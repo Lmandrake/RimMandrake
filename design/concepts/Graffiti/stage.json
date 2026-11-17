@@ -1,5 +1,6 @@
 {
  "aliases": [],
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 4; that look was not_covered; judging stopped on Graffiti (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -289,11 +290,74 @@
     "ref": "run rm-role-designer-1794755317",
     "stage": 5,
     "tokens": 249669
+   },
+   {
+    "at": "2026-11-17T17:34:03Z",
+    "kind": "helper",
+    "ref": "exam retake 2026-11-17 examiner ac3c67d5443415760",
+    "stage": 5,
+    "tokens": 46828
+   },
+   {
+    "at": "2026-11-17T17:34:03Z",
+    "kind": "helper",
+    "ref": "exam retake 2026-11-17 challenger a58da593fffbb225e",
+    "stage": 5,
+    "tokens": 41120
+   },
+   {
+    "at": "2026-11-17T17:34:03Z",
+    "kind": "helper",
+    "ref": "exam retake 2026-11-17 reader af3fa14e0ca328e02",
+    "stage": 5,
+    "tokens": 45183
+   },
+   {
+    "at": "2026-11-17T17:34:03Z",
+    "kind": "helper",
+    "ref": "exam retake 2026-11-17 reader ad97530ae3cf03d3e",
+    "stage": 5,
+    "tokens": 44481
+   },
+   {
+    "at": "2026-11-17T17:34:03Z",
+    "kind": "helper",
+    "ref": "exam retake 2026-11-17 control reader aca14241be5546dac",
+    "stage": 5,
+    "tokens": 44686
+   },
+   {
+    "at": "2026-11-17T17:38:31Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794936862",
+    "stage": 5,
+    "tokens": 394714
+   },
+   {
+    "at": "2026-11-17T17:39:51Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794936862",
+    "stage": 5,
+    "tokens": 498219
+   },
+   {
+    "at": "2026-11-17T17:40:08Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794936862-reader",
+    "stage": 5,
+    "tokens": 120538
    }
   ],
   "reserve": 60000,
-  "spent": 9223164
+  "spent": 10458933
  },
+ "coverage_releases": [
+  {
+   "at": "2026-11-17T17:34:10Z",
+   "rounds_at": 3,
+   "why": "steward RIMMANDRAKE_RETAKE_GRAFFITI_EXAM_AFTER_LOCKED_CHANGE: locked change of 2026-11-17T17:26:00Z (oracle/experience rewording by card, re-pinned); Cold Reader exam retaken 46/46 on tree e6507f3b, control on going_over missed e12/e13; the one coverage look the chain owes"
+  }
+ ],
  "coverage_rounds": [
   {
    "at": "2026-11-15T08:21:51Z",
@@ -371,8 +435,30 @@
    "tokens": 276361,
    "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d",
    "verdict": "covered"
+  },
+  {
+   "at": "2026-11-17T17:34:22Z",
+   "error": null,
+   "gaps": 2,
+   "ids": [
+    "marks_various",
+    "stories_not_tax"
+   ],
+   "judge": "rm-coverage-judge-1794936862",
+   "late": [],
+   "tags": {
+    "changed": 1,
+    "regression": 1
+   },
+   "tokens": 892933,
+   "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894",
+   "verdict": "not_covered"
   }
  ],
+ "coverage_stop": {
+  "at": "2026-11-17T17:40:09Z",
+  "why": "released for one more look at round 4; that look was not_covered"
+ },
  "history": [
   {
    "at": "2026-11-15T04:54:02Z",
@@ -685,6 +771,18 @@
    "stage": 5,
    "what": "locked_change",
    "why": "repair (RIMMANDRAKE_UNLOCK_REPIN_VOIDED_EXAM_NEXT_OPEN_REFUSED, d2a3509a53): the re-pin of 2026-11-17 voided stage 4's exam on a locked concept and left it locked, so no open or chain could retake it; unlocked for the retake as the fixed repin does, stage 5 locks it again; sources as the re-pin above"
+  },
+  {
+   "at": "2026-11-17T17:34:10Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "steward RIMMANDRAKE_RETAKE_GRAFFITI_EXAM_AFTER_LOCKED_CHANGE: locked change of 2026-11-17T17:26:00Z (oracle/experience rewording by card, re-pinned); Cold Reader exam retaken 46/46 on tree e6507f3b, control on going_over missed e12/e13; the one coverage look the chain owes"
+  },
+  {
+   "at": "2026-11-17T17:40:09Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: released for one more look at round 4; that look was not_covered; judging stopped on Graffiti (coverage_judge.py release <dir> --why ... grants one more look)"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -1058,6 +1156,6 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

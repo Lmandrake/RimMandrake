@@ -522,6 +522,16 @@ def paused_fix_checks(root):
     ok([x["id"] for x in got or []] == ["FIX_G", "FIX_R", "FIX_K"],
        "paused-fix: the default reader finds the granted, road-back and concept fix tickets, open only, in that order "
        "(read %s)" % [x["id"] for x in got or []])
+    # RIMMANDRAKE_FIND_CHAIN_STEWARD_FIXES_WHILE_STOPPED_TICK_BLIND: a locked-change chain steward's look stops judging
+    # and it files the gaps caused by its own item; those fix tickets get their fixer runs too (they were invisible)
+    items = dict(items, FIX_C=it("proposed", "fix", "CHAIN_P"), TASK_C=it("proposed", "task", "CHAIN_P"),
+                 FIX_C2=it("proposed", "fix", "CHAIN_OLD"))
+    s_ = {"steward": {"0.1.0|chain|2026-11-17T17:26:00Z": {"item": "CHAIN_P"},
+                      "0.1.0|blind_challenge|exit_not_met|1|x": {"item": "CHAIN_OLD"}}}
+    got = A.stop_tickets(dict(STOP), s_, items)
+    ok([x["id"] for x in got or []] == ["FIX_K", "FIX_C"],
+       "paused-fix: the default reader finds a chain steward's own fix tickets after the concept's, fix kind only, "
+       "never another steward's (read %s)" % [x["id"] for x in got or []])
 
 
 def final_look_checks(root):

@@ -1,751 +1,958 @@
 {
- "against": "rm-coverage-judge-1794734941",
- "at": "2026-11-15T14:45:24Z",
- "changed": [
-  "dec:d_rework_no_park",
-  "inv:inv_mark_on_wall",
-  "leaf:answer_wall",
-  "leaf:sits_on_wall",
-  "scene:sc_breach_bias_raid",
-  "scene:sc_spree_corridor",
-  "scene:sc_wall_closeup"
- ],
+ "at": "2026-11-17T17:34:22Z",
  "checklist": [
   {
    "evidence": [
-    "design/concepts/Graffiti/scenes.json (showcases spree_corridor, social_wall, after_the_raid; sc_spree_corridor start/action/control; sc_raid_retaken action)",
-    "src/RimMandrake/rimflow/showcase_rules.json via designer_stage.py showcases"
-   ],
-   "id": "inv_player_orders",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_spree_corridor",
-     "what": "showcase 1 no longer uses the player paint order: the skilled piece is a script-forced RM_PaintGraffitiJob with 'no Designator_PaintGraffitiMark and no paint designation anywhere on the map: asserted designations 0', in start, action and control"
-    },
-    {
-     "ok": true,
-     "scene": "spree_corridor, social_wall",
-     "what": "no scene of spree_corridor or social_wall (sc_beauty_pair, sc_mockery, sc_answer_wall, sc_temperament, sc_visitors, sc_own_fun) mentions a designator or order (searched)"
-    },
-    {
-     "ok": true,
-     "scene": "sc_raid_retaken",
-     "what": "inv_player_orders is first exercised by after_the_raid through sc_raid_retaken's 'designate the enemy marks one by one with Designator_ScrubGraffiti'"
-    },
-    {
-     "ok": true,
-     "scene": "after_the_raid",
-     "what": "designer_stage.py showcases, rerun by me: after_the_raid exercises 3, new 3, overlap 0.00; 'showcase set accepted'"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "design/concepts/Graffiti/record.json:279-299",
-    "design/concepts/Graffiti/scenes.json sc_wall_closeup",
-    "src/RimMandrake/Graffiti/Source/GraffitiPool.cs:163",
-    "src/RimMandrake/Graffiti/Source/WallPlane.cs:471",
-    "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs:374",
-    "infrastructure/state/items/RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL.md"
+    "record.json:279",
+    "scenes.json:79"
    ],
    "id": "inv_mark_on_wall",
    "parts": [
     {
      "ok": true,
-     "scene": "record.json inv_mark_on_wall",
-     "what": "the record now says the far-side refusal is kernel SidePaintable(2)=false and that 'the live paint paths do not yet apply' it, and cites ITEM:RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL; the item exists"
+     "scene": "sc_wall_closeup",
+     "what": "a mark sits on its wall's front face and climbs onto the top: sc_wall_closeup's positive case is unchanged and stays passed"
     },
     {
      "ok": true,
      "scene": "sc_wall_closeup",
-     "what": "the code read holds: GraffitiPool.cs:163 refuses only !PaintsEdgeOn, ChooseMark refuses only NoWall, WallPlane.cs:471 draws FaceHidden as PrintLip, SidePaintable(side) is false for 2"
+     "what": "no paint on an edge-on wall: the control's edge-on cell expects no mark and a pool that returns none (unchanged)"
     },
     {
      "ok": true,
      "scene": "sc_wall_closeup",
-     "what": "a live far-side control now exists: a paint order and a pool pick on the cell whose only wall is south of it, expecting no Filth_Mark, marked expected-to-fail with depends_on the fix item"
+     "what": "no paint on a wall's far side. Changed: the control now stages the south-only order as 'the one whose north wall came down after it was placed', reads ChooseMark's trace line and ProbeWallFaces s=0, and keeps 'the pool returns none for it', with the red 'a mark at c and s=1'. Both the order path and the pool path stay covered"
     }
    ]
   },
   {
    "evidence": [
-    "design/concepts/Graffiti/tree.json:80 (sits_on_wall)",
-    "design/concepts/Graffiti/scenes.json sc_wall_closeup"
+    "record.json:304",
+    "scenes.json:4",
+    "scenes.json:105"
    ],
-   "id": "sits_on_wall",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_wall_closeup",
-     "what": "the oracle's control names 'a cell whose only wall is south of it (the far side) gets no mark from a paint order or a pool pick'; the scenario adds that cell; false_pass adds 'a mark on a wall's far side, drawn as a lip, passes as painted'"
-    },
-    {
-     "ok": true,
-     "scene": "sc_wall_closeup",
-     "what": "the scene start asserts 'ReadWallSide 2, FaceOfSide FaceHidden' for that cell, so the control cannot pass by staging an edge-on or front cell by mistake; rules_out names 'paint on a wall's far side drawn as a lip'"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "design/concepts/Graffiti/tree.json (answer_wall)",
-    "design/concepts/Graffiti/scenes.json sc_answer_wall"
-   ],
-   "id": "answer_wall",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_answer_wall",
-     "what": "the changed oracle (four answers including 'a confront over painted-out work'; control 'a mark nobody is offended by gets no answer') is matched by sc_answer_wall: four asserted sub-cases, the confront case with the painter's earlier work painted out, control 'no answer job', rules_out auto-clean"
-    },
-    {
-     "ok": true,
-     "scene": "sc_answer_wall",
-     "what": "false_pass 'the answer is logged but no job runs' is answered by expect 'all four answer jobs complete, each by a pawn with a reason' plus the mark's state per answer"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "design/concepts/Graffiti/scenes.json sc_breach_bias_raid and coverage_rest",
-    "infrastructure/state/items/RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE.md:15"
-   ],
-   "id": "inv_breach_bias",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_breach_bias_raid",
-     "what": "coverage_rest binds inv_breach_bias 'by': sc_breach_bias_raid and sc_breach_toggle"
-    },
-    {
-     "ok": true,
-     "scene": "sc_breach_bias_raid",
-     "what": "start asserts that W 'is not vanilla's breach pick' with bias off, so a pick of W with bias on is attributable; the control (same W, glyph removed, bias on, pick is vanilla's) rules out 'W chosen for a reason other than the lure'; the bias-off reread checks the switch stops its own behaviour"
-    },
-    {
-     "ok": true,
-     "scene": "sc_breach_bias_raid",
-     "what": "its entry point is missing in validation.py and is filed in entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_GAP_SCENES_TWENTY_FOUR_IN_ONE, which exists and names scene_breach_bias_raid, as the contract requires"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "design/concepts/Graffiti/scenes.json showcase spree_corridor and sc_spree_corridor expect/control",
-    "design/concepts/Graffiti/record.json (inv_viewer_mood present/current)"
-   ],
-   "id": "inv_viewer_mood",
+   "id": "inv_mark_art_set",
    "parts": [
     {
      "ok": true,
      "scene": "sc_spree_corridor",
-     "what": "exercised by showcase 1: the walker 'holds a negative viewed-mark thought from a scrawl and a positive one from the skilled piece (asserted thought defs and signs)', and the walker has 'no traits that change mark thoughts (asserted)'"
+     "what": "punk/urban marks appear in play in the flagship spree (unchanged, passed)"
     },
     {
      "ok": true,
-     "scene": "sc_spree_corridor",
-     "what": "the g1 rework keeps the mood check: with the spree refused, 'the walker holds only its positive thought', which separates the scrawl's thought from the skilled piece's"
+     "scene": "sc_gallery",
+     "what": "every def is judged at play zoom, with planted signage and dirt as controls (unchanged, passed). 'several variants each' is an asset-variant count and is not a bar"
     }
    ]
   },
   {
    "evidence": [
-    "scenes.json"
-   ],
-   "id": "inv_weathering",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_weathered_raid_mark",
-     "what": "dropped from after_the_raid; listed in coverage_rest with a real scene and leaf"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "art_skill",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_art_skill",
-     "what": "viewer mood sign by skill asserted; craft-Normal control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
+    "record.json:326",
+    "scenes.json:155",
+    "scenes.json:132"
    ],
    "id": "inv_beauty_and_craft",
    "parts": [
     {
      "ok": true,
      "scene": "sc_art_skill",
-     "what": "beauty moves both ways and mood signs follow skill"
+     "what": "the painter's skill moves beauty and mood both ways (sc_art_skill unchanged, passed)"
     },
     {
      "ok": true,
      "scene": "sc_beauty_pair",
-     "what": "picture and stat agree; side-swap control"
+     "what": "an ugly mark looks ugly and inspects as uglier: sc_beauty_pair was reworded to drop the -15/-3 pin and now checks the same hand's scrawl against its tally at every craft; still passes"
     }
    ]
   },
   {
    "evidence": [
-    "scenes.json"
-   ],
-   "id": "reads_at_play_zoom",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_gallery",
-     "what": "the judge must call planted vanilla filth dirt and flag signage, so it cannot pass every cell"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "not_dirt",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_gallery",
-     "what": "vanilla filth called dirt; identical dirt cells called alike"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "ugliness_visible",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_beauty_pair",
-     "what": "side-swapped repeat and identical-tally pair control"
-    },
-    {
-     "ok": true,
-     "scene": "sc_walk",
-     "what": "scrawl and tally re-show on the lived-in wall"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "inv_social_layer",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_answer_wall, sc_fights, sc_mockery, sc_tribute_memorial",
-     "what": "answers, fights, mockery and tribute, each with a discriminating control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "fights_reasons",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_fights",
-     "what": "the unrestricted run must produce a confrontation; social-off control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "mockery",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_mockery",
-     "what": "subject field asserted; a neutral viewer holds no amused thought"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "tribute_memorial",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_tribute_memorial",
-     "what": "grief and relations asserted at start; expect is a conjunction"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json",
-    "sheet.md"
-   ],
-   "id": "raider_pressure",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_raider_pressure",
-     "what": "both modes, partial and full scrub, pressure-off control"
-    },
-    {
-     "ok": true,
-     "scene": "sc_weathered_raid_mark",
-     "what": "pressure lifts when the mark weathers away"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "inv_raider_future_marks",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_raider_pressure",
-     "what": "exercised in after_the_raid"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "weathering_bounds_marks",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_weathered_raid_mark",
-     "what": "despawn, EnemyClaim end, roofed control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "record.json",
-    "sheet.md"
-   ],
-   "id": "inv_settings",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_settings",
-     "what": "11 settings named; the sheet agrees"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json",
-    "tree.json"
-   ],
-   "id": "stands_alone_settings",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_settings",
-     "what": "a mark painted with ideoligions off, fields equal across reload, every switch including pressure"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json",
-    "record.json"
-   ],
-   "id": "inv_joy_and_idle_tag",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_own_fun",
-     "what": "idle-tag sub-case with a painting-off control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json",
-    "record.json"
+    "record.json:345",
+    "scenes.json:323"
    ],
    "id": "inv_ideo_sigils",
    "parts": [
     {
      "ok": true,
      "scene": "sc_sigil",
-     "what": "meme gate present vs absent; zero-red-error start"
+     "what": "a colonist of an ideoligion paints a sigil with its icon, tinted and framed; meme gate present vs absent (unchanged, passed)"
     }
    ]
   },
   {
    "evidence": [
-    "scenes.json"
-   ],
-   "id": "raid_mark_troubles",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_raid_retaken",
-     "what": "stage falls with the count; one-mark-left control"
-    },
-    {
-     "ok": true,
-     "scene": "sc_weathered_raid_mark",
-     "what": "EnemyClaim ends when the mark weathers away"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "inv_raid_marks",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_raid_exit, sc_raid_retaken",
-     "what": "exercised in after_the_raid"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "going_over",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_going_over",
-     "what": "second-cell control with no enemy painter"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "own_fun",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_own_fun",
-     "what": "joy level asserted at start"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "temperament",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_temperament",
-     "what": "each viewer's traits asserted at start"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "ideo_sigil",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_sigil",
-     "what": "ideo, memes and colour asserted"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "inv_temperament",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_temperament",
-     "what": "exercised in social_wall with asserted traits"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "inv_standalone",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_settings",
-     "what": "a mark painted with ideoligions off is asserted"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json",
-    "sheet.md"
-   ],
-   "id": "walk_lived_in",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_walk",
-     "what": "recreation job, mark count after the repeated spree, stripped-save control"
-    },
-    {
-     "ok": true,
-     "scene": "sc_walk",
-     "what": "the sheet lists the walk leaf"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "inv_mark_art_set",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_spree_corridor, sc_gallery",
-     "what": "exercised in the flagship; every def judged"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json",
-    "sheet.md"
-   ],
-   "id": "punk_register",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_gallery",
-     "what": "planted signage control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "no_english",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_gallery",
-     "what": "the planted word texture must be flagged"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "stories_not_tax",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak",
-     "what": "forced-hourly control shows a tax"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "rereads_daily",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_rereads",
-     "what": "refresh at most once a day; second-mark control"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "inv_scrub_protection",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_scrub_protection",
-     "what": "exercised in devout_wall"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
-   ],
-   "id": "scrub_protection",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_scrub_protection",
-     "what": "designated scrub vs an undesignated protected neighbour"
-    }
-   ]
-  },
-  {
-   "evidence": [
-    "scenes.json"
+    "record.json:369",
+    "scenes.json:4",
+    "scenes.json:33"
    ],
    "id": "inv_spree",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_spree_corridor, sc_spree_wall",
-     "what": "spree-refused control"
+     "scene": "sc_spree_corridor",
+     "what": "a painting spree breaks out and leaves marks; spree-refused control (unchanged, passed)"
     }
    ]
   },
   {
    "evidence": [
-    "scenes.json",
-    "sheet.md"
+    "record.json:392",
+    "scenes.json:180"
    ],
-   "id": "mark_appears",
+   "id": "inv_joy_and_idle_tag",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_spree_wall",
-     "what": "unbroken-painter control"
+     "scene": "sc_own_fun",
+     "what": "tagging as recreation gives a small buff; idle-tag case with a painting-off control (unchanged, passed)"
     }
    ]
   },
   {
    "evidence": [
-    "scenes.json"
+    "record.json:412",
+    "scenes.json:347",
+    "scenes.json:413"
+   ],
+   "id": "inv_player_orders",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_player_orders",
+     "what": "the player orders a chosen mark on a chosen cell and gets exactly it; an undesignated cell is the control (unchanged, passed)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_raid_retaken",
+     "what": "first exercised in a showcase by after_the_raid's ordered scrub (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:435",
+    "scenes.json:4"
+   ],
+   "id": "inv_viewer_mood",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_spree_corridor",
+     "what": "a viewer gets a negative thought from a scrawl and a positive one from a skilled piece; signs asserted, trait-free walker (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:456",
+    "scenes.json:276",
+    "scenes.json:508",
+    "scenes.json:228",
+    "scenes.json:252"
+   ],
+   "id": "inv_social_layer",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_answer_wall",
+     "what": "answers, fights, mockery and tributes, each with a discriminating control (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:478",
+    "scenes.json:484"
    ],
    "id": "inv_visitors",
    "parts": [
     {
      "ok": true,
      "scene": "sc_visitors",
-     "what": "exercised in social_wall"
+     "what": "a trader reads an insult to its faction once per visit (unchanged, passed)"
     }
    ]
   },
   {
    "evidence": [
-    "scenes.json"
+    "record.json:495",
+    "scenes.json:369",
+    "scenes.json:413"
    ],
-   "id": "visitors",
+   "id": "inv_raid_marks",
    "parts": [
     {
      "ok": true,
-     "scene": "sc_visitors",
-     "what": "other-faction insult control"
+     "scene": "sc_raid_exit",
+     "what": "a leaving raid tags the outer walls and troubles the colony until they are scrubbed (unchanged, passed)"
     }
    ]
   },
   {
    "evidence": [
-    "record.json:564",
-    "scenes.json:590-611"
+    "record.json:518",
+    "scenes.json:695",
+    "scenes.json:579"
+   ],
+   "id": "inv_breach_bias",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_breach_bias_raid",
+     "what": "a glyph lures the breach pick, and with the glyph removed the pick is vanilla's; covered through coverage_rest (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:535",
+    "scenes.json:300"
+   ],
+   "id": "inv_scrub_protection",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_scrub_protection",
+     "what": "cleaners leave devotional and colony marks unless ordered (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:552",
+    "scenes.json:532"
+   ],
+   "id": "inv_temperament",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_temperament",
+     "what": "psychopath, sensitive and clean-freak viewers react as stated, traits asserted (unchanged, passed). The long-run temperament regime is a separate gap on stories_not_tax"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:572",
+    "scenes.json:601"
    ],
    "id": "inv_wall_loss",
    "parts": [
     {
      "ok": true,
      "scene": "sc_wall_loss",
-     "what": "paint dies with a deconstructed or destroyed wall; neighbour kept"
+     "what": "paint dies with a deconstructed or destroyed wall, and the neighbour is kept (unchanged, passed)"
     }
    ]
   },
   {
    "evidence": [
-    "tree.json:101-112",
-    "scenes.json:56-76"
+    "record.json:588",
+    "floor.json",
+    "sheet.md:41",
+    "scenes.json:556"
+   ],
+   "id": "inv_settings",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "every switch, including raider pressure, stops its behaviour; coverage_rest lists sc_settings, and floor.json keeps mod_settings applicable (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:605",
+    "scenes.json:556"
+   ],
+   "id": "inv_standalone",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "a mark is painted with ideoligions off and survives a reload (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:623",
+    "scenes.json:460"
+   ],
+   "id": "inv_raider_future_marks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_raider_pressure",
+     "what": "a standing raider mark brings a letter and a sooner or larger raid, and lifts when it is scrubbed (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json:637",
+    "scenes.json:670",
+    "tree.json"
+   ],
+   "id": "inv_weathering",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_weathered_raid_mark",
+     "what": "a mark fades and goes, sooner unroofed, and a roofed same-age mark still stands faded (unchanged, passed). The record's 'fades over the last 40% of its life' and 'a few weeks outdoors' are tuning data under the bar rule: advisory only, see reasons"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:33",
+    "sheet.md:14"
+   ],
+   "id": "mark_appears",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_spree_wall",
+     "what": "a spree leaves marks, never an empty wall with a clean job log; unbroken-painter control (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:105",
+    "tree.json"
+   ],
+   "id": "reads_at_play_zoom",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gallery",
+     "what": "every face-on mark reads at play zoom as made on purpose; planted dirt and signage calibrate the judge (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:79"
+   ],
+   "id": "sits_on_wall",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_wall_closeup",
+     "what": "front face and over the crease onto the top, never over the floor (unchanged, passed)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_wall_closeup",
+     "what": "an edge-on wall takes no paint (unchanged, passed)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_wall_closeup",
+     "what": "a far side takes no paint: the changed control expect restages the order as one that outlived its north wall, reads the trace line and ProbeWallFaces s=0 with a stated red, and keeps the pool check. It still meets the oracle's 'no mark from a paint order or a pool pick'"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:108",
+    "scenes.json:68",
+    "scenes.json:71",
+    "exam.json:46",
+    "sheet.md:18"
    ],
    "id": "marks_various",
    "parts": [
     {
-     "ok": true,
+     "ok": false,
      "scene": "sc_spree_variety",
-     "what": ">=3 defs and >=5 def-variant pairs"
+     "what": "several visibly different kinds of mark in one colony. Changed: the expect is now 'a judge shown the lanes' marks tells several kinds of mark apart', but the action is still 'read def and variant of every mark' with no capture shown to a judge"
+    },
+    {
+     "ok": false,
+     "scene": "sc_spree_variety",
+     "what": "control ruling out recolours of one shape: only 'the pool gated to one def' / 'one def only', a pool read the judge never sees. It cannot catch exam e6's 'six entries that share one texture' and does not calibrate the judge"
     },
     {
      "ok": true,
-     "scene": "sc_spree_variety",
-     "what": "control: pool gated to one def"
+     "scene": "",
+     "what": "the sheet line 'One colony holds visibly different kinds of mark, not recolours' matches the reworded leaf"
     }
    ]
   },
   {
    "evidence": [
-    "tree.json:425-440",
-    "scenes.json:337-357"
+    "scenes.json:323",
+    "tree.json"
+   ],
+   "id": "ideo_sigil",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_sigil",
+     "what": "a sigil with the painter's ideoligion icon, tinted and framed; ideo, memes and colour asserted (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:105",
+    "sheet.md:19"
+   ],
+   "id": "punk_register",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gallery",
+     "what": "the set reads as urban punk, and planted real-world signage must be flagged (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:105",
+    "sheet.md"
+   ],
+   "id": "no_english",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gallery",
+     "what": "no legible English or third-party tag; a planted word texture must be flagged (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:105",
+    "sheet.md"
+   ],
+   "id": "not_dirt",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_gallery",
+     "what": "no mark reads as dirt; vanilla filth must be called dirt and identical dirt cells alike (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:132",
+    "exam.json"
+   ],
+   "id": "ugliness_visible",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_beauty_pair",
+     "what": "a scrawl looks worse than a tally at 64 px, unlabelled; the side-swap and identical-tally pair rule out position bias and a judge who always picks one (unchanged, passed)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_beauty_pair",
+     "what": "the same hand's scrawl inspects as uglier: the changed control expect adds 'at each of the seven crafts the hand can roll' with the Beauty stat matching the inspect line, which rules out the new false_pass 'uglier only in its def'. Wording looseness: the sweep sits in control.expect, not control.case"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "lived-in re-show of the pair (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:155",
+    "tree.json"
+   ],
+   "id": "art_skill",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_art_skill",
+     "what": "skill sets beauty and mood both ways; a skilled slander angers and pleases at once; Normal-craft control (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:180",
+    "tree.json"
+   ],
+   "id": "own_fun",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_own_fun",
+     "what": "making a mark is recreation with a small buff; joy asserted at start (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "scenes.json:204"
+   ],
+   "id": "rereads_daily",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_rereads",
+     "what": "mood at most once a day: the oracle's '60000 ticks' became 'once per in-game day', the same meaning; sc_rereads is unchanged and matches"
+    },
+    {
+     "ok": true,
+     "scene": "sc_rereads",
+     "what": "opinion changes once, and a second mark gives its own read (unchanged, passed)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_rereads",
+     "what": "no thought without sight: the walled-off viewer gains none (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:228",
+    "tree.json"
+   ],
+   "id": "mockery",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_mockery",
+     "what": "a mockery names someone and changes regard for its painter; neutral-viewer control (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:252",
+    "tree.json"
+   ],
+   "id": "tribute_memorial",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_tribute_memorial",
+     "what": "a tribute warms, a rival is jealous, a memorial eases grief; relations asserted (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:276",
+    "tree.json"
+   ],
+   "id": "answer_wall",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_answer_wall",
+     "what": "a scrub, a cross-out, a reply and a confrontation each complete; an inoffensive mark gets no answer (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:300",
+    "tree.json"
+   ],
+   "id": "scrub_protection",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_scrub_protection",
+     "what": "an ordered scrub clears its mark; the undesignated protected neighbour stays (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:347",
+    "tree.json"
    ],
    "id": "player_orders",
    "parts": [
     {
      "ok": true,
      "scene": "sc_player_orders",
-     "what": "3 designated cells, 3 named marks painted exactly"
-    },
-    {
-     "ok": true,
-     "scene": "sc_player_orders",
-     "what": "control: an undesignated cell gets no ordered mark"
+     "what": "three designated cells get exactly the named marks; an undesignated cell gets none (unchanged, passed)"
     }
    ]
   },
   {
    "evidence": [
-    "tree.json:651-668",
-    "scenes.json:590-611"
+    "scenes.json:413",
+    "scenes.json:670"
+   ],
+   "id": "raid_mark_troubles",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_raid_retaken",
+     "what": "the troubled stage falls as marks are scrubbed; one-mark-left control (unchanged, passed)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_weathered_raid_mark",
+     "what": "EnemyClaim ends when the last mark weathers away (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:437",
+    "exam.json"
+   ],
+   "id": "going_over",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_going_over",
+     "what": "an enemy paints over a colonist's tag and the tag is gone; a second cell with no enemy painter is the control (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:460",
+    "scenes.json:670",
+    "sheet.md:31"
+   ],
+   "id": "raider_pressure",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_raider_pressure",
+     "what": "a letter names the faction and points at the mark (unchanged, passed)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_raider_pressure",
+     "what": "the next raid comes sooner or larger in both modes; pressure-off control (unchanged, passed)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_weathered_raid_mark",
+     "what": "the last mark gone, scrubbed or weathered, lifts it (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:484",
+    "tree.json"
+   ],
+   "id": "visitors",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_visitors",
+     "what": "a trader reads an insult once per visit, never recharged; another-faction control (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:508",
+    "tree.json"
+   ],
+   "id": "fights_reasons",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_fights",
+     "what": "a fight has people and a reason and never breaks restrictions; social-off control (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:532",
+    "tree.json"
+   ],
+   "id": "temperament",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_temperament",
+     "what": "a psychopath feels nothing, a sensitive pawn feels more both ways, a clean freak takes more and breaks into cleaning; traits asserted (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:556",
+    "tree.json",
+    "floor.json"
+   ],
+   "id": "stands_alone_settings",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_settings",
+     "what": "works without any ideoligion, survives a reload, and each of 8 (11 with raider pressure) settings stops its behaviour (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json:634",
+    "scenes.json:632",
+    "scenes.json:636",
+    "exam.json:67",
+    "sheet.md:37"
+   ],
+   "id": "stories_not_tax",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "sc_lived_in_soak",
+     "what": "no colonist's mood is ruled by marks. Changed: the oracle now says 'no colonist's mood is ruled by them', but sc_lived_in_soak still checks 'summed mark thoughts stay small' and asserts no sensitive or clean-freak colonist, so one ruled pawn can hide in the sum"
+    },
+    {
+     "ok": false,
+     "scene": "sc_lived_in_soak",
+     "what": "occasional stories happen: the oracle's 'they read as stories' and the experience's 'make occasional stories' are not asserted in the scene; 'stay small' and 'few per week' pass a colony where graffiti never happens unforced"
+    },
+    {
+     "ok": true,
+     "scene": "sc_lived_in_soak",
+     "what": "no message stream: 'Graffiti messages few per week', and the forced-hourly control shows the instrument can see a tax (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:601",
+    "tree.json"
    ],
    "id": "paint_dies_with_wall",
    "parts": [
     {
      "ok": true,
      "scene": "sc_wall_loss",
-     "what": "deconstructed and destroyed wall: both marks gone the tick the wall goes"
+     "what": "a deconstructed or destroyed wall's mark is gone the tick the wall goes, and the neighbour stays (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "sheet.md:40",
+    "scenes.json:670"
+   ],
+   "id": "weathering_bounds_marks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "",
+     "what": "a mark stays crisp most of its life, then visibly fades before it goes. Changed from 'alpha 1 before 60 percent' to experience wording; an offline kernel selftest, which the scene contract exempts from an acceptance scene; the sheet line matches"
     },
     {
      "ok": true,
-     "scene": "sc_wall_loss",
-     "what": "control: the untouched neighbour stays"
+     "scene": "sc_weathered_raid_mark",
+     "what": "sooner outdoors than under a roof, permanent never fades: the kernel oracle plus the live roofed-mark control 'it still stands, faded' (unchanged, passed)"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:647",
+    "sheet.md:38"
+   ],
+   "id": "walk_lived_in",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_walk",
+     "what": "after a reload, a spree, recreation tagging, a raid and a trader in both orders tell the same story; stripped-save control (unchanged, passed)"
     }
    ]
   }
  ],
- "claims": [
+ "contract": {
+  "advisory": false,
+  "alarms": [
+   {
+    "family": "coverage_judge",
+    "first_at": "2026-11-15T09:32:09Z",
+    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+    "last_at": "2026-11-17T17:40:08Z",
+    "open": true,
+    "subject": "family:coverage_judge",
+    "told_at": "2026-11-15T09:32:09Z",
+    "trips": 15,
+    "why": "refused 20 of its last 20 verdicts (limit 70%)"
+   }
+  ],
+  "cached": [],
+  "calibration": "CALIBRATED",
+  "counted": true,
+  "may_judge": true,
+  "ok": true,
+  "repair_due": []
+ },
+ "contract_reasked": [
+  "refusal 0 (marks_various): evidence 'design/concepts/Graffiti/scenes.json sc_spree_variety' is not one of the inputs the judge was given",
+  "refusal 0 (marks_various): evidence \"design/concepts/Graffiti/tree.json marks_various (oracle_proposed, false_pass 'one def in six tints')\" is not one of the inputs the judge was given",
+  "refusal 0 (marks_various): evidence \"design/concepts/Graffiti/exam.json e6 ('the def list reads six entries that share one texture' -> reject), c5\" is not one of the inputs the judge was given",
+  "refusal 0 (marks_various): evidence \"design/concepts/Graffiti/tree.json (marks_various oracle_proposed, false_pass 'one def in six tints')\" is not one of the inputs the judge was given",
+  "refusal 0 (marks_various): evidence 'design/concepts/Graffiti/exam.json e6, c5' is not one of the inputs the judge was given",
+  "refusal 0 (marks_various): evidence 'design/concepts/Graffiti/sheet.md [leaf:marks_various]' is not one of the inputs the judge was given",
+  "refusal 1 (stories_not_tax): evidence \"design/concepts/Graffiti/tree.json stories_not_tax (oracle_proposed, experience 'the player sees graffiti make occasional stories')\" is not one of the inputs the judge was given",
+  "refusal 1 (stories_not_tax): evidence \"design/concepts/Graffiti/scenes.json sc_lived_in_soak (start 'a colony of six on ordinary walls (asserted)', expect 'summed mark thoughts stay small and Graffiti messages few per week')\" is not one of the inputs the judge was given",
+  "refusal 1 (stories_not_tax): evidence \"design/concepts/Graffiti/scenes.json sc_temperament / record.json inv_temperament ('sensitive pawns feel more both ways, clean freaks take extra debuffs')\" is not one of the inputs the judge was given",
+  "refusal 1 (stories_not_tax): evidence \"design/concepts/Graffiti/exam.json e9 (accept needs 'occasional stories, no colonist's mood ruled by marks')\" is not one of the inputs the judge was given",
+  "refusal 1 (stories_not_tax): evidence 'design/concepts/Graffiti/tree.json (stories_not_tax oracle_proposed, experience)' is not one of the inputs the judge was given",
+  "refusal 1 (stories_not_tax): evidence 'design/concepts/Graffiti/scenes.json sc_lived_in_soak' is not one of the inputs the judge was given",
+  "refusal 1 (stories_not_tax): evidence 'design/concepts/Graffiti/exam.json e9, e10' is not one of the inputs the judge was given",
+  "refusal 1 (stories_not_tax): evidence 'design/concepts/Graffiti/sheet.md [leaf:stories_not_tax]' is not one of the inputs the judge was given",
+  "passed inv_mark_on_wall: evidence 'design/concepts/Graffiti/record.json (inv_mark_on_wall)' is not one of the inputs the judge was given",
+  "passed inv_mark_on_wall: evidence 'design/concepts/Graffiti/scenes.json sc_wall_closeup' is not one of the inputs the judge was given",
+  "passed inv_mark_art_set: evidence 'design/concepts/Graffiti/record.json (inv_mark_art_set)' is not one of the inputs the judge was given",
+  "passed inv_mark_art_set: evidence 'design/concepts/Graffiti/scenes.json sc_spree_corridor, sc_gallery' is not one of the inputs the judge was given",
+  "passed inv_beauty_and_craft: evidence 'design/concepts/Graffiti/record.json (inv_beauty_and_craft)' is not one of the inputs the judge was given",
+  "passed inv_beauty_and_craft: evidence 'design/concepts/Graffiti/scenes.json sc_art_skill, sc_beauty_pair' is not one of the inputs the judge was given",
+  "passed inv_ideo_sigils: evidence 'design/concepts/Graffiti/record.json' is not one of the inputs the judge was given",
+  "passed inv_ideo_sigils: evidence 'design/concepts/Graffiti/scenes.json sc_sigil' is not one of the inputs the judge was given",
+  "passed inv_spree: evidence 'design/concepts/Graffiti/scenes.json sc_spree_corridor, sc_spree_wall' is not one of the inputs the judge was given",
+  "passed inv_joy_and_idle_tag: evidence 'design/concepts/Graffiti/scenes.json sc_own_fun' is not one of the inputs the judge was given",
+  "passed inv_joy_and_idle_tag: evidence 'design/concepts/Graffiti/record.json' is not one of the inputs the judge was given",
+  "passed inv_player_orders: evidence 'design/concepts/Graffiti/scenes.json sc_player_orders, sc_raid_retaken, showcases' is not one of the inputs the judge was given",
+  "passed inv_viewer_mood: evidence 'design/concepts/Graffiti/scenes.json sc_spree_corridor' is not one of the inputs the judge was given",
+  "passed inv_social_layer: evidence 'design/concepts/Graffiti/scenes.json sc_answer_wall, sc_fights, sc_mockery, sc_tribute_memorial' is not one of the inputs the judge was given",
+  "passed inv_visitors: evidence 'design/concepts/Graffiti/scenes.json sc_visitors' is not one of the inputs the judge was given",
+  "passed inv_raid_marks: evidence 'design/concepts/Graffiti/scenes.json sc_raid_exit, sc_raid_retaken' is not one of the inputs the judge was given",
+  "passed inv_breach_bias: evidence 'design/concepts/Graffiti/scenes.json sc_breach_bias_raid, sc_breach_toggle, coverage_rest' is not one of the inputs the judge was given",
+  "passed inv_scrub_protection: evidence 'design/concepts/Graffiti/scenes.json sc_scrub_protection' is not one of the inputs the judge was given",
+  "passed inv_temperament: evidence 'design/concepts/Graffiti/record.json (inv_temperament)' is not one of the inputs the judge was given",
+  "passed inv_temperament: evidence 'design/concepts/Graffiti/scenes.json sc_temperament' is not one of the inputs the judge was given",
+  "passed inv_wall_loss: evidence 'design/concepts/Graffiti/record.json' is not one of the inputs the judge was given",
+  "passed inv_wall_loss: evidence 'design/concepts/Graffiti/scenes.json sc_wall_loss' is not one of the inputs the judge was given",
+  "passed inv_settings: evidence 'design/concepts/Graffiti/record.json' is not one of the inputs the judge was given",
+  "passed inv_settings: evidence 'design/concepts/Graffiti/floor.json (mod_settings applicable)' is not one of the inputs the judge was given",
+  "passed inv_settings: evidence 'design/concepts/Graffiti/sheet.md' is not one of the inputs the judge was given",
+  "passed inv_settings: evidence 'design/concepts/Graffiti/scenes.json sc_settings, coverage_rest' is not one of the inputs the judge was given",
+  "passed inv_standalone: evidence 'design/concepts/Graffiti/scenes.json sc_settings, coverage_rest' is not one of the inputs the judge was given",
+  "passed inv_raider_future_marks: evidence 'design/concepts/Graffiti/scenes.json sc_raider_pressure' is not one of the inputs the judge was given",
+  "passed inv_weathering: evidence 'design/concepts/Graffiti/record.json (inv_weathering)' is not one of the inputs the judge was given",
+  "passed inv_weathering: evidence 'design/concepts/Graffiti/scenes.json sc_weathered_raid_mark, coverage_rest' is not one of the inputs the judge was given",
+  "passed inv_weathering: evidence 'design/concepts/Graffiti/tree.json weathering_bounds_marks' is not one of the inputs the judge was given",
+  "passed mark_appears: evidence 'design/concepts/Graffiti/scenes.json sc_spree_wall' is not one of the inputs the judge was given",
+  "passed mark_appears: evidence 'design/concepts/Graffiti/sheet.md' is not one of the inputs the judge was given",
+  "passed reads_at_play_zoom: evidence 'design/concepts/Graffiti/scenes.json sc_gallery' is not one of the inputs the judge was given",
+  "passed sits_on_wall: evidence 'design/concepts/Graffiti/tree.json (sits_on_wall)' is not one of the inputs the judge was given",
+  "passed sits_on_wall: evidence 'design/concepts/Graffiti/scenes.json sc_wall_closeup' is not one of the inputs the judge was given",
+  "passed ideo_sigil: evidence 'design/concepts/Graffiti/scenes.json sc_sigil' is not one of the inputs the judge was given",
+  "passed punk_register: evidence 'design/concepts/Graffiti/scenes.json sc_gallery' is not one of the inputs the judge was given",
+  "passed punk_register: evidence 'design/concepts/Graffiti/sheet.md' is not one of the inputs the judge was given",
+  "passed no_english: evidence 'design/concepts/Graffiti/scenes.json sc_gallery' is not one of the inputs the judge was given",
+  "passed not_dirt: evidence 'design/concepts/Graffiti/scenes.json sc_gallery' is not one of the inputs the judge was given",
+  "passed ugliness_visible: evidence 'design/concepts/Graffiti/tree.json (ugliness_visible)' is not one of the inputs the judge was given",
+  "passed ugliness_visible: evidence 'design/concepts/Graffiti/scenes.json sc_beauty_pair' is not one of the inputs the judge was given",
+  "passed ugliness_visible: evidence 'design/concepts/Graffiti/exam.json e3, e4, c3, c4' is not one of the inputs the judge was given",
+  "passed art_skill: evidence 'design/concepts/Graffiti/scenes.json sc_art_skill' is not one of the inputs the judge was given",
+  "passed own_fun: evidence 'design/concepts/Graffiti/scenes.json sc_own_fun' is not one of the inputs the judge was given",
+  "passed rereads_daily: evidence 'design/concepts/Graffiti/tree.json (rereads_daily)' is not one of the inputs the judge was given",
+  "passed rereads_daily: evidence 'design/concepts/Graffiti/scenes.json sc_rereads' is not one of the inputs the judge was given",
+  "passed mockery: evidence 'design/concepts/Graffiti/scenes.json sc_mockery' is not one of the inputs the judge was given",
+  "passed tribute_memorial: evidence 'design/concepts/Graffiti/scenes.json sc_tribute_memorial' is not one of the inputs the judge was given",
+  "passed answer_wall: evidence 'design/concepts/Graffiti/scenes.json sc_answer_wall' is not one of the inputs the judge was given",
+  "passed scrub_protection: evidence 'design/concepts/Graffiti/scenes.json sc_scrub_protection' is not one of the inputs the judge was given",
+  "passed player_orders: evidence 'design/concepts/Graffiti/scenes.json sc_player_orders' is not one of the inputs the judge was given",
+  "passed raid_mark_troubles: evidence 'design/concepts/Graffiti/scenes.json sc_raid_retaken, sc_weathered_raid_mark' is not one of the inputs the judge was given",
+  "passed going_over: evidence 'design/concepts/Graffiti/scenes.json sc_going_over' is not one of the inputs the judge was given",
+  "passed going_over: evidence 'design/concepts/Graffiti/exam.json control' is not one of the inputs the judge was given",
+  "passed raider_pressure: evidence 'design/concepts/Graffiti/scenes.json sc_raider_pressure, sc_weathered_raid_mark' is not one of the inputs the judge was given",
+  "passed raider_pressure: evidence 'design/concepts/Graffiti/sheet.md' is not one of the inputs the judge was given",
+  "passed visitors: evidence 'design/concepts/Graffiti/scenes.json sc_visitors' is not one of the inputs the judge was given",
+  "passed fights_reasons: evidence 'design/concepts/Graffiti/scenes.json sc_fights' is not one of the inputs the judge was given",
+  "passed temperament: evidence 'design/concepts/Graffiti/scenes.json sc_temperament' is not one of the inputs the judge was given",
+  "passed stands_alone_settings: evidence 'design/concepts/Graffiti/scenes.json sc_settings' is not one of the inputs the judge was given",
+  "passed stands_alone_settings: evidence 'design/concepts/Graffiti/tree.json' is not one of the inputs the judge was given",
+  "passed stands_alone_settings: evidence 'design/concepts/Graffiti/floor.json' is not one of the inputs the judge was given",
+  "passed paint_dies_with_wall: evidence 'design/concepts/Graffiti/scenes.json sc_wall_loss' is not one of the inputs the judge was given",
+  "passed weathering_bounds_marks: evidence 'design/concepts/Graffiti/tree.json (weathering_bounds_marks, tier offline)' is not one of the inputs the judge was given",
+  "passed weathering_bounds_marks: evidence 'design/concepts/Graffiti/sheet.md [leaf:weathering_bounds_marks]' is not one of the inputs the judge was given",
+  "passed weathering_bounds_marks: evidence 'design/concepts/Graffiti/scenes.json sc_weathered_raid_mark' is not one of the inputs the judge was given",
+  "passed weathering_bounds_marks: evidence \"src/RimMandrake/rimflow/roles/designer_scene_contract.md ('Each experience or walk leaf off the offline tier has at least one acceptance scene')\" is not one of the inputs the judge was given",
+  "passed walk_lived_in: evidence 'design/concepts/Graffiti/scenes.json sc_walk' is not one of the inputs the judge was given",
+  "passed walk_lived_in: evidence 'design/concepts/Graffiti/sheet.md' is not one of the inputs the judge was given",
+  "passed walk_lived_in: evidence 'src/RimMandrake/rimflow/roles/designer_lock.md' is not one of the inputs the judge was given",
+  "coverage: given inputs in no passed or refused evidence: exam.json, floor.json, record.json, scenes.json, sheet.md, tree.json"
+ ],
+ "gaps": [
   {
-   "evidence": "scenes.json sc_spree_corridor: the skilled piece is a script-forced RM_PaintGraffitiJob painting the pool's pick for an art-16 hand, with no Designator_PaintGraffitiMark and no paint designation on the map (asserted designations 0), in start, action and control; so inv_player_orders is first used by after_the_raid (sc_raid_retaken's Designator_ScrubGraffiti). designer_stage.py showcases: after_the_raid exercises 3, new 3, overlap 0.00; showcase set accepted",
-   "gap": "g1"
+   "bar_kind": "experience",
+   "criterion_by": "second_reader",
+   "criterion_verdict": "sound",
+   "criterion_why": "Seeing several visibly different kinds of mark rather than tints of one shape is variety a player notices; it pins no count, and adding an art variant would not force a re-pass, so a correct mod can pass it with a judge-visible capture and a recolour control.",
+   "evidence": [
+    "scenes.json:68",
+    "scenes.json:71",
+    "tree.json:108",
+    "exam.json:46"
+   ],
+   "gid": "g1",
+   "ids": [
+    "marks_various"
+   ],
+   "judge_criterion_verdict": "sound",
+   "judge_criterion_why": "Once the positive is a judge's eye, the control must rule out the plausible alternative (tint-only variety, or an uncalibrated judge) at that same judge; a pool read cannot.",
+   "new_since": "regression",
+   "observed": "The expect reads 'a judge shown the lanes' marks tells several kinds of mark apart, not recolours of one'. But the action is 'read def and variant of every mark' (no capture), and the control is 'the pool gated to one def' with expect 'one def only'. Its rules_out, 'variety coming from tint alone', is never tested at the judge: six defs sharing one texture (exam e6) pass the gate control, and the judge is never shown a recolour set to reject.",
+   "return_to": 3,
+   "severity": "problem",
+   "since": "Card reword d1542a3675 / re-pin d4243898e1. sc_spree_variety.expect changed from 'at least 3 defs and 5 def-variant pairs' to a judge's call, and tree.json marks_various.oracle_proposed changed to match. The action and control were left as def reads.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_spree_variety: add a capture-for-judge step to the action, and a recolour-set case to the control with expect 'the judge calls them recolours of one'. tree.json already names the case in its false_pass."
+   },
+   "what": "marks_various is now judged by eye, but its scene's action captures nothing for the judge, and its only control is a pool read the judge never sees. Nothing rules out one shape in several tints, or a judge who calls any tinted set varied.",
+   "where": "scenes.json sc_spree_variety (action, control)",
+   "would_pass": "sc_spree_variety's action captures every lane's mark at play zoom, unlabelled, for a judge who names the kinds. A control shows the same judge a recolour set it must call 'recolours of one': one def's texture in the six lanes' tints, or six defs sharing one texture. The pool-gate check can stay. A fresh judge or a script can check that scenes.json holds both the capture and this calibration control."
   },
   {
-   "evidence": "scenes.json sc_wall_closeup: start adds a cell whose only wall is south of it (asserted ReadWallSide 2, FaceHidden); control issues a paint order and a pool pick there and expects no Filth_Mark, marked expected-to-fail until RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL (filed 2026-11-15: apply SidePaintable in GraffitiPool.WeightedPick and JobDriver_PaintGraffiti.ChooseMark) lands; tree.json sits_on_wall oracle, scenario and false_pass carry the far-side case; record.json inv_mark_on_wall cites the item",
-   "gap": "g2"
+   "bar_kind": "experience",
+   "criterion_by": "second_reader",
+   "criterion_verdict": "sound",
+   "criterion_why": "Graffiti reading as occasional stories, not a standing mood tax or a stream of messages, is something a player feels in play; comparing it against a forced control needs no pinned number, so a correct mod can pass a per-colonist check.",
+   "evidence": [
+    "tree.json:634",
+    "scenes.json:632",
+    "scenes.json:636",
+    "record.json:552",
+    "exam.json:67"
+   ],
+   "gid": "g2",
+   "ids": [
+    "stories_not_tax"
+   ],
+   "judge_criterion_verdict": "sound",
+   "judge_criterion_why": "The leaf's experience is that no pawn is taxed and stories still happen; a colony sum with no lower bound checks neither, and the fix compares against the scene's own control, not a tuning number.",
+   "new_since": "changed",
+   "observed": "The oracle says 'no colonist's mood is ruled by them: they read as stories'. The scene expects 'summed mark thoughts stay small and Graffiti messages few per week', and its start asserts only 'a colony of six on ordinary walls'. A colony sum averages away the regime the mod amplifies on purpose (record.json inv_temperament: 'sensitive pawns feel more both ways, clean freaks take extra debuffs'), and nothing requires any unforced mark, thought or letter, so an inert layer passes.",
+   "return_to": 3,
+   "severity": "problem",
+   "since": "tree.json stories_not_tax.oracle_proposed changed from 'summed mark thoughts per colonist stay within the trimmed range (about plus or minus 3 on average)' to 'no colonist's mood is ruled by them: they read as stories, not a tax'; sc_lived_in_soak was not updated. The missing story-occurs assertion predates the change (the experience's 'occasional stories' was already unasserted); the prior judge passed the row on the forced-hourly control, which proves the instrument can see a tax, not that the layer is alive.",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "scenes.json sc_lived_in_soak: add the trait mix to start; change expect from a summed check to a per-colonist check against the control, and add the 'at least one unforced story' assertion. Make the control's 'visible standing tax' a per-colonist read too."
+   },
+   "what": "stories_not_tax: the reworded oracle promises that no colonist's mood is ruled by marks and that they read as stories, but the soak checks only a colony-wide sum. One sensitive or clean-freak pawn can be ruled while the sum stays small, and a colony where graffiti never happens unforced passes.",
+   "where": "scenes.json sc_lived_in_soak (start, expect)",
+   "would_pass": "sc_lived_in_soak's start asserts at least one sensitive and one clean-freak colonist among the six. Expect reads each colonist's own mark-thought mood daily, and every colonist stays below the forced-hourly control's level for a colonist of the same traits (a relative check, no pinned number). Expect also requires at least one unforced graffiti story in the three weeks: a mark painted, read with a thought, or answered."
   }
  ],
- "gaps": [],
  "hashes": {
   "dec:d_art_skill": "4c5f0e36f44c4c43",
   "dec:d_contrast_D": "f14e9829ef51edcb",
@@ -758,6 +965,7 @@
   "dec:d_rereads": "f2f244b150adbc96",
   "dec:d_rework_no_park": "844846402b48e06e",
   "dec:d_wall_loss": "5cbed36221803880",
+  "exam": "007408f9c8105f44",
   "floor": "9f55f9451ce980d9",
   "inv:inv_beauty_and_craft": "e7b56e5793e2c6a3",
   "inv:inv_breach_bias": "f1735197ea4a57a5",
@@ -784,7 +992,7 @@
   "leaf:going_over": "2918057a309267c1",
   "leaf:ideo_sigil": "23cf330b470accae",
   "leaf:mark_appears": "bb9c1911ff80f109",
-  "leaf:marks_various": "ecd52b890381e7a8",
+  "leaf:marks_various": "e8bf99c26775e729",
   "leaf:mockery": "9d065cd06b9b3f4a",
   "leaf:no_english": "36de2df6a615d152",
   "leaf:not_dirt": "df98b6994d261346",
@@ -795,17 +1003,17 @@
   "leaf:raid_mark_troubles": "b3f6c48fdc3b01f8",
   "leaf:raider_pressure": "e19cef297c2a368e",
   "leaf:reads_at_play_zoom": "9d4882abc2efeaa3",
-  "leaf:rereads_daily": "b27df9290330624e",
+  "leaf:rereads_daily": "0140bad668eaf6ee",
   "leaf:scrub_protection": "1cf2e4fcc7744397",
   "leaf:sits_on_wall": "733a2666a5f3517f",
   "leaf:stands_alone_settings": "fb8a81edcd614bf9",
-  "leaf:stories_not_tax": "3594bef115b69967",
+  "leaf:stories_not_tax": "6f907e6d784c7201",
   "leaf:temperament": "b042d8ae4506280a",
   "leaf:tribute_memorial": "c395ecd811692435",
-  "leaf:ugliness_visible": "fdb7237f1b046a2e",
+  "leaf:ugliness_visible": "60be1a70eb56fa66",
   "leaf:visitors": "a5a42359a35b7093",
   "leaf:walk_lived_in": "e6c7765f0d954940",
-  "leaf:weathering_bounds_marks": "b84309349d7f13aa",
+  "leaf:weathering_bounds_marks": "75f4db841fd70428",
   "record:scope": "c651ce62b042b135",
   "rest:inv_breach_bias": "d413df56edb345e0",
   "rest:inv_settings": "7946a0420083b4ca",
@@ -813,7 +1021,7 @@
   "rest:inv_weathering": "13f5ffa98c7286c7",
   "scene:sc_answer_wall": "a441c6628827d4c0",
   "scene:sc_art_skill": "89a8e65f3147a2cb",
-  "scene:sc_beauty_pair": "c364c171985ea78a",
+  "scene:sc_beauty_pair": "8508fa82aff93679",
   "scene:sc_breach_bias_raid": "bf331e4ad00c878a",
   "scene:sc_breach_toggle": "486308f8af4bd617",
   "scene:sc_fights": "2468342db365bff3",
@@ -832,18 +1040,18 @@
   "scene:sc_settings": "1f9c7286b7fa1415",
   "scene:sc_sigil": "64e1d16fb5ee8d00",
   "scene:sc_spree_corridor": "1f4a183e05b955db",
-  "scene:sc_spree_variety": "83978725ee4de7c3",
+  "scene:sc_spree_variety": "553aee3bfd8a6612",
   "scene:sc_spree_wall": "e3e6628c7601fe3d",
   "scene:sc_temperament": "a91a3cf3e50e8055",
   "scene:sc_tribute_memorial": "881c8f058d1952a3",
   "scene:sc_visitors": "e2edce181b42a714",
   "scene:sc_walk": "d786a1d5ec081dfd",
-  "scene:sc_wall_closeup": "37849054e8975aa9",
+  "scene:sc_wall_closeup": "19ee4ae8c6c58e49",
   "scene:sc_wall_loss": "2174794c06f8eb38",
   "scene:sc_weathered_raid_mark": "55f6d492177c199d",
   "sheet:": "188bb42a8a678f50",
   "sheet:delegated": "e8bdcd2d7076a90a",
-  "sheet:does": "a08e0c5361d5b2cd",
+  "sheet:does": "3aac7bf3e9abc4a7",
   "sheet:does not": "8c37857946f60fb2",
   "sheet:his words": "eab5169b889ec6d9",
   "sheet:open": "225766d67a587313",
@@ -855,13 +1063,22 @@
   "showcase:spree_corridor": "d170ccc2f056106e",
   "tree:rest": "b8d8ff1e7f005f8f"
  },
- "judge": "rm-coverage-judge-1794753924",
- "mode": "delta",
- "prompt_chars": 14789,
- "reasons": "g1 is fixed. sc_spree_corridor's skilled piece is now a script-forced RM_PaintGraffitiJob with 'asserted designations 0'. No scene in showcases 1 or 2 uses a designator or an order. I reran designer_stage.py showcases and it prints after_the_raid 'exercises 3 new 3 overlap 0.00' and 'showcase set accepted'. g2 is fixed. sc_wall_closeup now has a far-side cell (asserted ReadWallSide 2 / FaceHidden) and a live control for a paint order and a pool pick there. That control is marked expected-to-fail and depends on the fix item RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL, which exists. The code read it cites holds: GraffitiPool.cs:163, WallPlane.cs:471 and SidePaintable at RM_GraffitiKernel.cs:374. tree.json sits_on_wall and record.json inv_mark_on_wall carry the far-side case. The changed entries answer_wall and sc_breach_bias_raid open no gap. Not counted, noted for the Designer and the item owners. (1) record.json inv_mark_on_wall keeps proof 'current' and impl 'present' while its own text says the far-side refusal is not applied live. Proof 'stale', or a proof_note that leaves the far-side clause out, would be accurate. It was dropped because the same mismatch was visible to the earlier pass: the far-side clause and proof 'current' both predate this round. (2) Line 9 of infrastructure/state/items/RIMMANDRAKE_SCRIPT_GRAFFITI_CORRIDOR_WALK_AND_WALL_LOSS_SCENES.md still says 'a skilled colonist's designated piece mid-corridor'. That is stale against the reworked scene. The item defers to scenes.json as the spec, and the scene's 'designations 0' assertion would catch a designator, so this is a summary fix, not a coverage gap. (3) Lines 28-29 of the GAP_SCENES item list only the edge-on control and the wall-top check for wall_closeup. It defers to the scene, which holds the far-side control.",
- "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
- "signed": true,
- "tokens": 276361,
- "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d",
- "verdict": "covered"
+ "inputs": {
+  "exam.json": "50f47d0e87116055e5d5eccdcf4f5257fb23d90007cd54010232a3a9af02a5ad",
+  "floor.json": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
+  "record.json": "fc5893ede1c17c89d975a27fd8745b5001b12d980cc4a6a0ac8a49fee0963256",
+  "scenes.json": "dfd1eeeae40599754299b0df6b64edeae1681437a476139a74d9c0c44c7d2a72",
+  "sheet.md": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d"
+ },
+ "judge": "rm-coverage-judge-1794936862",
+ "mode": "full",
+ "prompt_chars": 8575,
+ "reasons": "Delta round 4 against rm-coverage-judge-1794753924. That verdict was covered with no gaps, so there were no open gaps to check for repair. I recomputed the entry hashes. The entries changed since that verdict are: exam, sheet:does, leaves marks_various, rereads_daily, stories_not_tax, ugliness_visible and weathering_bounds_marks, and scenes sc_beauty_pair, sc_spree_variety and sc_wall_closeup. All come from the card reword that took numbers out of the bars. I re-judged the rows those entries touch and kept every other row as passed; their scenes are unchanged and I can quote no defect in them.\n\nTwo changes opened blocking gaps:\n- g1 (marks_various, regression): the bar became a judge's eye, but its control stayed a pool read.\n- g2 (stories_not_tax, changed): the oracle now promises that no colonist is ruled and that marks read as stories, but the soak checks a colony sum with no lower bound.\n\nThe other changes hold:\n- ugliness_visible: the same-hand inspection at every craft is added, and the judge calibration stays.\n- rereads_daily: the change has the same meaning.\n- weathering_bounds_marks: an offline kernel leaf, exempt from an acceptance scene; its sheet line matches.\n- sc_wall_closeup: the far-side control is restaged, with a trace line, a ProbeWallFaces read and a stated red, and it still covers both the order and the pool path.\n\nThe exam retake (46/46) is consistent with sheet.md and tree.json, and its e6 is the exact case g1's scene cannot catch.\n\nAdvisory, not counted (bar rule): record.json inv_weathering still says 'fades over the last 40% of its life' and 'a few weeks outdoors', and inv_mark_art_set says 'several variants each'. This is tuning and asset-variant wording; an experience wording would match the reworded sheet. sc_beauty_pair's craft sweep sits in control.expect while control.case names only the side-swap and identical tallies; naming the sweep in case would read cleaner.",
+ "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
+ "signed": false,
+ "stopped": "released for one more look at round 4; that look was not_covered",
+ "token_unit": "weighted_v2",
+ "tokens": 892933,
+ "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894",
+ "verdict": "not_covered"
 }

@@ -1,0 +1,700 @@
+{
+ "schema_version": 1,
+ "subject": "Graffiti",
+ "kind": "mod",
+ "authored_by": "concept",
+ "root_ref": "design/validation_walks/RimMandrake/Graffiti.md#north-star",
+ "root_state": "VALIDATED",
+ "root_hash": "07ee6ecdbfb296ddd3fff8050204ea237fa3f8796e4ba49d835ad385c5ce1df8",
+ "floor": {
+  "ref": "concept_floor.json",
+  "hash": "0e3d21c2c6f327e0cf7c0430fba9084dd442b1a23cd2dedd73377def76843cd4",
+  "off": []
+ },
+ "exam_waived": null,
+ "waived": [],
+ "advisory": [
+  "Mood sizes (ordinary wall art about +2 to +3 capped), weather days and the raider pressure factor are tuning; scenes check the sign and shape, not the exact number"
+ ],
+ "leaves": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "every lane holds at least one RM_Graffiti mark made by its own painter after the spree; control: a lane whose painter is never broken holds none",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "mark_appears",
+   "by": "concept",
+   "root": [
+    "mark_actually_appears"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "After a colonist's painting spree ends, the player sees new marks on the wall beside where the colonist painted.",
+   "scenario": "Quicktest map, six colonists each with a wall lane, a forced painting spree each, 3000 ticks; count marks in each lane.",
+   "false_pass": [
+    "the job log shows paint jobs and the wall stays empty",
+    "marks are spawned by the test, not by the job"
+   ],
+   "red": "a build whose paint job completes and places nothing (the old placementMask Any bug)",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a judge reading the 64 px gallery pages calls each cell a deliberate mark; control: a vanilla filth cell on the same page is called dirt",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "reads_at_play_zoom",
+   "by": "concept",
+   "root": [
+    "mark_reads_as_deliberate",
+    "mark_reads_at_play_zoom"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At normal play zoom (about 64 px per cell) the player reads every face-on mark as something a hand made on purpose, not a smudge, across every mark def and variant.",
+   "scenario": "Gallery: every shipped mark def and each Graphic_Random variant placed face-on along a lit wall run; a 64 px capture per page.",
+   "false_pass": [
+    "only the best variant of each def is shown",
+    "the capture is zoomed in past play zoom"
+   ],
+   "red": "a build where a variant is a blur or a few pixels at 64 px and reads as nothing",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "in the close-up every mark's drawn rect lies on its wall cell's front face and over the crease onto the top; control: a mark with the wall side cleared draws on the floor and is flagged, a cell whose only wall is edge-on gets no mark, and a cell whose only wall is south of it (the far side) gets no mark from a paint order or a pool pick",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "sits_on_wall",
+   "by": "concept",
+   "root": [
+    "mark_sits_on_the_wall"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees each mark drawn on the front face of the wall it was painted on (the face the camera sees, the wall north of the painter's cell), aligned to it and climbing over the crease onto the wall top, never floating over the floor beside it; a wall seen edge-on and a wall's far side carry no paint.",
+   "scenario": "Close-up of a painted wall lane after the spree, walls on each side of the painter's cell, and a cell whose only wall is south of it.",
+   "false_pass": [
+    "the mark is drawn on the floor cell beside the wall",
+    "a mark turned along the edge-on strip of a wall top passes as painted",
+    "a mark on a wall's far side, drawn as a lip, passes as painted"
+   ],
+   "red": "a build that draws the mark at the floor cell's centre with no wall offset",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a judge shown the marks in one colony tells them apart as kinds, not recolours of one; control: the pool with all but one def gated off yields one def",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "marks_various",
+   "by": "concept",
+   "root": [
+    "marks_visibly_various"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "In one colony the player sees several visibly different kinds of mark, not recolours of one.",
+   "scenario": "The six spree lanes after 3000 ticks; read each mark's def and variant.",
+   "false_pass": [
+    "one def in six tints",
+    "every lane paints the same variant"
+   ],
+   "red": "a build whose pool collapses to one def or one variant",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "graffiti_v1_live_proof A3: ideo True, frame halo_0, iconIsIdeo True, tinted True; control: a colonist with no ideoligion gets no sigil in the pool",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "ideo_sigil",
+   "by": "concept",
+   "root": [
+    "marks_visibly_various"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a colonist of an ideoligion paint a sigil carrying that ideoligion's own icon in its colour inside a frame.",
+   "scenario": "Quicktest map, a colonist with an ideoligion paints RM_Graffiti_IdeoSigil on the site wall.",
+   "false_pass": [
+    "the sigil shows a fixed generic icon",
+    "the icon is the ideo's but untinted"
+   ],
+   "red": "a build where every sigil shows the same placeholder icon",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a judge reading every gallery cell finds none reading as clip-art or real-world signage; control: a deliberately planted hazard-triangle test texture on the page is called signage",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "punk_register",
+   "by": "concept",
+   "root": [
+    "mark_register_is_punk_urban",
+    "mark_carries_no_earth_signage"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player reads the mark set as urban punk graffiti, with no mark that reads as a contemporary real-world sign such as a hazard triangle, exit sign or traffic glyph.",
+   "scenario": "The gallery pages at 64 px and a close-up page, every def and variant.",
+   "false_pass": [
+    "tidy clip-art pictograms pass as tags",
+    "a hazard bolt is kept as a punk mark"
+   ],
+   "red": "a build that still ships the old hazard-bolt or prohibition-sign vandal art",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a judge reading each close-up finds no legible English word; control: a planted test texture with a word is caught",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": "legible real-world English words or a third-party author's tag in a mark",
+   "wall_expect_h": null,
+   "id": "no_english",
+   "by": "concept",
+   "root": [
+    "never_real_world_english"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player never sees legible real-world English words or a third-party author's tag in any mark.",
+   "scenario": "Close-up pages of every def and variant.",
+   "false_pass": [
+    "the TARTE tag survives in one variant",
+    "English shows only when zoomed in"
+   ],
+   "red": "a build that ships the donor vandal_0 with the TARTE tag",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a judge told which cell is vanilla dirt picks it out of each pair; control: two vanilla dirt cells are called alike",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": "a mark indistinguishable from vanilla filth at play zoom",
+   "wall_expect_h": null,
+   "id": "not_dirt",
+   "by": "concept",
+   "root": [
+    "never_reads_as_dirt"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player never mistakes a mark for vanilla filth at play zoom.",
+   "scenario": "Dirt pages: each mark beside vanilla dirt filth at 64 px.",
+   "false_pass": [
+    "a scratch mark is accepted because its def says graffiti"
+   ],
+   "red": "a build whose scratches or scrawls read as a mess beside vanilla dirt",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a judge shown the pair unlabelled picks the scrawl as uglier; control: one colonist paints a scrawl and a tally at each craft the hand can roll, and at every one the scrawl inspects as uglier than the tally",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "ugliness_visible",
+   "by": "concept",
+   "root": [
+    "mark_ugliness_is_visible"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "At a glance the player sees a vandal scrawl look worse than a tally, and when the same hand painted both the scrawl also inspects as uglier, so the stat and the picture agree.",
+   "scenario": "Beauty pair: a vandal scrawl and a tally mark side by side on one wall, 64 px.",
+   "false_pass": [
+    "the two marks look alike and only the stat differs",
+    "the scrawl is uglier only in its def, while the same hand's scrawl and tally inspect alike"
+   ],
+   "red": "a build where a scrawl inspects no uglier than a tally by the same hand, or the uglier-inspecting mark has the cleaner picture",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "room beauty falls for the skill 2 mark and rises for the skill 16 one; viewer thoughts carry the sign; the target of the skilled mockery holds an anger thought and a beauty thought at once; control: the same marks with craft forced Normal give equal beauty",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "art_skill",
+   "by": "concept",
+   "root": [
+    "art_skill_goes_into_the_art"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a poor artist's mark harm a room's beauty and give viewers a mood debuff, a skilled artist's piece raise both, and a skilled slanderous piece both anger its target and please viewers by its beauty.",
+   "scenario": "Two colonists of art skill 2 and 16 each paint one mark in identical rooms; a third pair paints a mockery; viewers walk through each.",
+   "false_pass": [
+    "skill changes only the label",
+    "a mockery's beauty cancels its anger into one net thought"
+   ],
+   "red": "a build where art skill does not reach the mark's beauty or the viewer's thought",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the colonist's recreation job is the paint joy job, joy rises during it, and a maker thought appears; control: painting switched off, the joy giver is never chosen",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "own_fun",
+   "by": "concept",
+   "root": [
+    "making_a_mark_is_its_own_fun"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a colonist who made a mark gain a small mood buff, and painting appear as a recreation activity that fills joy.",
+   "scenario": "A colonist with low joy and free time near a wall; read its job, joy and thoughts until it paints.",
+   "false_pass": [
+    "joy rises from another activity",
+    "the buff comes from viewing, not making"
+   ],
+   "red": "a build where painting is never picked for recreation or the maker gets no buff",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "mood thought from that mark refreshed at most once per in-game day, opinion changed once; control: a second, different mark on the route gives its own read",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "rereads_daily",
+   "by": "concept",
+   "root": [
+    "rereads_affect_at_most_daily"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "A colonist who keeps passing the same mark gets its mood effect at most once per day, and the player sees its opinion change only once, on the first read.",
+   "scenario": "One colonist walks past one mockery mark every hour for two in-game days.",
+   "false_pass": [
+    "the thought stacks per pass",
+    "opinion keeps moving each pass"
+   ],
+   "red": "a build where each pass stacks a new mood thought or a new opinion change",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the mark records its subject; the subject holds a hurt thought and lowered opinion of the painter; a rival of the subject holds an amused thought; control: a non-mockery tag by the same painter moves no opinion",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "mockery",
+   "by": "concept",
+   "root": [
+    "mockery_changes_regard"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a mockery mark name someone, hurt that person and amuse the right others, and change how they regard its painter.",
+   "scenario": "Quicktest colony of five with a known feud; the feuding colonist paints a mockery of the other; the others pass it.",
+   "false_pass": [
+    "the mockery names nobody",
+    "everyone gets the same thought"
+   ],
+   "red": "a build where a mockery names no one or moves no opinion of the painter",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "the memorial's painter carries a grief thought before and an eased one after; the tribute's subject holds a warm thought, the rival a jealous or annoyed one; control: a colonist with no dead friend never paints a memorial",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "tribute_memorial",
+   "by": "concept",
+   "root": [
+    "tribute_and_memorial_mean_it"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a tribute warm the person it honours, make a rival jealous or annoy an enemy, and a memorial painted by a grieving colonist ease that colonist's grief.",
+   "scenario": "A colonist with a dead friend and a colonist with a beloved partner and a rival, in one colony.",
+   "false_pass": [
+    "a memorial is painted by someone who never knew the dead",
+    "grief does not change"
+   ],
+   "red": "a build where memorials come from anyone or tributes move nobody",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "all four answer jobs (scrub, deface, reply, confront) each run to completion by a pawn with a reason and the mark's state changes to match, including a confront over painted-out work; control: a mark nobody is offended by gets no answer",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "answer_wall",
+   "by": "concept",
+   "root": [
+    "pawns_answer_the_wall"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees pawns answer what is on the wall and watches each answer finish: a scrub, a cross-out, a reply painted, or a confrontation with the painter.",
+   "scenario": "A mockery stands with its subject, a friend of the subject and the painter on the map, in four sub-cases, one per answer (scrub, cross-out, reply, confront; the confront case with the painter's earlier work painted out); run each until its answer completes.",
+   "false_pass": [
+    "the answer is logged but no job runs",
+    "the mark vanishes with no pawn at it"
+   ],
+   "red": "a build where offended pawns never act on the wall",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "graffiti_v1_live_proof A6: unforced own and devotional False, control True, forced and ordered True, then both gone",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "scrub_protection",
+   "by": "concept",
+   "root": [
+    "pawns_answer_the_wall"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees cleaners leave devotional marks and the colony's own vandal marks alone unless ordered, while a hostile vandal mark is cleaned.",
+   "scenario": "Own vandal mark, an enemy devotional sigil and an enemy vandal control on one wall; a cleaner with no orders, then with orders.",
+   "false_pass": [
+    "everything is cleaned",
+    "nothing is cleaned even when ordered"
+   ],
+   "red": "a build where auto-clean wipes devotional marks",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "graffiti_v1_live_proof A7: painted 3, matched 3, pending 0; control: an undesignated cell gets no ordered mark",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "player_orders",
+   "by": "concept",
+   "root": [
+    "mark_actually_appears"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player designates three cells with three named marks and sees a colonist paint exactly those marks there.",
+   "scenario": "Quicktest site, three designated cells, one colonist.",
+   "false_pass": [
+    "the colonist paints random marks",
+    "one designation stays pending forever"
+   ],
+   "red": "a build whose designator paints the wrong mark or none",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "graffiti_v1_live_proof A2 and A5: tags only on the way out, on exterior walls, each in its faction's mark, and the hostile thought on a colonist; after the last enemy mark is scrubbed the thought is gone; control: a raid that never turns to leave leaves no tags",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "raid_mark_troubles",
+   "by": "concept",
+   "root": [
+    "raid_mark_troubles_until_retaken"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "After a raid leaves, the player sees the raiders' marks on the outer walls and colonists troubled by enemy marks on our walls, until the wall is retaken by scrubbing.",
+   "scenario": "A raid assaults then leaves the site; read exit tags, colonists' thoughts, then scrub every enemy mark and read again.",
+   "false_pass": [
+    "tags appear on the way in",
+    "the trouble never ends after scrubbing"
+   ],
+   "red": "a build where raid tags trouble no one or keep troubling after the wall is retaken",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "with A's mark standing: one letter naming A whose look-target is a standing A mark, and A's raid points above B's by the setting's factor (or its arrival earlier by the setting's delay); after the last A mark is scrubbed, A's next raid matches B's; control: the setting off gives equal points and no letter",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "raider_pressure",
+   "by": "concept",
+   "root": [
+    "raid_mark_troubles_until_retaken"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "While a raider faction's mark stands on the colony's walls, the player gets a letter naming that faction and pointing at its mark, and that faction's next raid comes sooner or larger; once the last such mark is scrubbed or weathered away, the push lifts.",
+   "scenario": "Two hostile factions; faction A leaves exit marks, faction B none; trigger each faction's next raid at the same storyteller points; then scrub A's marks and trigger again.",
+   "false_pass": [
+    "a letter with no change to the raid",
+    "every faction's raids grow, marked or not",
+    "the pressure lingers after the last mark is gone"
+   ],
+   "red": "a build where a standing mark changes nothing about the next raid, or the letter names no mark",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "one goodwill change attributed to the mark per visit, within the cap; control: a mark insulting another faction moves this faction's goodwill not at all",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "visitors",
+   "by": "concept",
+   "root": [
+    "visitors_read_without_recharging"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a visiting trader read an insult to its faction and the faction's goodwill drop once, and never again from that same wall during the visit.",
+   "scenario": "An insult to the trader's faction on a wall the caravan passes repeatedly during one visit.",
+   "false_pass": [
+    "goodwill drops on every pass",
+    "visitors never read marks"
+   ],
+   "red": "a build where one trader drains goodwill pass after pass",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "any confrontation is between the subject and the painter with the mark as its reason; the drafted and restricted pawns never leave; control: with the social layer off, no confrontation over 3 in-game days",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "fights_reasons",
+   "by": "concept",
+   "root": [
+    "fights_have_people_and_reasons"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a fight start only between people with a reason, a grudge or a mark about them, and never one that breaks a pawn's restrictions.",
+   "scenario": "A feud mockery with the subject drafted, the subject restricted to an area, and an unrelated colonist nearby.",
+   "false_pass": [
+    "a fight starts with an unrelated pawn",
+    "a drafted or restricted pawn leaves to fight"
+   ],
+   "red": "a build where paint manufactures a fight from nothing or pulls a drafted pawn away",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "psychopath holds no mark thought; the sensitive viewer's offsets exceed the ordinary one's in both signs; the clean freak's debuff exceeds it and its forced break runs the graffiti cleaning job; control: the ordinary viewer's offsets equal the def values",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "temperament",
+   "by": "concept",
+   "root": [
+    "each_takes_it_like_themselves"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a psychopath feel nothing from any mark, a sensitive colonist feel more in both directions, and a clean freak take extra debuffs and sometimes break into compulsively cleaning marks.",
+   "scenario": "Four viewers, ordinary, psychopath, sensitive and clean freak, pass the same good and bad marks; then the clean freak's mood is lowered.",
+   "false_pass": [
+    "the psychopath gets a smaller thought instead of none",
+    "the clean freak's break cleans ordinary filth only"
+   ],
+   "red": "a build where traits make no difference to a mark's thought",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "every mark keeps def, variant, wall side, craft and subject across reload; each switch off stops its own behaviour and leaves the others running; control: each switch back on restores it",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "stands_alone_settings",
+   "by": "concept",
+   "root": [
+    "stands_alone_and_obeys_settings"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees graffiti work in a game without any ideoligion, survive a save and reload with every mark intact, and stop each behaviour its setting switches off.",
+   "scenario": "Quicktest with ideoligions off; paint marks; save, reload; then flip each setting off in turn (the 8 shipped, and the 3 raider-pressure settings once built) and repeat its trigger.",
+   "false_pass": [
+    "the settings page changes but the behaviour runs on",
+    "marks lose their subject on reload"
+   ],
+   "red": "a build where a switched-off setting still paints, reacts or tags, or a reload drops mark fields",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "after a week of marks, no colonist's mood is ruled by them: they read as stories, not a tax; Graffiti messages and letters number few per week; control: a colony with painting forced every hour shows the instrument can see a tax",
+   "tier_reason": "only a long run of an ordinary colony shows whether the layer becomes a tax; compressed at top speed on the full list",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "stories_not_tax",
+   "by": "concept",
+   "root": [
+    "stories_not_a_tax"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "Across three in-game weeks of an ordinary colony, the player sees graffiti make occasional stories, never a permanent mood tax or a stream of messages.",
+   "scenario": "A lived-in colony of six on ordinary walls, three in-game weeks at top speed with no forcing.",
+   "false_pass": [
+    "the run is too short to reach a steady state",
+    "messages are counted only for one kind"
+   ],
+   "red": "a build whose marks stack into a standing mood penalty or send a message every few hours",
+   "tier_proposed": "live_full",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "both marks are gone the tick their wall is gone; control: a mark on an untouched neighbouring wall stays",
+   "tier_reason": "marks, thoughts, jobs and letters are runtime state of a running map; the kernel selftest proves only the pure rules",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "paint_dies_with_wall",
+   "by": "concept",
+   "root": [
+    "mark_sits_on_the_wall"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "The player sees a mark vanish when the wall it is painted on is deconstructed or destroyed.",
+   "scenario": "A painted wall cell, then deconstruct it; a second painted cell destroyed by damage.",
+   "false_pass": [
+    "the mark stays floating on the floor cell"
+   ],
+   "red": "a build where paint outlives its wall",
+   "tier_proposed": "live_minimal",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a mark stays crisp most of its life, then visibly fades before it goes; WeatherDays roofed exceeds unroofed for every form; permanent never fades",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "weathering_bounds_marks",
+   "by": "concept",
+   "root": [
+    "stories_not_a_tax"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "preserve",
+   "experience": "A tester sees a mark stay crisp most of its life, then visibly fade before it goes after its weather days, sooner outdoors than under a roof, unless it is permanent.",
+   "scenario": "Kernel selftest of RM_GraffitiKernel.WeatherDays and the fade curve over form, craft and roofed.",
+   "false_pass": [
+    "fade starts at placement",
+    "roofed and unroofed last the same"
+   ],
+   "red": "a build where marks never weather, so raid marks and pressure last forever",
+   "tier_proposed": "offline",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "after reload every mark and the raider pressure record match the save; the repeated spree adds marks; both orders give the same insult goodwill change once and the same pressure letter",
+   "tier_reason": "the walk is the mod in play on the full list",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "walk_lived_in",
+   "by": "concept",
+   "root": [
+    "stories_not_a_tax",
+    "raid_mark_troubles_until_retaken",
+    "mark_actually_appears"
+   ],
+   "leaf_kind": "walk",
+   "clause_kind": "preserve",
+   "experience": "The player walks a lived-in colony: a spree, recreation tagging, a raid's exit tags and a trader visit, and sees the wall tell the colony's story.",
+   "scenario": "Load a lived-in save made mid-way through three in-game weeks; repeat a painting spree on the same corridor; take the raid then the trader visit, then reload and take them in the second order, trader first; read marks, thoughts, letters and goodwill each time.",
+   "false_pass": [
+    "a fresh map stands in for the lived-in save",
+    "the second order is never run"
+   ],
+   "red": "a build where marks or the pressure record are lost on reload, or the order of raid and trader changes the outcome",
+   "tier_proposed": "live_full",
+   "owner_part": "no"
+  }
+ ]
+}

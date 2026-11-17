@@ -333,6 +333,11 @@ def stop_tickets(dst, s, items):
     want += sorted(i for i, x in items.items() if cbs and x.caused_by in cbs)
     if isinstance(dst, dict) and dst.get("item"):
         want += sorted(i for i, x in items.items() if x.kind == "fix" and x.caused_by == dst["item"])
+    # RIMMANDRAKE_FIND_CHAIN_STEWARD_FIXES_WHILE_STOPPED_TICK_BLIND: the locked-change chain steward's look is what
+    # stops judging, and it files the gaps caused by its own item; without this they waited on no fixer
+    chains = {v.get("item") for k, v in ((s or {}).get("steward") or {}).items()
+              if isinstance(v, dict) and v.get("item") and str(k).split("|")[1:2] == ["chain"]}
+    want += sorted(i for i, x in items.items() if x.kind == "fix" and x.caused_by in chains)
     for i in want:
         if i not in out and items[i].state and items[i].state not in model.TERMINAL:
             out.append(i)
