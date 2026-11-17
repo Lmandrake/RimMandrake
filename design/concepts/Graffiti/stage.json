@@ -331,10 +331,17 @@
     "ref": "run rm-role-designer-1794936995",
     "stage": 4,
     "tokens": 1033663
+   },
+   {
+    "at": "2026-11-17T18:12:46Z",
+    "kind": "stage",
+    "ref": "run rm-role-designer-1794938752",
+    "stage": 2,
+    "tokens": 397698
    }
   ],
   "reserve": 60000,
-  "spent": 10522223
+  "spent": 10919921
  },
  "coverage_rounds": [
   {
@@ -751,17 +758,35 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1794936995: stage 4 done"
+  },
+  {
+   "at": "2026-11-17T18:06:37Z",
+   "stage": 2,
+   "what": "invalidated",
+   "why": "inputs changed since stage 2 was accepted: owner; back to stage 2 (his new words to take in: )"
+  },
+  {
+   "at": "2026-11-17T18:06:37Z",
+   "stage": 2,
+   "what": "over_budget",
+   "why": "10522223 of 4000000 spent; run rm-role-designer-1794938752 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-17T18:06:37Z",
+   "stage": 2,
+   "what": "open",
+   "why": "run rm-role-designer-1794938752, stage 2, budget 400000"
+  },
+  {
+   "at": "2026-11-17T18:12:46Z",
+   "stage": 3,
+   "what": "close",
+   "why": "run rm-role-designer-1794938752: stage 2 done"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
  "loop_since": "2026-11-15T13:47:00Z",
  "mod": "Graffiti",
- "must_cite": [
-  "1794790746864442914",
-  "1794790752285697966",
-  "1794790788426165373",
-  "1794790829027694796"
- ],
  "parks": [
   {
    "at": "2026-11-15T09:32:10Z",
@@ -931,98 +956,6 @@
    "why": "inputs changed since stage 2 was accepted: owner; back to stage 2 (his new words to take in: OWNER:1794749812865303715)"
   },
   {
-   "at": "2026-11-15T13:51:45Z",
-   "inputs": {
-    "exam": "28a42f76bf15438aff3a660a75f09d5dc7b0342169e66b517b8b89c8f13c92b3",
-    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
-    "owner": "e697dc11f7e779b953779c8684d055771de40255d1246d2846093d49498777dc",
-    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-    "scenes": "ea5474f3adc9f2e8396926a293a7dc384af5fe5e316454d497e2b7a727a2b3a3",
-    "sheet": "40637a736329d2a2e385acf2ec6e4f6bfa83501154fad2e50418e94d11de223c",
-    "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d"
-   },
-   "manifest": {
-    "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
-    "designer_dialogue.md": "e88d5a0508489eaae8b9cf6ab0cfea0f7b313852c0efb6c5a3acf2e54247f3fa"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1794790746864442914",
-    "1794790752285697966",
-    "1794790788426165373",
-    "1794790829027694796"
-   ],
-   "quick_look": {
-    "offer": false,
-    "why": "no owner question is proposed: his card settled the rework and nothing waits on him"
-   },
-   "repinned": [
-    {
-     "at": "2026-11-17T17:10:10Z",
-     "inputs": [
-      "owner"
-     ],
-     "sources": [
-      "OWNER:1794842055508243067@d1542a3675",
-      "OWNER:1794889675303725702@1bee0c2e96",
-      "OWNER:1794771556666342734@68f199064a",
-      "OWNER:1794790746864442914",
-      "OWNER:1794790752285697966",
-      "OWNER:1794790788426165373",
-      "OWNER:1794790829027694796"
-     ]
-    }
-   ],
-   "run": "rm-role-designer-1794750411",
-   "stage": 2,
-   "summary": "His card of 2026-11-15 (OWNER:1794749812865303715, 'Rework, and stop parking for these') recorded as decision d_rework_no_park; no ask is sent and no core contradiction is open. The rework edits are already in for stage 3 to lint and the judge to see: g1 (sc_spree_corridor's skilled piece is a script-forced paint job, not a player order; after_the_raid new 3, overlap 0.00, showcase set accepted), g18 (sc_wall_closeup gains a south-only cell and a far-side control, cited to RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL, which had never been filed and is now filed for BENCH), answer_wall's scenario now four sub-cases, and sc_breach_bias_raid's citation made true by a bias-off read. Gate A lint PASS; coverage_fixes.json written against rm-coverage-judge-1794734941. Budget: the task is past its cap (6.94M of 4.0M); raising it is the Conductor's call."
-  },
-  {
-   "at": "2026-11-15T14:25:58Z",
-   "inputs": {
-    "exam": "28a42f76bf15438aff3a660a75f09d5dc7b0342169e66b517b8b89c8f13c92b3",
-    "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
-    "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-    "scenes": "dfd1eeeae40599754299b0df6b64edeae1681437a476139a74d9c0c44c7d2a72",
-    "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
-    "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894"
-   },
-   "manifest": {
-    "designer.md": "1dbcd3e1af5183a6158552212793ec13257ff27b7e3f04ac00ec325e27614822",
-    "designer_scene_contract.md": "76f5d3ebf79e4cee4cfb9962f33e61d478decfd2236504e78bd08e95d95752d7",
-    "designer_write.md": "96e624c1abcd0fe2c5b6a839b820d82e91c09f920dbe20fd0878edd03dfef450"
-   },
-   "outcome": "done",
-   "owner_uncited": [],
-   "quick_look": {
-    "offer": false,
-    "why": "no owner question is proposed; the next step is the exam and the coverage judge's delta round"
-   },
-   "repinned": [
-    {
-     "at": "2026-11-17T17:10:10Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes"
-     ],
-     "sources": [
-      "OWNER:1794842055508243067@d1542a3675",
-      "OWNER:1794889675303725702@1bee0c2e96",
-      "OWNER:1794771556666342734@68f199064a",
-      "OWNER:1794790746864442914",
-      "OWNER:1794790752285697966",
-      "OWNER:1794790788426165373",
-      "OWNER:1794790829027694796"
-     ]
-    }
-   ],
-   "run": "rm-role-designer-1794752602",
-   "stage": 3,
-   "summary": "Stage 3 Write accepted as it stands: Gate A lint PASS; showcase set accepted (spree_corridor 5 new, social_wall 4 new at 0.20 overlap with its staging reason, after_the_raid 3 new, devout_wall 3 new). The return note's 24 round-1 gaps of rm-coverage-judge-1794730911 were fixed at 09:06Z (run rm-role-designer-1794732988); the last verdict on disk, rm-coverage-judge-1794734941, left 2 gaps (inv_player_orders in after_the_raid; the far-side wall case), both reworked and claimed in coverage_fixes.json against that judge (sc_spree_corridor's skilled piece is a script-forced job; sc_wall_closeup gains a south-only cell and far-side control, pending RIMMANDRAKE_REFUSE_HIDDEN_FACE_PAINT_ORDER_OUTLIVED_ITS_WALL). A fix file against 1794730911 would be refused by coverage_judge.fix_claims as stale, so it was not rewritten. System fault filed: RIMMANDRAKE_CLEAR_PENDING_DECISION_ON_ACCEPT_ROUND_ONE_LINGERS (stage.json pending_decision is never cleared). Budget past cap (7.44M of 4.0M); raising it is the Conductor's call."
-  },
-  {
    "at": "2026-11-15T14:53:08Z",
    "outcome": "rejected",
    "run": "rm-role-designer-1794753910",
@@ -1047,7 +980,13 @@
    "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes, owner; back to stage 4 (his new words to take in: OWNER:1794790746864442914, OWNER:1794790752285697966, OWNER:1794790788426165373, OWNER:1794790829027694796)"
   },
   {
-   "at": "2026-11-17T17:55:18Z",
+   "at": "2026-11-17T18:06:37Z",
+   "outcome": "invalidated",
+   "stage": 2,
+   "why": "inputs changed since stage 2 was accepted: owner; back to stage 2 (his new words to take in: )"
+  },
+  {
+   "at": "2026-11-17T18:12:46Z",
    "inputs": {
     "exam": "d2eafd2f45adc568544b32b44a3412f07fff492acfe189d46b733994a41e674d",
     "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
@@ -1059,19 +998,19 @@
    },
    "manifest": {
     "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
-    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+    "designer_dialogue.md": "60eedbdcfb85880d16d3b952c486b223752d9ad4b9859da3ad42de5f23778dba"
    },
    "outcome": "done",
    "owner_uncited": [],
-   "run": "rm-role-designer-1794936995",
-   "stage": 4,
-   "summary": "Cold Reader exam retaken on tree e6507f3b / sheet 26a15750 after the re-pin voided the 2026-11-15 exam: 122 scenarios (106 examiner: 74 kept, 8 rewritten off numbers the tree no longer states, 24 new on the reworded leaves and untested ones; 16 challenger), both Readers 122/122, accept_where_reject_core 0, no challenger misses; control (going_over removed) missed e8 and e19. The four OWNER card-backfill events (1794790746864442914, 1794790752285697966, 1794790788426165373, 1794790829027694796) restate cards already recorded and are cited in record.json; nothing new to design. The old coverage-fix decision was settled at the 2026-11-15 lock; the coverage judge's one look on the new tree is stage 5's."
+   "run": "rm-role-designer-1794938752",
+   "stage": 2,
+   "summary": "Spurious reopen: stage 2 came back with no new words to take in. The 2026-11-17 repin froze four OWNER card backfills (1794790746864442914, 1794790752285697966, 1794790788426165373, 1794790829027694796) uncited; stage 4 then cited them in record.json, which emptied the owner feed and stale_stage read that as a change. Nothing new from him: no ask is sent (all four answered), the one core contradiction (c_vandal_signage) is resolved by measurement, and c_proof_home and c_site_settings are stage-3 build and script items, not open design. The defect is filed and fixed in this run (RIMMANDRAKE_KEEP_STAGE_TWO_WHEN_CITED_WORDS_ARE_OLD: an owner-feed change counts only when a word the stage did not freeze is uncited; selftest_designer_stage.py 4 new checks, 2 failed on base). The old coverage-fix pending decision was settled at the 2026-11-15 lock; stages 3 and 4 face unchanged tree, sheet, scenes and exam, so each should re-close at once."
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
- "stage": 5,
+ "stage": 3,
  "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }
