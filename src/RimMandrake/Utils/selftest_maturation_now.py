@@ -22,9 +22,11 @@ phone images):
 15 the slots line names the pipeline's launches apart from the Conductor's (RIMMANDRAKE_SHOW_SLOTS_CONDUCTOR_APART_FROM_MODS)
 
 Points 4, 5 and 7 run on a temp copy of design/concepts and the held-statement folder (--no-live: the ledger is not read).
-Point 6 runs on the live tree twice; a ledger shard or run record that moved between the runs earns one retry.
+Point 6 runs on the live tree twice with a pinned clock and a shared Dispatch reading/ticks snapshot; a ledger shard
+that moved between the runs earns one retry. Its fixture regression advances the source reading by 60 seconds.
 """
 
+import datetime as dt
 import glob
 import json
 import os
@@ -33,6 +35,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from unittest.mock import patch
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
@@ -219,21 +222,95 @@ def p5_stage_words():
 
 
 def p6_two_runs():
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+    import maturation_dispatch as MD
+
     def stamp():
         fs = glob.glob(os.path.join(REPO, "infrastructure", "state", "ledger", "events", "*.jsonl"))
         return sorted((f, os.path.getmtime(f)) for f in fs)
-    env = dict(os.environ, MATURATION_NOW_CLOCK=str(__import__("time").time()))   # "so far" minutes cannot tick
-    for attempt in (1, 2):
-        s0 = stamp()
-        a, b = page_of(REPO, live=True, env=env), page_of(REPO, live=True, env=env)
-        moved = stamp() != s0
-        diff = [(x, y) for x, y in zip(a.splitlines(), b.splitlines()) if x != y]
-        same_len = len(a.splitlines()) == len(b.splitlines())
-        only_time = same_len and all(x.startswith("**Measured") and y.startswith("**Measured") for x, y in diff)
-        if only_time or not moved or attempt == 2:
-            check("6 two runs differ only in the measurement line", only_time,
-                  "%d lines differ; first: %r" % (len(diff), diff[0] if diff else ("line count", same_len)))
-            return
+    with tempfile.TemporaryDirectory(prefix="mn_two_runs_") as snapshot:
+        # Pin the reading as well as the page clock: Dispatch can write a new at_pac every minute.
+        for name in ("reading.json", "ticks.jsonl"):
+            try:
+                shutil.copyfile(os.path.join(MD.sdir(), name), os.path.join(snapshot, name))
+            except FileNotFoundError:
+                pass
+        env = dict(os.environ, MATURATION_NOW_CLOCK=str(__import__("time").time()),
+                   RM_MATURATION_DISPATCH_DIR=snapshot)   # "so far" minutes cannot tick
+        for attempt in (1, 2):
+            s0 = stamp()
+            a, b = page_of(REPO, live=True, env=env), page_of(REPO, live=True, env=env)
+            moved = stamp() != s0
+            diff = [(x, y) for x, y in zip(a.splitlines(), b.splitlines()) if x != y]
+            same_len = len(a.splitlines()) == len(b.splitlines())
+            only_time = same_len and all(x.startswith("**Measured") and y.startswith("**Measured") for x, y in diff)
+            if only_time or not moved or attempt == 2:
+                check("6 two runs differ only in the measurement line", only_time,
+                      "%d lines differ; first: %r" % (len(diff), diff[0] if diff else ("line count", same_len)))
+                return
+
+
+def p6_dispatch_clock():
+    """RIMMANDRAKE_PIN_MATURATION_NOW_CLOCK_MINUTE_FLAKES: advance the source reading by a minute between runs."""
+    M = MN()
+    now = dt.datetime(2026, 11, 17, 14, 50, tzinfo=dt.timezone.utc).timestamp()
+    M.live_facts = lambda mods: {"intake": 0, "questions": [], "records": [], "notes": [], "errors": []}
+    M.convergence = lambda root, errors: None
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+    with tempfile.TemporaryDirectory(prefix="mn_clock_") as root:
+        source = os.path.join(root, "dispatch")
+        os.makedirs(source)
+        reading = os.path.join(source, "reading.json")
+        with open(os.path.join(source, "ticks.jsonl"), "w") as f:
+            f.write(json.dumps({"at": now, "launched": []}) + "\n")
+
+        def plant(kind, at):
+            rd = {"at": at, "at_pac": M.pac(dt.datetime.fromtimestamp(at, dt.timezone.utc)),
+                  "needs_conductor": ["Fixture mod needs its next step"], "mods": {}}
+            if kind == "missing reading":
+                if os.path.exists(reading):
+                    os.remove(reading)
+                return
+            if kind == "missing timestamp":
+                rd.pop("at_pac")
+            if kind == "empty timestamp":
+                rd["at_pac"] = ""
+            if kind == "invalid timestamp":
+                rd["at_pac"] = "invalid timestamp"
+            with open(reading, "w") as f:
+                f.write({"empty reading": "", "invalid reading": "{"}.get(kind, json.dumps(rd)))
+
+        for kind in ("minute boundary", "missing reading", "empty reading", "invalid reading",
+                     "missing timestamp", "empty timestamp", "invalid timestamp", "changed page content"):
+            plant(kind, now)
+            pages, source_times = [], []
+
+            def render(root, live=False, env=None):
+                at = now + 60 * len(pages)
+                source_times.append(at)
+                plant(kind, at)
+                with patch.dict(os.environ, env, clear=True):
+                    d = M.gather(root, live=live)
+                    pair = M.build(d, dt.datetime.fromtimestamp(d["now"], dt.timezone.utc))
+                pages.append(pair)
+                return pair[0] + ("\nchanged content" if kind == "changed page content" and len(pages) == 2 else "")
+
+            try:
+                with patch.dict(os.environ, {"RM_MATURATION_DISPATCH_DIR": source}), \
+                        patch(__name__ + ".REPO", root), patch(__name__ + ".page_of", render), \
+                        patch(__name__ + ".check") as verdict, patch("time.time", return_value=now):
+                    p6_two_runs()
+                passed = verdict.call_count == 1 and verdict.call_args.args[1]
+                check("6 %s: comparison with source readings 60 s apart" % kind,
+                      source_times == [now, now + 60] and passed == (kind != "changed page content"),
+                      repr(verdict.call_args))
+                if kind == "minute boundary":
+                    notice = "Dispatch step, %s: Fixture mod needs its next step" % M.pac(
+                        dt.datetime.fromtimestamp(now, dt.timezone.utc))
+                    check("6 the Dispatch timestamp stays on both Markdown and HTML pages",
+                          len(pages) == 2 and all(notice in page for pair in pages for page in pair))
+            except Exception as e:
+                check("6 %s renders without crashing" % kind, False, repr(e))
 
 
 def p7_disagreement():
@@ -654,6 +731,7 @@ def main():
     p5_planted_changes()
     p5_stage_words()
     p6_two_runs()
+    p6_dispatch_clock()
     p7_disagreement()
     p8_interventions(d, page)
     p9_cycles()
