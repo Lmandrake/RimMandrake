@@ -6,7 +6,13 @@
       "meant": {
         "intent": "A playable expedition needs a return route and a safe arrival; refusing this is delegated from ship-or-nothing and the four-sea visit promise.",
         "source": "Standing ship-only ruling, 2026-09-26 and 2026-10-01, biome_rulings.md; sea_surface_removal_2026-11-01.md; delegated safe-arrival inference from the current danger and sole return vehicle.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "carrying water",
+            "stands_for": "Twilight channel cells whose dense current displaces unsecured visitors, rather than all surrounding seawater.",
+            "accept": "The ship is submerged in ordinary seawater but outside the carrying field, so unloading remains safe."
+          }
+        ]
       },
       "accept": [
         "The ship lands on floor ground with a reachable bank; the crew unloads, returns and flies away on the sea-floor layer.",
@@ -18,7 +24,7 @@
       ],
       "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
       "range": {
-        "varies": "All 4 named seas; existing fixed-world tiles represented by disposable authored floor fixtures, not new planets. Map sizes 150, 250, 325 and 400 cells square; 4 ship rotations, hulls of bounding width 9, 25 and 49 cells, edge/corner/central landing candidates; empty/loaded cargo, 1/8/40 colonists, intact and interrupted unloading; arrival, departure, re-entry and reload. Sweep boundary placements in geometry model, not just these samples.",
+        "varies": "All 4 named seas; existing fixed-world tiles represented by disposable authored floor fixtures, not new planets. Map sizes 150, 250, 325 and 400 cells square; 4 ship rotations, hulls of bounding width 9, 25 and 49 cells, edge/corner/central landing candidates; empty/loaded cargo, 1/8/40 colonists, intact and interrupted unloading; arrival, departure, re-entry and reload. Sweep boundary placements in geometry model, not just these samples. On the Scald floor the hull-to-bank route uses ordinary hot substrate outside localized boiling pools; it does not require crossing a burning pool or a beach-only cool margin.",
         "left_out": "No worldgen, alternative worlds, individual diving or surface settlement. A broken grav engine from combat is vanilla failure, not guaranteed rescue by this mod."
       },
       "sees": {
@@ -44,23 +50,36 @@
     },
     {
       "id": "B2",
-      "says": "A visitor distinguishes the Scald\u2019s cyan boil and rainbow mats, the Twilight\u2019s gold columns beneath living glass, the Grey\u2019s murk and mineral forms, and the Chill\u2019s dark fuel pools and ice floor in the ordinary play view.",
+      "says": "A visitor distinguishes the Scald\u2019s cyan boil and rainbow mats, the Twilight\u2019s gold columns and giant ceiling gardener beneath living glass, the Grey\u2019s murk and mineral forms, and the Chill\u2019s dark fuel pools and ice floor in the ordinary play view.",
       "meant": {
         "intent": "These are distinct places, not renamed vanilla water; each land picture is the indispensable content of the bundle.",
         "source": "delegated synthesis of the_scald.md artistic theme, the_twilight_deep.md artistic theme, the_grey_deep.md mineral floor additions and the_propane_lake_floor_sitting_agenda_2026-10-02.md; no new owner aesthetic approval claimed.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "gold columns",
+            "stands_for": "Amber shafts of light, not solid gold pillars.",
+            "accept": "A warm amber shaft illuminating plants, with no mineable metal column, reads as Twilight."
+          },
+          {
+            "word": "living glass",
+            "stands_for": "The living translucent waveglass organism overhead, not a constructed glass roof.",
+            "accept": "An irregular veined translucent organism with pale skylight rims forms the ceiling; there are no glass roof tiles."
+          }
+        ]
       },
       "accept": [
         "At normal colony zoom a worker beside cyan water and rainbow mats reads as Scald; gold-lit gardens under glass read as Twilight; pale mineral forms disappear into Grey murk; dark fuel pools interrupt Chill ice.",
-        "In the Grey, a mineral-rich scene still leaves distinct pools and silhouettes rather than a white screen; the Twilight has dark ground between light columns."
+        "In the Grey, a mineral-rich scene still leaves distinct pools and silhouettes rather than a white screen; the Twilight has dark ground between light columns.",
+        "The Twilight gardener has a living animal body moving at the ceiling and grazing a skylight rim; it is distinguishable from the well marker and a static roof ornament."
       ],
       "reject": [
         "The sea names change but the floor scenes are interchangeable blue water with recoloured fog.",
-        "A solid opaque overlay hides pawns, current boundaries or the only bank route."
+        "A solid opaque overlay hides pawns, current boundaries or the only bank route.",
+        "A gardener label or fixed roof ornament replaces the giant animal in the ordinary play view."
       ],
       "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
       "range": {
-        "varies": "All 4 seas; map-wide view and ordinary zoom at hull, forage patch, hazard edge and distant floor; naturally available fog/salt fall/steam/still-state variants with ordinary wild population, all kept lighting and overlays active; before/after reload and a season of growth. For Scald compare separate beach steam and submerged bubble views; never place beach sky underwater.",
+        "varies": "All 4 seas; map-wide view and ordinary zoom at hull, forage patch, hazard edge and distant floor; naturally available fog/salt fall/steam/still-state variants with ordinary wild population, all kept lighting and overlays active; before/after reload and a season of growth. For Scald compare separate beach steam and submerged bubble views; never place beach sky underwater. Include Twilight ceiling tending and the ordinary camera view of the gardener; no flight imagery test is introduced.",
         "left_out": "No exact palette, variant count or compulsory beauty score. The world-map painting and modern art regeneration output are not changed or judged in this proposal."
       },
       "sees": {
@@ -90,7 +109,13 @@
       "meant": {
         "intent": "Land without viable ordinary life or catch without living counterparts fails the owner\u2019s sea definition; species keep their existing placements and ordinary uses.",
         "source": "biome_rulings.md: floor-and-catch 2026-09-21, all fishables alive 2026-09-26, fish-sized exemption 2026-10-06, natives drink own water 2026-11-01; frozen Grey/Twilight life contrast; delegated ordinary forage inference.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "the Grey stays solitary",
+            "stands_for": "Grey fauna live singly rather than schooling; mineral forms and flora may crowd the floor.",
+            "accept": "A Grey pool crowded with mineral forms has dispersed individual animals and no animal school."
+          }
+        ]
       },
       "accept": [
         "A caught nissik has a living floor counterpart; Grey sessile creatures are distributed over the floor without marching as a swarm.",
@@ -130,31 +155,32 @@
     },
     {
       "id": "B4",
-      "says": "At the Scald a visitor pays for touching boiling water, can retreat onto cooler ground without cooling the sea, and cannot drink its body water, while the steam stays clean.",
+      "says": "At the Scald, touching a boiling pool burns an unprotected visitor, who can leave the pool for ground without contact burns; neither the sea nor its cooler beach margin supplies drinking water.",
       "meant": {
         "intent": "The Scald must be a permanent boil with a meaningful contact cost and no potable margin loophole; natives are the explicit environmental exception.",
         "source": "the_scald.md hard bans and clean-breath ruling, amended macro-life 2026-11-01; standing Direct Sun 2026-10-19; delegated treatment of conflicting margin description in RM_ScaldMargin.xml.",
         "figurative": []
       },
       "accept": [
-        "An unprotected visitor receives a visible wet burn on boiling contact and can stop further contact by withdrawing; the cooler margin changes exposure without yielding a drink.",
+        "On the beach an unprotected visitor takes a visible contact burn in boiling water, retreats to dry shore or the cooler margin and stops taking contact burns; the margin still cannot supply a drink.",
+        "On the floor a crew works on hot mineral ground without continuous contact burns, takes a burn only when entering a localized boiling pool, and returns to adjacent ordinary floor ground to stop further contact injury; the water overhead remains boiling above.",
         "A protected working party still has preparation or protection cost; Scald natives survive their environment. Distillation, if enabled in the next version, produces a separate resource rather than changing lake potability."
       ],
       "reject": [
         "The cool bathing margin is freely drinkable because its description says so.",
-        "Visitors stand in boiling water without preparation or injury, or a still spell turns the lake into safe ordinary water.",
-        "Clean steam secretly applies poison or a private biome sun-heat currency."
+        "Visitors cross boiling pools without preparation or injury, or a still spell turns those pools into safe ordinary water.",
+        "The entire submerged floor burns a worker continuously just for standing outside the hull, or leaving a pool requires reaching a beach margin that does not exist on that floor."
       ],
       "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
       "range": {
-        "varies": "All locally defined Scald boiling terrains plus FlowWorks bindings; cool margin; indoors/outdoors, air versus liquid contact, protected/unprotected flesh, native/nonnative animal, mechanoid, wet/dry, alive/downed/carried; fixed tile solar geometry, real roof/shade, steam/still beach weather, calm submerged floor; short entry, retreat, repeated crossing, long stay and reload. Test boundary cells and temperature/resistance settings at shipped value and UI extrema in checks.",
-        "left_out": "No new underwater breathing or suit engine; ordinary generic environmental protection is a dependency. Mod Settings may disable behaviour by explicit opt-out but no in-world cooling/draining technology is introduced. No invented steam exposure hediff in this version."
+        "varies": "Beach and floor are separate maps. Beach paid contact: RM_ScaldWaterDeep, RM_ScaldWaterOceanDeep, RM_ScaldWaterMovingChestDeep, RM_ScaldWaterShallow, RM_ScaldWaterOceanShallow and RM_ScaldWaterMovingShallow, plus equivalent resolved FlowWorks boiling-liquid bindings. Beach retreat: dry shore or nonboiling RM_ScaldMargin; the margin remains nonpotable. Floor paid contact: only localized vent-fed pool cells explicitly authored with those boiling terrains/bindings. All other floor substrate is ordinary hot ground with no boiling-contact injury from mere submersion; retreat is adjacent nonboiling floor substrate or the hull. RM_ScaldMargin exists only on the beach. Export the material/layer/cell mask before reading. Sweep pool interiors/edges, ordinary floor/margin/dry ground; indoors/outdoors, air versus liquid contact, protected/unprotected flesh, native/nonnative, mechanoid, wet/dry, alive/downed/carried; fixed solar geometry, roof/shade, beach steam/still and calm submerged bubbles; entry, retreat, repeat crossing, long stay and reload; shipped settings and UI extrema in checks.",
+        "left_out": "No new underwater breathing or suit engine; ordinary generic environmental protection is a dependency. Mod Settings may disable behaviour by explicit opt-out but no in-world cooling/draining technology is introduced. No invented steam exposure hediff in this version. Nonboiling floor ground can remain dangerously hot through ordinary ambient heat; stopping contact burns promises no instant cooling or recovery."
       },
       "sees": {
         "instrument": "T40 job/terrain/injury trace, M4 thermal/native exposure replay calibrated against real contact and room-temperature reads; existing proof_scald_steam.py is historical for the deferred clock and cannot pass this bar.",
-        "start": "Real Scald liquid and margin at native temperatures, a healthy visitor, native and comparison pawn, known gear and no other injury; separate beach/floor fixtures.",
+        "start": "Separate real beach and submerged-floor fixtures at native temperatures, with exported pool/contact masks and nonboiling retreat routes. The beach includes dry shore and a nonpotable cool margin; the floor includes ordinary hot substrate, a localized boiling pool and the reachable hull, with no margin terrain. Healthy visitor/native/comparison pawns have known gear and no unrelated injury.",
         "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
-        "control": "Ambient heatstroke could mimic a contact burn. Compare adjacent dry positions at identical air temperature and solar geometry in a copied fixture, and identify damage source and time of terrain entry. Read available drinking jobs/ingestion results, not terrain prose.",
+        "control": "Ambient heatstroke could mimic a contact burn. Compare adjacent dry positions at identical air temperature and solar geometry in a copied fixture, and identify damage source and time of terrain entry. Read available drinking jobs/ingestion results, not terrain prose. Compare floor pool and adjacent nonpool cells at matched ambient heat; neither the sea label nor being outside the hull may trigger contact injury. Verify the actual job path can retreat without another pool crossing.",
         "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
         "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
       },
@@ -176,7 +202,23 @@
       "meant": {
         "intent": "The signature joins temptation, legible boundary, carry and changing reach; an invisible harmless river or an unavoidable unloading trap both fail it.",
         "source": "the_twilight_deep.md underwater-river statement and no-swimmable-river hard ban; delegated rescue-safe working edge from current source and the owner\u2019s readable-sign ruling.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "read",
+            "stands_for": "Recognise bed shape and stakes against bank ground in play, not see a separate coloured liquid.",
+            "accept": "The moving water itself is invisible, yet the dry-looking trough and outer stake line let a visitor pick the bank route."
+          },
+          {
+            "word": "carrying water",
+            "stands_for": "The dense current within the authoritative channel field, not the entire submerged map.",
+            "accept": "A visitor can work submerged on a bank outside the carrying field without drifting."
+          },
+          {
+            "word": "sink",
+            "stands_for": "The current\u2019s terminal basin where a victim remains findable and rescuable, not deletion or necessarily a visible hole.",
+            "accept": "A victim lies marked Sunk in a shallow-looking mud basin; no hole opens and no pawn vanishes."
+          }
+        ]
       },
       "accept": [
         "A harvester reaches forage along the bank, sees bed/stakes and a surge warning, and can withdraw beyond the widened reach before resuming work.",
@@ -184,29 +226,31 @@
       ],
       "reject": [
         "The terrain looks like harmless mud, the worker receives no warning, and movement to the sink is the first sign.",
+        "A warning fires but the dry-looking bed is indistinguishable from bank silt, or the visible stake line misidentifies the widened reach.",
         "A pawn repeatedly walks through the centre faster than registration and never experiences carry.",
         "Current arrows move items while an ordinary colonist crosses safely, or the surge occupies the ship\u2019s sole usable exit and all safe banks."
       ],
       "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
       "range": {
-        "varies": "Full authored Twilight fields at map sizes 150/250/325/400, all 8 bearings, straight/diagonal/overlap/eddy/sink/edge placements and generated obstruction patterns; first entry and repeated crossings, calm/surge/start/end, naked/harnessed, normal/downed, native/nonnative, haulables, walls/doors/ford/weir, no/8/40 colonists. Sweep registration phase 0..249 ticks and process phase 0..14, settings pace extrema, reload just before due movement, and both forage-before-haul and haul-before-forage order.",
+        "varies": "Full authored Twilight fields at map sizes 150/250/325/400, all 8 bearings, straight/diagonal/overlap/eddy/sink/edge placements and generated obstruction patterns; first entry and repeated crossings, calm/surge/start/end, naked/harnessed, normal/downed, native/nonnative, haulables, walls/doors/ford/weir, no/8/40 colonists. Sweep registration phase 0..249 ticks and process phase 0..14, settings pace extrema, reload just before due movement, and both forage-before-haul and haul-before-forage order. Visual boundary sort covers ordinary zoom and map-wide views, dim ground versus gold columns, sparse and grown native clutter, calm, announced onset and expanded surge; not just a selected or debug-outlined channel.",
         "left_out": "No cargo-float logistics, no guaranteed rescue from choosing to enter the centre, no new FlowWorks fertility/weir engine. Ordinary bank harvest does not promise to feed an arbitrarily large colony indefinitely."
       },
       "sees": {
-        "instrument": "M2 geometry and timing sweep plus T40 adapter trace of actual cell entry, current membership, displacement, job interruption, warning delivery and bank route. Kernel selftests are inputs, not a substitute for engine movement/reachability.",
+        "instrument": "M2 geometry and timing sweep plus T40 adapter trace of actual cell entry, current membership, displacement, job interruption, warning delivery and bank route. Kernel selftests are inputs, not a substitute for engine movement/reachability. Boundary legibility additionally requires a live look: a cold reader sorts unlabelled ordinary play views of dry-looking beds, bank silt and surge stakes, marking carrying-bed and outer stake-line boundaries before seeing T40 field overlays. Compare those marked regions to the exported calm/surge reach; a warning event alone cannot pass the visual clause.",
         "start": "Generated full field with real bed/bank presentation, forage plants, an ordinary visitor path across and along it, actual ship reservation, no forced pawn teleport into the sink.",
         "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
-        "control": "A scripted teleport could look like current. Record pre-move field, due time, movement call and interrupted job; separate no-flow and blocked-edge controls must prevent the displacement. Verify bank forage completes while native growth and wildlife are running.",
+        "control": "A scripted teleport could look like current. Record pre-move field, due time, movement call and interrupted job; separate no-flow and blocked-edge controls must prevent the displacement. Verify bank forage completes while native growth and wildlife are running. For the visual sort hide selection labels, arrows and debug fields; include negative controls with bed art blended into bank silt and displaced stakes. A reader must reject those even when the warning fires. Sample calm, surge onset and full surge views with the same lighting and native clutter as the passing views.",
         "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
-        "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
+        "live_only_why": "The carrying liquid looks like the surrounding water. State can prove bed/stake placement and warning delivery, but only the ordinary play view can show whether a cold reader distinguishes the dry-looking channel and stake line from harmless bank silt. Calibrated state and geometry still decide movement, timing and route access."
       },
-      "live_only": false,
+      "live_only": true,
       "touches": [
         "channel_field",
         "rescue_state",
         "native_ecology",
         "floor_access",
-        "throughput"
+        "throughput",
+        "habitat_picture"
       ],
       "tests": {
         "reject": "The signature joins temptation, legible boundary, carry and changing reach; an invisible harmless river or an unavoidable unloading trap both fail it.",
@@ -220,7 +264,13 @@
       "meant": {
         "intent": "A fair consequence follows the current and preserves the no-unreadable-vanishing ruling; movement into a sink is not silent despawning.",
         "source": "Standing no animal or pawn vanishes without readable sign; current source default Recoverable and Sunk comp; delegated rescue predicate tightened beyond the source\u2019s generic roof check.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "sink",
+            "stands_for": "The current\u2019s terminal basin, not deletion or necessarily a visible hole.",
+            "accept": "A marked victim remains findable on the basin floor without disappearing down a hole."
+          }
+        ]
       },
       "accept": [
         "The carried colonist is placed at a reachable basin location, marked sunk and worsening; a rescuer removes them from carrying water into safe shelter or a safe carrier and the condition starts improving.",
@@ -259,43 +309,52 @@
     },
     {
       "id": "B7",
-      "says": "Beneath the Twilight\u2019s gardener-tended waveglass, a visitor finds inhabited lamplit banks in the campaign and temporary gold light columns that wane and reopen elsewhere while leaving usable garden ground.",
+      "says": "Beneath the Twilight\u2019s waveglass, a visitor meets the giant animal gardener tending skylight rims and finds temporary gold light columns whose remaining life can be inspected, with later visits showing waning and replacement over usable garden ground.",
       "meant": {
-        "intent": "This preserves the frozen no-roof-without-gardener and no-permanent-skylight laws, plus the campaign\u2019s minimal inhabited reveal. It retains necessary land/life support without retaining the optional light economy.",
-        "source": "the_twilight_deep.md \u00a7\u00a75,6,8, ratified 2026-09-07 and waveglass amendment 2026-09-26; delegated minimal implementation boundary. RM remains campaign-free; Utinni supplies its own inhabited placements.",
-        "figurative": []
+        "intent": "The living lid requires its actual tending creature and temporary light habitat; removing either would defeat this land and native life. No campaign habitation or optional light economy is needed.",
+        "source": "the_twilight_deep.md \u00a7\u00a73-6, ratified 2026-09-07 and waveglass amendment 2026-09-26; delegated protected-creature boundary for this version, not an owner ruling of immortality.",
+        "figurative": [
+          {
+            "word": "gold light columns",
+            "stands_for": "Warm amber light shafts, not solid gold objects.",
+            "accept": "Plants grow in an amber shaft of light without any metal pillar to mine."
+          }
+        ]
       },
       "accept": [
-        "A column visibly wanes with inspectable state and later closes; another opens over eligible garden ground while the gardener remains present as the keeper of the lid.",
-        "On the campaign floor a peaceful inhabited bank dwelling and tended plot make the ark reveal real; no rent menu or portable light factory is required."
+        "A living giant animal moves along the ceiling, grazes an occluded skylight rim clear and seals a spent opening with secretion; the corresponding rim and light state change, and usable garden ground remains below.",
+        "During an ordinary visit a column has inspectable finite remaining life; on returning after the game has aged that floor, the column visibly wanes and closes and a replacement opens over eligible garden ground.",
+        "An attempted attack is visibly refused because the gardener is protected in this version; the same living animal continues tending after reload, without a death reward or a roof-collapse encounter."
       ],
       "reject": [
-        "The waveglass remains but no gardener exists in scene, state or accessible representation.",
-        "A gold well is a permanent lamp, or reopening chooses only current cells and leaves the garden dark.",
-        "Campaign bottom dwellings are empty scenery, or Compact residents attack as a biome raid."
+        "The waveglass remains but the gardener is only a label, flag, static ornament or off-map ledger entry; no living animal performs the roof work.",
+        "The gardener goes through a tending animation but neither the skylight rim nor its light state responds.",
+        "The gardener can be killed or removed while the waveglass and columns continue as though it were present.",
+        "A gold well is a permanent lamp, its displayed remaining life never advances, or replacement chooses only current cells and leaves the garden dark."
       ],
       "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
       "range": {
-        "varies": "RM-only and campaign-enhanced configurations separately; new wells, overlapping wells, near-expiry saves, opening/standing/waning/closed/pending-replacement states; blocked/destroyed sites, gardener present/interrupted and reloaded, daylight/murk variants, natural glowers; safe-bank/current intersections; 150..400-square maps, 0/8/40 colonists, 15-day season plus near-boundary replay over the declared finite years-scale lifetime. No accelerated well clock is counted as a measurement of normal season duration.",
-        "left_out": "No full Compact town, rent, claims, culture, cages, lid-dark crisis, suulk pressure or pane impacts. Natural column lifecycle is not optional while presenting the living lid; explicit settings-off is an opted-out sandbox."
+        "varies": "RM-only and campaign-enhanced loads with all inhabited-holdings extras off. Fresh wells, overlapping wells, opening/standing/waning/closed/pending replacement, blocked/destroyed sites, gardener moving/grazing/patching/interrupted/reloaded and attempts at injury, death, starvation, hunting, slaughter, capture, transfer and map-unload removal. Natural glowers and normal dim/light variants, safe-bank/current intersections; 150..400-square maps and 0/8/40 colonists. An ordinary visit reads the finite clock and tending, not a years-long lifecycle. Later-visit evidence uses the B7 tick-aged branch: a fresh floor runs all real simulation ticks to natural waning, closure and replacement, separately from the 15-day season. Settings/lifetime/RNG/tick or age edits disqualify that branch.",
+        "left_out": "No inhabited campaign reveal, town, rent, claims, culture, cages, lid-dark crisis, suulk pressure, pane impacts or killable-gardener/roof-collapse scenario. The protected creature is a delegated version limit, not a lore claim of immortality; all-off is an explicit opted-out sandbox."
       },
       "sees": {
-        "instrument": "T40 well/gardener/inhabitation state trace and M5 lighting/habitat replay; B2 judges its visual read. Source search finds lifecycle hooks but no local gardener or campaign dwelling adapter; T43 must provide/locate those before this passes.",
-        "start": "Real Twilight floor with normal lid, well ledger, growth, current and natural light; campaign placement present in enhanced copy; native years-scale lifecycle declared, including an honestly aged boundary save.",
+        "instrument": "T40 actual spawned-animal, tending-job, rim-cover, light, well-clock and Scribe trace, with M1 transition walk and M5 habitat replay. B2 judges the visible animal and columns. T43 must locate or supply the actual creature and tending adapter; a flag cannot pass. T42/T46 record the separate naturally tick-aged lifecycle branch specified in M3, including its provenance.",
+        "start": "Record a fresh Twilight floor immediately after normal initialization, its source-save digest, resolved defaults/mod fingerprint, RNG state, all well ids/initial ages/lifespans and game tick. Keep that floor loaded. With every kept system on, advance the actual game one simulation tick at a time, skipping rendering only, until a normal well naturally enters waning; save through Scribe then continue to closure and replacement. Keep tick/event checkpoints and save digests chained to that fresh floor, plus a mid-branch reload. A later visitor uses this same floor. Any authored well age/stage/lifespan/due time, tick jump, lifetime-setting change or forced advance invalidates the evidence; a near-expiry save without this recorder provenance is insufficient.",
         "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
-        "control": "A decoration could impersonate a gardener or resident. Require a persistent tending/inhabitation state and actual ongoing ordinary tending/occupancy; trace natural opening/closing causes with rent, suulk and pane systems disabled. State must explain light after reload, not just a cached glower.",
+        "control": "A decorative animal or a forged clock could mimic a visit. Require the spawned Pawn\u2019s stable identity, completed real graze/patch jobs and matching rim/light changes, not animation alone; stopping the job in a separate copy must prevent its tending change. Trace natural age deltas against executed ticks and stage/expiry events against the original lifespan. A hand-edited boundary save and a frozen-clock mutant must be refused. Optional NotifyGardenerPassAdvance/lid-dark, tenancy, suulk, pane and habitation paths are off; ordinary tending never prematurely closes a live well. Validate the provenance recorder against known edited-age and skipped-tick controls.",
         "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
-        "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
+        "live_only_why": "Not independently live-only: actual spawned-animal identity, completed tending jobs, rim/light changes, injury/removal refusal and clock transitions have state evidence calibrated against the game. B2 separately must pass the live presentation of the animal and columns; B7 cannot substitute a state trace for that visual result."
       },
       "live_only": false,
       "touches": [
         "twilight_light",
         "native_ecology",
         "channel_field",
-        "persistence"
+        "persistence",
+        "habitat_picture"
       ],
       "tests": {
-        "reject": "This preserves the frozen no-roof-without-gardener and no-permanent-skylight laws, plus the campaign\u2019s minimal inhabited reveal. It retains necessary land/life support without retaining the optional light economy.",
+        "reject": "The living lid requires its actual tending creature and temporary light habitat; removing either would defeat this land and native life. No campaign habitation or optional light economy is needed.",
         "renormalize": "The outcome survives retuning yields, durations, sizes and art variants. Ranges exercise changed values without locking them into the experience.",
         "first_version": "Land, life or the current signature, or a named necessary adapter; see census and definition."
       }
@@ -306,7 +365,23 @@
       "meant": {
         "intent": "The complete default version must remain recognisable and workable together; isolated proofs cannot hide a map-scale collapse or a reload/order defect.",
         "source": "delegated whole-version inference from owner\u2019s 2026-11-16 cleansing brief and the kept promises; qualitative experience, not a mandated numerical equilibrium.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "a flood of hazards",
+            "stands_for": "Repeated hazards remove the usable visit route, whether or not any liquid level rises.",
+            "accept": "An undersurge reaches a garden edge but the ship and a bank route stay usable; this is danger without a flood of hazards."
+          },
+          {
+            "word": "an emptied floor",
+            "stands_for": "The loss of viable native life and its food chain, not an obligation to preserve each initial animal.",
+            "accept": "Predation reduces the shoal while surviving prey still feed predators and replace losses; the floor is not emptied."
+          },
+          {
+            "word": "stalled travel",
+            "stands_for": "Ordinary arrival, return or required task transitions stop completing under normal conditions, not a crew choosing to wait.",
+            "accept": "A crew waits out a warned surge then completes its bank work and return flight; that delay is not stalled travel."
+          }
+        ]
       },
       "accept": [
         "The expedition plans routes and harvests among native life, responds to an undersurge, recovers a victim and returns by ship; after saving and loading during the visit the same choices still make sense.",
@@ -319,8 +394,8 @@
       ],
       "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
       "range": {
-        "varies": "Each of the 4 seas runs on a full 250-square floor for 15 game days at shipped defaults, with 150/325/400-square boundary coverage through M1/M2; test 1,8,40 colonists, native wildlife and ordinary predation/growth, real weather/atmosphere, current, wells, ordinary salvage and all kept dependency features. Include new arrival and day-100 continued-save regimes, mid-season Scribe save/reload, and matched copies reversing harvest/haul/shelter/rescue order. Twilight covers calm, surge and return; if no natural surge occurs, continue until it does rather than count a forced event as spontaneous cadence proof. Near-expiry well replay supplements the full-season run. Time compression may skip rendering only: preserve all simulation ticks, RNG ordering, jobs, pathing, weather, temperature, plant/pawn ticks, hunger/thirst, movement, due times and save boundaries.",
-        "left_out": "Next-version extras are off. No alternative planets, cosmetic variant quotas, universal food self-sufficiency or guaranteed survival of deliberately abandoned visitors. Long-timescale well closure is supplemented, not mislabelled as a season event."
+        "varies": "Each of the 4 seas runs on a full 250-square floor for 15 game days at shipped defaults, with 150/325/400-square boundary coverage through M1/M2; test 1,8,40 colonists, native wildlife and ordinary predation/growth, real weather/atmosphere, current, wells, ordinary salvage and all kept dependency features. Include new arrival and day-100 continued-save regimes, mid-season Scribe save/reload, and matched copies reversing harvest/haul/shelter/rescue order. Twilight covers calm, surge and return; if no natural surge occurs, continue until it does rather than count a forced event as spontaneous cadence proof. The separately recorded B7/M3 tick-aged well branch supplements the season; the season itself need not show years-scale expiry. Time compression may skip rendering only: preserve all simulation ticks, RNG ordering, jobs, pathing, weather, temperature, plant/pawn ticks, hunger/thirst, movement, due times and save boundaries.",
+        "left_out": "Next-version extras are off. No alternative planets, cosmetic variant quotas, universal food self-sufficiency or guaranteed survival of deliberately abandoned visitors. Long-timescale well closure is supplemented, not mislabelled as a season event. The separate long well branch is mandatory for B7 but is not evidence that a new floor turns over its columns within this season."
       },
       "sees": {
         "instrument": "T42 whole-mod recorder and M3 calibrated whole-system model, anchored by real full-map traces; T40 checks ordinary action completion, native persistence, current reachability and reload. B2 separately judges presentation. A model with invented ecology or inactive dependencies cannot certify this bar.",
@@ -374,7 +449,7 @@
     },
     {
       "id": "K6",
-      "what": "Check layer-specific weather bindings, no rain/thunder/water snow underwater, Scald margin nonpotability, no local sun fields; existing sea-floor text/no-rain scripts are partial regressions."
+      "what": "Check layer-specific weather bindings, no rain/thunder/water snow underwater, Scald margin nonpotability, no local sun fields; existing sea-floor text/no-rain scripts are partial regressions. Check that steam adds no poisoning/fouling effect or private steam-health currency; these are implementation constraints, not a separate experience bar."
     },
     {
       "id": "K7",
@@ -435,19 +510,23 @@
     },
     {
       "id": "R6",
-      "rule": "Separate Scald beach steam sky from calm submerged bubbles; salt snow is falling crystals, not water weather. The margin remains nonpotable. Material, terrain and layer determine exposure rather than a sea label alone.",
+      "rule": "Separate Scald beach steam sky from calm submerged bubbles; salt snow is falling crystals, not water weather. The margin remains nonpotable. Material, terrain and layer determine exposure rather than a sea label alone. The cool margin is beach-only. Submerged Scald contact costs apply only in authored localized boiling pools; ordinary hot floor substrate and the hull-to-bank route do not incur that liquid-contact cost.",
       "touches": [
         "habitat_picture",
-        "liquid_exposure"
+        "liquid_exposure",
+        "floor_access"
       ]
     },
     {
       "id": "R7",
-      "rule": "Keep natural well lifecycle, gardener and gold glow; remove tenancy, graze pressure, event-dependent flora and culture dependencies. Use actual current membership for sites and the existing LightLedger for composed glow. Lifetime remains finite on the frozen sheet\u2019s years scale; current short-lived values are tunable implementation debt.",
+      "rule": "Keep natural well lifecycle, gardener and gold glow; remove tenancy, graze pressure, event-dependent flora and culture dependencies. Use actual current membership for sites and the existing LightLedger for composed glow. Lifetime remains finite on the frozen sheet\u2019s years scale; current short-lived values are tunable implementation debt. The gardener is a spawned ceiling-swimming animal on the floor map, protected from injury, lethal conditions and normal removal in this version. Actual grazing clears a rim; secretion patches spent openings. Tending preserves an active opening without changing its natural lifetime; the existing forced advance callback remains with deferred theatrical events. The last-gardener death/roof-loss system is not enabled.",
       "touches": [
         "twilight_light",
         "channel_field",
-        "native_ecology"
+        "native_ecology",
+        "habitat_picture",
+        "persistence",
+        "liquid_exposure"
       ]
     },
     {
@@ -464,14 +543,6 @@
       "touches": [
         "feature_gates",
         "persistence"
-      ]
-    },
-    {
-      "id": "R10",
-      "rule": "The campaign layer supplies peaceful inhabited bottom dwellings and placement lore without franchise references in RM. The gardener\u2019s minimal tending is required by the lid, not a new encounter or town economy.",
-      "touches": [
-        "twilight_light",
-        "floor_access"
       ]
     },
     {
@@ -493,10 +564,10 @@
         "B6",
         "B8",
         "R1",
-        "R10"
+        "R6"
       ],
       "holds_together": "unknown",
-      "why": "Ship landing exclusion currently keys on a hatch, while later rulings remove the hatch; access/layer adapters are unavailable. Landing, bank reach and inhabitants must coexist.",
+      "why": "Ship landing exclusion currently keys on a hatch, while later rulings remove the hatch; access/layer adapters are unavailable. Landing, bank work and rescue must coexist, including Scald floor access outside localized burning pools.",
       "model": "M2 - Channel and landing geometry"
     },
     {
@@ -526,10 +597,11 @@
         "B7",
         "B8",
         "R4",
+        "R7",
         "R9"
       ],
       "holds_together": "unknown",
-      "why": "Transfer, hediffs, wells, off-state callbacks and holders can agree pairwise yet duplicate or strand an entity across a reload. Kernel serialization is not Scribe proof.",
+      "why": "Transfer, hediffs, wells, off-state callbacks and holders can agree pairwise yet duplicate or strand an entity across a reload. Kernel serialization is not Scribe proof. The same protected gardener and its real tending job/rim state must survive unload/reload without a duplicate or a death hidden by respawn.",
       "model": "M1 - Situation and transition generator"
     },
     {
@@ -549,12 +621,15 @@
       "thing": "habitat_picture",
       "members": [
         "B2",
+        "B5",
+        "B7",
         "B8",
         "R6",
+        "R7",
         "R8"
       ],
       "holds_together": "argued",
-      "why": "Beach weather and submerged weather occupy separate maps; each floor uses its own material/lighting vocabulary. Quiet Grey life can coexist with crowded mineral forms. The shared group has no contrary spatial demand; B2 must still be seen.",
+      "why": "Beach steam and submerged bubbles occupy separate maps. Twilight uses bed shape/stakes rather than visible liquid colour, and the actual animal occupies the ceiling while bank routes remain below. Grey mineral crowding permits solitary fauna. These spatial roles have no logical conflict; final legibility is explicitly judged by B2/B5, not claimed from the argument.",
       "model": ""
     },
     {
@@ -582,11 +657,10 @@
         "B3",
         "B7",
         "B8",
-        "R7",
-        "R10"
+        "R7"
       ],
       "holds_together": "unknown",
-      "why": "Well drift, current avoidance, native growth and campaign tending can leave no eligible replacement or an empty garden; external keeper implementation is not present here.",
+      "why": "Natural drift, current avoidance, native growth and real creature tending can leave no eligible replacement or an empty garden. The gardener implementation is absent locally. Protection, tending and the clock must agree across reload without accelerating years-scale expiry.",
       "model": "M5 - Light habitat and food-chain model"
     },
     {
@@ -596,10 +670,11 @@
         "B4",
         "B8",
         "R5",
-        "R6"
+        "R6",
+        "R7"
       ],
       "holds_together": "unknown",
-      "why": "Native immunity, human drinking denial, cool margin, shared heat and floor atmosphere can each work separately while liquid classification makes the whole party die or drink the lake. Foreign adapters are unresolved.",
+      "why": "Native immunity, human drinking denial, beach-only cool margin, localized floor boiling pools, shared heat and floor atmosphere must preserve a workable non-contact hull-to-bank route. Foreign material/layer adapters remain unresolved.",
       "model": "M4 - Liquid and native physiology replay"
     },
     {

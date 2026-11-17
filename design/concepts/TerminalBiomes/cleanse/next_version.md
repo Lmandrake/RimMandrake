@@ -169,3 +169,8 @@ All scope decisions below are the Designer’s delegated calls, not new owner ru
 - **Inert cross-biome opt-in controls — recommend retirement; owner decides** (T33).
   What: persisted unsupported settings with no behaviour consumer.
   Why outside land/life/signature: no player experience and no authorised cross-biome requirement. Preserve fields, default off and labelled unsupported until decision.
+
+- **Campaign inhabited Twilight holdings** (T47).
+  What: peaceful residents, bottom dwellings, plots, moorings and lamplight for the ark reveal; implementation and callers unavailable locally.
+  Why outside land/life/signature: native gardens, the animal-tended lid and the bank/current/rescue chain remain whole without a populated settlement reveal; the historical initial-version promise is deferred under this cleanse’s smaller scope, not retired.
+  State: unknown; locate existing campaign work, preserve code/defs and gate placement/occupancy/availability behind a labelled next-version setting shipped off; no RM bar depends on it.
