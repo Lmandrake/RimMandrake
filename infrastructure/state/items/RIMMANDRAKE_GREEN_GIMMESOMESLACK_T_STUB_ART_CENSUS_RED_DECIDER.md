@@ -19,9 +19,9 @@ still go red).
 ## refs
 file: src/RimMandrake/GimmeSomeSlack/selftest_gss_stub_art_census.py
 file: src/RimMandrake/GimmeSomeSlack/Source/Core/StubJoinAudit.cs
-file: src/RimMandrake/GimmeSomeSlack/Textures (Junction_X_p*, Junction_Tin_p*)
-file: design/concepts/GimmeSomeSlack/version/test_table.json (T_STUB_ART_CENSUS, T_STUB_JOINS)
-commit: a8d27a3f6b (the textures), 2a1b8d88ed (the table that recorded it red)
+file: design/concepts/GimmeSomeSlack/version/test_table.json
+sha: a8d27a3f6b
+sha: 2a1b8d88ed
 
 ## criteria
 - Every texture under GimmeSomeSlack/Textures has exactly one StubArt.Census class; the census selftest prints its count

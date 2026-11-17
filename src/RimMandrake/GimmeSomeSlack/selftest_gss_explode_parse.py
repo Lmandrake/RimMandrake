@@ -19,7 +19,9 @@ def run(source=HERE):
     source = Path(source)
     probe = (source / "Source/Aerial/AerialProbe.cs").read_text()
     start = probe.index('            if (cmd.StartsWith("explode:"))')
-    end = probe.index('            if (cmd.StartsWith("set:"))', start)
+    # the branch ends where the next top-level command branch starts (a branch added after it, swaystation: on 2026-11-16,
+    # would otherwise be compiled against doubles it does not have)
+    end = probe.index('\n            if (cmd.StartsWith("', start + 1) + 1
     branch = probe[start:end]
     start = probe.index('            string cmd = request.')
     end = probe.index('            request = "";', start)
