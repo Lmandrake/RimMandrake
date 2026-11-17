@@ -25,11 +25,13 @@ and not a fact about the gateway. Anything in this file that is a claim about mo
 > (`ANTHROPIC_DEFAULT_*_MODEL`) before trusting a rung; name no account. Ladder source of truth:
 > `~/dev/Lodestar/claude/global/45-subagents.md`.
 
+One exception to "never Fable for game-waiting": the Test Pilot runs on Fable 5.2 (owner 2026-11-16; the Fable row below).
+
 The Conductor runs on Fable 5.2 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
 conclusion. Relentless's workers (Sonnet 5.5) classify each item by the
 rule below and hand Opus-class items to an `rm-builder` (Opus) subagent; an item `rimflow next` routes to a Test Pilot goes to an
-`rm-testpilot` (Opus) subagent instead (owner 2026-10-31).
+`rm-testpilot` (Fable 5.2, owner 2026-11-16) subagent instead (owner 2026-10-31).
 
 ## The one question
 
@@ -57,7 +59,7 @@ loud, and dangerous exactly where it is silent.
 
 | | Alias | For |
 |---|---|---|
-| **Fable 5.2** | `fable` | **The Conductor's window.** One agent finishing a whole mod against its checklist; design from a blank page; one escalation attempt on a clean ticket Opus failed at high effort. Hard dollar budget on every run, enforced from outside by `spend_watchdog.py` (never `--max-budget-usd`; no agent is told its spend, owner 2026-11-16). Never a helper, a rerun, a fleet worker or a game-waiter. Price: 2× Opus fresh, 1× cached. |
+| **Fable 5.2** | `fable` | **The Conductor's window.** One agent finishing a whole mod against its checklist; design from a blank page; one escalation attempt on a clean ticket Opus failed at high effort. Hard dollar budget on every run, enforced from outside by `spend_watchdog.py` (never `--max-budget-usd`; no agent is told its spend, owner 2026-11-16). Never a helper, a rerun, a fleet worker or a game-waiter. **Exception, the Test Pilot (`rm-testpilot`): Fable 5.2,** although a sitting waits on a live game. Owner, 2026-11-16 10:13 PM PST: "Test Pilot should also run as Fable 5.2 when it's called. For obvious reasons." Do not move it back to Opus under the game-waiter rule. Price: 2× Opus fresh, 1× cached. |
 | **Opus 5.5** (+fast mode) | `opus` | **Design** — design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation — always as a backgrounded subagent from the Conductor. **Complex code generation** — Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world.  |
 | **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome** — patches, defs, deploys, quicktests, fixes a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches** — greps, globs, censuses, existence checks, inventories (folded in 2026-10-01; see below). FOUNDRY's default |
 ### 🔴 Sonnet vs Opus — owner ruling, 2026-10-29 (replaces "Sonnet default, self-escalate after one failed attempt")
@@ -91,6 +93,7 @@ The method is the `efficient-subagents` skill (and `agent-fanout-research` for a
   | `rm-builder` | complex code or design, one item | opus |
   | `rm-bridge` | live-game section run by script | opus |
   | `rm-judge` | art/taste judging of work it did not make | opus |
+  | `rm-testpilot` | one live sitting on one item (`rimflow pilot`) | fable (the exception in the Fable row) |
 
 - **Unattended seats: at most 3 helpers per seat** (the allocator's limit). In the Conductor window there is no limit only for work started within
   20 min of the owner's last typed message; after that two helpers, and one running over an hour raises an alarm (owner: "...only for work started within

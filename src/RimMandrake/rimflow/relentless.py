@@ -283,6 +283,30 @@ def pkg(name):
     return importlib.import_module("rimflow." + name)
 
 
+def pilot_model(clone, agent, default, env=None):
+    """-> the model id a Test Pilot sitting runs on. Owner 2026-11-16 10:13 PM: "Test Pilot should also run as Fable 5.2
+    when it's called." The tier is the agent file's own `model:` line (.claude/agents/<agent>.md in `clone`, else this
+    repo's), so the file stays the one place it is set; `--model` beats that line, so it must be passed here. The tier
+    becomes an id by the environment first (ANTHROPIC_DEFAULT_<TIER>_MODEL, Agent_Policy.md), then detached_helper.MODEL_IDS:
+    the bare CLI alias "fable" resolves to Fable 5.1 (measured 2026-11-12 and 2026-11-16). No agent file or no line:
+    `default`."""
+    env = os.environ if env is None else env
+    tier = None
+    for base in (clone, os.path.dirname(os.path.dirname(os.path.dirname(HERE)))):
+        try:
+            with open(os.path.join(base or "", ".claude", "agents", "%s.md" % agent), encoding="utf-8") as f:
+                head = f.read().split("\n---", 1)[0]
+        except (OSError, TypeError):
+            continue
+        tier = next((ln.split(":", 1)[1].strip() for ln in head.splitlines() if ln.startswith("model:")), None)
+        break
+    if not tier:
+        return default
+    import detached_helper
+    return (env.get("ANTHROPIC_DEFAULT_%s_MODEL" % tier.upper()) or "").replace("[1m]", "").strip() \
+        or detached_helper.MODEL_IDS.get(tier, tier)
+
+
 def root():
     return os.environ.get("RELENTLESS_ROOT") or DEFAULT_ROOT
 
@@ -4223,7 +4247,10 @@ class Effects(relentless_game.GameFx):
     def launch(self, st, run, prompt, agent, clone, max_s, extra_env, wall=()):
         """-> None, or why it did not start. The caller persisted `run` before this call. wall: systemd properties."""
         rl = self.RL
-        role = {"name": "relentless", "seat": self.r["seat"], "clone": clone, "model": self.r["model"],
+        model = self.r["model"]
+        if agent in (self.r.get("pilot_agent"), relentless_game.STAGE_AGENT):    # a sitting, or the stager's pilot fallback
+            model = pilot_model(clone, self.r["pilot_agent"], model)            # Fable 5.2 (owner 2026-11-16)
+        role = {"name": "relentless", "seat": self.r["seat"], "clone": clone, "model": model,
                 "run_max_s": max_s}
         for k in ("runner", "codex_model", "codex_effort", "codex_sandbox"):
             if k in self.r:

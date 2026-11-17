@@ -53,6 +53,42 @@ SCORES = ("EXPECTED", "ODD", "ALARMING")   # each observation's surprise score
 BOOK = "SURPRISE BOOK"            # the brief's marker for surprise_book.py (SURPRISE_BOOK_BUILD_RETIRE_THE_BORING; selftest pins it)
 BOOK_CLI = "python3 src/RimMandrake/rimflow/surprise_book.py"
 EXPLAIN = "EXPLAIN-AWAY"          # one attempt to prove an ODD/ALARMING observation unsurprising before filing it
+# Owner 2026-11-16 10:13 PM: "Test Pilot should also run as Fable 5.2 when it's called. For obvious reasons. And it should
+# get that same inspirational prompting we worked out, just with a live game flare". The builders' steps
+# (maturation.HOW_A_BAR_HOLDS; the positive steps verbatim) with the game as the instrument. The agent file carries the
+# same section; selftest_testpilot_route pins both. The model: the agent file's `model:` line, which relentless.pilot_model reads.
+HOLDS = "HOW A SITTING HOLDS"     # the brief's marker for these steps (selftest pins it)
+POSITIVE_STEPS = ("The owner's positive steps: Get inventive. Innovate; do not just tune, and do not just diagnose: "
+                  "provide or repair what is broken. Think outside the box: collapse classes into one or invent new "
+                  "ones as needed to find a way around the problem.")
+HOLDS_LINES = [
+    "%s (owner, 2026-11-16): the builders' steps, with the live game as your instrument." % HOLDS,
+    "- " + POSITIVE_STEPS,
+    "- Hunt parameter regimes and regions, not examples. One failing scene is a sample of a region: find its edges.",
+    "- In every \"it cannot be done\" claim, tag each limit \"bar\" (the owner's) or \"our own rule\" (code, habit, a "
+    "site or harness choice, an earlier builder's choice), and attack our own rules first. Then unify the two things in "
+    "conflict into one, invent something that satisfies both, or propose a relaxation with its evidence (the map of "
+    "where each holds, the failing moment). Relaxing a bar is never yours: it is a question to your parent.",
+    "- You may not end with open cases. Every case you saw fail is fixed and committed, proved unreachable by a check "
+    "you land, or filed as its own item carrying the check that goes red and the captured failing moment. "
+    "\"Unexplained\" is not an ending; only what truly needs the owner stays open, as his question.",
+    "- The game is the instrument: run experiments in it instead of code-and-retest.",
+    "- First make the failure happen on demand, and capture it (state read, save, picture).",
+    "- Vary one thing at a time across the regimes the game really produces: ordinary play conditions, weather "
+    "unlocked, the mechanics switched on. Never judge a mechanic on a site that switches it off.",
+    "- Read the game's own state, not only the picture, and prove any offline copy you reason from (a def dump, a save "
+    "read, a script's model) agrees with the live game before you trust it.",
+    "- At the first error storm, stop and read the FIRST exception in Player.log, not the loudest.",
+    "- Never leave a broken game running: repair it live, or take it down by the reload rule, before you move on or stop.",
+    "- Look at every capture before you keep it.",
+    "- Show the owner the failing moment as a picture or a keeper save, with one question whose answer changes what "
+    "gets built.",
+    "- Two games exist on this machine (`python3 src/RimMandrake/Utils/game_instance.py status`): never report waiting "
+    "for a game.",
+    "- Never state spend.",
+    "- The standing limits hold: no flyer flight test of any kind; never unpause while the owner is watching; the "
+    "bridge rules.",
+]
 
 
 def streaks(runs):
@@ -128,7 +164,8 @@ def read_statuses(host_guard):
 def brief(verdict, host):
     """The ready-to-paste brief for an rm-testpilot subagent on `host`."""
     i = verdict["id"]
-    lines = ["Spawn subagent_type rm-testpilot (Opus) with this brief. One sitting, one item.",
+    lines = ["Spawn subagent_type rm-testpilot with model \"fable\" (Fable 5.2, owner 2026-11-16) and this brief. One "
+             "sitting, one item.",
              "",
              "Item %s. Routed by the Test Pilot rule: %s." % (i, verdict["why"]),
              "Host: %s. Take: rimflow bridge take --host %s --for \"test pilot %s\"" % (host, host, i)]
@@ -141,7 +178,7 @@ def brief(verdict, host):
                      "end. Take with --idle-ok; his OWNER hold still refuses, and then you pick the other host.")
     # LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL (owner 2026-11-04): "Make sure the Test Pilot's job is to EXPLAIN the
     # failure, not just try to execute a test. ... Then there needs to be follow-up work to address them."
-    lines += ["Read first: `rimflow show %s` and Player.log's first exception." % i]
+    lines += ["Read first: `rimflow show %s` and Player.log's first exception." % i] + HOLDS_LINES
     # TEST_PILOT_WIDEN_PAST_THE_CHECKLIST, owner 2026-11-04: "it should regularly "look at" the screen and reason about
     # what it's seeing. ... It should be given latitude to gather context and then reason about how surprising any of it
     # is. That's what's the test pilot is really about. Measuring surprise."
