@@ -8,13 +8,13 @@ The top part, **the mod as it stands**, is rewritten at every stage change and s
 
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`). Code exists:
   `src/RimMandrake/ExplosiveKnockback/`.
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:43 PM PST (`version/stage_record.json`).
+- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 10:21 PM PST (`version/stage_record.json`).
 - **Bars:** 59 (30 inventory rows of `record.json` + 29 leaves of `tree.json`). The test-and-stage table is
   `version/test_table.json` (read view `version/test_table.md`).
 - **Measured 2026-11-14 12:45 PST:** 53 of 59 bars have at least one test that runs today; 47 have every deciding test
   runnable; 41 have all their offline deciding tests green. All 15 offline tests are built (13 PASS, 2 known red,
   unchanged). In-game scenes: 56, entry exists 50, absent 6. Every in-game scene is UNRUN (Stage 6); commands in the table.
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:43 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 10:21 PM PST).
 - **Open questions:** see "Questions" at the end of the history.
 
 ### The vision (his root paragraph, approved by card 2026-11-11, OWNER:1794468835221748501)
@@ -378,4 +378,15 @@ answer the locked bar, his recorded words or the shipped code already gives; no 
 - Blind cycle 1 of this visit (5 in all).
 - Was, "Stage now": - **Stage now:** Stage 3, offline build, since 2026-11-16 12:28 PM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 12:28 PM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-16 10:21 PM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to Blind challenge, tests first (Stages 4 and 5) (by BENCH)
+
+- Why: steward road back: blind cycle 5 exit not met; 2 Problems filed under RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_CYCLE_FIVE_FAILURES (RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP, RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED); cycle 6 judges their fixes and the judge's own fix 42225e0686
+- Checks passed: order, by, version, hold, fourth_cycle, judge_certificate.
+- Steward confirms: Read cycle_5/SUMMARY.md, lane2/faults.json, planted_results.jsonl, tests_edited.json (K-25 added, 14 insertions, 0 deletions: no assertion weakened). Judge the judge: RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND = REAL MISS (sc_pit_fall's locked expect demands the covered lane; accept_covered_pit.py rc 1, 2 of 6 at 10abd71ff0, watched). RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN = REAL MISS, not a criterion flaw (a correct build can lift verdict arithmetic into tested code, the judge's own would_pass); re-pin not taken (it would change what decides inv_proof_scenes). Stale T_KERNEL runs_today = RECORD GAP, redone: certificate --run, 16 offline tests; T_RESTORE red on Pyrelands wind_burn_live.py:56 was a checker false positive, fixed 20eca8db5d. Certificate OK. Verdict: exit not met; road back to blind_challenge, cycle 6 (visit 2 of 3).
+- Owner said: per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward road back: blind cycle 5 exit not met; 2 Problems filed under RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_CYCLE_FIVE_FAILURES (RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP, RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED); cycle 6 judges their fixes and the judge's own fix 42225e0686
+- Blind cycle 2 of this visit (6 in all).
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:43 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:43 PM PST).
 - Record: `version/stage_record.json`.

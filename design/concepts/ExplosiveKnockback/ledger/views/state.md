@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":14103,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":983,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=f4da5876b7943623d23955f00af2f026740a5bba12d6be7ff3a4fd0a55e1ffed -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":14419,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=82895c4e38e90675336e070754f2d0d41671896daf89716f0180a3ae05b041fa -->
 # ExplosiveKnockback — mod ledger packet
-version 0.1.0 · stage blind_challenge · 496 events in 10 shards · reducer 1
-holder lease run-1794895533, token 10, last active 2026-11-17T06:20:39Z
+version 0.1.0 · stage blind_challenge · 498 events in 10 shards · reducer 1
+holder lease run-1794895533, token 10, last active 2026-11-17T06:22:32Z
 holder session 25001256-a0ed-4605-85e3-e0c7442bec90, context 94977 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1794865314, 2026-11-16T21:43:27Z)
-- done: advanced ExplosiveKnockback from offline_build to blind_challenge: every Stage 3 exit test passed; cover-break REAL MISS closed at a9eedde493 (tests added only, no assertion weakened); certificate rerun 81519824c0
-- next: Run blind cycle 1 of this visit (Stages 4 and 5, tests first) on the files changed since the last cycle, cover break included
-- ruled out: any not-met reason to sort: maturation.py next listed none
+## Last checkpoint (HOLDER.run-1794895533, 2026-11-17T06:22:32Z)
+- done: cycle 5 judged: 2 Problems re-filed under the route item (RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP, RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED); restore-check closure false positive fixed 20eca8db5d; certificate OK; advanced to blind_challenge (cycle 6)
+- next: Fix the two road-back items, then run blind cycle 6 on the changed files
+- ruled out: re-pinning inv_proof_scenes (changes what decides it); Pyrelands wind_burn_live.py as a real restore leak
 
 ## Open findings (46)
 - RIMMANDRAKE_RETIRE_UNUSED_CONTAINER_SHOVE_KERNEL [open, polish · bars closed_container_holds]: RM_KnockbackMath.ContainerShove (slide-or-jolt, parameter lightMassLimit) is called by no game code; ThrowContainer thr…
@@ -297,6 +297,6 @@ spend recorded: USD 98.24, 140077376 tokens
 - closed findings: 38, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - tests: 98, oldest first (`modledger.py show --mod ExplosiveKnockback <subject>`)
 - open findings in brief: the oldest 13 on one line, their fix and accept by `modledger.py show --mod ExplosiveKnockback <subject>`
-- the full history: 496 events (views/history.md; never read whole)
+- the full history: 498 events (views/history.md; never read whole)
 
-cursor: t=2026-11-17T06:20:39Z.1794896439494721644 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T06:20:39Z.1794896439494721644 prints what changed after this packet)
+cursor: t=2026-11-17T06:22:32Z.1794896552885319492 (modledger.py since --mod ExplosiveKnockback t=2026-11-17T06:22:32Z.1794896552885319492 prints what changed after this packet)

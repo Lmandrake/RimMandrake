@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":14103,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":983,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=8ca8f17913dc450843d73fcc54381a89e63b8afe57d1c6cd6839be7b639cb2d4 -->
-# ExplosiveKnockback — mod ledger history (496 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod ExplosiveKnockback) reducer=1 shards={"BACKFILL":302988,"DISPATCH":14419,"HOLDER.run-1794813483":1382,"HOLDER.run-1794824768":1788,"HOLDER.run-1794830532":2304,"HOLDER.run-1794860741":975,"HOLDER.run-1794865314":728,"HOLDER.run-1794895533":1780,"JUDGE.judge-1794890427":18837,"OWNER":1207} body_sha256=73f3c96eba44a40af7d603d21bcf644a10a3d98c98f5d76513b00f1931102bcc -->
+# ExplosiveKnockback — mod ledger history (498 events, merged across shards)
 
 - 2026-11-16T06:51:51Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 56 of 59 bars met at the lock
 - 2026-11-16T06:51:51Z BACKFILL#2 decision version v0.1.0: 
@@ -497,3 +497,5 @@
 - 2026-11-17T06:05:50Z DISPATCH#40 run.start run v0.1.0: 
 - 2026-11-17T06:20:04Z HOLDER.run-1794895533#1 lease.renew lease v0.1.0: 
 - 2026-11-17T06:20:39Z HOLDER.run-1794895533#2 trap.noted trap:t-restore-scans-whole-repo v0.1.0: T_RESTORE scans the whole repo: another mod's commit can turn EK's inv_proof_scenes decider red (Pyrelands wind_burn_live.py:56, 49e11870b4, a checker false positive fixed under RIMMANDRAKE_TEACH_RESTORE_CHECK_CLOSURES_PYRELANDS_TRIPPED_EK). Read the failing row's path before blaming the mod.
+- 2026-11-17T06:21:38Z DISPATCH#41 stage.accepted stage v0.1.0: 
+- 2026-11-17T06:22:32Z HOLDER.run-1794895533#3 session.checkpoint session v0.1.0: 

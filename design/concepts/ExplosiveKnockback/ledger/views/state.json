@@ -1,16 +1,16 @@
 {
  "_view": {
-  "body_sha256": "549fa2bd6f06207303e787543f926aa18bd9c94280a25bb763ded1bee29bba9f",
+  "body_sha256": "1ca03ddee32c1060751e43f87daef4d23e7c3ac5aad3b7312048c0386234b409",
   "reducer": 1,
   "shards": {
    "BACKFILL": 302988,
-   "DISPATCH": 14103,
+   "DISPATCH": 14419,
    "HOLDER.run-1794813483": 1382,
    "HOLDER.run-1794824768": 1788,
    "HOLDER.run-1794830532": 2304,
    "HOLDER.run-1794860741": 975,
    "HOLDER.run-1794865314": 728,
-   "HOLDER.run-1794895533": 983,
+   "HOLDER.run-1794895533": 1780,
    "JUDGE.judge-1794890427": 18837,
    "OWNER": 1207
   }
@@ -644,11 +644,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1794865314",
-   "done": "advanced ExplosiveKnockback from offline_build to blind_challenge: every Stage 3 exit test passed; cover-break REAL MISS closed at a9eedde493 (tests added only, no assertion weakened); certificate rerun 81519824c0",
-   "next": "Run blind cycle 1 of this visit (Stages 4 and 5, tests first) on the files changed since the last cycle, cover break included",
-   "ruled_out": "any not-met reason to sort: maturation.py next listed none",
-   "ts": "2026-11-16T21:43:27Z"
+   "by": "HOLDER.run-1794895533",
+   "done": "cycle 5 judged: 2 Problems re-filed under the route item (RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP, RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED); restore-check closure false positive fixed 20eca8db5d; certificate OK; advanced to blind_challenge (cycle 6)",
+   "next": "Fix the two road-back items, then run blind cycle 6 on the changed files",
+   "ruled_out": "re-pinning inv_proof_scenes (changes what decides it); Pyrelands wind_burn_live.py as a real restore leak",
+   "ts": "2026-11-17T06:22:32Z"
   },
   "decisions": {
    "bar:inv_items_teleport": {
@@ -836,7 +836,7 @@
     "ts": "2026-11-16T06:51:51Z"
    }
   },
-  "events": 496,
+  "events": 498,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -2254,7 +2254,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-17T06:20:39Z",
+   "last": "2026-11-17T06:22:32Z",
    "lease": "run-1794895533",
    "released": false,
    "token": 10

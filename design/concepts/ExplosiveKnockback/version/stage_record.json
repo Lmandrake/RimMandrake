@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "stage": "blind_challenge",
   "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-16T13:43:22-08:00",
+  "since": "2026-11-16T22:21:38-08:00",
   "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
@@ -15,8 +15,8 @@
     "run_records": "read"
   },
   "cycles": {
-    "visit": 1,
-    "total": 5
+    "visit": 2,
+    "total": 6
   },
   "pre_human_arrivals": 0,
   "moves": [
@@ -212,6 +212,26 @@
         "hold",
         "every_bar_has_a_check_that_runs",
         "table_version",
+        "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "blind_challenge",
+      "at": "2026-11-16T22:21:38-08:00",
+      "by": "BENCH",
+      "why": "steward road back: blind cycle 5 exit not met; 2 Problems filed under RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_CYCLE_FIVE_FAILURES (RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP, RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED); cycle 6 judges their fixes and the judge's own fix 42225e0686",
+      "unit": "rm-detached-bench-rimmandrake-route-explosiveknockback-cyc-1794895555",
+      "confirmed": {
+        "steward_confirms": "Read cycle_5/SUMMARY.md, lane2/faults.json, planted_results.jsonl, tests_edited.json (K-25 added, 14 insertions, 0 deletions: no assertion weakened). Judge the judge: RIMMANDRAKE_STOP_THROWS_OVER_COVERED_PITS_K08_SAYS_GROUND = REAL MISS (sc_pit_fall's locked expect demands the covered lane; accept_covered_pit.py rc 1, 2 of 6 at 10abd71ff0, watched). RIMMANDRAKE_PIN_KNOCKBACK_PROOF_VERDICTS_NINE_MUTANTS_UNSEEN = REAL MISS, not a criterion flaw (a correct build can lift verdict arithmetic into tested code, the judge's own would_pass); re-pin not taken (it would change what decides inv_proof_scenes). Stale T_KERNEL runs_today = RECORD GAP, redone: certificate --run, 16 offline tests; T_RESTORE red on Pyrelands wind_burn_live.py:56 was a checker false positive, fixed 20eca8db5d. Certificate OK. Verdict: exit not met; road back to blind_challenge, cycle 6 (visit 2 of 3).",
+        "owner_said": "per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM: steward road back: blind cycle 5 exit not met; 2 Problems filed under RIMMANDRAKE_ROUTE_EXPLOSIVEKNOCKBACK_CYCLE_FIVE_FAILURES (RIMMANDRAKE_DROP_THROWS_INTO_COVERED_PITS_K08_MUST_FLIP, RIMMANDRAKE_LIFT_PROOF_VERDICTS_INTO_TESTED_CODE_NINE_SLIPPED); cycle 6 judges their fixes and the judge's own fix 42225e0686"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
         "fourth_cycle",
         "judge_certificate"
       ]
