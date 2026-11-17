@@ -674,7 +674,8 @@ class Effects:
         env.setdefault("AGENT_SEAT", "BENCH")
         env.setdefault("RIMFLOW_SEAT", env["AGENT_SEAT"])
         with open(base + ".json", "w", encoding="utf-8") as out, open(base + ".err", "w", encoding="utf-8") as err:
-            p = subprocess.run(cmd, input=prompt, cwd=cwd, stdout=out, stderr=err, text=True, env=env)
+            # timeout=None on purpose: the Conductor's brief (owner authority) says no wall-clock limit on a run
+            p = subprocess.run(cmd, input=prompt, cwd=cwd, stdout=out, stderr=err, text=True, env=env, timeout=None)
         raw = _read(base + ".json") or ""
         try:
             res = json.loads(raw)
