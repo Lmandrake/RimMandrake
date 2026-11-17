@@ -135,6 +135,10 @@ def _save_reload_b_source(src):
     a = a[:a.index("\n        }\n")]
     assert "gSavedGame = new WeakReference(Current.Game)" in a, "A does not mark the saved game"
     n += 1
+    # the ui scene: a check it could not read is listed NOT READ, never counted as a pass (visit 1: 23/23 read as all green)
+    assert not re.search(r'Check\([^;]*skipped[^;]*,\s*true\s*,', src), "a skipped ui check is counted ok"
+    assert 'c.ev["skipped"] = skipped' in src and "NOT READ" in src
+    n += 1
     topo = src[src.index("string GTopo(string l)"):]
     topo = topo[:topo.index("\n\n")]
     assert '"cord "' in topo and "geom" in topo, topo

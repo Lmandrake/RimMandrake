@@ -818,6 +818,7 @@ namespace JawaBench.BridgeTools
             c.ev["route"] = "Thing.GetGizmos -> Command.ProcessInput -> (Targeter callback / FloatMenu option action); FloatMenuMakerMap.GetOptions for a selected colonist; Designator_Build.ProcessInput (style menu patch); settings fields flipped + Apply; Dialog_ModSettings drawn by the game on every tab";
             Map m = c.map;
             var checks = new List<Dictionary<string, object>>();
+            var skipped = new List<string>();
             c.ev["checks"] = checks;
             void Check(string what, bool ok, object detail = null) => checks.Add(PD("check", what, "ok", ok, "detail", detail));
             if (!GFindRect(c, m.Center + new IntVec3(-30, 0, 30), 30, 16, out CellRect r)) { c.Invalid("no clean 30x16 site"); yield break; }
@@ -907,7 +908,7 @@ namespace JawaBench.BridgeTools
                     Check("hoses disabled: no reel gizmo of ours and no hose float-menu option",
                         !loff.Any(s => s.StartsWith("Deploy hose") || s.StartsWith("Free end")) && !fo2.Any(o => o.Label.Contains("hose")), loff);
                 }
-                else Check("float menu (skipped: no colonist can reach the reel)", true, "skipped");
+                else skipped.Add("float menu 'Carry hose out from' and hoses-disabled float menu (no colonist can reach the reel)");   // a skip is not a pass
 
                 // ── anchors
                 Find.Selector.ClearSelection(); Find.Selector.Select(ma, false, false);
@@ -1011,8 +1012,9 @@ namespace JawaBench.BridgeTools
             Check("Mod Settings window drawn on every tab with no red error", mod != null && tabF != null && tabRows.All(s => s.Contains("drawn, 0 error")), tabRows);
             c.Phase("observe");
             var failed = checks.Where(x => !(bool)x["ok"]).Select(x => (string)x["check"]).ToList();
-            c.ev["passed"] = checks.Count - failed.Count; c.ev["total"] = checks.Count;
-            if (failed.Count == 0) c.Pass(checks.Count + "/" + checks.Count + " interface checks passed");
+            c.ev["passed"] = checks.Count - failed.Count; c.ev["total"] = checks.Count; c.ev["skipped"] = skipped;
+            string skip = skipped.Count == 0 ? "" : "; " + skipped.Count + " NOT READ: " + string.Join("; ", skipped);
+            if (failed.Count == 0) c.Pass(checks.Count + "/" + checks.Count + " interface checks passed" + skip);
             else c.Defect(failed.Count + "/" + checks.Count + " interface checks failed: " + string.Join("; ", failed));
         }
 
