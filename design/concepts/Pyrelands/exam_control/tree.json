@@ -21,7 +21,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "fire-cell census per game hour shows a contiguous front whose centroid moves and a growing scorched area behind it; after the front dies, a relight is read within the smoulder window, in open grass beyond the building margin; captures of the front",
+   "oracle_proposed": "fire-cell census per game hour shows burning ground whose centre moves and a growing scorched area behind it, never most of the map inside a few days; after the front dies, a relight is read within the smoulder window, in open grass; captures of the front",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -32,8 +32,8 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player, landing on a fresh Pyrelands map in ordinary play and watching at play zoom through the first days, sees a line of grass fire walking across the deep ash with a black scorched trail behind its front; when it dies down it is never out for long, a smoulder relighting in open grass far from buildings. It must not read as a scattered wildfire, a fire that burns once and is gone for good, or a front that lights inside the colony.",
-   "scenario": "Generate a fresh Pyrelands map with its opening front; capture the front each game hour for a day; let it die down and wait for the smoulder relight; record each relight cell's distance from the nearest building.",
+   "experience": "The player, landing on a fresh Pyrelands map in ordinary play and watching at play zoom through the first days, sees grass fire moving across the deep ash like a natural grass fire, with a black scorched trail behind it that regreens; when it dies down it is never out for long, a smoulder relighting in open grass. It must not read as a flood that takes the whole map and its grass, a fire that does not move, a fire that burns once and is gone for good, or a fire that lights inside the colony.",
+   "scenario": "Generate a fresh Pyrelands map with its opening front; capture the front each game hour for a day; let it die down and wait for the smoulder relight; record each relight cell and what grows on it.",
    "false_pass": [
     "a fire spawned by the test where the front should be, so a burn exists but nothing walks",
     "the opening front lights once and the map stays dark for good"
@@ -73,7 +73,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "per-cell fertility reads about 140% beside water and about 70% dry (his card 2026-11-07, \"Keep 70%, sowable\"); daily growth of the watered strip is clearly ahead; on watered ash the crop's temperature growth factor reads as for a cooler cell, on dry ash as vanilla's",
+   "oracle_proposed": "the dry deep-ash strip takes the sowing and grows; daily growth of the watered strip is clearly ahead of the dry strip's; on watered ash the crop's temperature growth factor reads as for a cooler cell, on dry ash as vanilla's",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -84,7 +84,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player farming an ordinary crop on deep ash finds it sowable dry (about 70%) and very fertile where watered (about 140%), benefiting from water as before (his cards 2026-11-07 and 2026-11-13, OWNER:1794594151279833849): a strip beside a watered channel grows clearly faster than the same crop on dry ash a few cells away. On watered ash the crop also grows as if its roots were cooler, so the biome's heat does not slow it, while on dry ash the heat slows it as in vanilla. It must not read as ash being barren, or as water making no difference to a crop on ash.",
+   "experience": "The player farming an ordinary crop on deep ash finds it sowable dry, and a strip beside a watered channel grows clearly faster than the same crop on dry ash a few cells away. On watered ash the crop also grows as if its roots were cooler, so the biome's heat does not slow it, while on dry ash the heat slows it as in vanilla. It must not read as ash being barren, or as water making no difference to a crop on ash.",
    "scenario": "Two strips of the same crop sown on the same tick on deep ash, one beside water and one dry; read growth each day for five days.",
    "false_pass": [
     "the watered strip is sown on soil rather than ash",
@@ -98,7 +98,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": "ash_fertility_probe",
-   "oracle_proposed": "fertility reads about 190% on the wet fresh scar, about 120% on the dry fresh scar and about 140% on wet old ash while the rain lasts; the burn bonus falls to zero by day 6 to 7 on its own clock, rain or no rain",
+   "oracle_proposed": "a wet fresh scar out-grows a dry fresh scar and wet old ash while the black rain lasts; the burn bonus fades on its own clock within the week, rain or no rain",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -123,7 +123,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "a cover census on a fresh map before any test action shows plants on at least 0.85 of open plantable cells, and a lower share on the same seed at plantDensity 1.0; green share at least 25% on day 3 and at least 60% on day 7 (his card thresholds); captures show the greening; ember grass on old dry ash grows at least at its own vanilla rate, faster on watered ash, with gentle bursts only on watered cells; roofed ember grass is gone within about a day while the unroofed patch beside it stays (sc_roof_withers)",
+   "oracle_proposed": "a cover census on a fresh map before any test action shows open plantable ground carpeted in ember grass and quick grass, thicker than the same seed at plantDensity 1.0; burnt open ground is largely green again within about a week, and the captures show green grass standing, not grey ash over grass the census counts unseen; ember grass on old dry ash grows at least at its own vanilla rate, faster on watered ash, with gentle bursts only on watered cells; roofed ember grass is gone within about a day while the unroofed patch beside it stays (sc_roof_withers)",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -150,7 +150,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "count on the burned pad above zero within the burn itself (pods roll on the burning cell's fire tick) and on the unburned pad zero from a map-wide zero start; harvest yields fruit and the eater's food need rises; the unpicked plant is gone within about a day and the stack rots within about four days",
+   "oracle_proposed": "count on the burned pad above zero within the burn itself (pods roll on the burning cell's fire tick) and on the unburned pad zero from a map-wide zero start; harvest yields fruit and the eater's food need rises; an unpicked plant is soon gone and picked fruit left unrefrigerated spoils",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -163,7 +163,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player watching the burn line pass sees scorch-fruit come up rapidly in the fresh scar right behind the front, while the ground is still smoking, and never on unburned ground; it ripens to fruit a colonist can pick and eat to feed, and rots fast: a ripe plant withers within about a day and picked fruit rots within about four days unrefrigerated. It must not read as an ordinary wild bush, as fruit that appears days after the fire, or as a crop that keeps.",
+   "experience": "The player watching the burn line pass sees scorch-fruit come up rapidly in the fresh scar right behind the front, while the ground is still smoking, and never on unburned ground; it ripens to fruit a colonist can pick and eat to feed, and rots fast: an unpicked plant is soon gone and picked fruit spoils unless refrigerated. It must not read as an ordinary wild bush, as fruit that appears days after the fire, or as a crop that keeps.",
    "scenario": "A burned pad and an unburned pad of the same ground and age; count scorch-fruit on each; let one ripen, have a colonist harvest it and a hungry colonist eat it; leave a ripe plant unpicked and a harvested stack in the open.",
    "false_pass": [
     "scorch-fruit spawned by the test onto the burned pad",
@@ -253,7 +253,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "live RM_FurnaceBeast body size 9, at least twice every other roster kind's, against the classic 3.2 when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours; fire on the grass bed after sleep (about two hours on average) and none on the bare-soil control (CompFurnaceBedIgnition.ProbeSleep); butchering yields RM_FurnaceHide, and a RM_FurnaceHideBank built from it holds its closed room at least 5 C above the twin room without a bank from hour 6, never above 21 C, with no fuel or power",
+   "oracle_proposed": "the live RM_FurnaceBeast stands far larger than every other roster kind, and back at the classic size when the giant switch's restore runs; status present beside the beast and absent away from it; the beast's room clearly hotter than the twin room after a few hours; fire on the grass bed after a while asleep and none on the bare-soil control (CompFurnaceBedIgnition.ProbeSleep); butchering yields RM_FurnaceHide, and a RM_FurnaceHideBank built from it keeps its closed room clearly warmer than the twin room without a bank, with no fuel or power",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -265,7 +265,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player sees the furnace-beast as a giant, standing far larger than any other animal on the map; a colonist standing in the open near it shows a readable warmth status that goes away when it walks off, a closed room holding a furnace-beast grows clearly hotter than the same room without one, and a furnace-beast that falls asleep on grass sets that grass alight after a while, never at once and never on a cell with no plant. A colonist who butchers a furnace-beast gets furnace hide, and a furnace-hide heat bank (RM_FurnaceHideBank) built from it warms a closed room slowly with no fuel and no power, up to about 21 C. It must not read as a heater building, as ordinary body heat, as a beast the size of a muffalo, or as a bed fire the test lit.",
+   "experience": "The player sees the furnace-beast as a giant, standing far larger than any other animal on the map; a colonist standing in the open near it shows a readable warmth status that goes away when it walks off, a closed room holding a furnace-beast grows clearly hotter than the same room without one, and a furnace-beast that falls asleep on grass sets that grass alight after a while, never at once and never on a cell with no plant. A colonist who butchers a furnace-beast gets furnace hide, and a furnace-hide heat bank (RM_FurnaceHideBank) built from it keeps a closed room clearly warmer with no fuel and no power. It must not read as a heater building, as ordinary body heat, as a beast the size of a muffalo, or as a bed fire the test lit.",
    "scenario": "Read the live furnace-beast's body size and drawn size against the other animals; colonist beside a furnace-beast, then walked ten cells away; two identical closed rooms, one holding a furnace-beast; read status and room temperature each hour. Two wild furnace-beasts laid down to sleep, one on ember grass and one on bare soil (the control), in clear weather on a concrete pad; read fire near each as they sleep. Butcher a furnace-beast and build a furnace-hide heat bank from its hide in one of two identical closed rooms on a cold map; read both rooms each hour.",
    "false_pass": [
     "the warmth status is applied by the test",
@@ -326,6 +326,33 @@
     "the herd's drift target is set by the test"
    ],
    "red": "the herd ignores the two-day-old burn, or goes to the fresh one",
+   "tier_proposed": "quicktest",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "a blind reader told apart the three captures and from vanilla rain; lightning strikes counted under cinderfall; fire count falls and ash depth on the sand grid (ProbeAsh) falls under black rain",
+   "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "three_skies",
+   "by": "concept",
+   "root": [
+    "pyre_ashfall_darkens_drifts",
+    "pyre_cinderfall_distinct",
+    "pyre_blackrain_reads"
+   ],
+   "leaf_kind": "experience",
+   "clause_kind": "change",
+   "experience": "The player sees three skies each recognisable at a glance: ash fall dims the map and banks drifts, cinderfall is its own look and brings lightning, black rain falls visibly dark and puts fires out. It must not read as one weather renamed three times, or as ordinary blue-grey rain.",
+   "scenario": "Force each weather in turn on the same map at noon; capture each at play zoom; a blind reader names them; read fires out under black rain.",
+   "false_pass": [
+    "the weathers differ only in their def fields",
+    "the captures are taken at night so all read dark"
+   ],
+   "red": "cinderfall looks like ash fall, or black rain draws as blue-grey rain",
    "tier_proposed": "quicktest",
    "owner_part": "no"
   },
@@ -434,7 +461,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "the sand cell yields 5 glass sand and turns to gravel, and the order is no longer offered on it; the deep-ash cell refuses the order",
+   "oracle_proposed": "shovelling the sand cell gives glass sand once and turns it to gravel, and the order is no longer offered on it; the deep-ash cell refuses the order",
    "tier_reason": "a running Pyrelands map with the biome's clocks, which a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -446,7 +473,7 @@
    "root": [
     "pyre_ground_deep_ash"
    ],
-   "experience": "The player who orders a colonist to shovel a patch of Pyrelands sand gets five glass sand per cell, and the cell turns to gravel, so every sand patch is a finite deposit. It must not read as a dig order that works on any ground, or a sand cell that can be dug forever.",
+   "experience": "The player who orders a colonist to shovel a patch of Pyrelands sand gets glass sand from each cell once, and the cell turns to gravel, so a sand patch is a finite deposit. It must not read as a dig order that works on any ground, or a sand cell that can be dug forever.",
    "scenario": "A colonist holding a shovel, a Pyrelands sand cell and a deep-ash cell (asserted by terrain read); designate both; read yield and terrain after; designate the dug cell again.",
    "false_pass": [
     "the glass sand was spawned by the test",
@@ -533,7 +560,7 @@
    "bundle": null,
    "scenario_informed_by": [],
    "needs_instrument": null,
-   "oracle_proposed": "the first ember carry seen on the home map sends exactly one letter that targets the hawk, a second carry sends none, and with the letter switch off none is sent; 400 hunted fire-hawks butchered under a fixed seed yield the Pristine Firehawk Crestfeather at the built 35% within 4 sigma, and a butchered non-hawk animal yields none; the letter's text names the hawk and the ember it carries; the crestfeather's live MarketValue is above the hawk's and its Beauty above 0",
+   "oracle_proposed": "the first ember carry seen on the home map sends exactly one letter that targets the hawk, a second carry sends none, and with the letter switch off none is sent; butchering hunted fire-hawks sometimes gives a Pristine Firehawk Crestfeather worth more than the hawk, and butchering anything else never does; the letter's text names the hawk and the ember it carries; the crestfeather's Beauty is above 0",
    "tier_reason": "the letter and the butcher products are read in a running game; a dev quicktest colony on the minimal list plus mandrake.rm.biomes gives one in ~90 s",
    "cannot_show": null,
    "wall_expect_h": null,
@@ -545,7 +572,7 @@
    "leaf_kind": "experience",
    "clause_kind": "change",
    "experience": "The player who first sees a fire-hawk carrying an ember on the home map gets one letter that names the hawk and the ember and jumps to it, once a game and switchable off in Mod Settings; a colonist who butchers a hunted fire-hawk sometimes gets a Pristine Firehawk Crestfeather, a valuable object of beauty. It must not read as a letter every time a hawk carries, or as a trophy any carcass drops.",
-   "scenario": "A staged hawk carries an ember on the home map, unfogged; read the letter stack; a second hawk carries; turn the letter switch off and re-arm; butcher 400 fire-hawks through the patched butcher products under a fixed seed and count crestfeathers; control: butcher a non-hawk animal.",
+   "scenario": "A staged hawk carries an ember on the home map, unfogged; read the letter stack; a second hawk carries; turn the letter switch off and re-arm; butcher many fire-hawks through the patched butcher products under a fixed seed and count crestfeathers; control: butcher a non-hawk animal.",
    "false_pass": [
     "the letter is sent by the test",
     "every butchered carcass drops the crestfeather"

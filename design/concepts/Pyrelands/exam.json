@@ -1,196 +1,317 @@
 {
- "author": "concept (tree authored_by; last stage-3 Designer run rm-role-designer-1794789422, which re-accepted the furnace-beast body-9 edit 6120bb02aa by his card OWNER:1794786804170379047)",
- "examiner": "rm-judge Examiner abd12815cb1880bd4 (fresh Opus, not the author; run rm-role-designer-1794789873)",
- "challenger": "rm-judge Challenger ac15eed2b5fd7af54 (fresh Opus, not the author)",
+ "author": "concept (tree authored_by; last edits by RIMMANDRAKE_APPLY_BARS_CARD_PATCH_WHEN_BLIND_JUDGES_END 1d7b17ad85 and the burn rescue 49e11870b4; last stage-3 Designer run rm-role-designer-1794789422)",
+ "examiner": "rm-judge Examiner a493484933e059c8f (fresh Opus, not the author; steward run bench-pyre-exam-st4-r8-20261117)",
+ "challenger": "rm-judge Challenger a2a221d98bd0fd4cd (fresh Opus, not the author)",
  "inputs": {
-  "tree": "2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5",
-  "sheet": "c356b3cd2d8d10f96c655b32c1f8c4da096b7c32acd1fd2d2487b8092ae942ab"
+  "tree": "c1b1d874f8b1855f4308b54067d17a2ad1bcc207f539f525f2d1cbdcbeacff08",
+  "sheet": "a0d6beb6b982019bd215065d574cb51b165e806f6b9620c10fb20b38a8d7c72a"
  },
  "scenarios": [
   {
    "id": "e1",
-   "text": "Testing on one Pyrelands map at noon, the tester forces each sky in turn. Under ash fall the light drops noticeably and grey drifts keep piling against rocks and walls. Under cinderfall the screen shows a different, ember-lit fall unlike the grey ash, and lightning strikes the plain twice in the hour. Under black rain dark streaks fall and a fire burning on the test pad goes out.",
-   "expect": "accept: each of the three weathers reads as its own sky at a glance; ash fall dims and banks drifts, cinderfall has its own look and brings lightning, black rain falls visibly dark and puts fires out",
-   "expect_source": "leaf:three_skies",
+   "text": "With a steady wind blowing east, a short north-south line of ember grass is lit. Over the next hours the burn pushes well east of the lit line, the grass strips just north and south of the line and the ground to its west stay unburned, and the cells burning at any moment stay a few times the number that were lit.",
+   "expect": "accept: the fire runs with the wind away from where it lit, not evenly to every side, and does not take the map",
+   "expect_source": "leaf:fire_walks_with_wind",
    "by": "examiner"
   },
   {
    "id": "e2",
-   "text": "At noon the tester forces cinderfall. The map dims and the same grey flakes as ash fall drift down across the screen; shown the capture without its label, a reader calls it ash fall. The weather readout says Cinderfall, and lightning strikes near the colony twice during the spell.",
-   "expect": "reject: cinderfall must be its own look, recognisable at a glance; the leaf's red is exactly 'cinderfall looks like ash fall', and lightning or a different def label does not rescue it (false_pass: weathers differing only in their def fields)",
-   "expect_source": "leaf:three_skies",
+   "text": "A strong wind is blowing west. A single patch of grass is lit and the player watches it burn outward in a near-perfect circle, eating upwind ground as fast as downwind ground.",
+   "expect": "reject: a fire that spreads the same way whatever the wind",
+   "expect_source": "leaf:fire_walks_with_wind",
    "by": "examiner"
   },
   {
    "id": "e3",
-   "text": "Black rain begins over the colony in mid-afternoon. The weather label reads Black rain and a grass fire near the colony goes out within the hour, but on screen the rain falls as the ordinary blue-grey streaks of a vanilla shower, with nothing dark about it.",
-   "expect": "reject: black rain must fall visibly dark; the leaf's red is 'black rain draws as blue-grey rain', and putting fires out does not make up for the look",
-   "expect_source": "leaf:three_skies",
+   "text": "A light breeze is blowing. A fire lit at one map edge is carried across everything, and by the next evening nearly every grass cell on the map has burned.",
+   "expect": "reject: a wind that carries one fire over the whole map",
+   "expect_source": "leaf:fire_walks_with_wind",
    "by": "examiner"
   },
   {
    "id": "e4",
-   "text": "The burn line passes a stretch of ember grass. Right behind the front the scar lies black and smoking with nothing growing in it; scorch-fruit sprouts only appear in it two days later, well after the smoke has cleared. Unburned ground nearby has none.",
-   "expect": "reject: scorch-fruit must come up rapidly in the fresh scar right behind the front, while the ground is still smoking; appearing only days after the front passed is the leaf's red",
-   "expect_source": "leaf:scorchfruit_born_of_fire",
+   "text": "A test run reports that no lane beside the lit lanes burned, and the report is filed as a pass. The capture of the test pad shows no scorched cells anywhere, including the lanes that were supposed to be lit.",
+   "expect": "reject: a line that never lit is read as a fire that stayed in its lanes",
+   "expect_source": "leaf:fire_walks_with_wind",
    "by": "examiner"
   },
   {
    "id": "e5",
-   "text": "A colonist sows rice on a patch of deep ash the fire crossed an hour ago. Black rain falls on it for half a day. Afterwards the per-cell fertility read on that patch shows about 140%, the same as a patch of old ash that was rained on just the same, and the two rice crops grow at the same pace through the week.",
-   "expect": "reject: black rain must add to the fresh-burn bonus, not wash it away; a rained-on fresh scar reading no better than wet old ash is the leaf's red (wet fresh scar should read about 190%)",
-   "expect_source": "leaf:fresh_burn_compounds_with_black_rain",
+   "text": "A wind test is checked only by counting burned cells on the downwind side of the lit line; the upwind side and the side lanes are never looked at, and the same build shows equal spread to every side when the wind setting is toggled.",
+   "expect": "reject: a build that ignores the wind, read only on the downwind side so an even spread passes as walking",
+   "expect_source": "leaf:fire_walks_with_wind",
    "by": "examiner"
   },
   {
    "id": "e6",
-   "text": "Three test pads of deep ash: one burned that morning and left dry, one burned that morning then given half a day of black rain, one old ash under the same black rain. After the rain the wet fresh scar reads about 190% fertility and its crop out-grows both others; by about day 6 to 7 its burn bonus has faded away and it reads like the other wet ash.",
-   "expect": "accept: a wet fresh scar out-grows a dry fresh scar and wet old ash (about 190%), and the bonus fades on its own six-day clock rather than lasting forever",
-   "expect_source": "leaf:fresh_burn_compounds_with_black_rain",
-   "by": "examiner"
-  },
-  {
-   "id": "e7",
-   "text": "A colonist sows potatoes on deep ash in two strips on the same tick: one alongside a watered channel, one dry a few cells away. The dry strip reads about 70% fertility and grows slowly in the heat; the watered strip reads about 140% and is clearly ahead after five days, its growth not slowed by the high temperature.",
-   "expect": "accept: an ordinary crop finds deep ash sowable dry (about 70%) and very fertile watered (about 140%), the watered strip grows clearly faster, and on watered ash the heat does not slow it",
-   "expect_source": "leaf:ash_fertile_when_watered",
-   "by": "examiner"
-  },
-  {
-   "id": "e8",
-   "text": "The tester sows ember grass on dry deep ash that last burned three weeks ago, and on watered ash beside a pond. The watered patch springs up fast with small bursts of growth; the dry patch creeps along at roughly a tenth of its normal speed and is still barely visible after several days.",
-   "expect": "reject: the biome's grasses must grow swiftly even on seemingly dry ash; grass on old dry ash growing at a crawl (a tenth of its speed) is the leaf's red",
-   "expect_source": "leaf:grass_carpets_and_regreens",
-   "by": "examiner"
-  },
-  {
-   "id": "e9",
-   "text": "After the opening front dies down, the player waits. A few hours later a smoulder relights the grass in the colony's own hay field, two cells from the barn wall, and a new front starts walking out of the base.",
-   "expect": "reject: the relight must be a smoulder in open grass far from buildings; a front that lights inside the colony is what the leaf says it must not read as",
+   "text": "On a fresh map at play zoom over the first days, a grass fire front moves across the deep ash, leaving a black scorched strip behind it; after the front dies down, within a short while a smoulder flares up again in open grass away from the colony.",
+   "expect": "accept: the burn line walks like a natural grass fire with a scorched trail, and is never out for long",
    "expect_source": "leaf:burn_line_walks",
    "by": "examiner"
   },
   {
+   "id": "e7",
+   "text": "The opening fire front burns across part of the map on the first day, dies, and for the remaining twelve days of play no fire lights anywhere on the map.",
+   "expect": "reject: the opening front lights once and the map stays dark for good",
+   "expect_source": "leaf:burn_line_walks",
+   "by": "examiner"
+  },
+  {
+   "id": "e8",
+   "text": "A test places fire cells at the spot where the front is expected to be; burning cells exist, but over several game hours their centre does not move and no scorched area grows behind them.",
+   "expect": "reject: a fire spawned by the test where the front should be, so a burn exists but nothing walks",
+   "expect_source": "leaf:burn_line_walks",
+   "by": "examiner"
+  },
+  {
+   "id": "e9",
+   "text": "A colonist sows rice on dry deep ash; the field accepts the sowing, but a strip of the same rice beside an irrigation channel a few cells away grows at the same daily rate as the dry strip.",
+   "expect": "reject: water makes no difference to a crop on ash",
+   "expect_source": "leaf:ash_fertile_when_watered",
+   "by": "examiner"
+  },
+  {
    "id": "e10",
-   "text": "A fresh Pyrelands map census lists fire-hawks, ashwallows, ullai and the rest of the fire cast, plus a small group labelled 'ash elephants' with charred-looking art. Reading their defName shows the vanilla Elephant animal carrying a patched label and texture.",
-   "expect": "reject: only the biome's own fire-ecology cast may live there; a donor animal wandering on the map is the red, and an intruder counted as ours because it carries a patched label is the named false pass",
-   "expect_source": "leaf:populations_are_the_biomes_own",
+   "text": "The player tries to designate a growing zone for potatoes on dry deep ash and the game refuses it as unfit for planting.",
+   "expect": "reject: ash reads as barren; the crop must be sowable dry",
+   "expect_source": "leaf:ash_fertile_when_watered",
    "by": "examiner"
   },
   {
    "id": "e11",
-   "text": "A wild furnace-beast lies down to sleep on a patch of ember grass on a clear day. The grass under it bursts into flame the same tick it lies down; a second furnace-beast sleeping on bare soil nearby lights nothing.",
-   "expect": "reject: a sleeping furnace-beast sets grass alight after a while, never at once; instant ignition on lying down breaks the leaf's rule (the bare-soil control is right, but the grass case is not)",
-   "expect_source": "leaf:furnacebeast_warms",
+   "text": "A fertility comparison reports the watered strip far ahead of the dry one, but the watered strip turns out to sit on a pocket of ordinary soil while the dry strip is on deep ash.",
+   "expect": "reject: the watered strip is sown on soil rather than ash",
+   "expect_source": "leaf:ash_fertile_when_watered",
    "by": "examiner"
   },
   {
    "id": "e12",
-   "text": "The burn line reaches an ashwallow grazing in the grass. Its status shows it burrowed and it disappears underground as the flames cross its cell; once the fire has passed it comes back up, and its health tab shows no burns and no injuries.",
-   "expect": "accept: as the front reaches it the ashwallow shows a readable burrowed status, dives, and comes up unharmed once the fire has passed",
-   "expect_source": "leaf:ashwallow_dives_unharmed",
+   "text": "Crops are sown on a scar the fire crossed yesterday. Black rain then falls on part of the scar; the wet part of the fresh scar grows faster than the dry part and faster than wet old ash, and by the following week all three grow alike.",
+   "expect": "accept: black rain adds to the burn bonus rather than washing it away, and the bonus fades on its own clock",
+   "expect_source": "leaf:fresh_burn_compounds_with_black_rain",
    "by": "examiner"
   },
   {
    "id": "e13",
-   "text": "A colonist fighting off a raid of wild predators is bitten once by a warg and never by a flamefang. Afterwards the colonist's health tab shows a bite wound and flamefang venom, smouldering worse over the following hours.",
-   "expect": "reject: flamefang venom must come only from a flamefang's bite; 'any bite or melee hit applies the venom' is the leaf's named false pass, and the sheet says no other bite does",
-   "expect_source": "leaf:flamefang_bite_carries_venom",
+   "text": "Black rain falls on a field sown on a fresh burn scar, and from that hour the crop grows at the same rate as the crop on old ash beside it.",
+   "expect": "reject: black rain wiping the burn bonus",
+   "expect_source": "leaf:fresh_burn_compounds_with_black_rain",
    "by": "examiner"
   },
   {
    "id": "e14",
-   "text": "Early in a new game a fire-hawk is first seen carrying a burning ember over the home map; one letter arrives naming the hawk and the ember and the camera jumps to it. Later that day a second hawk carries an ember and no second letter arrives. Over the season, butchering hunted fire-hawks now and then yields a Pristine Firehawk Crestfeather; butchered muffalo never do.",
-   "expect": "accept: one letter on the first carry, once a game, not on every carry; a hunted fire-hawk sometimes yields the crestfeather and other carcasses do not",
-   "expect_source": "leaf:firehawk_hunt_rewards",
+   "text": "A field sown on a fresh burn scar is still growing well ahead of the old-ash field three weeks after the fire passed, with no other change to either field.",
+   "expect": "reject: a bonus that never fades (it should fade on a six-day clock)",
+   "expect_source": "leaf:fresh_burn_compounds_with_black_rain",
    "by": "examiner"
   },
   {
    "id": "e15",
-   "text": "On a fresh Pyrelands map the player opens the info card of a wild furnace-beast grazing beside a Zeer. The furnace-beast reads body size 6 in the running game against the Zeer's 4.5: it is the biggest animal on the map, but stands only about a third taller than the Zeer next to it.",
-   "expect": "reject: the furnace-beast must be a giant, body size 9 in the running game, twice the Zeer's 4.5 (the largest other Pyrelands animal) and standing far larger than any other animal; body size 6 is the biggest on the map but below twice the Zeer's, so it misses the giant bar",
-   "expect_source": "leaf:furnacebeast_warms",
+   "text": "A burned patch of ember grass shows green shoots within a few days and is mostly green again about a week after the fire, while a room the colonists roofed over the carpet has no grass left inside after a day.",
+   "expect": "accept: the scar re-greens within about a week and grass withers under a roof within about a day",
+   "expect_source": "leaf:grass_carpets_and_regreens",
    "by": "examiner"
   },
   {
    "id": "e16",
-   "text": "A player watches a furnace-beast walk past a Zeer and an ullai herd on a fresh Pyrelands map. Its info card in the running game reads body size 9 against the Zeer's 4.5, and on screen it towers over the Zeer, roughly twice its bulk, and dwarfs the ullai. A colonist walking beside it shows a warmth status that disappears once the colonist has walked ten cells off.",
-   "expect": "accept: the furnace-beast is a giant, body size 9 in the running game, twice the Zeer's 4.5 and drawn far larger than any other animal; the warmth status shows near it and goes away when the colonist walks off",
-   "expect_source": "leaf:furnacebeast_warms",
+   "text": "A grass fire passes a meadow and the very next hour the meadow stands fully green again as if nothing had burned.",
+   "expect": "reject: grass that is green the moment the fire passes",
+   "expect_source": "leaf:grass_carpets_and_regreens",
    "by": "examiner"
   },
   {
    "id": "e17",
-   "text": "The furnace-beast's def file on disk lists body size 9, but in the running game its info card reads 3.2 and on the map it stands about the height of a muffalo, no bigger than the ullai grazing around it.",
-   "expect": "reject: the giant bar is body size 9 in the running game, standing far larger than any other animal; the leaf rules out a beast the size of a muffalo, and size read from the XML file instead of the running game's def is its named false pass",
+   "text": "A month after a burn, the scorched patch is still bare and black with barely any grass returning.",
+   "expect": "reject: a scar that stays black for a season",
+   "expect_source": "leaf:grass_carpets_and_regreens",
+   "by": "examiner"
+  },
+  {
+   "id": "e18",
+   "text": "As the front passes, scorch-fruit plants sprout in the still-smoking ground right behind it; none appear on the unburned grass beside the scar, and a colonist picks and eats the ripe fruit.",
+   "expect": "accept: scorch-fruit is born of fire, in the fresh scar right behind the front, and feeds a colonist",
+   "expect_source": "leaf:scorchfruit_born_of_fire",
+   "by": "examiner"
+  },
+  {
+   "id": "e19",
+   "text": "Scorch-fruit plants first show up in a burn scar three days after the fire has gone out.",
+   "expect": "reject: fruit that appears days after the fire",
+   "expect_source": "leaf:scorchfruit_born_of_fire",
+   "by": "examiner"
+  },
+  {
+   "id": "e20",
+   "text": "Picked scorch-fruit left on an unrefrigerated stockpile floor is still fresh and edible a month later.",
+   "expect": "reject: a crop that keeps; picked fruit must spoil unless refrigerated",
+   "expect_source": "leaf:scorchfruit_born_of_fire",
+   "by": "examiner"
+  },
+  {
+   "id": "e21",
+   "text": "A furnace-beast walks past a muffalo herd and stands about the same height as the muffalo.",
+   "expect": "reject: a beast the size of a muffalo; it must stand far larger than any other animal",
    "expect_source": "leaf:furnacebeast_warms",
    "by": "examiner"
   },
   {
-   "id": "c1",
-   "text": "On a fresh Pyrelands map in ordinary play, a wild furnace-beast grazes near a Zeer. It is clearly the biggest animal on the map: the dev inspector on the running game reads its body size as 6.5 against the Zeer's 4.5, and it is drawn visibly taller than the Zeer. A colonist standing beside it shows the warmth status, which goes away when she walks ten cells off.",
-   "expect": "reject: the leaf fixes the giant at 'body size 9 in the running game (twice the Zeer's 4.5, the largest other Pyrelands animal)', and its oracle requires 'at least twice every other roster kind's'; 6.5 is the largest on the map but only about 1.4 times the Zeer, so being merely the biggest animal does not meet the bar even though the warmth part works",
+   "id": "e22",
+   "text": "A furnace-beast falls asleep on a cell of bare soil with no plant on it, and after a while that cell catches fire.",
+   "expect": "reject: the bed fire must come only on a cell with a plant, never on bare ground",
    "expect_source": "leaf:furnacebeast_warms",
+   "by": "examiner"
+  },
+  {
+   "id": "e23",
+   "text": "A closed room holding a furnace-beast reads several degrees hotter after a few hours than an identical closed room without one, with no heater in either and no fire outside.",
+   "expect": "accept: a closed room holding a furnace-beast grows clearly hotter than the same room without one",
+   "expect_source": "leaf:furnacebeast_warms",
+   "by": "examiner"
+  },
+  {
+   "id": "e24",
+   "text": "Every time any fire-hawk on the home map picks up an ember, a new letter arrives naming the hawk.",
+   "expect": "reject: a letter every time a hawk carries; it must come once a game",
+   "expect_source": "leaf:firehawk_hunt_rewards",
+   "by": "examiner"
+  },
+  {
+   "id": "e25",
+   "text": "A colonist butchers a muffalo and a boomalope and gets a Pristine Firehawk Crestfeather from each.",
+   "expect": "reject: a trophy any carcass drops; only hunted fire-hawks may yield it",
+   "expect_source": "leaf:firehawk_hunt_rewards",
+   "by": "examiner"
+  },
+  {
+   "id": "e26",
+   "text": "The first time a fire-hawk is seen carrying an ember on the home map, one letter arrives naming the hawk and its ember, and clicking it jumps the camera to the hawk; later carries bring no letter.",
+   "expect": "accept: one letter, once a game, that names the hawk and the ember and jumps to it",
+   "expect_source": "leaf:firehawk_hunt_rewards",
+   "by": "examiner"
+  },
+  {
+   "id": "e27",
+   "text": "Midday captures of ash fall, cinderfall and black rain look the same apart from the weather name in the corner; the black rain shows ordinary blue-grey streaks.",
+   "expect": "reject: one weather renamed three times, or ordinary blue-grey rain",
+   "expect_source": "leaf:three_skies",
+   "by": "examiner"
+  },
+  {
+   "id": "e28",
+   "text": "In daylight, cinderfall has its own glowing look and lightning strikes during it, while black rain falls visibly dark and the burning cells on the map go out under it.",
+   "expect": "accept: the three skies are each recognisable, cinderfall brings lightning, black rain is dark and puts fires out",
+   "expect_source": "leaf:three_skies",
+   "by": "examiner"
+  },
+  {
+   "id": "e29",
+   "text": "Midway through summer on a Pyrelands map, ordinary clear rain falls for a day.",
+   "expect": "reject: ordinary rain must never fall; the only wet weather is black rain",
+   "expect_source": "leaf:no_ordinary_rain",
+   "by": "examiner"
+  },
+  {
+   "id": "e30",
+   "text": "A fire-hawk drops a burning twig beyond the front and a fire starts there, but the replay shows the front had already spread into that cell before the drop.",
+   "expect": "reject: the drop cell lit by the fire's own spread",
+   "expect_source": "leaf:firehawk_lights_ahead",
+   "by": "examiner"
+  },
+  {
+   "id": "e31",
+   "text": "A fresh Pyrelands map's wild animal census shows camels, fennec foxes and cacti among the wild population.",
+   "expect": "reject: a desert or savanna roster; only the biome's own plants and fire-ecology cast may appear",
+   "expect_source": "leaf:populations_are_the_biomes_own",
+   "by": "examiner"
+  },
+  {
+   "id": "e32",
+   "text": "An ashwallow comes through a burn unharmed, but the replay shows the fire front never reached its cell.",
+   "expect": "reject: the fire never reached the animal's cell, so it reads as an animal the fire simply missed",
+   "expect_source": "leaf:ashwallow_dives_unharmed",
+   "by": "examiner"
+  },
+  {
+   "id": "c1",
+   "text": "On a windy day a short line of fire is lit across a strip of ember grass on deep ash, with the wind blowing along the strip. Within a few hours the burn has run about twenty cells downwind of the line. Looking back, it has also burned about twenty cells upwind of the line, and into the lanes on both sides, so the black patch sits roughly centred on where the fire was lit.",
+   "expect": "reject: the leaf's red is 'the fire spreads evenly on every side whatever the wind, so a line burns as far upwind as downwind'; the fire must run 'away from where it lit, and not spread evenly to every side'",
+   "expect_source": "leaf:fire_walks_with_wind",
    "by": "challenger"
   },
   {
    "id": "c2",
-   "text": "The burn line crosses a field of ember grass at noon. The scar behind it smokes for a day and stays bare. Early on the second day after the front passed, scorch-fruit sprouts across the scar and only there, none on the unburned ash next to it. It ripens, a colonist picks it and a hungry colonist eats it, and the unpicked plants wither within a day.",
-   "expect": "reject: the leaf says scorch-fruit comes up 'rapidly in the fresh scar right behind the front, while the ground is still smoking', and the experience says it 'must not read as fruit that appears days after the fire'; its red is 'scorch-fruit appears only days after the front has passed'. Growing only on burned ground and rotting fast does not make up for the late arrival",
-   "expect_source": "leaf:scorchfruit_born_of_fire",
+   "text": "On arrival a broad grass-fire front sweeps across the fresh map over the first day and a half, leaving a black scorched trail that is mostly green again a week later. It burns out on day two. For the rest of the week the map is calm, with no fire anywhere, and the colony settles in safely.",
+   "expect": "reject: the fire 'is never out for long, a smoulder relighting in open grass'; it must not read as 'a fire that burns once and is gone for good'; the red is 'never relights after it goes out, so by day three the map holds no fire'",
+   "expect_source": "leaf:burn_line_walks",
    "by": "challenger"
   },
   {
    "id": "c3",
-   "text": "A colonist sows potatoes on deep ash the front crossed an hour earlier. That evening black rain falls for half a day. The fire is out, the loose ash on the pad is washed away, and the fertility read on the sown cells reads 140%, the same as wet old ash a few cells away under the same rain. The burn bonus no longer shows on the cell.",
-   "expect": "reject: the leaf says black rain 'adds to it instead of washing it away: a wet fresh scar reads 190%', and the experience says it 'must not read as black rain wiping the burn bonus'; its red is 'the rained-on fresh scar reads no better than wet old ash'. three_skies lets black rain wash loose ash away, but that does not carry the burn bonus with it",
-   "expect_source": "leaf:fresh_burn_compounds_with_black_rain",
-   "by": "challenger"
-  },
-  {
-   "id": "c4",
-   "text": "Ember grass is sown on deep ash last burned three weeks ago, far from water, and the same grass on watered ash beside a pond. The watered grass grows fast and shows gentle bursts. The dry-ash grass is sowable but grows at about a tenth of its normal speed, which matches dry ash being the weaker ground (about 70%) and watered ash the very fertile ground (about 140%).",
-   "expect": "reject: the leaf says the biome's grasses 'grow swiftly even on seemingly dry ash (very deep roots, underground storage)'; the experience says it 'must not read as grass that crawls on dry ash', and its red is 'the grass on old dry ash grows at a crawl (a tenth of its speed)'. The 70%/140% figures in ash_fertile_when_watered are for ordinary crops, not the biome's own grasses",
+   "text": "Ember grass is sown on two patches of old ash that last burned well over a week ago, one dry and one beside a watered channel. The watered patch shoots up quickly and puts out gentle bursts. The dry patch does grow, but only at about a tenth of the grass's normal speed, so after five days it is barely visible.",
+   "expect": "reject: the grasses 'grow swiftly even on seemingly dry ash'; it must not read as 'grass that crawls on dry ash', and the red names 'the grass on old dry ash grows at a crawl (a tenth of its speed)'",
    "expect_source": "leaf:grass_carpets_and_regreens",
    "by": "challenger"
   },
   {
+   "id": "c4",
+   "text": "Three pads on deep ash: one freshly burned and left dry, one freshly burned and then under black rain for half a day, and one of old ash under the same black rain. Over the next days both rained-on pads grow their crop at the same rate as each other, and both beat the dry fresh scar. The rain clearly helped.",
+   "expect": "reject: 'a wet fresh scar out-grows both a dry fresh scar and wet old ash'; a rained fresh scar that only matches wet old ash is the red, 'the rained-on fresh scar reads no better than wet old ash', which is black rain wiping the burn bonus",
+   "expect_source": "leaf:fresh_burn_compounds_with_black_rain",
+   "by": "challenger"
+  },
+  {
    "id": "c5",
-   "text": "In a Pyrelands summer heatwave, rice is sown on the same tick on two strips of deep ash, one beside a watered channel and one dry a few cells away. The fertility read gives about 140% on the watered strip and about 70% on the dry one, and the watered strip leads in growth. On both strips the crop's temperature growth factor reads the same reduced value, so the heat slows the watered rice exactly as much as the dry rice.",
-   "expect": "reject: the leaf says 'on watered ash its roots grow as if cooler, so the heat does not slow it', and its oracle reads 'on watered ash the crop's temperature growth factor reads as for a cooler cell, on dry ash as vanilla's'. Correct fertility figures do not meet the cooler-roots part",
+   "text": "During a hot spell an ordinary crop is sown on deep ash, one strip dry and one beside a watered channel. Both strips take the sowing. The watered strip grows faster overall, but the heat slows both strips by the same amount, as it would on any vanilla field.",
+   "expect": "reject: 'On watered ash the crop also grows as if its roots were cooler, so the biome's heat does not slow it'; heat should slow only the dry strip 'as in vanilla'",
    "expect_source": "leaf:ash_fertile_when_watered",
    "by": "challenger"
   },
   {
    "id": "c6",
-   "text": "Mid-season on a Pyrelands colony, a quest applies a weather-forcing game condition that calls for Rain. For the length of the condition ordinary blue-grey rain falls on the map; when it ends, the biome's own weather picker goes back to ash fall, cinderfall and black rain, and it never picked ordinary rain on its own during the season.",
-   "expect": "reject: the leaf says 'Ordinary rain never falls on a Pyrelands map; its only wet weather is black rain', and its oracle requires 'a game condition forcing Rain brings black rain, not Rain'. A forced condition is exactly the case the leaf covers, so a weather list without Rain is not enough",
-   "expect_source": "leaf:no_ordinary_rain",
+   "text": "A wild furnace-beast, far larger than every other animal on the map, lies down to sleep on ember grass. The grass beneath it bursts into flame the moment it settles. A second beast lying on bare soil starts no fire. Rooms holding a furnace-beast run clearly hotter, and a colonist beside one shows a warmth status that clears when it walks away.",
+   "expect": "reject: a sleeping furnace-beast sets grass alight 'after a while, never at once and never on a cell with no plant'; instant ignition breaks 'never at once'",
+   "expect_source": "leaf:furnacebeast_warms",
+   "by": "challenger"
+  },
+  {
+   "id": "c7",
+   "text": "Whenever a fire-hawk on the home map picks up an ember, a letter arrives that names the hawk and the ember it carries and jumps the camera to it. The letter can be switched off in Mod Settings. Over a season the player gets a dozen of these letters. Hunted fire-hawks sometimes butcher into a Pristine Firehawk Crestfeather worth more than the hawk.",
+   "expect": "reject: the letter comes 'once a game'; it must not read as 'a letter every time a hawk carries', and the red names 'a letter on every carry'",
+   "expect_source": "leaf:firehawk_hunt_rewards",
+   "by": "challenger"
+  },
+  {
+   "id": "c8",
+   "text": "After the front passes, the scar cools and goes quiet. On the second day after the fire, scorch-fruit comes up across the burned ground and only there, with none on the unburned ash beside it. It ripens, a colonist picks it and a hungry colonist eats it and is fed, and fruit left in the open spoils within a short time.",
+   "expect": "reject: scorch-fruit must 'come up rapidly in the fresh scar right behind the front, while the ground is still smoking'; it must not read as 'fruit that appears days after the fire', and the red names 'appears only days after the front has passed' (his words: 'rapid after the fire not in two days')",
+   "expect_source": "leaf:scorchfruit_born_of_fire",
    "by": "challenger"
   }
  ],
- "scenarios_hash": "931b3bf78e003ce7b555ffb51e270a0ad48258c24586b5cbb70c907b2c1d9ae8",
- "frozen_at": "2026-11-16T00:47:10Z",
+ "scenarios_hash": "ebd1e0060d74082d214eb2ab4904f76d28a0cc8e3fad9e752938f78e69f69eb7",
+ "frozen_at": "2026-11-17T17:39:30Z",
  "readers": [
-  "rm-judge Reader A a327667c750d88e96 (fresh Opus; sheet, tree, scenario text only)",
-  "rm-judge Reader B a677c54087433ad4d (fresh Opus; sheet, tree, scenario text only)"
+  "rm-judge Reader A aa114da353c51393a (fresh Opus; sheet, tree, scenario text only)",
+  "rm-judge Reader B abdfee8b72caccb97 (fresh Opus; sheet, tree, scenario text only)"
  ],
  "control": {
-  "broken_leaf": "three_skies",
+  "broken_leaf": "fire_walks_with_wind",
   "missed": true,
   "missed_ids": [
    "e2",
-   "e3"
+   "e5",
+   "c1"
   ],
-  "reader": "rm-judge control a7ccf3500aca03beb",
-  "note": "Control Reader got exam_control/ (designer_stage.py exam-control --leaf three_skies) with the showcase-3 sky clause and the sky captures clause also stripped by hand; it accepted what both real Readers reject, so the scenarios discriminate."
+  "reader": "rm-judge control ada115ab92a506f36",
+  "note": "Control Reader got exam_control/ (designer_stage.py exam-control --leaf fire_walks_with_wind); no other leaf or sheet line paraphrased the wind rule (grep wind/downwind/upwind/gust/direction/evenly: none). It accepted three wind rejects both real Readers caught, so the scenarios discriminate."
  },
  "score": {
-  "right": 23,
-  "total": 23
+  "right": 40,
+  "total": 40
  },
  "accept_where_reject_core": 0,
  "challenger_misses": [],
+ "audit": "both Readers, asked after, say they opened only sheet.md, tree.json and reader_scenarios.md; the expect-bearing files were moved out of their folder within a minute of launch",
  "verdicts": {
   "reader_a": {
    "e1": "accept",
@@ -199,23 +320,40 @@
    "e4": "reject",
    "e5": "reject",
    "e6": "accept",
-   "e7": "accept",
+   "e7": "reject",
    "e8": "reject",
    "e9": "reject",
    "e10": "reject",
    "e11": "reject",
    "e12": "accept",
    "e13": "reject",
-   "e14": "accept",
-   "e15": "reject",
-   "e16": "accept",
+   "e14": "reject",
+   "e15": "accept",
+   "e16": "reject",
    "e17": "reject",
+   "e18": "accept",
+   "e19": "reject",
+   "e20": "reject",
+   "e21": "reject",
+   "e22": "reject",
+   "e23": "accept",
+   "e24": "reject",
+   "e25": "reject",
+   "e26": "accept",
+   "e27": "reject",
+   "e28": "accept",
+   "e29": "reject",
+   "e30": "reject",
+   "e31": "reject",
+   "e32": "reject",
    "c1": "reject",
    "c2": "reject",
    "c3": "reject",
    "c4": "reject",
    "c5": "reject",
-   "c6": "reject"
+   "c6": "reject",
+   "c7": "reject",
+   "c8": "reject"
   },
   "reader_b": {
    "e1": "accept",
@@ -224,48 +362,82 @@
    "e4": "reject",
    "e5": "reject",
    "e6": "accept",
-   "e7": "accept",
+   "e7": "reject",
    "e8": "reject",
    "e9": "reject",
    "e10": "reject",
    "e11": "reject",
    "e12": "accept",
    "e13": "reject",
-   "e14": "accept",
-   "e15": "reject",
-   "e16": "accept",
+   "e14": "reject",
+   "e15": "accept",
+   "e16": "reject",
    "e17": "reject",
+   "e18": "accept",
+   "e19": "reject",
+   "e20": "reject",
+   "e21": "reject",
+   "e22": "reject",
+   "e23": "accept",
+   "e24": "reject",
+   "e25": "reject",
+   "e26": "accept",
+   "e27": "reject",
+   "e28": "accept",
+   "e29": "reject",
+   "e30": "reject",
+   "e31": "reject",
+   "e32": "reject",
    "c1": "reject",
    "c2": "reject",
    "c3": "reject",
    "c4": "reject",
    "c5": "reject",
-   "c6": "reject"
+   "c6": "reject",
+   "c7": "reject",
+   "c8": "reject"
   },
   "control": {
    "e1": "accept",
    "e2": "accept",
-   "e3": "accept",
+   "e3": "reject",
    "e4": "reject",
-   "e5": "reject",
+   "e5": "accept",
    "e6": "accept",
-   "e7": "accept",
+   "e7": "reject",
    "e8": "reject",
    "e9": "reject",
    "e10": "reject",
    "e11": "reject",
    "e12": "accept",
    "e13": "reject",
-   "e14": "accept",
-   "e15": "reject",
-   "e16": "accept",
+   "e14": "reject",
+   "e15": "accept",
+   "e16": "reject",
    "e17": "reject",
-   "c1": "reject",
+   "e18": "accept",
+   "e19": "reject",
+   "e20": "reject",
+   "e21": "reject",
+   "e22": "reject",
+   "e23": "accept",
+   "e24": "reject",
+   "e25": "reject",
+   "e26": "accept",
+   "e27": "reject",
+   "e28": "accept",
+   "e29": "reject",
+   "e30": "reject",
+   "e31": "reject",
+   "e32": "reject",
+   "c1": "accept",
    "c2": "reject",
    "c3": "reject",
    "c4": "reject",
    "c5": "reject",
-   "c6": "reject"
+   "c6": "reject",
+   "c7": "reject",
+   "c8": "reject"
   }
  }
 }

@@ -606,10 +606,59 @@
     "ref": "run rm-role-designer-1794790336",
     "stage": 5,
     "tokens": 427530
+   },
+   {
+    "at": "2026-11-17T17:40:38Z",
+    "kind": "helper",
+    "ref": "rm-judge Examiner a493484933e059c8f exam r8",
+    "stage": 4,
+    "tokens": 37627
+   },
+   {
+    "at": "2026-11-17T17:40:38Z",
+    "kind": "helper",
+    "ref": "rm-judge Challenger a2a221d98bd0fd4cd exam r8",
+    "stage": 4,
+    "tokens": 35718
+   },
+   {
+    "at": "2026-11-17T17:50:17Z",
+    "kind": "helper",
+    "ref": "rm-judge Reader A aa114da353c51393a exam r8",
+    "stage": 4,
+    "tokens": 47712
+   },
+   {
+    "at": "2026-11-17T17:50:17Z",
+    "kind": "helper",
+    "ref": "rm-judge Reader B abdfee8b72caccb97 exam r8",
+    "stage": 4,
+    "tokens": 48493
+   },
+   {
+    "at": "2026-11-17T17:50:17Z",
+    "kind": "helper",
+    "ref": "rm-judge control ada115ab92a506f36 exam r8",
+    "stage": 4,
+    "tokens": 47501
+   },
+   {
+    "at": "2026-11-17T17:50:17Z",
+    "kind": "helper",
+    "ref": "rm-judge audit asks A+B exam r8",
+    "stage": 4,
+    "tokens": 1150
+   },
+   {
+    "at": "2026-11-17T17:55:45Z",
+    "kind": "stage",
+    "ref": "run bench-pyre-exam-st4-r8-20261117",
+    "stage": 4,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 16924747
+  "spent": 17142948
  },
  "coverage_releases": [
   {
@@ -1479,13 +1528,39 @@
    "stage": 5,
    "what": "locked_change",
    "why": "repair (RIMMANDRAKE_UNLOCK_REPIN_VOIDED_EXAM_NEXT_OPEN_REFUSED, d2a3509a53): the re-pin of 2026-11-17 voided stage 4's exam on a locked concept and left it locked, so no open or chain could retake it; unlocked for the retake as the fixed repin does, stage 5 locks it again; sources as the re-pin above"
+  },
+  {
+   "at": "2026-11-17T17:37:55Z",
+   "stage": 4,
+   "what": "invalidated",
+   "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes, owner; back to stage 4 (his new words to take in: OWNER:1794790810777772480, OWNER:1794790871101885625)"
+  },
+  {
+   "at": "2026-11-17T17:37:55Z",
+   "stage": 4,
+   "what": "over_budget",
+   "why": "16924747 of 4000000 spent; run bench-pyre-exam-st4-r8-20261117 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-17T17:37:55Z",
+   "stage": 4,
+   "what": "open",
+   "why": "run bench-pyre-exam-st4-r8-20261117, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-17T17:55:45Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-pyre-exam-st4-r8-20261117: stage 4 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
  "loop_since": "2026-11-15T06:01:06Z",
  "mod": "RimMandrake/Pyrelands",
  "must_cite": [
-  "1794774895716093173"
+  "1794774895716093173",
+  "1794790810777772480",
+  "1794790871101885625"
  ],
  "parks": [
   {
@@ -1926,97 +2001,40 @@
    "summary": "Stage 3 re-accepted after the furnace-beast enlargement (6120bb02aa, his card 2026-11-15 'Keep twice, raise body to 9+', OWNER:1794786804170379047) edited sheet, tree and scenes. The one open round-7 gap g1 (rm-coverage-judge-1794779751: the x2 bar unattainable against RSW_Zeer 4.5 at body 6) is closed by the build, not the criterion: body 9, draw 7.5; claimed in coverage_fixes.json; recorded as d_furnace_body_nine. The older 'five coverage gaps (2026-11-06)' were claimed and judged in rounds 4-6. Gate A lint PASS, showcase set accepted (burn_line 6 new, fire_cast 3, sky_and_shelter 3, fire_solace 3 at overlap 0.25), selftest_pyrelands_defs_offline PASS 16/16 mutants red. The sc_furnace_giant live read stays UNRUN."
   },
   {
-   "at": "2026-11-16T00:49:37Z",
+   "at": "2026-11-17T17:37:55Z",
+   "outcome": "invalidated",
+   "stage": 4,
+   "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes, owner; back to stage 4 (his new words to take in: OWNER:1794790810777772480, OWNER:1794790871101885625)"
+  },
+  {
+   "at": "2026-11-17T17:55:45Z",
    "inputs": {
-    "exam": "16914afbf8aa005e5484f69b53b63ea11ceca3a93a1454759f90ddda4e56cf2b",
+    "exam": "5059a54449e65b8e99919ad28cf512fddaa6b435625661fd19e709fb1123eb60",
     "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-    "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
+    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
     "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "094f6b143492b2d130b01b3a4ca7ced20d06e5384fd4559173a5d7fa35b2133f",
-    "sheet": "c356b3cd2d8d10f96c655b32c1f8c4da096b7c32acd1fd2d2487b8092ae942ab",
-    "tree": "2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5"
+    "scenes": "b34b53d54f05b610809aeb291395e0f13c215ed681cad3da419ae1e2fabb9ddf",
+    "sheet": "a0d6beb6b982019bd215065d574cb51b165e806f6b9620c10fb20b38a8d7c72a",
+    "tree": "c1b1d874f8b1855f4308b54067d17a2ad1bcc207f539f525f2d1cbdcbeacff08"
    },
    "manifest": {
-    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
+    "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
     "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
    },
    "outcome": "done",
    "owner_uncited": [
     "1793766816609436834",
     "1794611171307640419",
-    "1794774895716093173"
+    "1794790810777772480",
+    "1794790871101885625"
    ],
    "quick_look": {
     "offer": false,
     "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
    },
-   "run": "rm-role-designer-1794789873",
+   "run": "bench-pyre-exam-st4-r8-20261117",
    "stage": 4,
-   "summary": "Cold Reader exam retaken on the tree and sheet as edited by the furnace-beast body-9 build (6120bb02aa, his card OWNER:1794786804170379047): 23 frozen scenarios (Examiner abd12815cb1880bd4 e1-e17, three new on the twice-the-Zeer bar; Challenger ac15eed2b5fd7af54 c1-c6, all rejects; 17 rejects), Readers a327667c750d88e96 and a677c54087433ad4d match all 23, 23/23, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with three_skies removed (a7ccf3500aca03beb) accepted e2, e3, which both Readers reject, so the set discriminates. exam.json carries it.",
-   "voided": [
-    {
-     "at": "2026-11-17T17:09:38Z",
-     "inputs": [
-      "sheet",
-      "tree",
-      "scenes",
-      "owner"
-     ],
-     "sources": [
-      "OWNER:1794926128945577969@1d7b17ad85ce",
-      "OWNER:1794926130118775229@1d7b17ad85ce",
-      "OWNER:1794842055508243067@1d7b17ad85ce",
-      "OWNER:1794790810777772480",
-      "OWNER:1794790871101885625",
-      "OWNER:1794894282613045211@49e11870b4",
-      "OWNER:1794894288587863659@49e11870b4"
-     ],
-     "why": "its exam ran against another tree or sheet: retake it"
-    }
-   ]
-  },
-  {
-   "at": "2026-11-16T00:57:59Z",
-   "inputs": {
-    "exam": "16914afbf8aa005e5484f69b53b63ea11ceca3a93a1454759f90ddda4e56cf2b",
-    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-    "owner": "b62ded42e21c0077baa22f864c407e6528f1a181dd3daf694b9ea54ef9cac3f1",
-    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-    "scenes": "094f6b143492b2d130b01b3a4ca7ced20d06e5384fd4559173a5d7fa35b2133f",
-    "sheet": "a0d6beb6b982019bd215065d574cb51b165e806f6b9620c10fb20b38a8d7c72a",
-    "tree": "c1b1d874f8b1855f4308b54067d17a2ad1bcc207f539f525f2d1cbdcbeacff08"
-   },
-   "manifest": {
-    "designer.md": "a56a6c88ffb81f160a2d59055cad605b75dce9ba36e9214d484be91b94e700e6",
-    "designer_lock.md": "873aa89bbe24fe07a9ca00544704de04fef4e969ef94f51e51474477ec31cbc4"
-   },
-   "outcome": "done",
-   "owner_uncited": [
-    "1793766816609436834",
-    "1794611171307640419",
-    "1794774895716093173"
-   ],
-   "repinned": [
-    {
-     "at": "2026-11-17T17:09:38Z",
-     "inputs": [
-      "tree",
-      "sheet"
-     ],
-     "sources": [
-      "OWNER:1794926128945577969@1d7b17ad85ce",
-      "OWNER:1794926130118775229@1d7b17ad85ce",
-      "OWNER:1794842055508243067@1d7b17ad85ce",
-      "OWNER:1794790810777772480",
-      "OWNER:1794790871101885625",
-      "OWNER:1794894282613045211@49e11870b4",
-      "OWNER:1794894288587863659@49e11870b4"
-     ]
-    }
-   ],
-   "run": "rm-role-designer-1794790336",
-   "stage": 5,
-   "summary": "Locked. Coverage judge rm-coverage-judge-1794790345 (delta round on the furnace body-9 fix) returned covered with 0 gaps and signed tree 2c1e467c / sheet c356b3cd; signature, verdict and ledger shard committed (4a44d06017). concept_tree.py gate PASS; designer_stage.py showcases accepts burn_line 6 new, fire_cast 3, sky_and_shelter 3, fire_solace 3 at overlap 0.25. All 29 scenes name an entry point; the five chains not yet in validation.py (roof_withers, herd_thirst, fire_sense, furnace_hide_bank, foreign_arrivals) are owed by live build items RIMMANDRAKE_BUILD_PYRELANDS_GAP_SCENE_PARTS_TEN_SCENES_OWED and RIMMANDRAKE_BUILD_PYRELANDS_ROUND_SIX_PARTS_AFTER_THE_TEN. Mod item filed --kind mod: RIMMANDRAKE_FINISH_PYRELANDS_AGAINST_TREE_FURNACE_GREW_TO_NINE, ## verify citing design/concepts/Pyrelands/tree.json at hash 2c1e467c7ee1a8ccd33d6e94bde82661b919a19eabdf6e548afd4c031a427ff5. sc_furnace_giant live read stays UNRUN with its command."
+   "summary": "Cold Reader exam retaken on the tree and sheet as re-pinned for the locked change of 2026-11-17 (his card: bars become experiences, the wind bar fire_walks_with_wind added; repair d2a3509a53 unlocked stage 4 for the retake): 40 frozen scenarios (Examiner a493484933e059c8f e1-e32, Challenger a2a221d98bd0fd4cd c1-c8; 32 rejects), Readers aa114da353c51393a and abdfee8b72caccb97 agree on all 40, 40/40, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with fire_walks_with_wind removed (ada115ab92a506f36) accepted e2, e5 and c1, wind rejects both Readers caught, so the set discriminates. exam.json carries it."
   }
  ],
  "runner": "claude",

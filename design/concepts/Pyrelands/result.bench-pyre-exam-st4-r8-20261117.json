@@ -1,0 +1,10 @@
+{
+ "run": "bench-pyre-exam-st4-r8-20261117",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam retaken on the tree and sheet as re-pinned for the locked change of 2026-11-17 (his card: bars become experiences, the wind bar fire_walks_with_wind added; repair d2a3509a53 unlocked stage 4 for the retake): 40 frozen scenarios (Examiner a493484933e059c8f e1-e32, Challenger a2a221d98bd0fd4cd c1-c8; 32 rejects), Readers aa114da353c51393a and abdfee8b72caccb97 agree on all 40, 40/40, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with fire_walks_with_wind removed (ada115ab92a506f36) accepted e2, e5 and c1, wind rejects both Readers caught, so the set discriminates. exam.json carries it.",
+ "quick_look": {
+  "offer": false,
+  "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
+ }
+}
