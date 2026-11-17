@@ -447,6 +447,7 @@ def add_ingame(root, mod, f, runs):
         return f
     f.update(M.ingame_facts(root, mod))
     f["certificate"] = M.certificate(root, mod, "in_game")
+    f["known_red"] = known_red(root, mod)          # cert_wait's red-decider route reads which items owe them
     f["cert_rerun_result"] = rerun_result(mod)     # cert_wait's zero-token rerun reads its last result
     t0 = _ts(f.get("opened"))
     f["ingame_runs"] = [r.get("unit") for r in runs or [] if _is_ingame_item(r.get("item")) and ran(r)
@@ -454,13 +455,17 @@ def add_ingame(root, mod, f, runs):
     return f
 
 
-def add_cert(root, mod, f):
-    """At the offline build waiting on its certificate: the certificate's rows and the test table's known_red marks
-    (cert_red_decide reads which red deciders an item already owes)."""
-    f["certificate"] = M.certificate(root, mod, "blind_challenge")
+def known_red(root, mod):
+    """-> the test table's known_red marks {test: item} (cert_red_decide reads which red deciders an item already owes)."""
     tt, _ = JC.read_table(root, mod)
-    f["known_red"] = {tid: t["known_red"] for tid, t in ((tt or {}).get("tests") or {}).items()
-                      if isinstance(t, dict) and isinstance(t.get("known_red"), str)}
+    return {tid: t["known_red"] for tid, t in ((tt or {}).get("tests") or {}).items()
+            if isinstance(t, dict) and isinstance(t.get("known_red"), str)}
+
+
+def add_cert(root, mod, f):
+    """At the offline build waiting on its certificate: the certificate's rows and the test table's known_red marks."""
+    f["certificate"] = M.certificate(root, mod, "blind_challenge")
+    f["known_red"] = known_red(root, mod)
     f["cert_rerun_result"] = rerun_result(mod)
     return f
 
@@ -473,6 +478,7 @@ def add_blind(root, mod, f, runs):
         return f
     f.update(M.blind_facts(root, mod))
     f["certificate"] = M.certificate(root, mod, "blind_challenge")
+    f["known_red"] = known_red(root, mod)          # cert_wait's red-decider route reads which items owe them
     f["cert_rerun_result"] = rerun_result(mod)     # cert_wait's zero-token rerun reads its last result
     f["cycle_decision"] = cycle_decision(M.load(root, mod) or {})
     t0 = _ts(f.get("opened"))
@@ -790,7 +796,9 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             s.pop("owed_since", None)
             s.pop("watch", None)
             if decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge, releases, games_of):
-                if not row.get("cert_rerun_key"):   # a zero-token rerun takes no run slot and drives no game
+                if row.get("cert_reds"):            # the offline builder on red deciders: a run slot, no game
+                    live_total += 1
+                elif not row.get("cert_rerun_key"):     # a zero-token rerun takes no run slot and drives no game
                     live_total += 1
                     drivers.append("(this tick: %s)" % mod)
                     games_of[drivers[-1]] = row.get("game", "a")
@@ -958,23 +966,30 @@ def red_deciders(f):
                    and r.get("clause") == "green" and r.get("test")})
 
 
-def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases=None):
+def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases=None, to="blind_challenge",
+                    what="the move into the blind challenge"):
     """At the offline build waiting on its certificate, with deciders recorded red (FlowWorks, 2026-11-16 1:36 AM PST:
     "owes nothing launchable at offline_build (certificate) and has no open road-back item", reds
     T_FETCH_FALLEN_OFFLINE, T_LIQUID_COATING_OFFLINE, T_TOSS_FLAME_OFFLINE). -> "launch" (row["cert_reds"]: execute
     files the item that owes each red decider and launches ONE builder on them, cert_launch), "decided" (the row put:
     settling, stopped, or a gate), or None (no reds: the certificate wait stands; stale stamps alone are
     `certificate --run`). Never a second automatic try at the same reds: another only once the red set shrank, or a
-    launch that never started on a transient fault, within launch_tries."""
+    launch that never started on a transient fault, within launch_tries. The same route serves a red decider found at
+    the blind cycle or in-game visit gate (cert_wait; TO and WHAT name the gate the certificate refuses): the builder is
+    the offline build's, at its cap and ceiling, booked as offline_build spend, and the record does not move
+    (RIMMANDRAKE_ROUTE_RED_DECIDER_AT_VISIT_AND_CYCLE_GATES). A try booked at another stage is not this gate's try."""
     mod = row["mod"]
     reds = red_deciders(f)
     if not reds:
         return None
     row["cert_reds"] = reds
+    row["cert_gate"] = {"stage": f.get("stage"), "to": to, "what": what}
     row["certificate"] = {"rows": [r for r in (f.get("certificate") or {}).get("rows") or []
                                    if r.get("clause") == "green" and r.get("test") in reds]}
     row["known_red"] = {t: (f.get("known_red") or {}).get(t) for t in reds if (f.get("known_red") or {}).get(t)}
     prior = s.get("cert_red") if isinstance(s.get("cert_red"), dict) else None
+    if prior and prior.get("stage", "offline_build") != f.get("stage"):
+        prior = None
     if prior and prior.get("unit") and 0 <= now - float(prior.get("at") or 0) < float(cfg.get("settle_s", 180)):
         put("settling", "the builder %s on red deciders %s started %d s ago" % (
             prior["unit"], ", ".join(prior.get("tests") or []), now - float(prior.get("at") or 0)))
@@ -1008,12 +1023,22 @@ def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases
         put("account_hold", account[1])
         return "decided"
     if no_slot(cfg, live_total, put):
+        if row.get("decision") == "slots_full":
+            row["waits_on"] = cert_red_waits(row)
         return "decided"
     row["cap"] = cap
     put("launch", "its certificate refuses %d red decider(s) (%s) and nothing is live on it: the item owing each and "
         "one builder on them%s (%s)" % (len(reds), ", ".join(reds), ", a retry after a transient fault" if retry
                                        else "", account[1]))
     return "launch"
+
+
+def cert_red_waits(row, ahead=()):
+    """-> what a red-decider row past max_live waits on: the offline builder, never its certificate."""
+    return "a free slot for one offline builder on red deciders %s (the road back to the offline build%s)%s" % (
+        ", ".join(row.get("cert_reds") or []), ", from %s" % row["cert_gate"]["what"]
+        if (row.get("cert_gate") or {}).get("stage") not in (None, "offline_build") else "",
+        " (launch priority: %s first)" % ", ".join(ahead) if ahead else "")
 
 
 RERUN_MAX_S = 4 * 3600     # a certificate rerun unit's bound (RuntimeMaxSec); FlowWorks' C# suite alone ran 531 s
@@ -1189,14 +1214,20 @@ def cert_item_id(mod, test, known):
     return None
 
 
-def cert_brief(mod, chosen, cap, bars):
-    lines = ["# Find why %s's offline deciders are red, and make each one hold (Stage 3: the certificate before the "
-             "blind challenge)" % mod, "",
+def cert_brief(mod, chosen, cap, bars, gate=None):
+    """GATE (row["cert_gate"]): where the certificate refuses; None or the offline build -> the move into the blind
+    challenge."""
+    g = gate or {}
+    to, what = g.get("to") or "blind_challenge", g.get("what") or "the move into the blind challenge"
+    later = g.get("stage") not in (None, "offline_build")
+    lines = ["# Find why %s's offline deciders are red, and make each one hold (%s)" % (
+                 mod, "the certificate before %s; the road back to the offline build" % what if later else
+                 "Stage 3: the certificate before the blind challenge"), "",
              "Items: %s. Seat BENCH. Offline only: no game, no bridge, no helpers." % (
                  ", ".join(sorted(set(chosen.values()))),), "",
-             "`maturation.py certificate %s` refuses the move into the blind challenge: these offline deciders are "
-             "recorded red, and no open item owed them until the Dispatch step filed these (item "
-             "RIMMANDRAKE_DISPATCH_PILOT_HOLDER_RUN_ITSELF_HAND_LAUNCHED_TWICE):" % mod, ""]
+             "`maturation.py certificate %s --to %s` refuses %s: these offline deciders are recorded red, and the "
+             "Dispatch step routes them to you (items RIMMANDRAKE_DISPATCH_PILOT_HOLDER_RUN_ITSELF_HAND_LAUNCHED_TWICE"
+             "%s):" % (mod, to, what, ", RIMMANDRAKE_ROUTE_RED_DECIDER_AT_VISIT_AND_CYCLE_GATES" if later else ""), ""]
     lines += ["- `%s` (bars %s): item %s" % (t, ", ".join(bars.get(t) or []) or "-", it) for t, it in sorted(
         chosen.items())]
     lines += ["", "1. First run `python3 src/RimMandrake/rimflow/maturation.py certificate %s --run` (zero tokens): it "
@@ -1209,27 +1240,32 @@ def cert_brief(mod, chosen, cap, bars):
               "red was such a pair). Otherwise fix the mod, or the test where the test is wrong (never loosen a "
               "north-star bar); the failing test first, seen failing; land with `./publish -m ... <paths>`; close its "
               "item with the published sha.",
-              "3. Rerun `certificate %s --run`, land the table, and end with `maturation.py certificate %s` exiting 0, "
-              "or a note starting `LEFT OPEN:` on each item still red: what remains, what you tried, and the map or "
-              "the experiment that would settle it." % (mod, mod), "", M.HOW_A_BAR_HOLDS]
+              "3. Rerun `certificate %s --run`, land the table, and end with `maturation.py certificate %s --to %s` "
+              "exiting 0, or a note starting `LEFT OPEN:` on each item still red: what remains, what you tried, and the "
+              "map or the experiment that would settle it." % (mod, mod, to), "", M.HOW_A_BAR_HOLDS]
     return "\n".join(lines) + "\n"
 
 
 def cert_launch(root, cfg, st, row, now, fx, known, do_file):
     """execute's act for cert_red_decide's launch: reuse the open item a red decider already has (its known_red, or
-    the one filed for it before), file one for each other, then ONE builder on all of them (a pilot's from its ledger
-    packet as its holder). Booked in s["cert_red"]: the reds, the items, the unit. -> True when it started."""
+    the one filed for it before, or an open item under the exact name this route would file: one filed by hand), file
+    one for each other, then ONE builder on all of them (a pilot's from its ledger packet as its holder). Booked in
+    s["cert_red"]: the reds, the items, the unit, the stage it was found at. -> True when it started."""
     mod, s = row["mod"], st["mods"][row["mod"]]
     reds, kr = row["cert_reds"], row.get("known_red") or {}
     mine = s.setdefault("cert_red_items", {})
-    cand = {t: kr.get(t) or mine.get(t) for t in reds}
+    own = {t: cert_item_id(mod, t, set()) for t in reds}
+    cand = {t: kr.get(t) or mine.get(t) or (own[t] if own[t] in known else None) for t in reds}
     ended = (fx.get("ended") or (lambda ids: M.ledger_ended(root, ids)))([v for v in cand.values() if v])
     bars = {}
     for r in ((row.get("certificate") or {}).get("rows") or []):
         if r.get("test") in reds and r.get("clause") == "green":
             bars.setdefault(r["test"], []).append(r.get("bar"))
     chosen, failed = {}, None
+    gate = row.get("cert_gate") or {}
     prior = s.get("cert_red") if isinstance(s.get("cert_red"), dict) else {}
+    if prior.get("stage", "offline_build") != gate.get("stage", "offline_build"):
+        prior = {}
     for t in reds:
         if cand.get(t) and cand[t] not in ended:
             chosen[t] = cand[t]
@@ -1250,7 +1286,7 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
     if not failed:
         cap = row.get("cap") or cfg["cap_usd"]
         item = sorted(set(chosen.values()))[0]
-        brief = cert_brief(mod, chosen, cap, bars)
+        brief = cert_brief(mod, chosen, cap, bars, gate)
         do_brief = fx.get("launch_brief") or AUT.launch_brief
         if (fx.get("pilot") or pilot_ledger)(root, mod):
             try:
@@ -1270,7 +1306,7 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
             s.setdefault("launches", []).append({"unit": unit, "item": item, "at": now, "cap": cap,
                                                  "stage": "offline_build", "cert_reds": reds})
     s["cert_red"] = {"tests": reds, "items": chosen, "unit": unit, "at": now, "failed": None if unit else text,
-                     "code": cfg.get("_code"),
+                     "code": cfg.get("_code"), "stage": gate.get("stage", "offline_build"),
                      "tries": int(prior.get("tries") or 0) + 1 if not prior.get("unit") and prior else 1}
     if unit:
         row.update(decision="launched", unit=unit, item=sorted(set(chosen.values()))[0], why=text,
@@ -1366,12 +1402,14 @@ def cert_put(put, mod, to, why, fix, what):
         "exits 0. Smallest fix: %s" % (what, why, mod, to, fix))
 
 
-def cert_wait(f, put, mod, to, what, rerun=None):
+def cert_wait(f, put, mod, to, what, rerun=None, red=None):
     """PRE_JUDGEMENT_CERTIFICATE (RIMMANDRAKE_CERTIFY_BARS_BEFORE_JUDGE_RED_TEST_WENT_IN): True (the row put) when the
     certificate refuses; read before every judge or visit launch, since a mod can go red between cycles. A certificate
     that did not run lets the launch through. RERUN (cfg, s, row, now): a certificate refusing only stale stamps gets
     cert_rerun_decide's one zero-token rerun per build key -> "launch" (row["cert_rerun_key"]) or "decided"
-    (RIMMANDRAKE_RERUN_STALE_CERTIFICATE_AT_VISIT_AND_CYCLE_GATES)."""
+    (RIMMANDRAKE_RERUN_STALE_CERTIFICATE_AT_VISIT_AND_CYCLE_GATES). RED (account, live_total, releases), with RERUN:
+    a certificate refusing a decider recorded red takes the offline build's red-decider route first (cert_red_decide at
+    the offline cap) -> "launch" (row["cert_reds"]) or "decided" (RIMMANDRAKE_ROUTE_RED_DECIDER_AT_VISIT_AND_CYCLE_GATES)."""
     cv = f.get("certificate")
     if not isinstance(cv, dict) or cv.get("ok", True):
         return False
@@ -1379,6 +1417,13 @@ def cert_wait(f, put, mod, to, what, rerun=None):
     why = JC.summary(cv) + "".join("; %s/%s %s: %s" % (r["bar"], r["test"], r["clause"], r["observed"]) for r in ref[:2])
     if rerun:
         cfg, s, row, now = rerun
+        if red:
+            account, live_total, releases = red
+            cap = cfg.get("cap_usd")
+            cap = cap if isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0 else 0
+            got = cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases, to, what)
+            if got:
+                return got
         got = cert_rerun_decide(cfg, s, f, row, put, now, to, what, why, JC.first_fix(cv))
         if got:
             return got
@@ -1466,9 +1511,11 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
         return False
     if reap_wait(f, retry, put, n, "blind cycle"):
         return False
-    cw = cert_wait(f, put, mod, "blind_challenge", "blind cycle %s" % n, (cfg, s, row, now))
+    cw = cert_wait(f, put, mod, "blind_challenge", "blind cycle %s" % n, (cfg, s, row, now),
+                   (account, live_total, releases))
     if cw:
-        return cw == "launch"   # a zero-token rerun (row["cert_rerun_key"]) or the certificate's wait
+        return cw == "launch"   # the offline builder on red deciders (row["cert_reds"]), a zero-token rerun
+        # (row["cert_rerun_key"]), or the certificate's wait
     if not cfg.get("blind_enabled"):
         put("blind_off", "blind_enabled is off in maturation_dispatch.json",
             "blind cycle %s is owed with nothing live; the Dispatch step's blind launches are off" % n)
@@ -1569,9 +1616,11 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
         return False
     if reap_wait(f, retry, put, n, "in-game visit"):
         return False
-    cw = cert_wait(f, put, mod, "in_game", "in-game visit %s" % n, (cfg, s, row, now))
+    cw = cert_wait(f, put, mod, "in_game", "in-game visit %s" % n, (cfg, s, row, now),
+                   (account, live_total, releases))
     if cw:
-        return cw == "launch"   # a zero-token rerun (row["cert_rerun_key"]) or the certificate's wait
+        return cw == "launch"   # the offline builder on red deciders (row["cert_reds"]), a zero-token rerun
+        # (row["cert_rerun_key"]), or the certificate's wait
     if not cfg.get("ingame_enabled"):
         put("ingame_off", "ingame_enabled is off in maturation_dispatch.json",
             "in-game visit %s is owed; the Dispatch step's live launches are off until the Conductor has run the first "
@@ -2212,8 +2261,8 @@ def prioritise(cfg, st, facts, rows, launches, root=None):
                 ahead.append(mod)
                 continue
             launches = [m for m in launches if m != mod]
-            row.update(decision="slots_full", aut=None, waits_on="a free slot%s" % (
-                " (launch priority: %s first)" % ", ".join(ahead) if ahead else ""),
+            row.update(decision="slots_full", aut=None, waits_on=cert_red_waits(row, ahead) if row.get("cert_reds")
+                       else "a free slot%s" % (" (launch priority: %s first)" % ", ".join(ahead) if ahead else ""),
                 why="%d live runs on advancing mods%s, the most is %d; it was: %s" % (
                     base, " plus %s ahead of it on the advancing list (launch priority)" % ", ".join(ahead)
                     if ahead else "", most, row.get("why")))

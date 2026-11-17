@@ -881,11 +881,18 @@ def blind_main():
         saved, tid, tfile = redden(root, "GimmeSomeSlack")
         rd = tick(gss)
         d = rd["mods"]["GimmeSomeSlack"]
-        ok(d["decision"] == "certificate" and not launches() and not filed and "3 of 3" in need(rd, "GimmeSomeSlack")
-           and "certificate GimmeSomeSlack --to blind_challenge" in need(rd, "GimmeSomeSlack"),
-           "cycle 1 owed but a deciding test is red: no judge, a Needs Conductor line with the test's last line and the "
-           "certificate command (%s: %s)" % (d["decision"], d["why"][:80]))
+        # RIMMANDRAKE_ROUTE_RED_DECIDER_AT_VISIT_AND_CYCLE_GATES (Conductor, Evidence-for-Ask): the red decider takes the
+        # offline build's red-decider route (it was a certificate wait with a Needs Conductor line, and nothing came)
+        a = launches()
+        bf = open(a[0][a[0].index("--brief-file") + 1]).read() if a and "--brief-file" in a[0] else ""
+        ok(d["decision"] == "launched" and len(a) == 1 and "# Blind challenge" not in bf
+           and "certificate GimmeSomeSlack --to blind_challenge" in bf and tid in bf
+           and len(filed) == 1 and "RED_DECIDER" in filed[0][0],
+           "cycle 1 owed but a deciding test is red: no judge; the item owing it is filed and ONE offline builder on it, "
+           "whose brief names the certificate command at this gate (%s: %s; filed %s)" % (
+               d["decision"], str(d["why"])[:80], [x[0] for x in filed]))
         restore(root, "GimmeSomeSlack", saved)
+        reset()
         with open(tfile, "a") as f:
             f.write("# edited after its recorded run\n")
         rd = tick(gss, at=60)
@@ -1448,16 +1455,20 @@ def ingame_main():
 
         # ---- PRE_JUDGEMENT_CERTIFICATE: no visit goes in while a deciding test is red -----------------------------
         def t_cert():
-            saved, _, _ = redden(root, "Pyrelands")
+            saved, tid, _ = redden(root, "Pyrelands")
             try:
                 r = tick(on)
-                return (dec(r) == "certificate" and not launches() and not filed and not asked
-                        and "3 of 3" in need(r, "Pyrelands") and "--to in_game" in need(r, "Pyrelands"))
+                a = launches()
+                bf = open(a[0][a[0].index("--brief-file") + 1]).read() if a and "--brief-file" in a[0] else ""
+                return (dec(r) == "launched" and len(a) == 1 and not asked and "certificate Pyrelands --to in_game" in bf
+                        and tid in bf and len(filed) == 1 and "RED_DECIDER" in filed[0][0])
             finally:
                 restore(root, "Pyrelands", saved)
                 reset()
-        chk(t_cert, "on, visit 1 owed, a deciding test red: no live driver, the bridge not even asked, the certificate's "
-                    "path to pass on a Needs Conductor line")
+        # restated by RIMMANDRAKE_ROUTE_RED_DECIDER_AT_VISIT_AND_CYCLE_GATES (Conductor, Evidence-for-Ask): the red
+        # decider takes the offline build's red-decider route (it was a certificate wait, and nothing came of it)
+        chk(t_cert, "on, visit 1 owed, a deciding test red: no live driver, the bridge not even asked; the item owing it "
+                    "is filed and ONE offline builder on it, whose brief names `certificate Pyrelands --to in_game`")
 
         # ---- the companion stand-in is a stand-in, not a bypass ------------------------------------------------------
         # The `companion` fx above answers FRESH so this block can test decide_ingame off the game host. A stand-in that
@@ -2035,9 +2046,12 @@ def cert_rerun_gates_main():
         red = rows5 + [{"bar": "bar_t", "test": "T_RED", "clause": "green", "status": "REFUSED", "observed": "rc 1",
                         "smallest_fix": "fix"}]
         rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, red), now, (True, "ok"), releases=[])
-        ok(not la and rows[0].get("decision") == "certificate" and not rows[0].get("cert_rerun_key"),
-           "cert rerun gates (%s): a red decider beside the stale stamps is no rerun: the wait stands (%s)" % (
-               stage, rows[0].get("decision")))
+        # restated by RIMMANDRAKE_ROUTE_RED_DECIDER_AT_VISIT_AND_CYCLE_GATES: beside a red decider the stale stamps get
+        # no rerun; the red decider takes the offline red route (here max_live 0: queued for it, cert_red_gates_main)
+        ok(not la and rows[0].get("decision") == "slots_full" and not rows[0].get("cert_rerun_key")
+           and rows[0].get("cert_reds") == ["T_RED"],
+           "cert rerun gates (%s): a red decider beside the stale stamps is no rerun: the red route, queued at max_live "
+           "0 (%s)" % (stage, rows[0].get("decision")))
         rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, rows5, live=["rm-other"]), now, (True, "ok"), releases=[])
         ok(not la and rows[0].get("decision") == "live", "cert rerun gates (%s): nothing while a run is live on the mod"
            % stage)
@@ -2060,6 +2074,152 @@ def cert_rerun_gates_main():
        "cert rerun gates: at max_live 1 on one game, the rerun ahead spends neither, the next mod's visit launches (%s)"
        % got)
     print("cert rerun gates: %d checks failed of the cases read (2 gates x 12 + 1)" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
+def cert_red_gates_main():
+    """RIMMANDRAKE_ROUTE_RED_DECIDER_AT_VISIT_AND_CYCLE_GATES (measured 2026-11-17 12:13 PM PST): Gimme Some Slack at
+    in-game visit 2 read 'waiting on its certificate' on a decider recorded red (T_STUB_ART_CENSUS, 26 new textures with
+    no census rows): cert_wait at the visit and cycle gates ran only the stale-stamp rerun, so a red decider there got no
+    item, no builder and no alarm. Decided (Conductor, Evidence-for-Ask): it takes the offline build's red-decider route as
+    it stands (cert_red_decide, cert_launch), within max_live, the offline cap and its account gate; a held or paused mod
+    is untouched; stale stamps alone keep the zero-token rerun. Written before the fix and watched failing on the base."""
+    FAILS.clear()
+    now = CLOCK
+    mod, red_t = "GimmeSomeSlack", "T_STUB_ART_CENSUS"
+    base_item = MD.cert_item_id(mod, red_t, set())   # the item filed by hand under the route's own name
+
+    def stale(tests):
+        return [{"bar": "bar_" + t.lower(), "test": t, "clause": "ran_on_this_build", "status": "REFUSED",
+                 "observed": "the recorded run was on build old", "would_pass": "runs_today.build == %s-b1" % t,
+                 "smallest_fix": "python3 src/RimMandrake/rimflow/maturation.py certificate %s --run" % mod}
+                for t in tests]
+    redrow = {"bar": "cords_join_stubs_on_position_and_slope", "test": red_t, "clause": "green", "status": "REFUSED",
+              "observed": "rc 1: 26 textures with no census row", "smallest_fix": "make %s green" % red_t}
+
+    def facts(stage, rows, live=(), who=mod, owed=None):
+        f = {"mod": who, "stage": stage, "version": "0.1.0", "exit": {"state": "absent"}, "live_units": list(live),
+             "stage_runs": {}, "run_usd": {}, "killed": {}, "ingame_live": [], "ingame_games": {},
+             "certificate": {"ok": not any(r["status"] == "REFUSED" for r in rows), "rows": rows, "to": stage,
+                             "mod": who}, "cert_rerun_result": None, "known_red": {}}
+        if stage == "in_game":
+            f.update(owed=owed or "run", visit=2, ingame_runs=[])
+        else:
+            f.update(owed=owed or "cycle", cycle=2, visit_first=1, blind_runs=[])
+        if owed == "blocked":
+            f["blocked"] = ["hold: the Conductor's journal hold"]
+        return {who: f}
+
+    cases = 0
+    for stage, gate, to in (("in_game", "in-game visit 2", "in_game"),
+                            ("blind_challenge", "blind cycle 2", "blind_challenge")):
+        cfg = dict(load_cfg(), advancing=[mod], max_live=1, launch_tries=3, ingame_enabled=True, blind_enabled=True,
+                   game_instances=["a"])
+        for rows_in, label in (([redrow], "a red decider alone"), (stale(["T_CORE", "T_NO_HOSE"]) + [redrow],
+                                                                     "a red decider beside stale stamps")):
+            cases += 1
+            filed, briefs, other = [], [], []
+            fx = {"cert_rerun": lambda *a, **k: other.append(("rerun", a)) or (0, "STARTED r", "r"),
+                  "file": lambda item, title, why, needs="offline", spec=None: filed.append(item) or (True, "filed"),
+                  "launch_brief": lambda item, text, model, cap, seat="BENCH", env=None, **k: briefs.append(
+                      {"item": item, "text": text, "cap": cap}) or (0, "DETACHED rm-cert-red-1", "rm-cert-red-1"),
+                  "known": lambda: {base_item}, "ended": lambda ids: set(),
+                  "launch": lambda *a, **k: other.append(("launch", a)) or (0, "DETACHED y", "y")}
+            st = {"mods": {}}
+            rows, la = MD.decide(cfg, st, facts(stage, rows_in), now, (True, "ok"), releases=[])
+            r = rows[0]
+            ok(la == [mod] and r.get("decision") == "launch" and r.get("cert_reds") == [red_t]
+               and not r.get("cert_rerun_key") and MD.takes_slot(r) and not r.get("game"),
+               "cert red gates (%s, %s): one launch on the red route, a run slot and no game (%s: %s)" % (
+                   gate, label, r.get("decision"), str(r.get("why"))[:160]))
+            try:
+                MD.execute(".", cfg, st, rows, la, now, fx)
+            except Exception as e:      # noqa: BLE001  the base has no red route here
+                rows[0]["decision"] = "crashed: %s: %s" % (type(e).__name__, e)
+            b = briefs[0]["text"] if briefs else ""
+            ok(not filed and not other and len(briefs) == 1 and briefs[0]["item"] == base_item
+               and "certificate %s --run" % mod in b and "--to %s" % to in b and gate in b
+               and rows[0].get("decision") == "launched",
+               "cert red gates (%s, %s): the open item under the route's own name gets ONE builder, nothing filed, its "
+               "brief names the --run rerun and the gate (filed %s, briefs %d, other %s, %s)" % (
+                   gate, label, filed, len(briefs), other, rows[0].get("decision")))
+            book = (st["mods"].get(mod) or {}).get("launches") or [{}]
+            ok(book[-1].get("stage") == "offline_build" and book[-1].get("cap") == cfg["cap_usd"],
+               "cert red gates (%s, %s): booked as offline_build spend at the offline cap (%s)" % (gate, label, book[-1]))
+            rows, la = MD.decide(cfg, st, facts(stage, rows_in, live=["rm-cert-red-1"]), now + 60, (True, "ok"),
+                                 releases=[])
+            ok(not la and rows[0].get("decision") == "live",
+               "cert red gates (%s, %s): its unit live: live, no launch (%s)" % (gate, label, rows[0].get("decision")))
+            rows, la = MD.decide(cfg, st, facts(stage, rows_in), now + 7200, (True, "ok"), releases=[])
+            ok(not la and rows[0].get("decision") == "stopped" and rows[0].get("need"),
+               "cert red gates (%s, %s): ended with the same reds: stopped, a Needs Conductor line, no second try "
+               "(%s)" % (gate, label, rows[0].get("decision")))
+        # max_live respected: the slot taken by another mod's live run
+        cases += 1
+        two = facts(stage, [redrow])
+        two.update(facts("offline_build" if stage == "in_game" else stage, [], live=["rm-other-1"], who="Other"))
+        rows, la = MD.decide(dict(cfg, advancing=[mod, "Other"]), {"mods": {}}, two, now, (True, "ok"), releases=[])
+        w = str(rows[0].get("waits_on"))
+        ok(not la and rows[0].get("decision") == "slots_full" and "offline builder" in w and red_t in w,
+           "cert red gates (%s): slot taken by a live run: slots_full, queued for the offline builder on %s, never a "
+           "certificate wait (%s; waits on %s)" % (gate, red_t, rows[0].get("decision"), w))
+        aut_fx = {"open_items": lambda ids: [], "designer_state": lambda m: None, "version_locked": lambda m: True,
+                  "version_evidence": lambda m: None}
+        st = {"mods": {}}
+        rows, la = MD.AUT.resolve(".", cfg, st, two, rows, la, now, aut_fx)
+        MD.AUT.classify(cfg, st, rows, now)
+        ok(rows[0].get("klass") == "wait" and "offline builder" in str(rows[0].get("status")),
+           "cert red gates (%s): the autonomy layer reads it as a named wait on the offline builder (%s)" % (
+               gate, rows[0].get("status")))
+        # max_live respected: the slot granted to an earlier mod on the advancing list (prioritise's pass)
+        cases += 1
+        ahead = facts(stage, [redrow])
+        ahead.update(facts(stage, [], who="Twin"))
+        cfg2 = dict(cfg, advancing=["Twin", mod], max_live=2, game_instances=["a", "b"])
+        rows, la = MD.decide(cfg2, {"mods": {}}, ahead, now, (True, "ok"), releases=[])
+        la = MD.prioritise(dict(cfg2, max_live=1), {"mods": {}}, ahead, rows, la)
+        r = next(x for x in rows if x["mod"] == mod)
+        w = str(r.get("waits_on"))
+        ok(la == ["Twin"] and r.get("decision") == "slots_full" and "offline builder" in w and red_t in w
+           and "Twin" in w,
+           "cert red gates (%s): slot taken by an earlier mod on the list: slots_full, queued for the offline builder "
+           "behind Twin (%s; %s; waits on %s)" % (gate, la, r.get("decision"), w))
+        # stale stamps alone: the zero-token rerun as before
+        cases += 1
+        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, stale(["T_CORE"])), now, (True, "ok"), releases=[])
+        ok(la == [mod] and rows[0].get("cert_rerun_key") and not rows[0].get("cert_reds"),
+           "cert red gates (%s): stale stamps alone: the zero-token rerun, no red route (%s)" % (
+               gate, rows[0].get("decision")))
+        # a held mod (journal hold) is untouched
+        cases += 1
+        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, [redrow], owed="blocked"), now, (True, "ok"), releases=[])
+        ok(not la and rows[0].get("decision") == "held" and not rows[0].get("cert_reds"),
+           "cert red gates (%s): a held mod: held, no red route (%s)" % (gate, rows[0].get("decision")))
+        # a paused mod (coverage stop) is untouched: resolve takes the launch back and execute acts on nothing
+        cases += 1
+        stop = {"status": "blocked", "history": [{"what": "coverage_stop", "at": "2026-11-14T20:00:00Z", "why": "x"}]}
+        st = {"mods": {}}
+        f1 = facts(stage, [redrow])
+        rows, la = MD.decide(cfg, st, f1, now, (True, "ok"), releases=[])
+        rows, la = MD.AUT.resolve(".", cfg, st, f1, rows, la, now, dict(aut_fx, designer_state=lambda m: stop))
+        acted = []
+        MD.execute(".", cfg, st, rows, la, now, {"file": lambda *a, **k: acted.append(a) or (True, "x"),
+                                                  "launch_brief": lambda *a, **k: acted.append(a) or (0, "x", "x"),
+                                                  "known": lambda: set(), "ended": lambda ids: set()})
+        ok(not la and rows[0].get("decision") == "coverage_stop" and not acted,
+           "cert red gates (%s): a paused mod (coverage stop): paused, nothing filed or launched (%s; %s)" % (
+               gate, rows[0].get("decision"), acted))
+    # at in-game acceptance the builder holds no game: a second mod's visit on the one game still launches
+    cases += 1
+    pair = facts("in_game", [redrow])
+    pair.update(facts("in_game", [], who="Twin"))
+    cfg = dict(load_cfg(), advancing=[mod, "Twin"], max_live=2, ingame_enabled=True, game_instances=["a"])
+    rows, la = MD.decide(cfg, {"mods": {}}, pair, now, (True, "ok"), releases=[])
+    got = [(x["mod"], x.get("decision"), bool(x.get("cert_reds")), x.get("game")) for x in rows]
+    ok(la == [mod, "Twin"] and got[0][:3] == (mod, "launch", True) and not got[0][3] and got[1][1] == "launch",
+       "cert red gates: on one game, the builder ahead holds no game and the next mod's visit launches (%s)" % got)
+    print("cert red gates: %d checks failed of %d cases read (2 gates x 7 + 1)" % (len(FAILS), cases) if FAILS
+          else "ALL PASS (%d cases read)" % cases)
     return 1 if FAILS else 0
 
 
@@ -2195,6 +2355,8 @@ if __name__ == "__main__":
         sys.exit(cert_rerun_main())
     if "--cert-rerun-gates" in sys.argv[1:]:
         sys.exit(cert_rerun_gates_main())
+    if "--cert-red-gates" in sys.argv[1:]:
+        sys.exit(cert_red_gates_main())
     if "--kill-clear" in sys.argv[1:]:
         sys.exit(kill_clear_main())
     if "--item-names" in sys.argv[1:]:
@@ -2213,6 +2375,7 @@ if __name__ == "__main__":
     rc = item_names_main() or rc
     rc = cert_rerun_main() or rc
     rc = cert_rerun_gates_main() or rc
+    rc = cert_red_gates_main() or rc
     rc = kill_clear_main() or rc
     rc = priority_main() or rc
     sys.exit(ingame_main() or rc)
