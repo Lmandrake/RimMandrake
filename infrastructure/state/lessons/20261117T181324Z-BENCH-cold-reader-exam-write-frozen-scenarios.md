@@ -1,0 +1,1 @@
+Cold Reader exam: write the frozen scenarios (with expect) and the Examiner/Challenger files OUTSIDE the folder the Readers are pointed at; only the expect-free scenario text goes there. In RIMMANDRAKE_RETAKE_PYRELANDS_EXAM_AFTER_LOCKED_CHANGE_RUN_TWO frozen.json sat beside reader_scenarios.md for about a minute until moved; both Readers, asked after, said they never opened it.
