@@ -66,6 +66,10 @@ def io_checks(tmp):
     cache = os.path.join(tmp, "cache")
     check(B.deployed_hash(d, cache_dir=cache) == h1 and B.deployed_hash(d, cache_dir=cache) == h1,
           "the stat-keyed cache returns the same hash, first read and second")
+    unwritable = os.path.join(tmp, "cache_is_a_file")          # fifth GPT review: a cache that cannot be written
+    write(unwritable, "x")
+    check(B.deployed_hash(d, cache_dir=unwritable) == h1,
+          "a cache that cannot be written leaves a readable folder's hash as it is, never None")
     write(os.path.join(d, "Defs", "a.xml"), "<Defs>!</Defs>")
     check(B.deployed_hash(d, cache_dir=cache) not in (None, h1), "the cache misses when a file's bytes change")
     write(os.path.join(d, "Defs", "a.xml"), "<Defs/>")
@@ -281,6 +285,9 @@ def io_checks(tmp):
         os.environ.pop(B.STANDIN_ENV, None)
     check(wc["why"] and B.STANDIN_ENV in " ".join(wc["why"]),
           "a stand-in is refused in any git checkout, not only the one this file sits in: %s" % wc["why"])
+    wf = B.walk_build(clone, "TestMod", sv, host="Archmagi")   # fifth GPT review: --root naming another checkout
+    check(wf["why"] and "build_match.py" in " ".join(wf["why"]) and not wf.get("mod_hash"),
+          "another checkout's walk build is not read with this checkout's modset_builder and readers: %s" % wf["why"])
 
     # ---- the tier list is built fresh each reading: no on-disk cache can hand back a list the builder now refuses -----
     calls = {"scan": 0}
@@ -502,6 +509,13 @@ def _fallback_mod_folder(root, mod, mods_dir):
     return pid, folder or B.deployed_folder(mods_dir, pid, mod)
 
 
+def _strict_keep(key, out):
+    """the fourth build: a cache write that fails failed the whole hash."""
+    os.makedirs(os.path.dirname(key), exist_ok=True)
+    with open(key, "w") as f:
+        f.write(out + "\n")
+
+
 def _compose_error_ignored(root, mod):
     """the third build: an unreadable composition file read as composing nothing."""
     try:
@@ -532,6 +546,8 @@ MUTANTS = {
     "standin_by_path_only": lambda: setattr(
         B, "_standin_refused", lambda root: os.path.realpath(root) == os.path.realpath(B.REPO)),
     "compose_error_ignored": lambda: setattr(B, "composed_into", _compose_error_ignored),
+    "cache_write_strict": lambda: setattr(B, "_keep", _strict_keep),
+    "foreign_checkout_read": lambda: setattr(B, "_foreign_checkout", lambda root: False),
     "idless_rows_dropped": lambda: setattr(B, "last_rows", _old_last_rows),
     "tier_scans_every_tier": lambda: setattr(B, "_resolve_tier", (lambda o: lambda t, i: o(t, []))(B._resolve_tier)),
     "hash_ignored": lambda: setattr(B, "CHECKED", ("game_build",)),

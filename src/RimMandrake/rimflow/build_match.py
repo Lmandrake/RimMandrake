@@ -158,10 +158,19 @@ def _hash_files(folder, files, cache_dir):
         _digest_file(p, h)
     out = "sha256:" + h.hexdigest()
     if key:
-        os.makedirs(cache_dir, exist_ok=True)
+        _keep(key, out)
+    return out
+
+
+def _keep(key, out):
+    """Keeping a hash is best-effort: a cache that cannot be written (read-only, full) costs the next reading time,
+    never this reading's hash (fifth GPT review, 2026-11-17)."""
+    try:
+        os.makedirs(os.path.dirname(key), exist_ok=True)
         with open(key, "w") as f:
             f.write(out + "\n")
-    return out
+    except OSError:
+        pass
 
 
 def active_mods(config):
@@ -310,6 +319,18 @@ def _standin_refused(root):
     return os.path.realpath(root) == os.path.realpath(REPO) or os.path.exists(os.path.join(root, ".git"))
 
 
+def _foreign_checkout(root):
+    """A git checkout that is not the one this file sits in: tier lists come from UTILS, this checkout's modset_builder,
+    so another checkout's rows are not read here (fifth GPT review, 2026-11-17). The same folder by another spelling is
+    not foreign (samefile: drvfs is case-insensitive)."""
+    if not os.path.exists(os.path.join(root, ".git")):
+        return False
+    try:
+        return not os.path.samefile(root, REPO)
+    except OSError:
+        return True
+
+
 def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, cache_dir=None):
     """The build he will walk: {game, mod_hash, game_build, active_mods, why[]} (why non-empty: unreadable here)."""
     sp = os.environ.get(STANDIN_ENV)
@@ -325,6 +346,10 @@ def walk_build(root, mod, savegame, host=None, mods_dir=None, version_txt=None, 
                             "unset it" % (STANDIN_ENV, sp, root))
         return d
     out = {"game": (host or socket.gethostname()).strip().lower(), "why": []}
+    if _foreign_checkout(root):
+        out["why"].append("%s is another checkout: its walk build and tier lists are read by its own build_match.py "
+                          "(this one's modset_builder and readers are %s's)" % (root, REPO))
+        return out
     if WALK_HOST and out["game"] != WALK_HOST:
         out["why"].append("the walk build is read on %s, where he walks; this is %s" % (WALK_HOST, out["game"]))
         return out
