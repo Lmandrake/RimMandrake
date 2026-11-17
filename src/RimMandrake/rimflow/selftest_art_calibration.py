@@ -103,9 +103,12 @@ def planted_cases(AC):
     rows = [json.loads(l) for l in open(os.path.join(REPO, "infrastructure/state/art_eval/regression.jsonl")) if l.strip()]
     check("planted: at least 11 cases", len(p) >= 11, len(p))
     check("planted: both ways", set(p.values()) == {"pass", "refuse"}, sorted(set(p.values())))
-    want = {AC.case_id(r): {"ACCEPT": "pass", "NOT_ACCEPT": "refuse"}[r["expect"]] for r in rows}
-    check("planted: every regression.jsonl row is a case with its owner's verdict",
+    taste = [r for r in rows if str(r.get("taste") or "").strip()]
+    want = {AC.case_id(r): {"ACCEPT": "pass", "NOT_ACCEPT": "refuse"}[r["expect"]] for r in rows if r not in taste}
+    check("planted: every regression.jsonl row he did not rule for taste is a case with his verdict",
           all(p.get(k) == v for k, v in want.items()), {k: (v, p.get(k)) for k, v in want.items() if p.get(k) != v})
+    check("planted: a row he ruled for taste (his words in `taste`) is no planted case",
+          all(AC.case_id(r) not in p for r in taste), [AC.case_id(r) for r in taste])
     kinds = {c.get("plant"): c for c in AC.cases()}
     check("planted: an owner-kept subject that must pass (E3)",
           (kinds.get("owner_kept") or {}).get("expect") == "pass", kinds.get("owner_kept"))

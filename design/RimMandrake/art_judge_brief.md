@@ -52,8 +52,15 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
 ### C. Facings and perspective
 - C1. North is the creature's rear (no face, no eyes); south looks at the camera; never a top-down view rotated.
   — Owner 2026-09-15 (`rimworld-sprite-facings`)
-- C2. Facings agree on size, proportions and palette; one facing looking huge or small is REDO. West mirrors
-  east unless a west file exists. — `rimworld-sprite-facings`
+- C2. Facings agree on proportions and palette: the same body plan from every side (the same parts, limb and
+  appendage count, and each part's size relative to the rest of the body, e.g. head to torso, legs to body) and the
+  same colours and materials. A facing drawn as a whole bigger, smaller, wider, narrower, taller or shorter than
+  another is NOT a REDO on that ground alone, whatever the bbox, widest-row or height ratio: say it in that picture's
+  `notes` as advisory (facing, measured ratio). REDO under this clause only for a body-plan or palette disagreement
+  between facings. West mirrors east unless a west file exists. The measured facing-scale gate
+  (`facing_scale_lint.py`, Owner 2026-10-15) runs outside this verdict. — `rimworld-sprite-facings`; size advisory only:
+  Owner 2026-11-17 (his Peeper r2 purge: "Correct, not size."; his Durrok r2 and Gawpsack picks: "I was
+  undoubtedly expressing style decisions.")
 - C3. A building's south facing is drawn from the measured building camera (orthographic, ~35°, a round top is an
   ellipse 0.56 tall for its width). — `design/RimMandrake/building_camera_perspective_2026-10-14.md`
 - C4. Registration on the rigid body: heads centred and sized on the skull mass (crown to chin), never ear tips,

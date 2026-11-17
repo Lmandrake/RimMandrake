@@ -26,7 +26,7 @@
    ],
    "cases": {
     "bad": [
-     "planted (art_calibration.py): the 6 NOT_ACCEPT rows of infrastructure/state/art_eval/regression.jsonl (owner REDO or PURGED), judged blind",
+     "planted (art_calibration.py): the 5 NOT_ACCEPT rows of infrastructure/state/art_eval/regression.jsonl (owner REDO or PURGED), judged blind (Peeper r2 left out: he purged it for art style, not size, owner 2026-11-17, a taste case no written line refuses)",
      "planted (art_calibration.py): north_from_south_RM_DecayDrake_r2, owner-picked art whose north.png is its own south.png: refused on C1 with a rear-view redraw (point 27)",
      "infrastructure/state/art_eval/criteria_ledger.jsonl owner overrides (55 rows): a corpus, not run"
     ],
@@ -699,10 +699,6 @@
     {
      "expect": "pass",
      "id": "regress_RM_Gawpsack_live"
-    },
-    {
-     "expect": "refuse",
-     "id": "regress_RM_Peeper_r2"
     },
     {
      "expect": "refuse",

@@ -9,7 +9,8 @@ $RM_CALIBRATION_RESULTS. Every picture is art already made and already ruled by 
   regress_<def>_<candidate>   the art-eval regression set (infrastructure/state/art_eval/regression.jsonl): ACCEPT rows
                               must pass, NOT_ACCEPT rows must be refused. Judged blind, as that set is: the subject's
                               def facts and description only, never the row's verdict or provenance, and shown as a
-                              candidate (no keep on record), so E3 does not decide them.
+                              candidate (no keep on record), so E3 does not decide them. A row marked `taste` (a
+                              verdict he gave for taste, in his words) is left out: no written line refuses it.
   kept_RM_Gawpsack_live       a picture the owner KEPT (criteria_ledger CL-030) that the art-eval pipeline banded
                               REALLY_BAD, staged with his keep -> must pass: checklist step 2, E3, a delegated call
                               never REDOes kept art (it says its concerns in the report)
@@ -131,12 +132,16 @@ def case_id(row):
 
 
 def cases():
-    """The regression rows, then the planted cases of art_calibration.json."""
+    """The regression rows, then the planted cases of art_calibration.json. A row with `taste` (his words: a verdict he
+    gave for taste, which no written line of the brief carries) is not a planted case: the brief judges only against
+    what is written, so it cannot be expected to refuse it (Peeper r2, owner 2026-11-17: "Correct, not size.")."""
     out = []
     with open(os.path.join(REPO, REGRESSION), encoding="utf-8") as f:
         for line in f:
             if line.strip():
                 r = json.loads(line)
+                if str(r.get("taste") or "").strip():
+                    continue
                 out.append({"id": case_id(r), "expect": {"ACCEPT": "pass", "NOT_ACCEPT": "refuse"}[r["expect"]],
                             "card": card_of(r), "why": r.get("why")})
     return out + [dict(c) for c in config()["planted"]]

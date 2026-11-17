@@ -65,7 +65,8 @@ not lose for leaving out a detail the description lists, and a redraw does not w
 House rules (each is a hard defect on the set that breaks it):
 - south = face toward the camera; north = the rear (back/tail, no face, no eyes); east = true side profile. A top-down
   / overhead plan view on any facing is a hard defect; so is a facing that is a different animal or pose family.
-- The three facings are the same size and the same individual (same markings, horns, tail, colours).
+- The three facings are the same individual (same markings, horns, tail, colours). One facing drawn bigger or
+  smaller than another is never a hard defect on its own (owner 2026-11-17: "Correct, not size.").
 - Realistic and painterly, not cartoon, not cute (glossy round eyes, smiling face, thick uniform black keyline are
   defects). Alien where the description says alien; an ordinary Earth body is fine when the description names one.
 - Clean real alpha: no baked ground, no halo, no cropped limbs.
@@ -90,7 +91,8 @@ state, and do not punish a plain, realistic animal when the description describe
 House rules (each is a defect on the set that breaks it):
 - south = face toward the camera; north = the rear (back/tail, no face, no eyes); east = true side profile. A top-down
   / overhead plan view on any facing is a hard defect; so is a facing that is a different animal or pose family.
-- The three facings are the same size and the same individual (same markings, horns, tail, colours).
+- The three facings are the same individual (same markings, horns, tail, colours). One facing drawn bigger or
+  smaller than another is never a hard defect on its own (owner 2026-11-17: "Correct, not size.").
 - Realistic and painterly, not cartoon, not cute (glossy round eyes, smiling face, thick uniform black keyline are
   defects). Alien where the description says alien; an ordinary Earth body is fine when the description names one.
 - Clean real alpha: no baked ground, no halo, no cropped limbs.

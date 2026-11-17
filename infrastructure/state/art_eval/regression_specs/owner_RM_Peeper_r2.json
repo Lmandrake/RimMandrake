@@ -4,7 +4,7 @@
  "template": "creature",
  "module": "walker",
  "candidate": "r2",
- "provenance": "owner-labelled regression case from run fauna_contagion_r2_03; owner PURGED Peeper r2 on owner_escalations_contagion_sheet_2026-10-24; guard: an F_SIZE_JUMP relaxation passes it (replay 2026-10-24)",
+ "provenance": "owner-labelled regression case from run fauna_contagion_r2_03; owner PURGED Peeper r2 on owner_escalations_contagion_sheet_2026-10-24; purged for its art style, not its facing size (owner 2026-11-17)",
  "description": "A once-predator gone soft and eye-studded \u2014 extra eyes opened in its hide until watching replaced hunting. A docile mid-tier browser of the goo margins, and another sky-reader the patient can learn from.",
  "tier": "RM_",
  "invented": true,
