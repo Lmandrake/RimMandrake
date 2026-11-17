@@ -310,6 +310,17 @@ def on_origin_main(repo, path):
         return None
 
 
+ITEMS_DIR = "infrastructure/state/items/"
+
+
+def closed_item_path(path):
+    """items/<ID>.md -> items/closed/<ID>.md, where an item's prose moves on close; None for any other path
+    (RIMMANDRAKE_FOLLOW_CLOSED_ITEM_PROSE_SWEEP_BROKE_TWO_SOURCES: a ticket sweep closed two cited items and every
+    Pyrelands stage-4 check refused its record)."""
+    rest = path[len(ITEMS_DIR):] if path.startswith(ITEMS_DIR) else ""
+    return ITEMS_DIR + "closed/" + rest if rest.endswith(".md") and "/" not in rest else None
+
+
 def source_errors(src, where, repo, owner_ev, on_origin=None):
     """A repo path missing in `repo` is asked of on_origin(path) (default on_origin_main): True = it exists, no error;
     False = "does not exist"; None = "does not exist" plus "origin/main could not be read"."""
@@ -329,6 +340,9 @@ def source_errors(src, where, repo, owner_ev, on_origin=None):
             path = s.split(":")[0]
             if not os.path.exists(os.path.join(repo, path)):
                 held = on_origin(path)
+                moved = closed_item_path(path)
+                if held is not True and moved:
+                    held = True if os.path.exists(os.path.join(repo, moved)) else (on_origin(moved) or held)
                 if held is False:
                     errs.append("%s: source path %s does not exist" % (where, path))
                 elif held is None:

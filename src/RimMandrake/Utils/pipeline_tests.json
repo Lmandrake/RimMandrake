@@ -44,6 +44,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_coverage_refusal_record.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_designer_stage.py", "seconds": 3.3},
     {"test": "src/RimMandrake/rimflow/selftest_designer_stage_land.py", "seconds": 5.6},
+    {"test": "src/RimMandrake/rimflow/selftest_designer_closed_item_source.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_stage5_program.py", "seconds": 0.8},
     {"test": ".claude/hooks/selftest_role_result_before_stop.py", "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_detached_helper.py", "seconds": 2.6},
