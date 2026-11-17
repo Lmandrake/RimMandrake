@@ -1,22 +1,23 @@
 {
-  "mod": "TheForge",
-  "run": "TheForge-cleanse-2026-11-17",
-  "outcome": "proposed",
-  "signature": "Warned fire and boiling rain temporarily crust the lava and wake a harvest interval, so crews gather floatstone and retreat before the crust melts back.",
-  "counts": {
-    "capabilities": 71,
-    "kept": 42,
-    "next_version": 25,
-    "recommend_retire": 4,
-    "old_bars": 0,
-    "bars": 8,
-    "live_only_bars": 1,
-    "checks": 14,
-    "rules": 11,
-    "unknown_pairs": 9,
-    "models": 4,
-    "tickets": 33,
-    "questions": 0
-  },
-  "blocked_on": []
+ "mod": "TheForge",
+ "run": "TheForge-cleanse-2026-11-17",
+ "outcome": "proposed",
+ "signature": "Warned fire and boiling rain temporarily crust the lava and wake a harvest interval, so crews gather floatstone and retreat before the crust melts back.",
+ "counts": {
+  "capabilities": 71,
+  "kept": 42,
+  "next_version": 25,
+  "recommend_retire": 4,
+  "old_bars": 0,
+  "bars": 8,
+  "live_only_bars": 1,
+  "checks": 14,
+  "rules": 11,
+  "unknown_pairs": 9,
+  "models": 4,
+  "tickets": 33,
+  "questions": 0
+ },
+ "blocked_on": [],
+ "applyable": false
 }

@@ -2,7 +2,7 @@
   "bars": [
     {
       "id": "B1",
-      "says": "On an ordinary Forge surface map, a colonist’s resource journeys meet recognisable foundry towers and manufactured remains among ash, visible vent-steam and lava seams, while permanent banks still let the colony shelter and move.",
+      "says": "On an ordinary Forge surface map, a colonist’s resource journeys meet whole standing foundry towers and manufactured remains among ash, visible vent-steam and lava seams with visible nonliving machine motion, while permanent banks still let the colony shelter and move.",
       "meant": {
         "intent": "A volcanic industrial place is the land itself, including useful physical route consequences. Reject test: an otherwise excellent cycle in a bare volcano would fail the owner’s ordinary-works answer. First version: land. No implied new dungeon or machine explanation.",
         "source": "Owner experience in design/RimMandrake/biome_experiences_2026-10-20.md, TheForge row; owner answers in design/RimMandrake/designer_codex_2026-11-09/TheForge/ANSWERS_OWNER.md, answer 1; frozen the_forge.md §§1,5,6; delegated: permanent routes follow from inhabiting this land.",
@@ -14,20 +14,22 @@
       ],
       "reject": [
         "The biome is named Forge and its arrival letter describes towers, but the resource trip crosses only ordinary volcanic rock.",
-        "A manufactured prop technically exists behind inaccessible lava, while ordinary journeys never encounter it, or the placed works close the colony’s only permanent exit."
+        "A manufactured prop technically exists behind inaccessible lava, while ordinary journeys never encounter it, or the placed works close the colony’s only permanent exit.",
+        "The seams are open lava in which nothing nonliving ever visibly moves.",
+        "Ordinary colony salvage dismantles the standing towers, leaving a long-settled Forge without its manufactured skyline."
       ],
-      "lazy": "none: ordinary routes must physically meet manufactured remains; a label or generic rock cannot satisfy that, and the banks must still work.",
+      "lazy": "none: whole towers on ordinary physical routes, visibly moving nonliving machinery and usable permanent banks are explicit; labels, inaccessible props, salvageable rubble alone and still melt fail.",
       "range": {
-        "varies": "Existing authored Forge surface-map corpus: cone, flow and skirt contexts represented by local terrain/height, not newly generated planets; square map sides 200, 250, 325; all legal rotations/footprints of retained remains; sparse and overlapping vent fields; every cycle phase; vanilla and advanced colony zoom; first landing and an occupied 40-colonist settlement. Machine motion must be nonliving and noninteractive.",
+        "varies": "Existing authored Forge surface-map corpus: cone, flow and skirt contexts represented by local terrain/height, not newly generated planets; square map sides 200, 250, 325; all legal rotations/footprints of retained remains; sparse and overlapping vent fields; every cycle phase; vanilla and advanced colony zoom; first landing and an occupied 40-colonist settlement. Machine motion must be nonliving and noninteractive. Include day-100 saves and ordinary salvage/deconstruction attempts; separate remains may be removed but whole tower forms persist.",
         "left_out": "No requirement that every tiny remote pocket contains a tower; the connected settled/workable part must carry the encounter. Campaign interiors, new world tiles, new planet seeds and flyer visual acceptance are excluded."
       },
       "sees": {
-        "instrument": "Paused in-game ground/ruin look against the accept/reject pictures, paired with M2 route/footprint state read; T16 and T27 provide missing local content and capture recipe.",
+        "instrument": "In-game ground/ruin look against the accept/reject pictures, paused for form and paired with successive observations as the ordinary clock advances for nonliving melt motion; M2 supplies route/footprint, tower-interaction and roof/caster state reads. T16 and T27 provide missing local content and capture recipe. No flyer visual test is part of this reading.",
         "start": "Disposable ordinary surface save, revealed only to the normal explored area for the visual reading, permanent shelter/work origins and resource targets recorded; no staged tower added by the judge.",
         "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
-        "control": "Remove the foundry content on a duplicate while keeping terrain/weather identical; the visual distinction and route detour must disappear together. A letter or named generic wreck is insufficient. Read whether the route intersects actual occupied footprints.",
+        "control": "Remove the foundry content on a duplicate while keeping terrain/weather identical; visual manufacture and obstacle-caused detours must disappear together. Freeze only the ambient machine animation on another duplicate: still lava must fail even while steam and wildlife move. Read paths around actual occupied footprints, not a letter or named generic wreck. Ordinary mine/deconstruct/salvage/damage attempts leave towers whole while separate remains can be salvaged.",
         "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
-        "live_only_why": "Manufactured form, volcanic ground and visible steam must be recognisable at ordinary colony zoom. A def, path graph or still mock cannot prove their simultaneous in-game visual distinction. Observe paused ground scenes; flight state is read separately, not live-tested here."
+        "live_only_why": "Manufactured form, volcanic ground, visible steam and nonliving melt motion must be recognisable at ordinary colony zoom. Defs, path graphs or still mocks cannot establish this visual distinction or motion. Observe ground scenes and ambient machinery over an advancing ordinary clock; flight state is read separately, with no flyer visual experiment here."
       },
       "live_only": true,
       "touches": [
@@ -81,12 +83,19 @@
       "says": "When the Forge’s rain crusts open lava, a prepared crew can reach naturally ripened floatstone gardens, harvest and haul usable building stone home, and return to permanent ground before the gardens depart and the crust melts.",
       "meant": {
         "intent": "One complete resource trip must be practicable, not merely a count of spawned gardens. Reject test: a wholly decorative or unreachable reward empties the signature. First version: signature. Progress is qualitative; no trip yield or harvest quota is pinned.",
-        "source": "FORGE_RULED_CONTENT_1 reported owner floatstone admission in src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml; cycle sources RM_GameCondition_ForgeCycle.cs and About/About.xml; delegated from these: reachable work and a return route are necessary to use the admitted opportunity.",
-        "figurative": []
+        "source": "Owner floatstone admission, FORGE_BEDAZZLE_SITTING_1 turn 7 (quoted in src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml header); cycle sources RM_GameCondition_ForgeCycle.cs and About/About.xml; delegated from these: reachable work and a return route are necessary to use the admitted opportunity.",
+        "figurative": [
+          {
+            "word": "depart",
+            "stands_for": "Unharvested gardens are removed at cracks with visible dust and a located counted message; no plant must visibly travel off-map.",
+            "accept": "At cracks an unharvested rooted garden disappears in visible dust with a located message; no garden flies away, and the crew returns before the crust melts."
+          }
+        ]
       },
       "accept": [
         "The crew waits out the rain, crosses visibly cooled crust, cuts mature gardens and hauls floatstone onto permanent ground; the material can enter ordinary construction.",
-        "A colony sends haulers before cutters on a later trip; the naturally ripened work still completes while unused isolated growth can be left behind."
+        "A colony sends haulers before cutters on a later trip; the naturally ripened work still completes while unused isolated growth can be left behind.",
+        "At cracks an unharvested rooted garden disappears in visible dust with a located message; no garden flies away, and the crew returns before the crust melts."
       ],
       "reject": [
         "The phase counter says Growth and gardens exist, but they never ripen before drifting away.",
@@ -156,30 +165,34 @@
     },
     {
       "id": "B5",
-      "says": "Forge natives feed and move as local animals, the julmox can support ordinary husbandry, aerial creatures actually stay aloft or fly, and wild rain-sealed natives visibly wake and seal without being replaced.",
+      "says": "Forge life sustains vapor-feeding bulloos and plant-grazing fleet fliers, includes native predation on vulnerable colony prey and retaliation when provoked, supports julmox husbandry and real flight or floating, and keeps wild rain-sealed animals identifiable as they visibly wake and seal.",
       "meant": {
         "intent": "Life must function in the running environment: heat-adapted ground fauna between rains, actual sky life around columns, useful tameable grazing, predators with ordinary counterplay. Reject test: a roster that starves, walks despite flight fiction, or swaps pawns for nodules fails the standing rulings and frozen biology. First version: life and its link to signature.",
-        "source": "Frozen the_forge.md §§4–6; src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml and RM_Ummisk.xml owner-attributed native frames; standing flight, native environmental-water and no-unreadable-disappearance rulings; delegated: sustained food/need viability is necessary ordinary life, not a fixed productivity promise.",
+        "source": "Frozen the_forge.md §§4–6; src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_TheForgeNatives.xml and RM_Ummisk.xml owner-attributed native frames; standing flight, native environmental-water and no-unreadable-disappearance rulings; delegated: sustained food/need viability is necessary ordinary life, not a fixed productivity promise. Owner experience sentence in design/RimMandrake/biome_experiences_2026-10-20.md, TheForge row; delegated reading of beasts challenging presence: ordinary predator/retaliation danger, not universal hostility or bespoke combat. Frozen §4 distinguishes vapor-metabolizing herds from plant-eating fleet fliers; bulloo/greater-bulloo rough-food defs are retained fallback diets, not vapor implementation.",
         "figurative": []
       },
       "accept": [
         "Wild julmox and resident dhuvvox wake into the wet feeding interval and later become the same identifiable sealed animals; tamed julmox remain available for ordinary feeding and handling.",
-        "Fleet fliers and jossurs record real flight, bulloos drift aloft, and wild small bulloo herds gather at visible columns without hunger being overridden by an endless homing job; the ummisk follows the accessible lava bank as its edge changes."
+        "Fleet fliers and jossurs record real flight, bulloos drift aloft, and wild small bulloo herds gather at visible columns without hunger being overridden by an endless homing job; the ummisk follows the accessible lava bank as its edge changes.",
+        "Small and greater bulloos restore food while feeding aloft inside a plant-free active vapor column; fleet fliers must eat actual vegetation, and tame bulloos away from columns lose food until they eat ordinary compatible feed.",
+        "A jossur hunts eligible vulnerable colony prey under ordinary predator rules, and provoking a native can bring ordinary retaliation, so colonists must protect animals or plan their hunt even with bespoke combat extras off."
       ],
       "reject": [
         "Wildlife defs resolve and a staged flock appears, but the live animals repeatedly starve beside their own habitat or a tamed animal is sealed beyond the player’s control.",
-        "Flight-fiction animals merely walk with a high drawn sprite, or a resident nodule is a new replacement pawn that loses the original animal’s injuries or ownership."
+        "Flight-fiction animals merely walk with a high drawn sprite, or a resident nodule is a new replacement pawn that loses the original animal’s injuries or ownership.",
+        "Bulloos only graze plants beneath columns and starve when a column has no plants, or fleet fliers receive vapor nutrition without eating plants, or tame bulloos away from columns gain food without any source.",
+        "Every native is harmless to colonists and their animals, even when hungry predators have eligible colony prey or a hunt provokes a native."
       ],
-      "lazy": "none: living feeding, husbandry, actual aerial movement and persistent sealing/waking are observable actions; a populated def list is insufficient.",
+      "lazy": "none: distinct vapor versus plant feeding, actual predator danger, usable husbandry, real aerial movement and persistent waking/sealing exclude a staged placid roster or filled needs without food sources.",
       "range": {
-        "varies": "All ten inline animal species and four inline ordinary plants, plus confirmed patch-added campaign species without eviction; ordinary predation/taming, juveniles/adults, wild/faction-owned, hungry/rested/urgent needs, healthy/injured/downed/dead, awake/sealed/damage-woken, map/caravan/reload. Field empty/sparse/overlapping, reachable/unreachable and moving lava edges; local water present/absent and shared thirst consumers active. Habitat/home-range test for bulloo/fleet flier/jossur only; greater bulloo retains real floating without inventing its missing column comp. Full default season and an extended day-100 sample; 40-colonist hunting/feed pressure and no hunting control.",
+        "varies": "All ten inline animal species and four inline ordinary plants, plus confirmed patch-added campaign species without eviction; ordinary predation/taming, juveniles/adults, wild/faction-owned, hungry/rested/urgent needs, healthy/injured/downed/dead, awake/sealed/damage-woken, map/caravan/reload. Field empty/sparse/overlapping, reachable/unreachable and moving lava edges; local water present/absent and shared thirst consumers active. Home-range test for small bulloo/fleet flier/jossur only; greater bulloo retains real floating and vapor-feeding eligibility without inventing its missing home-range comp. Full default season and an extended day-100 sample; 40-colonist hunting/feed pressure and no hunting control. For small/greater bulloos cross active-column interior/boundary/exterior with plants present/absent, hungry/full, wild/tame, ordinary compatible supplied feed present/absent, columns disabled/lost/rebuilt and caravan/reload. Greater-bulloo column feeding adds no permanent roaming leash. Fleet fliers require actual edible plants even inside a column. Exercise vanilla predator-eligible colony prey present/absent and native attack/retaliation branches without forcing a universal attack rate.",
         "left_out": "No new escort AI, no new animal, no roster eviction, no perpetual food output guarantee under player overhunting or imported off-biome creatures. Supplied checkout lacks other biome/campaign rosters: multi-homing is unknown beyond available source and must be annotated from merged defs, never used to cut a species."
       },
       "sees": {
-        "instrument": "Direct pawn identity, needs, food-source, job, dormancy Awake and Pawn_FlightTracker state reader; floating-comp state/position evidence; M1 transition generator and M3 population traces. Flight visual tests remain owner-present only; no attempt to film flight. T18 and T27 supply missing habitat/needs evidence.",
-        "start": "Unmodified native population with recorded IDs/needs and real habitat sources; tamed julmox matched to wild controls, no debug food, no suppression of scald, no hidden god mode. Deliberate flyer scenarios are state-only and follow existing owner-presence limits for any live flight experiment.",
+        "instrument": "Direct pawn identity, needs, food-source, job, dormancy Awake and Pawn_FlightTracker state reader; floating-comp state/position evidence; M1 transition generator and M3 population traces. Flight visual tests remain owner-present only; no attempt to film flight. T18 and T27 supply missing habitat/needs evidence. Record active InColumn membership and food-need deltas attributed to vapor bouts versus actually consumed vegetation/supplied feed, plus ordinary PredatorHunt/retaliation jobs, prey eligibility and resulting health state; no debug aggression or bespoke ability proves ordinary danger.",
+        "start": "Unmodified native population with recorded IDs/needs and real habitat sources; tamed julmox matched to wild controls, no debug food, no suppression of scald, no hidden god mode. Deliberate flyer scenarios are state-only and follow existing owner-presence limits for any live flight experiment. Include plant-free active-column bulloos, matched off-column tame bulloos with/without compatible feed, plant-free fleet fliers and vulnerable vanilla-eligible colony prey with a reachable native predator.",
         "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
-        "control": "Need changes and consumed food are measured rather than inferred from inspect text or an immunity comp. Toggle only habitat/dormancy in control copies; urgent hunger must beat homing. Keep dead pawns in death audit rather than treating their absence as successful resealing. Prove flight by flight tracker and floating by actual locomotion contract, not texPath or MaxFlightTime alone.",
+        "control": "Need changes and consumed food are measured rather than inferred from inspect text or an immunity comp. Toggle only habitat/dormancy in control copies; urgent hunger must beat homing. Keep dead pawns in death audit rather than treating their absence as successful resealing. Prove flight by flight tracker and floating by actual locomotion contract, not texPath or MaxFlightTime alone. Keep starting food, needs drain and clock matched: remove plants while keeping a column active, then remove only that column, to separate vapor intake from grazing or frozen hunger. Supplied feed rescues an off-column tame bulloo; no source permits ordinary depletion. A plant-free fleet flier gets no column calories. Remove only eligible prey/provocation on matched predator controls; a flag or harmless scripted chase alone does not prove native danger.",
         "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
         "live_only_why": "none: causal game-state traces and independent state/geometry comparisons can distinguish these pictures; models are forecasts until calibrated, and do not replace required game-state evidence."
       },
@@ -195,14 +208,14 @@
     },
     {
       "id": "B6",
-      "says": "Floatstone brought home from the Forge builds ordinary colony structures as lighter, stronger, nonflammable stone that improves their beauty, without requiring study or a special ship part.",
+      "says": "Floatstone brought home from the Forge is lighter to carry as blocks than ordinary stone blocks and builds stronger, nonflammable ordinary colony structures that improve beauty, without requiring study or a special ship part.",
       "meant": {
         "intent": "The expedition reward is visibly useful ordinary building material. Reject test: an unusable souvenir or material no different in its stated qualities empties the admitted reward. First version: signature payoff. Comparative qualities survive retuning; no yield, price, health factor, mass value or graphic count is a bar. Beauty here means the ordinary in-game Beauty contribution to the same structure/room, not an unmeasurable taste claim; material pictorial identity belongs to the ordinary visual content read.",
-        "source": "Owner-attributed floatstone words in src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml, FORGE_RULED_CONTENT_1 turn 7; delegated: vanilla stuff route already exists, so use it as the minimum payoff. Historical optional wall-atlas follow-on in forge_bedazzle_cast_2026-09-29.md §4 is not reopened.",
+        "source": "Owner-attributed floatstone words in src/RimMandrake/TheForge/Defs/ThingDefs_Items/RM_TheForgeItems.xml, FORGE_BEDAZZLE_SITTING_1 turn 7 (quoted in RM_TheForgeItems.xml header); delegated: vanilla stuff route already exists, so use it as the minimum payoff. Historical optional wall-atlas follow-on in forge_bedazzle_cast_2026-09-29.md §4 is not reopened.",
         "figurative": []
       },
       "accept": [
-        "A builder spends hauled floatstone on an ordinary wall using the normal stone-building workflow; compared at the same structure and quality, it is lighter and stronger than ordinary stone, does not burn, and contributes to the room’s beauty.",
+        "A builder spends hauled floatstone on an ordinary wall using the normal stone-building workflow; its blocks are lighter to carry than ordinary stone blocks, and the wall built from them is stronger, does not burn and adds beauty compared with the same ordinary stone structure and quality.",
         "The special study, door and hull remain off and the expedition material still has an ordinary construction use."
       ],
       "reject": [
@@ -211,14 +224,14 @@
       ],
       "lazy": "none: the material has to be spent in ordinary construction and compared with ordinary stone; an inventory ornament cannot satisfy that.",
       "range": {
-        "varies": "Default material rules for ordinary Stony-compatible structures; compare same recipe/shape/quality against granite stone blocks and comparable ordinary stone under actual loaded stats; construction materials sufficient through legitimate repeated trips; new and existing stock, fresh/reloaded saves and special research settings off/on; ordinary loaded Beauty contribution from the material to built structures/rooms. No variant or custom-atlas count is required.",
+        "varies": "Default material rules for ordinary Stony-compatible structures; compare same recipe/shape/quality against granite stone blocks and comparable ordinary stone under actual loaded stats; construction materials sufficient through legitimate repeated trips; new and existing stock, fresh/reloaded saves and special research settings off/on; ordinary loaded Beauty contribution from the material to built structures/rooms. No variant or custom-atlas count is required. Compare equal-count hauled and caravan block stacks for actual loaded mass, then matched carrier capacity with other item/stack limits distinguished; compare built structures only for strength, flammability and beauty. No claim of reduced built-wall mass or more units per vanilla hauling job is required.",
         "left_out": "No guarantee a single trip constructs a building; no minimum yield, sale profit, fuel saving or bespoke swirl atlas owed. Economy normalization constrains values through checks; owner’s original very-light/strong/nonflammable identity is not discarded."
       },
       "sees": {
-        "instrument": "Resolved stuff/designator and actual build-job/material-consumption state reads, comparative derived mass/strength/flammability and ordinary Beauty contribution; static material asset inspection needs no live-only visual judgment. T27 adds origin and expenditure audit. No art-variant counting.",
+        "instrument": "Resolved stuff/designator and actual build-job/material-consumption state reads; compare hauled-stack and caravan cargo mass for equal-count floatstone versus ordinary stone block stacks, and built-structure strength/flammability/Beauty at matching shape and quality. Do not infer lighter built walls from block Mass or promise extra units in a haul job capped by stack/job limits. Static material asset inspection needs no live-only visual judgment. T27 adds origin and expenditure audit. No art-variant counting.",
         "start": "Hauled garden-origin stone on permanent ground, no injected stock or reveal; deferred parts and research off; matched ordinary stone build available.",
         "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
-        "control": "Confirm material stack decreases because the build job consumed it, not because it burned or was deleted; match structure/quality to isolate stuff factors. A plain recoloured stone substitute and a research-required ordinary build must fail.",
+        "control": "Confirm material stack decreases because the build job consumed it, not because it burned or was deleted; match structure/quality to isolate stuff factors. A plain recoloured stone substitute and a research-required ordinary build must fail. Use actual item Mass times recorded stack count with equal other cargo for carry/caravan comparison; built-wall mass is not the lightness oracle. Loaded stone-block references must be real, not a header constant.",
         "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
         "live_only_why": "none: causal game-state traces and independent state/geometry comparisons can distinguish these pictures; models are forecasts until calibrated, and do not replace required game-state evidence."
       },
@@ -366,7 +379,7 @@
     },
     {
       "id": "C10",
-      "what": "Resolved material comparison: current floatstone mass 0.1, granite reference cited in def 1.25, HP factor 2.2, flammability zero; obtain actual comparison stats from loaded ordinary structures, not header claims. No price/profit/fuel bar."
+      "what": "Resolved material comparison: current floatstone mass 0.1, granite reference cited in def 1.25, HP factor 2.2, flammability zero; obtain lightness from loaded equal-count carried/caravan block-stack mass and strength/flammability/beauty from matched loaded ordinary structures, not header claims or built-wall mass. No price/profit/fuel bar."
     },
     {
       "id": "C11",
@@ -438,7 +451,7 @@
     },
     {
       "id": "R6",
-      "rule": "Resident rain-natives stay the same pawns; wild sealing yields to ownership, damage, danger/downing and active mental states. Native local water must satisfy native thirst under the standing ruling. Column homing yields to urgent needs. No species is removed from any roster; unknown multi-homing waits for the merged roster read.",
+      "rule": "Resident rain-natives stay the same pawns; wild sealing yields to ownership, damage, danger/downing and active mental states. Native local water must satisfy native thirst under the standing ruling. Column homing yields to urgent needs. No species is removed from any roster; unknown multi-homing waits for the merged roster read. Small/greater bulloos gain food from active-column vapor without consuming plants; retain rough-herbivore feed outside columns, including tame/caravan cases. Fleet fliers instead consume vegetation and jossurs prey; neither gains vapor calories. Columns absent/off grant no vapor food, and taming adds no homing obligation. Keep ordinary predator and retaliation behaviour active with bespoke combat extras off.",
       "touches": [
         "pawn_identity",
         "flora_food",
@@ -449,7 +462,7 @@
     },
     {
       "id": "R7",
-      "rule": "Keep actual core flight and permanent floating independent of the deferred stoop/hunt bonuses. Retain existing small-bulloo/fleet-flier/jossur habitat cast without inventing greater-bulloo escort or column membership. Ummisk bank movement stays on safe terrain and yields when no edge exists.",
+      "rule": "Keep actual core flight and permanent floating independent of the deferred stoop/hunt bonuses. Retain existing small-bulloo/fleet-flier/jossur habitat cast without inventing greater-bulloo escort or permanent home-range membership; greater-bulloo feeding eligibility follows R6. Ummisk bank movement stays on safe terrain and yields when no edge exists.",
       "touches": [
         "sky_habitat",
         "pawn_identity",
@@ -468,13 +481,14 @@
     },
     {
       "id": "R9",
-      "rule": "Surface industrial form is land; full towers and unexplained nonliving melt motion retain the frozen image. Use Wreckage’s placement/salvage contracts for mundane remains, no new bespoke reward or dungeon. Lore/tier partition and beldon-only tibanna prohibition persist even while campaign extras are off. No world generation or zero-tile finding.",
+      "rule": "Surface industrial form is land; full towers and unexplained nonliving melt motion retain the frozen image. Use Wreckage’s placement/salvage contracts for mundane remains, no new bespoke reward or dungeon. Lore/tier partition and beldon-only tibanna prohibition persist even while campaign extras are off. No world generation or zero-tile finding. Whole towers have solid impassable base footprints, no usable roof/floor/interior and no roof spawned over neighbours; ordinary damage, mining, deconstruction and salvage cannot remove them, while separate remains alone use ordinary salvage. Their caster geometry follows shared Direct Sun without changing ambient heat or stopping scald in a mere shadow.",
       "touches": [
         "landscape",
         "routes",
         "crust",
         "lore",
-        "defaults"
+        "defaults",
+        "weather_heat"
       ]
     },
     {
@@ -598,7 +612,7 @@
         "R9"
       ],
       "holds_together": "argued",
-      "why": "Surface form and ordinary paths share a static placement contract; no dungeon/portal is required. Permanent routes and no-lava-life bans constrain placement before visuals are judged. Geometry risk is handled in the routes meeting.",
+      "why": "Surface form and ordinary paths share a static placement contract; no dungeon/portal is required. Permanent routes and no-lava-life bans constrain placement before visuals are judged. Geometry risk is handled in the routes meeting. Towers persist as nonremovable solid scenery; salvage changes separate remains only. Thus long settlement cannot erase the whole-tower image. Ambient motion is required, visually read by B1 without a second creature system.",
       "model": ""
     },
     {
@@ -659,7 +673,7 @@
         "R7"
       ],
       "holds_together": "unknown",
-      "why": "A derived column field and need-yielding jobs can still maroon hungry animals, especially when crust removes terrain-sourced columns or a framework float comp is absent. Population/job traces must distinguish ordinary mortality from habitat failure.",
+      "why": "A derived column field and need-yielding jobs can still maroon hungry animals, especially when crust removes terrain-sourced columns or a framework float comp is absent. Population/job traces must distinguish ordinary mortality from habitat failure. Bulloo vapor intake is independent of plants but depends on active field membership, including greater-bulloo feeding without a home leash; fleet flier grazing and jossur prey keep separate plant/predator fluxes. Missing columns require actual ordinary feed, including for tame animals, rather than free nutrition.",
       "model": "M3: Whole Forge season"
     },
     {
@@ -686,10 +700,11 @@
         "R1",
         "R3",
         "R7",
-        "R10"
+        "R10",
+        "R9"
       ],
       "holds_together": "unknown",
-      "why": "Rain exposure, native survival, lava ambient heat, Direct Sun and flash/ordinary growth can jointly make shelter insufficient even if their individual comparisons hold. No current all-on health/temperature record establishes the combined regime.",
+      "why": "Rain exposure, native survival, lava ambient heat, Direct Sun and flash/ordinary growth can jointly make shelter insufficient even if their individual comparisons hold. No current all-on health/temperature record establishes the combined regime. Persistent tower footprints/casters may alter routes and common sun shade but create no adjacent roof against scald; M4 must distinguish these sources.",
       "model": "M4: Heat and shelter response"
     }
   ],

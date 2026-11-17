@@ -2,6 +2,8 @@
 
 All choices here are the Designer’s under the cleansing brief. Defs and code stay loadable. Default-off behaviour is required pending future version acceptance, including while a retirement recommendation waits. No waiver is reopened. External content marked unknown is inventoried from historical evidence and must be recovered before activation is claimed.
 
+Ordinary native predation and retaliation remain first-version life: deferring bespoke prey scoring, stoops, chemical swell or detonation does not make the roster harmless. B5 reads a jossur hunting eligible colony prey and provoked native retaliation with these extras off.
+
 ## fungus_cooling — recommend retirement
 
 What: Heatsink fungus description promises room cooling.

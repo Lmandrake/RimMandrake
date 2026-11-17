@@ -1,0 +1,742 @@
+{
+ "mod": "TheForge",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "census.json row vapor_sustenance (fate needed_by life, built absent); tickets.md T18; bars.json B5",
+     "evidence": "census.json describes it as 'Sky gas-grazers obtain sustenance at their ordinary vapor habitat', and T18 only says 'request only the supported native-forage contract and provide Forge data/adapter wiring'. The defs make them plant grazers: RM_Bulloo.xml:91, RM_ColossalAerofleet.xml:88 and RM_FleetFlier.xml:72 all have <foodType>VegetarianRoughAnimal</foodType>. The frozen sheet the_forge.md §4 says the sky herds are 'absorbing and metabolizing the complex chemical vapors'. No file says what the player sees: whether a herd grazes plants or feeds inside a column, what a tamed bulloo eats away from a column, or whether a column with no plants beneath it feeds anything. B5's 'Forge natives feed ... as local animals' passes under either mechanism.",
+     "would_pass": "definition.md states the sky herds' feeding mechanism (for example, the food need refills while inside a vapor column, or rough grazing beneath columns), including the tamed and away-from-column case, and B5 carries an accept/reject pair that separates the chosen mechanism from the other.",
+     "smallest_fix": "Add one Life paragraph to definition.md and one ambiguities.md entry choosing column-feeding or plant-grazing, with the lore and def evidence. Add one accept/reject picture pair to B5."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "census.json row ordinary_works (fate land, built absent); tickets.md T16; bars.json B1 and R9",
+     "evidence": "T16 says only 'whole standing manufactured towers ... Use existing Wreckage placement, occupied-footprint and ordinary salvage contracts where applicable'. ambiguities.md adds 'Ordinary Wreckage salvage can apply to appropriate remains; it is not licence to collapse all standing towers.' Nothing defines whether a colonist can deconstruct, mine or salvage a tower, whether a tower is passable or roofed, or whether it casts shade under the shared Direct Sun geometry. B1's range includes 'an occupied 40-colonist settlement' and day-100 saves, and the_forge.md §5 says 'The towers stand whole'. A colony that salvages the towers away would silently empty B1.",
+     "would_pass": "A stated physical contract for the towers, as distinct from the remains: whether they can be deconstructed or salvaged, how pathing and roofs treat them, and that their shade follows the shared Direct Sun rule. B1 then holds for a long-settled colony.",
+     "smallest_fix": "Add a short 'Foundry works' paragraph to definition.md and one sentence to R9 saying whether towers can be deconstructed (and that salvage applies only to remains), plus their shade and passability."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "tickets.md T16; bars.json B1 (says and reject); census.json row melt_machines; R9",
+     "evidence": "the_forge.md §3 has the owner-attributed bullet 'Nothing lives in the lava (owner, contrary to the rumors) — but there is movement there', and §5 has 'the machines in the melt still move'. census.json keeps melt_machines as land, and R9 says 'unexplained nonliving melt motion retain the frozen image'. But T16 says 'Minimal ambient nonliving melt machinery may convey the frozen always-true motion'. B1's says never mentions it and neither reject picture refuses still lava. Only accept picture 1 mentions 'distant moving machinery' in passing, so a build where nothing ever moves in the melt passes B1.",
+     "would_pass": "B1 (says or a reject picture) refuses open lava in which nothing nonliving ever visibly moves, and T16 requires the motion.",
+     "smallest_fix": "In T16 change 'may' to 'must'. Add to B1 the reject picture 'the seams are open lava in which nothing ever moves'."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json B5 (accept/reject); definition.md 'Why a player reaches for it'; next_version.md (dhoggur_swell, jossur_stoop, jossur_hunt, bulloo_detonation)",
+     "evidence": "B1 cites the owner's typed experience sentence in design/RimMandrake/biome_experiences_2026-10-20.md:24: 'Where the gods came to forge a world is now the ruins that seek to unmake you. Even the beasts challenge your presence.' definition.md calls the gods and hostile-ruins language thematic but never says how 'Even the beasts challenge your presence' is read. Every bespoke beast-aggression mechanic moves to the next version, and B5's pictures cover only feeding, husbandry, flight and sealing. A roster of placid grazers passes B5.",
+     "would_pass": "A stated reading of 'beasts challenge' (figurative or not, with evidence) and a B5 picture in which an ordinary native (for example a hunted dhokkur, or the jossur as a predator, using vanilla behaviour) credibly contests colonists, with a reject picture where every native is harmless.",
+     "smallest_fix": "Add one ambiguities.md entry for 'beasts challenge your presence' and one accept/reject pair to B5."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B6 accept picture 1 and sees.instrument",
+     "evidence": "B6 accept says 'compared at the same structure and quality, it is lighter and stronger than ordinary stone'. Floatstone's lightness is the block's Mass 0.1 (RM_TheForgeItems.xml:40), and its stuffProps statFactors (lines 62-67) carry no Mass factor. In vanilla a built structure's mass does not vary with its stuff [guess ~80%; not read from a running game]. If so, the 'comparative derived mass' of two walls reads equal and cannot tell floatstone from stone. The owner's words in the same file ('Super strong and light building material', 'barely presses on the hand that carries it') place the lightness in carrying.",
+     "would_pass": "Lightness read where the player meets it (hauled and caravan stack mass, more floatstone per trip than stone blocks); strength and beauty read on the built structure.",
+     "smallest_fix": "Reword B6 accept to 'its blocks are lighter to haul than stone blocks, and the wall built from them is stronger, does not burn and adds beauty', and point the instrument at hauled-stack mass."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B3 says ('before the gardens depart'); B3 meant.figurative is []",
+     "evidence": "ambiguities.md section '“Drift away” need not create a flying pawn' says 'Mark drift language figurative where it appears as a bar claim; current bar wording uses departure/closing instead.' But 'depart' is the same figure: plants do not leave. The implementation (census row garden_departure, DriftOffGardens) removes unharvested gardens with dust and a counted message. A builder could read 'depart' as visible movement off the map.",
+     "would_pass": "B3's figurative list holds 'depart', standing for unharvested gardens removed at cracks with a visible dust sign and a located message, plus one accept picture showing exactly that.",
+     "smallest_fix": "Add a figurative entry for 'depart' to B3 with that meaning and its accept picture."
+    },
+    {
+     "head": "authority_unsourced",
+     "where": "bars.json B6 meant.source and B3 meant.source",
+     "evidence": "B6 cites 'Owner-attributed floatstone words in .../RM_TheForgeItems.xml, FORGE_RULED_CONTENT_1 turn 7'; B3 cites 'FORGE_RULED_CONTENT_1 reported owner floatstone admission'. The cited file's header (RM_TheForgeItems.xml:5) attributes the verbatim owner words to 'FORGE_BEDAZZLE_SITTING_1 turn 7'. FORGE_RULED_CONTENT_1 is the file's item label, not the event where he spoke.",
+     "would_pass": "Both sources name the event the file actually records for his words.",
+     "smallest_fix": "Replace 'FORGE_RULED_CONTENT_1 turn 7' with 'FORGE_BEDAZZLE_SITTING_1 turn 7 (quoted in RM_TheForgeItems.xml header)' in B3 and B6."
+    }
+   ],
+   "reviewer_refusals": 7,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "The biome is named Forge and its arrival letter describes towers, but the resource trip crosses only ordinary volcanic rock.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "A manufactured prop technically exists behind inaccessible lava, while ordinary journeys never encounter it, or the placed works close the colony’s only permanent exit.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "A hauler detours around an unmistakably manufactured tower base beside steaming seams, reaches a resource patch and returns along permanent cool banks; distant moving machinery gives no explanation of its work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "At colony zoom the dark vertical works, ash ground, pale steam and red open seams remain distinguishable during the cycle’s rain and fog as well as still heat.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "Rain particles and a weather label appear while the scald switch is silently off.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "During a prolonged boiling phase, people can work under a roof but still need ordinary heat management; an open-sided roof is not a cooled room.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "The exposed newcomer acquires scald injuries and may need help; an immediate shelter or rescue response can still save them, and the matching roofed newcomer takes no direct rain scald.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A healthy newcomer dies at the first damage opportunity before a prompt response could occur, or a roofed control receives the same direct rain scald.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Gardens only grow on isolated crust unreachable from permanent ground, or hauling and retreat cannot finish before the warning closes the useful work window.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "The crew waits out the rain, crosses visibly cooled crust, cuts mature gardens and hauls floatstone onto permanent ground; the material can enter ordinary construction.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "The phase counter says Growth and gardens exist, but they never ripen before drifting away.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "A colony sends haulers before cutters on a later trip; the naturally ripened work still completes while unused isolated growth can be left behind.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "Workers respond at the hiss, interrupt outdoor work and reach a roof or bare permanent safe ground before gas-driven fire reaches them.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A warning letter appears at the same moment the crew is already surrounded by ignited growth or the return crossing melts.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "At cracks the crew abandons the remaining globes and retreats; a crew that ignores the warning loses goods to returning lava and can identify the cause and place of losses.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "The player must hear a bespoke sound or watch the right map to know the deadline; leaving items or a colonist on melting crust silently deletes them.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "Wild julmox and resident dhuvvox wake into the wet feeding interval and later become the same identifiable sealed animals; tamed julmox remain available for ordinary feeding and handling.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "Flight-fiction animals merely walk with a high drawn sprite, or a resident nodule is a new replacement pawn that loses the original animal’s injuries or ownership.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "Fleet fliers and jossurs record real flight, bulloos drift aloft, and wild small bulloo herds gather at visible columns without hunger being overridden by an endless homing job; the ummisk follows the accessible lava bank as its edge changes.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Wildlife defs resolve and a staged flock appears, but the live animals repeatedly starve beside their own habitat or a tamed animal is sealed beyond the player’s control.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "The special study, door and hull remain off and the expedition material still has an ordinary construction use.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "It is a generic heavy combustible building resource despite its admitted qualities, or the player has to enable a deferred hull to spend it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "A builder spends hauled floatstone on an ordinary wall using the normal stone-building workflow; compared at the same structure and quality, it is lighter and stronger than ordinary stone, does not burn, and contributes to the room’s beauty.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "Floatstone stacks have an ornate description but cannot be selected for ordinary construction until the deferred study completes.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "Turning the cycle off resolves its ground with survivors and haulable possessions safe or with an explicit pending safe-cleanup state where no landing cell exists; normal destructive play still accounts visibly for genuine deaths and losses.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "The log is clean after loading but the game seeds a fresh reward or erases a resident animal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The master is off yet scald or flash penalties continue, or gentle cleanup removes the floor beneath a survivor with no reachable safe landing and leaves them on open lava.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "The save resumes during growth with the same crust and gardens and the same sealed animal identities; harvesting and later melt happen as continued events rather than fresh duplicates.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "In a matched continuation the colony secures shelter before gathering instead of gathering before shelter improvements; the resource opportunity, warning, retreat and subsequent cycle still function under the changed work order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "The season is apparently peaceful because damage, weather or growth was disabled or locked; reload resets the cycle, no garden work completes, or repeated exceptions consume the log.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "The established colony shelters through danger, cuts and hauls naturally grown gardens, builds with the returned stone and sees another usable interval after saving mid-cycle and resuming. Life remains visible between crises and the works shape routine journeys.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "Targeted scenes pass separately, but default rain kills the forage and natives while gas and accelerated growth feed a destructive feedback loop over the season.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The Forge's vents and geysers: their density and placement, which the frozen sheet makes always-true ('The geysers are densest here and thin with distance (the vapor law's epicenter)', the_forge.md §5). census.json's vapor_field row says the shared column field is 'derived from geysers, emitters and hazardous terrain', and B1 requires 'visible vent-steam'. But no census row records where the Forge's vents come from, and a grep of src/RimMandrake/TheForge/Defs for geyser/vent placement found none. So the source of both B1's steam and B5's sky-habitat columns is unaccounted for.",
+   "loop_or_three_way": "A three-way meeting of B4, B5 and B8 over the same vegetation. Flash growth (R1/R10) during Rain and Growth produces the exposed plants that B4 requires the next gas wash to ignite. The same plants are the food of the VegetarianRoughAnimal natives in B5 (julmox, dhoggur, metallovore, fleet flier and the bulloos, per their defs). B8 forbids both runaway fire and lifeless ground. In the cycle order (C2: StillHeat → GasWash → Rain → Freeze → Growth), every burn is regrown only by the next flash window. Yet B4's touches omit flora_food and B4 is not a member of the flora_food meeting, so M3's season model is not asked whether each cycle's warned fire consumes the grazers' food faster than flash growth replaces it. Smallest fix: add B4 to the flora_food meeting and to M3's informs list.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 581790
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "definition.md, 'Why a player reaches for it' paragraph; ambiguities.md (no entry); owner_pages.md page two (no line)",
+     "evidence": "The owner's typed experience sentence (design/RimMandrake/biome_experiences_2026-10-20.md:24) is: \"Where the gods came to forge a world is now the ruins that seek to unmake you. Even the beasts challenge your presence.\" The proposal settles the second half openly: it has an ambiguities.md entry, a line on the owner pages and B5's predator pictures. The first half is disposed of in one clause of definition.md: \"Its gods/hostile-ruins language is thematic: no deity simulation, sentient attacking ruin or mandatory narrative event follows from it.\" In the first version the ruins are inert. Towers are \"permanent solid scenery\", the machinery is noninteractive, and B1's accept picture says \"distant moving machinery gives no explanation of its work\". The hostile part of the ruins (the tenders as a garrison, the_forge.md §8) has moved to next version. Nothing on his pages tells him that half of his sentence was read away.",
+     "would_pass": "The clause is settled like 'beasts challenge'. It gets an ambiguity entry with both readings: (a) hostile ruins, meaning tenders or a garrison, which is next version; (b) the works stand among the cycle's hazards, so the place itself unmakes you. The proposal states the reading it takes and ties it to a bar picture, for example routine journeys past the works crossing the gas, scald or melt danger. One line on his pages says the hostile tenders are deferred.",
+     "smallest_fix": "Add one ambiguities.md entry and one owner_pages.md line naming the reading taken. If reading (b) is taken, add one B1 or B4 accept/reject pair that ties the works to the danger."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "definition.md 'Foundry works' paragraph; tickets.md T16; census.json row melt_machines; bars.json B1",
+     "evidence": "melt_machines is kept as land, with built 'unknown'. Its only definition is \"Open melt must also show visible nonliving machine motion during ordinary observation\" (definition.md) and \"Minimal ambient nonliving melt machinery must convey the frozen always-true motion\" (T16). The lore gives the picture: \"old mechanoid-type machines, glowing with the same heat as the liquid around them\" (the_forge.md §3) and \"slow deliberate movement that is not alive\" (§9). The proposal never names what the player sees. An animated lava surface, drifting embers or passing steam is also 'visible nonliving motion'. B1's control (\"Freeze only the ambient machine animation\") cannot separate machinery from lava's own animation if the builder calls one the other.",
+     "would_pass": "The definition says what the motion is: discernible manufactured forms in open lava cells (mechanoid-type, glowing like the melt) that move slowly and deliberately. They must be distinguishable at colony zoom from lava flow, embers and steam, and their purpose is never revealed. B1 rejects a build where only the lava texture, sparks or steam move.",
+     "smallest_fix": "Add one sentence to definition.md and T16 naming the form. Add one B1 reject picture: \"Only the lava surface, embers or steam move; nothing reads as a machine.\""
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "definition.md 'Life — Designer feeding contract' paragraph; tickets.md T18",
+     "evidence": "Both say: \"Fleet fliers instead consume actual edible vegetation, including admitted fireweed\". Fireweed is not admitted. src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml:270 records: \"Plant_Fireweed / Plant_MagmaCactus CUT from this roster: owner 2026-10-19 by card (\\\"Cut them as the card said\\\"...)\". The proposal's own next_version.md also lists the fireweed economy as already struck. The diet contract names a plant the owner removed by card.",
+     "would_pass": "The fleet-flier diet names only plants the current roster admits (fire lavender, cinder crust, heatsink fungus, firevine), or says 'actual edible roster vegetation'. There is no claim that fireweed is admitted.",
+     "smallest_fix": "Delete \"including admitted fireweed\" from definition.md and T18."
+    },
+    {
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json B7 (says; reject picture 1; range)",
+     "evidence": "B7 says \"Reloading, disabling or ending a Forge cycle preserves ... resolves its temporary ground without stranding survivors\". Its first reject picture is \"The master is off yet scald or flash penalties continue\". Its range is mostly settings toggles (\"master/pulse/cycle/gas/freeze/bloom/dormancy/destructive-melt toggles separately and in combinations; ... premature condition End\"). Safe all-off behaviour is the standing Mod Settings ruling ('all-off degrades gracefully'). The proposal itself says such floors are \"inherited floors with regression checks, not artificial extra experience bars\" (definition.md, Settings), and R5 and C5/C7 already state the same contract. The reload half overlaps B8, whose says includes \"a mid-cycle reload\".",
+     "would_pass": "Disable and End safety live as the rule R5 plus the checks C5/C7 (and M1). Any surviving B7 covers only what a player meets in ordinary play: a reload mid-cycle continues the same crust, gardens and sealed animals with no duplicated reward or hazard. Alternatively, that reload content is folded into B8 and B7 is dropped.",
+     "smallest_fix": "Strike 'disabling or ending' and the master-off reject picture from B7, and move them to R5/C5. Keep the reload continuity pictures."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B8 says / meant.figurative / range.left_out",
+     "evidence": "B8 says \"without runaway destruction, lifeless ground, stalled cycles or an error storm\". meant.figurative marks only \"mountain’s temporary opportunities\" and \"error storm\". range.left_out defines differently named words, \"Flood\", \"desert\" and \"stall\" (for example \"desert = cycle-caused loss of ordinary forage/native viability\"), and never links them to the words in says. Read literally, \"lifeless ground\" fails only a wholly barren map. That would pass a season where every grazer starves among surviving lichen.",
+     "would_pass": "\"runaway destruction\" and \"lifeless ground\" are listed as figurative, each with its stands_for taken from left_out (flood and desert). Each gets one accept picture that departs from the literal reading, for example: \"fire clears a region to bare ash and it regrows by the next interval; this is not lifeless ground.\"",
+     "smallest_fix": "Add two figurative entries to B8 and rename the left_out terms to match the words in says."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A hauler detours around an unmistakably manufactured tower base beside steaming seams, reaches a resource patch and returns along permanent cool banks; distant moving machinery gives no explanation of its work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "At colony zoom the dark vertical works, ash ground, pale steam and red open seams remain distinguishable during the cycle’s rain and fog as well as still heat.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "Ordinary colony salvage dismantles the standing towers, leaving a long-settled Forge without its manufactured skyline.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "A manufactured prop technically exists behind inaccessible lava, while ordinary journeys never encounter it, or the placed works close the colony’s only permanent exit.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 5,
+     "text": "The biome is named Forge and its arrival letter describes towers, but the resource trip crosses only ordinary volcanic rock.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 6,
+     "text": "The seams are open lava in which nothing nonliving ever visibly moves.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "The exposed newcomer acquires scald injuries and may need help; an immediate shelter or rescue response can still save them, and the matching roofed newcomer takes no direct rain scald.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A healthy newcomer dies at the first damage opportunity before a prompt response could occur, or a roofed control receives the same direct rain scald.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "During a prolonged boiling phase, people can work under a roof but still need ordinary heat management; an open-sided roof is not a cooled room.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "Rain particles and a weather label appear while the scald switch is silently off.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Gardens only grow on isolated crust unreachable from permanent ground, or hauling and retreat cannot finish before the warning closes the useful work window.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "A colony sends haulers before cutters on a later trip; the naturally ripened work still completes while unused isolated growth can be left behind.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "At cracks an unharvested rooted garden disappears in visible dust with a located message; no garden flies away, and the crew returns before the crust melts.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "The crew waits out the rain, crosses visibly cooled crust, cuts mature gardens and hauls floatstone onto permanent ground; the material can enter ordinary construction.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "The phase counter says Growth and gardens exist, but they never ripen before drifting away.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "Workers respond at the hiss, interrupt outdoor work and reach a roof or bare permanent safe ground before gas-driven fire reaches them.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A warning letter appears at the same moment the crew is already surrounded by ignited growth or the return crossing melts.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "At cracks the crew abandons the remaining globes and retreats; a crew that ignores the warning loses goods to returning lava and can identify the cause and place of losses.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "The player must hear a bespoke sound or watch the right map to know the deadline; leaving items or a colonist on melting crust silently deletes them.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "Every native is harmless to colonists and their animals, even when hungry predators have eligible colony prey or a hunt provokes a native.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "Small and greater bulloos restore food while feeding aloft inside a plant-free active vapor column; fleet fliers must eat actual vegetation, and tame bulloos away from columns lose food until they eat ordinary compatible feed.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "Flight-fiction animals merely walk with a high drawn sprite, or a resident nodule is a new replacement pawn that loses the original animal’s injuries or ownership.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Fleet fliers and jossurs record real flight, bulloos drift aloft, and wild small bulloo herds gather at visible columns without hunger being overridden by an endless homing job; the ummisk follows the accessible lava bank as its edge changes.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "A jossur hunts eligible vulnerable colony prey under ordinary predator rules, and provoking a native can bring ordinary retaliation, so colonists must protect animals or plan their hunt even with bespoke combat extras off.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 6,
+     "text": "Bulloos only graze plants beneath columns and starve when a column has no plants, or fleet fliers receive vapor nutrition without eating plants, or tame bulloos away from columns gain food without any source.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 7,
+     "text": "Wild julmox and resident dhuvvox wake into the wet feeding interval and later become the same identifiable sealed animals; tamed julmox remain available for ordinary feeding and handling.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 8,
+     "text": "Wildlife defs resolve and a staged flock appears, but the live animals repeatedly starve beside their own habitat or a tamed animal is sealed beyond the player’s control.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A builder spends hauled floatstone on an ordinary wall using the normal stone-building workflow; its blocks are lighter to carry than ordinary stone blocks, and the wall built from them is stronger, does not burn and adds beauty compared with the same ordinary stone structure and quality.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "The special study, door and hull remain off and the expedition material still has an ordinary construction use.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Floatstone stacks have an ornate description but cannot be selected for ordinary construction until the deferred study completes.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "It is a generic heavy combustible building resource despite its admitted qualities, or the player has to enable a deferred hull to spend it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "The master is off yet scald or flash penalties continue, or gentle cleanup removes the floor beneath a survivor with no reachable safe landing and leaves them on open lava.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Turning the cycle off resolves its ground with survivors and haulable possessions safe or with an explicit pending safe-cleanup state where no landing cell exists; normal destructive play still accounts visibly for genuine deaths and losses.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The save resumes during growth with the same crust and gardens and the same sealed animal identities; harvesting and later melt happen as continued events rather than fresh duplicates.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "The log is clean after loading but the game seeds a fresh reward or erases a resident animal.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "In a matched continuation the colony secures shelter before gathering instead of gathering before shelter improvements; the resource opportunity, warning, retreat and subsequent cycle still function under the changed work order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "The season is apparently peaceful because damage, weather or growth was disabled or locked; reload resets the cycle, no garden work completes, or repeated exceptions consume the log.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "The established colony shelters through danger, cuts and hauls naturally grown gardens, builds with the returned stone and sees another usable interval after saving mid-cycle and resuming. Life remains visible between crises and the works shape routine journeys.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "Targeted scenes pass separately, but default rain kills the forage and natives while gas and accelerated growth feed a destructive feedback loop over the season.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The jossur as ordinary life. RM_TheForge_Biome.xml:262 lists RM_Jossur (\"sky apex predator\") among the ten wildAnimals, and RM_TheForgeNatives.xml:332-354 gives it real core flight through its MaxFlightTime stat. census.json has no life row for it, only its two extras, jossur_hunt and jossur_stoop, both moved to next version. Yet the jossur alone carries B5's predation picture, the proposal's 'beasts challenge' reading and one of B5's real-flight claims. With the stoop off it flies only on vanilla jobs flagged tryStartFlying, and the census never records or reviews that dependency.",
+   "loop_or_three_way": "B4, B2 and R1 meet in one sequence. The kept hiss letter tells crews \"Get people and stores under a roof or onto bare rock\" (RM_GameCondition_ForgeCycle.cs:269). B4's accept picture counts reaching \"a roof or bare permanent safe ground\" as success. By R1 and C2 the gas wash (2–3h) is followed directly by Rain, and in Rain B2 scalds every exposed colonist. A crew that obeys the warning by going to bare rock is moved into the next hazard. Once the voices and floods are switched off, the cycle sends no text of its own when Rain begins: the only Rain-onset texts found are the voice cue at RM_ForgeVoices.cs:188 and the flood message at RM_GameCondition_ForgeCycle.cs:592. Whether the shared pulse's ForceBurst posts its own message is unverified. The weather_heat meeting lists B2, B4 and R1 as 'unknown' under M4, but its reasoning never names this warning, then gas, then rain sequence.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 759635
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1250804,
+    "output_tokens": 15322
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "core_promise_weakened",
+   "where": "definition.md, 'Why a player reaches for it' paragraph; ambiguities.md (no entry); owner_pages.md page two (no line)",
+   "evidence": "The owner's typed experience sentence (design/RimMandrake/biome_experiences_2026-10-20.md:24) is: \"Where the gods came to forge a world is now the ruins that seek to unmake you. Even the beasts challenge your presence.\" The proposal settles the second half openly: it has an ambiguities.md entry, a line on the owner pages and B5's predator pictures. The first half is disposed of in one clause of definition.md: \"Its gods/hostile-ruins language is thematic: no deity simulation, sentient attacking ruin or mandatory narrative event follows from it.\" In the first version the ruins are inert. Towers are \"permanent solid scenery\", the machinery is noninteractive, and B1's accept picture says \"distant moving machinery gives no explanation of its work\". The hostile part of the ruins (the tenders as a garrison, the_forge.md §8) has moved to next version. Nothing on his pages tells him that half of his sentence was read away.",
+   "would_pass": "The clause is settled like 'beasts challenge'. It gets an ambiguity entry with both readings: (a) hostile ruins, meaning tenders or a garrison, which is next version; (b) the works stand among the cycle's hazards, so the place itself unmakes you. The proposal states the reading it takes and ties it to a bar picture, for example routine journeys past the works crossing the gas, scald or melt danger. One line on his pages says the hostile tenders are deferred.",
+   "smallest_fix": "Add one ambiguities.md entry and one owner_pages.md line naming the reading taken. If reading (b) is taken, add one B1 or B4 accept/reject pair that ties the works to the danger."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "definition.md 'Foundry works' paragraph; tickets.md T16; census.json row melt_machines; bars.json B1",
+   "evidence": "melt_machines is kept as land, with built 'unknown'. Its only definition is \"Open melt must also show visible nonliving machine motion during ordinary observation\" (definition.md) and \"Minimal ambient nonliving melt machinery must convey the frozen always-true motion\" (T16). The lore gives the picture: \"old mechanoid-type machines, glowing with the same heat as the liquid around them\" (the_forge.md §3) and \"slow deliberate movement that is not alive\" (§9). The proposal never names what the player sees. An animated lava surface, drifting embers or passing steam is also 'visible nonliving motion'. B1's control (\"Freeze only the ambient machine animation\") cannot separate machinery from lava's own animation if the builder calls one the other.",
+   "would_pass": "The definition says what the motion is: discernible manufactured forms in open lava cells (mechanoid-type, glowing like the melt) that move slowly and deliberately. They must be distinguishable at colony zoom from lava flow, embers and steam, and their purpose is never revealed. B1 rejects a build where only the lava texture, sparks or steam move.",
+   "smallest_fix": "Add one sentence to definition.md and T16 naming the form. Add one B1 reject picture: \"Only the lava surface, embers or steam move; nothing reads as a machine.\""
+  },
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "definition.md 'Life — Designer feeding contract' paragraph; tickets.md T18",
+   "evidence": "Both say: \"Fleet fliers instead consume actual edible vegetation, including admitted fireweed\". Fireweed is not admitted. src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml:270 records: \"Plant_Fireweed / Plant_MagmaCactus CUT from this roster: owner 2026-10-19 by card (\\\"Cut them as the card said\\\"...)\". The proposal's own next_version.md also lists the fireweed economy as already struck. The diet contract names a plant the owner removed by card.",
+   "would_pass": "The fleet-flier diet names only plants the current roster admits (fire lavender, cinder crust, heatsink fungus, firevine), or says 'actual edible roster vegetation'. There is no claim that fireweed is admitted.",
+   "smallest_fix": "Delete \"including admitted fireweed\" from definition.md and T18."
+  },
+  {
+   "head": "check_or_rule_as_bar",
+   "where": "bars.json B7 (says; reject picture 1; range)",
+   "evidence": "B7 says \"Reloading, disabling or ending a Forge cycle preserves ... resolves its temporary ground without stranding survivors\". Its first reject picture is \"The master is off yet scald or flash penalties continue\". Its range is mostly settings toggles (\"master/pulse/cycle/gas/freeze/bloom/dormancy/destructive-melt toggles separately and in combinations; ... premature condition End\"). Safe all-off behaviour is the standing Mod Settings ruling ('all-off degrades gracefully'). The proposal itself says such floors are \"inherited floors with regression checks, not artificial extra experience bars\" (definition.md, Settings), and R5 and C5/C7 already state the same contract. The reload half overlaps B8, whose says includes \"a mid-cycle reload\".",
+   "would_pass": "Disable and End safety live as the rule R5 plus the checks C5/C7 (and M1). Any surviving B7 covers only what a player meets in ordinary play: a reload mid-cycle continues the same crust, gardens and sealed animals with no duplicated reward or hazard. Alternatively, that reload content is folded into B8 and B7 is dropped.",
+   "smallest_fix": "Strike 'disabling or ending' and the master-off reject picture from B7, and move them to R5/C5. Keep the reload continuity pictures."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json B8 says / meant.figurative / range.left_out",
+   "evidence": "B8 says \"without runaway destruction, lifeless ground, stalled cycles or an error storm\". meant.figurative marks only \"mountain’s temporary opportunities\" and \"error storm\". range.left_out defines differently named words, \"Flood\", \"desert\" and \"stall\" (for example \"desert = cycle-caused loss of ordinary forage/native viability\"), and never links them to the words in says. Read literally, \"lifeless ground\" fails only a wholly barren map. That would pass a season where every grazer starves among surviving lichen.",
+   "would_pass": "\"runaway destruction\" and \"lifeless ground\" are listed as figurative, each with its stands_for taken from left_out (flood and desert). Each gets one accept picture that departs from the literal reading, for example: \"fire clears a region to bare ash and it regrows by the next interval; this is not lifeless ground.\"",
+   "smallest_fix": "Add two figurative entries to B8 and rename the left_out terms to match the words in says."
+  }
+ ],
+ "applyable": false,
+ "seconds": 956,
+ "at": "2026-11-17T02:41:00"
+}

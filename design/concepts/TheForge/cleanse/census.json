@@ -48,7 +48,7 @@
       "called_by": "Promised in biome description and later owner answer; no Forge placement/content row located in supplied src",
       "serves": "An inhabited ruined forge rather than an unmarked volcano",
       "fate": "land",
-      "why": "Required by the owner answer about ordinary journeys. Shared wreck machinery exists, but a generic wreck is not evidence of Forge-specific foundry towers.",
+      "why": "Required by the owner answer about ordinary journeys. Shared wreck machinery exists, but a generic wreck is not evidence of Forge-specific foundry towers. Designer physical contract: persistent towers are impassable, nonremovable by ordinary damage/mining/deconstruction/salvage, with no usable roof/interior; separate remains alone are salvageable. Shade uses shared Direct Sun caster geometry and creates no neighbouring roof.",
       "needed_by": "none",
       "ticket": "T16"
     },
@@ -61,7 +61,7 @@
       "called_by": "Frozen sheet always-true/ban; historic campaign tower tender references only",
       "serves": "Old manufacture remains in operation",
       "fate": "land",
-      "why": "Keep the minimal visible, noninteractive background required by the frozen sheet. No quest, combat encounter or explanation follows from it; current surface implementation is unverified.",
+      "why": "Keep the minimal visible, noninteractive background required by the frozen sheet. No quest, combat encounter or explanation follows from it; current surface implementation is unverified. Visible motion is mandatory in B1 and T16; still open melt cannot satisfy the image.",
       "needed_by": "none",
       "ticket": "T16"
     },
@@ -912,14 +912,14 @@
     },
     {
       "id": "vapor_sustenance",
-      "what": "Sky gas-grazers obtain sustenance at their ordinary vapor habitat",
+      "what": "Small and greater bulloos restore food from active-column vapor without plants; ordinary rough feed sustains them away from columns, including tame animals; fleet fliers instead eat vegetation",
       "built": "absent",
-      "evidence": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompVaporDrifter.cs; src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Bulloo.xml; src/RimMandrake/CreatureBehaviors/Source/RM_FilterFeedExtension.cs; design/Jawa/worldbuilding/biomes/the_forge.md",
+      "evidence": "src/RimMandrake/EnvironmentalHazards/Source/RM_CompVaporDrifter.cs; src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_Bulloo.xml; src/RimMandrake/CreatureBehaviors/Source/RM_FilterFeedExtension.cs; design/Jawa/worldbuilding/biomes/the_forge.md; src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_ColossalAerofleet.xml; src/RimMandrake/TheForge/Defs/ThingDefs_Races/RM_FleetFlier.xml",
       "proven": "missing",
       "called_by": "Frozen smoke-grazing biology; supplied drifter is a habitat/exemption comp, not a nutrition producer; no Forge gas-feeding assignment located",
       "serves": "Ordinary smoke-herd sustenance rather than perpetual starvation beside columns",
       "fate": "needed_by",
-      "why": "Deleting actual habitat nourishment defeats the frozen gas-grazer life. Reuse shared creature feeding contracts; no chemical extraction economy, gas item or new feeding minigame follows from it.",
+      "why": "Deleting actual habitat nourishment defeats the frozen gas-grazer life. Reuse shared creature feeding contracts; no chemical extraction economy, gas item or new feeding minigame follows from it. Designer contract: vapor-feeding bouts require active InColumn membership, independent of vegetation; absent columns give no vapor calories and leave ordinary compatible feed necessary. Fleet fliers follow the frozen sheet’s explicit plant diet. No greater-bulloo escort/home leash is added.",
       "needed_by": "life",
       "ticket": "T18"
     }
