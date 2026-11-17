@@ -1,0 +1,1 @@
+switching_plan status's week-ahead (simulate) does not model transition markers, so it showed system -> steven (to 35%) while the engine itself would have picked lukas at 2% (RIMMANDRAKE_FIX_SWITCHING_PLAN_EXCEPTION_MARKERS, 2026-11-17). Prove a routing claim with a dry check (decide on real markers), never the forecast alone.
