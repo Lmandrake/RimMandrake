@@ -15,6 +15,9 @@ state `D:\ClaudeWork\rimmandrake\testq\fault_state.json`). Raw evidence: `D:\Cla
 - Wrong SIMD results (Prime95 rounding, `stevecheck`, sha256 distinct digests) on a logical CPU, acquired
   during uptime, held until a reboot, cleared by every reboot so far.
 - 10-26 it was CPU 18; 10-31 CPU 2 under `numproc 18`; so masking a core cures nothing.
+- 🔴 **Not established (2026-11-17): the post-flash onsets are too few to say the flash changed anything.**
+  Three-or-four short onsets against ONE pre-flash observation is not a changed distribution, and nothing
+  controlled for workload, detection cadence or settings. Read the next bullet as timings, not as a finding.
 - After the BIOS 3401 flash (new microcode) onsets came SOONER: 3.30, 0.88, 2.88 h into a boot (fault_monitor
   windows F20261101T035219Z, F20261101T164245Z, F20261103T195921Z), against ~5 days once before the flash. Inside a
   window the bad CPU wanders cycle to cycle, with clean cycles between, until the reboot.
@@ -61,8 +64,15 @@ callers off is evidence for it.
 The first window opened on the boot where the A/B started, so state set before 03:40Z could explain it. The other two
 opened on clean boots with the callers off. A read at 2026-11-04T10:00Z (boot 09:38:00Z) showed every caller still
 Disabled and stopped, `cpuz154` and `CorsairLLAccess` not loaded, and no SCM start event for them since the disable
-(`D:\ClaudeWork\rimmandrake\steve_diag\driver_ab\verify_g3.out`). Onsets with the callers off (4.46 h, 0.88 h) fall
-inside the baseline range. **Software that calls these vendor drivers is not the cause.**
+(`D:\ClaudeWork\rimmandrake\steve_diag\driver_ab\verify_g3.out`). 🔴 **Corrected 2026-11-17:** this line read
+"Onsets with the callers off (4.46 h, 0.88 h) fall inside the baseline range", which is FALSE — the stated
+baseline is ≤ 3.3 h (line 46), so 4.46 h is OUTSIDE it, and an independent reviewer caught the contradiction.
+The falsification does not depend on it: the A/B's test was whether any window opens with the callers off, and
+three did, two of them on clean boots that began with the callers already off. **Software that calls these
+vendor drivers is not the cause.** What 4.46 h does mean is that onset timing is NOT tightly bounded, so
+"all ≤ 3.3 h" was never a safe baseline either: with 4 post-flash onsets (3.30, 0.88, 2.88, 4.46 h) against
+ONE ~5-day pre-flash observation, the claim that the flash made onsets sooner is UNMEASURED, not measured —
+the samples are too few and workload, detection cadence and settings were uncontrolled.
 
 Not excluded: the System-start drivers `AsIO2`, `GLCKIO2`, `ene` and `MsIo64` stayed loaded, with no known caller
 running. `iCUE.exe`, the user-mode app, kept running, but it reaches hardware only through the disabled services.
