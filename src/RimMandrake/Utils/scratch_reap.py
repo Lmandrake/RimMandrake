@@ -2489,14 +2489,20 @@ def refusal_reasons(rows: list[dict], top: int = 4) -> list[str]:
 
 def sanity_write(sd: Path, phase: str, m: dict, problems: list[str], residual: list[str] | None = None):
     """On disk before the work starts: the Dispatcher reads this, so a run that dies has already spoken. A new start
-    drops the last run's end, whose alarm belongs to that run."""
+    drops the last run's end, whose alarm belongs to that run, but keeps it as `prev_end`: without it the end read a
+    clean 0 for the ~50 min a run lasts (RIMMANDRAKE_HOLD_SCRATCH_DIRTY_END_WHILE_CLEANER_RUNS)."""
     p = sd / "sanity.json"
-    rec = {}
-    if phase != "start":
-        try:
-            rec = json.loads(p.read_text())
-        except (OSError, ValueError):
-            rec = {}
+    try:
+        old = json.loads(p.read_text())
+        old = old if isinstance(old, dict) else {}
+    except (OSError, ValueError):
+        old = {}
+    if phase == "start":
+        prev = old.get("end") or old.get("prev_end")
+        rec = {"prev_end": prev} if isinstance(prev, dict) else {}
+    else:
+        rec = old
+        rec.pop("prev_end", None)
     rec[phase] = {"at": time.time(), "measures": m, "problems": problems, "residual": residual or []}
     write_json(p, rec)
     durable(p)

@@ -1671,15 +1671,7 @@ def c_disk(now, rules, ctx):
     # carries it to the Conductor log; these file or reopen its one fixed item. No record yet is a clean reading of 0:
     # disk.scratch_ok_age_h above already alarms on a cleaner that never ran.
     san = rec.with_name("sanity.json")
-    for end in ("start", "end"):
-        try:
-            d = json.loads(san.read_text()) if san.exists() else {}
-            row = d.get(end) or {}
-            out["disk.scratch_dirty_" + end] = M(len(row.get("problems") or []), "sanity problems at the %s of the last run" % end,
-                                                 problems=(row.get("problems") or [])[:6],
-                                                 residual=(row.get("residual") or [])[:4])
-        except (OSError, ValueError, AttributeError) as e:
-            out["disk.scratch_dirty_" + end] = M(9999, "sanity problems at the %s of the last run" % end, why="%s: %s" % (san, e))
+    out.update(scratch_dirty(san))
     out.update(scratch_outside(san, now, rules))
     out.update(root_growth(rec.parent, now, rules))
     out.update(whea_reading(now))
@@ -1700,6 +1692,25 @@ def c_disk(now, rules, ctx):
     except Exception as e:
         out["disk.pool_breach"] = M(9999, "pool breaches", why="pool unreadable: %s" % str(e))
     out.update(seat_dirt_reading())
+    return out
+
+
+def scratch_dirty(san):
+    """disk.scratch_dirty_start/_end from the cleaner's sanity.json. Mid-run the end is the last finished run's
+    (`prev_end`, marked running), never a clean 0 (RIMMANDRAKE_HOLD_SCRATCH_DIRTY_END_WHILE_CLEANER_RUNS)."""
+    out = {}
+    for end in ("start", "end"):
+        try:
+            d = json.loads(san.read_text()) if san.exists() else {}
+            row = d.get(end)
+            running = end == "end" and not row and isinstance(d.get("prev_end"), dict)
+            row = (d["prev_end"] if running else row) or {}
+            x = {"running": True} if running else {}
+            out["disk.scratch_dirty_" + end] = M(len(row.get("problems") or []), "sanity problems at the %s of the last run" % end,
+                                                 problems=(row.get("problems") or [])[:6],
+                                                 residual=(row.get("residual") or [])[:4], **x)
+        except (OSError, ValueError, AttributeError) as e:
+            out["disk.scratch_dirty_" + end] = M(9999, "sanity problems at the %s of the last run" % end, why="%s: %s" % (san, e))
     return out
 
 
