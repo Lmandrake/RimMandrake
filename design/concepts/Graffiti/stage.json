@@ -1,5 +1,6 @@
 {
  "aliases": [],
+ "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: 3 not_covered verdicts (limit 3); judging stopped on Graffiti (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -352,10 +353,38 @@
     "ref": "run rm-role-designer-1794939868",
     "stage": 4,
     "tokens": 204334
+   },
+   {
+    "at": "2026-11-17T18:28:41Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794940039",
+    "stage": 5,
+    "tokens": 270651
+   },
+   {
+    "at": "2026-11-17T18:29:03Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794940039",
+    "stage": 5,
+    "tokens": 296231
+   },
+   {
+    "at": "2026-11-17T18:29:13Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1794940039-reader",
+    "stage": 5,
+    "tokens": 100843
+   },
+   {
+    "at": "2026-11-17T18:29:38Z",
+    "kind": "unmeasured",
+    "ref": "run rm-role-designer-1794940025",
+    "stage": 5,
+    "tokens": 400000
    }
   ],
   "reserve": 60000,
-  "spent": 11713880
+  "spent": 12781605
  },
  "coverage_rounds": [
   {
@@ -434,8 +463,28 @@
    "tokens": 276361,
    "tree": "a6eedf8713c0085ee36ebea1c3ce9eddc2b79a853b25c384d86e80f9f873340d",
    "verdict": "covered"
+  },
+  {
+   "at": "2026-11-17T18:27:19Z",
+   "error": null,
+   "gaps": 1,
+   "ids": [
+    "stories_not_tax"
+   ],
+   "judge": "rm-coverage-judge-1794940039",
+   "late": [],
+   "tags": {
+    "changed": 1
+   },
+   "tokens": 566882,
+   "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894",
+   "verdict": "not_covered"
   }
  ],
+ "coverage_stop": {
+  "at": "2026-11-17T18:29:13Z",
+  "why": "3 not_covered verdicts (limit 3)"
+ },
  "history": [
   {
    "at": "2026-11-15T04:54:02Z",
@@ -832,6 +881,30 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designer-1794939868: stage 4 done"
+  },
+  {
+   "at": "2026-11-17T18:27:18Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "11713880 of 4000000 spent; run rm-role-designer-1794940025 goes on with 400000 (advisory)"
+  },
+  {
+   "at": "2026-11-17T18:27:18Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-role-designer-1794940025, stage 5, budget 400000"
+  },
+  {
+   "at": "2026-11-17T18:29:13Z",
+   "stage": 5,
+   "what": "coverage_stop",
+   "why": "REFUSAL_NOTHING_COULD_EVER_PASS: 3 not_covered verdicts (limit 3); judging stopped on Graffiti (coverage_judge.py release <dir> --why ... grants one more look)"
+  },
+  {
+   "at": "2026-11-17T18:29:38Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-role-designer-1794940025 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -1097,12 +1170,21 @@
    "run": "rm-role-designer-1794939868",
    "stage": 4,
    "summary": "Cold Reader exam stands, not retaken: stage 3 (rm-role-designer-1794939319) changed only scenes.json (g1 sc_spree_variety, g2 sc_lived_in_soak); tree e6507f3b and sheet 26a15750 are byte-identical to the exam's frozen inputs, scenarios_hash recomputes equal, and the control copy (going_over removed) was made from this tree. Readers see only sheet, tree and scenario text, so a retake would re-score identical inputs. Standing result: 122/122 by both Readers, accept_where_reject_core 0, no challenger misses, control missed e8 and e19. The coverage judge's look at the mended scenes is stage 5's."
+  },
+  {
+   "at": "2026-11-17T18:29:38Z",
+   "outcome": "rejected",
+   "run": "rm-role-designer-1794940025",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "ready",
+ "status": "blocked",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

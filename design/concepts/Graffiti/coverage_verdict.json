@@ -1,6 +1,89 @@
 {
- "at": "2026-11-17T17:34:22Z",
+ "against": "rm-coverage-judge-1794936862",
+ "at": "2026-11-17T18:27:19Z",
+ "changed": [
+  "dec:d_raider_pressure",
+  "dec:d_rework_no_park",
+  "exam",
+  "scene:sc_lived_in_soak",
+  "scene:sc_spree_variety"
+ ],
  "checklist": [
+  {
+   "evidence": [
+    "scenes.json:57",
+    "scenes.json:69",
+    "scenes.json:73",
+    "tree.json:112",
+    "exam.json:753"
+   ],
+   "id": "marks_various",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_spree_variety",
+     "what": "several visibly different kinds of mark are seen in one colony, judged by eye rather than by def list"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spree_variety",
+     "what": "the judge sees the marks as the player does: captured at play zoom, unlabelled, by a judge that did not make the art"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spree_variety",
+     "what": "control rules out tint-only variety and a judge who calls any tinted set varied (one texture in six tints; six defs sharing one texture, the exam's k1 shape)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spree_variety",
+     "what": "red: the pool collapsing to one def is still caught by the gated-pool script read"
+    },
+    {
+     "ok": true,
+     "scene": "sc_spree_variety (entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN, item file present)",
+     "what": "entry point missing, so filed as a build item before acceptance review"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:625",
+    "scenes.json:638",
+    "scenes.json:642",
+    "tree.json:638",
+    "exam.json:361",
+    "exam.json:788"
+   ],
+   "id": "stories_not_tax",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_lived_in_soak",
+     "what": "three in-game weeks of an ordinary colony of six, unforced"
+    },
+    {
+     "ok": true,
+     "scene": "sc_lived_in_soak",
+     "what": "each colonist is read on their own, including at least one sensitive and one clean-freak colonist (asserted from GraffitiTemperament)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_lived_in_soak",
+     "what": "at least one unforced graffiti story happens, so a colony where graffiti never happens fails"
+    },
+    {
+     "ok": true,
+     "scene": "sc_lived_in_soak",
+     "what": "messages and letters together are few per week"
+    },
+    {
+     "ok": false,
+     "scene": "sc_lived_in_soak",
+     "what": "red: a colonist carrying a standing graffiti mood penalty is rejected"
+    }
+   ]
+  },
   {
    "evidence": [
     "record.json:279",
@@ -358,33 +441,6 @@
   },
   {
    "evidence": [
-    "tree.json:108",
-    "scenes.json:68",
-    "scenes.json:71",
-    "exam.json:46",
-    "sheet.md:18"
-   ],
-   "id": "marks_various",
-   "parts": [
-    {
-     "ok": false,
-     "scene": "sc_spree_variety",
-     "what": "several visibly different kinds of mark in one colony. Changed: the expect is now 'a judge shown the lanes' marks tells several kinds of mark apart', but the action is still 'read def and variant of every mark' with no capture shown to a judge"
-    },
-    {
-     "ok": false,
-     "scene": "sc_spree_variety",
-     "what": "control ruling out recolours of one shape: only 'the pool gated to one def' / 'one def only', a pool read the judge never sees. It cannot catch exam e6's 'six entries that share one texture' and does not calibrate the judge"
-    },
-    {
-     "ok": true,
-     "scene": "",
-     "what": "the sheet line 'One colony holds visibly different kinds of mark, not recolours' matches the reworded leaf"
-    }
-   ]
-  },
-  {
-   "evidence": [
     "scenes.json:323",
     "tree.json"
    ],
@@ -703,33 +759,6 @@
   },
   {
    "evidence": [
-    "tree.json:634",
-    "scenes.json:632",
-    "scenes.json:636",
-    "exam.json:67",
-    "sheet.md:37"
-   ],
-   "id": "stories_not_tax",
-   "parts": [
-    {
-     "ok": false,
-     "scene": "sc_lived_in_soak",
-     "what": "no colonist's mood is ruled by marks. Changed: the oracle now says 'no colonist's mood is ruled by them', but sc_lived_in_soak still checks 'summed mark thoughts stay small' and asserts no sensitive or clean-freak colonist, so one ruled pawn can hide in the sum"
-    },
-    {
-     "ok": false,
-     "scene": "sc_lived_in_soak",
-     "what": "occasional stories happen: the oracle's 'they read as stories' and the experience's 'make occasional stories' are not asserted in the scene; 'stay small' and 'few per week' pass a colony where graffiti never happens unforced"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak",
-     "what": "no message stream: 'Graffiti messages few per week', and the forced-hourly control shows the instrument can see a tax (unchanged, passed)"
-    }
-   ]
-  },
-  {
-   "evidence": [
     "scenes.json:601",
     "tree.json"
    ],
@@ -777,180 +806,129 @@
    ]
   }
  ],
+ "claims": [
+  {
+   "evidence": "scenes.json sc_spree_variety: action now captures every lane's marks at play zoom, unlabelled, and shows them to a judge that did not make the art, who names the kinds (the def and variant read stays as a script read); control.case is a calibration for the same judge: one def's texture in the six lanes' tints and six defs sharing one texture, expect 'the judge calls each recolour set recolours of one', rules_out adds 'a judge who calls any tinted set varied'; the pool-gate read stays. The script work is filed as entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN. acceptance/variety_scene_judge_capture.py: PASS",
+   "gap": "g1"
+  },
+  {
+   "evidence": "scenes.json sc_lived_in_soak: start asserts at least one sensitive and one clean-freak (Very Neurotic) colonist among the six, read from GraffitiTemperament; expect is per colonist against the control ('every colonist, each read on their own, stays below the control's standing tax for a colonist of the same temperament'), no summed check, plus 'at least one unforced graffiti story happens in the three weeks: a mark painted, read with a thought, or answered'; the control is read per colonist and rules out an instrument that averages a taxed colonist away. Script work filed as entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE. acceptance/soak_scene_per_colonist.py: PASS",
+   "gap": "g2"
+  }
+ ],
  "contract": {
   "advisory": false,
   "alarms": [
    {
+    "detail": {
+     "clauses": {
+      "answer_wall": 1,
+      "art_skill": 1,
+      "fights_reasons": 1,
+      "going_over": 1,
+      "ideo_sigil": 1,
+      "inv_beauty_and_craft": 1,
+      "inv_breach_bias": 1,
+      "inv_ideo_sigils": 1,
+      "inv_joy_and_idle_tag": 1,
+      "inv_mark_on_wall": 2,
+      "inv_player_orders": 2,
+      "inv_raid_marks": 1,
+      "inv_raider_future_marks": 1,
+      "inv_settings": 1,
+      "inv_social_layer": 1,
+      "inv_standalone": 1,
+      "inv_temperament": 1,
+      "inv_viewer_mood": 1,
+      "inv_weathering": 1,
+      "marks_various": 1,
+      "mockery": 1,
+      "not_dirt": 1,
+      "own_fun": 1,
+      "raid_mark_troubles": 1,
+      "raider_pressure": 1,
+      "reads_at_play_zoom": 1,
+      "rest": 1,
+      "sits_on_wall": 2,
+      "stands_alone_settings": 1,
+      "stories_not_tax": 2,
+      "temperament": 1,
+      "tribute_memorial": 1,
+      "ugliness_visible": 1,
+      "walk_lived_in": 1,
+      "weathering_bounds_marks": 1
+     },
+     "repair_due": []
+    },
+    "family": "coverage_judge",
+    "first_at": "2026-11-17T18:29:13Z",
+    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+    "last_at": "2026-11-17T18:29:13Z",
+    "open": true,
+    "subject": "item:RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
+    "told_at": "2026-11-17T18:29:13Z",
+    "trips": 1,
+    "why": "4 refused verdicts (limit 4)"
+   },
+   {
     "family": "coverage_judge",
     "first_at": "2026-11-15T09:32:09Z",
     "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
-    "last_at": "2026-11-17T17:40:08Z",
+    "last_at": "2026-11-17T18:29:13Z",
     "open": true,
     "subject": "family:coverage_judge",
     "told_at": "2026-11-15T09:32:09Z",
-    "trips": 15,
+    "trips": 18,
     "why": "refused 20 of its last 20 verdicts (limit 70%)"
    }
   ],
   "cached": [],
   "calibration": "CALIBRATED",
   "counted": true,
-  "may_judge": true,
+  "may_judge": false,
   "ok": true,
   "repair_due": []
  },
  "contract_reasked": [
-  "refusal 0 (marks_various): evidence 'design/concepts/Graffiti/scenes.json sc_spree_variety' is not one of the inputs the judge was given",
-  "refusal 0 (marks_various): evidence \"design/concepts/Graffiti/tree.json marks_various (oracle_proposed, false_pass 'one def in six tints')\" is not one of the inputs the judge was given",
-  "refusal 0 (marks_various): evidence \"design/concepts/Graffiti/exam.json e6 ('the def list reads six entries that share one texture' -> reject), c5\" is not one of the inputs the judge was given",
-  "refusal 0 (marks_various): evidence \"design/concepts/Graffiti/tree.json (marks_various oracle_proposed, false_pass 'one def in six tints')\" is not one of the inputs the judge was given",
-  "refusal 0 (marks_various): evidence 'design/concepts/Graffiti/exam.json e6, c5' is not one of the inputs the judge was given",
-  "refusal 0 (marks_various): evidence 'design/concepts/Graffiti/sheet.md [leaf:marks_various]' is not one of the inputs the judge was given",
-  "refusal 1 (stories_not_tax): evidence \"design/concepts/Graffiti/tree.json stories_not_tax (oracle_proposed, experience 'the player sees graffiti make occasional stories')\" is not one of the inputs the judge was given",
-  "refusal 1 (stories_not_tax): evidence \"design/concepts/Graffiti/scenes.json sc_lived_in_soak (start 'a colony of six on ordinary walls (asserted)', expect 'summed mark thoughts stay small and Graffiti messages few per week')\" is not one of the inputs the judge was given",
-  "refusal 1 (stories_not_tax): evidence \"design/concepts/Graffiti/scenes.json sc_temperament / record.json inv_temperament ('sensitive pawns feel more both ways, clean freaks take extra debuffs')\" is not one of the inputs the judge was given",
-  "refusal 1 (stories_not_tax): evidence \"design/concepts/Graffiti/exam.json e9 (accept needs 'occasional stories, no colonist's mood ruled by marks')\" is not one of the inputs the judge was given",
-  "refusal 1 (stories_not_tax): evidence 'design/concepts/Graffiti/tree.json (stories_not_tax oracle_proposed, experience)' is not one of the inputs the judge was given",
-  "refusal 1 (stories_not_tax): evidence 'design/concepts/Graffiti/scenes.json sc_lived_in_soak' is not one of the inputs the judge was given",
-  "refusal 1 (stories_not_tax): evidence 'design/concepts/Graffiti/exam.json e9, e10' is not one of the inputs the judge was given",
-  "refusal 1 (stories_not_tax): evidence 'design/concepts/Graffiti/sheet.md [leaf:stories_not_tax]' is not one of the inputs the judge was given",
-  "passed inv_mark_on_wall: evidence 'design/concepts/Graffiti/record.json (inv_mark_on_wall)' is not one of the inputs the judge was given",
-  "passed inv_mark_on_wall: evidence 'design/concepts/Graffiti/scenes.json sc_wall_closeup' is not one of the inputs the judge was given",
-  "passed inv_mark_art_set: evidence 'design/concepts/Graffiti/record.json (inv_mark_art_set)' is not one of the inputs the judge was given",
-  "passed inv_mark_art_set: evidence 'design/concepts/Graffiti/scenes.json sc_spree_corridor, sc_gallery' is not one of the inputs the judge was given",
-  "passed inv_beauty_and_craft: evidence 'design/concepts/Graffiti/record.json (inv_beauty_and_craft)' is not one of the inputs the judge was given",
-  "passed inv_beauty_and_craft: evidence 'design/concepts/Graffiti/scenes.json sc_art_skill, sc_beauty_pair' is not one of the inputs the judge was given",
-  "passed inv_ideo_sigils: evidence 'design/concepts/Graffiti/record.json' is not one of the inputs the judge was given",
-  "passed inv_ideo_sigils: evidence 'design/concepts/Graffiti/scenes.json sc_sigil' is not one of the inputs the judge was given",
-  "passed inv_spree: evidence 'design/concepts/Graffiti/scenes.json sc_spree_corridor, sc_spree_wall' is not one of the inputs the judge was given",
-  "passed inv_joy_and_idle_tag: evidence 'design/concepts/Graffiti/scenes.json sc_own_fun' is not one of the inputs the judge was given",
-  "passed inv_joy_and_idle_tag: evidence 'design/concepts/Graffiti/record.json' is not one of the inputs the judge was given",
-  "passed inv_player_orders: evidence 'design/concepts/Graffiti/scenes.json sc_player_orders, sc_raid_retaken, showcases' is not one of the inputs the judge was given",
-  "passed inv_viewer_mood: evidence 'design/concepts/Graffiti/scenes.json sc_spree_corridor' is not one of the inputs the judge was given",
-  "passed inv_social_layer: evidence 'design/concepts/Graffiti/scenes.json sc_answer_wall, sc_fights, sc_mockery, sc_tribute_memorial' is not one of the inputs the judge was given",
-  "passed inv_visitors: evidence 'design/concepts/Graffiti/scenes.json sc_visitors' is not one of the inputs the judge was given",
-  "passed inv_raid_marks: evidence 'design/concepts/Graffiti/scenes.json sc_raid_exit, sc_raid_retaken' is not one of the inputs the judge was given",
-  "passed inv_breach_bias: evidence 'design/concepts/Graffiti/scenes.json sc_breach_bias_raid, sc_breach_toggle, coverage_rest' is not one of the inputs the judge was given",
-  "passed inv_scrub_protection: evidence 'design/concepts/Graffiti/scenes.json sc_scrub_protection' is not one of the inputs the judge was given",
-  "passed inv_temperament: evidence 'design/concepts/Graffiti/record.json (inv_temperament)' is not one of the inputs the judge was given",
-  "passed inv_temperament: evidence 'design/concepts/Graffiti/scenes.json sc_temperament' is not one of the inputs the judge was given",
-  "passed inv_wall_loss: evidence 'design/concepts/Graffiti/record.json' is not one of the inputs the judge was given",
-  "passed inv_wall_loss: evidence 'design/concepts/Graffiti/scenes.json sc_wall_loss' is not one of the inputs the judge was given",
-  "passed inv_settings: evidence 'design/concepts/Graffiti/record.json' is not one of the inputs the judge was given",
-  "passed inv_settings: evidence 'design/concepts/Graffiti/floor.json (mod_settings applicable)' is not one of the inputs the judge was given",
-  "passed inv_settings: evidence 'design/concepts/Graffiti/sheet.md' is not one of the inputs the judge was given",
-  "passed inv_settings: evidence 'design/concepts/Graffiti/scenes.json sc_settings, coverage_rest' is not one of the inputs the judge was given",
-  "passed inv_standalone: evidence 'design/concepts/Graffiti/scenes.json sc_settings, coverage_rest' is not one of the inputs the judge was given",
-  "passed inv_raider_future_marks: evidence 'design/concepts/Graffiti/scenes.json sc_raider_pressure' is not one of the inputs the judge was given",
-  "passed inv_weathering: evidence 'design/concepts/Graffiti/record.json (inv_weathering)' is not one of the inputs the judge was given",
-  "passed inv_weathering: evidence 'design/concepts/Graffiti/scenes.json sc_weathered_raid_mark, coverage_rest' is not one of the inputs the judge was given",
-  "passed inv_weathering: evidence 'design/concepts/Graffiti/tree.json weathering_bounds_marks' is not one of the inputs the judge was given",
-  "passed mark_appears: evidence 'design/concepts/Graffiti/scenes.json sc_spree_wall' is not one of the inputs the judge was given",
-  "passed mark_appears: evidence 'design/concepts/Graffiti/sheet.md' is not one of the inputs the judge was given",
-  "passed reads_at_play_zoom: evidence 'design/concepts/Graffiti/scenes.json sc_gallery' is not one of the inputs the judge was given",
-  "passed sits_on_wall: evidence 'design/concepts/Graffiti/tree.json (sits_on_wall)' is not one of the inputs the judge was given",
-  "passed sits_on_wall: evidence 'design/concepts/Graffiti/scenes.json sc_wall_closeup' is not one of the inputs the judge was given",
-  "passed ideo_sigil: evidence 'design/concepts/Graffiti/scenes.json sc_sigil' is not one of the inputs the judge was given",
-  "passed punk_register: evidence 'design/concepts/Graffiti/scenes.json sc_gallery' is not one of the inputs the judge was given",
-  "passed punk_register: evidence 'design/concepts/Graffiti/sheet.md' is not one of the inputs the judge was given",
-  "passed no_english: evidence 'design/concepts/Graffiti/scenes.json sc_gallery' is not one of the inputs the judge was given",
-  "passed not_dirt: evidence 'design/concepts/Graffiti/scenes.json sc_gallery' is not one of the inputs the judge was given",
-  "passed ugliness_visible: evidence 'design/concepts/Graffiti/tree.json (ugliness_visible)' is not one of the inputs the judge was given",
-  "passed ugliness_visible: evidence 'design/concepts/Graffiti/scenes.json sc_beauty_pair' is not one of the inputs the judge was given",
-  "passed ugliness_visible: evidence 'design/concepts/Graffiti/exam.json e3, e4, c3, c4' is not one of the inputs the judge was given",
-  "passed art_skill: evidence 'design/concepts/Graffiti/scenes.json sc_art_skill' is not one of the inputs the judge was given",
-  "passed own_fun: evidence 'design/concepts/Graffiti/scenes.json sc_own_fun' is not one of the inputs the judge was given",
-  "passed rereads_daily: evidence 'design/concepts/Graffiti/tree.json (rereads_daily)' is not one of the inputs the judge was given",
-  "passed rereads_daily: evidence 'design/concepts/Graffiti/scenes.json sc_rereads' is not one of the inputs the judge was given",
-  "passed mockery: evidence 'design/concepts/Graffiti/scenes.json sc_mockery' is not one of the inputs the judge was given",
-  "passed tribute_memorial: evidence 'design/concepts/Graffiti/scenes.json sc_tribute_memorial' is not one of the inputs the judge was given",
-  "passed answer_wall: evidence 'design/concepts/Graffiti/scenes.json sc_answer_wall' is not one of the inputs the judge was given",
-  "passed scrub_protection: evidence 'design/concepts/Graffiti/scenes.json sc_scrub_protection' is not one of the inputs the judge was given",
-  "passed player_orders: evidence 'design/concepts/Graffiti/scenes.json sc_player_orders' is not one of the inputs the judge was given",
-  "passed raid_mark_troubles: evidence 'design/concepts/Graffiti/scenes.json sc_raid_retaken, sc_weathered_raid_mark' is not one of the inputs the judge was given",
-  "passed going_over: evidence 'design/concepts/Graffiti/scenes.json sc_going_over' is not one of the inputs the judge was given",
-  "passed going_over: evidence 'design/concepts/Graffiti/exam.json control' is not one of the inputs the judge was given",
-  "passed raider_pressure: evidence 'design/concepts/Graffiti/scenes.json sc_raider_pressure, sc_weathered_raid_mark' is not one of the inputs the judge was given",
-  "passed raider_pressure: evidence 'design/concepts/Graffiti/sheet.md' is not one of the inputs the judge was given",
-  "passed visitors: evidence 'design/concepts/Graffiti/scenes.json sc_visitors' is not one of the inputs the judge was given",
-  "passed fights_reasons: evidence 'design/concepts/Graffiti/scenes.json sc_fights' is not one of the inputs the judge was given",
-  "passed temperament: evidence 'design/concepts/Graffiti/scenes.json sc_temperament' is not one of the inputs the judge was given",
-  "passed stands_alone_settings: evidence 'design/concepts/Graffiti/scenes.json sc_settings' is not one of the inputs the judge was given",
-  "passed stands_alone_settings: evidence 'design/concepts/Graffiti/tree.json' is not one of the inputs the judge was given",
-  "passed stands_alone_settings: evidence 'design/concepts/Graffiti/floor.json' is not one of the inputs the judge was given",
-  "passed paint_dies_with_wall: evidence 'design/concepts/Graffiti/scenes.json sc_wall_loss' is not one of the inputs the judge was given",
-  "passed weathering_bounds_marks: evidence 'design/concepts/Graffiti/tree.json (weathering_bounds_marks, tier offline)' is not one of the inputs the judge was given",
-  "passed weathering_bounds_marks: evidence 'design/concepts/Graffiti/sheet.md [leaf:weathering_bounds_marks]' is not one of the inputs the judge was given",
-  "passed weathering_bounds_marks: evidence 'design/concepts/Graffiti/scenes.json sc_weathered_raid_mark' is not one of the inputs the judge was given",
-  "passed weathering_bounds_marks: evidence \"src/RimMandrake/rimflow/roles/designer_scene_contract.md ('Each experience or walk leaf off the offline tier has at least one acceptance scene')\" is not one of the inputs the judge was given",
-  "passed walk_lived_in: evidence 'design/concepts/Graffiti/scenes.json sc_walk' is not one of the inputs the judge was given",
-  "passed walk_lived_in: evidence 'design/concepts/Graffiti/sheet.md' is not one of the inputs the judge was given",
-  "passed walk_lived_in: evidence 'src/RimMandrake/rimflow/roles/designer_lock.md' is not one of the inputs the judge was given",
-  "coverage: given inputs in no passed or refused evidence: exam.json, floor.json, record.json, scenes.json, sheet.md, tree.json"
+  "evidence 'design/concepts/Graffiti/acceptance/soak_scene_per_colonist.py' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'design/concepts/Graffiti/acceptance/soak_script_per_colonist.py' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'design/concepts/Graffiti/acceptance/variety_scene_judge_capture.py' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'design/concepts/Graffiti/exam.json' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'design/concepts/Graffiti/scenes.json' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'design/concepts/Graffiti/tree.json' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)"
  ],
  "gaps": [
   {
    "bar_kind": "experience",
    "criterion_by": "second_reader",
    "criterion_verdict": "sound",
-   "criterion_why": "Seeing several visibly different kinds of mark rather than tints of one shape is variety a player notices; it pins no count, and adding an art variant would not force a re-pass, so a correct mod can pass it with a judge-visible capture and a recolour control.",
+   "criterion_why": "Graffiti should give a colony occasional stories, not a standing mood penalty or a steady stream of messages; a player would notice either, a correct mod whose graffiti thoughts expire between events can pass it, and the refusal's fix tests the shape of each colonist's mood rather than a mood number, so renormalizing would not move it.",
    "evidence": [
-    "scenes.json:68",
-    "scenes.json:71",
-    "tree.json:108",
-    "exam.json:46"
+    "scenes.json:638",
+    "scenes.json:642",
+    "tree.json:638",
+    "exam.json:361",
+    "exam.json:788"
    ],
    "gid": "g1",
-   "ids": [
-    "marks_various"
-   ],
-   "judge_criterion_verdict": "sound",
-   "judge_criterion_why": "Once the positive is a judge's eye, the control must rule out the plausible alternative (tint-only variety, or an uncalibrated judge) at that same judge; a pool read cannot.",
-   "new_since": "regression",
-   "observed": "The expect reads 'a judge shown the lanes' marks tells several kinds of mark apart, not recolours of one'. But the action is 'read def and variant of every mark' (no capture), and the control is 'the pool gated to one def' with expect 'one def only'. Its rules_out, 'variety coming from tint alone', is never tested at the judge: six defs sharing one texture (exam e6) pass the gate control, and the judge is never shown a recolour set to reject.",
-   "return_to": 3,
-   "severity": "problem",
-   "since": "Card reword d1542a3675 / re-pin d4243898e1. sc_spree_variety.expect changed from 'at least 3 defs and 5 def-variant pairs' to a judge's call, and tree.json marks_various.oracle_proposed changed to match. The action and control were left as def reads.",
-   "smallest_fix": {
-    "attainable": "yes",
-    "cost": "edit",
-    "what": "scenes.json sc_spree_variety: add a capture-for-judge step to the action, and a recolour-set case to the control with expect 'the judge calls them recolours of one'. tree.json already names the case in its false_pass."
-   },
-   "what": "marks_various is now judged by eye, but its scene's action captures nothing for the judge, and its only control is a pool read the judge never sees. Nothing rules out one shape in several tints, or a judge who calls any tinted set varied.",
-   "where": "scenes.json sc_spree_variety (action, control)",
-   "would_pass": "sc_spree_variety's action captures every lane's mark at play zoom, unlabelled, for a judge who names the kinds. A control shows the same judge a recolour set it must call 'recolours of one': one def's texture in the six lanes' tints, or six defs sharing one texture. The pool-gate check can stay. A fresh judge or a script can check that scenes.json holds both the capture and this calibration control."
-  },
-  {
-   "bar_kind": "experience",
-   "criterion_by": "second_reader",
-   "criterion_verdict": "sound",
-   "criterion_why": "Graffiti reading as occasional stories, not a standing mood tax or a stream of messages, is something a player feels in play; comparing it against a forced control needs no pinned number, so a correct mod can pass a per-colonist check.",
-   "evidence": [
-    "tree.json:634",
-    "scenes.json:632",
-    "scenes.json:636",
-    "record.json:552",
-    "exam.json:67"
-   ],
-   "gid": "g2",
    "ids": [
     "stories_not_tax"
    ],
    "judge_criterion_verdict": "sound",
-   "judge_criterion_why": "The leaf's experience is that no pawn is taxed and stories still happen; a colony sum with no lower bound checks neither, and the fix compares against the scene's own control, not a tuning number.",
+   "judge_criterion_why": "The leaf's experience and red ('never a permanent mood tax', 'marks stack into a standing mood penalty') can be checked from per-colonist daily reads without pinning any number; only the scene's comparator misses it.",
    "new_since": "changed",
-   "observed": "The oracle says 'no colonist's mood is ruled by them: they read as stories'. The scene expects 'summed mark thoughts stay small and Graffiti messages few per week', and its start asserts only 'a colony of six on ordinary walls'. A colony sum averages away the regime the mod amplifies on purpose (record.json inv_temperament: 'sensitive pawns feel more both ways, clean freaks take extra debuffs'), and nothing requires any unforced mark, thought or letter, so an inert layer passes.",
+   "observed": "The expect is 'every colonist, each read on their own, stays below the control's standing tax for a colonist of the same temperament'. The control's case is 'the same start with painting forced every hour'. The script check the Designer filed (acceptance/soak_script_per_colonist.py) looks for 'soak_each_colonist_below_control', which tests size against that forced maximum. The kernel caps graffiti mood (RM_GraffitiKernel.cs BadMoodBudget = 8, scaled by temperament), so the forced control sits at or near the cap. An unforced colony whose every colonist holds a -3 to -7 graffiti total that never clears is below it and passes. The tree's red is 'a build whose marks stack into a standing mood penalty', and the exam's e51 and k6 reject exactly that ('a small debuff every colonist carries almost every day is a tax'). Replacing the old sum with this comparison fixed the averaging but left a ruled colonist able to pass by another route.",
    "return_to": 3,
    "severity": "problem",
-   "since": "tree.json stories_not_tax.oracle_proposed changed from 'summed mark thoughts per colonist stay within the trimmed range (about plus or minus 3 on average)' to 'no colonist's mood is ruled by them: they read as stories, not a tax'; sc_lived_in_soak was not updated. The missing story-occurs assertion predates the change (the experience's 'occasional stories' was already unasserted); the prior judge passed the row on the forced-hourly control, which proves the instrument can see a tax, not that the layer is alive.",
+   "since": "scene:sc_lived_in_soak",
    "smallest_fix": {
     "attainable": "yes",
     "cost": "edit",
-    "what": "scenes.json sc_lived_in_soak: add the trait mix to start; change expect from a summed check to a per-colonist check against the control, and add the 'at least one unforced story' assertion. Make the control's 'visible standing tax' a per-colonist read too."
+    "what": "Edit scenes.json sc_lived_in_soak: change the expect from 'stays below the control's standing tax' to 'each colonist's Graffiti mood total returns to zero between stories, never held across most days of weeks two and three', and the control's expect to 'the forced colony's sensitive and clean-freak colonists hold a Graffiti total that never returns to zero'. Update the filed item RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE and its acceptance test so they require a per-colonist standing-penalty check in place of soak_each_colonist_below_control."
    },
-   "what": "stories_not_tax: the reworded oracle promises that no colonist's mood is ruled by marks and that they read as stories, but the soak checks only a colony-wide sum. One sensitive or clean-freak pawn can be ruled while the sum stays small, and a colony where graffiti never happens unforced passes.",
-   "where": "scenes.json sc_lived_in_soak (start, expect)",
-   "would_pass": "sc_lived_in_soak's start asserts at least one sensitive and one clean-freak colonist among the six. Expect reads each colonist's own mark-thought mood daily, and every colonist stays below the forced-hourly control's level for a colonist of the same traits (a relative check, no pinned number). Expect also requires at least one unforced graffiti story in the three weeks: a mark painted, read with a thought, or answered."
+   "what": "The soak now reads each colonist on their own, but its pass test is 'stays below the control's standing tax', and the control is painting forced every hour. So a colonist who carries a standing graffiti mood penalty every day, smaller than the forced maximum, passes. That is the leaf's red: marks stacking into a standing mood penalty.",
+   "where": "scenes.json sc_lived_in_soak (expect, control)",
+   "would_pass": "The expect and its script check test the shape of each colonist's graffiti mood, not its size against the forced maximum. For every colonist, the total from Graffiti thoughts must drop back to zero between stories: it is not held on most days of weeks two and three unless a new mark, mockery or raid caused it. The control (painting forced every hour, read per colonist) shows at least the sensitive and clean-freak colonists holding a graffiti total that never returns to zero, which proves the instrument flags a standing penalty. A script can check this from the daily per-colonist reads the action already takes. It needs no mood number, so a renormalization does not move it."
   }
  ],
  "hashes": {
@@ -960,12 +938,12 @@
   "dec:d_flagship_spree": "f0de1574df2aa0f3",
   "dec:d_his_look": "4805074f30354688",
   "dec:d_provably_ok": "909a0e806903b1b9",
-  "dec:d_raider_pressure": "e014488c66f2bff2",
+  "dec:d_raider_pressure": "6b73f1db5e4e917a",
   "dec:d_raider_pressure_traceable": "1291cb9a2b03dfe9",
   "dec:d_rereads": "f2f244b150adbc96",
-  "dec:d_rework_no_park": "844846402b48e06e",
+  "dec:d_rework_no_park": "af644e48fa066a93",
   "dec:d_wall_loss": "5cbed36221803880",
-  "exam": "007408f9c8105f44",
+  "exam": "485d67c89e147017",
   "floor": "9f55f9451ce980d9",
   "inv:inv_beauty_and_craft": "e7b56e5793e2c6a3",
   "inv:inv_breach_bias": "f1735197ea4a57a5",
@@ -1028,7 +1006,7 @@
   "scene:sc_gallery": "7e00a4913b2f740b",
   "scene:sc_going_over": "4ae5ee227d565037",
   "scene:sc_hostile_thought": "0e10ba8ce7a253f6",
-  "scene:sc_lived_in_soak": "6e4b7689d40e80d3",
+  "scene:sc_lived_in_soak": "19299cea990ee08d",
   "scene:sc_mockery": "715dbd6225bd1686",
   "scene:sc_own_fun": "b384dddb0a0f46d3",
   "scene:sc_player_orders": "e3f8411c4993b2f9",
@@ -1040,7 +1018,7 @@
   "scene:sc_settings": "1f9c7286b7fa1415",
   "scene:sc_sigil": "64e1d16fb5ee8d00",
   "scene:sc_spree_corridor": "1f4a183e05b955db",
-  "scene:sc_spree_variety": "553aee3bfd8a6612",
+  "scene:sc_spree_variety": "970e708548cef069",
   "scene:sc_spree_wall": "e3e6628c7601fe3d",
   "scene:sc_temperament": "a91a3cf3e50e8055",
   "scene:sc_tribute_memorial": "881c8f058d1952a3",
@@ -1064,21 +1042,21 @@
   "tree:rest": "b8d8ff1e7f005f8f"
  },
  "inputs": {
-  "exam.json": "50f47d0e87116055e5d5eccdcf4f5257fb23d90007cd54010232a3a9af02a5ad",
+  "exam.json": "d2eafd2f45adc568544b32b44a3412f07fff492acfe189d46b733994a41e674d",
   "floor.json": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
-  "record.json": "fc5893ede1c17c89d975a27fd8745b5001b12d980cc4a6a0ac8a49fee0963256",
-  "scenes.json": "dfd1eeeae40599754299b0df6b64edeae1681437a476139a74d9c0c44c7d2a72",
+  "record.json": "7c48039e979751714a1b3e2a270874f346a21991762aae323516fe5702a1cfd2",
+  "scenes.json": "0ce1b0ed0644ebed3f1ff06632f3bdb71de7ddef1424cf3c57144afcaca4857b",
   "sheet.md": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d"
  },
- "judge": "rm-coverage-judge-1794936862",
- "mode": "full",
- "prompt_chars": 8575,
- "reasons": "Delta round 4 against rm-coverage-judge-1794753924. That verdict was covered with no gaps, so there were no open gaps to check for repair. I recomputed the entry hashes. The entries changed since that verdict are: exam, sheet:does, leaves marks_various, rereads_daily, stories_not_tax, ugliness_visible and weathering_bounds_marks, and scenes sc_beauty_pair, sc_spree_variety and sc_wall_closeup. All come from the card reword that took numbers out of the bars. I re-judged the rows those entries touch and kept every other row as passed; their scenes are unchanged and I can quote no defect in them.\n\nTwo changes opened blocking gaps:\n- g1 (marks_various, regression): the bar became a judge's eye, but its control stayed a pool read.\n- g2 (stories_not_tax, changed): the oracle now promises that no colonist is ruled and that marks read as stories, but the soak checks a colony sum with no lower bound.\n\nThe other changes hold:\n- ugliness_visible: the same-hand inspection at every craft is added, and the judge calibration stays.\n- rereads_daily: the change has the same meaning.\n- weathering_bounds_marks: an offline kernel leaf, exempt from an acceptance scene; its sheet line matches.\n- sc_wall_closeup: the far-side control is restaged, with a trace line, a ProbeWallFaces read and a stated red, and it still covers both the order and the pool path.\n\nThe exam retake (46/46) is consistent with sheet.md and tree.json, and its e6 is the exact case g1's scene cannot catch.\n\nAdvisory, not counted (bar rule): record.json inv_weathering still says 'fades over the last 40% of its life' and 'a few weeks outdoors', and inv_mark_art_set says 'several variants each'. This is tuning and asset-variant wording; an experience wording would match the reworded sheet. sc_beauty_pair's craft sweep sits in control.expect while control.case names only the side-swap and identical tallies; naming the sweep in case would read cleaner.",
+ "judge": "rm-coverage-judge-1794940039",
+ "mode": "delta",
+ "prompt_chars": 97126,
+ "reasons": "One of the two claimed fixes holds; the other does not. g1 (marks_various) is fixed. sc_spree_variety now captures the lanes at play zoom, unlabelled, for a judge that did not make the art. Its control calibrates that same judge on two recolour sets (one texture in six tints, six defs sharing one texture), so tint-only variety and a lenient judge are both ruled out. The gated-pool read stays, and the entry point is filed as an item whose file exists. g2 (stories_not_tax) is partly fixed. The soak's start now asserts a sensitive colonist and a clean freak, each colonist is read on their own, and an unforced story is required. But the new pass test compares each colonist against a maximal, forced-hourly control, and the kernel caps graffiti mood. A colonist holding a standing penalty below that cap passes, which is the leaf's own red and the exam's e51 and k6 rejects. It is tagged `changed` because the new comparator opened it. The fix is a one-scene edit with no tuning number. Both acceptance scripts print PASS against scenes.json, but they test for key words, not for this.",
  "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
  "signed": false,
- "stopped": "released for one more look at round 4; that look was not_covered",
+ "stopped": "3 not_covered verdicts (limit 3)",
  "token_unit": "weighted_v2",
- "tokens": 892933,
+ "tokens": 566882,
  "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894",
  "verdict": "not_covered"
 }
