@@ -2638,6 +2638,11 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
             MH.observe(root, shipped, st, facts, now, rd, fx.get("hands"))
         except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
             rd["hand_acts_error"] = "%s: %s" % (e.__class__.__name__, e)
+        try:        # a mod going round the same ground: a Fable Rescue PROPOSED to the Conductor, never launched
+            import maturation_rescue as MR      # noqa: E402  (RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED)
+            MR.observe(root, cfg, st, facts, rows, now, rd, fx.get("rescue"))
+        except Exception as e:      # noqa: BLE001  this reading failing never costs the tick
+            rd["rescue_error"] = "%s: %s" % (e.__class__.__name__, e)
         _write(os.path.join(d, "state.json"), st)
         _write(os.path.join(d, "reading.json"), rd)
         with open(os.path.join(d, "ticks.jsonl"), "a", encoding="utf-8") as f:

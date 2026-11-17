@@ -50,7 +50,10 @@ matching its own numbers.
 - **No universal conflict stage.** The conflict procedure stays in the Rescue brief, used on a stuck mod; it is not
   a stage of the Maturation Pipeline. Making it one is a Divergent idea for later, to be filed as its own item only
   after step 2 shows it transfers beyond Slack.
-- No stall detector, no mandatory invention machinery, no framework for exhaustive worlds, no new margin gate.
+- No mandatory invention machinery, no framework for exhaustive worlds, no new margin gate. (A stall detector that
+  PROPOSES a rescue, never launches one, is now ordered: owner, 2026-11-16 about 10:10 PM PST, *"yup. Then we'll watch
+  stats to see if we need to tune that."* Item `RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED`;
+  ruling in `design/RimMandrake/standing_rulings.md`.)
 - Writing a new standing ruling. This item's filing title asked for one in `design/RimMandrake/standing_rulings.md`;
   the owner's ruling tonight narrowed the work to the brief and this order, so the ruling waits for step 2.
 - GPT's own first step, every owed action (a launch, a question to the owner) with a timestamp, an acknowledgement, a

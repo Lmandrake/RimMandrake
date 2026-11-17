@@ -2378,8 +2378,11 @@ def blind_brief_text(root, mod, cap_usd=None):
 #
 # The visit's record, design/concepts/<Mod>/version/in_game/visit_<N>/ (N = the moves into in_game so far):
 #   rows.jsonl     one row per run of a stage-6 check: {"test", "verdict": PASS|FAIL|UNMEASURED, "site_checked": bool,
-#                  "game": "archmagi"|"stevedesktop", "mod_sha", "command", "evidence"}; the last row per test counts (a
-#                  rerun after a fix made in the sitting supersedes; the earlier FAIL stays as history)
+#                  "game": "archmagi"|"stevedesktop", "mod_sha", "command", "evidence", "held": [...]}; the last row per
+#                  test counts (a rerun after a fix made in the sitting supersedes; the earlier FAIL stays as history).
+#                  "held" names what the site switched off or locked for the run ("fire", "weather", ...; [] when the whole
+#                  mod ran): maturation_rescue.py's C5 reads a bar whose every decider ran held as untested by the real
+#                  mechanic, and a row without "held" as UNMEASURED (RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED)
 #   strange.jsonl  one row per strange thing seen that no bar covers: {"what", "explained": "..."} or {"what", "filed": ID}
 #   SUMMARY.md     its "## Exit" section holds the block: ingame_rows: {test: pass|fail|unmeasured, ...} / strange_open: N
 #                  / savegame: <path> / exit_met: true|false
@@ -2999,7 +3002,8 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "`%s/`:" % vdir,
           "- `rows.jsonl`: one row per run: `{\"test\": id, \"verdict\": \"PASS\"|\"FAIL\"|\"UNMEASURED\", "
           "\"site_checked\": true, \"game\": \"archmagi\"|\"stevedesktop\", \"mod_sha\": <sha of the deployed source>, "
-          "\"command\": ..., \"evidence\": <path>}`, and in `evidence` or beside it the active mod list parsed from "
+          "\"command\": ..., \"evidence\": <path>, \"held\": [what the site switched off or locked for this run, e.g. "
+          "\"fire\", \"weather\"; [] when the whole mod ran]}`, and in `evidence` or beside it the active mod list parsed from "
           "that game's `ModsConfig.xml` (`activeMods`, in order) and the game build (spec: a verdict counts only on the "
           "version and list he walks).",
           "- `strange.jsonl`: as above; an empty file when nothing strange was seen.",

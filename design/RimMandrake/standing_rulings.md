@@ -635,6 +635,21 @@ PST, after reading the Contagion coverage judge's 25 refusals; "pendantic" is hi
 
 Item: `RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS`.
 
+## The pipeline proposes a Fable Rescue; it never launches one — owner, 2026-11-16
+
+Asked "Shall I file that as the next step of the work order, with its tests?" about the Conductor's criteria for when a
+mod is going round the same ground (both rescues of 2026-11-16, Gimme Some Slack and Pyrelands, were launched by hand),
+he answered *"yup. Then we'll watch stats to see if we need to tune that."* (about 10:10 PM PST). The Dispatch tick runs
+`src/RimMandrake/rimflow/maturation_rescue.py`, which reads five criteria from records (a check flipping pass/fail
+across builds; a tuning number changed twice in opposite directions; the same bar refused two cycles running; the stage
+spend ceiling reached without a green certificate; a bar with no test that runs the real mechanic) and writes one
+`RESCUE PROPOSED:` line per new piece of evidence to the Conductor log, marked RAISE FIRST. It never launches a rescue, it
+proposes nothing for a mod the owner holds or one under or just out of a rescue, and a criterion it cannot read is
+reported UNMEASURED. Its thresholds are one settings block, tuned only from the stats (`rescue_proposals.jsonl` in the
+Dispatch state dir; `maturation_rescue.py status`). This supersedes "No stall detector" in
+`RIMMANDRAKE_ENACT_INVENTION_WHEN_BARS_CONFLICT_GRADIENT_TOO_EASY`. Item:
+`RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED`.
+
 ## Broken tests are expected; an inability to measure is reported up, never read as broken work — owner, 2026-11-03
 
 *"The checker was unable to measure something, and interpreted that as a wrong value rather than an inability that should
