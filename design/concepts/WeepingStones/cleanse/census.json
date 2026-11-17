@@ -113,7 +113,7 @@
       "called_by": "Biome wildPlants; vanilla tree growth/cut/wood output; shared shade engine reads geometry",
       "serves": "trees",
       "fate": "life",
-      "why": "Scarce timber is the ordinary building cost of the land. Shared dewshrooms must receive the ruled distinct variant, not a permanent cross-biome identity waiver.",
+      "why": "Native timber is gatherable from separated trees and local cutting limits further wooden construction. Treeless ground loses ordinary building material, while a continuous timber forest loses this desert building cost. Shared dewshrooms must receive the ruled distinct variant, not a permanent cross-biome identity waiver.",
       "needed_by": "none: directly classified or deferred",
       "ticket": "T16"
     },

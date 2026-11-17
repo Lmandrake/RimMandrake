@@ -1,0 +1,759 @@
+{
+ "mod": "WeepingStones",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "design/concepts/WeepingStones/cleanse/bars.json B6 (says: \"can breed a vhorrin that consumes its stock\"), with B8, R6 and R7",
+     "evidence": "Nothing defines how the vhorrin eats stock. tickets.md T13 says \"vhorrin has no demonstrated stock-consumption route\" and asks for \"additional predator stock-pressure\". ambiguities.md item 19 says T13 must do this \"without creating a new predation engine at full wild water\". The two obvious ways to build it both break a kept rule. (a) As a predator hunt: R6 says \"Hunger and chase suppression share its radius\", and B8 accept 1 has a hungry wild or tame predator abandon a chase inside protected water. B8's range includes \"adjacent pens\", and the definition puts pens in the oasis water, so a pen vhorrin is a predator inside the truce field. (b) As stock removed by the pool bookkeeping: R7's list of readable reasons (\"Kill/carcass, netted stock, meat/cull, visible escape and warned emergence\") has no entry for a resident eaten by the vhorrin, so this would break the standing rule that no animal vanishes without a readable sign. The truce_field meeting lists B6 but names only \"emergence/cull ... overlap\", not this clash.",
+     "would_pass": "A rule that says how one vhorrin feeding takes a resident: either predation with a stated relation to the truce field (for example, pen water excluded from suppression, or the vhorrin exempt as farm stock), or a bookkeeping loss that leaves a carcass or remains and an ordinary cue. Add that reason to R7, and have the truce_field meeting name the B6/B8/R6 clash with the model that settles it.",
+     "smallest_fix": "Add one rule (R14) defining how the vhorrin takes stock and what the player sees; add \"consumed by vhorrin (remains plus cue)\" to R7's reasons; name B6 against B8/R6 in the truce_field meeting's why."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "design/concepts/WeepingStones/cleanse/bars.json B2 says: \"find medicine and scarce timber\"",
+     "evidence": "\"scarce\" is a vague relative word of the kind the brief tells the author to hunt (\"rare\", \"often\"). B2's figurative list is []. No accept or reject picture separates scarce from absent or from plentiful: accept 1 only says \"cuts sparse native timber\". census.json trees row says \"Scarce timber is the ordinary building cost of the land\" without a picture. A build with no harvestable native tree on the map, or one where rockfinger is as dense as a temperate forest, passes the words as written.",
+     "would_pass": "Mark \"scarce\" in figurative with what it stands for (for example: native timber is present and gatherable but limits how much a settler builds from it, so building choices matter), plus one accept picture and one reject picture showing a map with no timber and a map with forest-thick timber, with no number pinned.",
+     "smallest_fix": "Add one figurative entry for \"scarce\" and one reject picture to B2."
+    }
+   ],
+   "reviewer_refusals": 2,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "On the ridge a settler follows dark wet stone down to green at the pool; dry sand and a usable building shoulder remain outside it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "The descriptions say wet rock, but the map is uniform sand with randomly scattered plants and an isolated blue puddle.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "On a hot flat seep map a green pool stands in open rock and sand without a shaded cliff beside it; the water comes from below.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "The map becomes continuous lush ground, or every flat seep pool is refused because there is no cliff.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "All the names resolve, but forage yields nothing useful, stock starves beside its own water, and the advertised dewglider only walks.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A native at its environmental water can satisfy its drinking need; the same place need not make an outsider heatproof.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "A settler gathers bladder-fruit and salvecomb, tends dewgourds for later stores, cuts sparse native timber and raises a native pack animal while prey and a dewglider move around the oasis.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "Dewgourd is harvested by a debug action while ordinary growth or storage never works.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "The job list says stock and feed, but workers immediately harvest all breeders and every later meal requires another wild capture.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "After the player deliberately overdraws a pen it goes quiet and needs restocking; the other tended pen continues producing.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "Feeding only changes the inspect text while actual animals starve or leave the designated water.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "A farmer stocks a selected pool, keeps food coming and takes surplus while breeders remain and later replenish the stock.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "The pen is removed during carry, so the breeder remains carried or is dropped with a readable reason; the handler and animal are still accounted for.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "The handler freezes the animal before throwing, succeeds regardless of landing, or removes it while leaving no animal, carcass or breeder item.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "A biter catch leaves a readable cut while a bank feeding job does not inflict a catch injury.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "A failed release or dead handler silently consumes the carried breeder, or multiple handlers duplicate it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "A moving fish leaves the landing spread and the net misses; a covered fish is visibly entangled and becomes carried breeder stock when bagged.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "The farmer sees thinning or a distinct crowding warning before avoidable loss, then the changed water display after feeding, harvesting or culling; inspect text gives the cause.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "The on-water picture never changes and only a selected zone inspect string says that stock is dying.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "A fed crowded pen displays reassuring healthy rings until a vhorrin appears, or a culled pen still displays its old predator state.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "An empty pen has an identifiable empty-state marker, so absence of animation cannot be mistaken for an overlay that failed to load.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "An eel jumps invisibly through an intact wall, or a conversion deletes an animal with only a dev-mode log.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Crowding or missed feed changes the warning; a vhorrin emerges from the failing stock, remaining stock declines, and culling it lets a fed/restocked pen resume the ordinary farm loop.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "A fan eel slips out along a visible traversable wet route, with an origin/destination cue, and is nettable outside; a blocked route leaves it in the pen.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "A random wild vhorrin appears in a healthy tended pen or its presence never harms the stock; the cull only prints that the pool is saved.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "The cull meat can become its recovery dish at an ordinary stove; a stored paste or gourd supports later meals without a special event.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Farm catch only becomes usable through an extra mod, or the feast rewards the whole colony despite nobody eating it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The menu has exotic names and text about doubt, but ordinary and doubtful meals leave identical memories in an ordinary eater.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "The same eater is content with ordinary fish and receives the beast-specific uneasy memory after loomu, huldu or ivvol, with a diluted ingredient version and a callous-trait exception.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "Animals stand peacefully only because hunger or AI was locked off; the truce ends when the fixture unlocks.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Any damage makes every map animal manhunt indiscriminately, or a farm handling scratch incriminates the handler and rouses the pen.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "A handler feeds, nets, harvests and culls designated farm stock without retaliation caused by their ordinary farm-care job.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "A hungry wild or tame predator abandons a chase as either animal enters protected water; a margin predator outside it can still hunt.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "A guilty raider hit at the pool rouses nearby eligible wildlife against that faction; an engine-classified self-defense hit does not newly blame the defender.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 1,
+     "text": "Ordinary work feeds the tended pens and produces repeat meals, while an intentionally neglected pen warns, fails and recovers; the oasis margins remain alive and dry building ground remains available after the mid-season reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 2,
+     "text": "The display looks healthy only while weather, breeding, truce or work givers are disabled; unlocking the complete map empties the pens or fills the map with stock and job errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 3,
+     "text": "Saving forgets the hungry pen or repeats a completed capture, then the colony stalls or receives endless warnings after reload.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 4,
+     "text": "Changing the order of feed, surplus harvest, cull and restock produces the expected temporary differences and still returns viable pens to production without resetting their history.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "How released stock stays in its pen. The ruled stocked-pool sheet (design/Jawa/worldbuilding/biomes/weeping_stones_stocked_pool_2026-09-24.md section 3, 'Pens and pool zones') makes pen walls ordinary low walls at the waterline. They raise the escape bar and keep karrek off the drinking margin, and 'the pen line is what keeps husbandry violence out of the truce's sight'. census.json's pens row covers only the zone bookkeeping (designator, body ID, feed clock). It has no row for keeping neutral released animals in the pen (walls, or wander limited to pen water), even though B3 rejects stock that 'leave the designated water' and T13 calls residency 'unproven'. That separation from the truce is also what the vhorrin refusal above turns on.",
+   "loop_or_three_way": "A crowding loop through B3, R5 and B6. R5 says default automation 'feeds and maintains but never liquidates breeders' and harvests only on a deliberate request. B3 and R10 require real reproduction. B6 and the source kernel turn a crowded pen into a vhorrin. So a farmer who does exactly the default 'tending' (feeding) and never asks for surplus grows the pen into crowding, and from there into a vhorrin. The tending that prevents a vhorrin is harvest, which is opt-in. Either B5's crowding warning reliably prompts a harvest request in time, or the default 'tended' pen in B9's season ends up as the neglected one. The stock_population meeting marks this unknown under the Whole-map husbandry season model but does not name the loop.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 450259
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json B6 (third accept picture), B8 (meant, range), R14, meetings.truce_field; definition.md 'When it goes wrong' (R14 paragraph); ambiguities.md item 19",
+     "evidence": "The ruled stocked-pool sheet (design/Jawa/worldbuilding/biomes/weeping_stones_stocked_pool_2026-09-24.md, Status RULED 2026-09-24) says in §1: 'The truce holds at the water (§4) — and the pen is not the truce. What happens inside a stocked pool is husbandry'. Its 'Pens and pool zones' paragraph adds 'the pen line is what keeps husbandry violence out of the truce's sight (§6, §4 both honored by geometry)'. The proposal does the opposite. It treats pen water as protected truce water ('Shared predator hunts remain suppressed at that same water'; B6: 'a predator hunt at that same protected water remains suppressed'; B8 range: 'a due vhorrin stock-feeding conversion at protected pen water while hungry wild/tame predator hunts remain suppressed'). It then builds R14's long-range bookkeeping conversion to get around a conflict that the lore had already settled by geometry. Neither meetings.truce_field nor the owner pages mention the sheet's line, and the owner pages state only 'the existing shared radius/guilty-hit law'.",
+     "would_pass": "The truce_field meeting and B6/B8 follow the sheet: designated pen cells are husbandry ground outside the truce, so the vhorrin feeds there by ordinary predation that leaves a readable carcass, while drinkers at the margin stay protected. Or the proposal keeps R14, cites the sheet line, argues why it departs from it, and puts that departure on page two as a question with its evidence.",
+     "smallest_fix": "Add a rule that stocked-pen zone cells are not truce water, as the ruled sheet says (the shared engine needs a narrow exclusion hook, named as a dependency need rather than a redesign). Rewrite B6's third accept picture and B8's range to match, and drop or shrink R14. Or keep R14 and list the contradiction with the sheet line as a question on owner_pages.md page two."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B8 says ('does not turn the gathering against its handler') and B9 says ('lives among dry stone and wet native gatherings'); both figurative: []",
+     "evidence": "B1 marks 'gathered' as figurative: 'Green clusters follow wet habitat rather than filling the whole map; not literal moving or social plants'. In B8 'the gathering' means the water wildlife (animals), a different sense. In B9 'wet native gatherings' could mean either the plant clusters or the congregated animals. Both are unmarked, so a builder and a judge can read different subjects into the same word.",
+     "would_pass": "Each bar's figurative list marks 'gathering(s)' and says what it stands for (B8: the wildlife standing at full water; B9: plant clusters at wet habitat, animal congregation at water, or both), each with an accept picture that departs from the literal reading.",
+     "smallest_fix": "Add a figurative entry for 'gathering' to B8 and for 'gatherings' to B9, or replace the words with the literal subjects ('the water wildlife'; 'wet native plants and animals')."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B4 says ('with handling risk confined to the catch'); figurative: []",
+     "evidence": "Read literally, 'the catch' is the NET capture job. Yet census.json keeps harvest_injury as part of the signature ('risks minor scratches for skarrin/iaala'), and census row 'cull' keeps a cull that 'risks a bite'. The ruled sheet's HARVEST row says 'Handling injuries are real'. B8's reject picture mentions 'a farm handling scratch' during farm care. A builder holding the literal B4 would remove the harvest and cull injuries; a judge could then refuse for missing nastiness, or pass a build with the injuries left in, depending on reading. Only feeding is clearly meant to be safe (definition.md: 'feeding at the bank has no handling-injury roll').",
+     "would_pass": "B4 marks 'the catch' as figurative for every hands-on contact with stock (net, bag, harvest, cull), as opposed to bank feeding, with an accept picture showing a harvest scratch or cull bite. Or the says sentence names the jobs literally.",
+     "smallest_fix": "Reword B4 to '...with handling risk confined to hands-on catching, harvesting and culling, never bank feeding', or add the figurative entry."
+    }
+   ],
+   "reviewer_refusals": 3,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "On a hot flat seep map a green pool stands in open rock and sand without a shaded cliff beside it; the water comes from below.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "On the ridge a settler follows dark wet stone down to green at the pool; dry sand and a usable building shoulder remain outside it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "The descriptions say wet rock, but the map is uniform sand with randomly scattered plants and an isolated blue puddle.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "The map becomes continuous lush ground, or every flat seep pool is refused because there is no cliff.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A settler gathers bladder-fruit and salvecomb, tends dewgourds for later stores, cuts sparse native timber and raises a native pack animal while prey and a dewglider move around the oasis.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "All the names resolve, but forage yields nothing useful, stock starves beside its own water, and the advertised dewglider only walks.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "The ordinary map has no harvestable native timber, so a settler can build with wood only after importing it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A native at its environmental water can satisfy its drinking need; the same place need not make an outsider heatproof.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "Harvestable native trees cover the ordinary map as a continuous forest, so local timber never constrains the settler's building choices.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 6,
+     "text": "Dewgourd is harvested by a debug action while ordinary growth or storage never works.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 7,
+     "text": "Harvestable native trees stand apart across dry ground, and gathering them makes a wooden building possible while further wooden construction calls for another timber source.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Feeding only changes the inspect text while actual animals starve or leave the designated water.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "After the player deliberately overdraws a pen it goes quiet and needs restocking; the other tended pen continues producing.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "A farmer stocks a selected pool, keeps food coming and takes surplus while breeders remain and later replenish the stock.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "The job list says stock and feed, but workers immediately harvest all breeders and every later meal requires another wild capture.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "The handler freezes the animal before throwing, succeeds regardless of landing, or removes it while leaving no animal, carcass or breeder item.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A moving fish leaves the landing spread and the net misses; a covered fish is visibly entangled and becomes carried breeder stock when bagged.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "A biter catch leaves a readable cut while a bank feeding job does not inflict a catch injury.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "The pen is removed during carry, so the breeder remains carried or is dropped with a readable reason; the handler and animal are still accounted for.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "A failed release or dead handler silently consumes the carried breeder, or multiple handlers duplicate it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "The farmer sees thinning or a distinct crowding warning before avoidable loss, then the changed water display after feeding, harvesting or culling; inspect text gives the cause.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "A fed crowded pen displays reassuring healthy rings until a vhorrin appears, or a culled pen still displays its old predator state.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "An empty pen has an identifiable empty-state marker, so absence of animation cannot be mistaken for an overlay that failed to load.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "The on-water picture never changes and only a selected zone inspect string says that stock is dying.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A resident vhorrin takes pen stock, leaving a partly eaten carcass and a named pen cue while a predator hunt at that same protected water remains suppressed.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "A fan eel slips out along a visible traversable wet route, with an origin/destination cue, and is nettable outside; a blocked route leaves it in the pen.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "An eel jumps invisibly through an intact wall, or a conversion deletes an animal with only a dev-mode log.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "The pen census drops for vhorrin feeding with no remains or player cue, or stock loss requires disabling protected-water hunt suppression.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "Crowding or missed feed changes the warning; a vhorrin emerges from the failing stock, remaining stock declines, and culling it lets a fed/restocked pen resume the ordinary farm loop.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 6,
+     "text": "A random wild vhorrin appears in a healthy tended pen or its presence never harms the stock; the cull only prints that the pool is saved.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "Farm catch only becomes usable through an extra mod, or the feast rewards the whole colony despite nobody eating it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "The cull meat can become its recovery dish at an ordinary stove; a stored paste or gourd supports later meals without a special event.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The same eater is content with ordinary fish and receives the beast-specific uneasy memory after loomu, huldu or ivvol, with a diluted ingredient version and a callous-trait exception.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "The menu has exotic names and text about doubt, but ordinary and doubtful meals leave identical memories in an ordinary eater.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "Animals stand peacefully only because hunger or AI was locked off; the truce ends when the fixture unlocks.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "A hungry wild or tame predator abandons a chase as either animal enters protected water; a margin predator outside it can still hunt.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "A guilty raider hit at the pool rouses nearby eligible wildlife against that faction; an engine-classified self-defense hit does not newly blame the defender.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "Any damage makes every map animal manhunt indiscriminately, or a farm handling scratch incriminates the handler and rouses the pen.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "A handler feeds, nets, harvests and culls designated farm stock without retaliation caused by their ordinary farm-care job.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 1,
+     "text": "The display looks healthy only while weather, breeding, truce or work givers are disabled; unlocking the complete map empties the pens or fills the map with stock and job errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 2,
+     "text": "Ordinary work feeds the tended pens and produces repeat meals, while an intentionally neglected pen warns, fails and recovers; the oasis margins remain alive and dry building ground remains available after the mid-season reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 3,
+     "text": "Changing the order of feed, surplus harvest, cull and restock produces the expected temporary differences and still returns viable pens to production without resetting their history.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B9",
+     "n": 4,
+     "text": "Saving forgets the hungry pen or repeats a completed capture, then the colony stalls or receives endless warnings after reload.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Pen walls and the skarrin escape. The ruled stocked-pool sheet ('Pens and pool zones') specifies 'pen walls are ordinary low walls at the waterline that raise the skarrin escape bar and keep the karrek off the drinking margin', and §1 says the stock 'jump the pen walls'. The census has no row for pen walls, a skarrin or karrek escape, or the wall-to-escape relation. Its only escape row is the fan eel's (escape_recapture), and RM_MapComponent_PoolStock.cs has no wall or skarrin escape logic (its only skarrin mention is a species list at line 56). The row is neither kept nor moved, and R12's 'blocked route leaves it in the pen' quietly assumes the wall geometry the census never inventoried.",
+   "loop_or_three_way": "R5 (breeder reserve protected from harvest), R14 and B6 (crowding breeds a vhorrin, which eats stock regardless of reserve) and B3 (keep breeding stock and take surplus repeatedly) form a loop in small pens. If the viable reserve for a species already counts as crowded in a pen's footprint, the player cannot harvest below the reserve, the reserve itself keeps the pen crowded, crowding produces a vhorrin, and the vhorrin eats the breeders the reserve was protecting. No rule says the viable reserve must sit below the crowding threshold for a pen of that size. The stock_population meeting is marked unknown and assigned to the season model, but without a rule saying which one gives way (refuse stocking, cap the reserve, or scale the crowding threshold), that model has no decision to make.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 519419
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 835119,
+    "output_tokens": 7630
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "bars.json B6 (third accept picture), B8 (meant, range), R14, meetings.truce_field; definition.md 'When it goes wrong' (R14 paragraph); ambiguities.md item 19",
+   "evidence": "The ruled stocked-pool sheet (design/Jawa/worldbuilding/biomes/weeping_stones_stocked_pool_2026-09-24.md, Status RULED 2026-09-24) says in §1: 'The truce holds at the water (§4) — and the pen is not the truce. What happens inside a stocked pool is husbandry'. Its 'Pens and pool zones' paragraph adds 'the pen line is what keeps husbandry violence out of the truce's sight (§6, §4 both honored by geometry)'. The proposal does the opposite. It treats pen water as protected truce water ('Shared predator hunts remain suppressed at that same water'; B6: 'a predator hunt at that same protected water remains suppressed'; B8 range: 'a due vhorrin stock-feeding conversion at protected pen water while hungry wild/tame predator hunts remain suppressed'). It then builds R14's long-range bookkeeping conversion to get around a conflict that the lore had already settled by geometry. Neither meetings.truce_field nor the owner pages mention the sheet's line, and the owner pages state only 'the existing shared radius/guilty-hit law'.",
+   "would_pass": "The truce_field meeting and B6/B8 follow the sheet: designated pen cells are husbandry ground outside the truce, so the vhorrin feeds there by ordinary predation that leaves a readable carcass, while drinkers at the margin stay protected. Or the proposal keeps R14, cites the sheet line, argues why it departs from it, and puts that departure on page two as a question with its evidence.",
+   "smallest_fix": "Add a rule that stocked-pen zone cells are not truce water, as the ruled sheet says (the shared engine needs a narrow exclusion hook, named as a dependency need rather than a redesign). Rewrite B6's third accept picture and B8's range to match, and drop or shrink R14. Or keep R14 and list the contradiction with the sheet line as a question on owner_pages.md page two."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json B8 says ('does not turn the gathering against its handler') and B9 says ('lives among dry stone and wet native gatherings'); both figurative: []",
+   "evidence": "B1 marks 'gathered' as figurative: 'Green clusters follow wet habitat rather than filling the whole map; not literal moving or social plants'. In B8 'the gathering' means the water wildlife (animals), a different sense. In B9 'wet native gatherings' could mean either the plant clusters or the congregated animals. Both are unmarked, so a builder and a judge can read different subjects into the same word.",
+   "would_pass": "Each bar's figurative list marks 'gathering(s)' and says what it stands for (B8: the wildlife standing at full water; B9: plant clusters at wet habitat, animal congregation at water, or both), each with an accept picture that departs from the literal reading.",
+   "smallest_fix": "Add a figurative entry for 'gathering' to B8 and for 'gatherings' to B9, or replace the words with the literal subjects ('the water wildlife'; 'wet native plants and animals')."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json B4 says ('with handling risk confined to the catch'); figurative: []",
+   "evidence": "Read literally, 'the catch' is the NET capture job. Yet census.json keeps harvest_injury as part of the signature ('risks minor scratches for skarrin/iaala'), and census row 'cull' keeps a cull that 'risks a bite'. The ruled sheet's HARVEST row says 'Handling injuries are real'. B8's reject picture mentions 'a farm handling scratch' during farm care. A builder holding the literal B4 would remove the harvest and cull injuries; a judge could then refuse for missing nastiness, or pass a build with the injuries left in, depending on reading. Only feeding is clearly meant to be safe (definition.md: 'feeding at the bank has no handling-injury roll').",
+   "would_pass": "B4 marks 'the catch' as figurative for every hands-on contact with stock (net, bag, harvest, cull), as opposed to bank feeding, with an accept picture showing a harvest scratch or cull bite. Or the says sentence names the jobs literally.",
+   "smallest_fix": "Reword B4 to '...with handling risk confined to hands-on catching, harvesting and culling, never bank feeding', or add the figurative entry."
+  }
+ ],
+ "applyable": false,
+ "seconds": 584,
+ "at": "2026-11-17T03:16:41"
+}

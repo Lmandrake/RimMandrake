@@ -1,22 +1,23 @@
 {
-  "mod": "WeepingStones",
-  "run": "designer-cleanse-2026-11-17",
-  "outcome": "proposed",
-  "signature": "Tending stocked pools preserves a renewable food source; neglected or crowded stock can become a farm-eating vhorrin that the player must cull before rebuilding the stock.",
-  "counts": {
-    "capabilities": 68,
-    "kept": 39,
-    "next_version": 28,
-    "recommend_retire": 1,
-    "old_bars": 0,
-    "bars": 9,
-    "live_only_bars": 3,
-    "checks": 13,
-    "rules": 13,
-    "unknown_pairs": 10,
-    "models": 3,
-    "tickets": 24,
-    "questions": 0
-  },
-  "blocked_on": []
+ "mod": "WeepingStones",
+ "run": "designer-cleanse-2026-11-17",
+ "outcome": "proposed",
+ "signature": "Tending stocked pools preserves a renewable food source; neglected or crowded stock can become a farm-eating vhorrin that the player must cull before rebuilding the stock.",
+ "counts": {
+  "capabilities": 68,
+  "kept": 39,
+  "next_version": 28,
+  "recommend_retire": 1,
+  "old_bars": 0,
+  "bars": 9,
+  "live_only_bars": 3,
+  "checks": 13,
+  "rules": 14,
+  "unknown_pairs": 10,
+  "models": 3,
+  "tickets": 24,
+  "questions": 0
+ },
+ "blocked_on": [],
+ "applyable": false
 }
