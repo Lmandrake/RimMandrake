@@ -652,12 +652,12 @@
     },
     {
       "id": "dosimeter_reading",
-      "what": "Radiotroph density/colour and existing inspection provide reliable rough contamination comparisons.",
+      "what": "Vegetation and visible ground establish rough dose-bearing exposure comparisons; existing inspection refines them.",
       "built": "absent",
       "evidence": "src/RimMandrake/Wastes/Defs/ThingDefs_Plants/RM_WastesFlora.xml; repo-wide C#/XML exact-name searches for RM_DosimeterLawn / RM_VaultRoot / RM_Wartshrub locate defs/roster/aliases, no sensing or sequestration consumer.",
       "proven": "missing",
       "called_by": "No runtime sensing caller found; ordinary plant growth is not a pollution measurement.",
-      "serves": "Radiotroph density/colour and existing inspection provide reliable rough contamination comparisons.",
+      "serves": "Vegetation and visible ground establish rough dose-bearing exposure comparisons; existing inspection refines them.",
       "fate": "needed_by",
       "why": "Delete real sensing and decorative radmoss cannot inform the signature\u2019s route/refuge choices, contrary to the Nov 10 answer.",
       "needed_by": "signature",
@@ -691,7 +691,7 @@
     },
     {
       "id": "preservation",
-      "what": "Near-zero environmental rot throughout Wastes; no spoilage-dependent content.",
+      "what": "Near-zero environmental rot throughout Wastes; no spoilage-dependent content. CompDissolution remains vanilla and wastepacks still require frozen storage or ordinary disposal.",
       "built": "unknown",
       "evidence": "design/Jawa/worldbuilding/biomes/wastes.md \u00a73/\u00a75/\u00a76; Wastes has no local rot handler; RM_KroffaMilk has vanilla rot comp.",
       "proven": "unknown",
@@ -896,6 +896,32 @@
       "why": "The kept signature requires harmful reopening of finite bound poison, not a second mining/product economy or custom work type.",
       "needed_by": "",
       "ticket": "T42"
+    },
+    {
+      "id": "initial_buried_hoard",
+      "what": "Finite pre-settlement buried salvage present at local-map entry, with persistent identities and natural-storm exhumation.",
+      "built": "absent",
+      "evidence": "design/Jawa/worldbuilding/biomes/wastes.md sections 4b and 7; src/RimMandrake/MovingDunes/Source/DuneBurialUtility.cs supplies BuryThingsAt but its automatic candidate path only buries haulable items; src/RimMandrake/Wastes/Patches/RM_Wastes_MovingDunesBinding.xml supplies a cache cap, with no initial-hoard seeder found in Wastes or MovingDunes source/defs.",
+      "proven": "missing",
+      "called_by": "No Wastes native-hoard initializer caller found; T40 specifies a once-only local initializer using DuneBurialUtility.BuryThingsAt.",
+      "serves": "Natural storms expose remains older than the colony, making post-storm prospecting meaningful from the first season.",
+      "fate": "signature",
+      "why": "Deleting native buried content reduces the exhumation lottery to recycling colony discards, defeating the sourced changed-map promise on fresh maps.",
+      "needed_by": "",
+      "ticket": "T40"
+    },
+    {
+      "id": "regime_light_horizon",
+      "what": "Regime lighting and permanent directional stormwall glow on the cold-scour horizon.",
+      "built": "absent",
+      "evidence": "design/Jawa/worldbuilding/biomes/wastes.md sections 5 and 9; src/RimMandrake/Wastes/Defs/WeatherDefs/RM_WastesStorms.xml has weather sky colours but no directional stormwall horizon. Source/def search for stormwall finds TheRot lore references, with no Wastes horizon renderer or binding.",
+      "proven": "missing",
+      "called_by": "Existing fixed-world lighting and weather sky colours provide context; no directional horizon renderer/binding found. T41 specifies the missing local binding.",
+      "serves": "Recognizable ordinary basin, margin and cold-scour land/light, including the sourced navigable horizon glow.",
+      "fate": "land",
+      "why": "Deleting the directional horizon leaves the retained cold-scour B1 picture and the frozen land/light promise undefined. It is visual land context with no independent heat or hazard system.",
+      "needed_by": "",
+      "ticket": "T41"
     }
   ],
   "historical_inventory_rows": 51,

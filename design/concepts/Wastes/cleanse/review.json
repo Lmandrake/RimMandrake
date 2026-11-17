@@ -1,0 +1,674 @@
+{
+ "mod": "Wastes",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "evidence_cannot_tell",
+     "where": "design/concepts/Wastes/cleanse/bars.json, B3 (says; sees.control); rule R3",
+     "evidence": "B3 passes if a reader can rank routes 'from landscape context and existing inspection'. In vanilla, ground dose is binary. ToxicUtility.PawnToxicTickInterval adds +1 only when `pawn.Position.IsPolluted(pawn.Map)`. Vanilla also already displays that same grid: PlaySettings.showPollutionOverlay (PollutionGrid.cs:145) is an existing toggle, and the cell readout shows whether a cell is polluted. So a reader using only the vanilla overlay ranks every route correctly while radmoss sensing is still unbuilt (census dosimeter_reading: built absent, T40). The control step 'hide ground-truth toxicity while the reader ranks' never says whether the overlay counts as ground truth or as 'existing inspection'. Also, R3 has radmoss follow the 'current mobile' internal stock, but stock below the projection threshold doses nobody. Radmoss can therefore be accurate about something that does not change exposure. The signature ('radiotrophs help you compare dangerous ground') and the owner's answer 2 ('landscape observation distinguishes safer from worse exposure') pass or fail the same with radiotrophs off.",
+     "would_pass": "A B3 reading that can only succeed through the landscape: the reader ranks routes with the vanilla pollution overlay and the polluted-cell readout hidden. Inspection is allowed only to refine a ranking, not to make it. Radmoss is defined against the quantity that actually doses (the projected polluted cells plus airborne exposure), not against stock below the threshold.",
+     "smallest_fix": "In B3 `says`, replace 'from landscape context and existing inspection' with 'from the vegetation and ground as they appear, with existing inspection refining the choice'. In sees.control, add: 'pollution overlay off during ranking; a ranking made from the overlay alone is the lazy pass and is refused'. In R3, name the quantity radmoss follows: the dose-bearing projection."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "design/concepts/Wastes/cleanse/definition.md, 'Costs and state transitions' paragraph 1; bars.json rule R2 and check C4",
+     "evidence": "The definition keeps an internal mobile account and projects it onto Biotech pollution ('Biotech pollution occupancy is the surface projection'). It only defines one direction, account to grid. Other code also writes the grid. JobDriver_ClearPollution.ClearPollutionAt calls Unpollute() on up to 6 cells per job. The Wastepack's CompDissolutionEffectPollution re-pollutes 6 cells. The kept storm DoFall calls SetPolluted (RM_MapComponent_WastesStorms.cs:153). Biotech also has its own sinks. Nothing says whether the next projection re-pollutes a cell a cleanup job just cleared, which would make ordinary cleanup futile and flood B4, or whether outside grid writes are read back into the account. Without the read-back, C4's 'residual equals inputs minus outputs' fails on the first cleanup.",
+     "would_pass": "A rule naming every outside writer of the pollution grid (vanilla cleanup, wastepack dissolution, kept ash fall, Biotech sinks and sources) and how each is booked into the mobile account. It also states that the projection never re-pollutes a cell cleared by a job unless new stock has moved there.",
+     "smallest_fix": "Add one sentence to R2 and to definition.md: 'Grid changes made by other code are read back as declared flows (cleanup and dissolution are outputs and inputs; Biotech sinks are boundary flows); the projection is recomputed only from net transfers, never so as to undo a completed cleanup.' Add that read-back to C4."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "design/concepts/Wastes/cleanse/definition.md 'Using it' routine ('Wastepacks from cleanup remain physical vanilla objects requiring proper storage'); bars.json R5 and B4; refuge meeting",
+     "evidence": "Vanilla ClearPollution spawns a Wastepack per job. The Wastepack def has CompDissolution with dissolutionAfterDays 8 (factor 0.5 indoors). Its description says it dissolves 'if not frozen', and when it does, CompDissolutionEffectPollution re-pollutes 6 cells. B1's declared range runs up to +30 C in the warm basin, so a maintained refuge's own cleanup comes back as pollution beside the storage spot within days. The mod's own answer to this, casks and bays (T20, T21), is moved to the next version. 'Proper storage' is never defined: which sink a maintained refuge uses in each regime is unstated (freezer, Biotech atomizer, hauling it off the map), and so is whether R7's preservation covers dissolution. The refuge meeting and M2 never mention dissolution. B4's maintained-against-neglected contrast can collapse in the warm regime with nothing in the proposal to notice it.",
+     "would_pass": "The definition names the ordinary waste sink in each of the warm, margin and cold regimes, and says whether Wastes preservation affects wastepack dissolution. Dissolution is added to the refuge and mobile-stock meetings and to M2's sweep, so B4 is tested with real dissolving wastepacks.",
+     "smallest_fix": "Add one line to R5: 'Wastepacks dissolve by vanilla rules (not suppressed by preservation); a maintained refuge disposes of them by <freezer / atomizer / off-map haul>.' Add 'wastepack dissolution' to M2's inputs and to the refuge meeting's members."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "design/concepts/Wastes/cleanse/bars.json B5 range ('a particular random storm need not expose loot if no cache can be eroded'); ambiguities.md item 17; census.json (no initial buried-content row)",
+     "evidence": "wastes.md §4b: 'storms exhume — every blow reveals a trench line, a hull, a cache, a crime somewhere, and buries something else'. Its doctrine note says the Wasteland is 'the single place the map is allowed to regenerate … what's out there is a live question twice a season'. §7 lists 'The exhumation lottery'. MovingDunes buries only haulable items (DuneBurialUtility.cs:129: `t.def.category == ThingCategory.Item && t.def.EverHaulable`). No GenStep in Wastes or MovingDunes seeds buried caches; the binding only sets maxCachesPerMap 400. So on a fresh map a storm can only re-reveal items it buried since landing, and B5's range lets a whole season with no exhumation pass. No census row or ticket covers the starting buried hoard.",
+     "would_pass": "Either a kept capability that puts identity-bearing buried finds on a full map at map entry (local map initialization, not worldgen), required by B5's range so that a season of natural storms can exhume something the colony did not leave there; or an explicit line on his pages saying the exhumation lottery is reduced to re-burying the colony's own items.",
+     "smallest_fix": "Add a census row 'initial buried hoard' (built: absent; fate: signature; ticket T40 or T41). Change B5's range from 'a particular random storm need not expose loot' to keep that exception, but require that a full map at entry holds buried finds that natural storms can erode."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "design/concepts/Wastes/cleanse/bars.json B1 (says 'recognizably different basin, margin and cold-scour light'; accept picture 'the cold scour instead reads dark with the stormwall on its horizon')",
+     "evidence": "B1 makes regime light part of the land bar, and one accept picture depends on a stormwall glow on the horizon (wastes.md §5: 'the only light is the stormwall's glow on one horizon'). A search of src/ for 'stormwall' finds it only under src/RimMandrake/TheRot/. Nothing in Wastes or any shared engine renders it. census.json has no row for regime lighting or the stormwall glow (no build status, no ticket), and definition.md only says the regimes vary by 'existing authored local settings, mutators and injections'. The kept bar's passing picture depends on something nobody has defined or built.",
+     "would_pass": "A census row for regime light and horizon (built, absent or unknown, with its file and a ticket), or an accept picture whose regime difference is made only of things that exist or are ticketed.",
+     "smallest_fix": "Add a census row 'regime light / stormwall horizon' with its build status and a T41 scope line, or remove 'with the stormwall on its horizon' from B1's accept picture."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "The different regimes all show the same sunny fertile field, with a decorative puddle and nowhere reachable to build beyond the contaminated work area.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "A waterless war flat has ruined ground and construction space without an invented pool; changing its plant illustration does not alter this judgement.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "A pale brine basin has salt and ash around an old hull; cleaner accessible ground supports a roofed workshop, and the cold scour instead reads dark with the stormwall on its horizon.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "An otherwise dry cold-scour map regularly turns white with watery snowfall, or a described rib-vault shelter supplies no actual cover.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "The ordinary wild ambusher repeatedly hunts settlers and their livestock, or a creature called a bird only walks around the flight obstacle.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A native sits beside brine and dehydrates, or the whole resident population starves after the staged feeding supplies are gone.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "A native by its brine pool can drink without becoming dehydrated, and the scavenger bird traverses an obstacle in its flying state.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "Scavengers and grazers continue feeding while keepers obtain milk and eggs through ordinary work; the small ambusher hunts the small cast while settlers worry about polluted ground.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "A bare recently cleaned route is described as needing inspection, and a recovered grove's inspection distinguishes cleaner surface travel from dangerous root disturbance.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "Ash kills the markers and the resulting bare hot path is presented as safe, or clean-looking roots can be cut without any advance indication of their stored poison.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "Radmoss is decorative and equally lush over cleaner and worse ground, so its supposed comparison teaches the player the wrong route.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "Mature radiotroph growth warns against the worse of otherwise comparable routes; fresh fall or buried markers prompts inspection that reveals current surface danger before the worker commits.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "The only habitable room is a debug-clean sealed pad that ordinary cleanup cannot sustain once the storm runs.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A roof cures existing toxicity or turns the same polluted floor harmless, while the neglected home remains as healthy because nothing happens outside storms.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "Roofing a polluted workroom removes the airborne contribution but its ground still harms unprotected workers until cleaned.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "Workers return to a cleaned roofed home, rest, eat and resume work; the same staffing and supplies in an unmaintained comparison leave a rising exposure backlog.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "An exposed worker takes the storm's ordinary airborne toxicity while a clean roofed comparison avoids that contribution; the deposited pollution persists after the weather clears.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "Advancing the storm counter skips actual damage, plant time or drift and is presented as a completed storm cycle.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "After wind scours the previously loaded route and banks ash beside it, inspection ranks the altered ground differently and a previously buried identifiable find becomes accessible.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "The sky turns grey and fresh pollution appears at random, but old ground contamination never moves and a supposed revealed find is a newly generated replacement.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "The grove's surface becomes safer while inspection shows retained root contamination; cutting it changes the local pollution and an unprotected worker's exposure.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "A tree silently deletes pollution and yields harmless wood when removed, leaving no stored danger to inspect or reopen.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "Burning or shared growth-system death erases the stock, or reloading the disturbed grove lets the same load be released repeatedly.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "An exhausted store gives no further release on repeated work, and a living plant harvested without destroying its storage organ retains its load through saving.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "The old hull and a cached supply remain after weather and time; careful deconstruction returns useful materials, and protecting the worker reduces exposure compared with unprotected work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "A warm-basin supply survives environmental storage without ordinary spoilage consuming it, while theft by an outside raider or deliberate destruction can still remove it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The ruin is decoration that cannot be worked for useful salvage, or the dose is identical with and without the claimed protection because it bypasses ordinary toxicity.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "Only the frozen fixture preserves supplies; the warm Wastes quietly spoils the supposedly preserved cache before the return trip.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "Reloading the saved middle preserves mobile and root history, and harvesting before cleanup instead of after it changes the local consequences coherently without erasing or multiplying contamination.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Ash chokes the indicators, dying roots release poison and cleanup cannot preserve any useful refuge; or sequestration and cleanup leave the entire outside map as safe as home.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "After the season, the occupied home still supports work and rest, neglected ground has imposed an exposure cost, routes still differ, native feeding continues, and old remains are still a reason to venture out.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "The demonstration advances only weather timers with plant growth and hazards disabled, leaves the sky locked clear, or reloads into missing stocks, duplicate releases and repeating errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The vanilla Biotech pollution machinery that acts on the same grid as the kept signature. The census has no row for any of it. The pollution overlay toggle (PlaySettings.showPollutionOverlay) already shows players the binary cells that dose. Wastepack dissolution (Wastepack CompDissolution: 8 days, half speed indoors, paused when frozen, re-pollutes 6 cells) undoes cleanup. Biotech also has non-natural sinks, the wastepack atomizer and the polux tree, which matter to the 'no outlet' reading and to C4's conservation account.",
+   "loop_or_three_way": "A three-way meeting that no meeting lists: kept weather, R4 and B3/B6. RM_Wastes_Biome.xml keeps DryThunderstorm at commonality 1 in a biome with no rain at all. R4 says fire destroying a loaded root store remobilizes its load. B6 promises that reopening a store comes with an advance inspection warning, but that promise is written around settler work. A lightning fire with no rain to put it out burns a loaded grove: its stock is released with no inspection moment, and the radmoss on the same ground burns with it. The result is newly hot, bare, marker-less ground, the exact false-safe case B3 forbids, made by weather alone. The bound-stock and readings meetings and M2's sweep include fire as a destruction route but never dry lightning as its natural, unprompted source.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 679957
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "extra_without_argument",
+     "where": "design/concepts/Wastes/cleanse/census.json row initial_buried_hoard (fate \"signature\", built \"absent\"); bars.json B5 says/range/control; R2 hoard clauses; C4; T40 second paragraph",
+     "evidence": "The one-sentence signature on owner_pages.md line 9 and in result.json is \"ash moves and adds mobile contamination, so settlers must read changed ground and maintain a habitable refuge while radiotrophs bind poison beneath the crust\". It says nothing about exhumation or salvage. Yet the hoard row is filed as `signature`, with an empty `needed_by`. It is an unbuilt new system: a versioned once-only initializer with a saved manifest, legacy-map migration and partial-commit retry (definition.md 'Using it'; T40). Its 'why' says deleting it defeats \"the sourced changed-map promise\". But the changed danger map is already carried by the kept `redistribution` row, and the reason to venture out is carried by Wreckage salvage (B7). B5 then turns the hoard into a passing condition (\"naturally exhumed pre-settlement finds\"). wastes.md §7 lists \"the exhumation lottery\" among the 'uniquely available' items, next to excretor refining, the living furnace and the tipping fee, which this same pass deferred.",
+     "would_pass": "Either the census row is `needed_by` with a real deletion argument naming the kept bar that fails without it, citing wastes.md §4b's doctrine-grade note (\"what's out there is a live question twice a season\"), and the signature sentence on his pages names exhumation as part of the one chain. Or the initializer/manifest machinery moves to the next version and B5 no longer requires pre-settlement finds.",
+     "smallest_fix": "Move initial_buried_hoard to next_version.md with a spec-only ticket. Strike \"and naturally exhumed pre-settlement finds\" from B5 says, its accept picture 5 clause and reject picture 3. Drop the entry-season arms from the B5 and B8 ranges and controls, and the hoard clauses from R2, C4 and T40."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "census.json row initial_ground (built \"unknown\", fate \"land\"); definition.md 'Using it' first sentence; bars.json R5 (\"Initial local ground must already express native danger and construction choice\"); T40 (\"First inventory actual inherited ground\")",
+     "evidence": "B1, B3 and B4 all depend on a fresh map that already carries a native contamination pattern with cleaner construction ground. The definition asserts \"the map already contains native mobile pollution\", but no file says where that pollution comes from. RM_BiomeWorker_Wastes.cs has no pollution code. RM_Wastes_Biome.xml has no pollution initializer. The census evidence itself says \"no explicit native-stock initializer\". Two very different builds fit the words: (a) vanilla Biotech pollution inherited from the world tile, which is set only at the final paint (paint_plan row: \"not executed here\"); or (b) a new local-map GenStep with some unstated pattern relative to ash, wrecks and brine. Neither the pattern nor its source is defined, so a builder and a judge would build and test different mods.",
+     "would_pass": "definition.md and R5 name the source of initial native contamination. Either it is inherited tile pollution, stating what a test map uses before the final paint, or it is a named local initializer, stating which terrain or features it correlates with, how cleaner ground is left, and that it runs once per map. T40 carries its acceptance test.",
+     "smallest_fix": "Add one paragraph to definition.md 'Costs and state transitions' and one clause to R5 choosing (a) or (b) and stating the spatial rule in words without numbers. Change initial_ground's ticket scope in T40 from 'inventory' to 'implement the stated source'."
+    },
+    {
+     "head": "cannot_hold_together",
+     "where": "bars.json B1 (says \"recognizably different basin, margin and cold-scour light\"; range \"Tile lighting uses actual fixed-world position, never a region-name override\"; start \"no debug light overrides\") and B8 range (warm/margin/cold full maps), against the paint-once-at-the-end ruling (CLAUDE.md; biome_rulings.md) and the one-def ruling (wastes.md §0: the wastelands vary \"only by the mutators and Inhabited injections assigned to each family\")",
+     "evidence": "definition.md 'Neighbours' says the regimes \"vary by existing authored local settings, mutators and injections\". Those family assignments are part of the final planet paint (census paint_plan row: dependency, not executed here), and until then an RM_ biome on zero tiles is expected. The only existing site instrument, src/RimMandrake/Wastes/northstar_site.py ensure_wasteland_map, re-tiles one scratch-world tile near the colony and runs `world_mutators_set action=clear`, with a written SITE_TEMPERATURE. So it yields neither a family's mutators nor a chosen arc. With actual fixed-world positions and no overrides required, B1 and B8 have no sanctioned starting state before the final paint. The mod could not pass the pipeline until the planet is painted, which defeats the purpose of the pass.",
+     "would_pass": "B1 and B8 `start` name a sanctioned disposable-site recipe that yields each regime before the paint: a scratch tile at a stated arc with that family's mutators applied, light coming from tile geometry. Or B1's regime clause is limited to what tile geometry gives, with family-specific mutator content declared outside the range until the paint.",
+     "smallest_fix": "Add to B1 and B8 `start`: \"regime sites come from a scratch-world tile at the family's arc with that family's mutators applied in the disposable save (extend northstar_site.py; ticket under T44), never the canonical world\". Add to `left_out`: \"family content that exists only after the final paint\"."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B8 says (\"uniformly lethal\", \"overwhelmed by errors\"); figurative: []",
+     "evidence": "B8 says \"without the map becoming uniformly lethal, harmless, stalled or overwhelmed by errors\". Its own control defines these as something else: \"Flood means all reachable refuge/work choices become untenable under ordinary maintained play\" and \"error storm means repeated faults\". Neither is literal lethality everywhere or being literally overwhelmed. A literal reader could pass a map that is untenable but not lethal everywhere, or refuse a run over a single recurring error. Yet `figurative` is empty.",
+     "would_pass": "B8 `figurative` lists \"uniformly lethal\" (stands for: no maintainable refuge or work choice remains under ordinary maintained play) and \"overwhelmed by errors\" (stands for: repeating faults that stop or corrupt ordinary play), each with one accept picture that departs from the literal reading.",
+     "smallest_fix": "Fill B8's `figurative` with those two entries, reusing the control's definitions, and add one accept picture each (for example, a run where some outside cells are lethal but a maintainable refuge and work route remain)."
+    }
+   ],
+   "reviewer_refusals": 4,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "An otherwise dry cold-scour map regularly turns white with watery snowfall, or a described rib-vault shelter supplies no actual cover.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "A pale brine basin has salt and ash around an old hull; cleaner accessible ground supports a roofed workshop, and the cold scour instead reads dark with the stormwall on its horizon.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "The different regimes all show the same sunny fertile field, with a decorative puddle and nowhere reachable to build beyond the contaminated work area.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "A waterless war flat has ruined ground and construction space without an invented pool; changing its plant illustration does not alter this judgement.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "The ordinary wild ambusher repeatedly hunts settlers and their livestock, or a creature called a bird only walks around the flight obstacle.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "A native sits beside brine and dehydrates, or the whole resident population starves after the staged feeding supplies are gone.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "Scavengers and grazers continue feeding while keepers obtain milk and eggs through ordinary work; the small ambusher hunts the small cast while settlers worry about polluted ground.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A native by its brine pool can drink without becoming dehydrated, and the scavenger bird traverses an obstacle in its flying state.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "With the pollution overlay and polluted-cell readout hidden, the landscape provides no route comparison and the reader can choose only by uncovering those displays.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "A bare recently cleaned route is described as needing inspection, and a recovered grove's inspection distinguishes cleaner surface travel from dangerous root disturbance.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "Ash kills the markers and the resulting bare hot path is presented as safe, or clean-looking roots can be cut without any advance indication of their stored poison.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "Mature radiotroph growth and visible ground distinguish the worse of comparable routes before inspection, and inspection then refines the choice and identifies uncertain fresh fall or buried markers.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "Radmoss is decorative and equally lush over cleaner and worse ground, so its supposed comparison teaches the player the wrong route.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "The only habitable room is a debug-clean sealed pad that ordinary cleanup cannot sustain once the storm runs.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "A roof cures existing toxicity or turns the same polluted floor harmless, while the neglected home remains as healthy because nothing happens outside storms.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "Workers return to a cleaned roofed home, rest, eat and resume work; the same staffing and supplies in an unmaintained comparison leave a rising exposure backlog.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "Roofing a polluted workroom removes the airborne contribution but its ground still harms unprotected workers until cleaned.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "Advancing the storm counter skips actual damage, plant time or drift and is presented as a completed storm cycle.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "The sky turns grey and fresh pollution appears at random, but old ground contamination never moves and a supposed revealed find is a newly generated replacement.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "Storms recycle only the colony's dropped items while the entry season yields no buried remains predating settlement.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "An exposed worker takes the storm's ordinary airborne toxicity while a clean roofed comparison avoids that contribution; the deposited pollution persists after the weather clears.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "After wind scours the previously loaded route and banks ash beside it, inspection ranks the altered ground differently and an identifiable find buried before settlement becomes accessible.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A tree silently deletes pollution and yields harmless wood when removed, leaving no stored danger to inspect or reopen.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "Burning or shared growth-system death erases the stock, or reloading the disturbed grove lets the same load be released repeatedly.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "An exhausted store gives no further release on repeated work, and a living plant harvested without destroying its storage organ retains its load through saving.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "The grove's surface becomes safer while inspection shows retained root contamination; cutting it changes the local pollution and an unprotected worker's exposure.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "A warm-basin supply survives environmental storage without ordinary spoilage consuming it, while theft by an outside raider or deliberate destruction can still remove it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "Only the frozen fixture preserves supplies; the warm Wastes quietly spoils the supposedly preserved cache before the return trip.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The old hull and a cached supply remain after weather and time; careful deconstruction returns useful materials, and protecting the worker reduces exposure compared with unprotected work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "The ruin is decoration that cannot be worked for useful salvage, or the dose is identical with and without the claimed protection because it bypasses ordinary toxicity.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "The demonstration advances only weather timers with plant growth and hazards disabled, leaves the sky locked clear, or reloads into missing stocks, duplicate releases and repeating errors.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Reloading the saved middle preserves mobile and root history, and harvesting before cleanup instead of after it changes the local consequences coherently without erasing or multiplying contamination.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "After the season, the occupied home still supports work and rest, neglected ground has imposed an exposure cost, routes still differ, native feeding continues, and old remains are still a reason to venture out.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "Ash chokes the indicators, dying roots release poison and cleanup cannot preserve any useful refuge; or sequestration and cleanup leave the entire outside map as safe as home.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Vanilla Biotech already ties a plant to the polluted grid. PlantProperties.pollution = PollutedOnly makes PlantUtility.CanEverPlantAt and PollutionUtility refuse unpolluted cells, and Plant.DyingFromNoPollution kills the plant once its cell is no longer polluted (RimWorld source: PlantProperties.cs, Plant.cs, PlantUtility.cs). RM_WastesFlora.xml sets no <pollution> on RM_DosimeterLawn or any Wastes plant. The census still calls dosimeter_reading 'absent: no sensing consumer', and T40 plans bespoke sensing without weighing this built-in, projection-following radmoss response. It also gives a free inert-sensing control (pollution=Any) for the B3/T44 diagnostic.",
+   "loop_or_three_way": "R4 sequestration × R3 radmoss reading × B6 reopening: sequestration moves stock from surface to roots, so the projected surface pollution over a vault grove falls. Radmoss, which follows that projection under R3 (and would die under vanilla PollutedOnly), thins there. The grove then reads as the cleaner place exactly where the deep load is greatest. A settler cutting or digging it (B6) releases the load, the projection rises, and radmoss returns only after the harm. The vegetation cue's lag and inversion therefore sit precisely on the B3/B6 excavation choice. The 'readings' meeting mentions travel versus excavation risk, but no model output (M3's latency table is the closest) is named to decide whether the advance warning survives this loop over a season.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 545331
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 2171725,
+    "output_tokens": 20875
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "extra_without_argument",
+   "where": "design/concepts/Wastes/cleanse/census.json row initial_buried_hoard (fate \"signature\", built \"absent\"); bars.json B5 says/range/control; R2 hoard clauses; C4; T40 second paragraph",
+   "evidence": "The one-sentence signature on owner_pages.md line 9 and in result.json is \"ash moves and adds mobile contamination, so settlers must read changed ground and maintain a habitable refuge while radiotrophs bind poison beneath the crust\". It says nothing about exhumation or salvage. Yet the hoard row is filed as `signature`, with an empty `needed_by`. It is an unbuilt new system: a versioned once-only initializer with a saved manifest, legacy-map migration and partial-commit retry (definition.md 'Using it'; T40). Its 'why' says deleting it defeats \"the sourced changed-map promise\". But the changed danger map is already carried by the kept `redistribution` row, and the reason to venture out is carried by Wreckage salvage (B7). B5 then turns the hoard into a passing condition (\"naturally exhumed pre-settlement finds\"). wastes.md §7 lists \"the exhumation lottery\" among the 'uniquely available' items, next to excretor refining, the living furnace and the tipping fee, which this same pass deferred.",
+   "would_pass": "Either the census row is `needed_by` with a real deletion argument naming the kept bar that fails without it, citing wastes.md §4b's doctrine-grade note (\"what's out there is a live question twice a season\"), and the signature sentence on his pages names exhumation as part of the one chain. Or the initializer/manifest machinery moves to the next version and B5 no longer requires pre-settlement finds.",
+   "smallest_fix": "Move initial_buried_hoard to next_version.md with a spec-only ticket. Strike \"and naturally exhumed pre-settlement finds\" from B5 says, its accept picture 5 clause and reject picture 3. Drop the entry-season arms from the B5 and B8 ranges and controls, and the hoard clauses from R2, C4 and T40."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "census.json row initial_ground (built \"unknown\", fate \"land\"); definition.md 'Using it' first sentence; bars.json R5 (\"Initial local ground must already express native danger and construction choice\"); T40 (\"First inventory actual inherited ground\")",
+   "evidence": "B1, B3 and B4 all depend on a fresh map that already carries a native contamination pattern with cleaner construction ground. The definition asserts \"the map already contains native mobile pollution\", but no file says where that pollution comes from. RM_BiomeWorker_Wastes.cs has no pollution code. RM_Wastes_Biome.xml has no pollution initializer. The census evidence itself says \"no explicit native-stock initializer\". Two very different builds fit the words: (a) vanilla Biotech pollution inherited from the world tile, which is set only at the final paint (paint_plan row: \"not executed here\"); or (b) a new local-map GenStep with some unstated pattern relative to ash, wrecks and brine. Neither the pattern nor its source is defined, so a builder and a judge would build and test different mods.",
+   "would_pass": "definition.md and R5 name the source of initial native contamination. Either it is inherited tile pollution, stating what a test map uses before the final paint, or it is a named local initializer, stating which terrain or features it correlates with, how cleaner ground is left, and that it runs once per map. T40 carries its acceptance test.",
+   "smallest_fix": "Add one paragraph to definition.md 'Costs and state transitions' and one clause to R5 choosing (a) or (b) and stating the spatial rule in words without numbers. Change initial_ground's ticket scope in T40 from 'inventory' to 'implement the stated source'."
+  },
+  {
+   "head": "cannot_hold_together",
+   "where": "bars.json B1 (says \"recognizably different basin, margin and cold-scour light\"; range \"Tile lighting uses actual fixed-world position, never a region-name override\"; start \"no debug light overrides\") and B8 range (warm/margin/cold full maps), against the paint-once-at-the-end ruling (CLAUDE.md; biome_rulings.md) and the one-def ruling (wastes.md §0: the wastelands vary \"only by the mutators and Inhabited injections assigned to each family\")",
+   "evidence": "definition.md 'Neighbours' says the regimes \"vary by existing authored local settings, mutators and injections\". Those family assignments are part of the final planet paint (census paint_plan row: dependency, not executed here), and until then an RM_ biome on zero tiles is expected. The only existing site instrument, src/RimMandrake/Wastes/northstar_site.py ensure_wasteland_map, re-tiles one scratch-world tile near the colony and runs `world_mutators_set action=clear`, with a written SITE_TEMPERATURE. So it yields neither a family's mutators nor a chosen arc. With actual fixed-world positions and no overrides required, B1 and B8 have no sanctioned starting state before the final paint. The mod could not pass the pipeline until the planet is painted, which defeats the purpose of the pass.",
+   "would_pass": "B1 and B8 `start` name a sanctioned disposable-site recipe that yields each regime before the paint: a scratch tile at a stated arc with that family's mutators applied, light coming from tile geometry. Or B1's regime clause is limited to what tile geometry gives, with family-specific mutator content declared outside the range until the paint.",
+   "smallest_fix": "Add to B1 and B8 `start`: \"regime sites come from a scratch-world tile at the family's arc with that family's mutators applied in the disposable save (extend northstar_site.py; ticket under T44), never the canonical world\". Add to `left_out`: \"family content that exists only after the final paint\"."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json B8 says (\"uniformly lethal\", \"overwhelmed by errors\"); figurative: []",
+   "evidence": "B8 says \"without the map becoming uniformly lethal, harmless, stalled or overwhelmed by errors\". Its own control defines these as something else: \"Flood means all reachable refuge/work choices become untenable under ordinary maintained play\" and \"error storm means repeated faults\". Neither is literal lethality everywhere or being literally overwhelmed. A literal reader could pass a map that is untenable but not lethal everywhere, or refuse a run over a single recurring error. Yet `figurative` is empty.",
+   "would_pass": "B8 `figurative` lists \"uniformly lethal\" (stands for: no maintainable refuge or work choice remains under ordinary maintained play) and \"overwhelmed by errors\" (stands for: repeating faults that stop or corrupt ordinary play), each with one accept picture that departs from the literal reading.",
+   "smallest_fix": "Fill B8's `figurative` with those two entries, reusing the control's definitions, and add one accept picture each (for example, a run where some outside cells are lethal but a maintainable refuge and work route remain)."
+  }
+ ],
+ "applyable": false,
+ "seconds": 1109,
+ "at": "2026-11-17T03:02:23"
+}
