@@ -41,7 +41,8 @@ RULE = (   # both Marker prompts: the unwalled and the walled one must never dif
     "Begin every --defect with its cause (CHECKER_VERDICT_BUILD_CAUSE_BEFORE_RETURN): 'product:' the commit's own change or "
     "behaviour is wrong - name the changed file or the proof command that shows it, and add one --control saying how you "
     "showed your instrument can see (it goes green on a known-good case, or catches a fault you put in); 'measurement:' "
-    "the proof, the contract or the test is what is wrong, not the work; 'environment:' the machine, the disk, the game "
+    "the proof or contract is wrong. This includes demonstrated incompatible acceptance demands. Quote the demands, "
+    "explain the incompatibility, and state the clarification needed to make passing attainable. 'environment:' the machine, the disk, the game "
     "load, a remote host, the account; 'unknown:' you cannot tell which (an untagged defect is read as unknown). Only a product defect with a control goes back "
     "to a builder; the others go to the proof, to Operations, or to a diagnosis, never to new code.",
     "A gap must be in the item's own words: the mutant breaks something a clause of the item asks for. A mutant of an "
@@ -709,7 +710,9 @@ def marker_prompt(st, text, box, adapter_names=()):
         "  python3 %s PASS \"what you ran and saw\"" % qv,
         "  python3 %s WEAK \"the runs you made and what each showed, then each gap and the mutant or probe that "
         "shows it, then a STRONG: line and a LETS THROUGH: line\"" % qv,
-        "  python3 %s FAIL \"what is wrong, so the next worker can fix it\" --defect \"CAUSE: one wrong thing\" [--defect ...] "
+        "  python3 %s FAIL \"For each defect, state what you ran and saw, the attainable command result or observation "
+        "that would satisfy its clause, and the smallest product fix, proof repair, environment repair or clarification "
+        "needed to reach it\" --defect \"CAUSE: one wrong thing\" [--defect ...] "
         "[--control \"how your instrument showed it can see\"] [--unreached \"what you also could not reach\"]" % qv,
         "  python3 %s UNMEASURED \"CANNOT REACH: what, and the command that showed it; then what you did check\" "
         "--unreached \"one thing out of reach, and the command that showed it\" [--unreached ...] "

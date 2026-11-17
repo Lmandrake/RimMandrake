@@ -4933,8 +4933,9 @@ def checker_prompt(st, text, nonce, readings=()):
         "  %s verdict --item %s --nonce %s PASS \"what you ran and saw\"" % (rc, i, nonce),
         "  %s verdict --item %s --nonce %s WEAK \"the runs you made and what each showed, then each gap and the mutant or "
         "probe that shows it, so the next worker can pin it\"" % (rc, i, nonce),
-        "  %s verdict --item %s --nonce %s FAIL \"what is wrong, so the next worker can fix it\" --defect \"CAUSE: one "
-        "wrong thing\" [--defect ...] [--control \"how your instrument showed it can see\"] [--unreached \"what you "
+        "  %s verdict --item %s --nonce %s FAIL \"For each defect, state what you ran and saw, the attainable command "
+        "result or observation that would satisfy its clause, and the smallest product fix, proof repair, environment "
+        "repair or clarification needed to reach it\" --defect \"CAUSE: one wrong thing\" [--defect ...] [--control \"how your instrument showed it can see\"] [--unreached \"what you "
         "also could not reach\"]" % (rc, i, nonce),
         "  %s verdict --item %s --nonce %s UNMEASURED \"%s what, and the command that showed it; then what you did "
         "check\" --unreached \"one thing out of reach, and the command that showed it\" [--unreached ...]"

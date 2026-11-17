@@ -2255,7 +2255,9 @@ def blind_brief_text(root, mod, cap_usd=None):
           "pattern, not its tests." % lane1_scratch, "",
           "**Rows.** Write `lane1/lane1_rows.jsonl`, one row per line: `id`, `bars`, `kind` (fixed | random | sweep | "
           "info | not_kernel), `verdict` (PASS | FAIL | INFO | UNSETTLED), `cases`, `detail` (with the seed and the "
-          "shrunk form). A row you cannot decide is UNSETTLED, with its reason. **Commit lane 1 before you open "
+          "shrunk form). A FAIL row names the violated bar, the reproducing case and the attainable result that would pass "
+          "it. An UNSETTLED row states what remains undecided and the specific case, evidence or instrument that would "
+          "settle it. **Commit lane 1 before you open "
           "anything else.**"]
 
     # ---- lane 2

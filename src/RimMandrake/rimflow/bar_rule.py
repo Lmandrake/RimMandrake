@@ -15,8 +15,13 @@ RULE_TEXT is what a judge brief or a bar-writing brief says (coverage_judge.prom
 `blocks(gap)` is the gate: a gap blocks only when it is about an experience. It does not block when its own `bar_kind`
 says tuning_number, asset_variant or declared_data, when its demand (what, would_pass, smallest_fix) reads as one of those
 to the detector below whatever the judge called it, or when it is `late` with `miss_of` (a new gap at a later look on
-material that did not change, after a look that refused and so had to list every gap: that look's miss, recorded, never a
-new bar; a late gap with no refusing look before it still blocks). A gap that does not block is advisory: stored and shown.
+material that did not change, after a look that refused and so had to list every gap: that look's miss) and is not a
+serious Problem confirmed by the second reader. Owner, by card 2026-11-16 11:36 PM PST (point 26, "Only if a second
+reader agrees"): "a late gap blocks only when it is a Problem a player would reject and the judge's second reader
+confirms it." So a late gap blocks only with the judge's `severity` `problem` AND the second reader's `late_confirmed`
+True (coverage_judge.second_read sets it; the program reader confirms nothing); a late gap the reader has not read yet
+is held blocking until it does. A late gap with no refusing look before it still blocks. A gap that does not block is
+advisory: stored and shown.
 
 The detector reads only the DEMAND, never `observed` (which quotes the artifact, numbers and all). It is a word list,
 measured on the 25 Contagion gaps and the calibration cases (selftest_bar_rule_tuning_numbers.py); a new phrasing it
@@ -83,8 +88,14 @@ def detect(gap):
 def blocks(gap):
     """-> (True, None) for a gap about an experience; (False, why) for one that is advisory at most."""
     if gap.get("new_since") == "late" and gap.get("miss_of"):
-        return False, ("late: a new gap at a later look on material that did not change is the miss of %s, which "
-                       "refused and had to list every gap; recorded, never a new bar" % gap["miss_of"])
+        if gap.get("severity") != "problem":
+            return False, ("late: a new gap at a later look on material that did not change is the miss of %s, and the "
+                           "judge does not call it a serious Problem a player would reject; recorded, never a new bar"
+                           % gap["miss_of"])
+        if gap.get("late_confirmed") is False:
+            return False, ("late: the miss of %s, called serious by the judge, but the second reader did not confirm "
+                           "it a Problem a player would reject; recorded, never a new bar" % gap["miss_of"])
+        # late_confirmed True blocks; None (not read yet) is held blocking until the second reader reads it
     kind = gap.get("bar_kind")
     if kind in ADVISORY_KINDS:
         return False, "the judge filed it as %s: not a bar (bar_rule.RULE_TEXT)" % kind

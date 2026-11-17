@@ -96,9 +96,10 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
 
 ## Checklist (per subject)
 
-1. Inputs complete (else UNSURE). 2. Owner-kept? → no verdict on replacing it (E3). 3. Canon: each Must show line
-yes/no; limits excluded (A). 4. Style and sibling match (B). 5. Every facing (C). 6. Scale, canvas, alpha (D).
-7. Provenance and his notes (E). 8. Pawn faces (F).
+1. Inputs complete (else UNSURE). 2. Owner-kept? Apply E3. Flag concerns in the report. Any replacement follows its
+authorized art-eval regen route, shadow-sheet notice and one-click revert. 3. Canon: each Must show line yes/no; limits
+excluded (A). 4. Style and sibling match (B). 5. Every facing (C). 6. Scale, canvas, alpha (D). 7. Provenance and his
+notes (E). 8. Pawn faces (F).
 
 ## Output — one JSON file, committed by the window
 
@@ -132,7 +133,7 @@ other constraint you applied in `passed`, and a verdict on the constraint itself
   "refusals": [{"clause": "C1", "criterion_hash": "<refusal_contract.criterion_hash of C1's line>",
     "evidence": ["north.png"], "observed": "two eyes and a snout drawn on the north facing",
     "would_pass": "the north facing shows the back of the head and tail with no eyes, snout or mouth visible",
-    "smallest_fix": {"what": "regenerate north.png from the south facing turned 180 degrees, face removed",
+    "smallest_fix": {"what": "Redraw north.png as a rear view of the same subject, preserving its proportions, palette and scale.",
                      "attainable": "yes", "cost": "rerun"},
     "criterion_verdict": "sound",
     "criterion_why": "North is the rear by the game's convention, and a back view is drawable for this body.",

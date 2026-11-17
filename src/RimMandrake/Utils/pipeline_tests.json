@@ -36,6 +36,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_coverage_judge.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_coverage_judge_loop.py", "seconds": 0.6},
     {"test": "src/RimMandrake/rimflow/selftest_bar_rule_tuning_numbers.py", "seconds": 0.5},
+    {"test": "src/RimMandrake/rimflow/selftest_judge_card_answers.py", "seconds": 0.6},
     {"test": "src/RimMandrake/rimflow/selftest_coverage_refusal_record.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_designer_stage.py", "seconds": 3.3},
     {"test": "src/RimMandrake/rimflow/selftest_designer_stage_land.py", "seconds": 5.6},

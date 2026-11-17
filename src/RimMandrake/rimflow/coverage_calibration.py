@@ -16,8 +16,21 @@ in a temp tree (the real role files copied in), puts each to the coverage judge 
                           reads -> must pass: a judge that blocks on a tuning number or a variant count is not calibrated
   bad_leaf_no_scene       the oil leaf and its capability have no scene -> must be refused
   bad_scene_no_control    the light scene has no control and no asserted start -> must be refused
+  bad_conflict_routing    a second leaf, never_dark, that cannot hold beside oil_out -> must be refused AND routed to the
+                          criteria (a flawed or unattainable criterion, the neutral fixer), not sent to the Designer
+  bad_mixed_row           an inventory row pinning numbers (3 oil, 120 ticks) beside an experience no scene tests (a pawn
+                          refuels the lantern) -> must be refused on the experience; the number alone is waived
+  bad_late_serious        a round-2 look after a refusing round-1 verdict that passed oil_out on an acceptance scene that
+                          asserts the leaf's own red (lit at zero oil) -> the late gap must block: a serious Problem the
+                          second reader confirms (owner by card 2026-11-16, point 26)
+  good_round2_repaired    a round-2 look after round 1 refused the light scene's missing control, now repaired -> must
+                          pass: later rounds only check named repairs (owner by card 2026-11-16, point 14)
 
-It spends (one Opus judge per case, each capped at CASE_BUDGET_USD): it runs only from
+Every refusal is routed as production routes it (owner by card 2026-11-16 on GPT's point 17, "Calibration must check
+where a refusal goes"): the gaps the bar rule lets block go to the real second reader (coverage_judge.llm_reader), and
+a refuse case counts as the planted refusal only when its route is the planted one (`outcome`): `designer` (a sound
+criterion), `criteria` (the reader or the judge calls it flawed or unattainable) or `late` (a late gap the reader
+confirmed serious). It spends (one Opus judge per case, each capped at CASE_BUDGET_USD, plus one reader per refusal): it runs only from
 `refusal_contract.py calibrate --model coverage_judge`, never on a schedule.
 
     python3 src/RimMandrake/rimflow/coverage_calibration.py run        judge every case, print one line each
@@ -138,14 +151,105 @@ def _tuning_bait(c):
         "why": "the lantern is drawn and lit in sc_light; its numbers and variants are tuning, not an experience"})
 
 
-CASES = (("good_lanterns", "pass", None), ("good_lanterns_tuning", "pass", _tuning_bait),
-         ("bad_leaf_no_scene", "refuse", _no_oil_scene),
-         ("bad_scene_no_control", "refuse", _no_control))
+def _never_dark(c):
+    """Two leaves that cannot both hold (GPT point 17): oil_out says an unfuelled lantern goes dark, never_dark says it
+    never does. A correct refusal names the criteria, not the Designer's scenes."""
+    c["tree.json"]["leaves"].append(dict(
+        LEAF, id="never_dark", experience="A hung lantern never goes dark: its cells stay lit at every hour for as long "
+        "as it hangs, whether or not it holds any oil", scenario="a lit lantern with 0 oil, a day passing",
+        false_pass=["a lantern refuelled during the day"], red="a hung lantern whose cells go dark"))
+    c["sheet.md"] = c["sheet.md"].replace(
+        "\n\n## does not", "\n- [leaf:never_dark] A hung lantern never goes dark, oil or none\n\n## does not")
+    c["scenes.json"]["scenes"].append({
+        "id": "sc_never_dark", "kind": "acceptance", "requirement": ["never_dark"], "staged_by": "script",
+        "entry_point": "src/RimMandrake/Lanterns/validation.py::scene_never_dark",
+        "start": ["the sc_light room, the lantern lit with 0 oil (asserted)"], "action": "advance one day",
+        "expect": "the lantern's cells still read at least 50% within 2 cells",
+        "control": {"case": "the same room with no lantern hung", "expect": "glow stays 0 on every room cell",
+                    "rules_out": "light from the room rather than the lantern"},
+        "restore": "destroy the quicktest map; nothing persistent changed", "hold": "immediate"})
+
+
+def _refuel_row(c):
+    """A mixed row (GPT point 17): an experience no scene tests (a pawn refuels a lantern) beside tuning numbers. The
+    numbers are waived; the experience still blocks."""
+    c["record.json"]["inventory"].append({
+        "id": "inv_refuel", "what": "A pawn refuels a hung lantern from stockpiled oil, and the lantern lights again; "
+        "each refuel adds 3 oil and takes 120 ticks", "impl": "present",
+        "impl_evidence": ["src/RimMandrake/Lanterns/Source/CompLanternFuel.cs"], "proof": "current",
+        "scope": "approved", "source": ["OWNER:1"]})
+
+
+R1_JUDGE = "rm-coverage-judge-calibration-r1"
+
+
+def _prior(gap, rows_ok):
+    """A round-1 verdict that refused on `gap` and passed every other row (rows_ok: {id: scene})."""
+    return {"verdict": "not_covered", "judge": R1_JUDGE, "round": 1, "gaps": [dict(gap, gid="g1", new_since="first")],
+            "checklist": [{"id": i, "evidence": ["scenes.json", "tree.json"],
+                           "parts": [{"what": "the %s experience" % i, "scene": sc, "ok": True}]}
+                          for i, sc in rows_ok.items()]}
+
+
+LIGHT_GAP = {"what": "sc_light has no control and its start asserts no dark", "where": "scenes.json sc_light",
+             "ids": ["light", "inv_light"], "return_to": 3, "bar_kind": "experience", "severity": "problem",
+             "evidence": ["scenes.json"], "observed": "sc_light has no `control`",
+             "would_pass": "sc_light asserts a dark lamp-free room at midnight and a 0-oil control stays dark",
+             "smallest_fix": {"what": "add a control and asserted start to sc_light", "attainable": "yes",
+                              "cost": "edit"},
+             "criterion_verdict": "sound", "criterion_why": "a lit room is checkable with a dark control"}
+
+
+def _late_red(c):
+    """Round 2 after round 1 refused sc_light and PASSED oil_out on sc_oil_out, whose expect is the leaf's own red (a
+    lantern lit at zero oil): unchanged since, so a gap on it now is late, and a Problem a player would reject."""
+    sc = c["scenes.json"]["scenes"][1]
+    sc["expect"] = "the first lantern holds 0 oil and its cells still read at least 50% within 2 cells"
+    sc["control"]["expect"] = "it holds 1 oil and its cells still read at least 50% within 2 cells"
+    c["coverage_verdict.json"] = _prior(LIGHT_GAP, {"oil_out": "sc_oil_out", "inv_oil": "sc_oil_out"})
+
+
+def _repaired(c):
+    """Round 2 after round 1 refused sc_light's missing control; the BASE scene now has it: a later round checks the
+    repair and finishes."""
+    c["coverage_verdict.json"] = _prior(LIGHT_GAP, {"oil_out": "sc_oil_out", "inv_oil": "sc_oil_out"})
+
+
+# id, expect, mutation, the route a refusal must take (`outcome`), and whether it is a later round (a prior verdict)
+CASES = (("good_lanterns", "pass", None, None), ("good_lanterns_tuning", "pass", _tuning_bait, None),
+         ("good_round2_repaired", "pass", _repaired, None),
+         ("bad_leaf_no_scene", "refuse", _no_oil_scene, "designer"),
+         ("bad_scene_no_control", "refuse", _no_control, "designer"),
+         ("bad_conflict_routing", "refuse", _never_dark, "criteria"),
+         ("bad_mixed_row", "refuse", _refuel_row, "designer"),
+         ("bad_late_serious", "refuse", _late_red, "late"))
+ROUTE = {cid: route for cid, _e, _m, route in CASES}
+FAULTED = ("flawed", "unattainable")
 
 
 def planted():
     """The registry row's `planted` list (refusal_contract.judge_cases)."""
-    return [{"id": cid, "expect": exp} for cid, exp, _m in CASES]
+    return [{"id": cid, "expect": exp} for cid, exp, _m, _r in CASES]
+
+
+def route_of(g):
+    """Where production sends one blocking gap: the criteria (the neutral fixer: coverage_judge's criteria_suspect) or
+    the Designer."""
+    return "criteria" if (g.get("criterion_verdict") in FAULTED or g.get("judge_criterion_verdict") in FAULTED) \
+        else "designer"
+
+
+def outcome(route, blocking):
+    """-> "pass" with no blocking gap; "refuse" when a blocking gap takes the planted route (any route for a pass case:
+    its refusal is wrong anyway); else "refuse, misrouted (<routes>)", which is not the planted refusal."""
+    if not blocking:
+        return "pass"
+    routes = {route_of(g) for g in blocking}
+    if any(g.get("new_since") == "late" and g.get("late_confirmed") is True for g in blocking):
+        routes.add("late")
+    if route is None or route in routes:
+        return "refuse"
+    return "refuse, misrouted (%s)" % ", ".join(sorted(routes))
 
 
 def stage(root):
@@ -154,7 +258,7 @@ def stage(root):
         os.makedirs(os.path.dirname(os.path.join(root, rel)), exist_ok=True)
         shutil.copyfile(os.path.join(REPO, rel), os.path.join(root, rel))
     out = []
-    for cid, exp, mut in CASES:
+    for cid, exp, mut, _route in CASES:
         c = copy.deepcopy(BASE)
         if mut:
             mut(c)
@@ -167,10 +271,12 @@ def stage(root):
     return out
 
 
-def judge(root, d):
-    """One real coverage judge on a planted concept. -> (got, detail)."""
+def judge(root, d, route=None, reader="auto"):
+    """One real coverage judge on a planted concept, its blocking gaps read by the real second reader. -> (got,
+    detail)."""
     tree = json.load(open(os.path.join(d, "tree.json"), encoding="utf-8"))
-    text = CJ.prompt(d, root, CJ.required_ids(d, tree), False, 1)
+    prior = CJ.prior_verdict(d)
+    text = CJ.prompt(d, root, CJ.required_ids(d, tree), prior is not None, 2 if prior else 1)
     argv = [CJ.CLAUDE, "-p", text, "--model", CJ.MODEL, "--output-format", "json",
             "--json-schema", json.dumps(CJ.SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions",
             "--name", "COVERAGE CALIBRATION %s" % os.path.basename(d)]
@@ -185,19 +291,46 @@ def judge(root, d):
     if p.returncode != 0 or not isinstance(so, dict) or so.get("verdict") not in ("covered", "not_covered"):
         detail["error"] = "no well-formed verdict (exit %s)" % p.returncode
         return None, detail
-    gaps = list(so.get("gaps") or []) + CJ.failed_part_gaps(so.get("checklist") or [], so.get("gaps") or [])
-    # the gate run() applies: only a gap the bar rule lets block refuses (bar_rule.blocks)
+    gaps = [g for g in list(so.get("gaps") or []) + CJ.failed_part_gaps(so.get("checklist") or [], so.get("gaps") or [])
+            if isinstance(g, dict)]
+    if prior:   # what run() does on a later look: tag against the earlier gaps; a late gap is the refuser's miss
+        CJ.tag_gaps(gaps, [g for g in prior.get("gaps") or [] if isinstance(g, dict)])
+        for g in gaps:
+            if g.get("new_since") == "late":
+                g["miss_of"] = prior.get("judge")
+    # the gate run() applies: only a gap the bar rule lets block refuses (bar_rule.blocks), after the second reader
     gaps, adv = CJ.BR.split(gaps)
-    detail.update(verdict=so["verdict"], gaps=[str(g.get("what"))[:200] for g in gaps if isinstance(g, dict)][:8],
-                  advisory=[str(g.get("what"))[:200] for g in adv][:8])
-    return ("pass" if not gaps and (so["verdict"] == "covered" or adv) else "refuse"), detail
+    unread = None
+    if gaps:
+        rec = {"gaps": gaps}
+        ent, crit = CJ.entries(d), {CJ.REST_CLAUSE: CJ.REST_TEXT}   # the criterion texts, as contract_verdict gives them
+        for i in {i for g in gaps for i in g.get("ids") or []}:
+            e = ent.get("inv:%s" % i) or ent.get("leaf:%s" % i)
+            if e is not None:
+                crit[i] = json.dumps(e, sort_keys=True)
+        if reader == "auto":
+            reader = CJ.llm_reader(d, root, "calibration-%s" % os.path.basename(d), charge=False)
+        unread = CJ.second_read(rec, crit, reader)
+        gaps, adv2 = CJ.BR.split(rec["gaps"])
+        adv += adv2
+    detail.update(verdict=so["verdict"], gaps=[str(g.get("what"))[:200] for g in gaps][:8],
+                  advisory=[str(g.get("what"))[:200] for g in adv][:8],
+                  routes=[{"what": str(g.get("what"))[:120], "route": route_of(g), "new_since": g.get("new_since"),
+                           "criterion_verdict": g.get("criterion_verdict"), "severity": g.get("severity"),
+                           "late_confirmed": g.get("late_confirmed")} for g in gaps][:8])
+    if unread:   # no second read: the refusal binds nothing in production, so it is not the planted refusal either
+        detail["unread"] = unread
+        return "refuse, unread", detail
+    if not gaps and so["verdict"] != "covered" and not adv:
+        return "refuse", detail   # not_covered with no gap at all: a refusal that names nothing
+    return outcome(route, gaps), detail
 
 
 def run():
     with tempfile.TemporaryDirectory(prefix="rm-coverage-cal-") as root:
         staged = stage(root)
         with ThreadPoolExecutor(len(staged)) as ex:
-            got = list(ex.map(lambda s: judge(root, s[2]), staged))
+            got = list(ex.map(lambda s: judge(root, s[2], ROUTE.get(s[0])), staged))
     rows = [dict({"id": cid, "expect": exp, "got": g}, **det) for (cid, exp, _d), (g, det) in zip(staged, got)]
     path = os.environ.get("RM_CALIBRATION_RESULTS")
     if path:
