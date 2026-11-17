@@ -678,7 +678,9 @@ def launch_argv(rec, msg, claude):
     via_file = rec.get("brief_file")    # a long brief: claude -p reads it from stdin (StandardInput=file:)
     cmd = [bounded, "-p"] + ([] if via_file else [msg]) + [
            "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
-           "--max-budget-usd", "%g" % rec["budget_usd"], "--output-format", "json", "--dangerously-skip-permissions"]
+           "--output-format", "json", "--dangerously-skip-permissions"]
+    if rec["budget_usd"] > 0:           # --budget-usd 0: no harness flag, so the agent is not told its spend every turn (owner
+        cmd += ["--max-budget-usd", "%g" % rec["budget_usd"]]   # 2026-11-16; the outside stop is RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN)
     if rec.get("resume_session"):       # a mod's holder session (modledger.resume_plan), carried into this clone
         cmd += ["--resume", rec["resume_session"]]
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
