@@ -16,7 +16,7 @@
       },
       "accept": [
         "A route leaves marks in warm wet slime; a wall can stand on a crust shelf while the liquid channel makes the builder choose a different site.",
-        "A roofed workshop on constructed flooring protects contact exposure; a roof over bare crust does not make that body ground safe."
+        "A heavy building can be placed on the firm shelf but is refused on the soft mat; the compressor supplies blocks that a worker uses for construction instead of quarrying local rock."
       ],
       "reject": [
         "A green soil recolour offers identical building ground everywhere and its advertised footprints appear only in snow.",
@@ -54,7 +54,13 @@
       "meant": {
         "intent": "The benefit and fee are the same material chain; processing supports repeatable colony work, not a helper-fed demonstration or mandatory raw feeding forever.",
         "source": "delegated: from the_slime.md \u00a7\u00a73,5,7 and RM_gelatinous_slime_mod.md \u00a7\u00a72,6; source SlimeIngestion.cs and SlimeWorks.xml. These are the ordinary material branch of the signature.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "body",
+            "stands_for": "the ordinary raw-slime material obtained by bellows harvest and forage, not digging terrain or butchering creatures",
+            "accept": "A worker harvests a bellows sac and processes its raw slime while the underlying terrain and nearby animals remain intact."
+          }
+        ]
       },
       "accept": [
         "Normal harvest, hauling and bills provide a meal a colonist eats and blocks a worker builds with; the raw poisoned eater loses poison while gaining film.",
@@ -106,7 +112,8 @@
       },
       "accept": [
         "Health labels, impairments and a named warning identify a worsening worker; without rescue the death cause remains readable and their carried things can be recovered.",
-        "A native keeps feeding without acquiring film while a susceptible outsider deteriorates; absorption itself creates no faction change or attack order."
+        "A native keeps feeding without acquiring film while a susceptible outsider deteriorates; absorption itself creates no faction change or attack order.",
+        "A roofed workshop on constructed flooring prevents new contact exposure; a roof over bare crust still lets a susceptible worker acquire film."
       ],
       "reject": [
         "A terminal severity flag is logged while the pawn and equipment silently disappear.",
@@ -146,15 +153,27 @@
       "meant": {
         "intent": "Geography and an ordinary targeted treatment job are genuine escapes; ordinary neutral country is not an instant advanced-film cure and a treatment order is not completion.",
         "source": "Owner companion drying/caravan laws in RM_gelatinous_slime_mod.md \u00a7\u00a73-4; OWNER:1794346263694156545 existing UI; SlimeIngestion.cs targeted toxic cure. delegated: retain prepared incapacitated-patient rescue independently of the deferred injected gene race.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "body",
+            "stands_for": "contact-active native slime ground, including hardened crust; leaving it means reaching a non-slime contact surface, not leaving a giant pawn",
+            "accept": "An early-film patient improves on a constructed floor in the same Slime map without crossing a biome boundary."
+          },
+          {
+            "word": "drying country",
+            "stands_for": "biomes carrying DryingBiomeExtension, reached on a local map or by supported caravan travel; never hardened slime crust or an arid-looking untagged tile",
+            "accept": "A patient improves on a tagged salt-biome map even though it is not visibly dry desert; hardened slime crust does not reverse established film."
+          }
+        ]
       },
       "accept": [
-        "An early exposed worker improves on a constructed floor; an advanced patient stays impaired there but improves on a dry-country road or after completed toxic treatment.",
+        "An early exposed worker improves on a constructed floor; an advanced patient stays impaired there but improves on a road in a tagged drying biome or after completed toxic treatment.",
         "A downed patient can be treated by a prepared helper; a delayed untreated patient still reaches the lethal outcome."
       ],
       "reject": [
         "Entering any non-slime tile instantly clears advanced film and makes the drying route irrelevant.",
-        "The cure function works in isolation while a normal helper cannot target, reach and finish treating the patient."
+        "The cure function works in isolation while a normal helper cannot target, reach and finish treating the patient.",
+        "Hardened slime crust or an untagged arid-looking tile reverses established film merely because it looks dry."
       ],
       "lazy": "none: The says requires each distinct route and a helper finishing treatment before death, so neither a universal step-off cure nor a helper-only effect can satisfy it.",
       "range": {
@@ -185,10 +204,10 @@
     },
     {
       "id": "fields",
-      "says": "A settler who cultivates the body sees the open-ground field become slime again and lose its dependable crop supply, while undisturbed native growth still provides forage.",
+      "says": "After cultivated native ground reverts to slime, a settler sees a food crop fail to reach harvest there while the same crop reaches harvest on imported substrate or in hydroponics and unzoned native forage regrows.",
       "meant": {
-        "intent": "The land cannot be a permanent rich farm under a changed terrain label. Conversion and shared growth must not erase ordinary forage or prepared workshops.",
-        "source": "Frozen the_slime.md \u00a75 farms-fail law and \u00a76 no permanent farmland; delegated: dependable crop supply means repeated harvestable field use cannot continue indefinitely without importing or replacing the substrate. This does not ban hydroponics.",
+        "intent": "Field failure is an observed crop outcome attributable to reverted substrate, not a slight yield reduction, a renamed terrain or a prediction about indefinite farming; native forage and prepared workshops remain.",
+        "source": "Frozen the_slime.md \u00a75 farms-fail law and \u00a76 no permanent farmland; delegated: use a failed post-reversion sow-to-harvest attempt compared with a successful same-crop managed-substrate control within the declared observation stretch. Invalid sowing on reverted substrate is also a readable failure of that attempt. An earlier crop may finish before conversion; hydroponics and imported substrate remain managed alternatives.",
         "figurative": [
           {
             "word": "body",
@@ -198,23 +217,24 @@
         ]
       },
       "accept": [
-        "The planted ground visibly reverts and the farmer has to abandon that open-ground supply or replace its substrate, while the unzoned native meadow remains a harvest/grazing source.",
+        "The field visibly reverts; a subsequent food-crop attempt cannot be sown there or stops growing before harvest because of that substrate, while the matched crop reaches harvest on imported substrate or in compatible hydroponics and unzoned native forage regrows.",
         "A constructed workshop floor stays a workshop while nearby native growth completes its shared wet-growth cycle."
       ],
       "reject": [
-        "The field changes its label to rich slime and continues as the same permanent crop farm.",
+        "The field becomes rich slime but its food crop still reaches harvest, merely later or with a smaller yield.",
+        "Neither crop reaches harvest because the workers never sow or both plots lack light or heat; this is called converted-field failure.",
         "Conversion attacks unzoned native forage or replaces the colony floor to create the promised failure."
       ],
-      "lazy": "none: The says demands lost dependable supply plus surviving native forage, which rules out the label-only shortcut and indiscriminate terrain destruction.",
+      "lazy": "none: A failed post-reversion crop attempt beside a successful same-crop managed control and regrowing forage excludes label-only conversion, slower productive farming and general neglect.",
       "range": {
-        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Growing-zone cells sown/unsown/designated-but-not-yet-sown/harvested/de-zoned; primary grass/rich/hardened and packaged legacy growing ground; crop fertility tolerance across loaded ordinary food crops; field areas 1..2500 cells, map areas 22500..160000; over 15,60,100 days; all ExplosiveGrowth wet/cycle mechanics active.",
-        "left_out": "No promised crop yield, conversion deadline or fixed failure percentage. Constructed floors, off-body agriculture and hydroponics are outside the open body-soil law. A deliberate replacement of substrate is management, not permanent native farmland."
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Growing-zone cells sown/unsown/designated-but-not-yet-sown/harvested/de-zoned; primary grass/rich/hardened and packaged legacy growing ground; crop fertility tolerance across loaded ordinary food crops; field areas 1..2500 cells, map areas 22500..160000; over 15,60,100 days; all ExplosiveGrowth wet/cycle mechanics active. For each loaded ordinary food crop, pair a post-reversion sow-to-harvest attempt with compatible imported substrate or hydroponics under the same season/light/temperature, sowing effort and care. Attempt early enough in each declared stretch for the successful control to reach harvest; otherwise extend and record the stretch, never call an unfinished comparison a pass. Include a crop already growing at conversion separately from a new attempt.",
+        "left_out": "No promised crop yield, conversion deadline or fixed failure percentage. Constructed floors, off-body agriculture and hydroponics are outside the open body-soil law. A deliberate replacement of substrate is management, not permanent native farmland. A pre-conversion crop may finish. Exotic crops deliberately able to grow without suitable substrate are outside ordinary food crops; no promise to suppress arbitrary third-party crop mechanics."
       },
       "sees": {
-        "instrument": "M2 seasonal field/growth model using current terrain and crop requirements, calibrated against zone/crop/terrain/harvest records from T25; stochastic sampling must evaluate region coverage and recurring harvest, not a single changed cell.",
-        "start": "Identical fields and unzoned native patches on an authored map with growth/weather unlocked, normal crop data, natural plant sources and a constructed-floor control.",
+        "instrument": "M2 crop/terrain situation sweep calibrated by T25 actual attempted sowing, growth-stop reasons and harvest receipts. Enumerate loaded ordinary crop compatibility against reverted substrate and read the failed post-reversion attempt beside the successful same-crop managed control; slower growth or no harvest before an arbitrary timeout cannot pass.",
+        "start": "Matched crop attempts on reverted native ground and compatible imported substrate or hydroponics, plus an unzoned native patch and constructed-floor control, on an authored map with normal growth/weather unlocked; record substrate, light, temperature, sowing effort and crop prerequisites.",
         "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
-        "control": "Check actual crop viability after replacement, not terrain name. Controlled unzoned and floor cells separate conversion from shared-growth terrain changes. Successful no-conversion comparison supports attribution; default observation retains all features. Negative label-only implementation must fail.",
+        "control": "Show a substrate-caused sowing refusal or growth stop, not merely absence of harvest. Match crop and care; the managed control must actually reach harvest in the observed stretch and native forage must regrow. Verify loaded sow/growth eligibility and a no-conversion comparison; reject a mutant that only slows the crop or reduces yield while it still harvests. Keep default rain/growth ON and account their writes separately.",
         "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
         "live_only_why": "A game-calibrated deterministic state/geometry instrument can discriminate these pictures; until calibration is recorded, its output is a prediction, not acceptance. No live look is required to distinguish the defined outcomes."
       },
@@ -323,32 +343,40 @@
     },
     {
       "id": "water",
-      "says": "During slime rain the player can collect and drink potable water as the ground briefly floods and drains, without the event leaving a permanent flood or substituting ordinary rain.",
+      "says": "During organism-induced slime rain, the player can drink and collect potable floodwater on exposed natural slime ground as it briefly floods and drains without flooding constructed floors or roofed rooms.",
       "meant": {
-        "intent": "The organism waters itself; useful water and receding inundation are ordinary land/weather already ruled in. This cannot be declared delivered by a WeatherDef field or living-slime drinking alone.",
-        "source": "Frozen the_slime.md \u00a7\u00a73,4b,5-6 organism-induced rain/potable flood carve-out; RM_gelatinous_slime_mod.md \u00a72. delegated: rainfall/collection/drain ownership belongs to FlowWorks, no parallel liquid engine.",
-        "figurative": []
+        "intent": "The organism waters itself; useful water and receding inundation are ordinary land/weather already ruled in. Shallow standing potable surface water covers every unroofed, unbuilt natural slime land cell, including crust, grass and cultivated cells; existing liquid channels, constructed floors, edifices and roofed cells receive no ambient flood layer. It is FlowWorks-accounted water over the substrate, not a terrain swap or a tint. Normal in-place drinking and collection satisfy thirst without a raw ingestion dose. Ground stays traversable with its underlying movement costs and shared wet/slip behaviour; flooded bare slime still causes contact film. The layer neither destroys crops nor changes fertility, floors or building support: field failure remains conversion. Recession removes only event surface water, leaving prior terrain unchanged except independent conversion/growth writes, and retains collected water.",
+        "source": "Frozen the_slime.md \u00a7\u00a73,4b,5-6 organism-induced rain/potable flood carve-out; RM_gelatinous_slime_mod.md \u00a72. delegated: rainfall/collection/drain ownership belongs to FlowWorks, no parallel liquid engine. Designer selection: the frozen sheet does not choose cells, layer, movement or crop effects; the explicit flood picture in definition.md settles these without claiming the provider already exists.",
+        "figurative": [
+          {
+            "word": "floods",
+            "stands_for": "temporarily stands under shallow, drinkable surface water on the declared exposed natural slime land; not a deep river, a tint or a permanent terrain change",
+            "accept": "A worker walks across a flooded crust shelf and drinks there while a floored workshop and a roofed bare-ground room stay unflooded; the shelf retains its building support.",
+            "reject": "A green wet tint has no standing water account or in-place drinking action, or a deep-water terrain swap cuts the route and changes the shelf."
+          }
+        ]
       },
       "accept": [
-        "An exposed collector gains potable water during the organism event and a normal drink reduces thirst; visible temporary inundation recedes as the event passes.",
-        "A roofed collector stays dry, and stored collected water remains useful when the standing floodwater has drained."
+        "An open collector gains potable water during the organism event; a worker also drinks standing water on exposed natural slime land, satisfying thirst without a raw ingestion dose, and the surface water recedes afterward.",
+        "Constructed floors and roofed rooms remain unflooded while exposed grass and a planted field hold shallow water; movement and building support remain, bare slime still causes contact film, and recession leaves the underlying terrain and collected water intact."
       ],
       "reject": [
-        "The weather turns green and reports rain while no usable water reaches storage or the ground never floods.",
-        "A permanent expanding pool is called drainage, or collected living slime charges the raw absorption fee while being advertised as potable rainwater."
+        "The weather turns green and paints wet ground, but there is no standing potable water account or normal in-place drink and collection action.",
+        "A permanent expanding pool is called drainage, raw channel slime substitutes for potable rainwater, or floodwater hides contact-active slime and makes bare ground safe.",
+        "Flooding reaches constructed floors or roofed rooms, kills the crops instead of conversion doing so, or replaces terrain and leaves the shelf unusable after recession."
       ],
-      "lazy": "none: The says explicitly requires collection, drinking, real temporary flooding/drainage and organism weather, ruling out a sky-only build.",
+      "lazy": "none: Standing potable water, normal drinking and collection, bounded cell eligibility and real recession exclude tint-only, channel-only and destructive terrain-swap builds.",
       "range": {
-        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Authored tile rainfall 0 and nonzero; normal natural event selection as well as controlled event replay; event onset/sustained/end, roofed/open collectors, empty/partial/full tanks, dug channels/beds/undug natural ground, drainage blocked/open, existing liquids and floors/doors; during and after save/reload; rain before/after harvest and field conversion.",
-        "left_out": "No imported river, planetary rain editing, exact rainfall frequency/volume/depth or bespoke flood catastrophe. A sealed player-made basin may store water; it cannot be used to claim ambient inundation never drains. Raw channel slime is a separate last-resort liquid."
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Authored tile rainfall 0 and nonzero; normal natural event selection as well as controlled event replay; event onset/sustained/end, roofed/open collectors, empty/partial/full tanks, dug channels/beds/undug natural ground, drainage blocked/open, existing liquids and floors/doors; during and after save/reload; rain before/after harvest and field conversion. Flood-cell classes: unroofed natural hardened/rich/grass/mud and owned legacy equivalents, planted/unplanted ground, constructed flooring, roofed bare ground, roofed rooms, edifices, existing liquid channels and imported substrate; roof/floor added or removed mid-event and independent conversion/growth during recession.",
+        "left_out": "No imported river, planetary rain editing, exact rainfall frequency/volume/depth or bespoke flood catastrophe. A sealed player-made basin may store water; it cannot be used to claim ambient inundation never drains. Raw channel slime is a separate last-resort liquid. No elevation solver, channel-widening flood or lateral flood entry onto excluded cells. Flood depth, pulse rate and duration are checks; no new crop-drowning mechanic."
       },
       "sees": {
         "instrument": "T22 actual loaded weather-selection, collection/volume/composition/ingestion and inundation/recession trace; M3 water geometry ledger validates ownership. T27 state observers capture collector/terrain/liquid transitions, with a normal visual wetting witness recorded once for calibration.",
-        "start": "Existing authored slime map with known rainfall, unlocked weather selection, marked dry collectors and wetting area, known liquid inventories and ordinary thirst; no water prefilled for accepting branch.",
+        "start": "Existing authored slime map with known rainfall and unlocked weather, empty labelled open/roofed collectors, thirsty susceptible and resistant workers, and mapped exposed natural/field/floor/roof/edifice/channel cells with baseline terrain, crops and liquid accounts.",
         "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
-        "control": "Closed collector, no-event equivalent interval and ordinary-rain diagnostic branch distinguish the slime event from ambient storage/refill. Measure actual collected liquid composition and completed drinking. Derive before/after water balance and terrain, including wet/dry transitions; event-id forcing alone cannot show natural availability.",
+        "control": "Closed collector, no-event equivalent interval and ordinary-rain diagnostic branch distinguish the slime event from ambient storage/refill. Measure actual collected liquid composition and completed drinking. Derive before/after water balance and terrain, including wet/dry transitions; event-id forcing alone cannot show natural availability. Pair on-cell drink receipts with surface-water debit and thirst change, and distinguish rain ingestion from underlying contact with resistant and floored controls. Compare the flood mask to eligibility per pulse; audit unchanged terrain/support/crops against a same-actions no-event branch, accounting independent conversion/growth separately. Reject a render-only wetting mutant.",
         "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
-        "live_only_why": "Nothing cheaper distinguishes actual ordinary engine jobs, rendered affordances or shared-engine integration from a correct pure kernel and inert defs; this bar therefore needs the specified running-game reading. The says explicitly requires collection, drinking, real temporary flooding/drainage and organism weather, ruling out a sky-only build."
+        "live_only_why": "Normal in-place drinking, collection, visible standing water and shared terrain/contact integration require running-game calibration; a weather field, wet tint or ledger alone cannot establish this picture."
       },
       "live_only": true,
       "touches": [
@@ -380,7 +408,7 @@
         ]
       },
       "accept": [
-        "A prepared colony gathers, renders, presses, builds and treats patients as native plants and animals continue their roles; fields lose permanence and water recedes without swallowing the workplace.",
+        "A prepared colony gathers, renders, presses, builds and treats patients as native plants and animals continue their roles; post-reversion crop attempts fail beside productive managed-substrate crops and water recedes without swallowing the workplace.",
         "After reloading during rain with an active patient and a held victim, the player finishes the same ordinary actions, then repeats them with harvesting and treatment in a different order."
       ],
       "reject": [
@@ -431,7 +459,7 @@
     },
     {
       "id": "C3",
-      "what": "ConversionAttempts distribution and growing-zone source gate; loaded crop viability after replacement, including rich slime currently fertility 0.85. Source numbers inform M2, not bars."
+      "what": "ConversionAttempts distribution and growing-zone source gate; loaded crop viability after replacement, including rich slime currently fertility 0.85. Source numbers inform M2, not bars. Record each paired crop attempt, substrate-caused sow/growth refusal and successful managed-control harvest; a timeout alone is not evidence of failure."
     },
     {
       "id": "C4",
@@ -463,7 +491,7 @@
     },
     {
       "id": "C11",
-      "what": "Weather natural eligibility on authored zero-rainfall tile, no campaign Rain/FoggyRain, liquid conservation and potable collector contents; isolated forecast versus actual event receipt."
+      "what": "Weather natural eligibility on authored zero-rainfall tile, no campaign Rain/FoggyRain, liquid conservation and potable collector contents; isolated forecast versus actual event receipt. Snapshot depth, pulse and duration tuning; flood-cell mask, direct-drink water debits, substrate/contact preservation and post-drain terrain equality after independent writes."
     },
     {
       "id": "C12",
@@ -504,7 +532,7 @@
     },
     {
       "id": "R_farm",
-      "rule": "Designer rule (attackable): Growing-zone designation triggers substrate conversion, including not-yet-sown zones, as source does; de-zoning stops new zone-driven changes but never restores ground. Converted ground must lose permanent open-food-crop viability. Keep shared plant-top terrain changes separate in the ledger.",
+      "rule": "Designer rule (attackable): Growing-zone designation triggers substrate conversion, including not-yet-sown zones; de-zoning stops new zone-driven changes but never restores ground. After reversion, an ordinary food-crop sow-to-harvest attempt fails through substrate incompatibility while the same crop succeeds on managed imported substrate or hydroponics. Mere slow growth or lower yield is insufficient. Preserve native forage, floors and shared growth; keep zone and plant-top writes separate in the ledger.",
       "touches": [
         "surface_state",
         "material_economy",
@@ -525,7 +553,7 @@
     },
     {
       "id": "R_water",
-      "rule": "Designer rule (attackable): FlowWorks owns liquid quantities/composition, collection/drainage/slip and native thirst. Slime-rain precipitation must be naturally eligible at authored zero rainfall without changing planetary rainfall; ordinary Rain/FoggyRain absent in campaign. Collected rainwater is potable; raw channel slime keeps last-resort purge/film. Existing stored rainwater survives a rain toggle.",
+      "rule": "Designer rule (attackable): FlowWorks owns liquid quantities/composition, collection/drainage/slip and native thirst. Slime-rain precipitation must be naturally eligible at authored zero rainfall without changing planetary rainfall; ordinary Rain/FoggyRain absent in campaign. Collected rainwater is potable; raw channel slime keeps last-resort purge/film. Existing stored rainwater survives a rain toggle. Ambient inundation uses the definition.md shallow surface-water mask, never a terrain swap: exposed natural slime land only; roofs/floors/edifices/channels excluded. It is directly drinkable and collectible, retains underlying contact and support, and leaves crops intact. New roofs/floors stop further input; existing event water there drains without wetting neighbours. Recession does not roll back independent conversion/growth or erase storage.",
       "touches": [
         "surface_state",
         "water_growth",
@@ -622,7 +650,7 @@
         "R_scope"
       ],
       "holds_together": "unknown",
-      "why": "Farm conversion and wet Slime plant tops write rich terrain while rain changes wetness and exposure reads the top layer. Floors are protected by growth but legacy overlays/flow ownership and productive rich ground make a loop. Unknown until map-region simulation calibrated to actual terrain writes.",
+      "why": "Farm conversion and wet Slime plant tops write rich terrain while rain changes wetness and exposure reads the top layer. Floors are protected by growth but legacy overlays/flow ownership and productive rich ground make a loop. Unknown until map-region simulation calibrated to actual terrain writes. The proposed water layer cannot replace substrate or shield contact; post-reversion crop failure must coexist with native regrowth even under rain and plant-top writes. These explicit choices still need game-calibrated region coverage.",
       "model": "M2: Whole Slime season"
     },
     {
@@ -743,7 +771,7 @@
         "R_scope"
       ],
       "holds_together": "unknown",
-      "why": "Potable rain collection and recession, shared wet-growth/Slime top, farmland loss, native thirst and raw channel-liquid effects share liquid and terrain ownership. Existing ApplyRain is not evidence of undug slime inundation or potable collector delivery.",
+      "why": "Potable rain collection and recession, shared wet-growth/Slime top, farmland loss, native thirst and raw channel-liquid effects share liquid and terrain ownership. Existing ApplyRain is not evidence of undug slime inundation or potable collector delivery. Test the declared exposed-land flood mask and direct drinking, exclusion of floors/roofs/channels, continued underlying contact and crop survival during water alone; conversion must cause the paired crop failure. No claim of delivered undug-ground water follows from this specification.",
       "model": "M3: Rain and liquid ownership sweep"
     },
     {

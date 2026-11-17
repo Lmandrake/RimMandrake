@@ -1,0 +1,786 @@
+{
+ "mod": "GelatinousSlime",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "definition.md line 15 (runner-up); owner_pages.md page one runner-up paragraph and page two; result.json counts.questions = 0",
+     "evidence": "design/RimMandrake/RM_gelatinous_slime_mod.md:61 lists 'The gene machine: select target gene → locate in the currents → the vulnerable walk → coma → antidote race' with source 'sheet §7 + owner's new verbatim flow' and status 'Fully specced §5 — the mod's centerpiece'. record.json scope 'universal_body' records the same owner instruction. The proposal moves this whole chain to the next version (T4-T8; old bars chosen_gene_journey, friend_rescue and lasting_gene_price are 'moved'). definition.md itself says 'The original owner instruction ... makes it the former centerpiece' and calls the move 'my scope decision ... not an assertion that he stopped wanting it'. That is concrete evidence against the default, but the owner's pages carry 0 questions; the move appears only as a runner-up note on page one.",
+     "would_pass": "Page two carries one very clear question. It names the choice (the owner's own centerpiece, the gene expedition and friend rescue, versus the material/contact bargain as the 0.1.0 signature), gives the evidence (his verbatim flow, called the centerpiece in the mod spec, and its earlier showcase selection), states the default taken (material bargain; gene journey next version, switched off) and says what changes if he picks the other.",
+     "smallest_fix": "Add that question to owner_pages.md page two and set result.json counts.questions to 1. Keep the current default and proceed on it."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json water (says, accept 1, reject 1); definition.md line 41; census.json rain_water_services; tickets.md T22",
+     "evidence": "The water bar requires that 'the ground briefly floods and drains' and that 'visible temporary inundation recedes'. The census marks rain_water_services as built: 'unknown'. definition.md:41 gives FlowWorks ownership of 'wet surfaces and drainage' and says ApplyRain 'is evidence of an engine, not proof that it implements the authored undug-ground flood'. T22 says only 'Deliver minimal missing local provider/hook for potable collection and brief actual inundation/recession, if absent'. Nowhere is the flood defined: which cells flood (all open natural ground, low cells, the liquid channels widening), what the flood is (a FlowWorks potable surface-water layer or a terrain swap), whether pawns can drink from it in place (the_slime.md:144 'a place to fill your belly and your tanks'), whether flooded body ground still delivers contact, and what it does to fields, floors and the inside of roofed rooms. One builder could ship a wet tint over open cells and another a standing potable-water layer. Both would claim this bar.",
+     "would_pass": "definition.md (and the water bar's meant) states what the player sees: where flood water stands during the event, what it is and whether it can be drunk in place, what it does to movement, contact, floors, roofed cells and fields, and that it returns the cells to their prior terrain afterwards. A figurative entry for 'floods' gives an accept picture and a reject picture (for example, a tint-only flood is rejected).",
+     "smallest_fix": "Add one paragraph to definition.md 'Land running whole' fixing the flood picture, and add a 'floods' figurative entry with accept/reject to the water bar. Leave depth and frequency as checks."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json fields (says 'lose its dependable crop supply'; meant.source; sees.instrument); tickets.md T25 acceptance test",
+     "evidence": "meant.source defines the key words as 'repeated harvestable field use cannot continue indefinitely without importing or replacing the substrate'. The instrument is M2, run over 15, 60 and 100 days. SlimeTerrain.xml:71 gives converted RM_Slime_Rich fertility 0.85, so converted cells still grow crops at most of their former rate. T25 accepts on 'Calibrated M2 region sweep shows ... loses dependable continuing crop production'. 'Indefinitely' cannot be seen in any finite run. A field whose yield sags slightly but still feeds the colony through the observed stretch is a plausible false pass, and a judge cannot separate it from the intended failure. 'Dependable' is the unmarked vague word carrying the bar.",
+     "would_pass": "The bar names an observable comparison inside the observed stretch, with no number. For example: a crop sown on reverted ground no longer reaches harvest (or no longer replants to harvest), while the same crop on imported substrate or hydroponics does, and the unzoned native meadow keeps regrowing.",
+     "smallest_fix": "Replace 'dependable crop supply' and 'indefinitely' in fields.says and meant with that comparison, add matching accept/reject pictures, and have T25's acceptance read it."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json use_body (says 'harvest the body', figurative []); escape (says 'leaving body ground' and 'drying country', figurative [])",
+     "evidence": "The absorption and fields bars each mark 'body' as figurative ('the connected living terrain and ordinary slime material'; 'native slime substrate'). use_body and escape use the same word unmarked. In use_body, 'harvest the body' could be read as digging terrain or butchering creatures; in fact it is the bellows and forage harvest (SlimeFlora.xml RM_Plant_Bellows harvestedThingDef RM_RawSlime). 'Drying country' means biomes carrying DryingBiomeExtension (Patches/DryingBiomes.xml), yet definition.md:25 warns that the Slime's own 'dry crust' is not a drying biome. A cold reader can take 'drying country' to include dry crust or any arid tile.",
+     "would_pass": "Each of these words has a figurative entry saying what it stands for and one accept picture that departs from the literal reading.",
+     "smallest_fix": "Add figurative entries for 'body' in use_body and escape and for 'drying country' in escape (tagged drying biomes reached on a map or by caravan, never hardened crust)."
+    },
+    {
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json ground, accept[1]",
+     "evidence": "The ground bar's says covers telling shelves from yielding ground and channels, passage marks, and stone through production. Its second accept picture, 'A roofed workshop on constructed flooring protects contact exposure; a roof over bare crust does not make that body ground safe.', tests none of these. It restates R_contact ('roof alone is not protection, constructed non-slime floor is'). A build could match this picture and still fail every clause of the ground bar, so the picture certifies a rule rather than the experience.",
+     "would_pass": "Ground's accept pictures each witness its own says: shelves versus soft ground versus channels changing what can be built or crossed, marks from passage, and stone from the compressor. The roof/floor contrast lives under absorption or escape (or only as R_contact).",
+     "smallest_fix": "Move that picture to the absorption or escape bar (or drop it) and replace it with a picture contrasting heavy construction on a shelf with its refusal on rich or soft ground."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "absorption",
+     "n": 1,
+     "text": "A terminal severity flag is logged while the pawn and equipment silently disappear.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "absorption",
+     "n": 2,
+     "text": "Only a death notice identifies absorption; before that the player cannot identify the threatened patient or the worsening film.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "absorption",
+     "n": 3,
+     "text": "Health labels, impairments and a named warning identify a worsening worker; without rescue the death cause remains readable and their carried things can be recovered.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "absorption",
+     "n": 4,
+     "text": "A native keeps feeding without acquiring film while a susceptible outsider deteriorates; absorption itself creates no faction change or attack order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "absorption",
+     "n": 5,
+     "text": "Only visitors can dissolve, or crossing a film stage creates a hostile faction or manhunter job.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "escape",
+     "n": 1,
+     "text": "The cure function works in isolation while a normal helper cannot target, reach and finish treating the patient.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "escape",
+     "n": 2,
+     "text": "Entering any non-slime tile instantly clears advanced film and makes the drying route irrelevant.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "escape",
+     "n": 3,
+     "text": "A downed patient can be treated by a prepared helper; a delayed untreated patient still reaches the lethal outcome.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "escape",
+     "n": 4,
+     "text": "An early exposed worker improves on a constructed floor; an advanced patient stays impaired there but improves on a dry-country road or after completed toxic treatment.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "fields",
+     "n": 1,
+     "text": "The field changes its label to rich slime and continues as the same permanent crop farm.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "fields",
+     "n": 2,
+     "text": "The planted ground visibly reverts and the farmer has to abandon that open-ground supply or replace its substrate, while the unzoned native meadow remains a harvest/grazing source.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "fields",
+     "n": 3,
+     "text": "A constructed workshop floor stays a workshop while nearby native growth completes its shared wet-growth cycle.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "fields",
+     "n": 4,
+     "text": "Conversion attacks unzoned native forage or replaces the colony floor to create the promised failure.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "ground",
+     "n": 1,
+     "text": "A convenient natural quarry substitutes for producing the local building stone.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "ground",
+     "n": 2,
+     "text": "A roofed workshop on constructed flooring protects contact exposure; a roof over bare crust does not make that body ground safe.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "ground",
+     "n": 3,
+     "text": "A green soil recolour offers identical building ground everywhere and its advertised footprints appear only in snow.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "ground",
+     "n": 4,
+     "text": "A route leaves marks in warm wet slime; a wall can stand on a crust shelf while the liquid channel makes the builder choose a different site.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "mouth",
+     "n": 1,
+     "text": "A normal melee encounter puts eligible prey inside the giant with a named countdown; downing the captor returns that same prey, and a completed meal leaves gear while the fed giant grows and keeps its growth.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "mouth",
+     "n": 2,
+     "text": "A rescued victim reappears with injuries and film from the encounter; the colony can select and route around the grown animal after a reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "mouth",
+     "n": 3,
+     "text": "Only a debug engulf function can swallow prey, or a countdown exists but downing the giant destroys its prisoner.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "mouth",
+     "n": 4,
+     "text": "The sprite enlarges while occupied cells and prey capacity remain wrong, or starving silently shrinks a default grown giant.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "residents",
+     "n": 1,
+     "text": "Native grazers feed, an oomb eats refuse, and a thirsty native beside local liquid drinks without accumulating dehydration; a susceptible outsider carries readable film.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "residents",
+     "n": 2,
+     "text": "A fubbum selects permitted prey through normal hunting and a dwommo enters flight according to its tracker while keeping its native resistance.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "residents",
+     "n": 3,
+     "text": "An animal lineup supplies all labels while every creature starves, the floater only walks, or natives dehydrate beside their own water.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "residents",
+     "n": 4,
+     "text": "A dying corrosive native causes visible acid injury in its affected area, while a matched animal beyond that area escapes that death burst.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "residents",
+     "n": 5,
+     "text": "Visitor arrivals drown out native encounters or film itself starts new aggression.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "use_body",
+     "n": 1,
+     "text": "A prepared worker on constructed flooring can continue production without renewed contact; raw consumption still carries its own fee.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "use_body",
+     "n": 2,
+     "text": "Finished meals and blocks are spawned for the scene, while the normal benches cannot complete their bills.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "use_body",
+     "n": 3,
+     "text": "Raw slime cures susceptible eaters without charging film, or cooked meals secretly retain the raw-dose effect.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "use_body",
+     "n": 4,
+     "text": "Normal harvest, hauling and bills provide a meal a colonist eats and blocks a worker builds with; the raw poisoned eater loses poison while gaining film.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "water",
+     "n": 1,
+     "text": "An exposed collector gains potable water during the organism event and a normal drink reduces thirst; visible temporary inundation recedes as the event passes.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "water",
+     "n": 2,
+     "text": "A roofed collector stays dry, and stored collected water remains useful when the standing floodwater has drained.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "water",
+     "n": 3,
+     "text": "The weather turns green and reports rain while no usable water reaches storage or the ground never floods.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "water",
+     "n": 4,
+     "text": "A permanent expanding pool is called drainage, or collected living slime charges the raw absorption fee while being advertised as potable rainwater.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 1,
+     "text": "Shared growth coats the work area in permanent slime, rain accumulates without recession, native life disappears, or jobs and alerts cease to progress after reload.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 2,
+     "text": "The season works only with clear weather, plant tops, reproduction, predation or contact secretly disabled.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 3,
+     "text": "A prepared colony gathers, renders, presses, builds and treats patients as native plants and animals continue their roles; fields lose permanence and water recedes without swallowing the workplace.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 4,
+     "text": "After reloading during rain with an active patient and a held victim, the player finishes the same ordinary actions, then repeats them with harvesting and treatment in a different order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Tracked slime smear: RM_Slime_Mud and RM_Slime_Liquid each set <generatedFilth>RM_Filth_SlimeSmear</generatedFilth> (SlimeTerrain.xml:107 and :135), so pawns crossing mud or channels carry smear onto floors and into rooms, a cleaning chore and cleanliness cost the player sees. census.json mentions smear only as gappo cleaning and dissolution output. No row says whether tracked smear on a constructed floor counts as contact, which R_contact's 'constructed floor protects' depends on. (Also uncensused: the RM_AteRawSlime mood memory in SlimeThoughts.xml:7, part of the raw-eating fee.)",
+   "loop_or_three_way": "Fields (via T25) × R_growth × ground/use_body. RM_TopResolver.Slime (ExplosiveGrowth RM_TopResolver.cs:381-404) runs for all four native plants (roster: slimeTerrain RM_Slime_Rich). Each time one fires, cells within ChurnRadius have a 70% chance of becoming RM_Slime_Rich, skipping only water, floors and edifice cells. That includes slime grass and RM_Slime_Hardened shelves. Slime grass (fertilityMin 0.1) grows on hardened ground (fertility 0.12), so native tops steadily erode Heavy-affordance shelves into Light-only rich slime, against the ground bar's firm shelves. Meanwhile T25 must make rich slime unfit for dependable crops, but rich slime is the biome's ordinary ground: it is where bellows (fertilityMin 0.3, the RM_RawSlime source for use_body) and readerbloom (0.4) grow, and the ground the tops keep spreading. Cut rich fertility enough to kill crops and the tops spread a forage and raw-slime desert across the map. Leave it at 0.85 and fields keep farming. Ignore it and the shelves dissolve over the season. The surface_state meeting lists conversion and tops but names neither the shelf erosion nor the bellows coupling.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 706276
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "census.json (no row for colonist resistance acquisition); next_version.md archive_selection; definition.md 'Using it' and 'Settings'",
+     "evidence": "The owner's law 1 (2026-09-10) in design/RimMandrake/RM_gelatinous_slime_mod.md §3 reads: 'The resistance economy is therefore real: the mod ships resistance as an acquirable state (§5's archive carries a slime-resistance gene at the machine's standard price...)'. src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes.xml says RM_Gene_SlimeResistance is 'deliberately in the archive'. The proposal moves archive_selection, seeker and injection to the next version, switched off. No census row, bar, rule or ticket says how a colonist gains resistance in 0.1.0, and nothing names this law as given up. In the proposal resistance belongs only to natives ('resistant flesh still gets the benefit'), so a sourced owner law is dropped silently. Q1 on page two does not mention it.",
+     "would_pass": "Either (a) a kept, defined first-version route by which a colonist becomes resistant (for example the gene through ordinary Biotech genepack or implant handling, decoupled from the archive dialog), with a census row and a picture under use_body or escape; or (b) the loss stated plainly on the owner's pages, citing law 1, as part of Q1 or as Q2, with what changes if he keeps it.",
+     "smallest_fix": "Add a census row 'colonist resistance acquisition' (RM_Gene_SlimeResistance plus the RM_SlimeResistant extension) with a fate and a deletion argument. If it moves, add one line to owner_pages.md page two citing law 1 and the default taken."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json row 'footprints' (fate needed_by 'land: readable wet passage', ticket T18); bars.json bar 'ground' says and accept picture 1",
+     "evidence": "The row reads built 'absent'. Its why is 'Without visible passage marks the frozen ordinary-ground promise is missing', which repeats the sheet's words ('footprints always show', the_slime.md §5) and is not a deletion argument. Without marks, land still has firm shelves, soft mats, liquid channels and no quarry. A warm-ground decal system nobody has built is the kind of 'little custom detail that wasn't strictly necessary' he asked to move. Keeping it adds new build work to a live-only bar.",
+     "would_pass": "A deletion argument showing that, with passage marks removed, a player could no longer read land as land; or the marks moved to the next version and taken out of the ground bar.",
+     "smallest_fix": "Change footprints to next_version in census.json and next_version.md (nothing to switch off, since nothing is built). Delete 'sees passage marks on wet ground' from ground.says and 'A route leaves marks in warm wet slime;' from its accept picture. Mark T18 as next version."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json bar 'residents' says: 'outsiders visibly being absorbed'; figurative list is []",
+     "evidence": "The proposal moves the bespoke body film/tint/drip overlay to the next version (next_version.md film_overlay: 'Existing health labels, real impairments and necessary alerts can expose the whole hazard'). The bar still says 'visibly', and its accept picture only asks for 'readable film'. A cold reader would expect a visible mark on the animal's body, which is the moved extra. A builder could rebuild the overlay, or a judge could refuse its absence.",
+     "would_pass": "Either the says uses the literal word, or 'visibly' is listed as figurative, standing for 'readable through health, inspect and impairment state, with no body overlay', with an accept picture of a filmed outsider whose sprite is unchanged.",
+     "smallest_fix": "Replace 'visibly being absorbed' with 'readably being absorbed (health and inspect)', or add a figurative entry for 'visibly' with that accept picture."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json bar 'escape': live_only false, sees.instrument 'M1 state-machine and timing walk with T28 ... calibration', live_only_why 'No live look is required'",
+     "evidence": "One reject picture is 'The cure function works in isolation while a normal helper cannot target, reach and finish treating the patient.' The range covers 'walking/bed/downed/held/caravan states', 'helper contention with reachability/travel/work delays'. M1 models RM_SlimeLadder transitions. Whether UseItem can target a downed pawn on bare ground, in a bed or in a caravan is an engine job-availability fact the model does not contain. One calibration run in one holder state leaves a plausible false pass: M1 predicts cure for a holder class where the job can never be given.",
+     "would_pass": "The helper-completion arm is read in the running game for each holder class in the range (bed, downed on the map, held or released, caravan), with consumption and toxic cost observed. M1 covers only timing and severity between those calibrated classes.",
+     "smallest_fix": "In escape.sees, require T28 calibration rows per holder class before any M1 output counts, and name the uncalibrated classes UNKNOWN. Or set escape live_only true and update the live-only count on the owner's pages and in result.json."
+    }
+   ],
+   "reviewer_refusals": 4,
+   "stranger": [
+    {
+     "bar": "absorption",
+     "n": 1,
+     "text": "Only a death notice identifies absorption; before that the player cannot identify the threatened patient or the worsening film.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "absorption",
+     "n": 2,
+     "text": "Health labels, impairments and a named warning identify a worsening worker; without rescue the death cause remains readable and their carried things can be recovered.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "absorption",
+     "n": 3,
+     "text": "A terminal severity flag is logged while the pawn and equipment silently disappear.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "absorption",
+     "n": 4,
+     "text": "A roofed workshop on constructed flooring prevents new contact exposure; a roof over bare crust still lets a susceptible worker acquire film.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "absorption",
+     "n": 5,
+     "text": "Only visitors can dissolve, or crossing a film stage creates a hostile faction or manhunter job.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "absorption",
+     "n": 6,
+     "text": "A native keeps feeding without acquiring film while a susceptible outsider deteriorates; absorption itself creates no faction change or attack order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "escape",
+     "n": 1,
+     "text": "Hardened slime crust or an untagged arid-looking tile reverses established film merely because it looks dry.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "escape",
+     "n": 2,
+     "text": "A downed patient can be treated by a prepared helper; a delayed untreated patient still reaches the lethal outcome.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "escape",
+     "n": 3,
+     "text": "An early exposed worker improves on a constructed floor; an advanced patient stays impaired there but improves on a road in a tagged drying biome or after completed toxic treatment.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "escape",
+     "n": 4,
+     "text": "The cure function works in isolation while a normal helper cannot target, reach and finish treating the patient.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "escape",
+     "n": 5,
+     "text": "Entering any non-slime tile instantly clears advanced film and makes the drying route irrelevant.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "fields",
+     "n": 1,
+     "text": "Conversion attacks unzoned native forage or replaces the colony floor to create the promised failure.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "fields",
+     "n": 2,
+     "text": "A constructed workshop floor stays a workshop while nearby native growth completes its shared wet-growth cycle.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "fields",
+     "n": 3,
+     "text": "The field becomes rich slime but its food crop still reaches harvest, merely later or with a smaller yield.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "fields",
+     "n": 4,
+     "text": "Neither crop reaches harvest because the workers never sow or both plots lack light or heat; this is called converted-field failure.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "fields",
+     "n": 5,
+     "text": "The field visibly reverts; a subsequent food-crop attempt cannot be sown there or stops growing before harvest because of that substrate, while the matched crop reaches harvest on imported substrate or in compatible hydroponics and unzoned native forage regrows.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "ground",
+     "n": 1,
+     "text": "A heavy building can be placed on the firm shelf but is refused on the soft mat; the compressor supplies blocks that a worker uses for construction instead of quarrying local rock.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "ground",
+     "n": 2,
+     "text": "A route leaves marks in warm wet slime; a wall can stand on a crust shelf while the liquid channel makes the builder choose a different site.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "ground",
+     "n": 3,
+     "text": "A convenient natural quarry substitutes for producing the local building stone.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "ground",
+     "n": 4,
+     "text": "A green soil recolour offers identical building ground everywhere and its advertised footprints appear only in snow.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "mouth",
+     "n": 1,
+     "text": "Only a debug engulf function can swallow prey, or a countdown exists but downing the giant destroys its prisoner.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "mouth",
+     "n": 2,
+     "text": "A normal melee encounter puts eligible prey inside the giant with a named countdown; downing the captor returns that same prey, and a completed meal leaves gear while the fed giant grows and keeps its growth.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "mouth",
+     "n": 3,
+     "text": "A rescued victim reappears with injuries and film from the encounter; the colony can select and route around the grown animal after a reload.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "mouth",
+     "n": 4,
+     "text": "The sprite enlarges while occupied cells and prey capacity remain wrong, or starving silently shrinks a default grown giant.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "residents",
+     "n": 1,
+     "text": "An animal lineup supplies all labels while every creature starves, the floater only walks, or natives dehydrate beside their own water.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "residents",
+     "n": 2,
+     "text": "A dying corrosive native causes visible acid injury in its affected area, while a matched animal beyond that area escapes that death burst.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "residents",
+     "n": 3,
+     "text": "A fubbum selects permitted prey through normal hunting and a dwommo enters flight according to its tracker while keeping its native resistance.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "residents",
+     "n": 4,
+     "text": "Visitor arrivals drown out native encounters or film itself starts new aggression.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "residents",
+     "n": 5,
+     "text": "Native grazers feed, an oomb eats refuse, and a thirsty native beside local liquid drinks without accumulating dehydration; a susceptible outsider carries readable film.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "use_body",
+     "n": 1,
+     "text": "A prepared worker on constructed flooring can continue production without renewed contact; raw consumption still carries its own fee.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "use_body",
+     "n": 2,
+     "text": "Raw slime cures susceptible eaters without charging film, or cooked meals secretly retain the raw-dose effect.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "use_body",
+     "n": 3,
+     "text": "Finished meals and blocks are spawned for the scene, while the normal benches cannot complete their bills.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "use_body",
+     "n": 4,
+     "text": "Normal harvest, hauling and bills provide a meal a colonist eats and blocks a worker builds with; the raw poisoned eater loses poison while gaining film.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "water",
+     "n": 1,
+     "text": "A permanent expanding pool is called drainage, raw channel slime substitutes for potable rainwater, or floodwater hides contact-active slime and makes bare ground safe.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "water",
+     "n": 2,
+     "text": "Flooding reaches constructed floors or roofed rooms, kills the crops instead of conversion doing so, or replaces terrain and leaves the shelf unusable after recession.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "water",
+     "n": 3,
+     "text": "An open collector gains potable water during the organism event; a worker also drinks standing water on exposed natural slime land, satisfying thirst without a raw ingestion dose, and the surface water recedes afterward.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "water",
+     "n": 4,
+     "text": "The weather turns green and paints wet ground, but there is no standing potable water account or normal in-place drink and collection action.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "water",
+     "n": 5,
+     "text": "Constructed floors and roofed rooms remain unflooded while exposed grass and a planted field hold shallow water; movement and building support remain, bare slime still causes contact film, and recession leaves the underlying terrain and collected water intact.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 1,
+     "text": "After reloading during rain with an active patient and a held victim, the player finishes the same ordinary actions, then repeats them with harvesting and treatment in a different order.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 2,
+     "text": "A prepared colony gathers, renders, presses, builds and treats patients as native plants and animals continue their roles; post-reversion crop attempts fail beside productive managed-substrate crops and water recedes without swallowing the workplace.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 3,
+     "text": "The season works only with clear weather, plant tops, reproduction, predation or contact secretly disabled.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "whole",
+     "n": 4,
+     "text": "Shared growth coats the work area in permanent slime, rain accumulates without recession, native life disappears, or jobs and alerts cease to progress after reload.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Colonist resistance acquisition. RM_Gene_SlimeResistance ('slime-blind', src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes.xml) and the route a settler takes to become resistant, which the owner's law 1 requires ('ships resistance as an acquirable state'). The census treats resistance only as a fixed property of native races (the exposure row's 'identity/gene resistance') and never disposes of the player's way to acquire it.",
+   "loop_or_three_way": "water + R_growth + fields/whole form a three-way meeting. Organism rain wets native flora, and soaked ExplosiveGrowth Slime tops then write rich slime onto surrounding eligible ground. R_growth says only floors, water and edifices are protected, so imported substrate that is not a floor is eligible. The fields bar requires that reverted rich slime refuse food crops. So a top that fires beside the imported-substrate control plot can turn the control into failing ground, which breaks fields' managed control and the whole bar's 'productive managed-substrate crops'. The rain itself never touches crops. 'Imported substrate' is never defined as floor or terrain. The surface_state meeting names this region only loosely under M2; it needs the substrate class fixed and M2 to sweep top-writes onto managed plots.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 561140
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1181382,
+    "output_tokens": 11669
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "core_promise_weakened",
+   "where": "census.json (no row for colonist resistance acquisition); next_version.md archive_selection; definition.md 'Using it' and 'Settings'",
+   "evidence": "The owner's law 1 (2026-09-10) in design/RimMandrake/RM_gelatinous_slime_mod.md §3 reads: 'The resistance economy is therefore real: the mod ships resistance as an acquirable state (§5's archive carries a slime-resistance gene at the machine's standard price...)'. src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes.xml says RM_Gene_SlimeResistance is 'deliberately in the archive'. The proposal moves archive_selection, seeker and injection to the next version, switched off. No census row, bar, rule or ticket says how a colonist gains resistance in 0.1.0, and nothing names this law as given up. In the proposal resistance belongs only to natives ('resistant flesh still gets the benefit'), so a sourced owner law is dropped silently. Q1 on page two does not mention it.",
+   "would_pass": "Either (a) a kept, defined first-version route by which a colonist becomes resistant (for example the gene through ordinary Biotech genepack or implant handling, decoupled from the archive dialog), with a census row and a picture under use_body or escape; or (b) the loss stated plainly on the owner's pages, citing law 1, as part of Q1 or as Q2, with what changes if he keeps it.",
+   "smallest_fix": "Add a census row 'colonist resistance acquisition' (RM_Gene_SlimeResistance plus the RM_SlimeResistant extension) with a fate and a deletion argument. If it moves, add one line to owner_pages.md page two citing law 1 and the default taken."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "census.json row 'footprints' (fate needed_by 'land: readable wet passage', ticket T18); bars.json bar 'ground' says and accept picture 1",
+   "evidence": "The row reads built 'absent'. Its why is 'Without visible passage marks the frozen ordinary-ground promise is missing', which repeats the sheet's words ('footprints always show', the_slime.md §5) and is not a deletion argument. Without marks, land still has firm shelves, soft mats, liquid channels and no quarry. A warm-ground decal system nobody has built is the kind of 'little custom detail that wasn't strictly necessary' he asked to move. Keeping it adds new build work to a live-only bar.",
+   "would_pass": "A deletion argument showing that, with passage marks removed, a player could no longer read land as land; or the marks moved to the next version and taken out of the ground bar.",
+   "smallest_fix": "Change footprints to next_version in census.json and next_version.md (nothing to switch off, since nothing is built). Delete 'sees passage marks on wet ground' from ground.says and 'A route leaves marks in warm wet slime;' from its accept picture. Mark T18 as next version."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json bar 'residents' says: 'outsiders visibly being absorbed'; figurative list is []",
+   "evidence": "The proposal moves the bespoke body film/tint/drip overlay to the next version (next_version.md film_overlay: 'Existing health labels, real impairments and necessary alerts can expose the whole hazard'). The bar still says 'visibly', and its accept picture only asks for 'readable film'. A cold reader would expect a visible mark on the animal's body, which is the moved extra. A builder could rebuild the overlay, or a judge could refuse its absence.",
+   "would_pass": "Either the says uses the literal word, or 'visibly' is listed as figurative, standing for 'readable through health, inspect and impairment state, with no body overlay', with an accept picture of a filmed outsider whose sprite is unchanged.",
+   "smallest_fix": "Replace 'visibly being absorbed' with 'readably being absorbed (health and inspect)', or add a figurative entry for 'visibly' with that accept picture."
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "bars.json bar 'escape': live_only false, sees.instrument 'M1 state-machine and timing walk with T28 ... calibration', live_only_why 'No live look is required'",
+   "evidence": "One reject picture is 'The cure function works in isolation while a normal helper cannot target, reach and finish treating the patient.' The range covers 'walking/bed/downed/held/caravan states', 'helper contention with reachability/travel/work delays'. M1 models RM_SlimeLadder transitions. Whether UseItem can target a downed pawn on bare ground, in a bed or in a caravan is an engine job-availability fact the model does not contain. One calibration run in one holder state leaves a plausible false pass: M1 predicts cure for a holder class where the job can never be given.",
+   "would_pass": "The helper-completion arm is read in the running game for each holder class in the range (bed, downed on the map, held or released, caravan), with consumption and toxic cost observed. M1 covers only timing and severity between those calibrated classes.",
+   "smallest_fix": "In escape.sees, require T28 calibration rows per holder class before any M1 output counts, and name the uncalibrated classes UNKNOWN. Or set escape live_only true and update the live-only count on the owner's pages and in result.json."
+  }
+ ],
+ "applyable": false,
+ "seconds": 908,
+ "at": "2026-11-17T00:19:31"
+}
