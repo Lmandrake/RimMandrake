@@ -1,0 +1,654 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "A visitor recognises a pale fungal woodland by its towering caps, ground-level biolight and milky pools under the tile’s actual sky, and can identify ordinary forage and hazards in it.",
+      "meant": {
+        "intent": "Land must visibly embody the selected mushroom cathedral and its local ecology. Recognisable forage and hazards make the picture usable.",
+        "source": "Owner-selected TheRot row in design/RimMandrake/biome_experiences_2026-10-20.md. Frozen the_rot.md sections 1, 4, 4b, 9. Delegated readability inference from ordinary colony use.",
+        "figurative": [
+          {
+            "word": "woodland",
+            "stands_for": "A canopy and low cover made entirely from fungi, with existing giant cap architecture.",
+            "accept": "An irregular fungus-only stand with overlapping caps and no conventional trees remains a woodland in this sense."
+          }
+        ]
+      },
+      "accept": [
+        "An irregular stand of overlapping pale caps surrounds low glowing cover and milk shallows, with dark gaps between biological lights. Ordinary forage and a cloud-emitting Prime are recognisable on approach.",
+        "At the warm shoulder the actual low sun lights the same fungal structures, and the Sheen is named and shown as fungal sleet."
+      ],
+      "reject": [
+        "A dark vanilla woodland has a pale tint, while its edible plants and danger patches disappear beneath opaque cap art.",
+        "Ordinary blue marsh and water rain occupy the described milk ponds and Sheen weather."
+      ],
+      "lazy": "none: Land and life readability. The sentence requires the actual fungal structures, useful light, fungal liquid identity and recognisable forage/hazards, closing the tinted-vanilla and display-only alternatives.",
+      "range": {
+        "varies": "Authored Rot shoulder arc 74..135 and historical ambient -42..24 C from the frozen sheet, using actual fixed-tile illumination. Natural stand densities at current defaults and mature overlap extremes. Clear/SheenFall/SheenStorm/SheenMist/DryThunderstorm, transition into each, dry and wet ground, normal play zoom and close inspection. All selected art variants are eligible, with no required variant count.",
+        "left_out": "Planet placement and planetary tile counts. Color approval or regeneration of previously owner-kept art. Literal temple geometry."
+      },
+      "sees": {
+        "instrument": "Live look and listen through a controlled traverse, plus selected plant, weather and terrain state. Existing glower/selectability checks supplement it. T68 supplies readable-state inspection and T60 supplies missing substrate.",
+        "start": "A full Rot map at default content density, fog cleared for the traverse, camera/exposure fixed for comparisons, no manually placed illumination. Record weather, sun angle, active glowers and selected object IDs before looking.",
+        "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
+        "control": "A bright camera, hidden sunlamp or global biome light boost could fake biolight. Audit active light sources and actual sun angle, compare an unlit gap with an adjacent fungus-lit patch. Read terrain identity and affordances to exclude a white visual overlay on ordinary water.",
+        "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
+        "live_only_why": "Visual identification, depth/occlusion and audible weather continuity require the rendered game. XML paths and light totals alone cannot show whether the forage or danger remains readable."
+      },
+      "live_only": true,
+      "touches": [
+        "forest_geometry",
+        "biological_light",
+        "terrain_substrate",
+        "emission_wet_growth",
+        "ecology_population"
+      ],
+      "decision_tests": {
+        "reject": "Delegated rejection inference. Land must visibly embody the selected mushroom cathedral and its local ecology. Recognisable forage and hazards make the picture usable.",
+        "renormalize": "Pictures bind causes and player-visible comparisons. Tuning values, yields and art variant counts are held in checks or ranges.",
+        "first_version": "Land and life readability. The sentence requires the actual fungal structures, useful light, fungal liquid identity and recognisable forage/hazards, closing the tinted-vanilla and display-only alternatives."
+      }
+    },
+    {
+      "id": "B2",
+      "says": "Colonists can select, harvest and build through usable ground between dense giant fungi, with blocking contacts matching the visible bases as the stand grows and changes.",
+      "meant": {
+        "intent": "Dense giants must be a usable landscape with collision and selection aligned to their art across growth, rather than a static art gallery.",
+        "source": "Frozen the_rot.md artistic scale and ordinary building economy. Historical dense-giant ruling recorded in designer_codex_2026-11-09/TheRot/record.json. HugeFootprint patch documents owner whole-picture selection and ground-contact collision.",
+        "figurative": []
+      },
+      "accept": [
+        "A worker follows open ground beneath overhanging caps, selects the intended stem and completes a haul or harvest without crossing its visible solid base.",
+        "A changed stand still supports a route to the same ordinary work area, with placements refusing a solid fungal contact."
+      ],
+      "reject": [
+        "A worker walks through a visible trunk while the cap image selects a distant root.",
+        "A planted clearing works, but mature growth blocks all reachable forage or strands workers against newly occupied contacts."
+      ],
+      "lazy": "none: Land usable for ordinary play. Visible bases and completed work close collision-free art, wrong-root clicks and staged-clearing alternatives.",
+      "range": {
+        "varies": "M3 sweeps every current giant mask and art flip, all supported growth scales, root placements including map-edge clipping, adjacent wall/door/roof/bridge/pond and neighboring-plant contacts. Map sides 200..400 cells in each game-supported option. Colonies 1..40 with work on opposite sides of stands. Before/after growth, cut, destroy, build, save/reload and job reservation.",
+        "left_out": "Procedural planet layouts. New sprite production. Permission to reduce the ruled density. Exact counts of variants or contact cells."
+      },
+      "sees": {
+        "instrument": "M3 contact and reachability sweep on current art masks with production HugeThings math, validated against actual path grids and selection rectangles. Existing generated RotGiants_HugeFootprint data and plant-selectability selftest are inputs. Instrument gap T63.",
+        "start": "Resolved current textures, contact masks, live art/mask fingerprints and a saved stand with ordinary jobs. Record solid occupancy, planned routes and selection rectangles before each change.",
+        "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
+        "control": "A disconnected decorative image can coexist with a trivially open path grid. Compare every predicted blocked contact with an actual game path-grid cell, collision at a stem and open travel under an overhang. Completion uses normal jobs. A forced teleport cannot count.",
+        "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
+        "live_only_why": "A calibrated offline instrument can distinguish the physical outcomes. Its calibration reads actual game state before its prediction is trusted."
+      },
+      "live_only": false,
+      "touches": [
+        "forest_geometry",
+        "terrain_substrate",
+        "colony_workload",
+        "ecology_population"
+      ],
+      "decision_tests": {
+        "reject": "Delegated rejection inference. Dense giants must be a usable landscape with collision and selection aligned to their art across growth, rather than a static art gallery.",
+        "renormalize": "Pictures bind causes and player-visible comparisons. Tuning values, yields and art variant counts are held in checks or ranges.",
+        "first_version": "Land usable for ordinary play. Visible bases and completed work close collision-free art, wrong-root clicks and staged-clearing alternatives."
+      }
+    },
+    {
+      "id": "B3",
+      "says": "Colonists meet a self-sustaining fungal food web whose forage, predators, tame products and flying natives work through ordinary harvesting, hunting and husbandry, with readable animal deaths and departures.",
+      "meant": {
+        "intent": "The life roster must function as encountered ecology and useful husbandry across its ordinary lifecycle. Standing flight and readable-loss rules are part of that experience.",
+        "source": "Frozen the_rot.md sections 4, 6 and 7b. Standing native-water, flight, no-vanishing and no-evictions rulings. Dustveil answer in rot_open_questions_2026-10-22.md. Delegated ordinary-lifecycle completeness.",
+        "figurative": []
+      },
+      "accept": [
+        "Foragers gather fungal food and building stock while predators feed in their usual habitat. Tamed brogg produce milk and tended dustveils yield silk through their normal lifecycle.",
+        "A native flyer crosses an obstacle by actual flight. A wounded native dies with a corpse or a readable death sign, while surviving animals remain accounted for after a reload."
+      ],
+      "reject": [
+        "The roster is a static selection of named bodies that never eat, reproduce, yield products or hunt.",
+        "A moth bobs visually against a wall, or surplus wild giants silently disappear when the population cap runs."
+      ],
+      "lazy": "none: Life. Named roles must function through ordinary actions and real flight, with traceable deaths/departures. Decorative bodies and helper-created yields fail.",
+      "range": {
+        "varies": "Every current free-tier resident including body-only hwelgrue, plus historical external durrok/mullgoth when dependencies resolve. Wild/tamed, hungry/fed, young/adult, healthy/injured/dead, solitary/grouped, ground/pond-edge, direct and roofed access. Colony 1..40, population from normal initial spawn through a season of births and predation. Every fictional flyer includes thozzik colony/queen forms, illoth and dustveil. Ordinary Prime/Skulltop approach, cut and escape. Actual flight observations only in an owner-present session.",
+        "left_out": "Kin healing/wound transfer, chittik implantation, giant swallowing, medical prizes, new animal assignments and perfect static population balance. Historical campaign species are a dependency uncertainty until composed state is read."
+      },
+      "sees": {
+        "instrument": "Normal-job live state trace and the owner-present flight look, with M1 lifecycle situations and M4 food-chain forecast selecting worst cases. Existing paused Pawn_FlightTracker capability read is useful but insufficient for actual flight. T65/T69 provide lifecycle and automatic gas trace.",
+        "start": "Known wild and tamed cohorts in a default map, food supply and product counters recorded, no forced injury outcome or direct product spawn. Mat, weather, growth, decomposition and gas remain active.",
+        "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
+        "control": "Dev-spawned products and manually triggered gas can fake functional ecology. Require product parent IDs and completion of ordinary milking/shearing/harvest jobs. A flyer with zero elapsed flight time fails the crossing observation. Match health loss to local gas emissions or attacks, including a safe-radius control. Count entities by identity through save, birth, death and departure.",
+        "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
+        "live_only_why": "Autonomous animal choices, actual flight and ordinary job/lifecycle integration depend on the game scheduler. A stat or mocked lifecycle can miss a blocked diet, unusable job or walking flyer."
+      },
+      "live_only": true,
+      "touches": [
+        "ecology_population",
+        "forest_geometry",
+        "biological_light",
+        "terrain_substrate",
+        "corpse_ownership",
+        "emission_wet_growth",
+        "colony_workload"
+      ],
+      "decision_tests": {
+        "reject": "Delegated rejection inference. The life roster must function as encountered ecology and useful husbandry across its ordinary lifecycle. Standing flight and readable-loss rules are part of that experience.",
+        "renormalize": "Pictures bind causes and player-visible comparisons. Tuning values, yields and art variant counts are held in checks or ranges.",
+        "first_version": "Life. Named roles must function through ordinary actions and real flight, with traceable deaths/departures. Decorative bodies and helper-created yields fail."
+      }
+    },
+    {
+      "id": "B4",
+      "says": "Players can reduce routine backup heating in enclosed mat-floored rooms compared with matching inert-floor rooms, while the cold end of the Rot still requires colony protection.",
+      "meant": {
+        "intent": "Native metabolic heat is a genuine free benefit that reduces the colony heating burden and preserves the cold world.",
+        "source": "Frozen the_rot.md thermogenesis. Kit owner card 3 and later answered warm-mat question in rot_open_questions_2026-10-22.md. Delegated comparative test of “helps a lot”.",
+        "figurative": []
+      },
+      "accept": [
+        "A cold mat-floored bedroom lets the player run backup heating for less of its routine than in a matching inert-floor bedroom at the same occupied-room temperature, without feeding the ground.",
+        "Across the cold shoulder the player still provides insulation, clothing or heating despite the help from living floor."
+      ],
+      "reject": [
+        "All rooms receive a global warm-biome offset whether they have living floor or inert flooring.",
+        "The mat produces a negligible thermometer twitch with no useful change to heating work, or makes the cold shoulder routinely comfortable without other protection."
+      ],
+      "lazy": "none: The sentence requires a practical reduction in routine backup heating linked to enclosed living floor, together with remaining cold protection. A thermometer twitch alone cannot satisfy that routine change.",
+      "range": {
+        "varies": "Room interiors 3x3..30x30 and irregular shapes, roof/perimeter complete or breached, door use from shut to frequent traffic, floor fractions 0..1 including the configured threshold on either side. Ambient -42..24 C, 1..40 occupants. Inert floor conversions, room merges/splits, growth, cold startup, steady operation and reload. Normal and roofed rock cover. Default heat settings, then off as a separate check.",
+        "left_out": "Portable roots, warm pawn auras, sunlight overrides, outdoor ground-temperature simulation and guaranteed self-sufficient heating at the cold end."
+      },
+      "sees": {
+        "instrument": "M2 calibrated room heat-budget sweep using actual heat pushes and room leakage. T64 supplies trace and equivalence gate. Its output reads the comparison and backup demand, with a live paired-room sample as calibration.",
+        "start": "Matching room geometry and wall/roof materials, equal initial temperatures and outdoor history, no heat source except identical controlled backup heating and the retained ambient sources. Inventory/occupants/wrecks recorded.",
+        "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
+        "control": "Stocked produce or a sunward wall could create the difference. Match produce load and sun geometry, include an empty-stock pair, then swap floor membership and repeat. A floor-linked signal must follow the floor after the swap.",
+        "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
+        "live_only_why": "A calibrated offline instrument can distinguish the physical outcomes. Its calibration reads actual game state before its prediction is trusted."
+      },
+      "live_only": false,
+      "touches": [
+        "room_heat",
+        "storage_decay",
+        "terrain_substrate",
+        "colony_workload"
+      ],
+      "decision_tests": {
+        "reject": "Delegated rejection inference. Native metabolic heat is a genuine free benefit that reduces the colony heating burden and preserves the cold world.",
+        "renormalize": "Pictures bind causes and player-visible comparisons. Tuning values, yields and art variant counts are held in checks or ranges.",
+        "first_version": "Signature generosity. Floor-linked useful heating savings and the remaining cold cost close global-offset, invisible-heat and free-climate alternatives."
+      }
+    },
+    {
+      "id": "B5",
+      "says": "Players lose raw food and organic remains left exposed to the Rot’s digestion even in freezing air, while walled and roofed storage protects them from that accelerated loss.",
+      "meant": {
+        "intent": "The gut is a reliable practical consequence of exposure across the full cold-to-warm biome. Shelter is an effective response.",
+        "source": "Frozen the_rot.md rot clock and Always true. Kit owner card 2 confirms walled-plus-roofed exemption. Delegated application of the absolute sheet promise across its own temperature range.",
+        "figurative": [
+          {
+            "word": "digestion",
+            "stands_for": "The biome’s accelerated, exposure-driven destruction of organic stores and remains, readable in item/corpse state.",
+            "accept": "An exposed meat stack visibly loses its digestive freshness and disappears without a moving mouth or gut organ."
+          }
+        ]
+      },
+      "accept": [
+        "An exposed frozen meat stack shows digestive loss and is consumed while the matched enclosed stack retains ordinary cold preservation.",
+        "A roofed lean-to loses exposed perishables until the player finishes its walls. Outdoor corpse and filth disappear through readable decomposition while indoor cleaning remains ordinary."
+      ],
+      "reject": [
+        "The test uses warm meat alone, while exposed frozen stores survive indefinitely.",
+        "A roof canopy alone removes the digestive hazard, or a completed store receives the same accelerated loss as the open ground."
+      ],
+      "lazy": "none: Signature hunger and its shelter response. Explicit freezing and walls-plus-roof close the temperature-zero and lean-to loopholes.",
+      "range": {
+        "varies": "Ambient -42..24 C with dense samples around freezing, fresh/partly rotten/frozen food, whole/split/merged stacks, human/animal corpses with gear and corpse-holder reservations, outdoor filth. Unroofed, lean-to, full room, roof gap, wall breach, doorway and map-edge room. 1..40 colonists and normal hauling/cooking/butchery overlap. Mid-exposure reload and room change before/after haul. The sheet meat deadline remains 60000 game ticks in C4, independent of rate retuning.",
+        "left_out": "Live pawn consumption, unjoining/vat recovery, deconstructing inorganic wrecks and special giant digestion. Indoor vanilla rot and dirt still follow their own engine rules."
+      },
+      "sees": {
+        "instrument": "M1 state-transition enumeration with the real exposure predicate and production digestive seam, cross-checked against elapsed game ticks, RotProgress and destruction state. M2 supplies temperature coupling. T67 repairs the frozen contract. T61 provides the missing generator.",
+        "start": "Matched item IDs, initial freshness and temperature records in exposed, lean-to and enclosed locations. Valid queued haul/butcher actions exist in selected cases. Loaded ordinary rot and digestive settings recorded.",
+        "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
+        "control": "Hauling, eating or an animal could remove the stack first. Record ownership/destruction reason and use a protected inaccessible-to-eaters item control with equal temperature. A per-cell roof control distinguishes enclosure. Run ordinary ticks to observe stage consequences after bonus progress.",
+        "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
+        "live_only_why": "A calibrated offline instrument can distinguish the physical outcomes. Its calibration reads actual game state before its prediction is trusted."
+      },
+      "live_only": false,
+      "touches": [
+        "storage_decay",
+        "corpse_ownership",
+        "colony_workload",
+        "room_heat"
+      ],
+      "decision_tests": {
+        "reject": "Delegated rejection inference. The gut is a reliable practical consequence of exposure across the full cold-to-warm biome. Shelter is an effective response.",
+        "renormalize": "Pictures bind causes and player-visible comparisons. Tuning values, yields and art variant counts are held in checks or ranges.",
+        "first_version": "Signature hunger and its shelter response. Explicit freezing and walls-plus-roof close the temperature-zero and lean-to loopholes."
+      }
+    },
+    {
+      "id": "B6",
+      "says": "Players must account for heat from stored living fungal food when arranging refrigeration, and can preserve that food by managing stock, enclosure and cooling.",
+      "meant": {
+        "intent": "Harvest carries the same metabolism into the store. The heat must affect practical storage choices while competent storage remains achievable.",
+        "source": "Frozen the_rot.md living harvest and kit M5. RM_LivingProduceExtension names glimmerslime and raw dulcis as the existing intended pair. Delegated competent-base response.",
+        "figurative": [
+          {
+            "word": "living",
+            "stands_for": "Fresh fungal food that retains its metabolically active heat contribution after harvest.",
+            "accept": "A frozen fungal food stack remains heat-producing without simulating cell growth or an organism moving inside it."
+          }
+        ]
+      },
+      "accept": [
+        "A freezer that preserves ordinary food warms beyond preservation when loaded with metabolizing fungal food, and a matching change to stock or cooling restores preservation.",
+        "Dividing, moving and recombining fungal stacks moves the warming load with the actual food, including after a reload."
+      ],
+      "reject": [
+        "A cosmetic warm label appears on the harvest but a stocked freezer behaves exactly like its ordinary-food control.",
+        "Produce heat rises independently of held stock or keeps storage unusable after the player removes the food and provides appropriate cooling."
+      ],
+      "lazy": "none: Signature harvested metabolism. Actual changed refrigeration decisions and successful mitigation close cosmetic warmth and uncontrollable-heater builds.",
+      "range": {
+        "varies": "Marked RM_Glimmerslime and RM_RawDulcis fresh stacks, 0..2000 units per room as initial sweep support, including stack split/merge and the maximum normal stock of a 40-person colony. Recompute the tested stock/cooling ratios after tuning so both sides of the preservation boundary are covered. Rooms 3x3..30x30, inert/mat floor, cooling off/normal/expanded, ambient -42..24 C, frozen/chilled/room-temperature food, haul/cook/eat/destroy, room merge/split and reload. Cooked and non-food products enter the zero-marked-load arm.",
+        "left_out": "Heat from special teas, genes, portable roots or grown furnaces. A fixed cooler count, food yield, heat-per-unit or storage capacity as acceptance."
+      },
+      "sees": {
+        "instrument": "M2 coupled thermal/storage sweep with production stack-to-room aggregation, validated against game room pushes and temperature trajectories. T66 restores content binding. T64 provides independent heat and preservation traces.",
+        "start": "Equal food nutrition/storage mass in compared rooms, current product defs resolved, ordinary cooling capacity recorded, no special hidden heater. A marked empty-stack arm establishes zero load.",
+        "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
+        "control": "Native mat or unequal doorway traffic could fake heat. Keep both arms on identical floors with matched doors, then swap product types and rooms. Read actual production heat contributions before room equalization. Direct PushHeat and a fabricated marker never establish the product path.",
+        "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
+        "live_only_why": "A calibrated offline instrument can distinguish the physical outcomes. Its calibration reads actual game state before its prediction is trusted."
+      },
+      "live_only": false,
+      "touches": [
+        "room_heat",
+        "storage_decay",
+        "colony_workload",
+        "ecology_population"
+      ],
+      "decision_tests": {
+        "reject": "Delegated rejection inference. Harvest carries the same metabolism into the store. The heat must affect practical storage choices while competent storage remains achievable.",
+        "renormalize": "Pictures bind causes and player-visible comparisons. Tuning values, yields and art variant counts are held in checks or ranges.",
+        "first_version": "Signature harvested metabolism. Actual changed refrigeration decisions and successful mitigation close cosmetic warmth and uncontrollable-heater builds."
+      }
+    },
+    {
+      "id": "B7",
+      "says": "Over a season in the complete Rot, a colony can keep using fungal shelter, harvest and storage while the forest and its native food web renew, with understandable losses and workable routes through weather changes, a reload and reordered colony work.",
+      "meant": {
+        "intent": "Whole first-version play must remain a functioning cold fungal place with metabolic help and hunger operating together. A stable staged slice is insufficient.",
+        "source": "Delegated from owner whole-system requirement in this brief, the selected Rot experience, frozen ecosystem/thermogenesis/rot-clock intent and standing no-vanishing rule.",
+        "figurative": []
+      },
+      "accept": [
+        "The settled colony hauls and cooks, its living-floor rooms save heating, and stored fungal food requires cooling decisions while the full forest grows, local hazards run and native animals feed and reproduce.",
+        "After saving during active harvest and reloading, expanding storage before harvest and harvesting before expanding storage both yield understandable consequences and recoverable colony work."
+      ],
+      "reject": [
+        "A staged colony looks stable because weather, local gas, wet-native growth or digestion is locked or disabled.",
+        "Growth and gas consume the usable forest, native animals starve away, routine jobs stall, losses have no readable cause or recurring errors drown out play."
+      ],
+      "lazy": "none: Whole land, life and signature. Complete default operation, explicit change/save/work sequence and renewal close disabled-system showcases, static dioramas and supply-cache masking.",
+      "range": {
+        "varies": "Exactly the complete first version at factory defaults with all kept systems on and unlocked, next-version extras off. Full supported maps from 200..400 cells per side, flat/rocky/milk-shallows layouts, authored cold/middle/warm shoulder regimes, all actual weather states with natural selection left running, initial and mature stand density. A full 15-day in-game season, paired starts with 3 and 40 colonists, then a 100-day M4 extension to detect delayed drift. Save/load around day 7 during held harvest/haul and room changes. Main sequence enclose/store/harvest/cool then harvest/enclose/cool/store in a fresh sibling run. Compression only accelerates elapsed ticks or a calibrated offline integration step, preserving job scheduling, pawn metabolism, weather selection/RNG, plant/animal cadence, deadlines, room rebuilding, damage, reproduction and save clocks. Any skipped system invalidates the live reading. Natural rare states may be covered by M1 sibling fixtures in addition to the uninterrupted season, never by replacing its weather schedule.",
+        "left_out": "Deferred quests, rituals and exotic rewards. Subjective enjoyment. Exact equilibrium populations, yields, time budget or variant totals. Planet generation or canonical save changes."
+      },
+      "sees": {
+        "instrument": "M4 whole-map forecast calibrated against normal complete-map telemetry, followed by a live whole-season state trace and look in an owner-present session where flyers run. T62 specifies the driver and reload/action-order ledger. B1 through B6 supply its observations.",
+        "start": "A disposable complete Rot map with measured active def/settings/art/engine fingerprints, food and animal IDs recorded, normal work priorities and all doors/stockpiles/jobs usable. No debug immortality, frozen hunger, forced products or permanent weather condition. Starting supplies cover setup but ongoing food/heat/cooling must come from the declared normal economy.",
+        "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
+        "control": "An initial supply cache or external heater could mask an unsustainable colony. Account initial inputs and normal harvest/consumption/power through the whole season, expose failed jobs and food/corpse causes by identity. Keep natural weather selection active and report time in each state. Compare uninterrupted and reloaded/action-order sibling traces instead of copying a successful screenshot.",
+        "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
+        "live_only_why": "The coupled player experience includes route readability, ordinary jobs, animal decisions, actual flight, weather, saves and long-term feedback. An offline forecast informs extremes after calibration, while normal whole-colony play establishes the complete experience."
+      },
+      "live_only": true,
+      "touches": [
+        "forest_geometry",
+        "biological_light",
+        "terrain_substrate",
+        "emission_wet_growth",
+        "ecology_population",
+        "room_heat",
+        "storage_decay",
+        "corpse_ownership",
+        "colony_workload",
+        "feature_gates"
+      ],
+      "decision_tests": {
+        "reject": "Delegated rejection inference. Whole first-version play must remain a functioning cold fungal place with metabolic help and hunger operating together. A stable staged slice is insufficient.",
+        "renormalize": "Pictures bind causes and player-visible comparisons. Tuning values, yields and art variant counts are held in checks or ranges.",
+        "first_version": "Whole land, life and signature. Complete default operation, explicit change/save/work sequence and renewal close disabled-system showcases, static dioramas and supply-cache masking."
+      }
+    }
+  ],
+  "whole": "B7",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Snapshot resolved source/assembly/art/settings/engine and composed mod fingerprints before any proof. Current proposal claims no gameplay fingerprint agreement."
+    },
+    {
+      "id": "C2",
+      "what": "Use existing donor-name, selectable, glower, live-prep, Dustveil and cartoon-retirement selftests as scoped regression readings. Field/asset counts are diagnostics, outside passing bars."
+    },
+    {
+      "id": "C3",
+      "what": "Read inherited positive animal/plant density, actual element-form rosters and default weather pool. Keep current authored density intent without making exact density or variant counts bars."
+    },
+    {
+      "id": "C4",
+      "what": "Retain the frozen sheet raw-meat exposure deadline of 60000 ticks across -42..24 C. Room exemption matches walled-plus-roofed owner card 2. Frozen exposure status and final destruction are read independently."
+    },
+    {
+      "id": "C5",
+      "what": "Record warm-floor terrain set, configured required floor fraction, offset and max room temperature. Current source comments/extension contract use a 21 C ceiling and 250-tick sweep. Confirm actual resolved values before comparison."
+    },
+    {
+      "id": "C6",
+      "what": "Record living-produce attachment on RM_Glimmerslime/RM_RawDulcis and stack-to-room aggregation. Source default heatPerUnit is 3.5 per 2000-tick sweep. Zero XML attachments found in this checkout is a binding gap, not gameplay proof."
+    },
+    {
+      "id": "C7",
+      "what": "Read missing-field and old-settings migrations, new default-off opt-ins, actual job/incident/letter/effect suppression, all-off load and per-feature restore. Unrelated shared engine consumers must retain their behavior."
+    },
+    {
+      "id": "C8",
+      "what": "For every fictional flyer record resolved MaxFlightTime, tracker capability and directional flip-book assets. Existing paused state test is capability evidence only. Actual flight judgment obeys owner-present rule."
+    },
+    {
+      "id": "C9",
+      "what": "Count ordinary product/lifecycle/food-chain events by entity identity, including eggs, larva metamorphosis, asexual reproduction, gas-emitter tick callbacks and milk/silk jobs. Direct helper invocation is recorded separately."
+    },
+    {
+      "id": "C10",
+      "what": "Record current giant contact masks, flips, growth scales, footprint/texture fingerprints and resolved selection bounds. Reuse HugeThings tools, with off-map/model assumptions calibrated before trust."
+    },
+    {
+      "id": "C11",
+      "what": "Record initial inputs, harvest/consumption, room heat/cooling, usable routes, active weather durations and error rate over the season. Reloaded sibling and reordered-work sibling preserve settings and ordinary tick semantics."
+    },
+    {
+      "id": "C12",
+      "what": "Confirm automated worker/mutator planetary placement is disabled permanently. Existing fixed world and zero-tile owned biome state need no repair."
+    },
+    {
+      "id": "C13",
+      "what": "Retain deferred owner numeric rulings as checks for the opt-in branch, including annual age reversal, pale-tree psylink cap, gear slowing exposure, portable mat feeding/budding, wild-only blastpod and the accepted empty-alarm waiver."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Version selection is metabolic colony life. All existing animal roster entries remain. Animal special systems may be dormant independently of their bodies. All DLC and the common engine composition are assumed.",
+      "touches": [
+        "feature_gates",
+        "ecology_population"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Use the existing engine room/exposure concepts subject to the owner walled-plus-roofed contract. Floor membership is re-derived after construction, merge, split and reload. Door traffic uses actual engine room/temperature behavior.",
+      "touches": [
+        "room_heat",
+        "storage_decay",
+        "terrain_substrate"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Native mat supplies bounded ordinary room heat with no food or exhaustion inside Rot. Existing offset, ceiling and floor threshold remain tunable checks. Direct Sun remains the shared geometric rule.",
+      "touches": [
+        "room_heat",
+        "terrain_substrate"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Exposed raw meat follows the frozen sheet digestive deadline at every supported ambient temperature. Enclosed food gets ordinary vanilla preservation. Only rottable items, corpses and outdoor filth participate. Keep corpse gear/holder processing consistent with vanilla and Bones contracts.",
+      "touches": [
+        "storage_decay",
+        "corpse_ownership"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Bind the existing living-produce extension to the intended glimmerslime/raw-dulcis products. Per-room aggregation follows actual spawned stacks and ordinary temperature. Product moves, consumption and stack changes alter the next scheduled contribution.",
+      "touches": [
+        "room_heat",
+        "storage_decay"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Reuse current giant art and HugeThings contact math for placement/pathing/selection. Preserve owner dense-giant intent, with routes and work validated after growth or destruction.",
+      "touches": [
+        "forest_geometry",
+        "colony_workload"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Retain ordinary fungal food, wood substitute, fibre, medicine and native milk/eggs/silk/lifecycles. Native drinking follows the shared environmental-water ruling. Gas from resident Prime/Skulltop and ordinary animal toxin attacks stays. Shared spawner admission must preserve readable existing animals.",
+      "touches": [
+        "ecology_population",
+        "corpse_ownership",
+        "terrain_substrate",
+        "emission_wet_growth"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Keep wet fungal emission weather and its existing wet/fire effects, with natural rotation unlocked. Use authored tile geometry for sun. Ordinary biological glowers and goo lights illuminate the dark.",
+      "touches": [
+        "emission_wet_growth",
+        "biological_light",
+        "room_heat"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Keep ExplosiveGrowth existing wet-native Churn and immortal exceptions. Milk wet-source classification, regrowth and giant placement must be checked together through the existing engine APIs.",
+      "touches": [
+        "emission_wet_growth",
+        "forest_geometry",
+        "terrain_substrate",
+        "ecology_population"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Keep passive Wreckage/Bones/AcousticScanner integration. A scanner reading must describe enabled resident content. Special core clues, loot and quests require next-version opt-in.",
+      "touches": [
+        "feature_gates",
+        "corpse_ownership",
+        "forest_geometry"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "Each moved extra requires an explicit off-by-default next-version gate, normal-entry acquisition/effect suppression and safe legacy save conservation. Keep defs and source. All-off is a playable ordinary biome. Existing unsupported cross-biome switches stay off.",
+      "touches": [
+        "feature_gates",
+        "room_heat",
+        "ecology_population",
+        "corpse_ownership",
+        "colony_workload"
+      ]
+    },
+    {
+      "id": "R12",
+      "rule": "The whole reading runs all kept mechanisms through normal jobs and tick schedules at shipped defaults. Live motion of native flyers requires the standing owner-present session. Compression must preserve every named scheduler and saved transition.",
+      "touches": [
+        "colony_workload",
+        "ecology_population",
+        "room_heat",
+        "storage_decay",
+        "emission_wet_growth",
+        "forest_geometry",
+        "feature_gates"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "forest_geometry",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B7",
+        "R6",
+        "R9",
+        "R10",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Dense giant contacts, wet-native turnover, gas patches, wrecks and colony building all compete for the same routes. Pairwise open clearings cannot establish full-map reachability after a growth/room transition.",
+      "model": "M3 contact and reachability sweep"
+    },
+    {
+      "thing": "biological_light",
+      "members": [
+        "B1",
+        "B3",
+        "B7",
+        "R8"
+      ],
+      "holds_together": "argued",
+      "why": "B1 needs visible biological sources and dark gaps, B3 uses native light and B7 keeps them through the season. R8 uses actual glower positions and tile sky. A glower changes visibility and ordinary behavior through the game light grid, without a competing custom global brightness rule. Independent light-source auditing closes the masking explanation.",
+      "model": "none, argument settles the contract"
+    },
+    {
+      "thing": "terrain_substrate",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B7",
+        "R2",
+        "R3",
+        "R7",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Milk affordances, bridge support, native drinking, fungi sowing, giant roots and warm-floor qualification share the same terrain grid. A renamed vanilla marsh could preserve paths while violating the substrate contract.",
+      "model": "M3 contact and reachability sweep"
+    },
+    {
+      "thing": "emission_wet_growth",
+      "members": [
+        "B1",
+        "B3",
+        "B7",
+        "R7",
+        "R8",
+        "R9",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Natural emission rotation and milk wet classification feed an already active wet-native Churn engine while resident gas affects food and workers. Repeated wetting could produce dense turnover or flood the forest with hazards.",
+      "model": "M4 whole Rot season"
+    },
+    {
+      "thing": "ecology_population",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B6",
+        "B7",
+        "R1",
+        "R7",
+        "R9",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Predators, native gas, food spoilage, wet-native regrowth and reproduction can remove food faster than renewal or amplify spawn/product loops. Retained bodies and disabled special guts still need ordinary sustaining diet.",
+      "model": "M4 whole Rot season"
+    },
+    {
+      "thing": "colony_workload",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R6",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Routes, hauling deadlines, enclosure repairs, plant turnover and thermal stock management meet at a forty-person base. The intended stable routine is unmeasured and aggregate rates may create a persistent job stall.",
+      "model": "M4 whole Rot season"
+    },
+    {
+      "thing": "corpse_ownership",
+      "members": [
+        "B3",
+        "B5",
+        "B7",
+        "R4",
+        "R7",
+        "R10",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Hauling, rescue/butchery reservations, digestive destruction, native predation, Bones products and old extra holders meet on the same entity. Completion and reload order can lose gear or remove a corpse twice.",
+      "model": "M1 situation and transition generator"
+    },
+    {
+      "thing": "room_heat",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R2",
+        "R3",
+        "R5",
+        "R8",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Floor heat, harvest heat, Sheen temperature, thermal leakage and cooling meet in the same rooms. A room pair at a single temperature cannot establish useful assistance and workable refrigeration throughout the shoulder.",
+      "model": "M2 thermal and storage balance"
+    },
+    {
+      "thing": "storage_decay",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "R2",
+        "R4",
+        "R5",
+        "R12"
+      ],
+      "holds_together": "unknown",
+      "why": "Digestive exposure changes with enclosure while temperature changes from mat and stock. The current frozen skip and missing product markers show that a superficially safe store can hide the intended mechanism.",
+      "model": "M2 thermal and storage balance"
+    },
+    {
+      "thing": "feature_gates",
+      "members": [
+        "B7",
+        "R1",
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "holds_together": "argued",
+      "why": "All callers of moved behavior must pass explicit opt-in before acquiring or advancing effects. Reference-compatible defs let old saves load and preservation migrations keep holders recoverable. The common scanner and animal bodies refer to enabled ordinary content. This construction permits all bars together, with T61 and each containment ticket checking implementation. Existing missing gates are repairs rather than logical scope conflicts.",
+      "model": "none, argument plus implementation tickets"
+    }
+  ],
+  "old_bars": {}
+}
