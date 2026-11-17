@@ -1,0 +1,1 @@
+A shared lock record that names only a SEAT cannot tell a window from its detached runs: every take must record the taker's process identity (pid, role unit), every heartbeat must keep it, and any gate that holds on the lock judges that process, never the seat name (RIMMANDRAKE_FREE_GOODBYE_RESTART_HELD_BY_DETACHED_HELPERS_LOCK, 21 min goodbye hold 2026-11-17).
