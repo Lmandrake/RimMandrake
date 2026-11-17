@@ -1,0 +1,801 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "On an ordinary Webwork map the player sees a buildable jungle without a surface river or permanent pool, with substantial cables through trees, finer local strands and silk carpet identifying spider sites.",
+      "meant": {
+        "intent": "Keep the green jungle and the hierarchy of white architecture legible on a natural map; no white-floor replacement, invisible main cables or impassable partition.",
+        "source": "October 12 owner words quoted in Source/RM_GenStep_WebworkWeb.cs and Defs/ThingDefs_Buildings/RM_WebworkWebNetwork.xml; frozen design/Jawa/worldbuilding/biomes/the_webwork.md \u00a7\u00a71,5,9. Delegated: buildable and hierarchy are the smallest faithful reading, not a coverage quota.",
+        "figurative": [
+          {
+            "word": "substantial",
+            "stands_for": "main cables visually stronger than fine strands, recognizable across trunks; no fixed rendered width",
+            "accept": "Cables sag between trunks and are easy to pick out even though their drawing is narrower than a literal rope described in the lore."
+          }
+        ]
+      },
+      "accept": [
+        "Trunks and undergrowth remain readable behind spanning silk; carpet marks a nest site and open ground accepts ordinary colony buildings.",
+        "A scout can climb over a cable and still distinguish it from the fine sticky threads beside it."
+      ],
+      "reject": [
+        "A continuous white floor replaces the jungle, although the biome still spawns trees.",
+        "The main silk looks like scattered fence posts and blocks passage across otherwise buildable ground.",
+        "A permanent pond is supplied as the jungle water source."
+      ],
+      "lazy": "none: the words require the operative contrast in the pictures; a decorative or forced substitute is expressly excluded by says and the asserted starting state.",
+      "range": {
+        "varies": "Supported landable RM_Webwork local maps, engine-permitted dimensions 200\u2013400 cells per side, flat/hilled/mountainous accessible ground; hot-dry and storm-fed local weather regimes at the authored fixed sun positions; colony 1\u201340, days 0\u2013100, before/after one or more reloads. Relevant axes are refined below; combinations sharing a failure mechanism are grouped, not omitted. Sparse/dense naturally occurring canopy, fertility/rock masks, nest placement away from ideal soil, clipped cable spans, clear/fog/rain/webfall; early and maintained/abandoned late colony footprints. Player-built tanks and temporary rain wetness are allowed.",
+        "left_out": "Alternative planets/world generation, DLC-absent play, unsupported off-biome mechanics, deferred extras, colonies above 40 and artificial maps with no legal accessible ground are outside this version. Normal corpse/death/despawn transitions are included, not exempted."
+      },
+      "sees": {
+        "instrument": "Actual natural-map look at ordinary play zoom, with the M3 geometry/state overlay as supporting evidence and normal pawn crossing/build designation. T44 supplies natural-map precondition capture; no credible offline image metric can replace the look.",
+        "start": "Map created through its normal local MapCommonBase steps, not PlaceWeb/PlaceNest on another biome; record resolved defs, actual node/carpet/terrain positions and canopy. Scene has not been carpet-painted or stripped of ordinary flora.",
+        "on": "All retained Webwork and required shared-engine mechanics on at proposed shipped defaults, next-version and retirement candidates off, all DLC loaded, no research/AI lock and no forced weather. Negative controls are separate calibration replays, never the primary reading.",
+        "control": "A green background screenshot could hide partitioning or a staged site. Pair the look with actual path/passability and build designation reads, and provenance of naturally placed nodes; M3 labels the visible objects so a texture alone cannot masquerade as the network.",
+        "reset": "Discard the disposable local scenario and restore its initial saved snapshot/settings fingerprint; no canonical world save or tile edit. The whole-run save/reload is part of the reading, not a reset bypass.",
+        "live_only_why": "Drawing hierarchy, jungle recognition and readability at play zoom require an actual rendered map. Source paths, cell counts and offline geometry cannot establish that picture."
+      },
+      "live_only": true,
+      "touches": [
+        "land_surface",
+        "web_geometry",
+        "canopy_growth",
+        "exposure_geometry",
+        "settings_state"
+      ],
+      "tests": {
+        "reject": "Delegated from the October 12 contrast and frozen no-water identity: he would reject an ordinary rainforest or a white-floored spider room even if combat worked.",
+        "renormalize": "No pinned stat, yield, time, size, density quota or variant count; retuning a check does not change the accept/reject categories. A change that reverses the stated player-facing comparison is a behaviour change, not mere renormalization.",
+        "first_version": "Land; without these distinctions the player inhabits a different place."
+      }
+    },
+    {
+      "id": "B2",
+      "says": "A party walking into the Webwork hears its surroundings as a hush, while a newly felt contact gives an audible web cue without drowning subsequent play in repeated alarms.",
+      "meant": {
+        "intent": "Make quiet primarily audible and conditional, with a usable contact signal, not an empty map or attack-free grace period.",
+        "source": "Owner October 22 Q7 in design/RimMandrake/webworks_open_questions_2026-10-22.md; frozen sheet \u00a79 sound. Delegated: coalescing repeated audio keeps the cue usable at colony scale.",
+        "figurative": [
+          {
+            "word": "hush",
+            "stands_for": "steps, drip and silk are audible without a busy jungle-call bed; not zero sound",
+            "accept": "Rain is audible and a hunter makes combat noise while the surrounding animal-call bed remains sparse."
+          },
+          {
+            "word": "drowning",
+            "stands_for": "repeated alarms cease to obscure the contact change and other ordinary cues",
+            "accept": "A carrier remains felt while walking; refreshed marking stays quiet until a genuinely new acquisition."
+          },
+          {
+            "word": "felt",
+            "stands_for": "detected and carrying the named web mark; not a claim the jungle is literally conscious",
+            "accept": "A scan recognizes contact and directs a hunter without any sentient-biome actor."
+          }
+        ]
+      },
+      "accept": [
+        "Walking scouts hear footfalls and a sparse silk-and-drip bed; touching a live strand adds a distinct thrum.",
+        "Eggs continue to mark a carrier without replaying the acquisition cue on each scan."
+      ],
+      "reject": [
+        "All game audio is muted, so there is neither jungle noise nor a usable contact cue.",
+        "A rainforest chorus plays under the same thrum.",
+        "A stationary marked carrier makes the warning repeat until other play sounds are obscured."
+      ],
+      "lazy": "none: the words require the operative contrast in the pictures; a decorative or forced substitute is expressly excluded by says and the asserted starting state.",
+      "range": {
+        "varies": "Supported landable RM_Webwork local maps, engine-permitted dimensions 200\u2013400 cells per side, flat/hilled/mountainous accessible ground; hot-dry and storm-fed local weather regimes at the authored fixed sun positions; colony 1\u201340, days 0\u2013100, before/after one or more reloads. Relevant axes are refined below; combinations sharing a failure mechanism are grouped, not omitted. Foot entry and post-landing walk, untouched/contact/refreshed/expired/reacquired marks; weather from quiet clear to rain/webfall, clustered and dispersed marked parties, sound enabled at ordinary volume. Device mute is not a supported proof condition.",
+        "left_out": "Alternative planets/world generation, DLC-absent play, unsupported off-biome mechanics, deferred extras, colonies above 40 and artificial maps with no legal accessible ground are outside this version. Normal corpse/death/despawn transitions are included, not exempted."
+      },
+      "sees": {
+        "instrument": "Live listening plus sound-event timestamps/mark-source state for attribution. T44; the sound defs/event log are checks and controls, not the acoustic verdict.",
+        "start": "Natural map and walking party with audible vanilla footsteps; no staged PlayOneShot, no volume automation. Speakers/listener can hear the ordinary reference sounds.",
+        "on": "All retained Webwork and required shared-engine mechanics on at proposed shipped defaults, next-version and retirement candidates off, all DLC loaded, no research/AI lock and no forced weather. Negative controls are separate calibration replays, never the primary reading.",
+        "control": "A manually played thrum or disabled predator loop could mimic success. Cue must share an actual newly acquired mark source in the trace, and repeated refreshes must not generate new acquisition events; retained AI/growth/weather remain active.",
+        "reset": "Discard the disposable local scenario and restore its initial saved snapshot/settings fingerprint; no canonical world save or tile edit. The whole-run save/reload is part of the reading, not a reset bypass.",
+        "live_only_why": "No offline sound-def inspection or event count decides the mixed soundscape or whether the cue can be heard over ordinary play."
+      },
+      "live_only": true,
+      "touches": [
+        "acoustic_cues",
+        "detection_state",
+        "settings_state"
+      ],
+      "tests": {
+        "reject": "Sourced sound-first interpretation; without hush or a meaningful signal the owner's actual arrival distinction is lost.",
+        "renormalize": "No pinned stat, yield, time, size, density quota or variant count; retuning a check does not change the accept/reject categories. A change that reverses the stated player-facing comparison is a behaviour change, not mere renormalization.",
+        "first_version": "Land hush; cue needed by signature because otherwise the player cannot tell when the network noticed them."
+      }
+    },
+    {
+      "id": "B3",
+      "says": "On a living Webwork map, actual web contact, deliberate cutting, carrying stolen eggs and ship landing give a readable signal that brings available owners together through shaded approaches toward the intruder, with signal-directed pursuit ending when that signal expires.",
+      "meant": {
+        "intent": "The web does work: event to signal to ordinary hunter target/job, rather than only applying a hediff or spawning a staged manhunter.",
+        "source": "Frozen sheet \u00a7\u00a74,5; September owner-and-nest record \u00a74c; October 22 Q7 ship response. Delegated: coalescing, persisted expiry, hands-inclusive carry, finite-life boundary and cancellation as defined in definition.md. Owner November 10 answers in design/RimMandrake/designer_codex_2026-11-09/Webwork/ANSWERS_OWNER.md: prepared guarded escape route is essential; ordinary ollathrix hunting together suffice, with convincing coordination.",
+        "figurative": [
+          {
+            "word": "owners",
+            "stands_for": "untameable ollathrix occupying this local jungle, not a legal property title",
+            "accept": "The hunters respond to a carrier without any faction land claim or territory ownership UI."
+          }
+        ]
+      },
+      "accept": [
+        "A scout steps on a registered strand, is visibly marked with a thrum, and an awake owner changes target and approaches through shaded ground.",
+        "An egg hauler remains marked; after dropping the cargo the mark expires and the hunter stops tracking that cause.",
+        "A ship on bare landing ground wakes a living nest owner, which approaches or visibly waits at the sunlight boundary.",
+        "Available owners converge from separate shaded approaches on the same intruder; the party retreats by a prepared guarded route rather than improvising through unseen canopy."
+      ],
+      "reject": [
+        "A touched pawn receives a mark, but ordinary owners continue wandering until a proof method starts their jobs.",
+        "An egg in hauling hands escapes detection because only inventory is checked.",
+        "A landing emits only an introductory letter.",
+        "Reloading or a dead target leaves a permanent, source-free hunt.",
+        "Only a nearby manhunter reacts while other available owners ignore the signal or queue indefinitely at the same blocked crossing."
+      ],
+      "lazy": "none: the sentence requires the causal or comparative outcome illustrated; a mark without coordinated pursuit, token loot, or an icon without route protection does not satisfy its words.",
+      "range": {
+        "varies": "Supported landable RM_Webwork local maps, engine-permitted dimensions 200\u2013400 cells per side, flat/hilled/mountainous accessible ground; hot-dry and storm-fed local weather regimes at the authored fixed sun positions; colony 1\u201340, days 0\u2013100, before/after one or more reloads. Relevant axes are refined below; combinations sharing a failure mechanism are grouped, not omitted. Touch/acquisition/refresh/expiry, node overlap/destruction, deliberate versus force destruction, eggs in hands/inventory/transfer/drop/rot/sale/corpse/shelf/caravan arrival, landing at bare/shaded footprint. Awake/dormant/no remaining owner, with and without live nest, reachable/unreachable targets and target death/despawn; see R2/R3. Any local map owner can respond, no neighbour-world simulation. No resurrection after complete local clearance. Clutch occupied-cell touch and successful mining are real event adapters too; expiry cancels the mark-directed job, not ordinary newly acquired visible-prey hunting.",
+        "left_out": "Alternative planets/world generation, DLC-absent play, unsupported off-biome mechanics, deferred extras, colonies above 40 and artificial maps with no legal accessible ground are outside this version. Normal corpse/death/despawn transitions are included, not exempted."
+      },
+      "sees": {
+        "instrument": "M1 production-transition enumeration and calibrated event-adapter replays, with M3 reachability input. Until T40 has actual walk/cut/haul/landing adapter traces, result is UNMEASURED. A bridge state read calibrates the model; it is not necessary to manually watch every enumerated situation.",
+        "start": "Real unforced events on natural map, actual resolved current-content bindings, extant owner identities recorded. No injected felt mark, forced manhunter or StartJob. Initial cargo and target state known.",
+        "on": "All retained Webwork and required shared-engine mechanics on at proposed shipped defaults, next-version and retirement candidates off, all DLC loaded, no research/AI lock and no forced weather. Negative controls are separate calibration replays, never the primary reading.",
+        "control": "Vanilla aggro/proximity could explain the approach. Use event/target/job source trace; compare the same distance/line-of-sight on an unregistered route and shelf eggs, and show pursuit persists beyond proximity then ends with the recorded cause. A direct response hook cannot calibrate the landing adapter.",
+        "reset": "Discard the disposable local scenario and restore its initial saved snapshot/settings fingerprint; no canonical world save or tile edit. The whole-run save/reload is part of the reading, not a reset bypass.",
+        "live_only_why": "Not live-only: a calibrated finite transition/caller model can discriminate source and lifecycle across the declared state space; actual adapter agreement is mandatory first."
+      },
+      "live_only": false,
+      "touches": [
+        "web_geometry",
+        "detection_state",
+        "acoustic_cues",
+        "predator_population",
+        "exposure_geometry",
+        "nest_state",
+        "material_sources",
+        "settings_state"
+      ],
+      "tests": {
+        "reject": "Direct source promise of nervous-system tracking and guaranteed living-map ship response; a warning with no hunt would be rejected.",
+        "renormalize": "No pinned stat, yield, time, size, density quota or variant count; retuning a check does not change the accept/reject categories. A change that reverses the stated player-facing comparison is a behaviour change, not mere renormalization.",
+        "first_version": "Signature: the acquisition and release chain is the entire reason web is occupied territory."
+      }
+    },
+    {
+      "id": "B4",
+      "says": "An encountered ollathrix behaves as an untameable ambush predator whose mouth silk leaves a medically readable restraint and whose attacks overpower an unprotected colonist left in reach, leaving wounds or remains instead of an unexplained disappearance.",
+      "meant": {
+        "intent": "An actual owner encounter is dangerous and readable; species body/melee/venom, concealed tell, burst, mouth spit and medical rescue form the same predation chain.",
+        "source": "Frozen sheet \u00a74 anatomy, mouth origin, untameability and readable death; September owner-and-nest \u00a71 one kind and debris concealment. Standing no-vanishing ruling. Delegated: test an ordinary vulnerable colonist rather than a damage quota.",
+        "figurative": []
+      },
+      "accept": [
+        "A debris-like concealment gives way to a visible owner; mouth silk restrains the scout and a medic can treat the named condition.",
+        "An unprotected colonist who stays in reach is overpowered and suffers ordinary recorded wounds or leaves recoverable evidence of death."
+      ],
+      "reject": [
+        "The same animal chases as an ordinary pettable predator, with a harmless projectile labelled loom silk.",
+        "A web effect quietly deletes its victim without a body, wound history or readable sign.",
+        "Dormancy hides no visible owner or concealment tell and an attack appears from empty ground."
+      ],
+      "lazy": "none: the words require the operative contrast in the pictures; a decorative or forced substitute is expressly excluded by says and the asserted starting state.",
+      "range": {
+        "varies": "Supported landable RM_Webwork local maps, engine-permitted dimensions 200\u2013400 cells per side, flat/hilled/mountainous accessible ground; hot-dry and storm-fed local weather regimes at the authored fixed sun positions; colony 1\u201340, days 0\u2013100, before/after one or more reloads. Relevant axes are refined below; combinations sharing a failure mechanism are grouped, not omitted. Dormant/awake/damaged/bound/tended/released/downed/dead, unprotected/ordinary armour and already injured targets, organic/generic droid preference in campaign configuration, ordinary prey and large prey as engine permits. Isolated and clustered owners, resupply/medical access and reload around restraint/death. Head-crush and armour-penetration values are engineering checks rather than fixed fight outcomes.",
+        "left_out": "Alternative planets/world generation, DLC-absent play, unsupported off-biome mechanics, deferred extras, colonies above 40 and artificial maps with no legal accessible ground are outside this version. Normal corpse/death/despawn transitions are included, not exempted."
+      },
+      "sees": {
+        "instrument": "Actual autonomous predator encounter state trace: concealment/wake, origin of projectile, restraint health entry/tending, attack history and remains. M1 enumerates lifecycle and negative controls but cannot credibly predict engine combat/animation alone. Existing scald/spit binding checks are insufficient; T36/T44 supply missing encounter observation.",
+        "start": "Natural owner with actual species think tree, ordinary vulnerable colonist and reachable shaded approach; no forced attack job, debug health application or actor deletion. Existing combat/health settings and all retained systems active.",
+        "on": "All retained Webwork and required shared-engine mechanics on at proposed shipped defaults, next-version and retirement candidates off, all DLC loaded, no research/AI lock and no forced weather. Negative controls are separate calibration replays, never the primary reading.",
+        "control": "A manufactured injury or pre-applied hediff could look dangerous. Attribute projectile and wounds to the same owner's natural actions, confirm tending changes the real restraint, and inspect corpse/inventory identity after loss. A dead unrelated raider does not count.",
+        "reset": "Discard the disposable local scenario and restore its initial saved snapshot/settings fingerprint; no canonical world save or tile edit. The whole-run save/reload is part of the reading, not a reset bypass.",
+        "live_only_why": "Existing offline kernel models omit real combat execution, medical integration and concealed-to-visible presentation. No credible cheap full substitute exists; use targeted actual play/state observation, without unattended flyer tests."
+      },
+      "live_only": true,
+      "touches": [
+        "predator_population",
+        "detection_state",
+        "exposure_geometry",
+        "land_surface",
+        "settings_state"
+      ],
+      "tests": {
+        "reject": "The source describes an untameable powerful mouth-binding hunter. If it were a tameable harmless reskin, the place would have no owner despite working terrain.",
+        "renormalize": "No pinned stat, yield, time, size, density quota or variant count; retuning a check does not change the accept/reject categories. A change that reverses the stated player-facing comparison is a behaviour change, not mere renormalization.",
+        "first_version": "Life and necessary signature predator, not an additional quest or combat minigame."
+      }
+    },
+    {
+      "id": "B5",
+      "says": "The Webwork supplies ordinary forage and usable plant and animal products, while quarrok remove sensed crossings, vennick lead along silk to edible clutches, and sivvern move by actual flight.",
+      "meant": {
+        "intent": "Keep ordinary resident behaviour instead of a decorative zoo; no special steering UI, radar, quest or new species. Ordinary life includes resources actually usable by foragers, builders and animals, not just roster presence.",
+        "source": "Frozen sheet \u00a74b and September fauna roster roles; standing flyers-fly ruling. Delegated: ecological utility without additional directed-herding/circling interfaces.",
+        "figurative": []
+      },
+      "accept": [
+        "A foraging party brings back usable food and harvested plant material; hunting and butchery yield ordinary usable animal products without a campaign quest.",
+        "A quarrok chews a reachable cable; the destroyed crossing stops reporting touches while an overlapping live node still senses its own cells.",
+        "Vennick travel along an actual reachable silk route to existing eggs and eat from that clutch; a scout can follow.",
+        "Sivvern enter a real flight-tracker state while the other resident wildlife remains sparse and huntable."
+      ],
+      "reject": [
+        "Quarrok graze plants forever while chewable web remains within reach.",
+        "Vennick stream toward an absent or sealed nest because a decorative waypoint says eggs are there.",
+        "A winged sivvern walks over ground obstacles because only its sprite claims flight.",
+        "Plant and animal descriptions promise a living resource base, but ordinary forage, harvest or butchery produces unusable items that no pawn can eat or use."
+      ],
+      "lazy": "none: the words require the operative contrast in the pictures; a decorative or forced substitute is expressly excluded by says and the asserted starting state.",
+      "range": {
+        "varies": "Supported landable RM_Webwork local maps, engine-permitted dimensions 200\u2013400 cells per side, flat/hilled/mountainous accessible ground; hot-dry and storm-fed local weather regimes at the authored fixed sun positions; colony 1\u201340, days 0\u2013100, before/after one or more reloads. Relevant axes are refined below; combinations sharing a failure mechanism are grouped, not omitted. Legal reachable/blocked/removed/overlapping chew targets; no clutch, finite clutch, empty/eaten clutch, broken silk, reachable versus sealed nest; animal hungry/sated/injured/dead/dormant where legal; prey scarce/available and reload during a life job. Sivvern grounded/takeoff/airborne/landing/cooldown; actual engine flight flags/stats, not a fixed duration. Ordinary roster diets/forage/products are included in whole state, no eviction of patched/multi-homed species. Include natural forage and all distinct ordinary plant product-use classes (food, timber, liquor, water and animal feed), immature/harvestable/regrowing/rotted state and hungry/sated human/animal recipients. Variants sharing the same ordinary consumer path are grouped; no numerical yield quota.",
+        "left_out": "Alternative planets/world generation, DLC-absent play, unsupported off-biome mechanics, deferred extras, colonies above 40 and artificial maps with no legal accessible ground are outside this version. Normal corpse/death/despawn transitions are included, not exempted."
+      },
+      "sees": {
+        "instrument": "M1 calibrated life-job/flight-state replay with M3 route masks and actual node/clutch conservation; flight tracker state read only, never unattended visual flight. Existing chew kernel is reused; T37/T40/T42 provide missing autonomous consumers/readers. M4 calibrates actual forage/harvest/ingestion/use and ordinary butchery transactions; the life result cannot be inferred from an XML product name.",
+        "start": "Naturally spawned or representative identified residents in ordinary hunger/job states on a natural map, real chewable nodes and finite clutches. Main reads never directly assign chew/run-to-eggs/flight jobs. Include real foraging/plant harvesting and hungry animal/human consumers with their normal jobs; no debug-spawned replacement products.",
+        "on": "All retained Webwork and required shared-engine mechanics on at proposed shipped defaults, next-version and retirement candidates off, all DLC loaded, no research/AI lock and no forced weather. Negative controls are separate calibration replays, never the primary reading.",
+        "control": "A proof deletion or teleported mite could fabricate a useful trail. Require actor job/reservation/path/consumption trace and exact target ID. A no-target state must fall back to ordinary life without looping or new eggs. Wings/render flags alone fail flight calibration. Attribute usable resources to the actual forage/harvest/butchery action and inspect real consumption/use; a stocked initial pantry or completed campaign reward is not evidence.",
+        "reset": "Discard the disposable local scenario and restore its initial saved snapshot/settings fingerprint; no canonical world save or tile edit. The whole-run save/reload is part of the reading, not a reset bypass.",
+        "live_only_why": "Not live-only: discrete jobs, registration and flight states are enumerable after exact runtime adapter calibration; no claim about aesthetic wing motion is made."
+      },
+      "live_only": false,
+      "touches": [
+        "web_geometry",
+        "detection_state",
+        "predator_population",
+        "nest_state",
+        "land_surface",
+        "material_sources",
+        "settings_state"
+      ],
+      "tests": {
+        "reject": "Delegated from the frozen ecological tools and mandatory real flight: he would reject the tools existing only in descriptions even if the extra radar/herding UI is absent.",
+        "renormalize": "No pinned stat, yield, time, size, density quota or variant count; retuning a check does not change the accept/reject categories. A change that reverses the stated player-facing comparison is a behaviour change, not mere renormalization.",
+        "first_version": "Life: deleting these named ordinary ecological activities leaves labels without the assigned living roles."
+      }
+    },
+    {
+      "id": "B6",
+      "says": "A party risking a naturally defended Webwork site can bring back thrixweave and inert perishable eggs whose use or sale finances substantial colony progress, then return to a living nest that renews eggs without creating tame owners or fabric from destructive harvesting.",
+      "meant": {
+        "intent": "Close the ordinary expedition loop with the major windfall chosen on November 10, rather than token cloth; no specimen/research/quest/giant/siege is needed. Rare expensive resale is allowed. Reward scale compares the player's next colony improvement, not fixed prices or yields.",
+        "source": "September owner-and-nest \u00a7\u00a72\u20134 and September 24 nest/renewal/egg rulings; October 22 Q8 resale amendment. Delegated: unify destructive harvest exclusion with the same nest-raid principle and require ordinary buyer accessibility. Owner November 10 answer to trip-worth-repeating in design/RimMandrake/designer_codex_2026-11-09/Webwork/ANSWERS_OWNER.md: a major windfall should finance substantial progress.",
+        "figurative": [
+          {
+            "word": "living nest",
+            "stands_for": "surviving nest structure sustained by any living local ollathrix under the settled renewal rule",
+            "accept": "An unrelated surviving dormant ollathrix sustains the intact nest even after the visible guardian dies."
+          },
+          {
+            "word": "owners",
+            "stands_for": "the ollathrix species, not a legal property title",
+            "accept": "An egg remains valuable cargo while no faction claims ownership of it."
+          },
+          {
+            "word": "substantial colony progress",
+            "stands_for": "new usable crafting capacity or a coherent equipment refit, beyond replacing expedition supplies, scaled to the declared colony stage",
+            "accept": "An established colony uses its net sale proceeds for a squad equipment refit, while an early colony funds a new working workshop."
+          }
+        ]
+      },
+      "accept": [
+        "A prepared party cuts cable and mines clutches, escapes marked, and uses the fabric or net cargo proceeds for a new working workshop or a coherent equipment refit beyond replacing expedition supplies.",
+        "An exhausted clutch renews while a living local owner survives; after the owners die the remaining nest stops supplying eggs.",
+        "A costly rare resale offers fabric without turning every ordinary trader into a substitute for cutting the web."
+      ],
+      "reject": [
+        "The only working silk reward comes from a disabled giant-reading job or a debug lance specimen.",
+        "Beetle damage or burning web grants the same free fabric as a deliberate risky cut.",
+        "Eggs hatch into trainable owners, cannot be sold without a campaign quest, or accumulate in unattended clutches regardless of living owners.",
+        "Ordinary traders routinely supply the supposedly local treasure because only an XML stock row was stripped.",
+        "A serious successful expedition brings home only incidental cloth and sale money that cannot advance a planned colony improvement despite its danger."
+      ],
+      "lazy": "none: the sentence requires the causal or comparative outcome illustrated; a mark without coordinated pursuit, token loot, or an icon without route protection does not satisfy its words.",
+      "range": {
+        "varies": "Supported landable RM_Webwork local maps, engine-permitted dimensions 200\u2013400 cells per side, flat/hilled/mountainous accessible ground; hot-dry and storm-fed local weather regimes at the authored fixed sun positions; colony 1\u201340, days 0\u2013100, before/after one or more reloads. Relevant axes are refined below; combinations sharing a failure mechanism are grouped, not omitted. All supported accessible nest placements including poor-ground fallback; intact/raided/defended/abandoned/destroyed nest; any live map owner, no owner, new natural owner; due/no-due/no-space relay and normal 20\u201330-day initial renewal. Deliberate cut/butchery/mine versus force/beetle/burn/cleanup, repeated callbacks and saved transaction boundary. Actual buyer/stock/reward/gear/recipe source classes; base/campaign tier with extra markets off; cargo hands/inventory/shelf/transport/rot/sale. Material amounts and trader probabilities live in checks. Define the party's planned equipment/workshop improvement and starting colony needs before the run for both early and established 40-colonist economies; vary ordinary trade conditions and cargo lost to actual risk. Exact chosen benchmark cost is a check, not a fixed owner quota or perpetual-supply promise.",
+        "left_out": "Alternative planets/world generation, DLC-absent play, unsupported off-biome mechanics, deferred extras, colonies above 40 and artificial maps with no legal accessible ground are outside this version. Normal corpse/death/despawn transitions are included, not exempted."
+      },
+      "sees": {
+        "instrument": "M4 calibrated material/carrier/source ledger plus M1 nest-state enumeration; actual ordinary buyer receipt and natural-clock renewal are calibration anchors. T39/T43 repair/read provenance; existing forced-due relay and harvest proofs remain checks, never the natural timer evidence.",
+        "start": "Naturally placed defended site, incomplete extraction, recorded owner identities and unforced nest due time; ordinary supported trader with actual generated inventory; no pre-granted specimen research or campaign sale quest.",
+        "on": "All retained Webwork and required shared-engine mechanics on at proposed shipped defaults, next-version and retirement candidates off, all DLC loaded, no research/AI lock and no forced weather. Negative controls are separate calibration replays, never the primary reading.",
+        "control": "Reward stacks might pre-exist or be emitted by another feature; track their source/amount/recipient from before the action to the actual sale. Compare destroyed-node source classes and owner/no-owner branches with identical retained settings. A forced due-time call cannot prove the waiting cycle. Declare the ordinary next colony improvement and starting resources before departure; attribute its funding to the expedition receipt, so a rich initial colony cannot fake a windfall. Test the established colony separately from a poor starter.",
+        "reset": "Discard the disposable local scenario and restore its initial saved snapshot/settings fingerprint; no canonical world save or tile edit. The whole-run save/reload is part of the reading, not a reset bypass.",
+        "live_only_why": "Not live-only: after actual adapter, natural timer and generated buyer calibration, source/transaction conservation and nest-state transitions are finite replayable assertions; price/yield tuning is not the verdict."
+      },
+      "live_only": false,
+      "touches": [
+        "web_geometry",
+        "detection_state",
+        "predator_population",
+        "nest_state",
+        "material_sources",
+        "settings_state"
+      ],
+      "tests": {
+        "reject": "The source explicitly promises treasure, natural guaranteed nesting and inert renewable cargo. A debug-only stash or tame-hatch exploit would defeat that promise. November 10 specifically rejects merely noticeable improvement in favour of a major windfall; retain this stronger sourced contrast.",
+        "renormalize": "No pinned stat, yield, time, size, density quota or variant count; retuning a check does not change the accept/reject categories. A change that reverses the stated player-facing comparison is a behaviour change, not mere renormalization.",
+        "first_version": "Signature reward/carry branch and ordinary nest life; campaign offers are independent and off."
+      }
+    },
+    {
+      "id": "B7",
+      "says": "A colony can maintain open sunlit ground that stops voluntary owner crossings, while actual canopy return or reduced sunlight can reopen shaded approaches and exposed spiders visibly suffer reversible scald.",
+      "meant": {
+        "intent": "A conditional maintainable refuge, using shared geometry and ordinary cutting/fire; not an invulnerability flag or instant spider death. Colonists still pay ordinary air heat and Direct Sun exposure.",
+        "source": "Frozen sheet \u00a77b light-moat and regrowth/overcast threats; later kit/current sun-scald cripple-never-down rule; standing October 19 Direct Sun and tree-shade ruling. Delegated: path refusal, maintenance and truthful exposure inspection. Owner November 10 escape answer: clearing and guarding a prepared return route is essential, improvised retreat unreliable.",
+        "figurative": [
+          {
+            "word": "owner",
+            "stands_for": "an untameable ollathrix, not property law",
+            "accept": "A hunter refuses sunlight even though there is no territorial-claim object on the map."
+          }
+        ]
+      },
+      "accept": [
+        "Owners hold at an exposed clearing edge while ordinary workers maintain the cut margin; a newly shaded bridge lets a hunter approach.",
+        "A spider forced into sunlight accumulates a named crippling condition, can retreat to shade and recovers without being downed by scald alone.",
+        "A roof protects a worker from Direct Sun but also provides shade a hostile owner can use; lamps do not create refuge."
+      ],
+      "reject": [
+        "Spiders receive a scald icon but their voluntary chase still crosses the sunlit gap.",
+        "A permanently safe clearing flag remains after regrowth restores canopy.",
+        "A roof stand-in or locked clear sky is used to claim real-canopy protection, while the shared sun system is disabled.",
+        "Shade secretly cools the ambient-air thermometer through a Webwork-only heat rule."
+      ],
+      "lazy": "none: the sentence requires the causal or comparative outcome illustrated; a mark without coordinated pursuit, token loot, or an icon without route protection does not satisfy its words.",
+      "range": {
+        "varies": "Supported landable RM_Webwork local maps, engine-permitted dimensions 200\u2013400 cells per side, flat/hilled/mountainous accessible ground; hot-dry and storm-fed local weather regimes at the authored fixed sun positions; colony 1\u201340, days 0\u2013100, before/after one or more reloads. Relevant axes are refined below; combinations sharing a failure mechanism are grouped, not omitted. All legal shaded/exposed boundaries and bearings, shared fixed-sun authored positions and actual weather transitions; felled/young/regrown/mature/end-of-life canopy, overlapping crowns, walls/roofs/parasols/doors, lamp versus solar light. Voluntary pursuit/idle/escape from forced exposure, severed/overlapping sense nodes, maintenance performed/abandoned at 1\u201340 workers, days 0\u2013100 and save/load around geometry rebuild. Settings sensitivity is exploratory, primary bar at defaults.",
+        "left_out": "Alternative planets/world generation, DLC-absent play, unsupported off-biome mechanics, deferred extras, colonies above 40 and artificial maps with no legal accessible ground are outside this version. Normal corpse/death/despawn transitions are included, not exempted."
+      },
+      "sees": {
+        "instrument": "M3 calibrated production geometry/path sweep plus M2 calibrated growth/work replay and actual shared exposure/health-state anchors. T38/T42 provide missing path binding and removal of legacy heat overrides; T41 supplies seasonal observer. Unknown calibrated geometry or work model means UNMEASURED, never a roof-derived pass.",
+        "start": "Real canopy on a natural map; living owners, actual shared sun/grid active, a normal cut/burn maintenance schedule and an untouched comparison margin; record exposure before/after work and weather, no manually imposed safe-area flag.",
+        "on": "All retained Webwork and required shared-engine mechanics on at proposed shipped defaults, next-version and retirement candidates off, all DLC loaded, no research/AI lock and no forced weather. Negative controls are separate calibration replays, never the primary reading.",
+        "control": "A wall, disabled AI or heat system could explain safety. Show an otherwise passable exposed path is refused for the exposure reason, and the same path is taken after genuine shade returns. Compare shared felt-temperature reads at identical geometry on a control biome; ambient air is unchanged. Scald physiology and colonist sun heat use the same exposure geometry, not the same health effect.",
+        "reset": "Discard the disposable local scenario and restore its initial saved snapshot/settings fingerprint; no canonical world save or tile edit. The whole-run save/reload is part of the reading, not a reset bypass.",
+        "live_only_why": "Not live-only once M3/M2 are validated: geometry, route admissibility, scald transitions and a work budget can discriminate these contrasts; actual presentation remains in B1/B4/B8."
+      },
+      "live_only": false,
+      "touches": [
+        "web_geometry",
+        "predator_population",
+        "exposure_geometry",
+        "canopy_growth",
+        "land_surface",
+        "settings_state"
+      ],
+      "tests": {
+        "reject": "The frozen play advice makes the clearing the fortress and names its failure modes. A harmless icon with unstoppable crossing is the laziest rejected implementation.",
+        "renormalize": "No pinned stat, yield, time, size, density quota or variant count; retuning a check does not change the accept/reject categories. A change that reverses the stated player-facing comparison is a behaviour change, not mere renormalization.",
+        "first_version": "Signature counterplay plus growing land. Ordinary walls/fire/roof tools suffice; no traction lance or rite needed."
+      }
+    },
+    {
+      "id": "B8",
+      "says": "Across a season on a full Webwork map with all retained mechanics running, the colony can keep a clearing, take treasure and encounter living web predators without the map becoming a predator flood, an emptied jungle, a stalled cycle or an error storm, including saved reload and reordered actions.",
+      "meant": {
+        "intent": "Exactly one whole bar: establish the complete living trespass/refuge/extraction cycle rather than independent green test scenes. Full defaults, no locked mechanic/sky, next-version extras off.",
+        "source": "Delegated from November 16 whole-mod requirement, root jungle-growth sentence, October 20 experience and frozen light-moat play advice. Duration, compression protocol and counterexample categories below are Designer choices, not owner tuning bars.",
+        "figurative": [
+          {
+            "word": "predator flood",
+            "stands_for": "routine actions sustain accumulating owners until ordinary work cannot use a maintained refuge or routes",
+            "accept": "A genuine difficult hunt and a temporary cluster can happen while ordinary maintenance and later extraction remain possible."
+          },
+          {
+            "word": "emptied jungle",
+            "stands_for": "the retained land/life no longer regenerates or encounters become impossible through systemic consumption",
+            "accept": "A burned worked margin and temporarily scarce prey coexist with living forest and later ecological activity elsewhere."
+          },
+          {
+            "word": "stalled cycle",
+            "stands_for": "required contacts, jobs, regrowth or living-nest renewal cease despite their legitimate preconditions",
+            "accept": "After deliberate eradication no egg renewal occurs until a live owner returns, rather than fabricating renewal to keep a graph green."
+          },
+          {
+            "word": "error storm",
+            "stands_for": "repeated runtime errors or retry loops corrupt or prevent ordinary play",
+            "accept": "A clean explicit refusal on an artificial blocked placement is not a retry storm."
+          },
+          {
+            "word": "treasure",
+            "stands_for": "valuable local fabric and inert egg cargo that advances the colony, not a scripted chest or quest jackpot",
+            "accept": "A raiding party sells perishable eggs through ordinary trade and uses cloth in equipment with no treasure quest."
+          }
+        ]
+      },
+      "accept": [
+        "Maintained colony ground persists, abandoned shade grows back, actual contacts bring hunters, recovered cargo advances a planned colony improvement and a surviving nest later renews eggs; the saved run resumes without duplicates.",
+        "The reversed work-and-haul order changes the danger encountered but still supports the same legible refuge and extraction cycle."
+      ],
+      "reject": [
+        "A passing showcase freezes weather and disables fire, growth or ordinary AI while staged harvest and predator probes run.",
+        "Repeated harvesting keeps adding owners until ordinary maintenance cannot function, or predators erase the living prey and jungle cycle.",
+        "Reload duplicates owners, nodes, marks or rewards, resets the nest clock, or leaves jobs retrying without progress.",
+        "The party can work only because a later-version lance, siege payout or campaign quest was silently left active."
+      ],
+      "lazy": "none: the words require the operative contrast in the pictures; a decorative or forced substitute is expressly excluded by says and the asserted starting state.",
+      "range": {
+        "varies": "Supported landable RM_Webwork local maps, engine-permitted dimensions 200\u2013400 cells per side, flat/hilled/mountainous accessible ground; hot-dry and storm-fed local weather regimes at the authored fixed sun positions; colony 1\u201340, days 0\u2013100, before/after one or more reloads. Relevant axes are refined below; combinations sharing a failure mechanism are grouped, not omitted. Whole supported local regime: 200\u2013400-cell engine-permitted full maps, accessible flat/hilled/mountainous land, authored hot-dry/storm-fed weather and actual fixed sun positions; settled 4/12/40-pawn schedules plus a foot/ship arrival branch, natural sparse/dense canopy and intact/severed web. Run at least a natural season, extend to 30\u201360 days or longer until natural egg renewal and no-mother branch are observed; check old established day-100 starting states for accumulated history. Include halfway saved reload, real target death, and paired action orders clear->harvest->haul versus harvest->haul->clear from the same initial state. Replicates cover stochastic variation until stable regime conclusions; exact sample count belongs to M2 calibration/checks. Colony cardinality is swept from 1 through 40 for queue/limiter boundaries in M1/M2. Solo/party, small-camp and established-colony live anchors are grouped only by the same failure modes (acquisition coalescing versus maintenance workload); any detected scheduling threshold becomes a separate representative.",
+        "left_out": "Alternative planets/world generation, DLC-absent play, unsupported off-biome mechanics, deferred extras, colonies above 40 and artificial maps with no legal accessible ground are outside this version. Normal corpse/death/despawn transitions are included, not exempted."
+      },
+      "sees": {
+        "instrument": "Actual natural-clock full-map run and observer T41, preceded by calibrated M1/M2/M3/M4 to select worst regimes and cheap counterexamples. Time compression may increase simulation speed or skip rendering only; it preserves game ticks, weather durations, job scheduling, growth/age, fire, hunger, medical and nest deadlines. No direct completion, forced due-time, weather lock or population reset. A generated local map is not a generated world.",
+        "start": "Naturally created local RM_Webwork map, true shipped retained settings and content fingerprint, all research/access relevant to kept features available, next-version defaults off in base and campaign. Ordinary colony supplies/skills recorded; fixed sun unmodified; world never repainted. Capture complete state at start, midway save, reload and milestones; same recorded actions replayed in second order.",
+        "on": "All retained Webwork and required shared-engine mechanics on at proposed shipped defaults, next-version and retirement candidates off, all DLC loaded, no research/AI lock and no forced weather. Negative controls are separate calibration replays, never the primary reading.",
+        "control": "Instrument snapshots might hide temporary flood/stall or forced disabled mechanics. Continuous event/state timeline records effective settings, owner/node/cargo identities and production jobs between checkpoints; M2 predicts worst windows, actual game recorder samples them. A separate no-maintenance branch must regain canopy and show a changing approach, so static refuge is not credited. Read actual runtime log and life/death/exit provenance, not a mock response.",
+        "reset": "Discard the disposable local scenario and restore its initial saved snapshot/settings fingerprint; no canonical world save or tile edit. The whole-run save/reload is part of the reading, not a reset bypass.",
+        "live_only_why": "A whole-map model predicts regimes only after calibration and omits live engine coupling/presentation. The complete seasonal result, natural placement, scheduling, saved reload and lived workload still need actual game execution; targeted forced probes cannot substitute."
+      },
+      "live_only": true,
+      "touches": [
+        "land_surface",
+        "web_geometry",
+        "acoustic_cues",
+        "detection_state",
+        "predator_population",
+        "exposure_geometry",
+        "nest_state",
+        "material_sources",
+        "canopy_growth",
+        "settings_state"
+      ],
+      "tests": {
+        "reject": "The November 16 instruction explicitly requires the complete cycle. A set of isolated passing examples that collapses in aggregate is a rejected mod.",
+        "renormalize": "No pinned stat, yield, time, size, density quota or variant count; retuning a check does not change the accept/reject categories. A change that reverses the stated player-facing comparison is a behaviour change, not mere renormalization.",
+        "first_version": "Whole land/life/signature. All extras explicitly off, no additional version promise."
+      }
+    }
+  ],
+  "whole": "B8",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Floor: actual package load, clean log and superb searchable/resettable persisted settings; all DLC in each supported configuration. Broken check is evidence to repair, not an independent owner bar."
+    },
+    {
+      "id": "C2",
+      "what": "Resolved animalDensity/plantDensity positive, current complete ordinary roster and products/diets/flight fields/graphics resolve, including post-patch campaign entries. No field-count or art-variant bar. Source raw BiomeDef currently has 6 animal keys and 17 plant keys; these are def measurements, not live composed counts."
+    },
+    {
+      "id": "C3",
+      "what": "Existing validation.py, northstar_plan.py, C# proofs, harvest runner and Source/SelfTest kernels retained as regression readers. Record source/settings/runtime fingerprints; prior record proof is stale or missing, no current runtime pass claimed."
+    },
+    {
+      "id": "C4",
+      "what": "Current SenseWeb ScanIntervalTicks=250 and missing RUT_Webwork_FeltMark/RUT_Webwork_Egg soft lookup are measured source facts; require valid current content refs and actor/cargo adapters. Proposed expiry 60000 ticks since refresh; inspect source/expiry/reload state."
+    },
+    {
+      "id": "C5",
+      "what": "Existing egg relay default 20\u201330 days, clutches 1\u20132 when existing clutch absent; record Normal ticker and saved nextRelayTick; ordinary egg no hatcher/food/medical recipe and current rot field. Exact quantities remain tuning, no force-due proof of natural period."
+    },
+    {
+      "id": "C6",
+      "what": "Record current cable pathCost 30, strand 14, zero edifice fill, natural node overlap counts, actual legal site fallback coverage and no impassable cable partition. Geometry boundary invariants are model checks."
+    },
+    {
+      "id": "C7",
+      "what": "Record actual shared sun/shade values, threshold predicates and scald severity/capacity stages; no effective heatKind/heatOffsetC/minScaledHeatOffsetC/overheadAboveElevationDegrees override from Webwork. No lamp-as-sun or canopy-cooled ambient air."
+    },
+    {
+      "id": "C8",
+      "what": "Existing emergence base chances cable 0.03, strand 0.01 and configured multiplier; record production destruction mode/actor and finite population result. Check no force-break killedLeavings cloth and no double callback payout/spawn."
+    },
+    {
+      "id": "C9",
+      "what": "Generated stock/reward/material audit records each source, actual resale chance/count/price tier and buyer receipt. Preserve approved rare expensive resale. A source-count/yield/price number is a regression reading only."
+    },
+    {
+      "id": "C10",
+      "what": "Extra gates: actual fresh default map and caller-selection state absent things/jobs/letters/incidents, on-arm eligible presence, clean log; saved cocoon/quest/rigging shutdown preserves pawn/items. Field, Scribe fallback, reset and composed/campaign effective settings match."
+    },
+    {
+      "id": "C11",
+      "what": "Observer records full-map season tick/weather/fire/growth/AI histories, actual midway saved reload and reversed actions; natural relay extends beyond a season if needed, day-100 seeded-history case recorded. These numbers specify observation, not passing experience."
+    },
+    {
+      "id": "C12",
+      "what": "Model calibration exact IDs/events/registration/exposure decisions; aggregate M2 area/work tolerance initially 10%, M3 continuous shade tolerance 0.001 away from boundary; failure at a regime boundary invalidates it. Models are predictions, not measurements of the game."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Use normal local MapCommonBase placement, exhaustive legal-space fallback for nest and accessible clutches, visible cable hierarchy and slow passable crossings; natural nodes do not overwrite inhabitants/buildings or automatically regrow after cutting. No world mutation.",
+      "touches": [
+        "land_surface",
+        "web_geometry",
+        "nest_state",
+        "canopy_growth"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Contact marks the living pawn on registered occupied cells, actual deliberate cut or living-map ship event; eggs in hands/inventory maintain the same map-wide mark. Proposed expiry one day from last contact/refresh, scan initially existing 250 ticks; shelves/corpses/off-map cargo mark no pawn. One acquisition cue; persist expiry/source and reconstruct overlap counts once on load. Clutches register occupied cells and successful mining records the miner contact; nest wall guardian wake remains separate.",
+      "touches": [
+        "web_geometry",
+        "detection_state",
+        "acoustic_cues",
+        "material_sources",
+        "settings_state"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Existing awake/dormant map owners answer with acquire/wake then shade-reachable pursuit or visible boundary hold. Prefer configured generic droids among otherwise equivalent reachable prey; route exposure refusal wins. Coalesce triggers, never duplicate a landing per colonist, cancel on death/despawn/expiry. A fully cleared map creates no resurrection; live nest may answer. Initial response-latency check bound one game hour, never a bar. Multiple available owners must converge over usable shaded approaches, not strand a conga line at a blocked cell; no new caste/squad UI or faction alliance. Expiry cancels only signal-directed pursuit; ordinary visible-prey hunting may resume, never pacification.",
+      "touches": [
+        "predator_population",
+        "detection_state",
+        "exposure_geometry",
+        "nest_state",
+        "settings_state"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Use shared geometric shade and solar exposure only; species scald cripples, never downs alone, rises exposed and recovers shaded. Owner voluntary hunting paths refuse exposed crossings; forced exposed owner may retreat. Roofs/parasols shade, lamps do not. Same geometry gives same Direct Sun into vanilla heatstroke, ambient air unaffected. Old Webwork heatKind/offset fields must have no effective role.",
+      "touches": [
+        "exposure_geometry",
+        "predator_population",
+        "land_surface",
+        "settings_state"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Eggs are inert perishable Sellable ordinary cargo, never food/medicine/hatchers. Existing nest guardian is bounded and renewal uses any living local ollathrix, not unique mother identity. Initial ruled relay 20\u201330 days, existing nearby clutches suppress accumulation, destroyed walls do not regrow, due time persists and no load catch-up shower.",
+      "touches": [
+        "nest_state",
+        "predator_population",
+        "material_sources",
+        "detection_state"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Deliberate player natural-node cuts and ordinary butchery supply thrixweave; clutch mining and finite existing nest-wall salvage supply eggs. Combat, beetle, burn and cleanup yield no fabric and cause no harvest emergence. Real cutting records touch even if the existing separate small emergence roll misses; visible emergence and no duplicate event handling. Do not use siege/giant/specimen rewards as local harvest.",
+      "touches": [
+        "material_sources",
+        "predator_population",
+        "detection_state",
+        "web_geometry"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Quarrok autonomously chew reachable live registered chewable nodes, deregister by destroyed identity and grant no cloth. Vennick follow valid silk to real reachable finite clutches, eat finite eggs and wander when no route/food exists. Sivvern flight uses actual Core tracker/state and ordinary diet. No directed herding, circling radar, bespoke prey-gleaning/kill-trail AI or new self-predation engine.",
+      "touches": [
+        "web_geometry",
+        "nest_state",
+        "predator_population",
+        "material_sources",
+        "detection_state",
+        "land_surface"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Retained settings default on with truthful immediate/startup/new-map timing. Extras field/Scribe/reset defaults off, labelled Next version, gate composed and campaign callers. All-off keeps terrain/roster and ordinary weather while script jobs/active penalties cease safely; preserve saved occupants and items. Preserve the already waived worker, no new worldgen/cross-biome scope.",
+      "touches": [
+        "settings_state",
+        "land_surface",
+        "material_sources",
+        "predator_population",
+        "nest_state",
+        "acoustic_cues",
+        "detection_state",
+        "exposure_geometry",
+        "canopy_growth",
+        "web_geometry"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Use existing ExplosiveGrowth wet-native Webwork profiles and ruled tree life, no separate irrigation/maturity clock. Ordinary clearing/fire removes canopy; real regrowth changes shared shade, not an eternal clearing flag. Growth does not spontaneously recreate web. No biome-specific growth rates or climate field invented to force a pass.",
+      "touches": [
+        "canopy_growth",
+        "exposure_geometry",
+        "land_surface",
+        "predator_population",
+        "web_geometry"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Keep vanilla Hyperweave identity labelled thrixweave, source restriction and the already approved rare expensive Orbital_Exotic resale; ordinary supported buyers can buy inert eggs. Campaign later stockers, Reckoning, bounty, research and site rewards stay off; no extra material tier or premium broker needed. Successful serious extraction should finance a substantial declared next colony improvement (November 10 owner answer); tune quantities/value through checks, not an owner yield quota.",
+      "touches": [
+        "material_sources",
+        "settings_state",
+        "nest_state"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "land_surface",
+      "members": [
+        "B1",
+        "B4",
+        "B5",
+        "B7",
+        "B8",
+        "R1",
+        "R4",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "argued",
+      "why": "Land picture, ordinary build access, ecological life, conditional sunlight and growth refer to the same physical ground. R1 does not assign safe flags; R4 changes exposure rather than ambient air; R7 creates no duplicate terrain and R8 does not delete ordinary terrain. Thus neither roof shade nor buildability promises absolute safety. This is a logical scope argument, not measured appearance.",
+      "model": ""
+    },
+    {
+      "thing": "web_geometry",
+      "members": [
+        "B1",
+        "B3",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R2",
+        "R6",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Passable main cables, natural accessible nesting, finite local strands, overlap sensing, beetle deletion, mite routes and rebuilding after load share raster/cell state. Finite random placement and skipped cells can break a useful connected route even when each single placement probe passes. Do not infer connectivity from the drawing.",
+      "model": "M3 Web, canopy and refuge geometry sweep"
+    },
+    {
+      "thing": "acoustic_cues",
+      "members": [
+        "B2",
+        "B3",
+        "B8",
+        "R2",
+        "R8"
+      ],
+      "holds_together": "argued",
+      "why": "Hush is a sparse ambient mix; the thrum is a source-attributed acquisition event. R2 coalesces refresh and R8 preserves its truthful setting timing, so constant egg carry need not become constant sound. Actual mix is still B2 live-only; a logical meeting is not a claim of measured audio.",
+      "model": ""
+    },
+    {
+      "thing": "detection_state",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B8",
+        "R2",
+        "R3",
+        "R5",
+        "R6",
+        "R7",
+        "R8"
+      ],
+      "holds_together": "unknown",
+      "why": "Contact, cut, landing, carry, prey preference, death/despawn, pursuit, mite/cut node changes and reload all touch one mark/target state. Current absent RUT bindings and missing consumer make persistence and cancellation unestablished. M1 must walk transfer/death/load interleavings, not merely mark-present checks.",
+      "model": "M1 Situations and event-to-job transitions"
+    },
+    {
+      "thing": "predator_population",
+      "members": [
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Natural owners plus nest spawning and cut emergence consume the thin prey and workers needed to clear shade. Beetles reduce sensed nodes, mites consume future cargo, weather changes available routes; these agree pairwise yet can amplify a harvest->owners->less work->shade->pursuit loop. M2 must settle it with all retained defaults on.",
+      "model": "M2 Whole-map living web over time"
+    },
+    {
+      "thing": "exposure_geometry",
+      "members": [
+        "B1",
+        "B3",
+        "B4",
+        "B7",
+        "B8",
+        "R3",
+        "R4",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Readable clearing, voluntary path refusal, physiological scald, Direct Sun cost, canopy return and weather must use the same cached geometric state. A roof-based scald demonstration proves none of real-canopy path safety, updated geometry or colony work affordability. M3 supplies exact boundary calibration; M2 then tests seasonal coexistence.",
+      "model": "M2 Whole-map living web over time"
+    },
+    {
+      "thing": "nest_state",
+      "members": [
+        "B3",
+        "B5",
+        "B6",
+        "B8",
+        "R1",
+        "R3",
+        "R5",
+        "R7",
+        "R8",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Guaranteed reachable cluster, finite mites, living guardian, no-owner stop and saved relay time meet in the same nest. A nearby independent owner intentionally sustains renewal, but consumed clutches, blocked placement and load-time ordering can stall or multiply supply. M1/M3 distinguish legal absence from broken renewal, M2 measures its frequency only after calibration.",
+      "model": "M1 Situations and event-to-job transitions"
+    },
+    {
+      "thing": "material_sources",
+      "members": [
+        "B3",
+        "B5",
+        "B6",
+        "B8",
+        "R2",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Egg carrier risk, extraction reward, finite consumption, source strip/resale and default-off campaign/giant/siege/lance gates share material transactions. Source-only stock and destruction callbacks can pay twice or bypass danger; force-break killedLeavings is a concrete current risk. M4 attributes actual production events and source classes before M2 uses supply rates.",
+      "model": "M4 Material and carrier provenance ledger"
+    },
+    {
+      "thing": "canopy_growth",
+      "members": [
+        "B1",
+        "B7",
+        "B8",
+        "R1",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Ordinary growing land, initial layout and a maintained clearing interact over time. Shared wet-native membership proves eligibility, not that shade returns at a manageable work cost or survives fire without emptying the map. R9 forbids magical silk regeneration, exposing possible late depletion rather than concealing it. M2 decides whether tuning or a rule needs attack.",
+      "model": "M2 Whole-map living web over time"
+    },
+    {
+      "thing": "settings_state",
+      "members": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R2",
+        "R3",
+        "R4",
+        "R8",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Every kept reading and rule relies on effective defaults while shutdown leaves ordinary terrain/life safely present. Startup, new-map and immediate fields plus campaign re-additions and saved jobs can disagree even with a working checkbox. M1 walks actual gates and loaded-state cancellation; the primary whole reading never uses off-arm probes as proof.",
+      "model": "M1 Situations and event-to-job transitions"
+    }
+  ],
+  "old_bars": {}
+}
