@@ -1,0 +1,93 @@
+# Terminal Biomes — proposed Design Version 0.1.0
+
+Designer decisions, delegated by this cleanse brief, 2026-11-17. Nothing here changes a ruling or the running mod. The launcher’s fresh review and the owner’s reading precede application. This is a proposal, not certification of current code or art.
+
+## Read basis and limits
+
+The CASE was read first. Ruling basis: CLAUDE.md, biome_rulings.md, standing_rulings.md, biome_mod_architecture.md, NAMING_SCHEME_PLAN.md, ASHKARR_WORLD_DEFINITION.md, the_one_map.md and Alien_Bestiary.md. The later painted-world, floor-only, native-water and Direct Sun rulings take precedence over historical migration prose. The world is fixed; no planet generation, biome repaint or tile-count finding belongs to this proposal. In particular, the Scald is a terminal volcanic crater, not the perched river source still described in its BiomeDef and About.xml. The cast is alien rather than imported Earth organisms or franchise references in the RM tier.
+
+No concept record.json, sheet.md, tree.json, log.md or existing next-version file was present in this checkout; the concept directory initially contained an empty cleanse directory. No waiver is known and none is reopened. The CASE explicitly gives no tree leaves, so old_bars is exactly {}. Existing validation/walk prose is an engineering inventory, not an invented former locked bar set.
+
+Read the four named ledger items, the source/defs/patches/kernels and proof scripts, the validation walk, TerminalBiomes review and the relevant sea sheets/floor agendas. The two closed items establish historical scaffolding and the EH hard-dependency fix; they do not establish current gameplay. The review-fixes item is explicitly a list of unverified review evidence. Present source already fixes some listed problems: source-map carry ownership, terminal sink registration, due-time rearming, persistent graze debt and off-map Sunk recovery. They are not new findings here. No runtime, bridge, build or proof script was run. No current source fingerprint has been compared to a deployed DLL.
+
+Available source is incomplete for integration: classes reference DivingInteraction, SeaShores, Shared LightLedger and FlowWorks interfaces, but their implementations are not in this checkout. Local bindings prove coupling, not a working foreign feature. The floor agenda reports many external Chill mechanics as built; census uses unknown/stale for those, not absent. The local gardener callback exists; a corresponding keeper implementation was not found under src/. The proposals require locating external content before duplicating it.
+
+## Say the mod
+
+Visit alien sea floors by gravship: the Scald boils, the Grey grows salt, the Chill holds dark fuel, and the Twilight shelters gardens beneath living glass. Their native plants, prey and predators belong to those liquids, and the fish caught at the beach have living counterparts below. In the Twilight, harvestable banks tempt you beside a current that can carry a careless worker into a sink, so routes, warnings and rescue shape the visit.
+
+Land: distinct material, floor, visibility, ordinary weather and building ground, with calm underwater presentation separated from beach weather.
+
+Life: preserve the present rosters, normal native growth/harvest, movement, hunting, ordinary taming and environmental viability; no species eviction.
+
+Signature: **the Twilight’s productive banks draw workers beside carrying water whose warned surges can take them to a findable, rescuable sink.** This is one chain: attraction, exposure, carry, consequence and recovery.
+
+Runner-up: the cultivated-light/tenancy economy. It loses because it adds portable growers, culture, ownership, predators of light and ship maintenance alongside the bank/current chain. Minimal natural well drift and keeper support remain necessary land under the frozen lid laws; they are not a licence to retain that economy. Ordinary hot water, cold fuel and mineral pools use shared environmental rules rather than becoming additional bespoke progression systems.
+
+## Why a player reaches for it
+
+These are destinations for a supplied expedition that wants different resources, living encounters and a place worth navigating. The prediction is that planning a bank route and rescuing a worker makes Twilight visits memorable; enjoyment is not a bar. Vanilla water chiefly obstructs movement and supplies fishing; this kit must show floor life and a working, changing bank boundary. The sources’ GravTide comparison establishes a useful local-floor generation precedent, not proof of our own floor. We borrow no new engine from a donor and promise no alternative planet.
+
+## Using it: first hour, routine, and a large colony
+
+First arrival: the existing ship/layer dependency carries the actual crew and inventory down. A legal landing reserves its hull and unloading/return corridor outside current and surge reach. The crew sees floor material, native life and a reachable bank without consulting a hatch. Landing is refused or relocated safely when that geometry cannot fit; it never silently overrides the reservation. A broken ship from unrelated combat still needs vanilla repair.
+
+First Twilight work: the bed reads as a silt trough with a distinguishable centre and margins; aligned bed detail and inspect text give downstream direction. Stakes mark the outside of surge reach, not the edge of calm safety. The bank is visibly outside the trough and supports actual forage; both the look and field membership must agree. A new worker receives a readable entry warning before carry can become lethal. The centre is not a usable swimming crossing: ordinary pathing through it must be interrupted by carry. Marginal contact permits retreat, not immunity. Loose items drift through the same field; no cargo float is needed to demonstrate it.
+
+Routine: forage and haul along safe ground; keep the sink approach reachable; use existing arrest works and a harness when deliberately working close. The harness slows the cost, never erases it. An undersurge announces and visibly widens the reach; the stakes and direction remain truthful. The player can withdraw beyond it without abandoning the ship. Banks may be depleted by harvest, but native growth is real and not scripted infinite food.
+
+At 40 colonists: repeated work orders, moving animals, stockpiles and rescue jobs coexist on full maps. Existing field membership, light caches, native growth and pathfinding must remain coherent across crowds, multiple loaded floors, map transfers and save/load. No fixed wall-time target is an owner bar; a task or clock that stops progressing is a visible failure. The whole-system model measures work budgets to guide rules and tuning.
+
+## What changes in the colony’s story
+
+A sea visit has an arrival, a safe working edge, temptation beyond it, a bad choice and a possible recovery. Twilight’s keeper-tended lid and temporary columns show a living garden. In the campaign, peaceful occupied bottom dwellings, plots and lamplight supply the frozen ark reveal through the campaign dependency; a full town remains later work. Franchise-free RM content remains rich on its own. This pass retains no tenancy, claim-buoy commerce, rent, special quest or new faction hostility.
+
+## Costs and ordinary materials
+
+The ship carries ordinary food, water, power and environmental protection. This version does not add a machine to solve every environmental cost. Scald body water and its cooler margin never become potable; steam being clean means free of the lake’s fouling, not a separate poison or health currency. A condenser can produce a distinct distilled resource when its next-version feature is enabled, but default play does not depend on it.
+
+Scald touch cost is shared liquid injury plus ordinary thermal conditions; retreating from contact stops further contact injury without cooling the basin. Native biology is the explicit environmental exception. The Chill is cold and oxygen-poor; hull atmosphere and ordinary protective gear come from the existing floor dependency. Native fuel organisms are not ordinary colonist food. Stonewater keeps ordinary harvest/cooking use; its custom extractor and refinery chains move. Ordinary material harvesting, including natural salt, remains; it is not a guaranteed market profit or a new trading system.
+
+## When it goes wrong and the readable sign
+
+A current victim retains identity and a location in the basin, with a visible Sunk condition and an actionable warning. The basin is a terminal destination, not another carrying cell that repeatedly re-registers arrivals. A blocked landing location never defaults to an unchecked occupied cell; report a placement failure and keep the victim findable at the last valid position until safe placement is available. It must not become a perpetual sink-teleport loop.
+
+Rescue requires leaving dangerous liquid into reachable safe shelter or a safe carrier. Safe carriage means held by a living rescuer/ship outside the active hazard, or already transferred to a valid safe destination; merely being unspawned is not sufficient. A roof erected over live sinking water is not rescue. A dead/interrupted rescuer leaves the victim or corpse in a readable place. Neglect can kill; no pawn or animal disappears without remains, a location or another explicit readable transition. Existing off-map recovery code is evidence of an earlier fix, not proof this tighter predicate already holds.
+
+Fading light columns have ordinary inspection and a visible waning stage. Replacements choose real eligible garden ground using authoritative current membership, hull exclusion and ordinary habitat. They never require rent, graze pressure, a cage, a sun-sphere or an event-spawned special plant. The sheet’s finite years-scale drift stands; the code’s week-scale defaults are a tunable rule to repair, not a new owner preference. A season need not contain an entire years-long well lifecycle: an honestly aged save supplies boundary evidence.
+
+## Edges and deletion arguments
+
+Ordinary roster bodies, static glow, ordinary harvests and viable native feeding/drinking remain. This is not a blanket exemption for unusual species mechanics. Contact venom, weather-retraction art, fuselight explosion, tarnn wake, hesuun extrusion, plant charge/wilt and well-triggered special spreading all move; the bodies remain. Replace event-only placement with ordinary habitat placement so deleting an extra does not empty the life roster. The death-drop organ and special loot move without removing the creature. Natural creature light must move with its body, which is why its registration adapter stays.
+
+Scald steam presentation belongs to the beach; the floor has submerged bubbles and no weather-steam exposure clock. Grey salt fall is crystals in water, not cold snow or water rain. Mineral crowding is allowed while Grey fauna remain solitary. Twilight is allowed shoals below the lid; shore laws do not make it a sterile floor. Chill ice is floor bedrock/crust or a neighbouring beach, never a new location on the lake’s top. There is no native-land-predator invasion or new free immunity to boil traversal.
+
+The explicit exceptions retained as needed support are current warnings/inspection, the float harness and existing arrest interfaces, findable sink recovery, natural light registration, minimal keeper/tending and the campaign’s minimal inhabited reveal. Their deletion respectively destroys informed use, preparation, consequences, moving life, the roof law or the ark reveal. Settings, aliases and defensive guards are inherited/load support, not extra experiences. No bars demand a particular yield, density, duration, variant count, art path or numerical equilibrium.
+
+## Neighbours and contracts
+
+The mod remains a source member of the composed Baroque Biomes package. RM has generic names/defs/classes; Star Wars additions belong in the scenario patch tier; Ash’karr placement and Compact story belong in Utinni. RM_Eldspar’s RUT_AuroraGlass harvest is a concrete tier-binding risk, ticketed, not silently renamed. The available base rosters show no repeated animal across these named sea defs. This is not a complete patched/global multi-home measurement: RM_Bulloo references TheForge, some sea creatures and juveniles have broader historical placements, and unavailable campaign patches may add homes. Preserve all current assignments; no eviction or invented migration explanation.
+
+CreatureBehaviors supplies ordinary creature behaviours, native adaptation interfaces, real flight for fictional flyers and the sole Direct Sun geometry. ExplosiveGrowth supplies normal growth and wet-source integration without adding bloom incidents. EnvironmentalHazards supplies weather pulses, presentation helpers and mechanic gates without a private steam-health system. FlowWorks supplies material contact/heat, water classification and public bank-work arrest seams; no river redesign. Wreckage supplies ordinary scatter/salvage/decay. Bones supplies ordinary butchery remains. DivingInteraction/SeaShores supply ship/layer access, floor environment and beach material delivery. Shared LightLedger composes existing contributions. The campaign supplies occupied peaceful holdings. Their unresolved contracts are first instrument work, not proof of absence everywhere.
+
+## Settings
+
+Ship master on, each sea on. Expose on/off per major kept mechanic: ordinary land presentation, normal life adaptations, natural well lifecycle, current, surge and warnings. Show effective parent state, shipped tuning/reset, and whether a change applies now or on the next local floor. All-off stops scripted behaviour without removing defs, destroying held things, leaving a launch restriction or blocking return travel. Do not switch off the world’s literal terrain or undo the fixed planet. An explicitly opted-out sandbox is not the default fiction.
+
+Next-version options default false in both initialization and missing-value Scribe load. Each option is labelled next version, and gates construction, recipes, research, trade, incidents, map ticks, running jobs and reload reassertion wherever relevant. Natural counterparts remain available. Existing saved opt-ins need a readable migration, not a silent state purge. Existing unsupported cross-biome values stay off and labelled; recommend retiring the inert controls rather than implementing a capability the standing ruling dropped. No new worldgen control.
+
+## First hour
+
+The crew arrives beneath the Twilight lid. Gold columns pick out a garden; the bank path runs between the ship and forage. A worker starts toward a tempting patch across the bed, reads the warning and retreats. The scene already supplies the mod’s promise without rent, a pane strike or a custom farming station.
+
+## An ordinary week
+
+Foragers work the banks and loose dropped stock shows the downstream direction. A warned surge widens the reach; the crew brings workers beyond the stakes and resumes after calm returns. Native prey feed and predators hunt while harvest changes the accessible patches. A campaign visitor sees actual residents tending a peaceful bank holding.
+
+## The worst day
+
+A worker ignores the boundary and is carried into the sink. The warning selects a findable victim. A rescuer dies on the approach, leaving a body and an interrupted job rather than deleting either pawn. A second rescuer uses reachable safe ground, carries the worker into the hull and the condition improves. Reloading during that carriage preserves the outcome; roofing the sink would not have saved them.
+
+## The season’s turn
+
+The visit continues across natural current changes and ordinary native growth. A mid-way save survives reload, and hauling before foraging produces another viable route through the same obligations. A near-expiry continued save separately shows a well wane and a replacement on safe ground. The garden remains alive; the Grey stays a mineral murk, the Scald still boils and the Chill still demands heat. This is a prediction to test with the whole-mod recorder, not a claim that the current build has done it.

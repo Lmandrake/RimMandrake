@@ -1,0 +1,631 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "A crew reaches each sea floor and returns by gravship, lands clear of carrying water, and can work from the hull to the bank without using a hatch or a sea-surface settlement.",
+      "meant": {
+        "intent": "A playable expedition needs a return route and a safe arrival; refusing this is delegated from ship-or-nothing and the four-sea visit promise.",
+        "source": "Standing ship-only ruling, 2026-09-26 and 2026-10-01, biome_rulings.md; sea_surface_removal_2026-11-01.md; delegated safe-arrival inference from the current danger and sole return vehicle.",
+        "figurative": []
+      },
+      "accept": [
+        "The ship lands on floor ground with a reachable bank; the crew unloads, returns and flies away on the sea-floor layer.",
+        "A low-skill crew can stay on the hull and choose a bank route while a current remains hazardous elsewhere."
+      ],
+      "reject": [
+        "The crew spawns beside a hatch while its ship remains elsewhere, or returns by a pawn menu.",
+        "The ship lands astride a live channel and unloading automatically carries the crew toward the sink."
+      ],
+      "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
+      "range": {
+        "varies": "All 4 named seas; existing fixed-world tiles represented by disposable authored floor fixtures, not new planets. Map sizes 150, 250, 325 and 400 cells square; 4 ship rotations, hulls of bounding width 9, 25 and 49 cells, edge/corner/central landing candidates; empty/loaded cargo, 1/8/40 colonists, intact and interrupted unloading; arrival, departure, re-entry and reload. Sweep boundary placements in geometry model, not just these samples.",
+        "left_out": "No worldgen, alternative worlds, individual diving or surface settlement. A broken grav engine from combat is vanilla failure, not guaranteed rescue by this mod."
+      },
+      "sees": {
+        "instrument": "T40 situation/state adapter plus T41 landing/field geometry export; inspect real landing reservations, floor parent/layer, reachable paths and ordinary launch result.",
+        "start": "A supplied save with a functional occupied gravship and a legal sea-floor destination; no hatch; actual landing footprint, current field, map identity and payload recorded before entry.",
+        "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
+        "control": "An empty test map could allow any ship. Require an active channel elsewhere on Twilight and record zero intersection with its reserved landing footprint. Exercise ordinary launch and payload readback; a getter saying launch-allowed alone cannot prove travel.",
+        "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
+        "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
+      },
+      "live_only": false,
+      "touches": [
+        "floor_access",
+        "channel_field",
+        "persistence",
+        "feature_gates"
+      ],
+      "tests": {
+        "reject": "A playable expedition needs a return route and a safe arrival; refusing this is delegated from ship-or-nothing and the four-sea visit promise.",
+        "renormalize": "The outcome survives retuning yields, durations, sizes and art variants. Ranges exercise changed values without locking them into the experience.",
+        "first_version": "Land, life or the current signature, or a named necessary adapter; see census and definition."
+      }
+    },
+    {
+      "id": "B2",
+      "says": "A visitor distinguishes the Scald\u2019s cyan boil and rainbow mats, the Twilight\u2019s gold columns beneath living glass, the Grey\u2019s murk and mineral forms, and the Chill\u2019s dark fuel pools and ice floor in the ordinary play view.",
+      "meant": {
+        "intent": "These are distinct places, not renamed vanilla water; each land picture is the indispensable content of the bundle.",
+        "source": "delegated synthesis of the_scald.md artistic theme, the_twilight_deep.md artistic theme, the_grey_deep.md mineral floor additions and the_propane_lake_floor_sitting_agenda_2026-10-02.md; no new owner aesthetic approval claimed.",
+        "figurative": []
+      },
+      "accept": [
+        "At normal colony zoom a worker beside cyan water and rainbow mats reads as Scald; gold-lit gardens under glass read as Twilight; pale mineral forms disappear into Grey murk; dark fuel pools interrupt Chill ice.",
+        "In the Grey, a mineral-rich scene still leaves distinct pools and silhouettes rather than a white screen; the Twilight has dark ground between light columns."
+      ],
+      "reject": [
+        "The sea names change but the floor scenes are interchangeable blue water with recoloured fog.",
+        "A solid opaque overlay hides pawns, current boundaries or the only bank route."
+      ],
+      "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
+      "range": {
+        "varies": "All 4 seas; map-wide view and ordinary zoom at hull, forage patch, hazard edge and distant floor; naturally available fog/salt fall/steam/still-state variants with ordinary wild population, all kept lighting and overlays active; before/after reload and a season of growth. For Scald compare separate beach steam and submerged bubble views; never place beach sky underwater.",
+        "left_out": "No exact palette, variant count or compulsory beauty score. The world-map painting and modern art regeneration output are not changed or judged in this proposal."
+      },
+      "sees": {
+        "instrument": "Future live look paired with T40 state export to verify scene identity and effective settings. A fresh reviewer sorts unlabeled play views against the accept/reject pictures.",
+        "start": "Unstaged full floor maps with natural terrain/life/lighting and usable hull route; ordinary camera and overlays. No isolated sprite showcase.",
+        "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
+        "control": "Labels and a selected icon can fake distinct identity. Hide biome names during the sorting; include deliberately relabelled/recoloured vanilla-water negative controls, and confirm scene state belongs to the named floor.",
+        "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
+        "live_only_why": "The final art, murk, overlay layering and ordinary camera view determine whether these habitats can be distinguished. Def colours, screenshots of isolated sprites and a state export cannot establish that read."
+      },
+      "live_only": true,
+      "touches": [
+        "habitat_picture",
+        "native_ecology",
+        "twilight_light",
+        "channel_field"
+      ],
+      "tests": {
+        "reject": "These are distinct places, not renamed vanilla water; each land picture is the indispensable content of the bundle.",
+        "renormalize": "The outcome survives retuning yields, durations, sizes and art variants. Ranges exercise changed values without locking them into the experience.",
+        "first_version": "Land, life or the current signature, or a named necessary adapter; see census and definition."
+      }
+    },
+    {
+      "id": "B3",
+      "says": "Foragers meet the fish they can catch alive in their sea\u2019s floor habitat, encounter its ordinary prey and predators there, and see native life survive its own water while the Grey stays solitary and the Twilight supports shoals.",
+      "meant": {
+        "intent": "Land without viable ordinary life or catch without living counterparts fails the owner\u2019s sea definition; species keep their existing placements and ordinary uses.",
+        "source": "biome_rulings.md: floor-and-catch 2026-09-21, all fishables alive 2026-09-26, fish-sized exemption 2026-10-06, natives drink own water 2026-11-01; frozen Grey/Twilight life contrast; delegated ordinary forage inference.",
+        "figurative": []
+      },
+      "accept": [
+        "A caught nissik has a living floor counterpart; Grey sessile creatures are distributed over the floor without marching as a swarm.",
+        "Twilight shoals gather among columns while a predator hunts separately; native Scald animals drink or occupy their water without dehydrating.",
+        "Chill industrial catches are identifiable as fuel chemistry and cannot be fed to ordinary colonists as food."
+      ],
+      "reject": [
+        "Fishing produces labelled species that exist only as item icons; the floor roster silently fails to spawn.",
+        "Native fauna die thirsty beside their own water, or vanish when moving between states.",
+        "The Grey behaves like a schooling ocean, or every Twilight predator is a stationary decorative prop."
+      ],
+      "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
+      "range": {
+        "varies": "Resolved current RM rosters plus installed Utinni additions, all life stages and ordinary tame/wild states; active rare-table living-species catches, nonliving rare loot distinguished explicitly. Fishable-to-living mapping enumerated, not sampled. Wet/dry habitat patches, ordinary prey/predator interactions, birth/death/butchery, 0/8/40 colonists and harvest pressure from none through repeated accessible-patch depletion; fresh floor through season and day 100; reload mid-growth/drink/hunt.",
+        "left_out": "No roster evictions, no promised livestock husbandry for an untameable animal, no new shared animal AI. A living sessile animal can remain rooted; its state must be alive, feeding/growing and reacting rather than a dead item. No requirement that a human eat hydrocarbon flesh or raw brine."
+      },
+      "sees": {
+        "instrument": "Existing validation.py sea_catch_alive_checks and native-tag checks give partial static evidence; T40 follows spawned entities, ingestion/drink jobs and death/remain reasons; T42 whole-system trace and M5 habitat/food-chain model test persistence. Catch pairing checks alone cannot pass this bar.",
+        "start": "Resolved defs and real spawned populations in native habitats, no manually force-fed immortals or suppressed predators; initial population/growth/water classification recorded.",
+        "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
+        "control": "Native comfort stats alone can hide death or thirst jobs failing. Track thirst, food, injuries, causes of death, corpse/holder location and completed ordinary jobs. Use a separate native-water misclassification and unwired-catch mutant to prove refusal.",
+        "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
+        "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
+      },
+      "live_only": false,
+      "touches": [
+        "native_ecology",
+        "liquid_exposure",
+        "twilight_light",
+        "persistence"
+      ],
+      "tests": {
+        "reject": "Land without viable ordinary life or catch without living counterparts fails the owner\u2019s sea definition; species keep their existing placements and ordinary uses.",
+        "renormalize": "The outcome survives retuning yields, durations, sizes and art variants. Ranges exercise changed values without locking them into the experience.",
+        "first_version": "Land, life or the current signature, or a named necessary adapter; see census and definition."
+      }
+    },
+    {
+      "id": "B4",
+      "says": "At the Scald a visitor pays for touching boiling water, can retreat onto cooler ground without cooling the sea, and cannot drink its body water, while the steam stays clean.",
+      "meant": {
+        "intent": "The Scald must be a permanent boil with a meaningful contact cost and no potable margin loophole; natives are the explicit environmental exception.",
+        "source": "the_scald.md hard bans and clean-breath ruling, amended macro-life 2026-11-01; standing Direct Sun 2026-10-19; delegated treatment of conflicting margin description in RM_ScaldMargin.xml.",
+        "figurative": []
+      },
+      "accept": [
+        "An unprotected visitor receives a visible wet burn on boiling contact and can stop further contact by withdrawing; the cooler margin changes exposure without yielding a drink.",
+        "A protected working party still has preparation or protection cost; Scald natives survive their environment. Distillation, if enabled in the next version, produces a separate resource rather than changing lake potability."
+      ],
+      "reject": [
+        "The cool bathing margin is freely drinkable because its description says so.",
+        "Visitors stand in boiling water without preparation or injury, or a still spell turns the lake into safe ordinary water.",
+        "Clean steam secretly applies poison or a private biome sun-heat currency."
+      ],
+      "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
+      "range": {
+        "varies": "All locally defined Scald boiling terrains plus FlowWorks bindings; cool margin; indoors/outdoors, air versus liquid contact, protected/unprotected flesh, native/nonnative animal, mechanoid, wet/dry, alive/downed/carried; fixed tile solar geometry, real roof/shade, steam/still beach weather, calm submerged floor; short entry, retreat, repeated crossing, long stay and reload. Test boundary cells and temperature/resistance settings at shipped value and UI extrema in checks.",
+        "left_out": "No new underwater breathing or suit engine; ordinary generic environmental protection is a dependency. Mod Settings may disable behaviour by explicit opt-out but no in-world cooling/draining technology is introduced. No invented steam exposure hediff in this version."
+      },
+      "sees": {
+        "instrument": "T40 job/terrain/injury trace, M4 thermal/native exposure replay calibrated against real contact and room-temperature reads; existing proof_scald_steam.py is historical for the deferred clock and cannot pass this bar.",
+        "start": "Real Scald liquid and margin at native temperatures, a healthy visitor, native and comparison pawn, known gear and no other injury; separate beach/floor fixtures.",
+        "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
+        "control": "Ambient heatstroke could mimic a contact burn. Compare adjacent dry positions at identical air temperature and solar geometry in a copied fixture, and identify damage source and time of terrain entry. Read available drinking jobs/ingestion results, not terrain prose.",
+        "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
+        "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
+      },
+      "live_only": false,
+      "touches": [
+        "liquid_exposure",
+        "native_ecology",
+        "feature_gates"
+      ],
+      "tests": {
+        "reject": "The Scald must be a permanent boil with a meaningful contact cost and no potable margin loophole; natives are the explicit environmental exception.",
+        "renormalize": "The outcome survives retuning yields, durations, sizes and art variants. Ranges exercise changed values without locking them into the experience.",
+        "first_version": "Land, life or the current signature, or a named necessary adapter; see census and definition."
+      }
+    },
+    {
+      "id": "B5",
+      "says": "A Twilight harvester can follow the productive bank and read its current boundary, but entering carrying water moves an unsecured visitor toward the sink, and an announced undersurge brings that boundary onto the bank.",
+      "meant": {
+        "intent": "The signature joins temptation, legible boundary, carry and changing reach; an invisible harmless river or an unavoidable unloading trap both fail it.",
+        "source": "the_twilight_deep.md underwater-river statement and no-swimmable-river hard ban; delegated rescue-safe working edge from current source and the owner\u2019s readable-sign ruling.",
+        "figurative": []
+      },
+      "accept": [
+        "A harvester reaches forage along the bank, sees bed/stakes and a surge warning, and can withdraw beyond the widened reach before resuming work.",
+        "A visitor entering the channel is interrupted and carried downstream; a harness or existing arrest works helps manage exposure without turning the centre into a swimming route."
+      ],
+      "reject": [
+        "The terrain looks like harmless mud, the worker receives no warning, and movement to the sink is the first sign.",
+        "A pawn repeatedly walks through the centre faster than registration and never experiences carry.",
+        "Current arrows move items while an ordinary colonist crosses safely, or the surge occupies the ship\u2019s sole usable exit and all safe banks."
+      ],
+      "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
+      "range": {
+        "varies": "Full authored Twilight fields at map sizes 150/250/325/400, all 8 bearings, straight/diagonal/overlap/eddy/sink/edge placements and generated obstruction patterns; first entry and repeated crossings, calm/surge/start/end, naked/harnessed, normal/downed, native/nonnative, haulables, walls/doors/ford/weir, no/8/40 colonists. Sweep registration phase 0..249 ticks and process phase 0..14, settings pace extrema, reload just before due movement, and both forage-before-haul and haul-before-forage order.",
+        "left_out": "No cargo-float logistics, no guaranteed rescue from choosing to enter the centre, no new FlowWorks fertility/weir engine. Ordinary bank harvest does not promise to feed an arbitrarily large colony indefinitely."
+      },
+      "sees": {
+        "instrument": "M2 geometry and timing sweep plus T40 adapter trace of actual cell entry, current membership, displacement, job interruption, warning delivery and bank route. Kernel selftests are inputs, not a substitute for engine movement/reachability.",
+        "start": "Generated full field with real bed/bank presentation, forage plants, an ordinary visitor path across and along it, actual ship reservation, no forced pawn teleport into the sink.",
+        "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
+        "control": "A scripted teleport could look like current. Record pre-move field, due time, movement call and interrupted job; separate no-flow and blocked-edge controls must prevent the displacement. Verify bank forage completes while native growth and wildlife are running.",
+        "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
+        "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
+      },
+      "live_only": false,
+      "touches": [
+        "channel_field",
+        "rescue_state",
+        "native_ecology",
+        "floor_access",
+        "throughput"
+      ],
+      "tests": {
+        "reject": "The signature joins temptation, legible boundary, carry and changing reach; an invisible harmless river or an unavoidable unloading trap both fail it.",
+        "renormalize": "The outcome survives retuning yields, durations, sizes and art variants. Ranges exercise changed values without locking them into the experience.",
+        "first_version": "Land, life or the current signature, or a named necessary adapter; see census and definition."
+      }
+    },
+    {
+      "id": "B6",
+      "says": "A colonist carried into the Twilight sink remains findable with a visible sinking condition, can be recovered to safety and improve, and leaves a readable death or rescue record if the attempt fails.",
+      "meant": {
+        "intent": "A fair consequence follows the current and preserves the no-unreadable-vanishing ruling; movement into a sink is not silent despawning.",
+        "source": "Standing no animal or pawn vanishes without readable sign; current source default Recoverable and Sunk comp; delegated rescue predicate tightened beyond the source\u2019s generic roof check.",
+        "figurative": []
+      },
+      "accept": [
+        "The carried colonist is placed at a reachable basin location, marked sunk and worsening; a rescuer removes them from carrying water into safe shelter or a safe carrier and the condition starts improving.",
+        "A dead or interrupted rescuer leaves a findable victim or corpse; transferring the victim aboard the ship does not keep applying an off-map death ramp."
+      ],
+      "reject": [
+        "The pawn is deleted at the sink, or only a log line mentions a missing colonist.",
+        "A roof placed over a live sink counts as rescue while the pawn is still in carrying water.",
+        "A full sink deposits the victim outside the basin through a wall, repeats the arrival endlessly, or loses the victim on reload."
+      ],
+      "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
+      "range": {
+        "varies": "All generated sink edges/interiors; empty/full/blocked basin; victim standing/downed/dead, rescuer alive/dead/interrupted, roofed/unroofed sink and destination, inside/outside carrying field, carried/off-map/in-holder/despawned and returned; save before arrival, during worsening, carried and recovered; 1/8/40 colonists, calm and surge, path opened/closed after start. Real loss/death records included, not just happy rescue.",
+        "left_out": "No teleport rescue, invulnerability, or guarantee that a destroyed ship can evacuate. Injured/Lost outcome variants are next-version opt-ins; ordinary death remains possible after neglect."
+      },
+      "sees": {
+        "instrument": "T40 persistent entity/holder and hediff trace plus M1 state-machine walk; compare normal rescue actions with a separate interrupted-rescue control. Use actual Scribe reload, not a JSON clone of a kernel.",
+        "start": "A normally carried victim reaches a registered sink with default Recoverable; baseline health and stable thing id recorded; reachable rescuing colonist and shelter/ship exist.",
+        "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
+        "control": "Roof healing from a generic hediff could falsely look like rescue. Log rescue predicate inputs and verify roof-over-sink alone still worsens; dry safe shelter/carrier improves; source map stops moving a transferred victim.",
+        "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
+        "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
+      },
+      "live_only": false,
+      "touches": [
+        "rescue_state",
+        "channel_field",
+        "persistence",
+        "floor_access"
+      ],
+      "tests": {
+        "reject": "A fair consequence follows the current and preserves the no-unreadable-vanishing ruling; movement into a sink is not silent despawning.",
+        "renormalize": "The outcome survives retuning yields, durations, sizes and art variants. Ranges exercise changed values without locking them into the experience.",
+        "first_version": "Land, life or the current signature, or a named necessary adapter; see census and definition."
+      }
+    },
+    {
+      "id": "B7",
+      "says": "Beneath the Twilight\u2019s gardener-tended waveglass, a visitor finds inhabited lamplit banks in the campaign and temporary gold light columns that wane and reopen elsewhere while leaving usable garden ground.",
+      "meant": {
+        "intent": "This preserves the frozen no-roof-without-gardener and no-permanent-skylight laws, plus the campaign\u2019s minimal inhabited reveal. It retains necessary land/life support without retaining the optional light economy.",
+        "source": "the_twilight_deep.md \u00a7\u00a75,6,8, ratified 2026-09-07 and waveglass amendment 2026-09-26; delegated minimal implementation boundary. RM remains campaign-free; Utinni supplies its own inhabited placements.",
+        "figurative": []
+      },
+      "accept": [
+        "A column visibly wanes with inspectable state and later closes; another opens over eligible garden ground while the gardener remains present as the keeper of the lid.",
+        "On the campaign floor a peaceful inhabited bank dwelling and tended plot make the ark reveal real; no rent menu or portable light factory is required."
+      ],
+      "reject": [
+        "The waveglass remains but no gardener exists in scene, state or accessible representation.",
+        "A gold well is a permanent lamp, or reopening chooses only current cells and leaves the garden dark.",
+        "Campaign bottom dwellings are empty scenery, or Compact residents attack as a biome raid."
+      ],
+      "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
+      "range": {
+        "varies": "RM-only and campaign-enhanced configurations separately; new wells, overlapping wells, near-expiry saves, opening/standing/waning/closed/pending-replacement states; blocked/destroyed sites, gardener present/interrupted and reloaded, daylight/murk variants, natural glowers; safe-bank/current intersections; 150..400-square maps, 0/8/40 colonists, 15-day season plus near-boundary replay over the declared finite years-scale lifetime. No accelerated well clock is counted as a measurement of normal season duration.",
+        "left_out": "No full Compact town, rent, claims, culture, cages, lid-dark crisis, suulk pressure or pane impacts. Natural column lifecycle is not optional while presenting the living lid; explicit settings-off is an opted-out sandbox."
+      },
+      "sees": {
+        "instrument": "T40 well/gardener/inhabitation state trace and M5 lighting/habitat replay; B2 judges its visual read. Source search finds lifecycle hooks but no local gardener or campaign dwelling adapter; T43 must provide/locate those before this passes.",
+        "start": "Real Twilight floor with normal lid, well ledger, growth, current and natural light; campaign placement present in enhanced copy; native years-scale lifecycle declared, including an honestly aged boundary save.",
+        "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
+        "control": "A decoration could impersonate a gardener or resident. Require a persistent tending/inhabitation state and actual ongoing ordinary tending/occupancy; trace natural opening/closing causes with rent, suulk and pane systems disabled. State must explain light after reload, not just a cached glower.",
+        "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
+        "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
+      },
+      "live_only": false,
+      "touches": [
+        "twilight_light",
+        "native_ecology",
+        "channel_field",
+        "persistence"
+      ],
+      "tests": {
+        "reject": "This preserves the frozen no-roof-without-gardener and no-permanent-skylight laws, plus the campaign\u2019s minimal inhabited reveal. It retains necessary land/life support without retaining the optional light economy.",
+        "renormalize": "The outcome survives retuning yields, durations, sizes and art variants. Ranges exercise changed values without locking them into the experience.",
+        "first_version": "Land, life or the current signature, or a named necessary adapter; see census and definition."
+      }
+    },
+    {
+      "id": "B8",
+      "says": "Through a season of full-map sea visits, foraging, bank work, rescue and return travel, the crew keeps recognising each habitat and finding native life while the current alternates between workable banks and warned danger without a flood of hazards, an emptied floor, stalled travel or recurring errors.",
+      "meant": {
+        "intent": "The complete default version must remain recognisable and workable together; isolated proofs cannot hide a map-scale collapse or a reload/order defect.",
+        "source": "delegated whole-version inference from owner\u2019s 2026-11-16 cleansing brief and the kept promises; qualitative experience, not a mandated numerical equilibrium.",
+        "figurative": []
+      },
+      "accept": [
+        "The expedition plans routes and harvests among native life, responds to an undersurge, recovers a victim and returns by ship; after saving and loading during the visit the same choices still make sense.",
+        "Reversing whether the crew hauls or forages first changes the story without turning the banks into a continuous unavoidable sink or erasing the food chain."
+      ],
+      "reject": [
+        "Each isolated scene works, but combined growth hides every bank, predators erase the catch population, or light replacement leaves only dangerous ground.",
+        "The sky is locked clear, wildlife is suppressed or current is disabled for the season recording.",
+        "Reload duplicates carrying victims or weather, a different action order blocks the ship, or repeated errors replace ordinary play."
+      ],
+      "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
+      "range": {
+        "varies": "Each of the 4 seas runs on a full 250-square floor for 15 game days at shipped defaults, with 150/325/400-square boundary coverage through M1/M2; test 1,8,40 colonists, native wildlife and ordinary predation/growth, real weather/atmosphere, current, wells, ordinary salvage and all kept dependency features. Include new arrival and day-100 continued-save regimes, mid-season Scribe save/reload, and matched copies reversing harvest/haul/shelter/rescue order. Twilight covers calm, surge and return; if no natural surge occurs, continue until it does rather than count a forced event as spontaneous cadence proof. Near-expiry well replay supplements the full-season run. Time compression may skip rendering only: preserve all simulation ticks, RNG ordering, jobs, pathing, weather, temperature, plant/pawn ticks, hunger/thirst, movement, due times and save boundaries.",
+        "left_out": "Next-version extras are off. No alternative planets, cosmetic variant quotas, universal food self-sufficiency or guaranteed survival of deliberately abandoned visitors. Long-timescale well closure is supplemented, not mislabelled as a season event."
+      },
+      "sees": {
+        "instrument": "T42 whole-mod recorder and M3 calibrated whole-system model, anchored by real full-map traces; T40 checks ordinary action completion, native persistence, current reachability and reload. B2 separately judges presentation. A model with invented ecology or inactive dependencies cannot certify this bar.",
+        "start": "A clean disposable fixed-world save with real full maps, healthy equipped expedition, native populations, a functional ship, all kept systems enabled and research available; configuration fingerprint and every gate recorded. Record baseline counts, causes and geometry before advancing.",
+        "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
+        "control": "A large scene can appear stable because actors cannot act or time barely advanced. Require completed ordinary jobs, genuine births/growth/feeding/drinking/death/remains events where relevant, actual elapsed game ticks, effective gates and naturally initiated current transitions. Compare recorded event/state budgets to the calibrated model and use withheld action-order/reload traces; clean logs alone cannot pass.",
+        "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
+        "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
+      },
+      "live_only": false,
+      "touches": [
+        "floor_access",
+        "habitat_picture",
+        "native_ecology",
+        "liquid_exposure",
+        "channel_field",
+        "rescue_state",
+        "twilight_light",
+        "feature_gates",
+        "persistence",
+        "throughput"
+      ],
+      "tests": {
+        "reject": "The complete default version must remain recognisable and workable together; isolated proofs cannot hide a map-scale collapse or a reload/order defect.",
+        "renormalize": "The outcome survives retuning yields, durations, sizes and art variants. Ranges exercise changed values without locking them into the experience.",
+        "first_version": "Land, life or the current signature, or a named necessary adapter; see census and definition."
+      }
+    }
+  ],
+  "whole": "B8",
+  "checks": [
+    {
+      "id": "K1",
+      "what": "Parse effective XML rosters by child node names and resolved patches; record positive animalDensity and complete fishable-to-living pairing. Existing validation.py is partial coverage, not proof of encounters."
+    },
+    {
+      "id": "K2",
+      "what": "Record declared current widths/cadences, scan/process intervals, sink flags and enum defaults; existing Kernel/RM_ChannelKernel.cs and SelfTest/TerminalBiomesFuzz.cs checks stay regression-only."
+    },
+    {
+      "id": "K3",
+      "what": "Audit field/terrain correspondence and actual ship reservation, dimensions, setting extrema, corrupt/partial grids and cycles; no live field silently lacks a readable bed."
+    },
+    {
+      "id": "K4",
+      "what": "Check all settings missing-value defaults, actual consumers, Scribe round-trip and composed-package registrations. Each deferred feature has an effective false default and no default availability."
+    },
+    {
+      "id": "K5",
+      "what": "Check native temperature, water, light, food and flight bindings against actual resolved defs, including growth temperature curves and industrial nonfood flags. No species-name sampling."
+    },
+    {
+      "id": "K6",
+      "what": "Check layer-specific weather bindings, no rain/thunder/water snow underwater, Scald margin nonpotability, no local sun fields; existing sea-floor text/no-rain scripts are partial regressions."
+    },
+    {
+      "id": "K7",
+      "what": "Check Scribe identity, holder contents, terminal sink arrival, rescue status and LightLedger restoration at each save boundary; mutation controls must fail."
+    },
+    {
+      "id": "K8",
+      "what": "Record count/time budgets for growth, population, current exposure, safe route availability and errors over full-map traces; tune against qualitative bars, never promote a numeric budget into refusal."
+    },
+    {
+      "id": "K9",
+      "what": "Audit declared hard dependencies and assembly/def references in composed packaging; About.xml standalone prose is historical and must not decide current world or load behaviour."
+    },
+    {
+      "id": "K10",
+      "what": "Retain review findings only after source confirmation: current map-ownership and sink-idempotence fixes, cadence due-time preservation, graze persistence and off-map Sunk recovery are already visible in source. Do not reopen them from old review prose."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Preserve one fixed world and the sea-floor layer; no new worldgen, surface settlement or hatch route. Ship reservations and its bank access are excluded from authored current and surge reach.",
+      "touches": [
+        "floor_access",
+        "channel_field"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Current field is authoritative for carrying and siting exclusions. Terrain must show its boundary, but replacing terrain cannot secretly erase or create carry. A generated obstruction cannot leave a live downstream path through walls.",
+      "touches": [
+        "channel_field"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Use the existing ChannelKernel cadence comparisons: centre stronger than margin, surge stronger than calm, harness caps carry without immunity. Exact numeric cadences remain checks. Remove the legacy slow-registration option from supported default behaviour.",
+      "touches": [
+        "channel_field",
+        "throughput"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Default sink outcome is Recoverable. Sink arrival is terminal and idempotent; no source-map movement after transfer. Rescue requires leaving the dangerous liquid for safe shelter or safe carriage; a roof over the sink is insufficient. Never choose an unchecked fallback cell.",
+      "touches": [
+        "rescue_state",
+        "persistence"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Take Direct Sun only from shared geometry into vanilla felt temperature. Steam/hot fog use ordinary air temperature, Scald contact is the shared liquid injury path; natives drink their environmental liquid. No local solar offset or steam health currency.",
+      "touches": [
+        "liquid_exposure",
+        "native_ecology"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Separate Scald beach steam sky from calm submerged bubbles; salt snow is falling crystals, not water weather. The margin remains nonpotable. Material, terrain and layer determine exposure rather than a sea label alone.",
+      "touches": [
+        "habitat_picture",
+        "liquid_exposure"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Keep natural well lifecycle, gardener and gold glow; remove tenancy, graze pressure, event-dependent flora and culture dependencies. Use actual current membership for sites and the existing LightLedger for composed glow. Lifetime remains finite on the frozen sheet\u2019s years scale; current short-lived values are tunable implementation debt.",
+      "touches": [
+        "twilight_light",
+        "channel_field",
+        "native_ecology"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Retain ordinary roster entries and their habitat/food/light needs. Shared native physiology and movement are not opt-in extras; no eviction or fictional flyer grounded by def omission. Ordinary static plant glow does not need charge/wilt behaviour.",
+      "touches": [
+        "native_ecology",
+        "habitat_picture"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Preserve defs and saved holders when switching features off. Gate dispatch, running jobs, availability and reload reassertion. Master/per-sea/per-major-feature settings explain effective state; existing cross-biome controls stay off and unsupported.",
+      "touches": [
+        "feature_gates",
+        "persistence"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "The campaign layer supplies peaceful inhabited bottom dwellings and placement lore without franchise references in RM. The gardener\u2019s minimal tending is required by the lid, not a new encounter or town economy.",
+      "touches": [
+        "twilight_light",
+        "floor_access"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "All kept dependency mechanics run together during evidence collection, at shipped defaults and with all DLC. Modelling changes neither the game\u2019s population density nor its time order to obtain a pass.",
+      "touches": [
+        "throughput",
+        "native_ecology",
+        "feature_gates"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "floor_access",
+      "members": [
+        "B1",
+        "B5",
+        "B6",
+        "B8",
+        "R1",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Ship landing exclusion currently keys on a hatch, while later rulings remove the hatch; access/layer adapters are unavailable. Landing, bank reach and inhabitants must coexist.",
+      "model": "M2 - Channel and landing geometry"
+    },
+    {
+      "thing": "channel_field",
+      "members": [
+        "B1",
+        "B2",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R2",
+        "R3",
+        "R7"
+      ],
+      "holds_together": "unknown",
+      "why": "Carry, harvest, site selection, sink/rescue and ship reservation touch the same cells. Straight spokes, crossings, walls and missed entry phases may destroy the safe operating region.",
+      "model": "M2 - Channel and landing geometry"
+    },
+    {
+      "thing": "persistence",
+      "members": [
+        "B1",
+        "B3",
+        "B6",
+        "B7",
+        "B8",
+        "R4",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Transfer, hediffs, wells, off-state callbacks and holders can agree pairwise yet duplicate or strand an entity across a reload. Kernel serialization is not Scribe proof.",
+      "model": "M1 - Situation and transition generator"
+    },
+    {
+      "thing": "feature_gates",
+      "members": [
+        "B1",
+        "B4",
+        "B8",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "A gate removes behaviour/availability, never defs or the return route. Separate ordinary roster bodies from their attached extras; retained helpers consume no deferred products. This is an architectural argument, not a claim all current gates implement it.",
+      "model": ""
+    },
+    {
+      "thing": "habitat_picture",
+      "members": [
+        "B2",
+        "B8",
+        "R6",
+        "R8"
+      ],
+      "holds_together": "argued",
+      "why": "Beach weather and submerged weather occupy separate maps; each floor uses its own material/lighting vocabulary. Quiet Grey life can coexist with crowded mineral forms. The shared group has no contrary spatial demand; B2 must still be seen.",
+      "model": ""
+    },
+    {
+      "thing": "native_ecology",
+      "members": [
+        "B2",
+        "B3",
+        "B4",
+        "B5",
+        "B7",
+        "B8",
+        "R5",
+        "R7",
+        "R8",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Native growth, catch replacement, predation, water eligibility, harvest and moving light jointly set whether a floor stays alive. A season with every kept mechanism active has not been recorded here.",
+      "model": "M3 - Whole sea season model"
+    },
+    {
+      "thing": "twilight_light",
+      "members": [
+        "B2",
+        "B3",
+        "B7",
+        "B8",
+        "R7",
+        "R10"
+      ],
+      "holds_together": "unknown",
+      "why": "Well drift, current avoidance, native growth and campaign tending can leave no eligible replacement or an empty garden; external keeper implementation is not present here.",
+      "model": "M5 - Light habitat and food-chain model"
+    },
+    {
+      "thing": "liquid_exposure",
+      "members": [
+        "B3",
+        "B4",
+        "B8",
+        "R5",
+        "R6"
+      ],
+      "holds_together": "unknown",
+      "why": "Native immunity, human drinking denial, cool margin, shared heat and floor atmosphere can each work separately while liquid classification makes the whole party die or drink the lake. Foreign adapters are unresolved.",
+      "model": "M4 - Liquid and native physiology replay"
+    },
+    {
+      "thing": "rescue_state",
+      "members": [
+        "B5",
+        "B6",
+        "B8",
+        "R4"
+      ],
+      "holds_together": "unknown",
+      "why": "Live current and rescue can share a location while roof-only recovery falsely calls it safe; blocked basin, transferred victim and dead rescuer need a real state walk.",
+      "model": "M1 - Situation and transition generator"
+    },
+    {
+      "thing": "throughput",
+      "members": [
+        "B5",
+        "B8",
+        "R3",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "A full current book, reachable forage, light site search and all native actors may stall a large colony despite correct isolated kernels.",
+      "model": "M3 - Whole sea season model"
+    }
+  ],
+  "old_bars": {}
+}

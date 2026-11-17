@@ -1,0 +1,22 @@
+{
+  "mod": "TerminalBiomes",
+  "run": "2026-11-17-designer-cleanse",
+  "outcome": "proposed",
+  "signature": "The Twilight\u2019s productive banks draw workers beside carrying water whose warned surges can take them to a findable, rescuable sink.",
+  "counts": {
+    "capabilities": 71,
+    "kept": 37,
+    "next_version": 33,
+    "recommend_retire": 1,
+    "old_bars": 0,
+    "bars": 8,
+    "live_only_bars": 1,
+    "checks": 10,
+    "rules": 11,
+    "unknown_pairs": 8,
+    "models": 5,
+    "tickets": 43,
+    "questions": 0
+  },
+  "blocked_on": []
+}
