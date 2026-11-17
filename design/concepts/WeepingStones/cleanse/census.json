@@ -308,7 +308,7 @@
       "called_by": "Thing.PostApplyDamage postfix; predator prey-selection and hunt-toil patches; biome extension",
       "serves": "truce",
       "fate": "needed_by",
-      "why": "Without hunt suppression and guilt-based response a full pool becomes an ambush site, contradicting the frozen land/life definition of a gathering. Use the shared engine unchanged; farm/pool interactions require explicit validation.",
+      "why": "Hunt suppression and guilt-based response protect drinkers at full water. The ruled stocked-pool sheet §1 and §3 Pens and pool zones place designated pen cells outside that truce. The shared dependency needs a narrow pen-cell exclusion hook used by both suppression and retribution, validated through T18.",
       "needed_by": "life",
       "ticket": "T18"
     },
@@ -841,9 +841,9 @@
       "called_by": "Composed engine registration; native defs/map opt-ins or vanilla lifecycle",
       "serves": "Shared engine boundary",
       "fate": "dependency",
-      "why": "The existing truce field, guilty-hit attribution, suppression, warning/settings infrastructure; local study hooks move separately.",
+      "why": "The truce field, guilty-hit attribution, suppression, warning/settings infrastructure support native life. The ruled stocked-pool geometry requires a narrow designated pen-cell exclusion hook in the common field read. T18 specifies and validates this dependency need.",
       "needed_by": "none: directly classified or deferred",
-      "ticket": "none: not built and no retained unspecified mechanic"
+      "ticket": "T18"
     },
     {
       "id": "engine_wreckage",

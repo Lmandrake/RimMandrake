@@ -150,16 +150,16 @@
     },
     {
       "id": "B4",
-      "says": "A handler catches breeders when a thrown net covers them at landing, carries them into the chosen water pen, and sees the animal or its carried replacement after an interrupted job, with handling risk confined to the catch.",
+      "says": "A handler catches breeders when a thrown net covers them at landing, carries them into the chosen water pen, and sees the animal or its carried replacement after an interrupted job, with handling risk confined to hands-on catching, bagging, harvesting and culling, never bank feeding.",
       "meant": {
-        "intent": "Speed and landing matter; animal-to-stock-to-animal conversion must be readable and conserved. Nasty catches have minor medical consequences, while feeding from the bank is safe from the handling roll.",
+        "intent": "Speed and landing matter; animal-to-stock-to-animal conversion must be readable and conserved. Hands-on catching, bagging, harvesting and culling can cause minor handling injuries. Bank feeding is safe from the handling roll.",
         "source": "OWNER:1791380355976654559 in infrastructure/state/ledger/events/OWNER.jsonl; husbandry small injury decision in the 2026-09-24 stocked-pool sheet; standing no-unreadable-disappearance ruling; delegated transaction boundaries.",
         "figurative": []
       },
       "accept": [
         "A moving fish leaves the landing spread and the net misses; a covered fish is visibly entangled and becomes carried breeder stock when bagged.",
         "The pen is removed during carry, so the breeder remains carried or is dropped with a readable reason; the handler and animal are still accounted for.",
-        "A biter catch leaves a readable cut while a bank feeding job does not inflict a catch injury."
+        "A biter catch leaves a readable cut, a surplus harvest can leave a scratch and a vhorrin cull can leave a bite. Bank feeding has no handling-injury roll."
       ],
       "reject": [
         "The handler freezes the animal before throwing, succeeds regardless of landing, or removes it while leaving no animal, carcass or breeder item.",
@@ -167,14 +167,14 @@
       ],
       "lazy": "The handler freezes the animal before throwing, succeeds regardless of landing, or removes it while leaving no animal, carcass or breeder item.",
       "range": {
-        "varies": "All stockable species, stationary/walking/fleeing targets, takeoff/air/landing for actual flyers with owner-presence constraint; throw ranges 3–12, attempts 1–8 and obstructed LOS/map edge; two simultaneous handlers; interruption/death/downing/forbidden target at approach, windup, airborne net, bag, carry and release; output blocked/missing and reload at these transitions. Minor means no job-script maiming/death lottery, distinct from ordinary wound treatment risks.",
+        "varies": "All stockable species, stationary/walking/fleeing targets, takeoff/air/landing for actual flyers with owner-presence constraint; throw ranges 3–12, attempts 1–8 and obstructed LOS/map edge; two simultaneous handlers; interruption/death/downing/forbidden target at approach, windup, airborne net, bag, carry and release; output blocked/missing and reload at these transitions. Minor means no job-script maiming/death lottery, distinct from ordinary wound treatment risks. Handling-injury coverage also includes ordinary harvest and cull, with safe bank feeding as the control.",
         "left_out": "No guaranteed capture rate, no mandatory successful fleeing capture, no new net equipment economy. A species described as jumping is not thereby a fictional sustained flyer; current skarrin flight is not assumed."
       },
       "sees": {
-        "instrument": "Situation and transaction generator over net geometry and identity conservation, checked against actual launch/landing positions, carried items and job outcomes; T14/T20. Existing prove_job_net.py may supply handler traces, never capture success by itself.",
+        "instrument": "Situation and transaction generator over net geometry, identity conservation and catch/bag/harvest/cull injury callbacks, checked against actual launch/landing positions, carried items and job outcomes; T14/T20. Existing prove_job_net.py may supply handler traces, never capture success by itself.",
         "start": "Known handler, target, launch cell/aim, no existing breeder items, actual unforced target locomotion in the moving arm and independently asserted stationary target in its control.",
         "on": "All kept land, native life, ordinary fishing, stocked pools, health display, handling, emergence/cull, escape/recapture, cuisine thoughts, shared truce suppression/retribution, shared Direct Sun and growth are ON at shipped defaults; no weather/time/AI locks; all DLC and composed mandrake.rm.biomes. Next-version extras OFF. Free and campaign-added roster contexts where relevant.",
-        "control": "Replay identical landing geometry with target inside/outside spread; no-job and off-pad handler controls separate site disappearance. Track all live/carried/corpse/item identities and quantities, including failed output placement; absence from ground alone is not conversion.",
+        "control": "Replay identical landing geometry with target inside/outside spread; no-job and off-pad handler controls separate site disappearance. Track all live/carried/corpse/item identities and quantities, including failed output placement; absence from ground alone is not conversion. Compare hands-on catch/bag/harvest/cull callbacks with bank feeding and no-job controls to distinguish handling injuries from unrelated damage.",
         "reset": "Use disposable fixtures on the existing authored world; keep a pre-scene save plus settings, terrain, zones, pawn/item identities, weather/time-lock and log-cursor journal. Reload that fixture, restore captured settings at their declared scope, verify the before-state digest and delete only test-created fixtures. Never use the canonical world save or the current destructive suite teardown as restoration.",
         "live_only_why": "A calibrated executable mechanism/geometry/state reading can distinguish these outcomes; source-field presence alone cannot. Live state calibration is required before any offline surrogate is believed."
       },
@@ -254,23 +254,23 @@
       "accept": [
         "Crowding or missed feed changes the warning; a vhorrin emerges from the failing stock, remaining stock declines, and culling it lets a fed/restocked pen resume the ordinary farm loop.",
         "A fan eel slips out along a visible traversable wet route, with an origin/destination cue, and is nettable outside; a blocked route leaves it in the pen.",
-        "A resident vhorrin takes pen stock, leaving a partly eaten carcass and a named pen cue while a predator hunt at that same protected water remains suppressed."
+        "A resident vhorrin hunts stock inside the designated pen and leaves a partly eaten carcass with a named pen cue. A hungry predator abandons its hunt at the protected drinking margin outside the pen."
       ],
       "reject": [
         "A random wild vhorrin appears in a healthy tended pen or its presence never harms the stock; the cull only prints that the pool is saved.",
         "An eel jumps invisibly through an intact wall, or a conversion deletes an animal with only a dev-mode log.",
-        "The pen census drops for vhorrin feeding with no remains or player cue, or stock loss requires disabling protected-water hunt suppression."
+        "The pen census drops for vhorrin feeding with no remains or player cue, or stock loss requires disabling hunt suppression at the drinking margin."
       ],
       "lazy": "A random wild vhorrin appears in a healthy tended pen or its presence never harms the stock; the cull only prints that the pool is saved.",
       "range": {
-        "varies": "Fed/underfed/unfed and uncrowded/at threshold/overcrowded, all compatible stock mixes; no candidates/only vhorrin/candidates and vhorrin; same candidate selected for decay and conversion; empty, culled and restocked; escape paths open/blocked/other pen/map boundary; 1–40 colonists, 1–16 pens; reload before/after pulses, cull and recapture. Use forced random draws for branch coverage, real shipped random scheduling for incidence and time-to-response; season plus day 100 continuation. Resident feeding covers due/not-due feeding, reserved/unreserved victims, multiple vhorrins, no eligible stock, blocked remains placement, cull versus feeding order, and protected/unprotected pen water. A living non-vhorrin stock resident in the same pen is eligible regardless of species or breeder-reserve status, except while reserved by another transaction.",
+        "varies": "Fed/underfed/unfed and uncrowded/at threshold/overcrowded, all compatible stock mixes; no candidates/only vhorrin/candidates and vhorrin; same candidate selected for decay and conversion; empty, culled and restocked; escape paths open/blocked/other pen/map boundary; 1–40 colonists, 1–16 pens; reload before/after pulses, cull and recapture. Use forced random draws for branch coverage, real shipped random scheduling for incidence and time-to-response; season plus day 100 continuation. Resident predation covers hungry/sated vhorrins, reserved/unreserved victims, multiple vhorrins, no eligible stock, blocked paths, cull versus hunt order, and pen/margin boundary crossings. A living non-vhorrin stock resident inside the same current pen is eligible regardless of species or breeder-reserve status, except while reserved by another transaction.",
         "left_out": "No fixed probability, compulsory monster in every bad pen during a short sample, off-pen disease spread, annual lockout, barrel event, terrain drying, ivvol immunity, new raid or collective cull job."
       },
       "sees": {
         "instrument": "Whole-map husbandry season and Situation and transaction generator calibrated against real pulse/cull/escape states (T13/T14/T20).",
         "start": "Paired healthy and stressed pens with tracked residents, feeding records and current warnings; no ambient vhorrin spawn and no debug-spawn substitute for emergence in the causal arm.",
         "on": "All kept land, native life, ordinary fishing, stocked pools, health display, handling, emergence/cull, escape/recapture, cuisine thoughts, shared truce suppression/retribution, shared Direct Sun and growth are ON at shipped defaults; no weather/time/AI locks; all DLC and composed mandrake.rm.biomes. Next-version extras OFF. Free and campaign-added roster contexts where relevant.",
-        "control": "Same starting identities and random schedule with management changed; separate no-vhorrin arm proves additional stock pressure. Track disappearance reasons and actual remaining breeders after cull; a no-route escape control tests walls and map bounds. With a due resident-feeding clock, compare vhorrin present/absent at the same protected-water pen. Read victim-to-remains identity, deducted edible portion, named cue, committed feeding clock and actual hunt/guilt callbacks together. Suppression stays active in both arms.",
+        "control": "Same starting identities and random schedule with management changed; separate no-vhorrin arm proves additional stock pressure. Track disappearance reasons and actual remaining breeders after cull; a no-route escape control tests walls and map bounds. Compare hungry vhorrin present/absent in the same designated pen with the shared truce enabled. Read ordinary predator hunt/kill/eat callbacks, victim-to-remains identity, consumed food and named cue. Verify pen cells are excluded from the truce field while the adjacent drinking margin suppresses hunts in both arms.",
         "reset": "Use disposable fixtures on the existing authored world; keep a pre-scene save plus settings, terrain, zones, pawn/item identities, weather/time-lock and log-cursor journal. Reload that fixture, restore captured settings at their declared scope, verify the before-state digest and delete only test-created fixtures. Never use the canonical world save or the current destructive suite teardown as restoration.",
         "live_only_why": "A calibrated executable mechanism/geometry/state reading can distinguish these outcomes; source-field presence alone cannot. Live state calibration is required before any offline surrogate is believed."
       },
@@ -338,16 +338,17 @@
     },
     {
       "id": "B8",
-      "says": "At full oasis water predators abandon hunts and a guilty attack brings the water wildlife against the aggressor faction, while ordinary farm care does not turn the gathering against its handler.",
+      "says": "At full oasis water outside designated stocked pens, predators abandon hunts and a guilty attack brings the water wildlife against the aggressor faction, while ordinary farm care does not turn the water wildlife against its handler.",
       "meant": {
-        "intent": "The complete water gathering and owner-chosen guilt-based retribution are required life constraints; this does not add neutral-zone raid diplomacy or replace the shared engine's guilt test. Vhorrin feeding is a designated pen-stock conversion under R14. It leaves remains and a cue within the protected water, and grants no predator a hunt exemption.",
-        "source": "Frozen sheet §§4–6; 2026-09-24 truce acceptance, tame-predator side effect included; shine portfolio verdict 5; EnvironmentalHazards shared implementation; delegated: test farm jobs against the same law.",
+        "intent": "The wildlife at full water and owner-chosen guilt-based retribution are required life constraints. The ruled stocked-pool sheet places designated pen cells outside the truce, allowing ordinary vhorrin predation there with readable remains. Drinkers at the margin stay protected by the shared field and guilt test.",
+        "source": "Frozen sheet §§4–6; design/Jawa/worldbuilding/biomes/weeping_stones_stocked_pool_2026-09-24.md §1 and §3 Pens and pool zones; 2026-09-24 truce acceptance, tame-predator side effect included; shine portfolio verdict 5; EnvironmentalHazards shared implementation; delegated boundary validation of farm jobs.",
         "figurative": []
       },
       "accept": [
         "A hungry wild or tame predator abandons a chase as either animal enters protected water; a margin predator outside it can still hunt.",
-        "A guilty raider hit at the pool rouses nearby eligible wildlife against that faction; an engine-classified self-defense hit does not newly blame the defender.",
-        "A handler feeds, nets, harvests and culls designated farm stock without retaliation caused by their ordinary farm-care job."
+        "A guilty raider hit at the protected drinking margin rouses nearby eligible wildlife against that faction; an engine-classified self-defense hit does not newly blame the defender.",
+        "A handler feeds, nets, harvests and culls designated farm stock without retaliation caused by their ordinary farm-care job.",
+        "A vhorrin hunts stock inside designated pen cells excluded from the truce, while a predator chase entering the adjacent protected drinking margin is abandoned."
       ],
       "reject": [
         "Animals stand peacefully only because hunger or AI was locked off; the truce ends when the fixture unlocks.",
@@ -355,14 +356,14 @@
       ],
       "lazy": "Animals stand peacefully only because hunger or AI was locked off; the truce ends when the fixture unlocks.",
       "range": {
-        "varies": "Victim, predator and wildlife positions inside/on/outside the shared water-radius boundary; wet/dry/removed/restored water cells, shallow/deep and adjacent pens; hungry wild/tame predators; neutral/player/raider faction instigators, guilty/non-guilty, zero/positive damage, downed/dead/in-mental-state wildlife, turrets/projectiles/melee, repeated hits across cooldown and reload. Also normal bank feeding, thrown net, harvest, cull, injury callbacks and escape during retaliation. Every authored full-water regime; physical water source, not stock health, defines full water. Include a due vhorrin stock-feeding conversion at protected pen water while hungry wild/tame predator hunts remain suppressed, followed by a guilty player weapon-hit control.",
-        "left_out": "No new truce-engine semantics, moral reconstruction of who started a whole battle, promise of retaliation when no eligible wildlife exists, guaranteed raid victory, diplomatic reputation system or dying-natural-pool scarcity scuffle. Designated farm conversion is not an exemption for ordinary player weapon attacks."
+        "varies": "Victim, predator and wildlife positions inside/on/outside the shared water-radius boundary; wet/dry/removed/restored water cells, shallow/deep and adjacent pens; hungry wild/tame predators; neutral/player/raider faction instigators, guilty/non-guilty, zero/positive damage, downed/dead/in-mental-state wildlife, turrets/projectiles/melee, repeated hits across cooldown and reload. Also normal bank feeding, thrown net, harvest, cull, injury callbacks and escape during retaliation. Every authored full-water regime; physical water source, not stock health, defines full water. Include hungry vhorrin predation inside excluded designated pen cells, overlapping radius coverage from neighbouring water, and zone creation/edit/deletion and reload. Check both hunt suppression and guilty-hit response against the same exclusion mask. A guilty player weapon hit at the protected margin must trigger the shared response. A hit inside the pen lies outside that field.",
+        "left_out": "Shared radius, guilty-hit attribution and retaliation behaviour follow the existing engine. The designated pen-cell exclusion is a dependency need under the ruled sheet. No moral reconstruction of who started a whole battle, promise of retaliation when no eligible wildlife exists, guaranteed raid victory, diplomatic reputation system or dying-natural-pool scarcity scuffle."
       },
       "sees": {
         "instrument": "Situation and transaction generator plus actual shared field, damage attribution, predator-job and target-faction state reads; T18/T20. Offline truth table must be checked against real Harmony call paths.",
-        "start": "Live hunger, unsuppressed margin prey control, water-field mask and wildlife eligibility/factions recorded; no mental-state or clear-weather locks. Known damage source and guilt data captured before applying the hit.",
+        "start": "Live hunger, unsuppressed outside-field prey control, water-field and designated pen-cell exclusion masks and wildlife eligibility/factions recorded; no mental-state or clear-weather locks. Known damage source and guilt data captured before applying the hit.",
         "on": "All kept land, native life, ordinary fishing, stocked pools, health display, handling, emergence/cull, escape/recapture, cuisine thoughts, shared truce suppression/retribution, shared Direct Sun and growth are ON at shipped defaults; no weather/time/AI locks; all DLC and composed mandrake.rm.biomes. Next-version extras OFF. Free and campaign-added roster contexts where relevant.",
-        "control": "Outside-field control must hunt/retain normal prey acceptance; compare guilty hit with the same non-guilty and zero-damage hit. Confirm handler injury instigator is stock/factionless as actually delivered, not a player guilty attack manufactured by the fixture. Vhorrin stock conversion must leave remains and a cue with normal hunt suppression active. Read its real callbacks alongside a guilty weapon hit at the same pen to verify the shared retaliation law.",
+        "control": "Outside-field control must hunt/retain normal prey acceptance. Compare guilty hits with the same non-guilty and zero-damage hits at the protected margin, and compare the same guilty hit inside the excluded pen. Confirm handler injury instigator is stock/factionless as actually delivered. Vhorrin hunts in the pen must leave remains and a cue while matched hunts involving a protected-margin participant are suppressed. Read both consumers of the shared field after zone edits and reload, including pen cells overlapped by neighbouring water radii.",
         "reset": "Use disposable fixtures on the existing authored world; keep a pre-scene save plus settings, terrain, zones, pawn/item identities, weather/time-lock and log-cursor journal. Reload that fixture, restore captured settings at their declared scope, verify the before-state digest and delete only test-created fixtures. Never use the canonical world save or the current destructive suite teardown as restoration.",
         "live_only_why": "A calibrated executable mechanism/geometry/state reading can distinguish these outcomes; source-field presence alone cannot. Live state calibration is required before any offline surrogate is believed."
       },
@@ -384,7 +385,7 @@
     },
     {
       "id": "B9",
-      "says": "Across a season on a full map the colony lives among dry stone and wet native gatherings, repeatedly farms food, reads and remedies a troubled pen, and resumes after saving without runaway stock, bare habitat, stalled work or repeated errors.",
+      "says": "Across a season on a full map the colony lives among dry stone and native plant clusters and animals at water, repeatedly farms food, reads and remedies a troubled pen, and resumes after saving without runaway stock, bare habitat, stalled work or repeated errors.",
       "meant": {
         "intent": "Exactly the complete first version, with its normal colony actions and shared engines running together; observations must separate a viable farm from a flood of animals, stripped desert, stuck jobs or log storm.",
         "source": "User cleansing brief whole-bar requirement; owner experience 2026-10-20; delegated: integrated seasonal picture and failure categories.",
@@ -542,7 +543,7 @@
     },
     {
       "id": "R6",
-      "rule": "Use the shared EnvironmentalHazards field and DamageInfo.InstigatorGuilty unchanged. Hunger and chase suppression share its radius. Direct player weapon violence remains guilty when the engine says so, including at a farm. Animal handling injuries and deliberate farm conversion must not manufacture a guilty player damage hit; if the real engine contradicts this, raise the measured conflict rather than adding a private truce exemption.",
+      "rule": "Use the shared EnvironmentalHazards radius and DamageInfo.InstigatorGuilty law. The ruled stocked-pool sheet §1 and §3 Pens and pool zones place designated pen cells outside the truce. The dependency needs a narrow pen-cell exclusion hook in the common field read used by hunt suppression and retribution. Exclude eligible designated pen cells even when neighbouring water radii overlap them. Recompute membership on zone creation/edit/deletion, terrain eligibility changes and load. The drinking margin outside the pen retains the shared protection. Animal handling injuries and farm conversions must preserve their actual attribution. A guilty player weapon hit at the protected margin retains the shared response. Validate the hook through both consumers and report any measured incompatibility.",
       "touches": [
         "truce_field",
         "job_transactions",
@@ -621,7 +622,7 @@
     },
     {
       "id": "R14",
-      "rule": "Vhorrin feeding is a pen-stock bookkeeping conversion on the existing pool pulse. Each resident vhorrin has a saved next-feeding deadline with a retunable interval. Start it after the emergence warning permits ordinary care or culling. This deadline advances on game ticks even at protected water, independently of hunger suppression or ordinary feed deliveries. When due, select a living non-vhorrin resident uniformly from the same current pen, excluding animals reserved by another transaction. Breeder reserves do not protect stock from this failure consequence. Revalidate the eater, victim, pen and uncommitted identities at commit. Convert the victim atomically into a partly eaten carcass at its cell, deduct the consumed portion from recoverable food, and show an ordinary pen cue naming the vhorrin and victim. Set the next deadline from the current commit time and commit it with the loss and remains, with no separate meat/loot payout. Failed remains placement or no eligible victim preserves stock and the pending deadline. Cull before commit cancels feeding. Serialize this ownership and deadline so a reload cannot repeat consumption. This uses the farm conversion path and grants no predator hunt exemption, changes no truce radius or guilty-bit rule, and targets no wild animal, other pen, drinker outside the stock census or colonist. Validate actual callbacks against the shared engine before believing compatibility.",
+      "rule": "A resident vhorrin feeds by ordinary hunger-driven predation on living non-vhorrin stock inside its own designated pen, whose cells are excluded from the truce under R6. Use ordinary hunt, kill, carcass and eating behaviour with a readable partly eaten carcass and an ordinary pen cue naming eater and victim. Breeder reserves do not protect stock from this failure consequence. Respect concurrent job ownership and revalidate pen membership during the hunt. Targets are same-pen residents. A target leaving the pen ends the hunt, and drinkers at the margin retain truce protection. Culling ends the predator pressure. Save/load preserves actual hunger, hunt and carcass state through the normal game paths and R7 conservation. Verify integration and callbacks against real traces.",
       "touches": [
         "stock_population",
         "health_display",
@@ -728,7 +729,7 @@
         "R14"
       ],
       "holds_together": "unknown",
-      "why": "Net/release/harvest/cull, handlers dying, truce damage callbacks and multiple workers meet at the same conversion boundary; branch/conservation walk is needed. Due vhorrin feeding competes with cull, decay, emergence, capture and harvest for the same identities and remains placement.",
+      "why": "Net/release/harvest/cull, handlers dying, truce damage callbacks and multiple workers meet at the same conversion boundary; branch/conservation walk is needed. Ordinary vhorrin hunts compete with cull, decay, emergence, capture and harvest for the same identities. Interrupted hunts must leave living victims or accounted carcasses.",
       "model": "Situation and transaction generator"
     },
     {
@@ -768,7 +769,7 @@
         "R14"
       ],
       "holds_together": "unknown",
-      "why": "Zone identity, terrain eligibility, targeted carries and escape routes can disagree during edits/reload; enumerate the transition region rather than judging a rectangle.",
+      "why": "Zone identity, terrain eligibility, targeted carries and escape routes can disagree during edits/reload; enumerate the transition region rather than judging a rectangle. The shared truce exclusion must track exactly the eligible designated pen cells through these same edits and reloads.",
       "model": "Situation and transaction generator"
     },
     {
@@ -789,7 +790,7 @@
         "R14"
       ],
       "holds_together": "unknown",
-      "why": "Save between input removal/output placement, pulse mutation and pen edit may replay or lose state; enumerate legal save boundaries and compare with uninterrupted execution. Include the saved vhorrin feeding deadline, victim ownership and committed remains/cue so loading cannot replay a meal.",
+      "why": "Save between input removal/output placement, pulse mutation and pen edit may replay or lose state; enumerate legal save boundaries and compare with uninterrupted execution. Include vhorrin hunger, pending hunts, victim ownership, carcasses and cues so loading preserves actual predation outcomes.",
       "model": "Situation and transaction generator"
     },
     {
@@ -885,7 +886,7 @@
         "R14"
       ],
       "holds_together": "unknown",
-      "why": "B6 requires vhorrin stock consumption at protected pen water, while B8 and R6 suppress predator hunts there. R14 supplies a designated same-pen conversion with remains and a named cue, under R7 conservation, without a hunt exemption. Shared callbacks, victim-position attribution, emergence/cull and concurrent edits must still be calibrated against real traces to establish that resident feeding coexists with suppressed hunts and guilty-hit retaliation.",
+      "why": "The ruled stocked-pool sheet §1 says the pen is not the truce, and §3 Pens and pool zones separates husbandry violence from drinkers by geometry. B6/R14 ordinary predation occurs inside designated pen cells excluded by the R6 dependency hook. B8 protects the drinking margin with the shared radius and guilty-hit law. Real traces must calibrate the hook in both suppression and retribution, including overlapping water radii, hunt boundary crossings, farm injury callbacks, edits and reload.",
       "model": "Situation and transaction generator"
     }
   ],

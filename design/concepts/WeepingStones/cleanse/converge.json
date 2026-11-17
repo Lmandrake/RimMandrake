@@ -1,0 +1,120 @@
+{
+ "mod": "WeepingStones",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json B6 (third accept picture), B8 (meant, range), R14, meetings.truce_field; definition.md 'When it goes wrong' (R14 paragraph); ambiguities.md item 19",
+     "evidence": "The ruled stocked-pool sheet (design/Jawa/worldbuilding/biomes/weeping_stones_stocked_pool_2026-09-24.md, Status RULED 2026-09-24) says in §1: 'The truce holds at the water (§4) — and the pen is not the truce. What happens inside a stocked pool is husbandry'. Its 'Pens and pool zones' paragraph adds 'the pen line is what keeps husbandry violence out of the truce's sight (§6, §4 both honored by geometry)'. The proposal does the opposite. It treats pen water as protected truce water ('Shared predator hunts remain suppressed at that same water'; B6: 'a predator hunt at that same protected water remains suppressed'; B8 range: 'a due vhorrin stock-feeding conversion at protected pen water while hungry wild/tame predator hunts remain suppressed'). It then builds R14's long-range bookkeeping conversion to get around a conflict that the lore had already settled by geometry. Neither meetings.truce_field nor the owner pages mention the sheet's line, and the owner pages state only 'the existing shared radius/guilty-hit law'.",
+     "would_pass": "The truce_field meeting and B6/B8 follow the sheet: designated pen cells are husbandry ground outside the truce, so the vhorrin feeds there by ordinary predation that leaves a readable carcass, while drinkers at the margin stay protected. Or the proposal keeps R14, cites the sheet line, argues why it departs from it, and puts that departure on page two as a question with its evidence.",
+     "smallest_fix": "Add a rule that stocked-pen zone cells are not truce water, as the ruled sheet says (the shared engine needs a narrow exclusion hook, named as a dependency need rather than a redesign). Rewrite B6's third accept picture and B8's range to match, and drop or shrink R14. Or keep R14 and list the contradiction with the sheet line as a question on owner_pages.md page two."
+    },
+    {
+     "id": "R2",
+     "head": "figurative_unmarked",
+     "where": "bars.json B8 says ('does not turn the gathering against its handler') and B9 says ('lives among dry stone and wet native gatherings'); both figurative: []",
+     "evidence": "B1 marks 'gathered' as figurative: 'Green clusters follow wet habitat rather than filling the whole map; not literal moving or social plants'. In B8 'the gathering' means the water wildlife (animals), a different sense. In B9 'wet native gatherings' could mean either the plant clusters or the congregated animals. Both are unmarked, so a builder and a judge can read different subjects into the same word.",
+     "would_pass": "Each bar's figurative list marks 'gathering(s)' and says what it stands for (B8: the wildlife standing at full water; B9: plant clusters at wet habitat, animal congregation at water, or both), each with an accept picture that departs from the literal reading.",
+     "smallest_fix": "Add a figurative entry for 'gathering' to B8 and for 'gatherings' to B9, or replace the words with the literal subjects ('the water wildlife'; 'wet native plants and animals')."
+    },
+    {
+     "id": "R3",
+     "head": "figurative_unmarked",
+     "where": "bars.json B4 says ('with handling risk confined to the catch'); figurative: []",
+     "evidence": "Read literally, 'the catch' is the NET capture job. Yet census.json keeps harvest_injury as part of the signature ('risks minor scratches for skarrin/iaala'), and census row 'cull' keeps a cull that 'risks a bite'. The ruled sheet's HARVEST row says 'Handling injuries are real'. B8's reject picture mentions 'a farm handling scratch' during farm care. A builder holding the literal B4 would remove the harvest and cull injuries; a judge could then refuse for missing nastiness, or pass a build with the injuries left in, depending on reading. Only feeding is clearly meant to be safe (definition.md: 'feeding at the bank has no handling-injury roll').",
+     "would_pass": "B4 marks 'the catch' as figurative for every hands-on contact with stock (net, bag, harvest, cull), as opposed to bank feeding, with an accept picture showing a harvest scratch or cull bite. Or the says sentence names the jobs literally.",
+     "smallest_fix": "Reword B4 to '...with handling risk confined to hands-on catching, harvesting and culling, never bank feeding', or add the figurative entry."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Followed the ruled stocked-pool sheet §1 and §3. Designated pen cells are excluded from the shared truce field through a narrow dependency hook used by suppression and retribution, including overlapping water radii, zone edits and reload. Shrank R14 to ordinary hunger-driven predation with readable carcasses and cues. Replaced the custom feeding deadline throughout the affected definition, models, tickets and owner explanation. Kept protection at the drinking margin and recorded the current shared-engine exclusion gap in T18.",
+      "where": "bars.json B6, B8, R6, R14 and meetings job_transactions/pen_geometry/persistence/truce_field; definition.md colony story, failure signs and EnvironmentalHazards dependency; ambiguities.md items 19, 26, 27; census.json truce and engine_environmentalhazards; models.md Whole-map husbandry season and Situation and transaction generator; tickets.md T13 and T18; owner_pages.md page two Eats the farm and Truce"
+     },
+     {
+      "id": "R2",
+      "changed": "Replaced gathering in B8 with water wildlife and wet native gatherings in B9 with native plant clusters and animals at water, making both subjects literal.",
+      "where": "bars.json B8.says and B9.says"
+     },
+     {
+      "id": "R3",
+      "changed": "Named hands-on catching, bagging, harvesting and culling as the jobs with handling risk and bank feeding as safe from that roll. Added harvest-scratch and cull-bite accept pictures and aligned the injury range and instrument controls.",
+      "where": "bars.json B4.says, B4.meant.intent, B4.accept, B4.range.varies and B4.sees.instrument/control"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "The proposal now follows the ruled sheet's geometry (design/Jawa/worldbuilding/biomes/weeping_stones_stocked_pool_2026-09-24.md lines 75-76 and 198-200: 'the pen is not the truce'; 'the pen line is what keeps husbandry violence out of the truce's sight'). bars.json R6: 'The ruled stocked-pool sheet §1 and §3 Pens and pool zones place designated pen cells outside the truce. The dependency needs a narrow pen-cell exclusion hook in the common field read used by hunt suppression and retribution.' R14 is shrunk to 'ordinary hunger-driven predation on living non-vhorrin stock inside its own designated pen, whose cells are excluded from the truce under R6', which leaves 'a readable partly eaten carcass'. The saved deadline and pulse conversion are gone; a grep for 'deadline' in ambiguities.md and owner_pages.md finds only item 19's 'removes the custom pulse-feeding deadline'. B6's third accept picture now reads 'A resident vhorrin hunts stock inside the designated pen and leaves a partly eaten carcass ... A hungry predator abandons its hunt at the protected drinking margin outside the pen.' B8's range now reads 'Include hungry vhorrin predation inside excluded designated pen cells ... A hit inside the pen lies outside that field', and its source cites the sheet's §1 and §3. The meetings truce_field 'why' (bars.json:889) says 'The ruled stocked-pool sheet §1 says the pen is not the truce'. definition.md 'When it goes wrong' and ambiguities.md item 19 are rewritten to match. owner_pages.md line 39 now reads 'The ruled stocked-pool sheet §1 and §3 place pen cells outside it ... This corrects my prior protected-pen assumption.' T13 and T18 carry the hook as a dependency need: 'Current shared source paints a radius around all water and exposes no pen exclusion, so the required hook remains a dependency gap.'"
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "bars.json B8.says now reads 'ordinary farm care does not turn the water wildlife against its handler', and B9.says now reads 'lives among dry stone and native plant clusters and animals at water'. Both subjects are now literal, which is the smallest fix's second option. Neither says sentence still uses 'gathering(s)'."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "bars.json B4.says now reads 'with handling risk confined to hands-on catching, bagging, harvesting and culling, never bank feeding'. That names the jobs literally, as the smallest fix offered. B4.accept adds 'a surplus harvest can leave a scratch and a vhorrin cull can leave a bite. Bank feeding has no handling-injury roll.' B4.meant.intent, range.varies ('Handling-injury coverage also includes ordinary harvest and cull, with safe bank feeding as the control') and sees.control/instrument are aligned with it."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Shared boundaries, defaults and proof",
+    "ambiguities.md The farm",
+    "bars.json bars/B4",
+    "bars.json bars/B6",
+    "bars.json bars/B8",
+    "bars.json bars/B9",
+    "bars.json meetings",
+    "bars.json rules/R14",
+    "bars.json rules/R6",
+    "census.json rows/engine_environmentalhazards",
+    "census.json rows/truce",
+    "definition.md The neighbours",
+    "definition.md What changes in the colony's story",
+    "definition.md When it goes wrong and its readable sign",
+    "models.md Situation and transaction generator",
+    "models.md Whole-map husbandry season",
+    "owner_pages.md Page two — what to check",
+    "tickets.md T13: Complete minimal renewable farm intent, feeding and failure/recovery",
+    "tickets.md T18: Prove the shared truce/heat boundary and correct dangerous advice"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 969659,
+     "output_tokens": 10036
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "In bars.json, the meetings health_display 'why' still says 'A committed vhorrin feeding updates this same census and identifies the victim in its ordinary cue'. The word 'committed' comes from the retired bookkeeping-conversion design. R14 is now ordinary predation, so the census updates on the kill and eat callbacks rather than on an atomic commit.",
+   "reason": "The fix did not change this entry. The wording is a leftover rather than a contradiction, but a builder could read it as keeping a commit transaction for vhorrin feeding.",
+   "round": 1
+  },
+  {
+   "what": "bars.json B8.qualification.first_version still reads 'needed by life: frozen full-water gathering'. 'Gathering' is used figuratively there (the wildlife at full water) and is unmarked, the same issue R2 fixed in the says sentences.",
+   "reason": "The entry is outside the says sentences R2 named, and it is a qualification label rather than a bar statement. It is low risk, but it is the same ambiguity R2 described.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "b69cefd6aae745b66c0c20095669ba2b01622af500e35c81a3d6558e947691c1",
+ "seconds": 323,
+ "at": "2026-11-17T06:39:55"
+}

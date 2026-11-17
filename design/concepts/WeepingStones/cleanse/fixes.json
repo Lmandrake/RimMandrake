@@ -1,0 +1,19 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Followed the ruled stocked-pool sheet §1 and §3. Designated pen cells are excluded from the shared truce field through a narrow dependency hook used by suppression and retribution, including overlapping water radii, zone edits and reload. Shrank R14 to ordinary hunger-driven predation with readable carcasses and cues. Replaced the custom feeding deadline throughout the affected definition, models, tickets and owner explanation. Kept protection at the drinking margin and recorded the current shared-engine exclusion gap in T18.",
+      "where": "bars.json B6, B8, R6, R14 and meetings job_transactions/pen_geometry/persistence/truce_field; definition.md colony story, failure signs and EnvironmentalHazards dependency; ambiguities.md items 19, 26, 27; census.json truce and engine_environmentalhazards; models.md Whole-map husbandry season and Situation and transaction generator; tickets.md T13 and T18; owner_pages.md page two Eats the farm and Truce"
+    },
+    {
+      "id": "R2",
+      "changed": "Replaced gathering in B8 with water wildlife and wet native gatherings in B9 with native plant clusters and animals at water, making both subjects literal.",
+      "where": "bars.json B8.says and B9.says"
+    },
+    {
+      "id": "R3",
+      "changed": "Named hands-on catching, bagging, harvesting and culling as the jobs with handling risk and bank feeding as safe from that roll. Added harvest-scratch and cull-bite accept pictures and aligned the injury range and instrument controls.",
+      "where": "bars.json B4.says, B4.meant.intent, B4.accept, B4.range.varies and B4.sees.instrument/control"
+    }
+  ]
+}
