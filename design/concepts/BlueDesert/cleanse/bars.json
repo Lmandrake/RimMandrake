@@ -1,0 +1,678 @@
+{
+  "bars": [
+    {
+      "id": "B1",
+      "says": "On the Blue Desert, the player sees blue distance giving way to pale ice and small transparent branching plants up close, interrupted by abandoned workings and wrecks.",
+      "meant": {
+        "intent": "Keep the beautiful, apparently empty ancient ice plateau as a place rather than a normal snow map or bioweapon landscape.",
+        "source": "design/Jawa/worldbuilding/biomes/the_blue_desert.md sections 1, 8, 9; owner experience in design/RimMandrake/biome_experiences_2026-10-20.md. The exact contrasting pictures are delegated from those sources.",
+        "figurative": []
+      },
+      "accept": [
+        "At travel zoom the plateau reads blue and open; closer inspection reveals grey/clear ice, translucent branching low plants and discontinuous traces of abandoned excavation.",
+        "Rust, scorch and mineral glints can interrupt the pale scene at an old work site without coloring ordinary ice and plants blue."
+      ],
+      "reject": [
+        "A snowy conifer plain or a wall of opaque blue shrubs fills the playable ground.",
+        "Only the world icon is blue: the local map is generic white snow with generic plants and unrelated wreck props."
+      ],
+      "lazy": "Only the world icon is blue: the local map is generic white snow with generic plants and unrelated wreck props.",
+      "range": {
+        "varies": "Cold full local maps at 200, 250 and 300 cells per side; flat/small/large-hill/mountain settings already representable on received maps; clear, Haze, drift, fog and their transitions; normal play zoom and close inspection; sparse/dense natural plant patches, first day and after a season. Palette is assessed relative to neighboring ice maps with the same display settings.",
+        "left_out": "No planetary painting, tile-count criterion, new planet, asset-variant quota, or frame-perfect optical scattering simulation. Workings are physical land content, not the deferred epoch ladder."
+      },
+      "sees": {
+        "instrument": "Live look at the same running local-map states used by B3/B7/B8, with instrumented plant identities and site records alongside. T15 supplies capture/recovery contract; image existence alone is insufficient.",
+        "start": "A disposable received-map copy with ordinary populated ice and an actually placed abandoned work site, verified by state read; graphics not replaced by a test palette.",
+        "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
+        "control": "A blue ambient light could make generic white props pass at a distance. Compare near plant translucency/branching and ground identity under the same sky, plus an adjacent ordinary IceSheet reference; do not infer material identity from overall hue.",
+        "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
+        "live_only_why": "The relation between distance color, near translucency, small silhouettes and visual emptiness cannot be established by XML values or counts. State reads establish what is drawn but do not judge the resulting picture."
+      },
+      "live_only": true,
+      "touches": [
+        "appearance",
+        "sites",
+        "ecology",
+        "weather"
+      ],
+      "tests": {
+        "reject": "Reject this version if false: Keep the beautiful, apparently empty ancient ice plateau as a place rather than a normal snow map or bioweapon landscape.",
+        "renormalize": "Pictures compare behavior and visible relationships; retuning yields, dimensions, timings or variant counts does not change their classification.",
+        "first_version": "land"
+      }
+    },
+    {
+      "id": "B2",
+      "says": "The player meets a living cold-adapted food web on the ice: natives feed and hunt, tameable natives can be tended, and the vrisk actually flies.",
+      "meant": {
+        "intent": "Prevent sterile ice with spawned display animals, ordinary farm crops or a walking flier from satisfying the life promise.",
+        "source": "Owner life commission quoted in infrastructure/state/items/closed/BLUE_DESERT_LIFE_AUTHORING_1.md; the_blue_desert.md sections 3\u20134 and 6; standing real-flight and native-water rulings. Feeding and scale boundaries delegated from these.",
+        "figurative": []
+      },
+      "accept": [
+        "Wild low plants grow in darkness; sealed grazers consume them without detonating the food at each bite, prey feeds predators, and harvested native feed supports a tame dovvik in cold care.",
+        "A vrisk enters and leaves actual flight; a starving or weather-stressed native can leave with a readable sign instead of disappearing."
+      ],
+      "reject": [
+        "Natural spawn/growth is absent and only immortal debug animals remain.",
+        "The roster resolves, but natives cannot eat their own available food, cannot stay alive on the cold ice, or the vrisk crosses it only by walking."
+      ],
+      "lazy": "The roster resolves, but natives cannot eat their own available food, cannot stay alive on the cold ice, or the vrisk crosses it only by walking.",
+      "range": {
+        "varies": "Every inline native species and every locally enabled campaign roster addition; wild/tame, generated/newborn, juvenile/adult, hungry/fed, damaged/dead; cold ambient -60 to -19 C and local warm shelters; 1, 12 and 40 colonists; 0/ordinary/high natural prey availability; day 1 and day 100; save/reload during a feeding/hunting/flight state. Native water compatibility is required where an actual environmental water source exists.",
+        "left_out": "No eviction or new species, no obligation to make the colony self-sufficient in human food, no flight screenshots unattended. Water ice is not drinkable liquid before conversion. No invented waterhole to satisfy a water test."
+      },
+      "sees": {
+        "instrument": "Situation generator plus real pawn/growth/food/job/flight-state reads, calibrated against ordinary unfrozen actions. Existing validation flight and flora rows are partial; T12/T15 add newborn, hunger, product and population traces. Offline extraction alone never proves runtime flight.",
+        "start": "Naturally spawned local plants and animal IDs with health/food tracked, no forced feeding or permanent spawner lock; tame dovvik supplied locally harvested roe.",
+        "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
+        "control": "A test can pass by feeding imported hay or suppressing predation. Follow food provenance from native plant/roe through ingestion and prey death; observe natural jobs and live FlightTracker state while the rest of the colony runs.",
+        "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
+        "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
+      },
+      "live_only": false,
+      "touches": [
+        "ecology",
+        "organics",
+        "native_triggers",
+        "departure"
+      ],
+      "tests": {
+        "reject": "Reject this version if false: Prevent sterile ice with spawned display animals, ordinary farm crops or a walking flier from satisfying the life promise.",
+        "renormalize": "Pictures compare behavior and visible relationships; retuning yields, dimensions, timings or variant counts does not change their classification.",
+        "first_version": "life"
+      }
+    },
+    {
+      "id": "B3",
+      "says": "The player sees ice-sand build against structures and impede travel before it is cleared or erodes, while ice fog visibly cuts shooting reach and slows travel until it lifts.",
+      "meant": {
+        "intent": "Weather must act on the land the colony uses, with genuinely accumulated drift and routine fog rather than a permanently clear proof pad.",
+        "source": "the_blue_desert.md section 4b engine amendment, including owner deep-drift instruction at BLUEDESERT_DESIGN_SITTING_1; numerical severity is a check, not a bar. Haze appearance remains B1; exposure is deferred by this Designer.",
+        "figurative": []
+      },
+      "accept": [
+        "A route beside a wall or hull acquires ice-grain drifts that delay walking; clearing the obstruction restores that route and exposed deposits later wear away.",
+        "A shot and trip that are possible in clear weather become restricted in fog and recover as the weather changes."
+      ],
+      "reject": [
+        "A tan storm overlay moves across clean paths but no deposit obstructs a structure or changes a trip.",
+        "Weather definitions contain penalties, but the test map stays clear, or fog never releases its restrictions."
+      ],
+      "lazy": "Weather definitions contain penalties, but the test map stays clear, or fog never releases its restrictions.",
+      "range": {
+        "varies": "All transitions among Clear/Haze/IceSandDrift/IceFog; storm-start/middle/end/erosion; wall, door, ordinary room and landed hull, all rotations, edge/interior, open and roofed approaches; narrow and alternate routes; 200/250/300-cell maps, 1/12/40 colonists; short/typical/long naturally supported storm durations and consecutive storms. Shot origin/target distances sweep below, at and beyond the currently loaded range cap, not a permanent fixed bar value.",
+        "left_out": "No windward accumulation algorithm, vehicle burial job or global sand redesign promised. No atmospheric physics model; shared SandGrid remains the dependency. Special shuttle veto is off."
+      },
+      "sees": {
+        "instrument": "Drift geometry model and state reads of sand depth, path cost and actual trip/shot outcomes over natural weather traces. T14 provides matched geometry fixtures and blue-white layer read; B1 supplies material appearance judgment.",
+        "start": "Assert structure footprints, initial sand, pawn speed/health, gun and target, room roofs and current weather. Confirm no old weather lock, never clear deposits between storm and erosion observations.",
+        "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
+        "control": "A wall detour, injury or new roof can look like slow travel; keep topology, pawn and route fixed and log weather/sand-linked cost changes, with a parallel open route. Fog shot requests must reach the real targeting/range predicate rather than just report a def value.",
+        "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
+        "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
+      },
+      "live_only": false,
+      "touches": [
+        "weather",
+        "routes",
+        "appearance",
+        "heat"
+      ],
+      "tests": {
+        "reject": "Reject this version if false: Weather must act on the land the colony uses, with genuinely accumulated drift and routine fog rather than a permanently clear proof pad.",
+        "renormalize": "Pictures compare behavior and visible relationships; retuning yields, dimensions, timings or variant counts does not change their classification.",
+        "first_version": "land"
+      }
+    },
+    {
+      "id": "B4",
+      "says": "A crew can clear live growth and keep an escape route before excavating, so warming or damaging connected native fuel can spread an explosive chain while separated work avoids carrying that chain into the crew.",
+      "meant": {
+        "intent": "Caution is preparation and containment, not mystical mining speed; the player must be able to make the same site safer without deleting the signature.",
+        "source": "Owner experience sentence in biome_experiences_2026-10-20.md; later owner answer one in designer_codex_2026-11-09/BlueDesert/ANSWERS_OWNER.md; hydrocarbon explosive-chain lore. Exact containment definition delegated.",
+        "figurative": []
+      },
+      "accept": [
+        "The crew cuts and hauls living fuel away from its exit and recovery area before mining ordinary water ice; a later ignition consumes a connected patch without jumping the cleared separation into their retreat.",
+        "At the same uncleared site a flame or native death starts discrete neighboring blasts; sustained warming gives a locatable warning that lets an attentive crew turn heat off and retreat."
+      ],
+      "reject": [
+        "An isolated plant explodes but a connected field never propagates, or an ignition crosses empty ice without a causal fuel or heat path.",
+        "Mining fewer blocks is called careful, yet clearing and retreat cannot change which crew is caught; the only safe proof has native explosions disabled."
+      ],
+      "lazy": "Mining fewer blocks is called careful, yet clearing and retreat cannot change which crew is caught; the only safe proof has native explosions disabled.",
+      "range": {
+        "varies": "Native plant species, natural spacing plus every gap around loaded blast reach, Flame/Bullet/Blunt/neighbor blast/heat as initiators; safe cut/harvest/ingestion versus lethal damage; cold-warm-cold and disabled-enabled transitions; individual and full-field fires; 200/250/300 maps; crews of 1/12/40; work-before-haul and haul-before-work; reload after first warning and during a chain. \u201cSeparated\u201d means no reachable blast/heat propagation path into the marked retreat after accounting for native animals, dropped wax and carried cargo; it never means an arbitrary fixed gap.",
+        "left_out": "No guaranteed survival while standing in a lethal blast, no immunity from an unrelated raid, no safe ice-mining technique unlock, no standoff-distance stat pinned as a bar. A gap with a live animal/cargo bridge is not separated."
+      },
+      "sees": {
+        "instrument": "Containment sweep calibrated to game blast/temperature traces plus actual cut, mine, stop-heat and retreat state histories. T12 supplies persistent warm state and warnings; T15 the action observer. A model prediction alone cannot pass the bar.",
+        "start": "Paired copies of an actual site; record every fuel node, loaded radius/LOS behavior, room temperatures, work and retreat paths. Same ignition and prepared versus unprepared site, all hazards active.",
+        "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
+        "control": "The prepared crew could merely receive a weaker ignition or leave before work. Use identical initiator and extraction task, record removal of fuel/connectivity and actual exit completion; retain nearby untreated fuel as a positive propagation witness.",
+        "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
+        "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
+      },
+      "live_only": false,
+      "touches": [
+        "propagation",
+        "routes",
+        "organics",
+        "heat",
+        "sites"
+      ],
+      "tests": {
+        "reject": "Reject this version if false: Caution is preparation and containment, not mystical mining speed; the player must be able to make the same site safer without deleting the signature.",
+        "renormalize": "Pictures compare behavior and visible relationships; retuning yields, dimensions, timings or variant counts does not change their classification.",
+        "first_version": "signature/support"
+      }
+    },
+    {
+      "id": "B5",
+      "says": "Hunting native fuel has readable consequences: the Swallower can rupture at its gut and the Burner can set its surroundings off, while a living vhaulk detonates under EMP or a heat death and remains intact after a cold or kinetic kill.",
+      "meant": {
+        "intent": "Retain the explicitly ruled creature distinctions within the same fuel chain instead of creating a generic exploding zoo or a duplicate blast per death.",
+        "source": "BLUE_DESERT_LIFE_AUTHORING_1 ratified Swallower/Burner adaptation; the_blue_desert.md 2026-09-28 amendment; RM_VhaulkDetonation.cs. Readability and duplicate-event exclusion delegated from signature and source risk.",
+        "figurative": []
+      },
+      "accept": [
+        "A Burner shows its oxidation halo in pursuit/combat and its fatal fuel release can start the surrounding growth; a Swallower gut rupture kills through its normal charge rather than creating a separate reward minigame.",
+        "An EMP hit sets off a living cistern; a heat death does too, while an otherwise equivalent kinetic kill leaves a cold carcass available for normal cold handling."
+      ],
+      "reject": [
+        "An intact cistern explodes on an ordinary kinetic kill, or a living one ignores EMP.",
+        "The scene reports an explosion without identifying the victim or cause, hiding duplicate Burner blasts or a random thunderstorm as the source."
+      ],
+      "lazy": "The scene reports an explosion without identifying the victim or cause, hiding duplicate Burner blasts or a random thunderstorm as the source.",
+      "range": {
+        "varies": "Every native species trigger; Swallower gut/other part, injury/missing/death; Burner slow walk/jog/hunt/fight; vhaulk living/nonlethal-hit/lethal-hit/dead/downed, Flame/Burn/lightning/heatstroke/EMP/kinetic/cold/null culprit; wild/tame, generated/newborn/juvenile/adult, map edge/carried/off-map death. Shared propane-lake ascendant consumer is a regression boundary, never a BlueDesert roster eviction.",
+        "left_out": "No valve tapping, new weapon, new electrical attack suite, new radius by age, or guarantee that a kinetic-hit plant cannot be triggered. \u201cIntact\u201d means the killing event does not detonate the cistern; the resulting organic corpse remains cold-dependent under B6."
+      },
+      "sees": {
+        "instrument": "State-machine generator and attributed real damage/death/blast trace. Existing kernel and witness checks are partial: T12/T15 must count causal events and read corpse identity, not only that a neighbor was hurt.",
+        "start": "Identify the pawn, charge, life stage and target part with no prior damage, and a cold mapped kill site. Surrounding fuel remains enabled and recorded rather than scrubbed after each hit.",
+        "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
+        "control": "A neighboring flame or the duplicate Burner death action can create a false witness. Tag initiator, source pawn and resulting explosion chain, compare immediate source events before propagation, and keep the unused attack branches as negative arms.",
+        "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
+        "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
+      },
+      "live_only": false,
+      "touches": [
+        "native_triggers",
+        "propagation",
+        "organics",
+        "ecology"
+      ],
+      "tests": {
+        "reject": "Reject this version if false: Retain the explicitly ruled creature distinctions within the same fuel chain instead of creating a generic exploding zoo or a duplicate blast per death.",
+        "renormalize": "Pictures compare behavior and visible relationships; retuning yields, dimensions, timings or variant counts does not change their classification.",
+        "first_version": "signature/support"
+      }
+    },
+    {
+      "id": "B6",
+      "says": "Native corpses, wax and feed stay useful when cold and become a warned explosive hazard when warmed, while loose water ice buys time to repair cooling without requiring a rack.",
+      "meant": {
+        "intent": "The field-to-cold-hold promise must survive death, butchery, hauling, storage and cooling failure without a warm-safe loophole or a machine the owner has superseded.",
+        "source": "the_blue_desert.md hard ban on warm-safe native organics; owner answer two in ANSWERS_OWNER.md; later ordinary ice-mining answer. Loose-ice heat accounting and warning reset policy are delegated, not new owner numbers.",
+        "figurative": []
+      },
+      "accept": [
+        "A crew brings native wax and feed into a prepared cold room and uses them; during a blackout melting loose water ice delays warming while workers reduce traffic and restore cooling.",
+        "Unbuffered native cargo and a newly generated native corpse expose a visible warming state before destructive release; split and reloaded cargo do not become newly safe. Water ice melts without exploding."
+      ],
+      "reject": [
+        "The same organic fuel becomes safe as a corpse, newborn product, split stack, carried item or processed food.",
+        "Only the special rack cools a room, or a warm organic stack goes directly from apparently sound to destruction before the player can locate it and respond."
+      ],
+      "lazy": "Only the special rack cools a room, or a warm organic stack goes directly from apparently sound to destruction before the player can locate it and respond.",
+      "range": {
+        "varies": "All native plants, live heat tolerance, generated corpses, wax, roe, butcher outputs and enabled shared-engine products; fresh/stored/damaged, stack count 1 through loaded stack limit, merge/split, held/spawned, room/landed ship interior/transport container; ambient -60 through +40 C, door traffic 0/ordinary/40-colonist bursts, 1/12/40 colonists, powered cooling/on/off/repaired, loose-ice no/partial/full reserve, room sizes 9/36/144 cells; save/reload at warming/warning/ice-exhaustion/wick boundaries. Off-map containers may preserve a recorded hazard state but may not become free indefinite refrigeration.",
+        "left_out": "No physically infinite outdoor refrigerator or arbitrary target-temperature gizmo on loose ice. No new meltwater drip interaction. Plain water ice, potable water, metal and declared pure-carbon char-lace are not hydrocarbon organics. Char-lace production itself is off."
+      },
+      "sees": {
+        "instrument": "Thermal reserve model and real room/item histories with heat, mass, warning, wick and conversion provenance. T17 defines loose-ice storage; T12 lifecycle reactivity; T13 ordinary water/fuel consumers; T15 observation. Do not credit old rack-only proofs.",
+        "start": "Paired sealed rooms with identical heat sources, roofs, doors and cooling. Source native cargo by real harvesting/butchery, place loose ice in a stockpile without any rack, log room and item states before blackout.",
+        "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
+        "control": "An outdoor room can remain cold without ice; a cooler can secretly stay on. Read enclosure, powered heat exchange and input heat; compare loaded and empty ice arms with same traffic. Verify finite ice mass loss and no cold reset on split/load, and prove recovery by actual worker repairs.",
+        "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
+        "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
+      },
+      "live_only": false,
+      "touches": [
+        "heat",
+        "organics",
+        "conversion",
+        "routes",
+        "propagation"
+      ],
+      "tests": {
+        "reject": "Reject this version if false: The field-to-cold-hold promise must survive death, butchery, hauling, storage and cooling failure without a warm-safe loophole or a machine the owner has superseded.",
+        "renormalize": "Pictures compare behavior and visible relationships; retuning yields, dimensions, timings or variant counts does not change their classification.",
+        "first_version": "signature/support"
+      }
+    },
+    {
+      "id": "B7",
+      "says": "A player can find and salvage abandoned ice workings, mine their ice normally and use the water and native wax without unlocking a special technique.",
+      "meant": {
+        "intent": "Ancient discovery must be a coherent physical opportunity to work, with useful resources, rather than a paragraph or a debug-spawned lump; keep land and normal use without the archaeology progression extra.",
+        "source": "Owner experience in biome_experiences_2026-10-20.md; the_blue_desert.md sections 7\u20138; ordinary mining answer one in ANSWERS_OWNER.md. Minimal generic abandoned-work context delegated, campaign epoch identities remain next version.",
+        "figurative": []
+      },
+      "accept": [
+        "The crew discovers a broken extraction face with accessible ice and frozen equipment showing an abandoned attempt; ordinary salvage and mine orders yield materials the colony can actually use.",
+        "Clearing surrounding live fuel leaves an exit; the same workers can mine ice, melt water and refine gathered wax using ordinary bills in an appropriately cold workspace."
+      ],
+      "reject": [
+        "Only a developer spawn provides mineable ice, or unconnected generic wreck props claim an entire archaeological site.",
+        "Mine orders require cold-cutting research, excavation pace secretly changes a loot roll, or the recovered wax has no actual use beyond sitting as an explosive item."
+      ],
+      "lazy": "Mine orders require cold-cutting research, excavation pace secretly changes a loot roll, or the recovered wax has no actual use beyond sitting as an explosive item.",
+      "range": {
+        "varies": "Received local maps of 200/250/300 cells, flat through mountainous, edge/interior sites and blocked/open work faces; fresh colony through day 100 with 1/12/40 colonists; normal mining, salvage, bill cancellation, worker death, save/reload between damage hits and conversion; raw ice, can, bucket and melter consumers when installed. Site content may vary without a quota of epochs or variants.",
+        "left_out": "No campaign faction names or religious study, no timer/incident-created site required, no quarry-to-Horrors releases, no planetary generation or tile assignment. Ancient context is static and generic in the RM member; ship-specific burial is extra."
+      },
+      "sees": {
+        "instrument": "Local placement reachability sweep and real worker mine/salvage/conversion state reads; B1 judges whether the physical attempt is readable. T13 specifies discoverable placement and normal recipes. Existing mineable defs with scatter zero are not placement evidence.",
+        "start": "Fresh disposable received-map copy, no debug-spawned ice as acceptance evidence. Read placed site/mineable provenance and job reachability; assert wax and water consumers are actually available with all research unlocked.",
+        "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
+        "control": "Random map loot could make an expedition look productive. Trace outputs to the specific mined ice and salvage/job completions; verify ordinary recipes use the recovered resources and no developer grant or thaw roll supplied them.",
+        "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
+        "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
+      },
+      "live_only": false,
+      "touches": [
+        "sites",
+        "conversion",
+        "routes",
+        "organics"
+      ],
+      "tests": {
+        "reject": "Reject this version if false: Ancient discovery must be a coherent physical opportunity to work, with useful resources, rather than a paragraph or a debug-spawned lump; keep land and normal use without the archaeology progression extra.",
+        "renormalize": "Pictures compare behavior and visible relationships; retuning yields, dimensions, timings or variant counts does not change their classification.",
+        "first_version": "land"
+      }
+    },
+    {
+      "id": "B8",
+      "says": "Across a season on a full Blue Desert map, a working colony can repeatedly discover, clear, extract and cold-store resources while weather and native life continue, a local ignition remains understandable, and reloading or reversing the work order causes neither runaway destruction nor a dead or stalled biome.",
+      "meant": {
+        "intent": "The complete first version must remain beautiful, alive and usable through its own hazards, without a map-wide chain on routine predation, accumulating chores, disappearing life or an error storm.",
+        "source": "Whole-bar mandate in this cleanse brief; delegated synthesis of owner experience, ordinary mining/cooling answers and life commission. This is a proposed obligation, not a measured seasonal result.",
+        "figurative": []
+      },
+      "accept": [
+        "Wild growth and predation continue between expeditions; a prepared cold hold weathers a repairable blackout, a careless work site suffers a traceable chain, and the next expedition still finds life, routes and work.",
+        "After a mid-season reload, workers still finish the alternate haul/clear/excavate sequence, cooling reserves and warnings retain their meaning, and the map remains usable without scripted rescues."
+      ],
+      "reject": [
+        "Routine hunting repeatedly detonates the food web until the whole map is bare, or growth refills every cleared separation before crews can use it.",
+        "A beautiful proof pad passes only with clear sky or explosions locked off; the full run stalls jobs, floods predators or cargo, loses warning state on reload, silently deletes animals or repeatedly logs errors."
+      ],
+      "lazy": "A beautiful proof pad passes only with clear sky or explosions locked off; the full run stalls jobs, floods predators or cargo, loses warning state on reload, silently deletes animals or repeatedly logs errors.",
+      "range": {
+        "varies": "Full 200/250/300-cell local maps; 15-day season with tick order/tick rates unmodified, 1/12/40-colonist colonies, cold ambient traces -60 to -19 C with heated rooms, ordinary and concentrated wild distribution; initial scarcity/ordinary/high local plant and prey availability; natural weather traces including all weather transitions; controlled reachable-site ignition and repairable blackout as challenges in each trace; save on day 7 or 8, reload, then complete remaining season. Reverse sequences clear\u2192mine\u2192haul and haul loose cargo\u2192clear\u2192mine, and reduce traffic\u2192repair versus repair\u2192reduce traffic. Re-run after day-100 baseline for accumulated state. Compression means faster wall-clock speed only, never skipping ticks, jobs, heat, growth, ecology or weather.",
+        "left_out": "No claim of guaranteed recovery from deliberately heating all organics or global hostile bombardment. A crew that carries fuel through its own separation has not met containment preparation. No canonical world writes or alternative planet sweeps. Enjoyment is predicted, not graded."
+      },
+      "sees": {
+        "instrument": "Whole-season model first screens recorded geometries; then an instrumented full-map run reads resource provenance, jobs, ecology, blast/heat causal graphs, weather, departure signs and logs. Runtime traces decide state claims; B1 still requires the visual look. T15 adds a full-map observer and exact replay/recovery protocol; no current seasonal instrument is adequate.",
+        "start": "A working colony with all kept systems, a discoverable site, real native food and prepared cold hold; fingerprint source/defs/assembly/settings/assets/dependencies/save. Record initial states and quotas of neither flora nor animals as bars; log natural events without forcing sky clear.",
+        "on": "Every kept mechanic enabled at proposed shipped defaults: ordinary roster/growth/predation, native and flora charges, foreign-ingestion response, warning cues, weather rotation, departure signs, corpse/product reactivity and loose-ice cooling; next-version extras off. All DLC installed, research unlocked, no weather/time/health locks or invulnerable fixtures. Shared engines retain their declared shipped settings. Challenges are actions in this running state, never a hazard-off substitute.",
+        "control": "A scripted test can replenish animals, spawn resources or cool rooms between readings. Log every external intervention and reject unexplained additions/removals; paired untreated ecological areas and ice/no-ice reserves distinguish stable systems from scripted repair. Repeat after reload and reversed action order without clearing field state.",
+        "reset": "Use a disposable saved local map, preserve a baseline save plus settings/weather-lock journal before staging; reload that baseline and reread pawn IDs, items, room temperatures, sand depths, weather freedom and settings after the reading. Do not clear an arbitrary rectangle or restore guessed defaults. No canonical save is touched.",
+        "live_only_why": "State histories and calibrated offline replay can distinguish the pictured causes; no subjective live judgment is asserted."
+      },
+      "live_only": false,
+      "touches": [
+        "ecology",
+        "weather",
+        "propagation",
+        "organics",
+        "heat",
+        "sites",
+        "routes",
+        "conversion",
+        "departure",
+        "appearance"
+      ],
+      "tests": {
+        "reject": "Reject this version if false: The complete first version must remain beautiful, alive and usable through its own hazards, without a map-wide chain on routine predation, accumulating chores, disappearing life or an error storm.",
+        "renormalize": "Pictures compare behavior and visible relationships; retuning yields, dimensions, timings or variant counts does not change their classification.",
+        "first_version": "whole"
+      }
+    }
+  ],
+  "whole": "B8",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Resolve patched XML roster as named elements; preserve current membership, densities and cold/dark/fertility-independent unsowable flora flags. Assert no removed donor plants/random anima tree injection; loaded fingerprint binds the reading."
+    },
+    {
+      "id": "C2",
+      "what": "Record current tuning separately: plant threshold 5 C; warm ticks 2; weather commonalities 60/15/15/10; fog accuracy 0.5 and range cap 22.9; these are source readings, not passing conditions."
+    },
+    {
+      "id": "C3",
+      "what": "Validate every public Mod Settings field default and serialization; next-version labels/off defaults; per-feature changed behavior, master/all-off, in-flight transition and restart roster scopes. Runtime def references and compiled source hash resolve."
+    },
+    {
+      "id": "C4",
+      "what": "Assert vrisk flight stats/whole-body frame references and observe FlightTracker; no unattended visual flight test. Source frame count is not a bar."
+    },
+    {
+      "id": "C5",
+      "what": "Record organic warm/ruin/wick/corpse generated-def injection and starting-charge application to generated and newborn stages; source-attributed explosion count catches duplicate krissek paths."
+    },
+    {
+      "id": "C6",
+      "what": "Reconcile ice mass and water outputs across ordinary bill, FlowWorks bucket/melter and passive melt; inventory reserve splits, merges, haul/unload and save/load. No cyclic recipe creates cold or mass."
+    },
+    {
+      "id": "C7",
+      "what": "Read fresh default map for absence of extra jobs/incidents/letters/drops/active carriers; keep defs/classes for references; enable each extra separately and observe its declared output; clean log in both arms."
+    },
+    {
+      "id": "C8",
+      "what": "Existing fake-game mutations and kernel fuzz are harness regression evidence only. Every result row needs source/assembly/data/settings/save fingerprint and real start/control/reset proof; unknown reads never become zero."
+    },
+    {
+      "id": "C9",
+      "what": "Compare natural versus scripted roster spawn/food/death/leave ledgers and full-map propagation graphs; record largest loss and stalled jobs without turning those tuning counts into passing bars."
+    },
+    {
+      "id": "C10",
+      "what": "Check shared/campaign consumers including RUT_BurnerAscendant, Watchers buried cues, ColdStorage seals and SWBestiary physiology for dangling types or unlabelled behavior; historical OWNER-cut soundscape/road/drip stay absent."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Water ice is inert water, mined by vanilla work. Mining speed/passion adds no local heat or probabilistic loot; containment acts on nearby living/dropped fuel.",
+      "touches": [
+        "sites",
+        "conversion",
+        "heat",
+        "propagation"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Use existing plant Long-tick/vanilla flame explosion pathways; warm progress and warning/wick state survive save/load, split/merge and held-state transitions. Exactly one causal native fuel release per death; no arbitrary empty-cell jump.",
+      "touches": [
+        "propagation",
+        "organics",
+        "native_triggers",
+        "heat"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Safe cutting/harvesting and sealed native ingestion do not fire the plant damage blast; foreign ingestion is visibly incompatible. All fresh native life stages acquire required physiology; butcher/corpse/recipe transitions cannot launder organic hazards.",
+      "touches": [
+        "ecology",
+        "organics",
+        "native_triggers",
+        "conversion"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "No bespoke sun or heat kind. Vanilla room heat plus shared geometric Direct Sun applies; below-horizon sun on this nightside adds no invented local daylight. Loose water ice consumes finite sensible/latent reserve according to ambient exchange, never a chosen target thermostat or powered rack.",
+      "touches": [
+        "heat",
+        "conversion",
+        "weather"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Use Odyssey SandGrid for buildup/path costs and erosion; no windward special algorithm. Native fog handles accuracy/range/travel, ordinary rotation remains unlocked. Local ice-grain appearance changes no global sand material.",
+      "touches": [
+        "weather",
+        "routes",
+        "appearance"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "Ordinary wild growth, feeding and predation remain; no custom murrek top-up, minesweeping, storm-activated bloom or extra-generation loop. Shared ExplosiveGrowth must not convert ice into farm soil. Cleared connections may regrow naturally and must be inspected before each expedition.",
+      "touches": [
+        "ecology",
+        "propagation",
+        "routes"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Keep the existing roster and naming tiers: invented RM names stay RM, genuine canon patch remains external. Resolve local physiology compatibility without evicting a species or rewriting campaign history. Static abandoned works use generic material context; campaign epochs and study are off.",
+      "touches": [
+        "ecology",
+        "organics",
+        "sites",
+        "appearance"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Existing vhaulk exit remains physical walking with readable notice; blocked/downed/tame animals are never silently removed, map teardown is not a voluntary departure, and death must remain a corpse/blast event. Shared native departures use CreatureBehaviors signs.",
+      "touches": [
+        "departure",
+        "native_triggers",
+        "ecology"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Defaults enable retained systems and disable every next-version extra. Major features have independent persistent switches, on/off timing labels, search and reset. Off retains saved identities; all-off stops scripted behavior without deleting beings. Existing optional states finish or neutralize according to tickets, never vanish silently.",
+      "touches": [
+        "weather",
+        "heat",
+        "ecology",
+        "organics",
+        "propagation",
+        "departure",
+        "conversion",
+        "sites"
+      ]
+    },
+    {
+      "id": "R10",
+      "rule": "Static site/mineable placement is local content on received-map fixtures using existing placement ownership, never a planetary worker or second-world generator. Ordinary Wreckage salvage remains without ablation events; water routes share mass accounting and cold wax uses an ordinary cold-work bill.",
+      "touches": [
+        "sites",
+        "conversion",
+        "routes"
+      ]
+    },
+    {
+      "id": "R11",
+      "rule": "Warning state names its source, remaining response state and recovery action in inspect/readable notification; audio reinforces it but cannot be the sole warning. Immediate damage/EMP attacks are described hazards and need no artificial pre-impact delay. A warning alone never means survival while standing in a lethal blast.",
+      "touches": [
+        "organics",
+        "heat",
+        "propagation",
+        "native_triggers",
+        "appearance"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "appearance",
+      "members": [
+        "B1",
+        "B3",
+        "B8",
+        "R5",
+        "R7",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "One material/readability contract: distance hue does not license opaque blue plants or tan ground, while warning tells must remain locatable through the kept weather. State confirms identities; B1 supplies the only aesthetic judgment.",
+      "model": "none"
+    },
+    {
+      "thing": "conversion",
+      "members": [
+        "B6",
+        "B7",
+        "B8",
+        "R1",
+        "R3",
+        "R4",
+        "R9",
+        "R10"
+      ],
+      "holds_together": "argued",
+      "why": "Water ice remains water and native wax remains organic fuel until an explicit normal recipe consumes it. Shared consumers must account for mass and residual thermal state; no deferred rack or char-lace output supplies the retained recipe.",
+      "model": "none"
+    },
+    {
+      "thing": "departure",
+      "members": [
+        "B2",
+        "B8",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "argued",
+      "why": "Leaving, dying, transporting and map teardown are different state changes. An eligible wild vhaulk physically walks; interruption waits/retries, tame/downed/blocked cases do not silently despawn. Notices explain a real exit, not a missing pawn.",
+      "model": "none"
+    },
+    {
+      "thing": "ecology",
+      "members": [
+        "B1",
+        "B2",
+        "B5",
+        "B8",
+        "R3",
+        "R6",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Wild growth \u2192 grazing \u2192 predation death charges \u2192 blast loss \u2192 scarcity/respawn is a feedback loop. Fog travel and cleared gaps change encounter rates; paired trigger tests cannot establish seasonal survival.",
+      "model": "Whole-season coupled map"
+    },
+    {
+      "thing": "heat",
+      "members": [
+        "B3",
+        "B4",
+        "B6",
+        "B8",
+        "R1",
+        "R2",
+        "R4",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Door traffic, room leakage, latent reserve, wick progress and weather changes meet here. Existing rack math does not establish a loose-ice recovery window or energy conservation.",
+      "model": "Thermal reserve ledger"
+    },
+    {
+      "thing": "native_triggers",
+      "members": [
+        "B2",
+        "B5",
+        "R2",
+        "R3",
+        "R8",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "Immediate damage/EMP cases and gradual warming cases are distinct transitions; an intact kinetic-killed cistern is a still-reactive cold corpse. Local removal of duplicate krissek death action does not remove the shared propane-lake class.",
+      "model": "none"
+    },
+    {
+      "thing": "organics",
+      "members": [
+        "B2",
+        "B4",
+        "B5",
+        "B6",
+        "B7",
+        "B8",
+        "R2",
+        "R3",
+        "R7",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "argued",
+      "why": "Apply the same identity and hazard across source, newborn/corpse, stack, bill and container transitions. R2/R3/R9/R11 forbid reset/laundering and require a readable source; state enumeration can expose each bypass without a new hazard type.",
+      "model": "none"
+    },
+    {
+      "thing": "propagation",
+      "members": [
+        "B4",
+        "B5",
+        "B6",
+        "B8",
+        "R1",
+        "R2",
+        "R6",
+        "R9",
+        "R11"
+      ],
+      "holds_together": "unknown",
+      "why": "Animal bodies and dropped/carried stacks can bridge apparently clear gaps; overlap of death blasts, flame heat and warning latency may eliminate useful preparation or ignite routine predation chains.",
+      "model": "Containment geometry sweep"
+    },
+    {
+      "thing": "routes",
+      "members": [
+        "B3",
+        "B4",
+        "B6",
+        "B7",
+        "B8",
+        "R5",
+        "R6",
+        "R10"
+      ],
+      "holds_together": "argued",
+      "why": "Containment is declared by reachable paths and causal fuel separation, not a fixed drawn gap. Storm deposits and colony doors remain real obstacles. Travel/thermal feasibility is explicitly unknown under heat/weather/propagation, so this argument claims only consistent semantics.",
+      "model": "none"
+    },
+    {
+      "thing": "sites",
+      "members": [
+        "B1",
+        "B4",
+        "B7",
+        "B8",
+        "R1",
+        "R7",
+        "R9",
+        "R10"
+      ],
+      "holds_together": "argued",
+      "why": "Ordinary physical context and normal jobs supply the same extraction opportunity. The deferred study, loot counter and timed emergence never appear as prerequisites; cold-cutting is specifically excluded by later owner answer.",
+      "model": "none"
+    },
+    {
+      "thing": "weather",
+      "members": [
+        "B1",
+        "B3",
+        "B8",
+        "R4",
+        "R5",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Vanilla patchy sand may never produce the owner's deep deposits against representative walls/hulls, and route slowdown can prevent a thermal repair that works in a clear pad.",
+      "model": "Drift and route geometry"
+    }
+  ],
+  "old_bars": {}
+}
