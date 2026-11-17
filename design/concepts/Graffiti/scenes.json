@@ -66,7 +66,7 @@
     "the six lanes after sc_spree_wall (asserted: marks present)"
    ],
    "action": "read def and variant of every mark",
-   "expect": "at least 3 defs and 5 def-variant pairs",
+   "expect": "a judge shown the lanes' marks tells several kinds of mark apart, not recolours of one",
    "control": {
     "case": "the pool gated to one def",
     "expect": "one def only",

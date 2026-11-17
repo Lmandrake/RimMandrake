@@ -37,7 +37,7 @@
 - [leaf:stories_not_tax] In an ordinary colony over weeks, occasional stories, never a mood tax or a message stream
 - [leaf:walk_lived_in] A lived-in colony walked again after a reload: a spree, recreation tagging, a raid and a trader, in both orders, tell the same story
 - [leaf:paint_dies_with_wall] Paint dies with its wall
-- [leaf:weathering_bounds_marks] Paint weathers: it fades over the last 40 percent of its life, sooner outdoors
+- [leaf:weathering_bounds_marks] Paint weathers: a mark stays crisp most of its life, then visibly fades before it goes, sooner outdoors
 - [floor:mod_settings] Superb Mod Settings: every behaviour has its switch, and the raider pressure gets one with its tuning
 - [advisory] Mood sizes, weather days and the pressure factor are tuning; scenes check sign and shape
 
