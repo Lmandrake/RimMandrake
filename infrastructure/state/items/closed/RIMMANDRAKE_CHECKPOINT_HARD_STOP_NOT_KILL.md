@@ -57,7 +57,9 @@ rm-detached-bench-rimmandrake-judge-pyrelands-blind-cycle-1794925887 (session c8
 `python3 src/RimMandrake/rimflow/stop_resume.py scan` and the conductor log after it.
 
 ## refs
-- /mnt/d/ClaudeWork/rimmandrake/conductor/mass_kill_20261117_0335.md
-- /mnt/d/ClaudeWork/rimmandrake/conductor/hard_stop_checkpoint_20261117.md (helper progress)
-- src/RimMandrake/Utils/switching_plan.py, src/RimMandrake/rimflow/detached_helper.py, ~/.local/bin/claude-account
-- RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT (maturation's own retry of killed pipeline runs)
+file: src/RimMandrake/rimflow/stop_resume.py
+file: src/RimMandrake/rimflow/selftest_stop_resume.py
+file: src/RimMandrake/Utils/switching_plan.py
+file: src/RimMandrake/rimflow/detached_helper.py
+item: RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT
+full-why: forensics /mnt/d/ClaudeWork/rimmandrake/conductor/mass_kill_20261117_0335.md; helper progress /mnt/d/ClaudeWork/rimmandrake/conductor/hard_stop_checkpoint_20261117.md; ~/.local/bin/claude-account
