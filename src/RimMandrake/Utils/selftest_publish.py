@@ -111,6 +111,29 @@ def t_commits_only_named_paths(a, b):
     assert sh(a, "show", "--name-only", "--format=", "HEAD") == "f.txt"
 
 
+def t_refused_tree_check_leaves_no_commit(a, b):
+    """RIMMANDRAKE_UNDO_REFUSED_PUBLISH_COMMIT_NEXT_RUN_LANDED_IT: publish commits, then runs the tree checks; a red refused
+    but left its commit on HEAD, so the next publish (its named paths "carry no change") pushed that commit, the refused file
+    in it (2026-11-17: two fenced mod-ledger lines reached origin/main and turned selftest_modledger_tree red)."""
+    os.makedirs(os.path.join(a, os.path.dirname(P.TREE_CHECKS)), exist_ok=True)
+    with open(os.path.join(a, P.TREE_CHECKS), "w") as f:
+        f.write('{"budget_s": 30, "timeout_s": 20, "checks": [{"test": "nobad.py", "fix": "remove bad.txt"}]}')
+    write(a, "nobad.py", "import os, sys\nsys.exit(1 if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'bad.txt')) else 0)\n")
+    before = sh(a, "rev-parse", "HEAD")
+    write(a, "good.txt", "good\n")
+    write(a, "bad.txt", "bad\n")
+    why = refused(P.publish, a, ["good.txt", "bad.txt"], "mine")
+    assert why and "nobad.py" in why, why
+    assert sh(a, "rev-parse", "HEAD") == before, "the refused commit stayed on HEAD"
+    assert open(os.path.join(a, "good.txt")).read() == "good\n" and os.path.exists(os.path.join(a, "bad.txt"))
+    assert sh(a, "diff", "--cached", "--name-only", "--", "good.txt", "bad.txt") == "", "the refused paths stayed staged"
+    os.remove(os.path.join(a, "bad.txt"))                   # the fix: the refused file goes; the rest is published again
+    sha, log = quiet(P.publish, a, ["good.txt"], "mine")
+    assert "PUBLISHED %s" % sha in log, log
+    names = sh(a, "ls-tree", "-r", "--name-only", "origin/main").split()
+    assert "good.txt" in names and "bad.txt" not in names, names
+
+
 def t_new_file_and_delete(a, b):
     write(a, "dir/new.sh", "#!/bin/sh\n")
     os.remove(os.path.join(a, "g.txt"))

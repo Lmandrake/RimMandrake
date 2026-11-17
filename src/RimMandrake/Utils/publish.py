@@ -796,9 +796,21 @@ def _publish(top, paths, msg, cwd=None):
         if not made:
             print("no change in the named paths; pushing any local commits")
         warn_owner_shard(top, named)
+    else:
+        named, made = [], None
     changed = _changed_since_origin(top)
-    tree_checks(top, changed)
-    pipeline_checks(top, changed)
+    try:
+        tree_checks(top, changed)
+        pipeline_checks(top, changed)
+    except Refuse as e:
+        if not made:
+            raise
+        # RIMMANDRAKE_UNDO_REFUSED_PUBLISH_COMMIT_NEXT_RUN_LANDED_IT: a refused commit left on HEAD was pushed by the next
+        # publish ("no change in the named paths; pushing any local commits"), the refused file in it (2026-11-17): undo it,
+        # so HEAD, the index and the working tree are as they were before this run
+        run(top, "reset", "-q", "--soft", made + "~1")
+        run(top, "reset", "-q", "--", *named)
+        raise Refuse("%s\n    (this run's commit was undone: your files are as you left them; fix, then publish again)" % e)
     run(top, "fetch", "-q", REMOTE)
     _, track, label = target_ref(top)
     head = out(top, "rev-parse", "HEAD")
