@@ -896,8 +896,13 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                  "your stage-4 `designer_stage.py open <dir> --run <id>`; after the stage-4 close, claim stage 5 the "
                  "same way and publish the claim BEFORE `coverage_judge.py run <dir>`, so the launcher's stage-5 run "
                  "(whose pre-step is the judge) cannot open beside it; after the look, close the claim with "
-                 "`RM_ROLE_UNIT=<id> python3 src/RimMandrake/rimflow/role_launch.py stage5-program <dir>` "
-                 "(RIMMANDRAKE_GUARD_ONE_COVERAGE_LOOK_STEWARD_LAUNCHER_BOTH_RAN). Never a second look." % (
+                 "`RM_ROLE_UNIT=<id> python3 src/RimMandrake/rimflow/role_launch.py stage5-program <dir>`, or, when "
+                 "judging stopped, `designer_stage.py close <dir> --run <id> --tokens 0` with no result.json (the "
+                 "block stays for him; stage5-program would return the gaps to stage 3) "
+                 "(RIMMANDRAKE_GUARD_ONE_COVERAGE_LOOK_STEWARD_LAUNCHER_BOTH_RAN). Before the look, write "
+                 "coverage_fixes.json against the last verdict's judge: one claim per gap whose fix landed, its "
+                 "evidence the fix's sha and acceptance test; a gap with no claim is carried open whatever the judge "
+                 "finds (RIMMANDRAKE_CLAIM_FIXED_GAPS_BEFORE_FINAL_LOOK_JUDGE_AGREED). Never a second look." % (
                      lc.get("at"), str(lc.get("why"))))
         return
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage

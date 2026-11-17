@@ -833,6 +833,11 @@ def main():
         ok(any("designer_stage.py open" in b and "stage5-program" in b and "release nothing by hand" not in b
                for b in w.briefs),
            "wait 1: the chain brief claims stage 5 before its one look and closes the claim by stage5-program")
+        # RIMMANDRAKE_CLAIM_FIXED_GAPS_BEFORE_FINAL_LOOK_JUDGE_AGREED: Pyrelands round 11, the judge found all three
+        # fixed gaps answered, but no coverage_fixes.json claim named them, so delta_merge carried them open and the final
+        # look read not_covered; and a claim after a stop closes with no result (stage5-program would return it to 3)
+        ok(any("coverage_fixes.json" in b and "--tokens 0" in b for b in w.briefs),
+           "wait 1: the chain brief files the fix claims before the look and closes a stopped claim with no result")
         ds2 =dict(ds, history=ds["history"] + [{"at": "2026-11-15T15:00:00Z", "what": "coverage_release"}])
         fresh_state()
         w = World({"P": offline("P", "build", refused=["b1"])}, dstate={"P": ds2})
