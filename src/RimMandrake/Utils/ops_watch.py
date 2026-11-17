@@ -3761,7 +3761,11 @@ def _q_designer(q, now, pcache, cpath):
     runs_dir = Path(q.get("runs_dir") or os.path.join(
         os.environ.get("RM_DISPATCHER_STATE", "/mnt/d/ClaudeWork/rimmandrake/dispatcher"), "roles"))
     plist, alist, marks = [], [], []
+    import mod_owner_hold as OH
+    holds = OH.load()       # a concept the owner holds is not pending (mod_owner_hold.py); an unreadable file is blind
     for f in sorted(root.glob("*/stage.json")):
+        if OH.key(f.parent) in holds:
+            continue
         with open(f, encoding="utf-8") as fh:
             st = json.load(fh)
         if not isinstance(st, dict):

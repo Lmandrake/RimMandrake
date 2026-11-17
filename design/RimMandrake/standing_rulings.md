@@ -783,3 +783,19 @@ testing when I can't go to the desktop such as now."*
   (`maturation_dispatch.retriable` counts kills, not launch faults), and `maturation_dispatch.py clear` lifts the stop
   an ended automatic run left. The in-game driver's brief keeps every `*OWNER_LOOK*` save. His own OWNER bridge hold
   while he is walking a look stays his (§The bridge is passed through one file).
+
+## Owner hold: six biome mods stop, Pyrelands stays — owner, 2026-11-16
+
+His words (Mon 2026-11-16, ~5:20 PM PST, on the ledger 01:22Z 11-17 under `RIMMANDRAKE_HOLD_SIX_BIOME_MODS_ONLY_PYRELANDS_STAYS`):
+*"And stop the new biome mods work. Only Pyrelands as a biome mod right now. They are poorly defined builds right now
+and the system choked at their lack of precision I think."*
+
+- **Held:** Contagion, Cauldron, FeverWood, GelatinousSlime, LeaningScrub, Stillsand. **Untouched:** Pyrelands,
+  PyrelandsMechanics, Gimme Some Slack, Explosive Knockback, FlowWorks, Graffiti.
+- **One list, one file:** `src/RimMandrake/rimflow/mod_owner_hold.json` (code `mod_owner_hold.py`). A held mod: the Dispatch
+  tick launches nothing on it (no builder, judge, live driver, steward, fixer or holder, and a discovered concept is not
+  seeded); the Designer and DesignerCodex chain sweeps, the harvest chain and a pending run-now skip it; it is on no
+  idle, paused, stalled or Designer-stall reading, so it raises no alarm and no incident; `maturation_dispatch.py
+  status` and the maturation page print **HELD BY OWNER** with his words and date. A run already live on it finishes.
+- **Only he lifts it:** `python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said "<his words>"`, then publish
+  `mod_owner_hold.json`; `mod_owner_hold.py show` lists the holds. A new hold is a row in the same file, with his words.

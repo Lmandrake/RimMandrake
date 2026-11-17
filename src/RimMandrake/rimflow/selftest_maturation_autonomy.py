@@ -620,6 +620,9 @@ def main():
         print("against the base dispatcher in %s" % os.path.dirname(MD.__file__))
     tmp = tempfile.mkdtemp(prefix="mat_aut_")
     root = os.path.join(tmp, "root")
+    with open(os.path.join(tmp, "mod_owner_hold.json"), "w") as f:     # the fixture holds nothing: the live list is
+        json.dump({"holds": []}, f)                                 # selftest_mod_owner_hold.py's (mod_owner_hold.py)
+    os.environ["RM_OWNER_HOLD_FILE"] = os.path.join(tmp, "mod_owner_hold.json")
     os.makedirs(os.path.join(root, "design", "concepts"))
     os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(tmp, "state")
     os.environ["MATURATION_BRIEF_DIR"] = os.path.join(tmp, "briefs")
@@ -812,9 +815,9 @@ def main():
         ok(not w.launched and g("P").get("decision") == "coverage_stop",
            "stalled 3: a coverage-stopped mod is never launched on (read %s, launched %s)" % (
                g("P").get("decision"), w.launched))
-        # every class is one of four, on every row of every tick above
-        ok(all(m.get("klass") in ("launch", "wait", "paused", "owner", "rested") for m in rd["mods"].values()),
-           "every row has one of the five classes")
+        # every class is one of six (held: the owner's hold, mod_owner_hold.py), on every row of every tick above
+        ok(all(m.get("klass") in ("launch", "wait", "paused", "owner", "rested", "held") for m in rd["mods"].values()),
+           "every row has one of the six classes")
         # the ops_watch side: the alarm targets and the route exist
         rules = json.load(open(os.path.join(HERE, "..", "Utils", "ops_watch_rules.json")))
         names = {t.get("name"): t.get("key") for t in rules.get("targets") or []}

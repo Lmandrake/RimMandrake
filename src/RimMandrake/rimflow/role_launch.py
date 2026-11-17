@@ -1562,6 +1562,9 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 act(do="role_hold", role=name, why="%s run-now by %s (%s) expired: not launchable for %d s (busy or "
                     "held); ask again" % (name, req.get("by"), req.get("why"), RUN_NOW_TTL_S))
                 return
+            if req.get("concept") and owner_held(name, rs, req["concept"], now, act):
+                refuse_now(rs, "owner hold", now)     # a request asked before the hold, or by hand: consumed, not run
+                return
             due = [run_now_job(cfg, req, now)]
         if not due:
             return
@@ -2284,10 +2287,39 @@ def chain_next(name, rs, cfg, run, now, act, status):
                      "after run %s" % run["unit"])
 
 
+def owner_held(name, rs, concept, now, act):
+    """True when the owner holds `concept`'s mod (mod_owner_hold.json; item RIMMANDRAKE_HOLD_SIX_BIOME_MODS_ONLY_PYRELANDS_
+    STAYS): nothing is chained or launched on it. Said once a day per concept as a role_hold note, never an alarm. An
+    unreadable hold file holds every concept (nothing can be proved unheld), alarmed once per outage."""
+    import mod_owner_hold as OH
+    try:
+        h = OH.held(concept)
+    except OH.Unreadable as e:
+        if not rs.get("hold_blind"):
+            act(do="alarm", kind="role:%s:mod_owner_hold" % name, note=True, conductor_log=True,
+                why="%s: the owner hold file cannot be read, so NO concept is chained or launched: %s" % (name, e))
+        rs["hold_blind"] = str(e)
+        return True
+    rs.pop("hold_blind", None)
+    if not h:
+        return False
+    mark = "%s %s" % (day_of(now), OH.key(concept))
+    said = [k for k in rs.get("hold_said") or [] if str(k).startswith(day_of(now) + " ")]
+    if mark not in said:
+        act(do="role_hold", role=name, note=True, why="%s: %s is not chained or launched: %s" % (
+            name, OH.key(concept), OH.status(h)))
+        said.append(mark)
+    rs["hold_said"] = said
+    return True
+
+
 def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode, cause, after, reasons=None):
     """Ask (or queue behind the taken slot) one run-now for `concept`, under the per-concept daily cap. -> the request
     or None. Shared by the harvest's chain_next and the decide tick's chain_sweep. `reasons` (a rejected close's, every
-    one in full) ride on the request into the launch message (run_now_job, prompt)."""
+    one in full) ride on the request into the launch message (run_now_job, prompt). A concept the owner holds is never
+    asked (owner_held)."""
+    if owner_held(name, rs, concept, now, act):
+        return None
     day = day_of(now)
     counts = {k: v for k, v in (rs.get("chain_day") or {}).items() if k.startswith(day + " ")}
     key = "%s %s" % (day, concept)
@@ -2408,6 +2440,8 @@ def chain_sweep(name, rs, cfg, now, act, concepts, parked=None):
             continue
         if lane and (st.get("runner") or "claude") != lane:
             continue
+        if owner_held(name, rs, concept, now, act):
+            continue                    # held by the owner: not swept, not parked, no alarm (mod_owner_hold.py)
         res = [r for r in st.get("results") or [] if isinstance(r, dict)]
         reasons = None
         if res and res[-1].get("outcome") == "rejected":

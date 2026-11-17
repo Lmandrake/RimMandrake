@@ -139,6 +139,7 @@ import maturation_now as MN     # noqa: E402
 import maturation_autonomy as AUT   # noqa: E402
 import detached_helper as DH    # noqa: E402
 import modledger                # noqa: E402  the mod ledger: stage runs from its packet; holder sessions (resume_plan)
+import mod_owner_hold as OH          # noqa: E402  the owner's hold: a held mod is never decided (mod_owner_hold.json)
 
 UNM = "UNMEASURED"
 RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
@@ -2525,6 +2526,19 @@ def _aut(rows, mod):
     return any(r["mod"] == mod and r.get("aut") for r in rows)
 
 
+def held_rows(holds, facts):
+    """One row per mod the owner holds (mod_owner_hold.py): decision owner_hold, klass held, status HELD BY OWNER with his
+    words, date and lift command. A run live on it is named and left to finish."""
+    out = []
+    for mod, h in sorted(holds.items()):
+        f = next((v for k, v in facts.items() if OH.key(k) == mod), None) or {}
+        live = [u for u in f.get("live_units") or [] if isinstance(u, str)]
+        txt = OH.status(h) + ("; %s live on it, allowed to finish" % ", ".join(live) if live else "")
+        out.append({"mod": mod, "stage": f.get("stage", UNM), "live": live, "decision": "owner_hold", "klass": "held",
+                    "status": txt, "why": txt})
+    return out
+
+
 def tick(root, cfg, apply, fx=None, now=None, page=True):
     """One tick; with apply, under the state lock from its read of state.json to its write."""
     if not apply:
@@ -2545,6 +2559,10 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     facts = fx["facts"]() if "facts" in fx else gather(root, cfg)
     account = fx["account"]() if "account" in fx else account_gate()
     releases = fx["releases"]() if "releases" in fx else read_releases()
+    # The owner's hold (mod_owner_hold.py): a held mod is read (its live run finishes, its spend and ledger rows are still
+    # recorded below) but never decided, so nothing launches on it and it joins no idle, paused or stalled list.
+    holds = OH.load()
+    cfg = dict(cfg, advancing=[m for m in cfg.get("advancing") or [] if OH.key(m) not in holds])
     rows, launches = decide(cfg, st, facts, now, account, bridge=fx.get("bridge"), releases=releases)
     if aut:
         rows, launches = AUT.resolve(root, cfg, st, facts, rows, launches, now, fx)
@@ -2582,6 +2600,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     if apply:
         book_refunds(st, rows, now)
     AUT.classify(cfg, st, rows, now)
+    rows += held_rows(holds, facts)
     if apply and aut:
         AUT.post_cards(rows, st, now, fx)
     rd = AUT.annotate(reading(cfg, rows, now), rows)

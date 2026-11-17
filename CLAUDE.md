@@ -64,6 +64,11 @@ Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
 Retired by the owner 2026-11-13, nothing to resume (`design/RimMandrake/retired_loops_2026-11-13.md`); the successor is the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`, still in design); until then the Conductor launches builds directly as helpers (`src/RimMandrake/rimflow/detached_helper.py`). Design still to be argued out goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`); ops alarms to Operations. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to the Conductor's key (`RETIRED_SEATS` in `cli.py`), as does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`).
 
+## 🔴 Six biome mods are HELD BY OWNER; Pyrelands is the only biome mod advancing — owner, 2026-11-16
+
+*"And stop the new biome mods work. Only Pyrelands as a biome mod right now."* The held list is `src/RimMandrake/rimflow/mod_owner_hold.json` (nothing launches, chains or alarms on a held mod; only he lifts one: `mod_owner_hold.py lift <Mod> --said "…"`).
+Full text: `standing_rulings.md` §Owner hold.
+
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)
 
 - 🔑 **Search `src/` and the roster before FILING or designing** (user-level rule; here it is `src/` and the roster).

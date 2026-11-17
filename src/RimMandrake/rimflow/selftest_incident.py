@@ -1578,7 +1578,9 @@ def replay_batch():
 ROLE_INCIDENT_SUFFIXES = {"supervise", "unit", "overtime", "stop_failed", "stage_rejected", "stage_close", "stage_land", "failed",
                           "after", "schedule", "ops", "stage_refused",
                           # the Designer chain (e24689bad0, 42647172c7): unreadable stage.json, a looping chain, a blind sweep
-                          "chain", "chain_cap", "chain_sweep"}
+                          "chain", "chain_cap", "chain_sweep",
+                          # the owner hold file unreadable: every concept is held until it reads (mod_owner_hold.py)
+                          "mod_owner_hold"}
 
 
 def test_role_relapse_kinds_do_not_reopen():

@@ -1,0 +1,203 @@
+#!/usr/bin/env python3
+"""Selftest of the owner's hold (mod_owner_hold.py; item RIMMANDRAKE_HOLD_SIX_BIOME_MODS_ONLY_PYRELANDS_STAYS). The owner,
+2026-11-16: "And stop the new biome mods work. Only Pyrelands as a biome mod right now." A held mod: the Dispatch tick
+launches nothing on it (decide, the steward layer and the pilot holders never see it), the Designer chain sweep, the
+harvest chain and a pending run-now skip it, the Designer stall reader and the idle reading leave it out, and status
+prints HELD BY OWNER with his words, date and the lift command. Unheld mods are untouched. Pure: temp files, fakes."""
+import json
+import os
+import sys
+import tempfile
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+FAILS = []
+SIX = ("Contagion", "Cauldron", "FeverWood", "GelatinousSlime", "LeaningScrub", "Stillsand")
+UNTOUCHED = ("Pyrelands", "PyrelandsMechanics", "GimmeSomeSlack", "ExplosiveKnockback", "FlowWorks", "Graffiti")
+WORDS = "And stop the new biome mods work. Only Pyrelands as a biome mod right now."
+
+
+def check(ok, msg):
+    print("%s %s" % ("ok  " if ok else "FAIL", msg))
+    if not ok:
+        FAILS.append(msg)
+
+
+def temp_holds(mods):
+    p = os.path.join(tempfile.mkdtemp(prefix="owner_hold_"), "mod_owner_hold.json")
+    with open(p, "w") as f:
+        json.dump({"holds": [{"mod": m, "date": "2026-11-16", "said": WORDS} for m in mods]}, f)
+    os.environ["RM_OWNER_HOLD_FILE"] = p
+    return p
+
+
+def test_the_shipped_list():
+    import mod_owner_hold as OH
+    os.environ.pop("RM_OWNER_HOLD_FILE", None)
+    hs = OH.load()
+    check(sorted(hs) == sorted(SIX), "owner_hold.json holds exactly the six: %s" % sorted(hs))
+    check(not any(OH.held(m, hs) for m in UNTOUCHED), "Pyrelands, PyrelandsMechanics, GSS, EK, FlowWorks, Graffiti: "
+          "not held")
+    check(all("Only Pyrelands" in h["said"] and h["date"] == "2026-11-16" for h in hs.values()),
+          "every hold carries his words and the date 2026-11-16")
+    check(OH.held("/home/x/design/concepts/Cauldron/", hs) and OH.held("RimMandrake/Stillsand", hs),
+          "a concept path or a RimMandrake/ name matches by its last part")
+    s = OH.status(hs["Cauldron"])
+    check(s.startswith("HELD BY OWNER 2026-11-16") and "owner_hold.py lift Cauldron" in s, "status line: %s" % s)
+
+
+def test_unreadable_raises():
+    import mod_owner_hold as OH
+    p = temp_holds([])
+    with open(p, "w") as f:
+        f.write("{not json")
+    try:
+        OH.load()
+        check(False, "an unparsable hold file raises Unreadable")
+    except OH.Unreadable:
+        check(True, "an unparsable hold file raises Unreadable (never a calm 'no holds')")
+    with open(p, "w") as f:
+        json.dump({"holds": [{"mod": "X", "date": "2026-11-16"}]}, f)
+    try:
+        OH.load()
+        check(False, "a hold without his words raises")
+    except OH.Unreadable:
+        check(True, "a hold without his words raises Unreadable")
+
+
+def test_lift():
+    import mod_owner_hold as OH
+    p = temp_holds(["ModOne", "ModTwo"])
+    OH.lift("ModOne", "lift it")
+    hs = OH.load()
+    check(sorted(hs) == ["ModTwo"] and json.load(open(p))["lifted"][0]["lifted_said"] == "lift it",
+          "lift removes one mod and keeps the record of his lifting words")
+
+
+def test_designer_chain():
+    import selftest_designer_chain as DC
+    RL = DC.RL
+    temp_holds(["ModOne"])
+    old = DC.T - 4 * 3600
+    rows = [(DC.C1, {"stage": 2, "status": "ready"}, old)]
+    st, acts, opened = DC.sweep_decide(rows)
+    check(opened == [] and not st["roles"].get("Arbiter", {}).get("run_now")
+          and not any(a.get("do") == "alarm" for a in acts),
+          "the chain sweep asks no run on a held ready concept and raises no alarm: %r %r" % (
+              opened, [(a.get("do"), a.get("kind")) for a in acts]))
+    st, acts, opened = DC.sweep_decide([(DC.C2, {"stage": 2, "status": "ready"}, old)])
+    check(opened == [DC.C2], "an unheld concept is still swept and launched (%r)" % opened)
+    rej = [(DC.C1, {"stage": 3, "status": "ready", "results": [
+        {"outcome": "rejected", "why": ["x: source path no/such/file.json does not exist"]}]}, old)]
+    st, acts, opened = DC.sweep_decide(rej)
+    check(not any("parked" in str(a.get("kind")) for a in acts), "a held rejected concept raises no parked alarm")
+    # a run-now already pending on a held concept is refused at launch, said once, no alarm
+    rs = {"done": {}, "runs": [], "run_now": {"at": DC.T, "by": "Dispatcher", "why": "chain", "mode": "run",
+                                              "concept": DC.C1}}
+    st, acts, opened = DC.sweep_decide([], {"Arbiter": rs})
+    last = st["roles"]["Arbiter"].get("run_now_last") or {}
+    check(opened == [] and "owner hold" in str(last.get("outcome")) and not any(a.get("do") == "alarm" for a in acts),
+          "a pending run-now on a held concept is refused (owner hold), not launched: %r" % last.get("outcome"))
+    # the harvest's chain: an accepted close leaving a held concept ready chains nothing
+    rs = {"done": {}, "runs": []}
+    acts = DC.harvest(rs, {"stage": 3, "status": "ready"})
+    check(not rs.get("run_now") and not rs.get("run_now_queue"), "a harvested close on a held concept chains nothing")
+    # an unreadable hold file: no concept is chained, one alarm per outage
+    p = os.environ["RM_OWNER_HOLD_FILE"]
+    with open(p, "w") as f:
+        f.write("{")
+    st, acts, opened = DC.sweep_decide([(DC.C2, {"stage": 2, "status": "ready"}, old)])
+    check(opened == [] and any("owner_hold" in str(a.get("kind")) for a in acts),
+          "an unreadable hold file chains nothing and alarms: %r" % [a.get("kind") for a in acts])
+    del RL
+
+
+def test_stall_reader():
+    import ops_watch as OW
+    root = tempfile.mkdtemp(prefix="owner_hold_concepts_")
+    for m in ("ModOne", "ModTwo"):
+        os.makedirs(os.path.join(root, m))
+        with open(os.path.join(root, m, "stage.json"), "w") as f:
+            json.dump({"stage": 2, "status": "ready", "history": [{"at": "2026-11-16T01:00:00Z"}]}, f)
+    temp_holds(["ModOne", "ModTwo"])
+    out = OW._q_designer({"root": root, "runs_dir": root}, 1794880000, {}, None)
+    temp_holds(["ModOne"])
+    out1 = OW._q_designer({"root": root, "runs_dir": root}, 1794880000, {}, None)
+    temp_holds([])
+    out0 = OW._q_designer({"root": root, "runs_dir": root}, 1794880000, {}, None)
+    check(repr(out) != repr(out0) and repr(out1) != repr(out), "the Designer stall reader leaves held concepts out "
+          "(all held %r; one held %r; none held %r)" % (out, out1, out0))
+
+
+def test_dispatch_tick():
+    import maturation_dispatch as MD
+    import maturation_autonomy as AUT
+    temp_holds(list(SIX))
+    sd = tempfile.mkdtemp(prefix="owner_hold_dispatch_")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = sd
+    seen = {}
+    saved = (MD.decide, AUT.widen, AUT.resolve, MD.pilot_holders)
+
+    def decide(cfg, st, facts, now, account=None, bridge=None, releases=None):
+        seen["decide"] = list(cfg["advancing"])
+        rows = [{"mod": m, "stage": "offline_build", "decision": "launch", "why": "fake: owed", "owed": "build"}
+                for m in cfg["advancing"]]
+        return rows, list(cfg["advancing"])
+
+    def resolve(root, cfg, st, facts, rows, launches, now, fx):
+        seen["resolve"] = [r["mod"] for r in rows]
+        return rows, launches
+
+    def holders(root, cfg, st, facts, rows, launches, now, fx=None):
+        seen["holders"] = [r["mod"] for r in rows]
+        return rows, launches
+    every = list(SIX) + list(UNTOUCHED)
+    try:
+        MD.decide, MD.pilot_holders = decide, holders
+        AUT.widen = lambda root, cfg, st, apply, fx=None: dict(cfg, advancing=every)
+        AUT.resolve = resolve
+        facts = {m: {"stage": "offline_build", "live_units": ["rm-detached-x-1"] if m == "Contagion" else []}
+                 for m in every}
+        fx = {"autonomy": True, "facts": lambda: facts, "account": lambda: (True, ""), "releases": lambda: [],
+              "convergence": lambda root, rd: rd, "code": lambda: "tree"}
+        rd = MD.tick(HERE, dict(MD.load_cfg(), advancing=["Pyrelands", "Contagion"]), False, fx=fx, now=1794880000,
+                     page=False)
+    finally:
+        MD.decide, AUT.widen, AUT.resolve, MD.pilot_holders = saved
+    check(sorted(seen.get("decide") or []) == sorted(UNTOUCHED),
+          "decide sees only the unheld mods, the widened Designer concepts included: %r" % seen.get("decide"))
+    check(sorted(seen.get("resolve") or []) == sorted(UNTOUCHED) and sorted(seen.get("holders") or [])
+          == sorted(UNTOUCHED), "the steward layer and the pilot holders never see a held mod")
+    m = rd["mods"]
+    check(all(m[x]["decision"] == "owner_hold" and m[x].get("klass") == "held"
+              and str(m[x].get("status")).startswith("HELD BY OWNER 2026-11-16") for x in SIX),
+          "every held mod reads owner_hold / held / HELD BY OWNER 2026-11-16: %r" % {x: m.get(x, {}).get("decision")
+                                                                                    for x in SIX})
+    check("allowed to finish" in str(m["Contagion"].get("status")),
+          "a held mod's live run is named as allowed to finish: %s" % m["Contagion"].get("status"))
+    check(all(m[x]["decision"] == "would_launch" for x in UNTOUCHED), "the unheld six still launch (dry run): %r"
+          % {x: m[x]["decision"] for x in UNTOUCHED})
+    check(not any(x in str(rd.get("idle_owed_mods")) + str(rd.get("needs_conductor")) + str(rd.get("stalled"))
+                  + str(rd.get("paused")) for x in SIX), "no held mod in the idle, Needs Conductor, stalled or paused "
+          "lists")
+    lines = MD.status_lines(rd, 1794880000, unit_state=lambda u: "active")
+    held_lines = [ln for ln in lines if "HELD BY OWNER" in ln]
+    check(len(held_lines) == 6 and all("Only Pyrelands" in ln and "lift" in ln for ln in held_lines),
+          "status prints six HELD BY OWNER lines with his words and the lift command")
+
+
+def main():
+    for t in (test_the_shipped_list, test_unreadable_raises, test_lift, test_designer_chain, test_stall_reader,
+              test_dispatch_tick):
+        try:
+            t()
+        except Exception as e:  # noqa: BLE001
+            check(False, "%s raised %s: %s" % (t.__name__, type(e).__name__, e))
+    os.environ.pop("RM_OWNER_HOLD_FILE", None)
+    print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

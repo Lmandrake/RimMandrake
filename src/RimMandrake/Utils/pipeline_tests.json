@@ -8,6 +8,8 @@
     "src/RimMandrake/Utils/maturation*.py",
     "src/RimMandrake/rimflow/coverage_judge*.py",
     "src/RimMandrake/rimflow/coverage_calibration.py",
+    "src/RimMandrake/rimflow/mod_owner_hold.py",
+    "src/RimMandrake/rimflow/mod_owner_hold.json",
     "src/RimMandrake/rimflow/bar_rule*.py",
     "src/RimMandrake/rimflow/designer_stage*.py",
     ".claude/hooks/role_result_before_stop.py",
@@ -28,6 +30,7 @@
   ],
   "tests": [
     {"test": "src/RimMandrake/Utils/selftest_maturation_convergence.py", "seconds": 0.4},
+    {"test": "src/RimMandrake/rimflow/selftest_mod_owner_hold.py", "seconds": 0.4},
     {"test": "src/RimMandrake/rimflow/selftest_codex_review_fixes.py", "seconds": 0.9},
     {"test": "src/RimMandrake/rimflow/selftest_coverage_judge.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_coverage_judge_loop.py", "seconds": 0.6},

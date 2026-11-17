@@ -152,9 +152,13 @@ def widen(root, cfg, st, apply, fx=None):
     found = fx["discovered"]() if "discovered" in fx else discovered(root)
     seed = fx.get("seed", seed_and_land)
     st.setdefault("seed_refused", {})
+    import mod_owner_hold as OH
+    held = OH.load()
     for m in found:
         if m not in adv:
             adv.append(m)
+        if m in held:
+            continue        # the owner holds it (mod_owner_hold.py): not seeded; the tick lists it HELD BY OWNER
         if not os.path.isfile(os.path.join(root, "design", "concepts", m, M.RECORD)) and apply:
             try:
                 st["seed_refused"].pop(m, None)
