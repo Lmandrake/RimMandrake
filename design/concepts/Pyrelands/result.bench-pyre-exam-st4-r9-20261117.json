@@ -1,0 +1,10 @@
+{
+ "run": "bench-pyre-exam-st4-r9-20261117",
+ "stage": 4,
+ "outcome": "done",
+ "summary": "Cold Reader exam retaken on the tree and sheet as re-pinned for the locked change of 2026-11-17T19:49:53Z (round-9 gap fixes 314117207e, c07cd5a998, c1564dea9c; re-pin f00e3ad737): 40 frozen scenarios (Examiner aa81345c846acbccb e1-e32, Challenger a38265bfec3640110 c1-c8; 23 rejects), Readers a8df6ea0288f94114 and a682832acb7f2183e agree on all 40, 40/40, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with fire_walks_with_wind removed (a68e1a33a4f8efa28) accepted e5 and c3, wind rejects both Readers caught, so the set discriminates. exam.json carries it.",
+ "quick_look": {
+  "offer": false,
+  "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
+ }
+}

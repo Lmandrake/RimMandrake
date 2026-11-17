@@ -32,7 +32,7 @@
    ],
    "leaf_kind": "experience",
    "clause_kind": "change",
-   "experience": "The player, landing on a fresh Pyrelands map in ordinary play and watching at play zoom through the first days, sees grass fire moving across the deep ash like a natural grass fire, with a black scorched trail behind it that regreens; when it dies down it is never out for long, a smoulder relighting in open grass. It must not read as a flood that takes the whole map and its grass, a fire that does not move, a fire that burns once and is gone for good, or a fire that lights inside the colony.",
+   "experience": "The player, landing on a fresh Pyrelands map in ordinary play and watching at play zoom through the first days, sees grass fire moving across the deep ash like a natural grass fire, with a black scorched trail behind it that regreens; when it dies down it is never out for long, a smoulder relighting in open grass. It must not read as a flood that takes the whole map and its grass, a fire that does not move, or a fire that burns once and is gone for good.",
    "scenario": "Generate a fresh Pyrelands map with its opening front; capture the front each game hour for a day; let it die down and wait for the smoulder relight; record each relight cell and what grows on it.",
    "false_pass": [
     "a fire spawned by the test where the front should be, so a burn exists but nothing walks",

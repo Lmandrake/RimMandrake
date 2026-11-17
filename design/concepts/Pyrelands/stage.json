@@ -683,10 +683,52 @@
     "ref": "run rm-role-designer-1794938276",
     "stage": 5,
     "tokens": 400000
+   },
+   {
+    "at": "2026-11-17T20:05:06Z",
+    "kind": "helper",
+    "ref": "rm-judge examiner aa81345c846acbccb (run bench-pyre-exam-st4-r9-20261117)",
+    "stage": 4,
+    "tokens": 55025
+   },
+   {
+    "at": "2026-11-17T20:05:06Z",
+    "kind": "helper",
+    "ref": "rm-judge challenger a38265bfec3640110 (run bench-pyre-exam-st4-r9-20261117)",
+    "stage": 4,
+    "tokens": 37877
+   },
+   {
+    "at": "2026-11-17T20:05:06Z",
+    "kind": "helper",
+    "ref": "rm-judge readerA a8df6ea0288f94114 (run bench-pyre-exam-st4-r9-20261117)",
+    "stage": 4,
+    "tokens": 53257
+   },
+   {
+    "at": "2026-11-17T20:05:06Z",
+    "kind": "helper",
+    "ref": "rm-judge readerB a682832acb7f2183e (run bench-pyre-exam-st4-r9-20261117)",
+    "stage": 4,
+    "tokens": 53117
+   },
+   {
+    "at": "2026-11-17T20:05:06Z",
+    "kind": "helper",
+    "ref": "rm-judge control a68e1a33a4f8efa28 (run bench-pyre-exam-st4-r9-20261117)",
+    "stage": 4,
+    "tokens": 51967
+   },
+   {
+    "at": "2026-11-17T20:05:06Z",
+    "kind": "unmeasured",
+    "ref": "run bench-pyre-exam-st4-r9-20261117",
+    "stage": 4,
+    "tokens": 3940000
    }
   ],
   "reserve": 60000,
-  "spent": 18977885
+  "spent": 23169128
  },
  "coverage_releases": [
   {
@@ -1672,6 +1714,12 @@
    "stage": 4,
    "what": "open",
    "why": "run bench-pyre-exam-st4-r9-20261117, stage 4, budget 3940000"
+  },
+  {
+   "at": "2026-11-17T20:05:06Z",
+   "stage": 5,
+   "what": "close",
+   "why": "run bench-pyre-exam-st4-r9-20261117: stage 4 done"
   }
  ],
  "item": "BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS",
@@ -1691,7 +1739,6 @@
    "why": "the judge-and-rework loop has spent 8070268 tokens since 2026-11-06T02:30:55Z, past its ceiling of 8000000 (2x the cap)"
   }
  ],
- "pending_decision": "Stage 3 owes the five coverage gaps in coverage_verdict.json (at 2026-11-06T16:05:05Z).",
  "recovery": [],
  "results": [
   {
@@ -2156,36 +2203,42 @@
    "outcome": "invalidated",
    "stage": 4,
    "why": "inputs changed since stage 4 was accepted: sheet, tree, scenes; back to stage 4"
+  },
+  {
+   "at": "2026-11-17T20:05:06Z",
+   "inputs": {
+    "exam": "4de0b1a14538602f7719b948f67e1c2d15b461d23592c9cc45d55a35051d2e15",
+    "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
+    "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
+    "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
+    "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
+    "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
+    "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1"
+   },
+   "manifest": {
+    "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
+    "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
+   },
+   "outcome": "done",
+   "owner_uncited": [
+    "1793766816609436834",
+    "1794611171307640419",
+    "1794790810777772480",
+    "1794790871101885625"
+   ],
+   "quick_look": {
+    "offer": false,
+    "why": "the exam asks him nothing: every scenario's expect comes from a leaf, both Readers matched it, and no decision is open"
+   },
+   "run": "bench-pyre-exam-st4-r9-20261117",
+   "stage": 4,
+   "summary": "Cold Reader exam retaken on the tree and sheet as re-pinned for the locked change of 2026-11-17T19:49:53Z (round-9 gap fixes 314117207e, c07cd5a998, c1564dea9c; re-pin f00e3ad737): 40 frozen scenarios (Examiner aa81345c846acbccb e1-e32, Challenger a38265bfec3640110 c1-c8; 23 rejects), Readers a8df6ea0288f94114 and a682832acb7f2183e agree on all 40, 40/40, accept_where_reject_core 0, no challenger misses; control on the exam-control copy with fire_walks_with_wind removed (a68e1a33a4f8efa28) accepted e5 and c3, wind rejects both Readers caught, so the set discriminates. exam.json carries it."
   }
  ],
  "runner": "claude",
- "running": {
-  "at": "2026-11-17T19:58:31Z",
-  "inputs": {
-   "exam": "5059a54449e65b8e99919ad28cf512fddaa6b435625661fd19e709fb1123eb60",
-   "floor": "bd9d7fd896359814f8ad5c820b6b23ee1d61a06a6d4a33cbe92595cc4771b32d",
-   "owner": "79abe4290fa077e9fd73b85d4c6d6e47ee49c99ed1608b827f1afbe5f8895520",
-   "root": "ae26d34f7fa9f55c5bb0ea115379238907576a0151185aabfad9d1f495425fab",
-   "scenes": "b08126e2f6529eba85ebc5a0ad8aa8cad5da44f3c4744986affd96371a3eb245",
-   "sheet": "628feeb2919d67f7f489233bc436af3131c59595a7373502d2e1669bff30fd4c",
-   "tree": "2151214485d8553d2b830b2b86104a8d54ce19017d8b8a0fc8eefd556cc6b8c1"
-  },
-  "manifest": {
-   "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
-   "designer_exam.md": "de16443a97b34d590c9997247a53b9fec8da93ad2756b211d0ead83dc04621a6"
-  },
-  "owner_uncited": [
-   "1793766816609436834",
-   "1794611171307640419",
-   "1794790810777772480",
-   "1794790871101885625"
-  ],
-  "reserved": 3940000,
-  "run": "bench-pyre-exam-st4-r9-20261117",
-  "stage": 4
- },
+ "running": null,
  "schema": 1,
- "stage": 4,
+ "stage": 5,
  "status": "ready",
  "waiting_owner_feed": "c98d75390b0b629bc1c556f1ff746b7e27cdfdd0095436458a89fb6e590b08e0"
 }
