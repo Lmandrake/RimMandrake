@@ -1,0 +1,987 @@
+{
+  "rows": [
+    {
+      "id": "biome_worldgen",
+      "what": "Historical planet-scoring worker and planet-rarity setting (separated from kept biome identity).",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeBiome.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeWorld.cs",
+        "ITEM:GELATINOUSSLIME_RM_MOD_BUILD_1",
+        "ITEM:UMBRA_SLIME_ROADS_VERIFY_FINALLY_DRAWN"
+      ],
+      "proven": "stale",
+      "called_by": "BiomeDef.workerClass -> BiomeWorker_GelatinousSlime.GetScore -> RM_SlimeWorld.BiomeScore; SlimeMod rarity UI",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "recommend_retire",
+      "why": "Designer decision: No worldgen in any version is the standing rule and the explicit brief; historical universal-planet worker/rarity promises do not authorize an alternative planet. Recommend permanent inert retention, not a next-version option.",
+      "needed_by": null,
+      "ticket": "T0"
+    },
+    {
+      "id": "slime_terrain",
+      "what": "Tagged hardened, rich, grass, mud and liquid slime terrain provide movement, fertility and contact surfaces.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/TerrainDefs/SlimeTerrain.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml"
+      ],
+      "proven": "missing",
+      "called_by": "BiomeDef.terrainsByFertility and terrainPatchMakers; SlimeUtility.IsBeingRead; ExplosiveGrowth Slime top; FlowWorks slip/liquid patches",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "land",
+      "why": "Designer decision: Without firm shelves, slow soft ground and liquid channels the player cannot read where to build or traverse the body. All body ground remains contact-active, including hardened ground.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "slime_flora",
+      "what": "Slime grass, bellows, thumbstalk and readerbloom furnish the native pseudo-plant ecology and harvests.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Plants/SlimeFlora.xml",
+        "src/RimMandrake/GelatinousSlime/Textures/Things/Plant"
+      ],
+      "proven": "missing",
+      "called_by": "BiomeDef.wildPlants; vanilla Plant jobs; ExplosiveGrowth roster Slime tops",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "life",
+      "why": "Designer decision: Grass feeds grazers, bellows supplies harvestable raw material, thumbstalk and readerbloom supply ordinary vegetation and silhouettes, with no custom quest or extraction bonus. Deleting ordinary growth, grazing and harvest removes life and the material input.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "gelatid",
+      "what": "Resistant gelatid herd creature supplies the visible slime ecology and Titanoslime shedding product.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Gelatid.xml",
+        "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs"
+      ],
+      "proven": "stale",
+      "called_by": "BiomeDef.wildAnimals; vanilla grazing/predation; optional next-version titan shedding",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "life",
+      "why": "Designer decision: The harmless resistant herd is the ordinary grazer and prey population; deleting grazing/resistance leaves the wrong food chain.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "oomb_family",
+      "what": "Lesser, ordinary and greater oomb roster, resistant identity and ordinary refuse feeding; advancement/fission separate.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Oomb.xml",
+        "src/RimMandrake/GelatinousSlime/Patches/RM_Oomb_VEFThinkTree.xml"
+      ],
+      "proven": "missing",
+      "called_by": "BiomeDef.wildAnimals; VEF EatWeirdFood and RM_Oomb_VEFThinkTree patch; EnvironmentalHazards death worker",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "life",
+      "why": "Designer decision: Keep lesser, ordinary and greater oombs and refuse-eating: removing their scavenging eliminates the named scavenger role and its tame utility. Advancement/fission is separately inventoried, not hidden in this row.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "wuum",
+      "what": "Wuum substrate creature resists the body and carries acid death burst and optional VEF asexual reproduction.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Wuum.xml"
+      ],
+      "proven": "missing",
+      "called_by": "BiomeDef.wildAnimals; VEF AsexualReproduction; EnvironmentalHazards death worker",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "life",
+      "why": "Designer decision: Keep the substrate creature, bite and ordinary reproduction: without reproduction a genderless species has no natural renewal. Its VEF cloning is an ordinary reproductive route, not a separate reward mechanic; capped shared-framework behaviour is modelled.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "gappo_family",
+      "what": "Lesser, ordinary and greater gappos are resistant native filter-feeders.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Gappo.xml",
+        "ITEM:GELATINOUSSLIME_GAPPO_FAMILY_1"
+      ],
+      "proven": "missing",
+      "called_by": "BiomeDef.wildAnimals; vanilla grazing; greater race comp also calls deferred GappoChannel",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "life",
+      "why": "Designer decision: Keep lesser, ordinary and greater filter-feeders with ordinary feeding; removing grazing loses the filter-feeder role. Channel hardening is independently deferred.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "gappo_channels",
+      "what": "A greater gappo hardens eligible non-liquid slime ground and clears slime smear while grazing, under a setting.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/GappoChannel.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Gappo.xml"
+      ],
+      "proven": "missing",
+      "called_by": "Gappo.xml greater ThingDef -> RM_CompGappoChannel.CompTickRare -> terrain replacement and filth Destroy",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: The feeder remains a feeder if it stops paving and cleaning; terrain engineering is a secondary utility, not required land or signature.",
+      "needed_by": null,
+      "ticket": "T1"
+    },
+    {
+      "id": "dwommo_flight",
+      "what": "Dwommo has actual flight fields, animation frames and a grounding setting.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Dwommo.xml",
+        "src/RimMandrake/GelatinousSlime/Source/DwommoFlight.cs",
+        "ITEM:GELATINOUSSLIME_DWOMMO_FLIER_1"
+      ],
+      "proven": "missing",
+      "called_by": "Dwommo.xml MaxFlightTime and flying animation fields; DwommoFlight.Apply at startup and settings close",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "life",
+      "why": "Designer decision: Removing real flight contradicts the fictional floater and the flyer ruling. Keep native resistance and actual tracker flight; no new sky system.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "fubbum_hunting",
+      "what": "Fubbum is a resistant predator with a hunting toggle.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Fubbum.xml",
+        "src/RimMandrake/GelatinousSlime/Source/FubbumHunting.cs",
+        "ITEM:GELATINOUSSLIME_FUBBUM_HUNTER_1"
+      ],
+      "proven": "missing",
+      "called_by": "Fubbum.xml predator/size flags; FubbumHunting.Apply; vanilla predator jobs",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "life",
+      "why": "Designer decision: Without hunting the native predator has no ordinary ecological role. Vanilla prey choice applies; do not promise gelatid-only prey or adult-colonist safety for smaller children.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "visitor_ecology",
+      "what": "Neighbour-biome fauna arrive partly slimified through a generation seed and capped ongoing trickle, filtered away from hostile arrivals.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/SlimeVisitors.cs",
+        "src/RimMandrake/GelatinousSlime/Patches/RM_SlimeVisitorSeed_MapGenPatch.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/GenStepDefs/RM_SlimeVisitorSeed.xml"
+      ],
+      "proven": "missing",
+      "called_by": "MapComponent_SlimeVisitors tick; BuildNeighbourRoster; GenStep_SlimeVisitorSeed in local map setup only; CountVisitors counts ALL factionless wild animals",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "life",
+      "why": "Designer decision: Susceptible outsiders make the boundary between native resistance and absorption visible. Remove them and a native-only map cannot show that encounter. Keep bounded arrivals, no load-time reseeding.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "exposure",
+      "what": "Contact with tagged slime ground applies film to flesh pawns, including colonists, subject to identity/gene resistance.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/SlimeExposure.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Slimification.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes.xml"
+      ],
+      "proven": "stale",
+      "called_by": "MapComponent_SlimeExposure tick -> SlimeUtility.IsBeingRead/IsResistant -> AddHediff; also calls deferred SlimeArchiveUtility.Touch",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "signature",
+      "why": "Designer decision: Touch is the causal input of the material bargain; deleting contact removes its price. Must work independently of deferred archive recording.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "slimification_ladder",
+      "what": "Staged film slows and impairs a pawn, suppresses panic from half-absorption, progresses at the configured ordinary or injected rate and reaches dissolution.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/HediffDefs/Slimification.xml",
+        "src/RimMandrake/GelatinousSlime/Source/Slimification.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_SlimeLadder.cs"
+      ],
+      "proven": "stale",
+      "called_by": "HediffComp_Slimification.CompPostTickInterval -> RM_SlimeLadder.Check/RatePerDay; SlimeIngestion; titan release",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "signature",
+      "why": "Designer decision: Without progressive impairment and lethal completion contact has no escalating cost. The same ordinary ladder charges raw consumption and engulf release.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "cure_geography",
+      "what": "Early film wipes off off-body. Later ordinary film holds in normal country. Tagged drying biomes reverse film for map and caravan context.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/Slimification.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeBiome.cs",
+        "src/RimMandrake/GelatinousSlime/Patches/DryingBiomes.xml"
+      ],
+      "proven": "stale",
+      "called_by": "HediffComp_Slimification.SeverityChangePerDay -> SlimeUtility.BiomeOf -> DryingBiomeExtension; caravan Tile context",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "needed_by",
+      "why": "Designer decision: Deleting early wipe-off, advanced-film hold and drying reversal makes the signature an unavoidable death sentence or a trivial step-off cure; the map answer is explicitly owner-authored.",
+      "needed_by": "signature: ordinary absorption",
+      "ticket": null
+    },
+    {
+      "id": "dissolution",
+      "what": "Terminal film kills without leaving its corpse, yields slime and smear, and drops gear and carried inventory through the corrected destruction path.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/Slimification.cs",
+        "ITEM:CORPSEGEAR_FIX_HATCH_AND_DISSOLVE_DESTROY"
+      ],
+      "proven": "stale",
+      "called_by": "HediffComp_Slimification.Dissolve; titan Digest; vanilla Kill/Corpse.Strip/Destroy",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "signature",
+      "why": "Designer decision: Without terminal absorption the threat is cosmetic. Preserve belongings and readable death/signs in map, holder and caravan contexts.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "warnings",
+      "what": "Stage letters, the existing health information and a standing slimification alert expose the escalating threat.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/SlimeAlerts.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Slimification.cs"
+      ],
+      "proven": "stale",
+      "called_by": "HediffComp_Slimification.Announce saved latch; Alert_Slimification; titan inspect/countdown/messages",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "needed_by",
+      "why": "Designer decision: Without named existing-health/alert information and a cause-of-loss sign the player cannot act on the signature and the no-silent-vanishing ruling fails. Keep necessary warnings, not entry-recorded flavour.",
+      "needed_by": "signature and life: readable absorption and engulfing",
+      "ticket": null
+    },
+    {
+      "id": "raw_slime_bargain",
+      "what": "Ingesting raw slime purges poison-like hediffs and charges film severity in the same dose.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeItems.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_RawSlime ingestible -> IngestionOutcomeDoer_SlimeDose -> CurePoisons then DoseSeverity; FlowWorks living-slime liquid doer",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "signature",
+      "why": "Designer decision: Poison relief and film arrive in the same raw dose: deleting the benefit loses the sourced wondrous bargain, deleting the fee makes it free. Cooked output is a different safe use of the material.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "antidote",
+      "what": "A friend can administer toxic antidote through UseItem to clear subterminal film, including during coma.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeItems.xml"
+      ],
+      "proven": "stale",
+      "called_by": "SlimeItems.xml CompProperties_Usable (UseItem), CompTargetable_SinglePawn and bare CompProperties target effect/recipeMaker -> CompTargetEffect_SlimeAntidote.DoEffectOn",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "needed_by",
+      "why": "Designer decision: Deleting actual targeted toxic treatment removes the local escape for an incapacitated or advanced patient. Keep its recipe, targetability, cost and completed UseItem job.",
+      "needed_by": "signature: actionable escape",
+      "ticket": null
+    },
+    {
+      "id": "compressor_economy",
+      "what": "Slime compressor turns raw slime into buildable slime blocks.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimeWorks.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeItems.xml"
+      ],
+      "proven": "missing",
+      "called_by": "SlimeWorks.xml RM_SlimeCompressor/RM_Make_SlimeBlock -> RM_SlimeBlock stuff and vanilla construction",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "needed_by",
+      "why": "Designer decision: No local quarry is a land law; deleting compression removes renewable local stone. Keep a normal recipe and usable block output with imported bootstrap materials.",
+      "needed_by": "land and signature: no-rock material economy",
+      "ticket": null
+    },
+    {
+      "id": "pit_meals",
+      "what": "Slime pit renders raw slime into meals.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimeWorks.xml"
+      ],
+      "proven": "missing",
+      "called_by": "SlimeWorks.xml RM_SlimePit/RM_Make_SlimeMeal -> MealSimple, normal cooking and ingestion",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "needed_by",
+      "why": "Designer decision: Without normal slime-to-meal processing the food branch cannot become a managed routine without repeated raw-dose charges. Keep this base bill, separately from gourmet solvent bills.",
+      "needed_by": "signature: processed food",
+      "ticket": null
+    },
+    {
+      "id": "pit_solvent",
+      "what": "Solvent bills turn toxipotatoes and twisted meat into safe products, and Rot ambrosyx into a lavish dish with drug/addiction effects removed.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimePitSolvent.xml",
+        "src/RimMandrake/GelatinousSlime/Source/PitSolvent.cs",
+        "ITEM:GELATINOUSSLIME_PIT_SOLVENT_1"
+      ],
+      "proven": "missing",
+      "called_by": "SlimeMod.WriteSettings -> PitSolvent.Apply recipeUsers/cache edits; SlimePitSolvent.xml recipe/product defs",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Rendering toxipotatoes, twisted meat and ambrosyx is a cross-biome cuisine utility. Removing it leaves raw-slime meals and stone intact.",
+      "needed_by": null,
+      "ticket": "T2"
+    },
+    {
+      "id": "farm_conversion",
+      "what": "Growing zones on slime grass gradually revert to rich slime in a biome whose terrain definitions opt into slime grass.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/SlimeExposure.cs:94"
+      ],
+      "proven": "missing",
+      "called_by": "MapComponent_SlimeFieldConversion.FinalizeInit checks biome terrain table; tick random growing-zone cell -> rich slime; ExplosiveGrowth also writes rich terrain",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "land",
+      "why": "Designer decision: Deleting conversion creates permanent fertile open farmland, contradicting the land law. A label-only change to similarly productive rich slime is insufficient.",
+      "needed_by": null,
+      "ticket": "T25"
+    },
+    {
+      "id": "farm_ruins",
+      "what": "Generation places drowned farm outlines, walls/fences, channels and a readable farm ledger with ordinary loot.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/FarmRuins.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/GenStepDefs/RM_SlimeFarmRuins.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/FarmLedger.xml",
+        "ITEM:GELATINOUSSLIME_FARM_RUINS_1"
+      ],
+      "proven": "missing",
+      "called_by": "GenStep_SlimeFarmRuins via RM_SlimeFarmRuins_MapGenPatch; MapComponent_SlimeFarmRuins sites; FarmLedger.xml",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Custom ruins, loot and a farm ledger narrate failure; the living fields already demonstrate it. They are inhabited-object dressing, not needed land.",
+      "needed_by": null,
+      "ticket": "T3"
+    },
+    {
+      "id": "slime_rain",
+      "what": "Custom brief intense green rain weather has rainRate and occurs in the biome weather pool.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/WeatherDefs/SlimeRain.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml"
+      ],
+      "proven": "stale",
+      "called_by": "BiomeDef weather pool -> RM_Weather_SlimeRain WeatherDef; campaign SlimeRainStrip_Campaign patch",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "land",
+      "why": "Designer decision: Removing the organism-induced wetting would erase ordinary sky/weather and the lore water supply. This is ordinary biome hydrology, not a second elective signature or a meteorological-rain exception invented here.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "archive_selection",
+      "what": "Priority-selected GeneArchiveDef provides universal target/rider lists, with an optional campaign archive overriding it.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/GeneArchive.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/GeneArchiveDefs/DefaultArchive.xml",
+        "src/RimUtinni/UtinniPatches/Defs/GeneArchiveDefs/RUT_SlimeGeneArchive.xml",
+        "ITEM:GELATINOUSSLIME_GENE_TEXT_TIER_1"
+      ],
+      "proven": "stale",
+      "called_by": "GeneArchiveDef.Active -> Dialog_GeneArchive from CompGeneSeeker gizmo; SlimeMod invalidates active cache",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Choosing target/rider archives starts a separate elective gene-acquisition journey. Ordinary food/stone/contact survival remains whole without it.",
+      "needed_by": null,
+      "ticket": "T4"
+    },
+    {
+      "id": "seeker_scanner",
+      "what": "Blank handheld seeker is primed through an archive dialog and reports nearest slime world tile or a time-limited in-map extraction mark.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/GeneSeeker.xml"
+      ],
+      "proven": "stale",
+      "called_by": "GeneSeeker.xml CompGeneSeeker; gizmos -> archive choice/nearest world tile/map mark; no separate home console",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Handheld gene localisation belongs to that elective expedition; liquid channels still exist without a gene beacon.",
+      "needed_by": null,
+      "ticket": "T5"
+    },
+    {
+      "id": "seeker_extraction",
+      "what": "A primed seeker is carried to its marked current and consumed by a work job to create one loaded perishable injectable.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs:361",
+        "src/RimMandrake/GelatinousSlime/Defs/JobDefs/SlimeJobs.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/GeneSeeker.xml"
+      ],
+      "proven": "stale",
+      "called_by": "CompGeneSeeker float menu -> RM_ExtractSlimeSample -> JobDriver_ExtractSlimeSample -> loaded seeker creation/blank destruction",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: The marked-current extraction job supplies the deferred gene journey, not ordinary harvest.",
+      "needed_by": null,
+      "ticket": "T6"
+    },
+    {
+      "id": "gene_injection",
+      "what": "Loaded seeker grants target plus rider as endogenes, is consumed, induces xenogermination coma and fast slimification, and warns about lacking a capable friend.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs:476",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeSeekerProof.cs"
+      ],
+      "proven": "stale",
+      "called_by": "GeneSeekerLoaded comps -> CompTargetEffect_InjectSlimeGenes -> AddGene, coma, StartFastClock, item Destroy",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Chosen gene plus rider, coma and accelerated film is a distinct elective bargain. Retain ordinary contact and the ordinary antidote without this route.",
+      "needed_by": null,
+      "ticket": "T7"
+    },
+    {
+      "id": "slime_marked",
+      "what": "Gene acquisitions add lasting social marks, with campaign Reek/charm modifiers and generic condition/forced-thought helpers for archive genes.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/GeneSeeker.cs",
+        "src/RimMandrake/GelatinousSlime/Source/GeneConditions.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThoughtDefs/SlimeThoughts.xml"
+      ],
+      "proven": "stale",
+      "called_by": "CompTargetEffect_InjectSlimeGenes -> SlimeMarked/RM_SlimeLadder.MarkIncrement; GeneArchive ThoughtWorker; GeneConditions.cs; UtinniPatches A/B genes",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Permanent opinion/romance marks price the deferred gene journey; ordinary film requires no social economy. Existing campaign gene effects must remain valid for already existing carriers.",
+      "needed_by": null,
+      "ticket": "T8"
+    },
+    {
+      "id": "archive_snapshot",
+      "what": "Game archive stores last-contact entries for named colony humanlikes, including genes, skills, traits, age, backstories and direct relations.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/ArchiveResurrection.cs",
+        "src/RimMandrake/GelatinousSlime/Source/SlimeExposure.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
+        "ITEM:GELATINOUSSLIME_ARCHIVE_RESURRECTION_1"
+      ],
+      "proven": "missing",
+      "called_by": "MapComponent_SlimeExposure and RM_CompEngulfer.Engulf -> SlimeArchiveUtility.Touch -> GameComponent_SlimeArchive.Touch",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Recording a life for later resurrection is independent of contact damage. Calls from exposure and engulf prove coupling, not need.",
+      "needed_by": null,
+      "ticket": "T9"
+    },
+    {
+      "id": "archive_growing",
+      "what": "Powered archive vat offers paid growth of a dead recorded person, restores recorded fields and adds return/kin thoughts.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/ArchiveResurrection.cs:294",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Buildings/SlimeArchiveVat.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ResearchProjectDefs/ArchiveGrowing.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThoughtDefs/ArchiveThoughts.xml",
+        "ITEM:GELATINOUSSLIME_ARCHIVE_RESURRECTION_1"
+      ],
+      "proven": "missing",
+      "called_by": "SlimeArchiveVat.xml Building_SlimeArchiveVat -> TickRare/Grow; ArchiveGrowing research; snapshot DeadEntries menu",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Paid powered resurrection is a separate late-game promise; no survival loop here needs a vat. Preserve its last-touch, exclusive return and changed-family constraints when enabled.",
+      "needed_by": null,
+      "ticket": "T10"
+    },
+    {
+      "id": "titan_engulf",
+      "what": "Titanoslime melee engulfs eligible prey, holds/digests it under a visible timer, supports struggle/rescue/release and drops victim gear and inventory.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
+        "src/RimMandrake/GelatinousSlime/Source/TitanoslimeVerb.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Titanoslime.xml"
+      ],
+      "proven": "stale",
+      "called_by": "Titanoslime.xml tools -> TitanoslimeVerb -> RM_CompEngulfer.CanEngulf/Engulf/TickHeld/Digest/ReleaseAll; archive Touch is separate",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "life",
+      "why": "Designer decision: The resident giant is the body feeding, not scenery. Removing natural engulf/digestion/release defeats this explicitly authored animal; keep struggle, timer, terminal signs and belongings.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "titan_growth",
+      "what": "Feeding grows the Titanoslime through locked life stages, body/draw size and prey limits. Growth is permanent by default, with reversible option, max stage and growth switches.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Kernel/RM_TitanKernel.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/LifeStageDefs/Titanoslime.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_CompEngulfer.AddMass -> RM_TitanKernel -> life stage registration; HugeThings and Large Pawns consume current size",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "life",
+      "why": "Designer decision: The feeding giant grows as its ordinary lifecycle; deleting permanent growth contradicts the specific owner ruling. Keep stages/capacity/footprints from the existing kernel and HugeThings, not a separate boss event.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "titan_shedding",
+      "what": "Wounds on sufficiently large titanoslimes shed gelatids subject to its switch and cooldown.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/Gelatid.xml"
+      ],
+      "proven": "stale",
+      "called_by": "RM_CompEngulfer.PostPostApplyDamage -> RM_TitanKernel.ShedStep -> ShedOne -> AddMass; titanoslimeSheds setting",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Wound-created gelatids are a secondary combat/population mechanic; the giant still feeds, grows and releases without spawning more enemies.",
+      "needed_by": null,
+      "ticket": "T11"
+    },
+    {
+      "id": "chunk_weapon",
+      "what": "Taking a titanoslime chunk yields a thrown bioweapon whose burst coats resistant-gated pawns into advanced film without an armour gate.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/ChunkBomb.cs",
+        "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeSealBreach.xml",
+        "ITEM:GELATINOUSSLIME_TITAN_CHUNK_BOMB_1"
+      ],
+      "proven": "stale",
+      "called_by": "Titanoslime.xml butcherProducts RM_TitanoslimeChunk -> SlimeSealBreach.xml equipment -> Projectile_SlimeChunk.Impact -> Burst",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Harvesting a thrown bioweapon is an elective combat tool separate from living beside the animal. Keep owner ally danger and finite expenditure constraints for next version.",
+      "needed_by": null,
+      "ticket": "T12"
+    },
+    {
+      "id": "chunk_ground",
+      "what": "Burst converts nearby ground temporarily and restores stored terrain when the patch expires.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/ChunkBomb.cs"
+      ],
+      "proven": "missing",
+      "called_by": "ChunkBombUtility.Burst -> MapComponent_ChunkBurst.Convert/tick restore/ExposeData; no kept caller found",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Temporary blast contamination exists only to support the deferred chunk weapon. No default weather or growth may depend on its patch manager.",
+      "needed_by": null,
+      "ticket": "T13"
+    },
+    {
+      "id": "chunk_shelf",
+      "what": "Chunk age is saved and enforced by a map sweep over map stacks and spawned pawn inventory/equipment.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/ChunkBomb.cs"
+      ],
+      "proven": "missing",
+      "called_by": "CompChunkShelf; MapComponent_ChunkShelf enumerates stacks and spawned inventories/equipment; RM_TitanoslimeChunk comp",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Saved expiry belongs to the deferred chunk item. Ordinary raw slime uses its own ingestible/rotting rules.",
+      "needed_by": null,
+      "ticket": "T14"
+    },
+    {
+      "id": "slime_breach_api",
+      "what": "Chunk target effect consumes a piece to dissolve a building carrying RM_SlimeBreachable and adds drench filth.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/SealBreach.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Items/SlimeSealBreach.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_TitanoslimeChunk target comps -> CompTargetEffect_SlimeBreach -> RM_SlimeBreachable target Destroy and piece SplitOff",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: Generic seal dissolution is an elective chunk interaction; no land traversal bar requires opening a vault.",
+      "needed_by": null,
+      "ticket": "T15"
+    },
+    {
+      "id": "campaign_vault_seal",
+      "what": "Slough V5 vault places an impassable damage-absorbing flesh plug with proximity-chunk dissolution.",
+      "built": "present",
+      "evidence": [
+        "src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/ThingDefs_Buildings/RUT_VaultFleshSeal.xml",
+        "src/RimUtinni/StructureInjectionsRUT/Source/VaultDungeons/CompFleshSeal.cs",
+        "ITEM:GELATINOUSSLIME_VAULT_SEAL_PLUG_1"
+      ],
+      "proven": "missing",
+      "called_by": "StructureInjectionsRUT RUT_VaultFleshSeal -> CompFleshSeal proximity chunk scan; separate from RM_SlimeBreachable API",
+      "serves": "separate optional system or prohibited historical worldgen",
+      "fate": "next_version",
+      "why": "Designer decision: The actual campaign vault and plug are a separate adventure. Turning off the slime interaction must not delete an existing campaign structure or make it open for free.",
+      "needed_by": null,
+      "ticket": "T16"
+    },
+    {
+      "id": "feature_settings",
+      "what": "Searchable scoped SettingsKit groups expose switches, tuning, defaults and resets, with consumer hooks for hazard, ecology, titanoslime, solvent, chunk and archive systems.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs",
+        "src/RimMandrake/GelatinousSlime/Source/RM_GelatinousSlime.csproj",
+        "ITEM:GELATINOUSSLIME_SETTINGS_SWITCHES_1"
+      ],
+      "proven": "stale",
+      "called_by": "SlimeMod settings, ExposeData/ResetFields/WriteSettings plus every direct SlimeSettings read in Source",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "needed_by",
+      "why": "Designer decision: The standing settings ruling requires real opt-outs, reset, scope labels and safe active transitions. Without them the shipped contract and disabled-extra isolation are unreadable.",
+      "needed_by": "land, life, signature and standing Mod Settings ruling",
+      "ticket": "T23"
+    },
+    {
+      "id": "kit_art",
+      "what": "Existing ordinary land/life/production kit, readable at play scale; moved extra art remains retained but inactive.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Textures",
+        "src/RimMandrake/GelatinousSlime/check_kit_art.py",
+        "src/RimMandrake/GelatinousSlime/live_kit_art.py",
+        "ITEM:GELATINOUSSLIME_KIT_ART_1"
+      ],
+      "proven": "stale",
+      "called_by": "Textures; def graphicData; check_kit_art.py and live_kit_art.py; Dwommo numbered flight prefix",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "needed_by",
+      "why": "Designer decision: Land and life must be legible as slime surfaces and organisms; no exact asset count is a bar. Preserve the existing kit; moved items do not require a default art exhibition.",
+      "needed_by": "land and life: readable ordinary forms",
+      "ticket": "T26"
+    },
+    {
+      "id": "acoustic_payload",
+      "what": "Biome supplies opt-in acoustic payload data for scanner interpretation.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Patches/RM_AcousticPayload_GelatinousSlime.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RM_AcousticPayload_GelatinousSlime.xml FindMod guard -> AcousticScanner pulse; strings resolve at pulse time",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "dependency",
+      "why": "Designer decision: An existing shared scanner consumes biome data under its own ruling (payload on every biome, patch comment cites owner card 2026-10-06). Keep compatibility data; no new scanner, bespoke event or requirement to own a scanner.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "rain_water_services",
+      "what": "The brief and weather description promise potable collection plus brief flooding/drainage. The inspected WeatherDef and living-slime drinking integration establish only their own fields and services.",
+      "built": "unknown",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/WeatherDefs/SlimeRain.xml",
+        "src/RimMandrake/FlowWorks/Patches/Thirst/RM_LivingSlimeDrinkable.xml",
+        "design/RimMandrake/RM_gelatinous_slime_mod.md",
+        "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs:3458",
+        "design/concepts/GelatinousSlime/stage2_argument.md"
+      ],
+      "proven": "missing",
+      "called_by": "WeatherDef -> actual loaded FlowWorks ApplyRain/collection/stock/drainage and thirst consumers; no complete slime-rain service chain proven",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "needed_by",
+      "why": "Designer decision: Deleting potable collection and rapid drainage contradicts frozen land hydrology. Rain identity/rainRate alone cannot satisfy it; actual delivery remains unknown pending a trace.",
+      "needed_by": "land: slime-rain hydrology",
+      "ticket": "T22"
+    },
+    {
+      "id": "legacy_ground_flora",
+      "what": "Retired-donor compatibility defs retain slimy grasses, fern, trees, slimecasia and legacy hardened/rich ground, with local texture paths and raw-slime harvest substitutions.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/RM_GelatinousSlime_DonorPorts.xml",
+        "src/RimMandrake/GelatinousSlime/Textures/Things/Plants",
+        "src/RimMandrake/GelatinousSlime/Textures/Terrain/Surfaces"
+      ],
+      "proven": "missing",
+      "called_by": "RM_GelatinousSlime_DonorPorts.xml defs -> saved terrain/plants; exposure tag consumers, plant harvest; FlowWorks patched terrain services",
+      "serves": "ordinary land, life and the contact/material bargain",
+      "fate": "needed_by",
+      "why": "Designer decision: Existing owned ground and vegetation in authored saves cannot become inert by compatibility accident. Preserve their identities and classify each as live ground or ordinary inert flooring explicitly. No arbitrary foreign-label retrofit.",
+      "needed_by": "land and life: authored-save continuity",
+      "ticket": "T24"
+    },
+    {
+      "id": "biome_identity",
+      "what": "Existing no-rock, buildable-shelf biome and road allowance",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/BiomeDefs/GelatinousSlime.xml"
+      ],
+      "proven": "missing",
+      "called_by": "Authored BiomeDef and ordinary map terrain/roads",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "land",
+      "why": "Designer decision: Land remains even when forbidden planet scoring is inert; no world painting or alternative planet is proposed.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "oomb_advancement_fission",
+      "what": "Feeding-based oomb promotion and tame greater-oomb fission",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Oomb.xml"
+      ],
+      "proven": "missing",
+      "called_by": "VEF EatWeirdFood advanceLifeStage/fission fields, on the SAME comp as kept refuse feeding",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "next_version",
+      "why": "Designer decision: Deletion leaves refuse-eating and every rostered oomb size. This adds a stock-multiplication/lifecycle utility that is not necessary to the stated scavenger role; separate its configuration, retain the engine.",
+      "needed_by": null,
+      "ticket": "T17"
+    },
+    {
+      "id": "native_acid_death",
+      "what": "Oomb and wuum acid death bursts",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Oomb.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Wuum.xml"
+      ],
+      "proven": "missing",
+      "called_by": "RaceProperties.deathAction -> EnvironmentalHazards DeathActionWorker_ScaledExplosion",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "life",
+      "why": "Designer decision: Deletion turns the explicitly corrosive resident into safe butcher stock and removes the cost of handling these natives; keep ordinary danger, not a weapon-production chain.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "footprints",
+      "what": "Warm-ground footprints promised by the frozen Slime land law",
+      "built": "absent",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/TerrainDefs/SlimeTerrain.xml"
+      ],
+      "proven": "missing",
+      "called_by": "takeFootprints currently relies on snow; bounded search src/RimMandrake C# footprint/decal/Slime terms found no warm-ground delivery",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "needed_by",
+      "why": "Designer decision: Without visible passage marks the frozen ordinary-ground promise is missing. Def comment explicitly says takeFootprints is not delivery; this is a gap, not permission for an art project.",
+      "needed_by": "land: readable wet passage",
+      "ticket": "T18"
+    },
+    {
+      "id": "film_overlay",
+      "what": "Bespoke body film/tint/drip overlay",
+      "built": "absent",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/HediffDefs/Slimification.xml"
+      ],
+      "proven": "missing",
+      "called_by": "HediffDef comment says render nodes deliberately unwired; source/Textures search does not establish an overlay renderer",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "next_version",
+      "why": "Designer decision: Existing health labels, real impairments and necessary alerts can expose the whole hazard. A bespoke overlay is optional presentation beyond that readable signature.",
+      "needed_by": null,
+      "ticket": "T19"
+    },
+    {
+      "id": "joining_water",
+      "what": "Joining Water rite and former hand-ring interaction",
+      "built": "absent",
+      "evidence": [
+        "design/RimMandrake/v2_nine_rituals.md",
+        "design/concepts/GelatinousSlime/record.json"
+      ],
+      "proven": "missing",
+      "called_by": "No active rite caller found by RM_SlimeHandRing/JoiningWater search of src; historical removal is recorded in concept decisions",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "next_version",
+      "why": "Designer decision: Already deferred under OWNER:1792755170245820662; keep the deferral and do not reopen it as a question.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "helix_vendor",
+      "what": "Special Helix seller/contact for gene or return technology",
+      "built": "unknown",
+      "evidence": [
+        "design/Jawa/worldbuilding/biomes/the_slime.md",
+        "design/RimMandrake/RM_gelatinous_slime_mod.md"
+      ],
+      "proven": "missing",
+      "called_by": "Campaign trade content, not ordinary slime work; bounded source search does not establish a slime-specific seller chain",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "next_version",
+      "why": "Designer decision: An elective gene/return vendor is campaign quest/trade content and not needed by current local survival. Existing generic traders remain vanilla/neighbour behaviour.",
+      "needed_by": null,
+      "ticket": "T20"
+    },
+    {
+      "id": "throat_experiment",
+      "what": "Pouring the organism into the Glowing Throat as a bespoke experiment",
+      "built": "unknown",
+      "evidence": [
+        "design/Jawa/worldbuilding/biomes/the_slime.md"
+      ],
+      "proven": "missing",
+      "called_by": "Cross-written lore hook; no GelatinousSlime Source implementation found",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "next_version",
+      "why": "Designer decision: Planet-scale hazard experiment is a separate adventure, not land, life or contact survival. No default result or new engine is invented.",
+      "needed_by": null,
+      "ticket": "T21"
+    },
+    {
+      "id": "creature_engine",
+      "what": "CreatureBehaviors shared AI compatibility",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Biomes.compose.json",
+        "src/RimMandrake/CreatureBehaviors/Source/RM_CreatureBehaviorsMod.cs"
+      ],
+      "proven": "missing",
+      "called_by": "Composed shared engine; local Fubbum/Titan hunting uses vanilla, not an invented CreatureBehaviors hook",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "dependency",
+      "why": "Designer decision: Retain loaded engine and its own enabled roster behaviours. No new local creature AI, lair or swarm is commissioned.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "growth_engine",
+      "what": "ExplosiveGrowth ordinary growth, soak cycle and Slime terrain top",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/ExplosiveGrowth/Defs/ExplosiveGrowth/RM_ExplosiveGrowthRoster.xml",
+        "src/RimMandrake/ExplosiveGrowth/Source/RM_TopResolver.cs"
+      ],
+      "proven": "missing",
+      "called_by": "Plant tick/profile -> Slime top -> DropProduce/SplitAndDie/rich-slime ring; protects floors/water/edifices",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "dependency",
+      "why": "Designer decision: This is a shared growth dependency, not a disposable local extra. Keep shipped growth/wet/top mechanics ON and model terrain, produce and forage feedback.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "hazard_engine",
+      "what": "EnvironmentalHazards scaled acid explosions and composed hazards",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/EnvironmentalHazards/Source/DeathActionProperties_ScaledExplosion.cs",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Wuum.xml"
+      ],
+      "proven": "missing",
+      "called_by": "Oomb/wuum deathAction; other hazards only where configured",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "dependency",
+      "why": "Designer decision: Need existing acid danger and normal hazard ownership; do not redesign explosion propagation or invent biome sun.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "wreckage_engine",
+      "what": "Wreckage shared salvage integration",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Biomes.compose.json",
+        "src/RimMandrake/Wreckage/Source/RM_Patch_DeconstructSalvager.cs"
+      ],
+      "proven": "missing",
+      "called_by": "Global salvage hooks if an existing authored wreck is present; no direct local caller found",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "dependency",
+      "why": "Designer decision: Existing salvage stays usable; it is not a promise to generate ruins or a required resource bootstrap. No wreck spawner is proposed.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "bones_engine",
+      "what": "Bones shared butchery/building-material integration",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/Bones/Source/RM_Patch_ButcherBones.cs"
+      ],
+      "proven": "missing",
+      "called_by": "Pawn.ButcherProducts postfix consumes actual meat yield and bone stat",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "dependency",
+      "why": "Designer decision: Retain shared hook and its own filters. Slime bodies do not become a guaranteed quarry of skeletons; imported/outside game materials may bootstrap benches.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "water_engine",
+      "what": "FlowWorks drinking, rain, water stock, slippery-ground and bottle services",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/FlowWorks/Patches/Thirst/RM_LivingSlimeDrinkable.xml",
+        "src/RimMandrake/FlowWorks/Source/RM_MapComponent_Excavation.cs",
+        "src/RimMandrake/FlowWorks/Source/RM_SlimeSlip.cs"
+      ],
+      "proven": "missing",
+      "called_by": "Liquid doers -> SlimeDose; terrain patches -> slip/drink services; ApplyRain and normal collection",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "dependency",
+      "why": "Designer decision: Need existing water/drinking contract, native environmental-water exception and exact volume ownership; the missing slime-rain connection is T22, not an engine rewrite.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "size_engines",
+      "what": "HugeThings/Large Pawns size, occupied-cell and corpse-site services",
+      "built": "present",
+      "evidence": [
+        "design/RimMandrake/RM_titanoslime_spec.md",
+        "src/RimMandrake/GelatinousSlime/Source/Titanoslime.cs"
+      ],
+      "proven": "missing",
+      "called_by": "Titan stage re-registration; shared size consumers/corpse conversion",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "dependency",
+      "why": "Designer decision: Keep already-authored size integration and release-before-corpse conversion; no custom map geometry engine.",
+      "needed_by": null,
+      "ticket": null
+    },
+    {
+      "id": "vef_engine",
+      "what": "Built VEF-guarded integration for weird-food and asexual reproduction primitives; actual loaded framework must be verified in the declared context.",
+      "built": "present",
+      "evidence": [
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Oomb.xml",
+        "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/RM_Wuum.xml",
+        "src/RimMandrake/GelatinousSlime/Patches/RM_Oomb_VEFThinkTree.xml"
+      ],
+      "proven": "missing",
+      "called_by": "MayRequire guarded comps and FindMod guarded think-tree patch",
+      "serves": "See definition.md: ordinary land/life/signature or explicitly deferred side system.",
+      "fate": "dependency",
+      "why": "Designer decision: For shipped refuse-eating/cloning behaviour use the declared composed VEF context; absent-framework load safety is a check only, not a second life design. Decouple deferred oomb promotion/fission from kept feeding.",
+      "needed_by": null,
+      "ticket": null
+    }
+  ]
+}

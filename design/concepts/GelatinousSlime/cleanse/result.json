@@ -1,0 +1,22 @@
+{
+  "mod": "GelatinousSlime",
+  "run": "designer-cleanse-GelatinousSlime-2026-11-16",
+  "outcome": "proposed",
+  "signature": "The living material supplies food, stone and poison relief, but touching or eating it raw absorbs susceptible flesh, making preparation and reversal part of gathering and using the body.",
+  "counts": {
+    "capabilities": 60,
+    "kept": 38,
+    "next_version": 21,
+    "recommend_retire": 1,
+    "old_bars": 13,
+    "bars": 9,
+    "live_only_bars": 6,
+    "checks": 13,
+    "rules": 12,
+    "unknown_pairs": 6,
+    "models": 5,
+    "tickets": 34,
+    "questions": 0
+  },
+  "blocked_on": []
+}

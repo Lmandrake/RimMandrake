@@ -1,0 +1,844 @@
+{
+  "bars": [
+    {
+      "id": "ground",
+      "says": "On the Slime, a builder can distinguish firm building shelves from yielding ground and liquid channels, sees passage marks on wet ground, and finds local stone through production rather than quarrying.",
+      "meant": {
+        "intent": "Ordinary terrain must look and act like the body, with readable building/travel choices; no natural bedrock and no decorative footprints claim supported only by snow.",
+        "source": "delegated: from design/Jawa/worldbuilding/biomes/the_slime.md \u00a7\u00a75-6,9; RM_gelatinous_slime_mod.md \u00a72; roads owner card reported in that sheet; standing no-worldgen/Direct Sun rules.",
+        "figurative": [
+          {
+            "word": "yielding",
+            "stands_for": "soft-looking body surfaces that constrain movement/building differently from crust; no elastic-physics simulation",
+            "accept": "A soft mat stays visually still while its edge, movement and building affordance distinguish it from the crust."
+          }
+        ]
+      },
+      "accept": [
+        "A route leaves marks in warm wet slime; a wall can stand on a crust shelf while the liquid channel makes the builder choose a different site.",
+        "A roofed workshop on constructed flooring protects contact exposure; a roof over bare crust does not make that body ground safe."
+      ],
+      "reject": [
+        "A green soil recolour offers identical building ground everywhere and its advertised footprints appear only in snow.",
+        "A convenient natural quarry substitutes for producing the local building stone."
+      ],
+      "lazy": "none: The sentence requires visual differentiation coupled to actual building choices, warm-ground marks and productive stone, so recolour-only and snow-only builds fail.",
+      "range": {
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Each primary terrain and packaged legacy terrain; contact under roof and constructed floor separately; footprints of standing/walking flesh and native animals; light/medium/heavy build footprints, orientations and shore boundaries; current art, play zoom and inspection zoom.",
+        "left_out": "No additional art styles, exact footprint lifetime, fixed wet area or planet placement is required. Imported blocks and existing authored wrecks are allowed. No new world/map generator."
+      },
+      "sees": {
+        "instrument": "T26 normal-play terrain/build preview and visual review plus T18 warm-ground passage witness; state affordance/contact reads identify why the visible choice matters. C1/C7 check ground identities and owned paths.",
+        "start": "Existing authored no-rock slime map with dry shelves, wet ground, a liquid channel, constructed floor and known build orders; footprint surface free of snow.",
+        "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
+        "control": "Compare same pawn, light and route on ordinary floor versus body ground, and footprint before/after its actual walk. No snow, smear-spawn helper or preplaced artwork can count. Compare normal wall placement with its underlying terrain affordance.",
+        "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
+        "live_only_why": "Nothing cheaper distinguishes actual ordinary engine jobs, rendered affordances or shared-engine integration from a correct pure kernel and inert defs; this bar therefore needs the specified running-game reading. The sentence requires visual differentiation coupled to actual building choices, warm-ground marks and productive stone, so recolour-only and snow-only builds fail."
+      },
+      "live_only": true,
+      "touches": [
+        "surface_state",
+        "material_economy",
+        "player_information",
+        "save_state"
+      ],
+      "tests": {
+        "reject": "Designer inference from cited source: if only this experience failed, the sourced land/life/signature promise would be false and I would reject this version.",
+        "renormalize": "The pictures fix causal differences and usable actions, not magnitudes, asset counts or deadlines. Renormalization updates checks and model inputs; only reversing the experience challenges this bar.",
+        "first_version": "land"
+      }
+    },
+    {
+      "id": "use_body",
+      "says": "A colonist can harvest the body into cooked food and usable building blocks, while eating it raw relieves poison and also exposes susceptible flesh to absorption.",
+      "meant": {
+        "intent": "The benefit and fee are the same material chain; processing supports repeatable colony work, not a helper-fed demonstration or mandatory raw feeding forever.",
+        "source": "delegated: from the_slime.md \u00a7\u00a73,5,7 and RM_gelatinous_slime_mod.md \u00a7\u00a72,6; source SlimeIngestion.cs and SlimeWorks.xml. These are the ordinary material branch of the signature.",
+        "figurative": []
+      },
+      "accept": [
+        "Normal harvest, hauling and bills provide a meal a colonist eats and blocks a worker builds with; the raw poisoned eater loses poison while gaining film.",
+        "A prepared worker on constructed flooring can continue production without renewed contact; raw consumption still carries its own fee."
+      ],
+      "reject": [
+        "Finished meals and blocks are spawned for the scene, while the normal benches cannot complete their bills.",
+        "Raw slime cures susceptible eaters without charging film, or cooked meals secretly retain the raw-dose effect."
+      ],
+      "lazy": "none: Completed harvest, bills, eating and construction plus raw poison relief coupled to susceptible absorption exclude recipes-only and free-cure builds; repeat doses respect the declared ceiling rather than lowering film.",
+      "range": {
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Forage/harvest and existing liquid-drinking routes; poison categories vanilla food poisoning/ToxicBuildup plus configured radiation/venom analogues; non-poison injury/addiction negatives; resistant/non-flesh controls; repeat raw eating below/near terminal severity; ordinary work skills and disabled/missing work prerequisites; constrained labour at 40 colonists. At the existing raw-dose ceiling an additional raw dose need not worsen film; it must never lower existing film or bypass the ordinary remaining clock. A raw dose cannot itself leap straight to dissolution.",
+        "left_out": "No cure of missing parts, ordinary wounds or addiction; no guaranteed self-sufficiency at any settlement size; imported bootstrap steel/wood/power and prior ordinary research allowed. Deferred solvent recipes are not required."
+      },
+      "sees": {
+        "instrument": "T27 normal job/input/output observer for completed harvest, hauling, bill, construction and ingestion; raw-dose paired health record. M5 informs whether a routine is feasible but cannot prove completed work by itself.",
+        "start": "Preexisting bench with all normal costs/research paid, raw harvest source and no finished slime outputs, labelled raw input and poisoned patient; record total raw stock across all holders.",
+        "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
+        "control": "No produced stock at start; output ids must descend from observed consumed inputs and actual completed jobs. Poisoned untreated match retains poison, cooked-food match incurs no slime dose, floor-only non-eater separates contact from ingestion.",
+        "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
+        "live_only_why": "Nothing cheaper distinguishes actual ordinary engine jobs, rendered affordances or shared-engine integration from a correct pure kernel and inert defs; this bar therefore needs the specified running-game reading. Completed harvest, bills, eating and construction plus the coupled raw consequence exclude a recipes-only or free-cure implementation."
+      },
+      "live_only": true,
+      "touches": [
+        "surface_state",
+        "clinical_state",
+        "material_economy",
+        "save_state"
+      ],
+      "tests": {
+        "reject": "Designer inference from cited source: if only this experience failed, the sourced land/life/signature promise would be false and I would reject this version.",
+        "renormalize": "The pictures fix causal differences and usable actions, not magnitudes, asset counts or deadlines. Renormalization updates checks and model inputs; only reversing the experience challenges this bar.",
+        "first_version": "signature; needed production jobs"
+      }
+    },
+    {
+      "id": "absorption",
+      "says": "After body contact, a player can identify worsening, impairing film on susceptible colonists and animals before dissolution, without conversion making them hostile, and any resulting loss shows its cause and leaves belongings recoverable.",
+      "meant": {
+        "intent": "The ordinary lethal ladder applies to colonists and animals, with warnings before loss and accounting after it; disappearance is never the sign by itself.",
+        "source": "Owner instruction and companion laws reproduced in RM_gelatinous_slime_mod.md \u00a73; standing no animal/pawn vanishes without a readable sign; OWNER:1794346263694156545 selects existing game UI. delegated: apply the warning principle to animal losses through inspect/combat/death evidence rather than colonist letter spam.",
+        "figurative": [
+          {
+            "word": "body",
+            "stands_for": "the connected living terrain and ordinary slime material, not a single damageable planet-sized pawn",
+            "accept": "Separate wet areas on the local map share contact behaviour without a rendered creature connecting them."
+          }
+        ]
+      },
+      "accept": [
+        "Health labels, impairments and a named warning identify a worsening worker; without rescue the death cause remains readable and their carried things can be recovered.",
+        "A native keeps feeding without acquiring film while a susceptible outsider deteriorates; absorption itself creates no faction change or attack order."
+      ],
+      "reject": [
+        "A terminal severity flag is logged while the pawn and equipment silently disappear.",
+        "Only visitors can dissolve, or crossing a film stage creates a hostile faction or manhunter job.",
+        "Only a death notice identifies absorption; before that the player cannot identify the threatened patient or the worsening film."
+      ],
+      "lazy": "none: Actual contact, identifiable worsening impairment before loss, non-hostility, cause-of-loss evidence and recoverable belongings are all explicit; neither a silent severity counter nor an after-death-only warning meets the words.",
+      "range": {
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Severity 0..1 and neighbours of 0.2,0.5,0.9,1; primary/legacy tagged surfaces, ordinary floors, all resistance routes and disabled gene; walking/bed/downed/held/caravan states, gear/equipment/carried items; animal and humanlike factions including prisoner/slave; threshold-crossing reload and repeated exposure.",
+        "left_out": "Absorption does not forbid vanilla predators, retaliation or independent mental states. Specific pre-existing-state suppression follows source; new hostility must never be caused by conversion. No guarantee that other causes cannot kill a patient first."
+      },
+      "sees": {
+        "instrument": "M1 clinical state-machine generator using production RM_SlimeLadder plus saved transition witnesses; T28 supplies real contact/terminal-holder calibration, item ledger and named alert/letter payloads. A rate-only helper is insufficient.",
+        "start": "Health-clean susceptible and resistant records, untouched labelled belongings, real contact witness to establish application, then clock/holder states drawn from current saved game records.",
+        "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
+        "control": "Bind record to actual pawn identity and contact, not a seeded hediff alone. Terminal calibration must show real Kill/strip/transfer and animal loss sign. Mutation arms omit contact tag, suppress death sign or destroy carried stock and must be rejected.",
+        "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
+        "live_only_why": "A game-calibrated deterministic state/geometry instrument can discriminate these pictures; until calibration is recorded, its output is a prediction, not acceptance. No live look is required to distinguish the defined outcomes."
+      },
+      "live_only": false,
+      "touches": [
+        "surface_state",
+        "clinical_state",
+        "animal_population",
+        "player_information",
+        "save_state"
+      ],
+      "tests": {
+        "reject": "Designer inference from cited source: if only this experience failed, the sourced land/life/signature promise would be false and I would reject this version.",
+        "renormalize": "The pictures fix causal differences and usable actions, not magnitudes, asset counts or deadlines. Renormalization updates checks and model inputs; only reversing the experience challenges this bar.",
+        "first_version": "signature and readable loss"
+      }
+    },
+    {
+      "id": "escape",
+      "says": "A player can reverse early film by leaving body ground, reverse established film in drying country, or have a capable helper complete toxic antidote treatment before dissolution.",
+      "meant": {
+        "intent": "Geography and an ordinary targeted treatment job are genuine escapes; ordinary neutral country is not an instant advanced-film cure and a treatment order is not completion.",
+        "source": "Owner companion drying/caravan laws in RM_gelatinous_slime_mod.md \u00a7\u00a73-4; OWNER:1794346263694156545 existing UI; SlimeIngestion.cs targeted toxic cure. delegated: retain prepared incapacitated-patient rescue independently of the deferred injected gene race.",
+        "figurative": []
+      },
+      "accept": [
+        "An early exposed worker improves on a constructed floor; an advanced patient stays impaired there but improves on a dry-country road or after completed toxic treatment.",
+        "A downed patient can be treated by a prepared helper; a delayed untreated patient still reaches the lethal outcome."
+      ],
+      "reject": [
+        "Entering any non-slime tile instantly clears advanced film and makes the drying route irrelevant.",
+        "The cure function works in isolation while a normal helper cannot target, reach and finish treating the patient."
+      ],
+      "lazy": "none: The says requires each distinct route and a helper finishing treatment before death, so neither a universal step-off cure nor a helper-only effect can satisfy it.",
+      "range": {
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Severity immediately below/at/above early and terminal boundaries; eligible drying maps/caravan tiles including salt sea by declared tag, neutral country, invalid tile, beds/holder transitions; 1,2,6,40 patients and helper contention with reachability/travel/work delays 0..remaining lifetime; clock settings 2..30 days; off/on mid-film.",
+        "left_out": "Treatment is possible with supplies and time, not guaranteed regardless of distance, blocked doors or every colonist being incapacitated. It does not cure a dead pawn, undo independent coma or promise resurrection. All DLC present."
+      },
+      "sees": {
+        "instrument": "M1 state-machine and timing walk with T28 real UseItem/consumption/travel and caravan tick calibration. Calibration records distinguish targetability and work completion from invoking DoEffectOn directly; predicted deadline is derived, not hard-coded.",
+        "start": "Matching early/advanced patients from witnessed contact, known route/floor/drying tag, helper capability and labelled antidote; sufficient prepared route in successful arm and delayed route in failure arm.",
+        "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
+        "control": "Read patient still alive, item actually consumed by finished job and toxic cost incurred. Drying branch compares equivalent neutral geography; treatment versus untreated branches share contact and elapsed ticks. Revoke reachability in negative branch and reject a reported cure.",
+        "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
+        "live_only_why": "A game-calibrated deterministic state/geometry instrument can discriminate these pictures; until calibration is recorded, its output is a prediction, not acceptance. No live look is required to distinguish the defined outcomes."
+      },
+      "live_only": false,
+      "touches": [
+        "surface_state",
+        "clinical_state",
+        "material_economy",
+        "player_information",
+        "save_state"
+      ],
+      "tests": {
+        "reject": "Designer inference from cited source: if only this experience failed, the sourced land/life/signature promise would be false and I would reject this version.",
+        "renormalize": "The pictures fix causal differences and usable actions, not magnitudes, asset counts or deadlines. Renormalization updates checks and model inputs; only reversing the experience challenges this bar.",
+        "first_version": "needed by signature"
+      }
+    },
+    {
+      "id": "fields",
+      "says": "A settler who cultivates the body sees the open-ground field become slime again and lose its dependable crop supply, while undisturbed native growth still provides forage.",
+      "meant": {
+        "intent": "The land cannot be a permanent rich farm under a changed terrain label. Conversion and shared growth must not erase ordinary forage or prepared workshops.",
+        "source": "Frozen the_slime.md \u00a75 farms-fail law and \u00a76 no permanent farmland; delegated: dependable crop supply means repeated harvestable field use cannot continue indefinitely without importing or replacing the substrate. This does not ban hydroponics.",
+        "figurative": [
+          {
+            "word": "body",
+            "stands_for": "native slime substrate, not imported hydroponic equipment or constructed flooring",
+            "accept": "A roofed hydroponic crop remains productive while an adjacent open body-ground field fails."
+          }
+        ]
+      },
+      "accept": [
+        "The planted ground visibly reverts and the farmer has to abandon that open-ground supply or replace its substrate, while the unzoned native meadow remains a harvest/grazing source.",
+        "A constructed workshop floor stays a workshop while nearby native growth completes its shared wet-growth cycle."
+      ],
+      "reject": [
+        "The field changes its label to rich slime and continues as the same permanent crop farm.",
+        "Conversion attacks unzoned native forage or replaces the colony floor to create the promised failure."
+      ],
+      "lazy": "none: The says demands lost dependable supply plus surviving native forage, which rules out the label-only shortcut and indiscriminate terrain destruction.",
+      "range": {
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Growing-zone cells sown/unsown/designated-but-not-yet-sown/harvested/de-zoned; primary grass/rich/hardened and packaged legacy growing ground; crop fertility tolerance across loaded ordinary food crops; field areas 1..2500 cells, map areas 22500..160000; over 15,60,100 days; all ExplosiveGrowth wet/cycle mechanics active.",
+        "left_out": "No promised crop yield, conversion deadline or fixed failure percentage. Constructed floors, off-body agriculture and hydroponics are outside the open body-soil law. A deliberate replacement of substrate is management, not permanent native farmland."
+      },
+      "sees": {
+        "instrument": "M2 seasonal field/growth model using current terrain and crop requirements, calibrated against zone/crop/terrain/harvest records from T25; stochastic sampling must evaluate region coverage and recurring harvest, not a single changed cell.",
+        "start": "Identical fields and unzoned native patches on an authored map with growth/weather unlocked, normal crop data, natural plant sources and a constructed-floor control.",
+        "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
+        "control": "Check actual crop viability after replacement, not terrain name. Controlled unzoned and floor cells separate conversion from shared-growth terrain changes. Successful no-conversion comparison supports attribution; default observation retains all features. Negative label-only implementation must fail.",
+        "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
+        "live_only_why": "A game-calibrated deterministic state/geometry instrument can discriminate these pictures; until calibration is recorded, its output is a prediction, not acceptance. No live look is required to distinguish the defined outcomes."
+      },
+      "live_only": false,
+      "touches": [
+        "surface_state",
+        "water_growth",
+        "material_economy",
+        "player_information",
+        "save_state"
+      ],
+      "tests": {
+        "reject": "Designer inference from cited source: if only this experience failed, the sourced land/life/signature promise would be false and I would reject this version.",
+        "renormalize": "The pictures fix causal differences and usable actions, not magnitudes, asset counts or deadlines. Renormalization updates checks and model inputs; only reversing the experience challenges this bar.",
+        "first_version": "land"
+      }
+    },
+    {
+      "id": "residents",
+      "says": "A player living on the Slime meets resistant grazers and corrosive scavengers, a hunting fubbum and a flying dwommo, with native animals able to drink their environmental water and outsiders visibly being absorbed.",
+      "meant": {
+        "intent": "Ordinary native roles and outsider contrast must function, not just be listed; no roster eviction or new ecological minigame. Oomb refuse feeding and wuum reproductive renewal count as life, but channel paving and oomb multiplication are deferred.",
+        "source": "Frozen the_slime.md \u00a74; current BiomeDef roster and oomb/wuum source; standing flyer and native environmental-water rulings. delegated: test natural AI by role and actual flight tracker, not a staged lineup.",
+        "figurative": []
+      },
+      "accept": [
+        "Native grazers feed, an oomb eats refuse, and a thirsty native beside local liquid drinks without accumulating dehydration; a susceptible outsider carries readable film.",
+        "A fubbum selects permitted prey through normal hunting and a dwommo enters flight according to its tracker while keeping its native resistance.",
+        "A dying corrosive native causes visible acid injury in its affected area, while a matched animal beyond that area escapes that death burst."
+      ],
+      "reject": [
+        "An animal lineup supplies all labels while every creature starves, the floater only walks, or natives dehydrate beside their own water.",
+        "Visitor arrivals drown out native encounters or film itself starts new aggression."
+      ],
+      "lazy": "none: Actual feeding/scavenging, corrosive handling danger, drinking, hunting, flight and outsider absorption are required; lineup-only, stat-only and no-water builds fail.",
+      "range": {
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. All rostered kinds: Gelatid; GappoLesser/Gappo/GappoGreater; LesserOomb/Oomb/GreaterOomb; Wuum; Fubbum; Dwommo; Titan observed separately by mouth bar. Factionless/tame, age and diet states; hungry/fed/thirsty; neighbour roster empty/nonempty/resistant/predator mixes; wild population 0..existing cap and above cap; VEF loaded for feeding/cloning, absent context only load-safety check; flight takeoff/landing state before/after reload; default and grounded/hunting-off controls. Oomb/wuum actual death at each configured scale, susceptible neighbours inside/outside the affected area, death during predation and clustered native losses; do not infer acid immunity from film resistance.",
+        "left_out": "No guaranteed appearance of a rare species in a short random interval, gelatid-exclusive predation, nocturnal pooling or pet usefulness for every native. Do not live-test flyer visuals unattended; deterministic Pawn_FlightTracker state is sufficient, visual owner review remains owed."
+      },
+      "sees": {
+        "instrument": "T27 natural AI/diet/flight/thirst state read and T30 population trace. M2 predicts renewal and visitor/native coexistence but cannot establish that jobs, actual drinking and flight occur. Kit path checker is only a regression check.",
+        "start": "Existing authored full map with live roster/normal food and liquid, no forced jobs or mental states, tagged resistant and susceptible comparison animals; identity ledger includes animals that leave the map.",
+        "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
+        "control": "Track completed feeding/drinking/hunt and actual Pawn_FlightTracker transition, not a stat/description. A roofless susceptible ground control separates flying immunity claims from native resistance. Match visitor arrival source and all-wild-animal cap; a vanished row cannot count as successful immunity. Attribute acid injury and filth to the native death worker using actual damage/event source and an outside-area control, not an unrelated gunshot, poison tick or manually spawned acid.",
+        "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
+        "live_only_why": "Nothing cheaper distinguishes actual ordinary engine jobs, rendered affordances or shared-engine integration from a correct pure kernel and inert defs; this bar therefore needs the specified running-game reading. The says requires actual ecological actions and drinking/flight, so roster-only, stat-only and no-water builds fail."
+      },
+      "live_only": true,
+      "touches": [
+        "surface_state",
+        "clinical_state",
+        "animal_population",
+        "water_growth",
+        "player_information",
+        "save_state"
+      ],
+      "tests": {
+        "reject": "Designer inference from cited source: if only this experience failed, the sourced land/life/signature promise would be false and I would reject this version.",
+        "renormalize": "The pictures fix causal differences and usable actions, not magnitudes, asset counts or deadlines. Renormalization updates checks and model inputs; only reversing the experience challenges this bar.",
+        "first_version": "life"
+      }
+    },
+    {
+      "id": "mouth",
+      "says": "The resident titanoslime naturally engulfs prey, exposes time to rescue it, returns belongings when digestion kills, and permanently grows as it feeds under default settings.",
+      "meant": {
+        "intent": "This is the ordinary apex animal, a mobile part of the same consuming body. Rescue/release and truthful occupied geometry make its lethal lifecycle usable; chunk manufacture and wound spawning are not needed.",
+        "source": "Owner Titanoslime request and permanent-growth ruling recorded in RM_titanoslime_spec.md \u00a711 and TITANOSLIME_SLIME_BIOME_1; standing readable-loss ruling; delegated: keep natural melee, struggle/release and size-engine integration as necessary life.",
+        "figurative": []
+      },
+      "accept": [
+        "A normal melee encounter puts eligible prey inside the giant with a named countdown; downing the captor returns that same prey, and a completed meal leaves gear while the fed giant grows and keeps its growth.",
+        "A rescued victim reappears with injuries and film from the encounter; the colony can select and route around the grown animal after a reload."
+      ],
+      "reject": [
+        "Only a debug engulf function can swallow prey, or a countdown exists but downing the giant destroys its prisoner.",
+        "The sprite enlarges while occupied cells and prey capacity remain wrong, or starving silently shrinks a default grown giant."
+      ],
+      "lazy": "none: The says combines natural action, rescue time, terminal belongings and permanent feeding growth; debug-only and sprite-only giants fail.",
+      "range": {
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. All life stages and legal prey sizes on each side of capacity and size gates; flesh/non-flesh, human/animal, same-kind/self/held exclusions, default difficulty predatorsHuntHumanlikes true/false. In-map interiors/edges, narrow routes, structure-adjacent and blocked drop areas; held count empty..capacity; downed/dead/destroyed/off/reload transitions and multiple held victims; normal eating and digestion growth; off-body/starvation/wounding at default irreversible growth, alternative reversible/capped/growth-off controls separately.",
+        "left_out": "No chunk acquisition, bomb, seal breach or wound-created gelatid spawn in default version. No spontaneous giant incident outside its roster. No unbounded capacity, instant rescue regardless of geography or support for an untameable giant as caravan cargo."
+      },
+      "sees": {
+        "instrument": "T27 natural attack/held-pawn/item/job/inspect observer; existing northstar/titanoslime_gates.py classified rows are diagnostic inputs, not process-exit acceptance. M4 exact geometry/state sweep calibrates against actual occupied cells and drop positions. Existing owner in-game art review remains a floor review obligation.",
+        "start": "Existing naturally sized giant and live eligible prey with labelled belongings, reachable prepared rescue group, alternate oversized/non-flesh control; no DevSetMass/forced Engulf may supply the accepting encounter.",
+        "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
+        "control": "Observe real attack selecting engulf and held identity before the timer; complete release or lethal outcome and match item/pawn ids. Feed through actual eating/digestion rather than direct stage set. Read true body size and occupied cells independently of sprite, including shared-engine cache settling.",
+        "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
+        "live_only_why": "Nothing cheaper distinguishes actual ordinary engine jobs, rendered affordances or shared-engine integration from a correct pure kernel and inert defs; this bar therefore needs the specified running-game reading. The says combines natural action, rescue time, terminal belongings and permanent feeding growth; debug-only and sprite-only giants fail."
+      },
+      "live_only": true,
+      "touches": [
+        "surface_state",
+        "clinical_state",
+        "animal_population",
+        "held_occupancy",
+        "player_information",
+        "save_state"
+      ],
+      "tests": {
+        "reject": "Designer inference from cited source: if only this experience failed, the sourced land/life/signature promise would be false and I would reject this version.",
+        "renormalize": "The pictures fix causal differences and usable actions, not magnitudes, asset counts or deadlines. Renormalization updates checks and model inputs; only reversing the experience challenges this bar.",
+        "first_version": "life"
+      }
+    },
+    {
+      "id": "water",
+      "says": "During slime rain the player can collect and drink potable water as the ground briefly floods and drains, without the event leaving a permanent flood or substituting ordinary rain.",
+      "meant": {
+        "intent": "The organism waters itself; useful water and receding inundation are ordinary land/weather already ruled in. This cannot be declared delivered by a WeatherDef field or living-slime drinking alone.",
+        "source": "Frozen the_slime.md \u00a7\u00a73,4b,5-6 organism-induced rain/potable flood carve-out; RM_gelatinous_slime_mod.md \u00a72. delegated: rainfall/collection/drain ownership belongs to FlowWorks, no parallel liquid engine.",
+        "figurative": []
+      },
+      "accept": [
+        "An exposed collector gains potable water during the organism event and a normal drink reduces thirst; visible temporary inundation recedes as the event passes.",
+        "A roofed collector stays dry, and stored collected water remains useful when the standing floodwater has drained."
+      ],
+      "reject": [
+        "The weather turns green and reports rain while no usable water reaches storage or the ground never floods.",
+        "A permanent expanding pool is called drainage, or collected living slime charges the raw absorption fee while being advertised as potable rainwater."
+      ],
+      "lazy": "none: The says explicitly requires collection, drinking, real temporary flooding/drainage and organism weather, ruling out a sky-only build.",
+      "range": {
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Authored tile rainfall 0 and nonzero; normal natural event selection as well as controlled event replay; event onset/sustained/end, roofed/open collectors, empty/partial/full tanks, dug channels/beds/undug natural ground, drainage blocked/open, existing liquids and floors/doors; during and after save/reload; rain before/after harvest and field conversion.",
+        "left_out": "No imported river, planetary rain editing, exact rainfall frequency/volume/depth or bespoke flood catastrophe. A sealed player-made basin may store water; it cannot be used to claim ambient inundation never drains. Raw channel slime is a separate last-resort liquid."
+      },
+      "sees": {
+        "instrument": "T22 actual loaded weather-selection, collection/volume/composition/ingestion and inundation/recession trace; M3 water geometry ledger validates ownership. T27 state observers capture collector/terrain/liquid transitions, with a normal visual wetting witness recorded once for calibration.",
+        "start": "Existing authored slime map with known rainfall, unlocked weather selection, marked dry collectors and wetting area, known liquid inventories and ordinary thirst; no water prefilled for accepting branch.",
+        "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
+        "control": "Closed collector, no-event equivalent interval and ordinary-rain diagnostic branch distinguish the slime event from ambient storage/refill. Measure actual collected liquid composition and completed drinking. Derive before/after water balance and terrain, including wet/dry transitions; event-id forcing alone cannot show natural availability.",
+        "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
+        "live_only_why": "Nothing cheaper distinguishes actual ordinary engine jobs, rendered affordances or shared-engine integration from a correct pure kernel and inert defs; this bar therefore needs the specified running-game reading. The says explicitly requires collection, drinking, real temporary flooding/drainage and organism weather, ruling out a sky-only build."
+      },
+      "live_only": true,
+      "touches": [
+        "surface_state",
+        "water_growth",
+        "clinical_state",
+        "material_economy",
+        "player_information",
+        "save_state"
+      ],
+      "tests": {
+        "reject": "Designer inference from cited source: if only this experience failed, the sourced land/life/signature promise would be false and I would reject this version.",
+        "renormalize": "The pictures fix causal differences and usable actions, not magnitudes, asset counts or deadlines. Renormalization updates checks and model inputs; only reversing the experience challenges this bar.",
+        "first_version": "land; necessary water engine integration"
+      }
+    },
+    {
+      "id": "whole",
+      "says": "Across a season on a full Slime map, the colony can keep working among renewing native life while managing absorption, failed fields, the feeding giant and receding slime rain, and can resume that routine after reload and a changed order of work.",
+      "meant": {
+        "intent": "The complete shipped system remains usable as one place. Prepared management coexists with genuine threats; no flood of slime/water/animals, desert of forage/native encounters, stalled work loop or storm of errors may stand in for a season.",
+        "source": "Current brief: exactly one whole bar, full map/season/all kept mechanics/defaults/nothing locked/mid-save reload/second action order. delegated: inferred seasonal coexistence from the_slime.md land/life and ordinary contact/material bargain, not a measured enjoyment claim.",
+        "figurative": [
+          {
+            "word": "renewing",
+            "stands_for": "forage regrowth and continuing native ecological encounters, not immortality or replacement of every dead individual",
+            "accept": "An old animal dies with an accounted cause while younger natives and regrowing forage keep the landscape inhabited."
+          }
+        ]
+      },
+      "accept": [
+        "A prepared colony gathers, renders, presses, builds and treats patients as native plants and animals continue their roles; fields lose permanence and water recedes without swallowing the workplace.",
+        "After reloading during rain with an active patient and a held victim, the player finishes the same ordinary actions, then repeats them with harvesting and treatment in a different order."
+      ],
+      "reject": [
+        "The season works only with clear weather, plant tops, reproduction, predation or contact secretly disabled.",
+        "Shared growth coats the work area in permanent slime, rain accumulates without recession, native life disappears, or jobs and alerts cease to progress after reload."
+      ],
+      "lazy": "none: The says requires the simultaneous season, renewing life, work, risk management, reload and changed order, so isolated pads cannot pass.",
+      "range": {
+        "varies": "Authored local maps 150x150 through 400x400 (include 250x250 and 325x325), terrain interiors/edges and roads/floors/roof combinations; first day and after 100 days; 1, 6 and 40 colonists with 0, 1 and several active patients; before/after mid-state save/reload and swapped action order. Numbers delimit observation cases, not approval thresholds. Full 250x250 and 325x325 authored maps, plus 150x150/400x400 boundary runs; 15 in-game days as a season, continued 60/100-day projections for slow starvation/feedback. Colonies 6 and 40; native/visitor populations at low/ordinary/saturated starts, edible harvest/dry/soaked state mixes and poor/fair native patches. Save mid-way during a compound rain/patient/held-victim state, reload, repeat core production/contact/cure, and reverse harvest/treatment/build order. If no natural cycle appears, extend rather than force it and call it seasonal evidence.",
+        "left_out": "No new planets, arbitrary other biomes or prolonged deliberate starvation of an unprepared colony. No fixed sustainable colony size, perfect safety, performance budget or required stochastic rare spawn. Weather/AI/timers may run faster in wall time only through normal tick advancement; no skipped jobs, food needs, thermal/flight/water/growth pulses or rescaled random probabilities."
+      },
+      "sees": {
+        "instrument": "T30 whole-season runner on disposable authored map with T27 identity/job/terrain/liquid/log ledger, M2 seasonal model predictions and M5 demand envelope. Actual normal jobs and shared dependencies require the running game; a model is diagnostic, not a substitute for this complete observation.",
+        "start": "Prepared but ordinary colony with costs/research already paid and accounted bootstrap stock, normal engine defaults, unlocked weather and all kept settings ON; all moved extras OFF; snapshot inventories, land, animals, world/tile fingerprint and full log cursor.",
+        "on": "All retained GelatinousSlime features at proposed shipped defaults; all DLC; composed mandrake.rm.biomes and declared engines including ordinary/soaked ExplosiveGrowth and Slime tops, FlowWorks, native feeding/reproduction, natural weather unlocked. Next-version extras OFF. No forced clear sky, frozen AI, god-mode work, free outputs or disabled hazards. Scoped controls run as separate comparison branches, never replace the default arm.",
+        "control": "Account imports, harvest, raw use, production, treatments, deaths/emigration and liquid stock. Paired diagnostic engine-off runs identify causes but never accept the bar. No staged permanent resources, immortal pawns, artificial regen, locked sky or shortened simulation that bypasses cycles. Require live acquisition/use and state conservation, not quiet logs alone.",
+        "reset": "Use an isolated disposable copy of an existing authored local-map save; record save/content/settings fingerprint and unique pawn/item/cell ids before action. Restore by discarding the branch and reloading its exact entry copy, restore exact prior settings rather than defaults, then independently compare pawn/holder/inventory/terrain/liquid/alert/log records. Do not touch the canonical world. Missing read or incomplete recovery is unknown, never pass.",
+        "live_only_why": "Nothing cheaper distinguishes actual ordinary engine jobs, rendered affordances or shared-engine integration from a correct pure kernel and inert defs; this bar therefore needs the specified running-game reading. The says requires the simultaneous season, renewing life, work, risk management, reload and changed order, so isolated pads cannot pass."
+      },
+      "live_only": true,
+      "touches": [
+        "surface_state",
+        "clinical_state",
+        "material_economy",
+        "animal_population",
+        "held_occupancy",
+        "water_growth",
+        "player_information",
+        "save_state",
+        "default_isolation"
+      ],
+      "tests": {
+        "reject": "Designer inference from cited source: if only this experience failed, the sourced land/life/signature promise would be false and I would reject this version.",
+        "renormalize": "The pictures fix causal differences and usable actions, not magnitudes, asset counts or deadlines. Renormalization updates checks and model inputs; only reversing the experience challenges this bar.",
+        "first_version": "whole land, life and signature"
+      }
+    }
+  ],
+  "whole": "whole",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Loaded primary/legacy terrain identities, tags, fertility, crop requirements, path costs, affordances, hasBedrock, allowRoads, animalDensity and weather-pool entries. Numbers are regression data, not acceptance."
+    },
+    {
+      "id": "C2",
+      "what": "Production RM_SlimeLadder threshold/rate/dose/poison/antidote fuzz and RM_TitanKernel gates/growth/registration invariants; keep source default numeric snapshots separately."
+    },
+    {
+      "id": "C3",
+      "what": "ConversionAttempts distribution and growing-zone source gate; loaded crop viability after replacement, including rich slime currently fertility 0.85. Source numbers inform M2, not bars."
+    },
+    {
+      "id": "C4",
+      "what": "Settings schema/default/reset/consumer coverage, including existing-pawn caches, active state, acquisition gates and all-off behaviour; no ghost next-version jobs, products, letters or incidents."
+    },
+    {
+      "id": "C5",
+      "what": "Snapshot observer sensitivity: planted wrong identity, missing read, destroyed carried item, cancelled job, wrong loaded assembly, missing log interval and failed recovery must not print success. Supersedes scene_observer instrument leaf."
+    },
+    {
+      "id": "C6",
+      "what": "Dependencies present once in composed list, all DLC; shared growth Slime top and liquid types resolve; optional VEF/AcousticScanner guard load-safety; no actual planet generation call."
+    },
+    {
+      "id": "C7",
+      "what": "Kit paths/facings, Dwommo numbered-animation prefix resolution and whole-body flight fields; warm-ground footprint renderer witness. Asset counts/extra styles never passing requirements. Owner Titanoslime stage-one/five visual obligation remains owed."
+    },
+    {
+      "id": "C8",
+      "what": "Normal bill/input/output/item ledger, poison effect before resistance, safe cooked meal without raw-dose callback, recipe costs/research and actual construction availability."
+    },
+    {
+      "id": "C9",
+      "what": "Pawn/holder/gear/terrain/water/settings identity equality across recovery and save/reload. Colony floor checks clean log and load; a red check alone is not a refusal."
+    },
+    {
+      "id": "C10",
+      "what": "Visitor cap counts all factionless wild animals; cap boundary, empty-neighbour, no-on-load seed; Wuum cap/clone settings and oomb advancement/fission disabled while feeding remains; natural flight tracker state."
+    },
+    {
+      "id": "C11",
+      "what": "Weather natural eligibility on authored zero-rainfall tile, no campaign Rain/FoggyRain, liquid conservation and potable collector contents; isolated forecast versus actual event receipt."
+    },
+    {
+      "id": "C12",
+      "what": "Next-version constraints retained: gene target/rider/marks/coma/rescue, expensive exclusive last-touch return/no marriage rewind, finite chunk/ally danger and real seal accounting. No default acceptance scene depends on them."
+    },
+    {
+      "id": "C13",
+      "what": "Clinical state walk compares exact game transition witnesses including caravan loss/gear, invalid location, old saves, settings OFF advanced film, terminal-on-toggle and near-boundary antidote order. A model passing its own mirror is insufficient."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R_contact",
+      "rule": "Designer rule (attackable): Contact uses current top-terrain RM_SlimeTerrain tag, including hardened shelves; roof alone is not protection, constructed non-slime floor is. Rainwater is not a film dose. No slower hardened exposure is promised by its poetic description. All packaged legacy body ground needs explicit semantic mapping.",
+      "touches": [
+        "surface_state",
+        "clinical_state",
+        "save_state"
+      ]
+    },
+    {
+      "id": "R_clinic",
+      "rule": "Designer rule (attackable): Ordinary early film decays off body, advanced film holds in neutral country, drying tag takes priority, antidote clears subterminal film at toxic cost. Turned-off hazard stops application/dosing/progression and clears existing film safely; source advanced hold while OFF is a delivery defect. Other coma/genes are not cleared.",
+      "touches": [
+        "clinical_state",
+        "save_state",
+        "default_isolation"
+      ]
+    },
+    {
+      "id": "R_poison",
+      "rule": "Designer rule (attackable): Poison scope follows auditable toxin/venom/radiation classification with injury/missing-part/addiction exclusions. Raw benefit runs before resistance; resistant eaters legitimately pay no film. No universal cure of arbitrary bad health. Preserve ordinary dose/cure primitives even with all gene extras disabled.",
+      "touches": [
+        "clinical_state",
+        "material_economy",
+        "default_isolation"
+      ]
+    },
+    {
+      "id": "R_farm",
+      "rule": "Designer rule (attackable): Growing-zone designation triggers substrate conversion, including not-yet-sown zones, as source does; de-zoning stops new zone-driven changes but never restores ground. Converted ground must lose permanent open-food-crop viability. Keep shared plant-top terrain changes separate in the ledger.",
+      "touches": [
+        "surface_state",
+        "material_economy",
+        "water_growth",
+        "save_state"
+      ]
+    },
+    {
+      "id": "R_growth",
+      "rule": "Designer rule (attackable): Use ExplosiveGrowth ordinary and wet cycles/Slime tops as shipped dependency, all ON. Its rich-slime rings already protect water, floors and edifices. Do not redesign engine; calibrate wetting/top/produce feedback and attack local tuning/roster/terrain choices before changing a bar.",
+      "touches": [
+        "surface_state",
+        "water_growth",
+        "material_economy",
+        "animal_population",
+        "save_state"
+      ]
+    },
+    {
+      "id": "R_water",
+      "rule": "Designer rule (attackable): FlowWorks owns liquid quantities/composition, collection/drainage/slip and native thirst. Slime-rain precipitation must be naturally eligible at authored zero rainfall without changing planetary rainfall; ordinary Rain/FoggyRain absent in campaign. Collected rainwater is potable; raw channel slime keeps last-resort purge/film. Existing stored rainwater survives a rain toggle.",
+      "touches": [
+        "surface_state",
+        "water_growth",
+        "clinical_state",
+        "material_economy",
+        "save_state"
+      ]
+    },
+    {
+      "id": "R_population",
+      "rule": "Designer rule (attackable): Keep every current roster species. Visitor cap currently counts ALL factionless wild animals, not just arrivals; do not rewrite it as visitor-only without attack/testing. No load-time visitor seed; no hostility created by film. Native predation and acid death bursts retain normal causes; oomb fission/promotion and titan shedding OFF by default.",
+      "touches": [
+        "animal_population",
+        "clinical_state",
+        "default_isolation",
+        "save_state"
+      ]
+    },
+    {
+      "id": "R_engulf",
+      "rule": "Designer rule (attackable): Engulf is a normal melee tool with source flesh/size/capacity/holder guards and existing digestion/struggle/release. Growth is permanent by default; preserve half-body prey rule, max-stage cap and shared occupied-cell registration. Default shedding OFF never decrements growth or removes gelatids from the roster.",
+      "touches": [
+        "held_occupancy",
+        "clinical_state",
+        "animal_population",
+        "surface_state",
+        "save_state",
+        "default_isolation"
+      ]
+    },
+    {
+      "id": "R_information",
+      "rule": "Designer rule (attackable): Existing health/alerts/inspect strings and necessary loss messages expose cause, patient and available action; save warning latches. Ordinary animal losses need inspect/death/combat evidence rather than colonist letter spam. No new triage screen, optional registry messages or sentient speech. Remove misleading universal peace, faster crust, woodless-world and no-progress wording.",
+      "touches": [
+        "player_information",
+        "clinical_state",
+        "save_state"
+      ]
+    },
+    {
+      "id": "R_settings",
+      "rule": "Designer rule (attackable): Real per-major-feature switches, searchable/reset/scoped defaults; add missing core rain/production/native-special switches. Next-version labels default OFF, consumers and acquisition gated, no hidden work after disable. Mid-state: release held prey, retain grown giant, stop conversion, preserve paid-vat/active-sample/temporary-terrain state without progressing disabled extras or destroying people/items. Reset means proposed defaults, never historical all-ON.",
+      "touches": [
+        "default_isolation",
+        "clinical_state",
+        "held_occupancy",
+        "surface_state",
+        "save_state",
+        "player_information",
+        "material_economy",
+        "water_growth",
+        "animal_population"
+      ]
+    },
+    {
+      "id": "R_bootstrap",
+      "rule": "Designer rule (attackable): Use accounted imported vanilla steel/wood or existing salvage to build benches and floors, normal costs/research and working bills; no local rock. No thumbstalk wood promise: its current harvest is empty under the later wood ruling. Imported/off-body crops and hydroponics do not waive failure of permanent open body-ground farms.",
+      "touches": [
+        "material_economy",
+        "surface_state"
+      ]
+    },
+    {
+      "id": "R_scope",
+      "rule": "Designer rule (attackable): All DLC are assumed. RM native names remain RM; campaign genes/Helix/vault stay campaign-side. Composed package is mandrake.rm.biomes. No worldgen, repaint, CSV editing or new planet option in any version. Zero world tiles is expected. Direct Sun and shade use the shared geometric rule; no local heat exception. Owner build hold remains; this is a proposal only.",
+      "touches": [
+        "default_isolation",
+        "surface_state",
+        "water_growth",
+        "player_information"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "surface_state",
+      "members": [
+        "ground",
+        "use_body",
+        "absorption",
+        "escape",
+        "fields",
+        "residents",
+        "mouth",
+        "water",
+        "whole",
+        "R_contact",
+        "R_farm",
+        "R_growth",
+        "R_water",
+        "R_engulf",
+        "R_settings",
+        "R_bootstrap",
+        "R_scope"
+      ],
+      "holds_together": "unknown",
+      "why": "Farm conversion and wet Slime plant tops write rich terrain while rain changes wetness and exposure reads the top layer. Floors are protected by growth but legacy overlays/flow ownership and productive rich ground make a loop. Unknown until map-region simulation calibrated to actual terrain writes.",
+      "model": "M2: Whole Slime season"
+    },
+    {
+      "thing": "material_economy",
+      "members": [
+        "ground",
+        "use_body",
+        "escape",
+        "fields",
+        "water",
+        "whole",
+        "R_poison",
+        "R_farm",
+        "R_growth",
+        "R_water",
+        "R_settings",
+        "R_bootstrap"
+      ],
+      "holds_together": "unknown",
+      "why": "A fertile-looking field fails while harvest supplies meals, antidote and compression; growth tops can multiply output and build floors that prevent exposure. Pairwise useful production and failed farming do not establish a functioning whole-colony labour/raw budget.",
+      "model": "M5: Work and material budget"
+    },
+    {
+      "thing": "player_information",
+      "members": [
+        "ground",
+        "absorption",
+        "escape",
+        "fields",
+        "residents",
+        "mouth",
+        "water",
+        "whole",
+        "R_information",
+        "R_settings",
+        "R_scope"
+      ],
+      "holds_together": "argued",
+      "why": "Existing UI is the required display, not a second simulation. Patient/captor/weather/terrain identities and causes are shared observations. Warning payloads describe current rate/location and never imply a universal pause or peaceful ecology. Ground silhouettes/footprints and real actions satisfy distinct readings; no new UI or sentience is necessary.",
+      "model": null
+    },
+    {
+      "thing": "save_state",
+      "members": [
+        "ground",
+        "use_body",
+        "absorption",
+        "escape",
+        "fields",
+        "residents",
+        "mouth",
+        "water",
+        "whole",
+        "R_contact",
+        "R_clinic",
+        "R_farm",
+        "R_growth",
+        "R_water",
+        "R_population",
+        "R_engulf",
+        "R_information",
+        "R_settings"
+      ],
+      "holds_together": "argued",
+      "why": "Each saved identity has one owner: health comp clock/latch, giant ThingOwner/mass, map terrain/zone, shared growth/water engines, settings. Tests resume the same ids and state owners; restored branch copies avoid lossy cleanup. Runtime correctness is still read by the bar instruments. Physics/geography uncertainties are assigned above, not asserted solved here.",
+      "model": null
+    },
+    {
+      "thing": "clinical_state",
+      "members": [
+        "use_body",
+        "absorption",
+        "escape",
+        "residents",
+        "mouth",
+        "water",
+        "whole",
+        "R_contact",
+        "R_clinic",
+        "R_poison",
+        "R_water",
+        "R_population",
+        "R_engulf",
+        "R_information",
+        "R_settings"
+      ],
+      "holds_together": "unknown",
+      "why": "Raw poison relief, resistance, contact, early/advanced persistence, drying, toxic cure, engulf release, caravan travel and feature disable share a lethal boundary. Source OFF can leave advanced film holding; terminal-in-caravan belongings/signs are unproven. An enumerated transition walk must include real action calibration before acceptance.",
+      "model": "M1: Situation and clinical transition generator"
+    },
+    {
+      "thing": "animal_population",
+      "members": [
+        "absorption",
+        "residents",
+        "mouth",
+        "whole",
+        "R_growth",
+        "R_population",
+        "R_engulf",
+        "R_settings"
+      ],
+      "holds_together": "unknown",
+      "why": "Visitor cap counts native wild animals too; Wuum cloning, normal recruitment, predation, acid-chain deaths, giant feeding and shared forage renewal can starve arrivals or consume life. Deferred shedding/fission remove loops but do not prove coexistence.",
+      "model": "M2: Whole Slime season"
+    },
+    {
+      "thing": "water_growth",
+      "members": [
+        "fields",
+        "residents",
+        "water",
+        "whole",
+        "R_farm",
+        "R_growth",
+        "R_water",
+        "R_settings",
+        "R_scope"
+      ],
+      "holds_together": "unknown",
+      "why": "Potable rain collection and recession, shared wet-growth/Slime top, farmland loss, native thirst and raw channel-liquid effects share liquid and terrain ownership. Existing ApplyRain is not evidence of undug slime inundation or potable collector delivery.",
+      "model": "M3: Rain and liquid ownership sweep"
+    },
+    {
+      "thing": "held_occupancy",
+      "members": [
+        "mouth",
+        "whole",
+        "R_engulf",
+        "R_settings"
+      ],
+      "holds_together": "unknown",
+      "why": "Growing body footprints, finite release locations, held-victim film/death, settings-off and corpse-site conversion meet on edge/blocked cells. A valid prey gate does not prove a legal non-destructive release at every legal placement.",
+      "model": "M4: Engulf and occupied-cell sweep"
+    },
+    {
+      "thing": "default_isolation",
+      "members": [
+        "whole",
+        "R_clinic",
+        "R_poison",
+        "R_population",
+        "R_engulf",
+        "R_settings",
+        "R_scope"
+      ],
+      "holds_together": "argued",
+      "why": "Each deferred acquisition and active consumer is behind a labelled OFF gate, with its own ticket and truth table. Exposure/engulf no longer require archive entries; oomb feeding no longer requires promotion/fission; core material/cure primitives stay independent of gene content. No default bar needs a seeker, chunk, vat, seal, ritual, solvent dish or ruin. This is an explicit decoupling requirement, not a claim current code already meets it.",
+      "model": null
+    }
+  ],
+  "old_bars": {
+    "scene_observer": {
+      "to": "check",
+      "as": "C5",
+      "why": "Instrument reliability is a check, not an owner-visible experience."
+    },
+    "useful_body": {
+      "to": "merged",
+      "as": "use_body",
+      "why": "Keep ordinary food/block/raw benefit-price; farms are fields, rain is water, solvent/ruins move with extras."
+    },
+    "ordinary_absorption": {
+      "to": "merged",
+      "as": "absorption",
+      "why": "Split hazard/result from actionable routes in escape; seeded clocks alone never sufficient."
+    },
+    "chosen_gene_journey": {
+      "to": "moved",
+      "as": "T4-T7",
+      "why": "Runner-up signature: elective gene journey off in first version."
+    },
+    "friend_rescue": {
+      "to": "moved",
+      "as": "T7",
+      "why": "Injected coma race moves; ordinary incapacitated-patient antidote remains in escape."
+    },
+    "lasting_gene_price": {
+      "to": "moved",
+      "as": "T8",
+      "why": "Social/endogene price belongs to deferred chosen-gene journey."
+    },
+    "living_ecology": {
+      "to": "merged",
+      "as": "residents",
+      "why": "Ordinary roles keep all roster entries; channel paving and oomb advancement/fission move; land and growth also fields/ground."
+    },
+    "titan_lifecycle": {
+      "to": "merged",
+      "as": "mouth",
+      "why": "Retain natural feeding/engulf/rescue/permanent growth as necessary native life; wound spawning moves."
+    },
+    "harvested_chunk": {
+      "to": "moved",
+      "as": "T12-T14",
+      "why": "Combat production, blast terrain and expiry are a separate optional system."
+    },
+    "actual_vault_breach": {
+      "to": "moved",
+      "as": "T15-T16",
+      "why": "Generic and actual campaign vault interactions move; no dummy can stand in for the real next-version obligation."
+    },
+    "last_touch_return": {
+      "to": "moved",
+      "as": "T9-T10",
+      "why": "Separate paid resurrection lifecycle off; existing owner fidelity/family answer remains binding when implemented."
+    },
+    "settings_and_scope": {
+      "to": "check",
+      "as": "C4",
+      "why": "Standing floor and consumer regression; its concrete active-state choices are R_settings/R_scope, not an extra passing bar."
+    },
+    "repeat_walk": {
+      "to": "merged",
+      "as": "whole",
+      "why": "Replace tiny repeated gene showcase with all-default whole-map season, mid-state reload and reordered ordinary work."
+    }
+  }
+}
