@@ -77,24 +77,24 @@ def _digest_file(path, h):
 
 def _files(folder):
     """(posix relative path, path) of every file, sorted. Linked directories are followed, as the game follows them
-    (each real directory once, so a cycle ends); an unreadable directory raises OSError, never drops out of the hash.
+    (a link to a directory already on the path down is a cycle and is cut; two links to one directory are two paths the
+    game loads, both hashed); an unreadable directory raises OSError, never drops out of the hash.
     Empty directories are not hashed: the game loads files, and a folder holding no file changes nothing it loads.
     A plain directory's real path is its parent's plus its name; only a link is resolved (realpath on every directory
-    of RimMandrake.Biomes made the walk 81 s against 21 s, measured on /mnt/c 2026-11-17)."""
-    out, seen = [], set()
-    stack = [(folder, "", os.path.realpath(folder))]
+    of RimMandrake.Biomes made the walk 81 s against 11 s, measured on /mnt/c 2026-11-17)."""
+    out = []
+    top = os.path.realpath(folder)
+    stack = [(folder, "", top, frozenset((top,)))]
     while stack:
-        d, rel, real = stack.pop()
-        if real in seen:
-            continue
-        seen.add(real)
+        d, rel, real, chain = stack.pop()
         with os.scandir(d) as it:
             entries = list(it)
         for e in entries:
             r = rel + e.name
             if e.is_dir():                              # follows a link, as the game does
-                stack.append((e.path, r + "/", os.path.realpath(e.path) if e.is_symlink()
-                              else os.path.join(real, e.name)))
+                sub = os.path.realpath(e.path) if e.is_symlink() else os.path.join(real, e.name)
+                if sub not in chain:                    # every real directory down this path is in chain: no loop
+                    stack.append((e.path, r + "/", sub, chain | {sub}))
             else:
                 out.append((r, e.path))
     return sorted(out)
@@ -104,7 +104,10 @@ def deployed_hash(folder, cache_dir=None):
     """sha256:<hex> over the folder's files, or None when there is no folder or a part of it cannot be read. With
     cache_dir, a hash is kept under a key of the folder's real path and every file's path, size, mtime and change time
     (ctime: a write moves it and no utime can put it back; measured on drvfs 2026-11-17), so an unchanged folder is not
-    read twice (RimMandrake.Biomes, 704 MB, 4761 files: 72 s uncached, measured 2026-11-17)."""
+    read twice (RimMandrake.Biomes, 704 MB, 4761 files: 72 s uncached, measured 2026-11-17). The key is metadata, so it
+    cannot see a change no write call makes (stores through a live shared mapping) or a file only another user cannot
+    open; a deployed mod folder is written by deploy_custom_mods with plain writes as the one user, and the game opens
+    it read-only. A deploy during a reading is the same race an uncached read has: the next reading sees it."""
     if not folder or not os.path.isdir(folder):
         return None
     try:
@@ -211,11 +214,13 @@ def _paths():
 
 
 def _mod_folder(root, mod, mods_dir):
+    """A mod composed into Biomes is read from the Biomes folder first: a standalone copy left from before it was
+    composed is not what the walk loads (second GPT review, 2026-11-17)."""
     pid = mod_package_id(root, mod)
     comp = composed_into(root, mod)
-    folder = deployed_folder(mods_dir, pid, mod)
-    if folder is None and comp:
-        folder = deployed_folder(mods_dir, comp[0], comp[1] or "")
+    folder = deployed_folder(mods_dir, comp[0], comp[1] or "") if comp else None
+    if folder is None:
+        folder = deployed_folder(mods_dir, pid, mod)
     return pid, folder
 
 

@@ -109,6 +109,17 @@ def io_checks(tmp):
         shutil.rmtree(locked)
     else:
         check(True, "unreadable subfolder: running as root, not testable here")
+    # second GPT review (D:\ClaudeWork\rimmandrake\conductor\bm_gpt_review2.md): two links to one directory are two
+    # paths the game loads; dropping either must change the hash (only a cycle is cut, never an alias)
+    alias = os.path.join(tmp, "Alias")
+    write(os.path.join(alias, "About", "About.xml"), "x")
+    os.symlink(ext, os.path.join(alias, "a"))
+    os.symlink(ext, os.path.join(alias, "b"))
+    hb = B.deployed_hash(alias)
+    seen_a = sorted({r.split("/")[0] for r, _ in B._files(alias)})
+    os.unlink(os.path.join(alias, "b"))
+    check(hb and seen_a == ["About", "a", "b"] and B.deployed_hash(alias) not in (None, hb),
+          "two links to one directory are both hashed, and removing one changes the hash: %s" % seen_a)
 
     # ---- the deployed folder is found by packageId, not by name ------------------------------------------------------
     root = os.path.join(tmp, "repo")
@@ -117,6 +128,17 @@ def io_checks(tmp):
           "the mod's packageId is its About.xml's top-level one (a dependency's packageId is not it)")
     check(B.deployed_folder(os.path.join(tmp, "Mods"), "mandrake.rm.testmod", "TestMod") == d,
           "the deployed folder is the one whose About.xml names the packageId (here DeployedName, not TestMod)")
+    # a mod composed into Biomes is read from the Biomes folder even when an old standalone copy is still deployed
+    root2, mods2 = os.path.join(tmp, "repo2"), os.path.join(tmp, "Mods2")
+    write(os.path.join(root2, "src", "RimMandrake", "Comp", "About", "About.xml"), ABOUT % "mandrake.rm.comp")
+    write(os.path.join(root2, "src", "RimMandrake", "Biomes.compose.json"), json.dumps({
+        "compose_wave": 1, "entries": [{"key": "Comp", "wave": 1}], "about": {"packageId": "Mandrake.RM.Biomes"},
+        "target": "RimMandrake.Biomes"}))
+    write(os.path.join(mods2, "Comp", "About", "About.xml"), ABOUT % "mandrake.rm.comp")
+    write(os.path.join(mods2, "RimMandrake.Biomes", "About", "About.xml"), ABOUT % "mandrake.rm.biomes")
+    got2 = B._mod_folder(root2, "Comp", mods2)[1]
+    check(got2 == os.path.join(mods2, "RimMandrake.Biomes"),
+          "a composed mod is hashed in the Biomes folder, not in a stale standalone copy: %s" % got2)
 
     # ---- ModsConfig.xml is parsed, in order; a commented-out line is not a mod ---------------------------------------
     cfg = os.path.join(tmp, "ModsConfig.xml")
@@ -350,6 +372,25 @@ def _old_key(folder, files, cache_dir):
     return os.path.join(cache_dir, "hash_%s.txt" % sig.hexdigest()[:32])
 
 
+def _seen_once_files(folder):
+    """the second build's walk: each real directory once, so a second link to one directory was dropped."""
+    out, seen, stack = [], set(), [(folder, "")]
+    while stack:
+        d, rel = stack.pop()
+        if os.path.realpath(d) in seen:
+            continue
+        seen.add(os.path.realpath(d))
+        for e in os.scandir(d):
+            (stack.append((e.path, rel + e.name + "/")) if e.is_dir() else out.append((rel + e.name, e.path)))
+    return sorted(out)
+
+
+def _standalone_first(root, mod, mods_dir):
+    pid, comp = B.mod_package_id(root, mod), B.composed_into(root, mod)
+    folder = B.deployed_folder(mods_dir, pid, mod)
+    return pid, folder if folder or not comp else B.deployed_folder(mods_dir, comp[0], comp[1] or "")
+
+
 def _old_last_rows(rows):
     return {r.get("test") or r.get("id"): r for r in rows or [] if r.get("test") or r.get("id")}
 
@@ -357,6 +398,8 @@ def _old_last_rows(rows):
 MUTANTS = {
     "links_and_errors_skipped": lambda: setattr(B, "_files", _old_files),
     "cache_key_size_mtime": lambda: setattr(B, "_cache_key", _old_key),
+    "aliases_cut": lambda: setattr(B, "_files", _seen_once_files),
+    "standalone_before_composed": lambda: setattr(B, "_mod_folder", _standalone_first),
     "standin_on_real_repo": lambda: setattr(B, "REPO", "/nonexistent/repo"),
     "idless_rows_dropped": lambda: setattr(B, "last_rows", _old_last_rows),
     "tier_scans_every_tier": lambda: setattr(B, "_resolve_tier", (lambda o: lambda t, i: o(t, []))(B._resolve_tier)),
