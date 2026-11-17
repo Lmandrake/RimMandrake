@@ -1,0 +1,31 @@
+{
+ "edited": [
+  {
+   "path": "src/RimMandrake/Pyrelands/selftest_pyrelands_settings_sweep.py",
+   "why": "added: ShellOn wiring, heat-immunity prefix and WindCarries in entry_gated, checkbox binding fact; 5 mutants. Nothing removed or loosened.",
+   "before_sha256": "0149eda076c9f0cf3da279ae4f3b5dd239030283f21c5550eeaba7911ad2946a",
+   "after_sha256": "1451129049a06e9566feb93cc714273edc80a0f0aa9ec0493fe9d50f54b7f817",
+   "before_on": "912c1ee157baed0a2a2c1b2382e887a4eae0b461",
+   "after_on": "4a7c450d6b19a286a0f691e2fefd7bc455863b72"
+  },
+  {
+   "path": "src/RimMandrake/Pyrelands/selftest_pyrelands_ash_probe.py",
+   "why": "added: ProbeCell must pass the cell's own parts (BonusAt, IsWatered, burnTick, black-rain stamp, bonus clock). Nothing removed.",
+   "before_sha256": "69152c9cf86ae15b69acdca968e420368463a0dff66d32345ea57b8a8a1c129d",
+   "after_sha256": "15a7c66fa96a4b0adb239b1f9928e9521032783654189a6b280f9777b5d6da4c",
+   "before_on": "912c1ee157baed0a2a2c1b2382e887a4eae0b461",
+   "after_on": "4a7c450d6b19a286a0f691e2fefd7bc455863b72"
+  },
+  {
+   "path": "src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
+   "why": "added: facts biome_text_burned_for_millennia and about_no_worldgen_promise_while_off, 2 mutants; _copy also copies About.xml. Nothing removed.",
+   "before_sha256": "cd4d788b7beef591e904869b9fb18f58c8630b37f9b3f0937da4d4012758e93e",
+   "after_sha256": "a683031dc2120671c5f4b45c66c5d42271bfd36347ba41231d53c43f6739e462",
+   "before_on": "912c1ee157baed0a2a2c1b2382e887a4eae0b461",
+   "after_on": "4a7c450d6b19a286a0f691e2fefd7bc455863b72"
+  }
+ ],
+ "also_edited_not_a_test": [
+  "design/concepts/Pyrelands/version/test_table.json and version/pilot_throwaway/make_test_table.py: T_DEFS_OFFLINE observes prose 'body size 6' -> 'body size 9' (the def and the bar say 9); no command, decides or proves_at moved"
+ ]
+}

@@ -1,0 +1,107 @@
+{
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_FIX_PYRE_ABOUT_PROMISES_WORLDGEN_SHIPPED_OFF",
+   "class": "Problem",
+   "bar": "inv_art_and_text",
+   "criterion": "the shipped descriptions (approved art and text) say only what the mod does; floor:worldgen: the new-world switch ships off, labelled unsupported (his card 2026-11-13)",
+   "evidence": [
+    "lane1 row text_fixed_about_does_not_promise_worldgen_that_ships_off FAIL: About.xml 'it places itself on newly generated worlds with no other mod required' while RM_PyrelandsSettings.biomeGenerationEnabled = false",
+    "RM_FireEcoKernel.BiomeScore returns -100 when generation is off, so the biome never places itself on a new world at the shipped default",
+    "planted fault about_promises_worldgen_more survived every decider (T_DEFS_OFFLINE, RECORD_ART_SHEET, T_CUT_STAYS_CUT, T_SELF_CONTAINED_OFFLINE)"
+   ],
+   "would_pass": "the About description says new-world placement is an unsupported switch, off by default, and a decider fails on a placement promise while the switch ships off",
+   "smallest_fix": "reword the About sentence; add fact about_no_worldgen_promise_while_off to selftest_pyrelands_defs_offline.py",
+   "verdict_on_criterion": "criterion sound; the text was wrong",
+   "status": "FIXED 4a7c450d6b19a286a0f691e2fefd7bc455863b72",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_GUARD_PYRE_GATE_SHELL_TOGGLE_AND_WIND_ENTRY",
+   "class": "Problem",
+   "bar": "inv_settings_gate",
+   "criterion": "Mod Settings: every mechanic switches off cleanly; the Baroque Biomes roster toggle gates mechanics, not only worldgen",
+   "evidence": [
+    "planted gate_shellon_always (ShellOn => true) survived T_SETTINGS_SWEEP_OFFLINE, T_SETTINGS_SCREENS, T_SITE and lane 1",
+    "planted heat_immunity_gate_ignored (furnace-beast heat immunity with the gate and furnaceThermalEnabled off) survived",
+    "planted wind_ignores_gate (WindCarries without PyrelandsMechanicsGate.On) survived"
+   ],
+   "would_pass": "each of the three planted faults turns T_SETTINGS_SWEEP_OFFLINE red",
+   "smallest_fix": "gate_wired checks ShellOn; entry_gated adds Patch_FurnaceBeastHeatImmunity.Prefix and the WindCarries predicate (gate and its own switch)",
+   "verdict_on_criterion": "criterion sound; the decider read too little",
+   "status": "FIXED 4a7c450d6b19a286a0f691e2fefd7bc455863b72",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_GUARD_PYRE_WIND_CHECKBOX_BOUND_TO_BURN_LINE",
+   "class": "Problem",
+   "bar": "inv_settings_gate",
+   "criterion": "Mod Settings: every switch on the screen toggles its own setting",
+   "evidence": [
+    "planted wind_checkbox_wrong_field ('The wind carries the fire' bound to ref burnLineEnabled) survived T_SETTINGS_SCREENS (856/856 ok), T_SETTINGS_SWEEP_OFFLINE and lane 1"
+   ],
+   "would_pass": "a checkbox bound to the wrong field turns a decider red",
+   "smallest_fix": "fact checkboxes: every bool setting is the ref of exactly one CheckboxLabeled",
+   "verdict_on_criterion": "criterion sound; no decider checked the binding",
+   "status": "FIXED 4a7c450d6b19a286a0f691e2fefd7bc455863b72",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_GUARD_PYRE_PROBE_BONUS_PART_HANDED_ZERO",
+   "class": "Problem",
+   "bar": "ash_fertility_probe",
+   "criterion": "the tester reads, per cell, base fertility, the watered lift, the fresh-burn bonus and its age, and whether rain is on the cell",
+   "evidence": [
+    "planted probecell_bonus_dropped (PyrelandsAshField.ProbeCell hands ProbeLine 0f for the bonus) survived T_ASH_PROBE_OFFLINE and lane 1; the probe would read bonus=0 on a fresh scar"
+   ],
+   "would_pass": "T_ASH_PROBE_OFFLINE fails when ProbeCell does not pass the cell's own bonus",
+   "smallest_fix": "static check: ProbeCell passes comp?.BonusAt(c, now), IsWatered, burnTick, the black-rain stamp and freshBurnDays",
+   "verdict_on_criterion": "criterion sound; the decider checked the kernel, not all of its caller's arguments",
+   "status": "FIXED 4a7c450d6b19a286a0f691e2fefd7bc455863b72",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_GUARD_PYRE_DESCRIPTION_MILLENNIA_HALF_UNCHECKED",
+   "class": "Problem",
+   "bar": "biome_text_says_engineered",
+   "criterion": "the player learns that this grass savanna was genetically engineered and has burned for millennia",
+   "evidence": [
+    "planted desc_millennia_dropped ('for millennia' -> 'for a season') survived T_DEFS_OFFLINE; lane-1 row text_fixed_biome_description_engineered caught it"
+   ],
+   "would_pass": "T_DEFS_OFFLINE fails when the description loses 'for millennia'",
+   "smallest_fix": "fact biome_text_burned_for_millennia and a mutant",
+   "verdict_on_criterion": "the oracle names only 'engineered'; the experience names both; the bar keeps its meaning",
+   "status": "FIXED 4a7c450d6b19a286a0f691e2fefd7bc455863b72",
+   "miss_of": 2
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_PYRE_WIND_CALLERS_PROVE_ONLY_LIVE",
+   "class": "Polish",
+   "bar": "burn_line_walks",
+   "criterion": "grass fire moves across the map like a natural grass fire; must not read as a flood that takes the whole map",
+   "evidence": [
+    "planted and survived every offline test: carry_lights_every_probe, spread_prefix_always_vanilla, carry_forgets_carried, markcarried_noop, front_line_along_wind_caller, scar_wind_not_set (callers) and downwind_cone_wide (kernel)",
+    "bar burn_line_walks proves_at 6, decides sc_burn_line_walks (live)"
+   ],
+   "would_pass": "an offline check of the wind-carry callers (a static read like entry_gated, or the burn model driven by the C# caller) catches them before stage 6",
+   "smallest_fix": "optional; the live scene is the decider",
+   "verdict_on_criterion": "criterion sound; the stage-6 scene decides",
+   "status": "PENDING",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_CORRECT_PYRE_TEST_TABLE_SAYS_BODY_SIZE_SIX",
+   "class": "Polish",
+   "bar": "furnacebeast_warms",
+   "criterion": "a record says what is true: the furnace-beast is body size 9 (leaf furnacebeast_warms; RM_PyrelandsFauna.xml baseBodySize 9)",
+   "evidence": [
+    "test_table.json T_DEFS_OFFLINE observes: 'furnace-beast body size 6 in the def'; the def and the test's own check hold 9"
+   ],
+   "would_pass": "the prose says 9",
+   "smallest_fix": "correct the prose in make_test_table.py and test_table.json",
+   "verdict_on_criterion": "n/a (a record)",
+   "status": "FIXED 4a7c450d6b19a286a0f691e2fefd7bc455863b72",
+   "miss_of": null
+  }
+ ]
+}
