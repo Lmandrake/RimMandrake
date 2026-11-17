@@ -48,7 +48,7 @@
       "called_by": "RM_Warscar.xml wildPlants; TetchikGlowerGate and choir read plants; deferred tap catalyst and shielding consume crust.",
       "serves": "ordinary life",
       "fate": "life",
-      "why": "Black crust is the ordinary producer on poisoned substrate; retain ordinary harvest as raw trade goods only.",
+      "why": "Black crust is the ordinary producer on poisoned substrate; retain ordinary harvest as raw trade goods only. Current plant data lacks explicit pollution tolerance. T17/T26 require plant.pollution Any and native placement to preserve feeding on clean and polluted native substrate.",
       "needed_by": "",
       "ticket": ""
     },
@@ -61,7 +61,7 @@
       "called_by": "RM_Warscar.xml wildPlants; ordinary plant spawning/grazing.",
       "serves": "ordinary life",
       "fate": "life",
-      "why": "Ordinary retained flora; earlier explicit keep stands. No added cactus power or restoration mechanic.",
+      "why": "Ordinary retained flora; earlier explicit keep stands. No added cactus power or restoration mechanic. Current plant data lacks explicit pollution tolerance. T17/T26 require plant.pollution Any and native placement to preserve feeding on clean and polluted native substrate.",
       "needed_by": "",
       "ticket": ""
     },
@@ -74,20 +74,20 @@
       "called_by": "MapComponent_WreckLichen.MapComponentTick -> Seed; wild grazer Ingest jobs; deferred gardener history is not a producer dependency.",
       "serves": "ordinary life",
       "fate": "life",
-      "why": "Deleting ruin-adjacent seeding removes forage from a floor where ordinary wild sowing cannot support the grazer web. Keep the bounded seeder, not an engineered cultivation loop.",
+      "why": "Deleting ruin-adjacent seeding removes forage from a floor where ordinary wild sowing cannot support the grazer web. Keep the bounded seeder, not an engineered cultivation loop. Current plant data lacks explicit pollution tolerance. T17/T26 require plant.pollution Any and native placement to preserve feeding on clean and polluted native substrate.",
       "needed_by": "",
       "ticket": ""
     },
     {
       "id": "chatrak_body",
-      "what": "Armoured, low-revenge grazer, life stages, ordinary vegetarian forage, breeding and leather yield. Clean versus scaria distinction is preserved; staged snap is separate.",
+      "what": "Armoured, low-revenge grazer, life stages, ordinary vegetarian forage, breeding and leather yield. Current wild spawn has a clean/scaria split. W4/T20 extend eventual onset to every untreated wild resident and retain medical cure.",
       "built": "present",
       "evidence": "src/RimMandrake/Scarlands/Defs/ThingDefs_Races/RM_WarscarFauna.xml; independently read current file.",
       "proven": "stale",
       "called_by": "RM_Warscar.xml wildAnimals -> ordinary spawn/lifecycle; snap Sweep filters its PawnKind.",
       "serves": "ordinary life",
       "fate": "life",
-      "why": "Armoured crust grazer is ordinary animal life; deleting armour, grazing or the clean-versus-scaria distinction defeats its stated ecological role.",
+      "why": "Armour, grazing, lifecycle and ordinary products define its ecological role. Initial clean status does not exempt untreated wild residents from the frozen eventual-onset promise.",
       "needed_by": "",
       "ticket": ""
     },
@@ -269,7 +269,7 @@
       "called_by": "RM_MapComponent_ChatrakSnap.MapComponentTick -> Sweep/Armable; incubation comp TryCircle; render node; mental-state stage. Uses RM_WarscarMark.Warscar only as biome lookup.",
       "serves": "life",
       "fate": "needed_by",
-      "why": "Life: the frozen sheet says the scaria-bearing plated grazer eventually succumbs. Deleting onset leaves a permanently placid sick grazer, contradicting that animal role. Keep stages and local warnings as disease readability, not an extra colony curse.",
+      "why": "Life: the frozen sheet says the scaria-bearing plated grazer eventually succumbs. Deleting onset leaves a permanently placid sick grazer, contradicting that animal role. Keep stages and local warnings as disease readability, not an extra colony curse. Current scaria-only eligibility is insufficient for the frozen all-plated-grazers promise. T20 extends native arming to initially clean wild animals, with saved medical-treatment exemption and vanilla taming restrictions.",
       "needed_by": "life",
       "ticket": "T20"
     },
@@ -397,10 +397,10 @@
       "evidence": "src/RimMandrake/Scarlands/Source/RM_WarscarMark.cs; independently read current file.",
       "proven": "stale",
       "called_by": "RM_MapComponent_WarscarMark -> accrual and floor comp; HediffDefs mentalStateGivers; snap depends on static biome lookup, not the hediff.",
-      "serves": "future independent system",
-      "fate": "next_version",
-      "why": "A separate interaction, technology, reward or campaign system; deleting its player-facing behaviour leaves the defined battlefield, ordinary food web and Settling cycle whole.",
-      "needed_by": "",
+      "serves": "cursed land, mental cost of residence",
+      "fate": "needed_by",
+      "why": "Deleting bare accrual, mood, nightmare or lasting floor defeats frozen sheet section 5 marked-in-mind and section 7b, and the 2026-09-11 permanence ruling. This necessary land cost stays on independently of deferred trade bonuses and panels. T05 repairs the current off-biome nightmare leak and provides ordinary-time proof.",
+      "needed_by": "land, the frozen cursed-battlefield cost in W10",
       "ticket": "T05"
     },
     {
@@ -412,7 +412,7 @@
       "called_by": "RM_WarscarMarkStartup edits mark hediff stage offsets; no independent XP engine.",
       "serves": "future independent system",
       "fate": "next_version",
-      "why": "A separate interaction, technology, reward or campaign system; deleting its player-facing behaviour leaves the defined battlefield, ordinary food web and Settling cycle whole.",
+      "why": "Deleting hacking, mech-butchery and smelting bonuses leaves the retained mental cost and signature intact. These are a separate salvage reward attached to the mark and default off through T05a.",
       "needed_by": "",
       "ticket": "T05a"
     },
@@ -425,7 +425,7 @@
       "called_by": "RM_LoosenedPanels genstep -> panel building CanWork -> RM_WorkPanelLoose job -> cached crate Def on completion.",
       "serves": "future independent system",
       "fate": "next_version",
-      "why": "A separate interaction, technology, reward or campaign system; deleting its player-facing behaviour leaves the defined battlefield, ordinary food web and Settling cycle whole.",
+      "why": "Deleting privileged panel opening and its cache reward leaves the bare mental mark, ordinary sealed salvage and dust cycle intact. The new job and reward move through T05b.",
       "needed_by": "",
       "ticket": "T05b"
     },
@@ -594,7 +594,7 @@
       "called_by": "src/RimMandrake/Scarlands/Patches/Patches_BrokenTurretAim.xml -> CompProperties_TurretAim -> CompTick/PostDraw/inspect.",
       "serves": "land",
       "fate": "land",
-      "why": "The selected experience explicitly includes silent guns; harmless movement by abandoned defenses is ordinary environmental motion. Deleting tracking leaves inert props unable to convey that the guns still notice movement. No firing, refit or new combat behaviour stays.",
+      "why": "The selected experience explicitly includes silent guns; harmless movement by abandoned defenses is ordinary environmental motion. Deleting tracking leaves inert props unable to convey that the guns still notice movement. No firing, refit or new combat behaviour stays. Current comp is def-wide without a biome gate. T23 must restrict default target scanning, angle/render and inspect effects to Warscar. Off-biome operation uses only the existing unsupported opt-in, default off.",
       "needed_by": "",
       "ticket": "T23"
     },
@@ -756,7 +756,7 @@
     },
     {
       "id": "cross_biome",
-      "what": "Existing off-by-default, unsupported opt-in runs wreck-lichen and Settling on selected/every other biome; lichen intensity only. It does not export panels, fauna or ring generation. Preserve existing capability without proposing any new cross-biome switch.",
+      "what": "Existing off-by-default, unsupported opt-in runs wreck-lichen and Settling on selected/every other biome; lichen intensity only. It does not export panels, fauna or ring generation. Preserve existing capability without proposing any new cross-biome switch. T23 also gates existing def-wide gun tracking through this same off-biome opt-in and its current map selection, preserving native-only defaults.",
       "built": "present",
       "evidence": "src/RimMandrake/Scarlands/Source/RM_WarscarMod.cs:183; independently read current file.",
       "proven": "stale",
@@ -938,14 +938,14 @@
     },
     {
       "id": "persistent_poison",
-      "what": "The native substrate cannot become fertile and remains a source of contamination after local cleanup.",
+      "what": "Uncovered native substrate renews ordinary pollution after cleanup. A player floor or roof stops renewal beneath it, removal restores the source, and the saved substrate never becomes fertile soil.",
       "built": "absent",
       "evidence": "src/RimMandrake/Scarlands/Defs/BiomeDefs/RM_Warscar.xml; src/RimMandrake/Scarlands/Source/RM_AerosolScreen.cs",
       "proven": "missing",
       "called_by": "No renewal writer found in Scarlands source; biome marker is read-only, ordinary terrain selection is static. Needed implementation ticket T17.",
       "serves": "land",
       "fate": "needed_by",
-      "why": "Land: deleting lasting contamination makes poisoned forever a temporary weather effect. The polluted-biome marker detects pollution but creates none; floor selection alone does not implement renewal.",
+      "why": "Land: deleting lasting contamination makes poisoned forever a temporary weather effect. The polluted-biome marker detects pollution but creates none; floor selection alone does not implement renewal. Coverage suppresses source renewal rather than erasing the saved source. Ordinary pollution harms exposed workers, native crusts require pollution Any, and source inspect state plus ordinary pollution overlay shows the return.",
       "needed_by": "land",
       "ticket": "T17"
     },

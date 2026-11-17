@@ -1,0 +1,822 @@
+{
+ "mod": "Warscar",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json W4 (says, accept, meant.source); ambiguities.md item 7; owner_pages.md 'Mad grazers'",
+     "evidence": "The frozen sheet design/Jawa/worldbuilding/biomes/the_scarlands.md says in §4 that the plated grazer is 'guaranteed to lose its mind', and in §5 (Always true) that 'the plated grazers always succumb in the end'. W4 says 'a clean or successfully cured chatrak avoids that delayed onset'. RM_Warscar.xml sets wildAnimalScariaChance 0.5, so under W4 about half the wild plated grazers never turn. Ambiguity 7 and W4 credit this to a 'kit ruling'. The only source is the criterion 'A clean chatrak tames and never snaps' in infrastructure/state/items/closed/WARSCAR_SNAP_MARK_1.md. An agent wrote that build criterion; it is not an owner ruling. Nothing in the cast file's ruling table (warscar_bedazzle_cast_2026-09-30.md) separates clean animals from cured ones.",
+     "would_pass": "W4 either agrees with §5 (for example: every wild plated grazer on the Warscar eventually shows the change unless the player treats it), or keeps the clean/infected split as an open owner question carrying the frozen-sheet evidence. The Evidence-for-Ask rule makes such a question legitimate here.",
+     "smallest_fix": "Relabel W4's source for the clean/cure split as 'delegated', not a kit ruling. Add one question to page two: '§5 says plated grazers always succumb; the build arms only the half that carry scaria. Default: only scaria carriers turn. If you say otherwise, every wild chatrak arms.'"
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "next_version.md 'mark'; census.json row mark; owner_pages.md page one",
+     "evidence": "The frozen sheet says in §5 (Always true): 'Salvagers return changed — sick in body, marked in mind.' Its §7b names the Scarlands mark as the mind currency of the curse. The owner picked this experience by card in biome_experiences_2026-10-20.md: 'Everyone calls it cursed, and everyone who scavenges here learns why.' The proposal moves the whole mark, accrual and mood/nightmare included. The only reason given is the generic line 'A separate interaction, technology, reward or campaign system'. No bar, page or argument says that the 'marked in mind' half of the curse leaves 0.1.0, and the three sentences never mention the curse.",
+     "would_pass": "Either keep the bare mark (accrual, mood and nightmare, floor) as part of what being here costs, with a bar, and move only the trade bonuses and loosened panels; or move it with a specific deletion argument against §5 and the 'cursed' sentence, shown on his pages.",
+     "smallest_fix": "In next_version.md, give the mark a specific deletion argument. Add one page-two line: '§5 marked in mind / cursed: deferred; 0.1.0 carries the curse only through toxic dust and mad grazers'. Make that line a question with the evidence."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json W1 (accept and reject pictures); tickets.md T24 acceptance test",
+     "evidence": "The frozen sheet says in §5: 'Every ancient danger here has already been opened and destroyed.' §8 repeats it as an owner statement: 'Ancient dangers, plentiful — and ALL already opened and destroyed (owner)'. The proposal mentions 'pre-opened danger dressing' only in census.json defense_layout and in T24's Work text. No W1 picture rejects a live or dormant sealed ancient danger. T24's acceptance test checks only 'Old enemy evidence and intact unsealed prizes are absent'.",
+     "would_pass": "W1 rejects a map where an Odyssey ruin still holds a live sealed threat that wakes when opened, and accepts sprung or cracked-open threat sites lying spent beside sealed salvage.",
+     "smallest_fix": "Add that reject/accept pair to W1, and add 'no live ancient danger in any ruin' to T24's acceptance test."
+    },
+    {
+     "head": "cannot_hold_together",
+     "where": "bars.json R2 and the 'ground' meeting; tickets.md T17; W2 against W3",
+     "evidence": "R2 says 'Ordinary toxin/pollution paths' and T17 says 'the smallest ordinary pollution-source renewal on the saved native-substrate mask'. RM_WarscarFlora.xml sets no <pollution> on RM_Glower, RM_ScorchedStars or RM_WreckLichen. In vanilla the default is Pollution.CleanOnly (enum value 0; PlantProperties.RequiresNoPollution). On any polluted cell, Plant.DyingFromPollution kills such a plant, and PlantUtility refuses to place it ('MessageWarningPollutedCell'). So the renewal R2 and T17 prescribe would kill the crusts and lichen on the native ground where W3 says the grazers feed. The proposal marks the meeting 'unknown' and defers it to the season model, but reading the code already decides it.",
+     "would_pass": "Either a rule that the native crusts tolerate pollution (pollution Any or PollutedOnly), with a C4 def check, or a renewal design that does not write vanilla cell pollution under them.",
+     "smallest_fix": "Add to R2: 'native crust flora are pollution-tolerant'. Add the def field check to C4. Mark the ground meeting 'argued' for this pair."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json W9 (range.varies, range.left_out, meant 'stall'); same pattern in W5 range.left_out",
+     "evidence": "W9 allows 'Natural wind trace and separate labelled complete-cycle replay' and 'No forced wind change on finite all-calm trace: report it then replay declared transition.' It defines a stall as 'eligible sustained calm/wind never closes the cycle'. A build whose thresholds the shipped tile's natural weather never reaches is then not a stall by that definition, and it passes on the forced replay. That is the same false pass as the Pyrelands scenes run with the sky forced.",
+     "would_pass": "The natural, unforced season leg at shipped defaults must itself show at least one complete calm, fall, wind, lift cycle on the shipped weather. An all-calm or all-wind natural season counts as a W9 stall, a fail or UNMEASURED and re-run on natural weather, and is never cured by the replay. The replay stays as a diagnostic only.",
+     "smallest_fix": "Rewrite W9's range/left_out and the 'stall' definition to drop 'eligible' and put the natural-cycle requirement in. Make the same change to W5's 'No guaranteed wind change' clause."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "census.json row persistent_poison (built: absent, fate needed_by land); W2 accept picture; tickets.md T17; definition.md 'Costs and failure signs'",
+     "evidence": "The only definition given is 'remains a source of contamination after local cleanup' / 'temporary clearing is possible, permanent ecological recovery is not'. It never says whether renewal reaches cells under player floors and roofs, what a pawn working on exposed native ground suffers from it (as distinct from W5's airborne dose), or what readable sign shows renewal happening. W2's accept picture ('Cleanup leaves useful floor for a roofed work area, while exposed native substrate remains a contamination source') can be built two ways: the base re-pollutes forever, or only open ground does. T17 hands all of this to a later spec.",
+     "would_pass": "The definition states where renewal acts (exposed native mask only, or under floors too), what it does to pawns and plants there, and its readable sign. No numbers are needed.",
+     "smallest_fix": "Add one paragraph to definition.md and one ambiguity row choosing 'exposed native cells only; player floors and roofs stop renewal beneath them' (or the other reading), and reflect it in W2's pictures."
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "census.json row silent_guns; definition.md 'Settings and shipped profile' (harmless gun tracking default-on); ambiguities.md item 14",
+     "evidence": "src/RimMandrake/Scarlands/Patches/Patches_BrokenTurretAim.xml adds CompProperties_TurretAim def-wide to AncientAutocannonTurret and AncientUraniumSlugTurret. RM_CompTurretAim.cs gates it only on RM_WarscarSettings.turretTrackingEnabled, with no biome check. The census itself notes: 'Patch is def-wide, so targets outside Warscar are affected too.' The 2026-10-15 owner ruling (CLAUDE.md, Mod Settings section) says biome mechanics are promised inside our biomes only, with no new cross-biome switch, and existing ones 'stay, off, labelled unsupported'. As proposed, this Warscar mechanic runs by default on every map that has those ancient turrets. Ambiguity 14 says only 'No promise of tracking on unrelated biomes', which is not a gate.",
+     "would_pass": "Tracking defaults to Warscar maps only. Any off-biome tracking sits behind the existing unsupported cross-biome opt-in, off and labelled.",
+     "smallest_fix": "Add a ticket (or extend T23) to gate CompTurretAim on the Warscar biome lookup, with an off-biome map in its acceptance test."
+    }
+   ],
+   "reviewer_refusals": 7,
+   "stranger": [
+    {
+     "bar": "W1",
+     "n": 1,
+     "text": "A tooltip says last stand over random junk with intact valuable equipment lying in the open.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W1",
+     "n": 2,
+     "text": "A route detours through defensive layers toward sealed salvage that is distinguishable from stripped wrecks.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W1",
+     "n": 3,
+     "text": "Defenses make a decorative ring but their openings point at unrelated paths, or visible enemy remains explain the mystery.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W1",
+     "n": 4,
+     "text": "At play zoom, surviving broken emplacements and intervening cover face common approaches across shattered ground; hulls are bare and no remains identify the attackers.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W2",
+     "n": 1,
+     "text": "Wetting bare floor does not create green meadow; imported meals and a powered hydroponics building can still serve the colony.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W2",
+     "n": 2,
+     "text": "Cleanup leaves useful floor for a roofed work area, while exposed native substrate remains a contamination source and refuses soil farming.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W2",
+     "n": 3,
+     "text": "The ground stays sterile only because construction and ordinary roofs are refused.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W2",
+     "n": 4,
+     "text": "A polluted-biome label persists after cleanup, but watering or floor removal creates lasting fertile soil and ends the contaminant source.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W3",
+     "n": 1,
+     "text": "Weapon-descendants only use harmless generic bites, or human foragers conjure berries from bare floor.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W3",
+     "n": 2,
+     "text": "A chatrak eats lichen beside wrecks, a rimclaw hunts and a corpse slug feeds; a consumed body leaves remains and recoverable carried gear.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W3",
+     "n": 3,
+     "text": "Alien bodies spawn but cannot eat their promised reachable food, or a corpse eater deletes a named body and its equipment without a readable sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W3",
+     "n": 4,
+     "text": "A cleaner eats waste and a living munition uses its ordinary weapon; normal hunting, butchery and feasible taming still work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W4",
+     "n": 1,
+     "text": "A sick grazer lifts its plates and changes feeding or movement; an able worker nearby withdraws along an open escape path before its first attack.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W4",
+     "n": 2,
+     "text": "Blocked circling freezes disease forever, or clean and cured animals receive the same delayed rage as sick wild ones.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W4",
+     "n": 3,
+     "text": "Only inspect text changes before an immediate attack, or a visible warning gives the nearby worker on a clear path no chance to withdraw.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W4",
+     "n": 4,
+     "text": "Loading preserves disease progress, and curing scaria prevents a pending delayed rage rather than leaving a hidden curse.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W5",
+     "n": 1,
+     "text": "The transition still happens while attention is elsewhere and ordinary toxic weather also runs.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W5",
+     "n": 2,
+     "text": "Dust appears but health never changes, or only a debug command can start the fall.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W5",
+     "n": 3,
+     "text": "Only a deferred projector protects workers, or matched roofed and exposed workers receive the same signature airborne dose.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W5",
+     "n": 4,
+     "text": "Calm becomes falling dust; an exposed worker gains its attributable airborne toxic contribution while a matched roofed worker avoids that contribution, then returning wind stops the fall.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W6",
+     "n": 1,
+     "text": "Prints are scattered when dust falls without any crossing, and invisible walkers leave nothing.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W6",
+     "n": 2,
+     "text": "A walker crosses undisturbed dust and its direction can be followed; an invisible walker leaves a trace too and unrelated uncrossed ground stays blank.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W6",
+     "n": 3,
+     "text": "Old records persist but new crossings stop at capacity, or cleaned floor displays a floating stale trail.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W6",
+     "n": 4,
+     "text": "Later traffic overwrites steps; observed cleaning or feeding removes film locally while fresh crossings on remaining film still record.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W7",
+     "n": 1,
+     "text": "Film disappears but old prints remain, or loading restarts the front and doses the same pawn again.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W7",
+     "n": 2,
+     "text": "Flecks suggest a front but film vanishes everywhere at once, or a dead worker retains a live exposure callback.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W7",
+     "n": 3,
+     "text": "Behind the passing lift the floor and old prints are clear, ahead they remain; the exposed crosser receives the front contribution while the protected partner avoids it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W7",
+     "n": 4,
+     "text": "Loading during a lift continues from saved progress and a later fall permits fresh traces without restoring old ones.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W8",
+     "n": 1,
+     "text": "A gun fires to make its tracking noticeable, or absent deferred pools and hunters still produce boiling or moving silence.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W8",
+     "n": 2,
+     "text": "A broken gun follows a moving pawn without firing; muted audio still leaves the condition and shelter response readable in ordinary UI.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W8",
+     "n": 3,
+     "text": "A soundtrack ticks over an empty map while dust looks like rain and hides workers and trails.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W8",
+     "n": 4,
+     "text": "Calm stops wind-on-metal while local beetle clicks remain; dry falling dust leaves workers and fresh trails readable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W9",
+     "n": 1,
+     "text": "Roofing before scavenging and scavenging before roofing have understandable exposure costs and both leave the complete cycle functioning.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W9",
+     "n": 2,
+     "text": "Staged scenes pass only with weather clear, creatures frozen or toxicity off; the combined season empties the food web or buries the map in immortal film and records.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W9",
+     "n": 3,
+     "text": "Through changing weather a colony shelters, recovers sealed salvage and learns fresh trails; wind clears old dust, unharvested habitat still supports life, and a midway save preserves the behaviour.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W9",
+     "n": 4,
+     "text": "Midseason loading duplicates hazards or loses the wind transition; reversing work order deadlocks jobs or causes repeated exceptions and notices.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The census has no row for the biome's player-facing text: RM_Warscar.xml <description> and <settleWarning>. That text falls under the frozen sheet's §6 hard ban 1 (no §GM truth in player text). It also makes promises 0.1.0 no longer keeps: the settleWarning says 'The Forgotten Sentinels defend the ground; they do not pursue past their lines', and the description says 'machines defend the place'. The Sentinels belong to campaign_kit_data, which the proposal moves to the next version, off. T23's 'descriptions that currently promise deferred rewards' does not name the Sentinel promise and does not check the §GM leak ban.",
+   "loop_or_three_way": "Three-way meeting: R2/T17 (renew native contamination through ordinary vanilla cell pollution) × W3 (crust grazers feed on glower, scorched stars and wreck lichen on the native floor) × vanilla Plant.DyingFromPollution / PlantUtility. Those three RM flora defs set no <pollution>, so they default to CleanOnly. Every renewal pulse then kills the food web's producers on the very cells the wreck-lichen seeder and wildPlants spawning refill. The result is a loop: renewal kills, the seeder re-seeds, renewal kills again. It ends in the W9 'desert' (unharvested habitat cannot support life), which W2 and W3 each pass alone. RM_Warscar.xml declares no pollutionWildAnimals, but WildAnimalSpawner reads world-tile pollution, not map cells, so animal spawning is not part of this loop.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 730830
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json W8 range and control; R8; tickets.md T23; census.json cross_biome and silent_guns",
+     "evidence": "standing_rulings.md:133-140 (owner, 2026-10-15): \"We can't guarantee they will work in other biomes beyond our framework. They should… but we're not going to validate that at this time.\" The same ruling adds that no new mod builds a cross-biome switch. census cross_biome says the existing opt-in's coverage is 'Settling and WreckLichen only', yet the proposal extends it: 'T23 also gates existing def-wide gun tracking through this same off-biome opt-in'. W8 range includes 'existing unsupported opt-in off/on', and T23's acceptance test requires 'Enabling the existing opt-in permits tracking only on its selected maps'. That gives an unsupported switch new coverage and makes a cross-biome validation part of passing.",
+     "would_pass": "Gun tracking is gated on Warscar membership plus the master and feature switches, with no off-biome route. W8 and T23 check only that tracking is absent on an unrelated biome at defaults.",
+     "smallest_fix": "Delete the opt-in route from R8, T23 and the census cross_biome/silent_guns text. Strike 'opt-in off/on' from W8 range and the opt-in-on sentence from T23's acceptance test."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "definition.md 'Evidence boundary and reading receipts' paragraph; owner_pages.md (whole)",
+     "evidence": "ANSWERS_OWNER.md:3 and :9, owner write-in 2026-11-10, verbatim: \"it's the story of radiation seeping in but fabulous technology too\". The pages tell him the technology half was deferred. The radiation half is reinterpreted silently: definition.md says 'the specific radiological Warscar text are not grounds for an adapting-bioweapon simulator … the land uses conventional toxin paths', and the word radiation appears nowhere on his pages. The_scarlands.md §3 ('Million-year nuclear decay chains — heat and radiation') backs the same promise.",
+     "would_pass": "The definition says what carries 'radiation seeping in' in 0.1.0 (for example: fallout dust and self-renewing ground deliver it through ordinary toxic buildup, named as such in player text). Page two lists that reading as a settled ambiguity, beside the technology deferral.",
+     "smallest_fix": "Add one ambiguity entry and one page-two line: 'radiation seeping in' is read as the dust fall plus native renewal through vanilla toxic buildup, and the label/description text says so. Drop the strawman about an adapting-bioweapon simulator."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json W3 says ('readable remains'), W6 says ('readable until wind…'), W9 meant.figurative",
+     "evidence": "W3 and W6 both use 'readable', which is the very word ambiguity 10 argues over ('any vanish with a log?' versus remains in the world), yet neither bar marks it. W9 carries a figurative entry for 'read', but W9's says does not contain that word, so the entry seems to have been attached to the wrong bar.",
+     "would_pass": "W3 and W6 each mark 'readable' (W3: a physical remains/gear sign in the world, not a log line; W6: a direction a player can follow at play zoom), each with an accept picture. W9's stray entry is removed.",
+     "smallest_fix": "Add the two figurative entries and delete W9's."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json W2 accept[2]; W5 accept[1]",
+     "evidence": "W2 accept 'Imported meals and powered hydroponics serve a sheltered colony while the surrounding native floor remains sterile' is fully satisfied by a build with no renewal at all, which is W2's own lazy reject ('exposed native ground stays harmless'). W5 accept 'The transition still happens while attention is elsewhere and ordinary toxic weather also runs' is satisfied by W5's lazy reject ('Dust appears but health never changes'). A cold reader who accepts either picture accepts the false pass.",
+     "would_pass": "Each accept picture contains the element that separates it from the lazy build.",
+     "smallest_fix": "W2: '…while exposed native floor beside the hydroponics bay regains pollution after cleanup.' W5: '…the unattended transition still doses an exposed worker and spares the roofed one while toxic weather also runs.'"
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "tickets.md T23 ('Correct shipping label to the later house form \"the Warscar\"'); ambiguities.md item 25; bars.json C8",
+     "evidence": "biome_mod_architecture.md:567-570 records a 2026-09-26 card ruling 'the Warscar'. But warscar_turn3_development_2026-09-30.md §0 line 23 records a later card (2026-09-30, volley turn 2): 'the label is \"Warscar\", with no article'. RM_Warscar.xml:14 and :60 also carry no article. The proposal calls the 2026-09-26 form 'later' without addressing the 2026-09-30 record.",
+     "would_pass": "Either the label is left as built, or the conflict between the two dated cards goes on his pages as a question, with both sources and the default taken.",
+     "smallest_fix": "Remove the relabel from T23 and C8. Add a page-two question citing both cards, defaulting to the later record (no article)."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "W1",
+     "n": 1,
+     "text": "Defenses make a decorative ring but their openings point at unrelated paths, or visible enemy remains explain the mystery.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W1",
+     "n": 2,
+     "text": "A tooltip says last stand over random junk with intact valuable equipment lying in the open.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W1",
+     "n": 3,
+     "text": "An Odyssey ruin still contains a sealed live or dormant ancient danger that wakes when a scavenger opens it.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W1",
+     "n": 4,
+     "text": "Sprung clusters and cracked-open threat vaults lie spent beside sealed salvage containers that hold recoverable goods.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W1",
+     "n": 5,
+     "text": "A route detours through defensive layers toward sealed salvage that is distinguishable from stripped wrecks.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W1",
+     "n": 6,
+     "text": "At play zoom, surviving broken emplacements and intervening cover face common approaches across shattered ground; hulls are bare and no remains identify the attackers.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W10",
+     "n": 1,
+     "text": "A deeply marked resident suffers a mark-attributed distress episode, leaving ends that episode and prevents further mark nightmares, and returning makes the same saved mark eligible again.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W10",
+     "n": 2,
+     "text": "An ordinarily working salvager develops the named mood burden while staying, even under a roof, and a deeply established mark settles to a persistent mood scar after departure.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W10",
+     "n": 3,
+     "text": "A label calls the place cursed but salvagers accumulate only bodily toxins and leave mentally unchanged.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W10",
+     "n": 4,
+     "text": "Leaving erases an established mood scar or allows mark-caused nightmares to continue away from the Warscar.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W2",
+     "n": 1,
+     "text": "Imported meals and powered hydroponics serve a sheltered colony while the surrounding native floor remains sterile.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W2",
+     "n": 2,
+     "text": "Removing shelter exposes the same enduring native source again, while pollution-tolerant crusts feed grazers and wetting the substrate still cannot create soil farmland.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W2",
+     "n": 3,
+     "text": "A cleaned player floor or roofed work area is repeatedly recontaminated by native-source renewal beneath its shelter.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W2",
+     "n": 4,
+     "text": "After cleanup, a player floor or a roof stops native-source renewal beneath it, while uncovered native ground regains visible pollution and exposes workers through ordinary pollution effects.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W2",
+     "n": 5,
+     "text": "A polluted-biome label persists after cleanup, but exposed native ground stays harmless or watering creates lasting fertile soil.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W2",
+     "n": 6,
+     "text": "Construction and ordinary roofs are refused, or renewed pollution kills the native crusts that grazers need.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W3",
+     "n": 1,
+     "text": "A chatrak eats lichen beside wrecks, a rimclaw hunts and a corpse slug feeds; a consumed body leaves remains and recoverable carried gear.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W3",
+     "n": 2,
+     "text": "Alien bodies spawn but cannot eat their promised reachable food, or a corpse eater deletes a named body and its equipment without a readable sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W3",
+     "n": 3,
+     "text": "A cleaner eats waste and a living munition uses its ordinary weapon; normal hunting, butchery and feasible taming still work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W3",
+     "n": 4,
+     "text": "Weapon-descendants only use harmless generic bites, or human foragers conjure berries from bare floor.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W4",
+     "n": 1,
+     "text": "Loading preserves disease progress, and successful scaria treatment removes a pending delayed rage and prevents automatic biome reinfection of that animal.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W4",
+     "n": 2,
+     "text": "Untreated initially clean wild grazers remain calm indefinitely, blocked circling freezes disease forever, or successful treatment leaves a hidden delayed rage.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W4",
+     "n": 3,
+     "text": "An initially clean wild grazer and an infected wild grazer both develop lifted plates and altered feeding or movement if left untreated, letting a nearby able worker withdraw along an open escape path before the attack.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W4",
+     "n": 4,
+     "text": "Only inspect text changes before an immediate attack, or a visible warning gives the nearby worker on a clear path no chance to withdraw.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W5",
+     "n": 1,
+     "text": "Calm becomes falling dust; an exposed worker gains its attributable airborne toxic contribution while a matched roofed worker avoids that contribution, then returning wind stops the fall.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W5",
+     "n": 2,
+     "text": "The transition still happens while attention is elsewhere and ordinary toxic weather also runs.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W5",
+     "n": 3,
+     "text": "Dust appears but health never changes, or only a debug command can start the fall.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W5",
+     "n": 4,
+     "text": "Only a deferred projector protects workers, or matched roofed and exposed workers receive the same signature airborne dose.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W6",
+     "n": 1,
+     "text": "A walker crosses undisturbed dust and its direction can be followed; an invisible walker leaves a trace too and unrelated uncrossed ground stays blank.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W6",
+     "n": 2,
+     "text": "Later traffic overwrites steps; observed cleaning or feeding removes film locally while fresh crossings on remaining film still record.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W6",
+     "n": 3,
+     "text": "Prints are scattered when dust falls without any crossing, and invisible walkers leave nothing.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W6",
+     "n": 4,
+     "text": "Old records persist but new crossings stop at capacity, or cleaned floor displays a floating stale trail.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W7",
+     "n": 1,
+     "text": "Behind the passing lift the floor and old prints are clear, ahead they remain; the exposed crosser receives the front contribution while the protected partner avoids it.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W7",
+     "n": 2,
+     "text": "Loading during a lift continues from saved progress and a later fall permits fresh traces without restoring old ones.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W7",
+     "n": 3,
+     "text": "Flecks suggest a front but film vanishes everywhere at once, or a dead worker retains a live exposure callback.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W7",
+     "n": 4,
+     "text": "Film disappears but old prints remain, or loading restarts the front and doses the same pawn again.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W8",
+     "n": 1,
+     "text": "A gun fires to make its tracking noticeable, or absent deferred pools and hunters still produce boiling or moving silence.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W8",
+     "n": 2,
+     "text": "A soundtrack ticks over an empty map while dust looks like rain and hides workers and trails.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W8",
+     "n": 3,
+     "text": "A broken gun follows a moving pawn without firing; muted audio still leaves the condition and shelter response readable in ordinary UI.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W8",
+     "n": 4,
+     "text": "Calm stops wind-on-metal while local beetle clicks remain; dry falling dust leaves workers and fresh trails readable.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W9",
+     "n": 1,
+     "text": "The natural season stays calm or windy throughout, or never finishes its dust cycle, yet a forced wind replay is offered as proof of recurrence.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W9",
+     "n": 2,
+     "text": "During an unforced season a colony shelters, recovers sealed salvage and follows fresh trails through calm, falling dust, returning wind and a finished lift, while unharvested habitat supports life and a midway save preserves behaviour.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W9",
+     "n": 3,
+     "text": "Midseason loading duplicates hazards or loses the wind transition; reversing work order deadlocks jobs or causes repeated exceptions and notices.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "W9",
+     "n": 4,
+     "text": "Changing whether roofing or scavenging comes first leaves the natural cycle functioning, while prolonged stays leave a readable mental cost and leaving ends mark nightmares while retaining its lasting mood scar.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "W9",
+     "n": 5,
+     "text": "Staged scenes pass only with weather clear, creatures frozen or toxicity off; the combined season empties the food web or buries the map in immortal film and records.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "Toxic surface water. The_scarlands.md §3 says 'Surface water rises here … and it kills you: … poisoned ponds', and the shipped settleWarning (RM_Warscar.xml:63) tells the player 'Water is toxic'. Tickets.md T08 asserts 'New maps retain ordinary poisoned-water dressing' once pools are off. The census has no row for it: only the moved pools/pool_reagents/pool_remains rows, with no evidence of what places non-pool toxic water. So whether that water exists at defaults, or disappears with the RM_ReactionPools genstep, is undefined. A smaller related gap: the biome row calls the sky 'dry toxic', but its weather list includes ToxRain (rainRate 1, with a 'Tox rain' letter), whose commonality is 0 on a zero-rainfall tile. Whether 'ordinary toxic weather', which W5 and W9 assume is running, ever occurs is unmeasured.",
+   "loop_or_three_way": "R7 + W3 + W9, through vanilla Scaria. R7 makes every wild chatrak an ordinary Scaria carrier. Vanilla then forbids taming it (TameUtility.cs:51, Designator_Tame.cs:61), and when it is killed its corpse rots unbutcherable with probability scariaRotChance (Pawn.cs:3491-3493; 0.6 at the default difficulty, Difficulties.xml:128). Chatrak is the commonest edible grazer (0.25) beside the inedible tetchik (0.5). T26 removes forage, so humans must carry food or hunt it. W3 promises 'normal hunting, butchery and feasible taming'. Meanwhile every chatrak eventually rages, which W9 counts as a flood if it cascades. The life meeting names onset and mark interruptions but not Scaria rot or the taming ban, so the food-web model as specified would miss this three-way meeting. Inevitability could come from RM incubation alone without vanilla Scaria; that is the rule to attack first.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 883412
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 1991443,
+    "output_tokens": 22193
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "bars.json W8 range and control; R8; tickets.md T23; census.json cross_biome and silent_guns",
+   "evidence": "standing_rulings.md:133-140 (owner, 2026-10-15): \"We can't guarantee they will work in other biomes beyond our framework. They should… but we're not going to validate that at this time.\" The same ruling adds that no new mod builds a cross-biome switch. census cross_biome says the existing opt-in's coverage is 'Settling and WreckLichen only', yet the proposal extends it: 'T23 also gates existing def-wide gun tracking through this same off-biome opt-in'. W8 range includes 'existing unsupported opt-in off/on', and T23's acceptance test requires 'Enabling the existing opt-in permits tracking only on its selected maps'. That gives an unsupported switch new coverage and makes a cross-biome validation part of passing.",
+   "would_pass": "Gun tracking is gated on Warscar membership plus the master and feature switches, with no off-biome route. W8 and T23 check only that tracking is absent on an unrelated biome at defaults.",
+   "smallest_fix": "Delete the opt-in route from R8, T23 and the census cross_biome/silent_guns text. Strike 'opt-in off/on' from W8 range and the opt-in-on sentence from T23's acceptance test."
+  },
+  {
+   "head": "core_promise_weakened",
+   "where": "definition.md 'Evidence boundary and reading receipts' paragraph; owner_pages.md (whole)",
+   "evidence": "ANSWERS_OWNER.md:3 and :9, owner write-in 2026-11-10, verbatim: \"it's the story of radiation seeping in but fabulous technology too\". The pages tell him the technology half was deferred. The radiation half is reinterpreted silently: definition.md says 'the specific radiological Warscar text are not grounds for an adapting-bioweapon simulator … the land uses conventional toxin paths', and the word radiation appears nowhere on his pages. The_scarlands.md §3 ('Million-year nuclear decay chains — heat and radiation') backs the same promise.",
+   "would_pass": "The definition says what carries 'radiation seeping in' in 0.1.0 (for example: fallout dust and self-renewing ground deliver it through ordinary toxic buildup, named as such in player text). Page two lists that reading as a settled ambiguity, beside the technology deferral.",
+   "smallest_fix": "Add one ambiguity entry and one page-two line: 'radiation seeping in' is read as the dust fall plus native renewal through vanilla toxic buildup, and the label/description text says so. Drop the strawman about an adapting-bioweapon simulator."
+  },
+  {
+   "head": "figurative_unmarked",
+   "where": "bars.json W3 says ('readable remains'), W6 says ('readable until wind…'), W9 meant.figurative",
+   "evidence": "W3 and W6 both use 'readable', which is the very word ambiguity 10 argues over ('any vanish with a log?' versus remains in the world), yet neither bar marks it. W9 carries a figurative entry for 'read', but W9's says does not contain that word, so the entry seems to have been attached to the wrong bar.",
+   "would_pass": "W3 and W6 each mark 'readable' (W3: a physical remains/gear sign in the world, not a log line; W6: a direction a player can follow at play zoom), each with an accept picture. W9's stray entry is removed.",
+   "smallest_fix": "Add the two figurative entries and delete W9's."
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "bars.json W2 accept[2]; W5 accept[1]",
+   "evidence": "W2 accept 'Imported meals and powered hydroponics serve a sheltered colony while the surrounding native floor remains sterile' is fully satisfied by a build with no renewal at all, which is W2's own lazy reject ('exposed native ground stays harmless'). W5 accept 'The transition still happens while attention is elsewhere and ordinary toxic weather also runs' is satisfied by W5's lazy reject ('Dust appears but health never changes'). A cold reader who accepts either picture accepts the false pass.",
+   "would_pass": "Each accept picture contains the element that separates it from the lazy build.",
+   "smallest_fix": "W2: '…while exposed native floor beside the hydroponics bay regains pollution after cleanup.' W5: '…the unattended transition still doses an exposed worker and spares the roofed one while toxic weather also runs.'"
+  },
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "tickets.md T23 ('Correct shipping label to the later house form \"the Warscar\"'); ambiguities.md item 25; bars.json C8",
+   "evidence": "biome_mod_architecture.md:567-570 records a 2026-09-26 card ruling 'the Warscar'. But warscar_turn3_development_2026-09-30.md §0 line 23 records a later card (2026-09-30, volley turn 2): 'the label is \"Warscar\", with no article'. RM_Warscar.xml:14 and :60 also carry no article. The proposal calls the 2026-09-26 form 'later' without addressing the 2026-09-30 record.",
+   "would_pass": "Either the label is left as built, or the conflict between the two dated cards goes on his pages as a question, with both sources and the default taken.",
+   "smallest_fix": "Remove the relabel from T23 and C8. Add a page-two question citing both cards, defaulting to the later record (no article)."
+  }
+ ],
+ "applyable": false,
+ "seconds": 1342,
+ "at": "2026-11-17T02:56:46"
+}

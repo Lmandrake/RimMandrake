@@ -1,22 +1,23 @@
 {
-  "mod": "Warscar",
-  "run": "cleanse-2026-11-17",
-  "outcome": "proposed",
-  "signature": "Sustained calm brings airborne toxic dust and a film recording walkers; sustained returning wind lifts that film and its movement record away.",
-  "counts": {
-    "capabilities": 81,
-    "kept": 41,
-    "next_version": 38,
-    "recommend_retire": 2,
-    "old_bars": 0,
-    "bars": 9,
-    "live_only_bars": 6,
-    "checks": 10,
-    "rules": 9,
-    "unknown_pairs": 6,
-    "models": 4,
-    "tickets": 45,
-    "questions": 0
-  },
-  "blocked_on": []
+ "mod": "Warscar",
+ "run": "cleanse-2026-11-17",
+ "outcome": "proposed",
+ "signature": "Sustained calm brings airborne toxic dust and a film recording walkers; sustained returning wind lifts that film and its movement record away.",
+ "counts": {
+  "capabilities": 81,
+  "kept": 42,
+  "next_version": 37,
+  "recommend_retire": 2,
+  "old_bars": 0,
+  "bars": 10,
+  "live_only_bars": 7,
+  "checks": 11,
+  "rules": 10,
+  "unknown_pairs": 5,
+  "models": 4,
+  "tickets": 45,
+  "questions": 0
+ },
+ "blocked_on": [],
+ "applyable": false
 }

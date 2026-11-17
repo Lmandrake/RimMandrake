@@ -1,6 +1,6 @@
 # Next version — switched off
 
-These are Designer scope decisions under the cleansing brief, not reversals of earlier semantics or owner retirements. Code and defs stay. Tetchik jar, glower black, Watch and unselected pitches are not revived. The accepted repair/memory/permanent lacquer/broad-screen rulings still apply whenever those systems return. Unknown external source is not claimed built or absent.
+These are Designer scope decisions under the cleansing brief, not reversals of earlier semantics or owner retirements. Code and defs stay. Tetchik jar, glower black, Watch and unselected pitches are not revived. The accepted repair/memory/permanent lacquer/broad-screen rulings still apply whenever those systems return. Unknown external source is not claimed built or absent. Bare mark accrual, mood, nightmares and the lasting floor stay in this version as the frozen cursed-land cost, covered by W10 and T05.
 
 ### totchak — Next version, off
 
@@ -58,19 +58,11 @@ Why: A separate interaction, technology, reward or campaign system; deleting its
 
 Ticket: T04
 
-### mark — Next version, off
-
-What: Hourly map accrual, severity fade and saved permanent floor, staged mood and Wander_Sad, excludes other family marks; interval floor fix is present. Mental-state givers in XML have no off-biome gate, unlike the earlier ruling that nightmares end on departure.
-
-Why: A separate interaction, technology, reward or campaign system; deleting its player-facing behaviour leaves the defined battlefield, ordinary food web and Settling cycle whole.
-
-Ticket: T05
-
 ### mark trade — Next version, off
 
 What: Hacking/mech-butchery/smelting stage offsets; restart-only bonuses toggle; a benefit attached to the retained mark, not another separate XP system.
 
-Why: A separate interaction, technology, reward or campaign system; deleting its player-facing behaviour leaves the defined battlefield, ordinary food web and Settling cycle whole.
+Why: Trade bonuses add a salvage reward to the retained mental cost. Accrual, mood, nightmares and the lasting floor still work with these bonuses off.
 
 Ticket: T05a
 
@@ -78,7 +70,7 @@ Ticket: T05a
 
 What: Genstep replaces spaced ruin-wall slots with visible panels holding saved cacheDef; deepening-mark refusal/menu and work job; open spawns the assigned sealed-crate type. Cache object/contents are created on opening, not physically pregenerated behind the wall.
 
-Why: A separate interaction, technology, reward or campaign system; deleting its player-facing behaviour leaves the defined battlefield, ordinary food web and Settling cycle whole.
+Why: Privileged panel opening adds a bespoke job and cache reward. The retained bare mark and ordinary sealed salvage supply their promised experiences independently.
 
 Ticket: T05b
 
