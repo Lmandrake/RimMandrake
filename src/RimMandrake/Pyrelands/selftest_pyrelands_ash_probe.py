@@ -8,7 +8,8 @@ lift, fresh-burn bonus with its age and days left, black rain on the cell); a pr
 reads consistent=False (the leaf's false pass); with ashWaterFertilityEnabled off, or the mechanics gate off, the line
 starts refused=<reason> and still lists the parts. The same kernel text is compiled again with one planted fault per
 namespace and each must fail the table; a fault whose pattern no longer matches fails the test. Static reads check that
-PyrelandsAshField.ProbeCell hands ProbeLine the real grid fertility, the switch and the gate, that ProbeRect exists, and
+PyrelandsAshField.ProbeCell hands ProbeLine the real grid fertility, the cell's own parts (watered, bonus, burn tick, black-rain
+stamp, the bonus clock), the switch and the gate, that ProbeRect exists, and
 that validation.py's _probe still finds its keys.
 Run: python3 <this file>
 """
@@ -130,7 +131,11 @@ def static_checks():
         bad.append("ProbeCell does not return RM_FireEcoKernel.ProbeLine")
     elif not call[len("RM_FireEcoKernel.ProbeLine("):].lstrip().startswith("m.fertilityGrid.FertilityAt(c)"):
         bad.append("ProbeCell does not hand ProbeLine the grid's fertility first")
-    for need in ("RM_PyrelandsSettings.ashWaterFertilityEnabled", "PyrelandsMechanicsGate.On", "c.Roofed(m)", "FertilityCap"):
+    # The parts come from the cell too (blind challenge cycle 3: ProbeCell handing ProbeLine 0 for the bonus stayed green,
+    # and the probe then read bonus=0 on a fresh scar while the grid's fertility carried it).
+    for need in ("RM_PyrelandsSettings.ashWaterFertilityEnabled", "PyrelandsMechanicsGate.On", "c.Roofed(m)", "FertilityCap",
+                 "comp?.BonusAt(c, now)", "comp.IsWatered(c, now)", "comp.burnTick[i]", "comp?.blackRainWateredUntil",
+                 "RM_PyrelandsSettings.freshBurnDays"):
         if need not in call:
             bad.append("ProbeCell does not pass %s" % need)
     if not re.search(r"public static string ProbeRect\(string rect\)[\s\S]{0,900}ProbeCell\(", f):

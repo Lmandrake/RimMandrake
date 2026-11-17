@@ -1,0 +1,429 @@
+{
+ "faults": [
+  {
+   "id": "probe_wet_ignores_switch",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "bool wetNow = waterOn && watered;",
+   "new": "bool wetNow = watered;",
+   "bars": [
+    "ash_fertility_probe"
+   ]
+  },
+  {
+   "id": "probe_no_refusal_ash_off",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": ": !waterOn ? \"the ash field is off (ashWaterFertilityEnabled)\" : null;",
+   "new": ": null;",
+   "bars": [
+    "ash_fertility_probe"
+   ]
+  },
+  {
+   "id": "probe_consistent_always_true",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "(Math.Abs(fertility - expected) < 0.001f ? \"True\" : \"False\")",
+   "new": "\"True\"",
+   "bars": [
+    "ash_fertility_probe"
+   ]
+  },
+  {
+   "id": "fertility_water_ignores_switch",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "float v = (waterOn && isWatered ? watered : dry)",
+   "new": "float v = (isWatered ? watered : dry)",
+   "bars": [
+    "ash_fertility_probe",
+    "ash_fertile_when_watered"
+   ]
+  },
+  {
+   "id": "bonus_never_fades",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "return bonus * (f > 1f ? 1f : f);",
+   "new": "return bonus;",
+   "bars": [
+    "ash_fertility_probe",
+    "fresh_burn_compounds_with_black_rain"
+   ]
+  },
+  {
+   "id": "probecell_reads_base_not_grid",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+   "old": "return RM_FireEcoKernel.ProbeLine(m.fertilityGrid.FertilityAt(c), t?.defName,",
+   "new": "return RM_FireEcoKernel.ProbeLine(t?.fertility ?? 0f, t?.defName,",
+   "bars": [
+    "ash_fertility_probe"
+   ]
+  },
+  {
+   "id": "probecell_bonus_dropped",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+   "old": "comp?.BonusAt(c, now) ?? 0f, comp?.burnTick",
+   "new": "0f, comp?.burnTick",
+   "bars": [
+    "ash_fertility_probe"
+   ]
+  },
+  {
+   "id": "probecell_gate_ignored",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsAshField.cs",
+   "old": "                PyrelandsMechanicsGate.On, FertilityCap);\n        }\n\n        /// <summary>Bar ash_fertility_probe: ProbeCell",
+   "new": "                true, FertilityCap);\n        }\n\n        /// <summary>Bar ash_fertility_probe: ProbeCell",
+   "bars": [
+    "ash_fertility_probe",
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "desc_engineered_to_natural",
+   "file": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+   "old": "savanna, genetically engineered in a forgotten age",
+   "new": "savanna, grown wild in a forgotten age",
+   "bars": [
+    "biome_text_says_engineered"
+   ]
+  },
+  {
+   "id": "desc_millennia_dropped",
+   "file": "src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml",
+   "old": "for millennia. Coarse",
+   "new": "for a season. Coarse",
+   "bars": [
+    "biome_text_says_engineered"
+   ]
+  },
+  {
+   "id": "heat_immunity_gate_ignored",
+   "file": "src/RimMandrake/Pyrelands/Source/Patch_FurnaceBeastHeatImmunity.cs",
+   "old": "if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)",
+   "new": "if (false)",
+   "bars": [
+    "inv_settings_gate",
+    "furnacebeast_warms"
+   ]
+  },
+  {
+   "id": "heat_immunity_absorbs_nothing",
+   "file": "src/RimMandrake/Pyrelands/Source/Patch_FurnaceBeastHeatImmunity.cs",
+   "old": "                absorbed = true;\n                return false;",
+   "new": "                absorbed = false;\n                return true;",
+   "bars": [
+    "biome_text_says_engineered",
+    "inv_art_and_text"
+   ]
+  },
+  {
+   "id": "dig_leaves_no_gravel",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_TerrainDig.cs",
+   "old": "if (ext.leaves != null) map.terrainGrid.SetTerrain(c, ext.leaves);",
+   "new": "",
+   "bars": [
+    "sand_shovel_yields_glass_sand",
+    "inv_art_and_text"
+   ]
+  },
+  {
+   "id": "dig_default_count_one",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_TerrainDig.cs",
+   "old": "public int count = 5;",
+   "new": "public int count = 1;",
+   "bars": [
+    "sand_shovel_yields_glass_sand",
+    "inv_art_and_text"
+   ]
+  },
+  {
+   "id": "firebreak_terrain_back",
+   "file": "src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshField.xml",
+   "old": "</Defs>",
+   "new": "  <TerrainDef ParentName=\"FloorBase\"><defName>RM_FirebreakLine</defName><label>firebreak line</label><description>Fire will not cross it.</description><texturePath>Terrain/Surfaces/Concrete</texturePath><costList><Chemfuel>2</Chemfuel></costList></TerrainDef>\n</Defs>",
+   "bars": [
+    "inv_firebreak_firefoam"
+   ]
+  },
+  {
+   "id": "firebreak_keyed_back",
+   "file": "src/RimMandrake/Pyrelands/Languages/English/Keyed/Pyrelands.xml",
+   "old": "</LanguageData>",
+   "new": "  <RM_FirebreakLabel>Firebreak line</RM_FirebreakLabel>\n</LanguageData>",
+   "bars": [
+    "inv_firebreak_firefoam"
+   ]
+  },
+  {
+   "id": "breaker_def_back",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_FurnaceHide.xml",
+   "old": "  <ThingDef ParentName=\"LeatherBase\">\n    <defName>RM_FurnaceHide</defName>",
+   "new": "  <ThingDef ParentName=\"ResourceBase\"><defName>RM_LightningBreaker</defName><label>lightning breaker</label><description>Draws the strike.</description></ThingDef>\n  <ThingDef ParentName=\"LeatherBase\">\n    <defName>RM_FurnaceHide</defName>",
+   "bars": [
+    "inv_lightning_breaker"
+   ]
+  },
+  {
+   "id": "fulgurite_def_back",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_FurnaceHide.xml",
+   "old": "  </ThingDef>\n\n</Defs>",
+   "new": "  </ThingDef>\n  <ThingDef ParentName=\"ResourceBase\"><defName>RM_Fulgurite</defName><label>fulgurite</label><description>Glass from a strike.</description></ThingDef>\n</Defs>",
+   "bars": [
+    "inv_lightning_breaker"
+   ]
+  },
+  {
+   "id": "gate_ignores_shell",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_FireEcoKernel.cs",
+   "old": "return modMaster && (!shellPresent || shellOn);",
+   "new": "return modMaster;",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "gate_shellon_always",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsMechanicsGate.cs",
+   "old": "public static bool ShellOn => shellEnabled == null || shellEnabled(RosterKey);",
+   "new": "public static bool ShellOn => true;",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "wind_scribe_default_off",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "\"windCarriesFireEnabled\", true);",
+   "new": "\"windCarriesFireEnabled\", false);",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "worldgen_ships_on",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "public static bool biomeGenerationEnabled = false;",
+   "new": "public static bool biomeGenerationEnabled = true;",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "wind_checkbox_wrong_field",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "list.CheckboxLabeled(\"The wind carries the fire\", ref windCarriesFireEnabled,",
+   "new": "list.CheckboxLabeled(\"The wind carries the fire\", ref burnLineEnabled,",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "wind_not_in_section_reset",
+   "file": "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs",
+   "old": "new[] { \"burnLineEnabled\", \"windCarriesFireEnabled\", \"fireHawkSpreadEnabled\"",
+   "new": "new[] { \"burnLineEnabled\", \"fireHawkSpreadEnabled\"",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "wind_ignores_its_switch",
+   "file": "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
+   "old": "&& RM_PyrelandsSettings.windCarriesFireEnabled;",
+   "new": ";",
+   "bars": [
+    "inv_settings_gate",
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "wind_ignores_gate",
+   "file": "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
+   "old": "public bool WindCarries => IsPyrelandsMap && PyrelandsMechanicsGate.On && RM_PyrelandsSettings.burnLineEnabled",
+   "new": "public bool WindCarries => IsPyrelandsMap && RM_PyrelandsSettings.burnLineEnabled",
+   "bars": [
+    "inv_settings_gate",
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "preflight_wind_default_off",
+   "file": "src/RimMandrake/Pyrelands/preflight_pyrelands.py",
+   "old": "\"blackRainDousing\": 40.0, \"windCarriesFireEnabled\": True,",
+   "new": "\"blackRainDousing\": 40.0, \"windCarriesFireEnabled\": False,",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "preflight_worldgen_on",
+   "file": "src/RimMandrake/Pyrelands/preflight_pyrelands.py",
+   "old": "\"biomeGenerationEnabled\": False",
+   "new": "\"biomeGenerationEnabled\": True",
+   "bars": [
+    "inv_settings_gate"
+   ]
+  },
+  {
+   "id": "texpath_broken",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Plants/EmberGrass.xml",
+   "old": "<texPath>Things/Plant/RM_FE_EmberGrass</texPath>",
+   "new": "<texPath>Things/Plant/RM_FE_EmberGrassMissing</texPath>",
+   "bars": [
+    "inv_art_and_text"
+   ]
+  },
+  {
+   "id": "description_emptied",
+   "file": "src/RimMandrake/Pyrelands/Defs/ThingDefs_Items/RM_FurnaceHide.xml",
+   "old": "<description>The banded hide of a furnace-beast,",
+   "new": "<description></description><x>The banded hide of a furnace-beast,",
+   "bars": [
+    "inv_art_and_text"
+   ]
+  },
+  {
+   "id": "about_promises_worldgen_more",
+   "file": "src/RimMandrake/Pyrelands/About/About.xml",
+   "old": "Every mechanic has its own switch in Mod Settings",
+   "new": "Pyrelands appears on new worlds by default. Every mechanic has its own switch in Mod Settings",
+   "bars": [
+    "inv_art_and_text"
+   ]
+  },
+  {
+   "id": "probes_far_goes_back",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "old": "int lean = (n + side + 8) % 8, far = (n - side + 8) % 8;",
+   "new": "int lean = (n + side + 8) % 8, far = (n + 4) % 8;",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "carry_twice",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "old": "return enabled && freeStanding && onPyrelandsGround && !alreadyCarried && ticksSinceSpawn >= WindCarryTicks;",
+   "new": "return enabled && freeStanding && onPyrelandsGround && ticksSinceSpawn >= WindCarryTicks;",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "line_along_wind",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "old": "return (windBearingDeg + 90f) % 360f;",
+   "new": "return windBearingDeg % 360f;",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "downwind_cone_wide",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "old": "return along > 0f && across <= along * 2.4143f;",
+   "new": "return along > -1f;",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "vanilla_spread_still_runs",
+   "file": "src/RimMandrake/Pyrelands/Source/Kernel/RM_BurnKernel.cs",
+   "old": "return !(enabled && freeStanding && onPyrelandsGround);",
+   "new": "return true;",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "carry_lights_every_probe",
+   "file": "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+   "old": "                    && FireUtility.TryStartFireIn(c, map, Fire.MinFireSize, fire.instigator))\n                {\n                    return;",
+   "new": "                    && FireUtility.TryStartFireIn(c, map, Fire.MinFireSize, fire.instigator))\n                {\n                    continue;",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "spread_prefix_always_vanilla",
+   "file": "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+   "old": "return RM_BurnKernel.VanillaSpreadRuns(governed, true, true);",
+   "new": "return true;",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "carry_forgets_carried",
+   "file": "src/RimMandrake/Pyrelands/Source/FireEcologyHook.cs",
+   "old": "burn.WasCarried(__instance), __instance.TicksSinceSpawn",
+   "new": "false, __instance.TicksSinceSpawn",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "markcarried_noop",
+   "file": "src/RimMandrake/Pyrelands/Source/MapComponent_BurnLine.cs",
+   "old": "carriedFires.Add(fire.thingIDNumber);",
+   "new": ";",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "front_line_along_wind_caller",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs",
+   "old": "? RM_BurnKernel.AcrossWind(burn.WindBearing) : Rand.Range(0f, 360f);",
+   "new": "? burn.WindBearing : Rand.Range(0f, 360f);",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "scar_wind_not_set",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsFireFront.cs",
+   "old": "MapComponent_BurnLine.For(map)?.SetWindFromScar(scarEdge);",
+   "new": ";",
+   "bars": [
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "front_width_four",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs",
+   "old": "public const int FireFrontWidthCells = 24;",
+   "new": "public const int FireFrontWidthCells = 4;",
+   "bars": [
+    "burn_line_walks",
+    "inv_burn_line_fire_clock"
+   ]
+  },
+  {
+   "id": "fronts_rare",
+   "file": "src/RimMandrake/Pyrelands/Source/PyrelandsTuning.cs",
+   "old": "public const float FireFrontMaxDays = 4f;",
+   "new": "public const float FireFrontMaxDays = 40f;",
+   "bars": [
+    "inv_burn_line_fire_clock"
+   ]
+  },
+  {
+   "id": "keyed_wind_letter_lost",
+   "file": "src/RimMandrake/Pyrelands/Languages/English/Keyed/Pyrelands.xml",
+   "old": "<RM_FireFrontLetterTextWind>",
+   "new": "<RM_FireFrontLetterTextWindX>",
+   "bars": [
+    "inv_art_and_text",
+    "burn_line_walks"
+   ]
+  },
+  {
+   "id": "sim_carry_splits_two",
+   "file": "src/RimMandrake/Pyrelands/pyre_burn_sim.py",
+   "old": "carry_splits=1,",
+   "new": "carry_splits=2,",
+   "bars": [
+    "burn_line_walks"
+   ]
+  }
+ ]
+}

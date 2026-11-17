@@ -429,7 +429,7 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_defs_offline.py",
-   "observes": "static def reads: the biome weather list holds no ordinary rain; the biome description says engineered; flamefang venom is tendable and immunizable with falling tended severity (g7, def half); furnace-beast body size 6 in the def and its heat-immunity patch targets it (g6, static half); the sand shovel yields 5 glass sand and leaves gravel",
+   "observes": "static def reads: the biome weather list holds no ordinary rain; the biome description says engineered; flamefang venom is tendable and immunizable with falling tended severity (g7, def half); furnace-beast body size 9 in the def and its heat-immunity patch targets it (g6, static half); the sand shovel yields 5 glass sand and leaves gravel",
    "reads": [
     "src/RimMandrake/Pyrelands/Defs/",
     "src/RimMandrake/Pyrelands/Source/Patch_FurnaceBeastHeatImmunity.cs",

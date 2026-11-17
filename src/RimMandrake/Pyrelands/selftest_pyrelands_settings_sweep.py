@@ -11,9 +11,14 @@ Static reads of the C# (comments stripped), for every public static bool/float/i
                    PyrelandsMechanicsGate.On (the static half of g10), and the declared set is the pinned set
   gate_wired       PyrelandsMechanicsGate.On feeds "Mod enabled" (pyrelandsEnabled) and the Baroque Biomes toggle under the
                    key "Pyrelands" into RM_FireEcoKernel.MechanicsOn (blind challenge cycle 2: a gate that ignored either
-                   left every other check green)
+                   left every other check green); and ShellOn reads the shell's delegate under that key (blind cycle 3: a
+                   ShellOn forced true left the Baroque Biomes toggle gating nothing, every check green)
   entry_gated      each pinned mechanic entry point (a Harmony postfix) consults the gate in ITS OWN body, not merely
-                   somewhere in its file (cycle 2: an ungated postfix in a gated file stayed green)
+                   somewhere in its file (cycle 2: an ungated postfix in a gated file stayed green); blind cycle 3 added the
+                   furnace-beast heat-immunity prefix, and the wind carry's one predicate (MapComponent_BurnLine.WindCarries,
+                   which both wind patches read) must consult the gate and its own switch in its own expression
+  checkboxes       every bool setting is the `ref` of exactly one checkbox on the settings screen (blind cycle 3: the wind
+                   checkbox bound to burnLineEnabled left "The wind carries the fire" toggling the burn line, every check green)
   sliders          every slider's range holds its field's shipped default (a range that excludes it moves the value the
                    first time the settings window draws)
 Every planted fault must go red and the clean copy stay green.
@@ -63,7 +68,11 @@ ENTRY_POINTS = [("PyrelandsAshField.cs", "PyrelandsAshFieldPatches", "FertilityP
                 ("FireEcologyHook.cs", "Patch_FireTick_BlackRainDouses", "Postfix"),
                 ("FireEcologyHook.cs", "Patch_FireTick_AshAndScorchFruit", "Postfix"),
                 ("FireEcologyHook.cs", "Patch_FilthMaker_NoAshOnAsh", "Postfix"),
-                ("PyrelandsNoOrdinaryRain.cs", "PyrelandsNoOrdinaryRain", "Postfix_ChooseNextWeather")]
+                ("PyrelandsNoOrdinaryRain.cs", "PyrelandsNoOrdinaryRain", "Postfix_ChooseNextWeather"),
+                ("Patch_FurnaceBeastHeatImmunity.cs", "Patch_FurnaceBeastHeatImmunity", "Prefix")]
+# (file, property, the setting it must also read): expression-bodied predicates every entry point of a mechanic reads.
+ENTRY_PROPERTIES = [("MapComponent_BurnLine.cs", "WindCarries", "windCarriesFireEnabled")]
+SHELL_ON_EXPR = r"\bShellOn\s*=>\s*shellEnabled\s*==\s*null\s*\|\|\s*shellEnabled\(RosterKey\)\s*;"
 
 
 def _block(s, start):
@@ -149,6 +158,8 @@ def facts(mod):
         bad.append("PyrelandsMechanicsGate.On is not " + GATE_EXPR)
     if not re.search(r'RosterKey\s*=\s*"Pyrelands"\s*;', g):
         bad.append('the roster key is not "Pyrelands"')
+    if not re.search(SHELL_ON_EXPR, g):
+        bad.append("ShellOn does not read the Baroque Biomes delegate under RosterKey")
     fact("gate_wired", bad, "On = MechanicsOn(Mod enabled, shell, toggle \"Pyrelands\")")
     bad = []
     for f, cls, meth in ENTRY_POINTS:
@@ -157,7 +168,21 @@ def facts(mod):
             bad.append("%s.%s not found in %s" % (cls, meth, f))
         elif GATE not in body:
             bad.append("%s.%s never consults %s" % (cls, meth, GATE))
-    fact("entry_gated", bad, "%d entry points consult the gate" % len(ENTRY_POINTS))
+    for f, prop, setting in ENTRY_PROPERTIES:
+        m = re.search(r"\b%s\s*=>([^;]*);" % re.escape(prop), code.get(f, ""))
+        if not m:
+            bad.append("%s not found in %s" % (prop, f))
+            continue
+        if GATE not in m.group(1):
+            bad.append("%s never consults %s" % (prop, GATE))
+        if "RM_PyrelandsSettings.%s" % setting not in m.group(1):
+            bad.append("%s never reads its switch %s" % (prop, setting))
+    fact("entry_gated", bad, "%d entry points and %d predicates consult the gate" % (len(ENTRY_POINTS), len(ENTRY_PROPERTIES)))
+    refs = re.findall(r"CheckboxLabeled\([^;]*?,\s*ref (\w+)", ms)
+    bools = [n for n, (t, v) in fields.items() if t == "bool"]
+    fact("checkboxes", ["%s is the ref of %d checkboxes" % (n, refs.count(n)) for n in bools if refs.count(n) != 1]
+         + ["a checkbox binds %s, not a bool setting" % r for r in sorted(set(refs)) if r not in bools],
+         "%d bool settings, each bound by exactly one checkbox" % len(bools))
     bad = []
     sliders = re.findall(r"(\w+)\s*=\s*(?:Mathf\.RoundToInt\(|\(int\)\s*)?list\.Slider\((\w+),\s*([^,]+),\s*([^)]+)\)", ms)
     for target, arg, lo, hi in sliders:
@@ -188,6 +213,12 @@ MUTANTS = [
     ("black-rain douse ungated", S + "FireEcologyHook.cs", "BlackRainDouseAmount(PyrelandsMechanicsGate.On,", "BlackRainDouseAmount(true,"),
     ("rain swap ungated", S + "PyrelandsNoOrdinaryRain.cs", "pyre, PyrelandsMechanicsGate.On)", "pyre, true)"),
     ("slider range excludes its default", S + SETTINGS, "list.Slider(blackRainDousing, 0f, 100f)", "list.Slider(blackRainDousing, 50f, 100f)"),
+    # blind challenge cycle 3 (each one stayed green before)
+    ("shell toggle forced on", S + GATE_FILE, "public static bool ShellOn => shellEnabled == null || shellEnabled(RosterKey);", "public static bool ShellOn => true;"),
+    ("heat immunity ungated", S + "Patch_FurnaceBeastHeatImmunity.cs", "if (!PyrelandsMechanicsGate.On || !RM_PyrelandsSettings.furnaceThermalEnabled)", "if (false)"),
+    ("wind carry ungated", S + "MapComponent_BurnLine.cs", "WindCarries => IsPyrelandsMap && PyrelandsMechanicsGate.On &&", "WindCarries => IsPyrelandsMap &&"),
+    ("wind carry ignores its switch", S + "MapComponent_BurnLine.cs", "&& RM_PyrelandsSettings.windCarriesFireEnabled;", ";"),
+    ("wind checkbox bound to the burn line", S + SETTINGS, '"The wind carries the fire", ref windCarriesFireEnabled,', '"The wind carries the fire", ref burnLineEnabled,'),
 ]
 
 

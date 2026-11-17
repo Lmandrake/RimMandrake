@@ -4,6 +4,10 @@
 Reads the repo's XML and C# only (plus the def dump for the rainRate of weathers that are not ours):
   no_ordinary_rain       every weather on RM_Pyrelands's list, native AND patch-added, has rainRate 0 except black rain
   engineered             the biome description says the savanna was "genetically engineered", not negated in its clause
+  millennia              ... and that it has burned "for millennia" (the leaf's experience; blind cycle 3: dropping it stayed green)
+  about_worldgen         with biomeGenerationEnabled shipped off, About.xml asserts no placement on new worlds unless the same
+                         sentence says it is off or unsupported (blind cycle 3: "it places itself on newly generated worlds"
+                         shipped beside the switch shipped off)
   venom tendable (g7)    RM_FlamefangVenom is tendable, immunizable, and tended severity falls (rise + tended < 0)
   furnace (g6 static)    RM_FurnaceBeast body size at least twice every other RM_Pyrelands animal's (native AND
                          patch-added rows) and its adult draw size strictly the largest; Patch_FurnaceBeastHeatImmunity
@@ -183,6 +187,17 @@ def facts(root, dump_rain):
     negated = re.search(r"\b(not|never|no longer|nor|un)\b|n't\b", clause, re.I)
     fact("biome_text_says_engineered", eng and not negated,
          "description %d chars%s" % (len(desc), "; negated: %r" % negated.group(0) if negated else ""))
+    fact("biome_text_burned_for_millennia", re.search(r"\bfor millennia\b", desc, re.I), "description says 'for millennia'")
+    # the mod's own About text promises no world placement the shipped switch withholds
+    about_p = os.path.join(root, MOD, "About", "About.xml")
+    about = (ET.parse(about_p).getroot().findtext("description") or "") if os.path.exists(about_p) else ""
+    ms = open(os.path.join(root, MOD, "Source", "RM_PyrelandsMod.cs"), errors="replace").read()
+    gm = re.search(r"public static bool biomeGenerationEnabled\s*=\s*(true|false)\s*;", ms)
+    claims = [x.strip() for x in re.split(r"(?<=[.!?])\s+", about)
+              if re.search(r"\b(places? itself|is placed|appears?|generates?|spawns?)\b[^.!?]*\bnew(?:ly generated)? worlds?\b", x, re.I)
+              and not re.search(r"\b(off|unsupported|whether)\b", x, re.I)]
+    fact("about_no_worldgen_promise_while_off", about and gm and (gm.group(1) == "true" or not claims),
+         "biomeGenerationEnabled ships %s; About claims placement: %s" % (gm.group(1) if gm else "?", claims or "none"))
     # venom
     hd, hab = _defs(root, "HediffDef")
     v = hd.get("RM_FlamefangVenom")
@@ -254,6 +269,9 @@ MUTANTS = [
     ("not engineered", D + "BiomeDefs/Pyrelands.xml", "genetically engineered", "planted"),
     ("engineered negated", D + "BiomeDefs/Pyrelands.xml", "savanna, genetically engineered", "savanna, never genetically engineered"),
     ("engineered without genetically", D + "BiomeDefs/Pyrelands.xml", "genetically engineered", "engineered"),
+    ("millennia dropped", D + "BiomeDefs/Pyrelands.xml", "for millennia", "for a season"),
+    ("About promises new worlds", MOD + "/About/About.xml", "Every mechanic has its own switch",
+     "It places itself on newly generated worlds. Every mechanic has its own switch"),
     ("venom not tendable", D + "HediffDefs/RM_FlamefangVenom.xml", "<tendable>true</tendable>", "<tendable>false</tendable>"),
     ("tending too weak", D + "HediffDefs/RM_FlamefangVenom.xml", "<severityPerDayTended>-0.4<", "<severityPerDayTended>-0.2<"),
     ("furnace size 8.9", D + "ThingDefs_Races/RM_PyrelandsFauna.xml", "<baseBodySize>9</baseBodySize>", "<baseBodySize>8.9</baseBodySize>"),
@@ -273,7 +291,8 @@ MUTANTS = [
 
 def _copy(dst):
     """Copy only what facts() reads: every src/Rim*/**/Defs, Patches and the mod's Source."""
-    for f in _xml_files(REPO, "Defs") + _xml_files(REPO, "Patches") + glob.glob(os.path.join(REPO, MOD, "Source", "*.cs")):
+    for f in (_xml_files(REPO, "Defs") + _xml_files(REPO, "Patches") + glob.glob(os.path.join(REPO, MOD, "Source", "*.cs"))
+              + [os.path.join(REPO, MOD, "About", "About.xml")]):
         rel = os.path.relpath(f, REPO)
         os.makedirs(os.path.dirname(os.path.join(dst, rel)), exist_ok=True)
         shutil.copy2(f, os.path.join(dst, rel))
