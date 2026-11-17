@@ -1,0 +1,728 @@
+{
+  "bars": [
+    {
+      "id": "W1",
+      "says": "A scavenger on the Warscar can read a layered defense facing shared approaches among cratered floors and stripped wrecks, without seeing evidence of the enemy.",
+      "meant": {
+        "intent": "Land tells the last-stand story through arrangement. Reject: arbitrary junk defeats the root battlefield. Renormalize: no density or variant quota. First version: ordinary land.",
+        "source": "delegated: from the_scarlands.md sections 1, 5, 6 and 8; CASE compose sentence and selected experience in biome_experiences_2026-10-20.md.",
+        "figurative": [
+          {
+            "word": "read",
+            "stands_for": "Infer defensive purpose from geometry rather than read written words.",
+            "accept": "No sign or written account is present, but gun faces, entrances and cover make the shared defended approaches apparent."
+          }
+        ]
+      },
+      "accept": [
+        "At play zoom, surviving broken emplacements and intervening cover face common approaches across shattered ground; hulls are bare and no remains identify the attackers.",
+        "A route detours through defensive layers toward sealed salvage that is distinguishable from stripped wrecks."
+      ],
+      "reject": [
+        "A tooltip says last stand over random junk with intact valuable equipment lying in the open.",
+        "Defenses make a decorative ring but their openings point at unrelated paths, or visible enemy remains explain the mystery."
+      ],
+      "lazy": "A tooltip says last stand over random junk with intact valuable equipment lying in the open.",
+      "range": {
+        "varies": "Local map sides 200/250/300/400 and actual authored rectangles; every flat/hilly/mountain layout supported on the fixed world; approach bearings 0..359; untouched and partially scavenged states, entry from each edge. Judge untouched surviving sectors after player demolition. Normal play zoom and overview. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical.",
+        "left_out": "No alternate planet, new ruin art, enemy model, density quota or regeneration of player-demolished structures."
+      },
+      "sees": {
+        "instrument": "Live look at natural local layouts plus geometry/state export of defenses, entrances, facings and loot; geometry model cheaply rejects incoherence before the look. T24 supplies missing alignment evidence.",
+        "start": "Untouched local-map ruins and a partly scavenged branch; no deferred set pieces manually supplied to improve the picture.",
+        "on": "Every kept mechanic on at shipped defaults; all DLC and declared dependencies loaded; ordinary weather/wind unlocked; next-version extras off. Record actual source/runtime/settings fingerprints. Controls do not replace the primary combined reading. Missing apparatus or calibration is UNMEASURED.",
+        "control": "Hide descriptions for the main look, trace approaches from the geometry, then inspect actual surface versus sealed loot. Text alone and an accidental neat ring cannot count.",
+        "reset": "Disposable local-map fixtures and saves only; restore settings and wind controls, remove staged orders/things, discard fixtures after evidence export. No canonical world alteration.",
+        "live_only_why": "An angle table cannot establish whether the surviving ruins read as defensive layers at play zoom. Existing art acceptance is not reopened."
+      },
+      "live_only": true,
+      "touches": [
+        "ruins",
+        "ground",
+        "salvage",
+        "readability",
+        "defaults"
+      ]
+    },
+    {
+      "id": "W2",
+      "says": "Settlers can build shelter on the Warscar, but cleaning or wetting its native ground does not turn the poisoned battlefield into fertile farmland.",
+      "meant": {
+        "intent": "Enduring poisoned substrate is land. Reject: a reclaimed meadow erases the biome. No pollution level, timing, yield or crop stat pinned. Hydroponics does not make native soil fertile.",
+        "source": "the_scarlands.md sections 3, 5 and 6; delegated: native-substrate and ordinary-building boundary from those bans and the no-engine-redesign brief.",
+        "figurative": []
+      },
+      "accept": [
+        "Cleanup leaves useful floor for a roofed work area, while exposed native substrate remains a contamination source and refuses soil farming.",
+        "Wetting bare floor does not create green meadow; imported meals and a powered hydroponics building can still serve the colony."
+      ],
+      "reject": [
+        "A polluted-biome label persists after cleanup, but watering or floor removal creates lasting fertile soil and ends the contaminant source.",
+        "The ground stays sterile only because construction and ordinary roofs are refused."
+      ],
+      "lazy": "A polluted-biome label persists after cleanup, but watering or floor removal creates lasting fertile soil and ends the contaminant source.",
+      "range": {
+        "varies": "Generated native mask exposed/roofed; cleanup and pumps, terrain removal/replacement, water and growth inputs, crater/ruin margins, pollution 0..1; first day to day 100; construction before/after clearing. Enumerate actual loaded terrain-writing routes, including dependency routes. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical.",
+        "left_out": "No world-tile edits, isotope simulator, global hydroponics ban or cross-biome validation."
+      },
+      "sees": {
+        "instrument": "Situation generator executes actual terrain eligibility/renewal code once built; whole-map model replays cleanup/water and source state. Audit post-patch routes and calibrate against map reads. Static marker alone cannot pass. T17 supplies missing renewal.",
+        "start": "Export native-substrate mask before construction; roofed/exposed paired patches with known contamination and ordinary construction enabled.",
+        "on": "Every kept mechanic on at shipped defaults; all DLC and declared dependencies loaded; ordinary weather/wind unlocked; next-version extras off. Record actual source/runtime/settings fingerprints. Controls do not replace the primary combined reading. Missing apparatus or calibration is UNMEASURED.",
+        "control": "A sterile texture could conceal an inert source: read renewal source state and ordinary toxic/pollution effects after clearing as well as crop eligibility. Compare an ordinary non-Warscar floor via the same growth input.",
+        "reset": "Disposable local-map fixtures and saves only; restore settings and wind controls, remove staged orders/things, discard fixtures after evidence export. No canonical world alteration.",
+        "live_only_why": "Calibrated production-code/state models can decide this contract; adapters must first agree with real-game state. Neither the model nor that agreement is claimed built here."
+      },
+      "live_only": false,
+      "touches": [
+        "ground",
+        "air",
+        "life",
+        "ruins",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "W3",
+      "says": "A visitor meets a wreck-fed food web of crust grazers, carrion cleaners and dangerous weapon-descendants, with readable remains when bodies are consumed.",
+      "meant": {
+        "intent": "Ordinary life includes feeding, weapons, hunting, products and feasible taming. Reject: a static zoo, habitat-wide starvation or hidden body loss defeats life. No species count, yield or combat stat pinned.",
+        "source": "the_scarlands.md section 4; cast bible food web; standing no-animal-or-pawn-vanishes rule; delegated: census ordinary-life deletion arguments.",
+        "figurative": [
+          {
+            "word": "wreck-fed",
+            "stands_for": "Forage associated with ruined surfaces, carrion and waste sustain ordinary life; no claim that every animal literally eats wreck metal.",
+            "accept": "The grazer eats lichen beside a hull while the carrion feeder eats a body; neither consumes the ship."
+          },
+          {
+            "word": "weapon-descendants",
+            "stands_for": "Living animals with ordinary dangerous weaponlike attacks left by the war; no genealogy inspection or living-weapon factory required.",
+            "accept": "An electric insect discharges in ordinary combat without a manufacturer label, blueprint or ancestry screen."
+          }
+        ]
+      },
+      "accept": [
+        "A chatrak eats lichen beside wrecks, a rimclaw hunts and a corpse slug feeds; a consumed body leaves remains and recoverable carried gear.",
+        "A cleaner eats waste and a living munition uses its ordinary weapon; normal hunting, butchery and feasible taming still work."
+      ],
+      "reject": [
+        "Alien bodies spawn but cannot eat their promised reachable food, or a corpse eater deletes a named body and its equipment without a readable sign.",
+        "Weapon-descendants only use harmless generic bites, or human foragers conjure berries from bare floor."
+      ],
+      "lazy": "Alien bodies spawn but cannot eat their promised reachable food, or a corpse eater deletes a named body and its equipment without a readable sign.",
+      "range": {
+        "varies": "Actual retained free and full-profile patched roster grouped by feeding/attack route; juvenile/adult, hungry/fed, wild/tamed, corpse fresh/rotting/desiccated, human/animal/mech and gear/quest-item cases. Sparse/crowded forage, water/roof/clutter, 0/3/40 colonists, first hour through day 100; death/despawn/reload during feeding. No roster eviction. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical.",
+        "left_out": "No closed self-sufficient colony, exact nutrition/market yields, new tameability, absolute scaria immunity or invented rimclaw metal-eating/fuel recipes."
+      },
+      "sees": {
+        "instrument": "Live ordinary-job/food/damage trace with corpse/gear/remains conservation ledger; food-web model nominates worst cases. No forced job completion or refill. T26 supplies honest forage/remains routes.",
+        "start": "Hungry species with reachable/unreachable declared food, suitable attack targets and ledgered bodies/gear; no unrecorded feeding by fixture.",
+        "on": "Every kept mechanic on at shipped defaults; all DLC and declared dependencies loaded; ordinary weather/wind unlocked; next-version extras off. Record actual source/runtime/settings fingerprints. Controls do not replace the primary combined reading. Missing apparatus or calibration is UNMEASURED.",
+        "control": "Tag inputs and the actual consumed object; separate ordinary decay/storyteller damage from animal acts. Conserved item IDs rule out gear replacement or hidden loss.",
+        "reset": "Disposable local-map fixtures and saves only; restore settings and wind controls, remove staged orders/things, discard fixtures after evidence export. No canonical world alteration.",
+        "live_only_why": "Actual patched AI, attacks and corpse consumption cannot be certified by a nutrition model or XML fields."
+      },
+      "live_only": true,
+      "touches": [
+        "life",
+        "ground",
+        "film",
+        "salvage",
+        "save",
+        "readability",
+        "defaults"
+      ]
+    },
+    {
+      "id": "W4",
+      "says": "A wild scaria chatrak on the Warscar shows a worsening change before it attacks, while a clean or successfully cured chatrak avoids that delayed onset.",
+      "meant": {
+        "intent": "Life requires the sick plated grazer eventually to succumb, with a local warning that buys an able nearby worker retreat on an open path. No fixed onset time or speed. Clean does not mean safe from every vanilla provocation.",
+        "source": "the_scarlands.md sections 4 and 5; cast bible snap ruling and kit cure/taming distinction; delegated: smallest actionable reading of visible warning.",
+        "figurative": []
+      },
+      "accept": [
+        "A sick grazer lifts its plates and changes feeding or movement; an able worker nearby withdraws along an open escape path before its first attack.",
+        "Loading preserves disease progress, and curing scaria prevents a pending delayed rage rather than leaving a hidden curse."
+      ],
+      "reject": [
+        "Only inspect text changes before an immediate attack, or a visible warning gives the nearby worker on a clear path no chance to withdraw.",
+        "Blocked circling freezes disease forever, or clean and cured animals receive the same delayed rage as sick wild ones."
+      ],
+      "lazy": "Only inspect text changes before an immediate attack, or a visible warning gives the nearby worker on a clear path no chance to withdraw.",
+      "range": {
+        "varies": "Wild/tamed/treated, all incubation stages, juvenile/adult art scales, blocked/open circle destinations, mobile/downed/asleep workers, 1..40 colonists; death/map exit and save at every stage. Actionable retreat: able worker 1..12 cells away with open exit to safety at default speed, ordinary walking. Test cure both before/after arming and reversed order with retreat. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical.",
+        "left_out": "No guarantee for trapped/downed pawns, base evacuation, remote warning, human scaria infection or immunity to other attacks; successful taming uses existing ruled cure route."
+      },
+      "sees": {
+        "instrument": "Live ordinary-time arming/incubation/AI trace and play-scale plate-change look, guided by situation/onset models. Existing direct stage hooks are component checks only. T20.",
+        "start": "Matched healthy, wild-scaria and treated chatrak, mobile worker and measured escape path; saved progress before each branch.",
+        "on": "Every kept mechanic on at shipped defaults; all DLC and declared dependencies loaded; ordinary weather/wind unlocked; next-version extras off. Record actual source/runtime/settings fingerprints. Controls do not replace the primary combined reading. Missing apparatus or calibration is UNMEASURED.",
+        "control": "Read actual eligibility, health progression, food/job and first attack cause. Forced stage or mental state cannot substitute; untreated partner progresses while clean/cured partner does not.",
+        "reset": "Disposable local-map fixtures and saves only; restore settings and wind controls, remove staged orders/things, discard fixtures after evidence export. No canonical world alteration.",
+        "live_only_why": "Actual job arbitration, cure cleanup, timing and visible warning require the running game."
+      },
+      "live_only": true,
+      "touches": [
+        "life",
+        "readability",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "W5",
+      "says": "After sustained calm, exposed workers face falling toxic dust that a roof blocks, and sustained returning wind ends the fall without an incident or player action.",
+      "meant": {
+        "intent": "Signature cause and ordinary shelter response. Roof blocks the airborne contribution, not ground toxins or heat. Reject: a decorative or manual-only condition defeats the cycle. No strength/duration pinned.",
+        "source": "cast bible Settling ruling; delegated: roof response from RM_Settling production route, the dust-cycle intent and standing Direct Sun separation.",
+        "figurative": []
+      },
+      "accept": [
+        "Calm becomes falling dust; an exposed worker gains its attributable airborne toxic contribution while a matched roofed worker avoids that contribution, then returning wind stops the fall.",
+        "The transition still happens while attention is elsewhere and ordinary toxic weather also runs."
+      ],
+      "reject": [
+        "Dust appears but health never changes, or only a debug command can start the fall.",
+        "Only a deferred projector protects workers, or matched roofed and exposed workers receive the same signature airborne dose."
+      ],
+      "lazy": "Dust appears but health never changes, or only a debug command can start the fall.",
+      "range": {
+        "varies": "Wind below/equal/above both shipped thresholds, interrupted counters, indefinite calm/wind and oscillation; healthy/resistant flesh and immune/mech kinds, awake/asleep/downed, 0/3/40 colonists. Roof added/removed during fall, toxic weather overlap, map switch, save midcounter/midfall. Tuning extremes separately check semantics. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical.",
+        "left_out": "No guaranteed wind change on every finite trace, forced clear sky/rain, radiation heat or instant recovery under a roof."
+      },
+      "sees": {
+        "instrument": "Production hysteresis kernel enumeration plus live ordinary MapComponent/GameCondition/ToxicUtility trace with dose-source attribution. Existing weather rows are explicitly UNMEASURED; T19 builds their driver.",
+        "start": "Nonfalling map, recorded wind/weather, matched workers on equivalent ground with roof/exposed geometry, baseline health/immunity reads. Natural trace first, separate labelled wind replay second.",
+        "on": "Every kept mechanic on at shipped defaults; all DLC and declared dependencies loaded; ordinary weather/wind unlocked; next-version extras off. Record actual source/runtime/settings fingerprints. Controls do not replace the primary combined reading. Missing apparatus or calibration is UNMEASURED.",
+        "control": "Ground pollution/other toxic weather can fake harm. Keep them active in primary reading but attribute this condition calls and increments; isolated source controls validate attribution without replacing the complete reading.",
+        "reset": "Disposable local-map fixtures and saves only; restore settings and wind controls, remove staged orders/things, discard fixtures after evidence export. No canonical world alteration.",
+        "live_only_why": "The pure counter kernel cannot prove live ToxicUtility targeting or roof protection with other hazards active."
+      },
+      "live_only": true,
+      "touches": [
+        "wind",
+        "air",
+        "ground",
+        "life",
+        "readability",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "W6",
+      "says": "Crossings on settled film leave directional traces, including traces of invisible walkers, readable until wind or a visible local disturbance removes them within the shared record limit.",
+      "meant": {
+        "intent": "Signature ground record, not decorative filth. Shared capped-grid overwrites/eviction are allowed, not unlimited forensic history. Reject: random decals or no new records at capacity fails. No cap or sprite quota pinned.",
+        "source": "cast bible tracks-persist/shared-grid rulings; delegated: cleaning/feeding and capacity boundary from actual grid and scar-roach feeding.",
+        "figurative": []
+      },
+      "accept": [
+        "A walker crosses undisturbed dust and its direction can be followed; an invisible walker leaves a trace too and unrelated uncrossed ground stays blank.",
+        "Later traffic overwrites steps; observed cleaning or feeding removes film locally while fresh crossings on remaining film still record."
+      ],
+      "reject": [
+        "Prints are scattered when dust falls without any crossing, and invisible walkers leave nothing.",
+        "Old records persist but new crossings stop at capacity, or cleaned floor displays a floating stale trail."
+      ],
+      "lazy": "Prints are scattered when dust falls without any crossing, and invisible walkers leave nothing.",
+      "range": {
+        "varies": "Actual minBodySize through largest loaded grounded walker; human/animal/mech/crawling/invisible; bearing 0..359; edges/corners, roof/water/blocked/eligible floor, cleaning/consumption/later traffic, counts 0/cap-1/cap/cap+1; sides 200..400 and authored rectangles; save before/after write/erase. Follow a recent connected route, not an old individual after eviction. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical.",
+        "left_out": "No airborne flyer footprints, infinite history, identity after overwrite or required deferred chotrix sprite."
+      },
+      "sees": {
+        "instrument": "Geometry and trace sweep executes production pool/surface-selection/erase code on exported surfaces and movement sequences, with serialization and game calibration. W8 independently witnesses play-scale visual readability. T21.",
+        "start": "Empty pool, actual surface extension and tagged movement paths; no decorative initial prints; old/new routes on distinguishable cells.",
+        "on": "Every kept mechanic on at shipped defaults; all DLC and declared dependencies loaded; ordinary weather/wind unlocked; next-version extras off. Record actual source/runtime/settings fingerprints. Controls do not replace the primary combined reading. Missing apparatus or calibration is UNMEASURED.",
+        "control": "Compare cells/times/bearings against actual movements and an uncrossed path; remove film during calm and require its trace to clear. Previous-game registry data or decals cannot count.",
+        "reset": "Disposable local-map fixtures and saves only; restore settings and wind controls, remove staged orders/things, discard fixtures after evidence export. No canonical world alteration.",
+        "live_only_why": "Calibrated production-code/state models can decide this contract; adapters must first agree with real-game state. Neither the model nor that agreement is claimed built here."
+      },
+      "live_only": false,
+      "touches": [
+        "film",
+        "wind",
+        "life",
+        "readability",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "W7",
+      "says": "Returning wind lifts film and its movement record together across the map, briefly exposing unprotected passers without repeatedly dosing them or restarting the cleared route after loading.",
+      "meant": {
+        "intent": "Signature closure joins substrate, grid cursor and per-pawn dose state. Reject: immortal records or reload repeat hits break the cycle. No sweep speed or dose value pinned.",
+        "source": "cast bible lift-front adoption and next-wind wipe; delegated: production sweep/liftHit identity contract.",
+        "figurative": []
+      },
+      "accept": [
+        "Behind the passing lift the floor and old prints are clear, ahead they remain; the exposed crosser receives the front contribution while the protected partner avoids it.",
+        "Loading during a lift continues from saved progress and a later fall permits fresh traces without restoring old ones."
+      ],
+      "reject": [
+        "Film disappears but old prints remain, or loading restarts the front and doses the same pawn again.",
+        "Flecks suggest a front but film vanishes everywhere at once, or a dead worker retains a live exposure callback."
+      ],
+      "lazy": "Film disappears but old prints remain, or loading restarts the front and doses the same pawn again.",
+      "range": {
+        "varies": "Bearing 0..359, square/rectangle sides 200..400 and actual dimensions; first/middle/last batches; moving/still/repeated crossings, roof and valid neighbour-screen edges, immune/resistant kinds; death/despawn/arrival during sweep; save at boundaries and shared pool empty/full; fresh calm before previous sweep ends. At most one front contribution per pawn per actual lift. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical.",
+        "left_out": "No real direction sensor: existing saved map bearing supplies direction. Required shared-grid absence/instant fallback cannot pass. No arbitrary demand on front speed."
+      },
+      "sees": {
+        "instrument": "Geometry and trace sweep executes actual ordering and callback ledger with both components serialized; calibrate game checkpoints. Whole-model timing checks overlapping fall/lift. W5 proves airborne API, W8 moving visual; T22 supplies coupled resume test.",
+        "start": "Known film/track arrays and ordered route; falling condition must end via wind for main sequence, not direct eraser invocation; grid exists even with no prints.",
+        "on": "Every kept mechanic on at shipped defaults; all DLC and declared dependencies loaded; ordinary weather/wind unlocked; next-version extras off. Record actual source/runtime/settings fingerprints. Controls do not replace the primary combined reading. Missing apparatus or calibration is UNMEASURED.",
+        "control": "Tag callbacks, source-dose IDs and positions; uncleaned ahead strip rules out cleaners/roaches, repeated worker crossings reveal duplicate hits; compare uninterrupted versus restored branch.",
+        "reset": "Disposable local-map fixtures and saves only; restore settings and wind controls, remove staged orders/things, discard fixtures after evidence export. No canonical world alteration.",
+        "live_only_why": "Calibrated production-code/state models can decide this contract; adapters must first agree with real-game state. Neither the model nor that agreement is claimed built here."
+      },
+      "live_only": false,
+      "touches": [
+        "film",
+        "wind",
+        "air",
+        "life",
+        "save",
+        "readability",
+        "defaults"
+      ]
+    },
+    {
+      "id": "W8",
+      "says": "At ordinary play zoom and sound settings, the dust cycle, local beetle clicks and harmless tracking guns describe the same changing place while leaving workers and trails visible, without imitating rain or inventing a threat.",
+      "meant": {
+        "intent": "Land/life motion and signature readability with ordinary UI fallback; sound is no remote Geiger meter. Reject: masking dust or lying cues defeat the experience. Existing art accepted, no polish/variant demand.",
+        "source": "selected silent-guns experience; cast bible choir/Settling rulings; ASHKARR_WORLD_DEFINITION.md rain ban and kit war-aerosol reading; delegated: combined-source readability.",
+        "figurative": [
+          {
+            "word": "describe",
+            "stands_for": "Corresponding local sound and motion cues reveal the actual sources and phase, without spoken explanation.",
+            "accept": "No narrator speaks, but local clicks, stopped wind sound and visible dry dust convey the changing condition."
+          }
+        ]
+      },
+      "accept": [
+        "Calm stops wind-on-metal while local beetle clicks remain; dry falling dust leaves workers and fresh trails readable.",
+        "A broken gun follows a moving pawn without firing; muted audio still leaves the condition and shelter response readable in ordinary UI."
+      ],
+      "reject": [
+        "A soundtrack ticks over an empty map while dust looks like rain and hides workers and trails.",
+        "A gun fires to make its tracking noticeable, or absent deferred pools and hunters still produce boiling or moving silence."
+      ],
+      "lazy": "A soundtrack ticks over an empty map while dust looks like rain and hides workers and trails.",
+      "range": {
+        "varies": "Normal supported play zoom; pause/normal/fast speed; sources absent/sparse/crowded; near/far camera, map switch, audio on/muted/reduced repetition; all phases, pale/dark floor and ordinary weather overlap; moving/still/occluded/out-of-range targets, death/despawn/reload/source removal. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical.",
+        "left_out": "No audio requirement for muted/deaf player, new sound grain/texture variant, or screenshot-only flight evidence."
+      },
+      "sees": {
+        "instrument": "Live look/listen plus source/sustainer/target trace. T23 supplies presentation protocol. State alone selects cases but cannot establish perceptual masking.",
+        "start": "Natural full-map sources, actual broken-gun comp, ordinary camera/audio; no extra objects or weather lock improving the atmosphere.",
+        "on": "Every kept mechanic on at shipped defaults; all DLC and declared dependencies loaded; ordinary weather/wind unlocked; next-version extras off. Record actual source/runtime/settings fingerprints. Controls do not replace the primary combined reading. Missing apparatus or calibration is UNMEASURED.",
+        "control": "Correlate source IDs with camera movement, condition and actual target movement. Empty-source control must stop source sound; stationary targets cannot justify arbitrary barrel motion. Vanilla soundtrack/debug turns cannot count.",
+        "reset": "Disposable local-map fixtures and saves only; restore settings and wind controls, remove staged orders/things, discard fixtures after evidence export. No canonical world alteration.",
+        "live_only_why": "No credible offline model decides audible masking and on-screen combined-weather legibility."
+      },
+      "live_only": true,
+      "touches": [
+        "ruins",
+        "film",
+        "wind",
+        "life",
+        "readability",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "W9",
+      "says": "Over a season with the complete shipped Warscar running, a colony can shelter, scavenge and read the dust cycle while its native battlefield and food web endure, without accumulating hazards, losing the cycle or breaking on reload and a changed order of work.",
+      "meant": {
+        "intent": "The sole whole bar. Flood means immortal film/records, rage/body-loss cascade or notices preventing ordinary work; desert means all unharvested forage and functioning life lost; stall means eligible sustained calm/wind never closes the cycle; error storm means repeated exceptions corrupt play. No fun claim or balance quota.",
+        "source": "CASE whole-bar instruction; delegated: combined land/life/signature consequences from frozen sheet, selected experience and actual kept source.",
+        "figurative": [
+          {
+            "word": "read",
+            "stands_for": "Recognise the active dust phase and recent movement from normal game cues, not printed instructions or a forensic archive.",
+            "accept": "The player follows visible fresh traces and takes shelter from falling dust without opening a written explanation."
+          }
+        ]
+      },
+      "accept": [
+        "Through changing weather a colony shelters, recovers sealed salvage and learns fresh trails; wind clears old dust, unharvested habitat still supports life, and a midway save preserves the behaviour.",
+        "Roofing before scavenging and scavenging before roofing have understandable exposure costs and both leave the complete cycle functioning."
+      ],
+      "reject": [
+        "Staged scenes pass only with weather clear, creatures frozen or toxicity off; the combined season empties the food web or buries the map in immortal film and records.",
+        "Midseason loading duplicates hazards or loses the wind transition; reversing work order deadlocks jobs or causes repeated exceptions and notices."
+      ],
+      "lazy": "Staged scenes pass only with weather clear, creatures frozen or toxicity off; the combined season empties the food web or buries the map in immortal film and records.",
+      "range": {
+        "varies": "Full local maps sides 200/250/300/400 plus actual rectangles, a 15-day season and continuation to day 100 for persistence; 3 and 40 colonists, ordinary loaded roster/forage pressure, roof/clean/hunt/scavenge. Midway save, plus targeted lift/warning saves; orders roof->salvage->clean and salvage->roof->clean. Natural wind trace and separate labelled complete-cycle replay. Compression changes wall clock only: retain all ticks, AI, spawning, cell effects, doses, sampled sound/render and save points; no stage forcing, early condition end, locked sky or instant refill. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical.",
+        "left_out": "No forced wind change on finite all-calm trace: report it then replay declared transition. No starvation/no-import challenge, completely mined habitat, exact yields, unsupported mod profile or alternative planet."
+      },
+      "sees": {
+        "instrument": "Whole-map season model nominates worst regimes; live complete-run state/job/food/corpse/log ledger and normal-play observations decide. Model forecast is not a game measurement. T27 supplies whole driver.",
+        "start": "Disposable full map at genuine proposed defaults, ordinary beginning supplies, exported native mask/ruins/roster/plants/settings; no deferred technology manually supplied, no force/lock flags in natural leg.",
+        "on": "Every kept mechanic on at shipped defaults; all DLC and declared dependencies loaded; ordinary weather/wind unlocked; next-version extras off. Record actual source/runtime/settings fingerprints. Controls do not replace the primary combined reading. Missing apparatus or calibration is UNMEASURED.",
+        "control": "Ledger imports/harvest/deaths and unharvested habitat to expose starvation hidden by imported food; verify actual kept-on state throughout, compare uninterrupted/reloaded branches and action orders. Clean log with mechanics off is not a pass.",
+        "reset": "Disposable local-map fixtures and saves only; restore settings and wind controls, remove staged orders/things, discard fixtures after evidence export. No canonical world alteration.",
+        "live_only_why": "Combined colony AI, weather, ecology and observed readability over a season cannot be certified by isolated hooks or an uncalibrated forecast."
+      },
+      "live_only": true,
+      "touches": [
+        "ruins",
+        "ground",
+        "life",
+        "air",
+        "film",
+        "wind",
+        "salvage",
+        "save",
+        "readability",
+        "defaults"
+      ]
+    }
+  ],
+  "whole": "W9",
+  "checks": [
+    {
+      "id": "C1",
+      "what": "Current source/runtime/settings hashes, all DLC, actual patched roster and reachable genstep/recipe/menu snapshot; old closure is stale evidence."
+    },
+    {
+      "id": "C2",
+      "what": "Wind counter thresholds, strict gap, production-kernel seed/case counts and transition coverage; times and strength remain tuning checks."
+    },
+    {
+      "id": "C3",
+      "what": "Track cap/minBodySize/style/bearing/ordering/serialization regression; retuning changes the check and model inputs, not the bar."
+    },
+    {
+      "id": "C4",
+      "what": "Native terrain and forage eligibility, renewal source state, wet-growth exclusion and no ordinary rain/snow on the actual tile; dry-aerosol text."
+    },
+    {
+      "id": "C5",
+      "what": "Actual roster/diet/attack/trainability/products and bounded lichen seeder regressions, without passing yield/stat quotas; multi-home findings noted without eviction."
+    },
+    {
+      "id": "C6",
+      "what": "Corpse and carried-item conservation/remains ledger; separate butchery from animal consumption."
+    },
+    {
+      "id": "C7",
+      "what": "Deferred gate absence/presence matrix covers hidden cells, startup mutators, legacy saves, trade, menus, jobs and incidents. Old deferred tests become advisory."
+    },
+    {
+      "id": "C8",
+      "what": "Master/major-feature on/off/reset/effect-time labels, unsupported opt-in, partner status and clean-log floor; no worldgen UI. House label the Warscar follows later ruling."
+    },
+    {
+      "id": "C9",
+      "what": "Existing UNMEASURED rows require actual primary-path evidence; matching serialized fields or stage hooks alone do not certify resumed transitions."
+    },
+    {
+      "id": "C10",
+      "what": "Shared-service ABI, registered-map identity, reload/despawn and local-content decoupling; no stale screen alias or disabled-projector effect."
+    }
+  ],
+  "rules": [
+    {
+      "id": "R1",
+      "rule": "Reuse Odyssey local-map ruins and Wreckage stripped families; coordinate shared approaches if donor geometry fails. No enemy evidence/intact open prize; no alternative planet.",
+      "touches": [
+        "ruins",
+        "ground",
+        "salvage",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R2",
+      "rule": "Native substrate stays nonfertile and a contamination source through clearing/wetting; allow buildings, roofs and imported hydroponics. Ordinary toxin/pollution paths and shared geometric Direct Sun only. Choose renewal tuning using the whole model; no new engine or heat kind.",
+      "touches": [
+        "ground",
+        "air",
+        "life",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R3",
+      "rule": "Consecutive calm/strong-wind counters with strict gap; interruptions reset counters. Preserve seeded saved bearing. Queue fresh fall until unfinished lift completes rather than resetting or overlapping the front.",
+      "touches": [
+        "wind",
+        "air",
+        "film",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R4",
+      "rule": "Film uses exposed walkable nonwater cells and valid neighbour screens; one shared capped grid, ordinary overwrites/eviction. Film removal by cleaning/feeding/flooring clears its trace. Disabled shells create no clean-cell exception.",
+      "touches": [
+        "film",
+        "ground",
+        "life",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R5",
+      "rule": "Grid cursor and film wipe advance together; at most one front dose per pawn, with coupled saved cursor/bearing/hit identities. Off can finish harmless cleanup but adds no harmful pulse.",
+      "touches": [
+        "film",
+        "wind",
+        "air",
+        "life",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R6",
+      "rule": "No roster eviction; ordinary feeding/weapons/products work. Consumption preserves readable remains and gear; Bones butcher hook is not eating evidence. No conjured berries. Bileworm mood aura moves independently of feeding.",
+      "touches": [
+        "life",
+        "ground",
+        "film",
+        "salvage",
+        "readability",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R7",
+      "rule": "Arm eligible wild scaria chatrak on Warscar only, revalidate cure/taming/death and permit onset despite blocked circling. Keep plate/feeding/movement warnings. Biome lookup is independent of disabled mark gameplay.",
+      "touches": [
+        "life",
+        "readability",
+        "save",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R8",
+      "rule": "Sound uses actual enabled local sources; wind stops in fall. Broken-gun tracking has no firing verb. Dry aerosol wording and UI remain readable; absent extra sources make no sound.",
+      "touches": [
+        "ruins",
+        "wind",
+        "film",
+        "life",
+        "readability",
+        "defaults"
+      ]
+    },
+    {
+      "id": "R9",
+      "rule": "Gate moved creation/effect/reward routes off by default while defs and shared APIs persist. Neighbour screens retain their own broad contracts; unsupported opt-in remains off. All-off ends local scripted hazards gracefully and effect timing is labelled.",
+      "touches": [
+        "defaults",
+        "air",
+        "film",
+        "life",
+        "salvage",
+        "save",
+        "readability"
+      ]
+    }
+  ],
+  "meetings": [
+    {
+      "thing": "air",
+      "members": [
+        "W2",
+        "W5",
+        "W7",
+        "W9",
+        "R2",
+        "R3",
+        "R5",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Native poison, falling aerosol, lift and external screens can double-dose or cancel each other and erase forage; attribute sources before tuning.",
+      "model": "Whole-map season model"
+    },
+    {
+      "thing": "defaults",
+      "members": [
+        "W1",
+        "W2",
+        "W3",
+        "W4",
+        "W5",
+        "W6",
+        "W7",
+        "W8",
+        "W9",
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Current extras are mostly default on and not all routes obey their comp toggle; shared service must survive local gating. Enumerate creation, reward and off/on transitions.",
+      "model": "Situation and transition generator"
+    },
+    {
+      "thing": "film",
+      "members": [
+        "W3",
+        "W6",
+        "W7",
+        "W8",
+        "W9",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Seeding, roach/cleaner removal, capped recording, wind wipe and reload share substrate and grid; model all consumers and capacity boundaries, not a filmed example strip.",
+      "model": "Geometry and trace sweep"
+    },
+    {
+      "thing": "ground",
+      "members": [
+        "W1",
+        "W2",
+        "W3",
+        "W5",
+        "W9",
+        "R1",
+        "R2",
+        "R4",
+        "R6"
+      ],
+      "holds_together": "unknown",
+      "why": "Terrain sterility, renewable poison, growth exclusions and construction/food-web survival may conflict; label-only reasoning cannot settle the playable region.",
+      "model": "Whole-map season model"
+    },
+    {
+      "thing": "life",
+      "members": [
+        "W2",
+        "W3",
+        "W4",
+        "W5",
+        "W6",
+        "W7",
+        "W8",
+        "W9",
+        "R2",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Higher-order loop: toxin changes forage/deaths, body eaters change food/filth, roaches erase film and grazer rage adds deaths. Pairwise feeding success does not establish seasonal persistence.",
+      "model": "Food-web and onset ledger"
+    },
+    {
+      "thing": "readability",
+      "members": [
+        "W1",
+        "W3",
+        "W4",
+        "W5",
+        "W6",
+        "W7",
+        "W8",
+        "W9",
+        "R6",
+        "R7",
+        "R8",
+        "R9"
+      ],
+      "holds_together": "argued",
+      "why": "Health/UI, dry dust, corpse remains and actual source sound name different causes; W8 judges combined presentation and W9 catches attention floods. No sound is the sole warning.",
+      "model": ""
+    },
+    {
+      "thing": "ruins",
+      "members": [
+        "W1",
+        "W2",
+        "W8",
+        "W9",
+        "R1",
+        "R8"
+      ],
+      "holds_together": "argued",
+      "why": "Stripped works and harmless tracking supply ordinary land without manuals/hospice/rings; align ordinary layout instead of adding encounters. Live composition still owed.",
+      "model": ""
+    },
+    {
+      "thing": "salvage",
+      "members": [
+        "W1",
+        "W3",
+        "W9",
+        "R1",
+        "R6",
+        "R9"
+      ],
+      "holds_together": "argued",
+      "why": "Ordinary sealed Odyssey salvage and stripped Wreckage products do not depend on mark caches, chemistry, hospice or refits. Roof construction and dropped corpse gear require none of those rewards.",
+      "model": ""
+    },
+    {
+      "thing": "save",
+      "members": [
+        "W2",
+        "W3",
+        "W4",
+        "W5",
+        "W6",
+        "W7",
+        "W8",
+        "W9",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R9"
+      ],
+      "holds_together": "unknown",
+      "why": "Two sweep components, per-pawn disease and colony jobs resume independently. Matching a few fields cannot prove the same callbacks, hit set or cure result.",
+      "model": "Situation and transition generator"
+    },
+    {
+      "thing": "wind",
+      "members": [
+        "W5",
+        "W6",
+        "W7",
+        "W8",
+        "W9",
+        "R3",
+        "R5",
+        "R8"
+      ],
+      "holds_together": "argued",
+      "why": "Strict separated predicates prevent simultaneous start/end; fresh fall waits for unfinished lift. Generator still verifies equality, interruption and reload implementation; no current measurement claimed.",
+      "model": ""
+    }
+  ],
+  "old_bars": {}
+}
