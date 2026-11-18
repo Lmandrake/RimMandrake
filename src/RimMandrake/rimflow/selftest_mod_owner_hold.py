@@ -238,12 +238,18 @@ def test_stall_reader():
         os.makedirs(os.path.join(root, m))
         with open(os.path.join(root, m, "stage.json"), "w") as f:
             json.dump({"stage": 2, "status": "ready", "history": [{"at": "2026-11-16T01:00:00Z"}]}, f)
+    # its own Dispatcher state: an earlier test's RM_DISPATCHER_STATE may name a temp dir already removed
+    # (RIMMANDRAKE_ISOLATE_OWNER_HOLD_STALL_READER_FROM_CHAIN_TEST)
+    sf = os.path.join(root, "dispatcher_state.json")
+    with open(sf, "w") as f:
+        json.dump({"roles": {}}, f)
+    q = {"root": root, "runs_dir": root, "state_file": sf}
     temp_holds(["ModOne", "ModTwo"])
-    out = OW._q_designer({"root": root, "runs_dir": root}, 1794880000, {}, None)
+    out = OW._q_designer(q, 1794880000, {}, None)
     temp_holds(["ModOne"])
-    out1 = OW._q_designer({"root": root, "runs_dir": root}, 1794880000, {}, None)
+    out1 = OW._q_designer(q, 1794880000, {}, None)
     temp_holds([])
-    out0 = OW._q_designer({"root": root, "runs_dir": root}, 1794880000, {}, None)
+    out0 = OW._q_designer(q, 1794880000, {}, None)
     check(repr(out) != repr(out0) and repr(out1) != repr(out), "the Designer stall reader leaves held concepts out "
           "(all held %r; one held %r; none held %r)" % (out, out1, out0))
 
