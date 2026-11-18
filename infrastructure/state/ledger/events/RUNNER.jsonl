@@ -8620,3 +8620,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","result":"kept","detail":"sweep: running again","ts":"2026-11-18T07:18:05Z","tsn":1794986285485591922}
 {"seat":"RUNNER","event":"live","id":"OPS_SEAT_CLONE_DIRT_RESTORE_VTLF","result":"broken","detail":"Ops alarm SEAT_CLONE_DIRT: disk.seat_dirt = 1 paths dirty in the seat clone over 60 min (MEASURED), line > 0","ts":"2026-11-18T09:27:45Z","tsn":1794994065506521466}
 {"seat":"RUNNER","event":"live","id":"OPS_SEAT_CLONE_DIRT_RESTORE_VTLF","result":"broken","detail":"Ops alarm SEAT_CLONE_DIRT: disk.seat_dirt = 1 paths dirty in the seat clone over 60 min (MEASURED), line > 0","ts":"2026-11-18T09:30:20Z","tsn":1794994220774416787}
+{"seat":"RUNNER","event":"live","id":"OPS_SEAT_CLONE_DIRT_RESTORE_VTLF","result":"broken","detail":"Ops alarm SEAT_CLONE_DIRT: disk.seat_dirt = 1 paths dirty in the seat clone over 60 min (MEASURED), line > 0","ts":"2026-11-18T09:33:00Z","tsn":1794994380066024022}
