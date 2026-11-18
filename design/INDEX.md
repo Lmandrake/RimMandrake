@@ -6,7 +6,7 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
-⚠️ **1385 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+⚠️ **1892 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
 
 ### `design/`
 
@@ -746,6 +746,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `RM_gelatinous_slime_mod.md` | The Gelatinous Slime Biome — GELATINOUS_SLIME_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built |
 | `RM_liquid_types_mod.md` | One Liquid System, Many Liquids — LIQUID_TYPES_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built |
 | `RM_titanoslime_spec.md` | The Titanoslime — `RM_Titanoslime`, the Slime's own mouth | ? design spec — nothing here is built. item |
+| `agent_systems_assessment_2026-11-12.md` | Assessment of Relentless, Artisan and Whittle — 2026-11-12 | — |
 | `alpha_biomes_census_2026-11-01.md` | Alpha Biomes census: the rest of the names, decided (2026-11-01) | — |
 | `alpha_biomes_retirement_2026-10-16.md` | Alpha Biomes retirement plan, 2026-10-16 (FOUNDRY helper) | — |
 | `ancient_machines_design.md` | ANCIENT MACHINES — the grade ladder, and the two layers above it | ? design, filed 2026-09-15 from the bench session recorded in
@@ -779,6 +780,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `aurora_research_2026-10-20.md` | Aurora research for Auroral Umbra (RUT_Umbra) | — |
 | `automated_art_evaluation_design_2026-10-23.md` | Automated RimWorld art evaluation — design (2026-10-23) | — |
 | `balance_paradigm.md` | balance_paradigm.md — why we would change any number in this game |  |
+| `bars_pinning_tuning_numbers_census_2026-11-16.md` | Bars that pin a tuning number or an asset count — census, 2026-11-16 | — |
 | `baseline_two_seat_system_2026-10-26.md` | Baseline: the two-seat operating system, tagged 2026-10-26 | — |
 | `bazaar_trade_window_design.md` | The Bazaar — the scavenger trade window | — |
 | `beautiful_tilemap.md` | Beautiful_Tilemap — concept spec | ☁ aspirational |
@@ -813,6 +815,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `canopy_zoom_investigation_2026-10-18.md` | Canopy zoom — feasibility investigation (2026-10-18) | — |
 | `coastal_mesa_rationale.md` | Coastal Mesa — LLM-authored map improvement |  |
 | `code_review_c1_findings_2026-10-31.md` | Code review lane C1 findings, 2026-10-31 (item specs) | — |
+| `codex_experiment_scorecard_2026-11-15.md` | Codex experiment, scored — 2026-11-15 | — |
 | `codex_receiving_agent_design.md` | A receiving agent inside Codex — accelerating graphics generation | — |
 | `compaction_retention_test_2026-10-26.md` | Compaction retention test — 2026-10-26 | — |
 | `companion_handshake.md` | Companion handshake, campaign/test profiles and stale-target guards | — |
@@ -842,6 +845,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `event_trace_props_library_design_2026-10-03.md` | Event trace props library — design (2026-10-03) | — |
 | `evidence_gate_enforce_before_deletes_2026-11-06.md` | What enforces a close once a guard dies (EVIDENCE_GATE_DESIGN_ENFORCE_BEFORE_DELETES) | — |
 | `exotic_materials_census_2026-10-09.md` | Exotic materials census — 2026-10-09 | — |
+| `explosion_mods_characterized_2026-11-12.md` | Explosion mods on our lists, characterized (2026-11-12) | — |
 | `explosive_growth_bench_design_pass_2026-10-16.md` | Explosive growth: BENCH design pass on the consensus model (2026-10-16) | — |
 | `explosive_growth_consensus_2026-10-16.md` | Explosive growth: the consensus model (2026-10-16) | — |
 | `explosive_growth_deep_dive_2026-10-16.md` | Explosive growth: a deep dive (2026-10-16) | — |
@@ -905,6 +909,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `flowworks_ticket_consolidation_2026-10-17.md` | FlowWorks ticket consolidation (2026-10-17) | — |
 | `flowworks_unified_depth_2026-10-17.md` | One ruler for all water: the unified depth spec (RULED 2026-10-17) | — |
 | `flowworks_walkthrough_2026-10-23.md` | FlowWorks walkthrough — save RM_fw_walkthrough_20261023e (2026-10-23) | — |
+| `flowworks_water_solver_literature_review.md` | FlowWorks: CPU-Efficient Water Simulation on a Single-Valued Elevation Grid | — |
 | `fluff_cuts_2026-10-23.md` | Fluff cuts, 2026-10-23: the veto digest | — |
 | `flyer_stable_body_study.md` | Flyer stable-body study — 2026-10-08 | — |
 | `focused_testing_plan_2026-10-25.md` | Focused testing plan — 2026-10-25 | — |
@@ -944,6 +949,8 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `gpt_review_plan_2026-10-22.md` | GPT deep-review round, 2026-10-22 (FOUNDRY helper) | — |
 | `graffiti_personality_pass_2026-11-07.md` | Graffiti personality pass, 2026-11-07 | — |
 | `graffiti_series_2026-11-07.md` | The Graffiti series: Graffiti, the Star Wars reskin, Sacred Graffiti | — |
+| `gss_cabling_method_review_2026-11-08.gpt.md` | GPT's answer to the GSS cabling method review, 2026-11-08 (verbatim) | — |
+| `gss_cabling_method_review_2026-11-08.md` | Gimme Some Slack cabling: how we are solving it, and why it got this far — 2026-11-08 | — |
 | `gss_flowworks_rulings_2026-10-11.md` | GimmeSomeSlack + FlowWorks — owner rulings, 2026-10-11 (by question card, BENCH) | — |
 | `gss_gpt_source_read_2026-10-06.md` | Gimme Some Slack: GPT source read, checked against the code (2026-10-06) | — |
 | `gss_gpt_source_read_A_2026-10-06.md` | — | — |
@@ -959,7 +966,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `hose_port_to_flowworks_design_v2_2026-10-10.md` | Hose port: GimmeSomeSlack → FlowWorks — design v2 (2026-10-10) | — |
 | `hose_port_to_flowworks_review_2026-10-10.md` | Review — hose port to FlowWorks design (2026-10-10) | — |
 | `hose_wire_algorithms_advisory_2026-10-28.md` | Hose and wire algorithms: advisory report (2026-10-28) | — |
-| `huge_footprints_perf.md` | HugeFootprints performance: the code, the 70 ms/tick issue, the fix, and alternatives | — |
+| `huge_footprints_perf.md` | HugeFootprints performance: current scheduler and retained measurements | — |
 | `innovations.md` | Innovations: the list | — |
 | `jawa_scavenge_system_design_2026-10-03.md` | Jawa scavenging system: synthesis design (DRAFT for owner decisions) | — |
 | `jawa_scavenge_system_pitch_2026-10-03.md` | Jawa scavenging system: inventory and pitch (DRAFT, for owner cards) | — |
@@ -968,6 +975,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `kit_art_designs_2026-10-16.md` | Biome-sprint kit art: guessed designs, 2026-10-16 (FOUNDRY helper) | — |
 | `ladder_climbers_2026-10-23.md` | Ladder climbers — census (LADDER_PARITY_BUILD_NO_KEYS_REQUIRED, owner Q1 2026-10-23) | — |
 | `ladder_parity_2026-10-23.md` | Ladder parity — design (LADDER_PARITY_BUILD_NO_KEYS_REQUIRED) | — |
+| `lexicon_audit_2026-11-12.md` | Lexicon audit, 2026-11-12: every candidate word and what was decided | — |
 | `light_ledger_design.md` | Light ledger — one radius per light, composed from every effect | — |
 | `lightspeed_2026-11-06.md` | Lightspeed: the no-LLM test lane (design, 2026-11-06) | — |
 | `liquid_connections_visuals_2026-10-16.md` | Liquid connections: pump, hose and joins (HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY) | — |
@@ -980,6 +988,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `live_mods_filing_check_2026-11-05.md` | Live-mods filing check: a deep design pass (2026-11-05) | — |
 | `live_needs_enforce_evidence_2026-11-06.md` | LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: evidence (2026-11-06) | — |
 | `live_test_hang_runbook.md` | Live-test hang runbook | — |
+| `live_test_speed_assessment_2026-11-12.md` | Live-test speed: assessment and plan, 2026-11-12 | — |
 | `llm_ingame_wiring_spec.md` | The Oracle — in-game LLM wiring | ? spec — llm_ingame_wiring_1, bench 2026-08-31, green-lit by the owner, verbatim |
 | `llm_stack_assessment.md` | llm_stack_assessment.md — how far the live LLM stack gets us |  |
 | `llm_voice_preauthoring.md` | llm_voice_preauthoring.md — paste-ready LLM voice prompts (RimAI + RimDialogue) |  |
@@ -991,6 +1000,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `map_generator_chooser_spec.md` | Map generator v0 — the CHOOSER (spec) | — |
 | `map_generator_round4_options.md` | Map generator round 4 — the chooser, as OPTIONS (Fable design pass, not ruled) | — |
 | `mattpocock_design_suggestions.md` | Matt Pocock's design skills: what they do, what to keep | — |
+| `maturation_pipeline.md` | The Maturation Pipeline, as built | — |
 | `memory_clones_drives_2026-10-08.md` | Memory, clones, drives and configuration — audit and redesign (2026-10-08) | — |
 | `messy_conduit_design_2026-10-02.md` | Messy Conduit — design pass (2026-10-02) | — |
 | `messy_conduit_phase2_design_2026-10-02.md` | Messy Conduit — Phase 2 design (1b polish, aerial lines, flexible hoses, Northstar fast-track) | — |
@@ -1056,6 +1066,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `perpetual_orchestrator_context_2026-10-26.md` | Perpetual orchestrator context: grow-until-compaction vs handoff-and-restart | — |
 | `phase0_p6_save_rewrite_icons_NOTE.md` | Phase 0 P6 second pass: ideo-icon refs in the donor-free save (2026-10-16) | — |
 | `phase0_save_mutators_restore_NOTE.md` | Donor tile mutators stripped from the donor-free save — where to put them back | — |
+| `pipeline_diagnosis_20261116.md` | Why the mod pipeline keeps stopping: measured diagnosis, Mon 2026-11-16 | — |
+| `pipeline_interventions_census_2026-11-15.md` | Census: every time the Conductor stepped into the Maturation Pipeline | — |
+| `pipeline_launch_paths_census_2026-11-18.md` | Pipeline launch paths census, 2026-11-18 | — |
+| `pipeline_sleepers_census_2026-11-15.md` | Pipeline sleepers census, 2026-11-15 | — |
+| `pipeline_trial_counters_census_2026-11-18.md` | Every counter a Maturation Pipeline run can consume, and whether a system death spends it (2026-11-18) | — |
 | `pit_exposure_to_the_elements_2026-10-11.md` | Pit: "exposed to the elements" on vanilla's own temperature path — design pass, 2026-10-11 | — |
 | `pit_solvent_options_20261011.md` | Slime pit solvent: what is "the Rot's finest"? Options, 2026-10-11 | — |
 | `pit_superdeep_collapse_spec.md` | Pit → Superdeep collapse — design spec | — |
@@ -1063,17 +1078,17 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `planning_session_design_2026-11-01.md` | Planning sessions: orders for many days, without you | — |
 | `plant_draw_layers_2026-10-14.md` | Plant draw layers: ground cover under everything (2026-10-14) | — |
 | `plant_economy_rule_2026-11-01.md` | The plant economy bar (2026-11-01) | — |
+| `player_truth_sweep_trials_2026-11-13.md` | Player-truth sweep, second trial: wider set, and a truth baked into a fixer (2026-11-13) | — |
 | `player_truth_testing_pilot_2026-10-26.md` | Player-truth testing pilot (FlowWorks: pits, ladders, pipes, hoses, levelling) | — |
-| `player_truth_sweep_trials_2026-11-13.md` | Player-truth sweep second trial: six truth families, 16 facing violations, the facing truth wired into art_eval | — |
 | `pond_depth_design_2026-10-16.md` | Ponds shallow out before they turn to mud: design (2026-10-16) | — |
 | `post_event_recovery_mode_2026-11-05.md` | Post-event recovery mode: a design, replayed on 2026-11-04 (OPS_RECOVERY_DESIGN_POST_EVENT_MODE) | — |
 | `power_poles_and_flexible_pipe_assessment_2026-10-02.md` | Power Poles Extended, suspended wires and flexible piping — assessment (2026-10-02) | — |
 | `process_model_explainer_2026-10-29.md` | The process model, explained (2026-10-29) | — |
 | `process_model_v2_v3_design_2026-10-29.md` | Process model v2 + v3: design (2026-10-29) | — |
 | `producer_cadence_2026-10-29.md` | Producer cadence: more than Wednesdays (design, 2026-10-29) | — |
+| `production_system_map_2026-11-12.md` | The RimMandrake production system: a map, 2026-11-12 | — |
 | `pyrelands_ash_redesign_2026-10-12.md` | Pyrelands ground: deep ash everywhere, and the burn feeds the field (2026-10-12) | — |
 | `queue_judgment_2026-11-01.md` | Queue judgment, 1 November 2026 | — |
-| `ralph_loop_design_2026-10-29.md` | The best simple Ralph loop for RimMandrake (2026-10-29) | — |
 | `ratchet_workflow_and_token_burst_design_2026-10-11.md` | The ratchet workflow and the token burst to Wed 16:00 | — |
 | `reaction_mechanism_spec.md` | One reaction mechanism, four scales — spec | — |
 | `reel_fairlead_swivel_decision_2026-11-05.md` | Hose reel: payout guide (fairlead) and supply swivel — decided not needed (2026-11-05) | — |
@@ -1102,6 +1117,8 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `relentless_verdict_identity_design_2026-11-02.md` | Relentless verdict machinery: identity-bound, fail-closed (design pass, 2026-11-02) | — |
 | `relentless_vs_foundry_2026-11-02.md` | Relentless vs FOUNDRY: measured comparison (read-only, 2026-11-02) | — |
 | `relic_replacements_proposal.md` | Relic replacements for the five broken VWE relic precepts — PROPOSAL, awaiting owner approval | — |
+| `retired_eras_index_2026-11-18.md` | Retired eras: what was removed, where it lived, what stays and why (2026-11-18) | — |
+| `retired_loops_2026-11-13.md` | Retired 2026-11-13: Relentless per-ticket work, the Artisan loops, the Whittle loops | — |
 | `retired_mutators_port_2026-10-19.md` | Retired-donor world-tile mutators and landmarks: ported to our own defs, 2026-10-19 | — |
 | `retirement_register_wave4_2026-10-20.md` | Retirement Wave 4 register (2026-10-20): what was cut, why, and how to bring it back | — |
 | `return_to_building_checklist_2026-11-01.md` | Before we return to normal building: workflow checklist (2026-11-01) | — |
@@ -1143,6 +1160,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `salvage_wreckage_everywhere_design_2026-10-02.md` | SALVAGE_WRECKAGE_EVERYWHERE_1: design (placement, repair and salvage ruled 2026-10-03) | — |
 | `save_authoring_pipeline.md` | Save-Based World Authoring Pipeline — RimWorld 1.6 Jawa Gravship Campaign | ⛔ dead |
 | `scald_steam_and_hazards_spec.md` | The Scald — steam weather and boiling-water hazards (design spec) | — |
+| `scene_look_judge_brief.md` | Scene look judge brief: a fresh player's eyes on a staged in-game scene | — |
 | `scurrier_male_commission_2026-10-14.md` | Scurrier male art commission (2026-10-14) | — |
 | `sea_dive_maps_spec.md` | Sea dive maps — design spec | — |
 | `sea_floor_census_2026-10-29.md` | Sea floor and catch census, 2026-10-29 | — |
@@ -1156,6 +1174,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `sith_line_design.md` | Sith line — redesign of the Sanguophage xenotype | — |
 | `solar_mirrors_mod_design_2026-10-04.md` | Solar Mirrors — full design pass (SOLAR_MIRRORS_MOD_DESIGN_1) | — |
 | `sound_sourcing_options_2026-10-02.md` | Sound sourcing options (SOUND_SOURCING_ROUTE_1) — 2026-10-02 | — |
+| `spare_gpt_capacity.md` | Spare GPT capacity before its refresh | — |
 | `special_mechanics_review_2026-10-22.md` | Special mechanics, rites and items: review inventory (2026-10-22) | — |
 | `sprinklers_design_2026-10-16.md` | Sprinklers: native pipe heads + VFE automation (SPRINKLERS_DESIGN_PIPES_THEN_PANACHE, 2026-10-16) | — |
 | `sprint_art_commissions_2026-10-16.md` | Sprint art commissions, 2026-10-16 (FOUNDRY helper) | — |
@@ -1180,6 +1199,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `testpilot_design_opus_2026-10-29.md` | TestPilot: the owner's Foundry + TestPilot + Conductor proposal, evaluated and improved (Opus, 2026-10-29) | — |
 | `testpilot_merged_2026-10-29.md` | TestPilot: merged design, round 3 (2026-10-29) | — |
 | `testpilot_round2_opus_2026-10-29.md` | TestPilot round 2 (Opus): answer to GPT's independent design | — |
+| `testq_preflight_2026-11-12.md` | testq preflight and the deploy memo (2026-11-12) | — |
 | `texregen_unproven_adjudication.md` | Live art with no pipeline record, adjudicated (TEXREGEN_UNPROVEN_ASK_THE_SHEETS) | — |
 | `thirst_bottles_design_2026-10-16.md` | Thirst and bottles in FlowWorks, our own thirst (design, 2026-10-16) | — |
 | `thirst_fluids_design_2026-10-17.md` | Thirst and fluids: rulings, interactions and traffic (3x3 design, 2026-10-17) | — |
@@ -1196,8 +1216,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `v2_nine_rituals.md` | v2: the rituals of the Nine found in the Baroque Biomes | — |
 | `v3_health_daily_check_2026-10-29.md` | v3 health: the daily check (spec, 2026-10-29) | — |
 | `v3_keep_or_kill_evidence_2026-11-01.md` | Keep or kill v3: what we know, what we don't, and the date (2026-11-01) | — |
+| `validation_inventory_2026-11-12.md` | RimMandrake verification and validation: every scheme, 2026-11-12 | — |
+| `validation_map_and_rules.md` | Validation map and rules | — |
 | `vee_port_plan_2026-10-22.md` | VEE world layers: port plan (2026-10-22) | — |
 | `venomvine_design_2026-10-16.md` | Venomvine: the Leaning Scrub grows teeth (design, 2026-10-16) | — |
+| `warp_cloud_factory_study_2026-11-11.md` | Warp cloud factory study — 2026-11-11 | — |
 | `watcher_creatures_kit_design_2026-10-02.md` | Watcher creatures kit — design (WATCHER_CREATURES_MOD_1) | — |
 | `watcher_creatures_pitch.md` | Watcher creatures — the full pitch (WATCHER_CREATURES_MOD_1) | — |
 | `watchers_mod_pitch_2026-09-30.md` | Watchers: a cross-biome mod of shy creatures (pitch, 2026-09-30) | — |
@@ -1219,6 +1242,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `02a-gpt-blind-prompt.md` | Blind prompt sent to the second model (pass 2, step 1), 2026-11-07 | — |
 | `02a-gpt-blind.md` | Pass 2, step 1: the second model's blind answer | — |
 | `02m-remeasure.md` | Re-measure of the starred claims, and of the claims the critique disputed | — |
+| `03-merged.md` | Merged: Pocock's ideas, trials, and the loops | — |
+| `04-trial1-callers.md` | Trial 1: test the callers, not the kernels | — |
+| `05-gpt-review-trial1.md` | — | — |
+| `06-mined-live-bugs.md` | 06 — Live-found bugs, mined: where real bugs land, and which scenarios to write first | — |
+| `MERGE_DRAFT.md` | Merge draft for the Conductor: Pocock's ideas, trials, and the loops | — |
 | `status.md` | Run status: Pocock design pass (Deep-Design-3x2), 2026-11-07 | — |
 
 ### `design/RimMandrake/agent_visibility_2026-11-04/`
@@ -1250,6 +1278,268 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `build_spec.md` | BRIDGE_CONDITIONS: build spec (2026-11-06) | — |
 | `draft.md` | BRIDGE_CONDITIONS — composable wait / watch / sample primitives for live tests (draft, 2026-11-06) | — |
 | `gpt_enriched.md` | Bridge conditions — enriched design review | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/`
+
+| doc | title | status |
+|---|---|---|
+| `JUDGE.md` | — | — |
+| `brief_template.md` | — | — |
+| `fix_template.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/Abyss/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Abyss: owner answers (by question card, Tue 2026-11-10 ~08:34 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | — | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/AtmosphericBase/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | AtmosphericBase: owner answers (by question card, Tue 2026-11-10 ~08:47 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | — | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/BlueDesert/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | BlueDesert: owner answers (by question card, Tue 2026-11-10 ~08:52 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | BlueDesert | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/Cauldron/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Cauldron: owner answers (by question card, Tue 2026-11-10 ~08:57 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | Cauldron — proposed direction | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/Contagion/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Contagion: owner answers (by question card, Tue 2026-11-10 ~10:50 AM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | Contagion | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/CrackedLands/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | CrackedLands: owner answers (by question card, Tue 2026-11-10 ~09:12 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | CrackedLands | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/ExplosiveKnockback/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Explosive Knockback: owner answers (by question card, Tue 2026-11-10 ~09:01 PM PST) | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/FeverWood/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | FeverWood: owner answers (by question card, Tue 2026-11-10 ~09:19 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | FeverWood | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/GelatinousSlime/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | GelatinousSlime: owner answers (by question card, Tue 2026-11-10 ~10:30 AM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | GelatinousSlime | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/Greentide/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Greentide: owner answers (by question card, Tue 2026-11-10 ~09:26 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | — | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/LanternDeeps/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | LanternDeeps: owner answers (by question card, Tue 2026-11-10 ~09:30 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | LanternDeeps | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/LeaningScrub/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | LeaningScrub: owner answers (by question card, Tue 2026-11-10 10:12 AM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | LeaningScrub | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/LongShade/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | LongShade: owner answers (by question card, Tue 2026-11-10 ~10:20 AM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | — | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/Miasma/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Miasma: owner answers (by question card, Tue 2026-11-10 ~09:36 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | Miasma | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/NightsideIce/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | NightsideIce: owner answers (by question card, Tue 2026-11-10 ~09:40 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | NightsideIce / The Sleeping Ice | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/PropaneLakesShore/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Propane Lakes / the Chill shore: owner answers (by question card, Tue 2026-11-10 ~10:36 PM PST) | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/RustCathedral/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | RustCathedral: owner answers (by question card, Tue 2026-11-10 ~09:48 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | RustCathedral | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/Scarlands/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Scarlands: owner answers (by question card, Tue 2026-11-10 ~09:53 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | — | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/Stillsand/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Stillsand: owner answers (by question card, Tue 2026-11-10 ~10:03 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | Stillsand | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/TheChillFloor/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | The Chill sea floor: owner answers (by question card, Tue 2026-11-10 ~10:46 PM PST) | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/TheForge/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | TheForge: owner answers (by question card, Tue 2026-11-10 ~10:06 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | — | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/TheRot/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | TheRot: owner answers (by question card, Tue 2026-11-10 ~10:11 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | TheRot — proposed direction | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/TheScaldFloor/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | The Scald sea floor: owner answers (by question card, Tue 2026-11-10 ~10:55 PM PST) | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/TheSump/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | TheSump: owner answers (by question card, Tue 2026-11-10 ~10:40 AM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | — | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/Wasteland/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Wasteland: owner answers (by question card, Tue 2026-11-10 ~10:22 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | Wasteland | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/Webwork/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | Webwork: owner answers (by question card, Tue 2026-11-10 ~10:28 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | Webwork | — |
+| `designer_brief.md` | — | — |
+
+### `design/RimMandrake/designer_codex_2026-11-09/WeepingStones/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | WeepingStones: owner answers (by question card, Tue 2026-11-10 ~10:32 PM PST) | — |
+| `NOTES.md` | — | — |
+| `QUESTIONS.md` | — | — |
+| `QUESTIONS_OWNER.md` | — | — |
+| `designer_brief.md` | — | — |
 
 ### `design/RimMandrake/designer_v4/`
 
@@ -1333,6 +1623,21 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `prompt_C5b_northstar_rerun.md` | — | — |
 | `prompt_common.md` | — | — |
 
+### `design/RimMandrake/hugethings_codex_2026-11-09/`
+
+| doc | title | status |
+|---|---|---|
+| `ANSWERS_OWNER.md` | HugeThings: owner answers (by question card, Wed 2026-11-11 12:16 AM PST) | — |
+| `JUVENILE_PASSAGE_CLASSIFICATION.md` | Juvenile passage classification and spacing | — |
+| `NOTES.md` | — | — |
+| `OWNER_BUILD_PLAN.md` | Owner-directed HugeThings build plan — 2026-11-11 | — |
+| `QUESTIONS.md` | — | — |
+| `REEFBACK_CALF_DECISION.md` | Reefback calf: retain size and Miasma placement | — |
+| `REEFBACK_NURSERY_COMBAT.md` | Reefback nursery combat | — |
+| `REVIEW.md` | — | — |
+| `designer_brief.md` | — | — |
+| `review_brief.md` | — | — |
+
 ### `design/RimMandrake/lightspeed_2026-11-06/`
 
 | doc | title | status |
@@ -1345,6 +1650,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `gpt_answer.md` | — | — |
 | `prompt.md` | — | — |
+
+### `design/RimMandrake/mineral_matrix/round_two_2026-10-28/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | Mineral x Baroque Biome matrix: design pass, 2026-10-28 | — |
 
 ### `design/RimMandrake/mod_audit/`
 
@@ -1499,6 +1810,19 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `final.md` | TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: final (reframed after skeptical review) | — |
 | `gpt_review.md` | — | — |
 | `guard_audit.md` | TICKBURST guard audit: per-frame work under paused tick bursts | — |
+
+### `design/RimMandrake/validation_holding/`
+
+| doc | title | status |
+|---|---|---|
+| `owner_look_defects_2026-11-12.md` | Owner-look defects of 2026-11-12 (HELD, not yet ingested into any validation ladder) | — |
+| `owner_look_defects_2026-11-12_explosive_knockback.md` | Owner look defects, Explosive Knockback, 2026-11-12 | — |
+| `owner_look_defects_2026-11-13.md` | Owner-look defects of 2026-11-13 (HELD, not yet ingested into any validation ladder) | — |
+| `owner_look_defects_2026-11-13_dig_interface.md` | Owner look defects, FlowWorks dig interface, 2026-11-13 (HELD, not yet ingested into any validation ladder) | — |
+| `owner_look_defects_2026-11-13_evening.md` | Owner look defects, FlowWorks liquid look, 2026-11-13 evening (HELD, not yet ingested into any validation ladder) | — |
+| `owner_look_defects_2026-11-14.md` | Owner look defects, pit fixes sitting, 2026-11-14 (HELD, not yet ingested into any validation ladder) | — |
+| `owner_look_defects_2026-11-16_gimme_some_slack.md` | Owner look defects, Gimme Some Slack in-game visit 1, 2026-11-16 (HELD, not yet ingested into any validation ladder) | — |
+| `walk_defects_2026-11-14_graffiti.md` | Agent walk defects, Graffiti lived-in walk, 2026-11-14 (HELD, not yet ingested into any validation ladder) | — |
 
 ### `design/RimMandrake/vv_methods/`
 
@@ -3202,15 +3526,291 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `fall_line_arrival_mechanism_spec.md` | Fall Line arrival mechanism — design spec | — |
 | `vanilla_beast_excision_census.md` | Vanilla beast excision — census (VANILLA_BEAST_EXCISION_1, wave 1) | — |
 
+### `design/concepts/`
+
+| doc | title | status |
+|---|---|---|
+| `CLEANSE_PLAN_OWNER_2026-11-17.md` | The Designer Cleanse proposals are THE PLAN (owner, 2026-11-17, 9:04 PM PST) | — |
+
+### `design/concepts/Abyss/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Ambiguities settled by the Designer | — |
+| `definition.md` | The Abyss — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments to specify before building | — |
+| `next_version.md` | Next version, switched off | — |
+| `owner_marks.md` | Abyss: the owner's marks on the cleanse proposal (2026-11-17, about 8:40 PM PST) | — |
+| `owner_pages.md` | Page one — what the Abyss would ship | — |
+| `tickets.md` | Proposal tickets | — |
+
+### `design/concepts/BlueDesert/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Settled ambiguities and the arguments that changed the definition | — |
+| `definition.md` | Blue Desert — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments to specify now, build later | — |
+| `next_version.md` | Next version — switched off by default | — |
+| `owner_pages.md` | Page one — what Blue Desert becomes | — |
+| `tickets.md` | Proposed tickets — none executed on this pass | — |
+
+### `design/concepts/Cauldron/`
+
+| doc | title | status |
+|---|---|---|
+| `journal.md` | Cauldron: journal | — |
+| `log.md` | Cauldron dialogue record | — |
+| `plan.md` | Cauldron construction and proof plan | — |
+| `root.md` | Cauldron adopted root | — |
+| `sheet.md` | Cauldron | — |
+
+### `design/concepts/Cauldron/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Ambiguities settled by this Designer | — |
+| `definition.md` | The Cauldron — proposed Design Version 0.1.0 | — |
+| `models.md` | Cauldron instruments, in build order | — |
+| `next_version.md` | Next version, switched off | — |
+| `owner_pages.md` | Page one — what I propose the Cauldron becomes | — |
+| `tickets.md` | Cauldron proposal tickets | — |
+
+### `design/concepts/Cauldron/exam_control/`
+
+| doc | title | status |
+|---|---|---|
+| `sheet.md` | Cauldron | — |
+
+### `design/concepts/Cauldron/write_runs/rm-role-designercodex-1794846919/`
+
+| doc | title | status |
+|---|---|---|
+| `before.sheet.md` | Cauldron | — |
+
+### `design/concepts/Contagion/`
+
+| doc | title | status |
+|---|---|---|
+| `journal.md` | Contagion: journal | — |
+| `later_version.md` | Contagion: next Design Version (0.2.0) | — |
+| `log.md` | Contagion: Designer log (verbatim questions and answers) | — |
+| `plan.md` | Contagion, Design Version 0.1.0: plan | — |
+| `sheet.md` | Contagion: a red lid, a body that changes, and one dash when the sky clears | — |
+
+### `design/concepts/Contagion/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Settlements that change what gets built or what passes | — |
+| `definition.md` | Contagion — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built or measured | — |
+| `next_version.md` | Next version — disabled by default | — |
+| `owner_pages.md` | Page one — what the Contagion becomes | — |
+| `tickets.md` | Build tickets proposed for after review, adoption and hold release | — |
+
+### `design/concepts/Contagion/exam_control/`
+
+| doc | title | status |
+|---|---|---|
+| `sheet.md` | Contagion: a red lid, a body that changes, and one dash when the sky clears | — |
+
+### `design/concepts/CrackedLands/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Decisions that change what gets built or what passes | — |
+| `definition.md` | Cracked Lands — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built or measured | — |
+| `next_version.md` | Next version — default off | — |
+| `owner_pages.md` | Page one — what the Cracked Lands now are | — |
+| `tickets.md` | Implementation and instrument tickets — proposal only | — |
+
+### `design/concepts/ExplosiveKnockback/`
+
+| doc | title | status |
+|---|---|---|
+| `journal.md` | Explosive Knockback: journal | — |
+| `park_summary.md` | ExplosiveKnockback: locked (stage 5) | — |
+| `plan.md` | Explosive Knockback: plan (stage 3) | — |
+| `sheet.md` | Explosive Knockback: every blast in RimWorld now throws what it hits | — |
+
+### `design/concepts/ExplosiveKnockback/ledger/views/`
+
+| doc | title | status |
+|---|---|---|
+| `closed_0.1.0.md` | ExplosiveKnockback — closed in Design Version 0.1.0 (39) | — |
+| `history.md` | ExplosiveKnockback — mod ledger history (511 events, merged across shards) | — |
+| `state.md` | ExplosiveKnockback — mod ledger packet | — |
+
+### `design/concepts/ExplosiveKnockback/version/`
+
+| doc | title | status |
+|---|---|---|
+| `bars.md` | ExplosiveKnockback 0.1.0: the bars, locked as they stood on 2026-11-13 | — |
+| `gaps_sorted.md` | Explosive Knockback 0.1.0: open judge gaps, sorted | — |
+| `polish.md` | Explosive Knockback: Polish list | — |
+| `test_table.md` | Explosive Knockback 0.1.0: test-and-stage table | — |
+| `vision.md` | Explosive Knockback 0.1.0: the vision | — |
+
+### `design/concepts/ExplosiveKnockback/version/blind_challenge/`
+
+| doc | title | status |
+|---|---|---|
+| `FORMAT_NOTES.md` | Blind challenge (Stages 4 and 5): format notes from the first run | — |
+
+### `design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_1/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | Explosive Knockback 0.1.0 — blind challenge, cycle 1 (pilot) | — |
+
+### `design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_2/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | Explosive Knockback 0.1.0 — blind challenge, cycle 2 | — |
+
+### `design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_3/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | ExplosiveKnockback 0.1.0 — blind challenge cycle 3 (visit 1, cycle 1 of the visit) | — |
+
+### `design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_4/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | ExplosiveKnockback 0.1.0 — blind challenge cycle 4 | — |
+
+### `design/concepts/ExplosiveKnockback/version/blind_challenge/cycle_5/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | ExplosiveKnockback 0.1.0, blind challenge cycle 5 (judge-1794890427) | — |
+
+### `design/concepts/ExplosiveKnockback/version/criterion_repairs/sc_barrage_perf_2026-11-15/`
+
+| doc | title | status |
+|---|---|---|
+| `FINDINGS.md` | sc_barrage_perf criterion repair, step 1: the mod-off spikes land inside the event window | — |
+| `RECERTIFY.md` | Re-certify ExplosiveKnockback's tree with the barrage bar read as the p99 frame in the window | — |
+
+### `design/concepts/ExplosiveKnockback/version/in_game/visit_1/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | ExplosiveKnockback 0.1.0 — in-game acceptance, visit 1 | — |
+
+### `design/concepts/ExplosiveKnockback/version/in_game/visit_2/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | ExplosiveKnockback 0.1.0 — in-game acceptance, visit 2 | — |
+
+### `design/concepts/ExplosiveKnockback/version/in_game/visit_3/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | ExplosiveKnockback 0.1.0 — in-game acceptance, visit 3 | — |
+
+### `design/concepts/ExplosiveKnockback/version/in_game/visit_3/pilot_walk_raid_20261116/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | ExplosiveKnockback 0.1.0 — the walk's frame row on the smallest list (Test Pilot during visit 3; this folder was visit_4/ until 2026-11-16 ~12:23 PM PST, moved: only the Stage 6 driver opens a visit) | — |
+
+### `design/concepts/ExplosiveKnockback/version/rescue_2026-11-17/`
+
+| doc | title | status |
+|---|---|---|
+| `inventions_sheet.md` | Explosive Knockback 0.1.0: the rescue sheet (11:12 AM PST 2026-11-17) | — |
+| `tickets_sorted.md` | Explosive Knockback: the 51 open ledger items that name it, sorted (2026-11-17, the Fable Rescue) | — |
+
+### `design/concepts/FeverWood/`
+
+| doc | title | status |
+|---|---|---|
+| `journal.md` | FeverWood: journal | — |
+| `log.md` | FeverWood — stage 1 argument, rm-role-designercodex-1794804230 | — |
+| `plan.md` | FeverWood — stage 3 implementation and proof plan | — |
+| `sheet.md` | FeverWood | — |
+
+### `design/concepts/FeverWood/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Decisions that change scope, build or acceptance | — |
+| `definition.md` | Fever Wood — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built | — |
+| `next_version.md` | Deferred content and retirement recommendations | — |
+| `owner_pages.md` | Page one — what Fever Wood becomes | — |
+| `tickets.md` | Work tickets for later application | — |
+
+### `design/concepts/FeverWood/exam_control/`
+
+| doc | title | status |
+|---|---|---|
+| `sheet.md` | FeverWood | — |
+
 ### `design/concepts/FlowWorks/`
 
 | doc | title | status |
 |---|---|---|
+| `journal.md` | FlowWorks: journal | — |
 | `log.md` | FlowWorks Designer log | — |
 | `plan.md` | FlowWorks: plan (Designer stage 3, run rm-role-designer-1793863469, 2026-11-05) | — |
 | `sheet.md` | FlowWorks: deadly earthworks, and the liquids that fill them | — |
 | `turn_01.md` | FlowWorks, Designer turn 1 (stage 1: what is the mod) | — |
 | `turn_02.md` | FlowWorks, turn 2: the edges of your three raid scenes (run rm-role-designer-1793843896) | — |
+
+### `design/concepts/FlowWorks/ledger/views/`
+
+| doc | title | status |
+|---|---|---|
+| `closed_0.1.0.md` | FlowWorks — closed in Design Version 0.1.0 (219) | — |
+| `history.md` | FlowWorks — mod ledger history (1290 events, merged across shards) | — |
+| `state.md` | FlowWorks — mod ledger packet | — |
+
+### `design/concepts/FlowWorks/version/`
+
+| doc | title | status |
+|---|---|---|
+| `bars.md` | FlowWorks 0.1.0: the bars, locked as they stood on 2026-11-13 | — |
+| `gaps_sorted.md` | FlowWorks 0.1.0: open judge gaps, sorted | — |
+| `polish.md` | FlowWorks: Polish list | — |
+| `test_table.md` | FlowWorks 0.1.0: test-and-stage table | — |
+| `vision.md` | FlowWorks 0.1.0: the vision | — |
+
+### `design/concepts/FlowWorks/version/blind_challenge/cycle_1/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | FlowWorks 0.1.0 — blind offline challenge, cycle 1 | — |
+
+### `design/concepts/FlowWorks/version/blind_challenge/cycle_2/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | FlowWorks 0.1.0 — blind challenge, cycle 2 (run judge-1794833810) | — |
+
+### `design/concepts/FlowWorks/version/blind_challenge/cycle_3/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | FlowWorks 0.1.0 — blind challenge cycle 3 (visit 2, cycle 2 of it) | — |
+
+### `design/concepts/FlowWorks/version/in_game/visit_1/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | FlowWorks 0.1.0 — in-game acceptance, visit 1 | — |
+
+### `design/concepts/FlowWorks/version/in_game/visit_1/evidence/bigpit/`
+
+| doc | title | status |
+|---|---|---|
+| `BIG_PIT_KEY.md` | Big-pit key | — |
 
 ### `design/concepts/FlowWorks_Drawbridge/`
 
@@ -3220,11 +3820,43 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `sheet.md` | FlowWorks drawbridge: raised look, motion, and working it | — |
 | `sitting_01_brief.md` | Drawbridge: what a human must see before Relentless may call it done | — |
 
+### `design/concepts/GelatinousSlime/`
+
+| doc | title | status |
+|---|---|---|
+| `journal.md` | GelatinousSlime: journal | — |
+| `log.md` | GelatinousSlime — Designer dialogue log | — |
+| `plan.md` | GelatinousSlime implementation and proof plan | — |
+| `root.md` | GelatinousSlime adopted root | — |
+| `sheet.md` | GelatinousSlime | — |
+| `stage1_argument.md` | GelatinousSlime — stage 1 argument | — |
+| `stage2_argument.md` | GelatinousSlime — stage 2: argue the edge | — |
+| `stage2_flagship.md` | GelatinousSlime — stage 2 flagship disposition | — |
+
+### `design/concepts/GelatinousSlime/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Decisions that change scope, construction or passing | — |
+| `definition.md` | Gelatinous Slime — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments to specify before further build | — |
+| `next_version.md` | Next version — switched off | — |
+| `owner_pages.md` | Page one — the proposed Slime | — |
+| `tickets.md` | Proposed implementation and instrument tickets | — |
+
+### `design/concepts/GelatinousSlime/exam_control/`
+
+| doc | title | status |
+|---|---|---|
+| `sheet.md` | GelatinousSlime | — |
+
 ### `design/concepts/GimmeSomeSlack/`
 
 | doc | title | status |
 |---|---|---|
+| `journal.md` | Gimme Some Slack: journal | — |
 | `log.md` | GimmeSomeSlack: the Designer's log | — |
+| `park_summary.md` | RimMandrake/GimmeSomeSlack: locked (stage 5) | — |
 | `plan.md` | Gimme Some Slack: plan (stage 3) | — |
 | `sheet.md` | Gimme Some Slack: every conduit is a too-long extension cord | — |
 | `sitting_01_brief.md` | The Designer, sitting 1: GimmeSomeSlack | — |
@@ -3234,10 +3866,211 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `turn_04.md` | Gimme Some Slack, Designer turn 4 (stage 2: one question) | — |
 | `turn_05.md` | Gimme Some Slack, Designer turn 5 (stage 2: one question) | — |
 
+### `design/concepts/GimmeSomeSlack/ledger/views/`
+
+| doc | title | status |
+|---|---|---|
+| `closed_0.1.0.md` | GimmeSomeSlack — closed in Design Version 0.1.0 (39) | — |
+| `history.md` | GimmeSomeSlack — mod ledger history (554 events, merged across shards) | — |
+| `state.md` | GimmeSomeSlack — mod ledger packet | — |
+
+### `design/concepts/GimmeSomeSlack/version/`
+
+| doc | title | status |
+|---|---|---|
+| `bars.md` | GimmeSomeSlack 0.1.0: the bars, locked as they stood on 2026-11-13 | — |
+| `gaps_sorted.md` | Gimme Some Slack 0.1.0: open judge gaps, sorted | — |
+| `polish.md` | Gimme Some Slack: Polish list | — |
+| `test_table.md` | Gimme Some Slack 0.1.0: test-and-stage table | — |
+| `vision.md` | Gimme Some Slack 0.1.0: the vision | — |
+
+### `design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_1/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | Gimme Some Slack 0.1.0 — blind challenge (Stages 4 and 5), cycle 1 | — |
+
+### `design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_2/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | GimmeSomeSlack 0.1.0 — blind challenge, cycle 2 (visit 2) | — |
+
+### `design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_3/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | GimmeSomeSlack 0.1.0 — blind challenge, cycle 3 | — |
+
+### `design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_4/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | GimmeSomeSlack 0.1.0 — blind challenge cycle 4 | — |
+
+### `design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_5/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | GimmeSomeSlack 0.1.0, blind challenge cycle 5 | — |
+
+### `design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | GimmeSomeSlack 0.1.0 — blind challenge cycle 6 (judge-1794822790) | — |
+
+### `design/concepts/GimmeSomeSlack/version/blind_challenge/cycle_6_judge-1794822890/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | GimmeSomeSlack 0.1.0 — blind challenge cycle 6 (judge-1794822890) | — |
+
+### `design/concepts/GimmeSomeSlack/version/in_game/visit_1/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | GimmeSomeSlack 0.1.0 — in-game acceptance, visit 1 | — |
+
+### `design/concepts/Graffiti/`
+
+| doc | title | status |
+|---|---|---|
+| `journal.md` | Graffiti: journal | — |
+| `log.md` | Graffiti concept log (verbatim questions and answers) | — |
+| `park_summary.md` | Graffiti: locked (stage 5) | — |
+| `plan.md` | Graffiti: plan (Designer, stage 3) | — |
+| `sheet.md` | Graffiti: a colony's walls become a record of its people | — |
+
+### `design/concepts/Graffiti/exam_control/`
+
+| doc | title | status |
+|---|---|---|
+| `sheet.md` | Graffiti: a colony's walls become a record of its people | — |
+
+### `design/concepts/Graffiti/version/`
+
+| doc | title | status |
+|---|---|---|
+| `bars.md` | Graffiti 0.1.0: the bars, locked as they stood on 2026-11-15 | — |
+| `gaps_sorted.md` | Graffiti 0.1.0: open judge gaps, sorted | — |
+| `polish.md` | Graffiti: Polish list | — |
+| `test_table.md` | Graffiti 0.1.0 test table (read view of test_table.json) | — |
+| `vision.md` | Graffiti 0.1.0: the vision | — |
+
+### `design/concepts/Graffiti/version/blind_challenge/cycle_1/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | Graffiti 0.1.0 — blind challenge, cycle 1 | — |
+
+### `design/concepts/Graffiti/version/blind_challenge/cycle_2/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | Graffiti 0.1.0 — blind challenge, cycle 2 (visit 2) | — |
+
+### `design/concepts/Greentide/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Calls that change scope, construction or acceptance | — |
+| `definition.md` | Greentide — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built | — |
+| `next_version.md` | Next version, switched off | — |
+| `owner_pages.md` | Page one — what Greentide would be | — |
+| `tickets.md` | Implementation and instrument tickets | — |
+
+### `design/concepts/LanternDeeps/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Decisions that change scope, construction or passing | — |
+| `definition.md` | Lantern Deeps — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built or measured | — |
+| `next_version.md` | Next version — switched off | — |
+| `owner_pages.md` | Page one — what Lantern Deeps becomes | — |
+| `tickets.md` | Lantern Deeps proposal tickets | — |
+
+### `design/concepts/LeaningScrub/`
+
+| doc | title | status |
+|---|---|---|
+| `build_items_03.md` | Leaning Scrub: filed Stage 3 proof/product work | — |
+| `edge_argument_02.md` | Leaning Scrub — internal stage 2 edge audit | — |
+| `journal.md` | LeaningScrub: journal | — |
+| `later_version.md` | Leaning Scrub: next Design Version | — |
+| `log.md` | LeaningScrub dialogue record | — |
+| `north_star_before_03.md` | — | — |
+| `owner_answer_04.md` | Leaning Scrub: owner answer received | — |
+| `park_summary.md` | LeaningScrub: locked (stage 5) | — |
+| `pipeline_park_repair_02.md` | Park-page coverage routing repair | — |
+| `pipeline_repair_02.md` | Designer delegation intake repair — Stage 2 | — |
+| `plan.md` | Leaning Scrub — implementation and proof plan | — |
+| `review_02.md` | Stage 2 independent review | — |
+| `review_root_validation_02.md` | Independent review of the root-validation question | — |
+| `sheet.md` | Leaning Scrub | — |
+| `turn_01.md` | Leaning Scrub — stage 1 | — |
+| `turn_02.md` | Leaning Scrub — stage 2 | — |
+| `turn_03.md` | Leaning Scrub: validate the acceptance bar | — |
+
+### `design/concepts/LeaningScrub/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Decisions that changed scope, implementation or passing | — |
+| `definition.md` | Leaning Scrub — proposed Design Version 0.1.0 | — |
+| `models.md` | Proposed instruments, not measurements | — |
+| `next_version.md` | Next version, switched off | — |
+| `owner_pages.md` | Page one — what the mod becomes | — |
+| `tickets.md` | Proposed work tickets | — |
+
+### `design/concepts/LeaningScrub/exam_control/`
+
+| doc | title | status |
+|---|---|---|
+| `sheet.md` | Leaning Scrub | — |
+
+### `design/concepts/LeaningScrub/exam_runs/rm-role-designercodex-1794843033/prior_control_historical/`
+
+| doc | title | status |
+|---|---|---|
+| `sheet.md` | Leaning Scrub | — |
+
+### `design/concepts/LeaningScrub/version/`
+
+| doc | title | status |
+|---|---|---|
+| `bars.md` | LeaningScrub 0.1.0: the bars, locked as they stood on 2026-11-16 | — |
+| `test_table.md` | LeaningScrub 0.1.0 test table (read view of test_table.json) | — |
+
+### `design/concepts/LongShade/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Settled ambiguities — Designer decisions | — |
+| `definition.md` | LongShade — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built | — |
+| `next_version.md` | Deferred and recommended retirements | — |
+| `owner_pages.md` | Page one — what LongShade would become | — |
+| `tickets.md` | Proposal tickets — not filed or executed | — |
+
+### `design/concepts/Miasma/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Ambiguities resolved by the Designer | — |
+| `definition.md` | Miasma cleansing proposal | — |
+| `models.md` | Proposed instruments | — |
+| `next_version.md` | Next version and retirement recommendations | — |
+| `owner_pages.md` | Page one — the proposed first version | — |
+| `tickets.md` | Proposed builder tickets | — |
+
 ### `design/concepts/Pyrelands/`
 
 | doc | title | status |
 |---|---|---|
+| `journal.md` | Pyrelands: journal | — |
 | `log.md` | Pyrelands, Designer log | — |
 | `plan.md` | Pyrelands: plan (stage 3) | — |
 | `sheet.md` | Pyrelands: a grass savanna that has burned for millennia and is burning still | — |
@@ -3247,6 +4080,47 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `turn_04.md` | Pyrelands, Designer turn 4 (stage 2: argue the edge) | — |
 | `turn_05.md` | Pyrelands, Designer turn 5 (stage 2: argue the edge) | — |
 | `turn_06.md` | Pyrelands, Designer turn 6 (stage 2: argue the edge) | — |
+
+### `design/concepts/Pyrelands/exam_control/`
+
+| doc | title | status |
+|---|---|---|
+| `sheet.md` | Pyrelands: a grass savanna that has burned for millennia and is burning still | — |
+
+### `design/concepts/Pyrelands/version/`
+
+| doc | title | status |
+|---|---|---|
+| `bars.md` | Pyrelands 0.1.0: the bars, locked as they stood on 2026-11-13 | — |
+| `gaps_sorted.md` | Pyrelands 0.1.0: open judge gaps, sorted | — |
+| `polish.md` | Pyrelands: Polish list | — |
+| `test_table.md` | Pyrelands 0.1.0: test-and-stage table | — |
+| `vision.md` | Pyrelands 0.1.0: the vision | — |
+
+### `design/concepts/Pyrelands/version/blind_challenge/cycle_1/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | Pyrelands 0.1.0 — blind offline challenge (Stages 4 and 5), cycle 1 | — |
+
+### `design/concepts/Pyrelands/version/blind_challenge/cycle_2/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | Pyrelands 0.1.0 — blind challenge, cycle 2 (visit 1) | — |
+
+### `design/concepts/Pyrelands/version/blind_challenge/cycle_3/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | Pyrelands 0.1.0 — blind challenge, cycle 3 (visit 2) | — |
+
+### `design/concepts/Pyrelands/version/in_game/visit_1/`
+
+| doc | title | status |
+|---|---|---|
+| `SUMMARY.md` | Pyrelands 0.1.0: in-game acceptance, visit 1 (Archmagi, 2026-11-15 02:55 to 05:25 PST) | — |
+| `findings.md` | Pyrelands 0.1.0, visit 1: findings filed from the sitting (2026-11-15, Archmagi) | — |
 
 ### `design/concepts/PyrelandsMechanics/`
 
@@ -3260,6 +4134,156 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `turn_03.md` | PyrelandsMechanics, Designer turn 3 (stage 2: the edge of the fruit defence) | — |
 | `turn_04.md` | PyrelandsMechanics, Designer turn 4 (stage 2: argue the edge) | — |
 
+### `design/concepts/PyrelandsMechanics/version/`
+
+| doc | title | status |
+|---|---|---|
+| `bars.md` | Pyrelands Mechanics (the Deep Desert Tribes) 0.1.0: the bars, pinned as they stood on 2026-11-13 | — |
+| `gaps_sorted.md` | Pyrelands Mechanics (the Deep Desert Tribes) 0.1.0: open judge gaps, sorted | — |
+| `polish.md` | Pyrelands Mechanics: Polish list | — |
+| `vision.md` | Pyrelands Mechanics (the Deep Desert Tribes) 0.1.0: the vision | — |
+
+### `design/concepts/RustCathedral/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Settled ambiguities — Designer decisions, not owner words | — |
+| `definition.md` | RustCathedral — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified now, not built or run on this pass | — |
+| `next_version.md` | Next version — switched off | — |
+| `owner_pages.md` | Page one — what I propose | — |
+| `tickets.md` | Proposed work tickets | — |
+
+### `design/concepts/SleepingIce/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Ambiguities settled by this Designer | — |
+| `definition.md` | The Sleeping Ice — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built or measured on this pass | — |
+| `next_version.md` | Next version — default off, admissions preserved | — |
+| `owner_pages.md` | Page one — what I propose | — |
+| `tickets.md` | Proposal tickets — no implementation authorized by this file alone | — |
+
+### `design/concepts/Stillsand/`
+
+| doc | title | status |
+|---|---|---|
+| `journal.md` | Stillsand: journal | — |
+| `log.md` | Stillsand dialogue | — |
+| `plan.md` | Stillsand implementation and proof plan | — |
+| `root.md` | Stillsand adopted root | — |
+| `sheet.md` | Stillsand | — |
+| `stage2_edges.md` | Stillsand stage 2 | — |
+| `stage2_reconciliation.md` | Stillsand stage-2 return reconciliation | — |
+| `stage3_scope_return.md` | Stillsand stage 3: scope return before freezing the package | — |
+
+### `design/concepts/Stillsand/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Ambiguities settled by this Designer | — |
+| `definition.md` | Stillsand — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments to build when the named risk is encountered | — |
+| `next_version.md` | Deferred features and recommended retirements | — |
+| `owner_pages.md` | Stillsand — page one: what I propose | — |
+| `tickets.md` | Build tickets proposed by the Designer | — |
+
+### `design/concepts/Stillsand/exam_control/`
+
+| doc | title | status |
+|---|---|---|
+| `sheet.md` | Stillsand | — |
+
+### `design/concepts/TerminalBiomes/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Material ambiguities settled by the Designer | — |
+| `definition.md` | Terminal Biomes — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments to specify before further building | — |
+| `next_version.md` | Next version, switched off | — |
+| `owner_pages.md` | Page one — what the mod now is | — |
+| `tickets.md` | Proposed work tickets | — |
+
+### `design/concepts/TheForge/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Decisions that change scope, construction or passing | — |
+| `definition.md` | The Forge — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built | — |
+| `next_version.md` | Next version: switched off | — |
+| `owner_pages.md` | Page one — what I propose | — |
+| `tickets.md` | Proposed work; nothing implemented on this pass | — |
+
+### `design/concepts/TheRot/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Decisions that change scope or acceptance | — |
+| `definition.md` | The Rot proposed comprehensive definition | — |
+| `models.md` | Proposed instruments, in build order | — |
+| `next_version.md` | Next version and recommended retirements | — |
+| `owner_marks.md` | TheRot: the owner's marks on the cleanse proposal (2026-11-17, 9:02 PM PST) | — |
+| `owner_pages.md` | Page one — The Rot proposed first version | — |
+| `tickets.md` | Build and containment tickets | — |
+
+### `design/concepts/TheSump/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Ambiguities settled by the Designer | — |
+| `definition.md` | The Sump — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built | — |
+| `next_version.md` | Next version, switched off | — |
+| `owner_pages.md` | Page one — what the Sump becomes | — |
+| `tickets.md` | Proposal tickets | — |
+
+### `design/concepts/Warscar/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Settled ambiguities and the attack on this definition | — |
+| `definition.md` | Warscar — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built | — |
+| `next_version.md` | Next version — switched off | — |
+| `owner_pages.md` | What the Warscar now is | — |
+| `tickets.md` | Warscar proposal tickets | — |
+
+### `design/concepts/Wastes/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Consequential ambiguities and delegated settlements | — |
+| `definition.md` | The Wastes — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments specified, not built or measured | — |
+| `next_version.md` | Next version, default off | — |
+| `owner_pages.md` | Page one — what the Wastes becomes | — |
+| `tickets.md` | Implementation and instrument tickets — proposal only | — |
+
+### `design/concepts/Webwork/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Designer settlements — not additions to his words | — |
+| `definition.md` | Webwork — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments to specify before building | — |
+| `next_version.md` | Next version, switched off | — |
+| `owner_pages.md` | Page one — what Webwork now is | — |
+| `tickets.md` | Proposal tickets — no source changes on this pass | — |
+
+### `design/concepts/WeepingStones/cleanse/`
+
+| doc | title | status |
+|---|---|---|
+| `ambiguities.md` | Decisions and adversarial reading | — |
+| `definition.md` | Weeping Stones — proposed Design Version 0.1.0 | — |
+| `models.md` | Instruments to specify before building | — |
+| `next_version.md` | Next version — switched off | — |
+| `owner_pages.md` | Page one — the proposed mod | — |
+| `tickets.md` | Build handoff — proposal only | — |
+
 ### `design/concepts/_dry_walk/UtilityCreatures/`
 
 | doc | title | status |
@@ -3267,6 +4291,83 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `log.md` | — | — |
 | `plan.md` | — | — |
 | `sheet.md` | Utility Creatures (rehearsal, item UTILITY_CREATURES_DESIGN_DIG_THIS_PIT_BOY) | — |
+
+### `design/plans/`
+
+| doc | title | status |
+|---|---|---|
+| `2026-11-12-flowworks-water-solver-bakeoff.md` | FlowWorks water solver bakeoff: plan (2026-11-12) | — |
+| `2026-11-14-maturation-pipeline-build.md` | Building the Maturation Pipeline while its design still moves | — |
+| `2026-11-15-holder-pipeline-fusion-build.md` | Holder–pipeline fusion: build plan | — |
+
+### `design/specs/`
+
+| doc | title | status |
+|---|---|---|
+| `2026-11-12-designer-light-path-when-code-exists.md` | The Designer's light path when code exists (spec, nothing built) | — |
+| `2026-11-12-flowworks-natural-water-as-pits-feasibility.md` | FlowWorks: can natural water become real pits? Feasibility study | — |
+| `2026-11-12-flowworks-rivers-design.md` | FlowWorks rivers: final design report (2026-11-12) | — |
+| `2026-11-12-refusal-contract-for-judges-and-gates.md` | Refusal contract for judges and gates (spec, nothing built) | — |
+| `2026-11-12-ticket-preflight-before-any-token.md` | Ticket preflight: check everything Python can, before any token is spent (spec, nothing built) | — |
+| `2026-11-13-flowworks-dig-interface-census.md` | FlowWorks dig interface: census of every player-facing control (2026-11-13) | — |
+| `2026-11-13-maturation-pipeline.md` | The Maturation Pipeline | — |
+| `2026-11-13-mod-design-versions.md` | Mod Design Versions: a target that holds still long enough to pass | — |
+| `2026-11-15-cheap-guards-at-every-door.md` | Cheap guards at every door (spec, 2026-11-15; nothing here is built) | — |
+| `2026-11-15-conductor-restart-loses-nothing.gpt.md` | GPT adversarial read, verbatim | — |
+| `2026-11-15-conductor-restart-loses-nothing.md` | Conductor restarts lose nothing — measurement and design | — |
+| `2026-11-15-holder-pipeline-fusion.gpt.md` | — | — |
+| `2026-11-15-holder-pipeline-fusion.md` | Holder–pipeline fusion: the pipeline as a long-term holder's checklist | — |
+| `2026-11-15-maturation-autonomy-section.md` | Maturation Pipeline: no step waits on the Conductor's hand (section to fold into maturation_pipeline.md) | — |
+| `2026-11-15-mod-ledger-entry-standard.md` | The mod ledger's entry standard: what goes in, how small, how it is searched | — |
+| `2026-11-16-designer-cleanse-and-bar-definition.md` | Designer Cleanse and the definition of a bar (2026-11-16, v2 after GPT's review) | — |
+| `2026-11-17-evidence-quality-three-changes.md` | Three changes to how the pipeline records evidence | — |
+| `2026-11-17-landing-checks-in-builder-gate.md` | Landing checks in the builder’s gate | — |
+| `2026-11-17-offline-testing-with-real-game-code-gpt-brainstorm.md` | Offline testing on real RimWorld code: a GPT design brainstorm (2026-11-17) | — |
+| `2026-11-17-record-pin-commit.md` | Recording the pin commit | — |
+| `2026-11-17-route-red-supporting-test.md` | Routing a red supporting test | — |
+| `geyser_in_pit_hot_tub_2026-11-12.md` | A geyser in a pit: it sinks, it bubbles, it is a hot tub | — |
+| `water_solver_decision_2026-11-12.md` | FlowWorks natural water: which solver, and the water clock (2026-11-12) | — |
+
+### `design/specs/2026-11-15-holder-pipeline-fusion/`
+
+| doc | title | status |
+|---|---|---|
+| `00-measure.md` | 00 Measure: Gimme Some Slack (GSS) as the worked example of pipeline state sprawl | — |
+| `01-design.md` | Holder–pipeline fusion: the pipeline as a long-term holder's checklist | — |
+| `02a-gpt-blind.md` | — | — |
+| `02a-prompt.md` | — | — |
+| `02c-context-evidence.md` | 02c context evidence: fixes landing late in context (Relentless era) | — |
+| `02m-remeasure.md` | Re-measure of the starred claims (2026-11-15 ~9:15 PM PST, this run, a different method from `00-measure.md`) | — |
+| `02r-outside-practice.md` | Outside practice: sources used | — |
+| `status.md` | status (step | state | model | cost | note) | — |
+
+### `design/specs/2026-11-17-judge-flaws-not-polish/`
+
+| doc | title | status |
+|---|---|---|
+| `1_discussion_owner_words.md` | The discussion that triggered this review (2026-11-17, about 3:55 to 4:05 PM PST) | — |
+| `2_conductor_suggestions.md` | The Conductor's position and suggestions (given to the owner before this review) | — |
+| `3_gpt_own_review_blind.md` | — | — |
+| `4_gpt_crosscompare_rulings_and_edits.md` | PART A. Cross-comparison | — |
+| `5_fable_independent_review.md` | 5. Fable independent review of the judge "flaws not polish" proposal | — |
+| `6_proposed_ruling_plain.md` | Proposed ruling: the judge refuses flaws, not polish | — |
+| `7_same_problem_rule.md` | When is a second-look finding the same problem as a first-look one? | — |
+| `7b_codex_critique_same_problem_rule.md` | — | — |
+| `7c_codex_build_review.md` | — | — |
+| `7d_codex_counts_review.md` | — | — |
+| `7e_codex_calibration_review.md` | — | — |
+
+### `design/specs/2026-11-18-pipeline-control-surface/`
+
+| doc | title | status |
+|---|---|---|
+| `00-problem.md` | Problem: commanding an agentic build pipeline simply, cheaply and safely | — |
+| `01-design.md` | 01 - Pipeline control surface: design pass 1 (Opus) | — |
+| `02-gpt.md` | GPT critique (pass 2) | — |
+| `02a-gpt-blind.md` | GPT blind answer: pipeline control surface | — |
+| `02m-remeasure.md` | 02m - Re-measure of the starred claims in 01-design.md section 6 | — |
+| `03-merged.md` | Pipeline control surface: merged design (Deep-Design-3x2, 2026-11-18) | — |
+| `status.md` | Run status (Deep-Design-3x2, pipeline control surface, 2026-11-18) | — |
 
 ### `design/validation_walks/`
 

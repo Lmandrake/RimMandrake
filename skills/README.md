@@ -38,8 +38,7 @@ incident stories, dates and repeated copies (owner, 2026-11-07: *"move evidence 
 the lessons themselves in the active files. Provenance is for git."*). One convention everywhere:
 
 - Evidence that still matters goes to `references/history.md` beside the skill. For a project-level fact file it goes to
-  `infrastructure/state/facts/history/<topic>.md`. A skill whose repo keeps a record folder (`artisan/`, `relentless/` in
-  MandrakeWorkflows) uses that instead.
+  `infrastructure/state/facts/history/<topic>.md`. A skill whose repo keeps its own record folder uses that instead.
 - The active file points at it once. Everything else is in git.
 - **Every learned fact stays in an active file.** "Nothing learned is dropped for space" still holds. Before removing a *claim*
   as redundant, prove it implied or duplicated, by the two-blind-arms method in `efficient-subagents` if doubtful.
@@ -67,12 +66,10 @@ and push there — a queue item here never reaches it.
 | `live-debugging-proof-harness` | Write, run and read a LIVE proof of a RimWorld mod through the bridge — proof_all.py, proof_hose.py, a northstar/ runner… |
 | `northstar-validation` | Run a mod's north-star suites live without the harness eating the sitting — the bland world (generated per game, or the saved… |
 | `reading-rimworld-graphics` | Finding and reading RimWorld texture assets from disk — loose PNGs, Unity AssetBundles, and the base game's resources.assets — so… |
-| `relentless` | Operate, read, stop, debug or work inside the Relentless Pipeline (src/RimMandrake/rimflow/relentless.py, rm-relentless.timer… |
 | `rimbridge` | Drive a live RimWorld from outside via the RimBridgeServer GABP bridge and its JawaBench companion - author the planet, author… |
 | `rimbridge-companion` | Write, build, deploy and prove new [Tool] methods in the JawaBench companion DLL so the RimBridge bridge can do something it… |
 | `rimflow-operations` | Operate the multi-account Claude quota system - check each account's level (weekly vs 5-hour cap, percent left, reset time… |
 | `rimworld-art-evaluation` | Automated evaluation of RimMandrake game art — creatures (walkers, swimmers, flyers, catch items), plants, and machines with… |
-| `rimworld-artisan` | The RimMandrake facts on top of the general artisan, artisan-head and artisan-judge skills, for Artisan loops on a RimWorld mod |
 | `rimworld-canon-references` | Grade Star Wars creature, species and droid work against design/RimStarWars/canon_references/ — 137 entries whose sourced canon… |
 | `rimworld-content-moderation` | Deciding what content stays in a RimWorld campaign out of a large mod stack — building contact sheets of real sprites straight… |
 | `rimworld-crew-and-nemesis-events` | Design and build RimWorld 1.6 events about PEOPLE for a small fixed crew — who may join (a stranger, a castaway, a relative, a… |

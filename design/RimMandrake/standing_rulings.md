@@ -635,6 +635,18 @@ PST, after reading the Contagion coverage judge's 25 refusals; "pendantic" is hi
 
 Item: `RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS`.
 
+## Aim at a playable version, and build on what already exists — owner, 2026-11-08
+
+He said it of the retired Artisan loop, after a live sitting closed in hours what the loop had ground at for two days:
+*"We've got to get out of the "endless checklists grinding against the last 20% closure" experience."* · *"we're
+trying to get a Playable v1 right now, not determine the "ultimate perfect mod" right now."* · *"It also seems like
+we're biased towards building our own solutions rather than building off of existing game infrastructure (e.g. sand),
+open source projects, etc. We should more aggressively leverage existing work that's already proven whenever
+possible."* Work one issue at a time to a look, against the version's promise, not against frozen thresholds; before
+building a mechanism, look for a vanilla, DLC or proven open-source one to stand on. The judge rule below is the
+pipeline's form of the first half. (Source: the Conductor's seed for `RIMMASTER_REDESIGN_ARTISAN_JUDGMENT_NOT_CHECKLIST_GRIND`,
+`git show f2ce40bac8:design/RimMandrake/artisan_judgment_seed_2026-11-08.md`.)
+
 ## The judge refuses flaws, not polish — owner, by card 2026-11-17
 
 *"We need judges that turn away incomplete work, but not work that isn't tuned just-so or, worse, forever needing more

@@ -47,6 +47,16 @@ something, delete it and add a "Removed" row.
 | the repo copies of the status page's units | `src/RimMandrake/Utils/systemd/rm-whittle-now.{service,timer}` | Whittle | masked on Archmagi since 2026-11-13; the mask stays | `f2ce40bac8` |
 | the Whittle Codex-runner note | `src/RimMandrake/rimflow/roles/whittle.md` | Whittle | described a retired runner; `runner_options.md` keeps the live-driver findings | `f2ce40bac8` |
 | the mod list saved before the Whittle trial | `infrastructure/state/modlists/ModsConfig.BEFORE_WHITTLE_TRIAL_20261110.xml` | Whittle | a mod-list backup; the owner's mod list is never restored (owner 2026-10-24) | `f2ce40bac8` |
+| the Artisan (Ralph) loop kit: PROMPT, RATCHET, LOOK, QUESTIONS, PROGRESS, loop.sh, game_gate.py, tally.py, handoff notes | `ralph/` | Artisan | loops retired 2026-11-13; nothing current reads it | `108d42482` |
+| the Artisan status page, its selftest and its unit copies | `src/RimMandrake/Utils/artisan_now.py`, `selftest_artisan_now.py`, `src/RimMandrake/Utils/systemd/rm-artisan-now.{service,timer}` | Artisan | its timer is masked on Archmagi (the mask stays) | `108d42482` |
+| the Artisan Codex-runner note | `src/RimMandrake/rimflow/roles/artisan.md` | Artisan | described a retired runner | `108d42482` |
+| the RimWorld layer of the Artisan skills, and its `.claude/skills` link | `skills/rimworld-artisan/`, `.claude/skills/rimworld-artisan` | Artisan | operated retired loops (rm-ralph units, ARTISAN_NOW) | `108d42482` |
+| the Relentless skill (SKILL.md and a 309-line traps file), and its `.claude/skills` link | `skills/relentless/`, `.claude/skills/relentless` | Relentless | operated the retired tick; five traps still true today were filed as lessons first (2026-11-18, BENCH) | `108d42482` |
+| two by-hand Relentless readers | `src/RimMandrake/rimflow/relentless_head_age.py`, `relentless_tickp95.py` | Relentless | nothing but the deleted skill and `entrypoint_inventory.py` named them; now in its RETIRED list | `108d42482` |
+| the Archmagi Artisan-only capacity design | `design/RimMandrake/archmagi_artisan_only_2026-11-07.md` | Artisan | a plan for a retired loop; its machine numbers were dated estimates | `108d42482` |
+| the Artisan judgment seed (owner's ask of 2026-11-08) | `design/RimMandrake/artisan_judgment_seed_2026-11-08.md` | Artisan | his still-binding words moved to `standing_rulings.md` §Aim at a playable version | `108d42482` |
+| the Ralph loop design | `design/RimMandrake/ralph_loop_design_2026-10-29.md` | Artisan | design of a retired loop; `run_selftests.py --quick` no longer cites it | `108d42482` |
+| two Lodestar tickets for retired machinery | `tickets/RIMMASTER_AUTOTUNE_ARTISAN_LOOPS_WHEN_TOKENS_RESET_WEDNESDAY.md`, `tickets/RIMMASTER_RUN_V3_AUTOTUNER_AS_SELF_TUNING_TESTBED.md` | Artisan, rimflow v3 | the first was open for a retired loop, the second already dropped | `108d42482` |
 
 ## Phase 2: renames
 

@@ -84,7 +84,7 @@ COL_LONG = {"intake": "ideas waiting", "1": "vision, bars, lock", "2": "spec che
             "passed": "the mod rests"}
 DESIGNER_STEPS = {0: "Read", 1: "Argue the idea", 2: "Argue the edge", 3: "Write", 4: "Exam", 5: "Lock"}  # fallback only
 
-# Palette: running_now.py / artisan_now.py, so the NOW pages read as one family.
+# Palette: running_now.py, so the NOW pages read as one family.
 BG, CARD, EDGE, TEXT, DIM, FAINT = "#14171c", "#1f242c", "#3a4250", "#e8eaee", "#a2abb8", "#5d6675"
 ALERT, INK = "#ff8a7a", "#0b0f14"
 DONE = "#2f5f4c"

@@ -21,7 +21,7 @@ TIERS. `--tier default` (the default) runs every unit test; tests tagged
 Data) and print SKIPPED there. Run `--tier deployed` after a deploy, a game update, or a
 mod subscribe/unsubscribe — that is when their answer can change. `--tier all` runs both.
 
-QUICK. `--quick` (the ralph_a loop's pre-pass check, ralph_loop_design_2026-10-29.md §1.2) is the default-tier
+QUICK. `--quick` (a fast pre-commit check; it began as a retired loop's pre-pass check) is the default-tier
 run minus the slow tests that are SAFE to skip: a test is skipped only when ALL of (i) its last run (the quick-state
 file beside the timings, written by every run) was PASS, (ii) the hash of its source and dependencies (the test file,
 every file in its directory, and the repo .py files it imports or names, transitively) is the hash recorded at that
