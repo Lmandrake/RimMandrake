@@ -1,7 +1,7 @@
 # The Designer: core (injected into every run)
 
-On demand. Registered in `dispatcher_schedule.json` → `roles[name=Designer]` with `enabled: false` and no slots, so a
-concept starts only by `python3 src/RimMandrake/rimflow/role_launch.py run-now --role Designer --by <who> --why <why>
+On demand. Registered in `dispatcher_schedule.json` → `roles[name=Designer]` with no slots; whether the row is on is its
+`enabled` field, never this file. A concept starts only by `python3 src/RimMandrake/rimflow/role_launch.py run-now --role Designer --by <who> --why <why>
 --concept design/concepts/<Mod> --apply`. Each run works one stage; an accepted run that leaves the concept `ready` chains
 the next stage itself (`chain_stages`, `role_launch.chain_next`), while `waiting_owner`, `blocked` and `locked` wait for a
 new press. The launcher (`src/RimMandrake/rimflow/designer_stage.py`) reads the concept's

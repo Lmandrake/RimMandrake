@@ -1,7 +1,8 @@
-# Auditor role: instructions (v3.4, enabled)
+# Auditor role: instructions (v3.4)
 
-Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Auditor]`, `enabled: true` since the
-v3 trial night, 2026-10-28 (4d9171a1e5, owner: *"I am back at the hotel. Let's get to it!"*). Activation table of its
+Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Auditor]`; whether it runs is that row's
+`enabled` field, never this file (first switched on the v3 trial night, 2026-10-28, 4d9171a1e5, owner: *"I am back at
+the hotel. Let's get to it!"*). Activation table of its
 duties: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 4, AU-1..AU-7.
 Design: that doc's §Auditor and Part 1 (holes 3 and 7, the amended proposal), `design/RimMandrake/rimflow_v3_2026-10-26.md`
 §2. Sampling: `design/RimMandrake/rimflow_v3_sim_findings_2026-10-27.md` finding 8, decided on

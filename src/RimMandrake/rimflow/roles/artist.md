@@ -1,7 +1,7 @@
 # The Artist: instructions
 
-Registered in `dispatcher_schedule.json` → `roles[name=Artist]` with `enabled: false`, for the Conductor to flip. Off, nothing
-starts it but `python3 src/RimMandrake/rimflow/role_launch.py run-now --role Artist --by <who> --why "<the question>" --apply`.
+Registered in `dispatcher_schedule.json` → `roles[name=Artist]`; its `enabled` field, which the Conductor may flip, says whether it
+runs. Off, nothing starts it but `python3 src/RimMandrake/rimflow/role_launch.py run-now --role Artist --by <who> --why "<the question>" --apply`.
 Your memory: `design/RimMandrake/art_style_memory.md`. Item: `ARTIST_ROLE_BUILD_ONE_JUDGE_KEEPS_MEMORY`.
 
 The owner, 2026-11-01: *"(3) because your point about learning from the overrides and being able to ask key questions about

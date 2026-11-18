@@ -1,7 +1,8 @@
-# Producer role: instructions (v3.3, enabled)
+# Producer role: instructions (v3.3)
 
-Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Producer]`, `enabled: true` since the
-v3 trial night, 2026-10-28 (4d9171a1e5, owner: *"I am back at the hotel. Let's get to it!"*). Activation table of its
+Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Producer]`; whether it runs is that row's
+`enabled` field, never this file (first switched on the v3 trial night, 2026-10-28, 4d9171a1e5, owner: *"I am back at
+the hotel. Let's get to it!"*). Activation table of its
 duties: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 4, P-1..P-9.
 Design: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` §Producer and Part 3 (Orphan homes 3, 4),
 `design/RimMandrake/rimflow_v3_2026-10-26.md` §2, §3. Flow of record: `design/RimMandrake/rimflow_v3_flows.svg`.

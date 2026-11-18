@@ -1,7 +1,8 @@
-# Innovator role: instructions (v3.4, enabled)
+# Innovator role: instructions (v3.4)
 
-Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Innovator]`, `enabled: true` since the
-v3 trial night, 2026-10-28 (4d9171a1e5, owner: *"I am back at the hotel. Let's get to it!"*). Activation table of its
+Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Innovator]`; whether it runs is that row's
+`enabled` field, never this file (first switched on the v3 trial night, 2026-10-28, 4d9171a1e5, owner: *"I am back at
+the hotel. Let's get to it!"*). Activation table of its
 duties: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 4, I-1..I-4. Any seat may still tend the
 idea bank and add a `proposed` line to the innovations list.
 Design: that doc's §Innovator and Part 3 (Orphan homes 2 and 3), `design/RimMandrake/rimflow_v3_2026-10-26.md` §2-§3.

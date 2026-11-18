@@ -1,7 +1,7 @@
-# Operations role: instructions (v3.2, enabled)
+# Operations role: instructions (v3.2)
 
-Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Operations]`, `enabled: true` since
-Dispatcher wave 1, 2026-10-28 (e35afe1dcc, with the Conductor).
+Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Operations]`; whether it runs is that row's
+`enabled` field, never this file (first switched on at Dispatcher wave 1, 2026-10-28, e35afe1dcc, with the Conductor).
 Design: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` §Operations, `design/RimMandrake/rimflow_v3_2026-10-26.md` §3.
 Item: `OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE` (your own: every other role but the Conductor is token-blind and reads
 `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`, so no reading, runway, budget or token figure goes there; review U N2).
