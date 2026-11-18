@@ -26,6 +26,29 @@ SUITES = {
     "T_CENSUS": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py",
     "T_LINT": "python3 src/RimMandrake/Utils/lint_explosiveknockback_defs.py",
 }
+
+
+def discover_suites(repo, listed):
+    """The concept's selftests on disk (src/**/selftest_explosiveknockback*.py) that the hand list above does not name,
+    as {T_AUTO_<stem>: command}. 'Survived every offline suite' must mean every suite that exists, not every suite
+    someone remembered to list (RIMMANDRAKE_LIST_WALK_SUITE_IN_HARNESS_MUTANTS_SURVIVED)."""
+    named = {c.split()[-1] for c in listed.values()}
+    found = {}
+    for root, _dirs, files in os.walk(os.path.join(repo, "src")):
+        for fn in files:
+            if fn.startswith("selftest_explosiveknockback") and fn.endswith(".py"):
+                rel = os.path.relpath(os.path.join(root, fn), repo).replace(os.sep, "/")
+                if rel not in named:
+                    found["T_AUTO_" + fn[len("selftest_"):-3].upper()] = "python3 " + rel
+    return dict(sorted(found.items()))
+
+
+def verdict_of(returncode):
+    """PASS (0), UNMEASURED (rc 2: a suite that could not run here, e.g. a Windows-only def dump: never 'ran and missed'),
+    else FAIL."""
+    return "PASS" if returncode == 0 else "UNMEASURED" if returncode == 2 else "FAIL"
+
+
 current = {}
 
 
@@ -44,10 +67,10 @@ for s in (signal.SIGTERM, signal.SIGINT, signal.SIGHUP):
 
 def run_all(env):
     res = {}
-    for k, cmd in SUITES.items():
+    for k, cmd in {**SUITES, **discover_suites(REPO, SUITES)}.items():
         try:
             p = subprocess.run(cmd, shell=True, cwd=REPO, capture_output=True, text=True, timeout=200, env=env)
-            res[k] = "PASS" if p.returncode == 0 else "FAIL"
+            res[k] = verdict_of(p.returncode)
         except subprocess.TimeoutExpired:
             res[k] = "FAIL"
     tmp = "/tmp/ek_c5_lane1_planted.jsonl"
@@ -112,7 +135,11 @@ def main():
             new_lane1 = sorted(set(fails) - set(b["lane1_fail"]))
             row = {"id": fl["id"], "file": fl["file"], "bars": fl["bars"], "suites_red": new_suite, "lane1_new_fail": new_lane1,
                    "caught": bool(new_suite or new_lane1), "caught_by_builder": bool(new_suite), "caught_by_lane1": bool(new_lane1),
+                   "unconsulted": sorted(k for k in res if k not in b["suites"]),     # ran now, absent from the baseline: re-run --baseline
+                   "unmeasured": sorted(k for k, v in res.items() if v == "UNMEASURED"),
                    "seconds": round(time.time() - t0, 1)}
+            if row["unconsulted"] and not row["caught"]:
+                row["survived_every_suite"] = False      # never "survived every offline suite" while a suite was not in the baseline
         with open(OUT, "a") as f:
             f.write(json.dumps(row) + "\n")
         print(json.dumps(row), flush=True)
@@ -123,4 +150,5 @@ def main():
         print("tree_clean_after", clean)
 
 
-main()
+if __name__ == "__main__":
+    main()
