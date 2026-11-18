@@ -900,6 +900,50 @@ p = subprocess.run([sys.executable, CLI, "since", "--mod", MOD, "2026-11-15T20:0
 check("CLI since <time> prints the changes after it", p.returncode == 0 and "q:long" in p.stdout and
       "cause:the-refuted-cause" not in p.stdout, (p.returncode, p.stdout[-300:], p.stderr[-300:]))
 
+# RIMMANDRAKE_UNFENCE_LIVE_HOLDER_WHEN_RIVAL_NEVER_STARTED (acceptance: fixtures/repro_modledger_never_started_fences_live_holder.py):
+# a run that never started is revoked at its end and fences nobody; controls: a rival that started still fences, and a
+# revoked lease that had written keeps fencing what came before it
+_env = os.environ.pop("RM_MODLEDGER_WRITER", None)
+r9 = fresh()
+roots.append(r9)
+M.grant(r9, MOD, "run-0", version="0.1.0", views=False)
+a9 = M.launch(r9, MOD, "run-A", "fixer", stage="blind_challenge", views=False)
+b9 = M.launch(r9, MOD, "run-B", "fixer", stage="blind_challenge", views=False)
+M.end_run(r9, MOD, "run-B", "never_started", views=False)
+by9, cur9 = M.leases(M.read(r9, MOD))
+check("never started: run-B's lease is void and run-A is current again", by9["run-B"]["void"] and cur9 == "run-A",
+      (by9.get("run-B"), cur9))
+r10 = fresh()
+roots.append(r10)
+M.grant(r10, MOD, "run-0", version="0.1.0", views=False)
+a10 = M.launch(r10, MOD, "run-A", "fixer", stage="blind_challenge", views=False)
+b10 = M.launch(r10, MOD, "run-B", "fixer", stage="blind_challenge", views=False)
+M.append(r10, MOD, "HOLDER.run-B", "lease.renew", "lease", token=b10["token"], views=False)
+try:
+    M.append(r10, MOD, "HOLDER.run-A", "lease.renew", "lease", token=a10["token"], views=False)
+    fenced10 = False
+except Exception:   # noqa: BLE001
+    fenced10 = True
+check("control: a rival that started still fences the older holder", fenced10)
+M.end_run(r10, MOD, "run-B", "never_started", views=False)      # a wrong status on a run that wrote: still not void
+by10, cur10 = M.leases(M.read(r10, MOD))
+check("control: a revoked lease that wrote is not void and stays current", not by10["run-B"]["void"]
+      and cur10 == "run-B", (by10.get("run-B"), cur10))
+r11 = fresh()
+roots.append(r11)
+M.grant(r11, MOD, "run-0", version="0.1.0", views=False)
+M.append(r11, MOD, "DISPATCH", "lease.revoke", "lease", body={"lease": "run-0"}, views=False)
+try:
+    M.append(r11, MOD, "HOLDER.run-0", "lease.renew", "lease", token=1, views=False)
+    why11 = "accepted"
+except M.ModLedgerError as e:
+    why11 = str(e)
+except Exception as e:   # noqa: BLE001
+    why11 = "CRASH %s: %s" % (type(e).__name__, e)
+check("the only lease void: an append is a refusal, never a crash (Codex probe 2026-11-18)", "revoked" in why11, why11)
+if _env is not None:
+    os.environ["RM_MODLEDGER_WRITER"] = _env
+
 for d in roots:
     shutil.rmtree(d, ignore_errors=True)
 print("selftest_modledger: %d failure%s" % (len(FAIL), "" if len(FAIL) == 1 else "s"))

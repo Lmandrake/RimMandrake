@@ -583,8 +583,10 @@ def _clean(ev):
 # ---- leases and seals -----------------------------------------------------------------------------------------------
 
 def leases(events):
-    """-> {lease: {token, granted, last, released}} plus the current (highest-token) lease, from DISPATCH grants and
-    the holder's own activity."""
+    """-> {lease: {token, granted, last, released, void}} plus the current (highest-token, not void) lease, from DISPATCH
+    grants and the holder's own activity. A lease DISPATCH revoked before its holder wrote a line (a run that never
+    started, a packet over the line) is void: it fences no other lease (RIMMANDRAKE_UNFENCE_LIVE_HOLDER_WHEN_RIVAL_NEVER_
+    STARTED: Explosive Knockback's live holder run-1794896914 was fenced by run-1794896974, which never started)."""
     by = {}
     current = None
     for ev in events:
@@ -593,13 +595,17 @@ def leases(events):
             lease, tok = b.get("lease"), b.get("token")
             if isinstance(lease, str) and isinstance(tok, int):
                 by[lease] = {"lease": lease, "token": tok, "granted": _when(ev), "last": ev.get("ts"),
-                             "released": False}
-                if current is None or tok > by[current]["token"]:
-                    current = lease
+                             "released": False, "revoked": False, "void": False}
         elif ev.get("writer") == "DISPATCH" and ev.get("kind") == "lease.revoke":
             lease = (ev.get("body") or {}).get("lease")
             if lease in by:
-                by[lease]["released"] = True
+                by[lease]["released"] = by[lease]["revoked"] = True
+    wrote = {writer_suffix(ev["writer"]) for ev in events if writer_class(ev.get("writer") or "") == "HOLDER"
+             and (by.get(writer_suffix(ev["writer"])) or {}).get("token") == ev.get("token")}
+    for lease, g in by.items():
+        g["void"] = g["revoked"] and lease not in wrote
+        if not g["void"] and (current is None or g["token"] > by[current]["token"]):
+            current = lease
     for ev in events:
         if writer_class(ev.get("writer") or "") == "HOLDER" and not fenced(ev, by):
             lease = writer_suffix(ev["writer"])
@@ -622,7 +628,7 @@ def fenced(ev, by):
         return "token %r was never granted to lease %r" % (tok, lease)
     if _when(ev) < g["granted"]:
         return "written before its lease was granted"
-    newer = [o for o in by.values() if o["token"] > tok and o["granted"] <= _when(ev)]
+    newer = [o for o in by.values() if o["token"] > tok and o["granted"] <= _when(ev) and not o.get("void")]
     if newer:
         n = max(newer, key=lambda o: o["token"])
         return "stale token %d: lease %r (token %d) was granted before it" % (tok, n["lease"], n["token"])
@@ -736,6 +742,9 @@ def append(root, mod, writer, kind, subject, body=None, version=None, evidence=(
                                      "grant landed lacks it: ./sync, then retry)" % lease)
             if g["token"] != token:
                 raise ModLedgerError("token %d is not lease %r's token" % (token, lease))
+            if current is None:     # every lease is void (revoked before its holder wrote): none writes
+                raise ModLedgerError("lease %r was revoked before its holder wrote (a run that never started); ask the "
+                                     "dispatcher for a new one" % lease)
             if current != lease:
                 raise ModLedgerError("stale token %d: lease %r (token %d) has fenced lease %r; this run must stop"
                                      % (token, current, by[current]["token"], lease))
@@ -903,6 +912,10 @@ def end_run(root, mod, run, status, ts=None, views=True):
             if all(isinstance(b.get(k), str) and b[k].strip() for k in ("done", "next", "ruled_out")):
                 ok = True
     flags = [] if ok else ["NO_CHECKPOINT"]
+    if str(status) == "never_started" and lease in by and not by[lease]["revoked"]:
+        # a run that never started wrote nothing: its lease is revoked, void, and fences the live holder no more
+        append(root, mod, "DISPATCH", "lease.revoke", "lease", body={"lease": lease, "why": "never_started"}, ts=ts,
+               views=False)
     append(root, mod, "DISPATCH", "run.end", "run", run=run, ts=ts, views=views,
            body={"run": run, "lease": lease, "status": str(status), "flags": flags})
     return flags
