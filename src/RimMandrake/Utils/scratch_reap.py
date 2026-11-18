@@ -2034,12 +2034,21 @@ def pinned_holds(p: Path, pin: Path, row: dict, ctx: Ctx) -> list[str]:
     return why
 
 
+def apply_pressed() -> bool:
+    """The root disk under the pressure line, or /tmp past its lines: bytes matter more than the count."""
+    line = float(os.environ.get("SCRATCH_REAP_PRESSURE_GB", PRESSURE_GB))
+    return free_gb() < line or tmp_low(tmp_reading())
+
+
 def apply_rows(rows: list[dict], ctx: Ctx, max_s: float, failures: list[str], started: float) -> tuple[int, int]:
-    """Clones biggest first, then session shells, so a shell is judged with its clones already gone. The budget runs
-    from the start of the run: a long scan spends it too, or systemd's limit kills the run before it writes its record."""
+    """Clones smallest first (biggest first under disk pressure), then session shells, so a shell is judged with its
+    clones already gone. Biggest first deferred every ~29 KB ARCHIVE clone behind multi-GB deletes that took minutes
+    each (2026-11-18: 1178 s on two clones, 333 deferred). The budget runs from the start of the run: a long scan
+    spends it too, or systemd's limit kills the run before it writes its record."""
     freed, deferred = 0, 0
     todo = [r for r in rows if r["verdict"] in ("DELETE", "ARCHIVE")]
-    todo.sort(key=lambda r: (r["kind"] != "clone", -(r["bytes"] or 0)))
+    sign = -1 if apply_pressed() else 1
+    todo.sort(key=lambda r: (r["kind"] != "clone", sign * (r["bytes"] or 0)))
     for r in todo:
         if max_s and time.time() - started > max_s:
             r["deferred"] = True
