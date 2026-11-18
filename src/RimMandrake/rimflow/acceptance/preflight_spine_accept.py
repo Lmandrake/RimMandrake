@@ -21,7 +21,7 @@ THE CONTRACT IT FIXES (the ticket body states the same):
   ~/.local/state/rimmandrake/preflight/runs.jsonl) with run_id, item, trigger, total_ms, cut_off, checks[{id, ms,
   status}]. Report-only: nothing raises on a FAIL, and the CLI exits 0.
 """
-import ast
+import glob
 import json
 import os
 import subprocess
@@ -188,13 +188,13 @@ def main():
               "rimflow preflight <real item> --json exits 0 with total_ms (report-only)")
         got = open(env["RIMFLOW_PREFLIGHT_RUNS"]).read().splitlines() if os.path.exists(env["RIMFLOW_PREFLIGHT_RUNS"]) else []
         check(len(got) == 1, "the CLI run wrote exactly one timing line")
-        src = open(CLI).read()
-        tree = ast.parse(src)
-        door = [ast.get_source_segment(src, n) for n in ast.walk(tree)
-                if isinstance(n, ast.FunctionDef) and n.name in ("cmd_claim", "cmd_file")]
-        others = [open(os.path.join(RIMFLOW, f)).read() for f in ("relentless.py", "detached_helper.py")]
-        check(len(door) == 2 and not any("ticket_preflight" in d for d in door + others),
-              "no door is touched: cmd_claim, cmd_file, relentless.py, detached_helper.py never call ticket_preflight")
+        # "No door is touched" was ticket 1's alone: ticket 3 wires claim, file, start and detached_helper.launch in
+        # shadow, and preflight_shadow_accept.py holds those doors (RIMMANDRAKE_AMEND_SPINE_DOOR_CLAUSE_TICKET_THREE_MUST_BREAK).
+        # What still holds from ticket 1: no relentless*.py file calls the preflight.
+        rel = sorted(glob.glob(os.path.join(RIMFLOW, "relentless*.py")))
+        hit = [os.path.basename(f) for f in rel if "ticket_preflight" in open(f).read()]
+        check(rel and not hit, "no relentless*.py file calls ticket_preflight (%d read%s)" % (
+            len(rel), "; calls in " + ", ".join(hit) if hit else ""))
 
     for fn in cases:
         try:
