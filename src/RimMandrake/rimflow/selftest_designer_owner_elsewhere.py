@@ -72,10 +72,12 @@ def main():
         d = os.path.join(tmp, "design/concepts/WidgetWorks")
         DS.init(d, "RimMandrake/WidgetWorks", ITEM, aliases=["WW"])
         st = DS.load_state(d)
+        check("no word of his anywhere: {} (looked, found none), not None", DS.owner_elsewhere(tmp, d, st) == {},
+              DS.owner_elsewhere(tmp, d, st))
         on_own = repo.said(ITEM, "the widget turns")
         feed0, uncited0 = DS.owner_feed(tmp, ITEM, d), DS.owner_uncited(tmp, ITEM, d)
         check("base: his word on the concept's own item is in owner_uncited", uncited0 == [on_own], uncited0)
-        check("an empty sibling list is {} (looked, found none), not None", DS.owner_elsewhere(tmp, d, st) == {},
+        check("his own-item word alone is the whole list", DS.owner_elsewhere(tmp, d, st) == {on_own: ITEM},
               DS.owner_elsewhere(tmp, d, st))
 
         prefix = repo.said("WIDGETWORKS_BUILD_GEARS", "gears mesh by position AND slope")
@@ -104,7 +106,7 @@ def main():
         check("a card answer (byCard) is his word", card in got, u)
         check("a per-ruling note is not his word", ruling not in got, u)
         check("an unrelated item is not the mod's", other not in got, u)
-        check("words owner_uncited already holds are not listed twice", on_own not in got, u)
+        check("his words on the concept's own item are listed too (any item of the mod; Codex review 2)", on_own in got, u)
         check("the list maps each word to its item", (u or {}).get(prefix) == "WIDGETWORKS_BUILD_GEARS", u)
 
         # finding 1: X is not named by an event on X_EXTRA
@@ -151,7 +153,10 @@ def main():
         st["running"] = {"run": "pk"}
         full = DS.packet(d, st, {}, 1000, repo=tmp)
         check("packet: open_run's packet carries the section at every stage",
-              "His words on the mod's other items" in full and prefix in full, full[-400:])
+              "His words on the mod's items" in full and prefix in full, full[-400:])
+        for s_ in range(6):
+            pk = DS.packet(d, dict(st, stage=s_), {}, 1000, repo=tmp)
+            check("packet: stage %d carries the section" % s_, "His words on the mod's items" in pk)
 
         # the lock refuses while a binding word is uncited
         st5 = dict(st, stage=5, running={"run": "r5"})
@@ -192,6 +197,37 @@ def main():
         check("review: a word given within the concept's first second binds the lock",
               same_sec in (DS.elsewhere_binding(tmp, d, st)[1] or []), DS.elsewhere_binding(tmp, d, st)[1])
 
+        # second Codex review 2026-11-18
+        named_sib = repo.said("RIMMANDRAKE_SOME_REPAIR", "about %s: keep the gears oiled" % ITEM)
+        repo.filed("RIMMANDRAKE_SOME_REPAIR", "WidgetWorks: repair the oiler")
+        check("review 1: a sibling's word naming the concept item is listed (it is in owner_uncited too)",
+              named_sib in (DS.owner_elsewhere(tmp, d, st) or {}) and named_sib in (DS.owner_uncited(tmp, ITEM, d) or []))
+        prev = ITEM
+        for i in range(40):
+            repo.filed("RIMMANDRAKE_LINK_%02d_CHAIN" % i, "a link", caused_by=prev)
+            prev = "RIMMANDRAKE_LINK_%02d_CHAIN" % i
+        deep = repo.said(prev, "forty links down")
+        check("review 6: a cause chain of forty links still reaches the concept", deep in (DS.owner_elsewhere(tmp, d, st) or {}))
+        put(d, "record.json", {"decisions": [{"id": "x", "source": "NOTOWNER:" + on_own}]})
+        check("review 7: NOTOWNER:<tsn> does not take his own-item word out of owner_uncited",
+              on_own in (DS.owner_uncited(tmp, ITEM, d) or []), DS.owner_uncited(tmp, ITEM, d))
+        put(d, "record.json", {})
+        other = os.path.join(tempfile.mkdtemp(prefix="owner_elsewhere_judge_"))
+        try:
+            os.makedirs(os.path.join(other, os.path.dirname(CT.OWNER_SHARD)))
+            shutil.copy(repo.owner, os.path.join(other, CT.OWNER_SHARD))
+            check("review 3: a title filed only in the concept's clone counts when another clone judges",
+                  by_title in (DS.owner_elsewhere(other, d, st) or {}), DS.owner_elsewhere(other, d, st))
+        finally:
+            shutil.rmtree(other, ignore_errors=True)
+        shard = os.path.join(tmp, CT.LEDGER_DIR, "events", "BENCH.jsonl")
+        os.chmod(shard, 0)
+        try:
+            check("review 4: an unreadable ledger shard makes the list UNMEASURED (None), never 'not ours'",
+                  os.access(shard, os.R_OK) or DS.owner_elsewhere(tmp, d, st) is None, DS.owner_elsewhere(tmp, d, st))
+        finally:
+            os.chmod(shard, 0o644)
+
         # an unreadable shard is UNMEASURED, never an empty list, and the lock does not pass blind
         os.replace(repo.owner, repo.owner + ".away")
         try:
@@ -209,8 +245,8 @@ def main():
         gss = os.path.join(DS.REPO, "design/concepts/GimmeSomeSlack")
         if os.path.isfile(os.path.join(gss, "stage.json")):
             real = DS.owner_elsewhere(DS.REPO, gss)
-            check("sanity probe: the real GSS list is readable and not empty", isinstance(real, dict) and len(real) > 0,
-                  None if real is None else len(real))
+            check("sanity probe: the real GSS list is readable (a dict, possibly empty once all is cited)",
+                  isinstance(real, dict), real)
             cited = any("OWNER:1794839121624014370" in open(os.path.join(gss, n), encoding="utf-8").read()
                         for n in ("record.json", "tree.json") if os.path.isfile(os.path.join(gss, n)))
             if not cited:

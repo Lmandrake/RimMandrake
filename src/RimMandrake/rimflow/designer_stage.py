@@ -190,7 +190,7 @@ def owner_uncited(repo, item, d=None):
                 cited += f.read()
         except OSError:
             pass
-    return sorted(t for t in tsns if not re.search(r"OWNER:%s(?![0-9])" % re.escape(t), cited)
+    return sorted(t for t in tsns if not re.search(r"(?<![A-Za-z0-9_])OWNER:%s(?![0-9])" % re.escape(t), cited)
                   and not (t in delegated and re.search(r"CONDUCTOR:%s(?![0-9])" % re.escape(t), cited)))
 
 
@@ -201,15 +201,17 @@ def _names_id(item):
 
 
 def owner_elsewhere(repo, d, st=None):
-    """{tsn: item} of his words (ownerSaid or byCard) on the mod's OTHER items that neither record.json nor tree.json
-    cites as OWNER:<tsn> (RIMMANDRAKE_HARVEST_OWNER_WORDS_OFF_CONCEPT_ITEM_FOURTH_ASK: his 2026-11-09 slope rule for
-    Gimme Some Slack sat on a build item and never became a bar of its 0.1.0). A mod's item is one of its own
-    (concept_tree.mod_items), an id under its prefix (mod_prefixes), one whose cause chain reaches its own
-    (as concept_tree.caused_by_mod walks it), or one whose filed title starts with the mod's name (a title
-    merely mentioning it is not enough: the six-mod hold item named every held mod). Words owner_uncited already holds are left
-    out. Not part of owner_feed: no stage freezes this list, so a sibling's words never reopen an accepted stage or
-    relaunch a run; the packet lists them and the lock (stage 5 done) refuses until each is cited.
-    None = the OWNER shard is unreadable."""
+    """{tsn: item} of his words (ownerSaid or byCard) on ANY of the mod's items, its own included, that neither
+    record.json nor tree.json cites as OWNER:<tsn> (RIMMANDRAKE_HARVEST_OWNER_WORDS_OFF_CONCEPT_ITEM_FOURTH_ASK: his
+    2026-11-09 slope rule for Gimme Some Slack sat on a build item and never became a bar of its 0.1.0). A mod's item
+    is one of its own (concept_tree.mod_items), an id under its prefix (mod_prefixes), one whose cause chain reaches
+    its own (as concept_tree.caused_by_mod walks it, to any depth), or one whose filed title starts with the mod's name
+    (a title merely mentioning it is not enough: the six-mod hold item named every held mod; a name of four letters or
+    fewer matches no title, "Pyre" would claim every Pyrelands one). Causes and titles are read from the same clones
+    as his words. Words owner_uncited also holds stay listed: that feed freezes stages, this list does not. Not part
+    of owner_feed: no stage freezes this list, so these words never reopen an accepted stage or relaunch a run; the
+    packet lists them and the lock (stage 5 done) refuses until each is cited.
+    None = the OWNER shard, or a ledger shard the mapping reads, is unreadable."""
     st = st if isinstance(st, dict) else (read_json(state_path(d)) if d else None) or {}
     lines = CT.owner_lines(repo, clone_of(d))
     if lines is None:
@@ -227,22 +229,21 @@ def owner_elsewhere(repo, d, st=None):
             continue
         if isinstance(ev, dict) and ev.get("tsn") and CT.txt(ev.get("id")) and CT.his_word(ev):
             words[str(ev["tsn"])] = ev["id"]
-    causes = titles = None
+    meta = None
     ours = {}
     for it in sorted(set(words.values())):
         if it in own or (prefixes and it.upper().startswith(prefixes)):
             ours[it] = True
             continue
-        causes = CT.ledger_causes(repo) if causes is None else causes     # one fold, not one per item
+        meta = _ledger_meta((repo, clone_of(d)), set(words.values())) if meta is None else meta   # one fold
+        if meta is False:
+            return None                  # a shard the mapping needs could not be read: unknown, never "not ours"
+        causes, titles = meta
         chain, up = [], it
-        while isinstance(up, str) and up and up not in chain and len(chain) < 32 and up not in own:
+        while isinstance(up, str) and up and up not in chain and up not in own:     # the cycle check ends it
             chain.append(up)
             up = causes.get(up)
-        if up in own:
-            ours[it] = True
-            continue
-        titles = _filed_titles(repo, set(words.values())) if titles is None else titles
-        ours[it] = len(key) > 4 and re.sub(r"[^a-z0-9]", "", titles.get(it, "").lower()).startswith(key)
+        ours[it] = up in own or (len(key) > 4 and re.sub(r"[^a-z0-9]", "", titles.get(it, "").lower()).startswith(key))
     cited = ""
     for name in ("record.json", "tree.json"):
         try:
@@ -250,8 +251,7 @@ def owner_elsewhere(repo, d, st=None):
                 cited += f.read()
         except OSError:
             pass
-    inner = set(owner_uncited(repo, st.get("item"), d) or [])
-    return {t: it for t, it in sorted(words.items()) if ours.get(it) and t not in inner
+    return {t: it for t, it in sorted(words.items()) if ours.get(it)
             and not re.search(r"(?<![A-Za-z0-9_])OWNER:%s(?![0-9])" % re.escape(t), cited)}   # NOTOWNER: is no citation
 
 
@@ -278,11 +278,11 @@ def elsewhere_binding(repo, d, st):
 def elsewhere_section(repo, d, st, cap=40):
     """The packet's list of owner_elsewhere: every binding word in full, older ones by reference up to `cap`."""
     u, bind = elsewhere_binding(repo, d, st)
-    head = ["", "## His words on the mod's other items, not yet cited (designer_stage.py owner_elsewhere)"]
+    head = ["", "## His words on the mod's items, not yet cited (designer_stage.py owner_elsewhere)"]
     if u is None:
         return head + ["UNMEASURED: OWNER.jsonl could not be read; these words are unknown, not absent."]
     if not u:
-        return head + ["- none: every word of his on the mod's other items is cited in record.json or tree.json."]
+        return head + ["- none: every word of his on the mod's items is cited in record.json or tree.json."]
     ev = CT.owner_events(repo, clone_of(d))
     out = head + ["Take each in where it bears on the design, and cite it as OWNER:<tsn> in record.json (a bar, a "
                   "decision, or `owner_elsewhere_reviewed` [{\"source\": \"OWNER:<tsn>\", \"not_design_input\": <why>}]). "
@@ -300,25 +300,39 @@ def elsewhere_section(repo, d, st, cap=40):
     return out
 
 
-def _filed_titles(repo, ids):
-    """{item: its filed title} for `ids`, from every ledger file event (a bad line spoils itself only)."""
-    out = {}
-    for p in CT.ledger_files(repo):
-        try:
-            with open(p, encoding="utf-8", errors="replace") as f:
-                for line in f:
-                    if '"file"' not in line:
-                        continue
-                    try:
-                        ev = json.loads(line)
-                    except (ValueError, RecursionError):
-                        continue
-                    if (isinstance(ev, dict) and ev.get("event") == "file" and isinstance(ev.get("id"), str)
-                            and ev["id"] in ids and isinstance(ev.get("title"), str)):
-                        out.setdefault(ev["id"], ev["title"])
-        except OSError:
-            continue
-    return out
+def _ledger_meta(repos, ids):
+    """-> ({item: its cause}, {item: its filed title for `ids`}) over every ledger shard of each clone in `repos`
+    (concept_tree.ledger_causes' rule: a file event's caused_by, a spawn's from, `ITEM/run-N` is ITEM), or False when a
+    shard that exists could not be read. A missing shard is no reading (events.jsonl may be absent); a bad line spoils
+    itself only."""
+    causes, titles = {}, {}
+    for repo in dict.fromkeys(r for r in repos if r):
+        for p in CT.ledger_files(repo):
+            try:
+                with open(p, encoding="utf-8", errors="replace") as f:
+                    for line in f:
+                        if '"file"' not in line and '"spawn"' not in line:
+                            continue
+                        try:
+                            ev = json.loads(line)
+                        except (ValueError, RecursionError):
+                            continue
+                        if not isinstance(ev, dict):
+                            continue
+                        kind = ev.get("event")
+                        iid, cause = ((ev.get("id"), ev.get("caused_by")) if kind == "file" else
+                                      (ev.get("name"), ev.get("from")) if kind == "spawn" else (None, None))
+                        if not isinstance(iid, str):
+                            continue
+                        if isinstance(cause, str) and cause.strip():
+                            causes.setdefault(iid, cause.split("/run-")[0])
+                        if kind == "file" and iid in ids and isinstance(ev.get("title"), str):
+                            titles.setdefault(iid, ev["title"])
+            except FileNotFoundError:
+                continue
+            except OSError:
+                return False
+    return causes, titles
 
 
 def clone_of(d):
@@ -1526,13 +1540,14 @@ def result_errors(res, d, st, repo=REPO):
         errs += ["scenes: %s" % e for e in scene_errors(sc5, tree, artifact_repo)]
         errs += ["showcases: %s" % e for e in showcase_check(sc5, rec, tree, owner_ev, artifact_repo,
                                                               concept=concept_of(st, d))]
-        # his words on the mod's other items given since the concept began must be taken in before it locks
+        # his words on the mod's items given since the concept began must be taken in before it locks
         # (RIMMANDRAKE_HARVEST_OWNER_WORDS_OFF_CONCEPT_ITEM_FOURTH_ASK)
         _, bind = elsewhere_binding(repo, d, st)
         if bind is None:
-            errs.append("lock: his words on the mod's other items could not be read (OWNER.jsonl unread): not locked blind")
+            errs.append("lock: his words on the mod's items could not be read (OWNER.jsonl or a ledger shard unread): "
+                        "not locked blind")
         elif bind:
-            errs.append("lock: %d of his words on the mod's other items, given since this concept began, are not cited "
+            errs.append("lock: %d of his words on the mod's items, given since this concept began, are not cited "
                         "in record.json or tree.json: %s" % (len(bind), ", ".join("OWNER:" + t for t in bind[:15]) +
                                                              ("" if len(bind) <= 15 else ", ...")))
     return errs
