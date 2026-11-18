@@ -1,0 +1,25 @@
+Reviewed every line of all three supplied texts. The `stage.json` fixture correction is valid. I found these correctness flaws:
+
+1. **A newly stopped stage can omit the counts.** `coverage_judge.py:1449` calls `hold()` and returns without `close_line()`. For example, legacy charges or a changed pipeline limit can make this invocation discover the stop and close judging. Only the later stop path at `coverage_judge.py:1735` prints counts.
+
+2. **Unknown measurements become measured zero.** `coverage_judge.py:1257` ignores missing/null `owner_said`, then `record_round()` saves an integer with no uncertainty marker. This affects legacy carried gaps and program-generated gaps lacking that answer. Separately, `coverage_judge.py:1268` converts explicit null aggregate fields to zero, while `coverage_judge.py:1270` treats their presence as proof of measurement. A covered row with all three fields `None` produces three zeros and `uncounted_looks: 0`.
+
+3. **Invented owner requirements disappear from their count when made advisory.** `coverage_judge.py:1257` examines only `gaps`. A judge demand with `owner_said=False` that the bar rule moves to `advisory_gaps` contributes zero. A refusal demanding an invented tuning number is precisely something the promised count should expose, even after its blocking effect is removed. The acceptance contract incorrectly narrows this count to blocking gaps at `case_stage_close_counts.py:14`.
+
+4. **Refusals and overturns use different units.** `coverage_judge.py:1266` counts final refusing rounds; `coverage_judge.py:1254` counts individual gaps. One round containing two reader-overturned gaps can contribute two overturns but at most one refusal. If every gap becomes advisory, that round contributes no refusal at all. These figures cannot express “refusals and how many were overturned” consistently.
+
+5. **An overturn can be counted without a second-reader overturn.** At `coverage_judge.py:1254`, a malformed refusal containing the judge’s own `criterion_verdict="flawed"` but no `judge_criterion_verdict` increments `overturned`. That path can skip `second_read()` entirely. The program reader’s `late_confirmed=False`, explicitly meaning it cannot judge seriousness, also increments the figure labelled “by the second reader.” Missing confirmation and negative confirmation need distinct states.
+
+6. **A new demand on unchanged material can escape counting and remain blocking.** `coverage_judge.py:565` preserves an unmatched `unfixed` finding without checking a changed passage. Concrete input: prior slot `g1` concerns row `a`; the repair closes it; this look introduces a demand on unchanged row `b`, tagged `unfixed`, naming no slot. It survives as `unplaced`, but `coverage_judge.py:1252` counts zero new demands because its tag remains `unfixed`.
+
+7. **An old refusal can be counted as a new demand.** `coverage_judge.py:1253` counts every `dropped` entry. During a delta look prompted by a change to row `b`, a finding outside that scope can explicitly name old slot `g1` through `since`. The merge recognizes it as that slot’s note, carries the original problem, and retains the note in `dropped`. It nevertheless adds one “new demand.” I reproduced this merge and count.
+
+8. **Failure to establish a changed passage is treated as established unchanged material.** `coverage_judge.py:576` assigns `late` without `repair_passage` whenever `changed_passage()` fails; `coverage_judge.py:1252` then counts it as unchanged. This includes a missing prior `entry_text`, and even a genuinely changed passage rejected solely for being shorter than `QUOTE_MIN`. Those outcomes establish insufficient evidence of change, not evidence that the material was unchanged.
+
+9. **Legacy judge history disappears from the totals.** `coverage_judge.py:1264` reads only `coverage_rounds`, ignoring the legacy judges reconstructed from budget charges by `rounds()`. A legacy refusal identified by `prior_verdict()` can affect the judging limit, yet after a subsequent signature the closing totals report only the newly recorded look. They also provide no uncertainty notice for that omitted history.
+
+The acceptance case’s stated missing-field rule at `case_stage_close_counts.py:17` conflicts with the owner’s measurement rule. Its checks at `case_stage_close_counts.py:106` accept numeric zeros without requiring an uncertainty indicator. Its refusal-unit definition at `case_stage_close_counts.py:16` also embeds finding 4.
+
+Advice: add integration cases that actually call `run()` for signing, newly discovered stopping, and nonclosing outcomes. The current case only exercises schema and counter helpers; its “two refusals, stopped” case never verifies stopping or printing. Also add changed-passage, missing-measurement, and named-slot-drop cases.
+
+VERDICT: FIX_FIRST

@@ -362,6 +362,19 @@ def cases(root):
     r, _ = CJ.run(d, root, script([answer("not_covered", [re], BAD2, FALSE)]), now=2000000100, reader=None)
     expect("the retry checks the same slot: g1 open, blocking as itself", whats(r) == [WALL], whats(r))
 
+    # a stop found before judging closes the stage too: its counts are printed (Codex counts review 2026-11-18, 1)
+    d = concept(root, "StopFirst")
+    st0 = DS.load_state(d)
+    st0["coverage_rounds"] = [{"judge": "rm-coverage-judge-%d" % i, "verdict": "not_covered"} for i in (1, 2)]
+    DS.write_json(DS.state_path(d), st0)
+    lim, CJ.NOT_COVERED_LIMIT = CJ.NOT_COVERED_LIMIT, 2
+    try:
+        _r, msg = CJ.run(d, root, script([answer("covered", [], OK2)]), now=2000000000)
+    finally:
+        CJ.NOT_COVERED_LIMIT = lim
+    expect("a stop found before judging prints the coverage counts", "stopped" in msg and "coverage counts" in msg,
+           msg)
+
     # the phantom reader round
     st = {"coverage_rounds": [{"judge": "rm-coverage-judge-100", "verdict": "not_covered", "at": "2026-01-01T00:00:10Z",
                                "tokens": 5}],

@@ -63,6 +63,9 @@ rec = {"judge": "j2", "at": "2026-11-17T00:00:00Z", "verdict": "not_covered", "t
 with tempfile.TemporaryDirectory() as root:
     d = os.path.join(root, "X")
     os.makedirs(d)
+    # record_round appends to the concept's stage.json, which every judged concept has (fixture fixed 2026-11-18: the
+    # case first ran on a folder without one, so record_round could only raise; the assertions are unchanged)
+    DS.write_json(os.path.join(d, "stage.json"), {"stage": 5, "status": "open", "item": "X_ITEM"})
     try:
         row = CJ.record_round(d, rec)["coverage_rounds"][-1]
     except Exception as e:   # noqa: BLE001 - a crash is a wrong case, not a stop
@@ -108,6 +111,37 @@ if callable(cl) and callable(cc):
                  "not in the owner's words 2", "owner overturns: not counted"):
         expect("close_line names %r" % word, word in line, line)
 
+# Codex review 2026-11-18 (7d_codex_counts_review.md): what could not be measured is never a measured 0
+rec2 = {"judge": "j3", "at": "2026-11-17T00:00:00Z", "verdict": "not_covered", "tree": "t", "tokens": 1,
+        "gaps": [g(owner_said=None), g(new_since="unfixed", unplaced=True)],
+        "advisory_gaps": [g(new_since="late", miss_of="j1", late_confirmed=False, criterion_by="program"),
+                          g(new_since="late", miss_of="j1", passage="no_baseline"),
+                          g(new_since="late", miss_of="j1", passage="unchanged")],
+        "dropped": [g(names_slot=["g1"])]}
+with tempfile.TemporaryDirectory() as root:
+    d = os.path.join(root, "Y")
+    os.makedirs(d)
+    DS.write_json(os.path.join(d, "stage.json"), {"stage": 5, "status": "open", "item": "Y_ITEM"})
+    try:
+        row2 = CJ.record_round(d, rec2)["coverage_rounds"][-1]
+    except Exception as e:   # noqa: BLE001
+        row2 = {"crash": repr(e)}
+for k, want in (("owner_said_unmeasured", 1), ("not_owner_said", 0), ("unplaced", 1), ("overturned", 0),
+                ("new_on_unchanged", 2), ("new_unsettled", 1)):
+    expect("record_round, unmeasured kinds: %s" % k, row2.get(k) == want, (row2.get(k), "want %d" % want))
+if callable(cc):
+    got = cc(stage({"verdict": "covered", "overturned": None, "new_on_unchanged": None, "not_owner_said": None}))
+    expect("close_counts: null counts are an uncounted look, not zeros", got.get("uncounted_looks") == 1, got)
+    st_l = {"coverage_rounds": [{"judge": "rm-coverage-judge-9", "verdict": "covered", "overturned": 0,
+                                 "new_on_unchanged": 0, "not_owner_said": 0}],
+            "budget": {"charges": [{"ref": "rm-coverage-judge-1", "kind": "review", "tokens": 3, "at": "a"}]}}
+    got = cc(st_l)
+    expect("close_counts: a legacy judge from the charges is a look, uncounted", got.get("looks") == 2
+           and got.get("uncounted_looks") == 1, got)
+if callable(cl):
+    line = str(cl({"looks": 1, "refusals": 0, "overturned": 0, "new_on_unchanged": 0, "not_owner_said": 0,
+                   "owner_said_unmeasured": 2, "uncounted_looks": 0}))
+    expect("close_line names an unanswered owner_said as UNMEASURED", "UNMEASURED" in line, line)
 for w in wrong:
     print("WRONG", w)
 print("cases read %d; wrong %d (worst); limit 0" % (n, len(wrong)))

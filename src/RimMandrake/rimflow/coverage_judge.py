@@ -174,7 +174,9 @@ RECORD_TEXT = (
     "broken records, at most twice); one still broken is kept on file as malformed and counts for nothing.\n\n"
     "A refusal binds only \"close this hole\". The numbers, day counts, wind bearings and methods you suggest are one "
     "way to close it, never a bar; the builder may close it another way. A number binds only if the owner said it. "
-    "The mod itself is never changed to hit a test's number.")
+    "The mod itself is never changed to hit a test's number. "
+    "`promise` quotes the owner's promise the refusal rests on, and `owner_said` is true only when every number and "
+    "line the refusal binds on is in the owner's own words.")
 SCHEMA = {"type": "object", "additionalProperties": False,
           "required": ["verdict", "checklist", "gaps", "reasons", "repairs"],
           "properties": {"verdict": {"enum": ["covered", "not_covered"]},
@@ -191,7 +193,8 @@ SCHEMA = {"type": "object", "additionalProperties": False,
                                                                "ok": {"type": "boolean"}}}}}}},
                          "gaps": {"type": "array", "items": {"type": "object", "additionalProperties": False,
                                                              "required": ["what", "where", "return_to", "ids",
-                                                                          "new_since", "bar_kind", "severity"]
+                                                                          "new_since", "bar_kind", "severity",
+                                                                          "promise", "owner_said"]
                                                              + list(RECORD_FIELDS),
                                                              "properties": dict(RECORD_PROPS, **{
                                                                  "bar_kind": {"enum": list(BR.BAR_KINDS)},
@@ -202,7 +205,9 @@ SCHEMA = {"type": "object", "additionalProperties": False,
                                                                  "ids": {"type": "array", "items": {"type": "string"}},
                                                                  "new_since": {"enum": list(TAGS)},
                                                                  "since": {"type": "string"},
-                                                                 "late_why": {"type": "string"}})}},
+                                                                 "late_why": {"type": "string"},
+                                                                 "promise": {"type": "string"},
+                                                                 "owner_said": {"type": "boolean"}})}},
                          "reasons": {"type": "string"},
                          # the repair check's numbered slots (7_same_problem_rule.md); round 1 answers []
                          "repairs": {"type": "array", "items": {
@@ -548,6 +553,22 @@ def _unescape(t):
     return flat(t.replace("\\n", " ").replace('\\"', '"').replace("\\\\", "\\"))
 
 
+def passage_state(g, before, after):
+    """Why a new finding quotes no changed passage (counted by round_counts): `no_baseline` (the prior verdict kept no
+    renderings: could not look), `unchanged` (its quote is in the entry both before and after) or `unshown` (no entry
+    key and quote of at least QUOTE_MIN characters found in either)."""
+    if not isinstance(before, dict):
+        return "no_baseline"
+    key, sep, q = str(g.get("since") or "").partition("\n")
+    key = key.strip().strip("`'\"")
+    b, a = str(before.get(key) or ""), str((after or {}).get(key) or "")
+    for f in (lambda t: t, _unescape):
+        qq = f(flat(q)).strip("`'\"")
+        if sep and len(qq) >= QUOTE_MIN and qq in f(b) and qq in f(a):
+            return "unchanged"
+    return "unshown"
+
+
 def classify_new(rec, before, after, refuser):
     """Rule 4 over this look's findings that named no slot. One the judge tagged `unfixed` ("still open") that points at
     no slot is an unplaced repair report: it stays and blocks. Any other new finding stays only when it quotes a changed
@@ -569,7 +590,8 @@ def classify_new(rec, before, after, refuser):
             g.update(new_since="late", miss_of=refuser, repair_passage={"entry": cp[0], "passage": cp[1]})
             keep.append(g)
         else:
-            adv.append(dict(g, short_list=True, miss_of=refuser, advisory_why=(
+            adv.append(dict(g, short_list=True, miss_of=refuser, new_since="late", judge_said=g.get("new_since"),
+                            passage=passage_state(g, before, after), advisory_why=(
                 "a new finding at the check of the repairs that quotes no passage a repair changed: advisory, for the "
                 "owner's short list (owner, 2026-11-17 trial; 7_same_problem_rule.md rule 4)")))
     rec["gaps"] = keep
@@ -1257,9 +1279,68 @@ def record_round(d, rec):
         "ids": sorted({i for g in gaps for i in g.get("ids") or []}),
         "tags": {t: sum(1 for g in gaps if g.get("new_since") == t) for t in TAGS if any(
             g.get("new_since") == t for g in gaps)},
-        "late": rec.get("late") or [], "error": rec.get("error")})
+        "late": rec.get("late") or [], "error": rec.get("error"), **round_counts(rec)})
     DS.write_json(DS.state_path(d), st)
     return st
+
+
+# The four counts printed when a mod's coverage closes (owner by card 2026-11-17, 6_proposed_ruling_plain.md "How it is
+# built" step 5; RIMMANDRAKE_PRINT_JUDGE_COUNTS_WHEN_COVERAGE_CLOSES). The fifth, flaws found in play that the judge
+# passed, is counted after the played session, not here; his own overturns are outside the program's reach.
+def round_counts(rec):
+    """-> {new_on_unchanged, overturned, not_owner_said} for one round. new_on_unchanged: late gaps (blocking or
+    advisory) that quote no changed passage, plus the dropped ones; overturned: gaps a second reader did not confirm, or
+    whose criterion it called flawed or unattainable where the judge did not; not_owner_said: blocking gaps whose
+    `owner_said` is False (a missing answer is not counted)."""
+    every = [g for g in list(rec.get("gaps") or []) + list(rec.get("advisory_gaps") or []) if isinstance(g, dict)]
+    new = [g for g in every if g.get("new_since") == "late" and not g.get("repair_passage")]
+    read = lambda g: g.get("criterion_by") not in ("program", "judge (no second read)")   # a reader that did read it
+    mine = [g for g in rec.get("gaps") or [] if isinstance(g, dict) and not g.get("carried")]
+    return {"new_on_unchanged": sum(1 for g in new if g.get("passage") not in ("no_baseline", "unshown"))
+            + sum(1 for g in rec.get("dropped") or [] if isinstance(g, dict) and not g.get("names_slot")),
+            # a new finding whose material could not be shown changed or unchanged: neither count, named
+            "new_unsettled": sum(1 for g in new if g.get("passage") in ("no_baseline", "unshown")),
+            "unplaced": sum(1 for g in every if g.get("unplaced")),
+            "overturned": sum(1 for g in every if read(g) and (g.get("late_confirmed") is False or (
+                g.get("criterion_verdict") in ("flawed", "unattainable") and "judge_criterion_verdict" in g
+                and g.get("judge_criterion_verdict") not in ("flawed", "unattainable")))),
+            "not_owner_said": sum(1 for g in mine if g.get("owner_said") is False),
+            "owner_said_unmeasured": sum(1 for g in mine if not isinstance(g.get("owner_said"), bool))}
+
+
+def close_counts(st, d=None):
+    """-> the four counts over a concept's coverage rounds: looks (covered or not_covered: a malformed round is not a
+    look), refusals (not_covered), and the per-round counts summed (a round without one counts 0)."""
+    rs = _looks(rounds(st, d))   # a legacy judge (charges only, verdict unknown) is a look its counts never saw
+    looks = [r for r in rs if r.get("verdict") in ("covered", "not_covered") or r.get("legacy")]
+    out = {"looks": len(looks), "refusals": sum(1 for r in looks if r.get("verdict") == "not_covered")}
+    # counted: written by the counting build (it carries a count; one it lacks is 0, the case's rule); a round with no
+    # count, or a null one, was never counted
+    counted = [r for r in looks if any(k in r for k in COUNT_KEYS)
+               and all(isinstance(r[k], int) for k in COUNT_KEYS if k in r)]
+    for k in COUNT_KEYS + ("new_unsettled", "unplaced", "owner_said_unmeasured"):
+        out[k] = sum(int(r.get(k) or 0) for r in counted)
+    # a look recorded before the counts existed (2026-11-18), or with a count missing, could not be counted: named,
+    # never read as a measured 0
+    out["uncounted_looks"] = len(looks) - len(counted)
+    return out
+
+
+COUNT_KEYS = ("overturned", "new_on_unchanged", "not_owner_said")
+
+
+def close_line(counts):
+    c = dict({"new_unsettled": 0, "unplaced": 0, "owner_said_unmeasured": 0}, **counts)
+    return ("coverage counts: looks %(looks)d, refusals %(refusals)d (looks), overturned %(overturned)d (refusal records "
+            "the second reader overturned; owner overturns: not counted), new demands on unchanged material "
+            "%(new_on_unchanged)d, not in the owner's words %(not_owner_said)d" % c) + "".join((
+        "; %d new demand(s) whose material could not be shown changed or unchanged" % c["new_unsettled"]
+        if c["new_unsettled"] else "",
+        "; %d unplaced repair report(s)" % c["unplaced"] if c["unplaced"] else "",
+        "; %d refusal record(s) gave no `owner_said`: UNMEASURED" % c["owner_said_unmeasured"]
+        if c["owner_said_unmeasured"] else "",
+        "; %d look(s) recorded before counting began: their three counts UNMEASURED, the figures above leave them out"
+        % c["uncounted_looks"] if c.get("uncounted_looks") else ""))
 
 
 def earlier_gaps(st, d):
@@ -1430,7 +1511,11 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         return {"parked": why}, "parked: %s" % why
     if what == "stopped":
         hold(d, why, now)
-        return {"stopped": why}, "stopped: %s" % why
+        try:
+            counts = "; %s" % close_line(close_counts(DS.load_state(d), d))
+        except (DS.Refused, OSError, ValueError) as e:
+            counts = "; coverage counts UNMEASURED: %s" % e
+        return {"stopped": why}, "stopped: %s%s" % (why, counts)
     if what != "judge":
         prior = prior_verdict(d)
         if prior and (prior.get("advisory") or (prior.get("contract") or {}).get("advisory")):
@@ -1763,6 +1848,8 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         DS.write_json(os.path.join(d, VERDICT_FILE), rec)
         hold(d, stop, now)
         msg += "; stopped: %s" % stop
+    if rec["signed"] or stop:   # the coverage stage closes, either way: its four counts
+        msg += "; %s" % close_line(close_counts(DS.load_state(d), d))
     return rec, msg
 
 
