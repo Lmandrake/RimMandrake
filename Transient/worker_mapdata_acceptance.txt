@@ -1,0 +1,55 @@
+RIMMANDRAKE_RESTART_GAME_AFTER_MAPDATA_TIMEOUT_THREE_JOBS_BURNED — acceptance evidence
+
+verify: python3 infrastructure/stevedesktop/selftest_steve_worker.py
+  base 02ca67b3a4 : 11 failed   ->  landed ab3cb4372d68 : 0 failed, 119 ok
+
+READ BY THE CONDUCTOR, not taken from the builder's report. I copied the new test onto the BASE
+worker.py and watched these 11 fail:
+  (a) a kept game whose last result timed out on readiness 'mapData' is stopped BEFORE the job
+  (b) Error in WorldGenStep in the kept game's own log stops it
+      the unmappable game's Player.log is kept beside the attempt before the stop takes it
+  (c) a static constructor dead with a TypeInitializationException stops the game
+  (e) both instruments blind: the game is KEPT and the blindness is in worker.log
+  (e') a last result that cannot be parsed is a blindness, not a wound
+      a stop says 'cannot make a map: ...', distinct from the age/map limits and from a blind keep
+      a last result whose stop was REFUSED still counts
+      a wound the cold start leaves behind costs ONE stop across three jobs, not one each
+      a wound re-dealt at every load is stopped at every load (the brake owns that case)
+      an unmappable game that cannot be stopped -> INVALID/LOAD, no run
+
+THE FIVE INPUT KINDS, and the four answers (owner, 2026-11-17):
+  mapData timeout in the prior result's note      -> 1 stop, reason "cannot make a map: ..."
+  Error in WorldGenStep in the live Player.log    -> 1 stop, log kept as Player_unmappable.log first
+  static ctor + TypeInitializationException       -> 1 stop
+  a BENIGN static-ctor line (no type-load family) -> 0 stops  <- the control, so the matcher cannot creep
+  a healthy kept game                             -> 0 stops, nothing in worker.log
+  BOTH INSTRUMENTS BLIND                          -> KEEP, and worker.log says
+      "kept the game: could not read the kept game's log (...) or the last result (none published here yet)"
+
+Why blind keeps rather than stops, from kept_game_unmappable's docstring: stopping on ignorance would
+cold-start the first job of every fresh TESTQ_HOME and could kill a human's game, while a real wound
+still costs exactly ONE job via the run's own stop. The direction is argued in the code, not assumed.
+
+ALSO PROVEN by the builder's cases: archmagi never stops however wounded; a prior result saying it
+stopped its own game does not count, but one whose stop was REFUSED does; a failing `down` gives
+INVALID/LOAD with no run; and the repeat regime over three jobs in one home stops once when the cold
+start clears the wound, three times when it is re-dealt (which is the brake's own case).
+
+SIBLINGS GREEN (run by me in the main tree): selftest_steve_worker_contract, _tier, _companion,
+_outer_copy, _reset_repair — all rc 0.
+
+UNRUN, named as such: nothing live was started. The bench is hours into a 72 h CPU soak and the brief
+said START NO GAME, so the gate's behaviour on the real host is unexercised. It needs ONE lane job on
+a kept game after this lands.
+
+TWO NON-FINDINGS the builder checked rather than reported as breakage:
+  selftest_steve_worker_state_race.py fails "the walk really ran" identically on the base commit —
+      a 3 s wall-clock test under load average 11 on this Mac.
+  selftest_contracts.py is UNMEASURED on base too (SKIP C2/C4/C8) because base commit c8d1d12855 is
+      absent. That is the same dead BASE the drain hit; filed as
+      RIMMANDRAKE_REVIVE_REPLAY_BASE_SHA_GREEN_HID_THREE_UNRUN. Two independent agents hit it tonight.
+
+SPLIT OUT, not fixed here: brake_release.py's per-mod fill_plan (>120 s a pass, brake_release.json 38
+min stale, steward.json missing its heartbeat twice) is RIMMANDRAKE_SHORTEN_BRAKE_PASS_STEWARD_MISSED_ITS_BEAT.
+The builder added one fact to it: brake_release.py would not send its own canary either, because
+neither job had a recorded non-fault cause (conversations/2026-11-14-1926-e6778a9d.md:75).
