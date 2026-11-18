@@ -270,6 +270,45 @@ the dead tick still "carries". Measured 2026-11-18 14:50 PST: 25 store items sit
 4 `checking`, 2 `stopping`) with no tick to settle them. The split moves the guard unchanged (a move, not a redesign);
 its removal is filed as `RIMMANDRAKE_RETIRE_LEASE_GUARD_TWENTY_FIVE_GHOST_LEASES`.
 
+## Phase 2: moved
+
+How a move is made (tools: `src/RimMandrake/Utils/era_reach.py`, then `src/RimMandrake/Utils/era_split.py`, each with
+its selftest): the live top-level nodes of one module go verbatim into a module named for what it does; a live class
+moves whole (dead code may still hold its instances). The old module keeps only its dead nodes and imports the live
+names back from the new one, so the dead code and its old tests run unchanged until the deletion step removes them.
+Live importers are repointed in the same commit, and the live cases of the old tests move into the new module's test.
+
+| live part | moved from | moved to | its test | sha |
+|---|---|---|---|---|
+| the one live-mods name resolver: `Index`, `resolve`, `default_index`, `nearest`, `repo_defs`, `_srchashes` and their constants (15 names, 279 of 1,384 lines) | `rimflow/relentless_names.py` | `rimflow/mod_names.py` (importer repointed: `Utils/modlist_swap.py`) | `rimflow/selftest_mod_names.py` (20 cases from `selftest_relentless_needs.py`; watched red on a mutant) | this commit |
+
+Left for the next run, in this order (each one move per commit, the launcher check after any that touches
+`detached_helper.py`, `role_launch.py`, `maturation_autonomy.py` or `cli.py`):
+
+1. `relentless_live.py` (the proof-line lint `cli.py prooflint` calls: `lint_item`, `live_rules`, `refused_proof`,
+   `refused_site`, `proof_budget`) and `relentless_live_round.py` (`proof_lines`, `live_mods`, `folders`, `site_for`,
+   `clause_tier`, `is_package`, `mods_tier`: the mod proofs' helpers) -> `proof_lint.py` and `proof_lines.py`;
+   `relentless_game.py` `flyer_hold`/`proof_lines` with them. Repoint `cli.py`, `owner_queue.py` and the ~25 mod
+   proof tests listed in the measured-reach section.
+2. `relentless.py` -> `run_store.py` (`Store`, `Effects`, `rules`, `guard`, `pilot_model`, `CHAIN_MAX_PER_DAY`,
+   `day_of`, the clone/bundle helpers), with `relentless_disk.py`, `relentless_integrity.py`, `relentless_usage.py`,
+   `relentless_wake.store_dir` beside it; `relentless_rules.json` -> `run_rules.json` (live keys only). Repoint
+   `detached_helper.py`, `circling.py`, `evidence.py`, `role_launch.py`, `maturation_autonomy.py`, `cli.py`,
+   `modledger_backfill.py`. Then the launcher check.
+3. `relentless_exam.py` (Setter seam) -> `item_exam.py`; `relentless_dispute.py` (arbiter seam) -> `stage_dispute.py`;
+   `relentless_wall.py` (the walled box they run in, `box_config`) -> `checker_box.py`; their json beside them.
+4. Deletion: every `relentless*.py` and `relentless_*.json`, the 117 era selftests, the four era tools
+   (`validator_replay.py` with `validator_replay/`, `lightspeed_wire.py`, `block_migrate.py`,
+   `replay_unreached_closes.py`), `ops_watch.py`'s relentless points and their three Utils selftests and two fixtures,
+   the 29 dead-machinery rimflow tests, the wake poke in `publish.py` and `Utils/land.sh`; one Removed row each.
+5. Then the rest of the Phase 2 table (`Utils/pulse/**`, the sims, the v3 docs, `FOUNDRY.md`, unit copies).
+
+Kept on purpose (on-disk paths live code reads, NOT renamed by this item): `/home/mandrake/rm/relentless/store`
+(`Store`'s default root: `scratch_clone.py`, `running_now.py`, `circling.py`, `evidence.py` and `role_launch.py` read
+it) and `/home/mandrake/rm/relentless/clones` (the detached-helper pool, `detached_helper.pool_root`; running helpers
+live in it). A later rename needs: no detached run alive, the pool's clones moved or reaped, `RM_DETACHED_POOL` and
+`DEFAULT_ROOT` changed in one commit, and the 128 tracked files outside the ledger, conversations and replay fixtures that spell `rm/relentless` (measured 2026-11-18) updated.
+
 ## UNMEASURED
 
 What this run could not settle, and what would settle it:
