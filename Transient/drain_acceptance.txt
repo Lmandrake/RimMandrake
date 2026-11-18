@@ -1,0 +1,49 @@
+RIMMANDRAKE_DRAIN_ITEMS_WAITING_ON_A_JUDGE_THAT_RETIRED — acceptance evidence
+verify: python3 src/RimMandrake/rimflow/acceptance/judge_blocked_drained_accept.py
+
+base 84ca416f3a : FAIL 43 open items wait on the retired judge   (rc 1)
+landed 627dc5790d6a: PASS 0 open items wait on the retired judge   (rc 0)
+Both readings taken by the Conductor in this tree, the second after the branch was
+rebased onto current origin/main (the ledger shard is union-merged, so the rebase was clean).
+
+BUCKETS, all 43:
+  closed 22   on their own landed shas. I verified ALL 22: every sha is a real commit AND
+              an ancestor of origin/main (0 of 22 failed). Four block reasons had named a
+              lesson or review-mark commit instead of the work; those were corrected first.
+  dropped 2   RYCRIT_RESTORE_DEF_AND_ART_BOTH_MISSING (the owner CUT RSW_Rycrit at 0a0d2fcc62;
+              probe: no <defName>RSW_Rycrit anywhere under src/) and HARNESS_REPAIR_CAUSE_4F477502
+              (classed ENVIRONMENT at b24bf4027e, which the item's own ## classify sends to drop).
+  re-blocked 2 on kind=owner, with a reason that does NOT name Relentless.
+  back to ready/built 17, each with a corrected proof line written into the item, nothing closed.
+
+LEFT BLOCKED, 2 — both need a RULING, not a proof, so no proof could have closed them:
+  SEKKULAATH_RISING_DESIGN_CRATER_EVENT  the crater event's two design clauses from his
+      2026-10-10 card 19 (Sekkulaath harming local Wildsteam sites; closing some world sites
+      for good). No landed sha to verify.
+  ASSAILANT_WARLAB_BUILD_MERGE  hard reads 1 and 3 of warlab_merge_gate_order_judge_brief.md
+      are unruled (read 2 IS ruled, by his card 2026-11-03, closed 2f3b549b13). Lift = his word
+      or one fresh opus judge run.
+
+AUTHORITY AUDIT (mine, on the 91 added events):
+  verbs: unblock 43, close 22, verify 21, drop 2, block 2, needs 1
+  all 91 are seat OWNER with ranBy=AGENT and perRuling=CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM
+  none carries ownerSaid or byCard, and is_his_act() reads False, so his interaction clock is untouched
+  66 carry a stamped seat-boundary override (OWNER may not <verb> X - it belongs to BENCH).
+  That override is the DOCUMENTED loud path, not a bypass: cli._stamp_owner_and_override records it
+  on the event and warns on stderr, and its own comment says 'Silent power is the failure mode here,
+  not the override itself.'
+
+COULD NOT BE PROVEN (each named in its own item, with the command the next worker runs):
+  CONTRACTS_EXCISE_ARBITER_REPLAY_FAMILIES  replay.py:40 pins BASE=c8d1d12855, which git cat-file
+      calls 'Not a valid object name' in BOTH the clone and the parent repo, so C2/C4/C8 have never
+      run and 'RESULT: GREEN' masks three unread checks. <- a real instrument finding
+  REPO_RENAME_SYMLINK_RETIRE_1  clauses 2-3 need the Windows host; clause 1 red at 7 live-tooling
+      files. Instrument note from the builder: in git grep's default BRE, dev\Rimworld means
+      devRimworld and UNDER-reads by 7 - the backslash must be doubled. Counts printed beside
+      probes of 1199 and 0.
+  GAMEENV csharp_selftest UNMEASURED (no dotnet.exe) · the live-only five (MONO_ALLOC, PROOFDROWN,
+      WORLD_NULLTEX, WRECKED_LINKS, SOORRAK) · STEVE_DEPLOY (deploy on the host) ·
+      ARCHMAGI_BACKFILL (needs the Archmagi testq path) · HARNESS_REPAIR_CAUSE_B338C64C (live testq).
+
+The agent hit its 250-turn limit at 19 remaining with the work UNCOMMITTED; I resumed it with an
+instruction to commit first and then every few items, which is how the 24 already done survived.
