@@ -82,7 +82,9 @@ FIXTURE_MAX_LIVE = 2
 # found these checks red on a doubled cap_usd, settle_s, idle_alarm_min, blind_cap_usd, cycles or runs per visit).
 FIXTURE_NUMBERS = {"cap_usd": 15, "settle_s": 180, "idle_alarm_min": 60, "blind_cap_usd": 20, "blind_auto_cycles_per_visit": 3,
                    "ingame_cap_usd": 30, "ingame_auto_runs_per_visit": 1, "steward_cap_usd": 8, "fix_cap_usd": 10,
-                   "steward_max_per_version": 12, "stalled_min": 10}
+                   "steward_max_per_version": 12, "stalled_min": 10,
+                   # and two the 2026-11-15 pin missed (Codex review 2026-11-18): the batch split and the retry count checks
+                   "build_batch_bars": 6, "launch_tries": 3}
 
 
 def load_cfg():
@@ -1779,6 +1781,11 @@ def item_names_main():
     # 2026-11-16 05:05: the tick's own launch_failed record (systemd-run never ran) read as "a hand-launched run worked
     # here" (hand_run_seen) and paused Gimme Some Slack: a run that never started is no run
     saved = MD.M.ingame_facts, MD.M.certificate
+    # RIMMANDRAKE_ISOLATE_ITEM_NAMES_CASE_READ_LIVE_DISPATCH_DIR: add_ingame reads the cert rerun's result under sdir(); unset,
+    # that is the REAL Dispatch state (it crashed where /mnt is absent, and read the live dir on Archmagi)
+    was_dir = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    scratch = tempfile.mkdtemp(prefix="item_names_dispatch_")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = scratch
     try:
         MD.M.ingame_facts = lambda root, mod: {"opened": "2026-11-16T03:25:09-08:00"}
         MD.M.certificate = lambda root, mod, stage: {}
@@ -1792,6 +1799,11 @@ def item_names_main():
            % f.get("ingame_runs"))
     finally:
         MD.M.ingame_facts, MD.M.certificate = saved
+        shutil.rmtree(scratch, ignore_errors=True)
+        if was_dir is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = was_dir
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 
