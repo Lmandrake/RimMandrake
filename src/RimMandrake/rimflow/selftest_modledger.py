@@ -482,6 +482,25 @@ check("a subject outside the classes (bar:/finding:/cause:/trap:/q: or a singlet
       std_refusal(why, "subject"), why)
 why = try_open(subject="finding:F_BLAST", body=finding("bad finding name"))
 check("a finding: name that fails the project namecheck is refused", std_refusal(why, "subject"), why)
+# a 10-word id the mod's own blind-challenge faults.json records is a recorded name (like a legacy id); an unrecorded one
+# is still refused (RIMMANDRAKE_ADMIT_TEN_WORD_FAULT_ID_INTO_KNOCKBACK_LEDGER)
+TEN = "RIMMANDRAKE_PROBE_FOUR_FIXTURE_FAULTS_NO_OFFLINE_TEST_EVER_SEES"   # not in the real repo: REPO_ROOT counts too
+why = try_open(subject="finding:" + TEN, body=finding("a ten-word fault id not yet recorded"))
+check("an unrecorded 10-word finding name is still refused", std_refusal(why, "subject"), why)
+fdir = os.path.join(rs, "design", "concepts", MOD, "version", "blind_challenge", "cycle_1", "lane2")
+os.makedirs(fdir, exist_ok=True)
+with open(os.path.join(fdir, "faults.json"), "w", encoding="utf-8") as fh:
+    json.dump({"faults": [{"id": TEN}]}, fh)
+why = try_open(subject="finding:" + TEN, body=finding("a ten-word fault id the blind challenge recorded"))
+check("a 10-word finding name recorded in the mod's blind-challenge faults.json passes", why is None, why)
+why = try_open(subject="finding:RIMMANDRAKE_PROBE_FIVE_FIXTURE_FAULTS_NO_OFFLINE_TEST_EVER_SEES",
+               body=finding("a different ten-word name"))
+check("a different 10-word name is still refused beside a recorded one", std_refusal(why, "subject"), why)
+with open(os.path.join(fdir, "faults.json"), "w", encoding="utf-8") as fh:
+    fh.write("{not json")
+why = try_open(subject="finding:" + TEN, body=finding("faults.json unreadable"))
+check("an unreadable faults.json admits nothing (refused, not crashed)", std_refusal(why, "subject"), why)
+os.remove(os.path.join(fdir, "faults.json"))
 # most tickets have no prose file: their rimflow `file` event is the whole record, and their legacy name stays valid
 os.makedirs(os.path.join(rs, "infrastructure", "state", "ledger", "events"), exist_ok=True)
 with open(os.path.join(rs, "infrastructure", "state", "ledger", "events", "BENCH.jsonl"), "a", encoding="utf-8") as fh:

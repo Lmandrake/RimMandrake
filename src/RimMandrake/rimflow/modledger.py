@@ -235,14 +235,30 @@ def cited_file_exists(root, ref):
     return d == "infrastructure/state/items" and os.path.exists(os.path.join(root, d, "closed", f))
 
 
+def _blind_fault_ids(root):
+    """The fault ids the blind challenge recorded for any mod (design/concepts/*/version/blind_challenge/cycle_*/lane*/
+    faults.json): a recorded name, like a legacy id. An unreadable or malformed file records nothing (never a crash)."""
+    ids = set()
+    pat = os.path.join(root, "design", "concepts", "*", "version", "blind_challenge", "cycle_*", "lane*", "faults.json")
+    for fp in glob.glob(pat):
+        try:
+            with open(fp, encoding="utf-8") as fh:
+                d = json.load(fh)
+        except (OSError, ValueError):
+            continue
+        faults = d if isinstance(d, list) else (d.get("faults") if isinstance(d, dict) else None)
+        ids.update(f["id"] for f in faults or () if isinstance(f, dict) and isinstance(f.get("id"), str))
+    return ids
+
+
 def _finding_name_ok(name, root):
     """A finding keeps its ticket's name: any existing rimflow item (open or closed, with a prose file or filed in the
-    rimflow ledger only), any legacy form, or a name the project namecheck would mint."""
+    rimflow ledger only), a fault id a blind challenge recorded, any legacy form, or a name the project namecheck would mint."""
     for r in {root, REPO_ROOT}:
         for sub in ("", "closed"):
             if os.path.exists(os.path.join(r, "infrastructure", "state", "items", sub, name + ".md")):
                 return None
-        if name in _filed_ids(r):
+        if name in _filed_ids(r) or name in _blind_fault_ids(r):
             return None
     if model.NAMED_ID.match(name):
         return None
