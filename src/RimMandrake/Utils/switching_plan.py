@@ -989,6 +989,22 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
             brake.update({**d2, "do": "stop", "key": d2["key"] if d2["do"] == "stop" else stop_key(live, m2.get(live) or {}, n2)})
             return ["fleet-stop"]
         return same
+    if d["do"] == "switch" and not d.get("under"):
+        # RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH: a switch made above the line (a priority or reset pull,
+        # nothing spent) waits checkpoint_grace_s after the first soft notice, so the detached runs it will SIGTERM get
+        # the checkpoint signal (.claude/hooks/switch_checkpoint_signal.py) and publish first. A switch at or under the
+        # line, or a stop, never waits: that would spend past his line (card 10:20, "Soft line, then hard stop").
+        grace = plan.get("checkpoint_grace_s") or 0
+        nt = read_json(OUT / "notice.json", {}) or {}
+        since = epoch(nt.get("since")) if nt.get("state") == "soft" else None
+        if isinstance(grace, (int, float)) and grace > 0 and (since is None or now - since < grace):
+            write_notice({**d, "do": "soft", "why": f"checkpoint grace before the switch to {d['to']}: {d.get('why')}"},
+                         now)
+            left_s = int(grace - (now - since)) if since is not None else int(grace)
+            log({**rec, "do": "grace", "acted": False,
+                 "why": f"switch to {d['to']} held {left_s} s more (checkpoint_grace_s {grace}) so running agents "
+                        f"checkpoint first; was: {d.get('why')}"})
+            return 0
     if d["do"] == "switch":
         write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"], "under": d.get("under"),
                                 "line": d.get("line")})

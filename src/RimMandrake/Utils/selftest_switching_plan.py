@@ -27,6 +27,11 @@ PP.todoist_transport = lambda title, body: PHONE.append((title, body))  # never 
 FAILS = []
 NOW = 1_800_000_000.0
 PLAN = SP.load_plan()
+# the checkpoint grace is a tunable: pinned off for every case written before it, and turned on only by its own cases
+# (RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH; the pattern of RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS)
+PLAN["checkpoint_grace_s"] = 0
+(TMP / "plan_pinned.json").write_text(json.dumps(PLAN))
+SP.PLAN_PATH = TMP / "plan_pinned.json"
 
 
 def check(ok, msg):
@@ -89,6 +94,28 @@ def manual_switch_cases(calls):
     acts = go(day, NOW + 7 * 3600)
     check("use" not in acts, "and still leaves it alone hours later, on a later pass")
 
+    # RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH: a switch made above the line (the priority pulls, nothing is
+    # spent) waits checkpoint_grace_s after the first soft notice, so detached runs checkpoint and publish first; a
+    # switch at or under the line never waits (his card: "Soft line, then hard stop")
+    plan_path.write_text(json.dumps({**plan, "checkpoint_grace_s": 240}))
+    clear()
+    (TMP / "out" / "notice.json").unlink() if (TMP / "out" / "notice.json").exists() else None
+    acts = go(day)
+    nt = json.loads((TMP / "out" / "notice.json").read_text()) if (TMP / "out" / "notice.json").exists() else {}
+    rec = json.loads((TMP / "out" / "log.jsonl").read_text().splitlines()[-1])
+    check("use" not in acts and nt.get("state") == "soft" and rec.get("do") == "grace",
+          f"grace: a switch above the line first sends the soft notice and waits (got {acts}, {nt.get('state')}, {rec.get('do')})")
+    acts = go(day, NOW + 120)
+    check("use" not in acts, f"grace: still inside the grace, no switch (got {acts})")
+    acts = go(day, NOW + 300)
+    check("use" in acts, f"grace: once the soft notice is checkpoint_grace_s old the switch goes ahead (got {acts})")
+    clear()
+    (TMP / "out" / "notice.json").unlink() if (TMP / "out" / "notice.json").exists() else None
+    live_txt.write_text("lukas")
+    acts = go({**day, "lukas": R(0, 118)})
+    check("use" in acts, f"grace: a switch off a spent account (under its line) never waits (got {acts})")
+    plan_path.write_text(json.dumps(plan))
+    live_txt.write_text("lukas")
     # the same day with no switch of his on record: the priority still pulls (the fix did not freeze the plan)
     clear()
     acts = go(day)

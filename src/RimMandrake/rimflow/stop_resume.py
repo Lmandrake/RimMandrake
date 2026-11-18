@@ -54,8 +54,10 @@ MAX_TRIES = 3          # a resume refused this many times is given up, and said 
 RETURN_GRACE_S = DH.RETURN_WAIT_S + 300     # a return not done by then is not waited for
 # a run's own transcript begins within 64 s of its launch (427 runs on 2026-11-17, measured: clone sync, then claude)
 SESSION_START_S = 300
-NO_HEADROOM = ("soft", "stop", "stopped")
-DECISIONS = ("normal", "soft", "switch", "stop", "stopped", "start", "hold", "poll", "passive")
+# "grace": a switch is held a few minutes for the checkpoint signal (RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH):
+# a run resumed then is killed again by it
+NO_HEADROOM = ("soft", "stop", "stopped", "grace")
+DECISIONS = ("normal", "soft", "switch", "stop", "stopped", "start", "hold", "poll", "passive", "grace")
 ACTIONABLE = ("resume", "park", "mark", "refuse", "give_up")
 SWEEP_UNIT = "rm-stop-resume"
 
