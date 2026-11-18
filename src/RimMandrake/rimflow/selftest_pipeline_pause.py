@@ -191,14 +191,25 @@ def main():
         # the stale-clone gate reads alike in the dry pass
         fresh()
         fst = MD.forecast(root, cfg, within_s=120, step_s=60, fx=dict(fx, clone_seen={
-            "measured": True, "behind_min": 10, "ahead": 0, "behind": 3}), now=CLOCK)
+            "measured": True, "behind_min": 10, "ahead": 0, "behind": 3, "behind_since": CLOCK - 600}), now=CLOCK)
         ok(fst["launches"] == [] and any(b["decision"] == "stale_clone" for b in fst["blocked"]),
            "a stale dispatch clone: the forecast predicts no launch, as the applying tick would refuse")
-        try:
-            MD.forecast(root, cfg, within_s=120, step_s=-60, fx=fx, now=CLOCK)
-            ok(False, "a negative --step is refused")
-        except ValueError:
-            ok(True, "a negative --step is refused")
+        for bad_step in (-60, 0):
+            try:
+                MD.forecast(root, cfg, within_s=120, step_s=bad_step, fx=fx, now=CLOCK)
+                ok(False, "--step %s is refused" % bad_step)
+            except ValueError:
+                ok(True, "--step %s is refused" % bad_step)
+        # the clone gate ages on the forecast's clock: behind 4 min at the last tick, past the 5 min line 2 min later
+        fresh()
+        seen = {"measured": True, "behind": 3, "ahead": 0, "behind_since": CLOCK - 200, "behind_min": 3.3, "at": CLOCK}
+        fca = MD.forecast(root, cfg, within_s=120, step_s=60, fx=dict(fx, clone_seen=seen), now=CLOCK)
+        PP.pause(None, "clone age", "TEST", until=CLOCK + 180, now=CLOCK)
+        fcb = MD.forecast(root, cfg, within_s=300, step_s=60, fx=dict(fx, clone_seen=seen), now=CLOCK)
+        PP.resume(None, "clone age", "TEST", now=CLOCK)
+        ok(fca["launches"] and fcb["launches"] == [] and any(b["decision"] == "stale_clone" for b in fcb["blocked"]),
+           "the forecast's clone gate ages: 3.3 min behind launches now; a pause ending at +3 min meets a clone 6.3 min "
+           "behind, so nothing launches, as the applying tick would refuse")
 
         # ---- pause all ------------------------------------------------------------------------------------------
         fresh()
@@ -296,7 +307,9 @@ def main():
                           (json.dumps({"all": None, "mods": [], "history": []}), "mods not a mapping"),
                           ("{}", "an empty mapping"),
                           ('{"all": {"why": "x", "at": 1, "until": NaN}, "mods": {}, "history": []}', "a NaN until"),
-                          ('{"all": null, "mods": {}, "history": [null]}', "a null history record")):
+                          ('{"all": null, "mods": {}, "history": [null]}', "a null history record"),
+                          ('{"all": null, "mods": {}, "history": [{"act": "auto_resume", "at": "bad"}]}',
+                           "a history record with a bad at")):
             fresh()
             with open(pf, "w") as f:
                 f.write(bad)

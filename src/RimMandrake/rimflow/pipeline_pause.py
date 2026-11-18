@@ -68,8 +68,10 @@ def load(p=None):
     except (OSError, ValueError) as e:
         raise Unreadable("%s: %s: %s" % (p, type(e).__name__, e))
     if not isinstance(d, dict) or set(d) != {"all", "mods", "history"} or not isinstance(d["mods"], dict) \
-            or not isinstance(d["history"], list) or not all(isinstance(h, dict) for h in d["history"]):
-        raise Unreadable("%s: not a pause store (want exactly all, mods and history, history a list of records)" % p)
+            or not isinstance(d["history"], list) or not all(
+                isinstance(h, dict) and isinstance(h.get("act"), str) and _num(h.get("at")) for h in d["history"]):
+        raise Unreadable("%s: not a pause store (want exactly all, mods and history; each history record an act and a "
+                         "finite at)" % p)
     bad = ([] if d.get("all") is None or _entry_ok(d["all"]) else ["all"]) + [
         m for m, e in (d.get("mods") or {}).items() if not _entry_ok(e)]
     if bad:

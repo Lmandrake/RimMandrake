@@ -2907,8 +2907,13 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     # measured before any launch: a clone behind past the alarm's threshold read an old tree, so it launches nothing
     # (RIMMANDRAKE_HOLD_TICK_LAUNCHES_ON_STALE_CLONE_GHOST_STEWARD: 51 min behind, it launched a steward run for a
     # blind record whose exit block had landed 5 min before)
-    # the dry pass (the forecast) reads the clone the last applying tick measured (fx clone_seen), so it gates alike
-    clone = clone_reading(st, now, (fx.get("clone") or (lambda: clone_counts(root)))()) if apply else fx.get("clone_seen")
+    # the dry pass (the forecast) gates on the counts the last applying tick measured (fx clone_seen), aged to its own
+    # clock by the same clone_reading (counts held, behind_since kept), so it refuses where the applying tick would
+    seen = fx.get("clone_seen")
+    clone = (clone_reading(st, now, (fx.get("clone") or (lambda: clone_counts(root)))()) if apply else
+             clone_reading({"clone": {k: seen.get(k) for k in ("behind_since", "level_at") if seen.get(k)}}, now,
+                           (seen.get("behind"), seen.get("ahead"))) if isinstance(seen, dict) and seen.get("measured")
+             else seen)
     stale = bool(clone and clone.get("measured") and (clone.get("behind_min") or 0) > CLONE_STALE_MIN)
     if stale:
         for r in rows:
@@ -2998,7 +3003,6 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
 # The owner, 2026-11-18 ~10:27 AM PST: "perhaps some kind of "up next" feature we can ping that says what WILL happen in
 # some amount of time if we do nothing, so we can confirm using its own code..."
 VOID_ITEM = "RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT"
-TICK_S = 60         # rm-maturation-dispatch.timer's cadence: the forecast steps its clock by it
 
 
 def launch_kind(cfg, r, root=None):
@@ -3068,7 +3072,7 @@ def forecast(root, cfg, within_s=1800, step_s=None, fx=None, now=None):
     run). A live run's end cannot be forecast: its mod reads UNMEASURED, never "nothing"."""
     fx = dict(fx or {})
     now = time.time() if now is None else now
-    step = float(step_s or TICK_S)
+    step = float(TICK_S if step_s is None else step_s)
     if not (step > 0 and step == step and step != float("inf")):
         raise ValueError("--step must be a positive number of seconds, not %r" % step_s)
     unmeasured = []
@@ -3178,7 +3182,7 @@ def forecast_lines(fc):
     mins = int(fc["within_s"] // 60)
     out = ["UP NEXT from %s, the next %d min, by the tick's own decision code (dry, the clock moved every %d s%s):" % (
         fc["at_pac"], mins, fc["step_s"], "" if fc["step_s"] <= TICK_S else
-        "; coarser than the %d s tick, so each time is approximate, up to %d s late" % (TICK_S, fc["step_s"] - TICK_S))]
+        "; coarser than the %d s tick, so each time is approximate, up to %d s late" % (TICK_S, fc["step_s"]))]
     if fc["launches"]:
         for x in fc["launches"]:
             k = x.get("launch") or {}
