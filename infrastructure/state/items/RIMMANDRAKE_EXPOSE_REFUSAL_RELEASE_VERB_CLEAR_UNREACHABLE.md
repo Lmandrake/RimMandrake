@@ -10,8 +10,9 @@ its history), so the next trip tells again."*
 
 **The gap:** `clear()` is reachable in-module only. The CLI exposes `check`, `submit`, `diffguard`, `repair`,
 `calibrate`, `counters` and `alarms` — no release verb — and a grep for callers of `RC.clear` across `src/` finds
-none (the hits are unrelated `.clear()` calls on dicts and sets in `walls_slots_live.py`). So an alarm that
-**blocks further judging of an item** has no operator path to release it.
+none (the hits are unrelated `.clear()` calls on dicts and sets in `walls_slots_live.py`). So an alarm whose
+`may_judge()` answer is meant to block further judging of an item (no production code reads it yet, measured
+2026-11-18) has no operator path to release it.
 
 **Measured, and it moderates the ticket:** `clear()` itself WORKS when called directly. The Conductor planted a
 `family:maturation_advance` alarm in a throwaway refusal dir and released it:
