@@ -3,7 +3,7 @@
 
 RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR (2026-11-16): the seat clone /home/mandrake/rm/bench held 150
 dirty paths (92 conversation records, 14 items whose ledger `file` event was on origin but whose prose never landed,
-5 Designer edits, 15 queue views, ...) and nothing noticed. Two classes are always safe to land and are landed here:
+5 Designer edits, 15 queue views, ...) and nothing noticed. Three classes are always safe to land and are landed here:
 
     conversations/*.md           written by ~/dev/Lodestar/bin/conversations.py, landed before only at a handoff
     infrastructure/state/items/<ID>.md, untracked, when origin's ledger has a `file` event for <ID> and origin has
@@ -14,8 +14,9 @@ dirty paths (92 conversation records, 14 items whose ledger `file` event was on 
                                  files sat here after a done run left the Dispatcher's tracking without role_done)
 
 Everything else older than STALE_MIN is counted as `disk.seat_dirt` by ops_watch (alarm OPS_SEAT_CLONE_DIRT_RESTORE):
-a writer is dirtying the seat clone instead of its own clone. A path written in the last STALE_MIN minutes is taken
-to be held by a live run and is never counted or landed.
+a writer is dirtying the seat clone instead of its own clone. A path outside the safe classes written in the last
+STALE_MIN minutes is taken to be held by a live run and is never counted; a safe-class path lands once it has
+settled (SETTLE_MIN, or CONCEPT_SETTLE_MIN for a concept folder).
 
 Every role clone (ROLE_CLONE_ROOT/<name>, rimflow/role_clones.py: the Dispatcher's role runs and the art daemon work
 there since RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES) is read and tidied the same way (clones()).
@@ -80,7 +81,7 @@ def filed_on_origin(clone, ids, ref="origin/main"):
         return set()
     pats = []
     for i in sorted(ids):
-        pats += ["-e", '"id":"%s"' % i]
+        pats += ["-e", '"%s"' % i]        # the quoted id alone: a filing written with spaces matches; parsed below
     out = git(clone, "grep", "-h", "-F", *pats, ref, "--", LEDGER, check=False)
     found = set()
     for line in out.splitlines():
@@ -88,7 +89,7 @@ def filed_on_origin(clone, ids, ref="origin/main"):
             e = json.loads(line)
         except ValueError:
             continue
-        if e.get("event") == "file" and e.get("id") in ids:
+        if isinstance(e, dict) and e.get("event") == "file" and isinstance(e.get("id"), str) and e["id"] in ids:
             found.add(e["id"])
     return found
 
@@ -135,17 +136,21 @@ def classify(clone, now=None, settle_min=SETTLE_MIN):
 
 
 def settled_concepts(clone, rows):
-    """-> the concept folders whose every dirty path is CONCEPT_SETTLE_MIN old and whose stage.json parses and names no
-    open run (`running` empty). A concept with a run open, or a stage.json that is missing or does not parse, is
+    """-> the concept folders whose every dirty path is CONCEPT_SETTLE_MIN old and unstaged, and whose stage.json parses
+    and names no open run (`running` empty). A concept with a run open, or a stage.json that is missing or does not parse, is
     never landed here: its files are a live run's, or nobody can tell."""
-    newest = {}
-    for _st, p, age in rows:
+    newest, staged = {}, set()
+    for st_, p, age in rows:
         c = CONCEPT_RE.match(p)
         if c:
             newest[c.group(1)] = min(age, newest.get(c.group(1), age))
+            if st_[0] not in " ?":
+                # anything staged is a hand edit under way: a run's close renames with os.replace and stages nothing,
+                # and a staged rename's source never reaches the landing list (Codex review 2026-11-18)
+                staged.add(c.group(1))
     out = set()
     for mod, age in newest.items():
-        if age < CONCEPT_SETTLE_MIN:
+        if age < CONCEPT_SETTLE_MIN or mod in staged:
             continue
         try:
             with open(os.path.join(clone, "design", "concepts", mod, "stage.json"), encoding="utf-8") as f:

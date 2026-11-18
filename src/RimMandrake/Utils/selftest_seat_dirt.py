@@ -111,6 +111,39 @@ def main():
         rd = seat_dirt.reading(c)
         check(rd["stale"] == 7 and rd["landable"] == 0, "after tidy the reading is 7 stale, 0 landable: %s" % rd)
         check(seat_dirt.tidy(c) == "nothing to land", "a second tidy lands nothing")
+
+        # Codex review 2026-11-18: a staged rename is two NUL fields; a spaced ledger line; a non-object JSON line
+        write(c, "design/concepts/Staged/stage.json", '{"stage": 3, "running": null}\n')
+        write(c, "design/concepts/Staged/result.json", '{"run": "r1"}\n')
+        git(c, "add", "design/concepts/Staged")
+        git(c, "commit", "-q", "-m", "staged base")
+        git(c, "push", "-q", "origin", "main")
+        t = time.time() - old
+        for n in ("stage.json", "result.json"):
+            os.utime(os.path.join(c, "design/concepts/Staged", n), (t, t))
+        git(c, "mv", "design/concepts/Staged/result.json", "design/concepts/Staged/result.r1.json")
+        rows = seat_dirt.dirty(c)
+        check(not [p for _s, p in rows if not p.startswith(("design/", "infrastructure/", "tracked", "live/"))],
+              "a staged rename's source field is no bogus path: %s" % rows)
+        t = time.time() - old
+        os.utime(os.path.join(c, "design/concepts/Staged"), (t, t))
+        cl = seat_dirt.classify(c)
+        check(not [p for p in cl["landable"] if "/Staged/" in p],
+              "a concept folder with a staged change never lands (a hand edit; its rename source would be lost): %s"
+              % cl["landable"])
+        git(c, "mv", "design/concepts/Staged/result.r1.json", "design/concepts/Staged/result.json")
+        write(c, "infrastructure/state/ledger/events/OTHER.jsonl",
+              '[{"event":"file","id":"SPACED_ITEM_Z"}]\n{"seat": "OTHER", "event": "file", "id": "SPACED_ITEM_Z"}\n')
+        git(c, "add", "infrastructure/state/ledger/events/OTHER.jsonl")
+        git(c, "commit", "-q", "-m", "spaced filing")
+        git(c, "push", "-q", "origin", "main")
+        write(c, "infrastructure/state/items/SPACED_ITEM_Z.md", "# SPACED_ITEM_Z\n", old)
+        try:
+            cl = seat_dirt.classify(c)
+        except Exception as e:  # noqa: BLE001 - the crash is the defect
+            cl = {"landable": [], "crash": repr(e)}
+        check("infrastructure/state/items/SPACED_ITEM_Z.md" in cl["landable"],
+              "a filing written with spaces is found, and a JSON array line spoils nothing: %s" % cl)
     if FAILS:
         print("FAIL %d" % len(FAILS))
         return 1
