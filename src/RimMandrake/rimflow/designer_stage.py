@@ -581,6 +581,14 @@ def authority_errors(e, where, owner_ev, concept=None, rec=None):
     owner_src = [s for s in srcs if isinstance(s, str) and s.startswith("OWNER:")]
     if sp == "owner" and not owner_src:
         errs.append("%s: speaker owner needs an OWNER:<tsn> source (Conductor text is never his quotation)" % where)
+    elif sp == "owner" and owner_ev:
+        # RIMMANDRAKE_REQUIRE_HIS_WORDS_BEHIND_SPEAKER_OWNER_RULING_PASSED: the OWNER shard also holds the Conductor's
+        # per-ruling events; one of them is not his voice. An absent event is source_errors' to refuse.
+        evs = [owner_ev.get(s[6:]) for s in owner_src]
+        evs = [x for x in evs if isinstance(x, dict)]
+        if evs and not any(x.get("ownerSaid") or x.get("byCard") for x in evs):
+            errs.append("%s: speaker owner cites only OWNER events carrying none of his words (no ownerSaid or "
+                        "byCard); a per-ruling event is the Conductor's: speaker conductor" % where)
     if e.get("quote") and sp != "owner":
         errs.append("%s: a quotation is his words only; %s text is never quoted as his" % (where, sp))
     if e.get("kind") in OWNER_ONLY:
