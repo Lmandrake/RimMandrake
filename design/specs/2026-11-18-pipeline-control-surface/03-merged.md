@@ -75,7 +75,7 @@ rejected it on a false coupling), D alone (containment only: a blocked unit repo
   call-site test and the mutant, with the drop-in as a net. It is not a security boundary against an agent
   deliberately calling `systemd-run` by absolute path under the same user.
 
-- **Instant response** (owner, 2026-11-18 ~11:20 AM PST: "we are going to have. System that is instantly
+- **Instant response** (owner, 2026-11-18 ~11:02 AM PST: "we are going to have. System that is instantly
   responsive by the time we are done here. This is not beyond our technology to achieve."). A stopping act binds
   at once, because admission reads the store at the moment of launch; `--stop-live` stops live units in the same
   command. An enabling act triggers an immediate tick, so it does not wait up to 60 s for the timer. Every verb
@@ -120,7 +120,7 @@ tests run. 5 is adopted as a wording change. 13 is moot.
 3. `queue` verbs; compact read defaults.
 4. `next` on the shared planner; containment drop-in on the live prefix; mirror belt; deadman promise.
 
-In-flight work (measured 11:10 AM): the pause builder landed `maturation_dispatch.py pause|resume|next`
+In-flight work (measured about 10:58 AM): the pause builder landed `maturation_dispatch.py pause|resume|next`
 (b206c0d34f), a repo-side switch, kept as the interim pause until slice 1 absorbs it. The void builder keeps
 going: its counter census and the Graffiti restore are needed under any design; its void record is imported as
 opening balances. The `pipe` builder (JSONL design, wrong tree in its brief, nothing landed) is stopped and
@@ -137,4 +137,19 @@ run already live by default.
 
 ## Rulings
 
-(his answers, verbatim, go here)
+Owner, by card, 2026-11-18 11:06 AM PST.
+
+1. **Does a void run's spend count toward the stage spend ceiling?** He picked "Does not count (Recommended)"
+   (the Conductor's recommended option, from pass 1's proposal): the ceiling measures what the mod cost on its
+   merits; a separate system-fault alarm must catch a fault loop.
+2. **What should turning something off do to runs already running?** He wrote his own answer, verbatim: "Each of
+   these should be specific commands. "Stop work immediately and write where you are." "Stop work at the next easy
+   spot and write where you are." "STOP NOW without write." Defaults for the system are nice, sure... should be
+   Stop work at the next easy spot and write where you are" should be the default always. But we shouldn't rely on
+   defaults. The agent should be precise in its instruction and use the right option. We don't need to prethink
+   this."
+   So: three explicit stop commands (`--write-now`, `--at-easy-spot`, `--kill`); the default is at-easy-spot;
+   agents always name the mode; `pipe off` blocks new starts only. None of the four options offered was chosen.
+   The two writing modes need a channel into a running agent, which did not exist (re-measure): a stop-request in
+   the control store delivered by a hook in the run.
+3. Same day, ~11:02 AM PST, not by card: instant response is a requirement (section 3).
