@@ -27,6 +27,7 @@ nothing (hand or system, with its why); ZERO is a measured count; UNMEASURED is 
 (that run is left exactly as the books had it, and named). Spend already burnt stays measured as spend: it is shown
 apart as void spend, never subtracted silently.
 """
+import copy
 import datetime as dt
 import hashlib
 import json
@@ -168,6 +169,10 @@ def stage_runs(st):
         m = re.match(r"run (\S+?),? ", str((h or {}).get("why") or "")) if isinstance(h, dict) else None
         if m and h.get("what") == "open":
             out[m.group(1)] = parse_time(h.get("at"))
+    for c in (st.get("budget") or {}).get("charges") or []:     # a legacy judge known only by its charge
+        ref = str((c or {}).get("ref") or "") if isinstance(c, dict) else ""
+        if ref.startswith("rm-coverage-judge-"):
+            out.setdefault(ref, parse_time(c.get("at")))
     return out
 
 
@@ -189,12 +194,13 @@ def _raw_stage(d):
 
 
 def children(root, mod, rec):
-    """-> the Designer runs and coverage judges a detached run started on MOD's concept: those opened while it was
-    live (its record's at to its end, plus a minute). A judge's second reader (<judge>-reader) is one of them."""
-    t0, t1 = rec.get("at"), rec.get("ended") or rec.get("returned")
+    """-> the Designer runs and coverage judges a detached run started on MOD's concept: those that STARTED while it
+    was live (its record's at to its end; no slack after, so a run started once it ended is never taken). No launch
+    records its parent yet, so this is by time on the one concept; `void` prints every unit it takes."""
+    t0, t1 = rec.get("at"), rec.get("ended")
     if not isinstance(t0, (int, float)) or not mod:
         return []
-    t1 = (t1 if isinstance(t1, (int, float)) else time.time()) + 60
+    t1 = t1 if isinstance(t1, (int, float)) else time.time()
     st = _raw_stage(os.path.join(root, "design", "concepts", mod)) or {}
     # a voided stage file still names its moved runs: they are children too (a second void finds the same set)
     runs = dict(stage_runs(st))
@@ -324,9 +330,8 @@ def sync_dispatch(st, cur=None):
         if not isinstance(s, dict):
             continue
         mv = s.get("voided") or []
-        back = [m for m in mv if m.get("class") == "void_hand" and m.get("unit") not in cur
-                and not m.get("collision")]
-        back = [m for m in back if _restore(s, m)]
+        back = [m for m in mv if m.get("class") == "void_hand" and m.get("unit") not in cur]
+        back = [m for m in back if _restore(s, m)]     # one whose place is taken stays saved, retried each read
         if back:
             s["voided"] = [m for m in mv if not any(m is b for b in back)]
         _strip(s, mod, lambda x: next((cur[u] for u in _units_of(x) if u in cur), None), "void_hand")
@@ -381,15 +386,18 @@ def _restore(s, m):
     b, x = m["book"], m["entry"]
     if b in DICT_BOOKS:
         book = s.setdefault(b, {})
-        if m["key"] in book:        # a newer run took the key since: it stands, this one stays out (said in status)
-            m["collision"] = "unvoided, but a newer run holds key %s: it stands" % m["key"]
+        if m["key"] in book:        # a newer run took the key since: it stands, this one stays saved (said in status)
+            m["collision"] = "unvoided, but a newer run holds %s %s: it stands, this one stays saved" % (b, m["key"])
             return False
         book[m["key"]] = x
     elif b in LIST_BOOKS:
         s[b] = sorted((s.get(b) or []) + [x], key=lambda e: e.get("at") if isinstance(e.get("at"), (int, float)) else 0)
     elif b in ONE_BOOKS or b == "road_back":
-        if s.get(b) is None:
-            s[b] = x
+        if s.get(b) is not None and s.get(b) != x:
+            m["collision"] = "unvoided, but a newer %s stands: this one stays saved" % b
+            return False
+        s[b] = x
+    m.pop("collision", None)
     return True
 
 
@@ -465,6 +473,7 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
             continue
         heal_system(s, record)
         seen = s.setdefault("void_seen", {})
+        unmeasured = set()
 
         def judge(x, book=None):
             if not isinstance(x, dict) or x.get("void"):
@@ -478,11 +487,15 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
             if seen.get(u) == "counted":
                 return None
             rec = record(u)
-            if not isinstance(rec, dict) or rec.get("status") != "finished":
-                return None      # live, or UNMEASURED: the books keep it as it is
-            why = system_cause(rec)
+            if not isinstance(rec, dict):
+                unmeasured.add(u)   # could not look: the books keep it as it is, and status names it UNMEASURED
+                return None
+            if rec.get("status") not in ("finished", "launching", "running"):
+                return None
+            why = system_cause(rec)     # a running record is void only when its unit is dead (finish never ran)
             if not why:
-                seen[u] = "counted"
+                if rec.get("status") == "finished":
+                    seen[u] = "counted"     # only an ended run's answer is final
                 return None
             if kills_left and kills_left(book, x, why):
                 return None
@@ -518,6 +531,10 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
         if isinstance(rb, dict) and rb.get("caused_by") in items - {None}:
             moved.append({"book": "road_back", "key": None, "entry": s.pop("road_back"), "class": "void_system",
                           "void": None, "why": "its steward run is void_system", "unit": None, "faults": 0})
+        if unmeasured:
+            s["void_unmeasured"] = sorted(unmeasured)
+        else:
+            s.pop("void_unmeasured", None)
         if moved:
             _moved(s).extend(moved)
             counted = set()
@@ -544,11 +561,12 @@ def faults(s):
 
 def void_spend(s, record):
     """-> (list dollars of the mod's void runs, units whose spend is UNMEASURED). True spend: shown apart."""
-    usd, unm = 0.0, []
+    usd, unm, seen = 0.0, [], set()
     for m in s.get("voided") or []:
         u = m.get("unit")
-        if not u or m["book"] in ("last_run", "road_back"):
+        if not u or m["book"] in ("last_run", "road_back") or u in seen:
             continue
+        seen.add(u)
         c = (record(u) or {}).get("cost_usd")
         if isinstance(c, (int, float)) and not isinstance(c, bool):
             usd += c
@@ -613,8 +631,9 @@ def sync_stage(st, cur=None):
         st[field] = keep
     for m in moved:
         if m["field"] == "coverage_releases" and m["entry"].get("granted_at"):
-            m["fields_before"] = {k: st.get(k) for k in ("coverage_release_granted", "coverage_stop", "status",
-                                                         "blocked_on")}
+            m["fields_before"] = {k: copy.deepcopy(st.get(k)) for k in ("coverage_release_granted", "coverage_stop",
+                                                                        "status", "blocked_on")}
+            m["fields_absent"] = [k for k in m["fields_before"] if k not in st]
             if not isinstance(st.get("coverage_release_granted"), dict):
                 st["coverage_release_granted"] = {"at": m["entry"]["granted_at"], "why": m["entry"].get("granted_why"),
                                                   "after": list(m["entry"].get("after") or [])}
@@ -623,6 +642,7 @@ def sync_stage(st, cur=None):
                 st["coverage_stop"] = {"at": stop["at"], "why": stop["short"]}
                 if st.get("status") != "blocked":
                     st["status"], st["blocked_on"] = "blocked", stop["on"]
+            m["fields_set"] = {k: copy.deepcopy(st.get(k)) for k in m["fields_before"]}
     refs = sorted({str(c.get("ref") or "") for c in (st.get("budget") or {}).get("charges") or []
                    if isinstance(c, dict) and any(str(c.get("ref") or "") in (u, "run " + u) for u in units)})
     if moved or vd.get("moved") or refs:
@@ -647,10 +667,21 @@ def _stop_before(st, at):
 
 
 def _stage_restore(st, m):
+    """Put a moved stage entry back in time order (its `at` among the entries now there; an entry with no time goes to
+    its old index), and reverse only the fields that still hold what the void installed: a grant, stop or status set
+    since (a newer grant, say) stands."""
     lst = st.setdefault(m["field"], [])
-    lst.insert(min(int(m.get("index") or 0), len(lst)), m["entry"])
+    t = parse_time((m["entry"] or {}).get("at")) if isinstance(m.get("entry"), dict) else None
+    if t is None:
+        pos = min(int(m.get("index") or 0), len(lst))
+    else:
+        pos = next((n for n, x in enumerate(lst) if isinstance(x, dict) and (parse_time(x.get("at")) or 0) > t),
+                   len(lst))
+    lst.insert(pos, m["entry"])
     for k, v in (m.get("fields_before") or {}).items():
-        if v is None:
+        if k in (m.get("fields_set") or {}) and st.get(k) != m["fields_set"][k]:
+            continue        # changed since the void: the newer value stands
+        if k in (m.get("fields_absent") or []):
             st.pop(k, None)
         else:
             st[k] = v
@@ -667,7 +698,7 @@ def status_lines(st, record=None):
     record = record or DH.read_record
     out = []
     for mod, s in sorted(((st or {}).get("mods") or {}).items()):
-        if not isinstance(s, dict) or not (s.get("voided") or s.get("system_faults")):
+        if not isinstance(s, dict) or not (s.get("voided") or s.get("system_faults") or s.get("void_unmeasured")):
             continue
         seen = set()
         for m in s.get("voided") or []:
@@ -677,6 +708,12 @@ def status_lines(st, record=None):
             seen.add(key)
             out.append("%s: VOID %s %s (%s): %s" % (mod, "hand" if m["class"] == "void_hand" else "system",
                                                     m["unit"], m["book"], m.get("why")))
+        for m in s.get("voided") or []:
+            if m.get("collision"):
+                out.append("%s: UNVOID WAITING %s: %s" % (mod, m.get("unit"), m["collision"]))
+        if s.get("void_unmeasured"):
+            out.append("%s: UNMEASURED run record(s), counted as the books had them: %s" % (
+                mod, ", ".join(s["void_unmeasured"])))
         usd, unm = void_spend(s, record)
         try:
             import maturation_dispatch as MD
@@ -712,27 +749,39 @@ def swap_verdict(root, mod, judge, back=False, runner=None):
         cur = open(vf, encoding="utf-8").read()
     except OSError:
         cur = None
+    meta = arch[:-len(".json")] + ".meta.json"
     if back:
         if not os.path.exists(arch):
             return []
+        try:
+            put = (json.load(open(meta, encoding="utf-8")) or {}).get("put_back")
+        except (OSError, ValueError):
+            put = "UNMEASURED"
+        if (judge_of(cur) if cur is not None else None) != put:
+            return []       # a newer verdict landed since the void: it stands; the archive stays as evidence
         with open(vf, "w", encoding="utf-8") as f:
             f.write(open(arch, encoding="utf-8").read())
         os.remove(arch)
-        return [rel(vf), rel(arch)]
+        if os.path.exists(meta):
+            os.remove(meta)
+        return [rel(vf), rel(arch), rel(meta)]
     if cur is None or judge_of(cur) != judge:
         return []
+    void = set(active()) | {judge}
     r = runner(["git", "-C", root, "log", "--format=%H", "--", rel(vf)], capture_output=True, text=True, timeout=60)
     old = None
     for sha in (r.stdout or "").split():
         g = runner(["git", "-C", root, "show", "%s:%s" % (sha, rel(vf))], capture_output=True, text=True, timeout=60)
-        if g.returncode == 0 and judge_of(g.stdout) not in (None, judge):
-            old = g.stdout
+        if g.returncode == 0 and judge_of(g.stdout) is not None and judge_of(g.stdout) not in void:
+            old = g.stdout      # the latest verdict of a judge that is not void
             break
     with open(arch, "w", encoding="utf-8") as f:
         f.write(cur)
+    with open(meta, "w", encoding="utf-8") as f:
+        json.dump({"void_judge": judge, "put_back": judge_of(old) if old else None}, f, indent=1)
     if old is None:     # no earlier verdict: the file goes, and prior_verdict reads none (round 1's open search)
         os.remove(vf)
     else:
         with open(vf, "w", encoding="utf-8") as f:
             f.write(old)
-    return [rel(vf), rel(arch)]
+    return [rel(vf), rel(arch), rel(meta)]

@@ -232,6 +232,10 @@ def main():
            "the void judge's spend stays measured in the budget (true), listed apart in voided.spend_refs")
         for k in ("coverage_release_granted", "coverage_stop", "status", "blocked_on", "coverage_rounds", "results"):
             ok(dst.get(k) == before_stage.get(k), "stage.json %s reads as before the void run" % k)
+        DS.write_json(DS.state_path(d), dst)    # the void verb writes it so: the unvoid below must restore from disk
+        raw = json.load(open(DS.state_path(d)))
+        ok(not any(r.get("judge") == UJ for r in raw["coverage_rounds"]) and raw["voided"]["moved"],
+           "the written stage.json carries the void (its moved entries saved under voided)")
 
         # ---- the verdict file: kept as evidence, the earlier one back ---------------------------------------------
         subprocess.run(["git", "init", "-q", root], check=True)
@@ -245,7 +249,7 @@ def main():
         paths = RV.swap_verdict(root, "Fake", UJ)
         arch = os.path.join(d, "coverage_verdict.void.%s.json" % UJ)
         ok(json.load(open(vf))["judge"] == "rm-coverage-judge-3" and json.load(open(arch))["judge"] == UJ
-           and len(paths) == 2,
+           and len(paths) == 3,
            "the void judge's verdict is kept as evidence (%s) and the earlier verdict is back" % os.path.basename(arch))
         ok(CJ.prior_verdict(d)["judge"] == "rm-coverage-judge-3",
            "the next look checks the look before the void one (prior_verdict)")
@@ -264,8 +268,45 @@ def main():
                   "releases_used"):
             ok(st["mods"]["Fake"].get(k) == st0["mods"]["Fake"][k], "unvoid: the %s book is back as it was" % k)
         ok(not st["mods"]["Fake"].get("voided"), "unvoid: the voided list is empty")
-        ok(DS.load_state(d) == applied(before_stage), "unvoid: stage.json reads exactly as the run left it")
+        back_st = DS.load_state(d)
+        ok({k: v for k, v in back_st.items() if k != "voided"} == applied(before_stage) and not back_st.get("voided"),
+           "unvoid: stage.json, read from the voided file on disk, reads exactly as the run left it")
         ok(RV.unvoid([U1], "again")[1], "a second unvoid is refused")
+
+        # ---- review cases (Codex, 2026-11-18): a newer grant survives an unvoid; partial unvoids keep time order ----
+        RV._append({"act": "void", "ts": "t", "unit": U1, "mod": "Fake", "item": ITEM1, "why": "again", "by": "B"})
+        RV._append({"act": "void", "ts": "t", "unit": UD, "mod": "Fake", "item": ITEM1, "why": "again", "by": "B",
+                    "parent": U1})
+        x = RV.sync_stage(applied(before_stage))
+        x["coverage_release_granted"] = {"at": "2026-11-19T00:00:00Z", "why": "a newer grant", "after": []}
+        RV._append({"act": "unvoid", "ts": "t", "unit": UD, "why": "partial", "by": "B"})
+        x = RV.sync_stage(x)
+        ok([h.get("at") for h in x["history"]] == sorted(h.get("at") for h in x["history"]),
+           "a partial unvoid (the child first) puts its rows back in time order")
+        RV._append({"act": "unvoid", "ts": "t", "unit": U1, "why": "partial", "by": "B"})
+        x = RV.sync_stage(x)
+        ok(x["coverage_release_granted"]["why"] == "a newer grant" and len(x["coverage_releases"]) == 1,
+           "unvoid re-applies the release but leaves a grant made since the void standing (%s)"
+           % x["coverage_release_granted"]["why"])
+        ok([h.get("at") for h in x["history"]] == sorted(h.get("at") for h in x["history"]),
+           "after both unvoids every history row is in time order")
+        # a newer verdict survives an unvoid; the predecessor skips every void judge
+        for j, v in (("rm-coverage-judge-4", "covered"), (UJ, "covered")):
+            with open(vf, "w") as f:
+                json.dump({"judge": j, "verdict": v}, f)
+            subprocess.run(["git", "-C", root, "add", vf], check=True)
+            subprocess.run(["git", "-C", root, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", j],
+                           check=True)
+        RV._append({"act": "void", "ts": "t", "unit": "rm-coverage-judge-4", "mod": "Fake", "why": "t", "by": "B"})
+        RV.swap_verdict(root, "Fake", UJ)
+        ok(json.load(open(vf))["judge"] == "rm-coverage-judge-3",
+           "the verdict put back skips every void judge (4 is void too): judge 3's")
+        with open(vf, "w") as f:
+            json.dump({"judge": "rm-coverage-judge-5", "verdict": "covered"}, f)
+        RV.swap_verdict(root, "Fake", UJ, back=True)
+        ok(json.load(open(vf))["judge"] == "rm-coverage-judge-5" and os.path.exists(arch),
+           "an unvoid never puts the void verdict over a newer one: judge 5's stands, the archive stays")
+        RV._append({"act": "unvoid", "ts": "t", "unit": "rm-coverage-judge-4", "why": "t", "by": "B"})
 
         # ---- the automatic class: void_system ----------------------------------------------------------------------
         st = state()
@@ -282,6 +323,13 @@ def main():
            "each is a system fault on the mod's own count (2), never a trial (read %d)" % RV.faults(s))
         ok(s["void_seen"].get(U1) == "counted",
            "a run judged counted is remembered (its record is not read again)")
+        st4 = {"mods": {"Fake": {"steward": {"k": {"item": "X", "unit": "rm-no-record-1", "at": T0}}}}}
+        RV.sync_system(st4, record, now=T0)
+        ok("k" in st4["mods"]["Fake"]["steward"] and st4["mods"]["Fake"]["void_unmeasured"] == ["rm-no-record-1"]
+           and any("UNMEASURED run record" in x for x in RV.status_lines(st4, record)),
+           "a run whose record cannot be read keeps its count and is NAMED UNMEASURED in status")
+        ok(RV.void_spend({"voided": [{"book": "steward", "unit": U1}, {"book": "releases_used", "unit": U1}]},
+                         record)[0] == 3.53, "void spend counts a run once, however many books held it")
         ok(RV.system_cause(dict(RECS[U1], result="timeout (- -)")).startswith("it timed out")
            and RV.system_cause(dict(RECS[U1], result="exit-code (1 -)")).startswith("the CLI exited")
            and RV.system_cause(dict(RECS[U1], result="exit-code/claude-error (1 -)")) == ""
