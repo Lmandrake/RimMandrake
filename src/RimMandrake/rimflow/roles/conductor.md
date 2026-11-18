@@ -271,6 +271,8 @@ python3 src/RimMandrake/rimflow/cli.py queue CONDUCTOR
 ```
 
 **The question watcher (a Monitor) is armed with a grep anchored to the log line's leading timestamp that excludes the log text "restart:BENCH"** (its own command text and the backstop's restart line otherwise match it), **and is stopped before HANDOFF READY**, because a live watcher holds the context backstop restart.
+A detached run of this seat that ends wakes this window by itself, with its result path (the `run_end_wake.py` Stop
+hook; RIMMANDRAKE_WAKE_CONDUCTOR_ON_RUN_END_LOG_ONLY_TODAY): read the result when it arrives; no watcher is needed for that.
 
 **Anything you owe is an owed item, filed when the sentence that creates the debt is written** (a launch you promise, a
 decision you call yours, a question you put to him, a page you say you will write):

@@ -262,6 +262,16 @@
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/role_result_before_stop.py\""
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "asyncRewake": true,
+            "timeout": 86400,
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/run_end_wake.py\""
+          }
+        ]
       }
     ],
     "WorktreeCreate": [
