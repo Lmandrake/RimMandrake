@@ -380,10 +380,24 @@
     "ref": "run rm-role-designer-1794940025",
     "stage": 5,
     "tokens": 400000
+   },
+   {
+    "at": "2026-11-18T18:04:18Z",
+    "kind": "review",
+    "ref": "rm-coverage-judge-1795025027",
+    "stage": 5,
+    "tokens": 167016
+   },
+   {
+    "at": "2026-11-18T18:05:48Z",
+    "kind": "stage",
+    "ref": "run rm-steward-graffiti-chain-1795024973",
+    "stage": 5,
+    "tokens": 0
    }
   ],
   "reserve": 60000,
-  "spent": 12781605
+  "spent": 12948621
  },
  "coverage_releases": [
   {
@@ -491,6 +505,18 @@
    "tokens": 566882,
    "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894",
    "verdict": "not_covered"
+  },
+  {
+   "at": "2026-11-18T18:03:47Z",
+   "error": null,
+   "gaps": 0,
+   "ids": [],
+   "judge": "rm-coverage-judge-1795025027",
+   "late": [],
+   "tags": {},
+   "tokens": 167016,
+   "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894",
+   "verdict": "covered"
   }
  ],
  "history": [
@@ -943,6 +969,12 @@
    "stage": 5,
    "what": "open",
    "why": "run rm-steward-graffiti-chain-1795024973, stage 5, budget 3940000"
+  },
+  {
+   "at": "2026-11-18T18:05:48Z",
+   "stage": 5,
+   "what": "retry",
+   "why": "run rm-steward-graffiti-chain-1795024973 result rejected: no result.json (a closing message is not a result)"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -1245,29 +1277,19 @@
    "why": [
     "no result.json (a closing message is not a result)"
    ]
+  },
+  {
+   "at": "2026-11-18T18:05:48Z",
+   "outcome": "rejected",
+   "run": "rm-steward-graffiti-chain-1795024973",
+   "stage": 5,
+   "why": [
+    "no result.json (a closing message is not a result)"
+   ]
   }
  ],
  "runner": "claude",
- "running": {
-  "at": "2026-11-18T18:02:55Z",
-  "inputs": {
-   "exam": "d2eafd2f45adc568544b32b44a3412f07fff492acfe189d46b733994a41e674d",
-   "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
-   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-   "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
-   "scenes": "720397b399c808dbf26f3cc2ef21c91bccad5ed6b030e5a8d492789e98df5a89",
-   "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
-   "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894"
-  },
-  "manifest": {
-   "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
-   "designer_lock.md": "a24d6b44dc4c87fd66ffe4a37428e5af7a6fdbd18d056711014b21e424587ae7"
-  },
-  "owner_uncited": [],
-  "reserved": 3940000,
-  "run": "rm-steward-graffiti-chain-1795024973",
-  "stage": 5
- },
+ "running": null,
  "schema": 1,
  "stage": 5,
  "status": "ready",
