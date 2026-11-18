@@ -16,18 +16,23 @@ The judge reads roles/designer_scene_contract.md, roles/designer_lock.md and the
 Designer's run transcripts, token figures or why the concept was picked. It answers through --json-schema, so a missing or
 malformed verdict signs nothing. Its tokens are charged to the concept (designer_stage charge --kind review).
 
-One pass lists every gap (DESIGNER_GAPJUDGE_FIX_ONE_BATCH_PER_ROUND: Pyrelands' judge named 8 gaps, then 6 different ones,
+The first look lists every gap (DESIGNER_GAPJUDGE_FIX_ONE_BATCH_PER_ROUND: Pyrelands' judge named 8 gaps, then 6 different ones,
 each batch costing a write, exam and judge cycle; 9.3M tokens, 8 chained runs in a day). The verdict carries a checklist
 with a row for every inventory capability and tree leaf, each row naming every built part and the scene that tests it. A
 missing row is re-asked once in the same session and still missing is kept in `unchecked` (a covered verdict with one
-never signs); a failed part no gap names becomes a gap. A re-judge reads the previous verdict, so a passed row whose scene
-did not change reopens only for a defect it can quote.
+never signs); a failed part no gap names becomes a gap. The second look checks the repairs (owner by card 2026-11-17,
+design/specs/2026-11-17-judge-flaws-not-polish/6_proposed_ruling_plain.md rule 2), by the same-problem rule
+(7_same_problem_rule.md, settled 2026-11-18): every earlier gap is a numbered slot the judge answers in `repairs`; a slot
+closes only when its answer says repaired, its rows this look read ok and no finding names it, and an open slot blocks as
+it was first written. Any other new finding blocks only when it quotes a passage a repair changed (present in exactly one
+of the entry's stored renderings, before and after), is a `problem` and the second reader confirms it; otherwise it is
+advisory, on the owner's short list. A failed attempt keeps the last usable verdict as its `baseline`.
 
 A passing bar is an experience (RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS, owner 2026-11-16; bar_rule.py):
 every gap carries a `bar_kind`, and only an `experience` gap blocks. A gap that pins a tuning number, an asset-variant
 count or a def's declared field (its own word, or the bar_rule detector's on its demand), and a `late` gap (new at a later
-look on material that did not change: the earlier look's miss) unless it is a serious Problem the second reader confirms
-(owner by card 2026-11-16, point 26: the judge's `severity` `problem` and the reader's `serious`), is moved to
+look) unless it quotes a passage a repair changed and is a serious Problem the second reader confirms (owner by card
+2026-11-16, point 26, narrowed by his trial of 2026-11-17: a new gap on unchanged material never blocks), is moved to
 `advisory_gaps`: stored and shown, blocking nothing; a look left with no blocking gap is `covered`. The open search for
 gaps the artifacts do not cite is round 1's only (owner by card 2026-11-16, point 14, "Open search in round 1 only"): a
 later look checks that named gaps were repaired and that no change opened one, so the loop ends. The judge does not grade its own criterion: its
@@ -35,18 +40,18 @@ later look checks that named gaps were repaired and that no change opened one, s
 judge (one fresh Opus call over the blocking records, `second_read`; `criterion_by` says which). With no second read the
 refusal is stored and shown only, and the Designer is not sent back.
 
-  release <dir> --why TEXT     a concept stopped by the loop limit gets one more judge look; a look that does not cover
-                               stops it again
+  release <dir> --why TEXT     a concept stopped by the loop limit gets one more judge look; its refusal stops it
+                               again
 
 The loop limit (RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL): every verdict is a round in stage.json coverage_rounds
-(judges charged before the limit existed count from the budget charges). The third not_covered, a fourth judge run or
+(judges charged before the limit existed count from the budget charges; a second reader's charge is its judge's, never
+a round). The second not_covered, a fourth judge run or
 judge spend past JUDGE_SPEND_MAX stops judging: the concept is blocked on REFUSAL_NOTHING_COULD_EVER_PASS, the alarm row is
-raised (refusal_contract.py) and `run` exits 3, so the Designer's run never starts. A later gap on ids no earlier verdict
-named, that the judge does not tie to a change, is tagged late: the earlier pass missed it.
+raised (refusal_contract.py) and `run` exits 3, so the Designer's run never starts.
 
 Parked for him (RIMMANDRAKE_PARK_UNATTENDED_DESIGNER_LOOPS, RIMMANDRAKE_CEIL_JUDGE_LOOPS_AT_TWICE_CAP; designer_stage
-park): when he is away (designer_stage.owner_away) the SECOND not_covered parks the concept instead of waiting for the
-third, and a loop whose charges since the first judge reach twice the cap parks it whoever is there. A park writes
+park): when he is away (designer_stage.owner_away) the second not_covered parks a concept that needs his answer, and a
+loop whose charges since the first judge reach twice the cap parks it whoever is there. A park writes
 park_summary.md for him and sets waiting_owner; `run` exits 3 while it stands, `release` refuses it, and only his own
 word on the item lifts it.
 
@@ -83,10 +88,11 @@ READER_TIMEOUT_S = 600
 BUDGET_USD = 8          # hard spend stop per judge call (spend_watchdog.py, from outside: the judge is never told its spend; owner 2026-11-12: "Don't let any burn go to 90M this time ok?")
 REASK_MIN_S = 120       # less judge time than this left: no re-ask, the missing rows go on file as unchecked
 ROW_REASK_MAX = 2       # re-asks of only the broken refusal records; one still broken is kept on file as malformed
-# The loop limit (RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL, spec 2026-11-12 refusal contract §3). EK's judge said
-# not_covered 9 times in 3 h. The third not_covered on one concept, a 4th judge run, or judge spend past 4x the measured
+# The loop limit (RIMMANDRAKE_STOP_COVERAGE_LOOP_AT_THIRD_REFUSAL, spec 2026-11-12 refusal contract §3; two looks since
+# the owner's card of 2026-11-17, rule 2: one full inspection, then one check of the repairs). EK's judge said
+# not_covered 9 times in 3 h. The second not_covered on one concept, a 4th judge run, or judge spend past 4x the measured
 # p90 stops judging: the concept is blocked on the alarm and the Designer's run never starts. `release` grants one look.
-NOT_COVERED_LIMIT = 3
+NOT_COVERED_LIMIT = 2
 JUDGE_RUNS_MAX = 4
 # weighted_v2 (role_launch.MODEL_PRICES). Measured 2026-11-12 in weighted_v1: 12 judge runs (EK 8, GimmeSomeSlack 2,
 # Pyrelands 2), p90 751,818, median 706,708; converted 2026-11-16 at x0.911, the median v2/v1 of 50 judge sessions'
@@ -122,6 +128,34 @@ REST_CLAUSE = "rest"     # a gap about no single row: a showcase's claims, the s
 REST_TEXT = "the sheet a player reads says what the tree tests, and every showcase's claims are exercised by a scene"
 CONTRACT = True          # off only in a selftest of another rule; selftest_coverage_refusal_record tests it
 MALFORMED_LIMIT = RC.MALFORMED_ALARM_AT   # malformed verdicts on one concept that stop judging: the brief FAILED
+# The four rules (owner by card 2026-11-17, "Judge ruling -> Adopt the four rules (Recommended)"; plain text in
+# design/specs/2026-11-17-judge-flaws-not-polish/6_proposed_ruling_plain.md). Rules 1 and 4 in every prompt, rule 2's
+# first-look line in round 1 only and its repair-check line in every later look, rule 3 in RECORD_TEXT.
+RULES_TEXT = (
+    "You may refuse for only three reasons: a promise is not kept (the bar says orange and the evidence shows it is "
+    "not orange); nobody would notice if a promise were broken (there is no test for it, or the test cannot fail), "
+    "and then you describe the broken mod that would get through; or the test or the paperwork is itself wrong (a "
+    "test that would fail a correct mod, or a file that says something false). "
+    "Every refusal quotes the promise it rests on. Anything else is advice and does not block: \"prove it more "
+    "thoroughly\", \"test more cases\", \"it could be better\", polish, tuning. "
+    "Only the owner's promises must be proven. A \"must not read as\" line the Designer added is a tip for thinking "
+    "of broken mods, never a separate thing that needs its own test, unless it is the owner's own words or the plain "
+    "opposite of the promise.")
+FIRST_LOOK = ("This is the one full inspection: list every gap now. The second look only checks the repairs, and after "
+              "it judging stops.")
+REPAIR_LOOK = ("This is the check of the repairs: decide whether each listed problem was fixed by reading the fix itself, "
+               "never by whether a form was filed. Raise something new only when a repair itself broke something, and "
+               "quote the changed passage.")
+# The same-problem rule (7_same_problem_rule.md): how the repair check answers, in every later look's prompt.
+REPAIR_HOW = ("Answer `repairs` with one row for EVERY earlier gap listed, by its number: `gap` (g1, g2, ...), `repaired` "
+              "true only when you read the fix and it closes that hole, false otherwise, and `evidence` (the file and place "
+              "you read). A listed gap still open is that gap: answer it false; if you also write a gap for it, tag it "
+              "`unfixed` and put its number in `since`; it blocks as it was first written, and your new wording is kept "
+              "as a note. Any other gap is new. A new gap blocks only when `since` holds the changed entry's key (as "
+              "listed, e.g. scene:sc_wall or sheet:<heading>), a newline, then a passage of that entry copied verbatim "
+              "that the repair added, altered or removed; you give it `severity` `problem`; and a second reader who did "
+              "not judge confirms it. Any other new gap, including one on unchanged material, is advisory: it goes to the "
+              "owner's short list and blocks nothing.")
 RECORD_TEXT = (
     "\n\nEvery gap is a refusal record, as detailed as the evidence it refuses, with a path to pass: `evidence` lists "
     "the concept files it rests on (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json; `file:line` "
@@ -135,8 +169,12 @@ RECORD_TEXT = (
     "one goes to a neutral fixer, not back to the Designer. `bar_kind` says what the gap is about (bar rule above); "
     "`severity` says how bad it is: " + SEVERITY_TEXT + ". Each checklist row's `evidence` names the files its parts rest on, so every file "
     "you were given is cited by some row or gap. A refusal without these is itself refused and re-asked (only the "
-    "broken records, at most twice); one still broken is kept on file as malformed and counts for nothing.")
-SCHEMA = {"type": "object", "additionalProperties": False, "required": ["verdict", "checklist", "gaps", "reasons"],
+    "broken records, at most twice); one still broken is kept on file as malformed and counts for nothing.\n\n"
+    "A refusal binds only \"close this hole\". The numbers, day counts, wind bearings and methods you suggest are one "
+    "way to close it, never a bar; the builder may close it another way. A number binds only if the owner said it. "
+    "The mod itself is never changed to hit a test's number.")
+SCHEMA = {"type": "object", "additionalProperties": False,
+          "required": ["verdict", "checklist", "gaps", "reasons", "repairs"],
           "properties": {"verdict": {"enum": ["covered", "not_covered"]},
                          "checklist": {"type": "array", "items": {
                              "type": "object", "additionalProperties": False,
@@ -163,7 +201,13 @@ SCHEMA = {"type": "object", "additionalProperties": False, "required": ["verdict
                                                                  "new_since": {"enum": list(TAGS)},
                                                                  "since": {"type": "string"},
                                                                  "late_why": {"type": "string"}})}},
-                         "reasons": {"type": "string"}}}
+                         "reasons": {"type": "string"},
+                         # the repair check's numbered slots (7_same_problem_rule.md); round 1 answers []
+                         "repairs": {"type": "array", "items": {
+                             "type": "object", "additionalProperties": False,
+                             "required": ["gap", "repaired", "evidence"],
+                             "properties": {"gap": {"type": "string"}, "repaired": {"type": "boolean"},
+                                            "evidence": {"type": "string"}}}}}}
 GAPS_SCHEMA = {"type": "object", "additionalProperties": False, "required": ["gaps"],
                "properties": {"gaps": SCHEMA["properties"]["gaps"]}}   # the row re-ask: the broken records only
 
@@ -202,13 +246,22 @@ def failed_part_gaps(checklist, gaps):
     return out
 
 
+def _usable(rec):
+    return isinstance(rec, dict) and rec.get("verdict") in ("covered", "not_covered")
+
+
 def prior_verdict(d):
-    """The verdict an earlier judge left here, when it reached one (an errored run left nothing to carry on from)."""
+    """The verdict an earlier judge left here, when it reached one. A failed attempt (an error, a timeout, a malformed
+    answer) keeps the last usable verdict as its `baseline` (7_same_problem_rule.md rule 6), so a retry checks the
+    same numbered gaps against the same hashes and texts."""
     try:
         rec = DS.read_json(os.path.join(d, VERDICT_FILE))
     except DS.Refused:
         return None
-    return rec if isinstance(rec, dict) and rec.get("verdict") in ("covered", "not_covered") else None
+    if _usable(rec):
+        return rec
+    base = rec.get("baseline") if isinstance(rec, dict) else None
+    return base if _usable(base) else None
 
 
 # Re-judge only what changed (RIMMANDRAKE_REJUDGE_ONLY_CHANGED_GAPS, owner fix D, OWNER.jsonl:1794527688430451936).
@@ -284,6 +337,18 @@ def entries(d, read=None):
             body.append(line)
         put(head, body)
     return out
+
+
+def flat(s):
+    return " ".join(str(s).split())
+
+
+def entry_texts(d, read=None):
+    """-> {key: the entry as the program renders it to a judge (a sheet section's text, else json.dumps with
+    ensure_ascii False, as delta_prompt shows it), whitespace collapsed}. Stored on every verdict as `entry_text`, so the
+    next look can tell a passage a repair changed from one that only sits in a changed entry."""
+    return {k: flat(v if isinstance(v, str) else json.dumps(v, ensure_ascii=False))
+            for k, v in entries(d, read).items()}
 
 
 def entry_hashes(d, read=None):
@@ -364,12 +429,13 @@ def delta_prompt(d, repo, dp, round_no):
     rel = CT.concept_rel(d, repo)
     claims = {c["gap"]: c["evidence"] for c in dp["claims"]}
     body = ["You are the coverage judge for the RimMandrake concept at %s, on a re-judge: round %d. A previous judge "
-            "listed every gap; the Designer says it fixed some of them. You judge ONLY what is below. Read "
+            "listed its gaps; the Designer says it fixed some of them. You judge ONLY what is below. Read "
             "src/RimMandrake/rimflow/roles/designer_scene_contract.md (the proof-scene contract) first. Do not reread the "
             "concept's files whole: everything to judge is quoted here, and you open a file only at the place a claim's "
             "evidence names, to check it. Do not read result.*.json, log.md, stage.json or any transcript, and edit "
-            "nothing. The third not_covered verdict stops judging, so be whole on what you are shown." % (rel, round_no),
-            "", "## Gaps the Designer claims fixed (check each: still open -> a gap tagged `unfixed`)"]
+            "nothing. The second not_covered verdict stops judging." % (rel, round_no),
+            "", RULES_TEXT, "", REPAIR_LOOK + " " + REPAIR_HOW,
+            "", "## Gaps the Designer claims fixed (check each and answer its `repairs` row)"]
     for g in dp["claimed_gaps"]:
         body.append("- %s (ids %s; was: %s; at %s)\n  evidence: %s" % (
             g.get("gid"), ", ".join(g.get("ids") or []) or "none", g.get("what"), g.get("where"), claims[g["gid"]]))
@@ -383,63 +449,192 @@ def delta_prompt(d, repo, dp, round_no):
     if not dp["changed"]:
         body.append("(none)")
     body += ["", "## Gaps still open, carried on file. A carried gap is closed when every row on its ids that you "
-             "write this look is all ok; one you find still open, write its row with the part not ok."]
+             "write this look is all ok; one you find still open, write its row with the part not ok. It also needs its "
+             "`repairs` row to say repaired."]
     body += ["- %s: %s" % (g.get("gid"), " ".join(str(g.get("what") or "").split())) for g in dp["carried"]] or ["(none)"]
-    body += ["", "Write `checklist` with one row for each of these ids, none skipped: %s. A gap on anything not shown "
-             "above is the earlier pass's miss: tagged `late` with `late_why` it is kept, and it blocks only when you give "
-             "it `severity` `problem` and a second reader who did not judge confirms it; otherwise it is dropped. This "
-             "is a later round, and the open search was round 1's: do not hunt for new gaps elsewhere. Answer `covered` "
-             "only when every claimed gap is fixed and no change opened one.\n\nThe bar rule: %s" % (", ".join(dp["ids"]) or "(none)", BR.RULE_TEXT)]
+    body += ["", "Write `checklist` with one row for each of these ids, none skipped: %s. This is a later round, and "
+             "the open search was round 1's: do not hunt for new gaps elsewhere. Answer `covered` only when every gap "
+             "listed above is repaired and no repair broke anything.\n\nThe bar rule: %s" % (
+                 ", ".join(dp["ids"]) or "(none)", BR.RULE_TEXT)]
     return "\n".join(body) + RECORD_TEXT
 
 
-# A carried gap closes by the judge's own rows, never by a claim form (owner by card 2026-11-17, rule 2 of
-# design/specs/2026-11-17-judge-flaws-not-polish/6_proposed_ruling_plain.md: the repair check decides "by reading the
-# fix itself, never by whether a form was filed"). Pyrelands look 8 redid every row its three carried gaps name, every
-# part ok, and the merge refused anyway because no claim form matched.
-def _closed_carried(rec, dp):
-    """-> (closed, open): the carried gaps the judge's OWN rows this look prove repaired, and the rest. Read before the
-    prior rows are appended, so a row the judge did not write this look is "could not look", not "ok": only a row this
-    look, with at least one part and every part ok True, reads a repair. A gap the judge returned this look on any of
-    its ids (kept or dropped by the merge) is still open whatever its rows say."""
-    rows = {}
-    for r in rec.get("checklist") or []:
+# The same-problem rule (design/specs/2026-11-17-judge-flaws-not-polish/7_same_problem_rule.md, settled 2026-11-18 after
+# four Codex build rounds each lost on matching a second-look gap to a first-look one by its wording). The program never
+# matches text: each earlier gap is a numbered slot the judge answers in `repairs`, and identity is the slot's number
+# and rows. Unsure = open.
+GID = re.compile(r"\bg\d+\b")
+QUOTE_MIN = 12     # characters: a changed passage shorter than this proves nothing (an id, a word)
+
+
+def _slots(slots, rows, repairs, seen):
+    """Rules 1-3. slots: the earlier gaps (each with its gid); rows: the judge's OWN checklist this look; repairs: its
+    `repairs` answer, or None for an answer in the old form (read by its rows, RIMMANDRAKE_CLOSE_CARRIED_GAPS_REPAIRED_
+    WITHOUT_CLAIM_FORM); seen: every finding this look, kept or dropped. A finding names a slot by its number in `since`,
+    or (tagged `unfixed`, a failed part, or any finding in the old form) by sharing its rows. A slot closes only
+    when its answer says repaired (old form: every id has a row this look), every row on its ids this look is all ok,
+    and nothing names it. -> (closed, still open (with `second_look` notes), the findings that named a slot)."""
+    by_id = {}
+    for r in rows or []:
         if isinstance(r, dict):
-            rows.setdefault(r.get("id"), []).append(r)   # two rows on one id: every one of them must read ok
-    repeated = {i for g in (rec.get("gaps") or []) + (rec.get("dropped") or []) if isinstance(g, dict)
-                for i in g.get("ids") or []}
+            by_id.setdefault(r.get("id"), []).append(r)   # two rows on one id: every one of them must read ok
 
-    def all_ok(i):
-        rs = rows.get(i) or []
-        return bool(rs) and all(
-            (r.get("parts") or []) and all(isinstance(p, dict) and p.get("ok") is True for p in r["parts"]) for r in rs)
-
+    def ok(r):
+        return bool(r.get("parts")) and all(isinstance(q, dict) and q.get("ok") is True for q in r["parts"])
+    gids = {g.get("gid") for g in slots}
+    said = None
+    if repairs is not None:
+        said = {}
+        for a in repairs:
+            if isinstance(a, dict) and isinstance(a.get("gap"), str):   # two answers on one slot: both must say repaired
+                said[a["gap"]] = said.get(a["gap"], True) and a.get("repaired") is True
+    notes, naming = {}, []
+    for g in seen:
+        if not isinstance(g, dict):
+            continue
+        ids = {i for i in g.get("ids") or [] if isinstance(i, str)}
+        named = set(GID.findall(str(g.get("since") or ""))) & gids
+        if repairs is None or g.get("from_rows") or g.get("new_since") == "unfixed":
+            named |= {sl.get("gid") for sl in slots if ids & set(sl.get("ids") or [])}
+        for gid in named:
+            notes.setdefault(gid, []).append({k: g.get(k) for k in ("what", "where", "ids", "observed", "new_since",
+                                                                    "since") if g.get(k) not in (None, "", [])})
+        if named:
+            g["names_slot"] = sorted(named)
+            naming.append(g)
     closed, still = [], []
-    for g in dp["carried"]:
-        ids = list(g.get("ids") or [])
-        # an id that is not a readable row name is an id the look could not read: the gap stays open
-        read_ok = bool(ids) and all(isinstance(i, str) for i in ids) and not (set(ids) & repeated) \
-            and all(all_ok(i) for i in ids)
-        (closed if read_ok else still).append(g)
-    return closed, still
+    for sl in slots:
+        ids = list(sl.get("ids") or [])
+        readable = all(isinstance(i, str) for i in ids)   # an id that is not a row name could not be read: open
+        rows_ok = readable and all(ok(r) for i in ids for r in by_id.get(i) or [])
+        if said is None:
+            good = bool(ids) and readable and all(by_id.get(i) for i in ids) and rows_ok
+        else:
+            good = said.get(sl.get("gid")) is True and rows_ok
+        if good and sl.get("gid") not in notes:
+            closed.append(sl)
+        else:
+            still.append(dict(sl, second_look=notes[sl["gid"]]) if sl.get("gid") in notes else sl)
+    return closed, still, naming
 
 
-def delta_merge(rec, dp):
+def _answered(closed):
+    return [{"gid": g.get("gid"), "ids": list(g.get("ids") or []), "what": g.get("what")} for g in closed]
+
+
+def changed_passage(g, before, after):
+    """Rule 4 (a): -> (entry key, passage) when g's `since` is an entry key, a newline and a passage of at least
+    QUOTE_MIN characters present in exactly one of that entry's renderings before and after (entry_texts), else None.
+    before None: the prior verdict stored no renderings, so nothing can be shown to have changed."""
+    if not isinstance(before, dict):
+        return None
+    key, sep, q = str(g.get("since") or "").partition("\n")
+    key = key.strip().strip("`'\"")
+    if not sep or key not in set(before) | set(after or {}):
+        return None
+    b, a = str(before.get(key) or ""), str((after or {}).get(key) or "")
+    for f in (lambda t: t, _unescape):   # as the prompt showed it (JSON escapes kept), and as the file reads
+        qq, bb, aa = f(flat(q)).strip("`'\""), f(b), f(a)
+        if len(qq) >= QUOTE_MIN and (qq in bb) != (qq in aa):
+            return key, qq
+    return None
+
+
+def _unescape(t):
+    return flat(t.replace("\\n", " ").replace('\\"', '"').replace("\\\\", "\\"))
+
+
+def classify_new(rec, before, after, refuser):
+    """Rule 4 over this look's findings that named no slot. One the judge tagged `unfixed` ("still open") that points at
+    no slot is an unplaced repair report: it stays and blocks. Any other new finding stays only when it quotes a changed
+    passage (then it is `late`, the miss_of the last refuser, and blocks only as a confirmed `problem`, bar_rule.blocks);
+    the rest is advisory, on the owner's short list."""
+    keep, adv = [], []
+    for g in rec.get("gaps") or []:
+        if not isinstance(g, dict) or g.get("carried"):
+            keep.append(g)
+            continue
+        if g.get("new_since") == "unfixed" and not g.get("from_rows"):
+            g.update(unplaced=True)
+            keep.append(g)
+            continue
+        cp = changed_passage(g, before, after)
+        if cp:
+            if g.get("new_since") != "late":
+                g["judge_said"] = g.get("new_since")
+            g.update(new_since="late", miss_of=refuser, repair_passage={"entry": cp[0], "passage": cp[1]})
+            keep.append(g)
+        else:
+            adv.append(dict(g, short_list=True, miss_of=refuser, advisory_why=(
+                "a new finding at the check of the repairs that quotes no passage a repair changed: advisory, for the "
+                "owner's short list (owner, 2026-11-17 trial; 7_same_problem_rule.md rule 4)")))
+    rec["gaps"] = keep
+    if adv:
+        rec["advisory_gaps"] = list(rec.get("advisory_gaps") or []) + adv
+    # every new finding's ids, blocking or advisory: the judge's misses and the repairs' breaks, counted per round
+    late = list(dict.fromkeys(i for g in keep + list(rec.get("advisory_gaps") or []) if g.get("miss_of")
+                              for i in g.get("ids") or [REST_CLAUSE]))
+    if late:
+        rec["late"] = late
+    else:
+        rec.pop("late", None)
+    return rec
+
+
+def reopen_named(rec, new, slots):
+    """A record re-asked after the slots were read (the broken-row re-ask) that names a slot is that slot's note, never
+    its own refusal, and a slot it names that had closed opens again (rule 2: anything calling it open keeps it open)."""
+    by_gid = {s.get("gid"): s for s in slots if isinstance(s, dict)}
+    for g in new:
+        ids = {i for i in g.get("ids") or [] if isinstance(i, str)}
+        named = set(GID.findall(str(g.get("since") or ""))) & set(by_gid)
+        if g.get("new_since") == "unfixed":
+            named |= {gid for gid, s in by_gid.items() if ids & set(s.get("ids") or [])}
+        if not named:
+            continue
+        rec["gaps"] = [x for x in rec.get("gaps") or [] if x is not g]
+        note = {k: g.get(k) for k in ("what", "where", "ids", "observed", "new_since", "since") if g.get(k) not in (None, "", [])}
+        for gid in sorted(named):
+            held = next((x for x in rec["gaps"] if x.get("carried") and x.get("gid") == gid), None)
+            if held is None:   # it had closed: open again, as first written
+                rec["answered"] = [a for a in rec.get("answered") or [] if a.get("gid") != gid]
+                held = dict(by_gid[gid], carried=True, new_since="unfixed")
+                rec["gaps"].append(held)
+            held["second_look"] = list(held.get("second_look") or []) + [note]
+    if any(x.get("carried") for x in rec.get("gaps") or []) and rec.get("verdict") == "covered":
+        rec["verdict"] = "not_covered"
+    return rec
+
+
+def rejudge_slots(rec, prior, repairs):
+    """A full re-judge on a refusing prior verdict: every earlier gap is a slot (rules 1-3)."""
+    slots = [g for g in prior.get("gaps") or [] if isinstance(g, dict) and g.get("gid")]
+    closed, still, naming = _slots(slots, rec.get("checklist"), repairs, rec.get("gaps") or [])
+    rec["gaps"] = [g for g in rec.get("gaps") or [] if not any(g is x for x in naming)] + [
+        dict(g, carried=True, new_since="unfixed") for g in still]
+    rec["answered"] = _answered(closed)
+    return rec
+
+
+def delta_merge(rec, dp, repairs=None):
     """Fold a delta judge's answer into a whole verdict: the gaps it found within what it was shown (plus late gaps
-    with a why), the carried gaps its own rows did not close (`_closed_carried`), and the prior rows it did not redo. A
-    carried gap left open keeps a covered word from standing; a closed one is listed in rec["answered"]."""
+    with a why), every earlier gap (claimed or carried) its slot did not close (`_slots`), and the prior rows it did not
+    redo. A slot left open keeps a covered word from standing; a closed one is listed in rec["answered"]."""
     scope = set(dp["ids"])
     kept, dropped = [], []
     for g in rec.get("gaps") or []:
         ids = set(g.get("ids") or [])
         # a change to shared material (floor, sheet, scope: no row of its own) can open a gap on any row: kept when the
         # judge tags it changed or regression (RIMMANDRAKE_KEEP_GAPS_OPENED_BY_SHARED_MATERIAL_CHANGES)
+        # an `unfixed` report is never dropped: it names a slot, or it is an unplaced repair report (_slots, classify_new)
         if (ids & scope) or (not ids and dp["loose"]) or (g.get("new_since") == "late" and CT.txt(g.get("late_why"))) \
-                or (dp["loose"] and g.get("new_since") in ("changed", "regression")):
+                or (dp["loose"] and g.get("new_since") in ("changed", "regression")) or g.get("new_since") == "unfixed":
             kept.append(g)
         else:
             dropped.append(dict(g, dropped="a new gap on material that did not change, not tagged late with a why"))
-    answered, still_open = _closed_carried(dict(rec, gaps=kept, dropped=dropped), dp)
+    slots = list(dp.get("claimed_gaps") or []) + list(dp["carried"])   # a claim decides what is shown, never a closure
+    answered, still_open, naming = _slots(slots, rec.get("checklist"), repairs, kept + dropped)
+    kept = [g for g in kept if not any(g is x for x in naming)]
     carried = [dict(g, carried=True, new_since="unfixed") for g in still_open]
     redone = {r.get("id") for r in rec.get("checklist") or [] if isinstance(r, dict)}
     rec["checklist"] = list(rec.get("checklist") or []) + [
@@ -447,9 +642,8 @@ def delta_merge(rec, dp):
     rec["gaps"] = kept + carried
     if dropped:
         rec["dropped"] = dropped
-    if dp["carried"]:   # absent = nothing was carried to read; [] = they were read and none closed
-        rec["answered"] = [{"gid": g.get("gid"), "ids": list(g.get("ids") or []), "what": g.get("what")}
-                           for g in answered]
+    if slots:   # absent = nothing was carried to read; [] = they were read and none closed
+        rec["answered"] = _answered(answered)
     else:
         rec.pop("answered", None)   # a second answer in one session replaces the first: never a stale closure
     if carried and rec.get("verdict") == "covered":
@@ -457,16 +651,25 @@ def delta_merge(rec, dp):
     return rec
 
 
-def rounds(st, d=None):
+READER_SUFFIX = "-reader"    # llm_reader's charge ref: its judge's unit + this
+
+
+def rounds(st, d=None, readers_as_rounds=False):
     """-> every judge round on this concept, oldest first: stage.json's coverage_rounds, plus each earlier judge the
     budget charges name with no round on file (before the loop limit existed). An old round's verdict is known only when
     coverage_verdict.json is that judge's; its tokens are its charges, or the p90 when it was charged unmeasured."""
-    recorded = [r for r in st.get("coverage_rounds") or [] if isinstance(r, dict)]
+    recorded = [dict(r) for r in st.get("coverage_rounds") or [] if isinstance(r, dict)]
     known = {r.get("judge") for r in recorded}
     last = prior_verdict(d) if d else None
-    legacy = {}
+    legacy, reader = {}, {}
     for c in (st.get("budget") or {}).get("charges") or []:
         ref = c.get("ref") if isinstance(c, dict) else None
+        if isinstance(ref, str) and ref.startswith(UNIT_PREFIX) and ref.endswith(READER_SUFFIX) and not readers_as_rounds:
+            # a second reader's charge (llm_reader) is its judge's spend, never a round (it was, until 2026-11-18:
+            # Graffiti and LeaningScrub each read one phantom round)
+            j = ref[:-len(READER_SUFFIX)]
+            reader[j] = reader.get(j, 0) + (JUDGE_P90_TOKENS if c.get("kind") == "unmeasured" else int(c.get("tokens") or 0))
+            continue
         if isinstance(ref, str) and ref.startswith(UNIT_PREFIX) and ref not in known:
             r = legacy.setdefault(ref, {"judge": ref, "at": c.get("at"), "verdict": None, "tokens": 0, "legacy": True})
             if c.get("kind") == "unmeasured" or r["tokens"] is None:
@@ -476,27 +679,53 @@ def rounds(st, d=None):
     for r in legacy.values():
         if last and last.get("judge") == r["judge"]:
             r["verdict"] = last.get("verdict")
-    return sorted(legacy.values(), key=lambda r: str(r.get("at"))) + recorded
+        if r["judge"].endswith(READER_SUFFIX):
+            r["reader_phantom"] = True    # only when readers_as_rounds: the count an old release was written against
+    out = sorted(legacy.values(), key=lambda r: str(r.get("at"))) + recorded
+    for r in out:
+        if reader.get(r.get("judge")):
+            r["reader_tokens"] = reader.pop(r["judge"])
+    if reader:   # a reader whose judge has no round on file: its spend still counts, on a spend-only row
+        out.append({"judge": None, "verdict": None, "tokens": sum(reader.values()), "reader_only": True})
+    return out
 
 
 def spend(rs):
-    return sum(JUDGE_P90_TOKENS if r.get("tokens") is None else int(r["tokens"]) for r in rs)
+    return sum((JUDGE_P90_TOKENS if r.get("tokens") is None else int(r["tokens"])) + int(r.get("reader_tokens") or 0)
+               for r in rs)
+
+
+def _looks(rs):
+    """The judge runs among rounds(): a spend-only reader row is not a run."""
+    return [r for r in rs if not r.get("reader_only")]
 
 
 def stop_reason(st, d=None):
-    """-> why judging stops on this concept now, or None. After a release, exactly one more look: a look that did
-    not cover stops again."""
+    """-> why judging stops on this concept now, or None. After a release, one more look: its refusal stops again (an
+    error, a timeout or a malformed round is no look; the caps count them)."""
     rs = rounds(st, d)
     rel = [x for x in st.get("coverage_releases") or [] if isinstance(x, dict)]
     if rel:
-        after = rs[int(rel[-1].get("rounds_at") or 0):]
-        if after and after[-1].get("verdict") != "covered":
+        if isinstance(rel[-1].get("judges_at"), list):
+            before = set(rel[-1]["judges_at"])
+            after = [r for r in rs if r.get("reader_only") or r.get("judge") not in before]
+        else:   # written before 2026-11-18, counted with the phantom reader rounds: resolved against that count
+            old = rounds(st, d, readers_as_rounds=True)[int(rel[-1].get("rounds_at") or 0):]
+            keep = {r.get("judge") for r in old if not r.get("reader_phantom")}   # a phantom is dropped, never promoted
+            after = [r for r in rs if r.get("judge") in keep or r.get("reader_only")]
+        tail = _looks(after)
+        # the one look is a well-formed answer: an error or a timeout is no look and a malformed round is not one
+        # (the caps below still count them); its refusal stops judging again
+        refused = [r for r in tail if r.get("verdict") == "not_covered"]
+        if refused:
+            tail = tail[:tail.index(refused[0]) + 1]
+            at = len(_looks(rs)) - len(_looks(after)) + len(tail)
             if rel[-1].get("final"):
                 return ("the final look (granted %s, after %s) at round %d was %s: the owner's to decide" % (
                     rel[-1].get("granted_at"), ", ".join(rel[-1].get("after") or []) or "nothing",
-                    len(rs) - len(after) + 1, after[-1].get("verdict") or "no verdict"))
+                    at, tail[-1].get("verdict") or "no verdict"))
             return "released for one more look at round %d; that look was %s" % (
-                len(rs) - len(after) + 1, after[-1].get("verdict") or "no verdict")
+                at, tail[-1].get("verdict") or "no verdict")
         # RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: the caps still bind after a release, counted from it
         return _caps(after, " since the release")
     nc = sum(1 for r in rs if r.get("verdict") == "not_covered")
@@ -511,8 +740,8 @@ def _caps(rs, since):
     if bad >= MALFORMED_LIMIT:
         return "%d malformed verdicts%s (limit %d): the coverage brief FAILED its refusal contract" % (
             bad, since, MALFORMED_LIMIT)
-    if len(rs) >= JUDGE_RUNS_MAX:
-        return "%d judge runs%s (limit %d)" % (len(rs), since, JUDGE_RUNS_MAX)
+    if len(_looks(rs)) >= JUDGE_RUNS_MAX:
+        return "%d judge runs%s (limit %d)" % (len(_looks(rs)), since, JUDGE_RUNS_MAX)
     if spend(rs) >= JUDGE_SPEND_MAX:
         return "judge spend %d tokens%s (limit %d, 4x the p90)" % (spend(rs), since, JUDGE_SPEND_MAX)
     return None
@@ -603,7 +832,9 @@ def release(d, why, now=None, after=None, item_state=None):
             why, ", ".join(after)))
         DS.write_json(DS.state_path(d), st)
         return st
-    rec = {"at": DS.now_iso(), "why": why, "rounds_at": len(rounds(st, d))}
+    rs = rounds(st, d)
+    rec = {"at": DS.now_iso(), "why": why, "rounds_at": len(rs),
+           "judges_at": [r.get("judge") for r in _looks(rs)]}   # the boundary by judge, never by a count
     if isinstance(g, dict):
         waits = grant_waits(st, item_state, d)
         if waits:
@@ -721,6 +952,8 @@ def reader_items(rec, crit):
                 "smallest_fix": g.get("smallest_fix")}
         if _late(g):   # the reader confirms a late gap's seriousness or not (bar_rule.blocks); the judge's own word is not shown
             item.update(late=True, late_why=g.get("late_why") or "")
+            if g.get("repair_passage"):
+                item["repair_passage"] = g["repair_passage"]
         items.append(item)
     return gaps, items
 
@@ -731,8 +964,8 @@ def reader_prompt(items):
             "passes: `sound` (a fair bar a correct mod could pass, about something a player would notice), `flawed` "
             "(wrong, ambiguous, or not a bar under the rule below) or `unattainable` (nothing could ever pass it); give "
             "`criterion_why`, one sentence, and the refusal's `bar_kind`. A refusal marked `late` was found at a later "
-            "look on material that did not change, after an earlier look missed it; it blocks only when you confirm it "
-            "serious: `serious` true only when what it refuses is a Problem a player would reject (a defect, or an "
+            "look, after an earlier look refused; on the check of the repairs it quotes a passage a repair changed "
+            "(`repair_passage`); it blocks only when you confirm it serious: `serious` true only when what it refuses is a Problem a player would reject (a defect, or an "
             "experience a player would reject as strange or disappointing), false for anything less; for a refusal not "
             "marked `late`, answer `serious` false (it is not read). Read no file and edit nothing.\n\nThe bar "
             "rule: %s\n\nThe refusals (JSON, in order):\n%s\n\nAnswer `grades`, exactly one per refusal, in order."
@@ -1005,21 +1238,24 @@ LATER_SEARCH = ("This is a later round, and the open search was round 1's: now o
 
 def prompt(d, repo, ids=(), prior=False, round_no=1):
     rel = CT.concept_rel(d, repo)
+    slots = [g for g in ((prior_verdict(d) or {}).get("gaps") or []) if isinstance(g, dict)] if prior else []
     again = ("A previous judge's verdict is in %s/%s. Check each of its gaps first. A part it passed whose scene has not "
              "changed since stays passed unless you can quote the defect in the scene or the code. Tag every gap's "
              "`new_since`: `unfixed` (that verdict named it and it is still open), `changed` (it is new because an "
              "artifact changed since that verdict; `since` names the file and what changed), `regression` (that verdict "
              "passed it and a change broke it; `since` names the change), or `late` (it was there then and that judge "
              "missed it: say so). Tag a newly discovered gap on unchanged material `late` and explain the earlier miss. "
-             "The program determines its blocking status from the recorded history. A late gap blocks only when you "
-             "give it `severity` `problem` and a second reader who did not judge confirms it; any other late gap is "
-             "advisory. " % (rel, VERDICT_FILE)) if prior else (
-        "This is the first verdict on this concept: tag every gap `new_since` `first`, and leave nothing for later: a gap "
-        "a later judge finds that was already there is recorded as this pass's miss and blocks only if it is a serious "
-        "Problem a second reader confirms, so a gap you hold back is most likely a gap that is lost. ")
-    again += ("This is judge round %d. The third not_covered verdict on a concept stops judging and blocks it for the "
-              "Conductor, so the list must be whole now. " % round_no)
-    return (
+             "The program determines its blocking status from the recorded history. " % (rel, VERDICT_FILE)
+             + REPAIR_LOOK + " " + REPAIR_HOW + " The earlier gaps, by number: "
+             + ("; ".join("%s (ids %s): %s" % (g.get("gid"), ", ".join(g.get("ids") or []) or "none",
+                                               " ".join(str(g.get("what") or "").split())) for g in slots) or "(none)")
+             + ". ") if prior else (
+        FIRST_LOOK + " Tag every gap `new_since` `first`, and leave nothing for later: a gap a later judge finds on "
+        "material that did not change is advisory, it goes to the owner's short list and cannot send the mod back, so a "
+        "gap you hold back is a gap that is lost. ")
+    again += ("This is judge round %d. The second not_covered verdict on a concept stops judging and blocks it for the "
+              "Conductor. " % round_no)
+    return ((
         "You are the coverage judge for the RimMandrake concept at %(rel)s. You did not write it and you sign nothing "
         "yourself: you return a verdict and a program signs on it. Read, in this order: "
         "src/RimMandrake/rimflow/roles/designer_scene_contract.md (the proof-scene contract), "
@@ -1043,8 +1279,9 @@ def prompt(d, repo, ids=(), prior=False, round_no=1):
         "sheet's claim and the tested experience. State the evidence and attainable repair. Finish when each required "
         "capability, leaf and claim has been assessed, every failed assessment has a refusal record, and every "
         "remaining assessment has supporting evidence. Return `covered` when that review leaves no blocking gap.\n\n"
+        + RULES_TEXT + "\n\n" + ("" if prior else
         "This one pass must list EVERY gap: each round of gaps costs a full rewrite, exam and judge, so a gap held back "
-        "for later is the failure this checklist exists to stop. Do not stop at the first few. Before you answer, write "
+        "for later is the failure this checklist exists to stop. Do not stop at the first few. ") + "Before you answer, write "
         "`checklist`, one row for each of these ids and none skipped: %(ids)s. In each row's `parts`, name every separate "
         "thing a player would notice that capability or leaf ships or tests (one effect among several, a creature that "
         "must appear, a control that must fail), each with the id of the scene that tests it ('' if none) and `ok`; a "
@@ -1054,7 +1291,7 @@ def prompt(d, repo, ids=(), prior=False, round_no=1):
         "Add an advisory reason requesting an experience-based replacement. Quote any intended experience stated in "
         "the supplied artifacts. Where none is stated, write `intended experience unspecified in source`. A part waived or out in his words, or an offline leaf the contract exempts, is ok with the reason in "
         "`what`. Every part not ok must be in a gap, and the gap's `ids` names its rows; a gap about no single row "
-        "(a showcase's claims, the sheet) has empty `ids`. %(again)s\n\nThe bar rule: %(rule)s" % {
+        "(a showcase's claims, the sheet) has empty `ids`. %(again)s\n\nThe bar rule: %(rule)s") % {
             "rel": rel, "again": again, "ids": ", ".join(ids) or "(none)", "rule": BR.RULE_TEXT,
             "search": OPEN_SEARCH if not prior else LATER_SEARCH}
         + RECORD_TEXT)
@@ -1162,6 +1399,10 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     dp = delta_plan(d, prior)
     ids = dp["ids"] if dp is not None else required_ids(d, tree)
     hashes = entry_hashes(d)
+    texts = entry_texts(d)
+    # the repair check (7_same_problem_rule.md): every look on a refusing prior verdict whose gaps carry their numbers
+    slotted = bool(prior and prior.get("verdict") == "not_covered" and all(
+        isinstance(g, dict) and g.get("gid") for g in prior.get("gaps") or []))
     unit = UNIT_PREFIX + "%d" % int(now or time.time())
     env = dict(os.environ, RM_ROLE_UNIT=unit)
 
@@ -1174,6 +1415,7 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     argv = [CLAUDE, "-p", text] + tail
     rec = {"judge": unit, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now or time.time())),
            "tree": before[0], "sheet": before[1], "inputs": before[2], "verdict": None, "signed": False, "hashes": hashes,
+           "entry_text": texts,
            "mode": "full" if dp is None else "delta", "prompt_chars": len(text)}
     if dp is not None:
         rec.update(against=dp["against"], claims=dp["claims"], changed=dp["changed"])
@@ -1231,15 +1473,37 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         rec.pop("error", None)
     def take(so, missing):
         """Fold one well-formed answer into rec (a later answer in the same session replaces an earlier one)."""
-        extra = failed_part_gaps(so["checklist"], so["gaps"])
+        extra = [dict(g, from_rows=True) for g in failed_part_gaps(so["checklist"], so["gaps"])]
         rec.update(verdict=so["verdict"], checklist=so["checklist"], gaps=so["gaps"] + extra,
                    reasons=str(so.get("reasons") or ""))
-        for k in ("unchecked", "late", "dropped", "advisory_gaps", "covered_by_bar_rule"):
+        for k in ("unchecked", "late", "dropped", "advisory_gaps", "covered_by_bar_rule", "answered", "repairs"):
             rec.pop(k, None)
         if extra and rec["verdict"] == "covered" and not so["gaps"]:
             rec["verdict"] = "not_covered"  # its own rows failed: the rows outrank the word
         if missing:
             rec["unchecked"] = missing
+        if slotted:
+            # None (the key absent) is the old form, read by its rows; a value that is there but not a list answers
+            # no slot, so every slot stays open
+            repairs = None if "repairs" not in so else so["repairs"] if isinstance(so["repairs"], list) else []
+            if repairs is not None:
+                rec["repairs"] = repairs
+            if dp is not None:
+                delta_merge(rec, dp, repairs)
+                # the delta's scope never decides a new finding: one it dropped that names no slot is judged by rule 4
+                # like any other (a passage a repair changed blocks wherever its rows are)
+                back = [g for g in rec.get("dropped") or [] if not g.get("names_slot")]
+                rec["gaps"] = list(rec["gaps"]) + [{k: v for k, v in g.items() if k != "dropped"} for g in back]
+                rec["dropped"] = [g for g in rec.get("dropped") or [] if g.get("names_slot")]
+                if not rec["dropped"]:
+                    rec.pop("dropped")
+            else:
+                rejudge_slots(rec, prior, repairs)
+            classify_new(rec, prior.get("entry_text"), texts, prior.get("judge"))
+            # the verdict is derived, never the word (rule 5); the bar rule may still move a gap to advisory
+            rec["verdict"] = "not_covered" if rec["gaps"] else "covered"
+            apply_bar_rule(rec)
+            return
         if dp is not None:
             delta_merge(rec, dp)
         late = tag_gaps(rec["gaps"], earlier)
@@ -1297,9 +1561,14 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             at = rec["gaps"].index(bad[0])
             rest = [g for g in rec["gaps"] if not any(g is b for b in bad)]
             rec["gaps"] = rest[:at] + new + rest[at:]
-            late = tag_gaps(new, earlier)
-            if late:
-                rec["late"] = sorted(set(rec.get("late") or []) | set(late))
+            if slotted:
+                reopen_named(rec, new, [g for g in prior.get("gaps") or [] if isinstance(g, dict)])
+                classify_new(rec, prior.get("entry_text"), texts, prior.get("judge"))
+                rec["verdict"] = "not_covered" if rec["gaps"] else "covered"
+            else:
+                late = tag_gaps(new, earlier)
+                if late:
+                    rec["late"] = sorted(set(rec.get("late") or []) | set(late))
             apply_bar_rule(rec)
             if rec.get("verdict") != "not_covered":
                 errs = []
@@ -1375,6 +1644,8 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
             else:
                 rec["signed"] = True
     number_gaps(rec.get("gaps") or [])
+    if not _usable(rec) and prior:
+        rec["baseline"] = {k: v for k, v in prior.items() if k != "baseline"}   # rule 6: the retry checks the same slots
     DS.write_json(os.path.join(d, VERDICT_FILE), rec)
     st = record_round(d, rec)
     msg = "signed" if rec["signed"] else "not signed: %s" % (rec.get("error") or "%d gap(s)" % len(rec.get("gaps") or []))

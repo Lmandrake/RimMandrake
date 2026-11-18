@@ -132,7 +132,12 @@ def run_cases():
             check("round 2: a full re-judge's prompt has no open search", open_line not in text2, text2[:300])
             check("round 2: a full re-judge only checks that named gaps were repaired",
                   "only check that each gap an earlier verdict named was repaired" in text2, text2[-900:])
-            for n, (serious, want) in enumerate(((True, True), (False, False), (None, False))):
+            # The owner's trial of 2026-11-17 (7_same_problem_rule.md rule 4): on the check of the repairs a new
+            # finding on unchanged material is advisory however serious; one that quotes a passage a repair changed
+            # blocks when it is a `problem` the reader confirms. It was "a confirmed late gap blocks" (card 2026-11-16).
+            for n, (serious, want, changed) in enumerate(((True, False, False), (False, False, False),
+                                                          (None, False, False), (True, True, True),
+                                                          (False, False, True))):
                 d = B.concept(root, "Late%d" % (n + 1))
                 rec, _ = CJ.run(d, root, B.script([B.answer("not_covered", [B.true_gap()])]), reader=None)
                 with open(os.path.join(d, CJ.FIXES_FILE), "w") as f:
@@ -146,6 +151,11 @@ def run_cases():
                                   where="scenes.json sc_throw", severity="problem",
                                   observed="sc_throw asserts steel lands two cells out; the wall is one cell out",
                                   would_pass="sc_throw asserts the stack lands outside the wall")
+                if changed:   # the repair rewrote sc_throw's claim, and the finding quotes the new words
+                    with open(os.path.join(d, "scenes.json"), "w") as f:
+                        json.dump({"scenes": [{"id": "sc_throw", "asserts": "steel lands one cell out"}]}, f)
+                    late.update(new_since="changed", since='scene:sc_throw\n"asserts": "steel lands one cell out"',
+                                observed="sc_throw asserts steel lands one cell out; the wall is one cell out")
                 reader = None if serious is None else (lambda s: lambda items: [
                     {"criterion_verdict": "sound", "criterion_why": "a fair bar", "bar_kind": "experience",
                      "serious": s} for _ in items])(serious)
@@ -154,7 +164,8 @@ def run_cases():
                 blocking = [g for g in rec2.get("gaps") or [] if g.get("ids") == ["inv_throw"]]
                 label = {True: "a reader confirming it", False: "a reader not confirming it",
                          None: "no model reader"}[serious]
-                check("run: a serious late gap with %s %s" % (label, "blocks" if want else "is advisory"),
+                label += " on %s material" % ("changed" if changed else "unchanged")
+                check("run: a serious new gap with %s %s" % (label, "blocks" if want else "is advisory"),
                       bool(blocking) is want and (want or any(a.get("ids") == ["inv_throw"]
                                                               for a in rec2.get("advisory_gaps") or [])),
                       (rec2.get("verdict"), rec2.get("gaps"), rec2.get("advisory_gaps")))

@@ -18,18 +18,21 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    `not_covered`: each gap names `return_to` 3 (yours to fix) or 2 (needs his answer); `return` there with the gaps as
    the decision. One pass lists them all: its `checklist` has a row per inventory capability and leaf, and any `unchecked`
    ids it could not reach go in your return too, so stage 3 fixes the whole list in one run. No verdict (an error in the file): `blocked` on the error text.
-   The judge stops at the third `not_covered` (or a fourth judge run, or judge spend past 4x its p90): the concept is
+   The judge stops at the second `not_covered` (or a fourth judge run, or judge spend past 4x its p90): the concept is
    blocked on `REFUSAL_NOTHING_COULD_EVER_PASS`, the Conductor is told, and this run never starts; only
    `coverage_judge.py release <dir> --why ...` grants one more look. So the first `not_covered` is the list to fix whole:
-   each gap carries `new_since` (`unfixed`, `changed`, `regression`, `late`), and a `late` gap is the earlier judge's miss. A signature the retired Arbiter already
+   the second look only checks the repairs, gap by gap (`repairs`, one answer per `gid`; design/specs/2026-11-17-judge-flaws-not-polish/7_same_problem_rule.md), and a gap it calls still open
+   blocks as it was first written. A signature the retired Arbiter already
    recorded still counts.
    **A re-judge sees only what you claim and what changed** (RIMMANDRAKE_REJUDGE_ONLY_CHANGED_GAPS). Every gap has a
    `gid` (`g1`...). The stage-3 run that reworks them writes `<dir>/coverage_fixes.json`:
    `{"against": "<the verdict's judge>", "claims": [{"gap": "g3", "evidence": "<file and place that fixes it>"}]}`. The
    next judge is shown those claims, the entries changed since the verdict (by hash) and the open gaps carried on file;
    it redoes only the checklist rows they touch and keeps the rest. A gap you do not claim stays open unless the
-   judge's own rows on all its ids read ok; then it is closed and listed as answered. A new gap on
-   anything it was not shown counts only tagged `late` with a reason. No claim and no change: no judge runs. A file
+   judge's own rows on all its ids read ok; then it is closed and listed as answered. When the judge answers
+   `repairs`, it closes only when its slot also says repaired; a claimed gap closes the same way, never by the claim. A new gap
+   blocks only when it quotes a passage a repair changed and a second reader confirms it a serious Problem; any other
+   new gap is advisory, on the owner's short list. No claim and no change: no judge runs. A file
    against another judge is ignored, so the next round needs a new one.
    **The owner may pass coverage on his own word**, past a `not_covered` verdict. He did so first on ExplosiveKnockback on 2026-11-13
    (OWNER:1794608649743135329: "Yes, fix it like that, and then please record this as an actual Pass."). That stamp is

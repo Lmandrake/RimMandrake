@@ -131,6 +131,7 @@ def one_pass(root, calls, runner_of, signed):
     check("covered over a failed part -> not_covered, the part is a gap, not signed",
           rec["verdict"] == "not_covered" and not rec["signed"] and not signed
           and [g["ids"] for g in rec["gaps"]] == [["inv_a"]], rec)
+    os.remove(os.path.join(d, CJ.VERDICT_FILE))   # a first look: on a later one inv_a is an earlier gap's slot
     rec, _ = CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
     check("a failed part its gap already names is not listed twice", bare(rec["gaps"]) == [gap], rec)
     failing[1] = row("inv_b", False, "sc_b")
@@ -158,7 +159,11 @@ def one_pass(root, calls, runner_of, signed):
     CJ.run(d, os.path.join(root, "onepass"), runner_of("not json"))
     n = len(calls)
     CJ.run(d, os.path.join(root, "onepass"), runner_of(answer("not_covered", [gap], checklist=failing)))
-    check("an errored earlier run is no previous verdict", "previous judge" not in calls[n][0][calls[n][0].index("-p") + 1], calls[n][0][calls[n][0].index("-p") + 1][-300:])
+    # an errored run keeps the last usable verdict as its baseline (7_same_problem_rule.md rule 6, Codex's critique
+    # 2026-11-18: the retry lost every earlier gap); it was "an errored earlier run is no previous verdict"
+    check("an errored earlier run keeps the last verdict as the baseline: the retry is still a re-judge",
+          "previous judge" in calls[n][0][calls[n][0].index("-p") + 1]
+          and (CJ.prior_verdict(d) or {}).get("verdict") == "not_covered", calls[n][0][calls[n][0].index("-p") + 1][-300:])
 
 
 def bare(gaps):

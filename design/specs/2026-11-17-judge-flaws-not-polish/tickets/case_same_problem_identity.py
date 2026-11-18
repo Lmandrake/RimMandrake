@@ -279,6 +279,42 @@ def cases(root):
     r = look2(root, "BrokePolish", [dict(brk, severity="polish")], OK2, reader=reader_says(True))
     expect("a polish finding on changed material is advisory", r.get("signed") and not blocking(r), whats(r))
 
+    # a finding outside the delta's scope (only a leaf changed, the finding is on another row) quoting the changed leaf:
+    # the scope never drops it (Codex build review 2026-11-18)
+    d, rec1 = look1(root, "OutOfScope")
+    with open(os.path.join(d, "tree.json"), "w") as f:
+        json.dump({"kind": "mod", "leaves": [{"id": "leaf_wall", "what": "a wall stops a thrown item only when it is "
+                                                                      "steel"}]}, f)
+    with open(os.path.join(d, CJ.FIXES_FILE), "w") as f:
+        json.dump({"against": rec1["judge"], "claims": [{"gap": "g1", "evidence": "tree.json leaf_wall"}]}, f)
+    oos = dict(brk, what="the throw now lands wood through the wall", where="tree.json leaf_wall",
+               since="leaf:leaf_wall\na wall stops a thrown item only when it is steel")
+    r, _ = CJ.run(d, root, script([answer("not_covered", [oos], OK2, (("g1", True),))]), now=2000000000,
+                  reader=reader_says(True))
+    expect("a confirmed problem quoting a changed leaf blocks even outside the delta's rows",
+           r.get("mode") == "delta" and oos["what"] in whats(r) and not r.get("signed"),
+           (r.get("mode"), r.get("verdict"), whats(r), r.get("dropped")))
+
+    # Codex build review 2026-11-18, findings 1, 2 and 4
+    d, rec1 = look1(root, "Escaped")
+    esc = {"id": "sc_wall", "asserts": 'the label reads "wall" after the blast'}
+    repair(d, rec1, scenes=[{"id": "sc_throw", "asserts": "steel lands two cells out"}, esc])
+    r, _ = CJ.run(d, root, script([answer("not_covered", [dict(brk, since="scene:sc_wall\n" + json.dumps(
+        esc, ensure_ascii=False))], OK2, (("g1", True),))]), now=2000000000, reader=reader_says(True))
+    expect("a passage quoted exactly as the prompt showed it, JSON escapes and all, is a changed passage",
+           brk["what"] in whats(r) and not r.get("signed"), (r.get("verdict"), whats(r)))
+    r = look2(root, "FirstOnRow", [dict(newrow, new_since="first")], OK2, reader=reader_says(True))
+    expect("a finding tagged `first` on a repaired slot's row is new, not the slot: covered", r.get("signed")
+           and any(g.get("what") == newrow["what"] for g in short_list(r)), (r.get("verdict"), whats(r)))
+    for bad in (None, {}, "g1 repaired"):
+        d, rec1 = look1(root, "BadRepairs%s" % type(bad).__name__)
+        repair(d, rec1)
+        so = json.loads(answer("covered", [], OK2))
+        so["structured_output"]["repairs"] = bad
+        r, _ = CJ.run(d, root, script([json.dumps(so)]), now=2000000000, reader=None)
+        expect("a `repairs` value that is there but not a list (%r) answers no slot: g1 open" % (bad,),
+               not r.get("signed") and whats(r) == [WALL], (r.get("verdict"), whats(r)))
+
     # an unchanged passage inside a changed entry (Codex critique, finding 3): advisory
     d, rec1 = look1(root, "SameInChanged")
     repair(d, rec1, scenes=[{"id": "sc_throw", "asserts": "steel lands two cells out", "seed": 7}, SC_WALL])
@@ -302,6 +338,21 @@ def cases(root):
     expect("`covered` with an open slot is not_covered", r.get("verdict") == "not_covered" and not r.get("signed")
            and whats(r) == [WALL], (r.get("verdict"), whats(r)))
 
+    # a broken record re-asked after the slots were read, coming back as g1 still open: g1 opens again (Codex build
+    # review 2026-11-18)
+    d, rec1 = look1(root, "Reask")
+    repair(d, rec1)
+    broken = dict(brk, ids=["inv_throw"], evidence=["sheet.md:1"], observed="the range reading is missing; nobody "
+                  "measures distance", since="scene:sc_wall\n%s" % quote)
+    fixed = dict(broken, new_since="unfixed", since="g1", evidence=["tree.json", "scenes.json"],
+                 observed="leaf_wall says a wall stops a thrown item; sc_wall has no wall in its start")
+    r, _ = CJ.run(d, root, script([answer("not_covered", [broken], OK2, (("g1", True),)),
+                                   json.dumps({"structured_output": {"gaps": [fixed]}, "session_id": "sess"})]),
+                  now=2000000000, reader=reader_says(True))
+    expect("a re-asked record naming g1 reopens g1 and blocks as it, never as its own refusal",
+           whats(r) == [WALL] and not r.get("signed") and not any(a.get("gid") == "g1" for a in r.get("answered") or []),
+           (r.get("verdict"), whats(r), r.get("answered"), r.get("rows_reasked")))
+
     # a failed attempt keeps the baseline (Codex critique, finding 4)
     d, rec1 = look1(root, "Retry")
     repair(d, rec1)
@@ -312,13 +363,14 @@ def cases(root):
     expect("the retry checks the same slot: g1 open, blocking as itself", whats(r) == [WALL], whats(r))
 
     # the phantom reader round
-    st = {"coverage_rounds": [{"judge": "rm-coverage-judge-100", "verdict": "not_covered", "at": "2026-01-01T00:00:10Z"}],
+    st = {"coverage_rounds": [{"judge": "rm-coverage-judge-100", "verdict": "not_covered", "at": "2026-01-01T00:00:10Z",
+                               "tokens": 5}],
           "budget": {"charges": [{"ref": "rm-coverage-judge-100", "kind": "review", "tokens": 5, "at": "2026-01-01T00:00:09Z"},
                                  {"ref": "rm-coverage-judge-100-reader", "kind": "review", "tokens": 7,
                                   "at": "2026-01-01T00:00:11Z"}]}}
     rs = CJ.rounds(st)
     expect("a second reader's charge is not a judge round", len(rs) == 1, [x.get("judge") for x in rs])
-    expect("its tokens count in the judge's spend", CJ.spend(rs) >= 7, CJ.spend(rs))
+    expect("its tokens count in the judge's spend, exactly", CJ.spend(rs) == 12, CJ.spend(rs))
 
     # a legacy release counted with a phantom round grants no extra look; a new release records its judges
     ch = [{"ref": "rm-coverage-judge-1-reader", "kind": "review", "tokens": 1, "at": "2026-01-01T00:00:01Z"}]

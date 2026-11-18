@@ -67,6 +67,16 @@ def good_gap(**kw):
     return g
 
 
+def first_look(d):
+    """Make the next run a first look on this concept (no prior verdict, so no repair slots): the records these cases
+    test are a first look's. On a later look an earlier gap is a numbered slot and blocks as first written, so a
+    re-reported gap is not re-validated (design/specs/2026-11-17-judge-flaws-not-polish/7_same_problem_rule.md)."""
+    try:
+        os.remove(os.path.join(d, CJ.VERDICT_FILE))
+    except FileNotFoundError:
+        pass
+
+
 def bad_gap():
     return good_gap(would_pass="does not pass", smallest_fix={"what": "needs more work", "attainable": "maybe",
                                                               "cost": "edit"})
@@ -143,6 +153,7 @@ def main():
 
             # Malformed, then fixed on the re-ask in the same session.
             argvs = []
+            first_look(d)   # a later look checks repair slots, not records (7_same_problem_rule.md rule 3)
             rec, _ = CJ.run(d, root, script([answer("not_covered", [bad_gap()]),
                                              answer("not_covered", [good_gap(new_since="unfixed")])], argvs))
             check("a malformed refusal is re-asked once, same session, with the check's errors",
@@ -181,6 +192,7 @@ def main():
             # One bad row that stays bad: bounded re-asks, then the well-formed row is the stored verdict and the
             # broken one is kept on file marked malformed (the evidence rule is not loosened: it is not submitted).
             argvs = []
+            first_look(d)   # a later look checks repair slots, not records (7_same_problem_rule.md rule 3)
             rec, msg = CJ.run(d, root, script([answer("not_covered", [good_gap(new_since="unfixed"), throw_bad])]
                                               + [json.dumps({"structured_output": {"gaps": [throw_bad]},
                                                              "session_id": "sess"})] * CJ.ROW_REASK_MAX, argvs))
@@ -202,6 +214,7 @@ def main():
             st0 = DS.load_state(d)
             nc0 = sum(1 for r in st0.get("coverage_rounds") or [] if r.get("verdict") == "not_covered")
             argvs = []
+            first_look(d)   # a later look checks repair slots, not records (7_same_problem_rule.md rule 3)
             rec, msg = CJ.run(d, root, script([answer("not_covered", [bad_gap()])]
                                               + [answer("not_covered", [bad_gap()])] * CJ.ROW_REASK_MAX, argvs))
             check("all rows bad: bounded re-asks, then the whole look is malformed",
@@ -217,6 +230,7 @@ def main():
                 for x in open(os.path.join(root, "refusals", "refusals.jsonl"))))
 
             # No session to resume: malformed at once.
+            first_look(d)   # a later look checks repair slots, not records (7_same_problem_rule.md rule 3)
             rec, _ = CJ.run(d, root, script([answer("not_covered", [bad_gap()], session=None)], []))
             check("a second malformed round stops judging: the brief FAILED",
                   rec["verdict"] == "malformed" and "malformed" in (rec.get("stopped") or ""), rec.get("stopped"))

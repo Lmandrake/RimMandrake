@@ -3,15 +3,16 @@
 spec design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md).
 
 It replays the nine real ExplosiveKnockback verdicts (fixtures/ek_coverage_verdicts.json, from git: nine not_covered in
-three hours, gaps 19,14,11,6,9,7,6,4,4) through a fake judge that answers each in turn with its real token count, and
-shows judging stopping at the third: the concept blocked on REFUSAL_NOTHING_COULD_EVER_PASS, one alarm row and one told
-row however often it trips, the Designer's run kept from starting (exit 3), and six verdicts never paid for. Then: a
-healthy concept (two not_covered, then covered) still signs with no alarm; EK's own nine legacy charges stop it with no
+three hours, gaps 19,14,11,6,9,7,6,4,4) with their real token counts and one first-look gap kept open in later answers.
+Judging stops at NOT_COVERED_LIMIT: the concept blocked on REFUSAL_NOTHING_COULD_EVER_PASS, one alarm row and one told
+row however often it trips, the Designer's run kept from starting (exit 3), and the remaining verdicts never paid for. Then: a
+healthy concept (refusals below the limit, then covered) still signs with no alarm; EK's own nine legacy charges stop it with no
 judge run; a release grants exactly one more look; a release granted after named fixes waits for them and the re-pin,
 then is one final look; the spend cap; the program's late tags; the alarm's route.
 The claude call, the signature and the exam are stubbed; every write goes to a temp dir."""
 import json
 import os
+import subprocess
 import sys
 import tempfile
 
@@ -39,13 +40,22 @@ def check(name, ok, got=""):
         FAILS.append(name)
 
 
-def answer(verdict, gaps, tokens):
+def answer(verdict, gaps, tokens, repairs=None):
     res = {"structured_output": {"verdict": verdict, "gaps": [dict(g) for g in gaps], "reasons": "r", "checklist": []},
            "session_id": "sess"}
+    if repairs is not None:   # the repair check's numbered slots (7_same_problem_rule.md): {"g1": True, ...}
+        res["structured_output"]["repairs"] = [{"gap": g, "repaired": ok, "evidence": "x"} for g, ok in repairs.items()]
     if tokens is not None:
         res["usage"] = {"input_tokens": tokens, "output_tokens": 0, "cache_read_input_tokens": 0,
                         "cache_creation_input_tokens": 0}
     return json.dumps(res)
+
+
+def replay_answers(rounds):
+    # Keep one specific first-look gap open. The later historical reports also include new findings on old material.
+    still_open = next(g for g in rounds[0]["gaps"] if g["ids"] == ["wall_stops_dead"])
+    return [answer(r["verdict"], ([still_open] if n else []) + r["gaps"], r["tokens"])
+            for n, r in enumerate(rounds)]
 
 
 class Judge:
@@ -69,37 +79,44 @@ def told_rows(ops):
 
 def ek_replay(root, rounds, ops):
     d = concept(os.path.join(root, "ek"))
-    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds])
+    judge = Judge(replay_answers(rounds))
     out = []
     for i in range(len(rounds)):
         rec, msg = CJ.run(d, os.path.join(root, "ek"), judge, now=1794000000 + 1200 * i)
         out.append((judge.calls, rec, msg, DS.load_state(d).get("status")))
-    check("rounds 1 and 2 are judged and leave the concept unblocked",
-          [o[0] for o in out[:2]] == [1, 2] and all(o[3] != "blocked" for o in out[:2])
-          and all(not (o[1] or {}).get("stopped") for o in out[:2]), [(o[0], o[2], o[3]) for o in out[:2]])
-    check("round 3's not_covered stops judging: concept blocked on the alarm",
-          out[2][0] == 3 and out[2][1].get("verdict") == "not_covered" and out[2][1].get("stopped")
-          and out[2][3] == "blocked" and DS.load_state(d)["blocked_on"].startswith(RC.ALARM_ID), out[2][2])
-    check("rounds 4-9 never launch a judge", judge.calls == 3 and all((o[1] or {}).get("stopped") for o in out[3:]),
-          (judge.calls, [o[2] for o in out[3:]]))
+    before_stop = out[:CJ.NOT_COVERED_LIMIT - 1]
+    stopped = out[CJ.NOT_COVERED_LIMIT - 1]
+    after_stop = out[CJ.NOT_COVERED_LIMIT:]
+    check("rounds below the limit are judged and leave the concept unblocked",
+          [o[0] for o in before_stop] == list(range(1, CJ.NOT_COVERED_LIMIT))
+          and all(o[3] != "blocked" and not (o[1] or {}).get("stopped") for o in before_stop),
+          [(o[0], o[2], o[3]) for o in before_stop])
+    check("the refusal at the limit stops judging: concept blocked on the alarm",
+          stopped[0] == CJ.NOT_COVERED_LIMIT and stopped[1].get("verdict") == "not_covered"
+          and stopped[1].get("stopped") and stopped[3] == "blocked"
+          and DS.load_state(d)["blocked_on"].startswith(RC.ALARM_ID), stopped[2])
+    check("rounds after the limit never launch a judge",
+          judge.calls == CJ.NOT_COVERED_LIMIT and all((o[1] or {}).get("stopped") for o in after_stop),
+          (judge.calls, [o[2] for o in after_stop]))
     st = DS.load_state(d)
-    check("three rounds on file, every gap tagged",
-          len(st.get("coverage_rounds") or []) == 3 and all(
+    check("rounds at the limit on file, every gap tagged",
+          len(st.get("coverage_rounds") or []) == CJ.NOT_COVERED_LIMIT and all(
               g.get("new_since") in CJ.TAGS for g in json.load(open(os.path.join(d, CJ.VERDICT_FILE)))["gaps"]),
           st.get("coverage_rounds"))
     late = [len(r.get("late") or []) for r in st["coverage_rounds"]]
-    check("round 1 has no late gaps; later rounds' new ids are counted late (judge misses)",
+    check("round 1 has no late gaps; later new findings are counted as judge misses",
           late[0] == 0 and sum(late[1:]) > 0, late)
     rows = RC.open_alarms()
     check("one open alarm row for the concept", len(rows) == 1 and rows[0]["subject"] == "concept:Foo"
-          and rows[0]["trips"] == 7, rows)
+          and rows[0]["trips"] == len(rounds) - CJ.NOT_COVERED_LIMIT + 1, rows)
     check("one told row however often it trips", len(told_rows(ops)) == 1, told_rows(ops))
     check("the Designer's pre-launch step exits 3 (its claude never starts) and launches no judge",
-          CJ.main(["run", d]) == CJ.STOP_EXIT and judge.calls == 3)
-    spared = sum(r["tokens"] or 0 for r in rounds[3:])
+          CJ.main(["run", d]) == CJ.STOP_EXIT and judge.calls == CJ.NOT_COVERED_LIMIT)
+    spared = sum(r["tokens"] or 0 for r in rounds[CJ.NOT_COVERED_LIMIT:])
     spent = CJ.spend(CJ.rounds(st, d))
-    print("     EK replay: judged 3 of 9, spend counted %d tokens (round 1 unmeasured at the p90), "
-          "spared %d measured tokens over 6 verdicts; late ids per round %s" % (spent, spared, late))
+    print("     EK replay: judged %d of %d, spend counted %d tokens (round 1 unmeasured at the p90), "
+          "spared %d measured tokens over %d verdicts; late ids per round %s" % (
+              CJ.NOT_COVERED_LIMIT, len(rounds), spent, spared, len(rounds) - CJ.NOT_COVERED_LIMIT, late))
     return d, judge
 
 
@@ -115,13 +132,24 @@ def release(d, judge, root, ops, rounds):
     # stop's "released for one more look ... judging stopped" still in blocked_on, and the page showed it as the why
     check("a release takes the stop's reason off the record with the block",
           "blocked_on" not in st and "blocked_on" not in DS.load_state(d), st.get("blocked_on"))
-    judge.script[:] = [answer("not_covered", rounds[3]["gaps"], rounds[3]["tokens"])]
+    def timeout(argv, cwd, env, wall):
+        raise subprocess.TimeoutExpired(argv[0], wall)
+
+    rec, _ = CJ.run(d, os.path.join(root, "ek"), timeout, now=1794099800)
+    check("a timeout does not consume the released look",
+          rec.get("error") and not rec.get("stopped") and CJ.plan(d, os.path.join(root, "ek"))[0] == "judge", rec)
+    judge.script[:] = [replay_answers(rounds)[CJ.NOT_COVERED_LIMIT]]
     rec, _ = CJ.run(d, os.path.join(root, "ek"), judge, now=1794100000)
     check("the one more look is judged, and not covering stops it again",
-          judge.calls == 4 and rec.get("stopped") and DS.load_state(d)["status"] == "blocked", (judge.calls, rec))
+          judge.calls == CJ.NOT_COVERED_LIMIT + 1 and rec.get("stopped") and DS.load_state(d)["status"] == "blocked", (judge.calls, rec))
+    check("the released later round's new ids are counted late (judge misses)", bool(rec.get("late")), rec.get("late"))
+    check("the released look keeps previously named gaps unfixed, outside its late ids",
+          any(g.get("new_since") == "unfixed" for g in rec.get("gaps") or [])
+          and all(not (set(g.get("ids") or []) & set(rec.get("late") or []))
+                  for g in rec.get("gaps") or [] if g.get("new_since") == "unfixed"), rec.get("late"))
     check("the trip after a release tells again (second told row)", len(told_rows(ops)) == 2, told_rows(ops))
     rec, _ = CJ.run(d, os.path.join(root, "ek"), judge, now=1794101000)
-    check("and no look after that", judge.calls == 4 and rec.get("stopped"))
+    check("and no look after that", judge.calls == CJ.NOT_COVERED_LIMIT + 1 and rec.get("stopped"))
 
 
 def granted(root, rounds):
@@ -129,10 +157,10 @@ def granted(root, rounds):
     now with --after waits on its items closing and the re-pin landing, then counts as one final look."""
     os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_granted")
     d = locked(concept(os.path.join(root, "granted")))
-    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:3]])
-    for i in range(3):
+    judge = Judge(replay_answers(rounds)[:CJ.NOT_COVERED_LIMIT])
+    for i in range(CJ.NOT_COVERED_LIMIT):
         CJ.run(d, os.path.join(root, "granted"), judge, now=1794400000 + 1200 * i)
-    check("granted: three not_covered stop judging", DS.load_state(d).get("status") == "blocked" and judge.calls == 3)
+    check("granted: refusals at the limit stop judging", DS.load_state(d).get("status") == "blocked" and judge.calls == CJ.NOT_COVERED_LIMIT)
     states = {"FIX_A": "proposed"}
     saved, CJ.item_states = getattr(CJ, "item_states", None), lambda ids: {i: states.get(i) for i in ids}
     try:
@@ -174,14 +202,14 @@ def granted(root, rounds):
               rel.get("final") is True and rel.get("after") == ["FIX_A"] and rel.get("granted_at") == g.get("at")
               and "coverage_release_granted" not in st and st["status"] == "ready" and not RC.open_alarms(),
               (rel, st.get("status")))
-        judge.script[:] = [answer("not_covered", rounds[3]["gaps"], rounds[3]["tokens"])]
+        judge.script[:] = [replay_answers(rounds)[CJ.NOT_COVERED_LIMIT]]
         rec, _ = CJ.run(d, os.path.join(root, "granted"), judge, now=1794500000)
         st = DS.load_state(d)
         check("granted: the final look is judged once; not covering stops it, the stop naming the final look",
-              judge.calls == 4 and rec.get("stopped") and st["status"] == "blocked"
+              judge.calls == CJ.NOT_COVERED_LIMIT + 1 and rec.get("stopped") and st["status"] == "blocked"
               and "final look" in (st.get("coverage_stop") or {}).get("why", ""), (judge.calls, st.get("coverage_stop")))
         rec, _ = CJ.run(d, os.path.join(root, "granted"), judge, now=1794501000)
-        check("granted: and no look after the final one", judge.calls == 4 and rec.get("stopped"))
+        check("granted: and no look after the final one", judge.calls == CJ.NOT_COVERED_LIMIT + 1 and rec.get("stopped"))
     finally:
         CJ.item_states = saved
 
@@ -204,8 +232,8 @@ def granted_unlocked(root, rounds):
         d = concept(os.path.join(root, name))
         if state:
             locked(d, state)
-        judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:3]])
-        for i in range(3):
+        judge = Judge(replay_answers(rounds)[:CJ.NOT_COVERED_LIMIT])
+        for i in range(CJ.NOT_COVERED_LIMIT):
             CJ.run(d, os.path.join(root, name), judge, now=1794800000 + 1200 * i)
         states = {"FIX_D": "proposed"}
         saved, CJ.item_states = getattr(CJ, "item_states", None), lambda ids: {i: states.get(i) for i in ids}
@@ -235,8 +263,8 @@ def granted_late(root, rounds):
     waits on is one since the stop it lifts, not one since the grant, or the one look never applies."""
     os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "refusals_granted_late")
     d = locked(concept(os.path.join(root, "granted_late")))
-    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:3]])
-    for i in range(3):
+    judge = Judge(replay_answers(rounds)[:CJ.NOT_COVERED_LIMIT])
+    for i in range(CJ.NOT_COVERED_LIMIT):
         CJ.run(d, os.path.join(root, "granted_late"), judge, now=1794600000 + 1200 * i)
     states = {"FIX_B": "proposed"}
     saved, CJ.item_states = getattr(CJ, "item_states", None), lambda ids: {i: states.get(i) for i in ids}
@@ -260,8 +288,8 @@ def granted_late(root, rounds):
     st = DS.load_state(d)
     DS.hist(st, "locked_change", "an older re-pin, before the stop")
     DS.write_json(DS.state_path(d), st)
-    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:3]])
-    for i in range(3):
+    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds[:CJ.NOT_COVERED_LIMIT]])
+    for i in range(CJ.NOT_COVERED_LIMIT):
         CJ.run(d, os.path.join(root, "granted_stale_repin"), judge, now=1794700000 + 1200 * i)
     saved, CJ.item_states = getattr(CJ, "item_states", None), lambda ids: {i: "done" for i in ids}
     try:
@@ -279,16 +307,14 @@ def healthy(root):
     d = concept(os.path.join(root, "healthy"))
     gaps1 = [{"what": "a", "where": "x", "return_to": 3, "ids": ["l1"], "new_since": "first"},
              {"what": "b", "where": "y", "return_to": 3, "ids": ["l2"], "new_since": "first"}]
-    gaps2 = [{"what": "b", "where": "y", "return_to": 3, "ids": ["l2"], "new_since": "unfixed"}]
-    judge = Judge([answer("not_covered", gaps1, 700000), answer("not_covered", gaps2, 700000),
-                   answer("covered", [], 700000)])
-    recs = [CJ.run(d, os.path.join(root, "healthy"), judge, now=1794200000 + i)[0] for i in range(3)]
+    judge = Judge([answer("not_covered", gaps1, 700000)] * (CJ.NOT_COVERED_LIMIT - 1)
+                  + [answer("covered", [], 700000, {"g1": True, "g2": True})])   # the judge says both are repaired
+    recs = [CJ.run(d, os.path.join(root, "healthy"), judge, now=1794200000 + i)[0] for i in range(CJ.NOT_COVERED_LIMIT)]
     st = DS.load_state(d)
-    check("healthy: two not_covered then covered -> signed, never stopped, no alarm",
-          judge.calls == 3 and recs[2]["signed"] and not any(r.get("stopped") for r in recs)
+    check("healthy: refusals below the limit then covered -> signed, never stopped, no alarm",
+          judge.calls == CJ.NOT_COVERED_LIMIT and recs[-1]["signed"] and not any(r.get("stopped") for r in recs)
           and st["status"] != "blocked" and not RC.open_alarms(),
           [(r.get("verdict"), r.get("signed"), r.get("stopped")) for r in recs])
-    check("healthy: an unfixed gap is not counted late", not recs[1].get("late"), recs[1].get("late"))
 
 
 def legacy(root, rounds):
@@ -308,18 +334,22 @@ def legacy(root, rounds):
 
 def units():
     st = {"coverage_rounds": [{"judge": "j1", "verdict": "not_covered", "tokens": 1600000},
-                              {"judge": "j2", "verdict": "not_covered", "tokens": 1500000}]}
+                              {"judge": "j2", "verdict": None, "tokens": 1500000}]}
     check("spend past 4x the p90 stops at two rounds", "spend" in (CJ.stop_reason(st) or ""), CJ.stop_reason(st))
     st["coverage_rounds"][1]["tokens"] = 10
     check("two cheap rounds do not stop", CJ.stop_reason(st) is None, CJ.stop_reason(st))
-    st["coverage_rounds"] += [{"judge": "j3", "verdict": None, "tokens": None}, {"judge": "j4", "verdict": None}]
-    check("a fourth judge run stops even with no third not_covered", "4 judge runs" in (CJ.stop_reason(st) or ""),
+    st["coverage_rounds"] += [{"judge": "j%d" % i, "verdict": None, "tokens": None}
+                              for i in range(len(st["coverage_rounds"]) + 1, CJ.JUDGE_RUNS_MAX + 1)]
+    check("the judge run guard stops even below the refusal limit", "%d judge runs" % CJ.JUDGE_RUNS_MAX in (CJ.stop_reason(st) or ""),
           CJ.stop_reason(st))
     gaps = [{"ids": ["a"], "new_since": "first"}, {"ids": ["b"], "new_since": "unfixed"},
             {"ids": ["c"], "new_since": "changed", "since": "scenes.json"}, {"ids": [], "new_since": "late"}]
     late = CJ.tag_gaps(gaps, [{"ids": ["a"]}])
     check("tags: named before -> unfixed; new ids with no change -> late; changed stands",
           [g["new_since"] for g in gaps] == ["unfixed", "late", "changed", "late"] and late == ["b"], (gaps, late))
+    unfixed = [{"what": "b", "where": "y", "return_to": 3, "ids": ["l2"], "new_since": "unfixed"}]
+    late = CJ.tag_gaps(unfixed, [{"ids": ["l2"]}])
+    check("an unfixed gap is not counted late", not late and unfixed[0]["new_since"] == "unfixed", (unfixed, late))
     rt = incident.route_of(incident.load_table(), RC.ALARM_ID)
     check("the alarm routes to the Conductor, cause refusals",
           rt and rt["route"] == "role" and rt["reader"] == "Conductor" and rt.get("cause") == "refusals", rt)

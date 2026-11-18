@@ -10,8 +10,8 @@ It replays the real ExplosiveKnockback night two ways:
   spend since the first judge reaches 8M (2 x the 4M cap), attended or not; spend with no judge loop stays advisory.
 Then: a healthy attended walk still signs; a step ending in his certification parks only when he is away; his queue
 line shouts QUICK LOOK OFFERED only when code exists; the away detector reads mode and sitting, never his input clock.
-The claude call, signature, exam and result validation are stubbed; every write goes to a temp dir, and the real
-alarm and told files are checked unchanged."""
+The claude call, signature, exam and result validation are stubbed; every write goes to a temp dir, and sandbox
+default alarm and told files are checked unchanged."""
 import json
 import os
 import sys
@@ -32,7 +32,7 @@ import refusal_contract as _RC  # noqa: E402
 # here is calibrated; selftest_judge_calibration tests the UNTESTED side
 _RC.status = lambda family: "CALIBRATED"
 from selftest_coverage_judge import concept  # noqa: E402
-from selftest_coverage_judge_loop import Judge, answer, told_rows  # noqa: E402
+from selftest_coverage_judge_loop import Judge, answer, replay_answers, told_rows  # noqa: E402
 
 VERDICTS = os.path.join(HERE, "fixtures", "ek_coverage_verdicts.json")
 CHARGES = os.path.join(HERE, "fixtures", "ek_night_charges.json")
@@ -70,35 +70,44 @@ def needs_him(rounds):
     for r in out:
         if r.get("gaps"):
             r["gaps"][0]["return_to"] = 2
+            for g in r["gaps"]:
+                if g["ids"] == ["wall_stops_dead"]:
+                    g["return_to"] = 2
     return out
 
 
 def ek_designer_fixable(base, rounds, ops):
     """RIMMANDRAKE_UNPARK_DESIGNER_WHEN_IT_CAN_FIX_GAPS_ALONE (owner card 2026-11-15, "Rework, and stop parking for
     these"): the real EK night, every gap return_to 3, him away. The second refusal does not park, the Designer's
-    rework opens, and the brake (coverage_judge NOT_COVERED_LIMIT) stops judging at the third refusal with the one
-    fixed-id alarm instead of a ninth look."""
+    rework opens below the limit, and the brake (coverage_judge NOT_COVERED_LIMIT) stops judging at the limit with
+    the one fixed-id alarm."""
     DS.owner_away = AWAY
     root = os.path.join(base, "ekfix")
     d = concept(root)
-    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds])
-    out = [CJ.run(d, root, judge, now=1794000000 + 1200 * i) for i in range(2)]
-    st = DS.load_state(d)
-    check("fixable: the second refusal while away, every gap the Designer's alone, does not park",
-          out[1][0].get("verdict") == "not_covered" and not out[1][0].get("parked") and not st.get("park")
-          and st.get("status") != "waiting_owner" and not os.path.exists(os.path.join(d, DS.PARK_FILE)),
-          (out[1][1], st.get("park"), st.get("status")))
-    r = refused(DS.open_run, d, "rework-after-2", repo=root)
-    check("fixable: the Designer's rework run opens (not PARKED)", r is None, r)
+    judge = Judge(replay_answers(rounds))
+    out = [CJ.run(d, root, judge, now=1794000000 + 1200 * i) for i in range(CJ.NOT_COVERED_LIMIT - 1)]
+    check("fixable: refusals below the limit leave rework available",
+          all(r[0].get("verdict") == "not_covered" and not r[0].get("stopped")
+              and not r[0].get("parked") for r in out), out)
+    r = refused(DS.open_run, d, "rework-before-limit", repo=root)
+    check("fixable: the Designer's rework run opens below the limit", r is None, r)
     if r is None:
-        DS.abort_run(d, "rework-after-2")
-    rest = [CJ.run(d, root, judge, now=1794010000 + 1200 * i) for i in range(len(rounds) - 2)]
+        DS.abort_run(d, "rework-before-limit")
+    rec, msg = CJ.run(d, root, judge, now=1794010000)
+    st = DS.load_state(d)
+    check("fixable: the refusal at the limit while away, every gap the Designer's alone, does not park",
+          rec.get("verdict") == "not_covered" and not rec.get("parked") and not st.get("park")
+          and st.get("status") != "waiting_owner" and not os.path.exists(os.path.join(d, DS.PARK_FILE)),
+          (msg, st.get("park"), st.get("status")))
+    rest = [CJ.run(d, root, judge, now=1794020000 + 1200 * i)
+            for i in range(len(rounds) - CJ.NOT_COVERED_LIMIT)]
     st = DS.load_state(d)
     alarms = RC.open_alarms()
-    check("fixable: the brake stops judging at the third refusal (3 judges, not 9), blocked on the fixed-id alarm",
-          judge.calls == CJ.NOT_COVERED_LIMIT and rest[0][0].get("stopped") and st.get("status") == "blocked"
+    check("fixable: the brake stops judging at the limit, blocked on the fixed-id alarm",
+          judge.calls == CJ.NOT_COVERED_LIMIT and rec.get("stopped") and all(r[0].get("stopped") for r in rest)
+          and st.get("status") == "blocked"
           and str(st.get("blocked_on") or "").startswith(RC.ALARM_ID) and not st.get("park"),
-          (judge.calls, rest[0][1], st.get("status"), st.get("blocked_on")))
+          (judge.calls, msg, st.get("status"), st.get("blocked_on")))
     check("fixable: exactly one alarm row, the fixed id, for this concept",
           len([a for a in alarms if CJ.subject(d) in json.dumps(a)]) == 1, alarms)
     r = refused(DS.open_run, d, "rework-after-brake", repo=root)
@@ -143,14 +152,17 @@ def ek_unattended(base, rounds, ops):
     d = concept(root)
     check("sanity: the concept's clone is the temp root (his word is read there, not from the real shard)",
           DS.clone_of(d) == os.path.abspath(root), DS.clone_of(d))
-    judge = Judge([answer(r["verdict"], r["gaps"], r["tokens"]) for r in rounds])
+    judge = Judge(replay_answers(rounds))
     out = [CJ.run(d, root, judge, now=1794000000 + 1200 * i) for i in range(len(rounds))]
     check("away: round 1's refusal is judged and does not park", judge.calls >= 1 and not out[0][0].get("parked")
           and not out[0][0].get("stopped"), out[0][1])
-    check("away: round 2's refusal parks the concept (the SECOND refusal)",
-          out[1][0].get("verdict") == "not_covered" and "refused 2 times" in str(out[1][0].get("parked")), out[1][1])
-    check("away: rounds 3-9 never launch a judge", judge.calls == 2 and all(o[0].get("parked") for o in out[2:]),
-          (judge.calls, [o[1] for o in out[2:]]))
+    check("away: the refusal at the limit parks the concept",
+          out[CJ.NOT_COVERED_LIMIT - 1][0].get("verdict") == "not_covered"
+          and "refused %d times" % CJ.NOT_COVERED_LIMIT in str(out[CJ.NOT_COVERED_LIMIT - 1][0].get("parked")),
+          out[CJ.NOT_COVERED_LIMIT - 1][1])
+    check("away: rounds after the limit never launch a judge",
+          judge.calls == CJ.NOT_COVERED_LIMIT and all(o[0].get("parked") for o in out[CJ.NOT_COVERED_LIMIT:]),
+          (judge.calls, [o[1] for o in out[CJ.NOT_COVERED_LIMIT:]]))
     st = DS.load_state(d)
     page = open(os.path.join(d, DS.PARK_FILE)).read() if os.path.exists(os.path.join(d, DS.PARK_FILE)) else ""
     check("away: status waiting_owner, park kind second_refusal, written once",
@@ -163,7 +175,7 @@ def ek_unattended(base, rounds, ops):
           and st["park"]["quick_look"] is False, st["park"])
     check("away: plan says parked", CJ.plan(d, root)[0] == "parked", CJ.plan(d, root))
     check("away: the Designer's pre-launch step exits 3 and launches no judge",
-          CJ.main(["run", d]) == CJ.STOP_EXIT and judge.calls == 2)
+          CJ.main(["run", d]) == CJ.STOP_EXIT and judge.calls == CJ.NOT_COVERED_LIMIT)
     r = refused(CJ.release, d, "the Conductor wants one more look")
     check("away: a release (a seat's word) cannot lift a park", r and "only his word" in r, r)
     r = refused(DS.open_run, d, "run-after-park", repo=root)
@@ -187,9 +199,14 @@ def ek_unattended(base, rounds, ops):
     judge.script[:] = [answer("covered", [], 700000)]
     rec, msg = CJ.run(d, root, judge)
     st = DS.load_state(d)
-    check("lift: the next look is judged, the park moves to parks with lifted_at, the loop restarts",
-          judge.calls == 3 and rec.get("signed") and "park" not in st and len(st.get("parks") or []) == 1
-          and st["parks"][0].get("lifted_at") and st.get("loop_since") == st["parks"][0]["lifted_at"], (msg, st.get("parks")))
+    check("lift: at the look limit the park lifts into the stopped hold, with no further judge",
+          judge.calls == CJ.NOT_COVERED_LIMIT and rec.get("stopped") and not rec.get("signed")
+          and st["status"] == "blocked" and st["blocked_on"].startswith(RC.ALARM_ID)
+          and "park" not in st and len(st.get("parks") or []) == 1
+          and st["parks"][0].get("lifted_at") and st.get("loop_since") == st["parks"][0]["lifted_at"],
+          (msg, st.get("parks")))
+    check("lift: the stopped hold has one alarm and one told row", len(RC.open_alarms()) == 1
+          and len(told_rows(ops)) == 1, (RC.open_alarms(), told_rows(ops)))
 
 
 def by_card_lifts(base):
@@ -273,20 +290,21 @@ def healthy(base):
     root = os.path.join(base, "healthy")
     d = concept(root)
     g = [{"what": "a", "where": "x", "return_to": 3, "ids": ["l1"], "new_since": "first"}]
-    judge = Judge([answer("not_covered", g, 700000), answer("not_covered", [dict(g[0], new_since="unfixed")], 700000),
-                   answer("covered", [], 700000)])
-    recs = [CJ.run(d, root, judge, now=1794200000 + i)[0] for i in range(3)]
+    judge = Judge([answer("not_covered", g, 700000)] * (CJ.NOT_COVERED_LIMIT - 1)
+                  + [answer("covered", [], 700000, {"g1": True})])   # the judge says g1 is repaired
+    recs = [CJ.run(d, root, judge, now=1794200000 + i)[0] for i in range(CJ.NOT_COVERED_LIMIT)]
     st = DS.load_state(d)
-    check("healthy attended walk: two refusals then covered -> signed, never parked",
-          judge.calls == 3 and recs[2]["signed"] and not any(r.get("parked") for r in recs) and "park" not in st,
+    check("healthy attended walk: refusals below the limit then covered -> signed, never parked",
+          judge.calls == CJ.NOT_COVERED_LIMIT and recs[-1]["signed"] and not any(r.get("parked") for r in recs) and "park" not in st,
           [(r.get("verdict"), r.get("parked")) for r in recs])
     DS.owner_away = AWAY
     root = os.path.join(base, "healthy_away")
     d = concept(root)
-    judge = Judge([answer("not_covered", g, 700000), answer("covered", [], 700000)])
-    recs = [CJ.run(d, root, judge, now=1794300000 + i)[0] for i in range(2)]
+    judge = Judge([answer("not_covered", g, 700000)] * (CJ.NOT_COVERED_LIMIT - 1)
+                  + [answer("covered", [], 700000, {"g1": True})])   # the judge says g1 is repaired
+    recs = [CJ.run(d, root, judge, now=1794300000 + i)[0] for i in range(CJ.NOT_COVERED_LIMIT)]
     check("healthy away: one refusal then covered -> signed (away parks the second refusal, not the first)",
-          recs[1].get("signed") and not any(r.get("parked") for r in recs), recs)
+          recs[-1].get("signed") and not any(r.get("parked") for r in recs), recs)
 
 
 def stage_concept(base, name, inventory):
@@ -384,10 +402,9 @@ def away_units():
 
 
 def real_marks():
-    """How often the real refusal alarms and told rows name this test's concept or item (live processes write those
-    files too, so their mtimes prove nothing)."""
+    """Count this fixture's markers in the outer stores. Other callers may see unrelated incident rows change."""
     out = {}
-    for p in (os.path.join(RC.REAL_DIR, "alarms.json"), os.path.join(incident.REAL_OPS, "told.jsonl")):
+    for p in (RC.alarms_path(), incident.told_path()):
         try:
             with open(p, encoding="utf-8") as f:
                 text = f.read()
@@ -405,11 +422,14 @@ def main():
     CT.sign = lambda d, by, repo=None, **kw: []
     DS.exam_errors = lambda ex, d, st, repo=None: []
     env = {k: os.environ.get(k) for k in ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE")}
+    fallback = RC.REAL_DIR, incident.REAL_OPS
     with open(VERDICTS) as f:
         rounds = json.load(f)["rounds"]
-    before = real_marks()
     try:
         with tempfile.TemporaryDirectory() as base:
+            RC.REAL_DIR = os.path.join(base, "default_refusals")
+            incident.REAL_OPS = os.path.join(base, "default_ops")
+            defaults = (os.path.join(RC.REAL_DIR, "alarms.json"), os.path.join(incident.REAL_OPS, "told.jsonl"))
             ops = os.path.join(base, "ops")
             os.makedirs(ops)
             os.environ.update(RM_REFUSAL_DIR=os.path.join(base, "refusals"), RM_OPS_WATCH_DIR=ops,
@@ -421,15 +441,17 @@ def main():
             healthy(base)
             certification(base)
             away_units()
+            check("the sandbox default alarm and told files are untouched",
+                  not any(os.path.exists(p) for p in defaults), defaults)
     finally:
         CT.coverage_problem, CT.sign, DS.exam_errors = saved
         DS.owner_away = REAL_AWAY
+        RC.REAL_DIR, incident.REAL_OPS = fallback
         for k, v in env.items():
             if v is None:
                 os.environ.pop(k, None)
             else:
                 os.environ[k] = v
-    check("the real alarm and told files are untouched", real_marks() == before, (before, real_marks()))
     print("selftest_designer_park: %s" % ("FAIL (%d)" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 

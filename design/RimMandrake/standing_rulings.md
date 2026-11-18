@@ -594,7 +594,7 @@ destroy my account uselessly."*
   brief resets it to UNTESTED, and an UNTESTED brief's refusal is stored and shown only.
 - **Loops stop:** the third refusal of one clause triggers repair; the fourth refused verdict on one item, or a family
   refusing most of what it sees, raises `REFUSAL_NOTHING_COULD_EVER_PASS` to the Conductor. The Designer's coverage
-  judge stops at its third not_covered, parks on a second refusal while he is away, and parks at twice the item's cap.
+  judge stops at its second not_covered, parks on a second refusal while he is away, and parks at twice the item's cap.
 
 - **A judge does not grade its own criterion** (owner 2026-11-16, below): the Contagion judge marked all 25 of its own
   criteria `sound`. The coverage judge's `criterion_verdict` is kept as its opinion (`judge_criterion_verdict`); the

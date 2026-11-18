@@ -126,7 +126,9 @@ def main_walk(root):
     fixes(d, v["judge"], [{"gap": "g1", "evidence": "sc_a now stages 10x10; see scenes.json sc_a"},
                           {"gap": "g9", "evidence": "y"}, {"gap": "g2", "evidence": "  "}])
     edit(d, "scenes.json", lambda s: s["scenes"][0].update(expect="a moves 10x10"))
-    j.script.append(answer("not_covered", [gap(["inv_c"], "C NEW UNTAGGED", "unfixed"),
+    # tagged `first`, not `unfixed`: an `unfixed` report naming no earlier gap is an unplaced repair report and blocks
+    # (7_same_problem_rule.md rule 4; its own check is below)
+    j.script.append(answer("not_covered", [gap(["inv_c"], "C NEW UNTAGGED", "first"),
                                            gap(["inv_e"], "E MISSED", "late", late_why="the earlier judge never "
                                                "opened inv_e's impl_evidence"),
                                            gap(["inv_a"], "A STILL HALF", "unfixed")], [row("inv_a", ok=False)]))
@@ -145,13 +147,19 @@ def main_walk(root):
           len(v2.get("claims_refused") or []) == 2 and [c["gap"] for c in v2["claims"]] == ["g1"],
           v2.get("claims_refused"))
     whats = [g["what"] for g in v2["gaps"]]
-    check("an untagged new gap on unchanged material is dropped; a later look's miss stays advisory",
+    # the delta's scope no longer drops a new finding: every one goes through rule 4 of 7_same_problem_rule.md, and on
+    # unchanged material it is advisory, on his short list (it was "dropped")
+    check("an untagged new gap on unchanged material is advisory; a later look's miss stays advisory",
           "C NEW UNTAGGED" not in whats and "E MISSED" not in whats
-          and any(g["what"] == "E MISSED" and g.get("miss_of") == v["judge"]
-                  for g in v2.get("advisory_gaps") or [])
-          and [g["what"] for g in v2.get("dropped") or []] == ["C NEW UNTAGGED"], (whats, v2.get("dropped")))
-    check("unclaimed gaps carry open, tagged unfixed; the still-open claim stays; gaps renumbered",
-          "B IS BROKEN" in whats and "D IS BROKEN" in whats and "A STILL HALF" in whats
+          and all(any(g["what"] == w and g.get("miss_of") == v["judge"] and g.get("short_list")
+                      for g in v2.get("advisory_gaps") or []) for w in ("E MISSED", "C NEW UNTAGGED"))
+          and not v2.get("dropped"), (whats, v2.get("dropped"), v2.get("advisory_gaps")))
+    # the still-open claim blocks as it was first written, the judge's new wording a note on it (rule 3 of
+    # 7_same_problem_rule.md); it was "A STILL HALF" standing in its place
+    check("unclaimed gaps carry open, tagged unfixed; the still-open claim stays as first written; gaps renumbered",
+          "B IS BROKEN" in whats and "D IS BROKEN" in whats and "A IS BROKEN" in whats and "A STILL HALF" not in whats
+          and any(n.get("what") == "A STILL HALF" for g in v2["gaps"] if g["what"] == "A IS BROKEN"
+                  for n in g.get("second_look") or [])
           and all(g.get("carried") for g in v2["gaps"] if g["what"] in ("B IS BROKEN", "D IS BROKEN"))
           and [g["gid"] for g in v2["gaps"]] == ["g%d" % k for k in range(1, len(v2["gaps"]) + 1)], v2["gaps"])
     ids = [r["id"] for r in v2["checklist"]]
@@ -170,12 +178,22 @@ def covered_cases(root):
     v = verdict(d)
     fixes(d, v["judge"], [{"gap": "g1", "evidence": "inv_b gains a scene"}])
     edit(d, "record.json", lambda r: r["inventory"][1].update(what="capability inv_b, now staged"))
-    j.script.append(answer("covered", [gap([], "SHEET VAGUE", "unfixed")], [row("inv_b")]))
+    j.script.append(answer("covered", [gap([], "SHEET VAGUE", "first")], [row("inv_b")]))
     rec, _ = CJ.run(d, repo, j, now=1794100100)
     check("a covered word with a gap still carried is not_covered, and does not sign; a row-less new gap when only "
-          "rows changed is dropped",
+          "rows changed is advisory",
           rec["verdict"] == "not_covered" and not rec["signed"] and [g["what"] for g in rec["gaps"]] == ["D"],
           (rec.get("verdict"), rec.get("gaps")))
+    d2, j2 = make(os.path.join(root, "unplaced")), Judge()
+    j2.script.append(answer("not_covered", [gap(["inv_b"], "B")], ALL_ROWS))
+    CJ.run(d2, os.path.join(root, "unplaced"), j2, now=1794100200)
+    fixes(d2, verdict(d2)["judge"], [{"gap": "g1", "evidence": "inv_b gains a scene"}])
+    edit(d2, "record.json", lambda r: r["inventory"][1].update(what="capability inv_b, now staged"))
+    j2.script.append(answer("covered", [gap(["inv_c"], "STILL OPEN, POINTS NOWHERE", "unfixed")], [row("inv_b")]))
+    rec2, _ = CJ.run(d2, os.path.join(root, "unplaced"), j2, now=1794100300)
+    check("an `unfixed` report naming no earlier gap is never dropped: it blocks, and the look does not sign",
+          rec2["verdict"] == "not_covered" and not rec2["signed"]
+          and [g["what"] for g in rec2["gaps"]] == ["STILL OPEN, POINTS NOWHERE"], (rec2.get("verdict"), rec2.get("gaps")))
     check("a changed inventory entry puts its row in the delta",
           "inv:inv_b" in j.prompts[-1] and "now staged" in j.prompts[-1], j.prompts[-1][-500:])
 

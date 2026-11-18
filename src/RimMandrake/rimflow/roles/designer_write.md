@@ -35,6 +35,8 @@ signature, and refuses Setter fields (`oracle`, `tier`, `guard`, `budget`). Then
 - `experience`: what an observer sees, in plain words, with the observer named. A constraint is
   `<limit> <unit> on <test machine>`. The leaf says who is looking, at what zoom, in which state, across which variants
   (a finite, grouped set), what it reads as and what it must not read as.
+  Write at most one "must not read as" line per promise; unless it is the owner's own words or the plain
+  opposite of the promise, it is a tip for the judge, never a separate thing that needs its own test.
 - `false_pass`: a named wrong world, the worker's cheapest way to fake this leaf.
 - `red`: the broken version of the mod this leaf catches, in a plain sentence (hose: "water stops after the first cell").
   If you cannot name one, the leaf is decoration: cut it.
