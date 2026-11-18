@@ -792,11 +792,13 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                    why_sound="the pass is his alone (carried, spec Stage 8)")
     if forward and to == "blind_challenge" or (back and cur == to == "blind_challenge"):
         visit = (rec.get("cycles") or {}).get("visit", 0) if cur == "blind_challenge" else 0
-        if visit >= CYCLE_LIMIT:
+        import pipeline_control as PC       # the one control store (`pipe add <Mod> blind_cycles_total -1`)
+        visit, lim = PC.used(mod, "blind_cycles_total", visit), PC.limit(mod, "blind_cycles_total", CYCLE_LIMIT)
+        if visit >= lim:
             hand.append("conductor_decision")
         clause("fourth_cycle", "after three blind cycles in one visit the Conductor decides; a fourth judge never "
-               "starts on its own", visit < CYCLE_LIMIT or bool(conductor), [rec_ref, req_ref],
-               observed="cycles visit %d of %d; conductor_decision: none in the request" % (visit, CYCLE_LIMIT),
+               "starts on its own", visit < lim or bool(conductor), [rec_ref, req_ref],
+               observed="cycles visit %d of %d; conductor_decision: none in the request" % (visit, lim),
                would_pass="--conductor-decision saying what the Conductor chose (defer a bar, repair a criterion, "
                           "a design fault, or one more cycle)",
                fix="bring the Conductor the three cycles' findings and pass its decision", cost="owner",
@@ -1355,12 +1357,14 @@ def next_step(root, mod):
                "%s/SUMMARY.md and confirms: maturation.py advance %s --to in_game --by <SEAT> --why \"...\" "
                "--steward-confirms \"...\"" % (blind["cycle"], blind["exit"]["why"][0], blind["exit"]["record"], mod))
     elif blind:
+        import pipeline_control as PC       # the same count and limit the advance reads (`pipe show <Mod>`)
+        at_limit = (PC.used(mod, "blind_cycles_total", blind.get("visit") or 0)
+                    >= PC.limit(mod, "blind_cycles_total", CYCLE_LIMIT))
         nxt = ("NEXT (%s): cycle %d: exit not met (%s); the steward reads %s/SUMMARY.md, files the failures as named "
                "items and opens the next blind cycle (maturation.py advance %s --to blind_challenge%s) or another road" % (
-                   "PAUSED: three cycles, the Conductor decides" if (blind.get("visit") or 0) >= CYCLE_LIMIT else
+                   "PAUSED: three cycles, the Conductor decides" if at_limit else
                    "automatic: one steward run", blind["cycle"], "; ".join(blind["exit"]["why"][:3]), blind["exit"]["record"], mod,
-                   " --conductor-decision \"...\": three cycles in this visit" if (blind.get("visit") or 0) >= CYCLE_LIMIT
-                   else ""))
+                   " --conductor-decision \"...\": three cycles in this visit" if at_limit else ""))
     elif prog:
         tag = ("OWNER or the Designer's own launcher: maturation_dispatch.py status says which" if cur in (
                    "intake", "designer") else

@@ -30,6 +30,8 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+if HERE not in sys.path:
+    sys.path.insert(0, HERE)
 PATH = os.path.join(HERE, "mod_owner_hold.json")
 LIFT = 'python3 src/RimMandrake/rimflow/mod_owner_hold.py lift %s --said "<his words>"'
 
@@ -66,6 +68,15 @@ def load(path=None):
         if key(h["mod"]) in out:
             raise Unreadable("%s: %s is held twice (rows %r and %r)" % (p, key(h["mod"]), out[key(h["mod"])], h))
         out[key(h["mod"])] = h
+    if path is None:
+        # `pipe off <Mod>` (pipeline_control.py): a mod switched off in the one control store reads as held to every
+        # reader of this list, the moment it is written (no publish); his own hold row wins where both stand
+        import pipeline_control as PC
+        try:
+            for m, row in PC.off_mods().items():
+                out.setdefault(key(m), row)
+        except PC.Unreadable as e:
+            raise Unreadable("the pipeline control store: %s" % e)
     return out
 
 
@@ -112,6 +123,9 @@ def held(name, holds=None):
 
 def status(h):
     """The one line every status prints for a held mod."""
+    if h.get("control"):
+        return "OFF by pipe (act %s at %s): %s (on: pipe on %s --why \"...\")" % (
+            h.get("act"), h.get("at_pacific"), h.get("said"), h["mod"])
     return "HELD BY OWNER %s: \"%s\" (lift: %s)" % (h["date"], h["said"], LIFT % h["mod"])
 
 

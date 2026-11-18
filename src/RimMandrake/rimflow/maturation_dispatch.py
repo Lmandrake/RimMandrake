@@ -147,6 +147,7 @@ import maturation_autonomy as AUT   # noqa: E402
 import detached_helper as DH    # noqa: E402
 import modledger                # noqa: E402  the mod ledger: stage runs from its packet; holder sessions (resume_plan)
 import pipeline_pause as PP          # noqa: E402  the pipeline's pause: one switch, a file (pause.json in sdir)
+import pipeline_control as PC       # noqa: E402  the one control store (`pipe`): counts, limits, switches, queue
 import mod_owner_hold as OH          # noqa: E402  the owner's hold: a held mod is never decided (mod_owner_hold.json)
 
 UNM = "UNMEASURED"
@@ -1499,11 +1500,11 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
                if x.get("failed") else "the automatic cycle %s (%s) ended and wrote no record" % (n, x.get("unit")))
         put("stopped", why, "stopped, %s; never a second automatic try" % why)
         return False
-    per = int(cfg.get("blind_auto_cycles_per_visit", 1))
+    per = PC.limit(mod, "blind_cycles_visit", int(cfg.get("blind_auto_cycles_per_visit", 1)))
     dec = f.get("cycle_decision")
     if dec:     # the Conductor's recorded decision opened this cycle: it allows this one, past the visit's count
         row["conductor_decision"] = "%s: %s" % (dec.get("at"), str(dec.get("text"))[:160])
-    if len([x for x in ours if x is not retry]) >= per and not dec:
+    if PC.used(mod, "blind_cycles_visit", len([x for x in ours if x is not retry])) >= per and not dec:
         put("auto_spent", "the visit's %d automatic cycle(s) are spent (cycle %s)" % (
             per, ", ".join(str(x.get("cycle")) for x in ours)),
             "blind cycle %s is open; the Dispatch step runs %d automatic cycle(s) per visit (cycle %s was), so launch "
@@ -2822,6 +2823,13 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
             if r["mod"] in launches:
                 r.update(decision="pipeline_paused", why="%s; it would have launched: %s" % (why, r.get("why") or "-"))
     launches = [m for m in launches if not PP.reason(pz, m)]
+    ctl = PC.state()    # `pipe off all|item:<ID>|stage:<S>` (a mod's own switch reads as a hold, above): nothing launches
+    for r in rows:
+        if r["mod"] in launches:
+            why = PC.off(item=r.get("item") or r.get("fix_item"), stage=r.get("stage"), st=ctl)
+            if why:
+                r.update(decision="control_off", klass="held", why=why, status=why)
+                launches = [m for m in launches if m != r["mod"]]
     if not cfg.get("enabled"):
         for r in rows:
             if r["mod"] in launches:

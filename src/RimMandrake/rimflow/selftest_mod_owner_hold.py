@@ -39,7 +39,7 @@ def temp_holds(mods):
 def test_the_shipped_list():
     import mod_owner_hold as OH
     os.environ.pop("RM_OWNER_HOLD_FILE", None)
-    hs = OH.load()
+    hs = OH.load(OH.PATH)    # the shipped file alone: pipe's live switches (pipeline_control) are not shipped
     check(set(SIX) <= set(hs), "owner_hold.json holds the six biome mods: %s" % sorted(hs))
     check(not any(OH.held(m, hs) for m in UNTOUCHED), "Pyrelands, PyrelandsMechanics: not held")
     check(all("Only Pyrelands" in hs[m]["said"] and hs[m]["date"] == "2026-11-16" for m in SIX if m in hs),

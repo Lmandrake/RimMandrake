@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# pipe — command the Maturation Pipeline in one line: counts, limits, on/off switches, the queue, the log and undo.
+# Every act takes effect at the pipeline's next read (no clone, build or publish) and prints at most 3 lines.
+#     ./pipe show [Mod]      ./pipe add Graffiti granted_look -1 --why "..."      ./pipe off Graffiti --why "..."
+# See src/RimMandrake/rimflow/pipeline_control.py (item RIMMANDRAKE_BUILD_PIPELINE_CONTROL_ONE_LINERS_NO_BUILD_PROCESS).
+exec python3 "$(dirname "$(readlink -f "$0")")/src/RimMandrake/rimflow/pipeline_control.py" "$@"

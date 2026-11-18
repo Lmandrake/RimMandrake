@@ -75,6 +75,7 @@ sys.path.insert(0, HERE)
 import concept_tree as CT  # noqa: E402
 import designer_stage as DS  # noqa: E402
 import refusal_contract as RC  # noqa: E402
+import pipeline_control as PC  # noqa: E402  one-line overrides of every count here (`pipe`)
 import bar_rule as BR  # noqa: E402
 import spend_watchdog  # noqa: E402  (the hard spend stop, from outside the agent; owner 2026-11-16)
 
@@ -700,25 +701,34 @@ def _looks(rs):
     return [r for r in rs if not r.get("reader_only")]
 
 
+def released_rounds(st, d, rs, rel):
+    """-> the rounds since the release `rel` (a coverage_releases row): by its judges_at list, or (a release written
+    before 2026-11-18) by its rounds_at count with the phantom reader rounds. Shared by stop_reason and `pipe show`."""
+    if isinstance(rel.get("judges_at"), list):
+        before = set(rel["judges_at"])
+        return [r for r in rs if r.get("reader_only") or r.get("judge") not in before]
+    old = rounds(st, d, readers_as_rounds=True)[int(rel.get("rounds_at") or 0):]
+    keep = {r.get("judge") for r in old if not r.get("reader_phantom")}   # a phantom is dropped, never promoted
+    return [r for r in rs if r.get("judge") in keep or r.get("reader_only")]
+
+
 def stop_reason(st, d=None):
     """-> why judging stops on this concept now, or None. After a release, one more look: its refusal stops again (an
     error, a timeout or a malformed round is no look; the caps count them)."""
     rs = rounds(st, d)
+    mod = (DS.concept_of(st, d) or {}).get("mod") or "?"
     rel = [x for x in st.get("coverage_releases") or [] if isinstance(x, dict)]
     if rel:
-        if isinstance(rel[-1].get("judges_at"), list):
-            before = set(rel[-1]["judges_at"])
-            after = [r for r in rs if r.get("reader_only") or r.get("judge") not in before]
-        else:   # written before 2026-11-18, counted with the phantom reader rounds: resolved against that count
-            old = rounds(st, d, readers_as_rounds=True)[int(rel[-1].get("rounds_at") or 0):]
-            keep = {r.get("judge") for r in old if not r.get("reader_phantom")}   # a phantom is dropped, never promoted
-            after = [r for r in rs if r.get("judge") in keep or r.get("reader_only")]
+        after = released_rounds(st, d, rs, rel[-1])
         tail = _looks(after)
         # the one look is a well-formed answer: an error or a timeout is no look and a malformed round is not one
-        # (the caps below still count them); its refusal stops judging again
+        # (the caps below still count them); its refusal stops judging again. The count of refusing looks and its
+        # limit (1) are read through the control store: `pipe add <Mod> granted_look -1` gives a spent look back
         refused = [r for r in tail if r.get("verdict") == "not_covered"]
-        if refused:
-            tail = tail[:tail.index(refused[0]) + 1]
+        used, lim = PC.used(mod, "granted_look", len(refused)), PC.limit(mod, "granted_look", 1)
+        if refused and used >= lim:
+            cross = refused[max(1, min(len(refused), len(refused) - (used - lim))) - 1]
+            tail = tail[:tail.index(cross) + 1]
             at = len(_looks(rs)) - len(_looks(after)) + len(tail)
             if rel[-1].get("final"):
                 return ("the final look (granted %s, after %s) at round %d was %s: the owner's to decide" % (
@@ -727,21 +737,25 @@ def stop_reason(st, d=None):
             return "released for one more look at round %d; that look was %s" % (
                 at, tail[-1].get("verdict") or "no verdict")
         # RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: the caps still bind after a release, counted from it
-        return _caps(after, " since the release")
-    nc = sum(1 for r in rs if r.get("verdict") == "not_covered")
-    if nc >= NOT_COVERED_LIMIT:
-        return "%d not_covered verdicts (limit %d)" % (nc, NOT_COVERED_LIMIT)
-    return _caps(rs, "")
+        return _caps(after, " since the release", mod)
+    nc = PC.used(mod, "coverage_not_covered", sum(1 for r in rs if r.get("verdict") == "not_covered"))
+    lim = PC.limit(mod, "coverage_not_covered", NOT_COVERED_LIMIT)
+    if nc >= lim:
+        return "%d not_covered verdicts (limit %d)" % (nc, lim)
+    return _caps(rs, "", mod)
 
 
-def _caps(rs, since):
-    """The run, spend and malformed caps over rounds rs -> why judging stops, or None."""
-    bad = sum(1 for r in rs if r.get("verdict") == "malformed")
-    if bad >= MALFORMED_LIMIT:
+def _caps(rs, since, mod="?"):
+    """The run, spend and malformed caps over rounds rs -> why judging stops, or None. Each count and limit is read
+    through pipeline_control (`pipe show <Mod>`), so a one-line act moves it."""
+    bad = PC.used(mod, "coverage_malformed", sum(1 for r in rs if r.get("verdict") == "malformed"))
+    lim = PC.limit(mod, "coverage_malformed", MALFORMED_LIMIT)
+    if bad >= lim:
         return "%d malformed verdicts%s (limit %d): the coverage brief FAILED its refusal contract" % (
-            bad, since, MALFORMED_LIMIT)
-    if len(_looks(rs)) >= JUDGE_RUNS_MAX:
-        return "%d judge runs%s (limit %d)" % (len(_looks(rs)), since, JUDGE_RUNS_MAX)
+            bad, since, lim)
+    runs, lim = PC.used(mod, "coverage_runs", len(_looks(rs))), PC.limit(mod, "coverage_runs", JUDGE_RUNS_MAX)
+    if runs >= lim:
+        return "%d judge runs%s (limit %d)" % (runs, since, lim)
     if spend(rs) >= JUDGE_SPEND_MAX:
         return "judge spend %d tokens%s (limit %d, 4x the p90)" % (spend(rs), since, JUDGE_SPEND_MAX)
     return None

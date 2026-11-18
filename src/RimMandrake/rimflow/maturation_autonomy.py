@@ -48,6 +48,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 import maturation as M          # noqa: E402
+import pipeline_control as PC   # noqa: E402  the one control store (`pipe`)
 
 UNM = "UNMEASURED"
 EXCLUDE_MARKER = ".maturation-exclude"      # a concept folder holding it is never discovered (test fixtures)
@@ -967,7 +968,8 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
     # visit stays a hand: the game it left needs a look, and a steward never takes the bridge.
     if dec in STEWARD_ON or (dec == "cycle_unfinished" and stage == "blind_challenge"):
         n = row.get("visit") if stage == "in_game" else row.get("cycle") if stage == "blind_challenge" else None
-        if dec == "exit_not_met" and stage == "blind_challenge" and (f.get("visit") or 0) >= M.CYCLE_LIMIT:
+        if dec == "exit_not_met" and stage == "blind_challenge" and (PC.used(mod, "blind_cycles_total", f.get("visit") or 0)
+                                                                        >= PC.limit(mod, "blind_cycles_total", M.CYCLE_LIMIT)):
             row.update(decision="cycle_limit", why="three blind cycles in this visit ended not met; his rule of "
                        "2026-11-13 brings the Conductor in (maturation.py advance %s --to blind_challenge "
                        "--conductor-decision \"...\" un-pauses it)" % mod)
@@ -1147,6 +1149,8 @@ def _klass(cfg, s, row, now, queue):
         k, txt = "wait", "waiting on %s" % (on or "nothing running (%s)" % dec)
     elif dec == "owner":
         k, txt = "owner", "OWNER %s" % row.get("why")
+    elif dec == "control_off":      # `pipe off` (pipeline_control.py): a planned stop, never a pause or stall alarm
+        k, txt = "held", row.get("why")
     elif dec == "rested":
         k, txt = "rested", "RESTED %s" % row.get("why")
     else:
@@ -1159,7 +1163,7 @@ def _klass(cfg, s, row, now, queue):
     if prev.get("k") != k or prev.get("d") != dec or prev.get("w", named) != named:
         s["klass_since"] = {"k": k, "d": dec, "w": named, "at": now}
     row["for_min"] = round((now - s["klass_since"]["at"]) / 60)
-    stuck = (k == "wait" and not row.get("waits_on")) or k not in ("launch", "wait", "paused", "owner", "rested",
+    stuck = (k == "wait" and not row.get("waits_on")) or k not in ("launch", "wait", "paused", "owner", "rested", "held",
                                                                    "planned")
     # a mod under the pipeline's pause waits on the pause by plan: never stalled
     row["stalled"] = bool(stuck and row["for_min"] >= int(cfg.get("stalled_min", 10))) and not row.get("pipeline_paused")
