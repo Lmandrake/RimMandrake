@@ -25,6 +25,50 @@ version is *about*: from surviving in the dark to hiding in it.
 **Words used in "what happened".** *kept*; *kept, reshaped* (changed as stated); *moved* (scope bucket changed, from
 and to given, against the scope he approved on 2026-11-17); *folded into shared machinery*; *lost*.
 
+## Changed after his rulings of 2026-11-18
+
+His card of 2026-11-18, 3:10 PM PST ruled on stop length, cover from orbit, fuel and hull wear, and gave a test for
+every solution. This revision changed the design and this page as follows and nothing else. **The hidden-ship move
+is untouched: still in 0.1.0 as the first pass made it, still the first question under `NEEDS HIM`, still one line
+to revert.**
+
+1. **Stay length is stated, as an outer edge.** The "UNSETTLED: how long a stay lasts" paragraph is gone. The
+   design says about two months before the Empire's first contact at the outside (the pursuit's fourfold delay on
+   a hidden crew), on his words *"The numbers you're generating are likely the outer edge allowable for each biome,
+   and that's just fine. Go with that."* A ship that holds its cover is past that arithmetic, and the design says
+   the place then sets the edge.
+2. **Cover from orbit is stated as the full kind.** His card: *"full dark still pauses it."* Nothing changed in
+   what the Abyss does; the design now says in one place that it is the only biome with full cover, and that the
+   jungles' partial cover is a weaker entry beside it.
+3. **The grain wears the hull, in 0.1.0.** The question "Does the grain eat the ship?" is removed and answered by
+   his ruling (*"Yes in 0.1.0. It's easy, and most of the biome already talk about this."*). Of the three answers
+   the first pass offered, the design takes the plain one: the hull wears in any etchfall, whatever the engine is
+   doing. The variant where it wears only while the engine is cold is not taken; it would be a second rule on top
+   of the weather.
+4. **What answers the wear** is taken from the fluff-cut review's *"roof everything"* and his shield ruling of 2026-09-02: a
+   roofed lean-to against the hull, patching by hand, the ship's light screen. **New in this revision, not in any
+   source:** that a hull face with roofed building against it counts as out of the weather. It is an ordinary
+   reading of the built rule that roofed things are spared, and it is what makes the answer hands-on and made of
+   scrap.
+5. **The rough way in is written as the Abyss's second wear, at 0.2.0.** His ruling names *"rough weather
+   turbulence in the approach"* and the sheet describes exactly that here. I put it a version later because a
+   knock on arrival has no answer but a shield; that placing is mine.
+6. **Tholin is the Abyss's richer fuel source; there is nobody to buy from.** Both were already in the sources
+   and the build; the design now says so in the terms of his fuel ruling, and says the Abyss is not replete,
+   because the hide burns what it sweeps.
+7. **A new section in the design, "The ship while it sits here"**, holds cover, hull and fuel together. One promise
+   was added to the 0.1.0 table (the hull in an etchfall), two on-screen moments (sweeping the ship; the shed left
+   behind), one scope line in 0.1.0 and one in 0.2.0. `NEEDS HIM` went from four questions to three.
+8. **"Very Jawa" applied where a choice was open:** the hull is sheltered with a lean-to of wreck-field scrap
+   instead of a fitted cover; the dust that eats the ship is swept into sacks and burned as fuel.
+9. **A finding for the shared-machinery file:** the hull-wear frame already exists in the campaign
+   (`src/RimUtinni/ShipShields/`). Its cold test is far below the temperatures the Abyss's sheet records, so cold
+   is not a hull wear here.
+
+Read for this revision, in part: `abyss.md` §3 (wind and power), §7 and its weather list, by search;
+`hiding_the_gravship.md` lines 36 to 58; the first lines of the ship item; and the shield and pursuit files listed
+on the Fever Wood's choices page.
+
 ## The ones I would look at
 
 1. **The hidden ship, moved into 0.1.0.** This is the one place in the pilot where I moved something against an
@@ -63,8 +107,12 @@ Against the scope he approved on 2026-11-17 (cleanse proposal plus his four mark
   section and deleting the last two rows of the promises table. Trade isolation under cover stays 0.2.0.
 - **Nothing else moved.** His marks stand as he wrote them: the fold lamp, the turning vine, the glowberry as a
   carried light and the fishery are in 0.1.0; heat observation stays 0.2.0.
+- **The grain wearing the hull:** asked of him → 0.1.0, by his ruling of 2026-11-18. Revert is his.
+- **Gust shear knocking the arriving ship:** not in the first pass → 0.2.0. From the sheet's wind section and his
+  ruling's *"rough weather turbulence in the approach"*; the version is my choice. Revert by deleting its line.
 - **New, not in any source, and not in a version:** an Unveiling exposing the ship (asked as `NEEDS HIM`, default
-  no); the grain wearing the hull (asked, default no).
+  no).
+- **New, not in any source:** a roofed lean-to against the hull as shelter from the grain (0.1.0, with the wear).
 - **Stated as consequences of built behaviour, with scenes owed:** the Empire's lamps are eaten like anyone's; a
   fold lamp is the only clean firing lane; the crew's own dark vision does not pierce the Dark (from the sheet's
   ban on clean sensing).
@@ -99,6 +147,9 @@ pages, owner marks, definition, next-version list, ambiguities, census); *mechan
 | The collapse is the erosion: the rock is the trail of where the Dark has cleared | sheet §3 | kept as etchfall and the etched land | | |
 | Lightfall, the great chasm where the Dark always dies | sheet §3, §7 | kept; its contents are 0.2.0, its landmark is world authoring | | |
 | No steady wind; gusts and stillness | sheet §3, ban 2 | kept | | |
+| Wind shattering into vortices among the crags; gust shear that snaps what stands in it | sheet §3, §5 | kept, reshaped, moved: the rough way in for an arriving ship (not in the first pass → 0.2.0) | His ruling names approach turbulence as a wear. | 0.1.0: a hit on arrival with no hands-on answer. |
+| "Refuge priced in darkness, breakage and cold" | sheet §7 | kept, quoted; breakage now includes the ship's own plate | | |
+| "Roof everything" | fluff cuts (Abyss, etchfall) | kept, quoted; turned on the ship as a lean-to against the hull | | |
 | Power in pulses; chemistry seeps | sheet §3, §8 | lost as power (turbines cut); seeps kept in "later" | His card. | |
 | No geothermal | sheet ban 1 | kept | | |
 | No water rain; etchfall is grain | sheet ban 3, §4b | kept | | |
@@ -131,7 +182,9 @@ pages, owner marks, definition, next-version list, ambiguities, census); *mechan
 |---|---|---|---|---|
 | Hiding as the third verb, after run and fight | hiding note (his concept) | kept, quoted | | |
 | "The hiding place must be poor" | hiding note | kept, quoted | | |
-| "It must not be permanent"; something must erode | hiding note | kept, quoted; what erodes is asked (`NEEDS HIM`) | | |
+| "It must not be permanent"; something must erode | hiding note | kept, quoted; what erodes is the hull, in etchfall (0.1.0) | His ruling of 2026-11-18 on hull wear. | The hull exempt: then only stores and mood erode, and the hide has no clock of its own. |
+| "No salvage. No sun. No trade." | hiding note | kept, quoted, as the reason no fuel is bought here | His fuel ruling: *"You can also buy it"*; here nobody sells. | |
+| The hull wears only while the engine is cold | first pass's own offered answer, no source | lost | A second rule on top of the weather; he called hull wear *"easy"*. | Take it: the cover itself becomes what costs, at the price of a rule the player has to be told. |
 | Raid, get hot, go dark and cold, wait, come back up | hiding note | kept as the Abyss's place in the campaign's rhythm | | |
 | Hiding under water; the drowned cavern under polar night; the Deepwater Compact as gatekeeper | hiding note | lost from this design | Not the Abyss; it belongs to the seas. | Carry it into the first sea biome's rewrite. |
 | Underwater as vacuum for breathing | hiding note | lost from this design | Same. | Same. |
@@ -163,7 +216,8 @@ pages, owner marks, definition, next-version list, ambiguities, census); *mechan
 | Durrgak, the sorter: arranges things; tamed, it tidies | cast bible | kept for tidying; rings, dens and caches stay 0.2.0 | His approval. | Rings in 0.1.0: the first "someone was here" on day one. |
 | Krizzak, the moth that eats light | cast bible | kept | | |
 | Etchcap, only in etch-hollows; a delicacy | cast bible | kept | | |
-| Tholin: swept residue that refines to fuel | cast bible, review §8 | kept | | |
+| Tholin: swept residue that refines to fuel | cast bible, review §8 | kept; named as the Abyss's richer fuel source, spent by the hide's own heaters | His fuel ruling of 2026-11-18. | |
+| "Chemfuel-adjacent industry from air" | sheet §7 | kept, quoted | | |
 | Tholin collects in rings at the edges of warm clearings | review (consult), cast bible | lost | Not found built; the cleanse does not carry it. | A pretty tell that ties heat to harvest. |
 | Cindermare (now saevitha): mouthless, kills by grip, draining warmth | cast bible §4B | kept | | |
 | Skarnix (now ishvarith): will not cross firelight | cast bible §4B | kept | | |
@@ -242,8 +296,9 @@ pages, owner marks, definition, next-version list, ambiguities, census); *mechan
 ## Sources read, and the count
 
 Measured after writing (a script counted the table rows and the first words of the "what happened" column):
-**19 source files, 132 rows**, of which **14 lost**, **4 record a move** (three are the hidden ship, seen from
-three sources; the fourth is the outdoor pockets, which the cleanse moved and he approved), **5 kept, reshaped** and
+**19 source files, 138 rows**, of which **15 lost**, **5 record a move** (three are the hidden ship, seen from
+three sources; one is the outdoor pockets, which the cleanse moved and he approved; one is the rough way in, added
+by the revision of 2026-11-18, which added six rows and changed two), **6 kept, reshaped** and
 2 folded into shared machinery. Every source is named in at least one row's source column (checked by the same script; the six
 cleanse files count under the one name "cleanse").
 

@@ -17,6 +17,12 @@ call. It's still a daunting mod even with that you chose to keep in 0.1.0. I app
 scope and his four marks, and makes **one** move against it, which is the first thing under `NEEDS HIM`: the hidden
 ship comes forward into 0.1.0.
 
+**Revised the same day** after his card of 2026-11-18, 3:10 PM PST, which ruled on how long a stop lasts, on cover
+from orbit (*"full dark still pauses it"*), on fuel, and that a biome wears on the hull in 0.1.0. That last answers
+the first pass's question about the grain and the ship. The answers are written in below (see "The ship while it
+sits here"); the changes are listed at the top of `rewrite_choices.md`. The hidden-ship move is left exactly as the
+first pass made it, and is still his to revert.
+
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/Abyss/`
 (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its path by sitting here.
 
@@ -66,9 +72,17 @@ pursuit's built list of poorly surveyed biomes, which multiplies every wait by f
 (`design/Jawa/mods/ruthless_faction_pursuit.md`) records his figure for such refuges as 20 to 30 days. The ladder's own arithmetic: *"A Hidden clan on an Abyss tile
 therefore gets roughly 40–64 days between rungs."*
 
-**UNSETTLED: how long a stay lasts.** Assumed here: three weeks to two months before the first Imperial contact,
-depending on how quiet the crew keeps. A season is fifteen days, so **the Abyss is the one stop where seasons pass
-and slow things can be seen**: a crop under a lamp tree, stone wearing away, a crew getting used to the dark.
+**How long a stay here can last: about two months before the Empire's first contact, and that is the outer edge.**
+His ruling of 2026-11-18 on the numbers the first pass assumed: *"The numbers you're generating are likely the outer
+edge allowable for each biome, and that's just fine. Go with that."* The arithmetic: three weeks to a month for a
+crew the search reads as ordinary (five to eight days, times four), and up to two months for one that stays hidden,
+with the ladder's later steps as far apart again. A ship that holds its cover does better still, because the
+search has lost it; then the edge is set by the place and not by the Empire. Most stays end well short of it, on
+food, on fuel, on the hull (below), or on a probe that got its report out.
+
+A season is fifteen days, so **the Abyss is the one stop where seasons pass and slow things can be seen**: a crop
+under a lamp tree, stone wearing away, a crew getting used to the dark. (The pursuit's numbers are marked
+provisional in its own source.)
 
 ---
 
@@ -130,6 +144,61 @@ The crew's first decision is in front of them before the ramp is down: how many 
 - **The wear.** Weeks of grain on anything left unroofed. The hide is paid for in roofing, fuel, cold and the
   things the crew is not salvaging while it sits here.
 
+## The ship while it sits here
+
+Three things every biome design now states, by his rulings of 2026-11-18.
+
+**Cover from orbit: the full kind, and the only place that has it.** His card: *"Canopy, steam and fog slow the
+search by one step; full dark still pauses it."* The Abyss is the full dark. As built, that is the fourfold delay
+on every wait, and on top of it the cover a quiet, dark, cold-engined ship gathers (the first weeks, above). No
+other biome is on the pursuit's list.
+
+**Wear on the hull: the grain.** His ruling: *"Yes in 0.1.0. It's easy, and most of the biome already talk about
+this."* The Abyss has talked about it since its first sheet, whose star reads *"Refuge priced in darkness, breakage
+and cold"*, and the note that worked out his hiding idea said *"Something has to erode while you are down there."*
+What erodes is now settled: the ship.
+
+- *What the player sees.* In an etchfall the grain ticks on the hull as it ticks on stone, and the outside of the
+  ship wears like any steel left under the sky. Dry weather wears nothing. The dust it leaves on and around the
+  hull is tholin, the same fuel-dust that falls everywhere else.
+- *What answers it.* The etchfall's old lesson, *"roof everything"* (`fluff_cuts_2026-10-23.md`), turned on the ship: a hull face with roofed
+  building against it is out of the weather, so a crew can throw up a lean-to of walls and roof along the weather
+  side from wreck-field scrap, and leave a ship-shaped shed behind when it flies. (Building outside takes light,
+  and light is what gives the ship away.) Patching worn plate by hand. And, for a crew that owns one, the ship's
+  light screen: his shield ruling of 2026-09-02 is that it handles *"wind, ash, vapor, bio contamination, spores,
+  smoke, sand, and rain damage completely"*. (`UNSETTLED`: whether a running shield counts against the ship's
+  cover the way a lamp does. Assumed not; nothing built says it does.)
+- *The cold wears the crew, not the hull.* The hiding note calls this country *"cold enough to hurt a species
+  evolved for the dune sea"*. The shared hull-wear machinery counts cold only far below anything the Abyss's sheet
+  records, so the cold is felt in the rooms and paid for in fuel.
+- *It never traps.* His ruling of 2026-09-02: the hull *"is thick and can take a lot of damage in most situations,
+  so no environment is immediately lethal"*, and the ship *"will advise course of action, but no more than that"*.
+  Launching always ends the wear, and ends the hide with it.
+- `UNMEASURED`: how the built etchfall sampler treats a hull today. A ship's own cells are probably roofed in the
+  engine's eyes and so spared; wearing the outside faces is the part to build.
+- *0.2.0: the rough way in.* The sheet's wind: *"Laminar flow hits the relief and the Dark's temperature mosaic
+  and shatters into micro-turbulence: wild vortices dancing among the crags, suddenly icy-still, then blasting"*,
+  and of the wind machines that once stood here, *"the gust-shear snaps it"*. A ship coming down through that takes a knock on arrival unless its
+  screen is up. It waits a version because its only answer is a shield and its only warning is the ship's own
+  advisory; the first version's wear is the one a crew with nothing can answer by hand.
+
+**Fuel: a richer source, named, that the hide itself burns; and nowhere to buy.** His ruling: *"Every biome has a
+fuel source, but for most its the hideously slow route of rendering biomass into chemfuel... A few biomes have
+richer sources. You can also buy it."*
+
+- *The richer source is tholin.* The sheet: *"the Dark's fallen grains are concentrated organic feedstock;
+  chemfuel-adjacent industry from air."* It is built: swept up, refined, chemfuel. The crew scavenges its fuel out
+  of the weather, off the roof and off the hull.
+- *The hide spends it.* Heaters keep the rooms clear and the fold lamp is fuelled. What is left over after warmth
+  is what goes in the ship's tanks. A crew that hides well leaves with less.
+- *The emergency route is at its worst here.* There is very little biomass in the Abyss to render: berries, a slow
+  fungus, the herds.
+- *Buying it: nobody.* The hiding note is flat about the kind of place this is: *"No salvage. No sun. No trade."*
+  The ship item adds that under cover *"trade ships cannot reach it"* (0.2.0). For a crew whose whole life is
+  trade, that silence is the hide's real price. The only people the sources put here are the fugitive holds,
+  *"some still occupied"*, and they are later.
+- Not replete. *"The hiding place must be poor."*
+
 ## "OMG did you see that?"
 
 Each can happen inside a stay. Each says what is on screen.
@@ -151,6 +220,11 @@ Each can happen inside a stay. Each says what is on screen.
    hours. *Why it is beautiful, and why it twists:* it closes.
 8. **The probe.** *On screen:* a probe droid drifting between the crags, the ship dark, every crew member
    standing still. *Why it is funny:* someone left a lamp on in the galley.
+9. **Sweeping the ship.** *On screen:* after an etchfall, hooded figures with brooms on and around the hull,
+   sweeping rust-brown dust into sacks and carrying the sacks to the refinery. *Why it is funny:* the thing eating
+   the ship is the thing that fuels it, and they are not going to waste either.
+10. **The shed.** *On screen:* a lean-to of turbine housings and scrap vanes built up against the hull's weather
+   side; then the ship lifts and the shed stands there, ship-shaped and empty, in the dark.
 
 ## When the Empire arrives
 
@@ -184,7 +258,8 @@ It arrives late, and it arrives into the same Dark.
 
 **Out, before the Empire:**
 - The hide is poor. Food, fuel and warmth run down, and nothing here is the salvage the campaign is about.
-- The grain eats what is left outside.
+- The grain eats what is left outside, and now the outside of the ship.
+- Nobody to trade with, for as long as the hide holds.
 - A lit farm and a hidden ship cannot both be had in full.
 - A probe that got its report out.
 - *0.2.0:* the dread. *"You fear staying here too long will find the source of the nightmares themselves."* The
@@ -195,12 +270,13 @@ It arrives late, and it arrives into the same Dark.
 **Stay, longer than anywhere else:**
 - The pursuit's fourfold delay, and the cover on top of it.
 - Warm rooms, living lamps, roofed work, fuel swept off the ground.
+- A hull kept out of the weather: a lean-to along it, a patch crew, or the ship's light screen.
 - Stillness when a probe is on the map.
 
 ## What the crew takes away
 
 - **Time.** The weeks the Empire spent not finding them. It is the real product of the stop.
-- **Fuel.** Tholin swept up and refined (built: it becomes chemfuel).
+- **Fuel,** whatever the heaters left. Tholin swept up and refined (built: it becomes chemfuel).
 - **The fold lamp,** as knowledge: *"useful as a cold-night lamp anywhere."*
 - **A lamp tree** dug up and carried; **glowberries**, a light in the hand.
 - **Etchcap,** a delicacy and a trade good, slow and scarce.
@@ -227,8 +303,11 @@ It arrives late, and it arrives into the same Dark.
 | The fold lamp holds a lane of clear air that walls stop. | A lamp pointed down an open approach and at a wall. | Unfuelled: the lane closes. |
 | Vines turn to the strongest light; a picked glowberry lights its carrier. | Move the only lamp; hand a berry to a crew member in the Dark. | |
 | The pools hold living swimmers and the line brings up the same creatures. | Watch a pool; fish it. | A catch with nothing living in the pool fails (standing ruling). |
+| Etchfall wears the outside of a landed hull, with the grain's own sound and dust as the sign; a hull face behind roofed building, or under the ship's light screen, is spared; a worn ship can always launch. | A landed ship through an etchfall with one side bare, one side behind a lean-to; then launch. | Dry weather: no wear. With the wear switched off the bare side is untouched. |
 | A quiet, dark ship gains cover; lamps slow it; the engine ends it. | A landed ship run dark, run lit, then started. | With the feature switched off none of the three changes anything. |
 | A probe can be beaten by stillness and darkness or by killing it, and its report ends the cover and brings the search back to ordinary pace. | Three probes: avoided, destroyed, and allowed to report. Read the pursuit's next timer after each. | A probe that reports changes the timer; the other two do not. |
+
+The hull row pins no rate: how fast plate wears is tuning and stays out of any bar.
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary dark highland
 (standing rule, every mod).
@@ -242,13 +321,24 @@ Settings: one switch per major feature, defaults as shipped, everything off leav
   a lamp's radius. Any biome with light-eaters or darkness wants it.
 - **The gust signal** (`RM_GustController`): one reading of real wind excursions that the gharrek, the sound and
   anything later all obey.
-- **Exposure that wears things** (the etchfall sampler, on the shared hazards machinery).
+- **Exposure that wears things** (the etchfall sampler, on the shared hazards machinery). With his ruling of
+  2026-11-18 this is also the plainest case of a biome wearing a hull: weather that falls on it.
 - **Sound dimmed by a medium** (the muffling hook).
 
 **Merely active here:** real flight (the moths); wreck salvage (storm-torn turbine housings and vanes); bone from
 butchery; the ship's acoustic sounder; shared creature behaviours (tidying, light aversion's plumbing). The one sun
 from geometry applies and has nothing to do: this is past the terminator, and an Unveiling's brightness is not
 sunlight.
+
+**Three ship systems built once for every biome, and what the Abyss asks of each** (found while revising; the
+shared-machinery file has the whole of it):
+- *Hull wear.* The campaign already has the frame: `src/RimUtinni/ShipShields/`, whose exposure tracker wears a
+  landed ship's structures in a hazard its shield does not cover, sends an advisory and never refuses a landing. It
+  knows heat, cold and blown particles today. The Abyss needs it to know etchfall, and to count a roofed lean-to
+  as cover.
+- *Cover from orbit.* The Abyss is the built case: the pursuit's `surveyShadowBiomes` list and
+  `RM_MapComponentShipCover`. The partial kind the jungles need is a second, weaker entry beside it.
+- *Fuel.* Built here: tholin to chemfuel. Nothing to add but the absence of a seller.
 
 ## Scope
 
@@ -272,6 +362,9 @@ sunlight.
 - **The hidden ship:** cover that builds on a quiet, dark, landed ship and breaks on engine start; probes that
   still come; the report that ends the cover and restores the ordinary search. (cover and probes built; the
   pursuit's response to a broken cover is unverified) **Moved in by this rewrite.**
+- **The grain wears the hull:** etchfall on the outside of the landed ship; a roofed lean-to, patching by hand and
+  the ship's light screen as the answers. (unbuilt; campaign layer, as every ship touch is by his card of
+  2026-10-01; on the shared hull-wear machinery; his ruling of 2026-11-18)
 
 **0.2.0, Lightfall and the long stay** (as he approved on 2026-11-17, except the line above)
 - The brood at the bottom of Lightfall: the landscape-sized sleeping mother, the clutch, the bone field, one wake
@@ -282,6 +375,7 @@ sunlight.
 - Drifting clear pockets outdoors; the nevarithia's worn knot of Dark and its release at death.
 - A summ answering a Witchfire storm; summ regeneration and its hurt in daylight.
 - Trade ships unable to find a covered ship.
+- The rough way in: gust shear knocking a ship that arrives without its screen up. (unbuilt)
 - Learning heat-folding by watching warm air, with its letter (he left this open: *"We'll make that determination
   later."*).
 - The roster's bespoke behaviours not yet built (corpse-stripping, spine spray, hungry digging, and the like);
@@ -305,6 +399,9 @@ sunlight.
 
 ## NEEDS HIM
 
+Three questions are left. A fourth, whether the grain eats the ship, was answered by his ruling of 2026-11-18 and
+is written into the design above: it does, in 0.1.0, in any etchfall, whatever the engine is doing.
+
 1. **The hidden ship in 0.1.0.** On 2026-11-17 he approved it in 0.2.0. On 2026-11-18 he asked that the ship lens
    be the overriding priority for 0.1.0 and that the buckets stay *"a LITTLE open"*. *In 0.1.0* (this document's
    default): the Abyss's first version is the hide, which is what the biome is for; it adds two promises and one
@@ -316,11 +413,6 @@ sunlight.
    unexplained to everyone in-world."* The built engine ties outdoor Dark to one shared outdoor temperature, so
    0.1.0 has none outdoors. The cleanse asked this on 2026-11-17 and it is unanswered. *Off until 0.2.0* (default).
    *On in 0.1.0:* the drifting-pocket code exists and needs a lore-compatible reason and its own scene.
-3. **Does the grain eat the ship?** The hiding rule says something must erode while the crew is down here.
-   `UNMEASURED` whether the hull counts as exposed steel to the built sampler. *The hull is exempt* (default; only
-   what the crew builds outside wears). *The hull wears slowly:* the hide has a clock of its own, and the Abyss
-   forces the crew out before the Empire does. *The hull wears only while the engine is cold:* the cover itself is
-   what costs.
-4. **Does an Unveiling expose the ship?** New in this rewrite, not in any source. *No* (default; nothing built
+3. **Does an Unveiling expose the ship?** New in this rewrite, not in any source. *No* (default; nothing built
    changes). *Yes, while it lasts:* the most beautiful hours in the biome are the hours the Empire can see, which is
    his own line, *"only to twist into nightmares just as swiftly"*, made literal.
