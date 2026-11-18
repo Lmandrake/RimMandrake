@@ -1,0 +1,2 @@
+A mutation harness's 'survived every offline suite' is a claim about its own hand-written list, not about the repo: plant_faults.py names 13 suites while 26 selftest_explosiveknockback* files exist, and the unlisted selftest_explosiveknockback_walk_raid.py already killed both mutants the finding was filed about. Before trusting any 'nothing caught this' result, count what the instrument was pointed at versus what exists (filed: RIMMANDRAKE_LIST_WALK_SUITE_IN_HARNESS_MUTANTS_SURVIVED).
+home: NONE

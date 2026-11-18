@@ -1,0 +1,2 @@
+A ticket's quoted base reading decays: RIMMANDRAKE_EXTEND_GRAFFITI_FUZZ_SIX_RULES_LANE_ONE_CAUGHT said '6 missed on 8c4bced9e9' but five were missed when it was built, because two intervening commits had closed the sixth. Re-measure the base yourself at the commit you are branching from, and when it disagrees with the ticket say 'stale, not wrong' with the commits that moved it — the ticket is not edited and the work still stands.
+home: NONE
