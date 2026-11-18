@@ -56,7 +56,7 @@ you did when you resume it. (filed: lessons)
 4. **I landed a calibration that makes advance refusals BIND, and you can veto it.** `judge_calibration.json`
    gained a `maturation_advance` row in `13db68e8ed3b`. Without it `status()` reads UNTESTED and every advance
    refusal stays advisory for ever; with it, `REFUSAL_NOTHING_COULD_EVER_PASS` can rise from ordinary pipeline
-   work and **block further judging of an item**. I verified CALIBRATED was EARNED (a real `RC.run_check` over 3
+   work and tell the Conductor (it blocks nothing: `may_judge()` has no production reader, measured 2026-11-18; see RIMMANDRAKE_TUNE_ADVANCE_REFUSAL_ALARM_BLOCKS_NOTHING_AS_CODED). I verified CALIBRATED was EARNED (a real `RC.run_check` over 3
    planted cases, 2 refuse + 1 pass, all as planted), not declared. Two consequences are filed, not silenced:
    the suite already reaches **0.75 refused against the 0.70 family limit**, so it can ring on its own fixtures
    (`RIMMANDRAKE_WIDEN_FAMILY_TRIP_MARGIN_SUITE_ALMOST_RANG`); and the release `clear()` has no CLI verb and no
