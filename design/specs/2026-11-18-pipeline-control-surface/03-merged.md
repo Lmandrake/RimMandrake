@@ -153,3 +153,7 @@ Owner, by card, 2026-11-18 (asked 11:04 AM PST, answered by 11:25 AM PST).
    The two writing modes need a channel into a running agent, which did not exist (re-measure): a stop-request in
    the control store delivered by a hook in the run.
 3. Same day, ~11:02 AM PST, not by card: instant response is a requirement (section 3).
+4. Same day, ~11:28 AM PST, not by card: "And if the agent says "stop now and don't write"... there should even
+   be an option just to force kill the agent, period. Not just send it a nudge to die swiftly." So `--kill` is
+   SIGKILL to the unit's whole process group at once, verified dead before the command returns; never a polite
+   stop and never a message to the agent.
