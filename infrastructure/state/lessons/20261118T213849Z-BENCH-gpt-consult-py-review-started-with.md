@@ -1,0 +1,1 @@
+A gpt_consult.py review started with run_in_background and no timeout is killed at the 10-minute background default before it writes its answer (measured 2026-11-18: a full-file review of coverage_judge.py was killed at 10 min with no answer; its rerun with a long timeout took 7 min). Pass timeout up to 3600000 on the Bash call and --timeout to gpt_consult.

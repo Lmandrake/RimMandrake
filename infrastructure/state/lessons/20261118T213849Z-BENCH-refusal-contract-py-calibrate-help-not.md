@@ -1,0 +1,1 @@
+refusal_contract.py calibrate --help is not help: it runs every family's free check and rewrites infrastructure/state/judge_calibration.json (measured 2026-11-18). Read the module docstring for its usage instead.
