@@ -273,6 +273,22 @@ def main():
            "unvoid: stage.json, read from the voided file on disk, reads exactly as the run left it")
         ok(RV.unvoid([U1], "again")[1], "a second unvoid is refused")
 
+        # ---- a hand void of a run the tick already classed void_system (Graffiti's two killed runs) -----------------
+        st5 = state()
+        RV.sync_system(st5, record, keep_failed=lambda b, x: False, kills_left=lambda b, x, w: False, now=T0 + 2000)
+        s5 = st5["mods"]["Fake"]
+        f_before = RV.faults(s5)
+        RV._append({"act": "void", "ts": "t", "unit": U2, "mod": "Fake", "why": "the Conductor's stop", "by": "B"})
+        RV.sync_dispatch(st5)
+        ok(f_before == 2 and RV.faults(s5) == 1 and [m["class"] for m in s5["voided"] if m.get("unit") == U2
+                                                     or m["book"] == "road_back"] == ["void_hand", "void_hand"],
+           "a hand void of a void_system run makes it (and its road back) a hand void and drops its system fault "
+           "(faults %d -> %d)" % (f_before, RV.faults(s5)))
+        RV._append({"act": "unvoid", "ts": "t", "unit": U2, "why": "t", "by": "B"})
+        RV.sync_dispatch(st5)
+        ok("0.1.0|blind_challenge|exit_not_met|2|6115bec2" in s5["steward"] and s5.get("road_back"),
+           "its unvoid puts it back in its book (the next tick may class it void_system again: it was killed)")
+
         # ---- review cases (Codex, 2026-11-18): a newer grant survives an unvoid; partial unvoids keep time order ----
         RV._append({"act": "void", "ts": "t", "unit": U1, "mod": "Fake", "item": ITEM1, "why": "again", "by": "B"})
         RV._append({"act": "void", "ts": "t", "unit": UD, "mod": "Fake", "item": ITEM1, "why": "again", "by": "B",

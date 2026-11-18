@@ -330,15 +330,37 @@ def sync_dispatch(st, cur=None):
         if not isinstance(s, dict):
             continue
         mv = s.get("voided") or []
+        # a hand void of a run already classed void_system makes it a hand void: the owner's or Conductor's stop is
+        # his call, not a fault of the machine, so it leaves the system-fault count (it comes back if he unvoids it)
+        hand = {m.get("unit") for m in mv if m.get("class") == "void_system" and m.get("unit") in cur}
+        for m in mv:
+            if m["book"] == "road_back" and m.get("class") == "void_system" and _caused_by_hand(m, mv, hand):
+                m["unit"] = next(x.get("unit") for x in mv if x.get("unit") in hand and x["book"] == "steward"
+                                 and x["entry"].get("item") == m["entry"].get("caused_by"))
+            if m.get("unit") in hand and m.get("class") == "void_system":
+                m.update({"class": "void_hand", "void": cur[m["unit"]].get("id"),
+                          "why": cur[m["unit"]].get("why") or m.get("why"), "was": "void_system"})
+        if hand:
+            s["system_faults"] = [f for f in s.get("system_faults") or [] if f.get("unit") not in hand]
         back = [m for m in mv if m.get("class") == "void_hand" and m.get("unit") not in cur]
         back = [m for m in back if _restore(s, m)]     # one whose place is taken stays saved, retried each read
         if back:
             s["voided"] = [m for m in mv if not any(m is b for b in back)]
         _strip(s, mod, lambda x: next((cur[u] for u in _units_of(x) if u in cur), None), "void_hand")
+        for m in s.get("voided") or []:     # a hand-voided road back is tied to its steward's unit, so its unvoid
+            if m.get("class") == "void_hand" and m["book"] == "road_back" and not m.get("unit"):    # restores it
+                m["unit"] = next((x.get("unit") for x in s["voided"] if x["book"] == "steward"
+                                  and x["entry"].get("item") == m["entry"].get("caused_by")), None)
     return st
 
 
-def _strip(s, mod, judge, klass, cause=None):
+def _caused_by_hand(m, mv, hand):
+    """Does a moved road back belong to a steward run that is now hand-voided?"""
+    items = {x["entry"].get("item") for x in mv if x.get("unit") in hand and x["book"] == "steward"}
+    return (m.get("entry") or {}).get("caused_by") in items
+
+
+def _strip(s, mod, judge, klass):
     """Move every entry `judge(entry)` names (-> a void line or a dict with id/why) out of s's books."""
     moved = []
     for b in DICT_BOOKS:
@@ -595,7 +617,6 @@ def sync_stage(st, cur=None):
         _stage_restore(st, m)
         vd["moved"].remove(m)
     units = set(cur)
-    items = _void_items(cur)
 
     def unit_of(field, x):
         if not isinstance(x, dict):
