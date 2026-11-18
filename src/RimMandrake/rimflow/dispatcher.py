@@ -675,21 +675,33 @@ def denied_runs(sch, st, root, now, do_conductor):
     go on to the owner rung now only when the Conductor is dead (its role off) or its handed run is refused too
     (OPS_REFUSAL_REWIRE_TO_CONDUCTOR, operations_metronome_strategy_2026-11-02.md section 5: a cap-refused run moved
     plan-20261101164253, a mechanical plan-list cause, straight to his phone)."""
-    said = []
     ist = st.setdefault("incident", {})
     was = {k: ist[k] for k in ("denied_seen", "denied_seen_conductor") if k in ist}
     ops = _refused_last(st, "Operations", "denied_seen")
     cond = _refused_last(st, "Conductor", "denied_seen_conductor")
     if not (ops or (cond and cond.get("ids"))):
         return None
-    rows = IN.read_rows()
-    if rows is None:
-        # unread is not handled: give the seen marks back so the next tick reads the refusal again (review E #2)
+
+    def give_back():
         for k in ("denied_seen", "denied_seen_conductor"):
             ist.pop(k, None)
         ist.update(was)
-        return "denied run not read: told.jsonl torn"
-    incs = IN.fold(rows)[0]
+    try:
+        rows = IN.read_rows()
+        if rows is None:
+            # unread is not handled: give the seen marks back so the next tick reads the refusal again (review E #2)
+            give_back()
+            return "denied run not read: told.jsonl torn"
+        return _denied_hand(sch, st, ops, cond, IN.fold(rows)[0], now, do_conductor)
+    except BaseException:     # a beat's StepCut too: the tick saves state after it
+        # a hand-off that raised (the Conductor log unavailable) is not handled either: the next tick reads the same
+        # refusal again, never the advanced mark that lost it (DENIED_REFUSAL_LOST_WHEN_LOG_FAILS)
+        give_back()
+        raise
+
+
+def _denied_hand(sch, st, ops, cond, incs, now, do_conductor):
+    said = []
     if cond and cond.get("ids"):
         moved = _to_owner(incs, cond["ids"], now, "Operations run refused, and the Conductor run %s too; moved to him now"
                           % cond["outcome"])
@@ -739,18 +751,10 @@ def ledger_structural(r, run=subprocess.run):
     return True, "filed" if ok else "noted (already filed)"
 
 
-def incident_execute(a, sch, st, root, now, do_ring, do_conductor, do_file=None):
-    """The writes of one incident pass. Rows first: a ring the ledger does not hold would ring again. do_file: the
-    structural-item filer, None while the tick holds no ingest.lock (the ring comes back next pass)."""
-    ist = st.setdefault("incident", {})
-    IN.append(a["rows"]) if a["rows"] else None
-    ist["cursor"] = a["cursor"]     # the rows it read: a signal landing behind ours is still ahead of it
-    said = []
-    denied = denied_runs(sch, st, root, now, do_conductor)
-    if denied:
-        said.append(denied)
-    held, ist["held"] = ist.get("held") or [], []
-    fresh = []
+def _incident_rings(a, sch, st, now, do_conductor, do_file, held, said, fresh, bells):
+    """incident_execute's pass over this pass's rings and the held ones: doorbells are collected in `bells` (rung after,
+    one per seat), fresh runs in `fresh`; the rest act here. Mutates ist["held"], said, fresh, bells."""
+    ist = st["incident"]
     for r in held + a["rings"]:
         if r["how"] == "doorbell":
             pending = (st.get("seats", {}).get(r["seat"]) or {}).get("ring")
@@ -761,7 +765,7 @@ def incident_execute(a, sch, st, root, now, do_ring, do_conductor, do_file=None)
             if pending and not pending.get("consumed_at"):
                 ist["held"].append(r)           # one inbox file per seat: this ring waits, the Dispatcher's stays
                 continue
-            do_ring(root, r["seat"], "inc-%s-%d" % (r["id"], int(now)), r["text"])
+            bells.setdefault(r["seat"], []).append(r)     # rung below: one inbox file per seat, one ring per pass
         elif r["how"] == "quick_run":
             do_conductor(sch, {"kind": "incident:" + r["id"], "why": r["text"], "raise_first": "An incident is unacked."}, now)
             res = incident_run(sch, st, "Conductor", "quick", r["text"], now)
@@ -783,6 +787,35 @@ def incident_execute(a, sch, st, root, now, do_ring, do_conductor, do_file=None)
         elif r["how"] == "fresh_run":
             fresh.append(r)                     # every fresh-run ring of this pass is ONE Operations run
         said.append("%s: %s" % (r["id"], r["how"]))
+
+
+def incident_execute(a, sch, st, root, now, do_ring, do_conductor, do_file=None):
+    """The writes of one incident pass. Rows first: a ring the ledger does not hold would ring again. do_file: the
+    structural-item filer, None while the tick holds no ingest.lock (the ring comes back next pass)."""
+    ist = st.setdefault("incident", {})
+    IN.append(a["rows"]) if a["rows"] else None
+    ist["cursor"] = a["cursor"]     # the rows it read: a signal landing behind ours is still ahead of it
+    said = []
+    denied = denied_runs(sch, st, root, now, do_conductor)
+    if denied:
+        said.append(denied)
+    held, ist["held"] = ist.get("held") or [], []
+    fresh, bells = [], {}
+    try:
+        _incident_rings(a, sch, st, now, do_conductor, do_file, held, said, fresh, bells)
+    except BaseException:
+        # the bells collected so far were not rung: held, so the next pass rings them (their rows already landed)
+        ist["held"].extend(r for rs in bells.values() for r in rs)
+        raise
+    for seat, rs in bells.items():
+        # every bell of this pass for one seat is ONE ring carrying each text: a second write of the same inbox file
+        # destroyed the first; it is addressed to the seat window's session when known, so a `claude -p` child that
+        # re-armed the seat's doorbell leaves it (INCIDENT_BELLS_ONE_RING_PER_SEAT_SESSION; one_seat refuses that stranger)
+        text = rs[0]["text"] if len(rs) == 1 else "\n\n".join("[%s] %s" % (r["id"], r["text"]) for r in rs)
+        rid = "inc-%s-%d" % ("+".join(r["id"] for r in rs), int(now))
+        ss = st.get("seats", {}).get(seat) or {}
+        sid = ss.get("session_id") if ss.get("session_t") == now else None   # stale (PAUSE skipped the refresh): unaddressed
+        do_ring(root, seat, rid, text, sid) if sid else do_ring(root, seat, rid, text)
     if fresh:
         ids = [r["id"] for r in fresh]
         if len(fresh) == 1:
@@ -920,6 +953,8 @@ def decide(sch, st, obs, now, apply, out=None):
         sess = find_session(agents["sessions"], cfg)
         if sess:     # learned before any early return (pending ring, cooldown, restart, recover): a later recover
             ss["session_id"] = sess.get("sessionId") or ss.get("session_id")   # resumes the CURRENT session (night review N1)
+            if sess.get("sessionId"):
+                ss["session_t"] = now        # an incident bell trusts the session only when learned this tick
             ss["last_sess"] = {k: sess[k] for k in ("pid", "sessionId", "cwd") if sess.get(k)}   # read at its death
             ss.setdefault("alive_since", now)
             ss.pop("death_logged", None)
@@ -1618,7 +1653,7 @@ def measure_cost(st, what, seconds):
 
 
 def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=None, act_deadline=None,
-            fence=None, timing=None):
+            fence=None, timing=None, ring_clock=None):
     """Carry the actions out (apply) or only journal them (dry). fx overrides the side effects (selftests).
     persist() saves st durably (tick: an atomic state.json write); it runs around every role launch so a tick killed
     after systemd-run cannot forget the run and launch the role again (review round R, A). deadline (epoch, real
@@ -1627,6 +1662,9 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
     metronome's ownership fence) is asked before every act; False raises Fenced. timing (a dict): the notes' and the
     publish's seconds go into it (tick_steps.jsonl)."""
     fx = fx or {}
+    began = time.time()                 # a ring's rung_at is moved by the real time spent here (the ingest.lock wait)
+    # ring_clock: the live tick's clock (now is its reading), the moment a ring is written. Never put in fx: an empty
+    # fx is what says "live" to the owed-sources sync below.
     timing = {} if timing is None else timing
     deadline = deadline if deadline is not None else time.time() + sch.get("tick_budget_s", 420)
     beat = act_deadline is not None
@@ -1711,7 +1749,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 res = "%s; %s" % (res, do_conductor(sch, a, now))
                     elif a["do"] == "incident":
                         try:
-                            res = incident_execute(a, sch, st, root, now, fx.get("incident_ring", lambda rt, s, rid, m: ring(rt, s, rid, m)), do_conductor,
+                            res = incident_execute(a, sch, st, root, now, fx.get("incident_ring", ring), do_conductor,
                                                    fx.get("incident_file", ledger_structural) if ledger_ok and time.time() < deadline else None)
                         except Exception as e:  # noqa: BLE001 - said by the next tick; the deadman reads incidents.json's age
                             st["incident_failed"] = res = "FAILED: %s: %s" % (type(e).__name__, str(e))
@@ -1758,6 +1796,15 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             a["released"] = True     # from here on it may be in the inbox: never given back
                             do_ring(root, a["seat"], a["ring_id"], a["message"], a.get("session_id"))
                             res = "rung"
+                            # decide() stamped the tick's start; a lease taken in the lock wait before this write read as
+                            # the ring's hand-off (RUNG_AT_STAMPED_BEFORE_LOCK_WAIT).
+                            # The live tick passes its real clock (ring_clock), so observation time counts too.
+                            pend = (st.get("seats", {}).get(a["seat"]) or {}).get("ring")
+                            # A simulated clock (a selftest's) moves only past a second: under rung_iso's grain.
+                            at = max(now, ring_clock()) if ring_clock else now + time.time() - began
+                            if (at > now if ring_clock else at - now >= 1) and pend and pend.get("ring_id") == a["ring_id"]:
+                                pend["rung_at"] = at
+                                pend["rung_iso"] = iso(at)
                     elif a["do"] == "withdraw":
                         w = withdraw_reading(do_withdraw(root, a["seat"], a["ring_id"]))
                         res = "%s: %s" % (w["outcome"], w.get("why") or "")
@@ -2482,6 +2529,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
             fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             return [{"do": "skip", "why": "a tick is already running"}]
+        ring_clock = time.time if now is None else None   # a live tick's clock also stamps each ring's write (execute)
         now = time.time() if now is None else now
         try:
             st = load_state(root)
@@ -2525,7 +2573,8 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
                 t0 = time.time()
                 with step_limit("execute", hard_end):
                     execute(acts, sch, st, root, apply, now, fx, persist=lambda: save(st, root), deadline=deadline,
-                            act_deadline=act_deadline, fence=still_owner, timing=steps)
+                            act_deadline=act_deadline, fence=still_owner, timing=steps,
+                            **({"ring_clock": ring_clock} if ring_clock else {}))   # a selftest double of execute keeps its signature
                 timed("execute", t0)
             except StepCut as e:
                 cut(e)
