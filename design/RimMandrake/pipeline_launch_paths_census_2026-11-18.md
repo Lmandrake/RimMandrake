@@ -61,15 +61,34 @@ run-now` by a person; a run-now is still refused at launch while paused, D3).
   the tick it is written; the journal hold's delay is documented in `src/RimMandrake/rimflow/roles/conductor.md`.
 - **`enabled: false` raised the paused alarm**: its rows read decision `disabled`, class `paused`, so
   `maturation.paused` (OPS_MATURATION_MOD_PAUSED) counted every mod that would have launched; and it needed a code-file
-  edit. The pause is a planned stop: class `planned`, counted by no alarm.
+  edit. Fixed: `disabled` and `pipeline_paused` are class `planned`, counted by no alarm.
+- **Pipeline-machinery helpers count as live runs on a mod**: `maturation_now.item_mod` places a run on the mod its
+  item's notes cite by concept path, so this item's own helper read as live on Graffiti and filled `max_live 1`.
+  Filed as `RIMMANDRAKE_UNPLACE_MACHINERY_HELPERS_FROM_MODS_SLOT_TAKEN` (whether they should count is the Conductor's call).
 - **Nothing outside the tick honoured `enabled`**: D1 to D4 and R1 ran on while it was false. The pause covers them.
 - No path was found that nothing could stop: every T path is cut by `enabled`, and every D path by the owner hold.
 
 ## How each check is proven
 
-`selftest_pipeline_pause.py` (written first, watched failing on the base): a pause blocks T1 to T9 (each a row the
-tick would have launched), D1 to D4 and R1; a live run is untouched; `--stop-live` stops and records it; no idle,
-paused or stalled reading while paused; `--until` resumes by itself and says so; an unreadable pause file reads PAUSED
-(never running). `maturation_dispatch.py next` forecasts with the tick's own `_tick` on a moving clock; the selftest
-checks its first predicted launch equals what the following `tick --apply` launches, per tick layer, and that a
-forecast with one layer dropped fails.
+`src/RimMandrake/rimflow/selftest_pipeline_pause.py` (75 checks; written with the code and watched failing on the base
+`9a77bdcc47`, rc 1, and its later checks watched failing on the first landing `b206c0d34f`): pause all blocks T1 to T9
+(one launch row per layer through the real prioritise, gate, classify and reading code), D4 (a real `decide_roles` run:
+a chain_stages role's due slot launches unpaused and not paused), D1 to D3 (`pipeline_held` and `owner_held`, the
+function every one of them calls), and R1 (`red_dispatch.decide`); a mod paused alone takes no slot from the mod
+behind it at max_live 1; a live run is untouched; `--stop-live` stops and records it for voiding, and on unreadable
+live runs stops nothing and says UNMEASURED; no idle, paused or stalled reading while paused, and `enabled: false` is
+no paused reading either; `--until` resumes by itself and says so; a torn, misshapen, NaN or unreadable-folder pause
+file reads PAUSED, `resume` refuses over it and a one-mod pause may not replace it. `maturation_dispatch.py next`
+forecasts with the tick's own `_tick` (dry) on a 60 s clock; the selftest checks its first predicted launch equals
+what the following `tick --apply` hands execute, per layer, at the minute it named (a settle timer, a pause's end, a
+clone ageing past the stale line), and that a forecast mutated to lose any one layer fails that comparison.
+
+Not covered: T10 and T11 are left running on purpose; the cap shown for a pilot holder is `holder_cap`'s, checked as
+a function, not through a real `holder_launch` (which needs a mod ledger).
+
+## The sibling switch
+
+`RIMMANDRAKE_BUILD_PIPELINE_CONTROL_ONE_LINERS_NO_BUILD_PROCESS` landed `pipe` (`pipeline_control.py`, 2026-11-18 10:50
+AM PST) while this was built: `pipe off all|item:<ID>|stage:<S>` also withholds the tick's launches, right after this
+pause's gate. Two switches can stop the tick now; only this pause also reaches the Designer roles and red_dispatch,
+has `--until`, and is read by the forecast. Folding one into the other is the Conductor's call.
