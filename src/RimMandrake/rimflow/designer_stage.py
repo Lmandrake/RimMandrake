@@ -1389,7 +1389,11 @@ def exam_errors(ex, d, st, repo=REPO):
         errs.append("exam: %d/%d is under %d%%" % (right, total, EXAM_PASS * 100))
     if type(ex.get("accept_where_reject_core")) is not int or ex.get("accept_where_reject_core") != 0:
         errs.append("exam: accept_where_reject_core must be 0")
-    if not CT.txt(ex.get("examiner")) or ex.get("examiner") == ex.get("author"):
+    # by agent id, as the readers are (RIMMANDRAKE_MATCH_EXAMINER_TO_AUTHOR_BY_ID_NOT_LABEL): one id under two labels
+    # is one agent
+    au = ex.get("author")
+    if not CT.txt(ex.get("examiner")) or ex.get("examiner") == au or (
+            CT.txt(au) and (same_agent(ex["examiner"], au) or same_agent(au, ex["examiner"]))):
         errs.append("exam: the examiner is not the tree's author")
     errs += reader_errors(ex, st)
     # designer_exam.md step 3: a Challenger, a fresh agent, wrote scenarios that joined the set before the freeze

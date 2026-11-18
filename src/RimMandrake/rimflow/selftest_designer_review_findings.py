@@ -218,6 +218,7 @@ def packet_failure_leaves_no_run(tmp):
 # each child's section joins once its fix lands (every one was watched failing on base 25d20f71e0 first)
 SECTIONS = [
     lambda tmp: speaker_owner_needs_his_words(),
+    examiner_is_author_by_id,
 ]
 
 
