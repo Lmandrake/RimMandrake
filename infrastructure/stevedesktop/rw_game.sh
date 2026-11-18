@@ -76,6 +76,18 @@ steam_up() {
     echo "FAILED: Steam did not start within 120 s"; return 2
 }
 
+# Poll for the game's pid after Start-Process (a slow start or a Steam relaunch can take longer than one look at 5 s).
+# Prints the pid; prints nothing and returns 1 when none appeared within RW_START_WAIT_S; 2 when the list could not be read.
+wait_for_pid() {
+    local waited=0 step=${RW_START_POLL_S:-2} limit=${RW_START_WAIT_S:-60} p
+    while :; do
+        p=$(pid_of) || return 2
+        [ -n "$p" ] && { echo "$p"; return 0; }
+        [ "$waited" -ge "$limit" ] && return 1
+        sleep "$step"; waited=$(( waited + step ))
+    done
+}
+
 up() {
     local pid; pid=$(pid_of) || { echo "REFUSED: the game list could not be read; not starting a game on a guess"; return 2; }
     if [ -n "$pid" ]; then echo "already running (pid $pid)"; status; return 0; fi
@@ -83,9 +95,9 @@ up() {
     if [ -n "$NAMED" ]; then python3 "$GI" launch ${1:+"$1"}; return $?; fi
     local t0; t0=$(date +%s)
     ps_q "Start-Process -FilePath '$EXE_WIN' -WorkingDirectory '$DIR_WIN'"
-    sleep 5
-    pid=$(pid_of)
-    [ -n "$pid" ] || { echo "FAILED: no RimWorldWin64 process 5 s after Start-Process"; return 1; }
+    pid=$(wait_for_pid); local rc=$?
+    [ "$rc" -ne 2 ] || { echo "FAILED: the game list could not be read after Start-Process"; return 2; }
+    [ "$rc" -eq 0 ] || { echo "FAILED: no RimWorldWin64 process ${RW_START_WAIT_S:-60} s after Start-Process (polled every ${RW_START_POLL_S:-2} s)"; return 1; }
     echo "started pid $pid"
     [ "${1:-}" = --wait ] || return 0
     while [ $(( $(date +%s) - t0 )) -lt 600 ]; do
