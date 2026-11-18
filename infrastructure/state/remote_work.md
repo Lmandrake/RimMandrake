@@ -68,13 +68,26 @@ entry is deleted from this file.
 
 **Ticket text:** worker.py keeps a game process whose quicktest map can never generate: after a job ends with readiness 'mapData' timed out (or Player.log shows 'Error in WorldGenStep' / a failed static constructor), stop the game so the next job loads a fresh one. 2026-11-14: one bad process (AlienRace.HarmonyPatches type initializer threw) failed three jobs in a row and braked the lane 57 min until rw_game.sh down by hand. Also: brake_release.py takes over 120 s a pass (per-mod fill_plan), so brake_release.json ran 38 min stale and steward.json missed its heartbeat twice. Acceptance test: not drafted (capped steward session); owed: a selftest_steve_worker case where a kept game answers the probe but the prior result note carries readiness 'mapData' and the worker must call rw_game.sh down before load, failing on the base commit.
 
-## Coming shortly (not ready to take yet)
+## The judge ruling's bug fixes (added 2026-11-17 about 5:50 PM PST)
 
-Three tickets from the owner's 2026-11-17 ruling "The judge refuses flaws, not polish"
-(`design/specs/2026-11-17-judge-flaws-not-polish/6_proposed_ruling_plain.md`) are being filed now, each with an
-acceptance test watched failing: a finding rated polish must not block; a repaired gap closes without a claim form; the
-four rules as judge prompt text with the two-look limit. The Conductor adds them here when they exist. The first two
-are good remote work; the prompt-text one changes what the judge may refuse and is taken only on the owner's say.
+From the owner's 2026-11-17 ruling "The judge refuses flaws, not polish"
+(`design/specs/2026-11-17-judge-flaws-not-polish/6_proposed_ruling_plain.md`). Each ticket's FULL text is its item file,
+`infrastructure/state/items/<ID>.md`; its acceptance cases are a file in
+`design/specs/2026-11-17-judge-flaws-not-polish/tickets/` that was watched failing on base `bbfc765143` and must read
+"wrong 0" when the ticket is done. Take these two before tickets 3 to 7 above.
+
+### 8. `RIMMANDRAKE_UNBLOCK_POLISH_GAPS_EVERY_LOOK_NOT_LATE_ONLY`
+
+A finding the judge itself rated polish must never block, on any look. On base the cases read 31, wrong 10. One
+existing test ("round-1 gap blocks whatever its severity") must change; the item says how.
+
+### 9. `RIMMANDRAKE_CLOSE_CARRIED_GAPS_REPAIRED_WITHOUT_CLAIM_FORM`
+
+A carried gap the look found repaired closes without a claim form (the Pyrelands look-8 replay). On base the cases
+read 19, wrong 12.
+
+**Not offered from the same ruling:** `RIMMANDRAKE_WRITE_JUDGE_FOUR_RULES_TWO_LOOK_LIMIT` (changes what the judge may
+refuse; built here, under the owner's eye) and `RIMMANDRAKE_PRINT_JUDGE_COUNTS_WHEN_COVERAGE_CLOSES` (depends on it).
 
 ## Deliberately NOT offered
 
