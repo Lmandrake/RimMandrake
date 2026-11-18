@@ -56,7 +56,7 @@ def ok(cond, what):
         FAILS.append(what)
 
 
-ISOLATE = ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE")
+ISOLATE = ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE", "RM_JUDGE_CALIBRATION")
 
 
 def isolate(root):
@@ -65,8 +65,9 @@ def isolate(root):
     neither write the real store nor raise a real alarm (lesson 20261112T234316Z). -> the saved values, for restore."""
     was = {k: os.environ.get(k) for k in ISOLATE}
     os.environ.update(RM_REFUSAL_DIR=os.path.join(root, "_refusals"), RM_OPS_WATCH_DIR=os.path.join(root, "_ops"),
-                      RM_DISPATCHER_STATE=os.path.join(root, "_dispatcher"))
-    for k in ISOLATE:       # incident.append does not make its directory: the real OPS dir is always there
+                      RM_DISPATCHER_STATE=os.path.join(root, "_dispatcher"),
+                      RM_JUDGE_CALIBRATION=os.path.join(root, "_no_calibration.json"))      # absent: every family UNTESTED
+    for k in ISOLATE[:3]:       # incident.append does not make its directory: the real OPS dir is always there
         os.makedirs(os.environ[k], exist_ok=True)
     return was
 
@@ -193,8 +194,33 @@ def refused(res, clause, what):
             ok(bool(r["would_pass"]) and bool(r["smallest_fix"]["what"]), "%s: the refusal carries its path to pass" % what)
 
 
+def isolation_check():
+    """The plain suite's advance verdicts are fixtures, not judgements: with the real registry showing the advance family
+    CALIBRATED they must still be advisory (uncounted), or its 40-odd verdicts pool into one family window that rings
+    REFUSAL_NOTHING_COULD_EVER_PASS on itself (RIMMANDRAKE_WIDEN_FAMILY_TRIP_MARGIN_SUITE_ALMOST_RANG)."""
+    root = tempfile.mkdtemp(prefix="maturation_isolation_")
+    keys = ISOLATE + ("RM_JUDGE_CALIBRATION", "RM_CALIBRATION_ROOT")
+    was = {k: os.environ.get(k) for k in keys}
+    try:
+        with open(os.path.join(root, "brief.md"), "w") as f:
+            f.write("a calibrated brief\n")
+        cal = os.path.join(root, "ambient_cal.json")
+        with open(cal, "w") as f:
+            json.dump({"families": {FAM: {"brief": ["brief.md"], "hash": RC.brief_hash(["brief.md"], root),
+                                          "status": "CALIBRATED", "cases": {}}}}, f)
+        os.environ.update(RM_JUDGE_CALIBRATION=cal, RM_CALIBRATION_ROOT=root)
+        ok(RC.status(FAM) == "CALIBRATED", "isolation probe: the ambient registry really calls the family CALIBRATED")
+        isolate(root)
+        ok(RC.advisory(FAM), "isolate() makes the advance family advisory even when the ambient registry calibrates it (%s)"
+           % RC.status(FAM))
+    finally:
+        restore(was)
+        shutil.rmtree(root, ignore_errors=True)
+
+
 def main():
     before = git_status()
+    isolation_check()
 
     # ---- the committed records agree with the real journals ------------------------------------------------------
     names = MN.designer_names()
