@@ -881,6 +881,31 @@ def _refusal(argv, why, unreadable=False, run=None):
     return r
 
 
+RECEIPT_TAG = "rm-control"     # the journal tag of every hook line (journalctl --user -t rm-control)
+
+
+def _hook_quiet():
+    """A hook (condition / ended / escalate) writes NOTHING to fd 1 or 2: in a unit they are its StandardOutput=file:,
+    which systemd reopens at offset 0 for every Exec* step, so a printed receipt overwrote the head of a role's result
+    JSON and a run that succeeded read as failed (RIMMANDRAKE_MOVE_END_RECEIPT_OFF_RESULT_FILE_ROLES_FAILED; the same
+    trap as wrapup.py's, 2026-11-04). Both fds go to /dev/null, a traceback included; the line goes to the journal."""
+    null = os.open(os.devnull, os.O_WRONLY)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os.dup2(null, 1)
+    os.dup2(null, 2)
+    os.close(null)
+
+
+def _receipt(line):
+    """The hook's line, to the journal only (the store already holds the state). Never raises."""
+    try:
+        subprocess.run(["systemd-cat", "-t", RECEIPT_TAG], input=line + "\n", text=True, timeout=10,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError):
+        pass
+
+
 def hook_cmd(verb, run, p):
     py = "/usr/bin/python3" if os.path.exists("/usr/bin/python3") else sys.executable
     return "%s %s %s %s --db %s" % (py, os.path.abspath(__file__), verb, run, os.path.abspath(p))
@@ -1890,12 +1915,17 @@ def main(argv=None):
         if o.verb in ("condition", "ended", "escalate"):
             if o.db:
                 os.environ["RM_CONTROL_DB"] = o.db
-            if o.verb == "condition":
-                code, line = condition(o.run)
-                print(line)
-                return code
-            print(ended(o.run) if o.verb == "ended" else escalate(o.run))
-            return OK
+            _hook_quiet()
+            try:
+                if o.verb == "condition":
+                    code, line = condition(o.run)
+                else:
+                    code, line = OK, ended(o.run) if o.verb == "ended" else escalate(o.run)
+            except Exception as e:      # noqa: BLE001  named in the journal; the fds are /dev/null now
+                _receipt("%s %s: FAILED: %s: %s" % (o.verb, o.run, type(e).__name__, e))
+                raise
+            _receipt(line)
+            return code
         if o.verb == "reap":
             return reap(o.unit)
         if o.verb == "init":
