@@ -156,9 +156,9 @@ Seat = Literal["BENCH", "FOUNDRY", "OWNER", "DECIDE", "BUILD", "CHECK", "REP", "
 State = Literal["proposed", "ready", "doing", "built", "validated", "done", "dropped", "superseded"]
 Needs = Literal["offline", "deploy", "game-up", "bridge", "harvest", "owner"]
 DigestClass = Literal["technical", "scope", "design", "art", "cosmetic", "art geometric correction", "art marks",
-                      "bridge idle", "leftovers", "ceiling release", "evidence-for-ask", "unclassified"]
+                      "bridge idle", "leftovers", "ceiling release", "evidence-for-ask", "ledger deletion", "unclassified"]
 POLICY_CLASSES = tuple(sorted(DigestClass.__args__[:-1], key=len, reverse=True))   # longest first: `art marks` > `art`
-Source = Literal["ledger", "verdict", "commit", "marks", "art_install", "leftovers", "release"]
+Source = Literal["ledger", "verdict", "commit", "marks", "art_install", "leftovers", "release", "deletion"]
 SOURCES = Source.__args__
 Decision = Literal["ACCEPT", "REGEN", "ESCALATE", "HOLD_ERROR", "HOLD_INPUT", "REDO", "KEEP", "REJECT", "PASS",
                    "FAIL", "PICK", "OTHER"]
@@ -173,6 +173,17 @@ LeftKind = Literal["save", "setting", "clone", "other"]
 # the stage is closed, the mod one of the advancing list (_mod_domain). Its dollars and its why never reach the page
 # (token-blind: blind_core refuses a money word); the Conductor reads them with `maturation_dispatch.py releases`
 ReleaseStage = Literal["offline_build", "blind_challenge", "in_game"]
+# a deleted mod-ledger entry the monitor flagged (modledger.deletions; RIMMANDRAKE_LIST_MODLEDGER_DELETIONS_ON_DAILY_DIGEST):
+# the mod, the class of the shard it left, its entry kind and whether the finding was open. Never its text or subject.
+ShardClass = Literal["DISPATCH", "HOLDER", "JUDGE", "OWNER", "STEWARD", "BACKFILL"]
+EntryKind = Literal["bar.added", "bar.deferred", "bar.eased", "bar.locked", "cause.refuted", "cause.reopened",
+                    "cause.tried", "decision", "finding.claimed_fixed", "finding.disputed", "finding.open",
+                    "finding.reopened", "finding.verified", "finding.withdrawn", "judge.sealed", "lease.grant",
+                    "lease.release", "lease.renew", "lease.revoke", "live.run", "note", "question.answer",
+                    "question.ask", "question.withdrawn", "run.end", "run.start", "session.checkpoint", "session.id",
+                    "spend", "stage.accepted", "stage.enter", "stage.exit_claimed", "stage.exit_confirmed",
+                    "stage.rejected", "test.run", "trap.cleared", "trap.noted", "version.open"]
+WasOpen = Literal["was open", "was not open"]
 SourceState = Literal["measured", "unmeasured"]
 SourceFault = Literal["none", "absent", "unreadable", "git_failed", "import_failed", "error"]
 SectionTitle = Literal["NEXT", "IN PROGRESS", "BLOCKED", "WAITING ON A WINDOW", "NOT THIS TARGET", "BUILT", "PROPOSED",
@@ -210,6 +221,9 @@ class DigestRecord(_Closed):
     kind: Optional[LeftKind] = None
     mod: Optional[str] = None                # checked against _mod_domain() at projection and again at render
     stage: Optional[ReleaseStage] = None
+    shard_class: Optional[ShardClass] = None
+    entry_kind: Optional[EntryKind] = None
+    was_open: Optional[WasOpen] = None
     evidence: tuple[Evidence, ...] = Field(default=(), max_length=4)
 
 
@@ -279,6 +293,7 @@ RAW_FIELDS = {
     "art_install": ("t", "why", "seat", "rel"),
     "leftovers": ("t", "kind", "archive"),
     "release": ("t", "mod", "stage", "by"),
+    "deletion": ("t", "mod", "shard_class", "kind", "was_open"),
 }
 
 
@@ -487,6 +502,17 @@ def _record(src, raw, verbs, ids, resolved):
             dropped += int(sg not in (None, ""))
         f["by"] = _by(r.get("by"))
         dropped += _refused(r.get("by"), f["by"])
+    elif src == "deletion":
+        f["cls"] = "ledger deletion"
+        m, sc, k, wo = r.get("mod"), r.get("shard_class"), r.get("kind"), r.get("was_open")
+        for key, val, dom in (("mod", m, _mod_domain()), ("shard_class", sc, ShardClass.__args__),
+                              ("entry_kind", k, EntryKind.__args__)):
+            if isinstance(val, str) and val in dom:
+                f[key] = val
+            else:
+                dropped += int(val not in (None, ""))     # an unknown value is withheld and counted, never shown
+        if isinstance(wo, bool):
+            f["was_open"] = "was open" if wo else "was not open"
     return {k: v for k, v in f.items() if v is not None}, False, dropped
 
 
@@ -880,7 +906,7 @@ recommended decide yes how many whose The This Withheld ask block cut items ledg
 Narrow narrow Changes changes change per target generalization verdict latest reverted None be
 """.split())
 SRC_LABELS = ("ledger events", "judge verdict files", "Delegated commits", "art mark acts", "delegated art installs",
-              "leftover deletions", "ceiling releases")
+              "leftover deletions", "ceiling releases", "ledger deletions")
 _SRC_LABEL = dict(zip(SOURCES, SRC_LABELS))
 _VERB_DOMAIN = []
 
@@ -933,7 +959,8 @@ def _page(ids):
     enums = (Source.__args__, DigestClass.__args__, Decision.__args__, Pick.__args__, MarkAction.__args__,
              JudgeFamily.__args__, By.__args__, LeftKind.__args__, SourceFault.__args__, Seat.__args__,
              State.__args__, Needs.__args__, Kind.__args__, SectionTitle.__args__, NoteCategory.__args__, SRC_LABELS,
-             _verb_domain(), _agent_target_domain(), ReleaseStage.__args__, _mod_domain())
+             _verb_domain(), _agent_target_domain(), ReleaseStage.__args__, _mod_domain(), ShardClass.__args__,
+             EntryKind.__args__, WasOpen.__args__)
     if ids is None:
         return C.Page(TEMPLATE_VOCAB, enums)
     return C.Page(TEMPLATE_VOCAB, enums, item_ok=lambda i: _id_ok(i, ids),
@@ -973,6 +1000,15 @@ def _rec_line(P, r):
     if r.stage:
         P.lit(" at ")
         P.enum(r.stage, ReleaseStage.__args__)
+    if r.shard_class:
+        P.lit(" ")
+        P.enum(r.shard_class, ShardClass.__args__)
+    if r.entry_kind:
+        P.lit(" ")
+        P.enum(r.entry_kind, EntryKind.__args__)
+    if r.was_open:
+        P.lit(" ")
+        P.enum(r.was_open, WasOpen.__args__)
     if r.judge:
         P.lit(" judge ")
         for k, j in enumerate(r.judge):

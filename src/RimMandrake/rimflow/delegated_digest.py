@@ -33,6 +33,9 @@ Sources (each read whole; the window is decided centrally, below):
                The spend, the dollars released and the why stay off the page (token-blind: a money word is refused);
                `maturation_dispatch.py releases` lists them. Identity = the line's sha1. No file in a readable
                folder is measured and empty (no release yet).
+  deletion     the mod-ledger deletion monitor's FLAGGED rows (modledger.deletions: a deleted JUDGE or OWNER entry, a
+               deleted open finding): mod, shard class, entry kind, was open. No entry text, subject or commit subject
+               reaches the page. Identity = commit + entry id. A git failure reads UNMEASURED git_failed.
 
 The window (review gpt_review_digest_2026-10-27 findings 2, 4-8): state at
 D:\\ClaudeWork\\rimmandrake\\delegated_digest\\state.json (scratch, never the repo) holds, per digest date, its
@@ -86,8 +89,8 @@ STATE_SCHEMA = "rimflow.delegated-digest-state/2"
 # calls never reached a digest (DIGEST_GAPS_FIX_TWENTY_CALLS_WENT_MISSING). Both are read; blind.class_of classes the second.
 DELEGATED_PREFIXES = ("delegated:", "delegated backlog triage")
 SKIP_VERBS = {"lease", "renew", "release"}    # lease bookkeeping a claim already shows
-SOURCES = ("ledger", "verdict", "commit", "marks", "art_install", "leftovers", "release")
-LATER_SOURCES = ("release",)     # added after digests were recorded: an older state entry may lack them
+SOURCES = ("ledger", "verdict", "commit", "marks", "art_install", "leftovers", "release", "deletion")
+LATER_SOURCES = ("release", "deletion")     # added after digests were recorded: an older state entry may lack them
 FAILED_TEXT = ("# Delegated digest %s NOT BUILT\n\nThe program failed; the error is in Operations' log. The Conductor "
                "started anyway. The next digest carries every record this one would have.\n")
 
@@ -348,13 +351,41 @@ def release_read(path=RELEASES):
     return r
 
 
+def deletion_read(root=ROOT, deletions=None):
+    """The mod-ledger deletion monitor's FLAGGED rows (modledger.deletions: a deleted JUDGE or OWNER entry, a deleted
+    finding that was open), one record each: mod, shard class, entry kind, was_open. Never the entry's text, subject or
+    the commit's subject. `deletions` injects the monitor's answer for the selftest; a git or ledger failure reads
+    UNMEASURED git_failed, never an empty page. No flagged deletion is measured and empty."""
+    if deletions is None:
+        try:
+            import modledger
+            deletions = modledger.deletions(root)
+        except Exception:                      # noqa: BLE001 - the monitor never gates: its failure is UNMEASURED
+            return _read("unmeasured", "git_failed")
+    r = _read()
+    for row in (deletions or {}).get("flagged") or ():
+        t = utc(dt.datetime.fromtimestamp(row["time"], dt.timezone.utc).isoformat()) if isinstance(row, dict) and \
+            isinstance(row.get("time"), int) and row["time"] > 0 else None
+        if t is None or not row.get("id"):
+            r["malformed"] += 1
+            continue
+        r["items"].append(("X" + _h(row.get("commit"), row.get("id")), t, {
+            "source": "deletion", "t": t, "mod": row.get("mod"), "shard_class": _shard_class(row.get("shard")),
+            "kind": row.get("kind"), "was_open": row.get("was_open")}))
+    return r
+
+
+def _shard_class(shard):
+    return str(shard or "").split(".", 1)[0]
+
+
 def gather(events, root=ROOT, ddir=DELEGATED_DIR, leftovers=LEFTOVERS, added=None, commits=None, art_events=None,
-           releases=RELEASES):
+           releases=RELEASES, deletions=None):
     """Every source read; each injectable for the selftest. events None = the ledger did not read."""
     marks, inst = art_reads(art_events)
     return {"ledger": ledger_read(events), "verdict": verdict_read(root, ddir, added),
             "commit": commit_read(root, commits), "marks": marks, "art_install": inst,
-            "leftovers": leftovers_read(leftovers), "release": release_read(releases)}
+            "leftovers": leftovers_read(leftovers), "release": release_read(releases), "deletion": deletion_read(root, deletions)}
 
 
 # -------------------------------------------------------------------------------------------------- state -----

@@ -360,6 +360,26 @@ def test_refusals_prelaunch():
               "prelaunch: a later success writes the digest and removes the stale FAILED page")
 
 
+def test_deletion_read():
+    """The mod-ledger deletion source: only FLAGGED rows, no entry or commit text, and its failure is UNMEASURED
+    (RIMMANDRAKE_LIST_MODLEDGER_DELETIONS_ON_DAILY_DIGEST); the whole path is acceptance/modledger_deletion_digest_accept.py."""
+    row = {"mod": "FlowWorks", "shard": "JUDGE.J1", "id": "e1", "kind": "finding.open", "subject": "finding:SECRET_SUBJECT",
+           "was_open": True, "commit": "c" * 40, "time": 1763400000, "commit_subject": "SECRET COMMIT", "flag": True}
+    unflagged = dict(row, id="e2", flag=False)
+    bad = dict(row, id="e3", time=0)
+    delet = {"deleted": [row, unflagged, bad], "flagged": [row, bad], "counts": {}}
+    r = D.deletion_read(deletions=delet)
+    rec = r["items"][0][2] if r["items"] else {}
+    check(r["state"] == "measured" and len(r["items"]) == 1 and r["malformed"] == 1 and rec.get("shard_class") == "JUDGE"
+          and "SECRET" not in json.dumps(rec, default=str),
+          "deletion: one flagged row, an unflagged one skipped, a row with no time counted malformed (%s)" % r)
+    e = D.deletion_read(deletions={"deleted": [], "flagged": [], "counts": {}})
+    check(e["state"] == "measured" and e["items"] == [], "deletion: none flagged is measured and empty, not unmeasured")
+    u = D.deletion_read(root="/nonexistent/not/a/repo")
+    check(u["state"] == "unmeasured" and u["fault"] == "git_failed",
+          "deletion: a monitor that could not read git is UNMEASURED git_failed, never empty (%s)" % u)
+
+
 def test_real():
     with tempfile.TemporaryDirectory() as tmp:
         rc = D.main(["--dry-run", "--date", "2026-10-27", "--state", os.path.join(tmp, "s.json"), "--out-dir",
@@ -390,7 +410,7 @@ def main():
     global IDS
     IDS = _ids()
     for t in (test_triage_and_bridge_free_classed, test_blind_counts_body_malformed, test_window_fail_force_pending, test_identity,
-              test_refusals_prelaunch, test_real):
+              test_refusals_prelaunch, test_deletion_read, test_real):
         try:
             t()
         except Exception as e:  # noqa: BLE001
