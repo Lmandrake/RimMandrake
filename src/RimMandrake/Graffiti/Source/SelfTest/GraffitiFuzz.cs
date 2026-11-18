@@ -10,6 +10,9 @@
 //   weather the fade curve: roofed life > open for every form and craft, alpha 1 to 60% of life, 0 at its end, monotone; planted mutants must go red
 //   beauty  a same-hand scrawl inspects uglier than a tally at every craft, fresh or crossed out; craft counts in every form; mutants go red
 //   pressure a raider faction's standing marks: no mark or switch off -> 1.0 exactly, one mark -> the push (capped, never stacked), larger vs sooner, letter/lift; mutants go red
+//   kernel6 six lane-1-only rules (RIMMANDRAKE_EXTEND_GRAFFITI_FUZZ_SIX_RULES_LANE_ONE_CAUGHT): mood budget conserved, visit cap never
+//           recharges, a numb temperament zeroes good too, CraftBeauty(Normal) is 0, a scrawl's craft ceiling never passes Poor, no
+//           confront fight chance from a zero vanilla factor or zero temper
 // A failing case is printed as `family seed N: message | detail`; --fuzz-seed N replays it.
 using System;
 using System.Collections.Generic;
@@ -664,6 +667,71 @@ namespace RimMandrake.Graffiti.SelfTest
             Check(ch == (now && !was ? 1 : !now && was ? -1 : 0), $"PressureChange(was={was}, marks={marks}, on={on}) = {ch}");
         }
 
+        // ════════════════════════ kernel6 ════════════════════════
+        // RIMMANDRAKE_EXTEND_GRAFFITI_FUZZ_SIX_RULES_LANE_ONE_CAUGHT: six kernel rules blind lane 1 catches (lane1_rows.jsonl) that no builder
+        // offline suite pinned before this item. Each check below mirrors one lane-1 oracle row by name:
+        //   mood_budget_conserved        FitBudget never lets one sign's memories sum past its budget (PF_K_BUDGET_UNBOUNDED)
+        //   visit_goodwill_capped        a visit's loss never recharges past VisitLossCap once reached (PF_K_VISIT_CAP_RECHARGES)
+        //   temper_psycho_sensitive_ordinary  numb (a psychopath) zeroes every multiplier, including good (PF_K_PSYCHO_FEELS_GOOD)
+        //   craft_beauty_both_ways       CraftBeauty(Normal) is exactly 0, the control (PF_K_CRAFT_NORMAL_NONZERO)
+        //   craft_ceiling_scrawl_poor    a scrawl's craft ceiling never rises past Poor (PF_K_SCRAWL_CEILING_GOOD)
+        //   fight_chance_bounded         no confront fight chance when either vanilla or temper is zero (PF_K_FIGHT_FROM_NOTHING)
+        private static List<string> KernelSix(int n, int seed)
+        {
+            return Loop("kernel6", n, seed, r =>
+            {
+                Steps++;
+                // mood_budget_conserved
+                float budget = new[] { RM_GraffitiKernel.BadMoodBudget, RM_GraffitiKernel.VictimMoodBudget, RM_GraffitiKernel.GoodMoodBudget, RM_GraffitiKernel.AmbientMoodBudget }[r.Next(4)] * (0.5f + (float)r.NextDouble());
+                float already = 0f;
+                int reps = 1 + r.Next(30);
+                for (int i = 0; i < reps; i++)
+                {
+                    float offset = (float)r.NextDouble() * 8f;
+                    float k = RM_GraffitiKernel.FitBudget(already, offset, budget);
+                    Check(k >= 0f && k <= 1f, $"FitBudget factor {k} out of [0,1] (already {already}, offset {offset}, budget {budget})");
+                    already += offset * k;
+                }
+                Check(already <= budget + 1e-3f, $"FitBudget let a sign's memories sum to {already}, past its budget {budget}");
+
+                // visit_goodwill_capped
+                int lost = 0, gained = 0;
+                int reads = 1 + r.Next(20);
+                for (int i = 0; i < reads; i++)
+                {
+                    int delta = r.Next(-10, 11);
+                    int c = RM_GraffitiKernel.VisitCharge(delta, lost, gained);
+                    Check(Math.Abs(c) <= Math.Abs(delta), "a visit charge exceeded the read it came from");
+                    if (c < 0) lost -= c; else gained += c;
+                    Check(lost <= RM_GraffitiKernel.VisitLossCap, $"visit loss {lost} recharged past the cap {RM_GraffitiKernel.VisitLossCap}");
+                    Check(gained <= RM_GraffitiKernel.VisitGainCap, $"visit gain {gained} past the cap {RM_GraffitiKernel.VisitGainCap}");
+                }
+                Check(RM_GraffitiKernel.VisitCharge(-5, RM_GraffitiKernel.VisitLossCap, 0) == 0, "a visit already at the loss cap took more loss (recharged past the cap)");
+
+                // temper_psycho_sensitive_ordinary
+                var numb = RM_Temper.Plain; numb.numb = true;
+                var combined = RM_GraffitiKernel.Combine(new List<RM_Temper> { numb });
+                Check(combined.good == 0f, $"a numb (psychopath) temperament kept its good multiplier at {combined.good}");
+                Check(combined.bad == 0f && combined.fine == 0f && combined.ugly == 0f && combined.offended == 0f && combined.lean == RM_Lean.Nothing,
+                    "numb did not zero every multiplier / force lean Nothing");
+
+                // craft_beauty_both_ways (the Normal control)
+                float normalBeauty = RM_GraffitiKernel.CraftBeauty(RM_GraffitiKernel.Normal);
+                Check(normalBeauty == 0f, $"CraftBeauty(Normal) is {normalBeauty}, not 0 (a forced-Normal mark must give equal beauty for every mark)");
+
+                // craft_ceiling_scrawl_poor
+                int scrawlCeiling = RM_GraffitiKernel.CraftCeiling(GraffitiForm.Scrawl);
+                Check(scrawlCeiling <= RM_GraffitiKernel.Poor, $"a scrawl's craft ceiling is {scrawlCeiling}, above Poor (it is the ugliest thing on the wall)");
+
+                // fight_chance_bounded
+                float vRand = (float)r.NextDouble(), tRand = (float)(r.NextDouble() * 4);
+                Check(RM_GraffitiKernel.ConfrontFightChance(0f, tRand) == 0f, "a fight chance from zero vanilla factor (a fight from nothing)");
+                Check(RM_GraffitiKernel.ConfrontFightChance(vRand, 0f) == 0f, "a fight chance from zero temper (a fight from nothing)");
+                float chance = RM_GraffitiKernel.ConfrontFightChance(vRand, tRand);
+                Check(chance >= 0f && chance <= RM_GraffitiKernel.ConfrontFightCap + 1e-6f, $"fight chance {chance} out of [0, cap]");
+            });
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -684,6 +752,7 @@ namespace RimMandrake.Graffiti.SelfTest
                 ("weather", () => Weather(N(400), S(1))),
                 ("beauty", () => Beauty()),
                 ("pressure", () => Pressure(N(4000), S(1))),
+                ("kernel6", () => KernelSix(N(2000), S(1))),
             };
             foreach (var f in fam)
             {
