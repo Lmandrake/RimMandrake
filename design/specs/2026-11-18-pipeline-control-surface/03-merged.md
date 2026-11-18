@@ -75,6 +75,12 @@ rejected it on a false coupling), D alone (containment only: a blocked unit repo
   call-site test and the mutant, with the drop-in as a net. It is not a security boundary against an agent
   deliberately calling `systemd-run` by absolute path under the same user.
 
+- **Instant response** (owner, 2026-11-18 ~11:20 AM PST: "we are going to have. System that is instantly
+  responsive by the time we are done here. This is not beyond our technology to achieve."). A stopping act binds
+  at once, because admission reads the store at the moment of launch; `--stop-live` stops live units in the same
+  command. An enabling act triggers an immediate tick, so it does not wait up to 60 s for the timer. Every verb
+  returns in under 1 s (asserted). No control act depends on git, a clone or a test door.
+
 ### Where the passes disagree (not smoothed)
 
 - **Daemon or library.** GPT picks a supervised service; this merge picks a library over SQLite. Reason: SQLite
