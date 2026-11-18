@@ -92,7 +92,7 @@ def main():
     check(len(lines) <= 40, "the view is at most 40 lines")
     # many owed items: capped with a more-line
     for i in range(45):
-        cli("file", "RIMMANDRAKE_PAD_SANDBOX_OWED_FILLER_%s" % "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i % 26] * (1 + i // 26),
+        cli("file", "RIMMANDRAKE_PAD_SANDBOX_OWED_FILLER_%s" % ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i % 26] * (1 + i // 26)),
             "--for", "BENCH", "--title", "filler %d" % i, "--kind", "owed")
     rc, out = view()
     lines = out.strip().splitlines()
