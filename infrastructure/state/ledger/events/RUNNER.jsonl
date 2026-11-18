@@ -8664,3 +8664,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-18T19:04:18Z","tsn":1795028658591607995}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","result":"broken","detail":"Ops alarm MATURATION_HAND_ACT: maturation.hand_acts_overdue = 1 acts (MEASURED), line > 0","ts":"2026-11-18T19:05:28Z","tsn":1795028728242962730}
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-18T19:05:34Z","tsn":1795028734367128602}
+{"seat":"RUNNER","event":"note","id":"OPS_MATURATION_HAND_ACT_UNFOLDED_ZLWA","text":"ops_watch: cleared at 2026-11-18T20:45:19Z (maturation.hand_acts_overdue now 0)","ts":"2026-11-18T20:45:27Z","tsn":1795034727791459007}
