@@ -7,7 +7,8 @@ Prints: verdict (RUNNING / ENDED / STALLED / NOT_PLANNED / UNREACHABLE), run id,
 done, every FAIL step with CPU and time, reboots, the CONTROL result, the last reading and its age.
 Exit codes keep the four answers apart: 0 = read, running or ended, instrument PROVEN by a passing CONTROL;
 1 = read, but no passing CONTROL in this run (faults=0 is UNMEASURED, not clean); 2 = read, soak not running when it should
-be (STALLED) or nothing planned; 3 = could not reach SteveDesktop (nothing is known about the soak).
+be (STALLED, resumable) or nothing planned / planned and never started (NOT_PLANNED); 4 = the script exited having taken no step
+(INTERRUPTED_NO_WORK: could not look, a failure); 5 = ended with an empty reason= (ENDED_NO_REASON: cause unknown); 3 = could not reach SteveDesktop (nothing is known about the soak).
 """
 import argparse, json, os, re, sys, time
 from datetime import datetime, timezone
@@ -60,7 +61,7 @@ def summarize(head, lines, run=None):
         run = next((r for r in reversed(starts) if r), None)
     s = {"run": run, "started": None, "end_planned": None, "steps": 0, "passes_complete": 0, "fails": [],
          "reboots": [], "restarts": [], "waits": [], "controls": [], "ended": None, "last_step": None,
-         "worker_probe": None}
+         "worker_probe": None, "interrupted": None}
     if run and st.get("run") == run:
         s["end_planned"] = st.get("end_utc")
     mine = False
@@ -75,15 +76,19 @@ def summarize(head, lines, run=None):
             mine = f.get("run", "").rstrip(":") == run
             if not mine:
                 continue
+            if rest.startswith(("SOAK START", "SOAK REBOOT", "SOAK RESUME", "SOAK RESTART")):
+                s["interrupted"] = None     # a later start or resume makes an earlier interruption history
             if rest.startswith("SOAK START"):
                 s["started"] = ts
                 s["end_planned"] = s["end_planned"] or f.get("end")
+            elif rest.startswith("SOAK INTERRUPTED"):
+                s["interrupted"] = {"at": ts, "steps": int(f.get("steps") or 0), "cause": rest.split("cause=", 1)[1] if "cause=" in rest else None}
             elif rest.startswith("SOAK REBOOT"):
                 s["reboots"].append({"at": ts, "boot": f.get("boot"), "prev_boot": f.get("prev_boot")})
             elif rest.startswith("SOAK RESTART"):
                 s["restarts"].append(ts)
             elif rest.startswith("SOAK END"):
-                s["ended"] = {"at": ts, "reason": rest.split("reason=", 1)[1] if "reason=" in rest else "?"}
+                s["ended"] = {"at": ts, "reason": rest.split("reason=", 1)[1].strip() if "reason=" in rest else "?"}
             elif rest.startswith("CONTROL"):
                 s["controls"].append({"at": ts, "ok": f.get("ok") == "1", "fields": f})
             elif rest.startswith("PROBES"):
@@ -106,11 +111,14 @@ def summarize(head, lines, run=None):
     s["control_proven"] = bool(s["controls"]) and all(c["ok"] for c in s["controls"])
     alive = head.get("task") == "Running" or head.get("prime95", 0) > 0
     if not run or not s["started"]:
-        s["verdict"] = "NOT_PLANNED" if not st or st.get("finished") or not run else ("RUNNING" if alive else "STALLED")
+        # planned but never started is NOT_PLANNED: nothing ran, nothing failed (a started run that died is below)
+        s["verdict"] = "RUNNING" if alive and run and st and not st.get("finished") else "NOT_PLANNED"
     elif s["ended"] or (st.get("run") == run and st.get("finished")):
-        s["verdict"] = "ENDED"
+        s["verdict"] = "ENDED_NO_REASON" if s["ended"] and s["ended"]["reason"] == "" else "ENDED"
     elif alive:
         s["verdict"] = "RUNNING"
+    elif s["interrupted"] and s["interrupted"]["steps"] == 0 and s["steps"] == 0:
+        s["verdict"] = "INTERRUPTED_NO_WORK"    # exited having taken no step: could not look, a failure, never idle
     else:
         s["verdict"] = "STALLED"
     s.update(now=head["now"], boot=head.get("boot"), task=head.get("task"), prime95=head.get("prime95"))
@@ -118,6 +126,10 @@ def summarize(head, lines, run=None):
 
 
 def exit_code(s):
+    if s["verdict"] == "INTERRUPTED_NO_WORK":
+        return 4
+    if s["verdict"] == "ENDED_NO_REASON":
+        return 5
     if s["verdict"] in ("STALLED", "NOT_PLANNED"):
         return 2
     return 0 if s["control_proven"] else 1
@@ -145,7 +157,15 @@ def render(s):
         out.append("task restarts same boot=%d" % len(s["restarts"]))
     if s["waits"]:
         out.append("waits=%d last: %s %s" % (len(s["waits"]), s["waits"][-1]["at"], s["waits"][-1]["why"]))
-    if s["ended"]:
+    if s["verdict"] == "INTERRUPTED_NO_WORK":
+        out.append("INTERRUPTED %s: the script exited and no step was taken; cause: %s" % (
+            s["interrupted"]["at"], s["interrupted"]["cause"] or "UNKNOWN: the log line names none"))
+    elif s["interrupted"]:
+        out.append("INTERRUPTED %s after %d steps, resumable; cause: %s" % (
+            s["interrupted"]["at"], s["interrupted"]["steps"], s["interrupted"]["cause"] or "not named"))
+    if s["verdict"] == "ENDED_NO_REASON":
+        out.append("ENDED %s with no reason= written: the cause of the end is UNKNOWN" % s["ended"]["at"])
+    elif s["ended"]:
         out.append("ENDED %s reason=%s" % (s["ended"]["at"], s["ended"]["reason"]))
     if s["last_step"]:
         out.append("last reading %ds old: %s %s" % (s["last_reading_age_s"], s["last_step"]["at"], s["last_step"]["line"]))

@@ -69,7 +69,7 @@ L "PROBES run=$run worker_probe=$probe rimworld=$(@(Get-Process RimWorldWin64 -E
 $ci=Step 0 12 1 1 'fatal'; $ck=Step 0 12 1 1 'kill'
 $okf=[int]($ci.fatal -ge 1); $okk=[int](-not $ck.alive); $okh=[int](-not ($ci.heat -like 'UNMEASURED*')); $okl=[int]($ci.load -ge 50)
 L ("CONTROL run={0} inject_fatal_seen={1} inject_died_seen={2} heat_seen={3} load_seen={4} load={5} ok={6}" -f $run,$okf,$okk,$okh,$okl,$ci.load,[int]($okf -and $okk -and $okh -and $okl))
-$pass=0; $reason=''; $steps=0; $fails=[int]$s.fails
+$pass=0; $reason=''; $cause=''; $steps=0; $fails=[int]$s.fails
 try{
  while(-not $reason){
   if((Get-Date).ToUniversalTime() -ge $end){ $reason='END: time'; break }
@@ -93,7 +93,9 @@ try{
   }
   if(-not $reason){ L "PASS_COMPLETE pass=$pass" }
  }
-}catch{ L "SOAK ERROR run=$run line=$($_.InvocationInfo.ScriptLineNumber) $($_.Exception.Message)"
+}catch{ $cause="ERROR: line $($_.InvocationInfo.ScriptLineNumber) $($_.Exception.Message)"; L "SOAK ERROR run=$run line=$($_.InvocationInfo.ScriptLineNumber) $($_.Exception.Message)"
 }finally{ Get-Process prime95 -EA 0|Stop-Process -Force
  if($reason){ L "SOAK END run=$run steps=$steps passes_started=$pass fails=$fails reason=$reason"; Finish $reason }
- else{ L "SOAK INTERRUPTED run=$run steps=$steps passes_started=$pass (script exited without a reason; the next boot or task start resumes)" } }
+ else{ if(-not $cause){ $cause='UNKNOWN: no reason set and no exception (the script left its loop)' }
+  L "SOAK INTERRUPTED run=$run steps=$steps passes_started=$pass cause=$cause$(if($steps){' (resumable: the next boot or task start resumes)'}else{' (NO STEP WAS TAKEN: exit 4)'})"
+  if($steps -eq 0){ exit 4 } } }   # exit 4 = interrupted having taken no step (could not look); with steps done the exit stays 0, resumable

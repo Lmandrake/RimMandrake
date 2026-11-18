@@ -92,5 +92,32 @@ check(s["verdict"] == "NOT_PLANNED" and m.exit_code(s) == 2, "nothing planned ->
 s = m.summarize(*m.parse_fetch(fetch_text(head(), OLD + NEW + [CTL_OK] + STEPS)), run="S20990101T000000Z")
 check(s["steps"] == 0 and not s["started"], "--run of an absent run reads nothing of the others")
 
+# RIMMANDRAKE_NAME_SOAK_SILENT_EXIT_INTERRUPTED_LOOKS_IDLE: four fixed logs, four different verdicts and exit codes
+DEAD = head(task="Ready", p95=0)
+INT0 = NEW + [CTL_OK, "2026-11-18T01:30:00Z SOAK INTERRUPTED run=%s steps=0 passes_started=0 cause=UNKNOWN: no reason set, no exception (script exited)" % RUN]
+s = m.summarize(*m.parse_fetch(fetch_text(DEAD, OLD + INT0)))
+check(s["verdict"] == "INTERRUPTED_NO_WORK" and m.exit_code(s) == 4 and "no step was taken" in m.render(s) and "UNKNOWN" in m.render(s),
+      "A1: SOAK INTERRUPTED with steps=0 and nothing alive -> INTERRUPTED_NO_WORK exit 4, cause named")
+s = m.summarize(*m.parse_fetch(fetch_text(head(), OLD + INT0 + ["2026-11-18T01:31:00Z SOAK RESTART run=%s same_boot=x end=y" % RUN, STEPS[0]])))
+check(s["verdict"] == "RUNNING" and m.exit_code(s) == 0, "A1: an interruption later resumed and alive is history, RUNNING exit 0")
+INTW = NEW + [CTL_OK] + STEPS[:1] + ["2026-11-18T01:40:00Z SOAK INTERRUPTED run=%s steps=1 passes_started=1 cause=ERROR: boom (resumable)" % RUN]
+s = m.summarize(*m.parse_fetch(fetch_text(DEAD, OLD + INTW)))
+check(s["verdict"] == "STALLED" and m.exit_code(s) == 2, "an interruption with work done is resumable STALLED exit 2, not NO_WORK")
+EMPTY = NEW + [CTL_OK] + STEPS[:1] + ["2026-11-18T07:00:00Z SOAK END run=%s steps=1 passes_started=1 fails=0 reason=" % RUN]
+s = m.summarize(*m.parse_fetch(fetch_text(head(task="Ready", p95=0, state=dict(STATE, finished="")), OLD + EMPTY)))
+check(s["verdict"] == "ENDED_NO_REASON" and m.exit_code(s) == 5 and "no reason" in m.render(s),
+      "A2: SOAK END with an empty reason= -> ENDED_NO_REASON exit 5")
+s = m.summarize(*m.parse_fetch(fetch_text(head(task="Ready", p95=0, state=st_done), ended)))
+check(s["verdict"] == "ENDED" and m.exit_code(s) == 0 and "faults=2" in m.render(s) or s["verdict"] == "ENDED" and m.exit_code(s) == 0,
+      "A3: an on-time END with a reason still exits 0")
+ZERO = [l for l in ended if "FAIL" not in l]
+s = m.summarize(*m.parse_fetch(fetch_text(head(task="Ready", p95=0, state=st_done), ZERO)))
+check(s["verdict"] == "ENDED" and m.exit_code(s) == 0 and not s["fails"] and "faults=0" in m.render(s),
+      "A3: an on-time END that found no faults is a measured zero, exit 0")
+check(len({4, 5, 0, 2}) == 4 and m.exit_code({"verdict": "NOT_PLANNED", "control_proven": True}) == 2,
+      "A4: planned-but-never-started stays NOT_PLANNED exit 2, distinct from 4 and 5")
+s = m.summarize(*m.parse_fetch(fetch_text(head(task="Ready", p95=0, state=dict(STATE, started=False)), NEW[:1])))
+check(s["verdict"] == "NOT_PLANNED" and m.exit_code(s) == 2, "A4: a PLAN line with no START reads NOT_PLANNED exit 2")
+
 print("%d FAIL" % len(fails) if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
