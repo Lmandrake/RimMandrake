@@ -136,8 +136,7 @@ Old names inside live files (not paths, so the guard does not see them), for the
 Nothing outside the repo was changed by this item. What should go, for the Conductor:
 
 - `~/.claude/skills/` links into MandrakeWorkflows: `artisan`, `artisan-head`, `artisan-judge`, `relentless-pipeline`,
-  `whittle` (they still show in every session's skill list). Remove the links and their rows in
-  `~/dev/Lodestar/claude/skills.md`, and retire the skills in MandrakeWorkflows.
+  `whittle`. Done 2026-11-18 (below): the links stay, and RimMandrake sessions no longer see the skills.
 - Masked user units on Archmagi (`systemctl --user list-unit-files` shows them `masked`): `rm-relentless*`,
   `rm-artisan-now.*`, `rm-whittle-now.*`, `whittle-claude@.service`, `rm-pulse.service`. Keep the masks:
   `retired_loops_check.py` (deadman, every 15 min) alarms if one is unmasked. SteveDesktop's `whittle-claude@` mask
@@ -147,7 +146,34 @@ Nothing outside the repo was changed by this item. What should go, for the Condu
   (ticket `RIMMANDRAKE_LAND_RALPH_FLOWWORKS_PIT_FEATURES`), `D:\ClaudeWork\rimmandrake\whittle_claude\`,
   `D:\ClaudeWork\rimmandrake\ralph_*`, `D:\ClaudeWork\rimmandrake\relentless_agent\`, and the deploy checkout
   `/home/mandrake/rm/pulse-deploy` (live: units run from it).
-- The Conductor's memory files: any that describe Relentless, Artisan, Whittle, FOUNDRY or RimPulse as running.
+- The Conductor's memory files: any that describe Relentless, Artisan, Whittle, FOUNDRY or RimPulse as running. Done
+  2026-11-18 (below).
+
+## Outside this repo: done
+
+Item `RIMMANDRAKE_RETURN_LOOP_WISDOM_TO_MANDRAKEWORKFLOWS_SKILLS`, 2026-11-18. The owner, about 2:10 PM PST: "Whittle,
+Artisan, and Ralph loops (and relentless workers) were all in MandrakeWorkflows anyway, so a lot of that wisdom can be
+shoved back in there for future users."
+
+- **The wisdom went back to MandrakeWorkflows** (commit `37f0e9a`). Each loop's skill now holds a
+  `references/first-deployment-record.md`: what this project measured, why it retired the loop, and the lessons the
+  skill lacked (`skills/artisan/`, `skills/whittle/`, `skills/relentless-pipeline/`; the nine roots and the generic proof
+  traps are in the last). All five SKILL.md files (`artisan`, `artisan-head`, `artisan-judge`, `whittle`,
+  `relentless-pipeline`) say plainly that RimMandrake retired them on 2026-11-13 and why; the stale scoreboards
+  ("zero sessions", "zero acceptances as of 2026-11-07") were corrected. The skills stay for other projects.
+- **Hidden from RimMandrake sessions only.** `.claude/settings.json` sets `skillOverrides` to `"off"` for the five
+  skills. The `~/.claude/skills/` links are global and stay, so his other projects still see them; `~/dev/Lodestar/claude/skills.md`
+  is unchanged. Tested 2026-11-18 with `claude -p`: from this repo the five read absent (`handoff` present as the
+  control); from a folder with no project settings all five read present.
+- **The Conductor's memory** (`/home/mandrake/.claude/projects/-home-mandrake-rm-bench/memory/`): twelve files that
+  described a retired system as current (or, in the last one, as only paused) were corrected and three `MEMORY.md` index lines fixed. They are
+  `artisan-phase-conductor-does-it-question-cards`, `conductor-is-proactive-situation-officer`,
+  `live-progress-board-for-long-builds`, `open-markdown-in-typora`, `ask-before-large-autonomous-builds`,
+  `review-tiers-and-review-environments`, `owner-modes-bench-belt-afk`, `token-budget-plentiful-test-constantly`,
+  `rimflow-redesign-built-validated-leases-2026-10-07`, `gimmesomeslack-flowworks-first`,
+  `code-review-check-reachability-first` and `whittle-relentless-stay-off-until-validated`. Every owner preference in
+  them was kept; only the retired machinery they pointed at changed. Files that only mention FOUNDRY items as filed
+  history were left alone.
 
 ## UNMEASURED
 

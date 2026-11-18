@@ -695,5 +695,12 @@
       "Commanding",
       "Landing"
     ]
+  },
+  "skillOverrides": {
+    "artisan": "off",
+    "artisan-head": "off",
+    "artisan-judge": "off",
+    "relentless-pipeline": "off",
+    "whittle": "off"
   }
 }
