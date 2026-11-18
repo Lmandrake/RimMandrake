@@ -197,17 +197,18 @@ def children(root, mod, rec):
     """-> the Designer runs and coverage judges a detached run started on MOD's concept: those that STARTED while it
     was live (its record's at to its end; no slack after, so a run started once it ended is never taken). No launch
     records its parent yet, so this is by time on the one concept; `void` prints every unit it takes."""
-    t0, t1 = rec.get("at"), rec.get("ended")
+    t0 = rec.get("at")
+    t1 = next((rec[k] for k in ("ended", "returned") if isinstance(rec.get(k), (int, float))), None)
     if not isinstance(t0, (int, float)) or not mod:
         return []
-    t1 = t1 if isinstance(t1, (int, float)) else time.time()
+    t1 = t1 if t1 is not None else time.time()
     st = _raw_stage(os.path.join(root, "design", "concepts", mod)) or {}
     # a voided stage file still names its moved runs: they are children too (a second void finds the same set)
     runs = dict(stage_runs(st))
     for m in ((st.get("voided") or {}).get("moved") or []):
         runs.update(stage_runs({m["field"]: [m["entry"]]}) if m.get("field") in ("coverage_rounds", "results",
                                                                                      "history") else {})
-    return sorted(u for u, at in runs.items() if at is not None and t0 - 5 <= at <= t1)
+    return sorted(u for u, at in runs.items() if at is not None and t0 <= at <= t1)
 
 
 def resolve(root, st, units=(), item=None, mod=None, since=None, record=None):
@@ -653,7 +654,8 @@ def sync_stage(st, cur=None):
             u = unit_of(field, x)
             if u:
                 moved.append({"field": field, "index": n, "entry": x, "unit": u, "void": cur[u].get("id"),
-                              "why": cur[u].get("why")})
+                              "why": cur[u].get("why"), "after": copy.deepcopy(lst[n - 1]) if n else None,
+                              "before": copy.deepcopy(lst[n + 1]) if n + 1 < len(lst) else None, "first": n == 0})
             else:
                 keep.append(x)
         st[field] = keep
@@ -700,19 +702,31 @@ def _stage_restore(st, m):
     since (a newer grant, say) stands."""
     lst = st.setdefault(m["field"], [])
     t = parse_time((m["entry"] or {}).get("at")) if isinstance(m.get("entry"), dict) else None
-    if t is None:
+    nb = [n for n, x in enumerate(lst) if m.get("after") is not None and x == m["after"]]
+    na = [n for n, x in enumerate(lst) if m.get("before") is not None and x == m["before"]]
+    if m.get("first"):
+        pos = 0                 # it led the list: it leads again
+    elif nb:
+        pos = nb[-1] + 1        # straight after the entry it followed (ties in time keep their order)
+    elif na:
+        pos = na[0]             # else straight before the entry that followed it
+    elif t is None:
         pos = min(int(m.get("index") or 0), len(lst))
     else:
         pos = next((n for n, x in enumerate(lst) if isinstance(x, dict) and (parse_time(x.get("at")) or 0) > t),
                    len(lst))
     lst.insert(pos, m["entry"])
-    for k, v in (m.get("fields_before") or {}).items():
-        if k in (m.get("fields_set") or {}) and st.get(k) != m["fields_set"][k]:
-            continue        # changed since the void: the newer value stands
-        if k in (m.get("fields_absent") or []):
-            st.pop(k, None)
-        else:
-            st[k] = v
+    fb, fs = m.get("fields_before") or {}, m.get("fields_set") or {}
+    grant = "coverage_release_granted"
+    group = [k for k in fb if k != grant]       # the stop, the status and the block reason move together
+    for keys in ([grant], group):
+        if any(k in fs and st.get(k) != fs[k] for k in keys):
+            continue        # changed since the void: the newer state stands, as a whole
+        for k in keys:
+            if k in (m.get("fields_absent") or []):
+                st.pop(k, None)
+            elif k in fb:
+                st[k] = fb[k]
 
 
 def stage_spend_refs(st):
@@ -758,6 +772,13 @@ def status_lines(st, record=None):
 VERDICT = "coverage_verdict.json"
 
 
+def _at(text):
+    try:
+        return parse_time((json.loads(text) or {}).get("at")) or 0
+    except (ValueError, AttributeError):
+        return 0
+
+
 def swap_verdict(root, mod, judge, back=False, runner=None):
     """A VOID coverage judge's coverage_verdict.json is kept as evidence (coverage_verdict.void.<judge>.json) and the
     verdict before it, read from git, is put back: the next look checks the look before the void one, as if it never
@@ -781,11 +802,8 @@ def swap_verdict(root, mod, judge, back=False, runner=None):
     if back:
         if not os.path.exists(arch):
             return []
-        try:
-            put = (json.load(open(meta, encoding="utf-8")) or {}).get("put_back")
-        except (OSError, ValueError):
-            put = "UNMEASURED"
-        if (judge_of(cur) if cur is not None else None) != put:
+        arch_text = open(arch, encoding="utf-8").read()
+        if cur is not None and judge_of(cur) not in active() and _at(cur) > _at(arch_text):
             return []       # a newer verdict landed since the void: it stands; the archive stays as evidence
         with open(vf, "w", encoding="utf-8") as f:
             f.write(open(arch, encoding="utf-8").read())
@@ -796,8 +814,8 @@ def swap_verdict(root, mod, judge, back=False, runner=None):
     if cur is None or judge_of(cur) != judge:
         return []
     void = set(active()) | {judge}
-    r = runner(["git", "-C", root, "log", "--format=%H", "--", rel(vf)], capture_output=True, text=True, timeout=60)
     old = None
+    r = runner(["git", "-C", root, "log", "--format=%H", "--", rel(vf)], capture_output=True, text=True, timeout=60)
     for sha in (r.stdout or "").split():
         g = runner(["git", "-C", root, "show", "%s:%s" % (sha, rel(vf))], capture_output=True, text=True, timeout=60)
         if g.returncode == 0 and judge_of(g.stdout) is not None and judge_of(g.stdout) not in void:

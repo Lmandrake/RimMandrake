@@ -21,7 +21,7 @@ What it proves: one builder launches for a mod with build-work refusals and noth
 when a run is live on it, when the last run did not reduce its refusals (and never again at the same refusals), when the
 cap is missing, for a mod not on the list, for a mod not at the offline build, on a hold, past the stage's dollar
 ceiling, past max_live, on an account hold, or in a dry pass; a run that reduced the refusals lets the next one start;
-a failed launch is not retried; a mod ready to advance and one owing a hand step get a Needs Conductor line; the idle
+a failed launch is void_system and launched again; a mod ready to advance and one owing a hand step get a Needs Conductor line; the idle
 reading fires on a planted idle mod and ops_watch's maturation family reads it (stale is UNMEASURED); the alarm target
 is in ops_watch_rules.json; nothing in the repo is written. The blind challenge (blind_main): one automatic judge for
 a mod whose cycle is owed with nothing live, never a second in the visit (live, settling, ended without a record, exit
@@ -517,15 +517,18 @@ def main():
             f.write(jsaved)
         none_launched(dict(base, advancing=["PyrelandsMechanics"]), "a mod at intake")
 
-        # ---- a failed launch is not retried --------------------------------------------------------------------------
+        # ---- a failed launch spends no turn: the next tick launches -----------------------------------------------
         reset()
         os.environ["FAKE_DH_FAIL"] = "1"
         rd = MD.tick(root, one, True, fx=dict(fx, facts=lambda: facts_for(one)), now=CLOCK, page=False)
         os.environ.pop("FAKE_DH_FAIL")
         rd2 = MD.tick(root, one, True, fx=dict(fx, facts=lambda: facts_for(one)), now=CLOCK + 600, page=False)
-        ok(len(launches()) == 1 and rd["mods"]["FlowWorks"]["decision"] == "launch_failed"
-           and rd2["mods"]["FlowWorks"]["decision"] == "stopped" and rd["needs_conductor"],
-           "a failed launch gets a Needs Conductor line and no automatic retry")
+        # RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT: this read "a failed launch gets ... no automatic retry"
+        # (`stopped`), which spent the mod's turn on a system fault, the rule the owner forbade 2026-11-18
+        ok(len(launches()) == 2 and rd["mods"]["FlowWorks"]["decision"] == "launch_failed"
+           and rd2["mods"]["FlowWorks"]["decision"] == "launched" and rd["needs_conductor"]
+           and any("void_system" in x for x in rd["needs_conductor"]),
+           "a failed Stage 3 launch is void_system: a Needs Conductor line naming it, and the next tick launches")
 
         # ---- a Stage 3 launch that never started on a transient fault retries itself (owner, 2026-11-15: the pipeline
         # fixes its own defects; item RIMMANDRAKE_RETRY_STAGE_THREE_LAUNCH_TRANSIENT_FAULT_NOT_STOPPED). Before, a git
@@ -574,9 +577,10 @@ def main():
         reset()
         f9, _ = file_flaky(99)
         rs = [t3(dict(fx, file=f9), at=600 * i) for i in range(4)]
-        ok([d3(x) for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "stopped"] and not launches()
-           and nc3(rs[2]),
-           "a transient fault that outlasts launch_tries stops with a Needs Conductor line (%s)" % [d3(x) for x in rs])
+        ok([d3(x) for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "system_fault"] and not launches()
+           and nc3(rs[2]) and RV.ALARM_ID in rs[3]["mods"]["FlowWorks"]["why"],
+           "a transient fault that outlasts launch_tries: a Needs Conductor line, then system_fault (%s), no turn spent "
+           "(%s)" % (RV.ALARM_ID, [d3(x) for x in rs]))
 
         # ---- a steward or fixer run is not a builder (RIMMANDRAKE_EXEMPT_STEWARD_RUNS_FROM_BUILDER_PROGRESS_STOP).
         # Graffiti 2026-11-15: its preflight steward moved it into the offline build and was still live, so the tick

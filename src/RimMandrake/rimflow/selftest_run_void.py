@@ -240,9 +240,10 @@ def main():
         # ---- the verdict file: kept as evidence, the earlier one back ---------------------------------------------
         subprocess.run(["git", "init", "-q", root], check=True)
         vf = os.path.join(d, "coverage_verdict.json")
-        for j, v in (("rm-coverage-judge-3", "not_covered"), (UJ, "covered")):
+        for j, v, at in (("rm-coverage-judge-3", "not_covered", "2026-11-17T10:00:00Z"),
+                         (UJ, "covered", "2026-11-18T18:03:47Z")):
             with open(vf, "w") as f:
-                json.dump({"judge": j, "verdict": v}, f)
+                json.dump({"judge": j, "verdict": v, "at": at}, f)
             subprocess.run(["git", "-C", root, "add", vf], check=True)
             subprocess.run(["git", "-C", root, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", j],
                            check=True)
@@ -310,9 +311,10 @@ def main():
         ok([h.get("at") for h in x["history"]] == sorted(h.get("at") for h in x["history"]),
            "after both unvoids every history row is in time order")
         # a newer verdict survives an unvoid; the predecessor skips every void judge
-        for j, v in (("rm-coverage-judge-4", "covered"), (UJ, "covered")):
+        for j, v, at in (("rm-coverage-judge-4", "covered", "2026-11-18T12:00:00Z"),
+                         (UJ, "covered", "2026-11-18T18:03:47Z")):
             with open(vf, "w") as f:
-                json.dump({"judge": j, "verdict": v}, f)
+                json.dump({"judge": j, "verdict": v, "at": at}, f)
             subprocess.run(["git", "-C", root, "add", vf], check=True)
             subprocess.run(["git", "-C", root, "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", j],
                            check=True)
@@ -321,11 +323,36 @@ def main():
         ok(json.load(open(vf))["judge"] == "rm-coverage-judge-3",
            "the verdict put back skips every void judge (4 is void too): judge 3's")
         with open(vf, "w") as f:
-            json.dump({"judge": "rm-coverage-judge-5", "verdict": "covered"}, f)
+            json.dump({"judge": "rm-coverage-judge-5", "verdict": "covered", "at": "2026-11-18T20:00:00Z"}, f)
         RV.swap_verdict(root, "Fake", UJ, back=True)
         ok(json.load(open(vf))["judge"] == "rm-coverage-judge-5" and os.path.exists(arch),
            "an unvoid never puts the void verdict over a newer one: judge 5's stands, the archive stays")
+        # an older fallback is no newer work: void judge 4 as well, then unvoid UJ with judge 4 still void
+        with open(vf, "w") as f:
+            json.dump({"judge": "rm-coverage-judge-3", "verdict": "not_covered", "at": "2026-11-17T10:00:00Z"}, f)
+        RV.swap_verdict(root, "Fake", UJ, back=True)
+        ok(json.load(open(vf))["judge"] == UJ and not os.path.exists(arch),
+           "unvoid over an older fallback (judge 3, while 4 is void) puts the void verdict back")
         RV._append({"act": "unvoid", "ts": "t", "unit": "rm-coverage-judge-4", "why": "t", "by": "B"})
+        # ties in time keep their order through a partial unvoid; stop, status and block restore as a group
+        tie = {"results": [{"run": r, "at": "2026-11-18T18:00:00Z"} for r in ("rA", "rB", "rC")]}
+        RV._append({"act": "void", "ts": "t", "unit": "rA", "why": "t", "by": "B"})
+        RV._append({"act": "void", "ts": "t", "unit": "rB", "why": "t", "by": "B"})
+        tie = RV.sync_stage(tie)
+        RV._append({"act": "unvoid", "ts": "t", "unit": "rB", "why": "t", "by": "B"})
+        tie = RV.sync_stage(tie)
+        RV._append({"act": "unvoid", "ts": "t", "unit": "rA", "why": "t", "by": "B"})
+        tie = RV.sync_stage(tie)
+        ok([r["run"] for r in tie["results"]] == ["rA", "rB", "rC"],
+           "rows tied in time come back in their own order after a partial unvoid (%s)" % [r["run"] for r in tie["results"]])
+        RV._append({"act": "void", "ts": "t", "unit": U1, "mod": "Fake", "item": ITEM1, "why": "g", "by": "B"})
+        y = RV.sync_stage(applied(before_stage))
+        y["coverage_stop"] = {"at": "2026-11-19T00:00:00Z", "why": "a newer stop"}
+        y["blocked_on"] = "a newer block"
+        RV._append({"act": "unvoid", "ts": "t", "unit": U1, "why": "g", "by": "B"})
+        y = RV.sync_stage(y)
+        ok(y["status"] == "blocked" and y["coverage_stop"]["why"] == "a newer stop" and y["blocked_on"] == "a newer block",
+           "a newer stop and block stand through an unvoid, with the status they go with (%s)" % y["status"])
 
         # ---- the automatic class: void_system ----------------------------------------------------------------------
         st = state()

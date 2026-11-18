@@ -860,7 +860,12 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             idle = was == 0 and not w.get("ids")
             if idle:
                 s["last_run"]["not_judged"] = "no build work was owed when it started (0 refused bars)"
-            if not prog and not book and not idle:
+            # a VOID run (hand, or killed / timed out / no result of its own: run_void.py) is never judged: it spends
+            # no try at these refusals (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT)
+            vwhy = void_why(w.get("unit"))
+            if vwhy:
+                s["last_run"]["not_judged"] = "VOID: %s" % vwhy
+            elif not prog and not book and not idle:
                 s["stopped"] = {"ids": ids, "at": now, "why": "run %s ended and %s" % (w.get("unit"), pwhy)}
         owed = f.get("owed")
         if owed in OWED:
@@ -2494,13 +2499,18 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             row.update(decision="launch_retry", why="the Stage 3 launch never started on a transient fault (try %d of "
                        "%d), the next tick tries it again: %s" % (tries, int(cfg.get("launch_tries", 3)), text))
         else:
+            # a launch that never started is void_system (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT; this
+            # wrote `stopped`, spending the mod's turn on a system fault): its tries go on the mod's system faults and
+            # the next tick launches again, until system_fault_stop stops the loop at the limit
             s.pop("launch_retry", None)
             spent = (" %d times on a transient fault, the last" % tries) if tries > 1 and AUT.transient(text) else ""
-            s["stopped"] = {"ids": row["refused_ids"], "at": now, "why": "the launch failed%s: %s" % (spent, text),
-                            "launch_failed": True, "code": cfg.get("_code"), "tries": tries, "item": item,
-                            "filed": filed}
+            s.setdefault("system_faults", []).append({"at": now, "book": "launches", "key": item, "unit": None,
+                                                      "cause": "the Stage 3 launch never started%s: %s" % (spent, text),
+                                                      "n": max(1, tries)})
             row.update(decision="launch_failed", why=text,
-                       need="%s: the launch failed%s (%s); the step will not retry it on its own" % (mod, spent, text))
+                       need="%s: the Stage 3 launch failed%s (%s): void_system, no turn spent; the next tick tries "
+                            "again (system faults %d of %d)" % (mod, spent, text, RV.faults(s),
+                                                               int(cfg.get("system_fault_limit", RV.SYSTEM_FAULT_LIMIT))))
     return done
 
 
@@ -2777,6 +2787,17 @@ def status_lines(rd, now, unit_state=None):
             out.append("%s: %s" % (k, "; ".join(rd[k])))
     out += rd.get("voids") or []
     return out
+
+
+def void_why(unit, record=None):
+    """-> why a run is VOID (a standing hand void, or a system cause on its record), or "" (it counts; or its record
+    cannot be read: UNMEASURED, judged as before)."""
+    if not unit:
+        return ""
+    v = RV.active().get(unit)
+    if v:
+        return "hand void %s: %s" % (v.get("id"), v.get("why"))
+    return RV.system_cause((record or DH.read_record)(unit))
 
 
 def still_retried(cfg, book, x):

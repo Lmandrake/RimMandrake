@@ -911,7 +911,8 @@ using its own code..."*
   every tick at the moment it decides: no git hop.
 - **What it stops:** every path in `design/RimMandrake/pipeline_launch_paths_census_2026-11-18.md` (the Dispatch tick's
   layers, the Designer and DesignerCodex launches, red_dispatch). A live run finishes unless `--stop-live`, which stops
-  it and records it for voiding (`RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT`'s mechanism, once it lands).
+  it and records it in the pause store; a run stopped that way ends `killed`, so the tick classes it void_system and
+  it spends no trial (next section).
 - **A planned stop:** class `planned`, on no idle, paused or stalled reading, so no alarm; `enabled: false` reads the
   same. `status` and the maturation page lead with PIPELINE PAUSED, its why, who and until; an expired `--until`
   resumes by itself and says so. A pause store that cannot be read reads PAUSED, never running.
@@ -919,6 +920,29 @@ using its own code..."*
   dry on a moving clock: what WILL start, when, on which model and by which rule, what is blocked and by what, and
   "nothing will start" said outright. A live run's end and a Designer chain cannot be forecast: they read UNMEASURED.
 - **The Conductor's journal hold** stays a launch block in the tick, binding once its commit is in the dispatch clone.
+
+## No trial is spent by a system failure — owner, 2026-11-18
+
+His words (Wed 2026-11-18, ~10:30 AM PST, about Graffiti, item `RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT`):
+*"Ensure it didn't use up it's turns, trials, whatever... I will not accept ANY system that pointlessly expends such
+statistical measurements based on failed system calls or behavior. You know that. Fix the system such that it's easy
+to indicate this to it. And NEVER tell me "I can't that's frozen" or "it's a write only ledger" or bullshit like
+that."*
+
+- **No trial, turn, look or cycle is spent** by a run that died of a system cause (killed, timed out, the CLI exiting
+  with no result of its own, a launch that never started) or that he or the Conductor stopped or declares void. A mod's
+  real non-pass still counts. "Failed", "void", "zero" and "could not look" stay four answers in every record and line.
+- **Automatic:** the tick classes such a run `void_system` from its record's own result (`run_void.py`) and moves its
+  book entries to the mod's `voided` list; its faults go on the mod's own count, and at 3 since the last `clear` the mod
+  reads `system_fault` (alarm `OPS_MATURATION_SYSTEM_FAULT_LOOP`): nothing launches, no trial is spent.
+- **By hand, one verb:** `python3 src/RimMandrake/rimflow/maturation_dispatch.py void <unit>... | --item <ID> | --mod
+  <Mod> --since <time> --why "..." [--owner-said "..."]`; `unvoid <unit> --why "..."` reverses it; `voids` lists every
+  line. It takes the Designer runs and judges the run started, gives back a coverage look it applied (the grant stands
+  again, the earlier verdict file is put back, the void one kept as evidence), and lands the files. An unknown run and
+  a double void are refused. An append-only file is no excuse: the fold of its lines is what every reader honours.
+- **Spend stays true:** a void run's spend is shown apart as void spend, still counted toward the stage ceiling, and a
+  ceiling release it spent stays spent: un-spending either is his call (the census's proposal).
+- Census of every counter and what is not yet reached: `design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md`.
 
 ## Owner hold: six biome mods stop, Pyrelands stays — owner, 2026-11-16
 

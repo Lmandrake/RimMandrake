@@ -145,21 +145,27 @@ def retry_main():
         lambda it: (0, "DETACHED rm-x", "rm-x"))
     ok(entry.get("code") == "code-A" and not okk, "retry 7: a failed launch records the code it failed on", entry)
 
-    # Stage 3: the stop a failed launch writes carries the code and lifts once it changes
+    # Stage 3: a failed launch writes no stop (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT, the owner 2026-11-18:
+    # no turn is spent by a failed system call). These read "the stop carries its code / stays on the same code / lifts
+    # once it changes"; the launch is void_system now, a system fault, and the next tick launches on any code.
     st = {}
     f = offline(["a"])
     rows, launches = MD.decide(dict(CFG, _code="code-A"), st, f, NOW)
     MD.execute(REPO, dict(CFG, _code="code-A"), st, rows, launches, NOW,
                fx={"file": lambda *a, **k: (False, "REFUSED: a rule said no"), "known": lambda: set(),
                    "launch": lambda *a, **k: (0, "DETACHED rm-x", "rm-x"), "publish": lambda it: (True, "published")})
-    stop = st["mods"]["A"].get("stopped") or {}
-    ok(stop.get("launch_failed") and stop.get("code") == "code-A", "retry 8: the Stage 3 stop carries its code", stop)
+    sa = st["mods"]["A"]
+    ok(not sa.get("stopped") and [x.get("book") for x in sa.get("system_faults") or []] == ["launches"]
+       and "a rule said no" in sa["system_faults"][0]["cause"],
+       "retry 8: a failed Stage 3 launch writes no stop: a system fault naming its cause", sa.get("system_faults"))
     rows, launches = MD.decide(dict(CFG, _code="code-A"), st, f, NOW + 60)
-    ok(row_of(rows)["decision"] == "stopped", "retry 9 (control): on the same code the Stage 3 stop stays",
+    ok(row_of(rows)["decision"] == "launch", "retry 9: on the same code the next tick launches (no turn spent)",
        row_of(rows)["decision"])
+    stop = {"ids": ["a"], "at": NOW, "why": "the launch failed: x", "launch_failed": True, "code": "code-A"}
+    st["mods"]["A"]["stopped"] = dict(stop)
     rows, launches = MD.decide(dict(CFG, _code="code-B"), st, f, NOW + 120)
     ok(row_of(rows)["decision"] == "launch" and "code changed" in str(row_of(rows).get("stop_lifted")),
-       "retry 10: once the pipeline's code changes the Stage 3 stop lifts for one more try", row_of(rows))
+       "retry 10: a stop an older build wrote still lifts once the pipeline's code changes", row_of(rows))
     st["mods"]["A"]["stopped"] = dict(stop, tries=3)
     rows, launches = MD.decide(dict(CFG, _code="code-C"), st, f, NOW + 180)
     ok(row_of(rows)["decision"] == "stopped", "retry 11 (control): three failed tries end the retries",

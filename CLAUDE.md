@@ -269,6 +269,10 @@ when the fix is unknown, outside its tools, or would change a north-star bar, wi
 workaround without the permanent fix is not allowed. A mod's gaps still go through the stages. Full text:
 `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
 
+## 🔴 No trial is spent by a system failure — owner, 2026-11-18
+
+*"I will not accept ANY system that pointlessly expends such statistical measurements based on failed system calls or behavior."* A run killed, timed out, never started or stopped by him or the Conductor spends no trial, turn, look or cycle: the tick classes it void_system, and `maturation_dispatch.py void <unit> --why "..."` (reversed by `unvoid`) voids any run by hand. Never answer "it's frozen" or "it's append-only". Full text: `standing_rulings.md` §No trial is spent by a system failure.
+
 ## 🔴 A passing bar is an experience, never a tuning number — owner, 2026-11-16
 
 *"The mod passing bars should not specify flora and fauna yield rates! That would mean every time we renormalize every mod must repass its bars... drop that!"* No bar pins a yield rate, a stat value, any tuning number or an asset-variant count. The test: would this bar have to be re-passed after we renormalize numbers or add an art variant? Then it is not a bar. Gate: `src/RimMandrake/rimflow/bar_rule.py`; full text: `standing_rulings.md` §A passing bar is an experience.

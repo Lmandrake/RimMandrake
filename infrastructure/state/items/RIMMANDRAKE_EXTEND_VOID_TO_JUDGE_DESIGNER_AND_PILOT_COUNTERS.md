@@ -6,6 +6,7 @@ The void rule (run_void.py, item RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SP
 - the Designer chain count (Dispatcher state roles.<Designer>.chain_day) has no unit, so a void cannot reach it;
 - a certificate rerun (zero-token unit, no detached record) is reached only by a hand void;
 - a Test Pilot verify recorded fail because of a harness fault has no void.
+- a void's children (Designer runs and coverage judges a detached run started) are found by time on the one concept (run_void.children); no launch records its parent, so two overlapping parents on one concept cannot be told apart (Codex review of 5070199008, point 10). Record the parent unit at each Designer/judge launch and select children by it.
 ## verify
 Acceptance test (watched failing on f93b15709a: prints "stop_reason: 4 judge runs (limit 4)", exit 1; expected exit 0 on a fix, 1 check):
 python3 -c "import sys; sys.path.insert(0,'src/RimMandrake/rimflow'); import coverage_judge as CJ; st={'coverage_rounds':[{'judge':'rm-coverage-judge-%d'%n,'verdict':None,'error':'TimeoutExpired: judge call timed out','at':'2026-11-18T00:0%d:00Z'%n,'tokens':0} for n in range(4)]}; r=CJ.stop_reason(st); print('stop_reason:', r); sys.exit(0 if r is None else 1)"

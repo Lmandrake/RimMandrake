@@ -1186,6 +1186,10 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
   wrong, and the card quotes that evidence.
 - Never take the bridge, start or stop a game, or launch another run yourself: the Dispatch tick launches the next run
   when your move lands. Never open a fourth blind cycle in one visit.
+- No trial is spent by a system failure (his ruling, 2026-11-18): a run that was killed, timed out, never started or
+  was stopped by the Conductor counts as no cycle, visit, look or steward run. Never count one as a failure on the
+  mod's merits; void one the tick did not class itself with `python3 src/RimMandrake/rimflow/maturation_dispatch.py
+  void <unit> --why "..."` and say so in your note.
 - A failed or UNMEASURED line is filed as a NAMED item (`rimflow file <NAME> --for BENCH --caused-by %(item)s ...`;
   name grammar PROJECT_VERB_INTENTION_TWIST, `rimflow namecheck`), each with its acceptance test (a command that fails
   now and passes on a fix, or `Acceptance test: none, <reason>`), caused by THIS item so the tick finds and fixes them.
