@@ -18,7 +18,10 @@ biome to state (cover, fuel, wear on the hull, the Empire), and the scope of a f
 **Words used in "what happened".** *kept*; *kept, reshaped* (changed as stated); *moved* (scope bucket changed, from
 and to given; the cleanse used "first version", "next version, off" and "recommend retiring", and this design uses
 0.1.0, 0.2.0, later, dropped; a cleanse "next version" item that lands in "later" is not a move); *folded into
-shared machinery*; *lost*.
+shared machinery*; *lost*. Where a *moved* row's last two cells are empty, its reason and its other choice are the line
+for that feature under "Scope moves": the other choice is to move it back, and the cost is the scenes and checks
+that come with it. Where a *lost* row's last two cells are empty, the reason is in the outcome cell itself (a ban,
+a card, his word) and the other choice is to reopen that ruling.
 
 ## The ones I would look at
 
@@ -140,7 +143,7 @@ Source names: *sheet* = `biomes/the_webwork.md`; *sitting record* =
 | The web-sense; vibration; summoning support; tracking for over a kilometre | sheet §4, kit spec | kept as contact and convergence; "over a kilometre" lost | A map is not a kilometre. | |
 | Ambushers bursting from underbrush, underground or above, with a visible tell | sheet §4, cleanse | kept | | |
 | Fecund and self-limiting; their own main predator; "erratic, psychotic intelligence" | sheet §4, §4b | kept, quoted | | |
-| Legends of them talking, flavour only | sheet §4 | lost | | |
+| Legends of them talking, flavour only | sheet §4 | lost | The sheet itself says it is never a mechanic, and the free biome's spider has no galaxy to have legends in. | One line of campaign flavour; free. |
 | Helpless in direct sunlight | sheet §4 | kept | | |
 | "Cripple, never down" | kit spec ruling 1 | kept | | |
 | "There is no night here, and no light a player can make has the effect of this planet's terrible sun." | kit spec ruling 2 | kept, quoted | | |

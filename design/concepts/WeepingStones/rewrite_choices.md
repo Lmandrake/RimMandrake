@@ -18,7 +18,10 @@ a stop, and lets the truce carry the visit.
 **Words used in "what happened".** *kept*; *kept, reshaped* (changed as stated); *moved* (scope bucket changed, from
 and to given; the cleanse used "first version", "next version, off by default" and "recommend retiring", and this
 design uses 0.1.0, 0.2.0, later, dropped; a cleanse "next version" item that lands in "later" is not a move);
-*folded into shared machinery*; *lost*.
+*folded into shared machinery*; *lost*. Where a *moved* row's last two cells are empty, its reason and its other choice are the line
+for that feature under "Scope moves": the other choice is to move it back, and the cost is the scenes and checks
+that come with it. Where a *lost* row's last two cells are empty, the reason is in the outcome cell itself (a ban,
+a card, his word) and the other choice is to reopen that ruling.
 
 ## The ones I would look at
 
