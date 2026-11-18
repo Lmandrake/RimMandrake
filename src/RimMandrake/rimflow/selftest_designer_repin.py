@@ -212,6 +212,54 @@ def auto_sources_checks():
         shutil.rmtree(root, ignore_errors=True)
 
 
+LATE_ITEM = "RIMMANDRAKE_REPIN_A_LANDED_FIX_HE_APPROVED_AFTER"   # a card item filed by his card, after the fix landed
+
+
+def late_approval_checks():
+    """8 RIMMANDRAKE_CITE_LATE_APPROVAL_CARD_NOTE_FIX_NEVER_PASSED: a fix lands, then his card approves it (Graffiti,
+    6c7d175b52 at 10:35 AM, his card 5:24 PM PST 2026-11-17). The refusal's smallest fix is a ledger note on the card's
+    item naming the sha; written AFTER the card, that note is the record that this card approves that commit, and the
+    auto re-pin cites it as a hand re-pin does. A note written BEFORE the card cannot record it, so it still refuses
+    (the exam-card guard of check 6 stays: a later card never borrows an earlier note)."""
+    import time
+    root, d, shas = fixture(dated=True)
+    try:
+        st = DS.load_state(d)
+        cur = DS.inputs(d, st, root)
+        frozen = DS.owner_uncited(root, st.get("item"), d)
+        for r in DS.accepted(st):
+            if "owner" in DS.DEPS[r["stage"]]:
+                r["inputs"]["owner"], r["owner_uncited"] = cur.get("owner"), frozen
+        DS.write_json(DS.state_path(d), st)
+        srcs, rf = DS.repin_sources(d, repo=root)
+        DS.repin(d, srcs, "selftest: level before the late card", repo=root)
+        with open(os.path.join(d, "sheet.md"), "ab") as f:
+            f.write(b"\n- a fix he approved after it landed\n")
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", "fix: a scene test he had not yet seen")
+        fix = git(root, "rev-parse", "HEAD")
+        card = time.time_ns() + 60 * 10 ** 9           # his card, a minute after the fix commit
+        with open(os.path.join(root, CT.OWNER_SHARD), "a", encoding="utf-8") as f:
+            f.write(json.dumps({"seat": "OWNER", "event": "file", "id": LATE_ITEM, "tsn": str(card),
+                                "byCard": "Graffiti -> Approve fix, look after resets (Recommended)"}) + "\n")
+        bench = os.path.join(root, "infrastructure", "state", "ledger", "events", "BENCH.jsonl")
+        with open(bench, "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "note", "id": LATE_ITEM, "tsn": str(card - 1),
+                                "text": "early words naming %s" % fix[:12]}) + "\n")
+        srcs, rf = auto_refuses("8 a note on the card's item written before the card", d, root, fix)
+        check("8 a note older than the card cites nothing", not srcs, srcs)
+        with open(bench, "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "note", "id": LATE_ITEM, "tsn": str(card + 1),
+                                "text": "carried out by %s" % fix[:12]}) + "\n")
+        srcs, rf = DS.repin_sources(d, repo=root)
+        check("8 after the note on his late card's item, the auto re-pin cites that card", rf is None and srcs == [
+            "OWNER:%s@%s" % (card, fix)], (srcs, rf))
+        out = DS.repin(d, srcs, "selftest: the late card", repo=root, dry=True) if srcs else None
+        check("8 the late card's source passes repin itself", bool(out), out)
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
 PAVING_ITEM = "RIMMANDRAKE_ASK_PYRE_ROOT_STILL_PROMISES_PAVING_HOLDS"   # the item of his paving card
 
 
@@ -452,6 +500,7 @@ def main():
             shutil.rmtree(root5, ignore_errors=True)
 
         auto_sources_checks()
+        late_approval_checks()
         first_pin_checks()
 
         # 4: the spend ceiling and his word that predates the park
