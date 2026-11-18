@@ -54,16 +54,16 @@
     },
     {
       "id": "dusk_weather",
-      "what": "Permanent forced dry weather, fog overlay/sky colours, biome glow multiplier and sunlight-stat suppression; actual permanent amber visibility remains unaccepted.",
+      "what": "Permanent dusk from the fixed site's below-horizon sun angle, with forced dry weather for fog and sky colours. Actual permanent amber visibility remains unaccepted.",
       "built": "present",
-      "evidence": "src/RimMandrake/TheSump/Defs/GameConditionDefs/RM_SumpDuskLock.xml; inventory evidence: design/RimMandrake/designer_codex_2026-11-09/TheSump/record.json inventory.",
+      "evidence": "src/RimMandrake/TheSump/Defs/GameConditionDefs/RM_SumpDuskLock.xml; src/RimMandrake/TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml records the legacy sun overrides; the_sump.md §0 records below-horizon geometry.",
       "proven": "missing",
-      "called_by": "RM_TheSump.biomeMapConditions -> RM_SumpDuskLock -> EH GameCondition_EnvironmentalWeather; BiomeGlowPatches reads the glow extension.",
+      "called_by": "RM_TheSump.biomeMapConditions -> RM_SumpDuskLock -> EH GameCondition_EnvironmentalWeather.",
       "serves": "land",
       "fate": "land",
-      "why": "Designer decision (delegated): Removing dry dusk changes the cold black basin into a different place. Darkness is visible weather, never a separate heat rule.",
+      "why": "Designer decision (delegated): Dry dusk defines the cold black basin. The 2026-10-19 standing ruling gives the sun to shared geometry. Drop the Sump BiomeDef's glowMultiplier, which rescales celestial sun glow, and suppressSunlightStatAffecter, which forces sunlight-gated stats off.",
       "needed_by": "",
-      "ticket": ""
+      "ticket": "T43"
     },
     {
       "id": "deep_black_mere",
@@ -873,7 +873,7 @@
     },
     {
       "id": "routine_cleaning",
-      "what": "Automatic supplied worker cleanup with no repeated medical-bill selection",
+      "what": "Under the colony's Auto solvent cleaning setting, a worker carrying RM_Filth_Tar uses their Cleaning priority to fetch reachable, unforbidden weak solvent and scrub themselves on a solid, tar-free cell that accepts tar deposits.",
       "built": "absent",
       "evidence": "src/RimMandrake/TheSump/Defs/RecipeDefs/RM_Tarred_Surgery.xml",
       "proven": "missing",

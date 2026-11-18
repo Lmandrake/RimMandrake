@@ -1,0 +1,29 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Specified self-scrubbing as Cleaning work triggered by carried tar at any RM_Tarred stage. The carrier fetches usable weak solvent and scrubs on a reachable solid, tar-free accepting cell. The colony setting and access to unforbidden stock govern player-authorized spending. Ordinary floor cleaning uses no solvent. Removed the cleanup station and aligned the acceptance controls and supporting entries.",
+      "where": "definition.md Using it and What changes in the colony's story, tickets.md T40, bars.json B6 and R4, census.json routine_cleaning, ambiguities.md Automatic routine and Cleanup works, models.md Situation walk"
+    },
+    {
+      "id": "R2",
+      "changed": "Restored ordinary-paced mouse traversal in shallow tar and deep pools. Added matched solid-ground, shallow-tar and deep-pool readings, including the colonist's blocked deep entry, and made the mouse exception explicit.",
+      "where": "bars.json B3, definition.md When it goes wrong, tickets.md T43 and T44, ambiguities.md Mice run easily"
+    },
+    {
+      "id": "R3",
+      "changed": "Defined dusk from the fixed site's solar geometry and kept the dry weather lock for fog and sky colours. Dropped both Sump BiomeDef sunlight overrides from the retained design and specified their removal and verification.",
+      "where": "census.json dusk_weather, bars.json R10, ambiguities.md Permanent dusk, definition.md Neighbours and inherited constraints, tickets.md T43"
+    },
+    {
+      "id": "R4",
+      "changed": "Kept B7's water picture to observable drinking with thirst enabled and no pond. Moved the provisioning details to its starting state alongside the existing rule and check. Moved settler bottle and barrel drinking out of B3's acceptance pictures and into its hydration control.",
+      "where": "bars.json B3 accept and sees.control, B7 accept, lazy, range and sees.start"
+    },
+    {
+      "id": "R5",
+      "changed": "Named accepting floors in B4 and the workers' Cleaning priorities and colony Auto solvent cleaning setting in B6.",
+      "where": "bars.json B4 says and B6 says and lazy"
+    }
+  ]
+}

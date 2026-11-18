@@ -1,0 +1,157 @@
+{
+ "mod": "TheSump",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "kept_mechanic_undefined",
+     "where": "definition.md §Using it / §What changes in the colony's story; bars.json B6; tickets.md T40; census.json row routine_cleaning",
+     "evidence": "routine_cleaning is built: absent, fate needed_by signature, and B6 depends on it. It is defined only as \"the player's standing cleaning/work priorities and solvent-reserve policy\" (definition.md) and \"an enable/reserve policy\" (T40). Several things are left open. Which work type does the job. What triggers it: carried tar, or a given RM_Tarred stage. Whether the tarred pawn cleans itself or \"an available helper/pawn\" does it. Where it happens: definition.md says \"a stocked cleanup station matter[s]\", but no census row, ticket or building is a station. What the \"reserve policy\" actually is: a Mod Setting, a stockpile or a per-pawn toggle. The source answer this cites (design/RimMandrake/designer_codex_2026-11-09/TheSump/ANSWERS_OWNER.md: \"workers clean ... on their own; he plans routes ... and spends scarce solvent\") splits what workers do unprompted from what he spends, and the proposal never says on which side automatic solvent use falls. Two builders would make two different mods: a self-queued scrub surgery, or a new WorkGiver at a station.",
+     "would_pass": "One paragraph that fixes the routine's work type, trigger, actor (self or helper), place (any clean accepting cell, or a named building) and the player control that decides when scarce solvent is spent as opposed to ordinary unprompted cleaning, mirrored in T40's specification and acceptance test.",
+     "smallest_fix": "Add that paragraph to definition.md §Using it and to T40. Delete \"stocked cleanup station\" unless a building is commissioned, and state which side of his ANSWERS_OWNER split automatic solvent use sits on."
+    },
+    {
+     "id": "R2",
+     "head": "core_promise_weakened",
+     "where": "bars.json B3 says and range; definition.md §When it goes wrong (\"Natural deep tar is impassable to ordinary ground walkers\")",
+     "evidence": "The owner-starred mouse promise is \"run easily over the tar without a thought\" (the_sump.md §4), \"Mice run the black\" (§5), and \"Mice run the tar without a thought. Nothing else touches it\" (§1, repeated in the RM_TheSump BiomeDef description). B3 narrows this to \"mice cross shallow tar without colonist mire\". Its range lists only \"mouse shallow crossings\", while the definition makes deep tar impassable and gives mice no exception. Census native_tar_crossing even names a \"tar-cost/entry exemption\", entry being what deep tar needs. Deferring the mouse-line instrument (T23) does not require shrinking where mice run.",
+     "would_pass": "B3 and its range cover mice crossing the tar, deep pools included, at their ordinary pace while colonists cannot. Or a marked, delegated argument for excluding deep tar, with the biome description corrected so it does not promise more.",
+     "smallest_fix": "Change B3's \"shallow tar\" to \"the tar, shallow and deep\", add deep-pool mouse crossings to B3's range and T44's acceptance test, and add a mouse exception to the definition's deep-tar sentence."
+    },
+    {
+     "id": "R3",
+     "head": "contradicts_ruling_or_lore",
+     "where": "census.json row dusk_weather (fate land); bars.json R10; ambiguities.md row \"Permanent dusk\" (\"No special sun value\")",
+     "evidence": "The kept land row includes a \"biome glow multiplier and sunlight-stat suppression\". The BiomeDef sets BiomeGlowMultiplierExtension glowMultiplier 0.55 and suppressSunlightStatAffecter true (RM_TheSump_Biome.xml:175-177). EnvironmentalHazards' BiomeGlowMultiplierExtension.cs describes the flag as making a biome \"permanently sunless rather than merely dim\". That is a per-biome sun override. Standing ruling, 2026-10-19 card (standing_rulings.md:156): \"no biome-specific heat, no biome-specific sun. It's a matter of geometry\". The proposal also says \"No special sun value\" and \"under the fixed world's geometry\" while keeping both biome-specific sun fields unexamined. The site's sun is already −10.6° below the horizon (the_sump.md §0), so geometry alone may give the dusk.",
+     "would_pass": "Either the dusk is defined as coming from the fixed site's geometric sun angle, with the glow multiplier and sunlight suppression moved out of land; or a written argument that a light-only multiplier is not a \"sun\" under that ruling, with the suppress flag's effect named and shown to touch no Direct Sun or heat path.",
+     "smallest_fix": "Name both fields in dusk_weather and R10 and decide each: drop them, or argue them past the Direct Sun ruling. Remove \"No special sun value\" if they stay."
+    },
+    {
+     "id": "R4",
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json B7 accept picture \"Settlers drink carried fresh water ... the declared expedition stock lasts through the run ...\"; B3 accept picture \"... settlers drink carried fresh-water bottles or draw from imported fresh-water barrels\"",
+     "evidence": "\"The declared expedition stock lasts through the run\" holds by construction: T51 and B7's range tell the tester to budget cargo for \"the complete 60-day-or-longer declared horizon ... contingency reserve\" and to \"Extend the finite budget if the run extends\". That is R12, our provisioning rule, and C10's debit reconciliation. It is a test-setup condition, not something the player experiences, and it cannot fail because of the mod. B3 is an animal bar, and its says names no humanlike drinking, yet its accept picture puts settler bottle drinking in as a pass condition.",
+     "would_pass": "Water provisioning sits in R12, B7's sees.start and C10. B7's picture keeps only what the player sees: settlers drink carried water with thirst on and no pond, while natives drink at the tar. B3's pictures are about animals only, with the humanlike case kept as a sees.control.",
+     "smallest_fix": "Cut \"the declared expedition stock lasts through the run\" from B7's accept picture. Cut the settler clause from B3's accept picture and move it to B3's sees.control."
+    },
+    {
+     "id": "R5",
+     "head": "figurative_unmarked",
+     "where": "bars.json B4 says (\"carries tar home\"); B6 says (\"standing work orders\")",
+     "evidence": "\"home\" in B4 is not literal: the accept picture means any accepting floor, not RimWorld's Home area or the base. \"standing work orders\" in B6 is not a RimWorld object: vanilla has work priorities and bills, and a reader could take a single repeating bill as a standing order. Neither word is in its bar's figurative list. B4 lists only \"burden\", B6 lists only \"burden\".",
+     "would_pass": "Each word is either listed as figurative, with what it stands for and an accept picture that departs from the literal reading, or replaced with literal words.",
+     "smallest_fix": "In B4 write \"carries tar onto accepting floors\". In B6 write \"following work priorities and the colony's solvent setting\", or add both words to the figurative lists with stands_for and accept pictures."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Specified self-scrubbing as Cleaning work triggered by carried tar at any RM_Tarred stage. The carrier fetches usable weak solvent and scrubs on a reachable solid, tar-free accepting cell. The colony setting and access to unforbidden stock govern player-authorized spending. Ordinary floor cleaning uses no solvent. Removed the cleanup station and aligned the acceptance controls and supporting entries.",
+      "where": "definition.md Using it and What changes in the colony's story, tickets.md T40, bars.json B6 and R4, census.json routine_cleaning, ambiguities.md Automatic routine and Cleanup works, models.md Situation walk"
+     },
+     {
+      "id": "R2",
+      "changed": "Restored ordinary-paced mouse traversal in shallow tar and deep pools. Added matched solid-ground, shallow-tar and deep-pool readings, including the colonist's blocked deep entry, and made the mouse exception explicit.",
+      "where": "bars.json B3, definition.md When it goes wrong, tickets.md T43 and T44, ambiguities.md Mice run easily"
+     },
+     {
+      "id": "R3",
+      "changed": "Defined dusk from the fixed site's solar geometry and kept the dry weather lock for fog and sky colours. Dropped both Sump BiomeDef sunlight overrides from the retained design and specified their removal and verification.",
+      "where": "census.json dusk_weather, bars.json R10, ambiguities.md Permanent dusk, definition.md Neighbours and inherited constraints, tickets.md T43"
+     },
+     {
+      "id": "R4",
+      "changed": "Kept B7's water picture to observable drinking with thirst enabled and no pond. Moved the provisioning details to its starting state alongside the existing rule and check. Moved settler bottle and barrel drinking out of B3's acceptance pictures and into its hydration control.",
+      "where": "bars.json B3 accept and sees.control, B7 accept, lazy, range and sees.start"
+     },
+     {
+      "id": "R5",
+      "changed": "Named accepting floors in B4 and the workers' Cleaning priorities and colony Auto solvent cleaning setting in B6.",
+      "where": "bars.json B4 says and B6 says and lazy"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "Every point the record left open is now settled. tickets.md T40 says: \"Add a Cleaning WorkGiver that lets a worker carrying RM_Filth_Tar scrub themselves, regardless of RM_Tarred stage, at their normal Cleaning priority... uses it on any reachable solid, tar-free cell that accepts tar deposits. The colony-wide Auto solvent cleaning Mod Setting is on at shipped defaults and authorizes spending. The player can forbid stacks to hold them in reserve.\" That gives the work type (Cleaning), the trigger (carried RM_Filth_Tar at any stage), the actor (the carrier, self), the place (any reachable solid, tar-free accepting cell) and the player control (the Mod Setting plus forbidding stacks). The ANSWERS_OWNER split is now stated: \"ordinary floor cleaning runs unprompted and uses no solvent, while automatic scrubbing spends solvent at the player's discretion through the setting and stock access.\" definition.md §Using it carries the same paragraph. T40's acceptance test mirrors it: the trigger fires \"even before RM_Tarred appears\", there is \"no bill, helper or injury\", and controls cover the setting off, Cleaning disabled, a clean worker and an absent, blocked or forbidden stack. In definition.md §What changes, \"a stocked cleanup station\" became \"reachable solvent stock\". R4, B6 and census routine_cleaning agree with T40."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "B3 says now reads \"mice cross shallow and deep tar at their ordinary pace\". The first accept picture reads \"cross shallows and deep pools at their solid-ground pace, including pools a colonist cannot enter on foot\". The range now covers \"mouse crossings of shallow tar and deep pools, with matched solid ground and a colonist on foot as controls\". The reject now includes \"cannot cross a deep pool\". T44 gives \"shallow-tar movement-cost and deep-tar entry exemptions\", and its acceptance test shows \"the same mouse walking through shallow tar and through deep-pool cells at its ordinary pace\" while the colonist \"cannot enter the deep-pool cells on foot\". definition.md §When it goes wrong adds the exception: \"Sump-mice cross shallow and deep tar at their ordinary pace.\""
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "census dusk_weather what now reads \"Permanent dusk from the fixed site's below-horizon sun angle\". Its why names and drops both fields: \"Drop the Sump BiomeDef's glowMultiplier ... and suppressSunlightStatAffecter\". R10 reads \"Use the fixed site's below-horizon sun angle for dusk ... Drop the Sump BiomeDef's glowMultiplier and suppressSunlightStatAffecter overrides.\" The ambiguities.md \"Permanent dusk\" row no longer says \"No special sun value\" and cites the 2026-10-19 ruling. T43 now specifies \"Remove the Sump BiomeDef's `BiomeGlowMultiplierExtension` entry\", and its acceptance test reads \"Confirm neither Sump sun override is active in composed data\". definition.md §Neighbours matches."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "B7's water accept picture is now only \"With thirst enabled and no fresh-water pond, settlers drink carried fresh water while natives drink at the tar.\" The \"declared expedition stock lasts through the run\" clause is gone. The budgeting text (\"budget for the entire declared horizon ... recorded reserve\") now sits in B7's starting state and is absent from varies. R12 keeps the provisioning rule. B3's third accept picture now ends at \"without human liquid penalties\". The settler bottle and barrel case moved to B3 sees.control: \"as a separate control with thirst enabled, settlers to carried fresh-water bottles or imported fresh-water barrels\"."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "B4 says now reads \"carries tar onto accepting floors\". B6 says now reads \"following their Cleaning priorities and the colony's Auto solvent cleaning setting\". \"standing work orders\" is also gone from B6 lazy, which now reads \"Reachable stock, Cleaning priorities, the colony's solvent setting\"."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Ambiguities settled by the Designer",
+    "bars.json bars/B3",
+    "bars.json bars/B4",
+    "bars.json bars/B6",
+    "bars.json bars/B7",
+    "bars.json rules/R10",
+    "bars.json rules/R4",
+    "census.json rows/dusk_weather",
+    "census.json rows/routine_cleaning",
+    "definition.md Neighbours and inherited constraints",
+    "definition.md Using it",
+    "definition.md What changes in the colony's story",
+    "definition.md When it goes wrong and the readable sign",
+    "models.md Situation walk",
+    "tickets.md T40: routine cleaning",
+    "tickets.md T43: Retained ground and tracking seam",
+    "tickets.md T44: Native movement and actual flyer evidence"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1149192,
+     "output_tokens": 14485
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "owner_pages.md line 45 still describes \"Automatic\" as \"standing work policy, physical reachable solvent and no repeated individual medical bills\".",
+   "reason": "This is the owner-facing summary, and it now lags the fixed definition (Cleaning priority plus the Auto solvent cleaning setting). owner_pages.md was not among the changed entries.",
+   "round": 1
+  },
+  {
+   "what": "models.md (route model, line 45) still says \"Vary accepting cleanup pads present/absent\".",
+   "reason": "Since the station was removed, \"cleanup pads\" can be read as a building. The definition now says any reachable solid, tar-free accepting cell. This entry was not changed.",
+   "round": 1
+  },
+  {
+   "what": "With every DLC assumed, some pawns cannot do Cleaning at all (for example Royalty title holders who refuse dumb labour). Under T40 such a pawn never scrubs and only recovers slowly.",
+   "reason": "This is a design consequence nobody has stated. B6 range varies Cleaning enabled/disabled, but no row says that pawns who can never clean are accepted as slow-recovery only.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "8cb55f1085a4b6780c0d53d8c16a050bbd54ff3ad9a5989272abe16e09b122f3",
+ "seconds": 454,
+ "at": "2026-11-17T19:15:27"
+}
