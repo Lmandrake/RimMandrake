@@ -2562,6 +2562,32 @@ def pipeline_held(name, rs, concept, now, act):
     return True
 
 
+def chain_cap_view(rs, cfg, concept, stage, now):
+    """(today's chain counts, today's chain stages, forward) for `concept` at `stage`: THE chain-cap rule, shared by
+    chain_ask and by ops_watch's stall reader (chain_capped), so the alarm and the hold cannot disagree. The cap brakes
+    loops, not progress (RIMMANDRAKE_PASS_FORWARD_STAGES_PAST_DESIGNER_CHAIN_CAP: on 2026-11-15 Graffiti met it at
+    stage 3 and the Conductor pressed stages 3, 4 and 5 by hand): a stage this concept has not been chained at today is
+    forward progress and is chained past the cap, up to twice the cap; a stage chained before is a return, and past
+    the cap that is the loop the alarm names. (The stage history must cover every chained run of the day: counts with
+    no history, as on the day this landed, prove nothing about progress and keep the plain cap.)"""
+    day = day_of(now)
+    counts = {k: v for k, v in (rs.get("chain_day") or {}).items() if k.startswith(day + " ")}
+    key = "%s %s" % (day, concept)
+    cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)
+    stages = {k: list(v) for k, v in (rs.get("chain_stages_day") or {}).items() if k.startswith(day + " ")}
+    forward = (counts.get(key, 0) >= cap and stage is not None and str(stage) not in stages.get(key, [])
+               and len(stages.get(key, [])) == counts.get(key, 0) and counts.get(key, 0) < 2 * cap)
+    return counts, stages, forward
+
+
+def chain_capped(rs, cfg, concept, stage, now):
+    """True when chain_ask would HOLD `concept` on the per-concept daily chain cap right now (a deliberate hold that
+    already raised role:<Role>:chain_cap once, so the stall reader must not count it too)."""
+    counts, _stages, forward = chain_cap_view(rs, cfg, concept, stage, now)
+    cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)
+    return counts.get("%s %s" % (day_of(now), concept), 0) >= cap and not forward
+
+
 def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode, cause, after, reasons=None):
     """Ask (or queue behind the taken slot) one run-now for `concept`, under the per-concept daily cap. -> the request
     or None. Shared by the harvest's chain_next and the decide tick's chain_sweep. `reasons` (a rejected close's, every
@@ -2570,18 +2596,9 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
     if owner_held(name, rs, concept, now, act):
         return None
     day = day_of(now)
-    counts = {k: v for k, v in (rs.get("chain_day") or {}).items() if k.startswith(day + " ")}
     key = "%s %s" % (day, concept)
     cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)
-    # The cap brakes loops, not progress (RIMMANDRAKE_PASS_FORWARD_STAGES_PAST_DESIGNER_CHAIN_CAP: on 2026-11-15
-    # Graffiti met it at stage 3 and the Conductor pressed stages 3, 4 and 5 by hand): a stage this concept has not
-    # been chained at today is forward progress and is chained past the cap, up to twice the cap; a stage chained
-    # before is a return, and past the cap that is the loop the alarm names.
-    stages = {k: list(v) for k, v in (rs.get("chain_stages_day") or {}).items() if k.startswith(day + " ")}
-    # (the stage history must cover every chained run of the day: counts with no history, as on the day this landed,
-    # prove nothing about progress and keep the plain cap)
-    forward = (counts.get(key, 0) >= cap and stage is not None and str(stage) not in stages.get(key, [])
-               and len(stages.get(key, [])) == counts.get(key, 0) and counts.get(key, 0) < 2 * cap)
+    counts, stages, forward = chain_cap_view(rs, cfg, concept, stage, now)
     rs["chain_stages_day"] = stages
     if counts.get(key, 0) >= cap and not forward:
         said = [k for k in rs.get("chain_cap_said") or [] if str(k).startswith(day + " ")]

@@ -3757,7 +3757,10 @@ def _q_designer(q, now, pcache, cpath):
     by; RELAPSE_QUEUES_FIX_DIED_TWICE): the stall alarm counts exactly what the sweep should have moved. root: the concepts dir
     (default designer_stage.concepts_root(), the Designer clone's design/concepts); repo: the clone whose OWNER shard
     is read (default designer_stage.REPO; the concept's own clone is read too); a missing root, a stage.json that does
-    not parse, a ready concept with no readable time, or a waiting concept whose OWNER shard is unreadable is blind."""
+    not parse, a ready concept with no readable time, or a waiting concept whose OWNER shard is unreadable is blind. A
+    ready concept the launcher holds on the per-concept daily chain cap (role_launch.chain_capped; the dispatcher's
+    state.json, RIMMANDRAKE_SKIP_CHAIN_CAPPED_CONCEPTS_IN_DESIGNER_STALL) is not pending either; an unreadable
+    dispatcher state is blind."""
     rf = str(HERE.parent / "rimflow")
     if rf not in sys.path:
         sys.path.insert(0, rf)
@@ -3772,6 +3775,27 @@ def _q_designer(q, now, pcache, cpath):
     runs_dir = Path(q.get("runs_dir") or os.path.join(
         os.environ.get("RM_DISPATCHER_STATE", "/mnt/d/ClaudeWork/rimmandrake/dispatcher"), "roles"))
     plist, alist, marks = [], [], []
+    import role_launch as RL
+    sdir = os.environ.get("RM_DISPATCHER_STATE", "/mnt/d/ClaudeWork/rimmandrake/dispatcher")
+    state_file = q.get("state_file") or os.path.join(sdir, "state.json")
+    dstate = []     # the dispatcher state, read once and only when a ready concept needs it (unreadable: blind)
+
+    def chain_capped(st_, folder):
+        """The launcher holds this ready concept on the daily chain cap (role_launch.chain_capped, the one rule). The
+        concept is matched to its chain_day key by folder name: the key is the path the launcher was given."""
+        if not dstate:
+            with open(state_file, encoding="utf-8") as fh:
+                d = json.load(fh)
+            if not isinstance(d, dict) or not isinstance(d.get("roles"), dict):
+                raise ValueError("dispatcher state has no roles object: %s" % state_file)
+            dstate.append(d)
+        role = "DesignerCodex" if st_.get("runner") == "codex" else "Designer"
+        rs = dstate[0]["roles"].get(role) or {}
+        day = RL.day_of(now)
+        want = os.path.basename(os.path.normpath(str(folder)))
+        key = next((k[len(day) + 1:] for k in (rs.get("chain_day") or {})
+                    if k.startswith(day + " ") and os.path.basename(os.path.normpath(k[len(day) + 1:])) == want), None)
+        return key is not None and RL.chain_capped(rs, {}, key, st_.get("stage"), now)
     import mod_owner_hold as OH
     holds = OH.load()       # a concept the owner holds is not pending (mod_owner_hold.py); an unreadable file is blind
     for f in sorted(root.glob("*/stage.json")):
@@ -3808,6 +3832,8 @@ def _q_designer(q, now, pcache, cpath):
             continue
         if DS.rejection_parked(st, repo):
             continue      # the sweep's own rule: a retry cannot help; role_launch.parked_record says so
+        if chain_capped(st, f.parent):
+            continue      # held on the daily chain cap: role:<Role>:chain_cap already said so once (the same rule)
         hs = [h for h in (st.get("history") or []) if isinstance(h, dict)]
         last = _iso_epoch(hs[-1].get("at")) if hs else None
         if last is None and run_at is None:

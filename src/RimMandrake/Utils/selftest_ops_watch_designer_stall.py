@@ -15,6 +15,9 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 _TMP = Path(_tf.mkdtemp(prefix="selftest_designer_stall_"))
 os.environ["RM_OPS_WATCH_DIR"] = str(_TMP / "ops")
+os.environ["RM_DISPATCHER_STATE"] = str(_TMP / "disp")
+(_TMP / "disp").mkdir()
+(_TMP / "disp" / "state.json").write_text('{"roles": {}}')
 import ops_watch as OW  # noqa: E402
 
 FAILS = []
@@ -256,6 +259,48 @@ QR = {"queues": [dict(QR["queues"][0], runs_dir=str(_TMP / "nope"))]}
 concept("CodexRun", "ready", 100, running_min=100)
 setrunner("CodexRun", "codex")
 check("a missing runs dir does not blind the reading (the history marks still read)", stalled()["m"] == "MEASURED", stalled())
+# RIMMANDRAKE_SKIP_CHAIN_CAPPED_CONCEPTS_IN_DESIGNER_STALL: a concept the launcher holds on the per-concept daily chain
+# cap (role_launch.chain_cap_view, the one shared rule) already raised role:<Role>:chain_cap; it is not also a stall.
+for _d in list(ROOT.iterdir()):
+    shutil.rmtree(_d)
+STATE = _TMP / "state.json"
+QR = {"queues": [dict(QR["queues"][0], state_file=str(STATE), runs_dir=str(RUNS))]}
+_day = time.strftime("%Y-%m-%d", time.localtime(NOW))
+_yday = time.strftime("%Y-%m-%d", time.localtime(NOW - 86400 * 1.5))
+
+
+def setstate(role, day, concept_name, count, stages):
+    k = "%s %s" % (day, ROOT / concept_name)
+    STATE.write_text(json.dumps({"roles": {role: {"chain_day": {k: count}, "chain_stages_day": {k: stages}}}}))
+
+
+concept("Capped", "ready", 90)
+setstate("Designer", _day, "Capped", 8, ["2"] * 8)
+check("cap hit, stage already chained today (a return): held by the cap, not a stall", stalled()["v"] == 0.0
+      and read()["queues.designer.pending"]["v"] == 0, read())
+setstate("Designer", _day, "Capped", 8, ["4"] * 8)
+check("cap hit but the stage is NEW today (forward, count < 2*cap): still pending ~90", 89.5 <= stalled()["v"] <= 90.5,
+      stalled())
+setstate("Designer", _day, "Capped", 16, ["3", "4", "5", "2", "1", "0", "6", "7", "9", "9", "9", "9", "9", "9", "9", "9"])
+check("past twice the cap even a new stage is held", stalled()["v"] == 0.0, stalled())
+setstate("Designer", _yday, "Capped", 8, ["2"] * 8)
+check("the cap key is YESTERDAY's day: pending ~90", 89.5 <= stalled()["v"] <= 90.5, stalled())
+setstate("Designer", _day, "Capped", 7, ["2"] * 7)
+check("one under the cap: pending ~90", 89.5 <= stalled()["v"] <= 90.5, stalled())
+setstate("DesignerCodex", _day, "Capped", 8, ["2"] * 8)
+check("a claude-lane concept is read from the Designer role, not the Codex one: pending ~90",
+      89.5 <= stalled()["v"] <= 90.5, stalled())
+setrunner("Capped", "codex")
+check("a codex-lane concept capped in DesignerCodex is held", stalled()["v"] == 0.0, stalled())
+concept("Capped2", "ready", 90)
+check("a second ready concept with no cap record keeps ringing", 89.5 <= stalled()["v"] <= 90.5, stalled())
+STATE.write_text("{not json")
+_r = read()
+check("an unreadable dispatcher state is blind, never a calm 0", _r[KEY]["m"] == "UNMEASURED"
+      and _r["queues.blind"]["v"] == 1, _r)
+STATE.unlink()
+_r = read()
+check("a missing dispatcher state is blind too", _r[KEY]["m"] == "UNMEASURED" and _r["queues.blind"]["v"] == 1, _r)
 shutil.rmtree(_TMP, ignore_errors=True)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
