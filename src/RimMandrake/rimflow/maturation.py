@@ -351,6 +351,7 @@ def add_intervention(text, line):
 # ---- the exit tests --------------------------------------------------------------------------------------------------
 
 LOCKED_BARS = "version/locked_bars.json"
+PASS_RECORD_DIR = "version/passes"          # <version>.json, written once by the move to passed (spec section 3.7)
 
 
 def locked_bars(root, mod, v=None):
@@ -714,6 +715,8 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
     rec_ref, req_ref = rel(mod, RECORD), "request"
     inputs = {req_ref: request, rec_ref: dump(rec)}
     crit, passed, refusals, hand = {}, [], [], []
+    walk_id = None                  # the walk build a pass was validated on: advance() writes exactly this reading
+    revision = (rec.get("stage"), rec.get("version"), len(rec.get("moves") or []))     # what was evaluated
 
     def refs(*names):
         for n in names:
@@ -953,6 +956,27 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                    would_pass="--owner-said OWNER:<tsn>, his event on the OWNER shard passing the version",
                    fix="his walk ends with his words; pass them verbatim", cost="owner",
                    why_sound="the pass is his alone (carried, spec Stage 8)")
+            if to == "passed":
+                wid = walk_id = walk_identity(root, mod, rec)
+                inputs["walk_build"] = json.dumps(wid, sort_keys=True)      # the reading the clause rests on
+                clause("walk_build", "the pass names the one build he walked: the visit's mod source sha, the deployed "
+                       "folder hash, the active mod list in order and the game build (build_match.py)", not wid["why"],
+                       ["walk_build", rec_ref], observed="; ".join(wid["why"]) or "walk build: %s" % ", ".join(
+                           "%s %s" % (k, str(wid.get(k))[:40]) for k in WALK_FIELDS),
+                       would_pass="the last in-game visit's rows name one mod_sha and build_match.py reads the walk "
+                                  "savegame's mod hash, game build and mod list on %s" % BM.WALK_HOST,
+                       fix="read the walk build on the walk machine (build_match.py check --mod %s); a visit whose rows "
+                           "name no single build is re-run" % mod, cost="rerun",
+                       why_sound="RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD: a pass record names the build it passed "
+                                 "(skeptical review 2026-11-15, claims_checked.md A12)")
+                prp = "%s/%s.json" % (PASS_RECORD_DIR, rec.get("version"))
+                clause("pass_record_new", "this version has no pass record yet (a pass record is written once, never "
+                       "rewritten)", not os.path.lexists(os.path.join(mod_dir(root, mod), prp)), [rec_ref, rel(mod, prp)],
+                       observed="%s %s version %s already has %s" % (
+                           mod, rec.get("stage"), rec.get("version"), rel(mod, prp)),
+                       would_pass="no %s" % rel(mod, prp), fix="a passed version opens its next version instead "
+                       "(maturation.py next-version)", cost="owner",
+                       why_sound="Design Versions draft section 3.7: the pass record of each passed version")
     if forward and to == "blind_challenge" or (back and cur == to == "blind_challenge"):
         visit = (rec.get("cycles") or {}).get("visit", 0) if cur == "blind_challenge" else 0
         import pipeline_control as PC       # the one control store (`pipe add <Mod> blind_cycles_total -1`)
@@ -986,7 +1010,8 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
     verdict = {"item": "%s@%s" % (mod, rec.get("version")), "family": ADVANCE_FAMILY,
                "sha": sha or UNM, "given": {"criteria": crit, "inputs": inputs}, "passed": passed,
                "refusals": refusals}
-    return {"ok": not refusals, "verdict": verdict, "hand_steps": hand, "from": cur, "to": to}
+    return {"ok": not refusals, "verdict": verdict, "hand_steps": hand, "from": cur, "to": to, "walk_identity": walk_id,
+            "revision": revision}
 
 
 # ---- the move --------------------------------------------------------------------------------------------------------
@@ -1074,6 +1099,11 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
         return res
     rec = load(root, mod)
     cur, t = rec["stage"], now_ts()
+    if (cur, rec.get("version"), len(rec.get("moves") or [])) != res["revision"]:
+        # another move landed between the evaluation and this write: what was checked is not what would be moved
+        res["ok"], res["moved_meanwhile"] = False, "the record is %s now, not the %s evaluated" % (
+            (cur, rec.get("version"), len(rec.get("moves") or [])), res["revision"])
+        return res
     when = pac_heading(t)
     uncounted = None
     if to == "blind_challenge":
@@ -1121,7 +1151,23 @@ def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, wa
         entry.append("- Was, \"Waiting on\": %s" % (old_wait or "none"))
         entry.append("- Record: `%s`." % RECORD)
         jtext = jtext.rstrip("\n") + "\n\n" + "\n".join(entry) + "\n"
-    commit_move(root, mod, rec, jtext)
+    first = None
+    if cur == "his_walk" and to == "passed":
+        # RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD: the pass record goes in the same lock, written BEFORE the stage
+        # record (a stage that reads passed always has its record) and only where no file stands yet
+        wid = res.get("walk_identity")
+        if not wid or wid.get("why"):
+            res["ok"] = False
+            res["moved_meanwhile"] = "no validated walk build to record: %s" % ((wid or {}).get("why") or "none read")
+            return res
+        prp, pr = pass_record(root, mod, rec, owner, res["verdict"].get("sha"), t, wid)
+        first = {prp: json.dumps(pr, indent=1, sort_keys=True) + "\n"}
+        res["pass_record"] = rel(mod, prp)
+    try:
+        commit_move(root, mod, rec, jtext, first=first, expect=res["revision"])
+    except MovedMeanwhile as e:
+        res["ok"], res["moved_meanwhile"] = False, str(e)
+        return res
     ledger_stage_move(root, mod, cur, to, by)
     return res
 
@@ -1134,14 +1180,29 @@ def _mod_lock(root, mod):
     return f
 
 
-def commit_move(root, mod, rec, jtext=None, extra=None):
+class MovedMeanwhile(RuntimeError):
+    """The record on disk is not the one the move was evaluated on: another move landed first."""
+
+
+def commit_move(root, mod, rec, jtext=None, extra=None, first=None, expect=None):
     """RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY: one move is one locked write. Under the mod's lock the record is
     written first (a failed record write leaves no journal line), then the journal and any extra {path: text}; a later
-    write that fails puts every file already written back as it was and raises."""
+    write that fails puts every file already written back as it was and raises. `first` {path: text} are NEW files
+    written before the record (a pass record): one that already exists, even unreadable, raises before any write.
+    expect (stage, version, number of moves): the record on disk must still read so under the lock, else
+    MovedMeanwhile before any write."""
     lk = _mod_lock(root, mod)
     try:
-        todo = [(RECORD, dump(rec))] + ([("journal.md", jtext)] if jtext is not None else []) + sorted(
-            (extra or {}).items())
+        if expect is not None:
+            now = load(root, mod) or {}
+            got = (now.get("stage"), now.get("version"), len(now.get("moves") or []))
+            if got != tuple(expect):
+                raise MovedMeanwhile("the record is %s under the lock, not the %s evaluated" % (got, tuple(expect)))
+        for p in sorted(first or {}):
+            if os.path.lexists(os.path.join(mod_dir(root, mod), p)):
+                raise FileExistsError("%s already exists: it is written once, never replaced" % rel(mod, p))
+        todo = sorted((first or {}).items()) + [(RECORD, dump(rec))] + (
+            [("journal.md", jtext)] if jtext is not None else []) + sorted((extra or {}).items())
         done = []
         try:
             for p, text in todo:
@@ -2873,6 +2934,75 @@ def _is_savegame(path):
         return False
     head = head[3:] if head.startswith(b"\xef\xbb\xbf") else head    # RimWorld writes a UTF-8 BOM
     return head.lstrip().startswith(b"<") and b"<savegame" in head
+
+
+WALK_FIELDS = ("mod_sha", "mod_hash", "game_build", "active_mods")
+
+
+def walk_identity(root, mod, rec):
+    """The build he walked, for the pass record: the last in-game visit's one mod_sha (read_ingame_exit's `build`) and
+    the walk savegame's mod hash, game build and mod list in order (build_match.walk_build). -> {fields..., visit,
+    visit_record, savegame, game, standin, why[]}; why non-empty: no build identity, so no pass."""
+    n = max(1, len(ingame_openings(rec)))
+    out = {"visit": n, "visit_record": rel(mod, "%s/visit_%d" % (INGAME_DIR, n)), "why": []}
+    try:
+        ex = read_ingame_exit(root, mod, n)
+    except Exception as e:      # a reading that cannot run names no build
+        out["why"].append("the walk build could not be read (%s: %s)" % (type(e).__name__, e))
+        return out
+    out["savegame"] = (ex.get("claimed") or {}).get("savegame")
+    out["mod_sha"] = ex.get("build")
+    bm = ex.get("build_match")
+    walk = dict((bm or {}).get("walk") or {}, why=(bm or {}).get("walk_why") or [])   # the reading the match checked
+    if not bm or not bm.get("read"):
+        out["why"].append("visit %d's build match did not run, so its mod_sha is not known to be the walk build" % n)
+    elif bm.get("rerun"):
+        # a redeploy since Stage 6: the visit's sha and the folder hash he walks would name two builds
+        out["why"].append("visit %d's checks do not count on the walk build as deployed now (%s): re-run them on it"
+                          % (n, bm.get("worst")))
+    for k in ("mod_hash", "game_build", "active_mods", "game", "standin", "deployed_folder"):
+        if walk.get(k) is not None:
+            out[k] = walk[k]
+    out["why"].extend(walk.get("why") or [])
+    if not out["mod_sha"]:
+        out["why"].append("visit %d's rows name no single mod_sha (the build it ran)" % n)
+    out["why"].extend("the walk build names no %s" % k for k in WALK_FIELDS[1:] if not out.get(k)
+                      and "the stand-in names no %s" % k not in out["why"])
+    return out
+
+
+def pass_cost(root, mod, rec):
+    """A pass's cost: this version's spend rows (the record's and the Dispatch run rows since it was seeded, spend_rows)
+    in weighted tokens. Tokens no row measured read UNMEASURED, never 0."""
+    own = len((rec or {}).get("spend") or [])
+    since = ((rec or {}).get("seeded") or {}).get("at")
+    rows = spend_rows(root, mod, rec)
+    # RUN_SPEND outlives next-version and its rows name no version: a run that ended before this version was seeded
+    # is an earlier version's cost
+    rows = rows[:own] + [x for x in rows[own:] if not since or str(x.get("at") or "") >= since]
+    known = [x["tokens"] for x in rows if isinstance(x.get("tokens"), (int, float))]
+    return {"weighted_tokens": sum(known) if known else UNM, "entries": len(rows),
+            "tokens_unmeasured": len(rows) - len(known), "by_stage": spend_by_stage({"spend": rows}),
+            "unit": "weighted tokens"}
+
+
+def pass_record(root, mod, rec, owner, sha, t, wid):
+    """The pass record of a version (Design Versions draft section 3.7): date, commit, his words, bars, evidence, cost
+    in weighted tokens, cycles and the build he walked (wid: the walk_identity evaluate() validated, never a second
+    reading). -> (relative path under the mod, dict)."""
+    ev, _ = owner_event(root, owner)
+    ids, ierr = locked_bars(root, mod)
+    wb = "%s/arrival_%d.md" % (WALK_BRIEF_DIR, rec.get("pre_human_arrivals") or 0)
+    return "%s/%s.json" % (PASS_RECORD_DIR, rec.get("version")), {
+        "mod": mod, "version": rec.get("version"), "passed_on": iso(t), "commit": sha or UNM,
+        "owner_said": {"event": str(owner), "tsn": str((ev or {}).get("tsn") or ""), "words": (ev or {}).get("ownerSaid")
+                       or (ev or {}).get("byCard")},
+        "bars": {"locked": ids, "read": ierr or ("no %s" % LOCKED_BARS if ids is None else None),
+                 "record": rel(mod, LOCKED_BARS)},
+        "evidence": [rel(mod, RECORD), wid["visit_record"], rel(mod, wb), rel(mod, "version/test_table.json")],
+        "cost": pass_cost(root, mod, rec),
+        "cycles": dict(rec.get("cycles") or {}, pre_human_arrivals=rec.get("pre_human_arrivals", 0)),
+        "build": {k: v for k, v in wid.items() if k not in ("why",)}}
 
 
 def read_ingame_exit(root, mod, n, tt=None):

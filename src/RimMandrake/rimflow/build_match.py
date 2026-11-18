@@ -465,7 +465,8 @@ def judge_row(test, spec, r, walk, tiers):
 def compare(tests, last_rows, walk, tiers):
     """tests: [(id, spec)]; last_rows: {id: the last row or None}. -> {rows: {id: {counts, why, full}}, read, count,
     rerun, worst}."""
-    out = {"rows": {}, "rerun": [], "worst": None, "standin": walk.get("standin"), "walk_why": list(walk.get("why") or [])}
+    out = {"rows": {}, "rerun": [], "worst": None, "standin": walk.get("standin"), "walk_why": list(walk.get("why") or []),
+           "walk": {k: walk.get(k) for k in ("game", "mod_hash", "game_build", "active_mods", "standin")}}
     for t, spec in tests:
         ok, why = judge_row(t, spec, last_rows.get(t), walk, tiers)
         out["rows"][t] = {"counts": ok, "why": why, "full": is_full(spec)}

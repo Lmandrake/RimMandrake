@@ -527,6 +527,132 @@ def main():
                 "owner_said", "an OWNER:<tsn> not on the shard")
         ok(M.evaluate(root, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000001")["ok"],
            "his real OWNER event passing the version moves it")
+        # RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD: the pass record names the one build he walked
+        standin = os.environ.get(BM.STANDIN_ENV)
+        os.environ[BM.STANDIN_ENV] = os.path.join(root, "no_walk_build.json")
+        try:
+            refused(M.evaluate(root, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000001"),
+                    "walk_build", "a pass whose walk build cannot be read (no build identity)")
+        finally:
+            os.environ[BM.STANDIN_ENV] = standin
+        with open(os.path.join(root, "half_walk_build.json"), "w") as f:
+            json.dump({"mod_hash": WALK_HASH, "game_build": WALK_GAME_BUILD}, f)
+        os.environ[BM.STANDIN_ENV] = os.path.join(root, "half_walk_build.json")
+        try:
+            refused(M.evaluate(root, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000001"),
+                    "walk_build", "a pass whose walk build has no mod list")
+        finally:
+            os.environ[BM.STANDIN_ENV] = standin
+        with open(os.path.join(root, "redeployed_walk_build.json"), "w") as f:
+            json.dump(dict(json.load(open(standin)), mod_hash="selftest-redeployed-hash"), f)
+        os.environ[BM.STANDIN_ENV] = os.path.join(root, "redeployed_walk_build.json")
+        try:
+            refused(M.evaluate(root, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000001"),
+                    "walk_build", "a pass after a redeploy: the visit's mod_sha and the deployed hash name different builds")
+        finally:
+            os.environ[BM.STANDIN_ENV] = standin
+        real_wb, reads = BM.walk_build, []
+
+        def walk_build_drifts(*a, **kw):
+            reads.append(1)
+            w = real_wb(*a, **kw)
+            return dict(w, mod_hash="selftest-second-read-hash") if len(reads) > 1 else w
+        BM.walk_build = walk_build_drifts
+        try:
+            wid_ = M.walk_identity(root, "Pyrelands", M.load(root, "Pyrelands"))
+        finally:
+            BM.walk_build = real_wb
+        ok(wid_.get("mod_hash") == WALK_HASH and not wid_.get("why"),
+           "the identity recorded is the one the build match checked, never a second reading (%s, %d reads)"
+           % (wid_.get("mod_hash"), len(reads)))
+        twin = root + "_pass"
+        shutil.copytree(root, twin)
+        real_eval = M.evaluate
+
+        def eval_then_moved(r_, m_, to_, **kw):
+            out = real_eval(r_, m_, to_, **kw)
+            rc_ = M.load(r_, m_)
+            rc_["stage"] = "offline_build"
+            M.write_text(r_, m_, M.RECORD, M.dump(rc_))
+            return out
+        M.evaluate = eval_then_moved
+        try:
+            r = M.advance(twin, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000001")
+        finally:
+            M.evaluate = real_eval
+        prd_twin = os.path.join(twin, "design", "concepts", "Pyrelands", M.PASS_RECORD_DIR)
+        ok(not r["ok"] and M.load(twin, "Pyrelands")["stage"] == "offline_build" and not os.path.isdir(prd_twin),
+           "a stage that moved after the evaluation is not moved again, and no pass record is written (%s)"
+           % r.get("moved_meanwhile"))
+        shutil.rmtree(twin)
+        shutil.copytree(root, twin)
+        real_commit = M.commit_move
+
+        def commit_after_a_race(r_, m_, rec_, *a, **kw):
+            on_disk = M.load(r_, m_)
+            on_disk.setdefault("moves", []).append({"from": "his_walk", "to": "his_walk", "by": "selftest-race"})
+            M.write_text(r_, m_, M.RECORD, M.dump(on_disk))
+            return real_commit(r_, m_, rec_, *a, **kw)
+        M.commit_move = commit_after_a_race
+        try:
+            r = M.advance(twin, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000001")
+        finally:
+            M.commit_move = real_commit
+        ok(not r["ok"] and M.load(twin, "Pyrelands")["stage"] == "his_walk" and not os.path.isdir(prd_twin),
+           "a record that changed after the check, before the lock, is not overwritten and gets no pass record (%s)"
+           % r.get("moved_meanwhile"))
+        shutil.rmtree(twin)
+        shutil.copytree(root, twin)
+        try:
+            ver = M.load(twin, "Pyrelands").get("version")
+            visit_build = M.read_ingame_exit(twin, "Pyrelands", 1).get("build")
+            M.add_spend(twin, "Pyrelands", "in_game", 1234, source="selftest-ingame-run")
+            rc_ = M.load(twin, "Pyrelands")
+            rc_["seeded"] = dict(rc_.get("seeded") or {}, at="2026-11-01T00:00:00Z")
+            M.write_text(twin, "Pyrelands", M.RECORD, M.dump(rc_))
+            rsp = os.path.join(twin, "design", "concepts", "Pyrelands", M.RUN_SPEND)
+            os.makedirs(os.path.dirname(rsp), exist_ok=True)
+            with open(rsp, "a") as f:
+                f.write(json.dumps({"stage": "in_game", "stages": ["in_game"], "tokens": 50, "unit": "rm-old-version-run",
+                                    "at": "2026-10-20T00:00:00Z"}) + "\n")
+                f.write(json.dumps({"stage": "in_game", "stages": ["in_game"], "tokens": 70, "unit": "rm-this-version-run",
+                                    "at": "2026-11-05T00:00:00Z"}) + "\n")
+            rows_ = M.spend_rows(twin, "Pyrelands", M.load(twin, "Pyrelands"))
+            want_tokens = sum(x["tokens"] for x in rows_ if isinstance(x.get("tokens"), (int, float))
+                              and x.get("unit") != "rm-old-version-run")
+            r = M.advance(twin, "Pyrelands", "passed", by="CONDUCTOR", why="his walk passed it",
+                          owner="OWNER:4242000000000000001")
+            ok(r["ok"] and M.load(twin, "Pyrelands")["stage"] == "passed", "the pass moves the record (%s)"
+               % [x["clause"] for x in r["verdict"]["refusals"]])
+            pr = os.path.join(twin, "design", "concepts", "Pyrelands", M.PASS_RECORD_DIR, "%s.json" % ver)
+            rec_ = json.load(open(pr)) if os.path.isfile(pr) else {}
+            need = ("mod", "version", "passed_on", "commit", "owner_said", "bars", "evidence", "cost", "cycles", "build")
+            ok(all(k in rec_ for k in need), "the pass record carries %s (missing %s)"
+               % (", ".join(need), [k for k in need if k not in rec_]))
+            bd = rec_.get("build") or {}
+            ok(bd.get("mod_hash") == WALK_HASH and bd.get("game_build") == WALK_GAME_BUILD
+               and bd.get("active_mods") == WALK_LIST and bd.get("mod_sha") and bd.get("mod_sha") == visit_build,
+               "the pass record's build is the walk's mod hash, game build and mod list in order, and the visit's one "
+               "mod_sha (%s)" % bd)
+            ok(rec_.get("version") == ver and rec_.get("owner_said", {}).get("tsn") == "4242000000000000001"
+               and "ship it" in str(rec_.get("owner_said", {}).get("words")), "the pass record quotes his event (%s)"
+               % rec_.get("owner_said"))
+            ok(isinstance(rec_.get("bars"), dict) and (rec_.get("cost") or {}).get("weighted_tokens") == want_tokens
+               and want_tokens >= 1234 + 70, "the pass record holds the bars and this version's spend rows' weighted "
+               "tokens, the Dispatch run rows included and an earlier version's left out (%s, want %s: %s)"
+               % (rec_.get("bars"), want_tokens, rec_.get("cost")))
+        finally:
+            shutil.rmtree(twin, ignore_errors=True)
+        blind = M.pass_cost(root, "Pyrelands", {"spend": [{"stage": "designer", "tokens": M.UNM, "usd": M.UNM}]})
+        ok(blind["weighted_tokens"] == M.UNM and blind["tokens_unmeasured"] == 1,
+           "spend whose tokens were never measured is UNMEASURED, never 0 (%s)" % blind)
+        prd = os.path.join(root, "design", "concepts", "Pyrelands", M.PASS_RECORD_DIR)
+        os.makedirs(prd, exist_ok=True)
+        with open(os.path.join(prd, "%s.json" % M.load(root, "Pyrelands").get("version")), "w") as f:
+            f.write("{}")
+        refused(M.evaluate(root, "Pyrelands", "passed", by="CONDUCTOR", why="x", owner="OWNER:4242000000000000001"),
+                "pass_record_new", "a version whose pass record already exists (a pass record is never rewritten)")
+        shutil.rmtree(prd)
         e = M.evaluate(root, "PyrelandsMechanics", "designer", by="BENCH", why="x")
         cl = [r["clause"] for r in e["verdict"]["refusals"]]
         ok("owner_said" not in cl and "intake_closed" not in cl and "owner_said" not in e["hand_steps"],
