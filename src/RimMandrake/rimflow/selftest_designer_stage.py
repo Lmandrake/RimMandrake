@@ -1335,6 +1335,51 @@ def refusals_record_result(tmp, repo, tree):
     refuses("record: scope opened_by_owner with no OWNER scope_source is refused",
             rc(inventory=[inv(scope="opened_by_owner")]), "opened_by_owner needs scope_source")
 
+    # RIMMANDRAKE_CHECK_SCOPE_SOURCE_EVENT_EXISTS_FAKE_ID_OPENS: the cited event must EXIST, and (owner 2026-11-17)
+    # found / not-found-in-a-read-ledger / ledger-unreadable are three different answers. Only a ledger this validator
+    # can already read is consulted: no git call, so a stalled `git show` can never turn a real id into a forgery.
+    # Two of his events, added to the ledger READING only: appending to the shard would be new uncited words and would
+    # reopen stage 2 for every later case in this file.
+    opened_t, opened2_t = "7001", "7002"
+    check("scope_source: the probe tsns are not already in the real reading (so FOUND below is this fixture's doing)",
+          opened_t not in ev and opened2_t not in ev, sorted(ev)[:3])
+    ev_op = dict(ev, **{opened_t: {"tsn": opened_t, "id": ITEM, "seat": "OWNER",
+                                   "ownerSaid": "we may not need the ladder after all"},
+                        opened2_t: {"tsn": opened2_t, "id": ITEM, "seat": "OWNER",
+                                    "ownerSaid": "and the ladder's rungs are open too"}})
+    opened_src, opened2 = "OWNER:" + opened_t, "OWNER:" + opened2_t
+
+    def op(ss, owner_ev=ev_op):
+        r = copy.deepcopy(base)
+        r["inventory"] = [inv(scope="opened_by_owner", scope_source=ss)]
+        return [e for e in DS.record_errors(r, repo.root, owner_ev) if e.startswith("inventory[")]
+    check("scope_source: an OWNER event that IS in the ledger opens the scope", op(opened_src) == [], op(opened_src))
+    check("scope_source: a list of OWNER events that are all in the ledger opens the scope",
+          op([opened_src, opened2]) == [], op([opened_src, opened2]))
+    check("scope_source: legacy space-separated OWNER citations, all present, open the scope "
+          "(design/concepts/ExplosiveKnockback/record.json stores them this way)",
+          op("%s %s" % (opened_src, opened2)) == [], op("%s %s" % (opened_src, opened2)))
+    refuses("scope_source: a forged OWNER:999999 does NOT open the scope (it finds no event in a ledger that was read)",
+            op("OWNER:999999"), "finds no event")
+    refuses("scope_source: a forged id inside a list does not open the scope", op([opened_src, "OWNER:999999"]),
+            "finds no event")
+    refuses("scope_source: a forged id inside a legacy space-separated string does not open the scope",
+            op("%s OWNER:999999" % opened_src), "finds no event")
+    refuses("scope_source: OWNER:abc is a prefix, not an event id, so it does not open the scope either",
+            op("OWNER:abc"), "needs scope_source OWNER:<tsn>")
+    got = op(opened_src, owner_ev=None)
+    check("scope_source: an unreadable OWNER ledger is UNMEASURED - the scope stays shut and no id is called forged",
+          any("UNMEASURED" in e for e in got) and not any("finds no event" in e for e in got), got)
+    got = op(opened_src, owner_ev={})
+    check("scope_source: an OWNER ledger that read as no events at all is UNMEASURED too, never a forgery report "
+          "(CT.owner_events returns {} for an unreadable shard)",
+          any("UNMEASURED" in e for e in got) and not any("finds no event" in e for e in got), got)
+    check("scope_source: a non-OWNER scope_source on a scope he did not open is not checked against the ledger "
+          "(design records store paths and free text there)",
+          DS.record_errors(dict(base, inventory=[inv(scope="approved", scope_source="CLAUDE.md")]), repo.root,
+                           ev) == [],
+          DS.record_errors(dict(base, inventory=[inv(scope="approved", scope_source="CLAUDE.md")]), repo.root, ev))
+
     def ak(**kw):
         return DS.ask_errors(ask(**kw), base)
     check("refusal table: the ask baseline is clean", ak() == [], ak())

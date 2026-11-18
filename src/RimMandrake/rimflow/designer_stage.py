@@ -502,9 +502,25 @@ def inventory_errors(e, repo, owner_ev):
         errs.append("%s: proof current needs proof_evidence" % w)
     if e.get("scope") not in SCOPE:
         errs.append("%s: scope %r is not one of %s" % (w, e.get("scope"), "/".join(SCOPE)))
-    if e.get("scope") == "opened_by_owner" and not any(
-            isinstance(s, str) and s.startswith("OWNER:") for s in lst(e.get("scope_source"))):
-        errs.append("%s: opened_by_owner needs scope_source OWNER:<tsn> (only he opens a built thing's scope)" % w)
+    if e.get("scope") == "opened_by_owner":
+        # RIMMANDRAKE_CHECK_SCOPE_SOURCE_EVENT_EXISTS_FAKE_ID_OPENS: a prefix is not an event, so OWNER:999999 used to
+        # open a built capability's scope. The cited event must EXIST in the ledger this validator can ALREADY read:
+        # no git call, because a stalled `git show` would turn a real id into a forgery. Legacy records store several
+        # citations inside one space-separated string (design/concepts/ExplosiveKnockback/record.json), so split.
+        # Owner 2026-11-17: found / not-found-in-a-read-ledger / ledger-unreadable are three different answers.
+        cited = [t for s in lst(e.get("scope_source")) if isinstance(s, str) for t in s.split()
+                 if re.fullmatch(r"OWNER:[0-9]+", t)]
+        if not cited:
+            errs.append("%s: opened_by_owner needs scope_source OWNER:<tsn> (only he opens a built thing's scope)" % w)
+        elif not owner_ev:      # None (never read) or {} (CT.owner_events' reading of an unreadable shard)
+            errs.append("%s: opened_by_owner cites %s, UNMEASURED: OWNER.jsonl was not read here, so the scope stays "
+                        "shut and no citation is called forged; close this where the ledger is present" % (
+                            w, ", ".join(cited)))
+        else:
+            gone = [t for t in cited if t[6:] not in owner_ev]
+            if gone:
+                errs.append("%s: opened_by_owner scope_source %s finds no event in OWNER.jsonl (only an event of his "
+                            "opens a built thing's scope)" % (w, ", ".join(gone)))
     return errs
 
 
