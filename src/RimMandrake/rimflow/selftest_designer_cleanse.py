@@ -1745,15 +1745,27 @@ def test_release():
 
 
 def main():
-    for t in (test_check, test_detector, test_case, test_hold, test_run, test_review, test_fleet,
-              test_review_hardening, test_converge, test_gather, test_apply, test_apply_edges,
-              test_apply_write, test_release):
-        try:
-            t()
-        except Exception as e:      # a crash is a failed row, not a silent stop
-            import traceback
-            traceback.print_exc()
-            check(False, "%s raised %s: %s" % (t.__name__, type(e).__name__, e))
+    # Every mkdtemp below lands in one root of this run's own, removed pass or fail: a direct run left 1,659 dc_* dirs
+    # and 19,204 stood in /tmp on 2026-11-18 (selftest_designer_cleanse_tmp.py).
+    saved_tmp, saved_env = tempfile.tempdir, dict(os.environ)
+    root = tempfile.mkdtemp(prefix="dc_run_")
+    tempfile.tempdir = root
+    os.environ["TMPDIR"] = root
+    try:
+        for t in (test_check, test_detector, test_case, test_hold, test_run, test_review, test_fleet,
+                  test_review_hardening, test_converge, test_gather, test_apply, test_apply_edges,
+                  test_apply_write, test_release):
+            try:
+                t()
+            except Exception as e:      # a crash is a failed row, not a silent stop
+                import traceback
+                traceback.print_exc()
+                check(False, "%s raised %s: %s" % (t.__name__, type(e).__name__, e))
+    finally:
+        tempfile.tempdir = saved_tmp
+        os.environ.clear()
+        os.environ.update(saved_env)
+        shutil.rmtree(root, ignore_errors=True)
     print("%d checks, %d failed" % (N[0], len(FAILS)))
     return 1 if FAILS else 0
 
