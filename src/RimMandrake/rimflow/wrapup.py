@@ -231,6 +231,53 @@ def debts_of(owner):
     return out
 
 
+# ---------------------------------------------------------------- whose clone is it (OPS_WRAPUP_SKIP_CLONES_OF_LIVE_
+# FLEET_RUN): a clone's dot-sibling lock, the one live-owner fact a cwd scan cannot see
+
+def clone_lock_path(clone):
+    """-> the lock file beside this clone: <dir>/.<name>.lock. = designer_cleanse.mod_lock, which locks
+    `<pool>/clones/.cleanse-<Mod>.lock` beside the clone `<pool>/clones/cleanse-<Mod>` (selftest L10 reads that path
+    out of designer_cleanse and compares). A clone with no such file is simply not owned this way (state "none")."""
+    d, name = os.path.split(os.path.normpath(os.path.abspath(clone)))
+    return os.path.join(d, "." + name + ".lock")
+
+
+def lock_holder(text, dev, ino):
+    """-> the pid holding a lock on this (dev, ino) in /proc/locks `text`, -1 when the kernel names no pid for it, or
+    None when nothing in the text does. MEASURED on linux 6.x (docker python:3.12-slim, 2026-11-17):
+
+        10: FLOCK  ADVISORY  WRITE 1 00:2a:2637126 0 EOF         <- the holder, pid 1
+        10: -> FLOCK  ADVISORY  WRITE 7 00:2a:2637126 0 EOF      <- a process BLOCKED waiting, not a holder
+        3: OFDLCK ADVISORY  WRITE -1 00:2a:2637189 0 EOF         <- an open file description: pid -1
+
+    Field 5 is the file as MAJ:MIN:INO, major and minor in %02x. The line disappears the moment its holder exits or
+    dies, so a fleet that has ended frees its clone with no cleanup of any kind. FLOCK, POSIX and OFDLCK all count:
+    each is a live owner. A `-> ` waiter never does: it would clear a clone whose only claimant is still queueing for
+    it, and whose debris nobody is working on. It is tested by name (L9)."""
+    want = "%02x:%02x:%d" % (os.major(dev), os.minor(dev), ino)
+    for line in text.splitlines():
+        f = line.split()
+        if len(f) < 6 or f[1] == "->":           # a blocked waiter: its fields shift, and it holds nothing
+            continue
+        if f[5] != want:
+            continue
+        try:
+            return int(f[4])
+        except ValueError:
+            return -1                            # a holder whose pid field we cannot read is still a holder
+    return None
+
+
+def clone_owner_state(world, clone):
+    """-> (state, why) with "could not look" as its own answer: "live" | "free" | "none" | "unmeasured". A raise from
+    clone_owner becomes "unmeasured", never "free": a row is never cleared on ignorance."""
+    try:
+        state, why = world.clone_owner(clone)
+    except Exception as e:  # noqa: BLE001
+        return "unmeasured", "unmeasured: could not read who owns %s (%s: %s)" % (clone, type(e).__name__, e)
+    return state, why
+
+
 # ---------------------------------------------------------------- the real world, behind one seam (tests replace it)
 
 class World(object):
@@ -290,6 +337,38 @@ class World(object):
             if cwd == root or cwd.startswith(root + os.sep):
                 return True
         return False
+
+    def clone_owner(self, clone):
+        """-> (state, why) on the clone's own lock (clone_lock_path): "live" a process holds it, "free" the lock file
+        is there and nobody holds it, "none" there is no such lock file. Raises when /proc/locks cannot be read:
+        "could not look" is never "nobody holds it" (clone_owner_state turns a raise into "unmeasured").
+
+        OPS_WRAPUP_SKIP_CLONES_OF_LIVE_FLEET_RUN: clone_in_use asks whether a process has its CWD in the clone, and a
+        designer_cleanse fleet does not. Its unit runs with WorkingDirectory=ROOT, it hands cwd=clone to an author or
+        reviewer only inside a phase, and its blind sort runs in a mkdtemp; between phases the run owns the clone with
+        nothing standing in it. The lock IS the live-owner fact, and the kernel drops it when its holder exits or dies.
+
+        The window is one MOD's run (designer_cleanse.one holds mod_lock around it), NOT the fleet's whole life, on
+        purpose: a fleet lives hours over 23 mods, and a clone whose own mod has finished with a stray file in it is
+        real debris nobody is coming back to (Effects.release keeps such a clone exactly because `changed()` is not
+        empty). The incident's own rows are of that second kind [measured: filed 09:39Z, read 09:51Z, while Greentide's
+        phases ran 09:03:50Z-09:23:00Z], so they still stand here. Widening to the fleet would hide them for 8 h."""
+        lk = clone_lock_path(clone)
+        try:
+            st = os.stat(lk)
+        except FileNotFoundError:
+            return "none", "no lock file %s beside the clone" % lk
+        except OSError as e:
+            raise OSError("cannot stat %s: %s" % (lk, e))   # a path we cannot read is not a free one
+        if not os.path.exists("/proc/locks"):
+            raise OSError("no /proc/locks")
+        with open("/proc/locks", encoding="utf-8", errors="replace") as f:
+            pid = lock_holder(f.read(), st.st_dev, st.st_ino)
+        if pid is None:
+            return "free", "%s is there and no live process holds it" % lk
+        if pid < 0:
+            return "live", "an open file description holds %s (the kernel reports no pid for it)" % lk
+        return "live", "pid %d holds %s: its run, review or fleet is live" % (pid, lk)
 
     def game_relaunched(self):
         """-> epoch seconds the previous game process last wrote its log (every process older than the running one
@@ -477,6 +556,8 @@ def row_standing(world, row, rec):
     if k == "clone":
         if check_clone(world, row["what"], False)["act"] not in ("filed", "unmeasured"):
             return False
+        if clone_owner_state(world, row["what"])[0] == "live":
+            return False        # a live fleet owns it and will write there again: in flight, not debris
         try:
             return not world.clone_in_use(row["what"])  # a later run working in it: in flight, not debris
         except Exception:  # noqa: BLE001  unreadable: still standing
