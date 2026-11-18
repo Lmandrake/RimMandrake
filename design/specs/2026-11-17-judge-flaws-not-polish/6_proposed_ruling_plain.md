@@ -1,6 +1,10 @@
 # Proposed ruling: the judge refuses flaws, not polish
 
-**Status: PROPOSED, not adopted.** Nothing in the coverage judge or the Designer changes until the owner says yes.
+**Status: ADOPTED by the owner by question card, 2026-11-17, answered about 5:17 PM PST** ("Adopt the four rules
+(Recommended)"; OWNER.jsonl tsn 1794964642498221334, on `RIMMANDRAKE_RETHINK_JUDGE_STRICTNESS_BARS_LOOSE_PROOFS_ORNATE`).
+**The build is still owed:** the rules bind once the judge and Designer prompts are edited and the judge is
+recalibrated, not before. Until then the judge runs as it stands. Standing ruling: `design/RimMandrake/standing_rulings.md`
+§The judge refuses flaws, not polish. Build tickets: filed under the parent item (`rimflow show` it).
 Wording settled with the owner in conversation, 2026-11-17 about 5:00 to 5:20 PM PST. Sources: the Fable independent
 review (`5_fable_independent_review.md`), GPT's two rounds (`3_…`, `4_…`), the owner's words (`1_…`).
 

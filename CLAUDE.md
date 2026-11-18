@@ -273,6 +273,10 @@ workaround without the permanent fix is not allowed. A mod's gaps still go throu
 
 *"The mod passing bars should not specify flora and fauna yield rates! That would mean every time we renormalize every mod must repass its bars... drop that!"* No bar pins a yield rate, a stat value, any tuning number or an asset-variant count. The test: would this bar have to be re-passed after we renormalize numbers or add an art variant? Then it is not a bar. Gate: `src/RimMandrake/rimflow/bar_rule.py`; full text: `standing_rulings.md` §A passing bar is an experience.
 
+## 🔴 The judge refuses flaws, not polish — owner, by card 2026-11-17
+
+*"We need judges that turn away incomplete work, but not work that isn't tuned just-so or, worse, forever needing more tuning because we keep asking a judge 'how could it be better?'"* Four rules: (1) refuse only for a promise not kept, a broken promise nobody would notice, or a test or file that is itself wrong, quoting the promise; the rest is advice; (2) one full inspection, then one check of the repairs, by reading the fix; then the owner gets the short list; (3) a refusal binds only "close this hole": its numbers and methods are suggestions, a number binds only if he said it, and the mod is never changed to hit a test's number; (4) a Designer "must not read as" line that is not his words or the plain opposite of the promise is a tip, not a thing to test. Dials: who confirms a refusal; the number of looks (2). The rules bind once the judge prompt is edited and recalibrated, not before. Full text: `standing_rulings.md` §The judge refuses flaws, not polish.
+
 ## 🔴 No launched agent is told its spend — owner, 2026-11-16
 
 *"I don't like how you're telling the agent how much it's spent. This has been shown to reduce their creativity and obsess on cost savings..."* Never pass `claude --max-budget-usd` (the harness then states the spend every turn) and never write spend, cap or remainder into a brief, footer, packet or resume prompt; a hard cap goes through `spend_watchdog.wrap(argv, cap_usd)`, which stops the run from outside. Full text: `standing_rulings.md` §No launched agent is told its spend.

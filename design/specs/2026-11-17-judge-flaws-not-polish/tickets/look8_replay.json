@@ -1,0 +1,850 @@
+{
+ "_source": "Pyrelands coverage look 7 (prior, not_covered) and look 8 (delta): D:\\ClaudeWork\\rimmandrake\\conductor\\judge_rethink_20261117\\01_pyrelands_experience.md lines 569-585. 'judge_rows' are the five rows look 8 wrote itself (the first five of its merged checklist, the only rows that differ from look 7); 'prior_checklist' is look 7's. Look 8's own gaps were none and its reasons say the changes answer the three carried gaps.",
+ "look8_judge": "rm-coverage-judge-1794946219",
+ "look7_judge": "rm-coverage-judge-1794938280",
+ "carried": [
+  {
+   "gid": "g1",
+   "ids": [
+    "fire_walks_with_wind",
+    "inv_burn_line_fire_clock"
+   ],
+   "severity": "problem",
+   "new_since": "changed",
+   "bar_kind": "experience",
+   "what": "The new wind scene cannot tell a fire that follows the wind from a mod that simply stops sideways spread whatever the wind's direction. Its start also asserts neither the wind nor fire-free strips.",
+   "where": "scenes.json sc_fire_walks_with_wind (entry point src/RimMandrake/Pyrelands/wind_burn_live.py::main)"
+  },
+  {
+   "gid": "g2",
+   "ids": [
+    "burn_line_walks",
+    "inv_burn_line_fire_clock"
+   ],
+   "severity": "problem",
+   "new_since": "changed",
+   "bar_kind": "experience",
+   "what": "The burn line's new must-not, 'a flood that takes the whole map and its grass', is exercised by no read. The scene watches one day of the front at play zoom and measures no map-wide burned share.",
+   "where": "scenes.json sc_burn_line_walks; tree.json burn_line_walks"
+  },
+  {
+   "gid": "g3",
+   "ids": [
+    "burn_line_walks"
+   ],
+   "severity": "polish",
+   "new_since": "changed",
+   "bar_kind": "experience",
+   "what": "The burn line's must-not 'or a fire that lights inside the colony' survives in the tree, but the building-margin read that covered it was removed on his word, so the leaf claims a must-not its scene never checks.",
+   "where": "tree.json burn_line_walks experience; scenes.json sc_burn_line_walks"
+  }
+ ],
+ "judge_rows": [
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:4",
+    "scenes.json:31"
+   ],
+   "id": "inv_burn_line_fire_clock",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_burn_line_walks",
+     "what": "front walks the map and leaves a growing scorched trail"
+    },
+    {
+     "ok": true,
+     "scene": "sc_burn_line_walks (relight arm; burn_line_off_control rules out a stray fire)",
+     "what": "never out for long: a smoulder relights after the quiet spell"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind",
+     "what": "the wind carries fire downwind while windCarriesFireEnabled is on"
+    },
+    {
+     "ok": true,
+     "scene": "none needed (record text says not a bar)",
+     "what": "keeping lights off the home area and colony buildings: built behaviour, no longer a bar (his 2026-11-16 word)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_sense, sc_walk",
+     "what": "people step off fire cells and eat before fire duty"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "sheet.md:15",
+    "scenes.json:4",
+    "exam.json",
+    "record.json"
+   ],
+   "id": "burn_line_walks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_burn_line_walks: 24 hourly captures plus judge",
+     "what": "natural grass fire moving with a black trail that regreens"
+    },
+    {
+     "ok": true,
+     "scene": "sc_burn_line_walks: burned share at each of four day ends, at most half, against a wind-off control that has to cross half",
+     "what": "must not read as a flood over the whole map (carried gap g2)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_burn_line_walks relight arm; exam e2 and c2",
+     "what": "must not read as a fire that burns once and is gone for good"
+    },
+    {
+     "ok": true,
+     "scene": "leaf experience no longer claims it; sheet.md:15 records his 'Take out the far from buildings'",
+     "what": "the 'lights inside the colony' must-not removed with the building margin (carried gap g3)"
+    },
+    {
+     "ok": true,
+     "scene": "exam.json",
+     "what": "exam is still current: tree input_hash today is 2151214485… and the sheet hash matches; score 40/40"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:31",
+    "sheet.md",
+    "record.json",
+    "exam.json"
+   ],
+   "id": "fire_walks_with_wind",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind",
+     "what": "the burn runs further downwind than upwind at east (90) and the reversed west (270), so it turns when the wind turns (carried gap g1)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind start",
+     "what": "start asserts the wind bearing read back, carries= matching the switch, and no fire on the strip (carried gap g1)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind control",
+     "what": "the wind-off control spreads evenly, ruling out a blind instrument or an eastward lean; exam control Reader missed e5 and c3, so the exam discriminates"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind live_run",
+     "what": "live test UNRUN, recorded with its command"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "record.json",
+    "scenes.json:326",
+    "scenes.json:571",
+    "scenes.json:598",
+    "scenes.json:701"
+   ],
+   "id": "inv_furnacebeast",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_furnace_giant",
+     "what": "giant size read from the live def, with a classic-restore control"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace",
+     "what": "warmth aura and room heat"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_bed",
+     "what": "bed smoulder after a while, never at once, immune to its own heat"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_hide_bank",
+     "what": "hide leather and a heat bank that warms with no fuel or power"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "tree.json",
+    "sheet.md:26",
+    "scenes.json:701",
+    "scenes.json:326",
+    "exam.json"
+   ],
+   "id": "furnacebeast_warms",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_furnace_giant",
+     "what": "seen as a giant far larger than any other animal: live body and draw size against every resolved roster kind, roster read guarded against blindness (at least nine kinds)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace",
+     "what": "warmth status near it and gone away from it; closed room clearly hotter"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_bed; exam e19",
+     "what": "sleep on grass lights it after a while, never at once, never bare soil"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_hide_bank",
+     "what": "butchered hide builds a fuel-free, power-free heat bank"
+    }
+   ]
+  }
+ ],
+ "prior_checklist": [
+  {
+   "id": "inv_biome_self_contained",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "coverage_rest"
+    },
+    {
+     "ok": true,
+     "scene": "sc_populations"
+    }
+   ]
+  },
+  {
+   "id": "inv_plant_roster",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_roof_withers"
+    },
+    {
+     "ok": true,
+     "scene": "sc_populations"
+    },
+    {
+     "ok": true,
+     "scene": "sc_grass_regreens"
+    }
+   ]
+  },
+  {
+   "id": "inv_embergrass_regrow",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_grass_regreens"
+    }
+   ]
+  },
+  {
+   "id": "inv_animal_roster",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_herd_thirst"
+    },
+    {
+     "ok": true,
+     "scene": "sc_foreign_arrivals"
+    },
+    {
+     "ok": true,
+     "scene": "sc_populations"
+    },
+    {
+     "ok": true,
+     "scene": "sc_flamefang_venom"
+    }
+   ]
+  },
+  {
+   "id": "inv_ash_field",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ash_ground"
+    },
+    {
+     "ok": true,
+     "scene": "sc_ash_watered"
+    }
+   ]
+  },
+  {
+   "id": "inv_burn_line_fire_clock",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_burn_line_walks"
+    },
+    {
+     "ok": false,
+     "scene": "sc_burn_line_walks"
+    },
+    {
+     "ok": false,
+     "scene": "sc_fire_walks_with_wind"
+    },
+    {
+     "ok": false,
+     "scene": ""
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_sense"
+    }
+   ]
+  },
+  {
+   "id": "inv_scorchfruit",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_scorchfruit"
+    },
+    {
+     "ok": true,
+     "scene": "sc_scorchfruit"
+    }
+   ]
+  },
+  {
+   "id": "inv_ruins_scorched",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ruins"
+    }
+   ]
+  },
+  {
+   "id": "inv_firehawk_ember",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_firehawk"
+    },
+    {
+     "ok": true,
+     "scene": ""
+    }
+   ]
+  },
+  {
+   "id": "inv_furnacebeast",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_furnace_giant"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace, sc_furnace_bed"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_hide_bank"
+    }
+   ]
+  },
+  {
+   "id": "inv_burrowers_heat_dome",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ashwallow"
+    },
+    {
+     "ok": true,
+     "scene": "sc_heat_dome"
+    }
+   ]
+  },
+  {
+   "id": "inv_ullai_herd_giant",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_foreign_arrivals"
+    },
+    {
+     "ok": true,
+     "scene": ""
+    },
+    {
+     "ok": true,
+     "scene": "sc_ullai"
+    }
+   ]
+  },
+  {
+   "id": "inv_weather",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_three_skies"
+    },
+    {
+     "ok": true,
+     "scene": "sc_no_rain"
+    }
+   ]
+  },
+  {
+   "id": "inv_firebreak_firefoam",
+   "parts": [
+    {
+     "ok": true,
+     "scene": ""
+    }
+   ]
+  },
+  {
+   "id": "inv_firefoam_sprayer",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_firefoam_sprayer"
+    }
+   ]
+  },
+  {
+   "id": "inv_sand_shovel",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_sand_shovel"
+    }
+   ]
+  },
+  {
+   "id": "inv_lightning_breaker",
+   "parts": [
+    {
+     "ok": true,
+     "scene": ""
+    }
+   ]
+  },
+  {
+   "id": "inv_fire_rite_hook",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_rite_hook_alone"
+    }
+   ]
+  },
+  {
+   "id": "inv_settings_gate",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "T_SETTINGS_SWEEP_OFFLINE"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk"
+    },
+    {
+     "ok": true,
+     "scene": "T_SELF_CONTAINED_OFFLINE"
+    }
+   ]
+  },
+  {
+   "id": "inv_art_and_text",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "coverage_rest"
+    }
+   ]
+  },
+  {
+   "id": "inv_firehawk_hunt_rewards",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_firehawk_rewards"
+    },
+    {
+     "ok": true,
+     "scene": "sc_firehawk_rewards"
+    }
+   ]
+  },
+  {
+   "id": "burn_line_walks",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_burn_line_walks"
+    },
+    {
+     "ok": true,
+     "scene": "sc_burn_line_walks"
+    },
+    {
+     "ok": false,
+     "scene": "sc_burn_line_walks"
+    },
+    {
+     "ok": false,
+     "scene": "sc_burn_line_walks"
+    },
+    {
+     "ok": true,
+     "scene": "sc_grass_regreens"
+    }
+   ]
+  },
+  {
+   "id": "fire_walks_with_wind",
+   "parts": [
+    {
+     "ok": false,
+     "scene": "sc_fire_walks_with_wind"
+    },
+    {
+     "ok": false,
+     "scene": "sc_fire_walks_with_wind"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind"
+    },
+    {
+     "ok": false,
+     "scene": "sc_fire_walks_with_wind"
+    },
+    {
+     "ok": false,
+     "scene": "sc_fire_walks_with_wind"
+    },
+    {
+     "ok": false,
+     "scene": ""
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_walks_with_wind"
+    }
+   ]
+  },
+  {
+   "id": "ash_ground_and_blowing_ash",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ash_ground"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_dusts_ash"
+    }
+   ]
+  },
+  {
+   "id": "ash_fertile_when_watered",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ash_watered"
+    },
+    {
+     "ok": true,
+     "scene": "sc_ash_watered"
+    },
+    {
+     "ok": true,
+     "scene": "sc_ash_watered"
+    }
+   ]
+  },
+  {
+   "id": "fresh_burn_compounds_with_black_rain",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_burn_compounds"
+    },
+    {
+     "ok": true,
+     "scene": "sc_burn_compounds"
+    },
+    {
+     "ok": true,
+     "scene": "sc_burn_compounds"
+    }
+   ]
+  },
+  {
+   "id": "grass_carpets_and_regreens",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_grass_regreens"
+    },
+    {
+     "ok": true,
+     "scene": "sc_grass_regreens"
+    },
+    {
+     "ok": true,
+     "scene": "sc_grass_regreens"
+    },
+    {
+     "ok": true,
+     "scene": "sc_roof_withers"
+    }
+   ]
+  },
+  {
+   "id": "scorchfruit_born_of_fire",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_scorchfruit"
+    },
+    {
+     "ok": true,
+     "scene": "sc_scorchfruit"
+    },
+    {
+     "ok": true,
+     "scene": "sc_scorchfruit"
+    }
+   ]
+  },
+  {
+   "id": "populations_are_the_biomes_own",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_populations"
+    },
+    {
+     "ok": true,
+     "scene": "sc_herd_thirst"
+    }
+   ]
+  },
+  {
+   "id": "ruins_stand_blackened",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ruins"
+    }
+   ]
+  },
+  {
+   "id": "firehawk_lights_ahead",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_firehawk"
+    },
+    {
+     "ok": true,
+     "scene": "sc_firehawk"
+    }
+   ]
+  },
+  {
+   "id": "furnacebeast_warms",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_furnace_giant"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_bed"
+    },
+    {
+     "ok": true,
+     "scene": "sc_furnace_hide_bank"
+    }
+   ]
+  },
+  {
+   "id": "ashwallow_dives_unharmed",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ashwallow, sc_heat_dome"
+    }
+   ]
+  },
+  {
+   "id": "ullai_graze_old_burns",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_ullai"
+    }
+   ]
+  },
+  {
+   "id": "three_skies",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_three_skies"
+    },
+    {
+     "ok": true,
+     "scene": "sc_three_skies"
+    },
+    {
+     "ok": true,
+     "scene": "sc_three_skies"
+    }
+   ]
+  },
+  {
+   "id": "no_ordinary_rain",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_no_rain"
+    }
+   ]
+  },
+  {
+   "id": "ash_fertility_probe",
+   "parts": [
+    {
+     "ok": true,
+     "scene": ""
+    }
+   ]
+  },
+  {
+   "id": "walk_season_on_the_pyre",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_walk"
+    },
+    {
+     "ok": true,
+     "scene": "sc_walk"
+    },
+    {
+     "ok": true,
+     "scene": "sc_fire_sense"
+    }
+   ]
+  },
+  {
+   "id": "firefoam_sprayer_reaches_the_fruit",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_firefoam_sprayer"
+    }
+   ]
+  },
+  {
+   "id": "sand_shovel_yields_glass_sand",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_sand_shovel"
+    },
+    {
+     "ok": true,
+     "scene": "sc_sand_shovel"
+    }
+   ]
+  },
+  {
+   "id": "fire_rite_hook_silent_alone",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_rite_hook_alone"
+    }
+   ]
+  },
+  {
+   "id": "biome_text_says_engineered",
+   "parts": [
+    {
+     "ok": true,
+     "scene": ""
+    }
+   ]
+  },
+  {
+   "id": "flamefang_bite_carries_venom",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_flamefang_venom"
+    }
+   ]
+  },
+  {
+   "id": "firehawk_hunt_rewards",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_firehawk_rewards"
+    },
+    {
+     "ok": true,
+     "scene": "sc_firehawk_rewards"
+    }
+   ]
+  },
+  {
+   "id": "ullai_cross_the_map_as_vanilla_herds",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_foreign_arrivals"
+    }
+   ]
+  }
+ ],
+ "changed": [
+  "dec:d_burn_line_natural_grassfire",
+  "dec:d_fire_walks_with_wind",
+  "exam",
+  "inv:inv_burn_line_fire_clock",
+  "leaf:burn_line_walks",
+  "scene:sc_burn_line_walks",
+  "scene:sc_fire_walks_with_wind",
+  "scene:sc_furnace_giant",
+  "sheet:pruning"
+ ],
+ "claims": [],
+ "claims_refused": [
+  "coverage_fixes.json is against rm-coverage-judge-1794779751, not the last verdict's rm-coverage-judge-1794938280"
+ ],
+ "reasons": "No gaps are claimed fixed, and none of the changed entries opens a gap or breaks anything that passed. The changes also answer the three carried gaps. g1: sc_fire_walks_with_wind now runs at east and at the reversed west, rules out 'walks one way whatever the wind', and its start asserts the bearing, carries= and a fire-free strip. g2: sc_burn_line_walks now reads the burned share of open plantable ground at each of four day ends, at most half, against a wind-off control that has to cross half. If the control fails to flood, the read is left unmeasured and never passes (burned_share_verdict in src/RimMandrake/Pyrelands/validation.py). g3: the leaf no longer claims 'a fire that lights inside the colony' (tree.json burn_line_walks, sheet.md:15). sc_furnace_giant covers the size part of furnacebeast_warms. sc_furnace, sc_furnace_bed and sc_furnace_hide_bank cover the rest, so the leaf is whole. The exam is current: today's tree input_hash is 2151214485…, the same as the frozen one, and the sheet hash matches. It scored 40/40, and the control Reader missed exactly the wind rejects e5 and c3. Sub-threshold note: the scene text puts the smoulder wait after the wind-off reload. The code runs the relight arm first and turns the wind back on in a finally block, so the read happens on shipping settings. Not a gap."
+}

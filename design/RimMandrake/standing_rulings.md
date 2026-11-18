@@ -635,6 +635,36 @@ PST, after reading the Contagion coverage judge's 25 refusals; "pendantic" is hi
 
 Item: `RIMMANDRAKE_TEACH_JUDGES_BARS_HOLD_NO_TUNING_NUMBERS`.
 
+## The judge refuses flaws, not polish — owner, by card 2026-11-17
+
+*"We need judges that turn away incomplete work, but not work that isn't tuned just-so or, worse, forever needing more
+tuning because we keep asking a judge 'how could it be better?'"* (2026-11-17 about 4:00 PM PST, after Pyrelands' stage
+5 took nine recorded looks.) He then ruled by question card, answered about 5:17 PM PST: "Adopt the four rules
+(Recommended)" (OWNER.jsonl tsn 1794964642498221334). GPT's nine rulings were not adopted.
+
+- **Rule 1, three reasons to refuse:** a promise is not kept; nobody would notice if a promise were broken (no test, or
+  a test that cannot fail; the judge describes the broken mod that would get through); or the test or paperwork is
+  itself wrong. Every refusal quotes the promise it rests on. Anything else ("prove it more thoroughly", "test more
+  cases", polish, tuning) is advice and does not block.
+- **Rule 2, one full inspection, then one check of the repairs:** the second look checks only whether the listed
+  problems were fixed, by reading the fix, never by whether a form was filed. It raises something new only when a
+  repair itself broke something, quoting the changed passage. Then it stops; what is left goes to the owner as a short
+  list, not to another judge.
+- **Rule 3, a refusal creates no new requirement:** it binds only "close this hole". Its numbers, day counts, bearings
+  and methods are one way to close it; a number binds only if the owner said it. The mod is never changed to hit a
+  test's number: that is a question for the owner. (The 2026-11-12 path to pass stands, as a suggestion.)
+- **Rule 4, only the owner's promises must be proven:** a Designer "it must not read as…" line that is neither his words
+  nor the plain opposite of the promise is a tip for finding broken mods, never a separate thing to test.
+- **The two dials:** who must confirm a refusal (today only late findings get a second reader; one step up: every
+  refusal), and the number of looks (starts at 2). A third, the Designer's tips per promise, starts at 1.
+- **Two bug fixes land whatever else happens:** a finding the judge rated polish blocks nothing, and a carried gap the
+  look found repaired closes without a claim form.
+- **When it binds:** once the judge's and Designer's prompts are edited and the judge is recalibrated, not before. Until
+  then the judge runs as it stands. The rules are not applied backwards: Pyrelands stays covered.
+
+Full text: `design/specs/2026-11-17-judge-flaws-not-polish/6_proposed_ruling_plain.md`. Item:
+`RIMMANDRAKE_RETHINK_JUDGE_STRICTNESS_BARS_LOOSE_PROOFS_ORNATE`.
+
 ## The pipeline proposes a Fable Rescue; it never launches one — owner, 2026-11-16
 
 Asked "Shall I file that as the next step of the work order, with its tests?" about the Conductor's criteria for when a
