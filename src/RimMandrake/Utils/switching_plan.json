@@ -50,14 +50,14 @@
    ],
    "accounts": {
     "steven": {
-     "leave_pct_left": 35,
+     "leave_pct_left": 25,
      "window_h_after_reset": null
     },
     "system": {
      "leave_pct_left": 1
     }
    },
-   "_why": "[O] owner, by question card 2026-11-17 ~10:40 PST (system 13% left, steven 55%, lukas 2%; the standing plan would idle at system's floor until system's Wed reset): 'Current rule until the reset: Use this account, then switch to Steve, but keep the one mod at a time policy so we use it slowly. We need to leave space for Steven too.' So system burns first (order), then steven outside his window. [D] delegated (Conductor, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): he gave no number for 'leave space for Steven', so steven stops at 35% left; the exception ends at steven's next reset (read from the meter, ends_at_reset_of) or at `until` (Wed 2026-11-18 14:00 PST, his reset as metered on the day), whichever is first. [O] 2026-11-17 ~5:22 PM PST: 'please move to Steven when we get to 1% not 0%', so system's line is 1% left for this exception. After it the standing plan applies unchanged. Ledger: RIMMANDRAKE_EXPLORE_OPERATIONS_OPTIONS_AFTER_WEDNESDAY_RESET. The one-run-at-a-time limit is maturation_dispatch.json max_live 1 (84472234cb26), not this file."
+   "_why": "[O] owner, by question card 2026-11-17 ~10:40 PST (system 13% left, steven 55%, lukas 2%; the standing plan would idle at system's floor until system's Wed reset): 'Current rule until the reset: Use this account, then switch to Steve, but keep the one mod at a time policy so we use it slowly. We need to leave space for Steven too.' So system burns first (order), then steven outside his window. [D] delegated (Conductor, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): he gave no number for 'leave space for Steven', so steven stops at 35% left; the exception ends at steven's next reset (read from the meter, ends_at_reset_of) or at `until` (Wed 2026-11-18 14:00 PST, his reset as metered on the day), whichever is first. [O] 2026-11-17 ~5:22 PM PST: 'please move to Steven when we get to 1% not 0%', so system's line is 1% left for this exception. Owner 2026-11-17 ~5:35 PM PST: 'ensure that it has 25% remaining by tomorrow morning', so 25, not 35 (the live week plan carries the full text and the Wednesday daytime exception). After it the standing plan applies unchanged. Ledger: RIMMANDRAKE_EXPLORE_OPERATIONS_OPTIONS_AFTER_WEDNESDAY_RESET. The one-run-at-a-time limit is maturation_dispatch.json max_live 1 (84472234cb26), not this file."
   }
  ],
  "_exceptions": "[D] dated, self-expiring exceptions to the rules above (switching_plan.at(): the plan in force at a time). Each needs an id, `from` and `until` as ISO times with their UTC offset (at most 7 days apart), a `_why` with its provenance, and changes `order` (a reordering of the standing accounts) and/or `accounts.<name>.leave_pct_left` / `window_h_after_reset`; optional `ends_at_reset_of` ends it at that account's first reset after `from`, read from the meter. The guard (exception_problems) refuses a broken one, and overlapping ones, which are then never applied: the standing plan stands and every decision names the refusal (exception_refused). slot_allocator.lent_allowance reads the same exception for a lent account. An expired exception is inert and may be deleted."
