@@ -415,6 +415,158 @@ def owed_scene_parts(root, mod, tt):
     return out
 
 
+def _str_head(node):
+    """-> (the literal text a message expression starts with, whether that is the whole message), or None: "x", f"x{y}",
+    "x" + "y", "x" + y, "x %s" % y, "x{}".format(y). Any other expression has no known head."""
+    import ast
+    if isinstance(node, ast.Constant) and isinstance(node.value, str):
+        return node.value, True
+    if isinstance(node, ast.JoinedStr):
+        acc = ""
+        for v in node.values:
+            if not (isinstance(v, ast.Constant) and isinstance(v.value, str)):
+                return acc, False
+            acc += v.value
+        return acc, True
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Add):
+        left = _str_head(node.left)
+        if left is None or not left[1]:
+            return left
+        right = _str_head(node.right)
+        return (left[0] + right[0], right[1]) if right else (left[0], False)
+    if isinstance(node, ast.BinOp) and isinstance(node.op, ast.Mod):
+        left = _str_head(node.left)
+        return (left[0].split("%")[0], False) if left else None
+    if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute) and node.func.attr == "format":
+        left = _str_head(node.func.value)
+        return (left[0].split("{")[0], False) if left else None
+    return None
+
+
+def _is_missing_tool(node):
+    """True when the raise's first message argument provably starts "MISSING TOOL"."""
+    import ast
+    if not isinstance(node, ast.Call):
+        return False
+    args = list(node.args) + [k.value for k in node.keywords]
+    head = _str_head(args[0]) if args else None
+    return bool(head) and head[0].lstrip().startswith("MISSING TOOL")
+
+
+def _missing_tool_scan(path):
+    """-> ({function key: [line of each `raise ...("MISSING TOOL...")` in its own body]}, {function key: keys it calls}),
+    read with ast, nothing imported or run; raises OSError/SyntaxError/ValueError when the file cannot be read. A key is a
+    module-level function's name (or a nested one's "outer.inner"); an edge is a name called, or passed to a call as a
+    callback, that resolves to a nested function in scope or a module-level one. A lambda's body is its enclosing
+    function's; a class body is not read. A module-level `name = f(..., helper)` is a key whose edges are its arguments."""
+    import ast
+    with open(path, encoding="utf-8") as fh:
+        tree = ast.parse(fh.read(), filename=path)
+    fdefs = (ast.FunctionDef, ast.AsyncFunctionDef)
+    top = {n.name for n in tree.body if isinstance(n, fdefs)}
+    raises, edges = {}, {}
+
+    def named(call):
+        return [x.id for x in [call.func] + list(call.args) + [k.value for k in call.keywords] if isinstance(x, ast.Name)]
+
+    def visit(fn, key, scope):
+        local, nested, lines, calls = dict(scope), [], [], set()
+        a = fn.args     # a parameter or a local binding shadows a module-level function of that name
+        bound = {x.arg for x in a.posonlyargs + a.args + a.kwonlyargs + [a.vararg, a.kwarg] if x is not None}
+        stack = list(ast.iter_child_nodes(fn))
+        while stack:
+            n = stack.pop()
+            if isinstance(n, fdefs):
+                nested.append(n)
+                local[n.name] = key + "." + n.name
+                continue
+            if isinstance(n, ast.ClassDef):
+                continue
+            if isinstance(n, ast.Raise) and _is_missing_tool(n.exc):
+                lines.append(n.lineno)
+            if isinstance(n, ast.Call):
+                calls.update(named(n))
+            elif isinstance(n, ast.Name) and isinstance(n.ctx, ast.Store):
+                bound.add(n.id)
+            stack.extend(ast.iter_child_nodes(n))
+        raises[key] = lines
+        edges[key] = {local.get(c) or (c if c in top and c not in bound else None) for c in calls} - {None}
+        for n in nested:
+            visit(n, local[n.name], local)
+
+    for n in tree.body:
+        if isinstance(n, fdefs):
+            visit(n, n.name, {})
+        elif isinstance(n, ast.Assign) and isinstance(n.value, ast.Call):
+            for t in n.targets:
+                if isinstance(t, ast.Name) and t.id not in raises:
+                    raises[t.id], edges[t.id] = [], {c for c in named(n.value) if c in top}
+    return raises, edges
+
+
+def undeclared_stops(root, mod, tt, ended=None):
+    """-> {bar id: [reason, ...]} for bars an in-game scene decides whose entry (or a function of the same file it reaches
+    by name) raises "MISSING TOOL..." with no open owed_parts_item in scenes.json to say so: the scene stops at a missing
+    probe, so its check cannot run (RIMMANDRAKE_REFUSE_MISSING_TOOL_SCENES_GRAFFITI_READS_READY). A scene whose declared
+    item is open is owed_scene_parts' to count; one whose every item is in `ended` (default: the ledger) with the raise
+    still there is listed. Only .py entry files are read. A file that cannot be read or parsed is reported under
+    "__did_not_run__" and lists no bar."""
+    tests = tt.get("tests") if isinstance(tt, dict) else None
+    if not isinstance(tests, dict) or not tests:
+        return {}
+    sc, serr = read_json(root, mod, "scenes.json")
+    if serr and serr != "no file":     # the declarations could not be read: an absent owed item is not established
+        return {"__did_not_run__": ["%s: %s" % (rel(mod, "scenes.json"), serr)]}
+    owes = {}
+    for s in (sc.get("scenes") if isinstance(sc, dict) else None) or []:
+        v = s.get("owed_parts_item") if isinstance(s, dict) else None
+        ids = [v] if isinstance(v, str) else [x for x in v if isinstance(x, str)] if isinstance(v, list) else []
+        if ids and s.get("id"):
+            owes[s["id"]] = ids
+    if ended is None:
+        ended = ledger_ended(root, {i for ids in owes.values() for i in ids})
+    scans, stops, dnr = {}, {}, []
+    for tid, t in sorted(tests.items()):
+        if not isinstance(t, dict) or not t.get("file") or not t.get("entry") or not str(t["file"]).endswith(".py"):
+            continue    # a C# proof method or a look is no Python scene this scan reads
+        f = t["file"]
+        if f not in scans:
+            try:
+                scans[f] = _missing_tool_scan(os.path.join(root, f))
+            except (OSError, SyntaxError, ValueError) as e:
+                scans[f] = None
+                dnr.append("%s: %s" % (f, type(e).__name__ if not str(e) else str(e).splitlines()[0][:160]))
+        if scans[f] is None:
+            continue
+        raises, edges = scans[f]
+        seen, todo, lines = set(), [t["entry"]], []
+        while todo:
+            n = todo.pop()
+            if n in seen or n not in raises:
+                continue
+            seen.add(n)
+            lines += raises[n]
+            todo += sorted(edges.get(n, ()))
+        if not lines:
+            continue
+        where = "%s:%d stops at MISSING TOOL" % (f, min(lines)) + (
+            " (and %d more)" % (len(set(lines)) - 1) if len(set(lines)) > 1 else "")
+        items = owes.get(tid, [])
+        if not items:
+            stops[tid] = "%s; declare owed_parts_item in scenes.json or build the probe" % where
+        elif all(i in ended for i in items):
+            stops[tid] = "%s; its owed item %s is closed but the raise remains" % (where, ", ".join(items))
+    out = {}
+    for b in tt.get("bars") or []:
+        if isinstance(b, dict) and b.get("id"):
+            why = ["%s: %s" % (d, stops[d]) for d in b.get("decides") or [] if d in stops]
+            if why:
+                out[b["id"]] = why
+    if dnr:
+        out["__did_not_run__"] = dnr
+    return out
+
+
 def bar_fingerprints(tt):
     """-> {bar id: hash of its deciders' test entries}: a refused bar that turns runnable with its checks unchanged is a
     flag flipped, not progress (RIMMANDRAKE_DERIVE_CHECKS_FROM_LOCKED_BARS)."""
@@ -706,31 +858,42 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
             walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
             owed = {}
             live_red = {}
+            stops, stops_dnr = {}, []
             if isinstance(bad, list):
                 bad = [x for x in bad if x not in walk]
                 live_red = live_known_red_owed(root, tt, bad)
                 bad = [x for x in bad if x not in live_red]
                 owed = {b: i for b, i in owed_scene_parts(root, mod, tt).items() if b not in bad}
                 bad += sorted(owed)
+                stops = undeclared_stops(root, mod, tt)
+                stops_dnr = stops.pop("__did_not_run__", [])
+                bad += sorted(b for b in stops if b not in bad)
             owed_txt = ("; the table flags these runnable but a deciding scene in scenes.json still owes script parts "
                         "to an open item: %s" % "; ".join("%s (%s)" % (b, ", ".join(i)) for b, i in sorted(owed.items()))
                         ) if owed else ""
+            owed_txt += ("; a deciding scene stops at MISSING TOOL with no open owed item: %s"
+                         % "; ".join("%s (%s)" % (b, " | ".join(r)) for b, r in sorted(stops.items()))) if stops else ""
+            owed_txt += ("; the MISSING TOOL scan did not run on %s" % "; ".join(stops_dnr)) if stops_dnr else ""
             owed_txt += ("; counted runnable, UNRUN and owed to Stage 6 (a live known red with its fix landed): %s"
                          % "; ".join("%s (%s)" % (b, ", ".join("%s: %s %s" % x for x in r))
                                      for b, r in sorted(live_red.items()))) if live_red else ""
             clause("every_bar_has_a_check_that_runs", "every bar has every deciding check runnable "
                    "(an in-game scene may be UNRUN with its command, not with its script parts still owed)",
                    isinstance(bad, list) and not bad,
-                   [tref] + ([rel(mod, "scenes.json")] if owed else []),
+                   [tref] + ([rel(mod, "scenes.json")] if owed or stops else []),
                    observed=("%d of %d bars not runnable: %s%s" % (len(bad), n, ", ".join(bad), owed_txt))
                    if isinstance(bad, list) else "test_table.json: %s" % n,
                    would_pass="a test table whose every bar reads every_decider_runnable_today true",
                    fix="build the missing checks or scene entries for the listed bars, then remake the test table" + (
                        "; for a scene that owes script parts, work and close the owed item (%s)"
-                       % ", ".join(sorted({i for ids in owed.values() for i in ids})) if owed else ""),
+                       % ", ".join(sorted({i for ids in owed.values() for i in ids})) if owed else "") + (
+                       "; for a scene that stops at MISSING TOOL, build the probe and drop the raise, or name its "
+                       "probe ticket as the scene's owed_parts_item in scenes.json" if stops else ""),
                    cost="new instrument",
                    why_sound="the lock rule (his, by agreement 2026-11-14): no mod moves past Stage 3 until every bar "
                              "has a check that runs")
+            if stops_dnr and passed and passed[-1]["clause"] == "every_bar_has_a_check_that_runs":
+                passed[-1]["did_not_run"] = "the MISSING TOOL scan did not run on %s" % "; ".join(stops_dnr)
             if walk:
                 hand.append("walk_bars_confirmed")
                 clause("walk_bars_confirmed", "for a bar his walk decides, the steward says its other deciding checks "
@@ -1521,8 +1684,13 @@ def build_facts(root, mod):
     out["bar_fp"] = bar_fingerprints(tt)
     walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
     live_red = live_known_red_owed(root, tt, [b for b in bad if b not in walk]) if isinstance(bad, list) else {}
+    stops = {}
+    if isinstance(bad, list):     # a scene that stops at MISSING TOOL undeclared is build work too (as evaluate counts it)
+        stops = {k: v for k, v in undeclared_stops(root, mod, tt).items() if k != "__did_not_run__"}
+        bad = bad + sorted(b for b in stops if b not in bad)
     out.update({
-        "refused_bars": [b for b in bad if b not in walk and b not in live_red] if isinstance(bad, list) else UNM,
+        "refused_bars": [b for b in bad if b in stops or b not in walk and b not in live_red]
+        if isinstance(bad, list) else UNM,
         "live_red_owed": sorted(live_red),
         "bars_total": n if isinstance(n, int) else UNM, "walk_bars": walk,
         "build_refusals": [r["clause"] for r in refs if r["clause"] in BUILD_CLAUSES],
