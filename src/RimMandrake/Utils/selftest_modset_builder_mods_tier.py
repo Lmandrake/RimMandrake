@@ -97,7 +97,20 @@ def t_sides_agree():
     ok(MB.tier_arg("mods__base") == "mods__base", "--tier takes a mods__ name")
 
 
+def t_cherry_picker():
+    """Every tier carries Cherry Picker when it is installed, so the full list's cut beasts stay cut
+    (RIMMANDRAKE_KEEP_CUT_BEASTS_OFF_TEST_TIERS); not installed is no quieter list: it is simply absent here, and
+    tier_cut_creature_check.py reads the tier red."""
+    inst = {p: {"packageId": p, "deps": [], "after": [], "before": [], "dir": "x"} for p in (MB.CORE, MB.HARMONY, MB.CHERRY)}
+    pids, _, _ = MB.resolve_tier("mods__base", inst)
+    ok(MB.CHERRY in [p.lower() for p in pids], "a tier on a map that has Cherry Picker loads it (%s)" % pids)
+    del inst[MB.CHERRY]
+    pids, _, _ = MB.resolve_tier("mods__base", inst)
+    ok(MB.CHERRY not in [p.lower() for p in pids], "a map without Cherry Picker does not invent it")
+
+
 if __name__ == "__main__":
+    t_cherry_picker()
     t_round_trip()
     t_refusals()
     t_sides_agree()

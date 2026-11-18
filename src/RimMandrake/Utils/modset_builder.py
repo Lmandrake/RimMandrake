@@ -84,6 +84,7 @@ FULL_BACKUP = os.path.join(ROOT, "infrastructure", "state", "modlists",
 
 CORE = "ludeon.rimworld"
 HARMONY = "brrainz.harmony"
+CHERRY = "owlchemist.cherrypicker"       # every test tier loads it: the full list's cut beasts stay cut (RIMMANDRAKE_KEEP_CUT_BEASTS_OFF_TEST_TIERS)
 BRIDGE = "brrainz.rimbridgeserver"
 
 # Owner policy 2026-10-04: EVERY debug set carries the extra camera-zoom mod so he can zoom in
@@ -1040,6 +1041,8 @@ def resolve_tier(name, installed):
     else:
         want += [CORE]
     want += [HARMONY]
+    if CHERRY in installed and CHERRY not in want:      # not installed: tier_cut_creature_check.py reads the tier red
+        want.append(CHERRY)
     # a tier that wants Camera+, or pulls it in as a dependency, never gets the rival zoom mod, whether or not it says
     # no_zoom (Codex cd905b re-review): the zoom mod is added only after the closure is known to hold no Camera+
     pids, missing = close_over(want, installed)
