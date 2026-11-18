@@ -1131,7 +1131,51 @@ def walk_storeroom_raid(argv=None, bridge=None, wait=None, out=sys.stdout):
 LIVE_LEAVES = {"walk_storeroom_raid": walk_storeroom_raid}
 
 
+def _frame_budget_selftest():
+    """Offline oracle for FRAME_BUDGET (bar walk_storeroom_raid; RIMMANDRAKE_TEST_WALK_FRAME_JUDGE_OFFLINE_TWO_MUTANTS_LIVED):
+    calls _Walk.frame_row() directly against fixed `frame_on`/`frame_off` arm dicts, no bridge, no game. No offline test fed
+    the judge two arms before this, so a loosened FRAME_OVER_OFF (PF_V_FRAME_OVER_LOOSE, 10% -> 50%) or a FRAME_BUDGET row
+    always written PASS (PF_V_FRAME_ROW_ALWAYS_PASS) read green on every other offline suite. Cases, at FRAME_OVER_OFF=10%:
+    under budget (+9%) PASS, at the line (+10%, a wall: over <= FRAME_OVER_OFF is false for any float a hair past it from
+    rounding, so the line itself is the last PASS; the walk's own card and selftest W25/W26 test +3.6%/+10.1%, not the exact
+    line) FAIL, over budget (+11%) FAIL, and four UNREADABLE kinds that must never PASS: no mod-on arm at all (could not
+    look), no mod-off arm at all (failed to answer), a mod-off arm that read 0 ms (zero, nothing to divide by), nothing in
+    the air in the on arm's window (empty set), and arms whose window frame counts are not like for like."""
+    fails = []
+
+    def mk(**kw):
+        d = {"text": "fixed arm"}
+        d.update(kw)
+        return d
+
+    def check(cid, on, off, want_status, want_in_detail=None):
+        w = object.__new__(_Walk)
+        w.rows, w.ev = {}, {"frame_on": on, "frame_off": off}
+        w.frame_row()
+        got, det = w.rows.get("FRAME_BUDGET", ("MISSING", ""))
+        ok = got == want_status and (want_in_detail is None or want_in_detail in det)
+        print("%s %-26s want %-11s got %-11s %s" % ("PASS" if ok else "FAIL", cid, want_status, got, det[:160]))
+        if not ok:
+            fails.append(cid)
+
+    rows, air = FRAME_MIN_ROWS + 1, 12
+    off = mk(p99=100.0, rows=rows)
+    check("FB_UNDER_BUDGET_9PCT", mk(p99=109.0, rows=rows, inAir=air), off, "PASS")
+    check("FB_AT_BUDGET_LINE_10PCT", mk(p99=110.0, rows=rows, inAir=air), off, "FAIL")  # 1.10 - 1.0 is a hair over 0.10 as a float
+    check("FB_OVER_BUDGET_11PCT", mk(p99=111.0, rows=rows, inAir=air), off, "FAIL")
+    check("FB_COULD_NOT_LOOK_NO_ON_ARM", {}, off, "UNMEASURED", "no mod-on frame reading")
+    check("FB_FAILED_NO_OFF_ARM", mk(p99=100.0, rows=rows, inAir=air), {}, "UNMEASURED", "no mod-off frame reading")
+    check("FB_ZERO_OFF_ARM", mk(p99=100.0, rows=rows, inAir=air), mk(p99=0.0, rows=rows), "UNMEASURED", "not above 0")
+    check("FB_EMPTY_SET_NOTHING_IN_AIR", mk(p99=100.0, rows=rows, inAir=0), off, "UNMEASURED", "nothing in the air")
+    check("FB_UNLIKE_ARM_FRAME_COUNTS", mk(p99=100.0, rows=rows * 4, inAir=air), off, "UNMEASURED", "not like for like")
+    ok = not fails
+    print("FRAME_BUDGET offline selftest: %s (%d case(s), %d failed)" % ("PASS" if ok else "FAIL", 8, len(fails)))
+    return 0 if ok else 1
+
+
 if __name__ == "__main__":
+    if "--selftest" in sys.argv:
+        sys.exit(_frame_budget_selftest())
     if "--live" in sys.argv:
         rest = sys.argv[sys.argv.index("--live") + 1:]
         leaf = rest[0] if rest and not rest[0].startswith("-") else None
