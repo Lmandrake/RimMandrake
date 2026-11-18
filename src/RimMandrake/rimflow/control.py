@@ -689,7 +689,8 @@ def void(run, why, mod=None, owner_said=None, per_ruling=None, idem=None, p=None
             given += c.execute("UPDATE reservations SET state='voided', settled_at=? WHERE run=? AND state='charged'",
                                (now, x)).rowcount
             given += _release(c, "run=?", (x,), "voided: " + why, now)
-        return {"replayed": False, "act": a, "given": given, "mod": mod}
+        # the dispatch books key runs by unit: a void by run id books the unit (RIMMANDRAKE_BOOK_PIPE_VOID_BY_UNIT_NOT_RUN_ID)
+        return {"replayed": False, "act": a, "given": given, "mod": mod, "unit": rr["unit"] if rr else run}
 
 
 def voided(runs=None, p=None):
@@ -1742,7 +1743,7 @@ def cmd_void(o):
 
 
 def _void_books(o, r):
-    return void_books(o.run, r["mod"], o.why, o.owner_said, r["act"]["id"], per_ruling=getattr(o, "per_ruling", None))
+    return void_books(r.get("unit") or o.run, r["mod"], o.why, o.owner_said, r["act"]["id"], per_ruling=getattr(o, "per_ruling", None))
 
 
 def void_books(unit, mod, why, owner_said, act_id, p=None, per_ruling=None):

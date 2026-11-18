@@ -708,8 +708,33 @@ def t_sites():
                                                                             "turns it red", m)
 
 
+def t_void_books_by_run_id():
+    """RIMMANDRAKE_BOOK_PIPE_VOID_BY_UNIT_NOT_RUN_ID (Codex review 2026-11-18): `pipe void <run id>` gives back the
+    store's reservations by id or unit, and the dispatch books must learn the UNIT (their runs are units), with the
+    Conductor's route recorded beside it."""
+    fresh()
+    import types
+    import run_void as RV
+    vf = os.path.join(TMP, "voids-byid.jsonl")
+    os.environ["RM_RUN_VOIDS_FILE"] = vf
+    try:
+        C.switch("mod:Graffiti", False, "on")
+        a = C.admit(spec("rm-probe-books-2", mod="Graffiti"))
+        o = types.SimpleNamespace(run=a["run"], why="books by id", mod=None, owner_said=None,
+                                  per_ruling="CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM", idem=None)
+        C.cmd_void(o)
+        act = RV.active(vf)
+        rows = [json.loads(x) for x in open(vf, encoding="utf-8")] if os.path.exists(vf) else []
+        check(a["run"] != "rm-probe-books-2" and "rm-probe-books-2" in act and a["run"] not in act,
+              "pipe void <run id> books the run's unit in voids.jsonl, not its id", sorted(act))
+        check(any(r.get("per_ruling") == "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM" for r in rows),
+              "the dispatch books record the Conductor's route", rows)
+    finally:
+        os.environ.pop("RM_RUN_VOIDS_FILE", None)
+
+
 def main():
-    for t in (t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
+    for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites):
         print("== %s" % t.__name__)
         try:
