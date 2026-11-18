@@ -223,6 +223,31 @@ def cli(root):
           RC.main(["check", p]) == 0 and RC.main(["check", q]) == 1)
 
 
+def release_cli(root):
+    path = RC.alarms_path()
+    if os.path.exists(path):
+        os.remove(path)
+    RC.alarm("family:rel_x", "tripped", now=1000)
+    RC.alarm("family:rel_x", "again", now=1001)
+    check("release: no --why is refused (usage)", RC.main(["release", "family:rel_x"]) == RC.USAGE
+          and RC.main(["release", "family:rel_x", "--why", "  "]) == RC.USAGE)
+    check("release: a still-open row after a refused release", len(RC.open_alarms()) == 1)
+    check("release: closes the row", RC.main(["release", "family:rel_x", "--why", "fixed", "--by", "CONDUCTOR"]) == RC.RELEASED)
+    row = json.load(open(path))["family:rel_x"]
+    check("release: row closed, kept, trips intact, who and why on it", row["open"] is False and row["trips"] == 2
+          and row["releases"][0]["why"] == "fixed" and row["releases"][0]["by"] == "CONDUCTOR", row)
+    check("release: a second release says nothing is open", RC.main(["release", "family:rel_x", "--why", "x"]) == RC.NOTHING_OPEN)
+    check("release: an unknown subject is its own answer", RC.main(["release", "family:nope", "--why", "x"]) == RC.NO_SUCH_SUBJECT)
+    again = RC.alarm("family:rel_x", "back", now=2000)
+    check("release: the next trip tells again, keeps trips and history",
+          again["open"] and again["trips"] == 3 and len(again["releases"]) == 1 and again["first_at"] == RC.iso(2000), again)
+    with open(path, "w") as f:
+        f.write("{not json")
+    check("release: an unreadable store is not 'nothing to release'",
+          RC.main(["release", "family:rel_x", "--why", "x"]) == RC.STORE_UNREADABLE)
+    os.remove(path)
+
+
 def main():
     env = {k: os.environ.get(k) for k in ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE",
                                           "RM_JUDGE_CALIBRATION", "RM_CALIBRATION_ROOT")}
@@ -246,6 +271,7 @@ def main():
             families(root)
             advisory(root)
             cli(root)
+            release_cli(root)
     finally:
         for k, v in env.items():
             if v is None:

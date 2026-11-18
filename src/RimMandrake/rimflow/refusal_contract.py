@@ -118,7 +118,10 @@ def alarm(subject, why, now=None, family=None, detail=None):
     row = rows.get(subject)
     fresh = not (isinstance(row, dict) and row.get("open"))
     if fresh:
-        row = {"id": ALARM_ID, "subject": subject, "first_at": iso(now), "trips": 0, "open": True}
+        was = row if isinstance(row, dict) else {}      # a released row keeps its trips and releases
+        row = {"id": ALARM_ID, "subject": subject, "first_at": iso(now), "trips": int(was.get("trips") or 0), "open": True}
+        if was.get("releases"):
+            row["releases"] = was["releases"]
     row.update(last_at=iso(now), why=str(why), trips=int(row.get("trips") or 0) + 1)
     if family:
         row["family"] = family
@@ -136,7 +139,7 @@ def alarm(subject, why, now=None, family=None, detail=None):
     return row
 
 
-def clear(subject, why, now=None):
+def clear(subject, why, now=None, by=None):
     """A release: the row closes (kept, with its history), so the next trip tells again. -> the row or None."""
     now = time.time() if now is None else now
     path = alarms_path()
@@ -145,7 +148,10 @@ def clear(subject, why, now=None):
     if not isinstance(row, dict):
         return None
     row.update(open=False)
-    row.setdefault("releases", []).append({"at": iso(now), "why": str(why)})
+    rel = {"at": iso(now), "why": str(why)}
+    if by:
+        rel["by"] = str(by)
+    row.setdefault("releases", []).append(rel)
     rows[subject] = row
     _write(path, rows)
     return row
@@ -828,6 +834,38 @@ def unwrap(obj):
     return obj
 
 
+RELEASED, NOTHING_OPEN, NO_SUCH_SUBJECT, STORE_UNREADABLE, USAGE = 0, 10, 11, 12, 2
+
+
+def _release_cli(args):
+    """release <subject> --why "<reason>" [--by <who>]: close one open alarm row. Exit 0 released; 10 the row exists
+    but is not open (nothing to release); 11 no row for that subject; 12 the alarms store could not be read; 2 usage."""
+    opt = lambda k: args[args.index(k) + 1] if k in args and args.index(k) + 1 < len(args) else None  # noqa: E731
+    subject, why = (args[0] if args and not args[0].startswith("--") else None), opt("--why")
+    if not subject or not (why or "").strip():
+        print("usage: refusal_contract.py release <subject> --why \"<reason>\" [--by <who>]  (a reason is required)")
+        return USAGE
+    try:
+        row = _read(alarms_path()).get(subject)
+    except (OSError, ValueError) as e:
+        print("UNREADABLE alarms store %s: %s: %s; nothing was released" % (alarms_path(), type(e).__name__, e))
+        return STORE_UNREADABLE
+    if not isinstance(row, dict):
+        print("NO SUCH SUBJECT %s in %s; nothing was released" % (subject, alarms_path()))
+        return NO_SUCH_SUBJECT
+    if not row.get("open"):
+        print("NOTHING OPEN for %s (already released %d time(s)); nothing was released" % (
+            subject, len(row.get("releases") or [])))
+        return NOTHING_OPEN
+    try:
+        row = clear(subject, why, by=opt("--by") or os.environ.get("RM_SEAT") or os.environ.get("USER"))
+    except (OSError, ValueError) as e:
+        print("UNWRITABLE alarms store: %s: %s; nothing was released" % (type(e).__name__, e))
+        return STORE_UNREADABLE
+    print("RELEASED " + json.dumps(row, indent=1, sort_keys=True))
+    return RELEASED
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     cmd = argv[:1]
@@ -875,6 +913,8 @@ def main(argv=None):
         print(json.dumps({"items": items, "families": {k: len(v) for k, v in c["families"].items()},
                           "cached": len(c["cache"])}, indent=1, sort_keys=True))
         return 0
+    if cmd == ["release"]:
+        return _release_cli(argv[1:])
     if cmd != ["alarms"]:
         print(__doc__)
         return 2
