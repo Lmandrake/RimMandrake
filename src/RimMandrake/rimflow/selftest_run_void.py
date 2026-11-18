@@ -66,7 +66,8 @@ def state():
         "ingame_auto": [{"visit_id": "0.1.0#1", "visit": 1, "unit": UI, "at": T0 + 200}],
         "holder_road_back": [{"at": T0 + 1300, "ids": ["RB_1"], "item": "RB_1", "unit": UH}],
         "launches": [{"unit": UL, "item": "RIMMANDRAKE_AUTOBUILD_FAKE", "at": T0 + 50, "refused": 6, "ids": ["a"]}],
-        "last_run": {"unit": UL, "refused_before": 6, "refused_after": 6}}
+        "last_run": {"unit": UL, "refused_before": 6, "refused_after": 6},
+        "releases_used": {"rel-a": {"at": T0 + 1200, "stage": "blind_challenge", "usd": 90.0, "unit": U2}}}
     return {"mods": {"Fake": s}}
 
 
@@ -195,6 +196,7 @@ def main():
         ok(not s.get("road_back"), "the road back the void route steward opened goes with it")
         ok(MD.holder_spent(dict(s, road_back={"at": T0}), ["RB_1"]) is None,
            "holder one-run-per-set: the void holder run on RB_1 is no try at it")
+        ok(s.get("releases_used") == {}, "a ceiling release the void run spent is unspent again")
         ok("last_run" not in s and s.get("launches") == [],
            "builder progress: the void builder run is neither the last run judged nor a launch")
         ok(len(s["voided"]) >= 8 and all(m["class"] == "void_hand" and m["why"] for m in s["voided"]),
@@ -257,7 +259,8 @@ def main():
         ok(not bad and {UD, UJ} <= {x["unit"] for x in back}, "unvoid of a parent reverses its children too")
         RV.sync_dispatch(st)
         st0 = state()
-        for k in ("steward", "fixers", "blind_auto", "ingame_auto", "holder_road_back", "launches", "last_run", "road_back"):
+        for k in ("steward", "fixers", "blind_auto", "ingame_auto", "holder_road_back", "launches", "last_run", "road_back",
+                  "releases_used"):
             ok(st["mods"]["Fake"].get(k) == st0["mods"]["Fake"][k], "unvoid: the %s book is back as it was" % k)
         ok(not st["mods"]["Fake"].get("voided"), "unvoid: the voided list is empty")
         ok(DS.load_state(d) == applied(before_stage), "unvoid: stage.json reads exactly as the run left it")

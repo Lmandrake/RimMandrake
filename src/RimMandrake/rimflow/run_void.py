@@ -42,7 +42,7 @@ ALARM_ID = "OPS_MATURATION_SYSTEM_FAULT_LOOP"
 SYSTEM_FAULT_LIMIT = 3
 # the dispatch books a run can sit in: dict books keyed by state key or item, list books of launch entries, and single
 # entries holding one run
-DICT_BOOKS = ("steward", "fixers")
+DICT_BOOKS = ("steward", "fixers", "releases_used")     # releases_used: a ceiling release a launch spent
 LIST_BOOKS = ("blind_auto", "ingame_auto", "launches", "holder_road_back", "pilot_launches", "ledger_runs")
 ONE_BOOKS = ("last_run", "cert_rerun", "cert_red")
 # books the automatic class reads: a run there that died of a system cause would otherwise count as its trial
@@ -478,7 +478,11 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
                           "void": None, "why": "its steward run is void_system", "unit": None, "faults": 0})
         if moved:
             _moved(s).extend(moved)
-            for m in moved:
+            counted = set()
+            for m in moved:     # one fault per run (or launch), however many books held it
+                if m["unit"] and m["unit"] in counted:
+                    continue
+                counted.add(m["unit"])
                 if m["faults"]:
                     s.setdefault("system_faults", []).append({"at": now, "book": m["book"], "key": m["key"],
                                                               "unit": m["unit"], "cause": m["why"], "n": m["faults"]})
