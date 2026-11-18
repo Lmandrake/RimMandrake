@@ -260,11 +260,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.53,
+    "seconds": 5.28,
     "last": "PASS: 0 failure(s)",
-    "at": "2026-11-17T20:30:15Z",
+    "at": "2026-11-18T23:41:51Z",
     "result": "PASS",
-    "build": "d316dc29a925148a4a8a",
+    "build": "2c4cfbe5463a1a69d47c",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py"
    }
   },
@@ -281,11 +281,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.14,
     "last": "selftest_pyrelands_fruit_clear: PASS",
-    "at": "2026-11-17T20:30:15Z",
+    "at": "2026-11-18T23:41:51Z",
     "result": "PASS",
-    "build": "d3f9d2d807d60792b531",
+    "build": "ecda884011403dccbdfc",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_fruit_clear.py"
    }
   },
@@ -1714,12 +1714,12 @@
    "item": "RIMMANDRAKE_FIX_PYRELANDS_ROUND_SIX_SEVENTEEN_GAPS",
    "runs_today": {
     "ran": true,
-    "rc": 0,
-    "seconds": 3.96,
-    "last": "PASS: 0 of 18 checks failed",
-    "at": "2026-11-17T20:31:21Z",
-    "result": "PASS",
-    "build": "c8de685f009ec061f2f4",
+    "rc": 1,
+    "seconds": 2.61,
+    "last": "FAIL: 1 of 18 checks failed",
+    "at": "2026-11-18T23:41:54Z",
+    "result": "FAIL",
+    "build": "8247d7df8273c20713ab",
     "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_round6_gaps.py"
    }
   },
