@@ -1,0 +1,8 @@
+{
+ "_doc": "Fixed question lists for light_scan.py (RIMMANDRAKE_SCAN_SCENES_AGAINST_BARS_TOGGLE_NEVER_TOGGLED; spec design/specs/2026-11-15-cheap-guards-at-every-door.md section 5). Each answer is yes, no or cannot_tell; a no cites an input line as <name>:<line>.",
+ "scene_asks_bar": [
+  {"q": "observes_the_promise", "text": "Does the scene read, from the game, the state or event the bar promises (not only that its own orders were accepted), before any row about it can read PASS?"},
+  {"q": "event_happened", "text": "When the scene judges a change (something stops, fills, is coated, falls, switches), does it first check that the thing it judges actually happened or was actually present, so that nothing-happened cannot read PASS?"},
+  {"q": "both_states_driven", "text": "When the bar promises a contrast (on versus off, with versus without, before versus after), does the scene actually put the game into each of the states it compares, rather than reading one state twice?"}
+ ]
+}
