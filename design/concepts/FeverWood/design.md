@@ -6,6 +6,11 @@ definition sheets, rosters, reviews and the cleanse proposal as the place to rea
 happened to every idea in them, in `design/concepts/FeverWood/rewrite_choices.md`. Nothing has been deleted yet.
 The Fever Wood is one of the six biome mods HELD BY OWNER: this is a design document only and it launches nothing.
 
+**Revised the same day** after his card of 2026-11-18, 3:10 PM PST, which answered four questions the first pass had
+left for him: how long a stop lasts, what hides a ship from orbit, where fuel comes from, and whether a biome wears
+on the hull. The answers are written in below (see "The ship while it sits here"); the changes are listed at the top
+of `rewrite_choices.md`.
+
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/FeverWood/`
 (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its path by sitting here. Nothing in
 the pipeline reads it by name yet; the locked `sheet.md`, `tree.json` and `scenes.json` beside it still describe the
@@ -57,10 +62,24 @@ numbers are marked provisional):
 - Each step comes only if the one before it succeeded for the Empire, and a loud, visible crew halves every wait
   while a hidden one doubles it.
 
-**UNSETTLED: how long a visit really lasts.** The sources fix the first contact (five to eight days) and the last
-step (leave), not the total. This document assumes: the first week is nearly free of the Empire; the first fight
-comes in the second or third week; nothing lets a crew stay much past a month. A season is fifteen days, so
-**anything that needs a season to show itself is not in 0.1.0 or 0.2.0 here.**
+**How long a stop here can last: about six weeks, and that is the outer edge.** His ruling of 2026-11-18 on the
+numbers the first pass assumed: *"The numbers you're generating are likely the outer edge allowable for each biome,
+and that's just fine. Go with that."* So the figures below are the longest stay the Fever Wood allows, not the
+usual one.
+
+- On open ground, with a crew the search reads as ordinary, the ladder's arithmetic gives a probe on day 5 to 8, the
+  first real fight around day 12 to 20, and the bombardment around day 20 to 32 if the Empire wins every step.
+- The Fever Wood's closed crown is **partial cover from orbit** (his card, same day: *"Canopy, steam and fog slow
+  the search by one step; full dark still pauses it"*). Read here as one step on the pursuit's built visibility
+  scale: the search runs at the pace of a crew one band quieter than this one really is, which stretches every wait
+  by about four tenths. That gives a probe on day 7 to 11, a first fight in the third or fourth week, and nothing
+  past about six weeks.
+- Noise gives the step back. The water answers noise and so does the Empire's dial; a crew that fights at the
+  margins every day is read as loud whatever is over its head.
+
+Most stops end well inside that edge, because the eye, the hull (below) or a full hold ends them first. A season is
+fifteen days, so **anything that needs a season to show itself is not in 0.1.0 or 0.2.0 here.** (The pursuit's
+numbers are marked provisional in its own source, `EmpireLadderMath.cs`; the shape is what this design leans on.)
 
 ---
 
@@ -88,8 +107,8 @@ And from the hatch the crew can already see why they will not simply stay aboard
 the nearest pool.
 
 *New in this rewrite:* the landing counting as a noise the water hears. The hearing, the standing limb and the hush
-are all built; only the landing as a source is new, and it is small. It is not the hull-snaring "Mooring" the owner
-declined on 2026-10-02 (see `NEEDS HIM`, below).
+are all built; only the landing as a source is new, and it is small. What the marsh and the water then do to the
+hull is in "The ship while it sits here", below.
 
 ## The first day
 
@@ -129,6 +148,56 @@ declined on 2026-10-02 (see `NEEDS HIM`, below).
   Fever Wood's climax and it has to be reachable inside a stop; pressure from the crew's own salvaging is what
   brings it within days instead of seasons.
 
+## The ship while it sits here
+
+Three things every biome design now states, by his rulings of 2026-11-18.
+
+**Cover from orbit: partial.** The closed crown slows the search by one step (above). It is not a hideout: the
+probe still comes, and at ground level the trunks only break sightlines, they do not close them. This is a
+campaign-layer line (the pursuit lives in `src/RimUtinni/EmpirePursuit/`), one entry for this biome in a list the
+pursuit already reads.
+
+**Wear on the hull: the ground that refuses and the thing that hears.** His ruling: *"Yes in 0.1.0. It's easy, and
+most of the biome already talk about this."* The Fever Wood's sources name two wears, both in the review of
+2026-10-02 (`feverwood_bedazzle_review_2026-10-02.md`, the row called the Mooring): *"The biome acts on the ship in
+its own two voices: the ground that refuses and the thing that hears."*
+
+- *The marsh.* *"A ship on mud lists and mires a few hull cells a day."* Hull resting on refusing marsh takes wear
+  day by day, and the listing edge is the sign. Hull resting on bough-soil or causeway ground takes none.
+- *The water.* A hull edge parked inside a pool's reach is lashed when noise wakes that pool, like anything else in
+  reach. The reach overlay shows it before the ramp is down.
+- *The approach is calm.* No rain and no wind are bans of this biome, so nothing shakes the ship on the way in. The
+  wear starts when it sits.
+- *What answers it.* Where the ship is put down: firm ground, outside every reach, is free of both. Failing that,
+  hands-on work: jacking a sinking edge onto stilt footings (stilts on marsh are built; under a hull they are a new
+  use), patching worn plate by hand, and buying quiet from a pool the ordinary way (hurt a limb for hours, sever one
+  for a day). No shield setting stops the marsh: his ruling of 2026-09-02 on the ship's shields is that *"slow
+  pressing things move through all shields... nothing 'holds out water'"*. The heavy field does resist *"large
+  animal assault"*, so a crew that owns one can take the lash on it, at the power that costs.
+- *It never traps.* His ruling of the same sitting: the hull *"is thick and can take a lot of damage in most
+  situations, so no environment is immediately lethal"*, and the ship *"will advise course of action, but no more
+  than that"*. Wear is a bill that grows, with a sign, and launching always ends it.
+- `UNMEASURED`: whether Odyssey lets a ship land on refusing marsh at all. If it does not, the marsh's wear never
+  happens and the water's is the whole of it.
+- *0.2.0:* the Mooring in full. If the ship stays beside a pool, *"a snare wraps a hull edge and holds. Launch while
+  moored and the wrapped section tears off into the pool (the porter sets its pieces down at the margin weeks
+  later)."* A crew that comes back finds its own hull plate set out as bait. He did not choose this on 2026-10-02;
+  his ruling of 2026-11-18 puts hull wear in, and this is the Fever Wood's own. It is moved, listed, and one line to
+  revert.
+
+**Fuel: a richer source, named, and sold nearby.** His ruling: *"Every biome has a fuel source, but for most its
+the hideously slow route of rendering biomass into chemfuel... A few biomes have richer sources. You can also buy
+it."*
+
+- *The emergency route* is here as everywhere: fruit, tuber and carcass rendered down, hideously slow.
+- *The richer source is seep-oil.* The sheet, twice: *"strange oily deposits boiling gently to the surface —
+  gathered for perfumes, lubrication, and fuel"*, and *"perfume, lubricant, and fuel from the deep decay"*. The
+  barrel plant that carries it stands inside some pool's reach, so every drum is skimmed from under the water's
+  nose, in pairs. The harvest is built; the recipe that turns the oil into chemfuel is not, and is 0.2.0.
+- *Buying it.* The only sellers the sources name are Sporefall's Wildsteam traders (the kit spec stocks goods at
+  *"Sporefall/Wildsteam traders"*), who are campaign layer. The crew pays in what the water set out as bait.
+- Not replete. The oil comes a plant at a time, and each plant is a walk to a pool.
+
 ## "OMG did you see that?"
 
 Each of these can happen inside the visit. Each says what is on screen.
@@ -155,6 +224,12 @@ Each of these can happen inside the visit. Each says what is on screen.
    *"shocking even to those who know them."*
 8. **The trooper in the pool** (see the Empire, below). *On screen:* a white-armoured figure taken off the shore by
    the same limb that took the Jawa on day one, and nobody runs to carry him out.
+9. **The ship is sinking.** *On screen:* one corner of the hull visibly lower than it was yesterday, and three
+   hooded figures under it with a jack made of salvage, arguing. *Why it is funny:* the footings going in under the
+   hull are the cargo.
+10. **Paying for fuel with bait** (0.2.0, campaign layer). *On screen:* a crew member counting gear the water laid out (a helmet, a rifle,
+   somebody's boots) into a trader's hands for drums of fuel. *Why it lands:* the monster fishes with scrap, and the
+   Jawa have found a way to spend it.
 
 ## When the Empire arrives
 
@@ -194,6 +269,7 @@ learn the rules the Empire has not.
 ## What forces the crew out; what lets them stay
 
 **Out, before the Empire:**
+- The hull. A ship on marsh sinks a little every day, and a ship in reach is lashed whenever the pool wakes.
 - The eye at a great pool, arriving on the crew's own greed, with no protection. A crew that cannot face it leaves.
 - An angered pool beside the ship (someone shot the gift-giver) that makes the nearest salvage not worth it.
 - *0.2.0:* the oil boil. On the hottest still days the seep-oil lifts into a low rainbow haze; oil gathering pays
@@ -207,7 +283,8 @@ learn the rules the Empire has not.
   (owner: *"Fouling the water with specific poisons or radioactive material will cause it to be supressed for
   several days as the material diffuses away."*). In the campaign only genuinely dangerous radioactive salvage
   works; outside it the charge *"can be crafted from Uranium"*.
-- `NEEDS HIM`: whether the closed crown hides the ship from orbit (below). As built, it does not.
+- The closed crown, which slows the search from orbit by one step (his card of 2026-11-18). It is unbuilt.
+- A ship set down on firm ground outside every reach, which the place does not wear.
 
 ## What the crew takes away
 
@@ -216,7 +293,7 @@ learn the rules the Empire has not.
 - **Severed tentacle:** meat from the one animal that cannot be hunted. In the campaign it is dianoga, with a canon
   kitchen behind it.
 - **Nectar**, the crown's trade good, *"priced in the herd's peace"*.
-- **Seep-oil:** *"scent, slick, and flame"*. Whether it feeds the ship's fuel line is `NEEDS HIM`.
+- **Seep-oil:** *"scent, slick, and flame"*: a trade good from the first day, and from 0.2.0 the Fever Wood's fuel.
 - **Resin medicine, ribbon plumage** sheared from the murrelith, **potter's clay**.
 - **A chellow**, if someone tames one: a beakless bird with a throat like *"a lamp with a bellows"*, and a private
   alarm that still goes quiet for water anywhere the ship lands near it.
@@ -238,6 +315,10 @@ A promise here is something a player sees. None of them is a number.
 | Imperial troopers are seized like anyone else. | Walk a trooper squad across a mapped reach. | A native animal on the same cells is left alone. |
 | The bark ambusher strikes once and does not chase. | Small prey passes a silloch; prey that breaks free flees. | The silloch stays at its trunk. |
 | The vaulm seals and the drommath swells when hurt or mishandled, every time, never at random. | Hurt each; hit again inside and after its recovery. | An untouched one beside it does nothing. |
+| A ship resting on marsh, or with an edge inside a pool's reach, is visibly worn day by day, with a sign before the damage; a ship on firm ground outside every reach is not, and a worn ship can always launch. | Three landings: on marsh, on firm ground inside a reach with noise made, on firm ground clear of every pool. Run the days, then launch each. | With the water and the wear switched off, the marsh landing is untouched. An edge on stilt footings stops sinking. |
+| Under the closed crown the Empire's search comes one step slower than it does for the same crew on open ground. | The same crew, as loud, landed here and on an uncovered tile; read the search's next contact on both. | A crew made loud here loses the step. |
+
+Neither new row pins a rate: how fast a hull wears and how long a step is are tuning, and stay out of any bar.
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary safe swamp
 (standing rule, every mod).
@@ -254,11 +335,24 @@ Settings: one switch per major feature, defaults as shipped, everything off leav
   `RM_GenStep_RootCauseways`).
 - **Mineable living trunks**, the sibling of the Greentide's greatbole body. Here they never fall and never regrow
   in 0.1.0.
+- **Ground that wears a hull.** The hull-wear machinery is shared (below); the Fever Wood is where the *ground*
+  is the thing doing it.
 
 **Merely active here:** the one sun from geometry, with the crown as tree shade (no Fever Wood heat of its own);
 fast jungle growth (`ExplosiveGrowth`); natives drinking their own water (`FlowWorks` thirst, where present); real
 flight for anything that flies; bone from butchery (`Bones`); wreck salvage (`Wreckage`); the ship's acoustic
 sounder; the Empire's search and the visibility dial.
+
+**Three ship systems built once for every biome, and what the Fever Wood asks of each** (found while revising; the
+shared-machinery file has the whole of it):
+- *Hull wear.* The campaign already has the frame: `src/RimUtinni/ShipShields/`, whose exposure tracker wears a
+  landed ship's structures in a hazard its shield does not cover, sends an advisory and never refuses a landing. It
+  knows heat, cold and blown particles today. The Fever Wood needs two wears it does not know: terrain under the
+  hull, and a pool's reach. Neither is answered by any field setting.
+- *Cover from orbit.* The pursuit has one list for full shadow (`surveyShadowBiomes`, the Abyss only) and no notion
+  of partial cover. The Fever Wood needs a second, weaker entry.
+- *Fuel.* One recipe from seep-oil to chemfuel, and a trader who stocks fuel. The slow biomass route is the base
+  game's own.
 
 ## Scope
 
@@ -280,6 +374,12 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The bark ambusher that does not chase; the carrion mound; the wood-eating grub as an ordinary animal. (built)
 - The vaulm's seal and the drommath's swelling. (built; moved in, see `rewrite_choices.md`)
 - The water takes troopers too; trunks break the Empire's sightlines. (consequences of built things; scenes owed)
+- The place wears the hull: marsh under it and limbs in reach of it, each with a sign, answered by where the ship
+  is put down, by stilt footings and by hand. (unbuilt; campaign layer, on the shared hull-wear machinery; his
+  ruling of 2026-11-18)
+- The closed crown as partial cover from orbit. (unbuilt; campaign layer, one entry in the pursuit; his card of
+  2026-11-18)
+- Fuel by the slow route, and seep-oil as a trade good. (the base game's refining; the harvest is built)
 - Natives are never seized and drink their own water. Every loss shows a sign.
 
 **0.2.0, the stop with company**
@@ -287,7 +387,11 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   ground — which is the lie"*). (unbuilt)
 - The lure: live bait, staggered raiders, the two fronts. (built)
 - The oil boil. (built; owner's card of 2026-10-02)
-- The radioactive charge that quiets a pool without a fight. (built; `NEEDS HIM`, below)
+- Seep-oil rendered to chemfuel, and fuel on sale at Sporefall. (unbuilt)
+- The Mooring in full: the snare on a hull edge, the section torn off at launch, the crew's own plate set out as
+  bait on a later visit. (unbuilt; moved in by this revision)
+- The radioactive charge that quiets a pool without a fight. (built; `NEEDS HIM`, below) With hull wear in, it is
+  also how a crew buys days of quiet for a ship parked in reach.
 - The ransom of its young: a juvenile bought or carried from elsewhere, released into a pool, earns *"one great
   gift from the bottom"*. (built; owner's card of 2026-10-02) The cask is cargo; the gift is a reason to come back.
 - The ollareth, which *"screams, and the crown comes"*: its alarm, once what answers it is defined.
@@ -325,14 +429,10 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-1. **Does the crown hide the ship from orbit?** His 2026-08-05 ruling is that dark or covered tiles pause the
-   orbital clock; only the Abyss is on the built list of such biomes. *No* (as built, and this document's default):
-   the Fever Wood is an ordinary five-to-eight-day stop. *Yes, like the Abyss:* it becomes a refuge, and its own
-   dangers must then be what time the exit. *Partly:* one visibility band quieter while the ship sits under canopy.
-2. **Does the water touch the ship?** *Noise only* (default): the landing wakes it and the crew meets it at the
-   margins. *The Mooring as pitched 2026-10-02 and not chosen then:* a limb wraps a hull edge and launching tears
-   that section off into the pool, to be set out as bait weeks later. *Nothing:* the landing is silent to the deep.
-3. **The no-fight charge: 0.1.0 or 0.2.0?** The cleanse asked this on 2026-11-17 and it is unanswered. Default
-   here: 0.2.0. His September ladder names it, so keeping it out of 0.1.0 is a real narrowing.
-4. **Is seep-oil ship fuel?** The sheet says *"perfumes, lubrication, and fuel"*. *Trade good and lamp fuel only*
-   (default). *Refines toward the ship's fuel:* then the Fever Wood is a fuel stop and the margin's danger prices it.
+One question is left. Three others were answered by his card of 2026-11-18 and are written into the design above:
+the crown is partial cover from orbit; the place wears the hull, in 0.1.0; seep-oil is the Fever Wood's richer fuel
+source.
+
+1. **The no-fight charge: 0.1.0 or 0.2.0?** The cleanse asked this on 2026-11-17 and it is unanswered. Default
+   here: 0.2.0. His September ladder names it, so keeping it out of 0.1.0 is a real narrowing. Hull wear sharpens
+   the question a little: the charge is the one way to quiet a pool beside the ship without a fight.

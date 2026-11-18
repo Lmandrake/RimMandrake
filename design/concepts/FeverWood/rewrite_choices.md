@@ -18,12 +18,57 @@ changed as stated. *moved*: its scope bucket changed, from and to given. The old
 "later" is counted as *kept in its bucket*, not as a move. *folded into shared machinery*: it is a shared engine's
 job. *lost*: not in the design.
 
+## Changed after his rulings of 2026-11-18
+
+His card of 2026-11-18, 3:10 PM PST answered three of the four questions the first pass left for him here, and
+ruled on stop length and on a test for every solution. This revision changed the design and this page as follows
+and nothing else.
+
+1. **Stop length is stated, as an outer edge.** The "UNSETTLED: how long a visit really lasts" paragraph is gone.
+   The design now says about six weeks at the outside, from the pursuit's own arithmetic and the crown's cover, on
+   his words *"The numbers you're generating are likely the outer edge allowable for each biome, and that's just
+   fine. Go with that."*
+2. **The crown is partial cover from orbit.** The question "Does the crown hide the ship from orbit?" is removed
+   and answered by his card (*"Canopy, steam and fog slow the search by one step; full dark still pauses it"*).
+   **My reading, to check:** "one step" is written as one band on the pursuit's built visibility scale (hidden,
+   discreet, noticed, marked, exposed), because those are the only steps the search has. Going from noticed to
+   discreet multiplies each wait by 1.4 in today's provisional numbers. If he meant one rung of the ladder, or a
+   flat delay, the "clock" section and one promise row change and nothing else does.
+3. **The place wears the hull, in 0.1.0.** The question "Does the water touch the ship?" is removed. The wear is
+   taken from the one source that names it, the Mooring row of the 2026-10-02 review: the marsh (*"a ship on mud
+   lists and mires a few hull cells a day"*) and the water (limbs in reach of a hull edge). Both are in 0.1.0 with
+   a sign and an answer.
+4. **The Mooring in full moved from lost to 0.2.0.** The snare, the torn-off section and the crew's own plate set
+   out as bait were "lost as pitched" in the first pass because he had not chosen them on 2026-10-02. His ruling
+   that biomes wear the hull is the reason to bring the Fever Wood's own version back; it is not in 0.1.0 because
+   he called hull wear *"easy"* and the tear-off is a new system. Listed under Scope moves; one line to revert.
+5. **Seep-oil is the Fever Wood's richer fuel source.** The question "Is seep-oil ship fuel?" is removed. The
+   sheet says fuel twice. The slow biomass route is stated as the emergency route; the oil-to-chemfuel recipe and
+   fuel on sale at Sporefall are 0.2.0 (nothing builds either, and his words give no version); the Fever Wood is
+   not called replete.
+6. **A new section in the design, "The ship while it sits here"**, holds cover, hull and fuel together. Two
+   promises were added to the 0.1.0 table (hull wear; the crown's step), two on-screen moments (the sinking
+   corner; paying for fuel with bait), three scope lines in 0.1.0 and two in 0.2.0.
+7. **"Very Jawa" applied where a choice was open:** footings jacked under the hull from salvage instead of a
+   purpose-built pad; fuel paid for with the water's bait; the oil skimmed in pairs from inside a pool's reach.
+8. **A finding for the shared-machinery file:** the hull-wear frame already exists in the campaign
+   (`src/RimUtinni/ShipShields/`, with his eight shield rulings of 2026-09-02 in
+   `design/Jawa/proposals/ship_shields_deep_design.md`). The first pass did not find it. Two of his lines there
+   decide what answers the Fever Wood's wear: nothing *"holds out water"*, and the heavy field resists *"large
+   animal assault"*.
+
+Read for this revision, in part: `ship_shields_deep_design.md` (the ruled table only), `ShieldHazardExposureTracker.cs`
+and `ShieldHazardUtility.cs` (header comments and the hazard tests), `EmpireLadderMath.cs` (first eighty lines),
+`ScenParts_EmpirePursuit.xml` (whole), `reconciled_lore/01_campaign.md` (the fuel section), and the Mooring row
+and the hull, ship and fuel lines of the review and the sheet, found by search.
+
 ## The ones I would look at
 
 1. **The Mooring** (the water wraps the ship's hull; launching tears a section off). He did not choose it on
    2026-10-02, before he had stated the ship lens. Under that lens it is the most direct answer anyone has written
-   to *"What happens RIGHT AWAY when the ship arrives from the sky?"* The design uses only its quiet half (the
-   landing is heard below) and asks him.
+   to *"What happens RIGHT AWAY when the ship arrives from the sky?"* After his ruling of 2026-11-18 its plain half
+   (the marsh and the lash wear the hull) is in 0.1.0 and its dramatic half (the snare and the torn-off section) is
+   in 0.2.0. Moving the dramatic half was my call, not his words.
 2. **The Lost Crawler** (the bait turns out to be pieces of one old Jawa sandcrawler, the clan's own). Not chosen
    2026-10-02. It is the only idea in any source that makes the bait personal to *this* crew. Lost; it also needs a
    long stay to collect the pieces, which is the honest reason it stays lost.
@@ -70,6 +115,14 @@ where said). Each can be reverted by moving the line in the design's Scope secti
 - **Stayed "later" from the cleanse's "next version":** tank industry, escape and maturation, world-held-young
   pressure, the hive (all five parts), borer galleries, regrowth and sealant, moving routes, plennith soil, mirror
   break, arrival letter, grolth trail, the Sporefall display. Not moves.
+- **Hull wear by marsh and by reach:** asked of him → 0.1.0, by his ruling of 2026-11-18. Revert is his.
+- **The Mooring in full (snare, torn-off section, own plate as bait):** lost → 0.2.0. My move on the strength of
+  the same ruling. Revert by deleting its line in the design's 0.2.0 list.
+- **The crown as partial cover from orbit:** asked of him → 0.1.0, campaign layer, by his card.
+- **Seep-oil to chemfuel; fuel on sale at Sporefall:** asked of him → 0.2.0. The source is his ruling; the version
+  is my choice. 0.1.0 instead costs one recipe and a trader stock line, and makes the first version a fuel stop.
+- **New, not in any source:** stilt footings under a hull (stilts are built for buildings; this is a new use); the
+  bait as what the crew pays for fuel with (a reading, no mechanism).
 - **New, not in any source:** the ship's landing as a noise the water hears (0.1.0); troopers seized like anyone
   else and trunks breaking the Empire's sightlines, stated as promises with scenes (0.1.0). Both are consequences
   of built behaviour; drop either by deleting its line.
@@ -218,6 +271,8 @@ in `design/Jawa/worldbuilding/biomes/`; *kit spec* = `biomes/kits/fever_wood_kit
 | Corvath, grows only where it has fed; *"a grave marker"* | flora roster | moved: placed tell at 0.2.0; appearing after a feed later | | |
 | Sodderel and bog-timber | flora roster, sheet §7 | kept as scenery; the timber lost | Tree ruling. | |
 | Seepril and the honest rainbow | flora roster, deep-and-mud §6s | kept | | |
+| Seep-oil as fuel | sheet §3, §7 | kept, reshaped: the Fever Wood's richer fuel source; the recipe is 0.2.0 | His fuel ruling of 2026-11-18; the sheet says fuel twice. | Recipe in 0.1.0: small, and makes the first version a fuel stop. |
+| Sporefall and Wildsteam traders stocking goods | kit spec | kept in the campaign layer; named as where fuel is bought | *"You can also buy it"* (his ruling). | |
 | Skimmel, *"firm ground — which is the lie"* | flora roster | moved with sink-mud (→ 0.2.0) | | |
 | Wanlith, the pale one | flora roster | kept | | |
 | Tullick, the tuber | flora roster | kept | | |
@@ -246,7 +301,10 @@ in `design/Jawa/worldbuilding/biomes/`; *kit spec* = `biomes/kits/fever_wood_kit
 | No fungal miracle, no flowing water, no rain, no Earth life | sheet bans 5, 7 | kept | | |
 | The oil boil | bedazzle review §8 (his card) | moved (→ 0.2.0) | | |
 | The closing crown (weather that shuts routes) | bedazzle review §5 | lost (held off the card) | | |
-| The Mooring | bedazzle review §4 | lost as pitched; its quiet half kept; `NEEDS HIM` | Not chosen 2026-10-02. | See "the ones I would look at". |
+| The Mooring | bedazzle review §4 | kept, reshaped, moved: the marsh and the lash wear the hull in 0.1.0; the snare and the torn-off section moved (lost → 0.2.0) | His ruling of 2026-11-18 that biomes wear the hull, *"Yes in 0.1.0"*. It was not chosen 2026-10-02. | Leave the snare lost: the Fever Wood's wear is then plain damage with nothing of the bait in it. |
+| "A ship on mud lists and mires a few hull cells a day" | bedazzle review §4 | kept, quoted (0.1.0) | The source's own words for the wear. | |
+| Sporefall's toll to land on a trunk-top pad, out of reach and rented | bedazzle review §4 | lost | Campaign layer, and a purpose-built pad is less Jawa than a jack and salvage. | A rented pad as a campaign service: one more reason to trade. |
+| Drive the deep off first, then land safely | bedazzle review §4 | kept (hurting or severing a limb buys quiet for a ship in reach) | | |
 | The berth that costs a road | bedazzle review §5 | lost (folded into the Mooring, which was not chosen) | | |
 | The pressure wedge; bough-grafting | bedazzle review §4, §5 | lost (not chosen) | | |
 | Rites: the Gate Between, Cutting the Stilts, the Last Customer | bedazzle review §6 | lost (*"none, move on"*) | | |
@@ -277,8 +335,8 @@ in `design/Jawa/worldbuilding/biomes/`; *kit spec* = `biomes/kits/fever_wood_kit
 ## Sources read, and the count
 
 Measured after writing (a script counted the table rows and the first words of the "what happened" column):
-**28 source files, 162 rows**, of which **30 lost**, **18 moved**, **15 kept, reshaped** and 1 folded into shared
-machinery. Every one of the 28 files is named in at least one row's source column (checked by the same script).
+**28 source files, 167 rows**, of which **30 lost**, **19 moved**, **17 kept, reshaped** and 1 folded into shared
+machinery (recounted after the revision of 2026-11-18, which added five rows and changed one). Every one of the 28 files is named in at least one row's source column (checked by the same script).
 Three further rows keep a plant and lose only its timber; they are counted as kept.
 
 Read whole: the sheet; deep-and-mud; both rosters; the cast proposal; the Designer sheet and journal; the cleanse's
