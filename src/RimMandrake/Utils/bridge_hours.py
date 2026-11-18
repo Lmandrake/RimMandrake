@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """bridge_hours: hours the bridge lock was held, from ledger `bridge` events (FOUNDRY_THROUGHPUT_MEASURE_V2_GAP).
 
-The measure behind design/RimMandrake/foundry_management_analysis_2026-11-01.md: 14.6 h a day in the best v2 week,
+The measure behind the 2026-11-01 FOUNDRY management analysis (removed; git show f5089a41d:design/RimMandrake/foundry_management_analysis_2026-11-01.md): 14.6 h a day in the best v2 week,
 2.5 h a day in early v3. A hold is cut at CAP_S so one forgotten lock cannot read as a day of driving. A held lock is
 still not proof of driving; this reads the lane's occupancy, nothing finer.
 """

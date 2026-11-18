@@ -62,7 +62,7 @@ KEPT = {
 PROBES = (
     ("audit_prescreen", "import", "role_launch.py"),
     ("audit_prescreen", "run", "dispatcher_schedule.json"),
-    ("relentless", "run", ".service"),
+    ("maturation_dispatch", "run", ".service"),
     ("regrade", "doc", "findings_judge_prompt.md"),
 )
 

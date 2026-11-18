@@ -6,7 +6,7 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
-⚠️ **1892 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+⚠️ **1859 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
 
 ### `design/`
 
@@ -914,7 +914,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `flyer_stable_body_study.md` | Flyer stable-body study — 2026-10-08 | — |
 | `focused_testing_plan_2026-10-25.md` | Focused testing plan — 2026-10-25 | — |
 | `forge_slowground_concepts_2026-10-20.md` | The Forge's new slow-ground creature: three concepts, 2026-10-20 | — |
-| `foundry_management_analysis_2026-11-01.md` | How FOUNDRY is being managed, measured against v2 | — |
 | `fountain_sculptures_v2_2026-10-23.md` | Fountain sculptures — v2 brainstorm (2026-10-23) | — |
 | `four_biomes_readiness_2026-10-19.md` | Four biomes readiness: Pyrelands, Leaning Scrub, Cauldron, Contagion (2026-10-19, offline) | — |
 | `fulgurite_lightning_design_pass_2026-10-15.md` | Fulgurite and the lightning breaker: a design pass (2026-10-15) | — |
@@ -1084,7 +1083,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `post_event_recovery_mode_2026-11-05.md` | Post-event recovery mode: a design, replayed on 2026-11-04 (OPS_RECOVERY_DESIGN_POST_EVENT_MODE) | — |
 | `power_poles_and_flexible_pipe_assessment_2026-10-02.md` | Power Poles Extended, suspended wires and flexible piping — assessment (2026-10-02) | — |
 | `process_model_explainer_2026-10-29.md` | The process model, explained (2026-10-29) | — |
-| `process_model_v2_v3_design_2026-10-29.md` | Process model v2 + v3: design (2026-10-29) | — |
 | `producer_cadence_2026-10-29.md` | Producer cadence: more than Wednesdays (design, 2026-10-29) | — |
 | `production_system_map_2026-11-12.md` | The RimMandrake production system: a map, 2026-11-12 | — |
 | `pyrelands_ash_redesign_2026-10-12.md` | Pyrelands ground: deep ash everywhere, and the burn feeds the field (2026-10-12) | — |
@@ -1095,27 +1093,9 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `relative_depth_climb_design_2026-10-12.md` | Relative depth and climbing out — design pass (2026-10-12) | — |
 | `relative_depth_climb_gpt_review_2026-10-12.md` | GPT review — relative depth and climbing out (2026-10-12) | — |
 | `release_proximity_2026-10-22.md` | Release proximity, 2026-10-22 (FOUNDRY, read-only ranking) | — |
-| `relentless_TRUST_2026-11-01.md` | Relentless TRUST: first baseline, 2026-11-01 | — |
-| `relentless_agent_design_2026-11-01.md` | The Relentless Agent: design (2026-11-01) | — |
-| `relentless_agent_gpt_review_2026-11-01.md` | GPT attack review of the Relentless Agent design (2026-11-01) | — |
-| `relentless_agent_research_2026-11-01.md` | The Relentless Agent: research brief (2026-11-01) | — |
-| `relentless_counting_rules_2026-11-01.md` | The counting rules behind `relentless trust` (2026-11-01) | — |
-| `relentless_daily_release_2026-11-06.md` | One pinned daily release of Relentless, with a way back (2026-11-06) | — |
-| `relentless_failure_catalog_2026-11-05.md` | Relentless failure catalog, 2026-11-05 | — |
-| `relentless_failure_review_gpt_2026-11-05.gpt_read.md` | GPT deep skeptical review of Relentless failures, 2026-11-05 (raw answers, guidance not authority) | — |
-| `relentless_fixed_waits_2026-11-06.md` | Relentless fixed waits: profile and inventory (2026-11-06) | — |
 | `relentless_improvement_loop_2026-11-03.md` | Relentless improvement loop — owner, 2026-11-03 | — |
-| `relentless_incident_forensics_2026-11-02.md` | Relentless forensics (read-only), times UTC; PST = UTC-8 | — |
-| `relentless_live_mode_2026-11-02.md` | Relentless live mode: one agent, two modes (2026-11-02) | — |
-| `relentless_owner_design_2026-10-31.md` | Relentless owner: the item is the owner, workers are replaceable | — |
-| `relentless_pool_why_2026-11-05.md` | Why Operations' system items stay out of the Relentless pool — 2026-11-05 | — |
-| `relentless_progress_page_2026-11-03.md` | Relentless progress page: a design to refer to | — |
 | `relentless_recovery_plan_2026-11-05.md` | Relentless recovery plan, 2026-11-05: second read of the GPT review, and a ranked plan | — |
-| `relentless_selfbuild_2026-11-06.md` | Relentless builds Relentless, in stages (2026-11-06) | — |
-| `relentless_tick_slow_step_2026-11-03.md` | The slow step in a Relentless tick (RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS, 2026-11-03) | — |
 | `relentless_tree_schema_2026-11-01.md` | The acceptance tree: file format (2026-11-01) | — |
-| `relentless_verdict_identity_design_2026-11-02.md` | Relentless verdict machinery: identity-bound, fail-closed (design pass, 2026-11-02) | — |
-| `relentless_vs_foundry_2026-11-02.md` | Relentless vs FOUNDRY: measured comparison (read-only, 2026-11-02) | — |
 | `relic_replacements_proposal.md` | Relic replacements for the five broken VWE relic precepts — PROPOSAL, awaiting owner approval | — |
 | `retired_eras_index_2026-11-18.md` | Retired eras: what was removed, where it lived, what stays and why (2026-11-18) | — |
 | `retired_loops_2026-11-13.md` | Retired 2026-11-13: Relentless per-ticket work, the Artisan loops, the Whittle loops | — |
@@ -1129,26 +1109,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `rimflow_v3_2026-10-26.md` | RimFlow v3 — the integrator layer (design of record, 2026-10-26) | — |
 | `rimflow_v3_arbiter_tiers_2026-10-27.md` | RimFlow v3: the Arbiter by risk tier (2026-10-27) | — |
 | `rimflow_v3_audit_remeasure_2026-10-31.md` | RimFlow v3 audit: where it stands, re-measured (2026-10-31) | — |
-| `rimflow_v3_build_closeout_2026-10-31.md` | RimFlow v3 build-out: closeout (2026-10-31) | — |
-| `rimflow_v3_collapse_compare_2026-10-29.md` | RimFlow v3 collapse: two blind minimal designs compared, 2026-10-29 | — |
-| `rimflow_v3_collapse_settlement_2026-10-31.md` | RimFlow v3 collapse: how it was settled (2026-10-31) | — |
-| `rimflow_v3_field_evidence_2026-10-27.md` | RimFlow v3 against what others actually ended up using (2026-10-27) | — |
 | `rimflow_v3_golive_wave1.md` | RimFlow v3 go-live, wave 1 (runbook, written 2026-10-27, for Wednesday 2026-10-28 after the weekly token reset) | — |
-| `rimflow_v3_gpt_risk_review_2026-10-29.md` | RimFlow v3 risk report | — |
-| `rimflow_v3_minimal_gpt_2026-10-29.md` | — | — |
-| `rimflow_v3_minimal_opus_2026-10-29.md` | RimFlow minimal design (Opus, written independently of GPT's version), 2026-10-29 | — |
 | `rimflow_v3_responsibilities_2026-10-26.md` | RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26) | — |
 | `rimflow_v3_risk_response_2026-10-29.md` | RimFlow v3 risk review: the Opus response (2026-10-29) | — |
 | `rimflow_v3_sim_findings_2026-10-27.md` | RimFlow v3 in a bottle: what the simulation says (2026-10-27) | — |
 | `rimflow_v3_trial_night_2026-10-28.md` | RimFlow v3 trial night, 2026-10-28: one ordered runbook | — |
-| `rimflow_v3_workflow_as_built_2026-10-29.md` | RimFlow v3 agent workflow, as built (2026-10-29) | — |
 | `rimflow_validation_levels_addendum_2026-10-07.md` | Rimflow redesign — addendum: the validation levels | — |
-| `rimpulse_gpt_review_2026-10-22.md` | RimPulse — GPT review (2026-10-22) | — |
-| `rimpulse_intent_2026-10-22.md` | RimPulse — intention, success criteria, architecture and honest state (2026-10-22) | — |
-| `rimpulse_make_it_great_2026-10-25.md` | RimPulse, make it great: the owner surface for a two-machine, many-agent operation (2026-10-25) | — |
-| `rimpulse_redesign_2026-10-23.gpt_review.md` | — | — |
 | `rimpulse_redesign_2026-10-23.md` | RimPulse redesign: what it shows, what you need from it, three better ways (2026-10-23) | — |
-| `rimpulse_relentless_prototype_2026-11-02.md` | RimPulse with Relentless — markdown prototype v1 (2026-11-02) | — |
 | `rimtalk_analysis.md` | rimtalk_analysis.md — RimTalk adoption analysis | → superseded `llm_stack_assessment.md` |
 | `rimworld_file_lore.md` | rimworld_file_lore.md — technical manual for editing RimWorld save / scenario / def files |  |
 | `rimworld_new_version_research_2026-10-20.md` | RimWorld new version research (2026-10-20) | — |
