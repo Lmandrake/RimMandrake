@@ -1,0 +1,34 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Excluded the porter from ordinary withdrawal and sever relief. A hit removes it, permanently ends that pool’s gifts and raises local grievance without awarding quiet or flesh. The memory and response pictures now show the two outcomes.",
+      "where": "definition.md, What changes in the colony’s story. bars.json, rules R_MEMORY and R_RELIEF and bars memory and response accept[0]."
+    },
+    {
+      "id": "R2",
+      "changed": "The play-zoom picture now shows direct crown access, a harvest carried home on a connected wood route and a heavy blueprint refused on adjoining untreated marsh.",
+      "where": "bars.json, bar land accept[1]."
+    },
+    {
+      "id": "R3",
+      "changed": "The crowded-holding picture now follows harvest hauls to storage by the shared branch or its costlier wet detour during congestion, with builders still extending the home on stilts.",
+      "where": "bars.json, bar work accept[1]."
+    },
+    {
+      "id": "R4",
+      "changed": "Marked ‘still’, ‘working crown’ and ‘free of the adult’ as figurative. Their pictures show moving wildlife and dry weather over non-flowing pools, a work hum that hushes without birds, and a visible, inspectable defeated pool with the adult’s services disabled.",
+      "where": "bars.json, bars land, warning and response meant.figurative."
+    },
+    {
+      "id": "R5",
+      "changed": "Quoted the November answer on routes first and a little water interruption. Attributed the shore-chain signature and the hive’s deferral to the Designer’s choice about what changes ordinary branch work.",
+      "where": "owner_pages.md, Page one signature paragraph. definition.md, Say the mod runner-up paragraph."
+    },
+    {
+      "id": "R6",
+      "changed": "Rewrote the same picture as R2 so a reader can distinguish it from the decorative-branch reject by seeing actual hauling on the connected wood route and refusal of a heavy blueprint on untreated marsh.",
+      "where": "bars.json, bar land accept[1]."
+    }
+  ]
+}

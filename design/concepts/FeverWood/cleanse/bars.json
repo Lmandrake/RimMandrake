@@ -11,12 +11,17 @@
             "word": "above",
             "stands_for": "The terrain/art impression of an elevated crown, not a separate height or map layer.",
             "accept": "A raider steps straight from marsh onto adjoining crown terrain without a climb job."
+          },
+          {
+            "word": "still",
+            "stands_for": "Black pool water has no flowing-water mechanic.",
+            "accept": "Wildlife moves and a dry storm passes over the black pools while the pool water stays in place."
           }
         ]
       },
       "accept": [
         "A settler follows a wood route away from a solid trunk, plants in crown soil and finishes heavy construction on crown ground or completed stilts while untreated marsh and mirror water refuse it.",
-        "At play zoom the colony reads as living wood over dim black water even though pawns walk directly between adjoining crown and ground terrain."
+        "At play zoom the colony reads as living wood over dim black water. Pawns walk directly between adjoining ground and a crown patch on the connected wood route they use to carry a harvest home. The adjoining untreated marsh refuses a heavy blueprint."
       ],
       "reject": [
         "Branches form a decorative network but normal heavy buildings stand freely on the untreated marsh.",
@@ -60,7 +65,7 @@
       },
       "accept": [
         "Workers carry a crown harvest home along the connecting wood route; moving the destination changes which branch they use, and a ground detour remains possible when that route is blocked.",
-        "A crowded holding still completes routine work; builders can extend a home with stilts instead of waiting for a scripted ascent."
+        "In a crowded holding, haulers carry the crown harvest to storage along the shared branch route or take the costlier wet detour when the branch is congested. Builders extend the home with stilts without waiting for a scripted ascent."
       ],
       "reject": [
         "Workers complete the harvest on a debug pad beside storage while the displayed branch network connects no useful destinations.",
@@ -194,7 +199,13 @@
       "meant": {
         "intent": "a player must be able to notice and locate a water consequence without buying intelligence or operating a captive tank.",
         "source": "delegated: CONDUCTOR:1794806166917699063 chorus contract in record.json from documented individual-call ruling section 6k; standing no-vanish-without-readable-sign ruling.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "working crown",
+            "stands_for": "The retained work-bed ambient sound.",
+            "accept": "The work hum falls quiet when a water warning activates. Colonists keep working and no birds are present."
+          }
+        ]
       },
       "accept": [
         "Birds actually present contribute local calls over the working hum; a raised sentinel hushes them and the hum, and sound returns only after the remaining warning reason ends.",
@@ -242,7 +253,7 @@
         "figurative": []
       },
       "accept": [
-        "A recognisable delicate porter deposits obtainable goods and withdraws; attacking its counterpart leaves a warned hostile pool that no longer offers porter goods after the save is reloaded.",
+        "A recognisable delicate porter deposits obtainable goods and withdraws. A hit on its counterpart removes the porter, earns no quiet or flesh and makes that pool more hostile. After reload, the pool still warns of danger and remains more hostile, with no further porter gifts.",
         "An untouched neighbouring pool continues its own gift-and-danger cycle despite the attacked pool grievance."
       ],
       "reject": [
@@ -282,10 +293,16 @@
       "meant": {
         "intent": "the single signature has a reachable conclusion, and every water attack service must honour earned relief.",
         "source": "Documented owner ladder in fever_wood_deep_and_mud_2026-09-23.md section 2b, later than its earlier never-killable line; delegated inclusion as necessary signature response. Chemical treatment from that same ladder is proposed for deferral, not silently superseded: the owner-pages treatment question discloses the contrary validated treatment promise; allocation remains unapplied.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "free of the adult",
+            "stands_for": "Defeating the eye permanently disables the adult's water services on that map, including Tenant strikes, snares, lashes and porter visits.",
+            "accept": "After the eye is defeated, a pool remains visible and inspectable and its readout marks the adult defeated. Shore work continues there without Tenant strikes, snares, lashes or porter visits."
+          }
+        ]
       },
       "accept": [
-        "Damaged limbs withdraw, a sever leaves harvestable flesh and a longer quiet interval, and damaging the exposed eye drives the map quiet.",
+        "A damaged lash withdraws. If the colony severs an ordinary limb before it withdraws, the limb leaves harvestable flesh and the pool stays quiet longer. Damaging the exposed eye drives the map quiet.",
         "A defeated eye leaves an adult-free map across reload and continued shore work, while another map retains its own danger."
       ],
       "reject": [
@@ -475,7 +492,7 @@
     },
     {
       "id": "R_MEMORY",
-      "rule": "Local porter grievance is permanent on its affected surviving water cells: a connected component inherits grievance if it contains an aggrieved cell; split components inherit only their aggrieved cells, merge inherits any. Removing all affected water cells removes that local history, never transfers it to a nearest unrelated pool. Attack ends gifts and raises local hostile eligibility/rate; it cannot override earned quiet. Read-only observations never write agitation.",
+      "rule": "Local porter grievance is permanent on its affected surviving water cells: a connected component inherits grievance if it contains an aggrieved cell; split components inherit only their aggrieved cells, merge inherits any. Removing all affected water cells removes that local history, never transfers it to a nearest unrelated pool. Damage removes the porter, permanently ends gifts at that pool and raises local hostile eligibility/rate, subject to earned quiet. Porter damage bypasses the ordinary withdrawal and sever ladder and earns no quiet or flesh (RM_CompTentacleLimb.cs:293–302). Read-only observations never write agitation.",
       "touches": [
         "water",
         "economy",
@@ -485,7 +502,7 @@
     },
     {
       "id": "R_RELIEF",
-      "rule": "Ordinary withdrawal/sever quiet applies to the affected pool, including withdrawal of its active attackers; sever quiet outlasts ordinary retreat. Moderate eye damage quiets the map; severe/fatal damage permanently defeats its adult. Quiet gates both hostile water and porter rewards. Existing rescue obligations are neither extended nor forgiven by combat. Next-version suppression retains its documented map-wide adult scope but is off here.",
+      "rule": "Ordinary withdrawal/sever quiet applies to the affected pool, including withdrawal of its active attackers; sever quiet outlasts ordinary retreat. Porter damage bypasses this ladder and earns no quiet or flesh (RM_CompTentacleLimb.cs:293–302). Moderate eye damage quiets the map; severe/fatal damage permanently defeats its adult. Quiet gates both hostile water and porter rewards. Existing rescue obligations are neither extended nor forgiven by combat. Next-version suppression retains its documented map-wide adult scope but is off here.",
       "touches": [
         "water",
         "economy",

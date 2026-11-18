@@ -1,0 +1,158 @@
+{
+ "mod": "FeverWood",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "cannot_hold_together",
+     "where": "definition.md:41 and :47; bars.json rules R_RELIEF and R_MEMORY; bar response accept[0]; bar memory",
+     "evidence": "definition.md:41 counts the porter among the 'ordinary limbs' (feeler, snare, lash, porter, sentinel). definition.md:47 and R_RELIEF say damaging an ordinary limb makes it withdraw and a sever leaves flesh and longer local quiet that 'gates both hostile water and porter rewards'. R_MEMORY says grievance 'cannot override earned quiet'. So hitting the porter would quiet the very pool the memory bar says must become more hostile, and its control ('compare matched production danger eligibility/weight at the attacked and untouched pools') would read the attacked pool as safer. The source settles this the other way, but the proposal never states it: RM_CompTentacleLimb.cs:293-302 says 'attacking the porter angers the pool and permanently ends its trickle — it does NOT run the ordinary ladder'.",
+     "would_pass": "A rule saying porter damage never runs the withdrawal/sever ladder: it ends that pool's gifts, raises its grievance and removes the porter, with no quiet and no flesh. Then the memory and response bars read the same porter hit the same way.",
+     "smallest_fix": "Take 'porter' out of the ordinary-limb list at definition.md:41. Add one sentence to R_MEMORY and R_RELIEF: 'Porter damage is exempt from ordinary withdrawal/sever relief; it earns no quiet or flesh (as RM_CompTentacleLimb.cs:293-302 already does).'"
+    },
+    {
+     "id": "R2",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json bar land, accept[1]",
+     "evidence": "'At play zoom the colony reads as living wood over dim black water even though pawns walk directly between adjoining crown and ground terrain.' That is also true of the bar's own lazy reject, 'normal heavy buildings stand freely on the untreated marsh', and of a build with no connected routes. The picture is there to cover the figurative word 'above', but as written it accepts a build with ground refusal switched off. A cold reader sorted it reject.",
+     "would_pass": "The figurative picture still shows the parts of the bar that are not figurative: walk-on/off crown access together with heavy foundations refused on untreated marsh and a usable wood route.",
+     "smallest_fix": "Append to the picture: '…while a heavy blueprint on the adjoining untreated marsh is still refused and the crown patch lies on a connected wood route.'"
+    },
+    {
+     "id": "R3",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json bar work, accept[1]",
+     "evidence": "'A crowded holding still completes routine work; builders can extend a home with stilts instead of waiting for a scripted ascent.' Nothing in it involves the branch routes connecting work and home. It holds equally for the bar's lazy reject ('the displayed branch network connects no useful destinations').",
+     "would_pass": "The crowded-holding picture shows the routes still carrying the work under congestion, for example hauls queuing on the shared branch or detouring over costly wet ground, not just work completing.",
+     "smallest_fix": "Rewrite it: 'In a crowded holding, hauls between crown harvest and storage still run along the shared branch route or take the costlier wet detour when it is congested; builders extend the home with stilts rather than waiting for a scripted ascent.'"
+    },
+    {
+     "id": "R4",
+     "head": "figurative_unmarked",
+     "where": "bars.json bars warning (says, figurative: []), response (says, figurative: []), land (says)",
+     "evidence": "warning: 'A working crown and its living birds audibly fall quiet': 'working crown' stands for the biome's work-bed ambient sound (definition.md:57, census fw_chorus), not trees or colonists. response: 'keep its pools free of the adult': the adult is never a body on the map (definition.md:41 'not a body pawn in each pond'), so the phrase stands for 'every water attack service is permanently off on this map'. land: 'still black pools': ambiguities.md 'Still, hot and tree-canopied' says 'still' means no flowing-water mechanic, not halted animals or weather, but the land bar lists only 'above'.",
+     "would_pass": "Each of these words has a figurative entry saying what it stands for, with one accept picture that departs from the literal reading.",
+     "smallest_fix": "Add figurative entries. 'working crown' = the retained work-bed ambience; accept picture: the hum hushes with no birds present. 'free of the adult' = no Tenant strike, snare, lash or porter on that map after defeat; accept picture: a pool still visible and inspectable, labelled defeated. 'still' = no flowing-water mechanic; accept picture: wildlife moves and a dry storm passes over the pools."
+    },
+    {
+     "id": "R5",
+     "head": "authority_unsourced",
+     "where": "owner_pages.md:9; definition.md:15",
+     "evidence": "owner_pages.md:9: 'it loses because your recorded November answer makes ordinary branch work and shore interruptions the centre.' His words (record.json OWNER:1794374372850231423; ANSWERS_OWNER.md item 1): '1:2 and a little 3 when tentacles emerge from the water', i.e. routes shape the day, plus 'a little' water changing plans. He did not make shore interruptions the centre. Choosing the shore chain as the one signature, with water carrying four of eight bars, is the Designer's own call, but it is presented as his.",
+     "would_pass": "The pages quote his answer as given (routes first, a little water when tentacles emerge) and label the shore-chain signature and the hive's loss as the Designer's delegated choice, with that inference stated.",
+     "smallest_fix": "Replace the clause with: 'it loses because your November answer puts branch routes first and \"a little\" water when tentacles emerge; making that water chain the signature is my call.' Make the same correction at definition.md:15."
+    },
+    {
+     "id": "R6",
+     "head": "stranger",
+     "where": "bars.json land",
+     "evidence": "a cold reader sorted 'At play zoom the colony reads as living wood over dim black water even though pawns walk directly between adjoining crown and ground terrain.' as reject; the proposal labels it accept",
+     "would_pass": "pictures a cold reader sorts as the proposal does",
+     "smallest_fix": "rewrite those pictures, or the bar's says, so the line between accept and reject is plain from the words alone"
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Excluded the porter from ordinary withdrawal and sever relief. A hit removes it, permanently ends that pool’s gifts and raises local grievance without awarding quiet or flesh. The memory and response pictures now show the two outcomes.",
+      "where": "definition.md, What changes in the colony’s story. bars.json, rules R_MEMORY and R_RELIEF and bars memory and response accept[0]."
+     },
+     {
+      "id": "R2",
+      "changed": "The play-zoom picture now shows direct crown access, a harvest carried home on a connected wood route and a heavy blueprint refused on adjoining untreated marsh.",
+      "where": "bars.json, bar land accept[1]."
+     },
+     {
+      "id": "R3",
+      "changed": "The crowded-holding picture now follows harvest hauls to storage by the shared branch or its costlier wet detour during congestion, with builders still extending the home on stilts.",
+      "where": "bars.json, bar work accept[1]."
+     },
+     {
+      "id": "R4",
+      "changed": "Marked ‘still’, ‘working crown’ and ‘free of the adult’ as figurative. Their pictures show moving wildlife and dry weather over non-flowing pools, a work hum that hushes without birds, and a visible, inspectable defeated pool with the adult’s services disabled.",
+      "where": "bars.json, bars land, warning and response meant.figurative."
+     },
+     {
+      "id": "R5",
+      "changed": "Quoted the November answer on routes first and a little water interruption. Attributed the shore-chain signature and the hive’s deferral to the Designer’s choice about what changes ordinary branch work.",
+      "where": "owner_pages.md, Page one signature paragraph. definition.md, Say the mod runner-up paragraph."
+     },
+     {
+      "id": "R6",
+      "changed": "Rewrote the same picture as R2 so a reader can distinguish it from the decorative-branch reject by seeing actual hauling on the connected wood route and refusal of a heavy blueprint on untreated marsh.",
+      "where": "bars.json, bar land accept[1]."
+     }
+    ]
+   },
+   "verdicts": {
+    "R6": {
+     "verdict": "fixed",
+     "evidence": "a cold reader sorts every picture of land as the proposal labels it",
+     "by": "cold sort"
+    },
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "definition.md 'What changes in the colony's story' now lists only 'feeler searches, snare creates a rescue obligation, lash wounds, and sentinel announces awareness and hushes the crown' as ordinary limbs. 'The slender porter places goods' is a separate sentence. The same section says 'Porter damage bypasses the ordinary withdrawal and sever ladder and earns no quiet or flesh.' R_MEMORY and R_RELIEF in bars.json both say 'Porter damage bypasses ... and earns no quiet or flesh (RM_CompTentacleLimb.cs:293–302)'. memory accept[0] reads 'A hit on its counterpart removes the porter, earns no quiet or flesh and makes that pool more hostile.' The source agrees. RM_CompTentacleLimb.cs:295-302 says 'it does NOT run the ordinary ladder', calls OnPorterAttacked() and destroys the porter. The memory and response bars now read a porter hit the same way."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "bars.json land accept[1] now reads: 'Pawns walk directly between adjoining ground and a crown patch on the connected wood route they use to carry a harvest home. The adjoining untreated marsh refuses a heavy blueprint.' The picture now shows a working route and marsh that refuses heavy building. The lazy reject ('normal heavy buildings stand freely on the untreated marsh') and a build with no connected route both fail it."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "bars.json work accept[1] now reads: 'In a crowded holding, haulers carry the crown harvest to storage along the shared branch route or take the costlier wet detour when the branch is congested.' The routes now carry the work under crowding. The lazy reject ('branch network connects no useful destinations') fails it."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "bars.json land meant.figurative adds 'still': 'Black pool water has no flowing-water mechanic.' Its picture is 'Wildlife moves and a dry storm passes over the black pools'. warning meant.figurative adds 'working crown': 'The retained work-bed ambient sound.' Its picture is 'The work hum falls quiet ... no birds are present.' response meant.figurative adds 'free of the adult': 'permanently disables the adult's water services on that map, including Tenant strikes, snares, lashes and porter visits.' Its picture is 'a pool remains visible and inspectable and its readout marks the adult defeated.' Each picture breaks from the literal reading. The porter part matches the source: RM_MapComponent_TentacleWatch.cs:139 closes the ambient table, porter included, once permanentlyKilled is set."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "owner_pages.md Page one now reads: 'Your November answer, \"1:2 and a little 3 when tentacles emerge from the water\", puts branch routes first and gives water a smaller role. I chose the shore chain as the signature ... and I deferred the runner-up.' definition.md 'Say the mod' gives the same quote with its source (OWNER:1794374372850231423) and says 'I chose the shore chain as the signature ... and I deferred the hive.' His words are quoted as he gave them, and the signature choice is now marked as the Designer's own."
+    }
+   },
+   "changed_entries": [
+    "bars.json bars/land",
+    "bars.json bars/memory",
+    "bars.json bars/response",
+    "bars.json bars/warning",
+    "bars.json bars/work",
+    "bars.json rules/R_MEMORY",
+    "bars.json rules/R_RELIEF",
+    "definition.md Say the mod",
+    "definition.md What changes in the colony’s story",
+    "owner_pages.md Page one — what Fever Wood becomes"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 368833,
+     "output_tokens": 7168
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "fixes.json has an entry 'R6' that matches no refused record. It restates the R2 change to land accept[1].",
+   "reason": "It is bookkeeping noise in the author's account and changes nothing beyond R2. It blocks nothing.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "a5c0f7c3597161f532df031953e4ff77a5bd530eea055d319f568f325eedd19e",
+ "seconds": 257,
+ "at": "2026-11-17T19:19:39"
+}
