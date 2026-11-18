@@ -410,7 +410,8 @@ def _tag(v, klass, x):
 
 def _restore(s, m):
     b, x = m["book"], m["entry"]
-    if b in DICT_BOOKS:
+    if b in DICT_BOOKS or (m.get("key") is not None and not isinstance(m.get("key"), int)
+                           and b not in LIST_BOOKS + ONE_BOOKS + ("road_back",)):
         book = s.setdefault(b, {})
         if m["key"] in book:        # a newer run took the key since: it stands, this one stays saved (said in status)
             m["collision"] = "unvoided, but a newer run holds %s %s: it stands, this one stays saved" % (b, m["key"])
@@ -463,17 +464,19 @@ def heal_system(s, record):
     """A void_system entry whose record no longer shows a system cause (the class was fixed, or the record was
     repaired) goes back to its book and its fault is dropped; so does the road back its steward opened. -> [units]."""
     mv = s.get("voided") or []
-    back = []
+    # an entry moved from a book voids no longer reach (releases_used, 2026-11-18: a spent ceiling release must stay
+    # spent) goes back whatever its class
+    back = [m for m in mv if m["book"] not in DICT_BOOKS + LIST_BOOKS + ONE_BOOKS + ("road_back",)]
     for m in mv:
         u = m.get("unit")
-        if m.get("class") != "void_system" or not u or m["book"] in ("last_run", "road_back"):
+        if m.get("class") != "void_system" or not u or m["book"] in ("last_run", "road_back") or m in back:
             continue
         rec = record(u)
         if isinstance(rec, dict) and rec.get("status") == "finished" and not system_cause(rec):
             back.append(m)
     if not back:
         return []
-    units = {m["unit"] for m in back}
+    units = {m["unit"] for m in back if m.get("class") == "void_system"}
     items = {m["entry"].get("item") for m in back if m["book"] == "steward"}
     back += [m for m in mv if m.get("class") == "void_system" and (
         (m["book"] == "last_run" and m.get("unit") in units) or

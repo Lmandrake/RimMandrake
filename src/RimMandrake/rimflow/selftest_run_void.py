@@ -359,7 +359,11 @@ def main():
             {"book": "steward", "key": "k1", "entry": {"item": "I1", "unit": U1, "at": T0}, "class": "void_system",
              "void": None, "why": "it ended with no result JSON (success (exited 0))", "unit": U1, "faults": 1}],
             "system_faults": [{"at": T0, "book": "steward", "key": "k1", "unit": U1, "cause": "x", "n": 1}]}}}
+        st3["mods"]["Fake"]["voided"].append({"book": "releases_used", "key": "rel-b", "entry": {"unit": U2, "usd": 9.0},
+                                              "class": "void_system", "void": None, "why": "x", "unit": U2, "faults": 1})
         RV.sync_system(st3, record, now=T0 + 10)
+        ok(st3["mods"]["Fake"].get("releases_used", {}).get("rel-b"),
+           "heal: a ceiling release an earlier build moved out goes back: it stays spent")
         s3 = st3["mods"]["Fake"]
         ok(s3["steward"].get("k1", {}).get("unit") == U1 and not s3["voided"] and RV.faults(s3) == 0,
            "heal: a void_system entry whose record reads success is back in its book, its fault dropped")
