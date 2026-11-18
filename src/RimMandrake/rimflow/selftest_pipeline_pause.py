@@ -121,9 +121,13 @@ def main():
         rd = MD.tick(root, cfg, apply, fx=fx, now=CLOCK + at, page=False)
         return list(executed), rd
 
+    import control as C     # `pause` writes the control store (control.py); each fresh() gets an empty one
+
     def fresh():
         shutil.rmtree(sd, ignore_errors=True)
         os.makedirs(sd)
+        os.environ["RM_CONTROL_DB"] = os.path.join(sd, "control.db")
+        C.init(os.environ["RM_CONTROL_DB"])
 
     def at_first(fc, t):
         return sorted(x["mod"] for x in fc["launches"] if x["at"] == t)
@@ -325,21 +329,28 @@ def main():
             os.chmod(sd, 0o755)
         ok(bool(st_blind.get("error")) and PP.reason(st_blind), "a pause file behind an unreadable folder reads "
            "PAUSED, not absent (%s)" % st_blind.get("error"))
+        # the pause verbs write the control store (pause = `pipe off`): a torn retired pause.json does not stop them,
+        # and it still reads PAUSED until it is repaired (an unreadable store is never read as "not paused")
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             rc = MD.main(["pause", "ModBuild", "--why", "one over torn", "--by", "BENCH"])
-        ok(rc == 1 and "every other mod" in out.getvalue(), "a one-mod pause over a torn store is refused (it would "
-           "un-pause the rest)")
+        ok(rc == 0 and "PAUSED ModBuild" in out.getvalue() and PP.reason(PP.state()), "a one-mod pause writes the "
+           "control store; the torn file still reads PAUSED for every mod")
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             rc = MD.main(["resume", "--why", "x", "--by", "BENCH"])
-        ok(rc == 1 and "cannot be read" in out.getvalue(), "resume refuses over an unreadable store")
+        ok(rc == 0 and "STILL" in out.getvalue() and "cannot be read" in out.getvalue(), "resume over a torn file "
+           "says it is STILL paused (the file cannot be read)")
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             rc = MD.main(["pause", "--why", "over a torn file", "--by", "BENCH", "--until", "+30m"])
-        ok(rc == 0 and PP.load()["all"]["why"] == "over a torn file" and any(
-            x.startswith("pause.json.unreadable.") for x in os.listdir(sd)), "pause over a torn file writes the pause "
-           "and keeps the torn bytes beside it")
+        ok(rc == 0 and [r for r in C.switches() if r["scope"] == "all" and r["why"] == "over a torn file"],
+           "pause over a torn file writes the pause into the control store")
+        os.environ["RM_CONTROL_DB"] = os.path.join(sd, "absent.db")
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = MD.main(["resume", "--why", "x", "--by", "BENCH"])
+        ok(rc == 1 and "cannot be read" in out.getvalue(), "resume refuses over an unreadable control store")
 
         # ---- the verbs, --stop-live, rimflow pipeline, the page ---------------------------------------------------
         fresh()
@@ -355,7 +366,7 @@ def main():
         finally:
             MD.gather = gather_was
             MD.STOP_RUNNER[0] = subprocess.run
-        h = [x for x in PP.load()["history"] if x.get("act") == "stop_live"]
+        h = [json.loads(a["after"]) for a in C._q("SELECT after FROM acts WHERE kind='stop_live'")]
         ok(rc == 0 and calls == [["systemctl", "--user", "stop", "rm-detached-fake-live"]] and h and h[-1][
             "void_owed"] and h[-1]["units"][0]["unit"] == "rm-detached-fake-live",
            "--stop-live stops the live run and records it for voiding (%s)" % calls)

@@ -3448,13 +3448,26 @@ def _pause_verb(o):
         print("REFUSED: --why is empty")
         return 2
     scope = OH.key(o.mod) if o.mod else "the whole pipeline"
+    import control as C     # the one control store: `pause` IS `pipe off all|<Mod>`, binding the moment it commits
+    cscope = "mod:" + OH.key(o.mod) if o.mod else "all"
     if o.cmd == "resume":
         try:
-            was = PP.resume(o.mod, o.why, by)
-        except PP.Unreadable as e:
-            print("REFUSED: the pause store cannot be read, so nothing is resumed over it (it reads PAUSED): %s" % e)
+            r = C.switch(cscope, False, o.why)
+        except C.Unreadable as e:
+            print("REFUSED: the control store cannot be read, so nothing is resumed over it (it reads PAUSED): %s" % e)
             return 1
-        print("RESUMED %s by %s: %s (was: %s)" % (scope, by, o.why.strip(), PP.line(was) if was else "not paused"))
+        fwas = None
+        try:        # pause.json is retired; an old entry still standing there is lifted too, so it stops holding
+            d = PP.load()
+            if (d["mods"].get(OH.key(o.mod)) if o.mod else d["all"]):
+                fwas = PP.resume(o.mod, o.why, by)
+        except PP.Unreadable:
+            pass
+        still = PP.reason(PP.state(), o.mod)
+        tick = C.tick_now() if not still else None
+        print("RESUMED %s by %s: %s (was: %s)%s%s" % (scope, by, o.why.strip(), "paused" if r.get("had") or fwas
+                                                    else "not paused", "; STILL %s" % still if still else "",
+                                                    "; " + tick if tick else ""))
         return 0
     try:
         until = PP.parse_until(o.until) if o.until else None
@@ -3462,12 +3475,14 @@ def _pause_verb(o):
         print("REFUSED: %s" % e)
         return 2
     try:
-        e = PP.pause(o.mod, o.why, by, until)
-    except PP.Unreadable as err:
-        print("REFUSED: %s" % err)
+        r = C.switch(cscope, True, o.why, until=until)
+    except C.Unreadable as err:
+        print("NOTHING STARTS ALREADY: the control store cannot be read, so it admits no launch; the pause is not "
+              "written (repair: pipe doctor): %s" % err)
         return 1
-    print("PAUSED %s: %s. Nothing in the census starts on it from the next tick (within 60 s); see "
-          "design/RimMandrake/pipeline_launch_paths_census_2026-11-18.md" % (scope, PP.line(e)))
+    e = {"why": o.why.strip(), "by": by, "at": r["act"]["ts"], "until": until, "until_release": until is None}
+    print("PAUSED %s: %s. It binds now: every launch reads the control store at the moment it starts (`pipe show`)%s"
+          % (scope, PP.line(e), "; cancelled before start: %s" % ", ".join(r["cancelled"]) if r["cancelled"] else ""))
     if o.stop_live:
         # the launch scope the tick decides over: the shipped list widened by the concepts it discovers, plus MOD
         cfg = load_cfg()
@@ -3478,14 +3493,13 @@ def _pause_verb(o):
         if o.mod and OH.key(o.mod) not in [OH.key(m) for m in cfg.get("advancing") or []]:
             cfg = dict(cfg, advancing=list(cfg.get("advancing") or []) + [OH.key(o.mod)])
         stopped = stop_live(os.path.abspath(o.root), cfg, o.mod)
-        PP.note({"act": "stop_live", "scope": OH.key(o.mod) if o.mod else "all", "at": time.time(), "by": by,
-                 "why": o.why.strip(), "units": stopped, "void_owed": True, "void_item": VOID_ITEM})
+        C.note("stop_live", cscope, o.why, {"units": stopped, "void_owed": True, "void_item": VOID_ITEM, "by": by})
         for x in stopped:
             print("  %s %s on %s (rc %s)%s" % ("STOPPED" if x["rc"] == 0 else "STOP FAILED", x["unit"], x["mod"],
                                                x["rc"], ": " + x["said"] if x["said"] else ""))
-        print("  %s; recorded in %s for voiding (%s is not landed, so no run is voided automatically yet)" % (
-            "%d live run(s) stopped" % sum(1 for x in stopped if x["rc"] == 0) if stopped else "no run was live",
-            PP.path(), VOID_ITEM))
+        print("  %s; recorded in the control store for voiding (`pipe log`); the three stop modes are `pipe stop <scope> "
+              "--write-now | --at-easy-spot | --kill`" % (
+                  "%d live run(s) stopped" % sum(1 for x in stopped if x["rc"] == 0) if stopped else "no run was live"))
         if any(x["rc"] != 0 for x in stopped):
             return 1
     else:

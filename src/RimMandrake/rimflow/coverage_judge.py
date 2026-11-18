@@ -76,6 +76,7 @@ import concept_tree as CT  # noqa: E402
 import designer_stage as DS  # noqa: E402
 import refusal_contract as RC  # noqa: E402
 import pipeline_control as PC  # noqa: E402  one-line overrides of every count here (`pipe`)
+import control as C  # noqa: E402  the granted look's account: reserve, settle, void, grant (`pipe`)
 import bar_rule as BR  # noqa: E402
 import spend_watchdog  # noqa: E402  (the hard spend stop, from outside the agent; owner 2026-11-16)
 
@@ -715,6 +716,31 @@ def released_rounds(st, d, rs, rel):
     return [r for r in rs if r.get("judge") in keep or r.get("reader_only")]
 
 
+def look_balance(st, d=None, rs=None, mod=None):
+    """-> None when no release stands, else the granted look's account: {"mod", "win" (the accounting window: the grant's
+    time), "refused" (the refusing looks since the release that are not voided), "used" (their count plus any `pipe add`
+    override), "lim" (the one look a release grants, or its `pipe limit`, plus every `pipe grant <Mod> look +N` in the
+    window)}, or {"error": "CONTROL UNREADABLE: ..."} when the store cannot be read (judging stops: a look nobody can
+    account for is not given)."""
+    rel = [x for x in st.get("coverage_releases") or [] if isinstance(x, dict)]
+    if not rel:
+        return None
+    rs = rounds(st, d) if rs is None else rs
+    mod = mod or (DS.concept_of(st, d) or {}).get("mod") or (os.path.basename(os.path.abspath(d)) if d else "?")
+    refused = [r for r in _looks(released_rounds(st, d, rs, rel[-1])) if r.get("verdict") == "not_covered"]
+    win = C.look_window(st)
+    try:
+        gone = C.voided([r.get("judge") for r in refused])
+        granted = C.account(mod, C.LOOK, win, 0)["granted"]
+    except C.Unreadable as e:
+        return {"mod": mod, "error": "CONTROL UNREADABLE: the control store cannot be read (%s): no granted look is "
+                                     "given on it" % e}
+    refused = [r for r in refused if r.get("judge") not in gone]
+    base = PC.limit(mod, "granted_look", 1)
+    return {"mod": mod, "win": win, "refused": refused, "used": PC.used(mod, "granted_look", len(refused)),
+            "lim": base + granted}
+
+
 def stop_reason(st, d=None):
     """-> why judging stops on this concept now, or None. After a release, one more look: its refusal stops again (an
     error, a timeout or a malformed round is no look; the caps count them)."""
@@ -727,8 +753,10 @@ def stop_reason(st, d=None):
         # the one look is a well-formed answer: an error or a timeout is no look and a malformed round is not one
         # (the caps below still count them); its refusal stops judging again. The count of refusing looks and its
         # limit (1) are read through the control store: `pipe add <Mod> granted_look -1` gives a spent look back
-        refused = [r for r in tail if r.get("verdict") == "not_covered"]
-        used, lim = PC.used(mod, "granted_look", len(refused)), PC.limit(mod, "granted_look", 1)
+        bal = look_balance(st, d, rs, mod)
+        if bal.get("error"):
+            return bal["error"]
+        refused, used, lim = bal["refused"], bal["used"], bal["lim"]
         if refused and used >= lim:
             cross = refused[max(1, min(len(refused), len(refused) - (used - lim))) - 1]
             tail = tail[:tail.index(cross) + 1]
@@ -1408,6 +1436,56 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         if prior and (prior.get("advisory") or (prior.get("contract") or {}).get("advisory")):
             return prior, "%s: %s" % (what, why)
         return None, "%s: %s" % (what, why)
+    unit = UNIT_PREFIX + "%d" % int(now or time.time())
+    # the granted look is RESERVED before the judge runs and charged only at a validated settlement (control.py; spec
+    # 03-merged.md "Allowances"): of two judges racing for one look, one runs; a run that dies or errs charges nothing
+    lk = reserve_look(d, unit)
+    if lk and not lk["ok"]:
+        return None, "skip: %s" % lk["why"]
+    try:
+        rec, msg = _judge(d, repo, runner, timeout, now, charge, reader, unit)
+    except BaseException as e:
+        settle_look(lk, None, "the judge run raised %s" % type(e).__name__)
+        raise
+    settle_look(lk, rec, msg)
+    return rec, msg
+
+
+def reserve_look(d, unit):
+    """-> None when no granted look stands on this concept, else {"ok", "why", "mod", "unit"}: the look reserved for
+    `unit` in the control store (one transaction; a reservation whose holder died is released first). An unreadable
+    store reserves nothing: ok False, and no judge runs on a look nobody can account for."""
+    st = DS.load_state(d)
+    bal = look_balance(st, d)
+    if bal is None:
+        return None
+    mod = bal["mod"]
+    if bal.get("error"):
+        return {"ok": False, "why": bal["error"], "mod": mod, "unit": unit}
+    try:
+        ok, why = C.reserve(mod, C.LOOK, unit, bal["win"], base=bal["lim"], used=bal["used"])
+    except C.Unreadable as e:
+        return {"ok": False, "why": "CONTROL UNREADABLE: %s" % e, "mod": mod, "unit": unit}
+    return {"ok": ok, "why": None if ok else why, "mod": mod, "unit": unit}
+
+
+def settle_look(lk, rec, msg):
+    """Settle the look exactly once: a well-formed verdict (covered or not_covered, no error) is a validated result and
+    is charged; anything else (no answer, malformed, a runner fault, a raise) releases it as a system fault (fail_system,
+    on the meter with its own alarm)."""
+    if not lk or not lk.get("ok"):
+        return
+    valid = bool(rec) and rec.get("verdict") in ("covered", "not_covered") and not rec.get("error")
+    try:
+        C.settle(lk["unit"], valid, "verdict %s" % (rec or {}).get("verdict") if valid else
+                 "%s" % ((rec or {}).get("error") or msg))
+    except C.Unreadable as e:
+        print("coverage_judge: the look's settlement could not be written (%s); its holder's death releases it" % e,
+              file=sys.stderr)
+
+
+def _judge(d, repo, runner, timeout, now, charge, reader, unit):
+    """run()'s judging body, on the unit name run() reserved the look for."""
     tree = CT.load(d)
     before = fresh_key(d, tree)
     st0 = DS.load_state(d)
@@ -1420,7 +1498,6 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
     # the repair check (7_same_problem_rule.md): every look on a refusing prior verdict whose gaps carry their numbers
     slotted = bool(prior and prior.get("verdict") == "not_covered" and all(
         isinstance(g, dict) and g.get("gid") for g in prior.get("gaps") or []))
-    unit = UNIT_PREFIX + "%d" % int(now or time.time())
     env = dict(os.environ, RM_ROLE_UNIT=unit)
 
     def tail_for(schema):

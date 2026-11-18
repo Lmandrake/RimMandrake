@@ -615,6 +615,36 @@ def t_kill_bookkeeping():
     os.environ.pop("RM_DISPATCHER_STATE", None)
 
 
+def t_coverage_look():
+    """The owner-granted coverage look through coverage_judge: reserved before the judge runs, one of two racing judges
+    gets it, a run with no valid verdict releases it (fail_system, metered), a valid one charges it, a grant adds one."""
+    fresh()
+    import coverage_judge as CJ
+    d = os.path.join(TMP, "looks", "ModLook")
+    os.makedirs(d)
+    win = "2026-11-17T18:45:12Z"
+    with open(os.path.join(d, "stage.json"), "w") as f:
+        json.dump({"mod": "ModLook", "stage": "designer", "coverage_rounds": [],
+                   "coverage_releases": [{"at": "2026-11-18T10:00:00Z", "rounds_at": 0, "judges_at": [],
+                                          "granted_at": win}]}, f)
+    a, b = CJ.reserve_look(d, "rm-coverage-judge-a"), CJ.reserve_look(d, "rm-coverage-judge-b")
+    check(a["ok"] and not b["ok"] and "none available" in b["why"], "two judges for one granted look: one reserves",
+          (a, b))
+    CJ.settle_look(a, None, "no answer file")
+    acc = C.account("ModLook", C.LOOK, win, 1)
+    check(acc["held"] == 0 and acc["charged"] == 0 and C.faults("ModLook") == 1, "a judge with no valid verdict "
+                                                                                 "releases the look as a system fault",
+          acc)
+    c = CJ.reserve_look(d, "rm-coverage-judge-c")
+    CJ.settle_look(c, {"verdict": "not_covered", "error": None}, "ok")
+    check(C._q("SELECT state FROM reservations WHERE run='rm-coverage-judge-c'", one=True)["state"] == "charged",
+          "a valid verdict charges the look at settlement")
+    check(C.look_window({"coverage_release_granted": {"at": win}}) == win, "a grant still waiting on its fixes keys "
+                                                                           "the same window as its release")
+    C.grant("ModLook", C.LOOK, 1, "his exception", win=win, owner_said="one more")
+    check(CJ.look_balance(CJ.DS.load_state(d), d)["lim"] == 2, "a pipe grant adds one to the look's limit")
+
+
 # ---------------------------------------------------------------- every launch site is routed; a mutant is caught
 
 def t_sites():
@@ -640,7 +670,7 @@ def t_sites():
 
 def main():
     for t in (t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
-              t_kill_bookkeeping, t_sites):
+              t_kill_bookkeeping, t_coverage_look, t_sites):
         print("== %s" % t.__name__)
         try:
             t()

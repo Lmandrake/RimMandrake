@@ -466,7 +466,7 @@ def m_blind_total(ctx, mod):
 #          limit), the readers that must call used()/limit() with this name: (module, function))
 RESOURCES = {
     "granted_look": ("look", "refusing coverage looks since the last release (a release grants exactly one look)",
-                     m_granted_look, [("coverage_judge", "stop_reason")]),
+                     m_granted_look, [("coverage_judge", "look_balance")]),
     "coverage_runs": ("cov-runs", "coverage-judge runs (since the last release, if any)",
                       _cov_count(None, "JUDGE_RUNS_MAX"), [("coverage_judge", "_caps")]),
     "coverage_not_covered": ("cov-nc", "not_covered coverage verdicts (before any release)",

@@ -103,17 +103,49 @@ def live(e, now):
     return bool(e) and (e.get("until") is None or now < float(e["until"]))
 
 
+def store_entries(now=None):
+    """-> (the `all` entry or None, {mod: entry}) of the control store's control-layer switches (control.py: `pipe off
+    all|<Mod>`, `maturation_dispatch.py pause`), shaped as this file's entries. Raises control.Unreadable."""
+    import control as C
+    now = time.time() if now is None else now
+    rows = C._q("SELECT s.scope, s.why, s.until, s.who, s.act, a.ts FROM switches s LEFT JOIN acts a ON a.id = s.act "
+                "WHERE s.layer = 'control' AND (s.scope = 'all' OR s.scope LIKE 'mod:%')")
+    al, mods = None, {}
+    for r in rows:
+        if r["until"] is not None and now >= float(r["until"]):
+            continue
+        e = {"why": r["why"], "by": r["who"] or "?", "at": float(r["ts"] if r["ts"] is not None else now),
+             "until": r["until"], "until_release": r["until"] is None, "act": r["act"], "store": True}
+        if r["scope"] == "all":
+            al = e
+        else:
+            e["mod"] = r["scope"][4:]
+            mods[e["mod"]] = e
+    return al, mods
+
+
 def state(now=None, p=None):
     """-> {"all": entry|None, "mods": {mod: entry}, "error": str|None, "said": [recent automatic resumes]}: the entries in
-    force at `now`. Never raises: an unreadable store is returned as error, and reason() reads it as paused."""
+    force at `now`: this file's (pause.json, retired: read so an old entry still holds) and the control store's (where
+    `pause` writes now). Never raises: an unreadable file or store is returned as error, and reason() reads it as
+    paused. p: read that file alone (no store)."""
     now = time.time() if now is None else now
     try:
         d = load(p)
     except Unreadable as e:
         return {"all": None, "mods": {}, "error": str(e), "said": []}
-    return {"all": d["all"] if live(d["all"], now) else None,
-            "mods": {m: e for m, e in d["mods"].items() if live(e, now)}, "error": None,
-            "said": [h for h in d["history"] if h.get("act") == "auto_resume" and now - float(h.get("at") or 0) < SAID_S]}
+    out = {"all": d["all"] if live(d["all"], now) else None,
+           "mods": {m: e for m, e in d["mods"].items() if live(e, now)}, "error": None,
+           "said": [h for h in d["history"] if h.get("act") == "auto_resume" and now - float(h.get("at") or 0) < SAID_S]}
+    if p is None:
+        import control as C
+        try:
+            al, mods = store_entries(now)
+        except C.Unreadable as e:
+            return {"all": None, "mods": {}, "error": "the control store: %s" % e, "said": []}
+        out["all"] = out["all"] or al
+        out["mods"].update(mods)
+    return out
 
 
 def reason(st, mod=None):

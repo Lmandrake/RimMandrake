@@ -521,6 +521,12 @@ def mod_holds(p=None, now=None):
     return out
 
 
+def note(kind, scope, why, after=None, p=None, now=None):
+    """One act that records without switching (a stop-live list, say). -> the act."""
+    with txn(p) as c:
+        return _act(c, kind, scope, None, after, why, now=now)
+
+
 def lift_owner(mod, said, date=None, p=None, now=None, held_said=None):
     """Lift his hold on `mod` in the store (his words required), and remember the lifted (mod, date), so the file
     mirror's row stops holding at once. -> the store row lifted, or None when the store held no row for it."""
@@ -717,9 +723,13 @@ LOOK = "granted_look"
 
 
 def look_window(st):
-    """-> the accounting window of a concept's standing granted look (its last release's time), or None."""
+    """-> the accounting window of a concept's granted look: the grant's time (a release applied from a grant keeps
+    its granted_at; a plain release its own time; a grant still waiting on its fixes its time), or None."""
     rel = [x for x in (st or {}).get("coverage_releases") or [] if isinstance(x, dict)]
-    return str(rel[-1].get("at") or "") if rel else None
+    if rel:
+        return str(rel[-1].get("granted_at") or rel[-1].get("at") or "")
+    g = (st or {}).get("coverage_release_granted")
+    return str(g.get("at") or "") if isinstance(g, dict) else None
 
 
 # ---------------------------------------------------------------- admission and the launch primitive

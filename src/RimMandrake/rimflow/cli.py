@@ -5070,10 +5070,10 @@ def _relentless_guard(args, argv):
 
 def main(argv=None):
     av = sys.argv[1:] if argv is None else argv
-    if av[:1] == ["pipe"]:      # `rimflow pipe ...` is the one-line pipeline control (pipeline_control.py): no ledger
+    if av[:1] == ["pipe"]:      # `rimflow pipe ...` is the one-line pipeline control (control.py): no ledger
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-        import pipeline_control
-        return pipeline_control.main(av[1:])
+        import control
+        return control.main(av[1:])
     _bind_paths()
     p = build_parser()
     args = p.parse_args(argv)
