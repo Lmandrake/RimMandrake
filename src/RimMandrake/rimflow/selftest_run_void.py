@@ -111,7 +111,7 @@ def applied(st):
 
 
 RECS = {U1: {"unit": U1, "item": ITEM1, "at": T0 + 21, "ended": T0 + 1008, "status": "finished",
-             "result": "success (exited 0)", "cost_usd": 3.53, "out": "OUT_OK"},
+             "result": "success (exited 0)", "cost_usd": 3.53, "out": "OUT_NONE"},    # its out reads no JSON: it counts
         U2: {"unit": U2, "item": "RIMMANDRAKE_ROUTE_FAKE_CYCLE_TWO_FAILURES_BACK", "at": T0 + 1219, "ended": T0 + 1381,
              "status": "finished", "result": "killed: success (killed TERM)", "cost_usd": "UNMEASURED", "out": "OUT_NONE"},
         U3: {"unit": U3, "item": "RIMMANDRAKE_SETTLE_FAKE", "at": T0 + 1567, "ended": T0 + 1593, "status": "finished",
@@ -196,7 +196,8 @@ def main():
         ok(not s.get("road_back"), "the road back the void route steward opened goes with it")
         ok(MD.holder_spent(dict(s, road_back={"at": T0}), ["RB_1"]) is None,
            "holder one-run-per-set: the void holder run on RB_1 is no try at it")
-        ok(s.get("releases_used") == {}, "a ceiling release the void run spent is unspent again")
+        ok(list(s.get("releases_used") or {}) == ["rel-a"],
+           "a ceiling release the void run spent stays spent: un-spending it would release spend past the ceiling")
         ok("last_run" not in s and s.get("launches") == [],
            "builder progress: the void builder run is neither the last run judged nor a launch")
         ok(len(s["voided"]) >= 8 and all(m["class"] == "void_hand" and m["why"] for m in s["voided"]),
@@ -281,6 +282,20 @@ def main():
            "each is a system fault on the mod's own count (2), never a trial (read %d)" % RV.faults(s))
         ok(s["void_seen"].get(U1) == "counted",
            "a run judged counted is remembered (its record is not read again)")
+        ok(RV.system_cause(dict(RECS[U1], result="timeout (- -)")).startswith("it timed out")
+           and RV.system_cause(dict(RECS[U1], result="exit-code (1 -)")).startswith("the CLI exited")
+           and RV.system_cause(dict(RECS[U1], result="exit-code/claude-error (1 -)")) == ""
+           and RV.system_cause(dict(RECS[U1], result="unknown (- -)")) == "",
+           "a timeout and a CLI exit with no result are system causes; claude's own error and 'unknown' are not")
+        # the instrument trap of 2026-11-18 ~11:10 AM PST: a success run classed void_system goes back, its fault dropped
+        st3 = {"mods": {"Fake": {"steward": {}, "voided": [
+            {"book": "steward", "key": "k1", "entry": {"item": "I1", "unit": U1, "at": T0}, "class": "void_system",
+             "void": None, "why": "it ended with no result JSON (success (exited 0))", "unit": U1, "faults": 1}],
+            "system_faults": [{"at": T0, "book": "steward", "key": "k1", "unit": U1, "cause": "x", "n": 1}]}}}
+        RV.sync_system(st3, record, now=T0 + 10)
+        s3 = st3["mods"]["Fake"]
+        ok(s3["steward"].get("k1", {}).get("unit") == U1 and not s3["voided"] and RV.faults(s3) == 0,
+           "heal: a void_system entry whose record reads success is back in its book, its fault dropped")
         st2 = {"mods": {"Fake": {"steward": {"k": {"item": "X", "unit": None, "failed": "LAUNCH FAILED pool full",
                                                    "tries": 3}}}}}
         RV.sync_system(st2, record, keep_failed=lambda b, x: False, now=T0)

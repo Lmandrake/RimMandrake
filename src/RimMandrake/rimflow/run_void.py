@@ -15,8 +15,9 @@ design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md).
           designer_stage.load_state and maturation_autonomy.designer_state). A voided run's book entries are MOVED to
           the mod's `voided` list (never deleted), so an unvoid puts them back; a look it applied is un-applied (the
           grant stands again).
-  system  sync_system classes a run `void_system` when its record shows a system cause the machine can see (killed
-          or ended with no result JSON, a launch that never started and has no retry left): it is moved out the same
+  system  sync_system classes a run `void_system` when its record's own result shows a system cause the machine can
+          see (killed, timed out, the CLI exiting with no result of its own, a launch that never started and has no
+          retry left; system_cause): it is moved out the same
           way and counted on the mod's own `system_faults`, never on its trials. At SYSTEM_FAULT_LIMIT faults since
           the last `clear` the mod reads `system_fault` (alarm OPS_MATURATION_SYSTEM_FAULT_LOOP): nothing launches, no
           trial is spent, and `clear` (after reading the cause) resets the count.
@@ -42,7 +43,9 @@ ALARM_ID = "OPS_MATURATION_SYSTEM_FAULT_LOOP"
 SYSTEM_FAULT_LIMIT = 3
 # the dispatch books a run can sit in: dict books keyed by state key or item, list books of launch entries, and single
 # entries holding one run
-DICT_BOOKS = ("steward", "fixers", "releases_used")     # releases_used: a ceiling release a launch spent
+DICT_BOOKS = ("steward", "fixers")
+# NOT voided: releases_used. A ceiling release a dead run spent stays spent: un-spending it would let spend past the
+# stage ceiling, which only he releases (the census's proposal)
 LIST_BOOKS = ("blind_auto", "ingame_auto", "launches", "holder_road_back", "pilot_launches", "ledger_runs")
 ONE_BOOKS = ("last_run", "cert_rerun", "cert_red")
 # books the automatic class reads: a run there that died of a system cause would otherwise count as its trial
@@ -393,23 +396,61 @@ def _restore(s, m):
 # ---- the automatic class --------------------------------------------------------------------------------------------
 
 def system_cause(rec, runner=None):
-    """-> the system cause a run record shows, or "": killed with no result JSON or a unit dead with its finish never
-    run (detached_helper.killed), a launch that never started, or a FINISHED run that wrote no result JSON (a crash, a
-    harness or account fault, a timeout). A record that cannot be read is "" here: that run is UNMEASURED and left as
-    the books had it."""
+    """-> the system cause a run record shows, or "". Read from the record's own `result` (detached_helper.outcome,
+    written at finish from systemd's ExecStopPost variables), never from re-reading its output file: a detached run's
+    out is not one JSON document, so "no result JSON" read from it would class every finished run void (measured
+    2026-11-18 11:10 AM PST: four success runs on four mods read void_system that way). System causes: a launch that
+    never started; KILLED (detached_helper.killed: a signal stop, or a unit dead with its finish never run); a TIMEOUT;
+    the CLI exiting non-zero with no result of its own ("exit-code ..."). Not system: "success ..." (it ended), and
+    "exit-code/claude-error" (claude answered with an error of its own: a cap or the agent's, not the machine's). A
+    record that cannot be read, or whose result is "unknown" or absent, is "" here: UNMEASURED, left as the books had
+    it."""
     import detached_helper as DH
-    import role_launch as RL
     if not isinstance(rec, dict):
         return ""
     if rec.get("state") == "launch_failed":
         return "its launch never started (%s)" % str(rec.get("result") or rec.get("err") or "launch_failed")[:160]
-    k = DH.killed(rec, runner) if runner else DH.killed(rec)
-    if k:
-        return k
-    if rec.get("status") == "finished" and not isinstance(RL.read_result({"out": rec.get("out") or "",
-                                                                         "err": rec.get("err")}), dict):
-        return "it ended with no result JSON (%s)" % (rec.get("result") or "no result line")
+    res = str(rec.get("result") or "")
+    if res.startswith("killed"):
+        return "killed with no result JSON (%s)" % res
+    if rec.get("status") in ("launching", "running"):
+        k = DH.killed(rec, runner) if runner else DH.killed(rec)
+        return k or ""
+    if rec.get("status") != "finished":
+        return ""
+    if res.startswith("timeout"):
+        return "it timed out (%s)" % res
+    if res.startswith("exit-code") and not res.startswith("exit-code/claude-error"):
+        return "the CLI exited with no result of its own (%s)" % res
     return ""
+
+
+def heal_system(s, record):
+    """A void_system entry whose record no longer shows a system cause (the class was fixed, or the record was
+    repaired) goes back to its book and its fault is dropped; so does the road back its steward opened. -> [units]."""
+    mv = s.get("voided") or []
+    back = []
+    for m in mv:
+        u = m.get("unit")
+        if m.get("class") != "void_system" or not u or m["book"] in ("last_run", "road_back"):
+            continue
+        rec = record(u)
+        if isinstance(rec, dict) and rec.get("status") == "finished" and not system_cause(rec):
+            back.append(m)
+    if not back:
+        return []
+    units = {m["unit"] for m in back}
+    items = {m["entry"].get("item") for m in back if m["book"] == "steward"}
+    back += [m for m in mv if m.get("class") == "void_system" and (
+        (m["book"] == "last_run" and m.get("unit") in units) or
+        (m["book"] == "road_back" and (m.get("entry") or {}).get("caused_by") in items))]
+    done = [m for m in back if _restore(s, m)]
+    s["voided"] = [m for m in mv if not any(m is d for d in done)]
+    s["system_faults"] = [f for f in s.get("system_faults") or [] if f.get("unit") not in units]
+    seen = s.setdefault("void_seen", {})
+    for u in units:
+        seen[u] = "counted"
+    return sorted(units)
 
 
 def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
@@ -422,6 +463,7 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
     for mod, s in ((st or {}).get("mods") or {}).items():
         if not isinstance(s, dict):
             continue
+        heal_system(s, record)
         seen = s.setdefault("void_seen", {})
 
         def judge(x, book=None):
