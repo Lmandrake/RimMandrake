@@ -37,6 +37,19 @@ Per-boot bad-cycle counts from the whole probe log, and the pre/post split over 
   the pre-raise boots did between windows (one pre-raise boot ran 44 cycles / 3.6 h with 1 bad). The
   counting window set by the item runs to **2026-11-20T15:33Z**; only then is zero meaningful.
 
+## The 72 h Prime95 soak (started 2026-11-18T01:29Z, planned end 2026-11-21T01:29Z)
+
+Read it: `python3 src/RimMandrake/Utils/steve_cpu_retest/soak_read.py` (exit 0 proven / 1 instrument unproven /
+2 stalled or unplanned / 3 unreachable). Task `SteveDiag CPU Soak` (SYSTEM, boot trigger), log
+`C:\SteveDesktop\diag\soak\soak.log`. The testq lane is paused to 2026-11-21T03:29Z so no game job or reboot of ours
+lands in it. A reboot resumes the same run and logs `SOAK REBOOT` (proven by a deliberate reboot at 01:34Z).
+- The 2026-11-17 six-hour soak was **not** cut by a fault: a Conductor helper wrote its STOP file at 19:16:56Z to
+  free Steve for testq jobs (32 steps, all PASS); the fault window at 19:35Z came after, during the Pyrelands job.
+  Its log is kept at `C:\SteveDesktop\diag\soak\soak_20261117T185136Z_interrupted.log`.
+- The soak's "worker busy" yield is blind under SYSTEM (`worker_probe=blind`, measured): only a running RimWorld makes
+  it wait (`RIMMANDRAKE_UNBLIND_SOAK_WORKER_PROBE_SYSTEM_SEES_NO_DISTRO`).
+- The fault watch (watch2.ps1) keeps running during the soak, and its 4 s checks share CPUs with Prime95 every 5 min.
+
 ## The RAM test: done, clean (MEASURED 2026-10-31)
 
 - Windows Memory Diagnostic, Basic, 1 pass: no errors (events 1101/1201, 18:57Z).

@@ -1,0 +1,1 @@
+PowerShell variable names are case-insensitive: a script-body $plan=... assigns to a [switch]$Plan parameter and throws, which ended steve_cpu_soak.ps1 right after its CONTROL with no error line (2026-11-18). Give every param a name no body variable shares, and wrap the main loop in catch{ log the message } so the next one is visible.
