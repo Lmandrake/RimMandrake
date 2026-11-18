@@ -221,7 +221,7 @@ def main(argv=None):
     print("\n".join(lines))
     print("%s %s" % ("PASS" if ok else "FAIL", "offline" if a.offline else a.clause))
     why = None if a.offline else wrong_load(res)
-    if why:   # last line: relentless_live.asked_reload restages instead of sending the item back
+    if why:   # last line: proof_lint.asked_reload restages instead of sending the item back
         print("reload needed: %s" % why)
     return 0 if ok else 1
 

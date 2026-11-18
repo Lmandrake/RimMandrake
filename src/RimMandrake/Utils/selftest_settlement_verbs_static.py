@@ -9,7 +9,7 @@ Three checks, each proven able to fail by a planted break on a temp copy:
      provider really builds (a renamed label would make the live proof read "no option");
   3. the committed DLL carries the proof type's name and its .srchash names the proof source;
   4. every live-proof line in infrastructure/state/live_proofs/SETTLEMENT_VERBS_WAVE_1.txt (A1-A6) passes the
-     live gate's own relentless_live.refused_proof, and settlement_verbs_live_proof.verdict() passes only a PASS
+     live gate's own proof_lint.refused_proof, and settlement_verbs_live_proof.verdict() passes only a PASS
      line naming the clause's own verb.
 
     python3 src/RimMandrake/Utils/selftest_settlement_verbs_static.py
@@ -55,7 +55,7 @@ def live_faults(path):
     """-> faults in the live-proof file: a clause missing, or a line the live gate would refuse."""
     sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))
     import json
-    import relentless_live as RL
+    import proof_lint as RL
     rules = RL.live_rules(json.load(open(RL.RULES, encoding="utf-8")) if os.path.exists(RL.RULES) else None)
     lines = {}
     for ln in open(path, encoding="utf-8").read().splitlines():

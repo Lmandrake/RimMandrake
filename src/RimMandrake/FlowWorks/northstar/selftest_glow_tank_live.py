@@ -298,7 +298,7 @@ def main():
     root = os.path.normpath(os.path.join(HERE, "..", "..", "..", ".."))
     sys.path.insert(0, os.path.join(root, "src", "RimMandrake", "rimflow"))
     import re
-    import relentless_live as RL
+    import proof_lint as RL
     lp = os.path.join(root, "infrastructure", "state", "live_proofs", "GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP.txt")
     lines = [ln for ln in open(lp, encoding="utf-8") if ln.startswith("live-proof ") and "glow_tank_live.py" in ln]
     walls = [int(m.group(1)) for ln in lines for m in [re.search(r"--max-seconds (\d+)", ln)] if m]

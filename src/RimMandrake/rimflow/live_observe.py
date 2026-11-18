@@ -22,7 +22,7 @@ observation:
   - one valid VIOLATED decides VIOLATED: no later PASS, SATISFIED, malformed row or inability erases it;
   - else any INVALID row -> INVALID; any UNREACHED or UNKNOWN row -> that; SATISFIED only when every row is SATISFIED
     and the clause reached stage "result" (the proof says it finished);
-  - no RMOBS line at all -> NONE: the caller falls back to the regex classifier (relentless_live.could_not_ask);
+  - no RMOBS line at all -> NONE: the caller falls back to the regex classifier (proof_lint.could_not_ask);
   - a clause with RMOBS lines but none for this clause -> UNKNOWN.
 `stage` is where execution got to (STAGES); it is evidence, not attribution: a stop at launch or transport is told to
 the harness, any other non-verdict to the worker."""

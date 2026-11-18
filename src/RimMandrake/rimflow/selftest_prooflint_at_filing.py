@@ -40,7 +40,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, HERE)
-import relentless_live as L         # noqa: E402
+import proof_lint as L         # noqa: E402
 
 FAILS = []
 LR = L.live_rules({})

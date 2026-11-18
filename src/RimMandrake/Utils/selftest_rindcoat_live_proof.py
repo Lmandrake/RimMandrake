@@ -3,7 +3,7 @@
 verdict it reaches (prove_rindcoat_scald_live.decide) goes red on every way the clause can break.
 
 The line: infrastructure/state/live_proofs/RINDCOAT_TUNE_NEAR_IMMUNE_AFTER_ALL.txt must hold exactly one `live-proof A1:`
-that relentless_live.refused_proof accepts (no `$`, no shell loop, no game mutation) and that runs this proof. The
+that proof_lint.refused_proof accepts (no `$`, no shell loop, no game mutation) and that runs this proof. The
 previous line (a `for i in $(seq ...)` poll loop) is planted and must be refused.
 
 The verdict: synthetic two-day sample logs under held steam, at the clock's real rates (read from RM_ScaldExposure.xml),
@@ -21,7 +21,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "TerminalBiomes"))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
 import prove_rindcoat_scald_live as P  # noqa: E402
-import relentless_live as RL  # noqa: E402
+import proof_lint as RL  # noqa: E402
 import json  # noqa: E402
 
 ITEM = "RINDCOAT_TUNE_NEAR_IMMUNE_AFTER_ALL"

@@ -22,7 +22,7 @@ Bars (each prints PASS/FAIL; exit 1 on any FAIL):
      terrain fail B5; a duplicate canon key fails B7's loader
   B9 the live tier can run clause A1: infrastructure/state/live_proofs/PLAYER_START_SITE_1.txt holds exactly one
      `live-proof A1:` line, it runs zeddos_yard_live_proof.py (which exists) with argument A1, the .criteria file
-     holds A1, and the live gate (relentless_live.refused_proof) accepts the line; sanity: a `$(...)` spelling of
+     holds A1, and the live gate (proof_lint.refused_proof) accepts the line; sanity: a `$(...)` spelling of
      the same line and one ending `; ./game UP` are both refused (the gate can see a refusal)
 """
 import os
@@ -236,7 +236,7 @@ def main():
     # B9 the live line is one the live tier will run (a gate refusal sent this item back twice, gen 6 and 7)
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
     import json
-    import relentless_live as rl
+    import proof_lint as rl
     lr = rl.live_rules(json.load(open(os.path.join(REPO, "src", "RimMandrake", "rimflow", "relentless_rules.json"))))
     a1 = [ln.split(":", 1)[1].strip() for ln in open(LIVE_TXT).read().splitlines() if ln.startswith("live-proof A1:")]
     crit = open(LIVE_CRIT).read() if os.path.exists(LIVE_CRIT) else ""

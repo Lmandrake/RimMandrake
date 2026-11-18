@@ -15,7 +15,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
-import relentless_live_round as R  # noqa: E402
+import proof_lines as R  # noqa: E402
 import modlist_swap as M  # noqa: E402
 import deploy_custom_mods as D  # noqa: E402
 

@@ -1918,13 +1918,13 @@ def cmd_incidents(args, seat):
 def prooflint(iid, it=None, root=None, rules_path=None):
     """PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN: what the live lane would refuse in `iid`'s proof lines, asked where they are
     written instead of at a game slot (146 REFUSED rows in 3.5 days, one cut criterion refused 72 times): every
-    `live-proof` line of live_proofs/<ID>.txt through relentless_live.lint_item (cut criterion, `$`/backtick/eval/brace,
+    `live-proof` line of live_proofs/<ID>.txt through proof_lint.lint_item (cut criterion, `$`/backtick/eval/brace,
     a load or mutation, flyer wording, his ledger, a script the tree lacks). -> ["<cid>: why"]. Reads files only."""
     import relentless
     import relentless_game
-    import relentless_live
+    import proof_lint
     root = root or model.ROOT
-    lr = relentless_live.live_rules(relentless.rules(rules_path))
+    lr = proof_lint.live_rules(relentless.rules(rules_path))
     text, prose = "", []
     for rel in ("infrastructure/state/live_proofs/%s.txt" % iid, "infrastructure/state/items/%s.md" % iid,
                 "infrastructure/state/items/closed/%s.md" % iid, "infrastructure/state/live_proofs/%s.criteria" % iid):
@@ -1941,7 +1941,7 @@ def prooflint(iid, it=None, root=None, rules_path=None):
     crit = {"criteria": [{"id": c["id"], "level": c["level"], "text": c.get("text") or ""}
                          for c in (getattr(it, "criteria", None) or [])],
             "outstanding": list(getattr(it, "outstanding", None) or [])} if it is not None else None
-    return ["%s: %s" % (cid, why) for cid, why in relentless_live.lint_item(
+    return ["%s: %s" % (cid, why) for cid, why in proof_lint.lint_item(
         lr, crit, getattr(it, "title", "") or "", lines, lambda rel: os.path.isfile(os.path.join(root, rel)),
         "\n".join(prose))]
 

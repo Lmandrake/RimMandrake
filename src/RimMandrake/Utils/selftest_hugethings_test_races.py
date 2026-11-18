@@ -247,7 +247,7 @@ def live_mods_row():
     HugeThings and HugeThingsTestRaces (each a real mod folder with a packageId, the gate's input), and the file tells the
     stager about neku.largepawns, which that line cannot name."""
     sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "rimflow"))
-    import relentless_live_round as R
+    import proof_lines as R
     with open(LIVE_PROOFS, encoding="utf-8") as fh:
         text = fh.read()
     mods = R.live_mods(text)

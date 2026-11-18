@@ -2,9 +2,9 @@
 """selftest_modset_builder_mods_tier.py -- a tier named by its mods (LIGHTSPEED_REWIRE_ROUND_AS_TESTQ_CLIENT).
 
 Relentless sends every live-proof clause with no live-tier line to SteveDesktop as a testq job of profile
-tier:mods__<tokens> (relentless_live_round.mods_tier writes the name); the worker resolves that name here, at the job's
+tier:mods__<tokens> (proof_lines.mods_tier writes the name); the worker resolves that name here, at the job's
 source_sha. What must hold, offline, on a fake installed map:
-  - the name round-trips: relentless_live_round.mods_tier(pids) -> modset_builder.tier_def(name, installed) wants the
+  - the name round-trips: proof_lines.mods_tier(pids) -> modset_builder.tier_def(name, installed) wants the
     bridge, Gimme Some Slack and exactly those pids; `mods__base` wants the base alone;
   - resolve_tier closes it over dependencies and all five DLC, and refuses nothing on a clean map;
   - a token no installed mod spells stays as written, so resolve_tier reports it missing (never a quieter list); a
@@ -22,7 +22,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, "testq"))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
 import modset_builder as MB           # noqa: E402
-import relentless_live_round as LR    # noqa: E402
+import proof_lines as LR    # noqa: E402
 
 FAILS = []
 
@@ -86,7 +86,7 @@ def t_refusals():
 def t_sides_agree():
     ok(LR.MODS_TIER == MB.MODS_TIER_PREFIX and LR.MODS_TIER_BASE == MB.MODS_TIER_BASE
        and tuple(LR.MODS_TIER_ALWAYS) == tuple(MB.MODS_TIER_ALWAYS) and LR.MODS_TIER_MAX == MB.MODS_TIER_MAX,
-       "relentless_live_round and modset_builder agree on the mods__ form")
+       "proof_lines and modset_builder agree on the mods__ form")
     ok(hasattr(MB, LR.MODS_TIER_MARK), "the marker the round reads at a build's sha (%s) is modset_builder's" % LR.MODS_TIER_MARK)
     import testq
     import tier_load

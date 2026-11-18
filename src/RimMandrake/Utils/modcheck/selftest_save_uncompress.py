@@ -17,7 +17,7 @@ import test_site_saves as T  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", ".."))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
-import relentless_live_round as LR  # noqa: E402
+import proof_lines as LR  # noqa: E402
 
 FAILS = []
 

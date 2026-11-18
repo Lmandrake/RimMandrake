@@ -438,7 +438,7 @@ for _c in ("A1", "A2"):
           len(_ln) == 1 and _ln[0].split(":", 1)[1].strip().startswith("python.exe src/RimMandrake/Utils/modcheck/test_site_tier_gate.py river")
           and "test_site_saves.py prove river" in _ln[0].split("&&", 1)[1], _ln)
 sys.path.insert(0, os.path.join(HERE, "..", "..", "rimflow"))
-import relentless_live_round as RLR  # noqa: E402
+import proof_lines as RLR  # noqa: E402
 _lm = RLR.live_mods("\n".join(_LPT))
 check("12 live-mods names FlowWorks, GimmeSomeSlack, RimMandrake.Biomes",
       {"FlowWorks", "GimmeSomeSlack", "RimMandrake.Biomes"} <= set(_lm), _lm)

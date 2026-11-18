@@ -24,7 +24,7 @@ for _p in (os.path.join(UTILS, "modcheck", "live_queue"), os.path.join(UTILS, "m
 
 import drivers as D  # noqa: E402
 import extensions_rivers as RIV  # noqa: E402
-import relentless_live_round as R  # noqa: E402
+import proof_lines as R  # noqa: E402
 import row_verdict as RV  # noqa: E402
 import selftest_extensions as SE  # noqa: E402
 

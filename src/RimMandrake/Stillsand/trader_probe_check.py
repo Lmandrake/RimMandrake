@@ -19,7 +19,7 @@ row lacks pts= (the game runs a Stillsand DLL older than 208cc2f911, whose probe
 so read gen=False for every faction: its verdict says nothing about the mod).
 
 The proof guards its own build on purpose: the commit that owns it touches no shipped file, so another item's rebuild of
-the shared RimMandrake.Stillsand.dll cannot stale it (relentless_live.stale_build), and the pts= rows are what tell a
+the shared RimMandrake.Stillsand.dll cannot stale it (proof_lint.stale_build), and the pts= rows are what tell a
 current probe from an old game copy.
 
 The type and method are fixed: this script can run that one read-only probe and nothing else, which is why it calls the

@@ -13,7 +13,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.normpath(os.path.join(HERE, "..", "..", "rimflow")))
 import component_proof as cp  # noqa: E402
-import relentless_live as L  # noqa: E402
+import proof_lint as L  # noqa: E402
 
 STUCK = ("dlc_status: refusing jawa/dlc_status: 1 earlier mutating call(s) have an UNKNOWN outcome "
          "(b7164851922b4797 jawa/safe_advance). A retry could apply it twice.\n  python rimbridge_client.py --reconcile")

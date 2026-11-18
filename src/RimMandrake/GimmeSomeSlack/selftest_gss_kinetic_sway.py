@@ -361,8 +361,8 @@ class Command(unittest.TestCase):
     def test_registered_line_runs_executable_with_both_mods(self):
         root = HERE.parents[2]
         sys.path.insert(0, str(HERE.parent / "rimflow"))
-        import relentless_live_round as RR
-        import relentless_live as RL
+        import proof_lines as RR
+        import proof_lint as RL
         text = (root / "infrastructure/state/live_proofs/GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC.txt").read_text()
         command = RR.proof_lines(text)["A2"]
         mods = [m.group("mods") for m in map(RR.LIVE_MODS.match, text.splitlines()) if m]

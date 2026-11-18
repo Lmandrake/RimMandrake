@@ -67,11 +67,11 @@ src = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "rimbridge_c
 check("rimbridge_client writes the lineage on each start row", '"lineage": os.environ.get("%s")' % G.LINEAGE_ENV in src)
 import subprocess as _sp
 rl = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "rimflow")
-out = _sp.run([sys.executable, "-c", "import sys, os; sys.path.insert(0, %r); os.environ.pop(%r, None); import relentless_live as L; "
+out = _sp.run([sys.executable, "-c", "import sys, os; sys.path.insert(0, %r); os.environ.pop(%r, None); import proof_lint as L; "
                "L.Fx(); print(os.environ.get(%r, ''), os.environ.get('WSLENV', ''))" % (rl, G.LINEAGE_ENV, G.LINEAGE_ENV)],
               capture_output=True, text=True, timeout=120)
 w = (out.stdout.strip().split("\n") or [""])[-1].split(" ")
-check("relentless_live.Fx exports a lineage for its children (%s)" % (out.stderr.strip()[-200:] or "ok"),
+check("proof_lint.Fx exports a lineage for its children (%s)" % (out.stderr.strip()[-200:] or "ok"),
       out.returncode == 0 and len(w) == 2 and w[0] and G.LINEAGE_ENV in w[1].split(":"))
 # LIVETIER_PREFLIGHT_FIX_TRIPS_OWN_GUARD: the instance's two shapes. Log PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET-A1-20261106T142756Z:
 # the supervisor's own ping (pid 39752) ended 1 s before validation.py's go_to_main_menu; a sibling tick's one-shot

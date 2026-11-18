@@ -384,8 +384,8 @@ def live_line_runnable(path=LIVE_PROOFS):
     and does it run THIS proof script with stdin closed? Returns (ok, why)."""
     if RIMFLOW not in sys.path:
         sys.path.insert(0, RIMFLOW)
-    import relentless_live as L
-    import relentless_live_round as R
+    import proof_lint as L
+    import proof_lines as R
     try:
         text = open(path, encoding="utf-8").read()
     except OSError as e:
@@ -470,7 +470,7 @@ def main():
 
     # The live proof line must be one the supervisor's gate will run (gen 5 ended game_refused on a "$(wslpath ...)" line).
     ok3, why3 = live_line_runnable()
-    check(ok3, "live-proofs A1 line passes relentless_live.refused_proof and runs prove_glasswalk_speed.py: %s" % why3)
+    check(ok3, "live-proofs A1 line passes proof_lint.refused_proof and runs prove_glasswalk_speed.py: %s" % why3)
 
     print("RESULT SUMP_GLASSWALK_SPEED_RATIO_1/offline %s (%d failed)" % ("PASS" if not fails else "FAIL", len(fails)))
     return 0 if not fails else 1

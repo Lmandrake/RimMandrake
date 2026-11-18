@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import prove_rows as P  # noqa: E402
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rimflow"))
-import relentless_live as L  # noqa: E402
+import proof_lint as L  # noqa: E402
 
 ZOMBIE = "get_game_info answered with no ticksGame -- loaded-looking ZOMBIE state (aborted load); success flags prove nothing"
 IDS = ["flora_harvest.site_ready_flora", "flora_harvest.harvest_yields_Chemfuel_from_RM_Wartshrub"]

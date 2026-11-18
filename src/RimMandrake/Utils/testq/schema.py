@@ -120,7 +120,7 @@ def is_proofs(job):
     return bool(((job or {}).get("selector") or {}).get("proofs"))
 
 
-# The proof line grammar of rimflow/relentless_live_round.PROOF_LINE (a selftest holds the two to the same parse): the
+# The proof line grammar of rimflow/proof_lines.PROOF_LINE (a selftest holds the two to the same parse): the
 # worker reads the item's lines from its pinned clone and imports nothing from rimflow.
 PROOF_LINE = re.compile(r"^\s*(?:[-*]\s+)?(?:`live-proof\s+(?P<cid1>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd1>[^`\s][^`]*?)`"
                         r"|live-proof\s+(?P<cid2>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd2>\S.*?))\s*$")

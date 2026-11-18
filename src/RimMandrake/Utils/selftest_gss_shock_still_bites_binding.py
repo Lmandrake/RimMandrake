@@ -21,8 +21,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
 
-import relentless_live as RL  # noqa: E402
-import relentless_live_round as RR  # noqa: E402
+import proof_lint as RL  # noqa: E402
+import proof_lines as RR  # noqa: E402
 
 ITEM = "GSS_FALLEN_WIRE_FIX_SHOCK_STILL_BITES"
 BINDING = os.environ.get("BINDING_FILE") or os.path.join(REPO, "infrastructure", "state", "live_proofs", ITEM + ".txt")

@@ -24,7 +24,7 @@ import types
 HERE = os.path.dirname(os.path.abspath(__file__))
 DRIVER = os.environ.get("HOSPICE_PROOF") or os.path.join(HERE, "..", "Scarlands", "hospice_live_proof.py")
 sys.path.insert(0, os.path.join(HERE, "..", "rimflow"))
-import relentless_live  # noqa: E402
+import proof_lint  # noqa: E402
 
 SERVITOR_PASS = ("PASS haul offered; Unit 4410 (RM_DH_Litany) woke as RM_AncientServitor, colony mech, no mechanitor, "
                  "2 modification hediffs present, lights dark->lit, etchant absent")
@@ -88,7 +88,7 @@ def last(text):
 for hook in (REAL_FAIL, SERVITOR_PASS):
     code, text, hooks, defs = run("A2", CRADLE_SWAP, hook)
     check(code == 2, "swap live: exit %r, want 2 (%s)" % (code, last(text)))
-    check(last(text).startswith(relentless_live.RELOAD + ":"), "swap live: last line is not a reload ask: %r" % last(text))
+    check(last(text).startswith(proof_lint.RELOAD + ":"), "swap live: last line is not a reload ask: %r" % last(text))
     check("mandrake.rsw.droidworks" in last(text), "swap live: the reload line names no mod to drop: %r" % last(text))
     check(not hooks, "swap live: the Revival hook ran anyway (%s)" % hooks)
     check("FAIL" not in text, "swap live: the log carries a FAIL, which could_not_ask keeps as a verdict: %r" % text)

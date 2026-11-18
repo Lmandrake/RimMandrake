@@ -188,8 +188,8 @@ check("live_proofs live-mods loads the overlay", bool(lm) and "ModernFittingsCan
 SITE = "live-site A1: python.exe src/RimMandrake/Utils/live_site.py --game"
 check("live_proofs holds the --game site line", SITE in open(proofs, encoding="utf-8").read().splitlines())
 sys.path.insert(0, os.path.join(M.REPO, "src", "RimMandrake", "rimflow"))
-import relentless_live  # noqa: E402
-check("the lane accepts that site command", relentless_live.refused_site(SITE.split(": ", 1)[1]) is None)
+import proof_lint  # noqa: E402
+check("the lane accepts that site command", proof_lint.refused_site(SITE.split(": ", 1)[1]) is None)
 
 defs = ""
 for root, _, files in os.walk(os.path.join(FW, "Defs")):

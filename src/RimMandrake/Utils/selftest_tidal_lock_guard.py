@@ -244,7 +244,7 @@ def live_proof_file(text=None, saves=SAVES):
     """The live_proofs file -> list of what is missing for A1 to measure (empty = measurable)."""
     # the round's OWN parsers, so this reads the file exactly as the live round does
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
-    import relentless_live_round as R
+    import proof_lines as R
     if text is None:
         text = read(REPO, "infrastructure", "state", "live_proofs", "TIDAL_LOCK_FIX_PRESET_NAME_WAS_MISSING.txt")
     gaps = []

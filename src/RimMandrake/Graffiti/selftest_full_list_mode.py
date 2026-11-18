@@ -445,10 +445,10 @@ def t7_live_proofs():
     """The blind checker of d3c0dfedb4 read the game clauses' lines as reading nothing the full-list clauses name.
     The item's GREEN-FULL clauses (F1, F2) are its spec: a fresh full-list load, RunningModsListForReading vs
     FULL.LATEST, the full suite with config full. This pins each line to its clause."""
-    import relentless_live_round
+    import proof_lines
     txt = open(os.path.join(PROOFS, ITEM + ".txt"), encoding="utf-8").read()
     crit = _criteria(open(os.path.join(PROOFS, ITEM + ".criteria"), encoding="utf-8").read())
-    lines = relentless_live_round.proof_lines(txt)
+    lines = proof_lines.proof_lines(txt)
     check("7 every criteria clause has a live-proof line", crit and all(k in lines for k in crit),
           (sorted(crit), sorted(lines)))
     check("7 F1 and F2 are the GREEN-FULL final verification",
@@ -493,20 +493,20 @@ def _criteria_text(text):
 
 def t8_supervisor_gates():
     """gen 7 ended game_refused: F2's criterion said 'pre-flight', which the supervisor's flyer_re reads as a flyer.
-    Run the supervisor's own refusals (relentless_live.refused_proof with relentless_rules.json's live rules, and
+    Run the supervisor's own refusals (proof_lint.refused_proof with relentless_rules.json's live rules, and
     relentless_game.gate's word test) over every clause's full criterion text and proof line, offline."""
     import re
-    import relentless_live
-    import relentless_live_round
+    import proof_lint
+    import proof_lines
     rules = json.load(open(os.path.join(ROOT, "src", "RimMandrake", "rimflow", "relentless_rules.json"), encoding="utf-8"))
-    lr = relentless_live.live_rules(rules)
+    lr = proof_lint.live_rules(rules)
     txt = open(os.path.join(PROOFS, ITEM + ".txt"), encoding="utf-8").read()
     crit = _criteria_text(open(os.path.join(PROOFS, ITEM + ".criteria"), encoding="utf-8").read())
-    lines = relentless_live_round.proof_lines(txt)
+    lines = proof_lines.proof_lines(txt)
     check("8 the item's ledger title was read", bool(TITLE), TITLE)
     check("8 criteria text read for every clause", crit and all(crit.get(k) for k in ("A1", "A2", "F1", "F2")), crit)
     for cid in sorted(crit):
-        why = relentless_live.refused_proof(lr, TITLE, crit[cid], lines.get(cid))
+        why = proof_lint.refused_proof(lr, TITLE, crit[cid], lines.get(cid))
         check("8 %s passes the supervisor's refused_proof (no flyer word, expansion or forbidden act)" % cid,
               why is None, why)
     words = " ".join([TITLE] + [lines.get(c) or "" for c in sorted(crit)])
@@ -515,7 +515,7 @@ def t8_supervisor_gates():
     # mutant: the gen-7 wording comes back
     bad = crit.get("F2", "") + " the pre-flight running_list is PASS"
     check("8 mutant: a criterion saying 'pre-flight' is refused as a flyer",
-          (relentless_live.refused_proof(lr, TITLE, bad, lines.get("F2")) or "").startswith("flyer:"))
+          (proof_lint.refused_proof(lr, TITLE, bad, lines.get("F2")) or "").startswith("flyer:"))
 
 
 def t9_spree_rows_measurable():

@@ -59,8 +59,8 @@ SITE = "live-site A1: python.exe src/RimMandrake/Utils/live_site.py --game"
 lines = [ln.strip() for ln in open(LP, encoding="utf-8")] if os.path.exists(LP) else []
 check("RINDCOAT live_proofs holds %r" % SITE, SITE in lines)
 sys.path.insert(0, os.path.join(HERE, "..", "rimflow"))
-import relentless_live  # noqa: E402
-check("the lane accepts that site command", relentless_live.refused_site(SITE.split(": ", 1)[1]) is None)
+import proof_lint  # noqa: E402
+check("the lane accepts that site command", proof_lint.refused_site(SITE.split(": ", 1)[1]) is None)
 
 print("SELFTEST " + ("FAIL: %s" % FAILS if FAILS else "PASS"))
 sys.exit(1 if FAILS else 0)

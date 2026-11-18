@@ -25,15 +25,15 @@ def check(label, ok):
 
 LP = os.path.join(ROOT, "infrastructure", "state", "live_proofs", "HOSE_SITE_FIX_TERRAIN_WONT_READ_BACK.txt")
 prose = open(LP, encoding="utf-8").read() if os.path.exists(LP) else ""
-import relentless_live  # noqa: E402
-import relentless_live_round as R  # noqa: E402
+import proof_lint  # noqa: E402
+import proof_lines as R  # noqa: E402
 sites = R.proof_lines(prose, R.SITE_LINE)
 proofs = R.proof_lines(prose)
 SITE = "python.exe src/RimMandrake/Utils/live_site.py --game"
 check("A1 has a live-site line: %r" % sites.get("A1"), sites.get("A1") == SITE)
 check("A1's proof line is still there", "prove_terrain_overlays_cleared.py" in proofs.get("A1", ""))
 check("A2 has no site line (proof_hose makes its own map)", "A2" not in sites)
-check("the lane accepts the site command", relentless_live.refused_site(SITE) is None)
+check("the lane accepts the site command", proof_lint.refused_site(SITE) is None)
 
 # the proof against a no-map bridge: exit 2, NO VERDICT, nothing but map_info called
 NOMAP = {"success": False, "message": "No current map. These tools are map-scoped; use the planet-scoped world tool family instead."}

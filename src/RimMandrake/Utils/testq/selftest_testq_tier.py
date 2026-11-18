@@ -4,7 +4,7 @@
 Owner by card 2026-11-05: SteveDesktop is the exact-tier host. What must hold, with no ssh and no game:
   schema: a job of profile tier:<name> selects proofs and nothing else, names its item, runs on lane stevedesktop only;
   a tier profile without proofs, proofs without a tier, lane archmagi or any, no item, or a malformed tier are refused;
-  the worker's proof-line grammar is rimflow's (relentless_live_round.PROOF_LINE), parse for parse;
+  the worker's proof-line grammar is rimflow's (proof_lines.PROOF_LINE), parse for parse;
   submit: `testq.py submit ITEM --proofs A1 --profile tier:<t>` queues it with no modcheck preview; an unknown tier is
   refused; the same request again answers with the pending job (no double);
   batching: admission stays on a tier train while a job for it waits, even past a higher priority; off a tier, priority
@@ -68,7 +68,7 @@ def t_schema():
 
 
 def t_proof_grammar():
-    import relentless_live_round as LR
+    import proof_lines as LR
     text = ("live-proof A1: python.exe a.py < /dev/null\n- `live-proof B2: python3 b.py --x`\nlive-proof a3: no\n"
             "live-proof A1: second wins nothing\nlive-tier: x\n")
     check(S.proof_lines(text) == LR.proof_lines(text) and S.proof_lines(text) == {"A1": "python.exe a.py < /dev/null",

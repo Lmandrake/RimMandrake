@@ -17,7 +17,7 @@ import sys
 
 # preflights whose FAIL says the running game is not a playable load: another load can change them, no proof edit can
 RELOAD_PREFLIGHTS = ("game_loaded",)
-RELOAD = "reload needed"            # relentless_live.RELOAD / asked_reload: the last line's prefix
+RELOAD = "reload needed"            # proof_lint.RELOAD / asked_reload: the last line's prefix
 
 
 def why_missing(doc, missing):

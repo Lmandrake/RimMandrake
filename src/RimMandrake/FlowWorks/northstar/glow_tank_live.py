@@ -70,7 +70,7 @@ def main():
     ap.add_argument("--ticks", type=int, default=60000)
     ap.add_argument("--max-seconds", type=int, default=0,
                     help="wall-clock cap on the whole run (0 = none). The day stepped at ~60 ticks/s needs ~1000 s, past the "
-                         "live lane's 600 s default; relentless_live.proof_budget reads this flag and allows S + 120 s, so a run "
+                         "live lane's 600 s default; proof_lint.proof_budget reads this flag and allows S + 120 s, so a run "
                          "that outruns S stops itself and reads UNMEASURED instead of being killed mid-day "
                          "(GAMEENV_FIX_HARNESS_EEE35FD9_ITEMS_WAIT)")
     a = ap.parse_args()

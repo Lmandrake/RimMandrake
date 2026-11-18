@@ -4,7 +4,7 @@ under held steam lives two days, and its RM_ScaldExposure reads near 0.08x the u
 
     python.exe src/RimMandrake/TerminalBiomes/prove_rindcoat_scald_live.py --max-seconds 2400
 
-One literal command. --max-seconds is the live round's own budget flag (relentless_live.proof_budget gives such a proof
+One literal command. --max-seconds is the live round's own budget flag (proof_lint.proof_budget gives such a proof
 N + 120 s); the run stops advancing 60 s short of it. Resumable across rounds: the first call stages the
 site with proof_scald_steam.setup(), every call advances up to that wall of real time with proof_scald_steam.run() and keeps its
 samples in TEMP, and the call that sees the two days through judges. Exit 0 PASS, 1 FAIL, 2 UNMEASURED (bridge down, run

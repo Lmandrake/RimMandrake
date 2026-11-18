@@ -223,9 +223,9 @@ check("A1 line checks makeup before and after the run",
       < _a1[0].rindex("test_vitals_tier_makeup.py") and "&&" in _a1[0], True)
 
 # the supervisor's game gate refuses a proof bash builds at run time ($(...), backticks, eval, braces) or one that would
-# change the game: every live-proof line must pass relentless_live.refused_proof as the gate reads it (gen7 died there)
+# change the game: every live-proof line must pass proof_lint.refused_proof as the gate reads it (gen7 died there)
 sys.path.insert(0, os.path.join(HERE, "..", "..", "rimflow"))
-import relentless_live as RL
+import proof_lint as RL
 import relentless_game as RG
 _lp = open(os.path.join(HERE, "..", "..", "..", "..", "infrastructure", "state", "live_proofs",
                         "VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL.txt")).read()
@@ -236,7 +236,7 @@ for _c, _cmd in sorted(_lines.items()):
 check("A2 line runs --tier full", "--tier full" in _lines.get("A2", ""), True)
 # gen9's live FAILs were the SITE: a 14-mod game. The staging loads only what `live-mods:` names, so the line must name
 # every ratchet_pilot want id (A1's tier); A2 is the full-list clause, so it is GREEN-FULL and waits for the full list
-import relentless_live_round as RLR
+import proof_lines as RLR
 _lm = [m.lower() for m in RLR.live_mods(_lp)]
 for _w in [w for w in _t["want"] if not TM.MB._is_retired_donor(w) and w != TM.MB.BRIDGE]:
     check("live-mods names %s" % _w, _w.lower() in _lm, True)

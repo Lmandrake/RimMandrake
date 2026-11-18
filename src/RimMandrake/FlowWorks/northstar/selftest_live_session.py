@@ -977,7 +977,7 @@ for _d in (os.path.join(_REPO, "src", "RimMandrake", "rimflow"), os.path.join(_R
            os.path.join(_REPO, "src", "RimMandrake", "Utils")):
     if _d not in sys.path:
         sys.path.insert(0, _d)
-import relentless_live_round as _LR
+import proof_lines as _LR
 import schema as _TS
 import modset_builder as _MB
 

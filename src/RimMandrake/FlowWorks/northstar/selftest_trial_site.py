@@ -275,7 +275,7 @@ def sec8_live_tier():
     Archmagi's round ran A1/A2 on a 23-mod list and read WRONG GAME, which no lane step could fix."""
     root = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
     sys.path.insert(0, os.path.join(root, "src", "RimMandrake", "rimflow"))
-    import relentless_live_round as R
+    import proof_lines as R
     with open(os.path.join(root, "infrastructure", "state", "live_proofs",
                            "TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS.txt"), encoding="utf-8") as fh:
         text = fh.read()

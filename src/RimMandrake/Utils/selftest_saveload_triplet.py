@@ -343,13 +343,13 @@ except Exception as ex:  # noqa: BLE001 - an import/wiring crash is a FAIL, neve
 
 # 9. the live clause is readable whole and bound to the --triplet run. The ledger cuts a criterion at
 # model.CRITERION_TEXT_MAX; the supervisor refuses a live round on a cut criterion no prose extends ("cut at 160 chars on
-# the ledger and no prose holds the rest", 2026-11-04). Read A1 exactly as the live round does (relentless_live.Fx.prose +
+# the ledger and no prose holds the rest", 2026-11-04). Read A1 exactly as the live round does (proof_lint.Fx.prose +
 # whole_criterion over the ledger's own copy) and check the proof line it would run is the GSS --triplet run.
 ITEM = "PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET"
 try:
     ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
     sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "rimflow"))
-    import relentless_live as RL   # noqa: E402
+    import proof_lint as RL   # noqa: E402
     fx = RL.Fx(books=ROOT)
     item = fx.item(ITEM) or {}
     a1 = [c for c in item.get("criteria") or [] if c.get("id") == "A1"]

@@ -8,7 +8,7 @@ load existed where ART_RESOLUTION_MEASURE_AT_MAX_ZOOM A1's precondition (Camera+
   - a dependency that drags SCS back is refused (forbid), never a quieter list;
   - a tier without no_zoom still gets SCS (the owner's 2026-10-04 policy is untouched);
   - write_config does not add SCS to a list holding Camera+;
-  - the live-proof file binds A1 to this tier through relentless_live_round.clause_tier, with no live-mods line.
+  - the live-proof file binds A1 to this tier through proof_lines.clause_tier, with no live-mods line.
 """
 import os
 import sys
@@ -19,7 +19,7 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
 import modset_builder as MB           # noqa: E402
-import relentless_live_round as LR    # noqa: E402
+import proof_lines as LR    # noqa: E402
 
 TIER = "cameraplus_nozoom"
 CAM = "brrainz.cameraplus"

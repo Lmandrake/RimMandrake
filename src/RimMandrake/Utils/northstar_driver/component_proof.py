@@ -47,7 +47,7 @@ def find(out_path, chain, component):
 def refusal(out_path):
     """-> one line naming why the driver refused before any chain ran, or "" when it did not refuse.
     A bridge refusal for an UNKNOWN-outcome call is rimbridge_client's IndeterminateError: named so the live round
-    reads the run as a harness fault (relentless_live.EXIT1_HARNESS)."""
+    reads the run as a harness fault (proof_lint.EXIT1_HARNESS)."""
     with open(out_path) as f:
         doc = json.load(f)
     if not doc.get("refused") or doc.get("components"):
@@ -56,7 +56,7 @@ def refusal(out_path):
     ev = " | ".join("%s %s: %s" % (p.get("name"), p.get("status"), str(p.get("evidence") or "").split("\n")[0][:160])
                     for p in bad)
     tag = " (IndeterminateError: run rimbridge_client.py --reconcile)" if "UNKNOWN outcome" in ev else ""
-    # status words in lower case: a FAIL token here would read as the mod's observed FAIL (relentless_live.observed_fail)
+    # status words in lower case: a FAIL token here would read as the mod's observed FAIL (proof_lint.observed_fail)
     line = "%s%s; %s" % (doc["refused"], tag, ev[:600])
     return line.replace(" FAIL", "=fail").replace(" UNMEASURED", "=unmeasured")
 
