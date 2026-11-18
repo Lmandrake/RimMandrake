@@ -1,0 +1,3 @@
+A claude -p child started from inside an agent session inherits that session's environment and the project's Stop hooks. Any env var that arms a Stop hook in the parent (a session-holding hook, a result-before-stop gate) also arms it in the child, so a text-only consultation child cannot end its turn and keeps refusing until something kills it. Clear the arming variable in the child's env, or launch the child outside the project dir, and check that the child's turn actually ended before you count its answer. Measured 2026-11-10: three repeated refusals before the fix.
+item: RIMMANDRAKE_RETIRE_OLD_PIPELINE_REMNANTS_TEN_SLIPPED_INTO_LANES
+home: NONE
