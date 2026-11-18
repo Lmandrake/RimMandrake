@@ -226,11 +226,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.22,
+    "seconds": 0.23,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-17T19:11:47Z",
+    "at": "2026-11-18T03:22:36Z",
     "result": "PASS",
-    "build": "d6e1facfb89b50d1ebc7",
+    "build": "2275b157c7d8e450196f",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py"
    }
   },
