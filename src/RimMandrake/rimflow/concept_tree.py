@@ -561,9 +561,18 @@ def owner_lines(*repos):
     return out if read else None
 
 
+class OwnerEvents(dict):
+    """owner_events' reading: {tsn: event}, plus `unread` - True when no copy of OWNER.jsonl could be read at all, so an
+    empty reading of a shard that WAS read (no events) is not taken for one that could not be
+    (RIMMANDRAKE_SPLIT_UNREADABLE_LEDGER_FROM_FORGED_SOURCE_CITATION)."""
+    unread = False
+
+
 def owner_events(repo, *more):
-    out = {}
-    for line in owner_lines(repo, *more) or []:       # a bad byte spoils its line only
+    lines = owner_lines(repo, *more)
+    out = OwnerEvents()
+    out.unread = lines is None
+    for line in lines or []:       # a bad byte spoils its line only
         try:
             ev = json.loads(line)
         except (ValueError, RecursionError):

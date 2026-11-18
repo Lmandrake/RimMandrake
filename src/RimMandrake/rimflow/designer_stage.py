@@ -344,6 +344,15 @@ def source_errors(src, where, repo, owner_ev, on_origin=None):
         if not SOURCE.fullmatch(s.strip()):
             errs.append("%s: source %r is not OWNER:<tsn>, CONDUCTOR:<tsn>, ITEM:<id>, log.md#L<n> or a repo path" % (
                 where, s))
+        elif s.startswith("OWNER:") and owner_ev is not None and getattr(owner_ev, "unread", not owner_ev):
+            # RIMMANDRAKE_SPLIT_UNREADABLE_LEDGER_FROM_FORGED_SOURCE_CITATION: CT.owner_events returns {} (not None) for an
+            # unreadable shard, which called every real citation of his forged. Could-not-look is its own answer: the
+            # citation is not judged either way, and the caller refuses on this error as on any other. Its reading says
+            # which it was (OwnerEvents.unread: a READ shard with no events still calls a citation absent); a plain empty
+            # dict cannot say, so it is taken as unread. None stays "not asked" (record_errors' default; every production
+            # caller passes CT.owner_events' reading).
+            errs.append("%s: %s UNMEASURED: OWNER.jsonl could not be read here, so this citation is neither verified nor "
+                        "called forged; validate where the ledger is present" % (where, s))
         elif s.startswith("OWNER:") and owner_ev is not None and s[6:] not in owner_ev:
             errs.append("%s: %s finds no event in OWNER.jsonl" % (where, s))
         elif not s.startswith(("OWNER:", "CONDUCTOR:", "ITEM:", "log.md#")):

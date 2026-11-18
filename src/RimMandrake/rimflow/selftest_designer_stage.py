@@ -119,8 +119,50 @@ def turn_file_fallback(tmp):
     check("turn file: fallback ignores a turn_100.md directory", turn == older, turn)
 
 
+def source_ledger_answers():
+    """RIMMANDRAKE_SPLIT_UNREADABLE_LEDGER_FROM_FORGED_SOURCE_CITATION: source_errors called a real OWNER citation forged
+    when OWNER.jsonl could not be read, because CT.owner_events returns {} (not None) for an unreadable shard. Four
+    answers kept apart: present (no error); absent from a ledger that WAS read (forged); unreadable (UNMEASURED, its own
+    words, never "finds no event"); not asked (None: the caller did not read it, no judgment)."""
+    cite, read = "OWNER:1794793804486811354", {"1794793804486811354": {"tsn": "1794793804486811354"}}
+    other = {"5": {"tsn": "5"}}
+    ok_ = DS.source_errors(cite, "w", ".", read)
+    check("source: a citation whose event is in the read ledger has no error", ok_ == [], ok_)
+    forged = DS.source_errors("OWNER:999999", "w", ".", other)
+    check("source: a citation absent from a READ ledger is called forged (finds no event)",
+          len(forged) == 1 and "finds no event in OWNER.jsonl" in forged[0], forged)
+    blind = DS.source_errors(cite, "w", ".", {})
+    check("source: an UNREADABLE ledger ({}) reads UNMEASURED by name and never calls the citation forged",
+          len(blind) == 1 and "UNMEASURED" in blind[0] and "finds no event" not in blind[0] and cite in blind[0], blind)
+    asked = DS.source_errors(cite, "w", ".", None)
+    check("source: owner_ev None (not asked) judges nothing", asked == [], asked)
+    two = DS.source_errors([cite, "OWNER:999999"], "w", ".", {})
+    check("source: an unreadable ledger leaves a forged-looking citation unjudged too, never verified",
+          len(two) == 2 and all("UNMEASURED" in e for e in two), two)
+    # the reading itself says which empty it is (Codex review 2026-11-18): no shard anywhere vs a shard with no events
+    t = tempfile.mkdtemp(prefix="owner_ev_")
+    try:
+        none_ev = CT.owner_events(t)
+        check("owner_events: no readable OWNER.jsonl reads empty AND unread", none_ev == {} and none_ev.unread, none_ev)
+        p = os.path.join(t, CT.OWNER_SHARD)
+        os.makedirs(os.path.dirname(p))
+        open(p, "w").close()
+        empty_ev = CT.owner_events(t)
+        check("owner_events: a READ shard with no events reads empty and NOT unread",
+              empty_ev == {} and not empty_ev.unread, empty_ev)
+        got = DS.source_errors(cite, "w", ".", empty_ev)
+        check("source: a citation against a READ but empty ledger is absent (finds no event), not UNMEASURED",
+              len(got) == 1 and "finds no event in OWNER.jsonl" in got[0], got)
+        got = DS.source_errors(cite, "w", ".", none_ev)
+        check("source: against owner_events' unread reading it is UNMEASURED", len(got) == 1 and "UNMEASURED" in got[0],
+              got)
+    finally:
+        shutil.rmtree(t, ignore_errors=True)
+
+
 def main():
     DS.owner_away = lambda: (False, "selftest: attended")   # the real presence must not move this test
+    source_ledger_answers()
     tmp = tempfile.mkdtemp(prefix="designer_stage_")
     real_lint, real_gate, real_done = CT.lint, CT.gate, DS.done_items
     # the test repo has no ledger to fold: the done items are this fixture (the real fold is probed at the end)
