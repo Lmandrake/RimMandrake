@@ -84,8 +84,8 @@ file that he judges as the mod's face. In `scenes.json`, beside `scenes`:
   earlier showcase exercised. The program checks this against every later showcase in the list: none may have offered
   more new capabilities at an earlier position. It features ONLY very different functionality: what it shares with earlier showcases is
   the minimum needed to stage it. The numbers are in `src/RimMandrake/rimflow/showcase_rules.json`: `max_overlap` 0.25
-  (share of its exercised capabilities that earlier showcases already exercised) and `min_new_after_first` 3. Both are
-  **UNMEASURED** first guesses until replayed against real concepts. Above the overlap limit, every shared capability
+  (share of its exercised capabilities that earlier showcases already exercised) and `min_new_after_first` 3. Both were replayed against
+  ten concepts' showcase sets on 2026-11-18 and kept (`status` in that file says what was measured). Above the overlap limit, every shared capability
   carries its staging reason in `overlap_why`. A scene he named that is not orthogonal (FlowWorks' pit trap and island
   bridges both reuse the moat's pits and drawbridges) stays a scene; it is a showcase only if it passes these rules, or
   its shared capabilities carry `overlap_why`.
