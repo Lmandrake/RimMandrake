@@ -1,0 +1,1 @@
+systemd-run --user does not inherit the shell PATH or seat: a Codex lane launched that way died in 23 s with env: 'node': No such file, and its clone landed in rm/scratch/UNKNOWN. Pass --setenv=PATH="$PATH" --setenv=AGENT_SEAT=<seat>, and read the lane's first events within two minutes of launch before telling anyone it is running.
