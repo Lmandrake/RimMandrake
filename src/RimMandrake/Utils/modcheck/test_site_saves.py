@@ -47,6 +47,13 @@ for _p in (_HERE, _UTILS):
 import testenv_guards as TG  # noqa: E402
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import save_uncompress  # noqa: E402
+from rmpaths import rm_str  # noqa: E402
+
+
+def default_work_dir():
+    """Evidence + saves_backup_* dir: agent scratch, never the repo (a backup is the whole Saves folder).
+    rm_str raises RmDataRootUnset when no storage root is configured; there is no repo fallback."""
+    return rm_str("scratch", "test_site_saves")
 
 REGISTRY = os.path.join(_HERE, "test_site_saves.json")
 
@@ -727,7 +734,7 @@ def main(argv=None):
     ap.add_argument("--build-if-missing", action="store_true", help="prove: build the site first if its save is absent")
     ap.add_argument("--no-load", action="store_true", help="prove: A1 only (save present, header fits), no load")
     ap.add_argument("site", nargs="?", choices=sorted(SITES))
-    ap.add_argument("--work", default=None, help="evidence dir (default Transient/test_site_saves)")
+    ap.add_argument("--work", default=None, help="evidence dir (default <agent storage>/rimmandrake/scratch/test_site_saves)")
     ap.add_argument("--out", default=None, help="receipt JSON")
     ap.add_argument("--fingerprint", help="build pyrelands: the Pyrelands def fingerprint of the source fixture")
     ap.add_argument("--from-tag", default=None, help="build pyrelands: the source fixture's tag (e.g. r6)")
@@ -741,8 +748,7 @@ def main(argv=None):
         return 0
     if not a.site:
         ap.error("%s needs a site" % a.verb)
-    root = os.path.dirname(os.path.dirname(os.path.dirname(_UTILS)))
-    work = a.work or os.path.join(root, "Transient", "test_site_saves")
+    work = a.work or default_work_dir()
     os.makedirs(work, exist_ok=True)
     from rimbridge_client import RimBridge, resolve_endpoint
     h, p, t = resolve_endpoint()

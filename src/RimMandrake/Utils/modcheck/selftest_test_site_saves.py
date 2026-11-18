@@ -457,5 +457,17 @@ _g = TG.tier_gaps(_sub, "river", tier_list=_TL)
 check("13 the checker's want+DLC subset (%d of %d) is a gap" % (len(_sub), len(_TL)),
       len(_sub) < len(_TL) and _g != [], (_sub, _g))
 
+# 14. The default evidence dir (it holds a full saves_backup_*) is agent scratch, never inside the repo
+#     (SITESAVES_FIX_BACKUP_FILLS_REPO: it defaulted to <repo>/Transient/test_site_saves).
+_repo = os.path.realpath(os.path.join(HERE, "..", "..", "..", ".."))
+try:
+    _dw = os.path.realpath(T.default_work_dir())
+except Exception as _e:  # noqa: BLE001 - a missing storage root must fail loudly, not fall back into the repo
+    _dw = "ERR %r" % (_e,)
+check("14 default work dir exists as a function and lies outside the repo",
+      not _dw.startswith("ERR") and not (_dw + os.sep).startswith(_repo + os.sep), (_dw, _repo))
+check("14 default work dir is under the rimmandrake agent-storage scratch",
+      os.sep + "rimmandrake" + os.sep + "scratch" + os.sep in _dw + os.sep, _dw)
+
 print("selftest_test_site_saves: %d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
