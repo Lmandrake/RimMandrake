@@ -1150,6 +1150,19 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 finish_slot_alarms(rs, run)
                 close_concept(name, rs, cfg, run, {}, 0, now, act, obs)
                 continue
+            cs = judge_stopped(run, now, obs)
+            if cs:
+                # RIMMANDRAKE_CHARGE_NOTHING_FOR_JUDGE_STOPPED_RUN: the coverage judge stopped the concept and the unit
+                # exited STOP_EXIT before claude started; charged 0, closed at 0, and its alarm is the stop's own
+                run.update(state="done", tokens=0, raw_tokens=0, token_unit=TOKEN_UNIT, by="judge_stop",
+                           coverage_stop=cs)
+                act(do="role_done", role=name, unit=run["unit"], ticket=run.get("item"), note=True,
+                    why="%s run %s stopped by the stage-5 coverage judge at %s (%s): no model started, 0 tokens" % (
+                        name, run["unit"], cs.get("at"), cs.get("why") or "?"),
+                    blind=blind(name, "completed", run.get("mode"), run["unit"]))
+                finish_slot_alarms(rs, run)
+                close_concept(name, rs, cfg, run, {}, 0, now, act, obs)
+                continue
         if run.get("concept") and isinstance(res, dict):
             try:
                 pc = (obs.get("program_closed") or program_closed)(run["concept"], run["unit"])
@@ -2359,6 +2372,23 @@ def stage5_program(concept, unit=None, sync=True):
     return "designer", "close rejected the program's result: %s" % "; ".join(errs[:3])
 
 
+def judge_stopped(run, now, obs):
+    """-> the concept's coverage_stop ({at, why}) when the stage-5 coverage judge stopped it inside this run's window
+    [run.at, now] and no model started (no transcript), else None: the run is harvested as before. An unreadable
+    stage.json is None too (a failed run, alarmed, as before)."""
+    try:
+        st = (obs.get("stage_status") or stage_status)(run["concept"])
+    except Exception:  # noqa: BLE001 - unread: harvested as before
+        return None
+    cs = st.get("coverage_stop") if isinstance(st, dict) else None
+    at = utc_epoch(cs.get("at")) if isinstance(cs, dict) else None
+    if at is None or st.get("status") != "blocked" or not int(run["at"]) <= at <= now:
+        return None
+    if obs.get("transcript") and obs["transcript"](run) is not None:
+        return None
+    return cs
+
+
 def program_closed(concept, unit):
     """-> ("closed", its stage.json result entry) when stage5_program closed `unit`, ("error", why) when that step did
     not run on it, else None (the Designer ran, as today)."""
@@ -2428,6 +2458,22 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
                 if final else "retried next tick", owed["tries"], iso(owed["since"])))
         return
     run.pop("close_owed", None)
+    if run.get("by") == "judge_stop":
+        # the judge's designed stop: one alarm naming it and its release; no rejection route, so no re-chain onto the
+        # blocked concept (whose launch the next tick would refuse as role:<name>:stage_refused)
+        cs = run.get("coverage_stop") or {}
+        act(do="alarm", kind="role:%s:coverage_stop" % name, ticket=run.get("item"), note=True,
+            why="%s run %s on %s: the stage-5 coverage judge stopped it at %s before any model started (%s); not "
+                "re-chained. `python3 src/RimMandrake/rimflow/coverage_judge.py release %s --why \"...\"` grants one "
+                "more look" % (name, run["unit"], run["concept"], cs.get("at") or "?", cs.get("why") or "?",
+                               run["concept"]))
+        try:
+            (obs.get("stage_land") or stage_land)(run["concept"], run["unit"])
+        except Exception as e:  # noqa: BLE001 - said; the files stay on disk and the next close lands them
+            act(do="alarm", kind="role:%s:stage_land" % name, ticket=run.get("item"), note=True,
+                why="%s run %s on %s: its stage state did not land on origin/main: %s" % (
+                    name, run["unit"], run["concept"], str(e)))
+        return
     try:
         act(do="alarm" if not ok else "role_stage", kind="role:%s:stage_rejected" % name,
             ticket=run.get("item"), note=True,

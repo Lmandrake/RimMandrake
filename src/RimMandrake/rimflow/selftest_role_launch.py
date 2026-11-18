@@ -362,7 +362,48 @@ def test_ops_reading_points_not_mapping():
           "a status.json whose points is a list reads UNMEASURED, not a crash: %r" % (r,))
 
 
-TESTS = (test_incident_run_cap_and_page, test_after_ready_covered_slot, test_ops_reading_points_not_mapping, test_stop_call_failed_is_not_ok, test_stop_reports_each_failure, test_failed_stop_reissued_each_tick,
+# ---------------------------------------------------------------- a run the stage-5 coverage judge stopped
+def test_judge_stopped_run_charged_nothing():
+    """RIMMANDRAKE_CHARGE_NOTHING_FOR_JUDGE_STOPPED_RUN: the judge stops a concept (coverage_stop) and the unit exits
+    before claude starts. No result, no transcript, the stop inside the run window: 0 tokens, closed at 0, one alarm
+    naming the stop and its release, no re-chain. The same run with the stop before it opened: harvested as before."""
+    import selftest_designer_chain as SC
+    row = dict(RL.ROLE_DEFAULTS, **SC.designer_row())
+
+    def harvest(stop_at):
+        rs = {"runs": [{"state": "running", "unit": "u-judge", "at": SC.T - 600, "day": RL.day_of(SC.T),
+                        "budget": 400000, "mode": "run", "item": "X_ITEM", "concept": SC.C1, "scope": "S.scope",
+                        "marker": "M"}]}
+        closes, acts = [], []
+        st = {"stage": 5, "status": "blocked", "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: stopped",
+              "coverage_stop": {"at": RL.iso(stop_at), "why": "judge spend over its limit"}}
+        obs = {"unit_state": lambda u: "inactive", "result": lambda r: None, "procs": lambda *a, **k: [],
+               "transcript": lambda r: None, "program_closed": lambda c, u: None,
+               "stage_close": lambda c, u, t: (closes.append((u, t)), (False, ["no result.json"]))[1],
+               "stage_land": lambda c, u: None, "stage_turn": lambda c: None, "stage_status": lambda c: st}
+        RL._supervise_one("Designer", rs, row, obs, SC.T, lambda **kw: acts.append(kw), set())
+        return rs, closes, acts
+
+    rs, closes, acts = harvest(SC.T - 300)
+    run = rs["runs"][0]
+    alarms = [a.get("kind") for a in acts if a["do"] == "alarm"]
+    check(run["tokens"] == 0 and run["raw_tokens"] == 0 and closes == [("u-judge", 0)],
+          "a judge-stopped run is charged 0 tokens and closed at 0: tokens %r, closes %r" % (run.get("tokens"), closes))
+    check(alarms == ["role:Designer:coverage_stop"]
+          and "coverage_judge.py release" in next(a["why"] for a in acts if a["do"] == "alarm"),
+          "one alarm, the judge's stop, naming its release: %r" % alarms)
+    check(not rs.get("run_now") and not rs.get("run_now_queue"),
+          "a judge-stopped run is not re-chained: %r" % (rs.get("run_now") or rs.get("run_now_queue")))
+    rs, closes, acts = harvest(SC.T - 900)
+    run = rs["runs"][0]
+    alarms = [a.get("kind") for a in acts if a["do"] == "alarm"]
+    check(run["state"] == "failed" and run["tokens"] is None and closes == [("u-judge", None)]
+          and "role:Designer:failed" in alarms and "role:Designer:stage_rejected" in alarms,
+          "a stop from before the run opened: harvested as before (failed, counted at its budget): %r %r %r" % (
+              run.get("state"), closes, alarms))
+
+
+TESTS = (test_judge_stopped_run_charged_nothing, test_incident_run_cap_and_page, test_after_ready_covered_slot, test_ops_reading_points_not_mapping, test_stop_call_failed_is_not_ok, test_stop_reports_each_failure, test_failed_stop_reissued_each_tick,
          test_unit_state_and_scope_of, test_launch_result, test_launch_argv_shape, test_run_budget_usd_hard_stop, test_model_id, test_ops_reading,
          test_band, test_validate_role)
 
