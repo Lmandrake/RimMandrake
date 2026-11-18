@@ -75,9 +75,9 @@ radius), and the proposed new name.
 | path | who uses it (blast radius) | proposed new name |
 |---|---|---|
 | `src/RimMandrake/rimflow/relentless.py` | 8,562 lines. Imported by `detached_helper.py` (Store, Effects, rules, unit_state, run_tokens, read_result, role_scope, _stop_call), `cli.py` (guard, rules), `role_launch.py` (kick, set_status, status, unit_name, Store), `maturation_autonomy.py` (pilot_model, CHAIN_MAX_PER_DAY, day_of), `evidence.py` (Store, harvest_receipts, marker_receipt, verdict), `circling.py`, `validator_replay.py`, `scratch_clone.py` and about 40 selftests. Its store lives at `/home/mandrake/rm/relentless/store`; the clone pool at `/home/mandrake/rm/relentless/clones`. The tick, leasing and Builder/Judge stages inside it are dead (rm-relentless.timer masked 2026-11-13). | split: `rimflow/run_store.py` (Store, Effects, rules, receipts), `rimflow/run_units.py` (unit_state, kick, unit_name, stop), the pool under a neutral path (`/home/mandrake/rm/pool/`); delete the tick and every function only it reaches, with their selftests |
-| `src/RimMandrake/rimflow/relentless_*.py` | 54 modules, all reachable by import from `relentless.py` (measured by an AST import walk from every non-era file). Most serve only the dead tick (stage, wake, wall, exam, seeds, dispute, live_round...). | delete each one the split modules above do not import; rename the rest beside them |
+| `src/RimMandrake/rimflow/relentless_*.py` | 42 modules, all reachable by import from `relentless.py`; at function level most are dead (see "Phase 2: measured reach" below). Most serve only the dead tick (stage, wake, wall, exam, seeds, dispute, live_round...). | delete each one the split modules above do not import; rename the rest beside them |
 | `src/RimMandrake/rimflow/relentless_*.json` | config read by `relentless.py` and its modules (`relentless_rules.json` is read by `cli.py guard`, `detached_helper.py`, `circling.py`) | move the keys the split modules still read into `rimflow/run_rules.json`; delete the rest |
-| `src/RimMandrake/rimflow/selftest_relentless*.py` | about 130 selftests of the code above; none is in `pipeline_tests.json` or `publish_tree_checks.json`. `selftest_relentless.py` case `real` (the pool is every eligible item) is red on the real ledger; its ticket `RIMMANDRAKE_POOL_ELIGIBLE_FINISH_ITEMS_LEFT_OUT` was dropped because the pool selection serves only the retired tick | each goes with the code it tests: deleted with dead code, renamed with live code |
+| `src/RimMandrake/rimflow/selftest_relentless*.py` | 117 selftests of the code above (119 tracked `selftest_relentless*` files with the two in `Utils/`); none is in `pipeline_tests.json` or `publish_tree_checks.json`. `selftest_relentless.py` case `real` (the pool is every eligible item) is red on the real ledger; its ticket `RIMMANDRAKE_POOL_ELIGIBLE_FINISH_ITEMS_LEFT_OUT` was dropped because the pool selection serves only the retired tick | each goes with the code it tests: deleted with dead code, renamed with live code |
 | `src/RimMandrake/rimflow/selftest_bridge_seat_relentless.py` | tests the bridge seat RELENTLESS that `model.bridge_identity` still accepts for old `bridge` events | goes with the split |
 | `src/RimMandrake/rimflow/testdata/relentless_packet_handscored.json` | fixture of `selftest_relentless_packet.py` | goes with its selftest |
 | `src/RimMandrake/Utils/testdata/relentless_jam_2026-11-01.jsonl` | fixture of `selftest_relentless_watch.py` (ops_watch's relentless reader) | goes with ops_watch's relentless points |
@@ -175,13 +175,105 @@ shoved back in there for future users."
   them was kept; only the retired machinery they pointed at changed. Files that only mention FOUNDRY items as filed
   history were left alone.
 
+## Phase 2: measured reach (2026-11-18, BENCH, item `RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES`)
+
+Instrument: `src/RimMandrake/Utils/era_reach.py` (its selftest plants a repo and is watched to fail on a mutant). It
+walks the call graph from every non-era file's real uses (`from relentless_x import a`, `alias.attr`, `getattr(alias,
+"a")`) into `relentless.py` and the 42 `relentless_*.py`: a function is a node, a class's methods are nodes reached
+only when the class is reached and the method's name is used somewhere reached, a module's import-time statements run
+when it is imported, and a parameter named `sup` is `relentless` itself (the tick passes `sys.modules[__name__]`).
+What it cannot see: `getattr` on a non-module object, `exec`, string tables; so every cut is followed by an
+undefined-name check. Script-path calls are not imports and were grepped by hand: `publish.py` `wake_relentless` and
+`Utils/land.sh` run `relentless_wake.py poke` after every landing (it pokes the masked tick: dead in effect), and
+`ops_watch.py` runs `relentless.py expedite set` (inside its retired relentless points). No enabled systemd unit names
+`relentless` (every `rm-relentless*` and `rm-store-ledger-diff.*` unit is masked).
+
+Function counts (functions plus methods; constants not counted). Columns: reached from **all importers**; from **live
+code only**, after setting aside the importers that are themselves Relentless-era tools (below); and the **cut line**:
+live code plus every live test (mod proofs in FlowWorks, GimmeSomeSlack, TerminalBiomes, BlueDesert, modcheck, perf
+and `Utils/`, and the rimflow tests of live code), the set the split keeps.
+
+| module | all importers | live code only | + live tests (the cut line) | lines kept / all |
+|---|---|---|---|---|
+| `relentless.py` | 103/388 | 49 | 121 | 1,981 / 7,784 |
+| `relentless_account.py` | 0/11 | 0 | 0 | 0 / 134 |
+| `relentless_answer.py` | 0/6 | 0 | 0 | 0 / 70 |
+| `relentless_attrib.py` | 8/24 | 0 | 8 | 88 / 423 |
+| `relentless_binding.py` | 6/12 | 0 | 0 | 0 / 133 |
+| `relentless_bindjudge.py` | 0/16 | 0 | 0 | 0 / 194 |
+| `relentless_block.py` | 3/16 | 0 | 0 | 0 / 315 |
+| `relentless_books_left.py` | 0/12 | 0 | 12 | 140 / 140 |
+| `relentless_boxrun.py` | 18/20 | 0 | 0 | 0 / 362 |
+| `relentless_breakers.py` | 13/18 | 0 | 11 | 117 / 216 |
+| `relentless_broker.py` | 7/35 | 0 | 0 | 0 / 372 |
+| `relentless_canary.py` | 0/15 | 0 | 0 | 0 / 154 |
+| `relentless_cause.py` | 2/5 | 0 | 2 | 20 / 103 |
+| `relentless_disk.py` | 7/12 | 7 | 7 | 50 / 160 |
+| `relentless_dispute.py` | 14/55 | 14 | 55 | 712 / 712 |
+| `relentless_envcause.py` | 0/8 | 0 | 0 | 0 / 91 |
+| `relentless_exam.py` | 22/66 | 18 | 36 | 513 / 911 |
+| `relentless_expedite.py` | 0/11 | 0 | 0 | 0 / 146 |
+| `relentless_explain.py` | 1/14 | 0 | 0 | 0 / 130 |
+| `relentless_game.py` | 8/145 | 3 | 9 | 85 / 2,342 |
+| `relentless_incident.py` | 9/20 | 0 | 3 | 13 / 281 |
+| `relentless_integrity.py` | 2/19 | 2 | 2 | 41 / 289 |
+| `relentless_jobs.py` | 23/23 | 0 | 0 | 0 / 215 |
+| `relentless_live.py` | 96/114 | 11 | 39 | 654 / 1,968 |
+| `relentless_live_round.py` | 13/59 | 1 | 11 | 111 / 792 |
+| `relentless_names.py` | 13/58 | 13 | 13 | 239 / 1,151 |
+| `relentless_packet.py` | 2/7 | 0 | 0 | 0 / 69 |
+| `relentless_pool_why.py` | 0/8 | 0 | 0 | 0 / 125 |
+| `relentless_prooflines.py` | 1/9 | 0 | 0 | 0 / 88 |
+| `relentless_reach.py` | 20/26 | 0 | 1 | 7 / 422 |
+| `relentless_reachfix.py` | 21/38 | 0 | 21 | 270 / 708 |
+| `relentless_release.py` | 0/25 | 0 | 0 | 0 / 344 |
+| `relentless_repair_slot.py` | 0/2 | 0 | 0 | 0 / 37 |
+| `relentless_seeds.py` | 0/56 | 0 | 0 | 0 / 777 |
+| `relentless_selfbuild.py` | 0/15 | 0 | 0 | 0 / 259 |
+| `relentless_showing.py` | 1/35 | 0 | 0 | 0 / 512 |
+| `relentless_stage.py` | 0/44 | 0 | 0 | 0 / 485 |
+| `relentless_strikes.py` | 3/3 | 0 | 3 | 15 / 15 |
+| `relentless_tickprof.py` | 0/18 | 0 | 0 | 0 / 134 |
+| `relentless_trust.py` | 0/14 | 0 | 0 | 0 / 215 |
+| `relentless_usage.py` | 10/11 | 9 | 10 | 147 / 153 |
+| `relentless_wake.py` | 2/12 | 1 | 1 | 2 / 191 |
+| `relentless_wall.py` | 43/64 | 24 | 32 | 373 / 719 |
+| **all 43 modules** | 471/1569 | 152 | 397 | 5,578 / 24,841 |
+
+So **397 of 1,569 functions are live (25%)**; about 5,600 of 24,800 function lines move, the rest is deleted. 23
+of the 42 modules have no live function at all: `account`, `answer`, `binding`, `bindjudge`, `block`, `boxrun`,
+`broker`, `canary`, `envcause`, `expedite`, `explain`, `jobs`, `packet`, `pool_why`, `prooflines`, `release`,
+`repair_slot`, `seeds`, `selfbuild`, `showing`, `stage`, `tickprof`, `trust` (some show a count in the first column
+only through the era tools set aside below).
+
+Importers that are themselves Relentless-era tools, set aside from the roots (each says so in its own docstring; each
+goes with the dead code): `rimflow/validator_replay.py` (replays "the REAL supervisor transitions"; it alone pins
+`relentless.contract/finish/unhold/verdict` and 85 functions of `relentless_live`), `rimflow/lightspeed_wire.py` (writes
+proof lines "for owed Relentless criteria"), `rimflow/block_migrate.py` (one-shot over relentless store items),
+`rimflow/replay_unreached_closes.py` (replays past Relentless closes), and `ops_watch.py`'s relentless points
+(`c_relentless`, `rl_game_hold_idle`, `rl_broker_turn_ended`, the `expedite` caller). Also set aside: 29 rimflow tests
+with non-era names that test the dead tick or the dead live round (for example `selftest_live_verdict.py`,
+`selftest_repro_miss.py`, `selftest_workshop_live_mods.py`, `selftest_pool_dead_runs_release.py`); they go with the
+code they test.
+
+The live callers, by what they reach: `detached_helper.py` (`Store`, `Effects.remove_clone` and the bundle path,
+`rules`), `cli.py` (`guard` on every guarded verb; `prooflint` at file/close/implemented through
+`relentless_live.lint_item`, `live_rules`, `relentless_game.proof_lines`), `role_launch.py` (`Store`; the Setter seam
+`relentless_exam.kick/status/set_status/unit_name`; the arbiter seam `relentless_dispute.role_stage_dispute`),
+`maturation_autonomy.py` (`pilot_model`, `CHAIN_MAX_PER_DAY`, `day_of`), `circling.py` (`Store`, `rules`), `evidence.py`
+(`Store`, `relentless_wall.box_config`), `owner_queue.py` (`relentless_game.flyer_hold`), `modlist_swap.py`
+(`relentless_names.default_index`), `modledger_backfill.py` (`relentless_wake.store_dir`), and the mod proofs
+(`relentless_live_round.proof_lines/live_mods/folders/site_for`, `relentless_live.live_rules/refused_proof/refused_site`).
+
+A live retired-era behaviour found on the way: `relentless.guard` refuses `rimflow close/claim/start/...` on an item
+the dead tick still "carries". Measured 2026-11-18 14:50 PST: 25 store items sit in leased states (19 `game`,
+4 `checking`, 2 `stopping`) with no tick to settle them. The split moves the guard unchanged (a move, not a redesign);
+its removal is filed as `RIMMANDRAKE_RETIRE_LEASE_GUARD_TWENTY_FIVE_GHOST_LEASES`.
+
 ## UNMEASURED
 
 What this run could not settle, and what would settle it:
 
-- Whether each `relentless_*` module is dead or alive at function level: the AST walk shows all 54 reachable from
-  `relentless.py`, which live code imports. Settled by a call-graph walk from the live importers' actual call sites
-  (Phase 2).
 - Whether `LIVEPROOF_REDEPLOY_FIX_TRIPS_PEER_DLL` (a live proof re-deploying into the running game) still happens in
   today's live drivers: left open. Settled by grepping today's proof scripts for `modcheck run` without
   `MODCHECK_SKIP_DEPLOY`.
