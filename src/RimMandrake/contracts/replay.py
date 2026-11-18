@@ -10,7 +10,8 @@ hardened by CONTRACTS_REPLAY_HARDEN_OK_WITHOUT_PROOF).
                  fixtures/allowances.json exactly (and, for fixtures, every expectation held);
         exit 1 = an unexplained difference, a missed expectation, or a broken instrument (worker died, short output,
                  a module that did not come from the tree it should have);
-        exit 2 = no unexplained difference, but something promised was UNMEASURED (an absent or empty store).
+        exit 2 = no unexplained difference, but something promised was UNMEASURED (an absent or empty store, or a
+                 --base that is not a commit on HEAD's history: then no family runs, and each is named UNMEASURED).
 
 How old and new are run (GPT review contracts #1-#4): two isolated source trees are built under a temp dir -- OLD is
 `git archive --base` (default the commit before contracts were wired), NEW is a copy of the working tree -- and the
@@ -37,7 +38,10 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 RM = os.path.dirname(HERE)                                   # src/RimMandrake
 REPO = os.path.dirname(os.path.dirname(RM))
-BASE = "c8d1d12855"                                          # HEAD before the contracts wiring (2026-10-27)
+# HEAD before the contracts wiring (2026-10-27): the parent of 1726e1808a, the first contracts commit on main. It was
+# "c8d1d12855", a commit never on main (absent from most clones, a stray object in others), so C2/C4/C8 could not run
+# (RIMMANDRAKE_REVIVE_REPLAY_BASE_SHA_GREEN_HID_THREE_UNRUN); its four READERS blobs are identical to this one's.
+BASE = "08f2ffa1268a7174b14477bcc7af269454bf6970"
 OUT = "/mnt/d/ClaudeWork/rimmandrake/contracts"
 WORKER = os.path.join(HERE, "replay_worker.py")
 ALLOWANCES = os.path.join(HERE, "fixtures", "allowances.json")
@@ -68,6 +72,32 @@ class InstrumentError(Exception):
 
 def git(*args, **kw):
     return subprocess.run(["git", "-C", REPO] + list(args), check=True, capture_output=True, timeout=120, **kw).stdout
+
+
+BASE_FIX = ("fetch this clone's full history (not shallow), or pass --base <a commit on origin/main before the contracts "
+            "wiring: the parent of the first commit that added src/RimMandrake/contracts/compat.py>")
+
+
+def resolve_base(base):
+    """-> (full sha, None) when base names a commit on HEAD's history, else (None, why): no such object, not a commit,
+    or not an ancestor of HEAD (a stray object proves nothing about the code this tree came from). Never raises."""
+    def g(*a):
+        return subprocess.run(["git", "-C", REPO] + list(a), capture_output=True, text=True, timeout=120)
+    try:
+        t = g("cat-file", "-t", str(base))
+        if t.returncode:
+            return None, "base %s names no object here (%s); %s" % (base, t.stderr.strip(), BASE_FIX)
+        if t.stdout.strip() != "commit":
+            return None, "base %s is a %s, not a commit; %s" % (base, t.stdout.strip(), BASE_FIX)
+        sha = g("rev-parse", "%s^{commit}" % base).stdout.strip()
+        a = g("merge-base", "--is-ancestor", sha, "HEAD")
+        if a.returncode == 1:
+            return None, "base %s is not on HEAD's history (a stray commit); %s" % (base, BASE_FIX)
+        if a.returncode:
+            return None, "base %s: git merge-base could not say (%s); %s" % (base, a.stderr.strip(), BASE_FIX)
+        return sha, None
+    except (OSError, subprocess.SubprocessError) as e:
+        return None, "base %s: git could not be asked (%s: %s)" % (base, type(e).__name__, e)
 
 
 # ------------------------------------------------------------------ trees and workers
@@ -316,7 +346,10 @@ def snapshot(dest):
             snap[k] = shutil.copyfile(STORES[k], os.path.join(dest, os.path.basename(STORES[k])))
     clone = os.path.join(dest, "clone")
     sh = os.path.join(clone, "infrastructure", "state", "ledger", "events")
-    shutil.copytree(STORES["shards"], sh, ignore=lambda d, fs: [f for f in fs if not f.endswith(".jsonl")])
+    if os.path.isdir(STORES["shards"]):
+        shutil.copytree(STORES["shards"], sh, ignore=lambda d, fs: [f for f in fs if not f.endswith(".jsonl")])
+    else:       # absent (a sparse clone): no records, so ledger_events reads UNMEASURED like any absent store
+        os.makedirs(sh)
     snap["clone"] = clone
     q = os.path.join(dest, "testq")
     for st in TESTQ_STATES:
@@ -544,11 +577,23 @@ def main(argv=None):
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--out", default=OUT)
     a = ap.parse_args(argv)
+    if a.what == "commission" and a.n < 1:
+        ap.error("-n %d: a commission of fewer than 1 record measures nothing" % a.n)
     allow = load_allowances(a.allowances)
     t0 = time.time()
+    base, why = resolve_base(a.base)
+    if not base:    # could not look: no family runs, and the report names each one, never GREEN or a pass
+        rep = {"base_error": why, "unmeasured_families": list(FAMILIES), "base": a.base}
+        os.makedirs(a.out, exist_ok=True)
+        path = os.path.join(a.out, "replay_%s_%s.json" % (a.what, time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())))
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(rep, f, indent=1)
+        print("%s: no family ran (UNMEASURED: %s): %s -> %s UNMEASURED, not a pass or a fail" % (
+            a.what, ", ".join(FAMILIES), why, path))
+        return 2
     tmp = tempfile.mkdtemp(prefix="contracts_replay_")
     try:
-        trees = make_trees(tmp, a.base, a.new_tree)
+        trees = make_trees(tmp, base, a.new_tree)
         work = os.path.join(tmp, "work")
         os.makedirs(work)
         if a.what == "fixtures":

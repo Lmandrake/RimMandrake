@@ -19,6 +19,9 @@ needs pydantic:
   C7  close_evidence_kind on a v4 line never mutates the dict (the mac is over the raw dict)
   C11 model rules (review #10-#12): legacy version types, attempt ids, impossible timestamps
   C12 strict replay works on BYTES: a duplicate key and bytes that are not UTF-8 are refused (review #5)
+  C13 a replay base that is not a commit on HEAD's history (no such object, a blob) is refused before any tree is built:
+      exit 2, UNMEASURED, the sha and its fix named, every family listed UNMEASURED; BASE itself resolves
+      (RIMMANDRAKE_REVIVE_REPLAY_BASE_SHA_GREEN_HID_THREE_UNRUN: BASE named no object on main, so C2/C4/C8 never ran)
 needs pydantic and the base commit (old readers come from git):
   C2  replay fixtures: two isolated trees, every expectation in expected.json holds, every old/new difference is
       exactly its allowances.json entry
@@ -30,6 +33,7 @@ A check that cannot run is reported with the UNMEASURED phrase and the run never
 """
 import contextlib
 import copy
+import glob
 import io
 import json
 import os
@@ -304,6 +308,47 @@ def c12(RP):
     check("C12 input class ts_nonstr", RP.input_class("ledger_events", b'{"ts": 5}') == "ts_nonstr")
 
 
+def c13(RP):
+    blob = subprocess.run(["git", "-C", RP.REPO, "rev-parse", "HEAD:README.md"], capture_output=True, text=True).stdout.strip()
+    for bad, what in (("0000000deadbeef0", "no such object"), (blob, "a blob, not a commit")):
+        out_dir = tempfile.mkdtemp(prefix="c13_")
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                code = RP.main(["fixtures", "--base", bad, "--out", out_dir])
+            rep = json.load(open(glob.glob(os.path.join(out_dir, "replay_fixtures_*.json"))[0]))
+        finally:
+            shutil.rmtree(out_dir, ignore_errors=True)
+        out = buf.getvalue()
+        check("C13 a base that is %s: exit 2, UNMEASURED, the sha and the fix named" % what,
+              code == 2 and bad[:10] in out and "UNMEASURED" in out and "--base" in out, (code, out[-300:]))
+        check("C13 ... and every family is listed UNMEASURED in the report",
+              sorted(rep.get("unmeasured_families") or []) == sorted(RP.FAMILIES), rep.get("unmeasured_families"))
+    sha, why = RP.resolve_base(RP.BASE)
+    check("C13 BASE resolves to a commit on HEAD's history", bool(sha), why)
+    try:
+        with contextlib.redirect_stderr(io.StringIO()):
+            RP.main(["commission", "-n", "0", "--out", tempfile.gettempdir()])
+        code = 0
+    except SystemExit as e:
+        code = e.code
+    check("C13 a commission of 0 records is refused (exit 2), never an OK that measured nothing", code == 2, code)
+    was = dict(RP.STORES)
+    d = tempfile.mkdtemp(prefix="c13_snap_")
+    try:
+        RP.STORES.update(shards=os.path.join(d, "no_such_shards"), evidence=os.path.join(d, "none"),
+                         audits=os.path.join(d, "none.jsonl"), testq=os.path.join(d, "none_q"),
+                         sessions=os.path.join(d, "none.json"))
+        snap = RP.snapshot(os.path.join(d, "snap"))
+        recs, _src = RP.real_records(snap)
+        check("C13 an absent ledger shard store snapshots empty (ledger_events UNMEASURED), not a traceback",
+              not [r for r in recs if r[0] == "ledger_events"], len(recs))
+    finally:
+        RP.STORES.clear()
+        RP.STORES.update(was)
+        shutil.rmtree(d, ignore_errors=True)
+
+
 # ------------------------------------------------------------------ replay checks (pydantic + git)
 
 def c2(RP, tmp):
@@ -453,11 +498,11 @@ def main():
     else:
         check('C11 has v4 fixtures', False)
     guard('C12', c12, RP)
-    have_git = subprocess.run(["git", "-C", RP.REPO, "cat-file", "-e", RP.BASE + "^{commit}"],
-                              capture_output=True).returncode == 0
-    if not have_git:
+    guard('C13', c13, RP)
+    base, why = RP.resolve_base(RP.BASE)
+    if not base:
         for c in ("C2", "C4", "C8"):
-            skip(c, "base commit %s absent from this clone" % RP.BASE)
+            skip(c, why)
         return finish()
     tmp = tempfile.mkdtemp(prefix="selftest_contracts_")
     try:
