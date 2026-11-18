@@ -2311,25 +2311,37 @@ def _his_word(ev):
 def commit_cards(commit, repo, owner_ev, events):
     """-> the tsns of his cards (byCard or ownerSaid events) a commit carries out, by the first tie that finds any, in the
     order of change_tied: its message cites OWNER:<tsn>; its message names a card's item; a ledger event on a card's item
-    names the commit. A card given after the commit was made is not what the commit carried out and is never cited.
+    names the commit. A card given after the commit was made is not what the commit carried out and is never cited,
+    with one exception (RIMMANDRAKE_CITE_LATE_APPROVAL_CARD_NOTE_FIX_NEVER_PASSED): his card approving a fix that had
+    already landed is cited by the last tie only, when a ledger event on its item names the commit and was written
+    AFTER the card (the record that this card approves it), and no card given before the commit ties. A note older
+    than the card cannot record it, so a later card never borrows an earlier note.
     Every tsn returned passes change_tied, so repin accepts exactly what a hand re-pin citing it would."""
     msg = (_git(repo, "log", "-1", "--format=%B", commit) or b"").decode("utf-8", "replace")
     made = _commit_time(repo, commit)
-    cards = {t: ev for t, ev in owner_ev.items() if _his_word(ev)
-             and (made is None or not str(ev.get("tsn") or t).isdigit() or int(str(ev.get("tsn") or t)) // 10 ** 9 <= made)}
-    named = set()
+
+    def tsn_of(t, ev):
+        v = str(ev.get("tsn") or t)
+        return int(v) if v.isdigit() else None
+    words = {t: ev for t, ev in owner_ev.items() if _his_word(ev)}
+    cards = {t: ev for t, ev in words.items() if made is None or tsn_of(t, ev) is None or tsn_of(t, ev) // 10 ** 9 <= made}
+    named = {}                      # item id -> the tsns (ints, or None unreadable) of the events on it naming the commit
     for e in events:
         if not e.get("id"):
             continue
         hexes = _HEX.findall(" ".join(str(e.get(k) or "") for k in ("text", "reason", "why")))
         if (CT.txt(e.get("sha")) and len(e["sha"]) >= 7 and commit.startswith(e["sha"])) or \
                 any(commit.startswith(h) for h in hexes):
-            named.add(e["id"])
+            v = str(e.get("tsn") or "")
+            named.setdefault(e["id"], []).append(int(v) if v.isdigit() else None)
+    late = [t for t, ev in words.items() if t not in cards and ev.get("id") in named and tsn_of(t, ev) is not None
+            and any(n is not None and n > tsn_of(t, ev) for n in named[ev["id"]])]
     tiers = ([t for t in re.findall(r"OWNER:([0-9]+)(?![0-9])", msg) if t in cards],
              [t for t, ev in cards.items() if ev.get("id") and ev["id"] in msg],
-             [t for t, ev in cards.items() if ev.get("id") in named])
+             [t for t, ev in cards.items() if ev.get("id") in named],
+             late)
     for tier in tiers:
-        tied = sorted(dict.fromkeys(t for t in tier if change_tied(cards[t], commit, repo, events)))
+        tied = sorted(dict.fromkeys(t for t in tier if change_tied(words[t], commit, repo, events)))
         if tied:
             return tied
     return []
