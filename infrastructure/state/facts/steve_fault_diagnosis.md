@@ -3,6 +3,39 @@
 Item `STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO`. Machine: i9-10900K, ROG STRIX Z490-G, 4×32 GB F4-2666C18.
 Live instrument: `python3 src/RimMandrake/Utils/testq/fault_monitor.py report` (timer `rm-steve-fault.timer`,
 state `D:\ClaudeWork\rimmandrake\testq\fault_state.json`). Raw evidence: `D:\ClaudeWork\rimmandrake\steve_diag\`.
+🔑 **Reading the raw log from any machine, no Archmagi needed** (measured 2026-11-17): the Desktop's host
+`ssh` cannot reach Steve, but the tailnet container can —
+`docker exec tailscale-gmail sh -c 'ssh -o BatchMode=yes mandrake@100.115.10.14 "<cmd>"'`, with the probe
+log at `/mnt/c/SteveDesktop/diag/logs/watch.log` (4262 CYCLE lines as of 2026-11-18T01:00Z).
+
+## 🔴 The +0.100 V raise DID take effect, and it did not cure the fault (MEASURED 2026-11-18T01:00Z)
+
+Per-boot bad-cycle counts from the whole probe log, and the pre/post split over all 3898 cycles:
+
+| boot (UTC) | cycles | bad cycles | bad share | uptime at last read |
+|---|---|---|---|---|
+| 2026-11-07 17:52 | 1416 | 774 | **55%** | 118.1 h |
+| 2026-11-14 09:37 | 145 | 129 | **89%** | 12.1 h |
+| 2026-11-15 09:00 | 652 | 231 | **35%** | 54.3 h |
+| **2026-11-17 15:35** (first post-raise) | 51 | **2** | **3.9%** | 4.2 h |
+| **2026-11-17 19:54** (second post-raise) | 62 | **0** | **0%** | 5.1 h |
+
+- **The raise IS visible, in temperature, not in the vcore reading.** Package temp mean fell from
+  **42.8 °C (n=3792, max 73)** before the raise to **36.1 °C (n=106, max 43)** after — and vcore's
+  *spread* collapsed from 1.004–1.332 V (mean 1.125) to 1.016–1.037 V (mean 1.031). An earlier note
+  read "vcore ~1.03 V both before and after, so the raise is not visible": that compared the MEAN
+  against a single sample and is **wrong**. What changed is the variance, not the idle level — the
+  board stopped excursioning to 1.33 V. Cooler and electrically calmer under the same workload is a
+  machine whose boost behaviour changed, i.e. the BIOS change took.
+- **And the fault still fired**: window `F20261117T153258Z` opened 4.13 h into the first post-raise
+  boot, CPUs 8 then 7, one bad cycle each, with the positive control (`inject_exit=1 clean_exit=0`)
+  passing on both boots, so the instrument could see.
+- **Severity dropped by about an order of magnitude** (2 bad cycles vs 231 in the previous window;
+  3.9% vs 35–89% of cycles). That is the shape of a **marginal** fault whose margin improved, not a
+  cured one. `[measured]`
+- 🔴 **Do not read the current 0-bad boot as a cure.** 62 clean cycles over 5.1 h is well inside what
+  the pre-raise boots did between windows (one pre-raise boot ran 44 cycles / 3.6 h with 1 bad). The
+  counting window set by the item runs to **2026-11-20T15:33Z**; only then is zero meaningful.
 
 ## The RAM test: done, clean (MEASURED 2026-10-31)
 
