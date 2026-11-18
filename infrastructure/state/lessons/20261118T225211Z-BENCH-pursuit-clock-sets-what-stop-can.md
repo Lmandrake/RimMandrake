@@ -1,0 +1,3 @@
+Sort a biome's features by speed only after reading where it sits on the Empire's clock: 'anything that takes seasons will be missed' holds where first contact is 5 to 8 days after landing, and RM_Abyss is on surveyShadowBiomes at x4 (src/RimUtinni/EmpirePursuit/Defs/Scenarios/ScenParts_EmpirePursuit.xml), which makes a stay there three weeks to two months. Applying the short-stop rule to a refuge biome pushes its slow features (lamp crops, erosion, the dread of staying) out of the versions where a crew would actually see them.
+item: RIMMANDRAKE_REWRITE_BIOME_DESIGNS_UTINNI_LENS_SHIP_LEAVES_SOON
+home: NONE

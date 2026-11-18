@@ -1,0 +1,71 @@
+Row and source-coverage check of the three rewrite_choices.md pages, run 2026-11-18 14:52 PST at 9782bf6563d1.
+Per page: table rows under 'Every idea, row by row'; rows whose 'what happened' starts lost / records a move / is reshaped / is folded; then, per source name, how many rows cite it (0 would mean an old file with no row).
+
+== FeverWood
+rows 162 lost 30 moved 18 reshaped 15 folded 1
+   sheet 35
+   deep-and-mud 60
+   fauna roster 17
+   flora roster 22
+   cast proposal 6
+   syllable pass 1
+   bedazzle 13
+   kit spec 8
+   roster json 3
+   names doc 2
+   designer sheet 5
+   cleanse 17
+   walk 3
+   owner answers 2
+   tenant digest 2
+   rising 2
+   fluff cuts 4
+   experiences 1
+   log 1
+   plan 1
+   journal 1
+   coverage verdict 1
+
+== Greentide
+rows 158 lost 18 moved 19 reshaped 7 folded 1
+   sheet 48
+   flora roster 31
+   risk-reward 24
+   bedazzle 16
+   terror design 4
+   terror consult 1
+   crossovers 4
+   kit spec 9
+   harvest spec 5
+   roster json 4
+   names doc 1
+   cleanse 20
+   walk 2
+   owner answers 1
+   mechanics review 9
+   owner cards 1
+   fluff cuts 2
+   experiences 1
+   growth roster 1
+
+== Abyss
+rows 132 lost 14 moved 4 reshaped 5 folded 2
+   sheet 42
+   cast bible 31
+   cryptid spec 9
+   review 31
+   roster json 1
+   names doc 2
+   hiding note 7
+   pursuit note 2
+   ladder 2
+   ship item 3
+   cleanse 23
+   mechanics review 3
+   fluff cuts 1
+   experiences 1
+
+== Probe: can the check say zero? A source name no page uses:
+   not-a-real-source 0
+
+Limit: source names are matched as substrings of the source column, so 'sheet' also counts 'Designer sheet' and 'review' also counts 'mechanics review'. The check proves each named source is cited at least once; it does not prove every idea in a source has a row. That second claim rests on the author's reading and has had no second reader.
