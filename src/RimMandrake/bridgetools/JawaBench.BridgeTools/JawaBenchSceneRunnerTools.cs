@@ -135,7 +135,7 @@ namespace JawaBench.BridgeTools
             {
                 // cleanup is armed BEFORE SuiteBegin runs: a hook that changes some settings and then throws is still undone
                 armed = true;
-                string beginError = await ctx.MainThread.InvokeAsync<object>(() =>
+                object begun = await SceneDispatch(ctx, () =>
                 {
                     if (Halt() != null) return "not begun: " + Halt();
                     if (!SceneSameGame(run)) return "not begun: the game or map changed";
@@ -143,7 +143,8 @@ namespace JawaBench.BridgeTools
                     if (run.begin == null) { run.beginText = "none"; return null; }
                     try { run.beginText = "ran: " + SR.Clip(run.begin.Invoke(null, new object[] { "" }) as string); return null; }
                     catch (Exception e) { return "SuiteBegin threw " + SceneInner(e); }
-                }) as string;
+                }, timeoutMs - wall.ElapsedMilliseconds);
+                string beginError = begun is SceneStop bs ? "not begun: " + bs.why : begun as string;
                 if (beginError != null)
                 {
                     foreach (SR.Spec s in run.specs) rows.Add(SR.Unmeasured_(s.name, "SUITE_BEGIN", beginError));
@@ -152,7 +153,7 @@ namespace JawaBench.BridgeTools
                 {
                     for (int i = 0; i < run.specs.Count; i++)
                         await RunOneScene(ctx, run, run.specs[i], run.origins[i][0], run.origins[i][1], SR.TicksFor(run.specs[i], tickOverride),
-                            budget, Halt, rows, sceneInfo);
+                            budget, Halt, () => timeoutMs - wall.ElapsedMilliseconds, rows, sceneInfo);
                 }
             }
             finally
@@ -172,12 +173,24 @@ namespace JawaBench.BridgeTools
             return SceneResult(true, rows, sceneInfo, run.beginText, problems, wall);
         }
 
+        /// <summary>A main-thread dispatch bounded by the run's deadline: when the main thread does not answer in msLeft, a
+        /// SceneStop comes back at once. Every callback passed here checks halt() FIRST, so one that runs late (after its
+        /// answer was given up) changes nothing.</summary>
+        private static async Task<object> SceneDispatch(IRimBridgeContext ctx, Func<object> f, long msLeft)
+        {
+            Task<object> t = ctx.MainThread.InvokeAsync<object>(f);
+            int wait = (int)Math.Max(1, Math.Min(int.MaxValue, msLeft));
+            if (await Task.WhenAny(t, Task.Delay(wait)).ConfigureAwait(false) != t)
+                return new SceneStop("the main thread did not answer before timeoutMs");
+            return await t.ConfigureAwait(false);
+        }
+
         private static async Task RunOneScene(IRimBridgeContext ctx, SceneRunState run, SR.Spec spec, int ox, int oz, int want, double budget,
-            Func<string> halt, List<SR.Row> rows, List<object> sceneInfo)
+            Func<string> halt, Func<long> msLeft, List<SR.Row> rows, List<object> sceneInfo)
         {
             const string Changed = "the game or map changed under the run";
             var sw = Stopwatch.StartNew();
-            object staged = await ctx.MainThread.InvokeAsync<object>(() =>
+            object staged = await SceneDispatch(ctx, () =>
             {
                 string h = halt();
                 if (h != null) return new SceneStop("not run: " + h);
@@ -186,7 +199,7 @@ namespace JawaBench.BridgeTools
                 try { r = spec.method.Invoke(null, new object[] { spec.name, ox, oz }); }
                 catch (Exception e) { return new SceneStop("staging threw " + SceneInner(e)); }
                 return SceneSameGame(run) ? r : new SceneStop("staging changed the game or map");
-            });
+            }, msLeft());
             long stageMs = sw.ElapsedMilliseconds;
             SR.Row refusal = null;
             Delegate judge = null;
@@ -206,7 +219,7 @@ namespace JawaBench.BridgeTools
             while (stepped < want)
             {
                 int left = want - stepped;
-                SceneSlice sl = await ctx.MainThread.InvokeAsync<object>(() =>
+                object got = await SceneDispatch(ctx, () =>
                 {
                     var o = new SceneSlice();
                     string h = halt();
@@ -226,11 +239,15 @@ namespace JawaBench.BridgeTools
                             tm.DoSingleTick();
                             o.ticks++;
                             if (!SceneSameGame(run)) { o.stop = "a tick changed the game or map"; break; }
+                            string hh = halt();
+                            if (hh != null) { o.stop = hh; break; }
                         }
                     }
                     catch (Exception e) { o.stop = "a tick threw " + SceneInner(e) + " after " + o.ticks + " ticks this frame"; }
                     return o;
-                }) as SceneSlice;
+                }, msLeft());
+                if (got is SceneStop gs) { shortWhy = gs.why; break; }
+                SceneSlice sl = got as SceneSlice;
                 if (sl == null) { shortWhy = "a tick slice answered nothing"; break; }
                 stepped += sl.ticks;                             // counted before the stop: ticks that ran stay in the evidence
                 if (sl.newFrame) { frames++; sinceFrame.Restart(); }
@@ -244,9 +261,11 @@ namespace JawaBench.BridgeTools
             }
             long tickMs = sw.ElapsedMilliseconds;
             sw.Restart();
-            var sceneRows = await ctx.MainThread.InvokeAsync<object>(() =>
+            object judgedAnswer = await SceneDispatch(ctx, () =>
             {
                 var o = new List<SR.Row>();
+                string h = halt();
+                if (h != null) { o.Add(SR.Unmeasured_(spec.name, "VERDICT", "not judged: " + h)); return o; }
                 bool same = SceneSameGame(run);
                 if (!string.IsNullOrWhiteSpace(spec.outside))
                     foreach (SR.OutsideCheck c in SR.ParseOutside(spec.outside, out _))
@@ -258,7 +277,10 @@ namespace JawaBench.BridgeTools
                 if (!SceneSameGame(run)) judged = new List<SR.Row> { SR.Unmeasured_(spec.name, "VERDICT", "the judge changed the game or map; its answer is not kept") };
                 o.AddRange(judged);
                 return o;
-            }) as List<SR.Row>;
+            }, Math.Max(msLeft(), 1000));                        // the judge of a scene that ticked gets at least a second
+            var sceneRows = judgedAnswer is SceneStop js
+                ? new List<SR.Row> { SR.Unmeasured_(spec.name, "VERDICT", "not judged: " + js.why) }
+                : judgedAnswer as List<SR.Row>;
             long judgeMs = sw.ElapsedMilliseconds;
             rows.AddRange(SR.ShortAdvance(sceneRows ?? new List<SR.Row> { SR.Unmeasured_(spec.name, "VERDICT", "no rows came back") }, stepped, want, shortWhy));
             sceneInfo.Add(new { scene = spec.name, origin = ox + "," + oz, ticksWanted = want, ticksStepped = stepped, frames, stageMs, tickMs, judgeMs });

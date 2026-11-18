@@ -90,6 +90,15 @@ namespace JawaBench.BridgeTools
         public static object Fine(string scene, int x, int z) => null;
     }
 
+    internal static class Outer
+    {
+        public static class Inner
+        {
+            [RMTest("nested")]
+            public static object Nested(string scene, int x, int z) => null;
+        }
+    }
+
     internal static class HiddenSuite
     {
         [RMTest("hidden")]
@@ -138,11 +147,15 @@ namespace JawaBench.BridgeTools
             U("discover_refuses_generic_scene", bp.Any(p => p.StartsWith("Generic:")), bj);
             U("discover_refuses_non_object_return", bp.Any(p => p.StartsWith("ReturnsString:")), bj);
             U("discover_refuses_misdeclared_attribute_property_never_defaults", bp.Any(p => p.StartsWith("MisdeclaredTicks:") && p.Contains("Ticks")), bj);
-            U("discover_keeps_the_good_scenes_and_reports_eight_problems", bs.Select(s => s.name).SequenceEqual(new[] { "dup", "fine" }) && bp.Count == 8,
+            U("discover_refuses_a_suite_that_is_not_a_static_class", bp.Any(p => p.Contains("BadSuite: a suite must be a public static class")), bj);
+            U("discover_keeps_the_good_scenes_and_reports_nine_problems", bs.Select(s => s.name).SequenceEqual(new[] { "dup", "fine" }) && bp.Count == 9,
                 string.Join(",", bs.Select(s => s.name)) + " / " + bp.Count + ": " + bj);
             var hp = new List<string>();
             C.Discover(typeof(HiddenSuite), hp);
-            U("discover_refuses_a_non_public_suite", hp.Any(p => p.Contains("a suite must be a public type")), string.Join("; ", hp));
+            U("discover_refuses_a_non_public_suite", hp.Any(p => p.Contains("a suite must be a public static class")), string.Join("; ", hp));
+            var np = new List<string>();
+            C.Discover(typeof(Outer.Inner), np);
+            U("discover_refuses_a_public_suite_inside_a_hidden_type", np.Any(p => p.Contains("a suite must be a public static class")), string.Join("; ", np));
 
             // ---- selection and ticks
             var unk = new List<string>();
@@ -224,6 +237,12 @@ namespace JawaBench.BridgeTools
             U("verdict_error_is_unmeasured_with_cause", er[0].status == C.Unmeasured && er[0].cause.StartsWith("error:"), Show(er));
             var gb = C.Normalize("s", "STAGED s at 1,2");
             U("verdict_unreadable_is_unmeasured", gb[0].status == C.Unmeasured && gb[0].cause == "unreadable verdict line", Show(gb));
+            var noDetail = C.Normalize("s", "PASS s");
+            U("verdict_without_detail_is_unmeasured", noDetail[0].status == C.Unmeasured, Show(noDetail));
+            var noName = C.Normalize("s", "PASS  goods in pit");
+            U("verdict_with_blank_name_is_unmeasured", noName[0].status == C.Unmeasured, Show(noName));
+            var otherName = C.Normalize("s", "PASS other goods in pit");
+            U("verdict_naming_another_scene_is_unmeasured", otherName[0].status == C.Unmeasured && otherName[0].cause.Contains("other"), Show(otherName));
             var bare = C.Normalize("s", "PASS");
             U("verdict_bare_pass_word_is_unmeasured", bare[0].status == C.Unmeasured && bare[0].cause.Contains("names its scene"), Show(bare));
             var shortRow = C.Normalize("s", new List<string[]> { new[] { "check", "PASS" } });

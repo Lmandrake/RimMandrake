@@ -65,15 +65,20 @@ def unwrap(reply):
     return reply if isinstance(reply, dict) else None
 
 
-ROW_KEYS = ("scene", "check", "status")
+def _text(v):
+    return isinstance(v, str) and v.strip() != ""
+
+
+def valid_row(r):
+    """A row the table can carry: scene and check named, status PASS / FAIL / UNMEASURED, an UNMEASURED row with its cause."""
+    return (isinstance(r, dict) and _text(r.get("scene")) and _text(r.get("check"))
+            and r.get("status") in (PASS, FAIL, UNMEASURED) and (r.get("status") != UNMEASURED or _text(r.get("cause"))))
 
 
 def valid_rows(rows):
-    """The rows when they are an explicit list of row objects (each a dict with scene, check and status), else None.
-    An explicit [] stays [] (EMPTY); a missing, null or malformed rows field is None (the run could not be read)."""
-    if not isinstance(rows, list):
-        return None
-    if not all(isinstance(r, dict) and all(k in r for k in ROW_KEYS) for r in rows):
+    """The rows when they are an explicit list of valid rows, else None. An explicit [] stays [] (EMPTY); a missing, null
+    or malformed rows field, or any malformed row, is None (the run could not be read: NO_RUN, never a verdict)."""
+    if not isinstance(rows, list) or not all(valid_row(r) for r in rows):
         return None
     return rows
 
@@ -143,7 +148,7 @@ def run(call, type_name, scenes="", ticks=0, frame_budget_ms=40.0, timeout_s=600
             rows = valid_rows(r.get("rows"))
             if rows is None:
                 rep["error"] = "the run answered success with unreadable rows (%s): nothing can be judged" % (
-                    type(r.get("rows")).__name__ if not isinstance(r.get("rows"), list) else "a row that is not {scene, check, status, ...}")
+                    type(r.get("rows")).__name__ if not isinstance(r.get("rows"), list) else "a row without scene, check, a PASS/FAIL/UNMEASURED status or an UNMEASURED row's cause")
             else:
                 rep["rows"] = with_outside_guard(list(rows))
         else:

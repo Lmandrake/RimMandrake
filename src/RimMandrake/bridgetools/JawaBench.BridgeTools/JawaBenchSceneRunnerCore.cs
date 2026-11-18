@@ -68,7 +68,8 @@ namespace JawaBench.BridgeTools
         {
             var specs = new List<Spec>();
             var seen = new HashSet<string>(StringComparer.Ordinal);
-            if (!(suite.IsPublic || suite.IsNestedPublic)) problems.Add(suite.FullName + ": a suite must be a public type");
+            if (!(suite.IsVisible && suite.IsAbstract && suite.IsSealed))
+                problems.Add(suite.Name + ": a suite must be a public static class (visible from outside its assembly)");
             foreach (MethodInfo m in suite.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                          .OrderBy(x => x.MetadataToken))
             {
@@ -246,8 +247,11 @@ namespace JawaBench.BridgeTools
                 string[] head = t.Split(new[] { ' ' }, 3);
                 string word = head.Length > 0 ? head[0] : "";
                 string detail = head.Length > 2 ? head[2] : (head.Length > 1 ? head[1] : "");
-                if ((word == Pass || word == FailS) && head.Length < 2)
-                    o.Add(R(scene, "VERDICT", Unmeasured, Clip(t), Pass, "scene", "a verdict line names its scene: '" + word + " <name> <detail>'"));
+                bool whole = head.Length == 3 && head[1] == scene && head[2].Trim().Length > 0;
+                if ((word == Pass || word == FailS) && !whole)
+                    o.Add(R(scene, "VERDICT", Unmeasured, Clip(t), Pass, "scene", head.Length > 1 && head[1].Length > 0 && head[1] != scene
+                        ? "the verdict names scene '" + head[1] + "', not '" + scene + "'"
+                        : "a verdict line names its scene and says why: '" + word + " " + scene + " <detail>'"));
                 else if (word == Pass || word == FailS) o.Add(R(scene, "VERDICT", word, Clip(detail), Pass, "scene"));
                 else if (word == "INVALID" || word == "ERROR")
                     o.Add(R(scene, "VERDICT", Unmeasured, Clip(detail), Pass, "scene", word.ToLowerInvariant() + ": " + Clip(t)));

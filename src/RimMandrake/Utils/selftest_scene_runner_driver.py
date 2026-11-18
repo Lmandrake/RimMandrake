@@ -84,7 +84,7 @@ def main():
           "outcome %s, calls %s, order %s" % (rep["outcome"], call.calls, kinds))
     rep, _, _ = harness(ok_reply(GOOD[:2] + [row("storeroom_bomb_pit_control", "VERDICT", "FAIL")]))
     check("D2", rep["outcome"] == "FAIL" and SR.EXIT["FAIL"] == 1, rep["outcome"])
-    rep, _, _ = harness(ok_reply(GOOD[:2] + [row("storeroom_bomb_pit_control", "VERDICT", "UNMEASURED")]))
+    rep, _, _ = harness(ok_reply(GOOD[:2] + [dict(row("storeroom_bomb_pit_control", "VERDICT", "UNMEASURED"), cause="invalid: not at rest")]))
     check("D3", rep["outcome"] == "UNMEASURED" and SR.EXIT["UNMEASURED"] == 2, rep["outcome"])
     rep, _, _ = harness(ok_reply(GOOD[1:]))
     g = [r for r in rep["rows"] if r["check"] == "SUITE_OUTSIDE_READ"]
@@ -117,13 +117,17 @@ def main():
     check("D12", rep["outcome"] == "FAIL" and len(rep["rows"]) == 3, rep["outcome"])
     outs = []
     for bad in ({"success": True}, {"success": True, "rows": None}, {"success": True, "rows": ["bad"]},
-                {"success": True, "rows": [{"scene": "s", "status": "PASS"}]}):
+                {"success": True, "rows": [{"scene": "s", "status": "PASS"}]},
+                {"success": True, "rows": [dict(GOOD[1], status=None)]},
+                {"success": True, "rows": [dict(GOOD[0], scene=None, check=None)]},
+                {"success": True, "rows": [dict(GOOD[1], status="OK")]},
+                {"success": True, "rows": [dict(GOOD[1], status="UNMEASURED", cause="  ")]}):
         try:
             r13, _, _ = harness(bad)
             outs.append(r13["outcome"])
         except Exception as ex:                          # noqa: BLE001 - a crash is the defect this case looks for
             outs.append("CRASH %s" % type(ex).__name__)
-    check("D13", outs == ["NO_RUN"] * 4, str(outs))
+    check("D13", outs == ["NO_RUN"] * 8, str(outs))
     rep, _, _ = harness(None, load_raises=OSError("pipe closed"))
     check("D14", rep["outcome"] == "RESTORE" and "save failed" not in str(rep.get("error")), "%s %s" % (rep["outcome"], rep.get("error")))
 
