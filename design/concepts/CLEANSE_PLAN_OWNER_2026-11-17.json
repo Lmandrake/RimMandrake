@@ -1,0 +1,145 @@
+{
+ "schema": 1,
+ "plan": "CLEANSE_PLAN_OWNER_2026-11-17",
+ "source": "design/concepts/CLEANSE_PLAN_OWNER_2026-11-17.md",
+ "approved": "2026-11-17 9:04 PM PST, owner in chat: take these now as THE PLAN going forward",
+ "approval_commit": "a6f989bcda",
+ "digest": "designer_cleanse.proposal_digest over design/concepts/<Mod>/cleanse/ as at approval_commit",
+ "mark_values": {
+  "keep": "census fate in designer_cleanse.KEPT (0.1.0)",
+  "next_version": "census fate next_version (0.2.0)",
+  "drop": "census fate recommend_retire"
+ },
+ "excluded": {
+  "Pyrelands": "not part of the cleanse (design/specs/2026-11-16-designer-cleanse-and-bar-definition.md section 1)"
+ },
+ "mods": {
+  "Abyss": {
+   "approve": "fresh_review",
+   "approved_digest": null,
+   "marks_folded_at": "baaea8888a35",
+   "why": "edited after his approval only to fold his marks; approved once a fresh converged review names the current digest (Conductor, OWNER.jsonl tsn 1794983843500059966)",
+   "marks": {
+    "fold_lamp": "keep",
+    "vine_turning": "keep",
+    "glowberry_item": "keep",
+    "abyss_fishery": "keep",
+    "heat_observation": "next_version"
+   }
+  },
+  "BlueDesert": {
+   "approve": "digest",
+   "approved_digest": "e7ffe132a748272db34bbf21fb60e9a116b5d2d22d591e447ed099fb169af955",
+   "marks": {}
+  },
+  "Cauldron": {
+   "approve": "digest",
+   "approved_digest": "020847e1278e9135b0e41e06c83457700d47da5f4174e64f86bc6a4c3fa10fbd",
+   "marks": {}
+  },
+  "Contagion": {
+   "approve": "digest",
+   "approved_digest": "93f27a908831897b87daf6d9596f54e16375f13a7339afe932dc9cb5a07323d6",
+   "marks": {}
+  },
+  "CrackedLands": {
+   "approve": "digest",
+   "approved_digest": "9d2d0fa9b62d950d4e1c6e7fe7f45e34862d5e57aa91dba28b8a1d74ad48cd4a",
+   "marks": {}
+  },
+  "FeverWood": {
+   "approve": "digest",
+   "approved_digest": "a5c0f7c3597161f532df031953e4ff77a5bd530eea055d319f568f325eedd19e",
+   "marks": {}
+  },
+  "GelatinousSlime": {
+   "approve": "digest",
+   "approved_digest": "59ab1037c44943a77fa853c4704e22453b600138f6240ab221a0dc8f1630db49",
+   "marks": {}
+  },
+  "Greentide": {
+   "approve": "digest",
+   "approved_digest": "945588be4cc98cc3477d0e1ed3149f49504f9a293c6db6dcf5562d7ab6203c0f",
+   "marks": {}
+  },
+  "LanternDeeps": {
+   "approve": "digest",
+   "approved_digest": "340c26f3ca49d707586eac875d599785f04666b824e357377831a3bd22f38c5b",
+   "marks": {}
+  },
+  "LeaningScrub": {
+   "approve": "digest",
+   "approved_digest": "c9ae3a9e10f379cdd8a67debbd92d192d3e1a3616285af42818efebf6b972c90",
+   "marks": {}
+  },
+  "LongShade": {
+   "approve": "digest",
+   "approved_digest": "910f1dfe7e69c5c56cee0dc56dd4cefbed909f75be08ec0ff52d0fd97e73477b",
+   "marks": {}
+  },
+  "Miasma": {
+   "approve": "digest",
+   "approved_digest": "0fda1b9dd1f2af02e560dd86ed5ed629915e425ff9fd60b78e2f6ba84f2d066f",
+   "marks": {}
+  },
+  "RustCathedral": {
+   "approve": "digest",
+   "approved_digest": "65bbb99ea6ceaa58bdf0d1dada0adc439ede68574afbdf0388f57fd05704e5d8",
+   "marks": {}
+  },
+  "SleepingIce": {
+   "approve": "digest",
+   "approved_digest": "a7306fd2da342ee7fbf29cab078aa235aeef0f0717389afc40e74894c5130869",
+   "marks": {}
+  },
+  "Stillsand": {
+   "approve": "digest",
+   "approved_digest": "d11d87bb213a15abf126a646335bebdf042b091fad28b97dcbf0789b283f0ee9",
+   "marks": {}
+  },
+  "TerminalBiomes": {
+   "approve": "digest",
+   "approved_digest": "c5c7316d22507d72d2e124fcec602a998df6750f212db60421209f56e978f1ed",
+   "marks": {}
+  },
+  "TheForge": {
+   "approve": "digest",
+   "approved_digest": "8cee194afca01a5303e656940e009af99b4eea111a6202b197b1a61e074a72ed",
+   "marks": {}
+  },
+  "TheRot": {
+   "approve": "fresh_review",
+   "approved_digest": null,
+   "marks_folded_at": "baaea8888a35",
+   "why": "edited after his approval only to fold his marks; approved once a fresh converged review names the current digest (Conductor, OWNER.jsonl tsn 1794983843500059966)",
+   "marks": {
+    "pleasure_brew": "keep"
+   }
+  },
+  "TheSump": {
+   "approve": "digest",
+   "approved_digest": "8cb55f1085a4b6780c0d53d8c16a050bbd54ff3ad9a5989272abe16e09b122f3",
+   "marks": {}
+  },
+  "Warscar": {
+   "approve": "digest",
+   "approved_digest": "c986275475b2b5945822c92fd753449d0240e0acc0df66ec777202a238d32413",
+   "marks": {}
+  },
+  "Wastes": {
+   "approve": "digest",
+   "approved_digest": "94709182f8bd60d250354c95905402ee8e60c818fce31aa8e22eda240e0a679d",
+   "marks": {}
+  },
+  "Webwork": {
+   "approve": "digest",
+   "approved_digest": "2a74da8cee4a640de3a64c46a011e5d4e70c4bc1fbaec01c7661f41ddc9a0291",
+   "marks": {}
+  },
+  "WeepingStones": {
+   "approve": "digest",
+   "approved_digest": "b69cefd6aae745b66c0c20095669ba2b01622af500e35c81a3d6558e947691c1",
+   "marks": {}
+  }
+ }
+}
