@@ -95,8 +95,9 @@ def main():
         by = {l.get("door"): l for l in lines(runs)}
         sv = [e for e in events() if e.get("event") == "start" and e.get("id") == A]
         check(s.returncode == 0 and "start" in by, "start is shadow and writes door=start")
-        check(sv and sv[-1].get("preflight_run") and sv[-1]["preflight_run"] == by.get("start", {}).get("run_id"),
-              "the start event carries preflight_run")
+        check(sv and sv[-1].get("preflight_run") and sv[-1]["preflight_run"] == by.get("start", {}).get("run_id")
+              and isinstance(sv[-1].get("preflight_ms"), (int, float)),
+              "the start event carries preflight_run and preflight_ms")
 
         f2 = cli("file", B, "--for", "BENCH", "--title", "planted", "--kind", "build", RIMFLOW_PREFLIGHT_BREAK="1")
         c2 = cli("claim", B, RIMFLOW_PREFLIGHT_BREAK="1")
@@ -115,9 +116,12 @@ def main():
     check(not rel, "no relentless*.py file calls ticket_preflight (%s)" % ", ".join(os.path.basename(p) for p in rel))
     try:
         src = open(os.path.join(RIMFLOW, "detached_helper.py")).read()
-        fn = [ast.get_source_segment(src, n) for n in ast.walk(ast.parse(src))
-              if isinstance(n, ast.FunctionDef) and n.name == "launch"]
-        check(fn and "ticket_preflight" in fn[0], "detached_helper.launch runs the preflight")
+        fn = [n for n in ast.walk(ast.parse(src)) if isinstance(n, ast.FunctionDef) and n.name == "launch"]
+        # a CALL of ticket_preflight.<attr>(...) inside launch: an unused import or a comment is not a run
+        # (RIMMANDRAKE_TIGHTEN_SHADOW_ACCEPT_FOUR_CLAUSES_PASS_ON_LESS)
+        calls = [c for c in ast.walk(fn[0]) if isinstance(c, ast.Call) and isinstance(c.func, ast.Attribute)
+                 and isinstance(c.func.value, ast.Name) and c.func.value.id == "ticket_preflight"] if fn else []
+        check(bool(calls), "detached_helper.launch runs the preflight")
     except Exception as e:
         check(False, "detached_helper.launch unreadable: %s" % e)
 
@@ -136,10 +140,14 @@ def main():
     check(rows and all({"id", "fires", "incremental", "audited", "false"} <= set(r) for r in rows),
           "every check row has fires, incremental, audited, false")
     pl = bt.get("planted", [])
-    check(len(pl) >= 10 and all(p.get("caught") is True for p in pl) and len({p.get("group") for p in pl}) >= 8,
-          "at least 10 planted known-bad tickets over at least 8 groups, all caught (%d)" % len(pl))
-    check("joint_false_block" in bt and all({"p50", "p95", "max"} <= set(v) for v in bt.get("timing", {}).values())
-          and bt.get("timing"), "joint false block and per-door timing are reported")
+    groups = {p.get("group") for p in pl} & set("ABCDEFGHI")     # the spec's groups; any other label counts for none
+    check(len(pl) >= 10 and all(p.get("caught") is True for p in pl) and len(groups) >= 8,
+          "at least 10 planted known-bad tickets over at least 8 groups, all caught (%d over %s)" % (
+              len(pl), "".join(sorted(groups))))
+    tm = bt.get("timing", {})
+    check("joint_false_block" in bt and {"file", "claim", "start", "helper_launch"} <= set(tm)
+          and all({"p50", "p95", "max"} <= set(v) for v in tm.values()),
+          "joint false block and per-door timing (file, claim, start, helper_launch) are reported")
     for t in ("preflight_spine_accept.py", "preflight_core_accept.py"):
         p = subprocess.run([sys.executable, os.path.join(HERE, t)], cwd=REPO, capture_output=True, text=True, timeout=600)
         check(p.returncode == 0, "%s still passes" % t)
