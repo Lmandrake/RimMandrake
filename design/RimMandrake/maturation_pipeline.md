@@ -353,6 +353,7 @@ A `hold` blocks every advance until a later `release`.
 | Status page | `Utils/maturation_now.py` | `Utils/selftest_maturation_now.py` |
 | Designer inner steps, exam, coverage judge, owner certificate, repin | `designer_stage.py`, `concept_tree.py`, `coverage_judge.py` | `selftest_designer_*.py`, `selftest_concept_*.py`, `selftest_coverage_*.py` |
 | Refusal records, judge calibration registry, neutral fixer | `refusal_contract.py` | `selftest_refusal_contract.py`, `selftest_judge_calibration.py` |
+| Program-checked exits of the blind challenge and in-game acceptance: `advance` refuses a forward move whose exit reading is not met; a steward's word alone moves nothing; his newer OWNER event is the only override (clause `exit_met`) | `maturation.py` (`exit_met_clause`) | `selftest_maturation.py` |
 
 ### Designed but not built
 
@@ -361,8 +362,6 @@ A `hold` blocks every advance until a later `release`.
 - **A common test-table maker**: each mod has its own, and they disagree on whether his Stage 8 look counts as a check.
 - **`advance` refusals counted by `refusal_contract.submit`** (plan slice 2), so a stage refused again and again raises
   an alarm. (The status page reads the stage record since 84993ce73e.)
-- **Program-checked exits** for the blind challenge and in-game acceptance: each is still a steward's word (in-game
-  acceptance also needs the build match).
 - **The identity fields in the live drivers**: the in-game brief tells the runner to merge `build_match.py identity`
   into every row; no SteveDesktop queue job records them yet.
 - **The pass record** and anything after a pass (re-running a passed version on change).
@@ -373,11 +372,10 @@ A `hold` blocks every advance until a later `release`.
 
 1. **A new blind judge after a fix.** His words (spec §4 Stages 4 and 5, Road back): fix it right there, "then send it
    back to just before Stage 4 again for a new blind judgement pass". Since 10e1fafbf9 a cycle whose Problems were FIXED reads
-   "a new blind judge is owed", not met; `advance` still lets the mod leave on the steward's word. Pyrelands (cycle 1)
-   and FlowWorks (cycle 1) went to in-game acceptance on 2026-11-15 after a neutral fixer's reconcile in the same cycle,
-   with no new blind judge.
-2. **The blind and in-game exits** are "PROPOSAL" in the spec and enforced by nothing in the code but a
-   non-empty `--steward-confirms`. A steward can advance a mod whose reading says "not met".
+   "a new blind judge is owed", not met, and since 2026-11-18 `advance` refuses to leave on it (clause `exit_met`).
+   Pyrelands (cycle 1) and FlowWorks (cycle 1) went to in-game acceptance on 2026-11-15 after a neutral fixer's
+   reconcile in the same cycle, with no new blind judge, before that refusal existed.
+2. Resolved 2026-11-18: the blind and in-game exits are program-checked (the Built table, `exit_met`).
 3. **Blindness**: the spec says the judge "is not told" what earlier judges found and works "from the bars alone"
    first. The code's brief tells it which files are closed; nothing enforces it.
 4. **Designer exit**: the spec's exit is his word to lock; the code checks only `VERSION.json`, so a mod can be locked
@@ -397,10 +395,9 @@ Found by the skeptical review of 2026-11-15 and confirmed by reading the code (c
    UNSETTLED lane-1 rows as not passing; the in-game reader refuses an earlier non-PASS row, a bare `site_checked`, a
    non-hash `mod_sha`, rows on two builds (a3b3dead86), thin strange-thing entries and a file that is not a save. Read
    again on 2026-11-15, Explosive Knockback cycle 2, FlowWorks cycle 1 and Pyrelands cycle 1 read not met.
-8. **The steward's word moves the forward stages to in-game and pre-human** (a non-empty `--steward-confirms`;
-   binding those exits is his open decision). His walk to passed needs `OWNER:<tsn>`, his event on the OWNER shard
-   that does not refuse the pass; the Designer gate needs state `locked` by `owner`; `--by` must name a seat
-   (d5d5339d3b).
+8. Resolved 2026-11-18: a steward's word no longer moves a mod past an unmet blind or in-game exit (`exit_met`). His
+   walk to passed needs `OWNER:<tsn>`, his event on the OWNER shard that does not refuse the pass; the Designer gate
+   needs state `locked` by `owner`; `--by` must name a seat (d5d5339d3b).
 9. **The offline-build gate reads the builder's own flags.** Where the lock's bars are recorded
    (`version/locked_bars.json`, `maturation.py lock-bars`; the four locked mods since this change), a test table that
    drops or invents a bar fails the offline build's exit; a bar changes there only on his `OWNER:<tsn>` card. Dispatch's progress is a refused bar resolved by id

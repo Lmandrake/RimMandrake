@@ -696,6 +696,94 @@ def owner_event(root, owner):
     return ev, "OWNER:%s: %s" % (m.group(1), words[:80])
 
 
+def _record_time(root, mod, base):
+    """-> the newest time the evidence under base (a cycle or visit folder) was written: its last commit, or the mtime of
+    a file of it git sees changed or new; None when nothing can be read. A reading is as new as its newest file."""
+    d = os.path.join(mod_dir(root, mod), base)
+    if not os.path.isdir(d):
+        return None
+    times = []
+    try:
+        r = subprocess.run(["git", "log", "-1", "--format=%ct", "--", "."], cwd=d, capture_output=True, text=True,
+                           timeout=60)
+        if r.returncode == 0 and r.stdout.strip().isdigit():
+            times.append(float(r.stdout.strip()))
+        st = subprocess.run(["git", "status", "--porcelain", "-z", "--untracked-files=all", "--", "."], cwd=d,
+                            capture_output=True, timeout=60)
+        if st.returncode != 0:
+            raise OSError("git status rc %s" % st.returncode)
+        top = subprocess.run(["git", "rev-parse", "--show-toplevel"], cwd=d, capture_output=True, text=True, timeout=60)
+        for e in st.stdout.decode("utf-8", "surrogateescape").split("\0"):
+            fp = os.path.join(top.stdout.strip(), e[3:]) if len(e) > 3 else None
+            if fp:      # a changed file counts at its mtime; one deleted (or unreadable) since, at this moment
+                times.append(_mtime_or_now(fp))
+    except (OSError, subprocess.SubprocessError):     # no git here: every file's mtime, the newest counts
+        times = [_mtime_or_now(os.path.join(a, f)) for a, _, fs in os.walk(d) for f in fs]
+    return max(times) if times else None
+
+
+def _mtime_or_now(fp):
+    try:
+        return os.path.getmtime(fp)
+    except OSError:
+        return time.time()
+
+
+def exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref):
+    """RIMMANDRAKE_BIND_ADVANCE_TO_EXIT_READINGS: a forward move out of the blind challenge or the in-game stage needs
+    the program's exit reading met (read_exit of the current cycle, read_ingame_exit of the current visit) with nothing
+    blocking it; a steward's word alone no longer moves a mod past either. The only override is his OWNER event
+    (--owner-said OWNER:<tsn>) newer than the reading it overrides (the newest of the cycle or visit's opening and its
+    evidence files). A reading that cannot be made is not met; a reader that is itself wrong is repaired, never waved
+    past."""
+    tt, terr = read_json(root, mod, "version/test_table.json")
+    blocked = [] if tt is not None else ["version/test_table.json: %s" % terr]
+    try:
+        if cur == "blind_challenge":
+            bf = blind_facts(root, mod)
+            n, ex, opened = bf.get("cycle"), bf.get("exit") or {}, bf.get("opened")
+            blocked += [b for b in bf.get("blocked") or [] if not b.startswith("version/test_table.json")]
+            what, reader, base = "blind cycle %s" % n, "read_exit", "%s/cycle_%s" % (BLIND_DIR, n)
+        else:
+            n = max(1, len(ingame_openings(rec)))
+            ex, opened = read_ingame_exit(root, mod, n, tt), ingame_openings(rec).get(n)
+            what, reader, base = "in-game visit %d" % n, "read_ingame_exit", "%s/visit_%d" % (INGAME_DIR, n)
+    except Exception as e:  # noqa: BLE001  evidence the reader cannot parse: no reading, so not met
+        n, ex, opened, base = None, {"state": "unreadable", "why": ["the exit reader raised %s: %s" % (
+            type(e).__name__, str(e)[:200])]}, None, None
+        what, reader = "the %s exit" % cur, "the exit reader"
+    met = ex.get("state") == "met" and not blocked
+    over, ohow = None, "none in the request"
+    if not met and owner:
+        ev, ohow = owner_event(root, owner)
+        t_ev = int(ev["tsn"]) / 1e9 if ev is not None and str(ev.get("tsn") or "").isdigit() else None
+        try:
+            t_rec = _record_time(root, mod, base) if base else None
+        except Exception:  # noqa: BLE001  the evidence's time cannot be read: then nothing can be shown older
+            t_rec = time.time()
+        t_read = [t for t in (_ts(opened), t_rec) if t is not None]
+        if ev is not None and t_ev is None:
+            ohow = "%s; its time cannot be read, so it cannot be shown newer than %s's reading" % (ohow, what)
+        elif ev is not None and not t_read:     # no opening and no evidence: no dated reading for his word to predate
+            over, ohow = ev, "%s (%s has no dated evidence)" % (ohow, what)
+        elif ev is not None and t_ev <= max(t_read):
+            ohow = "%s; it predates %s's reading (newest evidence %s)" % (
+                ohow, what, dt.datetime.fromtimestamp(max(t_read), dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+        else:
+            over = ev
+    clause("exit_met", "the stage's exit reading (%s, a program check) is met with nothing blocking it, or his OWNER "
+           "event newer than that reading overrides it" % reader, met or over is not None, [rec_ref, req_ref],
+           observed="%s exit %s: %s%s; owner override: %s" % (what, ex.get("state"), "; ".join(
+               (ex.get("why") or [])[:3]) or "no reading", "; blocked: %s" % "; ".join(blocked) if blocked else "",
+               ohow),
+           would_pass="maturation.py next %s reads %s's exit met, or --owner-said OWNER:<tsn> naming his event newer "
+                      "than its reading" % (mod, what),
+           fix="work the reading's listed gaps through the stage's own road (a new cycle or visit); a reader that is "
+               "wrong is repaired as a Convergent fix of the reader", cost="rerun",
+           why_sound="decision of 2026-11-15 under RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME: a "
+                     "not-met exit goes back, it does not go forward (spec section 4, his Stage 4/5 words)")
+
+
 def certificate(root, mod, to="blind_challenge"):
     """judge_certificate.certify, never raising: a guard that cannot look says did not run and lets the work through."""
     try:
@@ -923,6 +1011,8 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                    would_pass="--steward-confirms naming the run and the verdict read",
                    fix="the Conductor reads the stage's evidence and passes --steward-confirms", cost="owner",
                    why_sound="the stage's exit is not settled as a program check (plan section 3)")
+            if forward:
+                exit_met_clause(root, mod, rec, cur, owner, clause, rec_ref, req_ref)
             if cur == "in_game":
                 # the BUILD MATCH (owner, 2026-11-17): a verdict made on another build than the one he walks does not
                 # count; its check is re-run (build_match.py, read by read_ingame_exit)

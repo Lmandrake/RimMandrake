@@ -471,8 +471,45 @@ def main():
         # hand steps on the later stages
         refused(M.advance(root, "Pyrelands", "in_game", by="BENCH", why="x"), "steward_confirms",
                 "leaving the blind challenge without the steward's reading of the verdict")
-        ok(M.advance(root, "Pyrelands", "in_game", by="CONDUCTOR", why="x", steward="read the run's verdict: clean")["ok"],
-           "Pyrelands moves to in_game on the steward's word")
+        # RIMMANDRAKE_BIND_ADVANCE_TO_EXIT_READINGS: the steward's word alone no longer moves a mod past an unmet exit
+        refused(M.advance(root, "Pyrelands", "in_game", by="CONDUCTOR", why="x", steward="read the run's verdict: clean"),
+                "exit_met", "a steward's word alone on a blind cycle with no exit reading")
+        oshard = os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER.jsonl")
+        os.makedirs(os.path.dirname(oshard), exist_ok=True)
+        with open(oshard, "a") as f:
+            f.write(json.dumps({"seat": "OWNER", "event": "note", "id": "SELFTEST", "tsn": 1000000000000000000,
+                                "ownerSaid": "Pyrelands may go in game"}) + "\n")
+            f.write(json.dumps({"seat": "OWNER", "event": "note", "id": "SELFTEST", "tsn": 4242000000000000003,
+                                "ownerSaid": "Pyrelands goes to the in-game stage as it is"}) + "\n")
+        refused(M.advance(root, "Pyrelands", "in_game", by="CONDUCTOR", why="x", steward="read the run's verdict: clean",
+                          owner="OWNER:1000000000000000000"), "exit_met", "his event older than the cycle it would override")
+        # newer than the cycle's opening is not enough: his event must be newer than the reading's newest evidence
+        import time as _time
+        t_mid = int(_time.time() * 1e9)
+        with open(oshard, "a") as f:
+            f.write(json.dumps({"seat": "OWNER", "event": "note", "id": "SELFTEST", "tsn": t_mid,
+                                "ownerSaid": "Pyrelands goes in game"}) + "\n")
+        cyc = os.path.join(root, "design", "concepts", "Pyrelands", M.BLIND_DIR, "cycle_%d" % M.blind_facts(
+            root, "Pyrelands")["cycle"])
+        os.makedirs(cyc, exist_ok=True)
+        _time.sleep(0.05)
+        with open(os.path.join(cyc, "SUMMARY.md"), "w") as f:
+            f.write("# a cycle written after his word\n")
+        refused(M.evaluate(root, "Pyrelands", "in_game", steward="the cycle read", owner="OWNER:%d" % t_mid),
+                "exit_met", "his event newer than the cycle's opening but older than its evidence")
+        real_bf = M.blind_facts
+        M.blind_facts = lambda *a, **k: (_ for _ in ()).throw(AttributeError("'NoneType' object has no attribute 'get'"))
+        try:
+            e = M.evaluate(root, "Pyrelands", "in_game", steward="the cycle read")
+        except Exception as x:  # noqa: BLE001
+            e = {"verdict": {"refusals": [{"clause": "raised %r" % x}]}}
+        finally:
+            M.blind_facts = real_bf
+        ok(any(r["clause"] == "exit_met" and "raised" in str(r.get("observed")) for r in e["verdict"]["refusals"]),
+           "an exit reader that cannot parse its evidence is a refusal, not a crash and not met")
+        ok(M.advance(root, "Pyrelands", "in_game", by="CONDUCTOR", why="x", steward="read the run's verdict: clean",
+                     owner="OWNER:4242000000000000003")["ok"],
+           "Pyrelands moves to in_game past an unmet exit only on his newer OWNER event")
         # the BUILD MATCH at the Stage 6 exit (owner, 2026-11-17): a check made on another build is re-run
         for brk, what in (("hash", "on another mod hash than his walk's"), ("build", "on another game build"),
                           ("list", "on its tier's mods in another order"), ("none", "with no build identity")):
@@ -482,6 +519,8 @@ def main():
         ex = M.read_ingame_exit(root, "Pyrelands", 1)
         ok(ex["state"] == "not_met" and any("re-run it" in w for w in ex["why"]),
            "the exit reader names the off-build check to re-run (%s)" % (ex["why"] or ["-"])[0][:90])
+        refused(M.advance(root, "Pyrelands", "pre_human", by="CONDUCTOR", why="x", steward="read the visit: met"),
+                "exit_met", "a steward's word alone on a visit whose exit reads not met")
         write_visit(root, "Pyrelands", 1)
         os.environ[BM.STANDIN_ENV] = os.path.join(root, "no_walk_build.json")
         try:
