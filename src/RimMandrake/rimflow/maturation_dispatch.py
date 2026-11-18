@@ -1879,7 +1879,7 @@ def origin_views(root, mods):
     (RIMMANDRAKE_FIX_DISPATCH_VIEWS_LANDED_BLIND_TO_PEER_SHARDS). No peer shard is written into the root: the shards
     are assembled in a temp dir; only the derived views are rewritten. -> None, or the refusal line (nothing landed).
     A root that is not a clone's top (a selftest) or RM_STAGE_LAND=0 is left as is. A peer landing between this fetch
-    and land.sh's push still races (land.sh retries the push but re-lands these views); the next landing repairs it."""
+    and land.sh's push is caught by land_ledger, which rebuilds and lands again (views_differ)."""
     import shutil
     import tempfile
     if os.environ.get("RM_STAGE_LAND") == "0":
@@ -1895,13 +1895,18 @@ def origin_views(root, mods):
         return "views not landed: fetch failed: %s: %s" % (type(e).__name__, e)
     if f.returncode:
         return "views not landed: git fetch origin main exited %d: %s" % (f.returncode, f.stderr.strip())
-    tmp = tempfile.mkdtemp(prefix="dispatch_views_")
+    try:
+        tmp = tempfile.mkdtemp(prefix="dispatch_views_")
+    except OSError as e:
+        return "views not landed: no temp dir: %s" % e
     try:
         for mod in mods:
             d = modledger.ledger_dir(root, mod)
             rel = os.path.relpath(d, root).replace(os.sep, "/")
             ls = subprocess.run(["git", "-C", root, "ls-tree", "--name-only", "origin/main", rel + "/"],
                                 capture_output=True, text=True, timeout=120)
+            if ls.returncode:       # an unreadable listing is no empty ledger
+                return "views not landed: cannot list origin/main:%s (git ls-tree exited %d)" % (rel, ls.returncode)
             td = modledger.ledger_dir(tmp, mod)
             os.makedirs(td)
             for name in ls.stdout.split():
@@ -1942,20 +1947,64 @@ def origin_views(root, mods):
     return None
 
 
+LAND_VIEW_TRIES = 3
+
+
 def land_ledger(root, mods, what, fx=None):
     """Land the DISPATCH shard and views of these mods' ledgers (land.sh, as land_spend does). The views landed are
-    rebuilt from origin/main's shards plus this root's DISPATCH shard first (origin_views)."""
+    rebuilt from origin/main's shards plus this root's DISPATCH shard first (origin_views). After a landing the views
+    are rebuilt again from a fresh fetch: a peer shard that landed between the fetch and the push leaves them unlike
+    origin's, and they land again, up to LAND_VIEW_TRIES landings (RIMMANDRAKE_REBUILD_DISPATCH_VIEWS_ON_EACH_LAND_RETRY:
+    before, land.sh's retry re-landed the same views and origin read VIEW_STALE until the next Dispatch landing)."""
     if (fx or {}).get("land_ledger"):
         paths = ledger_paths(root, mods)
         return fx["land_ledger"](paths) if paths else "nothing to land"
-    if not (fx or {}).get("land_spend"):
+    if (fx or {}).get("land_spend"):
+        paths = ledger_paths(root, mods)
+        return land_spend(root, paths, dict(fx, land_msg="modledger: %s (Dispatch step)" % what)) if paths \
+            else "nothing to land"
+    out = None
+    for n in range(LAND_VIEW_TRIES + 1):
         refused = origin_views(root, mods)
         if refused:
-            return refused
-    paths = ledger_paths(root, mods)
-    if not paths:
-        return "nothing to land"
-    return land_spend(root, paths, dict(fx or {}, land_msg="modledger: %s (Dispatch step)" % what))
+            return refused if out is None else "%s; then %s" % (out, refused)
+        paths = ledger_paths(root, mods)
+        if not paths:
+            return out or "nothing to land"
+        if out is not None:
+            if not views_differ(root, paths):
+                return out
+            if n == LAND_VIEW_TRIES:
+                return "%s; views still unlike origin's after %d landings (a peer kept landing): the next Dispatch " \
+                       "landing repairs them" % (out, LAND_VIEW_TRIES)
+        if (fx or {}).get("after_views"):       # the selftest's race seam: a peer lands between the fetch and the push
+            fx["after_views"]()
+        got = land_spend(root, paths, dict(fx or {}, land_msg="modledger: %s (Dispatch step)%s" % (
+            what, "" if out is None else ", views rebuilt after a peer landing")))
+        out = got if out is None else "%s; again: %s" % (out, got)
+        if not str(got).startswith("PUBLISHED"):
+            return out
+    return out
+
+
+def views_differ(root, paths):
+    """-> True when these paths in the root's worktree (views just rebuilt by origin_views from a fresh fetch) differ
+    from origin/main's, blob by blob (the index is never consulted: a file land.sh published through its temp index may
+    be untracked here); an unreadable read is True (land again rather than leave them stale)."""
+    for rel in paths:
+        try:
+            o = subprocess.run(["git", "-C", root, "rev-parse", "--verify", "-q", "origin/main:%s" % rel],
+                               capture_output=True, text=True, timeout=120)
+            here = os.path.exists(os.path.join(root, rel))
+            w = subprocess.run(["git", "-C", root, "hash-object", "--", rel], capture_output=True, text=True,
+                               timeout=120) if here else None
+        except (OSError, subprocess.SubprocessError):
+            return True
+        if w is not None and w.returncode:
+            return True
+        if (o.stdout.strip() if o.returncode == 0 else None) != (w.stdout.strip() if w is not None else None):
+            return True
+    return False
 
 
 def ledger_open(root, mod, role, brief, stage=None, now=None, fx=None):

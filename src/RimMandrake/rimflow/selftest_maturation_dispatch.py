@@ -1777,6 +1777,80 @@ def land_views_main():
     return 1 if FAILS else 0
 
 
+def land_race_main():
+    """RIMMANDRAKE_REBUILD_DISPATCH_VIEWS_ON_EACH_LAND_RETRY: a peer lands a new HOLDER shard line AFTER origin_views
+    fetched and BEFORE land.sh pushes (the fx seam "after_views" does it, once). land_ledger then landed views blind to
+    it, and origin read VIEW_STALE until the next Dispatch landing. Origin's views must list the peer's line, no
+    VIEW_STALE. Written before the fix and watched failing on the base 2b44745f85."""
+    import modledger as ML
+    tmp = tempfile.mkdtemp(prefix="dispatch_land_race_")
+    mod = "LandRaceFixture"
+    rel = "design/concepts/%s/ledger" % mod
+
+    def git(repo, *a):
+        r = subprocess.run(["git", "-C", repo, *a], capture_output=True, text=True, timeout=120)
+        return r.stdout.strip() if r.returncode == 0 else None
+
+    def clone(name):
+        d = os.path.join(tmp, name)
+        subprocess.run(["git", "clone", "-q", origin, d], check=True, capture_output=True, timeout=120)
+        for k, v in (("user.name", "selftest"), ("user.email", "selftest@example.invalid"), ("commit.gpgsign", "false")):
+            git(d, "config", k, v)
+        return d
+
+    saved = os.environ.get("RM_STAGE_LAND")
+    os.environ.pop("RM_STAGE_LAND", None)
+    try:
+        origin = os.path.join(tmp, "origin.git")
+        subprocess.run(["git", "init", "-q", "--bare", "-b", "main", origin], check=True, timeout=120)
+        peer = clone("peer")
+        ML.grant(peer, mod, "L1", version="1")
+        ML.append(peer, mod, "HOLDER.L1", "session.id", "session", body={"session_id": "s-1"}, token=1)
+        git(peer, "add", rel)
+        git(peer, "commit", "-q", "-m", "fixture: lease and first holder line")
+        git(peer, "push", "-q", "origin", "HEAD:main")
+        root = clone("dispatch")
+        fired = []
+
+        def race():         # the peer lands between the fetch and the push, once
+            if fired:
+                return
+            fired.append(1)
+            git(peer, "pull", "-q", "--rebase", "origin", "main")
+            ML.append(peer, mod, "HOLDER.L1", "lease.renew", "lease", token=1)
+            git(peer, "add", rel)
+            git(peer, "commit", "-q", "-m", "fixture: the holder lands mid-race")
+            fired.append(git(peer, "push", "-q", "origin", "HEAD:main") is not None)
+        ML.grant(root, mod, "L2")
+        got = MD.land_ledger(root, [mod], "run L2 on %s granted" % mod, {"after_views": race})
+        print("     land_ledger -> %s" % got)
+        ok(fired[1:] == [True], "land-race fixture: the peer line was pushed mid-race (%s)" % fired)
+        check = clone("check")
+        hist = open(os.path.join(check, rel, "views", "history.md"), encoding="utf-8").read() \
+            if os.path.exists(os.path.join(check, rel, "views", "history.md")) else ""
+        ok("HOLDER.L1#2" in hist and "DISPATCH#2" in hist,
+           "land-race: origin's history view lists the peer's mid-race line and the Dispatch's grant")
+        stale = [f for f in ML._lint_views(check, mod) if f[0] == "VIEW_STALE"]
+        ok(not stale, "land-race: origin's views are not VIEW_STALE after the race (got %s)" % (stale[:1],))
+        # Codex review 2026-11-18: a mod whose ledger is new to origin (files untracked in the root's index) lands
+        # once, never a second "nothing to land" try
+        fresh_mod = "LandRaceFresh"
+        ML.grant(root, fresh_mod, "L1", version="1")
+        os.environ["LAND_SYNC"] = "0"       # the index is then not moved after the landing: the new files stay untracked
+        try:
+            got2 = MD.land_ledger(root, [fresh_mod], "run L1 on %s granted" % fresh_mod)
+        finally:
+            os.environ.pop("LAND_SYNC", None)
+        ok(str(got2).startswith("PUBLISHED") and "again" not in str(got2),
+           "land-race: no race, a ledger new to origin lands once (read %s)" % got2)
+    finally:
+        if saved is not None:
+            os.environ["RM_STAGE_LAND"] = saved
+        shutil.rmtree(tmp, ignore_errors=True)
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
 def item_names_main():
     """RIMMANDRAKE_UNSTICK_DISPATCH_CLONE_PUBLISH_LINT_REFUSES_HEAD (2026-11-16 04:59): Gimme Some Slack's in-game visit 1
     item stood filed, so the next launch wanted a second name; its 61-char base only got shortened when the base
@@ -2570,6 +2644,8 @@ if __name__ == "__main__":
         sys.exit(item_names_main())
     if "--land-views" in sys.argv[1:]:
         sys.exit(land_views_main())
+    if "--land-race" in sys.argv[1:]:
+        sys.exit(land_race_main())
     if "--ingame" in sys.argv[1:]:
         sys.exit(ingame_main())
     if "--release" in sys.argv[1:]:
@@ -2579,6 +2655,7 @@ if __name__ == "__main__":
     rc = release_main() or rc
     rc = blind_main() or rc
     rc = land_views_main() or rc
+    rc = land_race_main() or rc
     rc = item_names_main() or rc
     rc = cert_rerun_main() or rc
     rc = cert_rerun_gates_main() or rc
