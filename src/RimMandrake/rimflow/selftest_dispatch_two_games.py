@@ -8,6 +8,10 @@ maturation_dispatch.json's game_instances is free when no live driver's run reco
 unit's env, else a) and its own `rimflow bridge idle` says takeable; the first free one is the run's, and reaches the
 unit as --env RM_GAME_INSTANCE=<game> and in its brief. A held game is never handed out, and nothing here stops a game.
 Written before the code and watched failing on the base; the bridge is the world's stand-in, never the real one.
+The JawaBench companion is a stand-in too (RIMMANDRAKE_REPAIR_TWO_GAMES_DOOR_TEST_BLOCKS_EVERY_PUBLISH): the companion gate
+(63388ebcfb) landed after this file, so every launch here read the game folder's real DLL, passing only on a machine whose
+deployed companion was FRESH and failing five cases on a Mac or in a container. MATURATION_COMPANION_DLL now names a file
+that does not exist, so a launch that still reads the real companion refuses and its case FAILS, never passes by luck.
 """
 import json
 import os
@@ -39,7 +43,7 @@ def chk(fn, what):
 def main():
     root = tempfile.mkdtemp(prefix="dispatch_two_games_")
     keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
-            "RM_MATURATION_DISPATCH_DIR", "FAKE_DH_FAIL", "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG")
+            "RM_MATURATION_DISPATCH_DIR", "FAKE_DH_FAIL", "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG", M.COMPANION_ENV)
     env_was = {k: os.environ.get(k) for k in keys}
     rec_was = MD.DH.read_record
     try:
@@ -56,7 +60,8 @@ def main():
         sd = os.path.join(root, "state")
         os.environ.update(MATURATION_DETACHED_HELPER=fake, FAKE_DH_LOG=log, MATURATION_CLOCK=str(SM.INGAME_CLOCK),
                           MATURATION_BRIEF_DIR=os.path.join(root, "briefs"), RM_MATURATION_DISPATCH_DIR=sd,
-                          MATURATION_BRIDGE_IDLE=idle, FAKE_IDLE="NOT", FAKE_IDLE_LOG=ilog)
+                          MATURATION_BRIDGE_IDLE=idle, FAKE_IDLE="NOT", FAKE_IDLE_LOG=ilog,
+                          **{M.COMPANION_ENV: os.path.join(root, "no_companion_here.dll")})
         os.environ.pop("FAKE_DH_FAIL", None)
         T0 = SM.INGAME_CLOCK
         world = {"live": {}, "runs": {}, "held": {}, "records": {}}
@@ -69,6 +74,9 @@ def main():
 
         def lbridge(p, s, game="a"):    # launch_mod's reading (purpose, seat)
             return bridge(p, game=game)
+
+        def fresh(game="a"):            # the companion stand-in: current on both games (one install serves both)
+            return True, "test stand-in: companion FRESH on game %s" % game
 
         MD.DH.read_record = lambda unit, root=None: world["records"].get(unit)
 
@@ -97,7 +105,8 @@ def main():
               "known": lambda: set(), "bridge": bridge,
               "file": lambda item, title, why, **kw: (True, "filed %s" % item),
               "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
-                                                                  bridge=lbridge, **kw)}
+                                                                  bridge=lbridge,
+                                                                  **dict({"companion": fresh}, **kw))}
 
         def tick(c, at=0):
             return MD.tick(root, c, True, fx=dict(fx, facts=lambda: facts_for(c)), now=T0 + at, page=False)
@@ -192,6 +201,14 @@ def main():
             return r[0] == 2 and "game b" in r[1] and not launches()
         chk(t_launch_mod_reads_its_game, "launch_mod checks the bridge of the run's own game (b held: refused, says b)")
 
+        def t_real_companion_never_read():
+            reset()
+            r = M.launch_mod(root, "Pyrelands", 20, "RIMMANDRAKE_DRIVE_PYRELANDS_IN_GAME_ACCEPTANCE_VISIT_ONE",
+                             bridge=lbridge, env={"RM_GAME_INSTANCE": "b"})
+            return r[0] == 2 and "MISSING %s" % os.environ[M.COMPANION_ENV] in r[1] and not launches()
+        chk(t_real_companion_never_read, "tripwire: with no stand-in the companion read is this test's missing file, so "
+                                         "the visit is refused by name (no case can pass on the machine's real DLL)")
+
         def t_bridge_idle_names_game():
             envlog = os.path.join(root, "idle_env.log")
             spy = os.path.join(root, "idle_env.py")
@@ -242,8 +259,12 @@ def main():
                 os.environ.clear()
                 os.environ.update(saved)
                 w.close()
-        chk(t_live_holder_not_takeable, "a live BENCH holder on the game's lock: bridge_idle says NOT TAKEABLE, though "
-                                        "rimflow reads the hold as ours")
+        what = "a live BENCH holder on the game's lock: bridge_idle says NOT TAKEABLE, though rimflow reads the hold as ours"
+        if os.path.isdir("/proc"):
+            chk(t_live_holder_not_takeable, what)
+        else:   # fake_two_games' machine finds and clears its processes through /proc (Linux only), as seat_restart's R4
+            print("UNMEASURED, not a pass or a fail — %s: fake_two_games lists its processes through /proc, which %s "
+                  "has none of" % (what, sys.platform))
     finally:
         MD.DH.read_record = rec_was
         for k, v in env_was.items():
