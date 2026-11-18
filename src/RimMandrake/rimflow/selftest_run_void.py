@@ -278,6 +278,9 @@ def main():
         RV.sync_system(st5, record, keep_failed=lambda b, x: False, kills_left=lambda b, x, w: False, now=T0 + 2000)
         s5 = st5["mods"]["Fake"]
         f_before = RV.faults(s5)
+        got5 = RV.resolve(root, st5, [U2], record=lambda u: None)[0]
+        ok(got5 and got5[0][1] == "Fake", "a run the tick already moved out (void_system) resolves to its mod (%s)"
+           % (got5[0][1] if got5 else None))
         RV._append({"act": "void", "ts": "t", "unit": U2, "mod": "Fake", "why": "the Conductor's stop", "by": "B"})
         RV.sync_dispatch(st5)
         ok(f_before == 2 and RV.faults(s5) == 1 and [m["class"] for m in s5["voided"] if m.get("unit") == U2

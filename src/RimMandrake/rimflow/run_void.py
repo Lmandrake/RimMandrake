@@ -220,6 +220,10 @@ def resolve(root, st, units=(), item=None, mod=None, since=None, record=None):
     for m, b, k, x in books:
         for u in _units_of(x):
             in_book.setdefault(u, (m, x.get("item")))
+    for m, s in ((st or {}).get("mods") or {}).items():     # a run already moved out (void_system) is known too
+        for v in (s.get("voided") or []) if isinstance(s, dict) else []:
+            if v.get("unit"):
+                in_book.setdefault(v["unit"], (m, (v.get("entry") or {}).get("item")))
     staged = {}
     for d in concept_dirs(root):
         for u, at in stage_runs(_raw_stage(d) or {}).items():
