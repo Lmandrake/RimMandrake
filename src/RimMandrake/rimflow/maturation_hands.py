@@ -130,18 +130,20 @@ def _act(aid, at, kind, mod, what, why=""):
 
 
 def tick_units(s):
-    """-> ({unit: (start, )}, {item}) of the runs the tick launched for one mod, from its books."""
+    """-> ({unit}, {item}): the units the tick launched (or tried to) for one mod, and their items, from its books."""
     units, items = set(), set()
-    for x in (s.get("launches") or []) + (s.get("blind_auto") or []) + (s.get("ingame_auto") or []):
+    # a failed launch is booked unit=None and `tried` (maturation_dispatch.tried_unit): its record is the tick's own
+    for x in (s.get("launches") or []) + (s.get("blind_auto") or []) + (s.get("ingame_auto") or []) + \
+            (s.get("holder_road_back") or []):
         if isinstance(x, dict):
-            units.update([x.get("unit")] + list(x.get("killed_before") or []))
+            units.update([x.get("unit"), x.get("tried")] + list(x.get("killed_before") or []))
             if x.get("unit"):
                 items.add(x.get("item"))
     for book in ("steward", "fixers"):
         for x in (s.get(book) or {}).values():
-            if isinstance(x, dict) and x.get("unit"):
-                units.add(x["unit"])
-                items.add(x.get("item"))
+            if isinstance(x, dict) and (x.get("unit") or x.get("tried")):
+                units.update([x.get("unit"), x.get("tried")])
+                items.add(x.get("item")) if x.get("unit") else None
     units.discard(None)
     items.discard(None)
     return units, items
@@ -195,7 +197,8 @@ def collect(root, cfg, st, facts, now, fx=None):
         w = s.get("watch") or {}
         for r in runs:
             at, item = r.get("at"), str(r.get("item") or "")
-            if r["unit"] in units or not isinstance(at, (int, float)) or at <= since:
+            # a launch record that never ran (launch_failed) worked on nothing: no run, no hand
+            if r["unit"] in units or r.get("ran") is False or not isinstance(at, (int, float)) or at <= since:
                 continue
             what = ("a blind judge" if MD._is_blind_item(item) else
                     "an in-game driver" if MD._is_ingame_item(item) else
@@ -207,7 +210,9 @@ def collect(root, cfg, st, facts, now, fx=None):
                 out.append(_act("run-%s" % r["unit"], at, "hand_run", mod, "%s launched by hand: %s on %s" % (
                     what, r["unit"], item)))
         rec = _json(os.path.join(root, "design", "concepts", mod, "version", "stage_record.json")) or {}
-        spans = [(r.get("at"), r.get("end")) for r in runs if r["unit"] in units and isinstance(r.get("at"), (int, float))]
+        # a tick launch that never ran (launch_failed, end None) is no span: it would read live to now and hide hand moves
+        spans = [(r.get("at"), r.get("end")) for r in runs if r["unit"] in units and r.get("ran") is not False
+                 and isinstance(r.get("at"), (int, float))]
         for m in rec.get("moves") or []:
             at = ts(m.get("at")) if isinstance(m, dict) else None
             if at is None or at <= since or m.get("unit"):

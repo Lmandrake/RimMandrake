@@ -538,8 +538,81 @@ def stalled_main():
     ok('"builder_stalled"' in src, "stalled 7: what the stalled-builder steward files is a road back, so fixers run it")
 
 
+def false_hands_main():
+    """RIMMANDRAKE_BOOK_FAILED_TICK_LAUNCHES_THREE_FALSE_HANDS, measured 2026-11-17: three of 13 open hand acts were not
+    hands. Gimme Some Slack's in-game launches 1794831340 and 1794834319 failed (the tick booked unit=None, the launch
+    record exists under the unit it tried) and read as hand launches; a builder on a pipeline-fix item whose id holds
+    BLIND read as a blind judge. Written before the fix and watched failing on the base."""
+    if MH is None:
+        ok(False, "false hands: maturation_hands.py exists")
+        return
+    root = tempfile.mkdtemp(prefix="mat_hands_false_")
+    was = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(root, "state")
+    try:
+        MD.sdir()
+        os.makedirs(os.path.join(root, "design", "concepts", "G", "version"))
+        t0 = NOW - 3 * 3600
+        tried = "rm-detached-bench-rimmandrake-drive-g-in-game-1794831340"
+        ticket = "RIMMANDRAKE_DRIVE_G_IN_GAME_ACCEPTANCE_VISIT_ONE"
+        st = {"hands": {"since": t0 - 10, "last_tick": NOW - 60},
+              "mods": {"G": {"ingame_auto": [
+                  {"visit_id": "0.1.0#1", "visit": 1, "unit": None, "item": ticket, "at": t0 + 10, "tries": 1,
+                   "filed": True, "never_started": True, "tried": tried,
+                   "failed": "filed; LAUNCH FAILED %s: systemd-run did not answer (OSError)" % tried}],
+                  "blind_auto": [{"unit": "rm-tick-judge", "item": "RIMMANDRAKE_JUDGE_G_BLIND_CYCLE_ONE"}]}}}
+        facts = {"G": {"stage": "in_game", "runs_seen": [
+            {"unit": tried, "item": ticket, "at": t0 + 11, "end": None, "ran": False},
+            {"unit": "rm-unstick", "item": "RIMMANDRAKE_UNSTICK_DISPATCH_BLIND_CYCLES_WAITED_SIX_HOURS", "at": t0 + 20},
+            {"unit": "rm-hand-on-ticket", "item": "RIMMANDRAKE_JUDGE_G_BLIND_CYCLE_ONE", "at": t0 + 30}]}}
+        fx = {"events": lambda: [], "known": lambda: set()}
+        MH.observe(root, dict(CFG, advancing=["G"]), st, facts, NOW, {"needs_conductor": []}, fx)
+        acts = [a for a in MH.read_acts() if a["kind"] == "hand_run"]
+        ok(not any(tried in a["id"] for a in acts),
+           "false hands 1: the tick's own failed launch (booked unit=None, its record under the unit it tried) is no "
+           "hand act", [a["id"] for a in acts])
+        ok(not any("rm-unstick" in a["id"] for a in acts),
+           "false hands 2: a run on a non-ticket item whose id holds BLIND is no hand act", [a["id"] for a in acts])
+        ok(sum(1 for a in acts if "rm-hand-on-ticket" in a["id"]) == 1,
+           "false hands 3 (control): a hand launch on the tick's own blind ticket is still one hand act",
+           [a["id"] for a in acts])
+        # Codex review 2026-11-18: an unconfirmed launch booked `tried` that then ran is the tick's own, not a hand's;
+        # and a failed launch (never ran, end None) hides no later hand move
+        ok(not any("rm-tick-judge" in a["id"] for a in acts), "false hands 3b (control): the tick's own judge is no act")
+        os.remove(os.path.join(MD.sdir(), MH.ACTS)) if os.path.exists(os.path.join(MD.sdir(), MH.ACTS)) else None
+        late = "rm-detached-bench-rimmandrake-drive-g-in-game-1794834319"
+        st["mods"]["G"]["ingame_auto"].append(
+            {"visit_id": "0.1.0#2", "visit": 2, "unit": None, "item": ticket + "_TWO", "at": t0 + 40, "tries": 1,
+             "filed": True, "never_started": True, "tried": late,
+             "failed": "filed; LAUNCH UNCONFIRMED %s: systemd-run did not answer" % late})
+        facts["G"]["runs_seen"].append({"unit": late, "item": ticket + "_TWO", "at": t0 + 41, "end": t0 + 900})
+        with open(os.path.join(root, "design", "concepts", "G", "version", "stage_record.json"), "w") as f:
+            json.dump({"moves": [{"from": "in_game", "to": "offline_build", "at": MH.iso(t0 + 1200), "by": "BENCH",
+                                  "why": "by hand"}]}, f)
+        MH.observe(root, dict(CFG, advancing=["G"]), st, facts, NOW + 30, {"needs_conductor": []}, fx)
+        acts2 = MH.read_acts()
+        ok(not any(late in a["id"] for a in acts2),
+           "false hands 6: an unconfirmed launch booked `tried` that then ran is the tick's own run, no hand act",
+           [a["id"] for a in acts2])
+        ok(any(a["kind"] == "hand_move" for a in acts2),
+           "false hands 7: a failed launch that never ran hides no later hand move", [a["kind"] for a in acts2])
+        b = {"failed": "x; LAUNCH FAILED %s: pool full" % tried}
+        ok(MD.tried_unit(b["failed"]) == tried if hasattr(MD, "tried_unit") else False,
+           "false hands 4: the unit a failed launch tried is read from its failure text")
+        ok((MD.tried_unit("LAUNCH UNCONFIRMED %s: systemd-run did not answer" % tried) == tried
+            and MD.tried_unit("no free item name") is None and MD.tried_unit(None) is None)
+           if hasattr(MD, "tried_unit") else False,
+           "false hands 5: an unconfirmed launch's unit is read too; a failure that names none reads None")
+    finally:
+        if was is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = was
+        shutil.rmtree(root, ignore_errors=True)
+
+
 SECTIONS = (("stalled", stalled_main), ("stop", stop_main), ("retry", retry_main), ("refund", refund_main), ("briefs", briefs_main),
-            ("acts", acts_main), ("chores", chores_main))
+            ("acts", acts_main), ("chores", chores_main), ("false_hands", false_hands_main))
 
 if __name__ == "__main__":
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None

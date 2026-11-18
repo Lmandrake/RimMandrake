@@ -1594,7 +1594,7 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
     if led:
         text = "%s; %s" % (text, MD.ledger_after(root, st, mod, led, unit if ok else None, item, now))
     book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else text,
-                 "tries": tries, "filed": filed}
+                 "tries": tries, "filed": filed, "tried": None if ok else MD.tried_unit(text)}
     if not ok and cfg.get("_code"):
         book[key]["code"] = cfg["_code"]
     if ok and row["aut"] == "steward" and row.get("steward_kind") in ("exit_not_met", "exit_met", "builder_stalled"):

@@ -334,8 +334,8 @@ def gather(root, cfg, live=True):
                                         r.get("cap") if isinstance(r.get("cap"), (int, float)) else 0.0)
                             for r in runs if r.get("unit")}
             # for maturation_hands (who launched what) and slow_chores (a dead run whose finish never ran)
-            f["runs_seen"] = [{"unit": r["unit"], "item": r.get("item"), "at": r.get("at"), "end": r.get("end")}
-                              for r in runs if r.get("unit")]
+            f["runs_seen"] = [{"unit": r["unit"], "item": r.get("item"), "at": r.get("at"), "end": r.get("end"),
+                               "ran": ran(r)} for r in runs if r.get("unit")]
             f["dead_unfinished"] = [r["unit"] for r in runs if r.get("unit") and not r.get("live") and r.get("end") is None
                                     and ran(r)]
         else:
@@ -443,6 +443,19 @@ def _is_blind_item(item):
     if not s.startswith("RIMMANDRAKE_"):
         return True
     return s[len("RIMMANDRAKE_"):].split("_", 1)[0] in JUDGE_VERBS
+
+
+TRIED_RX = re.compile(r"LAUNCH (?:FAILED|UNCONFIRMED) (rm-[\w.@-]+?):")
+
+
+def tried_unit(text):
+    """-> the unit a failed or unconfirmed launch tried, read from detached_helper's own failure line ("LAUNCH FAILED
+    <unit>: ..." / "LAUNCH UNCONFIRMED <unit>: ..."), or None when the text names none. A tick launch that failed is
+    booked unit=None, but its launch record exists under this unit; booked as `tried`, the hand-act reader knows it as
+    the tick's own (RIMMANDRAKE_BOOK_FAILED_TICK_LAUNCHES_THREE_FALSE_HANDS: Gimme Some Slack's in-game launches
+    1794831340 and 1794834319 read as hand launches)."""
+    m = TRIED_RX.search(str(text or ""))
+    return m.group(1) if m else None
 
 
 def ran(r):
@@ -1806,7 +1819,7 @@ def launch_counted(cfg, s, row, now, book, where, new_item, do_file, do_publish,
         text = "%s; %s" % (text, text2.splitlines()[0] if text2 else rc)
         ok = rc == 0 and bool(unit)
     entry = dict(where, unit=unit if ok else None, item=item, at=now, cap=row.get("cap"), failed=None if ok else text,
-                 tries=tries, filed=filed, never_started=not unit)
+                 tries=tries, filed=filed, never_started=not unit, tried=None if ok else tried_unit(text))
     if not ok and cfg.get("_code"):
         entry["code"] = cfg["_code"]        # the pipeline code it failed on: retriable() tries again once it changes
     lst = s.setdefault(book, [])
@@ -2201,7 +2214,8 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx):
                            (text or "").splitlines()[0] if text else rc,
                            ledger_after(root, st, mod, led, unit, item, now, fx))
     st.setdefault("mods", {}).setdefault(mod, {}).setdefault("holder_road_back", []).append(
-        {"at": now, "ids": sorted(ids), "item": item, "unit": unit, "stage": stage})
+        {"at": now, "ids": sorted(ids), "item": item, "unit": unit, "stage": stage,
+         "tried": None if unit else tried_unit(text)})
     return rc, text, unit, item
 
 
