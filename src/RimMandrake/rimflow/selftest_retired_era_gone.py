@@ -13,7 +13,10 @@ lived: design/RimMandrake/retired_eras_index_2026-11-18.md.
 Answers, kept apart: rc 0 = looked, nothing left outside the allow-list; rc 1 = remnants found (each named);
 rc 2 = could not look (git or the index unreadable). The unit check reads `systemctl --user`; where that cannot be read
 the line says UNITS UNMEASURED with its cause and the path check still decides (a missing reading is not a pass of the
-units, and is said so). Probes first: the checker must see a planted remnant before its verdict on the tree counts.
+units, and is said so). Not scanned, on purpose (the owner's order keeps them): history (ledger shards, lessons,
+closed-item prose, handoffs, evidence and code-review records, transcripts, Transient/) and mod content and its design
+(src/ outside rimflow/, Utils/ and bridgetools/; design/Jawa, design/concepts, design/RimStarWars, design/RimUtinni),
+where "foundry" or "pulse" are lore and feature words. Probes first: the checker must see a planted remnant before its verdict on the tree counts.
 """
 import fnmatch
 import os
@@ -26,7 +29,7 @@ INDEX = os.path.join("design", "RimMandrake", "retired_eras_index_2026-11-18.md"
 ALLOW_HEADINGS = ("## Phase 2: renames", "## Kept on purpose")
 
 # Era words anywhere in a path, in the scopes below.
-ERA = re.compile(r"relentless|artisan|whittle|ralph|rimpulse|fleet[_-]?watch|rimflow_v3|process_model_v2_v3", re.I)
+ERA = re.compile(r"relentless|artisan|whittle|ralph|rimpulse|fleet[ _-]?watch|rimflow[ _-]?v3|process_model_v2_v3", re.I)
 # Words too common to match everywhere: only in machinery scopes, and only in these shapes.
 MACHINERY_ONLY = re.compile(r"foundry|(^|/)pulse(/|$)|(^|/)rm-pulse\.", re.I)
 MACHINERY = ("src/RimMandrake/rimflow/", "src/RimMandrake/Utils/", ".claude/", "skills/", "infrastructure/agents/",
@@ -52,7 +55,10 @@ def era_path(p):
 
 
 def era_unit(name):
-    return bool(ERA.search(name) or re.match(r"rm-pulse\.", name))
+    return bool(ERA.search(name) or re.match(r"rm-pulse\.", name) or re.search(r"foundry", name, re.I))
+
+
+MASKED = ("masked", "masked-runtime")
 
 
 def read_allow(text):
@@ -60,12 +66,14 @@ def read_allow(text):
     rows, inside, seen = [], False, False
     for line in text.splitlines():
         if line.startswith("## "):
-            inside = line.strip().startswith(ALLOW_HEADINGS)
-            seen = seen or inside
+            inside = line.strip() in ALLOW_HEADINGS
             continue
         if not inside or not line.startswith("|"):
             continue
         cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if cells and cells[0] == "path":
+            seen = True      # a table's header row: an empty table is a table, a heading alone is not
+            continue
         m = re.fullmatch(r"`([^`]+)`", cells[0]) if cells else None
         if not m:
             continue
@@ -74,8 +82,6 @@ def read_allow(text):
 
 
 def allowed(p, glob):
-    if glob.endswith("/**"):
-        return p.startswith(glob[:-2])
     return fnmatch.fnmatchcase(p, glob)
 
 
@@ -86,19 +92,17 @@ def check_tree(paths, units, allow):
     for p in paths:
         if not era_path(p):
             continue
-        hit = next((g for g, _ in allow if allowed(p, g)), None)
-        if hit is None:
+        hits = {g for g, _ in allow if allowed(p, g)}
+        if not hits:
             remnants.append(p)
-        else:
-            used.add(hit)
+        used |= hits
     for name, state in units or ():
-        if not era_unit(name) or state == "masked":
+        if not era_unit(name) or state in MASKED:
             continue
-        hit = next((g for g, _ in allow if g == "unit:" + name), None)
-        if hit is None:
+        hits = {g for g, _ in allow if g == "unit:" + name}
+        if not hits:
             remnants.append(f"unit:{name} ({state})")
-        else:
-            used.add(hit)
+        used |= hits
     if units is not None:
         problems += [f"allow row `{g}` matches nothing" for g, _ in allow if g not in used]
     else:
@@ -120,9 +124,7 @@ def read_units():
         f = line.split()
         if len(f) >= 2:
             out.append((f[0], f[1]))
-    if not out:
-        return None, "systemctl listed no unit files at all"
-    return out, ""
+    return out, ""      # rc 0 with no rows is a measured empty list, not "could not look"
 
 
 def probes():
@@ -157,29 +159,42 @@ def probes():
     _, p = check_tree([], None, allow[1:])
     want(p == [], "with units unread, a unit allow row is not called stale")
     want(read_allow("# x\n## Other\n| `a` | b |\n") is None, "an index with no allow table reads as no table")
-    want(read_allow("## Kept on purpose\n| glob | why |\n|---|---|\n| `a/**` | b |\n") == [("a/**", "b")],
+    want(read_allow("## Kept on purpose\nprose only\n") is None, "a heading with no table is no table")
+    want(read_allow("## Kept on purpose\n| path | why |\n|---|---|\n") == [], "an empty table is an empty allow list")
+    want(read_allow("## Kept on purpose\n| path | why |\n|---|---|\n| `a/**` | b |\n") == [("a/**", "b")],
          "an allow table row is read")
+    want(read_allow("## Kept on purpose — rejected\n| path | why |\n| `ralph/**` | no |\n") is None,
+         "a heading that only starts like an allow heading grants nothing")
     want(allowed("whittle/x/y", "whittle/**") and not allowed("whittlex/y", "whittle/**"), "a dir glob is a prefix")
+    want(allowed("skills/a/whittle/x.py", "skills/*/whittle/**"), "a glob with a wildcard before /** matches")
+    _, p = check_tree(["ralph/a.md"], [], [("ralph/**", "x"), ("ralph/a.md", "y")])
+    want(p == [], f"two allow rows matching one path are both used (got {p})")
+    r, _ = check_tree(["design/RimMandrake/Fleet Watch.md", "design/RimMandrake/rimflow v3.md"],
+                      [("rm-foundry.service", "enabled"), ("rm-whittle.timer", "masked-runtime")], [])
+    want(r == ["design/RimMandrake/Fleet Watch.md", "design/RimMandrake/rimflow v3.md", "unit:rm-foundry.service (enabled)"],
+         f"spaced era names and a foundry unit are remnants; masked-runtime is masked (got {r})")
     return fails
 
 
 def main():
     fails = probes()
     if fails:
-        print(f"FAIL: {len(fails)} probe(s): the checker cannot see a planted remnant; its verdict does not count")
+        print(f"FAIL: {len(fails)} probe(s) failed: the checker is not trustworthy, so its verdict on the tree does not count")
         return 1
     try:
-        paths = subprocess.run(["git", "-C", REPO, "ls-files"], capture_output=True, text=True, check=True,
-                               timeout=60).stdout.splitlines()
+        raw = subprocess.run(["git", "-C", REPO, "ls-files", "-z"], capture_output=True, check=True,
+                             timeout=60).stdout
+        paths = [os.fsdecode(x) for x in raw.split(b"\0") if x]   # -z: real paths, never git's quoted display form
     except (OSError, subprocess.SubprocessError) as e:
         print(f"COULD NOT LOOK: git ls-files failed: {e}")
         return 2
     if not paths:
-        print("COULD NOT LOOK: git ls-files listed no paths")
+        print("COULD NOT LOOK: git ls-files listed no paths, so this is not the repo (this file is tracked)")
         return 2
     try:
-        text = open(os.path.join(REPO, INDEX), encoding="utf-8").read()
-    except OSError as e:
+        with open(os.path.join(REPO, INDEX), encoding="utf-8") as f:
+            text = f.read()
+    except (OSError, UnicodeError) as e:
         print(f"COULD NOT LOOK: index unreadable ({INDEX}): {e}")
         return 2
     allow = read_allow(text)
@@ -188,10 +203,8 @@ def main():
         return 2
     units, cause = read_units()
     remnants, problems = check_tree(paths, units, allow)
-    for x in remnants[:60]:
+    for x in remnants:
         print("REMNANT " + x)
-    if len(remnants) > 60:
-        print(f"REMNANT ... and {len(remnants) - 60} more")
     for x in problems:
         print("PROBLEM " + x)
     units_line = f"UNITS UNMEASURED: {cause}" if units is None else f"units read: {len(units)}"

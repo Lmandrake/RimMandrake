@@ -5,7 +5,7 @@
 files, one of them a text file holding a Latin-1 byte: seat_sync.landed_twin reads `git diff-tree -p` through
 Git.run(text=True), which decodes strictly. Git calls a file text unless it holds a NUL, so any stray non-UTF-8 byte in
 a tracked text file can do this. Here, in throwaway repos: a commit adding, editing and deleting such a file, landed
-upstream under another sha, is found as a twin (not a crash), and an unlanded one reads None.
+upstream under another sha, is found as a twin (not a crash), and one differing only by a non-UTF-8 byte reads None.
 """
 import os
 import subprocess
@@ -76,15 +76,21 @@ def main():
             check(not err, f"{name}: landed_twin reads a non-UTF-8 patch without crashing {err}".rstrip())
             check(twin == shas[1], f"{name}: the same change landed under another sha is its twin (got {twin})")
             git(seat, "reset", "-q", "--hard", "origin/main")
-        # an unlanded commit touching such a file is no twin
+        # an unlanded commit whose bytes differ from the landed one only in a non-UTF-8 byte is no twin. A lossy decode
+        # (errors="replace") gives both patches the same patch-id; landed_twin's blob comparison (entries) still tells
+        # them apart, which this case pins (measured 2026-11-18: an errors="replace" mutant passes here for that reason)
+        write(peer, "old/other.txt", b"\xe9 only here\n"); git(peer, "add", "old/other.txt")
+        git(peer, "commit", "-qm", "landed e9"); git(peer, "push", "-q", "origin", "HEAD:main")
         write(seat, "old/other.txt", b"\xb7 only here\n"); git(seat, "add", "old/other.txt")
-        git(seat, "commit", "-qm", "unlanded")
+        git(seat, "commit", "-qm", "unlanded b7")
+        git(seat, "fetch", "-q", "origin")
         try:
             twin = S.landed_twin(S.Git(seat), "origin/main", head(seat))
             err = ""
         except UnicodeError as e:
             twin, err = "crash", f"{type(e).__name__}"
-        check(twin is None and not err, f"an unlanded non-UTF-8 commit reads None (got {twin} {err})")
+        check(twin is None and not err, f"a commit differing from a landed one only by a non-UTF-8 byte reads None "
+                                        f"(got {twin} {err})".rstrip())
     print(f"{'FAIL' if fails else 'PASS'}: {len(fails)} failed")
     return 1 if fails else 0
 
