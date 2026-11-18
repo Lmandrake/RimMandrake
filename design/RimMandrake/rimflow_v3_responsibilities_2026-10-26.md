@@ -430,8 +430,9 @@ build order (v3.0 → v3.4), so each home also names who holds the duty **until*
    Dispatcher launches a headless FlowWorks builder in a clone under an exclusive lease, only while he is
    away, and fences it (stop, handoff, lease released) before his session writes. Not Foundry, except a Live Fixer run on a FlowWorks bug (owner 10-28, by card). Acceptance and code
    review are independent (Arbiter; the GPT reviewer until v3.3): "BENCH owns acceptance" means BENCH obtains it,
-   not grants it. Needs one schedule-rule change, which `V3_ROLES_DESIGN_INTERIM_HOLDER_PER_DUTY` carries: "the
-   watched BENCH window is never woken; a headless FlowWorks builder may run while he is away".
+   not grants it. Needs one schedule-rule change, which `V3_ROLES_DESIGN_INTERIM_HOLDER_PER_DUTY` carries: "a
+   headless FlowWorks builder may run while he is away". (That rule's other half, that the watched window is never
+   woken by a program, was removed on the owner's word 2026-11-18; a finished detached run wakes the Conductor window.)
 5. **Windows popping up, focus theft, dialogs left on his screen.** His: *"seems like Operations."*
    **Verdict: agree,** with the mechanism added: watching for it costs no AI. Prevention is hidden-launch defaults
    at the shared launch points with an allowlist and a selftest; detection is a deterministic foreground-change log

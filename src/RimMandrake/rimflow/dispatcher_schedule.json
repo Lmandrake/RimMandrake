@@ -50,7 +50,7 @@
             "session_aliases": ["AGENT BENCH"],
             "_names_why": "CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS (owner 2026-10-29: 'So it's called bench again instead of conductor.'): the window is launched and SHOWN as CONDUCTOR (session --name, --remote-control, title hook); a window launched before the rename keeps 'AGENT BENCH' until its next relaunch, so every matcher takes both (session_match.names_of). Never 'AGENT CONDUCTOR': that is the Conductor role's window_name hold, and the hold must not fire on this tile (selftest_conductor_identity). Ledger key stays BENCH.",
             "clone": "/home/mandrake/rm/bench", "model": "claude-fable-5-2",
-            "_why": "BENCH is the owner's workshop window (the Conductor's session mode): watched, never woken or resumed by a program"}
+            "_why": "BENCH is the owner's workshop window (the Conductor's session mode). wake=false only means the Dispatcher's ring ladder does not ring it; a finished detached run wakes it (.claude/hooks/run_end_wake.py, RIMMANDRAKE_WAKE_CONDUCTOR_ON_RUN_END_LOG_ONLY_TODAY). The old 'never woken or resumed by a program' line was an agent's note of 2026-10-26, removed on the owner's word 2026-11-18: 'That's a dumb rule. Remove it.'"}
  },
  "golive": {"roles": ["Conductor", "Operations", "Producer", "Auditor", "Innovator"], "recover_dead": [],
   "_doc": "The set the owner's switch may turn on (design/RimMandrake/rimflow_v3_trial_night_2026-10-28.md). selftest_dispatcher.py refuses any role enabled but not named in roles, and any seat with recover_dead true but not named in recover_dead. A flip is one file: set the role's enabled true AND add its name here (likewise a seat's recover_dead and its name). The Dispatcher itself does not read this block."},
