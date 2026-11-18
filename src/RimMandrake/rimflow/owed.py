@@ -18,9 +18,13 @@ per-prompt notice, .claude/hooks/conductor_goodbye.py), `evidence_ok()` the disc
 An item's age is from its `file`, never from a later event: nothing resets it. Closing its parent discharges nothing.
 """
 import datetime
+import json
 import os
 import re
 import sys
+import time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 try:                                                 # imported by cli.py as rimflow.owed: share its rebound model
     from . import model, priority, priority_list
@@ -224,7 +228,273 @@ def check_pointers_main(path):
     return 1 if bad else 0
 
 
+# ---- E3: the explicit Conductor hand steps become owed items at their source -----------------------------------------
+# RIMMANDRAKE_FILE_OWED_WHERE_RUNS_PARK_FOR_THE_CONDUCTOR (spec §3 E3 as narrowed by §4). Measured why: "Gimme Some Slack
+# is paused for the Conductor's call" reached the Conductor only as a run result, after the window that launched it was
+# gone. Only the hand steps the programs already name are sources; a plain failed run is not one (noise, §4).
+SOURCE_TAG = "owed-source"
+SOURCE_RX = re.compile(r"\b%s ([a-z]+:[\w@.:+~-]*[\w.+~-])" % SOURCE_TAG)     # the key, never a trailing `]` or `:`
+
+
+def _part(x):
+    """A key part SOURCE_RX reads back whole, one-to-one: A-Z a-z 0-9 _ . + - kept, any other character `~XX` (its
+    code point in hex), nothing `~none`. Two different values never share a key (Codex's second look, 2026-11-18)."""
+    if x is None or x == "":
+        return "~none"
+    return "".join(c if re.match(r"[A-Za-z0-9_.+-]", c) else "~%02X" % ord(c) for c in str(x))
+
+
+def _token(key):
+    """-> a 5-letter word unique to the source (sha1, A-Z only): the name's last resort, so names never run out."""
+    import hashlib
+    h = int(hashlib.sha1(key.encode()).hexdigest(), 16)
+    return "".join("ABCDEFGHIJKLMNOPQRSTUVWXYZ"[(h >> (5 * i)) % 26] for i in range(5))
+DECIDES = "the Conductor decides"               # maturation.next_step: "PAUSED: three cycles, the Conductor decides"
+CARD = "a card in the Conductor log"            # maturation.next_step: "OWNER, a card in the Conductor log"
+# A program seat may not `file` (model: "`file` is a window's verb"); RUNNER spawns instead, from the run's item or, for a
+# maturation row, from the Maturation Dispatch's own item (the cause maturation_dispatch.file_and_publish names).
+MATURATION_PARENT = "RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE"
+PUBLISH_RESERVE_S = 15                           # a push (fetch, replay, lint, push) is not started with less left
+
+
+def _cut(text, n=150):
+    t = " ".join(str(text or "").split())
+    return t if len(t) <= n else t[:n - 1] + "…"
+
+
+def maturation_sources(rows):
+    """-> [(key, name bases, title, caused_by)] for each status row whose NEXT names a Conductor hand step. Pure."""
+    out = []
+    for r in rows or []:
+        nxt, mod = str(r.get("next") or ""), str(r.get("mod") or "")
+        head = nxt.split("):", 1)[0]                # the NEXT's tag, never a later sentence quoting the words
+        if not mod or (DECIDES not in head and CARD not in head):
+            continue
+        b = r.get("blind") if isinstance(r.get("blind"), dict) else {}
+        visit = b.get("visit") or 0
+        key = "maturation:%s@%s:%s:visit%s" % (_part(mod), _part(r.get("version")), _part(r.get("stage")),
+                                                _part(visit))
+        m, stage = mod.upper(), [w for w in re.split(r"[^A-Z0-9]+", str(r.get("stage") or "").upper()) if w]
+        if DECIDES in head:
+            bases = ["RIMMANDRAKE_DECIDE_%s_AFTER_THREE_BLIND_CYCLES" % m, "RIMMANDRAKE_DECIDE_%s_AFTER_THREE_CYCLES" % m,
+                     "RIMMANDRAKE_DECIDE_%s_%s_AFTER_THREE_CYCLES" % (m, _token(key))]
+            act = "Decide %s %s after three blind cycles" % (mod, r.get("version") or "")
+        else:
+            bases = ["_".join(["RIMMANDRAKE", "CARD", m] + stage + ["TO_THE_OWNER"]), "RIMMANDRAKE_CARD_%s_TO_HIM" % m,
+                     "RIMMANDRAKE_CARD_%s_%s_TO_HIM" % (m, _token(key))]
+            act = "Put the card to him for %s %s at %s" % (mod, r.get("version") or "", r.get("stage") or "?")
+        out.append((key, bases, "%s: %s" % (act, _cut(nxt)), None))
+    return out
+
+
+def detached_sources(recs, items):
+    """-> [(key, name bases, title, caused_by)] for each run record carrying `owed_close` whose item is still open on
+    `items` (an item the ledger does not hold yet is not known open: a later pass files it). Pure."""
+    out = []
+    for rec in recs or []:
+        unit, iid = rec.get("unit"), rec.get("item")
+        it = items.get(iid) if iid else None
+        if not unit or not rec.get("owed_close") or it is None or not it.open:
+            continue
+        words = [w for w in str(iid).split("_")[1:4] if w]
+        bases = ["_".join(["RIMMANDRAKE", "SETTLE"] + words + ["LEFT_OPEN"]),
+                 "_".join(["RIMMANDRAKE", "SETTLE"] + words[:2] + ["AFTER_ITS_RUN"])]
+        key = "detached:%s" % _part(unit)
+        bases.append("_".join(["RIMMANDRAKE", "SETTLE"] + words[:2] + [_token(key), "LEFT_OPEN"]))
+        out.append((key, bases, "Close or carry %s: run %s ended with it open (%s)" % (
+            iid, unit, _cut(rec.get("owed_close"), 110)), iid))
+    return out
+
+
+def _free_name(bases, known):
+    """-> the first base (then base_AGAIN_<N as a word>) that `rimflow file` takes, or None (model.mint_problems)."""
+    ones = "TWO THREE FOUR FIVE SIX SEVEN EIGHT NINE TEN ELEVEN TWELVE".split()
+    for c in list(bases) + ["%s_AGAIN_%s" % (b, w) for b in bases for w in ones]:
+        if not model.mint_problems(c, known):
+            return c
+    return None
+
+
+def _lock_path():
+    """One exclusive lock per ledger: two passes at once each re-read the ledger under it, so a key is filed once."""
+    import hashlib
+    import tempfile
+    tag = hashlib.sha1(os.path.abspath(model.EVENTS).encode()).hexdigest()[:12]
+    return os.path.join(tempfile.gettempdir(), "rimflow_owed_sources.%s.lock" % tag)
+
+
+def filed_keys(events):
+    """-> {source key}: every key already written into an owed filing, open or closed (never filed twice)."""
+    keys = set()
+    for ev in events:
+        if ev.get("event") not in ("file", "spawn"):
+            continue
+        for v in ev.values():
+            if isinstance(v, str) and SOURCE_TAG in v:
+                keys.update(SOURCE_RX.findall(v))
+    return keys
+
+
+def sync_sources(rows, recs, seat="BENCH", repo=None, timeout=120, sources_err=None, spawn=False):
+    """File one owed item for each new source. -> (filed [(id, key)], problems [str]). rows/recs None = that source
+    could not be read (named in sources_err); the other source is still filed. spawn: write `spawn --from <cause>`
+    (RUNNER, the Dispatcher tick), else `file`."""
+    import fcntl
+    import subprocess
+    repo = repo or os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
+    cli = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cli.py")
+    filed, problems = [], list(sources_err or [])
+    with open(_lock_path(), "w") as lk:
+        fcntl.flock(lk, fcntl.LOCK_EX)
+        evs = model.read()
+        world = model.replay(evs)
+        done = filed_keys(evs)
+        known = set(world.items)
+        for key, bases, title, cause in maturation_sources(rows) + detached_sources(recs, world.items):
+            if key in done:
+                continue
+            iid = _free_name(bases, known)
+            if iid is None:
+                problems.append("%s: no free item name from %s" % (key, bases[0]))
+                continue
+            tagged = "%s [%s %s]" % (title, SOURCE_TAG, key)
+            if spawn:
+                argv = [sys.executable, cli, "spawn", "--from", cause or MATURATION_PARENT, "--for", seat, "--name", iid,
+                        "--kind", KIND, "--title", tagged]
+            else:
+                argv = [sys.executable, cli, "file", iid, "--for", seat, "--kind", KIND, "--title", tagged]
+                argv += ["--caused-by", cause] if cause else []
+            argv += ["--why", "%s %s: an explicit Conductor hand step, filed where it parked (owed.py sync-sources)"
+                     % (SOURCE_TAG, key)]
+            try:
+                r = subprocess.run(argv, cwd=repo, capture_output=True, text=True, timeout=timeout,
+                                   stdin=subprocess.DEVNULL)
+                ok, out = r.returncode == 0, (r.stdout + r.stderr).strip()
+            except Exception as e:              # noqa: BLE001 - said, never silent
+                ok, out = False, "%s: %s" % (type(e).__name__, e)
+            if ok:
+                filed.append((iid, key))
+                known.add(iid)
+                done.add(key)
+            else:
+                problems.append("%s: file %s refused: %s" % (key, iid, _cut(out, 300)))
+    return filed, problems
+
+
+def live_rows(root=None):
+    """-> [next_step row] for every versioned mod not held by the owner (mod_owner_hold.json: nothing alarms on one)."""
+    import maturation as M
+    root = root or M.REPO
+    return [M.next_step(root, m) for m in M.versioned(root)]
+
+
+def held_names():
+    """-> {MODNAME}: every owner-held mod, upper-cased as item ids spell it (mod_owner_hold.json)."""
+    import mod_owner_hold as H
+    return {re.sub(r"[^A-Z0-9]", "", str(k).upper()) for k in H.load()} - {""}
+
+
+def not_held(rows, recs, names):
+    """-> (rows, recs) without an owner-held mod: a row by its mod, a run by a word of its item id (the pipeline's names
+    spell the mod as one word, RIMMANDRAKE_AUTOBUILD_GRAFFITI_…). Nothing alarms on a held mod."""
+    rows = [r for r in rows if re.sub(r"[^A-Z0-9]", "", str(r.get("mod") or "").upper()) not in names]
+    recs = [r for r in recs if not names & set(str(r.get("item") or "").split("_"))]
+    return rows, recs
+
+
+def live_records(d=None):
+    """-> (records, [unreadable file]): a record mid-write is read on the next pass, but this pass says it missed it."""
+    import detached_helper as DH
+    d = d or DH.runs_dir()
+    out, bad = [], []
+    for n in sorted(os.listdir(d)):
+        if n.endswith(".json") and not n.endswith(".out.json"):
+            try:
+                with open(os.path.join(d, n), encoding="utf-8") as f:
+                    rec = json.load(f)
+            except (OSError, ValueError) as e:
+                bad.append("%s (%s)" % (n, type(e).__name__))
+                continue
+            if isinstance(rec, dict) and rec.get("unit"):
+                out.append(rec)
+            else:
+                bad.append("%s (no unit)" % n)
+    return out, bad
+
+
+def sync_sources_main(argv):
+    """`owed.py sync-sources [--maturation-json F] [--detached-dir D] [--for SEAT] [--publish]`: prints FILED <ID> <key>
+    per new item. Exit 0 every source read and every filing taken (nothing new is 0 too), 1 a filing refused, 2 a source
+    could not be read (the other is still filed). Run as RIMFLOW_SEAT=RUNNER (dispatcher.py's tick) it spawns, and
+    --publish then lands the RUNNER shard (testq ingest.publish; the caller holds testq's ingest.lock)."""
+    import argparse
+    ap = argparse.ArgumentParser(prog="owed.py sync-sources")
+    ap.add_argument("--maturation-json")
+    ap.add_argument("--detached-dir")
+    ap.add_argument("--for", dest="seat", default="BENCH")
+    ap.add_argument("--publish", action="store_true")
+    ap.add_argument("--deadline", type=float, help="epoch: past it minus PUBLISH_RESERVE_S the push is deferred")
+    a = ap.parse_args(argv)
+    if os.environ.get("RIMFLOW_LEDGER"):        # a throwaway ledger, as cli._bind_paths reads it
+        model.EVENTS = os.environ["RIMFLOW_LEDGER"]
+    if HERE not in sys.path:
+        sys.path.insert(0, HERE)
+    errs, rows, recs = [], None, None
+    try:
+        rows = json.load(open(a.maturation_json, encoding="utf-8")) if a.maturation_json else live_rows()
+    except Exception as e:                      # noqa: BLE001 - said, never silent
+        errs.append("could not look at the maturation rows (%s: %s)" % (type(e).__name__, e))
+    try:
+        recs, unread = live_records(a.detached_dir)
+        if unread:
+            errs.append("could not read %d detached record(s): %s" % (len(unread), ", ".join(unread[:5])))
+    except Exception as e:                      # noqa: BLE001
+        errs.append("could not look at the detached records (%s: %s)" % (type(e).__name__, e))
+    try:
+        names = held_names()
+        kept_rows, kept_recs = not_held(rows or [], recs or [], names)
+        rows, recs = (None if rows is None else kept_rows), (None if recs is None else kept_recs)   # unread stays unread
+    except Exception as e:                      # noqa: BLE001 - a hold unread is never "nothing held"
+        errs.append("could not read the owner holds (%s: %s): nothing filed" % (type(e).__name__, e))
+        rows, recs = None, None
+    runner = os.environ.get("RIMFLOW_SEAT") == "RUNNER"
+    filed, problems = sync_sources(rows, recs, seat=a.seat, sources_err=errs, spawn=runner)
+    for iid, key in filed:
+        print("FILED %s %s" % (iid, key))
+    if a.publish and runner:
+        try:
+            import importlib.util
+            spec = importlib.util.spec_from_file_location("owed_ingest", os.path.join(
+                os.path.dirname(HERE), "Utils", "testq", "ingest.py"))
+            ing = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(ing)
+            if not (filed or ing.unpublished()):
+                pass
+            elif a.deadline is not None and time.time() + PUBLISH_RESERVE_S > a.deadline:
+                # no room to push before the kill: the lines stay in the RUNNER shard, the next testq publish carries
+                # them (ops_watch's own rule)
+                print("publish: deferred: no time left in this beat; the next testq publish carries it")
+            else:
+                out = ing.publish(len(filed), message="ledger: owed sync-sources filed %d" % len(filed))
+                print("publish: %s" % out)
+                if not (out == "pushed" or str(out).endswith("; pushed")):
+                    problems.append("publish did not push (%s); the RUNNER shard keeps the lines" % _cut(out, 200))
+        except Exception as e:                  # noqa: BLE001 - the shard stays; the RUNNER ingest publishes it
+            problems.append("publish failed (%s: %s); the RUNNER shard keeps the lines" % (type(e).__name__, e))
+    elif a.publish:
+        problems.append("--publish lands only the RUNNER shard; seat %s publishes its own" % (
+            os.environ.get("RIMFLOW_SEAT") or "unset"))
+    for p in problems:
+        print("PROBLEM %s" % p)
+    print("sync-sources: %d filed, %d problem(s); rows %s, records %s" % (
+        len(filed), len(problems), "UNMEASURED" if rows is None else len(rows),
+        "UNMEASURED" if recs is None else len(recs)))
+    return 2 if errs else (1 if problems else 0)
+
+
 if __name__ == "__main__":
+    if sys.argv[1:2] == ["sync-sources"]:
+        sys.exit(sync_sources_main(sys.argv[2:]))
     if sys.argv[1:2] == ["check-pointers"]:
         if len(sys.argv) != 3:
             print("usage: owed.py check-pointers <handoff.md>")

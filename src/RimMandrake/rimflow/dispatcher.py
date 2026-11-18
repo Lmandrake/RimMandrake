@@ -1519,7 +1519,7 @@ def publish(n):
     return ingest.publish(n, shard_rel=SHARD_REL, message="ledger: DISPATCHER notes (%d)" % n)
 
 
-def publish_bounded(n, timeout, argv=None, kill_wait=10):
+def publish_bounded(n, timeout, argv=None, kill_wait=10, env=None):
     """publish(n) in a child process (its own process group) killed when it outlives timeout: ingest.publish's git
     calls each wait up to 300 s, and a hung push must not carry the tick past the service's 600 s. A killed
     publish leaves its commit local; the next tick's publish retries it (ingest.unpublished), and a rebase it left
@@ -1528,20 +1528,28 @@ def publish_bounded(n, timeout, argv=None, kill_wait=10):
         return "publish skipped: tick budget spent (the next tick retries)"
     argv = argv or [sys.executable, os.path.abspath(__file__), "publish", str(int(n))]
     p = subprocess.Popen(argv, cwd=REPO, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-                         stdin=subprocess.DEVNULL, start_new_session=True)
+                         stdin=subprocess.DEVNULL, start_new_session=True, env=env)
     try:
         out, _ = p.communicate(timeout=timeout)
     except subprocess.TimeoutExpired:
-        for sig, wait in ((signal.SIGTERM, kill_wait), (signal.SIGKILL, kill_wait)):   # TERM first: git removes its locks
+        try:
+            for sig, wait in ((signal.SIGTERM, kill_wait), (signal.SIGKILL, kill_wait)):   # TERM first: git removes its locks
+                try:
+                    os.killpg(p.pid, sig)
+                except OSError:
+                    pass
+                try:
+                    p.communicate(timeout=wait)
+                    break
+                except subprocess.TimeoutExpired:
+                    continue
+        except BaseException:
+            # cut or SIGTERMed while waiting out the TERM: never leave the child writing after the caller drops its lock
             try:
-                os.killpg(p.pid, sig)
+                os.killpg(p.pid, signal.SIGKILL)
             except OSError:
                 pass
-            try:
-                p.communicate(timeout=wait)
-                break
-            except subprocess.TimeoutExpired:
-                continue
+            raise
         return "publish KILLED after %d s (tick budget; the commit stays local, the next tick retries)" % timeout
     except BaseException:
         # cut (StepCut) or SIGTERMed mid-wait: the child has its own session, so nothing else would ever stop it
@@ -1557,6 +1565,19 @@ def publish_bounded(n, timeout, argv=None, kill_wait=10):
     if p.returncode:
         return "publish child exit %d: %s" % (p.returncode, out)
     return None if out == "None" else (out.splitlines() or [""])[-1]
+
+
+OWED_SOURCES_MIN_S = 4          # sync-sources reads in ~1.7 s (measured 2026-11-18); it defers its push past its deadline
+
+
+def owed_sources(timeout, deadline=None):
+    """`owed.py sync-sources --publish` as RUNNER (a program seat spawns; `file` is a window's verb), in a child killed at
+    `timeout` (publish_bounded's guard). -> its last line: `sync-sources: N filed, …`, or what stopped it. A killed
+    child's spawns stay in the RUNNER shard, which the RUNNER ingest publishes (ingest.unpublished)."""
+    argv = [sys.executable, os.path.join(HERE, "owed.py"), "sync-sources", "--publish"]
+    argv += ["--deadline", "%.3f" % deadline] if deadline is not None else []
+    env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO)
+    return publish_bounded(0, timeout, argv=argv, env=env) or "sync-sources: no output"
 
 
 def git_lock(wait_s=90):
@@ -1996,6 +2017,23 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                    % (len(deferred), ", ".join(sorted({str(x.get("do")) for x in deferred})), ", ".join(back) or "none")}
             journal(root, rec)
             actions.append(rec)
+        # the explicit Conductor hand steps become owed items where they park (owed.py sync-sources, spec
+        # 2026-11-15-conductor-restart-loses-nothing.md E3), so no window has to be alive when a run's result lands;
+        # under the ingest.lock held here, at most every owed_sources_every_s. A test's fx runs it only by name.
+        do_owed = fx.get("owed_sources") or (None if fx else owed_sources)
+        if (apply and ledger_ok and do_owed is not None and sch.get("owed_sources_every_s")
+                and now - st.get("owed_sources_at", -1e18) >= sch["owed_sources_every_s"]
+                and deadline - time.time() >= OWED_SOURCES_MIN_S and not do_paused()):
+            if fence is not None and not fence("owed_sources"):
+                raise Fenced("fenced before owed_sources: the metronome generation moved on")
+            t0 = time.time()
+            st["owed_sources_at"] = now
+            try:
+                out = do_owed(deadline - time.time(), deadline)
+            except Exception as e:  # noqa: BLE001
+                out = "error: %s: %s" % (type(e).__name__, str(e))
+            timing["owed_sources"] = round(time.time() - t0, 3)
+            journal(root, {"at": iso(now), "do": "owed_sources", "result": out})
         if apply and ledger_ok and sch.get("publish"):
             t0 = time.time()
             try:

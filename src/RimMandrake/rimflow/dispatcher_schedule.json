@@ -30,6 +30,7 @@
  "helper_budget": {"enabled": true, "pacing_attention": false, "_pacing_attention": "Owner 2026-11-04: \"all token limits rescinded as well as work type. Token is no longer constrained.\" false: helper_budget.attention tells nothing when token pacing would place fewer helpers (it was the 2026-11-02 advisory budget:token_pacing alarm). Scoped the same day: \"System work always precedes content work ... And Steve's account stop at 50% remains. You will still monitor token spending on items and launch investigations if they are too large.\" So only the Dispatcher's token pacing goes; Relentless per-item/day spend attention, the system-before-content order and Steve's 50% stop stay.", "_doc": "HELPER_BUDGET_MIGRATE_INTO_DISPATCHER: every tick the Dispatcher publishes the helper budget (helper_budget.py -> <state>/helper_budget.json, seats CONDUCTOR/FOUNDRY) that the spawn hook reads first. false = the hook falls back to allocation.json/compute."},
  "ledger_notes": true,
  "publish": true,
+ "owed_sources_every_s": 300,
  "alarm_item": "RIMFLOW_V3_BUILD_DISPATCHER_FIRST",
  "incident": {"enabled": true, "_doc": "incident.py, OP3 OP4 RO4: the told ledger, in the tick. Off: nothing rings, opens or stamps incidents.json. Its numbers live in alarm_routes.json."},
  "signal_watch": {"enabled": true, "ops_dir": "/mnt/d/ClaudeWork/rimmandrake/ops_watch",
