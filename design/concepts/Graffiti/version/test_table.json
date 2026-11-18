@@ -16,7 +16,7 @@
   {
    "source": "design/RimMandrake/validation_holding/walk_defects_2026-11-14_graffiti.md row 1",
    "row": 1,
-   "text": "After the colony's original ideoligion is removed (its last believer died: \"Primary ideoligion changed\"), every mark still saves `rmMarkMakerIdeo` pointing at it. Saving logs \"Object with load ID Ideo_12 is referenced (xml node name: rmMarkMakerIdeo) but is not deep-saved\", and loading logs \u226519 red ",
+   "text": "After the colony's original ideoligion is removed (its last believer died: \"Primary ideoligion changed\"), every mark still saves `rmMarkMakerIdeo` pointing at it. Saving logs \"Object with load ID Ideo_12 is referenced (xml node name: rmMarkMakerIdeo) but is not deep-saved\", and loading logs ≥19 red ",
    "speaker": "agent (walk finding, measured); not the owner's words",
    "bars": [
     "inv_standalone",
@@ -45,7 +45,7 @@
   {
    "source": "design/RimMandrake/validation_holding/walk_defects_2026-11-14_graffiti.md row 3",
    "row": 3,
-   "text": "A standing mockery taxes its subject daily for as long as nobody scrubs it. Run 1: Vex re-read Mariana's day-1 mockery at \u22123.6 every day for 13+ days; Vex's wall mood averaged \u22126.1, at \u22125 or below in 21 of 34 samples (worst \u221212).",
+   "text": "A standing mockery taxes its subject daily for as long as nobody scrubs it. Run 1: Vex re-read Mariana's day-1 mockery at −3.6 every day for 13+ days; Vex's wall mood averaged −6.1, at −5 or below in 21 of 34 samples (worst −12).",
    "speaker": "agent (walk finding, measured); not the owner's words",
    "bars": [
     "stories_not_tax",
@@ -73,7 +73,7 @@
   {
    "source": "design/RimMandrake/validation_holding/walk_defects_2026-11-14_graffiti.md row 5",
    "row": 5,
-   "text": "The text doesn't match the picture. The tally's description says \"in charcoal\", but its art is light chalk on the texture and draws orange in game. The scrawl's description says \"the ugliest thing on the wall, and it looks it\", but it reads as a loud, colourful tag at Beauty \u22122 (craft is capped at p",
+   "text": "The text doesn't match the picture. The tally's description says \"in charcoal\", but its art is light chalk on the texture and draws orange in game. The scrawl's description says \"the ugliest thing on the wall, and it looks it\", but it reads as a loud, colourful tag at Beauty −2 (craft is capped at p",
    "speaker": "agent (walk finding, measured); not the owner's words",
    "bars": [
     "ugliness_visible",
@@ -107,10 +107,14 @@
    "kind": "offline",
    "stage": "4-5",
    "file": "src/RimMandrake/Utils/selftest_graffiti_fuzz.py",
-   "observes": "kernel rules by fuzz: weighted pick, meme/skill/hostility gates, reaction priority, scrub-protection predicates, wall-cell candidates, breach lure (NOT weather)",
+   "observes": "kernel rules by fuzz: weighted pick, meme/skill/hostility gates, reaction priority, scrub-protection predicates, wall-cell candidates, breach lure, kernel6: the six rules only blind lane 1 caught (0755474953) (NOT weather)",
    "reads": [
     "src/RimMandrake/Graffiti/Source/Kernel/RM_GraffitiKernel.cs",
-    "src/RimMandrake/Graffiti/Source/SelfTest/RimMandrakeGraffiti.SelfTest.csproj"
+    "src/RimMandrake/Graffiti/Source/SelfTest/RimMandrakeGraffiti.SelfTest.csproj",
+    "src/RimMandrake/Graffiti/Source/GraffitiForm.cs",
+    "src/RimMandrake/Graffiti/Source/GraffitiCategory.cs",
+    "src/RimMandrake/Graffiti/Source/SelfTest/GraffitiFuzz.cs",
+    "src/RimMandrake/Graffiti/Source/SelfTest/Program.cs"
    ],
    "command": "python3 src/RimMandrake/Utils/selftest_graffiti_fuzz.py",
    "new": false,
@@ -124,11 +128,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 7.33,
-    "last": "graffiti fuzz: 141010 cases, 141284 steps, 1.84s total -> OK",
-    "at": "2026-11-17T04:52:25Z",
+    "seconds": 6.32,
+    "last": "graffiti fuzz: 143010 cases, 143284 steps, 1.67s total -> OK",
+    "at": "2026-11-18T17:59:12Z",
     "result": "PASS",
-    "build": "1410d8e9ac32212e0d41",
+    "build": "31a7a93da574d172f34e",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_fuzz.py"
    }
   },
@@ -155,9 +159,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 33.44,
+    "seconds": 28.06,
     "last": "Graffiti lint planted-defect selftest: 14/14 ok",
-    "at": "2026-11-17T04:52:59Z",
+    "at": "2026-11-18T17:59:40Z",
     "result": "PASS",
     "build": "e2365b647bf61785364e",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_lint.py"
@@ -186,9 +190,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 38.16,
+    "seconds": 65.26,
     "last": "RESULT: PASS (0 finding(s))",
-    "at": "2026-11-17T04:53:37Z",
+    "at": "2026-11-18T18:00:45Z",
     "result": "PASS",
     "build": "226c53bc76fed475a15b",
     "command": "python3 src/RimMandrake/Graffiti/sigil_coverage.py"
@@ -215,9 +219,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.06,
+    "seconds": 2.14,
     "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-17T04:53:39Z",
+    "at": "2026-11-18T18:00:47Z",
     "result": "PASS",
     "build": "e063d3615ddb45e8875f",
     "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py"
@@ -245,9 +249,9 @@
    "runs_today": {
     "ran": true,
     "rc": 1,
-    "seconds": 65.81,
+    "seconds": 76.53,
     "last": "Drift found. Re-run with --apply to deploy.",
-    "at": "2026-11-17T04:54:45Z",
+    "at": "2026-11-18T18:02:04Z",
     "result": "FAIL",
     "build": "b368c7d5c92d8a6c16a4",
     "command": "python3 src/RimMandrake/Graffiti/ship_check.py"
@@ -272,9 +276,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.81,
+    "seconds": 1.98,
     "last": "RESULT: PASS (0 failure(s))",
-    "at": "2026-11-17T04:54:46Z",
+    "at": "2026-11-18T18:02:06Z",
     "result": "PASS",
     "build": "42e7519f1777621eda90",
     "command": "python3 src/RimMandrake/Graffiti/selftest_full_list_mode.py"
@@ -299,9 +303,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.17,
+    "seconds": 0.15,
     "last": "selftest_graffiti_fresh_quicktest: PASS",
-    "at": "2026-11-17T04:54:47Z",
+    "at": "2026-11-18T18:02:06Z",
     "result": "PASS",
     "build": "833407a4c786838b1fd2",
     "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_fresh_quicktest.py"
@@ -326,9 +330,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.23,
+    "seconds": 0.19,
     "last": "selftest graffiti play zoom: PASS (0 failure(s))",
-    "at": "2026-11-17T04:54:47Z",
+    "at": "2026-11-18T18:02:06Z",
     "result": "PASS",
     "build": "9d2310ede841afa8bdcb",
     "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_play_zoom.py"
@@ -355,7 +359,7 @@
     "rc": 0,
     "seconds": 0.04,
     "last": "selftest graffiti spree surprise: PASS",
-    "at": "2026-11-17T04:54:47Z",
+    "at": "2026-11-18T18:02:06Z",
     "result": "PASS",
     "build": "3ace02ae69b77a18fee7",
     "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_spree_surprise.py"
@@ -380,9 +384,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.06,
+    "seconds": 0.94,
     "last": "PASS selftest_graffiti_v1_live",
-    "at": "2026-11-17T04:54:48Z",
+    "at": "2026-11-18T18:02:07Z",
     "result": "PASS",
     "build": "7f9380ee6521690db786",
     "command": "python3 src/RimMandrake/Graffiti/selftest_graffiti_v1_live.py"
@@ -411,11 +415,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.74,
+    "seconds": 2.74,
     "last": "T_WEATHER_OFFLINE: PASS (kernel weather family green; permanent rule green)",
-    "at": "2026-11-17T04:54:50Z",
+    "at": "2026-11-18T18:02:10Z",
     "result": "PASS",
-    "build": "b998d6b86c1c3ed07a07",
+    "build": "73fcb06988dc93074011",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_weather.py"
    }
   },
@@ -442,9 +446,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 8.88,
+    "seconds": 9.74,
     "last": "T_RAID_TAG_BUILT_WALL_ONLY: PASS - raid tags reach built walls only (watch: fixed copy green, 4 mutants red)",
-    "at": "2026-11-17T04:54:59Z",
+    "at": "2026-11-18T18:02:20Z",
     "result": "PASS",
     "build": "350ef9d9a71ce8bc504e",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_raid_tag_wall.py"
@@ -473,8 +477,8 @@
     "ran": true,
     "rc": 2,
     "seconds": 0.01,
-    "last": "python3: can't open file '/home/mandrake/rm/relentless/clones/RIMMANDRAKE_REPIN_GRAFFITI_UGLINESS_BAR_STAT_NOBODY_INSPECTS.det/src/RimMandrake/Utils/selftest_graffiti_message_counters.py': [Errno 2] No such file or directory",
-    "at": "2026-11-17T04:54:59Z",
+    "last": "python3: can't open file '/home/mandrake/rm/relentless/clones/RIMMANDRAKE_SYNC_MOD_TESTS_WITH_LANDED_RULES_BEFORE_JUDGING.det/src/RimMandrake/Utils/selftest_graffiti_message_counters.py': [Errno 2] No such file or directory",
+    "at": "2026-11-18T18:02:20Z",
     "result": "FAIL",
     "build": "616a95920d3808f876dd",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_message_counters.py"
@@ -505,11 +509,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.63,
+    "seconds": 2.22,
     "last": "T_UGLINESS_OFFLINE: PASS (kernel beauty family green; inspected beauty green)",
-    "at": "2026-11-17T04:55:00Z",
+    "at": "2026-11-18T18:02:22Z",
     "result": "PASS",
-    "build": "ff0745ee4692a600bb7b",
+    "build": "cbc9f5cdd929b2a9085b",
     "command": "python3 src/RimMandrake/Utils/selftest_graffiti_ugliness.py"
    }
   },
