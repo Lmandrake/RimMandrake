@@ -166,6 +166,7 @@ def owner_uncited(repo, item, d=None):
     if lines is None:
         return None
     tsns, delegated = [], set()
+    named = _names_id(item)
     for ln in lines:
         if item not in ln:
             continue
@@ -176,7 +177,7 @@ def owner_uncited(repo, item, d=None):
         if isinstance(ev, dict) and ev.get("tsn"):
             input_fields = dict(ev)
             input_fields.pop("caused_by", None)
-            if item not in json.dumps(input_fields):
+            if not named.search(json.dumps(input_fields)):     # X is not named by an event on X_EXTRA
                 continue
             tsn = str(ev["tsn"])
             tsns.append(tsn)
@@ -191,6 +192,132 @@ def owner_uncited(repo, item, d=None):
             pass
     return sorted(t for t in tsns if not re.search(r"OWNER:%s(?![0-9])" % re.escape(t), cited)
                   and not (t in delegated and re.search(r"CONDUCTOR:%s(?![0-9])" % re.escape(t), cited)))
+
+
+def _names_id(item):
+    """A whole ledger id: X, never the X inside X_EXTRA or OLD_X (RIMMANDRAKE_FIX_DESIGNER_STAGE_CODEX_REVIEW_FINDINGS
+    finding 1: a substring match pulled another item's events into this concept's owner feed)."""
+    return re.compile(r"(?<![A-Za-z0-9_])%s(?![A-Za-z0-9_])" % re.escape(item))
+
+
+def owner_elsewhere(repo, d, st=None):
+    """{tsn: item} of his words (ownerSaid or byCard) on the mod's OTHER items that neither record.json nor tree.json
+    cites as OWNER:<tsn> (RIMMANDRAKE_HARVEST_OWNER_WORDS_OFF_CONCEPT_ITEM_FOURTH_ASK: his 2026-11-09 slope rule for
+    Gimme Some Slack sat on a build item and never became a bar of its 0.1.0). A mod's item is one of its own
+    (concept_tree.mod_items), an id under its prefix (mod_prefixes), one whose cause chain reaches its own
+    (as concept_tree.caused_by_mod walks it), or one whose filed title starts with the mod's name (a title
+    merely mentioning it is not enough: the six-mod hold item named every held mod). Words owner_uncited already holds are left
+    out. Not part of owner_feed: no stage freezes this list, so a sibling's words never reopen an accepted stage or
+    relaunch a run; the packet lists them and the lock (stage 5 done) refuses until each is cited.
+    None = the OWNER shard is unreadable."""
+    st = st if isinstance(st, dict) else (read_json(state_path(d)) if d else None) or {}
+    lines = CT.owner_lines(repo, clone_of(d))
+    if lines is None:
+        return None
+    own = CT.mod_items(d) | ({st["item"]} if CT.txt(st.get("item")) else set())
+    prefixes = tuple(mod_prefixes(st.get("mod") or os.path.basename(os.path.abspath(d)), st.get("aliases")))
+    key = re.sub(r"[^a-z0-9]", "", (st.get("mod") or os.path.basename(os.path.abspath(d))).split("/")[-1].lower())
+    words = {}
+    for ln in lines:
+        if '"ownerSaid"' not in ln and '"byCard"' not in ln:
+            continue
+        try:
+            ev = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(ev, dict) and ev.get("tsn") and CT.txt(ev.get("id")) and CT.his_word(ev):
+            words[str(ev["tsn"])] = ev["id"]
+    causes = titles = None
+    ours = {}
+    for it in sorted(set(words.values())):
+        if it in own or (prefixes and it.upper().startswith(prefixes)):
+            ours[it] = True
+            continue
+        causes = CT.ledger_causes(repo) if causes is None else causes     # one fold, not one per item
+        chain, up = [], it
+        while isinstance(up, str) and up and up not in chain and len(chain) < 32 and up not in own:
+            chain.append(up)
+            up = causes.get(up)
+        if up in own:
+            ours[it] = True
+            continue
+        titles = _filed_titles(repo, set(words.values())) if titles is None else titles
+        ours[it] = len(key) > 4 and re.sub(r"[^a-z0-9]", "", titles.get(it, "").lower()).startswith(key)
+    cited = ""
+    for name in ("record.json", "tree.json"):
+        try:
+            with open(os.path.join(d or "", name), encoding="utf-8", errors="replace") as f:
+                cited += f.read()
+        except OSError:
+            pass
+    inner = set(owner_uncited(repo, st.get("item"), d) or [])
+    return {t: it for t, it in sorted(words.items()) if ours.get(it) and t not in inner
+            and not re.search(r"OWNER:%s(?![0-9])" % re.escape(t), cited)}
+
+
+def concept_start(st):
+    """Epoch seconds of the concept's first history row (its init), or None."""
+    for h in (st or {}).get("history") or []:
+        if isinstance(h, dict) and h.get("at"):
+            return _epoch(h["at"])
+    return None
+
+
+def elsewhere_binding(repo, d, st):
+    """(owner_elsewhere, the tsns of it the lock refuses on): his words newer than the concept's start. Older words
+    reach stage 0 through built_evidence's items; words given after it began are the ones a Designer can miss (the
+    GSS slope rule came four days after its init). (None, None) = the OWNER shard is unreadable."""
+    u = owner_elsewhere(repo, d, st)
+    if u is None:
+        return None, None
+    t0 = concept_start(st)
+    return u, sorted(t for t in u if t.isdigit() and (t0 is None or int(t) / 1e9 > t0))
+
+
+def elsewhere_section(repo, d, st, cap=40):
+    """The packet's list of owner_elsewhere: every binding word in full, older ones by reference up to `cap`."""
+    u, bind = elsewhere_binding(repo, d, st)
+    head = ["", "## His words on the mod's other items, not yet cited (designer_stage.py owner_elsewhere)"]
+    if u is None:
+        return head + ["UNMEASURED: OWNER.jsonl could not be read; these words are unknown, not absent."]
+    if not u:
+        return head + ["- none: every word of his on the mod's other items is cited in record.json or tree.json."]
+    ev = CT.owner_events(repo, clone_of(d))
+    out = head + ["Take each in where it bears on the design, and cite it as OWNER:<tsn> in record.json (a bar, a "
+                  "decision, or `owner_elsewhere_reviewed` [{\"source\": \"OWNER:<tsn>\", \"not_design_input\": <why>}]). "
+                  "The lock (stage 5 done) refuses while one given after this concept began is uncited "
+                  "(%d of %d here)." % (len(bind), len(u))]
+    for t in bind:
+        e = ev.get(t) or {}
+        w = " ".join(str(CT.his_word(e) or e.get("text") or "").split())
+        out.append("- OWNER:%s on %s (%s): %s" % (t, u[t], e.get("ts") or "?", w[:400] + ("..." if len(w) > 400 else "")))
+    older = [t for t in sorted(u) if t not in set(bind)]
+    if older:
+        out.append("Older than this concept (read; the lock does not refuse on them): %d%s" % (
+            len(older), "" if len(older) <= cap else ", first %d" % cap))
+        out += ["- OWNER:%s on %s" % (t, u[t]) for t in older[:cap]]
+    return out
+
+
+def _filed_titles(repo, ids):
+    """{item: its filed title} for `ids`, from every ledger file event (a bad line spoils itself only)."""
+    out = {}
+    for p in CT.ledger_files(repo):
+        try:
+            with open(p, encoding="utf-8", errors="replace") as f:
+                for line in f:
+                    if '"file"' not in line:
+                        continue
+                    try:
+                        ev = json.loads(line)
+                    except (ValueError, RecursionError):
+                        continue
+                    if (isinstance(ev, dict) and ev.get("event") == "file" and ev.get("id") in ids
+                            and isinstance(ev.get("title"), str)):
+                        out.setdefault(ev["id"], ev["title"])
+        except OSError:
+            continue
+    return out
 
 
 def clone_of(d):
@@ -1398,6 +1525,15 @@ def result_errors(res, d, st, repo=REPO):
         errs += ["scenes: %s" % e for e in scene_errors(sc5, tree, artifact_repo)]
         errs += ["showcases: %s" % e for e in showcase_check(sc5, rec, tree, owner_ev, artifact_repo,
                                                               concept=concept_of(st, d))]
+        # his words on the mod's other items given since the concept began must be taken in before it locks
+        # (RIMMANDRAKE_HARVEST_OWNER_WORDS_OFF_CONCEPT_ITEM_FOURTH_ASK)
+        _, bind = elsewhere_binding(repo, d, st)
+        if bind is None:
+            errs.append("lock: his words on the mod's other items could not be read (OWNER.jsonl unread): not locked blind")
+        elif bind:
+            errs.append("lock: %d of his words on the mod's other items, given since this concept began, are not cited "
+                        "in record.json or tree.json: %s" % (len(bind), ", ".join("OWNER:" + t for t in bind[:15]) +
+                                                             ("" if len(bind) <= 15 else ", ...")))
     return errs
 
 
@@ -2635,6 +2771,7 @@ def packet(d, st, hashes, budget, why=None, retries=0, manifest=MANIFEST, repo=N
     body = ["", "## Working record (record.json)", working_record(d)]
     if s in (0,) + DIALOGUE:
         body += built_section(REPO if repo is None else repo, st)
+    body += elsewhere_section(REPO if repo is None else repo, d, st)
     for name, h in hashes.items():
         with open(os.path.join(os.path.dirname(manifest), name), encoding="utf-8") as f:
             body += ["", "=== %s (sha256 %s) ===" % (name, h[:12]), f.read()]
