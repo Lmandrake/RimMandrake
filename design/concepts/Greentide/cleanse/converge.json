@@ -1,0 +1,178 @@
+{
+ "mod": "Greentide",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B6 (says, accept, range); census.json row seek_shade; rules R7/R8; ambiguities.md item 11",
+     "evidence": "In src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_SeekShade.cs:30-41 an animal looks for shade only when the air temperature at its cell is at or above tempThreshold (RM_Sulleth.xml:74 sets <tempThreshold>38</tempThreshold>), and the only cells it counts as shade are roofed ones (map.roofGrid.Roofed). It never reads the Roil, Breaklight, Direct Sun or tree canopy. The one thing that ties the clearing to the animals moving is RM_BreaklightCondition's <tempOffset>12</tempOffset> (RM_Greentide_Conditions.xml:45). The proposal never names that offset, and ambiguities.md item 11 says 'Another local heat multiplier ... violates the shared sun law; keep clearing/AI, no private heat.' B6's accept picture sends the grazer to 'reachable canopy or roof shade', but the code cannot target canopy. Nothing in the proposal says what makes the clearing start shade-seeking, or what counts as shade.",
+     "would_pass": "A rule that names what starts shade-seeking during a clearing and what the animal looks for. Either: Breaklight's existing +12 °C stays as ordinary hotter air, sourced to the 2026-10-19 Direct Sun ruling 'Hotter air on the thermometer', and the shade is roofed cells only. Or: the job reads Direct Sun exposure and shared tree shade, with that rebuild ticketed. B6's accept picture must match whichever is chosen.",
+     "smallest_fix": "Add a rule (R14): 'Breaklight raises ordinary air temperature through its existing condition offset; seek-shade carriers above their threshold path to reachable roofed cells; canopy counts only once shared tree shade supplies it.' Then remove the word 'canopy' from B6's accept picture, or ticket the canopy target."
+    },
+    {
+     "id": "R2",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B6 sees.control and reject",
+     "evidence": "B6's control compares 'a natural carrier with a non-carrier at matched starting exposure'. It never compares steam against clearing. In the source, a carrier seeks roof whenever the air is at or above 38 °C, under the Roil too (RM_JobGiver_SeekShade.cs:34-35). So an animal that already shelters every hot steamy hour, with no change when the Roil clears, passes B6's reading. The only reject picture covers a locked sky and a debug job.",
+     "would_pass": "A matched pair, same carrier, same cells, same time of day: one arm under the Roil, one under Breaklight. The animal moves toward shade measurably more in the clearing arm. Add a reject picture: 'the carrier shelters just the same under the Roil, so the clearing changes nothing it does'.",
+     "smallest_fix": "Add the Roil-versus-clearing arm to B6's control and that one picture to B6's reject list."
+    },
+    {
+     "id": "R3",
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json B6 sees.on and sees.control; check C8; owner_pages.md page two",
+     "evidence": "B6's 'on' requires Direct Sun to be active and shared tree shade to have passed its adopt-or-fall-back qualification. Its control says 'Equal radiation or an inactive Direct Sun gate invalidates the evidence even if the visible clearing/shade-search picture looks right.' Yet ambiguities.md item 10 says 'Heat-law compliance stays a rule/check; B6's player experience is only clearing, visible floor, natural shade-seeking and return.' The brief says a failed check is evidence, never a refusal by itself. The shade-seeking job reads neither Direct Sun nor tree shade (RM_JobGiver_SeekShade.cs). So B6, and through it the whole bar B8, cannot pass until a separate shared dependency qualifies (TREE_SHADE_DECIDE_CROWNS_OR_LIGHTS_OUT).",
+     "would_pass": "B6 is judged only on its own experience: the steam lifts, the floor shows, carriers head for shade, the steam returns. Direct Sun runs at whatever default R7 sets. The radiation contrast and the tree-shade qualification stay in C8/T38 as checks and readiness work for R7, not as a gate on B6's evidence.",
+     "smallest_fix": "Delete the radiation-contrast and qualification sentences from B6's sees.on and sees.control, and leave a pointer to C8/T38."
+    },
+    {
+     "id": "R4",
+     "head": "cannot_hold_together",
+     "where": "bars.json B4 (says, accept 1) and R2, R4; B3 reject 2; census.json row yearning_fruit (fate: signature)",
+     "evidence": "Seed passage plants new RM_YearningFruit seedlings 'wherever the eater happens to' be (RM_YearningFruit_Hediffs.xml:18, :50-54). It checks only InBounds, whether a plant is already there, and CanEverPlantAt (RM_HediffComp_SeedPassage.cs:88-102). It ignores the suppression grid and whether the cell is inside an enclosed room. R2 says regrowth 'respects floors, edifices and enclosed rooms'. B4 promises that an operating blower 'maintains a cleared ... approach'. B3 rejects a jungle that 'secretly spawns through ... enclosed rooms'. Two cases break this: a colonist who eats the fruit and then walks through a working blower's field, and one who eats it in an enclosed room with a dirt floor. Both sprout plants that the kept rules say cannot appear there. The vegetation meeting does not list this bypass.",
+     "would_pass": "Seed passage uses the same eligibility test as the shared sprout path: the built-ground and enclosed-room exemption plus the suppression grid. Or R2 and B4 state openly that eaten-seed sprouting overrides both, and their pictures change to match.",
+     "smallest_fix": "Add one line to R2: 'Seed-passage germination uses the shared SproutRing respectBuiltGround/enclosed-room predicate and honours active suppression.' Add a ticket with its acceptance test (no germination inside an active blower field or an enclosed room), and add these cases to M1/M3."
+    },
+    {
+     "id": "R5",
+     "head": "extra_without_argument",
+     "where": "census.json row yearning_fruit (fate: signature, why)",
+     "evidence": "The deletion argument is 'Deleting eat-pass-sprout severs this cause of encroachment.' But the census's own signature row daily_base_takeover gives the renewal path as 'RM_TopResolver.Wither -> RM_SproutRing.Sow(respectBuiltGround=true)', and definition.md gives the shared ExplosiveGrowth fruit/wither/sprout cycle. Remove seed passage and renewal still works, so the signature is not defeated. The brief requires the deletion to defeat land, life or the signature. The row also keeps a bespoke digestive mechanic (faster hunger, a brief movement penalty), and no bar needs it.",
+     "would_pass": "Either evidence that renewal on used routes depends on seed passage (for example, an M2 result where Wither→Sow alone produces no route pressure), or the row moves to the next version with a switch-off ticket and the fruit stays as ordinary forage.",
+     "smallest_fix": "Change yearning_fruit's fate to next_version, add a switch-off ticket for the digestive accelerant and seed passage (the harvestable fruit stays in life), and remove 'yearning fruit seed passage' from definition.md's Life line."
+    },
+    {
+     "id": "R6",
+     "head": "core_promise_weakened",
+     "where": "owner_pages.md page two ('Paving permanently stops regrowth on covered cells, including home entrances'); bars.json B3 accept 2, B8 accept 3; ambiguities.md item 3",
+     "evidence": "His card answer, design/RimMandrake/designer_codex_2026-11-09/Greentide/ANSWERS_OWNER.md answer 1 (2026-11-10): 'Defend an inhabited foothold: maintaining access to a rich home is the central bargain, with daily work clearing routes and protecting entrances.' The proposal settles, as a delegated interpretation and not as a question, that a paved entrance needs no protection at all from then on. A shared-engine rule (R2, which is ours and open to challenge) overrides half of his stated daily work. His card's own wording is concrete evidence against the obvious engine-law reading, so the Evidence-for-Ask rule requires this to be a question on his pages, not a settled interpretation.",
+     "would_pass": "Either entrances keep some recurring care (for example, pressure on the unpaved approach just outside the paved cells) and a bar shows it, or page two puts the narrowing to him with the card's quote, the default taken, and what changes if he says otherwise.",
+     "smallest_fix": "Add a third question to page two: 'Your 2026-11-10 card names protecting entrances as daily work; under the shared built-ground rule a paved entrance needs no protection afterwards. Default: paving is a permanent answer at the entrance, and care moves to unpaved routes. If not, entrance approaches need recurring pressure.' Update the question count in result.json."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Kept Breaklight's existing +12 °C as ordinary air heat under the 2026-10-19 ruling. R14 defines the carrier threshold and roofed destinations, which B6 and the definition now use.",
+      "where": "bars.json B6, R7, R14, weather_sun/wildlife meetings; census.json seek_shade; ambiguities.md item 11; definition.md Neighbours and Season's turn"
+     },
+     {
+      "id": "R2",
+      "changed": "Added matched Roil and Breaklight windows with the same carrier, cells, time and baseline air. B6 now requires increased autonomous roof-seeking when the offset crosses the threshold and rejects unchanged sheltering.",
+      "where": "bars.json B6 says, accept, reject, range and sees; models.md M4; tickets.md T38"
+     },
+     {
+      "id": "R3",
+      "changed": "Removed the radiation and shared tree-shade qualification gates from B6 evidence. B6 uses the R7 setting, and C8/T38 retain the shared heat-law readiness checks.",
+      "where": "bars.json B6, C8, R7 and weather_sun meeting; ambiguities.md item 10; definition.md Neighbours; models.md M4; tickets.md T38; owner_pages.md page two"
+     },
+     {
+      "id": "R4",
+      "changed": "R2 requires enabled seed passage to use shared SproutRing built-ground and room eligibility and respect active suppression. T54 and M1/M3 test germination around a working blower, in an enclosed dirt-floor room and on eligible outdoor ground.",
+      "where": "bars.json R2 and vegetation meeting; models.md M1/M3; tickets.md T54; ambiguities.md item 4"
+     },
+     {
+      "id": "R5",
+      "changed": "Deferred the digestive accelerant and seed passage behind the default-off T54 switch, with yearning fruit retained as ordinary forage. The first-version renewal trace now follows shared wet-native wither and sprouting.",
+      "where": "census.json yearning_fruit and dep_creature_behaviors; bars.json B3 and vegetation/property meetings; definition.md Life, routine and dependencies; ambiguities.md item 4; models.md M2; next_version.md; tickets.md T54; owner_pages.md page one; result.json counts"
+     },
+     {
+      "id": "R6",
+      "changed": "Added Q3 with the owner's daily entrance-protection wording, the paving default and the consequence of requiring recurring pressure on the unpaved approach. The bar pictures still reflect the stated default.",
+      "where": "owner_pages.md page two Q3; ambiguities.md items 3 and 34; result.json question count"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json now has rule R14: 'Breaklight keeps the existing +12 °C condition offset from RM_Greentide_Conditions.xml as ordinary air heat under the 2026-10-19 Direct Sun ruling, ‘Hotter air on the thermometer’. At or above its configured cell-air threshold, an unroofed carrier can take the existing seek-shade job to a reachable standable roofed cell ... The job uses roof status for both origin and destination.' That quotation is real: it appears at design/RimMandrake/standing_rulings.md:159 and unified_direct_sun_heat_2026-10-19.md:310 as D3. It also matches the source: RM_Greentide_Conditions.xml:45 has <tempOffset>12</tempOffset>, RM_Sulleth.xml:74 has <tempThreshold>38</tempThreshold>, and RM_JobGiver_SeekShade.cs:30 and :40 use roofGrid.Roofed. B6's accept picture now ends at 'a reachable roofed cell of its own accord', with no canopy, and 'roof/canopy/open' in its range became 'roof/open/enclosed cooled rooms'. census.json seek_shade names the offset, the 38 °C threshold and 'reachable standable roofed cells under R14'. ambiguities.md item 11 says 'Canopy alone has no roof status for the job.' R7 says 'Breaklight's ordinary air offset follows R14.'"
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "B6 sees.control now reads 'Compare equal-length windows under Roil and Breaklight with the same carrier, starting cell, reachable roof cells, time of day, starting activity and baseline air before the condition offset ... require more autonomous roof-bound trips in the clearing arm.' sees.start puts baseline air 'below its threshold but close enough for the Breaklight offset to reach it', so the hot-under-Roil false pass is excluded. B6 has a new reject picture: 'The carrier heads for shelter just as often under the Roil as during a comparable clearing, so the clearing changes nothing it does.' The 'lazy' field now excludes 'unchanged sheltering'. models.md M4 calibration and tickets.md T38 both repeat the matched-pair comparison."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "B6 sees.on is now 'Use the Direct Sun default from R7 ... See C8/T38 for the shared heat-law check.' The qualification requirement is gone. The radiation-contrast and 'invalidates the evidence' sentences are gone from sees.control. range.left_out says 'Shared radiation and tree-shade readiness are tracked in C8/T38.' C8 now frames the contrast as 'For R7 default-on readiness ... See T38 for readiness and B6 for the weather experience.' T38 says to 'Judge this weather trace independently of the shared radiation check and tree-shade qualification.' ambiguities.md item 10 says B6 'judges visible clearing, the roof-seeking response and returning steam independently of those checks.' owner_pages.md page two says 'Direct Sun readiness is checked separately.'"
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "R2 now adds: 'Seed passage is off by default. If enabled, every germination candidate must pass the shared SproutRing respectBuiltGround/enclosed-room eligibility test and honour active suppression (T54).' tickets.md T54 routes each candidate 'through RM_SproutRing.CanSprout with respectBuiltGround=true and the map's actual suppression state at expiry'. Its acceptance test says to 'Verify that no seed candidate germinates on suppressed cells inside a working blower field, in an enclosed dirt-floor room, or on built ground', with a positive control on eligible outdoor dirt and controlled rolls. models.md M1 adds T54 expiry traces in a blower field and an enclosed dirt-floor room. M3 adds blower-boundary, grazed-cell and room-doorway candidate checks. The vegetation meeting now names the bypass: 'Enabled seed passage could bypass blower or grazing suppression and room exemptions unless each seed candidate obeys R2/R4.'"
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "census.json yearning_fruit is now fate 'next_version' with ticket 'T54', and its why reads 'Ordinary yearning fruit remains harvestable forage. Shared wet-native fruit/wither/sprout cycles still provide renewal when the digestive accelerant and seed passage are off.' T54 is a default-off switch that keeps feeding. definition.md Life now reads 'ordinary forage including yearning fruit', without seed passage. next_version.md and owner_pages.md page one list the extra as deferred. M2 replays shared sprouting 'with seed passage off'. The census now has 37 next_version rows and 2 recommend_retire rows out of 84, leaving 45 kept, which matches result.json counts (kept 45, next_version 37) and page one."
+    },
+    "R6": {
+     "verdict": "fixed",
+     "evidence": "owner_pages.md page two now has Q3: 'Should entrances still need recurring care after paving? Your 2026-11-10 card names “daily work clearing routes and protecting entrances.” The shared built-ground rule exempts paved cells from regrowth. My default lets paving end regrowth care at the entrance and moves care to unpaved routes. If you want entrance care to recur, the unpaved approach will need pressure and the bars will show it.' The settled bullet now ends 'See Q3 for entrance upkeep.' The page reads 'Questions: 3', result.json counts.questions is 3, and ambiguities.md item 3 points to Q3 instead of settling the point as a delegated reconciliation."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Calls that change scope, construction or acceptance",
+    "bars.json bars/B3",
+    "bars.json bars/B6",
+    "bars.json checks/C8",
+    "bars.json meetings",
+    "bars.json rules/R14",
+    "bars.json rules/R2",
+    "bars.json rules/R7",
+    "census.json rows/dep_creature_behaviors",
+    "census.json rows/seek_shade",
+    "census.json rows/yearning_fruit",
+    "definition.md Edges and neighbours",
+    "definition.md Evidence boundary and second lazy-build attack",
+    "definition.md Greentide — proposed Design Version 0.1.0",
+    "definition.md Season's turn",
+    "definition.md Using it: first hour, routine, colony scale",
+    "models.md M1 Situations and transitions",
+    "models.md M2 Season of an inhabited foothold",
+    "models.md M3 Footing and doorway geometry",
+    "models.md M4 Clearing and heat timing",
+    "next_version.md Yearning fruit digestive accelerant and seed passage",
+    "owner_pages.md Page one — what Greentide would be",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T38: Common heat and actual clearing return",
+    "tickets.md T54: Yearning fruit digestive accelerant and seed passage"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1238122,
+     "output_tokens": 16858
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "owner_pages.md page two still ends with '## Still refused after the second look (the reviewer's words)'. It lists all six of this round's records verbatim and says 'The proposal cannot be applied until each of these is resolved or you accept it.'",
+   "reason": "If this round accepts the fixes, the page would show the owner six refusals that no longer stand. The section looks pipeline-generated, so the pipeline should refresh or remove it after this verdict. It is not the author's entry to fix.",
+   "round": 1
+  },
+  {
+   "what": "B6 range.varies still sweeps 'low/high sun angle 5..90 degrees'.",
+   "reason": "Under R14 the roof-seeking response reads only cell air temperature and roof status, so the sun-angle sweep tells B6 nothing; it belongs to the C8/T38 readiness check. This is harmless clutter, not a flaw.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "945588be4cc98cc3477d0e1ed3149f49504f9a293c6db6dcf5562d7ab6203c0f",
+ "seconds": 545,
+ "at": "2026-11-17T19:25:10"
+}

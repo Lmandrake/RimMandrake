@@ -98,11 +98,11 @@
       "evidence": "src/RimMandrake/Greentide/Defs/ThingDefs_Plants/RM_YearningFruit.xml; src/RimMandrake/Greentide/Defs/HediffDefs/RM_YearningFruit_Hediffs.xml; src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_SeedPassage.cs",
       "proven": "stale",
       "called_by": "src/RimMandrake/Greentide/Defs/ThingDefs_Plants/RM_YearningFruit.xml; src/RimMandrake/Greentide/Defs/HediffDefs/RM_YearningFruit_Hediffs.xml; src/RimMandrake/CreatureBehaviors/Source/RM_HediffComp_SeedPassage.cs; runtime entry by the named def/comp or map lifecycle; see definition.md",
-      "serves": "signature in the inhabited river-jungle",
-      "fate": "signature",
-      "why": "Designer decision (delegated): Eating and seed passage connect abundant food to renewed growth. Deleting eat-pass-sprout severs this cause of encroachment; hunger/waddle is the cost of that food, not another progression.",
+      "serves": "deferred digestive accelerant and seed passage",
+      "fate": "next_version",
+      "why": "Designer decision (delegated): Ordinary yearning fruit remains harvestable forage. Shared wet-native fruit/wither/sprout cycles still provide renewal when the digestive accelerant and seed passage are off.",
       "needed_by": "",
-      "ticket": ""
+      "ticket": "T54"
     },
     {
       "id": "catch_economy",
@@ -158,9 +158,9 @@
     },
     {
       "id": "seek_shade",
-      "what": "Sulleth carries shared seek-shade extension/AI. This is behavior, not an exception to ambient air heat or the common Direct Sun law.",
+      "what": "Sulleth carries shared seek-shade AI. Breaklight's +12 °C ordinary air offset can bring an unroofed carrier's cell to its 38 °C threshold. The job looks for reachable standable roofed cells under R14.",
       "built": "present",
-      "evidence": "src/RimMandrake/Greentide/Defs/ThingDefs_Races/RM_Sulleth.xml; src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_SeekShade.cs",
+      "evidence": "src/RimMandrake/Greentide/Defs/ThingDefs_Races/RM_Sulleth.xml; src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_SeekShade.cs; src/RimMandrake/Greentide/Defs/GameConditionDefs/RM_Greentide_Conditions.xml",
       "proven": "missing",
       "called_by": "src/RimMandrake/Greentide/Defs/ThingDefs_Races/RM_Sulleth.xml; src/RimMandrake/CreatureBehaviors/Source/RM_JobGiver_SeekShade.cs; runtime entry by the named def/comp or map lifecycle; see definition.md",
       "serves": "land: Breaklight; B6",
@@ -1010,7 +1010,7 @@
       "called_by": "Greentide creature/plant opt-ins",
       "serves": "shared dependency",
       "fate": "dependency",
-      "why": "Designer decision (delegated): Need aquatic hunt/reveal, scoped sight, warning silence, shade-seeking, bounded gall response, seed passage, flight-compatible native behavior and found creature feeding. Do not redesign shared algorithms.",
+      "why": "Designer decision (delegated): Need aquatic hunt/reveal, scoped sight, warning silence, shade-seeking, bounded gall response, flight-compatible native behavior and found creature feeding. Seed passage remains available for the deferred Greentide extra and other shared callers. Do not redesign shared algorithms.",
       "needed_by": "",
       "ticket": ""
     },

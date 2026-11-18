@@ -113,7 +113,7 @@
       ],
       "lazy": "none: Repeated natural obstruction is explicitly confined to used unpaved working routes, with warned recovery and permanent paved-cell exemption; neither fast specimen growth nor forced invasion of built ground qualifies.",
       "range": {
-        "varies": "Light above/below shared growth threshold; wet-native immature/mature/wither/seed passage; plant-eligible unpaved route width 1..5 between inhabited home, field edges, harvest sites and river; cleared/neglected/recleared; paved entrances from first-day siting, later paving and constructed/sealed boundaries; day 1..60, colony 1/8/40, grazing present/lost, blower active/outage/repaired, clearing/return and mid-cycle save. Include early-paved-home policy with unpaved resource routes and a fully paved used-route negative control; record eligible cells, not merely unroofed cells.",
+        "varies": "Light above/below shared growth threshold; wet-native immature/mature/wither/shared sprouting; plant-eligible unpaved route width 1..5 between inhabited home, field edges, harvest sites and river; cleared/neglected/recleared; paved entrances from first-day siting, later paving and constructed/sealed boundaries; day 1..60, colony 1/8/40, grazing present/lost, blower active/outage/repaired, clearing/return and mid-cycle save. Include early-paved-home policy with unpaved resource routes and a fully paved used-route negative control; record eligible cells, not merely unroofed cells.",
         "left_out": "Floors, walls and enclosed rooms remain exempt under the shared engine. No regrowth burden is required on wholly paved used ground, no compensating edge invasion, decay tax or escalation to defeat earned safety. Pressure applies where the colony continues to use plant-eligible ground; abandonment is possible after neglect, not mandatory for an engineered base. No new humidity or blackout-root law."
       },
       "sees": {
@@ -230,28 +230,29 @@
     },
     {
       "id": "B6",
-      "says": "When the Roil clears, colonists see the exposed floor and shade-seeking native animals move toward reachable shade; when the clearing ends, the low steam returns.",
+      "says": "Colonists see the floor as the Roil clears and shade-seeking natives head for roof shade more readily than under the steam, which returns when the clearing ends.",
       "meant": {
         "intent": "A readable variation of standing steam with the explicitly required natural animal response and return; shared heat-law compliance is R7 and regression evidence, not an additional player promise.",
         "source": "greentide_kit_spec.md card 2026-09-11 requires seek-shade in first playable; delegated clearing/return reading. R7 separately follows the standing Direct Sun ruling and its tree-shade qualification.",
         "figurative": []
       },
       "accept": [
-        "The low steam lifts, ground detail becomes visible and a shade-seeking grazer leaves exposed footing for reachable canopy or roof shade; when the clearing ends the low steam returns."
+        "The low steam lifts, ground detail becomes visible and a grazer that stayed out under the Roil leaves exposed footing for a reachable roofed cell of its own accord. The low steam returns after the clearing."
       ],
       "reject": [
-        "A clear-sky screenshot with weather locked permanently hides the return, or the grazer only seeks shade after a debug job is assigned."
+        "A clear-sky screenshot with weather locked permanently hides the return, or the grazer only seeks shade after a debug job is assigned.",
+        "The carrier heads for shelter just as often under the Roil as during a comparable clearing, so the clearing changes nothing it does."
       ],
-      "lazy": "none: Exposed-floor reading, autonomous movement to reachable shade and natural return are explicit; a locked clear sky, forced job or stationary shade-labelled animal cannot satisfy them.",
+      "lazy": "none: The visible floor, increased autonomous roof-seeking during clearing and natural return are explicit. A locked sky, forced job or unchanged sheltering cannot satisfy them.",
       "range": {
-        "varies": "Actual condition priority Roil/Breaklight/return including nested start/expiry and reload mid-clearing; native seek-shade carriers idle/hungry/hunted/downed, shade present/blocked/destroyed; low/high sun angle 5..90 degrees as fixed-world geometry supplies; roof/canopy/open/enclosed cooled rooms; air 28..65 C as a scenario envelope, not a new tile-temperature prescription; colony 1..40.",
-        "left_out": "Non-carrier animals and drafted human orders do not owe automatic seek-shade. No reachable shade produces a readable failed search, not invented cooling. Heat-law implementation belongs to R7/C8/T38; an unqualified shared tree-shade dependency cannot supply a positive reading for this default-on version."
+        "varies": "Actual condition priority Roil/Breaklight/return including nested start/expiry and reload mid-clearing; native seek-shade carriers idle/hungry/hunted/downed, reachable roof present/blocked/destroyed; low/high sun angle 5..90 degrees as fixed-world geometry supplies; roof/open/enclosed cooled rooms; air 28..65 C as a scenario envelope, including both arms below threshold, Breaklight crossing it, and both arms already above it; colony 1..40.",
+        "left_out": "Non-carrier animals and drafted human orders do not owe automatic seek-shade. The increased response is tested where Breaklight takes ordinary air through the carrier threshold and a roof is reachable. Below-threshold heat, continued sheltering when both arms are already hot and blocked-roof searches are boundary cases. Shared radiation and tree-shade readiness are tracked in C8/T38."
       },
       "sees": {
-        "instrument": "Weather/condition, natural AI job/destination, common Direct Sun inputs and vanilla room/Heatstroke state trace; M4 calibrated timing/thermal model, supported by B1 visual clearing reading (T34/T38).",
-        "start": "Natural weather clock unlocked, no artificial heat hediff, recorded shared sun/roof/canopy state and hot air, known shade-seeking carrier with accessible safe shade. No forced AI job.",
-        "on": "All kept Greentide mechanics and their shared-engine gates at shipped defaults, all research/work prerequisites available, all DLC installed; next-version extras off. Natural weather clock unlocked. A paired mechanism-off control is supplemental, never the accepted run. Capture actual loaded content/settings fingerprints. Direct Sun active on this map. Shared tree/roof shade must first satisfy the standing tree-shade adopt-or-fall-back qualification; this proposal selects the qualified-on branch for this version, not silent fallback to off.",
-        "control": "Read weather priority and active condition, and compare a natural carrier with a non-carrier at matched starting exposure. A supplemental blocked-shade arm distinguishes actual refuge search from scripted movement. As the R7/C8 prerequisite, measure the shared radiation contribution to felt temperature on verified exposed, roof-shaded and canopy-shaded cells at the same positive sun angle, weather, air temperature and gear: exposed must be positive and exceed each shaded reading. Equal radiation or an inactive Direct Sun gate invalidates the evidence even if the visible clearing/shade-search picture looks right. Missing shade qualification is UNMEASURED dependency work under T38.",
+        "instrument": "Trace weather priority, air temperature at the carrier, natural AI job/destination and return with M4, supported by B1's visual clearing reading (T34/T38).",
+        "start": "Natural weather clock unlocked. Start an unroofed seek-shade carrier with a reachable roof and baseline air below its threshold but close enough for the Breaklight offset to reach it. Record the starting cell, reachable roof cells, air and threshold. No artificial heat hediff or forced AI job.",
+        "on": "Run kept Greentide mechanics at shipped defaults with all DLC installed and next-version extras off. Use the Direct Sun default from R7. Keep the natural weather clock unlocked and capture loaded content/settings fingerprints. See C8/T38 for the shared heat-law check.",
+        "control": "Compare equal-length windows under Roil and Breaklight with the same carrier, starting cell, reachable roof cells, time of day, starting activity and baseline air before the condition offset. Read the active condition and actual air in each arm. Across repeated pairs where Breaklight takes the air to or above threshold, require more autonomous roof-bound trips in the clearing arm. Witness natural clearing and return with the clock unlocked. Use a matched non-carrier or blocked-roof arm as a supplemental check on scripted movement.",
         "reset": "Disposable baseline save plus settings/derived-def snapshot: reload baseline and restore prior values after each arm. Record loaded fingerprints and verify subjects, property, queues, weather and registrations match baseline. Never restore guessed defaults over prior user settings.",
         "live_only_why": "Not live-only: deterministic gameplay state and calibrated production-kernel/geometry readings distinguish the outcomes; the necessary game adapter is ticketed. No current passing claim."
       },
@@ -397,7 +398,7 @@
     },
     {
       "id": "C8",
-      "what": "Read field membership per blower rotation, suppression source/expiry, actual grazing writes, weather condition priority, native/airborne immunity and environmental-water eligibility. For default Greentide require the effective Direct Sun gate on, qualified shared crown shade and positive exposed radiation exceeding roof/canopy shade at matched positive sun, weather, air and gear; equality cannot certify the run. See R7/T38."
+      "what": "Read field membership per blower rotation, suppression source/expiry, actual grazing writes, weather condition priority, native/airborne immunity and environmental-water eligibility. For R7 default-on readiness, verify the effective Direct Sun gate, qualified shared crown shade and positive exposed radiation exceeding roof/canopy shade at matched positive sun, weather, air and gear. Equal radiation fails that regression check. See T38 for readiness and B6 for the weather experience."
     },
     {
       "id": "C9",
@@ -427,7 +428,7 @@
     },
     {
       "id": "R2",
-      "rule": "Ordinary wet-native regrowth respects floors, edifices and enclosed rooms under ExplosiveGrowth. Paving and sealed churnmud permanently exempt the cells they cover; no edge invasion or upkeep tax bypasses that answer. Natural pressure belongs to used plant-eligible unpaved working routes, including any still-unpaved entrance approach. Normal light-gated maturation replaces old dark-roots wording.",
+      "rule": "Ordinary wet-native regrowth respects floors, edifices and enclosed rooms under ExplosiveGrowth. Paving and sealed churnmud permanently exempt the cells they cover; no edge invasion or upkeep tax bypasses that answer. Natural pressure belongs to used plant-eligible unpaved working routes, including any still-unpaved entrance approach. Normal light-gated maturation replaces old dark-roots wording. Seed passage is off by default. If enabled, every germination candidate must pass the shared SproutRing respectBuiltGround/enclosed-room eligibility test and honour active suppression (T54).",
       "touches": [
         "vegetation",
         "ground_routes"
@@ -474,7 +475,7 @@
     },
     {
       "id": "R7",
-      "rule": "Common Direct Sun is geometric with shared tree/roof shade; ambient heat is vanilla air temperature. The legacy per-biome felt-offset extension/prose is not an authorized heat mechanism. Roil/Breaklight change the visible weather and shared AI response, never a local sun value. The proposed default is Direct Sun active on Greentide maps only with qualified shared tree shade under the standing adopt-or-fall-back test. T38 must establish that prerequisite; absent qualification, default-on evidence is UNMEASURED and this version cannot claim readiness. An off branch would require an explicit proposal revision, never a silent proof-scene bypass.",
+      "rule": "Common Direct Sun is geometric with shared tree/roof shade; ambient heat is vanilla air temperature. The legacy per-biome felt-offset extension/prose is not an authorized heat mechanism. Breaklight's ordinary air offset follows R14. The proposed default is Direct Sun active on Greentide maps only with qualified shared tree shade under the standing adopt-or-fall-back test. T38 must establish that prerequisite before R7 default-on readiness; absent qualification, the Direct Sun check is UNMEASURED. An off branch would require an explicit proposal revision, never a silent proof-scene bypass.",
       "touches": [
         "weather_sun",
         "vegetation"
@@ -532,6 +533,14 @@
         "wildlife",
         "ground_routes"
       ]
+    },
+    {
+      "id": "R14",
+      "rule": "Breaklight keeps the existing +12 °C condition offset from RM_Greentide_Conditions.xml as ordinary air heat under the 2026-10-19 Direct Sun ruling, ‘Hotter air on the thermometer’. At or above its configured cell-air threshold, an unroofed carrier can take the existing seek-shade job to a reachable standable roofed cell within its search radius. The job uses roof status for both origin and destination.",
+      "touches": [
+        "weather_sun",
+        "wildlife"
+      ]
     }
   ],
   "meetings": [
@@ -573,7 +582,7 @@
         "R13"
       ],
       "holds_together": "unknown",
-      "why": "Wet sprouts feed grazers, grazing suppresses sprouts, falls change canopy/light, fruit passage adds seedlings, and defence changes hauling capacity. Population and coverage can oscillate or collapse in combination. M2 must compare early-paved home approaches against continued unpaved field/harvest/river use and fully paved used-route controls. Covered cells stay exempt without blowers or grazing; no compensating invasion is allowed.",
+      "why": "Wet sprouts feed grazers, grazing suppresses sprouts, falls change canopy/light, and defence changes hauling capacity. Population and coverage can oscillate or collapse in combination. M2 must compare early-paved home approaches against continued unpaved field/harvest/river use and fully paved used-route controls. Covered cells stay exempt without blowers or grazing. Enabled seed passage could bypass blower or grazing suppression and room exemptions unless each seed candidate obeys R2/R4. T54 and separate M1/M3 cases test that path; M2 uses shared wet-native renewal with seed passage off.",
       "model": "M2 Season of an inhabited foothold"
     },
     {
@@ -587,10 +596,11 @@
         "B8",
         "R4",
         "R7",
-        "R8"
+        "R8",
+        "R14"
       ],
       "holds_together": "unknown",
-      "why": "The rules exclude a private heat species, but canopy loss plus clearing, room cooling and work timing may still make practical recovery impossible. Actual geometric shading and weather order need calibration. The default-on branch is credible only after the shared tree-shade qualification and measured positive exposed-versus-shaded radiation contrast; off/equal-radiation readings cannot close this meeting.",
+      "why": "Canopy loss, ordinary Breaklight air heat, room cooling and work timing may combine to make recovery impractical. M4 calibrates the natural weather and roof-seeking sequence under R14 and separately checks R7 default-on readiness through the shared tree-shade qualification and exposed-versus-shaded radiation contrast.",
       "model": "M4 Clearing and heat timing"
     },
     {
@@ -606,7 +616,8 @@
         "R8",
         "R9",
         "R12",
-        "R13"
+        "R13",
+        "R14"
       ],
       "holds_together": "unknown",
       "why": "Native feeding, water, immunity, canopy gnawing, tree turnover, predator warning and bounded gall responses must support a continuing population and practical retreat with forty colonists.",
@@ -625,7 +636,7 @@
         "R11"
       ],
       "holds_together": "unknown",
-      "why": "Burial, seed-food traffic, lace/crafting inventory and reload/cancellation can lose identity or duplicate a partial merge. The present cache stores insufficient state.",
+      "why": "Burial, lace/crafting inventory and reload/cancellation can lose identity or duplicate a partial merge. The present cache stores insufficient state.",
       "model": "M1 Situations and transitions"
     },
     {

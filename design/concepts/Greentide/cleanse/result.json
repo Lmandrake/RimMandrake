@@ -5,19 +5,19 @@
  "signature": "Wet growth feeds the colony and reclaims unpaved working ground, making clearing, dry-air protection and grazing useful there while paving earns lasting access to the home.",
  "counts": {
   "capabilities": 84,
-  "kept": 46,
-  "next_version": 36,
+  "kept": 45,
+  "next_version": 37,
   "recommend_retire": 2,
   "old_bars": 0,
   "bars": 8,
   "live_only_bars": 3,
   "checks": 12,
-  "rules": 13,
+  "rules": 14,
   "unknown_pairs": 7,
   "models": 4,
-  "tickets": 53,
-  "questions": 2
+  "tickets": 54,
+  "questions": 3
  },
  "blocked_on": "",
- "applyable": false
+ "applyable": true
 }

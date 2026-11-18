@@ -1,0 +1,34 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Kept Breaklight's existing +12 °C as ordinary air heat under the 2026-10-19 ruling. R14 defines the carrier threshold and roofed destinations, which B6 and the definition now use.",
+      "where": "bars.json B6, R7, R14, weather_sun/wildlife meetings; census.json seek_shade; ambiguities.md item 11; definition.md Neighbours and Season's turn"
+    },
+    {
+      "id": "R2",
+      "changed": "Added matched Roil and Breaklight windows with the same carrier, cells, time and baseline air. B6 now requires increased autonomous roof-seeking when the offset crosses the threshold and rejects unchanged sheltering.",
+      "where": "bars.json B6 says, accept, reject, range and sees; models.md M4; tickets.md T38"
+    },
+    {
+      "id": "R3",
+      "changed": "Removed the radiation and shared tree-shade qualification gates from B6 evidence. B6 uses the R7 setting, and C8/T38 retain the shared heat-law readiness checks.",
+      "where": "bars.json B6, C8, R7 and weather_sun meeting; ambiguities.md item 10; definition.md Neighbours; models.md M4; tickets.md T38; owner_pages.md page two"
+    },
+    {
+      "id": "R4",
+      "changed": "R2 requires enabled seed passage to use shared SproutRing built-ground and room eligibility and respect active suppression. T54 and M1/M3 test germination around a working blower, in an enclosed dirt-floor room and on eligible outdoor ground.",
+      "where": "bars.json R2 and vegetation meeting; models.md M1/M3; tickets.md T54; ambiguities.md item 4"
+    },
+    {
+      "id": "R5",
+      "changed": "Deferred the digestive accelerant and seed passage behind the default-off T54 switch, with yearning fruit retained as ordinary forage. The first-version renewal trace now follows shared wet-native wither and sprouting.",
+      "where": "census.json yearning_fruit and dep_creature_behaviors; bars.json B3 and vegetation/property meetings; definition.md Life, routine and dependencies; ambiguities.md item 4; models.md M2; next_version.md; tickets.md T54; owner_pages.md page one; result.json counts"
+    },
+    {
+      "id": "R6",
+      "changed": "Added Q3 with the owner's daily entrance-protection wording, the paving default and the consequence of requiring recurring pressure on the unpaved approach. The bar pictures still reflect the stated default.",
+      "where": "owner_pages.md page two Q3; ambiguities.md items 3 and 34; result.json question count"
+    }
+  ]
+}

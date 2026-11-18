@@ -218,6 +218,12 @@ What: Felling produces a rotting specimen whose study reveals hidden lace resear
 
 Why outside this version: The unique-medicine reward remains obtainable through ordinary visible MedicineProduction research and crafting; specimen progression is an extra. Built; switch off producers/study and decouple the hidden gate under T53.
 
+### Yearning fruit digestive accelerant and seed passage
+
+Eating wild or harvested yearning fruit speeds hunger, briefly slows the eater, then can leave filth and seedlings. T54 switches off these effects by default and keeps the harvestable fruit as ordinary forage.
+
+The shared wet-native fruit, wither and sprout cycle already supplies renewal on eligible ground. The digestive effects and eater-driven spread are unnecessary to the signature.
+
 ### Recommendations to retire, not enacted
 
 - **Recommend retiring Legacy alternative-planet scoring**: Designer decision (delegated): Alternative-planet scoring has no permitted experience. Worldgen is permanently out, not deferred; recommend removal of this legacy worker capability. No deletion is performed or authorized by this proposal.
