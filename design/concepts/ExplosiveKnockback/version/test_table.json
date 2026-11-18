@@ -226,11 +226,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.4,
+    "seconds": 0.25,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-18T18:11:08Z",
+    "at": "2026-11-18T18:25:13Z",
     "result": "PASS",
-    "build": "2275b157c7d8e450196f",
+    "build": "573583718df9b836a671",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py"
    }
   },
@@ -1780,9 +1780,9 @@
     "rc": 0,
     "seconds": 0.03,
     "last": "FRAME_BUDGET offline selftest: PASS (8 case(s), 0 failed)",
-    "at": "2026-11-18T18:11:33Z",
+    "at": "2026-11-18T18:25:13Z",
     "result": "PASS",
-    "build": "870b4037a5f3e3e362a9",
+    "build": "2f111c9d4c9b1ff6e457",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/validation.py --selftest"
    }
   }
