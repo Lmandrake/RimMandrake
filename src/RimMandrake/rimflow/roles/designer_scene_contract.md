@@ -69,9 +69,17 @@ file that he judges as the mod's face. In `scenes.json`, beside `scenes`:
   only through `coverage_rest` (its removal or absence check), never by a showcase. `exercises` names the capabilities
   the showcase really uses in play, not those it merely has on the map.
 - **Showcase 1 is the flagship he picked**: its `decision` names the record.json decision (speaker `owner`) that records
-  his pick, with `"flagship": "<this showcase id>"`, and its `source` shares that decision's `OWNER:<tsn>`. His root
-  approval is not a pick. If he has picked none, ask at stage 2. A mod whose only units are built but scoped out has no
-  showcase: `coverage_rest` covers them.
+  his pick, with `"flagship": "<this showcase id>"`, and its `source` shares that decision's `OWNER:<tsn>`. Or, under
+  the Evidence-for-Ask rule (designer.md, `RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME`), the pick is a
+  recorded delegated call: an OWNER.jsonl event per-ruling that item about THIS concept, its why starting
+  `delegated: evidence-for-ask`, recorded as a decision with speaker `conductor`, `delegated: "evidence-for-ask"`,
+  `"flagship": "<this showcase id>"` and source `CONDUCTOR:<tsn>`, which the showcase's `source` shares; a decision
+  that `answers` an ask names one in `record.asks` whose `evidence_against` is empty (an ask that carries evidence
+  waits for him). Once recorded, that pick is settled: never ask the same choice again (changed owner input reopens
+  work as designer.md says). His root approval is not a pick, by either route. With no pick recorded, take the
+  obvious one by that delegated call (the Conductor writes its event); ask him at stage 2 only with concrete evidence against it, written in the ask's
+  `evidence_against`. Lock's first-touch certification stays his and is never delegated. A mod whose only units are
+  built but scoped out has no showcase: `coverage_rest` covers them.
 - **Each next showcase is chosen greedily**: of the candidates, the one that newly exercises the most capabilities no
   earlier showcase exercised. The program checks this against every later showcase in the list: none may have offered
   more new capabilities at an earlier position. It features ONLY very different functionality: what it shares with earlier showcases is
