@@ -339,7 +339,13 @@ with tempfile.TemporaryDirectory() as root:
     C.prooflint = _real
 with open(C.__file__, encoding="utf-8") as f:
     src = f.read()
-ok('"--proofs"' in src and src.count("_prooflint_say(args.id") == 3, "7 `lint --proofs` exists; file, implemented, close call the lint")
+# each door by its own call: `file` reaches the lint through the preflight gate since 31c94dd37a (2026-11-15), so a
+# count of the plain call text reads 2 of 3 and would miss a door that lost it (old-era sweep, 2026-11-18)
+_doors = {"file": re.search(r'pf\.gate\("F3", _prooflint_say, args\.id\b', src),
+          "implemented": re.search(r'_prooflint_say\(args\.id, \w+, "implemented"\)', src),
+          "close": re.search(r'_prooflint_say\(args\.id, \w+, "closed"\)', src)}
+ok('"--proofs"' in src and all(_doors.values()),
+   "7 `lint --proofs` exists; file, implemented, close call the lint (missing: %s)" % [d for d, m in _doors.items() if not m])
 
 # 8. sanity
 ok(bool(L.refused_proof(LR, "", "", lines["A1"])), "8 the lane's refused_proof still refuses the `$` line")
