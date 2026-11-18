@@ -327,9 +327,9 @@ def concepts_dir():
     return os.environ.get("RM_CONTROL_CONCEPTS") or os.path.join(REPO, "design", "concepts")
 
 
-def known_mods():
-    """-> the pipeline's mods: maturation_dispatch.json's advancing list, then every concept folder (this tree's).
-    RM_CONTROL_MODS="A,B" names them for a test."""
+def known_mods(advancing_only=False):
+    """-> the pipeline's mods: maturation_dispatch.json's advancing list, then (unless advancing_only) every concept
+    folder (this tree's). RM_CONTROL_MODS="A,B" names them for a test."""
     env = os.environ.get("RM_CONTROL_MODS")
     if env is not None:
         return [m for m in env.split(",") if m]
@@ -339,9 +339,12 @@ def known_mods():
             out = [key(m) for m in json.load(f).get("advancing") or []]
     except (OSError, ValueError):
         pass
+    if advancing_only:
+        return out
     d = concepts_dir()
     try:
-        out += sorted(x for x in os.listdir(d) if os.path.isdir(os.path.join(d, x)) and x not in out)
+        out += sorted(x for x in os.listdir(d) if os.path.isdir(os.path.join(d, x)) and x not in out
+                      and not x.startswith(("_", ".")))
     except OSError:
         pass
     return out
@@ -1433,9 +1436,9 @@ def import_live(p=None, now=None, hold_file=None, concepts=None, voids_file=None
             continue
         import coverage_judge as CJ
         rs = CJ.rounds(st, d)
-        rel = [x for x in st.get("coverage_releases") or [] if isinstance(x, dict)][-1]
-        spent = [r.get("judge") for r in CJ._looks(CJ.released_rounds(st, d, rs, rel))
-                 if r.get("verdict") == "not_covered" and r.get("judge")]
+        rels = [x for x in st.get("coverage_releases") or [] if isinstance(x, dict)]
+        spent = [r.get("judge") for r in CJ._looks(CJ.released_rounds(st, d, rs, rels[-1]))
+                 if r.get("verdict") == "not_covered" and r.get("judge")] if rels else []     # a grant not yet applied
         with txn(p) as c:
             if _idem_hit(c, "import:look:%s:%s" % (m, win)):
                 out.append("look %s already imported" % m)
@@ -1489,6 +1492,14 @@ def tick_reading():
         return None, "no reading.json yet"
     except (OSError, ValueError) as e:
         return None, "%s: %s" % (type(e).__name__, e)
+
+
+def tick_rows(rd):
+    """-> {mod: the tick's last row} from a reading (its `mods` is a dict by mod; an older one a list of rows)."""
+    ms = (rd or {}).get("mods") or (rd or {}).get("rows") or {}
+    if isinstance(ms, dict):
+        return {key(m): r for m, r in ms.items() if isinstance(r, dict)}
+    return {key(r.get("mod")): r for r in ms if isinstance(r, dict) and r.get("mod")}
 
 
 def _stage_advanced_on_voided(c, mods=None):
@@ -1551,8 +1562,13 @@ def show(mod=None, p=None, now=None, as_json=False):
     finally:
         c.close()
     rd, rd_why = tick_reading()
-    mods = [key(mod)] if mod else known_mods()
-    mods += sorted({s["scope"][4:] for s in sw if s["scope"].startswith("mod:")} - set(mods)) if not mod else []
+    tickmods = tick_rows(rd)
+    if mod:
+        mods = [key(mod)]
+    else:   # the pipeline's mods: the tick's, the shipped advancing list, then any mod a switch names
+        mods = list(tickmods)
+        mods += [m for m in known_mods(advancing_only=True) if m not in mods]
+        mods += sorted({s["scope"][4:] for s in sw if s["scope"].startswith("mod:")} - set(mods))
     if as_json:
         return [json.dumps({"rev": r0, "switches": sw, "live": live, "stops": stops,
                             "looks": {"%s@%s" % k: v for k, v in accts.items()}, "flags": flags,
@@ -1565,10 +1581,6 @@ def show(mod=None, p=None, now=None, as_json=False):
     for s in sw:
         if not s["scope"].startswith("mod:") and s["scope"] != "all":
             out.append("%s %s" % (s["scope"], label(s)[:150]))
-    tickmods = {}
-    for x in (rd or {}).get("rows") or (rd or {}).get("mods") or []:
-        if isinstance(x, dict) and x.get("mod"):
-            tickmods[key(x["mod"])] = x
     for m in mods:
         ms = [s for s in sw if s["scope"] == "mod:" + m]
         state = "; ".join(label(s) for s in ms) or "ON"
@@ -1584,6 +1596,14 @@ def show(mod=None, p=None, now=None, as_json=False):
             out += ["  look window %s: %s" % (w, fmt_acct(a)) for (am, w), a in accts.items() if am == m]
             if tr.get("why"):
                 out.append("  tick why: %s" % str(tr["why"])[:200])
+            if tr.get("live"):
+                out.append("  live (tick): %s" % ", ".join(str(x) for x in tr["live"])[:200])
+            try:    # each consumable's count and limit (pipeline_control.py's census)
+                sys.path.insert(0, HERE) if HERE not in sys.path else None
+                import pipeline_control as PC
+                out += [x for x in PC.do_show(PC.Ctx(), m) if x.startswith("  ")]
+            except Exception as e:      # noqa: BLE001  a census that cannot read is UNMEASURED, never empty
+                out.append("  consumables: UNMEASURED (%s: %s)" % (type(e).__name__, e))
     lv = [r for r in live if not mod or r["mod"] == key(mod)]
     out.append("runs in flight: %s" % (", ".join("%s %s(%s)" % (r["unit"], r["state"], r["mod"] or r["family"])
                                                  for r in lv[:6]) + (" +%d" % (len(lv) - 6) if len(lv) > 6 else "")
@@ -1606,10 +1626,7 @@ def why(mod, p=None, now=None):
     m = key(mod)
     b = blocked({"family": "detached", "unit": "-", "mod": m}, p, now)
     rd, rd_why = tick_reading()
-    tr = {}
-    for x in (rd or {}).get("rows") or (rd or {}).get("mods") or []:
-        if isinstance(x, dict) and key(x.get("mod")) == m:
-            tr = x
+    tr = tick_rows(rd).get(m) or {}
     tick = ("tick %s: %s %s" % (rd.get("at_pac", UNM), tr.get("decision") or "-", str(tr.get("why") or "")[:140])
             if rd else "tick reading UNMEASURED (%s)" % rd_why)
     return "%s: %s | %s" % (m, ("BLOCKED " + b) if b else "nothing in control blocks it", tick)

@@ -145,6 +145,13 @@ def t_verbs():
     rc, out, _ = pipe("show", env={"RM_CONTROL_DB": os.path.join(TMP, "absent.db")})
     check(rc == 3 and out.startswith("CONTROL UNREADABLE:"), "an absent store: show says CONTROL UNREADABLE, exit 3",
           (rc, out))
+    with open(os.path.join(os.environ["RM_MATURATION_DISPATCH_DIR"], "reading.json"), "w") as f:
+        json.dump({"at_pac": "2026-11-18 1:05 PM PST", "mods": {"Graffiti": {"decision": "owner_hold",
+                                                                             "stage": "blind_challenge"}}}, f)
+    out = "\n".join(C.show())
+    check("tick: owner_hold" in out and "blind_challenge" in out, "show reads the tick's reading (mods by name)", out)
+    check("owner_hold" in C.why("Graffiti"), "why reads the tick's row for the mod")
+    os.unlink(os.path.join(os.environ["RM_MATURATION_DISPATCH_DIR"], "reading.json"))
     # in-process: the verbs themselves, without python start
     t0 = time.monotonic()
     for _ in range(20):
@@ -425,7 +432,10 @@ def t_owner_import():
         json.dump({"holds": [{"mod": "Graffiti", "date": "2026-11-18", "said": "stop Graffiti now"},
                              {"mod": "Cauldron", "date": "2026-11-16", "said": "stop the new biome mods work",
                               "design_allowed": {"said": "design only", "date": "2026-11-17"}}]}, f)
-    lines = C.import_live(DB, hold_file=hf, concepts=[], voids_file=os.path.join(TMP, "novoids.jsonl"))
+    lines = C.import_live(DB, hold_file=hf, concepts=[("Graffiti", TMP, {"coverage_release_granted": {
+        "at": "2026-11-17T18:45:12Z"}})], voids_file=os.path.join(TMP, "novoids.jsonl"))
+    check(any("look Graffiti window 2026-11-17T18:45:12Z" in x for x in lines), "a grant still waiting on its fixes "
+                                                                               "imports as an opening balance", lines)
     lines2 = C.import_live(DB, hold_file=hf, concepts=[], voids_file=os.path.join(TMP, "novoids.jsonl"))
     holds = C.mod_holds()
     check(set(holds) == {"Graffiti", "Cauldron"} and holds["Graffiti"]["said"] == "stop Graffiti now",
