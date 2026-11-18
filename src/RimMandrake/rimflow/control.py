@@ -524,6 +524,21 @@ def mod_holds(p=None, now=None):
     return out
 
 
+def heartbeat(name, p=None):
+    """The live store was read just now by `name` (the tick): touch <store dir>/<name>, the reading the item's --live
+    promise and the deadman check. A test store writes none. Never raises."""
+    p = p or db_path()
+    if not is_live(p):
+        return None
+    f = os.path.join(os.path.dirname(os.path.abspath(p)), name)
+    try:
+        with open(f, "w", encoding="ascii") as fh:
+            fh.write("%s\n" % utc(time.time()))
+        return f
+    except OSError:
+        return None
+
+
 def note(kind, scope, why, after=None, p=None, now=None):
     """One act that records without switching (a stop-live list, say). -> the act."""
     with txn(p) as c:

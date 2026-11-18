@@ -2981,7 +2981,16 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     releases = fx["releases"]() if "releases" in fx else read_releases()
     # The owner's hold (mod_owner_hold.py): a held mod is read (its live run finishes, its spend and ledger rows are still
     # recorded below) but never decided, so nothing launches on it and it joins no idle, paused or stalled list.
-    holds = OH.load()
+    try:
+        holds = OH.load()
+        if apply:       # the live tick read the control store: its heartbeat (the item's --live reading)
+            import control as C
+            C.heartbeat("tick_read")
+    except OH.Unreadable as e:
+        # the control store (or his hold file) cannot be read: every mod is held, said, and nothing launches
+        # (control.py: an unreadable store admits nothing; "could not look" is never "no holds")
+        holds = {OH.key(m): {"mod": OH.key(m), "date": "", "said": str(e), "unreadable": True}
+                 for m in cfg.get("advancing") or []}
     cfg = dict(cfg, advancing=[m for m in cfg.get("advancing") or [] if OH.key(m) not in holds])
     # The pipeline's pause (pipeline_pause.py; RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED), read at the moment of
     # deciding, no git hop; an --until that has passed resumes by itself (an applying tick moves it to history and says

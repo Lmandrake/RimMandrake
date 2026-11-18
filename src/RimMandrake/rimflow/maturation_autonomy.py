@@ -155,7 +155,10 @@ def widen(root, cfg, st, apply, fx=None):
     seed = fx.get("seed", seed_and_land)
     st.setdefault("seed_refused", {})
     import mod_owner_hold as OH
-    held = OH.load()
+    try:
+        held = OH.load()
+    except OH.Unreadable:   # the control store cannot be read: seed nothing (the tick holds every mod and says why)
+        held = {OH.key(m): None for m in list(found) + adv}
     for m in found:
         if m not in adv:
             adv.append(m)
