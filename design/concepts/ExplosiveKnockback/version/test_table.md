@@ -44,7 +44,7 @@ Generated 2026-11-15T15:12:28-08:00 from `test_table.json` (the record; this is 
 | `settings_scale_and_switch` | tree | 6 | T_SETTINGS_SWEEP_OFFLINE, T_SETTINGS_SCREEN, sc_settings_sweep, sc_settings_off | T_SCRIPT, T_STAGE3_SCENES, P_goods_fly_off | all |
 | `barrage_frame_budget` | tree | 6 | sc_barrage_perf | sc_frame_probe_check, T_STAGE3_SCENES, T_KERNEL | all |
 | `frame_time_probe` | tree | 6 | sc_frame_probe_check | T_STAGE3_SCENES, T_KERNEL | all |
-| `walk_storeroom_raid` | tree | 8 | sc_walk_raid, LOOK_STAGE8 | sc_storeroom_bomb_pit | all |
+| `walk_storeroom_raid` | tree | 8 | sc_walk_raid, LOOK_STAGE8 | sc_storeroom_bomb_pit, T_WALK_FRAME_JUDGE_OFFLINE | all |
 | `inv_kernel` | record | 4-5 | T_KERNEL, T_FUZZ | T_LINT | all |
 | `inv_hook` | record | 6 | sc_mortar_throw | sc_blast_kinds, T_ONLY_EXPLOSIONS_STATIC | all |
 | `inv_pawn_flyer` | record | 6 | T_LINT, sc_pawn_arc, sc_wall_stop | - | all |
@@ -96,6 +96,7 @@ Generated 2026-11-15T15:12:28-08:00 from `test_table.json` (the record; this is 
 | `T_HEAVY_KNOCK_RULE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py` | PASS rc=0 1.07s | the heavy-stack rule as kernel cases: over the heavy threshold blunt 2 to 5 and a stagger and the stack stops; under it no damage and it passes |
 | `T_STAGE3_SCENES` | 2 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py` | PASS rc=0 0.02s | the five Stage 3 scenes (hose drop, closed containers, settings sweep, frame probe, barrage) and their control lanes are named and routed, carry their start ass |
 | `T_ONLY_EXPLOSIONS_STATIC` | 2 | offline | `src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py` | PASS rc=0 0.19s | the only Harmony patch that queues a throw is on the explosion's damage step (no melee or bullet damage worker is patched) |
+| `T_WALK_FRAME_JUDGE_OFFLINE` | 4-5 | offline | `src/RimMandrake/ExplosiveKnockback/validation.py --selftest` | PASS rc=0 (2026-11-18, 8 cases) | the walk's FRAME_BUDGET judge fed fixed arms offline: over-budget fails, within passes, the four unreadable kinds never read PASS |
 | `sc_storeroom_bomb_pit` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: storeroom_bomb_pit | live: this pilot is offline only; entry EXISTS in the proof code (RM_KnockbackProof_StoreroomBombPit.cs, with its control lane) | the colonist one cell east of the impact is carried through the air straight away from it, stops dead at the east wall two cells on with a wall hit, and lands a |
 | `sc_mortar_throw` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: calibration | live: this pilot is offline only; entry EXISTS in the proof code | the colonist lands 3 cells out along the blast ray, alive and stunned; one launch line, journal reason thrown, carried by RM_PawnFlyer_Knockback |
 | `sc_over_sandbags` | 6 | live_minimal | `src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackProof.cs` :: over_sandbags | live: this pilot is offline only; entry EXISTS in the proof code | both colonists land 3 cells out, past the line, on standable ground; journal stop Distance |

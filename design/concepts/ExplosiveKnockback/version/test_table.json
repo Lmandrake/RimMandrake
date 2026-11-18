@@ -111,9 +111,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.16,
+    "seconds": 2.11,
     "last": "explosive knockback kernel: 246/246 passed",
-    "at": "2026-11-17T19:10:52Z",
+    "at": "2026-11-18T18:10:03Z",
     "result": "PASS",
     "build": "a4df482449f02f6b065d",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
@@ -134,9 +134,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.24,
-    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.35s total -> OK",
-    "at": "2026-11-17T19:10:55Z",
+    "seconds": 4.2,
+    "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.36s total -> OK",
+    "at": "2026-11-18T18:10:08Z",
     "result": "PASS",
     "build": "8afe2c39d6e415af503a",
     "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py"
@@ -158,9 +158,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.75,
+    "seconds": 2.73,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-17T19:10:57Z",
+    "at": "2026-11-18T18:10:10Z",
     "result": "PASS",
     "build": "2d1f270613ba37dc1e6b",
     "command": "python3 src/RimMandrake/Utils/lint_explosiveknockback_defs.py"
@@ -180,9 +180,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 35.74,
+    "seconds": 36.05,
     "last": "ExplosiveKnockback lint planted-defect selftest: 20/20 ok",
-    "at": "2026-11-17T19:11:33Z",
+    "at": "2026-11-18T18:10:46Z",
     "result": "PASS",
     "build": "17f915b8d7cf62d40e08",
     "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_lint.py"
@@ -202,9 +202,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 14.14,
+    "seconds": 21.17,
     "last": "PASS storage census: closed exactly when hidden",
-    "at": "2026-11-17T19:11:47Z",
+    "at": "2026-11-18T18:11:08Z",
     "result": "PASS",
     "build": "c9870f6e6d6e2aaae543",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py"
@@ -226,9 +226,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.23,
+    "seconds": 0.4,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-18T03:22:36Z",
+    "at": "2026-11-18T18:11:08Z",
     "result": "PASS",
     "build": "2275b157c7d8e450196f",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py"
@@ -249,9 +249,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.03,
+    "seconds": 9.12,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-17T19:11:49Z",
+    "at": "2026-11-18T18:11:17Z",
     "result": "PASS",
     "build": "4cbe6ccde8f63fef6103",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py"
@@ -270,9 +270,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 7.69,
+    "seconds": 10.27,
     "last": "selftest_proof_restore_check: PASS (0 failure(s))",
-    "at": "2026-11-17T19:11:57Z",
+    "at": "2026-11-18T18:11:27Z",
     "result": "PASS",
     "build": "89b8b21cea392571f7f5",
     "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py"
@@ -291,9 +291,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.85,
+    "seconds": 1.92,
     "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-17T19:11:59Z",
+    "at": "2026-11-18T18:11:29Z",
     "result": "PASS",
     "build": "4199c1886e4599a39e6b",
     "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py"
@@ -313,9 +313,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.06,
+    "seconds": 0.04,
     "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the falling cell; intact cover = ground; 4 mutants red",
-    "at": "2026-11-17T19:11:59Z",
+    "at": "2026-11-18T18:11:29Z",
     "result": "PASS",
     "build": "2402b18861ec6812061e",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py"
@@ -340,9 +340,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.21,
+    "seconds": 1.18,
     "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 10/10 switch faults caught | PASS",
-    "at": "2026-11-17T19:12:00Z",
+    "at": "2026-11-18T18:11:31Z",
     "result": "PASS",
     "build": "f1bded6f74a84dc6a715",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py"
@@ -364,9 +364,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.88,
+    "seconds": 0.91,
     "last": "explosive knockback gas census: PASS (10 sources, tagged grid:RimMandrake.Cauldron.RM_MapComponent_VentGas; 0 faults; 5/5 planted faults caught)",
-    "at": "2026-11-17T19:12:01Z",
+    "at": "2026-11-18T18:11:31Z",
     "result": "PASS",
     "build": "163b4abb86a9ca27b61e",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py"
@@ -387,9 +387,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.04,
     "last": "explosive knockback gas clumps: PASS (0 faults, 11/11 planted faults caught)",
-    "at": "2026-11-17T19:12:01Z",
+    "at": "2026-11-18T18:11:32Z",
     "result": "PASS",
     "build": "3d68680cb0f2ede4684b",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py"
@@ -412,9 +412,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.19,
+    "seconds": 1.25,
     "last": "explosive knockback kernel: 246/246 passed",
-    "at": "2026-11-17T19:12:02Z",
+    "at": "2026-11-18T18:11:33Z",
     "result": "PASS",
     "build": "a4df482449f02f6b065d",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
@@ -440,7 +440,7 @@
     "rc": 0,
     "seconds": 0.02,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-17T19:12:02Z",
+    "at": "2026-11-18T18:11:33Z",
     "result": "PASS",
     "build": "493bc22d3a780add438f",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py"
@@ -462,9 +462,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.22,
+    "seconds": 0.26,
     "last": "explosive knockback hook scope: PASS (0 faults, 3/3 planted faults caught)",
-    "at": "2026-11-17T19:12:02Z",
+    "at": "2026-11-18T18:11:33Z",
     "result": "PASS",
     "build": "bd301ad97ed1cefc803e",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py"
@@ -1763,6 +1763,28 @@
     "ran": false,
     "why": "Stage 8"
    }
+  },
+  "T_WALK_FRAME_JUDGE_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/validation.py",
+   "item": "RIMMANDRAKE_TEST_WALK_FRAME_JUDGE_OFFLINE_TWO_MUTANTS_LIVED",
+   "observes": "the walk's FRAME_BUDGET judge fed fixed arms offline (validation.py --selftest, 9a437178d8): over-budget fails, within passes, and the four unreadable kinds (no on arm, no off arm, a zero off arm, nothing in the air) never read PASS",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/validation.py"
+   ],
+   "id": "T_WALK_FRAME_JUDGE_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/validation.py --selftest",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "FRAME_BUDGET offline selftest: PASS (8 case(s), 0 failed)",
+    "at": "2026-11-18T18:11:33Z",
+    "result": "PASS",
+    "build": "870b4037a5f3e3e362a9",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/validation.py --selftest"
+   }
   }
  },
  "bars": [
@@ -2351,7 +2373,8 @@
     "LOOK_STAGE8"
    ],
    "supports": [
-    "sc_storeroom_bomb_pit"
+    "sc_storeroom_bomb_pit",
+    "T_WALK_FRAME_JUDGE_OFFLINE"
    ],
    "held": [],
    "offline_decides": [],
