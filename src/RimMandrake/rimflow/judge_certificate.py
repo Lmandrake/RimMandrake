@@ -11,8 +11,11 @@ bar, every offline test that decides it (bar["offline_decides"]) is read on four
   ran_on_this_build  its recorded run carries build_id of the test's `reads` and its own file, and that is the hash now;
                      a run that recorded its command must have run the table's command as it is now
   green              the run's rc is 0 and result PASS, and the test carries no `known_red`
-  red_seen           WARN "UNPROVEN" only, never a refusal (RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN makes it
-                     one)
+  red_seen           the decider was seen to fail: PASS on a recorded red run (version/evidence/red_seen.json, written
+                     only by red_seen(): a planted fault applied, the test run and seen non-zero, the fault reversed)
+                     against the test file as it is now; WARN "grandfathered" for a test unchanged since its mod's
+                     version/evidence/red_seen_grandfather.json was written (once, by grandfather()); REFUSED for a new
+                     or edited deciding test with no proof (RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN)
 Before an in-game visit (to="in_game") every in-game scene that decides a bar is also read on
   asks_on_empty_game the scene, run on an empty game (Utils/scene_empty_game.py: every bridge call a bare success), has no
                      row that reads PASS: a check that passes with nothing on the map tests nothing
@@ -33,7 +36,8 @@ import time
 
 TABLE = "version/test_table.json"
 RUN_TIMEOUT_S = 1800      # the slowest measured offline decider is FlowWorks' C# suite, 531 s
-NEXT_TICKET = "RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN"
+RED_SEEN = "version/evidence/red_seen.json"
+GRANDFATHER = "version/evidence/red_seen_grandfather.json"
 OFFLINE_STAGES = ("2", "4-5")   # a bar proving at one of these stages is decided offline
 EMPTY_GAME_TIMEOUT_S = 120      # FlowWorks' 17 scenes on an empty game: 0.15 s measured 2026-11-18
 
@@ -108,6 +112,12 @@ def _write_table(root, mod, tt):
     os.replace(tmp, p)
 
 
+def _run_env():
+    """A test's environment: ours, writing no bytecode, so a certificate run leaves the tree it read byte-for-byte as it
+    found it (a red proof checks exactly that)."""
+    return dict(os.environ, PYTHONDONTWRITEBYTECODE="1")
+
+
 def _last_line(*texts):
     for t in texts:
         lines = [x.strip() for x in str(t or "").splitlines() if x.strip()]
@@ -134,13 +144,15 @@ def run_offline(root, mod, runner=subprocess.run, now=None, resume=False):
             continue
         build = test_build(root, t)      # the content the run reads, taken before it runs
         old = t.get("runs_today") if isinstance(t.get("runs_today"), dict) else {}
-        if resume and old.get("rc") == 0 and old.get("result", "PASS") == "PASS" and old.get("build") == build \
+        if resume and old.get("ran") and old.get("rc") == 0 and old.get("result", "PASS") == "PASS" \
+                and old.get("build") == build \
                 and old.get("command") == t["command"]:     # green as certify reads it: a stamp it refuses reruns
             skipped += 1
             continue
         t0 = time.time()
         try:
-            r = runner(t["command"], shell=True, cwd=root, capture_output=True, text=True, timeout=RUN_TIMEOUT_S)
+            r = runner(t["command"], shell=True, cwd=root, capture_output=True, text=True, timeout=RUN_TIMEOUT_S,
+                       env=_run_env())
             rc, last = r.returncode, _last_line(r.stdout, r.stderr)
         except subprocess.TimeoutExpired:
             rc, last = -1, "timed out after %d s" % RUN_TIMEOUT_S
@@ -170,6 +182,220 @@ def _ended_items(root, ids):
         return set()
 
 
+def _evidence_path(root, mod, name):
+    return os.path.join(os.path.dirname(os.path.dirname(tpath(root, mod))), name)
+
+
+def _read_evidence(root, mod, name):
+    """-> the evidence file's object; {} when it is absent (looked, none); None when it is there but cannot be read
+    (could not look: never read as "no proof", never overwritten)."""
+    p = _evidence_path(root, mod, name)
+    if not os.path.exists(p):
+        return {}
+    try:
+        with open(p, encoding="utf-8") as f:
+            v = json.load(f)
+    except (OSError, ValueError):
+        return None
+    return v if isinstance(v, dict) else None
+
+
+def _write_evidence(root, mod, name, obj, exclusive=False):
+    """Write the evidence file atomically; exclusive: only when no such file exists (-> False when one does)."""
+    p = _evidence_path(root, mod, name)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    tmp = "%s.%d.tmp" % (p, os.getpid())
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(json.dumps(obj, indent=1, sort_keys=True) + "\n")
+    if not exclusive:
+        os.replace(tmp, p)
+        return True
+    try:
+        os.link(tmp, p)         # fails when the file exists: two writers cannot both create it
+        return True
+    except FileExistsError:
+        return False
+    finally:
+        os.remove(tmp)
+
+
+def test_blob(root, t):
+    """-> the git blob hash of the test's own file as it is now (computed, no git needed); for a record test that names
+    a folder, "dir:" + its build_id (an append-only ledger folder: a constant, as test_build leaves it out); "missing"."""
+    f = t.get("file") if isinstance(t, dict) else None
+    p = os.path.join(root, f) if f else None
+    if p and os.path.isdir(p):
+        return "append-only" if str(f).startswith(APPEND_ONLY) else "dir:" + build_id(root, [f])
+    if not p or not os.path.isfile(p):
+        return "missing"
+    with open(p, "rb") as fh:
+        data = fh.read()
+    return hashlib.sha1(b"blob %d\0" % len(data) + data).hexdigest()
+
+
+def grandfather(root, mod):
+    """Write version/evidence/red_seen_grandfather.json ONCE: {test id: blob of its file now} for every test of the table
+    with a file, so a test that existed when the clause arrived owes no red proof until it is edited. A list already
+    there is never rewritten or widened. -> {"written": bool, "tests": n, "why"}."""
+    if os.path.exists(_evidence_path(root, mod, GRANDFATHER)):
+        return {"written": False, "tests": len(_read_evidence(root, mod, GRANDFATHER) or {}),
+                "why": "%s is already written; it is never widened" % GRANDFATHER}
+    tt, err = read_table(root, mod)
+    if tt is None:
+        return {"written": False, "tests": 0, "why": "the table cannot be read: %s" % err}
+    gf = {tid: test_blob(root, t) for tid, t in sorted(tt["tests"].items()) if isinstance(t, dict) and t.get("file")}
+    gf = {k: v for k, v in gf.items() if v != "missing"}
+    if not _write_evidence(root, mod, GRANDFATHER, gf, exclusive=True):
+        return {"written": False, "tests": len(_read_evidence(root, mod, GRANDFATHER) or {}),
+                "why": "%s was written by another call meanwhile; it is never widened" % GRANDFATHER}
+    return {"written": True, "tests": len(gf), "why": "grandfathered %d tests" % len(gf)}
+
+
+def _patch_paths(root, patch):
+    """-> (the repo-relative paths the patch touches, None) or (None, why); NUL-delimited, so no path is quoted."""
+    r = subprocess.run(["git", "apply", "--numstat", "-z", patch], cwd=root, capture_output=True, timeout=60)
+    if r.returncode != 0:
+        return None, "the patch does not parse: %s" % (r.stderr.decode("utf-8", "replace").strip()[-200:]
+                                                       or "rc %s" % r.returncode)
+    paths, recs = [], r.stdout.decode("utf-8", "surrogateescape").split("\0")
+    i = 0
+    while i < len(recs):
+        rec = recs[i]
+        if rec.count("\t") >= 2:
+            name = rec.split("\t", 2)[2]
+            if name:
+                paths.append(name)
+            else:                       # a rename: "added\tdeleted\t" then the old and new paths
+                paths += [x for x in recs[i + 1:i + 3] if x]
+                i += 2
+        i += 1
+    return (sorted(set(paths)), None) if paths else (None, "the patch touches no file")
+
+
+def _snapshot(root, paths):
+    out = {}
+    for p in paths:
+        fp = os.path.join(root, p)
+        if os.path.isfile(fp):
+            with open(fp, "rb") as fh:
+                out[p] = fh.read()
+        else:
+            out[p] = None
+    return out
+
+
+NO_VERDICT_RC = (126, 127)      # the shell could not run the command: not a test that failed
+
+
+def _no_verdict(rc):
+    """True for an exit that is no test's verdict: none, a signal (negative, or the shell's 128 + n), 126/127."""
+    return rc is None or rc < 0 or rc > 128 or rc in NO_VERDICT_RC
+
+
+def _watch_paths(root, t, paths):
+    """-> every regular file a red proof must leave as it found it: the patch's, the test's own, its reads (a folder
+    read: every file under it, build artefacts left out)."""
+    out = set(paths)
+    for p in [t.get("file")] + list(t.get("reads") or []):
+        fp = os.path.join(root, p) if p else None
+        if not fp or str(p).startswith(APPEND_ONLY):
+            continue
+        if os.path.isfile(fp):
+            out.add(os.path.normpath(p))
+        elif os.path.isdir(fp):
+            for d, dirs, files in os.walk(fp):
+                dirs[:] = [x for x in dirs if x not in ("bin", "obj", "__pycache__", ".git")]
+                out.update(os.path.relpath(os.path.join(d, f), root) for f in files)
+    return sorted(out)
+
+
+def _git_dirty(root):
+    """-> the set of `git status` entries under root, or None outside a git work tree (nothing to compare)."""
+    r = subprocess.run(["git", "status", "--porcelain", "-z", "--untracked-files=all"], cwd=root, capture_output=True,
+                       timeout=120)
+    return set(r.stdout.decode("utf-8", "surrogateescape").split("\0")) - {""} if r.returncode == 0 else None
+
+
+def _snapshot_changes(root, before):
+    """-> [(path, its bytes before)] for every snapshotted path whose bytes differ now."""
+    now = _snapshot(root, list(before))
+    return [(p, old) for p, old in before.items() if now[p] != old]
+
+
+def red_seen(root, mod, test_id, patch=None, runner=subprocess.run, now=None):
+    """Prove a deciding test can fail: apply the planted fault (git apply, in root), run the test's command, want a
+    non-zero exit, reverse the fault and prove every file it touched is byte-identical to before. Only a red run is
+    recorded (version/evidence/red_seen.json[test]: rc, last line, the test file's blob, the patch, when); a test that
+    stays green under the fault is the test that could not fail, and nothing is recorded. -> {"ok", "why"}."""
+    tt, err = read_table(root, mod)
+    if tt is None:
+        return {"ok": False, "why": "did not run: the table cannot be read: %s" % err}
+    t = tt["tests"].get(test_id)
+    if not isinstance(t, dict) or not t.get("command"):
+        return {"ok": False, "why": "did not run: %s is not a test with a command in the table" % test_id}
+    if not patch or not os.path.isfile(patch):
+        return {"ok": False, "why": "did not run: a red proof needs a planted fault (--patch FILE); %r is no file" % patch}
+    with open(patch, encoding="utf-8", errors="replace") as fh:
+        patch_text = fh.read()
+    paths, perr = _patch_paths(root, os.path.abspath(patch))
+    if paths is None:
+        return {"ok": False, "why": "did not run: %s" % perr}
+    own = os.path.normpath(str(t.get("file") or "")) if t.get("file") else ""
+    if own and any(os.path.normpath(p) == own or p.startswith(own + os.sep) for p in paths):
+        return {"ok": False, "why": "did not run: the fault edits %s itself; a red proof plants a fault in what the test "
+                "reads, never in the test" % own}
+    reds = _read_evidence(root, mod, RED_SEEN)
+    if reds is None:
+        return {"ok": False, "why": "did not run: %s is there but cannot be read; nothing is overwritten" % RED_SEEN}
+    watched = _watch_paths(root, t, paths)
+    before = _snapshot(root, watched)
+    dirty0 = _git_dirty(root)
+    a = subprocess.run(["git", "apply", os.path.abspath(patch)], cwd=root, capture_output=True, text=True, timeout=60)
+    if a.returncode != 0:
+        return {"ok": False, "why": "did not run: the fault does not apply: %s" % a.stderr.strip()[-200:]}
+    try:
+        try:
+            r = runner(t["command"], shell=True, cwd=root, capture_output=True, text=True, timeout=RUN_TIMEOUT_S,
+                       env=_run_env())
+            rc, last = r.returncode, _last_line(r.stdout, r.stderr)
+        except subprocess.TimeoutExpired:
+            rc, last = None, "timed out after %d s" % RUN_TIMEOUT_S
+        except OSError as e:
+            rc, last = None, "could not start: %s" % e
+    finally:
+        rev = subprocess.run(["git", "apply", "-R", os.path.abspath(patch)], cwd=root, capture_output=True, text=True,
+                             timeout=60)
+        bad = []
+        for p, old in _snapshot_changes(root, before):  # not restored (the reverse, or the test's own writes): by hand
+            fp = os.path.join(root, p)
+            if old is None:
+                os.remove(fp)
+            else:
+                with open(fp, "wb") as fh:
+                    fh.write(old)
+            bad.append(p)
+    dirty1 = _git_dirty(root) if dirty0 is not None else None
+    new = sorted(dirty1 - dirty0) if dirty1 is not None else []
+    if new:     # the run changed the tree outside what was watched: no bytes to restore it from, so name it
+        return {"ok": False, "why": "the run left the work tree changed outside the files it reads: %s; nothing recorded"
+                % ", ".join(x[3:] for x in new[:6])}
+    if bad:
+        return {"ok": False, "why": "after the run and the fault's reverse (rc %s) %s still differed from before (the "
+                "reverse failed or the test wrote them); restored from the bytes read before; nothing recorded"
+                % (rev.returncode, ", ".join(bad))}
+    if _no_verdict(rc):
+        return {"ok": False, "why": "did not run to a verdict under the fault (rc %s: %s); nothing recorded" % (rc, last)}
+    if rc == 0:
+        return {"ok": False, "why": "%s stayed green under the fault (rc 0: %s): a test that could not fail; nothing "
+                "recorded" % (test_id, last or "no output")}
+    at = now if now is not None else datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    reds[test_id] = {"rc": rc, "last": last, "at": at, "file": t.get("file"), "test_blob": test_blob(root, t),
+                     "command": t["command"], "patch_files": paths, "patch": patch_text[:4000],
+                     "patch_sha": hashlib.sha256(patch_text.encode("utf-8", "replace")).hexdigest()[:16]}
+    _write_evidence(root, mod, RED_SEEN, reds)
+    return {"ok": True, "why": "%s went red under the fault (rc %s: %s); recorded in %s" % (test_id, rc, last, RED_SEEN)}
+
+
 def certify(root, mod, to="blind_challenge"):
     """-> {"ok", "rows", "did_not_run", "to"}: one row per (bar, offline decider, clause), status PASS / REFUSED / WARN,
     each with observed, would_pass and smallest_fix. ok is False when any row is REFUSED. Reads only; under a second."""
@@ -182,6 +408,10 @@ def certify(root, mod, to="blind_challenge"):
     run_fix = "python3 src/RimMandrake/rimflow/maturation.py certificate %s --run (reruns the offline deciders and " \
               "stamps each with its build; no tokens)" % mod
     builds = {}
+    reds, gf = _read_evidence(root, mod, RED_SEEN), _read_evidence(root, mod, GRANDFATHER)
+    blind = [n for n, v in ((RED_SEEN, reds), (GRANDFATHER, gf)) if v is None]
+    if blind:       # could not look: red_seen only warns until the evidence reads again
+        out["did_not_run"].append("red_seen did not run: %s cannot be read" % " and ".join(blind))
     ended = _ended_items(root, {t.get("known_red") for t in tests.values() if isinstance(t, dict)
                                 and isinstance(t.get("known_red"), str)})
 
@@ -263,9 +493,32 @@ def certify(root, mod, to="blind_challenge"):
             row(bid, d, "green", "PASS" if obs is None else "REFUSED",
                 obs or "rc 0, PASS: %s" % (r.get("last") or ""), "rc 0, result PASS, no known_red",
                 None if obs is None else fix)
-            row(bid, d, "red_seen", "WARN", "UNPROVEN: no recorded red run of %s yet (%s makes this a refusal)" % (
-                d, NEXT_TICKET), "a planted fault recorded turning %s red against its file as it is now" % d,
-                "record it once that ticket lands: maturation.py red-seen %s %s --patch <file>" % (mod, d))
+            blob = test_blob(root, t)
+            seen = (reds or {}).get(d) if isinstance((reds or {}).get(d), dict) else {}
+            if blind:
+                row(bid, d, "red_seen", "WARN", "did not run: %s cannot be read" % " and ".join(blind),
+                    "a readable %s" % " and ".join(blind), "repair or restore %s from git" % " and ".join(blind))
+            elif seen.get("rc") not in (0, None) and seen.get("test_blob") == blob \
+                    and seen.get("command") == t.get("command"):
+                row(bid, d, "red_seen", "PASS", "seen red (rc %s) under a planted fault at %s, against %s as it is now"
+                    % (seen.get("rc"), seen.get("at") or "no time", f), "a recorded red run of %s's file as it is now" % d,
+                    None)
+            elif (gf or {}).get(d) is not None and gf.get(d) == blob:
+                row(bid, d, "red_seen", "WARN", "grandfathered: %s is unchanged since %s was written (no red proof "
+                    "owed for a test that existed then)" % (f, GRANDFATHER),
+                    "a recorded red run of %s's file as it is now" % d, None)
+            else:
+                why = ("its red proof (%s) was of another version of %s" % (seen.get("at") or "no time", f)
+                       if seen and seen.get("test_blob") != blob else
+                       "its red proof (%s) ran `%s`; the table's command is now `%s`" % (
+                           seen.get("at") or "no time", str(seen.get("command"))[:60], str(t.get("command"))[:60])
+                       if seen else "no recorded red run") + (
+                    "; it was grandfathered, then edited" if d in gf else "")
+                row(bid, d, "red_seen", "REFUSED", "%s: a deciding test nobody has seen fail (%s)" % (d, why),
+                    "a planted fault recorded turning %s red against its file as it is now" % d,
+                    "plant a fault the test must catch and prove it: python3 src/RimMandrake/rimflow/maturation.py "
+                    "red-seen %s %s --patch <fault.patch> (applied, run, reversed; recorded only when the test goes red)"
+                    % (mod, d))
     if to == "in_game":
         try:
             _asks_on_empty_game(root, tt, row, out["did_not_run"])
@@ -344,8 +597,9 @@ def summary(v):
     bars = sorted({r["bar"] for r in v.get("rows") or []})
     dnr = "".join("; DID NOT RUN: %s" % d for d in v.get("did_not_run") or [])   # a clause that could not look
     if not ref:
-        return "certified: %d bars' offline deciders registered, run on this build and green (red_seen unproven)%s" % (
-            len(bars), dnr)
+        gfn = len({r["test"] for r in v.get("rows") or [] if r["clause"] == "red_seen" and r["status"] == "WARN"})
+        return "certified: %d bars' offline deciders registered, run on this build, green and seen red%s%s" % (
+            len(bars), " (%d grandfathered)" % gfn if gfn else "", dnr)
     rb = sorted({r["bar"] for r in ref})
     by = {}
     for r in ref:
@@ -385,5 +639,5 @@ def print_certificate(v, out=print):
         seen.add(r["bar"])
     warn = [r for r in v.get("rows") or [] if r["status"] == "WARN"]
     if warn:
-        out("  WARN red_seen UNPROVEN on %d decider rows (%s, not a refusal yet)" % (len(warn), NEXT_TICKET))
+        out("  WARN red_seen grandfathered on %d decider rows (unchanged since %s)" % (len(warn), GRANDFATHER))
     out("  %s" % summary(v))

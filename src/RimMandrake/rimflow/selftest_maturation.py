@@ -143,6 +143,9 @@ def certify_fixture(root, mods=None):
                                    "result": "PASS", "build": JC.test_build(root, t)}
         with open(JC.tpath(root, mod), "w", encoding="utf-8") as f:
             json.dump(tt, f, indent=1)
+        # red_seen: the fixture's stubs are grandfathered as they are now (a copied list names the real files' blobs)
+        JC._write_evidence(root, mod, JC.GRANDFATHER, {d: JC.test_blob(root, tt["tests"][d]) for d in sorted(dec)
+                                                       if isinstance(tt["tests"].get(d), dict)})
 
 
 def synthetic(root, state="drafting", locked_by=None, **more):

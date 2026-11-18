@@ -259,7 +259,16 @@ def _sprite(root=None):
             "--reference", str(ref)], root
 
 
+def _certificate_red_seen(root=None):
+    # its --red-seen mode reruns the first ticket's clauses with the red_seen clause built
+    # (RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN); the bare mode is the superseded "red_seen only warns" contract
+    root = Path(root or REPO_ROOT)
+    return [sys.executable, str(root / "src/RimMandrake/rimflow/acceptance/guard_judge_certificate_accept.py"),
+            "--red-seen"], root
+
+
 SPECIAL_INVOCATIONS = {
+    "src/RimMandrake/rimflow/acceptance/guard_judge_certificate_accept.py": _certificate_red_seen,
     "src/RimMandrake/Utils/rimplace/selftest.py": _rimplace,
     "skills/generating-rimworld-sprites/scripts/selftest.py": _sprite,
 }

@@ -1845,6 +1845,10 @@ def brief_text(root, mod, cap_usd=None, bars=None):
           "- Offline only: no bridge, no game, no deploy, no ModsConfig change. Whittle and Relentless stay off.",
           "- The test is built with the item (owner, 2026-11-13): each missing check is watched failing where the "
           "behaviour is missing, then passing; an in-game check is written with its exact command and recorded UNRUN.",
+          "- Every offline test you add or edit that decides a bar is proven able to fail before the judge: plant a "
+          "fault it must catch and run `python3 src/RimMandrake/rimflow/maturation.py red-seen %s <TEST> --patch "
+          "<fault.patch>` (applied, run, reversed; recorded only when it goes red), then commit "
+          "`version/evidence/red_seen.json`." % mod,
           "- Remake `design/concepts/%s/version/test_table.json` with the table's own maker (its `made_by` names it) "
           "and run `python3 src/RimMandrake/rimflow/maturation.py next %s`; say the count of bars not runnable "
           "before (%d) and after in your last note." % (mod, mod, len(ids)),
@@ -3737,6 +3741,13 @@ def main(argv=None):
     c.add_argument("--resume", action="store_true", help="with --run: keep a decider already green on its current build "
                    "and command (a rerun killed part way picks up where it stopped)")
     c.add_argument("--json", action="store_true")
+    c.add_argument("--grandfather", action="store_true", help="write the mod's red_seen grandfather list once (every test "
+                   "as it is now owes no red proof until edited); a list already written is never widened")
+    rs = sub.add_parser("red-seen", help="prove a deciding test can fail: apply a planted fault, run it, want red, "
+                        "reverse it; only a red run is recorded (version/evidence/red_seen.json)")
+    rs.add_argument("mod")
+    rs.add_argument("test")
+    rs.add_argument("--patch", required=True, help="the planted fault, a unified diff applied with git apply in the root")
     la = sub.add_parser("launch")
     la.add_argument("mod")
     la.add_argument("--budget-usd", type=float, required=True, help="the spend cap; required, no default")
@@ -3858,15 +3869,24 @@ def main(argv=None):
             return 0
         print_refusal(dict(res, verdict=dict(res["verdict"], refusals=prog)))
         return 1
+    if o.cmd == "red-seen":
+        r = JC.red_seen(root, o.mod, o.test, patch=o.patch)
+        print(("RED SEEN %s %s: %s" % (o.mod, o.test, r["why"])) if r["ok"] else "NOT RECORDED %s %s: %s" % (
+            o.mod, o.test, r["why"]))
+        return 0 if r["ok"] else 2 if str(r["why"]).startswith("did not run") else 1
     if o.cmd == "certificate":
         ran = None
+        g = JC.grandfather(root, o.mod) if o.grandfather else None
+        if g is not None and not o.json:
+            print("GRANDFATHER %s: %s" % (o.mod, g["why"]))
         if o.run:
             t0 = time.time()
             ran = JC.run_offline(root, o.mod, resume=o.resume)
             ran["wall_s"] = round(time.time() - t0, 1)
         cv = certificate(root, o.mod, o.to)
         if o.json:
-            print(json.dumps(dict(cv, run=ran), indent=2, ensure_ascii=False))
+            print(json.dumps(dict(cv, run=ran, **({"grandfather": g} if g is not None else {})), indent=2,
+                             ensure_ascii=False))
         else:
             if ran is not None:
                 print("RAN %s: %d offline tests in %.1f s%s%s" % (o.mod, ran["ran"], ran["wall_s"], (

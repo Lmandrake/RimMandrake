@@ -895,7 +895,8 @@ def _run_tree_checks(top, cfg, what="tree check", base=None):
     def one(c, tree=top):
         t0 = time.monotonic()
         try:
-            r = subprocess.run([sys.executable, os.path.join(tree, c["test"])], cwd=tree, capture_output=True, text=True,
+            argv = [sys.executable, os.path.join(tree, c["test"])] + [str(x) for x in c.get("args") or []]
+            r = subprocess.run(argv, cwd=tree, capture_output=True, text=True,
                                timeout=limit, stdin=subprocess.DEVNULL, env=env)
             return c, r.returncode, (r.stdout or "") + (r.stderr or ""), time.monotonic() - t0
         except subprocess.TimeoutExpired:

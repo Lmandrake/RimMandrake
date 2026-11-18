@@ -50,6 +50,7 @@ def fixture(root, bars, command=None):
     json.dump(table, open(tpath(root), "w"), indent=1)
     import judge_certificate as JC
     JC.run_offline(root, MOD)                       # stamps runs_today with this build (the real path to pass)
+    JC.grandfather(root, MOD)                       # red_seen (a later ticket) is not this test's subject: it only warns
     if command is not None:                         # swap the command AFTER the green stamped run: the planted fault
         t = json.load(open(tpath(root)))
         t["tests"]["T_GOOD"]["command"] = command

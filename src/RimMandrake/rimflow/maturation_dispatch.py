@@ -1108,10 +1108,13 @@ RERUN_MAX_S = 4 * 3600     # a certificate rerun unit's bound (RuntimeMaxSec); F
 def stale_key(cv):
     """-> a key for a certificate whose every refusal is a stale stamp (clause ran_on_this_build): the stale deciders and
     the build each must carry now (would_pass names it), so a new build is a new key. None when it does not refuse, or
-    refuses on anything a rerun cannot pass (a red decider, an unregistered one, a bar with no decider)."""
+    refuses on anything a rerun cannot pass (a red decider, an unregistered one, a bar with no decider). A red_seen
+    refusal (an edited decider owes a planted-fault proof) neither starts nor blocks the rerun: the rerun clears the stale
+    stamps and the red proof stays the certificate's own wait, with its fix (RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN)."""
     if not isinstance(cv, dict):
         return None
-    ref = [r for r in cv.get("rows") or [] if isinstance(r, dict) and r.get("status") == "REFUSED"]
+    ref = [r for r in cv.get("rows") or [] if isinstance(r, dict) and r.get("status") == "REFUSED"
+           and r.get("clause") != "red_seen"]
     if not ref or any(r.get("clause") != "ran_on_this_build" for r in ref):
         return None
     want = sorted({(str(r.get("test")), str(r.get("would_pass"))) for r in ref})

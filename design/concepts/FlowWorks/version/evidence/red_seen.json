@@ -1,0 +1,15 @@
+{
+ "PY_SETTINGS_REGISTRY": {
+  "at": "2026-11-18T21:47:10Z",
+  "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py",
+  "file": "src/RimMandrake/FlowWorks/northstar/selftest_settings_registry.py",
+  "last": "settings registry: FAIL -- 432 rows, 258 toggles",
+  "patch": "--- a/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\n+++ b/src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs\n@@ -542,7 +542,6 @@\n             RimMandrake.Shared.PatchApplier.BeforeExpose();\n             base.ExposeData();\n             Scribe_Values.Look(ref depthEngineEnabled, \"depthEngineEnabled\", true);\n-            Scribe_Values.Look(ref pulseIntervalTicks, \"pulseIntervalTicks\", 250f);\n             Scribe_Values.Look(ref flowPerPulse, \"flowPerPulse\", 1f);\n             Scribe_Values.Look(ref digToDepthEnabled, \"digToDepthEnabled\", true);\n             Scribe_Values.Look(ref maxDigDepth, \"maxDigDepth\", 4f);\n",
+  "patch_files": [
+   "src/RimMandrake/FlowWorks/Source/RimMandrakeFlowWorksMod.cs"
+  ],
+  "patch_sha": "23570f90c0249680",
+  "rc": 1,
+  "test_blob": "795a35172468d169244de38d74f8539d7b80b12b"
+ }
+}
