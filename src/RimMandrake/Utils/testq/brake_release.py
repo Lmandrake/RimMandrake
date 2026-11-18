@@ -99,15 +99,33 @@ def decide(now, mods):
     down = (T.read_json(T.q("ssh_state.json")) or {}).get("down_since")
     if not T.brake_tail(T.filler_jobs()):
         return {"state": "none", "reason": "no filler brake"}
-    plans = {m: T.fill_plan(m, 1, int(os.environ.get("TESTQ_FILL_CAP") or T.FILL_CAP_DEFAULT), T.FILL_DAY_S, now)
-             for m in mods}
-    braked = [m for m, p in plans.items() if p["verdict"] == "brake"]
-    if not braked:      # a stop file, a pause, a job on the lane or the day's cap comes first: not ours to lift
-        return {"state": "none", "reason": "; ".join("%s: %s" % (m, p["text"][:120]) for m, p in plans.items())}
-    mod = braked[0]
+    # Planned lazily (fill_plan reads every filler job: one per mod made a pass over 120 s, 2026-11-17). Only `held` is
+    # mod-specific; every other verdict is the lane's, the same for every mod, so the first mod that is not held settles it.
+    cap = int(os.environ.get("TESTQ_FILL_CAP") or T.FILL_CAP_DEFAULT)
+    plans, unmeasured, mod = {}, {}, None
+    for m in mods:
+        try:
+            p = T.fill_plan(m, 1, cap, T.FILL_DAY_S, now)
+        except Exception as e:      # could not look: neither braked nor clear
+            unmeasured[m] = "%s: %s" % (type(e).__name__, str(e)[:120])
+            continue
+        plans[m] = p
+        if p["verdict"] == "brake":
+            mod = m
+            break
+        if p["verdict"] != "held":
+            break
+    seen = set(plans) | set(unmeasured)
+    looked = {"planned": sorted(plans), "unmeasured": unmeasured, "not_planned": [m for m in mods if m not in seen]}
+    if mod is None:
+        if not plans:   # nothing could be planned (or no mod was given): no answer, never "no brake"
+            return dict(looked, state="unmeasured", reason="no mod could be planned: %s" % (
+                "; ".join("%s: %s" % kv for kv in sorted(unmeasured.items())[:3]) or "the mod list is empty"))
+        # a stop file, a pause, a job on the lane or the day's cap comes first: not ours to lift
+        return dict(looked, state="none", reason="; ".join("%s: %s" % (m, p["text"][:120]) for m, p in plans.items()))
     tails = plans[mod]["tail"]
     causes = causes_of(tails, now)
-    rec = {"tail": tail_ids(tails), "causes": causes}
+    rec = dict(looked, tail=tail_ids(tails), causes=causes)
     if down or os.path.exists(T.q("quarantine.json")):
         return dict(rec, state="wait", reason="machine down since %s" % down if down else "quarantined")
     unknown = sorted(j for j, c in causes.items() if not c)
