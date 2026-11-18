@@ -224,6 +224,30 @@ class T(unittest.TestCase):
         self.sc.rec["error"] = "Traceback"
         self.assertEqual(self.sc.exit_code(), 2)
 
+    def test_crashed_or_unstamped_phase_is_never_clean(self):
+        # RIMMANDRAKE_SEAL_SHOWCASE_EXIT_WHEN_PHASE_CRASHES_AFTER_PASSING (Codex 2026-11-18)
+        class Clock(object):
+            def __init__(self, readable):
+                self.t, self.readable = 100, readable
+
+            def call(self, tool, **kw):
+                if tool == "jawa/site_state":
+                    self.t += 1
+                    return {"success": True, "ticksGame": self.t} if self.readable else {"success": False}
+                return {"success": True}
+
+        def crash(s):
+            s.row("A_row", "a", "PASS", "MOD", "ok")
+            raise RuntimeError("raised after its rows")
+
+        sc = SC.Showcase(Clock(True), os.path.join(self.tmp, "crash.json"), "x.py", "ITEM", ["A_row"])
+        sc.run_phases([("A", crash, ["A_row"])])
+        self.assertNotEqual(sc.exit_code(), 0, (sc.rows, sc.phases))
+        sc = SC.Showcase(Clock(False), os.path.join(self.tmp, "blind.json"), "x.py", "ITEM", ["A_row"])
+        sc.run_phases([("A", lambda s: s.row("A_row", "a", "PASS", "MOD", "ok") and "PASS", ["A_row"])])
+        self.assertEqual(sc.phases[0]["status"], "PASS", sc.phases)
+        self.assertFalse(sc.ordered(), sc.phases)
+
     def test_plants_rows_and_door_orchestration(self):
         f = Fake()
         out = os.path.join(self.tmp, "plants.json")

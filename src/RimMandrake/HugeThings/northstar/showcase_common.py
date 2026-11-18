@@ -161,11 +161,14 @@ class Showcase(object):
         return next((p["status"] for p in self.phases if p["phase"] == name), None)
 
     def ordered(self):
-        """True when the phases that ran carry stamps proving their order: each start >= the previous end, end >= start."""
+        """True when the phases that ran carry stamps proving their order: each start >= the previous end, end >= start.
+        A phase that ran (startUtc set) on an unreadable clock proves nothing, so it is never in order."""
         last, scene = None, None
         for p in self.phases:
-            if p["startTick"] is None or p.get("foreignClock"):
-                continue              # a phase run inside another save's scene: its ticks are that save's, UTC orders it
+            if p.get("startUtc") is None or p.get("foreignClock"):
+                continue              # gated (never ran), or run inside another save's scene: UTC orders it
+            if p["startTick"] is None:
+                return False
             if p.get("scene") != scene:
                 last, scene = None, p.get("scene")
             if p["endTick"] is None or p["endTick"] < p["startTick"] or (last is not None and p["startTick"] < last):
@@ -183,9 +186,10 @@ class Showcase(object):
     def exit_code(self):
         """Lightspeed exit (proof contract): 0 every required row PASS; 1 a MOD FAIL among them; 2 could not ask.
         A run that only went UNMEASURED (site, harness, a crash) never exits 1: that would charge the mod.
-        An unrestored site or settings is never 0: the scene was not left as found."""
+        An unrestored site or settings is never 0: the scene was not left as found. Nor is a phase that stopped the run
+        (one that raised after writing PASS rows reads UNMEASURED and sets stopped_by)."""
         unrestored = self.rec.get("site_restore_errors") or self.rec.get("settings_restore_bad")
-        if self.summary().get("gameplay_pass") and not self.rec.get("error") and not unrestored:
+        if self.summary().get("gameplay_pass") and not self.rec.get("error") and not unrestored and self.stopped_by is None:
             return 0
         req = set(self.required)
         if any(r["id"] in req and r.get("status") == "FAIL" and r.get("cls") == "MOD" for r in self.rows):
