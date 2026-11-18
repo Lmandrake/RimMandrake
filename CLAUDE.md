@@ -7,8 +7,8 @@ so agent behaviour here is understandable, interpretable and trustable.
 
 **Read `infrastructure/agents/CHARTER.md`** — the whole process rulebook — and your
 own window file: `infrastructure/agents/CONDUCTOR.md` (the Conductor, with the owner); the
-Conductor launches builds directly as helpers (Relentless, Artisan and Whittle loops retired by the owner 2026-11-13:
-`design/RimMandrake/retired_loops_2026-11-13.md`). Game cycle:
+Conductor launches builds directly as helpers (the earlier pipelines are retired; what they left and where git keeps
+it: `design/RimMandrake/retired_eras_index_2026-11-18.md`). Game cycle:
 `infrastructure/GAME_STATE_WORKFLOW.md`. **Models: the ladder lives in
 `infrastructure/agents/Agent_Policy.md` and nowhere else; never restate it.**
 
@@ -65,9 +65,9 @@ its first script. Process: `design/RimMandrake/debug_process.md`.
 
 Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
-## 🔴 Relentless and the Artisan and Whittle loops are retired — owner, 2026-11-13; FOUNDRY is retired — owner, by card 2026-11-02
+## 🔴 The pipelines before the Maturation Pipeline are retired — owner, 2026-11-13 and 2026-11-18
 
-Retired by the owner 2026-11-13, nothing to resume (`design/RimMandrake/retired_loops_2026-11-13.md`); the successor is the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`, still in design); until then the Conductor launches builds directly as helpers (`src/RimMandrake/rimflow/detached_helper.py`). Design still to be argued out goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`); ops alarms to Operations. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to the Conductor's key (`RETIRED_SEATS` in `cli.py`), as does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`).
+*"Nothing of that era should remain. No more collisions or confusion."* (2026-11-18). Builds run in the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`); the Conductor launches helpers (`src/RimMandrake/rimflow/detached_helper.py`); design goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`), ops alarms to Operations. Every retired era, what was removed and what still carries an old name (some `relentless*` code still runs and is renamed in a later phase): `design/RimMandrake/retired_eras_index_2026-11-18.md`; `selftest_retired_era_gone.py` refuses a remnant at `./publish`. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to the Conductor's key (`RETIRED_SEATS` in `cli.py`), as does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`).
 
 ## 🔴 Six biome mods are HELD BY OWNER; Pyrelands is the only biome mod advancing — owner, 2026-11-16
 
@@ -312,7 +312,7 @@ and keep file writes and commits in separate Bash calls (hooks refuse a compound
 🔴 **`git worktree` is OFF** (owner, by card; `block_worktrees.py`). **A bounded pool of up to 16 reused
 clones and 70 GB is approved** for writers above 4 (owner: "I trust you, but please monitor them carefully. They seem to
 propagate prolifically."), refused at creation by `scratch_clone.py` (an idle pushed clone is
-reused first); `scratch_clone.py` reports count, GB, oldest (RimPulse is retired, owner 2026-11-03); one alarm, `disk.pool_breach`; any helper clone with unlanded work
+reused first); `scratch_clone.py` reports count, GB, oldest; one alarm, `disk.pool_breach`; any helper clone with unlanded work
 (pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
 travels with its `.srchash`. More: `standing_rulings.md` §Git.
 

@@ -63,6 +63,7 @@ something, delete it and add a "Removed" row.
 | five RimPulse design and review docs | `design/RimMandrake/rimpulse_{gpt_review_2026-10-22,intent_2026-10-22,make_it_great_2026-10-25,redesign_2026-10-23.gpt_review,relentless_prototype_2026-11-02}.md` | RimPulse | RimPulse retired 2026-11-03; nothing current cites them | `f5089a41de` |
 | the FOUNDRY management analysis | `design/RimMandrake/foundry_management_analysis_2026-11-01.md` | FOUNDRY | the seat is retired; `bridge_hours.py` now cites it by sha | `f5089a41de` |
 | the Relentless Codex-runner note | `src/RimMandrake/rimflow/roles/relentless.md` | Relentless | described a runner option of the retired tick | `f5089a41de` |
+| the Relentless Pipeline naming guard (owner 2026-11-03: the system is "the Relentless Pipeline") | `src/RimMandrake/rimflow/selftest_relentless_pipeline_naming.py` | Relentless | it required live docs to name a retired system and read deleted docs | `ba609865bd` |
 
 ## Phase 2: renames
 
@@ -76,7 +77,7 @@ radius), and the proposed new name.
 | `src/RimMandrake/rimflow/relentless.py` | 8,562 lines. Imported by `detached_helper.py` (Store, Effects, rules, unit_state, run_tokens, read_result, role_scope, _stop_call), `cli.py` (guard, rules), `role_launch.py` (kick, set_status, status, unit_name, Store), `maturation_autonomy.py` (pilot_model, CHAIN_MAX_PER_DAY, day_of), `evidence.py` (Store, harvest_receipts, marker_receipt, verdict), `circling.py`, `validator_replay.py`, `scratch_clone.py` and about 40 selftests. Its store lives at `/home/mandrake/rm/relentless/store`; the clone pool at `/home/mandrake/rm/relentless/clones`. The tick, leasing and Builder/Judge stages inside it are dead (rm-relentless.timer masked 2026-11-13). | split: `rimflow/run_store.py` (Store, Effects, rules, receipts), `rimflow/run_units.py` (unit_state, kick, unit_name, stop), the pool under a neutral path (`/home/mandrake/rm/pool/`); delete the tick and every function only it reaches, with their selftests |
 | `src/RimMandrake/rimflow/relentless_*.py` | 54 modules, all reachable by import from `relentless.py` (measured by an AST import walk from every non-era file). Most serve only the dead tick (stage, wake, wall, exam, seeds, dispute, live_round...). | delete each one the split modules above do not import; rename the rest beside them |
 | `src/RimMandrake/rimflow/relentless_*.json` | config read by `relentless.py` and its modules (`relentless_rules.json` is read by `cli.py guard`, `detached_helper.py`, `circling.py`) | move the keys the split modules still read into `rimflow/run_rules.json`; delete the rest |
-| `src/RimMandrake/rimflow/selftest_relentless*.py` | about 130 selftests of the code above; none is in `pipeline_tests.json` or `publish_tree_checks.json` | each goes with the code it tests: deleted with dead code, renamed with live code |
+| `src/RimMandrake/rimflow/selftest_relentless*.py` | about 130 selftests of the code above; none is in `pipeline_tests.json` or `publish_tree_checks.json`. `selftest_relentless.py` case `real` (the pool is every eligible item) is red on the real ledger; its ticket `RIMMANDRAKE_POOL_ELIGIBLE_FINISH_ITEMS_LEFT_OUT` was dropped because the pool selection serves only the retired tick | each goes with the code it tests: deleted with dead code, renamed with live code |
 | `src/RimMandrake/rimflow/selftest_bridge_seat_relentless.py` | tests the bridge seat RELENTLESS that `model.bridge_identity` still accepts for old `bridge` events | goes with the split |
 | `src/RimMandrake/rimflow/testdata/relentless_packet_handscored.json` | fixture of `selftest_relentless_packet.py` | goes with its selftest |
 | `src/RimMandrake/Utils/testdata/relentless_jam_2026-11-01.jsonl` | fixture of `selftest_relentless_watch.py` (ops_watch's relentless reader) | goes with ops_watch's relentless points |
@@ -108,6 +109,21 @@ radius), and the proposed new name.
 | `design/RimMandrake/rimflow_v3_sim_findings_2026-10-27.md` | cited by `sim/rimflow_v3_sim.py`, `roles/auditor.md`, `roles/conductor.md` | goes with `sim/process_sim.py` |
 | `design/RimMandrake/rimflow_v3_trial_night_2026-10-28.md` | cited by `dispatcher_schedule.json`, `selftest_dispatcher.py` | `dispatcher_trial_night_2026-10-28.md` |
 | `design/RimMandrake/rimpulse_redesign_2026-10-23.md` | cited by `Utils/pulse/brief.py` and the docs map `rimflow/docs/README.md` | goes with the pulse package rename |
+| `src/RimMandrake/rimflow/selftest_foundry_literals.py` | a live guard: no code routes work to the FOUNDRY seat by a string literal (`FOUNDRY_LITERALS_EXCISE_FROM_CODE`) | `selftest_retired_seat_literals.py` |
+
+Old names inside live files (not paths, so the guard does not see them), for the same phase:
+
+- `src/RimMandrake/Utils/bridge_holder.py` `CODEX_SEATS`: the `CLAUDE_*` seats were the Claude Whittle workers; their
+  ledger shards stay as history, so the names must keep replaying.
+- `./bridge foundry` and `set_agent_window.sh` still accept FOUNDRY; `model.bridge_identity` still accepts RELENTLESS
+  for old `bridge` events; `cli.py` `RETIRED_SEATS` maps FOUNDRY to the Conductor's key (keep that mapping: old
+  events name it).
+- `ops_watch.py` still reads the Relentless points (`c_relentless`, `rl_game_hold_idle`) and judges them retired;
+  `slot_allocator` and `slot_rules.json` keep a FOUNDRY seat key (`SLOTS_RENAME_FOUNDRY_KEY_RELENTLESS_READS_IT`).
+- `src/RimMandrake/rimflow/live_retired.txt` and `src/RimMandrake/Utils/retired_loops_check.py` name the retired units on
+  purpose: they keep them masked. Keep both.
+- `skills/using-rimflow/SKILL.md` uses FOUNDRY in two examples (`reassign --to FOUNDRY`, `next --seat FOUNDRY`); skills
+  are edited in curation sessions, so it is listed here, not edited.
 
 ## Kept on purpose
 
@@ -119,8 +135,70 @@ radius), and the proposed new name.
 
 Nothing outside the repo was changed by this item. What should go, for the Conductor:
 
+- `~/.claude/skills/` links into MandrakeWorkflows: `artisan`, `artisan-head`, `artisan-judge`, `relentless-pipeline`,
+  `whittle` (they still show in every session's skill list). Remove the links and their rows in
+  `~/dev/Lodestar/claude/skills.md`, and retire the skills in MandrakeWorkflows.
+- Masked user units on Archmagi (`systemctl --user list-unit-files` shows them `masked`): `rm-relentless*`,
+  `rm-artisan-now.*`, `rm-whittle-now.*`, `whittle-claude@.service`, `rm-pulse.service`. Keep the masks:
+  `retired_loops_check.py` (deadman, every 15 min) alarms if one is unmasked. SteveDesktop's `whittle-claude@` mask
+  likewise (not checked from here).
+- On disk, not in git: the Relentless store `/home/mandrake/rm/relentless/store` (read by live code: Phase 2), the clone
+  pool `/home/mandrake/rm/relentless/clones` (live), the kept Ralph clone `/home/mandrake/rm/scratch/BENCH/ralph_flowworks`
+  (ticket `RIMMANDRAKE_LAND_RALPH_FLOWWORKS_PIT_FEATURES`), `D:\ClaudeWork\rimmandrake\whittle_claude\`,
+  `D:\ClaudeWork\rimmandrake\ralph_*`, `D:\ClaudeWork\rimmandrake\relentless_agent\`, and the deploy checkout
+  `/home/mandrake/rm/pulse-deploy` (live: units run from it).
+- The Conductor's memory files: any that describe Relentless, Artisan, Whittle, FOUNDRY or RimPulse as running.
+
 ## UNMEASURED
 
 What this run could not settle, and what would settle it:
 
+- Whether each `relentless_*` module is dead or alive at function level: the AST walk shows all 54 reachable from
+  `relentless.py`, which live code imports. Settled by a call-graph walk from the live importers' actual call sites
+  (Phase 2).
+- Whether `LIVEPROOF_REDEPLOY_FIX_TRIPS_PEER_DLL` (a live proof re-deploying into the running game) still happens in
+  today's live drivers: left open. Settled by grepping today's proof scripts for `modcheck run` without
+  `MODCHECK_SKIP_DEPLOY`.
+- Whether `DIRTY_CODE_REVIEW_LOOP_CONTINUE_NOT_DONE` (FOUNDRY's code-review loop over ~140 dirty C# files) should be
+  re-filed in today's words: left open; `code_review_status.py` still measures the dirt.
+- SteveDesktop was not read (a soak is running there).
+
 ## Tickets
+
+Open ledger items whose target is a retired loop, seat or tool were dropped on 2026-11-18 with `rimflow drop --reason
+"retired era: <why>. Index: design/RimMandrake/retired_eras_index_2026-11-18.md"` (the reason is on each item's drop
+event in the ledger). The earlier triage (`D:\ClaudeWork\rimmandrake\conductor\pipeline_ticket_triage_20261118.md`)
+had already dropped ten. Ten pre-2026-11-13 tickets were left to the Conductor's own check, untouched here. Concept
+anchors (each `design/concepts/<Mod>/stage.json` item) stay open whatever their title says; mod-content items were out
+of scope.
+
+| item | era | dropped? |
+|---|---|---|
+| `BRIDGE_LOCK_CROSS_CLONE_RACE_1` | FOUNDRY | dropped |
+| `RIMPULSE_SHEETS_FIX_OWN_PROBE_REOPENS_THEM` | RimPulse | dropped |
+| `RIMPULSE_LOOKS_BUILD_UNREAD_NEVER_LISTED` | RimPulse | dropped |
+| `RIMPULSE_ALERTS_FIX_TELEMETRY_CRIES_WOLF` | RimPulse | dropped |
+| `RIMPULSE_FAILED_FIX_COUNTS_MANIFESTS_TOO` | RimPulse | dropped |
+| `RIMPULSE_PACKETS_BUILD_ANSWERED_NOT_APPLIED` | RimPulse | dropped |
+| `RIMPULSE_LOOK_ASK_PROMISED_AT_GOODBYE` | RimPulse | dropped |
+| `STEWARD_ESCALATION_REWIRE_TO_ENGINE` | FOUNDRY | dropped |
+| `RIMFLOW_V3_BUILD_DISPATCHER_FIRST` | rimflow v3 | dropped |
+| `LIVE_FIXER_DESIGN_ONE_SEAT_NO_SHUTTLE` | rimflow v3 | dropped |
+| `LIVEFIXER_BUILD_NOBODY_EVER_DID` | FOUNDRY | dropped |
+| `PRIORITY_LIST_BUILD_ONE_SHORT_FILE` | Relentless | dropped |
+| `BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK` | FOUNDRY | dropped |
+| `FOCUS_CAP_FIX_LIST_CANNOT_REACH` | FOUNDRY | dropped |
+| `FOUNDRY_THROUGHPUT_MEASURE_V2_GAP` | FOUNDRY | dropped |
+| `BOOKS_STALE_FIX_ART_SHARD_REORDER` | Relentless | dropped |
+| `BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT` | Relentless | dropped |
+| `BLINDCHECK_PROVE_VERDICTS_EATEN_BY_DISK` | Relentless | NOT dropped: it has dependents (rimflow refused without --release-dependents); left for the Conductor |
+| `WALLBOX_SHRINK_STILL_SHIPS_WHOLE_TREE` | Relentless | dropped |
+| `TICKSLOW_REWIRE_CLONES_OFF_THE_BELT` | Relentless | dropped |
+| `RIMMANDRAKE_POOL_ELIGIBLE_FINISH_ITEMS_LEFT_OUT` | Relentless | dropped |
+| `BUILT_ORPHANS_WIRE_NOBODY_LEFT_TO_CHECK` | Relentless and FOUNDRY | dropped |
+| `PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF` | Relentless | dropped |
+| `RIMMASTER_BRIEF_BUILDERS_REUSE_BEFORE_BUILDING` | Relentless | dropped |
+| `RIMMANDRAKE_CUT_RELENTLESS_RELEASE_BEFORE_ANY_TIMER_RESTART` | Relentless | dropped |
+| `FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT` | Fleet Watch | dropped |
+| `STEVE_BUILD_ARTISAN_LOOPER_THIRTEEN_MINUTES` | Artisan loops | dropped |
+| `RIMMANDRAKE_BUILD_WHITTLE_ADMISSION_AND_HARD_STOPS` | Whittle loops | dropped |

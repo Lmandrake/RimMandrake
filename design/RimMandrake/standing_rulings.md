@@ -532,6 +532,9 @@ A code version is `gate.code_version`: the chain's runtime hash, the runtime has
 
 ## Relentless fixes the system first — owner, 2026-11-03
 
+He said this of Relentless, retired 2026-11-13 (`retired_eras_index_2026-11-18.md`); his words below stand, and the
+Maturation Pipeline's form of the first rule is §The pipeline fixes its own defects.
+
 *"Yes relentless fixes itself first."* · *"Relentless fixes operations or conductor or designer or any other part of the
 system before continuing content creation yes."* Any known fault in the system itself (Relentless, Operations, the
 Conductor, the Designer, the Dispatcher, timers, tests, tools: anything that is not game content) outranks content
@@ -720,10 +723,6 @@ is rigorous checking is self denial."* The proof, harness, site, sandbox and con
 a failure is attributed before any rework, and an instrument fault becomes repair work while the item waits without a
 strike. A false close is still worse than a wait. Design input: GPT consult at
 `D:\ClaudeWork\rimmandrake\conductor\test_tolerance_consult\`.
-
-## Relentless: subtract, no new machinery until the 3-day check — owner, 2026-11-06 (card)
-
-No new rules, layers or judging machinery in Relentless until the 3-day check (`RELENTLESS_MEASURE_THREE_DAY_CHECK_NOV9`, due 2026-11-09) is read. Settings entries in `src/RimMandrake/rimflow/relentless_rules.json` do not grow (a fix may change a value). Fixes for real failures continue.
 
 ## Codex agents run with full machine access — owner, 2026-11-09
 

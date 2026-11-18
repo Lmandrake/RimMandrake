@@ -1,6 +1,6 @@
 # Agent_Policy — which model does which work
 
-**Binds the Conductor and Relentless.** Read with `CHARTER.md`. This is the ONLY file that
+**Binds the Conductor and every helper it launches.** Read with `CHARTER.md`. This is the ONLY file that
 says which model does what *for this repo's seats*; every other doc in RimMandrake
 points here. The routing axis is measured, not argued.
 
@@ -29,8 +29,8 @@ One exception to "never Fable for game-waiting": the Test Pilot runs on Fable 5.
 
 The Conductor runs on Fable 5.2 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
-conclusion. Relentless's workers (Sonnet 5.5) classify each item by the
-rule below and hand Opus-class items to an `rm-builder` (Opus) subagent; an item `rimflow next` routes to a Test Pilot goes to an
+conclusion. Each item is classified by the
+rule below, and Opus-class items go to an `rm-builder` (Opus) subagent; an item `rimflow next` routes to a Test Pilot goes to an
 `rm-testpilot` (Fable 5.2, owner 2026-11-16) subagent instead (owner 2026-10-31).
 
 ## The one question

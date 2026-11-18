@@ -68,7 +68,7 @@ gitignored rendered views you never edit — read one with `rimflow queue <SEAT>
 renders first (`queue/HUMAN.md` is the owner's hand-written inbox and stays tracked). Close: `rimflow close <ID> --sha <commit>`, commit
 carrying `Closes: <ID>`, push.
 
-🔴 **RELENTLESS IS RETIRED (owner, 2026-11-13); FOUNDRY IS RETIRED (owner, by card 2026-11-02).** Relentless and the Artisan and Whittle loops were retired by the owner 2026-11-13 (`design/RimMandrake/retired_loops_2026-11-13.md`); the successor is the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`, still in design); until then the Conductor launches builds directly as helpers. FlowWorks lane data: `infrastructure/state/flowworks_lane.json`.
+🔴 **THE PIPELINES BEFORE THE MATURATION PIPELINE ARE RETIRED** (owner, 2026-11-13 and 2026-11-18): builds run in the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`), launched by the Conductor; what the old eras left: `design/RimMandrake/retired_eras_index_2026-11-18.md`.
 
 🔴 **ANY SEAT ENDS AN ITEM IT FINDS DEAD — owner's ruling, 2026-09-19.** The moment
 any seat finds a queue item **completed, totally invalidated, superseded, or otherwise
@@ -194,7 +194,7 @@ the game down (OS lock).
 
 ## Windows
 
-**the Conductor** (with the owner; `CONDUCTOR.md`) and the helpers it launches (`rm-builder`, `rm-judge`; Relentless is retired, see above); every model choice, seat and subagent alike:
+**the Conductor** (with the owner; `CONDUCTOR.md`) and the helpers it launches (`rm-builder`, `rm-judge`); every model choice, seat and subagent alike:
 `Agent_Policy.md`. Subagents: spawn freely, always with `model`; a subagent's return
 is evidence, never a finding, and no subagent writes shared state. Queue views render on every `rimflow` write — no loop, no
 publisher, no staleness.

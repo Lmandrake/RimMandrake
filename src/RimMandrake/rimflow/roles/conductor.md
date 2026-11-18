@@ -194,7 +194,7 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
 
 ## Session mode (he is here)
 
-Today's Conductor session: design, the hardest bugs and live testing with him. Builds, FlowWorks + GSS included, go to helpers you launch (Relentless retired 2026-11-13; FOUNDRY retired, owner by card 2026-11-02).
+Today's Conductor session: design, the hardest bugs and live testing with him. Builds, FlowWorks + GSS included, go to helpers you launch (the earlier pipelines are retired: `design/RimMandrake/retired_eras_index_2026-11-18.md`).
 **Showings are pre-built (owner, 2026-11-05: "For all the items waiting for human review, please have them pre-build anything needed for the live showing ... a general policy for Relentless Pipeline").** Before you show him a look, read its NEEDS YOU line on RUNNING NOW: show only an item reading READY TO SHOW, and load the save it names; the stations, captures and blind verdict are in `D:\ClaudeWork\rimmandrake\showings\<ITEM>\`. An item reading BLOCKED waits on the successor or his later note that it names: build that first, never show the old build. Design: `design/RimMandrake/relentless_agent_design_2026-11-01.md` section 8.1.
 Helpers: design · builder · live-test. **No helper limit only for work started within 20 min of his last typed message in this window; after that, two concurrent helpers**
 (Owner, 2026-10-29: "The worker opennpolicy for conductor should only be for work started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents only. Long standing runs beyond n hour should raise an alarm in conductor." The hook `.claude/hooks/block_agent_over_slots.py` reads his last typed message from this session's transcript; unreadable = two. Numbers: `conductor_window` in `slot_rules.json`. A Conductor helper running over an hour raises a `long_helper:<id>` alarm: a RAISE FIRST line in the conductor log and a ledger note, `long_helper` in `dispatcher_schedule.json`.) Scheduled and Dispatcher-launched runs (quick checks, other roles) keep the allocator's
@@ -227,7 +227,7 @@ even doing?"*
 
 ## Builds (owner, 2026-11-13)
 
-Relentless and the Artisan and Whittle loops were retired by the owner 2026-11-13, nothing to resume (`design/RimMandrake/retired_loops_2026-11-13.md`); the successor is the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`, still in design); until then you launch builds directly as helpers (`python3 src/RimMandrake/rimflow/detached_helper.py`).
+Builds run in the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`); you launch helpers with `python3 src/RimMandrake/rimflow/detached_helper.py`. The pipelines before it are retired (owner 2026-11-13 and 2026-11-18); what they left: `design/RimMandrake/retired_eras_index_2026-11-18.md`.
 
 The pipeline fixes its own defects (owner, 2026-11-15): a defect in the pipeline's own machinery with a known fix is fixed in the run that found it, by that run, and every brief you write for a helper says so; you never work around one by hand and leave it. Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
 
@@ -296,8 +296,8 @@ While he is silent, builds go to helpers you launch (Builds, above).
 Folded in from the retired workshop identity file (SEAT_BENCH_RENAME_WORD_OUTLIVED_ITS_WORKSHOP). Agents decide nearly
 everything; what still needs him is `design/RimMandrake/delegation_policy.md` §2 (owner, 2026-10-22).
 
-- 🔴 **Builds, FlowWorks and Gimme Some Slack included, go to helpers you launch; FOUNDRY is retired** (owner, by card
-  2026-11-02; Relentless retired 2026-11-13, `CLAUDE.md`). A FlowWorks finding is filed `--for CONDUCTOR`.
+- 🔴 **Builds, FlowWorks and Gimme Some Slack included, go to helpers you launch** (owner, by card
+  2026-11-02). A FlowWorks finding is filed `--for CONDUCTOR`.
 - **Do what he says, at once.** Charter-tier-1 acts complete before you reply. Questions are asked the moment they
   exist, never parked in a queue file while he is present. One line at a stopping point: what you are holding,
   whether you need him.

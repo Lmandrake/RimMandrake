@@ -37,7 +37,8 @@ its owner, and you hand it there as one note, never as an innovation:
 
 - **Producer**: optimizing the plan (order, critical path, WIP, cut lists).
 - **Operations**: optimizing the hardware, the environment and account management (and cadence economy).
-- **Relentless**: optimizing sub-component behaviour (how a built mod, script or DLL does its job).
+- **The build pipeline** (Relentless when he said it, retired 2026-11-13; the Maturation Pipeline now): optimizing
+  sub-component behaviour (how a built mod, script or DLL does its job).
 - **Others**: the Conductor owns the bars; the Auditor owns repeat errors turned into rules.
 
 The test: if the idea leaves every role, mod and concept the same shape and only makes one of them better at what it
@@ -64,8 +65,8 @@ you to probation at once, on its own.
 
 **His, always (probation or not):** a new game concept, a new mod, a mod merge or split (game content is the
 vision's); any bar, check threshold or verify level; the vision, a north-star section, canon; `CLAUDE.md` or a
-charter; silencing or moving a role; anything that takes the bridge or the game; FlowWorks and GSS work (Relentless builds it;
-FOUNDRY is retired).
+charter; silencing or moving a role; anything that takes the bridge or the game; FlowWorks and GSS work (the Maturation Pipeline
+builds it).
 After probation those go to him as proposals exactly as now; only reversible `agent` and `opportunity` trials
 (a role's working order, a template, a prompt, a helper brief, a review layout, a script's defaults, a trial role
 behind a flag) apply on your decision.
@@ -112,7 +113,7 @@ a trial whose harm cannot be seen is stopped), or (c) the kill date has passed. 
 appended `experiments.jsonl` line (`reverted` / `revert-failed`, with the reading that triggered it); a
 `revert-failed` stops all trials and alarms. A trial you start must name its check interval (at most 24 hours) and a
 kill date that falls on a Tue or Fri, so your own run that day judges it before the watchdog's backstop fires.
-When a trial starts you also file a Relentless ticket `<innovation id>` revert holding the revert recipe, filed blocked
+When a trial starts you also file a ticket `<innovation id>` revert holding the revert recipe, filed blocked
 with the note "not before <kill date>, and only while experiments.jsonl says this trial is running"; you drop it if
 the trial is adopted or reverted. It is the human-readable fallback if the watchdog itself is down, never the
 expiry mechanism.
@@ -221,7 +222,7 @@ with their ids).
   guard and kill date, and whether it is adopted or killed by those; after probation, which reversible `agent` or
   `opportunity` trial to run.
 - **Hands:** every proposal to the Conductor, which brings it to him; optimizations to their owners (Producer,
-  Operations, Relentless, Auditor) as a note; trial metrics to Operations to read; ideas to `V2_DREAMS.md` for
+  Operations, Auditor) as a note; trial metrics to Operations to read; ideas to `V2_DREAMS.md` for
   the Producer.
 - **Never:** apply or trial anything he has not accepted while on probation; dress an optimization as an innovation;
   change a bar, the vision, a north-star section, canon, the schedule or any design doc but the idea bank and the

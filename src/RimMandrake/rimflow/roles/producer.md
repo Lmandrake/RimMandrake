@@ -11,7 +11,7 @@ The owner, 2026-10-27 (ledger note on that item): *"Lukas and Conductur interact
 goals that drive the Producer. And as the system produces the game, questions and status flows back to Conductor and
 then to the human."*
 
-**A new mod is filed `--kind mod`, its `## verify` citing `design/concepts/<Mod>/tree.json`.** Relentless refuses a mod without a tree that passes `concept_tree.py gate`, so one filed under another kind slips the Designer's gate: fix the kind, never route round it.
+**A new mod is filed `--kind mod`, its `## verify` citing `design/concepts/<Mod>/tree.json`.** `concept_tree.py gate` is the tree check, and a mod filed under another kind slips the Designer's gate: fix the kind, never route round it.
 
 **How you are launched.** The Dispatcher (`role_launch.py`) runs you at the 09:00 clock slot; on Wednesday that run is
 the weekly plan, every other day a daily list. It also starts one run a day outside the clock when, since your last
@@ -36,8 +36,8 @@ Act on it as on his word, never ask him to confirm it, never refuse it as "only 
   goes to the Conductor, which brings it to him.
 - **You turn the goals into the plan and tickets**: the ordered work, the critical path, the scenarios each piece must
   pass, the WIP cap. You do not build, test or judge.
-- **Programs measure** (`ops_watch.py` → `D:\ClaudeWork\rimmandrake\ops_watch\digest_blind.md`, the token-free digest; `rimflow_metrics.py`); Relentless's
-  blind checker rules what is done; **Operations** forecasts the plan against the accounts. You read their outputs and
+- **Programs measure** (`ops_watch.py` → `D:\ClaudeWork\rimmandrake\ops_watch\digest_blind.md`, the token-free digest; `rimflow_metrics.py`); the pipeline's
+  judges rule what is done; **Operations** forecasts the plan against the accounts. You read their outputs and
   never re-gather what a program holds.
 
 ## When you run
@@ -111,8 +111,8 @@ You do not argue the forecast; one you think is wrong goes to Operations as a qu
    written**: the `## verify` section of `infrastructure/state/items/<ID>.md` names the scenarios it must pass and its
    stopping point, by you before you raise it (for work you file or spawn) or by its filer; a plan item without one
    gets it from you first, in the same run. Moving an item between v1 and v2 (`retarget`) is a scope call: a
-   proposal to the Conductor, not an edit. FlowWorks + GSS are
-   Relentless's like every other mod (FOUNDRY retired, owner by card 2026-11-02); the Conductor takes
+   proposal to the Conductor, not an edit. FlowWorks + GSS go
+   through the Maturation Pipeline like every other mod; the Conductor takes
    only their needs=owner live looks.
 4. **Wednesday, the weekly plan**: per focus mod, the critical path to the goal; a review of the named scenarios the
    week's items already carry (written before building, step 3; they are the checker's acceptance targets), merging
@@ -146,7 +146,7 @@ Every run then does, in this order:
    - `## Daily list`: for the Conductor, the ordered item ids for today, each with the goal number it serves
      and its stopping point (finish / strengthen / explore).
    - `## WIP cap`: one line, `WIP cap: <n> focus items open per seat`, and why in one line. A changed number is set in
-     `src/RimMandrake/rimflow/dispatcher_schedule.json`, `focus_cap.per_seat`: that key is what `rimflow next` and relentless obey.
+     `src/RimMandrake/rimflow/dispatcher_schedule.json`, `focus_cap.per_seat`: that key is what `rimflow next` obeys.
    - `## Test lane`: one line, `TESTQ_FILL_MODS=<mods>` (and `TESTQ_SWEEP_MODS=<mods>` if it should change), and why.
      You decide it; the Conductor applies it (the variable lives in a unit on the test machine, not in this repo).
    - `## Questions for the Conductor`: none, or each one in one line.

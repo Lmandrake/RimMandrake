@@ -144,8 +144,6 @@ today score exactly what no change scores; name the open incidents too, or the p
 - **A round-robin pass that carries a reading it did not take (`ops_watch run --compose`) must never feed it to an edge-triggered alarm again:** each repeat counts toward `clear_passes` hysteresis, so one real reading can clear an alarm. Carried points are stamped `observed_at`; alarms see only points observed since the last alarm pass, and `last_measured` and digest history stamp from `observed_at`, not now.
 - **Metronome phase overruns look like a blind source.** A sense-phase overrun (15 s limit, 2 families a beat) killed both families and the round robin still advanced, so a family waited ~26 min against `compose_max_age_s` (1000 s) and its `.blind` alarm fired with a healthy source (fixed by per-phase `fam_retry`). When an alarm says 'older than the round robin allows', read `metronome/shadow/beats.jsonl` for overrun lines first. The ops_memory build stalls ~10.2 s on about half its runs from WSL because of the VictoriaMetrics read (`telemetry/store.py _get`: urlopen to 127.0.0.1 then the curl.exe fallback), not the build; candidate fixes are going straight to curl.exe when the local VM is unreachable or a short urlopen connect timeout.
 - **Churn alarm diagnosis starts from `attempts.jsonl` end classes, not the headline.** 'bouncing: N returns' reads `state.json` returns over the item's whole life once one failure lands inside `churn_window_h`; a distinct-class bouncer (e.g. 10 returns over 9 different defects, each found and fixed) whose old returns predate a rule fix is progress, not churn, and the cost of a full-list final-verification item meeting a new harness gap per live sitting is not a pipeline fault. An alarm filed before an instrument fix lands still spawns a diagnosis item: replay `churn_why` at the alarm's epoch with old vs current `churn_not_fail_ends` before hunting a new cause. A churn alarm can also be TRUE (two blind UNMEASUREDs of one cause, rung when a reach-repair unblock put the item back without resolving it); an unblock that hands a binding back to its builder is not an unhold, and once blocked on the cause `churn_item_points` skips it as parked. An 'unmeasured' ending is the Judge's blindness on one candidate: the same sha re-checked after a reach repair counts once (`ops_watch.blind_again`).
-- **Every attempts.jsonl end the supervisor writes as bookkeeping must be listed in `churn_not_fail_ends`** (`reach_adopted`, `reach_repaired`, `reach_waiter_released`, `reach_held`, `game_env_route`) or it is scored a FAILED attempt; likewise a Conductor/manual `hold`/`conductor_hold` is a put-down, and `game_env_fix` belongs in `churn_env_ends`. When a new supervisor end class is added, add it there too. Still open: `rl_churn`'s returned-tokens counts a gen whose last ending is `game_env_fix` as returned work though nothing went back to a worker.
-- **A Relentless batch item that drains rows and returns `partial_progress` each gen reads as churn** and climbs the approach ladder. When the remaining rows wait on a dependency, the worker must snag `blocked_by_predecessor --blocker external` instead; a relentless hold needs Conductor/owner authority (`--per-ruling` with the Conductor's text), so an Operations diagnosis cannot park it alone.
 - **The nightly and everything that feeds on it are HELD until a mod's Design Version passes** (owner by card
   2026-11-15; standing_rulings.md §The nightly checks finished mods only). `timers_guard.py hold --until finished-mod`
   stopped rm-selftests-nightly, its catch-up, rm-ops-reds and rm-red-dispatch; timers_guard and deadman read the hold
@@ -189,12 +187,12 @@ surplus as loudly as a projected shortfall, and propose pulling work forward. Ne
 ## Drift check (yours)
 
 You own the no-AI check in `ops_watch` that flags token talk creeping into the token-blind roles' reports (Producer,
-Auditor, Innovator, Relentless's builders): those roles' instructions forbid token talk and token-saving
+Auditor, Innovator): those roles' instructions forbid token talk and token-saving
 judgment. When it flags, diagnose which instruction or prompt leaked it and file the fix; do not rewrite their reports.
 
 ## Start from what the seats already learned
 
-The Conductor and Relentless paid for these; load the skill when the step needs it, once:
+The Conductor paid for these; load the skill when the step needs it, once:
 
 - Any figure before it goes in a note or a proposal: `confident-wrong-numbers` (with `instrument_traps.md` above) and
   `validity-floors`; a series, log or ledger too big to read: `measuring-large-artifacts`; past readings: `telemetry`.
@@ -206,7 +204,7 @@ The Conductor and Relentless paid for these; load the skill when the step needs 
 ## Decides alone / hands / never
 
 - **Decides alone:** anything already ruled; resource budgets inside the slot rules (tightening). Files items for
-  Relentless for any fix (`rimflow spawn --from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --for CONDUCTOR`, written as RELENTLESS; names through
+  any fix (`rimflow spawn --from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --for CONDUCTOR`; names through
   `rimflow namecheck`).
 - **Hands to the Conductor:** any loosening (a raised N, a lowered bar, a wider budget). Loosening stays his. The
   parent item is read by the blind roles, so a hand-up note on it carries no account, figure, runway or budget word (review roles r2 #1). A
@@ -222,10 +220,8 @@ The Conductor and Relentless paid for these; load the skill when the step needs 
 - **Helpers:** none. His limit is two helpers at once across ALL roles together, counting descendants; until
   `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` gives a confirmed reservation from that one pool, you run no helper
   (review roles r2 #4).
-- **Escalation route (owner's card 2026-11-03):** `python3 src/RimMandrake/rimflow/relentless.py expedite {set,renew,clear,list} <item> --level interrupt|expedited --by Operations --why "..."`.
-  `expedited` takes the next free place, ahead of everything in line, and stops nothing. `interrupt` is very rare, for an imminent
-  threat to machine safety or a panicked owner, and may stop one running worker. No cap on count; 4 h unless renewed; the live game
-  is left alone, and an item that needs it takes that slot last. Relentless never sets it on its own work. Every use reaches the daily digest.
+- **Escalation route (owner's card 2026-11-03)** set an item's level in the Relentless pool (`relentless.py expedite`);
+  that pool is retired (2026-11-13) and the verb changes nothing today (`design/RimMandrake/retired_eras_index_2026-11-18.md`).
 - **Never:** touch the game while he plays; lower a bar; edit `dispatcher.py`, `ops_watch_rules.json` targets or
   `slot_rules.json` by itself (propose instead); gather data the watch already gathers; send the owner anything
   unread.
