@@ -258,6 +258,120 @@ def main():
         page = DS.park_summary(d2, dict(st, status="blocked"), "ceiling", "a test park")
         check("park page: the certificate replaces the judge's gap list",
               "Coverage: passed on the owner's word" in page and "says not covered" not in page, page)
+
+        # RIMMANDRAKE_BIND_CERTIFICATE_TO_WHAT_HE_SAW and _CARRY_OWNER_CERTIFICATE_THROUGH_HIS_OWN_CARD_EDIT
+        repo4, d4 = fixture(os.path.join(tmp, "four"))
+        notes4 = []
+        emit4 = lambda r, i, t: notes4.append((i, t))     # noqa: E731
+        check("bind: certify on his event", CT.certify(d4, "OWNER:2001", repo4, emit=emit4) == [], notes4)
+        c4 = CT.load(d4)["coverage"]
+        check("bind: the stamp carries the gap ids and the gap text he passed past",
+              c4.get("judge_gids") == ["g1", "g2"] and len(str(c4.get("judge_gaps_sha"))) == 64, c4)
+        vp4 = os.path.join(d4, "coverage_verdict.json")
+        v4 = open(vp4).read()
+        put_json(d4, "coverage_verdict.json", dict(json.loads(v4), gaps=[{"gid": "g1", "what": "a"},
+                                                                      {"gid": "g3", "what": "b"}]))
+        errs, _ = CT.gate(d4, repo4)
+        check("bind: a verdict with other gap ids (same run, verdict and count) refuses", len(errs) == 1
+              and "gap ids" in errs[0], errs)
+        put_json(d4, "coverage_verdict.json", dict(json.loads(v4), gaps=[{"gid": "g1", "what": "a"},
+                                                                      {"gid": "g2", "what": "b, reworded"}]))
+        errs, _ = CT.gate(d4, repo4)
+        check("bind: the same gap ids with other gap text refuse", len(errs) == 1 and "gap text" in errs[0], errs)
+        with open(vp4, "w") as f:
+            f.write(v4)
+        check("bind: the verdict he saw passes again", CT.gate(d4, repo4)[0] == [], CT.gate(d4, repo4)[0])
+        with open(os.path.join(d4, "sheet.md"), "a") as f:
+            f.write("\nAn edit after his word.\n")
+        errs, _ = CT.gate(d4, repo4)
+        check("bind: an edit after his event voids the certificate at the gate", errs and "another sheet" in errs[0], errs)
+        got = CT.certify(d4, "OWNER:2001", repo4, emit=emit4)
+        check("bind: his same event cannot be replayed onto the edited sheet", len(got) == 1
+              and "already certified another" in got[0] and "carry" in got[0], got)
+        for ref, want in (("OWNER:2004", "not newer than the certificate"), ("OWNER:2002", "no ownerSaid or byCard"),
+                          ("OWNER:2005", "not this concept's item")):
+            got = CT.carry(d4, ref, repo4, emit=emit4)
+            check("carry refuses %s" % ref, len(got) == 1 and want in got[0], got)
+        n4 = len(notes4)
+        got = CT.carry(d4, "OWNER:2006", repo4, emit=emit4)
+        c4 = CT.load(d4)["coverage"]
+        check("carry: an edit made under his later card carries the certificate", got == [] and
+              CT.gate(d4, repo4)[0] == [] and c4.get("carried_by") == "OWNER:2006" and c4.get("owner_event") ==
+              "OWNER:2001", (got, CT.gate(d4, repo4)[0], c4))
+        check("carry: the carry note is the edit's record and cites the card", len(notes4) == n4 + 1 and
+              notes4[-1][1].startswith(CT.CARRY_MARK + " ") and "card=OWNER:2006" in notes4[-1][1], notes4[-1:])
+        tree4 = CT.load(d4)
+        tree4["coverage"] = dict(c4, carried_by="OWNER:2004")
+        CT.put(d4, tree4)
+        errs, _ = CT.gate(d4, repo4)
+        check("carry: a stamp carried by hand on an older event is refused by the gate", len(errs) == 1
+              and "carried through an edit" in errs[0], errs)
+        repo5, d5 = fixture(os.path.join(tmp, "five"))
+        CT.certify(d5, "OWNER:2001", repo5, emit=emit4)
+        with open(os.path.join(d5, "sheet.md"), "a") as f:
+            f.write("\nAn edit after his word.\n")
+        got = CT.certify(d5, "OWNER:2006", repo5, emit=emit4)
+        check("bind: his newer event after an edit certifies the edited tree", got == [] and
+              CT.gate(d5, repo5)[0] == [] and CT.load(d5)["coverage"]["owner_event"] == "OWNER:2006", got)
+        # replay holes the review found: each needs a newer word of his
+        repo6, d6 = fixture(os.path.join(tmp, "six"))
+        with open(os.path.join(repo6, CT.OWNER_SHARD), "a", encoding="utf-8") as f:
+            f.write(json.dumps(ev(2007, "2026-11-13T22:10:00Z", ownerSaid="Pass it as it stands.")) + "\n")
+        CT.certify(d6, "OWNER:2001", repo6, emit=emit4)
+        vp6 = os.path.join(d6, "coverage_verdict.json")
+        v6 = open(vp6).read()
+        put_json(d6, "coverage_verdict.json", dict(json.loads(v6), gaps=[{"gid": "g1", "what": "a"},
+                                                                      {"gid": "g2", "what": "b, reworded"}]))
+        got = CT.certify(d6, "OWNER:2001", repo6, emit=emit4)
+        check("replay: his same event cannot re-certify past changed gap text", len(got) == 1
+              and "already certified another gaps_sha" in got[0], got)
+        with open(vp6, "w") as f:
+            f.write(v6)
+        with open(os.path.join(d6, "sheet.md"), "a") as f:
+            f.write("\nAn edit after his word.\n")
+        got = CT.certify(d6, "OWNER:2007", repo6, emit=emit4)
+        check("replay: an unused event older than the one already used cannot certify the edit", len(got) == 1
+              and "not newer than OWNER:2001" in got[0], got)
+        check("replay: the carry under his later card still works", CT.carry(d6, "OWNER:2006", repo6, emit=emit4) == [])
+        with open(os.path.join(d6, "sheet.md"), "a") as f:
+            f.write("\nA second edit, under no card.\n")
+        got = CT.certify(d6, "OWNER:2006", repo6, emit=emit4)
+        check("replay: the card a carry used cannot certify a later edit", len(got) == 1
+              and "already certified another" in got[0], got)
+        bad = os.path.join(repo6, CT.LEDGER_DIR, "events", "BROKEN.jsonl")
+        os.makedirs(os.path.dirname(bad), exist_ok=True)
+        with open(bad, "w") as f:
+            f.write('{"text": "%s concept=%s tree=x owner=OWNER:2001 broken\n' % (CT.OWNER_MARK, CT.concept_rel(d6, repo6)))
+        got = CT.certify(d6, "OWNER:2006", repo6, emit=emit4)
+        check("replay: a ledger record of this concept that does not parse refuses", len(got) == 1
+              and "does not parse" in got[0], got)
+        os.remove(bad)
+        os.makedirs(os.path.join(repo6, CT.LEDGER_DIR, "events", "UNREADABLE.jsonl"), exist_ok=True)
+        got = CT.certify(d6, "OWNER:2006", repo6, emit=emit4)
+        check("replay: a ledger shard that cannot be read refuses (its history is unknown)", len(got) == 1
+              and "cannot be read" in got[0], got)
+        # the ledger is the history when the stamp has moved on: carry with a card, a newer word over changed gaps,
+        # then the card again must refuse (its carry note binds the gaps it covered)
+        repo7, d7 = fixture(os.path.join(tmp, "seven"))
+        shard7 = os.path.join(repo7, CT.LEDGER_DIR, "events", "BENCH.jsonl")
+        os.makedirs(os.path.dirname(shard7), exist_ok=True)
+
+        def emit7(r, i, t):
+            with open(shard7, "a") as f:
+                f.write(json.dumps({"event": "note", "id": i, "text": t}) + "\n")
+        with open(os.path.join(repo7, CT.OWNER_SHARD), "a", encoding="utf-8") as f:
+            f.write(json.dumps(ev(2008, "2026-11-13T23:30:00Z", ownerSaid="Pass it with the reworded gap.")) + "\n")
+        CT.certify(d7, "OWNER:2001", repo7, emit=emit7)
+        with open(os.path.join(d7, "sheet.md"), "a") as f:
+            f.write("\nAn edit under his card.\n")
+        check("ledger: carry under his card", CT.carry(d7, "OWNER:2006", repo7, emit=emit7) == [])
+        vp7 = os.path.join(d7, "coverage_verdict.json")
+        put_json(d7, "coverage_verdict.json", dict(json.loads(open(vp7).read()), gaps=[{"gid": "g1", "what": "a"},
+                                                                                    {"gid": "g2", "what": "b2"}]))
+        check("ledger: his newer word certifies past the reworded gap", CT.certify(d7, "OWNER:2008", repo7, emit=emit7) == [])
+        got = CT.certify(d7, "OWNER:2006", repo7, emit=emit7)
+        check("ledger: the carry's card cannot then certify the reworded gaps", len(got) == 1
+              and "already certified another" in got[0], got)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("selftest_concept_owner_certify: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

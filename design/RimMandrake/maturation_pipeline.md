@@ -405,9 +405,11 @@ Found by the skeptical review of 2026-11-15 and confirmed by reading the code (c
    refused set shrinks.
 10. **Dispatch's ceiling** reserves the run's cap since 780db1ef3e (spent plus cap must fit), at the offline build, the
     blind challenge and in-game acceptance; an unreadable occupancy launches nothing.
-11. **The owner certificate binds only the gap count.** It accepts any of his events on the concept's item newer than
-    the verdict, can be replayed after the tree changes, and records (judge run, verdict, number of gaps), not which
-    gaps he saw.
+11. Resolved 2026-11-18 (RIMMANDRAKE_BIND_CERTIFICATE_TO_WHAT_HE_SAW): a new owner certificate binds the gap ids and
+    gap text he passed past, its event cannot be replayed onto an edited tree or sheet, and an edit made under a later
+    card of his is carried by `concept_tree.py carry <dir> --card OWNER:<tsn>` (its carry note cites the card;
+    RIMMANDRAKE_CARRY_OWNER_CERTIFICATE_THROUGH_HIS_OWN_CARD_EDIT). A stamp written before this carries no gap ids and
+    is read on run, verdict and count as it was written (Explosive Knockback's, OWNER:1794836946186553250).
 12. **Calibration cut one way** until `RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS`: `covered` signed under an UNTESTED brief,
     `calibrate` promoted on a bare exit 0 and always wrote the registry, and advisory refusals raised repair and alarms.
     Now symmetric (the Calibration bullet above). (The coverage judge's runner exit, all-input freshness and caps after a release

@@ -747,7 +747,8 @@ def judge_verdict(d):
         return None
     gaps = [g for g in v.get("gaps") or [] if isinstance(g, dict)]
     return {"run": v["judge"], "verdict": v["verdict"], "gaps": len(gaps), "at": v.get("at"),
-            "gids": [g.get("gid") for g in gaps]}
+            "gids": [g.get("gid") for g in gaps],
+            "gaps_sha": hashlib.sha256(json.dumps(gaps, sort_keys=True).encode("utf-8")).hexdigest()}
 
 
 REPAIRS_DIR = os.path.join("version", "criterion_repairs")
@@ -841,10 +842,154 @@ def owner_certificate_problem(d, repo, cov):
     if (cov.get("judge_run"), cov.get("judge_verdict"), cov.get("judge_gaps")) != (v["run"], v["verdict"], v["gaps"]):
         return "owner certificate: a judge verdict newer than the one he passed past is on file (%s %s)" % (
             v["run"], v["verdict"])
+    # RIMMANDRAKE_BIND_CERTIFICATE_TO_WHAT_HE_SAW: the gaps he passed past, by id and by text (a stamp from before
+    # this rule carries neither and is read on run, verdict and count, as it was written)
+    if "judge_gids" in cov and cov.get("judge_gids") != v["gids"]:
+        return "owner certificate: the verdict's gap ids are %s; he certified past %s" % (v["gids"], cov.get("judge_gids"))
+    if "judge_gaps_sha" in cov and cov.get("judge_gaps_sha") != v["gaps_sha"]:
+        return "owner certificate: the verdict's gap text changed since he certified past it"
     if cov.get("fixes_hash") != fixes_hash(d):
         return "owner certificate: the gap claims (%s) changed since he certified" % FIXES_FILE
+    if cov.get("carried_by") is not None:
+        why = carry_event_problem(d, repo, cov.get("carried_by"), cov)
+        if why:
+            return "owner certificate carried through an edit: " + why
     return None
 
+
+# RIMMANDRAKE_CARRY_OWNER_CERTIFICATE_THROUGH_HIS_OWN_CARD_EDIT (his card 2026-11-15 13:12Z, "Certify, and fix the
+# rule": "a change you make by card carries your certificate automatically"): an edit of the tree or sheet made under a
+# card of his, later than his certificate, re-stamps the certificate on the edited tree; the carry note on the ledger is
+# the edit's record and cites the card. Any other edit voids it until a newer OWNER event of his covers the edited tree.
+CARRY_MARK = "owner-carried"
+
+
+def carry_event_problem(d, repo, ref, cov, events=None):
+    """Why the OWNER event `ref` cannot carry the certificate `cov` through an edit, or None: his own byCard or
+    ownerSaid event, on this concept's item chain, newer than the certificate's own event."""
+    m = re.fullmatch(r"(?:OWNER:)?([0-9]+)", str(ref or ""))
+    e = (owner_events(repo) if events is None else events).get(m.group(1)) if m else None
+    if e is None:
+        return "%s finds no event in OWNER.jsonl" % ref
+    if not his_word(e):
+        return "%s holds no ownerSaid or byCard: an agent's event carries nothing" % ref
+    if not caused_by_mod(repo, d, e.get("id")):
+        return "%s is on %s, not this concept's item nor one caused by it" % (ref, e.get("id"))
+    t, t0 = ev_epoch(e), ev_epoch({"ts": cov.get("owner_at")})
+    if t is None or t0 is None or t <= t0:
+        return "%s (%s) is not newer than the certificate it would carry (%s, %s)" % (
+            ref, e.get("ts"), cov.get("owner_event"), cov.get("owner_at"))
+    return None
+
+
+def carry(d, card, repo=REPO, emit=None):
+    """Carry the owner certificate on this tree through an edit made under his card `card` (OWNER:<tsn>): the stamp
+    must be his, valid in everything but the tree and sheet hashes; the card must pass carry_event_problem. Writes the
+    carry note (the edit's record, citing the card) and then the re-stamped certificate. -> refusals ([] on success)."""
+    errs, _fl = lint(d, repo)
+    if errs:
+        return errs
+    tree = load(d)
+    cov = dict(tree.get("coverage") or {}) if isinstance(tree.get("coverage"), dict) else {}
+    if cov.get("signed_by") != OWNER_SIGNER:
+        return ["no owner certificate on this tree to carry"]
+    th, sh = tree_hash(tree), sheet_hash(d)
+    if (cov.get("tree_hash"), cov.get("sheet_hash")) == (th, sh):
+        return ["nothing to carry: the certificate is on this tree and sheet already"]
+    why = carry_event_problem(d, repo, card, cov)
+    if why:
+        return [why]
+    cref = "OWNER:%s" % re.sub(r"^OWNER:", "", str(card))
+    ce = owner_events(repo).get(cref.split(":", 1)[1]) or {}
+    why = spent_problem(d, repo, cref, ev_epoch(ce), {"tree": th, "sheet": sh or "none", "fixes": cov.get("fixes_hash")
+                                                      or "none", "gaps_sha": cov.get("judge_gaps_sha")}, cov)
+    if why:
+        return [why]
+    old = dict(cov)
+    cov.update({"tree_hash": th, "sheet_hash": sh, "carried_by": "OWNER:%s" % re.sub(r"^OWNER:", "", str(card)),
+                "carried_from": {"tree_hash": old.get("tree_hash"), "sheet_hash": old.get("sheet_hash")}})
+    why = owner_certificate_problem(d, repo, cov)
+    if why:
+        return [why]
+    note = "%s concept=%s tree=%s sheet=%s card=%s owner=%s from_tree=%s from_sheet=%s fixes=%s gaps_sha=%s" % (
+        CARRY_MARK, concept_rel(d, repo), th, sh or "none", cov["carried_by"], cov.get("owner_event"),
+        old.get("tree_hash"), old.get("sheet_hash") or "none", cov.get("fixes_hash") or "none",
+        cov.get("judge_gaps_sha") or "none")
+    why = (emit or rimflow_note)(repo, cov.get("ledger_item") or stage_item(d), note)
+    if why:
+        return [why]
+    tree["coverage"] = cov
+    put(d, tree)
+    return []
+
+
+def used_events(d, repo, cov=None):
+    """-> ([{"ref", "what"}], None) for every OWNER event already used on this concept, by its stamp (owner_event,
+    carried_by) or by an owner-certified or owner-carried note on the ledger, each with what it covered as far as the
+    record says (tree, sheet, gids, gaps_sha, fixes); or (None, why) when a ledger shard cannot be read: an
+    authorization that cannot see its own history refuses."""
+    out, rel = [], concept_rel(d, repo)
+    if isinstance(cov, dict) and cov.get("signed_by") == OWNER_SIGNER:
+        what = {"tree": cov.get("tree_hash"), "sheet": cov.get("sheet_hash") or "none", "fixes": cov.get("fixes_hash")
+                or "none", "gids": cov.get("judge_gids"), "gaps_sha": cov.get("judge_gaps_sha")}
+        if cov.get("carried_by"):
+            out.append({"ref": cov["carried_by"], "what": what})
+            what = dict(what, **{k: (cov.get("carried_from") or {}).get(h) or ("none" if k == "sheet" else None)
+                                 for k, h in (("tree", "tree_hash"), ("sheet", "sheet_hash"))})
+        if cov.get("owner_event"):
+            out.append({"ref": cov["owner_event"], "what": what})
+    for p in ledger_files(repo):
+        try:
+            with open(p, encoding="utf-8", errors="replace") as f:
+                lines = [ln for ln in f if (OWNER_MARK in ln or CARRY_MARK in ln) and " concept=%s " % rel in ln]
+        except FileNotFoundError:       # not there: no history in it (looked, none)
+            continue
+        except OSError as e:
+            return None, "the ledger shard %s cannot be read (%s): which of his words are spent is unknown" % (p, e)
+        for ln in lines:
+            try:
+                t = str(json.loads(ln).get("text") or "")
+            except (ValueError, RecursionError, AttributeError):
+                return None, ("a ledger record of %s in %s does not parse: which of his words are spent is unknown"
+                              % (rel, p))
+            kv = dict(x.split("=", 1) for x in t.split()[1:] if "=" in x)
+            if kv.get("concept") != rel:
+                continue
+            if t.startswith(OWNER_MARK + " ") and kv.get("owner"):
+                out.append({"ref": kv["owner"], "what": {"tree": kv.get("tree"), "sheet": kv.get("sheet"),
+                                                         "fixes": kv.get("fixes"), "gaps_sha": kv.get("gaps_sha")}})
+            elif t.startswith(CARRY_MARK + " ") and kv.get("card"):
+                out.append({"ref": kv["card"], "what": {"tree": kv.get("tree"), "sheet": kv.get("sheet"),
+                                                        "fixes": kv.get("fixes"), "gaps_sha": kv.get("gaps_sha")}})
+    return out, None
+
+
+def spent_problem(d, repo, ref, t_ev, want, cov=None, events=None):
+    """Why his event `ref` (time t_ev) cannot certify `want` here, or None. A word of his covers what he answered
+    about: the same event again only on exactly what it covered; anything else changed needs an event newer than every
+    event already used on this concept."""
+    used, err = used_events(d, repo, cov)
+    if err:
+        return err
+    if not used:
+        return None
+    same = [u for u in used if u["ref"] == ref]
+    for u in same:
+        diff = [k for k, v in u["what"].items() if v is not None and want.get(k) is not None and v != want[k]]
+        if diff:
+            return ("%s already certified another %s of this concept: the tree, sheet, gaps or claims changed after "
+                    "his word" % (ref, "/".join(diff)))
+    if same:
+        return None
+    evs = owner_events(repo) if events is None else events
+    times = [ev_epoch(evs.get(re.sub(r"^OWNER:", "", u["ref"])) or {}) for u in used]
+    if any(t is None for t in times) or t_ev is None:
+        return "the time of %s or of an event already used on this concept cannot be read" % ref
+    if t_ev <= max(times):
+        newest = used[times.index(max(times))]["ref"]
+        return "%s is not newer than %s, already used on this concept: a changed tree needs a newer word of his" % (
+            ref, newest)
+    return None
 
 def claimed_gids(d):
     f = _read_json(os.path.join(d, FIXES_FILE)) or {}
@@ -892,17 +1037,24 @@ def certify(d, owner_event, repo=REPO, emit=None):
     if why:
         return [why]
     ref = "OWNER:%s" % e["tsn"]
+    want = {"tree": tree_hash(tree), "sheet": sheet_hash(d) or "none", "fixes": fixes_hash(d) or "none",
+            "gids": v["gids"], "gaps_sha": v["gaps_sha"]}
+    spent = spent_problem(d, repo, ref, ev_epoch(e), want, tree.get("coverage"))
+    if spent:
+        return ["%s; a newer OWNER event of his must cover what is here now, or, for an edit made under a later card "
+                "of his, `concept_tree.py carry %s --card OWNER:<tsn>`" % (spent, concept_rel(d, repo))]
     cov = {"signed_by": OWNER_SIGNER, "owner_event": ref, "owner_words": his_word(e), "owner_at": e.get("ts"),
            "judge_run": v["run"], "judge_verdict": v["verdict"], "judge_gaps": v["gaps"], "judge_at": v.get("at"),
+           "judge_gids": v["gids"], "judge_gaps_sha": v["gaps_sha"],
            "fixes_hash": fixes_hash(d), "tree_hash": tree_hash(tree), "sheet_hash": sheet_hash(d),
            "ledger_item": stage_item(d)}
     why = owner_certificate_problem(d, repo, cov)
     if why:
         return [why]
     tree["coverage"] = cov
-    note = "%s concept=%s tree=%s sheet=%s owner=%s judge=%s verdict=%s gaps=%s fixes=%s" % (
+    note = "%s concept=%s tree=%s sheet=%s owner=%s judge=%s verdict=%s gaps=%s fixes=%s gaps_sha=%s" % (
         OWNER_MARK, concept_rel(d, repo), cov["tree_hash"], cov["sheet_hash"] or "none", ref, v["run"], v["verdict"],
-        v["gaps"], cov["fixes_hash"] or "none")
+        v["gaps"], cov["fixes_hash"] or "none", v["gaps_sha"])
     why = (emit or rimflow_note)(repo, cov["ledger_item"], note)
     if why:
         return [why]
@@ -1124,7 +1276,7 @@ def report(errs, fl, name):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
-    for name in ("write", "lint", "gate", "sign", "certify", "askcheck", "hash"):
+    for name in ("write", "lint", "gate", "sign", "certify", "carry", "askcheck", "hash"):
         p = sub.add_parser(name)
         p.add_argument("dir")
         if name == "write":
@@ -1135,6 +1287,8 @@ def main(argv=None):
             p.add_argument("--item")
         if name == "certify":
             p.add_argument("--owner-event", required=True, help="OWNER:<tsn> of his ownerSaid or byCard event")
+        if name == "carry":
+            p.add_argument("--card", required=True, help="OWNER:<tsn> of his card the tree or sheet edit was made under")
         if name == "askcheck":
             p.add_argument("question")
     a = ap.parse_args(argv)
@@ -1154,6 +1308,11 @@ def main(argv=None):
         return report(*gate(a.dir), "gate")
     if a.cmd == "sign":
         return report(sign(a.dir, a.by, item=a.item), [], "sign")
+    if a.cmd == "carry":
+        rc = report(carry(a.dir, a.card), [], "carry")
+        if rc == 0:
+            print(coverage_summary(a.dir))
+        return rc
     if a.cmd == "certify":
         rc = report(certify(a.dir, a.owner_event), [], "certify")
         if rc == 0:
