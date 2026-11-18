@@ -1,0 +1,23 @@
+STEVE NVMe bad-block events — measured by the Conductor 2026-11-17 19:3x PST, via the Colima tailscale route
+
+DRIVES NOW IN THE MACHINE (Get-Disk, by serial):
+  disk 1  KINGSTON SNV3S1000G  0000_...0026_B768_7A27_5965.  NVMe  Healthy  1000204886016 (1 TB)
+  disk 0  WDC WD141KFGX-68FH9N0  9RHGSAEL                    SATA  Healthy   14000519643136 (14 TB)
+  => there is NO Samsung 970 in this machine. The 1 TB drive the ledger says was ordered is fitted.
+
+EVENT COUNTS (each with its own probe, so an empty answer cannot be a query bug):
+  last 7 days : total System events 3473   bad-block events 0
+  last 30 days: total System events 45674  bad-block events 30335
+      of those: 30328 provider 'disk', 7 provider 'cdrom'
+      newest 2026-11-01T17:25:38   oldest 2026-10-31T06:49:16
+      every one of the 30328 is the SAME message:
+        'The device, \Device\Harddisk1\DR1, has a bad block.'
+
+READING: the flood is real but CLOSED. It ran 2026-10-31 to 2026-11-01 and stopped; nothing in the
+last 7 days, and the 30-day window still holds 45674 other events, so the instrument can see.
+The second opinion's caution was right twice over: 46,000 events were never 46,000 distinct bad
+blocks (they are one repeated message), and the drive identity needed checking by serial - it is
+not the drive the pointer named.
+
+NOT MEASURED: the NVMe controller's own error log by serial (needs a vendor tool on the Kingston,
+not SMART summary). Unnecessary for the closed flood; owed only if events resume.
