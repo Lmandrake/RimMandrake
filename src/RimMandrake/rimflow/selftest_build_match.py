@@ -580,6 +580,15 @@ def main():
         return 1 if bad else 0
     if "--mutant" in sys.argv:
         MUTANTS[sys.argv[sys.argv.index("--mutant") + 1]]()
+    mutants_rc = 0
+    if "--mutant" not in sys.argv and "--default" not in sys.argv:
+        # the door runs this file bare: the bare run also runs the mutants (RIMMANDRAKE_RUN_SELFTEST_MODES_AT_THE_DOOR)
+        r = subprocess.run([sys.executable, os.path.abspath(__file__), "--mutants"], capture_output=True, text=True,
+                           timeout=900)
+        print((r.stdout.strip().splitlines() or ["(no output)"])[-1])
+        mutants_rc = 0 if r.returncode == 0 else 1
+        if mutants_rc:
+            print("FAIL mutants did not all die (exit %d)\n%s" % (r.returncode, r.stdout[-1500:] + r.stderr[-500:]))
     tmp = tempfile.mkdtemp(prefix="build_match_selftest_")
     try:
         io_checks(tmp)

@@ -1848,7 +1848,25 @@ def submit_main():
     return 1 if FAILS else 0
 
 
+MODES = ("--ingame", "--blind", "--launch", "--submit")
+
+
+def every_mode():
+    """The door runs a test file with no arguments (pipeline_tests.json), so the bare run is EVERY mode, each in its own
+    process: a fault in one reader alone must turn the door red (RIMMANDRAKE_RUN_SELFTEST_MODES_AT_THE_DOOR).
+    -> 0 only if the default run and every mode passed; a mode that did not run to a verdict is a failure, never silence."""
+    rc = main()
+    for m in MODES:
+        r = subprocess.run([sys.executable, os.path.abspath(__file__), m], capture_output=True, text=True, timeout=600)
+        tail = (r.stdout.strip().splitlines() or ["(no output)"])[-1]
+        print("mode %s: exit %d, %s" % (m, r.returncode, tail))
+        if r.returncode != 0:
+            print(r.stdout[-1500:] + r.stderr[-500:])
+            rc = 1
+    return rc
+
+
 if __name__ == "__main__":
     a = sys.argv[1:]
     sys.exit(launch_main() if "--launch" in a else blind_main() if "--blind" in a else ingame_main() if "--ingame" in a
-             else submit_main() if "--submit" in a else main())
+             else submit_main() if "--submit" in a else main() if "--default" in a else every_mode())
