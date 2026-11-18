@@ -433,8 +433,54 @@ def _on_site(t):
         if r.get("mapBiome") == "RM_Pyrelands":
             _GEN["site_map"] = pyre[0]
             return
+    # RIMMANDRAKE_LOAD_PYRELANDS_SITE_IN_TESTQ_CHAINS_RAN_BOREAL: no Pyrelands map is loaded at all (a testq job on a
+    # foreign BorealForest map, 2026-11-13, six chains UNMEASURED SITE): load the registered site once per run
+    if not _GEN.get("site_load_tried"):
+        _GEN["site_load_tried"] = True
+        mid, _GEN["site_load_why"] = _load_registered_site(t)
+        if mid is not None:
+            _GEN["site_map"] = mid
+            return
+    loaded_why = _GEN.get("site_load_why")      # every later chain of the run names the same failed load
     raise ExpectationFailed("UNMEASURED SITE: could not make a Pyrelands site current (tried map %s, read %r; "
-                            "loadedMaps %r)" % (site, r.get("mapBiome"), loaded))
+                            "loadedMaps %r)%s" % (site, r.get("mapBiome"), loaded,
+                                                  "; the registered site load: %s" % loaded_why if loaded_why else ""))
+
+
+def _site_registry():
+    """test_site_saves.json (Utils/modcheck): what each site save is, where it was built and how it loads."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils", "modcheck", "test_site_saves.json")
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _northstar_site():
+    """Pyrelands/northstar_site.py, the site's own loader (test_site_saves.load_site refuses Pyrelands and points here)."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "northstar_site.py")
+    spec = importlib.util.spec_from_file_location("pyre_northstar_site_for_suite", path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def _load_registered_site(t):
+    """Load the registered Pyrelands site save (test_site_saves.json `pyrelands`) through northstar_site.reload_fixture:
+    main menu, load_game, settle (name the colony, site current, queue cleared, 1500 ticks). -> (mapId, None) when a
+    RM_Pyrelands map is current after it, else (None, why)."""
+    try:
+        entry = (_site_registry() or {}).get("pyrelands") or {}
+    except (OSError, ValueError) as ex:
+        return None, "test_site_saves.json unreadable (%s: %s)" % (type(ex).__name__, ex)
+    if not entry.get("save") or entry.get("tile") is None:
+        return None, "no registered pyrelands site (save and tile) in test_site_saves.json"
+    try:
+        mi = _northstar_site().reload_fixture(t.session, entry["save"], entry["tile"], map_id=entry.get("mapId"))
+    except Exception as ex:  # noqa: BLE001 - a load that fails is the reason the row is UNMEASURED, said in it
+        return None, "loading %s failed: %s: %s" % (entry["save"], type(ex).__name__, str(ex)[:240])
+    t._record("on_site: loaded the registered site %s" % entry["save"], mi)
+    if (mi or {}).get("mapBiome") != "RM_Pyrelands":
+        return None, "%s loaded but the current map is %r, not RM_Pyrelands" % (entry["save"], (mi or {}).get("mapBiome"))
+    return mi.get("mapId"), None
 
 
 def _pad(t, xz):

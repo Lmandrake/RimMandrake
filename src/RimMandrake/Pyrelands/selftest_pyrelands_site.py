@@ -1579,15 +1579,76 @@ def test_on_site_finds_the_site_2026_11_12():
     v._on_site(t)
     check("foreign map 1, site loaded as map 4 -> map 4 current and recorded",
           t.session.cur == 4 and v._GEN.get("site_map") == 4, (t.session.calls, v._GEN))
-    v._GEN.clear()
-    t = _T({1: "RM_TheRot", 2: "AridShrubland"})
+    # RIMMANDRAKE_LOAD_PYRELANDS_SITE_IN_TESTQ_CHAINS_RAN_BOREAL: with no Pyrelands map loaded (a testq job on a foreign
+    # BorealForest map, 2026-11-13) _on_site loads the REGISTERED site (test_site_saves.json `pyrelands`) once through
+    # northstar_site.reload_fixture, and reads UNMEASURED SITE only when that load fails, naming why
+    loads = []
+
+    def fake_reload(s, name, tile, map_id=None):
+        loads.append((name, tile, map_id))
+        s.maps[7] = "RM_Pyrelands"
+        s.cur = 7
+        return {"mapId": 7, "tile": tile, "mapBiome": "RM_Pyrelands"}
+    real_ns = v._northstar_site
+    reg = {"pyrelands": {"save": "NS_Pyrelands_site_1_417df172fdb5_calm3", "tile": 5, "mapId": 1}}
+    real_reg = v._site_registry
     try:
+        v._northstar_site = lambda: type("NS", (), {"reload_fixture": staticmethod(fake_reload)})
+        v._site_registry = lambda: reg
+        v._GEN.clear()
+        t = _T({0: "BorealForest"})
         v._on_site(t)
-        raised = None
-    except v.ExpectationFailed as ex:
-        raised = str(ex)
-    check("no Pyrelands map loaded -> 'UNMEASURED SITE' naming the loaded maps",
-          bool(raised) and raised.startswith("UNMEASURED") and "AridShrubland" in raised, raised)
+        check("no Pyrelands map loaded -> the registered site is loaded through northstar_site.reload_fixture",
+              loads == [("NS_Pyrelands_site_1_417df172fdb5_calm3", 5, 1)] and t.session.cur == 7
+              and v._GEN.get("site_map") == 7, (loads, t.session.cur, v._GEN))
+        t.session.maps.pop(7)
+        t.session.cur = 0
+        try:
+            v._on_site(t)
+            raised = None
+        except v.ExpectationFailed as ex:
+            raised = str(ex)
+        check("the site is loaded once per run: a second loss reads UNMEASURED SITE, no second load",
+              len(loads) == 1 and bool(raised) and raised.startswith("UNMEASURED SITE"), (loads, raised))
+
+        def bad_reload(s, name, tile, map_id=None):
+            raise RuntimeError("no Playing map within 420s of load_game %s" % name)
+        v._northstar_site = lambda: type("NS", (), {"reload_fixture": staticmethod(bad_reload)})
+        v._GEN.clear()
+        t = _T({1: "RM_TheRot", 2: "AridShrubland"})
+        try:
+            v._on_site(t)
+            raised = None
+        except v.ExpectationFailed as ex:
+            raised = str(ex)
+        check("no Pyrelands map loaded and the load fails -> 'UNMEASURED SITE' naming the loaded maps and the load's error",
+              bool(raised) and raised.startswith("UNMEASURED") and "AridShrubland" in raised
+              and "no Playing map within 420s" in raised, raised)
+        bad = []
+        v._northstar_site = lambda: type("NS", (), {"reload_fixture": staticmethod(
+            lambda s_, name, tile, map_id=None: bad.append(name) or bad_reload(s_, name, tile, map_id))})
+        try:
+            v._on_site(t)
+            raised = None
+        except v.ExpectationFailed as ex:
+            raised = str(ex)
+        check("a later chain after a failed load: no second load, and the same load error is named",
+              not bad and bool(raised) and "no Playing map within 420s" in raised, (bad, raised))
+        v._site_registry = lambda: {}
+        v._GEN.clear()
+        t = _T({0: "BorealForest"})
+        try:
+            v._on_site(t)
+            raised = None
+        except v.ExpectationFailed as ex:
+            raised = str(ex)
+        check("no registered pyrelands site -> UNMEASURED SITE saying so, no load", bool(raised)
+              and "no registered" in raised and raised.startswith("UNMEASURED"), raised)
+    finally:
+        v._northstar_site, v._site_registry = real_ns, real_reg
+    reg_live = v._site_registry().get("pyrelands") or {}
+    check("the committed registry names the site save and tile _on_site loads",
+          bool(reg_live.get("save")) and reg_live.get("tile") is not None, reg_live)
     v._GEN.clear()
     t = _T({1: "RM_Pyrelands"})
     v._on_site(t)
