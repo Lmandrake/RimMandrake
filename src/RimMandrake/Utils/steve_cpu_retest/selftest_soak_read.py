@@ -119,5 +119,43 @@ check(len({4, 5, 0, 2}) == 4 and m.exit_code({"verdict": "NOT_PLANNED", "control
 s = m.summarize(*m.parse_fetch(fetch_text(head(task="Ready", p95=0, state=dict(STATE, started=False)), NEW[:1])))
 check(s["verdict"] == "NOT_PLANNED" and m.exit_code(s) == 2, "A4: a PLAN line with no START reads NOT_PLANNED exit 2")
 
+# RIMMANDRAKE_ROUTE_SOAK_READ_VIA_TAILNET_DESKTOP_SEES_NOTHING: a second route, injected; no real ssh is ever run here
+import shlex
+calls = []
+LIVE = fetch_text(head(), OLD + NEW + [CTL_OK] + STEPS)
+STOPPED = fetch_text(head(task="Ready", p95=0), OLD + NEW + [CTL_OK] + STEPS)
+
+
+def run_main(direct, fallback, env):
+    calls.clear()
+    rt.ps = lambda script, timeout=90: (calls.append("direct"), direct)[1]
+    m.ps_fallback = lambda prefix, script, timeout=120: (calls.append(("fallback", prefix)), fallback)[1]
+    os.environ.pop("STEVE_FALLBACK_SSH", None)
+    if env:
+        os.environ["STEVE_FALLBACK_SSH"] = env
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = m.main([])
+    return rc, buf.getvalue()
+
+
+rc, out = run_main((None, ""), (0, LIVE), "fake-route-cmd --flag stevedesktop-wsl")
+check(rc == 0 and out.startswith("SOAK RUNNING") and "route: fallback" in out and calls == ["direct", ("fallback", ["fake-route-cmd", "--flag", "stevedesktop-wsl"])],
+      "A1: direct down, the configured second route answers -> a real reading (RUNNING exit 0), route named: %r %s" % (out[:60], calls))
+rc, out = run_main((0, LIVE), (0, STOPPED), "x")
+check(rc == 0 and calls == ["direct"] and "route: fallback" not in out, "direct answering means the second route is not tried")
+rc, out = run_main((None, ""), (None, ""), "fake-route-cmd")
+check(rc == 3 and "UNREACHABLE" in out and "direct" in out and "fallback" in out and "faults" not in out,
+      "A2: both routes down -> UNREACHABLE exit 3, both causes named: %s" % out.strip()[:200])
+rc, out = run_main((None, ""), (0, "garbage"), "fake-route-cmd")
+check(rc == 3 and "no whole reading" in out, "A2: a route that answers with a partial reading is not a reading")
+rc, out = run_main((None, ""), (0, LIVE), "")
+check(rc == 3 and "STEVE_FALLBACK_SSH" in out and calls == ["direct"], "A3: no second route configured -> UNREACHABLE naming STEVE_FALLBACK_SSH, nothing hard-wired is tried")
+_, o_run = run_main((None, ""), (0, LIVE), "r")
+rc_stop, o_stop = run_main((None, ""), (0, STOPPED), "r")
+rc_dark, o_dark = run_main((None, ""), (None, ""), "r")
+check(o_run.split()[1] == "RUNNING" and o_stop.split()[1] == "STALLED" and o_dark.split()[1].rstrip(":") == "UNREACHABLE" and rc_stop == 2 and rc_dark == 3,
+      "A4: running clean / stopped / unreachable are three distinct verdicts and codes")
+
 print("%d FAIL" % len(fails) if fails else "ALL PASS")
 sys.exit(1 if fails else 0)

@@ -314,14 +314,27 @@ def rerun_job(rec, now=None):
 # ---------------------------------------------------------------- SteveDesktop, over ssh (a selftest replaces these)
 
 def ps(script, timeout=120):
-    """PowerShell on Steve -> (rc, stdout); rc None = ssh down."""
+    """PowerShell on Steve -> (rc, stdout); rc None = no route answered. Direct ssh first; when it gives no answer and
+    STEVE_FALLBACK_SSH names a command prefix that runs a bash line on Steve's WSL (a machine with no direct route, e.g.
+    a tailnet ssh through a container), that is tried second. Unset: no second route, none guessed."""
     enc = base64.b64encode(("$ProgressPreference='SilentlyContinue'\n" + script).encode("utf-16-le")).decode()
     try:
         r = subprocess.run(SSH + ["powershell -NoProfile -NonInteractive -EncodedCommand " + enc],
                            capture_output=True, text=True, timeout=timeout)
+        if r.returncode != 255:
+            return r.returncode, r.stdout
     except subprocess.TimeoutExpired:
+        pass
+    import shlex
+    prefix = shlex.split(os.environ.get("STEVE_FALLBACK_SSH", ""))
+    if not prefix:
         return None, ""
-    return (None if r.returncode == 255 else r.returncode), r.stdout
+    line = "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -NoProfile -NonInteractive -EncodedCommand " + shlex.quote(enc)
+    try:
+        r = subprocess.run(prefix + [line], capture_output=True, text=True, timeout=timeout)
+    except (subprocess.TimeoutExpired, OSError):
+        return None, ""
+    return (None if r.returncode in (255, 126, 127) else r.returncode), r.stdout
 
 
 def steve_read():

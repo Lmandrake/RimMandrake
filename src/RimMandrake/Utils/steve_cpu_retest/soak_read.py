@@ -8,7 +8,9 @@ done, every FAIL step with CPU and time, reboots, the CONTROL result, the last r
 Exit codes keep the four answers apart: 0 = read, running or ended, instrument PROVEN by a passing CONTROL;
 1 = read, but no passing CONTROL in this run (faults=0 is UNMEASURED, not clean); 2 = read, soak not running when it should
 be (STALLED, resumable) or nothing planned / planned and never started (NOT_PLANNED); 4 = the script exited having taken no step
-(INTERRUPTED_NO_WORK: could not look, a failure); 5 = ended with an empty reason= (ENDED_NO_REASON: cause unknown); 3 = could not reach SteveDesktop (nothing is known about the soak).
+(INTERRUPTED_NO_WORK: could not look, a failure); 5 = ended with an empty reason= (ENDED_NO_REASON: cause unknown); 3 = could not reach SteveDesktop by any route (nothing is known about the soak; each route's cause is named).
+Routes: direct ssh first; if that gives no whole reading and STEVE_FALLBACK_SSH is set (a command prefix that runs a bash line on
+Steve's WSL, e.g. a tailnet ssh through a container), that is tried and named in the output. Unset: it fails by that name.
 """
 import argparse, json, os, re, sys, time
 from datetime import datetime, timezone
@@ -28,6 +30,45 @@ if(Test-Path "$sd\soak.log"){ Get-Content "$sd\soak.log" }
 """
 
 TS = re.compile(r"^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d)Z (.*)$")
+
+
+WSL_POWERSHELL = "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe"   # a Windows path, reached from WSL
+
+
+def ps_fallback(prefix, script, timeout=120):
+    """The second route: `prefix` (STEVE_FALLBACK_SSH, a command that runs a bash line on Steve's WSL, e.g. a tailnet ssh
+    through a container when this machine has no direct route) runs PowerShell there. -> (rc, stdout); rc None = no answer."""
+    import base64, shlex, subprocess
+    enc = base64.b64encode(script.encode("utf-16-le")).decode()
+    line = "%s -NoProfile -NonInteractive -EncodedCommand %s" % (WSL_POWERSHELL, shlex.quote(enc))
+    try:
+        r = subprocess.run(list(prefix) + [line], capture_output=True, text=True, timeout=timeout)
+    except (subprocess.TimeoutExpired, OSError):
+        return None, ""
+    return (None if r.returncode in (255, 126, 127) else r.returncode), r.stdout
+
+
+def read_routed():
+    """-> (parsed (head, lines) or None, route name or None, [cause per route tried]). The direct route first; the second
+    only when the direct one gave no whole reading, and only if STEVE_FALLBACK_SSH names it (never a guessed host)."""
+    import shlex
+    import steve_cpu_retest as rt
+    causes = []
+    rc, out = rt.ps(FETCH_PS, timeout=120)
+    got = parse_fetch(out or "") if rc is not None else None
+    if got is not None:
+        return got, "direct", causes
+    causes.append("direct: " + ("ssh down or timed out" if rc is None else "rc=%s, no whole reading in the answer" % rc))
+    env = os.environ.get("STEVE_FALLBACK_SSH", "").strip()
+    if not env:
+        causes.append("fallback: not tried, STEVE_FALLBACK_SSH is not set (the command that reaches Steve's WSL from here)")
+        return None, None, causes
+    rc, out = ps_fallback(shlex.split(env), FETCH_PS, timeout=120)
+    got = parse_fetch(out or "") if rc is not None else None
+    if got is not None:
+        return got, "fallback", causes
+    causes.append("fallback: " + ("no answer (ssh down or timed out)" if rc is None else "rc=%s, no whole reading in the answer" % rc))
+    return None, None, causes
 
 
 def epoch(iso):
@@ -181,15 +222,13 @@ def main(argv=None):
     ap.add_argument("--run", help="read this run id instead of the one in state.json")
     ap.add_argument("--json", action="store_true")
     a = ap.parse_args(argv)
-    import steve_cpu_retest as rt
-    rc, out = rt.ps(FETCH_PS, timeout=120)
-    got = parse_fetch(out or "") if rc is not None else None
+    got, route, causes = read_routed()
     if got is None:
-        print("SOAK UNREACHABLE: could not read SteveDesktop (%s); nothing is known about the soak" %
-              ("ssh down or timed out" if rc is None else "rc=%s, no whole reading in the answer" % rc))
+        print("SOAK UNREACHABLE: could not read SteveDesktop (%s); nothing is known about the soak" % "; ".join(causes))
         return 3
     s = summarize(got[0], got[1], a.run)
-    print(json.dumps(s, indent=1) if a.json else render(s))
+    s["route"] = route
+    print(json.dumps(s, indent=1) if a.json else render(s) + ("\nroute: fallback (direct: %s)" % causes[0] if route == "fallback" else ""))
     return exit_code(s)
 
 
