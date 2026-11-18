@@ -6,7 +6,9 @@ Offline: a temp dir stands in for the repo top, with its own publish_tree_checks
 Cases: all green passes; one red refuses naming that check, its FAIL line and its fix, and not the green one; a
 ledger-only change runs nothing (a red check stays unrun); a timeout warns and refuses nothing; no config runs
 nothing; the bypass variable skips, out loud. A sparse git fixture clone (a check joining an in-cone list with an
-out-of-cone record) passes on a clean HEAD and refuses a violation committed in the cone, leaving no check tree. The real list: every listed test exists, and the listed seconds sum
+out-of-cone record) passes on a clean HEAD and refuses a violation committed in the cone, leaving no check tree. A pipeline
+test red on origin/main the same way before the change is named PRE-EXISTING and not refused; one the change turned red,
+made worse, or added, or one with no base to compare, is refused saying which. The real list: every listed test exists, and the listed seconds sum
 under budget_s. Exit 0 = all pass, 1 = a case failed.
 """
 import contextlib
@@ -108,9 +110,123 @@ def sparse_cases(tmp):
     check(not left, "no check tree left in the git dir: %s" % left)
 
 
+# RIMMANDRAKE_REPAIR_TWO_GAMES_DOOR_TEST_BLOCKS_EVERY_PUBLISH (A3, A4): a pipeline test red on origin/main before the change
+# refused every unrelated publish, and the refusal could not say "already red" from "your change broke it". The door
+# re-runs a red test on the commit the change sits on (HEAD's merge base with origin/main): red there with the same FAIL
+# lines is PRE-EXISTING (named, not refused); green there, red with new FAIL lines, or not readable there is refused,
+# saying which. The FAIL line carries a pid so the comparison must ignore numbers that move between runs.
+PIPE_TEST = r'''import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import pipe
+for f in pipe.FAULTS:
+    if f not in ("crash", "silent"):
+        print("FAIL %s fault (run %d)" % (f, 100000 + os.getpid()))
+print("ok the rest")
+if "crash" in pipe.FAULTS:
+    raise RuntimeError("boom in run %d" % (100000 + os.getpid()))
+sys.exit(1 if pipe.FAULTS else 0)
+'''
+
+
+def pipe_repo(tmp, name, base_faults, after_faults, remote=True, new_test=False):
+    """-> a work clone whose origin/main holds pipe.py with base_faults and whose HEAD commit makes it after_faults."""
+    up = os.path.join(tmp, name + "_up")
+    os.makedirs(os.path.join(up, os.path.dirname(P.PIPELINE_TESTS)))
+    json.dump({"timeout_s": 30, "pipeline_files": ["src/*.py"], "tests": [{"test": "src/selftest_pipe.py"}]},
+              open(os.path.join(up, P.PIPELINE_TESTS), "w"))
+    script(up, os.path.join("src", "pipe.py"), "FAULTS = %r\n" % (base_faults,))
+    if not new_test:
+        script(up, os.path.join("src", "selftest_pipe.py"), PIPE_TEST)
+    g("init", "-q", cwd=up)
+    g("add", "-A", cwd=up)
+    g("commit", "-q", "-m", "base", cwd=up)
+    work = os.path.join(tmp, name)
+    if remote:
+        g("clone", "-q", up, work, cwd=tmp)
+    else:
+        work = up
+    script(work, os.path.join("src", "pipe.py"), "FAULTS = %r\n# the change\n" % (after_faults,))
+    if new_test:
+        script(work, os.path.join("src", "selftest_pipe.py"), PIPE_TEST)
+        g("add", os.path.join("src", "selftest_pipe.py"), cwd=work)
+    g("commit", "-q", "-am", "change", cwd=work)
+    base = subprocess.run(["git", "-C", up, "rev-parse", "HEAD~1" if not remote else "HEAD"], capture_output=True,
+                          text=True).stdout.strip()
+    return work, base
+
+
+def pcall(top, changed):
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        try:
+            P.pipeline_checks(top, changed)
+            return None, buf.getvalue()
+        except P.Refuse as e:
+            return str(e), buf.getvalue()
+
+
+def door_base_cases(tmp):
+    ch = ["src/pipe.py"]
+    work, base = pipe_repo(tmp, "pre", ["old"], ["old"])
+    err, out = pcall(work, ch)
+    check(err is None and "PRE-EXISTING" in out and "selftest_pipe.py" in out and base[:10] in out
+          and "old fault" in out and "0 green, 1 PRE-EXISTING red" in out,
+          "a test red the same way on origin/main before the change: named PRE-EXISTING with the base sha, not refused "
+          "(%r)" % (err or out)[-240:])
+    work, base = pipe_repo(tmp, "broke", [], ["old"])
+    err, out = pcall(work, ch)
+    check(bool(err) and "selftest_pipe.py" in err and "green on origin/main %s" % base[:10] in err,
+          "a test green on origin/main that the change turns red: refused, saying the change broke it (%r)" % err)
+    work, base = pipe_repo(tmp, "worse", ["old"], ["old", "new"])
+    err, out = pcall(work, ch)
+    check(bool(err) and "new fault" in err and "red on origin/main %s too" % base[:10] in err
+          and "old fault" not in err.split("new in this change:")[-1],
+          "red on origin/main and the change adds a FAIL line: refused naming only the new line (%r)" % err)
+    work, base = pipe_repo(tmp, "noremote", ["old"], ["old"], remote=False)
+    err, out = pcall(work, ch)
+    check(bool(err) and "UNMEASURED" in err and "not proved pre-existing" in err,
+          "no origin/main to compare with: refused, the base reading UNMEASURED by name (%r)" % err)
+    work, base = pipe_repo(tmp, "newtest", ["old"], ["old"], new_test=True)
+    err, out = pcall(work, ch + ["src/selftest_pipe.py"])
+    check(bool(err) and "absent on origin/main" in err,
+          "a red test the change itself adds is refused, never excused as pre-existing (%r)" % err)
+    # Codex review 2026-11-18: ways a worse red could read as the old one
+    work, base = pipe_repo(tmp, "crashafter", ["old"], ["old", "crash"])
+    err, out = pcall(work, ch)
+    check(bool(err) and "new in this change" in err and "crash" in err,
+          "the same FAIL lines and then a crash: refused, the crash named as new (%r)" % err)
+    work, base = pipe_repo(tmp, "twice", ["old"], ["old", "old"])
+    err, out = pcall(work, ch)
+    check(bool(err) and "new in this change" in err, "a FAIL line that now appears twice is new, not the old one (%r)" % err)
+    work, base = pipe_repo(tmp, "silent", ["silent"], ["silent"])
+    err, out = pcall(work, ch)
+    check(bool(err) and "no FAIL line and no traceback" in err,
+          "a red with nothing to compare by is refused, never excused as pre-existing (%r)" % err)
+    work, base = pipe_repo(tmp, "dirty", ["old"], ["old", "new"])
+    script(work, os.path.join("src", "pipe.py"), "FAULTS = ['old']\n# an uncommitted edit hides the committed new fault\n")
+    err, out = pcall(work, ch)
+    check(bool(err) and "new fault" in err and "new in this change" in err,
+          "the working tree reads the old red but HEAD's commit adds a fault: compared commit to commit, refused (%r)" % err)
+    work, base = pipe_repo(tmp, "dirtyred", ["old"], [])
+    script(work, os.path.join("src", "pipe.py"), "FAULTS = ['old']\n# an uncommitted edit makes it red\n")
+    err, out = pcall(work, ch)
+    check(bool(err) and "green at HEAD's commit" in err,
+          "red only through uncommitted edits (HEAD's commit is green): refused, not excused (%r)" % err)
+    work, base = pipe_repo(tmp, "unknown", ["old"], ["old"], remote=False)
+    check(P._changed_since_origin(work) is None, "no origin/main: the change set reads unknown (None), not empty")
+    err, out = pcall(work, None)
+    check(bool(err) and "every pipeline test runs" in out and "selftest_pipe.py" in err,
+          "an unknown change set runs every pipeline test (it used to run none) (%r)" % (err or out))
+    left = [n for w in ("pre", "broke", "worse", "newtest", "crashafter", "twice", "silent") for n in os.listdir(os.path.join(tmp, w, ".git"))
+            if n.startswith(P.CHECKTREE_PREFIX)]
+    check(not left, "no base tree left in any git dir: %s" % left)
+
+
 def main():
     with tempfile.TemporaryDirectory() as tmp:
         sparse_cases(tmp)
+    with tempfile.TemporaryDirectory() as tmp:
+        door_base_cases(tmp)
     with tempfile.TemporaryDirectory() as tmp:
         script(tmp, "green.py", "print('ok all good')\n")
         script(tmp, "red.py", "print('FAIL the planted fault in x.py')\nraise SystemExit(1)\n")

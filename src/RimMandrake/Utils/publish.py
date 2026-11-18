@@ -41,6 +41,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
 
 REMOTE, BRANCH = "origin", "main"
@@ -662,10 +663,12 @@ def door_inputs(top, test):
 
 def pipeline_selection(top, changed, cfg):
     """-> the pipeline tests (not live_excluded) whose door_inputs the change touches; [] when it touches no pipeline
-    file."""
+    file; every one when the change set is unknown (None: no origin/main to diff against)."""
+    live = set(cfg.get("live_excluded", {}))
+    if changed is None:
+        return [c for c in cfg.get("tests", ()) if c["test"] not in live]
     if not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())):
         return []
-    live = set(cfg.get("live_excluded", {}))
     ch = set(changed)
     return [c for c in cfg.get("tests", ()) if c["test"] not in live and door_inputs(top, c["test"]) & ch]
 
@@ -675,28 +678,162 @@ def pipeline_checks(top, changed):
     phase for fluid code): a change touching a pipeline file runs the pipeline tests whose inputs it touches and
     refuses on a red. -> seconds added (0.0 when nothing ran), or raises Refuse."""
     cfg_path = os.path.join(top, PIPELINE_TESTS)
-    if not os.path.isfile(cfg_path) or not changed:
+    if not os.path.isfile(cfg_path) or changed == []:
         return 0.0
     skip = os.environ.get("RM_PUBLISH_SKIP_PIPELINE_CHECKS", "").strip()
     if skip:
         print("pipeline checks SKIPPED by RM_PUBLISH_SKIP_PIPELINE_CHECKS: %s" % skip)
         return 0.0
     cfg = json.load(open(cfg_path, encoding="utf-8"))
-    if not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())):
+    if changed is None:     # no origin/main to diff against: what the change touches is unknown, so nothing is skipped
+        print("pipeline checks: the change set is unknown (no origin/main here), so every pipeline test runs")
+    elif not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())):
         return 0.0
+    base = door_base(top)
     if is_sparse(top):
         with full_head_tree(top) as full:
-            return _run_pipeline_checks(full, changed, cfg)
-    return _run_pipeline_checks(top, changed, cfg)
+            return _run_pipeline_checks(full, changed, cfg, base)
+    return _run_pipeline_checks(top, changed, cfg, base)
 
 
-def _run_pipeline_checks(top, changed, cfg):
+def _run_pipeline_checks(top, changed, cfg, base=(None, "not asked")):
     sel = pipeline_selection(top, changed, cfg)
     if not sel:
         print("pipeline checks: a pipeline file changed, no pipeline test reads it")
         return 0.0
-    wall = _run_tree_checks(top, {"checks": sel, "timeout_s": cfg.get("timeout_s", 180)}, what="pipeline check")
+    wall = _run_tree_checks(top, {"checks": sel, "timeout_s": cfg.get("timeout_s", 180)}, what="pipeline check",
+                            base=base)
     return wall
+
+
+def door_base(top):
+    """-> (sha, None): the commit this change sits on (HEAD's merge base with origin/main), which a red pipeline test is
+    re-run on; or (None, why) when there is none to read."""
+    _, track, _label = target_ref(top)
+    if not ref_exists(top, track):
+        return None, "no %s in this clone" % track
+    r = run(top, "merge-base", "HEAD", track, check=False)
+    sha = (r.stdout or "").strip()
+    if r.returncode or not sha:
+        return None, "git merge-base HEAD %s: %s" % (track, (r.stderr or "").strip() or "no common commit")
+    return sha, None
+
+
+FAIL_RX = re.compile(r"\s*(FAIL|RED|BROKEN|STALE)")
+TMP_RX = re.compile(r"(?:/private)?(?:/tmp|/var/folders|%s)/\S*" % re.escape(tempfile.gettempdir()))
+
+
+def _norm(ln, tree):
+    """What moves between two runs of the same code, blanked: the tree's own path, temp paths, and numbers of four or more
+    digits (pids, timestamps, unit names). A short number (a count, a case number) is kept, so "unit 2" is not "unit 1"."""
+    ln = ln.strip().replace(os.path.realpath(tree), "<TOP>").replace(tree, "<TOP>")
+    return re.sub(r"\d{4,}", "N", TMP_RX.sub("<TMP>", ln))
+
+
+def red_signature(o, tree, rc):
+    """-> (Counter of a red run's normalised FAIL lines and crash, {key: one raw line}), or (None, why) when the run gives
+    nothing to compare by (no FAIL line and no traceback): such a red is never proved pre-existing. A traceback counts
+    by its last 20 lines, so a crash after the same FAIL lines, or at another place, is a difference."""
+    import collections
+    lines = o.splitlines()
+    fails = [ln for ln in lines if FAIL_RX.match(ln)]
+    crash = "Traceback (most recent call last)" in o
+    if not fails and not crash:
+        return None, "it prints no FAIL line and no traceback to compare by"
+    keys = collections.Counter(_norm(ln, tree) for ln in fails)
+    raw = {_norm(ln, tree): ln.strip() for ln in fails}
+    if crash:
+        tail = [ln for ln in lines if ln.strip()][-20:]
+        k = "CRASH: " + " / ".join(_norm(ln, tree) for ln in tail)
+        keys[k] += 1
+        raw[k] = "crash: " + (tail[-1].strip() if tail else "")
+    keys["exit %s" % rc] += 1
+    raw["exit %s" % rc] = "exit %s" % rc
+    return keys, raw
+
+
+def split_pre_existing(top, base, red, run_one):
+    """RIMMANDRAKE_REPAIR_TWO_GAMES_DOOR_TEST_BLOCKS_EVERY_PUBLISH (A3, A4): re-run each red test on the base commit, in a
+    throwaway shared clone, beside a run on HEAD's commit in another (the door's own run read the working tree; the
+    comparison is commit to commit). red: [(c, output, rc)]. -> (still_red [(c, o, note)], pre_existing [(c, o, note)]).
+    Pre-existing only when red at both, with every FAIL line, crash and exit code of HEAD's run also in the base's
+    (red_signature); green there, anything new, absent there, green at HEAD's commit, past its time, nothing to compare
+    by, or no base to read stays red, its note saying which (a reading that could not be taken proves nothing). Known
+    limit: numbers of four or more digits are blanked (pids, timestamps), so a FAIL line that differs only in one reads
+    as the same line."""
+    sha, why = base
+    if not sha:
+        return [(c, o, "origin/main's reading UNMEASURED (%s): not proved pre-existing" % why) for c, o, _rc in red], []
+    still, pre = [], []
+    try:
+        with full_head_tree(top, rev="HEAD", what="HEAD's commit") as htree, \
+                full_head_tree(top, rev=sha, what="the base") as tree:
+            here = [x for x in red if os.path.isfile(os.path.join(tree, x[0]["test"]))]
+            with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
+                got = list(ex.map(lambda x: (run_one(x[0], htree), run_one(x[0], tree)), here))
+    except (Refuse, OSError, subprocess.SubprocessError) as e:
+        return [(c, o, "origin/main's reading UNMEASURED (%s: %s): not proved pre-existing" % (
+            type(e).__name__, e)) for c, o, _rc in red], []
+    for c, o, _rc in red:
+        if not any(c is x[0] for x in here):
+            still.append((c, o, "absent on origin/main %s: a test this change adds" % sha[:10]))
+    for (c, o, _rc), ((_h, hrc, ho, _ht), (_b, rc, bo, _t)) in zip(here, got):
+        if hrc is None or rc is None:
+            still.append((c, o, "%s reading UNMEASURED (ran past its time there): not proved pre-existing" % (
+                "HEAD's commit" if hrc is None else "origin/main %s" % sha[:10])))
+            continue
+        if hrc == 0:
+            still.append((c, o, "red in this working tree but green at HEAD's commit: uncommitted edits make it red, so "
+                                "the commit cannot be compared; not proved pre-existing"))
+            continue
+        if rc == 0:
+            still.append((c, o, "green on origin/main %s: this change turned it red" % sha[:10]))
+            continue
+        now, raw = red_signature(ho, htree, hrc)
+        was, wraw = red_signature(bo, tree, rc)
+        if now is None or was is None:
+            still.append((c, o, "red on origin/main %s too, but %s %s: not proved pre-existing" % (
+                sha[:10], "at HEAD's commit" if now is None else "there", raw if now is None else wraw)))
+            continue
+        new = [raw[k] for k in now if now[k] > was.get(k, 0)]
+        if new:
+            still.append((c, o, "red on origin/main %s too, but these FAIL lines are new in this change: %s"
+                          % (sha[:10], " | ".join(new[:3]))))
+        else:
+            pre.append((c, o, "red the same way on origin/main %s before this change" % sha[:10]))
+    return still, pre
+    try:
+        with full_head_tree(top, rev=sha, what="the base") as tree:
+            here = [x for x in red if os.path.isfile(os.path.join(tree, x[0]["test"]))]
+            with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
+                got = list(ex.map(lambda x: run_one(x[0], tree), here))
+    except (Refuse, OSError, subprocess.SubprocessError) as e:
+        return still + [(c, o, "origin/main's reading UNMEASURED (%s: %s): not proved pre-existing" % (
+            type(e).__name__, e)) for c, o, _rc in red], []
+    for c, o, _rc in red:
+        if not any(c is x[0] for x in here):
+            still.append((c, o, "absent on origin/main %s: a test this change adds" % sha[:10]))
+    for (c, o, arc), (_c, rc, bo, _t) in zip(here, got):
+        if rc is None:
+            still.append((c, o, "origin/main %s reading UNMEASURED (ran past its time there): not proved pre-existing"
+                          % sha[:10]))
+            continue
+        if rc == 0:
+            still.append((c, o, "green on origin/main %s: this change turned it red" % sha[:10]))
+            continue
+        now, raw = red_signature(o, top, arc)
+        was, wraw = red_signature(bo, tree, rc)
+        if now is None or was is None:
+            still.append((c, o, "red on origin/main %s too, but %s %s: not proved pre-existing" % (
+                sha[:10], "here" if now is None else "there", raw if now is None else wraw)))
+            continue
+        new = [raw[k] for k in now if now[k] > was.get(k, 0)]
+        if new:
+            still.append((c, o, "red on origin/main %s too, but these FAIL lines are new in this change: %s"
+                          % (sha[:10], " | ".join(new[:3]))))
+        else:
+            pre.append((c, o, "red the same way on origin/main %s before this change" % sha[:10]))
+    return still, pre
 
 
 def is_sparse(top):
@@ -710,7 +847,7 @@ CHECKTREE_STALE_S = 3600
 
 
 @contextlib.contextmanager
-def full_head_tree(top):
+def full_head_tree(top, rev="HEAD", what="HEAD"):
     """A sparse clone cannot run the whole-tree checks: the files they read are not checked out, so they went red
     blind (lessons 2026-11-15 194926Z/195130Z) or green blind. Yield a full checkout of HEAD instead: a throwaway
     `git clone --shared` inside this clone's git dir (no objects copied, ~15 s for the whole tree on ext4), removed
@@ -723,7 +860,7 @@ def full_head_tree(top):
         p = os.path.join(gitdir, n)
         if n.startswith(CHECKTREE_PREFIX) and time.time() - os.path.getmtime(p) > CHECKTREE_STALE_S:
             shutil.rmtree(p, ignore_errors=True)
-    head = out(top, "rev-parse", "HEAD")
+    head = out(top, "rev-parse", rev)
     tmp = tempfile.mkdtemp(prefix=CHECKTREE_PREFIX, dir=gitdir)
     try:
         t0 = time.monotonic()
@@ -732,10 +869,11 @@ def full_head_tree(top):
             r = subprocess.run(["git", "-c", "core.hooksPath=/dev/null", *a], capture_output=True, text=True,
                                timeout=GIT_TIMEOUT_S)
             if r.returncode:
-                raise Refuse("sparse clone: the full checkout of HEAD for the tree checks failed: git %s: %s"
-                             % (a[0] if a[0] != "-C" else a[2], r.stderr.strip()))
-        print("tree checks: sparse clone, running them on a full checkout of HEAD %s (%.1f s)"
-              % (head[:12], time.monotonic() - t0), flush=True)
+                raise Refuse("the full checkout of %s for the checks failed: git %s: %s"
+                             % (what, a[0] if a[0] != "-C" else a[2], r.stderr.strip()))
+        print("tree checks: %s, running them on a full checkout of %s %s (%.1f s)"
+              % ("sparse clone" if rev == "HEAD" else "a red test re-run", what, head[:12], time.monotonic() - t0),
+              flush=True)
         yield tmp
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
@@ -746,14 +884,16 @@ def full_head_tree(top):
 LEDGER_IDENTITY = ("RM_MODLEDGER_WRITER", "RM_MODLEDGER_TOKEN")
 
 
-def _run_tree_checks(top, cfg, what="tree check"):
+def _run_tree_checks(top, cfg, what="tree check", base=None):
+    """base: (sha, why) from door_base for the pipeline checks, whose reds are re-run on it (split_pre_existing); None
+    for the whole-tree checks, which refuse on any red."""
     limit = cfg.get("timeout_s", 60)
     env = {k: v for k, v in os.environ.items() if k not in LEDGER_IDENTITY}
 
-    def one(c):
+    def one(c, tree=top):
         t0 = time.monotonic()
         try:
-            r = subprocess.run([sys.executable, os.path.join(top, c["test"])], cwd=top, capture_output=True, text=True,
+            r = subprocess.run([sys.executable, os.path.join(tree, c["test"])], cwd=tree, capture_output=True, text=True,
                                timeout=limit, stdin=subprocess.DEVNULL, env=env)
             return c, r.returncode, (r.stdout or "") + (r.stderr or ""), time.monotonic() - t0
         except subprocess.TimeoutExpired:
@@ -763,26 +903,42 @@ def _run_tree_checks(top, cfg, what="tree check"):
         res = list(ex.map(one, cfg["checks"]))
     wall = time.monotonic() - t0
     slow = [c["test"] for c, rc, _o, _t in res if rc is None]
-    red = [(c, o) for c, rc, o, _t in res if rc not in (0, None)]
+    red = [(c, o, rc) for c, rc, o, _t in res if rc not in (0, None)]
     for t in slow:
         print("WARNING: %s %s ran past %d s: UNMEASURED, not refused" % (what, t, limit))
+    notes, pre = {}, []
+    if red and base is not None:
+        red, pre = split_pre_existing(top, base, red, one)
+        for c, o, note in pre:
+            fails = [ln.strip() for ln in o.splitlines() if FAIL_RX.match(ln)][:3]
+            print("WARNING: PRE-EXISTING RED, not refused: %s %s is %s (%s). Your change did not make it; it is a defect "
+                  "of its own to fix and file. rerun: python3 %s" % (what, c["test"], note,
+                                                                   "; ".join(fails) or "no FAIL line", c["test"]))
+        notes = {c["test"]: note for c, _o, note in red}
+        red = [(c, o) for c, o, _note in red]
+    else:
+        red = [(c, o) for c, o, _rc in red]
     if red:
         lines = []
         for c, o in red:
-            fails = [ln.strip() for ln in o.splitlines() if re.match(r"\s*(FAIL|RED|BROKEN|STALE)", ln)][:3]
-            lines.append("  %s\n    %s\n    fix: %s\n    rerun: python3 %s"
+            fails = [ln.strip() for ln in o.splitlines() if FAIL_RX.match(ln)][:3]
+            lines.append("  %s\n    %s\n%s    fix: %s\n    rerun: python3 %s"
                          % (c["test"], "\n    ".join(fails) or (o.strip().splitlines() or ["(no output)"])[-1],
+                            "    %s\n" % notes[c["test"]] if c["test"] in notes else "",
                             c.get("fix", "see the test's FAIL line"), c["test"]))
         raise Refuse("%d %s(s) red after your commit (it stays on HEAD; fix, then publish again):\n%s"
                      % (len(red), "whole-tree check" if what == "tree check" else what, "\n".join(lines)))
-    print("%ss: %d green in %.1f s" % (what, len(res) - len(slow), wall))
+    print("%ss: %d green%s in %.1f s" % (what, len(res) - len(slow) - len(pre),
+                                         ", %d PRE-EXISTING red (not refused)" % len(pre) if pre else "", wall))
     return wall
 
 
 def _changed_since_origin(top):
+    """-> the paths HEAD's local commits touch, or None when there is no origin/main to diff against (unknown, which the
+    checks treat as 'run everything', never as 'nothing changed')."""
     _, track, _label = target_ref(top)
     if not ref_exists(top, track):
-        return []
+        return None
     r = run(top, "diff", "--name-only", "%s...HEAD" % track, check=False)
     return [p for p in (r.stdout or "").splitlines() if p]
 
