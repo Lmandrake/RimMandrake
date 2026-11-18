@@ -14,6 +14,7 @@ import copy
 import json
 import os
 import re
+import shutil
 import sys
 import tempfile
 
@@ -1357,6 +1358,20 @@ def test_apply_edges():
     finally:
         for k in ("RM_OWNER_HOLD_FILE", "RM_DETACHED_POOL", "RM_CLEANSE_STATUS_DIR"):
             os.environ.pop(k, None)
+    # a first look whose record list is unreadable is blocked, never a clean round 0
+    _converge_env()
+    try:
+        for bad in (None, "none", [1]):
+            repo, out = proposal()
+            json.dump({"mod": "Demo", "author": "codex", "remaining": bad}, open(os.path.join(out, "review.json"), "w"))
+            fx = FX(repo, codex=[], claude=[])
+            fx.snap()
+            rec = DC.converge_mod("Demo", fx)
+            check(rec["state"] == "blocked" and not os.path.exists(os.path.join(out, "converge.json")),
+                  "a review.json whose remaining is %r is blocked, never converged (%s)" % (bad, rec["state"]))
+    finally:
+        for k in ("RM_OWNER_HOLD_FILE", "RM_DETACHED_POOL", "RM_CLEANSE_STATUS_DIR"):
+            os.environ.pop(k, None)
     # the materialized plan loads through the readers
     repo, concept, out = applyable()
     r = DC.apply_plan(repo, "Demo")
@@ -1677,10 +1692,62 @@ def test_apply_write():
           "write: after a cleanup fault the install is complete")
 
 
+def test_release():
+    """Effects.release (RIMMANDRAKE_RELEASE_CLEANSE_CLONES_RECORDS_PIN_POOL_FULL): a clone whose only dirt is untracked
+    conversations/*.md records carries them out (published) and is removed; any other dirt keeps it; a failed carry
+    keeps it and says why. The pool filled 16 of 16 on such clones, 2026-11-17."""
+    import scratch_clone as SC
+    landed = tempfile.mkdtemp(prefix="dc_landed_")
+
+    class Rel(DC.Effects):
+        def __init__(self, fail=False):
+            self.fail, self.published = fail, []
+
+        def publish(self, cwd, paths, msg):
+            if self.fail:
+                raise RuntimeError("./publish exit 1: REFUSED (injected)")
+            for p in paths:
+                os.makedirs(os.path.dirname(os.path.join(landed, p)), exist_ok=True)
+                shutil.copy(os.path.join(cwd, p), os.path.join(landed, p))
+                os.remove(os.path.join(cwd, p))      # landed: the clone reads clean again
+            self.published.append(list(paths))
+            return "abc1234"
+
+    def clone_with(*files):
+        c = tempfile.mkdtemp(prefix="dc_rel_")
+        for f in files:
+            os.makedirs(os.path.dirname(os.path.join(c, f)) or c, exist_ok=True)
+            open(os.path.join(c, f), "w").write("x")
+        return c
+    real = (SC.clone_unpushed, SC.clone_in_use, DC.Effects.changed)
+    SC.clone_unpushed, SC.clone_in_use = (lambda p, strict=True: False), (lambda p: False)
+    DC.Effects.changed = lambda self, cwd: sorted(
+        os.path.relpath(os.path.join(b, f), cwd) for b, _d, fs in os.walk(cwd) for f in fs)
+    try:
+        c = clone_with("conversations/x.md")
+        fx = Rel()
+        said = fx.release(c)
+        check(not os.path.exists(c) and os.path.isfile(os.path.join(landed, "conversations", "x.md"))
+              and fx.published == [["conversations/x.md"]],
+              "release: a clone whose only dirt is conversations/x.md publishes it and is removed (%s)" % said)
+        c = clone_with("conversations/x.md", "stray.txt")
+        said = Rel().release(c)
+        check(os.path.isdir(c) and "kept" in said, "release: conversations plus another untracked file keeps it (%s)" % said)
+        c = clone_with()
+        said = Rel().release(c)
+        check(not os.path.exists(c) and "removed" in said, "release: a clean clone is removed (%s)" % said)
+        c = clone_with("conversations/y.md")
+        said = Rel(fail=True).release(c)
+        check(os.path.isfile(os.path.join(c, "conversations", "y.md")) and "kept" in said and "REFUSED (injected)" in said,
+              "release: a failed carry keeps the clone and names the failure (%s)" % said)
+    finally:
+        SC.clone_unpushed, SC.clone_in_use, DC.Effects.changed = real
+
+
 def main():
     for t in (test_check, test_detector, test_case, test_hold, test_run, test_review, test_fleet,
               test_review_hardening, test_converge, test_gather, test_apply, test_apply_edges,
-              test_apply_write):
+              test_apply_write, test_release):
         try:
             t()
         except Exception as e:      # a crash is a failed row, not a silent stop

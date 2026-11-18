@@ -937,13 +937,32 @@ class Effects:
 
     def release(self, clone):
         """Remove the finished mod's clone when nothing in it is unpushed, untracked or in use; otherwise keep it.
-        Not relentless_disk.park: the Relentless warm shelf hands its clones to builders that need a full checkout,
-        and this one is sparse (relentless.py removes a tracked-files-only tree rather than park it, for that reason)."""
+        Conversation records (conversations/*.md, which the conversation hook writes inside the clone) are carried out
+        first by publishing them, when they are the clone's only dirt: kept clones of nothing but records filled the
+        pool 16 of 16 and crashed the converge fleet, 2026-11-17 (RIMMANDRAKE_RELEASE_CLEANSE_CLONES_RECORDS_PIN_POOL_
+        FULL). A failed carry keeps the clone and says why. Not relentless_disk.park: the Relentless warm shelf hands
+        its clones to builders that need a full checkout, and this one is sparse (relentless.py removes a tracked-files-
+        only tree rather than park it, for that reason)."""
         try:
             import shutil
             import scratch_clone as SC
             from pathlib import Path
-            if SC.clone_unpushed(Path(clone), strict=True) or SC.clone_in_use(Path(clone)) or self.changed(clone):
+            if SC.clone_unpushed(Path(clone), strict=True) or SC.clone_in_use(Path(clone)):
+                return "kept at %s (unpushed, uncommitted or in use)" % clone
+            dirt = self.changed(clone)
+            records = [p for p in dirt if p.startswith("conversations/") and p.endswith(".md")
+                       and os.path.isfile(os.path.join(clone, p))]        # a deleted record is other dirt: kept
+            if dirt and len(records) == len(dirt):
+                try:
+                    sha = self.publish(clone, records, "conversations: %d record(s) carried out of cleanse clone %s"
+                                       % (len(records), os.path.basename(clone)))
+                except Exception as e:  # noqa: BLE001
+                    return "kept at %s (carrying %d conversation record(s) out failed: %s)" % (clone, len(records), e)
+                if SC.clone_unpushed(Path(clone), strict=True) or self.changed(clone):
+                    return "kept at %s (records published %s, but the clone still reads unpushed or dirty)" % (clone, sha)
+                shutil.rmtree(clone)
+                return "removed %s (its %d conversation record(s) published %s)" % (clone, len(records), sha)
+            if dirt:
                 return "kept at %s (unpushed, uncommitted or in use)" % clone
             shutil.rmtree(clone)
             return "removed %s (everything in it is on origin/main)" % clone
@@ -1718,6 +1737,11 @@ def converge_mod(mod, fx, clone=None):
     if not verdict_current(out, doc):
         return blocked("%s is a verdict of other bytes (its digest is not the proposal's): stale; review it again"
                        % name)
+    key = "open" if name == "converge.json" else "remaining"
+    if not isinstance(doc.get(key), list) or not all(isinstance(r, dict) for r in doc[key]):
+        # an unreadable record list is not zero open records: it never converges as clean
+        return blocked("%s %s is %s, not a list of records: the verdict cannot be read; review it again"
+                       % (name, key, type(doc.get(key)).__name__))
     if converge_done(clone, mod):
         state = _converge_state(name, doc)
         fx.status(mod, state, "already done (resumed): %s%s" % (out_rel, name))
