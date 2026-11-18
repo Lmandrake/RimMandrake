@@ -615,6 +615,23 @@ def pay_void_debts(world):
     return n
 
 
+def row_in_flight(world, row):
+    """A filed clone row whose dirt is still there while a live run owns the clone (its lock, or a process with its cwd
+    inside): not standing, and NOT cleared either. RIMMANDRAKE_KEEP_IN_FLIGHT_DEBRIS_OPEN_SWEEP_BURIED_IT:
+    sweep read such a record as "every filed row cleared" and resolved it, so the dirt the run left behind never
+    stood again. An unreadable reading is not in flight (row_standing already keeps that row standing)."""
+    if row.get("kind") != "clone" or row.get("act") not in STANDING:
+        return False
+    if check_clone(world, row["what"], False)["act"] not in ("filed", "unmeasured"):
+        return False
+    if clone_owner_state(world, row["what"])[0] == "live":
+        return True
+    try:
+        return bool(world.clone_in_use(row["what"]))
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def standing(world=None, now=None):
     """-> [(path, rec, [standing rows])] for every open file, plus one pseudo-file for the aged debts."""
     world = world or World()
@@ -644,8 +661,8 @@ def sweep(world=None):
         if not rec:                             # the aged debts: cleared only by paid() or `wrapup.py paid`
             left += bool(rows)
             continue
-        if rows:
-            left += 1
+        if rows or any(row_in_flight(world, r) for r in rec.get("rows", [])):
+            left += 1                           # standing, or in flight: a run that ends dirty must stand again
             continue
         _resolve(f, "every filed row cleared on re-measure")
         cleared += 1
