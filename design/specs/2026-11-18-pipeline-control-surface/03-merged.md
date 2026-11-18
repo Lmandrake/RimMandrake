@@ -137,7 +137,7 @@ run already live by default.
 
 ## Rulings
 
-Owner, by card, 2026-11-18 11:06 AM PST.
+Owner, by card, 2026-11-18 (asked 11:04 AM PST, answered by 11:25 AM PST).
 
 1. **Does a void run's spend count toward the stage spend ceiling?** He picked "Does not count (Recommended)"
    (the Conductor's recommended option, from pass 1's proposal): the ceiling measures what the mod cost on its
