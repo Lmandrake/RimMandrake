@@ -1,0 +1,46 @@
+RIMMANDRAKE_CHECK_SCOPE_SOURCE_EVENT_EXISTS_FAKE_ID_OPENS — acceptance evidence
+
+verify: python3 src/RimMandrake/Utils/run_selftests.py --only selftest_designer_stage selftest_designer_repin selftest_designer_stage_land
+  base 02ca67b3a4 : PASS 2/3 FAIL 1/3   ->  after: identical (the 1 FAIL is pre-existing)
+direct: python3 src/RimMandrake/rimflow/selftest_designer_stage.py
+  base: 407 ok / 1 FAIL   ->  after: 418 ok / 1 FAIL
+
+READ BY THE CONDUCTOR, not taken from the builder's report. I copied the new test onto the
+BASE designer_stage.py and watched these fail:
+  FAIL scope_source: a forged OWNER:999999 does NOT open the scope (it finds no event in a ledger that was read)  got: []
+  FAIL scope_source: a forged id inside a list does not open the scope  got: []
+  FAIL scope_source: a forged id inside a legacy space-separated string does not open the scope  got: []
+  FAIL scope_source: OWNER:abc is a prefix, not an event id, so it does not open the scope either  got: []
+and after the fix, all eight scope_source cases read ok, including:
+  ok scope_source: the probe tsns are not already in the real reading (so FOUND below is this fixture's doing)
+  ok scope_source: an unreadable OWNER ledger is UNMEASURED - the scope stays shut and no id is called forged
+  ok scope_source: an OWNER ledger that read as no events at all is UNMEASURED too, never a forgery report
+      (CT.owner_events returns {} for an unreadable shard)
+
+THE THREE ANSWERS (owner, 2026-11-17), each asserted by its own case:
+  token present in a read ledger      -> no error, the scope opens
+  token absent from a READ ledger     -> "finds no event in OWNER.jsonl"   (the defect fixed)
+  owner_ev falsy (None or {})         -> "UNMEASURED ... the scope stays shut and no citation is called forged"
+  no OWNER:<digits> token at all      -> the pre-existing "needs scope_source OWNER:<tsn>"
+The UNMEASURED case asserts the message CONTAINS "UNMEASURED" and does NOT contain "finds no event",
+so the two can never collapse into one another.
+
+WHY falsiness and not `is None`: the builder MEASURED that CT.owner_events returns {} for an
+unreadable shard. An is-None-only check would have passed its own test while leaving the real
+production path reporting forgeries for an unreadable ledger — the false-forgery direction the
+owner's rule forbids.
+
+BUILDER'S REGIME SWEEP (its own, not re-run by me): 36 record.json / 1945 inventory entries /
+8522 ledger events; entries the new check refuses: 0 (limit 0). With the ledger forced unreadable,
+32/32 opened_by_owner entries held shut as UNMEASURED and none was called forged. The 4 legacy
+space-separated multi-OWNER strings in ExplosiveKnockback's record.json split and pass.
+
+CORRECTION TO MY OWN BRIEF: I told the builder selftest_designer_stage had 2 pre-existing FAILs.
+It has ONE. My `grep -c` had matched the trailing "FAILED 1:" summary line as well as the FAIL
+line. The builder measured it and said so; it was right and I was wrong.
+
+OWED, NOT FIXED HERE (the builder found it and left it alone, correctly): designer_stage.py l.347
+in source_errors guards with `owner_ev is not None`, but production passes CT.owner_events(...),
+which yields {} for an unreadable ledger — so an unreadable ledger makes every OWNER `source`
+citation read as "finds no event". Same defect class, different check, and it is the false-forgery
+direction. Filed separately.
