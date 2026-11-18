@@ -2685,25 +2685,42 @@ def run(a, sd: Path) -> int:
     start = time.time()
     stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(start))
     before = free_gb()
+    # where the run's time goes, phase by phase (RIMMANDRAKE_UNCLOG_SCRATCH_ARCHIVE_BACKLOG_29_KB_CLONES_EACH: every
+    # run since 2026-11-18 08:00 PST spent its whole --max-seconds before apply_rows, so ARCHIVE rows were all deferred,
+    # and nothing said which phase ate the budget). `orphans` includes writing tmp_runs.jsonl.
+    phase_s, mark = {}, [start]
+
+    def lap(name):
+        now = time.time()
+        phase_s[name] = round(now - mark[0], 1)
+        mark[0] = now
     if a.apply:
         sanity_start(sd, start)
+    lap("sanity")
     ctx = Ctx(start)
+    lap("live")
     fixtures = sweep_fixtures(ctx, a.apply, start + a.max_seconds / 2 if a.max_seconds else 0)
+    lap("fixtures")
     tmp_before = tmp_reading()
     tmp, tmp_rows = sweep_tmp(ctx, a.apply, start + a.max_seconds / 2 if a.max_seconds else 0)
+    lap("tmp")
     # the real run-dir root only on a real run (a test that sets its roots names RM_RUN_TMP_ROOT to get one)
     runs_tmp = sweep_run_tmp() if a.apply and (os.environ.get("SCRATCH_REAP_ROOTS") is None
                                                or os.environ.get("RM_RUN_TMP_ROOT")) else {}
+    lap("run_tmp")
     if tmp_rows or tmp["errors"]:
         rotate(sd / "tmp_runs.jsonl")
         with open(sd / "tmp_runs.jsonl", "a") as f:
             f.write(json.dumps({"ts": stamp, "apply": a.apply, "summary": tmp, "rows": tmp_rows}) + "\n")
     orphans = prune_orphan_bundles() if a.apply and os.environ.get("SCRATCH_REAP_ROOTS") is None else {}
+    lap("orphans")
     rows = judge_all(ctx)
+    lap("judge")
     failures: list[str] = list(fixtures.get("failed", [])) + list(tmp.get("failed", []))   # judged gone, would not go
     freed, deferred = 0, 0
     if a.apply:
         freed, deferred = apply_rows(rows, ctx, a.max_seconds, failures, start)
+    lap("apply")
     rotate(sd / "runs.jsonl")
     with open(sd / "runs.jsonl", "a") as f:
         f.write(json.dumps({"ts": stamp, "apply": a.apply, "rows": rows}) + "\n")
@@ -2731,7 +2748,7 @@ def run(a, sd: Path) -> int:
            "blind_dirs": len(ctx.borrows.blind), "other_uid_procs": ctx.live.other_uid,
            "refused_bytes": sum(r["bytes"] or 0 for r in rows if r["verdict"] == "REFUSE"),
            "tmp": dict(tmp, errors=tmp["errors"][:5], before=tmp_before, after=tmp_reading()), "run_tmp": runs_tmp,
-           "orphan_bundles": orphans}
+           "orphan_bundles": orphans, "phase_s": phase_s}
     if a.apply:
         sanity_end(sd, end, rows, rec)
         record(sd, rec)

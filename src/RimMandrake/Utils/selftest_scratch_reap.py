@@ -610,6 +610,10 @@ def run_cases(env):
     rec = json.loads((td / "state/last_run.json").read_text())
     check(rec["ok"] is True and rec["freed_bytes"] > 0 and rec["counts"]["DELETED"] > 5 and rec["last_ok_epoch"],
           "last_run.json records the real run")
+    ph = rec.get("phase_s") or {}
+    check(set(ph) == {"sanity", "live", "fixtures", "tmp", "run_tmp", "orphans", "judge", "apply"}
+          and all(isinstance(v, (int, float)) and v >= 0 for v in ph.values()) and sum(ph.values()) <= rec["seconds"] + 2,
+          "last_run.json says where the run's time went, phase by phase (%s)" % ph)
 
     # a session shell goes once its clones have aged out, carrying its residue; the next run alarms nothing new
     n_before = len(alarms.splitlines())
