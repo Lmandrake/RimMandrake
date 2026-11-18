@@ -595,6 +595,153 @@ def main():
               "the world-start failure keeps Player.log and names the TypeInitializationException line: %s"
               % res.get("note"))
 
+        # RIMMANDRAKE_RESTART_GAME_AFTER_MAPDATA_TIMEOUT_THREE_JOBS_BURNED: the gate BEFORE the job, not after it.
+        # 11-14 10:35 PST a game came up with AlienRace.HarmonyPatches dead in its static constructor and
+        # "Error in WorldGenStep" on every quicktest. It answered the bridge, was young and held no maps, so all three
+        # existing kept-game gates passed it: three DIFFERENT jobs timed out on readiness 'mapData' and the lane stayed
+        # braked 57 min until rw_game.sh down by hand. Each case gets its OWN TESTQ_HOME, because the instrument is
+        # "the most recently published result on this host" and the cases above have published many here.
+        def unmap(name, log_text=None, prior=None, down_rc=0, runs=1, clear_log=False, **extra):
+            """`runs` jobs in one fresh TESTQ_HOME on a kept game, with a planted Player.log (None: no log at all)
+            and/or a planted last result. -> (the LAST result, how many times the game was stopped IN ALL of them,
+            that attempt's worker.log, its dir).
+
+            The mock game is kept until a stop: down leaves a sentinel, and the next load reports the fresh process
+            once and takes the sentinel away. So a second job meets a kept game again, as the lane does -- which is
+            what makes the repeat regime measurable (a cold start per job forever is the failure mode of a gate like
+            this one)."""
+            uhome, ulogdir = os.path.join(tmp, "uhome_" + name), os.path.join(tmp, "ulog_" + name)
+            udowns, uld = os.path.join(tmp, "udowns_" + name), os.path.join(tmp, "uload_%s.sh" % name)
+            sent = os.path.join(tmp, "usent_" + name)
+            os.makedirs(ulogdir, exist_ok=True)
+            open(uld, "w").write("if [ -f %s ]; then rm -f %s; echo 'started pid 4242'; "
+                                 "else echo 'already running (pid 4242)'; echo '%s'; fi\n" % (sent, sent, young))
+            gl = os.path.join(ulogdir, "Player.log")
+            if log_text is None:
+                os.remove(gl) if os.path.exists(gl) else None
+            else:
+                open(gl, "wb").write(log_text)
+            if prior is not None:
+                paid = "J20261114T103500Z-aaaaaa.a1"
+                pdir = os.path.join(uhome, "attempts", paid)
+                os.makedirs(pdir, exist_ok=True)
+                with open(os.path.join(pdir, "result.json"), "w") as f:
+                    f.write(prior if isinstance(prior, str) else json.dumps(dict(prior, attempt=paid)))
+            # a cold start writes a new Player.log, so a wound that is NOT dealt again leaves with the process it was
+            # in (clear_log); a wound dealt at every load stays, and that regime is measured too
+            down = ("echo down >> %s; " % udowns + ("rm -f %s; " % gl if clear_log else "")
+                    + ("touch %s; " % sent if down_rc == 0 else "") + "exit %d" % down_rc)
+            for _ in range(runs):
+                rc, o = w(["start"], job(), TESTQ_HOME=uhome, TESTQ_CMD_LOAD="bash " + uld, TESTQ_CMD_PROBE="true",
+                          TESTQ_CMD_MAPS=ok_maps, RM_GAME_LOGDIR=ulogdir, TESTQ_CMD_DOWN=down,
+                          TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'", **extra)
+                adir = os.path.join(uhome, "attempts", o.get("attempt", "x"))
+                t = time.time()
+                while time.time() - t < 40 and not os.path.exists(os.path.join(adir, "result.json")):
+                    time.sleep(0.3)
+            res = json.load(open(os.path.join(adir, "result.json"))) if os.path.exists(
+                os.path.join(adir, "result.json")) else {}
+            wl = os.path.join(adir, "worker.log")
+            return (res, len(open(udowns).read().split()) if os.path.exists(udowns) else 0,
+                    open(wl, encoding="utf-8", errors="replace").read() if os.path.exists(wl) else "", adir)
+        clean_log = b"RimWorld 1.6\nLoaded 123 mods\n"
+        healthy = {"schema": "testq.result/1", "outcome": "DONE", "cause": None, "note": "3 rows measured", "rows": []}
+        # (a) the measured 11-14 note, clipped exactly as the real one was ("...imWorld readiness 'mapData'.)")
+        mapdata = dict(healthy, outcome="INVALID", cause="HANG",
+                       note="ensure_playing_map: waited for RimWorld readiness 'mapData'.) [bridge split] 371.6 s wall")
+        res, stops, wlog, adir = unmap("mapdata", clean_log, mapdata)
+        check(res.get("outcome") == "DONE" and stops == 1
+              and (res.get("recycled_kept_game") or "").startswith("cannot make a map:")
+              and "mapData" in (res.get("recycled_kept_game") or ""),
+              "(a) a kept game whose last result timed out on readiness 'mapData' is stopped BEFORE the job: "
+              "stops=%d %s %s" % (stops, res.get("outcome"), res.get("recycled_kept_game")))
+        # (b) the live log, the only instrument that sees a wound dealt at load, before any job has published anything
+        res, stops, wlog, adir = unmap("worldgen", b"noise\nError in WorldGenStep: System.TypeLoadException: x\nend\n")
+        check(res.get("outcome") == "DONE" and stops == 1 and "Player.log says" in (res.get("recycled_kept_game") or "")
+              and "WorldGenStep" in (res.get("recycled_kept_game") or ""),
+              "(b) Error in WorldGenStep in the kept game's own log stops it: stops=%d %s"
+              % (stops, res.get("recycled_kept_game")))
+        ukept = os.path.join(adir, "Player_unmappable.log")
+        check(os.path.exists(ukept) and "WorldGenStep" in open(ukept).read(),
+              "the unmappable game's Player.log is kept beside the attempt before the stop takes it: %s" % ukept)
+        # (c) a failed static constructor: the type-load family is permanent for the process...
+        res, stops, wlog, adir = unmap("ctor", b"Error in static constructor of AlienRace.HarmonyPatches: "
+                                               b"System.TypeInitializationException: Token 0x19c1\n")
+        check(res.get("outcome") == "DONE" and stops == 1 and "static constructor" in (res.get("recycled_kept_game") or ""),
+              "(c) a static constructor dead with a TypeInitializationException stops the game: stops=%d %s"
+              % (stops, res.get("recycled_kept_game")))
+        # ...but a static ctor failure alone is NOT proof: vendor/wisdom/benign_log_errors.md records
+        # "Error in static constructor of ChooseWildAnimalSpawns.Main: ArgumentNullException" as a line this lane ran
+        # through for weeks. Stopping on it would cold-start every job for nothing.
+        res, stops, wlog, adir = unmap("benignctor", b"Error in static constructor of ChooseWildAnimalSpawns.Main: "
+                                                     b"System.ArgumentNullException: x\n", healthy)
+        check(res.get("outcome") == "DONE" and stops == 0 and "recycled_kept_game" not in res,
+              "(c') a benign static-constructor line (no type-load family) keeps the game: stops=%d %s"
+              % (stops, res.get("recycled_kept_game")))
+        # (d) the healthy kept game: both instruments read, both say nothing is wrong -> not stopped, nothing said
+        res, stops, wlog, adir = unmap("healthy", clean_log, healthy)
+        check(res.get("outcome") == "DONE" and stops == 0 and "recycled_kept_game" not in res
+              and "could not read" not in wlog,
+              "(d) a healthy kept game is kept, silently: stops=%d %s %s"
+              % (stops, res.get("recycled_kept_game"), res.get("note")))
+        # (e) "could not look" is a fourth answer, not a wound (owner, 2026-11-17): no log at all AND no result ever
+        # published here -> KEEP, and say which instrument was blind. Stopping on ignorance would cold-start the first
+        # job of every fresh home and could kill a game a human started; a real wound still costs one job, not three.
+        res, stops, wlog, adir = unmap("blind")
+        check(res.get("outcome") == "DONE" and stops == 0 and "recycled_kept_game" not in res
+              and "could not read the kept game's log" in wlog and "none published here yet" in wlog,
+              "(e) both instruments blind: the game is KEPT and the blindness is in worker.log: stops=%d %s"
+              % (stops, [ln for ln in wlog.splitlines() if "could not read" in ln]))
+        res, stops, wlog, adir = unmap("corrupt", clean_log, "{not json")
+        check(res.get("outcome") == "DONE" and stops == 0 and "unreadable:" in wlog,
+              "(e') a last result that cannot be parsed is a blindness, not a wound: stops=%d %s"
+              % (stops, [ln for ln in wlog.splitlines() if "could not read" in ln]))
+        # a stop and a blind keep must be told apart by their words, never by their silence
+        res, stops, wlog, adir = unmap("words", clean_log, mapdata)
+        check("cannot make a map:" in (res.get("recycled_kept_game") or "") and "could not read" not in wlog
+              and "h old" not in (res.get("recycled_kept_game") or ""),
+              "a stop says 'cannot make a map: ...', distinct from the age/map limits and from a blind keep: %s"
+              % res.get("recycled_kept_game"))
+        # a last result that stopped its OWN game says nothing about the process running now: otherwise every job after
+        # a no_game run would pay a cold start for a wound that left with the process it was in
+        res, stops, wlog, adir = unmap("alreadystopped", clean_log,
+                                       dict(mapdata, note=mapdata["note"] + "; game stopped so the next job cold-starts"))
+        check(res.get("outcome") == "DONE" and stops == 0 and "recycled_kept_game" not in res,
+              "a last result that already stopped its game does not restart this one: stops=%d %s"
+              % (stops, res.get("recycled_kept_game")))
+        # ...but a last result whose stop was REFUSED says "game NOT stopped": the wounded process may still be the one
+        # running, so its wound still counts. The two notes differ by one word, and the gate must read it that way.
+        res, stops, wlog, adir = unmap("notstopped", clean_log,
+                                       dict(mapdata, note=mapdata["note"] + "; game NOT stopped (REFUSED: selftest)"))
+        check(res.get("outcome") == "DONE" and stops == 1 and "cannot make a map" in (res.get("recycled_kept_game") or ""),
+              "a last result whose stop was REFUSED still counts: stops=%d %s"
+              % (stops, res.get("recycled_kept_game")))
+        # the archmagi lane's kept game is the owner's: never stopped, however wounded its log
+        res, stops, wlog, adir = unmap("archmagi", b"Error in WorldGenStep: System.TypeLoadException: x\n", mapdata,
+                                       TESTQ_WORKER_HOST="archmagi")
+        check(res.get("outcome") == "DONE" and stops == 0 and "recycled_kept_game" not in res,
+              "the archmagi lane never stops the kept game, however wounded: stops=%d %s"
+              % (stops, res.get("recycled_kept_game")))
+        # the repeat regime: this gate must not become a cold start on every job forever. The 11-14 wound was
+        # process-specific (the same deployment loaded fine after rw_game.sh down), so when the cold start leaves it
+        # behind, the SECOND job finds a clean log and a last result that stopped its own game -> one stop in total.
+        res, stops, wlog, adir = unmap("once", b"Error in WorldGenStep: System.TypeLoadException: x\n", None,
+                                       runs=3, clear_log=True)
+        check(res.get("outcome") == "DONE" and stops == 1 and "recycled_kept_game" not in res,
+              "a wound the cold start leaves behind costs ONE stop across three jobs, not one each: stops=%d %s"
+              % (stops, res.get("recycled_kept_game")))
+        # and a wound dealt again at every load is stopped again at every load, on purpose: the lane brake and
+        # invalid_class's GAME keys own a deterministically broken deployment, and a stop is cheaper than a burned job
+        res, stops, wlog, adir = unmap("always", b"Error in WorldGenStep: System.TypeLoadException: x\n", None, runs=3)
+        check(res.get("outcome") == "DONE" and stops == 3,
+              "a wound re-dealt at every load is stopped at every load (the brake owns that case): stops=%d" % stops)
+        # and an unmappable game that cannot be stopped is INVALID/LOAD with no run, like the other two gates
+        res, stops, wlog, adir = unmap("downfails", clean_log, mapdata, down_rc=1)
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "LOAD" and res.get("modcheck_exit") is None
+              and "cannot make a map" in (res.get("note") or ""),
+              "an unmappable game that cannot be stopped -> INVALID/LOAD, no run: %s %s"
+              % (res.get("cause"), res.get("note")))
+
         cdowns = os.path.join(tmp, "canary_downs")
         rc, o = w(["start"], job(), MOCK_MODE="canary", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
                   TESTQ_CMD_DOWN="echo down >> %s" % cdowns, **load)

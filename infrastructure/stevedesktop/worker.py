@@ -38,7 +38,10 @@ How a job runs (one attempt at a time on this machine):
     restarted once first, so the fresh start resolves them, instead of the job ending INVALID/HARNESS. Only once per
     marker (TESTQ_HOME/marker_bounces.json): a marker a restart did not clear fails later jobs fast, no restart loop.
   * A run that ends with a red canary or with the bridge's no_game (INVALID/HARNESS) stops the game, so the next job
-    cold-starts instead of inheriting it; a lane that may not stop the game says so in the note.
+    cold-starts instead of inheriting it; a lane that may not stop the game says so in the note. BEFORE a job commits
+    to a game load() kept, the same wound is looked for in that process's Player.log and in the last result published
+    here (kept_game_unmappable): a process that answers the bridge can still be unable to generate a map ever again,
+    and that one burned three jobs on 11-14. With both of those unreadable the game is kept, and worker.log says so.
   * A start that finds this machine's game guard HELD by a live driver (no testq attempt running) is deferred: busy,
     exit 75, the job stays pending; no attempt is made.
 
@@ -173,6 +176,30 @@ NO_GAME_RE = re.compile(r'"status":\s*"no_game"')      # the bridge's answer whe
 # wounded pid 4400 was handed to Bacta and the filler lane braked)
 WORLD_START_FAILED_RE = re.compile(r"quicktest world start FAILED")
 GAME_FATAL_RE = re.compile(r"BadImageFormat|TypeLoadException|TypeInitializationException")   # loads, cannot make a world
+# RIMMANDRAKE_RESTART_GAME_AFTER_MAPDATA_TIMEOUT_THREE_JOBS_BURNED: the evidence that a RUNNING process can never make
+# a map again, so the next job must not inherit it (kept_game_unmappable). Two instruments, two sets of words.
+# 1. the process's own Player.log. Only a wound that is PERMANENT for a process counts, and these two are:
+#    * a WorldGenStep that threw. Nothing a later quicktest does reloads defs or re-JITs, so the same step throws for
+#      every world this process ever tries (11-14; and pid 30296 on 10-31, AlienRace BadImageFormat then WorldGenStep
+#      TypeLoadException, design/RimMandrake/ops_diagnoses/steve_invalid_2026-11-01.md).
+#    * Harmony wrote a patch over IL it could not read, so that method is broken for the life of the process
+#      (11-14: "Token 0x19c1 is not a valid MethodBase token in Assembly-CSharp.dll").
+LOG_WOUND_RE = re.compile(r"Error in WorldGenStep|is not a valid MethodBase token")
+#    A dead static constructor is a wound ONLY with the type-load family (GAME_FATAL_RE) on the same line, because a
+#    type initializer that threw never runs again in the same process. The pair is the whole point:
+#    vendor/wisdom/benign_log_errors.md records "Error in static constructor of ChooseWildAnimalSpawns.Main:
+#    ArgumentNullException" as a line the lane ran through for weeks, so the line alone proves nothing; 11-14's
+#    "Error in static constructor of AlienRace.HarmonyPatches: System.TypeInitializationException" is the pair.
+CTOR_RE = re.compile(r"Error in static constructor of")
+# 2. the most recently finished attempt's result: the harness-side words no Player.log ever carries. Its own table, not
+#    invalid_class.SIGNATURES, which answers a different question (whose fault an INVALID was) and has no WorldGenStep
+#    row; and a cross-tree import of it would crash a job pinned to a sha from before that module existed.
+NOTE_WOUND_RE = re.compile(r"readiness .mapData|quicktest world start FAILED|" + LOG_WOUND_RE.pattern)
+# stop_game_for_next_job's own words: an attempt that stopped its game says nothing about the process running now.
+STOPPED_NOTE = "game stopped so the next job cold-starts"
+# A cap on scanning a healthy giant Player.log once per kept load, not a measurement of one: every line above is
+# written during load or during a quicktest's worldgen, far inside this much text. OUR rule, not a bar.
+LOG_SCAN_CHARS = 32_000_000
 # STEVE_GAME_FIX_UNBOUNDED_MAPS: a kept game is recycled before a job at either limit, both under pid 7460 (17 h, 27 maps,
 # 20.9 GB on a 128 GB host, then deaf). Maps grow because river_site.py founds a site per run and keeps earlier sites.
 MAX_GAME_AGE_S = int(os.environ.get("TESTQ_MAX_GAME_AGE_S") or 8 * 3600)
@@ -195,6 +222,22 @@ def read_json(path):
             return json.load(f)
     except (OSError, ValueError):
         return None
+
+
+def game_log_path(name="Player.log"):
+    """The running game's log, as the host exports it (RM_GAME_LOGDIR, else the user data dir)."""
+    return os.path.join(os.environ.get("RM_GAME_LOGDIR") or os.environ.get("RM_GAME_USERDATA", ""), name)
+
+
+def game_log_wound(text):
+    """-> the first line of a game log proving that process can never make a map, or None (none in what was read).
+
+    One line, both instruments on it: the permanent-wound patterns, and a dead static constructor only when the same
+    line names the type-load family. An empty log is an answer ("nothing in it"), not a blindness."""
+    for ln in text.splitlines():
+        if LOG_WOUND_RE.search(ln) or (CTOR_RE.search(ln) and GAME_FATAL_RE.search(ln)):
+            return ln.strip()[:200]
+    return None
 
 
 def read_text(path):
@@ -879,18 +922,28 @@ class Attempt:
             kept = last_pid_line(r"already running \(pid \d+\)", tail)
             wedged = kept and self.kept_game_wedged()
             overgrown = kept and not wedged and self.kept_game_overgrown(tail)
-            if wedged or overgrown:
+            # RIMMANDRAKE_RESTART_GAME_AFTER_MAPDATA_TIMEOUT_THREE_JOBS_BURNED: a game that answers the bridge, is young
+            # and holds few maps can still be unable to make one ever again. Last of the three, because it is the only
+            # one whose evidence a wedged or overgrown game would not even be asked for.
+            unmappable = kept and not wedged and not overgrown and self.kept_game_unmappable(tail)
+            if wedged or overgrown or unmappable:
                 # STEVE_LANE_FIX_WEDGED_KEPT_GAME: 2026-10-30 08:10Z the kept game (pid 7460, 17 h old, 27 maps, 21 GB)
                 # stopped answering; `up --wait` only sees the process, so five jobs each reused it (load 1 s), died in
                 # ensure_playing_map on the same 30 s timeout, braked the filler and left the lane dark 14 h. We hold
                 # the guard: restart it. A wedged game cannot run a job, so this needs no once-only memory; an overgrown
                 # one comes back fresh, under both limits.
-                self.res["bounced_unresponsive" if wedged else "recycled_kept_game"] = wedged or overgrown
-                why = "kept game does not answer the bridge (%s)" % wedged if wedged else "kept game %s" % overgrown
+                self.res["bounced_unresponsive" if wedged else "recycled_kept_game"] = (wedged or overgrown
+                                                                                        or unmappable)
+                why = ("kept game does not answer the bridge (%s)" % wedged if wedged
+                       else "kept game %s" % (overgrown or unmappable))
                 self.say(why + ": restarting it")
                 if wedged:
                     self.dump_game("wedged")
                     self.keep_game_log("Player_wedged.log")
+                if unmappable:
+                    # the next cold start overwrites Player.log and the one after takes its -prev copy (keep_game_log):
+                    # this is the only chance to read why the process could not make a map
+                    self.keep_game_log("Player_unmappable.log")
                 rc, tail = self.sh(self.cmd_down(), timeout=300)
                 if rc != 0:
                     return self.fail("REFUSED" if refused_line(tail) else "INVALID", "LOAD",
@@ -1005,6 +1058,81 @@ class Attempt:
         self.res["kept_game_maps"] = int(maps.group(1))
         if int(maps.group(1)) >= MAX_GAME_MAPS:
             return "holds %s maps (limit %d)" % (maps.group(1), MAX_GAME_MAPS)
+        return None
+
+    def prior_result(self):
+        """-> (the most recently published result on this host, its path), or (None, path|None) when there is one this
+        worker cannot read, or (None, None) when there is none at all.
+
+        Those are three different answers (owner, 2026-11-17): no attempt has ever finished here, and an attempt
+        finished but its record is corrupt, are not the same thing, and neither is a record that says the game was
+        healthy. Publish order (result.json's mtime) IS finish order: publish_result writes it once, last."""
+        files = []
+        for path in glob.glob(p("attempts", "*", "result.json")):
+            if os.path.dirname(path) == self.d:         # our own, if we somehow already published: never evidence
+                continue
+            try:
+                files.append((os.stat(path).st_mtime, path))
+            except OSError:
+                continue
+        if not files:
+            return None, None
+        path = max(files)[1]
+        return read_json(path), path
+
+    def kept_game_unmappable(self, load_tail):
+        """-> why the kept game can never make a map (for recycled_kept_game), or None (it can, as far as can be read).
+
+        RIMMANDRAKE_RESTART_GAME_AFTER_MAPDATA_TIMEOUT_THREE_JOBS_BURNED. 2026-11-14 10:35 PST the game came up with
+        AlienRace.HarmonyPatches dead in its static constructor ("Token 0x19c1 is not a valid MethodBase token"), then
+        Error in WorldGenStep on every quicktest, so no map ever appeared. It answered the bridge, it was young and it
+        held no maps, so `up --wait` kept it and all three gates above passed it: three jobs in a row timed out on
+        readiness 'mapData' and the lane stayed braked 57 min until rw_game.sh down by hand. The run's own stop
+        (run_modcheck: no_game, quicktest world start FAILED) fires only AFTER a job has been spent, and the three jobs
+        were three DIFFERENT jobs, so a per-job memory would not have caught it either. Two instruments, read before
+        the job commits to this process:
+
+          * the process's own Player.log, for the wounds that are permanent for a process (LOG_WOUND_RE, CTOR_RE
+            paired with GAME_FATAL_RE). This is the only instrument that sees a wound dealt at load, before any job.
+          * the most recently published result on this host, for the harness-side words no Player.log carries
+            (NOTE_WOUND_RE) -- unless it also says it stopped its game, in which case that process is gone and its
+            wound says nothing about this one. A wounded record is the newest only until this attempt publishes its
+            own, so a healthy process that inherits one pays one cold start, never a job.
+
+        Could not look is a fourth answer, not a failure (owner, 2026-11-17): with BOTH instruments blind the game is
+        KEPT and the blindness is logged. Stopping on ignorance would cold-start the first job of every fresh
+        TESTQ_HOME (no result exists yet) and would kill a game a human had started by hand; and a real wound is still
+        caught by this job's own run, costing one job, never the three this item was filed for. The two outcomes are
+        told apart by their words: a stop says "cannot make a map: ...", a blind keep is only in worker.log."""
+        if HOST != "stevedesktop":
+            return None                     # the archmagi lane's kept game is the owner's: never probed, never stopped
+        blind = []
+        log = game_log_path()
+        try:
+            with open(log, encoding="utf-8", errors="replace") as f:
+                text = f.read(LOG_SCAN_CHARS)
+        except OSError as e:
+            blind.append("the kept game's log (%s)" % e)
+            text = ""
+        wound = game_log_wound(text)
+        if wound:
+            return "cannot make a map: %s says %s" % (os.path.basename(log), wound)
+        res, path = self.prior_result()
+        if res is None:
+            blind.append("the last result (%s)" % ("none published here yet" if path is None
+                                                   else "unreadable: " + path))
+        elif STOPPED_NOTE in (res.get("note") or ""):
+            self.say("the last result (%s) stopped its own game: its fault is not this process's" % res.get("attempt"))
+        else:
+            rows = res.get("rows") if isinstance(res.get("rows"), list) else []
+            said = "\n".join([str(res.get("note") or "")]
+                             + [str(r.get("detail") or "") for r in rows if isinstance(r, dict)])
+            hit = NOTE_WOUND_RE.search(said)
+            if hit:
+                return "cannot make a map: %s ended %s/%s saying %s" % (res.get("attempt"), res.get("outcome"),
+                                                                        res.get("cause"), hit.group(0))
+        if blind:
+            self.say("kept the game: could not read %s; nothing says this process cannot make a map" % " or ".join(blind))
         return None
 
     def pending_markers(self, before):
