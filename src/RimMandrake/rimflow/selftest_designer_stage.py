@@ -594,6 +594,11 @@ def main():
         check("stage 5: closed from another clone, the gate reads the concept's own clone",
               seen and os.path.realpath(seen[-1]) == os.path.realpath(repo.root)
               and not any("gate:" in e for e in errs), (seen, errs))
+        # RIMMANDRAKE_ALIGN_STAGE5_SCENE_CHECK_CLONE_READ_WRONG_TREE: the scenes and showcases are artifacts of that clone
+        # too (stage 3 already read them there); judged against the Dispatcher's tree, a scene's entry point there is
+        # "not in the proof script"
+        check("stage 5: closed from another clone, its scenes and showcases are judged in the concept's own clone",
+              not any(e.startswith(("scenes:", "showcases:")) for e in errs), errs)
         CT.gate = lambda dd, rr=None, ff=None: ([], [])
         put(d, "record.json", dict(rec, inventory=rec["inventory"] + [inv(id="rope", what="a rope")]))
         ok, errs = run_cycle(d, repo, "run23b")

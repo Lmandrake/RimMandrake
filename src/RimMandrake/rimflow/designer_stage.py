@@ -1394,8 +1394,9 @@ def result_errors(res, d, st, repo=REPO):
         sc5 = read_json(os.path.join(d, "scenes.json"))
         # the showcase set names scenes, so the scenes it leans on must still meet the contract at the lock (a scene
         # added after stage 3 is checked here, not trusted by its id)
-        errs += ["scenes: %s" % e for e in scene_errors(sc5, tree, repo)]
-        errs += ["showcases: %s" % e for e in showcase_check(sc5, rec, tree, owner_ev, repo,
+        # judged in the concept's own clone, as stage 3 judges them (RIMMANDRAKE_ALIGN_STAGE5_SCENE_CHECK_CLONE_READ_WRONG_TREE)
+        errs += ["scenes: %s" % e for e in scene_errors(sc5, tree, artifact_repo)]
+        errs += ["showcases: %s" % e for e in showcase_check(sc5, rec, tree, owner_ev, artifact_repo,
                                                               concept=concept_of(st, d))]
     return errs
 
