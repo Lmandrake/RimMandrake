@@ -87,7 +87,10 @@ JUDGEMENT_SECTIONS = [
      "Anything left mid-flight, one bullet each: `- ITEM_ID -- state; NEXT: <one "
      "imperative action>`. A pointer without a ledger item id does not survive a "
      "seat change, and a pointer without a NEXT: measured ~0% pickup. An item in "
-     "`doing` with no line here is a trap for the next seat."),
+     "`doing` with no line here is a trap for the next seat. The Conductor's "
+     "pointers each cite an open owed id too: file the act first (`rimflow file "
+     "<ID> --for BENCH --kind owed --caused-by <item>`), then cite it on the line; "
+     "--check runs `owed.py check-pointers`."),
     ("Traps learned",
      "Instruments that lied, silent failures, commands that ate their own input. "
      "ONE line each, ending with where it now lives -- file it with "
@@ -539,6 +542,26 @@ def show_last_reply():
               % (r.returncode, (r.stderr or "").strip()))
     elif r.stdout.strip():
         print(r.stdout.rstrip() + "\n")
+
+
+def owed_pointer_problems(path):
+    """--check's E4 gate (RIMMANDRAKE_REFUSE_HANDOFF_POINTER_WITHOUT_OWED_ID): the Conductor's pointers each cite an open
+    owed id, so a pointer whose item closes still points at a live debt. Runs `owed.py check-pointers`, a validator that
+    writes nothing; only the Conductor's seat owes (show_owed). A check that could not look is a problem, never a pass."""
+    if seat() != "BENCH":
+        return []
+    cmd = [sys.executable, os.path.join(ROOT, "src", "RimMandrake", "rimflow", "owed.py"), "check-pointers", path]
+    try:
+        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=180)
+    except Exception as e:                       # noqa: BLE001 - said, never silent
+        return ["owed.py check-pointers did not run (%s: %s)" % (type(e).__name__, e)]
+    out = (r.stdout + r.stderr).strip()
+    if r.returncode == 0:
+        return []
+    if r.returncode == 1:
+        return ["pointer(s) citing no open owed id, or a closed one (owed.py check-pointers):\n      "
+                + "\n      ".join(out.splitlines()[:24])]
+    return ["owed.py check-pointers could not look (exit %d): %s" % (r.returncode, out[-400:] or "no output")]
 
 
 def show_owed():
@@ -1036,7 +1059,9 @@ def main():
     cands = [os.path.join(HANDOFFS, fn) for fn in handoff_files()]
     newest = max(cands, key=os.path.getmtime) if cands else None
 
-    if prev_name and window_is_empty(since_sha, prev_ts) and not a.force:
+    # write mode only: --check on a quiet window still checks the newest handoff (Codex, 2026-11-18: an uncommitted new
+    # handoff with unowed pointers or unfilled sections read ALREADY HANDED OFF and exited 0 unchecked)
+    if prev_name and window_is_empty(since_sha, prev_ts) and not a.force and not a.check:
         print("ALREADY HANDED OFF — nothing has closed, been filed or been "
               "committed since\n  %s"
               % os.path.join("infrastructure", "state", "handoffs", prev_name))
@@ -1063,7 +1088,7 @@ def main():
                         "python3 src/RimMandrake/Utils/conversations_land.py --apply" % len(convs))
 
     if a.check:
-        problems += todo_scan(newest) if newest else ["no handoff file written yet"]
+        problems += todo_scan(newest) + owed_pointer_problems(newest) if newest else ["no handoff file written yet"]
         if problems:
             print("NOT READY — %d thing(s) to fix:" % len(problems))
             for p in problems:

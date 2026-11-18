@@ -6,7 +6,8 @@ WHY. Every measured wake read `queue CONDUCTOR | tail -40` of a 23,872-line view
 nothing a dying window had filed before them; 8 of 9 lost or late debts had no item saying the Conductor owed the act.
 An owed act is an ordinary item, `rimflow file <ID> --for BENCH --kind owed --title "<the act>"` (`--caused-by` the
 item it acts on). This module only reads: `view()` is `rimflow queue CONDUCTOR --owed`, `banner()` its first line (the
-per-prompt notice, .claude/hooks/conductor_goodbye.py), `evidence_ok()` the discharge rule `rimflow close` applies.
+per-prompt notice, .claude/hooks/conductor_goodbye.py), `evidence_ok()` the discharge rule `rimflow close` applies,
+`check_pointers()` the handoff gate (`owed.py check-pointers <handoff.md>`, run by `handoff.py --check`).
 
   OWED <n> (actionable <a>, waiting <w>), oldest <age> <ID>
     <age>  [LATE]  <ID>  <title>  [for <caused_by>]       actionable, oldest first; LATE past 2 h
@@ -154,6 +155,80 @@ def wake_lines(repo, seat="CONDUCTOR", timeout=120):
     return ["", WAKE_HEAD] + out.splitlines()
 
 
+# A handoff pointer (RIMMANDRAKE_REFUSE_HANDOFF_POINTER_WITHOUT_OWED_ID, spec §3 E4): `- `ID`` or the template's
+# `- ID -- state` / `- ID — state`, on a line holding `NEXT:` (handoff.pointer_ids reads the same two shapes).
+POINTER = re.compile(r"^- (?:`[A-Z][A-Z0-9_]+`|[A-Z][A-Z0-9_]+ (?:--|\u2014|\u2013) )")
+LIST_OR_HEAD = re.compile(r"^\s*(?:[-*+]\s|\d+[.)]\s|#|<!--)")    # a new bullet (any marker, any depth), heading or comment
+CITED = re.compile(r"(?<![A-Za-z0-9_])[A-Z][A-Z0-9_]{2,}(?![A-Za-z0-9_])")
+
+
+def pointer_bullets(text):
+    """-> [(first line number, bullet text)] for each pointer, its continuation lines folded in: in the 17:27 Conductor
+    handoff of 2026-11-18, 5 of 6 pointers wrapped their `NEXT:` onto a later line (handoff._bullets folds the same
+    way). A blank line, a heading or a new bullet ends one."""
+    out, cur = [], None
+    for n, line in enumerate((text or "").splitlines(), 1):
+        if cur is not None and line.strip() and not LIST_OR_HEAD.match(line):
+            cur[1] += " " + line.strip()
+            continue
+        if cur is not None:
+            out.append(tuple(cur))
+            cur = None
+        if POINTER.match(line):
+            cur = [n, line]
+    if cur is not None:
+        out.append(tuple(cur))
+    return [(n, b) for n, b in out if "NEXT:" in b]
+
+
+def check_pointers(text, world):
+    """-> [(line number, reason)] for each pointer that cites no open owed id, or cites a closed one. Pure: a validator
+    that writes nothing. Any id in the pointer's bullet counts, its own included; a cited owed id that is no longer open
+    refuses the pointer even beside an open one (the act it named is done: drop the pointer, or file the new act)."""
+    bad = []
+    for n, line in pointer_bullets(text):
+        owed = [world.items[i] for i in dict.fromkeys(CITED.findall(line)) if i in world.items
+                and is_owed(world.items[i])]
+        closed = [i for i in owed if not i.open]
+        if closed:
+            bad.append((n, "; ".join("owed %s is closed (%s): drop the pointer, or file the new act and cite it"
+                                     % (i.id, i.state) for i in closed)))
+        elif not owed:
+            bad.append((n, "no owed id: file the act (`rimflow file <ID> --for BENCH --kind owed --title \"<the act>\" "
+                           "--caused-by <item>`), then cite it on this line (no act owed? write it as prose, not a `- `ID` … NEXT:` pointer)"))
+    return bad
+
+
+def check_pointers_main(path):
+    """`owed.py check-pointers <handoff.md>`: 0 every pointer cites an open owed id (or there are none), 1 one or more
+    do not (one line each), 2 could not look (the file or the ledger unreadable; nothing was judged)."""
+    try:
+        text = open(path, encoding="utf-8").read()
+    except (OSError, UnicodeDecodeError) as e:
+        print("check-pointers could not look: %s unreadable (%s)" % (path, e))
+        return 2
+    if os.environ.get("RIMFLOW_LEDGER"):        # a throwaway ledger, as cli._bind_paths reads it (shards beside it)
+        model.EVENTS = os.environ["RIMFLOW_LEDGER"]
+    try:
+        world = model.replay()
+    except Exception as e:                      # noqa: BLE001 - said, never silent
+        print("check-pointers could not look: the ledger did not replay (%s: %s)" % (type(e).__name__, e))
+        return 2
+    bad = check_pointers(text, world)
+    lines = text.splitlines()
+    for n, why in bad:
+        print("%s:%d: %s\n    %s" % (path, n, why, lines[n - 1].strip()[:160]))
+    n_ptr = len(pointer_bullets(text))
+    print("check-pointers: %d pointer(s), %d refused" % (n_ptr, len(bad)) if bad or n_ptr else
+          "check-pointers: no pointers in %s" % path)
+    return 1 if bad else 0
+
+
 if __name__ == "__main__":
+    if sys.argv[1:2] == ["check-pointers"]:
+        if len(sys.argv) != 3:
+            print("usage: owed.py check-pointers <handoff.md>")
+            sys.exit(2)
+        sys.exit(check_pointers_main(sys.argv[2]))
     w = model.replay()
     print("\n".join(view(w, show_all="--all" in sys.argv)))
