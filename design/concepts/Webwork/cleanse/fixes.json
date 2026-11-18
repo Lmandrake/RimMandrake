@@ -1,0 +1,44 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Specified normal MapCommonBase generation on one fixture tile in a disposable copy of the authored save. Live starts and resets use that route while canonical saves and shipped tiles stay read-only. The owner pages identify the fixture as pending implementation.",
+      "where": "bars.json B1/B2/B3/B4/B8 and R11, tickets.md T40/T41/T44/T47, ambiguities.md local map before end paint, owner_pages.md page two"
+    },
+    {
+      "id": "R2",
+      "changed": "Gave each wall one saved lifetime guardian budget on first wake. The intact-wall test checks that killed guardians stay dead and a due relay stays empty when all local owners are gone. A surviving local owner still sustains renewal.",
+      "where": "bars.json B6/R5/nest_state, census.json nest_guardian, tickets.md T37/T48, definition.md Edges, models.md M1/M2"
+    },
+    {
+      "id": "R3",
+      "changed": "Moved passive adhesion to the next version with a default-off gate and a test for sensing with no adhesion. Natural strands keep their sensing and ordinary path cost, and mouth silk keeps its readable restraint.",
+      "where": "census.json sticky_web, bars.json B1, tickets.md T21/T49, next_version.md passive strand and legacy sheet adhesion, definition.md Settings"
+    },
+    {
+      "id": "R4",
+      "changed": "Deferred the unbuilt vennick clutch-seeking job and removed it from first-version pictures, states and tests. Ordinary vennick remain huntable native prey, and scouts can follow silk and carpet to nests.",
+      "where": "census.json egg_trail_gap, bars.json B5/R7 and dependent meetings, tickets.md T37, next_version.md Vennick clutch seeking, definition.md and models.md"
+    },
+    {
+      "id": "R5",
+      "changed": "Moved random harvest ambushers to the next version with a default-off gate. The default-arm cut still marks its actor and pays once. B7 and the models retain coverage of ordinary Manhunter and nest-guardian paths.",
+      "where": "census.json harvest_emergence, bars.json B7/B8/C8/R4/R6 and predator_population, tickets.md T38/T39/T50, next_version.md random harvest ambusher, definition.md and models.md"
+    },
+    {
+      "id": "R6",
+      "changed": "Named the excluded fabric routes as web-node destruction from fire, fighting, beetles or cleanup. The deliberate cut in the accepted picture still pays.",
+      "where": "bars.json B6 says"
+    },
+    {
+      "id": "R7",
+      "changed": "Replaced the tester-chosen benchmark with a branch from the same departure save. Over the same days, the expedition must complete substantial work the colony doing ordinary work and trade cannot afford, after accounting for trip costs and losses.",
+      "where": "bars.json B6/B8/R10, definition.md Costs, models.md M4, tickets.md T43, ambiguities.md Worth repeating, owner_pages.md page one"
+    },
+    {
+      "id": "R8",
+      "changed": "Recorded both readings of the owner’s phrase and chose predatory attrition based on the BiomeDef. Linked it to B5’s sparse, huntable wildlife and kept the limits in B7’s regrowth and B8’s living-prey cycle.",
+      "where": "ambiguities.md It eats all, bars.json B5 meant.source, owner_pages.md page two"
+    }
+  ]
+}

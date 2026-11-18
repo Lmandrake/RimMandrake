@@ -1,0 +1,249 @@
+{
+ "mod": "Webwork",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "cannot_hold_together",
+     "where": "design/concepts/Webwork/cleanse/bars.json, B1/B3/B4/B8 sees.start and sees.reset; tickets.md T40/T41/T44",
+     "evidence": "The live bars need a map that cannot be made today. B1 start says \"Map created through its normal local MapCommonBase steps, not PlaceWeb/PlaceNest on another biome\". B8 start says \"Naturally created local RM_Webwork map ... world never repainted\". Every reset says \"no canonical world save or tile edit\". But RM_Webwork is on zero world tiles until the end paint (CLAUDE.md, biome_rulings). design/validation_walks/RimMandrake/Webwork.md lines 19, 26 and 32 record that \"the bridge cannot generate an RM_Webwork map\". No ticket (T40, T41, T44) and no rule says how a natural Webwork map is produced. So B1, B3, B4 and B8 have no starting state that their own instruments accept until the planet is painted.",
+     "would_pass": "The proposal names one route to a local RM_Webwork map that obeys the rulings. For example: a test-only local map built with that biome in a disposable, non-canonical save, never shipped, no world repaint, no alternative planet. If no such route exists, the proposal says plainly on his pages that the live bars cannot be read before the end paint, and why.",
+     "smallest_fix": "Add one rule and one instrument ticket naming how the map is created. Change the reset clause to forbid edits to canonical saves and shipped tiles only, and point B1/B3/B4/B8 start at that route."
+    },
+    {
+     "id": "R2",
+     "head": "cannot_hold_together",
+     "where": "bars.json B6 accept picture 2 vs R5 and the kept census row nest_guardian; src/RimMandrake/Webwork/Defs/ThingDefs_Buildings/RM_Webwork_Nest.xml:89-100; definition.md line 59",
+     "evidence": "B6 accepts \"after the owners die the remaining nest stops supplying eggs\". R5 renews eggs while any living local ollathrix exists. The kept nest wall carries CompProperties_SpawnerPawn (RM_Ollathrix, initialPawnsPoints 320, maxSpawnedPawnsPoints 640). Vanilla CompSpawnerPawn.CompTick [measured, RimSage] calls FilterOutUnspawnedPawns and then TrySpawnPawn whenever Active and SpawnedPawnsPoints < maxSpawnedPawnsPoints. So killed guardians are replaced on the spawn interval for as long as the awake wall stands, and the owners never stay dead while the wall exists. Once the wall is destroyed, the relay that rides on it is gone too. The accepted picture therefore cannot occur. definition.md also claims the spawner \"is not a perpetual manhunter dispenser\", which the kept code contradicts.",
+     "would_pass": "Either the guardian spawner gets a stated lifetime budget, or stops refilling, so that killing the owners while the wall stands is reachable and then stops renewal. Or B6's picture and R5 are reworded to the state the code can actually reach. Either way the nest_state meeting names the spawner refill.",
+     "smallest_fix": "Add to R5: \"the nest's guardian spawner does not replace killed guardians beyond a fixed lifetime budget\". Add a ticket with its acceptance test (kill all spawned guardians on an awake wall; none respawn; the relay stops). Add the spawner to the nest_state meeting."
+    },
+    {
+     "id": "R3",
+     "head": "kept_mechanic_undefined",
+     "where": "census.json row sticky_web (fate signature); bars.json (no bar, rule or check)",
+     "evidence": "census sticky_web is kept as signature: \"Local strands/old sheet webs apply sticky/slicked/locked hediff, decay and tending ... without that slowing/contact cost the web ceases to be a hunting surface.\" In bars.json the only mention is the phrase \"fine sticky threads\" in a B1 accept picture. No bar, rule (R1-R10) or check defines what adhesion does to a pawn: slowed or locked in place, how long, whether it can trap a pawn indefinitely, how tending clears it, or whether it applies to animals. definition.md mentions it only as a dependency and a settings group. The signature as stated (touch or rob → hunters; sunlight breaks the approach) does not run through adhesion either.",
+     "would_pass": "Either a rule defining adhesion as the player meets it (what it slows, whether it can immobilise, its readable sign, how it is cleared, no vanishing) that joins the detection_state and predator_population meetings. Or the row moves to the next version, switched off, with the strands kept only as sensed nodes.",
+     "smallest_fix": "Move sticky_web to next_version with a switch-off ticket (strands stay as sense nodes). Otherwise add an R11 that defines it and list it in the meetings."
+    },
+    {
+     "id": "R4",
+     "head": "extra_without_argument",
+     "where": "census.json row egg_trail_gap (built absent, fate life, ticket T37); bars.json B5 says and R7",
+     "evidence": "Vennick clutch-seeking does not exist yet (\"no RM_JobGiver_RunToEggs in src search\"); T37 would build a new job giver. Its only argument is \"Without an observable route to real finite eggs it is an arbitrary extra prey sprite.\" That is not a deletion argument. An ordinary small animal that is hunted and butchered is life. Deleting the egg-seeking defeats neither land, life nor the signature, since nests are placed by MapCommonBase and found by walking. This is the kind of unbuilt custom touch the owner asked to move: \"Little custom details that weren't strictly necessary\".",
+     "would_pass": "Vennick egg-seeking moves to the next version and the vennick clause is struck from B5 and R7. Or the census gives a real deletion argument showing that land, life or the signature fails without it.",
+     "smallest_fix": "Set egg_trail_gap to next_version. Drop \"vennick lead along silk to edible clutches\" from B5 says and from accept 3 / reject 2, drop the vennick sentence from R7, and remove it from T37."
+    },
+    {
+     "id": "R5",
+     "head": "extra_without_argument",
+     "where": "census.json row harvest_emergence (fate signature); bars.json B7 pictures and R4; meetings predator_population",
+     "evidence": "census why: \"Keep the explicitly ruled harvest ambusher risk as part of cutting the web.\" That names where the feature came from; it is not a deletion argument. With RM_CompEmergentSpawnOnDestroy deleted, \"touching or robbing the living web brings its hunters\" still holds through B3, where existing owners converge on the cutter. So the signature is not defeated. The emergence is a second, random source of hunters, and it is the main feed of the predator_population loop the proposal itself leaves unknown (\"harvest->owners->less work->shade->pursuit\").",
+     "would_pass": "Harvest emergence moves to the next version, switched off, with a switch-off ticket, and \"harvest-emergent manhunter\" is struck from B7's pictures and R4's source list. Or the census states which named experience fails without it.",
+     "smallest_fix": "Set harvest_emergence to next_version with a switch-off ticket, and edit the B7 pictures, R4 and T38 to drop the emergent-manhunter cases."
+    },
+    {
+     "id": "R6",
+     "head": "figurative_unmarked",
+     "where": "bars.json B6 says: \"without creating tame owners or fabric from destructive harvesting\"",
+     "evidence": "Deconstructing a cable destroys the node. A literal reader therefore takes \"fabric from destructive harvesting\" to forbid the very cut that B6 accept 1 rewards (\"cuts cable and mines clutches ... uses the fabric\"). The meaning is R6's list: combat, beetle, burn and cleanup destruction. B6's figurative list marks \"living nest\", \"owners\" and \"substantial colony progress\" but not this phrase.",
+     "would_pass": "The says names the excluded routes plainly, or the phrase is marked figurative with what it stands for and an accept picture that departs from the literal reading.",
+     "smallest_fix": "Replace \"fabric from destructive harvesting\" with \"fabric from fire, fighting or beetle damage\"."
+    },
+    {
+     "id": "R7",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B6 sees.control and range; definition.md Costs",
+     "evidence": "The control says \"Declare the ordinary next colony improvement and starting resources before departure\". The range says \"Exact chosen benchmark cost is a check\". The person running the test picks the benchmark, so a token haul passes by declaring a cheap improvement (definition.md allows \"a new working workshop\" for an early colony). The reading cannot tell the major windfall the owner chose on November 10 from the \"incidental cloth\" that B6 reject 5 forbids.",
+     "would_pass": "A benchmark the tester cannot choose. For example: the same colony over the same days without the expedition (doing ordinary work and trade) is the control arm, and the expedition arm affords an improvement the control arm cannot, judged on what it actually buys.",
+     "smallest_fix": "Add that paired control arm to B6 sees.control, and state that the improvement must be out of the control arm's reach."
+    },
+    {
+     "id": "R8",
+     "head": "core_promise_weakened",
+     "where": "design/validation_walks/RimMandrake/Webwork.md line 55 (owner, 2026-10-20); definition.md line 19; ambiguities.md (no row); bars.json",
+     "evidence": "His north-star sentence is \"So quiet that you know you're in terrible danger. It makes treasure, it eats all, and it's coming for you.\" quiet → B2, treasure → B6, coming for you → B3, but \"it eats all\" gets no reading. definition.md only quotes it, and there is no ambiguities row and no bar mapping. Two readings build different mods: the jungle swallowing clearings (B7 regrowth), or the predators and plants consuming the living. B8 even rejects \"predators erase the living prey and jungle cycle\", which one reading of \"eats all\" could call the intended picture.",
+     "would_pass": "An ambiguities row for \"it eats all\" with its two readings, the reading taken, the evidence (for example, the biome description \"most of the animals have been eaten, and few will enter\"), and the bar that carries it.",
+     "smallest_fix": "Add the row, and name in B5, B7 or B8 meant.source which clause carries \"it eats all\"."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Specified normal MapCommonBase generation on one fixture tile in a disposable copy of the authored save. Live starts and resets use that route while canonical saves and shipped tiles stay read-only. The owner pages identify the fixture as pending implementation.",
+      "where": "bars.json B1/B2/B3/B4/B8 and R11, tickets.md T40/T41/T44/T47, ambiguities.md local map before end paint, owner_pages.md page two"
+     },
+     {
+      "id": "R2",
+      "changed": "Gave each wall one saved lifetime guardian budget on first wake. The intact-wall test checks that killed guardians stay dead and a due relay stays empty when all local owners are gone. A surviving local owner still sustains renewal.",
+      "where": "bars.json B6/R5/nest_state, census.json nest_guardian, tickets.md T37/T48, definition.md Edges, models.md M1/M2"
+     },
+     {
+      "id": "R3",
+      "changed": "Moved passive adhesion to the next version with a default-off gate and a test for sensing with no adhesion. Natural strands keep their sensing and ordinary path cost, and mouth silk keeps its readable restraint.",
+      "where": "census.json sticky_web, bars.json B1, tickets.md T21/T49, next_version.md passive strand and legacy sheet adhesion, definition.md Settings"
+     },
+     {
+      "id": "R4",
+      "changed": "Deferred the unbuilt vennick clutch-seeking job and removed it from first-version pictures, states and tests. Ordinary vennick remain huntable native prey, and scouts can follow silk and carpet to nests.",
+      "where": "census.json egg_trail_gap, bars.json B5/R7 and dependent meetings, tickets.md T37, next_version.md Vennick clutch seeking, definition.md and models.md"
+     },
+     {
+      "id": "R5",
+      "changed": "Moved random harvest ambushers to the next version with a default-off gate. The default-arm cut still marks its actor and pays once. B7 and the models retain coverage of ordinary Manhunter and nest-guardian paths.",
+      "where": "census.json harvest_emergence, bars.json B7/B8/C8/R4/R6 and predator_population, tickets.md T38/T39/T50, next_version.md random harvest ambusher, definition.md and models.md"
+     },
+     {
+      "id": "R6",
+      "changed": "Named the excluded fabric routes as web-node destruction from fire, fighting, beetles or cleanup. The deliberate cut in the accepted picture still pays.",
+      "where": "bars.json B6 says"
+     },
+     {
+      "id": "R7",
+      "changed": "Replaced the tester-chosen benchmark with a branch from the same departure save. Over the same days, the expedition must complete substantial work the colony doing ordinary work and trade cannot afford, after accounting for trip costs and losses.",
+      "where": "bars.json B6/B8/R10, definition.md Costs, models.md M4, tickets.md T43, ambiguities.md Worth repeating, owner_pages.md page one"
+     },
+     {
+      "id": "R8",
+      "changed": "Recorded both readings of the owner’s phrase and chose predatory attrition based on the BiomeDef. Linked it to B5’s sparse, huntable wildlife and kept the limits in B7’s regrowth and B8’s living-prey cycle.",
+      "where": "ambiguities.md It eats all, bars.json B5 meant.source, owner_pages.md page two"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json R11 now names the route: \"Before end paint, T47 assigns RM_Webwork to one unused landable tile only in a disposable copy of the authored save, then opens that destination through ordinary local GetOrGenerateMap and MapCommonBase generation ... Canonical saves and shipped tiles are read-only ... no planet generation, world repaint or shipped test capability.\" tickets.md T47 is the instrument ticket. Its acceptance test fails a map made with manual PlaceWeb/PlaceNest or a donor biome, and it fingerprints the canonical save and shipped tiles before and after. B1 start reads \"R11/T47 disposable RM_Webwork map created through normal local MapCommonBase steps\". The B2, B3, B4 and B8 starts point at R11/T47 in the same way. Every reset now reads \"Restore the R11/T47 baseline snapshot ... Keep canonical saves and shipped tiles untouched.\" T40, T41 and T44 use the T47 fixture, and T47 says they treat missing fixture provenance as UNMEASURED. owner_pages.md page two: \"Before end paint, live readings need normal Webwork map generation on a test tile in a disposable copy of the authored save. This fixture is unbuilt.\""
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "bars.json R5: \"The nest spawner has one fixed lifetime budget for an initial guardian cohort on first wake. It never replaces killed or departed guardians and its budget stays spent through reload.\" B6 accept 2: \"Once the awake wall’s initial guardians and all other local owners die, the wall still stands and stops supplying eggs.\" That state can now be reached. The nest_state meeting names \"the nest’s vanilla guardian spawner refill\" and says that \"R5 replaces refill with a saved initial-cohort budget\". tickets.md T48 has the asked-for acceptance test: kill the guardians on an awake, standing wall, see \"no replacement guardians and no new clutch\", including across a reload. definition.md Edges: \"Killed or departed guardians are never replaced by the wall. An intact wall can therefore run out of owners and stop renewing eggs\". The contradicted \"perpetual manhunter dispenser\" claim is gone. census nest_guardian cites T48."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "census.json sticky_web is now fate \"next_version\" with ticket T49. Its why: \"Registered strands still mark trespass and bring hunters. Mouth silk supplies a separate medically readable restraint.\" tickets.md T49 gates RM_CompAdhesiveSlick for strands and legacy sheets, default off, and keeps RM_CompSenseWebNode and the path cost. Its acceptance test: crossing a strand \"registers contact and marks the pawn without adding sticky, slicked or locked conditions\". B1 accept now says \"fine sensing strands\". next_version.md has \"Passive strand and legacy sheet adhesion\". I checked that mouth silk does not depend on the moved mechanic. RM_Damage_LoomSpit in src/RimMandrake/Webwork/Defs/DamageDefs/RM_Webwork_DamageDefs.xml applies RM_LoomBound, not RM_Webwork_Slick, so B4's restraint survives."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "census.json egg_trail_gap: fate \"next_version\", why \"Ordinary vennick remain small native prey and can be hunted and butchered. Players can find the naturally placed nest by scouting\". B5 says now reads \"while quarrok remove sensed crossings and sivvern move by actual flight\". The vennick accept picture and the reject \"Vennick stream toward an absent or sealed nest\" are gone, and B5 start no longer names run-to-eggs jobs. R7 has no vennick sentence. T37 no longer mentions vennick. next_version.md has \"Vennick clutch seeking\"."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "census.json harvest_emergence: fate \"next_version\", ticket T50, with a deletion argument (\"A deliberate cut already marks the cutter and draws extant hunters\"). The B7 accept 2 sources are now \"displacement or shade loss\". The B7 reject, control and instrument fields no longer say \"harvest-emergent manhunter\". R4 lists \"the Manhunter mental state\" with no emergent source. T38 now uses \"a Manhunter chase triggered by an ordinary attack on a wild ollathrix\", and RM_Ollathrix.xml still supplies that path. tickets.md T50 is the default-off switch-off ticket with a paired-arm acceptance test. C8 reads the gate separately under C10/T50. The predator_population why now names \"the initial guardian cohort\" instead of the emergent feed."
+    },
+    "R6": {
+     "verdict": "fixed",
+     "evidence": "B6 says now ends: \"without creating tame owners or awarding fabric for web nodes destroyed by fire, fighting, beetles or cleanup.\" That names the excluded routes plainly and matches R6's list. The deliberate cut in accept 1 is no longer excluded by a literal reading."
+    },
+    "R7": {
+     "verdict": "fixed",
+     "evidence": "B6 sees.control: \"Branch the same colony save at departure. The no-expedition arm continues ordinary work and trade over the same elapsed days, with matched ordinary market opportunities ... The expedition arm must actually complete a substantial improvement the control cannot afford in that window after accounting for trip supplies, labour lost to the trip and losses ... A token purchase, restocking the expedition or an improvement already affordable in the control fails.\" The range sentence \"Exact chosen benchmark cost is a check\" is replaced by the paired-run comparison. Reject 5 and the figurative \"substantial colony progress\" use the same control arm. T43 records both arms. definition.md Costs, R10 and B8 control (\"B6’s matched no-expedition colony\") agree."
+    },
+    "R8": {
+     "verdict": "fixed",
+     "evidence": "ambiguities.md has a new row, “It eats all”, giving both readings (canopy swallowing clearings, or predators having eaten most wildlife). The reading taken is predatory attrition. The evidence quotes RM_Webwork_Biome.xml “most of the animals have been eaten, and few will enter.” I checked: this text is at src/RimMandrake/Webwork/Defs/BiomeDefs/RM_Webwork_Biome.xml:27. The row names B5 as the carrying bar and keeps B7's regrowth and B8's refusal of eradication as limits. B5 meant.source now says that \"the sparse but still huntable resident wildlife in the flight picture carries that clause\". owner_pages.md page two states the reading."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Designer settlements — not additions to his words",
+    "bars.json bars/B1",
+    "bars.json bars/B2",
+    "bars.json bars/B3",
+    "bars.json bars/B4",
+    "bars.json bars/B5",
+    "bars.json bars/B6",
+    "bars.json bars/B7",
+    "bars.json bars/B8",
+    "bars.json checks/C8",
+    "bars.json meetings",
+    "bars.json rules/R10",
+    "bars.json rules/R11",
+    "bars.json rules/R4",
+    "bars.json rules/R5",
+    "bars.json rules/R6",
+    "bars.json rules/R7",
+    "census.json rows/adhesive_command",
+    "census.json rows/dep_creatures",
+    "census.json rows/egg_trail_gap",
+    "census.json rows/harvest_emergence",
+    "census.json rows/nest_guardian",
+    "census.json rows/scanner_payload",
+    "census.json rows/sivvern_radar",
+    "census.json rows/sticky_web",
+    "census.json rows/web_flora_placement",
+    "census.json rows/web_network",
+    "definition.md Costs",
+    "definition.md Edges and settled transition contract",
+    "definition.md Four stories",
+    "definition.md Neighbours and dependency contracts",
+    "definition.md Settings",
+    "definition.md Webwork — proposed Design Version 0.1.0",
+    "definition.md What changes in the colony's story",
+    "definition.md When it goes wrong, and the readable sign",
+    "models.md M1 Situations and event-to-job transitions",
+    "models.md M2 Whole-map living web over time",
+    "models.md M3 Web, canopy and refuge geometry sweep",
+    "models.md M4 Material and carrier provenance ledger",
+    "next_version.md Passive strand and legacy sheet adhesion",
+    "next_version.md Player-commanded legacy sheet slick/locked flick interaction",
+    "next_version.md Random harvest ambusher",
+    "next_version.md Sivvern circling as nest radar",
+    "next_version.md Spider-sown web-following flora and nest flower-ring placement",
+    "next_version.md Vennick clutch seeking",
+    "next_version.md Webwork-specific acoustic scan payload",
+    "owner_pages.md Page one — what Webwork now is",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T21: Player-commanded legacy sheet slick/locked flick interaction — switch off",
+    "tickets.md T33: Sivvern circling as nest radar — deferred definition",
+    "tickets.md T37: Finish life consumers and accessible natural nesting",
+    "tickets.md T38: Align exposure and safe feature shutdown",
+    "tickets.md T39: Make local harvest provenance honest",
+    "tickets.md T40: Instrument situation generator and event adapters",
+    "tickets.md T41: Instrument full-map season and saved replay",
+    "tickets.md T43: Instrument sources, carriers and ordinary buyers",
+    "tickets.md T44: Instrument land appearance and audible cues",
+    "tickets.md T46: Spider-sown web-following flora and nest flower-ring placement — deferred definition",
+    "tickets.md T47: Create a disposable Webwork map through normal local generation",
+    "tickets.md T48: Give nest guardians a saved lifetime spawn budget",
+    "tickets.md T49: Passive Webwork strand and legacy sheet adhesion — switch off",
+    "tickets.md T50: Random harvest ambusher — switch off"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 2220849,
+     "output_tokens": 18362
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "The B5, B6 and B7 sees.start fields still say \"on a natural map\" (B5), \"Naturally placed defended site\" (B6) and \"Real canopy on a natural map\" (B7). None of them names the R11/T47 fixture, though their resets now restore \"the R11/T47 baseline snapshot\". B6's paired-economy runs and natural-clock renewal anchors, and B7's calibration anchors, need a live RM_Webwork map before end paint.",
+   "reason": "R1 named only B1/B3/B4/B8, and these start fields were not changed by the fix. Pointing them at R11/T47 would match the other bars. This blocks nothing.",
+   "round": 1
+  },
+  {
+   "what": "owner_pages.md still has a section \"Still refused after the second look (the reviewer's words)\" that lists R1–R8 verbatim as unresolved.",
+   "reason": "This section was not among the changed entries and may be regenerated by tooling. Left as it is, it tells the owner that eight records are refused after they were fixed in this round.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "2a74da8cee4a640de3a64c46a011e5d4e70c4bc1fbaec01c7661f41ddc9a0291",
+ "seconds": 627,
+ "at": "2026-11-17T19:40:11"
+}

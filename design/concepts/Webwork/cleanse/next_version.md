@@ -174,7 +174,7 @@ Ticket: T25.
 
 What: Instrument-assisted discovery. Next version, off.
 
-Why outside land, life and signature: A special scanning route is an extra; ordinary geometry, thrum and living mites make the signature readable.
+Why outside land, life and signature: A special scanning route is an extra; ordinary geometry and the thrum make the signature readable.
 
 Ticket: T19.
 
@@ -190,7 +190,7 @@ Ticket: T20.
 
 What: Web-switch puzzle. Next version, off.
 
-Why outside land, life and signature: Passive sticky strands and medical care complete the signature without a player switch that commands spider silk.
+Why outside land, life and signature: Sensed strands bring hunters and mouth silk still gives medical restraint with the command off.
 
 Ticket: T21.
 
@@ -262,7 +262,7 @@ Ticket: T32.
 
 What: Special interaction. Next version, off.
 
-Why outside land, life and signature: Flight and ordinary predation remain; a second nest-finding signal is not necessary with vennick.
+Why outside land, life and signature: Flight and ordinary predation remain. Scouts can find nests by following the existing web and carpet.
 
 Ticket: T33.
 
@@ -294,6 +294,30 @@ Fate: next version, off. Ticket: T45.
 
 What: The September flora/nest rosters promise pale flowers along architecture, irrigation-biased Sellith/Varrisk and a Ruddreth nest ring. Current flora defs have ordinary growth/clusters but no spider-carried sowing or web-biased placement consumer located.
 
-Why outside land, life and signature: Ordinary plant forms and canopy remain; this special propagation/decorative-placement system is not needed once actual silk, mites and mark inspection identify the site. Reliable route-safety telemetry is separately recommended for retirement.
+Why outside land, life and signature: Ordinary plant forms and canopy remain; this special propagation/decorative-placement system is not needed once actual silk, carpet and mark inspection identify the site. Reliable route-safety telemetry is separately recommended for retirement.
 
 Fate: next version, off. Ticket: T46.
+
+### Passive strand and legacy sheet adhesion
+
+What: Strand and sheet contact can apply a sticky, slicked or locked hediff, with decay and tending.
+
+Why outside land, life and signature: Sensed nodes already mark trespass and bring hunters. Mouth silk supplies the medically readable restraint.
+
+Fate: next version, off. Ticket: T49.
+
+### Vennick clutch seeking
+
+What: An unbuilt job would have vennick track reachable silk routes to clutches and eat the eggs.
+
+Why outside land, life and signature: Ordinary vennick are native prey. The web and carpet already let players scout naturally placed nests.
+
+Fate: next version, unbuilt.
+
+### Random harvest ambusher
+
+What: Destroying silk in eligible harvest modes can create a new hostile ollathrix.
+
+Why outside land, life and signature: Cuts already alert existing hunters, so the new pawn is a second threat source beyond the needed response.
+
+Fate: next version, off. Ticket: T50.

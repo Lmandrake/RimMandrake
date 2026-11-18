@@ -178,9 +178,9 @@
       "called_by": "RM_Webwork_Nest.xml CanBeDormant, wake, CompSpawnerPawn and lord; not a SenseWeb node itself",
       "serves": "signature: living nest and extraction",
       "fate": "needed_by",
-      "why": "Without the defending owner and guardian state the nest is unattended loot. This does not require a unique mother identity or a new breed; use bounded existing spawner/lord machinery. Its DefendAndExpandHive defence/assault movement must obey R4 exposure refusal too; the lord is not an exemption.",
+      "why": "Without the defending owner and guardian state the nest is unattended loot. This does not require a unique mother identity or a new breed; keep the initial guardian cohort and lord machinery, with a lifetime spawn budget that prevents vanilla refill after losses or reload. Its DefendAndExpandHive defence/assault movement must obey R4 exposure refusal too; the lord is not an exemption.",
       "needed_by": "signature: living nest and extraction",
-      "ticket": "T38"
+      "ticket": "T38; T48"
     },
     {
       "id": "egg_relay",
@@ -210,7 +210,7 @@
     },
     {
       "id": "web_network",
-      "what": "New-map sites linked by sagging spanning and through-cables, passable costly crossings, local sticky strands and silk carpet at sites; network/carpet/density controls.",
+      "what": "New-map sites linked by sagging spanning and through-cables, passable costly crossings, local sensing strands and silk carpet at sites; network/carpet/density controls.",
       "built": "present",
       "evidence": "src/RimMandrake/Webwork/Source/RM_GenStep_WebworkWeb.cs; src/RimMandrake/Webwork/Defs/ThingDefs_Buildings/RM_WebworkWebNetwork.xml; src/RimMandrake/Webwork/Defs/TerrainDefs/RM_WebworkSilkCarpet.xml",
       "proven": "stale",
@@ -241,11 +241,11 @@
       "evidence": "src/RimMandrake/Webwork/Defs/HediffDefs/RM_WebworkSlick.xml; src/RimMandrake/Webwork/Defs/ThingDefs_Buildings/RM_WebworkStructures.xml:113; src/RimMandrake/Webwork/Defs/ThingDefs_Buildings/RM_WebworkWebNetwork.xml:108",
       "proven": "missing",
       "called_by": "RM_Webwork_Strand and legacy sheet comps -> CreatureBehaviors RM_CompAdhesiveSlick -> RM_Webwork_Slick; separate command switch below",
-      "serves": "signature",
-      "fate": "signature",
-      "why": "Local exposure accumulates adhesion and tending clears it; without that slowing/contact cost the web ceases to be a hunting surface. Player-commandable flick modes are separately deferred.",
+      "serves": "Contact adhesion",
+      "fate": "next_version",
+      "why": "Registered strands still mark trespass and bring hunters. Mouth silk supplies a separate medically readable restraint. Removing passive strand and legacy sheet adhesion leaves the land and hunt intact.",
       "needed_by": "",
-      "ticket": ""
+      "ticket": "T49"
     },
     {
       "id": "sense_registration",
@@ -267,11 +267,11 @@
       "evidence": "src/RimMandrake/Webwork/Source/RM_CompEmergentSpawnOnDestroy.cs; src/RimMandrake/Webwork/Defs/ThingDefs_Buildings/RM_WebworkWebNetwork.xml:71",
       "proven": "stale",
       "called_by": "Cable/strand/legacy defs -> RM_CompEmergentSpawnOnDestroy.PostDestroy -> RM_EmergentKernel.Fires -> pawn generation",
-      "serves": "signature",
-      "fate": "signature",
-      "why": "Keep the explicitly ruled harvest ambusher risk as part of cutting the web, with a readable emergence tell. It cannot substitute for normal pursuit; constrain duplicate events and model population accumulation. The built Manhunter state is a self-chosen chase under R4, not forced movement; T38 must cover it as well as the ordinary hunter.",
+      "serves": "Random harvest ambusher",
+      "fate": "next_version",
+      "why": "A deliberate cut already marks the cutter and draws extant hunters. Random extra attackers add a second population source while the hunt, rewards and sunlit escape still work without it.",
       "needed_by": "",
-      "ticket": "T39; T38"
+      "ticket": "T50"
     },
     {
       "id": "silk_harvest",
@@ -592,11 +592,11 @@
       "evidence": "src/RimMandrake/Webwork/Defs/ThingDefs_Races/RM_WebworkFauna.xml:53",
       "proven": "missing",
       "called_by": "Vennick ordinary defs have no clutch-finder; no RM_JobGiver_RunToEggs in src search",
-      "serves": "life",
-      "fate": "life",
-      "why": "Vennick's ordinary ecological activity is finding and eating clutches. Without an observable route to real finite eggs it is an arbitrary extra prey sprite; no special scanner or radar UI needed.",
+      "serves": "Custom egg-finding job",
+      "fate": "next_version",
+      "why": "Ordinary vennick remain small native prey and can be hunted and butchered. Players can find the naturally placed nest by scouting, so clutch-seeking is unnecessary for life or the raid.",
       "needed_by": "",
-      "ticket": "T37"
+      "ticket": ""
     },
     {
       "id": "plant_behaviour_gap",
@@ -698,7 +698,7 @@
       "called_by": "Optional AcousticScanner extension consumer; references nest, spiders and urraveth pieces",
       "serves": "Instrument-assisted discovery",
       "fate": "next_version",
-      "why": "A special scanning route is an extra; ordinary geometry, thrum and living mites make the signature readable.",
+      "why": "A special scanning route is an extra; ordinary geometry and the thrum make the signature readable.",
       "needed_by": "",
       "ticket": "T19"
     },
@@ -724,7 +724,7 @@
       "called_by": "Legacy sheet CompFlickable -> shared adhesive comp; natural strands have no player command",
       "serves": "Web-switch puzzle",
       "fate": "next_version",
-      "why": "Passive sticky strands and medical care complete the signature without a player switch that commands spider silk.",
+      "why": "Sensed strands still recruit hunters and mouth silk still gives medical restraint with commandable adhesion off.",
       "needed_by": "",
       "ticket": "T21"
     },
@@ -841,7 +841,7 @@
       "called_by": "No dedicated implementation located in scoped consumer searches; unknown beyond those searches",
       "serves": "Special interaction",
       "fate": "next_version",
-      "why": "Flight and ordinary predation remain; a second nest-finding signal is not necessary with vennick.",
+      "why": "Flight and ordinary predation remain. Players can find nests by scouting the existing web and carpet.",
       "needed_by": "",
       "ticket": "T33"
     },
@@ -880,7 +880,7 @@
       "called_by": "Existing content extensions, global engine services or optional campaign patches described in evidence",
       "serves": "Dependency contract",
       "fate": "dependency",
-      "why": "Registration/overlaps, passive adhesion, tending, beetle chewing, scald and shared exposure. New Webwork consumers/bindings use its services, not copies; generic tether/specimens survive for Sump.",
+      "why": "Registration/overlaps, beetle chewing, scald and shared exposure. New Webwork consumers/bindings use its services, not copies; generic tether/specimens survive for Sump.",
       "needed_by": "",
       "ticket": ""
     },
@@ -971,7 +971,7 @@
       "called_by": "No dedicated current consumer/normal placer located; ordinary plant spawner is not evidence of these promises",
       "serves": "Optional nest detail and secondary salvage/propagation",
       "fate": "next_version",
-      "why": "Ordinary plant forms and canopy remain; this special propagation/decorative-placement system is not needed once actual silk, mites and mark inspection identify the site. Reliable route-safety telemetry is separately recommended for retirement.",
+      "why": "Ordinary plant forms and canopy remain; this special propagation/decorative-placement system is not needed once actual silk, carpet and mark inspection identify the site. Reliable route-safety telemetry is separately recommended for retirement.",
       "needed_by": "",
       "ticket": "T46"
     }

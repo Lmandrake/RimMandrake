@@ -5,19 +5,19 @@
  "signature": "Touching or robbing the living web brings its hunters, and maintaining open sunlit ground is how a colony breaks that pursuit as the jungle grows back.",
  "counts": {
   "capabilities": 75,
-  "kept": 38,
-  "next_version": 31,
+  "kept": 35,
+  "next_version": 34,
   "recommend_retire": 6,
   "old_bars": 0,
   "bars": 8,
   "live_only_bars": 5,
   "checks": 12,
-  "rules": 10,
+  "rules": 11,
   "unknown_pairs": 8,
   "models": 4,
-  "tickets": 46,
+  "tickets": 50,
   "questions": 0
  },
  "blocked_on": "",
- "applyable": false
+ "applyable": true
 }
