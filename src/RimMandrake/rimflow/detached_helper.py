@@ -1251,16 +1251,33 @@ def killed(rec, runner=subprocess.run, now=None):
     return ""
 
 
+def mark_killed(unit, why, now=None, root=None):
+    """`pipe stop --kill` killed this run's whole cgroup, its own ExecStopPost steps included (measured 2026-11-18: the
+    cgroup SIGKILL also kills the stop-post finish, so the record stayed `running` and the clone held). Record it
+    finished, result `killed: <why>`, with its finish OWED (finish then writes the note and log line once). -> line."""
+    rec = read_record(unit, root)
+    if not rec:
+        return "no record for %s (not a detached run): nothing to mark" % unit
+    if rec.get("status") == "finished":
+        return "already finished %s" % unit
+    rec.update(status="finished", result="killed: " + why, ended=now or time.time(), finish_owed=True)
+    write_record(rec, root)
+    return "record %s finished (killed), its finish owed" % unit
+
+
 def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_reader=None):
-    """The unit's ExecStopPost. -> (exit code, text). Once per run: a second call changes nothing."""
+    """The unit's ExecStopPost. -> (exit code, text). Once per run: a second call changes nothing. A run `pipe stop
+    --kill` marked killed (mark_killed) gets its owed note and log line here, its result kept."""
     now = now or time.time()
     env = os.environ if env is None else env
     rec = read_record(unit)
     if not rec:
         return 2, "no record for %s" % unit
-    if rec.get("status") == "finished":
+    if rec.get("status") == "finished" and not rec.get("finish_owed"):
         return 0, "already finished %s" % unit
     st, tokens, tail = outcome(rec, env)
+    if rec.get("finish_owed"):
+        st = rec.get("result") or st
     usd, how = measured_cost(rec)       # read now, with the tokens, before anything else touches the file
     took = int(now - rec["at"])
     # the owner, 2026-11-16: "Please speak in terms of weighted tokens not money." The dollars stay in the record
@@ -1311,6 +1328,7 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     except Exception as e:  # noqa: BLE001
         steps.append("conductor log FAILED: %s" % e)
     import role_launch as RL
+    rec.pop("finish_owed", None)
     rec.update(status="finished", ended=now, result=st, tokens=tokens, token_unit=RL.TOKEN_UNIT, steps=steps,
                cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how, owed_close=owed)
     write_record(rec)
