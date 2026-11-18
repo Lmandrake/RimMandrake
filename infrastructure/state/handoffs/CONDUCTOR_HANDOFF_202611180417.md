@@ -62,15 +62,28 @@ all 10 were green). ⛔ **Never relax a door test you have not diagnosed.** Evid
 ## What is half-done, and where it stops
 
 <!-- Anything left mid-flight, one bullet each: `- ITEM_OR_TOPIC — state; NEXT: <one imperative action>`. A pointer without a NEXT: measured ~0% pickup; with one, near-100%. -->
-- `TWO_LIVE_SUBAGENTS_AT_WRAP` — **two agents were still RUNNING when this was written (20:18 PST), in clones that
-  must not be deleted**: one building `RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS` in
-  `/Users/mandrake/ClaudeWork/scratch/rm-rc-submit` (branch `remote/rimmandrake_count_advance_refusals_so_a_loop_rings`),
-  one draining `RIMMANDRAKE_DRAIN_ITEMS_WAITING_ON_A_JUDGE_THAT_RETIRED` in
-  `/Users/mandrake/ClaudeWork/scratch/rm-drain` (branch `remote/rimmandrake_drain_items_waiting_on_a_judge_that_retired`,
-  and it DOES write ledger events, in its own clone only). Both were at `84ca416f3a` with clean trees at wrap, i.e.
-  neither had committed yet; NEXT: read each clone's `git log --oneline -1` and branch, and if a commit is there,
-  review it, run its verify command yourself, land it with `./publish`, record a level-tagged pass and close the
-  item — then delete the clone.
+- `FIVE_LIVE_SUBAGENTS_AT_WRAP` — five agents were RUNNING when this was last updated (20:36 PST), each in a clone
+  that must NOT be deleted; NEXT: for each clone below, run `git -C <clone> log --oneline -1` and if a commit is
+  there, review it, run its verify command yourself, land it with `./publish`, record a level-tagged pass and close
+  the item, then delete the clone (an empty clone whose agent is gone means the work is lost: re-launch it rather
+  than believing a summary).
+  - `RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS` — `~/ClaudeWork/scratch/rm-rc-submit`, branch
+    `remote/rimmandrake_count_advance_refusals_so_a_loop_rings`. 🔴 Its plan's own `--submit` test PASSES on base
+    (the flag is ignored), so check the case it wrote really fails on base before believing the fix.
+  - `RIMMANDRAKE_DRAIN_ITEMS_WAITING_ON_A_JUDGE_THAT_RETIRED` — `~/ClaudeWork/scratch/rm-drain`, branch
+    `remote/rimmandrake_drain_items_waiting_on_a_judge_that_retired`. This one DOES write ledger events, in its own
+    clone only. Accept a PARTIAL drain honestly reported.
+  - `RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED` — `~/ClaudeWork/scratch/rm-ticket-5`.
+  - `RIMMANDRAKE_CHECK_SCOPE_SOURCE_EVENT_EXISTS_FAKE_ID_OPENS` — `~/ClaudeWork/scratch/rm-ticket-6`.
+    ⚠️ Tickets 5 and 6 edit the SAME file (`designer_stage.py`), briefed about each other; land them one after the
+    other and re-run the second's case after the first lands.
+  - `RIMMANDRAKE_RESTART_GAME_AFTER_MAPDATA_TIMEOUT_THREE_JOBS_BURNED` — `~/ClaudeWork/scratch/rm-ticket-7`
+    (`infrastructure/stevedesktop/worker.py`). Its second half was split out as
+    `RIMMANDRAKE_SHORTEN_BRAKE_PASS_STEWARD_MISSED_ITS_BEAT`.
+  🔴 **Measured, and worth distrusting:** at 20:36 PST the two oldest (rc-submit, drain) had been running ~95 min
+  and had written **nothing at all** — no commit, no dirty file, no file in the clone touched since 19:14. That is
+  not proof they are dead, but a RimMandrake subagent has hung for an hour on this kind of work before and lost
+  everything it found. Check the clone itself, not the agent's word.
 - `RIMMANDRAKE_DRAIN_ITEMS_WAITING_ON_A_JUDGE_THAT_RETIRED` — **43** open items (not the spec's 45/46) are blocked
   with kind `judge` on a retired Relentless judge; the acceptance test
   `src/RimMandrake/rimflow/acceptance/judge_blocked_drained_accept.py` reads `FAIL 43 open items wait on the retired
