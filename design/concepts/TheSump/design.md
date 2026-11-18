@@ -54,9 +54,12 @@ droid five to eight days after landing, then scouts with a spotter, a strike tea
 breaching assault, and an orbital bombardment that cannot be fought. Each step comes only if the one before
 succeeded; a loud crew halves every wait and a hidden one doubles it.
 
-**How long a stop here can last (the outer edge, by his ruling of 2026-11-18).** By the pursuit rules: a first week
-nearly free of the Empire, a first fight in the second or third week, nothing past about a month. The Sump stretches
-that as far as any open ground on the planet can, for two reasons that are already built. The watchers must *see*
+**How long a stop here can last: about six to nine weeks for a crew that stays unlit, and that is the outer edge**
+(his ruling of 2026-11-18: the numbers are *"the outer edge allowable for each biome"*). On open ground the ladder's
+arithmetic gives a probe on day 5 to 8, a first real fight around day 12 to 20 and the bombardment around day 20 to
+32 if the Empire wins every step. A crew the search reads as discreet or hidden has every wait multiplied by 1.4 or
+by 2 (`EmpireLadderMath.BandIntervalMultiplier`), which is where six to nine weeks comes from; a crew that lights
+the place up gets the open-ground month. The Sump earns the long end for two reasons that are already built. The watchers must *see*
 the crew or the ship, and a target standing in darkness is seen only from six cells instead of twenty-six
 (`EmpireLadderMath.Sees`); the Sump is permanent dusk, so an unlit crew is nearly invisible at ground level and
 every lamp it lights is a choice. And nothing here grows, floods or closes in on a schedule: the tar is patient.

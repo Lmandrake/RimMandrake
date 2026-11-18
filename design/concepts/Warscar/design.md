@@ -64,9 +64,10 @@ droid five to eight days after landing, then scouts with a spotter, a strike tea
 breaching assault, and an orbital bombardment that cannot be fought. Each step comes only if the one before
 succeeded; a loud crew halves every wait and a hidden one doubles it.
 
-**How long a stop here can last (the outer edge, by his ruling of 2026-11-18).** The bare pursuit clock and nothing
-more: a first week nearly free of the Empire, a first fight in the second or third week, nothing past about a
-month. The Warscar adds no days to that. It is open ground under a high sun and it hides nothing. That is the outer
+**How long a stop here can last: about a month, and that is the outer edge** (his ruling of 2026-11-18: the
+numbers are *"the outer edge allowable for each biome"*). It is the bare pursuit clock and nothing more: the
+ladder's arithmetic on open ground gives a probe on day 5 to 8, a first real fight around day 12 to 20 and the
+bombardment around day 20 to 32 if the Empire wins every step. The Warscar adds no days to that. It is open ground under a high sun and it hides nothing. That is the outer
 edge, and very few crews will reach it, because the place charges for every day in four currencies of its own
 (below) and one of them never comes off.
 
