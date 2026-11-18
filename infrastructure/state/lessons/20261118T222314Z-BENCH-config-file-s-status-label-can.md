@@ -1,0 +1,1 @@
+A config file's status label can be pinned by a selftest: selftest_designer_stage asserted showcase_rules.json status contains UNMEASURED, so recording a calibration turned it red. Grep selftests for the field before changing a status label, and never chain ./publish after run_selftests with ';' (566bf64fd1 shipped red that way; fe17d44ecd repaired it).
