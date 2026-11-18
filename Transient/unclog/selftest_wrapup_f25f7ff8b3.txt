@@ -1,0 +1,88 @@
+PASS W1 role_launch: ExecStopPost=wrapup unit, carried for relentless
+PASS W1 the ExecStopPost hands the wrap-up to its own unit (outside the wall), never fails the unit, its tool exists
+PASS W1 a role run's wrap-up is not carried
+PASS W1 detached_helper: finish, the wrap-up and the clone return all run at stop
+PASS W1 detached_helper's wrap-up runs outside the sandbox and never fails the unit
+PASS W2 settings.json runs wrapup_hook.py on SessionEnd
+PASS W2 settings.json runs wrapup_hook.py on SubagentStop
+PASS W3 clean and pushed clone is ok
+PASS W3 an untracked file is filed: 1 uncommitted/untracked path(s) e.g. new.txt, 0 unpushed commit(s)
+PASS W3 a carried clone is carried, not filed
+PASS W3 an unpushed commit is filed: 0 uncommitted/untracked path(s), 1 unpushed commit(s)
+PASS W3 a removed clone is ok
+PASS W3 a clone whose push state cannot be read is filed
+PASS W4 this unit's hold is released
+PASS W4 a failed release is filed
+PASS W4 OWNER's hold is left alone
+PASS W4 another holder's hold is left alone
+PASS W4 another clone's hold is left alone
+PASS W4 a helper's hold is filed, not released
+PASS W4 a /clear's hold is filed, not released
+PASS W5 paid() clears a debt once
+PASS W5 the owed setting is filed with its undo
+PASS W5 the filed debt left the register; another agent's stays
+PASS W5 an open file is written for the agent
+PASS W6 a claim still doing is filed
+PASS W6 an unreadable ledger is unmeasured
+PASS W6 an unknown session start is unmeasured
+PASS W6 a unit's claims are the supervisor's
+PASS W7 the dirty clone is filed (1)
+PASS W7 standing() re-measures it as standing
+PASS W7 a cleaned clone stops standing
+PASS W7 sweep resolves the cleared file and keeps the debt one (1, 1)
+PASS W7 resolve closes the rest
+PASS W8 inside a launched unit the hook does nothing
+PASS W8 SessionEnd: clones and since from the transcript ((['/home/mandrake/.seat-tmp/BENCH/selftest_wrapup_74f0glll/w3', '/home/mandrake/.seat-tmp/BENCH/selftest_wrapup_74f0glll/w7'], 1793754123))
+PASS W8 /clear is report-only
+PASS W8 SubagentStop: only the helper's other clones
+PASS W8 a turn end is not an agent end
+PASS W9 standing debris MEASURED 1 ({'v': 1, 'm': 'MEASURED', 'unit': 'filed wrap-up rows still standing', 'x': {'first': ['unit-w9 clone /home/mandrake/.seat-tmp/BENCH/selftest_wrapup_74f0glll/w7']}})
+PASS W9 the wrap-up records are counted (3)
+PASS W9 the standing count files one fixed alarm
+PASS W9 the family is gathered
+PASS W9 no state dir is UNMEASURED, never 0
+PASS W10 the unit CLI exits 0 and records one line ()
+PASS W11 a fresh orphan debt does not stand yet
+PASS W11 an aged orphan debt stands
+PASS W12 sset owes the forced setting once (1)
+PASS W12 restore_settings pays it (bad=[], owed=0)
+PASS W13 a Scene torn down (read back empty) owes nothing
+PASS W13 a Scene left without teardown is filed with its undo: ["scene: scenelib Scene 'w13_killed' at 5,5,3,3"]
+PASS W13 success:true with things still standing stays owed
+PASS W13 setting() forced the field
+PASS W13 a forced setting never restored is filed with its old value: ['setting: scenelib.setting RimMandrake.X f=0']
+PASS W13 a setting() restored owes nothing
+PASS W13 a setting() whose restore failed stays owed
+map: 7 None tile None
+paused: True
+cleared: {'cleared': 0}
+PASS W14 a stage that crashed half-way is filed: ['scene: stage_review map 7: clear chunks; spawn Gizka:2']
+map: 7 None tile None
+paused: True
+cleared: {'cleared': 0}
+  spawn ('Gizka', 1, 1, True)
+PASS W14 a stage that finished owes nothing (rc=0)
+PASS W14 a reframe-and-shoot run changes nothing and owes nothing
+PASS W15 an entered transaction that changed nothing owes nothing
+PASS W15 a transaction killed before restore is filed: ['setting: SettingsTransaction forced debug godMode=True']
+PASS W15 a transaction restored owes nothing
+PASS W15 a restore with problems stays owed
+PASS W16 a settings get owes nothing
+PASS W16 a raw Session.call set killed before restore is filed once with its undo: [('setting: mod_settings_field:RimMandrake.Sarlacc.SarlaccSettings.enabled=False (was True)', "still owed at the agent's end; undo: jawa/mod_settings_field typeName=RimMandrake.Sarlacc.SarlaccSettings action=set field=enabled value=True")]
+PASS W16 the filed door debt stands and stays keyed
+PASS W16 a write back to the original pays the debt, whoever writes it, and owes no reverse change
+PASS W16 the paid door debt stops standing
+PASS W16 a no-op set and a refused set owe nothing
+PASS W16 debug_settings and difficulty_tune writes are owed per field: ['setting: difficulty_tune:threatScale=0.0 (was 1.0)', 'setting: debug_settings:noAnimals=True (was False)']
+PASS W16 restored (bool case, float within tolerance) owes nothing
+PASS W16 resolving the file forgets its door debts
+PASS W17 a dirty seat clone is carried
+PASS W17 a session ending in a seat clone files nothing: [{'kind': 'bridge', 'what': 'shared lock', 'act': 'ok', 'why': 'free'}, {'kind': 'clone', 'what': '/home/mandrake/.seat-tmp/BENCH/selftest_wrapup_74f0glll/w17seat', 'act': 'carried', 'why': "the shared seat clone: its state is the seat's work in flight, not this agent's debris"}]
+PASS W17 the same clone off the list is filed
+PASS W17 the pre-fix row exists (filed while off the list)
+PASS W17 a filed seat-clone row stops standing and sweep resolves it
+PASS W17 the default seat clone is bench alone (the foundry clone is deleted)
+PASS W17 the supervisor's start is carried; a window's own claim is filed: ['MINE', 'THEN']
+PASS W17 relentless.ledger_start still writes RELENTLESS_START_WHY
+selftest_wrapup: PASS
+[bridge split] 0.1 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 0.0 / outside calls 0.1 s
