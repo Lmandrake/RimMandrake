@@ -119,6 +119,36 @@ eg = OW.whea_reading(NOW)[COR]
 check("the 24 h edge: 23.9 h and a clock-skewed future row count, 24.1 h does not", eg["v"] == 2, eg)
 del os.environ["RM_OPS_WHEA_EVENTS"]
 
+# A row dated past the skew allowance: Windows' clock runs ahead of this one, so the window cannot be placed. Dropping
+# the row read a fatal error as a measured 0 (OPS_WATCH_FIX_BLIND_READINGS_STILL_ZERO claim 3); it is a blind reading.
+(TMP / "ahead").mkdir()
+(TMP / "ahead" / "whea.txt").write_text("\r\n".join(lines(ev(17, age_h=1), ev(18, level=2, age_h=-10 / 60.0))) + "\r\n")
+os.environ["RM_OPS_WHEA_EVENTS"] = str(TMP / "ahead" / "whea.txt")
+ah = OW.whea_reading(NOW)
+check("a fatal row 10 min ahead: severe is not a measured 0", ah[SEV]["m"] != "MEASURED", ah[SEV])
+check("a fatal row 10 min ahead: corrected UNMEASURED too, whea_blind 1 naming the clock",
+      ah[COR]["m"] == "UNMEASURED" and ah[BLIND]["v"] == 1 and "ahead" in ah[BLIND]["x"]["cause"], ah)
+del os.environ["RM_OPS_WHEA_EVENTS"]
+
+# Footers and bytes the collector never prints are blind too, never a zero or a crash (Codex review, 2026-11-18).
+for name, raw in (("two_ends", "END|1\r\nEND|0\r\n"),
+                  ("odd_digit", "END|²\r\n"), ("bad_byte", None)):
+    (TMP / name).mkdir()
+    f = TMP / name / "whea.txt"
+    if raw is None:
+        f.write_bytes(b"EV|17|3|\xff\r\nEND|1\r\n")
+    else:
+        f.write_text(raw, encoding="utf-8")
+    os.environ["RM_OPS_WHEA_EVENTS"] = str(f)
+    try:
+        r = OW.whea_reading(NOW)
+    except Exception as e:  # noqa: BLE001 -- a crash is the failure this case looks for
+        r = {"crash": repr(e)}
+    check("%s: a blind reading (UNMEASURED counts, whea_blind 1), not a zero or a crash" % name,
+          r.get(SEV, {}).get("m") == "UNMEASURED" and r.get(COR, {}).get("m") == "UNMEASURED"
+          and r.get(BLIND, {}).get("v") == 1, r)
+    del os.environ["RM_OPS_WHEA_EVENTS"]
+
 k, al = cli_pass("none", ["END|0"])
 check("Windows saying zero reads a measured 0", k[COR]["m"] == "MEASURED" and k[COR]["v"] == 0 and k[BLIND]["v"] == 0, k[COR])
 

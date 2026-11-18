@@ -1523,6 +1523,7 @@ def root_growth(sd, now, rules):
 POWERSHELL = "/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/powershell.exe"
 WHEA_DAYS = 8
 WHEA_SEVERE_IDS = (18, 19, 20)
+WHEA_SKEW_S = 300      # a row this far ahead of WSL's clock still counts; further ahead, the reading is blind
 WHEA_PS = ("$ErrorActionPreference='Stop'; try { $e = @(Get-WinEvent -FilterHashtable @{LogName='System'; "
            "ProviderName='Microsoft-Windows-WHEA-Logger'; StartTime=(Get-Date).AddDays(-%d)}) } catch { "
            "if ($_.FullyQualifiedErrorId -like 'NoMatchingEventsFound*') { $e = @() } else { 'ERR|' + $_.Exception.Message; exit 3 } }; "
@@ -1556,6 +1557,8 @@ def whea_parse(lines, now):
         if f[0] == "ERR":
             return [], "event log: " + "|".join(f[1:])
         if f[0] == "END":
+            if end is not None:
+                return [], "a second END line %r: the collector prints one" % ln
             end = f[1] if len(f) > 1 else ""
         elif f[0] == "EV":
             try:
@@ -1569,7 +1572,7 @@ def whea_parse(lines, now):
             return [], "unexpected line %r" % ln
     if end is None:
         return [], "no END line: the query did not finish"
-    if not end.isdigit() or int(end) != len(evs):
+    if not re.fullmatch(r"[0-9]+", end) or int(end) != len(evs):
         return [], "END says %r, %d rows read" % (end, len(evs))
     return evs, None
 
@@ -1579,12 +1582,16 @@ def whea_reading(now):
     last WHEA_DAYS days on the corrected point, so the daily curve is one read."""
     try:
         evs, why = whea_parse(whea_lines(), now)
-    except OSError as e:
+    except (OSError, UnicodeError) as e:     # undecodable output is a blind reading, never a crash
         evs, why = [], str(e)
+    ahead = max((e[2] - now for e in evs), default=0)
+    if not why and ahead > WHEA_SKEW_S:
+        # Windows' clock runs ahead of this one: the 24 h window cannot be placed, and dropping the row read a fatal as 0
+        why = "a row dated %d s ahead of this clock (allowance %d s): the clocks disagree" % (ahead, WHEA_SKEW_S)
     if why:
         return {"disk.whea_corrected_24h": U(why, "events"), "disk.whea_severe_24h": U(why, "events"),
                 "disk.whea_blind": M(1, "WHEA sources not seen", cause="WHEA count blind: " + why)}
-    recent = [e for e in evs if now - DAY <= e[2] <= now + 300]
+    recent = [e for e in evs if now - DAY <= e[2] <= now + WHEA_SKEW_S]
     severe = [e for e in recent if e[1] in (1, 2) or e[0] in WHEA_SEVERE_IDS]
     corrected = [e for e in recent if e not in severe]
     by_day = {}
