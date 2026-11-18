@@ -51,6 +51,33 @@ brim-full reference cells, or the judge files the references as WRONG (calibrati
 9. UI on screen: dialogs, red letters, error text, dev palettes covering the subject.
 10. Dead or downed pawns, fires, filth with no cause in the scene.
 
+## North-star must-show bars: the same two passes, one entry point
+Owner pick 11 (2026-11-12): one item, one judge (`RIMMANDRAKE_FOLD_FRAME_JUDGE_INTO_PRELOOK`). A north-star run's frames
+are judged by THIS brief through ONE entry point, `src/RimMandrake/Utils/northstar_driver/judge_cli.py` (cli.py and
+`src/RimMandrake/Graffiti/northstar_full.py` call it after a run; it is not a second judge).
+- Pass 1: before any bar is asked, one fresh judge per capture gets the open question above and nothing else (no bar id,
+  no bar text, no checklist). Its ODD or WRONG is a doubt listed on every bar row judged on that capture (`doubts`, and
+  "pass-1 doubt" in the row's evidence). Like every doubt here it stands until the owner rules on it or a state read
+  settles it; it does not change the bar's status, because a bar passes or fails on its own promise (`standing_rulings.md`
+  §The judge refuses flaws, not polish). COULD NOT SEE, an unreadable answer or a judge that could not run is counted as
+  "could not look" with its cause: never a doubt, never a verdict.
+- Pass 2: a different fresh judge that never sees pass 1. Its one sentence of expectation is the must-show bar's text,
+  verbatim (`src/RimMandrake/Utils/modcheck/judge.py`'s statement prompt: YES, NO or UNJUDGEABLE, UNJUDGEABLE never a
+  pass). That verdict is the bar's.
+- The bar's state result still gates first: a state FAIL stays FAIL whatever the frame shows.
+- Input, narrower than a matrix look: each claim is judged on ONE capture, the component's last shot (its framed
+  `__cell_rect` crop when one exists), not the uncropped frame plus labelled crops and grid key a presenter gives for a
+  matrix scene. A north-star component frames one subject; a matrix scene still goes through the presenter route above.
+- Output, also narrower: pass 1 answers one look per capture, pass 2 YES / NO / UNJUDGEABLE per bar, not per-cell lines.
+  Nothing on this route has its own place to judge recognisability (checklist item 4): there a "looks like a waffle"
+  answer is a pass-1 doubt unless the bar itself promises the look. The refusal-contract record for a north-star frame
+  FAIL is not written yet (`RIMMANDRAKE_EMIT_REFUSAL_RECORDS_FROM_NORTHSTAR_FRAME_FAILS`).
+- The exact image judged: the run's own capture file, named in the judge record with its sha256, pixel size and crop
+  note (`judge_cli.py` judges a byte copy and deletes only the copy).
+- Calibration: pass 2's prompt is unchanged by the fold; pass 1 is new and has no consequence beyond the doubts it lists.
+  This brief stays UNTESTED in `infrastructure/state/judge_calibration.json` until its planted cases run
+  (`RIMMANDRAKE_SEED_SCENE_LOOK_CALIBRATION_BRIM_PIT_PAIR`).
+
 ## Output, per cell (both passes)
 `cell: EXPECTED | ODD | WRONG | COULD NOT SEE` plus the object named and where (e.g. "left cell, east reel,
 the part between rim and water"). COULD NOT SEE is an allowed answer: too small, too zoomed out or covered is a

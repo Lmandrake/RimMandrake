@@ -17,6 +17,18 @@ not a verdict. Calls run --jobs at a time (default 8), --timeout s each (default
 throttle reply the rest run serially, and every throttled call is retried serially once.
 Recorded under `judge`: model asked for, model(s) the CLI reports, prompt-template sha256, and every
 call's image + image sha256 + verdict + full raw reply. The LLM never drives (owner, 2026-09-12).
+
+THE ONE SCENE-LOOK JUDGE (RIMMANDRAKE_FOLD_FRAME_JUDGE_INTO_PRELOOK; owner pick 11, 2026-11-12: one item, one judge).
+This is the entry point of design/RimMandrake/scene_look_judge_brief.md for north-star frames, both passes:
+  pass 1  before any bar is asked, ONE fresh `claude -p` per distinct capture gets the brief's open question and nothing
+          else (no bar id, no bar text, no checklist). Its ODD or WRONG is a DOUBT listed on every bar row judged on
+          that capture (`doubts[]`, and "pass-1 doubt" in the evidence) and in `judge.open_look`; it stands until the
+          owner or a state read answers it. It never changes a bar's status: the bar's promise is what passes or fails
+          (standing_rulings.md, "The judge refuses flaws, not polish"). COULD NOT SEE, an unreadable answer or a judge
+          that could not run is "could not look", counted with its cause, never a doubt and never a verdict.
+  pass 2  the statement prompt above, a DIFFERENT fresh call that never sees pass 1: the bar's text is its one
+          expectation sentence. Unchanged, so bar verdicts carry their old meaning.
+`--no-open-look` skips pass 1 (recorded as not run, with why).
 """
 import argparse
 import hashlib
@@ -47,6 +59,24 @@ from northstar_driver.cli import to_wsl                                   # noqa
 CLAUDE = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")  # systemd's PATH lacks ~/.local/bin (OPS_TIMER_REPAIR_PRXC)
 
 PROMPT_SHA256 = hashlib.sha256(judge._PROMPT.encode("utf-8")).hexdigest()
+
+# Pass 1 of scene_look_judge_brief.md, verbatim in its question (owner, 2026-11-12: "You are human player looking at this
+# test from a game playing point of view... first, does anything look odd?"). Bar-blind on purpose.
+OPEN_PROMPT = """\
+Read the image at this path: {image}
+
+You are a RimWorld player who has just walked up to this part of the map. Does anything look odd?
+
+Describe what you see in plain words, then answer with a single JSON object as the LAST thing you write:
+
+  {{"look": "EXPECTED" | "ODD" | "WRONG" | "COULD NOT SEE", "where": "<the object and where it is>",
+    "first_noticed": "<the single thing a player would notice first>"}}
+
+EXPECTED: nothing looks odd. ODD: something looks strange. WRONG: something is clearly broken. COULD NOT SEE: too
+small, too zoomed out or covered to tell; that is a real answer, never a guess.
+"""
+OPEN_PROMPT_SHA256 = hashlib.sha256(OPEN_PROMPT.encode("utf-8")).hexdigest()
+OPEN_LOOKS = ("EXPECTED", "ODD", "WRONG", "COULD NOT SEE")
 THROTTLE_RE = re.compile(r"rate.?limit|\b429\b|overloaded|usage limit|too many requests|quota", re.I)
 SPLIT = "SPLIT"
 # Captures are staged under agent storage, never tempfile's /tmp: on archmagi /tmp is an 18G tmpfs that
@@ -116,11 +146,23 @@ def image_problem(path):
         from PIL import Image
         with Image.open(path) as im:
             im.verify()
+        with Image.open(path) as im:             # verify() checks structure only: decode the pixels too (truncated files)
+            im.load()
     except ImportError:
         pass
     except Exception as ex:
         return "screenshot fails to decode: %s" % ex
     return None
+
+
+def image_px(path):
+    """[width, height] of the exact file judged, or None when it cannot be read (no Pillow): its provenance beside the verdict."""
+    try:
+        from PIL import Image
+        with Image.open(path) as im:
+            return list(im.size)
+    except Exception:                            # noqa: BLE001 - provenance only, never a verdict
+        return None
 
 
 def sha256_file(path):
@@ -194,7 +236,7 @@ def plan_calls(doc, repeat_must=1, repeat_cannot=3):
             t = texts.get(bid)
             claim = {"component": c.get("name"), "chain": c.get("chain"), "bar": bid,
                      "polarity": (t or {}).get("polarity", "must"), "image": "", "image_note": "",
-                     "image_sha256": "", "problem": None, "calls": []}
+                     "image_sha256": "", "image_px": None, "problem": None, "calls": []}
             claims.append(claim)
             if not t:
                 claim["problem"] = "bar not in the validated checklist (bar_text) -- orphaned shows="
@@ -208,6 +250,7 @@ def plan_calls(doc, repeat_must=1, repeat_cannot=3):
             if claim["problem"]:
                 continue
             claim["image_sha256"] = sha256_file(img)
+            claim["image_px"] = image_px(img)
             n = repeat_cannot if claim["polarity"] == judge.CANNOT else repeat_must
             for k in range(max(1, n)):
                 call = {"claim": claim, "k": k, "ok": None, "raw": "", "verdict": None, "why": "",
@@ -284,6 +327,94 @@ def execute(calls, texts, runner, jobs=8, backoff_s=20.0, log=_p):
     return stats
 
 
+# ------------------------------------------------------------------ pass 1: the open look
+
+def parse_open(raw):
+    """-> (look, where, first_noticed, cause). look is one of OPEN_LOOKS, or None with the cause: an error or throttle
+    envelope, no result text, or a LAST JSON object that is missing, unreadable or not a look (an earlier object is never
+    salvaged: the final answer is the answer)."""
+    try:
+        e = json.loads(raw)
+    except (ValueError, TypeError):
+        return None, "", "", "unreadable answer: the CLI envelope is not JSON"
+    if not isinstance(e, dict):
+        return None, "", "", "unreadable answer: the CLI envelope is not an object"
+    if e.get("is_error") or is_throttle(True, raw):
+        return None, "", "", "the judge could not run: %s" % str(e.get("result") or e.get("error") or "error envelope")[:300]
+    text = e.get("result")
+    if not isinstance(text, str) or not text.strip():
+        return None, "", "", "unreadable answer: no result text"
+    tail = text.rstrip().rstrip("`").rstrip()            # a closing code fence may follow the object
+    if not tail.endswith("}"):
+        return None, "", "", "unreadable answer: the answer does not end with its JSON object"
+    end = len(tail) - 1
+    dec = json.JSONDecoder()
+    obj = None
+    for st in [m.start() for m in re.finditer(r"\{", text[:end + 1])]:
+        try:
+            o, stop = dec.raw_decode(text, st)
+        except ValueError:
+            continue
+        if stop == end + 1:              # the object that ENDS the answer, decoded string-aware (stop is an absolute index)
+            obj = o
+            break
+    if not isinstance(obj, dict):
+        return None, "", "", "unreadable answer: the final JSON object does not decode"
+    look = str(obj.get("look", "")).strip().upper().replace("_", " ")
+    if look not in OPEN_LOOKS:
+        return None, "", "", "unreadable answer: look %r is not one of %s" % (obj.get("look"), "/".join(OPEN_LOOKS))
+    return look, str(obj.get("where") or ""), str(obj.get("first_noticed") or ""), None
+
+
+def open_look(claims, runner, jobs=8, log=_p):
+    """Pass 1 over every distinct capture the claims will judge (one call each, bar-blind). -> the record."""
+    by_img = {}
+    for cl in claims:
+        if cl["problem"] or not cl["image"]:
+            continue
+        by_img.setdefault(cl["image"], []).append(cl)
+    looks = []
+
+    def one(img):
+        comps = sorted({c["component"] for c in by_img[img]})
+        rec = {"image": img, "image_sha256": by_img[img][0]["image_sha256"], "image_px": by_img[img][0].get("image_px"),
+               "image_note": by_img[img][0].get("image_note"), "components": comps,
+               "look": None, "where": "", "first_noticed": "", "outcome": None, "cause": None, "ok": None, "raw": "", "ms": 0}
+        t0 = time.time()
+        try:
+            ok, raw = runner(lambda path: OPEN_PROMPT.format(image=path), img)
+        except rmpaths.RmDataRootUnset:
+            raise                                    # the documented by-name failure, never a "could not look"
+        except Exception as ex:                      # noqa: BLE001 - a staging or subprocess error is "could not run"
+            ok, raw = False, "%s: %s" % (type(ex).__name__, ex)
+        rec["ms"], rec["ok"], rec["raw"] = int((time.time() - t0) * 1000), ok, raw
+        if not ok:
+            rec["outcome"], rec["cause"] = "could_not_look", "the judge could not run: %s" % str(raw)[:300]
+        else:
+            look, where, first, cause = parse_open(raw)
+            rec["look"], rec["where"], rec["first_noticed"] = look, where, first
+            if look is None:
+                rec["outcome"], rec["cause"] = "could_not_look", cause
+            elif look == "COULD NOT SEE":
+                rec["outcome"], rec["cause"] = "could_not_look", "the judge could not see: %s" % (first or where or "no reason given")
+            else:
+                rec["outcome"] = "doubt" if look in ("ODD", "WRONG") else "expected"
+        log("open look %-28s %s%s" % (",".join(comps)[:28], rec["look"] or rec["outcome"], (" -- " + rec["where"])[:80] if rec["where"] else ""))
+        return rec
+
+    with ThreadPoolExecutor(max_workers=max(1, jobs)) as ex:
+        looks = list(ex.map(one, list(by_img)))
+    for rec in looks:
+        if rec["outcome"] == "doubt":
+            for cl in by_img[rec["image"]]:
+                cl.setdefault("doubts", []).append("%s: %s: %s%s" % (cl["component"], rec["look"], rec["where"] or "(no place named)",
+                                                                     ("; first noticed: " + rec["first_noticed"]) if rec["first_noticed"] else ""))
+    return {"status": "ran", "prompt_sha256": OPEN_PROMPT_SHA256, "looks": looks,
+            "doubts": sum(1 for r in looks if r["outcome"] == "doubt"),
+            "could_not_look": sum(1 for r in looks if r["outcome"] == "could_not_look"),
+            "expected": sum(1 for r in looks if r["outcome"] == "expected")}
+
+
 # ------------------------------------------------------------------ verdicts
 
 def decide_claim(claim):
@@ -336,26 +467,43 @@ def apply_verdicts(doc, claims):
         else:
             row["status"] = PASS
             row["evidence"] = "judge: " + "; ".join(parts)
+        # a pass-1 doubt stands beside the verdict until the owner or a state read answers it; it is not the verdict, and a
+        # rerun never erases one: earlier doubts are kept and merged (only an explicit resolution may remove one)
+        doubts = list(row.get("doubts") or [])
+        for d in (d for c in cls for d in c.get("doubts", [])):
+            if d not in doubts:
+                doubts.append(d)
+        if doubts:
+            row["doubts"] = doubts
+            row["evidence"] += " | pass-1 doubt (bar-blind open look, open until the owner or a state read answers it): " + "; ".join(doubts)[:600]
     doc["summary"] = B.summarize(doc.get("bars") or [])
     doc["all_green"] = B.all_green(doc.get("bars") or [], doc.get("expected") or None)
     return doc
 
 
 def judge_doc(doc, runner, model="(mock)", jobs=8, repeat_must=1, repeat_cannot=3, timeout=180,
-              backoff_s=20.0, log=_p):
+              backoff_s=20.0, log=_p, open_runner=None, open_skip_why=None):
+    """Pass 1 (open_runner, bar-blind) then pass 2 (runner, the bar statement). open_runner None = no pass 1, recorded."""
     texts = doc.get("bar_text") or {}
     claims, calls = plan_calls(doc, repeat_must, repeat_cannot)
     log("judge: %d claim(s), %d call(s), %d undecidable before asking; jobs=%d model=%s" % (
         len(claims), len(calls), sum(1 for c in claims if c["problem"]), jobs, model))
     t0 = time.time()
+    if open_runner is not None:
+        ol = open_look(claims, open_runner, jobs=jobs, log=log)
+    else:
+        ol = {"status": "not run: %s" % (open_skip_why or "no open runner given (the pass-2-only API)"), "looks": []}
     stats = execute(calls, texts, runner, jobs=jobs, backoff_s=backoff_s, log=log)
     apply_verdicts(doc, claims)
     models = sorted({m for c in calls for m in reported_models(c["raw"])})
+    prev = (doc.get("judge") or {}).get("open_look")
+    if prev and prev.get("status") == "ran":
+        ol["earlier"] = (prev.get("earlier") or []) + [{k: v for k, v in prev.items() if k != "earlier"}]
     doc["judge"] = {
         "judged_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "model_requested": model, "models_reported": models,
         "prompt_sha256": PROMPT_SHA256, "repeat_must": repeat_must, "repeat_cannot": repeat_cannot,
-        "jobs": jobs, "timeout_s": timeout, "wall_s": round(time.time() - t0, 1), "stats": stats,
+        "jobs": jobs, "timeout_s": timeout, "wall_s": round(time.time() - t0, 1), "stats": stats, "open_look": ol,
         "claims": [{k: v for k, v in cl.items() if k != "calls"} | {
             "calls": [{"k": c["k"], "verdict": c["verdict"], "why": c["why"], "ok": c["ok"],
                        "throttled": c["throttled"], "attempts": c["attempts"], "ms": c["ms"],
@@ -374,6 +522,7 @@ def main(argv=None):
     ap.add_argument("--repeat-must", type=int, default=1)
     ap.add_argument("--repeat-cannot", type=int, default=3)
     ap.add_argument("--only-chain", action="append", help="judge only these chains (repeatable)")
+    ap.add_argument("--no-open-look", action="store_true", help="skip pass 1 (the bar-blind open look); recorded as not run")
     a = ap.parse_args(argv)
     with open(a.results, encoding="utf-8") as f:
         doc = json.load(f)
@@ -384,12 +533,16 @@ def main(argv=None):
     if a.only_chain:
         doc["components"] = [c for c in doc["components"] if c.get("chain") in a.only_chain]
     judge_doc(doc, claude_runner(a.model, a.timeout), model=a.model, jobs=a.jobs,
-              repeat_must=a.repeat_must, repeat_cannot=a.repeat_cannot, timeout=a.timeout)
+              repeat_must=a.repeat_must, repeat_cannot=a.repeat_cannot, timeout=a.timeout,
+              open_runner=None if a.no_open_look else claude_runner(a.model, a.timeout),
+              open_skip_why="--no-open-look" if a.no_open_look else None)
     out = a.out or a.results
     B.write_results(out, doc)
     s = doc["summary"]
-    _p("%s: %s  PASS=%s FAIL=%s UNMEASURED=%s  -> %s" % (
-        doc.get("mod"), "GREEN" if doc["all_green"] else "NOT GREEN", s[PASS], s[FAIL], s[UNMEASURED], out))
+    ol = doc["judge"]["open_look"]
+    _p("%s: %s  PASS=%s FAIL=%s UNMEASURED=%s  pass-1 doubts=%s could-not-look=%s  -> %s" % (
+        doc.get("mod"), "GREEN" if doc["all_green"] else "NOT GREEN", s[PASS], s[FAIL], s[UNMEASURED],
+        ol.get("doubts", "-"), ol.get("could_not_look", "-") if ol.get("status") == "ran" else ol.get("status"), out))
     return 0 if doc["all_green"] else 1
 
 
