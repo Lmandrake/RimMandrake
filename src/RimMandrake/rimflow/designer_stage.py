@@ -2045,6 +2045,12 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
     out, stage = res["outcome"], st["stage"]
     entry = {"stage": stage, "outcome": out, "run": run, "at": now_iso(), "inputs": inputs(d, st, repo),
              "owner_uncited": owner_uncited(repo, st.get("item"), d), "manifest": r["manifest"]}
+    # RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED: an accepted stage is a pin, so it records its anchor
+    # too. These bytes land in a commit at or after this HEAD (land_state commits after this), so the window
+    # [HEAD, HEAD-then] starts at the landing of exactly these bytes instead of at a later revert to them.
+    pin_at = (_git(repo, "rev-parse", "--verify", "HEAD^{commit}") or b"").decode().strip()
+    if out == "done" and pin_at:
+        entry["pinned_at"] = {k: pin_at for k in INPUT_FILES}
     if out == "done" and stage == 2:
         st.pop("must_cite", None)
     for k in ("to", "decision", "on", "question", "summary", "quick_look", "by"):
@@ -2233,17 +2239,38 @@ def change_tied(ev, commit, repo, events):
     return False
 
 
-def input_changes(d, key, repo, pinned):
+def input_changes(d, key, repo, pinned, anchor=None):
     """-> (commits, why): the commits (oldest first) that moved file input `key` from its pinned hash to the committed
-    one, or (None, why) when that cannot be traced: the pin never appears in the file's git history."""
+    one, or (None, why) when that cannot be traced.
+
+    RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED: `anchor` is the commit that RECORDED the pin, written at
+    pin time (a result's `pinned_at[key]`), never read from a commit date. With it, the history read is the window
+    [anchor, HEAD] and the pin's own occurrence is the FIRST in that window, so an input that went A->B->A->C after
+    the pin owes a source for the B change too. Without it (a pin made before the field existed) the last occurrence
+    of the pinned hash is still the start, as before, until that stage's next pin records an anchor.
+    An anchor that was recorded but cannot be resolved or does not carry the pinned hash is UNMEASURED: (None, why),
+    never an empty list, which would read as "nothing changed since the pin" and let a re-pin pass unexamined."""
     rel = os.path.relpath(os.path.join(d, INPUT_FILES[key]), repo).replace(os.sep, "/")
-    log = _git(repo, "log", "--reverse", "--format=%H", "--", rel)
-    if log is None:
-        return None, "git log of %s failed" % rel
+    first = False
+    if anchor:
+        full = (_git(repo, "rev-parse", "--verify", "%s^{commit}" % anchor) or b"").decode().strip()
+        if not full:
+            return None, ("UNMEASURED: the commit that recorded the pinned %s (%s) does not resolve in this clone "
+                          "(rewritten history, or a shallow clone): the change since the pin cannot be read, and that "
+                          "is not 'no change'" % (key, str(anchor)[:10]))
+        log = _git(repo, "log", "--reverse", "--format=%H", "%s..HEAD" % full, "--", rel)
+        if log is None:
+            return None, "UNMEASURED: git log of %s from the recorded pin %s failed" % (rel, full[:10])
+        order, first = [full] + log.decode().split(), True
+    else:
+        log = _git(repo, "log", "--reverse", "--format=%H", "--", rel)
+        if log is None:
+            return None, "git log of %s failed" % rel
+        order = log.decode().split()
     import tempfile
     seen = []                       # (commit, hash after it)
     with tempfile.TemporaryDirectory(prefix="repin-", dir=os.path.dirname(os.path.abspath(state_path(d)))) as t:
-        for c in log.decode().split():
+        for c in order:
             blob = _git(repo, "show", "%s:%s" % (c, rel))
             p = os.path.join(t, INPUT_FILES[key])
             if blob is None:
@@ -2255,9 +2282,14 @@ def input_changes(d, key, repo, pinned):
             seen.append((c, input_hash(t, key)))
     at = [i for i, (_, h) in enumerate(seen) if h == pinned]
     if not at:
+        if first:
+            return None, ("UNMEASURED: the pinned %s (%s) is in no commit of %s at or after the commit that recorded "
+                          "the pin (%s): the change since the pin cannot be read, and that is not 'no change'" % (
+                              key, str(pinned)[:10], rel, seen[0][0][:10] if seen else "?"))
         return None, "the pinned %s (%s) is in no commit of %s: the change cannot be traced" % (
             key, str(pinned)[:10], rel)
-    return [c for i, (c, h) in enumerate(seen) if i > at[-1] and h != seen[i - 1][1]], ""
+    start = at[0] if first else at[-1]
+    return [c for i, (c, h) in enumerate(seen) if i > start and h != seen[i - 1][1]], ""
 
 
 REPIN_CLAUSE = "locked_change_cites_his_cards"
@@ -2337,7 +2369,7 @@ def repin_sources(d, repo=None):
                     bad.append("stage %d: the OWNER shard is unreadable" % r["stage"])
                 words += [t for t in new if t not in words]
                 continue
-            got, err = input_changes(d, k, repo, r["inputs"].get(k))
+            got, err = input_changes(d, k, repo, r["inputs"].get(k), (r.get("pinned_at") or {}).get(k))
             if got is None:
                 bad.append("stage %d: %s" % (r["stage"], err))
                 continue
@@ -2449,7 +2481,7 @@ def repin(d, sources, why, repo=None, dry=False):
             if cur.get(k) != committed.get(k):
                 raise Refused("stage %d: %s has an uncommitted change; a locked change is the committed one" % (
                     r["stage"], INPUT_FILES[k]))
-            commits, err = input_changes(d, k, repo, r["inputs"].get(k))
+            commits, err = input_changes(d, k, repo, r["inputs"].get(k), (r.get("pinned_at") or {}).get(k))
             if commits is None:
                 raise Refused("stage %d: %s" % (r["stage"], err))
             miss = [c for c in commits if c not in cited]
@@ -2471,9 +2503,16 @@ def repin(d, sources, why, repo=None, dry=False):
     if dry:                           # RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE: every check passed, nothing written
         return sorted(set(plan) | set(voided))
     at = now_iso()
+    # RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED: the anchor is RECORDED here, at pin time, so the next
+    # trace reads the window [this commit, HEAD] instead of guessing which occurrence of the pinned hash was the pin.
+    # HEAD is the right anchor: every file input was just checked equal to its committed blob (`committed` above).
+    pin_at = (_git(repo, "rev-parse", "--verify", "HEAD^{commit}") or b"").decode().strip() or None
     for r in accepted(st):
         if r["stage"] in plan:
             r["inputs"] = dict(r["inputs"], **{k: cur.get(k) for k in plan[r["stage"]]})
+            if pin_at:
+                r["pinned_at"] = dict(r.get("pinned_at") or {},
+                                      **{k: pin_at for k in plan[r["stage"]] if k in INPUT_FILES})
             if "owner" in plan[r["stage"]]:
                 r["owner_uncited"] = frozen_now
             r.setdefault("repinned", []).append({"at": at, "inputs": plan[r["stage"]], "sources": list(sources)})

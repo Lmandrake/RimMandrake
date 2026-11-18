@@ -212,6 +212,136 @@ def auto_sources_checks():
         shutil.rmtree(root, ignore_errors=True)
 
 
+PAVING_ITEM = "RIMMANDRAKE_ASK_PYRE_ROOT_STILL_PROMISES_PAVING_HOLDS"   # the item of his paving card
+
+
+def anchored(d, root, r, k):
+    """input_changes anchored to the commit that RECORDED the pin (the argument this ticket adds). On base, where
+    input_changes takes no anchor, this reports the TypeError as the reading so the case fails instead of crashing."""
+    try:
+        return DS.input_changes(d, k, root, r["inputs"].get(k), (r.get("pinned_at") or {}).get(k))
+    except TypeError as e:
+        return None, "input_changes takes no anchor: %s" % e
+
+
+def first_pin_checks():
+    """7 RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED: a frozen input that goes A->B->A->C after the pin
+    owes a source for the B change too. input_changes used to anchor to the LAST commit whose hash equalled the pin,
+    which for A->B->A->C is the A that reverted B, so it reported only C and a re-pin citing C alone passed with the
+    B change unaccounted for. The anchor is the commit that recorded the pin (written at pin time), never a commit
+    date (review 2 of the parent found a date-trusting fix wrong), and a recorded anchor that cannot be resolved is
+    UNMEASURED, never 'no changes since the pin'."""
+    root, d, shas = fixture(dated=True)
+    try:
+        # the pin, recorded: his words taken in (as the Designer citing them would), then the hand re-pin of case 2,
+        # which pins stage 3's sheet at HEAD and records the commit it was pinned at
+        st = DS.load_state(d)
+        cur, frozen = DS.inputs(d, st, root), DS.owner_uncited(root, st.get("item"), d)
+        for r in DS.accepted(st):
+            if "owner" in DS.DEPS[r["stage"]]:
+                r["inputs"]["owner"], r["owner_uncited"] = cur.get("owner"), frozen
+        DS.write_json(DS.state_path(d), st)
+        srcs, rf = DS.repin_sources(d, repo=root)
+        DS.repin(d, srcs, "selftest: the pin this case anchors to", repo=root)
+        pin_at = git(root, "rev-parse", "HEAD")
+        check("7 the fixture's pin leaves nothing stale and no refusal", rf is None
+              and DS.stale_stage(d, DS.load_state(d), root) == (None, []), (rf, DS.stale_stage(d, DS.load_state(d), root)))
+        r3 = {r["stage"]: r for r in DS.accepted(DS.load_state(d))}[3]
+        pin = r3["inputs"].get("sheet")
+        check("7 a re-pin records the commit it pinned at (stage 3, sheet)",
+              (r3.get("pinned_at") or {}).get("sheet") == pin_at, (r3.get("pinned_at"), pin_at))
+
+        # A -> B -> A -> C, all after the pin: the B change, the revert of it, and a later change his card carries out
+        sheet = os.path.join(d, "sheet.md")
+        a_bytes = open(sheet, "rb").read()
+        with open(sheet, "ab") as f:
+            f.write(b"\n- the B change: a sentence nobody asked for\n")
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", "fixture: the B change (cites no card of his)")
+        b_sha = git(root, "rev-parse", "HEAD")
+        with open(sheet, "wb") as f:
+            f.write(a_bytes)
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", "fixture: the B change reverted, back to the pinned bytes")
+        a2_sha = git(root, "rev-parse", "HEAD")
+        with open(sheet, "ab") as f:
+            f.write(b"\n- the C change, which his paving card asks for\n")
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", "fixture: the C change")
+        c_sha = git(root, "rev-parse", "HEAD")
+        with open(os.path.join(root, "infrastructure", "state", "ledger", "events", "BENCH.jsonl"), "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "note", "id": PAVING_ITEM, "tsn": 7,
+                                "text": "carried out by %s" % c_sha[:10]}) + "\n")
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", "fixture: the ledger note that ties the C change to his paving card")
+        st = DS.load_state(d)
+        r3 = {r["stage"]: r for r in DS.accepted(st)}[3]
+        at_a2 = git(root, "show", "%s:%s/sheet.md" % (a2_sha, SRC))
+        at_b = git(root, "show", "%s:%s/sheet.md" % (b_sha, SRC))
+        check("7 the fixture is A->B->A->C: the revert returns the sheet to the pinned bytes, B and C differ from it",
+              at_a2 == a_bytes.decode().strip() and at_b != at_a2 and DS.inputs(d, st, root).get("sheet") != pin,
+              (len(at_a2), len(at_b), DS.inputs(d, st, root).get("sheet") == pin))
+
+        got, why = anchored(d, root, r3, "sheet")
+        check("7 input_changes anchored at the recording commit lists the B change, its revert and C",
+              got is not None and [c for c in (got or [])] == [b_sha, a2_sha, c_sha], (got, why))
+
+        # the hole this ticket closes: a re-pin citing only the C change, with B unaccounted for
+        refuses("the B change of A->B->A->C, with only C cited", d, root,
+                ["OWNER:%s@%s" % (PAVING, c_sha)], b_sha[:10])
+        srcs, rf = DS.repin_sources(d, repo=root)
+        check("7 the automatic re-pin refuses: the B change carries out no card of his",
+              rf is not None and b_sha in json.dumps(rf.get("evidence")), (srcs, (rf or {}).get("evidence")))
+
+        # a recorded anchor that cannot be resolved is UNMEASURED, never "no changes since the pin"
+        st = DS.load_state(d)
+        for r in st["results"]:
+            if r.get("stage") == 3 and isinstance(r.get("pinned_at"), dict):
+                r["pinned_at"]["sheet"] = "0" * 40
+        DS.write_json(DS.state_path(d), st)
+        r3 = {r["stage"]: r for r in DS.accepted(DS.load_state(d))}[3]
+        got, why = anchored(d, root, r3, "sheet")
+        check("7 an unresolvable recorded anchor is UNMEASURED, not an empty set of changes",
+              got is None and "UNMEASURED" in (why or ""), (got, why))
+        refuses("an unresolvable recorded anchor", d, root, ["OWNER:%s@%s" % (PAVING, c_sha)], "UNMEASURED")
+
+        # a pin made before the field existed keeps today's behaviour until its next pin
+        st = DS.load_state(d)
+        for r in st["results"]:
+            r.pop("pinned_at", None)
+        DS.write_json(DS.state_path(d), st)
+        r3 = {r["stage"]: r for r in DS.accepted(DS.load_state(d))}[3]
+        got, why = anchored(d, root, r3, "sheet")
+        check("7 a pin with no recorded anchor keeps today's behaviour (the last occurrence)",
+              got == [c_sha], (got, why))
+
+        # an accepted stage is a pin too: close_run records the anchor, so the first re-pin after an accept is
+        # anchored even though no repin has run yet
+        st = DS.load_state(d)
+        st["stage"], st["status"] = 2, "ready"
+        st["results"] = [r for r in st["results"] if r.get("stage", 0) < 2]
+        DS.write_json(DS.state_path(d), st)
+        real_errors = DS.result_errors
+        DS.result_errors = lambda res, d_, st_, repo_=None: []   # the pin's anchor is under test, not validation
+        try:
+            DS.open_run(d, "pin-run", repo=root)
+            DS.write_json(os.path.join(d, "result.json"),
+                          {"run": "pin-run", "stage": 2, "outcome": "done", "summary": "selftest"})
+            ok, errs = DS.close_run(d, "pin-run", 1000, repo=root)
+        finally:
+            DS.result_errors = real_errors
+        head = git(root, "rev-parse", "HEAD")
+        acc2 = [r for r in (DS.load_state(d).get("results") or []) if r.get("stage") == 2
+                and r.get("outcome") == "done"][-1]
+        check("7 an accepted stage records the commit its inputs were pinned at (close_run)",
+              ok and (acc2.get("pinned_at") or {}).get("root") == head
+              and sorted(acc2.get("pinned_at") or {}) == sorted(DS.INPUT_FILES), (ok, errs, acc2.get("pinned_at")))
+        check("7 the recorded anchor covers only file inputs, never the owner feed",
+              "owner" not in (acc2.get("pinned_at") or {}), acc2.get("pinned_at"))
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
 def main():
     root, d, shas = fixture()
     try:
@@ -322,6 +452,7 @@ def main():
             shutil.rmtree(root5, ignore_errors=True)
 
         auto_sources_checks()
+        first_pin_checks()
 
         # 4: the spend ceiling and his word that predates the park
         st = DS.load_state(d)
