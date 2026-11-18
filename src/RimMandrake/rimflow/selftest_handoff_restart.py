@@ -33,6 +33,7 @@ D, SR, doorbell, SEAT = IB.D, IB.SR, IB.doorbell, IB.SEAT
 check, FAILS, REAL = IB.check, IB.FAILS, IB.REAL
 sys.path.insert(0, os.path.abspath(os.path.join(HERE, "..", "..", "..", ".claude", "hooks")))
 import handoff_restart as H  # noqa: E402
+import schedule_fixture as SF  # noqa: E402
 
 CFG = SR.config(REAL)[SEAT]
 WAIT = max(CFG["grace_s"], CFG["quiet_s"])
@@ -467,7 +468,7 @@ class Cw(Hw):
     def _dump(self, s):
         p = os.path.join(self.dir, "sched_c.json")
         with open(p, "w") as f:
-            json.dump(s, f)
+            json.dump(SF.fill(s), f)
         return p
 
 

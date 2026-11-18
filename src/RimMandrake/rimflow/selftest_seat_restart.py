@@ -32,6 +32,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
 import dispatcher as D  # noqa: E402
+import schedule_fixture as SF  # noqa: E402
 import seat_restart as SR  # noqa: E402
 
 FAILS = []
@@ -54,7 +55,7 @@ def sched(enabled=True, **seat_kw):
          "ledger_notes": False, "publish": False}
     p = os.path.join(TMP, "sched.json")
     with open(p, "w") as f:
-        json.dump(s, f)
+        json.dump(SF.fill(s), f)
     return D.load_schedule(p)
 
 
@@ -1446,7 +1447,7 @@ def bsched(**seat_kw):
          "ledger_notes": False, "publish": False}
     p = os.path.join(TMP, "bsched.json")
     with open(p, "w") as f:
-        json.dump(s, f)
+        json.dump(SF.fill(s), f)
     return D.load_schedule(p)
 
 

@@ -21,6 +21,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 import raise_ladder as L  # noqa: E402
 import dispatcher as D  # noqa: E402
+import schedule_fixture as SF  # noqa: E402
 
 FAILS = []
 T0 = 2_000_000_000.0
@@ -175,7 +176,7 @@ def sched():
          "roles": [], "alarm_item": "ALARMS_X", "no_handoff": {"conductor_log": os.path.join(TMP, "cl.md")}}
     path = os.path.join(TMP, "sched.json")
     with open(path, "w") as f:
-        json.dump(s, f)
+        json.dump(SF.fill(s), f)
     return D.load_schedule(path)
 
 

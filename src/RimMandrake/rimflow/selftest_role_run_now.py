@@ -191,7 +191,7 @@ def test_cli_writes_request():
     root = tempfile.mkdtemp(prefix="run_now_cli_")
     sch_path = os.path.join(root, "sched.json")
     with open(sch_path, "w") as f:
-        json.dump({"seats": {}, "roles": [SD.arbiter(enabled=False)], "alarm_item": "X"}, f)
+        json.dump(SD.SF.fill({"seats": {}, "roles": [SD.arbiter(enabled=False)], "alarm_item": "X"}), f)
     base = ["run-now", "--schedule", sch_path, "--root", root, "--role", "Arbiter", "--by", "BENCH", "--why", "trial"]
     rc = RL.main(base)
     check(rc == 0 and not os.path.exists(os.path.join(root, "state.json")), "run-now without --apply writes nothing")

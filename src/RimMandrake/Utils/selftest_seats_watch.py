@@ -21,6 +21,7 @@ os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
 os.environ["RM_DISPATCHER_STATE"] = str(TMP / "disp")
 import ops_watch as OW  # noqa: E402
 import dispatcher as D  # noqa: E402
+import schedule_fixture as SF  # noqa: E402
 
 FAILS = []
 ROOT = TMP / "disp"
@@ -124,10 +125,10 @@ check("in the token-blind digest", "seats idle with work 41.5 min" in blind, bli
 # ------------------------------------------------------------------------- the planted fault: the real dispatcher
 def sched():
     p = TMP / "sched.json"
-    p.write_text(json.dumps({"seats": {"FOUNDRY": {"enabled": True, "wake": True, "session_name": "AGENT FOUNDRY",
+    p.write_text(json.dumps(SF.fill({"seats": {"FOUNDRY": {"enabled": True, "wake": True, "session_name": "AGENT FOUNDRY",
                                                    "clone": str(TMP), "model": "sonnet"}},
                              "roles": [], "alarm_item": "X_Y", "stall_after_s": 60, "handoff_s": 600, "ledger_notes": False, "publish": False,
-                             "no_handoff": {"conductor_log": str(TMP / "conductor.md")}}))
+                             "no_handoff": {"conductor_log": str(TMP / "conductor.md")}})))
     return D.load_schedule(str(p))
 
 

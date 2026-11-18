@@ -29,6 +29,7 @@ os.environ["TESTQ_QUEUE"] = os.path.join(TMP, "testq")      # git_lock's ingest.
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 import dispatcher as D  # noqa: E402
+import schedule_fixture as SF  # noqa: E402
 import doorbell  # noqa: E402
 from rimflow import model  # noqa: E402
 
@@ -52,7 +53,7 @@ def sched(**kw):
     s.update(kw)
     path = os.path.join(TMP, "sched.json")
     with open(path, "w") as f:
-        json.dump(s, f)
+        json.dump(SF.fill(s), f)
     return D.load_schedule(path)
 
 

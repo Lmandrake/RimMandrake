@@ -30,6 +30,7 @@ os.environ.pop("METRONOME_DEADLINE", None)
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 import dispatcher as D  # noqa: E402
+import schedule_fixture as SF  # noqa: E402
 
 FAILS = []
 
@@ -48,8 +49,8 @@ class Lock:
 def sched():
     path = os.path.join(TMP, "sched.json")
     with open(path, "w") as f:
-        json.dump({"seats": {}, "roles": [], "alarm_item": "DISPATCHER_ALARMS_X", "ledger_notes": True,
-                   "publish": True, "no_handoff": {"conductor_log": os.path.join(TMP, "conductor_log.md")}}, f)
+        json.dump(SF.fill({"seats": {}, "roles": [], "alarm_item": "DISPATCHER_ALARMS_X", "ledger_notes": True,
+                           "publish": True, "no_handoff": {"conductor_log": os.path.join(TMP, "conductor_log.md")}}), f)
     return D.load_schedule(path)
 
 

@@ -44,6 +44,7 @@ sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
 import dispatcher as D  # noqa: E402
+import schedule_fixture as SF  # noqa: E402
 import seat_restart as SR  # noqa: E402
 
 FAILS = []
@@ -108,6 +109,7 @@ def schedule():
     sr = dict(live["seat_restart"]["seats"][SEAT], seat_log=os.path.join(TMP, "conductor_log.md"))
     s = {"seats": {SEAT: seat}, "seat_restart": {"enabled": True, "dry": False, "seats": {SEAT: sr}},
          "ledger_notes": False, "publish": False}
+    SF.fill(s)
     with open(os.environ["RM_SEAT_RESTART_SCHEDULE"], "w") as f:
         json.dump(s, f)
     return D.load_schedule(os.environ["RM_SEAT_RESTART_SCHEDULE"])

@@ -104,9 +104,11 @@ GAME_NEEDS = ("bridge", "game-up", "deploy")
 OPEN_STATES = ("proposed", "ready", "doing", "built", "validated")   # model.OPEN_STATES (selftest pins them equal)
 HANDOFF = ("claim", "start")            # plus a lease event with action take
 
-DEFAULTS = {"tick_s": 120, "stall_after_s": 240, "verify_s": 300, "handoff_s": 600, "max_retries": 2,
-            "cooldown_s": 3600, "dead_after_s": 600, "recover_verify_s": 300,
-            "ledger_notes": True, "publish": True, "tick_budget_s": 420}
+# The keys dispatcher_schedule.json must carry (SCHEDULE_HARDEN_FAIL_CLOSED_NO_DEFAULTS): load_schedule refuses one that
+# is missing, never fills a number in. The values live in the JSON only.
+REQUIRED_KEYS = ("tick_s", "stall_after_s", "verify_s", "handoff_s", "max_retries", "cooldown_s", "dead_after_s",
+                 "recover_verify_s", "ledger_notes", "publish", "tick_budget_s", "caps")
+REQUIRED_CAPS = ("wakes_per_seat_hour", "wakes_per_seat_day", "wakes_per_day")
 # tick_budget_s: rm-dispatcher.service is a oneshot with TimeoutStartSec=600; past this budget a tick writes no more
 # ledger notes and kills its publish, so systemd never SIGTERMs it mid-tick (review round R, A).
 # Inside a metronome beat (its dispatch phase, OPS_METRONOME_MIGRATE_CLOCKS_FENCED) the tick is killed at
@@ -216,7 +218,6 @@ def beat_deadline():
     return t if t == t and t not in (float("inf"), float("-inf")) else None
 
 
-CAP_DEFAULTS = {"wakes_per_seat_hour": 3, "wakes_per_seat_day": 30, "wakes_per_day": 80}
 # Raises of a dead window are bounded by raise_ladder.py (OPS_RAISE_REWIRE_WITH_DEATH_LADDER), not a per-day cap.
 RAISE_OBS_NONE = {"ending": lambda seat, sess, cfg: ("window_gone", "unknown"), "progress": lambda seat, cfg: None,
                   "mem": lambda: (None, "no memory reading"), "model_ok": None, "resets": lambda: {},
@@ -233,14 +234,24 @@ DEFAULT_RECOVER = ["{clone}/src/RimMandrake/Utils/claude_bounded.sh", "--bg", "-
 
 # ---------------------------------------------------------------- schedule and state
 
+class ScheduleInvalid(Exception):
+    pass
+
+
 def load_schedule(path=None):
-    with open(path or DEFAULT_SCHEDULE, encoding="utf-8") as f:
+    p = path or DEFAULT_SCHEDULE
+    with open(p, encoding="utf-8") as f:
         sch = json.load(f)
-    for k, v in DEFAULTS.items():
-        sch.setdefault(k, v)
-    caps = dict(CAP_DEFAULTS)
-    caps.update(sch.get("caps") or {})
-    sch["caps"] = caps
+    if not isinstance(sch, dict):
+        raise ScheduleInvalid("%s is not a JSON object" % p)
+    missing = [k for k in REQUIRED_KEYS if k not in sch]
+    caps = sch.get("caps")
+    if isinstance(caps, dict):
+        missing += ["caps.%s" % k for k in REQUIRED_CAPS if k not in caps]
+    elif "caps" in sch:
+        missing.append("caps (not an object)")
+    if missing:
+        raise ScheduleInvalid("%s is missing required key(s): %s" % (p, ", ".join(missing)))
     return sch
 
 
