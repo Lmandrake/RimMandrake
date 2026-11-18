@@ -1,0 +1,29 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Settled the two readings of the hostile ruins. Returning lava changes a routine haul past the works in B1. Hostile tenders stay deferred with the tower garrison, as stated on page two.",
+      "where": "definition.md (Why a player reaches for it); ambiguities.md (The ruins that seek to unmake you); owner_pages.md (page two); bars.json (B1)"
+    },
+    {
+      "id": "R2",
+      "changed": "Specified slow, deliberate movement of glowing mechanoid-type forms in open lava. Their purpose stays unrevealed. B1 rejects lava, embers or steam moving without discernible machine motion and isolates machine motion in its control.",
+      "where": "definition.md (Foundry works); tickets.md (T16); census.json (melt_machines); bars.json (B1)"
+    },
+    {
+      "id": "R3",
+      "changed": "Limited fleet-flier feeding to actual edible roster vegetation and recorded the owner's fireweed cut in the definition.",
+      "where": "definition.md (Life — Designer feeding contract); tickets.md (T18)"
+    },
+    {
+      "id": "R4",
+      "changed": "Restricted B7 to ordinary reload continuity. Disable and premature End safety remain governed by R5, with C5/C7 and T17 checking those paths. Removed B7 from the defaults meeting.",
+      "where": "bars.json (B7, C5, C7 and defaults meeting); tickets.md (T17 acceptance test)"
+    },
+    {
+      "id": "R5",
+      "changed": "Marked runaway destruction and lifeless ground as figurative, defined them using the existing collapse and forage/native viability boundaries, added an accept picture for each, and aligned the range labels with the bar sentence.",
+      "where": "bars.json (B8 meant.figurative and range.left_out)"
+    }
+  ]
+}

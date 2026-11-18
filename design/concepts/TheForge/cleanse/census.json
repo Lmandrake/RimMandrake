@@ -54,7 +54,7 @@
     },
     {
       "id": "melt_machines",
-      "what": "Ambient nonliving machinery moves beneath the melt without revealing its purpose",
+      "what": "Nonliving mechanoid-type forms glow like the open melt and move slowly and deliberately, distinct from lava flow, embers and steam at colony zoom, with their purpose unrevealed",
       "built": "unknown",
       "evidence": "design/Jawa/worldbuilding/biomes/the_forge.md; design/RimMandrake/designer_codex_2026-11-09/TheForge/record.json",
       "proven": "missing",

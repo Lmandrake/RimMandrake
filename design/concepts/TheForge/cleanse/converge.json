@@ -1,0 +1,154 @@
+{
+ "mod": "TheForge",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "core_promise_weakened",
+     "where": "definition.md, 'Why a player reaches for it' paragraph; ambiguities.md (no entry); owner_pages.md page two (no line)",
+     "evidence": "The owner's typed experience sentence (design/RimMandrake/biome_experiences_2026-10-20.md:24) is: \"Where the gods came to forge a world is now the ruins that seek to unmake you. Even the beasts challenge your presence.\" The proposal settles the second half openly: it has an ambiguities.md entry, a line on the owner pages and B5's predator pictures. The first half is disposed of in one clause of definition.md: \"Its gods/hostile-ruins language is thematic: no deity simulation, sentient attacking ruin or mandatory narrative event follows from it.\" In the first version the ruins are inert. Towers are \"permanent solid scenery\", the machinery is noninteractive, and B1's accept picture says \"distant moving machinery gives no explanation of its work\". The hostile part of the ruins (the tenders as a garrison, the_forge.md §8) has moved to next version. Nothing on his pages tells him that half of his sentence was read away.",
+     "would_pass": "The clause is settled like 'beasts challenge'. It gets an ambiguity entry with both readings: (a) hostile ruins, meaning tenders or a garrison, which is next version; (b) the works stand among the cycle's hazards, so the place itself unmakes you. The proposal states the reading it takes and ties it to a bar picture, for example routine journeys past the works crossing the gas, scald or melt danger. One line on his pages says the hostile tenders are deferred.",
+     "smallest_fix": "Add one ambiguities.md entry and one owner_pages.md line naming the reading taken. If reading (b) is taken, add one B1 or B4 accept/reject pair that ties the works to the danger."
+    },
+    {
+     "id": "R2",
+     "head": "kept_mechanic_undefined",
+     "where": "definition.md 'Foundry works' paragraph; tickets.md T16; census.json row melt_machines; bars.json B1",
+     "evidence": "melt_machines is kept as land, with built 'unknown'. Its only definition is \"Open melt must also show visible nonliving machine motion during ordinary observation\" (definition.md) and \"Minimal ambient nonliving melt machinery must convey the frozen always-true motion\" (T16). The lore gives the picture: \"old mechanoid-type machines, glowing with the same heat as the liquid around them\" (the_forge.md §3) and \"slow deliberate movement that is not alive\" (§9). The proposal never names what the player sees. An animated lava surface, drifting embers or passing steam is also 'visible nonliving motion'. B1's control (\"Freeze only the ambient machine animation\") cannot separate machinery from lava's own animation if the builder calls one the other.",
+     "would_pass": "The definition says what the motion is: discernible manufactured forms in open lava cells (mechanoid-type, glowing like the melt) that move slowly and deliberately. They must be distinguishable at colony zoom from lava flow, embers and steam, and their purpose is never revealed. B1 rejects a build where only the lava texture, sparks or steam move.",
+     "smallest_fix": "Add one sentence to definition.md and T16 naming the form. Add one B1 reject picture: \"Only the lava surface, embers or steam move; nothing reads as a machine.\""
+    },
+    {
+     "id": "R3",
+     "head": "contradicts_ruling_or_lore",
+     "where": "definition.md 'Life — Designer feeding contract' paragraph; tickets.md T18",
+     "evidence": "Both say: \"Fleet fliers instead consume actual edible vegetation, including admitted fireweed\". Fireweed is not admitted. src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml:270 records: \"Plant_Fireweed / Plant_MagmaCactus CUT from this roster: owner 2026-10-19 by card (\\\"Cut them as the card said\\\"...)\". The proposal's own next_version.md also lists the fireweed economy as already struck. The diet contract names a plant the owner removed by card.",
+     "would_pass": "The fleet-flier diet names only plants the current roster admits (fire lavender, cinder crust, heatsink fungus, firevine), or says 'actual edible roster vegetation'. There is no claim that fireweed is admitted.",
+     "smallest_fix": "Delete \"including admitted fireweed\" from definition.md and T18."
+    },
+    {
+     "id": "R4",
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json B7 (says; reject picture 1; range)",
+     "evidence": "B7 says \"Reloading, disabling or ending a Forge cycle preserves ... resolves its temporary ground without stranding survivors\". Its first reject picture is \"The master is off yet scald or flash penalties continue\". Its range is mostly settings toggles (\"master/pulse/cycle/gas/freeze/bloom/dormancy/destructive-melt toggles separately and in combinations; ... premature condition End\"). Safe all-off behaviour is the standing Mod Settings ruling ('all-off degrades gracefully'). The proposal itself says such floors are \"inherited floors with regression checks, not artificial extra experience bars\" (definition.md, Settings), and R5 and C5/C7 already state the same contract. The reload half overlaps B8, whose says includes \"a mid-cycle reload\".",
+     "would_pass": "Disable and End safety live as the rule R5 plus the checks C5/C7 (and M1). Any surviving B7 covers only what a player meets in ordinary play: a reload mid-cycle continues the same crust, gardens and sealed animals with no duplicated reward or hazard. Alternatively, that reload content is folded into B8 and B7 is dropped.",
+     "smallest_fix": "Strike 'disabling or ending' and the master-off reject picture from B7, and move them to R5/C5. Keep the reload continuity pictures."
+    },
+    {
+     "id": "R5",
+     "head": "figurative_unmarked",
+     "where": "bars.json B8 says / meant.figurative / range.left_out",
+     "evidence": "B8 says \"without runaway destruction, lifeless ground, stalled cycles or an error storm\". meant.figurative marks only \"mountain’s temporary opportunities\" and \"error storm\". range.left_out defines differently named words, \"Flood\", \"desert\" and \"stall\" (for example \"desert = cycle-caused loss of ordinary forage/native viability\"), and never links them to the words in says. Read literally, \"lifeless ground\" fails only a wholly barren map. That would pass a season where every grazer starves among surviving lichen.",
+     "would_pass": "\"runaway destruction\" and \"lifeless ground\" are listed as figurative, each with its stands_for taken from left_out (flood and desert). Each gets one accept picture that departs from the literal reading, for example: \"fire clears a region to bare ash and it regrows by the next interval; this is not lifeless ground.\"",
+     "smallest_fix": "Add two figurative entries to B8 and rename the left_out terms to match the words in says."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Settled the two readings of the hostile ruins. Returning lava changes a routine haul past the works in B1. Hostile tenders stay deferred with the tower garrison, as stated on page two.",
+      "where": "definition.md (Why a player reaches for it); ambiguities.md (The ruins that seek to unmake you); owner_pages.md (page two); bars.json (B1)"
+     },
+     {
+      "id": "R2",
+      "changed": "Specified slow, deliberate movement of glowing mechanoid-type forms in open lava. Their purpose stays unrevealed. B1 rejects lava, embers or steam moving without discernible machine motion and isolates machine motion in its control.",
+      "where": "definition.md (Foundry works); tickets.md (T16); census.json (melt_machines); bars.json (B1)"
+     },
+     {
+      "id": "R3",
+      "changed": "Limited fleet-flier feeding to actual edible roster vegetation and recorded the owner's fireweed cut in the definition.",
+      "where": "definition.md (Life — Designer feeding contract); tickets.md (T18)"
+     },
+     {
+      "id": "R4",
+      "changed": "Restricted B7 to ordinary reload continuity. Disable and premature End safety remain governed by R5, with C5/C7 and T17 checking those paths. Removed B7 from the defaults meeting.",
+      "where": "bars.json (B7, C5, C7 and defaults meeting); tickets.md (T17 acceptance test)"
+     },
+     {
+      "id": "R5",
+      "changed": "Marked runaway destruction and lifeless ground as figurative, defined them using the existing collapse and forage/native viability boundaries, added an accept picture for each, and aligned the range labels with the bar sentence.",
+      "where": "bars.json (B8 meant.figurative and range.left_out)"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "ambiguities.md now has the entry \"The ruins that seek to unmake you\" with both readings: \"the ruins are hostile through the tenders that garrison the towers, or the old works stand amid the cycle’s hazards\". It says which it takes (\"I take the second for the surface\") and that \"Hostile tenders move with those dungeons to next version\". B1 ties the reading to danger. Its new accept is \"the crew uses a crust crossing beside the works while it holds, then takes the permanent bank route after returning lava cuts the crossing\", its new reject is \"Routine routes past the works are insulated from the cycle’s hazards in every phase\", and its says adds \"returning melt can cut a crossing by the works\". owner_pages.md page two adds \"Hostile tower tenders move to next version.\" definition.md drops the \"thematic\" clause and reads the sentence as \"the danger of living among the old works\", with tenders deferred."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "definition.md Foundry works now says \"In open lava cells, nonliving mechanoid-type forms glow like the melt and move slowly and deliberately, distinct from lava flow, embers and steam at colony zoom.\" T16 and census melt_machines.what name the same form. B1 adds the reject \"Open melt shows no discernible machine motion, even if the lava surface, embers or steam move.\" Its control now reads \"Freezing only the machine animation while lava, embers and steam keep moving must fail B1\", and its lazy says \"animated lava alone fail\"."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "definition.md Life paragraph and T18 both now say \"Fleet fliers ... eat actual edible roster vegetation\". definition.md adds \"The current roster follows the owner’s fireweed cut recorded in RM_TheForge_Biome.xml.\" A grep of definition.md and tickets.md finds no remaining \"admitted fireweed\"."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "B7 says is now only \"When a player reloads a save mid-cycle ... resume in their saved state, and the cycle continues without duplicating rewards or hazards.\" The master-off reject and the off cleanup accept are gone. Its range.left_out reads \"Settings changes and premature condition End are covered by R5 and C5/C7.\" C5 now carries the toggle range and \"Master-off stops scald and flash penalties.\" C7 now covers \"gentle, off and premature End cleanup\" with pending safe support. The R5 rule keeps the Gentle/off/End survivor contract. The defaults meeting no longer lists B7, and T17's acceptance runs C5/C7 for off and End."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "B8 meant.figurative now holds \"runaway destruction\" (stands_for: escalating pressure that removes repeated workable intervals) and \"lifeless ground\" (stands_for: cycle-caused loss of forage or native viability). Each has an accept that departs from the literal reading, for example \"Fire temporarily clears a grazing patch to bare ash. Forage regrows by the next interval\". range.left_out now uses the words in says: \"Runaway destruction = ...; lifeless ground = ...; stalled cycles = ...; error storm = ...\"."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md “The ruins that seek to unmake you”",
+    "bars.json bars/B1",
+    "bars.json bars/B7",
+    "bars.json bars/B8",
+    "bars.json checks/C5",
+    "bars.json checks/C7",
+    "bars.json meetings",
+    "census.json rows/melt_machines",
+    "definition.md Using it: first hour, routine and a large colony",
+    "definition.md Why a player reaches for it",
+    "owner_pages.md Page two — what to check",
+    "tickets.md T16: Define and supply ordinary surface foundry identity",
+    "tickets.md T17: Close the retained cycle specification and transition gaps",
+    "tickets.md T18: Close ordinary native sustenance and locomotion contracts"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 800610,
+     "output_tokens": 12037
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "ambiguities.md entry “Gas-grazer” and “groundHazardImmune” do not prove food still says \"separate fleet-flier fireweed diet\" when it cites the_forge.md §4.",
+   "reason": "It is accurate as a quotation of the lore, but it sits next to a diet contract that now names only roster vegetation. A reader could take it to mean fireweed is food on today's roster. This entry was not changed by the fix, so it is a miss from the earlier look.",
+   "round": 1
+  },
+  {
+   "what": "B1 range.varies does not say how maps where no lava seam or crust crossing lies near the works meet the new reject \"Routine routes past the works are insulated from the cycle’s hazards in every phase\".",
+   "reason": "This is a placement edge case, for example skirt contexts, that a judge could read either way. It does not contradict any rule (R9 has no conflicting placement clause), so it is not a regression of the fixed records.",
+   "round": 1
+  },
+  {
+   "what": "The crust and pawn_identity meetings still list B7, and their why still cites End/off and disabled-feature cleanup.",
+   "reason": "Those meetings also list R5, which now carries that contract, so they still hold. The wording is stale after B7 narrowed to reload only.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "8cee194afca01a5303e656940e009af99b4eea111a6202b197b1a61e074a72ed",
+ "seconds": 412,
+ "at": "2026-11-17T19:14:45"
+}

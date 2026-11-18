@@ -2,23 +2,25 @@
   "bars": [
     {
       "id": "B1",
-      "says": "On an ordinary Forge surface map, a colonist’s resource journeys meet whole standing foundry towers and manufactured remains among ash, visible vent-steam and lava seams with visible nonliving machine motion, while permanent banks still let the colony shelter and move.",
+      "says": "On an ordinary Forge surface map, colonists on resource journeys pass whole standing towers and manufactured remains among ash, vent-steam and open lava with recognisable moving nonliving machinery, and returning melt can cut a crossing by the works while permanent banks still let the colony shelter and move.",
       "meant": {
-        "intent": "A volcanic industrial place is the land itself, including useful physical route consequences. Reject test: an otherwise excellent cycle in a bare volcano would fail the owner’s ordinary-works answer. First version: land. No implied new dungeon or machine explanation.",
+        "intent": "A volcanic industrial place is the land itself, with cycle hazards affecting routine journeys past its works. Reject test: a bare volcano or foundry scenery disconnected from ordinary hazardous travel would lose the owner’s experience of the ruins. First version: land meeting the signature.",
         "source": "Owner experience in design/RimMandrake/biome_experiences_2026-10-20.md, TheForge row; owner answers in design/RimMandrake/designer_codex_2026-11-09/TheForge/ANSWERS_OWNER.md, answer 1; frozen the_forge.md §§1,5,6; delegated: permanent routes follow from inhabiting this land.",
         "figurative": []
       },
       "accept": [
-        "A hauler detours around an unmistakably manufactured tower base beside steaming seams, reaches a resource patch and returns along permanent cool banks; distant moving machinery gives no explanation of its work.",
-        "At colony zoom the dark vertical works, ash ground, pale steam and red open seams remain distinguishable during the cycle’s rain and fog as well as still heat."
+        "A hauler detours around an unmistakably manufactured tower base beside steaming seams, reaches a resource patch and returns along permanent cool banks. Glowing nonliving mechanoid-type forms in the open melt move slowly and deliberately without revealing their task.",
+        "At colony zoom the dark vertical works, ash ground, pale steam and red open seams remain distinguishable during the cycle’s rain and fog as well as still heat.",
+        "On a routine haul past a tower, the crew uses a crust crossing beside the works while it holds, then takes the permanent bank route after returning lava cuts the crossing."
       ],
       "reject": [
         "The biome is named Forge and its arrival letter describes towers, but the resource trip crosses only ordinary volcanic rock.",
         "A manufactured prop technically exists behind inaccessible lava, while ordinary journeys never encounter it, or the placed works close the colony’s only permanent exit.",
-        "The seams are open lava in which nothing nonliving ever visibly moves.",
-        "Ordinary colony salvage dismantles the standing towers, leaving a long-settled Forge without its manufactured skyline."
+        "Open melt shows no discernible machine motion, even if the lava surface, embers or steam move.",
+        "Ordinary colony salvage dismantles the standing towers, leaving a long-settled Forge without its manufactured skyline.",
+        "Routine routes past the works are insulated from the cycle’s hazards in every phase, with melt crossings confined to terrain away from the works."
       ],
-      "lazy": "none: whole towers on ordinary physical routes, visibly moving nonliving machinery and usable permanent banks are explicit; labels, inaccessible props, salvageable rubble alone and still melt fail.",
+      "lazy": "none: whole towers on ordinary physical routes, discernible moving machine forms, melt changing routes past the works and usable permanent banks are explicit; labels, isolated props, salvageable rubble alone and animated lava alone fail.",
       "range": {
         "varies": "Existing authored Forge surface-map corpus: cone, flow and skirt contexts represented by local terrain/height, not newly generated planets; square map sides 200, 250, 325; all legal rotations/footprints of retained remains; sparse and overlapping vent fields; every cycle phase; vanilla and advanced colony zoom; first landing and an occupied 40-colonist settlement. Machine motion must be nonliving and noninteractive. Include day-100 saves and ordinary salvage/deconstruction attempts; separate remains may be removed but whole tower forms persist.",
         "left_out": "No requirement that every tiny remote pocket contains a tower; the connected settled/workable part must carry the encounter. Campaign interiors, new world tiles, new planet seeds and flyer visual acceptance are excluded."
@@ -27,7 +29,7 @@
         "instrument": "In-game ground/ruin look against the accept/reject pictures, paused for form and paired with successive observations as the ordinary clock advances for nonliving melt motion; M2 supplies route/footprint, tower-interaction and roof/caster state reads. T16 and T27 provide missing local content and capture recipe. No flyer visual test is part of this reading.",
         "start": "Disposable ordinary surface save, revealed only to the normal explored area for the visual reading, permanent shelter/work origins and resource targets recorded; no staged tower added by the judge.",
         "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
-        "control": "Remove the foundry content on a duplicate while keeping terrain/weather identical; visual manufacture and obstacle-caused detours must disappear together. Freeze only the ambient machine animation on another duplicate: still lava must fail even while steam and wildlife move. Read paths around actual occupied footprints, not a letter or named generic wreck. Ordinary mine/deconstruct/salvage/damage attempts leave towers whole while separate remains can be salvaged.",
+        "control": "Remove the foundry content on a duplicate while keeping terrain/weather identical; visual manufacture and obstacle-caused detours must disappear together. Freezing only the machine animation while lava, embers and steam keep moving must fail B1. Read paths around actual occupied footprints, not a letter or named generic wreck. Compare the same haul endpoints past the works with the crossing crusted and after natural melt, holding tower footprints fixed, to isolate the detour caused by returning lava. Ordinary mine/deconstruct/salvage/damage attempts leave towers whole while separate remains can be salvaged.",
         "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
         "live_only_why": "Manufactured form, volcanic ground, visible steam and nonliving melt motion must be recognisable at ordinary colony zoom. Defs, path graphs or still mocks cannot establish this visual distinction or motion. Observe ground scenes and ambient machinery over an advancing ordinary clock; flight state is read separately, with no flyer visual experiment here."
       },
@@ -245,30 +247,28 @@
     },
     {
       "id": "B7",
-      "says": "Reloading, disabling or ending a Forge cycle preserves identifiable animals and possessions with readable outcomes, resolves its temporary ground without stranding survivors, and lets a resumed cycle continue without duplicating its rewards or hazards.",
+      "says": "When a player reloads a save mid-cycle on the Forge, the same crust, gardens, possessions and identifiable animals resume in their saved state, and the cycle continues without duplicating rewards or hazards.",
       "meant": {
-        "intent": "Transitions are part of living with temporary land, not solely settings hygiene. Reject test: a silent lost animal, stranded survivor or duplicated harvest is a player-visible signature failure even if steady-state stages work. First version: signature and necessary safe controls; settings-existence remains a floor/check.",
-        "source": "Standing settings and no-unreadable-disappearance rulings; cycle and dormancy saved state in RM_GameCondition_ForgeCycle.cs and RM_CompForgeCycleDormancy.cs; delegated: temporary-ground ownership and restart continuity follow from that experience.",
+        "intent": "A colony can pick up the same expedition after saving mid-cycle. Reject test: a lost animal, crossing or harvest, or a replayed hazard, breaks ordinary play even if uninterrupted stages work. First version: signature.",
+        "source": "Standing no-unreadable-disappearance ruling; cycle and dormancy saved state in RM_GameCondition_ForgeCycle.cs and RM_CompForgeCycleDormancy.cs; delegated: temporary-ground ownership and save/reload continuity follow from that experience.",
         "figurative": []
       },
       "accept": [
-        "The save resumes during growth with the same crust and gardens and the same sealed animal identities; harvesting and later melt happen as continued events rather than fresh duplicates.",
-        "Turning the cycle off resolves its ground with survivors and haulable possessions safe or with an explicit pending safe-cleanup state where no landing cell exists; normal destructive play still accounts visibly for genuine deaths and losses."
+        "The save resumes during growth with the same crust, gardens, hauled stacks and sealed animal identities. Harvesting and later melt continue from that state without duplicating either event."
       ],
       "reject": [
-        "The log is clean after loading but the game seeds a fresh reward or erases a resident animal.",
-        "The master is off yet scald or flash penalties continue, or gentle cleanup removes the floor beneath a survivor with no reachable safe landing and leaves them on open lava."
+        "After loading, the game seeds a fresh reward, erases a resident animal, or repeats an ignition or melt event that had already resolved."
       ],
-      "lazy": "none: pawn identity, information and safe transition outcomes are explicit across a resumed or disabled cycle; mere absence of an exception is insufficient.",
+      "lazy": "none: the resumed crust, gardens, possessions, animal identities and one-time events are explicit, so a clean load that secretly resets progress fails.",
       "range": {
-        "varies": "Every phase and phase boundary; save before/after batched work and during a pending cleanup; master/pulse/cycle/gas/freeze/bloom/dormancy/destructive-melt toggles separately and in combinations; global dependency gates off/on; premature condition End; pawn ownership/death/downing/carrying; unrelated temp terrain/foundations; items/buildings/projectiles/filth/gas; safe cells near/far/none; map side 200–325 and up to full-map crust stress. Read both disabling and subsequent re-enabling in second order.",
-        "left_out": "No removal of shared engines or DLC from existing saves. Existing built deferred doors/hulls remain loaded when their menu switch is off. Gentle mode need not preserve rooted plants or intact unsupported buildings, but it must declare and account for those outcomes and preserve movable leavings."
+        "varies": "At shipped defaults, save and reload in every phase and before/after phase boundaries, warnings and batched work. Include wild and tamed, awake and sealed animals, deaths/downing/carrying, unrelated temp terrain and foundations, built structures and haulable stacks, map sides 200–325 and up to full-map crust stress.",
+        "left_out": "Settings changes and premature condition End are covered by R5 and C5/C7. Normal cycle progression after the save can still cause the losses described in B4."
       },
       "sees": {
-        "instrument": "M1 enumerated lifecycle/ownership walk, direct object/terrain ledger and save-load state reader at transition boundaries. T17 defines required safe fallback and T27 supplies the reader.",
-        "start": "Disposable recorded save with owned crust, mature/immature gardens, identifiable native and colonist pawns, haulable items and unrelated temporary terrain; copied before transition. No cleanup performed before making the mid-cycle save.",
+        "instrument": "M1 save/reload cases with direct object/terrain ledger and save-load state reader at transition boundaries. T27 supplies the reader.",
+        "start": "Disposable recorded saves bracketing the natural cycle transitions. Where present, record owned crust, mature/immature gardens, identifiable native and colonist pawns, haulable items and unrelated temporary terrain before saving.",
         "on": "All retained Forge mechanics and dependencies at proposed shipped defaults, all DLC, next-version features off; real weather/clock/pathfinding/heat/growth/needs unlocked. No clear-sky lock, god mode, synthetic growth completion, hidden damage switch or phase jump in a qualifying natural reading. Targeted control copies change only the named cause.",
-        "control": "Compare continuation with reload and no-reload branches by causal event and conserved identity/material, allowing harmless RNG-order differences. Compare underlying/top/temp terrain independently; counters/inspect strings alone cannot prove preservation. Inject no-safe-cell, duplicate-seed and End-with-crust cases and require their failures to be detected.",
+        "control": "Compare reload and uninterrupted branches by causal event and conserved identity/material, allowing harmless RNG-order differences. Read underlying/top/temp terrain independently of counters and inspect text. Require deliberate duplicate-seed and replayed-hazard controls to fail.",
         "reset": "Use a disposable copy of the asserted starting save; discard the entire copy afterward, including time, terrain, RNG, letters, knowledge, fires and wildlife. Restore settings from its journal. Do not claim fixture deletion restores a map.",
         "live_only_why": "none: causal game-state traces and independent state/geometry comparisons can distinguish these pictures; models are forecasts until calibrated, and do not replace required game-state evidence."
       },
@@ -276,7 +276,6 @@
       "touches": [
         "pawn_identity",
         "crust",
-        "defaults",
         "cycle_clock",
         "floatstone",
         "warnings"
@@ -293,6 +292,16 @@
             "word": "mountain’s temporary opportunities",
             "stands_for": "Cycle-created accessible crust and harvest work, not a new opportunity subsystem.",
             "accept": "A low skirt map still offers the crust trip even when no summit fits on the local map."
+          },
+          {
+            "word": "runaway destruction",
+            "stands_for": "Escalating default fire, terrain, population or material pressure that removes repeated workable intervals.",
+            "accept": "Gas-driven fire burns a stand of plants and destroys an outdoor stockpile, then runs out of fuel. The crew can still gather and retreat in subsequent intervals."
+          },
+          {
+            "word": "lifeless ground",
+            "stands_for": "Cycle-caused loss of ordinary forage or native viability, distinguished from deliberate clearcutting, overhunting and naturally bare lava.",
+            "accept": "Fire temporarily clears a grazing patch to bare ash. Forage regrows by the next interval and resident grazers resume feeding there."
           },
           {
             "word": "error storm",
@@ -312,7 +321,7 @@
       "lazy": "none: the full default season, actual colony actions, changed order and resumed mid-cycle run are explicit; separately staged successes cannot satisfy that.",
       "range": {
         "varies": "Season = 15 full game days/900000 simulated ticks, extended until a complete natural gas/rain/crust/growth/cracks/melt chain is observed if phase timing requires; full surface maps 200/250/325 and representative cone/flow/skirt geometry, no planetary generation. Fresh colony and established colonies up to 40, with first-day and day-100 start saves. Every retained mechanic at defaults including damage, growth, needs, shared Direct Sun/ambient heat, native husbandry/predation, Wreckage and Bones; extra switches off. Midway save made while crust/work is live; branch A improve shelter then harvest/haul/build, branch B harvest/haul then improve permanent shelter/build on an already safe base. Normal job ticks and natural phase lengths retained. Compressed wall-clock playback is allowed only by processing all game ticks, not phase jumps or rescaling growth/AI relative to hazards.",
-        "left_out": "No performance/FPS threshold, guaranteed profit or complete native immortality. Flood = escalating default fire/terrain/population/material pressure that removes repeated workable intervals; desert = cycle-caused loss of ordinary forage/native viability, distinguished from deliberate clearcutting/overhunting and naturally bare lava; stall = no next natural opportunity when eligible ground exists; error storm = recurring mechanic exceptions. No next-version feature is used to rescue a passing reading."
+        "left_out": "No performance/FPS threshold, guaranteed profit or complete native immortality. Runaway destruction = escalating default fire/terrain/population/material pressure that removes repeated workable intervals; lifeless ground = cycle-caused loss of ordinary forage or native viability, distinguished from deliberate clearcutting/overhunting and naturally bare lava; stalled cycles = no next natural opportunity when eligible ground exists; error storm = recurring mechanic exceptions. No next-version feature is used to rescue a passing reading."
       },
       "sees": {
         "instrument": "M3 calibrated season forecast selects worst regimes, then whole-map causal state/event trace plus log and material/job/population ledger over real game ticks, reusing the bar readers. B1 supplies separate visual identity acceptance; this bar is decidable from the integrated state trace without a season-long human look. T27 implements the integrated run recipe.",
@@ -359,7 +368,7 @@
     },
     {
       "id": "C5",
-      "what": "Settings floor: saved meaningful switches per major retained feature, defaults reset to proposal manifest; all extras default off with next-version labels. Read all-on/default and all-off in fresh and reload states; no stale exposed inert knobs; log clean and load resolutions present."
+      "what": "Settings floor: saved meaningful switches per major retained feature, defaults reset to proposal manifest; all extras default off with next-version labels. Read all-on/default and all-off in fresh and reload states; no stale exposed inert knobs; log clean and load resolutions present. Check master/pulse/cycle/gas/freeze/bloom/dormancy/destructive-melt toggles separately and in combinations, including shared dependency gates. Master-off stops scald and flash penalties. Disable and re-enable across phases and pending cleanup states in the M1 walk."
     },
     {
       "id": "C6",
@@ -367,7 +376,7 @@
     },
     {
       "id": "C7",
-      "what": "Object conservation ledger: pawn IDs, death/corpse/loss reasons, top/base/temp terrain ownership, stack origins/uses, garden seed/departure and consumed material; cross-check counters with actual state, including no safe landing and premature End."
+      "what": "Object conservation ledger: pawn IDs, death/corpse/loss reasons, top/base/temp terrain ownership, stack origins/uses, garden seed/departure and consumed material; cross-check counters with actual state. For gentle, off and premature End cleanup, read survivors and movable possessions on safe ground or on explicit pending safe support when no reachable landing exists. Check plant/building outcomes, preserved leavings and unrelated temporary layers."
     },
     {
       "id": "C8",
@@ -556,7 +565,6 @@
         "B2",
         "B5",
         "B6",
-        "B7",
         "B8",
         "R1",
         "R3",
