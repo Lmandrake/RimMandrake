@@ -1,0 +1,14 @@
+STEVE SOAK — live reading taken by the Conductor 2026-11-17 19:31 PST (2026-11-18T03:31Z)
+route: docker exec tailscale-gmail tailscale ssh stevedesktop-wsl (the host's own ssh cannot reach Steve at all)
+
+run S20261118T012929Z, planned 2026-11-18T01:29:29Z -> 2026-11-21T01:29:29Z (72 h)
+started=true  boot=2026-11-18T01:39:36Z (it RESUMED after the reboot)  finished=null  fails=0
+prime95.exe in tasklist: 1
+newest log line 03:31:48Z: pass=8 cpu=2 PASS fatal=0 whea=0 alive=1 load=100 core_max_c=48 vcore_v=1.025
+FAIL lines in the whole log: 0
+CONTROL at 01:31:29Z and again at 01:40:41Z: inject_fatal_seen=1 inject_died_seen=1 heat_seen=1 load_seen=1 ok=1
+
+=> The handoff pointer STEVE_SOAK_NOT_RUNNING is WRONG as of now. The soak did die 28 s into its first
+   start at 01:29:32Z; the machine then rebooted at 01:39:36Z and the resume-after-reboot path (c62f5f5d2a)
+   picked it up, which is exactly what that commit was for. Nothing is owed to the owner.
+   vcore now reads 1.001-1.028 V, inside the post-raise band the +0.100 V analysis measured.
