@@ -11,12 +11,14 @@ import sys
 import tempfile
 import time
 
+import re
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
 FAILS = []
 SIX = ("Contagion", "Cauldron", "FeverWood", "GelatinousSlime", "LeaningScrub", "Stillsand")
-UNTOUCHED = ("Pyrelands", "PyrelandsMechanics", "GimmeSomeSlack", "ExplosiveKnockback", "FlowWorks", "Graffiti")
+# the 2026-11-16 ruling names only Pyrelands as never held; any other mod he may hold later (Graffiti, 2026-11-18)
+UNTOUCHED = ("Pyrelands", "PyrelandsMechanics")
 WORDS = "And stop the new biome mods work. Only Pyrelands as a biome mod right now."
 
 
@@ -38,11 +40,12 @@ def test_the_shipped_list():
     import mod_owner_hold as OH
     os.environ.pop("RM_OWNER_HOLD_FILE", None)
     hs = OH.load()
-    check(sorted(hs) == sorted(SIX), "owner_hold.json holds exactly the six: %s" % sorted(hs))
-    check(not any(OH.held(m, hs) for m in UNTOUCHED), "Pyrelands, PyrelandsMechanics, GSS, EK, FlowWorks, Graffiti: "
-          "not held")
-    check(all("Only Pyrelands" in h["said"] and h["date"] == "2026-11-16" for h in hs.values()),
-          "every hold carries his words and the date 2026-11-16")
+    check(set(SIX) <= set(hs), "owner_hold.json holds the six biome mods: %s" % sorted(hs))
+    check(not any(OH.held(m, hs) for m in UNTOUCHED), "Pyrelands, PyrelandsMechanics: not held")
+    check(all("Only Pyrelands" in hs[m]["said"] and hs[m]["date"] == "2026-11-16" for m in SIX if m in hs),
+          "each of the six carries his words and the date 2026-11-16")
+    check(all(h.get("said") and re.fullmatch(r"\d{4}-\d\d-\d\d", h.get("date") or "") for h in hs.values()),
+          "every hold carries his words and a date")
     check(OH.held("/home/x/design/concepts/Cauldron/", hs) and OH.held("RimMandrake/Stillsand", hs),
           "a concept path or a RimMandrake/ name matches by its last part")
     s = OH.status(hs["Cauldron"])
@@ -83,7 +86,7 @@ def test_allow_design():
     os.environ.pop("RM_OWNER_HOLD_FILE", None)
     hs = OH.load()
     check(all(OH.design_allowed(h) and "dispatch it on every remaining biome" in OH.design_allowed(h)["said"]
-              and OH.design_allowed(h)["date"] == "2026-11-16" for h in hs.values()),
+              and OH.design_allowed(h)["date"] == "2026-11-16" for m, h in hs.items() if m in SIX),
           "the six shipped holds carry his words allowing the design-only pass (2026-11-16)")
     p = temp_holds(["ModOne", "ModTwo"])
     row = OH.allow_design("ModOne", "design it", date="2026-11-16")

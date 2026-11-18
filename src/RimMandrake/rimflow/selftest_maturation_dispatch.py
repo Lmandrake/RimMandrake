@@ -259,6 +259,13 @@ def main():
         restore(root, "Pyrelands", saved)
         ok(d["Graffiti"] == "not_offline" and d["PyrelandsMechanics"] == "not_offline",
            "Graffiti (no record, the Designer) and Pyrelands Mechanics (intake) launch nothing")
+        hp = os.environ.get("RM_OWNER_HOLD_FILE")
+        fixture_holds(["Graffiti"])
+        rdh = MD.tick(root, cfg, False, fx=fx, now=CLOCK, page=False)
+        ok(rdh["mods"]["Graffiti"]["decision"] == "owner_hold" and rdh["mods"]["FlowWorks"]["decision"] != "owner_hold",
+           "a fixture owner hold on Graffiti: Graffiti reads owner_hold, FlowWorks is still decided (%s, %s)"
+           % (rdh["mods"]["Graffiti"]["decision"], rdh["mods"]["FlowWorks"]["decision"]))
+        os.environ["RM_OWNER_HOLD_FILE"] = hp
         ok(len(filed) == 1 and filed[0][0] == "RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SEVEN_BARS_LEFT",
            "the build item is filed once, named by the refused count (%s)" % [x[0] for x in filed])
         nc = subprocess.run([sys.executable, os.path.join(HERE, "cli.py"), "namecheck", filed[0][0] if filed else "X"],
@@ -2363,7 +2370,20 @@ def priority_main():
     return 1 if FAILS else 0
 
 
+def fixture_holds(holds=()):
+    """Point mod_owner_hold.py at a temp file holding `holds` (RM_OWNER_HOLD_FILE). These checks are about dispatch, not
+    about which mods he holds today: read live, his 2026-11-18 Graffiti hold dropped Graffiti's row and turned the
+    "Graffiti ... launch nothing" check red (item RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT). The live list is
+    selftest_mod_owner_hold.py's."""
+    p = os.path.join(tempfile.mkdtemp(prefix="md_owner_hold_"), "mod_owner_hold.json")
+    with open(p, "w") as f:
+        json.dump({"holds": [{"mod": m, "date": "2026-11-18", "said": "fixture hold"} for m in holds]}, f)
+    os.environ["RM_OWNER_HOLD_FILE"] = p
+    return p
+
+
 if __name__ == "__main__":
+    fixture_holds()
     if "--priority" in sys.argv[1:]:
         sys.exit(priority_main())
     if "--cert-rerun" in sys.argv[1:]:

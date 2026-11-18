@@ -54,6 +54,11 @@
         "said": "implement the thing and dispatch it on every remaining biome other than Pyrelands! Every single one... let this thing go crazy.",
         "date": "2026-11-16"
       }
+    },
+    {
+      "mod": "Graffiti",
+      "date": "2026-11-18",
+      "said": "Stop that Graffiti work. Unauthorized item until the token reset."
     }
   ]
 }
