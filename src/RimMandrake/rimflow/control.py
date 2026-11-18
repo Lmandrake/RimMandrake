@@ -84,6 +84,7 @@ FAMILIES = {                        # the 7 launch families of the re-measure (0
     "designer_cleanse": "designer_cleanse.py fleet unit",
     "cert_rerun": "maturation_dispatch.cert_rerun_unit",
     "stop_resume": "stop_resume.py sweep unit",
+    "left_open_continue": "left_open_continue.py run unit (<run>-continue): a run that ended with work left",
     "testq": "testq/steward.py wake unit",
     "probe": "selftest probes (rm-probe-*)",
 }
@@ -1344,6 +1345,7 @@ BUILDERS = {    # functions that only BUILD a systemd-run argv; every call of on
     "rimflow/detached_helper.py:launch_argv",
     "rimflow/role_launch.py:launch_argv",
     "rimflow/designer_cleanse.py:fleet_unit_argv",
+    "rimflow/left_open_continue.py:kick_argv",
 }
 
 

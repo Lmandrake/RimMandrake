@@ -5,7 +5,7 @@ An in-process helper (the Agent tool) dies with its window, so a window past its
 one runs. A detached run lives in its own transient systemd unit and survives the window's restart:
 
   python3 src/RimMandrake/rimflow/detached_helper.py launch --seat BENCH --item ITEM_ID --brief-file F \
-      [--model fable|opus|sonnet] [--max-s none|SECONDS] [--budget-usd 15]
+      [--model fable|opus|sonnet] [--max-s none|SECONDS] [--budget-usd 15] [--continue-on-cap N]
   python3 src/RimMandrake/rimflow/detached_helper.py status [--all]
   python3 src/RimMandrake/rimflow/detached_helper.py finish --unit U     (the unit's ExecStopPost; never by hand)
   python3 src/RimMandrake/rimflow/detached_helper.py return --unit U [--no-publish-ledger]   (the unit's last ExecStopPost)
@@ -30,6 +30,10 @@ that ends success with its item still open and no `LEFT OPEN:` note since it beg
 that log line and its record (`owed_close`, which MATURATION_NOW's Needs Conductor lists while the item stays open); it
 closes nothing (RIMMANDRAKE_FLAG_DETACHED_SUCCESS_LEAVING_ITEM_OPEN, 2026-11-15: a run fixed 17 gaps, exited 0, and its
 item stayed `proposed` until a hand closed it).
+A run that ends success with work left (its item open with a `LEFT OPEN:` note since it began, or lane tickets of its
+brief still open), or one the spend watchdog stopped whose launch carried --continue-on-cap N, gets ONE continuation:
+finish plans it and starts left_open_continue.py's own unit, which launches it once the clone is back (at most 3 a day
+per item, then an alarm; never for a killed, voided or held run; RIMMANDRAKE_CONTINUE_LEFT_OPEN_RUNS_WITHOUT_A_HAND_RELAUNCH).
 return: the run's last step gives the pool clone <ITEM>.det BACK (RIMMASTER_RELEASE_POOL_FROZEN_ITEMS_HOLD_CLONES, 2026-11-07:
 three finished .det clones, a stopped pipeline's ten and SHOWINGS held 16 of 16 pool places and 67 of 70 GB while little ran).
 It lands the clone's conversation records, publishes the seat shard if the run left it dirty, levels the clone with
@@ -821,8 +825,9 @@ def _refusal(res):
 
 
 def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.run, known=None, clone=None, sleep=time.sleep,
-           events_dir=None, skip_launch_checks=None, env=None, resume_session=None, projects=None):
-    """-> (exit code, text). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief, and
+           events_dir=None, skip_launch_checks=None, env=None, resume_session=None, projects=None, extra=None):
+    """-> (exit code, text). extra: fields the run's record carries from creation (`continue_on_cap`, a
+    continuation's chain: left_open_continue.py). Refuses an unknown item, one not filed on origin/main, a bad model or seat, an empty brief, and
     a clone another run still holds (after waiting for one that is being given back).
     The ticket preflight runs here IN SHADOW (RIMMANDRAKE_BACKTEST_PREFLIGHT_OVER_REAL_PAST_TICKETS): its new checks in
     the run's clone once there is one, and this door's own checks observed in place; it refuses nothing, and its lines
@@ -836,7 +841,7 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
     code, text = 1, ""
     try:
         code, text = _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir,
-                             skip_launch_checks, pf, env, resume=(resume_session, projects))
+                             skip_launch_checks, pf, env, resume=(resume_session, projects), extra=extra)
     finally:
         try:
             tail = pf.finish()
@@ -847,7 +852,7 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
 
 
 def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir, skip_launch_checks, pf,
-            env=None, resume=(None, None)):
+            env=None, resume=(None, None), extra=None):
     now = now or time.time()
     bad = pf.gate("I1", lambda: None if seat in SEATS else "refused: seat %r is not one of %s" % (seat, ", ".join(SEATS)),
                   judge=_refusal)
@@ -881,11 +886,11 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
         return 2, held
     with clone_lock(dest):
         return _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks, pf,
-                              env, resume=resume)
+                              env, resume=resume, extra=extra)
 
 
 def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, dest, skip_launch_checks=None, pf=None,
-                   env=None, resume=(None, None)):
+                   env=None, resume=(None, None), extra=None):
     resume_session, projects = resume
     pf = pf or _NoShadow("no preflight handed in")
     held = clone_holders(dest, runner, now, kept_ok=bool(clone))     # again, under the lock: no waiting now
@@ -910,6 +915,7 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     root = state_dir()
     rec = {"seat": seat, "item": item, "clone": clone, "model": model, "max_s": max_s,
            "budget_usd": float(budget), "at": now, "state": root, "status": "launching", "clone_how": how}
+    rec.update({k: v for k, v in (extra or {}).items() if k not in rec})
     if skip_launch_checks:
         rec["launch_checks_skipped"] = skip_launch_checks
     if env:
@@ -1280,7 +1286,8 @@ def mark_killed(unit, why, now=None, root=None):
     return "record %s finished (killed), its finish owed" % unit
 
 
-def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_reader=None, waker=None):
+def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_reader=None, waker=None, continuer=None,
+           states_reader=None):
     """The unit's ExecStopPost. -> (exit code, text). Once per run: a second call changes nothing. A run `pipe stop
     --kill` marked killed (mark_killed) gets its owed note and log line here, its result kept."""
     now = now or time.time()
@@ -1313,12 +1320,15 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         write_record(rec)
         return 1, "NOT FINISHED %s: %s" % (unit, steps[0])
     owed = ""
+    got = None
     if not os.path.isdir(clone):                 # deleted under the run: no clone to note from, the log line still goes
         steps.append("clone gone: no note on the item, nothing published")
     else:
-        if st.startswith("success ("):          # its item still open with nothing said: one plain line, everywhere
+        cap_opt = int(rec.get("continue_on_cap") or 0) > int(rec.get("cap_continues_used") or 0)
+        if st.startswith("success (") or (cap_opt and not st.startswith("killed")):
+            # its item still open with nothing said: one plain line, everywhere; and what a continuation would carry on
             got = (item_reader or read_item)(clone, item)
-            if isinstance(got, dict):
+            if isinstance(got, dict) and st.startswith("success ("):
                 owed = owed_close(dict(rec, result=st), got.get("state"), got.get("notes"))
                 steps.append("item " + (got.get("state") or "absent") + (": OWED" if owed else ""))
             else:
@@ -1348,6 +1358,16 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     rec.update(status="finished", ended=now, result=st, tokens=tokens, token_unit=RL.TOKEN_UNIT, steps=steps,
                cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how, owed_close=owed)
     write_record(rec)
+    if isinstance(got, dict):   # work left: ONE continuation, its own unit (RIMMANDRAKE_CONTINUE_LEFT_OPEN_RUNS_WITHOUT_A_HAND_RELAUNCH)
+        try:
+            import left_open_continue as LOC
+            _, line = LOC.at_finish(read_record(unit) or rec, got, clone, now, runner, continuer, states_reader)
+        except Exception as e:  # noqa: BLE001  the run is finished; a continuation that cannot be planned is said
+            line = "continue FAILED: %s: %s" % (type(e).__name__, e)
+        steps.append(line)
+        rec = read_record(unit) or rec      # fresh: the continuation step may already have written to it
+        rec["steps"] = steps
+        write_record(rec)
     return 0, "FINISHED %s: %s" % (unit, "; ".join(steps))
 
 
@@ -1404,6 +1424,9 @@ def main(argv=None):
                    help="the Conductor's bypass of the item's ## launch-checks block; WHY is recorded on the run record")
     a.add_argument("--resume", metavar="SESSION", help="resume this claude session (a mod's holder; its transcript is "
                                                         "carried into the run's clone)")
+    a.add_argument("--continue-on-cap", type=int, default=0, metavar="N",
+                   help="a stop by the spend watchdog is carried on by itself up to N times (left_open_continue.py); "
+                        "default 0: a cap stop ends the work")
     f = sub.add_parser("finish")
     f.add_argument("--unit", required=True)
     b = sub.add_parser("return", help="give the run's pool clone back, bundled (the unit's last step; --all sweeps strays)")
@@ -1430,7 +1453,8 @@ def main(argv=None):
         else:
             rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model,
                               args.max_s, args.budget_usd, clone=args.clone, skip_launch_checks=args.skip_launch_checks,
-                              env=env, resume_session=args.resume)
+                              env=env, resume_session=args.resume,
+                              extra={"continue_on_cap": args.continue_on_cap} if args.continue_on_cap > 0 else None)
     elif args.cmd == "finish":
         keep_off_result(args.unit)      # before anything prints: never into claude's result or error file
         rc, text = finish(args.unit)
