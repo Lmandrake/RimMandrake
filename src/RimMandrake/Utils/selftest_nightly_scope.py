@@ -16,6 +16,7 @@ too fluid otherwise. Wrong phase." Cases, all on temp trees and fake systemctl (
   7  the clean clone: made from origin, reset to origin/main each run, and the sweep runs inside it with ~/.local/bin
 """
 import json
+import re
 import os
 import subprocess
 import sys
@@ -224,8 +225,28 @@ check("6 a live_excluded test never runs at the door",
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 tc = json.load(open(os.path.join(REPO, P.TREE_CHECKS), encoding="utf-8"))
 src = open(os.path.join(HERE, "publish.py"), encoding="utf-8").read()
+# the 13 tree checks this door was added beside (277260bc81): each stays; a check added later is no defect
+# (RIMMANDRAKE_NAME_NIGHTLY_SCOPE_TREE_CHECKS_COUNT_GREW_TWICE: 6b4fb634a7 and 3928fbe2da each added one)
+TREE_13 = (
+        "src/RimMandrake/rimflow/selftest_bench_word_prose.py",
+        "src/RimMandrake/Utils/selftest_biome_twins_retired.py",
+        "src/RimMandrake/Utils/selftest_one_path_seam.py",
+        "src/RimMandrake/rimflow/selftest_liveproofs_wrappers_ruling.py",
+        "src/RimMandrake/Utils/selftest_rmpaths.py",
+        "src/RimMandrake/Utils/modcheck/selftest_launch_gate.py",
+        "src/RimMandrake/Utils/selftest_fauna_normalization.py",
+        "src/RimMandrake/Utils/selftest_modlist_order_lint.py",
+        "src/RimMandrake/Utils/selftest_fuelsnows_name_cull.py",
+        "src/RimMandrake/Utils/art/selftest_drawn_art_ruled.py",
+        "src/RimMandrake/rimflow/selftest_entrypoint_inventory.py",
+        "src/RimMandrake/Utils/selftest_call_deadline_lint.py",
+        "src/RimMandrake/Utils/selftest_alpha_biomes_census.py",
+)
+gone = [t for t in TREE_13 if t not in {c.get("test") for c in tc["checks"]}]
 check("6 the 13 publish tree checks stay, and publish still runs them before the pipeline checks",
-      len(tc["checks"]) == 13 and "    tree_checks(top, changed)\n    pipeline_checks(top, changed)" in src, len(tc["checks"]))
+      len(TREE_13) == 13 and not gone   # in order, at any indent (c3dfdd7293 moved both into a try)
+      and re.search(r"\n([ \t]+)tree_checks\(top, changed\)\n\1pipeline_checks\(top, changed\)\n", src) is not None,
+      gone or len(tc["checks"]))
 pc = json.load(open(os.path.join(REPO, P.PIPELINE_TESTS), encoding="utf-8"))
 check("6 the shipped pipeline set is out of the nightly (one line, nightly: false) and lists only existing tests",
       pc["nightly"] is False and all(os.path.isfile(os.path.join(REPO, c["test"])) for c in pc["tests"])
