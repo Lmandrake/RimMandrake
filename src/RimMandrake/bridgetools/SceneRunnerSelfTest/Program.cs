@@ -20,9 +20,22 @@ namespace Elsewhere
     }
 }
 
+namespace Misdeclared
+{
+    // a mod's copy whose Ticks is a string: discovery must refuse it, never read it as Ticks 0 (the default)
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
+    internal sealed class RMTestAttribute : Attribute
+    {
+        public RMTestAttribute(string name) { Name = name; }
+        public string Name { get; }
+        public string Ticks { get; set; }
+        public string Outside { get; set; }
+    }
+}
+
 namespace JawaBench.BridgeTools
 {
-    internal static class GoodSuite
+    public static class GoodSuite
     {
         public static readonly List<string> Calls = new List<string>();
 
@@ -44,8 +57,20 @@ namespace JawaBench.BridgeTools
         public static object NotAScene(string scene, int x, int z) => null;
     }
 
-    internal static class BadSuite
+    public sealed class BadSuite
     {
+        [RMTest("instance")]
+        public object Instance(string scene, int x, int z) => null;
+
+        [RMTest("generic")]
+        public static object Generic<T>(string scene, int x, int z) => null;
+
+        [RMTest("returns_string")]
+        public static string ReturnsString(string scene, int x, int z) => null;
+
+        [Misdeclared.RMTest("misdeclared", Ticks = "900")]
+        public static object MisdeclaredTicks(string scene, int x, int z) => null;
+
         [RMTest("wrong_shape")]
         public static object WrongShape(string scene) => null;
 
@@ -65,6 +90,12 @@ namespace JawaBench.BridgeTools
         public static object Fine(string scene, int x, int z) => null;
     }
 
+    internal static class HiddenSuite
+    {
+        [RMTest("hidden")]
+        public static object Hidden(string scene, int x, int z) => null;
+    }
+
     internal static class Program
     {
         static int n;
@@ -77,6 +108,8 @@ namespace JawaBench.BridgeTools
 
         static string Show(IEnumerable<C.Row> rows) =>
             string.Join(" | ", rows.Select(r => r.scene + "/" + r.check + "=" + r.status + "(" + r.measured + ";" + r.cause + ")"));
+
+        public static object Echo(string s) => "PASS x " + s;
 
         static int Main()
         {
@@ -101,8 +134,15 @@ namespace JawaBench.BridgeTools
             U("discover_refuses_duplicate_name", bp.Any(p => p.StartsWith("dup: declared twice")), bj);
             U("discover_refuses_unreadable_outside", bp.Any(p => p.StartsWith("bad_outside: Outside unreadable")), bj);
             U("discover_refuses_ticks_over_cap", bp.Any(p => p.StartsWith("too_long: Ticks")), bj);
-            U("discover_keeps_the_good_scene_and_reports_four_problems", bs.Select(s => s.name).SequenceEqual(new[] { "dup", "fine" }) && bp.Count == 4,
-                string.Join(",", bs.Select(s => s.name)) + " / " + bp.Count);
+            U("discover_refuses_attributed_instance_method", bp.Any(p => p.StartsWith("Instance:")), bj);
+            U("discover_refuses_generic_scene", bp.Any(p => p.StartsWith("Generic:")), bj);
+            U("discover_refuses_non_object_return", bp.Any(p => p.StartsWith("ReturnsString:")), bj);
+            U("discover_refuses_misdeclared_attribute_property_never_defaults", bp.Any(p => p.StartsWith("MisdeclaredTicks:") && p.Contains("Ticks")), bj);
+            U("discover_keeps_the_good_scenes_and_reports_eight_problems", bs.Select(s => s.name).SequenceEqual(new[] { "dup", "fine" }) && bp.Count == 8,
+                string.Join(",", bs.Select(s => s.name)) + " / " + bp.Count + ": " + bj);
+            var hp = new List<string>();
+            C.Discover(typeof(HiddenSuite), hp);
+            U("discover_refuses_a_non_public_suite", hp.Any(p => p.Contains("a suite must be a public type")), string.Join("; ", hp));
 
             // ---- selection and ticks
             var unk = new List<string>();
@@ -139,6 +179,12 @@ namespace JawaBench.BridgeTools
             var ge = C.ParseOutside("pawns 0,0,1,1 >= 2", out _)[0];
             var le = C.ParseOutside("pawns 0,0,1,1 <= 2", out _)[0];
             var eq = C.ParseOutside("pawns 0,0,1,1 == 2", out _)[0];
+            var inMap = C.ParseOutside("haulables -3,-5,7,2 >= 1", out _)[0];
+            var on = C.RectOnMap(inMap, 12, 12, 250, 250);
+            U("rect_on_map_whole", on != null && on[0] == 9 && on[1] == 7 && on[2] == 7 && on[3] == 2, on == null ? "null" : string.Join(",", on));
+            U("rect_partly_off_map_is_null_never_clipped", C.RectOnMap(inMap, 2, 12, 250, 250) == null && C.RectOnMap(inMap, 12, 3, 250, 250) == null
+                && C.RectOnMap(inMap, 248, 12, 250, 250) == null && C.RectOnMap(inMap, 246, 12, 250, 250) != null);
+            U("rect_wholly_off_map_is_null", C.RectOnMap(inMap, 400, 400, 250, 250) == null && C.RectOnMap(inMap, int.MaxValue, int.MaxValue, 250, 250) == null);
             U("outside_ops", C.Holds(ge, 2) && !C.Holds(ge, 1) && C.Holds(le, 2) && !C.Holds(le, 3) && C.Holds(eq, 2) && !C.Holds(eq, 3));
             var r1 = C.OutsideRow("s", oc[0], 3);
             var r0 = C.OutsideRow("s", oc[0], 0);
@@ -163,6 +209,9 @@ namespace JawaBench.BridgeTools
             U("stage_non_delegate_is_unmeasured", ri != null && ri.status == C.Unmeasured && ri.cause.Contains("Int32"));
             C.StageResult("x", (Func<int, object>)(k => null), out var rd);
             U("stage_delegate_with_arguments_is_not_a_judge", rd != null && rd.status == C.Unmeasured);
+            var closed = (Func<object>)Delegate.CreateDelegate(typeof(Func<object>), "bound", typeof(Program).GetMethod(nameof(Echo)));
+            var cj = C.StageResult("x", closed, out var rc);
+            U("stage_closed_static_delegate_is_a_judge", cj != null && rc == null && (string)cj.DynamicInvoke() == "PASS x bound", rc == null ? "" : rc.cause);
             var br = C.Normalize("beta", ((Delegate)beta.method.Invoke(null, new object[] { "beta", 0, 0 })).DynamicInvoke());
             U("judge_rows_keep_their_status", br.Count == 2 && br[0].check == "B1" && br[0].status == C.Pass && br[1].status == C.FailS && br[1].measured == "0", Show(br));
 
@@ -175,6 +224,12 @@ namespace JawaBench.BridgeTools
             U("verdict_error_is_unmeasured_with_cause", er[0].status == C.Unmeasured && er[0].cause.StartsWith("error:"), Show(er));
             var gb = C.Normalize("s", "STAGED s at 1,2");
             U("verdict_unreadable_is_unmeasured", gb[0].status == C.Unmeasured && gb[0].cause == "unreadable verdict line", Show(gb));
+            var bare = C.Normalize("s", "PASS");
+            U("verdict_bare_pass_word_is_unmeasured", bare[0].status == C.Unmeasured && bare[0].cause.Contains("names its scene"), Show(bare));
+            var shortRow = C.Normalize("s", new List<string[]> { new[] { "check", "PASS" } });
+            U("judge_pass_row_without_measured_expected_is_unmeasured", shortRow[0].status == C.Unmeasured && shortRow[0].cause.Contains("columns"), Show(shortRow));
+            var blank = C.Normalize("s", new List<string[]> { new[] { "X", "UNMEASURED", null, ">= 1", "  " } });
+            U("judge_unmeasured_blank_cause_gets_the_fallback", blank[0].status == C.Unmeasured && !string.IsNullOrWhiteSpace(blank[0].cause), Show(blank));
             var emptyRows = C.Normalize("s", new List<string[]>());
             U("judge_empty_rows_is_unmeasured_never_pass", emptyRows.Count == 1 && emptyRows[0].status == C.Unmeasured, Show(emptyRows));
             var badStatus = C.Normalize("s", new List<string[]> { new[] { "X", "OK", "1" } });

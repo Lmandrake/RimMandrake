@@ -56,10 +56,26 @@ class CountingCall(object):
 
 
 def unwrap(reply):
-    """The tool's own object out of a bridge reply ({"result": {...}} or the object itself); None when it is not a dict."""
-    if isinstance(reply, dict) and "rows" not in reply and "success" not in reply and isinstance(reply.get("result"), dict):
-        reply = reply["result"]
+    """The tool's own object out of a bridge reply: {"result": {...tool payload...}} (whatever transport fields, such as its
+    own "success", the envelope carries) or the payload itself; None when it is not a dict."""
+    if isinstance(reply, dict) and "rows" not in reply and isinstance(reply.get("result"), dict):
+        inner = reply["result"]
+        if "rows" in inner or "success" in inner or "message" in inner:
+            reply = inner
     return reply if isinstance(reply, dict) else None
+
+
+ROW_KEYS = ("scene", "check", "status")
+
+
+def valid_rows(rows):
+    """The rows when they are an explicit list of row objects (each a dict with scene, check and status), else None.
+    An explicit [] stays [] (EMPTY); a missing, null or malformed rows field is None (the run could not be read)."""
+    if not isinstance(rows, list):
+        return None
+    if not all(isinstance(r, dict) and all(k in r for k in ROW_KEYS) for r in rows):
+        return None
+    return rows
 
 
 def overall(rows):
@@ -92,8 +108,10 @@ def run(call, type_name, scenes="", ticks=0, frame_budget_ms=40.0, timeout_s=600
     rep = {"type": type_name, "scenes_asked": scenes, "rows": [], "split": {}, "snapshot": None}
     t0 = clock()
     reply = None
+    phase = "save"                                       # save -> run -> restore: which one an exception came from
     try:
         with snapshot(call, "scene_runner_pre_") as snap:
+            phase = "run"
             rep["snapshot"] = snap.name
             rep["split"]["save_s"] = round(clock() - t0, 2)
             t1 = clock()
@@ -104,15 +122,16 @@ def run(call, type_name, scenes="", ticks=0, frame_budget_ms=40.0, timeout_s=600
                 rep["error"] = "%s raised %s: %s" % (TOOL, type(ex).__name__, ex)
             rep["split"]["run_s"] = round(clock() - t1, 2)
             t2 = clock()
+            phase = "restore"
         rep["split"]["reload_s"] = round(clock() - t2, 2)
         rep["restore"] = dict(snap.evidence.get("restore_load") or {})
     except SceneRestoreError as ex:
         rep["restore_error"] = str(ex)
-    except Exception as ex:                              # noqa: BLE001 - the save itself failed: nothing ran
-        if reply is None and "error" not in rep:
+    except Exception as ex:                              # noqa: BLE001 - classified by the phase it came from
+        if phase == "save":
             rep["error"] = "the scene-begin save failed, nothing was staged: %s: %s" % (type(ex).__name__, ex)
         else:
-            rep["restore_error"] = "%s: %s" % (type(ex).__name__, ex)
+            rep["restore_error"] = "%s during %s: %s" % (type(ex).__name__, phase, ex)
     rep["split"]["total_s"] = round(clock() - t0, 2)
     rep["bridge_calls"] = dict(call.calls, total=call.total)
     r = unwrap(reply)
@@ -121,7 +140,12 @@ def run(call, type_name, scenes="", ticks=0, frame_budget_ms=40.0, timeout_s=600
         rep["suite_begin"] = r.get("suiteBegin")
         rep["game_overall"] = r.get("overall")
         if r.get("success") is True:
-            rep["rows"] = with_outside_guard(list(r.get("rows") or []))
+            rows = valid_rows(r.get("rows"))
+            if rows is None:
+                rep["error"] = "the run answered success with unreadable rows (%s): nothing can be judged" % (
+                    type(r.get("rows")).__name__ if not isinstance(r.get("rows"), list) else "a row that is not {scene, check, status, ...}")
+            else:
+                rep["rows"] = with_outside_guard(list(rows))
         else:
             msg = str(r.get("message") or r)
             rep["error"] = msg
@@ -141,7 +165,8 @@ def run(call, type_name, scenes="", ticks=0, frame_budget_ms=40.0, timeout_s=600
     return rep
 
 
-def render(rep, out=sys.stdout):
+def render(rep, out=None):
+    out = out or sys.stdout                              # read at call time: a redirected stdout is honoured
     p = lambda s="": print(s, file=out)
     if rep["outcome"] == "PROOF_BUILD":
         p(PROOF_BUILD_MSG % rep["type"])
@@ -180,15 +205,23 @@ def main(argv=None):
     ap.add_argument("--timeout-s", type=float, default=600.0)
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
-    from rimbridge_client import RimBridge, resolve_endpoint
-    host, port, token = resolve_endpoint()
-    with RimBridge(host=host, port=port, token=token, timeout=a.timeout_s + 120) as b:
-        call = CountingCall(lambda tool, kw: b.call(tool, kw, check=False))
-        rep = run(call, a.type, a.scenes, a.ticks, a.frame_budget_ms, a.timeout_s)
+    rep = None
+    try:
+        from rimbridge_client import RimBridge, resolve_endpoint
+        host, port, token = resolve_endpoint()
+        with RimBridge(host=host, port=port, token=token, timeout=a.timeout_s + 120) as b:
+            call = CountingCall(lambda tool, kw: b.call(tool, kw, check=False))
+            rep = run(call, a.type, a.scenes, a.ticks, a.frame_budget_ms, a.timeout_s)
+    except Exception as ex:                              # noqa: BLE001 - no bridge is "could not run" (exit 4), never a FAIL
+        if rep is None:
+            rep = {"type": a.type, "rows": [], "split": {}, "bridge_calls": {}, "outcome": "NO_RUN",
+                   "error": "could not reach the bridge: %s: %s" % (type(ex).__name__, ex)}
+        else:
+            rep["teardown_error"] = "%s: %s" % (type(ex).__name__, ex)
     out = a.out or os.path.join(os.environ.get("RM_SCRATCH", r"D:\ClaudeWork\rimmandrake"), "scene_runner",
                                 "run_%s.json" % datetime.datetime.now().strftime("%Y%m%dT%H%M%S"))
     try:
-        os.makedirs(os.path.dirname(out), exist_ok=True)
+        os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
         with open(out, "w", encoding="utf-8") as f:
             json.dump(rep, f, indent=1, default=str)
         rep["evidence"] = out

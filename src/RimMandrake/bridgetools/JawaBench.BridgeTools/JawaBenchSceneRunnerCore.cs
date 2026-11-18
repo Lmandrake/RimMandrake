@@ -20,8 +20,9 @@
 // THE ROW TABLE: every scene returns rows of (scene, check, status, measured, expected, source, cause). status is PASS,
 // FAIL or UNMEASURED and nothing else. UNMEASURED always names its cause: the question was not answered (a staging
 // refusal, a judge that threw, a short advance, a game that changed under the run). It is never a FAIL and never a PASS.
-// source is "scene" (the mod's own judge) or "outside" (a vanilla read the runner makes from outside the mod, the
-// guard against a judge that shares the mod's blind spots: assessment section 3 (c)).
+// source is "scene" (the mod's own judge), "outside" (a vanilla read the runner makes from outside the mod, the guard
+// against a judge that shares the mod's blind spots: assessment section 3 (c)), "runner" (the runner's own UNMEASURED rows:
+// a refusal, a throw, a changed game) or, added by scene_runner.py, "driver" (its SUITE_OUTSIDE_READ guard).
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -67,7 +68,8 @@ namespace JawaBench.BridgeTools
         {
             var specs = new List<Spec>();
             var seen = new HashSet<string>(StringComparer.Ordinal);
-            foreach (MethodInfo m in suite.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly)
+            if (!(suite.IsPublic || suite.IsNestedPublic)) problems.Add(suite.FullName + ": a suite must be a public type");
+            foreach (MethodInfo m in suite.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                          .OrderBy(x => x.MetadataToken))
             {
                 object[] attrs;
@@ -75,8 +77,8 @@ namespace JawaBench.BridgeTools
                 catch (Exception e) { problems.Add(m.Name + ": attributes unreadable: " + e.GetType().Name + ": " + e.Message); continue; }
                 if (attrs.Length == 0) continue;
                 ParameterInfo[] ps = m.GetParameters();
-                bool shape = m.IsPublic && ps.Length == 3 && ps[0].ParameterType == typeof(string)
-                             && ps[1].ParameterType == typeof(int) && ps[2].ParameterType == typeof(int) && m.ReturnType != typeof(void);
+                bool shape = m.IsPublic && m.IsStatic && !m.ContainsGenericParameters && ps.Length == 3 && ps[0].ParameterType == typeof(string)
+                             && ps[1].ParameterType == typeof(int) && ps[2].ParameterType == typeof(int) && m.ReturnType == typeof(object);
                 if (!shape)
                 {
                     problems.Add(m.Name + ": a scene must be public static object M(string scene, int x, int z)");
@@ -84,9 +86,19 @@ namespace JawaBench.BridgeTools
                 }
                 foreach (object a in attrs)
                 {
-                    string name = Prop<string>(a, "Name");
-                    int ticks = Prop<int>(a, "Ticks");
-                    string outside = Prop<string>(a, "Outside");
+                    string name, outside;
+                    int ticks;
+                    try
+                    {
+                        name = Prop<string>(a, "Name");
+                        ticks = Prop<int>(a, "Ticks");
+                        outside = Prop<string>(a, "Outside");
+                    }
+                    catch (Exception e)
+                    {
+                        problems.Add(m.Name + ": an RMTest attribute is unreadable: " + (e.InnerException ?? e).Message);
+                        continue;
+                    }
                     if (string.IsNullOrWhiteSpace(name)) { problems.Add(m.Name + ": an RMTest with no Name"); continue; }
                     if (!seen.Add(name)) { problems.Add(name + ": declared twice"); continue; }
                     if (ticks < 0 || ticks > MaxSceneTicks) { problems.Add(name + ": Ticks " + ticks + " outside 0.." + MaxSceneTicks); continue; }
@@ -101,10 +113,14 @@ namespace JawaBench.BridgeTools
             return specs;
         }
 
+        /// <summary>An attribute property of exactly type T; throws (Discover records it) when it is missing or of another
+        /// type, so a mod's misdeclared copy never silently becomes a default Ticks or no Outside check.</summary>
         private static T Prop<T>(object a, string name)
         {
             PropertyInfo p = a.GetType().GetProperty(name);
-            object v = p?.GetValue(a);
+            if (p == null || p.PropertyType != typeof(T))
+                throw new InvalidOperationException(a.GetType().FullName + "." + name + " is " + (p == null ? "missing" : p.PropertyType.Name) + ", not " + typeof(T).Name);
+            object v = p.GetValue(a);
             return v is T t ? t : default(T);
         }
 
@@ -187,6 +203,15 @@ namespace JawaBench.BridgeTools
             return o;
         }
 
+        /// <summary>The rect at origin + (dx, dz) when every cell of it is on a sizeX x sizeZ map; null otherwise (a read of
+        /// part of the rect, or of none, would be a different measurement: the row is UNMEASURED, never a count).</summary>
+        public static int[] RectOnMap(OutsideCheck c, int ox, int oz, int sizeX, int sizeZ)
+        {
+            long x0 = (long)ox + c.dx, z0 = (long)oz + c.dz, x1 = x0 + c.w - 1, z1 = z0 + c.h - 1;
+            if (x0 < 0 || z0 < 0 || x1 >= sizeX || z1 >= sizeZ) return null;
+            return new[] { (int)x0, (int)z0, c.w, c.h };
+        }
+
         public static bool Holds(OutsideCheck c, int count) =>
             c.op == ">=" ? count >= c.n : c.op == "<=" ? count <= c.n : count == c.n;
 
@@ -203,7 +228,7 @@ namespace JawaBench.BridgeTools
         public static Delegate StageResult(string scene, object staged, out Row refusal)
         {
             refusal = null;
-            if (staged is Delegate d && d.Method.GetParameters().Length == 0) return d;
+            if (staged is Delegate d && d.GetType().GetMethod("Invoke")?.GetParameters().Length == 0) return d;
             string text = staged as string;
             refusal = Unmeasured_(scene, "STAGE", text != null ? "staging refused: " + Clip(text) :
                 staged == null ? "the scene returned nothing (no judge)" : "the scene returned a " + staged.GetType().Name + ", not a judge");
@@ -221,7 +246,9 @@ namespace JawaBench.BridgeTools
                 string[] head = t.Split(new[] { ' ' }, 3);
                 string word = head.Length > 0 ? head[0] : "";
                 string detail = head.Length > 2 ? head[2] : (head.Length > 1 ? head[1] : "");
-                if (word == Pass || word == FailS) o.Add(R(scene, "VERDICT", word, Clip(detail), Pass, "scene"));
+                if ((word == Pass || word == FailS) && head.Length < 2)
+                    o.Add(R(scene, "VERDICT", Unmeasured, Clip(t), Pass, "scene", "a verdict line names its scene: '" + word + " <name> <detail>'"));
+                else if (word == Pass || word == FailS) o.Add(R(scene, "VERDICT", word, Clip(detail), Pass, "scene"));
                 else if (word == "INVALID" || word == "ERROR")
                     o.Add(R(scene, "VERDICT", Unmeasured, Clip(detail), Pass, "scene", word.ToLowerInvariant() + ": " + Clip(t)));
                 else o.Add(R(scene, "VERDICT", Unmeasured, Clip(t), Pass, "scene", "unreadable verdict line"));
@@ -237,8 +264,10 @@ namespace JawaBench.BridgeTools
                         continue;
                     }
                     string st = a[1] == Pass || a[1] == FailS || a[1] == Unmeasured ? a[1] : null;
-                    o.Add(R(scene, a[0], st ?? Unmeasured, a.Length > 2 ? Clip(a[2]) : null, a.Length > 3 ? a[3] : null, "scene",
-                        st == null ? "status '" + a[1] + "' is not PASS, FAIL or UNMEASURED" : (st == Unmeasured ? (a.Length > 4 ? a[4] : "the scene could not measure it") : null)));
+                    string cause = st == null ? "status '" + a[1] + "' is not PASS, FAIL or UNMEASURED"
+                        : st != Unmeasured && a.Length < 4 ? "a " + st + " row needs {check, status, measured, expected}; this one has " + a.Length + " columns"
+                        : st == Unmeasured ? (a.Length > 4 && !string.IsNullOrWhiteSpace(a[4]) ? a[4] : "the scene could not measure it") : null;
+                    o.Add(R(scene, a[0], cause != null ? Unmeasured : st, a.Length > 2 ? Clip(a[2]) : null, a.Length > 3 ? a[3] : null, "scene", cause));
                 }
                 if (o.Count == 0) o.Add(R(scene, "ROWS", Unmeasured, null, null, "scene", "the judge returned no rows (empty is not a verdict)"));
                 return o;
@@ -248,8 +277,8 @@ namespace JawaBench.BridgeTools
             return o;
         }
 
-        /// <summary>A short advance is not a verdict: when stepped &lt; wanted every scene row becomes UNMEASURED (its
-        /// status and detail kept in the cause), outside rows included.</summary>
+        /// <summary>A short advance is not a verdict: when stepped &lt; wanted every row becomes UNMEASURED, outside rows
+        /// included; the status it would have had is kept in the cause and its measured value stays in measured.</summary>
         public static List<Row> ShortAdvance(List<Row> rows, int stepped, int wanted, string why)
         {
             if (stepped >= wanted) return rows;
