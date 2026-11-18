@@ -142,6 +142,62 @@ if callable(cl):
     line = str(cl({"looks": 1, "refusals": 0, "overturned": 0, "new_on_unchanged": 0, "not_owner_said": 0,
                    "owner_said_unmeasured": 2, "uncounted_looks": 0}))
     expect("close_line names an unanswered owner_said as UNMEASURED", "UNMEASURED" in line, line)
+# The fifth count (owner, 2026-11-17 ~6:50 PM PST, note on this ticket; RIMMANDRAKE_COUNT_REPAIR_PASSAGE_BLOCKS_FIFTH_
+# MISSED_AT_CLOSE): second-look blocks raised on a repaired passage, per mod, each listed with the changed passage it quotes and
+# the promise it says is not kept. A block is a gap in `gaps` (blocking), tagged late, carrying `repair_passage`; an
+# advisory one, a late one quoting no repair, or one carried from an earlier round is not.
+rec3 = {"judge": "j4", "at": "2026-11-17T00:00:00Z", "verdict": "not_covered", "tree": "t", "tokens": 1,
+        "gaps": [g(gid="g7", new_since="late", miss_of="j3", late_confirmed=True, promise="walls stand in a storm",
+                   repair_passage={"entry": "scene:sc_wall", "passage": "the wall holds under wind 3"}),
+                 g(gid="g8", new_since="late", miss_of="j3", late_confirmed=True),
+                 g(gid="g9", new_since="late", carried=True, promise="p",
+                   repair_passage={"entry": "scene:sc_old", "passage": "an old repair"}),
+                 g(gid="g10")],
+        "advisory_gaps": [g(gid="g11", new_since="late", miss_of="j3", late_confirmed=False, promise="q",
+                            repair_passage={"entry": "sheet:Wind", "passage": "wind bends"})]}
+with tempfile.TemporaryDirectory() as root:
+    d = os.path.join(root, "Z")
+    os.makedirs(d)
+    DS.write_json(os.path.join(d, "stage.json"), {"stage": 5, "status": "open", "item": "Z_ITEM"})
+    try:
+        row3 = CJ.record_round(d, rec3)["coverage_rounds"][-1]
+    except Exception as e:   # noqa: BLE001
+        row3 = {"crash": repr(e)}
+rb = row3.get("repair_blocks")
+expect("record_round: repair_blocks lists the one blocking late gap quoting a repaired passage",
+       isinstance(rb, list) and len(rb) == 1 and rb[0].get("gid") == "g7", rb)
+expect("record_round: a repair block keeps the passage it quotes and the promise",
+       isinstance(rb, list) and rb and rb[0].get("passage") == "the wall holds under wind 3"
+       and rb[0].get("entry") == "scene:sc_wall" and rb[0].get("promise") == "walls stand in a storm", rb)
+rec4 = dict(rec3, judge="j5", gaps=[g(gid="g1")], advisory_gaps=[])
+with tempfile.TemporaryDirectory() as root:
+    d = os.path.join(root, "W")
+    os.makedirs(d)
+    DS.write_json(os.path.join(d, "stage.json"), {"stage": 5, "status": "open", "item": "W_ITEM"})
+    try:
+        row4 = CJ.record_round(d, rec4)["coverage_rounds"][-1]
+    except Exception as e:   # noqa: BLE001
+        row4 = {"crash": repr(e)}
+expect("record_round: a round with no repair block records [] (looked, none), not a missing key",
+       row4.get("repair_blocks") == [], row4.get("repair_blocks"))
+if callable(cc):
+    blk = {"gid": "g7", "entry": "scene:sc_wall", "passage": "the wall holds under wind 3",
+           "promise": "walls stand in a storm"}
+    st5 = stage({"verdict": "not_covered", "overturned": 0, "new_on_unchanged": 0, "not_owner_said": 0},
+                {"verdict": "not_covered", "overturned": 0, "new_on_unchanged": 0, "not_owner_said": 0,
+                 "repair_blocks": [blk]},
+                {"verdict": "covered", "overturned": 0, "new_on_unchanged": 0, "not_owner_said": 0,
+                 "repair_blocks": []})
+    got = cc(st5)
+    expect("close_counts: repair_blocks sums the recorded blocks", got.get("repair_blocks") == 1, got)
+    expect("close_counts: a look recorded before the fifth count began is UNMEASURED for it, not 0",
+           got.get("repair_blocks_unmeasured") == 1, got)
+    if callable(cl):
+        line = str(cl(got))
+        for word in ("second-look blocks on a repaired passage 1", "the wall holds under wind 3",
+                     "walls stand in a storm", "scene:sc_wall"):
+            expect("close_line names %r" % word, word in line, line)
+        expect("close_line names the fifth count's unmeasured looks", "UNMEASURED" in line, line)
 for w in wrong:
     print("WRONG", w)
 print("cases read %d; wrong %d (worst); limit 0" % (n, len(wrong)))

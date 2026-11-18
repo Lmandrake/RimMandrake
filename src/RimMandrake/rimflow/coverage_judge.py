@@ -1279,14 +1279,16 @@ def record_round(d, rec):
         "ids": sorted({i for g in gaps for i in g.get("ids") or []}),
         "tags": {t: sum(1 for g in gaps if g.get("new_since") == t) for t in TAGS if any(
             g.get("new_since") == t for g in gaps)},
-        "late": rec.get("late") or [], "error": rec.get("error"), **round_counts(rec)})
+        "late": rec.get("late") or [], "error": rec.get("error"), **round_counts(rec),
+        "repair_blocks": repair_blocks(rec)})
     DS.write_json(DS.state_path(d), st)
     return st
 
 
 # The four counts printed when a mod's coverage closes (owner by card 2026-11-17, 6_proposed_ruling_plain.md "How it is
-# built" step 5; RIMMANDRAKE_PRINT_JUDGE_COUNTS_WHEN_COVERAGE_CLOSES). The fifth, flaws found in play that the judge
-# passed, is counted after the played session, not here; his own overturns are outside the program's reach.
+# built" step 5; RIMMANDRAKE_PRINT_JUDGE_COUNTS_WHEN_COVERAGE_CLOSES), plus the count he added on that ticket, second-look
+# blocks on a repaired passage (repair_blocks). Flaws found in play that the judge passed are counted after the played
+# session, not here; his own overturns are outside the program's reach.
 def round_counts(rec):
     """-> {new_on_unchanged, overturned, not_owner_said} for one round. new_on_unchanged: late gaps (blocking or
     advisory) that quote no changed passage, plus the dropped ones; overturned: gaps a second reader did not confirm, or
@@ -1308,6 +1310,20 @@ def round_counts(rec):
             "owner_said_unmeasured": sum(1 for g in mine if not isinstance(g.get("owner_said"), bool))}
 
 
+def repair_blocks(rec):
+    """The fifth count (owner, 2026-11-17 ~6:50 PM PST: "hopefully the judge doesn't just start polishing anything we
+    repair"; RIMMANDRAKE_COUNT_REPAIR_PASSAGE_BLOCKS_FIFTH_MISSED_AT_CLOSE): this round's blocking late gaps that quote a
+    passage a repair changed, each with that passage and the promise it says is not kept. [] = looked, none; a gap
+    carried from an earlier round was that round's block."""
+    out = []
+    for g in rec.get("gaps") or []:
+        rp = g.get("repair_passage") if isinstance(g, dict) else None
+        if isinstance(rp, dict) and g.get("new_since") == "late" and not g.get("carried"):
+            out.append({"gid": g.get("gid") or g.get("id") or ",".join(str(i) for i in g.get("ids") or []),
+                        "entry": rp.get("entry"), "passage": rp.get("passage"), "promise": g.get("promise")})
+    return out
+
+
 def close_counts(st, d=None):
     """-> the four counts over a concept's coverage rounds: looks (covered or not_covered: a malformed round is not a
     look), refusals (not_covered), and the per-round counts summed (a round without one counts 0)."""
@@ -1323,6 +1339,11 @@ def close_counts(st, d=None):
     # a look recorded before the counts existed (2026-11-18), or with a count missing, could not be counted: named,
     # never read as a measured 0
     out["uncounted_looks"] = len(looks) - len(counted)
+    # the fifth count: a look recorded before repair_blocks existed (2026-11-18) is UNMEASURED for it, never a 0
+    out["repair_block_list"] = [dict(b, judge=r.get("judge")) for r in looks if isinstance(r.get("repair_blocks"), list)
+                                for b in r["repair_blocks"] if isinstance(b, dict)]
+    out["repair_blocks"] = len(out["repair_block_list"])
+    out["repair_blocks_unmeasured"] = sum(1 for r in looks if not isinstance(r.get("repair_blocks"), list))
     return out
 
 
@@ -1340,7 +1361,18 @@ def close_line(counts):
         "; %d refusal record(s) gave no `owner_said`: UNMEASURED" % c["owner_said_unmeasured"]
         if c["owner_said_unmeasured"] else "",
         "; %d look(s) recorded before counting began: their three counts UNMEASURED, the figures above leave them out"
-        % c["uncounted_looks"] if c.get("uncounted_looks") else ""))
+        % c["uncounted_looks"] if c.get("uncounted_looks") else "",
+        "; second-look blocks on a repaired passage %d" % c.get("repair_blocks", 0) if "repair_blocks" in c else "",
+        "".join(" [%s %s: quotes %s \"%s\"; promise \"%s\"]" % (
+            b.get("judge") or "?", b.get("gid") or "?", b.get("entry") or "?", _clip(b.get("passage")),
+            _clip(b.get("promise"))) for b in c.get("repair_block_list") or []),
+        " (%d look(s) recorded before this count began: UNMEASURED for it)" % c["repair_blocks_unmeasured"]
+        if c.get("repair_blocks_unmeasured") else ""))
+
+
+def _clip(s, n=160):
+    s = " ".join(str(s or "").split())
+    return s if len(s) <= n else s[:n] + "..."
 
 
 def earlier_gaps(st, d):
