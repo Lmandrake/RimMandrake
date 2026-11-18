@@ -1534,7 +1534,7 @@ def pipeline_svg(p):
     if ac:
         low = ac["green"] * 2 < ac["total"]
         gauge(600, "MODS ACCEPTED, GOAL IS ALL", "%d of %d" % (ac["green"], ac["total"]), WARN if low else TEXT,
-              "%s, normal over half; GREEN at today's code; %d at older code, %d red, %d draft, %d never run" % ("low" if low else "ok", ac["stale"], ac["red"], ac["draft"], ac["never"]), WARN if low else DIM, yy=yy)
+              "%s, normal over half; GREEN at today's code; %d at older code, %d red, %s%d draft, %d never run" % ("low" if low else "ok", ac["stale"], ac["red"], "" if ac.get("unmeasured") is None else "%d unmeasured, " % ac["unmeasured"], ac["draft"], ac["never"]), WARN if low else DIM, yy=yy)
     else:
         gauge(600, "MODS ACCEPTED, GOAL IS ALL", "UNMEASURED", WARN, yy=yy)
     # ---- the belt
@@ -2707,7 +2707,7 @@ def mods_status_counts(text):
     """`modcheck status` lines -> counts by state. Its first word after the name is the state (a word stored in the file goes stale)."""
     c = collections.Counter()
     for line in text.splitlines():
-        m = re.match(r"\S+\s+(GREEN|STALE|RED|DRAFT-CHECKLIST|NEVER)\b", line)
+        m = re.match(r"\S+\s+(GREEN|STALE|RED|UNMEASURED|DRAFT-CHECKLIST|NEVER)\b", line)
         if m:
             c[m.group(1)] += 1
     if not c:
@@ -2734,7 +2734,7 @@ def refresh_fleet(env, save=True):
         c, why_m = guarded(mods_status_counts, raw)
         if c is not None:
             total = out.get("total_mods") or sum(c.values())
-            out["accepted"] = {"green": c["GREEN"], "stale": c["STALE"], "red": c["RED"], "draft": c["DRAFT-CHECKLIST"], "never": max(total - sum(c.values()) + c["NEVER"], 0), "total": total}
+            out["accepted"] = {"green": c["GREEN"], "stale": c["STALE"], "red": c["RED"], "draft": c["DRAFT-CHECKLIST"], "unmeasured": c["UNMEASURED"], "never": max(total - sum(c.values()) + c["NEVER"], 0), "total": total}
     out["accepted_why"] = why_m
     if save:
         env.write_atomic(FLEET_CACHE, json.dumps(out, ensure_ascii=False))

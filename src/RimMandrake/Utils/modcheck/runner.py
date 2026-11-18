@@ -1560,10 +1560,14 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort", tar
                 print("[modcheck] %s: targeted run, status entry untouched; sheet %s" % (mod_folder, sheet_path),
                       file=sys.stderr)
             else:
-                # a chain the known-good gate skipped was not measured: such a run never writes a GREEN entry
+                # a chain the known-good gate skipped was not measured: such a run never writes a GREEN entry; with
+                # no measured failure it reads UNMEASURED naming the chains, as a suite that measured nothing does
+                # (status.unmeasured_cause; RIMMANDRAKE_SPLIT_RED_FROM_UNMEASURED_STATUS_ENTRY_LIES)
+                import status as _ST  # noqa: E402
                 record_run(mod_folder, mod_dir,
                           "%s@%d" % (mod_folder, int(time.time())),
-                          summary["all_green"] and not (summary.get("gate") or {}).get("skipped"), walk=walk)
+                          summary["all_green"] and not (summary.get("gate") or {}).get("skipped"), walk=walk,
+                          unmeasured=_ST.unmeasured_cause(summary))
             if verify_err is not None:
                 raise verify_err
     finally:

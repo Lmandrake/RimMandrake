@@ -587,7 +587,7 @@ with tempfile.TemporaryDirectory() as d:
     good_f.clock = NOW + 2 * R.PROBE_EVERY + 300
     R.refresh_fleet(good_f)
     saved = json.load(open(R.FLEET_CACHE))
-    check("a fleet refresh caches the sections and the mods accepted", saved["accepted"] == {"green": 1, "stale": 0, "red": 1, "draft": 0, "never": 3, "total": 5} and saved["why"] is None)
+    check("a fleet refresh caches the sections and the mods accepted", saved["accepted"] == {"green": 1, "stale": 0, "red": 1, "draft": 0, "unmeasured": 0, "never": 3, "total": 5} and saved["why"] is None)
     down = Fake(ps=PS)
     down.clock = good_f.clock + 400
     R.refresh_fleet(down)

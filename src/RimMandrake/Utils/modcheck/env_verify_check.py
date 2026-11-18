@@ -50,6 +50,9 @@ def main(argv):
     if since is None or (entry.get("ts") or 0) <= since:
         print("UNMEASURED %s: entry (ts %s) does not postdate modcheck_env.py's commit (%s)" % (mod, entry.get("ts"), since))
         return UNMEASURED
+    if entry.get("status") == "UNMEASURED":     # the run happened but measured nothing it could vouch for
+        print("UNMEASURED %s: run %s recorded UNMEASURED (%s)" % (mod, entry.get("run_id"), entry.get("unmeasured")))
+        return UNMEASURED
     if entry.get("status") not in REAL:
         print("FAIL %s: run %s recorded %s (%s)" % (mod, entry.get("run_id"), entry.get("status"), entry.get("refused")))
         return FAIL

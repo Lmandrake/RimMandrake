@@ -412,7 +412,24 @@ def _checklist_state(walk):
     return ns["present"], ns["state"]
 
 
-def verdict_for(all_green, walk, refused="", reviewed=False):
+def unmeasured_cause(summary):
+    """-> why a run that measured no failure still could not measure the suite, or "" (a measured run: its answer is
+    GREEN or RED as before). RIMMANDRAKE_SPLIT_RED_FROM_UNMEASURED_STATUS_ENTRY_LIES: two of the three reasons the
+    runner handed verdict_for a false all_green were "could not look", not a defect:
+      - the suite recorded no component that ran (all() of nothing is True, so it was never green; nor is it a FAIL);
+      - the known-good gate skipped chains while everything that did run passed.
+    A run with any measured failure (a component, the judge half, a situational veto) returns "": it stays RED."""
+    comps = [c for ch in (summary or {}).get("chains") or [] for c in ch.get("components") or []
+             if c.get("execution") != "not_run"]
+    if not comps:
+        return "no component recorded: the suite measured nothing"
+    skipped = [str(x) for x in ((summary.get("gate") or {}).get("skipped") or [])]
+    if skipped and summary.get("all_green"):
+        return "known-good gate skipped chain(s) %s: not measured this run" % ", ".join(skipped)
+    return ""
+
+
+def verdict_for(all_green, walk, refused="", reviewed=False, unmeasured=""):
     """The GREEN definition of north_star_validation_spec.md §5, in one place.
 
     GREEN requires all five: state assertions pass, every validated must-show
@@ -420,6 +437,8 @@ def verdict_for(all_green, walk, refused="", reviewed=False):
     has reviewed the sheet once. The last three are what this function adds.
 
       REFUSED              the visual floor or an orphaned `shows=` (never ran)
+      UNMEASURED           nothing failed, but the run could not measure the suite: `unmeasured` names why
+                           (unmeasured_cause: no component recorded, or a gate-skipped chain). Never GREEN.
       RED                  something failed -- state or judge
       DRAFT-CHECKLIST      both halves passed against a bar that is not his yet
       PENDING-OWNER-REVIEW both halves passed; his own eyes not yet on a sheet
@@ -431,6 +450,8 @@ def verdict_for(all_green, walk, refused="", reviewed=False):
     """
     if refused:
         return "REFUSED"
+    if unmeasured:
+        return "UNMEASURED"
     if not all_green:
         return "RED"
     present, state = _checklist_state(walk)
@@ -441,7 +462,7 @@ def verdict_for(all_green, walk, refused="", reviewed=False):
     return "GREEN"
 
 
-def record_run(mod, mod_dir, run_id, all_green, walk=None, refused="", extra=None):
+def record_run(mod, mod_dir, run_id, all_green, walk=None, refused="", extra=None, unmeasured=""):
     """Called once per `modcheck run <mod>`. Never hand-called mid-run --
     the runner calls this exactly once, after every chain has finished.
 
@@ -451,7 +472,10 @@ def record_run(mod, mod_dir, run_id, all_green, walk=None, refused="", extra=Non
 
     `extra` (optional) is merged into the entry -- `modcheck record` stores the
     run's per-row tally and its environment fingerprint there (`components`,
-    `source`). It can never override the verdict fields above."""
+    `source`). It can never override the verdict fields above.
+
+    `unmeasured` is unmeasured_cause(summary) from the runner: non-empty, the entry reads UNMEASURED and keeps the
+    cause in its `unmeasured` field (None on a measured run), so a reader never has to guess which RED it was."""
     with _locked():
         data = load()
         prior = data.get(mod) or {}
@@ -459,7 +483,8 @@ def record_run(mod, mod_dir, run_id, all_green, walk=None, refused="", extra=Non
         data[mod] = {
             "hash": mod_hash(mod_dir),
             "run_id": run_id,
-            "status": verdict_for(all_green, walk, refused, bool(review)),
+            "status": verdict_for(all_green, walk, refused, bool(review), unmeasured),
+            "unmeasured": (unmeasured or None) if not refused else None,
             "ts": time.time(),
             "minor": None,
             # His review survives a re-run: it is required only for a mod's
@@ -471,7 +496,7 @@ def record_run(mod, mod_dir, run_id, all_green, walk=None, refused="", extra=Non
             if k not in data[mod]:
                 data[mod][k] = v
         save(data)
-    _record_evidence(mod, mod_dir, data[mod], all_green, refused)
+    _record_evidence(mod, mod_dir, data[mod], all_green, refused or (data[mod]["unmeasured"] or ""))
     return data[mod]
 
 
@@ -652,6 +677,9 @@ def check(mod, mod_dir):
         # the stored reason, not the generic visual-floor text: a `modcheck record`
         # refusal names its UNBUILT/UNCOVERED bars, which the generic line would hide
         return "REFUSED (%s)" % entry["refused"]
+    if recorded == "UNMEASURED":
+        # a run that failed nothing but could not measure the suite (unmeasured_cause): its cause, never a bare word
+        return "UNMEASURED (last run measured no failure but not the suite: %s)" % (entry.get("unmeasured") or "cause not recorded")
     s4 = step4_live(entry, mod_dir)
     if recorded == "RED" and s4 in ("FAIL", "UNMEASURED") and entry.get("step4"):
         return "RED (last run failed; step 4 %s: %s)" % (s4, _step4_why(entry))
