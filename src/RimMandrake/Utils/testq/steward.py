@@ -476,10 +476,11 @@ def launch_wake(clone, brief_path, log_path, budget, max_s):
         (" --model " + shlex.quote(os.environ["TESTQ_WAKE_MODEL"])) if os.environ.get("TESTQ_WAKE_MODEL") else "",
         shlex.quote(log_path), shlex.quote(exit_path(log_path)))
     try:
-        r = subprocess.run(["systemd-run", "--user", "--unit", WAKE_UNIT, "--collect", "-p", "RuntimeMaxSec=%d" % max_s,
-                            "-p", "WorkingDirectory=%s" % clone, "--setenv=RIMFLOW_SEAT=BENCH",
-                            "--setenv=PATH=%s" % os.environ.get("PATH", ""), "/bin/bash", "-c", cmd],
-                           capture_output=True, text=True, timeout=60)
+        import control as C     # the one admission point (control.py)
+        r = C.launch_unit(["systemd-run", "--user", "--unit", WAKE_UNIT, "--collect", "-p", "RuntimeMaxSec=%d" % max_s,
+                           "-p", "WorkingDirectory=%s" % clone, "--setenv=RIMFLOW_SEAT=BENCH",
+                           "--setenv=PATH=%s" % os.environ.get("PATH", ""), "/bin/bash", "-c", cmd],
+                          {"family": "testq", "unit": WAKE_UNIT}, capture_output=True, text=True, timeout=60)
     except (OSError, subprocess.SubprocessError) as e:
         return False, "systemd-run failed: %s" % e
     return r.returncode == 0, (r.stdout + r.stderr).strip()[-200:]

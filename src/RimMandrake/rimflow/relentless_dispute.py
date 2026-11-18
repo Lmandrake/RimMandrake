@@ -204,7 +204,9 @@ def kick(store, item, job, cfg=None, runner=subprocess.run):
             "--setenv", "RELENTLESS_ROOT=" + store.root, "--setenv", "PATH=" + os.environ.get("PATH", "/usr/bin:/bin"),
             "--setenv", "PYTHONDONTWRITEBYTECODE=1", "--", sys.executable, tool, "work", item, job]
     try:
-        r = runner(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+        import control as C     # Relentless is retired: its family is OFF in the control store
+        r = C.launch_unit(argv, {"family": "relentless", "item": item}, runner=runner, capture_output=True, text=True,
+                          timeout=60, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         return "%s: %s" % (type(e).__name__, e)
     return ("systemd-run exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")))) if r.returncode else None

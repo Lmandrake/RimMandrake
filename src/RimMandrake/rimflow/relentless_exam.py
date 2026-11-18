@@ -188,8 +188,10 @@ def kick(store, item, cfg=None, runner=subprocess.run):
             "-p", "RuntimeMaxSec=%d" % max_s, "--working-directory", os.path.dirname(tool),
             "--setenv", "RELENTLESS_ROOT=" + store.root, "--setenv", "PATH=" + os.environ.get("PATH", "/usr/bin:/bin"),
             "--", sys.executable, tool, "run", item]
+    import control as C     # Relentless is retired: its family is OFF in the control store
     try:
-        r = runner(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+        r = C.launch_unit(argv, {"family": "relentless", "item": item}, runner=runner, capture_output=True, text=True,
+                          timeout=60, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         return "%s: %s" % (type(e).__name__, e)
     return ("systemd-run exit %d: %s" % (r.returncode, ((r.stdout or "") + (r.stderr or "")))) if r.returncode else None
@@ -719,7 +721,9 @@ def box_runner(rules, source, sha, files_dir, item=None, nonce=None, runner=subp
                 + sum((["--setenv", "%s=%s" % kv] for kv in dict(relentless_wall.unit_env(prof, rbox), **RUN_ENV).items()), []) \
                 + ["--"] + list(argv)
             try:
-                q = runner(unit, capture_output=True, text=True, timeout=timeout + 60, stdin=subprocess.DEVNULL)
+                import control as C     # Relentless is retired: its family is OFF in the control store
+                q = C.launch_unit(unit, {"family": "relentless"}, runner=runner, capture_output=True, text=True,
+                                  timeout=timeout + 60, stdin=subprocess.DEVNULL)
                 return q.returncode, _cap((q.stdout or "") + (q.stderr or "")), False
             except subprocess.TimeoutExpired as e:
                 return None, str(e), True

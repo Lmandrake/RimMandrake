@@ -351,12 +351,10 @@ def test_journal_replay_and_damage(root):
     except PC.Unreadable as e:
         check("line" in str(e), "an unreadable journal raises Unreadable naming the line", str(e))
     import mod_owner_hold as OH
-    try:
-        OH.load()
-        check(False, "an unreadable store makes the owner-hold reader raise (nothing launches)")
-    except OH.Unreadable as e:
-        check("control store" in str(e), "an unreadable store makes the owner-hold reader raise: every hold reader "
-              "launches nothing", str(e))
+    # the switches moved to control.py's SQLite store (its unreadable case: selftest_control.t_unreadable); this
+    # journal now holds counts, limits and the queue only, so a torn journal stops their readers, not the hold reader
+    OH.load()
+    check(True, "a torn counts journal leaves the owner-hold reader on control.py's store")
     rc, out, _ = run("show")
     check(rc == 3 and "launches NOTHING" in out[0], "pipe itself says the store is unreadable, exit 3", out)
 

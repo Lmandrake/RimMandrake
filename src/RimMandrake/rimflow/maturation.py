@@ -1793,6 +1793,8 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
         fh.write(text)
     argv = [sys.executable, detached_helper_path(), "launch", "--seat", seat, "--item", item, "--brief-file", path,
             "--model", model, "--budget-usd", "%g" % budget_usd] + (["--resume", session] if session else [])
+    env = dict(env or {}, RM_CONTROL_MOD=os.path.basename(os.path.normpath(mod)),
+               **({"RM_CONTROL_STAGE": f["stage"]} if f.get("stage") else {}))     # admission's scopes (control.py)
     for k, v in sorted((env or {}).items()):
         argv += ["--env", "%s=%s" % (k, v)]
     r = runner(argv, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)

@@ -1515,8 +1515,9 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
         led = MD.ledger_open(root, mod, row["aut"], brief, stage=row.get("stage"), now=now)
         brief = led["brief"]
     if ok:
-        rc, text2, unit = do_launch(item, brief, model, row["cap"], cfg.get("seat", "BENCH"),
-                                    **({"env": led["env"]} if led else {}))
+        cenv = dict(led["env"] if led else {}, RM_CONTROL_MOD=mod, **({"RM_CONTROL_STAGE": row["stage"]}
+                                                                     if row.get("stage") else {}))
+        rc, text2, unit = do_launch(item, brief, model, row["cap"], cfg.get("seat", "BENCH"), env=cenv)
         ok = rc == 0 and bool(unit)
         text = "%s; %s" % (text, (text2 or "").splitlines()[0] if text2 else rc)
     if led:

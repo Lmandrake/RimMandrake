@@ -1170,8 +1170,10 @@ def cert_rerun_unit(mod, key, runner=subprocess.run, now=None):
             "-p", "StandardOutput=append:" + log, "-p", "StandardError=append:" + log, "--working-directory", REPO,
             "--setenv", "PATH=" + os.environ.get("PATH", "/usr/bin:/bin"), "--setenv", "RM_MATURATION_DISPATCH_DIR=" + sdir(),
             "--", sys.executable, os.path.abspath(__file__), "cert-rerun", mod, "--key", key, "--unit", unit]
+    import control as C     # the one admission point (control.py)
     try:
-        r = runner(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+        r = C.launch_unit(argv, {"family": "cert_rerun", "unit": unit, "mod": mod}, runner=runner, capture_output=True,
+                          text=True, timeout=60, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         return 1, "systemd-run failed: %s: %s" % (type(e).__name__, e), None
     if r.returncode:

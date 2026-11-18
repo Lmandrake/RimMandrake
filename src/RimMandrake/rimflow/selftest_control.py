@@ -440,7 +440,7 @@ def t_owner_import():
     try:
         got = OH.load()
         check(set(got) >= {"Graffiti", "Cauldron"}, "mod_owner_hold.load reads his holds (file and store)", got)
-        C.lift_owner("Graffiti", "go on Graffiti", date="2026-11-18")
+        C.lift_owner("Graffiti", "go on Graffiti", date="2026-11-18", held_said="stop Graffiti now")
         got = OH.load()
         check("Graffiti" not in got and "Cauldron" in got, "a store lift binds at once though the file still holds "
                                                            "the row (the mirror waits for its publish)", list(got))

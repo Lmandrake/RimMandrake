@@ -3193,6 +3193,7 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
+        + ["--settings", _control_settings()] \
         + list(role.get("launch_args") or []) + ["--output-format", "json", "--dangerously-skip-permissions"] \
         + (["--resume", role["resume_session"]] if role.get("resume_session")      # continues that session (resume_due)
            else ["--session-id", session] if session else [])     # its transcript, found when no result is
@@ -3280,6 +3281,12 @@ def stoppost_handoff(name, words):
     return "-" + " ".join(shlex.quote(w) for w in argv)
 
 
+def _control_settings():
+    """The run's PostToolUse hook: the stop channel of `pipe stop --write-now | --at-easy-spot` (control.py)."""
+    import control as C
+    return C.claude_settings()
+
+
 def tmp_setenv(tmpdir):
     """The run's own TMPDIR/TMP/TEMP (run_tmp.py): its launcher owns that dir and deletes it when the run is over."""
     return sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(tmpdir).items()), []) if tmpdir else []
@@ -3300,9 +3307,15 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
     session = role.get("resume_session") or str(uuid.uuid4())     # claude -p --resume keeps the session id
     # a real launch owns a TMPDIR (run_tmp.py; TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP); a test's fake runner makes no dir
     tmpdir = run_tmp.prepare(unit) if runner is subprocess.run else None
-    r = runner(launch_argv(role, unit, msg, out, err, claude, session, tmpdir), capture_output=True, text=True, timeout=60,
-               stdin=subprocess.DEVNULL)
+    import control as C     # the one admission point (control.py)
+    mod = role.get("mod") or (os.path.basename(os.path.normpath(role["concept"])) if role.get("concept") else None)
+    r = C.launch_unit(launch_argv(role, unit, msg, out, err, claude, session, tmpdir),
+                      {"family": "role", "unit": unit, "role": role.get("name"), "mod": mod, "model": role.get("model"),
+                       "extra_units": [role_scope(role["seat"], unit)]},
+                      runner=runner, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     text = ((r.stdout or "") + (r.stderr or "")).strip()
+    if getattr(r, "refused", False):
+        return False, "REFUSED by control: %s" % r.why, {}
     if r.returncode:
         return False, "systemd-run exit %d: %s" % (r.returncode, text), {}
     scope = role_scope(role["seat"], unit)

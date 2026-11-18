@@ -299,7 +299,17 @@ def run_in_box(cmd, sha, source, store_root, rules, timeout_s, nonce=None, base=
                 + sum((["--setenv", "%s=%s" % kv] for kv in relentless_wall.unit_env(prof, box).items()), [])
                 + ["--", "/bin/bash", script])
         setup = round(time.time() - t0, 1)
-        got = CAPTURE(argv, timeout_s + 30)
+        import control as C     # Relentless is retired: its family is OFF in the control store
+        box = {}
+
+        def _cap(argv, **_kw):      # the bounded capture runs the admitted argv
+            box.update(CAPTURE(argv, timeout_s + 30))
+            return subprocess.CompletedProcess(argv, box.get("exit") if box.get("exit") is not None else 0, "", "")
+        lr = C.launch_unit(argv, {"family": "relentless", "unit": unit}, runner=_cap)
+        if lr.refused:
+            return {"exit": None, "out": "", "out_sha256": None, "out_bytes": 0, "secs": 0, "setup_secs": setup,
+                    "box_error": lr.stderr}
+        got = box
         res = {k: got.get(k) for k in ("out", "out_sha256", "out_bytes")}
         res.update(secs=got.get("secs"), setup_secs=setup)
         if got.get("timed_out"):

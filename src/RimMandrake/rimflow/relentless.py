@@ -3975,8 +3975,10 @@ class Effects(relentless_game.GameFx):
                 argv = (["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet"]
                         + relentless_wall.props(prof, box, [store_root], list(paths))
                         + ["--", "/bin/sh", "-c", body, "sh", *paths])
+                import control as C
                 try:
-                    p = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+                    p = C.launch_unit(argv, {"family": "relentless", "item": r.get("item")}, capture_output=True,
+                                      text=True, timeout=60, stdin=subprocess.DEVNULL)
                 except (OSError, subprocess.SubprocessError) as e:
                     return False, "probe unit: %s: %s" % (type(e).__name__, e)
                 seen.append(("paths exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or "")).strip())))
@@ -4012,8 +4014,10 @@ class Effects(relentless_game.GameFx):
             argv = (["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet"]
                     + relentless_wall.props(prof, box, [store_root])
                     + ["--", "/bin/sh", "-c", body, "sh", os.path.join(box, "tree"), sha])
+            import control as C
             try:
-                p = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+                p = C.launch_unit(argv, {"family": "relentless"}, capture_output=True, text=True, timeout=60,
+                                  stdin=subprocess.DEVNULL)
             except (OSError, subprocess.SubprocessError) as e:
                 return False, "probe unit: %s: %s" % (type(e).__name__, e)
             out = ((p.stdout or "") + (p.stderr or "")).strip()
@@ -4044,8 +4048,10 @@ class Effects(relentless_game.GameFx):
             argv = (["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet"]
                     + relentless_wall.props(prof, box, [store_root])
                     + ["--", "/bin/sh", "-c", body, "sh", os.path.join(box, "tree", relentless_wall.ITEMS)])
+            import control as C
             try:
-                p = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+                p = C.launch_unit(argv, {"family": "relentless"}, capture_output=True, text=True, timeout=60,
+                                  stdin=subprocess.DEVNULL)
             except (OSError, subprocess.SubprocessError) as e:
                 return False, "probe unit: %s: %s" % (type(e).__name__, e)
             out = ((p.stdout or "") + (p.stderr or "")).strip()
@@ -4277,6 +4283,8 @@ class Effects(relentless_game.GameFx):
                 return "run tmp dir: %s" % e
             at = argv.index("--")
             argv[at:at] = sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(tmpdir).items()), [])
+        import control as C     # Relentless is retired (owner 2026-11-13): its family is OFF in the control store
+        cspec = {"family": "relentless", "unit": run["unit"], "item": st.get("item")}
         at = argv.index("--")
         argv[at:at] = ["--setenv", "RIMFLOW_BRIDGE_SEAT=" + BRIDGE_HOLDER,     # its worker's `bridge take` is Relentless's
                        "--setenv", "WSLENV=RIMFLOW_BRIDGE_SEAT"]               # and a python.exe preflight it runs reads the same name
@@ -4292,7 +4300,7 @@ class Effects(relentless_game.GameFx):
             tool = os.path.join(clone, "src", "RimMandrake", "rimflow", "relentless_stage.py")
             argv = argv[:at] + list(wall) + sum((["--setenv", "%s=%s" % kv] for kv in extra_env.items()), []) + \
                 ["--", sys.executable, tool, "run", "--plan", pf]
-            r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+            r = C.launch_unit(argv, cspec, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
             return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr))) if r.returncode else None
         if agent == VENDOR_AGENT:       # the Consult port: a python body in the same unit shape, so alive/stop/settle hold
             pf = os.path.splitext(run["out"])[0] + ".prompt.md"
@@ -4301,7 +4309,7 @@ class Effects(relentless_game.GameFx):
             tool = os.path.join(clone, "src", "RimMandrake", "rimflow", "relentless.py")
             argv = argv[:at] + list(wall) + sum((["--setenv", "%s=%s" % kv] for kv in extra_env.items()), []) + \
                 ["--", sys.executable, tool, "help-vendor", "--item", st["item"], "--prompt-file", pf]
-            r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+            r = C.launch_unit(argv, cspec, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
             return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr))) if r.returncode else None
         env = []
         for k, v in extra_env.items():
@@ -4309,7 +4317,7 @@ class Effects(relentless_game.GameFx):
         argv = argv[:at] + list(wall) + env + argv[at:]
         o = argv.index("--cwd") if codex else argv.index("--output-format")
         argv[o:o] = ["--agent", agent] + (["--resume", run["resume"]] if run.get("resume") else [])
-        r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+        r = C.launch_unit(argv, cspec, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         return ("systemd-run exit %d: %s" % (r.returncode, (r.stdout + r.stderr))) if r.returncode else None
 
     def sweep_run_tmp(self):

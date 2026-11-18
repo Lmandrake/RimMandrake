@@ -78,7 +78,7 @@ class World:
             self.launched.append(("stage", mod, item))
             return 0, "DETACHED rm-fake-%d" % len(self.launched), "rm-fake-%d" % len(self.launched)
 
-        def launch_brief(item, text, model, cap, seat):
+        def launch_brief(item, text, model, cap, seat, **kw):     # kw: env (the real seam carries RM_CONTROL_MOD)
             self.launched.append(("brief", item, model))
             self.briefs.append(text)
             if self.fail_texts:

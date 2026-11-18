@@ -95,6 +95,7 @@ WRITE_NOW_DEADLINE_S = 300
 KILL_WAIT_S = 1.0
 UNM = "UNMEASURED"
 LIVE_STATES = ("admitted", "started")
+NEVER_RAN = ("fail_launch", "refused")    # its unit ended without its payload (a cancelled or abandoned one may still start: fenced)
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS meta (k TEXT PRIMARY KEY, v TEXT);
 CREATE TABLE IF NOT EXISTS acts (id TEXT PRIMARY KEY, rev INTEGER NOT NULL UNIQUE, ts REAL NOT NULL, at TEXT,
@@ -140,15 +141,35 @@ def db_path():
     p = os.environ.get("RM_CONTROL_DB")
     if p:
         return p
-    if os.environ.get("RM_UNDER_SELFTEST") or os.environ.get("RM_OWNER_HOLD_FILE"):
+    if test_process():
         import tempfile
         d = os.path.join(tempfile.gettempdir(), "rm-control-selftest")
         os.makedirs(d, exist_ok=True)
         p = os.path.join(d, "control-%d.db" % os.getpid())
         if not os.path.exists(p):
             init(p)
+        os.environ["RM_CONTROL_DB"] = p     # its children read and write the same test store
         return p
     return DEFAULT_DB
+
+
+def test_process():
+    """True in a test: the selftest harness (RM_UNDER_SELFTEST), a test that pointed the owner hold at its own file, a
+    selftest_* script run directly, or a process whose dispatcher state is not the live one. A test never reaches the
+    live store."""
+    if os.environ.get("RM_UNDER_SELFTEST") or os.environ.get("RM_OWNER_HOLD_FILE"):
+        return True
+    if os.path.basename(sys.argv[0] if sys.argv else "").startswith("selftest"):
+        return True
+    st = os.environ.get("RM_DISPATCHER_STATE")
+    if st:
+        try:
+            sys.path.insert(0, HERE) if HERE not in sys.path else None
+            import doorbell
+            return os.path.abspath(st) != os.path.abspath(doorbell.DEFAULT_STATE)
+        except Exception:       # noqa: BLE001  cannot tell: treat it as a test (never write the live store blind)
+            return True
+    return False
 
 
 def is_live(p=None):
@@ -364,6 +385,8 @@ def run_scopes(spec):
     out = ["all", "family:" + str(spec.get("family"))]
     if spec.get("mod"):
         out.append("mod:" + key(spec["mod"]))
+    for m in spec.get("mods") or []:    # a fleet over several mods: any one held or off refuses it
+        out.append("mod:" + key(m))
     if spec.get("stage"):
         out.append("stage:" + spec["stage"])
     if spec.get("item"):
@@ -498,7 +521,7 @@ def mod_holds(p=None, now=None):
     return out
 
 
-def lift_owner(mod, said, date=None, p=None, now=None):
+def lift_owner(mod, said, date=None, p=None, now=None, held_said=None):
     """Lift his hold on `mod` in the store (his words required), and remember the lifted (mod, date), so the file
     mirror's row stops holding at once. -> the store row lifted, or None when the store held no row for it."""
     if not (isinstance(said, str) and said.strip()):
@@ -507,7 +530,8 @@ def lift_owner(mod, said, date=None, p=None, now=None):
     with txn(p) as c:
         old = c.execute("SELECT * FROM switches WHERE scope=? AND layer='owner'", ("mod:" + key(mod),)).fetchone()
         d = date or (old["date"] if old else "") or ""
-        _act(c, "lift", "mod:" + key(mod), dict(old) if old else None, {"lifted": [key(mod), d]},
+        w = held_said if held_said is not None else (old["said"] if old else "") or ""
+        _act(c, "lift", "mod:" + key(mod), dict(old) if old else None, {"lifted": [key(mod), d, w]},
              "his hold lifted: %s" % said.strip(), owner_said=said.strip(), idem="lift:owner:%s:%s:%d" % (
                  key(mod), d, int(now * 1000)), now=now)
         c.execute("DELETE FROM switches WHERE scope=? AND layer='owner'", ("mod:" + key(mod),))
@@ -515,12 +539,13 @@ def lift_owner(mod, said, date=None, p=None, now=None):
 
 
 def lifted_owner(p=None):
-    """-> {(mod, date)} of his holds lifted through the store (a later re-hold of the same date is a new import)."""
+    """-> {(mod, date, his words)} of his holds lifted through the store: a file row that is exactly one of them stops
+    holding at once; a new hold (other words or another day) holds."""
     out = set()
     for a in _q("SELECT after FROM acts WHERE kind='lift' ORDER BY rev", p=p):
         try:
-            m, d = json.loads(a["after"])["lifted"]
-            out.add((m, d))
+            m, d, w = json.loads(a["after"])["lifted"]
+            out.add((m, d, w))
         except (ValueError, KeyError, TypeError):
             continue
     return out
@@ -713,8 +738,15 @@ def admit(spec, p=None, now=None):
         rows = blocking(c, run_scopes(spec), now)
         why = describe(rows[0]) if rows else None
         if not why:
-            old = c.execute("SELECT state FROM runs WHERE unit=?", (spec["unit"],)).fetchone()
-            if old:
+            old = c.execute("SELECT state, pid, host FROM runs WHERE unit=?", (spec["unit"],)).fetchone()
+            mine = old is not None and old["state"] == "admitted" and old["host"] == socket.gethostname() and (
+                old["pid"] == os.getpid() or not os.path.exists("/proc/%d" % (old["pid"] or 0)))
+            if old and (old["state"] in NEVER_RAN or mine):
+                # that name never ran a payload, or its admission is this process's own earlier try (or a dead
+                # launcher's) whose unit never reached its start check: it may be admitted again
+                c.execute("DELETE FROM runs WHERE unit=?", (spec["unit"],))
+                c.execute("DELETE FROM reservations WHERE run=? AND state='held'", ("run_" + spec["unit"],))
+            elif old:
                 why = ("DUPLICATE: unit %s is already admitted (state %s): an ambiguous start is investigated, never "
                        "relaunched under the same name" % (spec["unit"], old["state"]))
         if not why:
@@ -842,10 +874,22 @@ def launch_unit(argv, spec, runner=None, p=None, **kw):
     admitted for reconcile: an ambiguous start is investigated, never relaunched under the same name)."""
     runner = runner or subprocess.run
     p = p or db_path()
-    spec = dict(spec, unit=spec.get("unit") or unit_of(argv))
     i = 1 if argv and os.path.basename(str(argv[0])) == "systemd-run" else None
-    if i is None:
-        raise ValueError("launch_unit takes a systemd-run argv, got %r" % argv[:1])
+    if i is None:       # not a unit (a test seam's stand-in command): admitted the same, run, and closed at once
+        try:
+            adm = admit(dict(spec, unit=spec.get("unit") or "rm-%s-%d" % (spec.get("family"), time.time_ns() // 1000)),
+                        p)
+        except Unreadable as e:
+            return _refusal(argv, str(e), unreadable=True)
+        if not adm["ok"]:
+            return _refusal(argv, adm["why"])
+        r = runner(argv, **kw)
+        _mark(adm["run"], "ended" if r.returncode == 0 else "fail_launch", "no unit: ran in the caller", p)
+        return r
+    if not (spec.get("unit") or unit_of(argv)):     # the unit name is fixed BEFORE launch, so admission can key it
+        argv = list(argv[:i]) + ["--unit", "rm-%s-%d-%04x" % (spec.get("family"), time.time_ns() // 1000,
+                                                             os.getpid() & 0xffff)] + list(argv[i:])
+    spec = dict(spec, unit=spec.get("unit") or unit_of(argv))
     try:
         adm = admit(spec, p)
     except Unreadable as e:
@@ -853,15 +897,22 @@ def launch_unit(argv, spec, runner=None, p=None, **kw):
     if not adm["ok"]:
         return _refusal(argv, adm["why"])
     rid = adm["run"]
-    full = list(argv[:i]) + ["-p", "ExecCondition=" + hook_cmd("condition", rid, p),
-                             "-p", "ExecStopPost=-" + hook_cmd("ended", rid, p)] + list(argv[i:])
+    # the two receipts go right after `--unit <name>` (the options before it stay where callers expect them)
+    j = next((n + 2 for n, a in enumerate(argv) if a == "--unit"), None) or \
+        next((n + 1 for n, a in enumerate(argv) if str(a).startswith("--unit=")), i)
+    full = list(argv[:j]) + ["-p", "ExecCondition=" + hook_cmd("condition", rid, p),
+                             "-p", "ExecStopPost=-" + hook_cmd("ended", rid, p)] + list(argv[j:])
     try:
         r = runner(full, **kw)
     except OSError as e:
         _mark(rid, "fail_launch", "systemd-run could not start: %s" % e, p, fault=True)
         raise
-    out = Launch(r.args, r.returncode, getattr(r, "stdout", None), getattr(r, "stderr", None))
-    out.run = rid
+    try:    # the runner's own result, marked (a caller's fake runner may return any object)
+        out = r
+        out.refused, out.unreadable, out.why, out.run = False, False, None, rid
+    except AttributeError:
+        out = Launch(getattr(r, "args", full), r.returncode, getattr(r, "stdout", None), getattr(r, "stderr", None))
+        out.run = rid
     try:
         st = run_state(rid, p)
     except Unreadable as e:

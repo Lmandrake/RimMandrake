@@ -664,6 +664,11 @@ def session_of(unit, root=None, projects=None):
     return sid, (context_tokens(t) if t else None)
 
 
+def _control_settings():
+    import control as C
+    return C.claude_settings()
+
+
 def launch_argv(rec, msg, claude):
     """role_launch.launch_argv's shape, plus ExecStopPost=finish so the outcome is recorded even on a kill."""
     clone, unit, seat = rec["clone"], rec["unit"], rec["seat"]
@@ -679,7 +684,8 @@ def launch_argv(rec, msg, claude):
     via_file = rec.get("brief_file")    # a long brief: claude -p reads it from stdin (StandardInput=file:)
     cmd = [bounded, "-p"] + ([] if via_file else [msg]) + [
            "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
-           "--output-format", "json", "--dangerously-skip-permissions"]
+           "--output-format", "json", "--dangerously-skip-permissions",
+           "--settings", _control_settings()]     # its PostToolUse hook: the stop channel (`pipe stop --write-now`)
     if rec.get("resume_session"):       # a mod's holder session (modledger.resume_plan), carried into this clone
         cmd += ["--resume", rec["resume_session"]]
     # the spend cap is enforced from outside: the agent is never told its spend (owner 2026-11-16, spend_watchdog.py);
@@ -938,9 +944,13 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
         with open(rec["brief_file"], "w", encoding="utf-8") as fh:
             fh.write(msg)
         write_record(rec, root)
+    import control as C     # the one admission point (control.py): a switch, his hold or a duplicate refuses here
+    cenv = rec.get("env") or {}
+    cspec = {"family": "detached", "unit": unit, "item": item, "model": model, "mod": cenv.get("RM_CONTROL_MOD"),
+             "stage": cenv.get("RM_CONTROL_STAGE"), "extra_units": [scope_name(seat, unit)]}
     try:
-        r = runner(launch_argv(rec, msg, claude_bin()), capture_output=True, text=True, timeout=60,
-                   stdin=subprocess.DEVNULL)
+        r = C.launch_unit(launch_argv(rec, msg, claude_bin()), cspec, runner=runner, capture_output=True, text=True,
+                          timeout=60, stdin=subprocess.DEVNULL)
     except OSError as e:                # it never ran (E2BIG, ENOENT): no unit can exist, nothing to ask systemd
         rec["status"] = "launch_failed"
         rec["why"] = "systemd-run could not be started: %s" % e
@@ -965,6 +975,11 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
             return 1, ("LAUNCH UNCONFIRMED %s: systemd-run did not answer (%s) and systemd cannot be read; the record "
                        "stays 'launching' (`detached_helper.py status` resolves it)" % (unit, type(e).__name__))
         r = subprocess.CompletedProcess([], 0, "", "")      # the unit is up after all: recorded running below
+    if getattr(r, "refused", False):    # control refused it: nothing ran, nothing is charged, no failed-launch alarm
+        rec["status"] = "refused"
+        rec["why"] = r.why
+        write_record(rec, root)
+        return 2, "REFUSED %s by control: %s" % (unit, r.why)
     if r.returncode:
         rec["status"] = "launch_failed"
         rec["why"] = ((r.stdout or "") + (r.stderr or "")).strip()

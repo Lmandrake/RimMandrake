@@ -266,8 +266,10 @@ def limit(mod, res, default, st=None):
 
 
 def off(mod=None, item=None, stage=None, st=None):
-    """-> why the named thing is OFF in the store ('all', the mod, the item or the stage), or None."""
-    st = st if st is not None else (empty() if isolated() else state())
+    """-> why the named thing is OFF ('all', the mod, the item or the stage), or None. The switches live in control.py's
+    store (`pipe on|off`), the one store every launch reads; `st` is accepted for old callers and not read. Raises
+    Unreadable when that store cannot be read (nothing launches on a switch nobody can read)."""
+    import control as C
     keys = ["all"]
     if mod:
         keys.append("mod:" + os.path.basename(os.path.normpath(str(mod))))
@@ -275,21 +277,26 @@ def off(mod=None, item=None, stage=None, st=None):
         keys.append("item:" + str(item))
     if stage:
         keys.append("stage:" + str(stage))
+    try:
+        rows = {(r["scope"], r["layer"]): r for r in C.switches()}
+    except C.Unreadable as e:
+        raise Unreadable("the control store: %s" % e)
     for k in keys:
-        o = st["off"].get(k)
-        if o:
-            return "OFF by pipe (%s, act %s at %s): %s" % (k, o.get("act"), o.get("at_pacific"), o.get("why"))
+        r = rows.get((k, "control")) or rows.get((k, "owner"))
+        if r:
+            return "OFF by pipe (%s, act %s at %s): %s" % (k, r.get("act"), r.get("at_pacific"), r.get("why")) \
+                if r["layer"] == "control" else C.describe(r)
     return None
 
 
 def off_mods(st=None):
-    """-> {mod: a mod_owner_hold-shaped row} for every mod switched off here, so each reader of the owner hold
-    (the tick, autonomy, the Designer chains, ops_watch, rescue, testq) honours `pipe off <Mod>` the moment it is
-    written. Rows carry control=True; their status reads OFF, never HELD BY OWNER."""
-    st = st if st is not None else (empty() if isolated() else state())
-    return {k[4:]: {"mod": k[4:], "date": (o.get("at") or "")[:10], "said": o.get("why"), "control": True,
-                    "act": o.get("act"), "at_pacific": o.get("at_pacific")}
-            for k, o in st["off"].items() if k.startswith("mod:") and o}
+    """-> {mod: a mod_owner_hold-shaped row} for every mod `pipe off` switched off (control.py's store; his own holds
+    are mod_owner_hold's). Rows carry control=True; their status reads OFF, never HELD BY OWNER."""
+    import control as C
+    try:
+        return {m: h for m, h in C.mod_holds().items() if h.get("control")}
+    except C.Unreadable as e:
+        raise Unreadable("the control store: %s" % e)
 
 
 def queue_order(mods, st=None):
@@ -572,17 +579,20 @@ def target_key(t, ctx):
 
 
 def do_switch(ctx, on, t, why, owner_said=None):
+    """`pipe on|off`: a switch in control.py's store (binds at once: every launch reads it at the moment it starts)."""
+    import control as C
     k = target_key(t, ctx)
-    st = state()
-    old = st["off"].get(k)
-    if on and not old:
-        return ["%s is already ON (nothing switched; %s)" % (k, "the store holds no switch for it")]
-    now = time.time()
-    after = None if on else {"why": why, "at": dt.datetime.fromtimestamp(now, dt.timezone.utc).strftime(
-        "%Y-%m-%dT%H:%M:%SZ"), "at_pacific": pac_str(now), "who": who()}
-    a = act("off", k, after, why, "on" if on else "off", owner_said, now=now)
-    return ["%s %s -> %s" % (k, "OFF" if old else "ON", "ON" if on else "OFF"),
-            "act %s at %s" % (a["id"], a["at_pacific"]), _undo_line(a)]
+    try:
+        r = C.switch(k, not on, why, owner_said=owner_said)
+    except C.Unreadable as e:
+        raise Unreadable("the control store: %s" % e)
+    if on and not r["had"]:
+        return ["%s is already ON (nothing switched; %s)" % (k, "the store holds no switch for it" if not r["still"]
+                                                              else "still " + r["still"][0])]
+    a = r["act"]
+    return ["%s %s -> %s" % (k, r["before"], "ON" if on else "OFF"), "act %s rev %s at %s" % (a["id"], a["rev"],
+                                                                                         a["at_pacific"]),
+            "undo: pipe %s %s --why \"...\"" % ("off" if on else "on", t)]
 
 
 def do_undo(act_id, why, owner_said=None):
@@ -620,8 +630,13 @@ def do_show(ctx, mod=None):
     mods = [mod_name(mod, ctx)] if mod else ctx.mods()
     out = []
     q = st.get("queue")
-    if "all" in st["off"]:
-        out.append("ALL " + off(st=st))
+    import control as C     # the switches live in control.py's store
+    try:
+        sw = [r for r in C.switches() if r["layer"] == "control"]
+    except C.Unreadable as e:
+        raise Unreadable("the control store: %s" % e)
+    if any(r["scope"] == "all" for r in sw):
+        out.append("ALL " + off())
     try:
         if HERE not in sys.path:
             sys.path.insert(0, HERE)
@@ -631,7 +646,7 @@ def do_show(ctx, mod=None):
         holds = None
         out.append("owner hold list: %s (%s)" % (UNM, e))
     for m in mods:
-        why = off(mod=m, st=st)
+        why = off(mod=m)
         onoff = "OFF" if why else "HELD" if holds and m in holds else "?" if holds is None else "ON"
         cells = []
         for res, (lab, doc, _f, _r) in RESOURCES.items():
@@ -651,9 +666,9 @@ def do_show(ctx, mod=None):
             out += cells
         else:
             out.append(head + "  " + "  ".join(cells))
-    for k in sorted(st["off"]):
-        if k != "all" and not k.startswith("mod:"):
-            out.append("%s OFF: %s" % (k, st["off"][k].get("why")))
+    for r in sorted(sw, key=lambda r: r["scope"]):
+        if r["scope"] != "all" and not r["scope"].startswith("mod:"):
+            out.append("%s OFF: %s" % (r["scope"], r["why"]))
     out.append("queue: %s" % (" > ".join(q) if q else "the shipped advancing order (no queue override)"))
     return out
 

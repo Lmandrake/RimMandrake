@@ -156,7 +156,9 @@ st2["mods"]["NotAPilot"] = {}
 got.clear()
 A._execute_one(root, {"seat": "BENCH"}, st2, row2, 9000, None,
                lambda item, text, model, cap, seat, **kw: got.append(kw) or (0, "DETACHED u9", "u9"), set())
-check("any other mod's fixer launches as before (no env)", got == [{}], got)
+# no holder env (no RM_MODLEDGER_WRITER); its only env is its admission scope, which control.launch_unit reads
+check("any other mod's fixer launches as before (no holder env, only its control scope)",
+      got == [{"env": {"RM_CONTROL_MOD": "NotAPilot", "RM_CONTROL_STAGE": row2.get("stage") or "in_game"}}], got)
 shutil.rmtree(SDIR, ignore_errors=True)
 shutil.rmtree(root, ignore_errors=True)
 print("PASS %d/%d" % (sum(res), len(res)) if all(res) else "FAIL %d of %d" % (res.count(False), len(res)))

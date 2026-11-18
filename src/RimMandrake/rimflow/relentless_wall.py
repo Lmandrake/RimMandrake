@@ -380,7 +380,9 @@ def toolchain_probe(prof, box, extra=(), cfg=None, timeout=300):
                 + sum((["--setenv", "%s=%s" % kv] for kv in unit_env(prof, box, cfg).items()), [])
                 + ["--", "/bin/bash", "-c", cmd])
         try:
-            p = subprocess.run(argv, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)
+            import control as C     # Relentless is retired: its family is OFF in the control store
+            p = C.launch_unit(argv, {"family": "relentless"}, capture_output=True, text=True, timeout=timeout,
+                              stdin=subprocess.DEVNULL)
             rows.append({"name": name, "exit": p.returncode, "out": ((p.stdout or "") + (p.stderr or "")).strip()})
         except (OSError, subprocess.SubprocessError) as e:
             rows.append({"name": name, "exit": -1, "out": "%s: %s" % (type(e).__name__, e)})

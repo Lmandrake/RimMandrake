@@ -33,6 +33,10 @@ def temp_holds(mods):
     with open(p, "w") as f:
         json.dump({"holds": [{"mod": m, "date": "2026-11-16", "said": WORDS} for m in mods]}, f)
     os.environ["RM_OWNER_HOLD_FILE"] = p
+    # each fixture its own control store (control.py): a lift recorded there is part of the fixture it lifted
+    os.environ["RM_CONTROL_DB"] = os.path.join(os.path.dirname(p), "control.db")
+    import control
+    control.init(os.environ["RM_CONTROL_DB"])
     return p
 
 

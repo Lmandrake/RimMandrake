@@ -45,8 +45,9 @@ def key(name):
     return os.path.basename(os.path.normpath(str(name or "")))
 
 
-def load(path=None):
-    """-> {mod: {"mod", "date", "said"}}. Raises Unreadable on a missing, unparsable or wrong-shaped file."""
+def load_file(path=None):
+    """-> {mod: {"mod", "date", "said"}} from the JSON file alone (the published mirror). Raises Unreadable on a missing,
+    unparsable or wrong-shaped file."""
     p = path or os.environ.get("RM_OWNER_HOLD_FILE") or PATH
     try:
         with open(p, encoding="utf-8") as f:
@@ -68,15 +69,25 @@ def load(path=None):
         if key(h["mod"]) in out:
             raise Unreadable("%s: %s is held twice (rows %r and %r)" % (p, key(h["mod"]), out[key(h["mod"])], h))
         out[key(h["mod"])] = h
+    return out
+
+
+def load(path=None):
+    """-> {mod: {"mod", "date", "said"}}: the file's holds (minus any the control store records as lifted, so a lift
+    binds at once, before its mirror is published), then every mod switch in the control store (control.py: his holds
+    imported with his words, and `pipe off <Mod>` rows, control=True), the moment it is written. Raises Unreadable on a
+    bad file or an unreadable store: a reader launches nothing it cannot prove unheld (never a calm "no holds").
+    path: read that file alone (no store)."""
+    out = load_file(path)
     if path is None:
-        # `pipe off <Mod>` (pipeline_control.py): a mod switched off in the one control store reads as held to every
-        # reader of this list, the moment it is written (no publish); his own hold row wins where both stand
-        import pipeline_control as PC
+        import control as C
         try:
-            for m, row in PC.off_mods().items():
+            lifted = C.lifted_owner()
+            out = {m: h for m, h in out.items() if (m, h.get("date") or "", h.get("said") or "") not in lifted}
+            for m, row in C.mod_holds().items():
                 out.setdefault(key(m), row)
-        except PC.Unreadable as e:
-            raise Unreadable("the pipeline control store: %s" % e)
+        except C.Unreadable as e:
+            raise Unreadable("the control store: %s" % e)
     return out
 
 
@@ -123,6 +134,9 @@ def held(name, holds=None):
 
 def status(h):
     """The one line every status prints for a held mod."""
+    if h.get("unreadable"):
+        return "CONTROL UNREADABLE: %s: nothing launches on %s until it can be read (pipe doctor)" % (h.get("said"),
+                                                                                                   h["mod"])
     if h.get("control"):
         return "OFF by pipe (act %s at %s): %s (on: pipe on %s --why \"...\")" % (
             h.get("act"), h.get("at_pacific"), h.get("said"), h["mod"])
@@ -130,8 +144,18 @@ def status(h):
 
 
 def lift(mod, said, path=None):
-    """Remove `mod` from the list. -> the hold removed. Raises KeyError when it is not held."""
+    """Lift his hold on `mod`: in the control store (binds at once) and in the file (its published mirror). -> the hold
+    removed. Raises KeyError when neither holds it."""
     p = path or os.environ.get("RM_OWNER_HOLD_FILE") or PATH
+    gone = None
+    if path is None:
+        import control as C
+        f = load_file(p).get(key(mod))
+        gone = C.lift_owner(key(mod), said, date=(f or {}).get("date"), held_said=(f or {}).get("said"))
+        if f is None:
+            if gone is None:
+                raise KeyError("%s is not held" % mod)
+            return gone
 
     def change(doc):
         keep = [h for h in doc["holds"] if key(h.get("mod")) != key(mod)]

@@ -2164,7 +2164,9 @@ def main(argv=None):
                 ["--effort", o.effort] if o.effort else [])
             unit = "rm-designer-cleanse-fleet-%s" % time.strftime("%Y%m%d-%H%M%S")
             os.makedirs(status_dir(), exist_ok=True)
-            r = subprocess.run(fleet_unit_argv(args, unit), capture_output=True, text=True, timeout=60)
+            import control as C     # the one admission point: a held or switched-off mod refuses the fleet
+            r = C.launch_unit(fleet_unit_argv(args, unit), {"family": "designer_cleanse", "unit": unit, "mods": mods},
+                              capture_output=True, text=True, timeout=60)
             print((r.stdout + r.stderr).strip())
             print("fleet of %d (%s) in unit %s; status: %s" % (len(mods), ", ".join(mods), unit,
                                                                 os.path.join(status_dir(), "status.md")))
