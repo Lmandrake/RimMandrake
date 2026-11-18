@@ -436,6 +436,44 @@ def proposals(rows):
     return out
 
 
+VERDICTS = ("fact_true", "fact_false")     # was the check's named fact true at pickup? fact_false = a false refusal
+
+
+def apply_audit(table, audit):
+    """Criterion A2: fold a reader's audit of `audit_sample` into the table. Per check named, audited = the sampled rows
+    read and false = those whose named fact was false at pickup (re-applying replaces, never adds); a check the audit does
+    not name keeps audited 0 and false null (unread). A3 is recomputed by proposals(). An audit row naming an item not
+    in that check's sample, a verdict outside VERDICTS, a row with no reason, a sample read twice or an audit naming no
+    reader raises ValueError, and nothing is changed. -> a new table."""
+    import copy
+    if not str(audit.get("reader") or "").strip():
+        raise ValueError("an audit names its reader")
+    sample = {c: {r.get("item") for r in rows} for c, rows in (table.get("audit_sample") or {}).items()}
+    read = {}
+    for c, rows in (audit.get("checks") or {}).items():
+        seen = set()
+        for r in rows:
+            if r.get("item") not in sample.get(c, set()):
+                raise ValueError("%s: %r is not in that check's audit_sample" % (c, r.get("item")))
+            if r.get("item") in seen:
+                raise ValueError("%s: %r is read twice" % (c, r.get("item")))
+            if r.get("verdict") not in VERDICTS:
+                raise ValueError("%s %s: verdict must be one of %s, got %r" % (c, r.get("item"), VERDICTS, r.get("verdict")))
+            if not str(r.get("why") or "").strip():
+                raise ValueError("%s %s: a verdict says why" % (c, r.get("item")))
+            seen.add(r["item"])
+        read[c] = rows
+    out = copy.deepcopy(table)
+    for r in out["checks"]:
+        if r["id"] in read:
+            r["audited"] = len(read[r["id"]])
+            r["false"] = sum(1 for x in read[r["id"]] if x["verdict"] == "fact_false")
+    out["proposed_for_ticket_4"] = proposals(out["checks"])
+    out["audit"] = {"reader": audit["reader"], "at": audit.get("at"), "read": {c: len(v) for c, v in read.items()},
+                    "file": audit.get("file")}
+    return out
+
+
 def answer(out, cases):
     """The one paragraph spec section 8 owes the owner, from the table's own numbers."""
     co, jb = out["corpora"], out["joint_false_block"]
@@ -476,7 +514,32 @@ def main():
     ap.add_argument("--out")
     ap.add_argument("--days", type=int, default=60)
     ap.add_argument("--timing-sample", type=int, default=40)
+    ap.add_argument("--apply-audit", metavar="AUDIT_JSON", help="fold a reader's audit of audit_sample into --table "
+                    "(criterion A2), recompute A3, and stop; the backtest itself is not rerun")
+    ap.add_argument("--table", help="the backtest table --apply-audit rewrites in place")
     a = ap.parse_args()
+    if a.apply_audit:
+        if not a.table:
+            ap.error("--apply-audit needs --table")
+        try:
+            with open(a.table, encoding="utf-8") as f:
+                tbl = json.load(f)
+            with open(a.apply_audit, encoding="utf-8") as f:
+                aud = json.load(f)
+            aud.setdefault("file", os.path.relpath(a.apply_audit, REPO) if os.path.isabs(a.apply_audit) else a.apply_audit)
+            new = apply_audit(tbl, aud)
+        except (OSError, ValueError) as e:
+            print("AUDIT REFUSED, table unchanged: %s" % e, file=sys.stderr)
+            return 2
+        tmp = a.table + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(new, f, indent=1, sort_keys=True)
+            f.write("\n")
+        os.replace(tmp, a.table)
+        for r in new["checks"]:
+            if r["id"] in new["audit"]["read"]:
+                print("%s audited %d, false %d" % (r["id"], r["audited"], r["false"]))
+        return 0
     t0 = time.monotonic()
     raw = model.read()
     w = model.replay(raw)

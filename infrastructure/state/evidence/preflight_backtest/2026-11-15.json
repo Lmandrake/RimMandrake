@@ -1,5 +1,13 @@
 {
  "answer": "Over 4752 past tickets (4446 closed or dropped in 60 days, 238 from the measured Relentless week, 68 from the labelled lists), each read as it stood at pickup, the preflight as built would have stopped 26 worked tickets before any token (E12 26), worth at most 0.0M tokens; all were then worked to an end (close 26). E12's fact (no declared line) is read off the ticket and cannot be false, so a person's audit (audit_sample) will find them true refusals, yet each is work that went fine without a refs block: that is the starving-gate cost to weigh, and the joint false-block share is bounded above by 1.0%. It catches almost nothing in the past because it reads only declared `## refs` lines and almost no past ticket had any: 5 of the 1240 with prose (3512 had no prose file at all). The 209M-token measured week of setup-class ends shows 0 fires of a refusing check. So what it would catch that today's gates do not is not in the history: it is the declared facts the refs rule makes tickets write from 2026-11-13 on, plus E12 itself, which as ruled would stop 1096 of 2117 open tickets today. The shadow doors (file, claim, start, helper launch, live since this build) are the measurement that counts; the planted tickets show the instrument sees (12 of 12 caught, every good twin passed: True). It is fast: at the doors, p95 file 98, claim 82, start 82, helper_launch 86 ms.",
+ "audit": {
+  "at": "2026-11-18T22:10:00Z",
+  "file": "infrastructure/state/evidence/preflight_backtest/2026-11-15.audit.json",
+  "read": {
+   "B1": 1
+  },
+  "reader": "Codex (gpt_consult.py, independent of the backtest's builder), for the Conductor's helper of Lane A (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)"
+ },
  "audit_sample": {
   "B1": [
    {
@@ -138,8 +146,8 @@
  },
  "checks": [
   {
-   "audited": 0,
-   "false": null,
+   "audited": 1,
+   "false": 0,
    "fires": {
     "open": 1
    },
@@ -433,14 +441,14 @@
  ],
  "proposed_for_ticket_4": [
   {
-   "audited": 0,
-   "false": null,
+   "audited": 1,
+   "false": 0,
    "fires": {
     "open": 1
    },
    "fires_on_worked": 0,
    "id": "B1",
-   "status": "stays WARN: 0 audited of the 30 needed"
+   "status": "stays WARN: 1 audited of the 30 needed"
   },
   {
    "audited": 0,

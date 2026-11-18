@@ -1,0 +1,14 @@
+{
+ "at": "2026-11-18T22:10:00Z",
+ "checks": {
+  "B1": [
+   {
+    "item": "RIMMANDRAKE_SHOW_UNTRACKED_PROMISES_NEXT_PROMPT_FILE_AT_KILL",
+    "verdict": "fact_true",
+    "why": "the item declares `file: src/RimMandrake/rimflow/promise_scan.py`; git cat-file -e a56213203b:src/RimMandrake/rimflow/promise_scan.py says it did not exist at pickup; a path the ticket creates is declared `new:`. Same verdict read independently by the helper and by Codex."
+   }
+  ]
+ },
+ "reader": "Codex (gpt_consult.py, independent of the backtest's builder), for the Conductor's helper of Lane A (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)",
+ "scope": "every sampled would-be refusal of a check that needs an audit. E12 and C4 are the owner's (by card 2026-11-13, spec 7 row 4) and need none: E12's 12 samples are not audited here, so its audited stays 0 and false null."
+}
