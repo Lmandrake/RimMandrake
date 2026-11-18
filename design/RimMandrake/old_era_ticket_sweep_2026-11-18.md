@@ -19,131 +19,139 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 - **VALID LARGE**: still true and more than about an hour, or needs a machine this run may not touch (SteveDesktop, the game). Left open with a note saying what it needs.
 - **LIVE ONLY**: built work whose remaining criteria are live game runs; the game is off-limits to this run. Left open.
 - **KEEP**: a live alarm's current item or a standing host something still files onto. Left open.
+- **DONE, GUARD OWED**: DONE by the same test, but the item was closed once before and its live promise broke since (deadman), so `rimflow close` refuses it until a class guard test is shown failing on the instance (`rimflow guard`) or the Conductor lifts the guard. Left open with a note; the deaths were mostly aggregate alarms read as each fix's relapse, the 2026-11-07 timer stop, and 2026-11-08 hook-wiring reads from a clone without hooks [measured: deadman `live broken` events].
 - **NEEDS HIM**: one question each.
 
 ## Counts
 
 | verdict | count |
 |---|---|
-| DONE | 99 |
+| DONE | 31 |
+| DONE_GUARD_OWED | 69 |
 | CLEARED | 30 |
-| DEAD | 72 |
+| DEAD | 73 |
 | DUPLICATE | 6 |
-| VALID_SMALL | 2 |
-| VALID_LARGE | 120 |
+| VALID_SMALL | 1 |
+| VALID_LARGE | 119 |
 | LIVE_ONLY | 38 |
 | KEEP | 7 |
 | NEEDS_HIM | 2 |
 | OUT | 2 |
 | total | 378 |
 
-## DONE (99)
+## DONE (31)
 
-| ticket | state | evidence |
+| ticket | state at census | evidence |
 |---|---|---|
-| `ACCOUNTPLAN_FIX_UNDOES_SWITCH_IN_FOUR_MIN` | ready | work landed fe7ed5afda; its 1 selftest(s) exit 0 on HEAD in this run |
 | `ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING` | ready | switching_plan.py runs from account-plan.timer (active); the skill shipped at c1651115d3; selftests green |
 | `AGENT_IMPROVE_AUDIT_KINDLESS_RECORDS_ALL_TWO` | ready | work landed c5c07b9e25; its 3 selftest(s) exit 0 on HEAD in this run |
-| `AGENT_IMPROVE_INSTALL_DAILY_TIMER` | ready | rm-agent-improve.timer enabled and active now; unit landed in 6ee19ad490 |
-| `AGENT_IMPROVE_REPAIR_SILENT_NONE` | ready | work landed 6ee19ad490; its 1 selftest(s) exit 0 on HEAD in this run |
-| `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED` | ready | work landed 3e0b001eb4; its 2 selftest(s) exit 0 on HEAD in this run |
 | `ALARM_FILING_FIX_NO_ROOM_AT_INN` | ready | work landed ba566f60c7; its 1 selftest(s) exit 0 on HEAD in this run |
-| `ALARM_RANGES_BUILD_CLASSES_AS_DATA` | ready | work landed 570e4d3b27; its 2 selftest(s) exit 0 on HEAD in this run |
-| `ALARM_REPEAT_FIX_BREAK_ON_WORSE` | ready | work landed 547224ce01; its 1 selftest(s) exit 0 on HEAD in this run |
-| `AMEND_HOOK_HARDEN_SWEPT_A_NEIGHBOUR` | ready | block_blanket_git_stage.py refuses a bare 'git commit --amend' (its docstring line 27; selftest green); work landed 1023093a75 |
-| `ARTPIPE_ORPHAN_UNSTICK_WEDGE` | ready | work landed 9b5e7b04d2; its 2 selftest(s) exit 0 on HEAD in this run |
-| `CALL_DEADLINES_ENFORCE_130_OPEN_ENDED` | ready | work landed 7a9249afe8; its 2 selftest(s) exit 0 on HEAD in this run |
-| `CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD` | ready | work landed 44daff0c93; its 2 selftest(s) exit 0 on HEAD in this run |
 | `CHECKER_REACH_FIX_GH_DARK_SECOND` | ready | work landed c549cc8ab6; its 1 selftest(s) exit 0 on HEAD in this run |
-| `CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER` | ready | work landed f0403eeadd; its 1 selftest(s) exit 0 on HEAD in this run |
 | `CLEANER_SANITY_REVIEW_FINISH_FULL_FILES` | ready | work landed 3bf4cecd5f; its 4 selftest(s) exit 0 on HEAD in this run |
 | `CLOSE_AUDIT_MEASURE_FALSE_CLOSES_HONESTLY` | ready | work landed c043da2443; its 1 selftest(s) exit 0 on HEAD in this run |
-| `CONDUCTOR_CLOSEOUT_BUILD_LEDGER_CHECK` | ready | work landed b00bfae65c; its 1 selftest(s) exit 0 on HEAD in this run |
-| `CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES` | ready | b483dac198: the Conductor handoff reboots via --now; selftests green |
 | `CONTRACTS_EXCISE_ARBITER_REPLAY_FAMILIES` | ready | work landed b47c87d04b; its 1 selftest(s) exit 0 on HEAD in this run |
-| `DELEGATED_CARDS_FIX_HELD_OUT_RECALL` | ready | selftest_block_delegated_cards.py exits 0 on HEAD; the bar was settled at 2315f1b614 |
 | `DELEGATED_DIGEST_HARDEN_MUTATION_SURVIVORS` | proposed | the red-first mutation-kill selftest it asked for landed at 68b347c069; selftest_delegated_digest green |
 | `DEPLOY_GUARD_FIX_EXCLUDE_DIR_MISMATCH` | ready | deploy_def_guard.DEPLOY_EXCLUDE_DIRS now includes art_candidates (line 73); selftests green; work landed f160d57cf8 |
-| `DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY` | ready | work landed f6b6c6dad9; its 2 selftest(s) exit 0 on HEAD in this run |
-| `DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN` | ready | work landed 3ccda6ef54; its 2 selftest(s) exit 0 on HEAD in this run |
 | `DEV_SCRATCH_DIRS_MIGRATE_OFF_LODESTARS_LAWN` | ready | work landed 3b7594a392; its 2 selftest(s) exit 0 on HEAD in this run |
-| `DISK_WATCH_BUILD_SCRATCH_OUTSIDE_CAP` | ready | work landed bb1fdf8e7d; its 1 selftest(s) exit 0 on HEAD in this run |
 | `DRVFS_ENOMEM_FIX_ORDER_SEVEN_RUNS_DRY` | ready | work landed 34283c8415; its 1 selftest(s) exit 0 on HEAD in this run |
 | `EVIDENCE_HEAD_SEAL_REPAIR_THREE_BEHIND` | ready | work landed 9df1e805ad; its 1 selftest(s) exit 0 on HEAD in this run |
 | `EVIDENCE_METRICS_WIRE_ONE_ROW_EVER` | ready | work landed 38c6a169d0; its 2 selftest(s) exit 0 on HEAD in this run |
-| `EXPEDITE_LANE_BUILD_JUMPS_THE_GAME_QUEUE` | ready | work landed fdf1374675; its 1 selftest(s) exit 0 on HEAD in this run |
-| `HANDOFF_FIX_RESTART_TWENTY_SECONDS` | ready | work landed ae07aa74b1; its 2 selftest(s) exit 0 on HEAD in this run |
-| `HANDOFF_HOOK_FIX_QUOTED_READY_COUNTS` | ready | work landed e7d62cabf4; its 1 selftest(s) exit 0 on HEAD in this run |
-| `HANDOFF_RESTART_AUDIT_FILES_OWED` | ready | work landed 53b8748973; its 2 selftest(s) exit 0 on HEAD in this run |
-| `HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS` | ready | work landed e8b334a354; its 1 selftest(s) exit 0 on HEAD in this run |
-| `HOOKS_BLINDSCAN_TUNE_DRIVE_D_IMPORT_TOLL` | ready | work landed 355bdc8b71; its 1 selftest(s) exit 0 on HEAD in this run |
-| `HOOKS_SCANGUARD_FIX_QUOTED_PIPE_SLIPS_PAST` | ready | work landed a2bac49a9a; its 1 selftest(s) exit 0 on HEAD in this run |
-| `HOOKS_VERIFY_TRUE_SUFFIX_MAY_MUTE_REFUSALS` | ready | work landed 2160831515; its 2 selftest(s) exit 0 on HEAD in this run |
-| `IDLE_SEAT_RESTART_BUILD_BRINGS_QUIET_BACK` | ready | work landed faaab9f5fe; its 1 selftest(s) exit 0 on HEAD in this run |
-| `IDLE_WATCH_BUILD_SEAT_MINUTES_IN_DIGEST` | ready | work landed 480705561c; its 3 selftest(s) exit 0 on HEAD in this run |
-| `INCIDENT_LEDGER_BUILD_TOLD_ACKED_RECOVERED` | ready | work landed c09e663226; its 1 selftest(s) exit 0 on HEAD in this run |
-| `ISSYSTEM_WORDS_FIX_PIPELINE_READ_AS_CONTENT` | ready | work landed a5cba06368; its 1 selftest(s) exit 0 on HEAD in this run |
-| `LENT_ALARM_MEASURE_THE_LOAN_NOT_WEEK` | ready | work landed 36b504cba2; its 1 selftest(s) exit 0 on HEAD in this run |
 | `LESSONS_RETIRE_INBOX_AS_QUEUE` | ready | work landed 47595a6360; its 1 selftest(s) exit 0 on HEAD in this run |
 | `LOG_BOUND_DECIDE_COLD_LOAD_ALWAYS_GUILTY` | ready | work landed 9d974a4e3c; its 1 selftest(s) exit 0 on HEAD in this run |
 | `MIRROR_PACK_REPAIR_STILL_GRUMBLING` | ready | work landed 1a553c5002; its 2 selftest(s) exit 0 on HEAD in this run |
-| `MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS` | ready | work landed 13e4c16f45; its 1 selftest(s) exit 0 on HEAD in this run |
-| `NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING` | ready | work landed f1574ed294; its 2 selftest(s) exit 0 on HEAD in this run |
-| `OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE` | ready | work landed 21dd9677e9; its 1 selftest(s) exit 0 on HEAD in this run |
-| `OPS_ALARMS_FIX_FIXED_ITEM_ID` | ready | ops_watch.mint_name keeps one fixed id per alarm (4f64d24ce3); alarms.json reuses OPS_PLAN_LIST_FIX_VMIV across refilings |
 | `OPS_ALARM_FIX_CLOSED_TICKET_SILENCES_FAULT` | ready | work landed ee749bf033; its 2 selftest(s) exit 0 on HEAD in this run |
-| `OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY` | ready | work landed 0f3e9fcd6f; its 1 selftest(s) exit 0 on HEAD in this run |
-| `OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV` | ready | work landed 42647172c7; its 1 selftest(s) exit 0 on HEAD in this run |
 | `OPS_ERROR_BUDGET_DIAGNOSE_CIRG` | ready | work landed 22f53ea356; its 2 selftest(s) exit 0 on HEAD in this run |
-| `OPS_FINDINGS_DIAGNOSE_17B4` | ready | work landed fb038d5c4c; its 2 selftest(s) exit 0 on HEAD in this run |
-| `OPS_FINDINGS_DIAGNOSE_XZLM` | ready | work landed 65a1f109c7; its 1 selftest(s) exit 0 on HEAD in this run |
-| `OPS_GAME_HEALTH_DEBUG_PXQI` | ready | work landed b397bc0152; its 1 selftest(s) exit 0 on HEAD in this run |
-| `OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY` | ready | work landed d61e43685d; its 4 selftest(s) exit 0 on HEAD in this run |
-| `OPS_HEALTH_RANK_FIX_GLOB_OUTVOTES_EXACT` | ready | work landed 5d4d5ea0a6; its 4 selftest(s) exit 0 on HEAD in this run |
-| `OPS_HEALTH_WIRE_INSTRUMENT_INCIDENTS` | ready | work landed 552f9d8bd4; its 1 selftest(s) exit 0 on HEAD in this run |
-| `OPS_JUDGE_NOTES_MEASURE_VS_NO_CHANGE` | ready | work landed 0166bd1228; its 1 selftest(s) exit 0 on HEAD in this run |
-| `OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH` | ready | work landed ac39eccf39; its 5 selftest(s) exit 0 on HEAD in this run |
 | `OPS_METRONOME_MIGRATE_CLOCKS_FENCED` | ready | work landed aa928335da; its 11 selftest(s) exit 0 on HEAD in this run |
-| `OPS_QUEUES_READING_RESTORE_HQXV` | ready | work landed a04f9d6f7a; its 2 selftest(s) exit 0 on HEAD in this run |
-| `OPS_RAISE_REWIRE_WITH_DEATH_LADDER` | ready | work landed 7d9928c0d0; its 2 selftest(s) exit 0 on HEAD in this run |
-| `OPS_REFUSAL_REWIRE_TO_CONDUCTOR` | ready | work landed b105e9a9c9; its 1 selftest(s) exit 0 on HEAD in this run |
-| `OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS` | ready | work landed 307feed8ee; its 4 selftest(s) exit 0 on HEAD in this run |
-| `OPS_STEVE_UNSTICK_UNCLAIMED_ETBS` | ready | work landed e70d1b821a; its 3 selftest(s) exit 0 on HEAD in this run |
-| `OPS_STEVE_UNSTICK_VHRP` | ready | work landed 87551b29f0; its 2 selftest(s) exit 0 on HEAD in this run |
-| `OPS_TESTQ_UNSTICK_ECPK` | ready | work landed 0400ec93c9; its 1 selftest(s) exit 0 on HEAD in this run |
 | `OWNER_ASKS_AUDIT_FIFTY_NINE_DEEP` | ready | work landed f03c025e7e; its 1 selftest(s) exit 0 on HEAD in this run |
 | `PROOFLINT_FIX_ARGS_READ_AS_SCRIPTS` | ready | 18178d9350; its cases (1, 1b, 1c) pass in selftest_prooflint_at_filing.py on HEAD |
-| `PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT` | ready | work landed 9a8c54a9f7; its 2 selftest(s) exit 0 on HEAD in this run |
-| `PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN` | ready | work landed de44537a98; its 1 selftest(s) exit 0 on HEAD in this run |
-| `PULSE_DEPLOY_UNSTICK_DIRTY_CHECKOUT` | ready | work landed 2fc8d23cf9; its 1 selftest(s) exit 0 on HEAD in this run |
-| `QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS` | ready | work landed 80d3d18393; its 1 selftest(s) exit 0 on HEAD in this run |
-| `RED_COP_BUILD_NO_ORPHAN_REDS` | ready | work landed f0492bc10c; its 2 selftest(s) exit 0 on HEAD in this run |
+| `PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN` | ready | file, implemented and close all call the lint (cli.py 2038, 2855, 3082); the only red, selftest check 7, counted call text and missed the preflight-gate route since 31c94dd37a: fixed at e6ab733c03, a mutant with the close call removed is caught |
 | `REGRADE_SAMPLE_BUILD_NOISE_GUARDED` | ready | work landed df7cadb8b9; its 1 selftest(s) exit 0 on HEAD in this run |
-| `RELAPSE_OPS_WATCH_FIX_DIED_TWICE` | ready | work landed 6997fe8331; its 1 selftest(s) exit 0 on HEAD in this run |
-| `RELAPSE_QUEUES_FIX_DIED_TWICE` | ready | work landed ff9168747b; its 2 selftest(s) exit 0 on HEAD in this run |
-| `RELAPSE_TIMERS_FIX_DIED_TWICE` | ready | work landed b59fb5b7f1; its 2 selftest(s) exit 0 on HEAD in this run |
-| `REPEAT_ALARM_ENFORCE_GUARD_OR_STAY_OPEN` | ready | b0fb6fe124: a fix that died closes only with a guard; its tests green except selftest_relentless.py, red on HEAD for the retired pool (retired-eras index) |
 | `REPO_RENAME_SYMLINK_RETIRE_1` | ready | D:\Luke\dev\Rimworld no longer exists; the last old-path reference was repointed at e148e8c31e; the remaining mentions are hook guards on purpose |
-| `RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS` | ready | work landed 307c7f3ac5; its 1 selftest(s) exit 0 on HEAD in this run |
 | `RESTOREWAIVER_AUDIT_TEN_TAKEN_ON_TRUST` | proposed | 746fd15844: selftest proves each waived restore; green on HEAD |
 | `ROLE_LAUNCH_KILL_DECIDE_ROLES_SURVIVORS` | proposed | the red-first golden mutation-kill selftest it asked for landed at 6dcfd7f682; its selftests green |
-| `ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED` | ready | work landed ac1d9e74eb; its 4 selftest(s) exit 0 on HEAD in this run |
-| `SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF` | ready | work landed 041f74af4c; its 1 selftest(s) exit 0 on HEAD in this run |
 | `SEAT_TMP_PRUNE_TESTS_LEFT_LUGGAGE` | ready | work landed e9221a885c; its 1 selftest(s) exit 0 on HEAD in this run |
-| `SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS` | ready | work landed 48c6bd7ab1; its 1 selftest(s) exit 0 on HEAD in this run |
 | `SLOT_HOOK_FIX_TEXT_STILL_OWNER_ONLY` | proposed | 0535dcc043 (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM) rewrote every his-words gate; the hook's selftests green |
-| `SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP` | ready | work landed dd677f6ecf; its 1 selftest(s) exit 0 on HEAD in this run |
-| `STATION_NOTEBOX_BUILD_WHISPER_AT_NEXT_TURN` | ready | work landed 8be5e40536; its 1 selftest(s) exit 0 on HEAD in this run |
 | `STEVE_BRAKE_FIX_KNOWN_CAUSES_RELEASE` | ready | work landed 5f7d5b0d57; its 5 selftest(s) exit 0 on HEAD in this run |
-| `STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING` | ready | work landed 9020b92322; its 1 selftest(s) exit 0 on HEAD in this run |
-| `STEWARD_FIX_LEAVES_THE_LIGHTS_ON` | ready | 5bd612281f: steward retires what a recovered incident left; selftests green |
 | `TESTQ_ROWS_MEASURE_THE_UNMEASURED_THIRD` | ready | work landed 6607725538; its 4 selftest(s) exit 0 on HEAD in this run |
 | `TMP_SCRATCH_PRUNE_SIXTEEN_GIGS_NOBODY_CLAIMS` | ready | work landed 7385b7d55d; its 1 selftest(s) exit 0 on HEAD in this run |
-| `WORKER_CLONES_MONITOR_POOL_NOT_RABBITS` | ready | work landed 5e603a1d82; its 2 selftest(s) exit 0 on HEAD in this run |
+
+## DONE_GUARD_OWED (69)
+
+| ticket | state at census | evidence |
+|---|---|---|
+| `ACCOUNTPLAN_FIX_UNDOES_SWITCH_IN_FOUR_MIN` | ready | work landed fe7ed5afda; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `AGENT_IMPROVE_INSTALL_DAILY_TIMER` | ready | rm-agent-improve.timer enabled and active now; unit landed in 6ee19ad490; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `AGENT_IMPROVE_REPAIR_SILENT_NONE` | ready | work landed 6ee19ad490; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED` | ready | work landed 3e0b001eb4; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `ALARM_RANGES_BUILD_CLASSES_AS_DATA` | ready | work landed 570e4d3b27; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 2 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `ALARM_REPEAT_FIX_BREAK_ON_WORSE` | ready | work landed 547224ce01; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `AMEND_HOOK_HARDEN_SWEPT_A_NEIGHBOUR` | ready | block_blanket_git_stage.py refuses a bare 'git commit --amend' (its docstring line 27; selftest green); work landed 1023093a75; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `ARTPIPE_ORPHAN_UNSTICK_WEDGE` | ready | work landed 9b5e7b04d2; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `CALL_DEADLINES_ENFORCE_130_OPEN_ENDED` | ready | work landed 7a9249afe8; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD` | ready | work landed 44daff0c93; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER` | ready | work landed f0403eeadd; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `CONDUCTOR_CLOSEOUT_BUILD_LEDGER_CHECK` | ready | work landed b00bfae65c; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES` | ready | b483dac198: the Conductor handoff reboots via --now; selftests green; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `DELEGATED_CARDS_FIX_HELD_OUT_RECALL` | ready | selftest_block_delegated_cards.py exits 0 on HEAD; the bar was settled at 2315f1b614; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY` | ready | work landed f6b6c6dad9; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `DESIGNER_STALL_MONITOR_READY_AND_FORGOTTEN` | ready | work landed 3ccda6ef54; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `DISK_WATCH_BUILD_SCRATCH_OUTSIDE_CAP` | ready | work landed bb1fdf8e7d; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 2 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `EXPEDITE_LANE_BUILD_JUMPS_THE_GAME_QUEUE` | ready | work landed fdf1374675; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `HANDOFF_FIX_RESTART_TWENTY_SECONDS` | ready | work landed ae07aa74b1; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 2 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `HANDOFF_HOOK_FIX_QUOTED_READY_COUNTS` | ready | work landed e7d62cabf4; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `HANDOFF_RESTART_AUDIT_FILES_OWED` | ready | work landed 53b8748973; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS` | ready | work landed e8b334a354; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `HOOKS_BLINDSCAN_TUNE_DRIVE_D_IMPORT_TOLL` | ready | work landed 355bdc8b71; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `HOOKS_SCANGUARD_FIX_QUOTED_PIPE_SLIPS_PAST` | ready | work landed a2bac49a9a; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `HOOKS_VERIFY_TRUE_SUFFIX_MAY_MUTE_REFUSALS` | ready | work landed 2160831515; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `IDLE_SEAT_RESTART_BUILD_BRINGS_QUIET_BACK` | ready | work landed faaab9f5fe; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `IDLE_WATCH_BUILD_SEAT_MINUTES_IN_DIGEST` | ready | work landed 480705561c; its 3 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 2 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `INCIDENT_LEDGER_BUILD_TOLD_ACKED_RECOVERED` | ready | work landed c09e663226; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `ISSYSTEM_WORDS_FIX_PIPELINE_READ_AS_CONTENT` | ready | work landed a5cba06368; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `LENT_ALARM_MEASURE_THE_LOAN_NOT_WEEK` | ready | work landed 36b504cba2; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 2 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `MODCHECK_VALIDATE_BUILD_DELEGATED_NEW_BARS` | ready | work landed 13e4c16f45; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `NIGHTLY_REDS_FIX_RERUN_BEFORE_PAYING` | ready | work landed f1574ed294; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE` | ready | work landed 21dd9677e9; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_ALARMS_FIX_FIXED_ITEM_ID` | ready | ops_watch.mint_name keeps one fixed id per alarm (4f64d24ce3); alarms.json reuses OPS_PLAN_LIST_FIX_VMIV across refilings; it was closed before and its live promise broke 2 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_CLOCKS_DEPLOY_ONE_PINNED_COPY` | ready | work landed 0f3e9fcd6f; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV` | ready | work landed 42647172c7; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 6 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_FINDINGS_DIAGNOSE_17B4` | ready | work landed fb038d5c4c; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_FINDINGS_DIAGNOSE_XZLM` | ready | work landed 65a1f109c7; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 14 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_GAME_HEALTH_DEBUG_PXQI` | ready | work landed b397bc0152; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 21 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY` | ready | work landed d61e43685d; its 4 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_HEALTH_RANK_FIX_GLOB_OUTVOTES_EXACT` | ready | work landed 5d4d5ea0a6; its 4 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_HEALTH_WIRE_INSTRUMENT_INCIDENTS` | ready | work landed 552f9d8bd4; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_JUDGE_NOTES_MEASURE_VS_NO_CHANGE` | ready | work landed 0166bd1228; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_MEMORY_VET_THEN_WIRE_AFTER_WATCH` | ready | work landed ac39eccf39; its 5 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_QUEUES_READING_RESTORE_HQXV` | ready | work landed a04f9d6f7a; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_RAISE_REWIRE_WITH_DEATH_LADDER` | ready | work landed 7d9928c0d0; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_REFUSAL_REWIRE_TO_CONDUCTOR` | ready | work landed b105e9a9c9; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_ROLE_DIAGNOSE_STARVED_AT_FOUR_RUNS` | ready | work landed 307feed8ee; its 4 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_STEVE_UNSTICK_UNCLAIMED_ETBS` | ready | work landed e70d1b821a; its 3 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 13 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_STEVE_UNSTICK_VHRP` | ready | work landed 87551b29f0; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `OPS_TESTQ_UNSTICK_ECPK` | ready | work landed 0400ec93c9; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT` | ready | work landed 9a8c54a9f7; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 3 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `PULSE_DEPLOY_GUARD_SOMEONE_WALKED_IN` | ready | work landed de44537a98; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `PULSE_DEPLOY_UNSTICK_DIRTY_CHECKOUT` | ready | work landed 2fc8d23cf9; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `QUEUE_STALL_ALARM_FINISH_THE_STRAGGLERS` | ready | work landed 80d3d18393; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `RED_COP_BUILD_NO_ORPHAN_REDS` | ready | work landed f0492bc10c; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `RELAPSE_OPS_WATCH_FIX_DIED_TWICE` | ready | work landed 6997fe8331; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `RELAPSE_QUEUES_FIX_DIED_TWICE` | ready | work landed ff9168747b; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `RELAPSE_TIMERS_FIX_DIED_TWICE` | ready | work landed b59fb5b7f1; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `REPEAT_ALARM_ENFORCE_GUARD_OR_STAY_OPEN` | ready | b0fb6fe124: a fix that died closes only with a guard; its tests green except selftest_relentless.py, red on HEAD for the retired pool (retired-eras index); it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS` | ready | work landed 307c7f3ac5; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 2 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED` | ready | work landed ac1d9e74eb; its 4 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF` | ready | work landed 041f74af4c; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS` | ready | work landed 48c6bd7ab1; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 2 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `SPAWN_HOOK_FIX_TYPING_BEATS_OWNER_CAP` | ready | work landed dd677f6ecf; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `STATION_NOTEBOX_BUILD_WHISPER_AT_NEXT_TURN` | ready | work landed 8be5e40536; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING` | ready | work landed 9020b92322; its 1 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `STEWARD_FIX_LEAVES_THE_LIGHTS_ON` | ready | 5bd612281f: steward retires what a recovered incident left; selftests green; it was closed before and its live promise broke 1 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
+| `WORKER_CLONES_MONITOR_POOL_NOT_RABBITS` | ready | work landed 5e603a1d82; its 2 selftest(s) exit 0 on HEAD in this run; it was closed before and its live promise broke 3 time(s) (deadman), so rimflow refuses the close until a class guard test is shown failing on the instance (`rimflow guard`), or the Conductor lifts it |
 
 ## CLEARED (30)
 
-| ticket | state | evidence |
+| ticket | state at census | evidence |
 |---|---|---|
 | `CLASS_REFS_FIX_UNRESOLVED_PIPESYSTEM` | proposed | selftest_lint_def_type_refs.py and selftest_paint_list.py exit 0 on HEAD in this run |
 | `DEPLOY_UPDATE_UNSTICK_ART_EVENTS_BLOCK_PULL` | ready | no DEPLOY_STALE alarm open in ops_watch/alarms.json at 2026-11-18 22:52Z |
@@ -176,9 +184,9 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 | `SELFTEST_DISPATCHER_FIX_NINE_RED_BEFORE_ME` | proposed | selftest_dispatcher.py exits 0 on HEAD in this run |
 | `WTPROFILE_FIX_TESTS_STILL_ASK_FOUNDRY` | proposed | selftest_seat_restart.py exits 0 on HEAD in this run |
 
-## DEAD (72)
+## DEAD (73)
 
-| ticket | state | evidence |
+| ticket | state at census | evidence |
 |---|---|---|
 | `ACCOUNTPICK_HOLD_RESTORE_WHEN_HE_LANDS` | proposed | his later ruling 2026-11-02 (TOKEN_LIMITS_TAME_BARK_NO_BITE) set account_pick hold to [] on purpose: dispatcher_schedule.json account_pick._hold_override |
 | `ACCOUNT_MOVE_FIX_ADVICE_WITH_NO_HANDS` | proposed | switching_plan.py now switches accounts (account-plan.timer active); his 10-28 burn card was replaced by his 2026-11-17 orders in the live plan |
@@ -246,6 +254,7 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 | `SLOT_HOOK_MEASURE_REFUSALS_AND_PEAK` | proposed | parked by owner card 2026-10-29 ('old workflow, stop now'); a measurement for the v3 slot allocator tuning, no consumer |
 | `SLOT_SITTING_FIX_UNMEASURED_START` | proposed | parked by owner card 2026-10-29 ('old workflow, stop now'); slot allocator sittings were v3 tuning |
 | `SLOT_STREAMS_BUILD_SPLIT_R1_R7` | proposed | parked by owner card 2026-10-29 ('old workflow, stop now'); v3 allocator stream split, never adopted |
+| `SPEND_CENSUS_REFUSE_MISSING_USAGE_NOT_ZERO` | proposed | its consumer arena_spend went with the arena (1f0e666566); sim/spend_census.py is a one-off census script nothing runs, and the ticket itself counted 0 such cases in 7680 real ids |
 | `TESTPILOT_FIX_ABORT_WRONG_SCENARIO` | built | Utils/arena/testpilot.py was removed with the arena at 1f0e666566 (owner card 2026-11-05) |
 | `TESTPILOT_FIX_LAUNCH_FAIL_HOLDS_BRIDGE` | built | Utils/arena/testpilot.py was removed with the arena at 1f0e666566 |
 | `TESTPILOT_HARDEN_SELFTEST_MUTANTS_ROUND2` | built | Utils/arena/testpilot.py was removed with the arena at 1f0e666566 |
@@ -255,7 +264,7 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 
 ## DUPLICATE (6)
 
-| ticket | state | evidence |
+| ticket | state at census | evidence |
 |---|---|---|
 | `CLOSE_SHA_REPAIR_FOUR_ON_ALL_SAINTS` | proposed | into `CLOSE_SHA_REPAIR_EIGHT_ON_LEAP_DAY`: same repair as CLOSE_SHA_REPAIR_EIGHT_ON_LEAP_DAY |
 | `CUTCRIT_RESTORE_173_BUILT_MID_SENTENCE` | proposed | into `CRITERIA_TEXT_FIX_CUT_AT_CAP`: the same 160-char criterion cap as CRITERIA_TEXT_FIX_CUT_AT_CAP |
@@ -264,16 +273,15 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 | `SITECALM_FIX_HIVE_APPEARS_MIDRUN` | proposed | into `DRIVERSITE_FIX_HIVE_HALTS_TWO_MAPS`: the same test-site hive problem |
 | `TELEMETRY_STACK_BUILD_AFTER_THE_MOVE` | proposed | into `TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED`: the same stack as TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED (validated) |
 
-## VALID_SMALL (2)
+## VALID_SMALL (1)
 
-| ticket | state | evidence |
+| ticket | state at census | evidence |
 |---|---|---|
-| `ROLE_HEADERS_RETIRE_ENABLED_PROSE` | proposed | producer.md and auditor.md headers say 'enabled' while dispatcher_schedule.json has both disabled: false prose |
-| `SPEND_CENSUS_REFUSE_MISSING_USAGE_NOT_ZERO` | proposed | sim/spend_census.py:117-121 still reads a missing usage count as 0 (u.get(k) or 0); gpt_consult.py imports it |
+| `ROLE_HEADERS_RETIRE_ENABLED_PROSE` | proposed | built in part at 0e982afe59: no role file states its switch setting any more (selftest_role_headers_state_free.py, red before, green after); producer.md, auditor.md and innovator.md had said enabled while disabled. LEFT OPEN: the clock-time and cap half (18 clock lines, 27 cap lines in seven role files) is prose rework of live role instructions, more than an hour |
 
-## VALID_LARGE (120)
+## VALID_LARGE (119)
 
-| ticket | state | evidence |
+| ticket | state at census | evidence |
 |---|---|---|
 | `ACCOUNTS_RESTORE_STEVE_LINE_AFTER_BIG_WEEK` | ready | week.conf still points account-plan.service at switching_plan_week_2026-11-05.json, which now carries his 2026-11-17 orders (git 9ae57150a3): removing it would undo them. The standard switching_plan.json has checkpoint_grace_s (RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH) that the live week file lacks, so that feature is not live. Needs: merge the week file into switching_plan.json, then delete week.conf, in one sitting the Conductor watches. Acceptance: systemctl --user cat account-plan.service shows no RM_SWITCH_PLAN and switching_plan.py status shows his 11-17 order and checkpoint_grace_s. |
 | `ACCOUNT_KEEPALIVE_VERIFY_STILL_BREATHING` | proposed | a SteveDesktop reading; SteveDesktop is off-limits this run (72 h soak). Deadline: the 30-day refresh window lapses about 2026-11-23. UNMEASURED. |
@@ -318,7 +326,6 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 | `PHONE_SENDS_ENFORCE_STILL_HONOR_SYSTEM` | proposed | no mechanical prereview gate on chat_review.py phone sends |
 | `POLLLOOPS_MIGRATE_THE_OTHER_SEVENTY` | proposed | migrate ~70 bridge poll loops; waits on T3/T9 |
 | `POLLLOOPS_MIGRATE_TO_UNTIL` | proposed | bridge conditions T9; waits on T3 |
-| `PROOFLINT_WIRE_AT_FILING_NOT_AT_RUN` | ready | file and close call the lint (cli.py:2038, 2855) but selftest_prooflint_at_filing.py check 7 is red on HEAD: `implemented` does not |
 | `PROOF_TIERS_WIDEN_FOUR_FULL_LIST_HOLDOUTS` | proposed | four places assume the full mod list; not probed (UNMEASURED) |
 | `QUOTA_LEFT_AT_RESET_MEASURE_PER_ACCOUNT` | proposed | record quota left at each reset over several cycles (days of readings) |
 | `REAPER_SESSION_DIRS_MEASURE_END_LINE_YOUNG` | ready | scratch reaper reading; blocked |
@@ -333,6 +340,7 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 | `RIMMANDRAKE_BUILD_OBSERVATORY_SMALL_PROVEN_FIRST` | proposed | bridge validation observatory; not built |
 | `RIMMANDRAKE_BUILD_SHARED_SCENE_RUNNER_FIRST_SLICE` | proposed | in-game C# scene runner; live |
 | `RIMMANDRAKE_EXTEND_PLAYER_TRUTH_SWEEP_LADDER_WAS_ONE` | proposed | trial 2 ran 2026-11-13 (a578a7bc81); the ladder is not built |
+| `RIMMANDRAKE_FIX_SLOT_SCAN_BLIND_TO_TEXPATH_PATCHES` | proposed | scan_def_slots reads base defs only; the fix is to read the patched tree (effective_def_lint.py already builds one), with a test on a patch-repointed def |
 | `RIMMANDRAKE_FIX_TICKBENCH_WSL_PATHS_UNDER_PYTHONEXE` | proposed | e51e288739 filed or began it; not probed (UNMEASURED) |
 | `RIMMANDRAKE_FOLD_FRAME_JUDGE_INTO_PRELOOK` | proposed | not built |
 | `RIMMANDRAKE_INVENTORY_VALIDATION_SCHEMES_BEFORE_ANY_LADDER` | proposed | an inventory; not started |
@@ -347,7 +355,6 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 | `RIMMANDRAKE_REVIVE_SHIPPED_FUZZ_WITH_LAWS` | proposed | not built |
 | `RIMMANDRAKE_ROUTE_ART_ROUND_CAP_TO_CRITERIA_FIXER` | proposed | refusal contract T8; not built |
 | `RIMMANDRAKE_WAIT_LOAD_READY_UNTIL_CURRENTMAP_SET` | proposed | bridge readiness; needs a live check |
-| `RIMMANDRAKE_FIX_SLOT_SCAN_BLIND_TO_TEXPATH_PATCHES` | proposed | scan_def_slots reads base defs only; the fix is to read the patched tree (effective_def_lint.py already builds one), with a test on a patch-repointed def |
 | `RIMMASTER_DESIGN_PHONE_ALERTS_THAT_ACTUALLY_RING` | proposed | he answered; ours to design (2026-11-15 sleeper census row 12) |
 | `RIMMASTER_FIX_AGENT_GAME_EVENTS_FILED_AS_OWNER` | proposed | ./game events by a helper recorded as OWNER; needs a read of the 2026-11-08 events and ./game's seat choice (UNMEASURED) |
 | `RIMMASTER_FIX_REMOTE_TAKE_HOLDS_LOCK_NOBODY_READS` | proposed | SteveDesktop remote bridge take; Steve is off-limits this run |
@@ -398,7 +405,7 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 
 ## LIVE_ONLY (38)
 
-| ticket | state | evidence |
+| ticket | state at census | evidence |
 |---|---|---|
 | `AWARENESS_GENPAWN_TAME_ARM_BEFORE_USE` | built | built; owes its live proof; the game is off-limits this run |
 | `BRIDGETOOLS_DLL_REBUILD_THREE_TOOLS_MISSING` | ready | a JawaBench DLL rebuild and deploy; deploy touches the game, off-limits this run |
@@ -441,7 +448,7 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 
 ## KEEP (7)
 
-| ticket | state | evidence |
+| ticket | state at census | evidence |
 |---|---|---|
 | `OPS_PLAN_LIST_FIX_VMIV` | ready | the live item of the open PLAN_DISTRESS alarm (priority list closed_entry since 2026-11-13); the Conductor keeps that list |
 | `OPS_SCRATCH_DIRT_MEASURE_AT_END_YOGQ` | ready | the live item of the open SCRATCH_DIRTY_END alarm |
@@ -453,18 +460,32 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 
 ## NEEDS_HIM (2)
 
-| ticket | state | evidence |
+| ticket | state at census | evidence |
 |---|---|---|
 | `DDRIVE_NVME_REPAIR_RESEAT_NEXT_SITTING` | proposed | Archmagi D: NVMe throws corrected PCIe AER (ops_watch counts it, 90aa0cc741): will you reseat the drive at a sitting, or leave it monitored? |
 | `RIMMASTER_SETTLE_HANDOFF_CULL_AGE_TWO_RULINGS_DISAGREE` | proposed | two of his rulings give different handoff cull ages (project handoff.py 30 days, owner 2026-09-18, vs Lodestar's): which one stands? |
 
 ## OUT (2)
 
-| ticket | state | evidence |
+| ticket | state at census | evidence |
 |---|---|---|
 | `MODCHECK_SUITE_CORRECTIONS_1` | ready | mod-suite content (12 mod suites), out of scope |
 | `RIMMASTER_TRIAGE_MOD_OWED_CENSUS_120_STILL_UNREAD` | proposed | triage of 120 mod-content items, out of scope |
 
-## Findings this run filed
+## Findings and builds of this run
 
-(filled in as filed)
+- `RIMMANDRAKE_SCOPE_SELFTEST_LEDGER_READS_PREFLIGHT_LOG_TRIPS` (filed and fixed, 1fe595f83e): `selftest_reconcile.py`
+  and `selftest_built.py` read every `*.jsonl` in their case dir as ledger events, including the ticket preflight's
+  `refusals/preflight_runs.jsonl`; 5 cases red with `KeyError: 'event'` on HEAD, all green after.
+- `selftest_prooflint_at_filing.py` check 7 counted call text and read 2 of 3 doors after the preflight gate began
+  routing `file` (31c94dd37a); fixed to check each door (e6ab733c03), a mutant with the close door removed is caught.
+- `ROLE_HEADERS_RETIRE_ENABLED_PROSE`, switch part (0e982afe59): producer.md, auditor.md and innovator.md said
+  "enabled" while their schedule rows are disabled; no role file states its switch now (`selftest_role_headers_state_free.py`).
+- The live account plan is the week file (`week.conf` -> `switching_plan_week_2026-11-05.json`); the standard
+  `switching_plan.json` holds `checkpoint_grace_s`, which the live service therefore does not read. Noted on
+  `ACCOUNTS_RESTORE_STEVE_LINE_AFTER_BIG_WEEK`.
+- `items/` glob drift: `RIMMANDRAKE_BURY_GSS_CORDS_IN_FW_SUPERDEEP_PIT_WATER` (done) had live prose; moved to
+  `items/closed/` (4eee6199f5, fe7c4ea9eb); `selftest_items_glob_live.py` 7/7.
+- Reds seen on HEAD in this run with no fix here: `selftest_focus_cap.py` ("the refused claim wrote no event"),
+  `selftest_known_results.py` (planted case), `selftest_static_game_state.py` (`RIMMASTER_GUARD_WRECKED_LINKS_STATIC_LIST_TRIPS_RATCHET`),
+  `selftest_scratch_reap.py` and `selftest_conductor_reset_mode.py` (no verdict in 170 s: UNMEASURED).
