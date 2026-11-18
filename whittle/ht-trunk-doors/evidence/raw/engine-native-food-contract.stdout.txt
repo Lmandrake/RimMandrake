@@ -1,2 +1,0 @@
-RimWorld.PawnInventoryGenerator GenerateInventoryFor instructions 124
-RimWorld.PawnInventoryGenerator GiveRandomFood instructions 52

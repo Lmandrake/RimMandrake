@@ -1,8 +1,0 @@
-{
-  "AST_identical_functions": [
-    "is_rostered",
-    "shrink_guard",
-    "shipped_op_count"
-  ],
-  "SHRINK_FRACTION_unchanged": true
-}

@@ -1,2 +1,0 @@
-contained in rm-harness.slice (max 24G), 1 workers
-[1/1] PASS          0.2s  src/RimMandrake/Utils/selftest_drawbridge_underpass.py

@@ -1,1 +1,0 @@
-PASS: four published integration files deployed and byte verified; 38 unrelated drift paths unchanged

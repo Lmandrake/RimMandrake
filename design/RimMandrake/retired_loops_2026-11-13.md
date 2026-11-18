@@ -41,7 +41,7 @@ Nothing here was paused. No `timers_guard.py pause` was used, so no resume timer
   The 19 moved unit files and drop-ins are under `D:\ClaudeWork\backups\rimmandrake\retire_loops_20261113\systemd\archmagi\`.
 - **Steve.** `whittle-claude@.service` and its drop-ins were tarred to `...\retire_loops_20261113\systemd\stevedesktop\whittle-claude.tar`, removed, and masked.
 - **Artisan restart recipes.** The two saved recipes, `rm-ralph-gss-steve.service.saved` and `rm-ralph-pyrelands.service.saved`, were moved to `...\retire_loops_20261113\saved_recipes\`. No `rm-ralph-*` unit was loaded.
-- **Whittle Stop hook.** `whittle/STOP` now exists. While it exists the hook holds no session open, even one started with `WHITTLE=1`.
+- **Whittle Stop hook.** Removed on 2026-11-18 with `whittle/` (`design/RimMandrake/retired_eras_index_2026-11-18.md`).
 - **Monitoring.**
   - The units are listed in `src/RimMandrake/rimflow/live_retired.txt`, so deadman no longer reopens promises on them.
   - `ops_clocks` lists them as outside its watch.
@@ -55,23 +55,12 @@ Nothing here was paused. No `timers_guard.py pause` was used, so no resume timer
   - The five Whittle clones in `/home/mandrake/rm/scratch/BENCH/claude-*` were removed. First, their unpushed backup branches were bundled to `...\retire_loops_20261113\clones\*.unpushed.bundle` and verified.
   - The four `ralph_*` clones there were cleaned up later the same day: three were removed and one was kept. See "The Ralph clones" below.
 
-## Where state and code live (code is NOT deleted in this pass)
+## Where state and code live now
 
-- **Code.** It stays as it was:
-  - `src/RimMandrake/rimflow/relentless.py` and `relentless_rules.json`;
-  - the repo's unit copies in `src/RimMandrake/Utils/systemd/`;
-  - the skills `relentless`, `relentless-pipeline`, `artisan*` and `whittle`;
-  - `.claude/hooks/whittle_stop.py`.
-
-  An agent could still run `relentless.py` by hand. Nothing does so on a schedule.
-- **State.** It stays as history:
-  - the Relentless store at `/home/mandrake/rm/relentless/store`, with item states frozen as they were;
-  - `whittle/`;
-  - the ralph work dirs under `D:\ClaudeWork\rimmandrake\ralph_*`.
-- **Design.**
-  - `design/RimMandrake/relentless_*.md`
-  - the ralph loop design
-  - this file
+On 2026-11-18 the owner ordered every remnant of these eras removed (item
+`RIMMANDRAKE_RETIRE_OLD_PIPELINE_REMNANTS_TEN_SLIPPED_INTO_LANES`). What was deleted, the last commit that held it, and
+what still stays because current machinery runs it (much of `relentless.py` and its store, renamed in a later phase)
+are listed in `design/RimMandrake/retired_eras_index_2026-11-18.md`.
 
 ## What was left running
 
@@ -115,7 +104,6 @@ for u in rm-relentless.timer rm-relentless.service rm-relentless-release.timer r
 ssh stevedesktop systemctl --user is-enabled whittle-claude@.service       # masked
 systemctl --user list-units --all --no-legend 'rm-ralph-*' 'whittle-claude@*' 'rm-relentless-job@*'   # empty
 grep -c 'owner 2026-11-13' src/RimMandrake/rimflow/live_retired.txt         # 9
-test -f whittle/STOP && echo STOP-present
 python3 src/RimMandrake/rimflow/detached_helper.py status --all             # only Conductor-launched helpers
 ```
 

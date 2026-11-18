@@ -1,1 +1,0 @@
-{"getterPublic":false,"property":"StateCompressed","getterPrivate":true,"type":"Verse.Rand","getterAssembly":false}

@@ -1,1 +1,0 @@
-\\wsl.localhost\Ubuntu\home\mandrake\rm\codex-ht\whittle\ht-juvenile-tier\evidence\observe_entry.py

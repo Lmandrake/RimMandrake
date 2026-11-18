@@ -1,3 +1,0 @@
-event_off_fresh_tick PASS
-A2_complete_land_pool PASS
-FAIL AssertionError('incident did not schedule eligible kind') ["AssertionError('exact restoration differs: debug,jobs')"]

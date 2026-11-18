@@ -133,7 +133,7 @@ check(got and FLAG not in got[0] and "--cap-usd" in got[0], "A coverage second r
 
 # the whole tree: no code line passes the flag (the watchdog replaces it everywhere)
 hits = []
-for root in (os.path.join(REPO, "src"), os.path.join(REPO, "infrastructure", "whittle_claude")):
+for root in (os.path.join(REPO, "src"),):
     for dp, dn, fn in os.walk(root):
         dn[:] = [d for d in dn if d not in ("bin", "obj", "__pycache__", "node_modules", "acceptance")]  # tests, not launchers
         for f in fn:

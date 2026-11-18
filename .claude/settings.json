@@ -262,15 +262,6 @@
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/role_result_before_stop.py\""
           }
         ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/whittle_stop.py\"",
-            "timeout": 60
-          }
-        ]
       }
     ],
     "WorktreeCreate": [

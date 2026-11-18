@@ -1,9 +1,6 @@
 # Runner selection
 
 Claude is the default. Designer: `role_launch.py run-now --role Designer --runner codex --concept <dir> --by <seat> --why <reason> --apply`.
-Relentless: set `runner: codex` in its rules JSON; Builder/Judge prompts and proof/verdict acceptance stay the same.
-
-Whittle: `python3 "$WORKFLOWS_ROOT/whittle/run.py" --runner codex --cwd <project>`; Artisan: `RUNNER=codex LOGS=<logs> bash ralph/loop.sh`.
 Set `RIMMANDRAKE_ROOT` to this clone and `WORKFLOWS_ROOT` to MandrakeWorkflows; see its `tools/RUNNERS.md` for setup.
 
 Model comes from `codex_model` or `CODEX_MODEL`, then the CLI config; effort from `codex_effort` or `CODEX_EFFORT` (default high).
@@ -23,7 +20,7 @@ The isolated Designer smoke passed with that selection. Windows-launched WSL pro
 A native WSL `codex exec --sandbox danger-full-access` session drove the complete
 Whittle pit-prison acceptance runner through Windows `python.exe`, then the
 HugeThings P1 runner. No Claude runner or Claude tool call drove the game.
-[The report](../../../../whittle/CODEX_LIVE_2026-11-10.md) links the raw attempts,
+The report (`whittle/CODEX_LIVE_2026-11-10.md`, removed with the Whittle loops; `git show f2ce40bac8:whittle/CODEX_LIVE_2026-11-10.md`) links the raw attempts,
 preflights, restoration receipts, independent pit judgment and published fixes.
 This establishes launch → attach → disposable-site setup → real jobs/ticks →
 occupied save/load → assertions → restoration → shutdown/release. It does not
@@ -53,15 +50,7 @@ their results explicitly. In this session the operator supplied:
 - Deploy planning, `--pull` rescue of unrecognized deployed edits, hold-file
   compliance, byte verification, intended tier selection and fresh process
   identity. These are operator/CLI contracts, not a side effect of saving source.
-- Whittle completion and helper wrapup. Its Claude Stop hook normally checks
-  DONE evidence, broaden work, judgment and freshness. Codex must run the workflow
-  validator explicitly when using the full workflow and inspect any refusal;
-  `whittle_stop.done_problems(...)` is the read-only claim check. Calling the Stop
-  hook itself can move BLOCKED.md into history. This session used the authorized
-  acceptance runner directly, kept the old blocked trial intact, and recorded
-  new raw results plus a fresh independent judge; it does **not** claim a new
-  complete Whittle orchestrator/Stop-hook run. Preserve raw receipts; never flip
-  statuses or touch evidence merely to satisfy an mtime gate.
+- Preserve raw receipts; never flip statuses or touch evidence merely to satisfy an mtime gate.
 - Settings/snapshot debts, pilot diagnosis after three non-passes, exact readbacks,
   first-exception investigation, sane shutdown and immediate bridge release.
   Claude's helper `wrapup_hook` does not run automatically for a Codex helper.
@@ -118,7 +107,7 @@ run in Windows Python; WSL Python runs offline checks and orchestration.
 
    ```sh
    python.exe "$(wslpath -w "$PWD/src/RimMandrake/FlowWorks/northstar/concept_scenes.py")" \
-     --out "$(wslpath -w "$PWD/whittle/evidence/codex-live/new-relative.json")"
+     --out "$(wslpath -w "/tmp/concept_scenes_result.json")"
    ```
 
    Use an existing disposable registered save, never worldgen or a canonical

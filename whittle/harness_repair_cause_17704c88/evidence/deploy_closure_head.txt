@@ -1,3 +1,0 @@
-2026-11-11T21:37:25-08:00
-deploy_closure(Pyrelands) = ['WeatherSuite', 'UtinniPatches', 'SWBestiary', 'PyrelandsMechanics', 'MandrakePatches']
-deploy_args_for(Pyrelands) = ['--compose', 'biomes', '--with', 'WeatherSuite', '--with', 'UtinniPatches', '--with', 'SWBestiary', '--with', 'PyrelandsMechanics', '--with', 'MandrakePatches']

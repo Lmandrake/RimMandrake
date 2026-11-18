@@ -1,3 +1,0 @@
-Wrote [JUDGE.md](/home/mandrake/rm/codex-ht/whittle/ht-passage-pool/JUDGE.md) with per-bullet judgments, raw evidence, defects, limits, and the disclosed review-scope breach.
-
-would show: yes
