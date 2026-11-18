@@ -134,6 +134,63 @@ def main():
     check(plan["verdict"] == "companion", "fill_plan says companion, not pick: %s" % plan["verdict"])
     r = T.cmd_fill(type("A", (), dict(mod="Mock", n=1, cap=200, day_s=3600))())
     check(r == 0 and not os.listdir(T.q("pending")), "the filler spends no job on it")
+
+    # ---------------------------------------------- admission: ANY job whose companion is not staged waits, not only
+    # the filler's (RIMMANDRAKE_HOLD_PENDING_BATCH_AFTER_DELIVERY_DEATH: 17 helper jobs of 5 mods died one after another
+    # on 2026-11-12 17:13-18:03 UTC, all `companion STALE ... want 7539f4942fa6`, because the gate covered the filler alone)
+    ids = {}
+
+    def pend(name, sha, prio, by="BENCH"):
+        j = S.make_job("Mock", {"chains": ["c1"]}, "guard", by, sha)
+        j.update(priority=prio)
+        S.dump(j, T.q("pending", j["id"] + ".json"))
+        ids[name] = j["id"]
+    starts, real_remote = [], T.remote
+    T.remote = lambda args, stdin=None, timeout=180: (starts.append(
+        [n for n, i in ids.items() if i == json.loads(stdin)["id"]][0]) or (0, {"attempt": "A%d" % len(starts)}))
+    try:
+        pend("JF", sha1, 95, by=T.FILLER)
+        pend("JA", sha1, 90)
+        pend("JB", sha0, 50)
+        T.admit({})
+        check(not starts and T.where(ids["JF"]) == "cancelled",
+              "a filler job at an unstaged companion is still cancelled at admission: starts %s" % starts)
+        ssh_before = count("sshlog")
+        T.admit({})
+        waits = T.read_json(T.q(T.ADMISSION_WAITS)) or {}
+        check(starts == ["JB"] and T.where(ids["JA"]) == "pending" and T.where(ids["JB"]) == "running",
+              "a helper job at origin/main's unstaged companion stays pending and the next job, staged, is admitted: %s"
+              % starts)
+        check(ids["JA"] in waits and "companion for %s not on SteveDesktop" % sha1 in waits[ids["JA"]]["reason"],
+              "the wait and its reason are recorded: %s" % waits)
+        check(count("sshlog") - ssh_before == 1, "one SteveDesktop probe per admission pass, not one per job: %d"
+              % (count("sshlog") - ssh_before))
+        import io
+        import contextlib
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            T.cmd_list(type("A", (), {"state": "pending"})())
+        check("waits: companion for %s" % sha1 in out.getvalue(), "testq.py list shows why it waits: %r"
+              % out.getvalue()[-200:])
+        T.move(ids["JB"], "running", "done", {"job": T.read_json(T.q("running", ids["JB"] + ".json"))["job"], "result": {}})
+        with open(inbox, "rb") as f:
+            kept = f.read()
+        CI.write_fixture(inbox, C.wanted(sha1))     # staged by hand: the stager's own build is counted below
+        T.admit({})
+        with open(inbox, "wb") as f:
+            f.write(kept)
+        waits = T.read_json(T.q(T.ADMISSION_WAITS)) or {}
+        check(starts == ["JB", "JA"] and ids["JA"] not in waits,
+              "once its companion is staged the waiting job is admitted and its wait cleared: %s %s" % (starts, waits))
+        for st in ("running", "done", "cancelled"):
+            for f in os.listdir(T.q(st)):
+                os.remove(T.q(st, f))
+        if os.path.exists(T.q(T.ADMISSION_WAITS)):
+            os.remove(T.q(T.ADMISSION_WAITS))
+        if os.path.exists(T.q("train.json")):
+            os.remove(T.q("train.json"))
+    finally:
+        T.remote = real_remote
     rec = C.run_pass()
     check(rec["state"] == "staged" and rec["how"] == "built" and count("count") == 2, "the next pass stages it: %s" % rec)
     check(T.companion_hold() is None and T.fill_plan("Mock", 1, 200, 3600, now)["verdict"] == "pick",
@@ -181,6 +238,37 @@ def main():
     check(rec["state"] == "behind" and count("count") == n, "a worktree off origin/main builds nothing: %s" % rec["state"])
     git(repo, "checkout", "-q", "--", tool)
     check(C.run_pass()["state"] == "staged", "level again: staged")
+
+    # ---------------------------------------------- a staged record whose copies left SteveDesktop: admission's wait
+    # makes the stager look again instead of trusting its "unchanged" shortcut (Codex review of
+    # RIMMANDRAKE_HOLD_PENDING_BATCH_AFTER_DELIVERY_DEATH: else the job would wait for good while the stager says staged)
+    game_dll = os.path.join(steve, "game", "BridgeTools", "JawaBench", CI.DLL_NAME)
+    CI.write_fixture(inbox, "1" * 64)
+    CI.write_fixture(game_dll, "1" * 64)
+    jw = S.make_job("Mock", {"chains": ["c1"]}, "guard", "BENCH", git(repo, "rev-parse", "--short", "HEAD"))
+    S.dump(jw, T.q("pending", jw["id"] + ".json"))
+    went, real_remote = [], T.remote
+    T.remote = lambda args, stdin=None, timeout=180: (went.append(json.loads(stdin)["id"]), (0, {"attempt": "AW"}))[1]
+    try:
+        T.admit({})
+        check(not went and T.where(jw["id"]) == "pending" and os.path.exists(T.q(C.RECHECK)),
+              "the staged companion gone from SteveDesktop: the job waits and the stager is asked to look again")
+        n = count("count")
+        rec = C.run_pass()
+        check(rec["state"] == "staged" and rec["how"] == "built" and count("count") == n + 1
+              and not os.path.exists(T.q(C.RECHECK)), "the next pass probes, restages, and clears the ask: %s" % rec)
+        T.admit({})
+        check(went == [jw["id"]] and not (T.read_json(T.q(T.ADMISSION_WAITS)) or {}),
+              "and the waiting job is admitted: %s" % went)
+        rec = C.run_pass()
+        check(rec["how"] == "unchanged", "with no ask the stager keeps its shortcut: %s" % rec.get("how"))
+    finally:
+        T.remote = real_remote
+        for f in os.listdir(T.q("running")):
+            os.remove(T.q("running", f))
+        for f in (T.ADMISSION_WAITS, "train.json"):
+            if os.path.exists(T.q(f)):
+                os.remove(T.q(f))
 
     # ---------------------------------------------- the admission gate
     sha_new = git(repo, "rev-parse", "--short", "HEAD")

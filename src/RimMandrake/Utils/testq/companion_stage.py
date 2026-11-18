@@ -46,6 +46,7 @@ import testq as T  # noqa: E402
 CI = M.CI
 STATE = "companion_stage.json"
 LOG = "companion_stage.log"
+RECHECK = "companion_recheck.json"  # testq.admit saw origin/main's companion missing on SteveDesktop: probe, don't trust
 RETRY_S = 1800              # a build that failed is not retried every tick
 BUILD_TIMEOUT_S = 420       # the tick's TimeoutStartSec is 900; winbuild queues on a shared stage lock
 FIXED_AT = "2026-11-03T22:40:00Z"   # `proof` counts only jobs finished after this fix began
@@ -131,7 +132,7 @@ def decide(now):
     rec = {"want": want, "sha": sha}
     if want is None:
         return dict(rec, state="unmeasured", reason="cannot hash %s at origin/main in %s" % (CI.SRC_REL, M.REPO))
-    if prev.get("state") == "staged" and prev.get("want") == want:
+    if prev.get("state") == "staged" and prev.get("want") == want and not os.path.exists(T.q(RECHECK)):
         return dict(rec, state="staged", how="unchanged", staged_at=prev.get("staged_at"))
     got = probe()
     if got is None:
@@ -156,7 +157,13 @@ def decide(now):
 def run_pass(now=None):
     now = time.time() if now is None else now
     prev = state() or {}
+    ask = os.path.exists(T.q(RECHECK))
     rec = decide(now)
+    if ask and "inbox" in rec:  # this pass READ SteveDesktop (an unread or unmeasured pass keeps the ask)
+        try:
+            os.remove(T.q(RECHECK))
+        except FileNotFoundError:
+            pass
     same = (prev.get("state"), prev.get("want")) == (rec["state"], rec["want"])
     rec.update(ts=S.utcnow(), epoch=now, since=prev.get("since", now) if same else now)
     S.dump(rec, T.q(STATE))
@@ -175,10 +182,20 @@ def hold_reason(st, rev="origin/main"):
     return None
 
 
-def unready_at(sha):
-    """Live: why a job at `sha` cannot pass deploy, or None (also when that cannot be read: the worker still judges)."""
+def ask_recheck(why):
+    """testq.admit: a job waits for origin/main's companion while the last record says it is staged. The record's
+    `unchanged` shortcut would never look again, so the next pass probes SteveDesktop (and restages)."""
+    st = state() or {}
+    if st.get("state") == "staged" and st.get("want") == wanted() and not os.path.exists(T.q(RECHECK)):
+        S.dump({"at": S.utcnow(), "why": why}, T.q(RECHECK))
+        T.log("companion_stage: recheck asked: %s" % why)
+
+
+def unready_at(sha, read=None):
+    """Live: why a job at `sha` cannot pass deploy, or None (also when that cannot be read: the worker still judges).
+    READ replaces probe() (testq.admit reads SteveDesktop once per pass, however many jobs it weighs)."""
     want = wanted(sha)
-    got = probe() if want else None
+    got = (read or probe)() if want else None
     if not got or want in got.values():
         return None
     return "companion for %s not on SteveDesktop: its sources hash %s, inbox %s, game %s" % (

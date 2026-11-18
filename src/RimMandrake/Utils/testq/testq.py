@@ -441,7 +441,17 @@ def admit_key(job, train):
     return (-(job["priority"] + (TIER_STAY_BONUS if stay else 0)), job["profile"] != train, job["submitted"], job["id"])
 
 
+ADMISSION_WAITS = "admission_waits.json"     # {job id: {"reason", "since"}}: pending jobs admission skipped
+
+
 def admit(status):
+    """Admit the first ready pending job, in admit_key order. A job whose companion is not staged on SteveDesktop
+    (companion_unready) would only die at deploy: a filler job is cancelled (the filler picks again); any other job
+    whose companion is origin/main's, which the stager stages by itself, WAITS, named in ADMISSION_WAITS and
+    `testq.py list`, and the next one is weighed; it is admitted once that companion is staged. A hand job whose
+    companion left origin/main will never be staged: it is admitted and the worker judges it, as before
+    (RIMMANDRAKE_HOLD_PENDING_BATCH_AFTER_DELIVERY_DEATH: 17 helper jobs of 5 mods, at shas that all wanted one companion, died
+    `companion STALE` one after another, 2026-11-12 17:13-18:03 UTC, when the gate covered the filler alone)."""
     if steve_running() or paused():
         return
     if status.get("busy"):
@@ -453,11 +463,41 @@ def admit(status):
     if not cands:
         return
     cands.sort(key=lambda j: admit_key(j, train))
-    job = cands[0]
-    why = job.get("requested_by") == FILLER and companion_unready(job)
-    if why:     # the filler picks again next tick; a cancel is not counted by the brake (brake_tail)
-        move(job["id"], "pending", "cancelled", {"job": job, "reason": why, "at": S.utcnow()})
-        log("%s cancelled at admission: %s" % (job["id"], why))
+    got, main = [], []
+
+    def main_wants():
+        if not main:
+            import companion_stage as CS
+            main.append(CS.wanted())
+        return main[0]
+
+    def read_once():        # one SteveDesktop probe per pass, however many jobs wait
+        if not got:
+            import companion_stage as CS
+            got.append(CS.probe())
+        return got[0]
+    before = read_json(q(ADMISSION_WAITS)) or {}
+    waits, job = {}, None
+    for cand in cands:
+        why = companion_unready(cand, read_once)
+        if not why:
+            job = cand
+            break
+        if cand.get("requested_by") == FILLER:  # the filler picks again next tick; a cancel is not counted (brake_tail)
+            move(cand["id"], "pending", "cancelled", {"job": cand, "reason": why, "at": S.utcnow()})
+            log("%s cancelled at admission: %s" % (cand["id"], why))
+            break
+        import companion_stage as CS
+        if not main_wants() or CS.wanted(cand["source_sha"]) != main_wants():
+            job = cand          # its companion left origin/main: the stager will never stage it; the worker judges
+            break
+        waits[cand["id"]] = {"reason": why, "since": (before.get(cand["id"]) or {}).get("since") or S.utcnow()}
+        if (before.get(cand["id"]) or {}).get("reason") != why:
+            log("%s waits at admission: %s" % (cand["id"], why))
+        CS.ask_recheck("%s waits: %s" % (cand["id"], why))
+    if waits or before:
+        S.dump(waits, q(ADMISSION_WAITS))
+    if job is None:
         return
     rc, o = remote(["start"], stdin=json.dumps(job))
     if rc == EX_BUSY:
@@ -1683,12 +1723,13 @@ def companion_hold(rev="origin/main"):
     return CS.hold_reason(st, rev)
 
 
-def companion_unready(job):
-    """Live, at admission: why this job's companion is not on SteveDesktop, or None. Only once a stager has run."""
+def companion_unready(job, read=None):
+    """Live, at admission: why this job's companion is not on SteveDesktop, or None. Only once a stager has run.
+    READ replaces companion_stage.probe (admit's one probe per pass)."""
     if not read_json(q("companion_stage.json")):
         return None
     import companion_stage as CS
-    return CS.unready_at(job["source_sha"])
+    return CS.unready_at(job["source_sha"], read)
 
 
 def nonfault_cause(rec, windows):
@@ -1885,11 +1926,15 @@ def cmd_list(a):
         print("PAUSED since %s by %s %s/%s: %s  (testq.py resume --reason R)" % (pz.get("since"), pz.get("job"),
                                                                               pz.get("outcome"), pz.get("cause"),
                                                                               pz.get("reason")))
+    waits = read_json(q(ADMISSION_WAITS)) or {}
     for st in ([a.state] if a.state else STATES):
         for rec in records(st):
             job, res = job_of(rec), rec.get("result") or {}
             extra = (rec.get("attempt") and rec["attempt"] + ("" if host_of(rec) == STEVE else " @" + host_of(rec))) or ("%s %s %s" % (res.get("outcome"), res.get("cause") or "",
                                                           res.get("counts")) if res else rec.get("reason", ""))
+            w = waits.get(job.get("id")) if st == "pending" else None
+            if w:
+                extra = "waits: %s (since %s)" % (w.get("reason"), w.get("since"))
             print("%-9s %s %-12s %-10s p%-3d %s  %s" % (st, job.get("id"), job.get("mod"), job.get("purpose"),
                                                       job.get("priority", 0), sel_text(job)[:50], extra))
     return 0
