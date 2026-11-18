@@ -6,7 +6,8 @@ mods with a harness"; instrument: a bad_selection probe per mod) and loop rule R
 bridge backlog).
 
   coverage.py measure [--json]       probe every harnessed mod; print the G5 line, write QHOME/coverage.json
-  coverage.py check [--min-wired N]  exit 0 iff at least N mods are wired and EVERY wired mod passes its probe
+  coverage.py check [--min-wired N]  exit 0 iff at least N unheld mods are wired and EVERY one passes its probe; exit 2
+                                     when the owner's hold list is unreadable (could not look)
   coverage.py rank [--top N]         selectable mods not yet wired, by open bridge items naming them (R4's order)
   coverage.py wired                  the mods the tick's filler walks, one per line (TESTQ_FILL_MODS overrides), rotated
                                      to start after the mod of the newest filler job (fill_order)
@@ -22,7 +23,10 @@ A HARNESSED mod is a folder src/<tier>/<Mod>/ holding validation.py. Its PROBE i
      id on infrastructure/state/modlists/ModsConfig.MINIMAL.xml, the only third-party mods sync_test_mods.py copies
      there. A selectable mod with any other dependency is `steve_missing` (its job would load without it).
 A WIRED mod (wired_mods.json, committed) is one the filler queues gap chains for. It passes only while its probe reads
-`selectable`: a wire that rots (a chain renamed away, a new dependency) fails `check` instead of idling Steve.
+`selectable`: a wire that rots (a chain renamed away, a new dependency) fails `check` instead of idling Steve. A wired
+mod on the owner's hold (mod_owner_hold.json) is reported HELD and not probed: the filler skips it (unheld), so its
+refusal is no broken wire, and it stays wired so lifting the hold re-arms `check` on it. An unreadable hold list makes
+`check` exit 2, "could not look" (RIMMANDRAKE_CLAIM_WIRED_MUST_SHOWS_THREE_MODS_BARE).
 """
 import argparse
 import json
@@ -181,6 +185,16 @@ def unheld(mods):
         return list(mods)
 
 
+def held_wired(wired):
+    """-> (the WIRED mods on the owner's hold, None), or ([], why) when the hold list cannot be read: the caller then
+    probes every wire and `check` says it could not look, never "none held". No wires: nothing to look up, ([], None)."""
+    try:
+        import pipeline_admit as PA
+        return [m for m in wired if PA.held_by_owner(m)], None
+    except Exception as e:  # noqa: BLE001 - mod_owner_hold.Unreadable (or a broken import)
+        return [], "the owner's hold list is unreadable (%s: %s)" % (type(e).__name__, str(e)[:160])
+
+
 def pipeline_mods():
     """-> sorted mods pipeline_admit.qualifying() counts past blind whose testq blocks name a chain; [] when unreadable
     (the wired list still walks)."""
@@ -251,37 +265,44 @@ def bridge_backlog(mods, items=None):
 
 
 def measure(root=REPO, preview=None, only_wired=False, wired=None):
-    """-> the coverage record: every harnessed mod's probe (ONLY_WIRED: the wired ones alone), the counts by state, and
-    the wired mods' states."""
+    """-> the coverage record: every harnessed mod's probe (ONLY_WIRED: the unheld wired ones alone; the all-mods scope
+    still probes a held mod, as one of the harnessed), the counts by
+    state, the wired mods' states, and the wired mods on the owner's hold ("held"; "held_error" when unreadable)."""
     minimal = minimal_ids()
     mods = harnessed(root)
     wired = read_wired() if wired is None else wired
-    probes = {m: probe(m, d, minimal, preview) for m, d in mods.items() if not only_wired or m in wired}
+    held, held_error = held_wired(wired)
+    probes = {m: probe(m, d, minimal, preview) for m, d in mods.items()
+              if not only_wired or (m in wired and m not in held)}
     counts = {s: sum(1 for p in probes.values() if p["state"] == s) for s in STATES}
     for m in wired:
-        if m not in probes:
+        if m not in probes and m not in held:
             probes[m] = {"mod": m, "state": "load", "chains": 0, "rows": 0, "why": "wired but has no validation.py",
                          "deps_missing": []}
     return {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "harnessed": len(mods), "counts": counts,
             "scope": "wired" if only_wired else "all",
-            "wired": wired, "wired_ok": [m for m in wired if probes[m]["state"] == "selectable"],
+            "wired": wired, "held": held, "held_error": held_error,
+            "wired_ok": [m for m in wired if m not in held and probes[m]["state"] == "selectable"],
             "probes": probes}
 
 
 def g5_line(rec):
-    bad = [m for m in rec["wired"] if m not in rec["wired_ok"]]
+    held = rec.get("held") or []
+    bad = [m for m in rec["wired"] if m not in rec["wired_ok"] and m not in held]
     c = rec["counts"]
+    tail = ("; HELD BY OWNER, skipped by the filler and by check: " + ", ".join(held) if held else "") + (
+        "; HOLD LIST UNREADABLE, every wire probed: " + rec["held_error"] if rec.get("held_error") else "")
     if rec.get("scope") == "wired":
         return "G5 coverage: %d of %d harnessed mods wired and selectable (%s)%s; only the wired mods probed" % (
             len(rec["wired_ok"]), rec["harnessed"], ", ".join(rec["wired_ok"]) or "none",
             "; BROKEN WIRES: " + ", ".join("%s (%s: %s)" % (m, rec["probes"][m]["state"], rec["probes"][m]["why"])
-                                            for m in bad) if bad else "")
+                                            for m in bad) if bad else "") + tail
     return ("G5 coverage: %d of %d harnessed mods wired and selectable (%s)%s; probe: %d selectable, %d offline-only, "
             "%d refused, %d load errors, %d missing Steve deps" % (
                 len(rec["wired_ok"]), rec["harnessed"], ", ".join(rec["wired_ok"]) or "none",
                 "; BROKEN WIRES: " + ", ".join("%s (%s: %s)" % (m, rec["probes"][m]["state"], rec["probes"][m]["why"])
                                                 for m in bad) if bad else "",
-                c["selectable"], c["offline"], c["refused"], c["load"], c["steve_missing"]))
+                c["selectable"], c["offline"], c["refused"], c["load"], c["steve_missing"])) + tail
 
 
 def queue_home():
@@ -306,13 +327,19 @@ def cmd_measure(a):
 def cmd_check(a):
     rec = measure(only_wired=True)
     print(g5_line(rec))
-    if len(rec["wired_ok"]) != len(rec["wired"]):
+    if rec.get("held_error"):
+        print("COULD NOT LOOK: %s; which wires the filler skips is UNMEASURED" % rec["held_error"])
+        return 2
+    held = rec.get("held") or []
+    live = [m for m in rec["wired"] if m not in held]
+    if len(rec["wired_ok"]) != len(live):
         print("FAIL: a wired mod's probe is not selectable")
         return 1
-    if len(rec["wired"]) < a.min_wired:
-        print("FAIL: %d wired, want at least %d" % (len(rec["wired"]), a.min_wired))
+    if len(live) < a.min_wired:
+        print("FAIL: %d unheld wired, want at least %d" % (len(live), a.min_wired))
         return 1
-    print("PASS: %d wired mods, every one selectable" % len(rec["wired"]))
+    print("PASS: %d unheld wired mods, every one selectable%s" % (
+        len(live), "; %d held by owner, not probed" % len(held) if held else ""))
     return 0
 
 
@@ -355,7 +382,8 @@ def cmd_dated(a):
                 " ".join("%s=%d" % kv for kv in sorted(c.items())) + "  jobs: " + jobs))
     none = [m for m, d in rec.items() if d is None]
     print("%d of %d wired mods hold a dated DONE testq result%s" % (
-        len(rec) - len(none), len(rec), "; none for: " + ", ".join(none) if none else ""))
+        len(rec) - len(none), len(rec), "; none for: " + ", ".join(none) if none else ""),
+        file=sys.stderr if a.json else sys.stdout)     # --json: stdout is one JSON document
     return 1 if none or not rec else 0
 
 

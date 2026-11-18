@@ -4,8 +4,9 @@
 Offline. Proves: each probe state (load, refused, offline, steve_missing from About.xml AND from a folded biome's
 closure, selectable); a broken wire fails `check` and a short wire list fails `--min-wired`; TESTQ_FILL_MODS overrides
 wired_mods.json, which overrides the FlowWorks fallback; the bridge backlog counts only open bridge items naming the mod;
-the tick unit's fill loop reads `coverage.py wired`; and the committed wired_mods.json holds at least 6 mods, every one
-of them selectable by the real probe.
+the tick unit's fill loop reads `coverage.py wired`; a wired mod on the owner's hold is reported HELD, never probed and
+never a broken wire, while an unreadable hold list exits `check` 2; and the committed wired_mods.json holds at least 6
+unheld mods, every one of them selectable by the real probe.
 """
 import json
 import os
@@ -102,6 +103,48 @@ def main():
     finally:
         C.measure = real_measure
 
+    # a wired mod on the owner's hold is reported HELD and not probed: the filler skips it (fill_mods/unheld), so it is
+    # no broken wire (RIMMANDRAKE_CLAIM_WIRED_MUST_SHOWS_THREE_MODS_BARE); an unreadable hold list is "could not look"
+    import pipeline_admit as PA
+    real_probe, real_hbo, real_harn = C.probe, PA.held_by_owner, C.harnessed
+    probed = []
+    try:
+        C.harnessed = lambda root=None: {"A": "/x/A", "H": "/x/H", "B": "/x/B"}
+        C.probe = lambda m, d, *a, **k: probed.append(m) or {"mod": m, "state": "refused" if m in ("H", "B") else
+                                                             "selectable", "why": "bare must-show lines"}
+        PA.held_by_owner = lambda m: {"mod": m} if m == "H" else None
+        check(C.held_wired(["A", "H"]) == (["H"], None), "held_wired names the wired mods on the owner's hold")
+        hr = C.measure(only_wired=True, wired=["A", "H"])
+        check(hr["held"] == ["H"] and hr["wired_ok"] == ["A"] and "H" not in probed and hr["held_error"] is None,
+              "a held wired mod is listed held and never probed: %s, probed %s" % (hr.get("held"), probed))
+        hl = C.g5_line(hr)
+        check("HELD BY OWNER, skipped by the filler and by check: H" in hl and "BROKEN" not in hl,
+              "the G5 line names the held mod and no broken wire: %s" % hl)
+        C.measure = lambda **kw: hr
+        check(C.main(["check", "--min-wired", "1"]) == 0, "check passes when the only unselectable wire is held")
+        check(C.main(["check", "--min-wired", "2"]) == 1, "a held wire does not count toward --min-wired")
+        C.measure = real_measure
+        ar = C.measure(wired=["A", "H"])
+        check(ar["wired_ok"] == ["A"] and "BROKEN" not in C.g5_line(ar) and "H" in probed,
+              "the all-mods scope probes a held mod as harnessed, yet calls it no broken wire: %s" % C.g5_line(ar))
+        br = C.measure(only_wired=True, wired=["A", "H", "B"])
+        C.measure = lambda **kw: br
+        check(C.main(["check", "--min-wired", "1"]) == 1, "an unheld broken wire still fails check beside a held one")
+        C.measure = real_measure
+
+        def unreadable(m):
+            raise ValueError("mod_owner_hold.json: bad JSON")
+        PA.held_by_owner = unreadable
+        del probed[:]
+        held, err = C.held_wired(["A", "H"])
+        check(held == [] and err and "unreadable" in err, "an unreadable hold list is an error, not 'none held': %s" % err)
+        ur = C.measure(only_wired=True, wired=["A", "H"])
+        check(ur["held_error"] and "H" in probed, "with the hold list unreadable every wire is probed: %s" % ur["held_error"])
+        C.measure = lambda **kw: ur
+        check(C.main(["check", "--min-wired", "1"]) == 2, "check exits 2 (could not look) when the hold list is unreadable")
+    finally:
+        C.probe, PA.held_by_owner, C.harnessed, C.measure = real_probe, real_hbo, real_harn, real_measure
+
     # bridge backlog: whole-word title or id, only the items handed in (the caller filters open + needs=bridge)
     items = [("STILLSAND_DUNE_FIX", "x"), ("OTHER_1", "stillsand glare row"), ("OTHER_2", "Stillsandish thing"),
              ("FLOWWORKS_PUMP", "pump")]
@@ -126,6 +169,26 @@ def main():
           "dated keeps the newest DONE result: %s" % newest["A"])
     check(newest["B"] is None and oc["B"] == {"INVALID": 1}, "an INVALID job is no dated result, but is tallied")
     check("Z" not in newest, "an unwired mod's records are ignored")
+    # dated --json prints ONE JSON document on stdout; its summary goes to stderr
+    # (RIMMANDRAKE_SPLIT_COVERAGE_DATED_JSON_FROM_TRAILING_SUMMARY)
+    import contextlib
+    import io
+    import testq
+    real_records, real_rw = testq.records, C.read_wired
+    out, err = io.StringIO(), io.StringIO()
+    try:
+        testq.records, C.read_wired = (lambda kind: recs), (lambda path=None: ["A", "B"])
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            rc = C.main(["dated", "--json"])
+    finally:
+        testq.records, C.read_wired = real_records, real_rw
+    try:
+        doc = json.loads(out.getvalue())
+    except ValueError:
+        doc = None
+    check(doc is not None and doc["newest_done"]["A"]["job"] == "J2" and rc == 1 and "none for: B" in err.getvalue(),
+          "dated --json stdout parses as JSON, the summary is on stderr, exit 1 names B: rc %s, stdout %r"
+          % (rc, out.getvalue()[-120:]))
 
     # the unit, and the real committed list (the item's done-when: >= 6 wired, each passing its probe)
     unit = open(os.path.join(HERE, "testq.py")).read()
@@ -133,8 +196,10 @@ def main():
           "testq-tick.service's fill loop walks `coverage.py wired`")
     live = C.measure(only_wired=True)
     print(C.g5_line(live))
-    check(len(live["wired"]) >= 6 and live["wired_ok"] == live["wired"],
-          "the committed wired_mods.json holds >= 6 mods, each selectable: %s" % C.g5_line(live))
+    unheld_wires = [m for m in live["wired"] if m not in live["held"]]
+    check(live["held_error"] is None and len(unheld_wires) >= 6 and live["wired_ok"] == unheld_wires,
+          "the committed wired_mods.json holds >= 6 unheld mods, each selectable (held ones reported, not probed): %s"
+          % C.g5_line(live))
     check(live["wired"][0] == "FlowWorks", "FlowWorks stays first in fill order")
 
     print("\n%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
