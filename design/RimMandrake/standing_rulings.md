@@ -897,6 +897,29 @@ obsess on cost savings..."* and *"You're telling it constantly"*.
 - **Humans still see spend**, in weighted tokens: run records, the DETACHED RUN ENDED lines, the status page. An
   Operations run is still told the ACCOUNT's throttle band (its job), never its own budget or spend.
 
+## The pipeline's pause switch and its "up next" forecast — owner, 2026-11-18
+
+His words (Wed 2026-11-18, ~10:27 AM PST, item `RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED`): *"I think we may
+need to have Dispatch have a "pause all pipeline items" setting we can easily toggle (non-code-editing) for situations
+like this. We really don't want work starting (or failing to start) when we expect otherwise. And perhaps some kind of
+"up next" feature we can ping that says what WILL happen in some amount of time if we do nothing, so we can confirm
+using its own code..."*
+
+- **One switch, no file editing:** `python3 src/RimMandrake/rimflow/maturation_dispatch.py pause [<Mod>] --why "..."
+  [--until <time>|--until-release] [--stop-live]`, `resume [<Mod>] --why "..."`, the same as `rimflow pipeline
+  pause|resume`. The store is `D:\ClaudeWork\rimmandrake\dispatcher\maturation\pause.json` (`pipeline_pause.py`), read by
+  every tick at the moment it decides: no git hop.
+- **What it stops:** every path in `design/RimMandrake/pipeline_launch_paths_census_2026-11-18.md` (the Dispatch tick's
+  layers, the Designer and DesignerCodex launches, red_dispatch). A live run finishes unless `--stop-live`, which stops
+  it and records it for voiding (`RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT`'s mechanism, once it lands).
+- **A planned stop:** class `planned`, on no idle, paused or stalled reading, so no alarm; `enabled: false` reads the
+  same. `status` and the maturation page lead with PIPELINE PAUSED, its why, who and until; an expired `--until`
+  resumes by itself and says so. A pause store that cannot be read reads PAUSED, never running.
+- **Up next:** `maturation_dispatch.py next [--within 30m]` (`rimflow pipeline next`) runs the tick's own decision code
+  dry on a moving clock: what WILL start, when, on which model and by which rule, what is blocked and by what, and
+  "nothing will start" said outright. A live run's end and a Designer chain cannot be forecast: they read UNMEASURED.
+- **The Conductor's journal hold** stays a launch block in the tick, binding once its commit is in the dispatch clone.
+
 ## Owner hold: six biome mods stop, Pyrelands stays — owner, 2026-11-16
 
 His words (Mon 2026-11-16, ~5:20 PM PST, on the ledger 01:22Z 11-17 under `RIMMANDRAKE_HOLD_SIX_BIOME_MODS_ONLY_PYRELANDS_STAYS`):
