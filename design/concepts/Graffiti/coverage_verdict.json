@@ -1,68 +1,14 @@
 {
- "advisory": "the coverage brief is UNTESTED: this covered verdict is stored and shown, nothing is signed",
- "against": "rm-coverage-judge-1794940039",
- "at": "2026-11-18T18:03:47Z",
- "calibration": "UNTESTED",
+ "against": "rm-coverage-judge-1794936862",
+ "at": "2026-11-17T18:27:19Z",
  "changed": [
-  "scene:sc_lived_in_soak"
+  "dec:d_raider_pressure",
+  "dec:d_rework_no_park",
+  "exam",
+  "scene:sc_lived_in_soak",
+  "scene:sc_spree_variety"
  ],
  "checklist": [
-  {
-   "evidence": [
-    "design/concepts/Graffiti/tree.json:638",
-    "design/concepts/Graffiti/scenes.json:625",
-    "design/concepts/Graffiti/acceptance/soak_scene_shape_not_size.py",
-    "src/RimMandrake/rimflow/roles/designer_scene_contract.md:19-46"
-   ],
-   "id": "stories_not_tax",
-   "parts": [
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak",
-     "what": "red 'marks stack into a standing mood penalty': a small graffiti debuff held every day now fails, with no size cap to hide under"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak",
-     "what": "each colonist read on their own; positive thoughts not netted against negative ones, so a taxed colonist cannot be averaged or offset away"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak",
-     "what": "a rotating run of different marks counts the same as one mark that stays"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak",
-     "what": "the excused days (mockery of that colonist, a raid's departing marks) are bounded by cause and listed per colonist, so a hidden excuse would show"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak",
-     "what": "red 'a message every few hours': Graffiti messages and letters are few per week, both kinds counted (false_pass 'messages are counted only for one kind')"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak",
-     "what": "stories happen: at least one unforced mark painted, read with a thought, or answered in the three weeks"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak",
-     "what": "false_pass 'run too short to reach a steady state': judged over weeks two and three of a three-week run"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak (control)",
-     "what": "control: painting forced hourly, read per colonist, shows the sensitive and clean-freak colonists holding a total that does not return to zero; rules_out names a thought-blind instrument, averaging, and a size-against-the-cap comparison"
-    },
-    {
-     "ok": true,
-     "scene": "sc_lived_in_soak",
-     "what": "acceptance kind, staged by script, entry point named, with its missing implementation filed as entry_point_item, per the scene contract"
-    }
-   ]
-  },
   {
    "evidence": [
     "scenes.json:57",
@@ -97,6 +43,44 @@
      "ok": true,
      "scene": "sc_spree_variety (entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN, item file present)",
      "what": "entry point missing, so filed as a build item before acceptance review"
+    }
+   ]
+  },
+  {
+   "evidence": [
+    "scenes.json:625",
+    "scenes.json:638",
+    "scenes.json:642",
+    "tree.json:638",
+    "exam.json:361",
+    "exam.json:788"
+   ],
+   "id": "stories_not_tax",
+   "parts": [
+    {
+     "ok": true,
+     "scene": "sc_lived_in_soak",
+     "what": "three in-game weeks of an ordinary colony of six, unforced"
+    },
+    {
+     "ok": true,
+     "scene": "sc_lived_in_soak",
+     "what": "each colonist is read on their own, including at least one sensitive and one clean-freak colonist (asserted from GraffitiTemperament)"
+    },
+    {
+     "ok": true,
+     "scene": "sc_lived_in_soak",
+     "what": "at least one unforced graffiti story happens, so a colony where graffiti never happens fails"
+    },
+    {
+     "ok": true,
+     "scene": "sc_lived_in_soak",
+     "what": "messages and letters together are few per week"
+    },
+    {
+     "ok": false,
+     "scene": "sc_lived_in_soak",
+     "what": "red: a colonist carrying a standing graffiti mood penalty is rejected"
     }
    ]
   },
@@ -824,11 +808,129 @@
  ],
  "claims": [
   {
-   "evidence": "fix 6c7d175b52 (on origin/main; item RIMMANDRAKE_MEND_GRAFFITI_SOAK_SCENE_SUM_HIDES_TAXED_PAWN, closed): scenes.json sc_lived_in_soak expect now tests each colonist's negative Graffiti mood total (negative thoughts only, positive not netted) for SHAPE, not size: it must return to zero between stories and is not held on most days of weeks two and three whatever its source (a rotating run of marks counts like one mark that stays); only mockery-of-that-colonist and departing-raid-mark days are excused, listed per colonist; no size comparison against the forced control remains. The control (painting forced hourly, read per colonist) expects the sensitive and clean-freak colonists to hold a total that does not return to zero, and rules out an instrument that compares size against the forced cap and misses a small daily debuff (e51, k6). Acceptance test: python3 design/concepts/Graffiti/acceptance/soak_scene_shape_not_size.py design/concepts/Graffiti/scenes.json prints PASS (13 checks) at HEAD; on 6c7d175b52^ it prints FAIL 8 of 13 (measured this run). No bar's words changed (scene text only).",
+   "evidence": "scenes.json sc_spree_variety: action now captures every lane's marks at play zoom, unlabelled, and shows them to a judge that did not make the art, who names the kinds (the def and variant read stays as a script read); control.case is a calibration for the same judge: one def's texture in the six lanes' tints and six defs sharing one texture, expect 'the judge calls each recolour set recolours of one', rules_out adds 'a judge who calls any tinted set varied'; the pool-gate read stays. The script work is filed as entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN. acceptance/variety_scene_judge_capture.py: PASS",
    "gap": "g1"
+  },
+  {
+   "evidence": "scenes.json sc_lived_in_soak: start asserts at least one sensitive and one clean-freak (Very Neurotic) colonist among the six, read from GraffitiTemperament; expect is per colonist against the control ('every colonist, each read on their own, stays below the control's standing tax for a colonist of the same temperament'), no summed check, plus 'at least one unforced graffiti story happens in the three weeks: a mark painted, read with a thought, or answered'; the control is read per colonist and rules out an instrument that averages a taxed colonist away. Script work filed as entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE. acceptance/soak_scene_per_colonist.py: PASS",
+   "gap": "g2"
   }
  ],
- "gaps": [],
+ "contract": {
+  "advisory": false,
+  "alarms": [
+   {
+    "detail": {
+     "clauses": {
+      "answer_wall": 1,
+      "art_skill": 1,
+      "fights_reasons": 1,
+      "going_over": 1,
+      "ideo_sigil": 1,
+      "inv_beauty_and_craft": 1,
+      "inv_breach_bias": 1,
+      "inv_ideo_sigils": 1,
+      "inv_joy_and_idle_tag": 1,
+      "inv_mark_on_wall": 2,
+      "inv_player_orders": 2,
+      "inv_raid_marks": 1,
+      "inv_raider_future_marks": 1,
+      "inv_settings": 1,
+      "inv_social_layer": 1,
+      "inv_standalone": 1,
+      "inv_temperament": 1,
+      "inv_viewer_mood": 1,
+      "inv_weathering": 1,
+      "marks_various": 1,
+      "mockery": 1,
+      "not_dirt": 1,
+      "own_fun": 1,
+      "raid_mark_troubles": 1,
+      "raider_pressure": 1,
+      "reads_at_play_zoom": 1,
+      "rest": 1,
+      "sits_on_wall": 2,
+      "stands_alone_settings": 1,
+      "stories_not_tax": 2,
+      "temperament": 1,
+      "tribute_memorial": 1,
+      "ugliness_visible": 1,
+      "walk_lived_in": 1,
+      "weathering_bounds_marks": 1
+     },
+     "repair_due": []
+    },
+    "family": "coverage_judge",
+    "first_at": "2026-11-17T18:29:13Z",
+    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+    "last_at": "2026-11-17T18:29:13Z",
+    "open": true,
+    "subject": "item:RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
+    "told_at": "2026-11-17T18:29:13Z",
+    "trips": 1,
+    "why": "4 refused verdicts (limit 4)"
+   },
+   {
+    "family": "coverage_judge",
+    "first_at": "2026-11-15T09:32:09Z",
+    "id": "REFUSAL_NOTHING_COULD_EVER_PASS",
+    "last_at": "2026-11-17T18:29:13Z",
+    "open": true,
+    "subject": "family:coverage_judge",
+    "told_at": "2026-11-15T09:32:09Z",
+    "trips": 18,
+    "why": "refused 20 of its last 20 verdicts (limit 70%)"
+   }
+  ],
+  "cached": [],
+  "calibration": "CALIBRATED",
+  "counted": true,
+  "may_judge": false,
+  "ok": true,
+  "repair_due": []
+ },
+ "contract_reasked": [
+  "evidence 'design/concepts/Graffiti/acceptance/soak_scene_per_colonist.py' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'design/concepts/Graffiti/acceptance/soak_script_per_colonist.py' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'design/concepts/Graffiti/acceptance/variety_scene_judge_capture.py' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'design/concepts/Graffiti/exam.json' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'design/concepts/Graffiti/scenes.json' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)",
+  "evidence 'design/concepts/Graffiti/tree.json' is not a concept file (sheet.md, tree.json, scenes.json, floor.json, exam.json, record.json)"
+ ],
+ "gaps": [
+  {
+   "bar_kind": "experience",
+   "criterion_by": "second_reader",
+   "criterion_verdict": "sound",
+   "criterion_why": "Graffiti should give a colony occasional stories, not a standing mood penalty or a steady stream of messages; a player would notice either, a correct mod whose graffiti thoughts expire between events can pass it, and the refusal's fix tests the shape of each colonist's mood rather than a mood number, so renormalizing would not move it.",
+   "evidence": [
+    "scenes.json:638",
+    "scenes.json:642",
+    "tree.json:638",
+    "exam.json:361",
+    "exam.json:788"
+   ],
+   "gid": "g1",
+   "ids": [
+    "stories_not_tax"
+   ],
+   "judge_criterion_verdict": "sound",
+   "judge_criterion_why": "The leaf's experience and red ('never a permanent mood tax', 'marks stack into a standing mood penalty') can be checked from per-colonist daily reads without pinning any number; only the scene's comparator misses it.",
+   "new_since": "changed",
+   "observed": "The expect is 'every colonist, each read on their own, stays below the control's standing tax for a colonist of the same temperament'. The control's case is 'the same start with painting forced every hour'. The script check the Designer filed (acceptance/soak_script_per_colonist.py) looks for 'soak_each_colonist_below_control', which tests size against that forced maximum. The kernel caps graffiti mood (RM_GraffitiKernel.cs BadMoodBudget = 8, scaled by temperament), so the forced control sits at or near the cap. An unforced colony whose every colonist holds a -3 to -7 graffiti total that never clears is below it and passes. The tree's red is 'a build whose marks stack into a standing mood penalty', and the exam's e51 and k6 reject exactly that ('a small debuff every colonist carries almost every day is a tax'). Replacing the old sum with this comparison fixed the averaging but left a ruled colonist able to pass by another route.",
+   "return_to": 3,
+   "severity": "problem",
+   "since": "scene:sc_lived_in_soak",
+   "smallest_fix": {
+    "attainable": "yes",
+    "cost": "edit",
+    "what": "Edit scenes.json sc_lived_in_soak: change the expect from 'stays below the control's standing tax' to 'each colonist's Graffiti mood total returns to zero between stories, never held across most days of weeks two and three', and the control's expect to 'the forced colony's sensitive and clean-freak colonists hold a Graffiti total that never returns to zero'. Update the filed item RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE and its acceptance test so they require a per-colonist standing-penalty check in place of soak_each_colonist_below_control."
+   },
+   "what": "The soak now reads each colonist on their own, but its pass test is 'stays below the control's standing tax', and the control is painting forced every hour. So a colonist who carries a standing graffiti mood penalty every day, smaller than the forced maximum, passes. That is the leaf's red: marks stacking into a standing mood penalty.",
+   "where": "scenes.json sc_lived_in_soak (expect, control)",
+   "would_pass": "The expect and its script check test the shape of each colonist's graffiti mood, not its size against the forced maximum. For every colonist, the total from Graffiti thoughts must drop back to zero between stories: it is not held on most days of weeks two and three unless a new mark, mockery or raid caused it. The control (painting forced every hour, read per colonist) shows at least the sensitive and clean-freak colonists holding a graffiti total that never returns to zero, which proves the instrument flags a standing penalty. A script can check this from the daily per-colonist reads the action already takes. It needs no mood number, so a renormalization does not move it."
+  }
+ ],
  "hashes": {
   "dec:d_art_skill": "4c5f0e36f44c4c43",
   "dec:d_contrast_D": "f14e9829ef51edcb",
@@ -904,7 +1006,7 @@
   "scene:sc_gallery": "7e00a4913b2f740b",
   "scene:sc_going_over": "4ae5ee227d565037",
   "scene:sc_hostile_thought": "0e10ba8ce7a253f6",
-  "scene:sc_lived_in_soak": "13f25a851b8f182a",
+  "scene:sc_lived_in_soak": "19299cea990ee08d",
   "scene:sc_mockery": "715dbd6225bd1686",
   "scene:sc_own_fun": "b384dddb0a0f46d3",
   "scene:sc_player_orders": "e3f8411c4993b2f9",
@@ -943,17 +1045,18 @@
   "exam.json": "d2eafd2f45adc568544b32b44a3412f07fff492acfe189d46b733994a41e674d",
   "floor.json": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
   "record.json": "7c48039e979751714a1b3e2a270874f346a21991762aae323516fe5702a1cfd2",
-  "scenes.json": "720397b399c808dbf26f3cc2ef21c91bccad5ed6b030e5a8d492789e98df5a89",
+  "scenes.json": "0ce1b0ed0644ebed3f1ff06632f3bdb71de7ddef1424cf3c57144afcaca4857b",
   "sheet.md": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d"
  },
- "judge": "rm-coverage-judge-1795025027",
+ "judge": "rm-coverage-judge-1794940039",
  "mode": "delta",
- "prompt_chars": 8431,
- "reasons": "g1 is fixed. 6c7d175b52 is on origin/main [measured]. The acceptance script prints PASS (13 checks) at HEAD [measured]. The scene's expect now tests each colonist's negative Graffiti total by its shape: it must return to zero between stories and must not be held on most days of weeks two and three, whatever the source. The old 'below the forced control' size test is gone, so a small debuff held every day (the leaf's red) now fails. The control checks for a held total in the sensitive and clean-freak colonists, and its rules_out names the size-against-the-cap blindness. The change opened no new gap: the excused days are bounded by cause and listed per colonist, messages and letters are both counted, and the scene still meets the contract (script entry point, its build filed as entry_point_item). Nothing in the scene pins a tuning number.",
+ "prompt_chars": 97126,
+ "reasons": "One of the two claimed fixes holds; the other does not. g1 (marks_various) is fixed. sc_spree_variety now captures the lanes at play zoom, unlabelled, for a judge that did not make the art. Its control calibrates that same judge on two recolour sets (one texture in six tints, six defs sharing one texture), so tint-only variety and a lenient judge are both ruled out. The gated-pool read stays, and the entry point is filed as an item whose file exists. g2 (stories_not_tax) is partly fixed. The soak's start now asserts a sensitive colonist and a clean freak, each colonist is read on their own, and an unforced story is required. But the new pass test compares each colonist against a maximal, forced-hourly control, and the kernel caps graffiti mood. A colonist holding a standing penalty below that cap passes, which is the leaf's own red and the exam's e51 and k6 rejects. It is tagged `changed` because the new comparator opened it. The fix is a one-scene edit with no tuning number. Both acceptance scripts print PASS against scenes.json, but they test for key words, not for this.",
  "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
  "signed": false,
+ "stopped": "3 not_covered verdicts (limit 3)",
  "token_unit": "weighted_v2",
- "tokens": 167016,
+ "tokens": 566882,
  "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894",
- "verdict": "covered"
+ "verdict": "not_covered"
 }
