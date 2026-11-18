@@ -13,6 +13,11 @@ bar, every offline test that decides it (bar["offline_decides"]) is read on four
   green              the run's rc is 0 and result PASS, and the test carries no `known_red`
   red_seen           WARN "UNPROVEN" only, never a refusal (RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN makes it
                      one)
+Before an in-game visit (to="in_game") every in-game scene that decides a bar is also read on
+  asks_on_empty_game the scene, run on an empty game (Utils/scene_empty_game.py: every bridge call a bare success), has no
+                     row that reads PASS: a check that passes with nothing on the map tests nothing
+                     (RIMMANDRAKE_DRYRUN_SCENES_ON_EMPTY_GAME_THREE_PASSED). Only the FlowWorks scene harness
+                     (concept_scenes.py STAGE3_SCENES) has an adapter; a scene in any other harness is did_not_run.
 No model is called anywhere. `run_offline` is the path to pass for a stale table: it reruns the offline tests and stamps
 each with its build (`maturation.py certificate <Mod> --run`, zero tokens). A table that cannot be read is "did not run":
 the guard lets the mod through and says so.
@@ -30,6 +35,7 @@ TABLE = "version/test_table.json"
 RUN_TIMEOUT_S = 1800      # the slowest measured offline decider is FlowWorks' C# suite, 531 s
 NEXT_TICKET = "RIMMANDRAKE_RECORD_RED_SEEN_PER_TEST_OR_PASSED_GREEN"
 OFFLINE_STAGES = ("2", "4-5")   # a bar proving at one of these stages is decided offline
+EMPTY_GAME_TIMEOUT_S = 120      # FlowWorks' 17 scenes on an empty game: 0.15 s measured 2026-11-18
 
 
 def tpath(root, mod):
@@ -128,7 +134,8 @@ def run_offline(root, mod, runner=subprocess.run, now=None, resume=False):
             continue
         build = test_build(root, t)      # the content the run reads, taken before it runs
         old = t.get("runs_today") if isinstance(t.get("runs_today"), dict) else {}
-        if resume and old.get("rc") == 0 and old.get("build") == build and old.get("command") == t["command"]:
+        if resume and old.get("rc") == 0 and old.get("result", "PASS") == "PASS" and old.get("build") == build \
+                and old.get("command") == t["command"]:     # green as certify reads it: a stamp it refuses reruns
             skipped += 1
             continue
         t0 = time.time()
@@ -259,26 +266,93 @@ def certify(root, mod, to="blind_challenge"):
             row(bid, d, "red_seen", "WARN", "UNPROVEN: no recorded red run of %s yet (%s makes this a refusal)" % (
                 d, NEXT_TICKET), "a planted fault recorded turning %s red against its file as it is now" % d,
                 "record it once that ticket lands: maturation.py red-seen %s %s --patch <file>" % (mod, d))
+    if to == "in_game":
+        try:
+            _asks_on_empty_game(root, tt, row, out["did_not_run"])
+        except Exception as e:  # noqa: BLE001  this clause could not look: it says so and refuses nothing
+            out["did_not_run"].append("asks_on_empty_game did not run: %s: %s" % (type(e).__name__, str(e)[:200]))
     out["ok"] = not any(x["status"] == "REFUSED" for x in rows)
     return out
 
 
+def _asks_on_empty_game(root, tt, row, did_not_run):
+    """The asks_on_empty_game clause: a REFUSED row per (bar, in-game decider) whose scene passes a row on an empty game;
+    a did_not_run line for the scenes no adapter can run, or when the scene file cannot be loaded."""
+    import sys
+    utils = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils")
+    if utils not in sys.path:
+        sys.path.insert(0, utils)
+    import scene_empty_game as SE
+    tests, fw, other = tt["tests"], {}, {}
+    if not isinstance(tests, dict) or not isinstance(tt.get("bars"), list):
+        did_not_run.append("asks_on_empty_game did not run: the table has no tests map or bars list")
+        return
+    for b in tt["bars"]:
+        for d in (b.get("decides") or []) if isinstance(b, dict) and b.get("id") else []:
+            t = tests.get(d)
+            if not isinstance(t, dict) or not str(t.get("kind") or "").startswith("live"):
+                continue
+            if t.get("file") == SE.FLOWWORKS_SCENES and t.get("entry"):
+                fw.setdefault(t["entry"], []).append((b["id"], d))
+            else:
+                other.setdefault(str(t.get("file")), set()).add(d)
+    if fw:
+        # its own process, bounded: a scene that loops on an empty answer cannot hang the certificate, and the scene
+        # module's imports stay out of this one
+        try:
+            r = subprocess.run([sys.executable, SE.__file__, "--root", root, "--json"], capture_output=True, text=True,
+                               timeout=EMPTY_GAME_TIMEOUT_S)
+            got = json.loads(r.stdout.strip().splitlines()[-1]) if r.stdout.strip() else {}
+        except (subprocess.TimeoutExpired, OSError, ValueError) as e:
+            got = {"did_not_run": "%s: %s" % (type(e).__name__, str(e)[:160])}
+        pairs, why = (got["vacuous"], None) if isinstance(got.get("vacuous"), list) else (
+            None, got.get("did_not_run") or "scene_empty_game.py printed no verdict (rc %s): %s" % (
+                r.returncode, (r.stderr or "").strip()[-160:]))
+        ran = set(got.get("scenes") or []) if pairs is not None else set()
+        unseen = sorted(e for e in fw if e not in ran)
+        if pairs is not None and unseen:    # never run, so its absence from the vacuous list establishes nothing
+            did_not_run.append("asks_on_empty_game did not run on %d in-game scene(s) %s: not in %s's STAGE3_SCENES"
+                               % (len(unseen), ", ".join(unseen[:6]), SE.FLOWWORKS_SCENES))
+        if pairs is None:
+            did_not_run.append("asks_on_empty_game did not run on %d in-game scene(s): %s" % (len(fw), why))
+        else:
+            vac = {}
+            for scene, rid in pairs:
+                vac.setdefault(scene, []).append(str(rid))
+            for entry, users in sorted(fw.items()):
+                if entry not in vac:
+                    continue
+                for bid, d in users:
+                    row(bid, d, "asks_on_empty_game", "REFUSED",
+                        "on an empty game (every bridge call a bare success, nothing on the map) %s's row(s) %s read PASS"
+                        % (entry, ", ".join(vac[entry])),
+                        "every row of %s reads FAIL, UNMEASURED or ERROR when nothing is on the map" % entry,
+                        "make each listed row read UNMEASURED when the event it judges was never seen (nothing spawned, "
+                        "no draw, a vacuous read), then check: python3 src/RimMandrake/Utils/scene_empty_game.py")
+    if other:
+        did_not_run.append("asks_on_empty_game did not run on %d in-game test(s) in %s: no empty-game adapter for that "
+                           "harness (only FlowWorks' concept_scenes.py STAGE3_SCENES has one; a modcheck Suite scene "
+                           "needs one that hands it a Suite over an EmptyGame and reads the Suite's rows)" % (sum(len(v) for v in other.values()),
+                                                  ", ".join(sorted(other)[:4]) + (" ..." if len(other) > 4 else "")))
+
+
 def summary(v):
     """-> one line: the certificate's reading."""
-    if v.get("did_not_run"):
+    if v.get("did_not_run") and not v.get("rows"):
         return v["did_not_run"][0]
     ref = [r for r in v.get("rows") or [] if r["status"] == "REFUSED"]
     bars = sorted({r["bar"] for r in v.get("rows") or []})
+    dnr = "".join("; DID NOT RUN: %s" % d for d in v.get("did_not_run") or [])   # a clause that could not look
     if not ref:
-        return "certified: %d bars' offline deciders registered, run on this build and green (red_seen unproven)" % len(
-            bars)
+        return "certified: %d bars' offline deciders registered, run on this build and green (red_seen unproven)%s" % (
+            len(bars), dnr)
     rb = sorted({r["bar"] for r in ref})
     by = {}
     for r in ref:
-        by.setdefault(r["clause"], set()).add(r["test"])
-    return "refused: %d of %d bars (%s); %s" % (len(rb), len(bars), ", ".join(rb[:6]) + (" ..." if len(rb) > 6 else ""),
-                                                "; ".join("%s %s" % (c, ", ".join(sorted(t)[:5])) for c, t in
-                                                          sorted(by.items())))
+        by.setdefault(r["clause"], set()).add(str(r["test"] if r["test"] is not None else "(bar %s)" % r["bar"]))
+    return "refused: %d of %d bars (%s); %s%s" % (len(rb), len(bars), ", ".join(rb[:6]) + (" ..." if len(rb) > 6 else ""),
+                                                  "; ".join("%s %s" % (c, ", ".join(sorted(t)[:5])) for c, t in
+                                                            sorted(by.items())), dnr)
 
 
 def first_fix(v):
