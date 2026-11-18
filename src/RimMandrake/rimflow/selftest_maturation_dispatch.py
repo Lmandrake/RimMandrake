@@ -140,6 +140,7 @@ def main():
     keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
             "RM_MATURATION_DISPATCH_DIR", "FAKE_DH_FAIL")
     env_was = {k: os.environ.get(k) for k in keys}
+    env_was.update(SM.isolate(root))    # advance() submits: never the real refusal store, never a real alarm
     try:
         for mod in FOUR + ("PyrelandsMechanics",):
             for rel in COPY:
@@ -809,6 +810,7 @@ def blind_main():
     keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
             "RM_MATURATION_DISPATCH_DIR", "FAKE_DH_FAIL")
     env_was = {k: os.environ.get(k) for k in keys}
+    env_was.update(SM.isolate(root))    # advance() submits: never the real refusal store, never a real alarm
     try:
         for mod in FOUR:
             for rel in COPY:
@@ -1348,6 +1350,7 @@ def ingame_main():
     keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
             "RM_MATURATION_DISPATCH_DIR", "FAKE_DH_FAIL", "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG")
     env_was = {k: os.environ.get(k) for k in keys}
+    env_was.update(SM.isolate(root))    # advance() submits: never the real refusal store, never a real alarm
 
     def chk(fn, what):
         """SM.chk's rule with this file's ok(), so a FAIL here counts in this file's FAILS (SM.chk's would not)."""

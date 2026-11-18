@@ -1142,6 +1142,64 @@
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },
+  "maturation_advance": {
+   "brief": [
+    "src/RimMandrake/rimflow/maturation.py"
+   ],
+   "cases": {
+    "bad": [
+     "planted (selftest_maturation.py --submit): unlocked_version_refuses, a Designer->preflight move with VERSION.json state drafting; cached_repeat_still_refuses, the same refusal re-submitted on the same evidence (cached, not counted twice)"
+    ],
+    "good": [
+     "planted (selftest_maturation.py --submit): locked_version_passes, the same move once VERSION.json reads locked and the hand steps are done"
+    ]
+   },
+   "free_check": [
+    "python3",
+    "src/RimMandrake/rimflow/selftest_maturation.py",
+    "--submit"
+   ],
+   "hash": "d3012c16c125cc01",
+   "last_run": {
+    "at": "2026-11-18T07:19:03Z",
+    "cases": "3 planted case(s) ran and came out as planted",
+    "exit": 0,
+    "out": "ALL PASS",
+    "results": [
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "unlocked_version_refuses"
+     },
+     {
+      "expect": "refuse",
+      "got": "refuse",
+      "id": "cached_repeat_still_refuses"
+     },
+     {
+      "expect": "pass",
+      "got": "pass",
+      "id": "locked_version_passes"
+     }
+    ]
+   },
+   "planted": [
+    {
+     "expect": "refuse",
+     "id": "unlocked_version_refuses"
+    },
+    {
+     "expect": "refuse",
+     "id": "cached_repeat_still_refuses"
+    },
+    {
+     "expect": "pass",
+     "id": "locked_version_passes"
+    }
+   ],
+   "reset_at": "2026-11-18T07:19:03Z",
+   "status": "CALIBRATED"
+  },
   "scene_look_judge_brief": {
    "brief": [
     "design/RimMandrake/scene_look_judge_brief.md"

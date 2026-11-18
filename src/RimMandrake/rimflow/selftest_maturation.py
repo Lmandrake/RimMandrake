@@ -56,6 +56,29 @@ def ok(cond, what):
         FAILS.append(what)
 
 
+ISOLATE = ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE")
+
+
+def isolate(root):
+    """Point the refusal store, the told ledger and the dispatcher state at this run's own temp tree, whatever the
+    caller set: advance() submits its verdict (RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS), and a test may
+    neither write the real store nor raise a real alarm (lesson 20261112T234316Z). -> the saved values, for restore."""
+    was = {k: os.environ.get(k) for k in ISOLATE}
+    os.environ.update(RM_REFUSAL_DIR=os.path.join(root, "_refusals"), RM_OPS_WATCH_DIR=os.path.join(root, "_ops"),
+                      RM_DISPATCHER_STATE=os.path.join(root, "_dispatcher"))
+    for k in ISOLATE:       # incident.append does not make its directory: the real OPS dir is always there
+        os.makedirs(os.environ[k], exist_ok=True)
+    return was
+
+
+def restore(was):
+    for k, v in was.items():
+        if v is None:
+            os.environ.pop(k, None)
+        else:
+            os.environ[k] = v
+
+
 def git_status():
     return subprocess.run(["git", "-C", REPO, "status", "--porcelain", "--", "design/concepts"],
                           capture_output=True, text=True, timeout=120).stdout
@@ -186,6 +209,7 @@ def main():
 
     root = tempfile.mkdtemp(prefix="maturation_selftest_")
     os.environ["MATURATION_CLOCK"] = str(CLOCK)
+    env_was = isolate(root)
     try:
         copy_mods(root)
         synthetic(root)
@@ -596,6 +620,7 @@ def main():
         ok(cli.returncode == 0 and "NEXT" in cli.stdout, "the command line prints a NEXT line")
     finally:
         os.environ.pop(BM.STANDIN_ENV, None)
+        restore(env_was)
         shutil.rmtree(root, ignore_errors=True)
 
     ok(git_status() == before, "nothing under design/concepts in the repo was written")
@@ -764,6 +789,7 @@ def launch_main():
     root = tempfile.mkdtemp(prefix="maturation_launch_")
     env_was = {k: os.environ.get(k) for k in ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR",
                                               "MATURATION_CLOCK")}
+    env_was.update(isolate(root))
     try:
         copy_mods(root)
         for mod in FOUR + ("PyrelandsMechanics",):
@@ -949,6 +975,7 @@ def blind_main():
     root = tempfile.mkdtemp(prefix="maturation_blind_")
     env_was = {k: os.environ.get(k) for k in ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR",
                                               "MATURATION_CLOCK")}
+    env_was.update(isolate(root))
     try:
         copy_blind(root)
         fake, log = os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
@@ -1344,6 +1371,7 @@ def ingame_main():
     keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
             "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG", BM.STANDIN_ENV, M.COMPANION_ENV)
     env_was = {k: os.environ.get(k) for k in keys}
+    env_was.update(isolate(root))
     try:
         copy_ingame(root)
         sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "bridgetools"))
@@ -1538,7 +1566,263 @@ def ingame_main():
     return 1 if FAILS else 0
 
 
+# ---- the refusal contract's count of advance refusals (RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS) -----------
+#
+# Watched failing on the base 84ca416f3a, where `--submit` was not a mode at all: the flag fell through to main() and
+# the store directory was never created. Written before maturation.py submitted anything.
+FAM = "maturation_advance"          # the brief advance judges with; judge_calibration.json is an exact lookup
+ITEM0 = "SpineTestMod@0.1.0"
+
+
+def rows_in_store():
+    p = RC.records_path()
+    if not os.path.exists(p):
+        return []
+    with open(p, encoding="utf-8") as f:
+        return [json.loads(x) for x in f if x.strip()]
+
+
+def item_counts():
+    return RC.counters()["items"].get(ITEM0) or {}
+
+
+def said(res):
+    """What the run says about the contract, or why it says nothing (on the base there is no submit_line at all)."""
+    f = getattr(M, "submit_line", None)
+    return (f(res) or "") if f else "<maturation.py has no submit_line>"
+
+
+def alarm_rows():
+    """-> (the rows of the store's alarms.json, why it could not be read). No file at all is its own answer: it is not
+    a store that holds no alarm."""
+    if not os.path.exists(RC.alarms_path()):
+        return {}, "%s was never written" % RC.alarms_path()
+    try:
+        with open(RC.alarms_path(), encoding="utf-8") as f:
+            return json.load(f), None
+    except (OSError, ValueError) as e:
+        return {}, "%s: %s" % (type(e).__name__, e)
+
+
+def reset_spine(root, **kw):
+    """Put SpineTestMod back at the Designer with a fresh VERSION.json (harness housekeeping, owner 2026-11-17): the
+    item string, and so the contract's count for it, does not change."""
+    synthetic(root, **kw)
+    p = os.path.join(root, "design", "concepts", "SpineTestMod", M.RECORD)
+    if os.path.exists(p):
+        os.remove(p)
+    M.seed_mod(root, "SpineTestMod", live=False)
+
+
+def submit_main():
+    """Every advance verdict goes through refusal_contract.submit, and a stage refused again and again rings the one
+    alarm. Six regimes, each with its own answer: counted / counted repeat (tagged from the counters) / cached (not
+    counted) / advisory (stored, not counted) / the store could not be reached (the count is UNREADABLE, not zero) /
+    malformed. Doubles as the maturation_advance family's free_check: it writes $RM_CALIBRATION_RESULTS."""
+    before = git_status()
+    root = tempfile.mkdtemp(prefix="maturation_submit_")
+    keys = ISOLATE + ("MATURATION_CLOCK", "RM_JUDGE_CALIBRATION", "RM_CALIBRATION_ROOT")
+    was = {k: os.environ.get(k) for k in keys}
+    cases, store = [], os.path.join(root, "_refusals")
+    try:
+        isolate(root)
+        os.environ["MATURATION_CLOCK"] = str(CLOCK)
+        # the family's own registry, CALIBRATED at a measured brief hash: only a CALIBRATED brief's refusal counts
+        with open(os.path.join(root, "brief.md"), "w") as f:
+            f.write("the advance gate's brief (fixture for this test)\n")
+        cal, h = os.path.join(root, "cal.json"), RC.brief_hash(["brief.md"], root)
+
+        def write_cal(status="CALIBRATED", hash_=None):
+            with open(cal, "w") as f:
+                json.dump({"families": {FAM: {"brief": ["brief.md"], "hash": hash_ or h, "status": status,
+                                              "cases": {}}}}, f)
+
+        write_cal()
+        os.environ.update(RM_JUDGE_CALIBRATION=cal, RM_CALIBRATION_ROOT=root)
+        copy_mods(root)
+        reset_spine(root)       # at the Designer, state "drafting": the `locked` clause is its one refusal
+
+        def try_advance(label, **kw):
+            r = M.advance(root, "SpineTestMod", kw.pop("to", "preflight"), by=kw.pop("by", "BENCH"),
+                          why=kw.pop("why", "the contract counts this"), **kw)
+            return r, (r.get("submit") or {}), label
+
+        # ---- A: the first refusal is submitted, counted, and tagged "first" -------------------------------------
+        r, s, _ = try_advance("first")
+        refused(r, "locked", "an unlocked version")
+        ok(r["verdict"]["family"] == FAM, "the verdict's family is the brief %r, not the move (%r)"
+           % (FAM, r["verdict"]["family"]))
+        rows = rows_in_store()
+        ok(len(rows) == 1 and rows[0]["kind"] == "refusal" and rows[0]["item"] == ITEM0
+           and rows[0]["record"]["clause"] == "locked",
+           "one submitted refusal row lands in %s (%d row(s): %s)" % (RC.records_path(), len(rows),
+                                                                      [x.get("kind") for x in rows]))
+        ok(s.get("counted") and s.get("calibration") == "CALIBRATED" and item_counts().get("refused") == 1,
+           "the first refusal is counted (counted=%s, calibration=%s, refused=%s of limit %d)"
+           % (s.get("counted"), s.get("calibration"), item_counts().get("refused"), RC.ITEM_ALARM_AT))
+        ok(r["verdict"]["refusals"][0]["new_since"] == "first",
+           "its new_since reads first (%r)" % r["verdict"]["refusals"][0].get("new_since"))
+        cases.append({"id": "unlocked_version_refuses", "expect": "refuse", "got": "refuse" if not r["ok"] else "pass"})
+
+        # ---- C: the same refusal again, with nothing changed, is answered from the cache and not counted ---------
+        r, s, _ = try_advance("cached", why="nothing has changed")
+        ok(not r["ok"] and s.get("cached") == ["locked"] and not s.get("counted")
+           and item_counts().get("refused") == 1,
+           "an identical re-ask is cached, not counted (cached=%s, counted=%s, refused=%s)"
+           % (s.get("cached"), s.get("counted"), item_counts().get("refused")))
+        cases.append({"id": "cached_repeat_still_refuses", "expect": "refuse",
+                      "got": "refuse" if not r["ok"] else "pass"})
+
+        # ---- B and the repeat limit: each fresh refusal is tagged from the counters, the 3rd and 4th ring -------
+        alarms, limit = [], max(RC.CLAUSE_REPAIR_AT, RC.ITEM_ALARM_AT)
+        for n in range(2, limit + 1):
+            synthetic(root, state="drafting round %d" % n)       # the cited evidence moves: a fresh refusal
+            r, s, _ = try_advance("round %d" % n)
+            tag = r["verdict"]["refusals"][0].get("new_since")
+            ok(not r["ok"] and s.get("counted") and item_counts().get("refused") == n and tag == "unfixed:locked",
+               "refusal %d of %d is counted and tagged unfixed:locked (refused=%s, tag=%r)"
+               % (n, limit, item_counts().get("refused"), tag))
+            if n == RC.CLAUSE_REPAIR_AT:
+                ok(s.get("repair_due") == ["locked"], "the %dth refusal of one clause asks for a criteria repair (%s)"
+                   % (RC.CLAUSE_REPAIR_AT, s.get("repair_due")))
+            alarms += [a for a in s.get("alarms") or []]
+        subs = [a.get("subject") for a in alarms]
+        ok("item:%s" % ITEM0 in subs, "the alarm rises on the item at the repeat limit (%s)" % subs)
+        ok(all(a.get("id") == RC.ALARM_ID for a in alarms) and any("%d refused verdicts" % RC.ITEM_ALARM_AT
+                                                                   in str(a.get("why")) for a in alarms),
+           "it is %s, and says the count that raised it (%s)" % (RC.ALARM_ID, [a.get("why") for a in alarms][-1:]))
+        saved, unread = alarm_rows()
+        row = saved.get("item:%s" % ITEM0) or {}
+        ok(row.get("open") and row.get("id") == RC.ALARM_ID and row.get("family") == FAM,
+           "the alarm row stands open in %s (%s)" % (RC.alarms_path(), unread or {k: row.get(k) for k in
+                                                                                  ("id", "open", "trips")}))
+        tp = os.path.join(root, "_ops", "told.jsonl")
+        told = [x for x in open(tp, encoding="utf-8") if RC.ALARM_ID in x] if os.path.exists(tp) else []
+        ok(len(told) >= 1, "the Conductor is told of the fresh trip (%s)"
+           % ("%d told row(s)" % len(told) if os.path.exists(tp) else "%s was never written" % tp))
+        ok(not RC.may_judge(ITEM0), "with the alarm open the item may not be judged again")
+
+        # ---- a clause refused for the first time after earlier refusals is a regression, not an unfixed gap -----
+        tag = getattr(M, "tag_new_since", None)
+        v = {"item": ITEM0, "refusals": [{"clause": "hold"}, {"clause": "locked"}]}
+        prior = tag(v) if tag else None
+        ok(prior == RC.ITEM_ALARM_AT, "tag_new_since reads the item's prior count from the counters (%s)"
+           % (prior if tag else "maturation.py has no tag_new_since"))
+        ok(tag and [r["new_since"] for r in v["refusals"]] == ["regression:hold", "unfixed:locked"],
+           "a clause not refused before is a regression, one refused before is unfixed (%s)"
+           % ([r.get("new_since") for r in v["refusals"]] if tag else "no tag_new_since"))
+
+        # ---- D: an uncalibrated brief's refusal is stored and shown, never counted ------------------------------
+        write_cal(status="UNTESTED")
+        synthetic(root, state="drafting advisory")
+        n_before = len(rows_in_store())
+        r, s, _ = try_advance("advisory")
+        ok(not r["ok"] and not s.get("counted") and s.get("advisory") and s.get("calibration") == "UNTESTED"
+           and item_counts().get("refused") == RC.ITEM_ALARM_AT and len(rows_in_store()) == n_before + 1,
+           "an UNTESTED brief's refusal is stored but not counted (counted=%s, refused=%s, rows %d->%d)"
+           % (s.get("counted"), item_counts().get("refused"), n_before, len(rows_in_store())))
+        ok("NOT COUNTED" in said(r), "and the run says so: %r" % said(r))
+        write_cal()
+        # a brief whose files moved since it was calibrated is UNTESTED again, by the hash alone
+        write_cal(status="CALIBRATED", hash_="0" * 16)
+        ok(RC.status(FAM) == "UNTESTED", "an edited brief is UNTESTED until it is calibrated again (%s)"
+           % RC.status(FAM))
+        write_cal()
+
+        # ---- F: a malformed verdict (a gate bug) is stored as malformed, counted against nothing, and exits 3 ---
+        orig, n_before = M.evaluate, len(rows_in_store())
+        try:
+            def broken(*a, **k):
+                res = orig(*a, **k)
+                for rec in res["verdict"]["refusals"]:
+                    rec["would_pass"] = "yes"        # says nothing checkable
+                return res
+
+            M.evaluate = broken
+            synthetic(root, state="drafting malformed")
+            r, s, _ = try_advance("malformed")
+            bad = [x for x in rows_in_store() if x.get("kind") == "malformed"]
+            ok(not r["ok"] and r.get("malformed") and len(bad) == 1 and not s.get("counted")
+               and item_counts().get("refused") == RC.ITEM_ALARM_AT,
+               "a malformed verdict is stored as malformed and counted against nothing (%s)"
+               % (r.get("malformed") or [])[:1])
+            rc = M.main(["--root", root, "advance", "SpineTestMod", "--to", "preflight", "--by", "BENCH", "--why", "x"])
+            ok(rc == 3, "the command line answers a malformed verdict with exit 3 (got %s)" % rc)
+        finally:
+            M.evaluate = orig
+
+        # ---- E: the store could not be reached. The count is unreadable, which is not a count of zero -----------
+        rec_was = read(root, "SpineTestMod", M.RECORD)
+        synthetic(root, state="drafting unreachable")
+        os.makedirs(store, exist_ok=True)       # on a build that never submits, the store does not exist yet
+        cpath = os.path.join(store, "counters.json")
+        # the counters are put back afterwards, not deleted: a deleted count IS zero, and this case is about a count
+        # that cannot be read while the four refusals already counted still stand
+        cwas = open(cpath, encoding="utf-8").read() if os.path.exists(cpath) else None
+        with open(cpath, "w") as f:
+            f.write("this is not JSON\n")
+        r, s, _ = try_advance("corrupt counters")
+        line = said(r)
+        ok(not r["ok"] and r.get("submit") is None and "counters could not be read" in (r.get("submit_error") or ""),
+           "corrupt counters: nothing is submitted, and the reason is said (%r)" % r.get("submit_error"))
+        ok("UNREADABLE, not zero" in line, "it is told apart from a count of zero: %r" % line)
+        ok(read(root, "SpineTestMod", M.RECORD) == rec_was, "and the refused move still writes nothing")
+        rc = M.main(["--root", root, "advance", "SpineTestMod", "--to", "preflight", "--by", "BENCH", "--why", "x"])
+        ok(rc == 4, "the command line answers an uncountable refusal with exit 4, not the plain 1 (got %s)" % rc)
+        if cwas is None:
+            os.remove(cpath)
+        else:
+            with open(cpath, "w") as f:
+                f.write(cwas)
+
+        ro = os.path.join(root, "_readonly")
+        os.makedirs(ro)
+        os.chmod(ro, 0o500)
+        try:
+            os.environ["RM_REFUSAL_DIR"] = ro
+            r, s, _ = try_advance("unwritable store")
+            ok(not r["ok"] and r.get("submit") is None and "could not be" in (r.get("submit_error") or "")
+               and "UNREADABLE, not zero" in said(r),
+               "an unwritable store is not reported as submitted (%r, said %r)" % (r.get("submit_error"), said(r)))
+            # the pass path: the move is the mod's, not the contract's, so it stands - said out loud, exit 0
+            reset_spine(root, state="locked", locked_by="owner")
+            rc = M.main(["--root", root, "advance", "SpineTestMod", "--to", "preflight", "--by", "BENCH",
+                         "--why", "locked on his word"])
+            moved = M.load(root, "SpineTestMod")["stage"] == "preflight"
+            ok(rc == 0 and moved, "a passing move whose count cannot be written still stands, exit 0 (rc=%s, %s)"
+               % (rc, M.load(root, "SpineTestMod")["stage"]))
+        finally:
+            os.chmod(ro, 0o700)
+            os.environ["RM_REFUSAL_DIR"] = store
+
+        # ---- the pass path, counted: a pass row keeps the family's history from being all-refused ---------------
+        reset_spine(root, state="locked", locked_by="owner")
+        fam_before = len(RC.counters()["families"].get(FAM) or [])
+        r, s, _ = try_advance("pass", why="locked on his word")
+        ok(r["ok"] and s.get("counted") and item_counts().get("refused") == RC.ITEM_ALARM_AT,
+           "a good move is counted as a verdict, not as a refusal (counted=%s, refused=%s)"
+           % (s.get("counted"), item_counts().get("refused")))
+        kept = [x for x in rows_in_store() if x.get("kind") == "pass"]
+        ok(len(kept) == 1 and kept[0]["item"] == ITEM0, "the passing verdict is stored whole (%d pass row(s))"
+           % len(kept))
+        hist = RC.counters()["families"].get(FAM) or []
+        ok(len(hist) == fam_before + 1 and hist[-1]["refused"] is False,
+           "the family's history carries the pass, so an all-refused window is a reading, not a certainty (%s)"
+           % [x["refused"] for x in hist[-3:]])
+        cases.append({"id": "locked_version_passes", "expect": "pass", "got": "pass" if r["ok"] else "refuse"})
+    finally:
+        restore(was)
+        shutil.rmtree(root, ignore_errors=True)
+    res_path = os.environ.get(RC.RESULTS_ENV)
+    if res_path:        # this mode is the family's free_check: its planted cases, both ways
+        with open(res_path, "w", encoding="utf-8") as f:
+            json.dump({"cases": cases}, f)
+    ok(git_status() == before, "nothing under design/concepts in the repo was written")
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
 if __name__ == "__main__":
     a = sys.argv[1:]
     sys.exit(launch_main() if "--launch" in a else blind_main() if "--blind" in a else ingame_main() if "--ingame" in a
-             else main())
+             else submit_main() if "--submit" in a else main())

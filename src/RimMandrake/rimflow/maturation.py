@@ -81,6 +81,9 @@ RECORD = "version/stage_record.json"
 # his Evidence-for-Ask ruling (2026-11-15): a new mod's first Design Version is 0.1.0 unless recorded evidence says
 # otherwise, and the pipeline locks it itself (locked_by "pipeline", per_ruling this id)
 EVIDENCE_FOR_ASK = "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME"
+# RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS: the one brief `advance` judges with, and the row
+# infrastructure/state/judge_calibration.json carries for it
+ADVANCE_FAMILY = "maturation_advance"
 PAC = MN.PAC
 
 # (word, maturation_now column, the spec's number, plain name, the words a "Stage now" line uses)
@@ -813,7 +816,9 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
                          "2026-11-15-cheap-guards-at-every-door.md section 4)")
     sha = subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"], capture_output=True, text=True,
                          timeout=60).stdout.strip()
-    verdict = {"item": "%s@%s" % (mod, rec.get("version")), "family": "maturation_advance:%s->%s" % (cur, to),
+    # the family is the brief, not the move: judge_calibration.json is an exact lookup, so a family carrying the
+    # transition could never match a calibrated row (the transition stays in `request`, and in from/to below)
+    verdict = {"item": "%s@%s" % (mod, rec.get("version")), "family": ADVANCE_FAMILY,
                "sha": sha or UNM, "given": {"criteria": crit, "inputs": inputs}, "passed": passed,
                "refusals": refusals}
     return {"ok": not refusals, "verdict": verdict, "hand_steps": hand, "from": cur, "to": to}
@@ -832,10 +837,70 @@ def ledger_stage_move(root, mod, cur, to, by):
                             body={"from": cur, "to": to, "by": by}, env_writer=None)
 
 
+def tag_new_since(verdict):
+    """RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS: say what is new in each refusal since the item's earlier
+    counted ones, MEASURED from the contract's counters (as coverage_judge.tag_gaps does), never guessed; the record
+    the gate builds says "first", which the contract refuses once a refusal is counted. -> the prior refused count.
+    Raises OSError/ValueError when the counters cannot be read: an unknown prior is not a prior of zero."""
+    it = RC.counters()["items"].get(verdict["item"]) or {}
+    prior, seen = int(it.get("refused") or 0), it.get("clauses") or {}
+    for rec in verdict["refusals"]:
+        c = rec["clause"]
+        # `late` is never written: the gate reads every clause of the move every time, so it cannot miss one and
+        # then bring it late
+        rec["new_since"] = "first" if not prior else (
+            "unfixed:%s" % c if seen.get(c) else "regression:%s" % c)
+    return prior
+
+
+def submit_line(res):
+    """One line saying what the refusal contract did with this verdict, or None when it was not submitted at all.
+    Four answers, never collapsed: counted / submitted but not counted (with why) / the count could not be written
+    (which is not a count of zero) / malformed (the caller prints that one)."""
+    if res.get("submit_error"):
+        return "COUNT NOT WRITTEN: %s. The refusal count is UNREADABLE, not zero: the %s alarm cannot ring until " \
+               "the store is reachable again." % (res["submit_error"], RC.ALARM_ID)
+    s = res.get("submit")
+    if not s:
+        return None
+    if s.get("counted"):
+        why = ["counted: %s" % res["verdict"]["item"]]
+        if s.get("repair_due"):
+            why.append("clause %s refused %d times: criteria repair due" % (", ".join(s["repair_due"]),
+                                                                            RC.CLAUSE_REPAIR_AT))
+        for a in s.get("alarms") or []:
+            why.append("%s raised on %s: %s" % (RC.ALARM_ID, a.get("subject"), a.get("why")))
+        return "; ".join(why)
+    why = ("the brief %s is %s, so a refusal is stored and shown only" % (res["verdict"]["family"],
+                                                                          s.get("calibration"))
+           if s.get("advisory") else "nothing has changed since the stored refusal of clause %s"
+           % ", ".join(s.get("cached") or []))
+    return "SUBMITTED BUT NOT COUNTED (%s)" % why
+
+
 def advance(root, mod, to, by, why, steward=None, conductor=None, owner=None, waits_on=None, game_only=None):
     res = evaluate(root, mod, to, steward=steward, conductor=conductor, owner=owner, by=by, why=why, check_by=True,
                    game_only=game_only)
-    errs = RC.check(res["verdict"])
+    res["submit"], res["submit_error"], prior, errs = None, None, 0, []
+    try:
+        prior = tag_new_since(res["verdict"])
+    except (OSError, ValueError) as e:
+        # the count could not be LOOKED at: with the prior unknown the new_since tags cannot be trusted, so nothing
+        # is submitted (a submit would store a malformed row and alarm the brief for the store's own fault)
+        res["submit_error"] = "the refusal counters could not be read (%s: %s)" % (type(e).__name__, e)
+    if not res["submit_error"]:
+        try:
+            sub = RC.submit(res["verdict"], now=now_ts())
+        except (OSError, ValueError) as e:
+            res["submit_error"] = "the refusal store could not be written (%s: %s)" % (type(e).__name__, e)
+        else:
+            res["submit"] = {k: sub.get(k) for k in ("ok", "counted", "cached", "advisory", "calibration",
+                                                     "repair_due", "alarms", "may_judge", "pointer")}
+            errs = sub["errors"]
+    if res["submit"] is None:
+        # the store is unreachable: the verdict is still checked here, against the prior the counters gave (0 when
+        # they could not be read), so a malformed verdict is never excused by the store's silence
+        errs = RC.check(res["verdict"], prior=prior)
     if errs:
         res["malformed"] = errs
         res["ok"] = False
@@ -3409,14 +3474,24 @@ def main(argv=None):
         if res.get("malformed"):
             print("MALFORMED REFUSAL (a bug in maturation.py): %s" % "; ".join(res["malformed"]))
             return 3
+        said = submit_line(res)
         if o.json:
             v = dict(res["verdict"])
             v["given"] = {"criteria": v["given"]["criteria"], "inputs": sorted(v["given"]["inputs"])}
-            print(json.dumps({"ok": res["ok"], "verdict": v}, indent=2, ensure_ascii=False))
+            print(json.dumps({"ok": res["ok"], "verdict": v, "submit": res.get("submit"),
+                              "submit_error": res.get("submit_error")}, indent=2, ensure_ascii=False))
         elif res["ok"]:
             print("ADVANCED %s: %s to %s; journal and %s written" % (o.mod, label(res["from"]), label(o.to), RECORD))
+            if said:
+                print("- refusal contract: %s" % said)
         else:
             print_refusal(res)
+            if said:
+                print("- refusal contract: %s" % said)
+        # a refusal nobody could count is not a refusal counted zero times: its own exit code, above the plain
+        # refusal's 1, so a caller in a loop cannot read "not counted yet" as "counted and under the limit"
+        if res.get("submit_error") and not res["ok"]:
+            return 4
         return 0 if res["ok"] else 1
     if o.cmd == "unrun":
         try:
