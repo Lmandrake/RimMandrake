@@ -50,6 +50,7 @@ import argparse
 import glob
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -447,7 +448,9 @@ def check_clone(world, clone, carried):
     if rc1 != 0:        # doubt files: a clone we cannot read may hold anything
         return {"kind": "clone", "what": clone, "act": "carried" if carried else "filed", "why": "git status failed"}
     # an untracked conversations/ export is regenerable from the transcript on disk (relentless POOL_NOISE): not debris
-    lines = [ln for ln in dirty.splitlines() if ln.strip() and not ln.startswith("?? conversations/")]
+    # likewise a direct-child queue/<name>.md: a rimflow projection regenerated on every call (a nested path stays work)
+    lines = [ln for ln in dirty.splitlines() if ln.strip() and not ln.startswith("?? conversations/")
+             and not re.fullmatch(r"\?\? infrastructure/state/queue/[^/]+\.md", ln.rstrip())]
     n_ahead = int((ahead or "0").strip() or 0) if rc2 == 0 else None
     if not lines and n_ahead == 0:
         return {"kind": "clone", "what": clone, "act": "ok", "why": "clean and pushed"}
