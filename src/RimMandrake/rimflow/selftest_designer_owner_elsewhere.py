@@ -171,6 +171,27 @@ def main():
         put(d, "record.json", {"decisions": [{"id": "slope", "source": "OWNER:%s0" % prefix}]})
         check("a longer tsn does not cite a prefix of itself", prefix in (DS.owner_elsewhere(tmp, d, st) or {}))
 
+        # Codex review 2026-11-18 (its probes, each failing on 114a720def)
+        put(d, "record.json", {"decisions": [{"id": "slope", "source": "NOTOWNER:" + prefix}]})
+        check("review: NOTOWNER:<tsn> is not a citation", prefix in (DS.owner_elsewhere(tmp, d, st) or {}))
+        put(d, "record.json", {})
+        with open(os.path.join(tmp, CT.LEDGER_DIR, "events", "BENCH.jsonl"), "a") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "file", "id": ["NOT", "A", "STRING"], "title": "x"}) + "\n")
+        try:
+            u2 = DS.owner_elsewhere(tmp, d, st)
+        except Exception as e:  # noqa: BLE001 - a crash is the defect
+            u2 = repr(e)
+        check("review: a file event whose id is a list spoils itself only", isinstance(u2, dict) and by_title in u2, u2)
+        long_words = "the slope rule " + "x" * 600 + " END_OF_HIS_WORDS"
+        long_t = repo.said("WIDGETWORKS_BUILD_GEARS", long_words)
+        text = "\n".join(DS.elsewhere_section(tmp, d, st))
+        check("review: a binding word is shown in full, not clipped", "END_OF_HIS_WORDS" in text and long_t in text)
+        t0 = DS.concept_start(st)
+        same_sec = repo.said("WIDGETWORKS_BUILD_GEARS", "said in the second the concept began",
+                             tsn=int(t0) * 10 ** 9 + 1)
+        check("review: a word given within the concept's first second binds the lock",
+              same_sec in (DS.elsewhere_binding(tmp, d, st)[1] or []), DS.elsewhere_binding(tmp, d, st)[1])
+
         # an unreadable shard is UNMEASURED, never an empty list, and the lock does not pass blind
         os.replace(repo.owner, repo.owner + ".away")
         try:

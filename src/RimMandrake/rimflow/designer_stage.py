@@ -252,7 +252,7 @@ def owner_elsewhere(repo, d, st=None):
             pass
     inner = set(owner_uncited(repo, st.get("item"), d) or [])
     return {t: it for t, it in sorted(words.items()) if ours.get(it) and t not in inner
-            and not re.search(r"OWNER:%s(?![0-9])" % re.escape(t), cited)}
+            and not re.search(r"(?<![A-Za-z0-9_])OWNER:%s(?![0-9])" % re.escape(t), cited)}   # NOTOWNER: is no citation
 
 
 def concept_start(st):
@@ -271,7 +271,8 @@ def elsewhere_binding(repo, d, st):
     if u is None:
         return None, None
     t0 = concept_start(st)
-    return u, sorted(t for t in u if t.isdigit() and (t0 is None or int(t) / 1e9 > t0))
+    # whole seconds against nanoseconds, in integers: a word in the concept's first second binds (a float drops it)
+    return u, sorted(t for t in u if t.isdigit() and (t0 is None or int(t) >= int(t0) * 10 ** 9))
 
 
 def elsewhere_section(repo, d, st, cap=40):
@@ -290,7 +291,7 @@ def elsewhere_section(repo, d, st, cap=40):
     for t in bind:
         e = ev.get(t) or {}
         w = " ".join(str(CT.his_word(e) or e.get("text") or "").split())
-        out.append("- OWNER:%s on %s (%s): %s" % (t, u[t], e.get("ts") or "?", w[:400] + ("..." if len(w) > 400 else "")))
+        out.append("- OWNER:%s on %s (%s): %s" % (t, u[t], e.get("ts") or "?", w))     # in full: these must be read
     older = [t for t in sorted(u) if t not in set(bind)]
     if older:
         out.append("Older than this concept (read; the lock does not refuse on them): %d%s" % (
@@ -312,8 +313,8 @@ def _filed_titles(repo, ids):
                         ev = json.loads(line)
                     except (ValueError, RecursionError):
                         continue
-                    if (isinstance(ev, dict) and ev.get("event") == "file" and ev.get("id") in ids
-                            and isinstance(ev.get("title"), str)):
+                    if (isinstance(ev, dict) and ev.get("event") == "file" and isinstance(ev.get("id"), str)
+                            and ev["id"] in ids and isinstance(ev.get("title"), str)):
                         out.setdefault(ev["id"], ev["title"])
         except OSError:
             continue
