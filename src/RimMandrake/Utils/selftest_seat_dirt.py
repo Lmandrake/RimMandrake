@@ -3,7 +3,10 @@
 
 RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR. Fixture: a bare origin whose ledger files item FILED_ITEM_X, and
 a clone holding (all two hours old unless said): the item's untracked prose, an unfiled item's prose, a conversation
-record, a modified tracked file, and a fresh (one-minute) untracked file.
+record, a modified tracked file, and a fresh (one-minute) untracked file; and three concept folders
+(RIMMANDRAKE_LAND_DESIGNER_RUN_DONE_BUT_NEVER_HARVESTED): Done (a finished run's state never landed: stage.json
+advanced, a new result file, result.json renamed away), Busy (the same, with a run open) and Recent (no run open, one
+file changed five minutes ago).
 """
 import os
 import subprocess
@@ -50,6 +53,9 @@ def main():
               '{"seat":"BENCH","event":"file","id":"FILED_ITEM_X","title":"x"}\n'
               '{"seat":"BENCH","event":"note","id":"UNFILED_ITEM_Y","text":"a note is not a filing"}\n')
         write(c, "tracked.txt", "one\n")
+        for mod in ("Done", "Busy", "Recent"):
+            write(c, "design/concepts/%s/stage.json" % mod, '{"stage": 3, "running": null}\n')
+            write(c, "design/concepts/%s/result.json" % mod, '{"run": "r1"}\n')
         git(c, "add", "-A")
         git(c, "commit", "-q", "-m", "base")
         git(c, "push", "-q", "origin", "main")
@@ -59,14 +65,32 @@ def main():
         write(c, "conversations/2026-11-16-0000-abcd.md", "record\n", old)
         write(c, "tracked.txt", "two\n", old)
         write(c, "live/fresh.json", "{}\n", 60)
+        for mod, running in (("Done", "null"), ("Busy", '{"run": "r2"}'), ("Recent", "null")):
+            write(c, "design/concepts/%s/stage.json" % mod, '{"stage": 4, "running": %s}\n' % running, old)
+            os.rename(os.path.join(c, "design/concepts/%s/result.json" % mod),
+                      os.path.join(c, "design/concepts/%s/result.r1.json" % mod))
+            t = time.time() - old
+            os.utime(os.path.join(c, "design/concepts/%s" % mod), (t, t))
+            os.utime(os.path.join(c, "design/concepts/%s/result.r1.json" % mod), (t, t))
+        write(c, "design/concepts/Recent/record.json", "{}\n", 300)
+        done = ["design/concepts/Done/result.json", "design/concepts/Done/result.r1.json",
+                "design/concepts/Done/stage.json"]
 
         cl = seat_dirt.classify(c)
-        check(sorted(cl["landable"]) == ["conversations/2026-11-16-0000-abcd.md",
-                                         "infrastructure/state/items/FILED_ITEM_X.md"],
-              "landable = the filed item's prose and the conversation record: %s" % cl["landable"])
-        check(sorted(cl["stale"]) == ["infrastructure/state/items/UNFILED_ITEM_Y.md", "tracked.txt"],
-              "stale = unfiled prose and the old tracked edit: %s" % cl["stale"])
-        check(cl["fresh"] == ["live/fresh.json"], "a one-minute-old file is fresh, never counted: %s" % cl["fresh"])
+        check(sorted(cl["landable"]) == ["conversations/2026-11-16-0000-abcd.md"] + done +
+              ["infrastructure/state/items/FILED_ITEM_X.md"],
+              "landable = the filed item's prose, the conversation record and the settled concept's state: %s"
+              % cl["landable"])
+        busy = ["design/concepts/Busy/result.json", "design/concepts/Busy/result.r1.json",
+                "design/concepts/Busy/stage.json"]
+        recent_old = ["design/concepts/Recent/result.r1.json", "design/concepts/Recent/stage.json"]
+        check(sorted(cl["stale"]) == busy + recent_old + ["infrastructure/state/items/UNFILED_ITEM_Y.md", "tracked.txt"],
+              "stale = a concept with a run open, a recently touched concept's old files, unfiled prose and the old "
+              "tracked edit: %s" % cl["stale"])
+        check(not [p for p in cl["landable"] if "/Recent/" in p],
+              "a concept folder changed five minutes ago lands nothing, old files included: %s" % cl["landable"])
+        check("live/fresh.json" in cl["fresh"] and "design/concepts/Recent/record.json" in cl["fresh"],
+              "a one-minute-old file is fresh, never counted: %s" % cl["fresh"])
 
         r = seat_dirt.tidy(c)
         check(r.startswith("PUBLISHED "), "tidy lands the safe classes: %s" % r)
@@ -76,10 +100,16 @@ def main():
               "origin now holds both")
         check("infrastructure/state/items/UNFILED_ITEM_Y.md" not in tree and "live/fresh.json" not in tree,
               "origin does not hold the unfiled prose or the fresh file")
+        check("design/concepts/Done/result.r1.json" in tree and "design/concepts/Done/result.json" not in tree and
+              subprocess.run(["git", "-C", o, "show", "main:design/concepts/Done/stage.json"], capture_output=True,
+                             text=True).stdout.startswith('{"stage": 4'),
+              "origin holds the settled concept's advanced state, its renamed result and the deletion")
+        check("design/concepts/Busy/result.r1.json" not in tree and "design/concepts/Recent/result.r1.json" not in tree,
+              "origin holds nothing of the concept with a run open or the one changed five minutes ago")
         check(subprocess.run(["git", "-C", o, "show", "main:tracked.txt"], capture_output=True,
                              text=True).stdout == "one\n", "the tracked edit was not landed")
         rd = seat_dirt.reading(c)
-        check(rd["stale"] == 2 and rd["landable"] == 0, "after tidy the reading is 2 stale, 0 landable: %s" % rd)
+        check(rd["stale"] == 7 and rd["landable"] == 0, "after tidy the reading is 7 stale, 0 landable: %s" % rd)
         check(seat_dirt.tidy(c) == "nothing to land", "a second tidy lands nothing")
     if FAILS:
         print("FAIL %d" % len(FAILS))

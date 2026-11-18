@@ -1720,7 +1720,7 @@ SEAT_TIDY = False    # set by `run --file-alarms` only: a selftest calling c_dis
 def seat_dirt_reading():
     """disk.seat_dirt (RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR): paths dirty in the seat clone for over an
     hour that no safe class covers, i.e. a writer working in the seat clone instead of its own. A live pass first lands
-    the safe classes (seat_dirt.tidy: conversation records, filed item prose). Unreadable is 9999, never silence."""
+    the safe classes (seat_dirt.tidy: conversation records, filed item prose, settled concept folders). Unreadable is 9999, never silence."""
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import seat_dirt

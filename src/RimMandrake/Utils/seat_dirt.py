@@ -8,6 +8,10 @@ dirty paths (92 conversation records, 14 items whose ledger `file` event was on 
     conversations/*.md           written by ~/dev/Lodestar/bin/conversations.py, landed before only at a handoff
     infrastructure/state/items/<ID>.md, untracked, when origin's ledger has a `file` event for <ID> and origin has
                                  no such file: the item exists, its prose is simply missing from origin
+    design/concepts/<Mod>/...    a concept folder whose stage.json names no open run and whose dirty files have not
+                                 changed for CONCEPT_SETTLE_MIN: a finished Designer run whose harvest never landed
+                                 its state (RIMMANDRAKE_LAND_DESIGNER_RUN_DONE_BUT_NEVER_HARVESTED: Cauldron's 12
+                                 files sat here after a done run left the Dispatcher's tracking without role_done)
 
 Everything else older than STALE_MIN is counted as `disk.seat_dirt` by ops_watch (alarm OPS_SEAT_CLONE_DIRT_RESTORE):
 a writer is dirtying the seat clone instead of its own clone. A path written in the last STALE_MIN minutes is taken
@@ -32,6 +36,8 @@ ITEMS = "infrastructure/state/items/"
 LEDGER = "infrastructure/state/ledger/"
 LAND = os.path.join(HERE, "land.sh")
 ITEM_RE = re.compile(r"^infrastructure/state/items/([A-Z0-9_]+)\.md$")
+CONCEPT_RE = re.compile(r"^design/concepts/([^/]+)/")
+CONCEPT_SETTLE_MIN = 30  # a concept folder lands only this long after its last change, and only with no run open
 
 
 def git(clone, *a, check=True):
@@ -91,17 +97,43 @@ def classify(clone, now=None):
     rows = [(st, p, age_min(clone, p, now)) for st, p in dirty(clone)]
     item_ids = {ITEM_RE.match(p).group(1) for st, p, _ in rows if st == "??" and ITEM_RE.match(p)}
     filed = filed_on_origin(clone, item_ids)
+    settled = settled_concepts(clone, rows)
     out = {"landable": [], "fresh": [], "stale": []}
     for st, p, age in rows:
         m = ITEM_RE.match(p)
+        c = CONCEPT_RE.match(p)
         safe = (p.startswith("conversations/") and p.endswith(".md") and st != " D") or \
-               (st == "??" and m and m.group(1) in filed and not on_origin(clone, p))
-        if safe and age >= SETTLE_MIN:
+               (st == "??" and m and m.group(1) in filed and not on_origin(clone, p)) or \
+               bool(c and c.group(1) in settled)
+        if safe and (age >= SETTLE_MIN or (c and c.group(1) in settled)):
             out["landable"].append(p)
         elif age < STALE_MIN:
             out["fresh"].append(p)
         else:
             out["stale"].append(p)
+    return out
+
+
+def settled_concepts(clone, rows):
+    """-> the concept folders whose every dirty path is CONCEPT_SETTLE_MIN old and whose stage.json parses and names no
+    open run (`running` empty). A concept with a run open, or a stage.json that is missing or does not parse, is
+    never landed here: its files are a live run's, or nobody can tell."""
+    newest = {}
+    for _st, p, age in rows:
+        c = CONCEPT_RE.match(p)
+        if c:
+            newest[c.group(1)] = min(age, newest.get(c.group(1), age))
+    out = set()
+    for mod, age in newest.items():
+        if age < CONCEPT_SETTLE_MIN:
+            continue
+        try:
+            with open(os.path.join(clone, "design", "concepts", mod, "stage.json"), encoding="utf-8") as f:
+                st = json.load(f)
+        except (OSError, ValueError):
+            continue
+        if isinstance(st, dict) and not st.get("running"):
+            out.add(mod)
     return out
 
 
@@ -117,7 +149,8 @@ def tidy(clone=SEAT_CLONE, now=None, land=LAND):
     paths = classify(clone, now)["landable"]
     if not paths:
         return "nothing to land"
-    msg = ("seat_dirt: land %d safe path(s) left in the seat clone (conversation records, filed item prose)\n\n"
+    msg = ("seat_dirt: land %d safe path(s) left in the seat clone (conversation records, filed item prose, "
+           "settled concept folders)\n\n"
            "RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR (seat_dirt.py tidy)." % len(paths))
     p = subprocess.run(["sh", land, "-m", msg] + paths, cwd=clone, capture_output=True, text=True, timeout=600,
                        env=dict(os.environ, LAND_REPO=clone))
