@@ -1,0 +1,53 @@
+RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED — acceptance evidence
+
+verify: python3 src/RimMandrake/Utils/run_selftests.py --only selftest_designer_stage selftest_designer_repin selftest_designer_stage_land
+  base 02ca67b3a4 : PASS 2/3 FAIL 1/3  ->  after: identical (the 1 FAIL is pre-existing)
+
+READ BY THE CONDUCTOR, not taken from the builder's report. I copied the new case onto the BASE
+designer_stage.py and watched 9 checks go red, these among them:
+
+  FAIL 7 a re-pin records the commit it pinned at (stage 3, sheet)  got: (None, '43a06fee2c90...')
+  FAIL 7 input_changes anchored at the recording commit lists the B change, its revert and C
+         got: (None, 'input_changes takes no anchor: input_changes() takes 4 positional arguments but 5 were given')
+  FAIL refuses the B change of A->B->A->C, with only C cited (72195b8232)  got: None
+  FAIL refused the B change ... leaves stage.json byte-identical  got: ''
+  FAIL 7 the automatic re-pin refuses: the B change carries out no card of his
+
+`got: None` on the third line IS the defect: the re-pin raised nothing, i.e. it succeeded with no
+source for the B change.
+
+AFTER (main tree, with ticket 6's scope_source fix already landed beneath it):
+  selftest_designer_repin.py          rc 0, "all checks passed"
+  selftest_designer_stage.py          418 ok, 1 FAIL — the pre-existing "decide: a role cap ..."
+                                      which needs a hard-wired seat-clone concepts path absent here
+  4 other readers of a result's pin   PASS 4/4 GREEN
+    (selftest_maturation_autonomy, selftest_coverage_judge_loop, selftest_designer_chain,
+     selftest_designer_park)
+
+THE FOUR ANSWERS, by construction:
+  a window read                                  -> the commits, oldest first
+  anchor recorded but does not resolve           -> UNMEASURED (rewritten history, or a shallow clone)
+  anchor resolves but lacks the pinned hash      -> UNMEASURED
+  no pinned_at at all (a pin predating the field)-> the old last-occurrence behaviour, until its next pin
+None of these returns [], which would read as "nothing changed since the pin" and let a re-pin pass
+unexamined. The anchor is RECORDED at pin time and never reconstructed from history, and never from
+a commit date — review 2 of the parent item had already judged a date-trusting fix wrong.
+
+BUILDER'S REGIME SWEEP (its own): the pin absent from the window; an anchor on a non-ancestor side
+branch; across a merge; a change arriving ONLY via a merge (history simplification does not hide it);
+a shallow clone with an unreachable anchor (UNMEASURED); a shallow clone anchored at its own HEAD
+(empty set — correctly a DIFFERENT answer from UNMEASURED).
+
+CORRECTION TO MY OWN BRIEF, made independently by two builders: I said selftest_designer_stage has
+2 pre-existing FAILs. It has ONE. My `grep -c` matched the trailing "FAILED 1:" summary line as well
+as the FAIL line. Both agents measured it and said so.
+
+OWED / NOT PROVED (the builder's own disclosure, kept):
+1. close_run's anchor is HEAD-at-close, while the bytes land in a commit land_state makes just after,
+   so the window starts one commit BEFORE the landing. Safe — the landing is the first occurrence
+   inside the window, which is what the fix anchors on, and it can only widen the window, never
+   narrow it — but a close whose landing is deferred across other concepts' commits is untested.
+2. Both files were already DIRTY under code_review_status on base (designer_stage.py since the
+   2026-11-04 mark at 9e6ef43f3b). Not marked clean: that needs a full-file review, not a fix.
+3. Existing pinned_at-less pins on live concepts keep today's last-occurrence behaviour until their
+   next pin, by design per the item's note, so the known hole persists for exactly those until then.
