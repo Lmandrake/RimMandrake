@@ -13,12 +13,12 @@
  "_order": "[O] 2026-10-28 10:15 (see _owner): 'Once steven.lewis resets, switch over to it and use it until 50%. Then use up system.mandrake to 2%, then lukas.mandrake to 2%.' A fixed priority: the engine burns the FIRST account in this list that is eligible (measured, fresh, inside its window, above its line). steven is eligible only inside his window after his reset, down to leave_pct_left. When system resets, the machine goes to system even if lukas still has budget; a lower account's budget that expires first is given up (the owner 2026-10-28, on being left on lukas at 13:00: 'awkward').",
  "accounts": {
   "steven": {
-   "leave_pct_left": 22,
-   "_leave_pct_left": "[O] 2026-11-17 5:51 AM PST, to the Conductor: 'Change the Steve account permission to allow drain down to 20%' (after the 5:50 AM hard stop at 56% left: 'STOP KILLING THESE WINDOWS NOW'). 22 = 20 plus the plan's 2-point overshoot margin. Before it: [O] 2026-11-11 20:3x PST, card on the Whittle fleet's account: 'Use Steven until it is down to 60%, then switch to system please.' 62 = 60 plus the plan's 2-point overshoot margin (as 50 -> 52 on 2026-10-28).",
+   "leave_pct_left": 35,
+   "_leave_pct_left": "[O] owner, by question card 2026-11-17 ~10:40 AM PST: 'Use this account, then switch to Steve, but keep the one mod at a time policy so we use it slowly. We need to leave space for Steven too.' [D] delegated (Conductor): he gave no number, so 35% left; this later word replaces the 5:51 AM 22 below. It was written at 10:48 AM only into switching_plan.json as an exception, which the live service does not read while week.conf points here; made live 2026-11-17 ~5:30 PM PST. Earlier: [O] 2026-11-17 5:51 AM PST, to the Conductor: 'Change the Steve account permission to allow drain down to 20%' (after the 5:50 AM hard stop at 56% left: 'STOP KILLING THESE WINDOWS NOW'). 22 = 20 plus the plan's 2-point overshoot margin. Before it: [O] 2026-11-11 20:3x PST, card on the Whittle fleet's account: 'Use Steven until it is down to 60%, then switch to system please.' 62 = 60 plus the plan's 2-point overshoot margin (as 50 -> 52 on 2026-10-28).",
    "window_h_after_reset": 168,
    "_window_h_after_reset": "[O] 2026-10-27 'Dispatcher can use Steve up to 50% after a fresh reset only'; the 48 h reading of 'fresh' is [A] (slot_rules.json lent_accounts.steven.prefer_start_of_week_h). Outside this window the engine never switches to steven and switches off him if live."
   },
-  "system": {"leave_pct_left": 1, "_leave_pct_left": "[O] 2026-11-05: 'When this account goes to 1%' (see _week_2026-11-05)."},
+  "system": {"leave_pct_left": 1, "_leave_pct_left": "[O] 2026-11-17 ~5:22 PM PST, to the Conductor: 'please move to Steven when we get to 1% not 0%'. Earlier: [O] 2026-11-05: 'When this account goes to 1%' (see _week_2026-11-05)."},
   "lukas": {}
  },
  "floors": {
