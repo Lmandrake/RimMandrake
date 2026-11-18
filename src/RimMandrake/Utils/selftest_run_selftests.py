@@ -141,6 +141,34 @@ with _tf.TemporaryDirectory() as _d:
 _tests = [Path("/r/a/selftest_one.py"), Path("/r/b/selftest_two.py"), Path("/r/c/selftest_two.py")]
 eq(rs._only_path("selftest_one", _tests), Path("/r/a/selftest_one.py"), "--only takes a bare stem")
 eq(rs._only_names(["a,b", "c"]), ["a", "b", "c"], "--only takes commas as well as spaces")
+_long = ",".join("selftest_name_%03d" % i for i in range(60))
+# Python before 3.14 and macOS raise ENAMETOOLONG from Path.is_file(); 3.14 on Linux answers False. Make it raise, always.
+import errno as _errno  # noqa: E402
+_is_file = Path.is_file
+
+
+def _raising_is_file(self, *a, **k):
+    if len(str(self)) > 255:
+        raise OSError(_errno.ENAMETOOLONG, "File name too long", str(self)[:40])
+    return _is_file(self, *a, **k)
+
+
+Path.is_file = _raising_is_file
+try:
+    _got, _err = rs._only_names([_long, "c"]), None
+except Exception as _e:  # noqa: BLE001 - the crash is what this case watches for
+    _got, _err = None, "%s: %s" % (type(_e).__name__, _e)
+try:
+    rs._only_names(["x" * 300])
+    _refused = None
+except SystemExit as _e:
+    _refused = str(_e)
+finally:
+    Path.is_file = _is_file
+eq(bool(_refused) and "errno 36" in _refused, True, "--only: a long entry with no comma refuses by name and errno (%s)" % _refused)
+eq(_got, ["selftest_name_%03d" % i for i in range(60)] + ["c"], "--only with a 1000-char comma list splits, never raises (%s)" % _err)
+_real = Path(__file__).resolve()
+eq(rs._only_names([str(_real)]), [str(_real)], "--only: an entry that IS a real file stays whole")
 eq(rs._only_path("selftest_one.py", _tests), Path("/r/a/selftest_one.py"), "--only takes a bare file name")
 eq(rs._only_path("selftest_two", _tests).name, "selftest_two", "an ambiguous stem stays a missing path, refused")
 eq(rs._only_path("selftest_nope", _tests).is_file(), False, "an unknown stem stays a missing path, refused")

@@ -55,6 +55,7 @@ inactive file cache) plus the recorded memory.peak of what is starting — never
 file or counter, which leaks on SIGKILL (design doc §8 #10).
 """
 import argparse
+import errno
 import itertools
 import json
 import os
@@ -266,7 +267,19 @@ SPECIAL_INVOCATIONS = {
 
 def _only_names(entries: list[str]) -> list[str]:
     """--only entries, split on commas: a,b means a b. An entry that is a real file stays whole."""
-    return [n for e in entries for n in ([e] if Path(e).is_file() else e.split(",")) if n]
+    return [n for e in entries for n in ([e] if _is_file(e) else e.split(",")) if n]
+
+
+def _is_file(entry: str) -> bool:
+    """Is this --only entry one real file? A comma list too long to be a name (ENAMETOOLONG) is plainly not a file; any
+    other reason the question could not be asked (a loop, a parent we may not read) refuses by name and errno, and is
+    never read as "not a file" (which would split a real path into nonsense names)."""
+    try:
+        return Path(entry).is_file()
+    except OSError as err:
+        if err.errno == errno.ENAMETOOLONG and "," in entry:
+            return False
+        sys.exit("--only %.80r: could not tell whether it is a file (%s, errno %s)" % (entry, err.strerror, err.errno))
 
 
 def _only_path(name: str, tests: list[Path]) -> Path:
