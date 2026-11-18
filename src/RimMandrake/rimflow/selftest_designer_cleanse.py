@@ -1326,14 +1326,14 @@ def test_apply():
     repo, concept, out = applyable()
     before = _snap(concept)
     for argv, code, line in ((["apply", "Demo", "--repo", repo], 0, "APPLY Demo WOULD_WRITE 5 files"),
-                             (["apply", "Demo", "--repo", repo, "--write"], 1, "APPLY Demo REFUSED WRITE_NOT_BUILT"),
+                             (["apply", "Demo", "--repo", repo, "--write"], 1, "APPLY Demo REFUSED NOT_APPROVED"),
                              (["apply", "Nobody", "--repo", repo], 1, "APPLY Nobody REFUSED NO_PROPOSAL")):
         buf = io.StringIO()
         with redirect_stdout(buf):
             got = DC.main(argv)
         last = buf.getvalue().strip().splitlines()[-1]
         check(got == code and last.startswith(line), "apply CLI %s: exit %s, %r" % (" ".join(argv[2:]), got, last))
-    check(_snap(concept) == before, "apply CLI: neither the dry run nor --write wrote anything")
+    check(_snap(concept) == before, "apply CLI: neither the dry run nor an unapproved --write wrote anything")
 
 
 def test_apply_edges():
@@ -1459,9 +1459,228 @@ def test_apply_edges():
           "apply: zero moved plans no later_version.md (%s %s %s)" % (r["answer"], r["cause"], r["detail"]))
 
 
+def _modes(d):
+    """{relpath: (mode, bytes)} under d: a rollback must restore both."""
+    out = {}
+    for base, _dirs, files in os.walk(d):
+        for f in files:
+            p = os.path.join(base, f)
+            with open(p, "rb") as fh:
+                out[os.path.relpath(p, d)] = (os.stat(p).st_mode, fh.read())
+    return out
+
+
+def approved(marks=None, plan=True):
+    """-> (repo, concept, out): applyable() plus the owner's plan approving Demo by its digest, and a hold file."""
+    import cleanse_plan as CP
+    repo, concept, out = applyable()
+    if plan:
+        p = os.path.join(repo, CP.PLAN_REL)
+        json.dump({"schema": 1, "excluded": {"Pyrelands": "not part"},
+                   "mods": {"Demo": {"approve": "digest", "approved_digest": DC.proposal_digest(out), "marks": marks or {}}}},
+                  open(p, "w"))
+    hold = os.path.join(repo, "src", "RimMandrake", "rimflow", "mod_owner_hold.json")
+    os.makedirs(os.path.dirname(hold), exist_ok=True)
+    json.dump({"holds": {"Demo": {"why": "his hold"}}}, open(hold, "w"))
+    return repo, concept, out
+
+
+def test_apply_write():
+    """apply_write (RIMMANDRAKE_WRITE_CLEANSE_APPLY_ATOMIC_HOLD_UNTOUCHED): all or none, the owner's plan first, a run
+    opened under the lock refuses, a cleanup failure after a complete install is WROTE (review-3 finding 4)."""
+    import designer_stage as DS
+    repo, concept, out = approved()
+    plan = DC.apply_plan(repo, "Demo")["files"]
+    outside = {k: v for k, v in _modes(repo).items() if not k.startswith(os.path.join("design", "concepts", "Demo") + os.sep)}
+    w = DC.apply_write(repo, "Demo")
+    check(w["answer"] == "WROTE" and w["files"] == sorted(plan) and not w["cleanup_failed"],
+          "write: an approved plan is WROTE, every planned file (%s %s %s)" % (w["answer"], w["cause"], w["detail"]))
+    check(all(open(os.path.join(concept, r), encoding="utf-8").read() == t for r, t in plan.items()),
+          "write: each file installed is the planned text")
+    check(not [f for f in os.listdir(concept) if f.startswith(".apply-")], "write: no temp file left")
+    now = {k: v for k, v in _modes(repo).items() if not k.startswith(os.path.join("design", "concepts", "Demo") + os.sep)}
+    check(now == outside, "write: nothing outside the concept folder changed (the owner's hold, the plan)")
+    check(DS.status(concept, repo)["status"] == "blocked", "write: the written concept reads blocked, never ready")
+    check(DC.apply_write(repo, "Demo")["answer"] == "NOTHING_TO_APPLY", "write: a re-run has nothing to apply")
+    # the owner's plan decides before the proposal's own refusals; its could-not-look stays could-not-look
+    repo, concept, out = approved(plan=False)
+    check(DC.apply_write(repo, "Demo")["cause"] == "NOT_APPROVED", "write: no owner's plan is NOT_APPROVED")
+    repo, concept, out = approved(marks={"ritual": "keep"})
+    check(DC.apply_write(repo, "Demo")["cause"] == "NOT_APPROVED", "write: a mark not folded is NOT_APPROVED")
+    repo, concept, out = approved()
+    os.remove(os.path.join(out, "converge.json"))
+    check(DC.apply_write(repo, "Demo")["cause"] == "CONVERGE_MISSING", "write: an approved plan still needs convergence")
+    if os.geteuid() != 0:
+        import cleanse_plan as CP
+        repo, concept, out = approved()
+        os.chmod(os.path.join(repo, CP.PLAN_REL), 0)
+        check(DC.apply_write(repo, "Demo")["answer"] == "COULD_NOT_LOOK", "write: an unreadable plan is COULD_NOT_LOOK")
+        os.chmod(os.path.join(repo, CP.PLAN_REL), 0o644)
+    # a Designer run opened while it took the lock: the re-plan under the lock refuses, nothing written
+    repo, concept, out = approved()
+    sp = os.path.join(concept, "stage.json")
+    json.dump({"schema": 1, "mod": "Demo", "stage": 3, "status": "ready", "running": None,
+               "budget": {"cap": 10, "reserve": 1, "spent": 0, "charges": []}, "results": [], "history": []}, open(sp, "w"))
+
+    def opens(phase, rel):
+        if phase == "locked":
+            s = json.load(open(sp))
+            s["running"] = {"run": "rm-role-designer-2", "stage": 3}
+            json.dump(s, open(sp, "w"))
+    w = DC.apply_write(repo, "Demo", fault=opens)
+    check((w["answer"], w["cause"]) == ("REFUSED", "DESIGNER_RUN_OPEN") and not os.path.exists(os.path.join(concept, "sheet.md")),
+          "write: a run opened under the lock refuses and writes nothing (%s %s)" % (w["answer"], w["cause"]))
+    # an install fault on the first and on a later file: every file back to its exact bytes and mode
+    for n in (1, 3):
+        repo, concept, out = approved()
+        open(os.path.join(concept, "sheet.md"), "w").write("# Demo\nold sheet\n")
+        os.chmod(os.path.join(concept, "sheet.md"), 0o600)
+        before = _modes(concept)
+        seen = []
+
+        def boom(phase, rel, n=n, seen=seen):
+            if phase == "install":
+                seen.append(rel)
+                if len(seen) == n:
+                    raise OSError(28, "No space left on device (injected)")
+        w = DC.apply_write(repo, "Demo", fault=boom)
+        check((w["answer"], w["cause"]) == ("WRITE_FAILED", "ROLLED_BACK") and _modes(concept) == before
+              and not os.path.exists(os.path.join(concept, "version")),
+              "write: an install fault on file %d rolls back bytes, modes and new folders (%s %s)" % (n, w["answer"], w["cause"]))
+    # a rollback that cannot restore says so by name, never ROLLED_BACK
+    repo, concept, out = approved()
+    open(os.path.join(concept, "sheet.md"), "w").write("old\n")
+    real, broke = DC._replace, []
+
+    def flaky(dst, data, mode, strays=None):
+        if broke:
+            raise OSError(5, "I/O error (injected)")
+        return real(dst, data, mode, strays)
+
+    def late(phase, rel):
+        if phase == "install" and rel == "tree.json":
+            broke.append(1)
+            raise OSError(28, "No space left on device (injected)")
+    DC._replace = flaky
+    try:
+        w = DC.apply_write(repo, "Demo", fault=late)
+    finally:
+        DC._replace = real
+    check((w["answer"], w["cause"]) == ("WRITE_FAILED", "ROLLBACK_INCOMPLETE") and "sheet.md" in w["detail"],
+          "write: a rollback that fails names what it left (%s %s)" % (w["answer"], w["cause"]))
+    # a failure inside the replace after a new folder was made: the folder goes too
+    repo, concept, out = approved()
+    before = _modes(concept)
+
+    def last_fails(dst, data, mode, strays=None):
+        if dst.endswith("VERSION.json"):
+            raise OSError(28, "No space left on device (injected)")
+        return real(dst, data, mode, strays)
+    DC._replace = last_fails
+    try:
+        w = DC.apply_write(repo, "Demo")
+    finally:
+        DC._replace = real
+    check(w["cause"] == "ROLLED_BACK" and _modes(concept) == before and not os.path.exists(os.path.join(concept, "version")),
+          "write: a failed replace after making version/ removes it with the rest (%s)" % w["cause"])
+    # an interrupt mid-install rolls back, then still interrupts
+    repo, concept, out = approved()
+    before = _modes(concept)
+
+    def interrupt(phase, rel):
+        if phase == "install" and rel == "stage.json":
+            raise KeyboardInterrupt()
+    try:
+        DC.apply_write(repo, "Demo", fault=interrupt)
+        got = "returned"
+    except KeyboardInterrupt:
+        got = "interrupted"
+    check(got == "interrupted" and _modes(concept) == before, "write: an interrupt mid-install rolls back and re-raises (%s)" % got)
+    # a temp file that cannot be removed is no exact rollback
+    repo, concept, out = approved()
+    real_unlink = os.unlink
+    real_rep = os.replace
+
+    def no_rep(a, b):
+        raise OSError(28, "No space left on device (injected)")
+
+    def no_unlink(p):
+        if os.path.basename(p).startswith(".apply-"):
+            raise OSError(16, "busy (injected)")
+        return real_unlink(p)
+    DC.os.replace, DC.os.unlink = no_rep, no_unlink
+    try:
+        w = DC.apply_write(repo, "Demo")
+    finally:
+        DC.os.replace, DC.os.unlink = real_rep, real_unlink
+    check(w["cause"] == "ROLLBACK_INCOMPLETE" and "temp file left" in w["detail"],
+          "write: a temp file it could not remove is ROLLBACK_INCOMPLETE, never ROLLED_BACK (%s)" % w["cause"])
+    for f in os.listdir(concept):
+        if f.startswith(".apply-"):
+            real_unlink(os.path.join(concept, f))
+    # a linked version/ folder would write outside the concept folder: refused, nothing written there
+    repo, concept, out = approved()
+    away = tempfile.mkdtemp(prefix="dc_away_")
+    os.symlink(away, os.path.join(concept, "version"))
+    w = DC.apply_write(repo, "Demo")
+    check((w["answer"], w["cause"]) == ("REFUSED", "UNSAFE_PATH") and os.listdir(away) == [],
+          "write: a linked version/ folder is UNSAFE_PATH and nothing lands outside (%s %s)" % (w["answer"], w["cause"]))
+    # a link planted on the path during the install is caught at the moment of writing
+    repo, concept, out = approved()
+    before = _modes(concept)
+    away = tempfile.mkdtemp(prefix="dc_away_")
+
+    def plant(phase, rel):
+        if phase == "install" and rel.startswith("version"):
+            os.symlink(away, os.path.join(concept, "version"))
+    w = DC.apply_write(repo, "Demo", fault=plant)
+    check(w["answer"] == "WRITE_FAILED" and os.listdir(away) == [] and _modes(concept) == before,
+          "write: a link planted mid-install fails the write, rolled back, nothing outside (%s %s)" % (w["answer"], w["cause"]))
+    # an interrupt right after the new folder is made still removes it
+    repo, concept, out = approved()
+    before = _modes(concept)
+    real_mkdir = os.mkdir
+
+    def mkdir_then_stop(p, *a):
+        real_mkdir(p, *a)
+        raise KeyboardInterrupt()
+    DC.os.mkdir = mkdir_then_stop
+    try:
+        DC.apply_write(repo, "Demo")
+        got = "returned"
+    except KeyboardInterrupt:
+        got = "interrupted"
+    finally:
+        DC.os.mkdir = real_mkdir
+    check(got == "interrupted" and not os.path.exists(os.path.join(concept, "version")) and _modes(concept) == before,
+          "write: an interrupt after mkdir removes the new folder and every file (%s)" % got)
+    # a cleanup fault after a complete install is WROTE plus its own line (CLI), never WRITE_FAILED
+    import io
+    from contextlib import redirect_stdout
+    repo, concept, out = approved()
+    plan = DC.apply_plan(repo, "Demo")["files"]
+
+    def dirty(phase, rel):
+        if phase == "cleanup":
+            raise OSError(16, "Device or resource busy (injected)")
+    DC.APPLY_FAULT, buf = dirty, io.StringIO()
+    try:
+        with redirect_stdout(buf):
+            code = DC.main(["apply", "Demo", "--write", "--repo", repo])
+    finally:
+        DC.APPLY_FAULT = None
+    lines = buf.getvalue().strip().splitlines()
+    check(code == 0 and lines[-1] == "APPLY Demo WROTE %d files" % len(plan)
+          and any(x.startswith("APPLY Demo CLEANUP_FAILED") for x in lines[:-1]),
+          "write CLI: a cleanup fault is WROTE with its own CLEANUP_FAILED line (%s %r)" % (code, lines[-2:]))
+    check(all(open(os.path.join(concept, r), encoding="utf-8").read() == t for r, t in plan.items()),
+          "write: after a cleanup fault the install is complete")
+
+
 def main():
     for t in (test_check, test_detector, test_case, test_hold, test_run, test_review, test_fleet,
-              test_review_hardening, test_converge, test_gather, test_apply, test_apply_edges):
+              test_review_hardening, test_converge, test_gather, test_apply, test_apply_edges,
+              test_apply_write):
         try:
             t()
         except Exception as e:      # a crash is a failed row, not a silent stop

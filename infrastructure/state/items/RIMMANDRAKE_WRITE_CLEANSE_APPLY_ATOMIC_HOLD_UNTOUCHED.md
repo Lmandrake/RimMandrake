@@ -21,8 +21,11 @@ CONTRACT:
   - REFUSED: exit 1.
   - COULD_NOT_LOOK: exit 4.
   - WRITE_FAILED: exit 5, rolled back to the exact prior bytes and modes.
-- It first runs apply_plan; that answer and cause stand unless it is WOULD_WRITE.
-- Then plan_check runs: any answer but APPROVED is `REFUSED NOT_APPROVED` (COULD_NOT_LOOK stays COULD_NOT_LOOK).
+- It first runs apply_plan; its COULD_NOT_LOOK and its BAD_MOD, PYRELANDS and NO_PROPOSAL refusals stand.
+- Then plan_check runs: any answer but APPROVED is `REFUSED NOT_APPROVED` (COULD_NOT_LOOK stays COULD_NOT_LOOK). The
+  acceptance case requires this before apply_plan's other refusals: TheRot (no converge.json) and an edited BlueDesert
+  read NOT_APPROVED, not CONVERGE_MISSING or CHECK_FAILED.
+- Then apply_plan's other answers stand unless it is WOULD_WRITE.
 - Then it takes an exclusive lock on the concept folder and re-reads stage.json: a run open now is
   `REFUSED DESIGNER_RUN_OPEN`.
 - Then it installs exactly apply_plan's `files`, each by temp file + os.replace inside design/concepts/<Mod>/, keeping

@@ -30,7 +30,9 @@ and dispatch it on every remaining biome other than Pyrelands! Every single one.
   designer_cleanse.py apply <Mod> [--repo R]
         dry run: what applying the converged proposal would write into design/concepts/<Mod>/ (tree.json, sheet.md,
         stage.json held blocked, version/VERSION.json 0.1.0, later_version.md's one next-version section), or why not.
-        Exit 0 WOULD_WRITE, 3 NOTHING_TO_APPLY, 1 REFUSED, 4 COULD_NOT_LOOK. --write is refused (not built here).
+        Exit 0 WOULD_WRITE, 3 NOTHING_TO_APPLY, 1 REFUSED, 4 COULD_NOT_LOOK. --write installs it, all or none, once
+        the owner's plan (cleanse_plan.py) reads APPROVED: exit 0 WROTE, 5 WRITE_FAILED (ROLLED_BACK, or
+        ROLLBACK_INCOMPLETE naming what it could not restore).
   designer_cleanse.py gather      every mod's pages, questions and retirements in one ALL_BIOMES.md beside the status
   designer_cleanse.py status
 
@@ -48,6 +50,7 @@ import os
 import random
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -2296,12 +2299,202 @@ def apply_plan(repo, mod):
     return _apply_out("WOULD_WRITE", files=files, changed=changed)
 
 
+WRITE_EXIT = {"WROTE": 0, "NOTHING_TO_APPLY": 3, "REFUSED": 1, "COULD_NOT_LOOK": 4, "WRITE_FAILED": 5}
+APPLY_FAULT = None      # the CLI's test seam: fault(phase, rel), phases "locked", "install", "cleanup"
+
+
+def _write_out(answer, cause="", path="", files=(), cleanup_failed=(), detail=""):
+    return {"answer": answer, "cause": cause, "path": path, "files": list(files), "cleanup_failed": list(cleanup_failed),
+            "detail": detail}
+
+
+APPLY_BEFORE_PLAN = ("BAD_MOD", "PYRELANDS", "NO_PROPOSAL")     # what the plan check cannot speak to: these decide first
+
+
+def _gate(repo, mod):
+    """apply_plan's reads and identity (COULD_NOT_LOOK, BAD_MOD, PYRELANDS, NO_PROPOSAL), then the owner's plan
+    (cleanse_plan.plan_check: an edited or unreviewed proposal is NOT_APPROVED, the truer answer than the check or
+    converge refusal it also earns), then apply_plan's other answers. -> (None, the plan) to write, or (the answer, None)."""
+    p = apply_plan(repo, mod)
+    stop = _write_out(p["answer"], p["cause"], p["path"], detail=p.get("detail", ""))
+    if p["answer"] == "COULD_NOT_LOOK" or p["cause"] in APPLY_BEFORE_PLAN:
+        return stop, None
+    import cleanse_plan
+    c = cleanse_plan.plan_check(repo, mod)
+    if c["answer"] == "COULD_NOT_LOOK":
+        return _write_out("COULD_NOT_LOOK", "PLAN_UNREADABLE", c["path"]), None
+    if c["answer"] != "APPROVED":
+        return _write_out("REFUSED", "NOT_APPROVED", c["path"], detail="the owner's plan reads %s%s" % (
+            c["answer"], " (%s)" % ", ".join(c["ids"]) if c["ids"] else "")), None
+    if p["answer"] != "WOULD_WRITE":
+        return stop, None
+    return None, p
+
+
+def apply_write(repo, mod, fault=None):
+    """Install apply_plan's files into design/concepts/<mod>/, all or none (RIMMANDRAKE_WRITE_CLEANSE_APPLY_ATOMIC_HOLD_
+    UNTOUCHED). -> {answer: WROTE | NOTHING_TO_APPLY | REFUSED | COULD_NOT_LOOK | WRITE_FAILED, cause, path, files (the
+    relpaths written), cleanup_failed}. Order: _gate (the plan's reads and identity, the owner's plan, the plan's other
+    answers); then, under an exclusive flock on the concept folder, the plan is made again (a Designer run opened
+    meanwhile refuses) and each file goes in by a temp file and os.replace, its prior bytes and mode kept in memory. A
+    failure before the last file is in rolls every file back (WRITE_FAILED); a cleanup failure after it is WROTE with
+    cleanup_failed. Touches nothing outside the concept folder: not the owner's hold, the plan, or the mod's source."""
+    fault = fault or (lambda phase, rel: None)
+    early, _ = _gate(repo, mod)
+    if early:
+        return early
+    concept = os.path.join(os.path.abspath(repo), "design", "concepts", mod)
+    try:
+        fd = os.open(concept, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    except OSError as e:
+        return _write_out("COULD_NOT_LOOK", "UNREADABLE", concept + " (%s)" % type(e).__name__)
+    try:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            return _write_out("REFUSED", "BUSY", concept, detail="another apply holds the concept folder")
+        prior, made_dirs, done, strays = {}, [], [], []
+        try:
+            fault("locked", None)
+            early, plan = _gate(repo, mod)      # under the lock: what changed while it waited decides
+            if early:
+                return early
+            files = plan["files"]
+            unsafe = _unsafe_paths(concept, files)
+            if unsafe:
+                return _write_out("REFUSED", "UNSAFE_PATH", concept, detail="not a plain file or folder inside the "
+                                  "concept folder: %s" % ", ".join(unsafe))
+            for rel in sorted(files):
+                dst = os.path.join(concept, rel)
+                if os.path.lexists(dst):
+                    st = os.lstat(dst)
+                    if not stat.S_ISREG(st.st_mode):
+                        raise OSError("%s is not a regular file" % rel)
+                    with open(dst, "rb") as f:
+                        prior[rel] = (f.read(), stat.S_IMODE(st.st_mode))
+                else:
+                    prior[rel] = None
+            for rel in sorted(files):
+                fault("install", rel)
+                dst = os.path.join(concept, rel)
+                parent = os.path.dirname(dst)
+                if not os.path.lexists(parent):
+                    made_dirs.append(parent)        # before the mkdir: an interrupt between the two still removes it
+                    os.mkdir(parent)
+                if _unsafe_paths(concept, {rel: None}):     # again at the moment of writing, not only before
+                    raise OSError("%s: a link or a non-plain file appeared on its path during the install" % rel)
+                done.append(rel)        # before the replace: an interrupt between the two still rolls this file back
+                _replace(dst, files[rel].encode("utf-8"), prior[rel][1] if prior[rel] else None, strays)
+        except BaseException as e:  # noqa: BLE001  any failure, an interrupt included, before the last file is in
+            unrestored = _rollback(concept, prior, done, made_dirs, strays)
+            if not isinstance(e, Exception):
+                raise           # an interrupt still stops the process, after the rollback
+            if unrestored:
+                return _write_out("WRITE_FAILED", "ROLLBACK_INCOMPLETE", concept, done,
+                                  detail="%s: %s; NOT restored: %s" % (type(e).__name__, e, "; ".join(unrestored)))
+            return _write_out("WRITE_FAILED", "ROLLED_BACK", concept, (),
+                              detail="%s: %s; every file restored to its prior bytes and mode" % (type(e).__name__, e))
+        cleanup = []
+        try:
+            fault("cleanup", None)
+            for d in sorted({os.path.dirname(os.path.join(concept, rel)) for rel in files}):
+                dfd = os.open(d, os.O_RDONLY | os.O_DIRECTORY)
+                try:
+                    os.fsync(dfd)
+                finally:
+                    os.close(dfd)
+        except Exception as e:      # noqa: BLE001  every file is in: the write stands, the cleanup is reported apart
+            cleanup.append("%s: %s" % (type(e).__name__, e))
+        return _write_out("WROTE", files=sorted(files), cleanup_failed=cleanup)
+    finally:
+        os.close(fd)
+
+
+def _unsafe_paths(concept, files):
+    """-> the planned relpaths whose file or any folder on the way is a link or not a plain file/folder (a write through
+    one would land outside the concept folder)."""
+    bad = []
+    for rel in sorted(files):
+        p = concept
+        parts = rel.split(os.sep)
+        for i, part in enumerate(parts):
+            p = os.path.join(p, part)
+            try:
+                st = os.lstat(p)
+            except FileNotFoundError:
+                break
+            if not (stat.S_ISREG(st.st_mode) if i == len(parts) - 1 else stat.S_ISDIR(st.st_mode)):
+                bad.append(rel)
+                break
+    return bad
+
+
+def _replace(dst, data, mode, strays=None):
+    """data into dst by a temp file beside it and os.replace; mode kept when given. A temp file it could not remove is
+    added to `strays`."""
+    tmp = None
+    try:
+        fd, tmp = tempfile.mkstemp(prefix=".apply-", dir=os.path.dirname(dst))
+        with os.fdopen(fd, "wb") as f:
+            f.write(data)
+            f.flush()
+            os.fsync(f.fileno())
+        if mode is not None:
+            os.chmod(tmp, mode)
+        os.replace(tmp, dst)
+    except BaseException:
+        try:
+            if tmp is not None:
+                os.unlink(tmp)
+        except OSError:
+            if strays is not None:
+                strays.append(tmp)
+        raise
+
+
+def _rollback(concept, prior, done, made_dirs, strays):
+    """Each installed file back to its prior bytes and mode (or gone, when it was new); new folders removed; temp files
+    removed. -> what could not be restored (a stray temp file included)."""
+    bad = []
+    for rel in reversed(done):
+        dst = os.path.join(concept, rel)
+        try:
+            if prior[rel] is None:
+                with contextlib.suppress(FileNotFoundError):    # marked done, interrupted before its replace
+                    os.unlink(dst)
+            else:
+                _replace(dst, prior[rel][0], prior[rel][1], strays)
+        except OSError as e:
+            bad.append("%s (%s)" % (rel, e))
+    for tmp in list(strays):
+        try:
+            os.unlink(tmp)
+            strays.remove(tmp)
+        except OSError as e:
+            bad.append("%s (temp file left: %s)" % (os.path.relpath(tmp, concept), e))
+    for d in reversed(made_dirs):
+        try:
+            with contextlib.suppress(FileNotFoundError):       # marked, interrupted before its mkdir
+                os.rmdir(d)
+        except OSError as e:
+            bad.append("%s (%s)" % (os.path.relpath(d, concept), e))
+    return bad
+
+
 def apply_cli(repo, mod, write=False):
-    """`apply <Mod> [--write]`: per-file lines, then `APPLY <Mod> <ANSWER> [CAUSE]`. -> exit code."""
+    """`apply <Mod> [--write]`: per-file lines, then `APPLY <Mod> <ANSWER> [CAUSE]` (--write: `APPLY <Mod> CLEANUP_FAILED
+    <detail>` first when the cleanup failed). -> exit code."""
     if write:
-        print("APPLY %s REFUSED WRITE_NOT_BUILT (the dry run is built; writing is RIMMANDRAKE_WRITE_CLEANSE_APPLY_"
-              "ATOMIC_HOLD_UNTOUCHED)" % mod)
-        return 1
+        w = apply_write(repo, mod, fault=APPLY_FAULT)
+        for rel in w["files"]:
+            print("WROTE %s" % rel)
+        for c in w["cleanup_failed"]:
+            print("APPLY %s CLEANUP_FAILED %s" % (mod, c))
+        if w["answer"] == "WROTE":
+            print("APPLY %s WROTE %d files" % (mod, len(w["files"])))
+        else:
+            print(("APPLY %s %s %s %s" % (mod, w["answer"], w["cause"], w["detail"] or w["path"])).rstrip())
+        return WRITE_EXIT[w["answer"]]
     r = apply_plan(repo, mod)
     for rel in sorted(r["files"]):
         print("%s %s" % ("WOULD_WRITE" if rel in r["changed"] else "SAME", rel))
@@ -2355,7 +2548,7 @@ def main(argv=None):
     ap_ = sub.add_parser("apply")
     ap_.add_argument("mod")
     ap_.add_argument("--repo", default=ROOT)
-    ap_.add_argument("--write", action="store_true", help="refused here: the write is its own ticket")
+    ap_.add_argument("--write", action="store_true", help="install the plan, all or none, once the owner's plan approves it")
     sub.add_parser("gather")
     sub.add_parser("status")
     o = ap.parse_args(argv)

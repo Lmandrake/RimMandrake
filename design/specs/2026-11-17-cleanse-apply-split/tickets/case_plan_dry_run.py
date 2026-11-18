@@ -202,8 +202,8 @@ def main():
             croot = os.path.join(TMP, "k1_again")
             shutil.copytree(cp, os.path.join(croot, "design", "concepts", "BlueDesert"))
             expect("K1 re-plan after apply", croot, "BlueDesert", "NOTHING_TO_APPLY")
-    code, last, _ = cli(root, "BlueDesert", "--write")
-    case("--write not built here", code == 1 and last.startswith("APPLY BlueDesert REFUSED WRITE_NOT_BUILT"), "exit %s line %r" % (code, last))
+    code, last, _ = cli(root, "BlueDesert", "--write")      # the write ticket's cases are case_write_apply.py's
+    case("--write without the owner's plan refuses", code == 1 and last.startswith("APPLY BlueDesert REFUSED NOT_APPROVED"), "exit %s line %r" % (code, last))
     case("--write wrote nothing", not os.path.exists(os.path.join(d, "tree.json")), "tree.json appeared")
 
     # K2, old tree, stage ready and idle (a queued Designer job): the plan withdraws it
