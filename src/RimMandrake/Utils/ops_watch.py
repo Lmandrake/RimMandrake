@@ -1718,21 +1718,33 @@ SEAT_TIDY = False    # set by `run --file-alarms` only: a selftest calling c_dis
 
 
 def seat_dirt_reading():
-    """disk.seat_dirt (RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR): paths dirty in the seat clone for over an
-    hour that no safe class covers, i.e. a writer working in the seat clone instead of its own. A live pass first lands
-    the safe classes (seat_dirt.tidy: conversation records, filed item prose, settled concept folders). Unreadable is 9999, never silence."""
+    """disk.seat_dirt (RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR): paths dirty for over an hour that no safe
+    class covers, in the seat clone and in every role clone (seat_dirt.clones; the Dispatcher's role runs and the art
+    daemon write there: RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES). A live pass first lands the safe
+    classes (seat_dirt.tidy: conversation records, filed item prose, settled concept folders). Unreadable is 9999, never silence."""
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import seat_dirt
-        landed = None
-        if SEAT_TIDY and os.path.isdir(seat_dirt.SEAT_CLONE):
+        landed, stale, fresh, paths, unread = {}, 0, 0, [], []
+        for clone in seat_dirt.clones():
+            tag = "" if clone == seat_dirt.SEAT_CLONE else os.path.basename(clone) + ":"
+            if SEAT_TIDY and os.path.isdir(clone):
+                try:
+                    landed[clone] = seat_dirt.tidy(clone)
+                except Exception as e:  # noqa: BLE001 - said in the reading; the count below still measures
+                    landed[clone] = "tidy failed: %s" % str(e)[:200]
             try:
-                landed = seat_dirt.tidy()
-            except Exception as e:  # noqa: BLE001 - said in the reading; the count below still measures
-                landed = "tidy failed: %s" % str(e)[:200]
-        r = seat_dirt.reading()
-        return {"disk.seat_dirt": M(r["stale"], "paths dirty in the seat clone over %d min" % seat_dirt.STALE_MIN,
-                                    paths=r["stale_paths"], fresh=r["fresh"], landed=landed)}
+                r = seat_dirt.reading(clone)
+            except Exception as e:  # noqa: BLE001 - one unreadable clone makes the whole reading unreadable below
+                unread.append("%s %s" % (clone, str(e)[:150]))
+                continue
+            stale += r["stale"]
+            fresh += r["fresh"]
+            paths += [tag + p for p in r["stale_paths"]]
+        if unread:
+            return {"disk.seat_dirt": M(9999, "paths dirty in the seat and role clones", why="unreadable: " + "; ".join(unread))}
+        return {"disk.seat_dirt": M(stale, "paths dirty in the seat and role clones over %d min" % seat_dirt.STALE_MIN,
+                                    paths=paths[:12], fresh=fresh, landed=landed or None)}
     except Exception as e:
         return {"disk.seat_dirt": M(9999, "paths dirty in the seat clone", why="unreadable: %s" % str(e)[:200])}
 

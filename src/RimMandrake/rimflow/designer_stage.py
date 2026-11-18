@@ -2788,7 +2788,9 @@ LIFECYCLE = ("lease", "claim", "start", "release", "seat", "unclaim", "renew")  
 
 
 def designer_clone(schedule=SCHEDULE):
-    """The Designer role's clone (dispatcher_schedule.json), where its runs write design/concepts, or None."""
+    """The Designer role's clone (dispatcher_schedule.json), where its runs write design/concepts, or None. A clone
+    that is not on disk (role_clones.py ensure makes it) is None too: concepts_root then reads this clone's own
+    design/concepts, never an absent folder that would read as "no concepts"."""
     try:
         with open(schedule, encoding="utf-8") as f:
             sch = json.load(f)
@@ -2796,7 +2798,7 @@ def designer_clone(schedule=SCHEDULE):
         return None
     for r in (sch.get("roles") if isinstance(sch, dict) else None) or []:
         if isinstance(r, dict) and r.get("stage_machine") == "designer_stage" and r.get("clone"):
-            return r["clone"]
+            return r["clone"] if os.path.isdir(os.path.join(r["clone"], ".git")) else None
     return None
 
 

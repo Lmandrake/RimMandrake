@@ -115,6 +115,7 @@ from fractions import Fraction
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import run_tmp  # noqa: E402  (the run's own TMPDIR: TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP)
+import role_clones  # noqa: E402  (a role's own clone: RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES)
 
 AUTH_BACKS_PER_DAY = 2
 OVER_REPEAT, OVER_WINDOW_S = 3, 7 * 86400
@@ -3293,6 +3294,11 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
         # a step exiting PRE_DONE_EXIT did the run's work itself (stage5_program): the unit ends 0, the model never starts
         script = '%s; r=$?; [ "$r" -eq 0 ] && exec "$@"; [ "$r" -eq %d ] && exit 0; exit "$r"' % (script, PRE_DONE_EXIT)
         cmd = ["/bin/sh", "-c", script, "role-pre-launch"] + cmd
+    own = role_clones.is_role_clone(role["clone"])
+    if own:
+        # a role's own clone (role_clones.py) is levelled first, so no step and no model runs stale code; a failed
+        # sync ends the unit before anything starts (RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES)
+        cmd = ["/bin/sh", "-c", './sync 1>&2 || exit %d; exec "$@"' % role_clones.SYNC_FAILED_EXIT, "role-sync"] + cmd
     bound = scope_bound_s(role)
     return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
             "-p", "StandardOutput=file:" + out, "-p", "StandardError=file:" + err,
@@ -3309,9 +3315,18 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
             # the scope (RuntimeMaxSec, TERM, then KILL after SCOPE_STOP_S), and the unit gets the same bound; so a
             # run is ended even if no tick ever supervises it again (timer off, dry-run root, unreadable state)
             "--setenv", "CLAUDE_SCOPE_RUNTIME_MAX=%d" % bound,
-            "-p", "RuntimeMaxSec=%d" % bound, "-p", "TimeoutStopSec=%d" % SCOPE_STOP_S,
+            "-p", "RuntimeMaxSec=%d" % bound, "-p", "TimeoutStopSec=%d" % SCOPE_STOP_S] + (
+            # what the run left in its own clone is published from there (role_clones.land), however the unit ended
+            ["-p", "ExecStopPost=" + land_argv(role, unit)] if own else []) + [
             "-p", "ExecStopPost=" + wrapup_argv(role, unit),
             "--setenv", "PATH=" + path] + tmp_setenv(tmpdir) + ["--"] + cmd
+
+
+def land_argv(role, unit):
+    """role_clones.py land for a role's own clone, from the launcher's copy, in a unit of its own (stoppost_handoff)."""
+    tool = os.path.join(os.path.dirname(os.path.abspath(__file__)), "role_clones.py")
+    return stoppost_handoff(unit + "-land", ["/usr/bin/python3", tool, "land", "--clone", role["clone"],
+                                             "--seat", role["seat"]])
 
 
 def wrapup_argv(role, unit):
@@ -3360,6 +3375,10 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
     systemd-run itself said no; a raise (a timeout) leaves the caller's run record in place, since the unit may be up.
     The scope is named by the launcher (role_scope), never looked up: the caller recorded it before this call."""
     out, err = run_paths(root, unit)
+    if role_clones.is_role_clone(role.get("clone")):
+        gone = role_clones.missing_why(role["clone"])
+        if gone:
+            return False, gone, {}
     if role.get("runner", "claude") == "codex":
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "Utils"))
         import agent_runner

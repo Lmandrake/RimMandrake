@@ -17,6 +17,9 @@ Everything else older than STALE_MIN is counted as `disk.seat_dirt` by ops_watch
 a writer is dirtying the seat clone instead of its own clone. A path written in the last STALE_MIN minutes is taken
 to be held by a live run and is never counted or landed.
 
+Every role clone (ROLE_CLONE_ROOT/<name>, rimflow/role_clones.py: the Dispatcher's role runs and the art daemon work
+there since RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES) is read and tidied the same way (clones()).
+
     seat_dirt.py report [--clone DIR]        one JSON reading
     seat_dirt.py tidy [--clone DIR] --apply  land the safe classes, then print the reading
 """
@@ -30,6 +33,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SEAT_CLONE = os.environ.get("RM_SEAT_CLONE", "/home/mandrake/rm/bench")
+ROLE_CLONE_ROOT = os.environ.get("RM_ROLE_CLONE_ROOT", "/home/mandrake/rm/roles")     # = role_clones.ROOT
 STALE_MIN = 60           # older than this and not landable -> dirt (the alarm)
 SETTLE_MIN = 10          # a safe-class file is landed only once it has not changed for this long
 ITEMS = "infrastructure/state/items/"
@@ -50,9 +54,12 @@ def git(clone, *a, check=True):
 def dirty(clone):
     """-> [(status, path)] for every modified, deleted or untracked path (ignored files never count)."""
     out = []
-    for rec in git(clone, "status", "--porcelain=v1", "-z", "--untracked-files=all").split("\0"):
+    recs = iter(git(clone, "status", "--porcelain=v1", "-z", "--untracked-files=all").split("\0"))
+    for rec in recs:
         if len(rec) > 3:
             out.append((rec[:2], rec[3:]))
+            if "R" in rec[:2] or "C" in rec[:2]:
+                next(recs, None)    # a rename or copy carries its source path as the next record, not an entry
     return out
 
 
@@ -64,7 +71,7 @@ def age_min(clone, path, now):
     try:
         return (now - os.lstat(p).st_mtime) / 60.0
     except OSError:
-        return 0.0
+        return float("inf")     # unmeasured age is never "fresh": it is counted (stale), not hidden
 
 
 def filed_on_origin(clone, ids, ref="origin/main"):
@@ -91,8 +98,20 @@ def on_origin(clone, path, ref="origin/main"):
                           capture_output=True, timeout=60).returncode == 0
 
 
-def classify(clone, now=None):
-    """-> {"landable": [paths], "fresh": [paths], "stale": [paths]} over the clone's dirt."""
+def clones(seat=None, role_root=None):
+    """The seat clone, then every role clone on disk (<role_root>/<name> holding a .git), sorted."""
+    seat = seat or SEAT_CLONE
+    role_root = role_root or ROLE_CLONE_ROOT
+    try:
+        names = sorted(os.listdir(role_root))
+    except FileNotFoundError:
+        names = []
+    return [seat] + [os.path.join(role_root, n) for n in names if os.path.isdir(os.path.join(role_root, n, ".git"))]
+
+
+def classify(clone, now=None, settle_min=SETTLE_MIN):
+    """-> {"landable": [paths], "fresh": [paths], "stale": [paths]} over the clone's dirt. settle_min 0: the writer
+    is known to have stopped (role_clones.land at the end of a role run's unit)."""
     now = time.time() if now is None else now
     rows = [(st, p, age_min(clone, p, now)) for st, p in dirty(clone)]
     item_ids = {ITEM_RE.match(p).group(1) for st, p, _ in rows if st == "??" and ITEM_RE.match(p)}
@@ -102,10 +121,11 @@ def classify(clone, now=None):
     for st, p, age in rows:
         m = ITEM_RE.match(p)
         c = CONCEPT_RE.match(p)
-        safe = (p.startswith("conversations/") and p.endswith(".md") and st != " D") or \
+        # a deletion (staged or not) or an unmerged path is never a safe class
+        safe = (p.startswith("conversations/") and p.endswith(".md") and "D" not in st and "U" not in st) or \
                (st == "??" and m and m.group(1) in filed and not on_origin(clone, p)) or \
                bool(c and c.group(1) in settled)
-        if safe and (age >= SETTLE_MIN or (c and c.group(1) in settled)):
+        if safe and (age >= settle_min or (c and c.group(1) in settled)):
             out["landable"].append(p)
         elif age < STALE_MIN:
             out["fresh"].append(p)
@@ -143,15 +163,16 @@ def reading(clone=SEAT_CLONE, now=None):
             "stale_paths": c["stale"][:12]}
 
 
-def tidy(clone=SEAT_CLONE, now=None, land=LAND):
+def tidy(clone=SEAT_CLONE, now=None, land=LAND, settle_min=SETTLE_MIN):
     """Land the safe classes in one land.sh -m commit (a temp index from origin/main: the clone's index, HEAD and a
     peer's edits are never touched). -> "PUBLISHED <sha>" | "nothing to land" | raises RuntimeError on a refusal."""
-    paths = classify(clone, now)["landable"]
+    paths = classify(clone, now, settle_min)["landable"]
     if not paths:
         return "nothing to land"
-    msg = ("seat_dirt: land %d safe path(s) left in the seat clone (conversation records, filed item prose, "
+    where = "seat clone" if clone == SEAT_CLONE else "role clone " + os.path.basename(os.path.normpath(clone))
+    msg = ("seat_dirt: land %d safe path(s) left in the %s (conversation records, filed item prose, "
            "settled concept folders)\n\n"
-           "RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR (seat_dirt.py tidy)." % len(paths))
+           "RIMMANDRAKE_ALARM_SEAT_CLONE_DIRT_OLDER_THAN_AN_HOUR (seat_dirt.py tidy)." % (len(paths), where))
     p = subprocess.run(["sh", land, "-m", msg] + paths, cwd=clone, capture_output=True, text=True, timeout=600,
                        env=dict(os.environ, LAND_REPO=clone))
     if p.returncode == 0:

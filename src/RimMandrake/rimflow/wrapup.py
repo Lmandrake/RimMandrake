@@ -430,6 +430,11 @@ def check_clone(world, clone, carried):
     if is_seat_clone(clone):
         return {"kind": "clone", "what": clone, "act": "carried",
                 "why": "the shared seat clone: its state is the seat's work in flight, not this agent's debris"}
+    import role_clones
+    if role_clones.is_role_clone(clone):
+        return {"kind": "clone", "what": clone, "act": "carried",
+                "why": "a role's own long-lived clone: role_clones.py land publishes what it can at the unit's end, and "
+                       "ops_watch's disk.seat_dirt alarms on the rest after an hour"}
     if not world.exists(clone):
         return {"kind": "clone", "what": clone, "act": "ok", "why": "gone"}
     rc, top = world.git(clone, "rev-parse", "--show-toplevel")

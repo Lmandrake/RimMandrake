@@ -4,12 +4,17 @@ After=default.target
 
 [Service]
 Type=simple
-WorkingDirectory=/home/mandrake/rm/bench
+# its own long-lived clone, never the Conductor's seat clone (role_clones.py, RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES);
+# made by `role_clones.py ensure artpiped`, levelled at every start; ops_watch disk.seat_dirt alarms on what it leaves there
+WorkingDirectory=/home/mandrake/rm/roles/artpiped
 Environment=ARTPIPE_STATE_DIR=/mnt/d/ClaudeWork/rimmandrake/artpipe
 Environment=RM_DATA_ROOT=/mnt/d/ClaudeWork/rimmandrake
 Environment=PYTHONUNBUFFERED=1
 # Same login PATH the WT tile had (codex.exe / gemini via /mnt/c interop).
+ExecStartPre=/bin/bash -lc './sync'
 ExecStart=/bin/bash -lc 'exec python3 src/RimMandrake/Utils/artpipe/artpiped.py'
+# what it leaves in its clone is published from there however it stops (role_clones.py land)
+ExecStopPost=-/usr/bin/python3 /home/mandrake/rm/roles/artpiped/src/RimMandrake/rimflow/role_clones.py land --clone /home/mandrake/rm/roles/artpiped --seat BENCH
 KillSignal=SIGINT
 TimeoutStopSec=15min
 Restart=on-failure
