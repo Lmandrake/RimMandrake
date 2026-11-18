@@ -1,0 +1,1 @@
+gpt_consult FULL-FILE review of a ~3000-line file (designer_stage.py, 188k chars) hit the default 1500 s deadline with no answer (rc 124) while Codex was still probing; rerun with --timeout 3000 and 'write the findings list first, keep probing short' answered in time. A deadline is a failed review, not a pass: its probe outputs in the job's codex.log are still worth reading.
