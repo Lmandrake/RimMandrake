@@ -22,4 +22,5 @@ python3 src/RimMandrake/rimflow/selftest_designer_stage.py
 
 Acceptance test: a case in selftest_designer_stage.py with the concept in a second fixture clone (clone_of(d) != repo),
 a stage-5 scenes.json naming a proof script present only in that clone: on base it FAILS (the result is refused with
-entry_point_exists); after the fix it passes, and a script in neither clone is still refused. Not yet written or
+entry_point_exists); after the fix it passes, and a script in neither clone is still refused.
+Written in the existing stage-5 other-clone case and watched failing on base 2026-11-18; fixed 37620ad3fc.
