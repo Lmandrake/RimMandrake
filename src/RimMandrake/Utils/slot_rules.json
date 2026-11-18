@@ -86,6 +86,8 @@
   "disk_brake_total": 1,
   "_disk_brake_total": "one helper: enough to clear scratch or fix the cause, not enough to fill the disk",
   "codex_conserve_runway": 1.0,
+  "codex_brake_min_used_pct": 50,
+  "_codex_brake_min_used_pct": "a low Codex runway brakes only once a MEASURED reading shows this share of the weekly quota used: early in a week the runway is one burst's rate projected over seven days (6% used in the first 2.6 h read 0.57 and held Codex with 94% left, owner's screenshot 2026-11-17). An ESTIMATE or missing used % lifts nothing; a spent quota still refuses",
   "steve_stall_min": 30,
   "steve_invalid_streak": 3
  }

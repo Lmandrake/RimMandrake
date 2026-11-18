@@ -35,8 +35,10 @@ def check(name, cond, detail=""):
         FAILS.append(name)
 
 
-def status(runway=None, mark="MEASURED", age_min=1.0):
+def status(runway=None, mark="MEASURED", age_min=1.0, used=None, used_mark="MEASURED"):
     pts = {} if runway is None else {"codex.runway": {"m": mark, "v": runway}}
+    if used is not None:
+        pts["codex.week_used_pct"] = {"m": used_mark, "v": used}
     (TMP / "status.json").write_text(json.dumps({"t": time.time() - age_min * 60, "points": pts}))
 
 
@@ -52,6 +54,27 @@ for rw, mark, age, want in [(LINE + 1.0, "MEASURED", 1, "OK"), (LINE / 2, "MEASU
     check(f"advice runway={rw} {mark} age={age}min -> {want}", got == want, got)
 (TMP / "status.json").unlink()
 check("advice with no status file -> UNMEASURED", CA.advice()["state"] == "UNMEASURED")
+
+# 1b. a burst early in the week is not a brake (RIMMANDRAKE_CALIBRATE_CODEX_HOLD_BURST_AT_94_PERCENT_LEFT: 6% used in
+# a fresh week's first hours read runway 0.57 and held Codex with 94% left). A low runway brakes only once a MEASURED
+# share of the week is spent; a used % that is an ESTIMATE floor, or absent, lifts nothing; a spent quota still refuses.
+MIN_USED = SA.load_rules()["ops"]["codex_brake_min_used_pct"]
+for rw, mark, used, umark, want in [(LINE / 2, "ESTIMATE", MIN_USED - 44.0, "MEASURED", "OK"),
+                                    (LINE / 2, "MEASURED", MIN_USED - 1.0, "MEASURED", "OK"),
+                                    (LINE / 2, "ESTIMATE", float(MIN_USED), "MEASURED", "HOLD"),
+                                    (LINE / 2, "ESTIMATE", MIN_USED + 10.0, "MEASURED", "HOLD"),
+                                    (LINE / 2, "ESTIMATE", MIN_USED - 44.0, "ESTIMATE", "HOLD"),
+                                    (LINE / 2, "ESTIMATE", MIN_USED - 44.0, "UNMEASURED", "HOLD"),
+                                    (LINE / 2, "ESTIMATE", "6", "MEASURED", "HOLD"),
+                                    (0.0, "MEASURED", MIN_USED - 44.0, "MEASURED", "EXHAUSTED"),
+                                    (LINE + 1.0, "MEASURED", MIN_USED + 40.0, "MEASURED", "OK")]:
+    status(rw, mark, 1, used, umark)
+    got = CA.advice()
+    check(f"advice runway={rw} {mark} used={used!r} {umark} -> {want}", got["state"] == want, got)
+status(LINE / 2, "ESTIMATE", 1, MIN_USED - 44.0)
+check("a lifted brake says why", "used" in CA.advice()["why"], CA.advice())
+_, adv = SA._ops({"ops": SA.ops_inputs(time.time(), SA.load_rules())}, SA.load_rules(), 4, [])
+check("slot_allocator says OK where codex_advice lifts the brake", adv["codex"] == "OK", adv)
 
 # 2. the allocator's own advice agrees on HOLD/CONSERVE (one reading, two readers)
 status(LINE / 2)

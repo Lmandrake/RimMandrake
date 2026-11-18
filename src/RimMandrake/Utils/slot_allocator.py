@@ -614,10 +614,23 @@ def ops_inputs(now, rules):
             return v if isinstance(v, str) else None
         return _finite(v)
     return {"ok": True, "age_min": round(age, 1), "root_free_gb": mv("disk.root_free_gb"),
-            "codex_runway": mv("codex.runway", ("MEASURED", "ESTIMATE")), "steve_state": mv("steve.state", numeric=False),
+            "codex_runway": mv("codex.runway", ("MEASURED", "ESTIMATE")), "codex_used_pct": mv("codex.week_used_pct"),
+            "steve_state": mv("steve.state", numeric=False),
             "steve_unowned_stall_min": mv("steve.unowned_stall_min"), "steve_invalid_streak": mv("steve.invalid_streak"),
             "alarms_open": sorted(k for k, a in (st.get("alarms") if isinstance(st.get("alarms"), dict) else {}).items()
                                   if isinstance(a, dict) and a.get("state") in ("OPEN", "PENDING"))}
+
+
+def codex_brakes(ops, o) -> bool:
+    """Does the Codex runway brake? Below the conserve line, unless a MEASURED reading shows less than
+    codex_brake_min_used_pct of the week used: that early, the runway is one burst projected over the week. A used %
+    that is missing or only a floor (ESTIMATE is dropped by ops_inputs) lifts nothing. One rule, two readers: this
+    allocator's advice line and codex_advice's gate."""
+    cx = ops.get("codex_runway")
+    if cx is None or not cx < o["codex_conserve_runway"]:
+        return False
+    used = ops.get("codex_used_pct")
+    return cx <= 0 or used is None or not used < o["codex_brake_min_used_pct"]
 
 
 def _ops(inp, rules, total, why):
@@ -645,7 +658,7 @@ def _ops(inp, rules, total, why):
                            f"{total}")
     cx = ops.get("codex_runway")
     if cx is not None:
-        adv["codex"] = "CONSERVE" if cx < o["codex_conserve_runway"] else "OK"
+        adv["codex"] = "CONSERVE" if codex_brakes(ops, o) else "OK"
         if adv["codex"] == "CONSERVE":
             why.append(f"Codex runway {cx:.2f} (< {o['codex_conserve_runway']}): send GPT/Codex consults only where "
                        f"a review is required")

@@ -55,9 +55,13 @@ def advice(now=None, rules=None) -> dict:
     line = (rules.get("ops") or {})["codex_conserve_runway"]
     if cx <= 0:
         return {"state": "EXHAUSTED", "runway": cx, "why": "Codex runway %.2f: the weekly quota is spent" % cx}
-    if cx < line:
+    if SA.codex_brakes(ops, rules["ops"]):
         return {"state": "HOLD", "runway": cx,
                 "why": "Codex runway %.2f (< %s): only rule-required review rounds run" % (cx, line)}
+    if cx < line:
+        return {"state": "OK", "runway": cx,
+                "why": "Codex runway %.2f (< %s) does not brake: only %.0f%% of the week is used (< %s%%)" % (
+                    cx, line, ops["codex_used_pct"], rules["ops"]["codex_brake_min_used_pct"])}
     return {"state": "OK", "runway": cx, "why": "Codex runway %.2f" % cx}
 
 
