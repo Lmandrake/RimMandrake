@@ -21,6 +21,7 @@ import json
 import os
 import re
 import sys
+import subprocess
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -279,6 +280,69 @@ def calibration_cases():
               "OWNER:3" in sheet and "OWNER:1" in sheet, sheet[:300])
         check("calibration: the mixed row pins numbers beside an uncovered experience",
               any(r.get("id") == "inv_refuel" for r in rec.get("inventory") or []), rec.get("inventory"))
+        # the recalibration's three cases (RIMMANDRAKE_RECALIBRATE_JUDGE_THEN_RESTAMP_PYRELANDS_ONCE) and the late case
+        # under the same-problem rule (7_same_problem_rule.md rule 4: the new gap quotes a passage a repair changed)
+        for cid, exp in (("good_pyrelands_look8", "pass"), ("bad_fire_never_touched", "refuse"),
+                         ("good_one_kind_enough", "pass")):
+            check("calibration: planted case %s expects %s" % (cid, exp), planted.get(cid) == exp, planted)
+        import coverage_judge as CJ
+        prior = CJ.prior_verdict(late_d) or {}
+        red = '"expect": "the first lantern holds 0 oil and its cells still read at least 50% within 2 cells"'
+        check("calibration: the late case's prior holds the renderings from before the repair, and its red is a "
+              "changed passage", CJ.changed_passage({"since": "scene:sc_oil_out\n" + red}, prior.get("entry_text"),
+                                                    CJ.entry_texts(late_d)) is not None, sorted(prior)[:12])
+        pyr_d = staged.get("good_pyrelands_look8", (None, root))[1]
+        pv = CJ.prior_verdict(pyr_d) or {}
+        dp = CJ.delta_plan(pyr_d, pv) if pv else None
+        check("calibration: the Pyrelands case is look 8's input (look 7's refusal on file), judged as a delta "
+              "carrying its three gaps", pv.get("judge") == "rm-coverage-judge-1794938280" and dp is not None
+              and len(dp["claimed_gaps"]) + len(dp["carried"]) == 3, (pv.get("judge"), dp and len(dp["carried"])))
+        fire_d = staged.get("bad_fire_never_touched", (None, root))[1]
+        sc = json.load(open(os.path.join(fire_d, "scenes.json"), encoding="utf-8"))
+        check("calibration: the fire case's only straw scene never puts the lantern on straw",
+              any(x["id"] == "sc_straw_safe" and "no straw anywhere" in " ".join(x["start"]) for x in sc["scenes"]))
+        # judge() reads a later look as run() does: the slot decides (a stubbed model, no spend)
+        rep_d = staged["good_round2_repaired"][1]
+        rows = [{"id": i, "evidence": ["scenes.json", "tree.json", "record.json", "sheet.md", "floor.json",
+                                       "exam.json"], "parts": [{"what": i, "scene": "sc_light", "ok": True}]}
+                for i in ("inv_light", "inv_oil", "light", "oil_out")]
+        saved = CC.subprocess.run
+        try:
+            for repaired, want in ((True, "pass"), (False, "refuse")):
+                out = json.dumps({"structured_output": {"verdict": "covered", "gaps": [], "reasons": "r",
+                                                        "checklist": rows, "repairs": [
+                                                            {"gap": "g1", "repaired": repaired, "evidence": "x"}]}})
+                CC.subprocess.run = lambda *a, **k: subprocess.CompletedProcess(a, 0, out, "")
+                got, det = CC.judge(root, rep_d, CC.ROUTE["good_round2_repaired"], reader=None)
+                check("calibration judge: the repaired case with g1 answered %s reads %s" % (repaired, want),
+                      got == want, (got, det))
+            # a well-formed refusal on the bad scene case refuses; an answer missing an owed row is no pass
+            bad_d = staged["bad_scene_no_control"][1]
+            ev = ["scenes.json", "tree.json", "record.json", "sheet.md", "floor.json", "exam.json"]
+            brows = [{"id": i, "evidence": ev, "parts": [{"what": i, "scene": "sc_light",
+                                                          "ok": i not in ("light", "inv_light")}]}
+                     for i in ("inv_light", "inv_oil", "light", "oil_out")]
+            bgap = {"what": "sc_light has no control and no asserted start", "where": "scenes.json sc_light",
+                    "return_to": 3, "ids": ["light", "inv_light"], "new_since": "first", "bar_kind": "experience",
+                    "severity": "problem", "evidence": ["scenes.json", "tree.json"],
+                    "observed": "sc_light has no control; its start is 'quicktest map'",
+                    "would_pass": "sc_light asserts a dark lamp-free room at midnight and a 0-oil control stays dark",
+                    "smallest_fix": {"what": "add a control and an asserted start to sc_light", "attainable": "yes",
+                                     "cost": "edit"}, "criterion_verdict": "sound",
+                    "criterion_why": "A lit room is checkable against a dark control in one scene.",
+                    "promise": "A lantern should light the room around it", "owner_said": True}
+            for name, rows_, want in (("a well-formed refusal", brows, "refuse"),
+                                      ("an answer missing an owed row", brows[:2], "incomplete")):
+                out = json.dumps({"structured_output": {"verdict": "not_covered", "gaps": [bgap], "reasons": "r",
+                                                        "checklist": rows_, "repairs": []}})
+                CC.subprocess.run = lambda *a, **k: subprocess.CompletedProcess(a, 0, out, "")
+                got, det = CC.judge(root, bad_d, CC.ROUTE["bad_scene_no_control"], reader=lambda items: [
+                    {"criterion_verdict": "sound", "criterion_why": "The bar names an experience one staged scene can "
+                     "show.", "bar_kind": "experience", "serious": False} for _ in items])
+                check("calibration judge: %s on the bad scene case reads %s" % (name, want),
+                      str(got).startswith(want), (got, det.get("malformed")))
+        finally:
+            CC.subprocess.run = saved
 
 
 def main():

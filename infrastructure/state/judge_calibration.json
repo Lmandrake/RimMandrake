@@ -755,14 +755,17 @@
    ],
    "cases": {
     "bad": [
-     "planted (coverage_calibration.py): bad_leaf_no_scene, a leaf and capability with no scene; bad_scene_no_control, a scene with no control and no asserted start; no owner-caught coverage miss on file yet"
+     "planted (coverage_calibration.py): bad_leaf_no_scene, a leaf and capability with no scene; bad_scene_no_control, a scene with no control and no asserted start; no owner-caught coverage miss on file yet",
+     "planted (coverage_calibration.py): bad_fire_never_touched, his promise that a knocked-over lantern never lights straw, proved only by a scene whose lantern never touches straw: nobody would notice the promise broken (rule 1)"
     ],
     "good": [
      "planted (coverage_calibration.py): good_lanterns, every capability and leaf with a contract scene, his flagship bound; it also plants the Pyrelands round 6 noise kinds g17 and g18 (a gap asking for documentation or another showcase that names no wrong behaviour)",
      "planted (coverage_calibration.py): good_lanterns_tuning, good_lanterns plus a burn rate, a MarketValue and three graphic variants no scene reads (the Contagion pedantry kinds, owner 2026-11-16): a judge that blocks on them is not calibrated",
      "planted (coverage_calibration.py): good_lanterns_no_reset, good_lanterns whose scenes put nothing back: test reset is harness housekeeping (owner 2026-11-17), so a judge that gaps it is not calibrated",
      "design/concepts/FlowWorks: signed by the retired Arbiter (tree.json coverage.signed_by Arbiter, 2026-11-05) at tree 572198fed9, not by this brief; a legacy signature, not a calibration case of it",
-     "design/concepts/ExplosiveKnockback judge9 gaps 3 (racks) and 4 (flagship shelf): owner 2026-11-12 ruled them no blockers (conductor log 2026-11-13T00:05:11Z), so a sound brief does not refuse on them"
+     "design/concepts/ExplosiveKnockback judge9 gaps 3 (racks) and 4 (flagship shelf): owner 2026-11-12 ruled them no blockers (conductor log 2026-11-13T00:05:11Z), so a sound brief does not refuse on them",
+     "planted (coverage_calibration.py): good_pyrelands_look8, Pyrelands look 8 replayed from commit e9b9067df1~1 under look 7's refusing verdict, judged as a delta: its three carried gaps were repaired with no claim form, so a sound brief closes it (owner by card 2026-11-17, rule 2)",
+     "planted (coverage_calibration.py): good_one_kind_enough, his promise that a lit lantern keeps the beasts away, tested with one animal kind and a control: \"test it against every roster kind\" is advice (rule 1)"
     ]
    },
    "hash": "9f8f57c14469d58b",
@@ -1098,6 +1101,18 @@
     {
      "expect": "refuse",
      "id": "bad_late_serious"
+    },
+    {
+     "expect": "pass",
+     "id": "good_pyrelands_look8"
+    },
+    {
+     "expect": "refuse",
+     "id": "bad_fire_never_touched"
+    },
+    {
+     "expect": "pass",
+     "id": "good_one_kind_enough"
     }
    ],
    "reset_at": "2026-11-17T19:11:38Z",

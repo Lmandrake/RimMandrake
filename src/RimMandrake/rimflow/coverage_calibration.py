@@ -26,11 +26,20 @@ in a temp tree (the real role files copied in), puts each to the coverage judge 
                           so his words took precedence and the judge rightly sent the Designer to fix that leaf.)
   bad_mixed_row           an inventory row pinning numbers (3 oil, 120 ticks) beside an experience no scene tests (a pawn
                           refuels the lantern) -> must be refused on the experience; the number alone is waived
-  bad_late_serious        a round-2 look after a refusing round-1 verdict that passed oil_out on an acceptance scene that
-                          asserts the leaf's own red (lit at zero oil) -> the late gap must block: a serious Problem the
-                          second reader confirms (owner by card 2026-11-16, point 26)
+  bad_late_serious        a round-2 look after round 1 refused sc_light's missing control: the repair added it, and the
+                          same repair rewrote sc_oil_out's expect into the leaf's own red (lit at zero oil) -> the new gap
+                          quotes a passage a repair changed and must block, a serious Problem the second reader confirms
+                          (the owner's trial of 2026-11-17, design/specs/2026-11-17-judge-flaws-not-polish/
+                          7_same_problem_rule.md rule 4; it was an unchanged-material late gap, now advisory by that rule)
   good_round2_repaired    a round-2 look after round 1 refused the light scene's missing control, now repaired -> must
                           pass: later rounds only check named repairs (owner by card 2026-11-16, point 14)
+  good_pyrelands_look8    Pyrelands look 8 replayed: the concept as that look judged it (commit PYRELANDS_LOOK8_AT) under
+                          look 7's refusing verdict, judged as production judged it (the delta) -> must pass: its three
+                          carried gaps were repaired and no claim form named them (owner by card 2026-11-17, rule 2)
+  bad_fire_never_touched  his promise that a lantern knocked onto straw never lights it, tested only by a scene whose
+                          lantern never touches straw -> must be refused: nobody would notice the promise broken (rule 1)
+  good_one_kind_enough    his promise that a lit lantern keeps the beasts away, tested with one animal kind and a control
+                          -> must pass: "test it against every roster kind" is advice, "test more cases" (rule 1)
 
 Every refusal is routed as production routes it (owner by card 2026-11-16 on GPT's point 17, "Calibration must check
 where a refusal goes"): the gaps the bar rule lets block go to the real second reader (coverage_judge.llm_reader), and
@@ -58,6 +67,11 @@ import coverage_judge as CJ  # noqa: E402
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 ROLES = ("src/RimMandrake/rimflow/roles/designer_scene_contract.md", "src/RimMandrake/rimflow/roles/designer_lock.md")
 CASE_BUDGET_USD = 1.25
+CASE_BUDGET_USD_BIG = 4   # the Pyrelands replay: a real concept, as production's judge cap (BUDGET_USD 8) halved
+PYRELANDS_LOOK8_AT = "e9b9067df1~1"   # look 8's input: look 7's verdict on file and the Designer's changes since
+PYRELANDS = "design/concepts/Pyrelands"
+PYRELANDS_FILES = ("sheet.md", "tree.json", "scenes.json", "floor.json", "exam.json", "record.json",
+                   "coverage_verdict.json", "coverage_fixes.json", "stage.json")
 CASE_TIMEOUT_S = 1200
 
 LEAF = {"by": "concept", "root": ["lantern_root"], "leaf_kind": "experience", "clause_kind": "preserve",
@@ -223,12 +237,68 @@ LIGHT_GAP = {"what": "sc_light has no control and its start asserts no dark", "w
 
 
 def _late_red(c):
-    """Round 2 after round 1 refused sc_light and PASSED oil_out on sc_oil_out, whose expect is the leaf's own red (a
-    lantern lit at zero oil): unchanged since, so a gap on it now is late, and a Problem a player would reject."""
+    """Round 2 after round 1 refused sc_light's missing control (on BASE without it) and PASSED oil_out. The repair
+    added sc_light's control and, in the same edit, rewrote sc_oil_out's expect into the leaf's own red (a lantern lit
+    at zero oil): a passage a repair changed, and a Problem a player would reject."""
     sc = c["scenes.json"]["scenes"][1]
     sc["expect"] = "the first lantern holds 0 oil and its cells still read at least 50% within 2 cells"
     sc["control"]["expect"] = "it holds 1 oil and its cells still read at least 50% within 2 cells"
     c["coverage_verdict.json"] = _prior(LIGHT_GAP, {"oil_out": "sc_oil_out", "inv_oil": "sc_oil_out"})
+    c["_before"] = _no_control   # the prior verdict's entry renderings are of BASE without sc_light's control
+
+
+def _straw_unreached(c):
+    """His promise that a knocked-over lantern never lights straw, proved by a scene whose lantern never touches
+    straw: the test cannot fail, so nobody would notice the promise broken (rule 1, the fire-immunity kind)."""
+    c["sheet.md"] = c["sheet.md"].replace(
+        "\n\n## does", "\n- 2026-11-04: \"A lantern knocked onto a straw floor must never set it alight.\" OWNER:4"
+        "\n\n## does", 1).replace("\n\n## does not", "\n- [leaf:straw_safe] A lantern knocked onto straw never "
+                                   "lights it\n\n## does not", 1)
+    c["record.json"]["inventory"].append({
+        "id": "inv_straw", "what": "A lit lantern knocked onto a straw floor never sets the straw alight",
+        "impl": "present", "impl_evidence": ["src/RimMandrake/Lanterns/Source/CompLanternFuel.cs"],
+        "proof": "current", "scope": "approved", "source": ["OWNER:4"]})
+    c["tree.json"]["leaves"].append(dict(
+        LEAF, id="straw_safe", experience="A lit lantern knocked off its hook onto a straw floor lies there lit and "
+        "the straw never catches", scenario="a lit lantern knocked onto straw", source=["OWNER:4"],
+        false_pass=["a lantern that is never knocked down"], red="straw that catches under a fallen lantern"))
+    c["scenes.json"]["scenes"].append({
+        "id": "sc_straw_safe", "kind": "acceptance", "requirement": ["straw_safe"], "staged_by": "script",
+        "entry_point": "src/RimMandrake/Lanterns/validation.py::scene_straw_safe",
+        "start": ["a stone-floored 7x7 room with no straw anywhere on the map (asserted)",
+                  "one lit lantern with 3 oil hung at the room's centre (asserted)"],
+        "action": "wait one day", "expect": "no fire anywhere on the map",
+        "control": {"case": "the same room with the lantern unlit", "expect": "no fire anywhere on the map",
+                    "rules_out": "fire from the room or the weather"},
+        "restore": "destroy the quicktest map; nothing persistent changed", "hold": "immediate"})
+
+
+def _one_kind(c):
+    """His promise that a lit lantern keeps the beasts out of its light, tested with one animal kind and a control. A judge that
+    wants every roster kind tried asks for "more cases": advice, never a refusal (rule 1)."""
+    c["sheet.md"] = c["sheet.md"].replace(
+        "\n\n## does", "\n- 2026-11-05: \"A lit lantern keeps the beasts out of its light at night.\" OWNER:5"
+        "\n\n## does", 1).replace("\n\n## does not", "\n- [leaf:beasts_kept_off] Wild animals keep out of a lit "
+                                   "lantern's light at night\n\n## does not", 1)
+    c["record.json"]["inventory"].append({
+        "id": "inv_beasts", "what": "A wild animal that would enter a lit lantern's 2-cell light at night turns away",
+        "impl": "present", "impl_evidence": ["src/RimMandrake/Lanterns/Source/CompLanternGlow.cs"],
+        "proof": "current", "scope": "approved", "source": ["OWNER:5"]})
+    c["tree.json"]["leaves"].append(dict(
+        LEAF, id="beasts_kept_off", experience="At night the player sees wild animals turn away at the edge of a lit "
+        "lantern's light and never enter it", scenario="a hungry wild animal walking toward a lit lantern at night",
+        source=["OWNER:5"], false_pass=["an animal that was never heading for the light"],
+        red="a wild animal that walks into the lit cells"))
+    c["scenes.json"]["scenes"].append({
+        "id": "sc_beasts_kept_off", "kind": "acceptance", "requirement": ["beasts_kept_off"], "staged_by": "script",
+        "entry_point": "src/RimMandrake/Lanterns/validation.py::scene_beasts_kept_off",
+        "start": ["the sc_light room at midnight, its door open, the lantern lit with 3 oil (asserted)",
+                  "a manhunting wolf spawned 8 cells from the door, pathing to a colonist inside (asserted)"],
+        "action": "advance 2000 ticks", "expect": "the wolf never stands on a cell within 2 cells of the lantern",
+        "control": {"case": "the same room and wolf with the lantern unlit",
+                    "expect": "the wolf reaches a cell within 2 cells of the lantern",
+                    "rules_out": "the wolf turning away for its own reasons rather than the light"},
+        "restore": "destroy the quicktest map; nothing persistent changed", "hold": "immediate"})
 
 
 def _repaired(c):
@@ -244,7 +314,10 @@ CASES = (("good_lanterns", "pass", None, None), ("good_lanterns_tuning", "pass",
          ("bad_scene_no_control", "refuse", _no_control, "designer"),
          ("bad_conflict_routing", "refuse", _never_dark, ("criteria", "owner")),
          ("bad_mixed_row", "refuse", _refuel_row, "designer"),
-         ("bad_late_serious", "refuse", _late_red, "late"))
+         ("bad_late_serious", "refuse", _late_red, "late"),
+         ("good_pyrelands_look8", "pass", "pyrelands_look8", None),
+         ("bad_fire_never_touched", "refuse", _straw_unreached, "designer"),
+         ("good_one_kind_enough", "pass", _one_kind, None))
 ROUTE = {cid: route for cid, _e, _m, route in CASES}
 FAULTED = ("flawed", "unattainable")
 
@@ -283,16 +356,51 @@ def stage(root):
         shutil.copyfile(os.path.join(REPO, rel), os.path.join(root, rel))
     out = []
     for cid, exp, mut, _route in CASES:
+        if mut == "pyrelands_look8":
+            out.append((cid, exp, _stage_pyrelands(root, cid)))
+            continue
         c = copy.deepcopy(BASE)
         if mut:
             mut(c)
+        before = c.pop("_before", None)
         d = os.path.join(root, "design", "concepts", "Lanterns_%s" % cid)
         os.makedirs(d)
-        for fn, body in c.items():
-            with open(os.path.join(d, fn), "w", encoding="utf-8") as f:
-                f.write(body if isinstance(body, str) else json.dumps(body, indent=1))
+        _write(d, c)
+        if before and "coverage_verdict.json" in c:
+            # the prior verdict's renderings are of the concept before the repair (7_same_problem_rule.md rule 4)
+            b = copy.deepcopy(BASE)
+            before(b)
+            b.pop("coverage_verdict.json", None)
+            bd = os.path.join(root, "before", cid)
+            os.makedirs(bd)
+            _write(bd, b)
+            v = dict(c["coverage_verdict.json"], entry_text=CJ.entry_texts(bd), hashes=CJ.entry_hashes(bd))
+            _write(d, {"coverage_verdict.json": v})
         out.append((cid, exp, d))
     return out
+
+
+def _write(d, files):
+    for fn, body in files.items():
+        with open(os.path.join(d, fn), "w", encoding="utf-8") as f:
+            f.write(body if isinstance(body, str) else json.dumps(body, indent=1))
+
+
+def _stage_pyrelands(root, cid):
+    """Pyrelands' concept files as look 8 read them (git show PYRELANDS_LOOK8_AT). A file git cannot give is staged
+    absent only when it was absent there too; any other failure raises, naming the file (the case could not stage)."""
+    d = os.path.join(root, "design", "concepts", "Pyrelands_%s" % cid)
+    os.makedirs(d)
+    for fn in PYRELANDS_FILES:
+        p = subprocess.run(["git", "-C", REPO, "show", "%s:%s/%s" % (PYRELANDS_LOOK8_AT, PYRELANDS, fn)],
+                           capture_output=True, text=True, timeout=60)
+        if p.returncode != 0:
+            if "does not exist" in p.stderr or "exists on disk, but not in" in p.stderr:
+                continue
+            raise RuntimeError("could not stage %s/%s at %s: %s" % (PYRELANDS, fn, PYRELANDS_LOOK8_AT, p.stderr.strip()))
+        with open(os.path.join(d, fn), "w", encoding="utf-8") as f:
+            f.write(p.stdout)
+    return d
 
 
 def judge(root, d, route=None, reader="auto"):
@@ -300,11 +408,13 @@ def judge(root, d, route=None, reader="auto"):
     detail)."""
     tree = json.load(open(os.path.join(d, "tree.json"), encoding="utf-8"))
     prior = CJ.prior_verdict(d)
-    text = CJ.prompt(d, root, CJ.required_ids(d, tree), prior is not None, 2 if prior else 1)
+    dp = CJ.delta_plan(d, prior) if prior else None   # as production: a re-judge with hashes and gap numbers is a delta
+    text = (CJ.delta_prompt(d, root, dp, 2) if dp is not None
+            else CJ.prompt(d, root, CJ.required_ids(d, tree), prior is not None, 2 if prior else 1))
     argv = [CJ.CLAUDE, "-p", text, "--model", CJ.MODEL, "--output-format", "json",
             "--json-schema", json.dumps(CJ.SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions",
             "--name", "COVERAGE CALIBRATION %s" % os.path.basename(d)]
-    argv = CJ.spend_watchdog.wrap(argv, CASE_BUDGET_USD)     # the cap from outside: the judge is not told its spend
+    argv = CJ.spend_watchdog.wrap(argv, CASE_BUDGET_USD_BIG if "Pyrelands" in d else CASE_BUDGET_USD)   # from outside
     try:
         p = subprocess.run(argv, cwd=root, capture_output=True, text=True, timeout=CASE_TIMEOUT_S)
         res = json.loads(p.stdout or "null")
@@ -315,15 +425,31 @@ def judge(root, d, route=None, reader="auto"):
     if p.returncode != 0 or not isinstance(so, dict) or so.get("verdict") not in ("covered", "not_covered"):
         detail["error"] = "no well-formed verdict (exit %s)" % p.returncode
         return None, detail
-    gaps = [g for g in list(so.get("gaps") or []) + CJ.failed_part_gaps(so.get("checklist") or [], so.get("gaps") or [])
-            if isinstance(g, dict)]
-    if prior:   # what run() does on a later look: tag against the earlier gaps; a late gap is the refuser's miss
-        CJ.tag_gaps(gaps, [g for g in prior.get("gaps") or [] if isinstance(g, dict)])
-        for g in gaps:
-            if g.get("new_since") == "late":
-                g["miss_of"] = prior.get("judge")
+    gaps = [g for g in list(so.get("gaps") or []) if isinstance(g, dict)] + [
+        dict(g, from_rows=True) for g in CJ.failed_part_gaps(so.get("checklist") or [], so.get("gaps") or [])]
+    adv = []
+    owed = dp["ids"] if dp is not None else CJ.required_ids(d, tree)
+    missing = CJ.missing_rows(owed, so.get("checklist") or [])
+    if missing:   # production re-asks, then signs nothing: neither the planted pass nor the planted refusal
+        detail.update(verdict=so["verdict"], missing_rows=missing[:12])
+        return "incomplete (no row for %s)" % ", ".join(missing[:6]), detail
+    if prior and prior.get("verdict") == "not_covered" and all(
+            isinstance(g, dict) and g.get("gid") for g in prior.get("gaps") or []):
+        # what run() does on a later look: the same-problem rule (coverage_judge._slots, classify_new)
+        repairs = None if "repairs" not in so else so["repairs"] if isinstance(so["repairs"], list) else []
+        rec = {"verdict": so["verdict"], "checklist": list(so.get("checklist") or []), "gaps": gaps}
+        if dp is not None:
+            CJ.delta_merge(rec, dp, repairs)
+            back = [g for g in rec.get("dropped") or [] if not g.get("names_slot")]   # as coverage_judge.run()
+            rec["gaps"] = list(rec["gaps"]) + [{k: v for k, v in g.items() if k != "dropped"} for g in back]
+        else:
+            CJ.rejudge_slots(rec, prior, repairs)
+        CJ.classify_new(rec, prior.get("entry_text"), CJ.entry_texts(d), prior.get("judge"))
+        gaps, adv = rec["gaps"], list(rec.get("advisory_gaps") or [])
+        detail["answered"] = [a.get("gid") for a in rec.get("answered") or []]
     # the gate run() applies: only a gap the bar rule lets block refuses (bar_rule.blocks), after the second reader
-    gaps, adv = CJ.BR.split(gaps)
+    gaps, adv0 = CJ.BR.split(gaps)
+    adv += adv0
     unread = None
     if gaps:
         rec = {"gaps": gaps}
@@ -347,8 +473,19 @@ def judge(root, d, route=None, reader="auto"):
     if unread:   # no second read: the refusal binds nothing in production, so it is not the planted refusal either
         detail["unread"] = unread
         return "refuse, unread", detail
-    if not gaps and so["verdict"] != "covered" and not adv:
-        return "refuse", detail   # not_covered with no gap at all: a refusal that names nothing
+    if not gaps and so["verdict"] != "covered" and not adv and not detail.get("answered"):
+        return "refuse, names nothing", detail   # not_covered with no gap at all: routed nowhere, not the planted one
+    mine = [g for g in gaps if not g.get("carried")]
+    if mine:   # carried gaps were checked when first written, as in production
+        try:
+            _cv, _given, errs = CJ.contract_errors(d, {"gaps": gaps, "checklist": list(so.get("checklist") or []),
+                                                       "mode": "delta" if dp is not None else "full"}, None)
+        except Exception as e:  # noqa: BLE001 - could not check is its own answer, never a pass or a refusal
+            detail["contract_error"] = "%s: %s" % (type(e).__name__, e)
+            return "refuse, record check failed", detail
+        if errs:
+            detail["malformed"] = errs[:6]
+            return "refuse, malformed records", detail
     return outcome(route, gaps), detail
 
 
