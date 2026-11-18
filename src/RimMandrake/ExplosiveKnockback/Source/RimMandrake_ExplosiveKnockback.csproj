@@ -70,6 +70,8 @@
     <Compile Include="RM_KnockbackProof_PitFall.cs" />
     <Compile Include="RM_KnockbackProof_MapCase.cs" />
     <Compile Include="RM_PatchApplierProbe.cs" />
+    <Compile Include="RM_KnockbackScenes.cs" />
+    <Compile Include="..\..\_Shared\SceneRunner\RMTestAttribute.cs" Link="Shared\SceneRunner\RMTestAttribute.cs" />
   </ItemGroup>
 
   <ItemGroup>
