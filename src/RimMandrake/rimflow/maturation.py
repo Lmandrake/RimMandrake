@@ -3120,6 +3120,46 @@ def ledger_items_caused_by(root, ids):
     return [{"id": k, "title": filed[k], "needs": needs.get(k)} for k in live]
 
 
+def ledger_live_endings(root, ids):
+    """-> {id: {"sat": tsn, "ends": [{"tsn", "unit"}]}} for these ledger items: the tsn of the item's last TESTPILOT_SAT
+    note (0 when none) and its LEFT OPEN endings after it, one per run (a note's role_unit; a note with none, a hand
+    note, counts alone), ordered by tsn; None when the ledger folder cannot be read (UNMEASURED, never zero endings).
+    The Maturation tick's Test Pilot step counts these (RIMMANDRAKE_ROUTE_SPENT_LIVE_FIXER_PILOT_BY_HAND)."""
+    d = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    if not os.path.isdir(d):
+        return None
+    want, notes = set(ids), {i: [] for i in ids}
+    try:
+        for f in sorted(os.listdir(d)) if want else []:
+            if not f.endswith(".jsonl"):
+                continue
+            with open(os.path.join(d, f), encoding="utf-8") as fh:
+                for ln in fh:
+                    if '"note"' not in ln or ("LEFT OPEN:" not in ln and "TESTPILOT_SAT" not in ln):
+                        continue
+                    try:
+                        e = json.loads(ln)
+                    except ValueError:
+                        continue
+                    text = e.get("text") or ""
+                    if e.get("event") == "note" and e.get("id") in want and str(e.get("tsn") or "").isdigit() and \
+                            text.startswith(("LEFT OPEN:", "TESTPILOT_SAT")):
+                        notes[e["id"]].append((int(e["tsn"]), text.startswith("TESTPILOT_SAT"), e.get("role_unit")))
+    except (OSError, UnicodeDecodeError):     # a shard that cannot be read: no partial count
+        return None
+    out = {}
+    for i, got in notes.items():
+        got.sort()
+        sat = max([t for t, is_sat, _ in got if is_sat] or [0])
+        ends, seen = [], set()
+        for t, is_sat, unit in got:
+            if t > sat and not is_sat and (unit is None or unit not in seen):
+                seen.add(unit) if unit else None
+                ends.append({"tsn": t, "unit": unit})
+        out[i] = {"sat": sat, "ends": ends}
+    return out
+
+
 def ledger_caused_by(root, ids):
     """-> {id: caused_by} for these ledger items, from their file or spawn event (an item filed with none is absent)."""
     d = os.path.join(root, "infrastructure", "state", "ledger", "events")

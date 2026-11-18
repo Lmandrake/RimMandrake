@@ -2316,6 +2316,160 @@ def kill_clear_main():
     return 1 if FAILS else 0
 
 
+def test_pilot_main():
+    """RIMMANDRAKE_ROUTE_SPENT_LIVE_FIXER_PILOT_BY_HAND, measured 2026-11-17: Explosive Knockback's walk-raid road-back
+    item ended LEFT OPEN three times live and the tick never sent it to a Test Pilot; the Conductor launched both
+    sittings by hand. The tick now counts each live road-back item's LEFT OPEN endings (one per run) since its last
+    TESTPILOT_SAT note and since its last tick sitting, and at Relentless's own count (relentless_rules.json
+    pilot_after_live_fails, reused unchanged) its next run is an rm-testpilot sitting on the pilot model; fewer endings
+    still go the fixer's way. Written before the fix and watched failing on the base d596d7aa18."""
+    import maturation_autonomy as A
+    import relentless as RL
+    tmp = tempfile.mkdtemp(prefix="maturation_test_pilot_")
+    try:
+        # 1. the ledger reader: endings after the last TESTPILOT_SAT note, one per run, hand notes each count
+        ev = os.path.join(tmp, "infrastructure", "state", "ledger", "events")
+        ok(M.ledger_live_endings(tmp, ["X"]) is None if hasattr(M, "ledger_live_endings") else False,
+           "ledger reader: no ledger folder is UNMEASURED (None), never zero endings")
+        os.makedirs(ev)
+        notes = [("X", "LEFT OPEN: before the sitting", "u0", 100), ("X", "TESTPILOT_SAT: abc | expected ...", "up", 200),
+                 ("X", "LEFT OPEN: first after", "u1", 300), ("X", "LEFT OPEN: same run again", "u1", 310),
+                 ("X", "DETACHED run u1 ended success", None, 320), ("X", "LEFT OPEN: a hand note", None, 400),
+                 ("Z", "LEFT OPEN: another item", "u9", 500)]
+        with open(os.path.join(ev, "BENCH.jsonl"), "w") as f:
+            for i, text, unit, tsn in notes:
+                e = {"event": "note", "id": i, "text": text, "tsn": str(tsn)}
+                if unit:
+                    e["role_unit"] = unit
+                f.write(json.dumps(e) + "\n")
+            f.write("not json\n")
+        got = M.ledger_live_endings(tmp, ["X", "Y"]) if hasattr(M, "ledger_live_endings") else None
+        ok(isinstance(got, dict) and [e["tsn"] for e in got["X"]["ends"]] == [300, 400] and got["X"]["sat"] == 200
+           and got["Y"] == {"sat": 0, "ends": []} and "Z" not in got,
+           "ledger reader: X has 2 endings since its sitting (one per run, the hand note counted), Y none, Z unasked "
+           "(read %s)" % got)
+
+        # 2. the decision
+        n = A.pilot_after() if hasattr(A, "pilot_after") else None
+        rules = json.load(open(os.path.join(HERE, "relentless_rules.json")))
+        ok(n == int(rules["pilot_after_live_fails"]) and n >= 1,
+           "the count is Relentless's own pilot_after_live_fails (%s), no new key" % n)
+        n = n or 2
+        facts = {"M": {"version": "0.1.0", "live_units": []}}
+        cfg = dict(load_cfg(), max_live=4, steward_enabled=True)
+        item = {"id": "FIX_ME", "needs": "game-up"}
+
+        def ends(k, t0=1000, unit="r"):
+            return [{"tsn": int((CLOCK - 3600 + t0 + i) * 1e9), "unit": "%s%d" % (unit, i)} for i in range(k)]
+
+        def res(st, endings, stage="in_game", items=(item,)):
+            rows = [{"mod": "M", "stage": stage, "decision": "launch", "visit": 2, "why": "visit owed"}]
+            fx = {"open_items": lambda ids: list(items) if "ROUTE_X" in ids else [], "designer_state": lambda m: {},
+                  "version_locked": lambda m: True, "live_endings": lambda ids: endings}
+            rows, launches = A.resolve(tmp, cfg, st, facts, rows, ["M"], CLOCK, fx)
+            return rows[0], launches
+
+        def state(fixers=None):
+            return {"mods": {"M": {"road_back": {"caused_by": "ROUTE_X", "from": "in_game"},
+                                   "fixers": dict(fixers or {})}}}
+
+        r, la = res(state(), {"FIX_ME": {"sat": 0, "ends": ends(n - 1)}})
+        ok(r.get("aut") == "fixer" and not r.get("pilot") and r.get("fix_item") == "FIX_ME" and la == ["M"],
+           "%d live ending(s), fewer than %d: the item gets its fixer, not a sitting (read %s)" % (n - 1, n, r.get("decision")))
+        spent = {"FIX_ME": {"item": "FIX_ME", "unit": "u-fix", "at": CLOCK - 7200}}
+        r, la = res(state(spent), {"FIX_ME": {"sat": 0, "ends": ends(n - 1)}})
+        ok(r.get("decision") == "fixer_spent" and la == [],
+           "%d ending(s) and its fixer spent: fixer_spent as before (read %s)" % (n - 1, r.get("decision")))
+        st = state(spent)
+        r, la = res(st, {"FIX_ME": {"sat": 0, "ends": ends(n)}})
+        key = r.get("fix_key")
+        ok(r.get("decision") == "pilot" and r.get("pilot") and r.get("aut") == "fixer" and r.get("fix_item") == "FIX_ME"
+           and la == ["M"] and key and key.startswith("FIX_ME|pilot|"),
+           "%d live endings since the last sitting: the tick's next run on it is a Test Pilot sitting (read %s, %s, %s)"
+           % (n, r.get("decision"), key, la))
+        r0, _ = res(state(), {"FIX_ME": {"sat": 0, "ends": ends(n)}})
+        ok(r0.get("decision") == "pilot", "the sitting comes first even when no fixer ran yet (hand runs ended it %d "
+                                          "times; read %s)" % (n, r0.get("decision")))
+        r2, _ = res(state(spent), {"FIX_ME": {"sat": 0, "ends": ends(n)}}, stage="offline_build")
+        ok(r2.get("decision") == "game_only" and not r2.get("pilot"),
+           "at an offline stage a live item gets no run, never a sitting (read %s)" % r2.get("decision"))
+        r3, _ = res(state(spent), {"FIX_ME": {"sat": 0, "ends": ends(n)}}, items=({"id": "FIX_ME", "needs": "offline"},))
+        ok(r3.get("decision") == "fixer_spent" and not r3.get("pilot"),
+           "an item that needs no live game never goes to a sitting (read %s)" % r3.get("decision"))
+        r4, _ = res(state(spent), None)
+        ok(r4.get("decision") == "fixer_spent" and "UNMEASURED" in str(r4.get("pilot_step")),
+           "an unreadable ledger: no sitting, the step named UNMEASURED, the fixer path as before (read %s, %s)"
+           % (r4.get("decision"), r4.get("pilot_step")))
+
+        # 3. the launch: an rm-testpilot sitting, on the pilot model, booked under its own key
+        seen = []
+
+        def launch(it, brief, model, cap, seat="BENCH", **kw):
+            seen.append((it, brief, model, cap))
+            return 0, "DETACHED rm-fake-sit", "rm-fake-sit"
+        A.execute(tmp, cfg, st, [r], la, CLOCK, {"launch_brief": launch, "known": lambda: set(),
+                                                  "file": lambda *a, **k: (False, "no filing")})
+        want = RL.pilot_model(REPO, rules.get("pilot_agent", "rm-testpilot"), cfg.get("steward_model", "opus"))
+        it, brief, model, cap = seen[0] if seen else (None, "", None, None)
+        ok(it == "FIX_ME" and model == want and model != cfg.get("steward_model"),
+           "the sitting launches on the item with the pilot model %s (read %s, %s)" % (want, it, model))
+        ok("rm-testpilot" in brief and "TESTPILOT_SAT" in brief and "Do not spawn" in brief and "FIX_ME" in brief,
+           "the sitting's brief makes the run the Test Pilot itself, ending on a TESTPILOT_SAT note")
+        book = st["mods"]["M"]["fixers"]
+        ok(book.get(key, {}).get("unit") == "rm-fake-sit" and book.get("FIX_ME", {}).get("unit") == "u-fix",
+           "the sitting is booked under its own key, the fixer's entry untouched (%s)" % sorted(book))
+
+        # 4. a sitting's endings reset the count; a killed one (voided out of the book) is retried, same key
+        mine = [{"tsn": int((CLOCK + 60) * 1e9), "unit": "rm-fake-sit"}]
+        book.setdefault(key or "-", {})["at"] = CLOCK
+        r5, _ = res(st, {"FIX_ME": {"sat": 0, "ends": ends(n) + mine}})
+        ok(r5.get("decision") == "fixer_spent" and not r5.get("pilot"),
+           "after the sitting, its own LEFT OPEN and the endings before it count nothing (read %s)" % r5.get("decision"))
+        later = ends(n, t0=3600 + 120, unit="z")
+        r6, _ = res(st, {"FIX_ME": {"sat": 0, "ends": ends(n) + mine + later}})
+        ok(r6.get("decision") == "pilot" and r6.get("fix_key") != key,
+           "%d fresh endings after the sitting: another sitting, a new key (read %s, %s)" % (n, r6.get("decision"),
+                                                                                           r6.get("fix_key")))
+        killed = state(spent)
+        r7, _ = res(killed, {"FIX_ME": {"sat": 0, "ends": ends(n)}})
+        ok(r7.get("decision") == "pilot" and r7.get("fix_key") == key,
+           "a killed sitting (moved out of the book by the void rule) is no sitting: the same one is retried")
+        # 5. Codex review 2026-11-18: a sitting launch that never started keeps its key owed (retried, not hidden);
+        # the step switched off (0) launches nothing and never crashes; an unreadable shard is UNMEASURED
+        st8 = state(dict(spent, **{key: {"item": "FIX_ME", "unit": None, "at": CLOCK + 5, "tries": 1,
+                                         "failed": "LAUNCH FAILED x: index.lock exists"}}))
+        r8, _ = res(st8, {"FIX_ME": {"sat": 0, "ends": ends(n)}})
+        ok(r8.get("decision") == "pilot" and r8.get("fix_key") == key and r8.get("retry_of"),
+           "a sitting whose launch never started is retried under the same key (read %s, %s)" % (
+               r8.get("decision"), r8.get("fix_key")))
+        was_after = A.pilot_after
+        try:
+            A.pilot_after = lambda: 0
+            r9, _ = res(state(spent), {"FIX_ME": {"sat": 0, "ends": ends(n)}})
+            ok(r9.get("decision") == "fixer_spent" and not r9.get("pilot"),
+               "pilot_after_live_fails 0 turns the step off (read %s)" % r9.get("decision"))
+        except Exception as e:      # noqa: BLE001
+            ok(False, "pilot_after_live_fails 0 turns the step off (raised %s)" % e)
+        finally:
+            A.pilot_after = was_after
+        bad = os.path.join(ev, "SHUT.jsonl")
+        with open(bad, "w") as f:
+            f.write("{}\n")
+        os.chmod(bad, 0)
+        try:
+            got = M.ledger_live_endings(tmp, ["X"])
+            ok(got is None or os.access(bad, os.R_OK), "an unreadable shard is UNMEASURED (None), never a crash or a "
+                                                       "partial count (read %s)" % got)
+        except OSError as e:
+            ok(False, "an unreadable shard is UNMEASURED (raised %s)" % e)
+        finally:
+            os.chmod(bad, 0o600)
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+    print("%d failed" % len(FAILS) if FAILS else "ALL PASS")
+    return 1 if FAILS else 0
+
+
 def priority_main():
     """RIMMANDRAKE_LAUNCH_PYRELANDS_FIRST_AT_ONE_SLOT: launch priority is the advancing list's order over every layer.
     At max_live 1, mod P (first) owes a fixer run that maturation_autonomy.resolve adds, and mod G (second) owes a launch
@@ -2410,6 +2564,8 @@ if __name__ == "__main__":
         sys.exit(cert_red_gates_main())
     if "--kill-clear" in sys.argv[1:]:
         sys.exit(kill_clear_main())
+    if "--test-pilot" in sys.argv[1:]:
+        sys.exit(test_pilot_main())
     if "--item-names" in sys.argv[1:]:
         sys.exit(item_names_main())
     if "--land-views" in sys.argv[1:]:
@@ -2429,4 +2585,5 @@ if __name__ == "__main__":
     rc = cert_red_gates_main() or rc
     rc = kill_clear_main() or rc
     rc = priority_main() or rc
+    rc = test_pilot_main() or rc
     sys.exit(ingame_main() or rc)

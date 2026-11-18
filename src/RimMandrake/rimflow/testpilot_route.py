@@ -161,21 +161,35 @@ def read_statuses(host_guard):
     return out
 
 
-def brief(verdict, host):
-    """The ready-to-paste brief for an rm-testpilot subagent on `host`."""
+HOST_NOTES = {
+    "stevedesktop": "Every live call runs on SteveDesktop: ssh \"$STEVE_WSL\" 'cd ~/rm/runner && ...'. That clone is "
+                    "read-only to you; code and deploys go by remote_modcheck.sh --sync --no-run from your own clone. "
+                    "A running testq job holds the guard: a refused take means pick the other host, never --force.",
+    "archmagi": "Archmagi: back up ModsConfig.xml before any list change and restore it with the game down at the "
+                "end. Take with --idle-ok; his OWNER hold still refuses, and then you pick the other host.",
+}
+# a detached run that IS the sitting (the Maturation tick's Test Pilot step, RIMMANDRAKE_ROUTE_SPENT_LIVE_FIXER_PILOT_BY_HAND)
+SIT = ("You are this sitting: the RimMandrake Test Pilot (rm-testpilot). Read `.claude/agents/rm-testpilot.md` in full "
+       "first, as your role file, and load the `test-pilot-sitting` skill: it is your method. Do not spawn a subagent: "
+       "you sit. One sitting, one item.")
+
+
+def brief(verdict, host, detached=False):
+    """The ready-to-paste brief for an rm-testpilot subagent on `host`; detached: the brief of a run that is the sitting
+    itself, and host None: the sitting picks the first free host when it starts."""
     i = verdict["id"]
-    lines = ["Spawn subagent_type rm-testpilot with model \"fable\" (Fable 5.2, owner 2026-11-16) and this brief. One "
+    lines = [SIT if detached else
+             "Spawn subagent_type rm-testpilot with model \"fable\" (Fable 5.2, owner 2026-11-16) and this brief. One "
              "sitting, one item.",
              "",
-             "Item %s. Routed by the Test Pilot rule: %s." % (i, verdict["why"]),
-             "Host: %s. Take: rimflow bridge take --host %s --for \"test pilot %s\"" % (host, host, i)]
-    if host == "stevedesktop":
-        lines.append("Every live call runs on SteveDesktop: ssh \"$STEVE_WSL\" 'cd ~/rm/runner && ...'. That clone is "
-                     "read-only to you; code and deploys go by remote_modcheck.sh --sync --no-run from your own clone. "
-                     "A running testq job holds the guard: a refused take means pick the other host, never --force.")
+             "Item %s. Routed by the Test Pilot rule: %s." % (i, verdict["why"])]
+    if host is None:
+        lines += ["Host: the first free one of %s (`python3 src/RimMandrake/rimflow/cli.py pilot %s` names it). Take: "
+                  "rimflow bridge take --host <host> --for \"test pilot %s\"" % (", ".join(HOSTS), i, i)]
+        lines += ["On %s: %s" % (h, HOST_NOTES[h]) for h in HOSTS]
     else:
-        lines.append("Archmagi: back up ModsConfig.xml before any list change and restore it with the game down at the "
-                     "end. Take with --idle-ok; his OWNER hold still refuses, and then you pick the other host.")
+        lines += ["Host: %s. Take: rimflow bridge take --host %s --for \"test pilot %s\"" % (host, host, i),
+                  HOST_NOTES["stevedesktop" if host == "stevedesktop" else "archmagi"]]
     # LIVE_FAILURES_EXPLAIN_MORE_THAN_A_LABEL (owner 2026-11-04): "Make sure the Test Pilot's job is to EXPLAIN the
     # failure, not just try to execute a test. ... Then there needs to be follow-up work to address them."
     lines += ["Read first: `rimflow show %s` and Player.log's first exception." % i] + HOLDS_LINES

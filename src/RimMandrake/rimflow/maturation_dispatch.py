@@ -83,6 +83,10 @@ design/RimMandrake/pipeline_interventions_census_2026-11-15.md; selftest_maturat
                 blind judge on a pilot writes JUDGE.<run>, starts with no packet and never in the holder's session,
                 and is sealed at its end (judge_open, end_judge_run; `judge-verify MOD` is its verification list);
                 the ledger part of a launch fits packet_budget_tokens or is refused (modledger.launch)
+  test pilot    a live road-back item at Stage 6 with Relentless's count (relentless_rules.json pilot_after_live_fails)
+                of LEFT OPEN endings since its last sitting gets an rm-testpilot sitting on the pilot model as its next
+                run, booked in fixers as ITEM|pilot|<tsn> (maturation_autonomy._pilot_step;
+                RIMMANDRAKE_ROUTE_SPENT_LIVE_FIXER_PILOT_BY_HAND: both Explosive Knockback sittings were launched by hand)
   slots_full    max_live live runs on advancing mods already (the Conductor's included)
   account_hold  the Dispatcher's account pick holds role launches (its rule's `hold` list): nothing
   launch        spawn a ledger item under this one (seat RUNNER, as ops_watch files), publish the shard, `maturation.py launch` it (opus, the cap)

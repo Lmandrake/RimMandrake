@@ -588,6 +588,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
     # launch taken back (a road-back fixer replacing a mod's own build) gives its slot back
     # (RIMMANDRAKE_RETURN_SLOT_OF_REPLACED_LAUNCH_FIXER_NEVER_RAN: at max_live 1 the fixer read slots_full for good)
     open_items = fx.get("open_items", lambda ids: M.ledger_items_caused_by(root, ids))
+    endings = fx.get("live_endings", lambda ids: M.ledger_live_endings(root, ids))
     dstate = fx.get("designer_state", lambda m: designer_state(root, m))
     locked = fx.get("version_locked", lambda m: version_locked(root, m))
     evidence = fx.get("version_evidence", lambda m: version_evidence(root, m))
@@ -628,7 +629,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             launches = [m for m in launches if m != mod]
             _stop_tickets(fx, row, s, dst, now, root=root, ver=ver)
         elif dec in LAUNCH and s.get("road_back") and row.get("stage") in ROAD_BACK_STAGES and \
-                _road_back(s, row, open_items, now, moved=True):
+                _road_back(s, row, open_items, now, moved=True, endings=endings):
             # RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM: the road back's items get their fixers before
             # the next cycle or visit launches (a blind_challenge -> blind_challenge road back launched at once)
             launches = [m for m in launches if m != mod]
@@ -639,7 +640,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
         else:
             _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx.get("designer_unit", designer_unit),
                    fx.get("designer_chain", lambda m: designer_chain(m, now)), now=now, fx_evidence=evidence,
-                   fx_exam=fx.get("exam_gate", lambda m: exam_gate(root, m)))
+                   fx_exam=fx.get("exam_gate", lambda m: exam_gate(root, m)), endings=endings)
             if row.get("decision") == "designer_blocked":
                 # a Designer blocked on a filed fix item (a pipeline defect) gets that item's one fixer run; the mod
                 # stays paused meanwhile (RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)
@@ -787,7 +788,72 @@ def _road_back_ids(s, rb):
     return ids
 
 
-def _road_back(s, row, open_items, now=None, moved=False):
+def pilot_after():
+    """-> rules.pilot_after_live_fails from relentless_rules.json: Relentless's own count of live endings since the
+    last sitting that makes the next run a Test Pilot sitting (TEST_PILOT_WIRE_INTO_THE_PIPELINE_EARLY), reused
+    unchanged, no new key (the Relentless freeze, 2026-11-06); 0 turns the step off; None when it cannot be read."""
+    try:
+        with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as fh:
+            return int(json.load(fh).get("pilot_after_live_fails") or 0)
+    except (OSError, ValueError, TypeError):
+        return None
+
+
+def _pilot_step(s, row, items, endings):
+    """-> True when a live road-back item at Stage 6 owes a Test Pilot sitting (RIMMANDRAKE_ROUTE_SPENT_LIVE_FIXER_PILOT_BY_HAND:
+    Explosive Knockback's walk-raid item ended LEFT OPEN three times live and both sittings were launched by hand). Its
+    LEFT OPEN endings (M.ledger_live_endings: one per run, after its last TESTPILOT_SAT note) are counted from the launch
+    of its last tick sitting that started (booked in s["fixers"] under ITEM|pilot|<tsn>; that sitting's own notes count
+    nothing; a launch that never started is no sitting, so its key stays owed and _gate retries it);
+    at pilot_after() of them the row is that sitting, keyed by the tsn of the ending that made it owed, so a sitting
+    the void rule moved out of the book (killed) is the same sitting, retried. Fewer: False, the fixer path decides."""
+    live = [x for x in items if (x or {}).get("needs") in M.LIVE_NEEDS]
+    if not (live and M.game_takeable(row.get("stage")) and endings):
+        return False
+    n = pilot_after()
+    if n == 0:          # the step is off
+        return False
+    got = endings([x["id"] for x in live]) if n else None
+    if n is None or got is None:
+        row["pilot_step"] = "UNMEASURED: %s" % ("relentless_rules.json pilot_after_live_fails cannot be read"
+                                                if n is None else "the ledger cannot be read for the LEFT OPEN endings")
+        return False
+    book = s.get("fixers") or {}
+    for x in live:
+        e = got.get(x["id"]) or {}
+        sat = [v for k, v in book.items() if str(k).startswith(x["id"] + "|pilot|") and isinstance(v, dict)
+               and v.get("unit")]
+        since = max([int(e.get("sat") or 0)] + [int((v.get("at") or 0) * 1e9) for v in sat])
+        mine = {v.get("unit") for v in sat if v.get("unit")}
+        ends = [y for y in e.get("ends") or [] if y.get("tsn", 0) > since and y.get("unit") not in mine]
+        if len(ends) >= n:
+            row.update(aut="fixer", pilot=True, fix_item=x["id"], fix_key="%s|pilot|%d" % (x["id"], ends[n - 1]["tsn"]),
+                       decision="pilot", why="road-back item %s ended LEFT OPEN %d time(s) live since its last sitting "
+                       "(Relentless's count is %d): its next run is a Test Pilot sitting" % (x["id"], len(ends), n))
+            return True
+    return False
+
+
+def pilot_brief(root, item, mod, why):
+    """-> the brief of a tick sitting: testpilot_route's sitting brief (the run IS the rm-testpilot, any free host),
+    then the bridge rules and the close rules every road-back run carries."""
+    import testpilot_route as TR
+    return ("# Test Pilot sitting: %s (%s)\n\nItem: %s. Seat BENCH. Launched by the Maturation tick's Test Pilot step.\n\n"
+            "%s\n\nWhen the item's acceptance passes, land the fix with `./publish -m ... <paths>` and close the item "
+            "with the published sha; otherwise write a note starting LEFT OPEN: on what still fails, after the "
+            "TESTPILOT_SAT note. Drop nothing.\n%s\n%s" % (
+                item, mod, item, TR.brief({"id": item, "why": why}, None, detached=True), M.SELF_FIX_RULE,
+                live_rules("%s Test Pilot sitting on %s" % (mod, item), mod)))
+
+
+def pilot_run_model(root, default):
+    """-> the model a sitting runs on: relentless.pilot_model, the agent file's own `model:` line (Fable 5.2, owner
+    2026-11-16)."""
+    import relentless as RL
+    return RL.pilot_model(root, "rm-testpilot", default)
+
+
+def _road_back(s, row, open_items, now=None, moved=False, endings=None):
     """-> True when the mod's open road back decides the row: a fixer on its next open item, fixers spent, or an
     unreadable ledger. Keyed on the road back being open, never on a stage change: blind_challenge -> blind_challenge
     is the road back ROADS_BACK draws for a blind cycle, so the stage never changes.
@@ -795,7 +861,8 @@ def _road_back(s, row, open_items, now=None, moved=False):
     closed them) or when the mod has moved (moved: a next cycle or visit is owed, so the steward's landing is in this
     clone). Then the steward runs it covers are marked road_back_closed, so the state they read is a new state
     (_after_road_backs). An empty road back on an unmoved mod stays open: the clone's ledger may not hold the steward's
-    filings yet; a steward that filed nothing stays spent."""
+    filings yet; a steward that filed nothing stays spent.
+    endings: the ledger reader of the Test Pilot step (_pilot_step); None leaves the step out."""
     rb = s.get("road_back")
     if not rb:
         return False
@@ -819,6 +886,8 @@ def _road_back(s, row, open_items, now=None, moved=False):
                        % (row.get("mod"), ", ".join(ids6), row.get("stage"), M.game_only_cmd(row.get("mod"), ids6)))
             return True
         items = work
+        if _pilot_step(s, row, items, endings):
+            return True
         fixed = s.setdefault("fixers", {})
         todo = [x for x in items if x["id"] not in fixed]
         if todo:
@@ -881,7 +950,7 @@ def _mark_worked(s, ver, stage, live, now, ended=None):
 
 
 def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=designer_unit, fx_dchain=None, now=None,
-           fx_evidence=None, fx_exam=None):
+           fx_evidence=None, fx_exam=None, endings=None):
     mod, dec, stage = row["mod"], row.get("decision"), row.get("stage")
     dst = dstate(mod)
     lc = chain_owed(dst)
@@ -917,7 +986,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                      lc.get("at"), str(lc.get("why")), exam_step))
         return
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage
-    if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now):
+    if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now, endings=endings):
         return
     if row.get("road_back_closed") and dec == "stopped":
         s.pop("stopped", None)
@@ -1063,7 +1132,7 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None,
 def _gate(cfg, s, row, live_total, ver):
     """-> (go, (decision, why)) for a steward or fixer launch: once per key, the version's count, the cap, the slots."""
     if row.get("aut") == "fixer":
-        key, done = row["fix_item"], s.setdefault("fixers", {})
+        key, done = row.get("fix_key") or row["fix_item"], s.setdefault("fixers", {})
     else:
         key, done = row["steward_key"], s.setdefault("steward", {})
     if key in done:
@@ -1124,7 +1193,7 @@ PAUSE_WHY = {
 
 def _klass(cfg, s, row, now, queue):
     dec = row.get("decision")
-    if dec in LAUNCH or (row.get("aut") and dec in ("steward", "fixer", "autolock", "autorepin")):
+    if dec in LAUNCH or (row.get("aut") and dec in ("steward", "fixer", "pilot", "autolock", "autorepin")):
         k, txt = "launch", "moving: %s %s" % (row.get("aut") or "run", row.get("unit") or row.get("item") or "")
         if row.get("fix_item") and row["fix_item"] not in txt:
             txt = "%s on %s" % (txt.rstrip(), row["fix_item"])
@@ -1472,7 +1541,7 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish)
         except Exception as e:      # noqa: BLE001  one row's failure is that row's PAUSE, never the tick's crash
             book = st["mods"][row["mod"]].setdefault("fixers" if row.get("aut") == "fixer" else "steward", {})
-            book[row.get("fix_item") or row.get("steward_key")] = {
+            book[row.get("fix_key") or row.get("fix_item") or row.get("steward_key")] = {
                 "item": row.get("item"), "unit": None, "at": now, "failed": "%s: %s" % (type(e).__name__, e),
                 "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1}
             row.update(decision="launch_failed", why="%s: %s" % (type(e).__name__, e))
@@ -1490,8 +1559,10 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
         live = (row.get("fix_for") != "blocked" and M.game_takeable(row.get("stage")) and MD.pilot_ledger(root, mod)
                 and live_only([{"needs": M.ledger_needs(root, [item]).get(item)}]))
         brief = fixer_brief(item, mod, row["cap"], row.get("fix_for"), live=live)
+        if row.get("pilot"):        # the Test Pilot step (_pilot_step): an rm-testpilot sitting on the pilot model
+            brief, model = pilot_brief(root, item, mod, row.get("why")), pilot_run_model(root, model)
         book = s.setdefault("fixers", {})
-        key = item
+        key = row.get("fix_key") or item
     else:
         key, book = row["steward_key"], s.setdefault("steward", {})
         if retry.get("item") and retry.get("filed", str(retry.get("failed") or "").startswith("filed ")):

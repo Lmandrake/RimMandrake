@@ -149,7 +149,7 @@ def tick_units(s):
 
 def _fix_queue(s):
     """The tick's own fix tickets for a mod: its fixer keys and what its road back names."""
-    ids = set((s.get("fixers") or {}).keys())
+    ids = {str(k).split("|")[0] for k in (s.get("fixers") or {})}     # a Test Pilot sitting's key is ITEM|pilot|<tsn>
     rb = s.get("road_back") or {}
     for k in ("items", "ids"):
         if isinstance(rb.get(k), list):
