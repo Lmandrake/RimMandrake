@@ -598,6 +598,36 @@ def t_stop():
                                                                        "unreadable, and says so", out)
 
 
+def t_stop_review_fixes():
+    """Codex review, 2026-11-18: a kill with a survivor is never recorded killed (its clone kept); a stopped run is
+    voided in the dispatch books too; `pipe init` in a test process never creates the live store."""
+    fresh()
+    a = C.admit(spec("rm-detached-probe-survivor-1", mod="Graffiti"))
+    C.condition(a["run"])
+    reaped = []
+    r = C.stop("Graffiti", "kill", "survivor test", killer=lambda us: [
+        {"unit": u, "dead": False, "ms": 1000, "survivors": [4242], "said": "SURVIVED: pids [4242]"} for u in us],
+        reaper=lambda *x: reaped.append(x) or "reaped")
+    check(not r["units"][0]["ok"] and C.run_state(a["run"])["state"] == "started" and not reaped,
+          "a kill that leaves a survivor is not recorded killed and its clone is not returned", r["units"])
+    vf = os.path.join(TMP, "voids-test.jsonl")
+    os.environ["RM_RUN_VOIDS_FILE"] = vf
+    try:
+        C.switch("mod:Graffiti", False, "on")
+        b = C.admit(spec("rm-probe-books-1", mod="Graffiti"))
+        C.condition(b["run"])
+        C.stop("Graffiti", "at_easy_spot", "books test", escalator=lambda *x: "-")
+        import run_void as RV
+        check("rm-probe-books-1" in RV.active(vf), "a stopped run is voided in the dispatch books too (voids.jsonl)")
+    finally:
+        os.environ.pop("RM_RUN_VOIDS_FILE", None)
+    env = {k: v for k, v in os.environ.items() if k != "RM_CONTROL_DB"}
+    env["RM_UNDER_SELFTEST"] = "1"
+    r2 = subprocess.run([PY, TOOL, "init"], capture_output=True, text=True, env=env, timeout=30)
+    check(r2.returncode == 0 and C.DEFAULT_DB not in r2.stdout and "rm-control-selftest" in r2.stdout,
+          "pipe init in a test process makes a test store, never the live one", r2.stdout)
+
+
 def t_kill_bookkeeping():
     """A killed detached run: its record is finished/killed at once and its clone is not held, so a relaunch needs no
     hand step (the Conductor measured 2026-11-18 11:30 AM PST that a bare SIGKILL left both)."""
@@ -680,7 +710,7 @@ def t_sites():
 
 def main():
     for t in (t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
-              t_kill_bookkeeping, t_coverage_look, t_sites):
+              t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites):
         print("== %s" % t.__name__)
         try:
             t()

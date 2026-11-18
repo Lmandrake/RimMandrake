@@ -1116,6 +1116,10 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
         runs = [{"id": None, "unit": scope[5:], "spec": "{}", "item": None, "mod": None, "family": "?"}]
         store_err = str(e)
     out = {"scope": scope, "mode": mode, "act": act, "cancelled": cancelled, "units": [], "store": store}
+    for r in runs:      # a stopped run spends no trial in the dispatch books either (run_void.py; card 2026-11-18)
+        if store and r.get("id"):
+            r["books"] = void_books(r["unit"], r.get("mod"), "stopped (%s): %s" % (mode, why), owner_said,
+                                    act["id"], p)
     if not store:
         out["store_err"] = store_err
     if mode == "kill":
@@ -1127,15 +1131,20 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
             row = {"unit": r["unit"], "dead": not bad and any(x["dead"] for x in res),
                    "ms": max(x["ms"] for x in res), "said": "; ".join("%s: %s" % (x["unit"], x["said"]) for x in res),
                    "ok": not bad}
+            if not row["ok"]:   # something survived or death is unverified: never recorded killed, the clone kept
+                row["bookkeeping"] = "NOT recorded killed and its clone kept: %s" % row["said"]
+                out["units"].append(row)
+                continue
             if store and r["id"]:
                 _mark(r["id"], "killed", "pipe stop --kill (%s): %s" % (act["id"], why), p, frm=("started", "admitted"))
             row["bookkeeping"] = (reaper or reap_detached)(r, act, why) if r.get("family") == "detached" or \
                 str(r["unit"]).startswith("rm-detached-") else "no bookkeeping owed (family %s)" % r.get("family")
+            row["bookkeeping"] += r.get("books", "")
             out["units"].append(row)
     else:
         for r in runs:
             esc = (escalator or schedule_escalation)(r["unit"], deadline_s, p) if deadline_s else None
-            out["units"].append({"unit": r["unit"], "ok": True, "said": "stop order written (%s)%s" % (
+            out["units"].append({"unit": r["unit"], "ok": True, "said": "stop order written (%s)%s%s" % (r.get("books", ""),
                 mode, "; escalates to --kill at %s (%s)" % (pac(now + deadline_s), esc) if deadline_s else
                 "; no deadline")})
     return out
@@ -1172,6 +1181,9 @@ def escalate(unit, p=None, now=None, killer=None, reaper=None):
         r = c.execute("SELECT * FROM runs WHERE unit=?", (unit,)).fetchone()
     r = dict(r) if r else {"id": None, "unit": unit, "spec": "{}", "family": "?"}
     res = (killer or kill_units)([unit] + _extra_units(r))
+    bad = [x for x in res if x["dead"] is False or (x["dead"] is None and "nothing was running" not in x["said"])]
+    if bad:
+        return "ESCALATION FAILED %s (%s): %s; NOT recorded killed" % (unit, a["id"], "; ".join(x["said"] for x in bad))
     if r.get("id"):
         _mark(r["id"], "killed", "escalated to --kill (%s)" % a["id"], p, frm=("started", "admitted"))
     book = (reaper or reap_detached)(r, a, "escalated") if str(unit).startswith("rm-detached-") else ""
@@ -1730,22 +1742,28 @@ def cmd_void(o):
 
 
 def _void_books(o, r):
-    """The dispatch books (run_void.py) learn the void too, so every counter reader there honours it at once."""
-    if not is_live():
+    return void_books(o.run, r["mod"], o.why, o.owner_said, r["act"]["id"])
+
+
+def void_books(unit, mod, why, owner_said, act_id, p=None):
+    """The dispatch books (run_void.py's voids.jsonl) learn the void too, so every counter reader there honours it at
+    once (a test store tells no books: RM_RUN_VOIDS_FILE names a test's). -> "; <what happened>"."""
+    if not (is_live(p) or os.environ.get("RM_RUN_VOIDS_FILE")):
         return ""
     try:
+        sys.path.insert(0, HERE) if HERE not in sys.path else None
         import run_void as RV
-        if o.run in RV.active():
+        if unit in RV.active():
             return "; dispatch books: already void"
-        rec = {"act": "void", "ts": utc(time.time()), "unit": o.run, "mod": r["mod"], "item": None, "why": o.why.strip(),
-               "by": who(), "kind": "hand", "result": UNM, "cost_usd": UNM, "control_act": r["act"]["id"]}
-        if o.owner_said:
-            rec["owner_said"] = o.owner_said
+        rec = {"act": "void", "ts": utc(time.time()), "unit": unit, "mod": mod, "item": None, "why": why.strip(),
+               "by": who(), "kind": "hand", "result": UNM, "cost_usd": UNM, "control_act": act_id}
+        if owner_said:
+            rec["owner_said"] = owner_said
         RV._append(rec)
         return "; dispatch books: voids.jsonl line written"
     except Exception as e:      # noqa: BLE001
         return "; dispatch books NOT told (%s: %s): maturation_dispatch.py void %s --why ..." % (type(e).__name__, e,
-                                                                                                o.run)
+                                                                                                unit)
 
 
 def cmd_grant(o):
@@ -1862,7 +1880,7 @@ def main(argv=None):
         if o.verb == "reap":
             return reap(o.unit)
         if o.verb == "init":
-            p = init(os.environ.get("RM_CONTROL_DB") or DEFAULT_DB)
+            p = init(db_path())     # a test process gets its own store here too, never the live one
             c = read(p)
             lines = ["store %s initialised (rev %d)" % (p, rev(c))]
             c.close()
