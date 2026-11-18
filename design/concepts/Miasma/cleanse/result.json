@@ -5,19 +5,19 @@
  "signature": "Storm recession creates nursery rescues whose treatment determines maternal tolerance and the chance of a juvenile inheritance.",
  "counts": {
   "capabilities": 86,
-  "kept": 59,
-  "next_version": 22,
+  "kept": 57,
+  "next_version": 24,
   "recommend_retire": 5,
   "old_bars": 0,
   "bars": 9,
   "live_only_bars": 1,
   "checks": 13,
   "rules": 12,
-  "unknown_pairs": 7,
+  "unknown_pairs": 6,
   "models": 4,
-  "tickets": 36,
+  "tickets": 35,
   "questions": 0
  },
  "blocked_on": "",
- "applyable": false
+ "applyable": true
 }

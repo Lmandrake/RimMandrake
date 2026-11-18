@@ -1,0 +1,221 @@
+{
+ "mod": "Miasma",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "core_promise_weakened",
+     "where": "bars.json B4 (says, range.left_out, reject #1); definition.md 'Using it'; owner_pages.md page one",
+     "evidence": "The owner's ruling, quoted word for word in design/Jawa/worldbuilding/biomes/miasma_fauna_roster_2026-09-23.md §6, says: \"Means that when it spawns, so do some stranded young (sometimes).\" The same section explains why it matters: \"the offer arrives with her, on the first day ... it is what makes this content reachable at all.\" census.json row warden_sites keeps it as signature (\"anchored warden and sometimes a nearby stranded juvenile\"). But no bar, definition paragraph or owner-page line mentions it. B4 says only \"When Miasma surge water withdraws...\", and its range allows \"Not every random recession must create an occupied pool.\" B4 reject #1 also refuses \"A young is spawned in a pre-existing painted pond ... while the surge itself changes no connectivity.\" A cold reader would refuse the ruled day-one young under that picture. So the ruled first-day offer is neither promised nor protected, and B9's stretch may never show an orphan at all.",
+     "would_pass": "A bar says a mother can arrive with a stranded young of her own, so the rescue-or-sell choice can open before any storm. Surge recession remains the recurring cause. The prepainted-pond reject is narrowed so it cannot catch the mother's own arrival.",
+     "smallest_fix": "Add a B4 accept picture: 'A mother placed with the map sometimes has her own stranded young nearby, which calls and can be rescued before any storm has come.' Reword reject #1 to: 'a proof helper spawns a young in a painted pond, and neither the mother's arrival nor a surge caused it.' Add one line to definition.md 'Using it' and to page one."
+    },
+    {
+     "id": "R2",
+     "head": "extra_without_argument",
+     "where": "census.json rows flotsam_yard and water_only_haul (both needed_by signature); bars.json B5 accept #2 and reject #4, B9 accept #4 and reject #4, R7's deposit clauses, meeting 'root-line goods'; tickets T6 and T15",
+     "evidence": "The signature in result.json is \"Storm recession creates nursery rescues whose treatment determines maternal tolerance and the chance of a juvenile inheritance.\" The case for keeping the deposits is circular. ambiguities.md 'Flotsam and salvage' says \"deleting them defeats recurring water-only haul\". 'Trainable at the waterline' says the haul stays because removing it \"defeats the affectionate child's ordinary usefulness\". So the deposits are kept for the haul, and the haul is kept for usefulness, which the signature sentence never names. The fauna roster §6a table already lists Guard and release/attack as water-scoped trained work that needs no item source. Deleting the haul and its recurring deposits leaves rescue, tolerance, sale and inheritance whole. What it removes is a custom economy with stock caps, its own wet-root placement, an unknown meeting ('root-line goods') and a seasonal item-flow model. That is the 'little custom details' the owner told the Designer to move.",
+     "would_pass": "Either a deletion argument that ties water-side haul to land, life or the signature as stated, or water-side haul and its recurring deposits moved to next version, switched off. The young's 'useful water-bound work' in B7 is then met by Guard and release/attack.",
+     "smallest_fix": "Move flotsam_yard's recurring deposits and water_only_haul to next_version.md with switch-off tickets (merge T6 and T15 into one). Drop B5 accept #2's haul clause, B5 reject #4, B9 accept #4 and reject #4, R7's deposit sentences and the 'root-line goods' meeting. Keep Guard and release/attack in R7."
+    },
+    {
+     "id": "R3",
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B7 (accept #2 'actually guards that nursery with less reach and threat'), R6, R7; definition.md 'What changes in the colony's story'; tickets.md T14",
+     "evidence": "R6: \"starting any harvest of plants, wood, salt or animals inside the mother's anchor reach immediately restores that actor as a defence target, tolerated or not.\" The source mechanism is RM_JobGiver_AnchorDefense (EnvironmentalHazards/Source/RM_CompTerritorialAnchor.cs), which the roster describes as fighting \"anything hostile-or-harvesting inside the anchor radius\". The roster §6a says the heir is \"simply a tamed juvenile with the anchor comp pointed at the crèche. The same mechanism\". Neither the proposal nor T14 says whom the colony-owned heir targets. Does it attack its own colony's salt and wood gatherers inside its reach? Does it guard only against hostiles? Does the harvest exception end when the mother dies? The 'weaker watch' is a kept signature mechanic with no target set.",
+     "would_pass": "R7 and B7 state the heir's target set: for example, hostiles in its reduced reach, never its own colony's harvesters. Add an accept/reject pair: 'a colonist gathering salt beside the inherited crèche works unharmed while the heir attacks a raider crossing its channel' against 'the heir attacks its own colony's salt gatherer'.",
+     "smallest_fix": "Add one sentence to R7 naming the heir's targets, and that accept/reject pair to B7."
+    },
+    {
+     "id": "R4",
+     "head": "kept_mechanic_undefined",
+     "where": "definition.md 'Using it' ('A held distressed young ... can be offered to an ordinary eligible trader'); ambiguities.md 'Carrying versus the water-bound affection' ('held for the ruled sale'); bars.json B6 accept #2, R6, R7 ('is never conventional taming'); next_version.md buyer_visits",
+     "evidence": "In code, a sellable young must belong to the colony. RM_MothersPrice.cs:280 checks \"p.Faction == Faction.OfPlayer && RM_MothersPrice.IsStrandedYoung(p)\". Carrying a wild pawn does not change its faction. R7 forbids conventional taming, and the roster §6a says a conventional taming grind \"is working against three rulings at once\". With the custom buyer moved to next version, the proposal never says how a colony comes to 'hold' a wild stranded young that an ordinary trader can buy: vanilla Tame, penning, capture, or only after self-taming. Without that, the sale half of the ruled 'carry it home or sell it' choice (MIASMA_MOTHERS_PRICE_1, owner card 2026-10-02) has no defined route.",
+     "would_pass": "A rule naming the act that makes a stranded young colony-held and tradeable, consistent with R7. Plus a B6 picture in which an ordinary trader's dialog lists a young the colony came to hold that way.",
+     "smallest_fix": "Add to R6: '<named act> makes an unresolved stranded young colony-held without taming it; only a held young appears in an ordinary trader's dialog.' Add the matching accept picture to B6."
+    },
+    {
+     "id": "R5",
+     "head": "figurative_unmarked",
+     "where": "bars.json B9 says ('ecological engulfment', 'permanent barren collapse') with figurative []; B1 says ('rainbow plants') with figurative []",
+     "evidence": "B9's figurative list is empty, but 'engulfment' and 'barren collapse' are images, not states. models.md defines a different set of words, 'flood', 'desert', 'stall' and 'error storm', so B9 and its own model use different vocabulary. B1's accept picture says \"saturated blooms\", which departs from a literal 'rainbow' without marking it.",
+     "would_pass": "Each word is listed in figurative with what it stands for and one accept picture that departs from the literal reading. Or B9 uses models.md's defined words.",
+     "smallest_fix": "Add figurative entries: 'engulfment' = breeders or events displacing ordinary play (the models' 'flood'); 'barren collapse' = ordinary life failing to recover in the habitable fresh region (the 'desert'); 'rainbow' = saturated multi-coloured blooms, not every hue on one plant."
+    },
+    {
+     "id": "R6",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B7 (figurative 'frequently', reject #4); models.md Whole-map season 'Game agreement before belief'; checks C11",
+     "evidence": "The instrument checks only that consent counts on holdout histories \"fit prediction intervals fixed from shipped chance/cadence\". That tests whether the model agrees with the game, not whether consent is frequent. A build that ships a chance so low the young almost never consent would match its own model and pass. models.md says \"B7 frequent-versus-almost-never classifications must agree with real traces\" but never states the line that classifies a trace as frequent or almost-never. The tuning is pushed to C11.",
+     "would_pass": "B7's sees states the comparison a player notices, as a classification and not a tuning number. For example, across the observed stretch a clean nursery with living young usually has young choosing the colony before the mother dies, and a clean nursery whose mother dies with none having chosen is the exception. The verdict comes from game traces, never from agreement with the shipped chance.",
+     "smallest_fix": "Add that classification rule to B7 sees.control. Delete 'fixed from shipped chance/cadence' as the pass criterion in models.md, keeping it only as the model's calibration check."
+    },
+    {
+     "id": "R7",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B1 sees.instrument",
+     "evidence": "\"Live rendered-map look with the simultaneous terrain/salinity and access overlay supplied by T19.\" B1 is about the player recognising salt, mud and channels at ordinary zoom. A look taken with a salinity overlay drawn reads the overlay, so a build whose plain render leaves salt banks indistinguishable (reject #1) can pass.",
+     "would_pass": "The look is judged on the plain rendered map with no debug overlay. The overlay is captured as a separate frame, used only to choose and label the sampled regions.",
+     "smallest_fix": "Reword the B1 instrument: 'judged on the plain render with no overlay drawn; the T19 overlay is a separate frame used only to locate sample regions.'"
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Kept recurring surge rescues and restored the ruled first-day offer. B4 now verifies that a mother can arrive with her own calling, rescuable stranded young before any storm, and its reject targets helper spawns with neither natural cause.",
+      "where": "bars.json B4, definition.md Using it, owner_pages.md page one, models.md Nursery transition generator, tickets.md T13"
+     },
+     {
+      "id": "R2",
+      "changed": "Deferred dedicated water-side haul and recurring flotsam deposits with the already-deferred startup grant under one default-off T6. Removed their first-version pictures, rules, meeting and model inputs. Kept Guard and release/attack as useful water-bound work and reconciled the counts.",
+      "where": "census.json flotsam_yard, water_only_haul and directly dependent rows, bars.json B5/B7/B9/C5/C8/R7/R11 and affected meetings, tickets.md T6/T12 (merged T15), next_version.md, ambiguities.md, definition.md, models.md, owner_pages.md, result.json"
+     },
+     {
+      "id": "R3",
+      "changed": "Defined the colony-owned heir’s target set as hostiles in its reduced reachable water anchor. Added acceptance and refusal pictures for the colony salt gatherer, alongside an actual hostile-raider attack trace.",
+      "where": "bars.json B7/R7, definition.md What changes in the colony’s story, tickets.md T14, models.md Nursery transition generator, owner_pages.md page two"
+     },
+     {
+      "id": "R4",
+      "changed": "Specified Hold for trade as wet custody delivery for a carried wild stranded young. It grants player-faction custody without taming, preserves distress and affiliation, and makes the young appear in an ordinary eligible trader’s dialog. Added proof of the listing, return and sale.",
+      "where": "bars.json B6/R6, definition.md Using it, ambiguities.md Carrying versus the water-bound affection, next_version.md buyer_visits, tickets.md T14/T35, models.md Nursery transition generator, owner_pages.md page two"
+     },
+     {
+      "id": "R5",
+      "changed": "Marked rainbow, ecological engulfment and permanent barren collapse as figurative. Added acceptable pictures for separate bloom colours, rising scuttler numbers alongside ordinary play and a bare salt margin with recovery in the fresh region.",
+      "where": "bars.json B1/B9 meant.figurative, models.md Whole-map season terminology"
+     },
+     {
+      "id": "R6",
+      "changed": "Made ordinary game histories decide frequency. Clean nursery histories with eligible living young usually show consent before natural maternal death, and zero-consent histories are the exception. Shipped probability and cadence serve calibration and tuning.",
+      "where": "bars.json B7/C11, models.md Whole-map season, definition.md What changes in the colony’s story, ambiguities.md Frequent consent versus a guaranteed animal, tickets.md T14"
+     },
+     {
+      "id": "R7",
+      "changed": "Made the plain rendered map the judgement frame. Specified a separate T19 overlay frame for sample location and labels only.",
+      "where": "bars.json B1 sees.instrument, tickets.md T19"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json B4 adds accept #4: \"A mother placed with the map arrives with her own stranded young nearby, whose call leads to a rescue or a decision to hold it for sale before any storm.\" Reject #1 is narrowed to \"A proof helper spawns a young in a painted pond, and neither the mother’s arrival nor a surge caused it.\" B4 says now opens \"a mother sometimes arrives with her own stranded young and receding surge water is the recurring cause\". range.left_out requires that \"Both natural routes must be observed across the range.\" definition.md First hour: \"A mother sometimes arrives with her own stranded young nearby, opening the rescue-or-sell choice before any storm. Recession remains the recurring cause.\" owner_pages.md page one: \"A warden mother sometimes arrives with her own stranded young before the first storm\". T13's acceptance test covers the first-day young as well."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "census.json flotsam_yard and water_only_haul now read \"fate\": \"next_version\" with ticket T6, and next_version.md has entries for both (\"Ticket T6\"). tickets.md has a single merged \"T6 — Switch off loose flotsam deposits and juvenile water-side hauling\" and T15 is gone. B5 accept #2 is now only \"A child follows its keeper along the water and stops when the keeper goes inland.\" B5 reject #4 and B9 accept #4 and reject #4 are removed. R7 drops the deposit sentences and keeps \"Preserve Guard and release/attack with full-route eligibility\". The 'root-line goods' meeting is deleted. B7 accept #1 meets useful work with \"real Guard or release/attack work along the water\". The counts agree: census fates add up to 57 kept, 24 next_version and 5 retire, and result.json shows next_version 24, tickets 35, unknown_pairs 6."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "R7: \"The colony-owned heir targets hostiles within its reduced reachable water anchor and excludes its own colony’s harvesters. The mother’s harvest exception ends with her watch.\" B7 adds accept \"After inheritance, a colonist gathering salt beside the crèche works unharmed while the heir attacks a hostile raider crossing its channel.\" It adds reject \"The heir attacks its own colony’s salt gatherer beside the inherited crèche.\" B7 sees.control adds \"Use an in-reach colony salt gatherer and an in-reach hostile raider to check actual heir targeting.\" T14 and definition.md 'What changes in the colony’s story' say the same (\"It targets hostiles within its reduced reachable water anchor. Its own colony’s harvesters work unharmed\")."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "R6 names the act: \"Completing Hold for trade delivers a carried, unresolved wild young to a chosen reachable wet holding cell outside its mother’s acceptance water and makes it colony-held in the player faction without taming or granting training ... Only an unresolved custody-held young is listed for this sale branch with an ordinary eligible trader. Interrupted delivery leaves the young unheld.\" B6 accept #2: \"A colonist carries a wild stranded young to wet custody with Hold for trade, and the same still-distressed young appears in an ordinary eligible trader’s dialog.\" B6 sees.control compares the trader's list before and after custody delivery. This is consistent with R7's 'never conventional taming', and T14 requires real consent rather than player faction for selfTamed. definition.md Routine and ambiguities.md 'Carrying versus the water-bound affection' match."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "B1 meant.figurative adds \"rainbow\": \"Benign plants collectively show saturated blooms in several colours\", accept \"A patch of single-colour blooms and a nearby patch of a different saturated colour are both distinguishable through the haze.\" B9 meant.figurative adds \"ecological engulfment\" (\"the whole-map model’s flood\", accept \"Scuttler numbers rise after a good breeding stretch while hunting, building and tending still proceed.\"). It also adds \"permanent barren collapse\" (\"the whole-map model’s desert\", accept \"A salt-crusted margin stays bare while habitable fresh patches replenish ordinary canopy and prey.\"). Both map onto the flood and desert defined in models.md 'Produces'."
+    },
+    "R6": {
+     "verdict": "fixed",
+     "evidence": "B7 sees.control: \"classify each nursery that stays clean and has living young eligible to consent before natural maternal death by whether any young chose the colony before that death ... Histories with a consenting young must be the usual outcome and those with none the exception. A tie or a predominance of no-consent histories fails. Forced rolls and agreement with shipped chance supply no verdict.\" B7 reject #4 now refuses a run \"even when the few consents match the model.\" models.md Whole-map season keeps \"prediction intervals fixed from shipped chance and cadence\" under \"For model calibration only\" and adds \"Decide B7 frequency from ordinary game traces ... A matching low-rate prediction cannot pass B7.\" C11: \"use chance and cadence to calibrate the model and tune probability. B7 frequency is classified from ordinary game histories.\""
+    },
+    "R7": {
+     "verdict": "fixed",
+     "evidence": "B1 sees.instrument: \"Judge recognition on the live plain rendered map at ordinary settlement zoom with no debug overlay drawn. Capture the T19 terrain/salinity and access overlay as a separate frame used only to locate and label sampled regions.\" The T19 acceptance test matches: \"For B1, supply the plain rendered view and a separate T19 overlay frame for sample selection and labels.\""
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Carrying versus the water-bound affection",
+    "ambiguities.md Flotsam and salvage",
+    "ambiguities.md Frequent consent versus a guaranteed animal",
+    "ambiguities.md “Trainable” at the waterline",
+    "bars.json bars/B1",
+    "bars.json bars/B4",
+    "bars.json bars/B5",
+    "bars.json bars/B6",
+    "bars.json bars/B7",
+    "bars.json bars/B9",
+    "bars.json checks/C11",
+    "bars.json checks/C4",
+    "bars.json checks/C8",
+    "bars.json meetings",
+    "bars.json rules/R11",
+    "bars.json rules/R6",
+    "bars.json rules/R7",
+    "census.json rows/flotsam_initial_seed",
+    "census.json rows/flotsam_yard",
+    "census.json rows/water_only_haul",
+    "census.json rows/wreck_salvage",
+    "census.json rows/young_training_gate",
+    "definition.md First hour",
+    "definition.md Routine",
+    "definition.md Settings",
+    "definition.md The season’s turn",
+    "definition.md What changes in the colony’s story",
+    "definition.md Why a player reaches for it",
+    "models.md Food and rescue budget",
+    "models.md Nursery transition generator",
+    "models.md Shore and route sweep",
+    "models.md Whole-map season",
+    "next_version.md buyer_visits — Next version, switched off",
+    "next_version.md flotsam_initial_seed — Next version, switched off",
+    "next_version.md flotsam_yard — Next version, switched off",
+    "next_version.md water_only_haul — Next version, switched off",
+    "owner_pages.md Page one — the proposed first version",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T12 — Require real water paths and true sea connection",
+    "tickets.md T13 — Keep distress and expiry truthful",
+    "tickets.md T14 — Complete nursery identity, trust and guarded succession",
+    "tickets.md T15 — Supply useful water-side juvenile work and its recurring source",
+    "tickets.md T19 — Replace placeholder scenes with a normal-entry-point recorder",
+    "tickets.md T35 — Defer custom nursery buyer visits",
+    "tickets.md T6 — Defer initial loose flotsam seeding only",
+    "tickets.md T6 — Switch off loose flotsam deposits and juvenile water-side hauling"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1483127,
+     "output_tokens": 18429
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "census.json has no row for the new Hold for trade custody delivery. A search for 'custody' or 'Hold for trade' finds no census entry, and the capability count stays at 86. Yet the mechanic is absent today and is now required by R6, B6 and T14.",
+   "reason": "Absent needed work elsewhere (water_only_haul, for example) got a census row with a needed_by argument. Without a row, the fate and the deletion argument for a newly kept build item go unrecorded. It blocks nothing, because R6 and T14 define and ticket the mechanic.",
+   "round": 1
+  },
+  {
+   "what": "owner_pages.md page two still carries the section 'Still refused after the second look (the reviewer's words)', which lists all seven records R1–R7 as unresolved.",
+   "reason": "Once this round's verdicts stand, the owner page tells him that fixed records still block the proposal. It looks like pipeline-stamped text, not the author's, so whatever writes it should refresh or remove it.",
+   "round": 1
+  },
+  {
+   "what": "definition.md Stories 'The worst day' says \"A buyer offers an easy escape from the rescue burden.\"",
+   "reason": "This entry was not changed. It can be read as the custom buyer incident that is now deferred (T35). The kept route is Hold for trade with an ordinary trader, and the wording could say so.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "0fda1b9dd1f2af02e560dd86ed5ed629915e425ff9fd60b78e2f6ba84f2d066f",
+ "seconds": 629,
+ "at": "2026-11-17T19:36:32"
+}

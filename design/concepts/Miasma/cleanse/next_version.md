@@ -66,7 +66,19 @@ Designer decision. Designer recommends retiring the current injury-severity balm
 
 The one-time startup loose-goods scattering, currently sharing FlotsamStep and flotsamEnabled with recession deposits.
 
-Designer decision. The initial windfall can disappear without defeating land, life or the signature; recurring wet root-line deposits remain kept as needed_by signature water-only haul. T6 splits the startup gate; T15 specifies the kept source and work.
+Designer decision. The initial windfall serves an optional salvage economy. Ticket T6.
+
+### flotsam_yard — Next version, switched off
+
+Recurring post-recession loose-goods deposits at root-lines, with stock limits.
+
+Designer decision. The deposits supply optional item work. Rescue, sale, tolerance and inheritance operate without loose-goods restocking. Ticket T6.
+
+### water_only_haul — Next version, switched off
+
+Dedicated trained hauling between water-side pickup and storage. The job is still a proposal.
+
+Designer decision. Guard and release/attack provide useful water-bound work for consenting young. Dedicated hauling and its recurring source can wait. Ticket T6.
 
 ### fever_forging — Next version, switched off
 
@@ -156,7 +168,7 @@ Designer decision. The necessary readable kill and feeding message stay. Extra b
 
 Custom buyer scheduling, retries and arrival/offer letter for held young
 
-Designer decision. Ordinary eligible traders already provide the signature’s sale branch. A guaranteed bespoke visitor and its letter add an independent incident. Ticket T35.
+Designer decision. The kept Hold for trade custody route supplies the signature’s sale branch through ordinary eligible traders. A guaranteed bespoke visitor and its letter add an independent incident. Ticket T35.
 
 ### swarm_contact_infection — Next version, switched off
 

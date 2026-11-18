@@ -1,0 +1,39 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Kept recurring surge rescues and restored the ruled first-day offer. B4 now verifies that a mother can arrive with her own calling, rescuable stranded young before any storm, and its reject targets helper spawns with neither natural cause.",
+      "where": "bars.json B4, definition.md Using it, owner_pages.md page one, models.md Nursery transition generator, tickets.md T13"
+    },
+    {
+      "id": "R2",
+      "changed": "Deferred dedicated water-side haul and recurring flotsam deposits with the already-deferred startup grant under one default-off T6. Removed their first-version pictures, rules, meeting and model inputs. Kept Guard and release/attack as useful water-bound work and reconciled the counts.",
+      "where": "census.json flotsam_yard, water_only_haul and directly dependent rows, bars.json B5/B7/B9/C5/C8/R7/R11 and affected meetings, tickets.md T6/T12 (merged T15), next_version.md, ambiguities.md, definition.md, models.md, owner_pages.md, result.json"
+    },
+    {
+      "id": "R3",
+      "changed": "Defined the colony-owned heir’s target set as hostiles in its reduced reachable water anchor. Added acceptance and refusal pictures for the colony salt gatherer, alongside an actual hostile-raider attack trace.",
+      "where": "bars.json B7/R7, definition.md What changes in the colony’s story, tickets.md T14, models.md Nursery transition generator, owner_pages.md page two"
+    },
+    {
+      "id": "R4",
+      "changed": "Specified Hold for trade as wet custody delivery for a carried wild stranded young. It grants player-faction custody without taming, preserves distress and affiliation, and makes the young appear in an ordinary eligible trader’s dialog. Added proof of the listing, return and sale.",
+      "where": "bars.json B6/R6, definition.md Using it, ambiguities.md Carrying versus the water-bound affection, next_version.md buyer_visits, tickets.md T14/T35, models.md Nursery transition generator, owner_pages.md page two"
+    },
+    {
+      "id": "R5",
+      "changed": "Marked rainbow, ecological engulfment and permanent barren collapse as figurative. Added acceptable pictures for separate bloom colours, rising scuttler numbers alongside ordinary play and a bare salt margin with recovery in the fresh region.",
+      "where": "bars.json B1/B9 meant.figurative, models.md Whole-map season terminology"
+    },
+    {
+      "id": "R6",
+      "changed": "Made ordinary game histories decide frequency. Clean nursery histories with eligible living young usually show consent before natural maternal death, and zero-consent histories are the exception. Shipped probability and cadence serve calibration and tuning.",
+      "where": "bars.json B7/C11, models.md Whole-map season, definition.md What changes in the colony’s story, ambiguities.md Frequent consent versus a guaranteed animal, tickets.md T14"
+    },
+    {
+      "id": "R7",
+      "changed": "Made the plain rendered map the judgement frame. Specified a separate T19 overlay frame for sample location and labels only.",
+      "where": "bars.json B1 sees.instrument, tickets.md T19"
+    }
+  ]
+}

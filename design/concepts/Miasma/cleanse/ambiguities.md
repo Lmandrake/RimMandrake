@@ -80,7 +80,7 @@ Each entry records an alternative build, its concrete consequence and the delega
 
 **Consequence.** A blanket ban makes the October “carry it home to her or sell it” choice impossible.
 
-**Taken.** An unresolved distressed young can be carried for rescue or held for the ruled sale. It keeps its distress sign while carried. Once returned/self-tamed into water life it stops at the waterline and receives no carry-home upgrade. This combines the September no-land solution boundary with the subsequent explicit carry-or-sell branch.
+**Taken.** An unresolved wild young keeps its distress sign while carried. **Hold for trade** makes it colony-held on delivery to reachable wet custody outside the mother’s acceptance water. That grants player-faction custody for the ordinary trader’s list while preserving distress and affiliation. Carrying alone leaves it wild, and custody grants no consent or training. Once returned/self-tamed into water life it stops at the waterline and receives no carry-home upgrade. This combines the September no-land solution boundary with the subsequent explicit carry-or-sell branch.
 
 ## “Its mother” and “nearby”
 
@@ -120,7 +120,7 @@ Each entry records an alternative build, its concrete consequence and the delega
 
 **Consequence.** Guaranteed affection removes the frozen “rebirth, maybe” premise, while a chance too low to occur during colony play makes the payoff unreachable.
 
-**Taken.** Frequent probabilistic consent, with no ordinary taming grind. “Frequently” means consent recurs among unharmed clean-nursery young through the whole-bar observation window; a clean nursery whose young almost never consent fails. It is not a guaranteed animal on a particular roll or a regular schedule. B7 marks the frequency word figurative and contrasts the pictures; chance and cadence remain C11 tuning checks. Generator branches cover roll outcomes, and whole-map histories measure ordinary occurrence rather than a forced lucky draw. Nursery affiliation and water eligibility are mandatory. Consent without rescue is possible. Inheritance needs the colony’s successful rescue record at this nursery, not the candidate’s personal rescue history: a living self-tamed sibling can inherit even if it was never rescued. A child dead, away or unreachable at the promotion decision supplies no local heir. Evidence: the owner’s “frequently self-tame” words and section 6a’s sibling payoff.
+**Taken.** Frequent probabilistic consent, with no ordinary taming grind. “Frequently” means that across independent game histories, a clean nursery with living young usually has a young choose the colony before natural maternal death. Finishing with none is the exception. B7 uses that comparison for the verdict. C11 records chance and cadence for calibration and tuning. It is not a guaranteed animal on a particular roll or a regular schedule. B7 marks the frequency word figurative and contrasts the pictures; chance and cadence remain C11 tuning checks. Generator branches cover roll outcomes, and whole-map histories measure ordinary occurrence rather than a forced lucky draw. Nursery affiliation and water eligibility are mandatory. Consent without rescue is possible. Inheritance needs the colony’s successful rescue record at this nursery, not the candidate’s personal rescue history: a living self-tamed sibling can inherit even if it was never rescued. A child dead, away or unreachable at the promotion decision supplies no local heir. Evidence: the owner’s “frequently self-tame” words and section 6a’s sibling payoff.
 
 ## An heir in name or an heir on watch
 
@@ -132,11 +132,11 @@ Each entry records an alternative build, its concrete consequence and the delega
 
 ## “Trainable” at the waterline
 
-**Two readings.** Hide broken Rescue/Haul options and call training finished, or offer real water-side Guard, release/attack and water-side haul that can execute.
+**Two readings.** Hide unusable land jobs and call training finished, or offer water-bound jobs that can execute.
 
-**Consequence.** Current hiding and periodic land interruption leave no useful dedicated hauling job.
+**Consequence.** Current hiding and periodic land interruption alone show no successful trained work.
 
-**Taken.** The ruled water work stays because removing it defeats the affectionate child’s ordinary usefulness in the signature. Keep its recurring post-recession wet root-line deposits as needed_by signature: no staged items, no source creation by the haul job, and eligible pickup, destination and complete water route. Initial seeding alone moves. RM_MiasmaWreckField.xml scatters wreck buildings once at local-map creation, with no water-side placement; it cannot sustain the ruled root-line work through the season. T15 must prove repeated natural source-to-store hauling after initial salvage ceases to supply the route. No general land Haul or Rescue is offered.
+**Taken.** Keep working Guard and release/attack with full water-route eligibility, drawing on the fauna roster §6a training table. Those roles give the affectionate young useful work without an item source. General Haul and Rescue remain unavailable. Dedicated water-side hauling and its deposits move together to the next version.
 
 ## Pool expiry and the previously allowed fallback
 
@@ -196,11 +196,11 @@ Each entry records an alternative build, its concrete consequence and the delega
 
 ## Flotsam and salvage
 
-**Two readings.** Once-only Wreckage salvage can supply water-only haul forever, or recurring natural wet root-line deposits are necessary for that work while initial flotsam seeding is dispensable.
+**Two readings.** Keep recurring loose-goods deposits to support a dedicated hauling job, or defer the loose-goods economy and hauling together.
 
-**Consequence.** Deferring all flotsam leaves a trained child idle after any initially reachable salvage is exhausted; staged haul items disguise the missing natural source. Conversely, current root-proximity-only placement can generate goods beside inland transplanted trees and inflate the economy.
+**Consequence.** Keeping deposits adds placement, stock and seasonal item-flow work. Deferring them leaves Guard and release/attack, rescue, sale, tolerance and inheritance available.
 
-**Taken.** Corrected after review: split the existing flotsam capability. Keep post-recession wet root-line deposits as needed_by signature, since deleting them defeats recurring water-only haul. Defer only the initial seed windfall. MapComponentTick reads LastRecedeCompletedTick and calls FlotsamStep then Place; those paths currently share flotsamEnabled and must be decoupled. T6 separates startup gating without consuming or replaying recession events; T15 requires actual wet root-line pickup cells, not root proximity, and saved outstanding-stock limits. Existing Wreckage remains a dependency. Whole-map item-flow modelling must settle sustainable work versus accumulating goods, including full stores and harvested roots. This is my revised deletion argument, not a new owner ruling.
+**Taken.** The startup windfall, recurring root-line deposits and dedicated water-only hauling move to the next version under T6. The two deposit paths already share flotsamEnabled. Shared Wreckage supplies ordinary brined debris and salvage independently.
 
 ## Cosmetics, medicine and rot
 

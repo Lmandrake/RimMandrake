@@ -245,7 +245,7 @@
       "fate": "needed_by",
       "why": "Designer decision. Useful affection remains water-bound. Removing honest training restrictions promises work the animal cannot do.",
       "needed_by": "signature",
-      "ticket": "T15"
+      "ticket": "T12"
     },
     {
       "id": "succession_bookkeeping",
@@ -396,12 +396,12 @@
       "built": "present",
       "evidence": "src/RimMandrake/Miasma/Source/RM_MapComponent_FlotsamYard.cs; cross-checked against current source during this pass. Historical inventory is design/RimMandrake/designer_codex_2026-11-09/Miasma/record.json.",
       "proven": "missing",
-      "called_by": "RM_MapComponent_FlotsamYard.MapComponentTick reads GradientAxis.LastRecedeCompletedTick, then RM_MiasmaKernel.FlotsamStep and Place call RootLineCells. The current seed/recede path shares flotsamEnabled; T6 separates startup from the recurring source and T15 validates placement.",
-      "serves": "Recurring naturally water-side hauling work for consenting nursery young",
-      "fate": "needed_by",
-      "why": "Designer correction after review. Deleting recurring root-line deposits leaves the ruled water-only haul without recurring natural work: RM_MiasmaWreckField scatters wreck buildings only at map creation, without water-side placement. Keep recession deposits as a necessary part of signature work, not an independent expansion of the economy.",
-      "needed_by": "signature",
-      "ticket": "T15"
+      "called_by": "RM_MapComponent_FlotsamYard.MapComponentTick reads GradientAxis.LastRecedeCompletedTick, then RM_MiasmaKernel.FlotsamStep and Place call RootLineCells. The startup and recurring branches share flotsamEnabled, which T6 moves behind a default-off control.",
+      "serves": "Recurring loose-goods deposits for a root-line salvage economy and proposed water-side hauling",
+      "fate": "next_version",
+      "why": "Designer decision. The stock-limited salvage economy supports optional item work. Guard and release/attack supply water-bound work, and the nursery’s rescue, sale, tolerance and inheritance chain needs no deposits.",
+      "needed_by": "",
+      "ticket": "T6"
     },
     {
       "id": "flotsam_initial_seed",
@@ -409,10 +409,10 @@
       "built": "present",
       "evidence": "src/RimMandrake/Miasma/Source/RM_MapComponent_FlotsamYard.cs; cross-checked against current source during this pass. Historical inventory is design/RimMandrake/designer_codex_2026-11-09/Miasma/record.json.",
       "proven": "missing",
-      "called_by": "RM_MapComponent_FlotsamYard.MapComponentTick -> RM_MiasmaKernel.FlotsamStep unseeded branch -> Place; currently shares flotsamEnabled with the kept recession branch.",
+      "called_by": "RM_MapComponent_FlotsamYard.MapComponentTick -> RM_MiasmaKernel.FlotsamStep unseeded branch -> Place; currently shares flotsamEnabled with the recurring recession branch.",
       "serves": "An immediate loose-goods windfall before the first recession",
       "fate": "next_version",
-      "why": "Designer decision. Removing startup seeding leaves the recurring wet root-line source and all signature water work intact. An initial grant is an extra, not land, life or the nursery chain.",
+      "why": "Designer decision. A startup loose-goods windfall serves a separate salvage economy. Land, life and the nursery chain work without it.",
       "needed_by": "",
       "ticket": "T6"
     },
@@ -425,7 +425,7 @@
       "called_by": "See current defining file and entry points in evidence. BiomeDef roster/extensions, associated ThingDef comps or settings/validation entry point. Absent rows have no complete caller, the evidence names the searched partial path.",
       "serves": "Brined flotsam frames/tanks scattered by shared Wreckage field and salvage families/weathering, distinct from loose restocking goods",
       "fate": "dependency",
-      "why": "Designer decision. Shared Wreckage supplies ordinary brined debris, weathering and salvage. Its once-at-map-creation scattered wreck buildings do not establish recurring water-side haulable goods and cannot replace the kept root-line source.",
+      "why": "Designer decision. Shared Wreckage supplies ordinary brined debris, weathering and salvage.",
       "needed_by": "",
       "ticket": ""
     },
@@ -800,11 +800,11 @@
       "evidence": "src/RimMandrake/Miasma/Source; src/RimMandrake/Miasma/Defs/JobDefs; src/ name/content search for Miasma, WardenMother and water-scoped work; cross-checked against current source during this pass. Historical inventory is design/RimMandrake/designer_codex_2026-11-09/Miasma/record.json.",
       "proven": "missing",
       "called_by": "See current defining file and entry points in evidence. BiomeDef roster/extensions, associated ThingDef comps or settings/validation entry point. Absent rows have no complete caller, the evidence names the searched partial path.",
-      "serves": "Dedicated useful water-only flotsam hauling was not located",
-      "fate": "needed_by",
-      "why": "Designer correction after review. The ruled trainable affection requires useful water work. It hauls naturally recurring post-recession root-line deposits kept as needed_by signature; deleting either the work or its recurring source defeats that promise. Initial seeding is not required.",
-      "needed_by": "signature",
-      "ticket": "T15"
+      "serves": "Optional trained item work between water-side pickup and storage",
+      "fate": "next_version",
+      "why": "Designer decision. Guard and release/attack give consenting young useful water-bound work. Dedicated item hauling and its recurring source can wait without interrupting rescue, sale, tolerance or inheritance.",
+      "needed_by": "",
+      "ticket": "T6"
     },
     {
       "id": "carried_cry",
