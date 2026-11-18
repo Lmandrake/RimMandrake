@@ -66,8 +66,10 @@ class Git:
         self.repo = repo
 
     def run(self, *a, check=True, inp: str | None = None) -> str:
-        r = subprocess.run(["git", "-C", self.repo, *a], capture_output=True, text=True, input=inp, env=_git_env(),
-                           timeout=GIT_TIMEOUT_S)
+        # surrogateescape: a patch is bytes, and a text file may hold a stray non-UTF-8 byte; it must round-trip into
+        # patch-id, never crash the landing (RIMMANDRAKE_DECODE_LANDING_PATCHES_AS_BYTES_STRAY_BYTE_CRASHED).
+        r = subprocess.run(["git", "-C", self.repo, *a], capture_output=True, text=True, errors="surrogateescape",
+                           input=inp, env=_git_env(), timeout=GIT_TIMEOUT_S)
         if check and r.returncode:
             raise Refused(f"git {' '.join(a[:3])} failed: {(r.stderr or r.stdout).strip()}")
         return r.stdout

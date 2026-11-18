@@ -83,7 +83,8 @@ def literal(paths):
 def run(top, *args, check=True):
     env = None if args[:1] and args[0] in HOOKED else git_env()
     for i in range(12):                                  # a plain-git peer may hold .git/index.lock for a moment
-        r = subprocess.run(["git", *args], cwd=top, capture_output=True, text=True, timeout=GIT_TIMEOUT_S, env=env)
+        r = subprocess.run(["git", *args], cwd=top, capture_output=True, text=True, errors="surrogateescape",
+                           timeout=GIT_TIMEOUT_S, env=env)
         if not (r.returncode and "index.lock" in r.stderr and i < 11):
             break
         time.sleep(0.25 * (i + 1))
@@ -303,7 +304,8 @@ def take_side(top, tree, tip, c, paths):
     env = git_env(GIT_INDEX_FILE=idx)
     try:
         def g(*a):
-            return subprocess.run(["git", *a], cwd=top, env=env, capture_output=True, text=True, check=True).stdout
+            return subprocess.run(["git", *a], cwd=top, env=env, capture_output=True, text=True, errors="surrogateescape",
+                                  check=True).stdout
         g("read-tree", tree)
         for p in paths:
             ent = out(top, "ls-tree", tip, "--", p) or out(top, "ls-tree", c, "--", p)
