@@ -5,8 +5,8 @@
  "signature": "The living fungal floor warms shelter, exposed organic stores feed decomposition, and living harvest brings metabolic heat into storage.",
  "counts": {
   "capabilities": 83,
-  "kept": 29,
-  "next_version": 45,
+  "kept": 28,
+  "next_version": 46,
   "recommend_retire": 9,
   "old_bars": 0,
   "bars": 7,
@@ -15,9 +15,9 @@
   "rules": 12,
   "unknown_pairs": 8,
   "models": 4,
-  "tickets": 64,
+  "tickets": 65,
   "questions": 1
  },
  "blocked_on": [],
- "applyable": false
+ "applyable": true
 }

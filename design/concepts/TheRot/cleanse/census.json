@@ -74,7 +74,7 @@
       "called_by": "BiomeDef RM_AcceleratedRotExtension, RM_MapComponent_AcceleratedRot.MapComponentTick, RM_KitFronts",
       "serves": "accelerated rot",
       "fate": "signature",
-      "why": "Designer decision under owner-pages Q1: extend exposed digestion through freezing, prioritizing the absolute rot-clock wording against the contrary starving-Frostcaps lore and intentionally temperature-scaled kit. The current frozen skip fails this proposed default, not a settled owner contract; T67 requests the behavior change.",
+      "why": "Designer decision. Keep the kit’s temperature-scaled digestion for exposed stores and corpses, with vanilla preservation for frozen stores at Frostcaps and for walled and roofed storage. T67 verifies this contract. Q1 asks whether to extend digestion through freezing.",
       "needed_by": "none, direct capability or dependency",
       "ticket": "none, no switch-off work"
     },
@@ -86,10 +86,10 @@
       "proven": "missing",
       "called_by": "RM_MapComponent_AcceleratedRot.MapComponentTick calls ThinOutdoorFilth after AccelerateRot",
       "serves": "outdoor compost",
-      "fate": "signature",
-      "why": "Designer decision. Decomposition must visibly consume outdoor filth as well as food and corpses. Deleting this part leaves the decomposer landscape unable to digest its ordinary organic litter.",
-      "needed_by": "none, direct capability or dependency",
-      "ticket": "none, no switch-off work"
+      "fate": "next_version",
+      "why": "Designer decision. Random outdoor filth thinning is a separate cleanup convenience. Food spoilage and corpse staging already show exposed decay, and storage and shelter decisions work with ordinary filth handling.",
+      "needed_by": "none, food and corpse stages make exposure readable",
+      "ticket": "T48"
     },
     {
       "id": "native_mat_heat",
@@ -106,14 +106,14 @@
     },
     {
       "id": "produce_heat",
-      "what": "Marked harvested glimmerslime/dulcis stacks push heat into their room; item-carried behavior can operate away from the Rot.",
+      "what": "Stored Rot-native fungal food from ordinary forage and crops pushes heat into its room wherever the item is stored. Native harvests currently yielding RawFungus need a Rot-owned marked equivalent. Vanilla RawFungus stays inert.",
       "built": "present",
-      "evidence": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingProduce.cs:49\nsrc/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_Flora.xml",
+      "evidence": "src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_LivingProduce.cs:49\nsrc/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_Flora.xml\nsrc/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_TheRot_DonorPorts.xml",
       "proven": "missing",
       "called_by": "RM_MapComponent_LivingProduce scans spawned things for RM_LivingProduceExtension. No XML binding found anywhere under src by exact search in this checkout",
       "serves": "produce heat",
       "fate": "signature",
-      "why": "Designer decision. Living harvest must carry metabolism into storage. Removing heat turns the freezer decision into vanilla refrigeration. Engine exists, content binding is missing in this checkout.",
+      "why": "Designer decision. The colony's usual fungal diet must create the freezer decision. Binding only glimmerslime and dulcis lets a colony storing ordinary RawFungus-yielding forage bypass it. The engine exists and T66 covers the missing content binding.",
       "needed_by": "none, direct capability or dependency",
       "ticket": "none, no switch-off work"
     },
@@ -236,9 +236,9 @@
     },
     {
       "id": "guardian_gas",
-      "what": "Orlath cap, vekkra choker and grath elder carry active gas emitters; choking/toxic gas and damage defs supply their hazard.",
+      "what": "RM_AgelessCap (orlath cap) gas emitter",
       "built": "present",
-      "evidence": "src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_GuardianGroves.xml\nsrc/RimMandrake/EnvironmentalHazards/Source/CompActiveGasEmitter.cs\nsrc/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_TheRot_DonorPorts.xml\nsrc/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_Flora.xml",
+      "evidence": "src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_GuardianGroves.xml\nsrc/RimMandrake/EnvironmentalHazards/Source/CompActiveGasEmitter.cs",
       "proven": "missing",
       "called_by": "RM_AgelessCap CompActiveGasEmitter in GuardianGroves.xml, normal map plant ticking",
       "serves": "guardian gas",

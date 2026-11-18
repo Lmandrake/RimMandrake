@@ -186,33 +186,33 @@
     },
     {
       "id": "B5",
-      "says": "Players lose raw food and organic remains left exposed to the Rot’s digestion even in freezing air, while walled and roofed storage protects them from that accelerated loss.",
+      "says": "Players see exposed raw food spoil and corpses desiccate faster where the Rot’s digestion is active, with the effect tapering in the cold and walled and roofed storage escaping the acceleration.",
       "meant": {
-        "intent": "The gut is a reliable practical consequence of exposure across the full cold-to-warm biome. Shelter is an effective response.",
-        "source": "Frozen the_rot.md section 3 rot clock promises exposed meat gone within a day, but section 3 Thermogenesis describes Frostcaps as the starved, freezing edge, with cold ground starving or dead. rot_kit_spec.md M2 deliberately routes progress through RotRateAtTemperature and targets warm unrefrigerated meat. Kit owner card 2 confirms walled-plus-roofed exemption. Delegated default, not an owner ruling: extend exposed digestion through freezing despite that contrary evidence, prioritizing the absolute rot-clock wording. Owner-pages question Q1 records both readings and the consequence of changing this default.",
+        "intent": "Where the gut is active, exposure hastens spoilage and desiccation. Cold weakens digestion and enclosure shelters stores.",
+        "source": "Delegated from the_rot.md section 3 Thermogenesis and rot_kit_spec.md M2. The kit uses RotRateAtTemperature and calibrates against warm unrefrigerated meat. Kit owner card 2 confirms the walled-plus-roofed exemption. Q1 on the owner pages records the alternative reading of the sheet’s one-day rot clock.",
         "figurative": [
           {
             "word": "digestion",
-            "stands_for": "The biome’s accelerated, exposure-driven destruction of organic stores and remains, readable in item/corpse state.",
-            "accept": "An exposed meat stack visibly loses its digestive freshness and disappears without a moving mouth or gut organ."
+            "stands_for": "Temperature-scaled acceleration of vanilla rot stages, readable in food and corpse state.",
+            "accept": "An exposed warm meat stack progresses through spoilage and vanishes at its normal rot endpoint without a moving mouth or gut organ."
           }
         ]
       },
       "accept": [
-        "An exposed frozen meat stack shows digestive loss and is consumed while the matched enclosed stack retains ordinary cold preservation.",
-        "A roofed lean-to loses exposed perishables until the player finishes its walls. Outdoor corpse and filth disappear through readable decomposition while indoor cleaning remains ordinary."
+        "An exposed warm meat stack spoils sooner than a matched walled and roofed stack at the same temperature. The extra progress tapers toward the cold edge, where frozen exposed stacks keep vanilla preservation.",
+        "Where the gut is active, perishables spoil faster in a roofed lean-to until the player finishes its walls. Exposed corpses visibly rot and desiccate sooner than temperature-matched sheltered corpses and remain on the map."
       ],
       "reject": [
-        "The test uses warm meat alone, while exposed frozen stores survive indefinitely.",
+        "The frozen edge consumes exposed frozen stores at the same pace as warm ground, or warm exposed food spoils at the same pace as its temperature-matched vanilla control.",
         "A roof canopy alone removes the digestive hazard, or a completed store receives the same accelerated loss as the open ground."
       ],
-      "lazy": "none: Signature hunger and its shelter response. Explicit freezing and walls-plus-roof close the temperature-zero and lean-to loopholes.",
+      "lazy": "none: Visible acceleration in active conditions, the cold taper and walls-plus-roof close ordinary warming and lean-to loopholes.",
       "range": {
-        "varies": "Ambient -42..24 C with dense samples around freezing, fresh/partly rotten/frozen food, whole/split/merged stacks, human/animal corpses with gear and corpse-holder reservations, outdoor filth. Unroofed, lean-to, full room, roof gap, wall breach, doorway and map-edge room. 1..40 colonists and normal hauling/cooking/butchery overlap. Mid-exposure reload and room change before/after haul. The sheet meat deadline is 60000 game ticks in C4; extending it across freezing is the delegated default in Q1, independent of rate retuning.",
-        "left_out": "Live pawn consumption, unjoining/vat recovery, deconstructing inorganic wrecks and special giant digestion. Indoor vanilla rot and dirt still follow their own engine rules."
+        "varies": "Ambient -42..24 C with dense samples around freezing and separate positive-rate and frozen arms. Fresh/partly rotten/frozen food, whole/split/merged stacks, human/animal corpses with gear and corpse-holder reservations. Unroofed, lean-to, full room, roof gap, wall breach, doorway and map-edge room. 1..40 colonists and normal hauling/cooking/butchery overlap. Mid-exposure reload and room change before/after haul. C4 records the deadline in warm unrefrigerated conditions.",
+        "left_out": "Live pawn consumption, unjoining/vat recovery, deconstructing inorganic wrecks, special giant digestion and next-version filth thinning. Vanilla owns ordinary rot stages and dirt handling."
       },
       "sees": {
-        "instrument": "M1 state-transition enumeration with the real exposure predicate and production digestive seam, cross-checked against elapsed game ticks, RotProgress and destruction state. M2 supplies temperature coupling. T67 requests the proposed frozen contract under the Q1 default; the current skip is intentional temperature scaling, not proof of an implementation defect. T61 provides the missing generator.",
+        "instrument": "M1 state-transition enumeration with the real exposure predicate and production digestive seam, cross-checked against elapsed game ticks, RotProgress, food loss and corpse stage and presence. M2 supplies temperature coupling. T67 verifies the existing temperature-scaled contract and T61 provides the missing generator.",
         "start": "Matched item IDs, initial freshness and temperature records in exposed, lean-to and enclosed locations. Valid queued haul/butcher actions exist in selected cases. Loaded ordinary rot and digestive settings recorded.",
         "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
         "control": "Hauling, eating or an animal could remove the stack first. Record ownership/destruction reason and use a protected inaccessible-to-eaters item control with equal temperature. A per-cell roof control distinguishes enclosure. Run ordinary ticks to observe stage consequences after bonus progress.",
@@ -227,17 +227,17 @@
         "room_heat"
       ],
       "decision_tests": {
-        "reject": "Delegated rejection inference. The gut is a reliable practical consequence of exposure across the full cold-to-warm biome. Shelter is an effective response.",
+        "reject": "Delegated rejection inference. Exposed food and corpses show the active gut, and shelter offers a practical response.",
         "renormalize": "Pictures bind causes and player-visible comparisons. Tuning values, yields and art variant counts are held in checks or ranges.",
-        "first_version": "Signature hunger and its shelter response. Explicit freezing and walls-plus-roof close the temperature-zero and lean-to loopholes."
+        "first_version": "Signature digestion and its shelter response. Food spoilage and corpse staging show where the gut is active."
       }
     },
     {
       "id": "B6",
-      "says": "Players must account for heat from stored living fungal food when arranging refrigeration, and can preserve that food by managing stock, enclosure and cooling.",
+      "says": "Players storing their usual harvest of living fungal food from the Rot must account for its heat when arranging refrigeration, and can preserve it by managing stock, enclosure and cooling.",
       "meant": {
         "intent": "Harvest carries the same metabolism into the store. The heat must affect practical storage choices while competent storage remains achievable.",
-        "source": "Frozen the_rot.md living harvest and kit M5. RM_LivingProduceExtension names glimmerslime and raw dulcis as the existing intended pair. Delegated competent-base response.",
+        "source": "The_rot.md section 5 living harvest and kit M5 describe native fungal food heating its store. Delegated from that scope and the existing harvest defs, including ordinary forage currently yielding vanilla RawFungus.",
         "figurative": [
           {
             "word": "living",
@@ -247,21 +247,22 @@
         ]
       },
       "accept": [
-        "A freezer that preserves ordinary food warms beyond preservation when loaded with metabolizing fungal food, and a matching change to stock or cooling restores preservation.",
+        "A freezer that preserves inert imports warms beyond preservation when loaded with a colony’s normal harvest of Rot fungal food, and a matching change to stock or cooling restores preservation.",
         "Dividing, moving and recombining fungal stacks moves the warming load with the actual food, including after a reload."
       ],
       "reject": [
+        "The colony eats and stores ordinary forage and never meets a freezer load.",
         "A cosmetic warm label appears on the harvest but a stocked freezer behaves exactly like its ordinary-food control.",
         "Produce heat rises independently of held stock or keeps storage unusable after the player removes the food and provides appropriate cooling."
       ],
-      "lazy": "none: Signature harvested metabolism. Actual changed refrigeration decisions and successful mitigation close cosmetic warmth and uncontrollable-heater builds.",
+      "lazy": "none: Ordinary harvest coverage, changed refrigeration decisions and successful mitigation close rare-crop demonstrations, cosmetic warmth and uncontrollable heaters.",
       "range": {
-        "varies": "Marked RM_Glimmerslime and RM_RawDulcis fresh stacks, 0..2000 units per room as initial sweep support, including stack split/merge and the maximum normal stock of a 40-person colony. Recompute the tested stock/cooling ratios after tuning so both sides of the preservation boundary are covered. Rooms 3x3..30x30, inert/mat floor, cooling off/normal/expanded, ambient -42..24 C, frozen/chilled/room-temperature food, haul/cook/eat/destroy, room merge/split and reload. Cooked and non-food products enter the zero-marked-load arm.",
+        "varies": "Ordinary Rot fungal forage, including harvests currently yielding RawFungus, and native fungal crops including RM_Glimmerslime and RM_RawDulcis. Sweep pure and mixed stores, 0..2000 units per room as initial support, stack split/merge and the maximum normal stock of a 40-person colony. Recompute tested stock/cooling ratios after tuning to cover both sides of the preservation boundary. Rooms 3x3..30x30, inert/mat floor, cooling off/normal/expanded, ambient -42..24 C, frozen/chilled/room-temperature food, haul/cook/eat/destroy, room merge/split and reload. Vanilla RawFungus, other inert imports, cooked meals and non-food products enter the zero-load arm.",
         "left_out": "Heat from special teas, genes, portable roots or grown furnaces. A fixed cooler count, food yield, heat-per-unit or storage capacity as acceptance."
       },
       "sees": {
-        "instrument": "M2 coupled thermal/storage sweep with production stack-to-room aggregation, validated against game room pushes and temperature trajectories. T66 restores content binding. T64 provides independent heat and preservation traces.",
-        "start": "Equal food nutrition/storage mass in compared rooms, current product defs resolved, ordinary cooling capacity recorded, no special hidden heater. A marked empty-stack arm establishes zero load.",
+        "instrument": "M2 coupled thermal/storage sweep with production stack-to-room aggregation, validated against game room pushes and temperature trajectories with normally harvested forage and crops. T66 specifies content binding and T64 provides independent heat and preservation traces.",
+        "start": "Matched stores from ordinary Rot harvest and inert imports, with nutrition/storage mass and ordinary cooling capacity recorded and no special hidden heater. An empty store establishes zero load.",
         "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
         "control": "Native mat or unequal doorway traffic could fake heat. Keep both arms on identical floors with matched doors, then swap product types and rooms. Read actual production heat contributions before room equalization. Direct PushHeat and a fabricated marker never establish the product path.",
         "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
@@ -289,11 +290,11 @@
         "figurative": []
       },
       "accept": [
-        "The settled colony hauls and cooks, its living-floor rooms save heating, and stored fungal food requires cooling decisions while the full forest grows, local hazards run and native animals feed and reproduce.",
+        "The settled colony hauls and cooks, its living-floor rooms save heating, and the ordinary fungal forage and crops it relies on for meals create a cooling decision in storage while the full forest grows, local hazards run and native animals feed and reproduce.",
         "After saving during active harvest and reloading, expanding storage before harvest and harvesting before expanding storage both yield understandable consequences and recoverable colony work."
       ],
       "reject": [
-        "A staged colony looks stable because weather, local gas, wet-native growth or digestion is locked or disabled.",
+        "A staged colony looks stable because weather, local gas, wet-native growth or digestion is locked or disabled, or the freezer load only appears when the tester stocks special crops outside the colony’s normal diet.",
         "Growth and gas consume the usable forest, native animals starve away, routine jobs stall, losses have no readable cause or recurring errors drown out play."
       ],
       "lazy": "none: Whole land, life and signature. Complete default operation, explicit change/save/work sequence and renewal close disabled-system showcases, static dioramas and supply-cache masking.",
@@ -302,12 +303,12 @@
         "left_out": "Deferred quests, rituals and exotic rewards. Subjective enjoyment. Exact equilibrium populations, yields, time budget or variant totals. Planet generation or canonical save changes."
       },
       "sees": {
-        "instrument": "M4 whole-map forecast calibrated against normal complete-map telemetry, followed by a live whole-season state trace and look in an owner-present session where flyers run. T62 specifies the driver and reload/action-order ledger. B1 through B6 supply its observations.",
+        "instrument": "M4 whole-map forecast calibrated against normal complete-map telemetry, followed by an agent-run live whole-season state trace that reads native flyers through Pawn_FlightTracker. The short owner-present flight look is a separate B3 obligation. T62 specifies the driver and reload/action-order ledger. B1 through B6 supply its other observations.",
         "start": "A disposable complete Rot map with measured active def/settings/art/engine fingerprints, food and animal IDs recorded, normal work priorities and all doors/stockpiles/jobs usable. No debug immortality, frozen hunger, forced products or permanent weather condition. Starting supplies cover setup but ongoing food/heat/cooling must come from the declared normal economy.",
         "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
-        "control": "An initial supply cache or external heater could mask an unsustainable colony. Account initial inputs and normal harvest/consumption/power through the whole season, expose failed jobs and food/corpse causes by identity. Keep natural weather selection active and report time in each state. Compare uninterrupted and reloaded/action-order sibling traces instead of copying a successful screenshot.",
+        "control": "An initial supply cache, external heater or specially stocked crop could mask the ordinary colony economy. Account initial inputs, normal harvest, storage, consumption and power through the whole season. Trace freezer load and the response to it from the same harvest feeding the colony, and expose failed jobs and food/corpse causes by identity. Keep natural weather selection active and report time in each state. Compare uninterrupted and reloaded/action-order sibling traces.",
         "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
-        "live_only_why": "The coupled player experience includes route readability, ordinary jobs, animal decisions, actual flight, weather, saves and long-term feedback. An offline forecast informs extremes after calibration, while normal whole-colony play establishes the complete experience."
+        "live_only_why": "The coupled player experience includes route readability, ordinary jobs, animal decisions, weather, saves and long-term feedback. An offline forecast informs extremes after calibration, while normal whole-colony play establishes the complete experience."
       },
       "live_only": true,
       "touches": [
@@ -345,7 +346,7 @@
     },
     {
       "id": "C4",
-      "what": "Retain the frozen sheet raw-meat exposure deadline of 60000 ticks across -42..24 C. Room exemption matches walled-plus-roofed owner card 2. Frozen exposure status and final destruction are read independently."
+      "what": "Read the 60000-tick raw-meat loss target in warm unrefrigerated exposure where the gut is active. Check diminishing bonus RotProgress as the temperature-driven rate falls and zero bonus for frozen items. Check walled-plus-roofed exemption separately per kit owner card 2."
     },
     {
       "id": "C5",
@@ -353,7 +354,7 @@
     },
     {
       "id": "C6",
-      "what": "Record living-produce attachment on RM_Glimmerslime/RM_RawDulcis and stack-to-room aggregation. Source default heatPerUnit is 3.5 per 2000-tick sweep. Zero XML attachments found in this checkout is a binding gap, not gameplay proof."
+      "what": "Record living-produce attachments on native fungal foods from ordinary forage and crops and check stack-to-room aggregation. Read vanilla RawFungus as an inert control. Source default heatPerUnit is 3.5 per 2000-tick sweep. Zero XML attachments found in this checkout is a binding gap."
     },
     {
       "id": "C7",
@@ -412,7 +413,7 @@
     },
     {
       "id": "R4",
-      "rule": "Exposed raw meat follows the frozen sheet digestive deadline at every supported ambient temperature. Enclosed food gets ordinary vanilla preservation. Only rottable items, corpses and outdoor filth participate. Keep corpse gear/holder processing consistent with vanilla and Bones contracts.",
+      "rule": "Temperature scales bonus rot for exposed rottable items and corpses while the vanilla rate is positive. Use the sheet’s meat deadline for warm unrefrigerated exposure. Frozen stores and stores in walled and roofed rooms follow the vanilla rot rate. Vanilla stages advance exposed corpses to desiccation and leave them in place. Keep corpse gear and holder processing consistent with vanilla and Bones contracts.",
       "touches": [
         "storage_decay",
         "corpse_ownership"
@@ -420,7 +421,7 @@
     },
     {
       "id": "R5",
-      "rule": "Bind the existing living-produce extension to the intended glimmerslime/raw-dulcis products. Per-room aggregation follows actual spawned stacks and ordinary temperature. Product moves, consumption and stack changes alter the next scheduled contribution.",
+      "rule": "Bind the existing living-produce extension to Rot-owned fungal foods from ordinary forage and crops. Route native harvests that currently yield RawFungus to a Rot-owned equivalent and leave the vanilla def inert. Per-room aggregation follows actual spawned stacks. Product moves, consumption and stack changes alter the next scheduled contribution.",
       "touches": [
         "room_heat",
         "storage_decay"
@@ -485,7 +486,7 @@
     },
     {
       "id": "R12",
-      "rule": "The whole reading runs all kept mechanisms through normal jobs and tick schedules at shipped defaults. Live motion of native flyers requires the standing owner-present session. Compression must preserve every named scheduler and saved transition.",
+      "rule": "The agent-run whole reading runs all kept mechanisms through normal jobs and tick schedules at shipped defaults, with native flyer state read through Pawn_FlightTracker. B3 carries the separate short owner-present flight look. Compression must preserve every named scheduler and saved transition.",
       "touches": [
         "colony_workload",
         "ecology_population",
@@ -605,7 +606,7 @@
         "R11"
       ],
       "holds_together": "unknown",
-      "why": "Hauling, rescue/butchery reservations, digestive destruction, native predation, Bones products and old extra holders meet on the same entity. Completion and reload order can lose gear or remove a corpse twice.",
+      "why": "Hauling, rescue/butchery reservations, corpse stage changes, native predation, Bones products and old extra holders meet on the same entity. Completion and reload order can lose gear or duplicate a job’s outputs.",
       "model": "M1 situation and transition generator"
     },
     {
@@ -639,7 +640,7 @@
         "R12"
       ],
       "holds_together": "unknown",
-      "why": "Digestive exposure changes with enclosure while temperature changes from mat and stock. The current frozen skip and missing product markers show that a superficially safe store can hide the intended mechanism.",
+      "why": "Digestive exposure changes with enclosure while mat and stock change temperature. A warm stack can restart rot after thawing, and missing markers on ordinary forage could hide the freezer load.",
       "model": "M2 thermal and storage balance"
     },
     {

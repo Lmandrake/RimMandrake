@@ -8,6 +8,12 @@ Recommended retirement. planet_scoring is the census entry.
 
 Designer decision. Recommend retiring automated planetary placement under the standing worldgen ban. It is permanently out of scope, including the next version. Preserve reference-compatible inert stubs if needed. Work is T1.
 
+### Probabilistic thinning of exposed outdoor filth
+
+Next version, switched off. outdoor_compost is the census entry.
+
+Designer decision. This is a separate cleanup convenience. Food spoilage and corpse stages already show the effects of exposure. Work is T48.
+
 ### Permanent condition bootstraps coating; weather/roof-gated ladder decays under shelter, gear slows gain, symbiosis stops it, saturation can seed spore flesh.
 
 Next version, switched off. sheen_exposure is the census entry.
@@ -74,7 +80,7 @@ Next version, switched off. treasure_conscience is the census entry.
 
 Designer decision. Trade guilt depends on special symbionts and treasures. With those deferred the retained economy has no host requiring this event. Work is T12.
 
-### Orlath cap, vekkra choker and grath elder carry active gas emitters; choking/toxic gas and damage defs supply their hazard.
+### RM_AgelessCap (orlath cap) gas emitter
 
 Next version, switched off. guardian_gas is the census entry.
 

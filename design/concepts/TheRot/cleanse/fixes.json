@@ -1,0 +1,34 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Restored temperature-scaled digestion in active exposure, vanilla frozen preservation and the walls-plus-roof exemption. T67 now verifies the existing contract. Q1 asks whether to add frozen digestion and quotes the one-day wording as evidence for that option.",
+      "where": "bars.json B5, C4, R4 and storage_decay meeting, census.json accelerated_rot, tickets.md T67 and T68, owner_pages.md summary, default and Q1, ambiguities.md freezing row and lazy-build example, definition.md digestion descriptions, models.md M2"
+    },
+    {
+      "id": "R2",
+      "changed": "Scoped the moved gas emitter and its gate to RM_AgelessCap’s prize defense. T13 requires normal gas emission from RM_Skulltop and RM_AgariluxPrime in both test arms.",
+      "where": "census.json guardian_gas, tickets.md T13, next_version.md guardian_gas"
+    },
+    {
+      "id": "R3",
+      "changed": "Made exposed corpses rot and desiccate faster through vanilla staging, with corpses still present at desiccation. The definition, ownership model and ticket tests now read stage, presence and ordinary butcher/gear handling.",
+      "where": "bars.json B5, R4 and corpse_ownership meeting, definition.md colony story and worst-day story, models.md M1 and M4, tickets.md T61 and T67, owner_pages.md digestion default"
+    },
+    {
+      "id": "R4",
+      "changed": "Selected Rot-owned equivalents for native forage that currently yields RawFungus and required heat from the colony’s ordinary native forage and crops. Corrected the kit attribution, recorded both food-scope readings and made B7 trace the freezer decision from the normal diet. Vanilla RawFungus is the inert control.",
+      "where": "bars.json B6, B7, C6, R5 and storage_decay meeting, census.json produce_heat, ambiguities.md living-harvest and binding rows, tickets.md T62 and T66, definition.md harvesting routine and ordinary week, models.md M2 and M4, owner_pages.md living-harvest default"
+    },
+    {
+      "id": "R5",
+      "changed": "Moved outdoor filth thinning to next version behind a separate default-off gate. Removed it from the retained digestion pictures, sweep and defaults. The proposal now counts 28 kept capabilities, 46 next-version capabilities and 65 tickets.",
+      "where": "census.json outdoor_compost, bars.json B5 and R4, tickets.md T48, next_version.md outdoor_compost, definition.md Settings, models.md M4, owner_pages.md moved list and counts, result.json counts"
+    },
+    {
+      "id": "R6",
+      "changed": "Assigned the whole-season trace to the agent, using Pawn_FlightTracker for flyer state. The short owner-present flight look belongs to B3.",
+      "where": "bars.json B7 and R12, tickets.md T62, owner_pages.md season instrument"
+    }
+  ]
+}

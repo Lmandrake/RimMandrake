@@ -4,7 +4,7 @@ Design Version 0.1.0. Author of scope, defaults and interpretations is the Desig
 
 ## The mod in player language
 
-A pale forest of enormous fungi rises out of glowing ground and milky ponds on Ash'karr's night shoulder. Its living floor helps heat your shelter, while the surrounding decomposer ecology consumes supplies left exposed. Food harvested from that ecology keeps giving off heat in storage, so settling here means arranging shelter, harvest and refrigeration around the same metabolism.
+A pale forest of enormous fungi rises out of glowing ground and milky ponds on Ash'karr's night shoulder. Its living floor helps heat your shelter, while exposed supplies spoil faster where the surrounding fungal mat is actively digesting. Food harvested from that ecology keeps giving off heat in storage, so settling here means arranging shelter, harvest and refrigeration around the same metabolism.
 
 Land comprises pale cap architecture, readable ground contacts, biological light, milk shallows, dark sky, wet fungal emission and ordinary wreckage. Life comprises fungal forage and timber, existing hybrid residents, their ordinary diets, predation, poison defenses, products and reproduction, and dangerous resident Prime/Skulltop patches. The signature is the metabolic bargain in which the living floor warms shelter, exposed organic stores feed decomposition, and living harvest brings heat into storage.
 
@@ -24,7 +24,7 @@ Inspect the pale standing fungi, select a usable forage plant and find dry groun
 
 ### Routine
 
-Harvest ordinary fungal food and timber through normal jobs. Cut, haul, cook, feed animals, construct bridges and keep goo lamps fueled through ordinary vanilla workflows. Storing metabolizing glimmerslime and dulcis adds a visible thermal load. Divide storage, provide cooling capacity, reduce held stock or cook and consume the harvest. Under my delegated default in owner-pages Q1, frozen outdoor meat still meets the digestive deadline. The sheet's starving Frostcaps account and the kit's temperature-scaled design support the opposing cold-preservation reading; frozen loss is not a settled owner ruling. Indoor refrigeration has its ordinary preservation effect once its heat budget works.
+Harvest ordinary fungal food and timber through normal jobs. Cut, haul, cook, feed animals, construct bridges and keep goo lamps fueled through ordinary vanilla workflows. The colony's usual native forage and crops add a visible thermal load in storage. Divide stores, add cooling, reduce held stock or cook and consume the harvest. Exposed meat spoils quickly on warm ground, and the bonus tapers with cold until frozen stacks keep ordinary vanilla preservation. Walled and roofed storage escapes the acceleration, and indoor refrigeration has its ordinary preservation effect once its heat budget works.
 
 The mat uses ordinary room heat. It helps at the cold end and stops adding heat at its ceiling. Ambient cold, clothing, insulation and backup heating still matter. Covering qualifying living floor with inert flooring changes the warmth qualification. Opening a doorway changes heat leakage. Breaching the roof or enclosing a formerly open stockpile changes digestive exposure. A reload re-derives room and thing membership from actual map state.
 
@@ -34,7 +34,7 @@ A working base uses designated indoor storage and sensible walking routes, with 
 
 ## What changes in the colony's story
 
-The same ground that supports a bedroom digests the meat left beyond its walls. A harvest expands food security and raises the freezer load. Outdoor corpse disposal competes with hauling, rescue and butchery. Native poison and fungal predators require care when approaching food patches. An ordinary giant may still wander past. Its special swallowed-person, metal-recovery and ship-reward behavior belongs to the next version.
+The same ground that supports a bedroom hastens spoilage of meat left beyond its walls where the gut is active. A harvest expands food security and raises the freezer load. Outdoors, exposed corpses spoil and desiccate faster, so hauling and butchery compete with rescue. Native poison and fungal predators require care when approaching food patches. An ordinary giant may still wander past. Its special swallowed-person, metal-recovery and ship-reward behavior belongs to the next version.
 
 ## Costs
 
@@ -42,7 +42,7 @@ Cold exposure, hauling before digestion, power or fuel for remaining heating/coo
 
 ## When it goes wrong and the readable sign
 
-An exposed stack shows digestion/rot state and loses freshness before it disappears. Frozen exposure needs an explicit digestive status because a vanilla frozen label otherwise promises safety. A roofed but unenclosed store has a visible exposure explanation. A qualifying mat room names its living-floor warmth in an inspectable readout. A rising freezer temperature corresponds to a visible quantity of metabolizing produce. These signs use existing inspect/temperature surfaces where possible. T68 specifies missing presentation.
+An exposed stack where digestion is active shows its rot state and loses freshness before it disappears. Exposed frozen food shows ordinary frozen preservation until it warms again. A roofed but unenclosed store has a visible exposure explanation. A qualifying mat room names its living-floor warmth in an inspectable readout. A rising freezer temperature corresponds to a visible quantity of metabolizing produce. These signs use existing inspect/temperature surfaces where possible. T68 specifies missing presentation.
 
 Plant gas shows a local cloud and a health consequence during an ordinary approach. Current plant emitters use CompTick while Plant ticking normally follows TickLong. A forced Burst proves the helper alone. T69 requires normal-tick evidence and the existing engine's contract to be fulfilled. Pawn deaths use ordinary health/corpse and message paths. Population limiting admits or delays new wildlife through the shared spawner. It must retain a readable sign for any departure and preserve existing animals. Current hwelgrue OverCap destroys a wild extra with Vanish before its feature gate, so T23 contains the decoupling required by the life bar.
 
@@ -64,7 +64,7 @@ Durrok and mullgoth are historically reported as shared with Leaning Scrub, and 
 
 ## Settings
 
-Keep the existing searchable, collapsible settings front, reset and persistence. Shipped defaults enable native mat warmth, digestive decay/compost, living produce, ordinary biological lighting, native predation/defense, ordinary animal lifecycle, shared wet-native growth and common wreckage. Each major retained behavior has a named toggle with effective scope. A disabled signature component leaves its terrain/content readable and the rest functional. Master-off makes special Rot behavior dormant while retaining safe defs, animals and held-state conservation.
+Keep the existing searchable, collapsible settings front, reset and persistence. Shipped defaults enable native mat warmth, accelerated rot, living produce, ordinary biological lighting, native predation/defense, ordinary animal lifecycle, shared wet-native growth and common wreckage. Each major retained behavior has a named toggle with effective scope. A disabled signature component leaves its terrain/content readable and the rest functional. Master-off makes special Rot behavior dormant while retaining safe defs, animals and held-state conservation.
 
 Moved extras receive separate next-version controls with factory defaults off, including when an older settings file omits a new field. Restart-sensitive content gates declare restart/new-map scope. Existing shared engine controls remain effective and the front shows when a shared control suppresses a feature. Existing cross-biome controls remain off and labelled unsupported. Portable mat keeps its expressly ruled supported-anywhere contract inside its dormant next-version option. Turning it off must stop spread/upkeep/heat safely, preserve existing floors and save state, and allow recovery of any held contents in related systems.
 
@@ -76,11 +76,11 @@ The landing party sees a dark woodland lit from below, selects a food cap and ca
 
 ### An ordinary week
 
-The cook keeps up with harvest. A brogg is milked and the dustveil's silk gives a husbandry reason to protect it. Stored glimmerslime raises the freezer load. Moving that stock and adding cooling restores preservation. The base's warmth and food costs remain legible while local Prime clouds make harvesting its particular patch a careful approach. Rain-like sleet is named Sheen and comes from the fungi.
+The cook keeps up with harvest. A brogg is milked and the dustveil's silk gives a husbandry reason to protect it. The usual harvest of native forage raises the freezer load. Moving that stock and adding cooling restores preservation. The base's warmth and food costs remain legible while local Prime clouds make harvesting its particular patch a careful approach. Rain-like sleet is named Sheen and comes from the fungi.
 
 ### The worst day
 
-A fight leaves a downed worker and several corpses outdoors. Rescue uses the ordinary rescue job. The first version's hwelgrue continues its ordinary animal life. A damaged roof exposes stores and cold air reaches bedrooms. The player can trace losses to roof, enclosure and stock, repair the roof, haul salvageable food and choose which corpses to butcher before the gut takes them. Every casualty has a readable health/death trail.
+A fight leaves a downed worker and several corpses outdoors. Rescue uses the ordinary rescue job. The first version's hwelgrue continues its ordinary animal life. A damaged roof exposes stores and cold air reaches bedrooms. The player can trace losses to roof, enclosure and stock, repair the roof, haul salvageable food and choose which corpses to butcher before the gut spoils them. Every casualty has a readable health/death trail.
 
 ### The season's turn
 

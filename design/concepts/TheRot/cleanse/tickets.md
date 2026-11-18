@@ -191,7 +191,7 @@ Gate the sale hook by explicit next-version feature plus enabled host/treasure s
 
 Acceptance test: With defaults on a fresh map, state reads at the ordinary producer and effect entry points named above show the treasure conscience extra absent, including attributable runtime things, jobs, custom letters and eligible incidents, and the new log is clean. With its next-version setting on and declared prerequisites enabled, the same ordinary entry path produces the named things/effects or offers and completes the named jobs/incidents. A matched off-state control stays dormant. Repeat through restart where declared, then save/reload mid-transition and verify entity/holder conservation and master-off behavior. Kept land, life and signature remain active in both arms.
 
-## T13: Contain Orlath cap, vekkra choker and grath elder carry active gas emitters; choking/toxic gas and damage defs supply their hazard.
+## T13: Contain the RM_AgelessCap (orlath cap) gas emitter
 
 Disposition is next_version. Designer decision. This row covers the ageless-cap prize defense only. Removing the special prize grove loses no ordinary food or metabolic shelter. Resident Prime/Skulltop defense remains in its own life row.
 
@@ -199,14 +199,12 @@ Source and callers
 
 - src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_GuardianGroves.xml
 - src/RimMandrake/EnvironmentalHazards/Source/CompActiveGasEmitter.cs
-- src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_TheRot_DonorPorts.xml
-- src/RimMandrake/TheRot/Defs/ThingDefs_Plants/RM_RotSporeKit_Flora.xml
 
 - RM_AgelessCap CompActiveGasEmitter in GuardianGroves.xml, normal map plant ticking
 
 Gate ageless-cap source appearance, valuable harvest, gas and all prize acquisition together. Preserve resident Prime and Skulltop gas. Source CompTick-on-Plant concern stays on the enabled next-version acceptance list.
 
-Acceptance test: With defaults on a fresh map, state reads at the ordinary producer and effect entry points named above show the guardian gas extra absent, including attributable runtime things, jobs, custom letters and eligible incidents, and the new log is clean. With its next-version setting on and declared prerequisites enabled, the same ordinary entry path produces the named things/effects or offers and completes the named jobs/incidents. A matched off-state control stays dormant. Repeat through restart where declared, then save/reload mid-transition and verify entity/holder conservation and master-off behavior. Kept land, life and signature remain active in both arms.
+Acceptance test: With defaults on a fresh map, state reads at RM_AgelessCap’s producer and effect entry points show its source appearance, prize harvest and acquisition, and normal-tick gas emission are absent and the new log is clean. With the next-version setting on and declared prerequisites enabled, the same ordinary paths produce the Orlath cap prize defense, harvest and gas, including after any required restart and a mid-transition reload. Verify entity/holder conservation and master-off behavior. RM_Skulltop and RM_AgariluxPrime emit gas normally in both arms with retained features on.
 
 ## T14: Contain Mirrash veil damage and false-fruit collection ring a network alarm routed through CreatureBehaviors reactions to tagged defenders.
 
@@ -708,6 +706,12 @@ Permanent exclusion under the standing worldgen ruling. Remove effective automat
 
 Acceptance test: With default settings on a fresh map, state reads show zero automated placement jobs, prompts, incidents or altered world-tile assignments and a clean new log. Inspect worker/mutator eligibility directly in a pure/offline harness. Attempted feature enablement still leaves all planetary selection inert. Existing authored/save references resolve. This standing forbidden capability has no positive opt-in.
 
+## T48: Gate outdoor filth thinning
+
+Keep ThinOutdoorFilth in the shared component and gate its call from RM_MapComponent_AcceleratedRot.MapComponentTick for the Rot. Give it a separate Mod Settings opt-in labelled next version, default off on fresh and legacy settings. Keep the ordinary AccelerateRot sweep independent of this opt-in and preserve other shared engine consumers.
+
+Acceptance test: On a fresh Rot map at defaults, read no custom thinning calls on the normal sweep and a clean log. With the opt-in enabled and accelerated rot running, normal ticks with reproducible chance rolls thin exposed filth while enclosed filth serves as the exposure control. Read custom calls and thickness separately from ordinary weather and cleaning. Exposed food and corpses receive the same temperature-scaled bonus rot in both arms. Reload with legacy settings lacking the new field and verify that custom thinning stays off.
+
 ## T60: Specify and bind milk substrate land
 
 Required by B1/B2/B3/B7. No dedicated substrate or placement binding was located in the parsed Rot terrain defs or milk/milky search of src. Specify pale shallow/deep local fungal medium, surface/readout, movement and bridge affordances, compatible wet fungal plants and native drinking. Use existing local terrain/map placement support. Keep the fixed world, ordinary room heat and shared water/soak contract. Milk does not introduce a new spreading substance or potable-water economy. Quantitative pond coverage is a tunable check.
@@ -716,15 +720,15 @@ Acceptance test: On an ordinary authored Rot map the actual terrain read identif
 
 ## T61: Build the retained situation and transition generator
 
-Required by B2/B4/B5/B6/B7 and unknown corpse_ownership. Build M1 using current pure production seams and exported room/holder snapshots. Extend existing TheRotFuzz sequence/shrinking pattern only where reusable. Cover default settings migration, retained native bodies, safe legacy extra holders and the actual corpse reservation/destruction seam. Keep deferred-chain existing tests scoped as checks.
+Required by B2/B4/B5/B6/B7 and unknown corpse_ownership. Build M1 using current pure production seams and exported room/holder snapshots. Extend existing TheRotFuzz sequence/shrinking pattern only where reusable. Cover default settings migration, retained native bodies, safe legacy extra holders and corpse staging alongside hauling and butcher reservations. Keep deferred-chain existing tests scoped as checks.
 
-Acceptance test: M1 emits a complete coverage matrix for declared partitions, with minimized failures for planted wrong exposure, double corpse destruction, lost held gear and an open extra gate. Real game save/reload and normal job transitions agree exactly on identities/eligibility and within the declared tick lag. Unavailable seams report unknown, and the corresponding bar keeps its game-state obligation.
+Acceptance test: M1 emits a complete coverage matrix for declared partitions, with minimized failures for planted wrong exposure, premature disappearance of a desiccating corpse, duplicate butcher outputs, lost held gear and an open extra gate. Real game save/reload and normal job transitions agree exactly on identities/eligibility and within the declared tick lag. Unavailable seams report unknown, and the corresponding bar keeps its game-state obligation.
 
 ## T62: Build the complete-season trace and driver
 
-Required by whole B7 and M4, with all kept mechanics on at factory defaults. Reuse validation.py and northstar_plan.py scaffolding. Existing map_mechanics rows are UNMEASURED and forced giant helpers are irrelevant to the retained colony proof. Trace active settings, weather, room contributions, ordinary job completion, plants/animals, losses, starting inputs and errors. Plan the owner-present flight session required by standing ruling.
+Required by whole B7 and M4, with all kept mechanics on at factory defaults. Reuse validation.py and northstar_plan.py scaffolding. Existing map_mechanics rows are UNMEASURED and forced giant helpers are irrelevant to the retained colony proof. The agent traces active settings, weather, room contributions, ordinary job completion, plants/animals, losses, starting inputs and errors through normal play. Read native flyer state through Pawn_FlightTracker. B3 carries the separate owner-present motion judgment.
 
-Acceptance test: A disposable full-map season and a mid-season save/reload sibling plus reordered-action sibling are recorded with identical source/settings/art fingerprints. Logs and entity/resource accounts reconcile, no kept subsystem is locked, and output classifies B7 flood/desert/stall/error candidates by the declared visible experience. A deliberately disabled wet-native/gas subsystem invalidates the whole reading. Calibrate M4 on independent traces before trusting its forecasts.
+Acceptance test: A disposable full-map season and a mid-season save/reload sibling plus reordered-action sibling are recorded with identical source/settings/art fingerprints. Logs and entity/resource accounts reconcile, no kept subsystem is locked, and output classifies B7 flood/desert/stall/error candidates by the declared visible experience. The trace links the forage and crops the colony normally harvests and eats to their actual freezer load and the resulting storage or cooling decision. A deliberately disabled wet-native/gas subsystem invalidates the whole reading. Calibrate M4 on independent traces before trusting its forecasts.
 
 ## T63: Build the contact, substrate and reachability instrument
 
@@ -744,23 +748,23 @@ Required by B3 and B7. Bind a normal-life trace to actual resolved composed defs
 
 Acceptance test: Normal harvest, feeding, hunt, milk, silk, eggs, larva metamorphosis and Agari reproduction produce traceable ordinary outputs. Every fictional flyer has capability readback and an owner-present actual crossing judgment. Natives maintain hydration beside milk. Ordinary thozzik attacks retain affiliation while no new faction/worldgen/raid runs. Saved deaths/departures conserve identities with readable signs. If external references remain unresolved, report the actual load/composition defect for repair without eviction or replacement.
 
-## T66: Restore living-food content binding
+## T66: Bind the ordinary Rot fungal harvest to living-produce heat
 
-Required by B6. The component and extension class exist, but exact XML search under src finds zero RM_LivingProduceExtension attachments in this checkout. Bind RM_Glimmerslime and RM_RawDulcis through the existing product extension mechanism. Update the proof wording that currently calls this live-preparation warmth. Ordinary food and special tea viability are separate consumers.
+Required by B6 and the ordinary-diet reading in B7. The component and extension class exist, but exact XML search under src finds zero RM_LivingProduceExtension attachments in this checkout. Use the existing extension on the retained native raw fungal foods players routinely harvest, eat and store. Route Rot-native RawFungus harvests in RM_RotSporeKit_Flora.xml and RM_TheRot_DonorPorts.xml to a marked Rot-owned equivalent. Bind existing Rot-owned foods such as RM_TollukCapHarvest, RM_Glimmerslime and RM_RawDulcis as well. Preserve harvesting, cooking, feeding and stockpile use, and keep vanilla RawFungus and existing stacks inert. Update the proof wording that currently calls this live-preparation warmth.
 
-Acceptance test: Normal harvesting/hauling produces marked glimmerslime and raw dulcis stacks. Actual production MapComponent ticks add their per-room contribution, with matched ordinary-food, empty and off-setting arms. Stack split/merge/move/consume and reload move or remove that contribution without duplication. M2/game traces agree. A direct helper PushHeat call supplies no acceptance.
+Acceptance test: Audit the retained harvest outputs and use normal harvesting and hauling to stock a freezer from ordinary native forage, including plants that formerly yielded RawFungus. Test a forage-only load and a normal mixed forage/crop load. Actual MapComponent ticks add a room contribution that changes preservation and responds to stock or cooling. Matched vanilla RawFungus, empty and heat-setting-off arms contribute zero produce heat. Test normal food and recipe use. Stack split/merge/move/consume and reload move or remove the contribution without duplication. M2/game traces agree. Direct helper heat calls are diagnostic only.
 
-## T67: Fulfil proposed frozen digestive loss and enclosure contract
+## T67: Verify temperature-scaled digestion and enclosure
 
-Required by B5 under the delegated frozen-digestion default in owner-pages Q1. Current RM_MapComponent_AcceleratedRot intentionally skips rate <= 0 and uses UsesOutdoorTemperature, consistent with kit M2 temperature scaling and the sheet's starving Frostcaps. Request a change to the existing EnvironmentalHazards contract to extend the exposed-meat deadline through freezing, preserving the owner walled-plus-roofed exemption. This is proposed behavior, not a settled owner requirement or a demonstrated code defect. If the owner chooses cold-edge preservation, narrow the frozen expectations in B5/C4 and this ticket, the inspection contract in T68 and definition.md, and recalibrate M1/M2/M4 instead. Engine implementation remains its owner responsibility. Preserve vanilla indoor preservation, corpse gear and held/reserved-object consistency.
+Required by B5. Verify the existing EnvironmentalHazards temperature scaling and the owner’s walled-plus-roofed exemption. The production component uses UsesOutdoorTemperature and skips zero-rate items. Keep vanilla food and corpse stage transitions and reconcile corpse gear and reservations with Bones and ordinary jobs.
 
-Acceptance test: Under the Q1 default, normal tick reads on exposed meat across -42..24 C reach digestive destruction by the proposed 60000-tick deadline, with readable digestive state. Matched enclosed frozen stores retain ordinary preservation. Lean-to, roof gap, wall breach and enclosure changes agree with the owner predicate. Human/animal corpse gear and Bones/hauling/butcher outputs reconcile through reload and job cancellation. M1 and M2 identify the current frozen-zero candidate as failing the proposed default, without presenting that default as settled lore.
+Acceptance test: Under normal ticks, temperature-matched exposed perishables with a positive vanilla rot rate gain bonus progress over the enclosed control. Read C4’s 60000-tick meat-loss target in warm unrefrigerated exposure. The bonus tapers toward freezing and exposed frozen stores receive zero bonus and retain vanilla preservation. Lean-to, roof gap, wall breach and enclosure changes agree with the owner predicate. Exposed human and animal corpses desiccate faster than matched sheltered corpses and remain present at desiccation. Gear and Bones/hauling/butcher outputs reconcile through reload and job cancellation.
 
 ## T68: Expose retained causes through ordinary inspection
 
-Required by B1/B4/B5/B6/B7. Use existing item/room/temperature/terrain panels to show digestive exposure including frozen food, native mat contribution and marked food load. Distinguish deferred legacy content as dormant. Supply an inspection/state adapter for tests where current public instruments are blind. No new letter stream is needed.
+Required by B1/B4/B5/B6/B7. Use existing item/room/temperature/terrain panels to show active digestive exposure, ordinary frozen preservation, native mat contribution and marked food load. Distinguish deferred legacy content as dormant. Supply an inspection/state adapter for tests where current public instruments are blind. No new letter stream is needed.
 
-Acceptance test: A reader can locate actual causes in the normal inspect/temperature surfaces before and after enclosure/floor/stock changes. Serialized text/state fixtures follow the real status rather than global labels. The live traverse can identify food, native gas and the reason a frozen exposed stack is being lost. Off/legacy states remain readable. Test adapters report actual production state and reject missing or locked preconditions.
+Acceptance test: A reader can locate actual causes in the normal inspect/temperature surfaces before and after enclosure/floor/stock changes. Serialized text/state fixtures follow the real status rather than global labels. The live traverse can identify food, native gas, accelerated loss for warm exposed stacks and ordinary preservation for exposed frozen stacks. Off/legacy states remain readable. Test adapters report actual production state and reject missing or locked preconditions.
 
 ## T69: Verify normal plant gas cadence through the shared engine
 

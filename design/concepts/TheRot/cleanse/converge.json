@@ -1,0 +1,188 @@
+{
+ "mod": "TheRot",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json B5 (says \"even in freezing air\", accept 1, range); C4; R4; tickets.md T67; owner_pages.md Q1",
+     "evidence": "The lore says digestion follows temperature. design/Jawa/worldbuilding/biomes/the_rot.md line 19: \"the spread is not noise, it is the map of digestion (§3)\". Lines 84-86: \"Frostcaps is where the heat fails — the starved, freezing edge. Warm ground = actively feeding; cold ground = starving or dead.\" rot_kit_spec.md lines 157-168 route the gut through RotRateAtTemperature by design, and card 2 at line 535 is \"RULED as drafted\". RM_MapComponent_AcceleratedRot.cs:112-116 implements exactly that (\"frozen — nothing to accelerate\"). The proposal admits all of this but still takes the opposite reading as its default. It writes that reading into a bar's says, a check, a rule and a change request (T67) against a shared engine, then asks him to undo it. Under the Evidence-for-Ask rule the obvious answer is the default and the ask carries the evidence against it. Here the order is reversed.",
+     "would_pass": "B5 promises accelerated digestion of exposed organics wherever the gut is active, scaled by temperature as the sheet and kit describe. Exposed frozen stores at the cold edge slow toward vanilla. A walled-and-roofed store still escapes the acceleration. Any frozen-digestion idea goes to him as a question with its evidence (the absolute \"gone within a day, for certain\" at sheet line 105) and stays off by default.",
+     "smallest_fix": "Flip the Q1 default. Remove \"even in freezing air\" from B5 says and accept 1. Narrow C4/R4 to active, non-frozen exposure. Withdraw T67's engine-change request, or reword it as the conditional branch for the case where he picks frozen digestion. Rewrite Q1 so it asks whether to add frozen digestion."
+    },
+    {
+     "id": "R2",
+     "head": "moved_extra_relied_on",
+     "where": "census.json row guardian_gas (fate next_version, ticket T13); tickets.md T13 heading and acceptance test",
+     "evidence": "The moved row's what reads \"Orlath cap, vekkra choker and grath elder carry active gas emitters\". In source, vekkra choker is RM_Skulltop (RM_RotSporeKit_Flora.xml:32-33) and grath elder is RM_AgariluxPrime (RotSpecies_NamesAndSizes.xml:50-57). Both are kept as life by row resident_predatory_fungi and relied on by B1 (\"a cloud-emitting Prime\", hazards) and B3. Only the why and the T13 body narrow the row to the ageless cap. T13's generic acceptance test asks for \"the guardian gas extra absent\" at the producer and effect entry points, which by the row's own what include both kept emitters. A builder following the heading and the test switches off the Prime and Skulltop gas that B1 and B3 require.",
+     "would_pass": "The moved row and T13 name only the Orlath cap (RM_AgelessCap) and its prize defense. The test's positive and negative arms say explicitly that RM_Skulltop and RM_AgariluxPrime keep emitting in both arms.",
+     "smallest_fix": "Rewrite guardian_gas.what and the T13 heading to \"RM_AgelessCap (orlath cap) gas emitter\". Add one line to T13's test: \"RM_Skulltop and RM_AgariluxPrime gas emission is unchanged in both arms.\""
+    },
+    {
+     "id": "R3",
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B5 accept 2 (\"Outdoor corpse and filth disappear through readable decomposition\") and says (\"organic remains\"); definition.md (\"choose which corpses to butcher before the gut takes them\"); R4",
+     "evidence": "The only kept mechanism is RM_MapComponent_AcceleratedRot.AccelerateRot (lines 81-119). It adds RotProgress, and its header says vanilla's tick \"owns the stage-transition consequences\". rot_kit_spec.md lines 174-176: \"Dessication follows vanilla staging automatically since we only accelerate progress.\" Vanilla corpses end at Dessicated and stay on the map. No census row, rule or ticket defines corpse removal: T67 covers frozen meat, and T61 even tests against \"double corpse destruction\" with no destruction path defined. The bar requires a disappearance that nothing in the first version produces.",
+     "would_pass": "Either define the corpse fate the gut causes (for example, an exposed corpse that reaches its final stage is removed, with a readable sign, its gear dropped and Bones outputs reconciled), with a ticket and acceptance test; or narrow the B5 picture to what is built: exposed corpses rot through to desiccated faster than vanilla, and only filth disappears.",
+     "smallest_fix": "Change B5 accept 2 to \"Outdoor corpses rot and desiccate visibly faster than sheltered ones, and outdoor filth fades\". Change the definition.md line to \"before the gut spoils them\". If removal is wanted, add a ticket defining removal and its gear handling."
+    },
+    {
+     "id": "R4",
+     "head": "core_promise_weakened",
+     "where": "bars.json B6 and R5; ambiguities.md row \"Still alive, everything harvested\"; census.json produce_heat",
+     "evidence": "rot_kit_spec.md M5 (lines 305-318): \"Everything harvested here keeps metabolizing: your fungal food pushes heat into the room storing it... The extension goes on RotSporeKit's food/crop defs\", and the kit marks M5 \"v1: ships... the freezer war is a defining colony rhythm\". the_rot.md line 150: \"What you harvest is still alive... it will wreck any freezer that is not overbuilt.\" The proposal limits heat to RM_Glimmerslime and RM_RawDulcis and claims \"The kit M5 and living-produce extension specify the pair\", which misreads the kit. In source, most Rot forage plants yield vanilla RawFungus (about 16 harvestedThingDef entries across RM_RotSporeKit_Flora.xml and RM_TheRot_DonorPorts.xml), and RawFungus stays inert. A colony living on ordinary forage never meets B6. Its instrument only fires when a tester deliberately stocks the two marked crops, so a build where the freezer war never happens in play still passes.",
+     "would_pass": "Either the Rot-native fungal foods a colony actually eats carry the metabolic load (via Rot-owned harvest products or a biome-scoped marker, leaving vanilla RawFungus elsewhere alone), or B6 and the definition state, with an argument, that the two crops are the colony's main stored food in ordinary play. In either case B7's whole run reads the freezer decision arising from the colony's normal diet.",
+     "smallest_fix": "Correct the misattribution in ambiguities.md. Add an ambiguity row for \"which fungal food is living\" with both readings and the RawFungus consequence. Add to B6 a reject picture: \"the colony eats and stores ordinary forage and never meets a freezer load\". Widen T66 to the foods ordinary play stores, or put this on his pages as the one question."
+    },
+    {
+     "id": "R5",
+     "head": "extra_without_argument",
+     "where": "census.json row outdoor_compost (fate signature, needed_by \"none, direct capability or dependency\")",
+     "evidence": "The signature is \"the living floor warms shelter, exposed organic stores feed decomposition, and living harvest brings heat into storage\" (result.json). Probabilistic thinning of outdoor filth (RM_MapComponent_AcceleratedRot.cs:122-142, chance 0.15 marked \"INVENTED\") is not a store and not part of that chain. Its why is circular: \"Deleting this part leaves the decomposer landscape unable to digest its ordinary organic litter\". It is the kind of small custom touch the owner asked to strip, kept without a deletion argument against land, life or the signature.",
+     "would_pass": "Either a needed_by argument naming which stated experience fails without it (for example, the readable sign that exposure digests), or fate next_version, switched off, with B5's \"filth\" clause removed.",
+     "smallest_fix": "Set outdoor_compost to next_version with a gate. Drop \"and filth\" from B5 accept 2 and R4. Alternatively, write the deletion argument into needed_by."
+    },
+    {
+     "id": "R6",
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json B7 sees.instrument (\"a live whole-season state trace and look in an owner-present session where flyers run\") and R12",
+     "evidence": "B7 asks for a full 15-day season at 3 and 40 colonists, plus a reload sibling and a reordered-work sibling. Its live reading is placed in an owner-present session because flyers run. CLAUDE.md, owner 2026-11-16: \"Do not hold live testing when I can't go to the desktop\". delegation_policy §2 reserves for him only the flyer flight live test, not a whole-colony season. The flight judgement already sits in B3, and the standing rule says to verify flight by a deterministic Pawn_FlightTracker state read. Tying the whole bar's season run to his presence holds the mod's only whole reading for him across several long runs.",
+     "would_pass": "B7's season trace is agent-run, with flyers' state read through Pawn_FlightTracker and no visual flight judgement. The owner-present flight look stays a short, separate B3 obligation.",
+     "smallest_fix": "Change B7 sees.instrument to \"...followed by an agent-run live whole-season state trace; flyer motion is judged only in B3's owner-present look\". Make the matching change in R12."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Restored temperature-scaled digestion in active exposure, vanilla frozen preservation and the walls-plus-roof exemption. T67 now verifies the existing contract. Q1 asks whether to add frozen digestion and quotes the one-day wording as evidence for that option.",
+      "where": "bars.json B5, C4, R4 and storage_decay meeting, census.json accelerated_rot, tickets.md T67 and T68, owner_pages.md summary, default and Q1, ambiguities.md freezing row and lazy-build example, definition.md digestion descriptions, models.md M2"
+     },
+     {
+      "id": "R2",
+      "changed": "Scoped the moved gas emitter and its gate to RM_AgelessCap’s prize defense. T13 requires normal gas emission from RM_Skulltop and RM_AgariluxPrime in both test arms.",
+      "where": "census.json guardian_gas, tickets.md T13, next_version.md guardian_gas"
+     },
+     {
+      "id": "R3",
+      "changed": "Made exposed corpses rot and desiccate faster through vanilla staging, with corpses still present at desiccation. The definition, ownership model and ticket tests now read stage, presence and ordinary butcher/gear handling.",
+      "where": "bars.json B5, R4 and corpse_ownership meeting, definition.md colony story and worst-day story, models.md M1 and M4, tickets.md T61 and T67, owner_pages.md digestion default"
+     },
+     {
+      "id": "R4",
+      "changed": "Selected Rot-owned equivalents for native forage that currently yields RawFungus and required heat from the colony’s ordinary native forage and crops. Corrected the kit attribution, recorded both food-scope readings and made B7 trace the freezer decision from the normal diet. Vanilla RawFungus is the inert control.",
+      "where": "bars.json B6, B7, C6, R5 and storage_decay meeting, census.json produce_heat, ambiguities.md living-harvest and binding rows, tickets.md T62 and T66, definition.md harvesting routine and ordinary week, models.md M2 and M4, owner_pages.md living-harvest default"
+     },
+     {
+      "id": "R5",
+      "changed": "Moved outdoor filth thinning to next version behind a separate default-off gate. Removed it from the retained digestion pictures, sweep and defaults. The proposal now counts 28 kept capabilities, 46 next-version capabilities and 65 tickets.",
+      "where": "census.json outdoor_compost, bars.json B5 and R4, tickets.md T48, next_version.md outdoor_compost, definition.md Settings, models.md M4, owner_pages.md moved list and counts, result.json counts"
+     },
+     {
+      "id": "R6",
+      "changed": "Assigned the whole-season trace to the agent, using Pawn_FlightTracker for flyer state. The short owner-present flight look belongs to B3.",
+      "where": "bars.json B7 and R12, tickets.md T62, owner_pages.md season instrument"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "The default is now flipped. bars.json B5 says: \"Players see exposed raw food spoil and corpses desiccate faster where the Rot's digestion is active, with the effect tapering in the cold and walled and roofed storage escaping the acceleration.\" B5 accept 1: \"The extra progress tapers toward the cold edge, where frozen exposed stacks keep vanilla preservation.\" \"even in freezing air\" is gone. C4 reads \"zero bonus for frozen items\" and R4 reads \"Frozen stores and stores in walled and roofed rooms follow the vanilla rot rate.\" tickets.md T67 is now \"Verify temperature-scaled digestion and enclosure\", with \"exposed frozen stores receive zero bonus and retain vanilla preservation\"; there is no engine-change request. owner_pages.md Q1: \"Should the Rot's digestive bonus extend to exposed frozen meat? My default keeps ordinary frozen preservation... The case for adding frozen digestion is the sheet's absolute rot-clock wording, 'gone within a day, for certain' (§3, line 105).\" census accelerated_rot.why and models.md M2 match."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "census.json guardian_gas.what is now \"RM_AgelessCap (orlath cap) gas emitter\", and its evidence list no longer cites Flora/DonorPorts. tickets.md heading: \"## T13: Contain the RM_AgelessCap (orlath cap) gas emitter\". The acceptance test is scoped to \"RM_AgelessCap's producer and effect entry points\" and ends: \"RM_Skulltop and RM_AgariluxPrime emit gas normally in both arms with retained features on.\" The body adds \"Preserve resident Prime and Skulltop gas.\" The next_version.md heading has been renamed to match."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "B5 accept 2: \"Exposed corpses visibly rot and desiccate sooner than temperature-matched sheltered corpses and remain on the map.\" R4: \"Vanilla stages advance exposed corpses to desiccation and leave them in place.\" definition.md The worst day: \"choose which corpses to butcher before the gut spoils them\". T61 now tests \"premature disappearance of a desiccating corpse, duplicate butcher outputs\" instead of double destruction. T67 checks that corpses \"remain present at desiccation\". The corpse_ownership meeting now says \"duplicate a job's outputs\" instead of \"remove a corpse twice\"."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "The new ambiguities.md row \"Which fungal food is living\" gives both readings and the RawFungus bypass consequence. The \"Still alive\" row no longer claims the kit specifies the pair: it says \"M5 defines the wider food scope.\" B6 has a new first reject: \"The colony eats and stores ordinary forage and never meets a freezer load.\" Its range covers \"Ordinary Rot fungal forage, including harvests currently yielding RawFungus\", with vanilla RawFungus in the zero-load arm. R5 routes RawFungus-yielding native harvests to a Rot-owned equivalent. T66 widens to forage-only and mixed loads stocked through normal harvesting, and I confirmed RM_TollukCapHarvest exists in RM_RotSporeKit_Flora.xml. B7 accept 1 and its reject now tie the freezer decision to \"the ordinary fungal forage and crops it relies on for meals\". T62 traces \"the forage and crops the colony normally harvests and eats to their actual freezer load\"."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "census.json outdoor_compost now has fate \"next_version\" and ticket \"T48\", and its why says \"Random outdoor filth thinning is a separate cleanup convenience\". tickets.md T48 \"Gate outdoor filth thinning\" puts it behind a separate opt-in that is \"default off on fresh and legacy settings\", with an acceptance test. B5's filth clause has been dropped (left_out lists \"next-version filth thinning\"), and R4 no longer names outdoor filth. The definition.md Settings defaults now say \"accelerated rot\" instead of \"digestive decay/compost\". The counts are consistent: result.json gives kept 28, next_version 46, tickets 65, and census.json has 83 fate rows."
+    },
+    "R6": {
+     "verdict": "fixed",
+     "evidence": "B7 sees.instrument: \"followed by an agent-run live whole-season state trace that reads native flyers through Pawn_FlightTracker. The short owner-present flight look is a separate B3 obligation.\" R12: \"The agent-run whole reading ... with native flyer state read through Pawn_FlightTracker. B3 carries the separate short owner-present flight look.\" T62 says the same, and owner_pages.md now reads \"The agent runs the live season ... Your flight look is a separate short session.\""
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Decisions that change scope or acceptance",
+    "ambiguities.md The second attack on the definition",
+    "bars.json bars/B5",
+    "bars.json bars/B6",
+    "bars.json bars/B7",
+    "bars.json checks/C4",
+    "bars.json checks/C6",
+    "bars.json meetings",
+    "bars.json rules/R12",
+    "bars.json rules/R4",
+    "bars.json rules/R5",
+    "census.json rows/accelerated_rot",
+    "census.json rows/guardian_gas",
+    "census.json rows/outdoor_compost",
+    "census.json rows/produce_heat",
+    "definition.md An ordinary week",
+    "definition.md Routine",
+    "definition.md Settings",
+    "definition.md The mod in player language",
+    "definition.md The worst day",
+    "definition.md What changes in the colony's story",
+    "definition.md When it goes wrong and the readable sign",
+    "models.md M1 situation and transition generator",
+    "models.md M2 thermal and storage balance",
+    "models.md M4 whole Rot season",
+    "next_version.md Orlath cap, vekkra choker and grath elder carry active gas emitters; choking/toxic gas and damage defs supply their hazard.",
+    "next_version.md Probabilistic thinning of exposed outdoor filth",
+    "next_version.md RM_AgelessCap (orlath cap) gas emitter",
+    "owner_pages.md Page one — The Rot proposed first version",
+    "owner_pages.md Page two — What to check",
+    "result.json counts",
+    "tickets.md T13: Contain Orlath cap, vekkra choker and grath elder carry active gas emitters; choking/toxic gas and damage defs supply their hazard.",
+    "tickets.md T13: Contain the RM_AgelessCap (orlath cap) gas emitter",
+    "tickets.md T48: Gate outdoor filth thinning",
+    "tickets.md T61: Build the retained situation and transition generator",
+    "tickets.md T62: Build the complete-season trace and driver",
+    "tickets.md T66: Bind the ordinary Rot fungal harvest to living-produce heat",
+    "tickets.md T66: Restore living-food content binding",
+    "tickets.md T67: Fulfil proposed frozen digestive loss and enclosure contract",
+    "tickets.md T67: Verify temperature-scaled digestion and enclosure",
+    "tickets.md T68: Expose retained causes through ordinary inspection"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1106484,
+     "output_tokens": 17535
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "owner_pages.md section \"## Still refused after the second look (the reviewer's words)\" still lists all six records R1 to R6 as refusals, quoting the old texts (for example \"even in freezing air\").",
+   "reason": "If these records are accepted as fixed, this section tells the owner that resolved items still block the proposal. It looks like a pipeline-stamped section rather than the author's text, so it needs regenerating from the current verdicts before he reads the pages.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "f50a4c6db060cd6fbf6567cc3ad535dc4fad84866ec76a32af1b200c8192a41d",
+ "seconds": 494,
+ "at": "2026-11-17T19:28:54"
+}
