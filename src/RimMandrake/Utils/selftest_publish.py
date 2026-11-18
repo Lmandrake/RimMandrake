@@ -773,6 +773,73 @@ def t_pushes_existing_local_commits(a, b):
     assert sha == sh(a, "rev-parse", "origin/main")
 
 
+ADDED = "conversations/2026-11-17-2328-2c2a405a.md"
+
+
+def t_untracked_copy_identical_to_origins_does_not_stop_the_move(a, b):
+    """RIMMANDRAKE_UNBLOCK_PUBLISH_UNTRACKED_FILE_EQUALS_ORIGIN_COPY. ./publish refused twice on 2026-11-17 with
+    'Untracked working tree file ... would be overwritten' when another lander had already pushed a byte-identical
+    copy (22215 bytes both ways). An identical untracked file carries nothing of ours: it is parked, not a blocker."""
+    peer_push(b, ADDED, "landed by the other seat\n")
+    write(a, ADDED, "landed by the other seat\n")               # untracked here, identical to origin's blob
+    write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+    sha = P_quiet_publish(a, ["f.txt"], "mine")
+    assert sha == sh(a, "rev-parse", "HEAD") == sh(a, "rev-parse", "origin/main")   # the clone moved too
+    assert open(os.path.join(a, ADDED)).read() == "landed by the other seat\n"     # and the file is still there
+    assert show(a, ADDED) == "landed by the other seat\n"
+    gd = sh(a, "rev-parse", "--absolute-git-dir")
+    import seat_sync as S
+    assert not [n for n in os.listdir(gd) if n.startswith(S.ADDED_PARK)], "a park was left behind after success"
+
+
+def t_a_different_untracked_file_is_refused_by_name_never_lost(a, b):
+    """The other half of the same rule: untracked content that is NOT origin's is somebody's unsaved work. The
+    refusal NAMES the path (the old one named only git's first collision) and the file is never overwritten."""
+    peer_push(b, ADDED, "origin's version\n")
+    write(a, ADDED, "MY UNSAVED DRAFT\n")
+    write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+    head0 = sh(a, "rev-parse", "HEAD")
+    why = refused(P.publish, a, ["f.txt"], "mine")
+    assert why and ADDED in why and "DIFFERENT" in why, why
+    assert open(os.path.join(a, ADDED)).read() == "MY UNSAVED DRAFT\n"   # the draft is untouched
+    assert sh(a, "log", "-1", "--format=%s") == "mine" and sh(a, "rev-parse", "HEAD^") == head0   # commit intact
+    assert not sh(a, "stash", "list")
+
+
+def t_an_unhashable_untracked_path_is_refused_not_called_identical(a, b):
+    """'Could not look' is not 'equal': a symlink (or a directory) where the move adds a file cannot be hashed, so
+    it must be refused by name rather than parked as if it held origin's bytes."""
+    peer_push(b, ADDED, "origin's version\n")
+    os.makedirs(os.path.dirname(os.path.join(a, ADDED)), exist_ok=True)
+    os.symlink("/etc/hosts", os.path.join(a, ADDED))
+    write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+    why = refused(P.publish, a, ["f.txt"], "mine")
+    assert why and ADDED in why and "cannot be hashed" in why, why
+    assert os.path.islink(os.path.join(a, ADDED)), "the symlink was replaced"
+
+
+def t_a_refused_move_puts_the_parked_identical_copy_back(a, b):
+    """The park is inside .git and is deleted only once every file is back. If the reset refuses AFTER the park, the
+    file must be at its path again, not stranded in .git."""
+    import seat_sync as S
+    peer_push(b, ADDED, "origin's version\n")
+    write(a, ADDED, "origin's version\n")
+    write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+    real = S._reset_keep_moved
+
+    def boom(*args, **kw):
+        raise S.Refused("planted: the reset refused after the park")
+    S._reset_keep_moved = boom
+    try:
+        why = refused(P.publish, a, ["f.txt"], "mine")
+    finally:
+        S._reset_keep_moved = real
+    assert why and "planted" in why, why
+    assert open(os.path.join(a, ADDED)).read() == "origin's version\n", "the parked copy did not come back"
+    gd = sh(a, "rev-parse", "--absolute-git-dir")
+    assert not [n for n in os.listdir(gd) if n.startswith(S.ADDED_PARK)], "the park outlived the refusal"
+
+
 def t_refuses_on_mnt(a, b):
     real = os.path.realpath
     P.os.path.realpath = lambda p: "/mnt/d/Luke/dev/RimMandrake" if p == a else real(p)

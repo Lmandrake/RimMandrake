@@ -141,6 +141,85 @@ def untracked_upstream(g: Git, head: str, up: str) -> list[str]:
         return sorted(x for x in r.stdout.split("\0") if x)
 
 
+ADDED_PARK = "rm-untracked-added"
+
+
+def untracked_added(g: Git, head: str, target: str, keep: list[str] | None = None) -> tuple[list[str], list[str]]:
+    """(untracked files byte-identical to the target's copy, untracked paths holding something else), at the paths
+    the move ADDS. Reads only; changes nothing.
+
+    `git reset --keep` refuses outright on either kind, naming only the first it meets, so a publish stalled with
+    `Untracked working tree file ... would be overwritten` even though a peer had already landed byte-identical
+    content (RIMMANDRAKE_UNBLOCK_PUBLISH_UNTRACKED_FILE_EQUALS_ORIGIN_COPY; it cost two hand workarounds
+    2026-11-17). An identical copy carries nothing of ours, so the move may park it; anything else is named and
+    refused, never overwritten.
+
+    A path we cannot HASH is never called identical: a symlink, a directory or an unreadable file is absent from
+    wt_hashes, so it lands in the second list and is refused by name. 'Could not look' is not 'equal'.
+
+    Scoped to git's OWN refusal set (--exclude-standard): an IGNORED file at an added path never stopped
+    `reset --keep` — git overwrites it silently (measured 2026-11-17, and origin/main added 2 such paths in its
+    last 400 commits) — so it is not this function's business and its behaviour is left exactly as it was."""
+    added = set(g.lines("diff", "--name-only", "-z", "--no-renames", "--diff-filter=A", head, target)) - set(keep or [])
+    if not added:
+        return [], []
+    al, untracked = sorted(added), set()
+    for i in range(0, len(al), 500):    # chunked like blobs(): a big landing would overflow one argv (E2BIG)
+        untracked.update(g.lines("ls-files", "-z", "--others", "--exclude-standard", "--", *al[i:i + 500]))
+    if not untracked:
+        return [], []
+    ul = sorted(untracked)
+    tb, wt = g.blobs(target, ul), g.wt_hashes(ul)
+    same = [u for u in ul if u in wt and u in tb and tb[u] == wt[u]]
+    return same, [u for u in ul if u not in set(same)]
+
+
+def _park_added(g: Git, same: list[str]) -> tuple[Path, list[str]]:
+    """Rename each identical untracked file aside inside .git (same filesystem, so instant). -> (park dir, moved)."""
+    park = Path(g.run("rev-parse", "--absolute-git-dir").strip()) / f"{ADDED_PARK}-{time.strftime('%Y%m%d_%H%M%S')}-{os.getpid()}"
+    moved: list[str] = []
+    try:
+        for u in same:
+            dst = park / u
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            os.rename(os.path.join(g.repo, u), dst)
+            moved.append(u)
+    except OSError as e:
+        _unpark_added(g, park, moved)
+        raise Refused(f"parking the untracked copy of {u} aside failed: {e}; nothing was moved") from e
+    return park, moved
+
+
+def _unpark_added(g: Git, park: Path, moved: list[str]) -> None:
+    """Put every parked file back at its path (the reset refused, or died). A path re-created meanwhile is left
+    alone and its copy stays in the park."""
+    stuck = False
+    for u in moved:
+        dst = Path(g.repo) / u
+        if os.path.lexists(dst):
+            stuck = True
+            continue
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        os.rename(park / u, dst)
+    if not stuck:
+        shutil.rmtree(park, ignore_errors=True)
+
+
+def _drop_park_if_restored(g: Git, park: Path, moved: list[str]) -> str:
+    """After the move: the park is deleted only once every file is back at its path with the SAME bytes git was
+    told to write. A mismatch keeps the park and says so — it is the only copy left."""
+    kept = []
+    for u in moved:
+        dst = Path(g.repo) / u
+        if not (dst.is_file() and not dst.is_symlink()) or dst.read_bytes() != (park / u).read_bytes():
+            kept.append(u)
+    if kept:
+        return (f"{len(kept)} untracked file(s) identical to upstream's were parked and did NOT come back as "
+                f"expected ({', '.join(kept[:4])}): the copies are in {park}, read them before deleting")
+    shutil.rmtree(park, ignore_errors=True)
+    return f"{len(moved)} untracked file(s) already identical to upstream's were parked past the move"
+
+
 def _check_displaced(g: Git, head: str, target: str) -> None:
     """After `reset --keep`: proof it replaced the commit we meant to replace. A peer's bare `git commit` can land between
     any check and git reading HEAD, and no lock here covers it, so the branch would silently lose that commit. ORIG_HEAD
@@ -153,14 +232,40 @@ def _check_displaced(g: Git, head: str, target: str) -> None:
 
 
 def reset_keep(g: Git, head: str, target: str, keep: list[str] | None = None) -> str:
-    """`git reset --keep <target>` that never deletes a file upstream merely STOPPED TRACKING.
+    """`git reset --keep <target>` that never deletes a file upstream merely STOPPED TRACKING, and is not
+    stopped by an untracked file that already holds exactly what the move would write.
 
-    Each such file (see untracked_upstream) is renamed aside inside .git (same filesystem, so instant even
-    for 25k files), dropped from the index so --keep sees index == target, the reset runs, and every file
-    is renamed back. Raises Refused (with index and files restored) if the reset itself refuses.
-    publish.py calls this too, so both ways a seat clone moves main keep the files."""
+    A file upstream stopped tracking (see untracked_upstream) is renamed aside inside .git (same filesystem,
+    so instant even for 25k files), dropped from the index so --keep sees index == target, the reset runs, and
+    every file is renamed back. An untracked file at a path the move ADDS (see untracked_added) is parked the
+    same way when it is byte-identical to the target's copy — it carries nothing of ours, so git refusing on it
+    stalled the clone for nothing; an untracked path holding anything else, or one we cannot hash, is named and
+    REFUSED, never overwritten. Raises Refused (with index, parked copies and files restored) if the reset
+    itself refuses. publish.py calls this too, so both ways a seat clone moves main keep the files."""
     if keep is None:
         keep = untracked_upstream(g, head, target)
+    same, other = untracked_added(g, head, target, keep)
+    if other:
+        raise Refused(f"{len(other)} untracked path(s) sit where the move adds a DIFFERENT file (or cannot be "
+                      f"hashed: a symlink, a directory, an unreadable file): " + ", ".join(other[:8])
+                      + ("" if len(other) <= 8 else " ...")
+                      + ". Nothing was changed. Move them aside yourself, then re-run")
+    park, parked = None, []
+    if same:
+        park, parked = _park_added(g, same)
+    try:
+        note = _reset_keep_moved(g, head, target, keep)
+    except BaseException:
+        if park is not None and g.run("rev-parse", "HEAD", check=False).strip() != target:
+            _unpark_added(g, park, parked)          # the branch did not move: put our copies back
+        raise
+    if park is not None:
+        back = _drop_park_if_restored(g, park, parked)
+        note = f"{note}; {back}" if note else back
+    return note
+
+
+def _reset_keep_moved(g: Git, head: str, target: str, keep: list[str]) -> str:
     if not keep:
         g.run("reset", "-q", "--keep", target)
         _check_displaced(g, head, target)
