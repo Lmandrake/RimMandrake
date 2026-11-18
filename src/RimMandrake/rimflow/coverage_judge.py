@@ -382,7 +382,8 @@ def delta_prompt(d, repo, dp, round_no):
         body.append("- %s: %s" % (k, "REMOVED" if v is None else json.dumps(v, ensure_ascii=False)))
     if not dp["changed"]:
         body.append("(none)")
-    body += ["", "## Gaps still open, carried on file (do not repeat them)"]
+    body += ["", "## Gaps still open, carried on file. A carried gap is closed when every row on its ids that you "
+             "write this look is all ok; one you find still open, write its row with the part not ok."]
     body += ["- %s: %s" % (g.get("gid"), " ".join(str(g.get("what") or "").split())) for g in dp["carried"]] or ["(none)"]
     body += ["", "Write `checklist` with one row for each of these ids, none skipped: %s. A gap on anything not shown "
              "above is the earlier pass's miss: tagged `late` with `late_why` it is kept, and it blocks only when you give "
@@ -392,9 +393,41 @@ def delta_prompt(d, repo, dp, round_no):
     return "\n".join(body) + RECORD_TEXT
 
 
+# A carried gap closes by the judge's own rows, never by a claim form (owner by card 2026-11-17, rule 2 of
+# design/specs/2026-11-17-judge-flaws-not-polish/6_proposed_ruling_plain.md: the repair check decides "by reading the
+# fix itself, never by whether a form was filed"). Pyrelands look 8 redid every row its three carried gaps name, every
+# part ok, and the merge refused anyway because no claim form matched.
+def _closed_carried(rec, dp):
+    """-> (closed, open): the carried gaps the judge's OWN rows this look prove repaired, and the rest. Read before the
+    prior rows are appended, so a row the judge did not write this look is "could not look", not "ok": only a row this
+    look, with at least one part and every part ok True, reads a repair. A gap the judge returned this look on any of
+    its ids (kept or dropped by the merge) is still open whatever its rows say."""
+    rows = {}
+    for r in rec.get("checklist") or []:
+        if isinstance(r, dict):
+            rows.setdefault(r.get("id"), []).append(r)   # two rows on one id: every one of them must read ok
+    repeated = {i for g in (rec.get("gaps") or []) + (rec.get("dropped") or []) if isinstance(g, dict)
+                for i in g.get("ids") or []}
+
+    def all_ok(i):
+        rs = rows.get(i) or []
+        return bool(rs) and all(
+            (r.get("parts") or []) and all(isinstance(p, dict) and p.get("ok") is True for p in r["parts"]) for r in rs)
+
+    closed, still = [], []
+    for g in dp["carried"]:
+        ids = list(g.get("ids") or [])
+        # an id that is not a readable row name is an id the look could not read: the gap stays open
+        read_ok = bool(ids) and all(isinstance(i, str) for i in ids) and not (set(ids) & repeated) \
+            and all(all_ok(i) for i in ids)
+        (closed if read_ok else still).append(g)
+    return closed, still
+
+
 def delta_merge(rec, dp):
     """Fold a delta judge's answer into a whole verdict: the gaps it found within what it was shown (plus late gaps
-    with a why), every carried gap, and the prior rows it did not redo. Carried gaps keep a covered word from standing."""
+    with a why), the carried gaps its own rows did not close (`_closed_carried`), and the prior rows it did not redo. A
+    carried gap left open keeps a covered word from standing; a closed one is listed in rec["answered"]."""
     scope = set(dp["ids"])
     kept, dropped = [], []
     for g in rec.get("gaps") or []:
@@ -406,13 +439,19 @@ def delta_merge(rec, dp):
             kept.append(g)
         else:
             dropped.append(dict(g, dropped="a new gap on material that did not change, not tagged late with a why"))
-    carried = [dict(g, carried=True, new_since="unfixed") for g in dp["carried"]]
+    answered, still_open = _closed_carried(dict(rec, gaps=kept, dropped=dropped), dp)
+    carried = [dict(g, carried=True, new_since="unfixed") for g in still_open]
     redone = {r.get("id") for r in rec.get("checklist") or [] if isinstance(r, dict)}
     rec["checklist"] = list(rec.get("checklist") or []) + [
         r for r in dp.get("prior_checklist") or [] if isinstance(r, dict) and r.get("id") not in redone]
     rec["gaps"] = kept + carried
     if dropped:
         rec["dropped"] = dropped
+    if dp["carried"]:   # absent = nothing was carried to read; [] = they were read and none closed
+        rec["answered"] = [{"gid": g.get("gid"), "ids": list(g.get("ids") or []), "what": g.get("what")}
+                           for g in answered]
+    else:
+        rec.pop("answered", None)   # a second answer in one session replaces the first: never a stale closure
     if carried and rec.get("verdict") == "covered":
         rec["verdict"] = "not_covered"
     return rec

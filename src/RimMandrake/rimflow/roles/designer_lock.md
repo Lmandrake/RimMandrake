@@ -27,7 +27,8 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    `gid` (`g1`...). The stage-3 run that reworks them writes `<dir>/coverage_fixes.json`:
    `{"against": "<the verdict's judge>", "claims": [{"gap": "g3", "evidence": "<file and place that fixes it>"}]}`. The
    next judge is shown those claims, the entries changed since the verdict (by hash) and the open gaps carried on file;
-   it redoes only the checklist rows they touch and keeps the rest. A gap you do not claim stays open; a new gap on
+   it redoes only the checklist rows they touch and keeps the rest. A gap you do not claim stays open unless the
+   judge's own rows on all its ids read ok; then it is closed and listed as answered. A new gap on
    anything it was not shown counts only tagged `late` with a reason. No claim and no change: no judge runs. A file
    against another judge is ignored, so the next round needs a new one.
    **The owner may pass coverage on his own word**, past a `not_covered` verdict. He did so first on ExplosiveKnockback on 2026-11-13

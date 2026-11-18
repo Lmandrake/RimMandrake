@@ -1,0 +1,34 @@
+JUDGE TICKETS — pipeline-door state measured by the Conductor 2026-11-17 ~19:5x PST, on darwin
+
+The change: bar_rule.py, coverage_judge.py, selftest_judge_card_answers.py, roles/designer_lock.md
+(RIMMANDRAKE_UNBLOCK_POLISH_GAPS_EVERY_LOOK_NOT_LATE_ONLY
+ + RIMMANDRAKE_CLOSE_CARRIED_GAPS_REPAIRED_WITHOUT_CLAIM_FORM)
+
+ACCEPTANCE (my own readings, taken here, not the builders' reports):
+  case_polish_never_blocks.py            base 7457b7695c: rc 1, "cases read 31; wrong 10"  ->  now rc 0, "wrong 0"
+  case_carried_gap_closes_on_ok_rows.py  base 7457b7695c: rc 1, "cases read 19; wrong 12"  ->  now rc 0, "wrong 0"
+
+EVERY DOOR TEST THAT ACTUALLY READS A FILE I CHANGED: GREEN
+  selftest_coverage_judge, selftest_coverage_judge_loop, selftest_bar_rule_tuning_numbers,
+  selftest_judge_card_answers, selftest_coverage_refusal_record, selftest_codex_review_fixes
+                                                              PASS 6/6, RESULT GREEN
+  selftest_designer_stage_land, selftest_stage5_program,
+  selftest_refusal_contract, selftest_maturation_autonomy     PASS 4/4
+
+DOOR TESTS RED ON BASE, UNRELATED TO THIS CHANGE
+(each proved by stashing my four paths and re-running the same command)
+  selftest_dispatch_two_games    6 FAIL on darwin, 5 FAIL in python:3.12-slim. IDENTICAL on base.
+                                 filed: RIMMANDRAKE_REPAIR_TWO_GAMES_DOOR_TEST_BLOCKS_EVERY_PUBLISH
+  selftest_maturation_dispatch   CRASH, uncaught OSError. IDENTICAL on base.
+  selftest_designer_stage        2 FAIL, both on a hard-wired seat-clone path that does not exist on this
+                                 machine. IDENTICAL on base — the two runs' FAIL lines differ only in the
+                                 unit-name timestamp.
+  selftest_seat_restart          was FAIL (6 lines) on base; FIXED by me in dfa5fd481d and now honestly
+  selftest_seat_restart_death    was CRASH on base;            UNMEASURED, named loudly by the runner.
+
+So the pipeline door is red on origin/main on this machine for reasons this change cannot reach, and the
+door cannot currently tell "already red before your change" from "your change broke it" — which is
+criterion A4 of the ticket filed above.
+
+Landed with RM_PUBLISH_SKIP_PIPELINE_CHECKS naming this evidence file. The 15 whole-tree checks still ran
+and are green; nothing was skipped that reads the changed files.

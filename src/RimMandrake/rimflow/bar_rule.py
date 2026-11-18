@@ -23,6 +23,13 @@ True (coverage_judge.second_read sets it; the program reader confirms nothing); 
 is held blocking until it does. A late gap with no refusing look before it still blocks. A gap that does not block is
 advisory: stored and shown.
 
+Severity, read on EVERY look and not only on a late gap: a gap the judge itself rated `severity` `polish` never blocks,
+whatever its `new_since`, `miss_of`, `late_confirmed` or `bar_kind` - it is advice (owner by card 2026-11-17, "the judge
+refuses flaws, not polish"; design/specs/2026-11-17-judge-flaws-not-polish/6_proposed_ruling_plain.md, "Two bugs fixed",
+first bug; item RIMMANDRAKE_UNBLOCK_POLISH_GAPS_EVERY_LOOK_NOT_LATE_ONLY). A severity the judge did not write, or wrote
+as a word we do not know, is NOT polish and is not cleared by this rule: a non-late gap fails closed and blocks, and a
+late gap with a `miss_of` stays advisory as before, because a late gap blocks only as an explicit `problem`.
+
 The detector reads only the DEMAND, never `observed` (which quotes the artifact, numbers and all). It is a word list,
 measured on the 25 Contagion gaps and the calibration cases (selftest_bar_rule_tuning_numbers.py); a new phrasing it
 misses is a line here, with its case in that selftest.
@@ -87,6 +94,11 @@ def detect(gap):
 
 def blocks(gap):
     """-> (True, None) for a gap about an experience; (False, why) for one that is advisory at most."""
+    if gap.get("severity") == "polish":
+        # The judge's own word, on any look: polish is advice, never a refusal (owner by card 2026-11-17). A severity
+        # the judge did not write, or wrote as anything else, is NOT polish and falls through to the rules below.
+        return False, ("the judge itself rated it `polish`, not a problem a player would reject: advice, never a bar "
+                       "(owner by card 2026-11-17, the judge refuses flaws, not polish)")
     if gap.get("new_since") == "late" and gap.get("miss_of"):
         if gap.get("severity") != "problem":
             return False, ("late: a new gap at a later look on material that did not change is the miss of %s, and the "

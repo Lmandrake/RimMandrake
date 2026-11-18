@@ -5,8 +5,10 @@ role_prompt_upgrades_20261116.md section 7, GPT's reply gpt_review_judge_prompts
 
 - Point 26, "Only if a second reader agrees": a late gap (new at a later look on unchanged material, after a refusing
   look) blocks only when the judge calls it a serious Problem (`severity` `problem`) AND the second reader confirms it
-  (`serious`). Four cases: serious+confirmed blocks, serious+unconfirmed and minor+confirmed are advisory, a round-1 gap
-  blocks whatever its severity. A program reader (no model) confirms nothing.
+  (`serious`). Five cases: serious+confirmed blocks, serious+unconfirmed and minor+confirmed are advisory, a round-1
+  `problem` gap blocks and a round-1 `polish` gap does not (that last pair replaced "a round-1 gap blocks whatever its
+  severity" when the owner's card of 2026-11-17 named it a bug; see the case text). A program reader (no model)
+  confirms nothing.
 - Point 14, "Open search in round 1 only": the first verdict's prompt hunts for gaps the artifacts do not cite; a later
   look (full re-judge or delta) only checks that named gaps were repaired and no change opened one.
 - The texts landed in GPT's words: J2 coverage line plus "Hunt parameter regimes and regions, not examples.", J4
@@ -58,8 +60,15 @@ def gate_cases():
     cases = (("serious + confirmed blocks", late_gap(late_confirmed=True), True),
              ("serious + unconfirmed is advisory", late_gap(late_confirmed=False), False),
              ("minor + confirmed is advisory", late_gap(severity="polish", late_confirmed=True), False),
-             ("round-1 gap blocks whatever its severity",
-              late_gap(new_since="first", miss_of=None, severity="polish"), True),
+             # Was "a round-1 gap blocks whatever its severity" (our reading of the 2026-11-16 card's point 26, which
+             # answered only late gaps). The owner's card of 2026-11-17 ("the judge refuses flaws, not polish",
+             # design/specs/2026-11-17-judge-flaws-not-polish/6_proposed_ruling_plain.md, "Two bugs fixed", first bug)
+             # names that a bug: a finding the judge itself rated polish blocks on no look. A round-1 problem still
+             # blocks (item RIMMANDRAKE_UNBLOCK_POLISH_GAPS_EVERY_LOOK_NOT_LATE_ONLY).
+             ("round-1 problem gap blocks",
+              late_gap(new_since="first", miss_of=None, severity="problem"), True),
+             ("round-1 polish gap does not block (owner by card 2026-11-17)",
+              late_gap(new_since="first", miss_of=None, severity="polish"), False),
              ("a late gap with no severity is advisory", late_gap(severity=None, late_confirmed=True), False))
     for name, g, want in cases:
         b, why = BR.blocks(g)
