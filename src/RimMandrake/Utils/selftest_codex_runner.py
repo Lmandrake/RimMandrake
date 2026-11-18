@@ -38,6 +38,79 @@ class CodexRunnerTests(unittest.TestCase):
     def test_quota_normal(self):
         self.assertEqual(AR.quota_gate(meter(90)), meter(90))
 
+    # stale-meter refresh: a stale ESTIMATE weekly % is cured by ONE probe + re-read, never looped
+    @staticmethod
+    def stale():
+        return {"codex.week_used_pct": {"m": "ESTIMATE", "v": 29.0}, "codex.hours_to_reset": {"m": "MEASURED", "v": 24}}
+
+    @staticmethod
+    def seq(*readings):
+        it = iter(readings)
+        calls = []
+        def reader():
+            calls.append(1)
+            return next(it)
+        return reader, calls
+
+    def test_stale_probe_gives_measured_passes(self):
+        reader, reads = self.seq(self.stale(), meter(29))
+        probes = []
+        self.assertEqual(AR.quota_gate(probe=lambda: probes.append(1), reader=reader), meter(29))
+        self.assertEqual((len(probes), len(reads)), (1, 2))
+
+    def test_stale_failing_probe_refuses_naming_probe(self):
+        reader, _ = self.seq(self.stale())
+        def boom():
+            raise RuntimeError("codex exited 1")
+        with self.assertRaises(AR.Refused) as c:
+            AR.quota_gate(probe=boom, reader=reader)
+        self.assertIn("probe failed", str(c.exception))
+        self.assertIn("codex exited 1", str(c.exception))
+
+    def test_stale_probe_timeout_refuses_naming_probe(self):
+        reader, _ = self.seq(self.stale())
+        def slow():
+            raise subprocess.TimeoutExpired("gpt_consult", 150)
+        with self.assertRaises(AR.Refused) as c:
+            AR.quota_gate(probe=slow, reader=reader)
+        self.assertIn("probe failed", str(c.exception))
+
+    def test_stale_probe_leaves_estimate_refuses_once(self):
+        reader, reads = self.seq(self.stale(), self.stale(), self.stale())
+        probes = []
+        with self.assertRaises(AR.Refused) as c:
+            AR.quota_gate(probe=lambda: probes.append(1), reader=reader)
+        self.assertIn("still not MEASURED", str(c.exception))
+        self.assertEqual((len(probes), len(reads)), (1, 2))
+
+    def test_fresh_never_probes(self):
+        reader, _ = self.seq(meter(40))
+        self.assertEqual(AR.quota_gate(probe=lambda: self.fail("probed a fresh reading"), reader=reader), meter(40))
+
+    def test_over_90_after_probe_still_refuses(self):
+        reader, _ = self.seq(self.stale(), meter(95))
+        with self.assertRaises(AR.Refused) as c:
+            AR.quota_gate(probe=lambda: None, reader=reader)
+        self.assertIn("exceeds 90%", str(c.exception))
+
+    def test_unreadable_not_stale_never_probes(self):
+        bad = ({}, {**meter(), "codex.week_used_pct": {"m": "MEASURED", "v": None}},
+               {**meter(), "codex.week_used_pct": {"m": "MEASURED", "v": -1}},
+               {**meter(), "codex.week_used_pct": {"m": "MEASURED", "v": float("nan")}},
+               {**meter(), "codex.week_used_pct": {"m": "ESTIMATE", "v": float("nan")}},
+               {**meter(), "codex.week_used_pct": {"m": "ESTIMATE", "v": -3}},
+               {"codex.week_used_pct": {"m": "UNMEASURED", "v": None}, "codex.hours_to_reset": {"m": "UNMEASURED", "v": None}})
+        for p in bad:
+            reader, _ = self.seq(p)
+            with self.assertRaises(AR.Refused) as c:
+                AR.quota_gate(probe=lambda: self.fail("probed an unfixable reading"), reader=reader)
+            self.assertIn("unreadable", str(c.exception))
+
+    def test_explicit_snapshot_without_probe_not_probed(self):
+        with patch.object(AR, "codex_probe", side_effect=AssertionError("probed")):
+            with self.assertRaises(AR.Refused):
+                AR.quota_gate(self.stale())
+
     def test_codex_argv(self):
         with patch.object(AR.CX, "wsl_to_win", side_effect=lambda p: "WIN:" + str(p)), patch.dict(os.environ, {"RM_CODEX_SIDE": "win"}, clear=True):
             a = AR.launch_argv(Path("/work"), Path("/out"), exe="codex.exe")
