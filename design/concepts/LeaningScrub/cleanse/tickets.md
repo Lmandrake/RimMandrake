@@ -416,6 +416,14 @@ Deferred promised behavior, not a claim that code exists. Before any later activ
 
 Acceptance test: none, there is no credible current implementation to exercise; acceptance of the later specification requires explicit inputs, states, expiry/interruption rules and a game-calibrated instrument before a build is authorized.
 
+## T46: Switch off shirrel_glide
+
+Keep the source and defs. Relabel the existing setting “Next version: Shirrel Gale glide and sweetline tether” and default it OFF for both initialization and unsupplied settings. Gate the Gale Goto/launch, tree binding, tether return and glide inspect text. The shirrel's HomeTether can otherwise bind to its spawn cell in PostSpawnSetup, so suppress its local binding and return jobs from spawn and reload while off, without changing the shared behavior for other animals. Clear its stored home and safely resolve any in-progress special glide when switched off.
+
+Decouple: RM_ShirrelGlide.cs CanFlyNow_Postfix currently gates every pawn with the glide comp even while the feature is off, and RM_LeaningScrubFauna.xml sets flightStartChanceOnJobStart to zero for the shirrel. Bypass that veto when off and enable ordinary job-start flight through TFLIGHT, keeping the existing directional frames. With the extra on, preserve the special launch gate and tether. Update the current settings inventory and distinguish the optional ProofGlide read from the ordinary-flight observer.
+
+Acceptance test: On a fresh default map with shirrels and eligible trees, passive state reads across ordinary wind and Gale show ordinary flight but no scripted Gale launch, home binding/return job, glide inspect effect, or extra things, letters or incidents. The log is clean. With the setting on, a naturally eligible idle shirrel in Gale uses the scripted launch and sweetline binding/return. Switching it off clears the tether, resolves the special glide visibly and leaves ordinary flight available. Visual flight checks are owner-attended.
+
 ## THISTORY: Switch off sweetline history
 
 Split naming and inspect timers from Record/history storage and CompGetGizmosExtra. Keep the old code/defs, add "Next version: tree history" OFF. Scratch notification can bank felt without writing a narrative entry. Callers: RM_SweetlineStation.cs Record, Notify_Scratched, Notify_DamageApplied, shedding tick and History action. Search found these inside the station; none is an argument to retain the diary.
@@ -430,9 +438,11 @@ Acceptance test: Effective composed terrain/weather state at supported fertility
 
 ## TROUTE: Implement and observe explicit trip intent
 
-Implement ordinary_intent/protected_ground using the existing shared passability seam, without redesigning EnvironmentalHazards. Add a read-only observer that records job source/actor/target, every entered cell, hazard/growth/size decision and permission lifecycle, including actual serialization links. No ready intent gate was found in RM_BodySizeBarrierPatches.cs. A new player confirmation names contact danger and the target, not a permanent pawn expedition mode. Display a no-safe-route waiting reason and cancel/replan if growth arms the next cell.
+Implement ordinary_intent/protected_ground using the existing shared passability seam, without redesigning EnvironmentalHazards. In RM_VenomvineIslands.cs NaturalFree, replace the blanket zone veto and separate sown-plant veto with protection for cells that have both a growing zone and a sown plant. Add a read-only observer that records job source/actor/target, every entered cell, hazard/growth/size decision and permission lifecycle, including actual serialization links. No ready intent gate was found in RM_BodySizeBarrierPatches.cs. Offer “Order risky trip” by right-click on the target with a colonist selected and confirm the named target and risk of injury from venomvine contact. Use the closed job list in ordinary_intent. Cancel or replan if growth arms the next cell.
 
-Acceptance test: Situation generator partitions every safe_routine range; calibrated production autonomous work chooses safe detour or visibly waits after closure; only an explicit prepared traversable trip crosses. Death, downing, job retarget, cancellation, mental break and post-load stale token never authorize later work. Exact cell trace detects poison intermediate steps; observer rejects corrupted IDs and never creates a Goto job. Dirt upkeep and protected ground are assessed with all kept mechanics on.
+Acceptance test: Calibrated ordinary work chooses the safe detour. Close it so the only traversable route crosses armed vines. A Harvest designation on ripe Dripping and a blanket-placement designation both remain queued with “No safe route: armed venomvine contact.” For each eligible job, right-click its target and confirm the target and contact risk: harvest ripe Dripping, place a smother blanket, pick up paid-out dry cane, cut an armed stand or rescue a downed pawn. The confirmed job can cross while physically traversable. Declining, an ineligible job or a body-size block prevents the crossing. A completed Dripping harvest regrows, and cancellation gives no venom. The situation generator also checks death, downing, retarget, cancellation, mental break and post-load stale tokens for permission leaks. Trace intermediate cells and reject corrupted IDs; the observer starts no jobs.
+
+Acceptance test, route upkeep: In otherwise eligible dirt within creep reach and below the spread cap, a one-cell-wide bare stockpile stripe along a dirt route still receives runners. Repeat for a dumping stripe and an empty growing zone. Roofed, built, floored and sown growing-zone cells refuse insertion in matched branches. Assess dirt-route clearing and developed ground with all kept mechanics on.
 
 ## TCLAIM: Finish saved claim duration and safe transactions
 
@@ -448,9 +458,9 @@ Acceptance test: Matched campfire/cooking or other supported consumers given acc
 
 ## TCARE: Implement and observe bounded animal care
 
-RM_SweetlineScratching.cs Rub currently sheds coat and calls Notify_Scratched but has no located health application. Implement care_transaction with resolved existing disease mechanisms, finite named adapter eligibility, legal pen/rope/allowed-area touch-cell and nonstacking personal health effect. Add no aura or new ritual. Fix bank placement-before-debit and overflow delivery if current code cannot conserve it. Keep everMature and tree-free behavior. Instrument completed natural rub plus health ticks without setting coat fullness or injecting jobs.
+RM_SweetlineScratching.cs WhyNot currently rejects coats below readiness, and Rub sheds coat without a located health application. Implement care_transaction with resolved disease mechanisms, a legal pen/rope/allowed-area touch-cell and a nonstacking personal health effect. Allow eligible sick animals to choose a care-only rub below readiness and to return when the effect expires while ill. Leave their regrowing coats intact. Vanilla animal disease incidents supply tame flu and plague. Stage gut worms and muscle parasites for adapter proof only. Add no native parasite source. Fix bank placement-before-debit and overflow delivery if current code cannot conserve it. Keep everMature and tree-free behavior. Log completed natural rubs and health ticks without setting coat fullness or injecting jobs.
 
-Acceptance test: Naturally ready eligible free coated animal completes a legal rub and its supported parasites/animal disease improve over time relative to untreated matched control. No relief on canceled rub, mere proximity, excluded condition or no-path animal; no pen escape. Same cohort/coat/bank/condition survives actual current reload. Repeated harvest conserves coat-derived wool, free shedding remains a separate natural source, overflow has a readable physical disposition.
+Acceptance test: For tame animal flu and plague from ordinary incidents and for each staged parasite, the eligible coated animal chooses a legal rub and the named condition clears from the living animal sooner than in a matched untreated control with the same starting severity, immunity and medicine. Include a sick animal below coat readiness that seeks care without producing wool or felt, and a ready animal that sheds its coat. No care effect on canceled rub, mere proximity, excluded condition or no-path animal. No pen escape. The same cohort, coat, bank and condition survive actual current reload. Repeated harvest conserves coat-derived wool, free shedding stays separate, and overflow has a readable physical disposition.
 
 ## TACCOUNT: Production material and health receipts
 
@@ -472,9 +482,9 @@ Acceptance test: Natural map/cycle state shows ordinary active life by class, in
 
 ## TFLIGHT: Separate ordinary flight from deferred launch events
 
-Search current ordinary movement callers for every effective fiction flyer. RM_ShirrelGlide already has launch/home logic and pure state proof; preserve it. RM_RunwayBloom/crown are deferred and cannot be the only reason another flyer launches. Complete ordinary-flight opt-ins through existing CreatureBehaviors/Core seam, never a duplicate wing renderer. Extend a non-mutating tracker observer; visual observations only jointly with owner.
+Search current ordinary movement callers for every effective fiction flyer. Complete ordinary job-start flight opt-ins for shirrel, dustflutter and any other dependent flyer through the existing CreatureBehaviors/Core seam, with the shirrel decoupled by T46. Reuse whole-body directional animation. Extend a non-mutating tracker observer for ordinary movement. Visual observations are jointly with the owner.
 
-Acceptance test: Passive production tracker/job evidence records ordinary airborne movement, landing, home loss and reload; no direct launch, crown or bloom is its cause. Attended observation establishes real_flyers directional body motion; unattended tests never drive a flyer. Def/animation files alone cannot pass.
+Acceptance test: With Gale glide, tether, crown and bloom OFF, passive production tracker/job evidence records ordinary airborne movement and landing for each effective fiction flyer, including shirrel and dustflutter. Check a shirrel on a map without a sweetline in ordinary wind, and record interruption and reload outcomes. Attended observation establishes directional body motion. The observer never drives a flyer.
 
 ## TLAND: Rendered and audible context reader
 

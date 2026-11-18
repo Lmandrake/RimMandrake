@@ -346,6 +346,14 @@ Why it is not required land, ordinary life or the selected signature: delegated:
 
 Proposed work: T45.
 
+## shirrel_glide
+
+What: An idle wild shirrel near a launch tree glides downwind in Gale and tethers to a sweetline home.
+
+Why it is not required land, ordinary life or the selected signature: delegated: Ordinary movement can still supply genuine flight, directional animation and landing. A weather-triggered trip and a home return are optional scripts.
+
+Proposed work: T46 switches off the scripts and decouples the shirrel’s ordinary flight under TFLIGHT.
+
 ## sweetline_history
 
 What: Dated event log and History gizmo

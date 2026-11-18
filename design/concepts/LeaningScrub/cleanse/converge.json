@@ -1,0 +1,207 @@
+{
+ "mod": "LeaningScrub",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "cannot_hold_together",
+     "where": "bars.json rule protected_ground vs bar safe_routine; owner_pages.md page two, line \"Maintained\"; definition.md, \"Using it\"",
+     "evidence": "protected_ground: \"Developed ground is a cell under a roof, an existing building, a laid floor/underterrain, a zone or a sown plant. No creep insertion there; a designation alone and Home area alone are not immunity. Dirt routes are actually cut/harvested ... no invisible dirt-route ward.\" The source agrees: src/RimMandrake/LeaningScrub/Source/RM_VenomvineIslands.cs:96 refuses any cell where `c.GetZone(map) != null`, and a stockpile or dumping zone counts. So a player can paint a one-cell stockpile stripe along every dirt route and get a free, permanent ward. That contradicts the pages' settlement \"dirt routes require measured labor. Home-area paint and blueprints confer no invisible immunity\", the definition's \"Dirt routes need actual repeated maintenance\", and the maintenance the signature (\"maintained routes\") and safe_routine's second accept picture (\"scheduled clearing\") depend on. Zone paint is the same kind of act as Home-area paint.",
+     "would_pass": "One reading everywhere. Either (a) zone paint is the intended cheap upkeep, said in safe_routine and on his pages, with the \"measured labor\" lines dropped; or (b) protection comes only from a roof, a building, a floor, or a sown plant inside a growing zone, and bare stockpile, dumping or other zones give no immunity.",
+     "smallest_fix": "Edit protected_ground to name which zone types protect (recommend: only a growing zone cell holding a sown plant). Add a TROUTE acceptance row: a stockpile stripe on a dirt route still receives runners. Keep the pages' \"Maintained\" line as written."
+    },
+    {
+     "id": "R2",
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json rule ordinary_intent and bars safe_routine and earned_claims; tickets.md TROUTE; rule fuel_transaction",
+     "evidence": "The signature's central act is \"a specifically ordered prepared trip\". It exists only as \"an explicit expedition UI acknowledgement tied to actor ID, job ID and target\" (ordinary_intent) and \"A new player confirmation names contact danger and the target\" (TROUTE). The census marks ordered_crossing_policy built \"unknown\" and proven \"missing\". Nothing defines what the player clicks, which jobs can carry consent (venom harvest, blanket placement, collecting due cane, cutting an armed stand, rescue), or what happens to a plain Harvest designation on a Dripping stand. fuel_transaction says \"Ordinary Dripping harvest uses vanilla regrowing-harvest completion\", and vanilla harvesting is designation-driven autonomous grower work, which by safe_routine is ordinary work that must wait. A builder and a judge would build and judge two different expedition systems.",
+     "would_pass": "A short definition: the order's entry point (for example a right-click option on the target stating the contact risk); the closed list of job types that can carry consent; that a harvest or placement designation alone stays ordinary work and waits when the target is reachable only through armed cells; and what the waiting reason says.",
+     "smallest_fix": "Add one paragraph to definition.md under \"Using it\" and one sentence to ordinary_intent naming the entry point and the eligible job list. Add both to TROUTE's acceptance test."
+    },
+    {
+     "id": "R3",
+     "head": "core_promise_weakened",
+     "where": "bars.json bar tree_care (says, accept picture one, range); rule care_transaction; check care_tuning",
+     "evidence": "His words (record.json owner_corrected_bar_20261116, OWNER:1794835478275153823): \"animals rub the sweetline because scratching gives them a healing hediff that removes parasites and disease over time.\" The bar weakens \"removes\" to \"gradually relieve\", and its accept picture only needs \"improving eligible disease severity\", so a build where severity dips and the animal still dies of plague passes. The promise is also unreachable in ordinary play. [measured, RimSage] Vanilla IncidentWorker_DiseaseAnimal gives disease only to player-faction non-humanlike pawns (Animal_Flu, Animal_Plague). Disease_GutWorms and Disease_MuscleParasites use IncidentWorker_DiseaseHuman, which targets only free colonists and prisoners. So no animal ever gets parasites, and wild natives never get disease. Finally, RM_SweetlineScratching.cs:122 lets an animal rub only when its coat is ready, so a sick animal with an unready coat cannot seek the cure. That reverses his \"because\".",
+     "would_pass": "says: over time the rubbing animal is rid of its eligible disease or parasites. An accept picture shows the condition gone, sooner than in a matched untreated animal. The range states which animals actually fall sick in play (tame flu and plague) and whether parasites need a native source or are staged-only. Readiness to rub is reconciled with \"because scratching heals\": either sickness also lets an animal rub, or this is stated as a deliberate narrowing on his pages.",
+     "smallest_fix": "Reword tree_care's says and first accept picture to \"rid of\". Add one range line on the vanilla disease sources. Add a page-two line (or ticket under TCARE) on the coat-readiness gate and the missing source of animal parasites."
+    },
+    {
+     "id": "R4",
+     "head": "extra_without_argument",
+     "where": "census.json row shirrel_glide; bars.json bar real_flyers (says) and rule real_locomotion",
+     "evidence": "The census keeps \"Gale launch/home tether\" as life with the reason \"deleting real launch, flight and landing violates the standing flyer ruling\". That argues only for flight. The standing ruling needs a fiction flyer to really fly; it does not need a Gale-triggered launch or a tether to a sweetline home (RM_ShirrelGlide.cs HomeTether). Deleting the Gale trigger and tether while keeping ordinary flight, as the proposal itself requires for dustflutter, would defeat neither land, life nor the signature. Yet real_flyers writes the extra into a bar: \"including a shirrel gliding downwind and returning to an available home\". It also pulls weather and tree supply into the flight meeting.",
+     "would_pass": "Either a deletion argument showing that ordinary flight without the Gale trigger and tether defeats land or life, or the Gale glide and tether moved to the next version and switched off like the other weather-triggered scripts, with the shirrel flying by ordinary flight.",
+     "smallest_fix": "Drop the shirrel clause from real_flyers' says and its second accept picture. Move the Gale trigger and home tether to next_version.md with a switch-off ticket, keeping the shirrel's ordinary flight under TFLIGHT."
+    },
+    {
+     "id": "R5",
+     "head": "figurative_unmarked",
+     "where": "bars.json bar vine_country, says and accept picture two",
+     "evidence": "\"recognizable venom edges and blunt galleries\" are coined names for the Dripping and Hollow forms. `figurative` marks only \"repeatedly\". A cold reader cannot tell that \"venom edges\" means the Dripping harvest form. \"Galleries\" literally means a walk-in tunnel, while contact_boundary says Hollow is \"not an invisible tunnel/teleport/crawl job\" and passable only inside its size band.",
+     "would_pass": "Figurative entries for \"venom edges\" (the Dripping stand's harvestable venom-bearing side) and \"blunt galleries\" (a Hollow stand with no contact venom that a body inside the size band can cross; no crawl job, no pocket space), each with an accept picture.",
+     "smallest_fix": "Add two figurative entries to vine_country."
+    },
+    {
+     "id": "R6",
+     "head": "figurative_unmarked",
+     "where": "bars.json bars safe_routine (\"prepared trip\") and earned_claims (\"prepared forager\")",
+     "evidence": "meant.intent of safe_routine: \"Prepared is informed consent and ordinary supplies, not a new equipment recipe.\" The word is in `says`, but `figurative` is empty for safe_routine and absent for it in earned_claims. Read literally, \"prepared\" leads a builder to add a preparation requirement, or a judge to refuse because none exists. His source is \"farther journeys require preparation\" (record.json owner_home_routes).",
+     "would_pass": "A figurative entry on both bars: \"prepared\" stands for the player's explicit acknowledgement of the named contact risk for that trip. An accept picture shows an unequipped pawn ordered on an acknowledged trip.",
+     "smallest_fix": "Copy the meant sentence into a figurative entry with one accept picture on each bar."
+    },
+    {
+     "id": "R7",
+     "head": "check_or_rule_as_bar",
+     "where": "bars.json bar tree_care says (\"without duplicating the animal's coat\"); bar earned_claims says (\"conserved\") and accept picture two",
+     "evidence": "These are the accounting invariants of the care_transaction and claim_transaction rules and of economy_observer_check. tree_care: \"without duplicating the animal's coat\". earned_claims: \"conserved dry cane\" and the whole of accept picture two: \"An interrupted or repeated claim cannot create extra cane; a saved claim retains its original due time when later claims use changed tuning.\" A player does not see a coat-to-wool ledger or the freezing of a claim's duration. The brief's reject test (would he reject the mod if only this were false?) is not answered from a source for either.",
+     "would_pass": "Bars state what the player sees (wool and felt to gather; dry cane after the long wait, worth more than wood). Conservation, due-time capture and no duplication on reload stay in the rules and checks, where they already are.",
+     "smallest_fix": "Strike \"without duplicating the animal's coat\" and \"conserved\" from the two says. Replace earned_claims' second accept picture with a player-visible one, or cite the source that makes duplication a rejection."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Limited developed-ground protection to roofs, existing buildings, laid floors or underterrain, and sown plants in growing zones. TROUTE tests runners on a bare stockpile stripe and other bare zones against protected cells. Kept the owner’s Maintained line as written.",
+      "where": "bars.json protected_ground and safe_routine range, definition.md Using it, tickets.md TROUTE, ambiguities.md Home and maintained, models.md Geometry and route sweep"
+     },
+     {
+      "id": "R2",
+      "changed": "Defined the right-click confirmation, the five eligible jobs and the armed-contact waiting message for ordinary designations. Specified that ordinary and confirmed Dripping harvests use the same regrowing completion and added acceptance coverage for both order paths.",
+      "where": "bars.json ordinary_intent, fuel_transaction and safe_routine range, definition.md Using it, tickets.md TROUTE, ambiguities.md Safe detour versus authorization"
+     },
+     {
+      "id": "R3",
+      "changed": "Required eligible illness to clear from a living animal sooner than in a matched untreated animal. Allowed a sick animal with a regrowing coat to rub for care without shedding. Tame flu and plague occur in play, and gut worms and muscle parasites are staged for proof.",
+      "where": "bars.json tree_care, care_transaction and care_tuning, definition.md tree boundary and Ordinary week, tickets.md TCARE, owner_pages.md Healing, ambiguities.md tree care and disease, models.md Economy and care walk"
+     },
+     {
+      "id": "R4",
+      "changed": "Moved the shirrel’s Gale launch and sweetline tether to next version with a default-off ticket. T46 decouples the flight veto and tether so ordinary shirrel flight remains required under TFLIGHT. Updated scope counts and removed the deferred effects from flight acceptance and shared-state meetings.",
+      "where": "census.json shirrel_glide and basic_flyer_locomotion, bars.json real_flyers, real_locomotion, their meetings and old shirrel_flight mapping, next_version.md shirrel_glide, tickets.md T46 and TFLIGHT, definition.md Ordinary life, ambiguities.md Fly means flying, owner_pages.md and result.json counts and scope"
+     },
+     {
+      "id": "R5",
+      "changed": "Marked venom edges as harvestable Dripping sides and blunt galleries as size-limited Hollow crossings with no contact venom. Gave each an accept picture.",
+      "where": "bars.json vine_country figurative"
+     },
+     {
+      "id": "R6",
+      "changed": "Marked prepared as the player’s explicit acknowledgement of the named risk for that trip. Both pictures show a pawn with no equipment making the acknowledged trip.",
+      "where": "bars.json safe_routine and earned_claims figurative"
+     },
+     {
+      "id": "R7",
+      "changed": "Removed coat and cane accounting from the player-facing bars. The second earned_claims picture now shows a stand still blanketed on an early visit and collectable dry cane after years. The transaction rules and checks retain the accounting requirements.",
+      "where": "bars.json tree_care and earned_claims"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json rules/protected_ground now reads: \"Developed ground is a cell under a roof, an existing building, a laid floor/underterrain, or a sown plant in a growing zone ... Bare growing zones, stockpile and dumping zones, other zone paint, Home areas and designations leave otherwise eligible ground open to runners.\" This is reading (b) of would_pass. definition.md \"Using it\" says the same: \"Bare stockpile, dumping, growing and other zones leave the dirt open to creep\". safe_routine range varies \"protected floors/buildings/roofs/sown plants in growing zones versus bare dirt, including stockpile, dumping and empty growing zones\". tickets.md TROUTE replaces the blanket zone veto in NaturalFree and adds \"Acceptance test, route upkeep: ... a one-cell-wide bare stockpile stripe along a dirt route still receives runners. Repeat for a dumping stripe and an empty growing zone.\" owner_pages.md \"Maintained\" is unchanged, and it now agrees with the rule."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "bars.json rules/ordinary_intent now defines the entry point: \"With a colonist selected, right-click the target and choose “Order risky trip”\". It closes the job list at five: \"harvest ripe Dripping venomvine, place a smother blanket, pick up dry cane already paid out by a due claim, cut an armed vine stand, or rescue a downed pawn\". It states that \"Harvest and blanket-placement designations are ordinary work ... otherwise wait/replan and show “No safe route: armed venomvine contact.”\" fuel_transaction now says \"A Harvest designation alone follows ordinary_intent and waits if armed contact is unavoidable.\" definition.md \"Using it\" has the matching paragraph. TROUTE's acceptance test covers both designations waiting with that message and each of the five confirmed jobs, plus declining, an ineligible job and a body-size block."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "bars.json tree_care says now reads \"if sick, rid itself of eligible disease or parasites over time\". The first accept picture: \"the condition clears sooner than in a matched untreated animal\". The first reject picture refuses \"illness severity drops, but the condition never clears or clears no sooner\". The range states \"only tame colony animals receive animal flu or plague from disease incidents, wild animals receive neither, and gut worms and muscle parasites are staged ... because vanilla supplies no animal parasite incidents\". Readiness is reconciled by letting sickness motivate a rub. tree_care accept: \"even while its coat is regrowing\". care_transaction: \"A sick animal with an unready coat gets a care-only rub\". The same change is in TCARE (\"Allow eligible sick animals to choose a care-only rub below readiness\"), care_tuning (\"Exercise the below-readiness care-only case\") and the owner_pages.md \"Healing\" line."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "census.json shirrel_glide now has fate \"next_version\" and ticket \"T46\". next_version.md gains a shirrel_glide entry. tickets.md T46 defaults the setting OFF and decouples CanFlyNow_Postfix and flightStartChanceOnJobStart 0 so the shirrel flies ordinarily. I checked the source: RM_ShirrelGlide.cs:257-261 has the postfix and RM_LeaningScrubFauna.xml:983 has the value 0. real_flyers says drops the shirrel clause (\"...and land as part of its ordinary life.\"), and the Gale/home accept picture is gone. real_locomotion now reads \"Shirrel, dustflutter and other fiction flyers use ordinary movement launches with Gale glide, home tether, crown and bloom off\". TFLIGHT tests \"a shirrel on a map without a sweetline\". The counts agree: census has 34 kept rows, 45 next_version and 4 recommend_retire, and tickets.md has 59 \"## T\" headings, matching result.json."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "vine_country meant.figurative now has \"venom edges\" (\"the Dripping stand’s harvestable venom-bearing side\") and \"blunt galleries\" (\"Hollow stands with no contact venom that a body inside the size band can cross in place, with ordinary movement and no crawl job or pocket space\"). Each has an accept picture."
+    },
+    "R6": {
+     "verdict": "fixed",
+     "evidence": "safe_routine and earned_claims both now carry a figurative entry for \"prepared\": \"the player’s explicit acknowledgement of the named venomvine contact risk for this trip ... no special equipment requirement\". The accept pictures are \"A pawn with no equipment takes the ordered trip after the player confirms the target and its contact risk\" and \"A pawn with no equipment harvests venom after the player confirms the Dripping target and its contact risk\"."
+    },
+    "R7": {
+     "verdict": "fixed",
+     "evidence": "tree_care says no longer contains \"without duplicating the animal’s coat\", and earned_claims says no longer contains \"conserved\" (\"then collect dry cane from the banked claim after years\"). earned_claims' second accept picture is now player-visible: \"An early return shows the blanketed stand still waiting in the field; after years it gives way to dry cane the forager can pick up there.\" The conservation wording stays in care_transaction (\"do not duplicate or silently erase it\") and in the unchanged claim_transaction and checks."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Fly means flying, even with the extras off",
+    "ambiguities.md Home and maintained",
+    "ambiguities.md Removes disease",
+    "ambiguities.md Safe detour versus authorization",
+    "ambiguities.md Tree care and who rubs",
+    "bars.json bars/earned_claims",
+    "bars.json bars/real_flyers",
+    "bars.json bars/safe_routine",
+    "bars.json bars/tree_care",
+    "bars.json bars/vine_country",
+    "bars.json checks/care_tuning",
+    "bars.json meetings",
+    "bars.json old_bars/shirrel_flight",
+    "bars.json rules/care_transaction",
+    "bars.json rules/fuel_transaction",
+    "bars.json rules/ordinary_intent",
+    "bars.json rules/protected_ground",
+    "bars.json rules/real_locomotion",
+    "census.json rows/basic_flyer_locomotion",
+    "census.json rows/shirrel_glide",
+    "definition.md Four short stories",
+    "definition.md Ordinary life, its deletion tests and the tree boundary",
+    "definition.md Using it: first hour, routine and a large colony",
+    "models.md Economy and care walk",
+    "models.md Geometry and route sweep",
+    "next_version.md shirrel_glide",
+    "owner_pages.md Page one — what the mod becomes",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T46: Switch off shirrel_glide",
+    "tickets.md TCARE: Implement and observe bounded animal care",
+    "tickets.md TFLIGHT: Separate ordinary flight from deferred launch events",
+    "tickets.md TROUTE: Implement and observe explicit trip intent"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1309773,
+     "output_tokens": 16854
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "earned_claims range.varies still lists \"reload and two action orders\" and \"tuning 120–600 frozen per claim\", but the bar's pictures and sees.control no longer show either outcome. The duplicate-on-retune or reload replay was removed from control.",
+   "reason": "This is the right side of the line between bar and rule (the R7 fix), and claim_transaction covers these cases. Even so, a judge reading this bar's range may look for evidence the bar no longer asks for. These variations could move to the rule's check.",
+   "round": 1
+  },
+  {
+   "what": "owner_pages.md page one still says \"Tree care supplies conserved wool for blanket crafting.\"",
+   "reason": "It is accounting wording on his page, the same kind R7 took out of the bars. That sentence was not changed, so this is not a regression.",
+   "round": 1
+  },
+  {
+   "what": "owner_pages.md \"Healing\" says sick animals \"can rub before their coats regrow\".",
+   "reason": "The rule means \"while their coats are regrowing\". \"Before\" can be read as a narrower timing. It is minor wording.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "c9ae3a9e10f379cdd8a67debbd92d192d3e1a3616285af42818efebf6b972c90",
+ "seconds": 512,
+ "at": "2026-11-17T19:29:46"
+}

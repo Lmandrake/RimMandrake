@@ -70,7 +70,7 @@ Readings: every new plant already scratches at full venom, or a young runner bec
 
 ## Home and maintained
 
-Readings: Home-area designation, blueprint or a one-time clearing confers permanent immunity, or developed cells are explicitly protected and dirt routes need actual upkeep. Consequence: invisible immunity changes land ownership while unbounded upkeep makes the home unusable. Take the developed checks in NaturalFree and owner home/routes direction, with the exact cell classes in protected_ground. No Walking means only one spread clock must respect it. Labor feasibility is unknown until the whole model; no guessed sentence says it is cheap.
+NaturalFree currently refuses any zone, so painting a stockpile stripe could permanently ward a dirt route. The owner’s maintained-route intent calls for actual clearing. Protect roofs, buildings, laid floors/underterrain and sown plants in growing zones. Bare zone paint, Home areas, blueprints and one-time clearing leave dirt routes exposed to new runners. TROUTE tests a stockpile stripe, and labor feasibility remains open for the whole model.
 
 ## A capped field
 
@@ -78,7 +78,7 @@ Readings: periodically recalculate denominator from today’s roofed/open area, 
 
 ## Safe detour versus authorization
 
-Readings: high hazard cost or player drafting suffices, or normal work needs a safe path and only an explicit target/job-specific expedition acknowledges exposure. Consequence: when a detour closes or the pawn gets a new job, an ordinary haul becomes lethal. Take ANSWERS_OWNER.md Q2 referenced by OWNER:1794334503877366549. No-route is visible waiting. Consent is bounded by actor/job/target and actual body passability; settings or a stale save cannot invent consent. Existing shared path code proves coupling, not this intent behavior; TROUTE is missing work.
+Readings: high hazard cost, drafting or a work designation suffices, or normal work needs a safe path and only a confirmed target-specific order acknowledges exposure. When a detour closes, the first reading lets ordinary work become lethal. Following ANSWERS_OWNER.md Q2 (OWNER:1794334503877366549), a right-click “Order risky trip” confirmation binds to a specific actor, eligible job and target. Ordinary Harvest and blanket-placement designations stay queued if reaching them requires armed contact, with “No safe route: armed venomvine contact.” TROUTE specifies the job list and tests physical passability and stale consent.
 
 ## Emergencies, downing and death
 
@@ -106,11 +106,11 @@ Readings: always guarantee a tree to satisfy the recipe, or retain rare/no-tree 
 
 ## Tree care and who rubs
 
-Readings: healing aura for all animals/humans, or completion-only grooming by legal reachable ready coated animals. Consequence: former becomes a hospital system or causes pen escapes. Select CompShearable eligibility from source WhyNot/Rub, with owner’s hediff explanation OWNER:1794835478275153823. Add actual pen touch-cell legality and bounded personal health effect. Roped/coatless animals do not gain a new travel compulsion. Ordinary medicine remains for everyone else.
+WhyNot/Rub currently requires a ready CompShearable coat. Keeping that gate for healing would turn the owner's reason for seeking a rub (OWNER:1794835478275153823) into an incidental reward for grazing animals with wool ready to shed. Keep the coat and legal tree-access requirements. Eligible illness can motivate a rub while the coat is regrowing, and only a ready coat yields wool or felt. A completed rub supplies the bounded personal effect.
 
 ## Removes disease
 
-Readings: subtract severity from every hediff including immunity/injury/permanent traits, or apply mechanism-specific eligible disease/parasite adapters over time. Consequence: generic subtraction may reduce immunity or cure things the owner never described. Select finite flu/plague/gut/muscle parasite adapters, leave injury/genes/unknown mechanisms untreated and visible, never guess a game defName. Natural recovery/medicine is controlled separately. Existing Rub supplies wool but no located healing call; TCARE is a genuine missing implementation, not a deferred owner requirement.
+The owner says the condition removes parasites and disease over time. Require the named condition to clear from a living animal sooner than in a matched untreated animal. Disease-specific adapters preserve immunity and leave injuries and unknown conditions alone. The first review traces vanilla Animal_Flu and Animal_Plague to IncidentWorker_DiseaseAnimal, which targets colony animals, and Disease_GutWorms and Disease_MuscleParasites to IncidentWorker_DiseaseHuman. Tame flu and plague are ordinary play. Stage both parasites to prove clearance and defer any native infection source. Existing Rub has no located healing call, so TCARE supplies the implementation and controls for natural recovery and medicine.
 
 ## Coat, bark bank and free shed
 
@@ -118,7 +118,7 @@ Readings: any tree wool output proves the grooming economy, or distinguish natur
 
 ## Fly means flying, even with the extras off
 
-Readings: MaxFlightTime plus a crown/bloom launch makes a flyer complete, or ordinary behavior must independently use the actual flight tracker/body animation and land. Consequence: switching extras off turns native flyers into walkers. Take the standing flyer rule; keep shirrel’s existing Gale/home locomotion and complete basic flight sources for others without deferred event producers. Source header about absent shirrel frames is stale relative to actual prefix/files. All motion looks are owner-attended; preliminary passive state reads cannot certify visual motion and must not drive a launch unattended.
+The flight ruling requires ordinary airborne travel and landing. A Gale-triggered launch and sweetline return add behavior beyond that ruling, so both move to next version. Simply flipping the existing setting off would leave the shirrel grounded because CanFlyNow still gates its tracker and its ordinary job-start chance is zero. T46 decouples that gate and tether. TFLIGHT uses ordinary movement and the existing directional animation, with visual observation attended by the owner.
 
 ## Species behavior versus roster eviction
 

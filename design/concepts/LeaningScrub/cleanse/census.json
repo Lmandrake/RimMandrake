@@ -632,11 +632,11 @@
       "evidence": "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:146\nsrc/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:195\nsrc/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:257",
       "proven": "missing",
       "called_by": "src/RimMandrake/LeaningScrub/Source/RM_ShirrelGlide.cs:36: public class RM_CompProperties_ShirrelGlide : CompProperties\nsrc/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml:998: <li Class=\"RimMandrake.LeaningScrub.RM_CompProperties_ShirrelGlide\">",
-      "serves": "ordinary land, ordinary life or route/claim signature",
+      "serves": "secondary weather-triggered launch and home behavior",
       "needed_by": "",
-      "ticket": "",
-      "fate": "life",
-      "why": "delegated: A shirrel is a glider in the fiction; deleting real launch, flight and landing violates the standing flyer ruling. Gale launch/home tether is retained only as its normal locomotion, not a bonus event."
+      "ticket": "T46",
+      "fate": "next_version",
+      "why": "delegated: Ordinary flight supplies launch, airborne travel and landing without a Gale trigger or sweetline tether. The scripted weather launch and home return are optional. T46 removes their default coupling to ordinary flight under TFLIGHT."
     },
     {
       "id": "shirrel_flight_art",
@@ -1014,7 +1014,7 @@
       "called_by": "src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_LeaningScrubFauna.xml\nskills/rimworld-modding/references/flight.md",
       "serves": "life",
       "fate": "life",
-      "why": "delegated: The standing flyer ruling applies even after crown and bloom move; ordinary AI cannot depend on those triggers.",
+      "why": "delegated: The standing flyer ruling applies with special launches off. Ordinary AI, including the shirrel’s movement, must fly independently of the Gale glide/tether, crown and bloom.",
       "needed_by": "",
       "ticket": "TFLIGHT"
     },

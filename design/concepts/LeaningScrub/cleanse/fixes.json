@@ -1,0 +1,39 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Limited developed-ground protection to roofs, existing buildings, laid floors or underterrain, and sown plants in growing zones. TROUTE tests runners on a bare stockpile stripe and other bare zones against protected cells. Kept the owner’s Maintained line as written.",
+      "where": "bars.json protected_ground and safe_routine range, definition.md Using it, tickets.md TROUTE, ambiguities.md Home and maintained, models.md Geometry and route sweep"
+    },
+    {
+      "id": "R2",
+      "changed": "Defined the right-click confirmation, the five eligible jobs and the armed-contact waiting message for ordinary designations. Specified that ordinary and confirmed Dripping harvests use the same regrowing completion and added acceptance coverage for both order paths.",
+      "where": "bars.json ordinary_intent, fuel_transaction and safe_routine range, definition.md Using it, tickets.md TROUTE, ambiguities.md Safe detour versus authorization"
+    },
+    {
+      "id": "R3",
+      "changed": "Required eligible illness to clear from a living animal sooner than in a matched untreated animal. Allowed a sick animal with a regrowing coat to rub for care without shedding. Tame flu and plague occur in play, and gut worms and muscle parasites are staged for proof.",
+      "where": "bars.json tree_care, care_transaction and care_tuning, definition.md tree boundary and Ordinary week, tickets.md TCARE, owner_pages.md Healing, ambiguities.md tree care and disease, models.md Economy and care walk"
+    },
+    {
+      "id": "R4",
+      "changed": "Moved the shirrel’s Gale launch and sweetline tether to next version with a default-off ticket. T46 decouples the flight veto and tether so ordinary shirrel flight remains required under TFLIGHT. Updated scope counts and removed the deferred effects from flight acceptance and shared-state meetings.",
+      "where": "census.json shirrel_glide and basic_flyer_locomotion, bars.json real_flyers, real_locomotion, their meetings and old shirrel_flight mapping, next_version.md shirrel_glide, tickets.md T46 and TFLIGHT, definition.md Ordinary life, ambiguities.md Fly means flying, owner_pages.md and result.json counts and scope"
+    },
+    {
+      "id": "R5",
+      "changed": "Marked venom edges as harvestable Dripping sides and blunt galleries as size-limited Hollow crossings with no contact venom. Gave each an accept picture.",
+      "where": "bars.json vine_country figurative"
+    },
+    {
+      "id": "R6",
+      "changed": "Marked prepared as the player’s explicit acknowledgement of the named risk for that trip. Both pictures show a pawn with no equipment making the acknowledged trip.",
+      "where": "bars.json safe_routine and earned_claims figurative"
+    },
+    {
+      "id": "R7",
+      "changed": "Removed coat and cane accounting from the player-facing bars. The second earned_claims picture now shows a stand still blanketed on an early visit and collectable dry cane after years. The transaction rules and checks retain the accounting requirements.",
+      "where": "bars.json tree_care and earned_claims"
+    }
+  ]
+}
