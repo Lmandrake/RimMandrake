@@ -1,0 +1,51 @@
+RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS — acceptance evidence
+verify: RM_REFUSAL_DIR=<tmp> python3 -I src/RimMandrake/rimflow/selftest_maturation.py --submit
+
+THE TRAP THIS TICKET WAS ABOUT, and it was avoided: the plan's own --submit test PASSES on the
+base commit because the flag was simply ignored, so it was not an oracle. The item said so.
+
+READ BY THE CONDUCTOR in a THROWAWAY clone (git clone --shared of the branch), because doing this
+in the agent's own live clone had already cost me 283 of its uncommitted insertions once tonight:
+  branch, fix in place        : rc 0, ALL PASS (34 checks)
+  maturation.py reverted to base, same test file: rc 1, 25 FAIL
+  head of the base failures:
+    FAIL the verdict's family is the brief 'maturation_advance', not the move
+    FAIL one submitted refusal row lands in .../_refusals/refusals.jsonl (0 row(s): [])
+    FAIL the first refusal is counted (counted=None, calibration=None, refused=None of limit 4)
+    FAIL an identical re-ask is cached, not counted (cached=None, counted=None, refused=None)
+Also green in the main tree after landing: the plain suite (ALL PASS), selftest_refusal_contract,
+selftest_maturation_convergence — PASS 3/3 GREEN.
+
+THE ALARM AT THE REPEAT LIMIT (from the builder's log, quoted):
+  the alarm rises on the item at the repeat limit
+  it is REFUSAL_NOTHING_COULD_EVER_PASS, and says the count that raised it
+      ['4 refused verdicts (limit 4); clause locked refused 3 times: criteria repair due']
+  the alarm row stands open ({'id': 'REFUSAL_NOTHING_COULD_EVER_PASS', 'open': True, 'trips': 2})
+  with the alarm open the item may not be judged again
+
+FOUR ANSWERS: counted / submitted-but-not-counted (advisory or cached) / malformed (exit 3) /
+'COUNT NOT WRITTEN ... UNREADABLE, not zero' (exit 4).
+
+THE THIRD FILE, flagged by the builder and checked by me: infrastructure/state/judge_calibration.json
+gains a maturation_advance row. This is load-bearing, not incidental — without it status() reads
+UNTESTED and refusal_contract.advisory() is True for ever, so every advance refusal would be stored
+and never counted and the alarm would be unreachable. I verified the status is EARNED, not declared:
+  RC.status('maturation_advance') -> CALIBRATED, was: None
+  last_run exit 0, '3 planted case(s) ran and came out as planted'
+  results: unlocked_version_refuses expect refuse got refuse · cached_repeat_still_refuses refuse/refuse
+           · locked_version_passes expect pass got pass
+  written by a narrow script rather than RC.calibrate(), which would have rewritten every other family's row.
+
+TWO RISKS THE BUILDER FLAGGED, both now filed rather than tuned away:
+  RIMMANDRAKE_WIDEN_FAMILY_TRIP_MARGIN_SUITE_ALMOST_RANG — the plain suite already reaches 0.75
+      refused against the 0.70 FAMILY_RATE over a 20-window, so the trip condition was LIVE and only
+      the if-refused gate kept it quiet. The builder proved no assertion depends on the silence
+      (forcing the trip on every refusal still leaves all five suite modes rc 0, empty FAILS).
+  RIMMANDRAKE_EXPOSE_REFUSAL_RELEASE_VERB_CLEAR_UNREACHABLE — the alarm blocks judging an item and
+      its release clear() has no CLI verb and no caller in src/. I probed it: clear() WORKS called
+      directly and returns a closed row with its history, so it is a missing door, not a stuck alarm.
+
+PRE-EXISTING, read identically on base and outside this diff: selftest_maturation_dispatch --item-names
+and selftest_maturation_now p6_two_runs die in sdir() on this host's absent read-only /mnt;
+guard_launch_checks_accept 20/21; selftest_maturation_now 1 FAIL (owner_queue first-touch count).
+All four source files read DIRTY under code_review_status (never marked clean) — true on base too.
