@@ -407,9 +407,12 @@ def _split_marker(err: str):
     """(stderr without the wrapper's line, its report dict or None)."""
     rep, keep = None, []
     for ln in err.splitlines(keepends=True):
-        if ln.startswith(_MARKER):
+        i = ln.find(_MARKER)    # not only at line start: a test's unterminated stderr line precedes the report
+        if i >= 0:
             try:
-                rep = json.loads(ln[len(_MARKER):])
+                rep = json.loads(ln[i + len(_MARKER):])
+                if ln[:i]:
+                    keep.append(ln[:i] + "\n")
             except ValueError:
                 keep.append(ln)
         else:
@@ -897,15 +900,19 @@ def save_quick(results, hashes: dict) -> None:
         pass
 
 
-def quick_select(tests, state: dict, limit: float, rel=None, hash_of=None):
+def quick_select(tests, state: dict, limit: float, rel=None, hash_of=None, jail=()):
     """--quick: -> (kept, skipped[(test, why)]). A test is skipped ONLY when its recorded last run was PASS, took
-    longer than `limit`, and its current dependency hash equals the one recorded at that PASS. Never-run, last-red
+    longer than `limit`, and its current dependency hash equals the one recorded at that PASS. A `jail` (quarantined) test
+    is never skipped. Never-run, last-red
     (FAIL/CRASH/UNMEASURED/TIMEOUT), changed or unhashable tests are kept."""
     rel = rel or _rel
     hash_of = hash_of or dep_hash
     kept, skipped = [], []
     for t in tests:
         e = state.get(rel(t)) if rel(t) else None
+        if rel(t) in jail:
+            kept.append(t)
+            continue
         secs = e.get("secs") if isinstance(e, dict) else None
         slow = isinstance(secs, (int, float)) and not isinstance(secs, bool) and secs > limit
         if not (slow and e.get("state") == "PASS" and isinstance(e.get("hash"), str)):
@@ -1223,6 +1230,13 @@ def _suite(args) -> int:
             return 1
     else:
         off_tier = []
+    _KNOWN = kn = _known_start()
+    if kn and (args.no_cache or args.full):
+        kn["led"].note_forced(args.because, len(tests), sys.argv[1:])
+    try:        # a quarantined test runs until a passing --because run clears it: no earlier layer may skip it, --quick included
+        jail = set(kn["led"].quarantined()) if kn else set()
+    except Exception:  # noqa: BLE001 - _known_select reads it again and says why
+        jail = set()
     if args.quick:
         if args.only:
             print("--quick and --only do not mix: --only already names exactly what runs")
@@ -1230,7 +1244,7 @@ def _suite(args) -> int:
         if args.no_cache or args.full:  # a forced rerun skips nothing on a stored answer, the quick state included
             quick_skipped = []
         else:
-            tests, quick_skipped = quick_select(tests, load_quick(), quick_s())
+            tests, quick_skipped = quick_select(tests, load_quick(), quick_s(), jail=jail)
         print(f"--quick: {len(quick_skipped)} test(s) SKIPPED(quick) (last run PASS, slower than {quick_s():g}s, "
               f"source unchanged); a green quick run is a pre-check, not a full-suite green", flush=True)
     else:
@@ -1257,13 +1271,6 @@ def _suite(args) -> int:
     elig = {t: why for t in tests if _rel(t) and (why := E.eligible(t, _head(t)))}
     _EVID = {"store": store, "eligible": elig, "recorded": [], "unrecorded": [], "mod": E}
     reused = []
-    _KNOWN = kn = _known_start()
-    if kn and (args.no_cache or args.full):
-        kn["led"].note_forced(args.because, len(tests), sys.argv[1:])
-    try:        # a quarantined test runs until a passing --because run clears it: no earlier layer may skip it either
-        jail = set(kn["led"].quarantined()) if kn else set()
-    except Exception:  # noqa: BLE001 - _known_select reads it again and says why
-        jail = set()
     if not (args.full or args.no_cache):        # --no-cache ignores every stored answer, evidence records included
         keep = []
         day = time.strftime("%Y-%m-%d")

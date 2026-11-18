@@ -180,6 +180,20 @@ err, rep = rs._split_marker("real stderr\n" + rs._MARKER + '{"ok": true, "oom_ki
 eq(err, "real stderr\nmore\n", "wrapper marker is removed from the test's stderr")
 eq(rep, {"ok": True, "oom_kill": 2}, "wrapper marker parses")
 
+# An unterminated stderr line must not swallow the wrapper's report (Codex round 4, finding 2).
+err, rep = rs._split_marker("checking..." + rs._MARKER + '{"ok": true, "oom_kill": 0}\n')
+eq(rep, {"ok": True, "oom_kill": 0}, "a marker appended to an unterminated stderr line still parses")
+eq(err.strip(), "checking...", "...and the test's own unterminated text is kept")
+
+# A quarantined test is never skipped by a saved quick PASS (Codex round 4, finding 1).
+_qp = [Path("/r/a/selftest_slow.py"), Path("/r/a/selftest_other.py")]
+_qs = {"a/selftest_slow.py": {"state": "PASS", "secs": 99.0, "hash": "h"},
+       "a/selftest_other.py": {"state": "PASS", "secs": 99.0, "hash": "h"}}
+_kept, _skipped = rs.quick_select(_qp, _qs, 1.0, rel=lambda t: "a/" + t.name, hash_of=lambda t: "h",
+                                  jail={"a/selftest_slow.py"})
+eq([t.name for t in _kept], ["selftest_slow.py"], "a quarantined test stays in the run despite a quick PASS")
+eq([t.name for t, _ in _skipped], ["selftest_other.py"], "an unquarantined slow PASS is still skipped")
+
 # A FAIL line above the output's tail survives into the detail, after the tail; a FAIL inside the tail is not doubled.
 with tempfile.TemporaryDirectory() as tmp:
     long = Path(tmp) / "long.py"
