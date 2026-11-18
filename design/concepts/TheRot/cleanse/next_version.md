@@ -28,7 +28,7 @@ Designer decision. Random allergy duplicates a second spore illness beside the e
 
 ### Brewing vessel, ingredient/work/research costs, live ingredients and live-prep markers; cold ruin plus lifespan, strict/lenient temperature option retaining expiry.
 
-Next version, switched off. brew_and_viability is the census entry.
+Next version, switched off. brew_and_viability is the census entry. The minimal pleasure-cup support path is retained under T7.
 
 Designer decision. The defended medicine expedition has its own production and expiry loop. Ordinary food and metabolic shelter work without its vessel or clock. Work is T4.
 
@@ -43,12 +43,6 @@ Designer decision. Age reversal adds an expedition reward and dosing system beyo
 Next version, switched off. regenerant_brew is the census entry.
 
 Designer decision. Permanent-injury healing is a special medical reward. It is unnecessary to the retained food/shelter chain. Work is T6.
-
-### Lussa crown cup gives chemical joy and a timed positive memory.
-
-Recommended retirement. pleasure_brew is the census entry.
-
-Designer decision. Recommend retiring the special pleasure cup because vanilla chemical joy already supplies its named experience. It adds a separate brew reward with no indispensable role. Work is T7.
 
 ### Permanent fast-healing symbiont paired with increased hunger, live before ingestion.
 
@@ -94,7 +88,7 @@ Designer decision. Summoned defenders for special live-prize groves add a separa
 
 ### Pekk fruit has a custom collection trap, alarm and mat-grip lookup; lussa crown and false fruit are separately weighted wild plants.
 
-Next version, switched off. false_fruit is the census entry.
+Next version, switched off. false_fruit is the census entry. Guarded Lussa crown harvest for T7 uses the retained local spore defense.
 
 Designer decision. Custom lure/trap/ring is a special-prize encounter mechanic beyond ordinary predation. Work is T15.
 
@@ -331,3 +325,5 @@ Designer decision. Gene acquisition and treasure sites add an independent expedi
 Next version, switched off. The promised false-fruit ring needs a paired placement contract.
 
 It defends a special medicine prize and serves the deferred expedition. The current independent wild weights provide no ring guarantee. Work is T76.
+
+T7 retains guarded Lussa crown harvest and live on-site brewing in 0.1.0. This deferred placement is for the false-fruit ring.

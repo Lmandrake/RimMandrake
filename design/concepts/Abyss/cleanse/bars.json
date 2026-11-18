@@ -2,31 +2,33 @@
   "bars": [
     {
       "id": "B1",
-      "says": "The player can distinguish black etched relief, usable ground, living illumination and heated-room clear-air edges while the Dark dims terrain, buildings and non-colony creatures without removing their silhouettes or obscuring the colony's pawns.",
+      "says": "The player can distinguish black etched relief, usable ground, living illumination and heated-room clear-air edges while the Dark dims terrain, buildings and non-colony creatures without removing their silhouettes or obscuring the colony's pawns, and a fuelled fold lamp opens a readable forward lane that ends at blocking walls.",
       "meant": {
         "intent": "The compose line and frozen sheet require inhabitable, visually readable country. This carries the protection/nearby-terror clause through reduced visual detail and partially expresses the beauty clause through briefly revealed relief; B8 carries the swift turn back to nearby danger through returning Dark, shrinking light and ordinary predators. Only the source-of-nightmares dread is deferred with cryptid content.",
-        "source": "CASE Biomes.compose.json line; design/Jawa/worldbuilding/biomes/abyss.md sections 1, 5 and 9; delegated: require usable local ground and a spatial boundary to make the material-air description playable; owner Abyss experience in design/RimMandrake/biome_experiences_2026-10-20.md; delegated: dimming with retained silhouettes, rather than sprite removal, preserves readable danger under the standing no-unreadable-vanishing ruling.",
+        "source": "CASE Biomes.compose.json line; design/Jawa/worldbuilding/biomes/abyss.md sections 1, 5 and 9; delegated: require usable local ground and a spatial boundary to make the material-air description playable; owner Abyss experience in design/RimMandrake/biome_experiences_2026-10-20.md; delegated: dimming with retained silhouettes, rather than sprite removal, preserves readable danger under the standing no-unreadable-vanishing ruling. Owner marks of 2026-11-17 in owner_marks.md and CLEANSE_PLAN_OWNER_2026-11-17.md.",
         "figurative": []
       },
       "accept": [
         "From a heated room, an open doorway shows clear indoor air against the Dark outside; black etched crags stand above a dark-sand route, and living plants light nearby ground while the workshop remains findable.",
-        "Unveiling reveals the explored etched country in detail; returning ambient Dark reduces that detail and dims buildings and a wild predator, but their silhouettes, the colony's pawns and maintained nearby light remain readable."
+        "Unveiling reveals the explored etched country in detail; returning ambient Dark reduces that detail and dims buildings and a wild predator, but their silhouettes, the colony's pawns and maintained nearby light remain readable.",
+        "The player rotates a fuelled fold lamp toward a dark work route and sees its fading clear lane turn with it, ending at a wall while adjacent Dark remains."
       ],
       "reject": [
         "A flat black sand map and a uniformly dark sky contain all the named terrain labels but no etched standing relief or local air boundary.",
         "Fog art hides the selected worker and controls as completely as the distant country.",
-        "A predator in the Dark is drawn exactly as in clear air, or disappears entirely instead of retaining a dim silhouette."
+        "A predator in the Dark is drawn exactly as in clear air, or disappears entirely instead of retaining a dim silhouette.",
+        "The fold lamp is available in the menu but only warms a room, clears behind its facing, or clears through a solid wall."
       ],
       "lazy": "none: the words require relief, usable ground, heated-room boundaries and density-dependent dimming with retained silhouettes; a uniform sky tint, unchanged predator or culled sprite fails.",
       "range": {
-        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. Camera at near/ordinary/far playable zoom; day/night palette slots for the same fixed solar geometry; roofed/unroofed and polluted/clean terrain; sparse/dense native cover; normal Dark, Witchfire and Unveiling; room/outdoor thermal boundaries, map-wide outdoor clearance/closure, terrain, relief, buildings, colony colonists/tame animals/mechs, wild animals and hostile/neutral visitor pawns; selected/unselected states. Outdoor air has a shared temperature; no spontaneous outdoor pockets or carried halo are active.",
+        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. Camera at near/ordinary/far playable zoom; day/night palette slots for the same fixed solar geometry; roofed/unroofed and polluted/clean terrain; sparse/dense native cover; normal Dark, Witchfire and Unveiling; room/outdoor thermal boundaries, map-wide outdoor clearance/closure, terrain, relief, buildings, colony colonists/tame animals/mechs, wild animals and hostile/neutral visitor pawns; selected/unselected states. Outdoor air has a shared temperature; no spontaneous outdoor pockets or carried halo are active. Fold-lamp rotations, overlapping lanes, fuelled/empty, blocked/open columns, build/remove, feature on/off, fresh load and reload with observation off.",
         "left_out": "Alternative planets and tile painting are prohibited. Exact art variants, crag dimensions and color values are checks/art choices, not independent bars. Unexplored map fog remains unexplored."
       },
       "sees": {
         "instrument": "Live look at state-annotated capture sites selected by M3, with resolved terrain/rock and local density/temperature reads (T29/T30). Existing world face is inspected in the same look; no tile census.",
         "start": "An already authored Abyss local map with ordinary ground, native lamps and a warmed shelter; a matched density-disabled capture at the same camera/sky. World-face swirls use existing BiomesShell defaults.",
         "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
-        "control": "A sky palette alone could look dark: hold sky/time/camera fixed while heating a room and verify that its visible boundary follows density. Compare the same predator in clear/Dark air; unchanged rendering and full sprite culling must both be rejected. Colony pawns remain fully drawn in both states. Flat-sand and UI-obscuring controls are blind-sorted as rejects.",
+        "control": "A sky palette alone could look dark: hold sky/time/camera fixed while heating a room and verify that its visible boundary follows density. Compare the same predator in clear/Dark air; unchanged rendering and full sprite culling must both be rejected. Colony pawns remain fully drawn in both states. Flat-sand and UI-obscuring controls are blind-sorted as rejects. Hold ordinary room temperature and other light sources fixed while rotating or emptying the fold lamp. Attribute the changed lane to its directional clearance.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
         "live_only_why": "State geometry cannot decide whether etched relief, the dark medium and the usable foreground actually read to a player; this is the bounded visual bar."
       },
@@ -40,9 +42,9 @@
         "map time"
       ],
       "tests": {
-        "reject": "Owner would reject if false: the compose line and frozen sheet require readable black relief and material Dark, with nearby danger perceptible through retained silhouettes rather than an unchanged sprite or invisible animal.",
+        "reject": "Owner would reject if false: the compose line and frozen sheet require readable black relief and material Dark, with nearby danger perceptible through retained silhouettes rather than an unchanged sprite or invisible animal. The owner mark retains a usable directional fold lamp, whose forward clearance must be visible.",
         "renormalize": "No yield, speed, dimensions, market value, tuning percentage or variant count is fixed by says or pictures; the same comparison survives retuning/art variants.",
-        "first_version": "Land, ordinary life or the single Dark/light/fuel signature as classified in census.json; necessary presentation/warning deletion arguments are recorded there."
+        "first_version": "Land, ordinary life or the single Dark/light/fuel signature as classified in census.json; necessary presentation/warning deletion arguments are recorded there. The fold lamp is an explicit owner-marked part of this signature."
       }
     },
     {
@@ -94,35 +96,37 @@
     },
     {
       "id": "B3",
-      "says": "The colony can grow and gather food using actual living light and ordinary warmth while the biome\u2019s native food, grazing, timber and fiber plants persist without real sky light.",
+      "says": "The colony can grow and gather food using actual living light and ordinary warmth while the biome\u2019s native food, grazing, timber and fiber plants persist without real sky light, paddle vines turn toward useful light, and harvested glowberries carry usable light as they are moved and eaten.",
       "meant": {
         "intent": "Farmable biological light and native forage must make this a living biome; a plant roster or decorative glower is insufficient.",
-        "source": "closed ABYSS_LAMP_CROPS_BUILD_1.md; frozen abyss.md sections 4 and 6; ABYSS_SHEET_DONOR_PORT_1.md later owned flora; delegated: ordinary food/material continuity is necessary to life.",
+        "source": "closed ABYSS_LAMP_CROPS_BUILD_1.md; frozen abyss.md sections 4 and 6; ABYSS_SHEET_DONOR_PORT_1.md later owned flora; delegated: ordinary food/material continuity is necessary to life. Owner marks of 2026-11-17 in owner_marks.md and CLEANSE_PLAN_OWNER_2026-11-17.md.",
         "figurative": []
       },
       "accept": [
         "A transplanted wickwood or giant glow globe lights warmed crop ground; crops advance there while otherwise matched unlit crops do not. Native berries and hollow fungus yield edible food through ordinary harvest.",
-        "Native grass supports grazing, tree mushroom supplies timber and paddle vine supplies workable ordinary fiber in the Dark; a wild light cluster can establish and regrow without imported sky light."
+        "Native grass supports grazing, tree mushroom supplies timber and paddle vine supplies workable ordinary fiber in the Dark; a wild light cluster can establish and regrow without imported sky light.",
+        "Moving the useful light source makes a paddle vine visibly turn toward it while ordinary fiber harvest still works; harvested berries light the carrier or dropped stack, and eating the last berry ends that source."
       ],
       "reject": [
         "A plant looks luminous, but useful crop light never reaches the warmed growing cells.",
         "Native plants are in the roster but their only wild establishment path needs sunlight or a pre-existing light cluster that cannot establish itself.",
-        "Etchcap grows on ordinary fertile sand as readily as in the actual etch-hollow, or an ancient unworkable stalk is sold as a new premium fiber crop."
+        "Etchcap grows on ordinary fertile sand as readily as in the actual etch-hollow, or an ancient unworkable stalk is sold as a new premium fiber crop.",
+        "Vines keep a fixed pose through a light-source move, or harvested berries have a glowing icon but cast no useful light, or leave ghost light after consumption."
       ],
       "lazy": "none: the words name actual warmth/light-supported crop growth and native harvest, excluding decorative glowers or sun-dependent life.",
       "range": {
-        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. Each named native plant role from the census, clean/polluted and fertile/poor substrates, hollow/plain sand, native versus ordinary light-dependent crops, wild/sown/transplanted/harvested/regrowing states, lamp destruction, temperature below/within growth range, RM and campaign tolerance patches; new colony and forty-colonist maintained plots.",
-        "left_out": "An unheated crop in lethal cold need not grow; no naturally farmable nightside greenbelt, guaranteed food abundance, fixed yields or special cuisine multipliers. Decorative plant turning/poison/new spore/mobile berry-light extras stay off."
+        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. Each named native plant role from the census, clean/polluted and fertile/poor substrates, hollow/plain sand, native versus ordinary light-dependent crops, wild/sown/transplanted/harvested/regrowing states, lamp destruction, temperature below/within growth range, RM and campaign tolerance patches; new colony and forty-colonist maintained plots. Vines with absent, moving, tied and occluded light sources. Berry harvest, dropped stacks, hauling, held inventory, split/merge, consumption, destruction and reload. Individual feature switches and all-off.",
+        "left_out": "An unheated crop in lethal cold need not grow; no naturally farmable nightside greenbelt, guaranteed food abundance, fixed yields or special cuisine multipliers. Globe poison and the new spore hazard stay off."
       },
       "sees": {
-        "instrument": "M1 plant/substrate transition generator plus M2 calibrated growth/food/harvest traces and glow/overlight reads; resolved-def reads determine inherited fields (T33A/T37A).",
+        "instrument": "M1 plant/substrate transition generator plus M2 calibrated growth/food/harvest traces and glow/overlight reads; resolved-def reads determine inherited fields (T33A/T37A). T39 pairs the selected light bearing and facing state with live captures of the rendered pose before and after moving the light. T41 adds item-owner and real glow-grid traces.",
         "start": "Paired plots share soil, temperature and crop age; one has a living emitter and one has no emitter. Natural native clusters are sampled separately from player-planted plots, with no hidden cheat light or food delivery.",
         "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
-        "control": "Fertility, artificial sunlamps or inventory injections could grow/feed the plot: hold soil/heat fixed, remove other glowers and record harvested item origin and actual crop-growth eligibility. Hollow and equally fertile sand controls separate substrate from fertility. Record sky/sun glow at every sampled plant and plot; native persistence and establishment count only where growth eligibility holds with the sky contribution removed, and paired crop readings must attribute growth to living light.",
+        "control": "Fertility, artificial sunlamps or inventory injections could grow/feed the plot: hold soil/heat fixed, remove other glowers and record harvested item origin and actual crop-growth eligibility. Hollow and equally fertile sand controls separate substrate from fertility. Record sky/sun glow at every sampled plant and plot; native persistence and establishment count only where growth eligibility holds with the sky contribution removed, and paired crop readings must attribute growth to living light. Move the only light source around a fixed vine and compare its rendered facing to the chosen eligible source. A changed facing value with a fixed sprite fails. Remove other glowers before measuring berry light and its disappearance after the final item is consumed.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
-        "live_only_why": "Not live-only: calibrated production-kernel/state traces can decide this comparison; live state reads calibrate engine integration, no subjective look is required."
+        "live_only_why": "State traces can decide growth and berry illumination after calibration. Only the live rendered vine establishes that the chosen facing is visible on the plant."
       },
-      "live_only": false,
+      "live_only": true,
       "touches": [
         "ground",
         "light grid",
@@ -132,9 +136,9 @@
         "map time"
       ],
       "tests": {
-        "reject": "Owner would reject if false: Farmable biological light and native forage must make this a living biome; a plant roster or decorative glower is insufficient.",
+        "reject": "Owner would reject if false: Farmable biological light and native forage must make this a living biome; a plant roster or decorative glower is insufficient. Owner marks retain visible vine turning and useful mobile berry light.",
         "renormalize": "No yield, speed, dimensions, market value, tuning percentage or variant count is fixed by says or pictures; the same comparison survives retuning/art variants.",
-        "first_version": "Land, ordinary life or the single Dark/light/fuel signature as classified in census.json; necessary presentation/warning deletion arguments are recorded there."
+        "first_version": "Land, ordinary life or the single Dark/light/fuel signature as classified in census.json; necessary presentation/warning deletion arguments are recorded there. Vine turning and glowberry_item are owner-marked first-version life."
       }
     },
     {
@@ -184,35 +188,37 @@
     },
     {
       "id": "B5",
-      "says": "The player meets a functioning dark-adapted food chain with useful ordinary native husbandry, gust-fed gharreks and genuinely flying krizzaks, and can identify what killed or removed an animal.",
+      "says": "The player meets a functioning dark-adapted food chain with useful ordinary native husbandry, gust-fed gharreks and genuinely flying krizzaks, and can identify what killed or removed an animal, while the player can see creepy pool creatures swim in their habitat and supply recognisable catches through ordinary fishing.",
       "meant": {
         "intent": "Life must be encountered as feeding, useful animals and visible predation/loss, not merely a cast list or silently culled population.",
-        "source": "frozen abyss.md section 4; closed ABYSS_GHARREK_BUILD_1.md; standing flight and no-unreadable-vanishing rulings; delegated: ordinary food-chain and husbandry roles from the actual owned defs.",
+        "source": "frozen abyss.md section 4; closed ABYSS_GHARREK_BUILD_1.md; standing flight and no-unreadable-vanishing rulings; delegated: ordinary food-chain and husbandry roles from the actual owned defs. Owner marks of 2026-11-17 in owner_marks.md and CLEANSE_PLAN_OWNER_2026-11-17.md. Standing fishables ruling in CLAUDE.md requires living moving counterparts.",
         "figurative": []
       },
       "accept": [
         "Gharreks open and feed with real gusts while ordinary native prey graze and predators leave a readable kill; aveluthia carry loads, milk stock produce food and trained sorters forage cleanables and haul.",
-        "A krizzak actually flies and later lands; death leaves a body and cause rather than a disappearing pawn, while native animal needs are met by the specified local resources."
+        "A krizzak actually flies and later lands; death leaves a body and cause rather than a disappearing pawn, while native animal needs are met by the specified local resources.",
+        "A veiljaw swims with its pale jaw seams visible in the dark pool and a suturefin glides along its bottom; ordinary fishing brings in a recognisable catch of a species that also lives and moves there."
       ],
       "reject": [
         "A populated roster yields only starving dormant feeders and predators until the map is empty.",
         "A flying moth only walks with an animated texture, or expired animals are silently deleted to balance the population.",
-        "A tame utility animal exists in the def database but ordinary colony handling cannot obtain its advertised pack, milk or haul role."
+        "A tame utility animal exists in the def database but ordinary colony handling cannot obtain its advertised pack, milk or haul role.",
+        "A fishing menu produces dark-themed loot while the biome has no living moving counterpart for that catch, or the pool creature is invisible or static scenery."
       ],
-      "lazy": "none: the words require a functioning ordinary food chain with usable husbandry, flight and visible loss causes, excluding a roster-only zoo.",
+      "lazy": "none: the words require a functioning ordinary food chain with usable husbandry, flight and visible loss causes, and recognisable living swimmers and catches. A menu and a movement trace alone leave the visibility claim unproven.",
       "range": {
-        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. All existing owned native species and campaign Taozin dependency, each ordinary diet/predator/pack/milk/training role, young/adult/old native stages, wild/tame/downed/dead and pen/free-roaming; normal Dark/Witchfire/Unveiling, real still/gust intervals, no colony and forty-colonist scale, water-adjacent native needs under the standing native-water ruling. RM and campaign-resolved tolerances; save/load and map exits.",
-        "left_out": "No roster additions/evictions, mandatory sighting of a trace species in a short run, exact population pyramid counts or yield thresholds. Continuous Summ growth/bond/bane/UV/regen systems stay off; ordinary native stages stay. External Taozin engine behavior is not redesigned."
+        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. All existing owned native species and campaign Taozin dependency, each ordinary diet/predator/pack/milk/training role, young/adult/old native stages, wild/tame/downed/dead and pen/free-roaming; normal Dark/Witchfire/Unveiling, real still/gust intervals, no colony and forty-colonist scale, water-adjacent native needs under the standing native-water ruling. RM and campaign-resolved tolerances; save/load and map exits. Authored mineral-pool banks, deep/shallow habitat, each declared catch/species pair, sparse and established populations, blocked/reachable banks, catch/haul/cook, fishery off/on, death and reload.",
+        "left_out": "Existing roster placements remain; the owner-marked fishery adds native species. No evictions, mandatory sighting of a trace species in a short run, exact population pyramid counts or yield thresholds. Continuous Summ growth/bond/bane/UV/regen systems stay off; ordinary native stages stay. External Taozin engine behavior is not redesigned."
       },
       "sees": {
-        "instrument": "M1 action/job/flight transitions and M4 food-pulse replay feed M2 calibrated food-web and cause-of-loss traces. Pawn_FlightTracker state verifies flight; ordinary cargo/milk/training job results verify utility (T34A/T37A).",
+        "instrument": "M1 action/job/flight transitions and M4 food-pulse replay feed M2 calibrated food-web and cause-of-loss traces. Pawn_FlightTracker state verifies flight; ordinary cargo/milk/training job results verify utility (T34A/T37A). T51 reads normal fishing jobs, catch-to-race mapping and elapsed movement for each catch species, then uses a short live look at both species swimming in their pool habitat and at their actual catches.",
         "start": "A real native population on a full map plus controlled examples of each functional role, ordinary edible plants and feeding resources; training/handling unlocked. A same-input no-predator/no-gust trace is a diagnostic control, never the accepting whole setup.",
         "on": "All kept mechanics at shipped defaults, including Dark, Unveiling, erosion, lamp crops, native feeding/aversion/warnings, gust soundscape and muffle; every kept unlock available. Next-version extras off. All DLC. Both RM-only resolved content and the campaign with declared neighbour defaults where range names them.",
-        "control": "Forced nutrition/spawn replenishment could hide a dead food chain: record all nutrition sources, ordinary spawn/migration and losses; compare unforced wind/needs. A flight graphic cannot substitute for the tracker state. Killing leaves corpse/combat records with pawn identity.",
+        "control": "Forced nutrition/spawn replenishment could hide a dead food chain: record all nutrition sources, ordinary spawn/migration and losses; compare unforced wind/needs. A flight graphic cannot substitute for the tracker state. Killing leaves corpse/combat records with pawn identity. Require distinct position samples for living aquatic pawns and ordinary-job catch provenance. A direct catch-item spawn or moving decorative texture cannot satisfy the fishery. Each catch mapping must resolve to an active native race and habitat admission. Match the visible swimmers and recognisable landed items to the state records under ordinary map lighting.",
         "reset": "Use copied input snapshots/disposable local maps. Restore settings snapshot and remove fixture-owned objects/effects only, or discard the map after save comparison; never alter the fixed world or canonical saves. Replay restores kernel state and RNG inputs, not an assumed clean map.",
-        "live_only_why": "Not live-only: calibrated production-kernel/state traces can decide this comparison; live state reads calibrate engine integration, no subjective look is required."
+        "live_only_why": "Position and job traces establish swimming and catch provenance. A live look establishes that each aquatic pawn renders in motion in the pool and the landed catch is recognisable, even when the state trace would pass with a broken sprite."
       },
-      "live_only": false,
+      "live_only": true,
       "touches": [
         "food web",
         "native lifecycle",
@@ -221,9 +227,9 @@
         "map time"
       ],
       "tests": {
-        "reject": "Owner would reject if false: Life must be encountered as feeding, useful animals and visible predation/loss, not merely a cast list or silently culled population.",
+        "reject": "Owner would reject if false: Life must be encountered as feeding, useful animals and visible predation/loss, not merely a cast list or silently culled population. Owner explicitly requests creepy creatures to fish for, with the standing living-counterpart rule.",
         "renormalize": "No yield, speed, dimensions, market value, tuning percentage or variant count is fixed by says or pictures; the same comparison survives retuning/art variants.",
-        "first_version": "Land, ordinary life or the single Dark/light/fuel signature as classified in census.json; necessary presentation/warning deletion arguments are recorded there."
+        "first_version": "Land, ordinary life or the single Dark/light/fuel signature as classified in census.json; necessary presentation/warning deletion arguments are recorded there. The fishery is explicit owner-marked first-version life."
       }
     },
     {
@@ -322,10 +328,10 @@
     },
     {
       "id": "B8",
-      "says": "Across a complete season of ordinary full-map play the colony can keep warm lit work and farms usable amid recurring Dark, native predation and grain wear, with nearby danger returning as Unveiling closes, without runaway residue, emptied native life, stalled work or cascading errors after reload or reordered work.",
+      "says": "Across a complete season of ordinary full-map play the colony can keep warm lit work, farms and fishing usable amid recurring Dark, native predation and grain wear, with nearby danger returning as Unveiling closes, without runaway residue, emptied native life, stalled work or cascading errors after reload or reordered work.",
       "meant": {
         "intent": "The first version must run as a whole: protection, living light, nearby danger and material maintenance must coexist over time, not only in isolated forced scenes. It carries sustained refuge and the swift beauty-to-danger reversal when Unveiling ends through returning Dark, shrinking artificial light, krizzak feeding and an ishvarith approaching the weakened refuge. Only long-stay discovery of a nightmare source is deferred; erosion is a material cost, not that dread.",
-        "source": "Owner 2026-10-20 Abyss experience in biome_experiences_2026-10-20.md; cleanse whole-bar requirement; delegated: classify flood/desert/stall/error outcomes using actual colony/material/ecology trajectories.",
+        "source": "Owner 2026-10-20 Abyss experience in biome_experiences_2026-10-20.md; cleanse whole-bar requirement; delegated: classify flood/desert/stall/error outcomes using actual colony/material/ecology trajectories. Owner marks of 2026-11-17 in owner_marks.md and CLEANSE_PLAN_OWNER_2026-11-17.md.",
         "figurative": [
           {
             "word": "runaway",
@@ -342,17 +348,19 @@
       "accept": [
         "During routine residence, workers roof and heat a refuge, maintain a living-light farm, handle a local feeder failure and use recovered grain; native life continues and the explored country periodically clears and closes.",
         "A save made during active light/air/material pressure resumes into the same kind of recoverable routine; planting before heating and heating before planting both reach usable work when their ordinary prerequisites are met.",
-        "On a cold map with krizzaks and an ishvarith near the colony edge, a natural Unveiling reveals etched relief; as it ends, returning Dark shortens artificial lamplight, a krizzak feeding on the approach lamp weakens the refuge further, and the ishvarith can approach the workers. The dim silhouette and existing cues let them see the danger return and withdraw toward maintained living light; no cryptid event or scheduled attack is needed."
+        "On a cold map with krizzaks and an ishvarith near the colony edge, a natural Unveiling reveals etched relief; as it ends, returning Dark shortens artificial lamplight, a krizzak feeding on the approach lamp weakens the refuge further, and the ishvarith can approach the workers. The dim silhouette and existing cues let them see the danger return and withdraw toward maintained living light; no cryptid event or scheduled attack is needed.",
+        "The colony rotates and fuels fold lamps, harvests turning vines and luminous berries, and fishes inhabited pools alongside its ordinary farming and roofing. After reload those routines continue with observation off."
       ],
       "reject": [
         "A staged clearing with fire, predation or grain switched off looks successful, but full default play empties the native food chain or eats the colony\u2019s land.",
         "Residue fills paths and storage without useful cost, light failures require continual bespoke intervention, ordinary work cannot resume, or a mid-cycle reload starts repeated exceptions.",
         "The main work sequence succeeds only in its scripted order because warming, planting or excluding a feeder leaves stale state in another system.",
-        "With the same cold air, approach lamp, nearby krizzak and ishvarith, Unveiling ends but only the sky tint changes: lamp reach and the predator approach stay as safe as during the clearing, so nothing nearby turns threatening."
+        "With the same cold air, approach lamp, nearby krizzak and ishvarith, Unveiling ends but only the sky tint changes: lamp reach and the predator approach stay as safe as during the clearing, so nothing nearby turns threatening.",
+        "The season only works with the retained tools switched off, debug-granted catches or an observation event forced."
       ],
       "lazy": "none: the words require complete default natural operation across the full stated stretch and action-order/reload cases, excluding an isolated forced showcase.",
       "range": {
-        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. Full season on complete local maps spanning supported dimensions, relief/thermal regimes and low/high ordinary exposure; new and established compact/dispersed colonies up to forty colonists. RM standalone and full campaign neighbour defaults. Save halfway through active cycle; repeat the main heat/roof/plant/haul/refine/exclude-feeder actions in a second order. Continue representative worst regimes to day 100. No forced clear sky or forced recurrence substitutes for actual natural cycles; if natural Unveiling is absent, extend observation through its natural occurrence and return.",
+        "varies": "RM_Abyss on the fixed authored world, cold/thermal-transition/warm-margin inputs; all supported normal local-map dimensions and relief classes read from the loaded configuration, new and established maps, day 1 through day 100. Full season on complete local maps spanning supported dimensions, relief/thermal regimes and low/high ordinary exposure; new and established compact/dispersed colonies up to forty colonists. RM standalone and full campaign neighbour defaults. Save halfway through active cycle; repeat the main heat/roof/plant/haul/refine/exclude-feeder actions in a second order. Continue representative worst regimes to day 100. No forced clear sky or forced recurrence substitutes for actual natural cycles; if natural Unveiling is absent, extend observation through its natural occurrence and return. Retained fold lamps, turning vines, mobile berry light and fishery at shipped defaults, observation off and load grant applied. Repeat lamp/plant/fish work in alternate orders, including overlapping light sources and an occupied carrier inventory at save.",
         "left_out": "No effortless guaranteed survival for deliberately unheated farms, hostile unrelated raid schedules or unbounded custom map sizes beyond the loaded supported configuration. No expectation of exact trajectory equality for stochastic runs, or unchanged unscribed feeder dimming immediately after reload. Next-version extras are excluded by shipped defaults, not selectively disabled only for the test."
       },
       "sees": {
@@ -378,7 +386,7 @@
         "external sensing"
       ],
       "tests": {
-        "reject": "Owner would reject if false: refuge, living light, nearby ordinary danger and material maintenance must coexist over a full season; isolated forced scenes cannot establish that.",
+        "reject": "Owner would reject if false: refuge, living light, nearby ordinary danger and material maintenance must coexist over a full season; isolated forced scenes cannot establish that. The whole version includes all owner-marked light tools and the inhabited fishery.",
         "renormalize": "No yield, speed, dimensions, market value, tuning percentage or variant count is fixed by says or pictures; the same comparison survives retuning/art variants.",
         "first_version": "Land, ordinary life or the single Dark/light/fuel signature as classified in census.json; necessary presentation/warning deletion arguments are recorded there."
       }
@@ -445,12 +453,20 @@
     {
       "id": "C15",
       "what": "M1\u2013M4 calibration records identify untrusted regions, input hashes, numeric error budgets, controlled mutations and all kept default settings; no model result labelled a game measurement."
+    },
+    {
+      "id": "C16",
+      "what": "Record fold-lamp grant/research/menu availability, fuel, rotations, wall stops and fade at fresh load/reload with heat observation off. Record vine target/facing and glowberry item/holder/light ownership through split/merge/consume/destroy/reload and all feature gates. Values are tuning checks."
+    },
+    {
+      "id": "C17",
+      "what": "Resolved fishery manifest maps each catch to a franchise-free RM_ race and authored pool habitat. State traces record actual swimming displacement, ordinary fishing-job provenance, catch/death/loss causes and population renewal. Empty, invalid and missing mappings fail the future builder check."
     }
   ],
   "rules": [
     {
       "id": "R1",
-      "rule": "Outdoor ambient Dark density follows the map's shared ordinary outdoor temperature; each room's density follows that room's ordinary temperature. Unveiling clears ambient particles, not solar geometry. Outdoor drifting noise pockets, fold lanes, phantom clearance and carried halos are next-version extras, off; no outdoor microclimate is promised.",
+      "rule": "Outdoor ambient Dark density follows the map's shared ordinary outdoor temperature; each room's density follows that room's ordinary temperature. Unveiling clears ambient particles, not solar geometry. Outdoor drifting noise pockets, phantom clearance and carried halos are next-version extras, off; no outdoor microclimate is promised. The retained fold lamp subtracts directional clearance from ambient Dark along wall-bounded columns with distance fade. It leaves the ordinary temperature field intact.",
       "touches": [
         "dark field",
         "weather and gust",
@@ -468,7 +484,7 @@
     },
     {
       "id": "R3",
-      "rule": "Living emitters resist ambient Dark; building glowers shrink by their named ledger contribution. Deepfire retains its ruled ambient exemption. Each owner restores only its own share, including useful overlight.",
+      "rule": "Living emitters resist ambient Dark; building glowers shrink by their named ledger contribution. Deepfire retains its ruled ambient exemption. Each owner restores only its own share, including useful overlight. Harvested glowberry emitters follow the current item or carrier position, compose with existing light ownership, and release their contribution on consumption, destruction or disable. Vine facing follows eligible useful light.",
       "touches": [
         "light grid",
         "dark field",
@@ -515,7 +531,7 @@
     },
     {
       "id": "R9",
-      "rule": "Observe ordinary tick scheduling through save/load and alternate action orders. Existing unscribed krizzak light-share safe-reset is permitted; ambient and other shares reapply independently. Murk clears on leaving an Abyss-held map.",
+      "rule": "Observe ordinary tick scheduling through save/load and alternate action orders. Existing unscribed krizzak light-share safe-reset is permitted; ambient and other shares reapply independently. Murk clears on leaving an Abyss-held map. Heat-observation off grants the observation project in FinalizeInit on fresh load and reload, silently and idempotently; the fold lamp remains normally buildable and usable while discovery checking, offers and letters stay off.",
       "touches": [
         "map time",
         "light grid",
@@ -535,7 +551,7 @@
     },
     {
       "id": "R11",
-      "rule": "Every deferred feature ships behind a labelled next-version off parent and child gates; code/defs remain loadable, menu/job/letter/incident effects absent. All-off is playable ordinary land/life/weather. Built references do not establish player-facing necessity.",
+      "rule": "Every deferred feature ships behind a labelled next-version off parent and child gates; code/defs remain loadable, menu/job/letter/incident effects absent. All-off is playable ordinary land/life/weather. Built references do not establish player-facing necessity. Fold lamp, vine turning, glowberry_item and fishery are owner-marked first-version defaults. Their individual switches and master-off preserve saved things and remove active contributions safely.",
       "touches": [
         "release defaults",
         "native lifecycle",
@@ -544,7 +560,7 @@
     },
     {
       "id": "R12",
-      "rule": "No worldgen in any version, no tile authoring, no new heat/sun rule, all DLC assumed and naming tiers respected. Native growth/forage and local build ground use actual resolved ordinary roles; zero owned tiles is expected.",
+      "rule": "No worldgen in any version, no tile authoring, no new heat/sun rule, all DLC assumed and naming tiers respected. Native growth/forage and local build ground use actual resolved ordinary roles; zero owned tiles is expected. RM_Veiljaw and RM_Suturefin are invented franchise-free aquatic natives. Every fishery catch maps to its living moving biome counterpart, with no change to existing species placements.",
       "touches": [
         "release defaults",
         "ground",
@@ -586,7 +602,7 @@
         "R12"
       ],
       "holds_together": "unknown",
-      "why": "Room temperature, shared outdoor temperature, ambient weather, target obstruction, visible boundary and listener muffling all consume this field. Outdoor uniformity is settled by R1, not an unknown. Clear endpoints may still bypass an intervening Dark segment or disagree with lamp/light/audio updates; the entire retained consumer group needs M3 calibration. No carried-halo or outdoor-pocket implementation is required.",
+      "why": "Room temperature, shared outdoor temperature, ambient weather, target obstruction, visible boundary and listener muffling all consume this field. R1 settles outdoor ambient uniformity before lane clearance. Clear endpoints may still bypass an intervening Dark segment or disagree with lamp/light/audio updates; the entire retained consumer group needs M3 calibration. No carried-halo or outdoor-pocket implementation is required. M3 must verify that a fuelled lamp opens the same wall-bounded lane for every consumer.",
       "model": "M3: Dark geometry, optical paths and composition sweep"
     },
     {
@@ -602,7 +618,7 @@
         "R9"
       ],
       "holds_together": "unknown",
-      "why": "Dark shrink, protected biological emitters, krizzak bite/recovery, overlight and aversion form a three-way feedback: reduced useful light can admit predators which remove caretakers, preventing light recovery. Ledger arithmetic alone cannot show actual overlight or path integration. M3 gives local consistency; M2 carries its calibrated result into season recovery.",
+      "why": "Dark shrink, protected biological emitters, krizzak bite/recovery, overlight and aversion form a three-way feedback: reduced useful light can admit predators which remove caretakers, preventing light recovery. Ledger arithmetic alone cannot show actual overlight or path integration. M3 gives local consistency; M2 carries its calibrated result into season recovery. M3 includes fold-lamp rotation, vine facing and berry light moving with its carrier.",
       "model": "M3: Dark geometry, optical paths and composition sweep"
     },
     {
@@ -706,7 +722,7 @@
         "R12"
       ],
       "holds_together": "unknown",
-      "why": "Wind feeds gharreks/prey, cultivated light feeds colonists, native predators consume stock and grain/fungus can alter productivity. Native utility, Taozin, ordinary breeding and feeding losses can agree locally yet jointly empty prey or multiply labor. M2 couples all of them, including both colony scales.",
+      "why": "Wind feeds gharreks/prey, cultivated light feeds colonists, native predators consume stock and grain/fungus can alter productivity. Native utility, Taozin, ordinary breeding and feeding losses can agree locally yet jointly empty prey or multiply labor. M2 couples all of them, including both colony scales. Catch effort competes with ordinary forage and labour and must leave populations able to renew.",
       "model": "M2: Whole-map season, light-food-material feedback"
     },
     {
@@ -730,7 +746,7 @@
         "R12"
       ],
       "holds_together": "argued",
-      "why": "Defaults compose by parent gates: neutral lane/phantom/cover APIs cannot reactivate their off owners; settings all-off cleans each share without deleting definitions or pawns. Static pursuit/banded payload/native roster are independent retained dependencies, so no accepting scene requires an off extra. M1 audits all parent/child transitions and imported settings to falsify this separation.",
+      "why": "Defaults compose by parent gates: neutral phantom/cover APIs cannot reactivate their off owners, and lamp clearance is neutral only when its own feature is off or the lamp is inactive; settings all-off cleans each share without deleting definitions or pawns. Static pursuit/banded payload/native roster are independent retained dependencies, so no accepting scene requires an off extra. M1 audits all parent/child transitions and imported settings, including the silent T4 grant with discovery off.",
       "model": ""
     }
   ],

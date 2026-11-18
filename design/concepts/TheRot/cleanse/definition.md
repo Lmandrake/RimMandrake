@@ -1,6 +1,6 @@
 # The Rot proposed comprehensive definition
 
-Design Version 0.1.0. Author of scope, defaults and interpretations is the Designer in this cleansing pass. Owner rulings remain constraints. Proposal application awaits the owner's reading and the fresh review described in the brief.
+Design Version 0.1.0. Author of scope, defaults and interpretations is the Designer in this cleansing pass. Owner rulings remain constraints. The owner mark of 2026-11-17 retains the Lussa pleasure cup in 0.1.0. Proposal application awaits the owner's reading and the fresh review described in the brief.
 
 ## The mod in player language
 
@@ -48,7 +48,7 @@ Plant gas shows a local cloud and a health consequence during an ordinary approa
 
 ## Edges
 
-The first-version promise covers authored Rot maps across their full warm-to-cold shoulder. The live site temperature and geometric sun position are inputs. Excluded experiences are Sheen infection, extra allergy incidents, guarded tea/symbiont prizes, kin sharing, chittik host implantation, psylink trees, weapon/fuel manufacture, grown heater/gene rewards, portable mat upkeep/budding, vats, purge medicine, special giant guts, rescue, core/log quests, ritual discovery, atmospheric food machines and mood mutators. Detailed fates and containment are in census.json and tickets.md.
+The first-version promise covers authored Rot maps across their full warm-to-cold shoulder. The live site temperature and geometric sun position are inputs. Excluded experiences are Sheen infection, extra allergy incidents, the wider guarded medicine/symbiont encounters, kin sharing, chittik host implantation, psylink trees, weapon/fuel manufacture, grown heater/gene rewards, portable mat upkeep/budding, vats, purge medicine, special giant guts, rescue, core/log quests, ritual discovery, atmospheric food machines and mood mutators. Detailed fates and containment are in census.json and tickets.md.
 
 Standing exclusions include automated planetary placement in any version, ordinary water rain on Rot, general gene banks, active engineered bioweapon ecology and arbitrary fauna disappearance. The setting is one received save on a fixed planet. Milk pools are local substrate and secretion. They add no planetary rivers, rainfall hydrology or traversable sea layer. Star Wars IP and authored campaign places belong to the deeper tier. Multi-homed species remain on their existing rosters.
 
@@ -85,3 +85,13 @@ A fight leaves a downed worker and several corpses outdoors. Rescue uses the ord
 ### The season's turn
 
 After a mid-season reload, growth, reproduction and decomposition resume from saved state. The colony expands storage before harvesting, then repeats the sequence with harvesting first to expose the consequences. Across the full map the pale forest remains alive, dangerous patches remain local, usable routes remain, and ordinary colony management continues. A forest-wide gas flood, collapsed food web, permanently jammed hauling or repeated error stream fails the whole bar.
+
+## Owner-retained pleasure brew
+
+The Lussa crown cup supplies chemical joy and its timed positive memory in 0.1.0 under the owner mark in owner_marks.md. The existing RM_Brew_EuphoricBrew, RM_Tea_Pleasure and RM_EuphoricBrewMemory path is recorded in the census.
+
+The frozen sheet requires a defended source and live on-site brewing. My delegated default reuses the existing local spore defense pattern for every harvestable Lussa crown, with a visible cloud and a retreat route. The cup uses the existing vessel, recipe, ingredient/work/research and viability path, with bill completion restricted to the local day and map of harvest, as specified by the plant description. The cup is consumed on that map. Loading it for export is blocked, and a cup moved away by another path is inert. The wider brew_and_viability suite stays next version. T7 isolates this shared path and keeps its costs visible and attainable at shipped defaults. Ingredient expiry, cold ruin and strict/lenient temperature viability still apply alongside the harvest-day deadline. Crown placement keeps its existing wild weight. False-fruit rings and guardian alarms remain deferred. T4/T15/T76 carry the narrowed containment boundaries.
+
+In the first hour the crew can identify harvestable crown and see the cup's preparation requirements. During an ordinary week a worker gathers crown through its local hazard, brews it on-site and drinks it through normal jobs, gaining chemical joy and a memory that expires naturally. Inspect and bill feedback explain a ruined ingredient, a missed harvest-day deadline or an interrupted bill. At forty colonists preparation competes for ingredients and labour with food/storage work. The worst day can interrupt brewing, leaving recoverable ingredients and held cups. The season includes repeated ordinary production and saved active memories under B7.
+
+The pleasure-brew setting ships on and independently controls this retained path. Master-off and individual off suppress new acquisition and ingestion effects safely. Existing objects remain serializable and active memories finish their ordinary expiry. Reload preserves cup and ingredient identity, harvest date and map, preparation state and the memory timer. All other medicinal cups, symbionts and encounters retain their previous release fates. B3 adds the normal acquisition-to-joy experience, C14 records technical readings, M1 enumerates preparation/ingestion/expiry transitions and M4 includes the labour and stock in the full-season forecast.

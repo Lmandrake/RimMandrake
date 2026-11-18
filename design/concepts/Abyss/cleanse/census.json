@@ -2,7 +2,7 @@
   "rows": [
     {
       "id": "biome_body",
-      "what": "Owned RM_Abyss BiomeDef: climate-independent content, diseases, fertile/dark ground, positive animalDensity, weather and flora/fauna tables, extra map steps; no fishery authored.",
+      "what": "Owned RM_Abyss BiomeDef: climate-independent content, diseases, fertile/dark ground, positive animalDensity, weather and flora/fauna tables, extra map steps; new fishery specified separately in abyss_fishery.",
       "built": "present",
       "evidence": "src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml; src/RimMandrake/Abyss/Defs/BiomeDefs/RM_Abyss.xml; ITEM:ABYSS_FULL_RENAME_1; ITEM:FORSAKENCRAGS_RM_MOD_BUILD_1",
       "proven": "stale",
@@ -158,15 +158,15 @@
     },
     {
       "id": "fold_lamp",
-      "what": "Fuelled, rotatable heater-lamp with a forward lane of Dark clearance; walls stop each column, clearance fades with distance. Plain heat/light remains without Dark.",
+      "what": "Fuelled, rotatable heater-lamp with a forward lane of Dark clearance; walls stop each column, clearance fades with distance. Plain heat/light remains without Dark. With heat_observation off, FinalizeInit grants its observation project on fresh load and reload so ordinary RM_HeatFolding bench research can unlock the lamp without a discovery event.",
       "built": "present",
       "evidence": "src/RimMandrake/Abyss/Source/RM_AbyssLight.cs:65; src/RimMandrake/Abyss/Source/RM_AbyssLight.cs:65; src/RimMandrake/Abyss/Defs/ThingDefs_Buildings/RM_FoldLamp.xml; src/RimMandrake/Abyss/Source/RM_AbyssKernel.cs",
       "proven": "missing",
       "called_by": "RM_MapComponentDark.DarknessAt -> RM_MapComponent_FoldLanes.ClearanceAt; RM_AbyssLight.cs Rebuild; RM_FoldLamp.xml research/build menu",
-      "serves": "deferred fold lamp",
-      "fate": "next_version",
-      "why": "Designer delegated: A custom directional tool is unnecessary when ordinary heat clears rooms and living plants light farms.",
-      "needed_by": "none: removing the player-facing behavior leaves the first version whole",
+      "serves": "first-version directional Dark clearance",
+      "fate": "signature",
+      "why": "Owner mark of 2026-11-17 in owner_marks.md retains the fuelled directional heater-lamp in 0.1.0 as part of the Dark/light signature.",
+      "needed_by": "none: owner-marked first-version capability",
       "ticket": "T5"
     },
     {
@@ -548,14 +548,14 @@
     },
     {
       "id": "glowberry",
-      "what": "Living lamp with edible ordinary RawBerries harvest, TreeSowing and own variants; no separate harvested glowing-berry item.",
+      "what": "Living lamp with TreeSowing and its own variants. The built bush yields RawBerries. In 0.1.0 direct bush harvest yields the edible product specified in glowberry_item, while abstract forage remains RawBerries.",
       "built": "present",
       "evidence": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowberryBush.xml; src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowberryBush.xml; ITEM:ABYSS_SHEET_DONOR_PORT_1",
       "proven": "stale",
       "called_by": "RM_Abyss.xml -> RM_GlowberryBush.xml",
       "serves": "first-version life",
       "fate": "life",
-      "why": "Designer delegated: Ordinary berry forage and planted light; existing RawBerries is the food, no new glowing inventory item required.",
+      "why": "Designer delegated: Ordinary berry forage and planted light are first-version life; the retained mobile-light harvest must preserve normal food use.",
       "needed_by": "none: not a needed_by classification",
       "ticket": ""
     },
@@ -1190,10 +1190,10 @@
       "evidence": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_PaddleVine.xml",
       "proven": "missing",
       "called_by": "description/header promise; no implementing comp/ability located",
-      "serves": "Paddle-vine tracking/turning toward light",
-      "fate": "next_version",
-      "why": "Designer delegated: A moving plant gimmick is unnecessary to fiber harvest or lighting.",
-      "needed_by": "none: not needed_by",
+      "serves": "first-version light-responsive native plant",
+      "fate": "life",
+      "why": "Owner mark of 2026-11-17 in owner_marks.md retains paddle-vine turning toward light in 0.1.0.",
+      "needed_by": "none: owner-marked first-version capability",
       "ticket": "T39"
     },
     {
@@ -1216,10 +1216,10 @@
       "evidence": "src/RimMandrake/Abyss/Defs/ThingDefs_Plants/RM_GlowberryBush.xml",
       "proven": "missing",
       "called_by": "description/header promise; no implementing comp/ability located",
-      "serves": "Harvested berry item emitting mobile light",
-      "fate": "next_version",
-      "why": "Designer delegated: The plant already gives RawBerries; inventory light is a new portable-light capability.",
-      "needed_by": "none: not needed_by",
+      "serves": "first-version harvested mobile light",
+      "fate": "life",
+      "why": "Owner mark of 2026-11-17 in owner_marks.md retains harvested glowing berries in 0.1.0.",
+      "needed_by": "none: owner-marked first-version capability",
       "ticket": "T41"
     },
     {
@@ -1247,6 +1247,19 @@
       "why": "Designer delegated: without intervening-air obstruction a warm room becomes clean long-range overwatch through the Dark, contradicting the frozen sensing ban; endpoint stat penalties alone cannot implement light eaten in transit.",
       "needed_by": "none: signature classification",
       "ticket": "T31"
+    },
+    {
+      "id": "abyss_fishery",
+      "what": "Fishery and catches of creepy dark creatures, with living moving RM_Veiljaw and RM_Suturefin counterparts in Abyss pools.",
+      "built": "absent",
+      "evidence": "owner_marks.md, fishery mark and follow-up of 2026-11-17; definition.md, Creepy dark fishery specification. The tracked Abyss roster has no fishery and neither proposed species name appears in the tracked source or biome rosters.",
+      "proven": "missing",
+      "called_by": "Promised ordinary fishing actions at authored Abyss pools; no implementing caller located in this checkout",
+      "serves": "first-version aquatic life and fishery",
+      "fate": "life",
+      "why": "Owner explicitly adds a fishery of creepy dark creatures to 0.1.0. The standing fishables ruling requires every catch to have a living, moving counterpart in the biome.",
+      "needed_by": "none: life classification",
+      "ticket": "T51"
     }
   ]
 }

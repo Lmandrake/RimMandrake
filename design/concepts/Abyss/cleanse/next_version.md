@@ -22,15 +22,9 @@ Why: Designer delegated: An extra scheduled manhunter encounter; removing it lea
 
 ### heat observation
 
-What: A colonist in clear air near a visible active heat source under otherwise dark ambient air completes the observation project and unlocks heat-folding. Option off grants observation on load.
+What: A colonist in clear air near a visible active heat source under otherwise dark ambient air completes the observation project and unlocks heat-folding. Option off grants observation on load, keeping the retained fold lamp available in 0.1.0.
 
 Why: Designer delegated: A bespoke discovery/research unlock; ordinary heaters already demonstrate warmth and remain usable. Ticket: T4.
-
-### fold lamp
-
-What: Fuelled, rotatable heater-lamp with a forward lane of Dark clearance; walls stop each column, clearance fades with distance. Plain heat/light remains without Dark.
-
-Why: Designer delegated: A custom directional tool is unnecessary when ordinary heat clears rooms and living plants light farms. Ticket: T5.
 
 ### gill ash — RECOMMEND RETIRING
 
@@ -212,30 +206,17 @@ What: Sickly mushroom bespoke spore-air exposure
 
 Why: Designer delegated: Inherited pollution-ground plant behavior is sufficient ordinary life; a new exposure system is extra. Ticket: T38.
 
-### vine turning
-
-What: Paddle-vine tracking/turning toward light
-
-Why: Designer delegated: A moving plant gimmick is unnecessary to fiber harvest or lighting. Ticket: T39.
-
 ### seep works
 
 What: Chemistry seep tapping and explosions
 
 Why: Designer delegated: Separate fuel/explosion industry duplicates the kept collapsed-grain fuel cycle. Ticket: T40.
 
-### glowberry item
-
-What: Harvested berry item emitting mobile light
-
-Why: Designer delegated: The plant already gives RawBerries; inventory light is a new portable-light capability. Ticket: T41.
-
 ### rites
 
 What: Campaign darkness rites
 
 Why: Designer delegated: Rituals do not operate the land, life or Dark cycle. Ticket: T42.
-
 
 ### outdoor drifting pockets
 

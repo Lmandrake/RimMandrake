@@ -93,10 +93,10 @@
     },
     {
       "id": "B3",
-      "says": "Colonists meet a self-sustaining fungal food web whose forage, predators, tame products and flying natives work through ordinary harvesting, hunting and husbandry, with readable animal deaths and departures.",
+      "says": "Colonists meet a self-sustaining fungal food web whose forage, predators, tame products and flying natives work through ordinary harvesting, hunting and husbandry, with readable animal deaths and departures, and a colony can harvest a guarded Lussa crown, brew its pleasure cup on the day of harvest, and drink it there for chemical joy and a timed positive memory.",
       "meant": {
         "intent": "The life roster must function as encountered ecology and useful husbandry across its ordinary lifecycle. Standing flight and readable-loss rules are part of that experience.",
-        "source": "Frozen the_rot.md sections 4, 6 and 7b. Standing native-water, flight, no-vanishing and no-evictions rulings. Dustveil answer in rot_open_questions_2026-10-22.md. Delegated ordinary-lifecycle completeness.",
+        "source": "Frozen the_rot.md sections 4, 6 and 7b. Standing native-water, flight, no-vanishing and no-evictions rulings. Dustveil answer in rot_open_questions_2026-10-22.md. Delegated ordinary-lifecycle completeness. Owner marks of 2026-11-17 in owner_marks.md and CLEANSE_PLAN_OWNER_2026-11-17.md. RM_EuphoricCrown's plant description requires brewing on the day of harvest. Frozen the_rot.md forbids export of live preparations.",
         "figurative": [
           {
             "word": "self-sustaining",
@@ -107,22 +107,25 @@
       },
       "accept": [
         "Foragers gather fungal food and building stock while predators feed in their usual habitat. Tamed brogg produce milk and tended dustveils yield silk through their normal lifecycle.",
-        "A native flyer crosses an obstacle by actual flight. A wounded native dies with a corpse or a readable death sign, while surviving animals remain accounted for after a reload."
+        "A native flyer crosses an obstacle by actual flight. A wounded native dies with a corpse or a readable death sign, while surviving animals remain accounted for after a reload.",
+        "A worker approaches a guarded Lussa crown through visible local spores, harvests it and brews the live crown on-site on the day it was cut. Drinking the cup there gives chemical joy and a positive memory that later expires."
       ],
       "reject": [
         "The roster is a static selection of named bodies that never eat, reproduce, yield products or hunt.",
-        "A moth bobs visually against a wall, or surplus wild giants silently disappear when the population cap runs."
+        "A moth bobs visually against a wall, or surplus wild giants silently disappear when the population cap runs.",
+        "An undefended crown yields a cup, a transported crown can be brewed off-site, or drinking the cup omits chemical joy or its timed positive memory.",
+        "A crown kept warm overnight still brews the following day, or a fresh exported cup grants joy or the memory."
       ],
       "lazy": "none: Life. Named roles must function through ordinary actions and real flight, with traceable deaths/departures. Decorative bodies and helper-created yields fail.",
       "range": {
-        "varies": "Every current free-tier resident including body-only hwelgrue, plus historical external durrok/mullgoth when dependencies resolve. Wild/tamed, hungry/fed, young/adult, healthy/injured/dead, solitary/grouped, ground/pond-edge, direct and roofed access. Colony 1..40, population from normal initial spawn through a season of births and predation. Every fictional flyer includes thozzik colony/queen forms, illoth and dustveil. Ordinary Prime/Skulltop approach, cut and escape. Actual flight observations only in an owner-present session.",
-        "left_out": "Kin healing/wound transfer, chittik implantation, giant swallowing, medical prizes, new animal assignments and perfect static population balance. Historical campaign species are a dependency uncertainty until composed state is read."
+        "varies": "Every current free-tier resident including body-only hwelgrue, plus historical external durrok/mullgoth when dependencies resolve. Wild/tamed, hungry/fed, young/adult, healthy/injured/dead, solitary/grouped, ground/pond-edge, direct and roofed access. Colony 1..40, population from normal initial spawn through a season of births and predation. Every fictional flyer includes thozzik colony/queen forms, illoth and dustveil. Ordinary Prime/Skulltop approach, cut and escape. Actual flight observations only in an owner-present session. Guarded crown approach and harvest, same-map and off-map preparation, harvest day and next local day, local ingestion and attempted export, ingredient viability, vessel build, research/work prerequisites, bill completion, ingestion, memory expiry, individual setting off/on, old settings and reload during preparation or the active memory.",
+        "left_out": "Kin healing/wound transfer, chittik implantation, giant swallowing, deferred medical prizes and false-fruit crown-ring encounters, new animal assignments and perfect static population balance. Historical campaign species are a dependency uncertainty until composed state is read."
       },
       "sees": {
-        "instrument": "Normal-job live state trace and the owner-present flight look, with M1 lifecycle situations and M4 food-chain forecast selecting worst cases. Existing paused Pawn_FlightTracker capability read is useful but insufficient for actual flight. T65/T69 provide lifecycle and automatic gas trace.",
+        "instrument": "Normal-job live state trace and the owner-present flight look, with M1 lifecycle situations and M4 food-chain forecast selecting worst cases. Existing paused Pawn_FlightTracker capability read is useful but insufficient for actual flight. T65/T69 provide lifecycle and automatic gas trace. T7 traces the local crown defense, normal harvest and on-site brewing through chemical joy and memory expiry with the wider medicine and crown-ring encounters off.",
         "start": "Known wild and tamed cohorts in a default map, food supply and product counters recorded, no forced injury outcome or direct product spawn. Mat, weather, growth, decomposition and gas remain active.",
         "on": "All retained mechanisms enabled at shipped defaults, next-version opt-ins off, all DLC, complete composed dependencies, unlocked normal jobs/research/terrain visibility appropriate to the task. No forced clear sky or disabled local gas, growth or animal metabolism.",
-        "control": "Dev-spawned products and manually triggered gas can fake functional ecology. Require product parent IDs and completion of ordinary milking/shearing/harvest jobs. A flyer with zero elapsed flight time fails the crossing observation. Match health loss to local gas emissions or attacks, including a safe-radius control. Count entities by identity through save, birth, death and departure. Record ordinary wild-spawner arrivals separately from births and developer spawns; spawner replenishment is allowed, while manual restocking cannot establish seasonal persistence.",
+        "control": "Dev-spawned products and manually triggered gas can fake functional ecology. Require product parent IDs and completion of ordinary milking/shearing/harvest jobs. A flyer with zero elapsed flight time fails the crossing observation. Match health loss to local gas emissions or attacks, including a safe-radius control. Count entities by identity through save, birth, death and departure. Record ordinary wild-spawner arrivals separately from births and developer spawns; spawner replenishment is allowed, while manual restocking cannot establish seasonal persistence. Read the crown's cloud and exposure on the approach and compare a protected approach. Trace crown identity and harvest day from normal harvest to brewing on the same map. Attempt the bill on another Rot map with the same viable ingredient and vessel to exclude a biome-only gate. Keep a matched crown warm and viable into the next local day and verify that the bill refuses it. Attempt to load a fresh cup for export. If a control forces that fresh cup to another map, verify it grants neither chemical joy nor the memory. Attribute both local effects to actual ingestion. Compare an unconsumed cup and a pleasure-brew-off run, keeping deferred medicine and guardian gates off throughout.",
         "reset": "Restore the disposable starting fixture and its settings snapshot, discard generated descendants, then compare saved thing IDs, jobs, holder contents and logs against the baseline. Preserve failure evidence separately before reset. No canonical-world mutation.",
         "live_only_why": "Autonomous animal choices, actual flight and ordinary job/lifecycle integration depend on the game scheduler. A stat or mocked lifecycle can miss a blocked diet, unusable job or walking flyer."
       },
@@ -137,9 +140,9 @@
         "colony_workload"
       ],
       "decision_tests": {
-        "reject": "Delegated rejection inference. The life roster must function as encountered ecology and useful husbandry across its ordinary lifecycle. Standing flight and readable-loss rules are part of that experience.",
+        "reject": "Delegated rejection inference. The life roster must function as encountered ecology and useful husbandry across its ordinary lifecycle. Standing flight and readable-loss rules are part of that experience. The owner explicitly keeps the pleasure cup and its chemical joy and timed memory.",
         "renormalize": "Pictures bind causes and player-visible comparisons. Tuning values, yields and art variant counts are held in checks or ranges.",
-        "first_version": "Life. Named roles must function through ordinary actions and real flight, with traceable deaths/departures. Decorative bodies and helper-created yields fail."
+        "first_version": "Life. Named roles must function through ordinary actions and real flight, with traceable deaths/departures. Decorative bodies and helper-created yields fail. The pleasure cup is an owner-marked first-version life capability with its minimal normal-acquisition support."
       }
     },
     {
@@ -286,12 +289,13 @@
       "says": "Over a season in the complete Rot, a colony can keep using fungal shelter, harvest and storage while the forest and its native food web renew, with understandable losses and workable routes through weather changes, a reload and reordered colony work.",
       "meant": {
         "intent": "Whole first-version play must remain a functioning cold fungal place with metabolic help and hunger operating together. A stable staged slice is insufficient.",
-        "source": "Delegated from owner whole-system requirement in this brief, the selected Rot experience, frozen ecosystem/thermogenesis/rot-clock intent and standing no-vanishing rule.",
+        "source": "Delegated from owner whole-system requirement in this brief, the selected Rot experience, frozen ecosystem/thermogenesis/rot-clock intent and standing no-vanishing rule. Owner mark of 2026-11-17 in owner_marks.md retains the pleasure cup in this complete version.",
         "figurative": []
       },
       "accept": [
         "The settled colony hauls and cooks, its living-floor rooms save heating, and the ordinary fungal forage and crops it relies on for meals create a cooling decision in storage while the full forest grows, local hazards run and native animals feed and reproduce.",
-        "After saving during active harvest and reloading, expanding storage before harvest and harvesting before expanding storage both yield understandable consequences and recoverable colony work."
+        "After saving during active harvest and reloading, expanding storage before harvest and harvesting before expanding storage both yield understandable consequences and recoverable colony work.",
+        "Guarded crown harvest, on-site brewing and cup consumption continue alongside storage work across reload, with chemical joy and memory expiry visible and the wider medicine/guardian suite dormant."
       ],
       "reject": [
         "A staged colony looks stable because weather, local gas, wet-native growth or digestion is locked or disabled, or the freezer load only appears when the tester stocks special crops outside the colony’s normal diet.",
@@ -299,7 +303,7 @@
       ],
       "lazy": "none: Whole land, life and signature. Complete default operation, explicit change/save/work sequence and renewal close disabled-system showcases, static dioramas and supply-cache masking.",
       "range": {
-        "varies": "Exactly the complete first version at factory defaults with all kept systems on and unlocked, next-version extras off. Full supported maps from 200..400 cells per side, flat/rocky/milk-shallows layouts, authored cold/middle/warm shoulder regimes, all actual weather states with natural selection left running, initial and mature stand density. A full 15-day in-game season, paired starts with 3 and 40 colonists, then a 100-day M4 extension to detect delayed drift. Save/load around day 7 during held harvest/haul and room changes. Main sequence enclose/store/harvest/cool then harvest/enclose/cool/store in a fresh sibling run. Compression only accelerates elapsed ticks or a calibrated offline integration step, preserving job scheduling, pawn metabolism, weather selection/RNG, plant/animal cadence, deadlines, room rebuilding, damage, reproduction and save clocks. Any skipped system invalidates the live reading. Natural rare states may be covered by M1 sibling fixtures in addition to the uninterrupted season, never by replacing its weather schedule.",
+        "varies": "Exactly the complete first version at factory defaults with all kept systems on and unlocked, next-version extras off. Full supported maps from 200..400 cells per side, flat/rocky/milk-shallows layouts, authored cold/middle/warm shoulder regimes, all actual weather states with natural selection left running, initial and mature stand density. A full 15-day in-game season, paired starts with 3 and 40 colonists, then a 100-day M4 extension to detect delayed drift. Save/load around day 7 during held harvest/haul and room changes. Main sequence enclose/store/harvest/cool then harvest/enclose/cool/store in a fresh sibling run. Compression only accelerates elapsed ticks or a calibrated offline integration step, preserving job scheduling, pawn metabolism, weather selection/RNG, plant/animal cadence, deadlines, room rebuilding, damage, reproduction and save clocks. Any skipped system invalidates the live reading. Natural rare states may be covered by M1 sibling fixtures in addition to the uninterrupted season, never by replacing its weather schedule. Include normal pleasure-cup production/consumption and saved ingredient/cup/memory transitions under T7.",
         "left_out": "Deferred quests, rituals and exotic rewards. Subjective enjoyment. Exact equilibrium populations, yields, time budget or variant totals. Planet generation or canonical save changes."
       },
       "sees": {
@@ -383,12 +387,16 @@
     {
       "id": "C13",
       "what": "Retain deferred owner numeric rulings as checks for the opt-in branch, including annual age reversal, pale-tree psylink cap, gear slowing exposure, portable mat feeding/budding, wild-only blastpod and the accepted empty-alarm waiver."
+    },
+    {
+      "id": "C14",
+      "what": "Trace T7 crown defense, crown/vessel/recipe availability, ingredient viability and harvest-day recipe eligibility on the origin map at defaults, export refusal, ordinary bill and local ingestion provenance, chemical joy, memory expiry, old settings and save/reload. Pleasure-brew off suppresses new acquisition and ingestion effects safely while existing memories finish their normal expiry. Wider brews, symbionts, false fruit and crown-ring encounters stay dormant."
     }
   ],
   "rules": [
     {
       "id": "R1",
-      "rule": "Version selection is metabolic colony life. All existing animal roster entries remain. Animal special systems may be dormant independently of their bodies. All DLC and the common engine composition are assumed.",
+      "rule": "Version selection is metabolic colony life. All existing animal roster entries remain. Animal special systems may be dormant independently of their bodies. All DLC and the common engine composition are assumed. The owner mark of 2026-11-17 retains pleasure_brew in first-version life.",
       "touches": [
         "feature_gates",
         "ecology_population"
@@ -475,7 +483,7 @@
     },
     {
       "id": "R11",
-      "rule": "Each moved extra requires an explicit off-by-default next-version gate, normal-entry acquisition/effect suppression and safe legacy save conservation. Keep defs and source. All-off is a playable ordinary biome. Existing unsupported cross-biome switches stay off.",
+      "rule": "Each moved extra requires an explicit off-by-default next-version gate, normal-entry acquisition/effect suppression and safe legacy save conservation. Keep defs and source. All-off is a playable ordinary biome. Existing unsupported cross-biome switches stay off. Exempt only the pleasure cup and its minimal crown, vessel, recipe/research and viability support from the deferred medicine gate. Ordinary crown acquisition works without the false-fruit ring or guardian chain. All other medicines and encounters retain their existing fates.",
       "touches": [
         "feature_gates",
         "room_heat",
@@ -574,7 +582,7 @@
         "R12"
       ],
       "holds_together": "unknown",
-      "why": "Predators, native gas, food spoilage, wet-native regrowth and reproduction can remove food faster than renewal or amplify spawn/product loops. Retained bodies and disabled special guts still need ordinary sustaining diet.",
+      "why": "Predators, native gas, food spoilage, wet-native regrowth and reproduction can remove food faster than renewal or amplify spawn/product loops. Retained bodies and disabled special guts still need ordinary sustaining diet. M4 includes the local exposure around harvestable Lussa crowns.",
       "model": "M4 whole Rot season"
     },
     {
@@ -591,7 +599,7 @@
         "R12"
       ],
       "holds_together": "unknown",
-      "why": "Routes, hauling deadlines, enclosure repairs, plant turnover and thermal stock management meet at a forty-person base. The intended stable routine is unmeasured and aggregate rates may create a persistent job stall.",
+      "why": "Routes, hauling deadlines, enclosure repairs, plant turnover and thermal stock management meet at a forty-person base. The intended stable routine is unmeasured and aggregate rates may create a persistent job stall. M4 includes travel to guarded crowns and on-site brewing work.",
       "model": "M4 whole Rot season"
     },
     {
@@ -653,7 +661,7 @@
         "R12"
       ],
       "holds_together": "argued",
-      "why": "All callers of moved behavior must pass explicit opt-in before acquiring or advancing effects. Reference-compatible defs let old saves load and preservation migrations keep holders recoverable. The common scanner and animal bodies refer to enabled ordinary content. This construction permits all bars together, with T61 and each containment ticket checking implementation. Existing missing gates are repairs rather than logical scope conflicts.",
+      "why": "All callers of moved behavior must pass explicit opt-in before acquiring or advancing effects. Reference-compatible defs let old saves load and preservation migrations keep holders recoverable. The common scanner and animal bodies refer to enabled ordinary content. This construction permits all bars together, with T61 and each containment ticket checking implementation. Existing missing gates are repairs rather than logical scope conflicts. T7 keeps its guard, vessel and viability path independent of deferred recipes and crown rings.",
       "model": "none, argument plus implementation tickets"
     }
   ],
