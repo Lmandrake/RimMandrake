@@ -72,9 +72,9 @@
       "evidence": "src/RimMandrake/SleepingIce/Defs/Fauna/RM_Tellurox.xml; OWNER:1792859729611947407",
       "proven": "stale",
       "called_by": "RM_Tellurox PawnKindDef -> RM_TelluroxRace; ordinary caravan loading reads packAnimal, animal needs/breeding and Pawn.ButcherProducts reads the permanent-shell bonus.",
-      "serves": "Ordinary food, livestock or stationary catalytic life",
-      "fate": "life",
-      "why": "delegated: Imported working livestock carries cargo and yields permanent shell when butchered; it is not a new wild admission.",
+      "serves": "Hosted livestock and shell definitions used by ordinary trade, caravans and butchery",
+      "fate": "dependency",
+      "why": "delegated: Keep the RM-tier hosted defs, including the existing shell butcher product. The tier move establishes their home. Any imported pack animal can satisfy the biome’s cargo picture.",
       "needed_by": "",
       "ticket": ""
     },

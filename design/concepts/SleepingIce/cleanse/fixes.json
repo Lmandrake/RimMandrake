@@ -1,0 +1,29 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "B4 requires insulation to lower breach pressure at equal comfort and the same insulated refuge to draw more breaches at comfort than when run cold. Its pictures and controls test both comparisons. The exposure rule and M3 require the ordering under shipped event gates with legal ice and free capacity.",
+      "where": "bars.json B4, definition.md Implementation choices exposure proxy, models.md M3"
+    },
+    {
+      "id": "R2",
+      "changed": "Classed the existing tellurox and shell defs as a hosted dependency and made B2's cargo pictures apply to any imported pack animal.",
+      "where": "census.json tellurox_livestock, bars.json B2 accept and reject"
+    },
+    {
+      "id": "R3",
+      "changed": "Specified hunting as a food supplement. Added pass and fail pictures and paired hunting and no-hunt cohorts at shipped density across days 1–15, tracking meat by hunted pawn and recording nutrition and food stocks through natural visitor replenishment.",
+      "where": "bars.json B2 says, accept, reject, lazy, range and sees.control"
+    },
+    {
+      "id": "R4",
+      "changed": "Required Lantern Deeps at shipped defaults in B1's entrance-present and no-entrance cohorts, with pictures and a matched-lighting control distinguishing local emergence glow from native surface glow.",
+      "where": "bars.json B1 accept, reject, range and sees"
+    },
+    {
+      "id": "R5",
+      "changed": "Marked breach pressure and exposure to the ice as figurative and gave both the open-door picture where the readout and breach frequency rise without the ice warming or deforming.",
+      "where": "bars.json B4 meant.figurative and accept"
+    }
+  ]
+}

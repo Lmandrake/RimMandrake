@@ -10,22 +10,24 @@
       },
       "accept": [
         "A traveller walks between dirty-white slabs, frost crystals and a low ridge; the sky lights their upper edges while the ground remains bare hard ice.",
-        "A local artificial lamp warms the colour beside the camp; the distant interior remains under cold sky light."
+        "A local artificial lamp warms the colour beside the camp; the distant interior remains under cold sky light.",
+        "A Lantern Deeps emergence leaks a local glow at its opening while the surrounding ice remains under the cold sky light."
       ],
       "reject": [
         "The biome has the right name and weather table, but the colony stands on a blue snowy plain containing a prefab puddle and a fertile patch.",
-        "The only dirty-white view is a camera fixture while ordinary ticking brings interior wind or snowfall."
+        "The only dirty-white view is a camera fixture while ordinary ticking brings interior wind or snowfall.",
+        "The ice gives off its own glow away from any Lantern Deeps emergence."
       ],
       "lazy": "The biome has the right name and weather table, but the colony stands on a blue snowy plain containing a prefab puddle and a fertile patch.",
       "range": {
-        "varies": "Full 200, 250 and 300 cell square supported colony maps; flat, small/large-hill and mountainous local terrain, open/interior/camp and prefab footprints, interior versus identifiable escarpment; coldest and warmest saved upland positions, ordinary aurora active/inactive; fresh arrival and days 7,15,100. View at routine play zoom and close inspection. These are local-map fixtures on the fixed planet, not generated planets.",
-        "left_out": "Unrestricted dev placement of foreign soil/water and foreign biome replacement are unsupported; own generators, injected prefabs and enabled shared-engine defaults are included. Margin event mechanics are deferred, never substituted across the interior."
+        "varies": "Full 200, 250 and 300 cell square supported colony maps; flat, small/large-hill and mountainous local terrain, open/interior/camp and prefab footprints, interior versus identifiable escarpment; coldest and warmest saved upland positions, ordinary aurora active/inactive; fresh arrival and days 7,15,100. Include ordinary Lantern Deeps entrance-present and no-entrance cohorts at shipped defaults in franchise-free and campaign loads. View at routine play zoom and close inspection. These are local-map fixtures on the fixed planet, not generated planets.",
+        "left_out": "Unrestricted dev placement of foreign soil/water and foreign biome replacement are unsupported; own generators, injected prefabs and enabled shared-engine defaults are included. B1 judges surface lighting, including emergence glow. The neighbour owns cavern lighting below. Margin event mechanics are deferred, never substituted across the interior."
       },
       "sees": {
         "instrument": "Cheapest complete instrument: terrain/room census and direct weather-override, run-lock and sky-scheduler state reads, plus a live visual/audio look at ordinary full-map samples (T3). State-only absence probes precede the look.",
         "start": "An ordinary SleepingIce local map, not repainted proof strips; natural weather scheduler and fixed tile geometry running; no debug lighting override.",
-        "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
-        "control": "Read actual terrain at the viewed cells and distant quadrants after ordinary ticking to exclude a white overlay or cropped puddle-free view. Read the weather decider's actual forced/dev override state and the run's own weather/sky/lighting lock record throughout the observation, including after reload. Read the resolved sky geometry, scheduler eligibility and ticking, and active game-condition identities with their ordinary creation provenance. Natural Clear-only weather is valid, but its history cannot establish absence of a Clear lock. A planted Clear lock must invalidate the reading even when its weather history matches the unlocked control. If any required lock or scheduler read is unavailable, report UNMEASURED.",
+        "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override. Lantern Deeps at shipped defaults in both entrance-present and no-entrance cohorts.",
+        "control": "Read actual terrain at the viewed cells and distant quadrants after ordinary ticking to exclude a white overlay or cropped puddle-free view. Compare glow at the placed Deeps emergence, away from it and on no-entrance maps under matched sky and lamp conditions. Read the weather decider's actual forced/dev override state and the run's own weather/sky/lighting lock record throughout the observation, including after reload. Read the resolved sky geometry, scheduler eligibility and ticking, and active game-condition identities with their ordinary creation provenance. Natural Clear-only weather is valid, but its history cannot establish absence of a Clear lock. A planted Clear lock must invalidate the reading even when its weather history matches the unlocked control. If any required lock or scheduler read is unavailable, report UNMEASURED.",
         "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
         "live_only_why": "Rendered light, silhouette, moving marks and audible spatial cues can be present as state yet unusable to a player. State exports cannot decide this perceptual distinction."
       },
@@ -43,30 +45,32 @@
     },
     {
       "id": "B2",
-      "says": "A colony on the ice must bring food and feed its livestock, while its admitted visitors and stationary mineable life remain distinct from a self-sustaining surface herd or garden.",
+      "says": "A colony on the ice must bring food and feed its livestock, since hunting its scarce visitors only supplements meals and the barren ground offers mineable ridges without pasture or crops.",
       "meant": {
         "intent": "Life: emptiness is ecological, not missing content; ordinary milk and cargo roles work, and a catalytic ridge never starts behaving as a creature.",
         "source": "sleeping_ice.md §§4,6–7 and closed cast §4c; rosters/sleeping_ice.json visitor law; bedazzle review §8 hessarund only a landform; delegated first-version life boundary.",
         "figurative": []
       },
       "accept": [
-        "A supplied zhissa gives milk and an imported tellurox carries cargo; outside their shelter the player finds no pasture or foraging crop, and mining a hessarund yields its crust.",
-        "A wandering visitor is injured by the cold or leaves normally with a readable account; no resident arctic food herd replaces it."
+        "A supplied zhissa gives milk and an imported pack animal carries cargo; outside their shelter the player finds no pasture or foraging crop, and mining a hessarund yields its crust.",
+        "A wandering visitor is injured by the cold or leaves normally with a readable account; no resident arctic food herd replaces it.",
+        "A hunted visitor provides a meal, and the camp still needs brought-in food as new visitors arrive."
       ],
       "reject": [
-        "The animal defs resolve, but the player can live on renewing wild pasture, or the shell pack beast cannot carry a caravan load.",
-        "A stationary ridge starts chasing a miner, or a cold casualty disappears to imply an unbuilt rescue below."
+        "The animal defs resolve, but the player can live on renewing wild pasture, or an imported pack animal cannot carry a caravan load.",
+        "A stationary ridge starts chasing a miner, or a cold casualty disappears to imply an unbuilt rescue below.",
+        "Even though the ice grows no pasture or crops, the camp stays fed on hunted visitors as the ordinary wild spawner keeps replacing them."
       ],
-      "lazy": "The animal defs resolve, but the player can live on renewing wild pasture, or the shell pack beast cannot carry a caravan load.",
+      "lazy": "Even though the ice grows no pasture or crops, the camp stays fed on hunted visitors as the ordinary wild spawner keeps replacing them.",
       "range": {
-        "varies": "Both franchise-free and campaign-patched Biomes loads, with all DLC in each; admitted patch visitors individually and ordinary spawner population together; 1–6 traveller pawns and 40 colonists, fed/unfed imported livestock, birth, milking, caravan loading, casualty and ordinary departure; days 1–15 and day100 snapshot. All current roster memberships retained. No demand that every random map rolls every scarce visitor.",
+        "varies": "Both franchise-free and campaign-patched Biomes loads, with all DLC in each; admitted patch visitors individually and ordinary spawner population together; 1–6 traveller pawns and 40 colonists, fed/unfed imported livestock, birth, milking, caravan loading, casualty and ordinary departure; days 1–15 and day100 snapshot. Across days 1–15, pair hunting admitted visitors at shipped density with a no-hunt control, including cohorts where the ordinary spawner replenishes hunted visitors. All current roster memberships retained. No demand that every random map rolls every scarce visitor.",
         "left_out": "No new wild admission for tellurox and no restoration of historically evicted donor residents; named deferred special organisms retain admission but their encounter systems are next-version content. Foreign farming cheats excluded; own soil/crop or growth-engine leaks included."
       },
       "sees": {
         "instrument": "Ordinary job, need, inventory, corpse and terrain state reads, with M1 situation generator and T28 roster/compatibility adapter. Use completed milk/pack/mining jobs, not only defs.",
         "start": "Supplied and unsupplied livestock cohorts on an ordinary barren map; no trader injections except the imported livestock fixture; hessarund and ordinary visitors placed by their proper owned generators.",
         "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
-        "control": "Compare food inventory before/after completed jobs, forbidding imported food only in the starvation branch; distinguish milk from hidden grazing and distinguish an ordinary corpse from missing custody. Check resolved campaign patch rows rather than inline XML alone.",
+        "control": "Compare food inventory before/after completed jobs, forbidding imported food in the starvation and hunting-only branches. In matched hunting-only and no-hunt cohorts, start with empty food stores and exclude outside food, livestock products and all other food sources. Keep the ordinary wild spawner running, tag meat by hunted pawn through butchery, cooking and consumption, and track pawn nutrition and food stocks across replenishment to see whether hunting alone meets ongoing needs. Distinguish milk from hidden grazing and an ordinary corpse from missing custody. Check resolved campaign patch rows rather than inline XML alone.",
         "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
         "live_only_why": "Not live-only: state/trace or a game-calibrated offline instrument distinguishes the pictures; runtime calibration is still required."
       },
@@ -126,30 +130,43 @@
     },
     {
       "id": "B4",
-      "says": "A camp that exposes more warmth to the ice draws greater breach pressure, while cooling or insulating a working refuge reduces that pressure and the thermal readout explains the change.",
+      "says": "A camp that exposes more warmth to the ice draws greater breach pressure, so the thermal readout shows lower pressure when a comfortable refuge is insulated and lower pressure still when that same insulated refuge is run cold.",
       "meant": {
-        "intent": "Signature: the cost of comfortable stopping is a controllable thermal cause, not a fixed raid schedule; insulation preserves useful warmth indoors.",
+        "intent": "Signature: sleeping_ice.md §4 pairs insulation and cold operation with the warning that heating to comfort lights a flare. Insulation reduces breach pressure at equal comfort, and a comfortable insulated refuge still draws more breach pressure than that same refuge run cold.",
         "source": "sleeping_ice.md §4 thermal threat and §8 cold exterior; §4c.4 continuous dial; bedazzle §4 row1; delegated exterior-exposure reading reconciles those promises without treating current formula as authority.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "breach pressure",
+            "stands_for": "The continuous thermal dial and the chance of a breach it drives when an opening is eligible.",
+            "accept": "With a warm room’s door left open, no ice cell warms or deforms, yet the thermal readout rises and breaches become more frequent across matched, eligible camps."
+          },
+          {
+            "word": "exposes more warmth to the ice",
+            "stands_for": "The exterior-transmission proxy counts more outdoor exposure from a warm source.",
+            "accept": "With a warm room’s door left open, no ice cell warms or deforms, yet the thermal readout rises and breaches become more frequent across matched, eligible camps."
+          }
+        ]
       },
       "accept": [
-        "A warm refuge retains its indoor comfort after its exterior is better insulated; the readout falls and the unsaturated breach trace becomes less threatening.",
-        "An exposed campfire or opened warm room raises the thermal trend and subsequent pressure; an unpowered cold machine does not."
+        "A warm refuge retains its indoor comfort after its exterior is better insulated; the readout falls and eligible breaches become less frequent. With the same insulation, running the refuge cold lowers the readout and breach frequency further.",
+        "An exposed campfire or opened warm room raises the thermal trend and subsequent pressure; an unpowered cold machine does not.",
+        "With a warm room’s door left open, no ice cell warms or deforms, yet the thermal readout rises and breaches become more frequent across matched, eligible camps."
       ],
       "reject": [
         "The displayed dial changes, but naturally rolled breaches ignore it and keep following a fixed schedule.",
-        "The dial counts indoor warmth identically through an open doorway and an insulating enclosure, so a cold exterior has no benefit."
+        "The dial counts indoor warmth identically through an open doorway and an insulating enclosure, so a cold exterior has no benefit.",
+        "With legal ice available and shivven capacity free, a walled, roofed refuge heated to comfort draws breaches no more often than the same insulated refuge run cold."
       ],
       "lazy": "The displayed dial changes, but naturally rolled breaches ignore it and keep following a fixed schedule.",
       "range": {
-        "varies": "Same source cohorts at 0–100 percent duty; raw pressure below threshold, threshold neighbourhood, unsaturated and saturated; heat scale 25–600, frequency scale 0.1–4; no-source, fires, working/off pushers, powered/off consumers and warm enclosed rooms; equal indoor temperature with door open/closed, wall depth1/2, source outdoors/inside. Fixed plateau outdoors -80 to -20 C as stress envelope, not a claim about current tile census. Colony sizes 1,6,40; original and reversed heat/floor sequences; count-cap saturation explicitly removes strict increase demand. Stochastic pressure uses paired distributions, never a guarantee in a particular hour. Include capacity permanently saturated by surviving waiting shivven through cooling, reheating and reload, with no death, followed by an accounted death freeing a slot. Pressure may still respond while new openings remain suppressed at capacity.",
+        "varies": "Same source cohorts at 0–100 percent duty; raw pressure below threshold, threshold neighbourhood, unsaturated and saturated; heat scale 25–600, frequency scale 0.1–4; no-source, fires, working/off pushers, powered/off consumers and warm enclosed rooms; equal indoor temperature with door open/closed, wall depth1/2, source outdoors/inside. At shipped defaults, pair a comfortably heated insulated refuge with the same insulated refuge run cold, holding walls, roof, closed doors, floor and legal bare-ice perimeter fixed, with free shivven capacity. Fixed plateau outdoors -80 to -20 C as stress envelope, not a claim about current tile census. Colony sizes 1,6,40; original and reversed heat/floor sequences; count-cap saturation explicitly removes strict increase demand. Stochastic pressure uses paired distributions, never a guarantee in a particular hour. Include capacity permanently saturated by surviving waiting shivven through cooling, reheating and reload, with no death, followed by an accounted death freeing a slot. Pressure may still respond while new openings remain suppressed at capacity.",
         "left_out": "No new air-temperature, sun, material-insulation or geothermal physics; a pressure sensor can use an explicit proxy. The proxy must match the cold-exterior ordering in the calibrated thermal model. Surface reconnection and thaw mechanics are off as extras."
       },
       "sees": {
         "instrument": "M3 exterior-heat model calibrated to ordinary room/source state, then paired unforced breach-event traces from M4. Existing pure kernel math is a check, not enough evidence (T5,T10,T11).",
         "start": "Equal supplied camps on the same saved climate geometry and random-state cohorts, no active crack initially; indoor temperatures stabilized by normal heater duty. Record raw components and actual outside exposure.",
         "on": "Every kept SleepingIce mechanic at shipped defaults, CreatureBehaviors swim/tells/confinement, Wreckage field/salvage, EnvironmentalHazards, ExplosiveGrowth and Bones enabled; all DLC; no research, timer, weather or AI locks; next-version extras off. Campaign checks also load the existing canon visitor patches and ordinary WeatherSuite; no biome-specific sun override.",
-        "control": "Pressure observations include natural tick gates and event rolls; never call ProofDial/TryOpen. Match source work and indoor comfort, then change only exterior protection or source duty. This distinguishes insulation from simply switching the heater off; paired cohorts distinguish monotonic pressure from a lucky silent hour.",
+        "control": "Pressure observations include natural tick gates and event rolls; never call ProofDial/TryOpen. Compare exterior protection at matched indoor comfort, recording heater duty. Then hold the insulated enclosure, other heat sources, cooldown state and available breach cells and capacity fixed while varying heater duty from comfort to a stabilized cold state. This distinguishes insulation from simply switching the heater off; paired cohorts distinguish monotonic pressure from a lucky silent hour.",
         "reset": "Use a disposable fixture save; after reading discard the branch and reload its untouched start, including map state, settings, random state, teaching flags and clock. Never modify the canonical world.",
         "live_only_why": "Not live-only: state/trace or a game-calibrated offline instrument distinguishes the pictures; runtime calibration is still required."
       },
@@ -162,7 +179,7 @@
       "qualification": {
         "reject": "delegated: false alone defeats the specific land, life or signature experience named in meant.intent; cited rulings supply the boundary.",
         "renormalize": "The pictures compare behaviours and readable outcomes, not declared quantities, variant counts, speeds, sizes or yields. Tuning checks remain separate.",
-        "first_version": "Signature: the cost of comfortable stopping is a controllable thermal cause, not a fixed raid schedule; insulation preserves useful warmth indoors."
+        "first_version": "Signature: insulation mitigates the thermal risk of a comfortable camp, and running it cold lowers that risk further."
       }
     },
     {
