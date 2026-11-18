@@ -670,13 +670,13 @@ def _store_dir(a):
     if a.store_dir:
         return a.store_dir
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    import relentless
-    return relentless.Store().dir
+    import run_store
+    return run_store.Store().dir
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--store-dir", help="the Relentless store dir (default: relentless.Store().dir)")
+    ap.add_argument("--store-dir", help="the Relentless store dir (default: run_store.Store().dir)")
     sub = ap.add_subparsers(dest="cmd", required=True)
     v = sub.add_parser("verify", help="verify one record, or every record and the index")
     v.add_argument("--item")
@@ -717,9 +717,9 @@ def main(argv=None):
         return 0
     if a.cmd == "harvest":
         sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-        import relentless
+        import run_store
         failed = []
-        got = harvest(relentless.Store(os.path.dirname(d)), failed)
+        got = harvest(run_store.Store(os.path.dirname(d)), failed)
         print("evidence: harvested %d Marker verdict(s)%s" % (len(got), ", %d FAILED" % len(failed) if failed else ""))
         return 1 if failed else 0
     if a.cmd == "repair-index":

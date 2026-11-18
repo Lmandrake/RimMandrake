@@ -476,7 +476,7 @@ def main() -> int:
         check((sc.state_dir() / "pool.json").read_text() == last, "and writes no pool.json over the full reading")
         # the DEFAULT glob, which every other check here overrides, must find what relentless's own Store writes
         sys.path.insert(0, str(HERE.parent / "rimflow"))
-        import relentless as R
+        import run_store as R
         check(str(sc.RM / "relentless") == R.DEFAULT_ROOT, f"the store's root is relentless's: {sc.RM} {R.DEFAULT_ROOT}")
         # the two copies of "what a trailing commit may touch" must stay one list, or a clone relentless parks reads stranded here
         check(sc.POOL_STATE == R.POOL_STATE, f"scratch_clone's POOL_STATE is relentless's: {sc.POOL_STATE} {R.POOL_STATE}")

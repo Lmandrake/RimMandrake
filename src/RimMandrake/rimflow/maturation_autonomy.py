@@ -850,9 +850,9 @@ def pilot_brief(root, item, mod, why):
 
 
 def pilot_run_model(root, default):
-    """-> the model a sitting runs on: relentless.pilot_model, the agent file's own `model:` line (Fable 5.2, owner
+    """-> the model a sitting runs on: run_store.pilot_model, the agent file's own `model:` line (Fable 5.2, owner
     2026-11-16)."""
-    import relentless as RL
+    import run_store as RL
     return RL.pilot_model(root, "rm-testpilot", default)
 
 

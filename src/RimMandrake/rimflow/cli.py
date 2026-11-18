@@ -1920,11 +1920,11 @@ def prooflint(iid, it=None, root=None, rules_path=None):
     written instead of at a game slot (146 REFUSED rows in 3.5 days, one cut criterion refused 72 times): every
     `live-proof` line of live_proofs/<ID>.txt through proof_lint.lint_item (cut criterion, `$`/backtick/eval/brace,
     a load or mutation, flyer wording, his ledger, a script the tree lacks). -> ["<cid>: why"]. Reads files only."""
-    import relentless
-    import relentless_game
+    import run_store
+    import proof_lines
     import proof_lint
     root = root or model.ROOT
-    lr = proof_lint.live_rules(relentless.rules(rules_path))
+    lr = proof_lint.live_rules(run_store.rules(rules_path))
     text, prose = "", []
     for rel in ("infrastructure/state/live_proofs/%s.txt" % iid, "infrastructure/state/items/%s.md" % iid,
                 "infrastructure/state/items/closed/%s.md" % iid, "infrastructure/state/live_proofs/%s.criteria" % iid):
@@ -1937,7 +1937,7 @@ def prooflint(iid, it=None, root=None, rules_path=None):
             text = body
         else:
             prose.append(body)
-    lines = relentless_game.proof_lines(text)
+    lines = proof_lines.proof_lines(text)
     crit = {"criteria": [{"id": c["id"], "level": c["level"], "text": c.get("text") or ""}
                          for c in (getattr(it, "criteria", None) or [])],
             "outstanding": list(getattr(it, "outstanding", None) or [])} if it is not None else None
@@ -5060,8 +5060,8 @@ def _relentless_guard(args, argv):
     """A leased relentless item's ledger state belongs to its supervisor (a stale worker cannot close it). Fails open
     when the store cannot be read: rimflow must work on a host with no store."""
     try:
-        import relentless
-        why = relentless.guard(getattr(args, "cmd", None), getattr(args, "id", None), argv)
+        import run_store
+        why = run_store.guard(getattr(args, "cmd", None), getattr(args, "id", None), argv)
     except Exception:  # noqa: BLE001
         return
     if why:

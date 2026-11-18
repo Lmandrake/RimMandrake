@@ -2902,9 +2902,9 @@ def to_setter(item, reasons, now, store=None, role=None):
     """The Setter seam: resit the run item's exam (relentless_exam, WP-03) with the check/bar reasons. Reads only.
     -> the role_setter_resit action that resits it, or None when the item has no exam (nothing to resit; the alarm
     stands for the checker's owner)."""
-    import relentless
+    import run_store
     import relentless_exam as RE
-    store = store or relentless.Store()
+    store = store or run_store.Store()
     if not item or not RE.status(store, item):
         return None
     return dict(do="role_setter_resit", role=role, item=item, ticket=item, note=False,
@@ -2915,9 +2915,9 @@ def to_setter(item, reasons, now, store=None, role=None):
 def setter_resit(item, resit_why, resit_at, store=None, kicker=None):
     """dispatcher.execute's role_setter_resit: the exam owed again with the reasons, its Setter unit kicked.
     -> what happened."""
-    import relentless
+    import run_store
     import relentless_exam as RE
-    store = store or relentless.Store()
+    store = store or run_store.Store()
     if not RE.status(store, item):
         return "no Setter exam for %s any more: nothing resat" % item
     RE.set_status(store, item, state="owed", resit_why=resit_why, resit_at=resit_at)

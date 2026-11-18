@@ -11,7 +11,9 @@ when the module is imported. In era modules a parameter named `sup` is the relen
 Roots: every name a non-era file pulls from an era module (mode `live` skips tests; `selftests` counts them too).
 A name reached only through getattr(obj, "x") on a non-module object, exec or a string table is NOT seen: check
 undefined names after any cut. A string path run as a script (land.sh, publish.py) is not an import: grep for those.
-usage: era_reach.py REPO [live|selftests] [--exclude-roots f1,f2]  -> JSON on stdout
+usage: era_reach.py REPO [live|selftests] [--exclude-roots f1,f2] [--only-methods mod.Cls=m1,m2;mod.Cls2=m3]  -> JSON
+--only-methods: for that class, only the named methods (and what they call through self) are reached, never a method
+merely used by name somewhere: the duck-typed rule over-reaches on common names (launch, measure, stop).
 """
 import ast, json, os, subprocess, sys
 from collections import defaultdict
@@ -21,6 +23,11 @@ MODE = sys.argv[2] if len(sys.argv) > 2 else "live"
 EXCL = set()
 if "--exclude-roots" in sys.argv:
     EXCL = set(sys.argv[sys.argv.index("--exclude-roots") + 1].split(","))
+ONLY = {}
+if "--only-methods" in sys.argv:
+    for spec in sys.argv[sys.argv.index("--only-methods") + 1].split(";"):
+        k, v = spec.split("=", 1)
+        ONLY[tuple(k.rsplit(".", 1))] = set(v.split(","))
 RF = "src/RimMandrake/rimflow"
 SUP_NAMES = {"sup"}
 
@@ -196,10 +203,18 @@ while True:
                 nxt.append((m, n.split(".")[0]))
         stack.extend((x, node) for x in nxt)
     added = False
+    self_used = defaultdict(set)
+    for c in ONLY:
+        for meth, b in methods.get(c, {}).items():
+            if (c[0], f"{c[1]}.{meth}") in reached:
+                self_used[c] |= {a.attr for a in ast.walk(b) if isinstance(a, ast.Attribute)
+                                 and isinstance(a.value, ast.Name) and a.value.id == "self"}
     for c in list(classes_reached):
         for meth in methods[c]:
             node = (c[0], f"{c[1]}.{meth}")
-            if node not in reached and (meth in live_attrs or (meth.startswith("__") and meth.endswith("__"))):
+            ok = (meth in ONLY[c] or meth in self_used.get(c, ())) if c in ONLY else \
+                (meth in live_attrs or (meth.startswith("__") and meth.endswith("__")))
+            if node not in reached and ok:
                 stack.append((node, c)); added = True
     if not added:
         break

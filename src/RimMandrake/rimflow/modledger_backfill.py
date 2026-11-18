@@ -146,7 +146,7 @@ BOOKKEEP_RE = re.compile(r"(?i)^(?:ledger|lessons?|modledger|handoff|notes?|chor
 WORK_ORDER_RE = re.compile(r"(?i)^maturation pipeline: take\b|\bblind (?:offline )?challenge cycle \d+\b")
 # --- the round-3 judge's rules (verdicts D:\ClaudeWork\rimmandrake\conductor\mining_samples\<Mod>_round3.judge.json):
 # every WRONG entry was a trap later work overtook, so a trap is mined only while it is still true today ---
-RELENTLESS_STORE = None     # the relentless store (relentless_wake.store_dir()); the selftest stands a fixture in here
+RELENTLESS_STORE = None     # the relentless store (run_store.store_dir()); the selftest stands a fixture in here
 STORE_MIN = 150             # a ledger text this long may be the cut copy of a text the relentless store holds whole
 # rule 4: a ticket whose every spec path is pipeline code belongs to no mod (a mod's own selftest under Utils/ does)
 PIPE_PATH_RE = re.compile(r"^src/RimMandrake/(?:rimflow|Utils)/")
@@ -174,8 +174,8 @@ def _store_dir():
     if RELENTLESS_STORE:
         return RELENTLESS_STORE
     try:
-        import relentless_wake
-        return relentless_wake.store_dir()
+        import run_store
+        return run_store.store_dir()
     except Exception:                    # no relentless on this host: nothing is read whole
         return None
 

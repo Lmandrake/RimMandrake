@@ -42,9 +42,9 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))   # relentless_game, designer_stage
+sys.path.insert(0, os.path.join(os.path.dirname(HERE), "rimflow"))   # run_store, designer_stage
 import first_touch  # noqa: E402  the pass item's suffix and its id for a concept folder
-import relentless_game  # noqa: E402  the supervisor's own test of a flyer hold: two copies of it disagreed
+import run_store  # noqa: E402  the store's own test of a flyer hold: two copies of it disagreed
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 QUESTIONS = os.path.join(REPO, "infrastructure", "state", "owner_questions.json")
 HIS_HOLDS = ("owner_call",)
@@ -71,7 +71,7 @@ def tooling_hold(rs):
     h = hold_of(rs)
     if h is None or (rs or {}).get("status") != "held":
         return None
-    if h.get("kind") in HIS_HOLDS or (h.get("kind") == "game" and relentless_game.flyer_hold(h.get("why"))):
+    if h.get("kind") in HIS_HOLDS or (h.get("kind") == "game" and run_store.flyer_hold(h.get("why"))):
         return None
     return h
 

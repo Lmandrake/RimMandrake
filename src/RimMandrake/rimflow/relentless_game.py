@@ -49,6 +49,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import relentless_expedite  # noqa: E402
 import relentless_envcause  # noqa: E402
+from run_store import FLYER, flyer_hold  # noqa: E402,F401  moved there
 NO_VERDICT = ("UNMEASURED", "NOT_ADMITTED")     # relentless_live.NO_VERDICT: a NOT_ADMITTED row routes as it did before
 
 GAME = "game"
@@ -1719,7 +1720,6 @@ def _not_reproduced(store, fx, item, missed, now, acts):
     fx.ledger_note(item, ("relentless game phase: held, %s: %s" % (NOT_REPRODUCED, detail)))
 
 
-FLYER = "flyer:"
 OWNER_LOOK = "owner look:"
 
 
@@ -1750,12 +1750,6 @@ def _owner_hold(store, fx, item, looks, whys, now, acts):
         OWNER_LOOK, ", ".join(looks), "; ".join("%s %s" % (k, whys.get(k) or "his look") for k in looks))
     _hold(store, fx, item, why, now, acts)
     acts.append({"do": "game_owner_look", "item": item, "clauses": list(looks)})
-
-
-def flyer_hold(why):
-    """This game hold's words say a flyer's flight, the one game hold only he can lift. Anchored where _hold writes the
-    reason: the rest of a why is free text (proof paths, mod names, file names), and "flyer" in it says nothing."""
-    return (why or "").startswith("game phase: " + FLYER)
 
 
 REFUSED_KEEP = 20       # fingerprints kept per item: enough for every clause of an item and its stale builds

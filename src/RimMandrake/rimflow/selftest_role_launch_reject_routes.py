@@ -195,10 +195,10 @@ def test_real_seams():
     live record; cause_attach writes it under the book lock."""
     import tempfile
     import cause_book as CB
-    import relentless
+    import run_store
     import relentless_exam as RE
     tmp = tempfile.mkdtemp(prefix="wp15-")
-    store = relentless.Store(os.path.join(tmp, "rel"))
+    store = run_store.Store(os.path.join(tmp, "rel"))
     kicked = []
     kick = lambda st, item: kicked.append(item)  # noqa: E731
     check(RL.to_setter("NO_EXAM", ["[cause:check] c1"], T, store=store) is None and not kicked,

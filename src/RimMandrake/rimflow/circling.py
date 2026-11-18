@@ -428,7 +428,7 @@ def replay(store, labels, c):
 
 
 def main(argv=None):
-    import relentless as R
+    import run_store as R
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("replay")

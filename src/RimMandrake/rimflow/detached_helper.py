@@ -456,7 +456,7 @@ def evict_clone(item, clone, before=None):
     """-> (bundle dir or None, why the clone stayed or None). relentless Effects.remove_clone: every commit, stash and
     dirty file goes to the store's bundles first, then the clone is parked as a warm spare or removed. A bundle that
     cannot be made keeps the clone (and alarms on the relentless journal)."""
-    import relentless as R
+    import run_store as R
     store = R.Store(pool_root())
     fx = R.Effects(R.rules(), store)
     out = fx.remove_clone({"clone": clone, "item": item}, before)
@@ -518,7 +518,7 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
         if not publish_ledger:  # its dirty ledger lines ride in the bundle; a note's publish would send them upstream too
             return
         text = ("DETACHED run %s left work no remote had; its clone %s is bundled at %s and goes back to the pool. NEXT: "
-                "restore it from that bundle (relentless restore_bundle) if the work is still wanted." % (unit, clone, bundle))
+                "restore it from that bundle (run_store.Effects.restore_bundle) if the work is still wanted." % (unit, clone, bundle))
         r = run(["python3", os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py"), "note", item, "--text", text,
                  "--seat", seat, "--why", "detached run clone returned"], "bundle note", 120)
         if r.returncode == 0:

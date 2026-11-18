@@ -12,7 +12,7 @@ import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling as C  # noqa: E402
-import relentless as R  # noqa: E402
+import run_store as R  # noqa: E402
 import selftest_relentless as SR  # noqa: E402
 
 BLOCK = R.rules(os.path.join(R.HERE, "relentless_rules.json"))["circling"]

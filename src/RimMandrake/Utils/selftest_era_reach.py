@@ -89,6 +89,9 @@ def main():
     ex = json.loads(subprocess.run([sys.executable, walk, str(tmp), "live", "--exclude-roots", "user.py"],
                                    capture_output=True, text=True, check=True, timeout=120).stdout)
     check(ex["modules"]["relentless"]["live"] == [], "an excluded root reaches nothing")
+    om = json.loads(subprocess.run([sys.executable, walk, str(tmp), "live", "--only-methods", "relentless.C=__init__"],
+                                   capture_output=True, text=True, timeout=120, check=True).stdout)["modules"]["relentless"]
+    check("C.m" not in om["live"] and "C.__init__" in om["live"], "--only-methods: a method used by name but not named stays dead (%s)" % om["live"])
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 

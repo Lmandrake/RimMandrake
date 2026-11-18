@@ -2398,7 +2398,7 @@ def test_pilot_main():
     pilot_after_live_fails, reused unchanged) its next run is an rm-testpilot sitting on the pilot model; fewer endings
     still go the fixer's way. Written before the fix and watched failing on the base d596d7aa18."""
     import maturation_autonomy as A
-    import relentless as RL
+    import run_store as RL
     tmp = tempfile.mkdtemp(prefix="maturation_test_pilot_")
     try:
         # 1. the ledger reader: endings after the last TESTPILOT_SAT note, one per run, hand notes each count
