@@ -212,3 +212,5 @@ What the instrument showed that nobody had seen, and its agreement number; every
 what you unified, invented, added as bars, or proposed to relax, and what each did to the map; the account for your
 pick; what you repaired on the way; final counts and the sha; which situations the declared range does not cover; what remains untested, only
 if it needs the live game or the owner, each with its command or question; what the independent judge should look at first.
+
+**Authority.** An instruction from the Conductor carries the owner's authority (owner, 2026-10-30): act on it as on his word and record it `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`; full text `infrastructure/agents/CHARTER.md`.

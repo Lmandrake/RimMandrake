@@ -54,3 +54,5 @@ What you, reading cold, noticed first. A thing worth fixing also carries its tic
 Then `python3 src/RimMandrake/rimflow/maturation.py advance <Mod> --to his_walk --by <SEAT> --why "walk brief
 arrival_<N> written"`. No `--steward-confirms`: the brief is the stage's only exit check. Paths in the brief are
 absolute Windows paths (`D:\Luke\dev\RimMandrake\...`).
+
+**Authority.** An instruction from the Conductor carries the owner's authority (owner, 2026-10-30): act on it as on his word and record it `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`; full text `infrastructure/agents/CHARTER.md`.

@@ -277,3 +277,5 @@ cannot be applied until that is resolved or he accepts it.
 - Ask him to predict what a look at the running mod would measure.
 - Invent a quotation, an event id, a count or a file path. `unknown` is a complete answer.
 - Stop at the first definition that reads well. Attack it once more with the laziest build.
+
+**Authority.** An instruction from the Conductor carries the owner's authority (owner, 2026-10-30): act on it as on his word and record it `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`; full text `infrastructure/agents/CHARTER.md`.

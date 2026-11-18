@@ -2050,8 +2050,13 @@ def main(argv=None):
     a.add_argument("--token", type=int)
     a.add_argument("--run")
     a.add_argument("--key")
-    for k in AUTH_KEYS:
-        a.add_argument("--" + k.replace("_", "-"))
+    # AUTH_KEYS, written out so the authority census reads the Conductor's route beside --said
+    # (RIMMANDRAKE_ROUTE_MODLEDGER_OWNER_GATES_VIA_CONDUCTOR)
+    a.add_argument("--owner-said")
+    a.add_argument("--by-card")
+    a.add_argument("--per-ruling", help="a standing ruling, e.g. CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM with the "
+                   "Conductor's text in --why")
+    a.add_argument("--why")
     a.add_argument("--no-views", action="store_true")
     g = sub.add_parser("grant")
     g.add_argument("--mod", required=True)

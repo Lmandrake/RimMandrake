@@ -85,6 +85,16 @@ EXEMPT = {
     "src/RimMandrake/Utils/art/sheet_to_artifact.py": "the demand is about a question's wording, not an authority",
     "src/RimMandrake/Utils/modcheck/l1_donor_off_round.py": "--owner-present states he is physically there for a flyer "
                                                             "test (never without him); a fact, not an authority",
+    # RIMMANDRAKE_ROUTE_MODLEDGER_OWNER_GATES_VIA_CONDUCTOR: the hold list is his alone, never Conductor-routed
+    "src/RimMandrake/rimflow/mod_owner_hold.py": "OWNER ONLY: a mod is held and lifted by him alone (owner 2026-11-16, "
+                                                 "\"And stop the new biome mods work. Only Pyrelands as a biome mod "
+                                                 "right now.\"; CLAUDE.md: only he lifts one)",
+    # optional provenance beside a required --why: nothing is refused for want of his words
+    "src/RimMandrake/rimflow/maturation_dispatch.py": "void/unvoid: --why is required, --owner-said is optional "
+                                                      "provenance; nothing is refused without it",
+    "src/RimMandrake/rimflow/pipeline_control.py": "pipe: --why is required, --owner-said is optional provenance "
+                                                   "(act records it); the grant gate's route is control.py's",
+    "src/RimMandrake/rimflow/run_void.py": "void/unvoid record --owner-said when given; --why is what they require",
 }
 DEMAND = re.compile(r"(needs?|requires?|must|only)\b.{0,40}(his (typed |exact |verbatim )?words|--owner-said|--said\b)", re.I)
 ROUTE = re.compile(r"per.ruling|Conductor|ROUTE|standing ruling|--why")
@@ -278,6 +288,8 @@ OWNER_ONLY = {
     "src/RimMandrake/rimflow/relentless_showing.py": "reads his recent OWNER notes so a showing waits until what he "
                                                      "asked for is built (OWNER_REVIEW_BUILD_SHOWS_READY_BEFORE_ASKED); "
                                                      "authorizes nothing",
+    "src/RimMandrake/rimflow/modledger_backfill.py": "counts OWNER-seat bulk `implemented` stamps in the ledger shards "
+                                                     "(evidence for a backfill), authorizes nothing",
     "src/RimMandrake/Utils/modcheck/northstar.py": "record_validation only persists the words its caller (modcheck/cli, "
                                                    "via CA.words) already gated",
     "design/RimStarWars/canon_references/gpt_review/check_review_complete.py": "compares a review row's disposition "

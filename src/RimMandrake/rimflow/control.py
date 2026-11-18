@@ -1119,7 +1119,7 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
     for r in runs:      # a stopped run spends no trial in the dispatch books either (run_void.py; card 2026-11-18)
         if store and r.get("id"):
             r["books"] = void_books(r["unit"], r.get("mod"), "stopped (%s): %s" % (mode, why), owner_said,
-                                    act["id"], p)
+                                    act["id"], p, per_ruling=per_ruling)
     if not store:
         out["store_err"] = store_err
     if mode == "kill":
@@ -1742,10 +1742,10 @@ def cmd_void(o):
 
 
 def _void_books(o, r):
-    return void_books(o.run, r["mod"], o.why, o.owner_said, r["act"]["id"])
+    return void_books(o.run, r["mod"], o.why, o.owner_said, r["act"]["id"], per_ruling=getattr(o, "per_ruling", None))
 
 
-def void_books(unit, mod, why, owner_said, act_id, p=None):
+def void_books(unit, mod, why, owner_said, act_id, p=None, per_ruling=None):
     """The dispatch books (run_void.py's voids.jsonl) learn the void too, so every counter reader there honours it at
     once (a test store tells no books: RM_RUN_VOIDS_FILE names a test's). -> "; <what happened>"."""
     if not (is_live(p) or os.environ.get("RM_RUN_VOIDS_FILE")):
@@ -1759,6 +1759,8 @@ def void_books(unit, mod, why, owner_said, act_id, p=None):
                "by": who(), "kind": "hand", "result": UNM, "cost_usd": UNM, "control_act": act_id}
         if owner_said:
             rec["owner_said"] = owner_said
+        if per_ruling:      # the Conductor's route travels with it (selftest_conductor_authority)
+            rec["per_ruling"] = per_ruling
         RV._append(rec)
         return "; dispatch books: voids.jsonl line written"
     except Exception as e:      # noqa: BLE001
