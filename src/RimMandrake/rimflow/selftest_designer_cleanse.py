@@ -1187,9 +1187,281 @@ def test_gather():
             os.environ.pop(k, None)
 
 
+def _snap(d):
+    """-> {relpath: bytes} of every file under d (what a dry run must leave as it found it)."""
+    out = {}
+    for base, _dirs, files in os.walk(d):
+        for f in files:
+            p = os.path.join(base, f)
+            try:
+                with open(p, "rb") as fh:
+                    out[os.path.relpath(p, d)] = fh.read()
+            except OSError:
+                out[os.path.relpath(p, d)] = None
+    return out
+
+
+def applyable(repo=None):
+    """-> (repo, concept, out): good() laid out under an old tree, its review converged on the current bytes."""
+    repo = repo or tempfile.mkdtemp(prefix="dc_apply_")
+    out = lay(good(), repo=repo)
+    res = json.load(open(os.path.join(out, "result.json")))
+    res["applyable"] = True
+    json.dump(res, open(os.path.join(out, "result.json"), "w"))
+    json.dump({"mod": "Demo", "applyable": True, "open": [], "digest": DC.proposal_digest(out)},
+              open(os.path.join(out, "converge.json"), "w"))
+    return repo, os.path.dirname(out), out
+
+
+def materialize(concept, files):
+    for rel, text in files.items():
+        p = os.path.join(concept, rel)
+        os.makedirs(os.path.dirname(p), exist_ok=True)
+        with open(p, "w", encoding="utf-8") as f:
+            f.write(text)
+
+
+def test_apply():
+    """apply_plan (RIMMANDRAKE_PLAN_CLEANSE_APPLY_DRY_RUN_FOUR_ANSWERS): four answers, the refusal order, review-3
+    findings 1 (a run open; a queued job withdrawn), 5 (one next-version section), 6 (check on every plan, a retry
+    reading the old-leaf record), 7 (unreadable is COULD_NOT_LOOK; {} and 0 bytes are CONVERGE_EMPTY) and 8 (temp
+    fixtures only). Writes nothing."""
+    import io
+    from contextlib import redirect_stdout
+    repo, concept, out = applyable()
+    before = _snap(concept)
+    r = DC.apply_plan(repo, "Demo")
+    check(r["answer"] == "WOULD_WRITE" and {"tree.json", "sheet.md", "stage.json", os.path.join("version", "VERSION.json"),
+                                            "later_version.md"} <= set(r["files"]),
+          "apply: a converged proposal plans tree, sheet, stage, VERSION and later_version (%s %s)" % (r["answer"], r["cause"]))
+    check(_snap(concept) == before, "apply: the dry run writes nothing")
+    check(DC.apply_plan(repo, "Demo")["files"] == r["files"], "apply: the same inputs plan the same files")
+    tree = json.loads(r["files"]["tree.json"])
+    st = json.loads(r["files"]["stage.json"])
+    ver = json.loads(r["files"][os.path.join("version", "VERSION.json")])
+    check([x["id"] for x in tree["leaves"]] == ["B1", "B2"] and tree["cleanse"]["old_leaf_ids"] == OLD
+          and tree["cleanse"]["digest"] == DC.proposal_digest(out), "apply: every bar a leaf; the old leaf ids recorded")
+    check(st["status"] == "blocked" and st["running"] is None and st["blocked_on"], "apply: a new stage is born blocked")
+    check(ver["version"] == "0.1.0" and ver["proposal_digest"] == tree["cleanse"]["digest"] and ver["replaces"] is None,
+          "apply: VERSION 0.1.0 names the digest and replaces nothing")
+    lv = r["files"]["later_version.md"]
+    check(lv.count(DC.NEXT_BEGIN) == 1 and lv.count(DC.NEXT_END) == 1 and "ritual" in lv, "apply: one next-version section")
+    # materialized: the readers take it, check still passes (the old-leaf record), a re-plan has nothing to apply
+    materialize(concept, r["files"])
+    check(not DC.check_dir(out)[0], "apply: check_dir passes the applied folder through tree.json's old-leaf record")
+    check(DC.apply_plan(repo, "Demo")["answer"] == "NOTHING_TO_APPLY", "apply: a re-plan of the applied plan has nothing to apply")
+    t = json.load(open(os.path.join(concept, "tree.json")))
+    t["cleanse"]["old_leaf_ids"].append("unmapped_old")
+    json.dump(t, open(os.path.join(concept, "tree.json"), "w"))
+    check(DC.apply_plan(repo, "Demo")["cause"] == "CHECK_FAILED", "apply: a retry still checks the original old bars")
+    # an old stage: a queued job is withdrawn; a run open refuses; a later version refuses
+    repo, concept, out = applyable()
+    json.dump({"schema": 1, "mod": "Demo", "stage": 3, "status": "ready", "running": None,
+               "budget": {"cap": 10, "reserve": 1, "spent": 0, "charges": []}, "results": [], "history": []},
+              open(os.path.join(concept, "stage.json"), "w"))
+    open(os.path.join(concept, "later_version.md"), "w").write("# Demo later\n\nhis older notes\n")
+    r = DC.apply_plan(repo, "Demo")
+    st = json.loads(r["files"]["stage.json"])
+    check(st["status"] == "blocked" and st["stage"] == 3 and st["cleanse"]["was"] == "ready",
+          "apply: a ready stage is withdrawn to blocked")
+    lv = r["files"]["later_version.md"]
+    check(lv.startswith("# Demo later\n\nhis older notes\n") and lv.count(DC.NEXT_BEGIN) == 1,
+          "apply: text outside the markers is kept verbatim")
+    materialize(concept, r["files"])
+    again = DC.apply_plan(repo, "Demo")
+    check(again["answer"] == "NOTHING_TO_APPLY" and again["files"]["later_version.md"].count(DC.NEXT_BEGIN) == 1,
+          "apply: a re-plan replaces the section, never adds one")
+    s = json.load(open(os.path.join(concept, "stage.json")))
+    s["running"] = {"run": "rm-role-designer-1", "stage": 3}
+    json.dump(s, open(os.path.join(concept, "stage.json"), "w"))
+    check(DC.apply_plan(repo, "Demo")["cause"] == "DESIGNER_RUN_OPEN", "apply: a Designer run open refuses")
+    repo, concept, out = applyable()
+    os.makedirs(os.path.join(concept, "version"))
+    json.dump({"mod": "Demo", "version": "0.2.0"}, open(os.path.join(concept, "version", "VERSION.json"), "w"))
+    check(DC.apply_plan(repo, "Demo")["cause"] == "VERSION_DOWNGRADE", "apply: VERSION above 0.1.0 refuses")
+    # zero moved plans no later_version.md; zero kept refuses
+    repo, concept, out = applyable()
+    c = json.load(open(os.path.join(out, "census.json")))
+    rows = c["rows"] if isinstance(c, dict) else c
+    for x in rows:
+        x["fate"] = "next_version"
+    json.dump(c, open(os.path.join(out, "census.json"), "w"))
+    check(DC.apply_plan(repo, "Demo")["cause"] == "ZERO_KEPT", "apply: zero kept refuses")
+    # each converge and result kind its own cause
+    for name, fn, cause in (
+            ("converge missing", lambda o: os.remove(os.path.join(o, "converge.json")), "CONVERGE_MISSING"),
+            ("converge {}", lambda o: open(os.path.join(o, "converge.json"), "w").write("{}"), "CONVERGE_EMPTY"),
+            ("converge 0 bytes", lambda o: open(os.path.join(o, "converge.json"), "w").close(), "CONVERGE_EMPTY"),
+            ("converge open", lambda o: json.dump({"applyable": False, "open": ["x"]}, open(os.path.join(o, "converge.json"), "w")),
+             "NOT_CONVERGED"),
+            ("converge stale", lambda o: json.dump({"applyable": True, "open": [], "digest": "0" * 64},
+                                                   open(os.path.join(o, "converge.json"), "w")), "STALE_CONVERGENCE"),
+            ("converge no digest", lambda o: json.dump({"applyable": True, "open": []}, open(os.path.join(o, "converge.json"), "w")),
+             "STALE_CONVERGENCE")):
+        repo, concept, out = applyable()
+        fn(out)
+        got = DC.apply_plan(repo, "Demo")
+        check((got["answer"], got["cause"]) == ("REFUSED", cause), "apply: %s is %s (%s)" % (name, cause, got["cause"]))
+    repo, concept, out = applyable()
+    res = json.load(open(os.path.join(out, "result.json")))
+    res["applyable"] = False
+    json.dump(res, open(os.path.join(out, "result.json"), "w"))
+    check(DC.apply_plan(repo, "Demo")["cause"] == "RESULT_NOT_APPLYABLE", "apply: result.json not applyable refuses")
+    check(DC.apply_plan(repo, "Nobody")["cause"] == "NO_PROPOSAL", "apply: no proposal refuses")
+    os.makedirs(os.path.join(repo, "design", "concepts", "Pyrelands", "cleanse"))
+    check(DC.apply_plan(repo, "Pyrelands")["cause"] == "PYRELANDS", "apply: Pyrelands is outside the cleanse")
+    check(DC.apply_plan(repo, "../Demo")["cause"] == "BAD_MOD", "apply: a mod name that is a path refuses")
+    if os.geteuid() != 0:
+        for rel in ("cleanse/converge.json", "tree.json"):
+            repo, concept, out = applyable()
+            os.chmod(os.path.join(concept, rel), 0)
+            got = DC.apply_plan(repo, "Demo")
+            check(got["answer"] == "COULD_NOT_LOOK" and os.path.basename(rel) in got["path"],
+                  "apply: an unreadable %s is COULD_NOT_LOOK naming it, never absent" % rel)
+            os.chmod(os.path.join(concept, rel), 0o644)
+    repo, concept, out = applyable()
+    open(os.path.join(concept, "stage.json"), "w").write("{broken")
+    check(DC.apply_plan(repo, "Demo")["answer"] == "COULD_NOT_LOOK", "apply: a stage.json that does not parse is COULD_NOT_LOOK")
+    # the CLI: one closing line, its exit; --write refused and writes nothing
+    repo, concept, out = applyable()
+    before = _snap(concept)
+    for argv, code, line in ((["apply", "Demo", "--repo", repo], 0, "APPLY Demo WOULD_WRITE 5 files"),
+                             (["apply", "Demo", "--repo", repo, "--write"], 1, "APPLY Demo REFUSED WRITE_NOT_BUILT"),
+                             (["apply", "Nobody", "--repo", repo], 1, "APPLY Nobody REFUSED NO_PROPOSAL")):
+        buf = io.StringIO()
+        with redirect_stdout(buf):
+            got = DC.main(argv)
+        last = buf.getvalue().strip().splitlines()[-1]
+        check(got == code and last.startswith(line), "apply CLI %s: exit %s, %r" % (" ".join(argv[2:]), got, last))
+    check(_snap(concept) == before, "apply CLI: neither the dry run nor --write wrote anything")
+
+
+def test_apply_edges():
+    """Codex review of the apply dry run (2026-11-18): each finding a row."""
+    import concept_tree as CT
+    import designer_stage as DS
+    # a clean first look converges in round 0: converge.json is written, so apply can read it
+    _converge_env()
+    try:
+        repo, out = proposal()
+        json.dump({"mod": "Demo", "author": "codex", "rounds": [{"refusals": []}], "remaining": [],
+                   "digest": DC.proposal_digest(out)}, open(os.path.join(out, "review.json"), "w"))
+        check(not DC.converge_done(repo, "Demo"), "a clean first look alone is not converged: converge.json is owed")
+        fx = FX(repo, codex=[], claude=[])
+        fx.snap()
+        rec = DC.converge_mod("Demo", fx)
+        cv = DC._json_file(os.path.join(out, "converge.json"))
+        check(rec["state"] == "converged" and isinstance(cv, dict) and cv.get("applyable") is True and cv.get("open") == []
+              and cv.get("digest") == DC.proposal_digest(out) and not [c for c in fx.calls if c[0] in ("codex", "claude")],
+              "a clean first look writes converge.json in round 0, no agent run (%s)" % rec["state"])
+    finally:
+        for k in ("RM_OWNER_HOLD_FILE", "RM_DETACHED_POOL", "RM_CLEANSE_STATUS_DIR"):
+            os.environ.pop(k, None)
+    # the materialized plan loads through the readers
+    repo, concept, out = applyable()
+    r = DC.apply_plan(repo, "Demo")
+    materialize(concept, r["files"])
+    try:
+        CT.load(concept)
+        s = DS.status(concept, repo)
+        ok, why = s.get("status") == "blocked" and s.get("running") is None, s.get("status")
+    except Exception as e:      # noqa: BLE001  a reader that refuses the plan is a failed row
+        ok, why = False, "%s: %s" % (type(e).__name__, e)
+    check(ok, "apply: the applied folder loads through concept_tree.load and designer_stage.status (%s)" % why)
+    # a later, different proposal maps the tree as it now stands, not the old-leaf record
+    bars = json.load(open(os.path.join(out, "bars.json")))
+    bars["old_bars"] = {"B1": {"to": "kept", "as": "B1", "why": "kept"}, "B2": {"to": "kept", "as": "B2", "why": "kept"}}
+    json.dump(bars, open(os.path.join(out, "bars.json"), "w"))
+    check(DC._old_bars(out) == ["B1", "B2"], "apply: a new proposal's old bars are the applied tree's leaves (%s)"
+          % DC._old_bars(out))
+    # a census whose rows are not a list is CHECK_FAILED, never a crash
+    repo, concept, out = applyable()
+    json.dump({"rows": 1}, open(os.path.join(out, "census.json"), "w"))
+    try:
+        got = DC.apply_plan(repo, "Demo")["cause"]
+    except Exception as e:      # noqa: BLE001
+        got = "raised %s" % type(e).__name__
+    check(got == "CHECK_FAILED", "apply: census rows that are not a list are CHECK_FAILED (%s)" % got)
+    # the census as a bare list (a form check_dir reads) plans its capabilities; a tree whose leaves are no list is unseeable
+    repo, concept, out = applyable()
+    c = json.load(open(os.path.join(out, "census.json")))
+    json.dump(c["rows"] if isinstance(c, dict) else c, open(os.path.join(out, "census.json"), "w"))
+    cv = json.load(open(os.path.join(out, "converge.json")))
+    cv["digest"] = DC.proposal_digest(out)
+    json.dump(cv, open(os.path.join(out, "converge.json"), "w"))
+    r = DC.apply_plan(repo, "Demo")
+    check(r["answer"] == "WOULD_WRITE" and len(json.loads(r["files"]["tree.json"])["capabilities"]) == 2
+          and "ritual" in r["files"].get("later_version.md", ""), "apply: a list-form census plans its kept and moved rows "
+          "(%s %s %s)" % (r["answer"], r["cause"], r["detail"]))
+    repo, concept, out = applyable()
+    json.dump({"leaves": 1}, open(os.path.join(concept, "tree.json"), "w"))
+    try:
+        got = DC.apply_plan(repo, "Demo")["answer"]
+    except Exception as e:      # noqa: BLE001
+        got = "raised %s" % type(e).__name__
+    check(got == "COULD_NOT_LOOK", "apply: a tree.json whose leaves are no list is COULD_NOT_LOOK, never a crash (%s)" % got)
+    # a definition that quotes `## his words` does not double on a re-plan
+    repo, concept, out = applyable()
+    with open(os.path.join(out, "definition.md"), "a") as f:
+        f.write("\n## his words\n\nThe ground breathes gas.\n")
+    cv = json.load(open(os.path.join(out, "converge.json")))
+    cv["digest"] = DC.proposal_digest(out)
+    json.dump(cv, open(os.path.join(out, "converge.json"), "w"))
+    r = DC.apply_plan(repo, "Demo")
+    if r["answer"] == "WOULD_WRITE":
+        materialize(concept, r["files"])
+        again = DC.apply_plan(repo, "Demo")
+        check(again["answer"] == "NOTHING_TO_APPLY", "apply: a definition quoting his heading re-plans to nothing (%s %s)"
+              % (again["answer"], again["changed"]))
+    else:
+        check(False, "apply: the his-words fixture plans (%s %s %s)" % (r["answer"], r["cause"], r["detail"]))
+    # an old sheet's his-words section is carried, verbatim
+    repo, concept, out = applyable()
+    open(os.path.join(concept, "sheet.md"), "w").write("# Demo\n\n## his words\n\n- \"keep the gas\"\n\n## does\n\n- x\n")
+    check("- \"keep the gas\"" in DC.apply_plan(repo, "Demo")["files"]["sheet.md"], "apply: his words on the old sheet are kept")
+    # an unreadable review.json is COULD_NOT_LOOK
+    if os.geteuid() != 0:
+        repo, concept, out = applyable()
+        legacy_review(out, [])
+        os.chmod(os.path.join(out, "review.json"), 0)
+        got = DC.apply_plan(repo, "Demo")
+        check(got["answer"] == "COULD_NOT_LOOK" and "review.json" in got["path"], "apply: an unreadable review.json is "
+              "COULD_NOT_LOOK naming it (%s %s)" % (got["answer"], got["path"]))
+        os.chmod(os.path.join(out, "review.json"), 0o644)
+    # a VERSION record with this digest but another shape is replaced by 0.1.0
+    repo, concept, out = applyable()
+    os.makedirs(os.path.join(concept, "version"))
+    json.dump({"mod": "Demo", "version": "0.0.9", "proposal_digest": DC.proposal_digest(out)},
+              open(os.path.join(concept, "version", "VERSION.json"), "w"))
+    ver = json.loads(DC.apply_plan(repo, "Demo")["files"][os.path.join("version", "VERSION.json")])
+    check(ver["version"] == "0.1.0" and ver["replaces"]["version"] == "0.0.9", "apply: a 0.0.9 record is replaced by 0.1.0")
+    # two marked sections already, or an unmatched marker: refused, never a second section
+    for tag, body in (("two", "%s\na\n%s\nnotes\n%s\nb\n%s\n" % ((DC.NEXT_BEGIN, DC.NEXT_END) * 2)),
+                      ("unmatched", "%s\na\n" % DC.NEXT_BEGIN), ("reversed", "%s\na\n%s\n" % (DC.NEXT_END, DC.NEXT_BEGIN))):
+        repo, concept, out = applyable()
+        open(os.path.join(concept, "later_version.md"), "w").write(body)
+        check(DC.apply_plan(repo, "Demo")["cause"] == "LATER_VERSION_MARKERS", "apply: later_version.md markers %s refuse" % tag)
+    # zero moved: no later_version.md planned
+    repo, concept, out = applyable()
+    c = json.load(open(os.path.join(out, "census.json")))
+    for x in c["rows"] if isinstance(c, dict) else c:
+        if x["fate"] == "next_version":
+            x["fate"] = "land"
+    json.dump(c, open(os.path.join(out, "census.json"), "w"))
+    res = json.load(open(os.path.join(out, "result.json")))
+    res["counts"].update(kept=3, next_version=0)
+    json.dump(res, open(os.path.join(out, "result.json"), "w"))
+    cv = json.load(open(os.path.join(out, "converge.json")))
+    cv["digest"] = DC.proposal_digest(out)
+    json.dump(cv, open(os.path.join(out, "converge.json"), "w"))
+    r = DC.apply_plan(repo, "Demo")
+    check(r["answer"] == "WOULD_WRITE" and "later_version.md" not in r["files"],
+          "apply: zero moved plans no later_version.md (%s %s %s)" % (r["answer"], r["cause"], r["detail"]))
+
+
 def main():
     for t in (test_check, test_detector, test_case, test_hold, test_run, test_review, test_fleet,
-              test_review_hardening, test_converge, test_gather):
+              test_review_hardening, test_converge, test_gather, test_apply, test_apply_edges):
         try:
             t()
         except Exception as e:      # a crash is a failed row, not a silent stop

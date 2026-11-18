@@ -27,6 +27,10 @@ and dispatch it on every remaining biome other than Pyrelands! Every single one.
         detached in its own systemd user unit (--foreground runs it here); resumable; status in
         D:\\ClaudeWork\\rimmandrake\\designer_cleanse\\status.json and status.md, per-mod logs beside them. --converge
         runs the converge round on every reviewed mod, fewest open records first.
+  designer_cleanse.py apply <Mod> [--repo R]
+        dry run: what applying the converged proposal would write into design/concepts/<Mod>/ (tree.json, sheet.md,
+        stage.json held blocked, version/VERSION.json 0.1.0, later_version.md's one next-version section), or why not.
+        Exit 0 WOULD_WRITE, 3 NOTHING_TO_APPLY, 1 REFUSED, 4 COULD_NOT_LOOK. --write is refused (not built here).
   designer_cleanse.py gather      every mod's pages, questions and retirements in one ALL_BIOMES.md beside the status
   designer_cleanse.py status
 
@@ -565,14 +569,21 @@ def _meetings(doc, bars, models, refuse, stats):
 
 
 def _old_bars(out):
+    """The old tree's leaf ids the proposal maps: tree.json's leaves, or, once an apply has replaced that tree, the
+    record it kept of them (tree.json cleanse.old_leaf_ids) while the proposal is the one applied (cleanse.digest), so a
+    retry still checks the original mapping and a later proposal maps the tree as it now stands."""
     tree = os.path.join(os.path.dirname(os.path.normpath(out)), "tree.json")
     try:
         with open(tree, encoding="utf-8") as f:
             doc = json.load(f)
     except (OSError, ValueError):
         return []
+    rec = doc.get("cleanse") if isinstance(doc, dict) else None
+    if (isinstance(rec, dict) and isinstance(rec.get("old_leaf_ids"), list)
+            and rec.get("digest") == proposal_digest(out)):     # a retry of the very proposal applied, never a new one
+        return [x for x in rec["old_leaf_ids"] if isinstance(x, str)]
     leaves = doc.get("leaves") if isinstance(doc, dict) else None
-    return [x["id"] for x in leaves or [] if isinstance(x, dict) and isinstance(x.get("id"), str)]
+    return [x["id"] for x in leaves if isinstance(x, dict) and isinstance(x.get("id"), str)] if isinstance(leaves, list) else []
 
 
 def _counts(result, rows, bars, doc, models, tickets, pages, mapped, refuse, stats):
@@ -1666,7 +1677,9 @@ def converge_done(repo, mod):
         return False
     if name == "converge.json":
         return doc.get("open") == [] or len(_dicts(doc.get("rounds"))) >= CONVERGE_ROUNDS
-    return not doc.get("remaining")
+    # a first look only, even a clean one: round 0 still writes converge.json, the one verdict apply and the owner's
+    # plan check read (a clean review.json left "already done" with no converge.json could never be applied)
+    return False
 
 
 def _converge_state(name, doc):
@@ -2091,6 +2104,214 @@ def fleet(mods, fx_for, runner="codex", parallel=4, model=None, effort=None, con
     return res
 
 
+# ------------------------------------------------------------------------------------------------ apply (dry run)
+# item RIMMANDRAKE_PLAN_CLEANSE_APPLY_DRY_RUN_FOUR_ANSWERS. apply_plan works out what applying a converged proposal
+# would write into its concept folder and refuses what must not be applied; it writes nothing. Writing it is
+# RIMMANDRAKE_WRITE_CLEANSE_APPLY_ATOMIC_HOLD_UNTOUCHED; the owner's plan check is cleanse_plan.py.
+
+APPLY_ANSWERS = ("WOULD_WRITE", "NOTHING_TO_APPLY", "REFUSED", "COULD_NOT_LOOK")
+APPLY_EXIT = {"WOULD_WRITE": 0, "NOTHING_TO_APPLY": 3, "REFUSED": 1, "COULD_NOT_LOOK": 4}
+NEXT_BEGIN, NEXT_END = "<!-- cleanse:next_version begin -->", "<!-- cleanse:next_version end -->"
+APPLY_BLOCK = ("Designer Cleanse applied: Design Version 0.1.0 is the cleansed tree (cleanse/ digest %s). The concept "
+               "is held until the Designer is scheduled on it again (designer_stage.py unblock).")
+# what an apply reads beside cleanse/: the concept's files the stage reader and the plan read
+APPLY_CONCEPT_FILES = ("tree.json", "sheet.md", "stage.json", "record.json", "scenes.json", "floor.json", "exam.json",
+                       "later_version.md", os.path.join("version", "VERSION.json"))
+
+
+def _apply_out(answer, cause="", path="", files=None, changed=(), detail=""):
+    return {"answer": answer, "cause": cause, "path": path, "files": files or {}, "changed": sorted(changed),
+            "detail": detail}
+
+
+def _apply_read(path):
+    """-> text, or None when absent. OSError (a parent that denies search included) and bad UTF-8 raise: a file that is
+    there but cannot be read is never treated as absent."""
+    try:
+        os.lstat(path)
+    except FileNotFoundError:
+        return None
+    with open(path, encoding="utf-8") as f:
+        return f.read()
+
+
+def _semver(v):
+    m = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", v) if isinstance(v, str) else None
+    return tuple(int(x) for x in m.groups()) if m else None
+
+
+def _dump(doc):
+    return json.dumps(doc, indent=1, ensure_ascii=False) + "\n"
+
+
+def _his_words(sheet):
+    """The old sheet's `## his words` section above its `## does`, verbatim (the owner's words never leave with a
+    rewrite), or ""."""
+    head = re.split(r"^## does[ \t]*$", sheet or "", maxsplit=1, flags=re.M)[0]
+    m = re.search(r"^## his words[ \t]*\n.*?(?=^## |\Z)", head, re.M | re.S)
+    return m.group(0).rstrip() if m else ""
+
+
+def apply_plan(repo, mod):
+    """-> {answer: WOULD_WRITE | NOTHING_TO_APPLY | REFUSED | COULD_NOT_LOOK, cause, path, files {relpath under
+    design/concepts/<mod>/: full text}, changed [the files that differ from disk]}. Writes nothing; the same inputs give
+    the same files. Order: reads, then PYRELANDS, NO_PROPOSAL, ZERO_KEPT, CHECK_FAILED, CONVERGE_MISSING, CONVERGE_EMPTY,
+    NOT_CONVERGED, STALE_CONVERGENCE, RESULT_NOT_APPLYABLE, DESIGNER_RUN_OPEN, VERSION_DOWNGRADE (and BAD_MOD,
+    VERSION_INVALID, STAGE_INVALID, LATER_VERSION_MARKERS: inputs the plan cannot build on)."""
+    import designer_stage as DS
+    if not isinstance(mod, str) or not re.fullmatch(r"[A-Za-z0-9_][A-Za-z0-9_-]*", mod):
+        return _apply_out("REFUSED", "BAD_MOD")
+    concept = os.path.join(os.path.abspath(repo), "design", "concepts", mod)
+    out = os.path.join(concept, "cleanse")
+    # 1. reads: every input that exists is read now, so "cannot read" is never mistaken for "absent" or "changed"
+    text = {}
+    names = [os.path.join("cleanse", n) for n in FILES + ("converge.json", "review.json", "review_attempt.json",
+                                                         "fixes.json")] + list(APPLY_CONCEPT_FILES)
+    for rel in names:
+        p = os.path.join(concept, rel)
+        try:
+            text[rel] = _apply_read(p)
+        except (OSError, UnicodeDecodeError) as e:
+            return _apply_out("COULD_NOT_LOOK", "UNREADABLE", p + " (%s)" % type(e).__name__)
+    try:
+        have_out = os.path.isdir(out) and os.listdir(out) is not None
+    except OSError as e:
+        return _apply_out("COULD_NOT_LOOK", "UNREADABLE", out + " (%s)" % type(e).__name__)
+    parsed = {}
+    for rel in ("tree.json", "stage.json", os.path.join("version", "VERSION.json")):
+        if text[rel] is not None:
+            doc = _json_text(text[rel])
+            if not isinstance(doc, dict) or (rel == "tree.json" and not isinstance(doc.get("leaves", []), list)):
+                return _apply_out("COULD_NOT_LOOK", "UNPARSED", os.path.join(concept, rel))     # old bars unseeable
+            parsed[rel] = doc
+    # 2. refusals, in order
+    if mod.casefold() == "pyrelands":
+        return _apply_out("REFUSED", "PYRELANDS")
+    if not have_out or text[os.path.join("cleanse", "result.json")] is None:
+        return _apply_out("REFUSED", "NO_PROPOSAL")
+    census = _json_text(text[os.path.join("cleanse", "census.json")])
+    listed = census.get("rows") if isinstance(census, dict) else census     # both forms check_dir reads
+    rows = [r for r in listed if isinstance(r, dict)] if isinstance(listed, list) else []
+    kept = [r for r in rows if r.get("fate") in KEPT]
+    if isinstance(listed, list) and not kept:
+        return _apply_out("REFUSED", "ZERO_KEPT")
+    refs, _stats = check_dir(out)
+    if refs:
+        return _apply_out("REFUSED", "CHECK_FAILED", detail="check_dir refuses: %s" % ", ".join(sorted({r["rule"] for r in refs})))
+    raw = text[os.path.join("cleanse", "converge.json")]
+    if raw is None:
+        return _apply_out("REFUSED", "CONVERGE_MISSING")
+    cv = _json_text(raw)
+    if not raw.strip() or cv == {}:
+        return _apply_out("REFUSED", "CONVERGE_EMPTY")
+    if not isinstance(cv, dict) or cv.get("applyable") is not True or cv.get("open") != []:
+        return _apply_out("REFUSED", "NOT_CONVERGED")
+    digest = proposal_digest(out)
+    if cv.get("digest") != digest:
+        return _apply_out("REFUSED", "STALE_CONVERGENCE")
+    result = _json_text(text[os.path.join("cleanse", "result.json")])
+    if not isinstance(result, dict) or result.get("applyable") is not True:
+        return _apply_out("REFUSED", "RESULT_NOT_APPLYABLE")
+    stage = parsed.get("stage.json")
+    if stage is not None and stage.get("running") is not None:
+        return _apply_out("REFUSED", "DESIGNER_RUN_OPEN")
+    vrel = DS.VERSION_FILE
+    ver = parsed.get(vrel)
+    if ver is not None and ver.get("version") is not None:
+        sv = _semver(ver.get("version"))
+        if sv is None:
+            return _apply_out("REFUSED", "VERSION_INVALID", os.path.join(concept, vrel))
+        if sv > (0, 1, 0):
+            return _apply_out("REFUSED", "VERSION_DOWNGRADE")
+    if stage is not None and not (stage.get("stage") in DS.STAGES and isinstance(stage.get("budget"), dict)):
+        return _apply_out("REFUSED", "STAGE_INVALID", os.path.join(concept, "stage.json"))
+    # 3. the plan
+    old_tree = parsed.get("tree.json")
+    if old_tree is None:
+        old_ids = []
+    else:
+        old_ids = _old_bars(out)        # a retry of the applied proposal reads its record of the tree it mapped
+    bdoc = _json_text(text[os.path.join("cleanse", "bars.json")])
+    bars = _dicts(bdoc.get("bars"))
+    whole = bdoc.get("whole") if not _blank(bdoc.get("whole")) else next(b["id"] for b in bars if b.get("whole") is True)
+    tree = {k: old_tree[k] for k in ("schema_version", "authored_by", "root_ref", "root_state", "root_hash", "floor",
+                                     "exam_waived", "waived", "advisory") if old_tree and k in old_tree}
+    tree.update(subject=mod, kind="mod", coverage=None, design_version="0.1.0", signature=result.get("signature"),
+                whole=whole, capabilities=kept, leaves=[dict(b, experience=b.get("says")) for b in bars],
+                checks=_dicts(bdoc.get("checks")), rules=_dicts(bdoc.get("rules")),
+                meetings=_dicts(bdoc.get("meetings")),
+                cleanse={"digest": digest, "old_leaf_ids": old_ids, "old_bars": bdoc.get("old_bars") or {}})
+    files = {"tree.json": _dump(tree)}
+    sheet = ["# %s" % mod, ""]
+    words = _his_words(text["sheet.md"])
+    if words:
+        sheet += [words, ""]
+    sheet += ["## does", ""] + ["- [leaf:%s] %s" % (b.get("id"), " ".join(str(b.get("says") or "").split())) for b in bars]
+    sheet += ["", "## kept capabilities", ""] + ["- %s: %s" % (r.get("id"), " ".join(str(r.get("what") or "").split()))
+                                                 for r in kept]
+    definition = (text[os.path.join("cleanse", "definition.md")] or "").strip()
+    if definition:
+        sheet += ["", "## definition", "", definition]
+    files["sheet.md"] = "\n".join(sheet).rstrip() + "\n"
+    why = APPLY_BLOCK % digest[:12]
+    if stage is None:
+        # designer_stage.init's shape (init writes; this plans), born blocked; no timestamps, so a re-plan is equal
+        st = {"schema": 1, "mod": mod, "item": None, "aliases": [], "stage": 0, "status": "blocked",
+              "budget": {"cap": DS.DEFAULT_CAP, "reserve": DS.DEFAULT_RESERVE, "spent": 0, "charges": []},
+              "running": None, "results": [], "recovery": [], "history": []}
+    else:
+        st = json.loads(json.dumps(stage))
+    prev = st.get("cleanse") if isinstance(st.get("cleanse"), dict) else {}
+    was = prev.get("was") if prev.get("digest") == digest else (stage or {}).get("status")   # a re-plan keeps it
+    st.update(status="blocked", running=None, blocked_on=why, cleanse={"digest": digest, "was": was})
+    files["stage.json"] = _dump(st)
+    if (ver is not None and ver.get("proposal_digest") == digest and ver.get("version") == "0.1.0"
+            and ver.get("mod") == mod and "replaces" in ver):
+        nv = ver                                                      # a re-plan: this digest's record stands
+    else:
+        nv = {"mod": mod, "version": "0.1.0", "state": "open", "proposal_digest": digest, "replaces": ver,
+              "why": "Designer Cleanse of the owner's approved plan (design/concepts/CLEANSE_PLAN_OWNER_2026-11-17.md)"}
+    files[vrel] = _dump(nv)
+    moved = [r for r in rows if r.get("fate") == "next_version"]
+    prior = text["later_version.md"] or ""
+    if prior.count(NEXT_BEGIN) != prior.count(NEXT_END) or prior.count(NEXT_BEGIN) > 1 or (
+            NEXT_BEGIN in prior and prior.index(NEXT_END) < prior.index(NEXT_BEGIN)):
+        return _apply_out("REFUSED", "LATER_VERSION_MARKERS", os.path.join(concept, "later_version.md"),
+                          detail="later_version.md holds %d begin and %d end markers; the plan owns exactly one section"
+                          % (prior.count(NEXT_BEGIN), prior.count(NEXT_END)))
+    if moved:
+        sec = [NEXT_BEGIN, "## Design Version 0.2.0: moved by the Designer Cleanse (digest %s)" % digest[:12], ""]
+        sec += ["- %s (0.2.0): %s\n  %s" % (r.get("id"), " ".join(str(r.get("what") or "").split()),
+                                             " ".join(str(r.get("why") or "").split())) for r in moved]
+        sec += [NEXT_END]
+        if NEXT_BEGIN in prior:
+            head, rest = prior.split(NEXT_BEGIN, 1)
+            later = head + "\n".join(sec) + rest.split(NEXT_END, 1)[1]
+        else:
+            later = prior + ("\n" if prior and not prior.endswith("\n") else "") + ("\n" if prior else "") + "\n".join(sec) + "\n"
+        files["later_version.md"] = later
+    changed = [rel for rel, t in files.items() if text.get(rel) != t]
+    if not changed:
+        return _apply_out("NOTHING_TO_APPLY", files=files)
+    return _apply_out("WOULD_WRITE", files=files, changed=changed)
+
+
+def apply_cli(repo, mod, write=False):
+    """`apply <Mod> [--write]`: per-file lines, then `APPLY <Mod> <ANSWER> [CAUSE]`. -> exit code."""
+    if write:
+        print("APPLY %s REFUSED WRITE_NOT_BUILT (the dry run is built; writing is RIMMANDRAKE_WRITE_CLEANSE_APPLY_"
+              "ATOMIC_HOLD_UNTOUCHED)" % mod)
+        return 1
+    r = apply_plan(repo, mod)
+    for rel in sorted(r["files"]):
+        print("%s %s" % ("WOULD_WRITE" if rel in r["changed"] else "SAME", rel))
+    if r["answer"] == "WOULD_WRITE":
+        print("APPLY %s WOULD_WRITE %d files" % (mod, len(r["changed"])))
+    else:
+        print(("APPLY %s %s %s %s" % (mod, r["answer"], r["cause"], r["path"] or r["detail"])).rstrip())
+    return APPLY_EXIT[r["answer"]]
+
+
 def _main_one(o):
     """run or review of one mod, its lock held by main."""
     if o.cmd == "run":
@@ -2131,9 +2352,15 @@ def main(argv=None):
     fp.add_argument("--foreground", action="store_true", help="run here (the detached unit runs this)")
     fp.add_argument("--converge", action="store_true", help="the converge round on every reviewed mod")
     sub.add_parser("converge").add_argument("mod")
+    ap_ = sub.add_parser("apply")
+    ap_.add_argument("mod")
+    ap_.add_argument("--repo", default=ROOT)
+    ap_.add_argument("--write", action="store_true", help="refused here: the write is its own ticket")
     sub.add_parser("gather")
     sub.add_parser("status")
     o = ap.parse_args(argv)
+    if o.cmd == "apply":
+        return apply_cli(o.repo, o.mod, o.write)
     if o.cmd == "case":
         print(case_text(ROOT, o.mod), end="")
         return 0
