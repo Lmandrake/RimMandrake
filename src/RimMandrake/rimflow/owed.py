@@ -134,10 +134,18 @@ def view(world, seat="BENCH", now=None, show_all=False):
 
 def safe_banner(seat="BENCH"):
     """-> the first line from the live ledger, or a `did not run` line: a per-prompt caller must never fail."""
+    return safe_banner_and_ids(seat)[0]
+
+
+def safe_banner_and_ids(seat="BENCH"):
+    """-> (first line, the seat's open owed ids or None when the ledger could not be read), from one replay: the
+    per-prompt hook needs both (the banner, and what tracks a promise in promise_scan)."""
     try:
-        return banner(model.replay(), seat)
+        w = model.replay()
+        act, wait = split(w, seat)
+        return banner(w, seat), [i.id for i in act + wait]
     except Exception as e:                      # noqa: BLE001 - said, never silent
-        return "OWED view did not run (%s: %s): run `rimflow queue CONDUCTOR --owed`" % (type(e).__name__, e)
+        return "OWED view did not run (%s: %s): run `rimflow queue CONDUCTOR --owed`" % (type(e).__name__, e), None
 
 
 WAKE_HEAD = "== what the Conductor OWES (rimflow queue CONDUCTOR --owed): act on these before anything else"
@@ -254,6 +262,8 @@ CARD = "a card in the Conductor log"            # maturation.next_step: "OWNER, 
 # A program seat may not `file` (model: "`file` is a window's verb"); RUNNER spawns instead, from the run's item or, for a
 # maturation row, from the Maturation Dispatch's own item (the cause maturation_dispatch.file_and_publish names).
 MATURATION_PARENT = "RIMMANDRAKE_WIRE_DISPATCH_TO_LAUNCH_BUILDERS_MODS_SAT_IDLE"
+PROMISE_PARENT = "RIMMANDRAKE_SHOW_UNTRACKED_PROMISES_NEXT_PROMPT_FILE_AT_KILL"   # the mechanism that queued it
+PROMISE_QUEUE = "untracked_promises.jsonl"       # beside detached/: seat_restart appends a backstop kill's hits
 PUBLISH_RESERVE_S = 15                           # a push (fetch, replay, lint, push) is not started with less left
 
 
@@ -283,7 +293,7 @@ def maturation_sources(rows):
             bases = ["_".join(["RIMMANDRAKE", "CARD", m] + stage + ["TO_THE_OWNER"]), "RIMMANDRAKE_CARD_%s_TO_HIM" % m,
                      "RIMMANDRAKE_CARD_%s_%s_TO_HIM" % (m, _token(key))]
             act = "Put the card to him for %s %s at %s" % (mod, r.get("version") or "", r.get("stage") or "?")
-        out.append((key, bases, "%s: %s" % (act, _cut(nxt)), None))
+        out.append((key, bases, "%s: %s" % (act, _cut(nxt)), None, MATURATION_PARENT))
     return out
 
 
@@ -302,7 +312,26 @@ def detached_sources(recs, items):
         key = "detached:%s" % _part(unit)
         bases.append("_".join(["RIMMANDRAKE", "SETTLE"] + words[:2] + [_token(key), "LEFT_OPEN"]))
         out.append((key, bases, "Close or carry %s: run %s ended with it open (%s)" % (
-            iid, unit, _cut(rec.get("owed_close"), 110)), iid))
+            iid, unit, _cut(rec.get("owed_close"), 110)), iid, iid))
+    return out
+
+
+def promise_sources(recs, items):
+    """-> sources for each queued backstop-kill promise (seat_restart.queue_untracked_promises) that names no owed id,
+    open or closed: one that cites its debt was tracked when written, and its debt closing never makes it new (Codex,
+    2026-11-18). A target item's id alone does not track it. Pure."""
+    import hashlib
+    owed_ids = {i for i, it in items.items() if is_owed(it)}
+    out = []
+    for r in recs or []:
+        sent = str(r.get("sentence") or "").strip()
+        if not sent or owed_ids & set(CITED.findall(sent)):
+            continue
+        h = hashlib.sha1(("%s\n%s" % (r.get("session_id") or "", sent)).encode()).hexdigest()[:12]
+        key = "promise:%s:%s" % (_part(r.get("seat")), h)
+        tok = _token(key)
+        bases = ["RIMMANDRAKE_KEEP_UNTRACKED_PROMISE_%s_FROM_THE_KILL" % tok, "RIMMANDRAKE_KEEP_PROMISE_%s" % tok]
+        out.append((key, bases, "UNTRACKED promise: " + " ".join(sent.split()), None, PROMISE_PARENT))
     return out
 
 
@@ -339,7 +368,7 @@ SPAWN_MIN_S = 4                                  # a filing replays the ledger: 
 
 
 def sync_sources(rows, recs, seat="BENCH", repo=None, timeout=120, sources_err=None, spawn=False, max_file=None,
-                 deadline=None):
+                 deadline=None, promises=None):
     """File one owed item for each new source. -> (filed [(id, key)], problems [str]). rows/recs None = that source
     could not be read (named in sources_err); the other source is still filed. spawn: write `spawn --from <cause>`
     (RUNNER, the Dispatcher tick), else `file`. max_file: at most this many filings a pass, the rest next pass;
@@ -355,7 +384,8 @@ def sync_sources(rows, recs, seat="BENCH", repo=None, timeout=120, sources_err=N
         world = model.replay(evs)
         done = filed_keys(evs)
         known = set(world.items)
-        for key, bases, title, cause in maturation_sources(rows) + detached_sources(recs, world.items):
+        for key, bases, title, cause, parent in (maturation_sources(rows) + detached_sources(recs, world.items)
+                                                  + promise_sources(promises, world.items)):
             if key in done:
                 continue
             if max_file is not None and len(filed) >= max_file:
@@ -370,7 +400,7 @@ def sync_sources(rows, recs, seat="BENCH", repo=None, timeout=120, sources_err=N
                 continue
             tagged = "%s [%s %s]" % (title, SOURCE_TAG, key)
             if spawn:
-                argv = [sys.executable, cli, "spawn", "--from", cause or MATURATION_PARENT, "--for", seat, "--name", iid,
+                argv = [sys.executable, cli, "spawn", "--from", parent, "--for", seat, "--name", iid,
                         "--kind", KIND, "--title", tagged]
             else:
                 argv = [sys.executable, cli, "file", iid, "--for", seat, "--kind", KIND, "--title", tagged]
@@ -434,6 +464,23 @@ def live_records(d=None):
     return out, bad
 
 
+def read_promises(path):
+    """-> ([queued promise], problem or None): a missing queue is no promise yet ([]); a torn line is named."""
+    if not os.path.exists(path):
+        return [], None
+    out, bad = [], 0
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            try:
+                r = json.loads(line)
+            except ValueError:
+                bad += 1
+                continue
+            if isinstance(r, dict):
+                out.append(r)
+    return out, ("%d torn line(s) in %s" % (bad, path) if bad else None)
+
+
 def sync_sources_main(argv):
     """`owed.py sync-sources [--maturation-json F] [--detached-dir D] [--for SEAT] [--publish]`: prints FILED <ID> <key>
     per new item. Exit 0 every source read and every filing taken (nothing new is 0 too), 1 a filing refused, 2 a source
@@ -463,6 +510,15 @@ def sync_sources_main(argv):
             errs.append("could not read %d detached record(s): %s" % (len(unread), ", ".join(unread[:5])))
     except Exception as e:                      # noqa: BLE001
         errs.append("could not look at the detached records (%s: %s)" % (type(e).__name__, e))
+    proms = None
+    try:
+        import detached_helper as DH
+        qdir = os.path.dirname(os.path.abspath(a.detached_dir)) if a.detached_dir else DH.state_dir()
+        proms, why = read_promises(os.path.join(qdir, PROMISE_QUEUE))
+        if why:
+            errs.append("could not read every queued promise: %s" % why)
+    except Exception as e:                      # noqa: BLE001
+        errs.append("could not look at the promise queue (%s: %s)" % (type(e).__name__, e))
     try:
         names = held_names()
         kept_rows, kept_recs = not_held(rows or [], recs or [], names)
@@ -472,7 +528,7 @@ def sync_sources_main(argv):
         rows, recs = None, None
     runner = os.environ.get("RIMFLOW_SEAT") == "RUNNER"
     filed, problems = sync_sources(rows, recs, seat=a.seat, sources_err=errs, spawn=runner, max_file=a.max_file,
-                                   deadline=a.deadline)
+                                   deadline=a.deadline, promises=proms)
     waits = [p for p in problems if ": waits for the next pass" in p]      # not a fault: the next pass files them
     problems = [p for p in problems if p not in waits]
     for iid, key in filed:

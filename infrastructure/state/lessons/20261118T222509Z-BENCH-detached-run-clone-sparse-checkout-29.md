@@ -1,0 +1,1 @@
+A detached-run clone is a sparse checkout (29,418 files skip-worktree, 2026-11-18): selftests that import files outside its cone (bridgetools/companion_identity.py) go red with ModuleNotFoundError or a missing file, while git status shows nothing deleted. Prove a red in a full git clone --shared with your diff applied before calling it yours or the base's.

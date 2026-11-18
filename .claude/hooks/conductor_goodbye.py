@@ -21,7 +21,8 @@ CONDUCTOR_RESET_FIX_KILLED_MID_READ): the same identity gate, then the switch is
 On an ordinary prompt it prints this window's own refused or held restart, if any (restart_notice), so a window
 whose HANDOFF READY was refused or held stops saying it into the void, and the owed view's first line, `OWED n …`
 (owed_line; rimflow/owed.py, RIMMANDRAKE_LIST_CONDUCTOR_OWES_FIRST_AT_EVERY_WAKE), so the oldest debt is in front of every
-turn. Prints nothing else on an ordinary prompt and on any unreadable input (exit 0 always: a hook must never block his message).
+turn, and the last reply's untracked promises (untracked_lines; rimflow/promise_scan.py,
+RIMMANDRAKE_SHOW_UNTRACKED_PROMISES_NEXT_PROMPT_FILE_AT_KILL), advisory. Prints nothing else on an ordinary prompt and on any unreadable input (exit 0 always: a hook must never block his message).
 It only prints: the restart itself is requested by the window and acted on by the Dispatcher, which holds it while
 helpers are alive, he is typing, or the window is mid-reply.
 """
@@ -161,11 +162,43 @@ def restart_notice(session_id):
 
 def owed_line():
     """The owed view's first line (`OWED n (actionable a, waiting w), oldest <age> <ID>`), or its `did not run` line."""
+    return owed_reading()[0]
+
+
+def owed_reading():
+    """-> (the owed view's first line, the open owed ids or None): one ledger replay for both."""
     try:
         import owed
-        return owed.safe_banner(SEAT)
+        return owed.safe_banner_and_ids(SEAT)
     except Exception as e:  # noqa: BLE001 - never block his message
-        return "OWED view did not run (%s): run `rimflow queue CONDUCTOR --owed`" % type(e).__name__
+        return "OWED view did not run (%s): run `rimflow queue CONDUCTOR --owed`" % type(e).__name__, None
+
+
+UNTRACKED_MAX = 5
+
+
+def untracked_lines(transcript, owed_ids):
+    """The last reply's untracked promises (rimflow/promise_scan.py; RIMMANDRAKE_SHOW_UNTRACKED_PROMISES_NEXT_PROMPT_FILE_
+    AT_KILL), advisory: nothing blocks. [] when there are none; one UNMEASURED line when it could not look."""
+    try:
+        import promise_scan
+        import seat_restart as SR
+        if owed_ids is None:
+            return ["UNTRACKED promises: UNMEASURED (the owed ids could not be read)"]
+        text = SR.last_assistant_text(transcript, tail_bytes=8 << 20, skip=SR.REPLY_SKIP) if transcript else ""
+        if not text.strip():
+            return []                # no reply yet (a fresh window) is no promise
+        hits = promise_scan.scan(text, owed_ids)
+    except Exception as e:  # noqa: BLE001 - never block his message
+        return ["UNTRACKED promises: UNMEASURED (%s)" % type(e).__name__]
+    if not hits:
+        return []
+    out = ["UNTRACKED in your last reply (%d): file each act as owed (`rimflow file <ID> --for BENCH --kind owed "
+           "--title \"<the act>\"`) and cite its id, or say it is not a promise:" % len(hits)]
+    out += ["  - %s" % (" ".join(h.split())[:220]) for h in hits[:UNTRACKED_MAX]]
+    if len(hits) > UNTRACKED_MAX:
+        out.append("  … %d more" % (len(hits) - UNTRACKED_MAX))
+    return out
 
 
 def _load_schedule():
@@ -208,7 +241,10 @@ def main():
         notice = restart_notice(data.get("session_id"))
         if notice:
             print(notice)
-        print(owed_line())
+        line, ids = owed_reading()
+        print(line)
+        for ln in untracked_lines(data.get("transcript_path"), ids):
+            print(ln)
         return 0
     sf = _session_file()
     ok, why = is_conductor(os.environ, sf, sch)

@@ -33,7 +33,7 @@ def keys_round_trip():
              "next": "NEXT (OWNER, a card in the Conductor log): his words"},
             {"mod": "Other", "version": None, "stage": None, "blind": {"visit": 3},
              "next": "NEXT (PAUSED: three cycles, the Conductor decides): bring the findings"}]
-    for key, _, title, _ in owed.maturation_sources(rows):
+    for key, _, title, _, _ in owed.maturation_sources(rows):
         got = owed.SOURCE_RX.findall("%s [%s %s]" % (title, owed.SOURCE_TAG, key))
         check(got == [key], "a key reads back whole from its title (%s -> %s)" % (key, got))
     a, b = (owed.maturation_sources([dict(rows[0], version=v)])[0][0] for v in ("0.1.0+build", "0.1.0-build"))
@@ -49,7 +49,7 @@ def names_never_run_out():
             for i in range(40)]
     srcs = owed.detached_sources(recs, {"RIMMANDRAKE_FIX_SAME_PREFIX_ITEM_OPEN": It()})
     names = []
-    for key, bases, _, _ in srcs:
+    for key, bases, _, _, _ in srcs:
         n = owed._free_name(bases, known)
         names.append(n)
         if n:

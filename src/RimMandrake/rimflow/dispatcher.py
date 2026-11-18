@@ -1569,6 +1569,7 @@ def publish_bounded(n, timeout, argv=None, kill_wait=10, env=None):
 
 OWED_SOURCES_MIN_S = 4          # sync-sources reads in ~1.7 s (measured 2026-11-18); it defers its push past its deadline
 OWED_SOURCES_CAP_S = 10         # one filing replays the ledger (4-10 s measured): one a pass, never the whole beat
+OWED_SOURCES_MARGIN_S = 2       # the child's own deadline is this far before its kill: it stops and says so, never killed
 OWED_SOURCES_RESERVE_S = 4      # left for the tick's publish and helper budget (the first live pass, 22:05 UTC
                                 # 2026-11-18, ran 11.6 s and cut the helper budget)
 
@@ -2035,7 +2036,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
             st["owed_sources_at"] = now
             try:
                 budget = min(OWED_SOURCES_CAP_S, deadline - time.time() - OWED_SOURCES_RESERVE_S)
-                out = do_owed(budget, time.time() + budget)
+                out = do_owed(budget, time.time() + budget - OWED_SOURCES_MARGIN_S)
             except Exception as e:  # noqa: BLE001
                 out = "error: %s: %s" % (type(e).__name__, str(e))
             timing["owed_sources"] = round(time.time() - t0, 3)
