@@ -1,0 +1,462 @@
+{
+ "ticket": "RIMMANDRAKE_SCAN_SCENES_AGAINST_BARS_TOGGLE_NEVER_TOGGLED",
+ "at": "2026-11-18T14:25:43-0800",
+ "list": "scene_asks_bar",
+ "model": "sonnet",
+ "keep_rule": "flags both bad and at most one good",
+ "cases": [
+  {
+   "kind": "bad",
+   "rev": "99ff70d91a",
+   "test": "sc_coating_wash",
+   "function": "_coating_wash",
+   "bars": [
+    "inv_liquid_coating"
+   ],
+   "input_chars": 1597,
+   "ran": true,
+   "ok": false,
+   "did_not_run": null,
+   "answers": [
+    {
+     "q": "observes_the_promise",
+     "answer": "yes",
+     "evidence": "scene:7-8 and scene:10-11 read the pawn's health from the game with jawa/list_pawns (includeHealth=True) and check it for 'Coated', rather than only checking that its own walk orders were accepted."
+    },
+    {
+     "q": "event_happened",
+     "answer": "no",
+     "evidence": "scene:11 - COAT_water_washes_it passes when 'oated' is absent from h2. It never checks that the pawn was coated first (scene:8 is a separate row), or that the pawn was found at that rect. If the pawn never got coated, or list_pawns returned nothing, the row still reads PASS."
+    },
+    {
+     "q": "both_states_driven",
+     "answer": "yes",
+     "evidence": "scene:6 walks the pawn through the oil and then to a dry tile to read the coated state. scene:9 then walks it into the water to read the washed state. Both states are driven."
+    }
+   ],
+   "refusals": [
+    {
+     "q": "event_happened",
+     "evidence": "scene:11 - COAT_water_washes_it passes when 'oated' is absent from h2. It never checks that the pawn was coated first (scene:8 is a separate row), or that the pawn was found at that rect. If the pawn never got coated, or list_pawns returned nothing, the row still reads PASS.",
+     "would_pass": "the scene does what the question asks: When the scene judges a change (something stops, fills, is coated, falls, switches), does it first check that the thing it judges actually happened or was actually present, so that nothing-happened cannot read PASS?",
+     "smallest_fix": "change the scene at the cited line so it checks the judged event happened first, then rerun this scan"
+    }
+   ],
+   "usd": 0.013065999999999998,
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1798,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 587,
+    "output_tokens_details": {
+     "thinking_tokens": 276
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 1798,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 587,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 1798,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 0,
+       "ephemeral_1h_input_tokens": 1798
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+   },
+   "model_usage": {
+    "claude-sonnet-5-5": {
+     "inputTokens": 2,
+     "outputTokens": 587,
+     "cacheReadInputTokens": 0,
+     "cacheCreationInputTokens": 1798,
+     "webSearchRequests": 0,
+     "costUSD": 0.013065999999999998,
+     "contextWindow": 1000000,
+     "maxOutputTokens": 128000,
+     "thinkingTokens": 276,
+     "cacheCreationEphemeral5mInputTokens": 0,
+     "cacheCreationEphemeral1hInputTokens": 1798,
+     "canonicalModel": "claude-sonnet-5-5",
+     "provider": "firstParty",
+     "costBasis": "list"
+    }
+   },
+   "weighted_v2": 3266
+  },
+  {
+   "kind": "bad",
+   "rev": "99ff70d91a",
+   "test": "sc_walk",
+   "function": "_walk",
+   "bars": [
+    "inv_settings",
+    "walk_moat_season"
+   ],
+   "input_chars": 3365,
+   "ran": true,
+   "ok": true,
+   "did_not_run": null,
+   "answers": [
+    {
+     "q": "observes_the_promise",
+     "answer": "yes",
+     "evidence": "scene:6-7 digest() reads the game's flowworks_engine_state and ProofCensus rather than just checking that its own orders were accepted. The scene covers only the toggle part of the bar and never saves or reloads."
+    },
+    {
+     "q": "event_happened",
+     "answer": "yes",
+     "evidence": "scene:11 requires `None not in a and a[0]` before PASS, so the digest must hold real values and a nonzero excavatedCellCount. A dig or fill that never happened would therefore not pass. The comment at scene:3 shows the earlier None == None false pass was fixed."
+    },
+    {
+     "q": "both_states_driven",
+     "answer": "yes",
+     "evidence": "scene:8 takes the digest before the toggle, scene:9 switches depthEngineEnabled off and back on with ticks in between, and scene:10 takes the digest afterwards. The before and after states are both really reached. The off state is never read, and no save or reload is driven."
+    }
+   ],
+   "refusals": [],
+   "usd": 0.020756000000000004,
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 2728,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 984,
+    "output_tokens_details": {
+     "thinking_tokens": 651
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 2728,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 984,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 2728,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 0,
+       "ephemeral_1h_input_tokens": 2728
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+   },
+   "model_usage": {
+    "claude-sonnet-5-5": {
+     "inputTokens": 2,
+     "outputTokens": 984,
+     "cacheReadInputTokens": 0,
+     "cacheCreationInputTokens": 2728,
+     "webSearchRequests": 0,
+     "costUSD": 0.020756000000000004,
+     "contextWindow": 1000000,
+     "maxOutputTokens": 128000,
+     "thinkingTokens": 651,
+     "cacheCreationEphemeral5mInputTokens": 0,
+     "cacheCreationEphemeral1hInputTokens": 2728,
+     "canonicalModel": "claude-sonnet-5-5",
+     "provider": "firstParty",
+     "costBasis": "list"
+    }
+   },
+   "weighted_v2": 5189
+  },
+  {
+   "kind": "good",
+   "rev": "HEAD",
+   "test": "sc_fill_front",
+   "function": "_fill_front",
+   "bars": [
+    "inv_flow_level",
+    "fill_flows_along_canal"
+   ],
+   "input_chars": 4032,
+   "ran": true,
+   "ok": false,
+   "did_not_run": null,
+   "answers": [
+    {
+     "q": "observes_the_promise",
+     "answer": "yes",
+     "evidence": "The scene reads per-cell liquid levels from the game with S.dl after each pulse (scene:9). Every row is computed from those readings (scene:11-14), not from the accepted dig and fill orders."
+    },
+    {
+     "q": "event_happened",
+     "answer": "no",
+     "evidence": "scene:12. FF_tar_behind_water reads PASS whenever t <= w at every read, and nothing checks that the tar front ever advanced. A tar canal that never fills still passes. FF_banks_dry (scene:14) likewise passes if no liquid moves, and it has no guard of its own."
+    },
+    {
+     "q": "both_states_driven",
+     "answer": "yes",
+     "evidence": "The scene digs both canals and fills one head cell with water and the other with tar (scene:3, 6-7). It confirms the dry start (scene:4) and then pulses and reads both fronts (scene:9-10), so both sides of the water/tar contrast are driven."
+    }
+   ],
+   "refusals": [
+    {
+     "q": "event_happened",
+     "evidence": "scene:12. FF_tar_behind_water reads PASS whenever t <= w at every read, and nothing checks that the tar front ever advanced. A tar canal that never fills still passes. FF_banks_dry (scene:14) likewise passes if no liquid moves, and it has no guard of its own.",
+     "would_pass": "the scene does what the question asks: When the scene judges a change (something stops, fills, is coated, falls, switches), does it first check that the thing it judges actually happened or was actually present, so that nothing-happened cannot read PASS?",
+     "smallest_fix": "change the scene at the cited line so it checks the judged event happened first, then rerun this scan"
+    }
+   ],
+   "usd": 0.020204,
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3150,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 760,
+    "output_tokens_details": {
+     "thinking_tokens": 429
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 3150,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 760,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 3150,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 0,
+       "ephemeral_1h_input_tokens": 3150
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+   },
+   "model_usage": {
+    "claude-sonnet-5-5": {
+     "inputTokens": 2,
+     "outputTokens": 760,
+     "cacheReadInputTokens": 0,
+     "cacheCreationInputTokens": 3150,
+     "webSearchRequests": 0,
+     "costUSD": 0.020204,
+     "contextWindow": 1000000,
+     "maxOutputTokens": 128000,
+     "thinkingTokens": 429,
+     "cacheCreationEphemeral5mInputTokens": 0,
+     "cacheCreationEphemeral1hInputTokens": 3150,
+     "canonicalModel": "claude-sonnet-5-5",
+     "provider": "firstParty",
+     "costBasis": "list"
+    }
+   },
+   "weighted_v2": 5051
+  },
+  {
+   "kind": "good",
+   "rev": "HEAD",
+   "test": "sc_one_surface",
+   "function": "_one_surface",
+   "bars": [
+    "inv_flow_level",
+    "one_still_surface"
+   ],
+   "input_chars": 4086,
+   "ran": true,
+   "ok": true,
+   "did_not_run": null,
+   "answers": [
+    {
+     "q": "observes_the_promise",
+     "answer": "yes",
+     "evidence": "Scene line 10 reads the game's own state through the ProofLevelSurface probe, and the ONE_level_every_cell row at line 14 is judged on that reading, not on whether its own orders were accepted."
+    },
+    {
+     "q": "event_happened",
+     "answer": "yes",
+     "evidence": "Line 13 requires the probe to print OK, exactly one body, and a gap of at most 0.01 m. Line 14 also requires the probe's square count to be at least len(canal)+len(pit). So a map with no water, or one the probe barely covers, cannot read PASS. This assumes the probe's square count means cells that actually hold water."
+    },
+    {
+     "q": "both_states_driven",
+     "answer": "yes",
+     "evidence": "Line 8 fills the canal at 0.8 and the pit at 3.0, putting the game into an uneven state. Lines 9-14 then let it settle and read it. Lines 15-18 place a sluice and refill the canal, and the row checks that the two sides differ. The before and after states are both driven, though the uneven state is never read directly."
+    }
+   ],
+   "refusals": [],
+   "usd": 0.02219,
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 3189,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 943,
+    "output_tokens_details": {
+     "thinking_tokens": 574
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 3189,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 943,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 3189,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 0,
+       "ephemeral_1h_input_tokens": 3189
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+   },
+   "model_usage": {
+    "claude-sonnet-5-5": {
+     "inputTokens": 2,
+     "outputTokens": 943,
+     "cacheReadInputTokens": 0,
+     "cacheCreationInputTokens": 3189,
+     "webSearchRequests": 0,
+     "costUSD": 0.02219,
+     "contextWindow": 1000000,
+     "maxOutputTokens": 128000,
+     "thinkingTokens": 574,
+     "cacheCreationEphemeral5mInputTokens": 0,
+     "cacheCreationEphemeral1hInputTokens": 3189,
+     "canonicalModel": "claude-sonnet-5-5",
+     "provider": "firstParty",
+     "costBasis": "list"
+    }
+   },
+   "weighted_v2": 5548
+  },
+  {
+   "kind": "good",
+   "rev": "HEAD",
+   "test": "sc_geyser_tub",
+   "function": "_geyser_tub",
+   "bars": [
+    "inv_geyser_tub"
+   ],
+   "input_chars": 1675,
+   "ran": true,
+   "ok": false,
+   "did_not_run": null,
+   "answers": [
+    {
+     "q": "observes_the_promise",
+     "answer": "yes",
+     "evidence": "scene:6-7 reads jawa/inspect_string and checks for the Hot Tub label; scene:9 reads the pawn's need list for HotSpring. Both are reads of game state, not just confirmation that orders were accepted."
+    },
+    {
+     "q": "event_happened",
+     "answer": "yes",
+     "evidence": "scene:7 and scene:9 pass only if the game output positively contains 'Hot tub' or 'HotSpring'. If nothing happened, neither string appears and the rows read FAIL."
+    },
+    {
+     "q": "both_states_driven",
+     "answer": "no",
+     "evidence": "scene:5 only digs and fills the pit over the vent, and no other state is ever driven. The bar's contrast with a geyser beside the water, or an unfilled pit, is never set up, so only the filled state is read."
+    }
+   ],
+   "refusals": [
+    {
+     "q": "both_states_driven",
+     "evidence": "scene:5 only digs and fills the pit over the vent, and no other state is ever driven. The bar's contrast with a geyser beside the water, or an unfilled pit, is never set up, so only the filled state is read.",
+     "would_pass": "the scene does what the question asks: When the bar promises a contrast (on versus off, with versus without, before versus after), does the scene actually put the game into each of the states it compares, rather than reading one state twice?",
+     "smallest_fix": "change the scene at the cited line so it drives the game into each compared state, then rerun this scan"
+    }
+   ],
+   "usd": 0.016767999999999998,
+   "usage": {
+    "input_tokens": 2,
+    "cache_creation_input_tokens": 1876,
+    "cache_read_input_tokens": 0,
+    "output_tokens": 926,
+    "output_tokens_details": {
+     "thinking_tokens": 637
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 1876,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 926,
+      "cache_read_input_tokens": 0,
+      "cache_creation_input_tokens": 1876,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 0,
+       "ephemeral_1h_input_tokens": 1876
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+   },
+   "model_usage": {
+    "claude-sonnet-5-5": {
+     "inputTokens": 2,
+     "outputTokens": 926,
+     "cacheReadInputTokens": 0,
+     "cacheCreationInputTokens": 1876,
+     "webSearchRequests": 0,
+     "costUSD": 0.016767999999999998,
+     "contextWindow": 1000000,
+     "maxOutputTokens": 128000,
+     "thinkingTokens": 637,
+     "cacheCreationEphemeral5mInputTokens": 0,
+     "cacheCreationEphemeral1hInputTokens": 1876,
+     "canonicalModel": "claude-sonnet-5-5",
+     "provider": "firstParty",
+     "costBasis": "list"
+    }
+   },
+   "weighted_v2": 4192
+  }
+ ],
+ "verdict": "NOT KEPT (flagged 1 of 2 bad, 2 of 3 good)",
+ "usd_total": 0.092984,
+ "weighted_v2_total": 23246,
+ "token_unit": "weighted_v2 (claude-sonnet-5-5 usage weighted by MODEL_PRICES, role_launch.py)"
+}

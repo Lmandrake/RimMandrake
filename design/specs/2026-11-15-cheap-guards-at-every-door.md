@@ -224,6 +224,12 @@ question?** FlowWorks visit 1 had a coating scene that passed with no coat ever 
 switched the engine off; both run cleanly and answer honestly on an empty game. That is the evidence, and it is one
 visit, so this is built last and as an experiment with a stated end.
 
+**Tried 2026-11-18, not kept.** The backtest flagged 1 of the 2 known-bad scenes and 2 of the 3 honest ones (keep rule:
+both bad, at most one good), for 23,246 weighted tokens on Sonnet 5.5. The module was removed in the closing commit of
+`RIMMANDRAKE_SCAN_SCENES_AGAINST_BARS_TOGGLE_NEVER_TOGGLED`; the version tried is at 1cf32bdb12, the record at
+`infrastructure/state/evidence/RIMMANDRAKE_SCAN_SCENES_AGAINST_BARS_TOGGLE_NEVER_TOGGLED_backtest.json`. The design below
+is kept as what was tried.
+
 - **The scan** (`light_scan.py`, one function, reusable at another door only when that door brings its own incident):
   Sonnet (Haiku is banned here); its input is the bar's words and the scene's own function text and nothing else; no
   tools and no file access; a fixed question list in a JSON file; input over 60,000 characters does not run, it is
