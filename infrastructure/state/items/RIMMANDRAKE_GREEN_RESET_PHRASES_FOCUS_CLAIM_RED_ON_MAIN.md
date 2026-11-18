@@ -3,6 +3,7 @@ Two selftests are red on origin/main, found by Lane C (RIMMANDRAKE_FILE_OWED_WHE
 - `src/RimMandrake/rimflow/selftest_conductor_reset_mode.py`: 6 FAIL, all "<phrase> is not the switch" ('hold on, one thing', 'are you ready?', 'put it on hold', 'ready to go, do the hose', 'auto mode for pipes', 'holding'): the reset-mode switch matcher now takes ordinary phrases as the switch, or the test's expectation is stale. Under the harness it also runs past 240 s (CRASH timeout).
 - `src/RimMandrake/rimflow/selftest_focus_cap.py`: 1 FAIL, "direct claim: the refused claim wrote no event".
 - `src/RimMandrake/rimflow/selftest_relentless.py`: FAIL on base 8e82911e2b too (full clone, 116 s); not read further. Relentless was retired 2026-11-13, so the test may only need retiring with it: check `retired_loops_2026-11-13.md` first.
+- `src/RimMandrake/Utils/selftest_known_results.py`: CRASH on base 5d806379be (full clone, 2026-11-18 ~3:30 PM PST), FileNotFoundError on its own fixture's `repo.state/known_results/quarantine.json`; not read further.
 Not known whether the code or the test is wrong: read each case's history (`git log -S` on the phrase list and the claim cap) before choosing.
 
 ## verify

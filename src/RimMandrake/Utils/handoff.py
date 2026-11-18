@@ -414,9 +414,11 @@ def gates(since_ts=None, handoff_path=None, doing_is_fatal=True):
     # block it, or account for it" — not "close it": some work is legitimately
     # left mid-flight, and a gate that cannot be satisfied by writing the truth
     # teaches the seat to pass --force instead, which is worse than no gate.
+    # Only its own half-done pointer with a NEXT: discharges it: a mention anywhere (the auto-listed queue, a longer id)
+    # did, and let a deleted pointer pass (Codex, 2026-11-18; RIMMANDRAKE_HARDEN_HANDOFF_CHECK_FOUR_HOLES_CODEX_FOUND).
     if open_doing and handoff_path and os.path.isfile(handoff_path):
-        text = io.open(handoff_path, encoding="utf-8").read()
-        open_doing = [i for i in open_doing if i not in text]
+        named = accounted_ids(io.open(handoff_path, encoding="utf-8").read())
+        open_doing = [i for i in open_doing if i not in named]
 
     # ⚠️ In WRITE mode this must not refuse. The only way to discharge it is to
     # write the item into 'What is half-done' — in a file that does not exist yet.
@@ -484,6 +486,59 @@ def _bullets(body):
     return out
 
 
+_EXACT_ID = re.compile(r"(?<![A-Za-z0-9_])[A-Z][A-Z0-9_]+(?![A-Za-z0-9_])")
+
+
+def accounted_ids(text):
+    """-> {item id} named, whole, on a half-done bullet that holds a NEXT: (the only way an open `doing` item is
+    accounted for)."""
+    body = _section(text, "What is half-done, and where it stops") or ""
+    out = set()
+    for b in _bullets(body):
+        if "NEXT:" in b:
+            out.update(_EXACT_ID.findall(b))
+    return out
+
+
+# hole 2: a git status that failed is UNMEASURED, never a clean tree
+TREE_UNMEASURED = ("Tree state UNMEASURED: `git status --short` failed when this was written; run it, list what is "
+                   "uncommitted and whose, then delete this line.")
+
+
+def tree_lines(run=subprocess.run):
+    """-> the uncommitted paths (`git status --short`, untracked Transient/ apart), or None when git could not say."""
+    try:
+        r = run(["git", "status", "--short"], cwd=ROOT, capture_output=True, text=True, timeout=60)
+    except Exception:  # noqa: BLE001 - could not run: UNMEASURED
+        return None
+    if r is None or r.returncode != 0:
+        return None
+    return [l for l in (r.stdout or "").splitlines() if l and not l.startswith("?? Transient/")]
+
+
+def window_start(since_sha, prev_ts):
+    """-> the ledger window's start: the --since commit's own time when one is given, else the previous handoff's.
+    `--since` used to move only the commit range, and items started between it and the previous handoff escaped the
+    doing gate. An unreadable --since commit -> None (no window: every open item answers, never fewer)."""
+    if not since_sha:
+        return prev_ts
+    raw = sh("git", "log", "-1", "--format=%cI", since_sha)
+    return _to_utc_z(raw) if raw and not raw.startswith("<could not run") else None
+
+
+def handoff_out(seat_, d, stamp=None):
+    """-> a skeleton path that names no file already there: a second write in the same minute replaced a filled handoff
+    with a fresh skeleton (the name was minute-precision and opened with "w")."""
+    stamp = stamp or datetime.datetime.utcnow().strftime("%Y%m%d%H%M")
+    cands = [stamp, stamp + datetime.datetime.utcnow().strftime("%S")]
+    cands += ["%s%02d" % (cands[1], k) for k in range(1, 100)]
+    for st in cands:
+        out = os.path.join(d, "%s_REBOOT_HANDOFF_%s.md" % (seat_, st))
+        if not os.path.exists(out):
+            return out
+    return None
+
+
 def todo_scan(path):
     """Everything --check demands of the handoff's CONTENT. Each check maps to a
     measured failure mode from the 2026-09-17 audit (Transient/handoff_audit/):
@@ -496,6 +551,9 @@ def todo_scan(path):
     n = text.count(TODO)
     if n:
         bad.append("%d unfilled section(s) still carry %s" % (n, TODO))
+    if TREE_UNMEASURED in text:
+        bad.append("the tree state is UNMEASURED (git status failed when the skeleton was written): run `git status "
+                   "--short`, list what is uncommitted and whose, and delete that line")
     n = text.count(WHOSE)
     if n:
         bad.append("%d uncommitted-file line(s) still carry %s — say whose each "
@@ -914,8 +972,7 @@ def build(since_sha, since_ts, prev_name):
     rng = ("%s..HEAD" % since_sha) if since_sha else "-30"
     commits = sh("git", "log", "--oneline", "--format=%h %s", rng)
 
-    dirty = [l for l in sh("git", "status", "--short").splitlines()
-             if l and not l.startswith("?? Transient/")]
+    dirty = tree_lines()
 
     game = sh(os.path.join(ROOT, "game"))
     bridge = ""
@@ -924,8 +981,10 @@ def build(since_sha, since_ts, prev_name):
                   if l and not l.startswith("#")]
         bridge = bridge[-1] if bridge else ""
 
-    stamp = datetime.datetime.utcnow().strftime("%Y%m%d%H%M")
-    out = os.path.join(HANDOFFS, "%s_REBOOT_HANDOFF_%s.md" % (s, stamp))
+    out = handoff_out(s, HANDOFFS)
+    if out is None:
+        raise SystemExit("REFUSED: every skeleton name for this minute is taken in %s; nothing written" % HANDOFFS)
+    stamp = os.path.basename(out)[len("%s_REBOOT_HANDOFF_" % s):-len(".md")]
 
     L = []
     L.append("# %s_REBOOT_HANDOFF_%s — READ FIRST on wake" % (s, stamp))
@@ -998,7 +1057,9 @@ def build(since_sha, since_ts, prev_name):
         L.append("- %s" % line.strip())
     L.append("- Bridge: %s" % (bridge or "unknown"))
     L.append("")
-    if dirty:
+    if dirty is None:
+        L.append(TREE_UNMEASURED)
+    elif dirty:
         L.append("Uncommitted (replace the placeholder after each line below with whose it is —")
         L.append("yours, the other seat's, a subagent's):")
         L.append("")
@@ -1061,7 +1122,8 @@ def main():
 
     # write mode only: --check on a quiet window still checks the newest handoff (Codex, 2026-11-18: an uncommitted new
     # handoff with unowed pointers or unfilled sections read ALREADY HANDED OFF and exited 0 unchecked)
-    if prev_name and window_is_empty(since_sha, prev_ts) and not a.force and not a.check:
+    since_ts = window_start(a.since, prev_ts)    # --since moves the ledger window too, not only the commit range
+    if prev_name and window_is_empty(since_sha, since_ts) and not a.force and not a.check:
         print("ALREADY HANDED OFF — nothing has closed, been filed or been "
               "committed since\n  %s"
               % os.path.join("infrastructure", "state", "handoffs", prev_name))
@@ -1070,7 +1132,7 @@ def main():
               "comes in. --force overrides.")
         return 0
 
-    problems = gates(prev_ts, newest if a.check else None,
+    problems = gates(since_ts, newest if a.check else None,
                      doing_is_fatal=a.check)
 
     # Owner 2026-10-18 (BUILDUP_BUILD_CLONES_STOP_BREEDING Q3): "the next handoff plays catchup and takes as
@@ -1108,7 +1170,7 @@ def main():
         print("\n--force writes the skeleton anyway (and records these as open).")
         return 1
 
-    out = build(since_sha, prev_ts, prev_name)
+    out = build(since_sha, since_ts, prev_name)
     print("wrote %s" % os.path.relpath(out, ROOT))
     print("\nFill these in — a script cannot:")
     for title, prompt in JUDGEMENT_SECTIONS:

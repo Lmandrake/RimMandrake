@@ -146,19 +146,22 @@ check(any("still open" in p for p in unscoped),
       "with NO window the doing-gate does fire — so the empty-window silence "
       "above is the scoping working, not the check being dead")
 
-# Naming the ids in the handoff clears them.
+# Accounting for each id on its own half-done pointer, with a NEXT:, clears them. A bare mention no longer does
+# (RIMMANDRAKE_HARDEN_HANDOFF_CHECK_FOUR_HOLES_CODEX_FOUND: a mention in the auto-listed queue or inside a longer id
+# discharged an item whose pointer had been deleted; selftest_handoff_holes.py holds those cases).
 ids = []
 for p in unscoped:
     if "still open" in p:
         ids = [x.strip() for x in p.split(":\n")[-1].split(",") if x.strip()]
 with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False,
                                  encoding="utf-8") as fh:
-    fh.write("# handoff\n\n" + "\n".join("- %s: left mid-flight" % i for i in ids))
+    fh.write("# handoff\n\n## What is half-done, and where it stops\n\n"
+             + "\n".join("- `%s` — left mid-flight; NEXT: pick it up" % i for i in ids) + "\n")
     accounted = fh.name
 try:
     cleared = handoff.gates(None, accounted)
     check(not any("still open" in p for p in cleared),
-          "naming every open item in the handoff discharges the gate (%d ids)"
+          "a half-done pointer with a NEXT: for every open item discharges the gate (%d ids)"
           % len(ids))
 finally:
     try:
