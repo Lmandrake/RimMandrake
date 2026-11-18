@@ -807,13 +807,28 @@ def test_r3_helpers_unreadable_hold_and_never_age_out():
 
 def test_r4_pid_identity_and_death():
     p = subprocess.Popen(["sleep", "60"])
-    start = SR.proc_start(p.pid)
-    check(start is not None, "R4 a live pid has a start time")
-    check(SR.kill_pid(p.pid, start=start + 1) .startswith("refused"), "R4 a different start time (pid reused) -> refused")
-    check(SR.proc_alive(p.pid, start), "R4 ... and the process was not touched")
-    res = SR.kill_pid(p.pid, start=start)
-    p.wait(timeout=5)
-    check(res.startswith("SIGTERM") and not SR.proc_alive(p.pid, start), "R4 the right process is killed (%s)" % res)
+    try:
+        start = SR.proc_start(p.pid)
+        check(start is not None, "R4 a live pid has a start time")
+        check(SR.kill_pid(p.pid, start=start + 1).startswith("refused"), "R4 a different start time (pid reused) -> refused")
+        check(SR.proc_alive(p.pid, start), "R4 ... and the process was not touched")
+        if not hasattr(os, "pidfd_open"):
+            # No pidfd here (macOS), so the real pinned kill cannot be performed at all. The reuse refusal above IS
+            # measured — proc_start works everywhere now — but the kill half is not, and it must say so rather than
+            # pass. Before this, kill_pid raised AttributeError and the whole test CRASHED on every Mac run.
+            res = SR.kill_pid(p.pid, start=start)
+            check(res.startswith("refused") and "pidfd_open" in res and SR.proc_alive(p.pid, start),
+                  "R4 with no pidfd: the kill is REFUSED by name and the process is left alive (%s)" % res)
+            print("UNMEASURED, not a pass or a fail — R4's pinned-kill half needs os.pidfd_open (%s has none); the "
+                  "reuse refusal was measured, the kill was not" % sys.platform)
+            return
+        res = SR.kill_pid(p.pid, start=start)
+        p.wait(timeout=5)
+        check(res.startswith("SIGTERM") and not SR.proc_alive(p.pid, start), "R4 the right process is killed (%s)" % res)
+    finally:
+        if p.poll() is None:            # a refused kill leaves it running: this test's own child, not a seat's window
+            p.kill()
+            p.wait(timeout=5)
 
 
 def test_r5_fallback_and_tile_share_one_election():

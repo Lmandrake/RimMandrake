@@ -472,9 +472,35 @@ def test_fresh_window_answers_then_quits():
     check(MSG not in s.fresh_by_hand(None), "%s: nor without one" % GAP_WAKE)
 
 
+def unmeasurable():
+    """-> why this machine cannot run the real-death half at all, or "" when it can.
+
+    The whole point of this file is that the REAL kill path runs, and `seat_restart.kill_pid` pins its target with
+    `os.pidfd_open` + `signal.pidfd_send_signal` — Linux-only syscalls, absent on this Mac. Stubbing them out would
+    leave a file that proves process death survives death without ever pinning a process, which is worse than no
+    test: it would read GREEN on a machine where the mechanism cannot exist.
+
+    So this machine answers UNMEASURED, by name, in run_selftests' own phrase. It is NOT a pass and NOT a fail: the
+    runner lists it loudly and does not count it green. Before this, the file reported `FAIL DEATHE: the Dispatcher
+    reached after_kill` on every Mac run while measuring nothing — a Linux-only instrument recorded as a verdict on
+    the code, which is exactly the 2026-11-17 four-answers defect, and it refused ./publish at the pipeline door
+    for changes that have nothing to do with seat restarts."""
+    missing = [n for n, ok in (("os.pidfd_open", hasattr(os, "pidfd_open")),
+                               ("signal.pidfd_send_signal", hasattr(signal, "pidfd_send_signal")))
+               if not ok]
+    return ("%s: this platform has no %s, so the real pinned-kill path cannot run"
+            % (sys.platform, " or ".join(missing))) if missing else ""
+
+
 def main():
     if len(sys.argv) > 1 and sys.argv[1] == "--child":
         return {"window": child_window, "dispatcher": child_dispatcher, "fresh": child_fresh}[sys.argv[2]](*sys.argv[3:])
+    why = unmeasurable()
+    if why:
+        shutil.rmtree(TMP, ignore_errors=True)
+        print("UNMEASURED, not a pass or a fail — %s" % why)
+        print("  run it on the Linux bench (or in a container) to measure the three deaths; nothing was checked here.")
+        return 0
     if not (doorbell.state_dir().startswith(TMP) and SR.claude_home().startswith(TMP)):
         print("FAIL  refusing to run: state or claude home outside the temp dir")
         return 1

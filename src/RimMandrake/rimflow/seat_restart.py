@@ -2269,12 +2269,39 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
 # execute
 
 def _proc_stat(pid):
-    """-> (state letter, start time in clock ticks) from /proc/<pid>/stat, or None."""
+    """-> (state letter, process birth) for a LIVE pid, or None when there is no such process.
+
+    On Linux that is `/proc/<pid>/stat` fields 3 and 22 (start time in clock ticks). Where there is no `/proc` —
+    this Mac — it is `ps -o state= -o lstart=`, and the birth is epoch seconds. Either way the number is only ever
+    compared with another reading of the SAME pid from the same function (proc_start vs rs["start"]), so the unit
+    does not travel; `reg_start` reads Claude Code's own `procStart`, which is only written where /proc exists.
+
+    🔴 Why this is not just a portability nicety: with the /proc read only, every call on a Mac returned None, and
+    `execute()` spells None as *"pid %s gone before the kill"* and FAILS the restart. So a machine that cannot
+    look was recorded as having looked and found the process dead — the 2026-11-17 four-answers rule, in the code
+    that kills the owner's windows. `selftest_seat_restart_death.py` read FAIL on this Mac for that reason alone
+    (DEATHE, `refused: pid ... gone before the kill`), while measuring nothing. A pid we cannot ask about at all
+    (no /proc AND no usable ps) still returns None, because then "gone" and "unreadable" really are
+    indistinguishable from here — but that is now a platform with no process table, not an ordinary Mac."""
     try:
         with open("/proc/%d/stat" % int(pid)) as f:
             rest = f.read().rsplit(")", 1)[1].split()
         return rest[0], int(rest[19])
-    except (OSError, ValueError, IndexError, TypeError):
+    except (ValueError, IndexError, TypeError):
+        return None
+    except OSError:
+        pass                                             # no /proc (or no such pid): ask the process table instead
+    try:
+        r = subprocess.run(["ps", "-o", "state=", "-o", "lstart=", "-p", str(int(pid))],
+                           capture_output=True, text=True, timeout=10)
+    except (OSError, ValueError, TypeError, subprocess.SubprocessError):
+        return None
+    parts = (r.stdout or "").split()
+    if r.returncode or len(parts) < 2:
+        return None                                      # ps says there is no such process
+    try:
+        return parts[0][:1], int(time.mktime(time.strptime(" ".join(parts[1:]), "%a %b %d %H:%M:%S %Y")))
+    except (ValueError, OverflowError):
         return None
 
 
@@ -2314,6 +2341,13 @@ def kill_pid(pid, wait_s=10, start=None):
         pfd = os.pidfd_open(pid)
     except ProcessLookupError:
         return "already gone"
+    except AttributeError:
+        # No pidfd on this platform (macOS): the pin that makes this kill PID-reuse-safe does not exist, so there is
+        # no safe kill to perform. Say that, by name, instead of raising — an uncaught AttributeError from here read
+        # as a CRASH in two selftests on every Mac run, which is a verdict about the code rather than about the
+        # platform. Callers already branch on a "refused:" prefix and put the restart back for a human.
+        return ("refused: this platform (%s) has no os.pidfd_open, so a pid cannot be pinned against reuse before "
+                "the signal; no kill was attempted" % sys.platform)
     try:
         if proc_start(pid) != start:     # checked AFTER the pin, so the pinned process is the one with this start time
             return ("refused: pid %s now has start %s, not %s (reused)" % (pid, proc_start(pid), start)
