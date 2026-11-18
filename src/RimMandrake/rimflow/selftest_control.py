@@ -434,7 +434,7 @@ def t_owner_import():
                               "design_allowed": {"said": "design only", "date": "2026-11-17"}}]}, f)
     lines = C.import_live(DB, hold_file=hf, concepts=[("Graffiti", TMP, {"coverage_release_granted": {
         "at": "2026-11-17T18:45:12Z"}})], voids_file=os.path.join(TMP, "novoids.jsonl"))
-    check(any("look Graffiti window 2026-11-17T18:45:12Z" in x for x in lines), "a grant still waiting on its fixes "
+    check(any("look Graffiti window grant:2026-11-17T18:45:12Z" in x for x in lines), "a grant still waiting on its fixes "
                                                                                "imports as an opening balance", lines)
     lines2 = C.import_live(DB, hold_file=hf, concepts=[], voids_file=os.path.join(TMP, "novoids.jsonl"))
     holds = C.mod_holds()
@@ -662,11 +662,11 @@ def t_coverage_look():
     import coverage_judge as CJ
     d = os.path.join(TMP, "looks", "ModLook")
     os.makedirs(d)
-    win = "2026-11-17T18:45:12Z"
+    win = "grant:2026-11-17T18:45:12Z"
     with open(os.path.join(d, "stage.json"), "w") as f:
         json.dump({"mod": "ModLook", "stage": "designer", "coverage_rounds": [],
                    "coverage_releases": [{"at": "2026-11-18T10:00:00Z", "rounds_at": 0, "judges_at": [],
-                                          "granted_at": win}]}, f)
+                                          "granted_at": win[6:]}]}, f)
     a, b = CJ.reserve_look(d, "rm-coverage-judge-a"), CJ.reserve_look(d, "rm-coverage-judge-b")
     check(a["ok"] and not b["ok"] and "none available" in b["why"], "two judges for one granted look: one reserves",
           (a, b))
@@ -679,10 +679,15 @@ def t_coverage_look():
     CJ.settle_look(c, {"verdict": "not_covered", "error": None}, "ok")
     check(C._q("SELECT state FROM reservations WHERE run='rm-coverage-judge-c'", one=True)["state"] == "charged",
           "a valid verdict charges the look at settlement")
-    check(C.look_window({"coverage_release_granted": {"at": win}}) == win, "a grant still waiting on its fixes keys "
+    check(C.look_window({"coverage_release_granted": {"at": win[6:]}}) == win, "a grant still waiting on its fixes keys "
                                                                            "the same window as its release")
     C.grant("ModLook", C.LOOK, 1, "his exception", win=win, owner_said="one more")
     check(CJ.look_balance(CJ.DS.load_state(d), d)["lim"] == 2, "a pipe grant adds one to the look's limit")
+    e1, e2 = CJ.reserve_look(d, "rm-coverage-judge-e"), CJ.reserve_look(d, "rm-coverage-judge-f")
+    check(e1["ok"] and not e2["ok"], "a grant of one adds exactly one look, never two (it is counted once)", (e1, e2))
+    CJ.settle_look(e1, {"verdict": "covered", "error": None}, "ok")
+    g = CJ.reserve_look(d, "rm-coverage-judge-g")
+    check(not g["ok"], "a look charged on a covered verdict stays spent though no refusal round shows it", g)
 
 
 # ---------------------------------------------------------------- every launch site is routed; a mutant is caught

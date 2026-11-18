@@ -760,7 +760,7 @@ def look_balance(st, d=None, rs=None, mod=None):
     refused = [r for r in refused if r.get("judge") not in gone]
     base = PC.limit(mod, "granted_look", 1)
     return {"mod": mod, "win": win, "refused": refused, "used": PC.used(mod, "granted_look", len(refused)),
-            "lim": base + granted}
+            "base": base, "lim": base + granted}
 
 
 def stop_reason(st, d=None):
@@ -1580,7 +1580,7 @@ def reserve_look(d, unit):
     if bal.get("error"):
         return {"ok": False, "why": bal["error"], "mod": mod, "unit": unit}
     try:
-        ok, why = C.reserve(mod, C.LOOK, unit, bal["win"], base=bal["lim"], used=bal["used"])
+        ok, why = C.reserve(mod, C.LOOK, unit, bal["win"], base=bal["base"], used=bal["used"])    # grants: the store
     except C.Unreadable as e:
         return {"ok": False, "why": "CONTROL UNREADABLE: %s" % e, "mod": mod, "unit": unit}
     return {"ok": ok, "why": None if ok else why, "mod": mod, "unit": unit}

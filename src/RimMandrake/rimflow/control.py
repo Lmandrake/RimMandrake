@@ -572,8 +572,8 @@ def _account(c, mod, resource, win, base, exclude_run=None, used=None):
     charged = sum(r["qty"] for r in rows if r["state"] == "charged")
     voided = sum(r["qty"] for r in rows if r["state"] == "voided")
     held = sum(r["qty"] for r in rows if r["state"] == "held" and r["run"] != exclude_run)
-    if used is not None:
-        charged = used
+    if used is not None:    # the caller's own validated count, or the store's charges where it holds more (a look
+        charged = max(used, charged)    # charged on a covered verdict counts though no refusal round shows it)
     return {"base": base, "granted": g, "charged": charged, "voided": voided, "held": held,
             "available": base + g - charged - held}
 
@@ -730,10 +730,11 @@ def look_window(st):
     """-> the accounting window of a concept's granted look: the grant's time (a release applied from a grant keeps
     its granted_at; a plain release its own time; a grant still waiting on its fixes its time), or None."""
     rel = [x for x in (st or {}).get("coverage_releases") or [] if isinstance(x, dict)]
-    if rel:
-        return str(rel[-1].get("granted_at") or rel[-1].get("at") or "")
+    if rel:     # keyed by kind, so a plain release and a grant in the same second are two windows
+        r = rel[-1]
+        return "grant:%s" % r["granted_at"] if r.get("granted_at") else "release:%s#%d" % (r.get("at") or "", len(rel))
     g = (st or {}).get("coverage_release_granted")
-    return str(g.get("at") or "") if isinstance(g, dict) else None
+    return "grant:%s" % (g.get("at") or "") if isinstance(g, dict) else None
 
 
 # ---------------------------------------------------------------- admission and the launch primitive
@@ -1145,9 +1146,9 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
     else:
         for r in runs:
             esc = (escalator or schedule_escalation)(r["unit"], deadline_s, p) if deadline_s else None
-            out["units"].append({"unit": r["unit"], "ok": True, "said": "stop order written (%s)%s%s" % (r.get("books", ""),
+            out["units"].append({"unit": r["unit"], "ok": True, "said": "stop order written (%s)%s%s" % (
                 mode, "; escalates to --kill at %s (%s)" % (pac(now + deadline_s), esc) if deadline_s else
-                "; no deadline")})
+                "; no deadline", r.get("books", ""))})
     return out
 
 
