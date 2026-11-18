@@ -233,7 +233,22 @@ The pipeline fixes its own defects (owner, 2026-11-15): a defect in the pipeline
 
 Every hand act of yours on the pipeline is recorded by the tick (owner, 2026-11-15; `python3 src/RimMandrake/rimflow/maturation_hands.py list`): a ceiling release, a `clear`, a coverage release, a stage run or move made by hand, closing an item the tick launched, a settings edit. Each one owes, within a day, the item that builds your judgement into the pipeline so the hand is not needed again: name that item in the act's `--why`, or `maturation_hands.py fold <act> --item <ID>`; an act that repeats a lesson already in a census (`design/RimMandrake/pipeline_interventions_census_*.md`) is folded with `--census "<row>"`. One left a day with neither raises `OPS_MATURATION_HAND_ACT_UNFOLDED`.
 
-**Pause, resume, and "what happens next" (owner, 2026-11-18; full text `design/RimMandrake/standing_rulings.md` §The pipeline's pause switch).** To stop work starting, never edit a file: `python3 src/RimMandrake/rimflow/maturation_dispatch.py pause [<Mod>] --why "<why>" [--until +2h|15:00]` (or `rimflow pipeline pause ...`); the next tick, within 60 s, starts nothing on it in any path of `design/RimMandrake/pipeline_launch_paths_census_2026-11-18.md` (the tick's builders, judges, drivers, stewards, fixers, holders and certificate reruns; the Designer roles; red_dispatch). Runs already live finish; `--stop-live` stops them and records them for voiding. `resume [<Mod>] --why "..."` lifts it; an `--until` ends by itself and says so on `status`. A pause raises no alarm. To see what WILL start if nobody acts: `maturation_dispatch.py next --within 30m`; it runs the tick's own decision code on a moving clock, and anything it cannot see (a live run's end, a Designer chain) reads UNMEASURED. A Conductor hold line in a mod's journal still blocks the tick, but only once its commit reaches the dispatch clone (about a minute after landing; the 2026-11-18 10:25 Graffiti fixer launched in that gap): for "stop now", `pause <Mod>`.
+**Commanding the pipeline (owner, 2026-11-18 ~10:40 AM PST: "This should be a one-line bash command, ok?"; full text `design/RimMandrake/standing_rulings.md` §One control store and `pipe`).** One store (`~/.local/state/rimmandrake/control/control.db`), read by every launch at the moment it starts: an act binds at once, no publish, no tick wait. Every write takes `--why` (and `--owner-said` for his words) and prints at most 3 lines with its undo.
+```
+./pipe show [Mod]                            one screen: switches, live runs, look accounts, the tick's decision
+./pipe why <Mod>                             one line: what blocks it, or what the tick last decided
+./pipe log -n 20                             the last acts (who, when Pacific, why)
+./pipe off <all|Mod|stage:S|item:ID|family:F> --why "..."   new starts stop at once; live runs untouched
+./pipe on  <same> --why "..."                lifts a `pipe off` (never his hold) and asks for a tick now
+./pipe stop <scope|unit> --at-easy-spot --why "..."   finish the unit in hand, write where you are, end (the default)
+./pipe stop <scope|unit> --write-now [--deadline 5m] --why "..."   stop now, write where you are, end; then --kill
+./pipe stop <scope|unit> --kill --why "..."  SIGKILL the whole cgroup, verified dead; record killed, return the clone
+./pipe void <run> --why "..."                the run spends no trial or look (store and dispatch books); no stage moves
+./pipe grant <Mod> look +1 --why "..." --owner-said "<his words>"   one more granted look
+./pipe set|add|reset|limit|queue|undo ...     counts, limits and the queue (pipeline_control.py)
+python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said "<his words>"   lift his hold (store + mirror)
+```
+Always name the stop mode (owner, by card 2026-11-18: "we shouldn't rely on defaults"), and every brief you write that may stop a run says which. `maturation_dispatch.py pause|resume` are the same switch as `pipe off|on`; `maturation_dispatch.py next --within 30m` forecasts what will start.
 
 **Spend in weighted tokens; never hold the game for his look while he is away (owner, 2026-11-16: "Please speak in terms of weighted tokens not money. The money quotes don't translate meaningfully. Do not hold live testing when I can't go to the desktop such as now.").** Every spend you state to him is in weighted tokens, never dollars. When you stage a look for him and he is not at the desktop, save it (a keeper save named in the item's note) and give the game back to the tick at once: never park it, hold the bridge for it, or leave a visit stopped for it. When he sits down, re-stage the look from that save. Full text: `design/RimMandrake/standing_rulings.md` §Spend in weighted tokens.
 

@@ -907,12 +907,11 @@ using its own code..."*
 
 - **One switch, no file editing:** `python3 src/RimMandrake/rimflow/maturation_dispatch.py pause [<Mod>] --why "..."
   [--until <time>|--until-release] [--stop-live]`, `resume [<Mod>] --why "..."`, the same as `rimflow pipeline
-  pause|resume`. The store is `D:\ClaudeWork\rimmandrake\dispatcher\maturation\pause.json` (`pipeline_pause.py`), read by
-  every tick at the moment it decides: no git hop.
-- **What it stops:** every path in `design/RimMandrake/pipeline_launch_paths_census_2026-11-18.md` (the Dispatch tick's
-  layers, the Designer and DesignerCodex launches, red_dispatch). A live run finishes unless `--stop-live`, which stops
-  it and records it in the pause store; a run stopped that way ends `killed`, so the tick classes it void_system and
-  it spends no trial (next section).
+  pause|resume` and as `./pipe off|on all|<Mod>`: a switch in the one control store (next-but-one section), binding the
+  moment it commits. `pause.json` is retired (still read, so an old entry would still hold).
+- **What it stops:** every `systemd-run` launch in `src/RimMandrake` (`control.launch_unit`; the census is
+  `control.call_sites`). A live run finishes unless stopped with `./pipe stop` (three modes, next-but-one section) or
+  `--stop-live` here, which stops it and records it in the control store; a stopped run spends no trial (next section).
 - **A planned stop:** class `planned`, on no idle, paused or stalled reading, so no alarm; `enabled: false` reads the
   same. `status` and the maturation page lead with PIPELINE PAUSED, its why, who and until; an expired `--until`
   resumes by itself and says so. A pause store that cannot be read reads PAUSED, never running.
@@ -946,6 +945,47 @@ that."*
   system-fault alarm catches a fault loop. The old killed-run refund is retired with it (nothing is charged to give
   back). A ceiling release a void run spent stays spent: un-spending a release is not in his ruling.
 - Census of every counter and what is not yet reached: `design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md`.
+
+## One control store and `pipe` — owner, 2026-11-18
+
+His words (Wed 2026-11-18): ~10:40 AM PST *"I want to be able to trivially have you submit a command to change consumable
+resources like looks, runs, etc. to modify the record when it fails due to other reasons or even if we want to make an
+exception. ... This should be a one-line bash command, ok? Build that immediately. No more wasting time and tokens on
+trivial pipeline commanding. ... Individual items should be trivially switchable on and off. Queues should be trivially
+editable. Make all of this deterministic, easy, traceable, reproducable, testable... this stuff isnt hard, so let's make
+sure we're doing it right."* ~11:02 AM PST *"we are going to have. System that is instantly responsive by the time we are
+done here. This is not beyond our technology to achieve."* By card (asked 11:04 AM, answered by 11:25 AM PST): a void
+run's spend does not count toward the stage ceiling (shown apart; the system-fault meter and its alarm catch a fault
+loop); stopping is three specific commands: *"Each of these should be specific commands. "Stop work immediately and
+write where you are." "Stop work at the next easy spot and write where you are." "STOP NOW without write." Defaults for
+the system are nice, sure... should be Stop work at the next easy spot and write where you are" should be the default
+always. But we shouldn't rely on defaults. The agent should be precise in its instruction and use the right option. We
+don't need to prethink this."* ~11:28 AM PST: *"there should even be an option just to force kill the agent, period. Not
+just send it a nudge to die swiftly."* Design: `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`.
+
+- **The store** is `~/.local/state/rimmandrake/control/control.db` (SQLite, WAL, ext4, outside every clone;
+  `src/RimMandrake/rimflow/control.py`; `RM_CONTROL_DB` for tests, and a test process never reaches the live one).
+  Control state never needs git, a clone, a publish or a tick: every launch reads it at the moment it starts.
+- **One admission point:** every `systemd-run` that starts pipeline work goes through `control.launch_unit`, which
+  admits (switches by scope: all, mod, stage, item, family, role; accounts; a duplicate unit name) in one transaction,
+  and gives the unit an `ExecCondition` that re-checks at start (a run cancelled by a `pipe off` after admission exits
+  REFUSED, never "running") and an end receipt. `selftest_control` fails on any unrouted site. Relentless (retired) is
+  routed and its family is OFF.
+- **His hold** (`mod_owner_hold.json`) is imported into the store with his words; the file is its published mirror.
+  `pipe on all` never lifts a mod's hold; `mod_owner_hold.py lift` lifts store and mirror, and binds at once.
+- **Stopping:** `pipe off` blocks new starts only and names the live runs. `pipe stop <scope> --write-now |
+  --at-easy-spot | --kill`: all three block new starts on the scope, void the live runs' trials, and print each unit and
+  the mode. The two writing modes reach the running agent through its Claude Code PostToolUse hook (`control.py hook`,
+  carried in its `--settings`); `--write-now` escalates to `--kill` at its deadline (5 min by default). `--kill` is
+  SIGKILL to the whole cgroup and the claude scope, verified dead with its milliseconds; a survivor is reported and
+  nothing is recorded killed. A killed detached run's record and clone return are done by the command, so a relaunch
+  needs no hand step. With no mode the default is `--at-easy-spot`, and `pipe` says it was the default.
+- **Consumables are reservations, not counters:** the owner-granted coverage look is reserved before its judge runs and
+  charged only at a valid verdict; no verdict, a raise or a dead holder releases it as a system fault (meter and alarm
+  `control:system_faults:<mod>`). `pipe void <run>` gives a run's charges back once and tells the dispatch books
+  (`run_void.py`); a void never moves a stage, and `pipe show` flags a stage advanced on a voided run.
+- **Unreadable store:** nothing launches, and `pipe show` says `CONTROL UNREADABLE: <cause>`; `pipe doctor` names the
+  fix. `pipe stop <unit> --kill` still works by unit name.
 
 ## Owner hold: six biome mods stop, Pyrelands stays — owner, 2026-11-16
 
