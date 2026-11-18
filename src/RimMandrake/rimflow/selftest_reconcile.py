@@ -114,14 +114,13 @@ def refused(*args, **kw):
 
 
 def ledger_bytes():
-    """Every ledger file under this case's dir, path -> bytes (the shards included)."""
+    """Every ledger file of this case, path -> bytes (the shards included). Only the files the ledger is made of
+    (model.ledger_files): other tools log *.jsonl beside it (the ticket preflight's refusals/preflight_runs.jsonl),
+    and their rows are not events (RIMMANDRAKE_SCOPE_SELFTEST_LEDGER_READS_PREFLIGHT_LOG_TRIPS)."""
     out = {}
-    for root, _dirs, files in os.walk(_TMP["dir"]):
-        for f in files:
-            if f.endswith(".jsonl"):
-                p = os.path.join(root, f)
-                with open(p, "rb") as fh:
-                    out[p] = fh.read()
+    for p in model.ledger_files(os.path.join(_TMP["dir"], "events.jsonl")):
+        with open(p, "rb") as fh:
+            out[p] = fh.read()
     return out
 
 

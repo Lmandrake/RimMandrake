@@ -130,12 +130,13 @@ def refused(*args, **kw):
 
 
 def ledger_events():
+    """The case's ledger events. Only the files the ledger is made of (model.ledger_files): other tools log *.jsonl
+    beside it (the ticket preflight's refusals/preflight_runs.jsonl), and their rows are not events
+    (RIMMANDRAKE_SCOPE_SELFTEST_LEDGER_READS_PREFLIGHT_LOG_TRIPS)."""
     evs = []
-    for root, _d, files in os.walk(_TMP["dir"]):
-        for f in sorted(files):
-            if f.endswith(".jsonl"):
-                with open(os.path.join(root, f), encoding="utf-8") as fh:
-                    evs += [json.loads(l) for l in fh if l.strip()]
+    for p in model.ledger_files(os.path.join(_TMP["dir"], "events.jsonl")):
+        with open(p, encoding="utf-8") as fh:
+            evs += [json.loads(l) for l in fh if l.strip()]
     return evs
 
 
