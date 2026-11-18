@@ -1,6 +1,5 @@
 {
  "aliases": [],
- "blocked_on": "REFUSAL_NOTHING_COULD_EVER_PASS: 3 not_covered verdicts (limit 3); judging stopped on Graffiti (coverage_judge.py release <dir> --why ... grants one more look)",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -386,13 +385,19 @@
   "reserve": 60000,
   "spent": 12781605
  },
- "coverage_release_granted": {
-  "after": [
-   "RIMMANDRAKE_MEND_GRAFFITI_SOAK_SCENE_SUM_HIDES_TAXED_PAWN"
-  ],
-  "at": "2026-11-17T18:45:12Z",
-  "why": "delegated: evidence-for-ask: one more look; its only gap stories_not_tax was mended at 6c7d175b52 (closed 18:37Z), and the stop counted two refusals from before its 11-15 covered sign-off. Fold item: RIMMANDRAKE_RESET_COVERAGE_STRIKES_AFTER_SIGNOFF_OLD_TWO_COUNTED"
- },
+ "coverage_releases": [
+  {
+   "after": [
+    "RIMMANDRAKE_MEND_GRAFFITI_SOAK_SCENE_SUM_HIDES_TAXED_PAWN"
+   ],
+   "at": "2026-11-18T18:02:53Z",
+   "final": true,
+   "granted_at": "2026-11-17T18:45:12Z",
+   "granted_why": "delegated: evidence-for-ask: one more look; its only gap stories_not_tax was mended at 6c7d175b52 (closed 18:37Z), and the stop counted two refusals from before its 11-15 covered sign-off. Fold item: RIMMANDRAKE_RESET_COVERAGE_STRIKES_AFTER_SIGNOFF_OLD_TWO_COUNTED",
+   "rounds_at": 5,
+   "why": "locked-change chain RIMMANDRAKE_RETAKE_GRAFFITI_EXAM_AFTER_LOCKED_CHANGE_RUN_TWO applies the grant of 2026-11-17T18:45:12Z: its after item RIMMANDRAKE_MEND_GRAFFITI_SOAK_SCENE_SUM_HIDES_TAXED_PAWN closed, fix 6c7d175b52 on origin/main, re-pinned 2026-11-18T17:58:16Z"
+  }
+ ],
  "coverage_rounds": [
   {
    "at": "2026-11-15T08:21:51Z",
@@ -488,10 +493,6 @@
    "verdict": "not_covered"
   }
  ],
- "coverage_stop": {
-  "at": "2026-11-17T18:29:13Z",
-  "why": "3 not_covered verdicts (limit 3)"
- },
  "history": [
   {
    "at": "2026-11-15T04:54:02Z",
@@ -924,6 +925,24 @@
    "stage": 5,
    "what": "locked_change",
    "why": "the grant's --after items are closed and it waits on the re-pin: the Maturation tick re-pins citing the cards of his each fix carries out (RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE); re-pinned stage 3 (scenes); stage 4 (scenes); sources OWNER:1794965084756269804@6c7d175b5270e8aefc5b342ef452aa5db20199cd"
+  },
+  {
+   "at": "2026-11-18T18:02:55Z",
+   "stage": 5,
+   "what": "coverage_release",
+   "why": "locked-change chain RIMMANDRAKE_RETAKE_GRAFFITI_EXAM_AFTER_LOCKED_CHANGE_RUN_TWO applies the grant of 2026-11-17T18:45:12Z: its after item RIMMANDRAKE_MEND_GRAFFITI_SOAK_SCENE_SUM_HIDES_TAXED_PAWN closed, fix 6c7d175b52 on origin/main, re-pinned 2026-11-18T17:58:16Z"
+  },
+  {
+   "at": "2026-11-18T18:02:55Z",
+   "stage": 5,
+   "what": "over_budget",
+   "why": "12781605 of 4000000 spent; run rm-steward-graffiti-chain-1795024973 goes on with 3940000 (advisory)"
+  },
+  {
+   "at": "2026-11-18T18:02:55Z",
+   "stage": 5,
+   "what": "open",
+   "why": "run rm-steward-graffiti-chain-1795024973, stage 5, budget 3940000"
   }
  ],
  "item": "RIMMANDRAKE_SEED_GRAFFITI_INTO_MATURATION_ADVANCED_BUT_UNLISTED",
@@ -1229,9 +1248,28 @@
   }
  ],
  "runner": "claude",
- "running": null,
+ "running": {
+  "at": "2026-11-18T18:02:55Z",
+  "inputs": {
+   "exam": "d2eafd2f45adc568544b32b44a3412f07fff492acfe189d46b733994a41e674d",
+   "floor": "872424f74edf3c4684f7afc14f35334feb01fbd9d576f66fcd1aa3db3dcad91f",
+   "owner": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+   "root": "be1799cd93cf45dd434e857d91d64941115eca990c8c9b795378f21b608e4412",
+   "scenes": "720397b399c808dbf26f3cc2ef21c91bccad5ed6b030e5a8d492789e98df5a89",
+   "sheet": "26a157508cd176bbf1786b951d10473c4d5a2edf6d66674cd2738f7f04c98b9d",
+   "tree": "e6507f3bf7aeb19d5f64db8e3bd7e63511095107231459bbc06921639f779894"
+  },
+  "manifest": {
+   "designer.md": "b0a38c9400e276337bd745b50eed4d244b8dc92f4f53feabf235180cc13cb940",
+   "designer_lock.md": "a24d6b44dc4c87fd66ffe4a37428e5af7a6fdbd18d056711014b21e424587ae7"
+  },
+  "owner_uncited": [],
+  "reserved": 3940000,
+  "run": "rm-steward-graffiti-chain-1795024973",
+  "stage": 5
+ },
  "schema": 1,
  "stage": 5,
- "status": "blocked",
+ "status": "ready",
  "waiting_owner_feed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 }

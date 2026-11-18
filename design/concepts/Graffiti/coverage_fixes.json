@@ -1,13 +1,9 @@
 {
- "against": "rm-coverage-judge-1794936862",
+ "against": "rm-coverage-judge-1794940039",
  "claims": [
   {
    "gap": "g1",
-   "evidence": "scenes.json sc_spree_variety: action now captures every lane's marks at play zoom, unlabelled, and shows them to a judge that did not make the art, who names the kinds (the def and variant read stays as a script read); control.case is a calibration for the same judge: one def's texture in the six lanes' tints and six defs sharing one texture, expect 'the judge calls each recolour set recolours of one', rules_out adds 'a judge who calls any tinted set varied'; the pool-gate read stays. The script work is filed as entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_VARIETY_JUDGE_CAPTURE_TINTS_UNSEEN. acceptance/variety_scene_judge_capture.py: PASS"
-  },
-  {
-   "gap": "g2",
-   "evidence": "scenes.json sc_lived_in_soak: start asserts at least one sensitive and one clean-freak (Very Neurotic) colonist among the six, read from GraffitiTemperament; expect is per colonist against the control ('every colonist, each read on their own, stays below the control's standing tax for a colonist of the same temperament'), no summed check, plus 'at least one unforced graffiti story happens in the three weeks: a mark painted, read with a thought, or answered'; the control is read per colonist and rules out an instrument that averages a taxed colonist away. Script work filed as entry_point_item RIMMANDRAKE_SCRIPT_GRAFFITI_SOAK_PER_COLONIST_SUM_HID_ONE. acceptance/soak_scene_per_colonist.py: PASS"
+   "evidence": "fix 6c7d175b52 (on origin/main; item RIMMANDRAKE_MEND_GRAFFITI_SOAK_SCENE_SUM_HIDES_TAXED_PAWN, closed): scenes.json sc_lived_in_soak expect now tests each colonist's negative Graffiti mood total (negative thoughts only, positive not netted) for SHAPE, not size: it must return to zero between stories and is not held on most days of weeks two and three whatever its source (a rotating run of marks counts like one mark that stays); only mockery-of-that-colonist and departing-raid-mark days are excused, listed per colonist; no size comparison against the forced control remains. The control (painting forced hourly, read per colonist) expects the sensitive and clean-freak colonists to hold a total that does not return to zero, and rules out an instrument that compares size against the forced cap and misses a small daily debuff (e51, k6). Acceptance test: python3 design/concepts/Graffiti/acceptance/soak_scene_shape_not_size.py design/concepts/Graffiti/scenes.json prints PASS (13 checks) at HEAD; on 6c7d175b52^ it prints FAIL 8 of 13 (measured this run). No bar's words changed (scene text only)."
   }
  ]
 }
