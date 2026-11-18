@@ -6,6 +6,10 @@ older definition sheet, rosters, reviews and the cleanse proposal as the place t
 in them is in `design/concepts/Greentide/rewrite_choices.md`. Nothing has been deleted yet. The Greentide is one of
 the six biome mods HELD BY OWNER: this is a design document only and it launches nothing.
 
+**Revised the same day** after his card of 2026-11-18, 3:10 PM PST, which answered the three questions the first
+pass had left for him here (cover from orbit, fuel, the hull) and ruled on how long a stop lasts. The answers are
+written in below (see "The ship while it sits here"); the changes are listed at the top of `rewrite_choices.md`.
+
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/Greentide/`
 (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its path by sitting here. Nothing in
 the pipeline reads it by name yet. The Greentide has no locked sheet or tree; its only pipeline material is the
@@ -53,9 +57,20 @@ provisional): a probe droid five to eight days after landing, then scouts with a
 cordon on the ship, a breaching assault, and an orbital bombardment that cannot be fought. Each step comes only if
 the one before succeeded; a loud crew halves every wait and a hidden one doubles it.
 
-**UNSETTLED: how long a visit lasts.** Assumed here: a first week nearly free of the Empire, a first fight in the
-second or third week, nothing past about a month. A season is fifteen days. The Greentide is kind to this clock: its
-own pressure is measured in hours and days, so almost everything it does can be seen inside a stop.
+**How long a stop here can last: about six weeks, and that is the outer edge.** His ruling of 2026-11-18 on the
+numbers the first pass assumed: *"The numbers you're generating are likely the outer edge allowable for each biome,
+and that's just fine. Go with that."* On open ground, for a crew the search reads as ordinary, the ladder's
+arithmetic gives a probe on day 5 to 8, a first real fight around day 12 to 20 and the bombardment around day 20 to
+32 if the Empire wins every step. The Greentide's canopy and steam are **partial cover from orbit** (his card, same
+day: *"Canopy, steam and fog slow the search by one step; full dark still pauses it"*), read here as one band on the
+pursuit's built visibility scale, which stretches every wait by about four tenths: a probe on day 7 to 11, a first
+fight in the third or fourth week, nothing past about six weeks. Canopy and steam together are still one step, not
+two. A loud crew gives the step back. (The pursuit's numbers are marked provisional in its own source; the shape is
+what this design leans on.)
+
+Few crews will see that edge. The Greentide is kind to a short clock: its own pressure is measured in hours and
+days, so almost everything it does can be seen inside a stop, and the green, the fever or the hull usually ends the
+stay first. A season is fifteen days.
 
 ---
 
@@ -119,6 +134,59 @@ landing hole that was not there at noon.
 - **One giant.** A fellable greatbole stands in a clearing of its own making. Bringing it down is a project of days
   and *"the largest event on the map"*, and it is the only tree that pays true hardwood.
 
+## The ship while it sits here
+
+Three things every biome design now states, by his rulings of 2026-11-18.
+
+**Cover from orbit: partial.** Canopy and standing steam slow the search by one step (above). At ground level the
+understory does more than that, because the probe and the spotter have to see the ship. Neither makes the
+Greentide a hideout: the probe still comes. This is a campaign-layer line, one entry for this biome in a list the
+pursuit already reads. (`UNSETTLED`: whether a clearing, which lifts the steam and leaves the canopy, costs the
+step while it lasts. Assumed not.)
+
+**Wear on the hull: the jungle eats metal too.** His ruling: *"Yes in 0.1.0. It's easy, and most of the biome
+already talk about this."* The Greentide's own wear is in the review of 2026-10-02
+(`greentide_bedazzle_review_2026-10-02.md`), the hull rasp: *"a colonial organism rasps exposed wet metal, the
+landed ship as one more feeding surface; scrape it off by hand in the heat; take off and the damage flies home, the
+rasp blanches and dies away from the jungle."* He did not choose it that day (he chose the lace). His card of
+2026-11-18 asked about it by name and he answered yes.
+
+- *What the player sees.* A visible colony spreading on outside metal within days of landing (its look is art still to be made): on hull plate, and
+  *"on every metal building alike, so no ship special case"*. Where it sits, the metal loses condition. Its marks
+  stay after it is gone.
+- *What answers it.* Scraping it off by hand, which is hot work in this air. A dry-air blower set at the hull: the
+  review calls the blower *"its natural counter"*, and the blower burns fuel. And, for a crew that owns one, the
+  ship's light screen: his shield ruling of 2026-09-02 is that it handles *"wind, ash, vapor, bio contamination,
+  spores, smoke, sand, and rain damage completely as well as repels small animals"*. The shield holds one setting
+  at a time, so the screen that keeps the rasp off is not the heavy field that would take a falling tree.
+- *It ends when the ship leaves.* The rasp dies away from the jungle. The scars fly home and are repaired like any
+  damage.
+- *The other wears are already here.* A tree that falls on the hull damages it like anything under a fall. The
+  green that closes the doors blocks them and does not eat them.
+- *The approach.* The ship comes down through the steam; no source says the steam shakes or scalds a hull on the
+  way in, and this design does not add it. Steam devils, which scald whatever they cross, are 0.2.0.
+- *It never traps.* His ruling of 2026-09-02: the hull *"is thick and can take a lot of damage in most situations,
+  so no environment is immediately lethal"*, and the ship *"will advise course of action, but no more than that"*.
+- The organism's name is `UNSETTLED`: the review's working name carries the note "Rename needed".
+
+**Fuel: a richer source, named, bought at the band's edge, and spent here faster than anywhere.** His ruling:
+*"Every biome has a fuel source, but for most its the hideously slow route of rendering biomass into chemfuel... A
+few biomes have richer sources. You can also buy it (the intended motivation to have to trade constantly, very
+Jawa)."*
+
+- *The emergency route* has the best feedstock on the planet: greenwood *"abundant beyond counting"*. It is still
+  the slow route.
+- *The richer source is resin.* The sheet lists, among what only the Greentide has, *"sap and resin — tapped from
+  trees growing too fast not to bleed: glue, lacquer, waterproofing, and rendered chemfuel — the dayside's fuel
+  economy."* Resin is a built harvest; the recipe that renders it to chemfuel is not, and is 0.2.0.
+- *Buying it.* The crew's own kind are already here: *"crawlers park at the band's edge"*, and *"the desert buys
+  [greenwood] by the crawler-load"*. A crew that fills the hold with wood has something every crawler wants. The
+  Wildsteam's two seats on the river are the other sellers. Both are campaign layer.
+- *Spending it.* The blower drains chemfuel all the time it runs (built). Holding the doors and the hull dry is
+  paid for in the same drums the ship flies on. That is the Greentide's fuel joke: it sells fuel and eats it.
+- Not written as replete. The sheet's phrase *"the dayside's fuel economy"* is strong, and if he reads it that way
+  it is a one-word change here.
+
 ## "OMG did you see that?"
 
 Each can happen inside the visit. Each says what is on screen.
@@ -143,6 +211,11 @@ Each can happen inside the visit. Each says what is on screen.
    several.
 9. **The shoal.** *On screen:* the water boils with small fast toothy things. The owner's words: *"crazy fast and
    nearly unkillable except with explosives."*
+10. **Scraping the ship.** *On screen:* hooded figures on the hull in the steam, scraping the colony off the
+   plate with whatever was in the hold, and the patch they cleared yesterday already furred over behind them.
+   *Why it is funny:* the jungle has decided the ship is food, and it is not wrong about anything else here.
+11. **Wood for fuel** (0.2.0, campaign layer). *On screen:* a crawler at the band's edge, a heap of greenwood, and
+   two groups of Jawa haggling over drums. *Why it lands:* the crew is finally on the selling side of the jungle.
 
 ## When the Empire arrives
 
@@ -174,6 +247,7 @@ There is no truce here and the Empire does not get one.
 ## What forces the crew out; what lets them stay
 
 **Out, before the Empire:**
+- The hull furring over with rasp faster than a small crew can scrape it, and the fuel the blowers burn.
 - The green closing the landing site faster than a small crew can clear it, with stock already in the mud.
 - Crew down with the Frenzy.
 - A tree, or a herd, through the camp.
@@ -182,7 +256,8 @@ There is no truce here and the Empire does not get one.
 - Blowers on the doorways, a penned herd eating the growth line, a paved apron.
 - Sight-blocking jungle between the ship and anything looking for it at ground level.
 - Mud and water the crew knows and the Empire does not.
-- `NEEDS HIM`: whether canopy and steam hide the ship from orbit. As built, they do not.
+- Canopy and steam over the ship, which slow the search from orbit by one step (his card of 2026-11-18; unbuilt).
+- A hull kept scraped, blown dry or screened.
 
 The danger does not grow as the crew learns. The owner's card of 2026-09-25: *"danger stays FLAT as players master
 the jungle; the player improves, the jungle does not scale."* A second Greentide stop is easier only because the
@@ -194,7 +269,8 @@ player is better.
 - **Greenwood,** weak, smoky and *"abundant beyond counting"*, on a world with almost no trees. *"The desert buys it
   by the crawler-load."*
 - **True hardwood,** only from a felled greatbole. *"The price gap between the two woods tells the biome's story."*
-- **Resin,** for sealing and lacquer. Whether it renders to fuel is `NEEDS HIM`.
+- **Resin,** for sealing and lacquer, and from 0.2.0 rendered to fuel.
+- **A hold full of greenwood,** which is what the crawlers at the band's edge sell fuel for.
 - **The stellock lace,** as knowledge: learned here, crafted anywhere.
 - **Tame grazers,** if the crew wants a living hedge-trimmer aboard.
 - *0.2.0:* **a marked survivor.** A crew member who has been through the Frenzy and lived carries it for life and is
@@ -217,6 +293,10 @@ player is better.
 | The Frenzy speeds its victim, then drops them for days. | An ambient case run to its end, tended and untended. | Flu and malaria do not appear here. |
 | The stellock lace stops all bleeding for a while and nothing else. | A bleeding patient with and without the lace, here and on another map. | The wounds are still there afterwards. |
 | Eating the yearning fruit feeds, then costs: early hunger, filth, a slow walk. | Two pawns, one fed fruit, one fed an ordinary meal. | |
+| Outside metal left in the jungle, the hull included, grows a visible rasp that wears it; scraping, a working blower and the ship's light screen each keep it off; it dies when the ship leaves, and a worn ship can always launch. | A landed ship and a steel wall, each with one face left alone, one scraped, one behind a blower. Run the days, then launch. | The same steel on another biome's map grows nothing. The blower with its fuel out: the rasp returns. |
+| Under canopy and steam the Empire's search comes one step slower than it does for the same crew on open ground. | The same crew, as loud, landed here and on an uncovered tile; read the search's next contact on both. | A crew made loud here loses the step. |
+
+Neither new row pins a rate: how fast the rasp wears and how long a step is are tuning, and stay out of any bar.
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary hot swamp (standing
 rule, every mod).
@@ -233,11 +313,25 @@ rule, every mod).
 - **Plants that block sight** (`RM_CompSightBlocker` in `CreatureBehaviors`).
 - **Standing weather that hides the floor, and its clearing** (the Roil and Breaklight, in `EnvironmentalHazards`).
 
+- **A living thing that wears metal** (the hull rasp). The hull-wear machinery is shared; this is its biological
+  case, and the one where the answer is a blower, a scraper or the light screen.
+
 **Merely active here:** the hush before a predator (the same `RM_MapComponent_SilenceCue` the Fever Wood features);
 the lunge from water; bounded insect reactions; shade-seeking animals; real flight; the one sun from geometry, with
 tree shade (the Greentide has no heat of its own any more; hot wet air is ordinary air temperature); bone from
 butchery; wreck salvage; the Empire's search and the visibility dial; root causeways (shared with the Fever Wood's
 painted routes).
+
+**Three ship systems built once for every biome, and what the Greentide asks of each** (found while revising; the
+shared-machinery file has the whole of it):
+- *Hull wear.* The campaign already has the frame: `src/RimUtinni/ShipShields/`, whose exposure tracker wears a
+  landed ship's structures in a hazard its shield does not cover, sends an advisory and never refuses a landing. It
+  knows heat, cold and blown particles today. The Greentide needs it to know a biome's own wear (the rasp) and to
+  count the light screen and a blower's dry air as cover against it.
+- *Cover from orbit.* The pursuit has one list for full shadow (the Abyss only) and no notion of partial cover. The
+  Greentide needs a second, weaker entry.
+- *Fuel.* One recipe from resin to chemfuel, and traders who stock fuel. The slow biomass route is the base game's
+  own.
 
 ## Scope
 
@@ -257,6 +351,12 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   the fruit's tax moved in)
 - The Frenzy as the jungle's own ambient sickness. The stellock lace by ordinary research. (built)
 - Natives are not mired at home; nothing disappears without a sign.
+- The hull rasp on outside metal, the ship included; scraping, the blower and the light screen as the answers.
+  (unbuilt; campaign layer for the ship, on the shared hull-wear machinery; his ruling of 2026-11-18)
+- Canopy and steam as partial cover from orbit. (unbuilt; campaign layer, one entry in the pursuit; his card of
+  2026-11-18)
+- Fuel by the slow route from greenwood; resin and greenwood as goods. (the base game's refining; the harvests are
+  built)
 
 **0.2.0, the stop with company**
 - Plants that act: the maddrick's closing ring, the gorbeleth's spitting throat, the phorrik's bursting bladders,
@@ -270,6 +370,7 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The yearning fruit's seed passing through and sprouting where it lands. (built)
 - The stench grenade, the one tool that turns the jungle's animals. (built)
 - The ship's acoustic sounder readings here. (built)
+- Resin rendered to chemfuel; fuel bought from crawlers at the band's edge and at the Wildsteam's seats. (unbuilt)
 
 **Later (a crew that stays, or a colony)**
 - The living greatbole tower: rooms mined into heartwood that heals shut, the sealant, the shaking and the
@@ -286,22 +387,16 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Danger that scales with the player (declined 2026-09-25).
 - Canon trees and the vanilla animals (*"we're making our own"*, 2026-09-22); the placeholder squirrel and alligator.
 - The dianoga here (*"It belongs only in tank prisons and the Fever Wood"*, 2026-09-23).
-- The moulting giant, the hull rasp, working between the crashes, the Uprooting rite (not chosen 2026-10-02).
+- The moulting giant, working between the crashes, the Uprooting rite (not chosen 2026-10-02). The hull rasp was
+  on this line and is back in 0.1.0 by his ruling of 2026-11-18.
 - Churnmud seeded on other biomes (kept off and labelled unsupported, by the 2026-10-15 ruling).
 - **Recommended for dropping, not yet his:** the unused sugar-famewort plant; the old natural-placement scoring.
 
 ## NEEDS HIM
 
-1. **Do canopy and steam hide the ship from orbit?** The same question as the Fever Wood's. His 2026-08-05 ruling
-   pauses the orbital clock on dark or covered tiles; only the Abyss is on the built list. *No* (as built, default).
-   *Yes:* the Greentide becomes a place to hide, paid for in upkeep. *Partly:* one visibility band quieter.
-2. **Is resin ship fuel?** The sheet lists *"rendered chemfuel — the dayside's fuel economy"* among the jungle's
-   goods and nothing builds it. *Not in these versions* (default). *A rendering recipe in 0.2.0:* the Greentide
-   becomes the fuel stop, and the blower burns what the jungle bleeds.
-3. **Does the jungle touch the hull?** Today a falling tree can hit the ship like anything else, and growth stops at
-   the hull's edge. *That is enough* (default). *The hull rasp he did not choose on 2026-10-02* (a colony organism
-   rasping exposed metal, scraped off by hand, dying when the ship leaves): a second reason not to linger, and a
-   new system.
+Nothing is left for him here. The three questions the first pass asked were answered by his card of 2026-11-18 and
+are written into the design above: canopy and steam are partial cover from orbit; resin is the Greentide's richer
+fuel source; the jungle wears the hull, by the rasp, in 0.1.0.
 
 Three questions the cleanse put to him on 2026-11-17 are answered here by scope instead of asked again, and each is
 a line under "Scope moves" in `rewrite_choices.md`: plants that act are 0.2.0, not absent; cuisine in 0.1.0 is

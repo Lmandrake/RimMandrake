@@ -17,6 +17,46 @@ and to given; the cleanse used "first version", "next version, switched off" and
 design uses 0.1.0, 0.2.0, later, dropped; a cleanse "next version" item that lands in "later" is not a move);
 *folded into shared machinery*; *lost*.
 
+## Changed after his rulings of 2026-11-18
+
+His card of 2026-11-18, 3:10 PM PST answered all three questions the first pass left for him here, and ruled on
+stop length and on a test for every solution. This revision changed the design and this page as follows and
+nothing else.
+
+1. **Stop length is stated, as an outer edge.** The "UNSETTLED: how long a visit lasts" paragraph is gone. The
+   design says about six weeks at the outside, from the pursuit's own arithmetic and the Greentide's cover, on his
+   words *"The numbers you're generating are likely the outer edge allowable for each biome, and that's just fine.
+   Go with that."*
+2. **Canopy and steam are partial cover from orbit**, and together they are one step, not two. The question is
+   removed and answered by his card. **My reading, to check:** "one step" is written as one band on the pursuit's
+   built visibility scale (hidden, discreet, noticed, marked, exposed); noticed to discreet multiplies each wait
+   by 1.4 in today's provisional numbers. Whether a clearing costs the step while the steam is up is marked
+   `UNSETTLED`, assumed not.
+3. **The hull rasp is back, in 0.1.0.** It was "lost (not chosen 2026-10-02)". His card of 2026-11-18 asked about
+   hull wear naming *"the Greentide hull rasp you did not choose on 2026-10-02"* and he answered *"Yes in 0.1.0."*
+   I read that as choosing it now. The brief said not to invent a wear where a source names one, and this is the
+   one the Greentide's sources name. If he meant hull wear in general and still not the rasp, the fallback is that
+   falling trees are the Greentide's only wear and the rasp's lines come out (one section paragraph, one promise
+   row, one scope line, one on-screen moment).
+4. **Resin is the Greentide's richer fuel source.** The question "Is resin ship fuel?" is removed. The slow
+   biomass route is stated (with greenwood as its feedstock); the resin recipe and fuel on sale are 0.2.0 (nothing
+   builds either, and his words give no version). The Greentide is written as richer, not replete; the sheet's
+   *"the dayside's fuel economy"* could carry replete, and that is his word to give.
+5. **A new section in the design, "The ship while it sits here"**, holds cover, hull and fuel together. Two
+   promises were added to the 0.1.0 table (the rasp; the step of cover), two on-screen moments (scraping the ship;
+   wood for fuel), three scope lines in 0.1.0 and one in 0.2.0, and the rasp left the dropped list.
+6. **"Very Jawa" applied where a choice was open:** fuel is bought from the crew's own cousins at the band's edge
+   and paid for in greenwood; the hull is scraped by hand with whatever is in the hold; the blower that keeps the
+   rasp off burns the fuel the crew came to buy.
+7. **A finding for the shared-machinery file:** the hull-wear frame already exists in the campaign
+   (`src/RimUtinni/ShipShields/`, with his shield rulings of 2026-09-02 in
+   `design/Jawa/proposals/ship_shields_deep_design.md`). His line there decides the shield answer to the rasp: the
+   light screen handles *"bio contamination"*.
+
+Read for this revision, in part: the review's three rasp passages and its ruling row (found by search);
+`the_greentide.md` §7 and §8 (the goods and the Jawa lines); `RM_DryAirBlower.xml` (its fuel lines); and the
+shield and pursuit files listed on the Fever Wood's choices page.
+
 ## The ones I would look at
 
 1. **The living greatbole tower.** *"Squatting inside an organism that is actively trying to heal you out of it."*
@@ -27,7 +67,8 @@ design uses 0.1.0, 0.2.0, later, dropped; a cleanse "next version" item that lan
    shot at a siege camp.
 2. **The hull rasp** (a colony organism that rasps the landed ship's metal, scraped off by hand, dying when the ship
    flies). He did not choose it on 2026-10-02, before he stated the ship lens. It is the only idea in any Greentide
-   source written about the ship itself. Lost; asked as `NEEDS HIM`.
+   source written about the ship itself. It was lost in the first pass and is back in 0.1.0 after his ruling of
+   2026-11-18 (see the change list above for the reading that rests on).
 3. **Concealment biology** (scent-masking, a resin that kills a working camp's noise, coatings that read as
    vegetation). One of ten reward ideas of 2026-09-22, never ruled, unbuilt. Under the lens it is the direct answer
    to "is there anything here that helps them hide from the Empire". Kept in "later".
@@ -72,6 +113,13 @@ in the design's Scope section.
 - **Stayed "later" from the cleanse's "next version":** the living greatbole package, moving roads, salinity, the
   habitable band, canopy drip, growth extract, ant materials, weapons beyond the stench grenade, branch travel, the
   rite. Not moves.
+- **The hull rasp:** dropped (not chosen 2026-10-02) → 0.1.0, on his ruling of 2026-11-18. Revert by restoring it
+  to the design's dropped list and deleting its promise row.
+- **Canopy and steam as partial cover from orbit:** asked of him → 0.1.0, campaign layer, by his card.
+- **Resin to chemfuel; fuel bought at the band's edge:** asked of him → 0.2.0. The source is his ruling; the
+  version is my choice. 0.1.0 instead costs one recipe and a trader stock line.
+- **New, not in any source:** greenwood as what the crew pays the crawlers with for fuel (a reading of two sheet
+  lines, no mechanism); the blower's fuel draw named as a cost of holding the hull.
 - **New, not in any source:** the ship as the foothold being defended; the Empire's troopers mired, their dropped
   gear buried and dug out later; sight-blocking growth as what the probe and spotter cannot see through. All three
   are readings of built behaviour.
@@ -190,7 +238,9 @@ Source names: *sheet* = `biomes/the_greentide.md`; *flora roster* = `biomes/gree
 | The fruit yearns to be eaten: accelerants, hunger, filth, the waddle | sheet §4 | moved (→ 0.1.0) | | |
 | Seed passed in filth and sprouting | sheet §4, mechanics review | moved (→ 0.2.0) | Couples to the growth signature. | |
 | Sap and resin: glue, lacquer, waterproofing | sheet §7 | kept as resin | | |
-| Sap rendered to chemfuel, the dayside's fuel economy | sheet §7 | lost as unbuilt; `NEEDS HIM` | | A recipe in 0.2.0. |
+| Sap rendered to chemfuel, the dayside's fuel economy | sheet §7 | kept, reshaped, moved: resin is the Greentide's richer fuel source; the recipe moved (lost → 0.2.0) | His fuel ruling of 2026-11-18. | Recipe in 0.1.0: small. Or write the Greentide as replete on the strength of "the dayside's fuel economy". |
+| The slow route: greenwood rendered to chemfuel | his ruling of 2026-11-18; sheet §7 for the wood | kept (the emergency route; the base game's refining) | *"Every biome has a fuel source."* | |
+| Crawlers at the band's edge, and the Wildsteam's seats, as where fuel is bought | sheet §8 | kept, reshaped: named as the sellers; campaign layer, 0.2.0 | *"You can also buy it... very Jawa."* | |
 | Greentide extract | sheet §7 | kept in "later" | Unbuilt. | See above. |
 | Eggs, chitin, medicine, fresh water upstream | sheet §7 | kept, reshaped: the lace is the medicine; eggs, chitin and hauled water are not promised | Not found built as Greentide goods. | |
 | Toxin sealant from resin | kit spec ruling 2 | kept in "later" with the living tower | | |
@@ -262,7 +312,11 @@ Source names: *sheet* = `biomes/the_greentide.md`; *flora roster* = `biomes/gree
 | The Ceded Room rite: *"Build it outside the ship and let it be taken"* | bedazzle review §8 | kept in "later" | His later ruling put it in a second version. | |
 | The Open Boast | bedazzle review §8 | lost from the Greentide (it is the Warscar's) | | |
 | The Uprooting | bedazzle review §6 | lost (not chosen) | | |
-| The hull rasp | bedazzle review §5 | lost (not chosen); `NEEDS HIM` | | See above. |
+| The hull rasp | bedazzle review §5 | moved (dropped → 0.1.0) | His ruling of 2026-11-18 on hull wear, asked with the rasp named. | Keep it dropped: the Greentide's only wear is then the falling tree. |
+| The rasp is on every metal building alike, no ship special case | bedazzle review §5 | kept, quoted | | |
+| The blower as the rasp's natural counter; scraping by hand in the heat | bedazzle review §5 | kept, quoted | | |
+| The damage flies home; the rasp dies away from the jungle | bedazzle review §5 | kept | It is what keeps the wear a reason to leave and never a trap. | |
+| Painting exposed plate with resin lacquer to keep the rasp off | not in any source (the sheet lists resin as lacquer and waterproofing; the rasp eats *wet* metal) | lost: not written into the design | A new idea and a good one for this crew; left out because no source ties resin to the rasp. | Add it as a third hands-on answer: one more job and one more scene. |
 | Acoustic sounder readings | cleanse | moved (→ 0.2.0) | | |
 | Natural-placement scoring | cleanse, fluff cuts | lost (no worldgen) | | |
 | Mod Settings | cleanse, mechanics review | kept | | |
@@ -282,8 +336,9 @@ Source names: *sheet* = `biomes/the_greentide.md`; *flora roster* = `biomes/gree
 ## Sources read, and the count
 
 Measured after writing (a script counted the table rows and the first words of the "what happened" column):
-**23 source files, 158 rows**, of which **18 lost**, **19 record a move** (whole or in part), **7 kept, reshaped**
-and 1 folded into shared machinery. Every source is named in at least one row's source column (checked by the same
+**23 source files, 164 rows**, of which **17 lost**, **21 record a move** (whole or in part), **9 kept, reshaped**
+and 1 folded into shared machinery (recounted after the revision of 2026-11-18, which added six rows and changed
+two). Every source is named in at least one row's source column (checked by the same
 script; the five cleanse files it read count under the one name "cleanse").
 
 Read whole: the sheet; the cleanse's owner pages; the owner answers. Read in large part: the flora roster (rulings,
