@@ -15,16 +15,16 @@
     },
     {
       "id": "C02",
-      "what": "Scald boiling liquid, shallow mat habitat and submerged floor presentation",
-      "built": "present",
-      "evidence": "src/RimMandrake/TerminalBiomes/Defs/TerrainDefs/RM_ScaldWater.xml; src/RimMandrake/TerminalBiomes/Patches/RM_ScaldWater_LiquidHeat.xml; src/RimMandrake/TerminalBiomes/Defs/TerrainDefs/RM_ScaldMargin.xml",
+      "what": "Scald floor: nonboiling hot mineral substrate and localized vent-adjacent boiling pools",
+      "built": "absent",
+      "evidence": "src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml currently maps both floor fertility bands to boiling ocean terrains. src/RimMandrake/TerminalBiomes/Patches/RM_ScaldWater_LiquidHeat.xml marks both hot. The beach liquid and margin defs exist. The proposed RM_ScaldFloorSubstrate and floor vent-pool placement are absent.",
       "proven": "missing",
       "called_by": "src/RimMandrake/Utils/scald_showcase.py; src/RimMandrake/TerminalBiomes/Tools/selftest_sea_text_no_surface_place.py; src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml; src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Buildings/RM_ScaldVent.xml; src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_WaterAgitation.cs; src/RimMandrake/EnvironmentalHazards/Source/RM_IncidentWorker_WalkerSurfacing.cs; src/RimMandrake/EnvironmentalHazards/Defs/Misc/RM_BiomeTierCleanup_Aliases.xml",
-      "serves": "A hot alien crater floor with costly water contact",
+      "serves": "Work outside the Scald hull and pay contact cost only at vent pools",
       "fate": "land",
-      "why": "delegated: Removing heat, boil or mat habitat would turn the named boiling sea into ordinary water. The margin stays a cool traversal contrast but never potable.",
+      "why": "delegated: Ordinary hot mineral floor gives submerged workers somewhere to stand and retreat. Vent pools keep contact burns meaningful while the overlying sea stays at the boil. Preserve the existing shallow mat habitat.",
       "needed_by": "",
-      "ticket": "T45"
+      "ticket": "T49"
     },
     {
       "id": "C03",

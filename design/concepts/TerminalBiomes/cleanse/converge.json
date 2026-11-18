@@ -1,0 +1,233 @@
+{
+ "mod": "TerminalBiomes",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json B4 (range, accept 2, reject 3); rules R6; definition.md 'Costs and ordinary materials'; tickets.md T45",
+     "evidence": "B4 lists RM_ScaldWaterOceanDeep and RM_ScaldWaterOceanShallow among the paid boiling-contact terrains. It also says the rest of the floor is 'ordinary hot mineral substrate', where standing costs nothing, and that boiling pools are 'localized vent-fed pools explicitly authored'. The built floor is almost entirely those two terrains: src/RimMandrake/TerminalBiomes/Defs/BiomeDefs/RM_TheScald.xml terrainsByFertility maps every non-rock cell to OceanDeep (fertility below 0.6) or OceanShallow (0.6 and above), and the comment there records a measured 49,940 deep cells on a 250x250 map. Patches/RM_ScaldWater_LiquidHeat.xml applies liquid heat to exactly those terrains. No terrain def exists for the 'ordinary hot substrate', and no genstep or rule places 'localized pools'. T45 only says to export that mask and keep a route clear. Built as it is now, the floor meets B4's own reject picture 3 ('the entire submerged floor burns a worker continuously'). The census row C02 calls this 'present'.",
+     "would_pass": "The floor's nonboiling hot substrate and the placement of its localized boiling pools are defined: which terrain def, how pools are placed relative to vents, and that the hull-to-bank route is clear. A build ticket with an acceptance test implements them, and B4's floor list of paid terrains names only the pool terrain.",
+     "smallest_fix": "Add a ticket (with its acceptance test, watched to fail on the current floor) to replace the floor's terrainsByFertility bands with a nonboiling floor substrate plus vent-adjacent pool cells. Split B4's terrain list into beach-paid and floor-paid parts. Set C02 to absent for the floor substrate and the pools."
+    },
+    {
+     "id": "R2",
+     "head": "cannot_hold_together",
+     "where": "bars.json B8 (reject 1, range) against R7 and B7; brief's whole-bar definition",
+     "evidence": "R7: 'Lifetime remains finite on the frozen sheet's years scale; current short-lived values are tunable implementation debt' (the kernel is 5 to 9 days: Kernel/RM_WellKernel.cs Lifespan). B8's range is '15 game days' and says 'the season itself need not show years-scale expiry'. Yet B8 reject 1 refuses a build where 'light replacement leaves only dangerous ground'. A season under R7 will almost never contain a replacement, so that clause cannot be read. The brief requires the whole bar to run 'through a stretch long enough to see its cycle'. With the well cycle measured in years, the kept lifecycle never runs together with current, forage and predation in the whole bar.",
+     "would_pass": "Either the well cycle fits inside the whole bar's stretch, or the whole bar does not claim to see replacement and the lifecycle is not a kept bar experience.",
+     "smallest_fix": "Keep the built week-scale clock as the rule for 0.1.0 and mark 'years scale' in the sheet's ban as the drift's upper bound (no permanence). Put this on page two as a question with its evidence: years makes turnover impossible to observe in any season. Or drop the replacement clause from B8 reject 1."
+    },
+    {
+     "id": "R3",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B7 (says 'later visits showing waning and replacement'; sees.start); models.md M3 tick-aged branch; T46 acceptance",
+     "evidence": "The instrument says 'Keep that floor loaded… A later visitor uses this same floor.' The bar's experience is a crew that leaves and returns. Whether a sea-floor map persists, and ages, while no crew is on it belongs to DivingInteraction, which the proposal itself says is absent from this checkout (definition.md 'Read basis'; census D07 'unknown'). No meeting or model covers persistence across departure. A build that discards or freezes the floor when the ship leaves, and regenerates fresh wells on return, would pass this continuously loaded branch while the player never sees waning on a later visit. The provenance contract also forbids any catch-up aging, which such a build would need.",
+     "would_pass": "The evidence follows the player's real path: depart, time passes, return to the same floor. It reads that floor's identity and the wells' age progression under whatever persistence rule the layer dependency really has. Or the later-visit clause is dropped from the bar.",
+     "smallest_fix": "Drop 'with later visits showing waning and replacement' from B7's says. Keep 'temporary columns whose finite remaining life can be inspected' (this satisfies the sheet's no-permanence ban). Move turnover to a check driven by M1's staged boundaries. Add floor persistence across departure as an unknown in the floor_access meeting."
+    },
+    {
+     "id": "R4",
+     "head": "kept_mechanic_undefined",
+     "where": "definition.md 'When it goes wrong' (gardener paragraph); bars.json B7 accept 1; R7; T43; T46",
+     "evidence": "'A completed graze clears the rim's visible occlusion and restores that opening's existing light footprint… without a new roof-health, roof-growth hazard'. Nothing in the proposal says what occludes a rim, when occlusion accrues, or how much light it removes. Without a cause of occlusion, a graze has nothing to clear. 'Restores' also implies an occluded well gives less light, which is an unspecified light rule touching M5 and the twilight_light meeting. T43 only says to implement 'grazing rim occlusion clear'.",
+     "would_pass": "A rule names the occlusion state: its cause, the reduced footprint as a check number, and what the gardener does to it. Or the bar has the gardener tend visibly without any occlusion state.",
+     "smallest_fix": "Add a rule R12 that defines rim occlusion (ceiling-garden growth on open rims at a check-only rate, reducing that well's light) and cite it from T43 and M5. Or delete 'occluded…clear' and 'restores light footprint' from B7 accept 1 and the definition, and keep patching of spent openings as the visible state change."
+    },
+    {
+     "id": "R5",
+     "head": "figurative_unmarked",
+     "where": "bars.json B2 accept 1",
+     "evidence": "'pale mineral forms disappear into Grey murk' is an accept picture for a bar whose says requires the visitor to distinguish 'the Grey's murk and mineral forms'. B2's own accept 2 asks for 'distinct pools and silhouettes rather than a white screen'. 'Disappear' is unmarked and reads literally as a failure. This reviewer's blind sort put picture 6 as reject.",
+     "would_pass": "The Grey clause of the picture shows mineral forms that are still readable through the murk.",
+     "smallest_fix": "Reword to 'pale mineral forms loom dimly through Grey murk yet stay readable as shapes', or add 'disappear' to B2's figurative list with what it stands for."
+    },
+    {
+     "id": "R6",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B3 accept 3",
+     "evidence": "'Chill industrial catches are identifiable as fuel chemistry and cannot be fed to ordinary colonists as food.' B3's says is about meeting living catch counterparts, prey and predators, and native survival. This picture shows none of those, so a build with only an inedible fuel item would satisfy it. K5 already checks 'industrial nonfood flags'. A cold reader (this blind sort, picture 2) rejects it as not meeting the bar.",
+     "would_pass": "Every accept picture shows the bar's experience: living counterparts, encounters, native survival.",
+     "smallest_fix": "Delete B3 accept 3; leave non-edibility to K5."
+    },
+    {
+     "id": "R7",
+     "head": "figurative_unmarked",
+     "where": "bars.json B1 says and range ('can work from the hull to the bank', 'All 4 named seas')",
+     "evidence": "B1 covers all four seas, but 'bank' is defined only for the Twilight channel (B5, the C22 signature). For the Scald, Grey and Chill floors nothing says what 'the bank' is. B4's range reuses 'hull-to-bank route' for the Scald without defining it. B1's figurative list marks only 'carrying water'.",
+     "would_pass": "'Bank' is defined for each sea, or B1 says 'working ground' outside the Twilight.",
+     "smallest_fix": "Add 'bank' to B1's figurative list: for the Twilight, the channel bank; for the other seas, the reachable working ground beyond the hull. Give one accept picture for a non-Twilight sea."
+    },
+    {
+     "id": "R8",
+     "head": "stranger",
+     "where": "bars.json B2",
+     "evidence": "a cold reader sorted 'At normal colony zoom a worker beside cyan water and rainbow mats reads as Scald; gold-lit gardens under glass read as Twilight; pale mineral forms disappear into Grey murk; dark fuel pools interrupt Chill ice.' as reject; the proposal labels it accept",
+     "would_pass": "pictures a cold reader sorts as the proposal does",
+     "smallest_fix": "rewrite those pictures, or the bar's says, so the line between accept and reject is plain from the words alone"
+    },
+    {
+     "id": "R9",
+     "head": "stranger",
+     "where": "bars.json B3",
+     "evidence": "a cold reader sorted 'Chill industrial catches are identifiable as fuel chemistry and cannot be fed to ordinary colonists as food.' as reject; the proposal labels it accept",
+     "would_pass": "pictures a cold reader sorts as the proposal does",
+     "smallest_fix": "rewrite those pictures, or the bar's says, so the line between accept and reject is plain from the words alone"
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Defined RM_ScaldFloorSubstrate and limited submerged contact to RM_ScaldWaterOceanShallow pools adjoining floor vents. T49 replaces the existing fertility bands, preserves mat habitat and requires pool retreat and a pool-free working route. The source binding subcheck failed on the current checkout as expected. C02 records the new substrate and pool placement as absent.",
+      "where": "bars.json B4, R6 and floor_access; census.json C02; definition.md Costs and ordinary materials; tickets.md T45 and T49"
+     },
+     {
+      "id": "R2",
+      "changed": "Proposed the shipped week-scale clock for 0.1.0 and put the interpretation of the sheet’s years scale as a bound against permanence to the owner. B8 now observes natural turnover during the same occupied-floor season as current, forage and predation.",
+      "where": "bars.json B8 and R7; owner_pages.md Q1; models.md M3; tickets.md T42 and T46; definition.md; ambiguities.md 16"
+     },
+     {
+      "id": "R3",
+      "changed": "B7 reads the same well’s decreasing countdown during an occupied-floor visit. K11 uses M1’s staged boundaries for turnover checks. The floor_access meeting now tracks floor identity and well aging after real ship departure as an unknown to probe through the deployed dependency.",
+      "where": "bars.json B7, K11 and floor_access; models.md M1–M3; tickets.md T40 and T46; definition.md; ambiguities.md 16"
+     },
+     {
+      "id": "R4",
+      "changed": "R12 defines how ceiling-garden growth overgrows a standing rim, reduces its well’s light radius and clears on a completed graze. K12 supplies tuning values. Patching seals the spent rim after natural closure, and grazing leaves the expiry schedule intact.",
+      "where": "bars.json B7, K12, R7, R12 and shared meetings; definition.md When it goes wrong; models.md M5; tickets.md T43 and T46"
+     },
+     {
+      "id": "R5",
+      "changed": "Made the Grey mineral silhouettes visibly readable through the murk at normal colony zoom.",
+      "where": "bars.json B2 accept 1"
+     },
+     {
+      "id": "R6",
+      "changed": "Removed the industrial nonfood picture from the living-ecology bar. K5 still checks industrial nonfood flags.",
+      "where": "bars.json B3 accept 3 and K5"
+     },
+     {
+      "id": "R7",
+      "changed": "Marked bank as figurative outside the Twilight, where it means reachable working ground beyond the hull. Added a Scald visit picture with a pool-free path to a mat patch and used working ground in the Scald route specification.",
+      "where": "bars.json B1 and B4 ranges, B1 figurative and accept pictures, R6; definition.md Costs and ordinary materials; models.md M2 and M4; tickets.md T41, T45 and T49"
+     },
+     {
+      "id": "R8",
+      "changed": "Rewrote the disputed picture so the sea-specific features remain distinguishable in the ordinary view, including the Grey mineral silhouettes in murk.",
+      "where": "bars.json B2 accept 1"
+     },
+     {
+      "id": "R9",
+      "changed": "Deleted the disputed item-only Chill picture. The remaining accept pictures show living counterparts, encounters or native survival.",
+      "where": "bars.json B3 accept pictures"
+     }
+    ]
+   },
+   "verdicts": {
+    "R8": {
+     "verdict": "fixed",
+     "evidence": "a cold reader sorts every picture of B2 as the proposal labels it",
+     "by": "cold sort"
+    },
+    "R9": {
+     "verdict": "fixed",
+     "evidence": "a cold reader sorts every picture of B3 as the proposal labels it",
+     "by": "cold sort"
+    },
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json B4 range now reads 'Floor paid contact: RM_ScaldWaterOceanShallow only, placed edge-adjacent to floor vents under T49. The generated nonrock floor outside those pools uses RM_ScaldFloorSubstrate, with ordinary ambient heat and no boiling-contact injury … a pool-free route connects the hull to working ground.' The beach list is kept separately ('Beach paid contact: …'). R6 names the substrate and vent pools. definition.md 'Costs and ordinary materials' says 'Local floor generation puts RM_ScaldWaterOceanShallow only on eligible ground sharing an edge with an RM_ScaldVent footprint.' tickets.md T49 says to replace 'the floor's two boiling terrainsByFertility bands with one full-range base band for new RM_ScaldFloorSubstrate'. It defines the substrate (walkable, no burn fields or hot-liquid binding), the pool placement (cardinal edge with the vent, excluding the hull reservation and route), retreat, and rejection of layouts with no pool-free path. Its acceptance test says it 'was run on the current checkout and failed'. That failure matches the source: RM_TheScald.xml lines 191-202 still map both bands to RM_ScaldWaterOceanDeep/OceanShallow, and RM_ScaldFloorSubstrate appears nowhere under src/. census.json C02 is now 'built': 'absent', ticket T49."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "bars.json R7 now reads 'Proposed 0.1.0 default is the shipped week-scale cadence, so turnover runs within the whole-bar season. Read the frozen sheet's years-scale drift as the upper bound against permanence … subject to the owner's decision on page two.' owner_pages.md Q1 asks this and gives the evidence: 'The kernel rolls five to nine game days … [measured from source, RM_WellKernel.Lifespan and twilightDriftCadence]'. B8 range now includes 'natural well waning, closure and replacement on the working floor at the R7 default cadence. Keep a crew working on that floor through turnover.' The old line 'the season itself need not show years-scale expiry' is gone. B8 reject 1 ('a fading well goes dark and its replacement stalls or lights only dangerous ground') can now be read inside the 15-day season. M3 and T42 record natural turnover in the same season as current, forage and predation."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "bars.json B7 says no longer contains 'later visits showing waning and replacement'. It now ends 'temporary gold light columns with an inspectable countdown to expiry'. B7 sees.start now observes the countdown 'on that occupied floor' with an actual Scribe reload, and the 'A later visitor uses this same floor' branch is gone. K11 adds M1-staged well boundaries, kept 'separate from natural turnover evidence'. The floor_access meeting now says 'The deployed DivingInteraction rule for floor retention, identity and well aging while the ship is away is unknown'. M1 'Floor access probe' and the T40 acceptance ('distinguishes a retained aging floor, a retained frozen floor and a recreated floor') follow the player's real path: depart, time passes, return."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "The new bars.json R12 names the cause: 'Ceiling-garden growth accumulates on each clear standing skylight rim'. It sets the effect: after the K12 interval the rim 'reduces only that well's current-stage light radius by the K12 factor … until a completed graze clears it or the well closes'. An interrupted graze has no effect. K12 gives the check numbers: 'one game day … and 75% of its current-stage light radius'. R12 is cited from T43 ('clearing ceiling-garden growth from rims under R12', with a K12 acceptance check), from M5 inputs and calibration, from the definition's gardener paragraph, and from the twilight_light meeting."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "bars.json B2 accept 1 now reads 'pale mineral forms stay readable as distinct silhouettes through the Grey's murk'. The word 'disappear into Grey murk' is gone."
+    },
+    "R6": {
+     "verdict": "fixed",
+     "evidence": "bars.json B3 accept now has only two pictures, the nissik counterpart with Grey sessiles and the Twilight shoals with Scald natives. The 'Chill industrial catches … cannot be fed' picture is deleted. K5 still checks 'industrial nonfood flags'."
+    },
+    "R7": {
+     "verdict": "fixed",
+     "evidence": "bars.json B1 meant.figurative adds the word 'bank', with stands_for 'The channel bank in the Twilight. In the Scald, Grey and Chill it means reachable working ground beyond the hull.' B1 adds accept 3 for a non-Twilight sea: 'On the Scald the crew steps off the hull onto hot mineral ground and reaches a mat patch by a pool-free path'. B1 and B4 ranges, R6, the liquid_exposure meeting, T41 and T45 now say 'working ground' for the Scald, not 'hull-to-bank'."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Material ambiguities settled by the Designer",
+    "ambiguities.md Response to the fresh review",
+    "bars.json bars/B1",
+    "bars.json bars/B2",
+    "bars.json bars/B3",
+    "bars.json bars/B4",
+    "bars.json bars/B7",
+    "bars.json bars/B8",
+    "bars.json checks/K11",
+    "bars.json checks/K12",
+    "bars.json meetings",
+    "bars.json rules/R12",
+    "bars.json rules/R6",
+    "bars.json rules/R7",
+    "census.json rows/C02",
+    "definition.md Costs and ordinary materials",
+    "definition.md The season’s turn",
+    "definition.md When it goes wrong and the readable sign",
+    "models.md M1 - Situation and transition generator",
+    "models.md M2 - Channel and landing geometry",
+    "models.md M3 - Whole sea season model",
+    "models.md M4 - Liquid and native physiology replay",
+    "models.md M5 - Light habitat and food-chain model",
+    "owner_pages.md Page one — what the mod now is",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "tickets.md T40: Situation recorder and transition adapter",
+    "tickets.md T41: Channel and landing geometry instrument",
+    "tickets.md T42: Whole-mod season recorder and calibrated models",
+    "tickets.md T43: Locate or supply the actual protected animal gardener and roof work",
+    "tickets.md T45: Resolve layer, liquid and native-physiology contracts",
+    "tickets.md T46: Decouple natural well lifecycle and native flora from light economy",
+    "tickets.md T49: Build the Scald floor substrate and vent pools"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1764689,
+     "output_tokens": 22821
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "census.json C02 used to record the Scald beach boiling liquid (RM_ScaldWater terrains plus the LiquidHeat patch) as 'present'. The fix rescoped the row to the floor substrate and pools ('absent'). The built beach boiling-contact liquid now has no census row of its own; it shows only as C01 'shore material bindings' and in C02's evidence sentence ('The beach liquid and margin defs exist').",
+   "reason": "Record R1's smallest_fix asked to set C02 absent 'for the floor substrate and the pools', which reads as a split, not a replacement. No regression head fits: B4 and T45 still define and keep the beach mechanic. But the census now undercounts what is already built on the beach.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "c5c7316d22507d72d2e124fcec602a998df6750f212db60421209f56e978f1ed",
+ "seconds": 786,
+ "at": "2026-11-17T19:43:46"
+}

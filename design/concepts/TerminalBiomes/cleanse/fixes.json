@@ -1,0 +1,49 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Defined RM_ScaldFloorSubstrate and limited submerged contact to RM_ScaldWaterOceanShallow pools adjoining floor vents. T49 replaces the existing fertility bands, preserves mat habitat and requires pool retreat and a pool-free working route. The source binding subcheck failed on the current checkout as expected. C02 records the new substrate and pool placement as absent.",
+      "where": "bars.json B4, R6 and floor_access; census.json C02; definition.md Costs and ordinary materials; tickets.md T45 and T49"
+    },
+    {
+      "id": "R2",
+      "changed": "Proposed the shipped week-scale clock for 0.1.0 and put the interpretation of the sheet’s years scale as a bound against permanence to the owner. B8 now observes natural turnover during the same occupied-floor season as current, forage and predation.",
+      "where": "bars.json B8 and R7; owner_pages.md Q1; models.md M3; tickets.md T42 and T46; definition.md; ambiguities.md 16"
+    },
+    {
+      "id": "R3",
+      "changed": "B7 reads the same well’s decreasing countdown during an occupied-floor visit. K11 uses M1’s staged boundaries for turnover checks. The floor_access meeting now tracks floor identity and well aging after real ship departure as an unknown to probe through the deployed dependency.",
+      "where": "bars.json B7, K11 and floor_access; models.md M1–M3; tickets.md T40 and T46; definition.md; ambiguities.md 16"
+    },
+    {
+      "id": "R4",
+      "changed": "R12 defines how ceiling-garden growth overgrows a standing rim, reduces its well’s light radius and clears on a completed graze. K12 supplies tuning values. Patching seals the spent rim after natural closure, and grazing leaves the expiry schedule intact.",
+      "where": "bars.json B7, K12, R7, R12 and shared meetings; definition.md When it goes wrong; models.md M5; tickets.md T43 and T46"
+    },
+    {
+      "id": "R5",
+      "changed": "Made the Grey mineral silhouettes visibly readable through the murk at normal colony zoom.",
+      "where": "bars.json B2 accept 1"
+    },
+    {
+      "id": "R6",
+      "changed": "Removed the industrial nonfood picture from the living-ecology bar. K5 still checks industrial nonfood flags.",
+      "where": "bars.json B3 accept 3 and K5"
+    },
+    {
+      "id": "R7",
+      "changed": "Marked bank as figurative outside the Twilight, where it means reachable working ground beyond the hull. Added a Scald visit picture with a pool-free path to a mat patch and used working ground in the Scald route specification.",
+      "where": "bars.json B1 and B4 ranges, B1 figurative and accept pictures, R6; definition.md Costs and ordinary materials; models.md M2 and M4; tickets.md T41, T45 and T49"
+    },
+    {
+      "id": "R8",
+      "changed": "Rewrote the disputed picture so the sea-specific features remain distinguishable in the ordinary view, including the Grey mineral silhouettes in murk.",
+      "where": "bars.json B2 accept 1"
+    },
+    {
+      "id": "R9",
+      "changed": "Deleted the disputed item-only Chill picture. The remaining accept pictures show living counterparts, encounters or native survival.",
+      "where": "bars.json B3 accept pictures"
+    }
+  ]
+}
