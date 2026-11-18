@@ -8694,3 +8694,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"broken","detail":"Ops alarm WRAPUP_DEBRIS: wrapup.debris_standing = 1 filed wrap-up rows still standing (MEASURED), line > 0","ts":"2026-11-18T22:30:49Z","tsn":1795041049831438575}
 {"seat":"RUNNER","event":"raise","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-18T22:30:56Z","tsn":1795041056037388985}
 {"seat":"RUNNER","event":"live","id":"OPS_WRAPUP_DRAIN_DEBRIS_PILES_UP_RWZN","result":"kept","detail":"sweep: running again","ts":"2026-11-18T22:33:06Z","tsn":1795041186928535787}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_STALLED_KHOT","result":"broken","detail":"Ops alarm MATURATION_STALLED: maturation.stalled = 1 mods (MEASURED), line > 0","ts":"2026-11-18T22:39:14Z","tsn":1795041554861989216}
+{"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_STALLED_KHOT","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-18T22:39:20Z","tsn":1795041560795959494}
