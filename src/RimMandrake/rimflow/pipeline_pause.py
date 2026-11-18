@@ -22,6 +22,7 @@ import contextlib
 import datetime as dt
 import fcntl
 import json
+import math
 import os
 import re
 import time
@@ -47,23 +48,28 @@ def key(mod):
     return os.path.basename(os.path.normpath(str(mod or "")))
 
 
+def _num(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
+
+
 def _entry_ok(e):
-    return (isinstance(e, dict) and isinstance(e.get("why"), str) and e["why"].strip() != ""
-            and isinstance(e.get("at"), (int, float)) and (e.get("until") is None or isinstance(e["until"], (int, float))))
+    return (isinstance(e, dict) and isinstance(e.get("why"), str) and e["why"].strip() != "" and _num(e.get("at"))
+            and (e.get("until") is None or _num(e["until"])))
 
 
 def load(p=None):
     """-> the store ({"all": None, "mods": {}, "history": []} when absent). Raises Unreadable on a torn or misshapen file."""
     p = p or path()
-    if not os.path.exists(p):
-        return {"all": None, "mods": {}, "history": []}
-    try:
+    try:        # only a file that is not there is "nothing paused"; any other failure to read is Unreadable
         with open(p, encoding="utf-8") as f:
             d = json.load(f)
+    except FileNotFoundError:
+        return {"all": None, "mods": {}, "history": []}
     except (OSError, ValueError) as e:
         raise Unreadable("%s: %s: %s" % (p, type(e).__name__, e))
-    if not isinstance(d, dict) or not isinstance(d.get("mods", {}), dict) or not isinstance(d.get("history", []), list):
-        raise Unreadable("%s: not a pause store (want all/mods/history)" % p)
+    if not isinstance(d, dict) or set(d) != {"all", "mods", "history"} or not isinstance(d["mods"], dict) \
+            or not isinstance(d["history"], list) or not all(isinstance(h, dict) for h in d["history"]):
+        raise Unreadable("%s: not a pause store (want exactly all, mods and history, history a list of records)" % p)
     bad = ([] if d.get("all") is None or _entry_ok(d["all"]) else ["all"]) + [
         m for m, e in (d.get("mods") or {}).items() if not _entry_ok(e)]
     if bad:
@@ -173,7 +179,12 @@ def pause(mod, why, by, until=None, now=None, p=None):
     with _lock(p):
         try:
             d = load(p)
-        except Unreadable:      # a torn store is replaced by the pause asked for, its bytes kept beside it
+        except Unreadable as err:
+            # a torn store reads as everything paused: only a pause of everything may replace it (its bytes kept
+            # beside it); a one-mod pause over it would un-pause every other mod
+            if mod:
+                raise Unreadable("%s; a pause of one mod would lift the pause this reads as on every other mod: pause "
+                                 "the whole pipeline (no MOD) to replace it" % err)
             if os.path.exists(p):
                 os.replace(p, "%s.unreadable.%d" % (p, int(now)))
             d = {"all": None, "mods": {}, "history": []}

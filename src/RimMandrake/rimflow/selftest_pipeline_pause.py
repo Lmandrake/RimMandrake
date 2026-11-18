@@ -41,7 +41,7 @@ SETTLE_AT = CLOCK + 420
 PATHS = {
     "ModBuild": {"stage": "offline_build"},
     "ModBlind": {"stage": "blind_challenge"},
-    "ModGame": {"stage": "in_game"},
+    "ModGame": {"stage": "in_game", "stage_usd": 0},
     "ModRed": {"stage": "offline_build", "cert_reds": ["T_RED"]},
     "ModRerun": {"stage": "offline_build", "cert_rerun_key": "k1"},
     "ModHolder": {"stage": "blind_challenge", "holder_items": ["ITEM_ONE"]},
@@ -154,13 +154,51 @@ def main():
            and kinds["ModHolder"]["kind"] == "holder", "each prediction names its kind, model and rule")
         ok(any("UNMEASURED" in u and "ModLive" in u for u in fc["unmeasured"]),
            "a live run's end reads UNMEASURED, never nothing")
-        # a mutant forecast that drops one layer must fail the same comparison
-        for mod in PATHS:
-            mutant = [m for m in pred0 if m != mod]
-            ok(mutant != sorted(got0), "mutant forecast without layer %s fails the comparison" % mod)
-        # the mutant that is a second copy of the logic missing the autonomy layer (rows with aut)
-        second = sorted(m for m in pred0 if not PATHS.get(m, {}).get("aut"))
-        ok(second != sorted(got0), "a forecast blind to the autonomy layer (steward, fixer, autolock) fails")
+        # a mutated forecast that loses one layer (its dry tick's rows of that kind dropped) must fail the comparison
+        real_tick = MD._tick
+
+        def mutant(kind):
+            def t(root_, cfg_, apply, fx=None, now=None, page=True):
+                rd_ = real_tick(root_, cfg_, apply, fx, now, page)
+                if not apply:
+                    for r_ in rd_["mods"].values():
+                        if r_.get("decision") == "would_launch" and (r_.get("launch") or {}).get("kind") == kind:
+                            r_["decision"] = "dropped_by_mutant"
+                return rd_
+            return t
+        try:
+            for mod in PATHS:
+                MD._tick = mutant(kinds[mod]["kind"])
+                fresh()
+                fm = MD.forecast(root, cfg, within_s=60, step_s=60, fx=fx, now=CLOCK)
+                MD._tick = real_tick
+                fresh()
+                gm, _ = tick(0)
+                ok(at_first(fm, CLOCK) != sorted(gm), "a forecast mutated to lose layer %s (%s) fails the comparison"
+                   % (mod, kinds[mod]["kind"]))
+        finally:
+            MD._tick = real_tick
+        # the holder cap: what execute's holder_launch will set, by the one rule
+        pl_was = MD.pilot_ledger
+        MD.pilot_ledger = lambda root_, mod: mod == "ModGame"
+        try:
+            k = MD.launch_kind(dict(cfg, stage_ceiling_usd=60, ingame_cap_usd=30), {"mod": "ModGame", "stage": "in_game",
+                                                                                  "stage_usd": 0}, root)
+        finally:
+            MD.pilot_ledger = pl_was
+        ok(k["cap_usd"] == 60 == MD.holder_cap(dict(cfg, stage_ceiling_usd=60), {"stage_usd": 0}, 30),
+           "a pilot holder's forecast cap is holder_cap's, as execute sets it (%s)" % k["cap_usd"])
+        # the stale-clone gate reads alike in the dry pass
+        fresh()
+        fst = MD.forecast(root, cfg, within_s=120, step_s=60, fx=dict(fx, clone_seen={
+            "measured": True, "behind_min": 10, "ahead": 0, "behind": 3}), now=CLOCK)
+        ok(fst["launches"] == [] and any(b["decision"] == "stale_clone" for b in fst["blocked"]),
+           "a stale dispatch clone: the forecast predicts no launch, as the applying tick would refuse")
+        try:
+            MD.forecast(root, cfg, within_s=120, step_s=-60, fx=fx, now=CLOCK)
+            ok(False, "a negative --step is refused")
+        except ValueError:
+            ok(True, "a negative --step is refused")
 
         # ---- pause all ------------------------------------------------------------------------------------------
         fresh()
@@ -218,12 +256,24 @@ def main():
         # ---- one mod ---------------------------------------------------------------------------------------------
         fresh()
         PP.pause("ModBuild", "one mod", "TEST", now=CLOCK)
+        del executed[:]
+        MD.tick(root, dict(cfg, advancing=["ModBuild", "ModBlind"], max_live=1), True, now=CLOCK, page=False,
+                fx=dict(fx, facts=lambda: {m: facts[m] for m in ("ModBuild", "ModBlind")}))
+        ok(executed == ["ModBlind"], "max_live 1: a mod paused alone takes no slot from the mod behind it (%s)" % executed)
+        fresh()
+        PP.pause("ModBuild", "one mod", "TEST", now=CLOCK)
         got, rd = tick(0)
         ok("ModBuild" not in got and set(PATHS) - {"ModBuild"} <= set(got), "pause ModBuild: only ModBuild held")
         ok(not RL.pipeline_held("Designer", {}, "design/concepts/ModBlind", CLOCK, lambda **k: None)
            and RL.pipeline_held("Designer", {}, "design/concepts/ModBuild", CLOCK, lambda **k: None),
            "a per-mod pause holds that concept only in the Dispatcher")
         PP.resume("ModBuild", "done", "TEST", now=CLOCK + 1)
+        fresh()
+        PP.pause(None, "the results cannot be read", "TEST", now=CLOCK)
+        a2 = []
+        RL.pipeline_held("Designer", {}, None, CLOCK, lambda **k: a2.append(k))
+        ok(a2 and not any(a.get("do") == "alarm" for a in a2), "a planned pause whose why says 'cannot be read' is "
+           "no alarm")
 
         # ---- --until: the forecast sees the end, the tick resumes by itself and says so ---------------------------
         fresh()
@@ -243,7 +293,10 @@ def main():
         # ---- unreadable = PAUSED ---------------------------------------------------------------------------------
         for bad, what in (("{not json", "torn"), (json.dumps({"all": {"why": ""}, "mods": {}, "history": []}),
                                                   "an entry with no why"),
-                          (json.dumps({"all": None, "mods": [], "history": []}), "mods not a mapping")):
+                          (json.dumps({"all": None, "mods": [], "history": []}), "mods not a mapping"),
+                          ("{}", "an empty mapping"),
+                          ('{"all": {"why": "x", "at": 1, "until": NaN}, "mods": {}, "history": []}', "a NaN until"),
+                          ('{"all": null, "mods": {}, "history": [null]}', "a null history record")):
             fresh()
             with open(pf, "w") as f:
                 f.write(bad)
@@ -252,6 +305,18 @@ def main():
                "a %s pause file reads PAUSED: nothing launches, the why says it cannot be read" % what)
         ok(RL.pipeline_held("Designer", {}, None, CLOCK, lambda **k: acts.append(k)) and
            any(a.get("do") == "alarm" for a in acts), "the Dispatcher holds on an unreadable pause file, alarmed")
+        os.chmod(sd, 0o600)     # the folder unreadable: the file cannot be proved absent
+        try:
+            st_blind = PP.state(CLOCK)
+        finally:
+            os.chmod(sd, 0o755)
+        ok(bool(st_blind.get("error")) and PP.reason(st_blind), "a pause file behind an unreadable folder reads "
+           "PAUSED, not absent (%s)" % st_blind.get("error"))
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            rc = MD.main(["pause", "ModBuild", "--why", "one over torn", "--by", "BENCH"])
+        ok(rc == 1 and "every other mod" in out.getvalue(), "a one-mod pause over a torn store is refused (it would "
+           "un-pause the rest)")
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             rc = MD.main(["resume", "--why", "x", "--by", "BENCH"])
@@ -281,6 +346,11 @@ def main():
         ok(rc == 0 and calls == [["systemctl", "--user", "stop", "rm-detached-fake-live"]] and h and h[-1][
             "void_owed"] and h[-1]["units"][0]["unit"] == "rm-detached-fake-live",
            "--stop-live stops the live run and records it for voiding (%s)" % calls)
+        del calls[:]
+        r_ = saved["stop_live"](root, cfg, facts={"ModX": {"live_units": "UNMEASURED"}},
+                                runner=lambda argv, **k: calls.append(argv))
+        ok(calls == [] and r_ and r_[0]["rc"] == 2 and "UNMEASURED" in r_[0]["said"],
+           "--stop-live on unreadable live runs stops nothing and says UNMEASURED, never 'none live'")
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             MD.main(["status"])
@@ -302,6 +372,27 @@ def main():
                 ok(False, "--until %s refused" % t)
             except ValueError:
                 ok(True, "--until %s refused" % t)
+        # ---- decide_roles itself: a pipeline role's scheduled slot does not start under the pause -----------------
+        os.environ["TZ"] = "UTC"
+        import time as _t
+        _t.tzset()
+        import selftest_dispatcher as SD
+
+        def drive(now_):
+            role = SD.operations(chain_stages=True)
+            o = SD.robs(SD.ops_status(now_))
+            o["stage_concepts"] = lambda: []
+            acts_ = []
+            RL.decide_roles({"roles": [role]}, {"roles": {}}, o, now_, lambda **k: acts_.append(k), set(), None)
+            return [a for a in acts_ if a.get("do") == "role_launch"], acts_
+        fresh()
+        t730 = SD.at_local("07:30")
+        la, _ = drive(t730)
+        ok(len(la) == 1, "decide_roles launches a chain_stages role's due slot unpaused (it can see: %d)" % len(la))
+        PP.pause(None, "slot test", "TEST", now=t730 - 60)
+        la, aa = drive(t730)
+        ok(la == [] and any(a.get("do") == "role_hold" and "slot test" in str(a.get("why")) for a in aa),
+           "decide_roles under pause: the slot does not launch, a role_hold note says why")
     finally:
         for n, f in saved.items():
             setattr(MD, n, f)

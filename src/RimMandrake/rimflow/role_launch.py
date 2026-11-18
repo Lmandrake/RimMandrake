@@ -2542,11 +2542,12 @@ def pipeline_held(name, rs, concept, now, act):
     A planned stop: said once a day per scope as a role_hold note, never an alarm. An unreadable pause store holds
     everything (a pause that cannot be proved lifted is never read as running), alarmed once per outage."""
     import pipeline_pause as PP
-    why = PP.blocks(concept, now)
+    pst = PP.state(now)
+    why = PP.reason(pst, concept)
     if not why:
         rs.pop("pause_blind", None)
         return False
-    if "cannot be read" in why and not rs.get("pause_blind"):
+    if pst.get("error") and not rs.get("pause_blind"):
         act(do="alarm", kind="role:%s:pipeline_pause" % name, note=True, conductor_log=True,
             why="%s: %s" % (name, why))
         rs["pause_blind"] = why
