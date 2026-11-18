@@ -176,5 +176,74 @@ check("seat_label maps the allocator key to v3 names", SA.seat_label("BENCH") ==
 check("seat_key maps v3 names and the old window name to the allocator key",
       SA.seat_key("CONDUCTOR") == "BENCH" and SA.seat_key("bench") == "BENCH" and SA.seat_key("RELENTLESS") == "RELENTLESS")
 
+# ---- RIMMANDRAKE_FIX_SLOT_ALLOCATOR_OVERRIDE_AND_BURN_PICK (Codex 2026-11-17), findings 2-5, each red on its base
+import os  # noqa: E402
+import tempfile  # noqa: E402
+import time  # noqa: E402
+_tmp = Path(tempfile.mkdtemp(prefix="slot_v3_fixes_"))
+# finding 2: a resumed transcript's idle gap is not running time
+_ag = _tmp / "proj" / "sess" / "subagents"
+_ag.mkdir(parents=True)
+_rt = time.time()
+_f = _ag / "agent-gap.jsonl"
+_f.write_text("".join(json.dumps({"type": "assistant", "timestamp": SA.iso_z(t)}) + "\n"
+                      for t in (_rt - 6 * H + 30, _rt - 6 * H + 60, _rt - 60, _rt - 30)), encoding="utf-8")
+os.utime(_f, (_rt - 30, _rt - 30))
+_mh = SA.mean_helpers([_tmp / "proj"], _rt, 6 * H)
+check("F2: one helper writing a minute at each end of 6 h averages ~0, not ~1 (the gap is idle)", _mh < 0.05, _mh)
+
+# findings 3-5: `set` keeps each word for its own seat and its own time
+_sd_old = os.environ.get("RM_STREAMS_DIR")
+os.environ["RM_STREAMS_DIR"] = str(_tmp / "streams")
+
+
+def _set(*args):
+    rc = SA.main(["set", *args, "--owner-said", "test word"])
+    return rc, json.loads((_tmp / "streams" / "slot_override.json").read_text(encoding="utf-8"))
+
+
+try:
+    _set("--n", "6", "--hours", "4")
+    rc, o = _set("--seat", "RELENTLESS", "--n", "1", "--hours", "4")
+    r = d(override=o)
+    check("F3: an unseated --n 6 survives a later --seat RELENTLESS --n 1 (BENCH keeps 6)",
+          rc == 0 and seats(r) == (6, 1), (rc, o, r["seats"]))
+    _set("--seat", "BENCH", "--n", "4", "--hours", "1")
+    rc, o = _set("--seat", "RELENTLESS", "--n", "2", "--hours", "4")
+    later = SA._override_live(o, time.time() + 2 * H) or {}
+    check("F4: BENCH's 1 h word is not extended to 4 h by a later RELENTLESS word",
+          rc == 0 and "BENCH" not in (later.get("seats") or {}) and (later.get("seats") or {}).get("RELENTLESS") == 2,
+          (rc, o, later))
+    check("F4: within its hour BENCH's word still holds", ((SA._override_live(o, time.time() + 0.5 * H) or {})
+                                                           .get("seats") or {}).get("BENCH") == 4, o)
+    # Codex review: a legacy alias key is the same seat, replaced, never revived when the new word lapses
+    (_tmp / "streams" / "slot_override.json").write_text(json.dumps(
+        {"ownerSaid": "old", "set_at": SA.iso_local(time.time()), "until": SA.iso_local(time.time() + 4 * H),
+         "mode": None, "seats": {"CONDUCTOR": 6}}), encoding="utf-8")
+    rc, o = _set("--seat", "BENCH", "--n", "1", "--hours", "1")
+    later = SA._override_live(o, time.time() + 2 * H)
+    check("F4: a CONDUCTOR-keyed word replaced by a BENCH word does not come back when BENCH's hour ends",
+          rc == 0 and "CONDUCTOR" not in o["seats"] and later is None, (rc, o, later))
+    # Codex review: once a seat's word lapses, the override's set_at is the kept seats' own, not the lapsed one's
+    (_tmp / "streams" / "slot_override.json").unlink()
+    _set("--seat", "BENCH", "--n", "4", "--hours", "4")
+    first = json.loads((_tmp / "streams" / "slot_override.json").read_text(encoding="utf-8"))["set_at"]
+    time.sleep(1.1)
+    rc, o = _set("--seat", "RELENTLESS", "--n", "1", "--hours", "0.0001")
+    time.sleep(0.5)
+    kept = SA._override_live(o, time.time()) or {}
+    check("F4: after RELENTLESS's word lapses, set_at is BENCH's own (a switching notice between them still binds)",
+          kept.get("set_at") == first and (kept.get("seats") or {}) == {"BENCH": 4}, (first, kept))
+    rc, o = _set("--n", "3", "--hours", "0")
+    check("F5: --hours 0 expires at once, not at the weekly reset",
+          rc == 0 and SA._override_live(o, time.time() + 1) is None, (rc, o))
+except Exception as e:  # noqa: BLE001 -- a crash is a failing case, named
+    check("F3-F5 ran without a crash", False, f"{type(e).__name__}: {e}")
+finally:
+    if _sd_old is None:
+        os.environ.pop("RM_STREAMS_DIR", None)
+    else:
+        os.environ["RM_STREAMS_DIR"] = _sd_old
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

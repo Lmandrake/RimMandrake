@@ -142,7 +142,9 @@
   "_disk_brake_total": "one helper: enough to clear scratch or fix the cause, not enough to fill the disk",
   "codex_conserve_runway": 1.0,
   "steve_stall_min": 30,
-  "steve_invalid_streak": 3
+  "steve_invalid_streak": 3,
+  "codex_brake_min_used_pct": 50,
+  "_codex_brake_min_used_pct": "the shipped slot_rules.json value (4e768ddf76 made the key required); frozen here like the rest"
  },
  "_fixture": "FROZEN copy of slot_rules.json (2026-11-05) for selftest_streams pacing(); never synced to the live file (SELFTEST_FIX_STREAMS_FQCB: an owner retune must not turn the nightly red)"
 }

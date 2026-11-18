@@ -213,20 +213,13 @@ def _first_ts(path):
     return None
 
 
-def mean_helpers(project_paths, now, window_s):
-    """Mean subagents running over [now-window, now]: each counts from its first record to its last write."""
-    lo, total = now - window_s, 0.0
-    for proj in project_paths:
-        for p in glob.glob(os.path.join(str(proj), "*", "subagents", "agent-*.jsonl")):
-            try:
-                end = os.path.getmtime(p)
-            except OSError:
-                continue
-            if end < lo:
-                continue
-            start = _first_ts(p) or end
-            total += max(0.0, min(end, now) - max(start, lo))
-    return total / window_s
+def mean_helpers(project_paths, now, window_s, gap_s=600.0, rules=None):
+    """Mean subagents running over [now-window, now], integrated over helper_spans: a resumed transcript's idle gap is
+    not running time (first record to last write read one helper writing at each end of 6 h as 1.0;
+    MEAN_HELPERS_COUNTS_IDLE_GAPS_AS_RUNNING)."""
+    lo = now - window_s
+    spans = helper_spans(project_paths, now, window_s, gap_s, rules)
+    return sum(max(0.0, min(b, now) - max(a, lo)) for a, b in spans) / window_s
 
 
 def helper_spans(project_paths, now, window_s, gap_s=600.0, rules=None):
@@ -718,7 +711,7 @@ def gather(now=None, rules=None):
                 inp["rate_pct_per_h"] = round(msgs / fit["msgs_per_pct"] / fit["window_h"], 3)
                 inp["rate_src"] = (f"{msgs} messages from this machine in {fit['window_h']} h / {fit['msgs_per_pct']} per % "
                                    f"(meter has {n} readings over {span:.1f} h, too few for a slope)")
-    inp["mean_helpers"] = round(mean_helpers(list(seat_paths.values()), now, win), 2)
+    inp["mean_helpers"] = round(mean_helpers(list(seat_paths.values()), now, win, rules["helpers"]["live_window_s"], rules), 2)
     # an unreadable transcript directory is "unavailable" (None), never a measured zero helpers
     inp["helper_spans"] = {s: (helper_spans([p], now, rules["overage"]["max_accrual_dt_h"] * HOUR,
                                            rules["helpers"]["live_window_s"], rules)
@@ -896,6 +889,18 @@ def _override_live(ov, now):
     until = epoch(ov.get("until"))
     if until is not None and until <= now:
         return None
+    su = ov.get("seat_until")
+    if isinstance(su, dict) and isinstance(ov.get("seats"), dict):
+        # each seat's word lapses at its own time (SLOT_SET_WORDS_KEEP_OWN_SEAT_TIME); the file's until is the latest
+        live = {k: v for k, v in ov["seats"].items() if epoch(su.get(k)) is None or epoch(su.get(k)) > now}
+        if not live and ov.get("n") is None and not ov.get("mode"):
+            return None
+        if live != ov["seats"]:
+            ov = dict(ov, seats=live)
+            ssa = ov.get("seat_set_at") if isinstance(ov.get("seat_set_at"), dict) else {}
+            at = [ssa.get(k) for k in live if epoch(ssa.get(k)) is not None]
+            if at and len(at) == len(live):
+                ov["set_at"] = max(at, key=epoch)   # the kept words' own time, not the lapsed one's
     return ov
 
 
@@ -1496,7 +1501,7 @@ def main(argv=None):
     if a.hours is not None and not (math.isfinite(a.hours) and a.hours >= 0):
         print("refused: --hours must be a finite number of hours, 0 or more", file=sys.stderr)
         return 2
-    if a.hours:
+    if a.hours is not None:      # --hours 0 is now, never "omitted" (it lasted to the weekly reset)
         until = iso_local(now + a.hours * HOUR)
     else:
         pst = (read_json(streams_dir() / "allocation.json") or {}).get("state") or {}
@@ -1518,7 +1523,25 @@ def main(argv=None):
                 return 2
             prior = _override_live(read_json(streams_dir() / "slot_override.json"), now) or {}
             # CONDUCTOR is stored as its allocator key BENCH; a live word for the other seat is kept, not overwritten
-            ov["seats"] = {**(prior.get("seats") or {}), seat_key(a.seat): a.n}
+            # keys folded to their seat (a legacy "CONDUCTOR" key is BENCH: replaced by a BENCH word, never revived)
+            psu = prior.get("seat_until") if isinstance(prior.get("seat_until"), dict) else {}
+            psa = prior.get("seat_set_at") if isinstance(prior.get("seat_set_at"), dict) else {}
+            kept, k_until, k_set = {}, {}, {}
+            for k, v in (prior.get("seats") or {}).items():
+                kept[seat_key(k)] = v
+                k_until[seat_key(k)] = psu.get(k) or prior.get("until")
+                k_set[seat_key(k)] = psa.get(k) or prior.get("set_at")
+            if prior.get("n") is not None and "BENCH" not in kept:
+                # an unseated --n is BENCH's word: kept, not lost to `seats`
+                kept["BENCH"], k_until["BENCH"], k_set["BENCH"] = prior["n"], prior.get("until"), prior.get("set_at")
+            kept.pop(seat_key(a.seat), None)
+            # each kept seat keeps its own lapse time and its own set_at, never the new word's
+            # (SLOT_SET_WORDS_KEEP_OWN_SEAT_TIME): set_at is what a switching notice is weighed against
+            ov["seat_until"] = {**{k: k_until[k] for k in kept}, seat_key(a.seat): until}
+            ov["seat_set_at"] = {**{k: k_set[k] for k in kept}, seat_key(a.seat): ov["set_at"]}
+            ov["seats"] = {**kept, seat_key(a.seat): a.n}
+            ends = [epoch(u) for u in ov["seat_until"].values()]
+            ov["until"] = None if None in ends else iso_local(max(ends))
         else:
             ov["n"] = a.n
     d = streams_dir()

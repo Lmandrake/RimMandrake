@@ -346,7 +346,9 @@ ts = SA.owner_window_times([proj], real_now, 3 * H)
 check("S8b: owner_window_times lists his typed messages only (one, 50 min ago)",
       len(ts) == 1 and abs((real_now - ts[0]) / 60 - 50) < 0.2, ts)
 mh = SA.mean_helpers([proj], real_now, 3 * H)
-check("mean helpers over 3 h from first record to last write (about 2.1)", 1.9 < mh < 2.3, mh)
+# Was "from first record to last write (about 2.1)": that rule is the defect MEAN_HELPERS_COUNTS_IDLE_GAPS_AS_RUNNING
+# fixed (an idle gap read as running). Each fixture wrote 100 s an hour ago; its later mtime is past the 600 s gap.
+check("mean helpers over 3 h integrate the writing runs, not the idle gap (6 x 100 s / 3 h = 0.056)", 0.05 < mh < 0.06, mh)
 fp = tmp / "projects" / "-home-mandrake-rm-foundry"
 fp.mkdir()
 (fp / "s2.jsonl").write_text("".join(json.dumps(A("tool_use", m)) + "\n" for m in ("m1", "m2", "m2", "m3")))
