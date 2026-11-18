@@ -149,6 +149,7 @@ import modledger                # noqa: E402  the mod ledger: stage runs from it
 import pipeline_pause as PP          # noqa: E402  the pipeline's pause: one switch, a file (pause.json in sdir)
 import pipeline_control as PC       # noqa: E402  the one control store (`pipe`): counts, limits, switches, queue
 import mod_owner_hold as OH          # noqa: E402  the owner's hold: a held mod is never decided (mod_owner_hold.json)
+import run_void as RV            # noqa: E402  a VOID run spends no trial (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT)
 
 UNM = "UNMEASURED"
 RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
@@ -249,7 +250,7 @@ def read_state(p):
             p, type(e).__name__, e))
     if not isinstance(st, dict):
         raise RuntimeError("%s is not an object; nothing runs on a lost state: repair or move it aside" % p)
-    return st
+    return RV.sync_dispatch(st)     # every reader honours the standing voids (run_void.py)
 
 
 def pac(t):
@@ -402,9 +403,10 @@ def killed_runs(runs, read=None, runner=subprocess.run):
     import role_launch as RL
     read = read or DH.read_record
     out = {}
+    void = RV.active()      # a VOID run is no kill to retry: it counts nothing (run_void.py)
     for r in runs or []:
         u = r.get("unit")
-        if not u or r.get("live") or not (_is_blind_item(r.get("item")) or _is_ingame_item(r.get("item"))):
+        if not u or r.get("live") or u in void or not (_is_blind_item(r.get("item")) or _is_ingame_item(r.get("item"))):
             continue
         rec = read(u)
         why = DH.killed(rec, runner) if rec else ""
@@ -459,7 +461,9 @@ def add_ingame(root, mod, f, runs):
     f["known_red"] = known_red(root, mod)          # cert_wait's red-decider route reads which items owe them
     f["cert_rerun_result"] = rerun_result(mod)     # cert_wait's zero-token rerun reads its last result
     t0 = _ts(f.get("opened"))
+    void = RV.active()      # a VOID run worked on nothing the visit counts (run_void.py)
     f["ingame_runs"] = [r.get("unit") for r in runs or [] if _is_ingame_item(r.get("item")) and ran(r)
+                        and r.get("unit") not in void
                         and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
     return f
 
@@ -491,7 +495,9 @@ def add_blind(root, mod, f, runs):
     f["cert_rerun_result"] = rerun_result(mod)     # cert_wait's zero-token rerun reads its last result
     f["cycle_decision"] = cycle_decision(M.load(root, mod) or {})
     t0 = _ts(f.get("opened"))
+    void = RV.active()      # a VOID run worked on nothing the cycle counts (run_void.py)
     f["blind_runs"] = [r.get("unit") for r in runs or [] if _is_blind_item(r.get("item")) and ran(r)
+                       and r.get("unit") not in void
                        and isinstance(r.get("at"), (int, float)) and t0 is not None and r["at"] >= t0 - 600]
     return f
 
@@ -2762,7 +2768,41 @@ def status_lines(rd, now, unit_state=None):
     for k in ("paused", "owner", "stalled"):
         if rd.get(k):
             out.append("%s: %s" % (k, "; ".join(rd[k])))
+    out += rd.get("voids") or []
     return out
+
+
+def still_retried(cfg, book, x):
+    """-> True for a never-started launch the tick still tries again (its tries are the retry's own, not a trial):
+    a blind or in-game one by retriable, a steward or fixer one by the gate's own rule (maturation_autonomy._gate)."""
+    if book in ("blind_auto", "ingame_auto"):
+        return retriable(cfg, x)
+    if book in ("steward", "fixers"):
+        return bool((AUT.transient(x.get("failed")) or code_changed(cfg, x))
+                    and int(x.get("tries") or 1) < int(cfg.get("launch_tries", 3)))
+    return book != "holder_road_back"    # a holder run that never started is no try at its items
+
+
+def kill_resumed(cfg, book, x, why):
+    """-> True for a KILLED blind or in-game run the tick still resumes (retriable: fewer than launch_tries kills)."""
+    return (book in ("blind_auto", "ingame_auto") and str(why).startswith(("killed", "its unit died"))
+            and not x.get("failed") and len(x.get("killed_before") or []) + 1 < int(cfg.get("launch_tries", 3)))
+
+
+def system_fault_stop(cfg, st, rows, launches):
+    """A mod with run_void.SYSTEM_FAULT_LIMIT system faults since its last clear launches nothing and reads
+    system_fault (alarm OPS_MATURATION_SYSTEM_FAULT_LOOP): an endless relaunch is stopped without spending a trial."""
+    most = int(cfg.get("system_fault_limit", RV.SYSTEM_FAULT_LIMIT))
+    for r in rows:
+        s = (st.get("mods") or {}).get(r["mod"]) or {}
+        n = RV.faults(s)
+        if n >= most and r["mod"] in launches:
+            last = (s.get("system_faults") or [{}])[-1]
+            r.update(decision="system_fault", why="%s: %d system faults since the last clear (limit %d), the last %s: "
+                     "%s; no trial is spent; read the cause, then `maturation_dispatch.py clear %s --why ...`" % (
+                         RV.ALARM_ID, n, most, last.get("unit") or "a launch", last.get("cause"), r["mod"]))
+            launches = [m for m in launches if m != r["mod"]]
+    return launches
 
 
 def _aut(rows, mod):
@@ -2795,6 +2835,9 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     now = now or time.time()
     d = sdir()
     st = read_state(os.path.join(d, "state.json"))
+    record = fx.get("record") or DH.read_record
+    RV.sync_system(st, record, keep_failed=lambda b, x: still_retried(cfg, b, x),
+                   kills_left=lambda b, x, why: kill_resumed(cfg, b, x, why), now=now)
     aut = fx.get("autonomy", True)      # False: the per-stage decision alone (selftest_maturation_dispatch's layer)
     shipped = cfg                       # the file's own values, before widen adds discovered mods (maturation_hands)
     cfg = AUT.widen(root, cfg, st, apply, fx) if aut else cfg   # Designer concepts seen and seeded; the game queue
@@ -2830,6 +2873,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
             if why:
                 r.update(decision="control_off", klass="held", why=why, status=why)
                 launches = [m for m in launches if m != r["mod"]]
+    launches = system_fault_stop(cfg, st, rows, launches)
     if not cfg.get("enabled"):
         for r in rows:
             if r["mod"] in launches:
@@ -2874,6 +2918,7 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     for x in pause_said:
         if x not in rd["pipeline_pause"]["said"]:
             rd["pipeline_pause"]["said"].append(x)
+    rd["voids"] = RV.status_lines(st, record)
     try:    # a DIVERGING stage is a Needs Conductor line; it pauses nothing (maturation_convergence.py)
         conv = fx.get("convergence")    # a selftest's fixture source (RIMMANDRAKE_ISOLATE_DISPATCH_SELFTEST_FROM_CONVERGENCE)
         if conv is None:
@@ -3179,7 +3224,26 @@ def main(argv=None):
     nx.add_argument("--step", type=float, default=None, help="seconds between simulated ticks (default within/30, "
                                                                 "at least 60)")
     nx.add_argument("--json", action="store_true")
+    for name, hlp in (("void", "a run that died of a system cause, or that the owner or Conductor stopped or declares "
+                               "void, spends no trial (run_void.py): one line per run, its Designer runs and judges"),
+                      ("unvoid", "reverse a void: the run counts again")):
+        vp = sub.add_parser(name, help=hlp)
+        vp.add_argument("units", nargs="*", help="run units (rm-detached-..., rm-coverage-judge-..., rm-role-...)")
+        if name == "void":
+            vp.add_argument("--item", help="every run of this item")
+            vp.add_argument("--mod", help="with --since: every run on this mod since then")
+            vp.add_argument("--since", help="ISO time, or local Pacific 'YYYY-MM-DD HH:MM'")
+        vp.add_argument("--why", required=True)
+        vp.add_argument("--owner-said", help="his words, when it is his call")
+        vp.add_argument("--by", default=None, help="who (default: this window's seat)")
+        vp.add_argument("--no-land", action="store_true", help="write the repo files, do not ./publish them")
+    sub.add_parser("voids", help="every void and unvoid line, and what stands")
     o = ap.parse_args(argv)
+    if o.cmd in ("void", "unvoid"):
+        with state_lock():
+            return _void(o)
+    if o.cmd == "voids":
+        return _voids()
     if o.cmd in ("pause", "resume"):
         return _pause_verb(o)
     if o.cmd == "next":
@@ -3316,6 +3380,84 @@ def _pause_verb(o):
                 if isinstance(u, str)] if not o.mod else []
         if live:
             print("  live runs finish (no --stop-live): %s" % ", ".join(live))
+    return 0
+
+
+def _voids():
+    """`voids`: every void and unvoid line, the ones that stand marked."""
+    recs, bad = RV.read()
+    cur = RV.active(recs=recs)
+    for r in recs:
+        print("%s %s %-6s %s %s (%s, by %s%s): %s%s" % (
+            r["ts"], r.get("id"), r["act"].upper(), r["unit"], r.get("mod") or "-", r.get("item") or "-",
+            r.get("by"), ", his words: %s" % r["owner_said"] if r.get("owner_said") else "", r["why"],
+            " [STANDS]" if r["act"] == "void" and (cur.get(r["unit"]) or {}).get("id") == r.get("id") else ""))
+    print("%d line(s), %d standing void(s), %d malformed line(s) in %s" % (len(recs), len(cur), bad, RV.path()))
+    return 0
+
+
+def _void(o):
+    """`void` / `unvoid`, under the state lock: the void lines, then state.json and each touched concept's stage.json
+    (and a void judge's verdict file) made to agree, then the repo files landed with ./publish."""
+    import doorbell
+    import model
+    import designer_stage as DS
+    by = model.canonical((o.by or doorbell.seat_name() or "").strip()) or RV.UNM
+    p = os.path.join(sdir(), "state.json")
+    try:
+        st = read_state(p)
+    except RuntimeError as e:
+        print("REFUSED: %s" % e)
+        return 1
+    root = os.path.abspath(o.root)
+    if o.cmd == "void":
+        since = None
+        if o.since or o.mod:
+            since = RV.parse_time(o.since) if o.since else None
+            if since is None or not o.mod:
+                print("REFUSED: --mod and --since go together (--since an ISO time or 'YYYY-MM-DD HH:MM' Pacific)")
+                return 2
+        if not (o.units or o.item or o.mod):
+            print("REFUSED: name the runs: units, --item ID, or --mod MOD --since TIME")
+            return 2
+        lines, bad = RV.void(root, st, o.units, o.item, o.mod, since, o.why, by, o.owner_said)
+    else:
+        if not o.units:
+            print("REFUSED: name the units to unvoid")
+            return 2
+        lines, bad = RV.unvoid(o.units, o.why, by, o.owner_said)
+    if bad:
+        print("REFUSED: %s" % bad)
+        return 2
+    cur = RV.active()
+    RV.sync_dispatch(st, cur)
+    _write(p, st)
+    paths = []
+    for mod in sorted({ln.get("mod") for ln in lines if ln.get("mod")}):
+        d = os.path.join(root, "design", "concepts", mod)
+        if os.path.isfile(DS.state_path(d)):
+            DS.write_json(DS.state_path(d), DS.load_state(d))    # load_state syncs it: the committed file agrees
+            paths.append(os.path.relpath(DS.state_path(d), root))
+        for ln in lines:
+            if ln.get("mod") == mod and str(ln["unit"]).startswith("rm-coverage-judge-"):
+                paths += RV.swap_verdict(root, mod, ln["unit"], back=o.cmd == "unvoid")
+    for ln in lines:
+        print("%s %s %s (%s, %s): %s" % (ln["act"].upper(), ln["unit"], ln.get("mod") or "-", ln.get("item") or "-",
+                                          ln["id"], ln["why"]))
+    for x in RV.status_lines(st):
+        print(x)
+    paths = list(dict.fromkeys(paths))
+    if paths and not o.no_land:
+        r = subprocess.run([os.path.join(root, "publish"), "-m", "%s: %d run(s), %s" % (
+            o.cmd, len(lines), o.why[:80])] + paths, cwd=root, capture_output=True, text=True, timeout=900)
+        last = [x for x in (r.stdout or "").splitlines() if x.startswith("PUBLISHED")]
+        if r.returncode != 0 or not last:
+            print("%s WRITTEN, NOT LANDED: ./publish exited %d; land these by hand: %s\n%s" % (
+                o.cmd.upper(), r.returncode, " ".join(paths), ((r.stdout or "") + (r.stderr or ""))[-800:]))
+            return 1
+        print(last[-1])
+    elif paths:
+        print("not landed (--no-land): %s" % " ".join(paths))
     return 0
 
 

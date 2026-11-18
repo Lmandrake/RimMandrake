@@ -259,10 +259,12 @@ def prior_verdict(d):
         rec = DS.read_json(os.path.join(d, VERDICT_FILE))
     except DS.Refused:
         return None
-    if _usable(rec):
+    import run_void     # a VOID judge's verdict is evidence on file, never the look the next one checks
+    void = run_void.active()
+    if _usable(rec) and rec.get("judge") not in void:
         return rec
     base = rec.get("baseline") if isinstance(rec, dict) else None
-    return base if _usable(base) else None
+    return base if _usable(base) and base.get("judge") not in void else None
 
 
 # Re-judge only what changed (RIMMANDRAKE_REJUDGE_ONLY_CHANGED_GAPS, owner fix D, OWNER.jsonl:1794527688430451936).
@@ -659,8 +661,9 @@ def rounds(st, d=None, readers_as_rounds=False):
     """-> every judge round on this concept, oldest first: stage.json's coverage_rounds, plus each earlier judge the
     budget charges name with no round on file (before the loop limit existed). An old round's verdict is known only when
     coverage_verdict.json is that judge's; its tokens are its charges, or the p90 when it was charged unmeasured."""
+    import run_void     # a VOID judge's charges build no round (its spend stays measured: run_void.sync_stage)
     recorded = [dict(r) for r in st.get("coverage_rounds") or [] if isinstance(r, dict)]
-    known = {r.get("judge") for r in recorded}
+    known = {r.get("judge") for r in recorded} | run_void.stage_spend_refs(st)
     last = prior_verdict(d) if d else None
     legacy, reader = {}, {}
     for c in (st.get("budget") or {}).get("charges") or []:

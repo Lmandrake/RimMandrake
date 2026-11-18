@@ -156,9 +156,12 @@ def launch_retry_checks(root):
     for i in range(6):
         rd, g = run(w, ["A"], root, now=CLOCK + 60 * i)
     st = str(g("A").get("status"))
-    ok(g("A").get("klass") == "paused" and len(briefs(w)) == 3 and "3 times" in st and "not on origin/main" in st,
-       "retry 2: three transient failures, then PAUSED naming the count and the real reason, no fourth try (read "
-       "%d launches, %s)" % (len(briefs(w)), st[:160]))
+    # RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT: the three tries are system faults, never the steward's run
+    sa = json.load(open(os.path.join(os.environ["RM_MATURATION_DISPATCH_DIR"], "state.json")))["mods"]["A"]
+    ok(g("A").get("decision") == "system_fault" and len(briefs(w)) == 3 and "3 system faults" in st
+       and "not on origin/main" in st and not sa.get("steward"),
+       "retry 2: three transient failures, then system_fault naming the count and the real reason, no fourth try, the "
+       "steward key unspent (read %d launches, %s)" % (len(briefs(w)), st[:160]))
     # a filing whose own publish hit the lock, then the launcher refused: the same, its item reused
     fresh_state()
     w = World({"A": offline("A", "hand step", hand=["walk_bars_confirmed"])})
@@ -182,13 +185,16 @@ def launch_retry_checks(root):
     w.fail_launch = True
     run(w, ["A"], root)
     rd, g = run(w, ["A"], root, now=CLOCK + 60)
-    ok(g("A").get("klass") == "paused" and "clear A" in str(g("A").get("status")),
-       "clear 1: a non-transient launch failure is PAUSED and names `clear` as its un-pause")
+    # RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT: this read "a non-transient launch failure is PAUSED" (spent
+    # until a hand clear), the rule the owner forbade 2026-11-18; a launch that never started is void_system
+    ok(g("A").get("decision") == "launch_failed" and len(briefs(w)) == 2,
+       "clear 1: a non-transient launch failure is void_system: the next tick launches it again with no clear (read "
+       "%s, %d launches)" % (g("A").get("decision"), len(briefs(w))))
     MD2.main(["clear", "A", "--why", "selftest"])
     w.fail_launch = False
     rd, g = run(w, ["A"], root, now=CLOCK + 120)
-    ok(g("A").get("klass") == "launch" and len(briefs(w)) == 2,
-       "clear 1: `maturation_dispatch.py clear` releases the never-launched steward key: the next tick launches "
+    ok(g("A").get("klass") == "launch" and len(briefs(w)) == 3,
+       "clear 1: after a clear (which resets the system-fault count) the next tick launches "
        "(read %s, %d launches)" % (g("A").get("klass"), len(briefs(w))))
     tr = getattr(AUT, "transient", None)
     ok(tr and tr("ingest.lock stayed busy; nothing filed") and not tr("LAUNCH FAILED pool full") and not tr(None), "transient(): a lock or an unpublished shard is transient, a full pool is not")
@@ -910,13 +916,19 @@ def main():
         w = World({"A": ingame("A", "exit met", why=["all rows PASS"])})
         rd, g = run(w, ["A"], root)
         ok(any("CONFIRM_A_VISIT_ONE_EXIT_MET" in x[1] for x in w.launched), "an exit met: a steward reads and confirms")
-        # a failed steward launch: PAUSED, not retried
+        # a failed steward launch is void_system (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT; this read "PAUSED,
+        # never retried", which spent the steward's one run on a system fault): relaunched, the faults counted apart,
+        # and at the third a system_fault stop with no fourth try
         fresh_state()
         w = World({"A": offline("A", "hand step", hand=["walk_bars_confirmed"])})
         w.fail_launch = True
-        rd, g = run(w, ["A"], root)
-        rd, g = run(w, ["A"], root, now=CLOCK + 60)
-        ok(g("A").get("klass") == "paused" and len(w.launched) == 1, "a failed steward launch: PAUSED, never retried")
+        for i in range(4):
+            rd, g = run(w, ["A"], root, now=CLOCK + 60 * i)
+        sa = json.load(open(os.path.join(os.environ["RM_MATURATION_DISPATCH_DIR"], "state.json")))["mods"]["A"]
+        ok(g("A").get("decision") == "system_fault" and g("A").get("klass") == "paused" and len(w.launched) == 3
+           and not sa.get("steward") and len(sa.get("voided") or []) == 3,
+           "a failed steward launch: void_system, relaunched; three faults stop it (system_fault), no steward run "
+           "spent (read %s, %d launches)" % (g("A").get("decision"), len(w.launched)))
         # full slots: wait
         fresh_state()
         f = offline("A", "ready to advance")

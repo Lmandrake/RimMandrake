@@ -1412,7 +1412,8 @@ def load_state(d):
     if not isinstance(st, dict):
         raise Refused("no stage.json in %s (designer_stage.py init)" % d)
     upgrade_cap(st)
-    return st
+    import run_void     # a VOID run's looks, results and retries count nothing (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT)
+    return run_void.sync_stage(st)
 
 
 def upgrade_cap(st):

@@ -1,0 +1,692 @@
+#!/usr/bin/env python3
+"""run_void.py: no trial, turn, look or cycle is ever spent by a system failure or a stopped run (item
+RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT). The owner, 2026-11-18 ~10:30 AM PST, about Graffiti: "Ensure it
+didn't use up it's turns, trials, whatever... I will not accept ANY system that pointlessly expends such statistical
+measurements based on failed system calls or behavior. You know that. Fix the system such that it's easy to indicate
+this to it. And NEVER tell me "I can't that's frozen" or "it's a write only ledger" or bullshit like that."
+
+Two parts, one effect: a VOID run consumes none of the Maturation Pipeline's counters (the census is
+design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md).
+
+  hand    `maturation_dispatch.py void <unit>... | --item ID | --mod MOD --since TIME --why "..." [--owner-said "..."]`
+          appends a void line to voids.jsonl (beside state.json and releases.jsonl); `unvoid <unit> --why` appends the
+          line that reverses it. An append-only file is no excuse: the fold of its lines is the truth, read by every
+          counter reader through sync_dispatch (state.json, in read_state) and sync_stage (a Designer stage.json, in
+          designer_stage.load_state and maturation_autonomy.designer_state). A voided run's book entries are MOVED to
+          the mod's `voided` list (never deleted), so an unvoid puts them back; a look it applied is un-applied (the
+          grant stands again).
+  system  sync_system classes a run `void_system` when its record shows a system cause the machine can see (killed
+          or ended with no result JSON, a launch that never started and has no retry left): it is moved out the same
+          way and counted on the mod's own `system_faults`, never on its trials. At SYSTEM_FAULT_LIMIT faults since
+          the last `clear` the mod reads `system_fault` (alarm OPS_MATURATION_SYSTEM_FAULT_LOOP): nothing launches, no
+          trial is spent, and `clear` (after reading the cause) resets the count.
+
+Four answers stay apart in every record and line: a run that FAILED on the mod's merits counts; a VOID run counts
+nothing (hand or system, with its why); ZERO is a measured count; UNMEASURED is a record that could not be read
+(that run is left exactly as the books had it, and named). Spend already burnt stays measured as spend: it is shown
+apart as void spend, never subtracted silently.
+"""
+import datetime as dt
+import hashlib
+import json
+import os
+import re
+import sys
+import time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+sys.path.insert(0, HERE)
+
+ALARM_ID = "OPS_MATURATION_SYSTEM_FAULT_LOOP"
+SYSTEM_FAULT_LIMIT = 3
+# the dispatch books a run can sit in: dict books keyed by state key or item, list books of launch entries, and single
+# entries holding one run
+DICT_BOOKS = ("steward", "fixers")
+LIST_BOOKS = ("blind_auto", "ingame_auto", "launches", "holder_road_back", "pilot_launches", "ledger_runs")
+ONE_BOOKS = ("last_run", "cert_rerun", "cert_red")
+# books the automatic class reads: a run there that died of a system cause would otherwise count as its trial
+SYSTEM_BOOKS = DICT_BOOKS + ("blind_auto", "ingame_auto", "launches", "holder_road_back")
+UNM = "UNMEASURED"
+
+
+# ---- the void ledger ------------------------------------------------------------------------------------------------
+
+def path():
+    p = os.environ.get("RM_RUN_VOIDS_FILE")
+    if p:
+        return p
+    d = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    if not d:
+        import doorbell
+        d = os.path.join(doorbell.state_dir(), "maturation")
+    return os.path.join(d, "voids.jsonl")
+
+
+def read(p=None):
+    """-> (records in file order, malformed line count). No file: ([], 0), no void stands."""
+    recs, bad = [], 0
+    try:
+        with open(p or path(), encoding="utf-8") as fh:
+            lines = fh.read().splitlines()
+    except FileNotFoundError:
+        return recs, 0
+    for line in lines:
+        if not line.strip():
+            continue
+        try:
+            r = json.loads(line)
+        except ValueError:
+            r = None
+        if isinstance(r, dict) and r.get("act") in ("void", "unvoid") and isinstance(r.get("unit"), str) and \
+                r["unit"].strip() and isinstance(r.get("why"), str) and r["why"].strip():
+            recs.append(r)
+        else:
+            bad += 1
+    return recs, bad
+
+
+def active(p=None, recs=None):
+    """-> {unit: its standing void line}: the fold of every void and unvoid line, in order."""
+    out = {}
+    for r in (read(p)[0] if recs is None else recs):
+        if r["act"] == "void":
+            out[r["unit"]] = r
+        else:
+            out.pop(r["unit"], None)
+    return out
+
+
+def _iso(t=None):
+    return dt.datetime.fromtimestamp(time.time() if t is None else t, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _append(rec, p=None):
+    rec["id"] = "void-%s" % hashlib.sha1(json.dumps(rec, sort_keys=True).encode()).hexdigest()[:12]
+    p = p or path()
+    os.makedirs(os.path.dirname(p) or ".", exist_ok=True)
+    with open(p, "a", encoding="utf-8") as f:
+        f.write(json.dumps(rec, sort_keys=True) + "\n")
+    return rec
+
+
+def parse_time(s):
+    """-> epoch seconds for an ISO time (Z or an offset) or a local Pacific 'YYYY-MM-DD HH:MM' (his clock); None when
+    it is neither."""
+    s = str(s or "").strip()
+    try:
+        if s.endswith("Z"):
+            return dt.datetime.strptime(s, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=dt.timezone.utc).timestamp()
+        t = dt.datetime.fromisoformat(s.replace(" ", "T"))
+    except ValueError:
+        return None
+    if t.tzinfo is None:
+        import maturation_now as MN
+        t = t.replace(tzinfo=MN.PAC)
+    return t.timestamp()
+
+
+# ---- what a unit is -------------------------------------------------------------------------------------------------
+
+def _units_of(x):
+    return [x["unit"]] if isinstance(x, dict) and isinstance(x.get("unit"), str) and x["unit"] else []
+
+
+def book_entries(st):
+    """-> [(mod, book, key, entry)] for every run-bearing entry of state.json's books (key: the dict key, the list
+    index, or None for a single entry)."""
+    out = []
+    for mod, s in ((st or {}).get("mods") or {}).items():
+        if not isinstance(s, dict):
+            continue
+        for b in DICT_BOOKS:
+            for k, x in (s.get(b) or {}).items() if isinstance(s.get(b), dict) else []:
+                out.append((mod, b, k, x))
+        for b in LIST_BOOKS:
+            for n, x in enumerate(s.get(b) or []) if isinstance(s.get(b), list) else []:
+                out.append((mod, b, n, x))
+        for b in ONE_BOOKS:
+            if isinstance(s.get(b), dict):
+                out.append((mod, b, None, s[b]))
+    return out
+
+
+def stage_runs(st):
+    """-> {unit: at (epoch or None)} for the runs a Designer stage.json names: its coverage judges, its results and the
+    runs its history opened."""
+    out = {}
+    for r in st.get("coverage_rounds") or []:
+        if isinstance(r, dict) and r.get("judge"):
+            out[r["judge"]] = parse_time(r.get("at"))
+    for r in st.get("results") or []:
+        if isinstance(r, dict) and r.get("run"):
+            out.setdefault(r["run"], parse_time(r.get("at")))
+    for h in st.get("history") or []:
+        m = re.match(r"run (\S+?),? ", str((h or {}).get("why") or "")) if isinstance(h, dict) else None
+        if m and h.get("what") == "open":
+            out[m.group(1)] = parse_time(h.get("at"))
+    return out
+
+
+def concept_dirs(root):
+    d = os.path.join(root, "design", "concepts")
+    try:
+        return [os.path.join(d, n) for n in sorted(os.listdir(d)) if os.path.isfile(os.path.join(d, n, "stage.json"))]
+    except OSError:
+        return []
+
+
+def _raw_stage(d):
+    try:
+        with open(os.path.join(d, "stage.json"), encoding="utf-8") as f:
+            st = json.load(f)
+        return st if isinstance(st, dict) else None
+    except (OSError, ValueError):
+        return None
+
+
+def children(root, mod, rec):
+    """-> the Designer runs and coverage judges a detached run started on MOD's concept: those opened while it was
+    live (its record's at to its end, plus a minute). A judge's second reader (<judge>-reader) is one of them."""
+    t0, t1 = rec.get("at"), rec.get("ended") or rec.get("returned")
+    if not isinstance(t0, (int, float)) or not mod:
+        return []
+    t1 = (t1 if isinstance(t1, (int, float)) else time.time()) + 60
+    st = _raw_stage(os.path.join(root, "design", "concepts", mod)) or {}
+    # a voided stage file still names its moved runs: they are children too (a second void finds the same set)
+    runs = dict(stage_runs(st))
+    for m in ((st.get("voided") or {}).get("moved") or []):
+        runs.update(stage_runs({m["field"]: [m["entry"]]}) if m.get("field") in ("coverage_rounds", "results",
+                                                                                     "history") else {})
+    return sorted(u for u, at in runs.items() if at is not None and t0 - 5 <= at <= t1)
+
+
+def resolve(root, st, units=(), item=None, mod=None, since=None, record=None):
+    """-> ([(unit, mod, item, rec)], refusal or None). A unit is known when it has a run record, sits in a dispatch book
+    or is named by a concept's stage.json; anything else is refused by name."""
+    import detached_helper as DH
+    record = record or DH.read_record
+    books = book_entries(st)
+    in_book = {}
+    for m, b, k, x in books:
+        for u in _units_of(x):
+            in_book.setdefault(u, (m, x.get("item")))
+    staged = {}
+    for d in concept_dirs(root):
+        for u, at in stage_runs(_raw_stage(d) or {}).items():
+            staged.setdefault(u, (os.path.basename(d), at))
+    want = list(units or [])
+    if item:
+        want += [u for u, (m, it) in in_book.items() if it == item]
+        try:
+            want += [r["unit"] for r in DH.all_records() if r.get("item") == item]
+        except OSError:
+            pass
+        if not want:
+            return [], "no run is known for item %s (no book entry, no run record)" % item
+    if mod and since is not None:
+        got = [u for m, b, k, x in books for u in _units_of(x) if m == mod and isinstance(x.get("at"), (int, float))
+               and x["at"] >= since]
+        got += [u for u, (m, at) in staged.items() if m == mod and at is not None and at >= since]
+        if not got:
+            return [], "no run on %s since %s" % (mod, _iso(since))
+        want += got
+    out, seen = [], set()
+    for u in want:
+        if u in seen:
+            continue
+        seen.add(u)
+        rec = record(u)
+        if not rec and u not in in_book and u not in staged:
+            return [], "unknown run %s: no run record, no dispatch book entry, no concept names it" % u
+        m = (in_book.get(u) or (None,))[0] or (staged.get(u) or (None,))[0] or mod
+        it = (rec or {}).get("item") or (in_book.get(u) or (None, None))[1]
+        out.append((u, m, it, rec))
+    return out, None
+
+
+# ---- the verbs ------------------------------------------------------------------------------------------------------
+
+def void(root, st, units=(), item=None, mod=None, since=None, why="", by="", owner_said=None, record=None, p=None,
+         now=None):
+    """Append one void line per run (and per Designer run or judge it started). -> (lines written, refusal or None).
+    A unit already void is refused, never written twice; every void here is a HAND void: a run that genuinely failed
+    on the mod's merits may be voided (his call), and its line says hand."""
+    if not str(why or "").strip():
+        return [], "a void says why (--why)"
+    got, bad = resolve(root, st, units, item, mod, since, record)
+    if bad:
+        return [], bad
+    cur = active(p)
+    plan = []
+    for u, m, it, rec in got:
+        kids = children(root, m, rec) if rec else []
+        plan.append((u, m, it, rec, None))
+        plan += [(k, m, it, None, u) for k in kids if k != u]
+    dup = [u for u, m, it, rec, par in plan if u in cur and par is None]
+    if dup:
+        return [], "already VOID: %s" % "; ".join("%s since %s (%s)" % (u, cur[u]["ts"], cur[u]["id"]) for u in dup)
+    out, done = [], set()
+    for u, m, it, rec, par in plan:
+        if u in cur or u in done:
+            continue
+        done.add(u)
+        r = {"act": "void", "ts": _iso(now), "unit": u, "mod": m, "item": it, "why": why.strip(), "by": by or UNM,
+             "kind": "hand", "result": (rec or {}).get("result") or UNM,
+             "cost_usd": (rec or {}).get("cost_usd") if isinstance((rec or {}).get("cost_usd"), (int, float)) else UNM}
+        if par:
+            r["parent"] = par
+        if owner_said:
+            r["owner_said"] = owner_said
+        out.append(_append(r, p))
+    return out, None
+
+
+def unvoid(units, why, by="", owner_said=None, p=None, now=None):
+    """Reverse standing voids (the unit's children with it). -> (lines written, refusal or None)."""
+    if not str(why or "").strip():
+        return [], "an unvoid says why (--why)"
+    cur = active(p)
+    miss = [u for u in units if u not in cur]
+    if miss:
+        return [], "not VOID: %s" % ", ".join(miss)
+    out = []
+    targets = list(units) + [u for u, r in cur.items() if r.get("parent") in units and u not in units]
+    for u in targets:
+        r = {"act": "unvoid", "ts": _iso(now), "unit": u, "mod": cur[u].get("mod"), "item": cur[u].get("item"),
+             "why": why.strip(), "by": by or UNM, "of": cur[u]["id"]}
+        if owner_said:
+            r["owner_said"] = owner_said
+        out.append(_append(r, p))
+    return out, None
+
+
+# ---- the readers' choke points --------------------------------------------------------------------------------------
+
+def _moved(s):
+    return s.setdefault("voided", [])
+
+
+def _void_items(cur):
+    return {r.get("item") for r in cur.values() if r.get("item")}
+
+
+def sync_dispatch(st, cur=None):
+    """Make state.json's books agree with the standing voids, in place: an entry whose unit is VOID moves to its mod's
+    `voided` list (book, key, entry, the void's id and why), a moved entry whose hand void was reversed goes back, and
+    a road back a voided steward opened goes with it. System voids (class void_system) are sync_system's and stay.
+    -> st. Idempotent: every reader may call it."""
+    cur = active() if cur is None else cur
+    for mod, s in ((st or {}).get("mods") or {}).items():
+        if not isinstance(s, dict):
+            continue
+        mv = s.get("voided") or []
+        back = [m for m in mv if m.get("class") == "void_hand" and m.get("unit") not in cur
+                and not m.get("collision")]
+        back = [m for m in back if _restore(s, m)]
+        if back:
+            s["voided"] = [m for m in mv if not any(m is b for b in back)]
+        _strip(s, mod, lambda x: next((cur[u] for u in _units_of(x) if u in cur), None), "void_hand")
+    return st
+
+
+def _strip(s, mod, judge, klass, cause=None):
+    """Move every entry `judge(entry)` names (-> a void line or a dict with id/why) out of s's books."""
+    moved = []
+    for b in DICT_BOOKS:
+        book = s.get(b)
+        for k, x in list(book.items()) if isinstance(book, dict) else []:
+            v = judge(x)
+            if v:
+                moved.append({"book": b, "key": k, "entry": book.pop(k)})
+                moved[-1].update(_tag(v, klass, x))
+    for b in LIST_BOOKS:
+        book = s.get(b)
+        if not isinstance(book, list):
+            continue
+        keep = []
+        for x in book:
+            v = judge(x)
+            if v:
+                moved.append(dict({"book": b, "key": None, "entry": x}, **_tag(v, klass, x)))
+            else:
+                keep.append(x)
+        if len(keep) != len(book):
+            s[b] = keep
+    for b in ONE_BOOKS:
+        x = s.get(b)
+        v = judge(x) if isinstance(x, dict) else None
+        if v:
+            moved.append(dict({"book": b, "key": None, "entry": s.pop(b)}, **_tag(v, klass, x)))
+    items = {m["entry"].get("item") for m in moved if m["book"] == "steward"}
+    rb = s.get("road_back")
+    if isinstance(rb, dict) and rb.get("caused_by") in items - {None}:
+        src = next(m for m in moved if m["book"] == "steward" and m["entry"].get("item") == rb["caused_by"])
+        moved.append(dict({"book": "road_back", "key": None, "entry": s.pop("road_back")},
+                          **{k: src[k] for k in ("class", "void", "why", "unit")}))
+    if moved:
+        _moved(s).extend(moved)
+    return moved
+
+
+def _tag(v, klass, x):
+    return {"class": klass, "void": v.get("id"), "why": v.get("why") or v.get("cause"),
+            "unit": (_units_of(x) or [None])[0]}
+
+
+def _restore(s, m):
+    b, x = m["book"], m["entry"]
+    if b in DICT_BOOKS:
+        book = s.setdefault(b, {})
+        if m["key"] in book:        # a newer run took the key since: it stands, this one stays out (said in status)
+            m["collision"] = "unvoided, but a newer run holds key %s: it stands" % m["key"]
+            return False
+        book[m["key"]] = x
+    elif b in LIST_BOOKS:
+        s[b] = sorted((s.get(b) or []) + [x], key=lambda e: e.get("at") if isinstance(e.get("at"), (int, float)) else 0)
+    elif b in ONE_BOOKS or b == "road_back":
+        if s.get(b) is None:
+            s[b] = x
+    return True
+
+
+# ---- the automatic class --------------------------------------------------------------------------------------------
+
+def system_cause(rec, runner=None):
+    """-> the system cause a run record shows, or "": killed with no result JSON or a unit dead with its finish never
+    run (detached_helper.killed), a launch that never started, or a FINISHED run that wrote no result JSON (a crash, a
+    harness or account fault, a timeout). A record that cannot be read is "" here: that run is UNMEASURED and left as
+    the books had it."""
+    import detached_helper as DH
+    import role_launch as RL
+    if not isinstance(rec, dict):
+        return ""
+    if rec.get("state") == "launch_failed":
+        return "its launch never started (%s)" % str(rec.get("result") or rec.get("err") or "launch_failed")[:160]
+    k = DH.killed(rec, runner) if runner else DH.killed(rec)
+    if k:
+        return k
+    if rec.get("status") == "finished" and not isinstance(RL.read_result({"out": rec.get("out") or "",
+                                                                         "err": rec.get("err")}), dict):
+        return "it ended with no result JSON (%s)" % (rec.get("result") or "no result line")
+    return ""
+
+
+def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
+    """Class `void_system` and move out every book entry whose run died of a system cause, in place; each goes on its
+    mod's `system_faults` (one per kill or launch try it holds). keep_failed(book, x) -> True for a never-started
+    launch the tick still retries (its tries are the retry's own); kills_left(book, x, cause) -> True for a killed run
+    the tick still resumes. Entries whose record cannot be read stay. -> {mod: [moved]}."""
+    now = time.time() if now is None else now
+    seen_out = {}
+    for mod, s in ((st or {}).get("mods") or {}).items():
+        if not isinstance(s, dict):
+            continue
+        seen = s.setdefault("void_seen", {})
+
+        def judge(x, book=None):
+            if not isinstance(x, dict) or x.get("void"):
+                return None
+            u = (_units_of(x) or [None])[0]
+            if not u:
+                if (x.get("failed") or book == "holder_road_back") and not (keep_failed and keep_failed(book, x)):
+                    return {"cause": "its launch never started: %s" % str(x.get("failed") or "no unit")[:200],
+                            "faults": max(1, int(x.get("tries") or 1))}
+                return None
+            if seen.get(u) == "counted":
+                return None
+            rec = record(u)
+            if not isinstance(rec, dict) or rec.get("status") != "finished":
+                return None      # live, or UNMEASURED: the books keep it as it is
+            why = system_cause(rec)
+            if not why:
+                seen[u] = "counted"
+                return None
+            if kills_left and kills_left(book, x, why):
+                return None
+            return {"cause": why, "faults": 1 + len(x.get("killed_before") or [])}
+
+        moved = []
+        for b in SYSTEM_BOOKS:
+            book = s.get(b)
+            if isinstance(book, dict):
+                for k, x in list(book.items()):
+                    v = judge(x, b)
+                    if v:
+                        moved.append(dict({"book": b, "key": k, "entry": book.pop(k)},
+                                          **{"class": "void_system", "void": None, "why": v["cause"],
+                                             "unit": (_units_of(x) or [None])[0], "faults": v["faults"]}))
+            elif isinstance(book, list):
+                keep = []
+                for x in book:
+                    v = judge(x, b)
+                    if v:
+                        moved.append({"book": b, "key": None, "entry": x, "class": "void_system", "void": None,
+                                      "why": v["cause"], "unit": (_units_of(x) or [None])[0], "faults": v["faults"]})
+                    else:
+                        keep.append(x)
+                if len(keep) != len(book):
+                    s[b] = keep
+        lr = s.get("last_run")
+        if isinstance(lr, dict) and lr.get("unit") in {m["unit"] for m in moved if m["book"] == "launches"}:
+            moved.append({"book": "last_run", "key": None, "entry": s.pop("last_run"), "class": "void_system",
+                          "void": None, "why": "its run is void_system", "unit": lr["unit"], "faults": 0})
+        items = {m["entry"].get("item") for m in moved if m["book"] == "steward"}
+        rb = s.get("road_back")
+        if isinstance(rb, dict) and rb.get("caused_by") in items - {None}:
+            moved.append({"book": "road_back", "key": None, "entry": s.pop("road_back"), "class": "void_system",
+                          "void": None, "why": "its steward run is void_system", "unit": None, "faults": 0})
+        if moved:
+            _moved(s).extend(moved)
+            for m in moved:
+                if m["faults"]:
+                    s.setdefault("system_faults", []).append({"at": now, "book": m["book"], "key": m["key"],
+                                                              "unit": m["unit"], "cause": m["why"], "n": m["faults"]})
+                if m["unit"]:
+                    seen[m["unit"]] = "void_system"
+            seen_out[mod] = moved
+    return seen_out
+
+
+def faults(s):
+    """-> system faults on a mod since its last `clear` (a sum of kills and launch tries)."""
+    cl = [c.get("at") for c in s.get("cleared") or [] if isinstance(c, dict) and isinstance(c.get("at"), (int, float))]
+    t0 = max(cl) if cl else 0
+    return sum(int(f.get("n") or 1) for f in s.get("system_faults") or [] if isinstance(f, dict)
+               and (f.get("at") or 0) > t0)
+
+
+def void_spend(s, record):
+    """-> (list dollars of the mod's void runs, units whose spend is UNMEASURED). True spend: shown apart."""
+    usd, unm = 0.0, []
+    for m in s.get("voided") or []:
+        u = m.get("unit")
+        if not u or m["book"] in ("last_run", "road_back"):
+            continue
+        c = (record(u) or {}).get("cost_usd")
+        if isinstance(c, (int, float)) and not isinstance(c, bool):
+            usd += c
+        else:
+            unm.append(u)
+    return usd, unm
+
+
+# ---- a Designer stage.json ------------------------------------------------------------------------------------------
+
+def _names(item, text):
+    return bool(item) and bool(re.search(r"(?<![A-Z0-9_])%s(?![A-Z0-9_])" % re.escape(item), str(text or "")))
+
+
+def sync_stage(st, cur=None):
+    """Make one concept's stage.json agree with the standing voids, in place: a void judge's coverage round (and its
+    -reader), a void run's result and its open/close/retry/over_budget history rows move to st["voided"]["moved"]; a
+    coverage release a void run applied is un-applied: the grant it spent stands again, and the stop and block it
+    lifted are put back. Budget charges stay (the spend is true) and their refs are listed in st["voided"]["spend_refs"]
+    so coverage_judge.rounds builds no round from them. An unvoid puts everything back. -> st."""
+    cur = active() if cur is None else cur
+    if not isinstance(st, dict):
+        return st
+    vd = st.get("voided") if isinstance(st.get("voided"), dict) else {}
+    for m in [m for m in vd.get("moved") or [] if m.get("unit") not in cur]:
+        _stage_restore(st, m)
+        vd["moved"].remove(m)
+    units = set(cur)
+    items = _void_items(cur)
+
+    def unit_of(field, x):
+        if not isinstance(x, dict):
+            return None
+        if field == "coverage_rounds":
+            j = str(x.get("judge") or "")
+            return next((u for u in units if j == u or j.startswith(u + "-")), None)
+        if field == "results":
+            return x.get("run") if x.get("run") in units else None
+        if field == "history":
+            w = str(x.get("why") or "")
+            if x.get("what") in ("open", "close", "retry", "over_budget"):
+                return next((u for u in units if re.search(r"run %s\b" % re.escape(u), w)), None)
+            if x.get("what") == "coverage_release":
+                return next((u for u, r in cur.items() if _names(r.get("item"), w)), None)
+        if field == "coverage_releases":
+            return next((u for u, r in cur.items() if _names(r.get("item"), x.get("why"))), None)
+        return None
+
+    moved = []
+    for field in ("coverage_rounds", "results", "history", "coverage_releases"):
+        lst = st.get(field)
+        if not isinstance(lst, list):
+            continue
+        keep = []
+        for n, x in enumerate(lst):
+            u = unit_of(field, x)
+            if u:
+                moved.append({"field": field, "index": n, "entry": x, "unit": u, "void": cur[u].get("id"),
+                              "why": cur[u].get("why")})
+            else:
+                keep.append(x)
+        st[field] = keep
+    for m in moved:
+        if m["field"] == "coverage_releases" and m["entry"].get("granted_at"):
+            m["fields_before"] = {k: st.get(k) for k in ("coverage_release_granted", "coverage_stop", "status",
+                                                         "blocked_on")}
+            if not isinstance(st.get("coverage_release_granted"), dict):
+                st["coverage_release_granted"] = {"at": m["entry"]["granted_at"], "why": m["entry"].get("granted_why"),
+                                                  "after": list(m["entry"].get("after") or [])}
+            stop = _stop_before(st, m["entry"].get("at"))
+            if stop and not st.get("coverage_stop"):
+                st["coverage_stop"] = {"at": stop["at"], "why": stop["short"]}
+                if st.get("status") != "blocked":
+                    st["status"], st["blocked_on"] = "blocked", stop["on"]
+    refs = sorted({str(c.get("ref") or "") for c in (st.get("budget") or {}).get("charges") or []
+                   if isinstance(c, dict) and any(str(c.get("ref") or "") in (u, "run " + u) for u in units)})
+    if moved or vd.get("moved") or refs:
+        vd.setdefault("moved", []).extend(moved)
+        vd["spend_refs"] = refs
+        st["voided"] = vd
+    elif "voided" in st:
+        st.pop("voided")
+    return st
+
+
+def _stop_before(st, at):
+    """-> the last coverage_stop history row before `at`: {at, short, on}."""
+    t = parse_time(at) or float("inf")
+    rows = [h for h in st.get("history") or [] if isinstance(h, dict) and h.get("what") == "coverage_stop"
+            and (parse_time(h.get("at")) or 0) <= t]
+    if not rows:
+        return None
+    on = str(rows[-1].get("why") or "")
+    short = on.split(": ", 1)[-1].split("; judging stopped", 1)[0]
+    return {"at": rows[-1].get("at"), "short": short, "on": on}
+
+
+def _stage_restore(st, m):
+    lst = st.setdefault(m["field"], [])
+    lst.insert(min(int(m.get("index") or 0), len(lst)), m["entry"])
+    for k, v in (m.get("fields_before") or {}).items():
+        if v is None:
+            st.pop(k, None)
+        else:
+            st[k] = v
+
+
+def stage_spend_refs(st):
+    return set((st.get("voided") or {}).get("spend_refs") or []) if isinstance(st, dict) else set()
+
+
+def status_lines(st, record=None):
+    """-> one line per voided run on each mod (VOID hand or VOID system, with its why), plus the system-fault count and
+    the void spend in weighted tokens."""
+    import detached_helper as DH
+    record = record or DH.read_record
+    out = []
+    for mod, s in sorted(((st or {}).get("mods") or {}).items()):
+        if not isinstance(s, dict) or not (s.get("voided") or s.get("system_faults")):
+            continue
+        seen = set()
+        for m in s.get("voided") or []:
+            key = (m.get("unit"), m.get("class"))
+            if key in seen or not m.get("unit"):
+                continue
+            seen.add(key)
+            out.append("%s: VOID %s %s (%s): %s" % (mod, "hand" if m["class"] == "void_hand" else "system",
+                                                    m["unit"], m["book"], m.get("why")))
+        usd, unm = void_spend(s, record)
+        try:
+            import maturation_dispatch as MD
+            spent = MD.wt(usd)
+        except Exception:  # noqa: BLE001
+            spent = "USD %.2f" % usd
+        out.append("%s: void spend %s (true spend, shown apart)%s; system faults %d since the last clear (limit %d)" % (
+            mod, spent, "; UNMEASURED for %s" % ", ".join(unm) if unm else "", faults(s), SYSTEM_FAULT_LIMIT))
+    return out
+
+
+# ---- the verdict file a void judge left ------------------------------------------------------------------------------
+
+VERDICT = "coverage_verdict.json"
+
+
+def swap_verdict(root, mod, judge, back=False, runner=None):
+    """A VOID coverage judge's coverage_verdict.json is kept as evidence (coverage_verdict.void.<judge>.json) and the
+    verdict before it, read from git, is put back: the next look checks the look before the void one, as if it never
+    ran. back=True reverses it. -> [repo-relative paths written], [] when there was nothing to do."""
+    import subprocess
+    runner = runner or subprocess.run
+    d = os.path.join(root, "design", "concepts", mod)
+    vf, arch = os.path.join(d, VERDICT), os.path.join(d, "coverage_verdict.void.%s.json" % judge)
+    rel = lambda q: os.path.relpath(q, root)    # noqa: E731
+
+    def judge_of(text):
+        try:
+            return (json.loads(text) or {}).get("judge")
+        except ValueError:
+            return None
+    try:
+        cur = open(vf, encoding="utf-8").read()
+    except OSError:
+        cur = None
+    if back:
+        if not os.path.exists(arch):
+            return []
+        with open(vf, "w", encoding="utf-8") as f:
+            f.write(open(arch, encoding="utf-8").read())
+        os.remove(arch)
+        return [rel(vf), rel(arch)]
+    if cur is None or judge_of(cur) != judge:
+        return []
+    r = runner(["git", "-C", root, "log", "--format=%H", "--", rel(vf)], capture_output=True, text=True, timeout=60)
+    old = None
+    for sha in (r.stdout or "").split():
+        g = runner(["git", "-C", root, "show", "%s:%s" % (sha, rel(vf))], capture_output=True, text=True, timeout=60)
+        if g.returncode == 0 and judge_of(g.stdout) not in (None, judge):
+            old = g.stdout
+            break
+    with open(arch, "w", encoding="utf-8") as f:
+        f.write(cur)
+    if old is None:     # no earlier verdict: the file goes, and prior_verdict reads none (round 1's open search)
+        os.remove(vf)
+    else:
+        with open(vf, "w", encoding="utf-8") as f:
+            f.write(old)
+    return [rel(vf), rel(arch)]

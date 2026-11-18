@@ -822,7 +822,9 @@ def dispatch_needs(now, errors):
     if now - float(rd.get("at") or 0) > 1800:
         return ["The Dispatch step's reading is %d min old (rm-maturation-dispatch.timer is not ticking)"
                 % ((now - float(rd.get("at") or 0)) / 60)]
-    return ["Dispatch step, %s: %s" % (rd.get("at_pac"), x) for x in rd.get("needs_conductor") or []]
+    # a VOID run (run_void.py: hand or system, with its why) shows here too: it spent no trial
+    return ["Dispatch step, %s: %s" % (rd.get("at_pac"), x) for x in (rd.get("needs_conductor") or [])
+            + (rd.get("voids") or [])]
 
 
 def pipeline_units(path):

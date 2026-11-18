@@ -50,6 +50,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import maturation as M              # noqa: E402
 import maturation_dispatch as MD    # noqa: E402
 import detached_helper as DH        # noqa: E402
+import run_void as RV               # noqa: E402
 
 FOUR = ("ExplosiveKnockback", "FlowWorks", "GimmeSomeSlack", "Pyrelands")
 COPY = ("journal.md", "stage.json", "version/VERSION.json", "version/test_table.json", "version/preflight.json",
@@ -1098,9 +1099,17 @@ def blind_main():
         rd = tick(gss)
         os.environ.pop("FAKE_DH_FAIL")
         rd2 = tick(gss, at=600)
-        ok(len(launches()) == 1 and rd["mods"]["GimmeSomeSlack"]["decision"] == "launch_failed"
-           and rd2["mods"]["GimmeSomeSlack"]["decision"] == "stopped",
-           "a failed blind launch spends the visit's one automatic cycle: never retried")
+        # RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT (the owner, 2026-11-18: "I will not accept ANY system that
+        # pointlessly expends such statistical measurements based on failed system calls"): this check said "a failed
+        # blind launch spends the visit's one automatic cycle: never retried", the rule he forbids. A launch that never
+        # started judged nothing: it is void_system, counted on the mod's system faults, never on its cycles.
+        stv = json.load(open(os.path.join(sd, "state.json")))["mods"]["GimmeSomeSlack"]
+        ok(len(launches()) == 2 and rd["mods"]["GimmeSomeSlack"]["decision"] == "launch_failed"
+           and rd2["mods"]["GimmeSomeSlack"]["decision"] == "launched"
+           and [x.get("unit") is not None for x in stv.get("blind_auto") or []] == [True]
+           and [m["class"] for m in stv.get("voided") or []] == ["void_system"] and RV.faults(stv) == 1,
+           "a failed blind launch is void_system: no cycle spent, the next tick launches it (%s, %s; faults %d)" % (
+               rd["mods"]["GimmeSomeSlack"]["decision"], rd2["mods"]["GimmeSomeSlack"]["decision"], RV.faults(stv)))
 
         # ---- RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE: a launch that never started on a transient
         # publish fault (measured 2026-11-15: an index.lock at publish, then "not on origin/main") is not a cycle: the
@@ -1162,19 +1171,21 @@ def blind_main():
         f3 = fxr(fl)
         rs = [rtick(f3, at=60 * k) for k in range(4)]
         b = bk()
-        ok([g(x)["decision"] for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "stopped"]
-           and "3 times" in g(rs[3])["why"] and need(rs[3], "GimmeSomeSlack") and len(calls) == 3 and not launches()
-           and len(filed) == 1 and len(b) == 1 and b[0].get("tries") == 3,
-           "three transient faults in a row: stopped (PAUSED) naming the count, a Needs Conductor line, no fourth try "
-           "(%s; %s)" % ([g(x)["decision"] for x in rs], g(rs[3])["why"][:90]))
+        vb = json.load(open(os.path.join(sd, "state.json")))["mods"]["GimmeSomeSlack"].get("voided") or []
+        ok([g(x)["decision"] for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "system_fault"]
+           and RV.ALARM_ID in g(rs[3])["why"] and "no trial is spent" in g(rs[3])["why"] and len(calls) == 3
+           and not launches() and len(filed) == 1 and not b and [m["entry"].get("tries") for m in vb] == [3],
+           "three transient faults in a row: system_fault (%s) naming the count, no fourth try, and the cycle unspent "
+           "(the book is empty, the entry void_system) (%s; %s)" % (RV.ALARM_ID, [g(x)["decision"] for x in rs],
+                                                                   g(rs[3])["why"][:90]))
 
         reset()
         calls, fl = flaky([refuse, "LAUNCH FAILED rm-detached-bench-fake: pool full"])
         f4 = fxr(fl)
         rs = [rtick(f4, at=60 * k) for k in range(3)]
-        ok([g(x)["decision"] for x in rs] == ["launch_retry", "launch_failed", "stopped"] and not launches()
-           and len(calls) == 2, "a transient fault, then a real launch failure: the real one spends the cycle (%s)"
-           % [g(x)["decision"] for x in rs])
+        ok([g(x)["decision"] for x in rs] == ["launch_retry", "launch_failed", "launched"] and len(launches()) == 1
+           and len(calls) == 3, "a transient fault, then a launch failure: neither spends the cycle, the third tick "
+           "launches it (%s)" % [g(x)["decision"] for x in rs])
 
         reset()
         del published[:]
@@ -1629,8 +1640,8 @@ def ingame_main():
             r1 = tick(on)
             os.environ.pop("FAKE_DH_FAIL")
             r2 = tick(on, at=600)
-            return dec(r1) == "launch_failed" and dec(r2) == "stopped" and len(launches()) == 1
-        chk(t_fail, "a failed in-game launch spends the visit's one automatic run: never retried")
+            return dec(r1) == "launch_failed" and dec(r2) == "launched" and len(launches()) == 2
+        chk(t_fail, "a failed in-game launch is void_system: it spends no run of the visit, the next tick launches it")
 
         # RIMMANDRAKE_ADMIT_INGAME_SPAWN_RUNNER_REFUSES_GAME_UP: a launch refused at the spawn never started; the
         # Conductor's clear releases it and the next tick launches the visit; a run that started is never released
@@ -1646,10 +1657,10 @@ def ingame_main():
             b = json.load(open(p))["mods"]["Pyrelands"]["ingame_auto"]
             MD.main(["clear", "Pyrelands", "--why", "selftest"])
             kept = json.load(open(p))["mods"]["Pyrelands"]["ingame_auto"]
-            return (dec(r1) == "launch_failed" and dec(r2) == "stopped" and c == 0 and dec(r3) == "launched"
-                    and len(launches()) == 1 and len(b) == 1 and b[0].get("unit") and kept == b)
-        chk(t_clear, "an in-game launch refused at the spawn: the Conductor's clear releases it and the next tick "
-                     "launches; a started run survives a clear")
+            return (dec(r1) == "launch_failed" and dec(r2) == "launched" and c == 0 and len(launches()) == 1
+                    and len(b) == 1 and b[0].get("unit") and kept == b)
+        chk(t_clear, "an in-game launch refused at the spawn is void_system: the next tick launches with no clear; "
+                     "a started run survives a clear")
 
         # RIMMANDRAKE_RETRY_JUDGE_LAUNCH_GIT_LOCK_SPENT_THE_CYCLE: a launch that never started on a transient publish
         # fault retries the same item, up to launch_tries; three in a row stop it naming the count
@@ -1687,10 +1698,11 @@ def ingame_main():
             reset()
             calls, f3 = fxr(9)
             rs = [rtick(f3, at=60 * k) for k in range(4)]
-            return ([dec(x) for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "stopped"]
-                    and "3 times" in rs[3]["mods"]["Pyrelands"]["why"] and len(calls) == 3 and not launches()
+            return ([dec(x) for x in rs] == ["launch_retry", "launch_retry", "launch_failed", "system_fault"]
+                    and RV.ALARM_ID in rs[3]["mods"]["Pyrelands"]["why"] and len(calls) == 3 and not launches()
                     and len(filed) == 1)
-        chk(t_retry_spent, "three transient in-game launch faults in a row: stopped naming the count, no fourth try")
+        chk(t_retry_spent, "three transient in-game launch faults in a row: system_fault naming the count, no fourth "
+                           "try, the visit's run unspent")
     finally:
         for k, v in env_was.items():
             if v is None:

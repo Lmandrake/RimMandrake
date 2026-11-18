@@ -184,6 +184,8 @@ def designer_state(root, mod):
         return None
     if not isinstance(st, dict):    # a wrong-shaped file is unreadable, never a crash of the tick
         return None
+    import run_void     # the standing voids, as designer_stage.load_state reads them
+    run_void.sync_stage(st)
     try:
         with open(os.path.join(root, "design", "concepts", mod, "record.json"), encoding="utf-8") as f:
             st["_asks"] = [a.get("title") or a.get("id") for a in json.load(f).get("asks") or [] if isinstance(a, dict)]
@@ -1116,6 +1118,7 @@ PAUSE_WHY = {
     "steward_off": "steward runs are off", "designer_chain_cap": "the Designer's daily chain cap is reached",
     "coverage_stop": "coverage judging stopped on it (REFUSAL_NOTHING_COULD_EVER_PASS)",
     "ceiling": "the stage's spend plus the next run's cap passes stage_ceiling_usd", "not_offline": "no automatic step exists for its stage",
+    "system_fault": "runs keep dying of a system cause (OPS_MATURATION_SYSTEM_FAULT_LOOP); no trial is spent",
 }
 
 
