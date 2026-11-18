@@ -57,6 +57,8 @@ class Fake(object):
 
     def __call__(self, tool, **kw):
         self.log.append(tool)
+        if tool == "rimbridge/list_logs":             # the bridge's journal read: a logs list, empty on a clean load
+            return {"success": True, "logs": []}
         if tool == "jawa/list_things":
             rows = [t for t in self.things]
             if kw.get("defName"):

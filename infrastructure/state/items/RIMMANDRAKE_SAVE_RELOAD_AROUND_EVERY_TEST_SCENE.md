@@ -40,10 +40,10 @@ Evidence of the judge change: `D:\ClaudeWork\rimmandrake\evidence\test_reset_rul
 `good_lanterns_no_reset` on "has no restoration": `old_noreset2.txt`; the new brief 9/9: `cal_new.txt`).
 
 ## refs
-- file: design/RimMandrake/standing_rulings.md
-- file: src/RimMandrake/rimflow/roles/designer_scene_contract.md
-- file: src/RimMandrake/HugeThings/northstar/showcase_common.py
-- file: src/RimMandrake/Utils/modcheck/test_site_saves.py
-- file: src/RimMandrake/Pyrelands/wind_burn_live.py
-- new: src/RimMandrake/Utils/modcheck/scene_snapshot.py
-- new: src/RimMandrake/Utils/modcheck/selftest_scene_snapshot.py
+file: design/RimMandrake/standing_rulings.md
+file: src/RimMandrake/rimflow/roles/designer_scene_contract.md
+file: src/RimMandrake/HugeThings/northstar/showcase_common.py
+file: src/RimMandrake/Utils/modcheck/test_site_saves.py
+file: src/RimMandrake/Pyrelands/wind_burn_live.py
+new: src/RimMandrake/Utils/modcheck/scene_snapshot.py
+new: src/RimMandrake/Utils/modcheck/selftest_scene_snapshot.py

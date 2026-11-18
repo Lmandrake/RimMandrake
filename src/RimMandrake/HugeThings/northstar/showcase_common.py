@@ -20,7 +20,6 @@ import os
 import re
 import sys
 import time
-import uuid
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD = os.path.dirname(HERE)
@@ -278,11 +277,12 @@ def live_bridge():
 
 
 class LiveSite(object):
-    """A registered disposable site restored around one showcase (trunk_doors_live.py main(), the scene-begin snapshot)."""
+    """A registered disposable site restored around one showcase: the scene-begin snapshot is scene_snapshot.SceneSnapshot
+    (Utils/modcheck/scene_snapshot.py), saved after the registered site loads and reloaded through that site."""
 
     def __init__(self, call, site_key, prefix):
         self.call, self.key, self.prefix = call, site_key, prefix
-        self.snapshot, self.saved, self.tx, self.evidence = None, False, None, {}
+        self.snapshot, self.saved, self.tx, self.evidence, self.snap = None, False, None, {}, None
 
     def begin(self):
         import test_site_saves as T
@@ -295,13 +295,17 @@ class LiveSite(object):
         self.evidence["site_load"] = dict(save=name, verified=ld.get("verified"), problems=ld.get("problems"))
         if not ld.get("verified"):
             raise RuntimeError("SITE: registered site %s did not load: %s" % (self.key, ld.get("problems")))
-        self.snapshot = self.prefix + uuid.uuid4().hex[:12]
-        self.evidence["snapshot"] = T.save_site(self.call, self.snapshot, G.SAVES)
-        self.saved = True
-        bl = T.load_site(self.call, self.key, name=self.snapshot, check=False, map_controls=("modal_broker",))
-        self.evidence["baseline_load"] = dict(verified=bl.get("verified"), problems=bl.get("problems"))
-        if not bl.get("verified"):
-            raise RuntimeError("SITE: scene-begin reload of %s failed" % self.snapshot)
+        import scene_snapshot as SS
+        self.snap = SS.SceneSnapshot(self.call, self.prefix, saves_dir=G.SAVES, load=lambda call, snap_name: T.load_site(
+            call, self.key, name=snap_name, check=False, map_controls=("modal_broker",)))
+        try:
+            self.snap.take(reload=True)
+        except SS.SceneRestoreError:
+            raise RuntimeError("SITE: scene-begin reload of %s failed" % self.snap.name)
+        finally:
+            self.snapshot, self.saved = self.snap.name, self.snap.saved
+            self.evidence["snapshot"] = self.snap.evidence.get("save")
+            self.evidence["baseline_load"] = self.snap.evidence.get("baseline_load")
         self.tx = H.SettingsTransaction(T.call_session(self.call))
         self.tx.__enter__()
         quiet = H.quiet_world(T.call_session(self.call), self.tx, wild_spawner=False, log_raids=False)
@@ -309,20 +313,14 @@ class LiveSite(object):
         return self.evidence
 
     def restore(self):
-        import test_site_saves as T
         errors = []
         if self.tx is not None:
             try:
                 self.tx.__exit__(None, None, None)
             except Exception as ex:  # noqa: BLE001
                 errors.append(repr(ex))
-        if self.saved:
-            try:
-                rl = T.load_site(self.call, self.key, name=self.snapshot, check=False, map_controls=("modal_broker",))
-                self.evidence["restore_load"] = dict(verified=rl.get("verified"), problems=rl.get("problems"))
-                if not rl.get("verified"):
-                    errors.append("scene-begin restoration load of %s failed" % self.snapshot)
-            except Exception as ex:  # noqa: BLE001
-                errors.append(repr(ex))
+        if self.snap is not None:
+            errors.extend(self.snap.restore())
+            self.evidence["restore_load"] = self.snap.evidence.get("restore_load")
         self.evidence["restore_errors"] = errors
         return errors

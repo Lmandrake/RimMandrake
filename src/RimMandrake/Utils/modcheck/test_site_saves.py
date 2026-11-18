@@ -397,6 +397,19 @@ def _wait(pred, budget_s, sleep):
     return None
 
 
+def _to_main_menu(call, sleep, budget_s=180):
+    """Reach a CONFIRMED main menu before a load_game. -> None, or the problem. An unread state is never taken for the
+    menu: a load_game the game then rejects leaves the old map Playing, which would read back as a verified load."""
+    if _state(call) != "Entry":
+        try:
+            call("rimworld/go_to_main_menu")
+        except Exception:                        # noqa: BLE001 - polled below
+            pass
+    if _wait(lambda: _state(call) == "Entry", budget_s, sleep) is None:
+        return "main menu not confirmed within %s s" % budget_s
+    return None
+
+
 LOAD_BROKEN = ("Error in Map.FinalizeLoading", "Error while loading a map", "Error while loading game",
                "Could not resolve cross refs")
 
@@ -413,9 +426,12 @@ def _journal_seq(call):
 def _load_errors(call, after_seq):
     """The LOAD_BROKEN lines the journal holds after `after_seq` (errors only, so the 1,000-entry ring keeps them)."""
     try:
-        lg = call("rimbridge/list_logs", afterSequence=after_seq, limit=1000, minimumLevel="error") or {}
+        lg = call("rimbridge/list_logs", afterSequence=after_seq, limit=1000, minimumLevel="error")
     except Exception as ex:        # noqa: BLE001
         return ["(journal unreadable: %s)" % type(ex).__name__]
+    # readable = a logs list, as validation_core's LogTap reads it: an error answer or no answer is not an empty journal
+    if not (isinstance(lg, dict) and lg.get("success") is not False and isinstance(lg.get("logs"), list)):
+        return ["(journal unreadable: %s)" % str(lg)[:80]]
     hits = []
     for x in lg.get("logs") or []:
         m = str(x.get("Message", "")).split("\n")[0]
@@ -436,12 +452,11 @@ def load_site(call, site, budget_s=420, sleep=time.sleep, check=True, name=None,
         raise ValueError("site %s has no save of its own (Pyrelands loads through northstar_site.py --reload-only)" % site)
     rec = {"site": site, "save": name, "utc": _now(), "problems": []}
     t0 = time.time()
-    if _state(call) == "Playing":
-        call("rimworld/go_to_main_menu")
-        if _wait(lambda: _state(call) == "Entry", 180, sleep) is None:
-            rec["problems"].append("main menu not reached within 180 s")
-            rec["verified"] = False
-            return rec
+    menu = _to_main_menu(call, sleep, min(180, budget_s))
+    if menu:
+        rec["problems"].append(menu)
+        rec["verified"] = False
+        return rec
     seq0 = _journal_seq(call)
     try:
         # ignoreModCompatibility: a registered site save is a fixed fixture whose own mod list is not the tier's. The calm

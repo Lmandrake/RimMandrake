@@ -18,16 +18,21 @@ wind cannot show the wind is the cause):
      2026-11-16, RIMMANDRAKE_RUN_PYRELANDS_WEEK_SKY_FREE_NEVER_ONCE_SEEN).
 Before each line is lit it asserts the start: SetWindForTest returned the bearing asked, ProbeWind reads that bearing back
 with carries= matching the wind switch, and the strip holds no fire.
-Restore: settings, weather, fires and the map's own wind bearing are put back; the strips' terrain and plants are not. The map
-is disposable: the scene saves wind_burn_live_pre before it lays a strip (reload it to get the ground back).
-Writes Transient/wind_burn_live.json and prints each row with its reading, then PASS or FAIL.
+Restore (RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE): the scene runs inside modcheck/scene_snapshot.py, which saves a
+unique wind_burn_live_pre_<hex> before anything changes and reloads it after, also when the scene raises; the mod settings
+(not in a save) are put back by hand. The JSON's "snapshot" records the save name and the reload's verified.
+Writes Transient/wind_burn_live.json and prints each row with its reading, then PASS or FAIL (FAIL too when the reload fails).
 Offline: selftest_pyrelands_wind_burn_rows.py drives these rows from pyre_burn_sim.py's model of the shipped carry.
 """
 import json
+import os
 import sys
 
-sys.path.insert(0, r"src\RimMandrake\Utils")
+_UTILS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils")
+sys.path.insert(0, _UTILS)
+sys.path.insert(0, os.path.join(_UTILS, "modcheck"))
 from rimbridge_client import RimBridge, resolve_endpoint  # noqa: E402
+from scene_snapshot import scene_snapshot  # noqa: E402
 
 S = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 BURN = "RimMandrake.Pyrelands.MapComponent_BurnLine"
@@ -97,7 +102,6 @@ def main():
     with RimBridge(h, p, tk) as rb:
         prior = {f: rb.call("jawa/mod_settings_field", {"typeName": S, "action": "get", "field": f}).get("value")
                  for f in list(SET) + ["windCarriesFireEnabled"]}
-        prior_wind, _ = parse_probe(rb.call("jawa/static_call", {"type": BURN, "method": "ProbeWind"}).get("result"))
 
         def setf(f, v):
             rb.call("jawa/mod_settings_field", {"typeName": S, "action": "set", "field": f, "value": str(v)})
@@ -109,7 +113,10 @@ def main():
                 n -= s
 
         def fires(rect):
-            return rb.call("jawa/list_things", {"defName": "Fire", "limit": 1, "rect": rect}).get("countMatched") or 0
+            n = rb.call("jawa/list_things", {"defName": "Fire", "limit": 1, "rect": rect}).get("countMatched")
+            if n is None:                         # could not look: never a zero-fire reading
+                raise RuntimeError("list_things unreadable for Fire in %s" % rect)
+            return int(n)
 
         def strip(x, z):
             """61 x 21 ember grass on deep ash at (x, z), a 4-cell bare ring round it. -> the grass rect."""
@@ -153,48 +160,58 @@ def main():
             print(label, out[label])
             return out[label]
 
+        snap = None
         try:
-            rb.call("rimworld/save_game", {"saveName": "wind_burn_live_pre"})
-            for f, v in SET.items():
-                setf(f, v)
-            rb.call("jawa/weather_set", {"weather": "Clear", "lockWeather": True})
-            east = rb.call("jawa/static_call", {"type": BURN, "method": "SetWindForTest", "args": "90"}).get("result")
-            f = run(60, 30, True, 90, east, "F_wind_east")
-            west = rb.call("jawa/static_call", {"type": BURN, "method": "SetWindForTest", "args": "270"}).get("result")
-            r = run(60, 80, True, 270, west, "R_wind_west")
-            east = rb.call("jawa/static_call", {"type": BURN, "method": "SetWindForTest", "args": "90"}).get("result")
-            b = run(60, 130, False, 90, east, "B_wind_off_control")
-            # black rain on a walking line
-            setf("windCarriesFireEnabled", True)
-            rect = strip(60, 180)
-            rb.call("jawa/map_fire", {"action": "extinguish", "rect": W})
-            rb.call("jawa/weather_set", {"weather": "RM_FE_BlackRain", "lockWeather": True})
-            adv(4500)
-            c_before = fires(rect)
-            c_lit = rb.call("jawa/map_fire", {"action": "start", "rect": "%d,186,1,9" % (60 + LINE), "fireSize": 0.35}
-                            ).get("firesStarted") or 0
-            ser = [fires(rect)]                                   # tick 0: what the rain is given to put out
-            for _ in range(8):
-                adv(250)
-                ser.append(fires(rect))
-            out["C_black_rain"] = {"fires_before": c_before, "lit": c_lit, "fires_at_0_then_every_250": ser}
-            rows = verdict_rows(f, r, b, out["C_black_rain"])
-            out["rows"] = [[n, bool(ok), v] for n, ok, v in rows]
-            out["verdict"] = "PASS" if all(ok for _, ok, _ in rows) else "FAIL"
-            for n, ok, v in rows:
-                print("%-4s %s: %s" % ("ok" if ok else "FAIL", n, v))
-            print("%s (%d of %d rows)" % (out["verdict"], sum(1 for _, ok, _ in rows if ok), len(rows)))
+            # the map (fires, weather, wind bearing, the strips' ground) comes back by reloading the scene-begin save
+            with scene_snapshot(lambda tool, **kw: rb.call(tool, kw), "wind_burn_live_pre_") as snap:
+                try:
+                    for f, v in SET.items():
+                        setf(f, v)
+                    rb.call("jawa/weather_set", {"weather": "Clear", "lockWeather": True})
+                    east = rb.call("jawa/static_call", {"type": BURN, "method": "SetWindForTest", "args": "90"}).get("result")
+                    f = run(60, 30, True, 90, east, "F_wind_east")
+                    west = rb.call("jawa/static_call", {"type": BURN, "method": "SetWindForTest", "args": "270"}).get("result")
+                    r = run(60, 80, True, 270, west, "R_wind_west")
+                    east = rb.call("jawa/static_call", {"type": BURN, "method": "SetWindForTest", "args": "90"}).get("result")
+                    b = run(60, 130, False, 90, east, "B_wind_off_control")
+                    # black rain on a walking line
+                    setf("windCarriesFireEnabled", True)
+                    rect = strip(60, 180)
+                    rb.call("jawa/map_fire", {"action": "extinguish", "rect": W})
+                    rb.call("jawa/weather_set", {"weather": "RM_FE_BlackRain", "lockWeather": True})
+                    adv(4500)
+                    c_before = fires(rect)
+                    c_lit = rb.call("jawa/map_fire", {"action": "start", "rect": "%d,186,1,9" % (60 + LINE), "fireSize": 0.35}
+                                    ).get("firesStarted") or 0
+                    ser = [fires(rect)]                                   # tick 0: what the rain is given to put out
+                    for _ in range(8):
+                        adv(250)
+                        ser.append(fires(rect))
+                    out["C_black_rain"] = {"fires_before": c_before, "lit": c_lit, "fires_at_0_then_every_250": ser}
+                    rows = verdict_rows(f, r, b, out["C_black_rain"])
+                    out["rows"] = [[n, bool(ok), v] for n, ok, v in rows]
+                    out["verdict"] = "PASS" if all(ok for _, ok, _ in rows) else "FAIL"
+                    for n, ok, v in rows:
+                        print("%-4s %s: %s" % ("ok" if ok else "FAIL", n, v))
+                    print("%s (%d of %d rows)" % (out["verdict"], sum(1 for _, ok, _ in rows if ok), len(rows)))
+                finally:
+                    bad = []
+                    for f, v in prior.items():           # every field, even after one write fails
+                        try:
+                            setf(f, v)
+                        except Exception as ex:  # noqa: BLE001 - recorded; the scene's own error keeps propagating
+                            bad.append("%s: %r" % (f, ex))
+                    out["settings_restore_errors"] = bad
         finally:
-            rb.call("jawa/map_fire", {"action": "extinguish", "rect": W})
-            rb.call("jawa/weather_set", {"weather": "Clear", "lockWeather": True})
-            adv(60)
-            rb.call("jawa/weather_set", {"unlock": True})
-            if prior_wind is not None:
-                rb.call("jawa/static_call", {"type": BURN, "method": "SetWindForTest", "args": str(int(round(prior_wind)))})
-            for f, v in prior.items():
-                setf(f, v)
-    json.dump(out, open(r"Transient\wind_burn_live.json", "w"), indent=1)
+            if snap is not None:
+                out["snapshot"] = snap.evidence
+            if out.get("settings_restore_errors") or (snap is not None and snap.evidence.get("restore_errors")):
+                out["verdict"] = "FAIL"
+                print("FAIL the scene was not put back: settings %s, reload %s" % (
+                    out.get("settings_restore_errors"), snap.evidence.get("restore_errors") if snap else None))
+            json.dump(out, open(r"Transient\wind_burn_live.json", "w"), indent=1)
+    return 0 if out.get("verdict") == "PASS" else 1
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
