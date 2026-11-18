@@ -708,6 +708,26 @@ def exam_gate_checks(root):
     r, la = _res(root, {"mods": {}}, dict(ds, stage=3), dec="not_offline", stage="designer", extra=gate)
     ok(r.get("decision") == "designer_wait", "exam gate: before stage 5 the exam is not read (read %s)" %
        r.get("decision"))
+    # RIMMANDRAKE_SPARE_EXAM_RETAKE_WHEN_ONLY_SCENES_MOVED: Graffiti 2026-11-18, a locked change that moved only
+    # scenes.json (re-pinned stages 3 and 4) left the exam passing its gate on the same tree and sheet, yet the chain
+    # brief ordered a full retake its Readers would have answered from identical inputs
+    lc = {"status": "ready", "stage": 5, "history": [{"at": "2026-11-18T17:58:16Z", "what": "locked_change",
+                                                       "why": "re-pinned stage 3 (scenes); stage 4 (scenes)"}]}
+    r, la = _res(root, {"mods": {}}, lc, dec="not_offline", stage="designer",
+                 extra={"exam_gate": lambda m: ([], "treehash123456")})
+    need = str(r.get("steward_need"))
+    ok(r.get("steward_kind") == "chain" and "stands" in need and "treehash123" in need
+       and "retake the Cold Reader exam on the new tree" not in need,
+       "exam gate: a chain whose exam still passes its gate on the current tree and sheet keeps it, no retake "
+       "(read %s)" % need[:200])
+    r, la = _res(root, {"mods": {}}, lc, dec="not_offline", stage="designer", extra=gate)
+    need = str(r.get("steward_need"))
+    ok(r.get("steward_kind") == "chain" and "retake the Cold Reader exam on the new tree" in need,
+       "exam gate: a chain whose exam fails its gate retakes it in full (read %s)" % need[:200])
+    r, la = _res(root, {"mods": {}}, lc, dec="not_offline", stage="designer",
+                 extra={"exam_gate": lambda m: ([], None)})
+    ok("retake the Cold Reader exam on the new tree" in str(r.get("steward_need")),
+       "exam gate: a chain whose exam gate could not be read (no tree hash) retakes it in full")
 
 
 def worked_after_checks(root):

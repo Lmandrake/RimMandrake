@@ -882,13 +882,20 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
     dst = dstate(mod)
     lc = chain_owed(dst)
     if lc:
+        # RIMMANDRAKE_SPARE_EXAM_RETAKE_WHEN_ONLY_SCENES_MOVED: an exam still passing its gate on the current tree and
+        # sheet (a change that moved only scenes) stands; its Readers would re-answer identical inputs
+        xerrs, xth = fx_exam(mod) if fx_exam else ([], None)
+        exam_step = ("the Cold Reader exam passes its gate on the current tree %s and sheet (the change left both as "
+                     "examined), so it stands: no retake; confirm the gate reads clean (`coverage_judge.py status` names "
+                     "no exam error) just before the look" % str(xth)[:12]) if xth and not xerrs else (
+                    "retake the Cold Reader exam on the new tree by "
+                    "src/RimMandrake/rimflow/roles/designer_exam.md in full (the Challenger's scenarios and the control "
+                    "copy included: an exam failing its gate makes the judge skip)")
         _steward(row, "chain", "%s|chain|%s" % (ver, lc.get("at")),
-                 "a locked change landed %s and no coverage look has followed it: re-pin, Cold Reader exam retake, "
-                 "ONE coverage-judge look" % lc.get("at"),
+                 "a locked change landed %s and no coverage look has followed it: re-pin, Cold Reader exam %s, "
+                 "ONE coverage-judge look" % (lc.get("at"), "check" if xth and not xerrs else "retake"),
                  "the locked change of %s (%s): check its re-pin (designer_stage.py repin, already done when the history "
-                 "says re-pinned), retake the Cold Reader exam on the new tree by "
-                 "src/RimMandrake/rimflow/roles/designer_exam.md in full (the Challenger's scenarios and the control "
-                 "copy included: an exam failing its gate makes the judge skip), then give it ONE coverage-judge look "
+                 "says re-pinned), %s, then give it ONE coverage-judge look "
                  "(coverage_judge.py release <dir> --why ...; when stage.json holds coverage_release_granted, that plain "
                  "release applies the grant as the final look and refuses until its `after` items close: add no "
                  "release of your own, and close an `after` item whose notes say its work landed, with its published "
@@ -903,7 +910,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                  "coverage_fixes.json against the last verdict's judge: one claim per gap whose fix landed, its "
                  "evidence the fix's sha and acceptance test; a gap with no claim is carried open whatever the judge "
                  "finds (RIMMANDRAKE_CLAIM_FIXED_GAPS_BEFORE_FINAL_LOOK_JUDGE_AGREED). Never a second look." % (
-                     lc.get("at"), str(lc.get("why"))))
+                     lc.get("at"), str(lc.get("why")), exam_step))
         return
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage
     if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now):
