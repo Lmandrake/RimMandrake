@@ -686,16 +686,36 @@ def ceiling_gate(cfg, s, mod, stage, usd, cap, where, releases):
                                      release_cmd(mod, stage, usd, cap, ceiling)), None
 
 
-def stage_spent(f, stage, ours):
-    """-> USD spent at this stage: every run the status page placed in its box (measured dollars, else its cap), plus
-    this step's own launches there not yet placed (at their cap)."""
+def void_units(f, s):
+    """-> the units whose spend does not count toward the stage ceiling: a standing hand void, an entry the mod's
+    `voided` list holds (hand or void_system), and a run killed before it wrote a result (f["killed"]). The owner, by
+    card 2026-11-18 11:06 AM PST (design/specs/2026-11-18-pipeline-control-surface/03-merged.md, Rulings 1): a void
+    run's spend "Does not count": the ceiling measures what the mod cost on its merits; the system-fault alarm
+    catches a fault loop (run_void.py)."""
+    out = set(RV.active()) | set((f or {}).get("killed") or {})
+    out |= {m.get("unit") for m in (s or {}).get("voided") or [] if m.get("unit")}
+    return out
+
+
+def _off_ceiling(f, s, spent):
+    """Drop the void units from {unit: usd}; -> (kept usd, void usd), each rounded."""
+    void = void_units(f, s)
+    v = round(sum(u_usd for u, u_usd in spent.items() if u in void), 2)
+    return round(sum(u_usd for u, u_usd in spent.items() if u not in void), 2), v
+
+
+def stage_spent(f, stage, ours, s=None, both=False):
+    """-> USD spent at this stage on the mod's merits: every run the status page placed in its box (measured dollars,
+    else its cap), plus this step's own launches there not yet placed (at their cap), less every VOID run (void_units;
+    shown apart as void spend). both=True -> (counted, void)."""
     spent = dict((f.get("box_runs") or {}).get(M.COL[stage]) or {})
     for x in ours or []:
-        # with the killed attempts a retry replaced: their dollars stay charged (RIMMANDRAKE_CHARGE_KILLED_ATTEMPTS_RETRY_DROPPED_DOLLARS)
+        # with the killed attempts a retry replaced (counted here, then taken off as void below)
         for u in [x.get("unit")] + list(x.get("killed_before") or []):
             if u and u not in spent:
                 spent[u] = (f.get("run_usd") or {}).get(u, x.get("cap") or 0.0)
-    return round(sum(spent.values()), 2)
+    kept, void = _off_ceiling(f, s, spent)
+    return (kept, void) if both else kept
 
 
 REFUND_STAGE = {"blind_challenge": "4+5", "in_game": "6"}       # maturation_convergence's stage keys
@@ -708,6 +728,8 @@ def refund(cfg, s, f, stage, usd, cap, unit):
     retry at the ceiling, the tick gives them back once: the amount still missing, never more than that run spent,
     never twice for one run, and not while the stage reads DIVERGING. Any other release stays the Conductor's hand."""
     if not unit or unit not in (f.get("killed") or {}):
+        return None, ""
+    if unit in void_units(f, s):    # its dollars are already off the ceiling (void spend): nothing to give back
         return None, ""
     if unit in (s.get("refunds") or {}):
         return None, "; the killed run %s was refunded once already" % unit
@@ -757,8 +779,10 @@ def reserve_refused(cfg, f, row, put, cap, stage, ours, s=None, releases=None, k
     stage's spend plus this run's cap passes stage_ceiling_usd. Read every tick, never stored: raising the ceiling or a
     Conductor's release (`release`) lifts it, the release once. killed: the killed run this launch retries, if any
     (refund)."""
-    usd = stage_spent(f, stage, ours)
+    usd, vusd = stage_spent(f, stage, ours, s, both=True)
     row["stage_usd"] = usd
+    if vusd:
+        row["void_usd"] = vusd      # shown apart: off the ceiling by his card of 2026-11-18
     over, rid = ceiling_gate(cfg, s or {}, row["mod"], stage, usd, cap, M.label(stage), releases)
     if over:
         ref, why_not = refund(cfg, s or {}, f, stage, usd, cap, killed)
@@ -974,7 +998,7 @@ def offline_usd(f, s):
     for x in s.get("launches") or []:
         if x.get("stage") == "offline_build" and x.get("unit") not in spent:
             spent[x["unit"]] = (f.get("run_usd") or {}).get(x["unit"], x.get("cap") or 0.0)
-    return round(sum(spent.values()), 2)
+    return _off_ceiling(f, s, spent)[0]     # less every VOID run: his card of 2026-11-18 (void_units)
 
 
 def red_deciders(f):

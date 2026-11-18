@@ -25,7 +25,7 @@ design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md).
 Four answers stay apart in every record and line: a run that FAILED on the mod's merits counts; a VOID run counts
 nothing (hand or system, with its why); ZERO is a measured count; UNMEASURED is a record that could not be read
 (that run is left exactly as the books had it, and named). Spend already burnt stays measured as spend: it is shown
-apart as void spend, never subtracted silently.
+apart as void spend, and off the stage ceiling by his card of 2026-11-18 (maturation_dispatch.void_units).
 """
 import copy
 import datetime as dt

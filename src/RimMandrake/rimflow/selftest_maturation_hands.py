@@ -191,23 +191,26 @@ def blind(usd_other, killed_usd, killed=True, word=None, refunds=None):
 
 
 def refund_main():
+    """The owner, by card 2026-11-18 11:06 AM PST (design/specs/2026-11-18-pipeline-control-surface/03-merged.md,
+    Rulings 1): a void run's spend "Does not count" toward the stage ceiling. These checks read "the killed cycle's
+    dollars are refunded once past the ceiling" (RIMMANDRAKE_REFUND_KILLED_RUN_DOLLARS_AT_THE_CEILING): a killed run's
+    dollars are now never charged, so nothing is refunded and none is given back twice (item
+    RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT)."""
     st, f = blind(66.0, 20.0)
     rows, launches = MD.decide(CFG, st, f, NOW, releases=([], 0))
     r = row_of(rows)
-    ok(r["decision"] == "launch" and launches == ["A"] and (r.get("refund") or {}).get("unit") == "rm-k",
-       "refund 1: USD 86 with the killed cycle's USD 20 in it relaunches the killed cycle past the ceiling", r)
+    ok(r["decision"] == "launch" and launches == ["A"] and not r.get("refund") and r.get("stage_usd") == 66.0
+       and r.get("void_usd") == 20.0,
+       "refund 1: USD 86 with the killed cycle's USD 20 in it: the 20 is void spend, off the ceiling (66 counted), "
+       "the cycle relaunches with no refund", r)
     d = tempfile.mkdtemp(prefix="mat_refund_")
     try:
         p = os.path.join(d, "releases.jsonl")
         r["decision"], r["unit"] = "launched", "rm-k2"
         MD.book_refunds(st, rows, NOW, path=p)
         recs, bad = MD.read_releases(p)
-        ok(len(recs) == 1 and recs[0].get("auto") is True and recs[0]["mod"] == "A"
-           and recs[0]["why"].startswith("delegated:") and bad == 0,
-           "refund 2: the refund is one whole release record, marked automatic, its reason a delegated call", recs)
-        ok(recs and recs[0]["id"] in (st["mods"]["A"].get("releases_used") or {})
-           and "rm-k" in (st["mods"]["A"].get("refunds") or {}),
-           "refund 3: it is spent by the launch and the killed run is marked refunded", st["mods"]["A"])
+        ok(recs == [] and not st["mods"]["A"].get("refunds"),
+           "refund 2: no release record is written: there is nothing to give back", recs)
     finally:
         shutil.rmtree(d, ignore_errors=True)
 
@@ -219,16 +222,23 @@ def refund_main():
        "refund 4 (control): a plain overspend with no killed run pauses at the ceiling", row_of(rows)["decision"])
     st, f = blind(95.0, 5.0)
     rows, launches = MD.decide(CFG, st, f, NOW, releases=([], 0))
-    ok(row_of(rows)["decision"] == "ceiling" and not launches,
-       "refund 5 (control): an excess larger than the killed run's dollars pauses", row_of(rows)["decision"])
+    ok(row_of(rows)["decision"] == "ceiling" and not launches and row_of(rows).get("stage_usd") == 95.0,
+       "refund 5 (control): the counted spend alone (95) still pauses at the ceiling", row_of(rows)["decision"])
     st, f = blind(66.0, 20.0, word="DIVERGING")
     rows, launches = MD.decide(CFG, st, f, NOW, releases=([], 0))
-    ok(row_of(rows)["decision"] == "ceiling" and not launches and "DIVERGING" in row_of(rows)["why"],
-       "refund 6 (control): a DIVERGING stage gets no refund and the pause says so", row_of(rows))
+    ok(row_of(rows)["decision"] == "launch" and launches == ["A"],
+       "refund 6: a DIVERGING stage no longer holds a void run's dollars: they are off the ceiling", row_of(rows))
     st, f = blind(66.0, 20.0, refunds={"rm-k": {"at": NOW - 60}})
     rows, launches = MD.decide(CFG, st, f, NOW, releases=([], 0))
-    ok(row_of(rows)["decision"] == "ceiling" and not launches,
-       "refund 7 (control): a killed run is refunded once", row_of(rows)["decision"])
+    ok(row_of(rows)["decision"] == "launch" and not row_of(rows).get("refund"),
+       "refund 7: a run refunded under the old rule is not counted again either", row_of(rows)["decision"])
+    st, f = blind(66.0, 20.0, killed=False)
+    st["mods"]["A"]["voided"] = [{"book": "blind_auto", "unit": "rm-k", "class": "void_hand",
+                                  "entry": st["mods"]["A"].pop("blind_auto")[0]}]     # as sync_dispatch moves it
+    f["A"]["blind_runs"] = []
+    rows, launches = MD.decide(CFG, st, f, NOW, releases=([], 0))
+    ok(row_of(rows).get("void_usd") == 20.0 and row_of(rows).get("stage_usd") == 66.0,
+       "refund 8: a hand-voided run's dollars are void spend too", row_of(rows))
 
 
 # ---- briefs -----------------------------------------------------------------------------------------------------------

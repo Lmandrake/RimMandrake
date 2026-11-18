@@ -940,8 +940,11 @@ that."*
   line. It takes the Designer runs and judges the run started, gives back a coverage look it applied (the grant stands
   again, the earlier verdict file is put back, the void one kept as evidence), and lands the files. An unknown run and
   a double void are refused. An append-only file is no excuse: the fold of its lines is what every reader honours.
-- **Spend stays true:** a void run's spend is shown apart as void spend, still counted toward the stage ceiling, and a
-  ceiling release it spent stays spent: un-spending either is his call (the census's proposal).
+- **Void spend is off the ceiling** (his card, 2026-11-18 11:06 AM PST, "Does not count (Recommended)":
+  `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`, Rulings 1): the stage ceiling counts what the mod
+  cost on its merits; a void run's spend stays measured and is shown apart as void spend (`void_usd`), and the
+  system-fault alarm catches a fault loop. The old killed-run refund is retired with it (nothing is charged to give
+  back). A ceiling release a void run spent stays spent: un-spending a release is not in his ruling.
 - Census of every counter and what is not yet reached: `design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md`.
 
 ## Owner hold: six biome mods stop, Pyrelands stays — owner, 2026-11-16
