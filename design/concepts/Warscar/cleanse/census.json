@@ -594,7 +594,7 @@
       "called_by": "src/RimMandrake/Scarlands/Patches/Patches_BrokenTurretAim.xml -> CompProperties_TurretAim -> CompTick/PostDraw/inspect.",
       "serves": "land",
       "fate": "land",
-      "why": "The selected experience explicitly includes silent guns; harmless movement by abandoned defenses is ordinary environmental motion. Deleting tracking leaves inert props unable to convey that the guns still notice movement. No firing, refit or new combat behaviour stays. Current comp is def-wide without a biome gate. T23 must restrict default target scanning, angle/render and inspect effects to Warscar. Off-biome operation uses only the existing unsupported opt-in, default off.",
+      "why": "The selected experience explicitly includes silent guns; harmless movement by abandoned defenses is ordinary environmental motion. Deleting tracking leaves inert props unable to convey that the guns still notice movement. No firing, refit or new combat behaviour stays. Current comp is def-wide without a biome gate. T23 restricts target scanning, angle/render and inspect effects to Warscar maps with the master and tracking feature switches enabled.",
       "needed_by": "",
       "ticket": "T23"
     },
@@ -756,7 +756,7 @@
     },
     {
       "id": "cross_biome",
-      "what": "Existing off-by-default, unsupported opt-in runs wreck-lichen and Settling on selected/every other biome; lichen intensity only. It does not export panels, fauna or ring generation. Preserve existing capability without proposing any new cross-biome switch. T23 also gates existing def-wide gun tracking through this same off-biome opt-in and its current map selection, preserving native-only defaults.",
+      "what": "Existing off-by-default, unsupported opt-in runs wreck-lichen and Settling on selected/every other biome; lichen intensity only. It does not export panels, fauna or ring generation. Preserve existing capability without proposing any new cross-biome switch.",
       "built": "present",
       "evidence": "src/RimMandrake/Scarlands/Source/RM_WarscarMod.cs:183; independently read current file.",
       "proven": "stale",

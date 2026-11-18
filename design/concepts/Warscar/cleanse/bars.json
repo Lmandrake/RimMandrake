@@ -57,7 +57,7 @@
       "accept": [
         "After cleanup, a player floor or a roof stops native-source renewal beneath it, while uncovered native ground regains visible pollution and exposes workers through ordinary pollution effects.",
         "Removing shelter exposes the same enduring native source again, while pollution-tolerant crusts feed grazers and wetting the substrate still cannot create soil farmland.",
-        "Imported meals and powered hydroponics serve a sheltered colony while the surrounding native floor remains sterile."
+        "Imported meals and powered hydroponics serve a sheltered colony while exposed, sterile native ground beside the hydroponics bay regains pollution after cleanup."
       ],
       "reject": [
         "A polluted-biome label persists after cleanup, but exposed native ground stays harmless or watering creates lasting fertile soil.",
@@ -103,6 +103,11 @@
             "word": "weapon-descendants",
             "stands_for": "Living animals with ordinary dangerous weaponlike attacks left by the war; no genealogy inspection or living-weapon factory required.",
             "accept": "An electric insect discharges in ordinary combat without a manufacturer label, blueprint or ancestry screen."
+          },
+          {
+            "word": "readable",
+            "stands_for": "The player can see physical remains in the world and recover any carried gear there after a body is consumed. A log entry alone cannot establish this.",
+            "accept": "After a bileworm consumes a corpse, a bile patch marks the spot and the crew recovers the dead pawn's equipment there without opening a log."
           }
         ]
       },
@@ -185,7 +190,7 @@
       },
       "accept": [
         "Calm becomes falling dust; an exposed worker gains its attributable airborne toxic contribution while a matched roofed worker avoids that contribution, then returning wind stops the fall.",
-        "The transition still happens while attention is elsewhere and ordinary toxic weather also runs."
+        "While attention is elsewhere and ordinary toxic weather also runs, the unattended fall adds dust-attributed toxic buildup to an exposed worker while a matched roofed worker avoids that contribution."
       ],
       "reject": [
         "Dust appears but health never changes, or only a debug command can start the fall.",
@@ -221,7 +226,13 @@
       "meant": {
         "intent": "Signature ground record, not decorative filth. Shared capped-grid overwrites/eviction are allowed, not unlimited forensic history. Reject: random decals or no new records at capacity fails. No cap or sprite quota pinned.",
         "source": "cast bible tracks-persist/shared-grid rulings; delegated: cleaning/feeding and capacity boundary from actual grid and scar-roach feeding.",
-        "figurative": []
+        "figurative": [
+          {
+            "word": "readable",
+            "stands_for": "A player can follow the trace's direction at ordinary play zoom.",
+            "accept": "At ordinary play zoom, a player follows fresh tracks around a wreck and can tell which way the walker went without opening an inspector."
+          }
+        ]
       },
       "accept": [
         "A walker crosses undisturbed dust and its direction can be followed; an invisible walker leaves a trace too and unrelated uncrossed ground stays blank.",
@@ -318,14 +329,14 @@
       ],
       "lazy": "A soundtrack ticks over an empty map while dust looks like rain and hides workers and trails.",
       "range": {
-        "varies": "Normal supported play zoom; pause/normal/fast speed; sources absent/sparse/crowded; near/far camera, map switch, audio on/muted/reduced repetition; all phases, pale/dark floor and ordinary weather overlap; moving/still/occluded/out-of-range targets, death/despawn/reload/source removal. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical. Warscar and off-biome controls with identical ancient turret defs, existing unsupported opt-in off/on, map transfer and reload.",
+        "varies": "Normal supported play zoom; pause/normal/fast speed; sources absent/sparse/crowded; near/far camera, map switch, audio on/muted/reduced repetition; all phases, pale/dark floor and ordinary weather overlap; moving/still/occluded/out-of-range targets, death/despawn/reload/source removal. Map dimensions additionally cover every supported local-map size in the shipped fixed-world profile, including smaller/larger or rectangular authored maps; the listed dimensions are sweep strata, not the entire acceptance set. Equivalent dimensions may group only when their cell/boundary/AI failure route is identical. Warscar and an unrelated biome at shipped defaults with identical ancient turret defs, map transfer and reload.",
         "left_out": "No audio requirement for muted/deaf player, new sound grain/texture variant, or screenshot-only flight evidence."
       },
       "sees": {
         "instrument": "Live look/listen plus source/sustainer/target trace. T23 supplies presentation protocol. State alone selects cases but cannot establish perceptual masking.",
         "start": "Natural full-map sources, actual broken-gun comp, ordinary camera/audio; no extra objects or weather lock improving the atmosphere.",
         "on": "Every kept mechanic on at shipped defaults; all DLC and declared dependencies loaded; ordinary weather/wind unlocked; next-version extras off. Record actual source/runtime/settings fingerprints. Controls do not replace the primary combined reading. Missing apparatus or calibration is UNMEASURED.",
-        "control": "Correlate source IDs with camera movement, condition and actual target movement. Empty-source control must stop source sound; stationary targets cannot justify arbitrary barrel motion. Vanilla soundtrack/debug turns cannot count. With the unsupported opt-in off, the same turret comp on another biome must neither acquire a tracking target nor turn its added barrel or display tracking text.",
+        "control": "Correlate source IDs with camera movement, condition and actual target movement. Empty-source control must stop source sound; stationary targets cannot justify arbitrary barrel motion. Vanilla soundtrack/debug turns cannot count. At shipped defaults, the same turret comp on an unrelated biome must leave target acquisition, added barrel movement and tracking text inactive.",
         "reset": "Disposable local-map fixtures and saves only; restore settings and wind controls, remove staged orders/things, discard fixtures after evidence export. No canonical world alteration.",
         "live_only_why": "No credible offline model decides audible masking and on-screen combined-weather legibility."
       },
@@ -346,13 +357,7 @@
       "meant": {
         "intent": "The sole whole bar. The natural, unlocked shipped weather must produce a complete calm, fall, returning-wind and finished-lift cycle within the observed season. Flood means immortal film/records, a rage/body-loss cascade, mark-induced work collapse or notices preventing ordinary work. Desert means all unharvested forage and functioning life lost. Stall includes a season without a complete natural cycle, whether caused by thresholds or the natural weather trace. Error storm means repeated exceptions corrupt play. No fun claim or balance quota.",
         "source": "CASE whole-bar instruction; delegated: combined land/life/signature consequences from frozen sheet, selected experience and actual kept source.",
-        "figurative": [
-          {
-            "word": "read",
-            "stands_for": "Recognise the active dust phase and recent movement from normal game cues, not printed instructions or a forensic archive.",
-            "accept": "The player follows visible fresh traces and takes shelter from falling dust without opening a written explanation."
-          }
-        ]
+        "figurative": []
       },
       "accept": [
         "During an unforced season a colony shelters, recovers sealed salvage and follows fresh trails through calm, falling dust, returning wind and a finished lift, while unharvested habitat supports life and a midway save preserves behaviour.",
@@ -473,7 +478,7 @@
     },
     {
       "id": "C8",
-      "what": "Master/major-feature on/off/reset/effect-time labels, unsupported opt-in, partner status and clean-log floor; no worldgen UI. House label the Warscar follows later ruling."
+      "what": "Master/major-feature on/off/reset/effect-time labels, unsupported opt-in, partner status and clean-log floor; no worldgen UI."
     },
     {
       "id": "C9",
@@ -569,7 +574,7 @@
     },
     {
       "id": "R8",
-      "rule": "Sound uses actual enabled local sources; wind stops in fall. Broken-gun tracking has no firing verb. Dry aerosol wording and UI remain readable; absent extra sources make no sound. Gate target scanning, barrel update/render and tracking inspect on Warscar biome membership plus the major-feature/master settings. Any off-biome tracking requires the existing unsupported cross-biome opt-in, default off, with its current map-selection predicate. No new switch.",
+      "rule": "Sound uses actual enabled local sources; wind stops in fall. Broken-gun tracking has no firing verb. Dry aerosol wording and UI remain readable; absent extra sources make no sound. Gate target scanning, barrel update/render and tracking inspect on Warscar biome membership plus the major-feature/master settings.",
       "touches": [
         "ruins",
         "wind",
@@ -743,7 +748,7 @@
         "R8"
       ],
       "holds_together": "argued",
-      "why": "Stripped works and harmless tracking supply ordinary land without manuals/hospice/rings; align ordinary layout instead of adding encounters. Live composition still owed. Already-spent threat sites coexist with sealed salvage. Tracking is native-only by default.",
+      "why": "Stripped works and harmless tracking supply ordinary land without manuals/hospice/rings; align ordinary layout instead of adding encounters. Live composition still owed. Already-spent threat sites coexist with sealed salvage. Tracking runs only on Warscar maps.",
       "model": ""
     },
     {

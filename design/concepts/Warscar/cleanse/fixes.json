@@ -1,0 +1,29 @@
+{
+  "fixes": [
+    {
+      "id": "R1",
+      "changed": "Restricted gun tracking to Warscar maps with both the master and tracking feature switches enabled. W8 and T23 use an unrelated biome at shipped defaults to check for absent tracking. The existing unsupported opt-in covers Settling and WreckLichen only.",
+      "where": "bars.json W8 range and control, R8 and ruins meeting; tickets.md T23; census.json cross_biome and silent_guns; definition.md settings; ambiguities.md item 14; models.md situation and transition generator; owner_pages.md Silent guns"
+    },
+    {
+      "id": "R2",
+      "changed": "Defined falling fallout dust and renewing native-ground pollution as the radiation exposure in 0.1.0. Both use vanilla toxic buildup, with radiation named in the dust description and ground inspect text. Replaced the simulator aside and recorded the reading on page two alongside the technology deferral.",
+      "where": "definition.md Evidence boundary and reading receipts; ambiguities.md item 29; owner_pages.md Radiation seeping in"
+    },
+    {
+      "id": "R3",
+      "changed": "Marked readable in W3 and W6 with acceptance pictures for physical remains and gear, and for following a trail's direction at play zoom. Removed the stray figurative entry from W9.",
+      "where": "bars.json W3, W6 and W9 meant.figurative"
+    },
+    {
+      "id": "R4",
+      "changed": "Required exposed native ground beside the hydroponics bay to regain pollution after cleanup. Required an unattended dust fall to add attributable toxic buildup to an exposed worker and spare a matched roofed worker from that contribution during other toxic weather.",
+      "where": "bars.json W2 accept[2] and W5 accept[1]"
+    },
+    {
+      "id": "R5",
+      "changed": "Removed the relabel instruction and check. Kept the current Warscar label as the default under the 30 September card and added one owner question citing both dated cards. Updated the question count to one.",
+      "where": "tickets.md T23; bars.json C8; ambiguities.md item 25 and question summary; owner_pages.md Q1 and counts; result.json counts.questions"
+    }
+  ]
+}

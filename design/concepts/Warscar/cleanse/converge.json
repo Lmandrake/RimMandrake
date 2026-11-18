@@ -1,0 +1,150 @@
+{
+ "mod": "Warscar",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json W8 range and control; R8; tickets.md T23; census.json cross_biome and silent_guns",
+     "evidence": "standing_rulings.md:133-140 (owner, 2026-10-15): \"We can't guarantee they will work in other biomes beyond our framework. They should… but we're not going to validate that at this time.\" The same ruling adds that no new mod builds a cross-biome switch. census cross_biome says the existing opt-in's coverage is 'Settling and WreckLichen only', yet the proposal extends it: 'T23 also gates existing def-wide gun tracking through this same off-biome opt-in'. W8 range includes 'existing unsupported opt-in off/on', and T23's acceptance test requires 'Enabling the existing opt-in permits tracking only on its selected maps'. That gives an unsupported switch new coverage and makes a cross-biome validation part of passing.",
+     "would_pass": "Gun tracking is gated on Warscar membership plus the master and feature switches, with no off-biome route. W8 and T23 check only that tracking is absent on an unrelated biome at defaults.",
+     "smallest_fix": "Delete the opt-in route from R8, T23 and the census cross_biome/silent_guns text. Strike 'opt-in off/on' from W8 range and the opt-in-on sentence from T23's acceptance test."
+    },
+    {
+     "id": "R2",
+     "head": "core_promise_weakened",
+     "where": "definition.md 'Evidence boundary and reading receipts' paragraph; owner_pages.md (whole)",
+     "evidence": "ANSWERS_OWNER.md:3 and :9, owner write-in 2026-11-10, verbatim: \"it's the story of radiation seeping in but fabulous technology too\". The pages tell him the technology half was deferred. The radiation half is reinterpreted silently: definition.md says 'the specific radiological Warscar text are not grounds for an adapting-bioweapon simulator … the land uses conventional toxin paths', and the word radiation appears nowhere on his pages. The_scarlands.md §3 ('Million-year nuclear decay chains — heat and radiation') backs the same promise.",
+     "would_pass": "The definition says what carries 'radiation seeping in' in 0.1.0 (for example: fallout dust and self-renewing ground deliver it through ordinary toxic buildup, named as such in player text). Page two lists that reading as a settled ambiguity, beside the technology deferral.",
+     "smallest_fix": "Add one ambiguity entry and one page-two line: 'radiation seeping in' is read as the dust fall plus native renewal through vanilla toxic buildup, and the label/description text says so. Drop the strawman about an adapting-bioweapon simulator."
+    },
+    {
+     "id": "R3",
+     "head": "figurative_unmarked",
+     "where": "bars.json W3 says ('readable remains'), W6 says ('readable until wind…'), W9 meant.figurative",
+     "evidence": "W3 and W6 both use 'readable', which is the very word ambiguity 10 argues over ('any vanish with a log?' versus remains in the world), yet neither bar marks it. W9 carries a figurative entry for 'read', but W9's says does not contain that word, so the entry seems to have been attached to the wrong bar.",
+     "would_pass": "W3 and W6 each mark 'readable' (W3: a physical remains/gear sign in the world, not a log line; W6: a direction a player can follow at play zoom), each with an accept picture. W9's stray entry is removed.",
+     "smallest_fix": "Add the two figurative entries and delete W9's."
+    },
+    {
+     "id": "R4",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json W2 accept[2]; W5 accept[1]",
+     "evidence": "W2 accept 'Imported meals and powered hydroponics serve a sheltered colony while the surrounding native floor remains sterile' is fully satisfied by a build with no renewal at all, which is W2's own lazy reject ('exposed native ground stays harmless'). W5 accept 'The transition still happens while attention is elsewhere and ordinary toxic weather also runs' is satisfied by W5's lazy reject ('Dust appears but health never changes'). A cold reader who accepts either picture accepts the false pass.",
+     "would_pass": "Each accept picture contains the element that separates it from the lazy build.",
+     "smallest_fix": "W2: '…while exposed native floor beside the hydroponics bay regains pollution after cleanup.' W5: '…the unattended transition still doses an exposed worker and spares the roofed one while toxic weather also runs.'"
+    },
+    {
+     "id": "R5",
+     "head": "contradicts_ruling_or_lore",
+     "where": "tickets.md T23 ('Correct shipping label to the later house form \"the Warscar\"'); ambiguities.md item 25; bars.json C8",
+     "evidence": "biome_mod_architecture.md:567-570 records a 2026-09-26 card ruling 'the Warscar'. But warscar_turn3_development_2026-09-30.md §0 line 23 records a later card (2026-09-30, volley turn 2): 'the label is \"Warscar\", with no article'. RM_Warscar.xml:14 and :60 also carry no article. The proposal calls the 2026-09-26 form 'later' without addressing the 2026-09-30 record.",
+     "would_pass": "Either the label is left as built, or the conflict between the two dated cards goes on his pages as a question, with both sources and the default taken.",
+     "smallest_fix": "Remove the relabel from T23 and C8. Add a page-two question citing both cards, defaulting to the later record (no article)."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "Restricted gun tracking to Warscar maps with both the master and tracking feature switches enabled. W8 and T23 use an unrelated biome at shipped defaults to check for absent tracking. The existing unsupported opt-in covers Settling and WreckLichen only.",
+      "where": "bars.json W8 range and control, R8 and ruins meeting; tickets.md T23; census.json cross_biome and silent_guns; definition.md settings; ambiguities.md item 14; models.md situation and transition generator; owner_pages.md Silent guns"
+     },
+     {
+      "id": "R2",
+      "changed": "Defined falling fallout dust and renewing native-ground pollution as the radiation exposure in 0.1.0. Both use vanilla toxic buildup, with radiation named in the dust description and ground inspect text. Replaced the simulator aside and recorded the reading on page two alongside the technology deferral.",
+      "where": "definition.md Evidence boundary and reading receipts; ambiguities.md item 29; owner_pages.md Radiation seeping in"
+     },
+     {
+      "id": "R3",
+      "changed": "Marked readable in W3 and W6 with acceptance pictures for physical remains and gear, and for following a trail's direction at play zoom. Removed the stray figurative entry from W9.",
+      "where": "bars.json W3, W6 and W9 meant.figurative"
+     },
+     {
+      "id": "R4",
+      "changed": "Required exposed native ground beside the hydroponics bay to regain pollution after cleanup. Required an unattended dust fall to add attributable toxic buildup to an exposed worker and spare a matched roofed worker from that contribution during other toxic weather.",
+      "where": "bars.json W2 accept[2] and W5 accept[1]"
+     },
+     {
+      "id": "R5",
+      "changed": "Removed the relabel instruction and check. Kept the current Warscar label as the default under the 30 September card and added one owner question citing both dated cards. Updated the question count to one.",
+      "where": "tickets.md T23; bars.json C8; ambiguities.md item 25 and question summary; owner_pages.md Q1 and counts; result.json counts.questions"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json R8 now ends at 'Gate target scanning, barrel update/render and tracking inspect on Warscar biome membership plus the major-feature/master settings.' The opt-in sentences are gone. W8 range now reads 'Warscar and an unrelated biome at shipped defaults with identical ancient turret defs, map transfer and reload' with no 'opt-in off/on'. W8 control reads 'At shipped defaults, the same turret comp on an unrelated biome must leave target acquisition, added barrel movement and tracking text inactive.' tickets.md T23 gates on 'the native Warscar biome lookup and the major-feature/master switches … without adding a new switch'. Its acceptance test compares 'identical ancient turrets on Warscar and an unrelated biome' at shipped defaults, and no opt-in-on sentence remains. census.json cross_biome had the 'T23 also gates … through this same off-biome opt-in' sentence removed. silent_guns now reads 'restricts … to Warscar maps with the master and tracking feature switches enabled.' ambiguities.md item 14 says 'The existing unsupported opt-in covers Settling and WreckLichen only.'"
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "definition.md 'Evidence boundary and reading receipts' now says: 'In 0.1.0, “radiation seeping in” is the exposure from falling fallout dust and pollution that renews on exposed native ground. Both use vanilla toxic buildup. The dust condition description and native-source inspect text name radiation …' The adapting-bioweapon-simulator sentence is gone. ambiguities.md adds item 29 'Radiation seeping in', citing ANSWERS_OWNER.md lines 3 and 9 and the_scarlands.md §3. owner_pages.md 'What to check' has a 'Radiation seeping in' line ending 'Fabulous technology moves to the next version', so the reading sits beside the technology deferral."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "bars.json W3 meant.figurative adds word 'readable', stands_for 'physical remains in the world and recover any carried gear … A log entry alone cannot establish this', with an accept picture: a bile patch marks the spot and the gear is recovered without opening a log. Bile filth is the existing bileworm_gas behaviour in census.json. W6 meant.figurative adds 'readable', stands_for 'follow the trace's direction at ordinary play zoom', with the accept picture of following fresh tracks around a wreck without an inspector. W9 meant.figurative is now []."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "bars.json W2 accept[2] now reads '…while exposed, sterile native ground beside the hydroponics bay regains pollution after cleanup'. A build with no renewal fails it. W5 accept[1] now reads '…the unattended fall adds dust-attributed toxic buildup to an exposed worker while a matched roofed worker avoids that contribution'. The lazy build ('health never changes') fails it."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "bars.json C8 no longer contains 'House label the Warscar follows later ruling.' The T23 text in tickets.md has no relabel instruction. ambiguities.md item 25 cites both the 2026-09-26 card (biome_mod_architecture.md Q5, lines 567–570) and the 2026-09-30 card (warscar_turn3_development_2026-09-30.md §0, lines 23–24). It defaults to the later card's no-article label, which matches RM_Warscar.xml. owner_pages.md Q1 puts the question with both sources and the default “Warscar”. result.json shows \"questions\": 1, and page one says '1 question'."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Second attack: the laziest plausible build",
+    "ambiguities.md Settled ambiguities and the attack on this definition",
+    "bars.json bars/W2",
+    "bars.json bars/W3",
+    "bars.json bars/W5",
+    "bars.json bars/W6",
+    "bars.json bars/W8",
+    "bars.json bars/W9",
+    "bars.json checks/C8",
+    "bars.json meetings",
+    "bars.json rules/R8",
+    "census.json rows/cross_biome",
+    "census.json rows/silent_guns",
+    "definition.md Evidence boundary and reading receipts",
+    "definition.md Settings and shipped profile",
+    "models.md Situation and transition generator",
+    "owner_pages.md What the Warscar now is",
+    "owner_pages.md What to check",
+    "result.json counts",
+    "tickets.md T23: Combined look and sound protocol"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 636849,
+     "output_tokens": 11057
+    }
+   },
+   "author_error": null,
+   "open_after": []
+  }
+ ],
+ "open": [],
+ "advisory_late": [
+  {
+   "what": "No ticket or check carries the radiation wording that definition.md and ambiguities.md item 29 now promise ('The dust condition description and native-source inspect text name radiation'). T17's inspect text only 'identifies active or covered source status', and T23 only says 'Correct descriptions that currently promise deferred rewards'.",
+   "reason": "The T17/T23 text that would carry this promise was not changed for this purpose, so this is an earlier gap rather than a regression. A builder could still ship without the word. Adding one clause to T17 (inspect text) and T23 or T19 (Settling description), each with an acceptance read, would close it.",
+   "round": 1
+  }
+ ],
+ "applyable": true,
+ "digest": "c986275475b2b5945822c92fd753449d0240e0acc0df66ec777202a238d32413",
+ "seconds": 358,
+ "at": "2026-11-17T19:20:12"
+}
