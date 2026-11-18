@@ -371,10 +371,12 @@ def stage(root):
             b = copy.deepcopy(BASE)
             before(b)
             b.pop("coverage_verdict.json", None)
-            bd = os.path.join(root, "before", cid)
-            os.makedirs(bd)
-            _write(bd, b)
-            v = dict(c["coverage_verdict.json"], entry_text=CJ.entry_texts(bd), hashes=CJ.entry_hashes(bd))
+            bd = tempfile.mkdtemp(prefix="rm-coverage-cal-before-")   # outside root: the judge must not find it
+            try:
+                _write(bd, b)
+                v = dict(c["coverage_verdict.json"], entry_text=CJ.entry_texts(bd), hashes=CJ.entry_hashes(bd))
+            finally:
+                shutil.rmtree(bd, ignore_errors=True)
             _write(d, {"coverage_verdict.json": v})
         out.append((cid, exp, d))
     return out
@@ -403,9 +405,10 @@ def _stage_pyrelands(root, cid):
     return d
 
 
-def judge(root, d, route=None, reader="auto"):
-    """One real coverage judge on a planted concept, its blocking gaps read by the real second reader. -> (got,
-    detail)."""
+def judge(root, d, route=None, reader="auto", _resume=None):
+    """One real coverage judge on a planted concept, its blocking gaps read by the real second reader. Refusal records
+    the contract finds broken are re-asked once in the same session, as coverage_judge.run() re-asks them (_resume:
+    (session, errors, cost so far)). -> (got, detail)."""
     tree = json.load(open(os.path.join(d, "tree.json"), encoding="utf-8"))
     prior = CJ.prior_verdict(d)
     dp = CJ.delta_plan(d, prior) if prior else None   # as production: a re-judge with hashes and gap numbers is a delta
@@ -414,6 +417,10 @@ def judge(root, d, route=None, reader="auto"):
     argv = [CJ.CLAUDE, "-p", text, "--model", CJ.MODEL, "--output-format", "json",
             "--json-schema", json.dumps(CJ.SCHEMA, separators=(",", ":")), "--dangerously-skip-permissions",
             "--name", "COVERAGE CALIBRATION %s" % os.path.basename(d)]
+    if _resume:
+        argv = [CJ.CLAUDE, "-p", "Your verdict's refusal records do not meet the refusal contract:\n%s\nAnswer again "
+                "with the whole verdict, every row and every gap, each gap a complete record."
+                % "\n".join("- %s" % e for e in _resume[1]), "--resume", _resume[0]] + argv[3:]
     argv = CJ.spend_watchdog.wrap(argv, CASE_BUDGET_USD_BIG if "Pyrelands" in d else CASE_BUDGET_USD)   # from outside
     try:
         p = subprocess.run(argv, cwd=root, capture_output=True, text=True, timeout=CASE_TIMEOUT_S)
@@ -422,6 +429,8 @@ def judge(root, d, route=None, reader="auto"):
         return None, {"error": "%s: %s" % (type(e).__name__, e)}
     so = (res or {}).get("structured_output") if isinstance(res, dict) else None
     detail = {"cost_usd": (res or {}).get("total_cost_usd") if isinstance(res, dict) else None}
+    if _resume:
+        detail.update(reasked=_resume[1][:6], cost_usd=(detail["cost_usd"] or 0) + (_resume[2] or 0))
     if p.returncode != 0 or not isinstance(so, dict) or so.get("verdict") not in ("covered", "not_covered"):
         detail["error"] = "no well-formed verdict (exit %s)" % p.returncode
         return None, detail
@@ -484,6 +493,9 @@ def judge(root, d, route=None, reader="auto"):
             detail["contract_error"] = "%s: %s" % (type(e).__name__, e)
             return "refuse, record check failed", detail
         if errs:
+            session = (res or {}).get("session_id") if isinstance(res, dict) else None
+            if session and not _resume:
+                return judge(root, d, route, reader, _resume=(session, errs, detail.get("cost_usd")))
             detail["malformed"] = errs[:6]
             return "refuse, malformed records", detail
     return outcome(route, gaps), detail

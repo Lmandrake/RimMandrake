@@ -341,6 +341,23 @@ def calibration_cases():
                      "show.", "bar_kind": "experience", "serious": False} for _ in items])
                 check("calibration judge: %s on the bad scene case reads %s" % (name, want),
                       str(got).startswith(want), (got, det.get("malformed")))
+            # a broken record is re-asked once in the same session, as run() does; the fixed answer counts
+            broken = dict(bgap, evidence=["sheet.md:99"], observed="nothing measured here")
+            outs = [json.dumps({"structured_output": {"verdict": "not_covered", "gaps": [g_], "reasons": "r",
+                                                      "checklist": brows, "repairs": []}, "session_id": "s1"})
+                    for g_ in (broken, bgap)]
+            calls = []
+
+            def two(argv, *a, **k):
+                calls.append(argv)
+                return subprocess.CompletedProcess(argv, 0, outs[min(len(calls), 2) - 1], "")
+            CC.subprocess.run = two
+            got, det = CC.judge(root, bad_d, CC.ROUTE["bad_scene_no_control"], reader=lambda items: [
+                {"criterion_verdict": "sound", "criterion_why": "The bar names an experience one staged scene can "
+                 "show.", "bar_kind": "experience", "serious": False} for _ in items])
+            check("calibration judge: a broken record is re-asked once in the same session, and its fix counts",
+                  got == "refuse" and len(calls) == 2 and "--resume" in calls[1] and det.get("reasked"),
+                  (got, len(calls), det.get("malformed")))
         finally:
             CC.subprocess.run = saved
 
