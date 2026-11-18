@@ -1580,7 +1580,10 @@ ROLE_INCIDENT_SUFFIXES = {"supervise", "unit", "overtime", "stop_failed", "stage
                           # the Designer chain (e24689bad0, 42647172c7): unreadable stage.json, a looping chain, a blind sweep
                           "chain", "chain_cap", "chain_sweep",
                           # the owner hold file unreadable: every concept is held until it reads (mod_owner_hold.py)
-                          "mod_owner_hold"}
+                          "mod_owner_hold",
+                          # the pipeline pause store unreadable: everything is held until it reads (pipeline_pause.py,
+                          # b206c0d34f), alarmed once per outage
+                          "pipeline_pause"}
 
 
 def test_role_relapse_kinds_do_not_reopen():

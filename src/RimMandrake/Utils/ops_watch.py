@@ -1087,7 +1087,7 @@ def held_nightly(keys, state=None):
         state = read_json(p) if p.exists() else {}
     for aid in (state if isinstance(state, dict) else {}):
         if aid.startswith("NIGHTLY_RED:testing.red_"):
-            out[aid.split(":", 1)[1]] = M(0, "nightly reds with one first error line, no entry parking them",
+            out["testing.red_" + aid.split(":testing.red_", 1)[1]] = M(0, "nightly reds with one first error line, no entry parking them",
                                           said=HELD_SAID)
     out["testing.nightly_reds_rerun_green"] = M(0, "nightly red groups green on one rerun", said=HELD_SAID)
     return out

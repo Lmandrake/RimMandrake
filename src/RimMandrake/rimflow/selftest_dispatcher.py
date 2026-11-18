@@ -2170,13 +2170,18 @@ def test_role_real_schedule_triggers():
 # ---------------------------------------------------------------- review T (launcher findings)
 
 def test_review_t():
-    # F1: only a token_aware role (Operations, and the Conductor since the owner ruling of 2026-10-31) is told band, runway, budget and caps
+    # F1: only a token_aware role (Operations, and the Conductor since the owner ruling of 2026-10-31) is told the
+    # ACCOUNT's band and runway; no role is told its own budget, cap or spend (owner 2026-11-16, 76dd23d59d: "I don't
+    # like how you're telling the agent how much it's spent")
     t = at_local("07:30")
     o = operations(token_aware=True, alarm_runs=False)
     a = role_acts(rdecide([o], fresh(), robs(ops_status(t)), t))
     la = [x for x in a if x["do"] == "role_launch"]
-    check(la and "Token budget" in la[0]["message"] and "runway" in la[0]["message"]
-          and "does not stop you" in la[0]["message"], "F1: Operations (token_aware) is told its band and budget")
+    lm = la[0]["message"].lower() if la else ""
+    check(la and "throttle band" in lm and "runway" in lm,
+          "F1: Operations (token_aware) is told the account's band and runway")
+    check(la and not any(w in lm for w in ("token budget", "budget", "spent", "remaining", "does not stop you", "cap ")),
+          "F1: Operations (token_aware) is not told its own budget, cap or spend (owner 2026-11-16)")
     a = role_acts(rdecide([operations(alarm_runs=False)], fresh(), robs(ops_status(t)), t))
     msg = [x for x in a if x["do"] == "role_launch"][0]["message"].lower()
     check(not any(w in msg for w in ("token", "budget", "runway", "week left", "band")),
