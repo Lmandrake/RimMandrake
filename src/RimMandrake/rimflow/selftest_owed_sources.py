@@ -87,6 +87,26 @@ def unread_records_said():
           "a torn record exits 2 naming it, and the readable source is still filed (rc %d)" % r.returncode)
 
 
+def one_filing_a_pass():
+    tmp = tempfile.mkdtemp(prefix="owed_max_")
+    det, items = os.path.join(tmp, "det"), os.path.join(tmp, "items")
+    os.makedirs(det)
+    os.makedirs(items)
+    mj = os.path.join(tmp, "m.json")
+    json.dump([{"mod": m, "version": "0.1.0", "stage": "blind_challenge", "blind": {"visit": 3},
+                "next": "NEXT (PAUSED: three cycles, the Conductor decides): x"} for m in ("Pyrelands", "FlowWorks")],
+              open(mj, "w"))
+    env = {k: v for k, v in os.environ.items() if not k.startswith("RIMFLOW_")}
+    env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=items, RIMFLOW_SEAT="BENCH",
+               RIMFLOW_PROBE="no-reading", PYTHONDONTWRITEBYTECODE="1")
+    argv = [sys.executable, os.path.join(HERE, "owed.py"), "sync-sources", "--maturation-json", mj, "--detached-dir", det,
+            "--max-file", "1"]
+    outs = [subprocess.run(argv, cwd=REPO, env=env, capture_output=True, text=True, timeout=300) for _ in range(3)]
+    filed = [o.stdout.count("FILED ") for o in outs]
+    check(filed == [1, 1, 0] and all(o.returncode == 0 for o in outs) and "WAITS " in outs[0].stdout,
+          "--max-file 1 files one a pass, says the other waits, exits 0 (filed %s)" % filed)
+
+
 def dispatcher_gates():
     calls = []
     sch = {"owed_sources_every_s": 300, "ledger_notes": False, "publish": True}
@@ -110,6 +130,8 @@ def dispatcher_gates():
     check(run(last=900.0)[0] == 0, "within owed_sources_every_s it does not run again")
     check(run(paused="paused")[0] == 0, "a PAUSE skips it")
     check(run(fence=lambda what: False)[0] == "fenced", "a moved metronome generation fences it")
+    n, st = run()
+    check(n == 1 and calls and calls[0] <= D.OWED_SOURCES_CAP_S, "its child gets at most OWED_SOURCES_CAP_S")
 
 
 def main():
@@ -117,6 +139,7 @@ def main():
     names_never_run_out()
     holds_on_every_path()
     unread_records_said()
+    one_filing_a_pass()
     dispatcher_gates()
     passed = sum(ok for ok, _ in RESULTS)
     for ok, what in RESULTS:

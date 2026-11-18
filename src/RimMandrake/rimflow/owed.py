@@ -335,10 +335,15 @@ def filed_keys(events):
     return keys
 
 
-def sync_sources(rows, recs, seat="BENCH", repo=None, timeout=120, sources_err=None, spawn=False):
+SPAWN_MIN_S = 4                                  # a filing replays the ledger: 4-10 s measured 2026-11-18
+
+
+def sync_sources(rows, recs, seat="BENCH", repo=None, timeout=120, sources_err=None, spawn=False, max_file=None,
+                 deadline=None):
     """File one owed item for each new source. -> (filed [(id, key)], problems [str]). rows/recs None = that source
     could not be read (named in sources_err); the other source is still filed. spawn: write `spawn --from <cause>`
-    (RUNNER, the Dispatcher tick), else `file`."""
+    (RUNNER, the Dispatcher tick), else `file`. max_file: at most this many filings a pass, the rest next pass;
+    deadline (epoch): no filing starts with under SPAWN_MIN_S left (it would be killed half-way)."""
     import fcntl
     import subprocess
     repo = repo or os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
@@ -352,6 +357,12 @@ def sync_sources(rows, recs, seat="BENCH", repo=None, timeout=120, sources_err=N
         known = set(world.items)
         for key, bases, title, cause in maturation_sources(rows) + detached_sources(recs, world.items):
             if key in done:
+                continue
+            if max_file is not None and len(filed) >= max_file:
+                problems.append("%s: waits for the next pass (at most %d filing(s) a pass)" % (key, max_file))
+                continue
+            if deadline is not None and time.time() + SPAWN_MIN_S > deadline:
+                problems.append("%s: waits for the next pass (no time left to file it)" % key)
                 continue
             iid = _free_name(bases, known)
             if iid is None:
@@ -367,7 +378,8 @@ def sync_sources(rows, recs, seat="BENCH", repo=None, timeout=120, sources_err=N
             argv += ["--why", "%s %s: an explicit Conductor hand step, filed where it parked (owed.py sync-sources)"
                      % (SOURCE_TAG, key)]
             try:
-                r = subprocess.run(argv, cwd=repo, capture_output=True, text=True, timeout=timeout,
+                r = subprocess.run(argv, cwd=repo, capture_output=True, text=True,
+                                   timeout=timeout if deadline is None else max(1.0, min(timeout, deadline - time.time())),
                                    stdin=subprocess.DEVNULL)
                 ok, out = r.returncode == 0, (r.stdout + r.stderr).strip()
             except Exception as e:              # noqa: BLE001 - said, never silent
@@ -434,6 +446,7 @@ def sync_sources_main(argv):
     ap.add_argument("--for", dest="seat", default="BENCH")
     ap.add_argument("--publish", action="store_true")
     ap.add_argument("--deadline", type=float, help="epoch: past it minus PUBLISH_RESERVE_S the push is deferred")
+    ap.add_argument("--max-file", type=int, help="at most this many filings this pass; the rest wait for the next")
     a = ap.parse_args(argv)
     if os.environ.get("RIMFLOW_LEDGER"):        # a throwaway ledger, as cli._bind_paths reads it
         model.EVENTS = os.environ["RIMFLOW_LEDGER"]
@@ -458,7 +471,10 @@ def sync_sources_main(argv):
         errs.append("could not read the owner holds (%s: %s): nothing filed" % (type(e).__name__, e))
         rows, recs = None, None
     runner = os.environ.get("RIMFLOW_SEAT") == "RUNNER"
-    filed, problems = sync_sources(rows, recs, seat=a.seat, sources_err=errs, spawn=runner)
+    filed, problems = sync_sources(rows, recs, seat=a.seat, sources_err=errs, spawn=runner, max_file=a.max_file,
+                                   deadline=a.deadline)
+    waits = [p for p in problems if ": waits for the next pass" in p]      # not a fault: the next pass files them
+    problems = [p for p in problems if p not in waits]
     for iid, key in filed:
         print("FILED %s %s" % (iid, key))
     if a.publish and runner:
@@ -484,10 +500,12 @@ def sync_sources_main(argv):
     elif a.publish:
         problems.append("--publish lands only the RUNNER shard; seat %s publishes its own" % (
             os.environ.get("RIMFLOW_SEAT") or "unset"))
+    for p in waits:
+        print("WAITS %s" % p.split(": waits", 1)[0])
     for p in problems:
         print("PROBLEM %s" % p)
-    print("sync-sources: %d filed, %d problem(s); rows %s, records %s" % (
-        len(filed), len(problems), "UNMEASURED" if rows is None else len(rows),
+    print("sync-sources: %d filed, %d waiting, %d problem(s); rows %s, records %s" % (
+        len(filed), len(waits), len(problems), "UNMEASURED" if rows is None else len(rows),
         "UNMEASURED" if recs is None else len(recs)))
     return 2 if errs else (1 if problems else 0)
 
