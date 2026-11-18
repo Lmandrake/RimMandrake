@@ -8618,3 +8618,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","result":"broken","detail":"Ops alarm CLONE_POOL_BREACH: disk.pool_breach = 1 pool breaches: over count, over bytes, stranded unpushed clones (MEASURED), line > 0","ts":"2026-11-18T07:17:23Z","tsn":1794986243279907375}
 {"seat":"RUNNER","event":"raise","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-18T07:17:28Z","tsn":1794986248911582576}
 {"seat":"RUNNER","event":"live","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","result":"kept","detail":"sweep: running again","ts":"2026-11-18T07:18:05Z","tsn":1794986285485591922}
+{"seat":"RUNNER","event":"live","id":"OPS_SEAT_CLONE_DIRT_RESTORE_VTLF","result":"broken","detail":"Ops alarm SEAT_CLONE_DIRT: disk.seat_dirt = 1 paths dirty in the seat clone over 60 min (MEASURED), line > 0","ts":"2026-11-18T09:27:45Z","tsn":1794994065506521466}
