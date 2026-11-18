@@ -47,3 +47,17 @@ the giver class, the think tree and both targets). The fix follows from that lin
 The job is still unnamed: no live attempt has reached the soorrak chain. Causes, none in this item's code or proof: a
 bridge refusal on another item's unreconciled call (976c01f0), `RimMandrake.Biomes` (which ships Stillsand) not enabled
 in ModsConfig, and a stale build after other items landed the CreatureBehaviors DLL and `validation.py`.
+
+## proof (corrected 2026-11-17, drain of the retired judge)
+The offline half, which is all that can be read without the game:
+
+    python3 src/RimMandrake/Stillsand/prove_soorrak_not_stuck.py --selftest
+
+Measured 2026-11-17: rc=0, `prove_soorrak_not_stuck selftest: 12 cases, ok`.
+Evidence: /Users/mandrake/ClaudeWork/scratch/rm-drain-logs/proofs/SOORRAK_INSTANT_JOB_LOOP_1.txt
+
+The item stays READY, not closed: its A1 is a single L2 clause (six wild RM_Soorrak on a Stillsand quicktest,
+3000 ticks, a JobDef other than Wait_MaintainPosture and a changed cell within 2500 ticks, no instant-job-loop
+warning). Twelve green selftest cases prove the READER classifies a stuck pawn correctly; they spawn no pawn.
+The judge this item was blocked on retired with Relentless 2026-11-13, so the block was lifted by this drain
+rather than by a verdict.

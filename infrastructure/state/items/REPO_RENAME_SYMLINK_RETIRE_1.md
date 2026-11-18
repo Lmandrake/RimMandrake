@@ -24,3 +24,48 @@ Not a typo: it is the repo's intermediate name. GitHub was `Lmandrake/RimMaster`
 - Re-measure with the scan patterns: zero BREAKS hits (state the instrument and a sanity probe).
 - Symlink removed.
 - A fresh Claude session in the repo works, the hourly Lodestar sweep (`lodestar-sync.timer`) completes, and the artpipe daemon still runs.
+
+## proof (corrected 2026-11-17, drain of the retired judge)
+Acceptance clause 1 was re-measured here. It FAILS. Instrument:
+
+    git grep -I -l -i -e 'dev\\Rimworld' -e 'dev/Rimworld' -e 'dev-Rimworld'
+
+The doubled backslash is load-bearing: git grep's default BRE reads `dev\Rimworld` as `devRimworld`
+and under-reads by 7 files. Sanity probes run with the same instrument in the same call: the new name
+`dev\\RimMandrake`/`dev/RimMandrake` returns 1199 files (the instrument can see), and
+`dev\\RimNoSuchThing` returns 0 (it is not matching everything).
+
+Measured 2026-11-17 on the drain clone at the branch point:
+  86 tracked files still carry an old-name path
+  44 of them are BENIGN by this item's own rule (`infrastructure/state/ledger`,
+     `infrastructure/state/items/closed`, `conversations`, `infrastructure/state/code_review`: never edit)
+  42 non-benign remain, of which these are LIVE TOOLING — Work step 1's target, a script or
+  instruction file that would act on the old path:
+    .claude/hooks/block_shared_tree_merge.py
+    .claude/hooks/selftest_block_blanket_git_stage.py
+    .claude/hooks/selftest_block_shared_tree_merge.py
+    infrastructure/output/pawn_flavor_phase2_census_gen.py
+    src/RimMandrake/Utils/artpipe/orphan_masters.py
+    skills/generating-rimworld-sprites/references/traps.md
+    skills/rimworld-modding/SKILL.md
+  (two further non-benign hits are frozen evidence, not tooling: a pulse time-ledger replay jsonl and
+  `whittle/amend_hook_harden_swept_a_neighbour/evidence/.../hook_selftest.txt`)
+  The top live BREAKS the Scan named — ~70 csproj build lines, ~20 `bridgetools/*.py` sys.path
+  inserts, `install_wt_seat_profiles.py`, `install_fleet_shortcut.py`, `claude_bounded.sh`,
+  `skills/validate_skills.py`, `infrastructure/dashboards` — now read ZERO. That part of step 1 landed.
+  The remainder is hooks, one generator, one artpipe tool and two skills.
+Evidence: /Users/mandrake/ClaudeWork/scratch/rm-drain-logs/proofs/REPO_RENAME_SYMLINK_RETIRE_1.txt
+
+## why this is ready, not done
+Three reasons, and the first is the only one a desk worker can clear:
+1. Acceptance clause 1 is red: 7 live-tooling files still carry the old path. Repoint them (prefer
+   `git rev-parse --show-toplevel` or a repo-relative path over a second absolute literal), then
+   re-run the instrument above WITH both sanity probes and state the three counts.
+2. Clause 2 (symlink removed) is a Windows filesystem action on `D:\Luke\dev\Rimworld`. UNMEASURED
+   from here: this clone is on a Mac with no `/mnt/d` and no `C:\`.
+3. Clause 3 (fresh session, `lodestar-sync.timer`, artpipe daemon) is a live reading on the Archmagi
+   host. UNMEASURED from here for the same reason.
+
+Next worker: do (1) offline in the real repo; (2) and (3) need the Windows host and must be read
+there, after (1), in that order — removing the link before the last live BREAKS is repointed is what
+breaks the daemon.

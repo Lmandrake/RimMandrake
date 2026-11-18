@@ -42,3 +42,23 @@ and when it finishes: `python3 src/RimMandrake/Utils/testq/retest.py passed <new
 - the class is recorded on this item (note) with its evidence before the fix;
 - `retest.py passed <re-run job> HARNESS_REPAIR_CAUSE_B338C64C` exits 0 on a job run at the fix's sha;
 - the negative control above exits 1.
+
+## proof (corrected 2026-11-17, drain of the retired judge)
+The offline half of the fix:
+
+    python3 src/RimMandrake/Utils/run_selftests.py --only infrastructure/stevedesktop/selftest_steve_worker_state_race.py
+
+Measured 2026-11-17: rc=0, RESULT: GREEN. The fix landed at cb48f180d956 (`worker.py` +14, `testq/schema.py`
++6, the selftest +117). Note that the OTHER commit citing this item, 5decaf8a5478, only added a `.rerun_job`
+file, which aee8a09cc6 later deleted — so cb48f180d956 is the commit that carries the work.
+Evidence: /Users/mandrake/ClaudeWork/scratch/rm-drain-logs/proofs/HARNESS_REPAIR_CAUSE_B338C64C.txt
+
+## why this is ready, not closed
+The item's own `## verify` is not the selftest: "Pass = the SAME job re-run yields a verdict", via
+`testq.py submit DivingInteraction --chains chill_dive_density_sampler,scald_walking_pasture,
+seabed_floor_ambient_carryover,seabed_floor_generators ... --profile targeted` then
+`retest.py passed <new job id>`. That needs the live testq harness: `infrastructure/state/testq` does not
+exist in this clone, and the `.rerun_job` marker that named the original job was deleted at aee8a09cc6. The
+state-race selftest passing is evidence the race is fixed; it is not the item's pass condition.
+
+Next worker (on the Steve host): re-submit the job above and read `retest.py passed <id>`.
