@@ -86,6 +86,7 @@ LAUNCH = {"launch", "launched", "would_launch"}
 # a Conductor hold stands: nothing automatic is routed past it, a road-back fixer included
 # (RIMMANDRAKE_HONOUR_CONDUCTOR_HOLD_ROAD_BACK_FIXER_IGNORED_IT)
 HOLDS = {"held"}
+PLANNED = {"pipeline_paused", "disabled"}     # a stop someone chose: class planned, never an alarm
 STEWARD_ON = {"hand_step", "ready", "exit_met", "exit_not_met"}
 OWNER_STAGES = {"his_walk": "his live walk (Stage 8): the version passes on his words alone"}
 # A passed version rests (spec: "pass record written; the mod rests"); opening the next one is weighed against the other
@@ -1124,6 +1125,10 @@ def _klass(cfg, s, row, now, queue):
             txt = "%s on %s" % (txt.rstrip(), row["fix_item"])
         if row.get("steward_why"):
             txt = "%s for: %s" % (txt.rstrip(), str(row["steward_why"]))
+    elif dec in PLANNED:
+        # a planned stop (the pipeline's pause, or enabled: false): no paused, stalled or idle reading counts it
+        # (RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED)
+        k, txt = "planned", row.get("why") or dec
     elif dec in WAIT:
         on = row.get("waits_on")
         if on is None and dec != "designer_wait":
@@ -1154,8 +1159,10 @@ def _klass(cfg, s, row, now, queue):
     if prev.get("k") != k or prev.get("d") != dec or prev.get("w", named) != named:
         s["klass_since"] = {"k": k, "d": dec, "w": named, "at": now}
     row["for_min"] = round((now - s["klass_since"]["at"]) / 60)
-    stuck = (k == "wait" and not row.get("waits_on")) or k not in ("launch", "wait", "paused", "owner", "rested")
-    row["stalled"] = bool(stuck and row["for_min"] >= int(cfg.get("stalled_min", 10)))
+    stuck = (k == "wait" and not row.get("waits_on")) or k not in ("launch", "wait", "paused", "owner", "rested",
+                                                                   "planned")
+    # a mod under the pipeline's pause waits on the pause by plan: never stalled
+    row["stalled"] = bool(stuck and row["for_min"] >= int(cfg.get("stalled_min", 10))) and not row.get("pipeline_paused")
 
 
 # ---- the acts: steward and fixer launches, owner cards ---------------------------------------------------------------
@@ -1564,7 +1571,10 @@ def annotate(rd, rows):
             if r.get(k) is not None:
                 m[k] = r.get(k)
         m["decision"], m["why"] = r.get("decision"), r.get("why")
-    rd["paused"] = ["%s: %s" % (r["mod"], r.get("status")) for r in rows if r.get("klass") == "paused"]
+    # under the pipeline's pause nothing is counted paused or stalled (a planned stop raises no alarm); a mod's own
+    # stop stays on its status line and is counted again the tick the pause ends
+    rd["paused"] = ["%s: %s" % (r["mod"], r.get("status")) for r in rows if r.get("klass") == "paused"
+                    and not r.get("pipeline_paused")]
     rd["owner"] = ["%s: %s" % (r["mod"], r.get("card") or r.get("why")) for r in rows if r.get("klass") == "owner"]
-    rd["stalled"] = [r["mod"] for r in rows if r.get("stalled")]
+    rd["stalled"] = [r["mod"] for r in rows if r.get("stalled") and not r.get("pipeline_paused")]
     return rd

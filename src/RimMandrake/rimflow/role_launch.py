@@ -1643,6 +1643,11 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 blind=blind(name, "schedule_unreadable"),
                 why="role %s NOT RUN: its schedule entry is unreadable: %s" % (name, e))
             return
+        # ---- the pipeline's pause: a pipeline role (chain_stages) starts nothing, a resume or a slot included; a
+        # run-now on a paused concept is refused at its own check below (owner_held)
+        if cfg.get("chain_stages") is True and pipeline_held(
+                name, rs, (rs.get("resume") or {}).get("concept") if isinstance(rs.get("resume"), dict) else None, now, act):
+            return
         # ---- a run the account cut off after real work goes first, resumed in its own session (account_death)
         if rs.get("resume") and not req and obs["off"](wsl_path(role.get("off_file") or "")) is None \
                 and resume_due(name, rs, cfg, now, act, busy, gate, resume_account(obs), tick_launch):
@@ -1778,7 +1783,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                     "held); ask again" % (name, req.get("by"), req.get("why"), RUN_NOW_TTL_S))
                 return
             if req.get("concept") and owner_held(name, rs, req["concept"], now, act):
-                refuse_now(rs, "owner hold", now)     # a request asked before the hold, or by hand: consumed, not run
+                import pipeline_pause as PP     # a request asked before the hold or pause, or by hand: consumed, not run
+                refuse_now(rs, "pipeline paused" if PP.blocks(req["concept"], now) else "owner hold", now)
                 return
             due = [run_now_job(cfg, req, now)]
         if not due:
@@ -2516,6 +2522,8 @@ def owner_held(name, rs, concept, now, act):
         rs["hold_blind"] = str(e)
         return True
     rs.pop("hold_blind", None)
+    if pipeline_held(name, rs, concept, now, act):
+        return True
     if not h:
         return False
     mark = "%s %s" % (day_of(now), OH.key(concept))
@@ -2525,6 +2533,31 @@ def owner_held(name, rs, concept, now, act):
             name, OH.key(concept), OH.status(h)))
         said.append(mark)
     rs["hold_said"] = said
+    return True
+
+
+def pipeline_held(name, rs, concept, now, act):
+    """True when the pipeline's pause (pipeline_pause.py; item RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED) stands on
+    `concept`'s mod, or on the whole pipeline (concept None: pause all only): nothing is chained, resumed or launched.
+    A planned stop: said once a day per scope as a role_hold note, never an alarm. An unreadable pause store holds
+    everything (a pause that cannot be proved lifted is never read as running), alarmed once per outage."""
+    import pipeline_pause as PP
+    why = PP.blocks(concept, now)
+    if not why:
+        rs.pop("pause_blind", None)
+        return False
+    if "cannot be read" in why and not rs.get("pause_blind"):
+        act(do="alarm", kind="role:%s:pipeline_pause" % name, note=True, conductor_log=True,
+            why="%s: %s" % (name, why))
+        rs["pause_blind"] = why
+    scope = PP.key(concept) if concept else "all"
+    mark = "%s %s" % (day_of(now), scope)
+    said = [k for k in rs.get("pause_said") or [] if str(k).startswith(day_of(now) + " ")]
+    if mark not in said:
+        act(do="role_hold", role=name, note=True, why="%s: %s not chained or launched: %s" % (
+            name, "%s is" % scope if concept else "nothing is", why))
+        said.append(mark)
+    rs["pause_said"] = said
     return True
 
 

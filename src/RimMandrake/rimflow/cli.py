@@ -4882,11 +4882,27 @@ def build_parser():
             _delegate("reindex"))
     s.add_argument("rest", nargs=argparse.REMAINDER,
                    help="passed straight through to render.py")
+    s = add("pipeline", "the Maturation Pipeline's pause switch and forecast: pipeline pause|resume|next|status "
+                        "(owned by maturation_dispatch.py; RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED)",
+            _pipeline)
+    s.add_argument("rest", nargs=argparse.REMAINDER,
+                   help="passed straight through to maturation_dispatch.py (pause [MOD] --why ... [--until T], "
+                        "resume [MOD] --why ..., next [--within 30m], status)")
     return p
 
 
+def _pipeline(args, seat):
+    """`rimflow pipeline ...` -> maturation_dispatch.py's own verbs (one code path, none copied here)."""
+    rest = list(args.rest or [])
+    if not rest or rest[0] not in ("pause", "resume", "next", "status"):
+        print("usage: rimflow pipeline pause|resume|next|status ... (maturation_dispatch.py <verb> --help)")
+        return 2
+    import maturation_dispatch as MD
+    return MD.main(rest)
+
+
 READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex", "queue", "pilot", "preflight", "incidents",
-             "namecheck")  # namecheck: a pure read the seatless nightly calls (NIGHTLY_COP_FIX_RED_MTJJIN_ODMC)
+             "namecheck", "pipeline")  # namecheck: a pure read the seatless nightly calls (NIGHTLY_COP_FIX_RED_MTJJIN_ODMC)
 
 
 # \u26d4 Bare assent is not an instruction. These are the words that mean "I agree

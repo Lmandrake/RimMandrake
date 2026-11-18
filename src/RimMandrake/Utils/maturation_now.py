@@ -892,6 +892,12 @@ def dispatch_pipeline(now, errors):
     # the dispatch clone's distance from origin/main (RIMMANDRAKE_UNJAM_DISPATCH_CLONE_TWO_WRITERS_BLOCK_EACH_REBASE):
     # a clone left behind runs old code under every timer, so it leads the list
     out = [MD.clone_line(rd["clone"])] if isinstance(rd.get("clone"), dict) else []
+    # the pipeline's pause leads the list (RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED): why, who, until
+    pz = rd.get("pipeline_pause") or {}
+    out = ((["PIPELINE PAUSED: the pause state cannot be read (%s); nothing starts" % pz["error"]] if pz.get("error")
+            else []) + (["PIPELINE PAUSED (all): %s" % pz["all"]] if pz.get("all") else [])
+           + ["PAUSED %s: %s" % (m, t) for m, t in sorted((pz.get("mods") or {}).items())]
+           + [str(x) for x in pz.get("said") or []] + out)
     out.append(slots_line(rd, pipeline_units(os.path.join(MD.sdir(), "ticks.jsonl")), mx))
     for mod, r in sorted((rd.get("mods") or {}).items()):
         if r.get("status"):

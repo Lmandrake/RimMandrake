@@ -181,6 +181,8 @@ def decide(cfg, st, facts, now, account=(True, "")):
     live_total = sum(len(r.get("live") or []) for r in runs.values())
     tonight = sum(1 for s in items.values() for a in s.get("attempts") or [] if a.get("night") == night)
     details = facts.get("night")
+    import pipeline_pause as PP     # noqa: E402  a pause-all starts no red fixer; an unreadable pause store reads paused
+    paused = PP.blocks(None, now)
     for red in reds:
         iid = red["item"]
         s = items.setdefault(iid, {})
@@ -227,6 +229,9 @@ def decide(cfg, st, facts, now, account=(True, "")):
             continue
         if not cfg.get("enabled"):
             put("disabled", "red_dispatch.json has enabled: false")
+            continue
+        if paused:      # the pipeline's pause (pipeline_pause.py; RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED)
+            put("pipeline_paused", paused)
             continue
         if tonight >= int(cfg.get("max_launches_per_night", 6)):
             put("night_cap", "%d launches tonight, the most is %s" % (tonight, cfg.get("max_launches_per_night")))

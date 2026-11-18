@@ -17,6 +17,13 @@ no builder on them, because every launch was a Conductor hand step.)
     python3 src/RimMandrake/rimflow/maturation_dispatch.py release MOD --stage STAGE --read-usd X --usd R --why "..."
             the Conductor releases MOD past the ceiling at STAGE by USD R, having read USD X spent there: one more
             launch, then the mod pauses at the next ceiling (item RIMMANDRAKE_RELEASE_STAGE_CEILING_PER_MOD_ONLY_GLOBAL_KNOB)
+    python3 src/RimMandrake/rimflow/maturation_dispatch.py pause [MOD] --why "..." [--until +2h|HH:MM|--until-release]
+            [--stop-live]      the pipeline's pause (pipeline_pause.py): nothing in the launch-path census starts on
+            MOD (default: anything) from the next tick; live runs finish unless --stop-live; a planned stop, no alarm
+    python3 src/RimMandrake/rimflow/maturation_dispatch.py resume [MOD] --why "..."
+    python3 src/RimMandrake/rimflow/maturation_dispatch.py next [--within 30m]
+            UP NEXT: what WILL start if nobody acts, by this tick's own code in its dry pass on a moving clock
+            (item RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED; the same verbs: `rimflow pipeline pause|resume|next`)
 
 Runs on rm-maturation-dispatch.timer (every 60 s, from the dispatch clone); its own timer, not the Dispatcher's tick,
 so a slow ledger read never cuts a Dispatcher beat. Settings: maturation_dispatch.json beside this file.
@@ -139,6 +146,7 @@ import maturation_now as MN     # noqa: E402
 import maturation_autonomy as AUT   # noqa: E402
 import detached_helper as DH    # noqa: E402
 import modledger                # noqa: E402  the mod ledger: stage runs from its packet; holder sessions (resume_plan)
+import pipeline_pause as PP          # noqa: E402  the pipeline's pause: one switch, a file (pause.json in sdir)
 import mod_owner_hold as OH          # noqa: E402  the owner's hold: a held mod is never decided (mod_owner_hold.json)
 
 UNM = "UNMEASURED"
@@ -2646,7 +2654,8 @@ def slow_chores(st, facts, now, fx=None):
 
 def reading(cfg, rows, now):
     owed = [r for r in rows if r.get("stage") == "offline_build" and r.get("owed") in OWED and not r.get("live")
-            and r.get("decision") not in ("launched",) and r.get("klass") not in ("paused", "owner")]
+            and r.get("decision") not in ("launched",) and r.get("klass") not in ("paused", "owner", "planned")
+            and not r.get("pipeline_paused")]     # a paused mod is idle by plan: no idle alarm
     mx = max([r.get("idle_min") or 0 for r in owed] or [0])
     over = [r["mod"] for r in owed if (r.get("idle_min") or 0) > cfg.get("idle_alarm_min", 60)]
     return {"schema": 1, "at": now, "at_pac": pac(now), "enabled": bool(cfg.get("enabled")),
@@ -2656,7 +2665,8 @@ def reading(cfg, rows, now):
             "needs_conductor": [r["need"] for r in rows if r.get("need")],
             "mods": {r["mod"]: {k: r.get(k) for k in ("decision", "why", "stage", "owed", "refused", "live",
                                                        "idle_min", "stage_usd", "cycle", "visit", "exit",
-                                                       "stop_lifted", "batch")} for r in rows}}
+                                                       "stop_lifted", "batch", "launch", "pipeline_paused")}
+                     for r in rows}}
 
 
 CLONE_FETCH_S = 30          # the tick's fetch of its own clone
@@ -2800,6 +2810,18 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
         rows, launches = AUT.resolve(root, cfg, st, facts, rows, launches, now, fx)
         rows, launches = pilot_holders(root, cfg, st, facts, rows, launches, now, dict(fx, account=lambda: account))
     launches = prioritise(cfg, st, facts, rows, launches, root)     # one slot order over every layer: the list's
+    # The pipeline's pause (pipeline_pause.py; RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED): read at the moment of
+    # deciding, no git hop. A paused mod's launch row reads pipeline_paused (class planned: no alarm); its live run is
+    # left alone; an --until that has passed resumes by itself (an applying tick moves it to history and says so).
+    pause_said = PP.expire(now) if apply else []
+    pz = fx["pause"](now) if "pause" in fx else PP.state(now)
+    for r in rows:
+        why = PP.reason(pz, r["mod"])
+        if why:
+            r["pipeline_paused"] = why
+            if r["mod"] in launches:
+                r.update(decision="pipeline_paused", why="%s; it would have launched: %s" % (why, r.get("why") or "-"))
+    launches = [m for m in launches if not PP.reason(pz, m)]
     if not cfg.get("enabled"):
         for r in rows:
             if r["mod"] in launches:
@@ -2833,10 +2855,17 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     if apply:
         book_refunds(st, rows, now)
     AUT.classify(cfg, st, rows, now)
+    for r in rows:      # the forecast's and the status's word for what a launch row starts (launch_kind)
+        if r.get("decision") in ("would_launch", "launched"):
+            r["launch"] = launch_kind(cfg, r)
     rows += held_rows(holds, facts)
     if apply and aut:
         AUT.post_cards(rows, st, now, fx)
     rd = AUT.annotate(reading(cfg, rows, now), rows)
+    rd["pipeline_pause"] = PP.summary(pz)
+    for x in pause_said:
+        if x not in rd["pipeline_pause"]["said"]:
+            rd["pipeline_pause"]["said"].append(x)
     try:    # a DIVERGING stage is a Needs Conductor line; it pauses nothing (maturation_convergence.py)
         conv = fx.get("convergence")    # a selftest's fixture source (RIMMANDRAKE_ISOLATE_DISPATCH_SELFTEST_FROM_CONVERGENCE)
         if conv is None:
@@ -2885,6 +2914,204 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     return rd
 
 
+# ---- the pipeline's pause and its "up next" forecast (RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED) ---------------
+# The owner, 2026-11-18 ~10:27 AM PST: "perhaps some kind of "up next" feature we can ping that says what WILL happen in
+# some amount of time if we do nothing, so we can confirm using its own code..."
+VOID_ITEM = "RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT"
+
+
+def launch_kind(cfg, r):
+    """-> {"kind", "model", "cap_usd", "rule"}: what a launch row starts, read from the row the tick hands execute."""
+    if r.get("aut") in ("autolock", "autorepin"):
+        return {"kind": r["aut"], "model": "none (an act: one landing, no run)", "cap_usd": 0,
+                "rule": "maturation_autonomy %s" % r["aut"]}
+    if r.get("aut"):
+        return {"kind": r["aut"], "model": cfg.get("steward_model", "opus"),
+                "cap_usd": cfg.get("fix_cap_usd" if r["aut"] == "fixer" else "steward_cap_usd"),
+                "rule": "maturation_autonomy %s%s" % (r["aut"], " on %s" % r["fix_item"] if r.get("fix_item") else "")}
+    if r.get("holder_items"):
+        return {"kind": "holder", "model": cfg.get("steward_model", "opus"), "cap_usd": r.get("cap") or cfg.get("cap_usd"),
+                "rule": "pilot_holders on %s" % ", ".join(map(str, r["holder_items"]))}
+    if r.get("cert_rerun_key"):
+        return {"kind": "certificate rerun", "model": "none (zero tokens)", "cap_usd": 0, "rule": "cert_rerun_decide"}
+    if r.get("cert_reds"):
+        return {"kind": "builder on red deciders", "model": cfg.get("model", "opus"), "cap_usd": r.get("cap") or
+                cfg.get("cap_usd"), "rule": "cert_red_decide"}
+    stage = r.get("stage")
+    return {"kind": ROLE_OF_STAGE.get(stage, "run"),
+            "model": cfg.get("ingame_model", "opus") if stage == "in_game" else cfg.get("model", "opus"),
+            "cap_usd": r.get("cap") or cfg.get({"blind_challenge": "blind_cap_usd", "in_game": "ingame_cap_usd"}.get(
+                stage, "cap_usd")), "rule": {"blind_challenge": "decide_blind", "in_game": "decide_ingame"}.get(
+                    stage, "decide (offline build)")}
+
+
+STOP_RUNNER = [subprocess.run]     # stop_live's runner (a selftest swaps it; nothing else does)
+
+
+def stop_live(root, cfg, mod=None, facts=None, runner=None):
+    """--stop-live: stop every live run on the advancing mods (mod: on that one). -> [{"mod", "unit", "rc", "said"}].
+    Each stopped run is recorded for voiding (VOID_ITEM's mechanism when it lands: a system-killed run spends no
+    trial); until then the record is the pause store's history, act stop_live, void_owed true."""
+    facts = facts if facts is not None else gather(root, cfg)
+    runner = runner or STOP_RUNNER[0]
+    out = []
+    for m, f in sorted(facts.items()):
+        if mod and OH.key(m) != OH.key(mod):
+            continue
+        for u in f.get("live_units") or []:
+            if not isinstance(u, str):
+                continue
+            try:
+                r = runner(["systemctl", "--user", "stop", u], capture_output=True, text=True, timeout=120)
+                rc, said = r.returncode, ((r.stdout or "") + (r.stderr or "")).strip()
+            except Exception as e:      # noqa: BLE001  a stop that fails is said, never read as stopped
+                rc, said = 1, "%s: %s" % (type(e).__name__, e)
+            out.append({"mod": m, "unit": u, "rc": rc, "said": said})
+    return out
+
+
+def forecast(root, cfg, within_s=1800, step_s=None, fx=None, now=None):
+    """What WILL start within within_s if nobody acts, by the tick's own code: _tick in its dry pass (apply False)
+    over ONE observation of the world (the facts, account, releases and code read once), the clock moved step by
+    step, so settle timers, waits on time and a pause's --until end as they will. -> {"at", "within_s", "launches":
+    [{"mod", "at", "at_pac", "launch", "why"}], "blocked": [{"mod", "decision", "why"}], "unmeasured": [why],
+    "roles": [line]}. A launch is the mod's FIRST one; what follows a launch is not forecast (it depends on the
+    run). A live run's end cannot be forecast: its mod reads UNMEASURED, never "nothing"."""
+    fx = dict(fx or {})
+    now = time.time() if now is None else now
+    step = float(step_s or max(60.0, within_s / 30.0))
+    unmeasured = []
+    if "facts" not in fx:
+        st0 = read_state(os.path.join(sdir(), "state.json"))
+        wcfg = AUT.widen(root, cfg, st0, False, fx) if fx.get("autonomy", True) else cfg
+        f0 = gather(root, wcfg)
+        fx["facts"] = lambda: f0
+    if "account" not in fx:
+        a0 = account_gate()
+        fx["account"] = lambda: a0
+    if "releases" not in fx:
+        r0 = read_releases()
+        fx["releases"] = lambda: r0
+    if "code" not in fx:
+        c0 = pipeline_code(REPO)
+        fx["code"] = lambda: c0
+    first, last, t = {}, {}, now
+    while t <= now + within_s + 1e-6:
+        rd = _tick(root, cfg, False, fx=fx, now=t, page=False)
+        for mod, r in (rd.get("mods") or {}).items():
+            if mod in first:
+                continue
+            if r.get("decision") == "would_launch":
+                first[mod] = {"mod": mod, "at": t, "at_pac": pac(t), "launch": r.get("launch") or {}, "why": r.get("why")}
+            else:
+                last[mod] = {"mod": mod, "decision": r.get("decision"), "why": r.get("status") or r.get("why"),
+                             "live": r.get("live")}
+        t += step
+    blocked = [v for m, v in sorted(last.items()) if m not in first]
+    for b in blocked:
+        if isinstance(b.get("live"), list) and b["live"]:
+            unmeasured.append("%s: UNMEASURED after its live run(s) %s end: a run's end cannot be forecast, so what "
+                              "starts then is not read here" % (b["mod"], ", ".join(map(str, b["live"]))))
+        elif b.get("live") is not None and not isinstance(b.get("live"), list):
+            unmeasured.append("%s: UNMEASURED, its live runs cannot be read" % b["mod"])
+    try:
+        last_rd = _read(os.path.join(sdir(), "reading.json"), None) or {}
+        c = last_rd.get("clone") or {}
+        if c.get("measured") and (c.get("behind_min") or 0) > CLONE_STALE_MIN:
+            unmeasured.append("every launch above: the dispatch clone read %s min behind origin/main at the last "
+                              "tick, and a stale clone launches nothing (stale_clone)" % c.get("behind_min"))
+    except Exception as e:      # noqa: BLE001
+        unmeasured.append("the dispatch clone's distance cannot be read (%s): a stale clone would launch nothing"
+                          % e)
+    return {"at": now, "at_pac": pac(now), "within_s": within_s, "step_s": step,
+            "launches": sorted(first.values(), key=lambda x: x["at"]), "blocked": blocked, "unmeasured": unmeasured,
+            "roles": forecast_roles(now, within_s, fx.get("schedule"))}
+
+
+def forecast_roles(now, within_s, sched=None):
+    """The Dispatcher's pipeline roles (chain_stages: Designer, DesignerCodex) and red_dispatch, in the same
+    forecast: blocked by the pause (pipeline_pause.reason, the gate role_launch reads), off, disabled, or a scheduled
+    slot inside the window. A chain or sweep run starts when a Designer stage closes or a concept sits orphaned: that
+    depends on a run's end and reads UNMEASURED, never as nothing."""
+    out = []
+    try:
+        if sched is None:
+            with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
+                sched = json.load(f)
+        import role_launch as RL
+    except Exception as e:      # noqa: BLE001
+        return ["Dispatcher roles: UNMEASURED, the schedule cannot be read (%s: %s)" % (type(e).__name__, e)]
+    pz = PP.state(now)
+    for role in sched.get("roles") or []:
+        if not isinstance(role, dict) or role.get("chain_stages") is not True:
+            continue
+        name = role.get("name", "?")
+        why = PP.reason(pz)
+        if why:
+            out.append("%s: nothing starts, %s" % (name, why))
+            continue
+        if not role.get("enabled"):     # decide_roles still sweeps a disabled chain role and launches its run-now
+            out.append("%s: no scheduled slot (the role is disabled in dispatcher_schedule.json); a run-now its chain "
+                       "sweep or a person asks still launches: UNMEASURED here; paused concepts: %s" % (
+                           name, ", ".join(sorted(pz.get("mods") or {})) or "none"))
+            continue
+        off = RL.off_switch(RL.wsl_path(role.get("off_file") or ""))
+        if off is not None:
+            out.append("%s: nothing (off switch %s: %s)" % (name, role.get("off_file"), off or "no reason given"))
+            continue
+        try:
+            due = [(sl, RL.slot_epoch(now + d, sl)) for d in (0, 86400) for sl, _m, _c in RL.slots(
+                dict(RL.ROLE_DEFAULTS, **role), now + d)]
+            due = [(sl, t) for sl, t in due if now <= t <= now + within_s]
+        except Exception as e:      # noqa: BLE001
+            out.append("%s: UNMEASURED, its slots cannot be read (%s)" % (name, e))
+            continue
+        out.append("%s: %s; chained and swept runs (a stage closing, an orphaned concept, a run-now) are UNMEASURED: "
+                   "they start on a run's end, which this forecast cannot see; paused concepts: %s" % (
+                       name, "scheduled slot(s) %s" % ", ".join("%s at %s" % (sl, pac(t)) for sl, t in due) if due
+                       else "no scheduled slot in the window", ", ".join(sorted(pz.get("mods") or {})) or "none"))
+    why = PP.reason(pz)
+    out.append("red_dispatch: nothing starts, %s" % why if why else
+               "red_dispatch: UNMEASURED here (its own dry pass: `red_dispatch.py tick`)")
+    return out
+
+
+def forecast_lines(fc):
+    mins = int(fc["within_s"] // 60)
+    out = ["UP NEXT from %s, the next %d min, by the tick's own decision code (dry, the clock moved every %d s):" % (
+        fc["at_pac"], mins, fc["step_s"])]
+    if fc["launches"]:
+        for x in fc["launches"]:
+            k = x.get("launch") or {}
+            out.append("  WILL START %s (+%d min): %s %s (model %s, cap %s), by %s; %s" % (
+                x["at_pac"], (x["at"] - fc["at"]) // 60, x["mod"], k.get("kind", "run"), k.get("model", UNM),
+                wt(k["cap_usd"]) if isinstance(k.get("cap_usd"), (int, float)) and k["cap_usd"] > 0 else "none",
+                k.get("rule", UNM), x.get("why") or ""))
+    else:
+        out.append("  NOTHING WILL START in the tick's layers in the next %d min%s" % (
+            mins, " (but see UNMEASURED below)" if fc["unmeasured"] else ""))
+    for b in fc["blocked"]:
+        out.append("  not starting: %-20s %s: %s" % (b["mod"], b["decision"], b["why"]))
+    for u in fc["unmeasured"]:
+        out.append("  %s" % u)
+    for r in fc["roles"]:
+        out.append("  %s" % r)
+    return out
+
+
+def _within(text):
+    m = PP.REL.match(str(text).strip().lower().lstrip("+")) or PP.REL.match("+" + str(text).strip().lower())
+    if not m:
+        raise ValueError("--within %r: give 30m, 2h or 1d" % text)
+    return float(m.group(1)) * {"m": 60, "min": 60, "h": 3600, "hr": 3600, "d": 86400}[m.group(2)]
+
+
+def _by(o):
+    import doorbell
+    import model
+    return model.canonical((getattr(o, "by", None) or doorbell.seat_name() or "").strip()) or "unknown"
+
+
 HAND_NOTE = ("This is a hand act on the pipeline (id %s): the tick records it, and one with no follow-up within a day "
              "alarms. Name the item that makes this hand unnecessary in --why, or `maturation_hands.py fold <id> --item "
              "<ID>` once it is filed.")
@@ -2925,7 +3152,37 @@ def main(argv=None):
     cr.add_argument("mod")
     cr.add_argument("--key", required=True)
     cr.add_argument("--unit", required=True)
+    pz = sub.add_parser("pause", help="pause the whole pipeline (or MOD): nothing starts until resume or --until; live "
+                                      "runs finish unless --stop-live")
+    pz.add_argument("mod", nargs="?", help="one mod only (default: every pipeline path)")
+    pz.add_argument("--why", required=True)
+    g = pz.add_mutually_exclusive_group()
+    g.add_argument("--until", help="+90m, +2h, HH:MM (local), an ISO date-time or an epoch: then it resumes by itself")
+    g.add_argument("--until-release", action="store_true", help="until `resume` (the default)")
+    pz.add_argument("--stop-live", action="store_true", help="also stop the runs live on it now, recorded for voiding")
+    pz.add_argument("--by", default=None, help="who pauses (default: this window's seat)")
+    rs_ = sub.add_parser("resume", help="lift the pause on the whole pipeline (or on MOD)")
+    rs_.add_argument("mod", nargs="?")
+    rs_.add_argument("--why", required=True)
+    rs_.add_argument("--by", default=None)
+    nx = sub.add_parser("next", help="what WILL start if nobody acts, by the tick's own decision code (a dry pass "
+                                     "on a moving clock)")
+    nx.add_argument("--within", default="30m", help="the window: 30m, 2h, 1d (default 30m)")
+    nx.add_argument("--step", type=float, default=None, help="seconds between simulated ticks (default within/30, "
+                                                                "at least 60)")
+    nx.add_argument("--json", action="store_true")
     o = ap.parse_args(argv)
+    if o.cmd in ("pause", "resume"):
+        return _pause_verb(o)
+    if o.cmd == "next":
+        try:
+            within = _within(o.within)
+        except ValueError as e:
+            print("REFUSED: %s" % e)
+            return 2
+        fc = forecast(os.path.abspath(o.root), load_cfg(), within, o.step)
+        print(json.dumps(fc, indent=1, default=str) if o.json else "\n".join(forecast_lines(fc)))
+        return 0
     if o.cmd == "cert-rerun":
         res = cert_rerun_worker(o.mod, o.key, o.unit)
         print(json.dumps(res, indent=1))
@@ -2947,6 +3204,8 @@ def main(argv=None):
         print(text)
         return rc
     if o.cmd == "status":
+        for x in PP.status_lines(PP.state()):    # the switch as it stands now, ahead of the last reading
+            print(x)
         rd = _read(os.path.join(sdir(), "reading.json"), None)
         if not rd:
             print("no reading yet")
@@ -3006,6 +3265,50 @@ def main(argv=None):
         with state_lock():
             return _clear(o)
     return 2
+
+
+def _pause_verb(o):
+    """`pause` / `resume`: write the pause store (pipeline_pause.py); the next tick (within 60 s) reads it, with no
+    git hop. --stop-live stops the live runs and records them for voiding."""
+    by = _by(o)
+    if not o.why.strip():
+        print("REFUSED: --why is empty")
+        return 2
+    scope = OH.key(o.mod) if o.mod else "the whole pipeline"
+    if o.cmd == "resume":
+        try:
+            was = PP.resume(o.mod, o.why, by)
+        except PP.Unreadable as e:
+            print("REFUSED: the pause store cannot be read, so nothing is resumed over it (it reads PAUSED): %s" % e)
+            return 1
+        print("RESUMED %s by %s: %s (was: %s)" % (scope, by, o.why.strip(), PP.line(was) if was else "not paused"))
+        return 0
+    try:
+        until = PP.parse_until(o.until) if o.until else None
+    except ValueError as e:
+        print("REFUSED: %s" % e)
+        return 2
+    e = PP.pause(o.mod, o.why, by, until)
+    print("PAUSED %s: %s. Nothing in the census starts on it from the next tick (within 60 s); see "
+          "design/RimMandrake/pipeline_launch_paths_census_2026-11-18.md" % (scope, PP.line(e)))
+    if o.stop_live:
+        stopped = stop_live(os.path.abspath(o.root), load_cfg(), o.mod)
+        PP.note({"act": "stop_live", "scope": OH.key(o.mod) if o.mod else "all", "at": time.time(), "by": by,
+                 "why": o.why.strip(), "units": stopped, "void_owed": True, "void_item": VOID_ITEM})
+        for x in stopped:
+            print("  %s %s on %s (rc %s)%s" % ("STOPPED" if x["rc"] == 0 else "STOP FAILED", x["unit"], x["mod"],
+                                               x["rc"], ": " + x["said"] if x["said"] else ""))
+        print("  %s; recorded in %s for voiding (%s is not landed, so no run is voided automatically yet)" % (
+            "%d live run(s) stopped" % sum(1 for x in stopped if x["rc"] == 0) if stopped else "no run was live",
+            PP.path(), VOID_ITEM))
+        if any(x["rc"] != 0 for x in stopped):
+            return 1
+    else:
+        live = [u for f in gather(os.path.abspath(o.root), load_cfg()).values() for u in f.get("live_units") or []
+                if isinstance(u, str)] if not o.mod else []
+        if live:
+            print("  live runs finish (no --stop-live): %s" % ", ".join(live))
+    return 0
 
 
 def _clear(o):
