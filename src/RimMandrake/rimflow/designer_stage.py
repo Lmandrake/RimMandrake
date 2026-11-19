@@ -843,7 +843,9 @@ def ask_errors(ask, rec):
     rv = ask.get("review")
     if not isinstance(rv, dict) or rv.get("verdict") not in ("pass", "struck"):
         errs.append("%s: no structured review result (verdict pass|struck)" % w)
-    elif not CT.txt(rv.get("by")) or rv.get("by") == ask.get("author"):
+    elif not CT.txt(rv.get("by")) or rv.get("by") == ask.get("author") or (CT.txt(ask.get("author")) and (
+            same_agent(rv["by"], ask["author"]) or same_agent(ask["author"], rv["by"]))):   # by id, as the exam's readers
+        # (RIMMANDRAKE_MATCH_ASK_REVIEWER_TO_AUTHOR_BY_AGENT_ID)
         errs.append("%s: reviewed by its own author" % w)
     elif rv.get("verdict") == "struck":
         errs.append("%s: struck by review (%s): it does not go to him" % (w, rv.get("why") or "no reason"))

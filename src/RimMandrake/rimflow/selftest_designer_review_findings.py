@@ -335,6 +335,7 @@ SECTIONS = [
     unreadable_owner_feed_is_not_an_answer,
     packet_failure_leaves_no_run,
     malformed_run_files_second_pass,
+    lambda tmp: ask_reviewer_is_author_by_id(),
 ]
 
 
