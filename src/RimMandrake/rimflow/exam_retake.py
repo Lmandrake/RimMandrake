@@ -335,7 +335,9 @@ def plan(d, scenarios=None, repo=None):
             carry.append(sid)
     if not retake:
         return _out(NONE_TOUCHED, "looked: nothing any of the %d scenarios read changed (tree and sheet as examined "
-                    "for every scenario's units): zero re-run, %d answers stand" % (len(sc), len(carry)),
+                    "for every scenario's units): zero re-run, %d answers stand; run `exam_retake.py carry <dir> --fresh <file>` "
+                    "on a file holding {} to restamp the exam's inputs (a sheet edit no scenario reads still moves the "
+                    "hash the gate checks)" % (len(sc), len(carry)),
                     carry=carry, changed=changed, against=against)
     return _out(PARTIAL, "re-run %d of %d (%s%s); carry %d answers forward" % (
         len(retake), len(sc), "changed leaves %s" % ", ".join(changed) if changed else "no leaf changed",

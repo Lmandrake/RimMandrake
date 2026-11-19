@@ -243,6 +243,24 @@ def a4(fx):
     w = ER.write_plan(d, p)
     need(read(d, ER.PLAN_FILE)["outcome"] == ER.NONE_TOUCHED and w["outcome"] == ER.NONE_TOUCHED,
          "the none-touched look is not recorded on disk")
+    # a sheet edit no unit sees (trailing spaces) still moves the sheet hash the gate checks: none touched, yet the
+    # standing exam fails its gate until `carry --fresh {}` restamps its inputs, and the plan says so
+    p_sh = os.path.join(d, "sheet.md")
+    lines = open(p_sh).read().split("\n")
+    k = next(i for i, ln in enumerate(lines) if ln.strip())
+    lines[k] += "   "
+    open(p_sh, "w").write("\n".join(lines))
+    p = ER.plan(d, repo=rd)
+    need(p["outcome"] == ER.NONE_TOUCHED, "whitespace edit: outcome %r: %s" % (p["outcome"], p.get("why")))
+    need("carry" in p["why"] and "--fresh" in p["why"], "the none-touched plan does not name the restamp: %r" % p["why"])
+    st = read(d, "stage.json")
+    need(any("another sheet" in e for e in DS.exam_errors(read(d, "exam.json"), d, st, rd)),
+         "the stale sheet hash is not refused by the gate")
+    f = os.path.join(d, "fresh_empty.json")
+    open(f, "w").write("{}")
+    ER.carry(d, f, repo=rd)
+    errs = DS.exam_errors(read(d, "exam.json"), d, st, rd)
+    need(errs == [], "carry --fresh {} did not restamp a none-touched exam: %s" % errs)
 
 
 def a5(fx):

@@ -381,10 +381,12 @@ def ticket_runs(item):
 # RIMMANDRAKE_RETAKE_ONLY_TOUCHED_EXAM_SCENARIOS_CARD_ASKED_TWICE: a retake after a repair re-runs only the scenarios
 # the repair touched when the read map can tell; the whole exam otherwise (exam_retake.py)
 RETAKE_STEP = ("first run `python3 src/RimMandrake/rimflow/exam_retake.py plan design/concepts/%s`: PARTIAL re-runs "
-               "only the scenarios it names through two fresh Readers and a control Reader on a fresh "
-               "`designer_stage.py exam-control` copy, then `exam_retake.py carry <dir> --fresh <file>` carries the "
-               "other answers forward; NONE_TOUCHED means the exam stands; CANNOT_RUN names an input or a file of "
-               "fresh answers that cannot be read: fix that and run the plan again, never retake on it; WHOLE means ")
+               "only the scenarios it names through two fresh Readers, with a control Reader on the whole scenario set "
+               "on a fresh `designer_stage.py exam-control` copy, then `exam_retake.py carry <dir> --fresh <file>` "
+               "carries the other answers forward; NONE_TOUCHED means nothing any scenario read changed: run that carry "
+               "with --fresh on a file holding {} to restamp the exam's inputs, retaking nothing; CANNOT_RUN means the "
+               "plan could not read an input or carry refused the fresh answers (unreadable, or a field missing or "
+               "stale): fix what it names and rerun the command that refused, never retake on it; WHOLE means ")
 
 
 def exam_gate(root, mod):
