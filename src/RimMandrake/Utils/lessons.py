@@ -1,10 +1,16 @@
 #!/usr/bin/env python3
 """lessons.py — the lessons inbox, one file per lesson (git plan Phase 5, 2026-10-02).
 
-    python3 src/RimMandrake/Utils/lessons.py add "<the lesson, one paragraph>" [--seat BENCH] [--slug words] [--home <skill|doc path|NONE>] [--item <ID|NONE>]
+    python3 src/RimMandrake/Utils/lessons.py add "<the lesson, one paragraph>" [--seat BENCH] [--slug words] [--home <skill|doc path|NONE>] [--item <ID|NONE>] [--merge <existing lesson> | --distinct "<why it is not a twin>"]
     python3 src/RimMandrake/Utils/lessons.py render          # -> infrastructure/state/LESSONS_INBOX.md (gitignored view)
     python3 src/RimMandrake/Utils/lessons.py list            # count + newest paths
     python3 src/RimMandrake/Utils/lessons.py stats           # counts by seat/age/home; oldest undrained
+
+`add` REFUSES (exit 2) a lesson whose first line is a near-twin of an existing one, names the twin, and offers two ways
+through: `--merge <that lesson's path>` appends the new text to it (no new file), or `--distinct "<reason>"` files it
+anyway with a `distinct:` line holding the reason. An unreadable lessons folder or lesson is "could not look" (exit 3),
+never "no twin". Why: warn-only was ignored; 4 of 10 clusters in the Crystallize 2026-W47 sweep were one lesson re-filed
+3-5 times past the warning.
 
 Each lesson is `infrastructure/state/lessons/<utc>-<seat>-<slug>.md`, holding the
 lesson text only. Filing is CREATING a file, so two windows filing at once never
@@ -49,11 +55,17 @@ def slugify(text, n=6):
     return "-".join(words[:n]) or "lesson"
 
 
+class CouldNotLook(Exception):
+    """The lessons could not be read: an answer of "no twin" would be false."""
+
+
 def lesson_files():
     try:
         names = sorted(n for n in os.listdir(DIR) if n.endswith(".md") and n != README)
     except FileNotFoundError:
-        return []
+        return []   # no folder yet: looked, and there are no lessons
+    except OSError as e:
+        raise CouldNotLook("lessons folder %s is unreadable: %s" % (DIR, e))
     return [os.path.join(DIR, n) for n in names]
 
 
@@ -80,8 +92,8 @@ def similar(text, limit=3, threshold=0.35):
         try:
             with open(fp, encoding="utf-8") as f:
                 first = HISTORY_PREFIX.sub("", f.readline().strip())
-        except OSError:
-            continue
+        except (OSError, UnicodeDecodeError) as e:
+            raise CouldNotLook("lesson %s is unreadable: %s" % (os.path.relpath(fp, ROOT), e))
         theirs = content_words(first)
         if not theirs:
             continue
@@ -166,7 +178,31 @@ def item_of(path):
     return None
 
 
-def add(text, seat=None, slug=None, utc=None, home=None, item=None):
+def resolve_lesson(ref):
+    """The existing lesson `ref` names (absolute, relative to the repo root, or a bare filename), else exit 1."""
+    cands = [ref, os.path.join(ROOT, ref), os.path.join(DIR, ref)]
+    real = {os.path.realpath(fp) for fp in lesson_files()}
+    for c in cands:
+        if os.path.realpath(c) in real:
+            return os.path.realpath(c)
+    sys.exit("FAIL: --merge %r is not an existing lesson in %s." % (ref, os.path.relpath(DIR, ROOT)))
+
+
+def merge_into(path, text):
+    """Append `text` to the lesson at `path`, before its item:/home: footer; the footer stays last."""
+    with open(path, encoding="utf-8") as f:
+        lines = f.read().rstrip("\n").splitlines()
+    n = len(lines)
+    while n > 0 and re.match(r"(item|home):", lines[n - 1]):
+        n -= 1
+    body = lines[:n] + [""] + text.splitlines() + lines[n:]
+    tmp = path + ".tmp.%d" % os.getpid()
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write("\n".join(body) + "\n")
+    os.replace(tmp, path)
+
+
+def add(text, seat=None, slug=None, utc=None, home=None, item=None, merge=None, distinct=None):
     text = text.strip()
     if not text:
         sys.exit("FAIL: empty lesson.")
@@ -180,11 +216,28 @@ def add(text, seat=None, slug=None, utc=None, home=None, item=None):
     if not home:
         print("WARN: no --home given: say which skill/doc should own this lesson, or --home NONE",
               file=sys.stderr)
-    dups = similar(text)
-    if dups:
-        print("possible duplicates:")
+    if merge is not None and distinct is not None:
+        sys.exit("FAIL: --merge and --distinct are two different answers; give one.")
+    if distinct is not None:
+        distinct = " ".join(distinct.split())
+        if not distinct:
+            sys.exit("FAIL: --distinct needs a reason, in words.")
+    if merge is not None:
+        target = resolve_lesson(merge)
+        merge_into(target, text)
+        return target
+    try:
+        dups = similar(text)
+    except CouldNotLook as e:
+        print("COULD NOT LOOK for a near-twin, nothing written: %s" % e, file=sys.stderr)
+        sys.exit(3)
+    if dups and distinct is None:
+        print("REFUSED: a near-twin of this lesson already exists (first-line similarity >= 0.35):")
         for score, fp, first in dups:
             print("  %.2f %s  %s" % (score, os.path.relpath(fp, ROOT), first))
+        print("Two ways through: --merge <path above> adds your text to that lesson (no new file), or\n"
+              "--distinct \"<one line: why this is not that lesson>\" files it anyway with the reason recorded.")
+        sys.exit(2)
     os.makedirs(DIR, exist_ok=True)
     utc = utc or time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
     base = "%s-%s-%s" % (utc, seat_of(seat), slugify(slug or text))
@@ -197,6 +250,8 @@ def add(text, seat=None, slug=None, utc=None, home=None, item=None):
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
     with os.fdopen(fd, "w", encoding="utf-8") as f:
         f.write(text + "\n")
+        if distinct:
+            f.write("distinct: %s\n" % distinct)
         if item:
             f.write("item: %s\n" % item)
         if home:
@@ -238,12 +293,14 @@ def main():
     a.add_argument("--slug", help="a few words for the filename (default: from the text)")
     a.add_argument("--home", help="proposed durable home: a skill, a doc path, or NONE")
     a.add_argument("--item", help="the item it was learned on (default: $RIMFLOW_ITEM); NONE for none")
+    a.add_argument("--merge", help="a near-twin's path: append this text to that lesson instead of filing a new one")
+    a.add_argument("--distinct", help="one line: why this is not a twin of the lesson `add` named; files it anyway")
     sub.add_parser("render", help="rebuild the gitignored (untracked) LESSONS_INBOX.md view")
     sub.add_parser("stats", help="counts by seat, age, home; oldest undrained lesson")
     sub.add_parser("list", help="count lessons and show the newest")
     args = ap.parse_args()
     if args.cmd == "add":
-        p = add(args.text, args.seat, args.slug, home=args.home, item=args.item)
+        p = add(args.text, args.seat, args.slug, home=args.home, item=args.item, merge=args.merge, distinct=args.distinct)
         print(os.path.relpath(p, ROOT))
         print("commit it: git commit %s -m 'lesson: …'" % os.path.relpath(p, ROOT))
     elif args.cmd == "render":

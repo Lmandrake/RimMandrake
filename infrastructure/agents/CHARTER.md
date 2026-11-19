@@ -148,7 +148,7 @@ ceremony.
 An enforced rule is a **hook** (`.claude/hooks/`); propose the hook, not a paragraph.
 A default worth stating is a **line in this charter**, replacing one. Everything else
 is deleted — git is the archive. Lessons: one file each into
-`infrastructure/state/lessons/` (`python3 src/RimMandrake/Utils/lessons.py add "…"`), at any time and at reboot; skills are edited
+`infrastructure/state/lessons/` (`python3 src/RimMandrake/Utils/lessons.py add "…"`, which refuses a near-twin of an existing lesson: `--merge <that file>` or `--distinct "<why>"`), at any time and at reboot; skills are edited
 only in a fresh-context curation session, never at end-of-context. A fact that
 outgrows its doc goes to `infrastructure/state/facts/` — unbudgeted, never dropped
 for space.
