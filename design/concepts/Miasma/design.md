@@ -139,7 +139,7 @@ drift of things the sea left, some of them metal.
   to build a **decay cell**: a bed that makes power from ordinary rot. *"Opportunistic extra power, using waste
   already on hand"* (his answer of 2026-11-10). The design is that spoiled food, scraps and the day's butchering
   all go in: *"spoiled freight becomes power."* **As built it does not do that yet:** the cell needs the
-  electricity research and its hopper takes raw food, not rot (`NEEDS HIM` 7).
+  electricity research and its hopper takes raw food, not rot (`Answered on 2026-11-19` 7).
 
 ## The first week
 
@@ -204,7 +204,7 @@ Each can happen inside the visit. Each says what is on screen.
     the biome's own clock: the two are not yet linked, and the old rule that the trees need the swarm was removed.)
 11. **The mass.** *On screen:* after a surge, the ground at the brine end starts to flow: a grey clicking carpet
     goes round the landing gear, through the cook-fire and out the other side.
-12. **Too clean.** *On screen, if he rules the haze onto the ship's screen (`NEEDS HIM` 1):* the particulate
+12. **Too clean.** *On screen (the haze counts on the ship's screen, `Answered on 2026-11-19` 1):* the particulate
     screen comes up and the scuttlers peel back from the hull in a ring; the ship stands in the only bare mud on
     the map.
 
@@ -287,7 +287,7 @@ proper is bought: Bitterleaf, the Wildsteam seat on this coast, runs stills (*"s
 hope"*), and the flotsam crews trade. Both are campaign layer, and whether Bitterleaf's stills sell fuel is
 `UNSETTLED`. Bitterleaf is a sea-facing island with no road, so "on this coast" means a flight, not a walk. And
 the fuel-saving half of this paragraph holds only when the cell eats waste: as built it eats raw food, which on a
-hungry ship is fuel of another kind (`NEEDS HIM` 7).
+hungry ship is fuel of another kind (`Answered on 2026-11-19` 7).
 
 **What wears on the ship (owner's ruling of 2026-11-18: in 0.1.0, from what the sources already say).** The frame
 exists and is not redesigned here: `src/RimUtinni/ShipShields/`, on his shield rulings of 2026-09-02. *"The
@@ -306,7 +306,8 @@ nothing to your ship."* Read against the frame, there are three candidates, in o
    the Working's breath"*). As built the frame looks for pollution or a weather with a sand rate, and the haze has
    neither, so today the frame does not see it. Counting the haze is one flag on one weather, not a new system.
    *Answer:* the particulate screen. And because that screen *"repels small animals"*, a screened ship in this
-   biome stands in a ring of mud with no scuttlers on it and no swarm over it. `NEEDS HIM` 1.
+   biome stands in a ring of mud with no scuttlers on it and no swarm over it. The haze counts: an unscreened ship
+   wears slowly for the whole stop (`Answered on 2026-11-19` 1, by his ruling).
 3. **Brine (this rewrite's proposal; no source says a hull wears from it).** One pitch he did not choose calls a
    warden mother's shell *"the only brine-proof plating on the planet"*, which implies what brine does to other
    plate; nothing else in the sources puts salt on a hull. What his rulings do settle is that no shield answers
@@ -314,7 +315,8 @@ nothing to your ship."* Read against the frame, there are three candidates, in o
    work that way."* So if brine wears a ship whose footing a surge has reached, the answers are by position (land
    above the dead ilbareen; the brine comes up the gradient, not from the sky), by hand (clean the crust off: new,
    small work, no source describes it), or by armour (the plate he did not choose). The surge does not repaint the
-   deck itself: the built repaint leaves gravship foundations alone. `NEEDS HIM` 2.
+   deck itself: the built repaint leaves gravship foundations alone. Not in 0.1.0: brine wear is a proposal for
+   0.2.0, because no source has it (delegated call, `Answered on 2026-11-19` 2).
 
 The fever wears on the crew, not the ship, and is covered above.
 
@@ -333,8 +335,8 @@ The fever wears on the crew, not the ship, and is covered above.
 | The rainbow blooms are harmless in every way. | Touch, harvest and eat near each. | |
 | The haze never lifts and never rains, softens the light, and the air here makes people ill more often than elsewhere. | A stop of some weeks. | Rain. Clear sky. |
 | A dead meter found on the map teaches the decay cell; a cell fed ordinary rot gives real power. | Find, study, build, feed with spoiled food, run a bench from it. | A cell that runs on nothing. A cell that only takes good food (what is built today). |
-| *(Only if he says yes to `NEEDS HIM` 2; a proposal, not a sourced promise.)* A hull a surge has reached is worn by salt until it is cleaned, and a ship landed above the surge's reach is not. | Two landings, one surge. | Wear with no brine. |
-| *(Only if he says yes to `NEEDS HIM` 1.)* The haze wears an unscreened ship and a screened one is clean, with the small animals keeping off it. | Two ships, one screened, some days. | A screen that changes nothing visible. |
+| *(0.2.0 proposal only, not a 0.1.0 promise; `Answered on 2026-11-19` 2.)* A hull a surge has reached is worn by salt until it is cleaned, and a ship landed above the surge's reach is not. | Two landings, one surge. | Wear with no brine. |
+| The haze wears an unscreened ship and a screened one is clean, with the small animals keeping off it. | Two ships, one screened, some days. | A screen that changes nothing visible. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary hot mangrove swamp
 (standing rule, every mod).
@@ -377,11 +379,12 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The found meter and the decay cell, the Miasma's gift on his ship register. (built; moved in; as built it
   takes raw food, not rot)
 - The ship's wear, on the built shield frame: heat on the hottest days (built); the haze on the particulate
-  screen (his ruling of 2026-09-02; one flag, if he says so); brine on the hull, with its answers by position and
-  by hand (this rewrite's proposal; new, small, if he says so).
+  screen (his ruling of 2026-09-02; one flag on the haze weather, unbuilt).
 - Canopy and haze as one step of cover from orbit. (new, small, by his card)
 
 **0.2.0, the stop with company**
+- Brine on the hull, with its answers by position and by hand (this rewrite's proposal; no source has it; new,
+  small).
 - Fever-forging: a disease survived sometimes leaves a lasting change; the five strange ones he chose
   (swarm-marked, salt-blooded, loam-lunged, mother-dreamed, fever-tempered). (part built: the five are stand-ins)
 - Young that tame themselves to a crew that has not harmed them, their guard and attack work, and the weaker
@@ -433,42 +436,41 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 Each is tagged with one theme. Two ship ideas here are ones he already declined (2 and 3); neither is revived.
 
-1. **[hull] Does the haze count on the ship's shield frame?** His ruling of 2026-09-02 says the particulate screen
-   handles *"vapor, bio contamination, spores"* and *"repels small animals."* The built frame does not see the
-   Miasma's haze (no sand rate, not pollution). *Not counted* (default here: nothing is changed, and the only
-   built wear is heat on the hottest days). *Counted:* one flag on the haze weather; an unscreened ship wears
-   slowly the whole stop, and a screened one stands in a ring of clean mud.
-2. **[hull] Brine on the hull, and the brine-proof plate.** No source says a hull wears from brine; it is this
-   rewrite's proposal, and by his own words no shield holds out water. *No brine wear* (default: the
-   promise table carries brine only "if he says yes"). *Brine wears a ship whose footing a surge reached, answered
-   by position and by cleaning* (written out in the hull section, flagged; new, small work). *And the plate:* on 2026-10-02 he chose the mother's price
-   over the grounded mother, a dead warden mother's body as a reef of *"ship-grade hull plate"*, *"the only
-   brine-proof plating on the planet"*, guarded by her young. Not revived. Its own card said *"the choice comes
-   once, late"*, which is the case against it for a ship.
 3. **[other] The last dry deck.** Not chosen the same day: during a surge a flotsam crew retreats along the last
    roots to the landed ship, *"dragging two workshop frames, and asks for passage to Bitterleaf with its
    livelihood"*; *"taking them costs deck space or freight as the approach floods; refusing leaves them visibly
    trying worse."* The reviewer's note beside it: he has rejected *"ship-centric gimmicks with no biome voice"*,
    and this one has the voice. *Not revived* (default). *0.2.0:* a medium build and a real cost in deck.
-4. **[other] Does a rescued young ever come aboard?** His words of 2026-09-23: *"now what when they love you but
-   can only survive in the water?"* For a colony the answer was that they inherit their mother's nursery. A ship
-   leaves. *They stay* (default: the stop ends with something in the channel watching the ship go, which may be
-   the best moment the biome has; it is also what the roster wrote under his ruling, *"Do not solve it. No
-   land-walking upgrade, no tank, no carrying it around"*, and what the cleanse kept). *They can be carried wet*
-   in some hold fitting: a new system, it turns an orphan into livestock, and it breaks that line.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 5. **[scope] One signature, or the pieces.** His card of 2026-11-17 was "Land, life, one signature", and the
    cleanse read it as the nursery alone, with the yard and the cell switched off. This design's 0.1.0 holds the
    surge, the yard, the orphans, the mother where she occurs and the cell, on his answer of 2026-11-10
    (*"competing worthwhile opportunities"*) and on *"Rot is power."* *The pieces* (default here). *One signature:*
    then it is the surge and what it leaves, and the cell and the mother's price move to 0.2.0.
+   *Waits on the first-version size question of 2026-11-19.*
 6. **[scope] Her death.** The first read moved her dying of age, and her young inheriting, to "later" as a long
    game. The cleanse's own target is 30 to 60 days after a crew meets an already-old mother, which a long stop
    reaches. *Later* (default: nothing of it is promised in a stop, and she is only seen to be old). *0.2.0:* a
    crew that stays its full six weeks can watch her fail, and leave a child on watch behind them.
-7. **[fuel] What the decay cell eats.** The promise is rot (*"using waste already on hand"*); the build takes raw
-   food. *Rot, as promised* (default; owed work on a built thing). *Raw food, as built:* then the cell is a way to
-   burn rations for light, and it stops being the thing that spares the ship's tanks.
-8. **[other] The sando aqua monster adult.** Placed here by his review of 2026-09-10 as *"bottom-walker adult — the
-   submerged herds"*, and held since 2026-10-02 (*"Ask the owner before building it"*) because it breaks "no
-   second giant" and "only the young side". Nobody asked. *Held* (default). *Built:* a second very large animal
-   in the mother's water.
+   *Waits on the first-version size question of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **[hull] Does the haze count on the ship's shield frame?** *His ruling:* his shield ruling of 2026-09-02: the light
+   screen handles *"wind, ash, vapor, bio contamination, spores, smoke, sand, and rain damage completely"*. Counted:
+   one flag on the haze weather. An unscreened ship wears slowly the whole stop, and a screened one stands in a ring
+   of clean mud. **This changes the design's default.** Was: *Not counted*.
+2. **[hull] Brine on the hull, and the brine-proof plate.** No brine wear in 0.1.0: no source has it. Brine wear is a
+   proposal for 0.2.0. The brine-proof plate stays not revived; it is one of the ideas the declined-ship-ideas
+   question covers. *Delegated call.*
+4. **[other] Does a rescued young ever come aboard?** They stay in the water (the design's default). *Delegated call.*
+7. **[fuel] What the decay cell eats.** Rot, as promised. The build is wrong and is owed a fix (the design's default).
+   *Delegated call.*
+8. **[other] The sando aqua monster adult.** Held: it breaks the sheet's "no second giant" (the design's default).
+   *Delegated call.*

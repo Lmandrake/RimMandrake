@@ -102,14 +102,14 @@ look. The sheet's own word for a person here is the word for the ship: *"People 
   step."* The Scrub has no canopy and no steam. Its water is ground fog on the wind, and wind-fog is the commonest
   weather in the biome's built list (weight 40 of 85, read from the biome definition). This design gives the Scrub
   one visibility band of slowing on fog days and nothing on clear ones, which makes it the weakest cover of any
-  covered biome. Whether fog that comes and goes counts is `NEEDS HIM` 3.
+  covered biome. Whether fog that comes and goes counts is `Answered on 2026-11-19` 3.
 - **On the ground: none for the ship, and for the crew only what the vine's size gate gives.** Anything bigger than
   the crew cannot follow them into a thicket; that is built. Being *unseen* in there is not: no venomvine
   definition blocks sight or gives cover today (measured: none sets a cover value or carries the sight-blocker).
   The venomvine design of 2026-10-16 proposed exactly this and nobody built it: half cover inside or behind a
   stand, a pawn deep inside an island hidden from view, and scent masked (*"the cane's own smell covers theirs...
   Hunting from inside the thicket becomes the Jawa ambush"*). It is the crew's only possible cover on this map and
-  it is `NEEDS HIM` 4.
+  it is `Answered on 2026-11-19` 4.
 - **Fog blunts every gun.** Wind-fog halves ranged accuracy for both sides (built into the weather). A Gale takes a
   fifth off accuracy and a tenth off walking speed, and deafens whoever is outdoors.
 
@@ -251,7 +251,7 @@ Each can happen inside the visit. Each says what is on screen.
   with a herd in the middle of whichever side lit the most.
 - **They cannot follow the crew into the vine at speed.** A trooper is a person: slow in the thicket, scratched,
   poisoned by degrees. A crew that knows its hollow stands has streets the Empire has to cut. They can still shoot
-  in: the vine gives no cover as built (`NEEDS HIM` 4).
+  in: the vine gives no cover as built (`Answered on 2026-11-19` 4).
 - **A reared stand tells on both sides.** Anything that pushes into rearing venomvine flags itself, troopers
   flanking through a hedge as much as a Jawa robbing a nest; in a Gale the flag cannot be read. The pitch's line
   for it: its *"weapon is information, not injury."*
@@ -297,7 +297,7 @@ Each can happen inside the visit. Each says what is on screen.
 **Stay, longer than the Empire would like:**
 - Free power, every hour of every day but the Stall.
 - Mild air, clean fog water, no weather that kills.
-- The vine: a wall the crew can cross and a larger enemy cannot. (Being unseen inside it is `NEEDS HIM` 4.)
+- The vine: a wall the crew can cross and a larger enemy cannot. (Being unseen inside it is `Answered on 2026-11-19` 4.)
 - Fog days, which slow the search from orbit by a step.
 - The giants, for a crew that has learned never to be the one seen with the match.
 
@@ -338,7 +338,7 @@ ask him, kept the sheet's "years" and proposed a hundred and twenty days. So the
 he has chosen none of them. At the built thirty days, a crew that lays a blanket in its first week collects cane
 at the outer edge of a stop; at a hundred and twenty it never does. A blanket costs forty fuzz fibre and fifteen
 felt, woven at a tailoring bench, and the felt comes only from a sweetline tree, which three maps in four do not
-have. This is `NEEDS HIM` 2.
+have. This is `Answered on 2026-11-19` 2.
 
 Whatever he rules, a visiting crew gets cane three more ways: from the tail of a walking stand that has died back
 behind itself (built); by **buying** it, from traders and from the scavenger camps when those arrive in 0.2.0;
@@ -364,7 +364,7 @@ and never a refusal to land. Three hazards are known to it: heat, cold and parti
   state is readable. On the ground a Gale also does to the crew's wind gear what it does to anyone's: surge,
   breakage, repair. **One piece is missing and is my proposal, not a source's:** the built frame recognises a
   particulate hazard by a weather's sand rate, and the Gale's definition does not set one (measured), so today the
-  frame cannot see a Gale. Setting it is one field. `NEEDS HIM` 5.
+  frame cannot see a Gale. Setting it is one field. `Answered on 2026-11-19` 5.
 - **The vine.** A strangler stand wraps a wall or tree beside it and damages it until trimmed; a shedding stand
   litters the ground downwind with thorns each Gale. *Answer:* hands-on work, exactly as the code already calls
   it: trimming and sweeping. Do not park against a black island, or downwind of a ragged one. (`UNMEASURED`:
@@ -449,7 +449,7 @@ Every feature is in one bucket. "Built" is what the locked sheet of 2026-11-16 c
 - Thundersteps finding the maker by witness or trail. (his ruling of 2026-11-10; not built)
 - What the place does to the landed ship: the Gale as a particulate hazard on the built ship-shield frame,
   strangler and thorn litter, a giant on its line. (the frame is built; the Gale's definition needs its one
-  field, `NEEDS HIM` 5; the rest is built for ordinary structures)
+  field, `Answered on 2026-11-19` 5; the rest is built for ordinary structures)
 - Fog as one step of cover from orbit on fog days. (new, small, by his card)
 - The plain's sound: wind, the tikkit click-chorus, wing-bursts and stranger calls, quiet in the Stall. (built on
   vanilla sounds; his ruling of 2026-09-28)
@@ -470,7 +470,7 @@ Every feature is in one bucket. "Built" is what the locked sheet of 2026-11-16 c
 
 **Later (a crew that stays, or a colony)**
 - Laying a smother blanket and waiting for the cane, if he rules the long clock. Built (at thirty days) and
-  locked into the current tree; see `NEEDS HIM` 2.
+  locked into the current tree; see `Answered on 2026-11-19` 2.
 - Sworn venomvine: the one strain a player can sow, and the sap-mark that lets its own walk through. A hedge-fort
   is a home's wall.
 - Transplanted venomvine as fortification; farming under cover and growlight; the moisture farmer's whole trade.
@@ -478,7 +478,7 @@ Every feature is in one bucket. "Built" is what the locked sheet of 2026-11-16 c
 - The Stall-Hold rite. The Blurrg as a tamed-only mount (campaign; his words *"yes Blurrg here"*, then by card
   tamed-only, arriving by trade, scenario or quest: *"carried here, the way saddles are — and the plain has not
   been consulted"*).
-- Cover, concealment and scent masking for a body inside a stand, unless he takes it sooner (`NEEDS HIM` 4).
+- Cover, concealment and scent masking for a body inside a stand, unless he takes it sooner (`Answered on 2026-11-19` 4).
 - Living cane as a spiked building material for fences and traps (venomvine design, proposed, never built).
 - People who actually walk in and camp under a sweetline tree. As built a "visit" is cold ash or a token left at
   the trunk and a line in the tree's history, with nobody seen.
@@ -518,24 +518,7 @@ Each is tagged with one theme word.
    the biome's strongest ship moment, and the review's own caution applies (*"herds delay/damage, never
    forbid"*). *Reopen the lee:* note that the Long Shade has a built relative, the Shipfall Commons, where a
    landed ship's shade draws wildlife.
-2. **[fuel] Which clock does a smother claim run on?** The sheet says years. The mod ships thirty days, on a
-   slider from one to a hundred and twenty. The Designer of 2026-11-16 chose not to ask and proposed a hundred and
-   twenty. His validated bar of that day names *"banked years-long smothering and premium useful cane fuel."*
-   *Leave the built thirty days:* a crew can lay a claim and collect inside one long stop, and the craft is in
-   0.1.0 whole. *A hundred and twenty days or years* (default here, because the bar says years): laying a claim
-   moves to "later", cane stays in 0.1.0 through died-back stands and purchase. *Keep the lore and shorten only
-   for a visitor:* two clocks, which is a rule nobody has needed before.
-3. **[cover] Does fog that comes and goes count as cover?** His card names fog: *"Canopy, steam and fog slow the
-   search by one step."* Here fog is weather, about half the days, not a standing condition. *Yes, on fog days*
-   (default). *No:* the Scrub is the planet's open ground, power paid for in exposure.
-4. **[cover] Should a body inside venomvine be hard to see?** Proposed on 2026-10-16 and never built: half cover in
-   or behind a stand, a pawn deep in an island hidden from view, and scent masked. Without it the vine slows
-   pursuers and hides nothing. *Not promised* (default here: this design claims only the size gate). *Build it in
-   0.1.0:* the crew gets real ground cover, and troopers get it too. *Scent masking only:* cheap, and it makes the
-   thicket the place to hunt from.
-5. **[hull] May the Gale count as a particulate hazard?** His shield ruling names wind, and the frame is built,
-   but the frame reads a weather's sand rate and the Gale's is unset. Setting it is my proposal. *Yes* (default):
-   the Gale wears an unscreened ship. *No:* the Scrub's hull wear is the vine and the giants only.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 6. **[scope] One signature, or every "did you see that"?** His card of 2026-11-17: a biome's first version holds
    *"Land, life, one signature."* The cleanse that followed chose the creeping vine as the signature and proposed
    switching off, for 0.1.0, the ripple, the Stall's hunt, the runs flushing, the lash, ten of the thirteen kinds
@@ -545,15 +528,27 @@ Each is tagged with one theme word.
    priority"*. *Keep them all in 0.1.0* (default here: nearly every moment in this design's list is one of them).
    *One signature:* 0.1.0 is the wind, the vine islands, dripping and hollow stands, the tree and the plain
    animals, and most of the list above moves to 0.2.0.
-7. **[other] Should lightning exist here?** The sheet bans it (*"fire implies folly"*), and the giants' whole
-   response assumes a maker. The biome's weather list carries a windy dry thunderstorm at weight 1 of 85, added
-   when he asked for calm days to be given the Scrub's wind (card 2026-10-20). The cleanse read that as *"preserve
-   its wind while excluding ignition."* *Remove the strikes* (default). *Keep them:* a rare fire nobody lit, and a
-   herd looking for a culprit among the crew.
-8. **[locked-tree] The locked tree promises a home.** `sheet.md`, `tree.json` and `scenes.json` (locked
-   2026-11-16) are built on *"a dependable wind-powered home"* and on his card of 2026-11-10, *"Home and routes
-   are safe."* This design reads home as the landed ship and its apron and has not touched those files. A later
-   Designer run has to reconcile them; until then two documents in this folder disagree about who lives here.
-9. **[other] Does the thunderstep grow a coat?** The tree's ruled spec left it open: as built the giants do not
-   rub, though the sheet's picture of the tree is giants rubbing. *No* (default, as built). *Yes:* one line in the
-   campaign layer, and the scratching post gets its biggest customer.
+   *Waits on the first-version size question of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+2. **[fuel] Which clock does a smother claim run on?** Years, as the sheet says. Laying a claim moves to "later"; cane
+   is in 0.1.0 from died-back stands and from purchase (the design's default). *Delegated call.*
+3. **[cover] Does fog that comes and goes count as cover?** Cover on fog days only (the design's default). *Delegated
+   call.*
+4. **[cover] Should a body inside venomvine be hard to see?** Not promised: it is unbuilt (the design's default).
+   *Delegated call.*
+5. **[hull] May the Gale count as a particulate hazard?** *His ruling:* his shield ruling of 2026-09-02: the light
+   screen handles *"wind"*. Yes: set the Gale's sand rate, and the Gale wears an unscreened ship.
+7. **[other] Should lightning exist here?** Remove the strikes. The sheet bans fire here (*"fire implies folly"*).
+   *Delegated call.*
+8. **[locked-tree] The locked tree promises a home.** *His ruling:* his word of 2026-11-18, *"Let's rewrite them all
+   and let git be provenance."* A Designer run reconciles `sheet.md`, `tree.json` and `scenes.json` with this file
+   when the hold lifts.
+9. **[other] Does the thunderstep grow a coat?** No (as built; the design's default). *Delegated call.*

@@ -79,18 +79,19 @@ cordon on the ship, a breaching assault, and an orbital bombardment that cannot 
 the one before succeeded; a loud crew halves every wait and a hidden one doubles it. (The arithmetic is taken from
 "The clock on any stop" in `design/concepts/Greentide/design.md`, not derived again.)
 
-**How long a stop here can last: about six weeks, floor or beach, and that is the outer edge.** His ruling of
-2026-11-18: *"The numbers you're generating are likely the outer edge allowable for each biome, and that's just
-fine. Go with that."* With one step of cover (below), the ladder's arithmetic gives a probe on day 7 to 11, a first
-fight in the third or fourth week, and nothing past about six weeks. On a still day the beach has none of that
-cover for a few hours.
+**How long a stop here can last: about six weeks on the beach, months on the floor; that is the outer edge.** His
+ruling of 2026-11-18: *"The numbers you're generating are likely the outer edge allowable for each biome, and
+that's just fine. Go with that."* On the beach, with one step of cover (below), the ladder's arithmetic gives a
+probe on day 7 to 11, a first fight in the third or fourth week, and nothing past about six weeks. On a still day
+the beach has none of that cover for a few hours. On the floor, the top level of cover makes every wait four times
+the open-ground wait: a probe around day 20 to 32.
 
 **Few crews will see that edge.** His own answer is the practical one: the ship withdraws *"when cooling or
 supplies become inadequate."* The Scald's pressure is measured in hours (a vent's cycle), days (the rooms warming)
 and what was in the larder, so everything it does can be seen inside a stop.
 
-**`UNSETTLED`: how the Empire's ladder reaches a ship on a sea floor.** No source says. It is the first question
-under `NEEDS HIM`, as it is for the other three seas. The sections below assume only what is safe in every answer:
+**How the Empire's ladder reaches a ship on a sea floor:** the probe and the bombardment follow, and the troops wait
+at the beach, as for the other three seas (`Answered on 2026-11-19` 1). The sections below assume only what is safe in every answer:
 the clock runs, the probe comes, and the bombardment does not care about water.
 
 ---
@@ -129,7 +130,7 @@ opens and the air comes in.
   coral: *"centuries of glass, one season of flesh."*
 - **The herd.** The sheet's signature and the owner's centrepiece: bottom-walkers, *"armored, slow, pastoral"*,
   *"huge, sea-urchin-like, very alien"* in his typed words of 2026-09-25, when he also named them: **the Mighty
-  Vu'uul**. (In source the creature is labelled *iridesce*; see `NEEDS HIM`.) *"A domed, heat-glossed giant that
+  Vu'uul**. (In source the creature is labelled *iridesce*; the rename to Vu'uul is owed, `Answered on 2026-11-19` 3.) *"A domed, heat-glossed giant that
   walks the Scald's floor on a hundred short thick legs... It barely notices anything the size of a person; it is
   simply very large and has somewhere to be."* They never attack. Where one grazes, the mat's pigment-rich
   underside is left briefly bare, and that is the crew's work: follow the herd, gather behind it, stop when it
@@ -179,16 +180,17 @@ opens and the air comes in.
 
 Three things every biome design now states, by his rulings of 2026-11-18.
 
-**Cover from orbit: partial, one step, in both places.** His card: *"Canopy, steam and fog slow the search by one
-step; full dark still pauses it."* The beach is under standing steam. The floor is under the same steam and a
-boiling sea. Two covers are still one step. The Scald has one more claim that is his own, from the Rust
+**Cover from orbit: one step on the beach, the top level on the floor.** His card: *"Canopy, steam and fog slow
+the search by one step; full dark still pauses it."* His later word the same day: *"Going under the ocean is like
+the Dark... VERY concealed. But nowhere pauses it indefinitely."* The beach is under standing steam: one step. The
+floor is under the same steam and a boiling sea, so it is the top level of cover, like the Abyss's Dark and the
+other three sea floors (applied on 2026-11-19 with the other seas). The Scald has one more claim that is his own, from the Rust
 Cathedral's history (2026-09-10): the machine dumps its heat here because *"it's an easy way to covertly dump heat
 to avoid detection"*; in the amendment's words, *"a boiling crater lake is the one place on the planet where more
-heat is invisible."* A warm ship in a boiling lake is hidden the same way. This design claims no more than the one
-step for it. (`UNSETTLED`: whether a still day costs the beach its step while it lasts. Assumed not, to match the
+heat is invisible."* A warm ship in a boiling lake is hidden the same way. This design claims no more for it than
+the floor's top level. (`UNSETTLED`: whether a still day costs the beach its step while it lasts. Assumed not, to match the
 Greentide's clearing; the other answer is attractive here, because the still day is when the crew most wants to be
-outside. Whether the dark floor counts as "full dark" is part of the one question the shared-machinery file
-already asks for every sunless place; default here is no.)
+outside.)
 
 **Wear on the hull: the sea warms the rooms.** His ruling: *"Yes in 0.1.0. It's easy, and most of the biome
 already talk about this."* The Scald's is named, ruled and in source. By his card of 2026-10-02, the Immersion
@@ -328,7 +330,8 @@ How it arrives on a floor is `UNSETTLED` (above). What the Scald does to whoever
 - A tight ship with a cooled core, and enough power.
 - Knowing the sails and the herd, which turns the floor's two dangers into a timetable.
 - Nothing hunting the crew.
-- Steam and sea over the ship, one step slower from orbit (his card of 2026-11-18; unbuilt).
+- Steam and sea over the ship: the top level of cover from orbit on the floor, one step on the beach (his words of
+  2026-11-18; unbuilt).
 - On the beach: the ship as a roof, heat-armoured gear, the still day, and a geyser to power the coolers.
 
 ## What the crew takes away
@@ -367,7 +370,7 @@ How it arrives on a floor is `UNSETTLED` (above). What the Scald does to whoever
 | A ship parked on the floor warms room by room, most where it has most outside wall; cooling holds it; no door seals and launch is never blocked. | A ship parked for days, one room cooled and one not; then launch. | The same ship on another sea's floor does not warm. Dividing a room with inside walls does not raise its load. |
 | On the beach, the steam stands, lifts for a still day, and returns. Unroofed and unprotected in it a visitor sickens by readable stages and can die; a roof, a still day and heat-armoured clothing each answer it; no clothing makes it free. | Three pawns on the beach through steam and a still day: one in the open, one roofed, one in a boil-suit. | A native in the open is unharmed. The clock does not run on the floor map. |
 | On the beach, boiling water burns a wader, more in the deep; the cool margin does not; wrecks in the shallows can be salvaged at that price. | A wader in shallow, in deep and in the margin; a salvage job on a still day and a steam day. | The water burns the same on a still day. |
-| The Empire's search comes one step slower here than for the same crew on open ground. | The same crew, as loud, landed here and on an uncovered tile; read the search's next contact on both. | A crew made loud here loses the step. |
+| The Empire's search comes one step slower on the beach, and at the top level of cover on the floor, than for the same crew on open ground; on the floor it still comes. | The same crew, as loud, landed on the beach, on the floor and on an uncovered tile; read the search's next contact on all three. | A crew made loud here loses the step. A search that never comes on the floor. |
 | Nothing vanishes. | A trampled pawn, a vent-burned pawn, a steam-killed pawn, each with a save and reload in the middle. | |
 
 No row pins a rate. How fast a room warms, how long a still day lasts, how many days the steam takes and how
@@ -427,7 +430,8 @@ Every feature is in one bucket. "In source" is my search of 2026-11-18, not a pa
 - The steam clock on the beach and the clothing that answers it: the scald wrap, the boil-suit, any heat armour.
   (in source; moved in against the cleanse, see `TheScald_rewrite_choices.md`)
 - Natives unhurt by steam, boil and devils, and not thirsty beside their own water. (in source)
-- Steam and sea as partial cover from orbit. (unbuilt; campaign layer, one entry in the pursuit)
+- Steam as one step of cover on the beach, and the sea floor as the top level. (unbuilt; campaign layer, entries
+  in the pursuit)
 - Fuel by the slow route.
 
 **0.2.0, the stop with company**
@@ -471,29 +475,36 @@ Every feature is in one bucket. "In source" is my search of 2026-11-18, not a pa
 
 ## NEEDS HIM
 
-1. **What does the Empire do about a ship at the bottom of a sea?** The same question each of the four sea
-   designs asks. *The probe and the bombardment follow; the troops wait at the beach and meet the ship when it
-   lifts* (default; it needs the fewest new things). *Everything follows:* troopers on the floor, and the Scald
-   does to them what it does to the crew. *Nothing follows but the clock:* the floor is safe from all but the
-   last step.
 2. **Is the steam's clock still wanted, now that there is one kind of heat?** *Yes, in 0.1.0 on the beach*
    (default). His words asked for steam *"deadly without protective gear"* (2026-09-25); his card of 2026-10-08
    folded its protection into ordinary heat armour; his card of 2026-11-06 tuned the rind coat against it, which
    is after the one-sun ruling of 2026-10-19. *No, hot air only:* the cleanse's reading of that ruling
    (*"Volcanic/steam/fog heat is plain air temperature"*); then the beach is a hot, blind shore and the gear is
    only for wading.
-3. **The herd's name.** He typed *"bottom walkers: The Mighty Vu'uul"* on 2026-09-25. The creature in source is
-   labelled *iridesce*, with the *iridai* as its small cousin; no word of his was found for either, and he
-   finished the Scald's art sheet on 2026-10-05 with the creature shown under the built label. *Vu'uul* (default
-   in this design's prose). *Iridesce*, as built.
-4. **Does every river start here, or end here?** Nothing in a stop shows it, so this design says only his line
-   of 2026-10-20: *"every river starts here, boiling."* But the documents disagree and each side has his words.
-   Typed 2026-09-12: *"the rivers flow OUT of the Scald... and you know this!"* The world definition's ruling of
-   2026-08-21 and the sheet as amended in October say eight rivers end in it and none leaves, and the cleanse
-   followed those. *Leave both: the rivers start here as steam and come home as water* (default; it is what the
-   sheet's water chain already says). *Or rule one,* and the def text and the world document follow.
+   *Left open on 2026-11-19:* The draft of 2026-11-19 answered this *No, hot air only* as his ruling: on 2026-10-19 he
+   called volcanic, steam and hot-fog heat *"Hotter air on the thermometer"*. The second reader left it open, for
+   three reasons. The steam clock is built (`RM_HediffComp_EnvironmentalExposure`, read by ordinary heat armour). His
+   card of 2026-11-06, after that ruling, tuned the rind coat against the steam. And his words of 2026-09-25 ask for
+   steam *"deadly without protective gear"*. Two of his acts point different ways, so it stays his.
 5. **Two ship ideas for the Scald that he did not pick, not revived here.** *Kettle scale* (mineral fur on the
    hull, scraped off): offered on the card of 2026-10-02 and passed over for the Immersion Berth; the agenda
    called it *"too close to the Grey's crust-and-chip."* *A navigation core in the Rakatan wreck:* declined by
    card, 2026-09-25. Neither card has typed words of his. Listed in case the hull ruling of 2026-11-18 changes
    his mind about the first.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **What does the Empire do about a ship at the bottom of a sea?** The probe and the bombardment follow the ship
+   down. The troops wait at the beach and meet it when it lifts. This needs the fewest new things and is the same in
+   all four seas (the design's default). *Delegated call.*
+3. **The herd's name.** Vu'uul, his typed word (the design's default). The label in source is still *iridesce*; the
+   rename is owed. *Delegated call.*
+4. **Does every river start here, or end here?** Both: the rivers start here as steam and come home as water (the
+   design's default). *Delegated call.*

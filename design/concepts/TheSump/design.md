@@ -384,7 +384,7 @@ willingly, and it can be lit into a terrible smoky horror nothing can cross."*
 - *Later:* the Sinking. His ruling of 2026-10-02: one thing of value thrown into the tar *"pushes the next Imperial
   probe or raid away x5"*, and other parties' ownership claims on what the crew keeps go down with it. It is the
   most direct answer any biome has to "what helps them stay", and it is a rite, and he tabled the rites on
-  2026-10-03. See `NEEDS HIM`.
+  2026-10-03. It stays tabled (`Answered on 2026-11-19` 1).
 
 ## What the crew takes away
 
@@ -503,7 +503,7 @@ Every feature is in one bucket.
   their live proof the next day, and have no recorded pass; the fuse post's own ignition does not honour gates)
 - Tar channels and gates used on purpose: draining a dig, feeding the refinery, flooding an approach. (built,
   shared; active here from the first day whether or not anyone promises it)
-- The tanker raid: hose, pump and ship tank. (FlowWorks hardware; see `NEEDS HIM`)
+- The tanker raid: hose, pump and ship tank. (FlowWorks hardware; `Answered on 2026-11-19` 6)
 - Tar-eaters that run to a belch and nose at tarred people. (not built; his words of 2026-09-02)
 - The capstan turret, its rescue pull, and learning it from two preserved draw-joints; the salvage winch. (built)
 - The solvent wake as a weapon. (built)
@@ -544,47 +544,21 @@ Every feature is in one bucket.
 - The pump rhythm, the buried dragline, the Reckoning of Owners, the first round of tar offerings (not taken).
 - **No longer recommended for dropping:** the arrival letter. The first pass and the cleanse both wanted it gone
   for teaching by telling. It was his own idea and his card (2026-09-24). What is wrong with it is only that its
-  text names signs that are not built; see `NEEDS HIM`.
+  text names signs that are not built; the text is fixed (`Answered on 2026-11-19` 8).
 
 ## NEEDS HIM
 
-1. **The Sinking, for a ship on the run.** (scope) He ruled its effect (*"pushes the next Imperial probe or raid away
-   x5"*) and then tabled every rite. *Leave it tabled* (default; the Sump still hides a crew by its dusk). *Pull
-   this one rite forward to 0.2.0:* the Sump becomes the place a hunted crew goes to buy time by throwing away
-   something it loves, which is the campaign in one act; it needs the rites machinery, which does not exist yet.
-2. **Does the beast swallow the ship?** (hull) The ruled beast swallows buildings and leaves a mound. A grounded
-   gravship is made of buildings. (A second thing nobody has settled: the bulge wakes when something is built
-   within twenty cells. Whether setting a ship down that close counts is `UNSETTLED`.) *It goes for the yard and the ship alike, and the ship can always lift first* (default: the
-   beast is slow by design and the lift is the evacuation). *The ship's hull is exempt:* safer, and the beast then
-   threatens only what the crew left outside, which is a smaller reason to leave.
-3. **Is the scrap the kethrel takes ever the crew's own?** (other) There is a setting for it. As built, the
-   kethrel leaves forbidden things and anything inside the home area alone and has a value ceiling. *The crew's
-   unguarded outdoor salvage is fair game* (default here: it is the joke, and nothing is lost, only worn). *Never
-   the crew's property:* gentler, and the kethrel is then scenery until a trooper dies.
 4. **Is the Sump's dusk dark enough to pause the search?** (cover) *One step, from dusk and fog together*
    (default). *Full dark, a pause:* his light card of 2026-10-20 leaves the Sump at a median glow of 0.02, and the
    2026-09-07 freeze ruling left the Sump's "lit" status as an owed one-line call. The same question is open for
    the whole plain night side in `biome_shared_machinery_2026-11-18.md`.
+   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
+   2026-11-19.*
 5. **Which fuel class is the Sump?** (fuel) *A richer source* (default: a found refinery on a pool that never
    runs dry, and his story card calls the Sump the fuel route). *The slow route with a machine:* his words of
    2026-09-07, *"not fuel — must be processed ... and it is slow; the player cannot stay long"*. The machinery is
    the same either way; the answer sets its rate and whether a crew plans a stop around it.
-6. **The tanker raid, for this crew.** (fuel) Flying to the tar, running a hose and leaving with a hold full is in
-   the liquids design as *"a first-class, highly viable player goal"*, and the Sump is its named example. No Sump
-   sitting has ruled it in or out. *0.2.0, with the moat and channels* (default). *0.1.0:* it is the most Jawa
-   thing here and its hardware is shared. *Not for this campaign.*
-7. **Tar fouling as the hull wear.** (hull) This is the design's proposal, not a sourced wear. *Fouling, answered
-   by solvent and glasswalk* (default). *The cold only,* which the built frame already handles and which does not
-   bite here. *Something else he had in mind.*
-8. **The arrival letter.** (other) His idea; both earlier passes recommended dropping it. *Keep it and fix its
-   text* (default). *Drop it and let the mice teach.*
-9. **Sealed eggs in the dig.** (other) On 2026-09-02 he asked for *"sealed alien eggs"* in the loot and for *"egg
-   forms of creatures that hatch when disturbed (tar beasts)"*. On 2026-09-24 he typed *"Only truly ancient
-   machines or assailants. No normal life can survive otherwise."* The later word wins here: nothing ordinary
-   hatches. *Eggs are loot that never hatch* (default). *A tar beast's egg is the one exception.*
-10. **The vault as a ship gift.** (other) The contributions list gives the Sump three gifts and cites his words
-    for them, but his words name the bitumen floor and the burning statues; the vault item itself calls the larder
-    *"candidate row, not yet owner-confirmed"*. *Keep all three* (default). *Only the two he named.*
+   *Waits on the rich-fuel question (which biomes are the few with a richer source) of 2026-11-19.*
 
 No ship idea that he declined or cut was found in the Sump's sources. The nearest things are not ship ideas:
 re-paving the Ashfall Road, tar rain, and the mess-lover trait, each listed under Dropped with his words.
@@ -592,3 +566,29 @@ re-paving the Ashfall Road, tar rain, and the mess-lover trait, each listed unde
 Two questions the cleanse put on its owner pages are answered here by scope instead of asked again, and each is a
 line under "Scope moves" in `rewrite_choices.md`: the playable "hides all" (the dig) is in 0.1.0, not deferred; and
 the water problem is not solved, it is the stop's own clock.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. (scope) **The Sinking, for a ship on the run.** *His ruling:* he tabled every rite, and his ruling of 2026-11-17
+   moves rituals *"to the next version if not retired outright"*. Leave it tabled.
+2. (hull) **Does the beast swallow the ship?** It goes for the yard and the ship alike, and the ship can always lift
+   first (the design's default). This keeps his shield ruling of 2026-09-02: *"no environment is immediately lethal"*.
+   Whether a ship set down within twenty cells wakes the bulge is still `UNSETTLED`. *Delegated call.*
+3. (other) **Is the scrap the kethrel takes ever the crew's own?** The crew's unguarded outdoor salvage is fair game
+   (the design's default). *Delegated call.*
+6. (fuel) **The tanker raid, for this crew.** *His ruling:* the move card of 2026-11-18 (*"Move it, list every
+   move"*): 0.2.0, with the moat and channels.
+7. (hull) **Tar fouling as the hull wear.** Fouling stays in 0.1.0, answered by solvent and glasswalk. The only
+   sourced wear (cold) does not bite here, so this is the one exception to "an invented wear waits for 0.2.0".
+   *Delegated call.*
+8. (other) **The arrival letter.** Keep it, and fix its text (the design's default). *Delegated call.*
+9. (other) **Sealed eggs in the dig.** *His ruling:* his typed word of 2026-09-24: *"Only truly ancient machines or
+   assailants. No normal life can survive otherwise."* Eggs are loot that never hatch.
+10. (other) **The vault as a ship gift.** Keep all three gifts. The vault is marked as an agent's pick, not his (the
+   design's default). *Delegated call.*

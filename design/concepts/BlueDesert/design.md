@@ -81,7 +81,7 @@ to six weeks** as the outer edge of a stay, set by food and nerve, and expects m
 salvage run of a few days. A season is fifteen days, so one regrowth of a cleared patch can be seen and little else
 that is slow.
 
-`NEEDS HIM` (see the end): whether a blast chain, visible from orbit on a black plain, ends the pause. This design
+`Answered on 2026-11-19` 1 (see the end) answers whether a blast chain, visible from orbit on a black plain, ends the pause. This design
 assumes it does, which makes the biome's own signature the thing that gives the crew away. Once the pause is lost
 the stop runs on the open-ground clock, taken from the Greentide design's arithmetic and not re-derived here: a probe
 on day 5 to 8, a first real fight around day 12 to 20, the bombardment around day 20 to 32 if the Empire wins every
@@ -102,7 +102,7 @@ watch: each is a slow fuse under a field. A warmed plant shows a readable warnin
 it goes, and taking the heat away before that point stops it. After that point it is a chain: *"not a fire."*
 
 Whether the ship's own landing sets off the growth under the hull is `UNMEASURED` (it depends on what a gravship
-landing does to the cells beneath it) and `NEEDS HIM` as a design matter.
+landing does to the cells beneath it) and not promised as a design matter (`Answered on 2026-11-19` 2).
 
 Before the first hour is out the player should have seen: transparent plants with the ice visible through them; an
 old extraction face with somebody else's abandoned gear standing at it; and a herd of small pale grazers that
@@ -249,7 +249,7 @@ It arrives late if the crew has kept dark, and soon if it has not.
 - The cold: the heater needs fuel, and the fuel must be made in a room the heater must not reach.
 - A blast that takes the stores, or a pantry that goes.
 - The drift, if digging out is left too long.
-- A flare that ends the dark (see `NEEDS HIM`).
+- A flare that ends the dark (`Answered on 2026-11-19` 1).
 
 **Stay, longer than the Empire would like:**
 - The dark itself. This is the quietest sky on the planet for a crew that shows no light and sets nothing off.
@@ -287,7 +287,7 @@ this design adds no hull system and every wear below comes from a source. Nothin
   the temperature within the ship... still better than the extreme cold of the night-side atmosphere."* The shield
   design makes a cold trip *"expedition-shaped: fuel committed up front, no casual hop in and out."* The answer by
   hand is the one Jawa would reach for: heaters, closed doors, and patching what seizes. `UNSETTLED`: whether an
-  envelope that pulls in heat warms the growth round the hull (assumed not). `NEEDS HIM`: whether a hull glowing
+  envelope that pulls in heat warms the growth round the hull (assumed not). `Answered on 2026-11-19` 5: whether a hull glowing
   red-orange on a black plain can be seen from orbit.
 - **Blown ice sand (built in the frame, by its signal).** The frame's third hazard is any weather that carries
   sand (`sandRate` above zero), and the ice-sand drift rides exactly that field, so a drift storm should foul an
@@ -420,33 +420,34 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-1. **Does a blast end the dark?** Nothing in the sources says. *Yes* (default here): a chain on a black plain is
-   seen from orbit and the search starts as on open ground, so the crew's own carelessness is what finds them.
-   *No:* the dark is free cover whatever happens, and the Blue Desert is the safest hiding place on the planet for
-   anyone who can eat. *Only a large one:* a vhaulk, or a field, but not a single plant.
-2. **Does the landing itself set off the growth under the ship?** *Not promised* (default): the first blast is
-   something a Jawa did. *Yes:* every arrival opens with a ring of blasts around the hull, spectacular and
-   unavoidable, and a first stop teaches the rule before the crew has a say. Needs the engine fact first.
-3. **The campaign's two outsiders, the vapaad and the thunderbeast, have ordinary meat and leather in a biome whose
-   law is that nothing is warm-safe.** Carried from the cleanse. *Keep both and owe them native bodies* (default).
-   *Give them a stated exception.* *Take them off this biome's patch:* for the vapaad this would undo his own
-   placement (roster review, September 2026: *"This goes in the blue desert... why couldn't I see that in the
-   dropdown?"*), so it is listed only for the thunderbeast, a trace experiment.
 4. **Is the plain night side "full dark"?** This page claims the full pause on his words *"full dark still pauses
    it"*. Evidence against assuming it: the only biome on the built list is the Abyss, whose Dark is a substance,
    and three other sunless designs ask the same thing (`biome_shared_machinery_2026-11-18.md`, question 1).
    *Full dark* (default here). *One step of cover only,* which makes this a stop of about six weeks like the
    Greentide.
-5. **Does a hull glowing with the cryo envelope give the ship away in the dark?** His shield ruling has the
-   envelope *"glowing with red-orange black body radiation"*, and this biome's cover is the absence of light. *No*
-   (default, as the shared file assumes for every shield). *Yes:* on the night side the crew chooses between a
-   seizing hull and a visible one, and the answers by hand matter more.
-6. **What is the Blue Desert's deck part now?** His card of 2026-09-24 made it the cold hold with the blue-ice rack
-   as *"the deck part"* (`BIOME_SHIP_CONTRIBUTIONS_1`). His answer of 2026-11-10 removed the rack (*"no rack
-   needed"*), and the later word wins, so the biome's ship contribution is now a room and a habit, not a part.
-   *Leave it so* (default). *Name a new part.*
+   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
+   2026-11-19.*
 
 Themes, for gathering these across biomes: 1 cover · 2 hull · 3 other · 4 cover · 5 hull · 6 other.
 
 No ship idea of his was found declined for this biome. The two cut ship-side details are already on the dropped
 list: the rack's meltwater drip (cut 2026-10-23) and the rack itself (his own later answer).
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **Does a blast end the dark?** Yes, for a while: after a blast the search runs as on open ground (the design's
+   default). *Delegated call.*
+2. **Does the landing itself set off the growth under the ship?** Not promised. Measure what the engine does first
+   (the design's default). *Delegated call.*
+3. **The campaign's two outsiders, the vapaad and the thunderbeast, have ordinary meat and leather in a biome whose
+   law is that nothing is warm-safe.** Keep both, and owe them native bodies (the design's default). *Delegated call.*
+5. **Does a hull glowing with the cryo envelope give the ship away in the dark?** No in 0.1.0: the envelope's glow is
+   not built. Ask again when it is built. *Delegated call.*
+6. **What is the Blue Desert's deck part now?** *His ruling:* his answer of 2026-11-10, *"no rack needed"*. The later
+   word wins: the Blue Desert gives the ship a room and a habit, not a part.

@@ -287,7 +287,7 @@ built: `src/RimUtinni/ShipShields/` (his eight shield rulings of 2026-09-02, rec
   here and the threshold, or the biome's temperature, is a build question; no bar pins either number.
 - *The envelope on this ice.* A shield that glows red-orange is the only warm-coloured light on a hemisphere whose
   sheet says *"no warm light exists but yours"*, and it works by pulling heat. Whether the tunnelers read a running
-  envelope as warmth is the third question under `NEEDS HIM`. The default here is that they do not: the envelope
+  envelope as warmth was the third question under `NEEDS HIM`; they do not in 0.1.0 (`Answered on 2026-11-19` 3): the envelope
   holds the hull's skin cold, which is the sheet's own *"exteriors at ambient"*, and the crew's comfort inside is
   still what gives them away.
 - *Cold inside (0.1.0, ordinary systems).* Holding the ship habitable is a standing cost in power and fuel, and it
@@ -385,6 +385,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Nothing disappears without a sign.
 
 **0.2.0, the stop with company**
+- The heat spike at engine start-up, read by the heat-sensing ice creatures once per landing. (a proposal;
+  delegated call of 2026-11-19, `Answered on 2026-11-19` 3)
 - The sohl: a mound that moves once. (art done; unbuilt)
 - The ice-kept dead: bodies in the ice, one or a roped party, cut out with their gear. (unbuilt)
 - The hessarn, the ice's watcher: small seam-grazers in the cracks that turn toward warm bodies and draw down in
@@ -428,6 +430,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
    cover is thermal, and a pause here would make half the planet a hideout). *Yes, it pauses:* every nightside
    biome becomes a refuge and the ice's price for it is the cold. *No cover at all:* the thermal signature matters
    only to the tunnelers.
+   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
+   2026-11-19.*
 2. **[hull] The two ship ideas he passed here: the kesshet and the Keel-Press.** On 2026-10-01 he was shown four
    new marks for this biome, two of them about the ship, and typed: *"I don't like any of these. We should likely
    just pass this. Home for now."* The record of that turn adds *"passed, not gaps to re-pitch."* On 2026-11-18 he
@@ -436,14 +440,21 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
    a rime-ring on the warm hull that raises the signature and must be scraped before launch, for a superconducting
    film. *The Keel-Press:* shifting cargo to press the ice until it calves up a seam of wreckage; the review that
    pitched it called its fiction the weakest of the five.
-3. **[hull] Does a running cryo envelope give the ship away to the ice?** His shield ruling of 2026-09-02 has the
-   envelope glow red-orange and pull in heat. On this biome heat is what everything senses. *No* (default: it
-   holds the hull's skin at ambient; the crew's comfort is still the beacon). *Yes:* protecting the hull costs
-   signature, and the crew chooses between a worn hull and a visited one. *Only at start-up:* the fuel spike is
-   also a heat spike, once per landing.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 The cleanse proposal of 2026-11-17 asked him nothing, and one of its own readings is changed here by scope rather
 than asked: it built the first version around a supplied refuge of forty colonists. The same warmth, cracks and
 floor line are kept, and the refuge is the ship. A second of its calls is undone on his earlier word: it
 recommended retiring the tellurox hexplate, which is the biome's answer to his every-biome ship question of
 2026-09-24.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+3. **[hull] Does a running cryo envelope give the ship away to the ice?** No in 0.1.0: the envelope's glow is not
+   built (the design's default). The heat spike at engine start-up is a proposal for 0.2.0. *Delegated call.*

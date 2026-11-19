@@ -209,7 +209,7 @@ A ship on the run is the passing player. So:
 - *Spending it.* The blower drains chemfuel all the time it runs (built). Holding the doors and the hull dry is
   paid for in the same drums the ship flies on. That is the Greentide's fuel joke: it sells fuel and eats it.
 - Not written as replete, and no longer written as a recipe the crew runs. Whether his ruling of 2026-11-18 was
-  meant to open sap-chemfuel to a ship's crew is the first question under NEEDS HIM.
+  meant to open sap-chemfuel to a ship's crew was the first question under NEEDS HIM, answered by his ruling R5 (`Answered on 2026-11-19` 1): the crew buys it.
 
 ## "OMG did you see that?"
 
@@ -374,7 +374,7 @@ shared-machinery file has the whole of it):
 - *Cover from orbit.* The pursuit has one list for full shadow (the Abyss only) and no notion of partial cover. The
   Greentide needs a second, weaker entry.
 - *Fuel.* Traders who stock fuel and take greenwood for it. The slow biomass route is the base game's own. No crew
-  recipe from resin is asked for (his ruling R5; see NEEDS HIM).
+  recipe from resin is asked for (his ruling R5; `Answered on 2026-11-19` 1).
 
 ## Scope
 
@@ -455,30 +455,39 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 Each has the default this design uses, so nothing waits on him to read on.
 
-1. **[fuel] May a ship's crew make chemfuel from resin, or only buy it?** His ruling R5 (2026-09-07) says
-   sap-chemfuel is *"not player-tappable — a settlement-level investment"*. His ruling of 2026-11-18 says *"a few
-   biomes have richer sources"* and names none. Default: the Wildsteam make it, the crew buys it, and no crew recipe
-   is built. The other answer: one recipe at 0.2.0, as the first version of this page had it.
-2. **[fuel] Does green wood sell as it is?** R24 says it does not burn until seasoned, and that drying is
-   settlement-scale. Default: yes, the crawlers buy it green and dry it themselves; the crew never burns it.
-3. **[hull] Did "Yes in 0.1.0" choose the rasp itself?** He passed over the hull rasp on 2026-10-02 and answered a
-   card that named it on 2026-11-18. Default: yes, the rasp is the Greentide's wear. If he meant hull wear in
-   general, the falling tree is the only wear here and the rasp's lines come out.
 4. **[cover] Is one step of cover one visibility band,** and does a clearing, which lifts the steam and leaves the
    canopy, cost the step while it lasts? Asked once for every biome. Default: one band; a clearing costs nothing.
-5. **[scope] The shoal's blast-only hide in 0.1.0?** His typed words define the creature by it and it is built; the
-   cleanse deferred it by a delegated call. Default: 0.1.0.
-6. **[scope] The Ceded Room.** Not asked for: listed because it is his own ship idea and he deferred it
-   (2026-10-23, quoted under Scope). Default: it stays in a later version.
-7. **[other] Is the rooted ambusher the Greentide's?** He approved the creature on 2026-09-22 and never ruled which
-   biome is its home. Default: here, at 0.2.0.
-8. **[other] Does felling a living giant cost standing with the Wildsteam?** Their taboo is *"cutting a living
-   tree"*. His rulings name only the landmark's catastrophe as sacrilege. Default: felling an ordinary greatbole
-   costs nothing.
-9. **[other] Does a crew react to one of its own being given the Frenzy on purpose?** The item that holds his
-   ruling marks this as never ruled. Default: no reaction. (0.2.0.)
+   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
+   2026-11-19.*
 
 Three questions the cleanse put to him on 2026-11-17 are answered here by scope instead of asked again, and each is
 a line under "Scope moves" in `rewrite_choices.md`: plants that act are 0.2.0, not absent; cuisine in 0.1.0 is
 ordinary cooking of extraordinary ingredients, with the combining system later; and paving ends regrowth on the
 cells it covers, so care moves to the unpaved ground a visiting crew actually uses.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **[fuel] May a ship's crew make chemfuel from resin, or only buy it?** *His ruling:* his ruling R5 (2026-09-07):
+   sap-chemfuel is *"not player-tappable — a settlement-level investment"*. The Wildsteam make it, the crew buys it,
+   and no crew recipe is built.
+2. **[fuel] Does green wood sell as it is?** Yes: the crawlers buy it green and dry it themselves (the design's
+   default). *Delegated call.*
+3. **[hull] Did "Yes in 0.1.0" choose the rasp itself?** Yes: the card of 2026-11-18 named the rasp, so the rasp is
+   the Greentide's wear (the design's default). *Delegated call.*
+5. **[scope] The shoal's blast-only hide in 0.1.0?** *His ruling:* his typed words define the creature by its
+   blast-only hide, it is built, and the move card of 2026-11-18 (*"Move it, list every move"*). 0.1.0; the
+   first-version size question can still move it.
+6. **[scope] The Ceded Room.** *His ruling:* his deferral of 2026-10-23: *"All 'rituals' to interact with the Nine
+   that are based on unique Baroque Biome content are hereby documented and deferred to v2."* It stays later.
+7. **[other] Is the rooted ambusher the Greentide's?** Here, at 0.2.0. Its sitting confirms it (the design's default).
+   *Delegated call.*
+8. **[other] Does felling a living giant cost standing with the Wildsteam?** No: felling an ordinary greatbole costs
+   nothing (the design's default). *Delegated call.*
+9. **[other] Does a crew react to one of its own being given the Frenzy on purpose?** No reaction (0.2.0; the design's
+   default). *Delegated call.*

@@ -407,22 +407,27 @@ Each is tagged with one theme word.
    the canyon floor only* (default here): the landing becomes a real choice between hidden-and-floodable and
    safe-and-seen. *No:* the Cracked Lands have no cover anywhere, every stop is on the open clock, and the floor is
    simply the wrong place to park.
-2. **[hull] Does the river come aboard a ship parked on the floor?** His shield ruling says nothing holds out
-   water, and the cleanse says a roof does not elevate; neither was said about a gravship. *Yes: crew aboard are in
-   the flood, the hull is not damaged, and the ship may launch on the chimes* (default). *The hull is proof against
-   it and only what is outside is lost:* kinder, and it makes the floor a safe place to hide, which the Farmers'
-   "NEVER" says it is not. *The ship is grounded while the water is up:* closer to a trap than the ladder allows.
-3. **[other] Do the Farmers and the road shelter a hunted ship or sell it?** Campaign layer; it decides whether
-   this is the friendly stop or the dangerous one. *Not decided here.*
+   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
+   2026-11-19.*
 4. **[scope] Is the witnessed flood part of the first stop?** He ruled on 2026-09-10 that the Farmers' invitation
    fires on the first gravship landing within range. It is a campaign quest, unbuilt, and it is the only thing
    that puts the biome's event inside a short visit. *0.2.0, with the campaign* (default, as the first read had
    it). *0.1.0:* the first stop always meets the flood; one quest and a production "arm the flood" call to build.
-5. **[scope] The fossil case.** The cleanse recommended retiring it as decoration and the first read agreed.
-   It is also this biome's row on the ship list (an agent's pick of 2026-11-11, carded to him), and the cast bible
-   he accepted on 2026-09-28 has *"a gravship galley with one bolted to the bulkhead."* *Kept, 0.2.0 with the
-   fossils* (default). *Retired:* then the biome owes the ship another part, and the two he was offered (the chime
-   and the wax tank) he rejected.
-6. **[other] The words on the ledges.** The carvings are built with placeholder lines; drafts were written for him
-   on 2026-10-08 and never ruled. The one line with a source is the card's own: *"the mercy that kills, then
-   feeds."*
+   *Waits on the first-version size question of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+2. **[hull] Does the river come aboard a ship parked on the floor?** Yes: crew aboard are in the flood, the hull is
+   not damaged, and the ship may launch on the chimes. his shield ruling of 2026-09-02 says nothing *"holds out
+   water"* (the design's default). *Delegated call.*
+3. **[other] Do the Farmers and the road shelter a hunted ship or sell it?** Not decided in the biome. The campaign
+   layer decides (the design's default). *Delegated call.*
+5. **[scope] The fossil case.** Kept, at 0.2.0 with the fossils (the design's default). *Delegated call.*
+6. **[other] The words on the ledges.** An agent drafts the lines and a judge picks them (a taste call). The one
+   sourced line, *"the mercy that kills, then feeds."*, stays. *Delegated call.*

@@ -25,7 +25,9 @@ exist: on 2026-11-06 the traction lance passed, the remains and the silk harvest
 failed (`designer_codex_2026-11-09/Webwork/NOTES.md`).
 
 **Names.** The owner species is the **ollathrix**, an invented spider of ours (his pick, 2026-09-23). When the
-campaign layer is active it wears the canon Wyyyschokk's skin and its silk is called Shokkweave; in the free biome
+campaign layer is active it wears the canon Wyyyschokk's skin and its silk is called Shokkweave (the older
+bestiary animal `RSW_Wyyyschokk` gets a new label, so only one creature carries the name; `Answered on 2026-11-19`
+6); in the free biome
 the silk is **thrixweave**. This document uses the free names. One ollathrix, three ollathrix. Everything here was
 invented first, on his instruction of 2026-09-23: *"we should just invent our own complete roster of fauna, flora,
 etc. that make it a rich place THEN look for Star Wars specific injection opportunistically."*
@@ -274,10 +276,11 @@ a single slash."*
 
 - **The web feels them too.** A team that walks in under the canopy has announced itself to everything on the
   map. The owners are *"enemy of all, ally to none."*
-- **The probe is a droid.** The first thing the Empire sends is exactly what the owners hate most. (`UNMEASURED`:
-  whether the built droid preference recognises an Imperial probe. If it does, a probe that goes under the canopy
-  does not report, and the next step of the search does not come. It is the single strongest thing this biome
-  does for a crew, and it wants one check.)
+- **The probe is a droid.** The first thing the Empire sends is exactly what the owners hate most. An Imperial
+  probe counts as a droid the web eats (delegated call of 2026-11-19, `Answered on 2026-11-19` 2): a probe that
+  goes under the canopy does not report. The later search steps still come. It is the single strongest thing this
+  biome does for a crew. (`UNMEASURED`: whether the built droid preference recognises an Imperial probe today; one
+  check, and a fix if it does not.)
 - **Their camp is in the shade or in the open.** Under the trees it is in the web. In the crew's clearing it is
   in the crew's field of fire.
 - **A bound trooper is somebody's dinner.** Whoever is spat on and left is collected.
@@ -488,29 +491,28 @@ Every feature is in one bucket.
    offered the Greentide's hull rasp the same week, did not choose that either, and on 2026-11-18
    said yes to it by name. *Silk and wrapped doors only* (default: built parts, and the owners' own hand).
    *Add the roots:* a second wear that works in the dark while nobody is watching, and a new system.
-2. *(other)* **Does an Imperial probe count as a droid?** If yes, the Webwork eats the first step of the search and becomes
-   the best hide on the planet for a crew that can stand to live there. *Yes, and say so in the design*
-   (recommended: it follows from two things he has already ruled). *No:* the probe is exempt and the Webwork is
-   simply dangerous to everyone.
-3. *(scope)* **The plants that act.** The cleanse recommends retiring the snap-trap's bite, the needle-wand's volley and
-   the bait bell's lure as duplicating the spiders. Under the lens a plant that closes on a Jawa's foot is the
-   kind of thing he asked for by name, and his art notes of 2026-10-05 ask for both to look the part: the
-   kessaroth with *"eager, visceral flytrap-like mouths, one shown already fed"*, the norrveth *"twice as big and
-   DANGEROUS"*. This design parks them in 0.2.0 instead of retiring them. *Keep them for
-   0.2.0* (default). *Retire them* as the cleanse recommends.
-4. *(hull)* **Which wear is the Webwork's own?** Three candidates. *The heat of the clearing* is built and comes
-   from the sources, and it is the same wear as every hot biome's. *Silk on the hull and wrapped doors* is the
-   first pass's proposal, from parts built for the siege. *Roots in the doorframes* is question 1. Default here:
-   heat is the 0.1.0 wear because it exists; silk at the canopy's edge is written as a proposal.
-5. *(cover)* **Is the bargain right?** This design sets the canopy's one step of cover against the owners' shade,
-   and the clearing's safety against heat and a plain view from orbit. No source states it; it follows from his
-   cover ruling and the sheet. *Keep it* (default). *Give the clearing a step too* when the thermal veil is up or
-   webfall is drifting: kinder, and it dissolves the choice.
-6. *(other)* **Two animals called wyyyschokk.** Under the campaign the skinned ollathrix and an older generic
-   bestiary animal both carry the name, and the older one can be tamed, sheared and bred, which the Webwork's
-   first ban forbids for its owner. A closed item calls this *"a decision for a card"* and no card was sent.
-   *Leave both* (default: the older one has no home on this planet). *Rename or retire the older one.*
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 7. *(scope)* **Should the cut cocoon exist as a thing to find?** The rite was not chosen on 2026-10-02. Its found
    site is one of the best pictures in the sources: *"a silk cocoon on a sunlit rock, cut open from the inside,
    empty, knife marks on the inner wall and boot prints going away into the light. Someone got out."* *Leave it
    out* (default). *Place it as scenery with no rite attached:* small, and it tells a crew that people do leave.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+2. *(other)* **Does an Imperial probe count as a droid?** Yes, and the design says so: the web eats the probe step,
+   and the later search steps still come (the design's recommended answer). *Delegated call.*
+3. *(scope)* **The plants that act.** 0.2.0, not retired (the design's default). *Delegated call.*
+4. *(hull)* **Which wear is the Webwork's own?** Heat, built and sourced, is the 0.1.0 wear. Silk at the canopy's edge
+   is a proposal for 0.2.0 (the design's default). *Delegated call.*
+5. *(cover)* **Is the bargain right?** Keep the bargain as written (the design's default). *Delegated call.*
+6. *(other)* **Two animals called wyyyschokk.** Rename the older one. Two creatures with one name is a defect. The
+   older one is `RSW_Wyyyschokk` (the generic bestiary animal); its label changes and its defName stays, because
+   TrophyCraft and the Utinni tolerances patch name it. **This changes the design's default.** Was: *Leave both*.
+   Undo: set this answer back to *Leave both*; nothing is built. *Delegated call.*

@@ -155,7 +155,7 @@ of a gallery; and a chassis that was lying down when the party walked past, stan
   it spoils it lights its own fuse. The cave is at seventeen degrees. As built, a crate of fresh wax left on the
   cave floor has a couple of hours (worked from the item's numbers; not seen live). So the milk run is a run: up
   the cable or out the mouth, into the forty below that would kill the crew, because that is the only shelf cold
-  enough. `NEEDS HIM` 4.
+  enough. `Answered on 2026-11-19` 4.
 
 ## The first week
 
@@ -241,7 +241,7 @@ divide the crew:
   must fly is not deleted; they are in a warm cave with food, and the tile remembers. Coming back for them is a
   landing on a tile the Empire has already searched.
 
-`NEEDS HIM` (below): whether the Empire ever comes down the shaft.
+`Answered on 2026-11-19` 1 (below): the Empire does not come down the shaft in 0.1.0.
 
 ## Who else attacks; who hates the Empire
 
@@ -300,7 +300,7 @@ missing). It is safe only below freezing. Warmer than that it spoils within a co
 its fuse (the Blue Desert's switch `coldWaxWarmReactiveEnabled`, on by default). Its header records the recipe that
 turns it into chemfuel as owed; whether one has been built since was not checked, so whether it fills a tank is
 `UNSETTLED`. And the Deep's air is seventeen degrees, so this fuel cannot be stored where it is made. Nobody chose
-that; the item was reused. It is either a defect or the best joke in the cave (`NEEDS HIM` 4). The trade the old
+that; the item was reused. It is either a defect or the best joke in the cave (`Answered on 2026-11-19` 4). The trade the old
 proposal wrote is the Jawa part either way: this fuel *"must be stored cold"*, and the crew that strikes it has to
 keep it colder than they keep themselves.
 
@@ -320,7 +320,7 @@ within the ship... still better than the extreme cold of the night-side atmosphe
 Three things follow for this stop, all from sources. The generator holds one field at a time, so the cold-proofed
 ship has no heavy field up. The envelope's slow inside chill is a cost to the crew and, by accident, a help to a
 hold full of wax. And by his words the envelope glows *"red-orange"* (the glow is not built) on a host where
-darkness is the ship's only cover (`NEEDS HIM` 5). The host's design owns the rest. The Deep adds two things of
+darkness is the ship's only cover (`Answered on 2026-11-19` 5). The host's design owns the rest. The Deep adds two things of
 its own to the ship, both from sources: the **tether** (cable down, no launch), and a **cargo that must stay
 cold** and that goes off if it does not.
 
@@ -337,7 +337,7 @@ cold** and that goes off if it does not.
 | Orun-Ghal is harmless company: it can be studied by real visits, it remembers the crew, and on a later descent it comes to greet them and keeps near them. | Study to completion; leave; save, reload; return with a different crew member. | An interrupted visit earns nothing. It never mines, fights, or is recruited. A destroyed suit stays destroyed. |
 | An unsupported roof warns where it will fall, in time to leave or prop it. | Remove a support under a span with a miner beneath; once leave, once prop. | A propped span does not fall; the warning does not hold a roof up for ever. |
 | A drifter or a galuush killed by fire or spark detonates; killed cold it does not. | One of each, each way. | The inspect text says so before the first shot. |
-| Candlers can be milked for a fuel that works as fuel. | Tame, milk, burn. | A candler butchered for meat gives none: these animals are fuel, not food. Whether the wax may sit in the cave's own air is `NEEDS HIM` 4. |
+| Candlers can be milked for a fuel that works as fuel. | Tame, milk, burn. | A candler butchered for meat gives none: these animals are fuel, not food. Whether the wax may sit in the cave's own air is `Answered on 2026-11-19` 4. |
 | The cave feeds and clothes a visiting party from its own fungus, and what is eaten grows back. | A week of foraging on one pasture. | |
 | With a keel hoist, cargo and a downed animal ride the cable between the ship and the Deep, and the ship will not launch with the cable down. | The walk already written in `design/validation_walks/RimMandrake/KeelHoist.md`, step 3 and 4. | Reeled in, the launch is allowed. |
 
@@ -391,6 +391,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Nothing disappears without a sign: bodies, falls and sealed mouths leave something to read.
 
 **0.2.0, the stop with company**
+- A lone Imperial probe that drifts down the mouth with its searchlight on, which the cave deals with unaided.
+  (a proposal; delegated call of 2026-11-19, `Answered on 2026-11-19` 1)
 - Crew droids stop and listen at a mindstone gallery. (built, switched off)
 - The hush, unseen on unlit floor; the sipper, shrinking lamps; the tapper, draining batteries; the pooler,
   smothering fires and heaters; the slick's fuse trail. (built, unproven; hush and slick failed their last live
@@ -416,7 +418,7 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The Answering rite (the owner tabled rites on 2026-10-03 until the biome mod is complete).
 - A deeper giant that forces a longer or more dangerous route (his answer of 2026-11-10; no candidate chosen).
 - The Chorus as a psychological effect; formations that mature and cleave offspring; sowing lanternstone.
-- A wax of the Deep's own, if he wants one that keeps in the cave (`NEEDS HIM` 4); the cantina's Deep lane of dishes; Pyrinth and other added minerals;
+- A wax of the Deep's own, if he wants one that keeps in the cave (`Answered on 2026-11-19` 4); the cantina's Deep lane of dishes; Pyrinth and other added minerals;
   the imported orange crystal.
 - Living in the Deep; a home of forty.
 
@@ -435,35 +437,29 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-1. **Does the Empire ever come down the shaft?** Nothing in any source sends them, and incidents are suppressed
-   below. *No* (default, as built): the Deep is a bolt-hole for people and the fight is always at the ship.
-   *Yes, at the strike step and after:* troopers with bright lamps in a cave that answers light would be the
-   funniest fight on the planet, and it needs a new arrival route and a rule for what the crystals do about them.
-   *Only a probe:* one droid drifting down the mouth with its searchlight on, which the cave deals with unaided.
-   Two sources bear on it: his ruling of 2026-09-11 that the Empire knows the Deeps and may have mined them, and
-   his caverns row of 2026-09-02, which made a deliberate collapse (a passage dropped behind the party) a
-   first-version mechanic there.
 2. **Is the host's dark enough to pause the search here, as built?** His rulings say full dark pauses it; the
    pursuit mod slows only the Abyss. This is the hosts' question more than the Deep's, and it decides whether a
    Deeps stop is a month or a long winter. *Add the cold nightside hosts to the slowed list* (what the rulings
    read as). *Leave them out:* the Deeps become a smash-and-grab like anywhere else.
-3. **Do the crew's own droids stop at the gallery in 0.1.0?** It is built, it is what a Jawa crew would see first
-   (their stock in trade refusing to walk), and the cleanse switched it off because it also interrupts a player's
-   Biotech mechanoids and a fresh review refused it as a default. *0.2.0* (default here). *0.1.0, droids only,
-   mechanoids exempt:* a small change and a strong first-descent moment.
-4. **The wax goes off in the cave's own air. Leave it?** As built the candler's milk is the Blue Desert's wax: safe
-   below freezing, spoiled and lit within hours above it, and the cave is seventeen degrees. Nobody chose this; the
-   item was reused. *Leave it* (default here): fuel that has to be run out into the killing cold is the most Jawa
-   thing in the cave, costs nothing, and makes the hoist matter. It also means a party that milks and lingers
-   blows itself up, so the candler's text must say so (it nearly does: *"will not stay inert anywhere warm"*).
-   *Give the Deep a wax of its own that keeps at cave warmth and spoils in a heated hold:* a second item, and the
-   old proposal's cold-chain trade without the surprise. *Switch the reaction off inside a Deep:* the smallest
-   change, and the fuel becomes ordinary.
-5. **Does a running cryo envelope give the ship away?** His shield ruling has it *"glowing with red-orange black
-   body radiation"*; the glow is unbuilt. The ship's only cover at a Deeps stop is the host's dark. *No* (default,
-   and what the shared machinery file assumes for every shield). *Yes:* a ship kept warm is a ship seen sooner, and
-   a crew may choose to let the hull take the cold. This is one question for every nightside host, not only this
-   one.
+   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
+   2026-11-19.*
 
 **Ship ideas he declined or cut:** none found in the Deeps' sources. The one ship idea pitched here, the keel
 hoist, he took and widened on 2026-10-01.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **Does the Empire ever come down the shaft?** No in 0.1.0 (the design's default). A lone probe that drifts down the
+   mouth with its searchlight on is a proposal for 0.2.0. *Delegated call.*
+3. **Do the crew's own droids stop at the gallery in 0.1.0?** *His ruling:* the move card of 2026-11-18 (*"Move it,
+   list every move"*): 0.2.0.
+4. **The wax goes off in the cave's own air. Leave it?** Leave it, and fix the candler's text to say the milk does not
+   keep in the cave's warm air (the design's default). *Delegated call.*
+5. **Does a running cryo envelope give the ship away?** No in 0.1.0: the envelope's glow is not built. Ask again when
+   it is built. *Delegated call.*

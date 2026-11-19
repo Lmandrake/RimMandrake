@@ -136,7 +136,7 @@ slime.
   body.
 - **The arrest.** Held on the patient, a Sunbeam's lens stops the change where it is. What has already changed
   stays, and the treatment leaves a burn. It works at the warning stage too, before anything has grown: that is
-  the moment the warning is for. A crew member who goes out again starts again. (How a crew comes by a Sunbeam in 0.1.0 is `NEEDS HIM`.)
+  the moment the warning is for. A crew member who goes out again starts again. (How a crew comes by a Sunbeam in 0.1.0: it buys one before it lands, `Answered on 2026-11-19` 1.)
 - **The tissue run.** What the crew came for. Take a sample from a donor; carry it to a Bloody Mess; read the odds
   before committing; come back about four days later for what grew (the host dies making it: one batch each). A batch that misses the wanted part still brings matched,
   usable tissue: a kidney, a liver, a lung, a heart.
@@ -387,34 +387,40 @@ Every feature is in one bucket.
 
 Each is tagged with one theme word.
 
-1. **[other] Is the built way to a Sunbeam enough for a ship on the run?** He ruled the sellers by card on
-   2026-10-15: *"Quests plus a visiting Helix trader."* As built, the Sunbeam also carries the ordinary
-   ranged-weapon trade tag and a standard reward tag, so any arms trader or quest reward can bring one with Helix
-   trade switched off; the Repulsor comes as a quest reward only. Nothing on the map supplies either.
-   *As built* (default): a crew that wants one buys it before it lands. *Also found as salvage in a dead visitor's
-   Burn shelter* (the sheet has *"the ruins of visitors who learned the clock too late"*; one new placement).
 2. **[hull] Does a raised particulate screen keep the Bloom off the crew standing inside its bubble?** His words
    give the light screen *"bio contamination, spores"* handled *"completely"*, and the shield design protects *"the
    ship and a bubble around it"*. As built, the touched dose reads only what is overhead and never asks about a
    shield. *No, the screen protects the ship and its gear* (default; as built). *Yes, inside the bubble:* then the
    screen is the answer to this biome's spine for anyone who stays by the ramp, and the trip away from it is the
    whole risk.
+   *Left open on 2026-11-19:* The draft of 2026-11-19 answered this *Yes* as his ruling. The second reader left it
+   open: *"the ship and a bubble around it"* is the shield design's own text
+   (`design/Jawa/proposals/ship_shields_deep_design.md` §2), not his words. His row of 2026-09-02 says only that the
+   screen handles *"spores"* *"completely"*. A *Yes* changes a built default and makes the screen the answer to this
+   biome's spine, so it stays his.
 3. **[hull] A ship idea he cut, listed so nobody revives it:** the spore membrane, a sealed positive-pressure skin
    for exactly this biome, with its research gated behind a Helix story beat. Cut on the shield sheet, 2026-09-02:
    *"spores aren't magical, just particulates."* Not revived here.
-4. **[cover] Does a Burn show the ship to orbit?** *For as long as the sky is clear* (default). *No:* the lid's step
-   is constant and a forced Burn is free. *A forced one only.*
-5. **[other] Do the Helix sell out a stolen ship?** Unsettled anywhere. It decides whether trading with the only
-   people here is safe. *Not decided here* (default: they buy and say nothing).
-6. **[scope] The Rawshade.** His words, 2026-10-24, on the art sheet: *"Make (C) into a new creature, it's very
-   cool. New name, description, behavior."* The cleanse of 2026-11-17 recommended retiring it as a duplicate of the
-   Danglemaw; his earlier word wins, so it stays, at 0.2.0. Its shade is *"truly safe"* only because it *"does not
-   hunt anything as large as a person"* (prey up to body size 0.7). Whether a Jawa is under that line is
-   `UNMEASURED`. *Safe for a Jawa as for anyone* (default). *A Jawa is prey:* the false shelter is false for this
-   crew in particular.
-7. **[scope] Bodyprints in 0.1.0.** His card of 2026-10-16 kept the Dive and Bodyprints *"in THIS sprint"*; reading
-   that as 0.1.0 was an agent's call, and the cleanse deferred the phases. *In 0.1.0* (default, as the locked sheet
-   has it). *A plain corpse or remnant now, the phases in 0.2.0.*
-8. **[locked-tree] The locked sheet and tree describe a colony that settles the valley** (*"Colonists within one
-   dash of a refuge"*, the season's turn). This page describes a stop. The tree is not edited; a Designer run
-   reconciles them.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **[other] Is the built way to a Sunbeam enough for a ship on the run?** As built: a crew that wants one buys it
+   before it lands (the design's default). *Delegated call.*
+4. **[cover] Does a Burn show the ship to orbit?** Yes, for as long as the sky is clear (the design's default).
+   *Delegated call.*
+5. **[other] Do the Helix sell out a stolen ship?** Not decided in the biome. The campaign layer decides. Here they
+   trade and say nothing (the design's default). *Delegated call.*
+6. **[scope] The Rawshade.** Safe for a Jawa as for anyone, until a Jawa's body size is measured against the 0.7 line
+   (`UNMEASURED` today). *Delegated call.*
+7. **[scope] Bodyprints in 0.1.0.** *His ruling:* his card of 2026-10-16: *"Dive and Bodyprints stay in THIS sprint"*.
+   In 0.1.0; the first-version size question can still move it.
+8. **[locked-tree] The locked sheet and tree describe a colony that settles the valley** *His ruling:* his word of
+   2026-11-18, *"Let's rewrite them all and let git be provenance."* The tree is not edited now; a Designer run
+   reconciles it when the hold lifts.

@@ -119,7 +119,7 @@ The fourth route is the one the sheet calls *"the cursed prize"*: the vault-root
 deposits"*. Digging them out is *"exactly what the Junkers do and exactly what reopens the wound."* In these
 versions it stays cursed and unbuilt as a fuel: destroying a loaded root releases what it bound, and that is all.
 The Wastes is not replete. Giving soot bricks something that burns them, the ship first, is the build this ruling
-asks for. Which route is the Wastes' own is `NEEDS HIM` 5.
+asks for. Which route is the Wastes' own is `Answered on 2026-11-19` 5.
 
 **What the place does to the ship (his ruling of 2026-11-18, in 0.1.0).** It wears it down from the hour it
 lands, and that is already built. The frame his ruling points at (`src/RimUtinni/ShipShields/`, his shield rulings
@@ -468,7 +468,7 @@ Every feature is in one bucket.
 - Vault-root ore as a fuel economy. The top-down healing of the land, which runs on a scale of ages.
 - Radiation-scrubbing drugs and the dive structure priced in a dose budget.
 - A second, native giant that passes through as a huge pawn. (His words of 2026-10-21 on the titan passage:
-  *"Every biome should have something like this."* The Wastes' roster homes none. `NEEDS HIM` 6.)
+  *"Every biome should have something like this."* The Wastes' roster homes none. `Answered on 2026-11-19` 6.)
 - The throat cask (campaign): his cargo that breaks the ship from inside.
 - The excretor's sheared bezoars; the isi isi's shock; the 626 existing map features (caves, junkyards, ruins)
   planned for Wastes tiles at the end paint, which will make one Wastes landing differ from the next.
@@ -489,39 +489,32 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-1. *(other)* **"The creatures are its victims."** His experience line, picked on 2026-10-20, ends with those words. His
-   ruling of 2026-09-28 says the opposite in as many words: survivors, *"never pitiable"*. This design follows the
-   earlier, typed ruling for the creatures and reads "victims" as the unadapted dead (the rib-vaults, the
-   Junkers). *Leave it* (default). *Re-pick the line* so its last clause matches the cast.
-2. *(scope)* **Is cargo you are paid to carry a 0.2.0 thing?** The tipping trade as built delivers casks to a licensed pad
-   on the player's land every few days. For a ship it is better as a single paid pickup: take casks aboard at a
-   toll gate, be paid, and own the problem. *Keep the built pad contract for 0.2.0* (default; it exists).
-   *Reshape it to a paid pickup:* very Jawa, and a rewrite of a quest that passed live.
-3. *(hull)* **Does the Middenshell touch the ship?** As built it goes around gravship parts and its tentacle will not take
-   them. *Keep that* (default: the player loses a yard, never the campaign). *Let it crush what is in its path,
-   ship included, with the hours of warning as the fairness:* a real reason to launch early, and one bad save
-   away from ending a run.
 4. *(cover)* **Is the dark scour full dark for the search from orbit?** His card of 2026-11-18: *"full dark still
    pauses it."* The sheet says the scour's only light is the stormwall's glow on one horizon. Only the Abyss is on
    the built pause list. *Yes, add the scour's tiles* (default: a cold, poisoned, lightless flat becomes one of
    the planet's real hides, and a stop there runs six to nine weeks at the edge). *No, it is one step, like ash:*
    the glow counts as light, and the scour is only a slower clock.
-5. *(fuel)* **Which fuel is the Wastes' own?** Three are in the sources. *Wartshrub* (default for 0.1.0: built,
-   proven, scarce). *Soot bricks:* the sootgrazer exists and the brick burns in its own text, and nothing consumes
-   it; making the ship burn them is a build, and it turns a penned animal into a fuel plant. *Vault-root ore, "the
-   cursed prize":* unbuilt, the sheet's own, and the only one that tempts a crew to do harm. Buying from Junkers
-   is this design's proposal and has no source.
-6. *(scope)* **Does the Middenshell count as the Wastes' giant?** His words on the titan passage, 2026-10-21:
-   *"Every biome should have something like this."* The Wastes has the Middenshell, which is a building that
-   crawls, and no giant animal for the passage pool. *Yes, it counts* (default: one giant is enough for a place
-   whose rule is that wildlife is never the headline). *No, a second giant is owed:* a new creature at the roster
-   sitting, and a second thing walking through the yard.
-7. *(scope)* **Should the waste run exist?** The mechanics review of 2026-10-22 asked and nobody carried the
-   question to him: it *"sends waste away, which undoes the line 'nothing ever leaves'"*. His own hook answers
-   half of it (2026-10-12: the waste cannot leave the planet, because the only hyperdrive that fits is in the war
-   lab). *Keep it in the campaign layer* (default; it is built, with four stubs owed). *Fold its choice into the
-   tipping letters. Cut it.*
-8. *(hull)* **Is the throat cask Wastes content again?** His words of 2026-10-09 make it the one cargo that faults
-   the ship. An agent moved it out of the Wastes' count on 2026-10-23, to the campaign layer. *Leave it there*
-   (default). *Bring it into the Wastes' 0.2.0 with the cask bay:* one more live check, and the Stenchlands
-   arrive with the biome.
+   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
+   2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. *(other)* **"The creatures are its victims."** Leave it. Read "victims" as the unadapted dead (the design's
+   default). *Delegated call.*
+2. *(scope)* **Is cargo you are paid to carry a 0.2.0 thing?** Keep the built pad contract for 0.2.0 (the design's
+   default). *Delegated call.*
+3. *(hull)* **Does the Middenshell touch the ship?** Keep it: the Middenshell goes around the ship. This keeps his
+   shield ruling of 2026-09-02: *"no environment is immediately lethal"* (the design's default). *Delegated call.*
+5. *(fuel)* **Which fuel is the Wastes' own?** Wartshrub (built, proven, scarce; the design's default). The rich-fuel
+   question (which biomes are the few with a richer source) can change whether it counts as richer. *Delegated call.*
+6. *(scope)* **Does the Middenshell count as the Wastes' giant?** Yes, it counts (*"Every biome should have something
+   like this"*, 2026-10-21; the design's default). *Delegated call.*
+7. *(scope)* **Should the waste run exist?** Keep it in the campaign layer (the design's default). *Delegated call.*
+8. *(hull)* **Is the throat cask Wastes content again?** Leave it in the campaign layer (the design's default).
+   *Delegated call.*

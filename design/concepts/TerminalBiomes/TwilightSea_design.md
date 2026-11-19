@@ -78,13 +78,16 @@ cordon on the ship, a breaching assault, and an orbital bombardment that cannot 
 the one before succeeded; a loud crew halves every wait and a hidden one doubles it. The arithmetic is taken from
 "The clock on any stop" in `design/concepts/Greentide/design.md` and is not re-derived here.
 
-**How long a stop on the floor can last: about six weeks, and that is the outer edge.** His ruling of 2026-11-18:
-*"The numbers you're generating are likely the outer edge allowable for each biome, and that's just fine. Go with
-that."* One step quieter than open ground, the ladder gives a probe on day 7 to 11 and the bombardment on day 28 to
-45 if the Empire wins every step. **On the beach, in the open: about a month** (bombardment on day 20 to 32).
+**How long a stop on the floor can last: months, and that is the outer edge.** His ruling of 2026-11-18: *"The
+numbers you're generating are likely the outer edge allowable for each biome, and that's just fine. Go with
+that."* Under the sea is the top level of cover (`Answered on 2026-11-19` 2): every wait is four times the
+open-ground wait, so a probe comes around day 20 to 32 and the bombardment around day 80 to 128 if the Empire wins
+every step (four times the ladder's provisional numbers). **On the beach, in the open: about a month** (bombardment
+on day 20 to 32).
 
-Few crews will see that edge. A light-well lives about a week, so a six-week stay watches the light walk away five or
-six times, and the deck fills the whole while. A season is fifteen days.
+Few crews will see that edge. A light-well lives about a week, so a long stay watches the light walk away many
+times, and the deck fills the whole while. The deck and the lack of salvage, not the Empire, move most crews on
+(this design's reading). A season is fifteen days.
 
 ---
 
@@ -162,14 +165,14 @@ Before the first hour is out the player should have seen four things without goi
 
 ## The ship while it sits here
 
-**Cover from orbit: partial, one step, on the floor. None on the beach.** His card of 2026-11-18: *"Canopy, steam
-and fog slow the search by one step; full dark still pauses it."* The floor is under a sea and under one living lid
-from shore to shore, which is more than a canopy and is not dark: this is *"the beautiful lighted Twilight floor
-with lots of lighted everything"* (his words, 2026-09-26). So it takes the one step and not the pause. "One step" is
-one band on the pursuit's built visibility scale. His own first thought about water, on 2026-08-13, was that it
+**Cover from orbit: the top level on the floor. None on the beach.** His card of 2026-11-18: *"Canopy, steam and
+fog slow the search by one step; full dark still pauses it."* His later word the same day: *"Going under the ocean
+is like the Dark... VERY concealed. But nowhere pauses it indefinitely."* The floor is under a sea and under one
+living lid from shore to shore. It is not dark (*"the beautiful lighted Twilight floor with lots of lighted
+everything"*, his words, 2026-09-26), but it is under the ocean, so it takes the top level of cover, like the
+Abyss's Dark, and no pause (`Answered on 2026-11-19` 2). His own first thought about water, on 2026-08-13, was that it
 hides a ship: *"'Hiding' your gravship from pursuit is a big deal in this campaign, and allowing them to under the
-(admittedly very small) bodies of water or into the permanently dark terrain is pretty cool!"* Whether under water
-should count for more than one step is under `NEEDS HIM`. The beach is an open salt pan in a wind that never stops:
+(admittedly very small) bodies of water or into the permanently dark terrain is pretty cool!"* The beach is an open salt pan in a wind that never stops:
 no cover from above. At ground level its only cover is the kilometre-long shadow of a single blade plant.
 
 **Wear on the hull: the laden deck.** His ruling of 2026-11-18: *"Yes in 0.1.0. It's easy, and most of the biome
@@ -200,7 +203,7 @@ already talk about this."* This sea's wear was his own, typed seven weeks earlie
 - *A second wear, for 0.2.0, flagged as mine.* The sea's oldest giant is described in source in these words: *"what
   those hands close on they do not let go of: a hull, a mooring, a diver."* The gripping terror is built as an
   animal; nothing makes it take hold of a ship. Making it do so is my proposal from that sentence, not a source's
-  design, and it is under `NEEDS HIM`.
+  design; it comes at 0.2.0 as a rare event with a sign first and a grip that can be broken (`Answered on 2026-11-19` 4).
 - *The approach.* No source says the lid or the water shakes a ship on the way down, and this design does not add it.
 - *The beach.* No source names a wear on a ship parked on the Twilight's beach, and none is proposed. The frame's
   blown-particle case is there if salt in that wind is ever made weather.
@@ -215,8 +218,8 @@ the hideously slow route of rendering biomass into chemfuel. Uselessly slow, onl
   It is rare on this floor. That is a source line for a little fuel, not for a rich source, and the Twilight is
   written as the slow route.
 - *Buying it.* Nobody on the floor is known to sell fuel. The Compact are *"keepers and neighbours, never landlords
-  and never sellers"* of light by his ruling of 2026-09-27; whether a holding trades ordinary goods at all is under
-  `NEEDS HIM`. On the beach side the campaign has a junker caravan that stocks chemfuel (measured in
+  and never sellers"* of light by his ruling of 2026-09-27; a holding trades ordinary goods at one resident
+  (`Answered on 2026-11-19` 3). On the beach side the campaign has a junker caravan that stocks chemfuel (measured in
   `src/RimUtinni/UtinniPatches/`, marked provisional there), and the crew has something no market has seen to pay
   with: light that is alive. Very Jawa: sell the glowing weed before it rots.
 - *The contrast is the point.* The fuel sea is the Chill. This one feeds the crew and does not fill the tanks.
@@ -271,8 +274,8 @@ Each can happen inside the visit. Each says what is on screen.
 
 ## When the Empire arrives
 
-How the Empire's ladder reaches a ship at the bottom of a sea is `UNSETTLED` and is the first question under
-`NEEDS HIM`. What the place does to anyone who comes down, whoever they are:
+How the Empire's ladder reaches a ship at the bottom of a sea: the probe and the bombardment follow, and the troops
+wait at the beach (`Answered on 2026-11-19` 1). What the place does to anyone who comes down, whoever they are:
 
 - **The river takes them.** Nobody warned them about the stakes. The river pass wrote the fight already: *"a bank
   fight one step from the current — free drama, by design."* A trooper knocked into the bed goes to the sink like
@@ -315,7 +318,7 @@ How the Empire's ladder reaches a ship at the bottom of a sea is `UNSETTLED` and
   sell it before it rots.
 
 **Stay, longer than the Empire would like:**
-- A lid and a sea over the ship, which slow the search from orbit by one step.
+- A lid and a sea over the ship: the top level of cover from orbit.
 - Food, more of it and easier than anywhere but the Greentide, picked up by hand.
 - Mild water. Nothing here burns, freezes, crusts or poisons.
 - Free ground. Nobody charges for a well.
@@ -368,7 +371,7 @@ comfortable"*; there is no cover from orbit; water arrives as fog, *"a cupful at
 | Food can be gathered and hunted by hand on the floor; nothing can be fished there; the same kinds are fished from the beach. | A crew with no supplies for a day on the floor; a line on the beach. | A fishing zone on the floor does nothing. |
 | Nothing rains under the sea; weather changes only the light. | A full visit's weather. | His words: *"Twilight Sea is a sea floor... no rain."* |
 | Nothing vanishes. | Every loss above, with a save and reload in the middle. | |
-| Under the lid the Empire's search comes one step slower than it does for the same crew on the beach. | The same crew, as loud, landed on the floor and on the beach; read the search's next contact on both. | A crew made loud on the floor loses the step. |
+| Under the lid the Empire's search comes at the top level of cover, much slower than for the same crew on the beach, and it still comes. | The same crew, as loud, landed on the floor and on the beach; read the search's next contact on both. | A search that never comes on the floor. |
 
 No row pins a rate: how often a pane falls, how long a well lives and how long a step is are tuning, and stay out of
 any bar.
@@ -403,7 +406,7 @@ sea (his redirect of 2026-09-26).
 **Three ship systems, and what the Twilight asks of each:**
 - *Hull wear.* The frame is `src/RimUtinni/ShipShields/`. The Twilight asks it for nothing new: only that the
   landing advisory name the laden deck.
-- *Cover from orbit.* One entry on the partial-cover list the pursuit does not have yet.
+- *Cover from orbit.* One entry for this floor at the top level, beside the Abyss's Dark.
 - *Fuel.* Nothing. The slow route is the base game's.
 
 ## Scope
@@ -433,7 +436,7 @@ Every feature is in one bucket. "Built" is source presence, not a pass.
 - The stripped wreck; ordinary sea-floor wrecks. (built)
 - Weather that only changes the light. (today the floor has Clear and Fog; the four lighting weathers are unbuilt)
 - The beach as it is: salt pan, wind, the catch. (shore plumbing built)
-- Under the lid as partial cover from orbit. (unbuilt; campaign layer, one entry in the pursuit)
+- Under the lid as the top level of cover from orbit. (unbuilt; campaign layer, one entry in the pursuit)
 
 **0.2.0, the stop with company**
 - The gardener's five beats: the booming, the dark, the panic, the rain of flakes, parasites and glowing shells, and
@@ -483,7 +486,7 @@ Every feature is in one bucket. "Built" is source presence, not a pass.
 
 ## UNSETTLED and UNMEASURED
 
-- **How the Empire's ladder reaches a ship on a sea floor.** Under `NEEDS HIM`.
+- **How the Empire's ladder reaches a ship on a sea floor.** The probe and the bombardment follow; the troops wait at the beach (`Answered on 2026-11-19` 1).
 - **Which big animals are cast.** The roster file carries his 2026-09 notes placing eight famous or donor animals
   here; the content drop measured them absent from the live def after the cast sitting of 2026-09-25; on 2026-11-18
   the free def carries eighteen animals and the campaign patch adds three (two scalefish and the sando). The colo
@@ -497,31 +500,32 @@ Every feature is in one bucket. "Built" is source presence, not a pass.
 
 ## NEEDS HIM
 
-1. **What does the Empire do about a ship at the bottom of this sea?** No source rules it. The nearest is a retired
-   seat's line from 2026-08-13, developing his hiding concept: *"The best kind of safety is somewhere the enemy could
-   reach and chooses not to."* *The probe and the bombardment follow; the troops wait at the beach and meet the ship
-   when it lifts* (default; it needs the fewest new things, and matches the other three seas' designs). *Everything
-   follows:* troopers on the floor in their own gear, and the river, the panes and the dark do to them what they do
-   to the crew. *Nothing follows but the clock:* the floor is safe from all but the last step.
-2. **Is being under this sea one step of cover, or more?** His card names canopy, steam and fog for one step and full
-   dark for the pause; water is not on it. His words of 2026-08-13 make water a hiding place in its own right. *One
-   step* (default: the floor is lit, and one step already makes this the longest stop of any sea). *Two steps, or the
-   pause:* the Twilight becomes the comfortable hideout, fed and mild, and the only thing that moves a crew on is
-   the deck and the lack of salvage.
-3. **Does a Compact holding trade with a visiting crew at all, and does anyone on this sea sell fuel?** His ruling
-   removed the selling of light. The blessed cast sheet says *"ordinary goods only"* if a trade role must sit on
-   someone, and names nobody. *Ordinary goods at one resident, no fuel on the floor, fuel from caravans on the
-   beach* (default). *The ward as well:* the only friendly medicine under the sea, for a price. *No trade at all:*
-   they are neighbours, and the crew sells its glowing weed somewhere else.
-4. **May the gripping terror take hold of the ship (0.2.0)?** Its own description says it grips hulls. *Yes, as a
-   rare event with a sign first and a way to make it let go* (my proposal). *No:* it stays a thing seen at a
-   distance, and the laden deck is this sea's only wear.
 5. **Not questions; a list he asked for.** Ship or light ideas in these sources that he declined or cut, which this
    design does not bring back: the selling of light and all its paper (2026-09-27, his words above); light calling
    the sea (2026-09-26, his words above); the Ark Seed, a tank of live breeding stock carried up in the ship, which
    sat third in the ranking he answered with *"no we need to vary this"* (2026-09-26) and was never ruled in. If he
    wants the Ark Seed, the small version is live fish as cargo in the hold with no home pen.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 The cleanse proposal of 2026-11-17 asked him one question, whether the wells may turn over in about a week when the
 frozen sheet says years. He had answered it on 2026-09-26 in his own words (*"the light can move around slowly over a
 week"*); it is not asked again.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **What does the Empire do about a ship at the bottom of this sea?** The probe and the bombardment follow the ship
+   down. The troops wait at the beach and meet it when it lifts. This needs the fewest new things and is the same in
+   all four seas (the design's default). *Delegated call.*
+2. **Is being under this sea one step of cover, or more?** *His ruling:* his word of 2026-11-18 (4:09 PM PST): *"Going
+   under the ocean is like the Dark... VERY concealed. But nowhere pauses it indefinitely."* Under this sea is the top
+   level of cover. **This changes the design's default.** Was: *One step*.
+3. **Does a Compact holding trade with a visiting crew at all, and does anyone on this sea sell fuel?** Ordinary goods
+   at one resident, no fuel on the floor, fuel from caravans on the beach (the design's default). *Delegated call.*
+4. **May the gripping terror take hold of the ship (0.2.0)?** Yes, at 0.2.0, as a rare event: a sign comes first, the
+   ship is never destroyed, the grip can be broken, and a launch stays possible. *Delegated call.*

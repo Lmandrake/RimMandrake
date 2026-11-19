@@ -110,7 +110,7 @@ resolving on Cathedral ground is a large hit — the 'local skirmish' it dreads,
 ending for a crew that lets it go all the way (2026-09-12): *"The rust cathedral fights the Empire and slowly
 falls, the planet becomes a warzone again... Something ancient and wondrous is gone forever, and the ship
 mourns."* So in the campaign this is the one stop where staying until the Empire arrives is the worst thing a
-crew can do. Nothing in 0.1.0 or 0.2.0 acts on it; see `NEEDS HIM` 2.
+crew can do. Nothing in 0.1.0 or 0.2.0 acts on it; see `Answered on 2026-11-19` 2.
 
 ---
 
@@ -272,7 +272,7 @@ the crew sold while they were watching; what the eels do to the one who eats the
 - The noon, on a crew that works outside.
 - The hum at its worst, with debts unpaid and the Enclaves' doors closing everywhere else the ship will land.
 - A deep drill left running.
-- No fuel to be had (below).
+- Almost no fuel to be had here (below).
 
 **Stay, longer than the Empire would like:**
 - Steel without limit, and better than steel.
@@ -296,15 +296,18 @@ the crew sold while they were watching; what the eels do to the one who eats the
 
 ## Fuel, and what this place does to the ship
 
-**Fuel: none that any source names; the emergency route is nearly closed as well.** (Owner's ruling of
-2026-11-18: *"Every biome has a fuel source, but for most its the hideously slow route of rendering biomass."*)
-Here there is almost no biomass to render: no plants at all, a handful of animals, the eels. This design does not
-invent a source to make the ruling true; it is `NEEDS HIM` below. One lead exists in the sources: a measured note
+**Fuel: the thin slow route, and buying from the Enclaves.** (Owner's ruling of 2026-11-18: *"Every biome has a
+fuel source, but for most its the hideously slow route of rendering biomass into chemfuel. Uselessly slow, only
+for emergencies. A few biomes have richer sources. You can also buy it"*.) Here there is almost no biomass to
+render: no plants at all, a handful of animals, the eels. So the slow route is thinner here than anywhere, and
+buying is the real route. This design does not invent a source (`Answered on 2026-11-19` 1). One lead exists in
+the sources: a measured note
 of 2026-08-19 found that the game's own ancient chemfuel refinery landmark is allowed on the donor biome this one
 was made from. Whether it can occur on our definition is `UNMEASURED`. A dead refinery on a factory plateau would
-be the least invented fuel there could be. As written, a crew arrives with the fuel it
-means to leave on. Buying: the Enclaves deal on standing; the Junkers have no trader caravans at all (*"a loot source, not a
-market"*), so their truce yard is for one work order and not a shop; whether either sells fuel is `UNSETTLED`. One thing here burns fuel instead of giving it: a kept borehulk's servicing takes
+be the least invented fuel there could be. A crew arrives with most of the fuel it means to leave on.
+Buying: the Enclaves deal on standing, so standing with the droids is worth fuel; the Junkers have no trader caravans at all (*"a loot source, not a
+market"*), so their truce yard is for one work order and not a shop. Fuel is bought from the Enclaves; how
+much they sell is `UNSETTLED`. One thing here burns fuel instead of giving it: a kept borehulk's servicing takes
 chemfuel (0.2.0).
 
 **What wears on the ship (owner's ruling of 2026-11-18: in 0.1.0, from what the sources already say; his list
@@ -322,7 +325,7 @@ already has two hazards to see, so nothing here is new work.
 2. **The poison (built, on the fixed world).** The plateau is saturated with pollution, and the frame's
    particulate test reads a polluted tile. *The answer by shield:* the particulate screen. His ruling on that
    screen says it *"repels small animals"*, and the living bolts are very small machines that he later ruled
-   climb aboard. Whether a screened ship keeps its stowaways off is `NEEDS HIM` 4.
+   climb aboard. Whether a screened ship keeps its stowaways off is `Answered on 2026-11-19` 4.
 3. *The answer by armour, to both:* **the pattern hull**, which mends itself (provisionally 120 hit points a day).
    It is built and switched off; this design places it in 0.2.0. Each section needs an ingot of the live metal,
    and the live metal comes only from a deep drill, which brings machines. A crew that wants the hull has to
@@ -405,6 +408,10 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   or freeing it, with what each costs and earns. (built in large part; *"This should be a MAJOR pain to repair"*)
 - The pattern hull, this biome's gift on his ship register; each section needs live metal from a deep drill.
   (built; an agent's pick)
+- The bolt as a button on the wall: a living bolt keeps to cells beside a wall and is drawn onto the wall's face,
+  as he asked on 2026-10-05 (*"more like a little button that flits around on walls and other surfaces"*). One
+  job-giver and a draw offset; option A of `RUSTCATHEDRAL_LIVINGBOLT_WALL_FLIT_1`. (unbuilt; delegated call of
+  2026-11-19, `Answered on 2026-11-19` 7)
 - Shed curiosities and the charge for picking one up; the coolant in the eater's blood; the shock from the canal;
   standing that bleeds while the hum is at its worst; the giant frozen with the mood. (built)
 
@@ -432,8 +439,6 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Stowaway bolts that go still a day after leaving (the pitch; he replaced it with bolts that remain).
 - A debt owed to the machines' own faction (the kit's reading; his August ruling names the Enclaves).
 - The nineteen hill tiles (the later flatness ruling); the mech-rat and the mech-chicken (his cuts).
-- **Dropped by an agent under his "I cut, you veto" card, though it was his own wish; he has not vetoed it:**
-  bolts flitting on walls. See `NEEDS HIM` 7.
 - **Recommended for dropping, not yet his:** alternate-planet scoring and rarity (there is no worldgen in any
   version).
 
@@ -441,45 +446,39 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 Each is tagged with one theme. The ship ideas he did not choose are gathered in 8; none is revived.
 
-1. **[fuel] What is the fuel here?** His ruling says every biome has a source, if only the slow one. This biome has
-   almost no biomass. *None, and say so* (default: the Cathedral is where a crew that came for metal learns to
-   arrive full). *An ancient chemfuel refinery:* the game's own landmark, which a measured note of 2026-08-19
-   found is allowed on the donor biome; whether our definition allows it is unmeasured, and it would be the
-   least invented answer. *The coolant:* the only liquid here, and very Jawa to siphon; new invention on a
-   watched resource. *Bought only:* from the Enclaves (the Junkers run no trade), which makes standing with the
-   droids worth fuel.
-2. **[other] Does the place show that it wants the crew gone before the Empire comes?** *(The reason is not
-   player-facing.)* In the campaign this is ruled: the arc counts Empire attention brought onto this ground as
-   the largest loss of the mind's regard, and his ending has it fall. The open part is the free biome. *Nothing
-   in these versions* (default: the campaign owns it). *0.2.0:* the hum rises a step with each step the search
-   climbs on this map, with no explanation offered. Small to build on the existing mood; it must never trap.
-3. **[other] Jawa with droids aboard, in the free droids' holy city.** His words of 2026-08-19 give the history:
-   the Enclaves *"were hostile due to Jawa tendency to enslave and sell droids"* and are neutral now only because
-   the crew stole from the Hutts. What no source says is whether landing with droid stock in the hold, or selling
-   a droid while a hull bolt watches, moves that standing. *Nothing* (default). *Something:* it would be a new
-   rule touching the campaign's factions, and it is where this crew's trade and this place meet.
-4. **[hull] Does the particulate screen keep the bolts off?** Two of his rulings meet here. The screen *"repels
-   small animals"* (2026-09-02). The bolts climb onto the landed ship and stay (2026-10-02). And *"slow pressing
-   things move through all shields."* *They get through* (default: the bolts are slow, mechanical, and his later
-   ruling is the one about them). *They do not:* a crew then chooses between a clean hull and its passengers,
-   which is a real choice and costs him his stowaways on any careful ship.
-5. **[hull] The pattern hull as the ship's armour, and when.** An agent picked it as this biome's ship gift
-   (2026-11-11); it is built, switched off, and the only armour answer to wear in this biome. *0.2.0* (default
-   here). *0.1.0:* then the first version has the full trade (deep-drill for ingots, machines come, the hull
-   mends itself afterwards), at the cost of one more thing to prove.
 6. **[scope] One signature, or the pieces.** His card of 2026-11-17 was "Land, life, one signature", and the
    cleanse read it as the temper alone. The first read moved the boarding bolts into 0.1.0 on his own words.
    The line-cycle has the same claim: he picked it by card on 2026-10-02, it is built, it lasts a minute or two,
    and it holds animals and machines but not the crew. *As written* (default: bolts board in 0.1.0; the
    line-cycle waits for 0.2.0). *Both in 0.1.0. Neither* (the cleanse's reading).
-7. **[other] The bolt as a button on the wall.** His sheet note of 2026-10-05: *"Very small 0.1 cells, more like a
-   little button that flits around on walls and other surfaces."* The size is built. The wall movement was
-   dropped on 2026-10-23 by an agent as *"only a cosmetic wish"*, under his card *"I cut, you veto"*; the digest
-   that listed it did not say the wish was his. *Stays dropped* (default; nothing is built, and he has not
-   vetoed it). *Built the small way:* the bolt keeps to cells beside a wall and is drawn onto
-   the wall's face; one job-giver and a draw offset.
+   *Waits on the first-version size question of 2026-11-19.*
 8. **[other] Ship ideas he did not choose, listed so nobody revives one by accident.** All on 2026-10-02: **the
    Loosing** (unbuild the thing the colony bolted down to stay and *"carry every piece aboard the ship's
    hold"*); **the Rider** (bolts steering the giant from its cab, which *"move out onto the ship"* if the giant
    is salvaged); and the first form of the stowaways, which went still a day after leaving, replaced by his own
    (*"REMAIN on the ship"*). Not revived.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **[fuel] What is the fuel here?** *His ruling:* his ruling of 2026-11-18: *"Every biome has a fuel source, but for
+   most its the hideously slow route of rendering biomass into chemfuel. Uselessly slow, only for emergencies. A few
+   biomes have richer sources. You can also buy it"*. The thin slow route, plus buying from the Enclaves. Not "none".
+   **This changes the design's default.** Was: *None, and say so*.
+2. **[other] Does the place show that it wants the crew gone before the Empire comes?** Nothing in the free versions.
+   The campaign owns it (the design's default). *Delegated call.*
+3. **[other] Jawa with droids aboard, in the free droids' holy city.** Nothing (the design's default). *Delegated
+   call.*
+4. **[hull] Does the particulate screen keep the bolts off?** *His ruling:* his shield ruling of 2026-09-02: *"Slow
+   pressing things move through all shields"*. They get through.
+5. **[hull] The pattern hull as the ship's armour, and when.** 0.2.0 (the design's default). *Delegated call.*
+7. **[other] The bolt as a button on the wall.** Back in, at 0.2.0, built the small way: the bolt keeps to cells
+   beside a wall and is drawn onto the wall's face. It was his own wish (sheet note of 2026-10-05), and the digest
+   that cut it did not say so. **This changes the design's default.** Was: *Stays dropped*. Undo: move it back to
+   "Dropped" and set this answer back to *Stays dropped*. *Delegated call.*

@@ -54,7 +54,7 @@ years."*
 **Seen from the ship, this is the one stop where the crew are not the fools on the ground.** This is desert with
 roads in it, herd beasts, dead vehicles and a dead sandcrawler at the end of one of the roads; by every sign in
 the sources it is the crew's own kind of country (no source says in one sentence which biome the clan calls home;
-`NEEDS HIM` below). They know to rest, dash and rest. They know *"for a Jawa, the shade is the dig site."* What
+home ground by the delegated call in `Answered on 2026-11-19` 2, below). They know to rest, dash and rest. They know *"for a Jawa, the shade is the dig site."* What
 they have never done is arrive in something that casts shade. The sheet's own warning to any builder is exact for
 a landed hull:
 
@@ -95,7 +95,7 @@ stay here exactly as long as it dares.
 pavement. Shade is not cover: a hull in a shadow is still a hull. A sandstorm blows through now and then and is
 not on his list of what slows the search either. This is the price of the easiest living on the day side.
 (*0.2.0:* the smoke haze that drifts in from the Pyrelands' fires dims the sun over the whole map; it is the
-natural candidate for one step of cover while it lasts, and that is `NEEDS HIM` 3, not assumed. His card of
+natural candidate for one step of cover while it lasts, and that is `Answered on 2026-11-19` 3, not assumed. His card of
 2026-11-17 on the Pyrelands' own smoke weather was *"Next version"*.)
 
 ---
@@ -274,7 +274,7 @@ too wide for them.
   uniquely add something to the ship?... What can they take and improve their ships environment with?"* This
   biome's answer on the register is *"a tall black-chitin vane whose lee runs the length of an open deck under a
   low sun... shade a roof cannot give without closing the deck."* It is built. An agent chose it, not he; the
-  cleanse recommends retiring it (`NEEDS HIM` 4).
+  cleanse recommends retiring it (`Answered on 2026-11-19` 4).
 - *0.2.0:* steel and components off the wreck road, at the cost of the road; a negotiated hull or its price; the
   prepared vorrel, *"a euphoric delicacy that is a controlled near-miss with a lethal parasite"*; mirrak hide,
   which casts deeper shade.
@@ -436,7 +436,7 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   pure geometry); the tazzok's ash-only schedule (its ash act is gone). The cleanse also recommended retiring the
   lure awning and the shade mast. This design does not follow it on either: he admitted the lure awning by card
   on 2026-10-08 (*"the one biome where you can bait with geometry"*) and it is built, so it sits in 0.2.0 with the
-  other admitted extras; and the mast is this biome's gift to the ship (`NEEDS HIM` 4).
+  other admitted extras; and the mast is this biome's gift to the ship (`Answered on 2026-11-19` 4).
 
 ## NEEDS HIM
 
@@ -448,26 +448,28 @@ Each is tagged with one theme word.
    they can actually recover in, then resumes; drafted and broken people are left alone. It is a rule for every
    biome and it is unbuilt. *That default.* *Something lighter:* a warning and nothing automatic. *Something
    smarter:* which contradicts his own "they aren't evolved beings from that biome".
-2. **[other] Is this the crew's home ground?** The design plays the Long Shade as the one place the crew is competent on
-   foot and the ship is the novelty. If instead the clan's roads are in the deep desert or elsewhere, the crew is
-   as lost here as anywhere and the jokes change sides. *Home ground* (default). *Not home:* rewrite the tone, not
-   the mechanics.
-3. **[cover] Does the smoke haze hide the ship?** His card gives canopy, steam and fog one step of cover. Haze is
-   none of the three and does the same job to the eye. *No cover in 0.1.0; one step under haze when haze arrives
-   in 0.2.0* (default). *Never:* the Long Shade is the planet's bare table. *Now:* pull the haze into 0.1.0 with
-   it.
-4. **[hull] Does the ship keep its mast?** The long-shade mast is this biome's entry on the list he asked for on
-   2026-09-24 (what each biome adds to the ship). An agent picked it on 2026-11-11 after a judge found the lure
-   awning *"only shaded its footprint"*; it was carded to him for review and no answer is recorded. The cleanse of
-   2026-11-17 recommends retiring it as against the rule that shade gear is parasols and roofs. *Keep it as the
-   ship's gift* (default here: the lens makes the ship the point, and an open deck is what a roof cannot shade).
-   *Retire it:* the Long Shade then gives the ship nothing, and something else must be chosen.
+   *Waits on the overheating question (what a crew member does alone when the sun starts to hurt) of 2026-11-19.*
 5. **[scope] One signature, or the pieces he picked?** His card of 2026-11-17: a biome's first version holds
    *"Land, life, one signature."* The cleanse chose real and false shelter as the signature and switched off the
    ship's shade filling up, the heaps, the sun graves, the wreck road, the vorrel and the rest. This design brings
    the first three back into 0.1.0. Two of them (the ship as refuge, the heaps) are his own card picks of
    2026-09-30, and the lens of 2026-11-18 makes the ship the subject. *As this design has it* (default). *Strictly
    one signature:* 0.1.0 is the sun, the dash, the gloomcast and the mirrak, and the ship's shade is just shade.
-6. **[other] Should lightning strike here?** The sheet bans fire that starts here (*"Ash and smoke ARRIVE; they do
-   not originate"*). The biome's weather table carries dry thunderstorms at weight 4 in 99. *Remove them*
-   (default). *Keep them:* rare fires on ground the sheet says never burns of itself.
+   *Waits on the first-version size question of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+2. **[other] Is this the crew's home ground?** Home ground (the design's default). *Delegated call.*
+3. **[cover] Does the smoke haze hide the ship?** No cover in 0.1.0; one step under haze when the haze arrives in
+   0.2.0 (the design's default). *Delegated call.*
+4. **[hull] Does the ship keep its mast?** Keep the mast as the ship's gift (the design's default). The closest call
+   of the 83: the rule says shade gear is parasols and roofs, and a sail on a mast is a parasol on a pole. *Delegated
+   call.*
+6. **[other] Should lightning strike here?** Remove the dry thunderstorms. The sheet bans fire that starts here (*"Ash
+   and smoke ARRIVE; they do not originate"*). *Delegated call.*

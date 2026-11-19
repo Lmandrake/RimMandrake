@@ -193,7 +193,7 @@ Each can happen inside the visit. Each says what is on screen.
 - **The air does not take sides.** His words (2026-10-09): *"raids from the empire suffer constant slow damage from
   that ambient acidity when they raid the players there."* Ambient acid and the bloom fall on every unsealed body
   of every faction. `UNMEASURED`: whether Imperial armour counts by its stats as a full seal. If it does, the
-  build contradicts his sentence, and that is the `NEEDS HIM` question below.
+  build contradicts his sentence, and his sentence wins (`Answered on 2026-11-19` 2, below).
 - **Blasters are sparks.** A firefight in vent haze is a firefight in fuel. The crew chose which vents to cap, so
   the crew knows where the gas lies, and a line of troopers advancing through an uncapped hollow is standing in
   it. Lightning lights it too.
@@ -376,16 +376,23 @@ Every feature is in one bucket.
    the scab. *No* (default): the built acid wear and its liner are the whole of what the place does to the hull.
    *Yes, later:* scab to scrub, trace metal for the trouble; a new system. *Yes, instead of the acid wear:* the
    built sampler is retired.
-2. **Imperial armour and the acid air.** His words say raiders *"suffer constant slow damage"* here. The build
-   spares anything whose stats make a full seal, and nobody has measured stormtrooper armour. *His sentence wins*
-   (default): raiders burn whatever they wear, unless a unit is plainly a sealed machine. *The stats win:* sealed
-   troopers shrug it off and the air is the crew's problem alone.
-3. **The locked tree is a settlement; this design is a stop.** The root's last promise (*"a prepared forty-colonist
-   routine"*) is "later" here. *Re-cut the tree from this file when the hold lifts* (default). *Keep the tree and
-   treat this as a second reading.*
-4. **Oomo's shrine: in, or later?** On 2026-10-15 he ruled the extras in by name: *"Everything except the
-   Seismometer"*, and the packet lists the Oomo shrine among them. The cleanse of 2026-11-17 moved it off and this
-   page files it under "later" as campaign-layer devotion a ship passes by. His word is the older and the more
-   direct. *Later* (as written here). *0.2.0, on the campaign layer,* with the ruin it stands in.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 Themes, for gathering these across biomes: 1 hull · 2 other · 3 locked-tree · 4 scope.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+2. **Imperial armour and the acid air.** *His ruling:* his typed words of 2026-10-09: raids from the Empire *"suffer
+   constant slow damage from that ambient acidity"*. His sentence wins: raiders burn whatever they wear, unless a unit
+   is plainly a sealed machine.
+3. **The locked tree is a settlement; this design is a stop.** *His ruling:* his word of 2026-11-18, *"Let's rewrite
+   them all and let git be provenance."* Re-cut the tree from this file when the hold lifts.
+4. **Oomo's shrine: in, or later?** *His ruling:* his ruling of 2026-11-17: *"The rituals. Little custom details that
+   weren't strictly necessary. They absolutely should be, at minimum, moved to the next version if not retired
+   outright."* It is later than the list of 2026-10-15. Later.

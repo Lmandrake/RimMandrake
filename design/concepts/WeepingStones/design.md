@@ -115,8 +115,9 @@ some hours, with warning letters and never a hard stop.
 the sheet's physics (*"every cold shaded face of it weeps"*) and its palette (*"verdigris where metal meets
 moss"*): a hull that stands here for weeks is a tall cold shaded face in a wet wind, so its shaded side films with
 water, moss takes the seams, bare metal greens, and a basin set under the drip gives a trickle of water. It is
-gentle and half a gift. No source contains it and nothing builds it. It is kept here marked as a proposal, behind
-the two built wears; see `NEEDS HIM`.
+gentle and half a gift. No source contains it and nothing builds it. It is not in 0.1.0: an invented wear waits
+for 0.2.0, and the two built wears answer his hull ruling (delegated call of 2026-11-19, `Answered on 2026-11-19`
+4). It stays a proposal for 0.2.0.
 
 ---
 
@@ -215,7 +216,7 @@ middle of it, very small, being ignored.
   burra burra wallowing out a new basin. The tirbak, *"the walking cistern"*, the caravan mount of the oasis string.
   Out past the scrub, the vhakk, *"the warden"*, which *"never hunts at water"* and owns the approaches instead.
   *"Its patrol is the oasis's outermost wall."* (Its shipped description says the opposite, that it ambushes
-  drinkers from the shallows: see `NEEDS HIM`.)
+  drinkers from the shallows; only the description changes, `Answered on 2026-11-19` 5.)
 - **The road in and out is where things die.** *"Violence lives on the approaches and in scarcity, never at full
   water."* Errands away from the pool pass through the warden's ground.
 
@@ -243,7 +244,7 @@ Each can happen inside the visit. Each says what is on screen.
    rattles, and dances at another one, in the middle of the crew's bucket line.
 9. **The warden's turn.** *On screen:* a hauler coming back along the approach with something low and
    blade-backed pacing it through the scrub, which stops, exactly, where the green begins.
-10. **The ship weeps** (if the proposal is taken). *On screen:* a week in, the hull's shaded flank has a black wet streak down it and a line
+10. **The ship weeps** (0.2.0, if the proposal is built). *On screen:* a week in, the hull's shaded flank has a black wet streak down it and a line
     of moss in a seam, and a sillik is licking it.
 
 ## When the Empire arrives
@@ -306,7 +307,7 @@ better than it is used to.
   vellak walk in traders' caravans as pack beasts, which is where a crew buys one.)
 - *0.2.0:* **the ancient condenser.** The Weeping Stones' named gift to the ship: the oldest stone-crab on the
   world carries a running ancient water machine, and a crew can cut it out. *"It weeps water with no power or fuel
-  wherever it is installed."* One per world. As built it fills flasks that nothing yet drinks. See `NEEDS HIM`.
+  wherever it is installed."* One per world. As built it fills flasks that nothing yet drinks; its water gets a use aboard (`Answered on 2026-11-19` 2).
 - *0.2.0:* **dewsilk,** from the cocoons of a tamed mirrik swarm: *"fiercely hydrophilic"*, the cloth of moisture
   cloaks and comb-sails.
 
@@ -378,10 +379,11 @@ Every feature is in one bucket.
 - Water for the ship. (built by being water)
 - Hull wear from sandstorms and, at the hottest oases, from heat, answered by his shields. (built in
   `src/RimUtinni/ShipShields/`; never watched here)
-- The ship's shaded side weeping. (a proposal of this design, in no source; owed only if he takes it)
 - No cover in clear air; fog as one step. (owed, small)
 
 **0.2.0, the stop with company**
+- The ship's shaded side weeping. (a proposal of this design, in no source; out of 0.1.0 by the delegated call of
+  2026-11-19)
 - The walking condenser: the oldest gorrask, the pool that forms round it for a season and dries when it leaves,
   and the three choices (guide it, sell where it goes next, or cut the machine out for the ship). (built; a closed
   item records the pool forming and the three choices firing end to end, from a debug spawn. As built the sale
@@ -428,7 +430,7 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-Each carries a theme word in brackets. Seven: scope 3, other 2, hull 1, cover 1.
+Each carries a theme word in brackets. Two are left, both scope; five were answered on 2026-11-19 (next section).
 
 1. **[scope] Is the pen still the signature, for a ship?** His experience line ends *"Keep the oasis healthy, or
    it breeds something wrong"*, and the cleanse built 0.1.0 on seasons of husbandry. A ship is here for a month at
@@ -437,35 +439,30 @@ Each carries a theme word in brackets. Seven: scope 3, other 2, hull 1, cover 1.
    (default). *Make the truce the signature outright and move the pen to 0.2.0:* a smaller, sharper first version
    that sets his own line aside for a version. *Hold the cleanse's reading:* the pen across seasons, which no
    visit sees.
-2. **[other] Cutting the machine out of the crab, and what its water is for.** The Weeping Stones' gift to the
-   ship costs the oldest animal on the world its life, and there is one. His words chose the walking condenser and
-   the two quests; the ship-gifts list was filled in by an agent. As built, the plant fills flasks of water that
-   nothing on the ship or in the crew uses. *Leave it as one of three choices in 0.2.0 and give its water a use
-   aboard* (default). *Make sparing the crab pay as well as taking the machine,* so the Jawa answer is not always
-   the knife. *Leave it a trophy.*
+   *Waits on the first-version size question of 2026-11-19.*
 3. **[scope] The pilgrim passage: declined, listed so it is not revived.** The landed ship blocks the pilgrims'
    way to the water, and the crew either launches or grants *"a permanent public passage"* through it, where
    *"closing it later is a recorded breach."* He was shown it on 2026-10-02 with three other ideas and typed:
    *"None of these. Close misses."* That was before he stated the ship lens. It is the only idea in the Weeping
    Stones' sources about what the ship does to the place. *Leave it declined* (default). *Look at it again under
    the lens:* his to raise, not this design's.
-4. **[hull] The weeping hull.** This design's own invention, in no source (see "What the place does to the
-   ship"). *Keep it as a gentle third wear* (default in the text, flagged). *Cut it:* the built sandstorm and
-   heat wears are then the whole answer to his hull ruling here, and on a mild day the Weeping Stones leaves the
-   ship alone.
-5. **[other] The vhakk: his picture against his ban.** His art note of 2026-10-10 asked for *"something low and
-   lurking that lays in the water and watches, same niche as an alligator"*. The description written from it now
-   ships, and has the vhakk wait *"at the water's edge for whatever comes down to drink"* and drag it under. The
-   sheet bans a predator whose hunting ground is the pool, and the built truce stops any hunt there. *It looks as
-   he asked and behaves as the ban says:* it lies in the shallows and watches, and hunts only on the approaches
-   (default; only the description changes). *His note changes the ban:* the warden becomes the one thing that
-   strikes at the water, and the truce needs an exception.
-6. **[scope] The ivvol's protection.** Its shipped description says a pen with an ivvol loses fewer eels and never
-   breeds a vhorrin. Nothing in the code does that, and the question of whether it should (*"real small
-   mechanical bonus, or farmer superstition the numbers never confirm?"*) was drafted on 2026-09-24 and never put
-   to him. The cleanse recommends dropping it because it removes the cost of bad husbandry. *Farmers' belief only*
-   (default). *Make it real.*
-7. **[cover] Is a ship at a crowded pool loud?** The search halves every wait for a loud crew. An oasis is where
-   half the desert comes, and market-day happens at the water's edge. The sources do not say whether that counts.
-   *Not loud* (default: the stop lasts about a month). *Loud:* about two weeks, and the kindest stop on the planet
-   becomes the shortest.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+2. **[other] Cutting the machine out of the crab, and what its water is for.** One of three choices in 0.2.0, and its
+   water gets a use aboard (the design's default). *Delegated call.*
+4. **[hull] The weeping hull.** Out of 0.1.0: it is in no source. The built sandstorm and heat wears answer his hull
+   ruling (*"It's in there."*). It stays a proposal for 0.2.0. **This changes the design's default.** Was: a gentle
+   third wear in 0.1.0. Undo: set this answer back to the third wear in 0.1.0. *Delegated call.*
+5. **[other] The vhakk: his picture against his ban.** It looks as he asked and behaves as the ban says: it lies in
+   the shallows and watches, and hunts only on the approaches. Only the description changes (the design's default).
+   *Delegated call.*
+6. **[scope] The ivvol's protection.** Farmers' belief only (the design's default). *Delegated call.*
+7. **[cover] Is a ship at a crowded pool loud?** Not loud (the design's default). *Delegated call.*

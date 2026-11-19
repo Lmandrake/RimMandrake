@@ -425,7 +425,7 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   2026-11-18)
 - Fuel by the slow route, and seep-oil as a trade good. (the base game's refining; the harvest is built)
 - The radioactive charge that quiets a pool without a fight. (built; his ladder of 2026-09-23 names it and the
-  validated water bar says "treatment"; moved in by the second reader, `NEEDS HIM` 1) With hull wear in, it is
+  validated water bar says "treatment"; moved in by the second reader, `Answered on 2026-11-19` 1) With hull wear in, it is
   also how a crew buys days of quiet for a ship parked in reach.
 - Limbs that nobody hurts sink back by themselves after a while, so a quiet pool does not fill up and a standing
   sentinel does not mute the crown for good. (built; *"the pool breathes"*)
@@ -449,6 +449,11 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   the indicator spike (corvath, *"a grave marker"*) standing at pools that have fed, placed when the map is made.
 - The Fever Wood's wreck field and the acoustic sounder's readings here.
 - The crown's only safe water, the cistrel cup, once the thirst service it needs is in the build.
+- The fever: a fungal sickness from the wood's own spore load, which a crew catches within days and which the
+  Wildsteam of Sporefall sell an answer to (his freeze ruling R15 of 2026-09-07: *"the fever is fungal — the wood's
+  own spore load"*). It must read clearly apart from the Miasma's and the Rot's disease registers. The light screen
+  keeps spores off the ship (*"spores aren't magical, just particulates"*). (unbuilt; delegated call of 2026-11-19,
+  `Answered on 2026-11-19` 3)
 
 **Later (a crew that stays, or a colony)**
 - The prison tank as an industry: products, teaching, neglect, escape, the escapee establishing in a pool and
@@ -481,30 +486,35 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-Three questions. Three others were answered by his card of 2026-11-18 and are written into the design above: the
-crown is partial cover from orbit; the place wears the hull, in 0.1.0; seep-oil is the Fever Wood's richer fuel
-source.
+One question is left. Three others were answered by his card of 2026-11-18 and are written into the design above:
+the crown is partial cover from orbit; the place wears the hull, in 0.1.0; seep-oil is the Fever Wood's richer fuel
+source. Two more were answered on 2026-11-19 (next section).
 
-1. **The no-fight charge: 0.1.0 or 0.2.0?** (scope) The cleanse of 2026-11-17 proposed moving it out of the first
-   version and said itself that this *"needs your decision"*. Against moving it: his ladder of 2026-09-23 ends
-   with it; his answer of 2026-11-10 names poison at a pool as the one thing a player can do; the bar validated
-   on 2026-11-16 says "treatment"; it is built. Default here, changed by the second reader: **0.1.0**, because
-   his dated words outrank the cleanse. Saying 0.2.0 removes one line from each of two lists.
 2. **The Mooring in full: bring it back?** (hull) Offered by name on his card of 2026-10-02 (*"if you stay, a
    tentacle wraps a hull edge and holds. Launch anyway and that section tears off into the pool"*) and not
    chosen; he took the oil boil only. No words of his were recorded against it, and he passed over it before he
    had said the ship lens or ruled hull wear in. Default here: out. Yes puts the snare, the torn-off section and
    the crew's own plate as bait into 0.2.0. The same card passed over a rented trunk-top landing pad at
    Sporefall and a steel saddle across two trunks; they come back with it or not at all.
-3. **Is there a fever in the Fever Wood?** (other) His freeze ruling of 2026-09-07, R15, says yes: *"the fever is
-   fungal — the wood's own spore load, which is also what Sporefall is named for and what the Wildsteam harvest
-   there. The hazard and the resource are the same thing, so living there is a bargain rather than an
-   accident."* It was never written into the sheet (whose ban 5 forbids a "fungal miracle"), and no sitting,
-   roster, build or cleanse after it mentions a disease. Default here: no fever, because nothing after R15
-   carries it and the first two versions already have their centre. If yes, it is a sickness a crew catches
-   within days and a thing the Wildsteam sell; and his shield ruling of 2026-09-02 already says what keeps
-   spores off a ship (*"spores aren't magical, just particulates"*, the light screen).
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 Two readings this document rests on, flagged where they are used: "one step" of cover is one visibility band
 (cover), and an unbuilt fuel recipe goes in 0.2.0 (fuel). Both are asked once for every biome in
 `design/RimMandrake/biome_shared_machinery_2026-11-18.md`.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. (scope) **The no-fight charge: 0.1.0 or 0.2.0?** *His ruling:* his ladder of 2026-09-23, his answer of 2026-11-10
+   and the move card of 2026-11-18 (*"Move it, list every move"*). 0.1.0; the first-version size question can still
+   move it.
+3. (other) **Is there a fever in the Fever Wood?** Yes, at 0.2.0. His freeze ruling R15 (2026-09-07) says *"the fever
+   is fungal — the wood's own spore load"*, and nothing later reversed it. The sheet's ban 5 forbids a *"fungal
+   miracle"*, not a disease. R15 also owes a clear line between this fever and the Miasma's and the Rot's registers.
+   **This changes the design's default.** Was: no fever. Undo: strike the fever line from the 0.2.0 list and set this
+   answer back to *no fever*. *Delegated call.*

@@ -462,40 +462,34 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-1. **"Etchant."** (other) On 2026-11-10 he wrote: *"I don't know what Etchant even is, so we will need to revisit these
-   strange little design quirks that seem to have gotten into the notes to make sure we still want it."* It is one
-   of three reagents drawn from the pools (with a gel for the screen and a coagulant), adopted by his card of
-   2026-09-30 from an outside consult, and it is what machine repair and turret refit consume. This design keeps
-   every chain that used it out of 0.1.0 and writes 0.2.0's refit and waking as needing *"components and steel"*
-   only. *Keep the three reagents as adopted. Fold them into one "pool reagent"* (default for 0.2.0: one thing to
-   learn, one colour table). *Drop pool reagents as inputs:* the pools are then scenery and hazard, and the chains
-   cost ordinary parts.
-2. **Do mynocks belong to the free biome?** (hull) His note on their art, 2026-10-05: *"I like the mynok there"*.
-   The sheet makes the infestation the Warscar's own (*"the biome
-   follows you home"*), but the mynock is a canon animal and arrives only through the campaign's roster. *Campaign
-   only* (default, as built). *An invented hull-leech of ours in the free tier:* the free Warscar then wears on
-   ships too, and it needs a creature and art.
-3. **Is there anything here that hides a crew?** (cover) As written, no, and this design says so plainly. The one
-   candidate in the sources is the lacquer cloak, which by its built rule *"does not cloak ships"*. *Leave the
-   Warscar with no hide* (default: every biome need not have one, and "found on schedule" is this stop's
-   character). *Let lacquer be painted on a hull at a punishing price:* a second reason to come, and a new system.
-
 4. **The war-black hull, and glower as fuel.** (hull) The first review offered *"war-black hull plating, a
    cosmetic with a tiny beauty-and-prestige stat, the Warscar's mark on every ship that stopped here"*, with
    glower as a brazier fuel and a pigment. His card of 2026-09-30 (turn 2, by card, so no words of his to quote)
    put all three out. Seven weeks later he ruled that every biome has a fuel source and wears on the hull with
    armour that answers it. *Leave them out* (default: a cut is a cut). *Bring back the plating as the Warscar's
    armour against its own air.* *Bring back the fuel as the biome's slow route.*
-5. **Which field should a ship here have to give up?** (hull) As built, the frame wears the ship for heat and
-   for air and one generator turns only one. *Leave it as built* (default: it is the choice). *The air only:* the
-   heat here is ordinary for this crew and should not cost the ship. *Neither in 0.1.0.*
-6. **Do the dead of the old line stay dead for free-tier players?** (scope) The rule that every ancient danger is
-   already sprung is his, and the dressing for it was lost with the campaign twin. *Rewire the dressing onto this
-   biome and inspect the base game's ruins for live threats* (default; it is the open item
-   `WARSCAR_REWIRE_SCARLANDS_KIT_TWIN_GONE`). *Campaign only.*
-7. **The hospice in 0.1.0?** (scope) The first pass named it the one thing to pull forward and left it in 0.2.0
-   believing it had never run. It has four live passes. *0.2.0* (default: it still leans on the reagent he
-   doubted, and a week of waking is longer than most stops). *0.1.0 with ordinary parts.*
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 One question the cleanse put on its owner pages is answered here without asking: the label is "Warscar", the later
 of the two cards.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. (other) **"Etchant."** Fold the three reagents into one pool reagent for 0.2.0 (the design's default). *Delegated
+   call.*
+2. (hull) **Do mynocks belong to the free biome?** *His ruling:* his naming-tier ruling of 2026-09-22 (Q11a,
+   `design/RimMandrake/biome_rulings.md`): a genuine canon name is IP and goes through the campaign layer. Campaign
+   only.
+3. (cover) **Is there anything here that hides a crew?** No. The Warscar's draw is its salvage (the design's default).
+   *Delegated call.*
+5. (hull) **Which field should a ship here have to give up?** As built: one generator, one field. That is the choice
+   (the design's default). *Delegated call.*
+6. (scope) **Do the dead of the old line stay dead for free-tier players?** Rewire the dressing onto this biome, item
+   `WARSCAR_REWIRE_SCARLANDS_KIT_TWIN_GONE` (the design's default). *Delegated call.*
+7. (scope) **The hospice in 0.1.0?** *His ruling:* the move card of 2026-11-18 (*"Move it, list every move"*): 0.2.0.

@@ -91,24 +91,27 @@ provisional): a probe droid, then scouts with a spotter, a strike team, an ion c
 assault, and an orbital bombardment that cannot be fought. The arithmetic is taken from "The clock on any stop" in
 `design/concepts/Greentide/design.md` and is not re-derived here: on open ground a probe on day 5 to 8, a first
 real fight around day 12 to 20, the bombardment around day 20 to 32; one visibility band quieter stretches every
-wait by about four tenths, a probe on day 7 to 11 and nothing past about six weeks.
+wait by about four tenths, and the top level of cover (the Abyss's Dark and the sea floors) makes every wait four
+times longer: a probe around day 20 to 32.
 
-**The outer edge of a stay: about six weeks on the floor, about a month on the beach.** By his word of 2026-11-18
+**The outer edge of a stay: months on the floor, about a month on the beach.** On the floor the search is four
+times slower and still comes (`Answered on 2026-11-19` 2). By his word of 2026-11-18
 the figure a design derives is *"the outer edge allowable"*, not the typical stay. Few crews will see either edge.
 The Chill pushes a ship out by its own means long before: the power it costs to stay warm, the charge in the
 suits, the food and water that came down in the hold.
 
 **Cover from orbit.** His card of 2026-11-18: *"Canopy, steam and fog slow the search by one step; full dark still
-pauses it."* "One step" is read as one visibility band, as in every other design of this rewrite.
+pauses it."* "One step" is read as one visibility band, as in every other design of this rewrite. His later word
+the same day: *"Going under the ocean is like the Dark... VERY concealed. But nowhere pauses it indefinitely."*
 
-- *The floor: one step.* The ship sits under a sea that is black from above, on the night side of the world.
-  Whether that is the "full dark" that pauses the search is the cross-biome question the shared-machinery file
-  already asks, and it is under `NEEDS HIM`. The default here is one step, for a reason this sea supplies itself:
-  a ship on this floor cannot go quiet. It must heat, and its heat is written on the sea. The owner's ruling: *"There
+- *The floor: the top level.* The ship sits under a sea that is black from above, on the night side of the world.
+  Under the ocean is the top level of cover, like the Abyss's Dark: every wait four times longer, and no pause
+  (`Answered on 2026-11-19` 2). This sea still costs a ship its quiet: it must heat, and its heat is written on
+  the sea. The owner's ruling: *"There
   should be bubbling animations surrounding the hot ship boiling the propane simply by being normal temperature."*
   The build item's line: *"The player's presence is visible as violence against the medium before they touch
-  anything."* (`UNSETTLED`: whether a boil shroud on the floor can be seen from orbit. The default does not lean on
-  it either way.)
+  anything."* (`UNSETTLED`: whether a boil shroud on the floor can be seen from orbit. If it can, it takes cover away
+  while it shows, like any light.)
 - *The beach: none.* The sheet's hard ban 3 is *"No visibility penalty as the standing state"*, on the owner's
   ruling of an aurora-clear sky with *"no visibility blockage"*. His later word on the land (2026-10-19) is that it
   is *"totally dark except for the utterly beautiful and wildly active aurora"*, and he made the aurora perpetual.
@@ -233,7 +236,7 @@ mirror beginning to turn toward the noise.
 
 Three things every biome design now states, by his rulings of 2026-11-18.
 
-**Cover from orbit:** one step on the floor, none on the beach (above).
+**Cover from orbit:** the top level on the floor, none on the beach (above).
 
 **Wear on the hull: cold, and the sources already say how.** His ruling: *"Yes in 0.1.0. It's easy, and most of
 the biome already talk about this... Heat or cold. Different kinds of shields or armor. It's in there."* For the
@@ -396,7 +399,7 @@ not light it either. It belongs to the campaign layer.
 - The cold field, and one warm room run with discipline.
 - A fire room.
 - A light hand in the garden. By his answers, stopping is always allowed and always works.
-- The sea itself over the ship: one step slower from orbit.
+- The sea itself over the ship: the top level of cover from orbit.
 - *0.2.0:* a collector mast on a surge night.
 
 ## What the crew takes away
@@ -441,7 +444,7 @@ not light it either. It belongs to the campaign layer.
 | At the beach the ship fuels from the lake through pipes laid from a standoff, and never by parking at the edge. | A pipe run, a pump, a tank filling. | With the valve shut nothing flows. |
 | Pumping draws the lake creature, with warning enough to stop and get people clear; the pipe may be lost. | A pump left running and a pump stopped at the first sign of the wake. | A silent pump on the same lake draws nothing. |
 | A gas emergency can always be walked away from; shutting the valve is the dangerous choice. | A rupture with a crew near it: one group leaves, one goes for the valve. | Nobody is ever sealed in gas. A shot fired in thick gas is what makes the fireball; the lake does not light by itself. |
-| On the floor the Empire's search comes one step slower than for the same crew on the open beach. | The same crew, as loud, on the floor and on the beach; read the search's next contact on both. | A crew made loud on the floor loses the step. |
+| On the floor the Empire's search comes at the top level of cover, much slower than for the same crew on the open beach, and it still comes. | The same crew, as loud, on the floor and on the beach; read the search's next contact on both. | A search that never comes on the floor. |
 | Nothing vanishes. | Every loss above, with a save and reload in the middle. | |
 
 No row pins a rate, a temperature, a charge time, a wattage or a count: those are tuning and stay out of any bar.
@@ -475,8 +478,7 @@ geometry, which on the night side and on a sea floor is nothing.
 **Three ship systems built once for every biome, and what the Chill asks of each:**
 - *Hull wear.* Nothing new. The frame's cold case and cold field are built; what is owed is proof that they read
   a seabed-layer floor, and the field's glow.
-- *Cover from orbit.* One entry on the partial-cover list for the floor, or one on the full-shadow list if he
-  rules it full dark.
+- *Cover from orbit.* One entry for the floor at the top level, beside the Abyss's Dark.
 - *Fuel.* The pipes are built. The Chill needs no recipe to be replete; it has two anyway (catch, and the late
   plant chain).
 
@@ -496,7 +498,7 @@ Every feature is in one bucket.
 - The wax procession and its sheets. (built; moved in)
 - The hull: cold wear on the ship's structures and the cold field that answers it. (built in the campaign's shield
   mod; unproven on a floor)
-- One step of cover from orbit on the floor. (unbuilt; one entry in the pursuit)
+- The top level of cover from orbit on the floor. (unbuilt; one entry in the pursuit)
 - The beach as a fuel stop: fishing with every catch alive below; catch rendered to fuel; pipes, pump and valve
   from a standoff; the lake creature drawn by pumping, with a window to withdraw; a gas emergency that can be
   walked away from. (built, campaign layer for the pipework; the creature's home unsettled)
@@ -508,7 +510,7 @@ Every feature is in one bucket.
 - The lake creature at the scale its sheet promises, and a sea giant big enough for the titan passage. (open
   items; his call at the shore's sitting)
 - The lakebed set he seeded on 2026-09-10, if he still wants it: the bottlearm, the lakestar and its crown, the
-  bead fields and the pale spire. (unbuilt; under `NEEDS HIM`)
+  bead fields and the pale spire. (unbuilt; the stinger and the lakestar pair come into 0.2.0, `Answered on 2026-11-19` 4)
 - The crust-sitter that flinches from warmth, from the watchers pitch. (a pitch; admitted or cut at the sitting)
 
 **Later (a crew that stays, or a colony)**
@@ -538,36 +540,6 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-1. **What does the Empire do about a ship at the bottom of this sea, and what does a bombardment do beside it?**
-   The first half is the question all four sea designs ask. *The probe and the bombardment follow; the
-   troops wait at the beach* (default; it needs the fewest new things). *Everything follows,* in cold kit, and
-   the sea does to them what it does to the crew. *Nothing follows but the clock.* The Chill adds a second half
-   that no other sea has: the last step of the ladder is ordnance from orbit, and the beach is beside the one
-   lake on the planet that ends the campaign if it goes up. His words are that blowing it is *"harder than you
-   think, but possible"*, and his card of 2026-11-02 says a blast does not light the Empire's own road to the
-   lab. *An ordinary bombardment never lights the lake* (default). *It can:* then staying too long on the beach is
-   one more way to fire the ending, which the sheet once wanted (*"there may be automated ways for it to occur
-   too"*).
-2. **Is the Chill's floor "full dark"?** *One step, like the other floors* (default, because a ship there cannot
-   run cold). *It pauses the search:* the Chill becomes the second true refuge after the Abyss, priced in power,
-   and it is also the fuel stop.
-3. **What is the beach, exactly?** The surface-removal record of 2026-11-01 left three of its seventeen wording
-   questions on this sea, and they decide what a crew meets there. *Is the lake's ice a beach?* The sheet's image
-   is *"blue flame running on the ice"* and one of the built animals *"runs the frozen sheets between the pools"*.
-   Default: the beach is the land beside the lake, and its own pools and crust; no place on the lake. *Where does
-   the lake creature live?* Default: in the lake as seen from the beach, where its wake is the point; never a
-   floor animal. *What falls?* The floor's descriptions still say fuel snow; his word of 2026-10-19 for the land
-   is that it rains propane and does not snow. Default: rain on the beach, and on the floor a slow fall of what
-   the sky makes, called nothing in particular until he words it.
-4. **Does the lakebed he seeded on 2026-09-10 still stand?** Before this sea had its present cast he asked for
-   *"a stationary animal that stings/attacks at the bottom of the propane lake"* and *"weird plant-like growths
-   underwater"*, got the bottlearm, the lakestar and its crown, bead fields and a pale spire, and ruled on them by
-   card the same day (one crystal lineage with the Lantern Deeps' life; make the harvest items real). None of it
-   was built, and the sittings of 2026-09-24 to 2026-09-27 made a different cast and a different garden without
-   mentioning it. *Bring the stinger and the lakestar pair into 0.2.0 beside the present cast* (default; the
-   stinger is the best slapstick the floor could have, a thing that punishes exactly the reach a scavenger cannot
-   help making). *It was replaced:* say so and it is dropped. *All of it,* plants included: a second flora
-   register on a floor ruled sparse.
 5. **Ship ideas he has already cut or passed over here.** Listed, not revived. *Tanker runs*, cut 2026-09-02:
    *"You're not extra flammable on the way home, just right next to that explosive lake... and you have to run
    long flexible pipes from your ship to the lake, because of your thrusters."* The cut was of hauling as the
@@ -575,6 +547,26 @@ Every feature is in one bucket.
    question it leaves. *A cold hold aboard* for cargo that must stay frozen, not chosen 2026-10-02 (no words
    recorded). *Krellik-frost insulation* for the hull, not adopted 2026-09-27 (no words recorded). Default for
    all three: they stay out.
-6. **Where does the polar Burner stand?** Ruled a guardian of one place on the lake's rim on 2026-09-27, with the
-   place to be picked at the shore's own sitting, which has not been held. It is the only thing between this
-   design and a complete 0.2.0 beach.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **What does the Empire do about a ship at the bottom of this sea, and what does a bombardment do beside it?** The
+   probe and the bombardment follow the ship down. The troops wait at the beach and meet it when it lifts. This needs
+   the fewest new things and is the same in all four seas (the design's default). An ordinary bombardment never lights
+   the lake (his card of 2026-11-02). *Delegated call.*
+2. **Is the Chill's floor "full dark"?** *His ruling:* his word of 2026-11-18 (4:09 PM PST): *"Going under the ocean
+   is like the Dark... VERY concealed. But nowhere pauses it indefinitely."* The Chill's floor is the top level of
+   cover, like the Abyss's Dark. **This changes the design's default.** Was: *One step, like the other floors*.
+3. **What is the beach, exactly?** The beach is the land beside the lake, with its own pools and crust. The lake
+   creature lives in the lake, seen from the beach. It rains propane (his word of 2026-10-19). These are the design's
+   defaults. *Delegated call.*
+4. **Does the lakebed he seeded on 2026-09-10 still stand?** Yes: the stinger and the lakestar pair come into 0.2.0
+   beside the present cast (the design's default). *Delegated call.*
+6. **Where does the polar Burner stand?** The Conductor picks the place in the shore's design. *Delegated call.*

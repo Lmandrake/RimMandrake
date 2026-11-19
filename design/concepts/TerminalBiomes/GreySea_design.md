@@ -87,11 +87,12 @@ orbital bombardment that cannot be fought. Each step comes only if the one befor
 every wait and a hidden one doubles it. The arithmetic is the Greentide design's ("The clock on any stop") and is
 not re-derived here; the pursuit's own source marks its numbers provisional.
 
-**How long a stop on the floor can last: about six weeks, and that is the outer edge.** His ruling of 2026-11-18:
-*"The numbers you're generating are likely the outer edge allowable for each biome, and that's just fine. Go with
-that."* A sea floor under murk is covered ground, one step (see "The ship while it sits here"), read as one band on
-the pursuit's visibility scale: a probe on day 7 to 11, a first real fight in the third or fourth week, nothing past
-about six weeks. **On the beach, in the open: about a month** (a probe on day 5 to 8, a first fight around day 12 to
+**How long a stop on the floor can last: long, and the hull sets the edge.** His ruling of 2026-11-18: *"The
+numbers you're generating are likely the outer edge allowable for each biome, and that's just fine. Go with
+that."* The sea floor is the top level of cover (see "The ship while it sits here"): each wait is four times the
+open-ground wait, as in the Abyss, so a probe comes around day 20 to 32 (four times the ladder's provisional five
+to eight days). The search still comes, because *"nowhere pauses it indefinitely"*. On this floor the salt on the
+hull and the crew's deck end most stops before the Empire does (this design's reading). **On the beach, in the open: about a month** (a probe on day 5 to 8, a first fight around day 12 to
 20, the bombardment around day 20 to 32 if the Empire wins every step).
 
 Few crews will see either edge, because the Grey's own clock is measured in days and it is on the hull. As built,
@@ -100,8 +101,8 @@ the ship down begins inside the first week. A crew that stays a fortnight is chi
 able to leave. The owner chose that ladder by card on 2026-09-27; its numbers are tuning and no promise below pins
 them.
 
-`UNSETTLED`: how the Empire's ladder reaches a ship at the bottom of a sea. No source says. It is the first question
-under `NEEDS HIM`.
+How the Empire's ladder reaches a ship at the bottom of a sea: the probe and the bombardment follow, and the troops
+wait at the beach (`Answered on 2026-11-19` 1).
 
 ---
 
@@ -191,11 +192,12 @@ it; and a human shape in a block of salt a little way off, as an example.
 Three things every biome design states, by his rulings of 2026-11-18.
 
 **Cover from orbit: partial on the floor, none on the beach.** His card: *"Canopy, steam and fog slow the search by
-one step; full dark still pauses it."* The floor is under a sea and under *"directionless grey-green dimness fading
-to blind"*. Read here as one step. A loud crew gives the step back, and on this floor loud and lit are the same
+one step; full dark still pauses it."* Then his word of 2026-11-18: *"Going under the ocean is like the Dark... VERY concealed. But nowhere pauses it
+indefinitely."* The floor is under a sea and under *"directionless
+grey-green dimness fading to blind"*, so it is the top level of cover, like the Abyss's Dark (`Answered on
+2026-11-19` 4). A loud crew gives some of it back, and on this floor loud and lit are the same
 mistake: the lamps that would give the ship away are the lamps that call the giant. So running dark is one craft
-with two rewards. (That coupling is this design's reading; no source states it. Whether the floor counts as "full
-dark" is under `NEEDS HIM`, because he called it *"dark on the bottom"* himself.) The beach is the opposite: *"a
+with two rewards. (That coupling is this design's reading; no source states it.) The beach is the opposite: *"a
 white salt pan under a permanent horizontal wind"*, where *"anything that stands up out of the ground casts a shadow
 a kilometre long."* No cover at all.
 
@@ -215,7 +217,7 @@ tear-free launch; settings for each). No new hull system is designed here.
   harvest, no item"*). And no shield: his shield ruling of 2026-09-02 says *"Slow pressing things move through all
   shields... This is why nothing 'holds out water,' it just doesn't work that way."* His 2026-11-18 words also name
   *"different kinds of shields or armor"* as answers to hull wear in general; whether that reopens the Grey's
-  *"nothing purchasable"* is under `NEEDS HIM`, and the default here is that it does not.
+  *"nothing purchasable"*: it does not (`Answered on 2026-11-19` 2).
 - *It never traps.* Doors force from inside. The launch gate only delays. The tear-free launch is always offered.
   His ruling of 2026-09-02: *"no environment is immediately lethal."*
 - *The shared frame.* The campaign's hull-wear frame is `src/RimUtinni/ShipShields/` (his eight shield rulings of
@@ -279,9 +281,9 @@ Each can happen inside the visit. Each says what is on screen.
 
 ## When the Empire arrives
 
-How the ladder reaches the floor is `UNSETTLED` (see `NEEDS HIM`). What is safe to say in every answer:
+How the ladder reaches the floor: the probe and the bombardment follow, the troops wait at the beach (`Answered on 2026-11-19` 1). So:
 
-- **The search clock runs under the sea, one step slower,** and the bombardment at its end does not care about
+- **The search clock runs under the sea four times slower (the top level of cover),** and the bombardment at its end does not care about
   water.
 - **The launch is the fight.** On this floor the crew's real opponent on the day the Empire comes is its own deck.
   A kept hull lifts at once. A neglected one chips against the clock or tears free and flies wounded into whatever
@@ -322,7 +324,7 @@ How the ladder reaches the floor is `UNSETTLED` (see `NEEDS HIM`). What is safe 
 **Stay, longer than the Empire would like:**
 - A hull chipped daily, on a berth chosen well away from chimneys and channels.
 - Lamps run in short windows and dowsed when the watcher shows.
-- A sea over the ship: one step slower above.
+- A sea over the ship: the top level of cover above.
 - Chipping pays, so the stay is never wasted time.
 
 ## What the crew takes away
@@ -362,7 +364,7 @@ drifter that *"rides the shore current through the shadow lanes"*) are on the fl
 | A crusted ship can always tear free, at a cost in hull. | A launch with the deck still crusted, by the forced launch. | The ship leaves; the crust and salted doors are gone; the damage is real and never destroys a hull part. |
 | A strong steady work-light brings the watcher to the edge of the light, then fresh scrape-marks, then the giant, which breaks that lamp and leaves. Switching the lamp off at any point resets it. | One work-light left burning; a second ship-day with the lamp dowsed when the watcher shows. | A torch never brings the giant. The watcher never enters the light and never attacks. The giant harms neither ship nor crew. |
 | Every catch has a living body on the floor, and nothing here schools. | Fish the beach; find the same four kinds alive below. | A catch that exists only as an item fails. |
-| Under the sea the Empire's search comes one step slower than for the same crew on the beach. | The same crew, as loud, on the floor and on the beach; read the search's next contact on both. | A crew made loud on the floor loses the step. |
+| Under the sea the Empire's search comes at the top level of cover, much slower than for the same crew on the beach, and it still comes. | The same crew, as loud, on the floor and on the beach; read the search's next contact on both. | A search that never comes on the floor. |
 | Nothing vanishes. | Every loss above, with a save and reload in the middle; a launch with someone still encased outside. | The launch warns that someone is held. |
 
 No row pins a rate, a day count or a yield: how fast salt comes, how long a lamp may burn and how much a block pays
@@ -398,7 +400,7 @@ the Empire's search and the visibility dial; the one sun from geometry, which on
   tier, which differs from the Abyss card of 2026-10-01 that kept a ship touch in the campaign layer; the Grey's was
   built on his typed word before that and is left where it is. The frame needs to let a biome name its own wear to
   the landing advisory and declare that no field covers it.
-- *Cover from orbit.* One entry for this floor in the partial-cover list the pursuit does not have yet.
+- *Cover from orbit.* One entry for this floor at the top level, beside the Abyss's Dark.
 - *Fuel.* Nothing. The Grey is on the buying side only.
 
 ## Scope
@@ -420,7 +422,7 @@ design are listed, with reasons, in `GreySea_rewrite_choices.md`.
 - The lamp: light-seekers, the fessk at the rim, scrape-marks, the giant that breaks the lamp. (built; moved in)
 - The catch of four and its rare table; the beach's white crust and domes. (built)
 - Salt as goods: raw salt, the four coloured salts. (built)
-- The sea as partial cover from orbit. (unbuilt; campaign layer, one entry in the pursuit)
+- The sea floor as the top level of cover from orbit. (unbuilt; campaign layer, one entry in the pursuit)
 - The ship's landing advice naming the salt. (unbuilt; campaign layer, on the shared frame)
 
 **0.2.0, the stop with company**
@@ -464,29 +466,27 @@ design are listed, with reasons, in `GreySea_rewrite_choices.md`.
 
 ## NEEDS HIM
 
-1. **What does the Empire do about a ship at the bottom of a sea?** No source says. *The probe and the bombardment
-   follow; troops wait at the beach and meet the ship when it lifts* (the default used here; it needs the fewest
-   new things, and it makes a crusted deck the whole fight). *Everything follows:* troopers on the floor, and the
-   pools, plumes and orruhmu do to them what they do to the crew. *Nothing follows but the clock:* the floors
-   become the campaign's hideouts, and the Grey's price for hiding is the hull.
-2. **Does "different kinds of shields or armor" (2026-11-18) reopen "nothing purchasable ever" for the Grey's
-   crust (card, 2026-09-27)?** These pull against each other. Against reopening: the earlier card was specific to
-   this sea and said *ever*; his shield ruling of 2026-09-02 says slow pressing things pass all shields. For it:
-   the later ruling is general and newer. *No, the Grey stays chip, berth, weather and leave* (default). *Yes:* a
-   hull coating or field slows the salt, and the Grey loses the one rule that made it different from every other
-   wear. Listed here also because three ship ideas were declined on this sea and this design revives none of them:
-   heat or fuel for time (card, 2026-09-26, *"no heat-for-time trade"*); an anticrystallant from the sprig (card,
-   2026-09-27); any purchased slowdown (card, 2026-09-27).
-3. **Should the Brine Elder come forward into 0.1.0?** It is his own paragraph, entire, and it is built. Under his
-   "very Jawa" test nothing on this floor scores higher: a customer for junk, as long as it is junk it has never
-   seen, and a reason to fly to the next Grey tile. Against: about eleven hundred lines with no live trade on
-   record; a mechanics review of 2026-10-22 asked whether it is *"a fluff trade window"*; its ship-crippling clause
-   is unbuilt. *0.2.0* (default). *0.1.0:* the Grey's first version has a mind in it, and one more large system to
-   prove before the mod can pass.
-4. **Is the Grey's floor "full dark"?** His own words call it *"dark on the bottom"*; the sheet says *"dimness
-   fading to blind"*. *One step, like fog* (default). *Full dark, the search pauses:* the Grey becomes a true
-   refuge whose only price is the hull, and a ship could sit out the Empire for as long as its crew can chip. This
-   is one case of a question several biomes ask (which sunless places are full dark).
+None. All entries were answered on 2026-11-19 (next section).
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **What does the Empire do about a ship at the bottom of a sea?** The probe and the bombardment follow the ship
+   down. The troops wait at the beach and meet it when it lifts. This needs the fewest new things and is the same in
+   all four seas (the design's default). *Delegated call.*
+2. **Does "different kinds of shields or armor" (2026-11-18) reopen "nothing purchasable ever" for the Grey's crust
+   (card, 2026-09-27)?** No. His sentence of 2026-11-18 ends *"It's in there."*, so the sources decide, and the Grey's
+   sources say nothing purchasable (the design's default). *Delegated call.*
+3. **Should the Brine Elder come forward into 0.1.0?** *His ruling:* the move card of 2026-11-18 (*"Move it, list
+   every move"*): 0.2.0.
+4. **Is the Grey's floor "full dark"?** *His ruling:* his word of 2026-11-18 (4:09 PM PST): *"Going under the ocean is
+   like the Dark... VERY concealed. But nowhere pauses it indefinitely."* The Grey's floor is the top level of cover,
+   like the Abyss's Dark. **This changes the design's default.** Was: *One step, like fog*.
 
 ## Found while reading, for whoever builds
 

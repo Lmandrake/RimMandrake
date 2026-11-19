@@ -16,7 +16,7 @@ on water"*. His sheet of 2026-09-06 made it a highland instead, and the seas lat
 **What the owner had already approved.** On 2026-11-17 he walked the cleanse proposal for the Abyss and approved its
 scope with four marks (`cleanse/owner_marks.md`): *"I saw how much you put into 0.2.0 Impressive, and the right
 call. It's still a daunting mod even with that you chose to keep in 0.1.0. I approve."* This design keeps that
-scope and his four marks, and makes **one** move against it, which is the first thing under `NEEDS HIM`: the hidden
+scope and his four marks, and makes **one** move against it, which was the first thing under `NEEDS HIM` and stands by the move card (`Answered on 2026-11-19` 1): the hidden
 ship comes forward into 0.1.0.
 
 **Revised the same day** after his card of 2026-11-18, 3:10 PM PST, which ruled on how long a stop lasts, on cover
@@ -124,7 +124,8 @@ pursuit's own timers, and whether it slows those other raids nobody has read.)
 His rule for how the search opens (2026-09-27, in the ladder): *"Escallation isn't just 'more troopers' it's more
 kinds of raids that rapidly escalate until you move. Always start with probes that can be evaded."* The oldest
 source for the pause is in the same file: his rulings of 2026-08-05 and 06 that *dark/covered tiles PAUSE the
-orbital clock*. What is built slows the clock fourfold and does not stop it (asked under `NEEDS HIM`). The ladder
+orbital clock*. What is built slows the clock fourfold and does not stop it, and his later word of 2026-11-18 keeps
+it so: *"nowhere pauses it indefinitely"* (`Answered on 2026-11-19` 9). The ladder
 also has the tile remember how far the search got, fading a step a season: *"the desert remembers, decaying"*. The
 same dark valley is not a free hide twice running. By the same design the storyteller's own Empire raids never
 advance the search. (Rung definitions exist in `src/RimUtinni/EmpirePursuit/` today; nobody has run them.)
@@ -218,7 +219,9 @@ The crew's first decision is in front of them before the ramp is down: how many 
   shrink again, the moths return, and whatever was waiting is nearer than it was. His answer of 2026-11-10 is what
   the clearing is for: *"Wonder draws you out... then leaves you exposed when darkness returns."* The crew that
   walks out to look is the crew caught outside. The review's line: *"Every other biome's rare weather is a hazard.
-  This one is a gift."* It has a price that is built: the grain falls harder while the air is clear. (In 0.2.0 it also shows the
+  This one is a gift."* It has a price that is built: the grain falls harder while the air is clear. It has a second
+  price: while the Dark is gone, the ship has no cover from orbit, and the search runs as on open ground until the
+  Dark returns (delegated call of 2026-11-19, `Answered on 2026-11-19` 3). (In 0.2.0 it also shows the
   sorter's rings standing in the open. Its name collides with the campaign's "nine unveilings"; neither has been
   renamed and nobody has asked him.)
 - **The wear.** Weeks of grain on anything left unroofed. The hide is paid for in roofing, fuel, cold and the
@@ -228,10 +231,12 @@ The crew's first decision is in front of them before the ramp is down: how many 
 
 Three things every biome design now states, by his rulings of 2026-11-18.
 
-**Cover from orbit: the full kind, and the only place that has it.** His card: *"Canopy, steam and fog slow the
-search by one step; full dark still pauses it."* The Abyss is the full dark. As built, that is the fourfold delay
-on every wait, and on top of it the cover a quiet, dark, cold-engined ship gathers (the first weeks, above). No
-other biome is on the pursuit's list.
+**Cover from orbit: the top level.** His card: *"Canopy, steam and fog slow the search by one step; full dark
+still pauses it."* His later word the same day: *"Going under the ocean is like the Dark... VERY concealed. But
+nowhere pauses it indefinitely."* So the Dark is the top level of cover, which it shares only with the sea floors.
+As built, that is the fourfold delay on every wait, and on top of it the cover a quiet, dark, cold-engined ship
+gathers (the first weeks, above). No other biome is on the pursuit's list yet. An Unveiling takes the cover away
+while it lasts.
 
 **Wear on the hull: the grain.** His ruling: *"Yes in 0.1.0. It's easy, and most of the biome already talk about
 this."* The Abyss has talked about it since its first sheet, whose star reads *"Refuge priced in darkness, breakage
@@ -338,7 +343,7 @@ It arrives late, and it arrives into the same Dark.
 - **The crew owns the only clear lane.** A fold lamp pointed down the approach is a firing lane the strike team
   does not have.
 - **The grain falls on their steel as well.**
-- **The Unveiling is nobody's friend.** For a few hours everyone can see everyone.
+- **The Unveiling is nobody's friend.** For a few hours everyone can see everyone, and orbit can see the ship.
 - **Launching ends the hide.** The engine tears the cover away. Leaving is the loud option, and it is always open.
 
 ## Who else attacks; who hates the Empire
@@ -367,7 +372,7 @@ It arrives late, and it arrives into the same Dark.
 - **The longer the stay, the fewer the quiet stretches.** His card of 2026-11-10: *"Danger becomes more frequent:
   close threats and frightening reversals gradually leave fewer peaceful stretches, giving a practical reason to
   depart at the cost of breathing room."* Nothing built does this yet and no source says how; it is the hide's own
-  clock in his words, and which version holds it is asked under `NEEDS HIM`.
+  clock in his words, and it is 0.2.0 by the move card (`Answered on 2026-11-19` 4).
 - *0.2.0:* the dread. *"You fear staying here too long will find the source of the nightmares themselves."* The
   free tier's whisper about the Nhaleth is that they *"are not visitors at all. They are whoever stays"*, and its
   sign after a long stay is a dream: *"Dreamt I didn't need the light."* For a crew in hiding, the rumour is about
@@ -529,36 +534,43 @@ shared-machinery file has the whole of it):
 Each has the default this design uses, so nothing waits on him to read on. The first three are the first pass's;
 the rest were found by the second reader (the ninth on reading the ladder to its end).
 
-1. **[scope] The hidden ship in 0.1.0.** On 2026-11-17 he approved it in 0.2.0. On 2026-11-18 he asked that the ship
-   lens be the overriding priority for 0.1.0 and that the buckets stay *"a LITTLE open"*. New evidence for moving it:
-   his own card of 2026-11-10, a week before that approval, answers "keeping a hidden colony working" with probes
-   (*"exposed activity becomes dangerous while a search probe passes"*). *In 0.1.0* (this document's default): the
-   Abyss's first version is the hide, which is what the biome is for; it adds two promises and two unbuilt links
-   (the engine breaking cover, the pursuit reading it) to an already *"daunting"* version. *Back to 0.2.0:* 0.1.0 is
-   then a dark place to survive with only the passive fourfold delay.
-2. **[other] Sharp-edged clear pockets outdoors.** The frozen sheet says *"clear pockets are real, sharp-edged, and
-   unexplained to everyone in-world."* The built engine ties outdoor Dark to one shared outdoor temperature, so
-   0.1.0 has none outdoors. The cleanse asked this on 2026-11-17 and it is unanswered. *Off until 0.2.0* (default).
-3. **[cover] Does an Unveiling expose the ship?** New in the rewrite, not in any source. *No* (default). *Yes, while
-   it lasts:* the most beautiful hours in the biome are the hours the Empire can see.
-4. **[scope] "Danger becomes more frequent" the longer the crew stays: which version?** His card of 2026-11-10.
-   Nothing is built and no source says how it happens. Default: named in the design as the hide's clock, built in
-   0.2.0 with the cryptid's signs, because 0.1.0 already has the hull, the larder and the probes to end a stay.
 5. **[hull] The lasting etch scar.** The review offered a mark the ship carries everywhere, *"I was in the Abyss"*;
    he chose no free-tier ship touch on 2026-10-01 and has not been asked about it for the campaign. Default: the
    hull wears and is repaired like any damage, with no lasting mark.
-6. **[hull] Wear against the hiding rule.** The note that worked out his hiding idea says a hide must cost *"salvage
-   and progress — not hit points"*. His ruling of 2026-11-18 puts hull wear in 0.1.0. Default: both stand; the wear
-   is slow and hand-answerable and is not the hide's main price.
-7. **[other] Is Lightfall's bottom clear or dark?** His sheet: *"the one place the Dark always dies"*. The biology
-   draft in use since 2026-10-01: the Dark there *"has never once lifted"*. Default: the sheet (clear above, with
-   the brood in whatever dark the chasm floor keeps); the draft's sentence is his to edit. (0.2.0.)
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 8. **[other] Two declined ship ideas, listed and not revived:** moths on the ship's own lamps lifting the cover, and
    the heatless stealth lamp (both on his card of 2026-10-01, neither chosen).
-9. **[cover] Pause, or four times slower?** His words, on 2026-08-05 and 06 as the ladder records them and again on
-   2026-11-18, are that full dark *pauses* the search. What is built multiplies every wait by four, and the
-   ladder's own text calls a refuge *"a slower ladder, never a frozen one"*. Default: the biome slows the search
-   fourfold, and the pause is what a ship holding its cover earns, because the search has lost it.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 Not a question: the Abyss has no locked Designer tree. Not asked again: where the greed line lies (his waiver),
 the gust turbines (cut), the rites (deferred by him).
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+1. **[scope] The hidden ship in 0.1.0.** *His ruling:* the move card of 2026-11-18 (*"Move it, list every move"*). The
+   hide stays in 0.1.0 and is on the move list. It is the Abyss's signature, so it holds under any answer to the
+   first-version size question.
+2. **[other] Sharp-edged clear pockets outdoors.** Off until 0.2.0. The built engine ties outdoor Dark to one outdoor
+   temperature, so it cannot make them yet. *Delegated call.*
+3. **[cover] Does an Unveiling expose the ship?** Yes, while it lasts. The Dark is gone, so its cover is gone: for the
+   hours of an Unveiling the search runs as on open ground. **This changes the design's default.** Was: *No*. Undo:
+   set it back to *No* here and strike the cover lines added to "The Unveiling" and "The ship while it sits here".
+   *Delegated call.*
+4. **[scope] "Danger becomes more frequent" the longer the crew stays: which version?** *His ruling:* the move card of
+   2026-11-18 (*"Move it, list every move"*): 0.2.0, as the hide's clock, with the cryptid's signs.
+6. **[hull] Wear against the hiding rule.** *His ruling:* his card of 2026-11-18, hull wear *"Yes in 0.1.0"*. The
+   "salvage and progress — not hit points" note is not his words. Both stand: the wear is slow and answered by hand,
+   and it is not the hide's main price.
+7. **[other] Is Lightfall's bottom clear or dark?** His sheet wins: clear above (*"the one place the Dark always
+   dies"*), with the brood in whatever dark the chasm floor keeps. The biology draft's sentence stays for him to edit.
+   0.2.0. *Delegated call.*
+9. **[cover] Pause, or four times slower?** *His ruling:* his word of 2026-11-18 (4:09 PM PST): *"Going under the
+   ocean is like the Dark... VERY concealed. But nowhere pauses it indefinitely."* The Dark is the top level of cover,
+   and the top level is the built fourfold delay. Nothing pauses the search for good, a ship holding its cover
+   included. This later word overtakes *"full dark still pauses it"*.

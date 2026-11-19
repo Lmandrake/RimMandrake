@@ -411,19 +411,26 @@ Each is tagged with one theme word.
    archive); **the Unfiled Hull** (a small ship inside the oldest giant, got out by leading it onto dry ground,
    then sold sealed, opened, or stripped for a bio-sealed hold); **the tamper-proof seal** (a lacquer for freight
    crates). The first read asked him the first of these again. This page does not.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 2. **[scope] Is the gene journey the heart of a stop, or an extra?** The cleanse asked this and defaulted to
    "extra". This design defaults to *the heart*: it is his original ask, it is the chosen showcase, and it fits in
    a few days. *An extra:* 0.1.0 is larder, tanks and the film, and the journey waits.
-3. **[scope] The return from the last touch.** A leaf of the locked sheet (0.1.0); "later" in the first read; the
-   archive vat is built and is this biome's row on the ship list (an agent's pick of 2026-11-11, carded to him).
-   *0.2.0, as the deck part* (default). *0.1.0, as the locked sheet has it:* a clan of six gets its dead back on
-   the first visit that can pay for it. *Later:* the ship list then owes this biome another part. Owed either way:
-   his look at the list of what carries over, asked for on 2026-10-02 and never shown.
-4. **[other] Is a dry room aboard a cure?** As built, the film fades only on a map in dry country, however the
-   crew got there. The review notes that the same marker *"is usable on a building or a ship room."* Nobody has
-   designed that. *No: the cure is days spent in dry country, or the antidote* (default; as built). *Yes:* a dried
-   room on the ship lets a crew stay on the Slime as long as the Empire allows.
+   *Waits on the first-version size question of 2026-11-19.*
 5. **[other] His look at the giant.** Card of 2026-10-18: *"Can't judge from this sheet."* The in-game look at the
    smallest and largest sizes is still owed.
-6. **[locked-tree] The locked tree is a colony; this design is a stop.** The tree is not edited. *Re-cut the tree
-   from this file when the hold lifts* (default). *Keep the tree and treat this as a second reading.*
+   *Waits on his look at the giant in game (not a question) of 2026-11-19.*
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+3. **[scope] The return from the last touch.** *His ruling:* the move card of 2026-11-18 (*"Move it, list every
+   move"*): 0.2.0, as the deck part. Still owed: his look at the list of what carries over (asked for on 2026-10-02).
+4. **[other] Is a dry room aboard a cure?** No, as built: the cure is days in dry country, or the antidote (the
+   design's default). *Delegated call.*
+6. **[locked-tree] The locked tree is a colony; this design is a stop.** *His ruling:* his word of 2026-11-18, *"Let's
+   rewrite them all and let git be provenance."* Re-cut the tree from this file when the hold lifts.

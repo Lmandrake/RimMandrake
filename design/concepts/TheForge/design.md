@@ -75,8 +75,7 @@ hundred kilometers."*
 
 **`UNSETTLED`: what it means to land beside the Empire's own station.** The gas operation is the campaign layer's
 (`design/Jawa/tibanna_embargo_plot_spec.md`; its build is owed). Whether a ship that lands on this mountain is
-found sooner because the garrison is in sight is not written anywhere. This design assumes the ordinary search and
-asks the question under `NEEDS HIM`.
+found sooner because the garrison is in sight is not written anywhere. The ordinary search applies (`Answered on 2026-11-19` 1).
 
 ---
 
@@ -405,9 +404,7 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
    *Bring it back in 0.2.0:* a rig on a vent that charges the ship faster than anywhere, on ground that scalds and
    burns it every few days; a small build on the cycle's own state. *A gas tap instead:* the campaign's helixien
    path given a home here; a new deposit and its own design.
-2. **Does landing beside the Empire's station change the search?** *No; the ordinary search* (default; the station
-   is the campaign layer's). *Yes:* the first contact here is not a probe; the garrison has eyes. That makes the
-   Forge the most dangerous landing on the planet and the tibanna raid its reason.
+   *Waits on the rich-fuel question (which biomes are the few with a richer source) of 2026-11-19.*
 3. **Two things he cut that touched the hull: the scour and the keel brace.** The scour (boiling rain doing minor
    damage and leaving ash on the ship's unroofed tiles) was struck on 2026-09-29 as half of the heat exchanger,
    before the ship lens and before his 2026-11-18 ruling that hull wear is in 0.1.0; his own light-screen ruling of
@@ -416,7 +413,19 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
    the lava landing, heat and fire, and its armour is floatstone). *The scour comes back in 0.2.0 on the shield
    frame:* rain and ash wear an unscreened ship; a small build on the cycle's rain phase. *The brace comes back:*
    one commit to revert; a second ship gift beside the hull and door.
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 The cleanse proposal of 2026-11-17 asked him nothing. One of its readings is changed here by scope rather than
 asked: it wrote the first version for a colony that *"settles among dark foundry towers"*. The same cycle is kept,
 and the settlers are a crew on a stop.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+2. **Does landing beside the Empire's station change the search?** No: the ordinary search. The station belongs to the
+   campaign layer (the design's default). *Delegated call.*

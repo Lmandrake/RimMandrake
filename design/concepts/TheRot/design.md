@@ -237,7 +237,7 @@ was purged too, and the roster records with his ruling of 2026-09-20 that no rep
 new versions of these silly plants."*
 And on 2026-11-17 he let the cleanse leave blastpod fuel switched off. So this design claims no richer source here.
 The slow rendering of biomass has a forest to work on. Blastpod fuel goes back where the cleanse put it, and the
-question is the third under `NEEDS HIM`. (`UNMEASURED`: whether map generation places grown pods that then simply
+question was the third under `NEEDS HIM`: emergency fuel only (`Answered on 2026-11-19` 3). (`UNMEASURED`: whether map generation places grown pods that then simply
 never regrow. Filed as `RIMMANDRAKE_DECIDE_ROT_BLASTPOD_GROWS_ONLY_ABOVE_FIFTY_DEGREES`.) The fungal power generator
 was cut (*"that's stupid"*) and stays cut. **Where fuel is bought:** no source puts a seller in the Rot. What the
 Rot gives a crew that has to buy fuel is something to sell: in the campaign tier the warm soil itself, dug and sold
@@ -410,19 +410,24 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
    uses the ship to travel. Asked with it, because it is the other ship idea he passed over the same day: the
    launch siege, where the mat grips the struts of a ship carrying a joined crew member and the Unjoining is what
    makes leaving easy. *Not chosen stays not chosen* (default).
+   *Waits on the declined-ship-ideas question of 2026-11-19.*
 2. **How much of the giant is 0.1.0?** He let the cleanse put all of it in the next version on 2026-11-17, the day
    before the lens. This design brings the eating, the swallowing, the rescue, the castings and the ping into 0.1.0
    and leaves the core, the log and the vat at 0.2.0. *As written* (default). *All of it at 0.2.0, as he marked:*
    the first version is the cleanse's quiet metabolism and one cup. *All of it at 0.1.0:* the stop's prize is in the
    first version, with a world-unique carrier and a ship part to prove.
-
-3. **Is the blastpod the Rot's fuel?** His ruling of 2026-09-06 took the chemfuel chain in wild-only and said it
-   might be cut. Since then: the built plant cannot grow below 50 °C and the Rot never passes +24 °C; he kept its
-   two donor bodies purged on 2026-09-20 (*"I don't want new versions of these silly plants"*); and on 2026-11-17
-   he let the cleanse leave it switched off. *Emergency fuel only* (default: the Rot renders biomass like
-   anywhere, and has a great deal of it). *Blastpods are the richer source:* the plant is rewritten to grow on
-   the warm mat, and foraging pods becomes the Rot's refuelling; a small build and a design call on how common.
-   *Cut the chain:* one less thing.
+   *Waits on the first-version size question of 2026-11-19.*
 
 The cleanse proposal's own question to him still stands and is not re-asked here: whether exposed frozen meat
 should also be digested. This design keeps the cleanse's default, that frozen stock keeps.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number. Item
+`RIMMANDRAKE_APPLY_83_BIOME_ANSWERS_FOUR_CHANGE_A_DEFAULT` (his word: "83 biomes yes") applied them after a
+second reader checked each answer against its source. **His ruling** means his dated words answer it. **Delegated
+call** means the Conductor took the obvious answer (`RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); he
+can undo any one by name.
+
+3. **Is the blastpod the Rot's fuel?** Emergency fuel only. The plant cannot grow at the Rot's temperatures, and he
+   kept its donor bodies purged (the design's default). *Delegated call.*
