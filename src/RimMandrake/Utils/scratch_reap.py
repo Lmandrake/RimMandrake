@@ -775,7 +775,8 @@ class Live:
         """Record every place one argv word or environment value could name. The only reader of path shapes."""
         for raw in path_forms(token, cwd, bare_must_exist):
             self._add(os.path.normpath(raw), pid)
-            self._add(os.path.realpath(raw), pid)           # a link before the `..` means normpath named the wrong dir
+            real = self.resolved.get(raw) or self.resolved.setdefault(raw, os.path.realpath(raw))   # once a snapshot:
+            self._add(real, pid)    # a link before the `..` means normpath named the wrong dir; 25k uncached calls were 5 s
             self.named.add(os.path.normpath(raw))
 
     def users(self, p: Path) -> list[str]:
