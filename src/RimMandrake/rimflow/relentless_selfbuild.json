@@ -19,7 +19,7 @@
     {"path": "src/RimMandrake/rimflow/selftest_relentless_selfbuild.py", "part": "check of this check"}
   ],
   "protected_keys": [
-    {"path": "src/RimMandrake/rimflow/relentless_rules.json", "keys": ["walls", "checker_agent", "check_max_s", "offbox_adapters", "offbox_max_s", "reach_never", "reach_classes", "reach_repair", "hand_check", "unmeasured_limit"], "part": "wall profiles and Judge settings"}
+    {"path": "src/RimMandrake/rimflow/run_rules.json", "keys": ["walls", "checker_agent", "check_max_s", "offbox_adapters", "offbox_max_s", "reach_never", "reach_classes", "reach_repair", "hand_check", "unmeasured_limit"], "part": "wall profiles and Judge settings"}
   ],
   "import_roots": ["src/RimMandrake/rimflow", "src/RimMandrake/Utils"],
   "outside": [

@@ -48,9 +48,9 @@ def row(outcome, why="", game=GAME, age=60, sha="abc123"):
 
 def t_defaults_and_rules():
     check("DEFAULTS holds no pacing key", not any(k in R.DEFAULTS for k in GONE), R.DEFAULTS)
-    with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as f:
+    with open(os.path.join(HERE, "run_rules.json"), encoding="utf-8") as f:
         live = json.load(f)["live"]
-    check("relentless_rules.json live holds no pacing key", not any(k in live for k in GONE), sorted(live))
+    check("run_rules.json live holds no pacing key", not any(k in live for k in GONE), sorted(live))
     with open(os.path.join(HERE, "relentless_wake.json"), encoding="utf-8") as f:
         keys = json.load(f).get("clock_keys", {})
     check("relentless_wake.json lists no removed clock", not any("live." + k in keys for k in GONE))

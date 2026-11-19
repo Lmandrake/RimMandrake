@@ -237,7 +237,7 @@ def main():
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
     import json
     import proof_lint as rl
-    lr = rl.live_rules(json.load(open(os.path.join(REPO, "src", "RimMandrake", "rimflow", "relentless_rules.json"))))
+    lr = rl.live_rules(json.load(open(os.path.join(REPO, "src", "RimMandrake", "rimflow", "run_rules.json"))))
     a1 = [ln.split(":", 1)[1].strip() for ln in open(LIVE_TXT).read().splitlines() if ln.startswith("live-proof A1:")]
     crit = open(LIVE_CRIT).read() if os.path.exists(LIVE_CRIT) else ""
     line = a1[0] if len(a1) == 1 else ""

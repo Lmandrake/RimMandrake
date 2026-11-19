@@ -86,7 +86,7 @@ def mutate(text, at=r"fails (\d+)"):
 
 
 def main():
-    r = R.rules(os.path.join(HERE, "relentless_rules.json"))
+    r = R.rules(os.path.join(HERE, "run_rules.json"))
     ad = W.adapters(r).get(NAME)
     check("(1) the adapter is defined", ad is not None)
     if ad is None:

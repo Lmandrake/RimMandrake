@@ -38,7 +38,7 @@ def git(cwd, *a, text=True):
 
 
 def t_proposal():
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     ok(RF.classify(r, [DEVU_BLIND]).get("class") == "proc", "(1) DEVU's blind text is classed proc")
     st = {"reach": {"class": "proc", "proposal": {"adapters": ["proc_cwds"], "by": "seed", "paths": [], "refused": {}},
                     "still_blind": DEVU_BLIND}, "blind": {"what": DEVU_BLIND}}

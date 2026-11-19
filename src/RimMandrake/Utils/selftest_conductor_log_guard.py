@@ -37,7 +37,7 @@ def check(name, cond, detail=""):
 ops_rules = json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8"))
 paths = {t["conductor_log"] for t in ops_rules["targets"] if t.get("conductor_log")}
 check("ops_watch_rules: at least one target owes the Conductor a line", paths)
-paths.add(json.loads((RIMFLOW / "relentless_rules.json").read_text(encoding="utf-8"))["staffing"]["conductor_log"])
+paths.add(json.loads((RIMFLOW / "run_rules.json").read_text(encoding="utf-8"))["staffing"]["conductor_log"])
 paths.add(json.loads((RIMFLOW / "dispatcher_schedule.json").read_text(encoding="utf-8"))["no_handoff"]["conductor_log"])
 check("every rules file's Conductor log is the path the guard protects", paths == {REAL_LIVE}, paths)
 

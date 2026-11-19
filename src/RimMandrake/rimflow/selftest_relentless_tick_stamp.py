@@ -243,7 +243,7 @@ def t_rule_back_at_ten():
     with open(os.path.join(repo_utils, "ops_watch_rules.json"), encoding="utf-8") as f:
         rule = json.load(f)["ranges"]["relentless.tick_age_s"]
     ok(rule["max_age_min"] == 10, "relentless.tick_age_s max_age_min is 10: %s" % rule["max_age_min"])
-    live = R.rules(os.path.join(HERE, "relentless_rules.json"))
+    live = R.rules(os.path.join(HERE, "run_rules.json"))
     worst = live["tick_game_budget_s"] + live["live"]["gate_plan_max_s"]
     ok(worst <= 480, "game budget plus the one plan that may start under it leave room in 10 min with the 2 min pause: %s s" % worst)
 

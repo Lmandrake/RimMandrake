@@ -19,7 +19,7 @@ Offline: no bridge, no game, ModsConfig.xml and modcheck_status.json never touch
     full-tier verdict; A2's drive `needs-mods` and `--config current`. A proofs file pointing a full-list clause at a
     small-list command goes red here (mutants inside the test).
   8 every clause's criterion text and proof line passes the supervisor's own refusals (flyer word, expansion,
-    forbidden act) under relentless_rules.json, so a game_refused shows offline; mutant 'pre-flight' goes red.
+    forbidden act) under run_rules.json, so a game_refused shows offline; mutant 'pre-flight' goes red.
 """
 import atexit
 import copy
@@ -493,12 +493,12 @@ def _criteria_text(text):
 
 def t8_supervisor_gates():
     """gen 7 ended game_refused: F2's criterion said 'pre-flight', which the supervisor's flyer_re reads as a flyer.
-    Run the supervisor's own refusals (proof_lint.refused_proof with relentless_rules.json's live rules, and
+    Run the supervisor's own refusals (proof_lint.refused_proof with run_rules.json's live rules, and
     relentless_game.gate's word test) over every clause's full criterion text and proof line, offline."""
     import re
     import proof_lint
     import proof_lines
-    rules = json.load(open(os.path.join(ROOT, "src", "RimMandrake", "rimflow", "relentless_rules.json"), encoding="utf-8"))
+    rules = json.load(open(os.path.join(ROOT, "src", "RimMandrake", "rimflow", "run_rules.json"), encoding="utf-8"))
     lr = proof_lint.live_rules(rules)
     txt = open(os.path.join(PROOFS, ITEM + ".txt"), encoding="utf-8").read()
     crit = _criteria_text(open(os.path.join(PROOFS, ITEM + ".criteria"), encoding="utf-8").read())

@@ -48,7 +48,7 @@ def put(root, rel, text):
 
 def sealed_rules(d):
     """The real rules with every host path moved into `d` and nothing to staff, launch or prove."""
-    with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as f:
+    with open(os.path.join(HERE, "run_rules.json"), encoding="utf-8") as f:
         r = json.load(f)
     r["enabled"] = True
     r["ops_watch_dir"] = os.path.join(d, "ops_watch")
@@ -152,7 +152,7 @@ def told_since(path, at):
 
 
 def t_tick_once():
-    with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as f:
+    with open(os.path.join(HERE, "run_rules.json"), encoding="utf-8") as f:
         real = json.load(f)
     told = os.path.join(real["ops_watch_dir"], "told.jsonl")
     host = [real["ops_watch_dir"]] + \

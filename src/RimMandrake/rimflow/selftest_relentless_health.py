@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import relentless as R  # noqa: E402
 
 FAILS = []
-RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, only_system_and_live=False, share=0.5, max_workers=2,
+RULES = dict(R.rules(os.path.join(R.HERE, "run_rules.json")), enabled=True, only_system_and_live=False, share=0.5, max_workers=2,
              enrol_per_tick=50, max_queued=50, staffing=None, one_builder_per_mod=False)
 
 

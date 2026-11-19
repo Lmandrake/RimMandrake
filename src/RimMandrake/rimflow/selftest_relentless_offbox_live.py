@@ -22,7 +22,7 @@ import relentless_wall as W             # noqa: E402
 FAILS = []
 ITEM = "UNPROVEN_LIVE_LEGS_TRIAGE_1"
 OTHER = "ACC_BIOMES_FIXES_LIVE_RERUN_1"
-RULES = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+RULES = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
 
 
 def ok(cond, name):

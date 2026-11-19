@@ -1,4 +1,4 @@
-"""checker_box.py -- the walled box a checker runs in: its config (relentless_box.json), grants, git and item copies, systemd properties and environment (make_box, remove_box, profile, props, unit_env, box_config).
+"""checker_box.py -- the walled box a checker runs in: its config (checker_box.json), grants, git and item copies, systemd properties and environment (make_box, remove_box, profile, props, unit_env, box_config).
 
 Moved verbatim from rimflow/relentless_wall.py (RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES):
 only the functions live code reaches (design/RimMandrake/retired_eras_index_2026-11-18.md).
@@ -163,7 +163,7 @@ def tmp_env(box):
 def unit_env(prof, box, cfg=None):
     """A walled unit's environment: its TMPDIR, and the profile's `env`. Lodestar's helper is behind the wall, so without
     RM_DATA_ROOT named here anything importing rmpaths crashes before its first check (207 Markers met that and worked round it).
-    PATH: relentless_box.json path_prepend (the checkbox venv: python3 with cv2/numpy) ahead of the supervisor's own."""
+    PATH: checker_box.json path_prepend (the checkbox venv: python3 with cv2/numpy) ahead of the supervisor's own."""
     env = dict(tmp_env(box), **prof.get("env", {}))
     pre = box_path_prepend(cfg)
     if pre and "PATH" not in prof.get("env", {}):
@@ -172,12 +172,12 @@ def unit_env(prof, box, cfg=None):
 
 
 # CHECKBOX_BUILD_BUILDER_TOOLCHAIN (owner 2026-11-06, redesign_final.md WP-02): every box carries the builder's toolchain -
-# git history at the candidate, python3 with cv2/numpy, the Windows build stage - as data in relentless_box.json.
-BOX_CONFIG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_box.json")
+# git history at the candidate, python3 with cv2/numpy, the Windows build stage - as data in checker_box.json.
+BOX_CONFIG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "checker_box.json")
 
 
 def box_config(path=None):
-    """-> relentless_box.json as a dict; {} when it is missing or unreadable (a box then is what it was before WP-02)."""
+    """-> checker_box.json as a dict; {} when it is missing or unreadable (a box then is what it was before WP-02)."""
     try:
         with open(path or BOX_CONFIG, encoding="utf-8") as f:
             got = json.load(f)
@@ -187,7 +187,7 @@ def box_config(path=None):
 
 
 def default_grants(cfg=None):
-    """-> the grants every box gets (relentless_box.json default_grants), known GRANTS only, in order."""
+    """-> the grants every box gets (checker_box.json default_grants), known GRANTS only, in order."""
     cfg = box_config() if cfg is None else cfg
     return [g for g in dict.fromkeys(cfg.get("default_grants") or []) if g in GRANTS]
 
@@ -239,7 +239,7 @@ def change_range(source, parent, sha, base, item):
 
 def make_box(prof, source, sha, nonce, grants=(), base=None, item=None, cfg=None):
     """-> the box's path. Tree at sha with none of tree_exclude, the diff (change_range), the verdict script.
-    `grants` (a passed reach repair's, relentless_reachfix.grants) plus relentless_box.json default_grants (git_history
+    `grants` (a passed reach repair's, relentless_reachfix.grants) plus checker_box.json default_grants (git_history
     since CHECKBOX_BUILD_BUILDER_TOOLCHAIN): GIT_GRANT adds a read-only git history at sha (grant_git).
     `base`/`item`: the item's base and id, so work landed before a later report commit is in change.diff."""
     grants = list(dict.fromkeys(default_grants(cfg) + list(grants or ())))

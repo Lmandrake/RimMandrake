@@ -24,7 +24,7 @@ import relentless_wall as W       # noqa: E402
 FAILS = []
 NAME = "jawabench_build_candidate"
 SHA = "0123456789abcdef0123456789abcdef01234567"
-RULES = json.load(open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8"))
+RULES = json.load(open(os.path.join(HERE, "run_rules.json"), encoding="utf-8"))
 
 
 def ok(c, msg):

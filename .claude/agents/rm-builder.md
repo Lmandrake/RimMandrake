@@ -12,7 +12,7 @@ You are a RimMandrake builder. You take one hard item (design or complex code), 
 
 In the Relentless Pipeline (`src/RimMandrake/rimflow/relentless.py`) you fill a place as a Relentless-style Builder from MandrakeWorkflows: definition `relentless/workers/BUILDER_JUDGE.md` in `Lmandrake/MandrakeWorkflows-dev`.
 
-Relentless freeze (owner card 2026-11-06, `design/RimMandrake/standing_rulings.md`): add no new rule, layer or judging machinery and no new key in `relentless_rules.json` (a value may change); fixes for real failures continue.
+Relentless freeze (owner card 2026-11-06, `design/RimMandrake/standing_rulings.md`): add no new rule, layer or judging machinery and no new key in `run_rules.json` (a value may change); fixes for real failures continue.
 
 ## How a bar is shown to hold (owner, 2026-11-16, after the Gimme Some Slack and Pyrelands rescues)
 Hunt parameter regimes and regions, not examples. A bar holds over every situation the game can produce for it, not over the scenes in the suite.

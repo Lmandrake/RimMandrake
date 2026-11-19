@@ -20,7 +20,7 @@ import relentless as R  # noqa: E402
 import ops_health  # noqa: E402
 
 FAILS = []
-RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, only_system_and_live=False, share=1.0,
+RULES = dict(R.rules(os.path.join(R.HERE, "run_rules.json")), enabled=True, only_system_and_live=False, share=1.0,
              max_workers=3, enrol_per_tick=50, max_queued=50, staffing=None, one_builder_per_mod=False)
 NOW = 1_000_000.0
 

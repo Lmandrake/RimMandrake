@@ -27,7 +27,7 @@ OWN = ("python3 src/RimMandrake/Utils/run_selftests.py --only selftest_relentles
        "# (1) contract refuses a proof naming what the Marker's box cannot reach (masked/tmpfs paths from the walls profile "
        "incl. /mnt/d/ClaudeWork and other clones and ~/dev, git history verbs, ssh/tailscale, Windows .exe/powershell)")
 ADAPTER = "steve_c_free"
-REAL = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+REAL = R.rules(os.path.join(R.HERE, "run_rules.json"))
 PROF = W.profile(REAL)
 
 

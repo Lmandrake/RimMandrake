@@ -17,7 +17,7 @@ import relentless_expedite as X  # noqa: E402
 import relentless_game as G  # noqa: E402
 
 FAILS = []
-RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, share=0.5, max_workers=2,
+RULES = dict(R.rules(os.path.join(R.HERE, "run_rules.json")), enabled=True, share=0.5, max_workers=2,
              enrol_per_tick=50, max_queued=50, staffing=None, one_builder_per_mod=False, pool_ids_exclude=["BANNED"])
 H = 3600
 

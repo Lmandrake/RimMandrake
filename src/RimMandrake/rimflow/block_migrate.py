@@ -9,7 +9,7 @@ Two sources:
   ledger    an open item blocked with no --on whose reason says "Follows X", "depends on X [and Y]", "precondition
             unmet: X", "blocked on X", "waits/waiting on X" for a filed, OPEN X: re-blocked --on X, reason kept.
   store     a relentless item (its store, items/*/state.json) still in line whose last ending is a blocker class
-            (relentless_rules.json blocker_classes): relentless_block.resolve, as a worker's snag now does.
+            (run_rules.json blocker_classes): relentless_block.resolve, as a worker's snag now does.
 Only items the writing seat owns are written (a block is the owner's verb); the rest are listed for that seat.
 Anything vaguer than those phrases is left alone: a wrong predecessor would release an item early.
 """
@@ -88,7 +88,7 @@ def main(argv=None):
     ap.add_argument("--store", default=os.path.join(os.environ.get("RELENTLESS_ROOT") or "/home/mandrake/rm/relentless",
                                                     "store"))
     a = ap.parse_args(argv)
-    with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as f:
+    with open(os.path.join(HERE, "run_rules.json"), encoding="utf-8") as f:
         rules = json.load(f)
     w = model.replay(model.read())
     rows = from_ledger(w) + from_store(w, a.store, rules)

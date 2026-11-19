@@ -219,7 +219,7 @@
    "idle_if": [
     "relentless.why"
    ],
-   "why": "Distressed line equals relentless_rules.json staffing.alarm_after_min (selftest_relentless_watch holds them equal). Emergency at 2 h, four times the distressed line: the 2026-11-01 jam ran 6 h, so this class would have stood for its last 4.",
+   "why": "Distressed line equals run_rules.json staffing.alarm_after_min (selftest_relentless_watch holds them equal). Emergency at 2 h, four times the distressed line: the 2026-11-01 jam ran 6 h, so this class would have stood for its last 4.",
    "classes": {
     "sane": {
      "at_least": 0

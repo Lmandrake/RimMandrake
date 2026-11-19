@@ -3,7 +3,7 @@
 """The checker box carries the builder's toolchain (CHECKBOX_BUILD_BUILDER_TOOLCHAIN, redesign_final.md WP-02 row 02).
 
 Owner 2026-11-06: a checker box with git + dotnet + cv2 is top priority. Rows, one per acceptance clause:
-  (A) every box gets the read-only git history by default (relentless_box.json default_grants): tree/.git at the sha, the
+  (A) every box gets the read-only git history by default (checker_box.json default_grants): tree/.git at the sha, the
       prompt says so and names the toolchain; a box built with an empty config is the old export (no .git);
   (B) the unit's PATH carries the checkbox venv (python3 imports cv2), and the box config's grants stay inside GRANTS;
   (C) relentless_reach.needs no longer calls served git history verbs or winbuild.py out of reach; refs, remotes and other
@@ -18,7 +18,7 @@ Owner 2026-11-06: a checker box with git + dotnet + cv2 is top priority. Rows, o
         E3 code-commit: `git log -1 --format=%H -- <path>` == the commit that last touched it (planted: HEAD moved
            before that commit);
       E4 a candidate C# build (winbuild.py ColdStorage.csproj) is green, and red with a planted syntax error;
-      E5 toolchain_probe exits 0 on every relentless_box.json row (git, python_cv2, windows_build).
+      E5 toolchain_probe exits 0 on every checker_box.json row (git, python_cv2, windows_build).
 Rows A, C and D fail on the code before this item (no default grant, git/winbuild refused, a note and a wait forever).
 Row E needs a user systemd and the Windows interop; where they are missing it prints the unmeasured phrase."""
 import json
@@ -55,7 +55,7 @@ def git(*a, cwd=REPO):
 
 
 def rules():
-    with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as f:
+    with open(os.path.join(HERE, "run_rules.json"), encoding="utf-8") as f:
         return json.load(f)
 
 

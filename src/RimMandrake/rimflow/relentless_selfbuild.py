@@ -182,7 +182,7 @@ def ready(spec, rules):
     """Reasons a self-build may not start yet: the builder wall must exist, be enforced and deny every outside part."""
     w = (rules.get("walls") or {}).get(spec.get("build_wall", "builder"))
     if not isinstance(w, dict):
-        return [f"no walls.{spec.get('build_wall', 'builder')} profile in relentless_rules.json: the builder can read the keys"]
+        return [f"no walls.{spec.get('build_wall', 'builder')} profile in run_rules.json: the builder can read the keys"]
     out = []
     if not w.get("enforce"):
         out.append(f"walls.{spec.get('build_wall')} is not enforced")
@@ -322,7 +322,7 @@ def main(argv=None):
                 return 0
             why = check_protected(a.root, a.base, a.head, spec)
         elif a.cmd == "ready":
-            why = ready(spec, json.loads((HERE / "relentless_rules.json").read_text(encoding="utf-8")))
+            why = ready(spec, json.loads((HERE / "run_rules.json").read_text(encoding="utf-8")))
         elif a.cmd == "promote":
             ok, why = promote(spec, json.loads(Path(a.file).read_text(encoding="utf-8")))
         elif a.cmd == "cross":

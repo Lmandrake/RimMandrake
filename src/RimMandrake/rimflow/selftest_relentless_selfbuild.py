@@ -192,7 +192,7 @@ def test_real_list():
         ok(p in prot, f"the real list protects {p}")
     missing = [e["path"] for e in spec["protected"] if not Path(S.REPO, e["path"]).is_file()]
     ok(not missing, "every listed grader path exists in this tree (a renamed one would protect nothing)", missing)
-    rules = json.loads((S.HERE / "relentless_rules.json").read_text(encoding="utf-8"))
+    rules = json.loads((S.HERE / "run_rules.json").read_text(encoding="utf-8"))
     gone = [k for e in spec["protected_keys"] for k in e["keys"] if k not in rules]
     ok(not gone, "every protected rules key exists", gone)
 

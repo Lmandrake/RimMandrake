@@ -121,7 +121,7 @@ def main():
              "oom-kill:constraint=CONSTRAINT_MEMCG,oom_memcg=/a/claude-seat-BENCH-rm-relentless-work-ab-g3.scope/claude-code-bash",
              "python3 invoked oom-killer: rm-relentless"]
     check("only a kill inside a Relentless cgroup is Relentless's", U.own_oom_kills(lines) == 1, U.own_oom_kills(lines))
-    rules_all = json.loads((HERE / "relentless_rules.json").read_text())
+    rules_all = json.loads((HERE / "run_rules.json").read_text())
     stages = [x for x in rules_all["staffing"]["stages"] if x != "budget"]
     check("staffing top stage is 3-8 workers, under max_workers, and with its checks and a consult fits the 16-clone pool"
           " (owner card 2026-11-02: 8 workers, 16 clones / 70 GB)",

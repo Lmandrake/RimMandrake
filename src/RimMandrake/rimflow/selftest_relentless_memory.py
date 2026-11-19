@@ -67,7 +67,7 @@ def main():
     check("an ending with no words matches nothing", "gen 1 ended lost" in R.learned_view(empty, hist, log))
     check("a note that quotes an ending is no ending", told in R.learned_view(note(1, words=told), hist, log))
 
-    rules = json.loads((HERE / "relentless_rules.json").read_text())
+    rules = json.loads((HERE / "run_rules.json").read_text())
     st = R.new_state("X", 0, "t")
     rows = [{"gen": 2, "end": "proof_weak", "detail": told}, {"gen": 3, "end": "lost", "detail": "the worker died"}]
     p = R.worker_prompt(st, "item", many + ending(2, told), rules, rows, None, log)

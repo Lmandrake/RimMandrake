@@ -389,18 +389,18 @@ def t_harvest_exit():
     with contextlib.redirect_stderr(io.StringIO()):
         got = E.harvest(store, failed)
     ok(got == [] and len(failed) == 1, "R7. harvest reports the failed receipt (%r)" % failed)
-    fake = types.ModuleType("relentless")
+    fake = types.ModuleType("run_store")
     fake.Store = lambda root=None: store
-    saved = sys.modules.get("relentless")
-    sys.modules["relentless"] = fake
+    saved = sys.modules.get("run_store")
+    sys.modules["run_store"] = fake
     try:
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
             rc = E.main(["--store-dir", d, "harvest"])
     finally:
         if saved is None:
-            sys.modules.pop("relentless", None)
+            sys.modules.pop("run_store", None)
         else:
-            sys.modules["relentless"] = saved
+            sys.modules["run_store"] = saved
     ok(rc == 1, "R7. `evidence.py harvest` exits 1 when a receipt failed (%s)" % rc)
     shutil.rmtree(d, ignore_errors=True)
 

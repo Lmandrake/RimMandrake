@@ -219,7 +219,7 @@ def resolve_stones(names, src=None, dump=None):
 
 # ---- owed items: liveness from the LEDGER, not items/*.md ---------------------------------------------------
 # The ledger is what ships with a commit into every checker's box; infrastructure/state/items/ is left out of a
-# blind checker's tree on purpose (relentless_rules.json tree_exclude), so reading it there sees nothing.
+# blind checker's tree on purpose (run_rules.json tree_exclude), so reading it there sees nothing.
 TERMINAL = {"close", "drop", "supersede"}
 OPENING = {"file", "claim", "start", "reclaim", "implemented"}
 

@@ -3,9 +3,9 @@
 
 Naming (owner, 2026-11-03, PIPELINE_RENAME_WORKERS_NOW_SWAPPABLE): this program is the Relentless Pipeline; each worker in
 its places is a Relentless-style Builder/Judge from MandrakeWorkflows (relentless/workers/BUILDER_JUDGE.md), run as the
-agents named by worker_agent and checker_agent in relentless_rules.json. Swapping workers leaves the pipeline's design.
+agents named by worker_agent and checker_agent in run_rules.json. Swapping workers leaves the pipeline's design.
 
-Design: design/RimMandrake/relentless_owner_design_2026-10-31.md. Limits: relentless_rules.json (data). A program, no AI.
+Design: design/RimMandrake/relentless_owner_design_2026-10-31.md. Limits: run_rules.json (data). A program, no AI.
 `tick` runs from rm-relentless.timer, out of one pinned release (<root>/release/current, relentless_release.py), and reads
 its data from the supervisor's own clone (<root>/books), which it fast-forwards itself: a push to main moves the data, not
 this code. Nothing here depends on the FOUNDRY tree.
@@ -463,7 +463,7 @@ def unmeasured(store, st, said, blind, r, now):
     if n >= limit:
         # legacy route, rule reach_repair false only
         relentless_strikes.hold(st, "the checker could not reach the evidence on %d checks running of %s, so the box needs "
-                                "repair, not the work: %s. Fix the box, or unhold --offbox NAME with a supervisor adapter (relentless_rules.json offbox_adapters) that reads it from outside; "
+                                "repair, not the work: %s. Fix the box, or unhold --offbox NAME with a supervisor adapter (run_rules.json offbox_adapters) that reads it from outside; "
                                 "either way unhold checks this sha again" % (n, sha, (blind or reasons)), "unmeasured", now)
         st["status"] = "held"
         st.pop("recheck_at", None)
@@ -789,7 +789,7 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None, 
     """Set by the first worker before it edits; only a redesign may change it, and says why. One exception: any worker
     may add a live line the contract lacks with the proof unchanged, since that only asks more of the work. Three
     workers of CLOSE_GATE_ENFORCE_DONE_IS_EARNED died on the lock before a redesign could add it. `offbox`: adapter names
-    (relentless_rules.json offbox_adapters) the supervisor runs outside the Marker's wall at check time; adding them with the proof
+    (run_rules.json offbox_adapters) the supervisor runs outside the Marker's wall at check time; adding them with the proof
     unchanged also widens, since the Marker still judges whether each one measures its clause. Outside a redesign the offbox
     adapters and game clauses already set are kept: a change names more, never fewer. `reach_ok`: the worker's why for a
     proof that names what the walled Marker's box hides (relentless_reach.needs); without it or an adapter such a proof is
@@ -4168,12 +4168,12 @@ def worker_prompt(st, text, learned, r, history=None, causes=None, log=None):
             "A hook, systemd unit, dispatcher_schedule.json or ops_watch_rules.json change, or an OPS_ alarm item, needs --live with one of: "
             "`unit=rm-foo.timer reading=<path> max_age=6h`, `hook=block_foo.py`, `once: why`.",
             "The checker runs walled: no ssh or other machine; it has a read-only git history at your sha (no refs or remote), "
-            "python3 with cv2/numpy and the Windows build stage (winbuild.py) (relentless_box.json); D:\\ClaudeWork and "
+            "python3 with cv2/numpy and the Windows build stage (winbuild.py) (checker_box.json); D:\\ClaudeWork and "
             "/mnt/d/ClaudeWork/rimmandrake read empty except the paths under them your contract, finish evidence or item text "
             "names (bound read only; a progress or handoff file never is), no other Windows program. `finish` first runs your "
             "contract's proof as written in that box (relentless_boxrun); `%s boxrun --item %s --gen %d` runs it at HEAD before "
             "you land. When the proof's truth lives there, add --offbox NAME naming a supervisor adapter from "
-            "relentless_rules.json offbox_adapters (%s): the supervisor runs it outside the wall at check time and hands the "
+            "run_rules.json offbox_adapters (%s): the supervisor runs it outside the wall at check time and hands the "
             "checker its raw output. You cannot pass a command; a reading no adapter makes is a snag. A checker that still "
             "cannot reach the evidence says UNMEASURED, which sends nothing back to you. `contract` refuses a proof that "
             "names what the box hides (a masked path, git refs or a remote, ssh, a Windows program) unless --offbox routes it or "
@@ -4980,7 +4980,7 @@ def ts_epoch(ts):
         return None
 
 
-OWNER_PAUSE_WHY = "owner pause: pipeline items only"     # relentless_owner_pause.json (owner 2026-11-05)
+OWNER_PAUSE_WHY = "owner pause: pipeline items only"     # owner_pause.json (owner 2026-11-05)
 
 
 def owner_pause(fx, states=()):
@@ -6856,7 +6856,7 @@ def reading(store, r, now, acts, clock=None, fx=None):
     br = load_breaker(store)
     rec = {"at": iso(clock() if clock else now), "share": r["share"], "counts": counts, "spent_today": spent_today(store, now),
            "breaker": br or None, "acts": acts[-20:], "circling": circling.summary(store, r, now),
-           # the owner's pipeline-only switch (relentless_owner_pause.json): on, only pipeline items start
+           # the owner's pipeline-only switch (owner_pause.json): on, only pipeline items start
            "owner_pause": {k: op[k] for k in ("why", "prefixes")} if (op := owner_pause(fx)) else None,
            "items": [{"item": s["item"], "status": s["status"], "gen": s["gen"], "returns": s["returns"],
                       "approach": s["approach"], "spent": s["spent"]} for s in states if s["status"] in OPEN],
@@ -7630,7 +7630,7 @@ def main(argv=None):
             p.add_argument("--game", help="criterion ids only the running game can show, e.g. A2,B3 (relentless_game)")
             p.add_argument("--game-why", help="why only the running game can show them")
             p.add_argument("--no-offline", help="why no offline proof is possible at all")
-            p.add_argument("--offbox", action="append", help="an adapter NAME from relentless_rules.json offbox_adapters, which "
+            p.add_argument("--offbox", action="append", help="an adapter NAME from run_rules.json offbox_adapters, which "
                            "the supervisor runs outside the Marker's wall at check time, its raw output and exit handed in: "
                            "for evidence the box cannot reach (repeatable). Never a command")
             p.add_argument("--reach-ok", dest="reach_ok", help="why the walled Marker can still show a proof that names "
@@ -7757,7 +7757,7 @@ def main(argv=None):
     p.add_argument("--owner-said")
     p.add_argument("--per-ruling", help="with --why: a Conductor instruction (conductor_authority.RULING)")
     p.add_argument("--why")
-    p.add_argument("--offbox", action="append", help="an unmeasured hold's repair: an adapter NAME from relentless_rules.json "
+    p.add_argument("--offbox", action="append", help="an unmeasured hold's repair: an adapter NAME from run_rules.json "
                    "offbox_adapters, run by the supervisor outside the Marker's wall at check time, added to the contract (repeatable)")
     a = ap.parse_args(argv)
     store = Store()

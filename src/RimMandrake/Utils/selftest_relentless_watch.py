@@ -145,7 +145,7 @@ back = next(pts for row, pts in seen if row["at"] >= "2026-11-01T13:16")
 check("recovered once the record does", back["relentless.distressed"]["v"] == 0, back["relentless.cause"])
 check("blind never rose on a whole record", all(pts["relentless.blind"]["v"] == 0 for _, pts in seen),
       next((pts["relentless.blind"] for _, pts in seen if pts["relentless.blind"]["v"]), None))
-limits = json.loads((HERE.parent / "rimflow/relentless_rules.json").read_text(encoding="utf-8"))
+limits = json.loads((HERE.parent / "rimflow/run_rules.json").read_text(encoding="utf-8"))
 check("the line is relentless's own alarm line", RULES["ranges"]["relentless.under_min"]["classes"]["distressed"]["at_least"] == limits["staffing"]["alarm_after_min"])
 
 # the same record through full passes at the timer's 15 min: the alarm, its item, the digests

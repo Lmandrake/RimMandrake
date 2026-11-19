@@ -367,7 +367,7 @@ class Command(unittest.TestCase):
         command = RR.proof_lines(text)["A2"]
         mods = [m.group("mods") for m in map(RR.LIVE_MODS.match, text.splitlines()) if m]
         self.assertEqual(mods, ["GimmeSomeSlack, KineticArms"])
-        rules = json.loads((HERE.parent / "rimflow/relentless_rules.json").read_text())
+        rules = json.loads((HERE.parent / "rimflow/run_rules.json").read_text())
         self.assertIsNone(RL.refused_proof(RL.live_rules(rules), "GSS_CORD_SWAY_TAME_PER_FRAME_ALLOC", "", command))
         # Execute the registered shell line locally. Only its live child is replaced by an offline driver.
         with tempfile.TemporaryDirectory() as directory:

@@ -287,7 +287,7 @@ def t_clones_seed():
     import subprocess
     import tempfile
     import relentless_wall as W
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     what = ("Whether /home/mandrake/rm/foundry was synced to origin/main (was 1877 behind): 'ls /home/mandrake/rm/foundry' "
             "-> Permission denied")
     cls = RF.classify(r, [what])
@@ -328,7 +328,7 @@ def t_store_seed():
     import time
     import hashlib
     import relentless_wall as W
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     what = ("Relentless store spend-*.json / items/*/attempts behind the diagnosis: ls /home/mandrake/rm/relentless/store "
             "-> Permission denied; item learn log in the Relentless store: same path, Permission denied")
     cls = RF.classify(r, [what])
@@ -412,7 +412,7 @@ def t_store_waiter_kuqy():
     import tempfile
     import time
     import relentless_wall as W
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     store_root = "/home/mandrake/rm/relentless/store"
     cls = RF.classify(r, [KUQY_BLIND])
     prop = RF.propose(r, cls, [], [], KUQY_BLIND, store_root)
@@ -524,7 +524,7 @@ def t_clones_scratch_instance():
     import subprocess
     import tempfile
     import relentless_wall as W
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     cls = RF.classify(r, [SCRATCH_BLIND])
     stored = {"adapters": ["seat_clone_state"], "by": "seed", "paths": [], "grants": [],
               "refused": {"/home/mandrake/rm/foundry": "under /home/mandrake/rm/foundry/conversations"}}
@@ -611,7 +611,7 @@ def t_clones_judge_gap_filled():
     holds seat_clone_state, which covers bench. Now (g) a Judge proposal that leaves a named masked path uncovered gains
     the class seed adapters that cover it, within OFFBOX_MAX, and is probed; no ticket, one re-check."""
     import json
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     judge = ["proc_cwds", "relentless_live_evidence", "rm_pool_state"]
     x = rig(probe=(True, "read non-empty"))
     x.r = dict(x.r, reach_classes=r["reach_classes"], reach_never=r.get("reach_never") or [],
@@ -655,7 +655,7 @@ def seat_tmp_rows(r):
 
 def t_seat_tmp_reach():
     import json
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json"), encoding="utf-8") as f:
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json"), encoding="utf-8") as f:
         r = json.load(f)
     for cond, name in seat_tmp_rows(r):
         ok(cond, name)
@@ -674,7 +674,7 @@ def t_live_round_seed():
     was filed. Now a live-round gap is its own class, seeded with the supervisor adapter relentless_live_evidence, and a
     Judge proposal refused whole falls back to the class seed instead of proposing nothing."""
     import json
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     live = "/home/mandrake/rm/relentless/live"
     cls = RF.classify(r, [LIVE_BLIND, LIVE_BLIND])
     prop = RF.propose(r, cls, [live], [LIVE_BLIND], LIVE_BLIND)
@@ -702,7 +702,7 @@ def t_gpt_review_back_to_worker():
     No adapter can make a review the worker never wrote: the worker owes it (run it, name its output path in the finish
     evidence, and the box binds that path read only). Now the gap is classed gpt_review and goes back to the worker."""
     import json
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     cls = RF.classify(r, [GPT_BLIND, GPT_BLIND])
     ok(cls["class"] == "gpt_review" and cls.get("worker_owes"),
        "(10) a GPT-review gap is classed gpt_review (worker owes it), not windows_build: %s" % cls["class"])
@@ -738,7 +738,7 @@ def t_store_dark_second():
     """CHECKER_REACH_FIX_STORE_DARK_SECOND (the instance): after STORE_STILL_DARK closed, KUQY's store proposal reseeded and
     filled to [store_attempts, store_journal, git_log_candidate, seat_clone_state] with the git_history grant, and the
     coverage gate still filed a successor on /mnt/d/Luke/dev/RimMandrake/.git: no adapter declares a .git in its covers,
-    and the gate never credited the grant, though every box holds that history (relentless_box.json default_grants).
+    and the gate never credited the grant, though every box holds that history (checker_box.json default_grants).
     Now (a) the instance's proposal leaves nothing uncovered; (b) with no git grant held (the proposal's or the box's),
     the mirror's .git is still uncovered; (c) a grant covers only what grant_covers names: another repo's .git stays
     uncovered, and (e) so do a checkout's refs, a ~/rm repo it does not name and the store; (f) a Judge proposal of the
@@ -746,7 +746,7 @@ def t_store_dark_second():
     would carry refs past the candidate), files no ticket and re-checks the same sha once."""
     import json
     import relentless_wall as W
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     texts = [KUQY_STILL_BLIND, KUQY_STILL_BLIND]
     stored = {"adapters": ["relentless_store_attempts"], "by": "seed", "paths": [], "refused": {}}
     st = {"reach": {"class": "store", "proposal": stored, "still_blind": KUQY_STILL_BLIND, "status": "ticket"},
@@ -816,7 +816,7 @@ def t_seed_bank_dark():
     the store repair, parked on a done ticket, a waiter behind it): the sweep gives the owner back and unblocks it, files
     no successor, and the waiter takes the class repair over and is released on its own passing probe."""
     import json
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     # CHECKER_REACH_FIX_SEEDS_STILL_DARK since shipped relentless_seed_compare, whose covers name this seed bank: the rows
     # are about withheld scratch NO adapter covers, so they run on the rules as they stood when the instance happened.
     r["offbox_adapters"] = {k: v for k, v in r["offbox_adapters"].items() if k != "relentless_seed_compare"}

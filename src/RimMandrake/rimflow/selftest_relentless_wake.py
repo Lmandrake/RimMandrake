@@ -371,7 +371,7 @@ def t_config():
         raw = json.load(f)
     for k in ("fire_min_gap_s", "fire_max_per_hour", "serve_min_gap_s", "serve_max_per_tick"):
         ok(k in raw and "_" + k in raw and "easured" in raw["_" + k], "config: %s carries a measured reason" % k)
-    with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as f:
+    with open(os.path.join(HERE, "run_rules.json"), encoding="utf-8") as f:
         rules = json.load(f)
     # backoff_owed is gone: those keys are now caps over a cause sweep (relentless_cause, RELENTLESS_REWIRE_BACKOFFS_ON_CAUSE_CLOSE)
     kinds = {"ceiling", "throttle", "window", "cause_cap", "wp11"}

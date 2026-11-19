@@ -661,7 +661,7 @@ def reader_problem(reader, sch=None, table=None):
     return None
 
 
-RELENTLESS_RULES = os.path.join(HERE, "relentless_rules.json")
+RELENTLESS_RULES = os.path.join(HERE, "run_rules.json")
 
 
 def receiver_problem(seat, needs, sch=None, table=None, relentless=None):

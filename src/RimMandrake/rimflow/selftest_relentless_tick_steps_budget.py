@@ -126,7 +126,7 @@ def t_a_late_lease_makes_no_clone():
 
 def t_live_rules_fit_the_alarm():
     """The live numbers: budgets plus the phases that follow them fit the alarm's limit, timer gap included."""
-    live = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    live = R.rules(os.path.join(R.HERE, "run_rules.json"))
     ops = os.path.join(os.path.dirname(R.HERE), "Utils", "ops_watch_rules.json")
     with open(ops, encoding="utf-8") as f:
         rule = json.load(f)["ranges"]["relentless.tick_age_s"]

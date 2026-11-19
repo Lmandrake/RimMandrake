@@ -24,7 +24,7 @@ PY = ["src/RimMandrake/Utils/ops_watch.py",
       "src/RimMandrake/rimflow/relentless.py", "src/RimMandrake/Utils/slot_allocator.py",
       "src/RimMandrake/rimflow/helper_budget.py", ".claude/hooks/block_agent_over_slots.py"]
 JSON = {"src/RimMandrake/Utils/ops_watch_rules.json": ("token_talk",),
-        "src/RimMandrake/rimflow/relentless_rules.json": ("staffing",),
+        "src/RimMandrake/rimflow/run_rules.json": ("staffing",),
         "src/RimMandrake/Utils/slot_rules.json": ("seats", "enforce_seats", "fallback_n", "split")}
 WORD = re.compile(r"\bFOUNDRY\b")
 
@@ -92,7 +92,7 @@ def main():
     # both ends of the budget key agree: Relentless reads its budget under the key the allocator places
     sys.path.insert(0, os.path.join(ROOT, "src/RimMandrake/Utils"))
     import slot_allocator as SA
-    rr = json.load(open(os.path.join(ROOT, "src/RimMandrake/rimflow/relentless_rules.json"), encoding="utf-8"))
+    rr = json.load(open(os.path.join(ROOT, "src/RimMandrake/rimflow/run_rules.json"), encoding="utf-8"))
     sr = json.load(open(os.path.join(ROOT, "src/RimMandrake/Utils/slot_rules.json"), encoding="utf-8"))
     key = rr["staffing"]["seat"]
     check(key == SA.seat_label(SA.BUILDER) and SA.BUILDER in sr["seats"],

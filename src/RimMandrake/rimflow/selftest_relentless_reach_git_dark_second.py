@@ -81,7 +81,7 @@ def t_grant_over_cap():
 
 
 def t_split():
-    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_rules.json")))
+    r = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "run_rules.json")))
     prof = W.profile(r)
     shim = types.SimpleNamespace(**{k: getattr(W, k) for k in dir(W) if not k.startswith("__")})
     shim.profile = lambda _r: prof          # the rig runs wall-less; only the reach book sees the shipped masks

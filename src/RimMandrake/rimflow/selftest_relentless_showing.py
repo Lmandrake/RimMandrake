@@ -448,8 +448,8 @@ def harden_rows(tmp):
 def wiring_rows():
     src = open(os.path.join(HERE, "relentless.py"), encoding="utf-8").read()
     check("relentless_showing.tick(store, fx, r, now, acts" in src, "relentless.tick runs the showing stage")
-    rules = json.load(open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8"))
-    check((rules.get("showings") or {}).get("enabled") is True, "the stage is on in relentless_rules.json")
+    rules = json.load(open(os.path.join(HERE, "run_rules.json"), encoding="utf-8"))
+    check((rules.get("showings") or {}).get("enabled") is True, "the stage is on in run_rules.json")
 
 
 def main():

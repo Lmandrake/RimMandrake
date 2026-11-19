@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """Make (or confirm) the checkbox venv: the system python3 plus opencv-python-headless, so `python3 -c 'import cv2,
-numpy'` runs in a walled checker box (RELENTLESS_FIX_CHECKBOX_TEST_SERIAL_LANE; relentless_box.json path_prepend).
+numpy'` runs in a walled checker box (RELENTLESS_FIX_CHECKBOX_TEST_SERIAL_LANE; checker_box.json path_prepend).
 
 Idempotent: a venv that already imports cv2 with the SYSTEM numpy is left alone (exit 0, "ALREADY"). A missing or
 broken one is (re)made with --system-site-packages over /usr/bin/python3 and opencv-python-headless installed under a
 constraint pinning numpy to the system's version (a wheel that pulled a second numpy would shadow the one every other
 tool here uses). uv when it is on PATH, else `python3 -m venv` + pip (SteveDesktop has no uv).
 
-  provision_checkbox_venv.py              make or confirm the venv at relentless_box.json path_prepend[0] (minus /bin)
+  provision_checkbox_venv.py              make or confirm the venv at checker_box.json path_prepend[0] (minus /bin)
   provision_checkbox_venv.py --venv DIR   another folder
   provision_checkbox_venv.py --check      read only: exit 0 provisioned, 1 not
 Last line: ALREADY|PROVISIONED|MISSING venv=<dir> cv2=<v> numpy=<v>, or FAILED <reason> (exit 1).
@@ -21,17 +21,17 @@ import sys
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-BOX_JSON = os.path.join(HERE, "..", "rimflow", "relentless_box.json")
+BOX_JSON = os.path.join(HERE, "..", "rimflow", "checker_box.json")
 SYSTEM_PY = "/usr/bin/python3"
 PROBE = "import cv2, numpy, sys; print(cv2.__version__, numpy.__version__, numpy.__file__)"
 
 
 def default_venv(box_json=BOX_JSON):
-    """-> the venv folder relentless_box.json path_prepend[0] names (its bin/ stripped), ~ expanded."""
+    """-> the venv folder checker_box.json path_prepend[0] names (its bin/ stripped), ~ expanded."""
     with open(box_json, encoding="utf-8") as f:
         pre = json.load(f).get("path_prepend") or []
     if not pre:
-        raise SystemExit("FAILED relentless_box.json has no path_prepend")
+        raise SystemExit("FAILED checker_box.json has no path_prepend")
     d = os.path.expanduser(str(pre[0])).rstrip("/")
     return d[:-4] if d.endswith("/bin") else d
 
@@ -99,7 +99,7 @@ def main(argv=None, run=_run, which=shutil.which):
 
 def _main(argv, run, which):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--venv", help="venv folder (default: relentless_box.json path_prepend[0] without /bin)")
+    ap.add_argument("--venv", help="venv folder (default: checker_box.json path_prepend[0] without /bin)")
     ap.add_argument("--check", action="store_true", help="read only: exit 0 provisioned, 1 not")
     a = ap.parse_args(argv)
     venv = os.path.abspath(os.path.expanduser(a.venv)) if a.venv else default_venv()

@@ -14,7 +14,7 @@ import relentless as R  # noqa: E402
 import relentless_pool_why as P  # noqa: E402
 
 FAILS = []
-REAL = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+REAL = R.rules(os.path.join(R.HERE, "run_rules.json"))
 NOW = 1_800_000_000
 
 

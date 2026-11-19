@@ -45,7 +45,7 @@ from html import escape as hesc
 from xml.sax.saxutils import escape
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-RULES_FILE = os.path.join(HERE, "..", "rimflow", "relentless_rules.json")     # committed: this tree's copy, level with main
+RULES_FILE = os.path.join(HERE, "..", "rimflow", "run_rules.json")     # committed: this tree's copy, level with main
 PAUSE_WORDS = "Relentless starts no new content work. System items, expedited items, live-failure fixes, checks of finished builds and the game phase go on."
 AGENT = "/mnt/d/ClaudeWork/rimmandrake"
 OUT_DIR = AGENT + "/conductor"

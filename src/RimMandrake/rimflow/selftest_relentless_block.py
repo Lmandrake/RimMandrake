@@ -347,13 +347,13 @@ def t_returned_run_not_restaffed():
 # ---------------------------------------------------------------- strikes and the token cap (shipped rules)
 
 def shipped(**over):
-    r = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    r = R.rules(os.path.join(R.HERE, "run_rules.json"))
     return dict(SR.RULES, same_failure_limit=r["same_failure_limit"], max_approach_changes=r["max_approach_changes"],
                 **over)
 
 
 def t_strikes():
-    r = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    r = R.rules(os.path.join(R.HERE, "run_rules.json"))
     ok(r["same_failure_limit"] == 2 and r["max_approach_changes"] == 2, "shipped: two strikes, two changes")
     ok(r["item_spend_limit"] <= 5 * 10 ** 6, "shipped: a per-item advisory threshold of a few million (was 10^12, off)")
     x = SR.Rig(n=1, share=1.0)

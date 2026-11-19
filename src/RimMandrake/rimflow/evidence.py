@@ -472,7 +472,7 @@ _TOOLS = {}
 
 
 def box_tools(box_cfg=None):
-    """-> {config_hash, tools{name: version}}: what the box carried. config_hash is relentless_box.json's toolchain,
+    """-> {config_hash, tools{name: version}}: what the box carried. config_hash is checker_box.json's toolchain,
     path_prepend and grants (what make_box builds from); tools are probed once per process on the host binaries the box
     binds (the same git and the same checkbox venv python), `probed: host`."""
     if box_cfg is None:

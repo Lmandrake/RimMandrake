@@ -252,7 +252,7 @@ def publish():
 
 
 BENCH_SHARD = "infrastructure/state/ledger/events/BENCH.jsonl"
-# the L1 item's seat: relentless's home pool (relentless_rules.json pool_seats), which its workers drain; the T2 check
+# the L1 item's seat: relentless's home pool (run_rules.json pool_seats), which its workers drain; the T2 check
 # (rimflow incident.receiver_problem) refuses the spawn if no program would pick it up
 ALARM_SEAT = "BENCH"
 # the T+120 rung's told-ledger metric: alarm_routes.json steve.* sends it to Operations (alarm_census reads it here)

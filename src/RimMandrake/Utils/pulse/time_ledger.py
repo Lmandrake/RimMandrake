@@ -25,7 +25,7 @@ A run concerning no mod stays in `runs` only.
 Output (RM_TIME_LEDGER, else <pulse state>/time_ledger.json; the only file this writes):
     {"at", "since", "mods": {<Mod>: {"at", "hours": {cat: h}, "runs": [run ids]}}, "runs": {<item>#g<gen>: {...}},
      "unmeasured": [...]}
-Waste (S2) is read with relentless_rules.json `circling`: a run spending over test_share_limit of its working time
+Waste (S2) is read with run_rules.json `circling`: a run spending over test_share_limit of its working time
 (wall minus waiting) in selftests, for at least test_share_min minutes, is flagged. A flag on a run labelled fine is a
 wrongful stop; a waste-labelled run with no flag is missed waste. Seat windows (BENCH, FOUNDRY) are not runs: UNMEASURED.
 """
@@ -52,7 +52,7 @@ import pulse_core as pc       # noqa: E402
 
 CATEGORIES = ("selftest", "live", "build", "reading", "editing", "waiting")
 KINDS = CATEGORIES + ("other", "model")
-RULES = HERE.parents[1] / "rimflow" / "relentless_rules.json"
+RULES = HERE.parents[1] / "rimflow" / "run_rules.json"
 ITEM = "WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT"
 FIXTURE = HERE / "time_ledger_replay"     # S2: hand-labelled real runs, frozen (freeze), replayed by the selftest
 

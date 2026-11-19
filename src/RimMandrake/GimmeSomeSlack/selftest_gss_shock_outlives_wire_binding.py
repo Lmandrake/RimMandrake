@@ -57,7 +57,7 @@ check("1 the site command is one the lane accepts", bool(own_site) and RL.refuse
 check("1 site_for hands the lane that line", RR.site_for(text, "A1") == own_site)
 check("1 GimmeSomeSlack is the deployed mod", "GimmeSomeSlack" in " ".join(
     m.group("mods") for m in map(RR.LIVE_MODS.match, text.splitlines()) if m))
-with open(os.path.join(REPO, "src", "RimMandrake", "rimflow", "relentless_rules.json"), encoding="utf-8") as f:
+with open(os.path.join(REPO, "src", "RimMandrake", "rimflow", "run_rules.json"), encoding="utf-8") as f:
     rules = json.load(f)
 refused = RL.refused_proof(RL.live_rules(rules), ITEM, "", proof)
 check("1 the lane does not refuse the proof", refused is None, str(refused))

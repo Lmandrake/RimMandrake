@@ -16,7 +16,7 @@ import uuid
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 
-CONFIG = os.path.join(HERE, "relentless_exam.json")
+CONFIG = os.path.join(HERE, "item_exam.json")
 EXAM_DIR = ".exam"                  # the Setter's own files, copied into the box tree under this name for each run
 # a planted break of equal size inside the same second leaves a .pyc the import trusts: the break would read green
 RUN_ENV = {"PYTHONDONTWRITEBYTECODE": "1"}

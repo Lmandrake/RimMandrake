@@ -18,7 +18,7 @@ import relentless_disk as D  # noqa: E402
 import scratch_clone as SC  # noqa: E402
 
 FAILS = []
-RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, staffing=None, circling=None)
+RULES = dict(R.rules(os.path.join(R.HERE, "run_rules.json")), enabled=True, staffing=None, circling=None)
 
 
 def ok(cond, what):

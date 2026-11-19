@@ -19,7 +19,7 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 import item_exam as E  # noqa: E402
 
-CONFIG = os.path.join(HERE, "relentless_dispute.json")
+CONFIG = os.path.join(HERE, "stage_dispute.json")
 WINNERS = ("setter", "builder", "environment", "bar")
 
 

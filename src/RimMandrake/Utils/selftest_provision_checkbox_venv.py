@@ -129,7 +129,7 @@ finally:
     shutil.rmtree(tmp, ignore_errors=True)
 
 box = json.load(open(P.BOX_JSON, encoding="utf-8"))
-check("(b) relentless_box.json venv_fix runs the installer", "provision_checkbox_venv.py" in box.get("venv_fix", ""),
+check("(b) checker_box.json venv_fix runs the installer", "provision_checkbox_venv.py" in box.get("venv_fix", ""),
       box.get("venv_fix"))
 check("(b) the installer's default venv is the box's path_prepend folder",
       os.path.join(P.default_venv(), "bin") == os.path.expanduser(box["path_prepend"][0]), P.default_venv())

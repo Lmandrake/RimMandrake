@@ -437,7 +437,7 @@ def t_old_contract_text_never_runs():
         def run_offbox(self, name, adapter, timeout):
             calls.append(name)
             return {"cmd": name, "exit": 0, "out": "x", "at": 0}
-    r = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    r = R.rules(os.path.join(R.HERE, "run_rules.json"))
     got = R.offbox_readings(Fx(), {"offbox": ["cat ~/.claude/x", ADAPTER]}, r)
     ok(calls == [ADAPTER] and "refused" in str(got[0]["exit"]), "F1: only the adapter ran; the text was refused: %s" % calls)
     got = R.offbox_readings(Fx(), {"offbox": [ADAPTER, ADAPTER]}, dict(r, offbox_max_s=0))

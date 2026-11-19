@@ -18,11 +18,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import live_line  # noqa: E402
 import relentless as R  # noqa: E402
 
-RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, only_system_and_live=False, share=0.5, max_workers=2,
+RULES = dict(R.rules(os.path.join(R.HERE, "run_rules.json")), enabled=True, only_system_and_live=False, share=0.5, max_workers=2,
              enrol_per_tick=50, max_queued=50, run_reserve=1000, item_spend_limit=10**7, day_spend_limit=10**9,
              staffing=None, circling=None, walls=None,   # the machinery test runs with no wall; the wall has its own selftest
              same_failure_limit=3, max_approach_changes=None, account_settle_s=0)   # the ladder's machinery; the shipped 2 and its hold: selftest_relentless_block
-STAFF = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"], hold_s=600, stages=[3, 5, "budget"],
+STAFF = dict(R.rules(os.path.join(R.HERE, "run_rules.json"))["staffing"], hold_s=600, stages=[3, 5, "budget"],
              launch_per_tick=2, work_launch_per_tick=2, check_backlog_max=2,
              foreign_retired=False, foreign_seat="FOUNDRY")  # the tree-reading machinery, live, on a test-pinned foreign seat (the shipped rules name none since FOUNDRY_LITERALS_EXCISE_FROM_CODE); the shipped FOUNDRY retirement: t_foreign_retired. Mechanism tests pin their own numbers, not the live rules (card 2026-11-02 widened them)
 FAILS = []
@@ -1238,7 +1238,7 @@ def t_breaker_forgets_when_proved():
 
 def t_one_sha_checkout_charges_no_launcher():
     """The clone cannot read one sha: the launcher is fine, and the other items must still launch."""
-    live = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    live = R.rules(os.path.join(R.HERE, "run_rules.json"))
     x = Rig(n=1)
     x.r = dict(x.r, **{k: live[k] for k in ("breaker_refusal_words",)})
     for why in ("checkout 567b22f: fatal: unable to read tree (567b22f)", "fatal: reference is not a tree: 567b22f"):
@@ -1252,7 +1252,7 @@ def t_one_sha_checkout_charges_no_launcher():
 def t_tick_budget_reaches_lease():
     """Deploy plans over the Windows mount outlived the unit's 20-minute kill, so no tick reached lease or flush. Past the
     budget game items wait for the next tick and the rest of the tick still runs."""
-    live = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    live = R.rules(os.path.join(R.HERE, "run_rules.json"))
     ok(0 < live["tick_game_budget_s"] <= 600, "with one plan's 500 s still to finish, the budget stays inside the 1200 s kill: %s" % live["tick_game_budget_s"])
     for budget, skipped in ((420, 2), (None, 0)):
         x = Rig(n=2, share=1.0, tick_game_budget_s=budget)
@@ -1550,7 +1550,7 @@ def t_breaker_di2():
     R.run_tmp.unit_states = flaky_states
     x, d, log, seen = breaker_rig()
     os.environ["RM_OPS_WATCH_DIR"] = d
-    live = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    live = R.rules(os.path.join(R.HERE, "run_rules.json"))
     ok(live["breaker_cool_max_s"] == 1800, "the shipped cap is 1800")
     x.r["breaker_cool_max_s"] = live["breaker_cool_max_s"]
 
@@ -2184,7 +2184,7 @@ def t_foreign_tomb():
 
 def t_foreign_retired():
     """FOUNDRY_CLONE_RESCUE_GHOST_HOLDS_CLOSINGS: a retired seat's tree never hears; nothing waits on it."""
-    shipped = R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"]
+    shipped = R.rules(os.path.join(R.HERE, "run_rules.json"))["staffing"]
     ok(shipped["foreign_seat"] is None and shipped["foreign_retired"] is True,
        "the shipped rules name no foreign seat and retire it (FOUNDRY_LITERALS_EXCISE_FROM_CODE)")
     ok(R.Effects.seat_words(type("F", (), {"r": {"staffing": dict(shipped, foreign_seat="FOUNDRY",
@@ -2242,7 +2242,7 @@ def t_parked_list():
     ok(R.pool_excluded("X_PARKED_FIX", r), "pool_excluded says so")
     ok(R.parked_ids(dict(r, pool_parked_lists=None)) == set() and R.eligible(it("X_PARKED_FIX"), dict(r, pool_parked_lists={})),
        "no lists: nothing parked")
-    live = R.parked_ids(R.rules(os.path.join(R.HERE, "relentless_rules.json")))
+    live = R.parked_ids(R.rules(os.path.join(R.HERE, "run_rules.json")))
     ok({"BIOME_PAINT_ONCE_AT_THE_END_1", "WARSCAR_PILGRIM_CAMP_SITES_1"} <= live, "the live rules park the paint list: %s" % sorted(live))
     # a snag on a parked item: never relaunched at the top, handed back to the ledger, out of the line
     x = Rig(n=1, share=1.0)
@@ -3621,7 +3621,7 @@ def t_pool_real_git():
     shutil.rmtree(d, ignore_errors=True)
 
 
-HELP = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["circling"], enabled=False)      # the consult, not the watch
+HELP = dict(R.rules(os.path.join(R.HERE, "run_rules.json"))["circling"], enabled=False)      # the consult, not the watch
 
 
 def consults(rig):
@@ -4297,7 +4297,7 @@ def t_incident_line_fills_every_place():
 
 
 def t_staffed_incident_line_fills_every_place():
-    """The filed numbers under the LIVE rule shape (relentless_rules.json staffing on, share 0.5, max_queued 8): the share
+    """The filed numbers under the LIVE rule shape (run_rules.json staffing on, share 0.5, max_queued 8): the share
     is spent by the ten seeded (target 8 of 16), so only the staffing filler (free places minus the line able to start)
     can enrol. Counting the eight parked as the line would leave a place empty for good."""
     flow = ["I%d" % i for i in range(8)]

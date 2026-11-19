@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """selftest_relentless_subagent_cap.py - RELENTLESS_SUBAGENT_DECIDE_THREE_PER_BUILDER: a builder run's subagents are
 charged with it (a result's modelUsage holds them; a usage-only result adds their transcripts), and only then may a
-builder start them: at most three, said in the worker brief from relentless_rules.json worker_subagent_cap, none for
+builder start them: at most three, said in the worker brief from run_rules.json worker_subagent_cap, none for
 a pilot sitting, and rm-builder carries the Agent tool."""
 import json
 import os
@@ -102,7 +102,7 @@ def measuring():
 
 
 def briefing():
-    rules = json.loads((HERE / "relentless_rules.json").read_text())
+    rules = json.loads((HERE / "run_rules.json").read_text())
     check("rules allow three subagents per builder", rules.get("worker_subagent_cap") == 3, rules.get("worker_subagent_cap"))
     st = R.new_state("X", 0, "t")
     st["approach"] = "build"

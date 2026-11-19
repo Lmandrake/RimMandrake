@@ -38,7 +38,7 @@ RIMFLOW = "src/RimMandrake/rimflow/"
 PINNED_DIRS = (RIMFLOW, "src/RimMandrake/Utils/", "src/RimMandrake/contracts/")
 PINNED_FILES = ("src/RimMandrake/bridgetools/companion_identity.py",)     # bridgetools is mod tooling, but the tick imports this
 # his pipeline-only pause is a switch he throws by a commit, not a limit: it must reach the tick at once
-LIVE_FILES = (RIMFLOW + "relentless_owner_pause.json",)
+LIVE_FILES = (RIMFLOW + "owner_pause.json",)
 KEEP = 7                # releases kept on the way back, beyond the current one
 GONE_AFTER_S = 2 * 86400     # a tree off that list stays this long: a live round or exam unit may still be running in it
 SMOKE_S = 300

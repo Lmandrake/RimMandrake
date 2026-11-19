@@ -31,7 +31,7 @@ def ok(c, msg):
 
 
 SHA = "0123456789abcdef0123456789abcdef01234567"
-RULES = json.load(open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8"))
+RULES = json.load(open(os.path.join(HERE, "run_rules.json"), encoding="utf-8"))
 
 
 def t_fill():

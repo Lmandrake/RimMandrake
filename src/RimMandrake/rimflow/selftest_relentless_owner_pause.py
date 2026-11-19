@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The owner's pipeline-only pause (relentless_owner_pause.json). Owner 2026-11-05 ~22:55 PST: "I'd like to pause content
+"""The owner's pipeline-only pause (owner_pause.json). Owner 2026-11-05 ~22:55 PST: "I'd like to pause content
 work for now on Archmagi and work entirely on the pipeline working on pipeline items." Planted: switch on, content_pause
 is a global owner pause whatever the verdict or holding; content is refused, an expedited or listed content item too;
 a system item (fx.first) and a LIGHTSPEED_ item start, also behind held content; the start loop says content_paused with
@@ -16,7 +16,7 @@ sys.path.insert(0, HERE)
 import relentless as R  # noqa: E402
 
 FAILS = []
-RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, only_system_and_live=False, share=1.0,
+RULES = dict(R.rules(os.path.join(R.HERE, "run_rules.json")), enabled=True, only_system_and_live=False, share=1.0,
              max_workers=3, enrol_per_tick=50, max_queued=50, staffing=None, one_builder_per_mod=False)
 ON = {"pipeline_only": True, "pipeline_prefixes": ["LIGHTSPEED_"]}
 OFF = dict(ON, pipeline_only=False)

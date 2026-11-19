@@ -72,7 +72,7 @@ def prof(root, box_root=None):
 
 
 def test_reach():
-    r = json.loads(Path(HERE, "relentless_rules.json").read_text(encoding="utf-8"))
+    r = json.loads(Path(HERE, "run_rules.json").read_text(encoding="utf-8"))
     cls = RF.classify(r, [NIGHTSIDE])
     check("(1) the NIGHTSIDE text classes as items, not other", cls["class"] == "items", cls)
     prop = RF.propose(r, cls, [], [], NIGHTSIDE)

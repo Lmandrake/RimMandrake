@@ -109,7 +109,7 @@ def test_box(root):
     txt = W.marker_prompt({"candidate": {"sha": sha, "evidence": "e"}, "contract": {"proof": "x"}}, "ITEM", box)
     check("(3) the granted prompt says the history is there", "read-only git history" in txt and "no git history" not in txt
           and "workers' words" in txt, txt[:400])
-    plain = W.make_box(p, str(clone), sha, "g2", cfg={})    # no relentless_box.json defaults: the box before WP-02
+    plain = W.make_box(p, str(clone), sha, "g2", cfg={})    # no checker_box.json defaults: the box before WP-02
     check("(3) no grant, no .git", not Path(plain, "tree/.git").exists() and W.git_reads(plain) == [])
     txt = W.marker_prompt({"candidate": {"sha": sha, "evidence": "e"}, "contract": {"proof": "x"}}, "ITEM", plain)
     check("(3) no grant, the prompt still says no git history", "no git history" in txt)
@@ -148,7 +148,7 @@ def test_box(root):
 
 
 def test_reach(root):
-    r = json.loads(Path(HERE, "relentless_rules.json").read_text(encoding="utf-8"))
+    r = json.loads(Path(HERE, "run_rules.json").read_text(encoding="utf-8"))
     check("(4) the JAM text classes as git, not gh", RF.classify(r, [JAM_TEXT])["class"] == "git", RF.classify(r, [JAM_TEXT]))
     for c in ("git", "gh"):
         row = [x for x in RF.classes(r) if x["class"] == c][0]

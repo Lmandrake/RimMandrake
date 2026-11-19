@@ -2394,7 +2394,7 @@ def test_pilot_main():
     """RIMMANDRAKE_ROUTE_SPENT_LIVE_FIXER_PILOT_BY_HAND, measured 2026-11-17: Explosive Knockback's walk-raid road-back
     item ended LEFT OPEN three times live and the tick never sent it to a Test Pilot; the Conductor launched both
     sittings by hand. The tick now counts each live road-back item's LEFT OPEN endings (one per run) since its last
-    TESTPILOT_SAT note and since its last tick sitting, and at Relentless's own count (relentless_rules.json
+    TESTPILOT_SAT note and since its last tick sitting, and at Relentless's own count (run_rules.json
     pilot_after_live_fails, reused unchanged) its next run is an rm-testpilot sitting on the pilot model; fewer endings
     still go the fixer's way. Written before the fix and watched failing on the base d596d7aa18."""
     import maturation_autonomy as A
@@ -2425,7 +2425,7 @@ def test_pilot_main():
 
         # 2. the decision
         n = A.pilot_after() if hasattr(A, "pilot_after") else None
-        rules = json.load(open(os.path.join(HERE, "relentless_rules.json")))
+        rules = json.load(open(os.path.join(HERE, "run_rules.json")))
         ok(n == int(rules["pilot_after_live_fails"]) and n >= 1,
            "the count is Relentless's own pilot_after_live_fails (%s), no new key" % n)
         n = n or 2

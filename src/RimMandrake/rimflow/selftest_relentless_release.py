@@ -53,8 +53,8 @@ print(@V@, helper.VERSION, open(os.path.join(HERE, "..", "..", "..", "design", "
 def land(work, ver, doc):
     put(work, "src/RimMandrake/rimflow/relentless.py", TICK.replace("@V@", repr(ver)))
     put(work, "src/RimMandrake/rimflow/helper.py", "VERSION = %r\n" % ver)
-    put(work, "src/RimMandrake/rimflow/relentless_rules.json", '{"v": "%s"}\n' % ver)
-    put(work, "src/RimMandrake/rimflow/relentless_owner_pause.json", '{"v": "%s"}\n' % ver)
+    put(work, "src/RimMandrake/rimflow/run_rules.json", '{"v": "%s"}\n' % ver)
+    put(work, "src/RimMandrake/rimflow/owner_pause.json", '{"v": "%s"}\n' % ver)
     put(work, "src/RimMandrake/rimflow/cli_data.json", '{"v": "%s"}\n' % ver)
     put(work, "src/RimMandrake/Utils/tool.py", "VERSION = %r\n" % ver)
     put(work, "src/RimMandrake/SomeMod/About/About.xml", "<%s/>\n" % ver)
@@ -110,12 +110,12 @@ def t_tree_and_pin(w):
        "first release: recorded with sha, date, kind")
     ok(os.path.islink(w.rel.current) and w.rel.pinned_id() == w.first[:12], "current names it")
     t = os.path.realpath(w.rel.current)
-    for rel in ("src/RimMandrake/rimflow/relentless.py", "src/RimMandrake/rimflow/helper.py", "src/RimMandrake/rimflow/relentless_rules.json",
+    for rel in ("src/RimMandrake/rimflow/relentless.py", "src/RimMandrake/rimflow/helper.py", "src/RimMandrake/rimflow/run_rules.json",
                 "src/RimMandrake/Utils/tool.py"):
         p = os.path.join(t, rel)
         ok(os.path.isfile(p) and not os.path.islink(p), "pinned, a real file: " + rel)
     for rel in ("design", "infrastructure", "Transient", ".git", "src/RimMandrake/SomeMod", "src/RimMandrake/rimflow/cli_data.json",
-                "src/RimMandrake/rimflow/relentless_owner_pause.json"):
+                "src/RimMandrake/rimflow/owner_pause.json"):
         p = os.path.join(t, rel)
         ok(os.path.islink(p) and os.path.realpath(p) == os.path.realpath(os.path.join(w.books, rel)), "live, a link into books: " + rel)
     ok(os.path.realpath(os.path.join(t, ".git")).endswith("books/.git"), "BOOKS comes from .git")
@@ -125,8 +125,8 @@ def t_tree_and_pin(w):
 
 
 def t_push_does_not_change_tick(w):
-    pause = os.path.join(os.path.realpath(w.rel.current), "src/RimMandrake/rimflow/relentless_owner_pause.json")
-    rules = os.path.join(os.path.realpath(w.rel.current), "src/RimMandrake/rimflow/relentless_rules.json")
+    pause = os.path.join(os.path.realpath(w.rel.current), "src/RimMandrake/rimflow/owner_pause.json")
+    rules = os.path.join(os.path.realpath(w.rel.current), "src/RimMandrake/rimflow/run_rules.json")
     second = w.push("v2", "doc2")
     out = w.tick()
     ok(out[:2] == ["v1", "v1"], "a push to main does not change the running tick's code")
@@ -223,14 +223,14 @@ def t_crash_between_swap_and_row(w):
 
 def t_fetch_and_live_file(w):
     """A dead tick fetches nothing, so the cut must; and a pause file absent at the cut must still reach the tick when it returns."""
-    git(w.work, "rm", "-q", "src/RimMandrake/rimflow/relentless_owner_pause.json")
+    git(w.work, "rm", "-q", "src/RimMandrake/rimflow/owner_pause.json")
     git(w.work, "commit", "-q", "-m", "pause gone")
     git(w.work, "push", "-q", "origin", "HEAD:main")
     sha = git(w.work, "rev-parse", "HEAD")
     row = w.rel.cut("emergency", why="the tick is dead, books never fetched this")
     ok(row["sha"] == sha, "a cut fetches for itself: it sees a landing books has not fetched")
     git(w.books, "pull", "-q", "--ff-only", "origin", "main")
-    p = os.path.join(os.path.realpath(w.rel.current), "src/RimMandrake/rimflow/relentless_owner_pause.json")
+    p = os.path.join(os.path.realpath(w.rel.current), "src/RimMandrake/rimflow/owner_pause.json")
     ok(os.path.islink(p) and not os.path.exists(p), "the pause file absent at the cut: a dangling link, read as off")
     w.push("back", "b")
     ok(os.path.exists(p), "the commit that restores it reaches the running tree")
@@ -296,12 +296,12 @@ def t_real_tree():
         os.makedirs(tree)
         R.write_tree(REPO, sha, tree)
         rf = os.path.join(tree, R.RIMFLOW)
-        for n in ("relentless.py", "relentless_wake.py", "relentless_live_round.py", "relentless_broker.py", "relentless_rules.json", "cli.py", "model.py"):
+        for n in ("relentless.py", "relentless_wake.py", "relentless_live_round.py", "relentless_broker.py", "run_rules.json", "cli.py", "model.py"):
             ok(os.path.isfile(os.path.join(rf, n)) and not os.path.islink(os.path.join(rf, n)), "the real tree pins " + n)
         ok(not os.path.islink(os.path.join(tree, "src/RimMandrake/bridgetools/companion_identity.py"))
            and os.path.islink(os.path.join(tree, "src/RimMandrake/bridgetools", sorted(n for n in os.listdir(os.path.join(tree, "src/RimMandrake/bridgetools")) if n != "companion_identity.py")[0])),
            "the real tree pins the one bridgetools module the tick imports, and links the rest")
-        ok(os.path.islink(os.path.join(rf, "relentless_owner_pause.json")), "the real tree leaves the pause switch live")
+        ok(os.path.islink(os.path.join(rf, "owner_pause.json")), "the real tree leaves the pause switch live")
         ok(os.path.isfile(os.path.join(tree, "src/RimMandrake/Utils/rmpaths.py")) and os.path.islink(os.path.join(tree, "infrastructure")),
            "the real tree: Utils pinned, infrastructure linked")
         why = R.smoke_tree(tree + "/", REPO)

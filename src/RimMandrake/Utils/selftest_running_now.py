@@ -639,7 +639,7 @@ for label, env in (("unreadable", pause_env(None)), ("not an object", pause_env(
     page, phone = built(env)
     check("pause %s: the page says UNMEASURED, not on and not off" % label, "**Token pause UNMEASURED**" in before_svg(page) and "token pause (" in page and "TOKEN PAUSE ON" not in page)
     check("pause %s: the phone copy says UNMEASURED" % label, "TOKEN PAUSE UNMEASURED" in phone and "TOKEN PAUSE ON" not in phone)
-check("the real rules path is the file relentless.py reads", os.path.realpath(R.RULES_FILE) == os.path.realpath(os.path.join(R.HERE, "..", "rimflow", "relentless_rules.json")) and os.path.isfile(R.RULES_FILE))
+check("the real rules path is the file relentless.py reads", os.path.realpath(R.RULES_FILE) == os.path.realpath(os.path.join(R.HERE, "..", "rimflow", "run_rules.json")) and os.path.isfile(R.RULES_FILE))
 with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as tmp:
     json.dump({"only_system_and_live": True}, tmp)
 real_rules, R.RULES_FILE = R.RULES_FILE, tmp.name

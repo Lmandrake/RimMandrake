@@ -226,7 +226,7 @@ check("A1 line checks makeup before and after the run",
 # change the game: every live-proof line must pass proof_lint.refused_proof as the gate reads it (gen7 died there)
 sys.path.insert(0, os.path.join(HERE, "..", "..", "rimflow"))
 import proof_lint as RL
-import relentless_game as RG
+import proof_lines as RG
 _lp = open(os.path.join(HERE, "..", "..", "..", "..", "infrastructure", "state", "live_proofs",
                         "VITALS_OVERHEAD_MEASURE_FULL_LIST_TOLL.txt")).read()
 _lines = RG.proof_lines(_lp)

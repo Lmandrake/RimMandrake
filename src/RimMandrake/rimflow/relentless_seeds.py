@@ -476,7 +476,7 @@ def pick_fresh(name, froms, split, tasks, census, repo, now, used, quota=None, c
 def fingerprint():
     """What the measured thing is. A set is not resumed across a change of it."""
     import relentless as R
-    rules = json.loads((HERE / "relentless_rules.json").read_text(encoding="utf-8"))
+    rules = json.loads((HERE / "run_rules.json").read_text(encoding="utf-8"))
     st = {"item": "X", "candidate": {"sha": "S", "evidence": "E"}, "contract": {}}
     text = "|".join([(REPO / ".claude/agents/rm-judge.md").read_text(encoding="utf-8"), rules["model"],
                      rules["checker_agent"], R.checker_prompt(st, "T", "N"), W.marker_prompt(st, "T", "B")])
@@ -589,7 +589,7 @@ W = _wall()
 
 def store_rl():
     import relentless as R
-    rules = json.loads((HERE / "relentless_rules.json").read_text(encoding="utf-8"))
+    rules = json.loads((HERE / "run_rules.json").read_text(encoding="utf-8"))
     store = R.Store(str(WORK))
     return R, rules, store, R.Effects(rules, store)
 

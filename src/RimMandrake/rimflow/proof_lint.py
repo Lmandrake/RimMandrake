@@ -18,7 +18,7 @@ except ImportError:
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BOOKS = os.path.dirname(os.path.realpath(os.path.join(HERE, "..", "..", "..", ".git")))     # a release tree's .git links to books
-RULES = os.path.join(HERE, "relentless_rules.json")
+RULES = os.path.join(HERE, "run_rules.json")
 GAME_MODS = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"
 LIVE_LEVELS = ("L1", "L2", "GREEN-MIN", "GREEN-FULL")       # model.LEVEL_NEEDS says bridge; L3 is a judge, L4 a human
 # PROOF_TIERS_WIDEN_SMALL_LIST_FIRST_ALWAYS (owner 2026-11-02): "small mod lists should always be the way to test until a
@@ -804,8 +804,8 @@ def is_package(name, folder=None):
     if folder is not None:
         return not folder(name)
     if name not in _FOLDER_SEEN:
-        import relentless_names     # the one resolver (LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_BOARDING); it caches no blind read
-        if not relentless_names.default_index().is_folder(name):
+        import mod_names     # the one resolver (LIVE_MODS_ENFORCE_ROLL_CALL_BEFORE_BOARDING); it caches no blind read
+        if not mod_names.default_index().is_folder(name):
             return True
         _FOLDER_SEEN[name] = True
     return not _FOLDER_SEEN[name]

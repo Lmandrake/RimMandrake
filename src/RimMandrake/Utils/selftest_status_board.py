@@ -77,7 +77,7 @@ check("plain_reason: a bare slug becomes words", M.plain_reason("tmp mount is ma
 check("block_who: a live wait is the game", M.block_who("needs a live quicktest pass") == "the game")
 check("first_sentence cuts at a word and drops a trailing ;", M.first_sentence("needs a map type; then more") ==
       "needs a map type" and M.first_sentence("x " * 200).endswith("…"))
-flyer = {"status": "held", "hold": {"kind": "game", "why": "game phase: " + M.owner_queue.relentless_game.FLYER}}
+flyer = {"status": "held", "hold": {"kind": "game", "why": "game phase: " + M.owner_queue.run_store.FLYER}}
 check("flyer game hold routed to him is 'you'", M.stuck_of(item("X", needs="owner"), flyer, [], known, {})["waits"] == "you")
 check("flyer game hold not yet routed is stuck, but not 'you' (Needs you must match)",
       M.stuck_of(item("X"), flyer, [], known, {})["waits"] == "Relentless")

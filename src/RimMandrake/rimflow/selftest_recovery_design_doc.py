@@ -3,7 +3,7 @@
 
 The design is a doc, so this checks two things: its required parts are present, and the facts it states that the
 repo itself holds are true:
-  * relentless_rules.json carries the breaker numbers the 429 replay rests on (3 failures, 900 s, cap 1800 s);
+  * run_rules.json carries the breaker numbers the 429 replay rests on (3 failures, 900 s, cap 1800 s);
   * the ledger's supersede/close rows for HARNESS_REPAIR_CAUSE_* match what §7.1 says the hand triage did.
 A negative control runs the same checks on a copy with one part cut out and on a ledger with a target changed; both must
 fail, so a green run cannot come from a checker that sees nothing.
@@ -18,7 +18,7 @@ import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 DOC = os.path.join(ROOT, "design", "RimMandrake", "post_event_recovery_mode_2026-11-05.md")
-RULES = os.path.join(ROOT, "src", "RimMandrake", "rimflow", "relentless_rules.json")
+RULES = os.path.join(ROOT, "src", "RimMandrake", "rimflow", "run_rules.json")
 LEDGER = os.path.join(ROOT, "infrastructure", "state", "ledger", "events")
 
 REQUIRED = [  # (what, regex) — each must match the doc

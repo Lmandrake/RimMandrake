@@ -15,7 +15,7 @@ import circling as C  # noqa: E402
 import run_store as R  # noqa: E402
 import selftest_relentless as SR  # noqa: E402
 
-BLOCK = R.rules(os.path.join(R.HERE, "relentless_rules.json"))["circling"]
+BLOCK = R.rules(os.path.join(R.HERE, "run_rules.json"))["circling"]
 FAILS = []
 HOME = tempfile.mkdtemp(prefix="circ-home-")
 os.environ["HOME"] = HOME

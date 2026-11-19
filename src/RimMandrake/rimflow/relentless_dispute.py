@@ -31,7 +31,7 @@ builder_reply, arbiter, winner, at}. Nothing here files a ledger item.
 Also the arbiter of WP-03's R4: an exam whose second VALIDATE refusal left it `arbiter_owed` is ruled
 setter | environment | bar by arbitrate_exam() (relentless_exam.py's unit calls it).
 
-SHADOW (mode in relentless_dispute.json): the loop runs and its rows are kept; nothing gates a close, a `builder` or `bar`
+SHADOW (mode in stage_dispute.json): the loop runs and its rows are kept; nothing gates a close, a `builder` or `bar`
 ruling changes no item state (WP-03's posture, until the exam gates in WP-09b).
 """
 import argparse
@@ -215,7 +215,7 @@ def ask(store, item, gen, clauses, claim, evidence, text="", cfg=None, kicker=No
     """`challenge`: open a job, start its worker, wait in-call for the answer. -> the job."""
     cfg = config() if cfg is None else cfg
     if cfg.get("mode", "off") == "off":
-        raise ValueError("the dispute loop is off (relentless_dispute.json mode)")
+        raise ValueError("the dispute loop is off (stage_dispute.json mode)")
     if claim not in CLAIMS:
         raise ValueError("--claim must be one of %s" % "|".join(CLAIMS))
     clauses = [c.strip() for c in (clauses if isinstance(clauses, list) else str(clauses or "").split(",")) if c.strip()]

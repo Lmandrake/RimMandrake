@@ -8,7 +8,7 @@ Before this, an UNMEASURED verdict set a 30-minute clock and the same sha was ch
 and every unhold bought two more Markers (JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS: 11 checks, churn diagnosis
 D:\\ClaudeWork\\rimmandrake\\conductor\\churn_diagnosis_2026-11-05.md). Now the first blind verdict ends the checking:
 
-  on_blind()   under the lock, at the verdict. The gap is classed (relentless_rules.json reach_classes). The Judge's own
+  on_blind()   under the lock, at the verdict. The gap is classed (run_rules.json reach_classes). The Judge's own
                `verdict UNMEASURED ... --propose NAME|PATH` is the repair (else the class's seed adapters / the paths its
                --unreached names). The first item blind on a class OWNS the repair; another item blind on a class whose
                repair is open WAITS on it (blocked, a ledger dependency on the owner). No clock, no re-check.
@@ -106,7 +106,7 @@ def _paths_of(texts):
 
 
 def granted(r, grants, p):
-    """-> the box grant (the proposal's, or every box's relentless_box.json default) whose rules grant_covers regex names
+    """-> the box grant (the proposal's, or every box's checker_box.json default) whose rules grant_covers regex names
     path p, else None. CHECKER_REACH_FIX_STORE_DARK_SECOND: KUQY's store proposal failed the coverage gate twice on the
     mirror's .git, though every box already held that history (git_history). Bad rules data covers nothing."""
     gcov = r.get("grant_covers")
@@ -167,7 +167,7 @@ def dark(r, texts):
 def back_why(gone, what):
     return ("the proof needs %s, which the wall withholds by design (never_through / never_through_rx) and no supervisor "
             "adapter covers: no reach repair can give the Judge these eyes, so the binding goes back to its builder. Rebind "
-            "(proof only, the code stays): read it through a supervisor offbox adapter (relentless_rules.json "
+            "(proof only, the code stays): read it through a supervisor offbox adapter (run_rules.json "
             "offbox_adapters; add one if none fits) or prove it from what the box shows. The Judge said: %s"
             % (", ".join(gone[:6]), (what or "")))
 
@@ -556,7 +556,7 @@ def sweep(store, fx, r, now, acts, iso, back=None):
                 file_successor(store, fx, r, book, name, owner, ent.get("why") or "its probe failed after the close",
                                now, acts, iso)
                 continue
-            ent["probed_event"] = event     # a new close, or the box itself changed since (relentless_box.json): probe once
+            ent["probed_event"] = event     # a new close, or the box itself changed since (checker_box.json): probe once
             ent["probed_box"] = fp
             prop = reseed(r, name, prop)
         if status == "failed":
@@ -687,7 +687,7 @@ def split(store, fx, r, book, name, owner, st, prop, gaps, why, now, acts, iso):
 
 
 def box_fingerprint(cfg=None):
-    """-> a short hash of relentless_box.json: what every box carries. A change re-probes a class parked on a done ticket."""
+    """-> a short hash of checker_box.json: what every box carries. A change re-probes a class parked on a done ticket."""
     cfg = relentless_wall.box_config() if cfg is None else cfg
     return hashlib.sha256(json.dumps(cfg, sort_keys=True, default=str).encode("utf-8")).hexdigest()[:16]
 
@@ -706,7 +706,7 @@ def file_successor(store, fx, r, book, name, owner, why, now, acts, iso):
     old = ent.get("ticket") or _ticket_of(r, name)
     new = successor_id(name, ent)
     text = ("Successor of %s, which closed while the %s reach probe still fails for %s and %d waiter(s): %s. Give the "
-            "Marker a way to read it (relentless_box.json for what every box carries, an offbox adapter, or a read path "
+            "Marker a way to read it (checker_box.json for what every box carries, an offbox adapter, or a read path "
             "the wall may bind); closing this re-probes and releases the waiting items."
             % (old, name, owner, len(ent.get("waiters") or []), (why or "")))
     if not file_ticket(store, fx, r, book, name, owner, why, now, acts, iso, ticket=new, text=text):
@@ -728,7 +728,7 @@ def file_ticket(store, fx, r, book, name, owner, why, now, acts, iso, ticket=Non
     ticket = ticket or _ticket_of(r, name)
     bad = fx.reach_ticket(ticket, text or "Relentless could not repair its own %s reach: the Judge's proposal for %s failed its "
                           "probe from inside the wall (%s). Give the Marker a way to read it (an offbox adapter in "
-                          "relentless_rules.json or a read path the wall may bind); closing this re-probes and releases "
+                          "run_rules.json or a read path the wall may bind); closing this re-probes and releases "
                           "the waiting items." % (name, owner, (why or "")))
     if bad:
         acts.append({"do": "reach_ticket_failed", "item": owner, "why": bad})

@@ -38,7 +38,7 @@ def check(name, cond, detail=""):
 
 
 def rules():
-    with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as f:
+    with open(os.path.join(HERE, "run_rules.json"), encoding="utf-8") as f:
         return json.load(f)
 
 

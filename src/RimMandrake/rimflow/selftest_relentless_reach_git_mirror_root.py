@@ -92,7 +92,7 @@ class Fx:
 
 
 def rules(rx=None):
-    with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as f:
+    with open(os.path.join(HERE, "run_rules.json"), encoding="utf-8") as f:
         r = json.load(f)
     if rx is not None:
         r["grant_covers"] = dict(r["grant_covers"], git_history=rx)
@@ -118,7 +118,7 @@ def run_one(item, st, r):
 
 def main():
     r = rules()
-    ok(RF.on(r), "precondition: reach_repair is on in relentless_rules.json")
+    ok(RF.on(r), "precondition: reach_repair is on in run_rules.json")
     texts = [STALL["blind"]["what"]]
     old = RF.uncovered(rules(OLD_RX), RF.refreshed(rules(OLD_RX), dict(STALL, item="X")), texts)
     ok(old == [MIRROR], "(a) the pre-fix regex leaves the mirror root uncovered: %s" % old)

@@ -121,7 +121,7 @@ def t_ordinary_death_still_strikes():
 
 
 def t_shipped_wait_outlasts_a_switch():
-    shipped = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    shipped = R.rules(os.path.join(R.HERE, "run_rules.json"))
     ok(shipped["account_settle_s"] >= 21 + 90, "the shipped wait outlasts claude-account's stop (21 s) and verify (90 s)")
 
 
@@ -280,7 +280,7 @@ def t_walled_checker_transcript():
     path = os.path.join(home, "s.jsonl")
     with open(path, "w") as f:
         f.write(json.dumps(err) + "\n")
-    shipped = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    shipped = R.rules(os.path.join(R.HERE, "run_rules.json"))
     prof = R.relentless_wall.profile(shipped, "marker")
     ok(prof and any(a.startswith("BindPaths=%s:" % os.path.join(box, "projects")) for a in R.relentless_wall.props(prof, box)),
        "the wall binds the very folder this sign reads")

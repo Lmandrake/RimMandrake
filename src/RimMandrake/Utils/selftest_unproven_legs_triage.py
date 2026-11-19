@@ -5,7 +5,7 @@ A1: each of the four triaged items carries a ledger note from the triage giving 
     triage's vocabulary and a NEXT.
 A2: every item named in a NEXT is re-filed on the ledger: a `file` event caused_by this item, with a title and a
     `why` giving its triage class (needs a tool / a map / owner / half bridge-measurable). Read from the ledger only:
-    the blind checker's tree leaves infrastructure/state/items out (relentless_rules.json walls.marker.tree_exclude).
+    the blind checker's tree leaves infrastructure/state/items out (run_rules.json walls.marker.tree_exclude).
     Every scoped leg whose verdict says BRIDGE-MEASURABLE NOW (or PARTLY ...) must be bound to a live proof in
     infrastructure/state/live_proofs/UNPROVEN_LIVE_LEGS_TRIAGE_1.txt: a line with the item's --mod that runs every
     bar the verdict names; and those bars exist (each live-proof line rerun with --mock, which exits 0 only when every named bar is present in a mock suite run).

@@ -792,11 +792,11 @@ def _road_back_ids(s, rb):
 
 
 def pilot_after():
-    """-> rules.pilot_after_live_fails from relentless_rules.json: Relentless's own count of live endings since the
+    """-> rules.pilot_after_live_fails from run_rules.json: Relentless's own count of live endings since the
     last sitting that makes the next run a Test Pilot sitting (TEST_PILOT_WIRE_INTO_THE_PIPELINE_EARLY), reused
     unchanged, no new key (the Relentless freeze, 2026-11-06); 0 turns the step off; None when it cannot be read."""
     try:
-        with open(os.path.join(HERE, "relentless_rules.json"), encoding="utf-8") as fh:
+        with open(os.path.join(HERE, "run_rules.json"), encoding="utf-8") as fh:
             return int(json.load(fh).get("pilot_after_live_fails") or 0)
     except (OSError, ValueError, TypeError):
         return None
@@ -818,7 +818,7 @@ def _pilot_step(s, row, items, endings):
         return False
     got = endings([x["id"] for x in live]) if n else None
     if n is None or got is None:
-        row["pilot_step"] = "UNMEASURED: %s" % ("relentless_rules.json pilot_after_live_fails cannot be read"
+        row["pilot_step"] = "UNMEASURED: %s" % ("run_rules.json pilot_after_live_fails cannot be read"
                                                 if n is None else "the ledger cannot be read for the LEFT OPEN endings")
         return False
     book = s.get("fixers") or {}

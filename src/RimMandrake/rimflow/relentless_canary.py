@@ -27,7 +27,7 @@ A bridge that cannot be taken is no canary verdict: gate() says "bridge not take
 CACHE. <RELENTLESS_ROOT>/live/canary.json holds the last verdict with the FINGERPRINT of everything the canaries depend on
 (PATH, user, WSL_INTEROP, the interpreter, where python.exe/powershell.exe/wslpath resolve, the bytes of the bridge client,
 live_def_check and this file, the running game's start). Healthy is reused for ttl_s, sick for fail_ttl_s, and only while
-the fingerprint is the same: a new game, a new PATH or a changed client runs them again. Rules: relentless_rules.json
+the fingerprint is the same: a new game, a new PATH or a changed client runs them again. Rules: run_rules.json
 live.canary {enabled, ttl_s, fail_ttl_s}.
 """
 import hashlib

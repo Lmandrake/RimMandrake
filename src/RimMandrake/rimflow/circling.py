@@ -4,7 +4,7 @@
 Named at each tick: test_share (a), no_change (b), oscillation (c, A-B-A), trivial_churn. A `learn` line is no finding:
 every worker is told to write one every 20 minutes, a circling one included. A finding is a NEW read target.
 Report-only. Stopping needs `stop` on AND a replay verdict from this code on these thresholds under `false_stop_limit`
-(stop_gate). Thresholds: relentless_rules.json `circling`. Design: operating_requirements_2026-11-01.md RW2.
+(stop_gate). Thresholds: run_rules.json `circling`. Design: operating_requirements_2026-11-01.md RW2.
     python3 circling.py replay --labels <file.json> [--write]
 """
 import argparse

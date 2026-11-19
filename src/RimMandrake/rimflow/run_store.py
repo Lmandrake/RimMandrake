@@ -26,7 +26,7 @@ import clone_park  # noqa: E402
 import clone_integrity  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-RULES = os.path.join(HERE, "relentless_rules.json")
+RULES = os.path.join(HERE, "run_rules.json")
 DEFAULT_ROOT = "/home/mandrake/rm/relentless"
 RESTORE_EMAIL = "relentless@localhost"     # the committer of every commit restore_commits carries back into a clone
 GAME = "game"           # relentless_game.GAME: the store status of an item in its game phase
@@ -747,11 +747,11 @@ def clone_item(c):
         if name.startswith(pre):
             return name[len(pre):].rsplit("-c", 1)[0]
     return re.sub(r"\.q\d+$", "", name)
-OWNER_PAUSE = os.path.join(HERE, "relentless_owner_pause.json")
+OWNER_PAUSE = os.path.join(HERE, "owner_pause.json")
 
 
 def owner_pause_rule(path=None):
-    """The owner's pipeline-only switch as data (relentless_owner_pause.json), read once per tick by the real Effects
+    """The owner's pipeline-only switch as data (owner_pause.json), read once per tick by the real Effects
     (fx.owner_pause_rule; a test's Fx has none, so it reads off). No file: off. A file that cannot be read: on, said in
     its why, since his pause is the side that cannot start work against his word."""
     try:

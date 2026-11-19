@@ -119,20 +119,20 @@ def hidden(path, prof, carved=()):
 
 
 def host_only_rows(rules):
-    """-> [(test path, why)] from relentless_rules.json reach_host_only: selftests whose truth is the host's own layout."""
+    """-> [(test path, why)] from run_rules.json reach_host_only: selftests whose truth is the host's own layout."""
     rows = (rules or {}).get("reach_host_only") or []
     return [(str(x["path"]), str(x.get("why") or "")) for x in rows if isinstance(x, dict) and x.get("path")]
 
 
 def git_tool_rows(rules):
-    """-> [(tool path, why)] from relentless_rules.json reach_git_tools: tools that run git themselves, so naming one is a
+    """-> [(tool path, why)] from run_rules.json reach_git_tools: tools that run git themselves, so naming one is a
     git history need though the proof text holds no git verb (OPS_CHURN_DIAGNOSE_RELENTLESS_HFDA_UHRX)."""
     rows = (rules or {}).get("reach_git_tools") or []
     return [(str(x["path"]), str(x.get("why") or "")) for x in rows if isinstance(x, dict) and x.get("path")]
 
 
 def git_granted_rows(rules):
-    """-> [(tool path, why)] from relentless_rules.json reach_git_granted: tools that read git at HEAD only, which the
+    """-> [(tool path, why)] from run_rules.json reach_git_granted: tools that read git at HEAD only, which the
     git_history box grant serves (OPS_CHURN_DIAGNOSE_GRAFFITI_LOVJ_IMIL)."""
     rows = (rules or {}).get("reach_git_granted") or []
     return [(str(x["path"]), str(x.get("why") or "")) for x in rows if isinstance(x, dict) and x.get("path")]
@@ -419,7 +419,7 @@ def expand_vars(t, env):
     return "".join(out) + "".join("\n" + x for x in extra)
 
 
-# CHECKBOX_BUILD_BUILDER_TOOLCHAIN: what every box now carries (relentless_box.json reach_served) is no need. History verbs
+# CHECKBOX_BUILD_BUILDER_TOOLCHAIN: what every box now carries (checker_box.json reach_served) is no need. History verbs
 # read the candidate's ancestry in the default git_history grant; these need refs or a remote, which no box has.
 _GIT_REFS = ("fetch", "pull", "push", "branch", "for-each-ref", "reflog", "ls-remote", "remote", "submodule", "clone",
              "worktree", "tag")
@@ -433,7 +433,7 @@ _REF_ARG = re.compile(r"(?:^|[\s'\"]|\.\.\.?)(?:origin|upstream)/\S*|@\{|--(?:al
 
 
 def served(cfg=None):
-    """-> the reach kinds every box carries (relentless_box.json reach_served), so needs() leaves them out."""
+    """-> the reach kinds every box carries (checker_box.json reach_served), so needs() leaves them out."""
     cfg = relentless_wall.box_config() if cfg is None else cfg
     got = set(cfg.get("reach_served") or [])
     if relentless_wall.GIT_GRANT in got and relentless_wall.GIT_GRANT not in relentless_wall.default_grants(cfg):

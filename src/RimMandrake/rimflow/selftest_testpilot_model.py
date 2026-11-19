@@ -4,7 +4,7 @@ called. For obvious reasons. And it should get that same inspirational prompting
 
 The tier is the `model:` line of .claude/agents/rm-testpilot.md. `--model` beats that line, so Relentless must pass the
 pilot's own model (relentless.pilot_model), and the bare CLI alias "fable" resolves to Fable 5.1, so the tier becomes an id
-through the environment first, then detached_helper.MODEL_IDS. A builder keeps relentless_rules.json's model.
+through the environment first, then detached_helper.MODEL_IDS. A builder keeps run_rules.json's model.
 
     python3 src/RimMandrake/rimflow/selftest_testpilot_model.py
 """
@@ -93,7 +93,7 @@ def t_relentless_launch_puts_the_pilot_on_fable_and_keeps_the_builder():
     try:
         assert _launched_model("rm-testpilot") == "claude-fable-5-2", "a sitting must launch on Fable 5.2"
         assert _launched_model(relentless_game.STAGE_AGENT) == "claude-fable-5-2", "the stager's pilot fallback too"
-        assert _launched_model("rm-builder") == "opus", "a builder keeps relentless_rules.json's model"
+        assert _launched_model("rm-builder") == "opus", "a builder keeps run_rules.json's model"
     finally:
         if saved is not None:
             os.environ["ANTHROPIC_DEFAULT_FABLE_MODEL"] = saved

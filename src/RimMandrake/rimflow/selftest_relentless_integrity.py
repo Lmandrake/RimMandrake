@@ -15,7 +15,7 @@ import relentless_integrity as I  # noqa: E402
 import relentless_wall as W  # noqa: E402
 
 FAILS = []
-RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, staffing=None, circling=None, walls=None)
+RULES = dict(R.rules(os.path.join(R.HERE, "run_rules.json")), enabled=True, staffing=None, circling=None, walls=None)
 
 
 def ok(cond, what):

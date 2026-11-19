@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """relentless_wall.py - what a mode may not see, as data, and the Marker's walled packet.
 
-Design: relentless_agent_design_2026-11-01.md section 8. The profile lives in relentless_rules.json `walls`. A profile
+Design: relentless_agent_design_2026-11-01.md section 8. The profile lives in run_rules.json `walls`. A profile
 with enforce false changes no launch: `audit` reports what it would have denied, from the runs' own tool calls.
 The wall stops accident, not a hostile worker on the same host.
 
@@ -167,14 +167,14 @@ def through_lines(paths):
 
 
 def toolchain(cfg=None):
-    """-> [(name, shell command, why)] from relentless_box.json toolchain."""
+    """-> [(name, shell command, why)] from checker_box.json toolchain."""
     cfg = box_config() if cfg is None else cfg
     return [(str(t["name"]), str(t["cmd"]), str(t.get("why") or "")) for t in cfg.get("toolchain") or []
             if isinstance(t, dict) and t.get("name") and t.get("cmd")]
 
 
 def toolchain_lines(cfg=None):
-    """The Marker's words about what its box can run (only the tools relentless_box.json names)."""
+    """The Marker's words about what its box can run (only the tools checker_box.json names)."""
     names = [n for n, _, _ in toolchain(cfg)]
     if not names:
         return []
@@ -280,7 +280,7 @@ def marker_prompt(st, text, box, adapter_names=()):
         "this box, would let you read it. Relentless probes your proposal from inside this wall, applies it as its own "
         "change and checks this same commit once more; only if your proposal fails its probe is a ticket filed. A "
         "proposal only adds read access: the store, transcripts, memory and credentials are never opened."
-        % (", ".join(sorted(adapter_names)) or "see relentless_rules.json offbox_adapters"),
+        % (", ".join(sorted(adapter_names)) or "see run_rules.json offbox_adapters"),
         *offbox_lines(st["contract"], box),
         *blind_lines(st),
         "See the change in: %s/change.diff" % box, "", "--- item ---", text])
@@ -569,7 +569,7 @@ def names_strong(reasons):
     return bool(_STRONG.search(reasons or "") and _LETS.search(reasons or ""))
 
 
-# ---- off-box measurements: a contract's `offbox` ADAPTER NAMES. Each name is a fixed command in relentless_rules.json
+# ---- off-box measurements: a contract's `offbox` ADAPTER NAMES. Each name is a fixed command in run_rules.json
 # "offbox_adapters", which the supervisor runs outside the wall at check launch; raw output and exit go read only into the
 # box, so the Marker judges a fresh measurement, never a number a worker typed. GPT review of 0135b04912: a worker-authored
 # command ran with the supervisor's reach and could carry transcripts or store files into the box - so a worker (or unhold)
@@ -592,7 +592,7 @@ def check_offbox_names(names, rules):
     known = adapters(rules)
     bad = [x for x in names if not _NAME.match(x) or x not in known]
     if bad:
-        raise ValueError("--offbox takes an adapter name from relentless_rules.json offbox_adapters (%s), never a command: "
+        raise ValueError("--offbox takes an adapter name from run_rules.json offbox_adapters (%s), never a command: "
                          "%s. A new reading is a new adapter, added by a reviewed change to the rules"
                          % (", ".join(sorted(known)) or "none defined", ", ".join(repr(x[:80]) for x in bad)))
     if len(names) > OFFBOX_MAX:

@@ -78,7 +78,7 @@ def test_profile_and_props():
     sp = W.props({"deny": ["/srv/private data"], "tmpfs": ["/tmp/a b"]}, "/b")
     check("a path with a space stays one entry", 'InaccessiblePaths="/srv/private data"' in sp and 'TemporaryFileSystem="/tmp/a b"' in sp, sp)
     check("a quote in a path is escaped", W.unit_path('/a"b') == '"/a\\"b"' and W.unit_path("/plain") == "/plain")
-    live = json.loads(Path(HERE, "relentless_rules.json").read_text(encoding="utf-8"))
+    live = json.loads(Path(HERE, "run_rules.json").read_text(encoding="utf-8"))
     check("the live profile is enforced (RA_S03: the wall lets a correct Marker work, proved on seed cases)", W.enforced(live))
 
 
@@ -86,7 +86,7 @@ def test_box():
     root = tempfile.mkdtemp(prefix="wallbox")
     p = prof(root)
     src, sha = repo()
-    box = W.make_box(p, src, sha, "n1", cfg={})     # cfg={}: no relentless_box.json default grants (the pre-WP-02 box)
+    box = W.make_box(p, src, sha, "n1", cfg={})     # cfg={}: no checker_box.json default grants (the pre-WP-02 box)
     tree = Path(box, "tree")
     check("tree at the commit", (tree / "a.py").read_text(encoding="utf-8") == "two\n")
     check("no git in the box", not (tree / ".git").exists())
@@ -148,7 +148,7 @@ def test_skills_and_snapshot():
     check("nothing is writable that was denied", not set(W.readonly(p)) & set(d))
     p2 = dict(p, allow_read_skills=None)
     check("no skills key walls the root whole", W.denied(p2) == [kids] and W.readonly(p2) == [])
-    live = json.loads(Path(HERE, "relentless_rules.json").read_text(encoding="utf-8"))["walls"]["marker"]
+    live = json.loads(Path(HERE, "run_rules.json").read_text(encoding="utf-8"))["walls"]["marker"]
     check("the live wall lets the skills be read", live.get("allow_read_skills") == W.HOME + "/.claude/skills")
     check("the live wall still denies the builder's transcripts and scratch", "conversations" in live["tree_exclude"]
           and "/home/mandrake/.seat-tmp" in live["tmpfs"] and "/home/mandrake/rm/scratch" in live["tmpfs"]
@@ -257,7 +257,7 @@ def test_tmpdir_inside_the_wall():
     import relentless as R
     import role_launch
     import run_tmp
-    live = json.loads(Path(HERE, "relentless_rules.json").read_text(encoding="utf-8"))
+    live = json.loads(Path(HERE, "run_rules.json").read_text(encoding="utf-8"))
     deny = W.profile(live)["deny"] + W.profile(live)["tmpfs"]      # seat-tmp is a tmpfs since MARKER_WALL_FIX_HIDES_ONLY_THE_DIARY
     check("the live wall hides run_tmp's default root: why a walled run brings its own",
           any(os.path.expanduser("~/.seat-tmp/runs").startswith(d + "/") for d in deny), deny)
@@ -323,7 +323,7 @@ def test_tmpdir_inside_the_wall():
 def test_unit_env():
     """The Marker's Lodestar helper is behind the wall: the data root must be named, and be the wall's own empty tmpfs."""
     import relentless as R
-    real = W.profile(R.rules(os.path.join(R.HERE, "relentless_rules.json")))
+    real = W.profile(R.rules(os.path.join(R.HERE, "run_rules.json")))
     env = W.unit_env(real, "/b/ox")
     check("the walled unit's TMPDIR is the short /tmp its box's tmp is bound over", env["TMPDIR"] == W.UNIT_TMP == "/tmp"
           and "BindPaths=/b/ox/tmp:/tmp" in W.props(real, "/b/ox"), env)
@@ -368,7 +368,7 @@ def test_through():
     check("reach: never_through and an account stay hidden", RR.hidden(os.path.join(root, "agent/x.txt"), hp)
           and RR.hidden(os.path.join(root, "mix/w_progress.md"), hp))
     check("reach: the root itself stays hidden", RR.hidden(root, hp))
-    real = W.profile(__import__("relentless").rules(os.path.join(str(HERE), "relentless_rules.json")))
+    real = W.profile(__import__("relentless").rules(os.path.join(str(HERE), "run_rules.json")))
     check("the real profile reads through scratch but never the worker folders",
           real["read_through"][0] == "/mnt/d/ClaudeWork/rimmandrake"
           and "/mnt/d/ClaudeWork/rimmandrake/relentless_agent" in real["never_through"]

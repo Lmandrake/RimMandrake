@@ -37,7 +37,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_ROOT = "/home/mandrake/rm/relentless"      # relentless.DEFAULT_ROOT; not imported, so a broken relentless.py
                                                    # never blinds the window
 
-# kind -> (station prefix, count, label). Counts mirror relentless_rules.json max_workers / check_backlog_max / one
+# kind -> (station prefix, count, label). Counts mirror run_rules.json max_workers / check_backlog_max / one
 # consult; a run past the last station of its kind shows in the overview only.
 KINDS = {"work": ("B", 8, "Builder"), "check": ("J", 4, "Judge"), "help": ("C", 1, "Consult")}
 STATIONS = [p + str(i) for k, (p, n, _) in KINDS.items() for i in range(1, n + 1)]

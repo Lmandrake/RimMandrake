@@ -12,7 +12,7 @@ and publishes it as `<dispatcher state>/helper_budget.json` under the v3 seat na
 
 Owner, 2026-10-29: the interactive Conductor window (AGENT_SEAT BENCH, no RM_ROLE_UNIT) is unlimited only within 20 min
 of his last typed message, then two helpers (slot_rules.json conductor_window); the numbers here govern scheduled and
-Dispatcher-launched runs and RELENTLESS only (relentless_rules.json staffing.seat reads it;
+Dispatcher-launched runs and RELENTLESS only (run_rules.json staffing.seat reads it;
 the key was FOUNDRY until that seat retired, FOUNDRY_LITERALS_EXCISE_FROM_CODE).
 
 The spawn hook (.claude/hooks/block_agent_over_slots.py) reads this file first. It computes for itself only when the
