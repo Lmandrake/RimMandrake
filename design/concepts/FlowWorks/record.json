@@ -927,7 +927,7 @@
    "id": "inv_liquid_coating",
    "what": "A pawn who comes out of oil, tar, blood or another staining liquid carries it as a named condition with a clean, not crude, look, and walking into normal water plainly washes it off.",
    "text": "Liquid coating on pawns reads as a condition and washes off in normal water",
-   "impl": "partial",
+   "impl": "absent",
    "search_scope": "src/RimMandrake/FlowWorks/Source: no coating condition found; the graphics he saw wash off on their own (2026-11-13 row 11)",
    "proof": "missing",
    "scope": "opened_by_owner",

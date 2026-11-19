@@ -1,6 +1,5 @@
 {
  "aliases": [],
- "blocked_on": "RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS: coverage_judge brief is UNTESTED, its verdict is advisory, and concept_tree.py gate requires the missing authorised coverage signature",
  "budget": {
   "cap": 4000000,
   "charges": [
@@ -245,6 +244,12 @@
    "stage": 5,
    "what": "close",
    "why": "run rm-role-designercodex-1794842698: stage 5 blocked"
+  },
+  {
+   "at": "2026-11-19T23:17:45Z",
+   "stage": 5,
+   "what": "unblock",
+   "why": "its block's item RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS is done on the ledger: the block lifts and the gate is read again (was blocked on RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS: coverage_judge brief is UNTESTED, its verdict is advisory, and concept_tree.py gate requires the missing authorised coverage signature)"
   }
  ],
  "item": "RIMMANDRAKE_ADMIT_GELATINOUSSLIME_DESIGNER_ON_CODEX_FOURTH",
@@ -619,5 +624,5 @@
  "running": null,
  "schema": 1,
  "stage": 5,
- "status": "blocked"
+ "status": "ready"
 }
