@@ -1246,21 +1246,45 @@
   },
   "scene_look_judge_brief": {
    "brief": [
-    "design/RimMandrake/scene_look_judge_brief.md"
+    "design/RimMandrake/scene_look_judge_brief.md",
+    "src/RimMandrake/Utils/northstar_driver/judge_cli.py",
+    "src/RimMandrake/Utils/modcheck/judge.py"
    ],
    "cases": {
     "bad": [
+     "planted (scene_look_calibration.py): crop_pit6.png, the brim pit the owner called wrong 2026-11-12 (\"2m water depth put the northern ladder behind the pit wall art\"): pass 1 must say ODD or WRONG, pass 2 on the north-ladder bar must say NO",
      "scene_look_judge_brief.md 'Missed by the judge' row 2026-11-12: FlowWorks pit submerge scene, 2 m water (RIMMANDRAKE_SUBMERGE_PIT_FITTINGS_BY_LEVEL)"
     ],
     "good": [
+     "planted (scene_look_calibration.py): crop_pit3.png, the 1 m pit he called correct (\"Looks great at 1m water depth\"): pass 2 on the same bar must say YES (its pass 1 is recorded, not planted)",
      "EK knockback grid, owner 'It looks AWESOME'",
      "incendiary Station 6, owner 'Full pass'"
     ]
    },
-   "hash": "3d91a819c73f20c2",
-   "reset_at": "2026-11-17T19:11:38Z",
+   "hash": "2c98bc7c540b6baf",
+   "reset_at": "2026-11-19T03:07:30Z",
    "status": "UNTESTED",
-   "was": "UNTESTED"
+   "was": "UNTESTED",
+   "model_check": [
+    "python3",
+    "src/RimMandrake/rimflow/scene_look_calibration.py",
+    "run"
+   ],
+   "planted": [
+    {
+     "id": "brim_pit_open_look",
+     "expect": "refuse"
+    },
+    {
+     "id": "brim_pit_ladder_bar",
+     "expect": "refuse"
+    },
+    {
+     "id": "one_m_pit_ladder_bar",
+     "expect": "pass"
+    }
+   ],
+   "timeout_s": 1200
   }
  }
 }

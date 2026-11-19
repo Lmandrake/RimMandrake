@@ -634,7 +634,8 @@ def judge_cases(planted, results):
         return "UNTESTED", "planted cases do not go both ways (%s)" % ", ".join("%s %d" % kv for kv in sorted(want.items()))
     if missing:
         return "UNTESTED", "did not run: %s" % ", ".join(missing)
-    return "CALIBRATED", "%d planted case(s) ran and came out as planted" % len(cases)
+    n = len(cases) if isinstance(planted, dict) else len({str(c.get("id")) for c in planted or [] if isinstance(c, dict)})
+    return "CALIBRATED", "%d planted case(s) ran and came out as planted" % n   # a recorded, unplanted row is not one
 
 
 def run_check(cmd, root, planted, timeout=600):
