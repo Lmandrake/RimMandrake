@@ -1532,6 +1532,9 @@ def _source_ok(src, ids, owner_ev):
     return (src[len("leaf:"):] if src.startswith("leaf:") else src) in ids
 
 
+EXAM_VERDICTS = ("accept", "reject")
+
+
 def exam_errors(ex, d, st, repo=REPO):
     try:
         tree = CT.load(d)
@@ -1558,6 +1561,10 @@ def exam_errors(ex, d, st, repo=REPO):
         if not CT.txt(s.get("id")) or not CT.txt(s.get("text")):
             errs.append("exam: scenario %d needs an id and its text" % i)
             continue
+        if CT.txt(s["expect"]).split(":", 1)[0].strip().casefold() not in EXAM_VERDICTS:
+            errs.append("exam: scenario %s's expect %r carries no verdict word; it must begin with 'accept' or "
+                        "'reject' (then ':' and the reason), or the score has no defined right answer"
+                        % (s["id"], CT.txt(s["expect"])))
         norm = " ".join(CT.txt(s["text"]).casefold().split())
         for key, seen, what in ((CT.txt(s["id"]), seen_id, "id"), (norm, seen_text, "text")):
             if key in seen:

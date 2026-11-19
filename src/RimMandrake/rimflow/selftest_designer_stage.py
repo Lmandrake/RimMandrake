@@ -552,6 +552,7 @@ def main():
         exam["scenarios"] = scen
         put(d, "exam.json", exam)
         refusals_exam(tmp, d, repo, exam)
+        t_expect_carries_a_verdict_word(d, repo, exam)
 
         # ---- late owner correction during examination
         DS.open_run(d, "run16", repo=repo.root)
@@ -1172,6 +1173,20 @@ def refusals_scene_floor(repo, tree, good, flood, inter, expl, lines, floor):
     t_bad = dict(tree, floor={"off": [{"line": "art", "ref": said, "words": "skip the art entirely"}]})
     refuses("floor: disabled with floor.off words he never said is refused", fl(dis, t_bad, ev),
             "not his words on that event")
+
+
+def t_expect_carries_a_verdict_word(d, repo, exam):
+    st = DS.load_state(d)
+
+    def ex(sc):
+        return DS.exam_errors(dict(copy.deepcopy(exam), scenarios=sc, scenarios_hash=CT.sha(sc)), d, st, repo.root)
+    rest = exam["scenarios"][1:]
+    got = ex([dict(exam["scenarios"][0], expect="maybe: unspecified")] + rest)
+    check("expect-carries-a-verdict-word: 'maybe: ...' is refused, naming the scenario and both words",
+          any(exam["scenarios"][0]["id"] in e and "'accept'" in e and "'reject'" in e for e in got), got)
+    got = ex([dict(exam["scenarios"][0], expect=" Reject : wall")] + rest)
+    check("expect-carries-a-verdict-word: case and spacing around the word are fine",
+          not any("verdict word" in e for e in got), got)
 
 
 def refusals_exam(tmp, d, repo, exam):
