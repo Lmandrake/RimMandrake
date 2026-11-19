@@ -821,9 +821,24 @@ def test_r4_pid_identity_and_death():
             res = SR.kill_pid(p.pid, start=start)
             check(res.startswith("refused") and "pidfd_open" in res and SR.proc_alive(p.pid, start),
                   "R4 with no pidfd: the kill is REFUSED by name and the process is left alive (%s)" % res)
-            print("UNMEASURED, not a pass or a fail — R4's pinned-kill half needs os.pidfd_open (%s has none); the "
-                  "reuse refusal was measured, the kill was not" % sys.platform)
+            print("UNMEASURED, not a pass or a fail — R4's pinned-kill half needs os.pidfd_open (%s has none): kill_pid "
+                  "refuses for the missing pidfd before it compares starts, so neither the reuse refusal nor the kill "
+                  "was measured here" % sys.platform)
             return
+        # RIMMANDRAKE_READ_UNREADABLE_PID_AS_UNKNOWN_NOT_DEAD_YET: a reading that fails is never a death
+        real_read = SR._proc_read
+        SR._proc_read = lambda pid: ("unknown", "test: /proc unreadable", None)
+        try:
+            check(SR.proc_alive(p.pid, start) is None, "R4 an unreadable reading of a live pid is None, not dead")
+            res = SR.kill_pid(p.pid, start=start)
+            check(res.startswith("refused") and "could not be read" in res,
+                  "R4 an unreadable pid is refused by name, no signal (%s)" % res)
+            res = SR.kill_pid(p.pid)
+            check(res.startswith("refused") and "could not be read" in res,
+                  "R4 an unreadable pid with no start given is refused, not 'already gone' (%s)" % res)
+        finally:
+            SR._proc_read = real_read
+        check(p.poll() is None and SR.proc_alive(p.pid, start), "R4 ... and the process was not touched")
         res = SR.kill_pid(p.pid, start=start)
         p.wait(timeout=5)
         check(res.startswith("SIGTERM") and not SR.proc_alive(p.pid, start), "R4 the right process is killed (%s)" % res)

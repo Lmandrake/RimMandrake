@@ -1202,6 +1202,7 @@ def default_obs(sch, events_since, now_fn=time.time):
         "shard": lambda seat: unpublished_shard(seat, cfgs[seat].get("clone") or REPO),
         "killed": killed_reading,
         "start": proc_start,
+        "birth": proc_birth,
         "bridge": bridge_reading,
         "game": lambda seat: game_reading(seat, cfgs[seat].get("clone"), events_since, now_fn(),
                                           cfgs[seat]["game_hold_s"]),
@@ -1961,7 +1962,11 @@ def _gone(seat, cfg, rs, obs, ro, now, act, why):
     unanswered is adopted, so the next window reads it (SEAT_RESTART_FIX_DEAD_WINDOW_UNREAD_LOST). Anything else is a
     cancel: a live pid is /clear or /resume, and a window that owes nothing may have been quit on purpose."""
     rs["state"] = "pending"
-    alive = ro["start"](rs.get("pid")) == rs.get("start") if callable(ro.get("start")) and rs.get("pid") else True
+    if callable(ro.get("birth")) and rs.get("pid"):   # one reading: an unreadable window is never adopted as dead
+        got, unread = ro["birth"](rs.get("pid"))
+        alive = bool(unread) or got == rs.get("start")
+    else:
+        alive = ro["start"](rs.get("pid")) == rs.get("start") if callable(ro.get("start")) and rs.get("pid") else True
     if cfg.get("kind") != "conductor" or alive or rs.get("start") is None or not callable(ro.get("owed")):
         return _cancel(rs, seat, why, now, act)
     owed = ro["owed"](rs)
@@ -2268,46 +2273,68 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
 # ---------------------------------------------------------------------------------------------------------------------
 # execute
 
-def _proc_stat(pid):
-    """-> (state letter, process birth) for a LIVE pid, or None when there is no such process.
+def _proc_read(pid):
+    """-> ("ok", state letter, birth) | ("gone", None, None) | ("unknown", why, None).
 
-    On Linux that is `/proc/<pid>/stat` fields 3 and 22 (start time in clock ticks). Where there is no `/proc` —
-    this Mac — it is `ps -o state= -o lstart=`, and the birth is epoch seconds. Either way the number is only ever
-    compared with another reading of the SAME pid from the same function (proc_start vs rs["start"]), so the unit
-    does not travel; `reg_start` reads Claude Code's own `procStart`, which is only written where /proc exists.
+    On Linux that is `/proc/<pid>/stat` fields 3 and 22 (start time in clock ticks), and ONLY /proc: a ps fallback there
+    re-read the birth in epoch seconds against a start saved in ticks, so a running process read as dead
+    (RIMMANDRAKE_READ_UNREADABLE_PID_AS_UNKNOWN_NOT_DEAD_YET). Where there is no `/proc` (a Mac) it is
+    `ps -o state= -o lstart=`, and the birth is epoch seconds; the number is only ever compared with another reading
+    from the same machine, so the unit does not travel. "gone" is measured (no such pid); "unknown" is a reading that
+    failed (EACCES, EIO, a torn line, ps timing out): could not look, never dead (owner, 2026-11-17). `reg_start` reads
+    Claude Code's own `procStart`, which is only written where /proc exists.
 
-    🔴 Why this is not just a portability nicety: with the /proc read only, every call on a Mac returned None, and
-    `execute()` spells None as *"pid %s gone before the kill"* and FAILS the restart. So a machine that cannot
-    look was recorded as having looked and found the process dead — the 2026-11-17 four-answers rule, in the code
-    that kills the owner's windows. `selftest_seat_restart_death.py` read FAIL on this Mac for that reason alone
-    (DEATHE, `refused: pid ... gone before the kill`), while measuring nothing. A pid we cannot ask about at all
-    (no /proc AND no usable ps) still returns None, because then "gone" and "unreadable" really are
-    indistinguishable from here — but that is now a platform with no process table, not an ordinary Mac."""
+    🔴 With the /proc read only, every call on a Mac returned None and `execute()` spelled it *"pid %s gone before the
+    kill"*: a machine that could not look was recorded as having looked and found the process dead."""
     try:
-        with open("/proc/%d/stat" % int(pid)) as f:
-            rest = f.read().rsplit(")", 1)[1].split()
-        return rest[0], int(rest[19])
-    except (ValueError, IndexError, TypeError):
-        return None
-    except OSError:
-        pass                                             # no /proc (or no such pid): ask the process table instead
+        pid = int(pid)
+    except (TypeError, ValueError):
+        return "gone", None, None                        # no pid named: no process to find
+    if sys.platform.startswith("linux"):
+        try:
+            with open("/proc/%d/stat" % pid) as f:
+                line = f.read()
+        except (FileNotFoundError, ProcessLookupError):
+            if not os.path.exists("/proc/self/stat"):
+                return "unknown", "no /proc mounted", None
+            return "gone", None, None
+        except OSError as e:
+            return "unknown", "/proc/%d/stat unreadable (%s)" % (pid, type(e).__name__), None
+        try:
+            rest = line.rsplit(")", 1)[1].split()
+            return "ok", rest[0], int(rest[19])
+        except (ValueError, IndexError):
+            return "unknown", "/proc/%d/stat unparseable" % pid, None
     try:
-        r = subprocess.run(["ps", "-o", "state=", "-o", "lstart=", "-p", str(int(pid))],
+        r = subprocess.run(["ps", "-o", "state=", "-o", "lstart=", "-p", str(pid)],
                            capture_output=True, text=True, timeout=10)
-    except (OSError, ValueError, TypeError, subprocess.SubprocessError):
-        return None
+    except (OSError, subprocess.SubprocessError) as e:
+        return "unknown", "ps failed (%s)" % type(e).__name__, None
     parts = (r.stdout or "").split()
-    if r.returncode or len(parts) < 2:
-        return None                                      # ps says there is no such process
+    if r.returncode and not parts:
+        if (r.stderr or "").strip():
+            return "unknown", "ps exited %s: %s" % (r.returncode, r.stderr.strip()[:120]), None
+        return "gone", None, None                        # ps says there is no such process
     try:
-        return parts[0][:1], int(time.mktime(time.strptime(" ".join(parts[1:]), "%a %b %d %H:%M:%S %Y")))
-    except (ValueError, OverflowError):
-        return None
+        return "ok", parts[0][:1], int(time.mktime(time.strptime(" ".join(parts[1:]), "%a %b %d %H:%M:%S %Y")))
+    except (ValueError, OverflowError, IndexError):
+        return "unknown", "ps line unparseable", None
 
 
 def proc_start(pid):
-    s = _proc_stat(pid)
-    return s[1] if s and s[0] != "Z" else None
+    """The pid's birth, or None when there is none to read: gone, a zombie, OR unreadable. A caller that would act on
+    "gone" uses proc_birth() (one reading) instead."""
+    kind, state, born = _proc_read(pid)
+    return born if kind == "ok" and state != "Z" else None
+
+
+def proc_birth(pid):
+    """ONE reading -> (birth, None) alive | (None, None) gone or a zombie | (None, why) could not look. A caller that
+    acts on "gone" uses this, never proc_start then a second read: the two can disagree."""
+    kind, state, born = _proc_read(pid)
+    if kind == "unknown":
+        return None, state
+    return (born if kind == "ok" and state != "Z" else None), None
 
 
 def reg_start(sf):
@@ -2326,17 +2353,23 @@ def registered_start(s):
 
 
 def proc_alive(pid, start):
-    """The SAME process (pid + start time) is still running (a zombie counts as gone)."""
-    return start is not None and proc_start(pid) == start
+    """The SAME process (pid + start time) is still running: True | False (gone, a zombie, or another birth) | None
+    (its reading failed: could not look, never dead). No start to match is False, as before."""
+    if start is None:
+        return False
+    kind, state, born = _proc_read(pid)
+    if kind == "unknown":
+        return None
+    return kind == "ok" and state != "Z" and born == start
 
 
 def kill_pid(pid, wait_s=10, start=None):
     """SIGTERM, then SIGKILL after wait_s, each only while pid still has the start time seen at the check (no PID
     reuse kill), then death confirmed. -> how it ended: SIGTERM | SIGKILL | already gone | refused: .. | survived: .."""
     if start is None:
-        start = proc_start(pid)
+        start, why = proc_birth(pid)
         if start is None:
-            return "already gone"
+            return ("refused: pid %s could not be read (%s); no kill was attempted" % (pid, why)) if why else "already gone"
     try:                                 # pin the process first: a pidfd cannot be re-pointed by PID reuse (review2 #4)
         pfd = os.pidfd_open(pid)
     except ProcessLookupError:
@@ -2349,9 +2382,13 @@ def kill_pid(pid, wait_s=10, start=None):
         return ("refused: this platform (%s) has no os.pidfd_open, so a pid cannot be pinned against reuse before "
                 "the signal; no kill was attempted" % sys.platform)
     try:
-        if proc_start(pid) != start:     # checked AFTER the pin, so the pinned process is the one with this start time
-            return ("refused: pid %s now has start %s, not %s (reused)" % (pid, proc_start(pid), start)
-                    if proc_start(pid) is not None else "already gone")
+        kind, state, born = _proc_read(pid)  # read AFTER the pin, so the pinned process is the one with this start time
+        if kind == "unknown":
+            return "refused: pid %s could not be read after the pin (%s); no signal was sent" % (pid, state)
+        if kind == "gone" or state == "Z":
+            return "already gone"
+        if born != start:
+            return "refused: pid %s now has start %s, not %s (reused)" % (pid, born, start)
         return _signal_pinned(pfd, pid, start, wait_s)
     finally:
         os.close(pfd)
@@ -2362,9 +2399,10 @@ def _signal_pinned(pfd, pid, start, wait_s):
         signal.pidfd_send_signal(pfd, signal.SIGTERM)
     except ProcessLookupError:
         return "already gone"
+    alive = None
     for sig, label in ((None, "SIGTERM"), (signal.SIGKILL, "SIGKILL")):
         if sig is not None:
-            if not proc_alive(pid, start):
+            if proc_alive(pid, start) is False:
                 return "SIGTERM (late)"
             try:
                 signal.pidfd_send_signal(pfd, sig)
@@ -2372,9 +2410,12 @@ def _signal_pinned(pfd, pid, start, wait_s):
                 return "SIGTERM (late)"
         end = time.time() + (wait_s if sig is None else 5)
         while time.time() < end:
-            if not proc_alive(pid, start):
+            alive = proc_alive(pid, start)
+            if alive is False:           # None is a reading that failed: not a death
                 return label
             time.sleep(0.2)
+    if alive is None:
+        return "unconfirmed: pid %s could not be read after SIGKILL (its reading failed); death not confirmed" % pid
     return "survived: pid %s still alive after SIGKILL" % pid
 
 
@@ -2495,7 +2536,11 @@ def execute(a, sch, st, apply, now, fx=None):
             return "would run %s" % " ".join(a["argv"])
         root = fx.get("root")
         rec = _read_json(killed_path(seat, root)) or {}
-        if rec.get("old_pid") and fx.get("alive", lambda p: old_alive(rec))(int(rec["old_pid"])):
+        alive = fx.get("alive", lambda p: old_alive(rec))(int(rec["old_pid"])) if rec.get("old_pid") else False
+        if alive is None:                # could not look: no launch beside it now, and a later tick asks again
+            rs.pop("fallback_at", None)
+            return "skipped: the killed window's pid %s could not be read; retried next tick" % rec["old_pid"]
+        if alive:
             return "skipped: the killed window's pid %s is still alive" % rec["old_pid"]
         try:                             # the same O_EXCL election as the tile (GPT review HIGH 5): one launch per kill
             fd = os.open(intile_path(seat, a.get("killed_at") or rec.get("killed_at"), root),
@@ -2554,10 +2599,15 @@ def execute(a, sch, st, apply, now, fx=None):
         rs.update(state="pending", busy=rs.get("busy", 0) + 1)
         rs.pop("claimed_at", None)
         return "held at the kill: %s" % "; ".join(holds)
-    start = fx.get("start", proc_start)(a["pid"])
+    start, unread = (fx["start"](a["pid"]), None) if "start" in fx else proc_birth(a["pid"])
     if start is not None and start != rs.get("start"):   # birth identity bound at the request (review3 #1)
         why = "pid %s has start %s, not the %s seen when the restart was asked for (reused, or unbound)" % (
             a["pid"], start, rs.get("start"))
+        rs.update(state="failed", why=why, ended_at=now, alarm_pending="seat restart of %s refused: %s" % (seat, why),
+                  cooldown_until=now + rs.get("cooldown_s", DEFAULTS["cooldown_s"]))
+        return "refused: " + why
+    if unread:                           # could not look is not gone: no kill, and no relaunch beside a living window
+        why = "pid %s could not be read before the kill (%s)" % (a["pid"], unread)
         rs.update(state="failed", why=why, ended_at=now, alarm_pending="seat restart of %s refused: %s" % (seat, why),
                   cooldown_until=now + rs.get("cooldown_s", DEFAULTS["cooldown_s"]))
         return "refused: " + why
@@ -2587,7 +2637,7 @@ def execute(a, sch, st, apply, now, fx=None):
         rs.pop("claimed_at", None)
         return "held at the final fence: %s" % "; ".join(late)
     how = fx.get("kill", kill_pid)(a["pid"], start=start)
-    if how.startswith(("refused", "survived")):     # never relaunch beside a window that may still be there
+    if how.startswith(("refused", "survived", "unconfirmed")):  # never relaunch beside a window that may still be there
         fx.get("write_killed", write_killed)(seat, dict(rec, aborted=how))
         rs.update(state="failed", why=how, ended_at=now, alarm_pending="seat restart of %s: %s" % (seat, how),
                   cooldown_until=now + rs.get("cooldown_s", DEFAULTS["cooldown_s"]))
@@ -2900,7 +2950,7 @@ def intile_claim(seat, now, alive=None, root=None, window_s=DEFAULTS["intile_win
         window_s = min(window_s, rec["window_s"])
     if now < rec["killed_at"] - 5:
         return None
-    if rec.get("old_pid") and (alive(int(rec["old_pid"])) if alive else old_alive(rec)):
+    if rec.get("old_pid") and (alive(int(rec["old_pid"])) if alive else old_alive(rec)) is not False:  # None: unread
         return None
     p = intile_path(seat, rec["killed_at"], root)
     if os.path.exists(p):
@@ -2928,8 +2978,11 @@ def _reclaim(seat, rec, now, root=None):
     last = _read_json(marks[-1]) or {}
     if len(marks) >= MAX_CLAIMS or now - (last.get("at") or 0) >= (rec.get("arm_s") or DEFAULTS["arm_s"]):
         return None
-    if last.get("by_pid") and proc_alive(last["by_pid"], last.get("by_start")):
-        return None
+    if last.get("by_pid"):
+        held = (proc_alive(last["by_pid"], last["by_start"]) if last.get("by_start") is not None
+                else doorbell._alive(int(last["by_pid"])))    # no birth saved: the pid answering holds the claim
+        if held is not False:
+            return None
     if last.get("by") == "fallback" and now - (last.get("at") or 0) < FALLBACK_GRACE_S:
         return None
     if _live_window(seat):
@@ -2944,9 +2997,14 @@ def _live_window(seat):
         return True
     for p in glob.glob(os.path.join(claude_home(), "sessions", "*.json")):
         sf = _read_json(p) or {}
-        born = reg_start(sf) or proc_start(sf.get("pid"))
-        if SM.name_matches(sf.get("name"), SM.names_of(cfg)) and proc_alive(sf.get("pid"), born):
-            return True
+        if SM.name_matches(sf.get("name"), SM.names_of(cfg)):
+            born, why = reg_start(sf), None
+            if born is None:
+                born, why = proc_birth(sf.get("pid"))
+            if why:
+                return True              # could not look: never a second window on a guess
+            if proc_alive(sf.get("pid"), born) is not False:
+                return True
     return False
 
 
@@ -2960,8 +3018,8 @@ def orphan_owed(seat, sch, st):
     if rs.get("state") not in ("pending", "claimed"):
         req = _read_json(request_path(seat)) or {}
         rs = req if req.get("ts") is not None and req.get("ts") != rs.get("req_ts") else {}
-    if not rs or rs.get("start") is None or proc_alive(rs.get("pid"), rs["start"]):
-        return False
+    if not rs or rs.get("start") is None or proc_alive(rs.get("pid"), rs["start"]) is not False:
+        return False                     # alive, or its reading failed: nothing is adopted from a window that may live
     owed = unanswered(rs.get("tx_path"), rs.get("tx_offset"))
     return owed is None or bool(owed)
 
@@ -3335,7 +3393,7 @@ def cmd_request(args):
     born = reg_start(sf)
     if born is None or proc_start(pid) != born:
         print("seat_restart: REFUSED: pid %s is not the process its session file registered (procStart %s, live %s)"
-              % (pid, sf.get("procStart"), proc_start(pid)))
+              % (pid, sf.get("procStart"), (lambda b: b[1] or b[0])(proc_birth(pid))))
         return 3
     cfg = cfgs[seat]
     # FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE (owner 2026-10-28: "we should let Foundry do more than one if it's
@@ -3427,14 +3485,13 @@ def window_alive(sf, now=None):
     """Is this session file's window still running? Pid-alone lies exactly when it matters: after a boot the low pids are
     reused and a dead Conductor reads alive, so its reply would be skipped for an older one. procStart (the kernel's start
     tick, /proc/<pid>/stat field 22) ties the file to that one process; a file without it must postdate this boot."""
-    try:
-        pid = int(sf.get("pid"))
-        with open("/proc/%d/stat" % pid) as f:
-            start = f.read().rsplit(")", 1)[1].split()[19]
-    except (OSError, TypeError, ValueError, IndexError):
+    born, unread = proc_birth(sf.get("pid"))
+    if unread:
+        return True                      # could not look: never chosen as the dead window whose reply is read
+    if born is None:
         return False
     if sf.get("procStart") is not None:
-        return str(sf["procStart"]) == start
+        return str(sf["procStart"]) == str(born)
     import helper_receipts as HR
     btime = HR.boot_time()
     return bool(btime and (sf.get("startedAt") or 0) / 1000 >= btime)
