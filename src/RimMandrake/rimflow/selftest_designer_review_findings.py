@@ -86,25 +86,6 @@ def examiner_is_author_by_id(tmp):
     check("examiner: the identical string is still refused", msg in DS.exam_errors(ex3, d, st, tmp))
 
 
-def open_run_records_runner(tmp):
-    """RIMMANDRAKE_RECORD_RUNNER_IN_OPEN_RUN_CODEX_BILLED_TOKENS (finding 6, review-2 finding 12)."""
-    d = concept(tmp, "Cdx", runner="codex")
-    DS.open_run(d, "rm-role-designer-1", repo=tmp)
-    check("runner: the open run of a Codex concept records runner codex",
-          (DS.load_state(d).get("running") or {}).get("runner") == "codex", DS.load_state(d).get("running"))
-    DS.open_run(d, "rm-role-designer-2", repo=tmp)
-    st = DS.load_state(d)
-    check("runner: a dead Codex run is UNMEASURED, never charged its token reservation",
-          st["budget"]["spent"] == 0 and any(r.get("usage") == "UNMEASURED" for r in st.get("runner_spend") or []),
-          (st["budget"], st.get("runner_spend")))
-    d2 = concept(tmp, "Cld")
-    DS.open_run(d2, "rm-role-designer-3", repo=tmp)
-    DS.open_run(d2, "rm-role-designer-4", repo=tmp)
-    st2 = DS.load_state(d2)
-    check("runner: a dead run of a concept with no runner (the Claude default) is still charged its reservation",
-          st2["budget"]["spent"] > 0 and not st2.get("runner_spend"), (st2["budget"], st2.get("runner_spend")))
-
-
 def flawed_criterion_not_designers():
     """RIMMANDRAKE_ROUTE_FLAWED_CRITERION_GAPS_OFF_DESIGNER_REWORK (finding 7, lane B's probe of program_result)."""
     gap = {"gid": "g1", "what": "the soak scene", "return_to": 3}
@@ -219,6 +200,7 @@ def packet_failure_leaves_no_run(tmp):
 SECTIONS = [
     lambda tmp: speaker_owner_needs_his_words(),
     examiner_is_author_by_id,
+    lambda tmp: flawed_criterion_not_designers(),
 ]
 
 

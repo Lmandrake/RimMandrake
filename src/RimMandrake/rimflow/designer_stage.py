@@ -1941,7 +1941,13 @@ def designer_can_fix(rec):
     gaps = rec.get("gaps") if isinstance(rec, dict) else None
     return bool(isinstance(gaps, list) and gaps and rec.get("verdict") == "not_covered"
                 and not rec.get("criteria_suspect")
-                and all(isinstance(g, dict) and g.get("return_to") == 3 for g in gaps))
+                and all(isinstance(g, dict) and g.get("return_to") == 3 and not _criterion_suspect(g) for g in gaps))
+
+
+def _criterion_suspect(g):
+    """A gap whose criterion the judge calls flawed or unattainable: the neutral criteria fixer's, never the Designer's
+    rework (RIMMANDRAKE_ROUTE_FLAWED_CRITERION_GAPS_OFF_DESIGNER_REWORK; park_summary routes it the same way)."""
+    return g.get("criterion_verdict") in ("flawed", "unattainable")
 
 
 def fixable_park(st, d):
@@ -2155,6 +2161,8 @@ def program_result(st, verdict, run):
         return None
     if not isinstance(verdict, dict) or verdict.get("advisory") or verdict.get("error"):
         return None
+    if isinstance(verdict.get("contract"), dict) and verdict["contract"].get("advisory"):
+        return None     # advisory where park_summary and coverage_judge also read it
     if verdict.get("tree") and st.get("tree_now") and verdict["tree"] != st["tree_now"]:
         return None
     judge = verdict.get("judge") or "the coverage judge"
@@ -2167,7 +2175,7 @@ def program_result(st, verdict, run):
     if verdict.get("verdict") != "not_covered" or not isinstance(gaps, list) or not gaps:
         return None
     if not all(isinstance(g, dict) and g.get("return_to") in (3, "3") and CT.txt(g.get("gid") or g.get("id"))
-               and CT.txt(g.get("what")) for g in gaps):
+               and CT.txt(g.get("what")) and not _criterion_suspect(g) for g in gaps):
         return None
     return {"run": run, "stage": 5, "outcome": "return", "to": 3, "by": "program",
             "decision": "%s returned not_covered; every gap returns to stage 3: %s" % (judge, "; ".join(
