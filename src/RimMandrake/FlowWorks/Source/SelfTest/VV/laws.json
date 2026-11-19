@@ -159,7 +159,7 @@
    "plant": {
     "kind": "hook",
     "name": "volume",
-    "what": "one whole level of water (U decilitres) appears from nowhere in a wet cell before a pulse"
+    "what": "one decilitre of water (the kernel's smallest unit) appears from nowhere in a wet cell before a pulse"
    }
   },
   "bounds": {

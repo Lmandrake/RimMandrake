@@ -52,6 +52,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 		public readonly int[] bodyOf;
 		public readonly List<Body> bodies = new List<Body>();
 		public readonly Dictionary<Fluid, float> externalIn = new Dictionary<Fluid, float>();
+		/// <summary>The same declared input in whole decilitres, exact (the total-volume law compares decilitres:
+		/// RIMMANDRAKE_SHARPEN_FLOWWORKS_VOLUME_LAW_ONE_DECILITRE_SLIPS_BY).</summary>
+		public long externalInDl;
 		public Fluid activeFluid = Water;
 
 		public ArrayWorld(int w, int h)
@@ -116,7 +119,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 			var b = BodyAt(idx);
 			if (b == null) return true;
 			float unit = (b.fluid ?? activeFluid).vpt;
-			if (b.limitless) { externalIn[b.fluid] = externalIn.GetValueOrDefault(b.fluid) + 1; return true; }
+			if (b.limitless) { externalIn[b.fluid] = externalIn.GetValueOrDefault(b.fluid) + 1; externalInDl += RM_LevelSolve.U; return true; }
 			if (!RM_StockMath.CanDebit(false, b.stock, unit)) return false;
 			b.stock -= unit;
 			return true;
@@ -146,6 +149,7 @@ namespace RimMandrake.FlowWorks.SelfTest
 		{
 			Fluid f = (fluid as Fluid) ?? activeFluid;
 			externalIn[f] = externalIn.GetValueOrDefault(f) + dl / (float)RM_LevelSolve.U;
+			externalInDl += dl;
 		}
 
 		/// <summary>A cell's water in levels (dL / U).</summary>
@@ -164,6 +168,15 @@ namespace RimMandrake.FlowWorks.SelfTest
 
 		public long pulse;
 		public void Pulse(IEnumerable<int> seeds) { pulse++; k.Pulse(seeds, pulse); Sync(); }
+
+		/// <summary>All water in decilitres, exact: every dug cell's water plus every limited body's stock.</summary>
+		public long TotalDl()
+		{
+			long t = 0;
+			for (int i = 0; i < w * h; i++) if (k.depth[i] > 0) t += k.WaterOf(i);
+			foreach (var b in bodies) if (!b.limitless) t += b.Dl();
+			return t;
+		}
 
 		public Dictionary<Fluid, float> Totals()
 		{
@@ -263,7 +276,9 @@ namespace RimMandrake.FlowWorks.SelfTest
 				for (int i = 0; i < n; i++) prevFill[i] = w.WaterLevels(i);
 				Array.Copy(w.cellFluid, prevFluid, n);
 				var t0 = w.Totals();
+				long dl0 = w.TotalDl();
 				w.externalIn.Clear();
+				w.externalInDl = 0;
 				w.Pulse(seeds);
 				Pulses++;
 				if (w.k.worstImbalance > 0) return $"pulse {p}: kernel ledger {string.Join("; ", w.k.imbalanceReports)}";
@@ -278,8 +293,11 @@ namespace RimMandrake.FlowWorks.SelfTest
 				}
 				foreach (var b in w.bodies) if (!b.limitless && b.stock < 0) return $"pulse {p}: body {b.id} stock {b.stock}: unaffordable debit";
 				var t1 = w.Totals();
-				float in0 = t0.Values.Sum(), in1 = t1.Values.Sum(), ext = w.externalIn.Values.Sum();
-				if (Math.Abs(in1 - (in0 + ext - w.k.sinkDrained)) > 1e-3) return $"pulse {p}: total volume {in0}->{in1}, +{ext} in, -{w.k.sinkDrained} sunk";
+				// exact, in decilitres: a float sum of levels with a 1e-3 tolerance (ten decilitres) let a one-decilitre
+				// leak pass (RIMMANDRAKE_SHARPEN_FLOWWORKS_VOLUME_LAW_ONE_DECILITRE_SLIPS_BY). The kernel reports its sink in
+				// float levels; whole decilitres went in, so it is rounded back to them.
+				long dl1 = w.TotalDl(), sunkDl = (long)Math.Round(w.k.sinkDrained * (double)RM_LevelSolve.U);
+				if (dl1 != dl0 + w.externalInDl - sunkDl) return $"pulse {p}: total volume {dl0}->{dl1} dL, +{w.externalInDl} dL in, -{sunkDl} dL sunk ({dl1 - (dl0 + w.externalInDl - sunkDl)} dL unaccounted)";
 				// Sinks drain before any flow and components are disjoint, so a sink cell drains min(F, perPulse) of
 				// the fluid it held at the start of the pulse.
 				var sunk = new Dictionary<Fluid, float>();

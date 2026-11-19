@@ -29,9 +29,9 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 	{
 		public static bool Override, Record;
 		/// <summary>RIMMANDRAKE_REVIVE_SHIPPED_FUZZ_WITH_LAWS: a planted break (--plant), so a law family is seen to go red
-		/// at the shipped settings. "volume": one whole level (U decilitres: the kernel keeps water in whole levels, so a
-		/// single decilitre was measured to vanish, 2026-11-18) appears from nowhere in a wet cell (breaks volume
-		/// conservation); "bounds": a dug cell's depth is set to 5 (breaks 0 &lt;= F &lt;= D &lt;= 4), both on every seventh
+		/// at the shipped settings. "volume": ONE decilitre (the kernel's smallest unit of water) appears from nowhere in a
+		/// wet cell (breaks volume conservation; RIMMANDRAKE_SHARPEN_FLOWWORKS_VOLUME_LAW_ONE_DECILITRE_SLIPS_BY: the law
+		/// used to compare float levels with a 1e-3 tolerance, ten decilitres, so a one-decilitre leak slipped by); "bounds": a dug cell's depth is set to 5 (breaks 0 &lt;= F &lt;= D &lt;= 4), both on every seventh
 		/// hook call; "shuttle": on EVERY hook call one level moves between two neighbouring wet cells, the direction
 		/// flipping each call (volume and bounds kept, so only the settling law should see it). After the flags, never in a
 		/// normal run (Plant is null).</summary>
@@ -95,7 +95,7 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 				for (int i = 0; i < k.depth.Length; i++)
 				{
 					if (k.depth[i] == 0) continue;
-					if (Plant == "volume" && k.water[i] > 0 && k.water[i] + RM_LevelSolve.U <= k.depth[i] * RM_LevelSolve.U) { k.water[i] += RM_LevelSolve.U; Planted++; break; }
+					if (Plant == "volume" && k.water[i] > 0 && k.water[i] + 1 <= k.depth[i] * RM_LevelSolve.U) { k.water[i] += 1; Planted++; break; }
 					if (Plant == "bounds") { k.depth[i] = 5; Planted++; break; }
 				}
 			}
