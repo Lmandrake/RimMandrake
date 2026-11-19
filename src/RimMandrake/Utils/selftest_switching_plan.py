@@ -178,6 +178,26 @@ def manual_switch_cases(calls):
     em = [m for m in SP.read_markers().values() if m.get("phase") in ("done", "failed")]
     check("use" in acts and em and all(SP.epoch(m.get("ended")) is not None and SP.epoch(m["ended"]) >= SP.epoch(m["at"])
                                        for m in em), f"log: the plan's marker carries when its call ended (got {em})")
+    # `ended` is dated in the frame of the pass's `now`: a clock that steps 5 s per read never dates it early
+    clear()
+    live_txt.write_text("lukas")
+    ticks, seen, real_clock, real_wm = [1000.0], {}, SP.clock, SP.write_marker
+    def step():
+        ticks.append(ticks[-1] + 5)
+        return ticks[-1]
+    def wm(key, m):
+        if m.get("phase") != "pending":
+            seen["c_end"] = ticks[-1]
+        return real_wm(key, m)
+    SP.clock, SP.write_marker = step, wm
+    try:
+        go(day)
+    finally:
+        SP.clock, SP.write_marker = real_clock, real_wm
+    em = [m for m in SP.read_markers().values() if m.get("phase") in ("done", "failed")]
+    want = NOW + seen.get("c_end", 0) - 1005.0  # 1005: the pass's first read (t0) stands for its `now`
+    check(em and (SP.epoch(em[0].get("ended")) or 0) >= want - 1,
+          f"log: ended is in the frame of now, never early (got {em and em[0].get('ended')}, want >= {SP.iso(want)})")
     clear()
 
     # the limits: spent, past its window, or the next switch ends it

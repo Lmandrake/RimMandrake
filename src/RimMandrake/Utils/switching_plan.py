@@ -969,6 +969,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
     meter = meter_fn()
     t1 = clock()
     now += t1 - t0  # a slow status or meter read moves time on too: windows are judged when the pass acts
+    t_now = t1  # the clock sample `now` stands for: a stamp taken later is now + clock() - t_now
 
     def manual_now():  # read at each decision: a human can switch during a slow poll
         return manual_switch(last_switch(), read_markers(), live)
@@ -991,7 +992,8 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
                 st = switcher_status()
                 live = st.get("live")
                 meter = meter_fn()
-                now += clock() - t1  # time moved during the poll: windows and resets are judged at the new time
+                t_now = clock()
+                now += t_now - t1  # time moved during the poll: windows and resets are judged at the new time
                 if (OUT / "HOLD").exists():
                     log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
                     return 0
@@ -1063,7 +1065,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         # `ended`: a switch of this transition in the log after the call returned is his, not this marker's
         write_marker(d["key"], {"phase": "done" if ok else "lapsed" if lapsed else "failed", "at": iso(now), "from": live, "to": d["to"],
                                 "under": d.get("under"), "line": d.get("line"), "result": res,
-                                "ended": iso(now + clock() - t2)})
+                                "ended": iso(now + clock() - t_now)})
         if ok:
             state.pop("stopped", None)
             save_state(state)
