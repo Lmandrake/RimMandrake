@@ -270,8 +270,36 @@ namespace RimMandrake.FlowWorks.SelfTest
 			int n = w.w * w.h;
 			var prevFill = new float[n];
 			var prevFluid = new Fluid[n];
-			var history = new List<string>();
 			for (int p = 0; p < s.pulses; p++)
+			{
+				string err = CheckedPulse(s, w, seeds, p, prevFill, prevFluid);
+				if (err != null) return err;
+			}
+			// No shuttle: with the inputs exhausted or steady, the grid settles. Allow the longest viscosity stride
+			// (8) times two, then demand a fixed point over a further 24 pulses (lcm of strides 1,3,6,8). The window's
+			// pulses are checked like every other (a leak there is a leak).
+			if (!s.sinks && s.pulses >= 100)
+			{
+				var states = new HashSet<string> { Snapshot(w) };
+				var stock0 = w.bodies.Select(b => b.limitless ? long.MinValue : b.Dl()).ToArray();
+				for (int p = s.pulses; p < s.pulses + 24; p++)
+				{
+					string err = CheckedPulse(s, w, seeds, p, prevFill, prevFluid);
+					if (err != null) return err;
+					states.Add(Snapshot(w));
+				}
+				// settled is expected only when no body gave anything during the window (its exact stock unchanged): a
+				// body still pouring in the window is legitimate filling, never a missing fixed point
+				bool noInput = w.bodies.Select(b => b.limitless ? long.MinValue : b.Dl()).SequenceEqual(stock0);
+				if (states.Count > 1 && noInput && SettledExpected(w)) return $"no fixed point after {s.pulses} pulses: {states.Count} distinct states in 24 more\n{w.Grid()}";
+			}
+			return null;
+		}
+
+		/// <summary>One pulse and every per-pulse invariant: null = they held.</summary>
+		private static string CheckedPulse(Scene s, ArrayWorld w, IEnumerable<int> seeds, int p, float[] prevFill, Fluid[] prevFluid)
+		{
+			int n = w.w * w.h;
 			{
 				for (int i = 0; i < n; i++) prevFill[i] = w.WaterLevels(i);
 				Array.Copy(w.cellFluid, prevFluid, n);
@@ -311,14 +339,6 @@ namespace RimMandrake.FlowWorks.SelfTest
 						float want = t0.GetValueOrDefault(f) + w.externalIn.GetValueOrDefault(f) - sunk.GetValueOrDefault(f);
 						if (Math.Abs(t1.GetValueOrDefault(f) - want) > 1e-3) return $"pulse {p}: {f} volume {t0.GetValueOrDefault(f)}->{t1.GetValueOrDefault(f)} (+{w.externalIn.GetValueOrDefault(f)} declared): one fluid became another";
 					}
-			}
-			// No shuttle: with the inputs exhausted or steady, the grid settles. Allow the longest viscosity stride
-			// (8) times two, then demand a fixed point over a further 24 pulses (lcm of strides 1,3,6,8).
-			if (!s.sinks && s.pulses >= 100)
-			{
-				var states = new HashSet<string> { Snapshot(w) };
-				for (int p = 0; p < 24; p++) { w.Pulse(seeds); Pulses++; states.Add(Snapshot(w)); }
-				if (states.Count > 1 && SettledExpected(w)) return $"no fixed point after {s.pulses} pulses: {states.Count} distinct states in 24 more\n{w.Grid()}";
 			}
 			return null;
 		}

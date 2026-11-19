@@ -32,8 +32,13 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 		/// at the shipped settings. "volume": ONE decilitre (the kernel's smallest unit of water) appears from nowhere in a
 		/// wet cell (breaks volume conservation; RIMMANDRAKE_SHARPEN_FLOWWORKS_VOLUME_LAW_ONE_DECILITRE_SLIPS_BY: the law
 		/// used to compare float levels with a 1e-3 tolerance, ten decilitres, so a one-decilitre leak slipped by); "bounds": a dug cell's depth is set to 5 (breaks 0 &lt;= F &lt;= D &lt;= 4), both on every seventh
-		/// hook call; "shuttle": on EVERY hook call one level moves between two neighbouring wet cells, the direction
-		/// flipping each call (volume and bounds kept, so only the settling law should see it). After the flags, never in a
+		/// hook call; "shuttle": on EVERY hook call one decilitre moves between one KEPT pair of wet, non-sink cells of the
+		/// same fluid, in different dug components where the grid has them (so the kernel cannot level the move away),
+		/// the direction flipping each call (a settled scene's water is often under a level a cell); a move is made only when the
+		/// donor has the decilitre and the receiver has room (a dry receiver is claimed for the pair's fluid), so
+		/// volume, bounds, each fluid's total and the sinks are kept and only the settling law should see it
+		/// (RIMMANDRAKE_PLANT_FLOWWORKS_SETTLING_LAW_SHUTTLE_TRIPS_OTHERS: the old shuttle tripped the fluid and sink laws
+		/// first, and could not reverse its own move). After the flags, never in a
 		/// normal run (Plant is null).</summary>
 		public static string Plant;
 		public static long Planted;
@@ -68,28 +73,86 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 			Override = Forced.Count > 0;
 		}
 
+		private static RM_FlowKernel shK;
+		private static int shA = -1, shB = -1;
+		private static object shFluid;
+		private static bool shToB;
+
+		/// <summary>A cell the shuttle may use: dug, not a sink, and dry or holding the pair's fluid.</summary>
+		private static bool Usable(RM_FlowKernel k, int i, object fluid)
+		{
+			if (k.depth[i] == 0 || k.world.IsSink(i)) return false;
+			object f = k.world.CellFluid(i);
+			return k.water[i] == 0 ? true : f != null && Equals(f, fluid);
+		}
+		private static bool CanMove(RM_FlowKernel k, int from, int to) =>
+			k.water[from] >= 1 && k.water[to] + 1 <= k.depth[to] * RM_LevelSolve.U;   // a decilitre to give; room for it
+
+		/// <summary>The dug component (4-neighbour, depth &gt; 0) of every cell: -1 for an undug one.</summary>
+		private static int[] Components(RM_FlowKernel k)
+		{
+			int n = k.depth.Length, wd = k.width, c = 0;
+			var comp = Enumerable.Repeat(-1, n).ToArray();
+			var stack = new Stack<int>();
+			for (int s = 0; s < n; s++)
+			{
+				if (k.depth[s] == 0 || comp[s] >= 0) continue;
+				comp[s] = c; stack.Push(s);
+				while (stack.Count > 0)
+				{
+					int i = stack.Pop(), x = i % wd, y = i / wd;
+					foreach (int j in new[] { x > 0 ? i - 1 : -1, x < wd - 1 ? i + 1 : -1, y > 0 ? i - wd : -1, y < k.height - 1 ? i + wd : -1 })
+						if (j >= 0 && k.depth[j] > 0 && comp[j] < 0) { comp[j] = c; stack.Push(j); }
+				}
+				c++;
+			}
+			return comp;
+		}
+
+		/// <summary>Pick a wet donor and a partner that can trade a level with it, preferring two dug components (the
+		/// kernel cannot level water between them, so the move is not undone).</summary>
+		private static void Pick(RM_FlowKernel k)
+		{
+			shA = shB = -1;
+			var comp = Components(k);
+			for (int pass = 0; pass < 2 && shA < 0; pass++)
+				for (int a = 0; a < k.depth.Length && shA < 0; a++)
+				{
+					if (k.water[a] == 0 || k.depth[a] == 0 || k.world.IsSink(a) || k.world.CellFluid(a) == null) continue;
+					object f = k.world.CellFluid(a);
+					for (int b = 0; b < k.depth.Length; b++)
+						if (b != a && Usable(k, b, f) && (pass == 1 || comp[a] != comp[b]) && (CanMove(k, a, b) || CanMove(k, b, a)))
+						{ shA = a; shB = b; shFluid = f; break; }
+				}
+		}
+
+		private static void Shuttle(RM_FlowKernel k)
+		{
+			if (!ReferenceEquals(shK, k)) { shK = k; shA = shB = -1; }
+			for (int attempt = 0; attempt < 2; attempt++)
+			{
+				bool kept = shA >= 0 && Usable(k, shA, shFluid) && Usable(k, shB, shFluid) && (k.water[shA] > 0 || k.water[shB] > 0);
+				if (!kept) Pick(k);
+				if (shA < 0) return;
+				int from = shToB ? shA : shB, to = shToB ? shB : shA;
+				if (!CanMove(k, from, to)) (from, to) = (to, from);
+				if (CanMove(k, from, to))
+				{
+					if (k.water[to] == 0) k.world.Claim(to, shFluid);   // a dry receiver holds the pair's fluid, as a first level does
+					k.water[from] -= 1; k.water[to] += 1; Planted++;
+					shToB = to != shB;   // next call: back the other way
+					return;
+				}
+				shA = shB = -1;   // the kept pair can move neither way now: pick again, once
+			}
+		}
+
 		/// <summary>Called by the staged ArrayWorld.Pulse just before RM_FlowKernel.Pulse.</summary>
 		public static void Apply(RM_FlowKernel k)
 		{
 			HookCalls++;
 			if (Override) foreach (var (f, v) in Forced) f.SetValue(k, v);
-			if (Plant == "shuttle" && k.depth != null && k.water != null)
-			{
-				// one level between the first wet cell and the first OTHER dug cell with a level of room, the direction
-				// flipping each call, so the grid never holds one state (volume and bounds kept)
-				int U = RM_LevelSolve.U, a = -1, b = -1;
-				for (int i = 0; i < k.depth.Length && (a < 0 || b < 0); i++)
-				{
-					if (k.depth[i] == 0) continue;
-					if (a < 0 && k.water[i] >= U && k.water[i] + U <= k.depth[i] * U) a = i;
-					else if (b < 0 && k.water[i] >= U && k.water[i] + U <= k.depth[i] * U) b = i;
-				}
-				if (a >= 0 && b >= 0)
-				{
-					int from = HookCalls % 2 == 0 ? a : b, to = from == a ? b : a;
-					k.water[from] -= U; k.water[to] += U; Planted++;
-				}
-			}
+			if (Plant == "shuttle" && k.depth != null && k.water != null && k.world != null) Shuttle(k);
 			if (Plant != null && Plant != "shuttle" && HookCalls % 7 == 3 && k.depth != null && k.water != null)
 			{
 				for (int i = 0; i < k.depth.Length; i++)

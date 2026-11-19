@@ -40,6 +40,11 @@ HOOK_PLANTS = ("volume", "bounds", "shuttle")
 ID_RE = re.compile(r"^[a-z][a-z0-9_]{5,63}$")
 PROVE_N = {"kernel_fuzz": 300, "seq_orders": 3000, "seq_conversion": 300, "seq_sequences": 300, "seq_pitwidth": 300,
            "fills_from_limitless": 300, "surface_random": 300}
+# A law family that applies to few generated scenes proves on more: `settling` judges only a sinkless scene of 100+
+# pulses whose bodies are spent and gave nothing in the window: 58 of 10,000 kernel_fuzz scenes, 14 of them holding
+# water, and its shuttle plant red in 13 [measured 2026-11-18, RIMMANDRAKE_PLANT_FLOWWORKS_SETTLING_LAW_SHUTTLE_TRIPS_OTHERS]:
+# at 300 scenes that plant would be red about 0.4 times.
+PROVE_N_FAMILY = {"settling": {"kernel_fuzz": 10000}}
 
 
 def _read(rel):
@@ -204,7 +209,7 @@ def prove_flowworks(doc, only=None, log=print):
             if tag and "" not in built:
                 built[""] = M.stage_flowworks()
         for mf in mfs:
-            n = {mf: PROVE_N.get(mf, 300)}
+            n = {mf: PROVE_N_FAMILY.get(name, {}).get(mf, PROVE_N.get(mf, 300))}
             base_out, plant_out = os.path.join(run_dir, "%s_%s_base.jsonl" % (name, mf)), os.path.join(run_dir, "%s_%s_plant.jsonl" % (name, mf))
             M.rates(built[""], base_out, "LAWS_BASELINE", shipped, n, 600, 1)
             M.rates(built[tag], plant_out, "LAWS_PLANT_" + name, shipped, n, 600, 1, plant=pl["name"] if pl["kind"] == "hook" else None)
