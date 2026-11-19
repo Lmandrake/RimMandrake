@@ -1743,6 +1743,16 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in wind_burn_live.py (5 of 5 PASS live on 2026-11-16, before this bar existed)"
    }
+  },
+  "T_FURNACE_ART_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_furnace_beast_art.py",
+   "observes": "T_FURNACE_ART_OFFLINE (RIMMANDRAKE_REDRAW_FURNACE_BEAST_BIGGER_ART_CARD_PROMISED_IT): the furnace-beast's art fits the 7.5-cell giant the owner's card made it (2026-11-15, \"Keep 'twice', raise body to 9+ ... needs bigger art\").",
+   "reads": [],
+   "id": "T_FURNACE_ART_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_furnace_beast_art.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
   }
  },
  "bars": [
@@ -1959,7 +1969,8 @@
    "supports": [
     "T_FUZZ",
     "T_DEFS_OFFLINE",
-    "P_furnace_room"
+    "P_furnace_room",
+    "T_FURNACE_ART_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -2374,7 +2385,8 @@
    "supports": [
     "T_FUZZ",
     "T_DEFS_OFFLINE",
-    "P_furnace_room"
+    "P_furnace_room",
+    "T_FURNACE_ART_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -2575,7 +2587,8 @@
     "sc_three_skies",
     "T_BARBSLINGER",
     "T_TRACKS",
-    "T_REVIEW_MAP"
+    "T_REVIEW_MAP",
+    "T_FURNACE_ART_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -2635,5 +2648,11 @@
    "any_test_runnable_today": true,
    "covered_by_leaves": []
   }
- ]
+ ],
+ "unlisted_suites": {
+  "selftest_pyrelands_round6_parts.py": "proof-harness completeness: asserts the round-6 scenes have their parts in validation.py and firehawk_rewards_live.py, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pyrelands_ten_scenes_parts.py": "proof-harness completeness: asserts the ten gap scenes have their parts in validation.py, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pyrelands_walk_digest.py": "proof-harness: asserts validation.walk_digest compares only state that survives a reload, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pyrelands_wind_burn_rows.py": "proof-harness: asserts wind_burn_live.verdict_rows refuses planted wrong games (a test of the live scene's verdict), not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+ }
 }

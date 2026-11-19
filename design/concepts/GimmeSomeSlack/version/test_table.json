@@ -5997,6 +5997,73 @@
     "why": "live: offline-only run",
     "last_live": "PASS (gravship_scene on/off, same job)"
    }
+  },
+  "T_CORDS_UNDER_ITEMS_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py",
+   "observes": "Offline half of sc_cords_under_items (GimmeSomeSlack 0.1.0, bar cords_draw_under_things, owner by card 2026-11-14). No game: the scene's entry imports and is wired (validation.scene_cords_under_items, scene_rows.cords_under_items in proof_all's scenes block, the probe verb under: in GimmeSomeSlackProbe.cs), and its verdict reads planted probe answers the right way: a thing drawn above the cord PAS",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py",
+    "src/RimMandrake/GimmeSomeSlack/validation.py"
+   ],
+   "id": "T_CORDS_UNDER_ITEMS_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_FLIP_FRESH_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_flip_fresh.py",
+   "observes": "live_flip_fresh.py's verdict, and that the mod's dirty-event patch sends a liveness flip to the on/off-screen rule.",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_flip_fresh.py"
+   ],
+   "id": "T_FLIP_FRESH_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_flip_fresh.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_TEXPATH_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py",
+   "observes": "RIMMANDRAKE_TRACE_GSS_ILLEGAL_PATH_ONLY_ON_FIRST_START: every texture the mod asks for by a path it builds goes through SafeTex (Source/SafeTex.cs, Source/Core/TexPath.cs), which refuses a path no file system takes and names it. The guard's own rule is checked in the C# selftest (TexPathChecks.cs); this reads the mod's source for a call that goes round it.",
+   "reads": [
+    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py"
+   ],
+   "id": "T_TEXPATH_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
+   "observes": "Another mod's dropped live cord is not an overhead line: the overhead-lines master switch must not silence it.",
+   "reads": [],
+   "id": "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_LIVE_END_SWEEP_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_live_end_sweep.py",
+   "observes": "RIMMANDRAKE_INVENT_SLACK_LIVE_END_GREEN_BY_THIN_MARGIN: the live cut end's mathematics, swept offline, as a permanent check.",
+   "reads": [],
+   "id": "T_LIVE_END_SWEEP_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_live_end_sweep.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_NO_GROUND_WIND_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/GimmeSomeSlack/selftest_gss_no_ground_wind.py",
+   "observes": "Offline: wind never moves a ground cord (RIMMANDRAKE_CLEAN_SLACK_SWAY_POLE_WIRES_ONLY_NOT_CONDUIT).",
+   "reads": [],
+   "id": "T_NO_GROUND_WIND_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_no_ground_wind.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
   }
  },
  "bars": [
@@ -6056,7 +6123,8 @@
     "P_B1_rope_settle",
     "P_B7_ground_cords_never_sway",
     "P_SW6_needless_loops_off_reaches_builder",
-    "P_SC_cords_all_slack"
+    "P_SC_cords_all_slack",
+    "T_NO_GROUND_WIND_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -6206,7 +6274,9 @@
     "P_SC_cut_battery_each_side_both_live",
     "P_SC_dead_wire_shocks_nobody",
     "P_SC_floor_end_dead_spares",
-    "P_SC_cord_end_one_kind"
+    "P_SC_cord_end_one_kind",
+    "T_FLIP_FRESH_OFFLINE",
+    "T_LIVE_END_SWEEP_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -6439,7 +6509,8 @@
     "P_S12c_D5_multilink_one_frame",
     "P_S12e_batched_links_merge",
     "P_S7_save_load_styles",
-    "P_S12d_D4_pending_queue_save"
+    "P_S12d_D4_pending_queue_save",
+    "T_TEXPATH_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -6706,7 +6777,8 @@
    "supports": [
     "P_SC_shock_reach_default_all",
     "P_SC_shock_reach_three_values",
-    "P_SC_shock_reach_deck_cord_per_value"
+    "P_SC_shock_reach_deck_cord_per_value",
+    "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -6783,7 +6855,8 @@
     "P_D1_zero_tick_rereads_same",
     "P_D2_fresh_builder_same",
     "P_SL3_after_load_census_equal",
-    "LOOK_STAGE8"
+    "LOOK_STAGE8",
+    "T_CORDS_UNDER_ITEMS_OFFLINE"
    ],
    "held": [
     "owner_look_defects_2026-11-12.md#34",
@@ -6876,7 +6949,8 @@
     "P_B1_rope_settle",
     "P_B7_ground_cords_never_sway",
     "P_SW6_needless_loops_off_reaches_builder",
-    "P_SC_cords_all_slack"
+    "P_SC_cords_all_slack",
+    "T_NO_GROUND_WIND_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -7137,7 +7211,9 @@
     "P_SC_cut_battery_each_side_both_live",
     "P_SC_dead_wire_shocks_nobody",
     "P_SC_floor_end_dead_spares",
-    "P_SC_cord_end_one_kind"
+    "P_SC_cord_end_one_kind",
+    "T_FLIP_FRESH_OFFLINE",
+    "T_LIVE_END_SWEEP_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -7390,7 +7466,8 @@
     "P_S12c_D5_multilink_one_frame",
     "P_S12e_batched_links_merge",
     "P_S7_save_load_styles",
-    "P_S12d_D4_pending_queue_save"
+    "P_S12d_D4_pending_queue_save",
+    "T_TEXPATH_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -7446,7 +7523,8 @@
     "P_M22b_kinetic_sway_off_does_nothing",
     "P_M21e_keep_wires_on_gravship_off_setting_state",
     "P_M21f_keep_wires_on_gravship_on_setting_state",
-    "P_S11_lamp_master_off_vanilla"
+    "P_S11_lamp_master_off_vanilla",
+    "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -7563,5 +7641,14 @@
    "any_test_runnable_today": true,
    "any_decider_runnable_today": true
   }
- ]
+ ],
+ "unlisted_suites": {
+  "selftest_gss_fixer_row.py": "proof-harness: asserts a scene's verdict (scene_rows.fixer_verdict) and its driver against a scripted bridge, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_gss_scenes_gate_rows.py": "proof-harness: asserts validation.py --scenes-from carries a scene's offline gate rows into its verdict, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_gss_wall_end_rows.py": "proof-harness: asserts the proof rows changed by the owner's 2026-11-16 wall-end ruling refuse what they now must, a test of the rows, not of the mod (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_live_stub_joins_probe.py": "live-driver: asserts live_stub_joins.py's probe path through the companion, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_gss_art_manifest_sizes.py": "review tooling: asserts gss_art_manifest.py sizes pieces as the C# draws them, for art review sheets, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_stage_pole_sway_matrix.py": "review tooling: asserts stage_pole_sway_matrix.py writes through rmpaths, a staging tool, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_gss_selftest_run_lock.py": "test machinery: asserts the C# selftest holds its shared-stage lock from build through run, not a mod behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+ }
 }

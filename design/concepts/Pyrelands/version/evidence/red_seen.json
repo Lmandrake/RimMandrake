@@ -1,0 +1,15 @@
+{
+ "T_SITE": {
+  "at": "2026-11-19T03:49:13Z",
+  "command": "python3 src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
+  "file": "src/RimMandrake/Pyrelands/selftest_pyrelands_site.py",
+  "last": "FAIL: 1 failure(s)",
+  "patch": "diff --git a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\nindex b486caa201..56ec1a3df4 100644\n--- a/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n+++ b/src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs\n@@ -163,7 +163,7 @@ namespace RimMandrake.Pyrelands\n             Scribe_Values.Look(ref scorchFruitMapCap, \"scorchFruitMapCap\", 40);\n             Scribe_Values.Look(ref ashfallAccumulationEnabled, \"ashfallAccumulationEnabled\", true);\n             Scribe_Values.Look(ref ashfallRateMultiplier, \"ashfallRateMultiplier\", 1f);\n-            Scribe_Values.Look(ref biomeGenerationEnabled, \"biomeGenerationEnabled\", false);\n+            Scribe_Values.Look(ref biomeGenerationEnabled, \"biomeGenerationEnabled\", true);\n             Scribe_Values.Look(ref wildPlantAllowlistEnabled, \"wildPlantAllowlistEnabled\", true);\n             Scribe_Values.Look(ref plantGrowthStagesEnabled, \"plantGrowthStagesEnabled\", true);\n             Scribe_Values.Look(ref scorchedRuinsEnabled, \"scorchedRuinsEnabled\", true);\n",
+  "patch_files": [
+   "src/RimMandrake/Pyrelands/Source/RM_PyrelandsMod.cs"
+  ],
+  "patch_sha": "bce6fbba1ee4a095",
+  "rc": 1,
+  "test_blob": "d84bad651d4f5f12d13fb754af19899ef959f25d"
+ }
+}
