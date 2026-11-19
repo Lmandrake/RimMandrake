@@ -18,7 +18,7 @@ rimflow/dispatcher_schedule.json "measure"):
                          (the last line of rm-scratch-reap's runs.jsonl, written hourly: no 160 s dry run here)
                          clones outside the pool cap (scratch_outside: the reaper's sanity record, read only)
              timers      systemctl --user: failed units, timers overdue
-             flow        the rimflow ledger (pulse_core.read_ledger, the union of clones): untriaged findings,
+             flow        the rimflow ledger (ops_ledger.read_ledger, the union of clones): untriaged findings,
                          closes and verify passes in 24 h, lapsed leases
              process     process-commit share (git log, the resp_register PROC regex) over 24 h and 7 d
              tps         tps_record.py --json: tick ratio, stalls, coverage
@@ -80,7 +80,7 @@ import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-for _p in (HERE, HERE / "pulse", HERE / "sim"):
+for _p in (HERE, HERE / "ops_core", HERE / "sim"):
     if str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
 
@@ -687,7 +687,7 @@ def incident_unowned(inc):
     if not item:
         return True
     try:
-        import pulse_core as pc
+        import ops_ledger as pc
         it = pc._model().replay(pc.read_ledger()).items.get(item)
     except Exception:  # noqa: BLE001
         return False
@@ -1941,7 +1941,7 @@ def untriaged_reading(events):
 
 
 def c_flow(now, rules, ctx):
-    import pulse_core as pc
+    import ops_ledger as pc
     model = pc._model()
     events = pc.read_ledger()
     ctx["events"] = events
@@ -2042,7 +2042,7 @@ def c_process(now, rules, ctx):
                                   commits=len(cs), process_only=p)
     try:  # the live lane's occupancy (FOUNDRY_THROUGHPUT_MEASURE_V2_GAP); a ledger that will not read must not cost the shares above
         import bridge_hours as BH
-        import pulse_core as pc
+        import ops_ledger as pc
         evs = pc._model().read_clone(str(data_clone() / "infrastructure" / "state" / "ledger" / "events.jsonl"))
         for key, span in (("bridge_h_24h", DAY), ("bridge_h_7d", 7 * DAY)):
             out["process." + key] = M(BH.held_hours(evs, now, span), "hours the bridge lock was held (each hold cut at 6 h)")
@@ -2198,7 +2198,7 @@ def tt_texts(now, rules, ctx):
     try:
         events = ctx.get("events")
         if events is None:
-            import pulse_core as pc
+            import ops_ledger as pc
             events = pc.read_ledger()
         if not events:
             raise RuntimeError("ledger read gave no events")
@@ -2483,7 +2483,7 @@ def c_roles(now, rules, ctx):
     RU = role_use_module()
     events = ctx.get("events")
     if events is None:
-        import pulse_core as pc
+        import ops_ledger as pc
         events = pc.read_ledger()
     if not events:
         return {"roles._collector": U("the ledger read empty")}
@@ -3250,7 +3250,7 @@ def mint_name(tag, known, prefix):
     it) is used as it stands, and is the same on every call (OPS_ALARMS_FIX_FIXED_ITEM_ID): a repeat of an alarm
     reopens one item through `rimflow live` and is counted. A bare prefix gets a random twist, as before."""
     import secrets
-    import pulse_core as pc
+    import ops_ledger as pc
     model = pc._model()
     if prefix in known or not model.mint_problems(prefix, known):
         return prefix
@@ -3284,7 +3284,7 @@ def alarm_prefix(tg, tag, key, state, aid, pt=None):
     if "*" in tg.get("key", "") or "%s_%s" % (base, alarm_twist(base)) in held:     # held names carry their twist
         long_base = "%s_%s" % (base, re.sub(r"\W+", "_", key.split(".", 1)[-1]).upper())
         name = "%s_%s" % (long_base, alarm_twist(long_base))
-        import pulse_core as pc
+        import ops_ledger as pc
         if not pc._model().mint_problems(name, set()):
             return name
         # the key's tail made it too long or too many words for the namecheck, and mint_name would fail on it 20
@@ -4346,7 +4346,7 @@ def publish_health(points, prev, ctx, rules, now):
     try:
         world = None
         if ctx.get("events") is not None:
-            import pulse_core as pc
+            import ops_ledger as pc
             world = pc._model().replay(ctx["events"])
         v = ops_health.publish(points, prev, world, rules, str(data_clone()), now,
                                stamp={"ledger": ops_health.ledger_mark(ctx.get("events"))})

@@ -20,11 +20,11 @@ ROOT = HERE.parents[2]
 RIMFLOW = HERE.parent / "rimflow"
 TMP = Path(tempfile.mkdtemp(prefix="selftest_role_use_"))
 os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
-for p in (HERE, HERE / "pulse", RIMFLOW):
+for p in (HERE, HERE / "ops_core", RIMFLOW):
     sys.path.insert(0, str(p))
 import incident as IN  # noqa: E402
 import ops_watch as OW  # noqa: E402
-import pulse_core as pc  # noqa: E402
+import ops_ledger as pc  # noqa: E402
 import role_use as RU  # noqa: E402
 
 RULES = json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8"))

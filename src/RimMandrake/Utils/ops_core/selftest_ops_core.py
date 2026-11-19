@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Selftest for what is left of the pulse package's pulse.py and pulse_core.py: the deploy checkout's updater
-(`pulse.py update`), the strict JSONL reader, and the owner-ask fold streams.py counts (owner_rulings, ask_class,
+"""Selftest for deploy_update.py and ops_ledger.py (RimPulse's pulse.py and pulse_core.py until 2026-11-18): the
+deploy checkout's updater, the strict JSONL reader, and the owner-ask fold streams.py counts (owner_rulings, ask_class,
 ask_addressee). The dashboard's own checks went with it (RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES).
 """
 # selftest temp containment (wave 7, DIRTY_CODE_REVIEW_STANDING_LOOP_1): every mkdtemp/mkstemp below,
 # and every child process via TMPDIR, lands in one private dir removed at exit — this
 # test used to leave its temp dirs behind in the seat TMPDIR on every run.
 import atexit as _st_atexit, os as _st_os, shutil as _st_shutil, tempfile as _st_tempfile  # noqa: E401
-_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_pulse_")
+_st_tempfile.tempdir = _st_os.environ["TMPDIR"] = _st_tempfile.mkdtemp(prefix="st_selftest_ops_core_")
 _st_atexit.register(_st_shutil.rmtree, _st_tempfile.tempdir, True)
 import os
 import sys
@@ -15,9 +15,9 @@ import tempfile
 import time
 from pathlib import Path
 
-os.environ["RM_PULSE_STATE"] = tempfile.mkdtemp(prefix="pulse_selftest_")
+os.environ["RM_PULSE_STATE"] = tempfile.mkdtemp(prefix="ops_core_selftest_")
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import pulse_core as pc  # noqa: E402
+import ops_ledger as pc  # noqa: E402
 
 NOW = 1_791_500_000.0
 FAILS = []
@@ -148,7 +148,7 @@ check("addressee: the OWNER seat, a --for OWNER item and an L4-only item are his
       and pc.ask_addressee(type("I", (), {"title": "x", "owed_levels": lambda self: ["L4"]})(), {"seat": "BENCH"})[0] == "owner"
       and pc.ask_addressee(_W(), {"seat": "BENCH", "reason": "sheet up"})[0] == "unknown")
 
-import pulse as pl  # noqa: E402
+import deploy_update as pl  # noqa: E402
 check("update refuses a seat clone (never pull another agent's working tree)",
       raises(lambda: pl.update_code(pc.CLONES[0])))
 
@@ -238,7 +238,7 @@ with tempfile.TemporaryDirectory() as d:
         rc = pl.main(["update"])
     finally:
         pl.update_code = orig_uc
-    check("`pulse.py update` exits 0 on a skip, so the unit does not fail", rc == 0, rc)
+    check("`deploy_update.py update` exits 0 on a skip, so the unit does not fail", rc == 0, rc)
 
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)

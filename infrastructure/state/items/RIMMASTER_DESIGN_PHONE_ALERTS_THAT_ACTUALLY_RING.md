@@ -8,7 +8,7 @@ The design is written, and nothing is built. Read it here: `D:\ClaudeWork\rimman
 - A sync read of reminders returned **0**: no task ever had a reminder attached, and a due time alone never rings.
 - `urgent_reminder_device: None`, so no phone is set to receive Todoist's urgent alarms.
 - Todoist warns that a reminder made shortly before it fires may not reach an iPhone in time. Our tasks are created one minute before they fall due.
-- Three senders post these tasks: `pulse/phone_push.py`, `deadman_check.py` and `windows/heartbeat.ps1`. As of 2026-11-08 20:05Z, 137 of their tasks were open in the Inbox the owner shares with Steve, and none was ever closed. One sweep on 2026-11-07 at 02:34Z posted about 50 tasks in 20 seconds.
+- Three senders post these tasks: `ops_core/phone_push.py` (`pulse/phone_push.py` until 2026-11-18), `deadman_check.py` and `windows/heartbeat.ps1`. As of 2026-11-08 20:05Z, 137 of their tasks were open in the Inbox the owner shares with Steve, and none was ever closed. One sweep on 2026-11-07 at 02:34Z posted about 50 tasks in 20 seconds.
 
 ## Recommendation
 - **Primary: Pushover.** It costs $4.99 once. Its emergency priority (with Critical Alerts) sounds through silent and Do Not Disturb, repeats until he acknowledges it, and returns a receipt.

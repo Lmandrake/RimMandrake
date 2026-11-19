@@ -22,11 +22,11 @@ from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
-sys.path[:0] = [HERE, os.path.join(HERE, "pulse"), os.path.join(ROOT, "src", "RimMandrake", "rimflow")]
+sys.path[:0] = [HERE, os.path.join(HERE, "ops_core"), os.path.join(ROOT, "src", "RimMandrake", "rimflow")]
 os.environ["RIMFLOW_LEDGER"] = os.path.join(ROOT, "infrastructure", "state", "ledger", "events.jsonl")
 import findings_fold as ff  # noqa: E402
 import model  # noqa: E402
-import pulse_core as pc  # noqa: E402
+import ops_ledger as pc  # noqa: E402
 
 INSTANCES = ("STEVE_LANE_SYNC_REFUSED_5E2C71", "FLOWWORKS_CROPS_IRRIGATE_THEN_DROWN_FAILS_2B0937",
              "FLOWWORKS_CROPS_IRRIGATE_THEN_DROWN_FAILS_54F48C", "FLOWWORKS_FINDS_OFF_NONE_FAILS_2B0937")

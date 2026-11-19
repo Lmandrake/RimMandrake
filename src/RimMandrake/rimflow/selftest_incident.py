@@ -19,7 +19,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 TMP = tempfile.mkdtemp(prefix="selftest_incident_")
 os.environ["RM_OPS_WATCH_DIR"] = os.path.join(TMP, "ops")
 os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
-sys.path[:0] = [HERE, os.path.join(HERE, "..", "Utils"), os.path.join(HERE, "..", "Utils", "pulse")]
+sys.path[:0] = [HERE, os.path.join(HERE, "..", "Utils"), os.path.join(HERE, "..", "Utils", "ops_core")]
 import alarm_census as AC  # noqa: E402
 import dispatcher as D  # noqa: E402
 import doorbell  # noqa: E402

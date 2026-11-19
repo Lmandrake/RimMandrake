@@ -88,7 +88,7 @@ def alarm(alarms, key):
 check("three WHEA targets, all alarms", set(TG) == {COR, SEV, BLIND} and all(t.get("alarm") is True for t in TG.values()), TG)
 check("corrected alarms over 30 a day", TG[COR]["op"] == ">" and TG[COR]["value"] == 30, TG.get(COR))
 check("severe and blind alarm on any one", TG[SEV]["value"] == 0 and TG[BLIND]["value"] == 0, TG)
-import pulse_core as PC  # noqa: E402
+import ops_ledger as PC  # noqa: E402
 for k, t in TG.items():
     # the filer mints base + "_" + a 4-letter twist; a base one word or 5 chars too long reads "no mintable alarm name"
     n = "%s_%s" % (t["name"], OW.alarm_twist(t["name"]))

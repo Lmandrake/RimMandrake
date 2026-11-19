@@ -364,12 +364,12 @@ check("steve: a ledger error on an incident that already holds an item is still 
 check("steve: ladder_blind wants the steward's exact prefix and no item",
       OW.ladder_blind(_blind) and not OW.ladder_blind({"item": None, "error": "no receiver: x"})
       and not OW.ladder_blind("ledger unreadable: x") and not OW.ladder_blind(None), "")
-_pc_real = sys.modules.get("pulse_core")
+_pc_real = sys.modules.get("ops_ledger")
 _led_items = {"OPEN_ONE": types.SimpleNamespace(open=True), "SHUT_ONE": types.SimpleNamespace(open=False)}
-_pc = types.ModuleType("pulse_core")
+_pc = types.ModuleType("ops_ledger")
 _pc.read_ledger = lambda: []
 _pc._model = lambda: types.SimpleNamespace(replay=lambda evs: types.SimpleNamespace(items=_led_items))
-sys.modules["pulse_core"] = _pc
+sys.modules["ops_ledger"] = _pc
 check("steve: an item the readable ledger never heard of owns nothing", OW.incident_unowned({"item": "NOT_THERE"}) is True, "")
 check("steve: a closed item owns nothing", OW.incident_unowned({"item": "SHUT_ONE"}) is True, "")
 check("steve: an open item owns the stall", OW.incident_unowned({"item": "OPEN_ONE"}) is False, "")
@@ -377,9 +377,9 @@ _pc.read_ledger = lambda: 1 / 0
 check("steve: an unreadable ledger does not say unowned (c_flow says it aloud)",
       OW.incident_unowned({"item": "OPEN_ONE"}) is False, "")
 if _pc_real is not None:
-    sys.modules["pulse_core"] = _pc_real
+    sys.modules["ops_ledger"] = _pc_real
 else:
-    del sys.modules["pulse_core"]
+    del sys.modules["ops_ledger"]
 wj(Q / "steward_watch.json", {"epoch": NOW - 40 * 60, "incident": None})
 _it = types.SimpleNamespace(id="STEVE_LANE_UNSTICK_F1", state="proposed", blocked=False, created_at=NOW + 3600)
 _wd = types.SimpleNamespace(items={"a": _it})
@@ -1211,7 +1211,7 @@ check("incident: an OWNER rung beside a held item -> 0 (ETBS: 2E27 read 35.9 wit
 r = OW.steve_incident_unclaimed(_w(_it(_P + "BRAKED_OWNER_2E27", "proposed", 90), _it(_P + "BRAKED_UNOWNED_A", "proposed", 12)), _M, NOW, RULES)
 check("incident: an OWNER rung hides no unclaimed seat item", abs(r["v"] - 12) < 0.1 and r["x"]["first"] == [_P + "BRAKED_UNOWNED_A"], r)
 
-import pulse_core as _pc  # noqa: E402
+import ops_ledger as _pc  # noqa: E402
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "ops_watch_rules.json"), encoding="utf-8") as _f:
     _real = json.load(_f)
 _bad = [t["name"] for t in _real["targets"] if t.get("name") and _pc._model().mint_problems(t["name"] + "_A1B2", set())]
@@ -1605,7 +1605,7 @@ try:
 finally:
     OW.qhome = _qh
 check("steve: a numeric reason costs nothing", _s["steve.state"]["m"] == "MEASURED", _s["steve.state"])
-import pulse_core as _pc  # noqa: E402
+import ops_ledger as _pc  # noqa: E402
 _rl, _si = _pc.read_ledger, OW.steve_incident_unclaimed
 def _boom(*a):
     raise TypeError("bad steve_incident")

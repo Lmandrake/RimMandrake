@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""pulse.py update -- fast-forward THIS checkout (the dedicated deploy checkout /home/mandrake/rm/pulse-deploy, never a
+"""deploy_update.py update -- fast-forward THIS checkout (the dedicated deploy checkout /home/mandrake/rm/pulse-deploy, never a
 seat clone) to origin/main. Run every 10 min by rm-deploy-update.service; rm-streams-collect and ops_watch run from
 that checkout.
 
-All that is left of RimPulse's command (the dashboard retired 2026-11-03; its daemon, digest, hands, metrics and
-report verbs went 2026-11-18, RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES).
+RimPulse's `pulse.py update`, the one verb of that command still run (the dashboard retired 2026-11-03; the rest of
+pulse.py went 2026-11-18 and this moved from Utils/pulse/, RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES).
+The checkout keeps its old name and its `.git/pulse_update_last_good` stamp, which ops_watch reads.
 """
 from __future__ import annotations
 
@@ -13,13 +14,13 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import pulse_core as pc  # noqa: E402
+import ops_ledger as pc  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[4]   # the checkout this code runs from
-# what the sparse deploy checkout holds: pulse itself, rimflow's fold, and art/ for prereview.py (the "to look at"
+# what the sparse deploy checkout holds: ops_core itself, rimflow's fold, and art/ for prereview.py (the "to look at"
 # gate). Files directly in a parent dir (Utils/rmpaths.py, Utils/close_evidence.py) come free. Every dir the deploy's
-# units reach must be here: selftest_pulse_sparse_dirs.py walks their imports (PULSEDEPLOY_FIX_SPARSE_LIST_FORGOT_CONTRACTS).
-SPARSE_DIRS = ("src/RimMandrake/Utils/pulse", "src/RimMandrake/rimflow", "src/RimMandrake/Utils/art",
+# units reach must be here: selftest_deploy_sparse_dirs.py walks their imports (PULSEDEPLOY_FIX_SPARSE_LIST_FORGOT_CONTRACTS).
+SPARSE_DIRS = ("src/RimMandrake/Utils/ops_core", "src/RimMandrake/rimflow", "src/RimMandrake/Utils/art",
                "src/RimMandrake/Utils/modcheck",    # modcheck/metrics.py: testing_metrics.py's owner-day + sheet loader
                "src/RimMandrake/Utils/sim",         # sim/csuite_codex_limits.py: ops_watch.py's Codex reading
                "src/RimMandrake/contracts",         # close_evidence.py path-loads contracts/jsonl.py; rimflow imports it
@@ -115,7 +116,7 @@ def _clean_landed_dirt(git) -> bool:
         git("rm", "-q", "--cached", "--ignore-unmatch", "--", *not_head)
         for path in not_head:
             (root / path).unlink(missing_ok=True)
-    print(f"pulse update: put back {len(paths)} path(s) already on origin/main "
+    print(f"deploy update: put back {len(paths)} path(s) already on origin/main "
           f"(a half-done fast-forward): {', '.join(paths[:5])}", flush=True)
     return True
 
@@ -141,7 +142,7 @@ def update_code(root: Path = ROOT, timeout: float = UPDATE_BUDGET_S, max_skip_ag
     try:
         old = git("rev-parse", "HEAD").stdout.strip()
         have = set(git("sparse-checkout", "list").stdout.split())
-        if have and not set(SPARSE_DIRS) <= have:   # a dir pulse newly imports from (art/ for prereview.py, 2026-10-23)
+        if have and not set(SPARSE_DIRS) <= have:   # a dir the deploy newly imports from (art/ for prereview.py, 2026-10-23)
             s = git("sparse-checkout", "set", *SPARSE_DIRS)
             if s.returncode != 0:
                 raise RuntimeError(f"git sparse-checkout set: rc {s.returncode}: {(s.stderr or s.stdout).strip()[:200]}")
@@ -166,13 +167,13 @@ def update_code(root: Path = ROOT, timeout: float = UPDATE_BUDGET_S, max_skip_ag
 def main(argv=None) -> int:
     argv = sys.argv[1:] if argv is None else argv
     if argv != ["update"]:
-        print("usage: pulse.py update", file=sys.stderr)
+        print("usage: deploy_update.py update", file=sys.stderr)
         return 2
     u = update_code()
     if u.get("skipped"):
-        print(f"pulse update: git timed out, skipping this pass (last good pass {u['age']:.0f} s ago)")
+        print(f"deploy update: git timed out, skipping this pass (last good pass {u['age']:.0f} s ago)")
         return 0
-    print(f"pulse update: {ROOT} {u['old']} -> {u['new']}" + ("" if u["changed"] else " (already current)"))
+    print(f"deploy update: {ROOT} {u['old']} -> {u['new']}" + ("" if u["changed"] else " (already current)"))
     return 0
 
 

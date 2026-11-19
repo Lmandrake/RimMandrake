@@ -29,7 +29,7 @@ os.environ["RM_DATA_ROOT"] = str(TMP / "data")
 (TMP / "ops").mkdir()
 (TMP / "qhome").mkdir()
 import ops_watch as OW  # noqa: E402
-import pulse_core as pc  # noqa: E402
+import ops_ledger as pc  # noqa: E402
 
 FAILS = []
 

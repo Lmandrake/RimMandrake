@@ -153,7 +153,7 @@ def sweeps():
 def phones():
     """DEADMAN_WIRE_PHONE_WITHOUT_AI: a dead arm or a broken timer rings the phone through the real phone_push (its
     transport faked, its state in TMP), once per outage, whatever the filer did; recovery closes the key."""
-    sys.path.insert(0, str(HERE / "pulse"))
+    sys.path.insert(0, str(HERE / "ops_core"))
     import phone_push as pp
     pp.STATE = TMP / "phone_push.json"
     sent = []
@@ -296,7 +296,7 @@ def main():
     phones()
     receivers()
     # the pass reads the shard it files into, from a clone no other reader lists
-    import pulse_core as pc
+    import ops_ledger as pc
     seen, keep_rl, keep_cl, keep_here = [], pc.read_ledger, pc.CLONES, DM.HERE
     pc.read_ledger = lambda clones: seen.extend(clones) or []
     pc.CLONES, DM.HERE = [Path("/a")], Path("/d/src/RimMandrake/Utils")

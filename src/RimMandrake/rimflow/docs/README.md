@@ -342,7 +342,7 @@ Older shas are context.
 | Multi-agent coordination in one directory (locks, leases, driver lock, explicit-path publishing) | **recent activity** | b821520446 driver lock (10-10); e2f9579631 / 37d9681f9e refuse claim on a terminal item (10-22); context: 6fc532dbe4 cross-clone bridge lock (10-07) |
 | Lane routing (which window owns which class of work) | **recent activity** | 9efbca13f6 / 82475391cb lane for the FlowWorks mod family enforced by `rimflow file` (10-23) |
 | Provenance and delegated authority | **recent activity** | 3c41b9a8c3 then 1ee50cfd84 (10-11); `design/RimMandrake/delegation_policy.md` (10-22) |
-| Phone and away loop (dashboard, digest, owner review of everything sent to him) | **recent activity** | `design/RimMandrake/rimpulse_redesign_2026-10-23.md`; context: RimPulse 593156f3a5 (10-08); phone push is still a stub (`PHONE_PUSH_ENABLED = False` in `pulse.py`) |
+| Phone and away loop (dashboard, digest, owner review of everything sent to him) | **recent activity** | retired: the RimPulse dashboard (593156f3a5, 10-08) went 2026-11-03, its redesign doc 2026-11-18 (`git show 4b1c4a745c:design/RimMandrake/rimpulse_redesign_2026-10-23.md`); the phone push is `Utils/ops_core/phone_push.py` |
 | Naming as retrieval | no recent change identified | b8a0f988a3 (10-10) |
 | Extraction as a standalone tool | no implementation identified | these documents are the first step |
 | Backlog compaction, snapshots, browsing UI, multi-human permissions | no implementation identified | (judgment: the next real constraints) |

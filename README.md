@@ -44,16 +44,16 @@ it launches) around the live game. The rules every agent obeys are in `CLAUDE.md
 ## First run
 
 - **Environment**: no `.venv`, `pyproject.toml`, `requirements.txt` or `package.json` at the
-  repo root — the `./game`, `./bridge`, `./mirror`, `./publish`, `./pulse` wrapper scripts are
+  repo root — the `./game`, `./bridge`, `./mirror`, `./publish` wrapper scripts are
   Bash that shell out to stdlib-only Python 3 (`src/RimMandrake/rimflow/cli.py`,
-  `src/RimMandrake/Utils/pulse/pulse.py`, `publish.py`, `mirror.py` — no imports beyond the
+  `publish.py`, `mirror.py` — no imports beyond the
   standard library found). `src/` also holds C#/.NET mod projects
   (`Directory.Build.props`/`.targets`, individual `.csproj`s under `src/Jawa/` and
   `src/RimMandrake/`) that build against RimWorld's own Harmony DLL on Windows; **`dotnet` is
   not installed on this machine**, so the C# side cannot be built here — mod work targets a
   Windows box with the Steam RimWorld install.
 - **Console scripts**: none via a Python package — the entry points are the root wrapper
-  scripts themselves (`game`, `bridge`, `mirror`, `publish`, `pulse`), all present and
+  scripts themselves (`game`, `bridge`, `mirror`, `publish`), all present and
   executable in the repo root.
 - **Login/token**: in-game LLM calls shell out to `claude -p "<prompt>"` and authenticate via
   the normal Claude Code / `claude.ai` login — **never a hosted API key** (owner ruling,

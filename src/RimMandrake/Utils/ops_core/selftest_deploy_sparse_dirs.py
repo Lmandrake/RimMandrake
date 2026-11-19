@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Class guard: the sparse deploy checkout (pulse.SPARSE_DIRS) holds every repo module the deploy's units reach
+"""Class guard: the sparse deploy checkout (deploy_update.SPARSE_DIRS) holds every repo module the deploy's units reach
 (PULSEDEPLOY_FIX_SPARSE_LIST_FORGOT_CONTRACTS).
 
 The instance: close_evidence.py (a Utils/ file, free in the cone) loads src/RimMandrake/contracts/jsonl.py BY PATH at
@@ -20,7 +20,7 @@ HERE = Path(__file__).resolve().parent
 REPO = HERE.parents[3]
 R = Path("src/RimMandrake")
 sys.path.insert(0, str(HERE))
-import pulse  # noqa: E402
+import deploy_update  # noqa: E402
 
 FAILS = []
 
@@ -35,8 +35,8 @@ def check(name, cond, detail=""):
 # Every allowlisted hit is re-proved function-local below, so a module-level import of one still fails.
 LAZY_OK = {"src/RimMandrake/Utils/rimdrive": "live-game driver: modcheck runner/scene_report import it inside live calls"}
 
-CONE = tuple(pulse.SPARSE_DIRS)
-SEARCH = [R / "Utils" / "pulse", R / "rimflow", R / "Utils", R] + [Path(c) for c in CONE]
+CONE = tuple(deploy_update.SPARSE_DIRS)
+SEARCH = [R / "Utils" / "ops_core", R / "rimflow", R / "Utils", R] + [Path(c) for c in CONE]
 
 
 def in_cone(rel: Path) -> bool:
@@ -137,7 +137,7 @@ check("every module the deploy's code reaches is inside the sparse cone", not ba
       "; ".join(f"{k} <- {v}" for k, v in sorted(bad.items())))
 
 # the guard must fail on the instance: drop contracts from the cone and re-walk
-CONE = tuple(c for c in pulse.SPARSE_DIRS if c != "src/RimMandrake/contracts")
+CONE = tuple(c for c in deploy_update.SPARSE_DIRS if c != "src/RimMandrake/contracts")
 _, OUT2 = walk(ENTRIES)
 check("without contracts in the cone the walk flags contracts/jsonl.py (guard bites)",
       any(str(t).startswith("src/RimMandrake/contracts/") for t in OUT2), sorted(map(str, OUT2)))

@@ -430,7 +430,7 @@ def wiring():
     from unittest.mock import patch
     sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
     import switching_plan as SP
-    from pulse import phone_push as PP
+    from ops_core import phone_push as PP
     out = Path(TMP) / "plan_out"
     now = T_STOP
     meter = {n: {"source": "MEASURED", "week_pct_left": 90, "week_resets_at": SP.iso(now + 36000), "age_min": 1,

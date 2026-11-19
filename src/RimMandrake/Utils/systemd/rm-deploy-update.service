@@ -8,5 +8,5 @@ Description=fast-forward the pulse-deploy checkout to origin/main
 [Service]
 Type=oneshot
 Environment=RM_PULSE_DEPLOY=/home/mandrake/rm/pulse-deploy
-ExecStart=/usr/bin/python3 /home/mandrake/rm/pulse-deploy/src/RimMandrake/Utils/pulse/pulse.py update
+ExecStart=/usr/bin/python3 /home/mandrake/rm/pulse-deploy/src/RimMandrake/Utils/ops_core/deploy_update.py update
 TimeoutStartSec=120s

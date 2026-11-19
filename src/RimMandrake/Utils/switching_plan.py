@@ -868,7 +868,7 @@ def notify_stop(state: dict) -> None:
     stopped = state.get("stopped") or {}
     if not stopped or stopped.get("phone_notified"):
         return
-    from pulse import phone_push
+    from ops_core import phone_push
     until = stopped.get("reset_at")
     resume = (f"The next account refills at {until}; the fleet will restart after the switcher confirms headroom "
               "(checked every five minutes)." if until else

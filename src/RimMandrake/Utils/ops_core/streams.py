@@ -5,7 +5,7 @@ Design: design/RimMandrake/work_allocation_framework_2026-10-26.md §3 (measures
 owner is the bottleneck), §7 (the panel). Items STREAM_METRICS_UNIFY_ONE_SERIES, MODCHECK_METRICS_RETIRE_INTO_HOURLY,
 RIMPULSE_STREAMS_BUILD_VS_TIME.
 
-    streams.py collect [--no-write] [--print]   one record -> streams/series.jsonl (the rm-pulse-streams timer, 15 min)
+    streams.py collect [--no-write] [--print]   one record -> streams/series.jsonl (the rm-streams-collect timer, 15 min)
     streams.py backfill --days 7                 hourly records for past hours, ledger + testq measures only
     streams.py show                              the latest record, as text
 
@@ -37,7 +37,7 @@ for _p in (HERE, UTILS, os.path.join(UTILS, "modcheck"), os.path.join(UTILS, "ar
     if _p not in sys.path:
         sys.path.insert(0, _p)
 import testing_metrics as TM  # noqa: E402  (imports modcheck/metrics.py as MX)
-import pulse_core as pc  # noqa: E402
+import ops_ledger as pc  # noqa: E402
 import rimflow_metrics as RFM  # noqa: E402
 
 MX = TM.MX

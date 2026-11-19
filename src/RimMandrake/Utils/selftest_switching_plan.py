@@ -18,7 +18,7 @@ os.environ["RM_SWITCH_PLAN_DIR"] = str(TMP / "out")
 os.environ["RM_ACCOUNTS_DIR"] = str(TMP / "accounts")  # never the machine's real switcher log
 sys.path.insert(0, str(HERE))
 import switching_plan as SP  # noqa: E402
-from pulse import phone_push as PP
+from ops_core import phone_push as PP
 os.environ["RM_PHONE_PUSH_STATE"] = str(TMP / "phone.json")
 PP.STATE = TMP / "phone.json"
 PHONE = []

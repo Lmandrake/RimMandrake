@@ -198,7 +198,7 @@ AID = "QUEUE_STALLED:" + KEY
 check("the alarm target is crossed on a 120 min stall", OW.target_state(_pts, RULES).get(AID) is True,
       OW.target_state(_pts, RULES).get(AID))
 _nm = OW.alarm_prefix(TG[0], "QUEUE_STALLED", KEY, {}, AID, _pts[KEY]) if TG else ""
-import pulse_core as _pc  # noqa: E402
+import ops_ledger as _pc  # noqa: E402
 check("its fixed item name is this rule's own, the same on every pass, and passes the namecheck",
       _nm.startswith("OPS_DESIGNER_UNSTICK_READY_AND_WAITING_") and _nm == OW.alarm_prefix(TG[0], "QUEUE_STALLED", KEY,
       {}, AID, _pts[KEY]) and not _pc._model().mint_problems(_nm, set()), _nm)

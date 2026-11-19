@@ -4,7 +4,7 @@ On the drvfs mount (/mnt/*) one `git status` took 28.7 s under load and the 80 s
 past the 3600 s last-good-pass limit (unit failed). Class guard: every place that names the deploy checkout (the unit files in
 the repo, ops_watch.PULSE_DEPLOY) names the SAME path, and it is not under /mnt/. Worst value printed with the count read.
 
-    python3 src/RimMandrake/Utils/pulse/selftest_pulse_deploy_on_ext4.py
+    python3 src/RimMandrake/Utils/ops_core/selftest_deploy_on_ext4.py
 """
 import re
 import sys

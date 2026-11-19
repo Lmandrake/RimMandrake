@@ -1,8 +1,8 @@
-"""The shared ledger readers the ops tools use: every clone's rimflow ledger, folded by rimflow's own model, and the
+"""ops_ledger.py (RimPulse's pulse_core.py until 2026-11-18) -- the shared ledger readers the ops tools use: every clone's rimflow ledger, folded by rimflow's own model, and the
 owner-ask classifier streams.py counts (owner_rulings, ask_class, ask_addressee, ask_label).
 
 What is left of RimPulse's spine (the dashboard retired 2026-11-03; its collectors, rows and pages went
-2026-11-18, RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES). Readers: ops_watch, deadman_check,
+2026-11-18 and this moved from Utils/pulse/, RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES). Readers: ops_watch, deadman_check,
 known_reds, streams, testing_metrics, usage. The ledger key is `id`, NOT `item`.
 """
 from __future__ import annotations

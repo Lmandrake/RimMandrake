@@ -1114,7 +1114,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `process_sim_findings_2026-10-27.md` | RimFlow v3 in a bottle: what the simulation says (2026-10-27) | — |
 | `dispatcher_trial_night_2026-10-28.md` | RimFlow v3 trial night, 2026-10-28: one ordered runbook | — |
 | `rimflow_validation_levels_addendum_2026-10-07.md` | Rimflow redesign — addendum: the validation levels | — |
-| `rimpulse_redesign_2026-10-23.md` | RimPulse redesign: what it shows, what you need from it, three better ways (2026-10-23) | — |
 | `rimtalk_analysis.md` | rimtalk_analysis.md — RimTalk adoption analysis | → superseded `llm_stack_assessment.md` |
 | `rimworld_file_lore.md` | rimworld_file_lore.md — technical manual for editing RimWorld save / scenario / def files |  |
 | `rimworld_new_version_research_2026-10-20.md` | RimWorld new version research (2026-10-20) | — |

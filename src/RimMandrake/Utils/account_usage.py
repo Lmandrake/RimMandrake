@@ -23,8 +23,8 @@ Where each account is read, in order (the first that answers wins):
                      live, and only under the switcher's machine lock after its live_account() is read again
                      there: no switch can land between that check and the refresh, so the live login is never
                      warmed (a refresh of the live credential is an "auto log out"). Then the token is read again.
-  3b. RimPulse     - pulse/usage.py's last reading of the plan's usage endpoint (the same figures /usage
-                     shows, read with the stored token, never refreshed), if under 20 minutes old.
+  3b. RimPulse     - usage.json under $RM_PULSE_STATE, if under 20 minutes old: the reading RimPulse's daemon
+                     wrote until it retired (2026-11-03). Nothing writes the file now, so this step finds none.
   4. ESTIMATE      - none answered: the last MEASURED reading carried forward while its window has not
                      reset. A lower bound (usage only rises inside a window); labelled, never "MEASURED".
   5. UNMEASURED    - nothing to carry (no reading yet, or the window reset since): every figure null.

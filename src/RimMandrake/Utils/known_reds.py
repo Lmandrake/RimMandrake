@@ -337,8 +337,8 @@ def measure(open_ids, now, with_cop=False):
 
 
 def ledger_open():
-    sys.path.insert(0, str(HERE / "pulse"))
-    import pulse_core as pc
+    sys.path.insert(0, str(HERE / "ops_core"))
+    import ops_ledger as pc
     world = pc._model().replay(pc.read_ledger())
     return {i for i, it in world.items.items() if it.open}
 

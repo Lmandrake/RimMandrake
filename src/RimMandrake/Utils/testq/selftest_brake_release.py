@@ -323,7 +323,7 @@ def main():
 
     # clause 3: the real c_flow on real replayed events, with the fault the real steward wrote, through the real alarm rule
     wipe()
-    import pulse_core as pc
+    import ops_ledger as pc
     rules = OW.load_rules()
     tg = [t for t in rules["targets"] if t["key"] == "steve.incident_unclaimed_min"]
     check(len(tg) == 1 and tg[0]["value"] == 30 and tg[0]["alarm"] is True and tg[0]["name"] == "OPS_STEVE_UNSTICK_UNCLAIMED",

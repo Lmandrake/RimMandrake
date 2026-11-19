@@ -263,7 +263,7 @@ OWNER_ONLY = {
     "src/RimMandrake/Utils/broadcast.py": "OWNER ONLY broadcast skill: announce to every window is his",
     "src/RimMandrake/Utils/mod_completion.py": "reads ledger history for evidence, authorizes nothing",
     "src/RimMandrake/Utils/owner_queue.py": "reads his notes, authorizes nothing",
-    "src/RimMandrake/Utils/pulse/pulse_core.py": "display of whose event it was, authorizes nothing",
+    "src/RimMandrake/Utils/ops_core/ops_ledger.py": "display of whose event it was, authorizes nothing",
     "src/RimMandrake/Utils/artpipe/fill_queue.py": "verifies a recorded card ruling of his (evidence), authorizes nothing new",
     "src/RimMandrake/Utils/rimflow_metrics.py": "counts provenance, authorizes nothing",
     "src/RimMandrake/Utils/agent_improve.py": "reads his words from the ledger, authorizes nothing",

@@ -241,7 +241,7 @@ check("BUILD COP: two new reds with one cause file ONE item, its title naming th
       len(f) == 1 and f[0]["name"].startswith("SELFTEST_FIX_B_") and "No space left" in f[0]["title"]
       and "due 2026-11-07" in f[0]["title"] and "selftest_b.py" in f[0]["title"] and "selftest_c.py" in f[0]["title"], f)
 check("BUILD COP: a listed red files nothing", not any("selftest_a.py" in a["title"] for a in f), f)
-import pulse_core as PC  # noqa: E402  (ops_watch put pulse/ on the path)
+import ops_ledger as PC  # noqa: E402  (ops_watch put ops_core/ on the path)
 check("BUILD COP: the minted name passes the ledger's name rules", f and not PC._model().mint_problems(f[0]["name"], set()), f)
 item, item_key = f[0]["name"], f[0]["key"]
 check("BUILD COP: the real filer raises every item it files (first in the BENCH queue)",

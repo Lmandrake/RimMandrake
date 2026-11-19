@@ -4,7 +4,7 @@ stopped every WSL-side alarm for ~6 h; this runs as a Windows Scheduled Task wit
 Checks, every run:
   commits  GitHub origin/main (public repo, anonymous API) has no commit for -StaleMinutes  -> alert
   wsl      a real small write inside WSL (echo > ~/.hb_probe; sync) fails or hangs past -ProbeSeconds -> alert
-Alert = a Todoist Inbox task due a minute out (rings on the phone; same route as pulse/phone_push.py). One alert per
+Alert = a Todoist Inbox task due a minute out (rings on the phone; same route as ops_core/phone_push.py). One alert per
 open cause; reminder every -RemindMinutes while it stays open; state clears when the cause goes green.
 Token: Todoist API token in <StateDir>\todoist_token (NOT in the repo). Pause (planned stop): create <StateDir>\paused.
 Test hooks: -FakeCommitAgeMinutes N, -FakeWslFail, -DryRun (log the alert, send nothing).

@@ -30,7 +30,7 @@ its inputs live in agent storage too, and an hourly timer must never commit into
 recomputed on every timer run until it is over; read_history + best_per_day pick, per day, the record with the most
 coverage and then the latest.
 
-Usage: testing_metrics.py [--days N] [--print] [--no-write]     (every 15 min: rm-pulse-streams.timer, before streams.py)
+Usage: testing_metrics.py [--days N] [--print] [--no-write]     (every 15 min: rm-streams-collect.timer, before streams.py)
 """
 import argparse
 import datetime
@@ -551,7 +551,7 @@ def append_if_changed(path, rec):
 
 def read_ledger():
     sys.path.insert(0, HERE)
-    import pulse_core as pc
+    import ops_ledger as pc
     return pc.read_ledger()
 
 

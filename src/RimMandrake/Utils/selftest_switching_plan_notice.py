@@ -10,7 +10,7 @@ from unittest.mock import patch
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import switching_plan as SP
-from pulse import phone_push as PP
+from ops_core import phone_push as PP
 
 NOW = 1_800_000_000
 plan = SP.load_plan()

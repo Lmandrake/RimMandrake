@@ -115,7 +115,7 @@ def load_ledger(root):
                 try:
                     events.append(json.loads(line))
                 except ValueError:
-                    continue            # a torn line, as pulse_core reads it
+                    continue            # a torn line, as ops_ledger reads it
     return M.canonical_order(events)
 
 

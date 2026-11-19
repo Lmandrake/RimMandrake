@@ -12,7 +12,7 @@ has no item. On recovery it puts the item back. The ledger is the only state, so
 `live_repeats` counts its outages; at 2 the report says it needs a fold. The pass writes ops_watch/live_sweep.json,
 whose `line` reads "61 promises, 58 kept, 3 broken". A pass that cannot see systemd says so and touches nothing.
 With --file-alarms a dead arm (Dispatcher, ops_watch) or a broken timer promise (`unit=`) also rings the owner's phone
-through pulse/phone_push.py, a fixed template with no AI in the path, once per outage (the key closes on recovery),
+through ops_core/phone_push.py, a fixed template with no AI in the path, once per outage (the key closes on recovery),
 whatever the ledger write did (DEADMAN_WIRE_PHONE_WITHOUT_AI). RM_DEADMAN_PUSH=0 turns the phone off.
 
     ops_watch   $RM_OPS_WATCH_DIR/status.json  key "t" (epoch of the last pass; a metronome beat, ~1 min)  limit 50 min
@@ -333,8 +333,8 @@ def real_check(line, runner=subprocess.run):
 
 
 def read_items():
-    import ops_watch  # noqa: F401   puts pulse/ on the path
-    import pulse_core as pc
+    import ops_watch  # noqa: F401   puts ops_core/ on the path
+    import ops_ledger as pc
     own = HERE.parents[2]                  # this pass's own shard, or it would not see what it filed until others pull
     return pc._model().replay(pc.read_ledger([*pc.CLONES, *([own] if own not in pc.CLONES else [])])).items
 
@@ -413,7 +413,7 @@ def phone_row(row):
 
 def phone(rows, pusher):
     """Push every phone-worthy broken row, close the key of every one that is kept again. pusher: an object with
-    send(row) -> bool and close(key) (pulse/phone_push; a selftest double). The push dedups by key, so a broken row
+    send(row) -> bool and close(key) (ops_core/phone_push; a selftest double). The push dedups by key, so a broken row
     pushes once per outage and a failed send retries next pass. -> [what happened], for the report."""
     out = []
     for r in rows:
@@ -432,10 +432,10 @@ def phone(rows, pusher):
 
 
 def real_pusher():
-    """pulse/phone_push (Todoist due-now task), unless RM_DEADMAN_PUSH=0."""
+    """ops_core/phone_push (Todoist due-now task), unless RM_DEADMAN_PUSH=0."""
     if os.environ.get("RM_DEADMAN_PUSH", "1") == "0":
         return None
-    sys.path.insert(0, str(HERE / "pulse"))
+    sys.path.insert(0, str(HERE / "ops_core"))
     import phone_push
     return phone_push
 
