@@ -1036,6 +1036,29 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
   'later' list."* A claim outside the page goes to `polish.md` or `next_version.md` beside the page as one line: no
   ticket, no repair. For pipeline machinery with no page yet, a claim is a Problem only if a call site in the repo or
   a documented command produces the input. This replaces his "Fix all 24" of 7:47 PM the same evening.
+- **Decision 4, a rare failure that breaks a promise (owner, by card Thu 2026-11-19, answered 5:27 AM PST,
+  13:27:48Z, session f95c29f3).** Card: *"Each piece of pipeline code now has a one-page list of promises. A promise
+  says what the code always does. A blind reader and Codex each say 21 of 35 old review complaints break a promise.
+  The earlier analyst said 4. Most of the 21 are rare failures, such as a crash during a crash. What do we do with a
+  rare failure that breaks a promise?"* He picked *"Page says 'not handled' (Recommended)"*: *"Why: keep the code
+  small and stop the review cycle. The page lists each rare failure it does not survive. No fix is built. Cost: those
+  failures stay possible, and you must trust the list. Recommended: fixing all 21 is the review cycle again by
+  another door."* (Not picked: "Fix every one", "Fix only what happened".) So a complaint is a Problem only when it
+  breaks a promise in ordinary operation. A rare failure is not: it goes under DOES NOT SURVIVE as one plain line,
+  the promise's words are narrowed until the page is true, and no fix is built. Where the code already survives a
+  rare failure, the line says "handled today, not promised", so the page stays true and no review asks for more.
+  Our reading of "rare" (the Conductor's helper, delegated, not his words): it needs something to go wrong that the
+  broken promise does not itself name (a failed call, kill or read; a locked, corrupt or lost store; a crash), or a
+  second failure while the first is handled, or two events in the same instant, or an input or code shape no call
+  site produces. Ordinary is any input inside ACCEPTS at the pace a person or a timer sends it, with the world
+  answering, plus the one failure a promise names as its own subject, met alone (`probe-never-lies` names a failed
+  `systemctl` call; without this such a promise would promise nothing). The same card's second question, *"May I run
+  one more Codex test?"*: he picked *"Yes, after the page rule (Recommended)"*: *"Why: the page rule above changes
+  which complaints count as real. I relabel the 35 by your rule, then run one test. Cost: one Codex run, and a short
+  wait for the relabel. Recommended: a test against wrong labels tells us nothing."* That is one run; it does not
+  turn Codex reviews of pipeline machinery back on (his 8:22 PM stop below stands until he says otherwise).
+  Applied: `src/RimMandrake/rimflow/roles/code_review.md`, the control page's DOES NOT SURVIVE, and the relabel in
+  `design/specs/2026-11-18-review-growth-cycle/05-three-way-labels-20261119.md`.
 - **Changing a page after it has passed** is next-version work: a new accepted input, survived failure or promise is
   written for the next Design Version and never added to the current one's bars. Moving a failure to DOES NOT SURVIVE
   accepts a risk: the Conductor decides it (delegated, logged) and he sees it in the daily digest.

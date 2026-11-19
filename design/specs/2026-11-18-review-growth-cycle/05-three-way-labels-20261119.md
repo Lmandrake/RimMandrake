@@ -109,9 +109,9 @@ analyst labelled before the page existed, so this is a missing rule in the analy
 
 To `src/RimMandrake/rimflow/roles/code_review.md`, §A Problem (one added paragraph, one changed sentence):
 
-> **Rarity is not your call.** An input inside ACCEPTS, or a failure not under DOES NOT SURVIVE, that breaks a promise
-> is a Problem however rare it is and however small its harm. If it is too rare to fix, say so in `why`; the Conductor
-> may move it to DOES NOT SURVIVE (a logged decision), and only then is it polish.
+> (overruled before it was applied: he picked "Page says 'not handled'" by card 2026-11-19 13:27:48Z, `standing_rulings.md`
+> §A boundary page before pipeline code, Decision 4. A rare failure is not a Problem; what was applied is in
+> `code_review.md` §A Problem.)
 
 > (changed) "A failure listed under DOES NOT SURVIVE is never a Problem, unless the component **noticed it and** then
 > reported something false about it."
