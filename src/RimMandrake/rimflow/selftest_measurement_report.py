@@ -166,6 +166,18 @@ def main():
         bad = copy.deepcopy(GOOD)
         mut(bad)
         check("malformed: %s is refused" % name, refused(MR.build, bad) is not None)
+    big = copy.deepcopy(GOOD)
+    big["worst"].update(value=10 ** 400, limit=10 ** 400)
+    try:
+        hb = MR.build(big)["worst"]["headroom"]
+    except Exception as e:  # noqa: BLE001
+        hb = "%s: %s" % (type(e).__name__, e)
+    check("numbers: a huge finite integer is a number, never a crash", hb == 0, hb)
+    mempty = SWEEP.replace("2272 of 13248 unlaid, 2188 with", "2188 of 13248 unlaid, 2188 with").replace(
+        "within 0.219 cell of it", "within 0.000 cell of it")
+    m8 = {x["check"]: MR.build(x) for x in MR.gss_live_end_readings(mempty, SRC)[0]}.get("poses, machine plug", {})
+    check("empty: every unlaid machine pose on the run leaves the off-run subset EMPTY",
+          m8.get("worst", {}).get("state") == "EMPTY", m8.get("worst"))
     lay = by.get("poses, lay alone", {})
     check("gss: the lay-alone worst is the sweep's 0.206", lay.get("worst", {}).get("value") == 0.206, lay.get("worst"))
     check("gss: every regression is read, by check",

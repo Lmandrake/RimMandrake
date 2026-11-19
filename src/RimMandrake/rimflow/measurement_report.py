@@ -42,7 +42,7 @@ class Refused(ValueError):
 
 def _num(x):
     """A finite measured number: NaN or infinity is no reading."""
-    return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
+    return (isinstance(x, int) and not isinstance(x, bool)) or (isinstance(x, float) and math.isfinite(x))
 
 
 def _txt(x):
