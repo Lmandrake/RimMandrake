@@ -21,6 +21,15 @@ path by sitting here. Nothing in the pipeline reads it by name yet. The Rust Cat
 its only pipeline material is the cleanse proposal of 2026-11-17, which this design supersedes and which was never
 applied.
 
+**Second reader, 2026-11-18.** A second reader who did not write this design read the sources to their ends and
+repaired it; what changed and why is at the top of `rewrite_choices.md`. In short: the wear on the ship is built
+already (every tile here is over the shield frame's heat line, and the ground is saturated with pollution, which
+the frame also reads), so the hull section now cites the frame and his shield rulings and invents nothing; the
+pattern hull is named as this biome's row on his ship-gift register, with what it costs; his founding rulings of
+August (the file the first read did not open) are carried in, including what the free droids think of Jawa; the
+campaign's ruled answer to "what if the Empire comes here" is cited; and several lines say "as built" where the
+signature is not built yet.
+
 **Tags:** `NEEDS HIM` is a question only the owner can settle, with the real answers and the default used here.
 `UNSETTLED` is a fact the sources do not fix. `UNMEASURED` is an engine fact nobody has checked. "Built" means the
 census of 2026-11-17 (`cleanse/census.json`) found it in source; it does not mean it has passed anything.
@@ -34,11 +43,20 @@ census of 2026-11-17 (`cleanse/census.json`) found it in source; it does not mea
 
 > *"A circuit board the size of a country, humming to itself in its sleep."* (`the_rust_cathedral.md` §9)
 
+> *"Astounding quantities of metal were brought down from the asteroids onto the surface to feed vast factory
+> complexes, which have now ground to a rusty halt."* (owner, 2026-08-15)
+
 *"A metal country."* A dead-flat plateau of deck plate at the foot of the eternal noon, cut by *"a complex, almost
 circuit-board maze of walls, structures and designs that scream of meaningful complexity and intention"* (owner),
 rust dust banked in drifts against them, heat shimmer for weather, *"and almost nothing alive."* *"You do not stand
 on ground that holds a factory; you stand on the factory."* Dried, cooked animals lie where they strayed in. *"And
 under everything, always, a hum."* The hum changes. Everyone eventually notices that it is *"reacting to them."*
+
+It is *"not a place that contains metal. It is built of it — the whole map is the reward"* (owner, 2026-08-15),
+so *"the only thing regulating the reward is how hard it is to survive standing on it."* The ground is saturated
+with old industrial poison as well as heat: *"the droids are immune to the heat and the poison, which is exactly
+why the place can be a home to them and to no one else."* And *"for machinery this old it has barely rusted at
+all, and that wrongness is the first thing an educated visitor notices."*
 
 The sheet's whole instruction for surviving here is one sentence: *"the Cathedral is not survived by walls but by
 manners."* Mine the plain plate freely; touch nothing sacred; when the hum drops, stop.
@@ -48,10 +66,21 @@ treasure."* *"Every wall is money, every sacred building is blasphemy, and the h
 between."* An earlier pass put the crew's side of it plainly: *"We are Jawas: a giant ownerless droid is the
 biggest salvage prize on Ash'karr."* So this is the stop where a crew whose whole nature is to take things apart
 and carry them off is set down in a country made of metal, told it may have most of it, and asked to be polite
-about the rest. The free droids who hold this ground as their holy city have one piece of advice, and the sheet
-keeps it word for word:
+about the rest. The founding ruling put the bargain in one line, and it is a line about Jawa: *"I can have all of
+this if I am careful and slow"*, *"the only bargain that makes a scavenger clan's patience into a virtue."*
+
+The free droids hold this ground as their holy city, *"the machines' equivalent of a birthplace"*, and they have
+a history with this crew's kind. His words of 2026-08-19, on why their goodwill starts at neutral: *"They were
+hostile due to Jawa tendency to enslave and sell droids, but then they stole the ship and angered the Hutts… so
+now it's up to neutral."* They have one piece of advice, and the sheet keeps it word for word:
 
 > *"Why have you angered this place? We know what it feels. So will you if you just listen."*
+
+*(Not player-facing.)* The ship has been here before. His ruling of 2026-08-15: the Utinni is a Forsaken ship,
+*"one of the initiators"*, built by the people who built this, and *"the vaults, the Arsenal, the Rust Cathedral —
+these are not somebody's ruins. They are her people's."* Her systems would call the place by its makers' name,
+Archon. Nothing says any of this to a player (there is no talking ship in the first version, by his ruling of the
+same day); it is why bolts stay alive on this hull and on no other.
 
 ## The clock on any stop
 
@@ -75,20 +104,30 @@ to see anything; that is all.
 *(Not player-facing.)* The sheet's plot canon makes this the one biome with an opinion about the pursuit: the mind
 under the plate survives by *"looking exceptionally dull"*, *"the Empire's modern presence is the top threat"*, and
 *"the player's Rakatan gravship flying around agitating the Empire is exactly the danger it fears — so it dislikes
-the player at first."* Nothing in these versions acts on that; see `NEEDS HIM`.
+the player at first."* The campaign's arc is already ruled to act on it (`design/Jawa/cathedral_concealment_arc_spec.md`):
+*"Empire heat brought near: high Heat while parked on/adjacent to the Cathedral region; any Act II+ pursuit event
+resolving on Cathedral ground is a large hit — the 'local skirmish' it dreads, made real by the player."* And his
+ending for a crew that lets it go all the way (2026-09-12): *"The rust cathedral fights the Empire and slowly
+falls, the planet becomes a warzone again... Something ancient and wondrous is gone forever, and the ship
+mourns."* So in the campaign this is the one stop where staying until the Empire arrives is the worst thing a
+crew can do. Nothing in 0.1.0 or 0.2.0 acts on it; see `NEEDS HIM` 2.
 
 ---
 
 ## The first minutes
 
-The ship comes down out of a white sky onto plate that rings under the landing gear. The shadows of the walls are
+From altitude the walls are *"alignments that resolve into meaning"*: this is the one biome best seen from a ship
+coming in, a circuit board the size of a country. The ship comes down out of a white sky onto plate that rings
+under the landing gear. The shadows of the walls are
 hard, short and exactly where they will always be. The air is hotter than the crew's own desert and the sun is
 straight overhead. Then the engines stop and the hum is there, *"felt in the teeth."*
 
 On the deck near the ramp something that looks like a dropped component gets up and walks. Then several. They move
 *"in complex, strange, dance-like patterns for no reason."* These are **living bolts**: *"component-looking
 creatures the player tries to pick up and simply move out of the way."* They are not organic, not tameable and not
-meat. They like the edges of the ship.
+meat: *"a bolt with legs, or a gear with opinions"*, and very small (a tenth of a cell, by his sheet note of
+2026-10-05: *"more like a little button"*). They like the edges of the ship: *"a landed ship on deck plate draws
+the living bolts; they gather and dance on its hull and under its struts while the hum watches."*
 
 Before the first hour is out the player should have seen three things without hunting for them: the bolts dancing;
 a wall that is plainly steel and plainly minable; and, a long way off down a corridor, something very large
@@ -102,19 +141,25 @@ crossing a gap between walls, slowly, not looking this way.
   through one sours the hum and may open a chamber with a guardian in it. (His answer of 2026-11-10: *"cutting
   through shortcuts angers the Hum and can reveal trapped chambers with guardians."*) A few buildings are
   **sacred**: owned, rare, and not offered for mining at all.
-- **The hum is the meter.** It has a mood, voiced as layered tones, calm to very much not. At its worst it goes
-  silent.
+- **The hum is the meter.** It has a mood, voiced as layered tones, calm to very much not. *"Mine deck plate all
+  day and it stays a warm drone."* Do the wrong thing and *"a new tone slides in under the first, then another."*
+  At its worst it goes silent. (As built, at default settings the display is clamped to calm, so none of this
+  can be heard yet: owed work on the signature itself.)
 - **The bolts show where.** *"Living bolts tend to gravitate around what they don't like"* (his answer of
   2026-11-10): when the hum rises, the bolts gather at the work that caused it. Stop the work and withdraw, and a
   small irritation fades by itself.
-- **Killing a bolt is noticed.**
+- **Killing a bolt is noticed.** It is allowed: *"the sheet prices sacrilege, it does not un-button the gun."*
+- **The ground is poison as well as oven.** The whole plateau is saturated with old pollution. A crew works here
+  the way it would in any fouled place: covered, in shifts, and not for long. The only sicknesses on the place's
+  own table are mechanites, and they are rare.
 - **The heat is ordinary heat, and there is a great deal of it.** Hot air, plus the planet's one sun from almost
   straight overhead, which is the strongest it gets anywhere. Shade works. The walls' short hard shadows are the
   shade.
 - **The pools.** Still, toxic, with a sulfur-yellow edge that reads as acid from a distance. They do not move and
   they do not hide. Walk round.
 - **The cleaners.** Small tough machine-roaches eat filth. A Jawa camp produces filth. The camp is tidied by
-  something nobody asked.
+  something nobody asked. They tell the crew nothing about the hum, by his ruling: they are fauna, *"not
+  instrumentation"*, and go on cleaning while everything else has frozen.
 - **The guards hold ground.** The great machines keep marked grounds and slow patrol lines. They do not hunt.
   The sheet's advice when one crosses the line of sight: *"be small and biological and boring."*
 
@@ -122,7 +167,11 @@ crossing a gap between walls, slowly, not looking this way.
 
 - **Sacrilege has a price, in a real currency.** Destroying or claiming a sacred building costs standing with the
   Free Droid Enclaves, the faction whose holy city this is, and that standing is the same one the crew trades on
-  everywhere else. The hum stays above calm while the debt stands, and its inspector says what is owed and where.
+  everywhere else. There are about ten such buildings; from neutral a crew can strip five before the Enclaves
+  turn (*"half the Cathedral is takeable on arrival and finishing it costs the war"*), and then *"there is no
+  cheap apology"*: *"the punishment is isolation, not an army."* (As built none of this is wired: the sacred
+  walls belong to the machines' own faction, whose goodwill cannot move, and the real Enclave debit is owed
+  work.) The hum stays above calm while the debt stands, and its inspector says what is owed and where.
   Paying is plain: deliver silver against a visible bill, from the public side. No rite. (His answer of
   2026-11-10: *"sacred damage requires costly, concrete repayment before comfortable access returns, without a new
   ritual."*)
@@ -132,10 +181,13 @@ crossing a gap between walls, slowly, not looking this way.
 - **The giant.** A **borehulk** may be on the map: *"a massive mining droid, more like a digging tank with drill
   and scoop... Not very intelligent but ridiculously armored and strong. Fortunately it is also peaceful."* (owner,
   2026-10-02). Its bit is worn out. It scrapes at the plate and gets nowhere, and backs away from anyone who hurts
-  it. It is the largest ownerless machine a Jawa has ever seen and in this version there is nothing to be done
-  about it but look.
+  it. It came here *"having escaped the abandoned mines"*. It is the largest ownerless machine a Jawa has
+  ever seen, and in this version there is one thing to be done about it besides look: it can be killed, which is
+  *"possible and very hard"*, and its wreck is steel, plasteel, components and the drill head. It will not fight
+  back. It sounds *"a long grinding horn and backs slowly away."*
 - **Digging deep.** Under the plate is metal of another kind, live and patterned. Drilling for it brings machines,
-  in force, against the drill. They lose interest when the drilling stops. *"Dig deep enough and very bad things
+  in force, against the drill and anything defending it. They lose interest when the drilling stops. This metal
+  is what the pattern hull is seeded with (below), so the ship's best armour is under the plate and guarded. *"Dig deep enough and very bad things
   happen. No one's quite sure what."* No text will ever say more.
 - **The dead.** Old wrecks lie among the walls with their own salvage, and at the map's edges the dried bodies of
   animals that wandered in mad and were cooked.
@@ -165,10 +217,16 @@ Each can happen inside the visit. Each says what is on screen.
 10. **They came for the drill.** *On screen:* the deep drill bites, the hum goes quiet, and machines arrive and go
     straight past the crew to the drill.
 11. **Stowaways.** *On screen:* the ship lifts, the camera follows, and on the hull three small shapes are still
-    turning their figure in the wind.
+    turning their figure in the wind. The letter says only what was seen: *"A few of the dancing bolts are still
+    clinging to the hull."*
+12. **The approach.** *On screen:* the last seconds of the descent, and the maze below resolving into a pattern
+    that was plainly drawn by somebody.
 
-*0.2.0 adds:* the floor rolling as a mile of machinery under it turns over once, and everything alive standing
-still until it passes; a crew member who has listened long enough to read the tones, and writes it down to sell;
+*0.2.0 adds:* the floor rolling as a mile of machinery under it turns over once, a dust front crossing the map,
+and every animal and machine standing still until it passes while the crew, who are not held, stand there
+feeling it (see `NEEDS HIM` 6: this is built, he picked it by card on 2026-10-02, and it asks nothing of the
+player); the hull bolts all stopping at once and turning to face a crew member who is selling something of the
+Cathedral's, on another world; a crew member who has listened long enough to read the tones, and writes it down to sell;
 the worn bit unbolted and hauled to a Junker yard to be haggled over; the hull bolts' cold little marks, and what
 the crew sold while they were watching; what the eels do to the one who eats them.
 
@@ -187,6 +245,9 @@ the crew sold while they were watching; what the eels do to the one who eats the
   shortcuts is cutting marked dividers, and the hum does not ask who is holding the cutter.
 - **Shade decides the firefight.** Everybody fights in the same noon. Whoever holds the walls' shadows is not
   cooking.
+- *(Not player-facing; campaign.)* A fight with the Empire on this ground is the thing the mind fears most, and
+  the arc prices it as the largest loss of its regard a crew can cause. A crew that knows the place lifts before
+  the strike team lands.
 - **Nobody may explain any of this.** If the place seems to take a side, no letter, inspector or droid says why.
 
 ## Who else attacks; who hates the Empire
@@ -197,8 +258,10 @@ the crew sold while they were watching; what the eels do to the one who eats the
 - **The machines that answer a deep drill.**
 - **The Junkers,** in the campaign's world: *"hostile on sight, bribable, no trader caravans."* Their yard is
   where a worn bit goes in 0.2.0.
-- **The Free Droid Enclaves** hold eight of their twelve seats on this ground. They are not enemies unless the
-  crew makes them so, one sacred building at a time. Whether they would fight the Empire is `UNSETTLED`.
+- **The Free Droid Enclaves** hold eight of their twelve seats on this ground. They were enemies of Jawa once,
+  for the obvious reason, and are neutral now because the crew stole from the Hutts. They become enemies again
+  one sacred building at a time.
+- **The Hutts,** in the campaign: they *"want the ship back and they want paying."* Whether they would fight the Empire is `UNSETTLED`.
 - **Who hates the Empire:** nothing here says so. *(Not player-facing: the mind fears the Empire's attention more
   than anything and hates something else entirely.)*
 
@@ -222,29 +285,53 @@ the crew sold while they were watching; what the eels do to the one who eats the
 - **Steel,** by the hold-full. **Dead smartsteel.** For the bold, **live-pattern metal** from under the plate.
 - **Wreck salvage** from the derelicts.
 - **Eel catch,** *"salable"* and *"watched"*.
-- **Hull bolts:** not chosen, not owned, and not leaving.
+- **Hull bolts:** not chosen, not owned, and not leaving. They take no harm from heat, cold, poison or vacuum;
+  a blow can still kill one.
+- **Roach shell,** which sells and which nobody is watching.
 - **A standing with the Free Droid Enclaves** that goes with the ship to every other stop, for better or worse.
 - *0.2.0:* shed bolt curiosities; a written primer on reading the hum; a refurbished bit and the choice it buys;
-  a self-repairing hull made from this place's metal.
+  and **the pattern hull,** this biome's gift on his ship register (an agent's pick of 2026-11-11): hull plate
+  cut from dead smartsteel, each section seeded with one ingot of live metal, on which *"dents creep shut,
+  cracks close, and a holed section is whole again in a few days."*
 
 ## Fuel, and what this place does to the ship
 
 **Fuel: none that any source names; the emergency route is nearly closed as well.** (Owner's ruling of
 2026-11-18: *"Every biome has a fuel source, but for most its the hideously slow route of rendering biomass."*)
 Here there is almost no biomass to render: no plants at all, a handful of animals, the eels. This design does not
-invent a source to make the ruling true; it is `NEEDS HIM` below. As written, a crew arrives with the fuel it
-means to leave on. Buying: the Junker yard deals for a bribe and the Enclaves deal on standing; whether either
-sells fuel is `UNSETTLED`. One thing here burns fuel instead of giving it: a kept borehulk's servicing takes
+invent a source to make the ruling true; it is `NEEDS HIM` below. One lead exists in the sources: a measured note
+of 2026-08-19 found that the game's own ancient chemfuel refinery landmark is allowed on the donor biome this one
+was made from. Whether it can occur on our definition is `UNMEASURED`. A dead refinery on a factory plateau would
+be the least invented fuel there could be. As written, a crew arrives with the fuel it
+means to leave on. Buying: the Enclaves deal on standing; the Junkers have no trader caravans at all (*"a loot source, not a
+market"*), so their truce yard is for one work order and not a shop; whether either sells fuel is `UNSETTLED`. One thing here burns fuel instead of giving it: a kept borehulk's servicing takes
 chemfuel (0.2.0).
 
 **What wears on the ship (owner's ruling of 2026-11-18: in 0.1.0, from what the sources already say; his list
-began with "Heat").** **The noon.** *"The highest steady sun on the planet"*, on a hull parked in it for as long as
-the stop lasts, in the hottest standing air on the day side. It is ordinary heat, by the one-sun ruling: no kind
-of its own. The walls' shadows are too short to cover a ship.
-- *The answer by hand:* ordinary repair of what the heat degrades, and roofing or screening exposed work.
-- *The answer by armour:* **the pattern hull**, a self-repairing hull made from Cathedral metals. It is built and
-  switched off; this design places it in 0.2.0 as the thing this stop teaches a ship to wear.
-- *Not wear:* the pools (stationary and legible: do not land in one) and the hull bolts (passengers, not damage).
+began with "Heat").** The frame exists and is not redesigned here: `src/RimUtinni/ShipShields/`, on his shield
+rulings of 2026-09-02. *"The environment is hostile and immediately goes to work on the ship... Its hull is thick
+and can take a lot of damage in most situations, so no environment is immediately lethal."* An unshielded hull in
+a hazard deteriorates, faster the longer it sits; the ship advises and never refuses. On this biome the frame
+already has two hazards to see, so nothing here is new work.
+
+1. **The noon (built).** The frame counts a map as a heat hazard at 58 C outdoors. The sheet's measured
+   temperatures for these tiles run from 58.9 to 65.9: every one is over the line, all the time. It is ordinary
+   heat, by the one-sun ruling. *The answer by shield:* the thermal veil, which by his own note reflects the
+   ship's heat inward too, *"so the temperature slowly climbs anyway"*: here the veil is a clock of its own.
+   (Read from the code and the sheet; no map temperature was measured.)
+2. **The poison (built, on the fixed world).** The plateau is saturated with pollution, and the frame's
+   particulate test reads a polluted tile. *The answer by shield:* the particulate screen. His ruling on that
+   screen says it *"repels small animals"*, and the living bolts are very small machines that he later ruled
+   climb aboard. Whether a screened ship keeps its stowaways off is `NEEDS HIM` 4.
+3. *The answer by armour, to both:* **the pattern hull**, which mends itself (provisionally 120 hit points a day).
+   It is built and switched off; this design places it in 0.2.0. Each section needs an ingot of the live metal,
+   and the live metal comes only from a deep drill, which brings machines. A crew that wants the hull has to
+   decide how many ingots it dares to raise.
+4. *The answer by hand:* ordinary repair, and getting out of the open. The walls' shadows are too short to cover
+   a ship.
+
+*Not wear:* the pools (stationary and legible: do not land in one) and the hull bolts (passengers, not damage).
+Dry thunderstorms are on the weather table and are not a hazard the frame sees.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -262,7 +349,7 @@ of its own. The walls' shadows are too short to cover a ship.
 | The air and the overhead sun are ordinary heat at their strongest; the walls' shadows are real shade. | The same pawn in the open and in a wall's shadow. | A heat of the Cathedral's own. |
 | A roach cleans filth; a worn borehulk scrapes, backs away when hurt, and never fights. | A camp with filth; a shot at the borehulk. | |
 | Bolts on the ship's edges at launch stay on the hull and keep dancing wherever the ship lands. | Land, wait, launch, land elsewhere. | Bolts that fall off in weather. Bolts carried as cargo. |
-| The noon wears on the landed hull, and repair and screening answer it. | A ship parked a week in the open. | Wear with the hull under a roof. |
+| An unshielded ship parked here wears, on the built shield frame, from the heat and from the polluted ground; the veil and the screen answer each, and neither is a design of this biome's. | A ship parked a week in the open, bare; then veiled; then screened. | Wear that stops when the crew behaves. A hazard the frame does not report. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a hot metal flat with its plain
 salvage and residents (standing rule, every mod). Switching off never resets a real faction standing.
@@ -293,7 +380,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   sulfur edge, cooked strays, derelict wrecks; heat as ordinary air and overhead sun. (part built; the pools are
   absent; whether the maze is laid as deliberate corridors is unknown)
 - Bulk salvage and dead smartsteel; live-pattern metal only from deep. (built)
-- The hum: its saved mood, its sound, silence at the worst. (built)
+- The hum: its saved mood, its sound, silence at the worst. (built; at default settings the display is clamped
+  to calm, which hides it, and nothing yet restores lost standing)
 - Living bolts: figures, gathering at disliked work, protection. (figures and protection built; gathering is not)
 - Marked shortcuts as an offence; guarded chambers behind them. (unbuilt)
 - Sacred buildings, real Enclave standing, the visible bill and repayment in silver. (placement built; the real
@@ -302,24 +390,34 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Guardians that hold ground and never hunt. (unknown)
 - Roaches; eels, their catch and what fishing does to the hum; the worn, peaceful borehulk. (built)
 - Bolts that board at launch and live on the hull. (built; moved in, see `rewrite_choices.md`)
-- The noon's wear on the landed ship. (new, small)
+- The wear on the landed ship: heat and pollution, on the built shield frame, answered by the veil and the
+  screen. (built; shared machinery, nothing of this biome's to add)
+- The ground's pollution as a cost on a crew working outside. (the fixed world's tiles; ordinary game rules)
 - An arrival notice of the pools and the heat. (built)
 
 **0.2.0, the stop with company**
-- The line-cycle: machinery turning over under the plate, and everything standing still. (built)
+- The line-cycle: machinery turning over under the plate, and every animal and machine standing still while the
+  crew, who are not held, feel it. (built; in the batch he picked by card on 2026-10-02; `NEEDS HIM` 6)
 - Hum reading and the written primer; the droids' muttered commentary. (built)
 - Hull bolts as witnesses: the ledger of what the crew sold or broke in their sight, the cold marks, the uneasy
   hum on return, the revealed dilemma of prying them off, the small comfort of having them. (built)
 - The Worn Bit: taking the bit off, the truce yard and its haggling, the long restoration, and keeping the giant
   or freeing it, with what each costs and earns. (built in large part; *"This should be a MAJOR pain to repair"*)
-- The pattern hull. (built)
+- The pattern hull, this biome's gift on his ship register; each section needs live metal from a deep drill.
+  (built; an agent's pick)
 - Shed curiosities and the charge for picking one up; the coolant in the eater's blood; the shock from the canal;
   standing that bleeds while the hum is at its worst; the giant frozen with the mood. (built)
 
 **Later (a crew that stays, a colony, or the campaign)**
 - The hiding mind and its long arc with the crew: stages, regard, offers, the survey, the descent and what is
   revealed. Campaign layer, and gated.
-- The two rites he shaped on 2026-10-02, the Mending Weld and the Stranger's Overhaul (rites are tabled).
+- The two rites he shaped on 2026-10-02, the Mending Weld (*"restoring an old creation. Very sacred."*) and the
+  Stranger's Overhaul (rites are tabled).
+- The interlock doors: paired factory doors the line-cycle swings, where bracing one seals the other for good.
+  Held for a second turn in October and never shown to him.
+- The campaign's price for bringing the Empire here, its going dark, and his ending in which it *"fights the
+  Empire and slowly falls"* and *"the ship mourns."*
+- The pass, which the mind *"can also grant... to the player jawas if it chooses."*
 - Gravtech boons; hum-literacy as a trade.
 - The rarer wall tiers between dead smartsteel and the deep metal.
 - The enclave seats, shrines and roads as places.
@@ -329,25 +427,59 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Any text that explains the mind, the droids' mercy or the deep response.
 - A heat kind of the Cathedral's own (retired for every biome by the one-sun unification).
 - The eldest eel, the armed great patroller, remnant rebuilding, sun bars, the Second Signature, the Loosing, and
-  four of the giant's five hooks (not chosen 2026-10-02).
-- Bolts flitting on walls.
+  four of the giant's five hooks: the Furrow, the Bounty Notice, Scoop-Loads and the Rider (not chosen
+  2026-10-02).
+- Stowaway bolts that go still a day after leaving (the pitch; he replaced it with bolts that remain).
+- A debt owed to the machines' own faction (the kit's reading; his August ruling names the Enclaves).
+- The nineteen hill tiles (the later flatness ruling); the mech-rat and the mech-chicken (his cuts).
+- **Dropped by an agent under his "I cut, you veto" card, though it was his own wish; he has not vetoed it:**
+  bolts flitting on walls. See `NEEDS HIM` 7.
 - **Recommended for dropping, not yet his:** alternate-planet scoring and rarity (there is no worldgen in any
   version).
 
 ## NEEDS HIM
 
-1. **What is the fuel here?** His ruling says every biome has a source, if only the slow one. This biome has
-   almost no biomass and no source in any document. *None, and say so* (default: the Cathedral is where a crew
-   that came for metal learns to arrive full). *The coolant:* it is the only liquid here and nothing rules what it
-   is; making it a slow or dangerous fuel is new invention on a watched resource, and it is very Jawa to siphon
-   it. *Bought only:* from the Junker yard or the Enclaves, which makes standing with the droids worth fuel.
-2. **Does the hum care that the Empire is coming?** *(The reason is not player-facing.)* His own plot canon is that
-   the crew's ship agitating the Empire is what this mind fears most. It is the plainest answer anywhere on the
-   planet to his lens question "is there anything here that forces the players to leave before the Empire does?"
-   *Not in these versions* (default: the campaign's concealment arc owns it). *0.2.0:* the hum rises a step with
-   each step the search climbs on this map, with no explanation offered, so the place visibly wants the crew gone
-   before the fight starts. Small to build on the existing mood; it must never trap.
-3. **Jawa with droids aboard, in the free droids' holy city.** No source says what the Enclaves or the hum make
-   of a crew whose trade is selling droids, landing with stock in the hold. *Nothing* (default). *Something:* it
-   is a ready-made source of slapstick and of standing lost or won, and it would be a new rule touching the
-   campaign's factions.
+Each is tagged with one theme. The ship ideas he did not choose are gathered in 8; none is revived.
+
+1. **[fuel] What is the fuel here?** His ruling says every biome has a source, if only the slow one. This biome has
+   almost no biomass. *None, and say so* (default: the Cathedral is where a crew that came for metal learns to
+   arrive full). *An ancient chemfuel refinery:* the game's own landmark, which a measured note of 2026-08-19
+   found is allowed on the donor biome; whether our definition allows it is unmeasured, and it would be the
+   least invented answer. *The coolant:* the only liquid here, and very Jawa to siphon; new invention on a
+   watched resource. *Bought only:* from the Enclaves (the Junkers run no trade), which makes standing with the
+   droids worth fuel.
+2. **[other] Does the place show that it wants the crew gone before the Empire comes?** *(The reason is not
+   player-facing.)* In the campaign this is ruled: the arc counts Empire attention brought onto this ground as
+   the largest loss of the mind's regard, and his ending has it fall. The open part is the free biome. *Nothing
+   in these versions* (default: the campaign owns it). *0.2.0:* the hum rises a step with each step the search
+   climbs on this map, with no explanation offered. Small to build on the existing mood; it must never trap.
+3. **[other] Jawa with droids aboard, in the free droids' holy city.** His words of 2026-08-19 give the history:
+   the Enclaves *"were hostile due to Jawa tendency to enslave and sell droids"* and are neutral now only because
+   the crew stole from the Hutts. What no source says is whether landing with droid stock in the hold, or selling
+   a droid while a hull bolt watches, moves that standing. *Nothing* (default). *Something:* it would be a new
+   rule touching the campaign's factions, and it is where this crew's trade and this place meet.
+4. **[hull] Does the particulate screen keep the bolts off?** Two of his rulings meet here. The screen *"repels
+   small animals"* (2026-09-02). The bolts climb onto the landed ship and stay (2026-10-02). And *"slow pressing
+   things move through all shields."* *They get through* (default: the bolts are slow, mechanical, and his later
+   ruling is the one about them). *They do not:* a crew then chooses between a clean hull and its passengers,
+   which is a real choice and costs him his stowaways on any careful ship.
+5. **[hull] The pattern hull as the ship's armour, and when.** An agent picked it as this biome's ship gift
+   (2026-11-11); it is built, switched off, and the only armour answer to wear in this biome. *0.2.0* (default
+   here). *0.1.0:* then the first version has the full trade (deep-drill for ingots, machines come, the hull
+   mends itself afterwards), at the cost of one more thing to prove.
+6. **[scope] One signature, or the pieces.** His card of 2026-11-17 was "Land, life, one signature", and the
+   cleanse read it as the temper alone. The first read moved the boarding bolts into 0.1.0 on his own words.
+   The line-cycle has the same claim: he picked it by card on 2026-10-02, it is built, it lasts a minute or two,
+   and it holds animals and machines but not the crew. *As written* (default: bolts board in 0.1.0; the
+   line-cycle waits for 0.2.0). *Both in 0.1.0. Neither* (the cleanse's reading).
+7. **[other] The bolt as a button on the wall.** His sheet note of 2026-10-05: *"Very small 0.1 cells, more like a
+   little button that flits around on walls and other surfaces."* The size is built. The wall movement was
+   dropped on 2026-10-23 by an agent as *"only a cosmetic wish"*, under his card *"I cut, you veto"*; the digest
+   that listed it did not say the wish was his. *Stays dropped* (default; nothing is built, and he has not
+   vetoed it). *Built the small way:* the bolt keeps to cells beside a wall and is drawn onto
+   the wall's face; one job-giver and a draw offset.
+8. **[other] Ship ideas he did not choose, listed so nobody revives one by accident.** All on 2026-10-02: **the
+   Loosing** (unbuild the thing the colony bolted down to stay and *"carry every piece aboard the ship's
+   hold"*); **the Rider** (bolts steering the giant from its cab, which *"move out onto the ship"* if the giant
+   is salvaged); and the first form of the stowaways, which went still a day after leaving, replaced by his own
+   (*"REMAIN on the ship"*). Not revived.

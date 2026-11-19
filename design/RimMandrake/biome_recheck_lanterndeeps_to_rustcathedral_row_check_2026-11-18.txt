@@ -21,7 +21,12 @@ Miasma: 342 rows (209 added by the second reader), 38 lost, 19 record a move, 2 
   broken-copy probe exit status (must be 2): 2 (one added row's outcome cell blanked; the check named the row)
   Miasma's 44 files are the ones its page lists under "Read to the end by the second reader"; the files read in part (the cleanse's large JSON records, the 87 KB mechanics item, the Codex record) are named on the page with what was skipped. A search of the cleanse's three large records for a ship, hull, Empire or landing line returned only the gravship-foundation rule.
 
-Not yet checked by this record: RustCathedral (its second read had not been done when this was written).
+RustCathedral: 307 rows (183 added by the second reader), 38 lost, 19 record a move, 5 reshaped, 0 folded into shared machinery; 23 named sources, sources with no row: none; rows without five cells: none; rows with empty outcome: none; probe (an invented source name must be reported): seen; source files read in full: 20, listed but not on disk: none
+  exit status: 0
+  broken-copy probe exit status (must be 2): 2 (one added row's outcome cell blanked; the check named the row; run before the last three rows were added, and the page re-checked after: exit 0)
+  RustCathedral's 20 files are the ones its page lists under "Read to the end by the second reader". Its page also names what was read in part (the August war rulings, the concealment arc spec, the cleanse's ambiguities and census) and what was not read (the cleanse's models, tickets, bars and review records; the Codex record; about 150 KB of build-record items, which were searched for his quoted words). Two measured facts on the page come from searches, not reading: the deep-history document holds none of the sheet's plot terms (kyber, smart metal, Archon, "losing battle": 0 lines each; "Scald": 4, so the search can see a hit), and the mod's source has no mention of the chemfuel refinery landmark (0 lines under src/RimMandrake/RustCathedral and src/RimUtinni/UtinniPatches).
+
+All five biomes of this item are now checked by this record.
 
 Measured for whoever takes LeaningScrub next (2026-11-18): design/concepts/LeaningScrub/ holds 3,774,046 bytes in 142 files, 130 of them distinct byte for byte; with its biome sheets, walk and 48 ledger items the sources are 4,172,822 bytes, and 2,562,955 bytes are left after the de-duplicating reader below marks every repeated line and sentence. The nine exam briefs under exam_runs/ each embed the tree.
 
