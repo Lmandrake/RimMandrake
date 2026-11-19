@@ -1433,10 +1433,13 @@ def ingame_main():
               # red off-host (12 of 12, measured 2026-11-17 on the Desktop). That refusal is a reading of the test
               # machine, never of the mod or of decide_ingame, which is what this block tests; the real gate keeps its
               # own selftest (RIMMANDRAKE_REFUSE_INGAME_VISIT_ON_STALE_COMPANION). The world owns it, so a check may
-              # still say FRESH or not.
+              # still say FRESH or not. `deployed` stands in for mod_deployed (the game folder's mod copy) the same way;
+              # its real gate is tested in selftest_maturation.py.
               "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
                                                                   bridge=lambda p, s: world["bridge"],
-                                                                  companion=lambda game="a": world["companion"], **kw)}
+                                                                  companion=lambda game="a": world["companion"],
+                                                                  deployed=lambda r_, m_: (True, "in sync (stand-in)"),
+                                                                  **kw)}
 
         def tick(c, at=0, apply=True):
             return MD.tick(root, c, apply, fx=dict(fx, facts=lambda: facts_for(c)), now=T0 + at, page=False)

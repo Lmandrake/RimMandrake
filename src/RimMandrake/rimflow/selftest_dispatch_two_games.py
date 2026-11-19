@@ -106,7 +106,9 @@ def main():
               "file": lambda item, title, why, **kw: (True, "filed %s" % item),
               "launch": lambda mod, cap, item, **kw: M.launch_mod(root, mod, cap, item, model="opus", seat="BENCH",
                                                                   bridge=lbridge,
-                                                                  **dict({"companion": fresh}, **kw))}
+                                                                  **dict({"companion": fresh,
+                                                                          "deployed": lambda r_, m_: (True, "in sync")},
+                                                                         **kw))}
 
         def tick(c, at=0):
             return MD.tick(root, c, True, fx=dict(fx, facts=lambda: facts_for(c)), now=T0 + at, page=False)

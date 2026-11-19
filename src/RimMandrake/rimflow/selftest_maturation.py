@@ -1577,6 +1577,21 @@ print("TAKEABLE  delegated: bridge idle (free)" if v == "YES" else "NOT TAKEABLE
 sys.exit(0 if v == "YES" else 1)
 """
 
+FAKE_DEPLOY = """#!/usr/bin/env python3
+import os, sys
+with open(os.environ["FAKE_DEPLOY_LOG"], "a") as f:
+    f.write(" ".join(sys.argv[1:]) + "\\n")
+v = os.environ.get("FAKE_DEPLOY", "SYNC")
+if v == "SYNC":
+    print("GimmeSomeSlack   mandrake.rm.gimmesomeslack\\n\\nEverything in sync.")
+elif v == "DRIFT":
+    print("GimmeSomeSlack   mandrake.rm.gimmesomeslack\\n    ~  Assemblies/RimMandrakeGimmeSomeSlack.dll\\n"
+          "    ~  Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash\\n\\nDrift found. Re-run with --apply to deploy.")
+    sys.exit(1)
+else:
+    sys.exit("deploy_custom_mods.py: no such mod in the repo: Pyrelands")
+"""
+
 
 def chk(fn, what):
     """ok(fn(), what), with an exception read as FAIL: on the base each check fails by itself."""
@@ -1704,7 +1719,8 @@ def ingame_main():
     before = git_status()
     root = tempfile.mkdtemp(prefix="maturation_ingame_")
     keys = ("MATURATION_DETACHED_HELPER", "FAKE_DH_LOG", "MATURATION_BRIEF_DIR", "MATURATION_CLOCK",
-            "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG", BM.STANDIN_ENV, M.COMPANION_ENV)
+            "MATURATION_BRIDGE_IDLE", "FAKE_IDLE", "FAKE_IDLE_LOG", BM.STANDIN_ENV, M.COMPANION_ENV,
+            "MATURATION_DEPLOY_PLAN", "FAKE_DEPLOY", "FAKE_DEPLOY_LOG")
     env_was = {k: os.environ.get(k) for k in keys}
     env_was.update(isolate(root))
     try:
@@ -1715,6 +1731,12 @@ def ingame_main():
         fresh_dll = CI.write_fixture(os.path.join(root, "companion", "fresh", CI.DLL_NAME), want)
         stale_dll = CI.write_fixture(os.path.join(root, "companion", "stale", CI.DLL_NAME), "0" * 64)
         os.environ[M.COMPANION_ENV] = fresh_dll
+        dep, dlog = os.path.join(root, "fake_deploy.py"), os.path.join(root, "fake_deploy.log")
+        with open(dep, "w") as f:
+            f.write(FAKE_DEPLOY)
+        open(dlog, "w").close()
+        os.environ.update({"MATURATION_DEPLOY_PLAN": "%s %s" % (sys.executable, dep), "FAKE_DEPLOY_LOG": dlog,
+                           "FAKE_DEPLOY": "SYNC"})
         write_ledger(root)
         fake, log = os.path.join(root, "fake_dh.py"), os.path.join(root, "fake_dh.log")
         idle, ilog = os.path.join(root, "fake_idle.py"), os.path.join(root, "fake_idle.log")
@@ -1822,6 +1844,25 @@ def ingame_main():
         chk(lambda: (lambda r: r[0] == 2 and "stand-in says old" in r[1] and not calls())(
             M.launch_mod(root, P, 20, ITEM, bridge=free, companion=lambda game="a": (False, "stand-in says old"))),
             "a companion stand-in that says not current refuses, with its words")
+        # the deployed mod copy matches the repo before a visit plays (2026-11-19: GSS's game DLL and .srchash differed
+        # from the repo build, and nothing in code checked)
+        os.environ["FAKE_DEPLOY"] = "DRIFT"
+        chk(lambda: (lambda r: r[0] == 2 and "Assemblies/RimMandrakeGimmeSomeSlack.dll" in r[1]
+                     and "deploy_custom_mods.py --mod %s --apply" % P in r[1] and not calls())(
+            M.launch_mod(root, P, 20, ITEM, bridge=free)),
+            "the deploy plan finds drift: launch refuses, names the differing files and the deploy command, launches "
+            "nothing")
+        chk(lambda: open(dlog).read().split("\n")[-2] == "--mod %s" % P,
+            "the deploy check runs the plan only (no --apply) for the mod's own folder")
+        os.environ["FAKE_DEPLOY"] = "BROKEN"
+        chk(lambda: (lambda r: r[0] is False and "could not read" in r[1] and "no such mod" in r[1])(
+            M.mod_deployed(root, P)),
+            "a deploy plan that cannot run is could-not-look, never in sync, and says why")
+        os.environ["FAKE_DEPLOY"] = "SYNC"
+        chk(lambda: M.mod_deployed(root, P)[0] is True, "a plan that reads Everything in sync reads deployed")
+        chk(lambda: (lambda r: r[0] == 2 and "stand-in says stale" in r[1] and not calls())(
+            M.launch_mod(root, P, 20, ITEM, bridge=free, deployed=lambda root_, mod: (False, "stand-in says stale"))),
+            "a deploy stand-in that says not current refuses, with its words")
         asked = []
 
         def go():

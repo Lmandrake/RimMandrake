@@ -2086,6 +2086,34 @@ def companion_current(game="a"):
     return v.get("state") == "FRESH", CI.describe(v)
 
 
+DEPLOY_PLAN_ENV = "MATURATION_DEPLOY_PLAN"     # a command run in place of deploy_custom_mods.py (selftests)
+
+
+def mod_deployed(root, mod, runner=subprocess.run):
+    """-> (current, why): does the game's copy of `mod` match the repo? deploy_custom_mods.py's plan (never --apply), for
+    Baroque Biomes when Biomes.compose.json composes the mod; only its "Everything in sync." reads current, and a plan
+    that cannot run is could-not-look. (2026-11-19: GSS visit 2 was owed with the game's DLL and .srchash older than the
+    repo build; the brief told the driver to deploy, and nothing in code checked.)"""
+    args = ["--compose", "biomes"] if BM.composed_into(root, mod) else ["--mod", mod]
+    fix = "deploy it while the game is down: `python3 src/RimMandrake/Utils/deploy_custom_mods.py %s --apply`" % " ".join(
+        args)
+    cmd = os.environ.get(DEPLOY_PLAN_ENV, "").split() or [
+        sys.executable, os.path.join(os.path.dirname(HERE), "Utils", "deploy_custom_mods.py")]
+    try:
+        r = runner(cmd + args, capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return False, "the deploy plan could not read the game copy (%s: %s); %s" % (type(e).__name__, e, fix)
+    out = ((r.stdout or "") + (r.stderr or "")).strip()
+    if r.returncode == 0 and "Everything in sync." in out:
+        return True, "the game's copy of %s matches the repo" % mod
+    if "Drift found." in out:
+        diff = [x.strip() for x in out.splitlines() if x.strip()[:2] in ("~ ", "+ ", "- ")]
+        return False, "the game's copy of %s differs from the repo (%s%s); %s" % (
+            mod, ", ".join(diff[:4]), " and %d more" % (len(diff) - 4) if len(diff) > 4 else "", fix)
+    return False, "the deploy plan could not read the game copy (exit %s: %s); %s" % (
+        r.returncode, (out.splitlines() or ["no output"])[-1][:200], fix)
+
+
 def game_brief(game):
     """The brief's section naming the run's game: game_instance.brief (RIMMANDRAKE_LAUNCH_BOTH_GAMES_STEAM_REFUSES_A_BESIDE_B)."""
     utils = os.path.join(os.path.dirname(HERE), "Utils")
@@ -2096,7 +2124,8 @@ def game_brief(game):
 
 
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
-               resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None, companion=None):
+               resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None, companion=None,
+               deployed=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -2111,7 +2140,8 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     (modledger.resume_plan, `--resume`); reconcile: why the last run was killed or lost, so the brief opens with the
     reconcile step (RIMMANDRAKE_RESUME_HOLDER_SESSIONS_TO_400K_KILL_AND_RESUME). game: the game an in-game run drives
     (the Dispatch step's free choice): it reaches the unit as RM_GAME_INSTANCE and the brief, and the bridge read is
-    that game's. companion: a stand-in for companion_current (an in-game visit refuses a companion not current)."""
+    that game's. companion: a stand-in for companion_current (an in-game visit refuses a companion not current);
+    deployed: a stand-in for mod_deployed (an in-game visit refuses a game copy of the mod that differs from the repo)."""
     if game:
         env = dict(env or {}, RM_GAME_INSTANCE=game)
     game = (env or {}).get("RM_GAME_INSTANCE") or "a"
@@ -2151,6 +2181,10 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
         if not cur:
             return 2, ("REFUSED: %s's in-game visit %s would drive an old JawaBench companion, so its checks would not be "
                        "the ones committed: %s; %s" % (mod, f.get("visit"), cwhy, COMPANION_FIX)), None
+        cur, dwhy = (deployed or mod_deployed)(root, mod)
+        if not cur:
+            return 2, "REFUSED: %s's in-game visit %s would play a game copy not checked against the repo: %s" % (
+                mod, f.get("visit"), dwhy), None
         text = text.rstrip("\n") + "\n\n" + game_brief(game)
     elif f.get("stage") != "offline_build":
         return 2, ("REFUSED: %s stands at %s; only an offline build, a blind challenge or an in-game acceptance "
