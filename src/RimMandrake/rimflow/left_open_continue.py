@@ -163,6 +163,18 @@ def relaunched(rec, targets, now, root=None):
     return later[0]["unit"] if later else None
 
 
+def waiting(got, now):
+    """-> why the item's own dated `rimflow wait` forbids a continuation now, or None (no wait, or its date passed).
+    A wait is the item saying nothing can move before its date; an unreadable date is a no, named."""
+    until = (got or {}).get("wait_until")
+    if not until:
+        return None
+    t = DH._epoch(until)
+    if t is None:
+        return "its wait date %r could not be read, so it is treated as still running" % (until,)
+    return "it waits until %s (rimflow wait), so a continuation now has nothing to do" % local(t) if t > now else None
+
+
 def plan(rec, got, lane_states, now=None, gates=None, root=None):
     """-> {act: continue|alarm|none, why, ...}. rec: the finished run (its result set); got: read_item's {state, notes}
     for its item from the run's clone; lane_states: {ticket: state} for its lane's tickets."""
@@ -198,6 +210,9 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
     else:
         return dict(base, act="none", why="%s is still %s with no LEFT OPEN: note since the run began and no open "
                                          "lane ticket (finish flags it OWED)" % (item, state))
+    waits = waiting(got, now) if target == item else None
+    if waits:
+        return dict(base, act="none", why=waits)
     no = gate_no(rec, target, gates)
     if no:
         return dict(base, act="none", why=no)

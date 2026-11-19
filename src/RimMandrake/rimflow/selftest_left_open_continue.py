@@ -368,9 +368,20 @@ def test_launch_records_opt_in():
     check("I: --continue-on-cap takes a number", out == [2], str(out))
 
 
+def test_waiting():
+    """A LEFT OPEN item under a dated `rimflow wait` still ahead is not continued; past its date it is."""
+    rec = make_run(at=T0 + 20)
+    got = {"state": "doing", "notes": [note(LEFT, T0 + 500)], "wait_until": DH.iso(T0 + 3 * 86400)}
+    p = LOC.plan(rec, got, {}, now=T0 + 700, gates=Gates().as_dict())
+    check("W: a running wait plans no continuation", p["act"] == "none" and "wait" in p["why"], str(p))
+    got["wait_until"] = DH.iso(T0 + 600)
+    p = LOC.plan(make_run(at=T0 + 21), got, {}, now=T0 + 700, gates=Gates().as_dict())
+    check("W: a wait past its date continues", p["act"] == "continue", str(p))
+
+
 def main():
     for t in (test_open_with_note, test_closed, test_lane, test_limit, test_capped, test_killed_voided, test_gates,
-              test_finish_kicks, test_launch_records_opt_in):
+              test_finish_kicks, test_launch_records_opt_in, test_waiting):
         try:
             t()
         except Exception as e:  # noqa: BLE001

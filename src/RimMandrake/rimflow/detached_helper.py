@@ -1032,13 +1032,13 @@ import model
 item = sys.argv[1]
 evs = model.read()
 it = model.replay(evs).items.get(item)
-print(json.dumps({"state": getattr(it, "state", None),
+print(json.dumps({"state": getattr(it, "state", None), "wait_until": getattr(it, "wait_until", None),
                   "notes": [e for e in evs if e.get("id") == item and e.get("event") == "note"]}))
 """
 
 
 def read_item(clone, item):
-    """-> {"state", "notes"} for the item as the run's clone folds its ledger (the run's own close sits there before
+    """-> {"state", "wait_until", "notes"} for the item as the run's clone folds its ledger (the run's own close sits there before
     any other clone pulls it), or None when that cannot be read."""
     try:
         r = subprocess.run([sys.executable, "-c", READ_ITEM, item], cwd=clone, capture_output=True, text=True,
