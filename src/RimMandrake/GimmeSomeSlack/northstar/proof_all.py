@@ -215,6 +215,9 @@ def _run(cmd, timeout=1800):
     return r.returncode, (r.stdout or "") + (r.stderr or ""), round(time.time() - t, 1)
 
 
+OFFLINE_CENSUS_TESTS = ("selftest_gss_stub_art_census.py", "selftest_gss_statics_census.py")
+
+
 def offline_gate():
     """Every offline check, as {"red": [ids], "steps": {...}, "spec": path}. Runs in WSL python3."""
     red, steps = [], {}
@@ -242,6 +245,12 @@ def offline_gate():
     steps["selftest_proof_all"] = {"exit": rc, "tail": out.strip().splitlines()[-1:], "wall_s": w}
     if rc:
         red.append("selftest_proof_all")
+    # the test table's census deciders (make_test_table feeds the certificate): a mod commit lands against them too
+    for census in OFFLINE_CENSUS_TESTS:
+        rc, out, w = _run([sys.executable, os.path.join(HERE, census)])
+        steps[census[:-3]] = {"exit": rc, "tail": out.strip().splitlines()[-1:], "wall_s": w}
+        if rc:
+            red.append(census[:-3])
     os.makedirs(SCRATCH_POSIX, exist_ok=True)
     spec = os.path.join(SCRATCH_POSIX, SPEC_NAME)
     rc, out, w = _run([sys.executable, os.path.join(MX_DIR, "design_spec.py"), "--out", spec])

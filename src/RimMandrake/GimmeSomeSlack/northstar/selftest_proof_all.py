@@ -476,5 +476,8 @@ check("11 control: ModsConfig not what is running (edited mid-session) names no 
 check("12 gate: win32 refuses as HARNESS naming WSL python3", "HARNESS" in (PA.offline_gate_refusal("win32") or "") and "python3" in PA.offline_gate_refusal("win32"))
 check("12 control: linux has no refusal", PA.offline_gate_refusal("linux") is None)
 
+check("13 gate: every census decider exists and is in the offline gate's list",
+      len(PA.OFFLINE_CENSUS_TESTS) == 2 and all(os.path.exists(os.path.join(PA.HERE, c)) for c in PA.OFFLINE_CENSUS_TESTS))
+
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))
 sys.exit(1 if FAILS else 0)
