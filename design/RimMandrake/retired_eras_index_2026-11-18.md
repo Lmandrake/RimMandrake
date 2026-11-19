@@ -289,7 +289,7 @@ Live importers are repointed in the same commit, and the live cases of the old t
 | the walled box a checker runs in: `box_config`, `profile`, `make_box`, `remove_box`, `props`, `unit_env` and their grants, copies and constants (24 functions, 475 of 719 lines) | `rimflow/relentless_wall.py` | `rimflow/checker_box.py` (importers repointed: `evidence.py`, `item_exam.py`) | `selftest_evidence.py`; `selftest_relentless_wall.py` green through the shim. Its config is still `relentless_box.json` (renamed in the json step) | `a164008a3e` |
 | the Setter seam: `status`, `set_status`, `kick`, `unit_name`, `run_setter`, `box_runner`, `apply_patch` and their readers (18 functions, 249 of 911 lines) | `rimflow/relentless_exam.py` | `rimflow/item_exam.py` (importers repointed: `role_launch.py`, two role_launch tests) | `selftest_role_launch*.py` (6, green); `selftest_relentless_exam.py` green with its box stand-in on `checker_box` | `a164008a3e` |
 | the arbiter seam: `role_stage_dispute` and the arbiter run it starts (14 functions, 239 of 712 lines) | `rimflow/relentless_dispute.py` | `rimflow/stage_dispute.py` (imports `item_exam`, `run_store`; importers repointed: `role_launch.py`, `selftest_role_launch_reject_routes.py`) | `selftest_relentless_dispute.py` (its role-entry case now patches `run_store`/`stage_dispute`) | `a164008a3e` |
-| the live config the moved code and the pipeline read: `relentless_rules.json` (the whole file: helper budget, dispatch, steward, pipeline watch, running_now, incident, circling and the mod proofs read keys of it), `relentless_owner_pause.json`, `relentless_box.json`, `relentless_exam.json`, `relentless_dispute.json` | `rimflow/` | `rimflow/run_rules.json`, `owner_pause.json`, `checker_box.json`, `item_exam.json`, `stage_dispute.json` (git mv; every reader in `src/` and `.claude/agents/rm-builder.md` updated; skills, handoffs, ledger and dated design docs keep the old name as history) | the readers' 26 tests; `selftest_evidence_recovery.py` R7 repointed (its fake `relentless` module had gone stale at move 2) | json step |
+| the live config the moved code and the pipeline read: `relentless_rules.json` (the whole file: helper budget, dispatch, steward, pipeline watch, running_now, incident, circling and the mod proofs read keys of it), `relentless_owner_pause.json`, `relentless_box.json`, `relentless_exam.json`, `relentless_dispute.json` | `rimflow/` | `rimflow/run_rules.json`, `owner_pause.json`, `checker_box.json`, `item_exam.json`, `stage_dispute.json` (git mv; every reader in `src/` and `.claude/agents/rm-builder.md` updated; skills, handoffs, ledger and dated design docs keep the old name as history) | the readers' 26 tests; `selftest_evidence_recovery.py` R7 repointed (its fake `relentless` module had gone stale at move 2) | `829686e552`, old names deleted `99d4de3569` |
 
 For move 3, `selftest_role_launch_reject_routes.py` was also set aside as a root (its wildcard use of `relentless_dispute` made the whole module look live). Measured first: the exam's own unit (`relentless_exam.py run`, what `kick` starts) counts as dead, because every unit the Setter seam, the arbiter and the box start is launched as family `relentless`, which the control store refuses (`./pipe show`: `family:relentless OFF`, 2026-11-18). Both seams act only on an item with a Relentless-era exam (102 in the store, newest 2026-11-06). Their retirement is filed as `RIMMANDRAKE_RETIRE_SETTER_ARBITER_SEAMS_EVERY_LAUNCH_REFUSED`, with its acceptance test. `era_reach.py` gained `--roots` for script entries.
 
@@ -297,26 +297,47 @@ For move 2 the cut line also set aside the relentless cases of eight more tests 
 
 The cut line for moves 1 onward (BENCH, second run, 2026-11-18): `era_reach.py . selftests --exclude-roots <list>`, the list being the four era tools, `Utils/ops_watch.py` (its only era roots are the relentless points) and 29 rimflow tests that test the dead tick, live round, pool or validator replay: `selftest_{companion_cover_batchreads,engine_review_leftovers,jam_classes,live_companion_gate,live_mods_tooling_dirs,live_pacing_pruned,live_round_item_gate,live_verdict,liveround_stale_build,names_modcheck_closure,pool_dead_runs_release,pool_game_waiters_release,proof_cost,proof_sha_cited_mods,repro_miss,workshop_live_mods,books_untracked_runs,evidence_wire_repair,fake_effects_drift,fakeworld_parity,livecheck_reader,validator_mutants,wrapup_restore,first_touch,evidence_gate,evidence,close_gate,concept_tree,judge_card_answers}.py`. The last eight test live modules too: at the deletion step only their relentless cases go, the rest stay. Measured with that list: **270 functions live** (plus their constants) of 1,569, in 11 modules: `relentless` 68, `dispute` 55, `live` 52, `exam` 36, `wall` 24, `live_round` 11, `usage` 10, `disk` 7, `game` 4, `integrity` 2, `wake` 1.
 
-Left for the next run, in this order (each one move per commit, the launcher check after any that touches
-`detached_helper.py`, `role_launch.py`, `maturation_autonomy.py` or `cli.py`):
+Left for the next run (state at 2026-11-18 4:40 PM PST, after `99d4de3569`). Measured then with the cut line above
+(`era_reach.py`, dead-root list plus the eight dead-case tests and `selftest_role_launch_reject_routes.py`, the
+`--only-methods` spec of move 2): **no live file reaches a function of any `relentless*.py` module**; what still imports
+them is the era's own code and tests. In this order, one commit each, the launcher check after any that touches a
+launcher import:
 
-1. `relentless_live.py` (the proof-line lint `cli.py prooflint` calls: `lint_item`, `live_rules`, `refused_proof`,
-   `refused_site`, `proof_budget`) and `relentless_live_round.py` (`proof_lines`, `live_mods`, `folders`, `site_for`,
-   `clause_tier`, `is_package`, `mods_tier`: the mod proofs' helpers) -> `proof_lint.py` and `proof_lines.py`;
-   `relentless_game.py` `flyer_hold`/`proof_lines` with them. Repoint `cli.py`, `owner_queue.py` and the ~25 mod
-   proof tests listed in the measured-reach section.
-2. `relentless.py` -> `run_store.py` (`Store`, `Effects`, `rules`, `guard`, `pilot_model`, `CHAIN_MAX_PER_DAY`,
-   `day_of`, the clone/bundle helpers), with `relentless_disk.py`, `relentless_integrity.py`, `relentless_usage.py`,
-   `relentless_wake.store_dir` beside it; `relentless_rules.json` -> `run_rules.json` (live keys only). Repoint
-   `detached_helper.py`, `circling.py`, `evidence.py`, `role_launch.py`, `maturation_autonomy.py`, `cli.py`,
-   `modledger_backfill.py`. Then the launcher check.
-3. `relentless_exam.py` (Setter seam) -> `item_exam.py`; `relentless_dispute.py` (arbiter seam) -> `stage_dispute.py`;
-   `relentless_wall.py` (the walled box they run in, `box_config`) -> `checker_box.py`; their json beside them.
-4. Deletion: every `relentless*.py` and `relentless_*.json`, the 117 era selftests, the four era tools
-   (`validator_replay.py` with `validator_replay/`, `lightspeed_wire.py`, `block_migrate.py`,
-   `replay_unreached_closes.py`), `ops_watch.py`'s relentless points and their three Utils selftests and two fixtures,
-   the 29 dead-machinery rimflow tests, the wake poke in `publish.py` and `Utils/land.sh`; one Removed row each.
-5. Then the rest of the Phase 2 table (`Utils/pulse/**`, the sims, the v3 docs, `FOUNDRY.md`, unit copies).
+1. **Strip the relentless cases out of the partial tests**, keeping their live cases (repoint those to `run_store`,
+   `proof_lint`, `proof_lines`, `item_exam`, `stage_dispute`, `checker_box`): `Utils/selftest_codex_runner`
+   (`test_relentless_argv`), `selftest_conductor_log_guard` (the relentless writer), `selftest_ops_health_incidents` and
+   `selftest_ops_health_fan_in` (`owner_pause`, `owner_pipeline`, `repair_id`), `rimflow/selftest_incident` (relentless
+   alarms), `selftest_testpilot_model` (`Effects.launch`, `STAGE_AGENT`; its `pilot_model` cases -> `run_store`),
+   `selftest_prooflint_at_filing` (case 6, `proof_text_owed`), `selftest_run_tmp` (the tick hook), `selftest_close_gate`
+   (`s4_relentless`), `selftest_concept_tree` (`R.concept_refused`, `R.lease`), `selftest_evidence` (the
+   `relentless_boxrun` rigs), `selftest_evidence_gate` (`R.verdict`), `selftest_first_touch` (`R.eligible`),
+   `selftest_judge_card_answers` (reads relentless source), `selftest_wrapup_restore` (R9), `selftest_conductor_authority`
+   (`relentless.py unhold -h`), `Utils/selftest_scratch_clone` (`relentless.json` sidecar cases if dead).
+2. **Script-path and text users** (not imports, so the walk does not see them; grep `relentless` in each): the wake poke
+   in `Utils/publish.py` (`wake_relentless`) and `Utils/land.sh`; `ops_watch.py`'s relentless points (`c_relentless`,
+   `rl_game_hold_idle`, `rl_broker_turn_ended`, the `relentless.py expedite set` call) with
+   `Utils/selftest_relentless_watch.py`, `selftest_relentless_game_hold_agrees.py`,
+   `selftest_ops_watch_relentless_retired.py` and the two fixtures; `entrypoint_inventory.py`; and the files the first
+   grep listed (`Utils/{agent_improve,clone_mem_probe,fleet_mods,ops_health,ops_lives,provision_checkbox_venv,push_refusal_census,running_now,scratch_clone}.py`,
+   `Utils/pulse/{pulse_core,time_ledger}.py`, `Utils/sim/fanout_sim.py`, `contracts/blind.py`,
+   `rimflow/acceptance/*_accept.py`, `rimflow/{control,delivery_metrics,incident,jam_classes,notebox,wrapup}.py`,
+   `.claude/hooks/notebox_deliver.py`): each is either a store-path reader (keep: the store path stays) or an era reader
+   (delete the era part).
+3. **Delete**: every `rimflow/relentless*.py` (43; `relentless.py` now holds only dead code over `run_store`), the
+   remaining `relentless_*.json` (`boxrun`, `broker`, `jobs`, `selfbuild`, `wake`), the 117 `selftest_relentless*.py`
+   and their testdata, the 21 wholly-dead tests of the dead-root list, the four era tools (`validator_replay.py` with
+   `validator_replay/`, `lightspeed_wire.py`, `block_migrate.py`, `replay_unreached_closes.py`),
+   `prove_relentless_s03_compare.py`, `selftest_bridge_seat_relentless.py`, the `Utils/systemd/rm-relentless*` copies.
+   Before it: run `era_reach.py` once more and an undefined-name check (pyflakes) over every file that imported one.
+   One "Removed" row each, with the last sha.
+4. Then the rest of the Phase 2 table (`Utils/pulse/**`, the sims, the v3 docs, `FOUNDRY.md`, unit copies), and the
+   follow-ups filed on the way: `RIMMANDRAKE_RETIRE_SETTER_ARBITER_SEAMS_EVERY_LAUNCH_REFUSED` (lets `item_exam.py`,
+   `stage_dispute.py` and most of `checker_box.py` go) and `RIMMANDRAKE_RETIRE_LEASE_GUARD_TWENTY_FIVE_GHOST_LEASES`
+   (the guard, now in `run_store.py`).
+
+Found on the way, not caused by the split: `selftest_relentless_checkbox.py` is red 8 at HEAD (a box cannot read
+`rimflow/control.py`; era test, goes at step 3); `selftest_focus_cap.py` is red (filed
+`RIMMANDRAKE_FIX_FOCUS_CAP_REFUSED_CLAIM_STILL_TAKES_LEASE`). The tools need `PYFLAKES_PYTHON` (a venv with pyflakes).
 
 Kept on purpose (on-disk paths live code reads, NOT renamed by this item): `/home/mandrake/rm/relentless/store`
 (`Store`'s default root: `scratch_clone.py`, `running_now.py`, `circling.py`, `evidence.py` and `role_launch.py` read
