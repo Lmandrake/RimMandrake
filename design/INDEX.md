@@ -1094,7 +1094,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `relative_depth_climb_gpt_review_2026-10-12.md` | GPT review — relative depth and climbing out (2026-10-12) | — |
 | `release_proximity_2026-10-22.md` | Release proximity, 2026-10-22 (FOUNDRY, read-only ranking) | — |
 | `relentless_improvement_loop_2026-11-03.md` | Relentless improvement loop — owner, 2026-11-03 | — |
-| `relentless_recovery_plan_2026-11-05.md` | Relentless recovery plan, 2026-11-05: second read of the GPT review, and a ranked plan | — |
 | `concept_tree_schema.md` | The acceptance tree: file format (2026-11-01) | — |
 | `relic_replacements_proposal.md` | Relic replacements for the five broken VWE relic precepts — PROPOSAL, awaiting owner approval | — |
 | `retired_eras_index_2026-11-18.md` | Retired eras: what was removed, where it lived, what stays and why (2026-11-18) | — |

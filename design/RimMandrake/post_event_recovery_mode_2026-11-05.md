@@ -1,6 +1,6 @@
 # Post-event recovery mode: a design, replayed on 2026-11-04 (OPS_RECOVERY_DESIGN_POST_EVENT_MODE)
 
-Status: DESIGN. Nothing here is built. This is step 7 of `design/RimMandrake/relentless_recovery_plan_2026-11-05.md`.
+Status: DESIGN. Nothing here is built. This is step 7 of the retired Relentless recovery plan (`git show 9e35e61381:design/RimMandrake/relentless_recovery_plan_2026-11-05.md`).
 Steps 2, 3, 5 and 6 of that plan are parts of this design, and each is already filed as its own item. Inputs:
 GPT consult B (`design/RimMandrake/relentless_failure_review_gpt_2026-11-05.gpt_read.md` l.225-300), the failure catalog
 (`design/RimMandrake/relentless_failure_catalog_2026-11-05.md`, classes c, i and j), and the readings cited in §7.

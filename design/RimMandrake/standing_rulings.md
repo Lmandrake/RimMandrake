@@ -563,8 +563,9 @@ is impaired (the account circuit is open, storage headroom is spent, the assessm
 suspect). Otherwise only content in the spent SLI's lane waits (each SLI's `scope` in `ops_watch_rules.json`
 `health.slis`: `game` reaches content that needs the live game, `system` reaches no content), a free place is kept for
 each system item still in line, and content he ruled on within 48 h may take a kept place (every other check still
-applies). Runnable content held over 6 h is told to the Conductor, naming the system items holding it. Build item
-`DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE`; spec `design/RimMandrake/relentless_recovery_plan_2026-11-05.md` §3.
+applies). Runnable content held over 6 h is told to the Conductor, naming the system items holding it. Why (measured 2026-11-05): the spent SLIs were not tied to the items that would heal them, so one red nightly class
+stopped every mod item, including ones he had ruled on that day. Build item `DEGRADED_PAUSE_FIX_STOPS_ONLY_WHAT_BROKE`;
+the spec, the retired Relentless recovery plan's §3, is in git: `git show 9e35e61381:design/RimMandrake/relentless_recovery_plan_2026-11-05.md`.
 
 ## Wrap-up is a script, never a request — owner, 2026-11-03
 

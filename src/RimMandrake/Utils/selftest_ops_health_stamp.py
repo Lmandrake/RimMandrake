@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ops_health: unusable health rules read UNMEASURED, never healthy, and every verdict names its inputs
-(OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY, relentless_recovery_plan_2026-11-05 step 2, finding B1: verdict() set b={}
+(OPS_HEALTH_FIX_BROKEN_RULES_READ_HEALTHY, step 2 of the retired Relentless recovery plan, git show 9e35e61381:design/RimMandrake/relentless_recovery_plan_2026-11-05.md, finding B1: verdict() set b={}
 when the rules were unusable, so spent=[] gave state "healthy" and content_paused False — a broken instrument read green).
 
 Three cases from the plan: unusable rules, missing ledger, pinned-input replay byte-identical; plus the ops_watch point

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """selftest_alarm_closed_reopen.py -- OPS_ALARM_FIX_CLOSED_TICKET_SILENCES_FAULT: closing an alarm's ticket cannot
-silence an unfixed fault (design/RimMandrake/relentless_recovery_plan_2026-11-05.md step 3).
+silence an unfixed fault (step 3 of the retired Relentless recovery plan: git show 9e35e61381:design/RimMandrake/relentless_recovery_plan_2026-11-05.md).
 
 Real rules, real ops_watch.run_alarms: file an alarm, close its item, keep the reading crossed with nothing new and
 nothing worse -> the alarm reopens that same item. Before the fix it returned at "nothing new" and stayed silent. Also:

@@ -85,7 +85,6 @@ radius), and the proposed new name.
 | `src/RimMandrake/Utils/pulse/**` | RimPulse's dashboard is retired (owner 2026-11-03), but its package is live: `pulse_core` (ops_watch, deadman_check, known_reds), `phone_push` (switching_plan, deadman_check, login_watch), `failreport` (winbuild, testq steward), `streams` and `testing_metrics` (rm-streams-collect.timer, enabled), `pulse.py report` / `update` (findings_judge.sh, rm-deploy-update.service, rm-agent-improve.service, rm-selftests-nightly.service). Units run it from the deploy checkout `/home/mandrake/rm/pulse-deploy` (65 tracked files name that path). | `src/RimMandrake/Utils/ops_core/` (pulse_core, phone_push, failreport, streams, testing_metrics, usage, the `report`/`update` verbs); delete the dashboard pages (mission_page, brief, agents_timeline, time_ledger and its replay fixtures) once nothing imports them; rename the deploy checkout |
 | `pulse` | the repo-root launcher of `pulse.py` (`./pulse back`, `report`, `update`) | goes with the package rename |
 | `design/RimMandrake/relentless_improvement_loop_2026-11-03.md` | cited by `Utils/findings_judge_prompt.md` (the live findings judge), `rimflow/concept_tree.py`, `rimflow/evidence_metrics.py`, `rimflow/jam_classes.json` | fold what the findings judge still needs into its prompt, then delete |
-| `design/RimMandrake/relentless_recovery_plan_2026-11-05.md` | cited by `standing_rulings.md` (§3 "pause only what it touches"), `selftest_alarm_closed_reopen.py`, `selftest_ops_health_stamp.py` | move §3 into `standing_rulings.md`, then delete |
 | `design/RimMandrake/rimpulse_redesign_2026-10-23.md` | cited by `Utils/pulse/brief.py` and the docs map `rimflow/docs/README.md` | goes with the pulse package rename |
 
 Old names inside live files (not paths, so the guard does not see them), for the same phase:
@@ -282,6 +281,7 @@ Renamed 2026-11-18, every live reference repointed in the same commit (history, 
 Renamed 2026-11-18 the same way: `sim/ralph_loop_sim.py` to `sim/loop_sim.py` and `sim/rimflow_v3_sim.py` to `sim/process_sim.py`, with their params, selftests and `rimflow_v3_sim_findings_2026-10-27.md` (now `process_sim_findings_2026-10-27.md`); `rimflow/selftest_foundry_literals.py` to `rimflow/selftest_retired_seat_literals.py`.
 
 Removed 2026-11-18: `infrastructure/agents/FOUNDRY.md`, with FOUNDRY out of `set_agent_window.sh`; a window naming the seat is refused and gets no identity (`selftest_conductor_identity.py`). `model.SEATS` and `cli.RETIRED_SEATS` keep FOUNDRY so its closed items replay.
+Removed 2026-11-18: `design/RimMandrake/relentless_recovery_plan_2026-11-05.md`; its §3 ruling and the measured reason now stand in `standing_rulings.md` (An unhealthy system pauses only what it touches); every citer points at `git show 9e35e61381:design/RimMandrake/relentless_recovery_plan_2026-11-05.md`.
 
 Left, in order:
 
