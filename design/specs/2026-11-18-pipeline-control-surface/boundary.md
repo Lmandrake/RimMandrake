@@ -46,6 +46,11 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
   built another way is not seen.
 - **corrupt-or-lost-store.** It is not repaired. Nothing launches (a promise below) and `pipe doctor` names the fix.
 - **a-store-locked-over-3-seconds.** The command says it could not look and exits 3. A unit kill does not wait.
+- **a-unit-launched-with-its-suffix.** A `spec["unit"]` ending in `.service`. `pipe stop` strips the suffix, so
+  the stop order is written for the bare name and that run's hook never sees it (finding 14 of
+  RIMMANDRAKE_FIX_SLICE_REVIEW_TWENTY_FINDINGS_QUEUE_FIRST, run on real systemd 2026-11-19). No launcher writes one:
+  every `launch_unit` call site builds a bare name, and 0 of 170 runs in the live store carry the suffix
+  [measured 2026-11-19].
 
 Rare failures the code handles today but does not promise to (owner card 2026-11-19, `standing_rulings.md` §A
 boundary page before pipeline code, Decision 4: a rare failure is listed here, not fixed and not reviewed):
