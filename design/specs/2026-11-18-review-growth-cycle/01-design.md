@@ -2,7 +2,11 @@
 
 Written 2026-11-18, 10:20 to 10:50 PM PST, by a detached designer (Fable) for the Conductor. Item
 `RIMMANDRAKE_DESIGN_REVIEW_TREADMILL_FIX_COUNT_WAS_FLAT`. Problem statement: `00-problem.md` beside this file.
-**Nothing here is enacted or ruled.** No helper was started, no code changed, no second model has read this.
+No second model has read this. **Ruled since:** the owner picked the recommended option on all three decisions of
+section 8 by card (2026-11-18, 11:19 to 11:25 PM PST): `design/RimMandrake/standing_rulings.md` §A boundary page before
+pipeline code. Enacted so far: the control store's page and its later lists
+(`design/specs/2026-11-18-pipeline-control-surface/boundary.md`, `polish.md`, `next_version.md`). Sections 5.2 to 5.5
+and section 6 steps 4 to 6 are open tickets, not built.
 
 Tags: [measured: source] is a number read or counted tonight, by me or by the report named. [guess ~N%] is my
 estimate. "The analyst" means the two read-only reports in `D:\ClaudeWork\rimmandrake\conductor\`
