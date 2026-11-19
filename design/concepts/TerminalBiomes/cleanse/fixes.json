@@ -1,29 +1,9 @@
 {
   "fixes": [
     {
-      "id": "R1",
-      "changed": "B5 compares ordinary bank harvest with the strongest reachable alternatives, including off-bank lit gardens, and rejects a bank that only beats dim ground. B8 observes workers choosing the bank during calm under ordinary orders.",
-      "where": "bars.json B5, B8 and season diagnostics, definition.md First Twilight work and signature, owner_pages.md signature and Productive bank, result.json signature, ambiguities.md 23, models.md M3, tickets.md T40, T42 and T44"
-    },
-    {
-      "id": "R2",
-      "changed": "Specified a Twilight wild-spawn weight for eligible RM_Gloamurn and RM_HoolimbrePlant on authoritative bank silt at seeding and refill. Split the missing bank advantage out of the present C10 flora roster, recorded it as absent with T44, and linked C22 to it.",
-      "where": "bars.json R15, census.json C10, C22 and C30, tickets.md T44, definition.md First Twilight work, ambiguities.md 23"
-    },
-    {
-      "id": "R3",
-      "changed": "B7 uses a labelled staged start with every kept mechanic enabled and reads normal updates through expiry, loss of old light and scheduled replacement. A countdown-only control fails. K11 remains a regression check and B8 uses unedited well ages.",
-      "where": "bars.json B7, B8, K11 and R7, owner_pages.md beside Q1, definition.md well lifecycle, ambiguities.md 16, models.md M1, M3 and M5, tickets.md T40, T42 and T46"
-    },
-    {
-      "id": "R4",
-      "changed": "Deferred timed rim overgrowth and grazing, spent-rim patching and the selectable ceiling plane under T52. The same living protected swimmer stays visible far overhead wherever the waveglass stands. Updated the dependent bars, models and tickets to the smaller scope.",
-      "where": "bars.json B2, B7, B8, R7, former R12/R13 and K12, and meetings, census.json C21 and X37–X39, next_version.md roof-work entries, tickets.md T43 and T52 and dependent tickets, definition.md gardener, models.md M1–M3 and M5, ambiguities.md 15, owner_pages.md scope, result.json counts"
-    },
-    {
-      "id": "R5",
-      "changed": "Kept the existing cross-biome controls under C27 and the 2026-10-15 card, default off with the required unsupported label. Removed the retirement recommendation and repurposed T33 to verify the inherited settings.",
-      "where": "owner_pages.md settings and counts, census.json X33, next_version.md former T33 entry, tickets.md T33, definition.md Settings, ambiguities.md 20, result.json counts"
+      "id": "G1.1",
+      "changed": "Updated B2’s visual sort control to use T43’s saved living-gardener identity and far-overhead presentation and to confirm floor paths are unchanged beneath the gardener.",
+      "where": "bars.json bars/B2 sees.control"
     }
   ]
 }

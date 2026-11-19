@@ -65,9 +65,3 @@ Models, first to build first:
 Open work includes channel-bed terrain, real hull reservations, the living gardener, composed travel and shore delivery, and a campaign-tier harvest binding. The dependency sources and floor-retention contract are identified. Gameplay evidence is still owed.
 
 The reviewer’s findings are addressed in this revision. The proposal awaits fresh review and your approval before application.
-
-## Still refused after the second look (the reviewer's words)
-
-The proposal cannot be applied until each of these is resolved or you accept it.
-
-- the converge fix broke an entry it changed (the verifier's words) (bars.json bars/B2). B2 changed in this fix (accept 3, range.left_out and range.varies were rewritten for the far-overhead gardener). Its sees.control still reads 'Pair the visual sort with T43’s ceiling-plane state and overlapping ground-path trace.' The ceiling plane was R13, which is removed. census.json X39 'Selectable ceiling-water plane with cell routing' is now next_version under T52, and the rewritten tickets.md T43 has no ceiling-plane state: it gives a far-overhead animal 'outside the floor’s movement and interaction space'. So a kept bar's evidence still relies on a moved extra (moved_extra_relied_on), and the instrument it names will not exist in 0.1.0. Would pass: B2's control pairs the visual sort only with instruments that exist in 0.1.0: T43's saved living-gardener identity and far-overhead presentation state, with ground paths independent. Nothing in B2 refers to a ceiling plane. Smallest fix: Replace the last sentence of B2 sees.control with: 'Pair the visual sort with T43’s saved living-gardener identity and far-overhead presentation read, and confirm floor paths are unchanged beneath it.'

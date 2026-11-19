@@ -173,21 +173,52 @@
      "smallest_fix": "Replace the last sentence of B2 sees.control with: 'Pair the visual sort with T43’s saved living-gardener identity and far-overhead presentation read, and confirm floor paths are unchanged beneath it.'"
     }
    ]
-  }
- ],
- "open": [
+  },
   {
-   "id": "G1.1",
-   "head": "regression",
-   "where": "bars.json bars/B2",
-   "evidence": "B2 changed in this fix (accept 3, range.left_out and range.varies were rewritten for the far-overhead gardener). Its sees.control still reads 'Pair the visual sort with T43’s ceiling-plane state and overlapping ground-path trace.' The ceiling plane was R13, which is removed. census.json X39 'Selectable ceiling-water plane with cell routing' is now next_version under T52, and the rewritten tickets.md T43 has no ceiling-plane state: it gives a far-overhead animal 'outside the floor’s movement and interaction space'. So a kept bar's evidence still relies on a moved extra (moved_extra_relied_on), and the instrument it names will not exist in 0.1.0.",
-   "would_pass": "B2's control pairs the visual sort only with instruments that exist in 0.1.0: T43's saved living-gardener identity and far-overhead presentation state, with ground paths independent. Nothing in B2 refers to a ceiling plane.",
-   "smallest_fix": "Replace the last sentence of B2 sees.control with: 'Pair the visual sort with T43’s saved living-gardener identity and far-overhead presentation read, and confirm floor paths are unchanged beneath it.'"
+   "n": 2,
+   "records": [
+    {
+     "id": "G1.1",
+     "head": "regression",
+     "where": "bars.json bars/B2",
+     "evidence": "B2 changed in this fix (accept 3, range.left_out and range.varies were rewritten for the far-overhead gardener). Its sees.control still reads 'Pair the visual sort with T43’s ceiling-plane state and overlapping ground-path trace.' The ceiling plane was R13, which is removed. census.json X39 'Selectable ceiling-water plane with cell routing' is now next_version under T52, and the rewritten tickets.md T43 has no ceiling-plane state: it gives a far-overhead animal 'outside the floor’s movement and interaction space'. So a kept bar's evidence still relies on a moved extra (moved_extra_relied_on), and the instrument it names will not exist in 0.1.0.",
+     "would_pass": "B2's control pairs the visual sort only with instruments that exist in 0.1.0: T43's saved living-gardener identity and far-overhead presentation state, with ground paths independent. Nothing in B2 refers to a ceiling plane.",
+     "smallest_fix": "Replace the last sentence of B2 sees.control with: 'Pair the visual sort with T43’s saved living-gardener identity and far-overhead presentation read, and confirm floor paths are unchanged beneath it.'"
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "G1.1",
+      "changed": "Updated B2’s visual sort control to use T43’s saved living-gardener identity and far-overhead presentation and to confirm floor paths are unchanged beneath the gardener.",
+      "where": "bars.json bars/B2 sees.control"
+     }
+    ]
+   },
+   "verdicts": {
+    "G1.1": {
+     "verdict": "fixed",
+     "evidence": "bars.json B2 sees.control now ends: 'Reject a floor-walking animal with an elevated sprite. Pair the visual sort with T43’s saved living-gardener identity and far-overhead presentation read, and confirm floor paths are unchanged beneath it.' This is the record's smallest_fix word for word. The words 'ceiling-plane state and overlapping ground-path trace' are gone, and B2 names no ceiling plane anywhere else. B2 says still uses 'giant ceiling gardener', but that describes where the creature is, not the deferred X39 plane. The instrument B2 now names exists in 0.1.0. tickets.md T43 gives 'a persistent living giant overhead animal, visible from the floor as it swims far overhead beneath the waveglass. The presentation follows its saved living state and stable identity.' Its acceptance test says 'Compare its visible presence and saved identity before and after…' and 'Floor paths and reservations stay independent.' That matches the would_pass: T43's saved identity and far-overhead presentation state, with ground paths independent."
+    }
+   },
+   "changed_entries": [
+    "bars.json bars/B2"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 114838,
+     "output_tokens": 1202
+    }
+   },
+   "author_error": null,
+   "open_after": []
   }
  ],
+ "open": [],
  "advisory_late": [],
- "applyable": false,
- "digest": "00377dd53cf177d636927f08f39e4901af305e18fefe6dfa280978ac2df556d7",
- "seconds": 627,
- "at": "2026-11-19T00:04:34"
+ "applyable": true,
+ "digest": "7a49c3753eee65e9b8a2fad0f696b53590532284571d0c1b0e438cf05ed89888",
+ "seconds": 739,
+ "at": "2026-11-19T00:06:26"
 }
