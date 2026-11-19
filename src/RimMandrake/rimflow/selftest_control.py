@@ -487,14 +487,25 @@ n = 0
 while n < 600:
     n += 1
     time.sleep(0.1)          # one simulated tool call
+    t = time.time()          # when this call's hook began (one appended line per call: "<start> <rc>")
     r = subprocess.run([sys.executable, tool, "hook", "--db", db], capture_output=True, text=True)
+    fd = os.open(calls, os.O_WRONLY | os.O_CREAT | os.O_APPEND)
+    os.write(fd, ("%.6f %d\n" % (t, r.returncode)).encode())
+    os.close(fd)
     if r.returncode == 2:
         with open(note, "w") as f:
             f.write("HANDOFF after %d tool calls: %s" % (n, r.stderr))
         sys.exit(0)
-    with open(calls, "w") as f:
-        f.write(str(n))
 """
+
+
+def hook_calls(path):
+    """-> [(start, rc)] of the stub's complete call lines (a line still being written is skipped)."""
+    try:
+        with open(path, encoding="ascii") as f:
+            return [(float(a), int(b)) for a, b in (ln.split() for ln in f.read().split("\n")[:-1] if ln.strip())]
+    except (OSError, ValueError):
+        return []
 
 
 def t_stop():
@@ -560,16 +571,20 @@ def t_stop():
                              resources=[{"resource": C.LOOK, "win": "ws", "base": 1}]),
                         capture_output=True, text=True, timeout=30)
     check(res.returncode == 0, "the stub agent starts", res.stderr)
-    wait_for(lambda: os.path.exists(calls), 5)
-    before = int(open(calls).read() or 0)
+    wait_for(lambda: hook_calls(calls), 5)
     r = C.stop("Graffiti", "write_now", "write-now test", deadline_s=60, escalator=lambda *a: "no timer in test")
+    t_order = time.time()   # the order is committed by now: every hook call that starts later must receive it
     check(r["units"] and r["units"][0]["unit"] == "rm-probe-stub1", "the stop order names the live unit", r["units"])
     wait_for(lambda: os.path.exists(note), 10)
     txt = open(note).read() if os.path.exists(note) else ""
-    seen_after = int(txt.split("after ")[1].split(" ")[0]) - before if "after " in txt else 99
     check("STOP ORDER, write now" in txt and "RIMMANDRAKE_PROBE_STOP_CHANNEL_STUB" in txt,
           "the running agent receives the write-now order through its hook, with its item", txt[:200])
-    check(seen_after <= 2, "within one tool call of the order (counted %d)" % seen_after)
+    # counted from the order's commit, not from when the test last read a count (the test's own time is not the
+    # channel's: RIMMANDRAKE_FIX_STOP_TEST_RACE_EMPTY_READ_COUNTED_ZERO)
+    hc = hook_calls(calls)
+    missed = [x for x in hc if x[0] >= t_order and x[1] != 2]
+    check(hc and hc[-1][1] == 2 and not missed, "the first tool call after the order receives it (%d later call(s) "
+          "missed it)" % len(missed), hc[-4:])
     wait_for(lambda: C.run_state("rm-probe-stub1")["state"] == "ended", 10)
     check(C.run_state("rm-probe-stub1")["state"] == "ended", "the unit ended after writing")
     srow = C._q("SELECT * FROM stops WHERE unit='rm-probe-stub1'", one=True)
