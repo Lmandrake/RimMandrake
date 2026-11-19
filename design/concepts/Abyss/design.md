@@ -32,7 +32,7 @@ never opened them); the grain on the hull is sourced (a ship idea put to him on 
 "later" on his ruling of 2026-10-23; six animals he cut are listed as cut; and what is and is not built of the
 hidden ship is stated plainly. The list and the reasons are in the section "Second reader" at the top of
 `rewrite_choices.md`. Continued the same evening: the sixteen files first read in part were read to their
-end, with the four ledger items filed under the biome's older names, and 100 more rows were added (the rites'
+end, with the four ledger items filed under the biome's older names, and 101 more rows were added (the rites'
 own design, the Empire's ladder, his planet rulings of 2026-09-07, the first names, the census and the dry-run
 record). The Abyss has no locked Designer sheet or tree, so nothing here waits on a Designer run to
 reconcile.

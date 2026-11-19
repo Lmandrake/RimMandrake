@@ -5,27 +5,69 @@
 A different agent from the writer re-read the Abyss's sources before any old file is deleted, starting with the
 ledger items and with what the first read had named as unread.
 
-DELETE-READY: no, because one source file is not yet read to its end: `design/RimMandrake/special_mechanics_review_2026-10-22.md` from line 221 on (the other biomes' tables; its whole Abyss table is read). The continuation of 2026-11-18 read the other fifteen part-read files to their end and added 100 rows (the last five tables under "Every idea, row by row"); this section's counts below are the earlier ones until that file is finished.
+DELETE-READY: yes
 
-Every file on the delete list was read to its end by the second reader (`abyss.md`, the cast bible, the cryptid
-spec, the review, `rosters/abyss.json`), and so was every file in `design/concepts/Abyss/` but one, and every
-ledger item with the Abyss in its name. The "no" is for these, read in part: `cleanse/census.json` (all 97 rows'
-id, fate, what and why; the evidence and caller path fields for the first twelve rows only); the codex run's
-`record.json` (root draft, scope, decisions, contradictions, neighbours and all 76 inventory texts; not its
-reviewed-file list, scene audit or proof notes) and `QUESTIONS.md` (all nine questions; the tail of its root
-paragraph cut); `BIOME_SHIP_CONTRIBUTIONS_1` (every table row; long paragraphs cut at 1,500 characters);
-`_freeze_rulings_2026-09-07.md` (R1, R4, R5, R10, R17, R24 and a search); the escalation ladder (its Abyss lines);
-the names document (its Abyss batch); the mechanics review (its Abyss section, the last cells of rows 14 to 16
-cut); `v2_nine_rituals.md`, `fluff_cuts_2026-10-23.md` and `biome_experiences_2026-10-20.md` (their Abyss lines).
-Not opened: `designer_brief.md` in the codex folder, `SALVATION_RITES_UNIFICATION_1`,
-`CONDITION_GATED_RITUALS_MOD_1`, `salvation_rites_2026-10-01.md`, `biome_rites_pass_2026-10-01.md`, and the other
-files in `design/` that only mention the Abyss. A run that reads those eleven to the end can change this line.
+That line is for the five old files listed at the end of this page, and it rests on this, all measured: every one
+of those five was read to its end by the second reader; so was every file in `design/concepts/Abyss/`, every ledger
+item filed under the Abyss or under its older names (Forsaken Crags, Black Crags, Lightfall), and each of the
+sixteen files the first sitting of this second read had only read in part or not opened. That last debt was paid
+the same evening (list below). What was **not** read to its end: 286 other files under `design/` and the ledger's
+items that mention the Abyss in passing, about 22 MB, most of it registers, art job lists and other biomes' pages
+(the largest: the creature and plant registers, the texture-regeneration lists, `design/INDEX.md`). None is on the
+delete list and none is about the Abyss. Their paths are in
+`D:\ClaudeWork\rimmandrake\recheck_second_reader_20261118\ab_mentions_not_read_to_end.txt`. If "every source" is
+meant to include those, this line is a "no" and no single run can change it; the Conductor can reverse it by
+editing one word.
 
-**Measured** (by `rowcheck.py`; its line is in
-`design/RimMandrake/biome_recheck_feverwood_greentide_abyss_row_check_2026-11-18.txt`): **264 rows, 126 of them
-added by the second reader.** By the first word of "what happened": 215 kept, 34 lost, 7 kept and reshaped, 6
-moved, 2 folded into shared machinery. 32 source names, each used in at least one row. **50 source files read to
-their end** (the first read counted 19, most in part).
+**Measured** (by `rowcheck.py`; its lines are in
+`design/RimMandrake/biome_recheck_feverwood_greentide_abyss_row_check_2026-11-18.txt`): **365 rows, 227 of them
+added by the second reader** (126 at the first sitting, 101 on the continuation). By the first word of "what
+happened": 300 kept, 47 lost, 9 kept and reshaped, 6 moved, 3 folded into shared machinery. 40 source names, each
+used in at least one row. **70 source files read to their end** (the first read counted 19, most in part).
+
+**The continuation, 2026-11-18 evening: the sixteen part-read files, read to their end.** `cleanse/census.json`
+(all 97 rows, every field); the dry run's `record.json` (all of it, the reviewed-file list included),
+`QUESTIONS.md` and `designer_brief.md`; `BIOME_SHIP_CONTRIBUTIONS_1`; `SALVATION_RITES_UNIFICATION_1`;
+`CONDITION_GATED_RITUALS_MOD_1`; `_freeze_rulings_2026-09-07.md` (all thirty-nine rulings); the escalation ladder;
+the names document with both appendices; `special_mechanics_review_2026-10-22.md` (every biome's table);
+`v2_nine_rituals.md`; `fluff_cuts_2026-10-23.md`; `biome_experiences_2026-10-20.md`; `salvation_rites_2026-10-01.md`;
+`biome_rites_pass_2026-10-01.md`. Added because they are the Abyss's own ledger items under older names, which
+the first sitting had not found: `FORSAKENCRAGS_RM_MOD_BUILD_1`, `FORSAKEN_CRAGS_FAUNA_1`,
+`FORSAKEN_CRAGS_PREDATORS_BUILD_1`, `LIGHTFALL_CHASM_AUTHORING_1`.
+
+*The three best things those files held:*
+
+1. **The hidden ship, said in the campaign's own religion.** The god of flight and the god of concealment
+   *"reconcile in exactly one posture, hidden and watching for the instant to flee"*, and the hungry war-sun is
+   starved by *"staying dark, hidden, and unfought"*. The first sentence sat in another biome's rite; the second in
+   the rites' design, which no one had opened for the Abyss. With them: where each of the four rites is found, a
+   fifth (the Unlit Wedding), and his own words that a rite is one of the Abyss's take-aways.
+2. **His first words on what lives here, and why the grip-killer has no mouth.** *"Others get promoted to other
+   crag creatures. The forsaken crags are the dark biomes on the night side."* (2026-09-01). The saevitha and the
+   ishvarith began as two pictures passed over for a livestock animal: *three pictures exist before their
+   creatures do.* It kills by grip because the picture had no mouth.
+3. **His rule that the search opens with a probe that can be evaded** (2026-09-27), the oldest source for the
+   pause (his rulings of 2026-08-05 and 06), and a gap between his word and the build: he says full dark
+   *pauses* the search, and what is built slows it fourfold. That is the ninth question for him.
+
+Close behind: the crags' seven place names, which exist in no other Abyss file; his growth law (fast growth needs
+water and light both), which is why the larder is slow; and from the census read to its end, that the first
+"OMG" moment has no art (the gharrek has no picture of its fans opening), that the grain's sampler touches only
+rock and steel, and that the cover's code sits in the free mod against his campaign-only card.
+
+*What the continuation changed in the design* (17 places, each a row below): the gods' posture and the war-sun
+in "What this place is"; his probe rule, the pause's oldest source and the remembered tile in the clock section;
+the gharrek art gap; where the saevitha and ishvarith came from; "never skin" on the grain; the growth law on the
+larder; the four-lamp count as `UNSETTLED` and the free-mod contradiction on the hidden ship; the third way to
+beat a probe, its self-destruct and its letter; the rings shown by an Unveiling and the name collision; the
+sampler fact beside the hull wear; his scarcity words beside tholin; a rite among the take-aways; the rites'
+found-places, the Unlit Wedding and the place names under "Later"; question 9 under `NEEDS HIM`; and two
+sentences in the status header.
+
+*Findings for other pages from the continuation.* The escalation ladder's header still says "design only"; rung
+definitions exist in `src/RimUtinni/EmpirePursuit/`. The mechanics review's row 16 says the free tier supplies no
+probe; the later dry run found a stand-in. `biome_shared_machinery_2026-11-18.md` should carry the pause-or-slow
+question once for every dark biome.
 
 **The three most valuable things the first read missed**
 
@@ -65,8 +107,8 @@ bargain was the wrong way round.
 7. Scope: the rites to "later"; the great bone as the recorded ship gift; the ship's four accepted and three
    refused parts and its refusal line; a new dropped list (six cut animals, four ideas not chosen on 2026-10-01,
    the sea-floor idea, eclipses).
-8. `NEEDS HIM` went from three to eight, each with its default: scope 2, hull 2, cover 1, other 3. Fuel: none.
-   Locked-tree: none, the Abyss has no locked sheet or tree.
+8. `NEEDS HIM` went from three to eight at the first sitting and to nine on the continuation, each with its
+   default: scope 2, hull 2, cover 2, other 3. Fuel: none. Locked-tree: none, the Abyss has no locked sheet or tree.
 
 **Four first-read rows corrected in place** (each says so in its cell): the dusk rat, the frostling, the four
 rites, and the hull-wear row.
@@ -640,6 +682,7 @@ More source names: *rites register* = `design/Jawa/salvation_rites_2026-10-01.md
 | Etchfall was put on trial and kept by an agent under his card *"I cut, you veto"* | fluff cuts (2026-11-02) | kept | Nothing of the Abyss was cut in that pass. | |
 | The experiences file is the only home of the Abyss's experience line: the biome has no validation walk | experiences (header) | kept as a fact for whoever deletes files | That file must outlive any cleanup. | |
 | *"this one is about the ship"* | contributions item (owner, 2026-09-24) | kept, quoted | | |
+| Other biomes with the Abyss's light bargain: a cavern where *carried light draws predators* and a creature that shrinks lamps through the same shared light account; a sea floor where a lamp left burning draws a watcher, then scrape marks, then something that smashes the lamp; a sea whose parked ship grows a crust that must be chipped off before launch | mechanics review (the Lantern Deeps and Grey Sea tables) | folded into shared machinery | The light ledger and the wear-on-a-parked-ship idea are already shared; the Abyss is where the first is featured. Read while taking that file to its end; nothing else in it past the Abyss table concerns this biome. | |
 
 ##### The ledger items filed under the biome's older names
 
