@@ -15,6 +15,9 @@ Covered, all on files and in memory (nothing launched, nothing written):
   ready       `rimflow seat ready` as BENCH says "CONDUCTOR is ready [seat BENCH]", both write seat CONDUCTOR on disk (key BENCH),
               and handoff.py reads the seat KEY back out of either form (CONDUCTOR_NAME_RENAME_BENCH_STEPS_ASIDE)
   injection   the SessionStart hook injects CONDUCTOR.md, once, for a BENCH role; titles say CONDUCTOR
+  helper      a launched run (RM_ROLE_UNIT set: detached helper or Dispatcher role run) gets no seat identity file and
+              no doctrine delta at SessionStart, and its start does not advance the seat's whats_new marker; the
+              Conductor window (no RM_ROLE_UNIT) still gets CONDUCTOR.md (RIMMANDRAKE_STRIP_CONDUCTOR_IDENTITY_HELPERS_TOLD_DELEGATE)
   tile        the WT tile is named CONDUCTOR (profile + tabTitle + launch_fleet.ps1), --name/--remote-control CONDUCTOR
   wake        the BENCH tile's first prompt reads CONDUCTOR.md, still runs handoff --wake + seat ready, is shell-safe
   report      a headless quick check has one place to report: conductor.md names the Conductor log
@@ -174,6 +177,7 @@ def _hook():
 
 def test_injection():
     old = os.environ.get("CLAUDE_PROJECT_DIR")
+    unit = os.environ.pop("RM_ROLE_UNIT", None)     # the Conductor window's view, even when a launched run tests
     os.environ["CLAUDE_PROJECT_DIR"] = ROOT
     try:
         H = _hook()
@@ -233,10 +237,60 @@ def test_injection():
         finally:
             shutil.rmtree(tmp, ignore_errors=True)
     finally:
+        if unit is not None:
+            os.environ["RM_ROLE_UNIT"] = unit
         if old is None:
             os.environ.pop("CLAUDE_PROJECT_DIR", None)
         else:
             os.environ["CLAUDE_PROJECT_DIR"] = old
+
+
+def _session_start(env_extra, drop=()):
+    """-> the additionalContext of one SessionStart hook run as seat BENCH, in a temp project holding a copy of
+    infrastructure/agents (no whats_new.py there, so no delta: the delta is checked through read_delta)."""
+    tmp = tempfile.mkdtemp(prefix="hs-")
+    try:
+        shutil.copytree(os.path.join(ROOT, "infrastructure", "agents"), os.path.join(tmp, "infrastructure", "agents"))
+        os.makedirs(os.path.join(tmp, ".claude", "session_roles"))
+        env = {k: v for k, v in os.environ.items() if k not in ("RM_ROLE_UNIT",) + tuple(drop)}
+        env.update(CLAUDE_PROJECT_DIR=tmp, AGENT_SEAT="BENCH", **env_extra)
+        r = subprocess.run([sys.executable, os.path.join(ROOT, ".claude", "hooks", "set_session_title.py")],
+                           input=json.dumps({"hook_event_name": "SessionStart", "session_id": "probe-identity-0001",
+                                             "source": "startup", "cwd": tmp}),
+                           capture_output=True, text=True, env=env, timeout=60)
+        out = json.loads(r.stdout)["hookSpecificOutput"] if r.stdout.strip() else {}
+        return out.get("additionalContext") or ""
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+def test_helper_start():
+    ctx = _session_start({"RM_ROLE_UNIT": "rm-detached-bench-probe-1"})
+    check("# CONDUCTOR" not in ctx and "You are this session's seat" not in ctx,
+          "a launched run (RM_ROLE_UNIT set) gets no seat identity file at SessionStart (%r)" % ctx[:80])
+    ctx = _session_start({})
+    check("# CONDUCTOR" in ctx, "the Conductor window (no RM_ROLE_UNIT) still gets CONDUCTOR.md at SessionStart")
+    # the doctrine delta: a launched run never runs whats_new for the seat, so it neither sees nor consumes it
+    old = {k: os.environ.get(k) for k in ("CLAUDE_PROJECT_DIR", "RM_ROLE_UNIT")}
+    H = _hook()
+    calls = []
+    real = H.subprocess.run
+    H.subprocess.run = lambda *a, **k: calls.append(a[0]) or real(["true"])
+    try:
+        os.environ["CLAUDE_PROJECT_DIR"] = ROOT
+        os.environ["RM_ROLE_UNIT"] = "rm-detached-bench-probe-1"
+        check(H.read_delta("AGENT BENCH") is None and not any("whats_new.py" in " ".join(c) for c in calls),
+              "a launched run does not run whats_new --seat BENCH, so the seat's delta is not marked read")
+        os.environ.pop("RM_ROLE_UNIT")
+        H.read_delta("AGENT BENCH")
+        check(any("whats_new.py" in " ".join(c) for c in calls), "the Conductor window still gathers its delta")
+    finally:
+        H.subprocess.run = real
+        for k, v in old.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
 
 
 def test_tile():
@@ -255,7 +309,7 @@ def test_tile():
 
 if __name__ == "__main__":
     for fn in (test_identity, test_pointer, test_wake, test_report, test_window, test_ready, test_injection,
-               test_tile):
+               test_helper_start, test_tile):
         fn()
     print("%d FAIL" % len(FAILS) if FAILS else "ALL PASS")
     sys.exit(1 if FAILS else 0)

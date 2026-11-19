@@ -207,6 +207,14 @@ def record_role(sid, title):
         pass
 
 
+def launched_run():
+    """True in a run a unit launched (a detached helper or a Dispatcher role run: role_launch and detached_helper set
+    RM_ROLE_UNIT). Such a run is a worker with a brief, not the seat's window: it gets no seat identity file (CONDUCTOR.md
+    told helpers to delegate, not work) and does not consume the seat's doctrine delta
+    (RIMMANDRAKE_STRIP_CONDUCTOR_IDENTITY_HELPERS_TOLD_DELEGATE)."""
+    return bool(os.environ.get("RM_ROLE_UNIT"))
+
+
 def read_delta(title):
     """What changed in the doctrine set since this seat last synced, or None.
 
@@ -227,7 +235,7 @@ def read_delta(title):
     not.
     """
     seat = seat_of(title)
-    if not seat:
+    if not seat or launched_run():
         return None
 
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
@@ -286,7 +294,7 @@ def read_identity(title, sid):
     `title` is what set_agent_window.sh recorded, e.g. "AGENT FOUNDRY".
     """
     seat = seat_of(title)
-    if not seat:
+    if not seat or launched_run():
         return None
 
     root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
