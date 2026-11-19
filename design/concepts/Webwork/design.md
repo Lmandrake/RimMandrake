@@ -45,7 +45,10 @@ in the owner's ledger."*
 > (owner, typed, 2026-10-20: the experience line)
 
 It is the Greentide turned inside out. The Greentide is loud and lawless; here *"the quiet is not peace, it is
-ownership."* *"Most of the animals have been eaten, and few will enter. Those who do frequently discover a shadow,
+ownership."* *"The Greentide's silence-before-the-predator is the Webwork's permanent state."* There is no truce
+to be had: *"you are not a fellow drinker, you are prey in someone's ledger."* (His "it eats all" has two
+readings in the sources, the canopy swallowing clearings and the owners having eaten the wildlife; both are true
+here, and the 2026-11-17 cleanse took the second.) *"Most of the animals have been eaten, and few will enter. Those who do frequently discover a shadow,
 seconds before it lands upon them, and know nothing more."*
 
 One law runs the whole place: *"the entire biome is a single organism of shadow."* The owners are as big as an
@@ -162,7 +165,11 @@ sunlit regions should shine and be clearly visible."*
   even in a rage. Shade is theirs: canopy, roofs, the ship's own shadow, an overcast sky. Lamps do not count; the
   owner's words of 2026-09-11: *"There is no night here, and no light a player can make has the effect of this
   planet's terrible sun."* By his card the same day the sun cripples and never downs: a caught spider crawls for
-  shade and is not a free kill.
+  shade and is not a free kill. What the wall does not stop: spit from a shaded edge within range, a spider
+  already inside, fire, and the heat. The margin is the dangerous place: keeping it open means working among the
+  cables in it, every touch marks the worker, and the owners come to the nearest shade, *"which is exactly where
+  the workers stand."* The cleanse's reviewer put the whole refuge on one comparison: spit range against the width
+  of the cleared margin. A ship's clearing has to be wider than a spit.
 - **The clearing has to be made and kept.** *"Cut the canopy, burn a ring, keep it burned."* The margin scrub
   burns hot and clean. *"Fire is architecture, not just weaponry."* The threats to a clearing are *"regrowth ...
   overcast skies, and an untrimmed margin"*: *"the moat maintains itself only as long as you do."*
@@ -193,7 +200,9 @@ sunlit regions should shine and be clearly visible."*
 - **The silk is the treasure.** Thrixweave is the finest cloth there is and by ruling it comes from nowhere else:
   *"the ONLY way to obtain it in the game."* It is cut from the web itself, *"which rings the line you cut"*;
   taken in small amounts from a kill; and taken from a nest. Burning a web, fighting on it or letting the beetles
-  chew it yields nothing: only deliberate, risky cutting pays.
+  chew it yields nothing: only deliberate, risky cutting pays, and by his ruling of 2026-09-11 a cut has *"a small
+  chance of SPAWNING"* a spider *"to get you"* (built; the cleanse moves it off, this design keeps it because the
+  words are his). Cut web is never rebuilt: *"regrowing trees restore shade, not silk."*
 - **The beetles.** Quarrok are great insects that *"hate them instinctively"* and chew through web anchors,
   *"neutral, unbothered"*. Where they have been, the web is cut and blind.
 - **The mites.** Vennick are fist-sized, run the silk, and eat eggs. They are harmless, *"which makes a mite trail
@@ -206,7 +215,8 @@ sunlit regions should shine and be clearly visible."*
   inside, guardians waking when it is touched. A living nest lays again in twenty to thirty days. Its parts: the
   clutches, each *"a pale mass of leathery eggs packed in silk"*; the silk walls; the hide mass, *"the only warm
   colour in the biome"* (*"a nest is where the missing went"*); and the mother beside the clutch, *"the one place
-  a guaranteed Ollathrix sits — every other one on the map is a roll."*
+  a guaranteed Ollathrix sits — every other one on the map is a roll."* Wounding a guardian is its own alarm:
+  the nest's defenders turn out to attack whoever did it and stand down only after a quiet spell.
 - **Three ways in.** Follow the mites, free and slow, and *"arrive felt"*. Burn a corridor, which is unfelt and is
   also *"a light-moat pointing at the nest, so every Ollathrix on the map converges on the fire."* Or lure the
   beetles along a route for *"the only silent approach"* (0.2.0). What comes out, in order of worth: eggs, wall
@@ -295,6 +305,7 @@ a single slash."*
 
 **Out, before the Empire:**
 - An overcast day.
+- Sickness: the sheet keeps *"a heavy disease load in the canopy air"* (malaria, sleeping sickness, plague).
 - Regrowth and silk closing the clearing faster than a small crew can cut and burn.
 - The ship's doors wrapped, and nobody left outside to cut them free.
 - Crew bound and waiting on medicine while the shade line moves.
@@ -336,12 +347,12 @@ silk and a clutch down a path it prepared, and lifts with the web still ringing.
 |---|---|---|
 | A ship landing on a living Webwork draws the owners within the hour; a party that walks in quietly does not, until it touches the web. | Land a ship; on another run, walk a party in and stand still. | A map whose owners and nest have been destroyed stays quiet when a ship lands: nothing is resurrected. A letter alone is not a response; a spider must change what it is doing. |
 | The jungle is audibly quiet: steps, drip, silk, and a thrum on contact. | A listening check at a staged save, at a joint sitting. | The same save with an ordinary rainforest chorus added must fail the check. |
-| An ollathrix will not choose to cross direct sunlight, and one caught in it is crippled and goes for shade. | A spider at a shade line with prey in the sun, at noon, in a rage and calm. | Roof the gap, or let it cloud over: it crosses. A lamp changes nothing. |
+| An ollathrix will not choose to cross direct sunlight, and one caught in it is crippled and goes for shade. | A spider at a shade line with prey in the sun, at noon: hunting, following a mark, idling, in a rage, and as a nest guardian turned out to attack. | Roof the gap, or let it cloud over: it crosses. A lamp changes nothing. A spider already in the sun crosses it only toward shade. |
 | One contact brings others, over shaded ground that connects them. | Touch a strand at one end of the map with spiders at the other, with and without a continuous shaded way between. | Their positions and paths show convergence; a queue of spiders stuck at a sunlit gap is the control and must not be counted as converging. |
 | The spit binds without wounding, lasts days untended, and medicine ends it. | One bound pawn tended, one left. | The bound pawn has a named condition and can be rescued; nobody is deleted. |
 | A kept clearing holds; an untended one closes, by regrowth and by silk. | Two clearings beside the ship, one burned and trimmed, one left, over the days of a stop. | Real trees and real weather, not a roof standing in for canopy. |
 | Deliberate cutting of web yields thrixweave and rings the line; burning, fighting and beetles yield none; no trader sells it but the rare reseller. | Cut, burn and let beetles chew three like spans; inspect generated trader stock. | The check is on stock a live trader actually generated, not on the XML. |
-| The nest is a place: marked by its blooms, guarded, with clutches that can be cut out; it lays again while any owner lives. | Follow the signs to the nest, raid it, wait. | Its guardians are finite: the wall does not replace the fallen. Save and reload mid-raid. |
+| The nest is a place: marked by its blooms, guarded, with clutches that can be cut out; it lays again while any owner lives. | Follow the signs to the nest, raid it, wait. | Its guardians are finite: the wall does not replace the fallen (owed: today it does). Save and reload mid-raid. |
 | A carried egg marks the carrier to the web; a shelved one does not; dropping it does not end the hunt at once. | Carry a clutch down a corridor; shelve it aboard; on another run, drop it. | The egg spoils on schedule and never hatches. |
 | Droids are attacked first, among prey equally in reach. | A droid and a person enter the shade together, the same distance from a hunter. | With the preference switched off they are treated alike. A droid standing in sunlight is not preferred over a person in shade. |
 | Quarrok chew anchors and the web they cut stops feeling; vennick run the silk toward eggs. | Watch a beetle file and a mite stream on a map with a nest. | A cut span no longer alarms when touched. The mites' line ends at a clutch. |
@@ -364,6 +375,11 @@ jungle with large animals in it (standing rule, every mod).
   idea against growth).
 - **Growth that takes back cleared ground** (`ExplosiveGrowth`, which the Greentide also features; here it closes
   a defence instead of a doorway).
+
+**The one hard dependency.** By his Direct Sun ruling the sun is switched off on tree-heavy maps unless the
+tree-shade model is excellent, and the Webwork is the most tree-heavy map there is. The cleanse says it plainly:
+*"If tree-shade calibration fails, this signature is not demonstrated: do not pass by replacing trees with
+roofs."* Sunlight as a wall, the landing bargain and promise 3 all wait on that model.
 
 **Merely active here:** the tether pull (shared with the Sump's capstan, one implementation by his ruling); wet
 native growth holding the water inside; fire and wind; darkness and canopy as cover from the Empire's search; the
@@ -394,18 +410,21 @@ Every feature is in one bucket.
 - Thrixweave as the sole source, by cutting, butchery and the nest; rare steep resale. (built; the live trader
   check has never run)
 - The nest, its blooms, its finite guardians, its clutches, re-laying. (The nest, guardians, clutches and
-  re-laying are built; the placing can give up and leave a map with no nest. The rust-red ring and the flowers
+  re-laying are built; the placing can give up and leave a map with no nest. The guardians are not finite yet:
+  the wall replaces its dead for as long as it stands, so a raid cannot be won by attrition today. Mining a
+  clutch rings nothing, because the clutch is not on the web's sense. The rust-red ring and the flowers
   that follow the web are not placed by anything yet.)
 - The egg: inert, perishable, valuable, and the carried mark. (The egg is built. The carried mark is not
   working: see the mark defect above.)
 - Quarrok and vennick doing their jobs; the vennick's run toward clutches. (quarrok built; the vennick's
   clutch-seeking moved in)
 - The trace cast: skennet, cravvet, the flying sivvern; the sixteen invented plants as ordinary plants, with the
-  brimlock's water and the fellome's food. (built)
+  brimlock's water and the fellome's food. (built; a seventeenth plant, the glasmaw, was added after the roster)
 - Silk spun at the ship and its doors wrapped. (built for the siege; pointing it at a landed ship is owed)
 - Canopy as one step of cover. (owed, small)
-- The heat of the clearing on crew and hull; the thermal veil as the answer. (the heat kind and the shield
-  frame are built; never run on a Webwork map)
+- The heat of the clearing on crew and hull; the thermal veil as the answer. (The shield frame is built. Heat
+  here is ordinary hot air plus the one Direct Sun from geometry, by his ruling of 2026-10-19; the biome's old
+  heat-kind fields are obsolete and must stop having any effect. Never run on a Webwork map.)
 
 **0.2.0, the stop with company**
 - The siege on the next tile over: the owners arrive at a home beside the Webwork, spin, wrap doors, cocoon the
@@ -435,7 +454,11 @@ Every feature is in one bucket.
   attack it."*
 - The Felled Noon rite (tabled with all rites, 2026-10-03; and by his card it waits for the tree-shade model).
 - Silk gutters as moving water; the still-burner as a weapon.
-- An egg that can be planted as a weapon outside a quest.
+- An egg that can be planted as a weapon outside a quest (filed as future work by his card of 2026-09-24).
+- Two sketched campaign jobs that suit a ship: *"Fragile Cargo"*, the Cartel paying to move a clutch across
+  Webwork ground against the mark, and *"Something in the Walls"*: *"someone paid to put an egg in your colony —
+  find it before nightfall."*
+- Dry air as a second weakness of the owners (the sheet: weak *"away from high humidity"*; unbuilt).
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - A tamed, traded or negotiated owner; truce language; silk from an abdomen; a safe cell under dense canopy;

@@ -21,3 +21,9 @@ design/concepts/Webwork/rewrite_choices.md
    {'rows': 233, 'added': 106, 'first': 127, 'counts': {'kept': 190, 'lost': 26, 'reshaped': 3, 'folded': 1, 'moved': 12, 'other': 1}, 'partial_moves': 3, 'bad': [], 'empty': [], 'names': 34, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 21}
    VERDICT: PASS
 exit status: 0
+
+Webwork re-run after the second sitting read every remaining file (supersedes the Webwork entry above):
+design/concepts/Webwork/rewrite_choices.md
+   {'rows': 284, 'added': 157, 'first': 127, 'counts': {'kept': 236, 'lost': 30, 'reshaped': 3, 'folded': 1, 'moved': 13, 'other': 1}, 'partial_moves': 4, 'bad': [], 'empty': [], 'names': 44, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 25}
+   VERDICT: PASS
+exit status: 0

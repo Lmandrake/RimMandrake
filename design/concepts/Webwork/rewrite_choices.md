@@ -3,10 +3,10 @@
 ## Second reader, 2026-11-18
 
 A different agent from the one that wrote this page and the design read sources the first pass had read in part
-or not at all, and checked each idea in them against the rows below. This reading is not complete: the second
-reader reached its spending limit, and the files it did not open are named under "Sources read, and the count".
+or not at all, and checked each idea in them against the rows below. The reading took two sittings: the first
+was cut short and published with its unread files named; the second read every one of them to the end.
 
-**Rows added: 106**, in the tables under "Added by the second reader" at the end of "Every idea, row by row".
+**Rows added: 157**, in the tables under "Added by the second reader" at the end of "Every idea, row by row".
 
 **The three most valuable things the first read missed.**
 
@@ -36,6 +36,14 @@ moving source of sunlight in a biome where light is safety"*); the cut cocoon's 
 for the two acting plants to look *"DANGEROUS"* and *"already fed"*; and two creatures both labelled wyyyschokk
 under the campaign, one of them tameable, left for a card nobody sent.
 
+From the second sitting, three more of the same weight. **The margin loop**: the cleanse's reviewer showed that
+keeping the clearing's edge open is itself what calls the hunters to it, and that spit range against the width
+of the margin decides whether a clearing can be held at all. **The tree-shade model is the biome's one hard
+dependency**: by his Direct Sun ruling the sun is off on tree-heavy maps unless that model is excellent, and
+without it there is no wall of light. **The guardians are not finite**: the nest replaces its dead today, so the
+design's "finite guardians (built)" was wrong. The egg market draft also holds two jobs made for a ship (*"Fragile
+Cargo"*; *"Something in the Walls"*).
+
 **What changed in the design, and why.**
 
 - *Heat:* a paragraph in "What this place is"; the landing bargain now has heat on the clearing's side.
@@ -52,6 +60,10 @@ under the campaign, one of them tameable, left for a card nobody sent.
 - *Takeaways:* fangs, with his words; tavrosk liquor.
 - *The siege:* his order and his four answers; its failed live run.
 - *Dropped list:* the morravell by name, the guild names, the player-built trap.
+- *Second sitting:* what the wall of light does not stop, and the margin; the cut that can bring a spider out
+  (his words of 2026-09-11, kept against the cleanse); the guardian alarm; disease among what drives a crew out;
+  the tree-shade dependency; heat restated as ordinary air plus the one Direct Sun; promises 3 and 8 tightened;
+  the two ship-shaped campaign jobs and dry air added to "later"; a seventeenth plant.
 - *NEEDS HIM:* theme tags on the first three; question 1 now carries the card's own wording; four added (which
   wear is the Webwork's own; whether the cover bargain is right; the two wyyyschokk; the cut cocoon as a find).
 
@@ -59,17 +71,19 @@ under the campaign, one of them tameable, left for a card nobody sent.
 doorframes, offered by card on 2026-10-02 with a recommendation to take all three new ideas; he took the lance
 only (a card, so there are no words of his to quote). It is `NEEDS HIM` 1 in the design.
 
-**Measured counts** (script, after writing; it reports an invented source name as missing): **233 rows**
-(127 from the first pass, 106 added); **26 lost**; **12 record a move**, and
-3 more in part; **3 kept, reshaped**; 1 folded into shared machinery; 190 kept; 1 row of
-the first pass's has a mixed outcome. Rows with a missing cell: 0. **Source files read to the end by the second
-reader: 28**; in large part: 3; by search: 5.
+**Measured counts** (script, after writing; it reports an invented source name as missing): **284 rows** (127
+from the first pass, 157 added); **30 lost**; **13 record a move**, and 4 more in part; **3 kept, reshaped**; 1
+folded into shared machinery; 236 kept; 1 row of the first pass's has a mixed outcome. Rows with a missing cell:
+0. **Source files read to the end by the second reader: 46**; in large part: 6; by search: 6. All are named under
+"Sources read, and the count".
 
-DELETE-READY: no, because the second reader stopped short of the cleanse's files, three large closed items, the
-Designer's question files and the egg market draft in full. For the six files on the deletion list itself the
-position is better: the second reader read five of them to the end (both rosters, the review, the kit spec, the
-roster json) and the first pass read the sixth, the sheet, whole. The two held files stay held. A third reader
-with the list under "Not read by the second reader" can settle this in one sitting.
+DELETE-READY: yes
+
+That line covers the six files listed under "The older files this design replaces", on the conditions already
+written there (the two held files stay held; the flora roster's rows move to where the art seat reads before it
+goes). The second reader read all six to the end, and both held files. One condition is added: the roster json
+is the only place the 57 named evictions and their reasons are written, so say that in whatever replaces the
+roster files before it goes.
 
 ---
 
@@ -186,7 +200,11 @@ Added by the second reader: *owner rulings* = `python3 src/RimMandrake/rimflow/o
 `WYYYSCHOKK_IDENTITY_COLLISION_1`; *feralisk item* = `WYYYSCHOKK_FERALISK_MERGE_1`; *structures item* =
 `WEBWORK_WEB_STRUCTURES_1`; *reckoning item* = `WEBWORK_EGG_RECKONING_QUEST_1`; *broker item* =
 `WEBWORK_EGG_BROKER_CHANNEL_1`; *eggs item* = `SHOKKWEAVE_RETIRE_EGGS_MOVE_TO_HUTTS`; *first script items* = the
-five `*_FIRST_SCRIPT_1` items and `WEBWORK_COVERAGE_GAPS_1`.
+five `*_FIRST_SCRIPT_1` items and `WEBWORK_COVERAGE_GAPS_1`; *sole source item* = `SHOKKWEAVE_SOLE_SOURCE_1`;
+*mod build item* = `WEBWORK_RM_MOD_BUILD_1`; *kit build item* = `WEBWORK_KIT_BUILD_1`. In the cleanse folder:
+*cleanse definition* = `definition.md`; *ambiguities* = `ambiguities.md`; *tickets* = `tickets.md`; *bars* =
+`bars.json`; *models* = `models.md`; *cleanse review* = `review.json` with `converge.json`. And *Designer
+questions* = `QUESTIONS.md` with `QUESTIONS_OWNER.md`; *Designer record* = `record.json`, beside the Designer notes.
 
 ### The place
 
@@ -480,6 +498,62 @@ Rows for ideas found in sources the first pass read in part or not at all. Same 
 | No fish: "a fishable cell anywhere in this biome would falsify the sheet's central image" | roster json | kept, quoted | | |
 | "Baby evil spider in the Web biome" and the feralisk to be "reskinned" to the web's spider (his review notes, 2026-09) | roster json | lost | Overtaken by his card of 2026-09-23: one race, one kind, and an invented spider of ours. | |
 
+**From the third sitting: the cleanse in full, the large closed items, the Designer's questions, the egg market draft and the sheet**
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| The margin loop: keeping the sunlit margin open means working among the cables in it; each contact marks the worker; the owners come to the nearest shaded edge, "which is exactly where the workers stand"; spit from that edge binds them; bound workers stop cutting; the canopy returns | cleanse review | kept; a new line under the first day | "Spit range from the edge compared with the width of the cleared margin decides whether [the] refuge can be maintained at all." A ship's clearing has to be wider than a spit. | |
+| A clearing does not stop "ranged spit from a reachable shaded edge", an owner already inside it, fire or hot air | cleanse definition | kept; the design's "sunlight is the wall" now says what the wall does not stop | | |
+| The tree-shade model decides everything: by his Direct Sun ruling the sun is switched off on tree-heavy maps unless the shade model is excellent, and the Webwork is the most tree-heavy map there is. If the model fails, either the scald runs on a geometry the sun is ruled off for, or the moat is gone | cleanse review, cleanse definition | kept; stated in the design's shared-machinery section as the biome's one hard dependency | "If tree-shade calibration fails, this signature is not demonstrated: do not pass by replacing trees with roofs." | |
+| The BiomeDef allows rivers, and a river painted through a Webwork tile would put surface water on the map | cleanse review | kept as an end-paint rule; his ruling of 2026-09-08 already moved the eight river tiles to the Greentide ("dayside river lines are the Greentide's by the lush rule") | | |
+| The nest's guardians are not finite today: the vanilla spawner replaces the dead for as long as the wall stands, up to its points limit | cleanse review, tickets | kept as a defect; the design's "finite guardians (built)" and promise 8's control are corrected to owed | A raid cannot be won by attrition on today's source. | |
+| A harmed guardian sends the nest to attack the colony, and stands down only after a quiet spell | cleanse review | kept; added to the nest line | Touching a nest is not the only trigger: wounding a guardian is. | |
+| Every way an owner chooses to move must refuse the sun: hunting, marked pursuit, idling, a manhunter rage, a nest's assault. "A crippled manhunter slowly walks through the supposed moat" is the failure | cleanse review, bars, ambiguities | kept as the rule behind promise 3 | The design's promise named rage; this names the rest. | |
+| An owner caught in the sun may cross it only to reach shade; with no shade to reach it "holds with readable scald" | cleanse definition | kept | | |
+| The main loop: "more cutting -> more material and contact marks -> more pursuit by existing owners -> less clearing work -> more shade -> more reachable hunting"; the three ways it ends badly: an owner flood, a prey desert, a nest that stalls | models | kept as the whole-stop failure to test for | | |
+| "It eats all", read two ways: the canopy swallowing clearings, or the predators having eaten the wildlife. The cleanse took the second, from the biome's own description | ambiguities, cleanse review | kept; the design's opening carries both and says which is which | His sentence, and nobody asked him. Low stakes: both are true of the place. | |
+| The owner is the named listener for the hush, at a staged save; "the game never waits for the sitting" | bars, tickets | kept as how promise 2 is read | | |
+| The windfall measured by a twin: the same crew over the same days without the trip must be unable to afford what the trip bought | bars, cleanse definition | kept as the measure of his "major windfall" answer (the first pass's row), with the method | | |
+| "Regrowing trees restore shade, not silk": cut web is never rebuilt | cleanse definition | kept | A stop can strip a map's silk for good. | |
+| Passive stickiness of strands; a random spider born from a cut: both moved off by the cleanse | cleanse definition, tickets | moved (→ 0.2.0): stickiness, as the first pass had it. The cut that brings a spider out stays in this design's 0.1.0, against the cleanse, because it is his own ruling of 2026-09-11 | | Follow the cleanse: a cut then only calls the spiders already on the map. |
+| "A crowded egg store is not a map-wide alarm; carrying eggs is." Eggs in hauling hands count as carried | cleanse definition, ambiguities | kept | | |
+| Mining a clutch rings nothing today: the clutch has no sense node | tickets | kept as a defect on promise 8 | | |
+| Natural cables pay silk when broken by force today | tickets, ambiguities | kept as a defect on promise 7 | | |
+| Before the planet is painted, a Webwork map can only be made on one tile of a throwaway copy of the save | cleanse review, tickets | kept as a test note | | |
+| The cleanse's counts: 75 capabilities, 35 kept, 34 next, 6 to retire; 8 bars, 5 live-only; 50 tickets; 4 models | cleanse | kept as history | | |
+| The cleanse's four stories: "we cut the line and were followed home"; "Dropping cargo buys eventual release from pursuit, not instant amnesia."; "A lamp and an arrival letter could not have saved them." | cleanse definition | kept, quoted in part; the settlement framing is lost | A settlement's stories. | |
+| The Designer's unasked question about the ship: "What should the landing's response make the crew do before unloading, and what happens if they leave immediately?" | Designer questions | kept as a row; the design takes the cleanse's settlement (an answer within the hour, never only a letter, nothing resurrected on a cleared map) | A persisting response to a ship that left and came back was one of the drafted options and is not taken. | A grudge the web holds across visits: new saved state. |
+| The Designer's other drafts: readable canopy recovery without "babysitting forty people"; the giant's visit as "awe at what the owners can kill", never "repeated identical waits"; what a prepared colony does before a siege reaches its doors | Designer questions | lost (never asked; three other drafts were answered by card and have rows) | | |
+| "Silence offers no safety" | Designer questions | kept, quoted | | |
+| As built the ollathrix hunts nothing bigger than itself | Designer record | kept as a build fact beside the dead giant and the titan battle | "They ate the colossus" is not something today's spider would try. | |
+| A seventeenth plant, the glasmaw, added after the roster | Designer record, tickets | kept as a plant | The design said sixteen. | |
+| The Designer's three ways the Webwork fails: it "looks owned but never notices the player"; treasure exists only as spawned objects; proof accepts ingredients while play is unfair | Designer record | kept, as what the promises are written against | | |
+| The two sanctioned resellers and their rates: Wildsteam weavers, about one caravan in three, one to three bolts; the Hutt Cartel's egg and captives caravans, about one in eight | sole source item | kept in the campaign layer; no promise pins the rates | | |
+| Whether those resale rolls ever happen was never seen live; marked unproven by his card of 2026-10-09. The trader strip's proof by source was accepted by the same card | sole source item | kept as build facts | | |
+| The old silk knot (a vein of silk to mine) and the single 60-bolt nest | sole source item | lost (cut with the old economy mod by his card of 2026-10-22) | | |
+| Five donor traders log an error every restock | sole source item | kept as a defect | | |
+| The jungle's diseases and weather by name: malaria, sleeping sickness, plague; fog, rain, dry and wet thunderstorms. "A heavy disease load in the canopy air" | mod build item, sheet §0 | kept; disease added to what forces a crew out | The design had no disease in it. | |
+| The front creep was built and seen working on 2026-09-12 before he deleted it | kit build item | lost (the first pass's row), with the date | | |
+| "A hunter is loud and billed hourly; an egg is quiet and biodegradable." | egg market draft | kept in the campaign layer, quoted | | |
+| The Cartel "owns the only non-Imperial orbital node — the door off-world"; "a contract killing is debt collection by other means" | egg market draft | kept in the campaign layer, quoted | It is who a smuggler crew would sell to, and why. | |
+| "The Wildsteam pay less, openly, and like you for it; the Cartel pays more, quietly, and owns you a little." | egg market draft | kept in the campaign layer, quoted | | |
+| "Fragile Cargo": the Cartel pays to move a clutch across Webwork ground against the mark; the immoral option is selling the cargo to the Wildsteam | egg market draft §2e | kept in "later", named | A hauling job for a ship that already knows the eggs are quiet in a hold. | |
+| "Something in the Walls": "someone paid to put an egg in your colony — find it before nightfall"; "the Cartel sells to your enemies too" | egg market draft §2e | kept in "later", named | Aboard a ship this is the best quest in the draft. | |
+| The hatch is "the Cartel's craft: a viable egg, kept warm and turned, hatches when placed — the player buys the service, not a mechanism"; the night-hatched spider is a juvenile and can lose | egg market draft §3, §5 | kept in the campaign layer | | |
+| No fixed black-market seat: "a fixed site makes the egg run a milk-run" | egg market draft §1b | kept in the campaign layer | | |
+| The free-form egg weapon filed as future work by his card of 2026-09-24 | egg market draft §5 | kept in "later" (the first pass's row), with the card | | |
+| The old economy mod's four jobs and what became of each | owner cards | kept as a build fact (the first pass's row), with the detail | | |
+| The spider is "strongly heat-resistant", and weak "away from high humidity ... Nothing they do overcomes the dry heat of the desert" | sheet §3, §4 | kept; the dry-air weakness is recorded and unbuilt | Heat does not hurt it, light does. A ship's dry hold is a second thing it would hate. | Build dryness as a second weakness: a new condition, and a reason spiders stay off the deck. |
+| "The truce concept does not even parse in the Webwork; you are not a fellow drinker, you are prey in someone's ledger." | sheet header | kept, quoted | | |
+| "Borderline sentient"; "wielding only the technology they were born with *(for now)*" | sheet §4 | kept, quoted, as flavour | | |
+| "Seeking slowly to convert all the green of the world into their green and white hellscape"; "two expansionist greens meeting — the Webwork converts, the Greentide churns" | sheet §4, Owed | kept in the campaign layer | | |
+| The Wildsteam's seats ring the Scald side: "devastating at home ... and this is next door to home" | sheet §8 | kept in the campaign layer, quoted | | |
+| "A droid convoy routed near the margin is a story that ends badly and is told often." | sheet §8 | kept, quoted | Jawa tell that story. | |
+| "The Greentide's silence-before-the-predator is the Webwork's *permanent state*." Safety "rendered as glare" | sheet §9 | kept, quoted | | |
+| "It can even compete with the Contagion in ferocity"; the Contagion's UV cage as shared physics | sheet §2, Owed | lost as geography | | |
+| The spider is canon fauna and not a Rakatan invention (his ruling, 2026-09-08) | sheet §7 | kept in the campaign layer | | |
+| "Go for it, write it up!" (the sheet's ratification) | sheet header | kept as history | | |
+
 ## Sources read, and the count
 
 Measured after writing: a script counted the table rows and the first words of the "what happened" column; the file
@@ -503,34 +577,37 @@ build-ready: a second reader should check it for ideas with no row here); the ca
 
 **20 source files opened, 127 rows**, of which **17 lost**, **14 record a move** (whole or in part), **2 kept, reshaped** and 1 folded into shared machinery.
 
-**Second reader's sources, 2026-11-18.** Counted as a file opened and read to its last line.
+**Second reader's sources, 2026-11-18.** Counted as a file opened and read to its last line. The reading took
+two sittings; the second finished every file the first had named as unread.
 
-*Read to the end (28):* the sitting record; the roster json; the fauna roster; the flora roster, the kit spec, the open-questions
-file and the bedazzle review (every line, with lines longer than about 1,300 characters cut at that length; the
-review's findings and card at 520 to 700); the silk spec; the Designer's `NOTES.md` and `ANSWERS_OWNER.md`; the
-items `SHOKKWEAVE_RETIRE_EGGS_MOVE_TO_HUTTS`, `WYYYSCHOKK_FANG_PENDANT_1`, `WEBWORK_DEAD_GIANT_BUILD_1`,
-`WEBWORK_TRACTION_LANCE_BUILD_1`, `WEBWORK_FELLED_NOON_RITE_1`, and closed `WEBWORK_SCORING_SITTING_1`,
-`EGG_PROXIMITY_HATCH_TRIGGER_1`, `WEBWORK_COVERAGE_GAPS_1`, `SHOKK_RSW_MOD_1`, `WEBWORK_DESIGN_SITTING_1`,
-`WEBWORK_HEAT_SHADE_BUILD_1`, `WEBWORK_EGG_BROKER_CHANNEL_1`, `WEBWORK_EGG_RECKONING_QUEST_1`,
-`WYYYSCHOKK_IDENTITY_COLLISION_1`, `WEBWORK_WEB_STRUCTURES_1`, `WEBWORK_BASE_PORT_BUILD_1`,
-`WYYYSCHOKK_FERALISK_MERGE_1`; `src/RimUtinni/ShipShields/Source/ShieldHazardUtility.cs`.
+*Read to the end (46):* the sheet; the sitting record; the egg market draft; the fauna roster; the roster json;
+the silk spec; the flora roster, the kit spec, the open-questions file and the bedazzle review (every line; in
+the first sitting lines longer than about 1,300 characters were cut at that length, and the review's findings
+and card at 520 to 700); in the cleanse folder `definition.md`, `ambiguities.md`, `next_version.md`,
+`owner_pages.md`, `tickets.md`, `models.md`, `bars.json`, `fixes.json`, `result.json`, `run.json`; the Designer's
+`NOTES.md`, `ANSWERS_OWNER.md`, `QUESTIONS.md`, `QUESTIONS_OWNER.md`; the validation walk; the items
+`SHOKKWEAVE_RETIRE_EGGS_MOVE_TO_HUTTS`, `WYYYSCHOKK_FANG_PENDANT_1`, `WEBWORK_DEAD_GIANT_BUILD_1`,
+`WEBWORK_TRACTION_LANCE_BUILD_1`, `WEBWORK_FELLED_NOON_RITE_1`, and closed `SHOKKWEAVE_SOLE_SOURCE_1`,
+`WEBWORK_RM_MOD_BUILD_1`, `WEBWORK_KIT_BUILD_1`, `WEBWORK_SCORING_SITTING_1`, `EGG_PROXIMITY_HATCH_TRIGGER_1`,
+`WEBWORK_COVERAGE_GAPS_1`, `SHOKK_RSW_MOD_1`, `WEBWORK_DESIGN_SITTING_1`, `WEBWORK_HEAT_SHADE_BUILD_1`,
+`WEBWORK_EGG_BROKER_CHANNEL_1`, `WEBWORK_EGG_RECKONING_QUEST_1`, `WYYYSCHOKK_IDENTITY_COLLISION_1`,
+`WEBWORK_WEB_STRUCTURES_1`, `WEBWORK_BASE_PORT_BUILD_1`, `WYYYSCHOKK_FERALISK_MERGE_1`;
+`src/RimUtinni/ShipShields/Source/ShieldHazardUtility.cs`.
 
-*Read in large part (3):* the cleanse census (every one of its 75 rows by its description, build state and fate;
-not the evidence paths); the art sheet of 2026-10-05 (every note of his); the five `*_FIRST_SCRIPT_1` items
-(their openings; they are one template).
+*Read in large part (6):* the cleanse's `review.json` and `converge.json` (every refusal, fix, verdict, missed
+capability and loop; the 636 lines of sorted pictures, which repeat the bars' pictures, by filter: 0 mismatches);
+the Designer's `record.json` (root, scope, decisions, all 53 inventory entries, contradictions, failure modes,
+scene audit, neighbours and limits; the 220-file list by path; not the per-entry evidence path arrays); the
+cleanse census (all 75 rows by description, build state and fate; not the evidence paths); the art sheet of
+2026-10-05 (every note of his); the five `*_FIRST_SCRIPT_1` items (their openings; they are one template).
 
-*Read by search (5):* his recorded rulings (`owner_rulings.py`, nine searches); the egg market draft (its ruling
-and owner lines); `ship_shields_deep_design.md` (the ruled table); the Webwork flora defs (the liquor harvest);
-the art sheet of 2026-11-03 (no notes in it).
+*Read by search (6):* his recorded rulings (`owner_rulings.py`, nine searches);
+`design/RimMandrake/biome_owner_cards_2026-10-22.md` (card 5 whole; the other cards are other biomes');
+`ship_shields_deep_design.md` (the ruled table); the Webwork flora defs (the liquor harvest); the mechanics
+review's Webwork table (the first pass read it whole); the art sheet of 2026-11-03 (no notes in it).
 
-*Not read by the second reader:* the three largest closed items, `SHOKKWEAVE_SOLE_SOURCE_1`,
-`WEBWORK_RM_MOD_BUILD_1` and `WEBWORK_KIT_BUILD_1` (their rulings were read at the specs and sitting record they
-cite, not in the items); the cleanse's `definition.md`, `ambiguities.md`, `next_version.md`, `tickets.md`,
-`bars.json`, `models.md`, `review.json`, `converge.json` and `fixes.json` beyond what the first pass read; the
-Designer's `QUESTIONS.md`, `QUESTIONS_OWNER.md` and `record.json`; the validation walk; the egg market draft in
-full; `design/RimMandrake/biome_owner_cards_2026-10-22.md` beyond the first pass's reading; the sheet again (the first pass read it whole); the campaign mods `EggReckoning` and
-`WildsteamEggBounty`. The second reader ran out of its spending limit before these. None of the cleanse or
-Designer files is on the deletion list below.
+*Not read:* the C# and XML under `src/RimMandrake/Webwork/` beyond the flora defs; the campaign mods
+`EggReckoning` and `WildsteamEggBounty`. None is a design file, and none is on the deletion list below.
 
 ## The older files this design replaces, ready to delete on his word
 
