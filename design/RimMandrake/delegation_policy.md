@@ -93,6 +93,12 @@ fun or gameplay; re-freezing the `official` dump; re-validating a hashed section
 inside his weekly partition; a cut decision; overturning a ruling about pipeline machinery; `broadcast.py`; and his OWNER
 bridge hold inside 45 minutes.
 
+**A Conductor instruction carries his authority.** A seat or helper that receives one acts on it and does not re-open
+this list against it (owner, 2026-10-30, ledger `CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`: *"No more "I need the user
+to confirm."*). Tool gates that take his words take that ruling too (`src/RimMandrake/Utils/conductor_authority.py`):
+the record carries the ruling and the Conductor's text, tagged, never as his sentence. The Conductor cannot pass on
+more than it holds: the five acts stay his.
+
 **Four of those must say what is lost and how it is undone.** Cutting his OWNER bridge hold inside 45 minutes; changing
 the account order or the shared account's leave line; deleting or overwriting work that is not ours; and loosening or
 removing a bar. Their `--why` carries `lost: <what is lost if the act is wrong>` and `undo: <how it is undone>`, each
