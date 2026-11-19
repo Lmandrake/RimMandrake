@@ -467,10 +467,74 @@ def cmd_queue(args, seat):
         return 0
     try:
         with open(path, encoding="utf-8") as fh:
-            sys.stdout.write(fh.read())
+            text = fh.read()
     except OSError as e:
         die("rendered, but %s could not be read: %s" % (path, e))
+    if getattr(args, "full", False):
+        sys.stdout.write(text)
+        return 0
+    ev, w = load()
+    sys.stdout.write(compact_queue(text, w, ev, "rimflow queue %s --full" % which))
     return 0
+
+
+COMPACT_SECTIONS = 25
+
+
+def compact_queue(text, w, ev, full_cmd, now=None, limit=COMPACT_SECTIONS):
+    """The default `rimflow queue` view: the rendered view's headings, and only the items running now (state doing)
+    or touched today (an event on today's Pacific date), at most `limit` of them in the view's own order, each as its
+    heading and its state, lease, action and then lines (cut at 240 characters), then one line
+    naming what was left out and the --full command. The whole view printed 1,380,514 bytes on 2026-11-18 [measured]
+    (item RIMMANDRAKE_ADD_PIPE_QUEUE_VERBS_QUEUE_VIEW_PRINTS_MEGABYTES)."""
+    import datetime as _dt
+    try:
+        from zoneinfo import ZoneInfo
+        tz = ZoneInfo("America/Los_Angeles")
+    except Exception:       # noqa: BLE001  no tz database: today in UTC, said in the footer
+        tz = _dt.timezone.utc
+    today = _dt.datetime.fromtimestamp(now or time.time(), tz).date()
+
+    def touched_today(it):
+        for i in reversed(getattr(it, "history", None) or []):
+            ts = (ev[i] if 0 <= i < len(ev) else {}).get("ts") or ""
+            try:
+                d = _dt.datetime.strptime(ts[:19], "%Y-%m-%dT%H:%M:%S").replace(tzinfo=_dt.timezone.utc)
+            except ValueError:
+                continue
+            return d.astimezone(tz).date() == today
+        return False
+    out, kept, left, sec, keep = [], 0, 0, [], True
+    def flush():
+        nonlocal kept, left
+        if sec:
+            if keep and kept < limit:     # the heading and what to do; the rest is in --full
+                out.append(sec[0] if len(sec[0]) <= 241 else sec[0][:240] + "…\n")
+                out.extend((x if len(x) <= 241 else x[:240] + "…\n") for x in sec[1:]
+                           if x.startswith(("state:", "lease:", "action:", "then:")))
+                out.append("\n")
+                kept += 1
+            else:
+                left += 1
+    for line in text.splitlines(True):
+        if line.startswith("## "):
+            flush()
+            iid = line[3:].split(" ", 1)[0].strip()
+            it = w.items.get(iid)
+            keep = it is not None and (getattr(it, "state", None) == "doing" or touched_today(it))
+            sec = [line]
+        elif line.startswith("# "):
+            flush()
+            sec = []
+            out.append(line)
+        elif sec:
+            sec.append(line)
+        else:
+            out.append(line)
+    flush()
+    out.append("\n(compact view: %d item(s) running or touched today shown, %d more left out; the whole view: %s)\n"
+               % (kept, left, full_cmd))
+    return "".join(out)
 
 
 def _owed():
@@ -4893,6 +4957,9 @@ def build_parser():
                    help="BENCH or FOUNDRY (default: this seat)")
     s.add_argument("--path", action="store_true",
                    help="render, then print only the view's path")
+    s.add_argument("--full", action="store_true",
+                   help="the whole rendered view (the default shows items running or touched today, at most %d)"
+                        % COMPACT_SECTIONS)
     s.add_argument("--acceptance", action="store_true",
                    help="print built/validated work grouped by cheapest owed level "
                         "(same as `next --acceptance`); renders nothing")

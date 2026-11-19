@@ -2994,6 +2994,11 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
         # (control.py: an unreadable store admits nothing; "could not look" is never "no holds")
         holds = {OH.key(m): {"mod": OH.key(m), "date": "", "said": str(e), "unreadable": True}
                  for m in cfg.get("advancing") or []}
+    import control as C     # `pipe queue` (slice 3): the store's order and membership of the advancing list
+    try:
+        cfg = dict(cfg, advancing=C.queue_apply(cfg.get("advancing") or []))
+    except C.Unreadable:    # the shipped order stands: the hold read above already holds every mod as UNREADABLE
+        pass
     cfg = dict(cfg, advancing=[m for m in cfg.get("advancing") or [] if OH.key(m) not in holds])
     # The pipeline's pause (pipeline_pause.py; RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED), read at the moment of
     # deciding, no git hop; an --until that has passed resumes by itself (an applying tick moves it to history and says

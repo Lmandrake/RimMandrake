@@ -1459,11 +1459,85 @@ def t_accounts():
     check(rc in (0, 2), "pipe set still answers (0 done or 2 refused for an unknown mod)", (rc, out))
 
 
+def t_queue():
+    """Slice 3 (RIMMANDRAKE_ADD_PIPE_QUEUE_VERBS_QUEUE_VIEW_PRINTS_MEGABYTES): `pipe queue` keeps order and membership
+    apart (critique 23) in this store, and the tick's advancing list reads it."""
+    fresh()
+    ship = ["Pyrelands", "Graffiti", "Cauldron"]
+    check(C.queue_apply(ship) == ship, "no queue act: the shipped advancing order, unchanged")
+    C.queue_act("top", "Cauldron", "first", mods=ship)
+    check(C.queue_apply(ship) == ["Cauldron", "Pyrelands", "Graffiti"], "queue top moves a mod first",
+          C.queue_apply(ship))
+    C.queue_act("bottom", "Pyrelands", "last", mods=ship)
+    check(C.queue_apply(ship) == ["Cauldron", "Graffiti", "Pyrelands"], "queue bottom moves a mod last",
+          C.queue_apply(ship))
+    C.queue_act("move", "Pyrelands", "second", n=2, mods=ship)
+    check(C.queue_apply(ship) == ["Cauldron", "Pyrelands", "Graffiti"], "queue move puts a mod at a position",
+          C.queue_apply(ship))
+    C.queue_act("drop", "Pyrelands", "out of the queue", mods=ship)
+    check(C.queue_apply(ship) == ["Cauldron", "Graffiti"], "queue drop takes a mod out (membership)", C.queue_apply(ship))
+    C.queue_act("add", "Pyrelands", "back in", mods=ship)
+    check(C.queue_apply(ship) == ["Cauldron", "Pyrelands", "Graffiti"],
+          "queue add puts it back where its order said (membership and order are separate)", C.queue_apply(ship))
+    r = C.queue_act("top", "Cauldron", "retried", mods=ship, idem="q-retry")
+    r2 = C.queue_act("top", "Cauldron", "retried", mods=ship, idem="q-retry")
+    check(r2["replayed"] and r2["act"]["id"] == r["act"]["id"], "a retried queue act with one key changes nothing")
+    try:
+        C.queue_act("move", "Graffiti", "bad", n=0, mods=ship)
+        got = "accepted"
+    except C.Refused:
+        got = "refused"
+    check(got == "refused", "a position under 1 is refused", got)
+    rc, out, _ = pipe("queue", "top", "Graffiti", "--why", "cli")
+    check(rc == 0 and len([x for x in out.splitlines() if x.strip()]) <= 3 and "Graffiti" in out,
+          "pipe queue top answers in at most 3 lines", (rc, out))
+    rc, out, _ = pipe("queue")
+    check(rc == 0 and out.splitlines()[0].startswith("queue"), "pipe queue lists the order", (rc, out))
+    rc, out, _ = pipe("queue", "top", "Grafiti", "--why", "typo")
+    check(rc == 2 and "Graffiti" in out, "a wrong mod is refused with the nearest name", (rc, out))
+    # the tick reads it: maturation_dispatch's advancing list goes through queue_apply
+    import maturation_dispatch as MD
+    import inspect
+    src = inspect.getsource(MD)
+    check("queue_apply(" in src, "the tick's advancing list reads the store's queue (maturation_dispatch)")
+    # an unreadable store: queue_apply raises (the tick keeps the shipped order and admits nothing on it)
+    old = os.environ["RM_CONTROL_DB"]
+    os.environ["RM_CONTROL_DB"] = os.path.join(TMP, "absent-q.db")
+    try:
+        C.queue_apply(ship)
+        got = "no raise"
+    except C.Unreadable:
+        got = "Unreadable"
+    finally:
+        os.environ["RM_CONTROL_DB"] = old
+    check(got == "Unreadable", "an unreadable store's queue read is Unreadable, never the shipped order as fact", got)
+    # the compact `rimflow queue` default: running or touched today, at most 25, each cut to what to do
+    import types
+    sys.path.insert(0, os.path.dirname(HERE)) if os.path.dirname(HERE) not in sys.path else None
+    from rimflow import cli as RC
+    now = time.time()
+    today = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))
+    old_ts = "2020-01-01T00:00:00Z"
+    ev = [{"ts": today}, {"ts": old_ts}]
+    items = {"RUN_%d" % i: types.SimpleNamespace(state="doing", history=[1]) for i in range(30)}
+    items.update({"OLD_ONE": types.SimpleNamespace(state="ready", history=[1]),
+                  "NEW_ONE": types.SimpleNamespace(state="ready", history=[0])})
+    w = types.SimpleNamespace(items=items)
+    body = "".join("## %s title\nstate:    x\nsummary:  %s\n\n" % (k, "y" * 2000) for k in ["NEW_ONE", "OLD_ONE"] +
+                   ["RUN_%d" % i for i in range(30)])
+    text = "# HEAD\nas-of: now\n\n# NEXT\n" + body
+    out = RC.compact_queue(text, w, ev, "rimflow queue BENCH --full", now=now)
+    check("## NEW_ONE" in out and "## OLD_ONE" not in out and out.count("## ") == 25 and "y" * 50 not in out
+          and "--full" in out.splitlines()[-1] and "# NEXT" in out and len(out) < 4000,
+          "the compact queue view: running or touched today, at most 25, no prose, says --full",
+          (out.count("## "), len(out), out[-200:]))
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
-              t_accounts):
+              t_accounts, t_queue):
         print("== %s" % t.__name__)
         try:
             t()

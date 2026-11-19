@@ -29,6 +29,8 @@ moment of launch (admit) and again when the unit itself starts (its ExecConditio
                 no), abandoned (reconcile: it never started and its launcher is gone).
   reservations  a consumable held for a run: held -> charged at VALIDATED settlement, or released; charged -> voided.
   grants        more of a consumable for a mod in one accounting window (`pipe grant <Mod> look +N`).
+  queue         the advancing order (`pipe queue top|bottom|move|drop|add`): a position per mod and, apart from it, its
+                membership (critique 23); the tick's advancing list reads it (queue_apply).
   adjustments   the typed counts and limits (`pipe set|add|reset|limit`): a count's delta at a revision, a limit's
                 value; `pipe undo <act>` is a compensating act, refused with the later acts it would break.
   voids         one row per voided run; voiding twice changes nothing. A void never moves a stage.
@@ -127,6 +129,7 @@ CREATE TABLE IF NOT EXISTS stops (id INTEGER PRIMARY KEY AUTOINCREMENT, unit TEX
 CREATE TABLE IF NOT EXISTS adjustments (id INTEGER PRIMARY KEY AUTOINCREMENT, act TEXT NOT NULL, mod TEXT NOT NULL,
   res TEXT NOT NULL, kind TEXT NOT NULL, verb TEXT, delta INTEGER, value INTEGER, state TEXT NOT NULL DEFAULT 'live',
   undone_by TEXT, at REAL);
+CREATE TABLE IF NOT EXISTS queue (mod TEXT PRIMARY KEY, pos REAL, member INTEGER NOT NULL DEFAULT 1, act TEXT, at REAL);
 CREATE INDEX IF NOT EXISTS runs_state ON runs (state);
 CREATE INDEX IF NOT EXISTS res_acct ON reservations (mod, resource, win, state);
 CREATE INDEX IF NOT EXISTS stops_unit ON stops (unit, state);
@@ -945,6 +948,120 @@ def import_accounts(pc_dir, p=None, now=None):
             out.append("%s %s = %s %s" % (sec, k, v, "already imported" if r["replayed"] else "imported (%s)" %
                                           r["act"]["id"]))
     return out or ["old counters: the journal holds no count or limit ([] nothing to import)"]
+
+
+# ---------------------------------------------------------------- the queue (slice 3)
+# Item RIMMANDRAKE_ADD_PIPE_QUEUE_VERBS_QUEUE_VIEW_PRINTS_MEGABYTES. The shipped advancing list
+# (maturation_dispatch.json) is the base; a row here gives a mod a position, or takes it out (member 0) or adds it
+# (member 1, a mod the list does not ship). Order and membership are separate: a dropped mod keeps its position.
+
+Q_SQL = ("CREATE TABLE IF NOT EXISTS queue (mod TEXT PRIMARY KEY, pos REAL, member INTEGER NOT NULL DEFAULT 1, act TEXT, "
+         "at REAL)")
+QUEUE_OPS = ("top", "bottom", "move", "drop", "add")
+
+
+def _queue_rows(c):
+    if not c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='queue'").fetchone():
+        return {}
+    return {r["mod"]: dict(r) for r in c.execute("SELECT * FROM queue").fetchall()}
+
+
+def _queue_order(rows, mods, members_only=True):
+    mods = [key(m) for m in mods]
+    allm = mods + sorted(m for m, r in rows.items() if m not in mods and r["member"])
+    keep = [m for m in allm if not members_only or (rows.get(m) or {}).get("member", 1)]
+    base = {m: i for i, m in enumerate(allm)}
+    # a positioned mod sorts by its position; an unpositioned one keeps its shipped place after them
+    return sorted(keep, key=lambda m: ((rows.get(m) or {}).get("pos") is None,
+                                       (rows.get(m) or {}).get("pos") or 0, base[m]))
+
+
+def queue_apply(mods, p=None):
+    """-> the advancing list `mods` in the store's queue order and membership (no queue act: `mods` unchanged).
+    Raises Unreadable (the tick then keeps the shipped order; admission refuses everything on that store anyway)."""
+    c = read(p)
+    try:
+        return _queue_order(_queue_rows(c), mods)
+    except sqlite3.Error as e:
+        raise Unreadable(_err(e))
+    finally:
+        c.close()
+
+
+def queue_act(op, mod, why, n=None, mods=None, owner_said=None, per_ruling=None, idem=None, p=None, now=None):
+    """`pipe queue top|bottom|move <N>|drop|add <Mod>` -> {"act", "before", "after", "replayed"} (orders of members).
+    top/bottom/move renumber every member's position in the new order; drop/add change membership only."""
+    if op not in QUEUE_OPS:
+        raise Refused("queue takes %s, not %r" % ("|".join(QUEUE_OPS), op))
+    if op == "move":
+        try:
+            n = int(n)
+        except (TypeError, ValueError):
+            raise Refused("queue move <Mod> <position>: a whole number, got %r" % (n,))
+        if n < 1:
+            raise Refused("a queue position is 1 or more, got %d" % n)
+    mod = key(mod)
+    mods = list(mods or [])
+    now = time.time() if now is None else now
+    with txn(p) as c:
+        hit = _idem_hit(c, idem)
+        if hit:
+            return {"act": hit, "before": None, "after": _queue_order(_queue_rows(c), mods), "replayed": True}
+        c.execute(Q_SQL)
+        rows = _queue_rows(c)
+        before = _queue_order(rows, mods)
+        a = _act(c, "queue", "mod:" + mod, {"order": before}, {"op": op, "n": n}, why, owner_said, per_ruling, idem,
+                 now=now)
+        if op in ("drop", "add"):
+            pos = (rows.get(mod) or {}).get("pos")
+            if op == "add" and pos is None and mod not in [key(m) for m in mods]:
+                pos = max([r["pos"] for r in rows.values() if r["pos"] is not None] + [len(mods)]) + 1
+            c.execute("INSERT OR REPLACE INTO queue (mod, pos, member, act, at) VALUES (?,?,?,?,?)",
+                      (mod, pos, 1 if op == "add" else 0, a["id"], now))
+        else:
+            order = [m for m in before if m != mod]
+            at = 0 if op == "top" else len(order) if op == "bottom" else min(n - 1, len(order))
+            order.insert(at, mod)
+            for i, m in enumerate(order):
+                member = (rows.get(m) or {}).get("member", 1)
+                c.execute("INSERT OR REPLACE INTO queue (mod, pos, member, act, at) VALUES (?,?,?,?,?)",
+                          (m, i + 1, 1 if m == mod else member, a["id"] if m == mod else (rows.get(m) or {}).get(
+                              "act"), now))
+        return {"act": a, "before": before, "after": _queue_order(_queue_rows(c), mods), "replayed": False}
+
+
+def shipped_advancing():
+    """-> maturation_dispatch.json's advancing list (the queue's base), read from this tree."""
+    with open(os.path.join(HERE, "maturation_dispatch.json"), encoding="utf-8") as f:
+        return list(json.load(f).get("advancing") or [])
+
+
+def cmd_queue(o):
+    mods = shipped_advancing()
+    if not o.op or o.op == "list":
+        c = read()
+        try:
+            rows = _queue_rows(c)
+        finally:
+            c.close()
+        order = _queue_order(rows, mods)
+        out = _queue_order(rows, mods, members_only=False)
+        dropped = [m for m in out if m not in order]
+        return ["queue (%s): %s" % ("the shipped advancing order, no queue act" if not rows else "store",
+                                     " > ".join(order) or "[] empty"),
+                "dropped (kept in order, out of the queue): %s" % (", ".join(dropped) or "[] none"),
+                "shipped list: %s" % " > ".join(mods)]
+    if not o.mod:
+        raise Refused("pipe queue %s <Mod>" % o.op)
+    m = scope_of(o.mod)[4:]
+    r = queue_act(o.op, m, o.why or "", n=o.n, mods=mods, owner_said=o.owner_said, per_ruling=o.per_ruling,
+                  idem=o.idem)
+    if r["replayed"]:
+        return ["queue %s %s: already done as %s (idempotency key %s): nothing changed" % (o.op, m, r["act"]["id"],
+                                                                                         o.idem)]
+    return ["queue %s %s: %s -> %s" % (o.op, m, " > ".join(r["before"]) or "[]", " > ".join(r["after"]) or "[]"),
+            _who_line(r["act"]), "undo: pipe queue <top|bottom|move|drop|add> <Mod> --why \"...\" (a queue act is "
+                                 "changed by the next one)"]
 
 
 def fmt_acct(a):
@@ -2385,7 +2502,7 @@ def doctor():
 
 def main(argv=None):
     av = list(sys.argv[1:] if argv is None else argv)
-    if av[:1] in (["set"], ["add"], ["reset"], ["limit"], ["undo"], ["queue"]):
+    if av[:1] in (["set"], ["add"], ["reset"], ["limit"], ["undo"]):
         sys.path.insert(0, HERE) if HERE not in sys.path else None
         import pipeline_control as PC
         return PC.main(av)
@@ -2429,6 +2546,14 @@ def main(argv=None):
     p.add_argument("mod")
     p.add_argument("resource")
     p.add_argument("n")
+    p = sub.add_parser("queue")
+    p.add_argument("op", nargs="?", choices=("list",) + QUEUE_OPS)
+    p.add_argument("mod", nargs="?")
+    p.add_argument("n", nargs="?")
+    p.add_argument("--why")
+    p.add_argument("--owner-said")
+    p.add_argument("--per-ruling")
+    p.add_argument("--idem")
     p = sub.add_parser("init")
     p.add_argument("--import", action="store_true", dest="do_import")
     sub.add_parser("doctor")
@@ -2486,6 +2611,8 @@ def main(argv=None):
             lines = cmd_void(o)
         elif o.verb == "grant":
             lines = cmd_grant(o)
+        elif o.verb == "queue":
+            lines = cmd_queue(o)
     except Refused as e:
         print("pipe: REFUSED: %s" % e)
         return REFUSED
