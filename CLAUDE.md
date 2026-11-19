@@ -394,7 +394,7 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./game --said "<his words>" up|down|loading         the moment he says it; bare ./game measures
 ./game --why "<your reason>" down|loading|up        🔴 a REBOOT is yours to call, no asking
                                                      (owner 2026-09-02) — bridge free first
-./bridge [conductor|foundry|free]                   his override; bare ./bridge says who has it
+./bridge [conductor|free]                           his override; bare ./bridge says who has it
 rimflow …                                           the ledger: file/claim/close/drop/verify
 rimflow pilot [<ID>]                                Test Pilot: 3 non-pass runs in a row or live-only defect → spawn rm-testpilot
 python3 src/RimMandrake/Utils/run_selftests.py --only <tests>   before a commit: only the tests for what you changed;
@@ -417,7 +417,7 @@ User-level rule; here the route is Tailscale.
 One window drives the live game at a time. Who holds it is `infrastructure/state/BRIDGE`,
 written only by `rimflow bridge who | take --for "<what for>" | release` (release the moment
 you stop). It errs toward ALLOWING: a hold with no event for 45 minutes is stale and simply
-taken; `take --force` works on any seat's hold. ⭐ The owner overrides with `./bridge conductor|foundry|free`.
+taken; `take --force` works on any seat's hold. ⭐ The owner overrides with `./bridge conductor|free`.
 **RELENTLESS** was the retired Relentless Pipeline's bridge holder (`model.bridge_identity`), not a seat: only old `bridge` events carry it.
 🔴 **His OWNER hold** (owner, by card 2026-10-30: *"45 minutes after my last interaction, or I deliberately release
 it"*): takeable only 45 min after his last deliberate interaction (a ledger event, `./bridge` or `./game` by his own

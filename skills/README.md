@@ -50,8 +50,8 @@ the lessons themselves in the active files. Provenance is for git."*). One conve
 General skills live in `~/dev/MandrakeWorkflows/skills/` (`D:\Luke\dev\MandrakeWorkflows\skills\`) or their own repos, linked
 into `~/.claude/skills/` for every project; `~/dev/Lodestar/claude/skills.md` is the cross-machine table. These include
 `efficient-subagents`, `deciding-and-superseding`, `frozen-artifacts`, `verify-before-you-escalate`, `agent-fanout-research`,
-`calibrating-binary-formats`, `artisan`, `artisan-head`, `artisan-judge`, `relentless-pipeline`, `measuring-large-artifacts`,
-`review-sheets` and `confident-wrong-numbers`. The roster below reads `skills/` and **cannot see them**; fix one in its own repo
+`calibrating-binary-formats`, `measuring-large-artifacts`, `review-sheets` and `confident-wrong-numbers` (the loop
+skills `artisan`, `artisan-head`, `artisan-judge`, `whittle` and `relentless-pipeline` are retired here, hidden by `.claude/settings.json`). The roster below reads `skills/` and **cannot see them**; fix one in its own repo
 and push there — a queue item here never reaches it.
 
 <!-- doc_roster:BEGIN — generated, do not hand-edit -->

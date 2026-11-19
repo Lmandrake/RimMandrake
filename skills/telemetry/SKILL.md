@@ -7,7 +7,7 @@ description: Query recorded history before re-measuring anything about the game,
 
 Built by `TELEMETRY_BUILD_EVERY_TICK_ACCOUNTED`; design
 [references/history.md](references/history.md) (owner picks: hybrid VictoriaMetrics + SQLite +
-Grafana + RimPulse alerts, data on E:, 1 s test tier + flight recorder). Code: `src/RimMandrake/Utils/telemetry/`.
+Grafana + alerts (RimPulse, which showed them, is retired), data on E:, 1 s test tier + flight recorder). Code: `src/RimMandrake/Utils/telemetry/`.
 
 ## The three laws
 
@@ -44,7 +44,6 @@ producers (unchanged)                      Windows, E:\telemetry  (survives wsl 
 Everything runs on the Windows side **with no window** (see traps). WSL only exports its own sources and
 watches the heartbeat (`rm-telemetry-health.timer`); it never reads `\\wsl.localhost` from Windows, because
 touching that path boots the distro.
-- **The RimPulse widget window hangs off the desktop's right edge** (logical x 1544-2124 on a 1920-wide desktop): anything at the right end of its title bar is invisible to the owner, and in the overflowing flex bar an `overflow:hidden` span shrinks to 0 width. Put controls and status at the LEFT, give status text `flex:none`, let the source lights shrink. Verify with a Windows desktop capture (`python.exe system_screenshot.py`) cropped to the window, not by reading the HTML.
 
 ## Verbs
 

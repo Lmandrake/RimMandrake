@@ -1,6 +1,6 @@
 ---
 name: rm-consult
-description: RimMandrake fresh-eyes consultant (relentless.py help): reads a stuck item's failed approaches and returns hypotheses, each with the one observation that tests it. Read-only. Opus.
+description: RimMandrake fresh-eyes consultant: reads a stuck item's failed approaches and returns hypotheses, each with the one observation that tests it. Read-only. Opus.
 model: opus
 maxTurns: 60
 autoCompactWindow: 150000

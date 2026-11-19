@@ -18,7 +18,7 @@ The isolated Designer smoke passed with that selection. Windows-launched WSL pro
 ## Native WSL Codex as the live-game driver (proved 2026-11-10)
 
 A native WSL `codex exec --sandbox danger-full-access` session drove the complete
-Whittle pit-prison acceptance runner through Windows `python.exe`, then the
+pit-prison acceptance runner of the retired Whittle loops through Windows `python.exe`, then the
 HugeThings P1 runner. No Claude runner or Claude tool call drove the game.
 The report (`whittle/CODEX_LIVE_2026-11-10.md`, removed with the Whittle loops; `git show f2ce40bac8:whittle/CODEX_LIVE_2026-11-10.md`) links the raw attempts,
 preflights, restoration receipts, independent pit judgment and published fixes.

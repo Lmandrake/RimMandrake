@@ -4,7 +4,7 @@ The full text behind `SKILL.md` §0b and §1: every rule there is stated once in
 
 ## 0b. 🔴 Claim the bridge before you drive it — `rimflow bridge take`/`release`
 
-Whoever drives the bridge (a Relentless live round, a Test Pilot, a BENCH sitting
+Whoever drives the bridge (a testq live lane, a Test Pilot, a BENCH sitting
 for an owner live look, an L3 evaluation per `infrastructure/VALIDATION_LADDER.md`)
 runs `rimflow bridge take` before driving and `rimflow bridge release` the instant
 it stops. There is no chat message, no asking and no waiting on another seat's grant.

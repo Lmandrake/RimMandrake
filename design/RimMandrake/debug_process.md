@@ -1,6 +1,6 @@
 # How we debug — debug through the script, leave the harness behind
 
-status: **OFFICIAL**, owner rulings 2026-10-01 · binds BENCH, FOUNDRY and every subagent
+status: **OFFICIAL**, owner rulings 2026-10-01 · binds the Conductor and every helper and subagent
 
 ## 0. The rule
 

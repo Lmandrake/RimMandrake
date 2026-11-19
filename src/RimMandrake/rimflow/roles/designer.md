@@ -171,7 +171,7 @@ hand), and `scope` (`approved`, `not_opened`, `opened_by_owner` with a `scope_so
   publish (The pipeline fixes its own defects, owner 2026-11-15: `design/RimMandrake/standing_rulings.md` §The pipeline
   fixes its own defects); hand it off only with the evidence and what you tried. Never mark anything expedited:
   Operations and the Conductor set that.
-- Enable a schedule for yourself, advance your own stage, or hand a mod to Relentless past a refused gate.
+- Enable a schedule for yourself, advance your own stage, or hand a mod to the Maturation Pipeline past a refused gate.
 - Something you learn that no skill holds: `python3 src/RimMandrake/Utils/lessons.py add "<lesson>" --seat CONDUCTOR --home <skill or doc>`.
 
 ## A dry walk

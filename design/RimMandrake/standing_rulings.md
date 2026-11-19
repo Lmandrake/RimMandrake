@@ -4,7 +4,7 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (FOUNDRY, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
 ## The pipeline never "blesses" a small change — owner, 2026-11-05
 
@@ -12,7 +12,8 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
 for a small validation that could be manually performed."* A small change whose check is a quick manual validation
 (an installed picture equals his pick, a value reads back, a file is deployed) is checked by the agent that made it,
 on the spot (a hash, a read, a single bridge call), and closed with that evidence (`rimflow verify ... --level L0`
-then `close`). It is never queued, unheld or left open for Relentless to judge. Relentless builds and proves real work:
+then `close`). It is never queued, unheld or left open for the pipeline to judge (he said it of Relentless, since retired). The
+Maturation Pipeline builds and proves real work:
 code, systems, live proofs that need a game round. With "See it, fix it, then" in the CHARTER.
 
 ## Fix it and check it yourself; no notes, no re-run generations — owner, 2026-11-05
@@ -22,8 +23,8 @@ each item once more time to do a check, ok?"* (He had just said *"NO! Do not wri
 YOU DO IT NOW!"* to a Conductor that diagnosed `MODCHECK_DONOR_ENVIRONMENTS_1` and wrote the next step on the item.)
 Any seat or helper that finds why an item is stuck does the fix and the remaining check itself, in the same sitting
 (a run, a read, a bridge call, one live line), and closes the item with that evidence. Never write the diagnosis or a
-`NEXT:` onto the ticket instead, and never unhold or re-release an item so a whole new Relentless generation can rebuild
-it only to re-run a check. An item returns to Relentless only when real build work remains. With "The pipeline never
+`NEXT:` onto the ticket instead, and never unhold or re-release an item so a whole new pipeline run can rebuild
+it only to re-run a check. An item returns to the pipeline only when real build work remains. With "The pipeline never
 blesses a small change" above.
 
 ## North-star validation state
@@ -261,7 +262,7 @@ a duplicate, write a pointer instead.
 
 **Operating doc: `design/RimMandrake/GIT_WORKFLOW.md`** — read it before touching git.
 
-- **Work in your seat clone** — `/home/mandrake/rm/bench` or `/home/mandrake/rm/foundry`, ext4, one writer each. `D:\Luke\dev\RimMandrake` is a **read-only mirror** of origin/main (no `.git`, refreshed every 5 min); never write it. Windows tools read it.
+- **Work in your seat clone** — `/home/mandrake/rm/bench` (the FOUNDRY clone was retired with its seat) or the helper clone your brief names, ext4, one writer each. `D:\Luke\dev\RimMandrake` is a **read-only mirror** of origin/main (no `.git`, refreshed every 5 min); never write it. Windows tools read it.
 - **Land with the wrappers:** `./publish -m "subject" path…` or `land.sh <sha> <paths>` (each prints `PUBLISHED <sha>`; pass that to `rimflow close --sha`), and `./sync` to realign the clone — never `git pull --rebase` (it refuses on any dirty file) and never a stash (`GIT_WORKFLOW.md`). Pathspec on the `commit` (`git commit <paths> -F -`), never `git add -A`/`.`/`-a` (hook-enforced), never `--force`, never a file over ~50 MB.
 - Committed *and pushed* is the only durable state: commit each finished unit and push at once. Proof of publication is `git merge-base --is-ancestor <sha> origin/main`, not an empty `git log origin/main..HEAD`.
 - The pre-push and PreToolUse hooks refuse a compound command whole: keep file writes and commits in separate Bash calls.
@@ -291,10 +292,6 @@ python3 src/RimMandrake/Utils/code_review_status.py list               every rec
 
 - **Fixing a finding does not clean a file.** Only a full-file review returning
   zero significant findings does, recorded with `mark-clean`.
-  - **Scope exception, `relentless.py` and `relentless_game.py` ONLY (owner card, 2026-11-06):** a file is clean
-    when a full review finds no high-severity issue; smaller bugs can stay (filed, not blocking). Authority: *"What
-    should clean mean for relentless.py and relentless_game.py? → Only serious ones count: a file is clean when a full
-    review finds no high-severity issue; smaller bugs can stay"*. Every other file keeps the rule above.
   - **Pipeline machinery is under a different rule (owner card, 2026-11-18, answered 11:19 to 11:25 PM PST):** for
     a file matched by `pipeline_files` in `src/RimMandrake/Utils/pipeline_tests.json`, the two lines above do not
     apply. Such a file is clean when every promise on its boundary page has a test and it has had its two looks; a
@@ -335,8 +332,8 @@ says so. Since 2026-10-04 art goes through the art ledger and its `art install` 
 `infrastructure/state/art_rulings/`, never only in `Transient/`.
 
 ```
-src/                    mods, defs, C#, art            FOUNDRY owns
-design/                 campaign specs (Utinni)        the owner's, via BENCH
+src/                    mods, defs, C#, art            built by helpers the Conductor launches
+design/                 campaign specs (Utinni)        the owner's, via the Conductor
 skills/                 tooling + how-to               curated in fresh-context passes
 infrastructure/state/   ledger, items, facts/, V1.md   written only through rimflow
   items/<ID>.md         LIVE item prose only — this glob is the live set
@@ -482,7 +479,7 @@ minutes; after that the lock is stale and the next window simply takes it, sayin
 `take --force` works on any seat's hold and is recorded. **Nobody is coming to tell you it freed:
 if you want it, look again.**
 
-⭐ **The owner overrides both of you with `./bridge bench|foundry|free`**, and his word
+⭐ **The owner overrides both of you with `./bridge conductor|free`**, and his word
 lands in the same file you already read.
 
 🔴 **His presence at the machine is not an event** (owner, 2026-10-30, verbatim: *"I really, really need you to strip "when I come back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*). Nothing reads his
@@ -496,7 +493,7 @@ it does not steal his screen. The arena lane config key `owner_playing` is ignor
 🔴 **His OWNER hold is takeable 45 minutes after his last interaction** (owner, by question card 2026-10-30, "Should
 agents ever be allowed to take your hold?", typed: *"45 minutes after my last interaction, or I deliberately release
 it"*). Interaction means his deliberate acts only: any OWNER-attributed ledger event (his `./game`, his
-`./bridge bench|foundry|free`, anything run on his words, card or ruling), a bare `./bridge`, his chat prompt to any
+`./bridge conductor|free`, anything run on his words, card or ruling), a bare `./bridge`, his chat prompt to any
 seat window (the human-input signal `block_agent_over_slots.py` uses), and the hold's own events. Never his keyboard,
 mouse or presence. Until then every take refuses, `--force` included, naming his last interaction; an unmeasured
 signal refuses. Code: `src/RimMandrake/rimflow/owner_interaction.py`, gate in `rimflow/cli.py` `_take_decision`.
@@ -535,32 +532,34 @@ A code version is `gate.code_version`: the chain's runtime hash, the runtime has
 
 *"In general, any decision we make that is shown to simply limit progress, productivity, or parallel construction should be immediately attacked to force it to defend its requirement. Parallel subagent development must be maximized so long as it's reliable, work is fairly checked, etc. That's true of ALL architectural comparisons, ok? They MUST support this. And our handoff procedures and context management must be robust to this."* · *"Trial gets priority, not exclusion."* A limit states what it limits and what requires it, then is kept, loosened or removed. An architectural comparison that does not exercise parallel work does not decide which design is best. Review: `design/RimMandrake/parallel_review_2026-10-31/`.
 
-## Relentless fixes the system first — owner, 2026-11-03
+## Relentless fixes the system first (said of the retired Relentless) — owner, 2026-11-03
 
 He said this of Relentless, retired 2026-11-13 (`retired_eras_index_2026-11-18.md`); his words below stand, and the
 Maturation Pipeline's form of the first rule is §The pipeline fixes its own defects.
 
 *"Yes relentless fixes itself first."* · *"Relentless fixes operations or conductor or designer or any other part of the
-system before continuing content creation yes."* Any known fault in the system itself (Relentless, Operations, the
-Conductor, the Designer, the Dispatcher, timers, tests, tools: anything that is not game content) outranks content
-creation: while such an item is open and buildable, Relentless takes it before any content item. When the system misses
+system before continuing content creation yes."* Any known fault in the system itself (Operations, the Conductor,
+the Designer, the Dispatcher, timers, tests, tools: anything that is not game content) outranks content creation: while
+such an item was open and buildable, Relentless took it before any content item. When the system misses
 its health targets (its error budget is spent), new content stops only as far as the broken part reaches (below). Design: top-5 #5 of
 `design/RimMandrake/build_system_practices_2026-11-03.md`; build item `PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF`.
 
-🔑 **Operations owns the health assessment; Relentless only asks** — owner, 2026-11-03: *"I don't want relentless to own
+🔑 **Operations owns the health assessment; the build pipeline only asks** — owner, 2026-11-03, of the retired Relentless: *"I don't want relentless to own
 assessing system health. I want it to ask "the system" for its health assessment, and that belongs to the operations
 component."* Operations (ops_watch) publishes ONE health verdict: healthy or not, the error-budget state, and the ordered
-list of system items to take before content, with its own as-of time. Relentless reads that verdict and obeys it; it
-never computes health, budgets or SLOs itself. What Relentless observes (failures, refusals, spend) it reports to
-Operations as signals (the told ledger, alarms), never as a verdict. A missing or stale verdict is Operations' alarm
-to raise.
+list of system items to take before content, with its own as-of time (`src/RimMandrake/Utils/ops_health.py`, written
+to `health.json` every ops_watch pass). Relentless was its one reader and obeyed it; it never computed health, budgets or
+SLOs itself, and reported what it observed (failures, refusals, spend) to Operations as signals, never as a verdict.
+Today nothing in the Maturation Pipeline reads the verdict (measured 2026-11-19: no importer of `ops_health` outside
+ops_watch, alarm_census and model; `RIMMANDRAKE_WIRE_HEALTH_VERDICT_READER_NOBODY_OBEYS_IT`). A missing or stale
+verdict is Operations' alarm to raise.
 
-🔑 **"First" means first pick, never preemption or idling** — owner, by card 2026-11-03, on what Relentless does when the
-verdict is missing or stale: *"System work immediately but existing non system work continues. If all system tickets
+🔑 **"First" means first pick, never preemption or idling** — owner, by card 2026-11-03, on what Relentless (retired) did when the
+verdict was missing or stale: *"System work immediately but existing non system work continues. If all system tickets
 are already being worked non system work can be selected. Keeps system work at max priority without forcing others to
 wait pointlessly."* So a system item always takes the next free place; work already running is never stopped for it;
-when every open, buildable system item is already being worked, a free place takes content. With no verdict, Relentless
-applies this at once, treating every open system item as first (no grace period), and says so in its reading.
+when every open, buildable system item is already being worked, a free place takes content. With no verdict, the
+reader applies this at once, treating every open system item as first (no grace period), and says so in its reading.
 
 🔑 **An unhealthy system pauses only what it touches** — owner, by card 2026-11-05: *"What should happen to mod work while
 the system is unhealthy?"* → **Pause only what it touches.** All new content waits only while a shared integrity resource
@@ -733,8 +732,8 @@ strike. A false close is still worse than a wait. Design input: GPT consult at
 ## Codex agents run with full machine access — owner, 2026-11-09
 
 *"Please grant that authority to all agents immediately."* This answered the finding that on Archmagi, Codex's Windows
-workspace-write sandbox cannot reach WSL (`Wsl/Service/E_ACCESSDENIED`), so a Codex-run Designer, Relentless, Whittle or
-Artisan can work on the ext4 clones only with `danger-full-access`. Every agent environment now carries
+workspace-write sandbox cannot reach WSL (`Wsl/Service/E_ACCESSDENIED`), so a Codex-run agent (then a Designer, or a worker of the
+Relentless, Whittle or Artisan loops, all since retired) can work on the ext4 clones only with `danger-full-access`. Every agent environment now carries
 `CODEX_SANDBOX=danger-full-access` (`~/.config/environment.d/50-codex-sandbox.conf`, `~/.zshenv`, `~/.profile`; the
 runner is `src/RimMandrake/Utils/agent_runner.py`). It changes nothing else: Claude stays the default runner, results are
 still validated by the existing checks, and the quota gate and the rule against falling back to Claude still hold.

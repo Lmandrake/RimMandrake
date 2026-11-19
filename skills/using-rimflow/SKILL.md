@@ -89,7 +89,7 @@ and ruled. Before acting on any note, list items filed AFTER it that name the
 same subject: `ls -t infrastructure/state/items/` is enough.
 
 🔴 **`infrastructure/state/MODE` has no CLI setter — it is a plain file
-`cli.py` only reads, and it can go stale.** A FOUNDRY window once read `afk`
+`cli.py` only reads, and it can go stale.** A FOUNDRY window (a seat since retired) once read `afk`
 from a prior session while the owner was live saying "go go go"; `rimflow why`
 silently suppressed a fully-specified `needs=owner` item under that stale
 mode with no warning that mode gating was the reason. If the owner is
@@ -182,9 +182,9 @@ laptop neither rimflow nor `handoff.py` can derive the seat at all — no seat
 profile, `CLAUDE_CODE_SESSION_ID` unset, and `set_agent_window.sh` only does
 the window half — so every ledger call there needs an **explicit `--seat`**,
 or a whole sitting's ledger trail lands mis-seated. Also: subcommand targets
-take `--to` (e.g. `reassign --to FOUNDRY`, `needs --to bridge`); bare
+take `--to` (e.g. `reassign --to BENCH`, `needs --to bridge`); bare
 positionals for a target are refused.
-- **`rimflow next --seat <OTHER SEAT>` takes a real lease as that seat in YOUR clone** (a diagnostic `next --seat FOUNDRY` wrote a lease into the local `FOUNDRY.jsonl` and then blocked `./publish`). For a read-only look use `next --seat X --peek` (what the Dispatcher uses), `blind_view.py queue <SEAT>`, `rimflow why` or `rimflow show`, and run it in THAT seat's clone: the Dispatcher peeks there and a seat's local reconciles are not on origin.
+- **`rimflow next --seat <OTHER SEAT>` takes a real lease as that seat in YOUR clone** (a diagnostic `next --seat FOUNDRY`, before that seat was retired, wrote a lease into the local `FOUNDRY.jsonl` and then blocked `./publish`). For a read-only look use `next --seat X --peek` (what the Dispatcher uses), `blind_view.py queue <SEAT>`, `rimflow why` or `rimflow show`, and run it in THAT seat's clone: the Dispatcher peeks there and a seat's local reconciles are not on origin.
 
 More traps for this section: [references/traps.md](references/traps.md) § Seat identity.
 
@@ -200,7 +200,7 @@ history can sit uncommitted — already-lost territory if the machine goes
 down — until caught by accident.
 
 Commit your seat's shard `infrastructure/state/ledger/events/<SEAT>.jsonl` by **explicit
-path** (the rendered `queue/BENCH.md`/`FOUNDRY.md` are gitignored since 2026-10-02 —
+path** (the rendered `queue/<SEAT>.md` files are gitignored since 2026-10-02 —
 never commit them; read them with `rimflow queue <SEAT>`, which renders first), with
 each close or at least once per work wave — not only at session end. Prefer
 a dedicated "ledger sync" commit over folding it silently into a code

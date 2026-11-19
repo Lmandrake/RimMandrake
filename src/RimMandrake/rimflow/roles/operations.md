@@ -152,7 +152,7 @@ today score exactly what no change scores; name the open incidents too, or the p
   missing nightly is not a fault while the hold waits.
 - **A held red is cured only by the instrument's own reading.** `ops_watch.red_groups` reruns only NEW nightly-red groups (RerunGate), so a deleted test kept `NIGHTLY_RED:testing.red_<x>` refiling under fresh items; `known_reds` counts a deleted test as no red (`selftest_nightly_red_deleted_clears.py`), so a `NIGHTLY_RED_OVERDUE` alarm whose reds were deleted clears by itself: check `status.json` before building anything.
 - **When redefining a measured point, grep its key across rules and readers, not just its alarm.** Narrowing `testing.nightly_news` three minutes after the `nightly_reds` SLI was built on it made 84 reds read 0/ok while the budget still burned. `ops_health` SLIs now name the unit they were written against; a changed unit reads UNMEASURED and alarms `SLI_DRIFT`.
-- **`ops_watch` `c_flow untriaged_findings` counts every UNTRIAGED finding not yet an item** (131) and is blind to `findings_fold`'s standing table, where they fold to 78 signatures and only 26 need FOUNDRY (residue). Read `D:\ClaudeWork\rimmandrake\findings_fold\standing.json` `counts.residue` (and contradictions) so the backlog alarm counts judgment owed, not repeats; wiring it into `ops_watch.py` is owed.
+- **`ops_watch` `c_flow untriaged_findings` counts every UNTRIAGED finding not yet an item** (131) and is blind to `findings_fold`'s standing table, where they fold to 78 signatures and only 26 need build work (residue). Read `D:\ClaudeWork\rimmandrake\findings_fold\standing.json` `counts.residue` (and contradictions) so the backlog alarm counts judgment owed, not repeats; wiring it into `ops_watch.py` is owed.
 - **Hole-check a series before claiming 'stayed under X for N hours'.** The `ops_watch` disk series (`D:\ClaudeWork\rimmandrake\ops_watch\series\disk.jsonl`) had no row for 4 h 18 min though the machine was up. `series_held.py` checks holes (exit 2 UNMEASURED on a gap over `--max-gap-min`); read the holes, not just the max.
 - **Before building on an OPS/NIGHTLY alarm item, check `git log` for siblings with the same stem.** One nightly red spawned three alarm items within an hour because the alarm refiled under a new suffix before the fixes landed; the fix may already be on main and the item only needs proof.
 
@@ -220,8 +220,6 @@ The Conductor paid for these; load the skill when the step needs it, once:
 - **Helpers:** none. His limit is two helpers at once across ALL roles together, counting descendants; until
   `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` gives a confirmed reservation from that one pool, you run no helper
   (review roles r2 #4).
-- **Escalation route (owner's card 2026-11-03)** set an item's level in the Relentless pool (`relentless.py expedite`);
-  that pool is retired (2026-11-13) and the verb changes nothing today (`design/RimMandrake/retired_eras_index_2026-11-18.md`).
 - **Never:** touch the game while he plays; lower a bar; edit `dispatcher.py`, `ops_watch_rules.json` targets or
   `slot_rules.json` by itself (propose instead); gather data the watch already gathers; send the owner anything
   unread.

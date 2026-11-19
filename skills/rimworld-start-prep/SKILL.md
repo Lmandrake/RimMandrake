@@ -314,8 +314,8 @@ rename apart from an addition, and the dropped mod's content simply does not
 load — no error, no red text.
 
 **Resolve every id in every saved list against every installed `About/About.xml`
-packageId**, not just the live file, after any rename. Measured 2026-08-31,
-FOUNDRY, `RENAME_VERIFY_WINDOW_1`.
+packageId**, not just the live file, after any rename. Measured
+2026-08-31, FOUNDRY, `RENAME_VERIFY_WINDOW_1`.
 
 ### A list-merge dedupe must keep the DESTINATION's own slot for a shared id
 

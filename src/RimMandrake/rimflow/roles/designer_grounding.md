@@ -60,7 +60,7 @@ go, getting better and better at it incrementally rather than pretending we know
 
 The four recent mods get the pass now, and any other mod gets it the first time an item names it: read its code and
 spec, expand the spec and the validation strategies (site prep and controls for each scene), certify with him and clear
-up confusion, then write it all out for Relentless as build items. Filed: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`,
+up confusion, then write it all out as build items for the Maturation Pipeline (Relentless when he said it, since retired). Filed: `BAROQUE_SCRIPT_MEASURE_PREP_AND_CONTROLS`,
 `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`,
 `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; the trigger is `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`.
 

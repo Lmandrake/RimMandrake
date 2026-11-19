@@ -8,7 +8,7 @@
 - account-failover-r4-open (20261028T170459Z): first real unattended `use` on Archmagi; `use --dry-run` refuses while
   DISARMED so its preflight is unprobed; a 600 s subprocess timeout SIGKILLs a switch mid-way and leaves journal.json.
 - stopping-timers-for-cutover (05:04 incident): stop timers only through timers_guard pause.
-- `--n 0` does not stop FOUNDRY; DARK does. DARK left after a reset strands the new week.
+- `--n 0` did not stop the retired FOUNDRY seat; DARK stops every seat. DARK left after a reset strands the new week.
 - Dormant-account tie: equal newest reading times; never prefer the first key.
 - Blind meter on an exhausted account is normal (it cannot be read); that is why the 0% blind rule exists.
 
@@ -45,9 +45,6 @@
 ## 4. Recovery when a switch sticks (needs no Claude)
 - **The Tailscale-SSH-from-the-Mac route can be unavailable** (the laptop had no Tailscale CLI, no 100.x interface, and `archmagi`/`archmagi-wsl` did not resolve). The browser route works: console.tailscale.com > Machines > archmagi-wsl > "SSH to machine" > username Other: `mandrake` (Google re-auth popup) opens a shell as mandrake on Archmagi. Drive it with uiclick plus System Events keystrokes; the cdp extension loses the tab once the SSH popup opens.
 
-## Relentless fx surface
-- **A method added to the Relentless fx surface (`GameFx` in `relentless_game`) owes the same method on `FakeWorld`, and the contract proof must name `selftest_fakeworld_parity`.** A proof on the routing alone stays green while the parity guard goes red; no new gate exists, so the worker must remember it.
-
 ## Units, timers and hooks
 - **`daemon-reload` restarts the count of a `systemd-run --on-active` timer** (a 30 s timer with a reload at +20 s fired at +50 s; an `--on-calendar` one fired at +30 s). Selftests and deploys reload often here, so a delay beyond a few minutes needs `--on-calendar`. A transient `--on-active` timer also stays loaded after it fires (`RemainAfterElapse` defaults to yes), so reusing a fixed unit name is refused until it unloads: pass `--timer-property=RemainAfterElapse=no`.
 - **Deleting a watched trigger file after judging it spent races its writer** (re-read-then-unlink still loses a replacement). Rename it aside atomically, judge the moved bytes, `os.link` back (never overwrites), and sweep old `.tmp`/`.aside` leftovers or a PathExistsGlob unit re-fires for ever.
@@ -71,7 +68,7 @@
 - **A timer's cadence is read by its consumers' staleness thresholds.** Before slowing a timer, grep for the age limit that watches its output (testq `steward.py` `STALE_S=300` assumes a 60 s `testq-tick`; a 5-min slow-down would raise false STALE_HEARTBEAT incidents).
 
 ## Clones and units that read other clones
-- **`pulse_core.CLONES` lists bench and foundry only**: a program running from the Dispatcher clone that reads `read_ledger()` does not see its own RUNNER shard until a listed clone pulls. Pass the running clone too (`deadman_check.read_items`).
+- **`ops_core/ops_ledger.py` `CLONES` lists the bench clone only**: a program running from the Dispatcher clone that reads `read_ledger()` does not see its own RUNNER shard until a listed clone pulls. Pass the running clone too (`deadman_check.read_items`).
 - **Read pool counts from `ops_watch`'s `status.json` (`disk.pool_clones`, `disk.pool_gb`), never `~/.local/state/rm-objstore/pool.json`.** pool.json read 0 / 0.0 GB while status.json said 16 clones / 63.67 GB; only `scratch_clone.py` and its selftest name that file, and another caller of `scratch_clone.pool_reading` with `RM_POOL_ROOT` set but no `RM_OBJSTORE_STATE` is the suspect.
 - **The production dispatch clone `~/rm/dispatch` is a sparse cone, and a missing directory fails silently or kills the tick.** Without `src/RimMandrake/Utils/modcheck` and `src/RimMandrake/FlowWorks`, testq `preview()`, `bad_selection()` and `cmd_fill`'s gone-chain check did nothing and every job was admitted unchecked (`git sparse-checkout add` them; `gaps.probe` now says `blind: ...`). A new top-level import in testq/ingest/steward from a new src dir (contracts did this) killed every tick with `ModuleNotFoundError` for 80 min while the lane looked RUNNING; symptom: `tick.log` and `steward.json` stop updating while the timer fires, check `journalctl --user -u testq-tick.service -n 8`. Add the dir to the dispatch sparse set in the same change. Also, a brake must name what releases it, and the documented remedy must produce that release: `fill_plan`'s brake read only the last two FILLER jobs, so a hand-submitted DONE job with a green canary never cleared it (`lane_proven_after()` now does).
 - **`rm-memwatch.service` ExecStart runs `src/RimMandrake/Utils/memwatch.py` straight from the BENCH clone (not the D: mirror).** An uncommitted BENCH edit to `memwatch.py` is live at the next 1-minute timer tick. Keep its CLI flags (`--no-host` etc.) accepted when retiring features. More generally a daemon unit's `WorkingDirectory` is part of a deploy: `rm-artpiped` once ran from the retired foundry clone through a drop-in, so fixes landed on main never reached it; after a fix to a daemon, check `systemctl --user show <unit> -p WorkingDirectory` and that clone's HEAD.

@@ -99,7 +99,7 @@ More traps for this section: [references/traps.md](references/traps.md) § 5. St
 ## 6. Throttles and timers
 
 - Allocator override: `slot_allocator.py set --mode DARK` (every seat 0) / `set --n N --hours H`, `clear`.
-  `--n 0` does NOT stop the FOUNDRY seat; use DARK. A DARK left behind after a reset strands the fresh
+  `--n 0` did not stop the retired FOUNDRY seat; DARK stops every seat. A DARK left behind after a reset strands the fresh
   week: lift it when the escape condition changes.
 - Pausing timers: only `timers_guard.py pause --hours H --all|TIMER` (it arms the restart first,
   then stops). A bare `systemctl stop` of rm-*/testq-* timers on 2026-10-28 05:04 killed every no-LLM lane

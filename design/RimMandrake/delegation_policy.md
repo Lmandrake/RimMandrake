@@ -1,7 +1,7 @@
 # Delegation policy — agents decide nearly everything, art included
 
-*Adopted 2026-10-22 on the owner's word (item `DELEGATION_POLICY_BUILD_AGENTS_ASK_AGENTS`). Binds BENCH,
-Relentless and every subagent. Model tiers are `infrastructure/agents/Agent_Policy.md`'s, never restated here.*
+*Adopted 2026-10-22 on the owner's word (item `DELEGATION_POLICY_BUILD_AGENTS_ASK_AGENTS`). Binds the
+Conductor, every helper the pipeline launches and every subagent. Model tiers are `infrastructure/agents/Agent_Policy.md`'s, never restated here.*
 
 ## The ruling
 
@@ -116,7 +116,7 @@ may not validate.
    Workshop upload, a public post), and the acts his global instructions call his: an interactive login, a
    GUI he must look at, a purchase (`~/.claude/CLAUDE.md`, "RUN IT YOURSELF" ③).
 6. **Presence-bound acts his rulings name.** Live flight tests of a flyer — *"do not do live testing of flyers
-   without a human present"* (CLAUDE.md, flight); `broadcast.py` is his; `./bridge bench|foundry|free` is his
+   without a human present"* (CLAUDE.md, flight); `broadcast.py` is his; `./bridge conductor|free` is his
    except as delegated here. **Delegated:** a seat MAY take the bridge, deploy and restart the game on its own
    when the bridge is free, ours, or stale by the 45-minute rule, his OWNER hold only 45 min after his last interaction (owner card 2026-10-30), and never for a flyer's
    flight. Each take and restart is listed in his daily digest. His presence at the machine plays no part (owner,

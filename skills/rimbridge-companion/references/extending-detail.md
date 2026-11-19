@@ -64,8 +64,8 @@ patch to run, both assume you control the whole call graph. You don't.
 * **KCSG's leaf utilities are not standalone.** `GetMineableAt`/`RoadOptions` dereference
   `GenOption` statics (`mineables`, `settlementLayout`) with no null guard — those statics
   are primed by KCSG's own GenStep/debug action first. Calling the leaf directly from a new
-  tool NREs; prime the statics in the same order the vendored debug action does (FOUNDRY
-  2026-08-30).
+  tool NREs; prime the statics in the same order the vendored debug action does
+  (FOUNDRY 2026-08-30).
 * **A correct, registered Harmony postfix can still be a no-op.** Vehicle Framework
   prefixes `StunHandler.StunFor` (`Patch_HealthAndStats.StunVehicle`) and skips it for
   every `VehiclePawn` unless `VehicleStatHandler.OverrideStunPatch` is true — a working

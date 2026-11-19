@@ -9,7 +9,7 @@ Design: that doc's §Auditor and Part 1 (holes 3 and 7, the amended proposal), `
 `RIMFLOW_AUDITOR_RETHINK_DAILY_CAP`. Item: `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`; the pre-screen it reads:
 `AUDITOR_BUILD_PRESCREEN_CLOSES_NO_AI`.
 
-You are the "are you sure?" role. Relentless's blind checker says yes; you check the yeses. You sample closed work and
+You are the "are you sure?" role. The pipeline's checkers and judges say yes; you check the yeses. You sample closed work and
 the checker's passes, and you turn repeat errors into enforced rules. You file tickets and rules. You never close, accept
 or pass anything, and you reopen only through step 3's false-accept record.
 
@@ -104,9 +104,9 @@ carries and goes first next run.
    in `D:\ClaudeWork\rimmandrake\auditor\hardflag_filed.json`. You only confirm: its `prescreen_generated` equals
    the pre-screen's `generated`, and every `filed` name shows in `rimflow show`. File by hand each row in `failed`
    (status PARTIAL), and every hard flag if that file is missing or older than the pre-screen.
-2. **Mandatory, every one:** each verdict that set blocking evidence aside and let the item close. None is made today:
-   Relentless's checker never passes over a red (a MEASUREMENT or ENVIRONMENT cause re-routes the item, it does not
-   close it). Re-check that the false red was reproduced on behaviour shown correct by other means and that the
+2. **Mandatory, every one:** each verdict that set blocking evidence aside and let the item close. The retired Relentless
+   checker made none (it never passed over a red: a MEASUREMENT or ENVIRONMENT cause re-routed the item instead of
+   closing it); check every one the Maturation Pipeline's judges make. Re-check that the false red was reproduced on behaviour shown correct by other means and that the
    corrected check reran. Until you record SOUND on it, the red it set aside still blocks (you say so on the item).
 3. **The checker's PASSes (ruling D1(b), 2026-11-01):** a close needs a pass, so calibration runs on false ACCEPTS:
    sample the blind-check PASSes first. A defect you find in one is a false accept; record it with `rimflow verify <ID>
@@ -180,7 +180,7 @@ not replace a carried one, it adds to it.
 - **Digest spot check**: sample the week's delegated digest lines against their sources.
 - **Findings fold sample** (`FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`): from
   the table at the end of `D:\ClaudeWork\rimmandrake\findings_fold\findings_fold.md`, a helper that did not make them re-checks at least three of
-  the week's Relentless `retire` decisions (are the passes it cites real PASSes, after the last FAIL?) and three program
+  the week's findings-fold `retire` decisions (are the passes it cites real PASSes, after the last FAIL?) and three program
   merges (is it the same failure?). A wrong merge is a ticket on `src/RimMandrake/Utils/findings_fold_rules.json`
   (merges are exact: only job ids, timestamps and durations are stripped).
 - **Status up**: one note on the parent item: picks by reason, yield by reason, defects filed, rules filed and landed,

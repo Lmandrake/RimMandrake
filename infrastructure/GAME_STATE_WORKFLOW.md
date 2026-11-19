@@ -1,7 +1,7 @@
 # GAME STATE WORKFLOW
 
 **Permanent doctrine.** Authority: the owner's specification, 2026-08-20; condensed
-2026-08-27 for the two-window fleet (BENCH · FOUNDRY — see
+2026-08-27 for the two-window fleet of that time (BENCH · FOUNDRY, the second since retired; see
 `infrastructure/agents/CHARTER.md`). Where this file and a window file disagree
 about the cycle, this file wins; fix the window file in the same commit.
 
@@ -16,7 +16,7 @@ about the cycle, this file wins; fix the window file in the same commit.
    is passed through one file" is now canonical**: it errs toward ALLOWING, not
    mutual lockout. A stale (45-minute-idle) hold is simply taken, saying so;
    `take --force` always works and is recorded; `infrastructure/state/BRIDGE` is
-   the one-glance mirror; `./bridge bench|foundry|free` is the owner's override.
+   the one-glance mirror; `./bridge conductor|free` is the owner's override.
 
 ## The states
 
@@ -28,7 +28,7 @@ about the cycle, this file wins; fix the window file in the same commit.
      └──"game is closed"── GOING_DOWN ◀──"game is going down"──────── UP
 ```
 
-| state | what FOUNDRY does | what BENCH does |
+| state | what the bridge holder does (a helper or the Conductor; FOUNDRY's column before that seat was retired) | what the Conductor's window (BENCH) does |
 |---|---|---|
 | `DOWN` | assemblies + content deploy (only window a DLL can be replaced); finish mining the last load's corpse — `needs: harvest` outranks ordinary work until the dumps and log are drained | offline work with the owner |
 | `DEPLOYING` | deploy the build, then `rimflow seat ready` — that idleness is the owner's go-signal | unaffected |

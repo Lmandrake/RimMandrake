@@ -283,8 +283,8 @@ but only if the proof is written for it. Exit 0/1/2 means PASS/FAIL/UNMEASURED. 
 one deterministic row per criterion, with the verdict last. Use no `$`-built commands.
 Keep a criterion ≤160 chars, or put the full text in the prose. Validate the site first
 and give a named UNMEASURED reason. Read flyers as state only. Declare the smallest
-tier. `hot_reload_defs` is not a speed path. `relentless_live.py` refuses proof lines
-that break these rules. The full rules, their reasons, and PLANNED tools with today's
+tier. `hot_reload_defs` is not a speed path. `rimflow file`/`close` refuse proof lines
+that break these rules (`rimflow/proof_lint.py`). The full rules, their reasons, and PLANNED tools with today's
 fallback are in `references/lightspeed-authoring.md`.
 
 More traps for this section: [references/traps.md](references/traps.md) § Write it so Lightspeed can run it.

@@ -43,8 +43,7 @@ ROOT = os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(
 
 DOCS = ["CLAUDE.md", "GLOBAL_CLAUDE.md",
         "infrastructure/agents/POLICY.md",
-        "infrastructure/agents/REP.md", "infrastructure/agents/BUILD.md",
-        "infrastructure/agents/CHECK.md", "infrastructure/agents/DECIDE.md"]
+        "infrastructure/agents/REP.md"]
 
 # A documented invocation: `python3 <path.py> …`, or a `./script` at the repo root.
 CMD_RE = re.compile(

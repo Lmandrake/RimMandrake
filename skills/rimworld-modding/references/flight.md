@@ -34,7 +34,7 @@ rediscovering this — stop reaching for a live-bridge flight test at all.**
   one thing that needs the owner actually watching.
 - **How to apply:** if a flyer's live behavior needs eyes on it, that is a
   `rimworld-live-review`-style session done WITH the owner present, or it waits —
-  it is never a FOUNDRY solo bridge pass. Don't file a "live verify" bar on a flyer
+  it is never a solo agent bridge pass. Don't file a "live verify" bar on a flyer
   item that can only be closed by an unattended screenshot/observation hunt; close it
   via the state-read instead, or leave the visual bar for a joint session.
 

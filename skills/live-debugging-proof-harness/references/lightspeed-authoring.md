@@ -17,14 +17,12 @@ written for it. Each rule below says why and where it comes from.
   Known defect: `proof_all.py` returns 1 for both FAIL and UNMEASURED. It should return
   2 when nothing FAILed. That fix is owed. Do not copy its exit code.
 - **One deterministic row per criterion**: id, verdict, measured value, bar. Print the
-  verdict last. The reason: `relentless_live.py` takes the verdict from the LAST verdict
-  line. The repro-miss verdicts are spelled exactly `NOT REPRODUCED` and `NOT SHARED`.
+  verdict last. The reason: the proof reader (`src/RimMandrake/rimflow/proof_lint.py`,
+  `VERDICT_LINE`) takes the verdict from the LAST verdict line. The repro-miss verdicts are spelled exactly `NOT REPRODUCED` and `NOT SHARED`.
 - **An UNMEASURED line names its reason on the same line** (`UNMEASURED: water within 2
-  cells of the pit`). The reason: `relentless_live.exit_reason` skips a bare
-  `UNMEASURED` and groups repeats by that reason. With no reason given, every stop on
-  that proof shares one cause key and turns into a RELOAD request. Keep paths, numbers
-  and times out of the leading words, so that two runs stopped by the same thing share
-  the key.
+  cells of the pit`). The reason: a bare `UNMEASURED` tells the next reader nothing to
+  fix, and the reason is how repeats are grouped. Keep paths, numbers and times out of
+  the leading words, so that two runs stopped by the same thing read as one cause.
 - **ROWS_JSON results.** PLANNED (item LIGHTSPEED_WIRE_GSS_FIRST_NO_LLM_PATH). The worker
   contract (print `ROWS_JSON <path>`, and the worker maps the rows) is not built.
   Today: write your rows to a JSON file anyway and print the plain row table. The exit
@@ -34,12 +32,12 @@ written for it. Each rule below says why and where it comes from.
 
 ## 2. A proof line the runner will accept
 
-Format (`relentless_live_round.py` docstring, `relentless_game.py` BRIEF):
+Format (`src/RimMandrake/rimflow/proof_lines.py`: `PROOF_LINE`, `SITE_LINE`):
 `live-proof A2: <cmd>` in `infrastructure/state/live_proofs/<ID>.txt`, plus
 `live-mods:`, `live-deploy:`, `live-tier [A1]: <tier>` and `live-site <CID>: <cmd>`.
 The criteria go in `<ID>.criteria` as `A2 L1: what is observed`.
-`relentless_live.py` (`owed()`, `refused_proof()`) refuses the following, so writing
-any of them wastes the round:
+`rimflow file` and `close` refuse the following (`cli.prooflint`, through
+`proof_lint.py` `lint_item()` and `refused_proof()`), so writing any of them wastes the item:
 
 | Refused | Reason |
 |---|---|
