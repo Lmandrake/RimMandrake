@@ -151,16 +151,28 @@ def parse_usage(text: str, now: float) -> dict | None:
 
 
 # ------------------------------------------------------------------ config
-def registry() -> dict[str, str]:
-    """name -> email from the switcher's registry (non-secret)."""
+class RegistryUnreadable(RuntimeError):
+    """The switcher's registry could not be read: no account is known, so nothing may be published."""
+
+
+class RegistryEmpty(RuntimeError):
+    """The registry was read and names no account: a different answer from unreadable, and nothing to poll."""
+
+
+def registry(strict: bool = False) -> dict[str, str]:
+    """name -> email from the switcher's registry (non-secret). strict: an unreadable file raises RegistryUnreadable
+    (poll() must not publish an empty snapshot over good readings); otherwise readers get {} (an undecodable file
+    included, which used to raise)."""
     reg = {}
+    path = ACCOUNTS_DIR / "accounts.tsv"
     try:
-        for line in (ACCOUNTS_DIR / "accounts.tsv").read_text().splitlines():
+        for line in path.read_text().splitlines():
             parts = line.split()
             if len(parts) >= 2 and not line.lstrip().startswith("#"):
                 reg[parts[0]] = parts[1].lower()
-    except OSError:
-        pass
+    except (OSError, UnicodeDecodeError) as e:
+        if strict:
+            raise RegistryUnreadable(f"switcher registry {path} unreadable ({type(e).__name__}: {e})") from e
     return reg
 
 
@@ -438,7 +450,10 @@ def carry(name: str, prev: dict | None, now: float, why: str) -> dict:
 
 def poll(now: float | None = None) -> dict:
     now = now or time.time()
-    reg, cfg, here = registry(), config(), machine_name()
+    reg = registry(strict=True)
+    if not reg:  # read, and names no account: publishing {} would wipe every good reading (RIMMANDRAKE_GUARD_USAGE_POLL_WIPES_LATEST_ON_EMPTY_REGISTRY)
+        raise RegistryEmpty(f"switcher registry {ACCOUNTS_DIR / 'accounts.tsv'} names no account")
+    cfg, here = config(), machine_name()
     prev = (read_latest() or {}).get("accounts") or {}
     got, why = {}, {n: [] for n in reg}
     by_email = {e: n for n, e in reg.items()}
@@ -653,7 +668,12 @@ def main(argv=None) -> int:
                    help="the one Operations deploy (systemd/ops_clocks.json)")
     a = ap.parse_args(argv)
     if a.cmd == "poll":
-        recs = poll()
+        try:
+            recs = poll()
+        except (RegistryUnreadable, RegistryEmpty) as e:
+            # nothing published: latest.json keeps the last good snapshot, and stdout holds nothing that reads as one
+            print(f"poll refused, nothing published: {e}", file=sys.stderr)
+            return 3
         print(" ".join(f"{n}={r['source']}" for n, r in recs.items()))
         return 0 if recs else 1
     if a.cmd == "install":
