@@ -45,7 +45,7 @@ as LEFT in `model_weeks`, the status line prints each, and week_left_for(row, mo
 run of that model (the lower of all-models and the model's own; RIMMANDRAKE_READ_FABLE_WEEKLY_METER_USAGE_LINE_NEVER_SHOWED).
 
   account_usage.py poll                 read every account once, append the series (the timer runs this)
-  account_usage.py now [--json]         the newest reading per account (no polling)
+  account_usage.py now [--json]         the newest reading per account (no polling); text mode adds codex and jpl-genai lines (all as LEFT)
   account_usage.py install [--deploy D] write + enable the systemd user timer rm-account-usage.timer
 """
 from __future__ import annotations
@@ -708,6 +708,85 @@ def _fmt(d: dict) -> str:
             f"{'STALE ' if d['stale'] else ''}measured {d.get('measured_at') or 'never'} ({d.get('machine') or '-'})")
 
 
+GENAI_SWITCH = "~/dev/GenAISwitch/bin/genai-switch"
+
+
+def read_codex_points() -> dict:
+    """Codex's weekly meter from the ops reader (ops_watch.c_codex, the one the ops digest's `## codex` block uses)."""
+    import ops_watch
+    return ops_watch.c_codex(time.time(), ops_watch.load_rules(), {})
+
+
+def read_genai_status() -> tuple[str, str | None]:
+    """(`absent`, None) when the tool is not on this machine; (`ok`, stdout) on exit 0; (`failed`, cause) otherwise."""
+    tool = os.path.expanduser(GENAI_SWITCH)
+    if not os.path.exists(tool):
+        return "absent", None
+    try:
+        r = subprocess.run([tool, "status"], capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "failed", f"{type(e).__name__}: {e}"
+    if r.returncode != 0:
+        return "failed", f"exit {r.returncode}: {(r.stderr or r.stdout or '').strip()[-200:]}"
+    return "ok", r.stdout
+
+
+def _pacific(ts: float) -> str:
+    return datetime.fromtimestamp(ts, ZoneInfo("America/Los_Angeles")).strftime("%a %b %d %H:%M %Z")
+
+
+def _meter_line(name: str, left: float, reset_ts: float | None, now: float, mark: str, age_h: float | None) -> str:
+    reset = "reset unknown" if reset_ts is None else f"resets {_pacific(reset_ts)} (in {(reset_ts - now) / 3600:.1f} h)"
+    age = "" if age_h is None else f", {age_h:.1f} h old"
+    return f"{name:<10}{left:g}% left, {reset} [{mark}{age}]"
+
+
+def _codex_line(now: float, points: dict) -> tuple[str, bool]:
+    used, hrs = points.get("codex.week_used_pct") or {}, points.get("codex.hours_to_reset") or {}
+    v = used.get("v")
+    if type(v) not in (int, float) or v < 0 or v != v:
+        return f"{'codex':<10}UNMEASURED: {used.get('why') or 'no weekly reading'}", False
+    h = hrs.get("v")
+    reset = now + h * 3600 if type(h) in (int, float) else None
+    at = epoch((used.get("x") or {}).get("reading_at"))
+    mark = "measured" if used.get("m") == "MEASURED" else f"estimate: {used.get('why')}"
+    return _meter_line("codex", round(100 - v, 1), reset, now, mark, None if at is None else (now - at) / 3600), True
+
+
+def _genai_line(now: float, status: tuple[str, str | None]) -> tuple[str, bool]:
+    kind, out = status
+    if kind == "absent":
+        return f"{'jpl-genai':<10}not on this machine", False
+    if kind != "ok":
+        return f"{'jpl-genai':<10}UNMEASURED: {out}", False
+    m = re.search(r"(\d+(?:\.\d+)?)\s*%\s*(used|left|remaining)", out or "", re.I)
+    if not m:
+        return f"{'jpl-genai':<10}UNMEASURED: genai-switch status shows no percent meter", False
+    pct = float(m.group(1))
+    left = round(100 - pct, 1) if m.group(2).lower() == "used" else pct
+    rs = re.search(r"\d{4}-\d\d-\d\dT[\d:]+(?:Z|[+-]\d\d:?\d\d)?", out)
+    return _meter_line("jpl-genai", left, epoch(rs.group(0)) if rs else None, now, "measured", 0.0), True
+
+
+def account_lines(now: float, st: dict, codex_reader=None, genai_reader=None) -> tuple[list[str], int]:
+    """The one list: each Claude line as before, then codex, then JPL GenAI. Returns (lines, how many accounts
+    gave a reading); `UNMEASURED: cause` and `not on this machine` are answers, never a percent."""
+    codex_reader, genai_reader = codex_reader or read_codex_points, genai_reader or read_genai_status
+    lines, n = [], 0
+    for d in st["accounts"].values():
+        lines.append(_fmt(d))
+        n += d.get("week_pct_left") is not None
+    try:
+        cl, ok = _codex_line(now, codex_reader())
+    except Exception as e:  # the reader failing is "could not look", named
+        cl, ok = f"{'codex':<10}UNMEASURED: reader failed: {type(e).__name__}: {e}", False
+    n += ok
+    lines.append(cl)
+    gl, ok = _genai_line(now, genai_reader())
+    lines.append(gl)
+    return lines, n + ok
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -736,8 +815,11 @@ def main(argv=None) -> int:
     else:
         if not st["accounts"]:
             print("no reading yet (account_usage.py poll)")
-        for d in st["accounts"].values():
-            print(_fmt(d))
+        lines, n = account_lines(time.time(), st)
+        print("\n".join(lines))
+        if not n:
+            print("no account could be read", file=sys.stderr)
+            return 1
     return 0
 
 
