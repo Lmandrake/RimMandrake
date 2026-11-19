@@ -238,7 +238,8 @@ tn = time.time()
                "session_pct_used": 18.0, "session_resets_at": SA.iso_local(tn + 3 * H)}}}))
 (fx / "au" / "series.jsonl").write_text("")
 os.environ.update(RM_SLOT_PROJECTS=str(fx / "projects"), RM_ACCOUNT_USAGE_DIR=str(fx / "au"), RM_SLOT_MACHINE="testhost",
-                  RM_SLOT_OWNER_LEDGER=str(fx / "none.jsonl"))
+                  RM_SLOT_OWNER_LEDGER=str(fx / "none.jsonl"),
+                  RM_SLOT_LIVE_LOGIN="system")  # hermetic: the fixture machine's live login, never the real claude-account's
 pc_ = S.pacing(tn)
 al = json.loads((Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").read_text()) \
     if (Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").exists() else {}

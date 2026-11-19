@@ -402,18 +402,28 @@ def live_login_name():
         return None
 
 
-def pick_burn_account(accounts, rules, here):
+_ASK = object()
+
+
+def pick_burn_account(accounts, rules, here, login=_ASK):
+    """login = claude-account's live login for this machine (None: unreadable); asked here when not passed."""
     want = rules.get("burn_account") or "auto"
     if want != "auto":
         return want, "pinned in slot_rules.json"
     live = [a for a in accounts.values() if (a.get("machine") or "").lower() == here.lower()
             and a.get("source") == "MEASURED"]
     if live:
-        name = live_login_name()
+        name = live_login_name() if login is _ASK else login
         for a in live:
             if name and a.get("account") == name:
                 return name, f"this machine's ({here}) live login (claude-account says {name})"
-        # claude-account unreadable or names an account not measured here: newest reading, an exact tie is not a
+        if name:
+            # claude-account answered, and its login has no MEASURED reading here yet (right after a switch): UNKNOWN,
+            # never paced on the previous account's quota (RIMMANDRAKE_FIX_SLOT_ALLOCATOR_OVERRIDE_AND_BURN_PICK
+            # finding 1, the Conductor's option (b), 2026-11-18); the blind-meter hold applies until it is read
+            return None, (f"this machine's ({here}) live login {name} (claude-account says so) has no MEASURED "
+                          f"reading here yet: UNKNOWN until the meter reads it")
+        # claude-account unreadable: newest reading, an exact tie is not a
         # reason to prefer the first key, so a 'live login' method wins it, then the dict order is the last resort
         a = max(live, key=lambda r: (epoch(r.get("measured_at")) or 0, "live login" in str(r.get("method") or "")))
         return a["account"], f"this machine's ({here}) newest reading (claude-account live login unavailable)"
@@ -682,8 +692,9 @@ def gather(now=None, rules=None, model=None):
     try:
         meter = meter_now(now).get("accounts") or {}
         here = machine()
-        acc, how = pick_burn_account(meter, rules, here)
-        inp["account_how"] = how
+        login = live_login_name() if (rules.get("burn_account") or "auto") == "auto" else None
+        acc, how = pick_burn_account(meter, rules, here, login)
+        inp["account_how"], inp["live_login"] = how, login
         inp.update(plan_inputs(meter, acc, now))
         a = meter.get(acc) if acc else None
         if a:
@@ -1154,7 +1165,8 @@ def _decide_core(inp, state, rules, now, advisory=False):
             # no pace (reset time unknown), but a measured near-empty week is DARK whatever the pace
             mode, since = "DARK", (since if state.get("token_mode") == "DARK" else now)
         why.append(f"meter {inp.get('source') or 'UNMEASURED'} for {inp.get('account') or 'the burn account'}: holding "
-                   f"{mode}" + ("" if state.get("token_mode") else " (no history)"))
+                   f"{mode}" + ("" if state.get("token_mode") else " (no history)")
+                   + ("" if inp.get("account") or not inp.get("account_how") else f" ({inp['account_how']})"))
     else:
         mode, pending, since = _token(inp, state, rules, now, P)
         h = inp["hours_to_week_reset"]
@@ -1527,8 +1539,10 @@ def main(argv=None):
         pst = (read_json(streams_dir() / "allocation.json") or {}).get("state") or {}
         g = gather(now, rules)
         mr = g.get("week_resets_at") if g.get("source") in ("MEASURED", "ESTIMATE") else None
-        # the persisted reset is the fallback, and only for the account it was persisted for
-        cur = pst.get("reset_at") if (not g.get("account") or pst.get("account") in (None, g.get("account"))) else None
+        # the persisted reset is the fallback, and only for the account it was persisted for: a burn account UNKNOWN
+        # because the named live login is not measured yet is judged by that login, never the previous account's reset
+        acct = g.get("account") or g.get("live_login")
+        cur = pst.get("reset_at") if (not acct or pst.get("account") in (None, acct)) else None
         until, err = override_until(None, cur, mr, now)
         if err:
             print("refused: " + err, file=sys.stderr)
