@@ -8,7 +8,8 @@ done, every FAIL step with CPU and time, reboots, the CONTROL result, the last r
 Exit codes keep the four answers apart: 0 = read, running or ended, instrument PROVEN by a passing CONTROL;
 1 = read, but no passing CONTROL in this run (faults=0 is UNMEASURED, not clean); 2 = read, soak not running when it should
 be (STALLED, resumable) or nothing planned / planned and never started (NOT_PLANNED); 4 = the script exited having taken no step
-(INTERRUPTED_NO_WORK: could not look, a failure); 5 = ended with an empty reason= (ENDED_NO_REASON: cause unknown); 3 = could not reach SteveDesktop by any route (nothing is known about the soak; each route's cause is named).
+(INTERRUPTED_NO_WORK: could not look, a failure); 5 = ended with an empty reason= (ENDED_NO_REASON: cause unknown); 3 = could not reach SteveDesktop by any route (nothing is known about the soak; each route's cause is named, and the line
+"instrument blind for N min (since <local time>)" says how long the reader has been blind: soak_read_last.json keeps the streak).
 Routes: direct ssh first; if that gives no whole reading and STEVE_FALLBACK_SSH is set (a command prefix that runs a bash line on
 Steve's WSL, e.g. a tailnet ssh through a container), that is tried and named in the output. Unset: it fails by that name.
 """
@@ -217,6 +218,53 @@ def render(s):
     return "\n".join(out)
 
 
+def now():
+    return time.time()
+
+
+def state_path():
+    """soak_read_last.json under the agent-storage root (rmpaths), or SOAK_READ_STATE. -> (path or None, why not)."""
+    if os.environ.get("SOAK_READ_STATE"):
+        return os.environ["SOAK_READ_STATE"], None
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        import rmpaths
+        return str(rmpaths.rm_path("steve_cpu_soak", "soak_read_last.json")), None
+    except Exception as e:      # noqa: BLE001 - no root is a named cause, never a guessed path
+        return None, "%s: %s" % (type(e).__name__, e)
+
+
+def blind_streak(reachable):
+    """RIMMANDRAKE_NAME_SOAK_BLIND_MINUTES_ON_REPEATED_UNREACHABLE. Two UNREACHABLE reads in a row are a fault in the
+    monitoring, not news about the CPU. The file keeps when the current UNREACHABLE streak began; a whole reading
+    clears it. -> the line to print on UNREACHABLE, or None. A state that cannot be read or kept is UNMEASURED."""
+    path, why = state_path()
+    t = now()
+    if path is None:
+        return None if reachable else "instrument blind for UNMEASURED min (no state file: %s)" % why
+    try:
+        with open(path, encoding="utf-8") as f:
+            st = json.load(f)
+        if not isinstance(st, dict):
+            st = {}
+    except FileNotFoundError:
+        st = {}
+    except (OSError, ValueError):
+        st = {}
+    since = None if reachable else (st.get("blind_since") if isinstance(st.get("blind_since"), (int, float)) else t)
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path + ".tmp", "w", encoding="utf-8") as f:
+            json.dump({"blind_since": since, "last_read": t, "last_reachable": reachable}, f)
+        os.replace(path + ".tmp", path)
+    except OSError as e:
+        return None if reachable else "instrument blind for UNMEASURED min (state file %s not kept: %s)" % (path, e)
+    if reachable:
+        return None
+    local = datetime.fromtimestamp(since).astimezone().strftime("%Y-%m-%d %H:%M %Z")
+    return "instrument blind for %d min (since %s)" % (int((t - since) // 60), local)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--run", help="read this run id instead of the one in state.json")
@@ -225,7 +273,9 @@ def main(argv=None):
     got, route, causes = read_routed()
     if got is None:
         print("SOAK UNREACHABLE: could not read SteveDesktop (%s); nothing is known about the soak" % "; ".join(causes))
+        print(blind_streak(False))
         return 3
+    blind_streak(True)
     s = summarize(got[0], got[1], a.run)
     s["route"] = route
     print(json.dumps(s, indent=1) if a.json else render(s) + ("\nroute: fallback (direct: %s)" % causes[0] if route == "fallback" else ""))

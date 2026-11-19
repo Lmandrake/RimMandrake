@@ -6,6 +6,9 @@ counted; no CONTROL or a failed CONTROL exits 1 and calls faults=0 UNMEASURED; a
 both gone reads STALLED exit 2; nothing planned reads NOT_PLANNED exit 2; an ENDED run carries its reason."""
 import json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import tempfile
+_sd = tempfile.mkdtemp(prefix="soak_read_state_")
+os.environ["SOAK_READ_STATE"] = os.path.join(_sd, "soak_read_early.json")    # no run here touches the real streak
 import soak_read as m
 import steve_cpu_retest as rt
 
@@ -156,6 +159,28 @@ rc_stop, o_stop = run_main((None, ""), (0, STOPPED), "r")
 rc_dark, o_dark = run_main((None, ""), (None, ""), "r")
 check(o_run.split()[1] == "RUNNING" and o_stop.split()[1] == "STALLED" and o_dark.split()[1].rstrip(":") == "UNREACHABLE" and rc_stop == 2 and rc_dark == 3,
       "A4: running clean / stopped / unreachable are three distinct verdicts and codes")
+
+# RIMMANDRAKE_NAME_SOAK_BLIND_MINUTES_ON_REPEATED_UNREACHABLE: a streak of UNREACHABLE reads is a fault in the
+# monitoring; the reader remembers when the streak began (temp state file, injected clock)
+os.environ["SOAK_READ_STATE"] = os.path.join(_sd, "soak_read_last.json")
+_clock = [1795000000.0]
+m.now = lambda: _clock[0]
+rc1, o1 = run_main((None, ""), (None, ""), "r")
+_clock[0] += 600
+rc2, o2 = run_main((None, ""), (None, ""), "r")
+check(rc1 == 3 and "instrument blind for 0 min" in o1, "A1: the first UNREACHABLE starts the streak at 0 min: %r" % o1[-120:])
+check(rc2 == 3 and "instrument blind for 10 min (since " in o2, "A1: a second UNREACHABLE 10 min later says blind for 10 min, exit 3: %r" % o2[-120:])
+_clock[0] += 300
+rc3, o3 = run_main((None, ""), (0, LIVE), "r")
+_clock[0] += 300
+rc4, o4 = run_main((None, ""), (None, ""), "r")
+check(rc3 == 0 and "blind" not in o3.split("\n")[0] and rc4 == 3 and "instrument blind for 0 min" in o4,
+      "A2: a whole reading clears the streak; the next UNREACHABLE starts at 0 min: %r" % o4[-120:])
+os.environ["SOAK_READ_STATE"] = os.path.join(_sd, "no_such_dir", "x", "soak_read_last.json")
+open(os.path.join(_sd, "no_such_dir"), "w").close()     # a file where the directory should be: the state cannot be written
+rc5, o5 = run_main((None, ""), (None, ""), "r")
+check(rc5 == 3 and "blind for UNMEASURED min" in o5 and "blind for 0 min" not in o5,
+      "a state file that cannot be kept makes the streak UNMEASURED, never 0 min; exit stays 3: %r" % o5[-160:])
 
 print("%d FAIL" % len(fails) if fails else "ALL PASS")
 sys.exit(1 if fails else 0)
