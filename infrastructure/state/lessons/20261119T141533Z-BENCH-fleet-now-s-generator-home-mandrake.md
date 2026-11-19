@@ -1,0 +1,1 @@
+FLEET_NOW's generator is /home/mandrake/mw/augur-wsl/augur/augur/dashboard/render.py (MandrakeWorkflows-dev, branch augur-wsl, live: augur-dashboard.timer runs it from that checkout every 30 s); to check its SVG, render in headless Edge (msedge.exe --headless=new --screenshot), not cairosvg, which misplaces text-anchor=end tspans.
