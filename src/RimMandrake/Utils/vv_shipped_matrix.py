@@ -106,7 +106,12 @@ def settings_defaults(text):
 def adapter_lines(text):
     """`flowKernel.<field> = <expr>;` assignments inside DoPulse (one-line ones; multi-line = scene-dependent)."""
     i = text.index("private void DoPulse()")
-    j = text.index("flowKernel.Pulse(", i)
+    # the pulse is started by flowKernel.BeginPulse( since the kernel was sliced across frames; flowKernel.Pulse( before
+    found = [k for k in (text.find("flowKernel.BeginPulse(", i), text.find("flowKernel.Pulse(", i)) if k >= 0]
+    if not found:
+        raise ValueError("DoPulse in %s starts the kernel with neither flowKernel.BeginPulse( nor flowKernel.Pulse(: "
+                         "the adapter moved, so the shipped kernel settings cannot be derived" % ADAPTER_CS)
+    j = min(found)
     body = text[i:j]
     out, scene = [], []
     for m in re.finditer(r"flowKernel\.(\w+) = ([^;]*?)(;|\n)", body):
@@ -259,9 +264,24 @@ def _rsync(rels, dest):
         sys.exit("VV: rsync failed (%d)" % r.returncode)
 
 
-def _probe_csproj(src_csproj, extra, startup, defines, assembly):
+def _probe_csproj(src_csproj, extra, startup, defines, assembly, beside=False):
+    """A probe project from a SelfTest csproj. beside=True: it is written in the SAME folder (own bin_vv/obj_vv), so every
+    path relative to that folder, in the csproj and in the harness .targets it imports, stays right; else one folder
+    below, with its paths moved up one."""
     t = open(src_csproj, encoding="utf-8").read()
+    if beside:
+        t = re.sub(r"<BaseOutputPath>[^<]*</BaseOutputPath>", "<BaseOutputPath>bin_vv\\</BaseOutputPath>", t)
+        t = re.sub(r"<BaseIntermediateOutputPath>[^<]*</BaseIntermediateOutputPath>", "<BaseIntermediateOutputPath>obj_vv\\</BaseIntermediateOutputPath>", t)
+        return _probe_finish(t, extra, startup, defines, assembly)
     t = re.sub(r'<Compile Include="([^"]+)"', lambda m: '<Compile Include="..\\%s"' % m.group(1), t)
+    # the copy sits one folder below the SelfTest csproj: every path relative to that project's folder moves up one
+    # (an <Import> of a harness .targets, and $(MSBuildProjectDirectory) in a property; both added after 2026-10-16)
+    t = re.sub(r'<Import Project="(?![$\\/]|[A-Za-z]:)([^"]+)"', lambda m: '<Import Project="..\\%s"' % m.group(1), t)
+    t = t.replace("$(MSBuildProjectDirectory)", "$(MSBuildProjectDirectory)\\..")
+    return _probe_finish(t, extra, startup, defines, assembly)
+
+
+def _probe_finish(t, extra, startup, defines, assembly):
     t = t.replace("<ItemGroup>", "<ItemGroup>\n" + "".join('    <Compile Include="%s" />\n' % e for e in extra), 1)
     t = re.sub(r"<AssemblyName>[^<]*</AssemblyName>", "<AssemblyName>%s</AssemblyName>" % assembly, t)
     t = t.replace("</PropertyGroup>", "  <StartupObject>%s</StartupObject>\n    <DefineConstants>$(DefineConstants);%s</DefineConstants>\n"
@@ -271,13 +291,25 @@ def _probe_csproj(src_csproj, extra, startup, defines, assembly):
 
 def _build(csproj_path):
     d = os.path.dirname(csproj_path)
-    for sub in ("bin", "obj"):
+    for sub in ("bin", "obj", "bin_vv", "obj_vv"):
         shutil.rmtree(os.path.join(d, sub), ignore_errors=True)     # stale-stage lesson: never trust a warm bin/obj
     rc = winbuild.run_dotnet(winbuild.win(csproj_path), d, "Release", [])
     if rc:
         sys.exit("VV: build failed for %s (env/build failure, not a verdict)" % csproj_path)
     dll = glob.glob(os.path.join(d, "bin", "Release", "net8.0", "*.dll"))
     return d
+
+
+def sibling_sources():
+    """Every other mod whose Source the SelfTest build reads: named as a path segment in the SelfTest csproj or in a
+    harness .targets it imports (the tank-theft extractor reads LuminousPigment's water bridge, 2026-11-18). Derived, so
+    a harness added later cannot break the staged build by naming a file the stage never copied."""
+    texts = [open(p, encoding="utf-8").read() for p in glob.glob(os.path.join(SELFTEST, "*.csproj")) + glob.glob(os.path.join(SELFTEST, "*.targets"))]
+    names = set()
+    for t in texts:
+        names |= set(re.findall(r'[\\/"\'(,\s]([A-Z][A-Za-z]+)[\\/"\']', t))
+    base = os.path.join(ROOT, "src", "RimMandrake")
+    return sorted(n for n in names if n != "FlowWorks" and os.path.isdir(os.path.join(base, n, "Source")))
 
 
 def stage_flowworks(control=False):
@@ -292,6 +324,7 @@ def stage_flowworks(control=False):
     # the About/ and Defs/ of the slime-outcome mods, and GelatinousSlime's SlimeIngestion.cs
     rels += ["src/RimMandrake/Biomes.compose.json", "src/RimMandrake/GelatinousSlime/Source/SlimeIngestion.cs"]
     rels += ["src/RimMandrake/%s/%s/" % (m, sub) for m in ("Contagion", "TheRot", "GelatinousSlime") for sub in ("About", "Defs")]
+    rels += ["src/RimMandrake/%s/Source/" % m for m in sibling_sources()]
     _rsync(rels, dest)
     st = os.path.join(dest, "src", "RimMandrake", "FlowWorks", "Source", "SelfTest")
     _patch(os.path.join(st, "FlowKernelFuzz.cs"), PULSE_ANCHOR, PULSE_HOOK)
@@ -320,12 +353,14 @@ def stage_flowworks(control=False):
         path = os.path.join(vv, "VVControl.csproj")
     else:
         _patch(os.path.join(st, "Program.cs"), CASE_ANCHOR, CASE_HOOK)
-        proj = _probe_csproj(os.path.join(st, "RimMandrakeFlowWorks.SelfTest.csproj"), ["ShippedMatrixProbe.cs"],
-                             "RimMandrake.FlowWorks.SelfTest.VV.ShippedMatrixProbe", "VV_HOSE", "VVProbe")
-        path = os.path.join(vv, "VVProbe.csproj")
+        proj = _probe_csproj(os.path.join(st, "RimMandrakeFlowWorks.SelfTest.csproj"), ["VV\\ShippedMatrixProbe.cs"],
+                             "RimMandrake.FlowWorks.SelfTest.VV.ShippedMatrixProbe", "VV_HOSE", "VVProbe", beside=True)
+        path = os.path.join(st, "VVProbe.csproj")
     with open(path, "w", encoding="utf-8") as f:
         f.write(proj)
     _build(path)
+    if not control:
+        return os.path.join(st, "bin_vv", "Release", "net8.0", "VVProbe.dll")
     return os.path.join(vv, "bin", "Release", "net8.0", os.path.splitext(os.path.basename(path))[0] + ".dll")
 
 
