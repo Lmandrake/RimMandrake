@@ -6,10 +6,16 @@ older definition sheet, the fauna and flora proposals, the review and the cleans
 happened to every idea in them is in `design/concepts/LanternDeeps/rewrite_choices.md`. Nothing has been deleted.
 This is a design document only and it launches nothing.
 
+**Second reader, 2026-11-18:** every source was then read to its end by a reader who did not write this file.
+What changed here, and why, is at the top of `rewrite_choices.md`. The Deeps have no locked Designer sheet or tree,
+so nothing here waits on a later Designer run to reconcile.
+
 **What kind of place this is (checked against the sheet's own header):** not a world-map biome and not a sea. It is
 an **underground layer**: a cave map reached through a mouth on any nightside map at −40 °C or colder. *"Not a
 worldmap biome (owner: 'that was a mistake')"* (`the_lantern_deeps.md`). **The ship cannot go down.** It parks on
-the frozen surface above, and the crew goes down on foot and on a cable.
+the frozen surface above, and the crew goes down on foot and on a cable. (Forty below is the rule. As built the
+test is a list of host biome names in the mod's settings, defaulting to the three cold hosts; the temperature test
+itself is owed.)
 
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/LanternDeeps/`
 (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its path by sitting here. Nothing in
@@ -36,6 +42,10 @@ The oldest minds in the caverns cannot move at all, and so they wear what the de
 
 > *"Nobody reaches this place without excellent technology; that is why the caverns are full of it, walking."*
 
+> *"Dig deep enough under the Lantern Deeps and the stone begins to listen... it hums a half-beat after you speak —
+> never with you, always after, like something learning the shape of your voice."* (legends entry written with the
+> owner, 2026-09-11, `mindstone_arc_legends.md`)
+
 **Seen from the ship, this is the best scrapyard the crew has ever heard of, and it is occupied.** Every corpse down
 here was superbly equipped: exo-suits, droids, power cells, cutting gear. A crew that has spent its life stripping
 wrecks along desert roads is standing over a shaft full of the finest salvage on the planet, in the dark, with the
@@ -43,8 +53,19 @@ light they carry telling everything alive exactly where they are. The sheet says
 Junkers *"occasionally try and usually fail to get far enough"*, and today nobody mines here *"except maybe a very
 rare Junker with a death wish"* (owner). The crew is that Junker, with a stolen ship idling overhead.
 
+They are not the first well-equipped party, and not all the dead are miners. His ruling of 2026-09-11 lays the
+dead down across *"empires rising and falling"*: *"a Helix expedition vessel could easily have explored it, and
+certainly the Empire is aware of it and could have mined some on an expedition. A rare Junker expedition might
+actually survive too."* Some of the best-equipped corpses in the cave are Imperial.
+
+The oldest design note for anything underground on this planet calls the next fact *"the design's soul"*: *"No
+shields, no ship guns, no home-turf advantage... Everywhere else the Utinni is the answer to 'we're in trouble.'
+Underground, it isn't in the building."* And its other half: *"Underground is the only place on Ash'karr where
+secrecy is free."* (`underground_caverns_deep_design.md`)
+
 Two things turn every desert habit upside down. At home light is the enemy you hide from at noon and the comfort you
-gather round at night; here *"we are blazing beacons begging to be messed with."* And at home a dead droid is stock.
+gather round at night; here, in his words of 2026-09-02, *"Light is what we bring because we need it, but in such great abundance compared
+to the local creatures we are like blazing beacons begging to be messed with."* And at home a dead droid is stock.
 Here it stands up and looks at the lamp.
 
 ## The clock on any stop
@@ -88,7 +109,11 @@ The ship lands **beside the mouth, not on it**, and that choice is the stop. A s
 (built: `src/RimMandrake/KeelHoist/`, a gravship part) can hang its cable down the shaft, send cargo and downed
 animals up and down without anyone carrying them, and haul the whole haul straight into the hold. While the cable
 is down the pilot's console refuses to launch: *"Reel in the keel hoist first."* A crew without the hoist walks
-everything through the mouth by hand.
+everything through the mouth by hand. The hoist's own design has the feel of it: *"throwing a dependable rope into
+an unknowable dark ... every use declares, 'We are staying here until this line comes back.'"* The hoist also
+counts how long its line has hung (the Open Line meter: the counter and its readout are built). What a long-open
+line brings at a Deep is `UNSETTLED`: its consequences were left to be wired site by site, and nobody has written
+this site's.
 
 The first party goes down out of the killing cold into still air at room temperature, in the only light there is:
 lanternstone blue, fungus glow, and their own lamp, *"a spotlight everything turns toward."* The cave hums.
@@ -107,16 +132,30 @@ of a gallery; and a chassis that was lying down when the party walked past, stan
   good, and ordinary light. *"Light now"* against *"light later, sold"* is a decision made for a Jawa: the one safe
   lamp in the cave is also worth money.
 - **The dead are well provisioned.** Equipped corpses and dead droid chassis lie along the galleries and at the
-  shaft bottom. This is the loot the stop is for, and it is lying in the open.
+  shaft bottom. This is the loot the stop is for, and it is lying in the open. (As built: old mercenary dead,
+  components, plasteel, medicine and chemfuel, slumped droid chassis, and a field of wrecked nightside hulls, tanks
+  and rigs. The Imperial and Helix dead are his ruling and are not dressed yet.)
+- **What goes down is all there is.** No power line and no supply chain reaches the bottom except the cable; light,
+  food, tools and medicine are what the party carried. Air is not on the list: his note of 2026-09-02 keeps
+  breathing gear for *"vapor-filled areas"*, and the Deep's air is still and good.
 - **Some of them walk.** Near an aware crystal a dead chassis stands, worries at the rock without mining it, and
   turns to face a light it can actually see. Its inspect names the rooted crystal that moves it; the crystal's
   names its bodies.
-- **The larder and the loom.** Puffer tendrils (they go on twitching in the bowl for hours: *"the squirming bowl
-  that is not alive"*), nurrik and brellik to eat, prenna lace for cloth, thrakk for tough timber.
+- **The larder and the loom.** Puffer tendrils are the cave's one table food as built (they go on twitching in the
+  bowl for hours, *"the squirming bowl that is not alive"*; the puffer itself *"has no more mind than a heart
+  valve"*), and prenna lace is its one cloth. The other fungi feed the animals. There is no timber: thrakk and
+  vellok stopped giving wood on his card of 2026-10-17 (*"stop giving wood"*).
 - **The roof talks first.** An unsupported span gives dust, sand and a rumble where it will fall, with time for a
-  miner to leave or a prop to go in.
+  miner to leave or a prop to go in. (Owner, 2026-09-02: *"natural caverns that grumble and moan are great
+  tension. Regions of instability should have animated bits of dust trailing down to warn the player, as well as
+  some piled sand accumulating below."*)
 - **The cow gives fuel.** Candlers graze the fungus in small groups, each with a swollen yellow sac along its back.
   They can be milked for cold wax, which *"burns like chemfuel and needs no refinery."*
+- **And the fuel goes off.** The wax is the Blue Desert's wax, one shared item: above freezing it spoils, and when
+  it spoils it lights its own fuse. The cave is at seventeen degrees. As built, a crate of fresh wax left on the
+  cave floor has a couple of hours (worked from the item's numbers; not seen live). So the milk run is a run: up
+  the cable or out the mouth, into the forty below that would kill the crew, because that is the only shelf cold
+  enough. `NEEDS HIM` 4.
 
 ## The first week
 
@@ -135,8 +174,9 @@ of a gallery; and a chassis that was lying down when the party walked past, stan
   *"Peacefulness indicated through a greeting and harmless presence and curiosity."*) A stop of a week or two holds
   enough descents for the greeting to be earned and seen.
 - **The sun under the mountain.** Some Deeps hold one **galuush**: *"a sun hung under the mountain"*, a roof-pinned
-  bladder four cells across that lights its whole chamber blue-gold, with every light-loving animal in the cave
-  gathered under it. Killed cold, with blades, it is *"a fortune in fuel — the single richest harvest in the
+  bladder four cells across that lights its whole chamber blue-gold. (The proposal has the cave's animals gathered
+  beneath it and the fungus grown fat there; no gathering behaviour is built, and the built galuush is nearly
+  still, not truly pinned.) Killed cold, with blades, it is *"a fortune in fuel — the single richest harvest in the
   biome."* Touched by anything hot while it dies, it goes off.
 - **The floating herd.** Drifters graze the voids, harmless to a blade, and each one bursts into flame if it is
   killed by fire or spark. A crew that hunts by lamp and blaster is hunting with explosives.
@@ -155,9 +195,9 @@ Each can happen inside the visit. Each says what is on screen.
    holding the lamp was holding it for everyone else.
 3. **The shot at the balloon.** *On screen:* a drifter floats into the lamplight, somebody fires, and the drifter
    is a fireball. *Why it lands:* it would have died quietly to a knife.
-4. **The sun goes out.** *On screen:* the lit chamber, the crowd of animals under the galuush, the crew cutting it
-   down cold; the light dies and the chamber is dark with everything that came to feed still in it. Or one spark,
-   and there is no chamber.
+4. **The sun goes out.** *On screen:* the one lit chamber in the cave and the crew cutting its sun down cold; the
+   light dies and the chamber is dark. Or one spark, and there is no chamber. (The proposal's crowd of animals
+   feeding under it is not built; with it, the dark would be full.)
 5. **The gallery says no.** *On screen:* a miner takes the first block of marked lanternstone; three dead shells
    along the wall straighten, slowly, and start walking. The miner runs. They stop at the gallery's edge.
 6. **The greeting.** *On screen:* the party climbs down on day six braced for trouble and a huge mining suit with a
@@ -167,13 +207,16 @@ Each can happen inside the visit. Each says what is on screen.
    light becomes a crate; the inspect line starts to climb.
 8. **The squirming bowl.** *On screen:* dinner aboard, a bowl of cut tendrils still twitching.
 9. **The cable.** *On screen:* the Empire's letter arrives; the hold is half loaded; the console reads *"Reel in
-   the keel hoist first"*; and two of the crew are still at the bottom.
+   the keel hoist first"*; and two of the crew are still at the bottom. (The hoist design starred this very moment as its
+   signature: *"reel in an incomplete load, defend a split expedition, or abandon cargo to save people."*)
 10. **The milk run.** *On screen:* a Jawa milking a blind loaf-shaped animal for fuel in a glowing fungus meadow,
-    and the wax going straight into the coldest corner of the ship because a warm store of it *"is a fire waiting
-    for a reason."*
+    then running the crate for the cable, because in the cave's own warmth it *"will not stay inert"* for long and
+    the only safe shelf is the killing cold upstairs. A warm store of it *"is a fire waiting for a reason."*
 
-*0.2.0 adds:* the droid that carried the tools down stops at the gallery mouth and will not go in; lamps dimming
-under a crust of sippers; the hunter nobody could see on the unlit floor; a drinker that bites a crew member and
+*0.2.0 adds:* the droid that carried the tools down stops at the gallery mouth and will not go in (his legends
+entry: they *"turn at the shaft mouth and refuse in every language they own"*); lamps dimming under a crust of
+sippers; the hunter nobody could see on the unlit floor (*"the one thing down here that does not glow"*, so the lamp
+that calls the cave is also the only thing that shows it); a drinker that bites a crew member and
 dies of the wrong blood; a blind grazer drumming the wall seconds before the roof goes.
 
 ## When the Empire arrives
@@ -188,6 +231,12 @@ divide the crew:
 - **The dark is on the crew's side up top.** The probe and the spotter each have to see the ship or a crew member,
   and on unlit nightside ground they have to come close to do it. A crew with its surface lamps out is hard to
   find. A crew working the shaft head under floodlights is not.
+- **The ship is set against the cold, not against them.** One shield generator holds one field at a time (his
+  rulings of 2026-09-02, built in `src/RimUtinni/ShipShields/`). A ship parked at forty below wants its cryo
+  envelope up; the heavy field that stops blaster fire and impacts is the same generator. Changing over is the
+  crew's decision in the hours after the strike team is announced.
+- **They have been here before.** His ruling of 2026-09-11 has the Empire aware of the Deeps and likely to have
+  mined them. Nothing sends this pursuit down the shaft, but the cave is not news to them.
 - **Leaving people behind is possible, and readable.** The Deep is persistent. A party still below when the ship
   must fly is not deleted; they are in a warm cave with food, and the tile remembers. Coming back for them is a
   landing on a tile the Empire has already searched.
@@ -199,10 +248,14 @@ divide the crew:
 - **Down here, the cave itself:** the drinker drawn by light, ordinary cave hunters, and the crystals' shells if
   their gallery is robbed. None of it is a raid and none of it leaves the Deep.
 - **Nobody trades here and nobody visits.** Living droids *"avoid the Deeps at all costs."* The only other people
-  who ever come are the dead ones.
+  who ever come are the dead ones. (Later, by his legends entry, something does leave: *"Now and then one walks out.
+  What crosses back into the light remembers nothing."* For a crew of droid dealers that is stock with no owner.
+  See Scope: later.)
 - **The crystals are not on anyone's side.** They are not the Empire's friends: in the campaign's deeper story they
   are the mechanoids' *"wild cousins"*, afraid of the Rust Cathedral, and selling the kyber that lies among them is
-  *"extremely illegal to the Empire"*. None of that is in these versions (see Scope: later). In 0.1.0 they want
+  *"extremely illegal to the Empire"*. The kyber trade is built in the campaign layer (`src/RimUtinni/KyberTradePlot/`,
+  2026-11-11, not yet seen live): each sale raises the crew's visibility, the number the search runs on. The
+  cousins' voice and the Cathedral are not in these versions (see Scope: later). In 0.1.0 they want
   their gallery left alone and they like the one who sat with the suit.
 
 ## What forces the crew out; what lets them stay
@@ -226,9 +279,12 @@ divide the crew:
 - **The dead's gear:** the best salvage on the planet. *"Excellent loot, sometimes still moving."*
 - **Lanternstone:** *"light, volatile blasting material, the trade crystal."* The protected gallery's is the prize
   worth the trip; ordinary lanternstone is everywhere else.
-- **Fuel:** cold wax by the crate, and the galuush's harvest if the crew dared.
-- **Prenna lace** (the Deep's one cloth), **thrakk wood**, **puffer tendrils** and the other three table fungi.
-- **A tame candler,** for a crew with a cold hold: fuel on the hoof.
+- **Fuel:** cold wax by the crate, kept below freezing all the way home, and the galuush's harvest if the crew
+  dared. Also what a killed drinker had drained, a small fluid to sell (built).
+- **Prenna lace** (the Deep's one cloth) and **puffer tendrils**. No timber, and no other table food as built.
+- **A tame candler,** for a crew with a cold hold: fuel on the hoof. `UNSETTLED`: whether a Deep animal lives away
+  from the Deep has never been measured (the proposal's own premise 12; the review left it *"the build's to
+  measure, not to assume"*).
 - **A place that remembers them.** The acquaintance with Orun-Ghal belongs to the crew, not to the one who studied,
   and survives the stop.
 
@@ -238,18 +294,35 @@ divide the crew:
 have richer sources."*) The Deeps are one of the few, on their own sources: the candler's cold wax *"burns like
 chemfuel and needs no refinery"*; the drifter is the *"best fuel-per-kill"*; the galuush is the richest single
 harvest. It is not replete: the wax comes at a milking pace and the big harvests are each a risk. Nobody sells fuel
-here, because nobody is here. Two honest gaps: the wax item is referenced by the animals' definitions and its own
-definition was not found in source by the cleanse (`UNMEASURED`); and whether cold wax goes into the ship's tanks
-directly or through an ordinary recipe is `UNSETTLED`. The trade the old proposal wrote is the Jawa part: this fuel
-*"must be stored cold"*, it softens and spoils above freezing, and a warm store near fire ignites. The crew that
-strikes fuel has to keep it colder than they keep themselves.
+here, because nobody is here. What is built, read from the definitions and not seen live: the wax is the Blue Desert's item, shared
+(`src/RimMandrake/BlueDesert/Defs/ThingDefs_Items/RM_ColdWax.xml`; the cleanse could not find it and called it
+missing). It is safe only below freezing. Warmer than that it spoils within a couple of hours, and spoiling lights
+its fuse (the Blue Desert's switch `coldWaxWarmReactiveEnabled`, on by default). Its header records the recipe that
+turns it into chemfuel as owed; whether one has been built since was not checked, so whether it fills a tank is
+`UNSETTLED`. And the Deep's air is seventeen degrees, so this fuel cannot be stored where it is made. Nobody chose
+that; the item was reused. It is either a defect or the best joke in the cave (`NEEDS HIM` 4). The trade the old
+proposal wrote is the Jawa part either way: this fuel *"must be stored cold"*, and the crew that strikes it has to
+keep it colder than they keep themselves.
 
-**What wears on the ship.** (Owner's ruling of 2026-11-18: in 0.1.0, from what the sources already say.) The Deep
-never touches the hull: the review's own scorecard reads *"Gravship touch: MISS... a ship cannot go down; nothing
-down here reaches up to it."* This design does not invent one. The wear at a Deeps stop is the **host's cold on a
-landed ship**, stated in the host's design (the Sleeping Ice, the Blue Desert, the Propane Lakes' margins), and the
-answer is whatever that host names. The Deep adds two things of its own to the ship, both from sources: the
-**tether** (cable down, no launch), and a **cargo that must stay cold** in a hold the crew would like to heat.
+**What wears on the ship.** (Owner's ruling of 2026-11-18: in 0.1.0, from what the sources already say: *"Heat or
+cold. Different kinds of shields or armor. It's in there."*) The Deep itself never touches the hull: the review's
+own scorecard reads *"Gravship touch: MISS... a ship cannot go down; nothing down here reaches up to it."* This
+design does not invent a reach. The wear at a Deeps stop is **cold**, and the frame for it is built:
+`src/RimUtinni/ShipShields/`, from his shield rulings of 2026-09-02
+(`design/Jawa/proposals/ship_shields_deep_design.md`; its hazard tests and header comments were read, and nothing
+here says it has passed anything). A ship sitting unshielded on a map at forty below or colder takes steady wear on
+its own structures, faster after some hours, with a letter on landing and never a refusal: *"Its hull is thick and
+can take a lot of damage in most situations, so no environment is immediately lethal."* Every Deep host is such a
+map by the injection rule; the rule's forty below is the tracker's own cold line. The answer is his **cryo
+envelope**: *"Pulls in heat in both directions... holding severe cold at bay. But slowly decreases the temperature
+within the ship... still better than the extreme cold of the night-side atmosphere."*
+
+Three things follow for this stop, all from sources. The generator holds one field at a time, so the cold-proofed
+ship has no heavy field up. The envelope's slow inside chill is a cost to the crew and, by accident, a help to a
+hold full of wax. And by his words the envelope glows *"red-orange"* (the glow is not built) on a host where
+darkness is the ship's only cover (`NEEDS HIM` 5). The host's design owns the rest. The Deep adds two things of
+its own to the ship, both from sources: the **tether** (cable down, no launch), and a **cargo that must stay
+cold** and that goes off if it does not.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -264,7 +337,7 @@ answer is whatever that host names. The Deep adds two things of its own to the s
 | Orun-Ghal is harmless company: it can be studied by real visits, it remembers the crew, and on a later descent it comes to greet them and keeps near them. | Study to completion; leave; save, reload; return with a different crew member. | An interrupted visit earns nothing. It never mines, fights, or is recruited. A destroyed suit stays destroyed. |
 | An unsupported roof warns where it will fall, in time to leave or prop it. | Remove a support under a span with a miner beneath; once leave, once prop. | A propped span does not fall; the warning does not hold a roof up for ever. |
 | A drifter or a galuush killed by fire or spark detonates; killed cold it does not. | One of each, each way. | The inspect text says so before the first shot. |
-| Candlers can be milked for a fuel that works as fuel. | Tame, milk, burn. | A candler butchered for meat gives none: these animals are fuel, not food. |
+| Candlers can be milked for a fuel that works as fuel. | Tame, milk, burn. | A candler butchered for meat gives none: these animals are fuel, not food. Whether the wax may sit in the cave's own air is `NEEDS HIM` 4. |
 | The cave feeds and clothes a visiting party from its own fungus, and what is eaten grows back. | A week of foraging on one pasture. | |
 | With a keel hoist, cargo and a downed animal ride the cable between the ship and the Deep, and the ship will not launch with the cable down. | The walk already written in `design/validation_walks/RimMandrake/KeelHoist.md`, step 3 and 4. | Reeled in, the launch is allowed. |
 
@@ -287,7 +360,8 @@ plants and plain animals (standing rule, every mod). Existing Deeps and their mo
 **Merely active here:** wreck and salvage placement (`Wreckage`); bones from the dead (`Bones`); creature
 behaviours (fluid feeding, real flight for the drinker); fast-growth rosters (`ExplosiveGrowth`, with the sowable
 stone deliberately left out); the acoustic scanner's readings; the Empire's search and the visibility dial, which
-act on the surface map only; the one sun from geometry, which an intact roof shuts out entirely (the cave's warmth
+act on the surface map only; the ship's shield generator and the cold that wears an unshielded ship (`ShipShields`,
+campaign layer), likewise on the surface map only; the hoist's Open Line counter; the one sun from geometry, which an intact roof shuts out entirely (the cave's warmth
 is ordinary air temperature, not a heat of its own).
 
 ## Scope
@@ -298,14 +372,19 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Two kinds of mouth on cold nightside hosts; the persistent Deep; its still air, hum, lanternstone rock and
   glowing formations; sealing a mouth as the player's own destructive choice, with a warning. (built)
 - Light draws the drinker; the standing Lantern's safe light and its sale; a Lantern placed naturally where a first
-  party can find it. (built, except natural placement of the Lantern)
+  party can find it. (built, with two gaps: no Lantern is placed naturally, and today the draw makes one or two new
+  drinkers beside the party; the hunter that walks a real route from where it lives is the cleanse's owed repair)
 - The well-provisioned dead; the Working Dead that stand and turn to light; the aware crystals that move them.
-  (built; the only chains proven inside a placed Deep, 2026-10-05)
+  (built; the only chains proven inside a placed Deep, 2026-10-05. The Imperial and Helix dead of his 2026-09-11
+  ruling are dressing, unbuilt)
 - The protected gallery and its defence by remote shells; the route out left open. (unbuilt: the present shells
-  cannot fight)
+  cannot fight. `UNSETTLED`: a deep drill used inside a Deep reaches the same stone without touching a wall; by
+  default here, drilling under a marked gallery counts as taking it)
 - Orun-Ghal's rounds, real study and the remembered greeting. (rounds and study built; the greeting is not)
 - Roof warnings. (built, unproven)
-- The fungus pasture, food, cloth and timber, and its regrowth. (built)
+- The fungus pasture, food and cloth, and its regrowth. (built; no timber)
+- The cold on the landed ship, and the cryo envelope that answers it. (built in the campaign's `ShipShields`,
+  unproven; it happens on the host's map)
 - The plain hydrocarbon animals as bodies with their own light; the candler's fuel; the galuush as a lit chamber
   and a harvest; drifter and galuush ignition when killed hot. (built; ignition moved in, see `rewrite_choices.md`)
 - The keel hoist's line down a mouth and its tether lock. (built in its own mod; the live walk is uncovered)
@@ -329,19 +408,26 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 **Later (a crew that stays, a colony, or the campaign)**
 - The mindstone gallery, the Kindled, droids that leave wiped and rogue, the cousins who talk, the facility's
   trickle, the testimony about the Cathedral. Campaign layer; canon is ruled, nothing here builds it.
-- Kyber as a find and the illegal kyber trade (it raises the Empire's attention with every sale: a campaign device
-  this design would want the day it is built).
+- Kyber as a find and the illegal kyber trade. Built in the campaign layer on 2026-11-11
+  (`src/RimUtinni/KyberTradePlot/`; not seen live): every sale raises the crew's visibility to the Empire. It is
+  outside these free-tier versions; a crew in the campaign already has it.
+- Collapse as a tool: a charge or a mined prop that seals a passage for good (his caverns row of 2026-09-02).
+- The droids that walk out wiped, and anything a long-open hoist line brings.
 - The Answering rite (the owner tabled rites on 2026-10-03 until the biome mod is complete).
 - A deeper giant that forces a longer or more dangerous route (his answer of 2026-11-10; no candidate chosen).
 - The Chorus as a psychological effect; formations that mature and cleave offspring; sowing lanternstone.
-- The warm-wax reaction as its own behaviour; the cantina's Deep lane of dishes; Pyrinth and other added minerals;
+- A wax of the Deep's own, if he wants one that keeps in the cave (`NEEDS HIM` 4); the cantina's Deep lane of dishes; Pyrinth and other added minerals;
   the imported orange crystal.
 - Living in the Deep; a home of forty.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - The Lantern Deeps as a world-map biome (*"that was a mistake"*).
 - Crystal-studded animals (*"a bit hokey... I'd rather have crystals AS creatures"*) and the rat.
-- The blinker's flash (removed 2026-10-23); the earlier local glowbulb, grabber, shatterjaw and chiller.
+- The blinker's flash (removed 2026-11-02 under his "I cut, you veto" card); the earlier local glowbulb, grabber,
+  shatterjaw and chiller (the census records them gone; the second reader could not find the ruling that retired
+  them, and three of the four were his own remakes of 2026-09-18).
+- Orun-Ghal as a contracted miner whose route the player paints (the first pitch; his answer: *"it might not just
+  mine"*). A legend of the Kindled and one of the True Children (both cut by him, 2026-09-11).
 - Dulcis here (*"It makes no sense that the rot has something growing in the lantern deeps as well"*).
 - Any Force route through kyber or mindstone; any Deep under a host warmer than the rule; regenerating Deeps.
 - A ship that goes underground.
@@ -354,6 +440,9 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
    *Yes, at the strike step and after:* troopers with bright lamps in a cave that answers light would be the
    funniest fight on the planet, and it needs a new arrival route and a rule for what the crystals do about them.
    *Only a probe:* one droid drifting down the mouth with its searchlight on, which the cave deals with unaided.
+   Two sources bear on it: his ruling of 2026-09-11 that the Empire knows the Deeps and may have mined them, and
+   his caverns row of 2026-09-02, which made a deliberate collapse (a passage dropped behind the party) a
+   first-version mechanic there.
 2. **Is the host's dark enough to pause the search here, as built?** His rulings say full dark pauses it; the
    pursuit mod slows only the Abyss. This is the hosts' question more than the Deep's, and it decides whether a
    Deeps stop is a month or a long winter. *Add the cold nightside hosts to the slowed list* (what the rulings
@@ -362,3 +451,19 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
    (their stock in trade refusing to walk), and the cleanse switched it off because it also interrupts a player's
    Biotech mechanoids and a fresh review refused it as a default. *0.2.0* (default here). *0.1.0, droids only,
    mechanoids exempt:* a small change and a strong first-descent moment.
+4. **The wax goes off in the cave's own air. Leave it?** As built the candler's milk is the Blue Desert's wax: safe
+   below freezing, spoiled and lit within hours above it, and the cave is seventeen degrees. Nobody chose this; the
+   item was reused. *Leave it* (default here): fuel that has to be run out into the killing cold is the most Jawa
+   thing in the cave, costs nothing, and makes the hoist matter. It also means a party that milks and lingers
+   blows itself up, so the candler's text must say so (it nearly does: *"will not stay inert anywhere warm"*).
+   *Give the Deep a wax of its own that keeps at cave warmth and spoils in a heated hold:* a second item, and the
+   old proposal's cold-chain trade without the surprise. *Switch the reaction off inside a Deep:* the smallest
+   change, and the fuel becomes ordinary.
+5. **Does a running cryo envelope give the ship away?** His shield ruling has it *"glowing with red-orange black
+   body radiation"*; the glow is unbuilt. The ship's only cover at a Deeps stop is the host's dark. *No* (default,
+   and what the shared machinery file assumes for every shield). *Yes:* a ship kept warm is a ship seen sooner, and
+   a crew may choose to let the hull take the cold. This is one question for every nightside host, not only this
+   one.
+
+**Ship ideas he declined or cut:** none found in the Deeps' sources. The one ship idea pitched here, the keel
+hoist, he took and widened on 2026-10-01.

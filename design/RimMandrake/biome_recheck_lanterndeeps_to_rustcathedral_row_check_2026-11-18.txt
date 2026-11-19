@@ -1,0 +1,7 @@
+Row and source check over the rewrite_choices.md pages of RIMMANDRAKE_RECHECK_LANTERNDEEPS_TO_RUSTCATHEDRAL_CHOICES (second reader), run 2026-11-18 (offline; documents only, no game).
+What it checks: every table row under "Every idea, row by row" has five cells and a non-empty outcome; every source name defined in a "Source names" or "More source names" paragraph appears in at least one row's source column; an invented source name is reported missing (shows the check can see absence); every file on the second reader's read-in-full list exists. A copy of each page with one outcome cell blanked must fail (exit 2): shown per biome.
+What it does not check: that every idea in every source has a row. That is the second reader's reading, stated at the top of each page with what was read in part.
+
+LanternDeeps: 233 rows (91 added by the second reader), 29 lost, 20 record a move, 11 reshaped, 2 folded into shared machinery; 29 named sources, sources with no row: none; rows without five cells: none; rows with empty outcome: none; probe (an invented source name must be reported): seen; source files read in full: 74, listed but not on disk: none
+  exit status: 0
+  broken-copy probe exit status (must be 2): 2
