@@ -1,7 +1,5 @@
 {
   "_": "What live code still reads of the retired Relentless tick's rules file (run_store.rules, and the readers named in each comment). The tick's other keys went with it on 2026-11-18 (RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES); git keeps them, see design/RimMandrake/retired_eras_index_2026-11-18.md. selftest_run_rules_keys.py refuses a key no live file names.",
-  "_only_system_and_live": "Owner 2026-11-03: \"Since we're near the end of our tokens, I'd like to pause all work EXCEPT system work and Live Testing.\" LIFTED owner 2026-11-04: \"all token limits rescinded as well as work type. Token is no longer constrained.\" Read only by running_now.py's Relentless panel, which goes with RIMMANDRAKE_RETIRE_RELENTLESS_COLLECTOR_READS_A_DEAD_STORE.",
-  "only_system_and_live": false,
   "enabled": true,
   "_same_failure_limit": "RELENTLESS_STRIKES_HARDEN_CHANGE_TACK (owner 2026-11-02): two returns of one class change the approach. Read only by circling.watch, which only the retired tick called; it goes with RIMMANDRAKE_RETIRE_CIRCLING_WATCH_ONLY_THE_DEAD_TICK_CALLED.",
   "same_failure_limit": 2,

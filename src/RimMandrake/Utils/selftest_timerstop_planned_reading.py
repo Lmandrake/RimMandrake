@@ -5,7 +5,8 @@ The record: rm-relentless.timer stopped 2026-11-06 19:22:10Z for an account swit
 back 19:36:50Z. The 19:33Z deadman sweep reopened ten promises on it and ops_watch filed RELENTLESS_BLIND at 19:44Z,
 after the restart, on a stamp from 19:22:56Z. The decision: the existing mark (timers_guard pause, or a hand-armed
 restart) is what both read, and no second one exists. A stop with no restart armed still reads as the outage it is.
-Real sweep, real c_relentless, real store files; only systemd is a double.
+Real sweep, real store files; only systemd is a double. (The ops_watch half, c_relentless reading the belt's planned stop,
+went with that collector on 2026-11-18; the deadman half reads any timer the same way.)
 """
 import json
 import os
@@ -18,26 +19,9 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 TMP = Path(tempfile.mkdtemp(prefix="selftest_timerstop_"))
 os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
-os.environ["RELENTLESS_ROOT"] = str(TMP / "belt")
 os.environ["TESTQ_QUEUE"] = str(TMP / "q")
 (TMP / "ops").mkdir()
 import deadman_check as DM  # noqa: E402
-import ops_watch as OW  # noqa: E402
-
-# Operations and the owner tune these alarm lines: the cases run on the ones shipped 2026-11-15
-# (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
-PIN_TARGETS = {
-    "relentless.books_behind_min": {"value": 30, "worse": {"factor": 2}},
-}
-
-
-def pin_rules(r):
-    for t in r.get("targets") or ():
-        if isinstance(t, dict) and t.get("key") in PIN_TARGETS:
-            t.update(json.loads(json.dumps(PIN_TARGETS[t["key"]])))
-    return r
-_load_rules = OW.load_rules
-OW.load_rules = lambda *a, **k: pin_rules(_load_rules(*a, **k))
 
 FAILS = []
 STOP = 1793992930.0      # 2026-11-06T19:22:10Z
@@ -84,7 +68,6 @@ def blind_run(argv, **kw):
 
 HAND_ARMED = systemd("inactive", HAND_ROW, SHOW_HAND)
 BARE = systemd("inactive")
-BACK = systemd("active", began=RESTART)
 
 
 class It:
@@ -143,148 +126,6 @@ os.utime(TMP / "reading_promise", (time.time() - 21 * 60, time.time() - 21 * 60)
 check(DM.real_check(LINE, BARE) not in (None, DM.EXCUSED), "stopped bare, stale reading: broken")
 check(DM.just_restarted(LINE, blind_run) is False, "systemd unread: no excuse")
 check(DM.just_restarted("hook=block_foo.py") is False, "a hook has no start to wait on")
-
-# ------------------------------------------------------------------ ops_watch: RELENTLESS_BLIND, 19:44Z on a 19:22Z stamp
-STORE = TMP / "belt" / "store"
-RULES = pin_rules(json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8")))
-RULES["relentless"]["root"] = str(TMP / "belt")      # the store under test IS the one the timer writes
-g = lambda *x, cwd=None: subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *x], cwd=cwd, capture_output=True,
-                                        text=True, timeout=60, check=True)
-(STORE / "items").mkdir(parents=True)
-(TMP / "belt/live").mkdir()
-(TMP / "belt/live/runs.jsonl").write_text("")
-g("init", "--bare", "-b", "main", str(TMP / "belt/origin.git"))
-g("clone", str(TMP / "belt/origin.git"), str(TMP / "belt/books"))
-g("commit", "--allow-empty", "-m", "x", cwd=TMP / "belt/books")
-g("push", "origin", "HEAD:main", cwd=TMP / "belt/books")
-g("fetch", "origin", cwd=TMP / "belt/books")
-g("branch", "--set-upstream-to=origin/main", cwd=TMP / "belt/books")
-
-
-def put_tick(t):
-    row = {"t": t, "at": OW.iso(t), "live": 8, "target": 8, "places": 8, "ready": 40, "minutes_under": 0, "why": "filling",
-           "checks": {"waiting": 0, "oldest_wait_s": 0}}
-    (STORE / "staffing.json").write_text(json.dumps(row))
-    (STORE / "staffing.jsonl").write_text(json.dumps(row) + "\n")
-    (STORE / "reading.json").write_text(json.dumps({"at": row["at"]}))
-    (STORE / "breaker.json").write_text("{}")
-    (STORE / "journal.jsonl").write_text(json.dumps({"at": OW.iso(t - 60), "do": "lease"}) + "\n")
-
-
-def collect(sysd, now, rules=None):
-    OW.RL_SYSTEMD = sysd
-    return OW.c_relentless(now, rules or RULES, {})
-
-
-put_tick(LAST_STAMP)
-base = collect(BACK, LAST_STAMP + 30)
-check(base["relentless.blind"]["v"] == 0, "the fixture reads sane on a fresh tick: %s" % base["relentless.blind"]["x"]["cause"])
-
-pts = collect(HAND_ARMED, STOP + 16 * 60)
-check(pts["relentless.blind"]["v"] == 0, "stopped, restart armed, stamp 16 min old: not blind (%s)" % pts["relentless.blind"]["x"]["cause"])
-check(pts["relentless.distressed"]["m"] == "UNMEASURED" and "planned stop" in pts["relentless.why"]["why"],
-      "and nothing claims sane: the belt reads unseen, saying why")
-pts = collect(BACK, RESTART + 7 * 60)
-check(pts["relentless.blind"]["v"] == 0, "the 19:44Z reading itself: restarted 7 min ago on a 19:22Z stamp, not blind (%s)" % pts["relentless.blind"]["x"]["cause"])
-pts = collect(BARE, STOP + 16 * 60)
-check(pts["relentless.blind"]["v"] >= 1 and "frozen" in pts["relentless.blind"]["x"]["cause"], "stopped with no restart armed: RELENTLESS_BLIND as ever")
-pts = collect(BACK, RESTART + 11 * 60)
-check(pts["relentless.blind"]["v"] >= 1, "restarted past the limit with no new stamp: a dead belt reads blind")
-pts = collect(blind_run, STOP + 16 * 60)
-check(pts["relentless.blind"]["v"] >= 1, "systemd unread: frozen stays blind")
-pts = collect(systemd("active", began=STOP - 86400), STOP + 16 * 60)
-check(pts["relentless.blind"]["v"] >= 1, "a running timer that stopped stamping: blind, restart long past")
-check(collect(HAND_ARMED, STOP + 16 * 60, pin_rules(json.loads((HERE / "ops_watch_rules.json").read_text())))["relentless.blind"]["v"] >= 1,
-      "a store that is not the timer's (the throwaway belts of other selftests) never asks systemd")
-
-(STORE / "staffing.json").unlink()
-check(collect(HAND_ARMED, STOP + 16 * 60)["relentless.blind"]["v"] >= 1, "a missing staffing.json under a planned stop: still blind, no stop tears a file")
-put_tick(LAST_STAMP)
-(STORE / "reading.json").write_text("{torn")
-check(collect(HAND_ARMED, STOP + 16 * 60)["relentless.blind"]["v"] >= 1, "a torn reading.json under a planned stop: still blind")
-
-# a stop of hours: the belt's first fresh tick after it must not read as a stall
-put_tick(LAST_STAMP)
-long_back = LAST_STAMP + 3 * 3600
-row = json.loads((STORE / "staffing.json").read_text())
-row.update(t=long_back + 120, at=OW.iso(long_back + 120))
-(STORE / "staffing.json").write_text(json.dumps(row))
-(STORE / "staffing.jsonl").write_text(json.dumps(row) + "\n")
-(STORE / "reading.json").write_text(json.dumps({"at": row["at"]}))
-pts = collect(systemd("active", began=long_back), long_back + 180)
-check(pts["relentless.progress_age_min"]["v"] == 3.0, "a 3 h pause: progress counts from the restart, %s min" % pts["relentless.progress_age_min"]["v"])
-pts = collect(systemd("active", began=LAST_STAMP - 86400), long_back + 180)
-check(pts["relentless.progress_age_min"]["v"] > 170, "a running timer with no progress still ages: %s min" % pts["relentless.progress_age_min"]["v"])
-
-# ------------------------------------------------------------------ what only a tick can end: books lag and an idle game hold
-# Only the belt's tick levels the books clone and frees a hold; a stopped belt has no tick, and ops_watch still measures both.
-BOOKS = "relentless.books_behind_min"
-STALE = "RELENTLESS_BOOKS_STALE:" + BOOKS
-g("clone", str(TMP / "belt/origin.git"), str(TMP / "belt/up"))
-PASS_RULES = json.loads(json.dumps(RULES))
-for tg in PASS_RULES["targets"]:      # never the real Conductor log
-    if tg.get("conductor_log"):
-        tg["conductor_log"] = str(TMP / "conductor.md")
-passes = []
-
-
-def whole_pass(sysd, now):
-    """The collector's points, and the alarms of a whole pass over the real rules, in an ops directory of its own."""
-    passes.append(1)
-    os.environ["RM_OPS_WATCH_DIR"] = str(TMP / ("ops_%d" % len(passes)))
-    OW.RL_SYSTEMD = sysd
-    alarms = OW.run(now=now, rules=PASS_RULES, filer=lambda todo, conf: {a["name"]: None for a in todo}, families=["relentless"])["alarms"]
-    return OW.c_relentless(now, PASS_RULES, {}), alarms
-
-
-def land(when):
-    """One commit on origin the books clone lacks, stamped `when`."""
-    date = "%d +0000" % when
-    subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "--allow-empty", "-m", "c"], cwd=TMP / "belt/up", check=True,
-                   capture_output=True, timeout=60, env={**os.environ, "GIT_COMMITTER_DATE": date, "GIT_AUTHOR_DATE": date})
-    g("push", "origin", "HEAD:main", cwd=TMP / "belt/up")
-
-
-def level():
-    g("pull", "--ff-only", "origin", "main", cwd=TMP / "belt/books")
-
-
-put_tick(LAST_STAMP)
-land(STOP + 10 * 60)
-pts, al = whole_pass(BARE, STOP + 60 * 60)
-check(pts[BOOKS]["v"] == 50.0 and STALE in al, "instrument: a commit 50 min behind, belt stopped with no restart armed: the books alarm rings (%s)" % pts[BOOKS]["v"])
-pts, al = whole_pass(HAND_ARMED, STOP + 60 * 60)
-check(pts[BOOKS]["v"] == 0 and pts[BOOKS]["x"]["behind"] == 1 and pts[BOOKS]["x"]["stopped_min"] == 50.0 and STALE not in al,
-      "the checker's case: hand-armed 1 h, commit landed 50 min ago, no books alarm, the lag still shown (%s)" % pts[BOOKS])
-pts, al = whole_pass(HAND_ARMED, STOP + 3 * 3600)
-check(pts[BOOKS]["v"] == 0 and STALE not in al, "the same at 3 h (%s)" % pts[BOOKS])
-pts, al = whole_pass(systemd("active", began=STOP + 3600), STOP + 3600 + 5 * 60)
-check(pts[BOOKS]["v"] == 5.0 and STALE not in al, "restarted 5 min ago: the lag counts from the restart (%s)" % pts[BOOKS])
-pts, al = whole_pass(systemd("active", began=STOP + 3600), STOP + 3600 + 35 * 60)
-check(pts[BOOKS]["v"] == 35.0 and STALE in al, "restarted 35 min ago and still behind: a jam, the alarm rings (%s)" % pts[BOOKS])
-pts, al = whole_pass(systemd("active", began=STOP - 86400), STOP + 60 * 60)
-check(pts[BOOKS]["v"] == 50.0 and "stopped_min" not in pts[BOOKS]["x"] and STALE in al, "a timer running all along: the full age, no stop to take off (%s)" % pts[BOOKS])
-OW.RL_SYSTEMD = HAND_ARMED
-check(OW.c_relentless(STOP + 60 * 60, pin_rules(json.loads((HERE / "ops_watch_rules.json").read_text())), {})[BOOKS]["v"] == 50.0,
-      "a store that is not the timer's: the full age")
-level()
-land(LAST_STAMP - 40 * 60)
-pts, al = whole_pass(HAND_ARMED, STOP + 3 * 3600)
-check(pts[BOOKS]["v"] == 40.0 and STALE in al, "jammed 40 min before the stop: still late, the stop hides nothing (%s)" % pts[BOOKS])
-pts, al = whole_pass(systemd("active", began=STOP + 3600), STOP + 3600 + 60)
-check(pts[BOOKS]["v"] == 41.0 and STALE in al, "and after the restart: 40 before it, 1 since (%s)" % pts[BOOKS])
-level()
-land(LAST_STAMP - 5 * 60)
-pts, al = whole_pass(HAND_ARMED, STOP + 3 * 3600)
-check(pts[BOOKS]["v"] == 5.0 and STALE not in al, "5 min behind at the stop reads 5 however long the stop (%s)" % pts[BOOKS])
-level()
-(STORE / "staffing.jsonl").write_text("")
-(STORE / "staffing.json").write_text("{torn")
-land(STOP + 10 * 60)
-pts, al = whole_pass(HAND_ARMED, STOP + 60 * 60)
-check(pts[BOOKS]["v"] == 50.0 and STALE in al, "no tick readable, so the stop has no date: the full age (%s)" % pts[BOOKS])
-level()
-put_tick(LAST_STAMP)
 
 print("selftest_timerstop_planned_reading: %s" % ("OK" if not FAILS else "FAIL %d" % len(FAILS)))
 sys.exit(1 if FAILS else 0)

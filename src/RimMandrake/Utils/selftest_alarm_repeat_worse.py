@@ -33,7 +33,7 @@ CLOG = TMP / "conductor_log.md"
 RULES = OW.load_rules()
 # Operations and the owner tune these alarm lines and steps: the cases run on the ones shipped 2026-11-15
 # (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
-PIN_TARGETS = {"accounts.*.runway": {"value": 1.0, "worse": {"factor": 2}}, "relentless.distressed": {"value": 0},
+PIN_TARGETS = {"accounts.*.runway": {"value": 1.0, "worse": {"factor": 2}}, "plan.distressed": {"value": 0},
                "steve.unowned_stall_min": {"value": 30, "worse": {"factor": 2}},
                "disk.root_free_gb": {"value": 210, "worse": {"add": 50}}}
 for _t in RULES["targets"]:
@@ -114,7 +114,7 @@ def test_downward_step():
 
 
 def test_severity_needs_no_step():
-    b = Bench("RELENTLESS_DISTRESS:relentless.distressed")
+    b = Bench("PLAN_DISTRESS:plan.distressed")
     cur = b.read(OW.M(1, "flag", state="distressed", cause="breaker open"))
     ok(cur["told"]["class"] == "distressed", "the collector's judged class is the severity told")
     b.sent = []
@@ -324,13 +324,13 @@ def test_dispatcher_breaks_on_worse():
 
 # Every target key that states a step today. Dropping one goes red; a new row with a step may be added freely.
 # (arena.push_refused_24h left with the arena trial, owner card 2026-11-05, 1f0e666566; relentless.game_hold_idle_min left
-# with its reader, relentless_broker.py, in the retired-era split.)
+# with its reader, relentless_broker.py, in the retired-era split; relentless.books_behind_min and relentless.live_measured_pct
+# with c_relentless, 2026-11-18.)
 STATED_STEPS = {
     "accounts.*.loan_runway", "accounts.*.runway", "codex.runway", "companion.grant_hours_left",
     "disk.c_free_gb", "disk.d_free_gb", "disk.pool_breach", "disk.root_free_gb", "disk.scratch_ok_age_h", "disk.tmp_free_gb",
     "disk.tmp_used_pct", "flow.untriaged_findings", "health.drifted_slis", "health.spent_slis", "queues.artpipe.stalled_min",
-    "queues.testq.stalled_min", "relentless.books_behind_min",
-    "relentless.live_measured_pct", "steve.incident_unclaimed_min", "steve.invalid_streak", "steve.seats_absent_min",
+    "queues.testq.stalled_min", "steve.incident_unclaimed_min", "steve.invalid_streak", "steve.seats_absent_min",
     "steve.unowned_stall_min", "timers.failed_units", "tps.health_breaches"}
 
 

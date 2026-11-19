@@ -18,22 +18,18 @@ OLD_UNIT = "nightly reds not on the known-red list, and entries past their age"
 PH = 'M(len(v["drifted"]), "SLIs whose point changed unit under them", said=", ".join(v["drifted"]))'
 MUTANTS = [
     # GAP 1: the shipped rule's key or unit moves off what the collector emits
-    (RU, '"unit": "%"', '"unit": "banana"', "rules: infra_share unit"),
     (RU, '"unit": "GB free on /tmp"', '"unit": "GB free on /nowhere"', "rules: tmp unit"),
     (RU, '"unit": "GB free on /"', '"unit": "GB free on /mnt/x"', "rules: root unit"),
     (RU, '"unit": "GB the pool holds (cap 80.0)"', '"unit": "GB the pool holds (cap 99)"', "rules: pool unit"),
     (RU, '"unit": "nightly reds no known-red entry parks"', '"unit": "nightly reds"', "rules: nightly_reds unit"),
     (RU, '"key": "disk.tmp_free_gb", "unit"', '"key": "disk.nope_free_gb", "unit"', "rules: tmp key"),
     (RU, '"key": "disk.pool_gb", "unit"', '"key": "disk.pool_nope", "unit"', "rules: pool key"),
-    (RU, '"key": "relentless.live_measured_pct", "unit"', '"key": "relentless.nope_pct", "unit"', "rules: infra_share key"),
     (RU, '"key": "testing.nightly_unparked_reds", "unit"', '"key": "testing.nightly_news", "unit"', "rules: the blind key back"),
     # GAP 1: the collector moves off the shipped rule
-    (OW, 'M(pct, "%", **got)', 'M(pct, "share", **got)', "collector: infra_share unit"),
     (OW, '"GB free on %s" % mnt', '"free GB %s" % mnt', "collector: free GB unit"),
     (OW, '"GB the pool holds (cap %s)" % pr["max_gb"]', '"GB in pool"', "collector: pool unit"),
     (OW, '"nightly reds no known-red entry parks"', '"nightly reds nothing parks"', "collector: unparked unit"),
     (OW, 'out["disk.%s_free_gb" % name] = M(', 'out["disk.%s_gone_gb" % name] = M(', "collector: free key"),
-    (OW, 'pts["relentless.live_measured_pct"] = U(got, "%") if', 'pts["relentless.nope_pct"] = U(got, "%") if', "collector: infra_share key"),
     (OW, '    out.update(nightly_news(now, ctx))\n', '', "collector: c_testing stops calling nightly_news"),
     # GAP 2: publish_health
     (OW, PH, PH.replace('len(v["drifted"])', "0"), "publish_health: count 0"),

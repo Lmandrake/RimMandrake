@@ -2,9 +2,8 @@
 """selftest_running_now.py - running_now.py offline, on fixtures (no systemd, no Windows, no ssh, no state files).
 
 Covers: a source that cannot be read says UNMEASURED and never a 0 count; the tree accounts for every process counted;
-an unmatched python process is shown under NOT RECOGNISED with its pid; a Relentless unit finds its item by the hash;
-a place held with no process is called out; idle under a brake is the first, red thing on the page; the 24 h counters
-count a verdict once; the page is on disk before ssh is tried and a dead ssh changes nothing but the route dots; the
+an unmatched python process is shown under NOT RECOGNISED with its pid; idle under a brake is the first, red thing on
+the page; the page is on disk before ssh is tried and a dead ssh changes nothing but the route dots; the
 write is atomic, a failed build keeps the old page and the next good page carries a STALE banner; no blank line sits
 inside the details block (Typora would end the block there and spill the rest).
 The fuel gauge: every account's week left and time to reset with AHEAD/EQUAL/BEHIND against the spend left; a stale or
@@ -32,24 +31,18 @@ def check(name, cond):
 
 
 NOW = 1793741698.0
-ITEM = "GRAFFITI_V1_LIVE_PROOF_1"
-SHORT = R.short(ITEM)
-WORKER_CG = "0::/user.slice/user-1000.slice/user@1000.service/app.slice/rm-relentless-work-%s-g1.service\n" % SHORT
+WORKER_CG = "0::/user.slice/user-1000.slice/user@1000.service/app.slice/rm-role-builder-1793741600.service\n"
 DISPATCH_STATE = R.AGENT + "/dispatcher/state.json"
 STEWARD = R.TESTQ + "/steward.json"
 BRIDGE = R.BRIDGE_FILES[0]
-SHADOW = R.RELENTLESS_STORE + "/shadow.jsonl"
-JOURNAL = R.RELENTLESS_STORE + "/journal.jsonl"
-STAFFING = R.RELENTLESS_STORE + "/staffing.json"
-BREAKER = R.RELENTLESS_STORE + "/breaker.json"
 
 
 class Fake(R.Env):
     """Every door to the world is shut unless a fixture opens it."""
 
-    def __init__(self, ps="", units=None, timers=None, files=None, cg=None, fail=(), items=None, dirs=None):
+    def __init__(self, ps="", units=None, timers=None, files=None, cg=None, fail=(), dirs=None):
         self.ps_text, self.units, self.timers, self.files, self.cg, self.fail = ps, units, timers, files or {}, cg or {}, fail
-        self.items, self.dirs = items, dirs or {}
+        self.dirs = dirs or {}
         self.clock = NOW
         self.bridge, self.fleet, self.mods = None, None, None
         self.calls = []
@@ -85,9 +78,6 @@ class Fake(R.Env):
         if "timers" in self.fail:
             raise R.Unmeasured("systemctl broke")
         return self.timers or []
-
-    def tick_show(self):
-        raise R.Unmeasured("no tick in a selftest")
 
     def tasklist(self):
         if "tasklist" in self.fail:
@@ -126,17 +116,6 @@ class Fake(R.Env):
         if path in self.dirs:
             return self.dirs[path]
         raise OSError("no dir " + path)
-
-    def item_states(self):
-        if self.items is None:
-            raise R.Unmeasured("no item state files")
-        return self.items
-
-    def ledger_titles(self, wanted):
-        return {}
-
-    def ledger_blocks(self, wanted):
-        return getattr(self, "blocks", {})
 
     def steve_probe(self):
         self.calls.append(("ssh", os.path.exists(R.OUT) and "updated_epoch=%d" % int(self.clock) in open(R.OUT).read()))
@@ -197,28 +176,27 @@ WORKER = {5000: WORKER_CG, 5001: WORKER_CG, 5002: WORKER_CG}
 page = page_of(Fake(fail=("ps", "units", "timers", "tasklist")))
 head = before_svg(page)
 check("unreadable sources are listed as UNMEASURED at the top", "UNMEASURED this minute" in head and head.count("UNMEASURED") >= 4)
-check("no invented zero: no 'Relentless 0' and no 'bridge FREE'", "Relentless 0" not in head and "bridge FREE" not in head)
+check("no invented zero: no 'bridge FREE'", "bridge FREE" not in head)
 check("unreadable Dispatcher is UNMEASURED and not a green age", "Dispatcher UNMEASURED" in head or "last tick UNMEASURED" in page)
 check("the tree says UNMEASURED and not 0 processes", "UNMEASURED" in fence(page) and "TOTAL 0" not in fence(page))
 
 # 2. the tree accounts for every process counted
-env = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running"}])
+env = Fake(ps=PS, cg=WORKER)
 p = R.gather(env, {})
 lines, roots = R.tree_lines(p)
 check("every process counted lands in exactly one root", p["tree"]["total"] >= 5 and roots == p["tree"]["total"])
 text = "\n".join(lines)
 check("the tree's TOTAL line shows the same sum", "TOTAL %d Linux processes" % roots in text)
 check("no tree line outgrows the code fence", max(len(x) for x in lines) <= 84)
-env = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running"}])
+env = Fake(ps=PS, cg=WORKER)
 far = R.gather(env, {})
-moved = next(x for x in far["tree"]["groups"].values() if x["family"] == "relentless")
+moved = next(x for x in far["tree"]["groups"].values() if x["family"] == "roles")
 moved.update(family="seats", name="CONDUCTOR", cwd="/somewhere/else", model="o", who="CONDUCTOR", unit="x", age=1.0)
 check("a Conductor sitting outside the clones is counted once", R.tree_lines(far)[1] == far["tree"]["total"])
 
-# 3. a worker finds its item by the unit's hash, and shows it in plain words with its children
-check("worker row carries the item's plain words", "Graffiti v1 live proof 1" in text and "item UNMEASURED" not in text)
-check("worker row sums its child processes", re.search(r"claude 1 .*= 3", text) is not None)
-check("heading counts a work unit as a Builder", "Builders 1, Judges 0" in text)
+# 3. a role run shows its unit and sums its child processes
+check("role row sums its child processes", re.search(r"claude 1 .*= 3", text) is not None)
+check("heading counts the role run", "ROLE RUNS  1 running" in text)
 
 # 4. unmatched process shown with its pid; matched one not
 page = page_of(Fake(ps=PS))
@@ -227,33 +205,9 @@ check("unmatched python process listed with pid", "pid 4242" in nr and "match.py
 check("matched account page is not listed as unrecognised", "4343" not in nr)
 check("the strip raises it", "NOT RECOGNISED" in before_svg(page))
 
-# 5. a place with no process is named; one with a process is not
-env = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running"}, {"item": "SOME_ITEM_NO_PROCESS", "status": "checking"}])
-ghosts = R.ghost_places(R.gather(env, {}))
-check("an item holding a place with no unit is a ghost", [(g if isinstance(g, str) else g.get("item")) for g in ghosts] == ["SOME_ITEM_NO_PROCESS"])
-check("ghosts are unknown, not none, when the tree is unread", R.ghost_places(R.gather(Fake(fail=("ps",), items=[{"item": ITEM, "status": "checking"}]), {})) is None)
-check("the strip says so", "1 place with no process" in before_svg(page_of(env)))
-env_j = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running"},
-                                      {"item": "SOME_ITEM_JUDGED", "status": "checking", "check": {"run": {"out": "/r/judged.json"}}}])
-env_j.files = dict(getattr(env_j, "files", {}) or {}, **{"/r/judged.json": "{}"})
-check("a checking item whose Judge wrote its result is no ghost: the tick reads it (PASS3_FLOOD board)",
-      R.ghost_places(R.gather(env_j, {})) == [])
-env_l = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running"},
-                                      {"item": "SOME_ITEM_JUDGING", "status": "checking", "check": {"run": {"out": "/r/judging.json"}}}])
-env_l.files = dict(getattr(env_l, "files", {}) or {}, **{"/r/judging.json": ""})
-st_l = R.collect_items(env_l)["by_status"]["checking"][0]
-check("a Judge's out file that systemd opened empty at launch is no verdict: a dead one is still a ghost (RUNNING_BOARD_FIX_FINISHED_JUDGES_CRY_WOLF)",
-      "_judge_out" not in st_l and [(g if isinstance(g, str) else g.get("item")) for g in R.ghost_places(R.gather(env_l, {}))] == ["SOME_ITEM_JUDGING"])
-
 # 6. a Dispatcher far behind leads the strip
 page = page_of(Fake(files={DISPATCH_STATE: {"last_tick": "2026-11-03T20:00:00Z"}}))
 check("old Dispatcher tick raises DISPATCHER NOT TICKING", "DISPATCHER NOT TICKING" in before_svg(page))
-
-# 6b. the breaker file keeps old counts after it closes: open means `until` is still ahead
-check("breaker with an old `opens` count is clear", R.breaker_word({"breaker": {"opens": {"k": {"n": 2}}}, "now": NOW}) == "clear")
-check("breaker with `until` ahead is OPEN", R.breaker_word({"breaker": {"until": NOW + 60}, "now": NOW}) == "OPEN")
-check("breaker with `until` passed is clear", R.breaker_word({"breaker": {"until": NOW - 60}, "now": NOW}) == "clear")
-check("unreadable breaker is UNMEASURED", R.breaker_word({"breaker": None, "now": NOW}) == "UNMEASURED")
 
 # 7. the bridge mirror file parses both ways
 held = R.collect_bridge(Fake(files={BRIDGE: "# comment\nHELD OPERATIONS since 2026-11-03T20:00:00Z\nfor a proof\n"}))
@@ -267,7 +221,7 @@ dirs = {R.TESTQ + "/running": [], R.TESTQ + "/pending": []}
 page = page_of(Fake(files=files, dirs=dirs))
 head = before_svg(page)
 check("braked and idle reads as trouble in the strip", "Steve BRAKED + IDLE" in head)
-check("trouble comes first in the strip", "Relentless" in head and head.index("Steve BRAKED") < head.index("Relentless"))
+check("trouble comes first in the strip", "bridge" in head and head.index("Steve BRAKED") < head.index("bridge"))
 check("the Steve panel says it in words", "BRAKED AND IDLE" in page)
 check("an unreadable Steve job count is not 'idle'", not R.steve_headline({"state": "BRAKED", "running": None})[1])
 check("a working Steve under no brake is not idle", not R.steve_headline({"state": "OK", "running": 0})[1])
@@ -295,9 +249,8 @@ broken = Fake(files=files, dirs=dirs)
 real_svg, R.steve_svg = R.steve_svg, lambda p: 1 / 0
 page = page_of(broken)
 R.steve_svg = real_svg
-check("a panel that cannot draw costs that panel, not the page", "SteveDesktop: UNMEASURED" in page and "SteveDesktop panel" in before_svg(page) and "RELENTLESS" in page)
+check("a panel that cannot draw costs that panel, not the page", "SteveDesktop: UNMEASURED" in page and "SteveDesktop panel" in before_svg(page) and "ARCHMAGI" in page)
 
-# 8d. a state file that cannot be read is an UNMEASURED Relentless, not a short count
 def collections_d(**kw):
     return R.collections.defaultdict(list, kw)
 
@@ -311,7 +264,7 @@ under_run = ("  100  1  900  1.0 systemd /lib/systemd/systemd --user\n"
              " 6001 6000 500 20.0 claude claude -p --model opus --name ROLE\n")
 tree = R.build_tree(Fake(cg={6000: WORKER_CG, 6001: SEAT_CG}), R.Table(R.Env().families()), R.parse_ps(under_run))
 groups = list(tree["groups"].values())
-check("a numbered seat scope under a live Builder is that Builder, not a window", [g["label"] for g in groups if g["family"] != "upkeep" and g["procs"][0]["pid"] >= 6000] == ["worker"]
+check("a numbered seat scope under a live role run is that run, not a window", [g["label"] for g in groups if g["family"] != "upkeep" and g["procs"][0]["pid"] >= 6000] == ["role"]
       and not [g for g in groups if g["label"] == "window"])
 tree = R.build_tree(Fake(cg={6000: "0::/init.scope\n", 6001: SEAT_CG}), R.Table(R.Env().families()), R.parse_ps(under_run))
 check("a numbered seat scope under nothing that owns agents stays a window", len([g for g in tree["groups"].values() if g["label"] == "window"]) == 1)
@@ -329,24 +282,23 @@ job_files = {done_dir + "/" + OLD_JOB: {"job": {"purpose": "guard", "mod": "Flow
              STEWARD: {"state": "RUNNING", "epoch": NOW - 10}}
 env = Fake(files=job_files, dirs={done_dir: [OLD_JOB, "J1.json"], R.TESTQ + "/running": [], R.TESTQ + "/pending": []})
 state = {}
-sv = R.collect_steve(env, state, {"by_status": {"done": [{"item": "X_ITEM", "done_at": NOW - 50}]}})
+sv = R.collect_steve(env, state)
 check("a job born 10 days ago and finished now counts in the 24 h", sv["jobs_known"] and sv["done"] == 1 and sv["failed"] == 0)
-check("Steve's Live Testing reads that job", sv["live"]["rows"] == {"PASS": 1, "FAIL": 1} and sv["live"]["bugs"] == 1 and sv["live"]["closed"] == 1)
+check("Steve's Live Testing reads that job", sv["live"]["rows"] == {"PASS": 1, "FAIL": 1} and sv["live"]["bugs"] == 1)
 check("Steve's busy share is its job's minutes over 24 h", abs(sv["live"]["busy"] - 600 / 86400) < 1e-6)
 check("a job finished long ago keeps only its finish time", set(state["steve_jobs"]["J1.json"]) == {"v", "f"})
 env.files = {STEWARD: job_files[STEWARD]}
-sv = R.collect_steve(env, state, None)
+sv = R.collect_steve(env, state)
 check("a result already read is not read again", sv["jobs_known"] and sv["done"] == 1)
 state["steve_jobs"].pop(OLD_JOB)
 state["steve_jobs"]["J1.json"] = {"f": 5}     # the shape before this change: read again, not trusted
-sv = R.collect_steve(env, state, None)
+sv = R.collect_steve(env, state)
 check("an unreadable result leaves the day's counts unknown, not short", sv["jobs_known"] is False)
 check("an unreadable result leaves Live Testing UNMEASURED, not short", sv["live"] is None)
 env_ns = Fake(dirs={done_dir: [], R.TESTQ + "/running": [], R.TESTQ + "/pending": []})
-sv = R.collect_steve(env_ns, {}, None)
+sv = R.collect_steve(env_ns, {})
 check("a dead steward keeps the queue readings and says why", sv["state"] is None and sv["running"] == 0 and "steward UNMEASURED" in sv["reason"] and sv["age"] is None)
 check("an unread history is UNMEASURED, a missing one is merely new", "UNMEASURED" in R.window_stats(R.read_history(Fake(fail=())) , NOW, 86400, "24 h")[0])
-check("unread item states are no count of waiting items", R.it_waiting(None) is None and "UNMEASURED items wait" in R.game_idle_text({"idle_pct": 1, "window_min": 1, "used_min": 0, "waiting": None}))
 
 check("verdict: above the usual with high being bad warns", R.versus(9, (1, 5)) == ("high, usual 1-5", R.WARN))
 check("verdict: below the usual with low being bad warns", R.versus(0, (1, 5), False) == ("low, usual 1-5", R.WARN))
@@ -365,41 +317,20 @@ ROWS = "\n".join(json.dumps(r) for r in [{"at": iso(NOW - 50), "item": "A", "cri
                                          {"at": iso(NOW - 2 * 86400), "item": "D", "criterion": "A1", "outcome": "REFUSED"}]) + "\n"
 env = Fake(files={R.LIVE_RUNS: ROWS})
 env.bridge = [(NOW - 3600, "taken"), (NOW - 1800, "released")]
-items = {"by_status": {"done": [{"item": "A", "done_at": NOW - 10}, {"item": "E", "done_at": NOW - 10}, {"item": "A2", "done_at": NOW - 90000}]}}
 hist = [{"t": NOW - 60, "n": 1, "f": {"game": 1}}, {"t": NOW - 120, "n": 1, "f": {"game": 0}}]
-lv = R.collect_archmagi_live(env, NOW, items, hist)
+lv = R.collect_archmagi_live(env, NOW, hist)
 check("proof rows by result count the 24 h only", lv["rows"] == {"PASS": 1, "FAIL": 2, "UNMEASURED": 1})
 check("a clause failing twice is one bug", lv["bugs"] == 1)
-check("closed by a live proof needs both the close and a PASS", lv["closed"] == 1)
 check("Archmagi's busy share is bridge time over 24 h", abs(lv["busy"] - 1800 / 86400) < 1e-6)
-check("game idle share is one minus held, per two-hour point", abs(lv["idle_trend"][-1] - (1 - 1800 / 7200)) < 1e-6 and len(lv["idle_trend"]) == R.TREND_POINTS)
 check("game up share comes from the page's own samples", lv["game_up"] == 0.5)
 broken = Fake(files={R.LIVE_RUNS: "{bad\n" + ROWS})
-check("a broken runs.jsonl line is UNMEASURED, never a short count", R.guarded(R.collect_archmagi_live, broken, NOW, items, [])[1] is not None)
+check("a broken runs.jsonl line is UNMEASURED, never a short count", R.guarded(R.collect_archmagi_live, broken, NOW, [])[1] is not None)
 env.bridge = None
-lv2 = R.collect_archmagi_live(env, NOW, items, hist)
-check("no ledger: busy is UNMEASURED, not 0", lv2["busy"] is None and lv2["idle_trend"] is None)
+lv2 = R.collect_archmagi_live(env, NOW, hist)
+check("no ledger: busy is UNMEASURED, not 0", lv2["busy"] is None)
 
-st = {"status": "held", "hold": {"at": NOW - 100}}
-check("oldest in a stage reads the field that stage writes", R.stage_since(st) == NOW - 100 and R.stage_since({"status": "game", "game": {"entered_at": 5}}) == 5)
-check("a stage with no clock has no age", R.stage_since({"status": "done"}) is None)
-check("oldest finds the stage's oldest item", R.oldest_in({"by_status": collections_d(queued=[{"item": "Y", "status": "queued", "enrolled_at": NOW - 9}, {"item": "Z", "status": "queued", "enrolled_at": NOW - 90}])}, "queued", NOW) == (90.0, "Z"))
 check("mods accepted reads the state after the name", R.mods_status_counts("Abyss   STALE   x\nB   RED (last)  y\nC  GREEN  z\nnoise\n") == {"STALE": 1, "RED": 1, "GREEN": 1})
 check("mods accepted with no line is UNMEASURED", R.guarded(R.mods_status_counts, "nothing\n")[1] is not None)
-
-jd = json.dumps({"at": iso(NOW - 3600), "acts": [{"do": "done", "item": "I1"}, {"do": "blind_fail", "item": "I2"}]}) + "\n" + json.dumps({"at": iso(NOW - 90000), "acts": [{"do": "done", "item": "I3"}]}) + "\n"
-env = Fake(files={SHADOW: "", JOURNAL: jd})
-thr = R.collect_throughput(env, NOW)
-check("the trend lines count the journal's closes and Judge fails", sum(thr["trend"]["closed"]) == 2 and sum(thr["trend"]["blind_fail"]) == 1)
-check("a usual range needs a whole window the record reaches past", thr["usual"].get("closed") is None)
-jd2 = jd + json.dumps({"at": iso(NOW - 5 * 86400), "acts": []}) + "\n"
-thr = R.collect_throughput(Fake(files={SHADOW: "", JOURNAL: jd2}), NOW)
-check("a usual range is the windows before this one", thr["usual"]["closed"] == (0, 1))
-env.files.update({R.RELENTLESS_STORE + "/spend-%s.json" % R.time.strftime("%Y%m%d", R.time.gmtime(NOW)): {"spent": 8000000}})
-day = R.time.strftime("%Y%m%d", R.time.gmtime(NOW))
-tk = R.collect_tokens(env, NOW, {"closed_day": {day: 2, **{}}, } if False else {"closed_day": R.collections.Counter({day: 2})})
-check("tokens per item closed is the day's spend over its closes", tk[0]["per"] == 4000000)
-check("a day still running is no full day", R.full_days(tk, NOW) == [])
 
 # the whole page, every section, on a full fixture
 FLEET = {"needs": {"count": 2, "lines": [], "topics": [{"topic": "DRAW", "items": ["DRAW_A", "DRAW_B"], "q": "Look at the bridge", "others": ["<Other> line"]}, {"topic": "K", "items": ["K_X"], "q": "Keep it?", "others": []}],
@@ -409,15 +340,13 @@ FLEET = {"needs": {"count": 2, "lines": [], "topics": [{"topic": "DRAW", "items"
                    "tasks": [{"mark": "✓", "kind": "pass", "title": "A task <b>", "date": "1 Nov"}], "more": 3}],
          "total_mods": 10, "t": NOW, "good_t": NOW,
          "accepted": {"green": 1, "stale": 2, "red": 3, "draft": 1, "never": 3, "total": 10}}
-ITEMS = [{"item": ITEM, "status": "running", "started_at": NOW - 60}, {"item": "Q1", "status": "queued", "enrolled_at": NOW - 7200}]
-full = Fake(ps=PS, cg=WORKER, items=ITEMS, files={R.FLEET_CACHE: FLEET, STEWARD: {"state": "RUNNING", "epoch": NOW}, R.LIVE_RUNS: ROWS, SHADOW: "", JOURNAL: jd})
+full = Fake(ps=PS, cg=WORKER, files={R.FLEET_CACHE: FLEET, STEWARD: {"state": "RUNNING", "epoch": NOW}, R.LIVE_RUNS: ROWS})
 full.bridge = [(NOW - 3600, "taken"), (NOW - 1800, "released")]
 page, sample, phone = R.build(full, {}, [])
-for word in ("How to read", "Relentless-style Builder or Judge", "NEEDS YOU, 2", "RECENT EVENTS", "FINISHED TODAY, 1", "PROGRESS BY MOD, 1 MODS", "ARCHMAGI", "STEVEDESKTOP", "LIVE TESTING, LAST 24 H",
-             "TRENDS, 48 H", "TOKENS PER ITEM CLOSED (TRIAL)", "MODS ACCEPTED", "1 of 10", "GAME UNMEASURED", "game idle", "live proofs", "oldest", "normal", "FALSIFIED EXPECTATIONS", "9 of 8", "Judge's FAIL", "<title>"):
+for word in ("How to read", "NEEDS YOU, 2", "RECENT EVENTS", "FINISHED TODAY, 1", "PROGRESS BY MOD, 1 MODS", "ARCHMAGI", "STEVEDESKTOP", "LIVE TESTING, LAST 24 H",
+             "MODS ACCEPTED", "1 of 10", "normal", "FALSIFIED EXPECTATIONS", "<title>"):
     check("the page shows: " + word, word in page)
-check("the page has a how-to-read line for each of its panels", page.count("How to read:") == 7)
-check("CLOSED PER HOUR is gone, the 24 h histogram stays", "CLOSED PER HOUR" not in page and "LAST 24 H, EVENTS" in page)
+check("the page has a how-to-read line for each of its panels", page.count("How to read:") == 6)
 check("the old names are gone", "blind checker" not in page.lower() and "checkers" not in page and "workers " not in page.split("<details>")[0].replace("workers can", ""))
 check("Needs you folds a topic into one row and escapes it", page.count("Look at the bridge") == 1 and "DRAW, 2 items" in page and "&lt;Other&gt; line" in page and "<Other>" not in page)
 check("an answered item leaves the list and says so", "1 more you already answered" in page and "ANS_ITEM" in page)
@@ -426,13 +355,6 @@ sections = re.findall(r"^<div style=.*$", page, re.M)
 check("each html section is one block, one line", len(sections) >= 8 and all(x.rstrip().endswith("</div>") for x in sections))
 check("every svg stays one block", all("\n" not in x for x in re.findall(r"<svg.*?</svg>", page, re.S)))
 check("the phone copy is short and plain", len(phone) < 2500 and "<" not in phone and "NEEDS YOU 2" in phone and "Archmagi: busy" in phone and "SteveDesktop" in phone)
-# OWNER_REVIEW_BUILD_SHOWS_READY_BEFORE_ASKED: NEEDS YOU names the save and the time of a ready showing, or why not
-SHOWN = {"items": {"K_X": {"state": "READY TO SHOW", "save": "Showing_K_X", "minutes": 6, "dir": "D:\\ClaudeWork\\rimmandrake\\showings\\K_X"},
-                   "DRAW_A": {"state": "BLOCKED", "blocked_on": "DRAW_UP_FIX", "why": "on DRAW_UP_FIX: his note is not built yet"}}}
-sp, _s, sphone = R.build(Fake(ps=PS, cg=WORKER, items=ITEMS, files={R.FLEET_CACHE: FLEET, R.SHOWINGS: SHOWN}), {}, [])
-check("NEEDS YOU shows a ready showing's save and time", "READY TO SHOW: load save Showing_K_X, about 6 min" in sp and "Showing_K_X" in sphone)
-check("NEEDS YOU says a blocked showing is BLOCKED and on what, never ready", "DRAW_A: showing BLOCKED on DRAW_UP_FIX" in sp and "Showing_DRAW" not in sp)
-check("no showings file: NEEDS YOU still renders, with no showing words", "READY TO SHOW" not in page and "NEEDS YOU, 2" in page)
 frozen = dict(FLEET, t=NOW - R.FLEET_STALE - 1)
 frozen_page = R.build(Fake(ps=PS, files={R.FLEET_CACHE: frozen}), {}, [])[0]
 check("a mods count from a refresh long past reads UNMEASURED", "mods accepted (" in frozen_page.split("<div><svg")[0] and "1 of 10" not in frozen_page)
@@ -445,62 +367,19 @@ page = R.build(bare, {}, [])[0]
 check("no fleet cache: those sections read UNMEASURED", "mods, receipts and Needs you" in page.split("<div><svg")[0] and "NEEDS YOU" in page)
 check("no modcheck: mods accepted reads UNMEASURED, never 0", "mods accepted (" in page.split("<div><svg")[0])
 
-with tempfile.TemporaryDirectory() as d:
-    real_store, R.RELENTLESS_STORE = R.RELENTLESS_STORE, d
-    os.makedirs(d + "/items/a")
-    os.makedirs(d + "/items/b")
-    with open(d + "/items/a/state.json", "w") as f:
-        f.write('{"item": "A", "status": "running"}')
-    with open(d + "/items/b/state.json", "w") as f:
-        f.write('{"item": "B", "sta')
-    got, why = R.guarded(R.Env().item_states)
-    R.RELENTLESS_STORE = real_store
-check("a torn item file makes the items UNMEASURED", got is None and "1 item state files unreadable" in why)
-
 # 8d2. a process table that cannot be attributed is UNMEASURED, not a believable zero
 class NoCgroup(Fake):
     def cgroup(self, pid):
         raise PermissionError("cgroup unreadable")
 
 
-page = page_of(NoCgroup(ps=PS, items=[{"item": ITEM, "status": "running"}]))
-check("an unreadable cgroup makes the tree UNMEASURED, and raises no ghost place", "PROCESS TREE: UNMEASURED" in page and "with no process" not in before_svg(page))
+page = page_of(NoCgroup(ps=PS))
+check("an unreadable cgroup makes the tree UNMEASURED", "PROCESS TREE: UNMEASURED" in page)
 
 # 8e. the Steve script omits the game when tasklist fails rather than reporting 0
 check("Steve's game reading is conditional on tasklist's exit", 'if t=$(timeout 5' in R.STEVE_SCRIPT and "</dev/null" in R.STEVE_SCRIPT)
 
-# 9. 24 h counters: one verdict with several rule rows counts once; put-backs are not called FAIL
-rows = [{"at": NOW - 60, "nonce": "a", "word": "PASS", "rule": 1}, {"at": NOW - 60, "nonce": "a", "word": "PASS", "rule": 2},
-        {"at": NOW - 60, "nonce": "b", "word": "FAIL", "rule": 1}, {"at": NOW - 90000, "nonce": "c", "word": "PASS", "rule": 1}]
-acts = {"at": "2026-11-03T20:00:00Z", "acts": [{"do": "returned", "item": "X"}, {"do": "done", "item": "Y"}, {"do": "game_refused", "item": "Z"}]}
-good_journal = json.dumps(acts)
-_, why = R.guarded(R.collect_throughput, Fake(files={SHADOW: 'garbage\n{"at": 1}\n', JOURNAL: good_journal}), NOW)
-check("a broken verdict record makes the counts UNMEASURED, not short", why and "shadow.jsonl line 1" in why)
-_, why = R.guarded(R.collect_throughput, Fake(files={SHADOW: '{"at": 1}\n{"at": ', JOURNAL: good_journal}), NOW)
-check("a last verdict line still being written is not damage", not why)
-_, why = R.guarded(R.collect_throughput, Fake(files={SHADOW: "", JOURNAL: '{"acts": broken\n' + good_journal + "\n"}), NOW)
-check("a broken journal record makes the counts UNMEASURED, not short", why and "journal.jsonl" in why)
 check("a history line that is not a record does not stop the page", R.read_history(Fake(files={R.HIST: 'null\n[1]\n5\n'})) == [])
-_, why = R.guarded(R.collect_throughput, Fake(files={SHADOW: "", JOURNAL: "no record at all\n" + good_journal + "\n"}), NOW)
-check("so does one too broken to name its acts", why and "journal.jsonl" in why)
-t = R.collect_throughput(Fake(files={SHADOW: "\n".join(json.dumps(r) for r in rows), JOURNAL: json.dumps(acts)}), NOW)
-check("a verdict with several rule rows counts once", t["pass"] == 1)
-check("older than 24 h is out", t["pass"] + t["fail"] == 2)
-check("a put-back is not a check FAIL", t["blind_fail"] == 1 and t["put_back"] == 1)
-check("closed and refused come from the journal", t["closed"] == 1 and t["refused"] == 1)
-# 9b. RUNNING_BOARD_FIX_DONE_COUNT_LAGS_PASSES: Done is what is done NOW; a ledger reopen (a top-level reenrol record, no
-# acts) takes one away, so 5 closes and 3 reopens moved Done by 2 and the owner read the stall as failures
-flow = [{"at": "2026-11-03T20:00:00Z", "acts": [{"do": "check_passed", "item": "D%d" % i}, {"do": "done", "item": "D%d" % i}]} for i in range(5)]
-flow += [{"at": "2026-11-03T20:01:00Z", "do": "reenrol", "item": "R1", "why": "reopened on the ledger after done"},
-         {"at": "2026-11-03T20:01:00Z", "do": "reenrol", "item": "R2", "why": "hand", "was": "done"},
-         {"at": "2026-11-03T20:01:00Z", "do": "reenrol", "item": "R3", "why": "reopened on the ledger after done", "was": "done"},
-         {"at": "2026-11-03T20:01:00Z", "do": "reenrol", "item": "R4", "why": "wrongly retired", "was": "retired"},
-         {"at": "2026-11-03T20:01:00Z", "do": "reenrol", "item": "R5", "why": "wrongly retired"}]
-t = R.collect_throughput(Fake(files={SHADOW: "", JOURNAL: "\n".join(json.dumps(j) for j in flow) + "\n"}), NOW)
-check("a close counts once, not with its check_passed", t["closed"] == 5)
-check("reopens out of done are counted, retirements undone are not", t["reopened"] == 3)
-check("the Done card says both, so a flat count reads as closes less reopens", R.done_flow(t) == "24 h: +5 closed, -3 reopened")
-check("no stage note claims Done only grows", all("only grows" not in w for _, w in R.STAGE_NORMAL.values()))
 
 # 10. history honesty
 hist = [{"t": NOW - 600, "n": 5}, {"t": NOW - 300, "n": 7}, {"t": NOW - 60, "n": 9}]
@@ -607,63 +486,18 @@ with tempfile.TemporaryDirectory() as d:
     check("next good page carries the STALE since banner", "STALE since" in open(R.OUT).read())
     check("the page records its own update epoch for --check", "updated_epoch=%d" % int(good.clock) in open(R.OUT).read())
 
-# the game's idle share (RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS): the page and its text twin, and never an invented 100%
-runs = "".join(json.dumps({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(NOW - m * 60)), "log": "x.log"}) + "\n"
-               for m in (1, 2, 200))
-page = page_of(Fake(files={R.LIVE_RUNS: runs}, items=[{"item": ITEM, "status": "game"}]))
-check("the page shows the game's idle share", "idle 99% of 180 min" in page and "GAME idle 99% of the last 180 min: a proof held it in 2, 1 items wait" in page)
-page = page_of(Fake(items=[{"item": ITEM, "status": "game"}]))
-check("an unreadable runs file says idle UNMEASURED", "idle UNMEASURED" in page and "GAME idle UNMEASURED" in page and "game idle share" in before_svg(page))
-
-# the owner's token pause (rules only_system_and_live): a banner above everything while on, nothing while off, never a guess
-def pause_env(rules):
-    env = Fake(ps=PS)
-    if rules is not None:
-        env.files[R.RULES_FILE] = rules
-    return env
-
-
-def built(env):
-    page, _, phone = R.build(env, {}, [])
-    return page, phone
-
-
-page, phone = built(pause_env({"only_system_and_live": True}))
-check("pause on: the banner is on the page, above the panels", "TOKEN PAUSE ON" in before_svg(page) and page.index("TOKEN PAUSE ON") < page.index("<svg"))
-check("pause on: the phone copy leads with it", phone.splitlines()[1].startswith("TOKEN PAUSE ON") and "<" not in phone.splitlines()[1])
-check("pause on: the page does not call it unmeasured", "oken pause UNMEASURED" not in page and "token pause (" not in page)
-for label, rules in (("off", {"only_system_and_live": False}), ("missing key", {"enabled": True})):
-    page, phone = built(pause_env(rules))
-    check("pause %s: no banner on the page or the phone" % label, "TOKEN PAUSE" not in page and "oken pause" not in page and "TOKEN PAUSE" not in phone)
-for label, env in (("unreadable", pause_env(None)), ("not an object", pause_env([1]))):
-    page, phone = built(env)
-    check("pause %s: the page says UNMEASURED, not on and not off" % label, "**Token pause UNMEASURED**" in before_svg(page) and "token pause (" in page and "TOKEN PAUSE ON" not in page)
-    check("pause %s: the phone copy says UNMEASURED" % label, "TOKEN PAUSE UNMEASURED" in phone and "TOKEN PAUSE ON" not in phone)
-check("the real rules path is the file relentless.py reads", os.path.realpath(R.RULES_FILE) == os.path.realpath(os.path.join(R.HERE, "..", "rimflow", "run_rules.json")) and os.path.isfile(R.RULES_FILE))
-with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as tmp:
-    json.dump({"only_system_and_live": True}, tmp)
-real_rules, R.RULES_FILE = R.RULES_FILE, tmp.name
-check("the real Env reads the rules file", R.collect_pause(R.Env()) is True)
-os.unlink(tmp.name)
-check("the real Env on a missing rules file is unread, not off", R.guarded(R.collect_pause, R.Env())[0] is None)
-R.RULES_FILE = real_rules
-
 # ---- every number on every instrument panel, read panel by panel and tile by tile, never as words anywhere on the page.
 # The text twin, the how-to-read prose and another machine's panel cannot satisfy these. A list row (a process, an item line,
 # a receipt) is a list; the numbers judged here are the instruments: the owner's "every number gets a verdict and rough normal range".
 VERDICT = re.compile(r"(^|[;:] )(ok|normal|high|low|bad)\b")
 RANGE = re.compile(r"\b(normal|usual|rough) \S")
-LIVE_TILES = {"BUSY / IDLE", "PROOF ROWS BY RESULT", "CLOSED BY LIVE PROOF", "BUGS FOUND", "FALSIFIED EXPECTATIONS"}
+LIVE_TILES = {"BUSY / IDLE", "PROOF ROWS BY RESULT", "BUGS FOUND", "FALSIFIED EXPECTATIONS"}
 EXPECTED = {
-    "Relentless": {"PLACES", "TICK", "BREAKER", "LIVE GAME", "TOKENS TODAY", "TOKENS PER ITEM CLOSED (TRIAL)", "MODS ACCEPTED, GOAL IS ALL", "FAIL LOOP"}
-    | {x.upper() for x in R.BELT + R.SIDE} | {"BAR " + x for x in ("CLOSED", "PASS", "WEAK", "FAIL", "GAME UNMEASURED", "REFUSED", "PUT BACK")}
-    | {"TREND " + x for x in ("closed", "Judge fails", "live proofs", "game idle")},
     "Archmagi": {"UPTIME", "LOAD", "WSL RAM USED", "EXT4 FREE", "D: FREE", "GAME THIS 24 H"} | LIVE_TILES,
     "SteveDesktop": {"STATE", "ROUTES", "UPTIME", "LOAD", "WSL RAM USED", "CPU", "DISK FREE", "GPU", "GAME", "RUNNING", "QUEUED", "DONE 24 H", "FAILED 24 H", "LAST JOB", "ROWS/HOUR 24 H",
                      "STEWARD WROTE", "MACHINE READING"} | LIVE_TILES,
 }
-NAME_BANDS = {"NAMES " + x.upper() for x in ("running", "candidate", "checking", "closing", "held", "blocked")}
-NOT_A_NUMBER = {"FALSIFIED EXPECTATIONS"} | NAME_BANDS      # nothing records the first, and a band holds names: nothing to judge in either
+NOT_A_NUMBER = {"FALSIFIED EXPECTATIONS"}      # nothing records it: nothing to judge
 # a digit outside any reading is a naked number, unless it only names a window or a stage of the axis
 FRAME = re.compile(r"^(48 h ago|LIVE TESTING, LAST 24 H|LAST 24 H, EVENTS \(SEVERAL PER ITEM\)|TRENDS, 48 H, TWO-HOUR POINTS)$")
 SVGNS = "{http://www.w3.org/2000/svg}"
@@ -719,8 +553,7 @@ def panel_problems(page, cards_have_oldest=True):
         for label in sorted(want - set(rs)):
             bad.append("%s: no reading %s" % (name, label))
         for label in sorted(set(rs) - want):
-            if not (name == "Relentless" and label in NAME_BANDS):     # a band exists only while its stage overflows its card
-                bad.append("%s: a reading nobody pinned: %s" % (name, label))
+            bad.append("%s: a reading nobody pinned: %s" % (name, label))
         inside = {id(t) for g, _ in rs.values() for t in g.iter(SVGNS + "text")}
         for t in root.iter(SVGNS + "text"):
             words = "".join(t.itertext())
@@ -729,49 +562,22 @@ def panel_problems(page, cards_have_oldest=True):
         for label, (_, texts) in rs.items():
             rowt = {id(t) for r in g_of(rs, label).iter(SVGNS + "g") if r.get("data-item") for t in r.iter(SVGNS + "text")}
             texts = [(size, w) for size, w, t in texts_with(rs, label) if id(t) not in rowt]   # an item row is a name, not a note
-            notes = [w for size, w in texts if (size == "9" or label in ("FAIL LOOP", "STATE")) and not w.startswith("top ")]
+            notes = [w for size, w in texts if (size == "9" or label == "STATE") and not w.startswith("top ")]
             for w in notes:
                 if label not in NOT_A_NUMBER and not judged(w):
                     bad.append("%s %s: note with no verdict or range: %s" % (name, label, w))
                 if "…" in w:
                     bad.append("%s %s: note clipped: %s" % (name, label, w))
-                if label.rstrip("#").lower() in R.BELT + R.SIDE and len(w) > 32:
-                    bad.append("%s %s: note wider than its card: %s" % (name, label, w))
             value = [w for size, w in texts if w not in notes and re.search(r"\d", w)]
             if value and label not in NOT_A_NUMBER and not notes:
                 bad.append("%s %s: a number with no note: %s" % (name, label, value))
             if any(w == "UNMEASURED" for _, w in texts):
                 bad.append("%s %s: UNMEASURED on the full fixture" % (name, label))
-    root = pans.get("Relentless")
-    if root is not None:
-        rs = readings_of(root)
-        lines = list(root.iter(SVGNS + "polyline"))
-        if len(lines) != 4 or len({x.get("stroke") for x in lines}) != 4:
-            bad.append("trends: %d polylines drawn, want 4 in 4 colours" % len(lines))
-        for lab in ("closed", "Judge fails", "live proofs", "game idle"):
-            g = rs.get("TREND " + lab)
-            if g is None or len(list(g[0].iter(SVGNS + "polyline"))) != 1:
-                bad.append("trend %s: no line of its own" % lab)
-            elif len(g[0].find(SVGNS + "polyline").get("points").split()) != R.TREND_POINTS:
-                bad.append("trend %s: not %d points" % (lab, R.TREND_POINTS))
-        for stage in R.BELT + R.SIDE:
-            if stage.upper() in rs and not any(re.match(r"(ok|high|low), normal \S", w) for _, w in rs[stage.upper()][1]):
-                bad.append("%s: no verdict on its count" % stage)
-        if cards_have_oldest:
-            for stage in ("QUEUED", "RUNNING", "CANDIDATE", "CHECKING", "CLOSING", "GAME", "HELD", "BLOCKED", "STOPPING", "RETIRING"):
-                if stage in rs and not any(w.startswith("oldest ") and judged(w) for _, w in rs[stage][1]):
-                    bad.append("%s: no judged oldest" % stage)
-            if "DONE" in rs and not any(w.startswith("last ") and judged(w) for _, w in rs["DONE"][1]):
-                bad.append("DONE: no judged last close")
-    # a how-to-read line right under each panel, and the one under the Pipeline explains places
-    for name, words in (("Relentless", "9 of 8"), ("Archmagi", "Busy means"), ("SteveDesktop", "Busy means"), ("Chain", "Follow an arrow")):
+    # a how-to-read line right under each panel
+    for name, words in (("Archmagi", "Busy means"), ("SteveDesktop", "Busy means"), ("Chain", "Follow an arrow")):
         hit = re.search(r'aria-label="%s[^\n]*</svg></div>\n(?:\n*)<div[^\n]*How to read:</b>([^\n]*)' % name, page)
         if not hit or words not in hit.group(1):
             bad.append("%s: no how-to-read under it saying %s" % (name, words))
-    if not re.search(r'aria-label="Relentless[^\n]*</svg></div>\n<div[^\n]*How to read:</b>[^\n]*A place is ', page):
-        bad.append("no how-to-read under the Pipeline says what a place is")
-    if "CLOSED PER HOUR" in page:
-        bad.append("CLOSED PER HOUR is back")
     return bad
 
 
@@ -781,232 +587,30 @@ def fixture_env(extreme=False):
     per = 3 if extreme else 1
     rows = [{"at": iso(NOW - 50 - i), "item": "A", "criterion": "A%d" % i, "outcome": "FAIL" if extreme else "PASS"} for i in range(3)]
     rows += [{"at": iso(NOW - 80 - i), "item": "C", "criterion": "U%d" % i, "outcome": "UNMEASURED"} for i in range(40 if extreme else 1)]
-    journal = [{"at": iso(NOW - 3600), "acts": [{"do": "done", "item": "A"}, {"do": "blind_fail", "item": "I2"}]}]
-    journal += [{"at": iso(NOW - k * 86400 - 60), "acts": [{"do": "done", "item": "D%d" % i} for i in range(k + 1)]} for k in range(1, 5)]
-    stage_item = {"queued": {"enrolled_at": 1}, "running": {"started_at": 1}, "candidate": {"candidate": {"at": 1}}, "checking": {"check": {"at": 1}}, "closing": {"tomb_since": 1},
-                  "game": {"game": {"entered_at": 1}}, "held": {"hold": {"at": 1}}, "blocked": {"blocked_at": 1}, "stopping": {"stopping_since": 1}, "retiring": {"stopping_since": 1}}
-    age = 30 * 3600 if extreme else 60
-
-    def aged(d):
-        return {k: (aged(v) if isinstance(v, dict) else NOW - age) for k, v in d.items()}
-
-    items = []
-    for stage, fields in stage_item.items():
-        top = R.STAGE_NORMAL[stage][0]
-        for i in range(top + 1 if extreme else 1):
-            items.append(dict(aged(fields), item="%s_%d" % (stage.upper(), i), status=stage))
-    items += [{"item": "OVER", "status": "done"}, {"item": "OUT", "status": "retired"}]
     done_dir = R.TESTQ + "/done"
     job = "J%sT000000Z-aaaaaa.json" % day(10)
     files = {R.FLEET_CACHE: FLEET, STEWARD: {"state": "BRAKED" if extreme else "RUNNING", "epoch": NOW - (900 if extreme else 10), "reason": "x", "since": iso(NOW - 9000)},
-             R.LIVE_RUNS: "\n".join(json.dumps(r) for r in rows) + "\n", SHADOW: "", JOURNAL: "\n".join(json.dumps(j) for j in journal) + "\n",
+             R.LIVE_RUNS: "\n".join(json.dumps(r) for r in rows) + "\n",
              done_dir + "/" + job: {"job": {"purpose": "guard", "mod": "FlowWorks", "item": "A"},
                                     "result": {"outcome": "DONE", "started": iso(NOW - 7700), "finished": iso(NOW - (7100 if extreme else 100)), "rows": [{"chain": "c", "row": "r", "verdict": "PASS"}, {"chain": "c", "row": "s", "verdict": "PASS"}], "counts": {"PASS": 2}}},
              R.STEVE_CACHE: {"good_t": NOW - (2000 if extreme else 30), "routes": {"tailscale": True, "lan": not extreme, "wsl": True},
                              "good": {"up": "100" if extreme else "20000", "load": "99.9" if extreme else "0.5", "cores": "18", "ram": "63000 64000" if extreme else "1000 64000", "disk": "50 1000" if extreme else "900 1000",
                                       "gpu": "NVIDIA GeForce RTX 2080 Ti, %s, 4400, 11264" % ("99" if extreme else "27"), "game": "0" if extreme else "1", "cpu_pct": 99 if extreme else 3}}}
-    files[R.RELENTLESS_STORE + "/queue_next.json"] = {"t": NOW - 30, "free": ["QUEUED_0"], "waiting": []}
-    files.update({STAFFING: {"t": NOW - 5, "target": 8, "places": 8, "spent_today": 950e6 if extreme else 30e6}, BREAKER: {"until": NOW - 60}, BRIDGE: "FREE since 2026-11-03T20:00:00Z\n"})
-    for k in range(0, 5):
-        files[R.RELENTLESS_STORE + "/spend-%s.json" % day(k)] = {"spent": (900e6 if extreme and k == 0 else 50e6 * (k + 1))}
+    files[BRIDGE] = "FREE since 2026-11-03T20:00:00Z\n"
     pending = ["p%d.json" % i for i in range(25 if extreme else 1)]
 
     class Full(Fake):
         def local_stats(self):
             return {"up": 100.0 if extreme else 90000.0, "load": 99.9 if extreme else 7.0, "cores": 14, "ram": (34000, 35000) if extreme else (8000, 35000), "disk": 50 if extreme else 500, "disk_d": 50 if extreme else 1700}
 
-        def tick_show(self):
-            return {"ActiveState": "activating", "TimeoutStartUSec": "20min", "Result": "success", "mono": 10000.0, "ExecMainStartTimestampMonotonic": str(int((10000 - (1100 if extreme else 60)) * 1e6))}
 
-    env = Full(ps=PS, cg=WORKER, items=items, files=files, dirs={done_dir: [job], R.TESTQ + "/running": ["r%d.json" % i for i in range(per)], R.TESTQ + "/pending": pending})
+    env = Full(ps=PS, cg=WORKER, files=files, dirs={done_dir: [job], R.TESTQ + "/running": ["r%d.json" % i for i in range(per)], R.TESTQ + "/pending": pending})
     env.bridge = [(NOW - 3600, "taken"), (NOW - 1800, "released")]
     return env, [{"t": NOW - 60, "n": 1, "f": {"game": 0 if extreme else 1}}, {"t": NOW - 120, "n": 1, "f": {"game": 1 if not extreme else 0}}]
 
 
-LONG = "RUNNING_PAGE_BUILD_NAMES_ON_THE_BELT_AND_THEN_SOME"      # longer than any real name (44 measured 2026-11-03)
-TWIN = LONG[:-1] + "X"                                           # the two differ only at the end: a clip makes them one
-
-
-def names_env(running=6, closing=30, queued=7, done=9, next_order=None):
-    """Real-length names on every stage; closing holds enough to overflow its card and running does not."""
-    env, hist = fixture_env()
-    items = [dict(x) for x in env.items if x["status"] not in ("running", "closing", "candidate", "checking", "queued")]
-    def add(stage, name, **kw):
-        items.append(dict({"item": name, "status": stage}, **kw))
-    add("running", LONG, started_at=NOW - 3000)
-    add("running", TWIN, started_at=NOW - 60)
-    for i in range(running - 2):
-        add("running", "%s_%d" % (LONG, i), started_at=NOW - 100 - i)
-    add("candidate", "CANDIDATE_" + LONG, candidate={"at": NOW - 70})
-    add("checking", "CHECKING_" + LONG, check={"at": NOW - 80})
-    for i in range(closing):
-        add("closing", "CLOSING_%d_%s" % (i, LONG), tomb_since=NOW - 90 - i)
-    order = next_order or ["QUEUED_%d_%s" % (i, LONG) for i in range(queued)]
-    for name in reversed(order):        # enrolled in reverse: an alphabetical or file-order list cannot pass by luck
-        add("queued", name, enrolled_at=NOW - 500)
-    for i in range(done):
-        add("done", "DONE_%d" % i)
-    env.items = items
-    env.files[R.RELENTLESS_STORE + "/queue_next.json"] = {"t": NOW - 30, "free": order[:2], "waiting": order[2:]}
-    env.files[JOURNAL] = "\n".join(json.dumps({"at": iso(NOW - 60 * k), "acts": [{"do": "done", "item": "CLOSED_%d_%s" % (k, LONG)}]}) for k in range(1, 7)) + "\n"
-    return env, hist
-
-
-def joined(texts):
-    """The characters of a reading, line breaks gone: a name wrapped in full is still in here whole."""
-    return "".join(w.replace(" ", "") for _, w in texts)
-
-
-def names_problems():
-    """The owner's ask, sentence by sentence, on real-length names: which items, at which stage, whole, in a layout that still holds."""
-    bad = []
-    env, hist = names_env()
-    page = R.build(env, {}, hist)[0]
-    root = panels_of(page)["Relentless"]
-    rs = readings_of(root)
-    body = lambda label: joined(rs[label][1]) if label in rs else ""  # noqa: E731
-    for stage, names in (("RUNNING", [LONG, TWIN] + ["%s_%d" % (LONG, i) for i in range(4)]), ("CANDIDATE", ["CANDIDATE_" + LONG]), ("CHECKING", ["CHECKING_" + LONG])):
-        for n in names:
-            if n not in body(stage):
-                bad.append("%s does not name %s whole" % (stage, n))
-    if "NAMES CLOSING" not in rs:
-        bad.append("thirty closing names have no band")
-    for i in range(30):
-        if "CLOSING_%d_%s" % (i, LONG) not in body("NAMES CLOSING"):
-            bad.append("the closing band misses name %d" % i)
-    if "all30namedbelow" not in body("CLOSING"):
-        bad.append("the closing card does not point at its band")
-    if "…" in "".join(w for k in rs for _, w in rs[k][1] if k.split(" ")[-1] in ("QUEUED", "RUNNING", "CANDIDATE", "CHECKING", "CLOSING", "DONE")):
-        bad.append("a belt name ends in an ellipsis")
-    q = body("QUEUED")
-    at = [q.find("QUEUED_%d_%s" % (i, LONG)) for i in range(R.NEXT_SHOWN)]
-    if -1 in at or at != sorted(at):
-        bad.append("queued does not show the next few, in the tick's order: %s" % at)
-    if "QUEUED_%d_%s" % (R.NEXT_SHOWN, LONG) in q or "+3more" not in q:
-        bad.append("queued does not stop at the next few with a count of the rest")
-    if "nextinline:" not in q or "notfreetostart:" not in q:
-        bad.append("queued does not say which names may start")
-    d = body("DONE")
-    if not all("CLOSED_%d_%s" % (k, LONG) in d for k in (1, 2, 3)) or "CLOSED_4_" in d or "+%dearlier" % (10 - 3) not in d:
-        bad.append("done does not show the latest few with a count of the rest: %s" % d[:120])
-    # the layout holds: every line inside its card or band, every card level, nothing past the bottom
-    cards = {}
-    for label, (g, _) in rs.items():
-        if label.lower() in R.BELT:
-            x = min(float(t.get("x")) for t in g.iter(SVGNS + "text"))
-            cards[label] = x - 10
-    bottoms = {}
-    rects = [r for r in root.iter(SVGNS + "rect") if r.get("width") == "152.0"]
-    for label, x in cards.items():
-        box = next((r for r in rects if float(r.get("x")) == x), None)
-        bottoms[label] = float(box.get("y")) + float(box.get("height")) if box is not None else None
-        for t in rs[label][0].iter(SVGNS + "text"):
-            w = "".join(t.itertext())
-            if t.get("font-family") != R.MONO or t.get("font-size") != "10.5":
-                continue
-            if float(t.get("x")) + len(w) * R.MONO_CHAR > x + 152:
-                bad.append("%s: line past the card's right edge: %s" % (label, w))
-            if box is None or float(t.get("y")) + 3 > bottoms[label]:
-                bad.append("%s: line below the card's bottom: %s" % (label, w))
-    if len(set(bottoms.values())) != 1:
-        bad.append("the belt cards are not level: %s" % bottoms)
-    side = float(next(t.get("y") for t in rs["GAME"][0].iter(SVGNS + "text")))
-    if bottoms and side <= max(v or 0 for v in bottoms.values()):
-        bad.append("the set-aside row runs under the belt")
-    ys = [(float(t.get("y")), "".join(t.itertext())) for t in root.iter(SVGNS + "text")]
-    if max(ys)[0] > float(root.get("viewBox").split()[3]):
-        bad.append("the panel is shorter than what it draws: %s" % (max(ys),))
-    band_ys = [float(t.get("y")) for t in rs["NAMES CLOSING"][0].iter(SVGNS + "text")] if "NAMES CLOSING" in rs else []
-    trend_y = float(next(t.get("y") for t in rs["BAR CLOSED"][0].iter(SVGNS + "text"))) if "BAR CLOSED" in rs else 0
-    if band_ys and not (side < min(band_ys) and max(band_ys) < trend_y):
-        bad.append("the band overlaps the rows around it")
-    # the plain-text twin and the process tree carry the same words in full
-    chunk = page.split("-- the panels as plain text --")[-1].split("-- Archmagi --")[0]
-    flat = re.sub(r"[\s│]", "", chunk)
-    if not all(n in flat for n in (LONG, TWIN, "CLOSING_29_" + LONG, "QUEUED_0_" + LONG, "CLOSED_1_" + LONG)):
-        bad.append("the plain-text twin does not name them whole")
-    if any(len(ln) > R.FENCE_WIDTH for ln in chunk.splitlines() if "CLOSING_" in ln or "QUEUED_" in ln or "oldest" in ln):
-        bad.append("a plain-text name line is wider than the fence")
-    # the tree's build row and the oldest line give the whole title, the row's columns still whole and inside the fence
-    words = "A build row's plain words run far past the room the counts leave, and the owner wants to read all of them to the very last word"
-    env = Fake(ps=PS, cg=WORKER, items=[{"item": ITEM, "status": "running", "started_at": NOW - 60}, {"item": "GHOST_OF_A_PLACE", "status": "checking", "check": {"at": NOW - 9}}])
-    env.ledger_titles = lambda wanted: {i: words + " " + i for i in wanted}
-    tp = R.gather(env, {})
-    tree = R.tree_lines(tp)[0]
-    flat = " ".join(re.sub(r"^[│ ├└─┄]*", "", x) for x in tree)
-    row = next((x for x in tree if " build " in x and "= " in x), "")
-    rest = tree[tree.index(row) + 1:] if row else []
-    told = re.sub(r"\s+", " ", " ".join([re.sub(r"\s{2,}.*$", "", row.split("build", 1)[1])] + [x.strip("│ ") for x in rest[:6]])).strip()
-    if (words + " " + ITEM) not in told:
-        bad.append("the tree's build row does not give the whole title: %s" % told[:160])
-    if "…" in row or not re.search(r"= \d+$", row):
-        bad.append("the tree's build row lost its columns or still clips: %s" % row)
-    if max(len(x) for x in tree) > 84:
-        bad.append("a wrapped tree line outgrows the fence")
-    if words not in re.sub(r"\s+", " ", re.sub(r"[│]", "", "\n".join(x for x in tree if not x.startswith("TOTAL")))) or "GHOST_OF_A_PLACE" not in "".join(x.strip("│ ") for x in tree):
-        bad.append("the no-process line does not give the whole title")
-    twin = re.sub(r"\s+", "", R.pipeline_text(tp)).split("oldest:")[-1]    # a wrap may fall inside a name: compare without the breaks
-    if re.sub(r"\s+", "", words + ITEM) not in twin:
-        bad.append("the oldest line clips its title")
-    # an old or missing order says so; it never passes off some other order as the next few
-    for note, change in (("old", {"t": NOW - R.QUEUE_NEXT_MAX_AGE - 60, "free": ["QUEUED_0_" + LONG], "waiting": []}), ("torn", {"free": []})):
-        env, hist = names_env()
-        env.files[R.RELENTLESS_STORE + "/queue_next.json"] = change
-        p2 = R.build(env, {}, hist)[0]
-        q2 = joined(readings_of(panels_of(p2)["Relentless"])["QUEUED"][1])
-        if "nextinlineUNMEASURED" not in q2 or "QUEUED_0_" in q2:
-            bad.append("%s queue_next.json does not read UNMEASURED: %s" % (note, q2[:80]))
-    # an item the tick named that has since moved on is no longer next
-    env, hist = names_env()
-    env.files[R.RELENTLESS_STORE + "/queue_next.json"]["free"] = ["GONE_ALREADY"] + env.files[R.RELENTLESS_STORE + "/queue_next.json"]["free"]
-    if "GONE_ALREADY" in joined(readings_of(panels_of(R.build(env, {}, hist)[0])["Relentless"])["QUEUED"][1]):
-        bad.append("queued lists a name that left the queue")
-    return bad
-
-
-def set_aside_problems():
-    """The owner's ask 2026-11-04: held and blocked items named in boxes of their own, most expensive first, each with its reason."""
-    bad = []
-    env, hist = names_env()
-    items = [x for x in env.items if x["status"] not in ("held", "blocked")]
-    for i in range(12):     # held: spend rises with i; the dearest is the one he could not find
-        items.append({"item": "HELD_%02d_%s" % (i, LONG), "status": "held", "spent": 1_000_000 * (i + 1), "returns": 0,
-                      "hold": {"at": NOW - 3600 * (i + 1), "kind": "owner_call", "why": "REASON_%02d wants his yes" % i}})
-    items.append({"item": "BLOCKED_ON_PRED", "status": "blocked", "spent": 500, "blocked_at": NOW - 7200})
-    items.append({"item": "BLOCKED_NO_WHY", "status": "blocked", "spent": 100, "blocked_at": NOW - 60})
-    env.items = items
-    env.blocks = {"BLOCKED_ON_PRED": ("THE_PREDECESSOR_ITEM", "relentless snag gate_unmet: the remake is not done")}
-    page = R.build(env, {}, hist)[0]
-    rs = readings_of(panels_of(page)["Relentless"])
-    body = lambda label: joined(rs[label][1]) if label in rs else ""  # noqa: E731
-    h, b = body("NAMES HELD"), body("NAMES BLOCKED")
-    if not h or not b:
-        return ["held or blocked has no box of its own: %s" % sorted(rs)]
-    at = [h.find("HELD_%02d_%s" % (i, LONG)) for i in (11, 10, 3)]
-    if -1 in at or at != sorted(at):
-        bad.append("held is not listed most expensive first: %s" % at)
-    if "HELD_02_" in h or "+3more" not in h or "HELD:12" not in h:
-        bad.append("held does not stop at nine with a count of the rest")
-    if "owner_call:REASON_11" not in h or "12h" not in h.replace("12.0h", "12h"):
-        bad.append("a held row lacks its reason or its time in state: %s" % h[:200])
-    if not {"HELD_11_" + LONG, "BLOCKED_ON_PRED"} <= set(R.row_items(R.gather(env, {}, hist, False))):
-        bad.append("held and blocked names do not get a mark (pass count and tokens)")
-    if "waitsonTHE_PREDECESSOR_ITEM" not in b or "theremakeisnotdone" not in b:
-        bad.append("a blocked row does not say what it waits on and why: %s" % b[:200])
-    if "reasonUNMEASURED" not in b or b.find("BLOCKED_ON_PRED") > b.find("BLOCKED_NO_WHY"):
-        bad.append("a blocked row with no reason is not marked UNMEASURED, or the blocked order is not by cost")
-    envn, histn = fixture_env()
-    envn.items = [x for x in envn.items if x["status"] not in ("held", "blocked")]
-    rsn = readings_of(panels_of(R.build(envn, {}, histn)[0])["Relentless"])
-    if "none" not in joined(rsn["NAMES HELD"][1]) or "HELD:0" not in joined(rsn["NAMES HELD"][1]):
-        bad.append("an empty held box does not say none")
-    if "HELD and BLOCKED" not in page or "most expensive first" not in page:
-        bad.append("How to read does not explain the held and blocked boxes")
-    return bad
-
-
 def page_problems():
-    bad = names_problems() + set_aside_problems()
+    bad = []
     for extreme in (False, True):
         env, hist = fixture_env(extreme)
         bad += ["%s: %s" % ("extreme" if extreme else "normal", x) for x in panel_problems(R.build(env, {}, hist)[0])]
@@ -1017,47 +621,12 @@ found = page_problems()
 for x in found:
     print("  " + x)
 check("every instrument on all three panels carries a verdict and a rough normal, tile by tile, in normal and out-of-range states", not found)
-_done = readings_of(panels_of(R.build(fixture_env()[0], {}, fixture_env()[1])[0])["Relentless"]).get("DONE")
-check("the Done card names its 24 h closes and reopens (RUNNING_BOARD_FIX_DONE_COUNT_LAGS_PASSES)",
-      _done is not None and any(re.match(r"24 h: \+\d+ closed, -\d+ reopened$", w) for _, w in _done[1]))
 env, hist = fixture_env()
 pans = panels_of(R.build(env, {}, hist)[0])
 for machine in ("Archmagi", "SteveDesktop"):
     rs = readings_of(pans[machine])
     check("%s's own panel has its Live Testing tiles and its own busy figure" % machine, LIVE_TILES <= set(rs) and "UNMEASURED" not in " ".join(w for _, w in rs["BUSY / IDLE"][1]))
-check("closed by a live proof says a verdict and a range on each machine", all(judged(next(w for s, w in readings_of(pans[m])["CLOSED BY LIVE PROOF"][1] if s == "9")) for m in ("Archmagi", "SteveDesktop")))
-tiles = readings_of(pans["Relentless"])
-for label in ("TOKENS TODAY", "TOKENS PER ITEM CLOSED (TRIAL)", "MODS ACCEPTED, GOAL IS ALL"):
-    check("%s has a verdict word and a range of its own" % label, judged(next(w for s, w in tiles[label][1] if s == "9")))
-check("hover text sits on the tile it explains", tiles and readings_of(pans["Archmagi"])["CLOSED BY LIVE PROOF"][0].find(SVGNS + "title") is not None)
-
-check("a systemd duration reads whole", (R.systemd_seconds("20min"), R.systemd_seconds("1min 30s"), R.systemd_seconds("1h 5min"), R.systemd_seconds("30s")) == (1200, 90, 3900, 30))
-check("infinity is no limit, not a number", R.systemd_seconds("infinity") is None and R.systemd_seconds("") is None)
-env, hist = fixture_env()
-env.files[STAFFING] = dict(env.files[STAFFING], t=NOW - 86400)
-stale_page = R.build(env, {}, hist)[0]
-check("yesterday's staffing file is no today's spend", "UNMEASURED" in readings_of(panels_of(stale_page)["Relentless"])["TOKENS TODAY"][1][1][1])
-TAILED = "\n".join(json.dumps({"at": iso(NOW - k * 86400), "acts": [{"do": "done", "item": "T"}]}) for k in (1.5, 0.1)) + "\n"
-
-
-class Tail(Fake):
-    def read_tail(self, path, n):
-        return self.read_text(path), True
-
-
-tailed = R.collect_throughput(Tail(files={SHADOW: "", JOURNAL: "x\n" + TAILED}), NOW)
-check("the day a cut journal tail starts in is no whole day", sum(tailed["closed_day"].values()) == 1)
-check("a cut tail short of 24 h is UNMEASURED, not a short count", R.guarded(R.collect_throughput, Tail(files={SHADOW: "", JOURNAL: "x\n" + json.dumps({"at": iso(NOW - 3600), "acts": []}) + "\n"}), NOW)[1] is not None)
-env, hist = fixture_env()
-env.items = None
-env.files[R.LIVE_RUNS] = json.dumps({"at": iso(NOW - 50), "item": "A", "criterion": "A", "outcome": "PASS"}) + "\n"
-unread = R.build(env, {}, hist)[0]
-check("an unread queue never reads as nothing waits", "nothing waits" not in unread.split("</svg>")[0] and "verdict UNMEASURED" in unread.split("</svg>")[0])
-env, hist = fixture_env()
-env.tick_show = lambda: {"ActiveState": "inactive", "TimeoutStartUSec": "10min", "Result": "success", "mono": 10000.0, "InactiveExitTimestampMonotonic": str(int(9000 * 1e6)), "InactiveEnterTimestampMonotonic": str(int(9540 * 1e6))}
-slow = R.build(env, {}, hist)[0]
-check("a finished tick near its limit reads high", "high, normal under 8 min" in slow)
-
+check("hover text sits on the tile it explains", readings_of(pans["Archmagi"])["BUGS FOUND"][0].find(SVGNS + "title") is not None)
 midnight = time.mktime(time.localtime(NOW)[:3] + (0, 0, 0, 0, 0, -1))
 late = Fake(ps=PS, files={R.FLEET_CACHE: dict(FLEET, t=midnight - 60, good_t=midnight - 60)})
 late.clock = midnight + 60
@@ -1097,6 +666,7 @@ with tempfile.TemporaryDirectory() as d:
     R.LEDGER_EVENTS = real_events
 check("a release and a take in one second keep their order", [s for _, s in tied] == ["released", "taken"])
 
+LONG = "RUNNING_PAGE_BUILD_NAMES_ON_THE_BELT_AND_THEN_SOME"      # longer than any real name (44 measured 2026-11-03)
 check("wrap_name keeps every character and every line fits, on names, titles and a run wider than the line",
       all("".join(R.wrap_name(t, w, h)).replace(" ", "") == t.replace(" ", "") and all(len(x) <= w for x in R.wrap_name(t, w, h)) and all(len(x) <= w - h for x in R.wrap_name(t, w, h)[1:])
           for t in (LONG, "A", "A_", "_A_", "NO_UNDERSCORES" * 9, "x" * 90, "a title, in plain words / with-a-dash and more words than one line holds"[:70], "OPS_RED_OVERDUE_CHASE_AEUZ")
@@ -1122,19 +692,16 @@ def content_problems():
     if "✓ Did the thing." not in fin or "check PASS" not in fin:
         bad.append("FINISHED TODAY does not show its receipt row")
     ev = next((x for x in lines if "RECENT EVENTS" in x), "")
-    for row in ("<b>closed</b> A</div>", "<b>a Judge failed it</b> I2</div>", "<b>Steve job done</b> FlowWorks guard</div>", "<b>your note</b> X_ITEM: a word from him</div>"):
+    for row in ("<b>Steve job done</b> FlowWorks guard</div>", "<b>your note</b> X_ITEM: a word from him</div>"):
         if row not in ev:
             bad.append("RECENT EVENTS lacks the row %s" % row)
-    live = R.collect_archmagi_live(env, NOW, None, hist)
-    if live["proofs"] != [0] * (R.TREND_POINTS - 1) + [5]:
-        bad.append("live proofs buckets read %s, not five rows in the last bucket" % live["proofs"])
+    live = R.collect_archmagi_live(env, NOW, hist)
     if live["bugs"] != 1:
         bad.append("BUGS FOUND counts %s, not the one FAIL of the last 24 h" % live["bugs"])
+    acc = next((x for x in lines if "MODS ACCEPTED, GOAL IS ALL:" in x), "")
+    if "1 of 10" not in acc or not judged(re.sub(r"<[^>]+>", " ", acc.split("1 of 10", 1)[-1]).strip()):
+        bad.append("the mods panel does not say MODS ACCEPTED with a verdict and a range")
     try:
-        rs = readings_of(panels_of(page)["Relentless"])
-        ys = [float(p.split(",")[1]) for p in rs["TREND live proofs"][0].find(SVGNS + "polyline").get("points").split()]
-        if not (len(ys) == R.TREND_POINTS and ys[-1] < min(ys[:-1]) and len(set(ys[:-1])) == 1):
-            bad.append("the live proofs line does not rise at its last point: %s" % ys)
         if "1" not in [w for _, w in readings_of(panels_of(page)["Archmagi"])["BUGS FOUND"][1]]:
             bad.append("the Archmagi BUGS FOUND tile does not read 1")
     except (KeyError, AttributeError, IndexError, ValueError) as e:
@@ -1145,7 +712,7 @@ def content_problems():
 found = content_problems()
 for x in found:
     print("  " + x)
-check("receipt row, feed rows of every kind, the live proofs line and today's bugs are on the page", not found)
+check("receipt row, feed rows of every kind, mods accepted and today's bugs are on the page", not found)
 
 # ---- and the test above bites: each mutant of running_now.py is a way this page has lost a verdict, a tile or a line
 SRC = open(R.__file__).read()
@@ -1159,43 +726,14 @@ MUTANTS = [
     ("Steve WSL RAM has no verdict", 'TEXT, frac, *against(frac * 100, 85, "under 85%"))\n    else:', "TEXT, frac)\n    else:"),
     ("Steve UPTIME has no verdict", "*(uptime_note(upv) if upv is not None else (None, DIM))", "None, DIM"),
     ("Archmagi UPTIME has no verdict", '*uptime_note(d["up"])', "None, DIM"),
-    ("the belt cards lose oldest", "s.text(x + 10, y0 + 96, note_, 9, col_)\n        elif", "pass\n        elif"),
-    ("the side cards lose oldest", "s.text(x + 10, sy + 72, note_, 9, col_)", "pass"),
-    ("a stage count loses its verdict", 's.text(x + 10, y0 + 83, verdict, 9, col)', "pass"),
-    ("the game idle trend is gone", 'live.get("idle_trend") if live else None, WARN', "None, WARN"),
-    ("the trend lines are never drawn", "s.polyline([(lx +", QUIET + "[(lx +"),
-    ("a trend's point has no verdict", "s.text(rx + 8, yy + 27, verdict, 9, ncol)", "pass"),
-    ("a bar has no verdict", "s.text(350, yy + 11, note, 9, ncol)", "pass"),
-    ("closed by live proof is a description again", "cn = versus(c, None, False, closed_rough) if c is not None else (None, DIM)", 'cn = ("closed with a PASS here", DIM)'),
-    ("tokens today has no verdict", '("high," if high else "ok,") + verdict.split(",", 1)[1] + " a day"', '"UTC day"'),
-    ("tokens per item has no verdict", '"%s; %s/%s: %d closed" % (verdict,', '"%s; %s/%s: %d closed" % ("days seen",'),
     ("mods accepted has no range", '"%s, normal over half; GREEN', '"%s; GREEN'),
     ("the proof rows tile has no verdict", '"%s, %d of %d measured%s; normal over 30%%" % ("low" if low else "ok", measured, total,', '"%s %d of %d measured%s" % ("", measured, total,'),
     ("the Falsified tile is gone", 'tile(s, 864, y, 162, "FALSIFIED EXPECTATIONS",', QUIET + 's, 864, y, 162, "FALSIFIED EXPECTATIONS",'),
     ("Steve loses a machine tile", 'tile_(cols[3][0], y, cols[3][1], "CPU",', QUIET + 'cols[3][0], y, cols[3][1], "CPU",'),
     ("a tile too narrow clips its verdict", 'tile_(102, y, 96, "QUEUED",', 'tile_(102, y, 60, "QUEUED",'),
     ("Steve's how-to-read is gone", 'how_to_read("The second machine', '(lambda t: "")("The second machine'),
-    ("a number outside any reading", 's.reading_open("FAIL LOOP")', 's.reading_open("FAIL LOOP"); s.text(0, 0, "42", 12)'),
-    ("a name row clips its names again", 'for j, ln in enumerate(wrap_name(e[1] + e[2], width, 2)):', 'for j, ln in enumerate([clip(e[1] + e[2], width)]):'),
-    ("the cards stop growing", "ch = max([170] + [112 + entries_height(card_entries(lists, k)) + 6 for k in BELT])", "ch = 170"),
-    ("the panel forgets its added height", "W, H = 1040, 610 + (ch - 170) + sum(b[2] + 8 for b in bands)", "W, H = 1040, 610"),
-    ("the throughput rows ignore the band", "ty = by + 6 if bands else sy + sh + 18", "ty = sy + sh + 18"),
-    ("closing keeps its long list in the card", 'return [k for k in BELT if sum(1 for e in lists[k] if e[0] == "name") > NAMES_IN_CARD]', "return []"),
-    ("queued ignores the tick's order", 'free = [i for i in qn["free"] if i in here][:NEXT_SHOWN]', 'free = sorted(here)[:NEXT_SHOWN]'),
-    ("queued lists a name that moved on", 'free = [i for i in qn["free"] if i in here][:NEXT_SHOWN]', 'free = qn["free"][:NEXT_SHOWN]'),
-    ("queued loses the count of the rest", 'out["queued"].append(("note", "+ %d more" % (len(waiting) - len(free) - len(held))))', "pass"),
-    ("done lists everything it knows", "recent = thr[\"recent\"][:LATEST_SHOWN]", "recent = thr[\"recent\"][:1]"),
-    ("done loses the count of the rest", 'out["done"].append(("note", "+ %d earlier" % rest))', "pass"),
-    ("an old order still reads as the next few", 'if now - q["t"] > QUEUE_NEXT_MAX_AGE:', "if False:"),
-    ("the text twin loses the names", "for e in lists[name]:   # whole names, as on the cards, each with its band, passes and tokens", "for e in []:"),
-    ("a build row clips its title again", 'cont="│  %s" % (" " if branch == "└─" else "│") + " " * 8)', "cont=None)"),
-    ("the no-process line clips its title", 'L.extend(fence_wrap("! %d items hold a place with no process: %s" % (len(ghosts), title(ghosts[0])), "│  ", "│    "))', 'L.append("│  ! %d items hold a place with no process: %s" % (len(ghosts), clip(title(ghosts[0]), W - 45)))'),
-    ("the oldest line clips its title", 'out += fence_wrap("%s %s: %s" % (k, ago(o[0]), title(o[1])), "  ", "      ")', 'out.append("  %s %s: %s" % (k, ago(o[0]), clip(title(o[1]), 40)))'),
-    ("the page's places words are gone", "A place is one running Builder or Judge", "One running Builder or Judge"),
     ("FINISHED TODAY drops its receipt rows", '"".join(row(r) for r in rows) or "Nothing yet today."', '"Nothing yet today."'),
     ("RECENT EVENTS prints no rows", "for at, word, txt in rows[:18])", "for at, word, txt in rows[:0])"),
-    ("the pipeline's acts never reach the feed", "feed.append((at, FEED_WORD[w], x.get(\"item\") or \"\"))", "pass"),
-    ("the live proofs line stays flat", "proofs[b] += 1", "pass"),
     ("BUGS FOUND counts every day", 'if k == 0 and d.get("outcome") == "FAIL":', 'if d.get("outcome") == "FAIL":'),
     ("Steve's jobs never reach the feed", 'rows += [(at, "Steve job %s"', 'rows += [] and [(at, "Steve job %s"'),
     ("his notes never reach the feed", 'rows += [(at, "your note", txt)', 'rows += [] and [(at, "your note", txt)'),
@@ -1215,6 +753,11 @@ finally:
     exec(compile(SRC, R.__file__, "exec"), R.__dict__)
 check("every mutant of the page goes red (%d mutants)%s" % (len(MUTANTS), ": survivors " + "; ".join(survivors) if survivors else ""), not survivors)
 check("the page's own source passes again after the mutants", not page_problems() and not content_problems())
+def built(env):
+    page, _, phone = R.build(env, {}, [])
+    return page, phone
+
+
 # --------------------------------------------------------------------------- the fuel gauge
 AU = R.account_usage_module()
 LATEST, SERIES = str(AU.DATA_DIR / "latest.json"), str(AU.DATA_DIR / "series.jsonl")
@@ -1380,7 +923,7 @@ check("fuel: the panel holds all three accounts with figures and words", all(w i
 check("fuel: the how-to-read explains the three words", all(w in page for w in ("AHEAD: burning faster", "EQUAL: about right", "BEHIND: burning slower")))
 check("fuel: no blank line inside the panel (Typora would end the block)", "\n\n" not in head)
 lines = phone.splitlines()
-check("fuel: the phone leads with the three accounts", lines.index("ACCOUNTS, THIS WEEK") < lines.index("RELENTLESS PIPELINE") and any(x.startswith("alpha 5% left, resets in") and "AHEAD, out " in x for x in lines) and any(x.startswith("beta 41% left") and "BEHIND, " in x for x in lines) and any(x.startswith("gamma 40% left") and x.endswith("EQUAL") for x in lines))
+check("fuel: the phone leads with the three accounts", lines.index("ACCOUNTS, THIS WEEK") < lines.index("LIVE TESTING, 24 H") and any(x.startswith("alpha 5% left, resets in") and "AHEAD, out " in x for x in lines) and any(x.startswith("beta 41% left") and "BEHIND, " in x for x in lines) and any(x.startswith("gamma 40% left") and x.endswith("EQUAL") for x in lines))
 check("fuel: the phone copy is plain text", not any("<" in x for x in lines[lines.index("ACCOUNTS, THIS WEEK"):lines.index("ACCOUNTS, THIS WEEK") + 4]))
 broken = fuel_env(three, series)
 real_mod, R.account_usage_module = R.account_usage_module, lambda: 1 / 0
@@ -1521,106 +1064,6 @@ rc, phone = real_cli(child, "--phone")
 check("fuel real: a missing latest.json says ACCOUNTS UNMEASURED", rc == 0 and any(x.startswith("ACCOUNTS UNMEASURED") for x in phone.splitlines()) and "ACCOUNTS, THIS WEEK" not in phone)
 tmp.cleanup()
 
-# --- item rows wear their bounces (RUNNING_PAGE_BUILD_ROWS_WEAR_THEIR_BOUNCES): bands, flash, phone emoji ---
-import ops_watch as OW  # noqa: E402
-BANDS = {"passes": [2, 3], "spent": [3000000, 6000000], "age_s": {"running": [10800, 28800]}, "stuck_silent_s": 3600}
-def run_st(**kw):
-    st = {"status": "running", "returns": 0, "spent": 100000, "started_at": NOW - 60, "last_beat": NOW - 30}
-    st.update(kw)
-    return st
-def row_svg(m):
-    sv = R.Svg(400, 60, "t")
-    R.item_row(sv, 20, 20, ("name", "1h ", "SOME_ITEM_NAME_HERE"), R.CARD_CHARS, lambda n: n, {"SOME_ITEM_NAME_HERE": m} if m else None)
-    return "".join(sv.parts)
-
-def rows_results():
-    """Every row check as (name, held); the mutants below must turn at least one False."""
-    out = []
-    ok = lambda name, cond: out.append((name, bool(cond)))  # noqa: E731
-    m = R.item_mark(run_st(), NOW, BANDS)
-    ok("rows: a first pass, small spend, fresh start is cool and does not flash", m["band"] == "cool" and m["passes"] == 1 and not m["flash"] and m["age"] == 60)
-    ok("rows: one return (pass 2) is warm, two returns (pass 3) is hot", R.item_mark(run_st(returns=1), NOW, BANDS)["band"] == "warm" and R.item_mark(run_st(returns=2), NOW, BANDS)["band"] == "hot")
-    ok("rows: tokens band at the rule's edges (just under warm cool, at warm warm, at hot hot)",
-          [R.item_mark(run_st(spent=v), NOW, BANDS)["band"] for v in (2999999, 3000000, 6000000)] == ["cool", "warm", "hot"])
-    ok("rows: time in place bands by the stage's own pair", [R.item_mark(run_st(started_at=NOW - a), NOW, BANDS)["band"] for a in (10799, 10800, 28800)] == ["cool", "warm", "hot"])
-    ok("rows: the worst of the three sets the band, and says which", R.item_mark(run_st(returns=1, spent=6000000), NOW, BANDS)["why"] == ["passes warm", "tokens hot"])
-    u = R.item_mark({"status": "running"}, NOW, BANDS)
-    ok("rows: an unread state is UNMEASURED, not cool-by-default zeros", u["passes"] is None and u["spent"] is None and u["age"] is None
-          and R.mark_words(u) == "passes UNMEASURED · tokens UNMEASURED · age UNMEASURED" and R.mark_words(None) == "passes, tokens UNMEASURED")
-    ok("rows: a row listed without an age (the queue) gets its time in place on the second line", R.mark_words(R.item_mark(run_st(started_at=NOW - 7200), NOW, BANDS), False).startswith(R.ago(7200).replace(" ", "") + " here") and " here" not in R.mark_words(R.item_mark(run_st(), NOW, BANDS)))
-    ok("rows: a check that could not read is written on the row", R.mark_words(R.item_mark(run_st(), NOW, BANDS, unread=["churn UNMEASURED (x)"])).endswith("churn UNMEASURED (x)"))
-    ok("rows: the second line names pass and tokens in human units", R.mark_words(R.item_mark(run_st(returns=3, spent=1500000), NOW, BANDS)).startswith("pass 4 · 1.5M tok"))
-    for kw, word in (({"circling": True}, "CIRCLING"), ({"churn": True}, "CHURN"), ({"ghost": True}, "NO PROCESS")):
-        f = R.item_mark(run_st(), NOW, BANDS, **kw)
-        ok("rows: %s flashes and forces hot on an otherwise cool row" % word, f["flash"] == [word] and f["band"] == "hot" and word in R.mark_words(f))
-    f = R.item_mark(run_st(last_beat=NOW - 3600), NOW, BANDS)
-    ok("rows: a running item silent for stuck_silent_s flashes SILENT; one beat short does not",
-          f["flash"] and f["flash"][0].startswith("SILENT") and not R.item_mark(run_st(last_beat=NOW - 3599), NOW, BANDS)["flash"])
-    ck = run_st(status="checking", last_beat=NOW - 150000, check={"at": NOW - 360})
-    ok("rows: a checking item is timed by its Judge's launch, not the builder's old beat (PASS3_FLOOD board)",
-       not R.item_mark(ck, NOW, BANDS)["flash"] and R.item_mark(dict(ck, check={"at": NOW - 3600}), NOW, BANDS)["flash"][0].startswith("SILENT"))
-    ok("rows: a Judge that wrote its result is no SILENT; unread past stuck_silent_s it is VERDICT UNREAD",
-       not R.item_mark(dict(ck, check={"at": NOW - 9000}, _judge_out=NOW - 120), NOW, BANDS)["flash"]
-       and R.item_mark(dict(ck, check={"at": NOW - 9000}, _judge_out=NOW - 3600), NOW, BANDS)["flash"][0].startswith("VERDICT UNREAD"))
-    ok("rows: a queued item never flashes SILENT (no beat is owed)", not R.item_mark(run_st(status="queued", last_beat=NOW - 99999), NOW, BANDS)["flash"])
-    d = R.item_mark(run_st(status="done", returns=5), NOW, BANDS, churn=True, circling=True, ghost=True)
-    ok("rows: a done item never flashes, keeps its passes band", d["flash"] == [] and d["band"] == "hot" and d["why"] == ["passes hot"])
-    ok("rows: no rule for a value gives it no level (a rules file without item_bands reads cool, never hot)", R.item_mark(run_st(returns=9, spent=9e9), NOW, {})["band"] == "cool")
-    # the flash rule reuses ops_watch's churn, not a second definition
-    CH = {"churn_window_h": 12, "churn_returns": 3, "churn_same_class": 2}
-    ok("rows: in_churn - two fails of one class in the window is churn", OW.in_churn({"returns": 1}, [(NOW - 60, "red"), (NOW - 120, "red")], NOW, CH))
-    ok("rows: in_churn - three returns of mixed classes is churn", OW.in_churn({"returns": 3}, [(NOW - 60, "a"), (NOW - 120, "b"), (NOW - 180, "c")], NOW, CH))
-    ok("rows: in_churn - old fails outside the window are not churn", not OW.in_churn({"returns": 5}, [(NOW - 13 * 3600, "red"), (NOW - 14 * 3600, "red")], NOW, CH))
-    ok("rows: in_churn - one fail, no repeats is not churn", not OW.in_churn({"returns": 1}, [(NOW - 60, "red")], NOW, CH))
-    ok("rows: attempt_failed reads an ended, non-ok row and skips starts and kinds",
-          OW.attempt_failed({"gen": 2, "end": "red", "at": "2026-11-04T10:00:00Z"}, {"done"})[1] == "red" and OW.attempt_failed({"gen": 2, "start": 1}, set()) is None
-          and OW.attempt_failed({"gen": 2, "end": "done"}, {"done"}) is None and OW.attempt_failed({"gen": 2, "end": "x", "kind": "k"}, set()) is None)
-    # SMIL only on flash rows, on the stripe and the metric line
-    calm, hot = row_svg(R.item_mark(run_st(), NOW, BANDS)), row_svg(R.item_mark(run_st(), NOW, BANDS, churn=True))
-    ok("rows: a calm row has no animation, a flash row animates twice (stripe and line)", "<animate" not in calm and hot.count("<animate") == 2 and hot.count(R.FLASH_SMIL) == 2)
-    ok("rows: the row's colour is its band (cool blue, hot red), and an unmarked row is faint", R.LIVE in calm and R.BAD in hot and R.FAINT in row_svg(None))
-    ok("rows: every row opens one balanced group per close", all(x.count("<g") == x.count("</g>") for x in (calm, hot, row_svg(None))))
-    ok("rows: the row is tagged as an item, so page checks keep it apart from instrument notes", 'data-item="SOME_ITEM_NAME_HERE"' in calm)
-    # the phone: one emoji per row, no HTML
-    saved = R.stage_lists
-    R.stage_lists = lambda p: {k: ([("name", "2h ", "ITEM_A"), ("name", "5h ", "ITEM_B")] if k == "running" else [("name", "1d ", "ITEM_C")] if k == "queued" else []) for k in R.BELT}
-    pp = {"items": {"x": 1}, "now": NOW, "marks": {"ITEM_A": R.item_mark(run_st(), NOW, BANDS), "ITEM_B": R.item_mark(run_st(), NOW, BANDS, churn=True), "ITEM_C": R.item_mark(run_st(status="queued", returns=1), NOW, BANDS)}}
-    ph = R.phone_rows(pp)
-    rows = [x for x in ph if x.startswith("- ")]
-    ok("rows: phone - one emoji per row: blue calm, siren cycler, amber bounce", [x.split()[1] for x in rows] == [R.BAND_EMOJI["cool"], R.FLASH_EMOJI, R.BAND_EMOJI["warm"]] or
-          sorted(x.split()[1] for x in rows) == sorted([R.BAND_EMOJI["cool"], R.FLASH_EMOJI, R.BAND_EMOJI["warm"]]))
-    ok("rows: phone - no HTML, the legend leads, a blank line closes the list", not any("<" in x for x in ph) and ph[1].startswith("ITEMS (") and ph[-1] == "")
-    pp["marks"], pp["marks_why"] = None, "no store"
-    ok("rows: phone - unread marks say UNMEASURED with the reason", R.phone_rows(pp)[1] == "ITEMS: passes, tokens and bands UNMEASURED (no store)")
-    R.stage_lists = saved
-    return out
-
-ROW_MUTANTS = [
-    ("a flash no longer forces hot", '"band": "hot" if flash else ("cool", "warm", "hot")[worst]', '"band": ("cool", "warm", "hot")[worst]'),
-    ("a done item flashes", 'if status not in ("done", "retired"):\n        if circling:', 'if True:\n        if circling:'),
-    ("passes count returns, not 1 + returns", "passes = int(rets) + 1 if", "passes = int(rets) if"),
-    ("a flash row does not animate", 's.parts.append("<g>" + FLASH_SMIL)', 's.parts.append("<g>")'),
-    ("the phone shows the band, never the siren", "em = FLASH_EMOJI if m and m[\"flash\"] else", "em = None or"),
-    ("an unread pass count prints as a number", 'w = ["pass %d" % m["passes"] if m["passes"] is not None else "passes UNMEASURED",', 'w = ["pass %d" % (m["passes"] or 0),'),
-    ("SILENT never fires", 'flash.append("SILENT %s"', 'flash.append and None and flash.append("SILENT %s"'),
-]
-for name, held in rows_results():
-    check(name, held)
-row_survivors = []
-try:
-    for name, old, new in ROW_MUTANTS:
-        check("row mutant applies: " + name, old in SRC)
-        exec(compile(SRC.replace(old, new, 1), R.__file__, "exec"), R.__dict__)
-        try:
-            caught = [n for n, held in rows_results() if not held]
-        except Exception as e:
-            caught = [repr(e)]
-        if not caught:
-            row_survivors.append(name)
-finally:
-    exec(compile(SRC, R.__file__, "exec"), R.__dict__)
-    R.stage_lists = R.__dict__["stage_lists"]
-check("every mutant of the item rows goes red (%d mutants)%s" % (len(ROW_MUTANTS), ": survivors " + "; ".join(row_survivors) if row_survivors else ""), not row_survivors)
 
 print("\n%d failed" % len(FAILS) if FAILS else "\nALL PASS")
 sys.exit(1 if FAILS else 0)

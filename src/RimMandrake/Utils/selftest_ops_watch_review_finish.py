@@ -10,7 +10,7 @@
 5. dead_targets: a wildcard target with no instance this pass (testing.red_* on a clean night) is not a dead rule.
 6. run_alarms: a new filing marks noted only the names its title shows: the next pass notes the rest (6b: a cut title).
 7. found_filed recovery delivers the Conductor line the pass that died after filing may have owed.
-8. c_relentless: a reading.json stamped ahead of the clock counts as blind.
+(8, c_relentless reading a reading.json dated ahead, went with that collector on 2026-11-18.)
 
 Fixtures only: rules are built here, alarm state lives in a temp RM_OPS_WATCH_DIR, the filer and minter are fakes.
 
@@ -147,30 +147,6 @@ def main():
     ow.run_alarms({"t.reds": M(1, news=["a"])}, rules7, NOW, {"OPS_T_RED_AB12"}, None, open_ids={"OPS_T_RED_AB12"})
     said = clog.read_text() if clog.exists() else ""
     ok("OPS_T_RED_AB12" in said and "ALARM" in said, "7: found_filed delivers the owed Conductor line", said)
-
-    # 8. reading.json dated ahead of the clock is blind, not fresh
-    root = TMP / "belt"
-    (root / "store" / "items").mkdir(parents=True)
-    (root / "live").mkdir()
-    (root / "live" / "runs.jsonl").write_text("")
-    at = ow.iso(NOW)
-    row = {"at": at, "t": NOW, "live": 3, "running": 3, "places": 3, "target": 3, "ready": 4, "minutes_under": 0,
-           "under": False, "why": None, "checks": {"waiting": 0, "running": 1, "oldest_wait_s": 0}}
-    for n, o in (("staffing.json", row), ("reading.json", {"at": ow.iso(NOW + 86400)}), ("breaker.json", {})):
-        (root / "store" / n).write_text(json.dumps(o))
-    (root / "store" / "staffing.jsonl").write_text(json.dumps(row) + "\n")
-    (root / "store" / "journal.jsonl").write_text(json.dumps({"at": at, "do": "lease"}) + "\n")
-    saved = os.environ.get("RELENTLESS_ROOT")
-    os.environ["RELENTLESS_ROOT"] = str(root)
-    try:
-        pts = ow.c_relentless(NOW, ow.load_rules(), {})
-    finally:
-        if saved is None:
-            os.environ.pop("RELENTLESS_ROOT", None)
-        else:
-            os.environ["RELENTLESS_ROOT"] = saved
-    cause = str((pts.get("relentless.blind") or {}).get("x", {}).get("cause"))
-    ok("reading.json is dated" in cause, "8: a reading.json stamped a day ahead counts as blind", cause)
 
     # 5. a wildcard target that matches nothing this pass (a quiet night) is not a dead rule
     def tg(key):

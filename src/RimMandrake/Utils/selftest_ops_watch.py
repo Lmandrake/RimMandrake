@@ -974,7 +974,7 @@ check("blind digest: health stays (steve, disk, stalls, disk alarm, disk flag), 
       "steve ok" in blind and "DISK_LOW:disk.root_free_gb" in blind and "DISK_TWO_DAYS" in blind
       and "stalls" in blind and "1 flag(s), 1 alarm(s) open" in blind, blind)
 check("blind digest: every allowed key is a real family of ours (no wildcard crept in)",
-      all("." in k and "*" not in k and k.split(".")[0] in ("companion", "disk", "flow", "plan", "process", "production", "relentless", "seats", "steve",
+      all("." in k and "*" not in k and k.split(".")[0] in ("companion", "disk", "flow", "plan", "process", "production", "seats", "steve",
                                                               "testing", "timers", "tps", "v3") for k in OW.BLIND_KEYS)
       and "production.B" not in OW.BLIND_KEYS and not any(OW.is_token_key(k) for k in OW.BLIND_KEYS))
 check("blind digest: run() writes digest_blind.md", (TMP / "ops" / "digest_blind.md").exists())
@@ -1963,20 +1963,6 @@ _g("commit", "-q", "-am", "rs2", cwd=_rw)
 _g("push", "-q", "origin", "HEAD:main", cwd=_rw)
 _v = OW.rerun_at_main(["src/t.py"], 60, root=_rw)
 check("rerun: HEAD moving during the run is unmeasured, never green", _v[0] == "unmeasured" and "moved" in _v[1], _v)
-# CD3 #3: an attempts.jsonl that is there and unreadable is blind, never a counted 0; a missing one is no attempts
-# (the real store holds started items without one: 44 of 1089 with gen > 0 on 2026-11-06)
-_cs = TMP / "churn_unread_store"
-(_cs / "items" / "STARTED_B").mkdir(parents=True, exist_ok=True)
-(_cs / "items" / "STARTED_B" / "state.json").write_text(json.dumps({"item": "STARTED_B", "status": "queued", "gen": 2,
-                                                                     "returns": 3, "spent": 0}))
-_c = OW.rl_churn(_cs, NOW, {})
-check("churn: a started item with no attempts.jsonl reads a measured count (control)",
-      _c["relentless.churn_items"]["m"] == "MEASURED", _c.get("relentless.churn_items"))
-(_cs / "items" / "STARTED_B" / "attempts.jsonl").mkdir()          # there, and no file can be read from it
-_c = OW.rl_churn(_cs, NOW, {})
-check("churn: an unreadable attempts.jsonl is UNMEASURED and reads 'unreadable' (relentless.blind counts it)",
-      _c["relentless.churn_items"]["m"] == "UNMEASURED" and "unreadable" in _c["relentless.churn_items"].get("why", "")
-      and "STARTED_B" in _c["relentless.churn_items"]["why"], _c.get("relentless.churn_items"))
 # OPS_ALARM_FIX_LOG_LINE_NEVER_RETRIED: the ledger filing succeeds but the Conductor log cannot be written. The alarm is
 # OPEN (signal_watch skips OPEN), so a later pass must retry the line once the log can be written again
 _cdir = TMP / "clog_missing_dir"
@@ -2102,143 +2088,6 @@ try:
     check("untriaged: a bad table is UNMEASURED, never a count", OW.untriaged_reading([_F])["m"] == "UNMEASURED")
 finally:
     _FF.no_outcome = _dfn
-# books_behind: the books clone behind origin reads its oldest missing commit's age (BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT)
-import subprocess as _sp, tempfile as _tf
-_d = Path(_tf.mkdtemp(prefix="bb_"))
-def _g(c, *a, env=None):
-    _sp.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=c, check=True, capture_output=True,
-            env=dict(_GITENV, **(env or {})))     # no user config or hooks on fixture commits
-_g(_d, "init", "-q", "--bare", "-b", "main", "o.git")
-_g(_d, "clone", "-q", "o.git", "up"); _g(_d / "up", "checkout", "-q", "-b", "main")
-(_d / "up" / "f").write_text("1"); _g(_d / "up", "add", "f"); _g(_d / "up", "commit", "-qm", "a"); _g(_d / "up", "push", "-q", "origin", "main")
-_g(_d, "clone", "-q", "o.git", "books")
-check("books level: 0 behind", OW.rl_books_behind(_d / "books", time.time()) == (0.0, 0))
-(_d / "up" / "f").write_text("2"); _old = str(int(time.time()) - 3 * 3600) + " +0000"
-_g(_d / "up", "commit", "-qam", "b", env={"GIT_COMMITTER_DATE": _old, "GIT_AUTHOR_DATE": _old}); _g(_d / "up", "push", "-q", "origin", "main")
-_m, _n = OW.rl_books_behind(_d / "books", time.time())
-check("books behind: age of the oldest missing commit, count", _n == 1 and 170 <= _m <= 190, (_m, _n))
-check("books absent: unmeasured, not zero", OW.rl_books_behind(_d / "nope", time.time())[0] is None)
-# a refused fetch: a level clone on an old ref must not read 0 behind for long
-_g(_d, "clone", "-q", "o.git", "cut")
-(_d / "up" / "f").write_text("3"); _g(_d / "up", "commit", "-qam", "c"); _g(_d / "up", "push", "-q", "origin", "main")
-_g(_d / "cut", "pull", "-q", "--ff-only", "origin", "main")
-_g(_d / "cut", "remote", "set-url", "origin", str(_d / "gone.git"))
-_fh = _d / "cut" / ".git" / "logs" / "refs" / "remotes" / "origin" / "main"
-check("instrument: the ref's first move starts its reflog", _fh.is_file(), _fh)
-check("one refused fetch on a recently moved ref: still a reading", OW.rl_books_behind(_d / "cut", time.time()) == (0.0, 0))
-os.utime(_fh, (time.time() - 2 * 3600,) * 2); _st = _fh.stat().st_mtime
-_m, _w = OW.rl_books_behind(_d / "cut", time.time())
-check("refused, ref unmoved 2 h: unmeasured, never 0 behind", _m is None and "unmoved for 120 min" in str(_w), (_m, _w))
-check("instrument: a refused fetch leaves the reflog's stamp alone", _fh.stat().st_mtime == _st)
-_g(_d / "cut", "remote", "set-url", "origin", str(_d / "o.git"))
-check("a fetch that works reads again, however old the ref", OW.rl_books_behind(_d / "cut", time.time())[0] is not None)
-_g(_d / "cut", "remote", "set-url", "origin", str(_d / "gone.git"))
-_fh.unlink()
-check("refused with no reflog: unmeasured", OW.rl_books_behind(_d / "cut", time.time())[0] is None)
-_tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.books_behind_min"]
-check("the books-stale target alarms", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["value"] <= 60, _tg)
-# ...and wired: the same clone, through the registered collector and a whole pass, on an otherwise sane belt. Reading
-# rl_books_behind alone stays green if c_relentless drops its answer, or keeps a refused fetch out of relentless.blind.
-_rr = Path(_tf.mkdtemp(prefix="bb_belt_"))
-(_rr / "store" / "items").mkdir(parents=True); (_rr / "live").mkdir(); (_rr / "live" / "runs.jsonl").write_text("")
-_g(_d, "clone", "-q", "o.git", str(_rr / "books"))
-_br = OW.load_rules()
-for _t in _br["targets"]:       # never the real Conductor log
-    if _t.get("conductor_log"):
-        _t["conductor_log"] = str(_rr / "conductor.md")
-_bsaved = {k: os.environ.get(k) for k in ("RELENTLESS_ROOT", "RM_OPS_WATCH_DIR")}
-_bcoll, _bpasses = OW.COLLECTORS["relentless"], []
-def _bpass():
-    """One sane tick on the belt, then (collector's points, whole pass's status points, the pass's alarms), each pass
-    in a new ops directory: an alarm already standing from an earlier stage cannot answer for this one."""
-    _now = time.time(); _at = OW.iso(_now)
-    _row = {"at": _at, "t": _now, "live": 3, "running": 3, "places": 3, "target": 3, "ready": 400, "minutes_under": 0,
-            "under": False, "why": None, "checks": {"waiting": 0, "running": 1, "oldest_wait_s": 0}}
-    for _n, _o in (("staffing.json", _row), ("reading.json", {"at": _at}), ("breaker.json", {})):
-        (_rr / "store" / _n).write_text(json.dumps(_o))
-    (_rr / "store" / "staffing.jsonl").write_text(json.dumps(_row) + "\n")
-    (_rr / "store" / "journal.jsonl").write_text(json.dumps({"at": _at, "do": "lease"}) + "\n")
-    _bpasses.append(1)
-    os.environ["RM_OPS_WATCH_DIR"] = str(_rr / ("ops%d" % len(_bpasses)))
-    _pts = _bcoll(_now, _br, {})
-    _dg = OW.run(now=_now, rules=_br, filer=lambda todo, conf: {a["name"]: None for a in todo}, families=["relentless"])
-    return _pts, OW.read_json(OW.ops_dir() / "status.json")["points"], _dg["alarms"]
-_BSTALE, _BBLIND = "RELENTLESS_BOOKS_STALE:relentless.books_behind_min", "RELENTLESS_BLIND:relentless.blind"
-_bkey, _bbl = "relentless.books_behind_min", "relentless.blind"
-_bgit = _rr / "books"
-os.environ["RELENTLESS_ROOT"] = str(_rr)
-try:
-    check("wired: the registered relentless collector is c_relentless", _bcoll is OW.c_relentless, _bcoll)
-    _p, _s, _a = _bpass()
-    check("wired: a level clone reads MEASURED 0, nothing blind, no alarm",
-          _p[_bkey]["m"] == "MEASURED" and _p[_bkey]["v"] == 0.0 and _p[_bkey]["x"]["behind"] == 0
-          and _p[_bbl]["v"] == 0 and _BSTALE not in _a and _BBLIND not in _a, (_p[_bkey], _p[_bbl], _a))
-    (_d / "up" / "f").write_text("4"); _old = str(int(time.time()) - 3 * 3600) + " +0000"
-    _g(_d / "up", "commit", "-qam", "d", env={"GIT_COMMITTER_DATE": _old, "GIT_AUTHOR_DATE": _old}); _g(_d / "up", "push", "-q", "origin", "main")
-    _p, _s, _a = _bpass()
-    check("wired: a clone 1 commit behind reads MEASURED ~180 min, behind=1",
-          _p[_bkey]["m"] == "MEASURED" and 170 <= _p[_bkey]["v"] <= 190 and _p[_bkey]["x"]["behind"] == 1 and _p[_bbl]["v"] == 0,
-          (_p[_bkey], _p[_bbl]))
-    check("wired: the pass writes that reading to status.json",
-          _s.get(_bkey, {}).get("m") == "MEASURED" and 170 <= (_s.get(_bkey, {}).get("v") or 0) <= 190, _s.get(_bkey))
-    check("wired: the pass raises the books-stale alarm on it", _BSTALE in _a, _a)
-    # a jammed clone while the belt keeps landing: several missing commits, old and fresh. The age is the OLDEST one;
-    # the newest (max of the stamps) would read ~1 min and never alarm on the item's own case.
-    (_d / "up" / "f").write_text("5"); _old6 = str(int(time.time()) - 6 * 3600) + " +0000"
-    _g(_d / "up", "commit", "-qam", "e", env={"GIT_COMMITTER_DATE": _old6, "GIT_AUTHOR_DATE": _old6})
-    (_d / "up" / "f").write_text("6"); _new1 = str(int(time.time()) - 60) + " +0000"
-    _g(_d / "up", "commit", "-qam", "g", env={"GIT_COMMITTER_DATE": _new1, "GIT_AUTHOR_DATE": _new1})
-    _g(_d / "up", "push", "-q", "origin", "main")
-    _p, _s, _a = _bpass()
-    check("wired: 3 missing commits aged 3 h, 6 h, 1 min read the oldest (~360 min), behind=3, and alarm",
-          _p[_bkey]["m"] == "MEASURED" and 350 <= _p[_bkey]["v"] <= 370 and _p[_bkey]["x"]["behind"] == 3
-          and _BSTALE in _a, (_p[_bkey], _a))
-    _g(_bgit, "pull", "-q", "--ff-only", "origin", "main")
-    _p, _s, _a = _bpass()
-    check("wired: levelled again reads 0 and the alarm is gone", _p[_bkey]["v"] == 0.0 and _BSTALE not in _a, (_p[_bkey], _a))
-    _g(_bgit, "remote", "set-url", "origin", str(_d / "gone.git"))
-    _p, _s, _a = _bpass()
-    check("wired: one refused fetch on a recently moved ref is still a reading, not blind",
-          _p[_bkey]["m"] == "MEASURED" and _p[_bbl]["v"] == 0, (_p[_bkey], _p[_bbl]))
-    _rl = _bgit / ".git" / "logs" / "refs" / "remotes" / "origin" / "main"
-    os.utime(_rl, (time.time() - 2 * 3600,) * 2)
-    _p, _s, _a = _bpass()
-    check("wired: refused with the ref unmoved 2 h is UNMEASURED, saying so",
-          _p[_bkey]["m"] == "UNMEASURED" and "unmoved for 120 min" in str(_p[_bkey].get("why")), _p[_bkey])
-    check("wired: that refusal raises relentless.blind by exactly one and names it",
-          _p[_bbl]["v"] == 1 and "fetch refused" in str(_p[_bbl]["x"].get("cause")), _p[_bbl])
-    check("wired: the pass keeps it UNMEASURED in status.json", _s.get(_bkey, {}).get("m") == "UNMEASURED", _s.get(_bkey))
-    check("wired: the pass raises the blind alarm, and no stale alarm on a number it never read",
-          _BBLIND in _a and _BSTALE not in _a, _a)
-    shutil.rmtree(_bgit)
-    _p, _s, _a = _bpass()
-    check("wired: no books clone is UNMEASURED and blind", _p[_bkey]["m"] == "UNMEASURED" and _p[_bbl]["v"] == 1
-          and "no books clone" in str(_p[_bbl]["x"].get("cause")) and _BBLIND in _a, (_p[_bkey], _p[_bbl], _a))
-finally:
-    for _k, _v in _bsaved.items():
-        if _v is None:
-            os.environ.pop(_k, None)
-        else:
-            os.environ[_k] = _v
-# live measured share (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING): PASS+FAIL of the recent live runs, too few is UNMEASURED
-_lv = Path(_tf.mkdtemp(prefix="lm_")); _now = 1_800_000_000
-def _runs(outs, age_s=60):
-    with open(_lv / "runs.jsonl", "w") as f:
-        for i, o in enumerate(outs):
-            f.write(json.dumps({"at": OW.iso(_now - age_s - i), "outcome": o, "why": "proof exited 2" if o == "UNMEASURED" else ""}) + "\n")
-_lc = {"measured_runs": 40, "measured_window_h": 24, "measured_min_runs": 12}
-_runs(["PASS"] * 2 + ["UNMEASURED"] * 18)
-_p, _g = OW.rl_live_measured(_lv, _now, _lc)
-check("live measured: 2 of 20 is 10%, cause names the repeat", _p == 10.0 and _g["n"] == 20 and "18x UNMEASURED" in _g["cause"], (_p, _g))
-_runs(["FAIL"] * 3 + ["REFUSED"] * 2)
-check("live measured: too few runs is UNMEASURED, not a share", OW.rl_live_measured(_lv, _now, _lc)[0] is None)
-_runs(["PASS"] * 20, age_s=30 * 3600)
-check("live measured: runs older than the window do not count", OW.rl_live_measured(_lv, _now, _lc)[0] is None)
-check("live measured: no file is UNMEASURED", OW.rl_live_measured(_lv / "nope", _now, _lc)[0] is None)
-check("live measured: an unreadable file says so (c_relentless counts it blind)", "unreadable" in str(OW.rl_live_measured(_lv / "nope", _now, _lc)[1]), OW.rl_live_measured(_lv / "nope", _now, _lc))
-_tg = [t for t in OW.load_rules()["targets"] if t["key"] == "relentless.live_measured_pct"]
-check("the live-measured target alarms below a floor", len(_tg) == 1 and _tg[0]["alarm"] and _tg[0]["op"] == "<"
-      and 10 <= _tg[0]["value"] <= 50, _tg)
 # deploy_update_age: rm-deploy-update's last good pull on pulse-deploy (PULSE_DEPLOY_UNSTICK_DIRTY_CHECKOUT)
 import tempfile as _tf2
 _dp = Path(_tf2.mkdtemp(prefix="dep_")); (_dp / ".git").mkdir(); _ds = _dp / ".git" / "pulse_update_last_good"

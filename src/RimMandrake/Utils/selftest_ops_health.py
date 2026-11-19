@@ -8,7 +8,6 @@ import os
 import sys
 import tempfile
 import types
-import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -127,7 +126,7 @@ shipped = json.loads((HERE / "ops_watch_rules.json").read_text(encoding="utf-8")
 sc = H.conf(shipped)
 ok("shipped: the health block passes its own check", not H.sli_problems(sc) and len(sc["slis"]) >= 4, H.sli_problems(sc))
 ok("shipped: every design SLI is present or said UNMEASURED",
-   {"infra_share", "nightly_reds", "tmp_headroom"} <= {s["name"] for s in sc["slis"]} and "infra_tokens_day" in sc["unmeasured_slis"])
+   {"nightly_reds", "tmp_headroom"} <= {s["name"] for s in sc["slis"]} and {"infra_share", "infra_tokens_day"} <= set(sc["unmeasured_slis"]))
 tg = [t for t in shipped["targets"] if t.get("key") == "health.spent_slis"]
 ok("shipped: a spent budget is an alarm with one fixed item name",
    len(tg) == 1 and tg[0].get("alarm") is True and tg[0].get("name") == "OPS_ERROR_BUDGET_DIAGNOSE", tg)
@@ -209,37 +208,24 @@ for var in ("RM_OPS_DISKS", "RM_POOL_MAX_BYTES", "RM_POOL_MAX_CLONES"):   # the 
 (fx / "pool").mkdir()
 os.environ.update(RM_POOL_ROOT=str(fx / "pool"), RM_OBJSTORE_STATE=str(fx / "state"), RM_SCRATCH_ROOT=str(fx / "scratch"),
                   RM_SESSION_GLOB=str(fx / "none" / "*"), RM_POOL_STATE_GLOB=str(fx / "none" / "*"),
-                  RM_SCRATCH_REAP_RUNS=str(fx / "reap" / "runs.jsonl"), RM_TESTING_METRICS_DIR=str(fx / "metrics"),
-                  RELENTLESS_ROOT=str(fx / "belt"))
-(fx / "belt" / "live").mkdir(parents=True)
-(fx / "belt" / "store").mkdir()
-# the churn SLIs (OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS) read items/ and spend-*.json: one item returned 3 times
-_it = fx / "belt" / "store" / "items" / "FX_ITEM"
-_it.mkdir(parents=True)
-(_it / "state.json").write_text(json.dumps({"returns": 3, "gen": 2, "spent": 100}))
-_mk = "rm-relentless-work-%s-g1" % __import__("hashlib").sha1(b"FX_ITEM").hexdigest()[:10]
-(_it / "attempts.jsonl").write_text(json.dumps({"gen": 1, "at": OW.iso(NOW - 3600), "start": _mk}) + "\n"
-                                    + json.dumps({"gen": 1, "at": OW.iso(NOW - 3000), "end": "harness"}) + "\n")
-(fx / "belt" / "store" / ("spend-%s.json" % time.strftime("%Y%m%d", time.gmtime(NOW)))).write_text(json.dumps({"runs": {_mk: 100}}))
-(fx / "belt" / "live" / "runs.jsonl").write_text("".join(
-    json.dumps({"at": OW.iso(NOW - 60 * i), "outcome": "PASS" if i % 2 else "INFRA", "why": "fixture"}) + "\n" for i in range(20)))
+                  RM_SCRATCH_REAP_RUNS=str(fx / "reap" / "runs.jsonl"), RM_TESTING_METRICS_DIR=str(fx / "metrics"))
 KR.measure = lambda *a, **k: {"night": "n", "news": [], "reds": ["t%d" % i for i in range(84)], "listed": [],
                               "unlisted": ["t%d" % i for i in range(84)], "expired": [], "cured": [],
                               "cop": {"groups": [], "overdue": [], "overdue_said": "", "detail_read": False}}
 emitted = {}
-for fam, c_ in (("testing", {"steve_jobs": [], "steve_jobs_bad": [], "open_ids": set()}), ("disk", {}), ("relentless", {})):
+for fam, c_ in (("testing", {"steve_jobs": [], "steve_jobs_bad": [], "open_ids": set()}), ("disk", {})):
     emitted.update(REAL_COLLECTORS[fam](NOW, shipped, c_))
 KR.measure = real_measure
-ok("real collectors: the five shipped SLIs are the ones walked here",
-   {s_["name"] for s_ in sc["slis"]} >= {"infra_share", "nightly_reds", "tmp_headroom", "root_headroom", "pool_headroom"})
+ok("real collectors: the four shipped SLIs are the ones walked here",
+   {s_["name"] for s_ in sc["slis"]} >= {"nightly_reds", "tmp_headroom", "root_headroom", "pool_headroom"})
 for s_ in sc["slis"]:
     pt = emitted.get(s_["key"]) or {}
     ok("real collector: %s key %s reads MEASURED" % (s_["name"], s_["key"]), pt.get("m") == "MEASURED", pt)
     ok("real collector: %s unit is exactly %r" % (s_["name"], s_["unit"]), pt.get("unit") == s_["unit"], pt)
     b = H.budget(emitted, {}, sc, NOW)[s_["name"]]
     ok("real collector: %s judged, not drifted" % s_["name"], b["now"] in ("ok", "bad") and not b.get("drifted"), b)
-ok("real collector: nightly_reds still reads the 84, live_measured_pct its 50%",
-   emitted["testing.nightly_unparked_reds"]["v"] == 84 and emitted["relentless.live_measured_pct"]["v"] == 50.0, emitted["relentless.live_measured_pct"])
+ok("real collector: nightly_reds still reads the 84",
+   emitted["testing.nightly_unparked_reds"]["v"] == 84, emitted["testing.nightly_unparked_reds"])
 
 # --- the was unit is what the old collector really wrote: the real series around the redefinition, and that commit's parent
 was_ = next(s_ for s_ in sc["slis"] if s_["name"] == "nightly_reds")["was"][0]
@@ -289,9 +275,9 @@ ok("publish_health: one drifted SLI reads MEASURED 1 and names it",
 hj = json.loads((d / "ow" / "health.json").read_text())
 ok("publish_health: health.json says drifted, UNMEASURED, 0 h",
    hj["drifted"] == ["nightly_reds"] and hj["budget"]["nightly_reds"]["now"] == "UNMEASURED" and hj["budget"]["nightly_reds"]["bad_h"] == 0, hj["budget"]["nightly_reds"])
-drift_pts["relentless.live_measured_pct"] = PT(50.0, "share")
+drift_pts["disk.tmp_free_gb"] = PT(50.0, "a unit nobody wrote")
 hp = OW.publish_health(drift_pts, {}, {}, ow_rules, NOW)["health.drifted_slis"]
-ok("publish_health: two drifted SLIs read 2, each named", hp["v"] == 2 and hp["x"]["said"] == "infra_share, nightly_reds", hp)
+ok("publish_health: two drifted SLIs read 2, each named", hp["v"] == 2 and hp["x"]["said"] == "nightly_reds, tmp_headroom", hp)
 hp = OW.publish_health(emitted, {}, {}, ow_rules, NOW)["health.drifted_slis"]
 ok("publish_health: none drifted reads MEASURED 0, nothing named", hp["m"] == "MEASURED" and hp["v"] == 0 and not hp["x"]["said"], hp)
 real_publish = H.publish

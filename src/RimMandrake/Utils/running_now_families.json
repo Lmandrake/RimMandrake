@@ -3,7 +3,6 @@
   "order": [
     "seats",
     "dispatcher",
-    "relentless",
     "helpers",
     "roles",
     "art",
@@ -19,9 +18,6 @@
     },
     "dispatcher": {
       "title": "Dispatcher"
-    },
-    "relentless": {
-      "title": "Relentless"
     },
     "helpers": {
       "title": "Conductor helpers"
@@ -49,16 +45,6 @@
     }
   },
   "units": [
-    [
-      "rm-relentless-(?P<kind>[a-z]+)-(?P<id>[0-9a-f]{10}-g\\d+(?:-c\\d+)?)",
-      "relentless",
-      "worker"
-    ],
-    [
-      "rm-relentless\\.(service|timer)",
-      "relentless",
-      "tick"
-    ],
     [
       "rm-role-(?P<id>[A-Za-z]+-\\d+)",
       "roles",

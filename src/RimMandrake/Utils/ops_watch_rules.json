@@ -28,34 +28,6 @@
  ],
  "series_days": 8,
  "steve_seats": {"_doc": "c_steve_seats: a seat is up when its tmux screen shows `ready`", "ssh": "mandrake@stevedesktop-wsl", "seats": ["seat-server", "seat-runner"], "ready": "Capacity:|Connected|Reconnected after|remote-control is active"},
- "relentless": {
-  "_doc": "c_relentless (OP2, DI2 in operating_requirements_2026-11-01.md), read from the belt's store under RELENTLESS_ROOT or root. Every limit is in the ranges block. progress_acts: the journal acts that count as the belt moving",
-  "root": "/home/mandrake/rm/relentless",
-  "progress_acts": ["lease", "done", "check_started", "retired", "closed_waiting_for_seat"],
-  "_progress_acts_doc": "returned and blind_fail are not progress (OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS): on 2026-11-04 47 items churned 3+ returns each, one to gen 20, and every return read as the belt moving. Churn is measured by relentless.churn_items and relentless.returned_tokens_pct",
-  "churn_window_h": 12, "churn_returns": 3, "churn_same_class": 2, "tokens_window_h": 24, "churn_max_unmapped_pct": 20,
-  "churn_not_fail_ends": ["finish", "done", "unhold", "blocked", "hold", "conductor_hold", "reach_adopted", "reach_repaired", "reach_waiter_released", "reach_held", "game_env_route", "released"],
-  "churn_env_ends": ["game_stale_build", "game_env_fix", "game_stage"], "_churn_env_ends_doc": "ops_watch.churn_why: game-phase endings (entered only through a blind PASS) that blame something other than the item's work: the returns before one are spent and only the same env class repeating inside churn_window_h speaks. game_env_fix is the lane's own environment fix, no builder and no new gen (OPS_CHURN_DIAGNOSE_WEEPINGSTONE_BENK_YIMV: WEEPINGSTONES_HANDLER_VANISHES_1 rang 'bouncing: 3 returns' off three two-day-old returns of three classes when the lane restaged Biomes into the load). game_stage is the stager stopping before the proofs ran (OPS_CHURN_DIAGNOSE_HEAVY_ZWWY_NYJN: HEAVY_TEXTURES_MEASURE_REAL_VRAM, blind PASS 11-06 00:14Z, rang 'bouncing: 3 returns' at 14:16Z off a 13:55Z companion exact-hash stop that 4ca2cfb99d fixed at 14:27Z)",
-  "churn_item_stuck_stages": ["game", "checking"], "churn_item_parked_statuses": ["blocked", "held"], "churn_item_new_per_pass": 5, "churn_item_max_open": 12,
-  "_churn_item_doc": "ops_watch.churn_item_points (CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER): one relentless.churn_item.<ID> per item that is bouncing (the churn rule above, same-class windowed to a failure inside churn_window_h), whose spend rose in tokens_window_h while state.json spent is at the hot item_bands.spent band and nothing landed, or that sat in a churn_item_stuck_stages stage for its hot item_bands.age_s band; never one in a churn_item_parked_statuses status (put down: nothing spends, the block names the cause; OPS_CHURN_DIAGNOSE_JAM_VPZP_ECXS); at most churn_item_new_per_pass new ones a pass and churn_item_max_open held at once, largest spend first",
-  "_churn_doc": "ops_watch.rl_churn: an item is in churn when it failed an attempt (attempts.jsonl end not in churn_not_fail_ends, which holds the put-downs hold and conductor_hold: a person's hold is no failed attempt, OPS_CHURN_DIAGNOSE_HORRORS_XSDJ_RKYR, and the supervisor's own bookkeeping rows reach_adopted, reach_repaired (a probe passed), reach_waiter_released, reach_held and game_env_route (routed, no builder), OPS_CHURN_DIAGNOSE_RETURNED_WORK_IWIV gen 5; an account_lost row is none either, by ops_watch.NO_STRIKE_ENDS, though its spend stays returned spend, OPS_CHURN_DIAGNOSE_ENGINE_QCHQ_AUUY; the class is the signature) in the last churn_window_h and has churn_returns returns or one class churn_same_class times; returned tokens are the spend-file runs whose (item, gen) failed, placed by the gen's start row",
-  "item_bands": {
-   "_why": "INITIAL GUESSES (RUNNING_PAGE_BUILD_ROWS_WEAR_THEIR_BOUNCES, owner 2026-11-05): RELENTLESS_NOW colours each item row cool/warm/hot by its worst value; shared with ops_watch's per-item churn alarm (CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER) so both read one set of numbers. Each pair is [warm at or over, hot at or over]. passes = 1 + state.json returns: 2 is one bounce, 3 is two. spent = state.json weighted tokens: warm at the advisory item_spend_limit (3M; closed items read p90 3.4M on 2026-11-04), hot at its first doubling (6M). age_s = time in the current stage: warm at the stage's normal top on the page (STAGE_OLD), hot at about 3x. A row FLASHES only for an identified cycler (a circling.py hit at the item's current gen, or in churn by the churn_* rule above) or a stuck process (running/checking with no unit process, or no beat for stuck_silent_s: a worker is told to beat every 20 minutes). Retune from what the page shows.",
-   "passes": [2, 3],
-   "spent": [3000000, 6000000],
-   "age_s": {"queued": [172800, 604800], "running": [10800, 28800], "candidate": [3600, 14400], "checking": [3600, 10800],
-             "closing": [86400, 259200], "game": [172800, 604800], "held": [604800, 1814400], "blocked": [604800, 1814400],
-             "stopping": [900, 3600], "retiring": [900, 3600]},
-   "stuck_silent_s": 3600
-  },
-  "measured_runs": 40, "measured_window_h": 24, "measured_min_runs": 12,
-  "_measured_doc": "relentless.live_measured_pct: PASS+FAIL share of the newest measured_runs live/runs.jsonl rows within measured_window_h; under measured_min_runs rows it is UNMEASURED (LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING)"
-,
-  "checks_lost_window_h": 1,
-  "_checks_lost_doc": "relentless.checks_lost_items: the different items with a checker_lost journal act in the last checks_lost_window_h (CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD); account_lost is not counted",
-  "checker_run_window_h": 3,
-  "_checker_run_doc": "relentless.checker_deaths_run: the different items in the run of checker deaths (checker_lost, check_launch_fail) ending now, across items, with no verdict act between and no death that wrote output, read over the last checker_run_window_h (CHECKER_DEATHS_MONITOR_29_NOBODY_NOTICED)"
- },
  "seats": {
   "_doc": "c_seats (OP2 in operating_requirements_2026-11-01.md), read from the Dispatcher's journal.jsonl and state.json under RM_DISPATCHER_STATE or state_dir. Every limit is in the ranges block. Bringing the seat back is DI1's, not this metric's",
   "state_dir": "/mnt/d/ClaudeWork/rimmandrake/dispatcher",
@@ -70,15 +42,13 @@
   "_doc": "ops_health.py (PIPELINE_BUDGET_ENFORCE_HEAL_THYSELF): Operations' ONE verdict, health.json beside status.json, read by relentless.py to order its pool. Owner 2026-11-03: 'Yes relentless fixes itself first.'; 'I don't want relentless to own assessing system health. I want it to ask \"the system\" for its health assessment, and that belongs to the operations component.' An SLI is bad past its line; its budget is spent at allowed_bad_h bad hours in window_h (design idea 5: 'When any SLI is over budget for 24 h, Relentless staffs only pipeline items until it recovers'). Spent: degraded, content paused. system_words/system_prefixes classify an open item as the system's own (no game mod named). Words match the id's SUBJECT only, never its twist; a system_words_lead word counts only as the first word (HOSE_NET_SELFTEST is a mod's test). guard_exempt_kinds: alarm kinds no test can guard, a spent account is weather (alarm_census.recurring).",
   "max_age_min": 45, "window_h": 48, "allowed_bad_h": 24, "max_gap_h": 1.0,
   "slis": [
-   {"name": "infra_share", "scope": "game", "key": "relentless.live_measured_pct", "unit": "%", "op": "<", "x": 40, "incident": true, "why": "idea 1 proxy: under 40% of recent live runs gave PASS or FAIL, the rest said nothing (INFRA or UNMEASURED)"},
    {"name": "nightly_reds", "scope": "system", "key": "testing.nightly_unparked_reds", "unit": "nightly reds no known-red entry parks", "was": [{"key": "testing.nightly_news", "unit": "nightly reds not on the known-red list, and entries past their age"}], "op": ">", "x": 25, "why": "idea 4: open nightly reds nobody listed; more than 25 is a suite nobody can read. `was`: testing.nightly_news meant this until RED_COP_BUILD_NO_ORPHAN_REDS narrowed it to the list's own faults (OPS_ERROR_BUDGET_DIAGNOSE_CIRG)"},
-   {"name": "churn_items", "scope": "system", "key": "relentless.churn_items", "unit": "items returned in the churn window with >= churn_returns returns or one failure class repeated", "op": ">", "x": 10, "incident": true, "why": "OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: 47 items churned on 2026-11-04 (broken tests read as broken work) and no SLI said so; more than 10 items failing again and again is the instrument, not the work"},
-   {"name": "returned_tokens_pct", "scope": "system", "key": "relentless.returned_tokens_pct", "unit": "% of weighted tokens over tokens_window_h on attempts that were returned", "op": ">", "x": 50, "incident": true, "why": "OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: over half of the day's tokens bought attempts that came back (66-76% on 2026-11-02..04, read 2026-11-04)"},
    {"name": "tmp_headroom", "scope": "integrity", "key": "disk.tmp_free_gb", "unit": "GB free on /tmp", "op": "<", "x": 2, "why": "idea 3: /tmp headroom at launch"},
    {"name": "root_headroom", "scope": "integrity", "key": "disk.root_free_gb", "unit": "GB free on /", "op": "<", "x": 50, "why": "idea 3: VHDX headroom"},
    {"name": "pool_headroom", "scope": "integrity", "key": "disk.pool_gb", "unit": "GB the pool holds (cap 80.0)", "op": ">", "x": 76.0, "why": "idea 3: pool within 5% of its 80 GB cap (line raised from 70 on 2026-11-18)"}
   ],
-  "unmeasured_slis": {"infra_tokens_day": "idea 1/5: tokens spent on INFRA or harness-caused work per day; no instrument tags spend by cause yet. Its ceiling is read: returned_tokens_pct (relentless.returned_tokens_day, returned work of any cause)"},
+  "unmeasured_slis": {"infra_share": "the share of live proof runs that measured something rather than infra; its instrument was the retired Relentless tick's live/runs.jsonl (relentless.live_measured_pct, gone 2026-11-18) and nothing in the Maturation Pipeline writes one yet.",
+    "infra_tokens_day": "idea 1/5: tokens spent on INFRA or harness-caused work per day; no instrument tags spend by cause yet."},
   "_incident_doc": "an SLI with incident: true opens Operations' ONE churn/instrument alarm (health.incident_slis, OPS_CHURN_DIAGNOSE_RETURNED_WORK) the pass it reads bad, never after allowed_bad_h: the budget still spends at 24 h, the alarm does not wait for it",
   "_system_rank": "Owner 2026-11-03: \"Please work any machine fixing item right now in relentless: the escalation route we discussed, system fixing tickets, etc... all of that should be max priority before content work.\" Operations' hand order over the classifier: throughput stoppers, then alarms and restarts, then the families. An entry ending in * is a family. not_system: ids whose words only look like machinery (a mod's pool, ledger, budget) and mods' test polish.",
   "system_rank": ["TICK_SPEED_FIX_GAME_IDLES_WAITING", "RELENTLESS_BREAKER_DIAGNOSE_UNREADABLE_TREE", "RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS", "EXPEDITE_LANE_BUILD_JUMPS_THE_GAME_QUEUE", "CONDUCTOR_REBOOT_FIX_THREE_WASTED_MINUTES", "STEVE_BRAKE_FIX_KNOWN_CAUSES_RELEASE", "OPS_STAFFING_RESTORE_UNDER_BUDGET", "RED_COP_BUILD_NO_ORPHAN_REDS", "OPS_NIGHTLY_RED_*", "OPS_ERROR_BUDGET_*", "NIGHTLY_COP_FIX_RED_*", "NIGHTLY_REDS_FIX_REMAINING_REAL_FAILS", "NIGHTLY_SELFTESTS_*", "NIGHTLY_SWEEP_HARDEN_DIED_AT_SIXTY", "RELENTLESS_LINE_FIX_ONE_MOD_CLOGS_ALL", "RELENTLESS_DEPLOY_WIRE_NOBODY_MAY_APPLY", "RELENTLESS_HOLD_FIX_TOOLING_ISNT_OWNERS", "RELENTLESS_LIVE_REPAIR_QUITS_BEFORE_THE_LOAD", "RELENTLESS_START_SILENCE_REFUSED_RETRY_LOOP", "RELENTLESS_FIX_PARKED_ITEM_STILL_STAFFED", "RELENTLESS_GAME_FIX_HOLD_LIFT_FORGETS_GAME", "BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT", "POOL_FIX_STATE_COMMITS_PIN_CLONES", "POOL_STRANDED_FIX_LANDED_COMMITS_STILL_HOWL", "POOL_STRANDS_SALVAGE_BLOCKED_HOLD_THE_BAG", "STEVE_COMPANION_WIRE_STAGE_HAND_CRANKED", "STEVE_LANE_*", "STEVE_FAULT_MONITOR_ONSET_BEFORE_RESULTS", "SELFTEST_ALARM_FIX_ESCAPES_INTO_REAL_LOG", "REPEAT_ALARM_ENFORCE_GUARD_OR_STAY_OPEN", "ALARM_REPEAT_FIX_BREAK_ON_WORSE", "ALARM_CENSUS_EXTEND_BUILT_NAMES_SLIP_PAST", "OPS_*", "CALL_DEADLINES_ENFORCE_130_OPEN_ENDED", "SEAT_RESTART_*", "SEAT_GOODBYE_*", "CONDUCTOR_GOODBYE_FIX_QUEUED_WAIT_SKIPPED", "CONDUCTOR_PROMPT_WIRE_SEND_IT_AGAIN_LINE", "DISPATCHER_*", "STEVE_STEWARD_FIX_PLANNED_OUTAGE_CRIED_WOLF", "FLEETWATCH_UNIT_REWIRE_RUNS_A_STALE_SEAT", "FOUNDRY_SEAT_RETIRE_ALARM_STILL_MOURNING", "FOUNDRY_CLONE_UNITS_MIGRATE_TO_BENCH", "PUBLISH_ALARM_HARDEN_FRESH_LOCK_IS_TRAFFIC", "PULSE_DEPLOY_*", "TIMER_ALARM_SILENCE_TEST_LITTER_COUNTED", "SCRATCH_STRANDED_FIX_SHARDS_CRY_WOLF", "PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED", "RELENTLESS_*", "SELFTEST_*", "TESTQ_*"],
@@ -172,136 +142,6 @@
    }
   },
   "_doc": "OP1 in operating_requirements_2026-11-01.md: the watched metrics' classes as data, read by the collectors and by ops_watch.run, which stamps class, owner, ack_within_min and max_age_min on each reading. A metric fills only the classes it can act on, of idle, sane, distressed, emergency (roles.* alone: under, sane; under rings nothing, RO1 is report-only); every class is one of {\"at_least\": n}, the class of a reading from n up to the next class's n, or {\"in\": [text]} with one {\"otherwise\": true}. owner: who answers for it. ack_within_min: required with distressed or emergency. max_age_min: an older source reads UNMEASURED. idle_if: this metric reads idle while any metric named here does. why: a range change rewrites it. `ops_watch.py lint` and load_rules refuse a metric short of any of these. classes: a limit lives here and nowhere else",
-  "relentless.why": {
-   "owner": "Operations",
-   "max_age_min": 10,
-   "why": "A stop somebody chose reads idle, never distressed: pause, no budget. Anything else is the belt filling. The day's spend ceiling stops nothing since owner 2026-11-02 (TOKEN_LIMITS_TAME_BARK_NO_BITE: token limits advisory everywhere), so it is no reason here.",
-   "classes": {
-    "idle": {
-     "in": [
-      "paused",
-      "budget 0",
-      "share 0"
-     ]
-    },
-    "sane": {
-     "otherwise": true
-    }
-   }
-  },
-  "relentless.ready": {
-   "owner": "Operations",
-   "max_age_min": 10,
-   "why": "With nothing ready a silent belt has no work to be late on: no_live_min and progress_age_min read idle.",
-   "classes": {
-    "idle": {
-     "at_least": 0
-    },
-    "sane": {
-     "at_least": 1
-    }
-   }
-  },
-  "relentless.tick_age_s": {
-   "owner": "Operations",
-   "max_age_min": 10,
-   "why": "staffing.json and reading.json carry their write time, so the age is one tick plus the timer's 15 s pause. A deploy plan inside the tick had grown ticks to 3-8 min with outliers to the unit's 20 min kill; its mod gap now reads --gate (35 s, not 260 s; RELENTLESS_TICK_TUNE_FIFTEEN_MINUTE_NAPS). Ticks on 2026-11-06 ran a median 320 s, worst 626 s, so tick_steps_budget_s 240 and tick_lease_budget_s 360 bound them from the tick's start (OPS_RELENTLESS_READING_RESTORE_IUUR). Past 10 the tick is slow or dead: its journal row's phases and slow_steps name the step.",
-   "classes": {
-    "sane": {
-     "at_least": 0
-    }
-   }
-  },
-  "relentless.under_min": {
-   "owner": "Operations",
-   "ack_within_min": 30,
-   "max_age_min": 10,
-   "idle_if": [
-    "relentless.why"
-   ],
-   "why": "Distressed line equals run_rules.json staffing.alarm_after_min (selftest_relentless_watch holds them equal). Emergency at 2 h, four times the distressed line: the 2026-11-01 jam ran 6 h, so this class would have stood for its last 4.",
-   "classes": {
-    "sane": {
-     "at_least": 0
-    },
-    "distressed": {
-     "at_least": 30
-    },
-    "emergency": {
-     "at_least": 120
-    }
-   }
-  },
-  "relentless.breaker_open_min": {
-   "owner": "Operations",
-   "ack_within_min": 30,
-   "max_age_min": 10,
-   "idle_if": [
-    "relentless.why"
-   ],
-   "why": "The 2026-11-01 jam ran 6 h behind an open breaker. Emergency at 2 h, four times the distressed line: the 2026-11-01 jam ran 6 h, so this class would have stood for its last 4.",
-   "classes": {
-    "sane": {
-     "at_least": 0
-    },
-    "distressed": {
-     "at_least": 30
-    },
-    "emergency": {
-     "at_least": 120
-    }
-   }
-  },
-  "relentless.no_live_min": {
-   "owner": "Operations",
-   "ack_within_min": 30,
-   "max_age_min": 10,
-   "idle_if": [
-    "relentless.why",
-    "relentless.ready"
-   ],
-   "why": "Minutes with nothing live; the 2026-11-01 jam held nothing live for 6 h. Its max_age_min bounds staffing.jsonl, the record it is counted from.",
-   "classes": {
-    "sane": {
-     "at_least": 0
-    },
-    "distressed": {
-     "at_least": 5
-    }
-   }
-  },
-  "relentless.progress_age_min": {
-   "owner": "Operations",
-   "ack_within_min": 30,
-   "max_age_min": 45,
-   "idle_if": [
-    "relentless.why",
-    "relentless.ready"
-   ],
-   "why": "The longest gap between progress acts outside the jam was 25.4 min (2026-10-31 to 11-01), and a worker's run may last 60.",
-   "classes": {
-    "sane": {
-     "at_least": 0
-    },
-    "distressed": {
-     "at_least": 45
-    }
-   }
-  },
-  "relentless.blind": {
-   "owner": "Operations",
-   "ack_within_min": 30,
-   "max_age_min": 10,
-   "why": "Any source not seen: nothing can say the belt is sane until it is seen again. Agrees with the relentless.blind target.",
-   "classes": {
-    "sane": {
-     "at_least": 0
-    },
-    "distressed": {
-     "at_least": 1
-    }
-   }
-  },
   "disk.scratch_outside_cap": {
    "owner": "Operations",
    "ack_within_min": 30,
@@ -501,7 +341,7 @@
   "sigma_floor_rel": 0.05,
   "sigma_floor_abs": 0.5,
   "keys": ["*"],
-  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.tmp_*", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "disk.scratch_outside_*", "relentless.*", "seats.*", "roles.*"]
+  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.tmp_*", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "disk.scratch_outside_*", "seats.*", "roles.*"]
  },
  "run": {
   "_doc": "n consecutive same-direction changes (equal neighbours collapse) in the KPI series named here; a drift the band cannot see yet.",
@@ -511,7 +351,7 @@
  "silent": {
   "_doc": "a series that was MEASURED within the baseline and has not been MEASURED for its hours: the instrument went blind. A tokentalk.<group>.share whose group token_talk no longer lists (seats, roles) is retired, never silent (ops_watch.tt_retired).",
   "default_h": 2,
-  "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3, "tokentalk.*": 6, "relentless.*": 1, "seats.*": 1},
+  "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3, "tokentalk.*": 6, "seats.*": 1},
   "keys": ["*"],
   "skip": ["*._collector", "roles.*"]
  },
@@ -653,9 +493,6 @@
    "why": "a lent account is judged by its loan, not its week (LENT_ALARM_MEASURE_THE_LOAN_NOT_WEEK): below 1 its allowance runs out before the lent window ends; 0 is this machine on a closed loan"},
   {"key": "codex.runway", "op": "<", "value": 1.0, "alarm": true, "worse": {"factor": 2}, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],
    "why": "owner brief 2026-10-26: Codex runs out before its weekly reset"},
-  {"key": "relentless.distressed", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_DISTRESS", "name": "OPS_RELENTLESS_UNSTICK", "marks": ["MEASURED"], "title_field": "cause",
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "OP2, DI2: the belt ran 6 h behind an open breaker on 2026-11-01 with 382 ready, and the alarm that named it reached only a note. The cause is in the title and in relentless.cause; the limits are in the ranges block"},
   {"key": "disk.scratch_outside_distressed", "op": ">", "value": 0, "alarm": true, "tag": "SCRATCH_OUTSIDE_CAP", "name": "OPS_SCRATCH_OUTSIDE_CAP_DRAIN", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: helper clones are piling up where the pool cap cannot see them. The count is in the title; the limit is in the ranges block; the source is ~/.local/state/rm-scratch-reap/sanity.json"},
@@ -689,37 +526,11 @@
   {"key": "seats.blind", "op": ">", "value": 0, "alarm": true, "tag": "SEATS_BLIND", "name": "OPS_SEATS_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: the Dispatcher's state or journal is missing, frozen or disagreeing, or the collector did not run. Nothing can say the seats are sane until it is seen again; the cause names which source"},
-  {"key": "relentless.books_behind_min", "op": ">", "value": 30, "alarm": true, "worse": {"factor": 2}, "tag": "RELENTLESS_BOOKS_STALE", "name": "OPS_RELENTLESS_BOOKS_UNSTICK", "marks": ["MEASURED"],
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "BOOKS_STALE_FIX_OPS_CANNOT_SEE_IT: the books clone runs the engine; behind origin the belt runs stale code while every other reading is sane (jammed 2026-11-02/03 by dirty shard reorders). The age is that of the oldest commit it lacks; normal levelling takes one 3 min tick"},
-  {"key": "relentless.jam_unnamed", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_JAM_UNNAMED", "name": "OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND", "marks": ["MEASURED"], "title_field": "first",
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS (owner 2026-11-03: \"absolutely, fix the class should be the rule.\"): the belt jammed for a reason no class in src/RimMandrake/rimflow/jam_classes.json names. Name the class there (plain sentence, detector, remedy or why none is safe, an example from the journal); jam_classes.py lint holds the row. Clears when the class is added or the jam leaves window_days"},
-  {"key": "relentless.jam_repeat", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_JAM_REPEAT", "name": "OPS_JAM_CLASS_FIX_AGAIN", "marks": ["MEASURED"], "title_field": "first",
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS: no class jams twice. A class in jam_classes.json jammed after its fixed.at, so its fix did not hold: fix the class again (not the instance) and move fixed.at to the new fix. Clears then, or when the jam leaves window_days"},
-  {"key": "relentless.checks_lost_items", "op": ">", "value": 2, "alarm": true, "worse": {"factor": 2}, "tag": "RELENTLESS_CHECKERS_DYING", "name": "OPS_CHECKER_DEATHS_DIAGNOSE_SILENT", "marks": ["MEASURED"], "title_field": "first",
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "CHECKER_DEATHS_ALARM_BUILD_29_WENT_UNHEARD: on 2026-11-03 every walled checker died at launch (EACCES under its own wall) for 2.5 h, 29 of 29, and each item read only its own checker_lost. Three or more different items losing a checker inside an hour is one cause on the checker's launch or wall, not three items: read an rm-relentless-check .err of the items named and fix the launch. The 2026-11-02..05 journal swept at 15 min crossed only inside that incident (from 20:15Z, 2 h before it was filed by hand); outside it the most was 2"},
-  {"key": "relentless.checker_deaths_run", "op": ">", "value": 2, "alarm": true, "worse": {"factor": 2}, "tag": "RELENTLESS_CHECKER_RUN_NO_VERDICT", "name": "OPS_CHECKER_RUN_DIAGNOSE_NO_VERDICT", "marks": ["MEASURED"], "title_field": "first",
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "CHECKER_DEATHS_MONITOR_29_NOBODY_NOTICED: on 2026-11-03 every blind checker died at launch for 2.5 h with no verdict between and no output, and no alarm said so. Three or more different items whose checkers died in a row with no verdict given in between (a verdict, or a death that wrote output, ends the run) is the checker's launch or wall: read the err tail on the point and an rm-relentless-check .err of the items named. The 2026-11-01..04 journal swept at 15 min crossed only inside that incident (4 items at 20:15Z rising to 17 items, 30 deaths, at 22:30Z); outside it the most was 2"},
-  {"key": "relentless.live_measured_pct", "op": "<", "value": 25, "alarm": true, "worse": {"factor": 2}, "tag": "RELENTLESS_LIVE_UNMEASURED", "name": "OPS_RELENTLESS_LIVE_MEASURE_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "LIVE_RUNS_FIX_MOSTLY_MEASURE_NOTHING: 25 of 263 live runs (9.5%) gave a PASS or FAIL on 2026-11-02/03, most of the rest one refusal or one unmeasured cause repeated every round, while every other reading was sane. Under a quarter of the recent runs measuring means the live tier spends the bridge on runs that cannot judge; the cause names the top repeats. Read live/runs.jsonl under RELENTLESS_ROOT"},
-  {"key": "relentless.blind", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_BLIND", "name": "OPS_RELENTLESS_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "OP2: a relentless source is missing, torn, frozen, or the collector did not run. Nothing can say the belt is sane until it is seen again; the cause names which source"},
   {"key": "steve.seats_absent_min", "op": ">", "value": 10, "alarm": true, "worse": {"factor": 2}, "tag": "STEVE_SEATS", "name": "OPS_STEVE_SEATS_RESTORE", "marks": ["MEASURED"], "title_field": "said",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "owner 2026-10-31: SteveDesktop is ours and no step may need a hand at its keyboard. The logon task \\Claude Fleet returns both seats in about 2 min after a boot; past 10 min they are not coming back alone"},
   {"key": "steve.unowned_stall_min", "op": ">", "value": 30, "alarm": true, "worse": {"factor": 2}, "tag": "STEVE_STALL", "name": "OPS_STEVE_UNSTICK", "marks": ["MEASURED"],
    "why": "owner brief: Steve lane stalled over 30 min. Counted only where the steward is not already escalating it (a fault with no steward incident, or the steward AND its watcher both silent)"},
-  {"key": "relentless.churn_item.*", "op": ">", "value": 0, "alarm": true, "worse": {"add": 1}, "tag": "CHURN_ITEM", "name": "OPS_CHURN_DIAGNOSE_ITEM", "subject_field": "subject", "subject_prefix": "OPS_CHURN_DIAGNOSE", "marks": ["MEASURED"], "title_field": "said",
-   "why": "CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER, owner 2026-11-05: 'Please maintain a very tight awareness for churning items please. This needs to be a constant operations monitor, deterministic: what items are just bouncing around the build pipeline, costing more and more, or stuck in testing a very very long time without progress. It raises alarms for operations to look into the issue.' One fixed OPS_ item per churning item (its name from the item's first word and id), raised for Operations; the reading names the item and its reasons (bouncing, spend rising, stuck). The work: read that item's attempts.jsonl and state.json under the relentless store, find why it does not land (a broken test, unreachable evidence, a wrong contract, a game lane that never runs) and fix or file the cause; never only retry it. A worse reading (one more reason) re-raises; it clears when the item stops churning, lands or retires"},
-  {"key": "health.incident_slis", "op": ">", "value": 0, "alarm": true, "worse": {"add": 1}, "tag": "CHURN_OR_BLIND", "name": "OPS_CHURN_DIAGNOSE_RETURNED_WORK", "marks": ["MEASURED"], "title_field": "cause",
-   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
-   "why": "OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS, owner 2026-11-04: 'Where was operations in all this?' 47 items churned overnight on broken tests and unreachable evidence (~157M weighted tokens) while infra_share read 22.5% for 7.75 h and only spent its budget at 24 h. One fixed item, filed the pass an incident SLI (health slis incident: true) reads bad: an OPS_ item starts an Operations alarm run, the Conductor gets the line, a repeat reopens it. The work: find which test, harness or evidence route the returns share (health.json budget, relentless.churn_items x.first and x.last_fail, relentless.returned_tokens_pct x.by_end: returned spend per ending/lane) and fix or file it; never retry the items"},
   {"key": "steve.incident_unclaimed_min", "op": ">", "value": 30, "alarm": true, "worse": {"factor": 2}, "tag": "STEVE_INCIDENT_UNCLAIMED", "name": "OPS_STEVE_UNSTICK_UNCLAIMED", "marks": ["MEASURED"],
    "why": "owner 2026-10-28 15:50 PDT: 'Keep SteveDesktop busy. Man I'm tired of saying that.' The lane sat PAUSED 21 min under an open STEVE_LANE_UNSTICK_* item nobody claimed and steve.unowned_stall_min stayed 0 (the steward had escalated). 30 min, not the first 10 (OPS_STEVE_UNSTICK_UNCLAIMED_FDBF): the item is born at the steward's T+10 and its T+30 wake claims it at age 20 to 25 min, so 10 alarmed on ladders that worked and a lane that came back by itself (20.3, 22.2, 17.8) and 30 keeps every one that failed (38.9, 55.8, 348.8). Must stay above the ladder gap (L2_S - L1_S, testq/steward.py), selftest_ops_watch checks it"},
   {"key": "steve.invalid_share_24h", "op": ">=", "value": 0.15, "alarm": true, "worse": {"add": 0.1}, "tag": "STEVE_INVALID_SHARE", "name": "OPS_STEVE_DIAGNOSE_INVALID_SHARE", "marks": ["MEASURED"],

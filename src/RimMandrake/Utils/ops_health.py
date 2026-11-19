@@ -28,7 +28,7 @@ ops_watch.run() calls publish() every pass; it writes $RM_OPS_WATCH_DIR/health.j
   INPUTS   every verdict names what it was made from: rules_sha256 (canonical JSON of the rules ops_watch passed), the
            collector's git sha (the clone this file runs from), the ledger watermark (events, last ts/tsn; None = no
            ledger this pass). Same inputs -> byte-identical verdict, so a strange verdict is explained by re-running it.
-  INCIDENT an SLI with `incident: true` (infra_share, churn_items, returned_tokens_pct) is listed in `incident.bad` the pass it
+  INCIDENT an SLI with `incident: true` (none since the retired tick's three went, 2026-11-18) is listed in `incident.bad` the pass it
            reads bad, budget or no budget, and in `incident.held` while it reads ok with its budget spent (a dip over the
            line is not recovery: RELAPSE_CHURN_FIX_DIED_TWICE): ops_watch turns that into ONE fixed alarm item (health.incident_slis,
            OPS_CHURN_MEASURE_RETURNS_ARE_NOT_PROGRESS: 47 items churned a night while infra_share sat bad 7.75 h of its 24).

@@ -169,14 +169,16 @@ def readings(table, status, now):
     return bad, True, seen
 
 
+REMOVED_FAMILIES = ("relentless",)    # ops_watch.REMOVED_FAMILIES: collectors taken out (relentless: 2026-11-18)
+
+
 def retired_sane(status, metric):
-    """A retired belt's reading that stopped coming (its churn alarm left alarms.json, so ops_watch no longer writes the
-    key) is the retirement, not a blind instrument, as ops_watch.andon reads it. -> True for a `relentless.` key while
-    `relentless.retired` reads 1, else None. Without it an incident holding such a key never closes on its readings
-    (work_belt-20261101160557: 56 churn keys absent, at his rung for good after the Relentless retirement)."""
+    """A reading of a family whose collector was removed (ops_watch no longer writes any of its keys) is the removal, not a
+    blind instrument, as ops_watch.andon reads it. -> True for such a key absent from the status, else None. Without it an
+    incident holding such a key never closes on its readings (work_belt-20261101160557: 56 churn keys absent, at his rung
+    for good after the Relentless retirement)."""
     pts = (status or {}).get("points") or {}
-    p = pts.get("relentless.retired") or {}
-    if metric.startswith("relentless.") and p.get("m") == "MEASURED" and p.get("v") == 1:
+    if metric.split(".", 1)[0] in REMOVED_FAMILIES and metric not in pts:
         return True
     # a nightly red group's key exists only while the group is red: absent while the collector reports the night (or the
     # held nightly reads 0) is the group cleared, as ops_watch.andon reads it (testing-20261101162433: 145 such keys)

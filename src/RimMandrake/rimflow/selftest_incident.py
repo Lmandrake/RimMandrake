@@ -52,14 +52,10 @@ for tg in RULES["targets"]:
     if tg.get("conductor_log"):
         tg["conductor_log"] = OPS_LOG
 BASE = {"accounts.acct.runway": 9.0, "accounts.acct.week_left_pct": 90.0}
-SANE = {"relentless.under_min": 0, "relentless.breaker_open_min": 0, "relentless.no_live_min": 0, "relentless.progress_age_min": 0,
-        "relentless.blind": 0, "relentless.ready": 5, "relentless.why": "running", "relentless.distressed": 0,
-        "seats.idle_with_work_min": 0, "seats.blind": 0, "seats.distressed": 0, "seats.paused": 0, "disk.pool_breach": 0}
+SANE = {"seats.idle_with_work_min": 0, "seats.blind": 0, "seats.distressed": 0, "seats.paused": 0, "disk.pool_breach": 0}
 # ops_watch.run writes a family's unmeasured blind key as 1, and this rig stubs every collector: a blind key landed later is sane here too
 SANE.update({t["key"]: 0 for t in RULES["targets"] if t.get("alarm") and t["key"].endswith("blind")})
-SEVERE = {"relentless.under_min": 150, "relentless.breaker_open_min": 150, "relentless.no_live_min": 150,
-          "relentless.progress_age_min": 150, "relentless.blind": 1, "relentless.distressed": 1,
-          "seats.idle_with_work_min": 200, "seats.blind": 1, "seats.distressed": 1, "disk.pool_breach": 1}
+SEVERE = {"seats.idle_with_work_min": 200, "seats.blind": 1, "seats.distressed": 1, "disk.pool_breach": 1}
 
 
 def check(name, cond, detail=""):
@@ -164,23 +160,23 @@ class Rig:
 
 def test_silent_reader():
     r = Rig("silent")
-    r.tick(T0, relentless__under_min=40)              # distressed
+    r.tick(T0, seats__idle_with_work_min=40)              # distressed
     x = r.inc()
     check("a distressed reading opens one told row with cause, metric, reader, told_at, ack_due, recover_by",
           len(x) == 1 and x[0]["cause"] == "work_belt" and x[0]["metric"] and x[0]["reader"] == "Operations" and x[0]["told_at"]
           and x[0]["ack_due"] and "recover_by" in x[0], x)
-    r.tick(T0 + 29 * M, relentless__under_min=69)
+    r.tick(T0 + 29 * M, seats__idle_with_work_min=69)
     check("still rung 0 before ack_within_min", r.inc()[0]["rung"] == 0, r.inc())
-    r.tick(T0 + 30 * M, relentless__under_min=70)
+    r.tick(T0 + 30 * M, seats__idle_with_work_min=70)
     check("reader silent: Conductor on time at 30 min", r.inc()[0]["rung"] == 1, r.inc())
     log = open(r.log).read()
     check("the Conductor rung writes its log and asks a quick run", "INCIDENT" in log and (r.asked("Conductor") or r.runs), log)
-    r.tick(T0 + 60 * M, relentless__under_min=100)
+    r.tick(T0 + 60 * M, seats__idle_with_work_min=100)
     check("Operations-read: no fresh Operations rung at 60, the Conductor holds it (same role not asked twice)",
           r.inc()[0]["rung"] == 1 and not [e for e in r.evs("escalated") if e.get("rung") == 2], r.evs("escalated"))
-    r.tick(T0 + 239 * M, relentless__under_min=100)
+    r.tick(T0 + 239 * M, seats__idle_with_work_min=100)
     check("distressed stays from him until 4 h", r.inc()[0]["rung"] == 1 and not r.snap()["owner"], r.snap())
-    r.tick(T0 + 240 * M, relentless__under_min=100)
+    r.tick(T0 + 240 * M, seats__idle_with_work_min=100)
     check("distressed reaches him at 4 h, straight from the Conductor", r.inc()[0]["rung"] == 3 and len(r.snap()["owner"]) == 1
           and [e["rung"] for e in r.evs("escalated")] == [1, 3], (r.snap(), r.evs("escalated")))
 
@@ -216,15 +212,15 @@ def test_chain_dedupe():
           "incident-line" in IN.ring_of(t, inc("BENCH", 2), T0)["text"]
           and "incident-line" not in IN.ring_of(t, inc("Operations", 0), T0)["text"])
     r = Rig("dedupe_emergency")                       # Operations-read, emergency, every agent silent, through step()
-    r.tick(T0, relentless__under_min=150)
+    r.tick(T0, seats__idle_with_work_min=150)
     check("an emergency Operations-read incident opens with Operations as reader", r.inc()[0]["reader"] == "Operations", r.inc())
     for m in (30, 45, 59):
-        r.tick(T0 + m * M, relentless__under_min=150)
+        r.tick(T0 + m * M, seats__idle_with_work_min=150)
     check("emergency: Conductor at its ack minute, no fresh Operations rung, not him before 60",
           r.inc()[0]["rung"] == 1 and not r.snap()["owner"] and [e["rung"] for e in r.evs("escalated")] == [1],
           (r.inc(), r.evs("escalated")))
     check("emergency: the Conductor rung asked for his line", r.asked("Conductor") or r.runs, r.runs)
-    r.tick(T0 + 60 * M, relentless__under_min=150)
+    r.tick(T0 + 60 * M, seats__idle_with_work_min=150)
     check("emergency: him at 60, straight from the Conductor", r.inc()[0]["rung"] == IN.OWNER_RUNG and len(r.snap()["owner"]) == 1
           and [e["rung"] for e in r.evs("escalated")] == [1, IN.OWNER_RUNG], (r.snap(), r.evs("escalated")))
 
@@ -233,11 +229,11 @@ def test_emergency_all_dead():
     r = Rig("dead")
     r.dead = True
     PP.STATE = type(PP.STATE)(r.root + "/phone.json")
-    r.tick(T0, relentless__under_min=150)
+    r.tick(T0, seats__idle_with_work_min=150)
     for m in (30, 45):
-        r.tick(T0 + m * M, relentless__under_min=150)
+        r.tick(T0 + m * M, seats__idle_with_work_min=150)
     check("no banner before 60", not r.snap()["owner"], r.snap())
-    r.tick(T0 + 60 * M, relentless__under_min=150)
+    r.tick(T0 + 60 * M, seats__idle_with_work_min=150)
     own = r.snap()["owner"]
     check("all agents dead, emergency: the template on his banner at 60 min, marked unread",
           len(own) == 1 and own[0]["unread"] and "fixed template" in own[0]["line"], own)
@@ -256,28 +252,28 @@ def test_emergency_all_dead():
     amber = dict(rows[0], kind="amber", key="other")
     check("amber never reaches the phone", PP.send(amber, transport=t) is False and len(sent) == 1, sent)
     r2 = Rig("line")
-    r2.tick(T0, relentless__under_min=150)
+    r2.tick(T0, seats__idle_with_work_min=150)
     i = r2.inc()[0]["id"]
     for m in (30, 45):
-        r2.tick(T0 + m * M, relentless__under_min=150)
+        r2.tick(T0 + m * M, seats__idle_with_work_min=150)
     IN.write_line(i, "Operations", "Belt jammed on the pool, Operations restarting it.", now=T0 + 50 * M)
     check("his line is no ack", not r2.inc()[0].get("acked_t"), r2.inc())
-    r2.tick(T0 + 60 * M, relentless__under_min=150)
+    r2.tick(T0 + 60 * M, seats__idle_with_work_min=150)
     own = r2.snap()["owner"]
     check("the last agent's line is the one he sees, read", own and own[0]["line"].startswith("Belt jammed") and not own[0]["unread"], own)
 
 
 def test_ack_then_killed():
     r = Rig("ack")
-    r.tick(T0, relentless__under_min=40)
+    r.tick(T0, seats__idle_with_work_min=40)
     i = r.inc()[0]["id"]
     IN.ack(i, "OPERATIONS", "investigating", now=T0 + 5 * M)
-    r.tick(T0 + 31 * M, relentless__under_min=71)
+    r.tick(T0 + 31 * M, seats__idle_with_work_min=71)
     check("an ack holds the ack clock", r.inc()[0]["rung"] == 0 and r.inc()[0]["recover_by"], r.inc())
     r.dead = True                                       # reader killed; the fault stays
-    r.tick(T0 + 64 * M, relentless__under_min=104)
+    r.tick(T0 + 64 * M, seats__idle_with_work_min=104)
     check("before recover_by it waits", r.inc()[0]["rung"] == 0, r.inc())
-    r.tick(T0 + 66 * M, relentless__under_min=106)
+    r.tick(T0 + 66 * M, seats__idle_with_work_min=106)
     x = r.inc()[0]
     check("acked 'investigating', fault stays, reader killed: escalates anyway", x["rung"] == 1 and not x.get("acked_t"), x)
     e = r.evs("escalated")
@@ -326,7 +322,7 @@ def test_one_outage():
     r.tick(T0, **{k.replace(".", "__"): v for k, v in SEVERE.items()})
     x = r.inc()
     bad = sorted(x[0]["metrics"]) if x else []
-    check("one outage tripping 10 metrics: one incident", len(x) == 1 and len(bad) >= 10, (len(x), bad))
+    check("one outage tripping 4 metrics: one incident", len(x) == 1 and len(bad) >= 4, (len(x), bad))
     check("one run", len(r.alarm_runs()) == 1, r.alarm_runs())
     r.tick(T0 + 120, **{k.replace(".", "__"): v for k, v in SEVERE.items()})
     r.tick(T0 + 240, **{k.replace(".", "__"): v for k, v in SEVERE.items()})
@@ -440,27 +436,27 @@ def test_denied_goes_to_conductor_first():
 
 def test_relapse():
     r = Rig("relapse")
-    r.tick(T0, relentless__under_min=40)
+    r.tick(T0, seats__idle_with_work_min=40)
     i = r.inc()[0]["id"]
-    r.tick(T0 + 10 * M, relentless__under_min=0)
+    r.tick(T0 + 10 * M, seats__idle_with_work_min=0)
     check("sane is not closed", r.inc()[0]["state"] == "open" and r.inc()[0]["sane_since"], r.inc())
-    r.tick(T0 + 40 * M, relentless__under_min=0)
+    r.tick(T0 + 40 * M, seats__idle_with_work_min=0)
     check("a rung does not move on sane readings", r.inc()[0]["rung"] == 0, r.inc())
-    r.tick(T0 + 69 * M, relentless__under_min=0)
+    r.tick(T0 + 69 * M, seats__idle_with_work_min=0)
     check("not closed before sustain_min", r.inc()[0]["state"] == "open", r.inc())
-    r.tick(T0 + 71 * M, relentless__under_min=0)
+    r.tick(T0 + 71 * M, seats__idle_with_work_min=0)
     check("closes on the sustained reading, no ack needed", r.inc()[0]["state"] == "closed", r.inc())
-    r.tick(T0 + 2 * H, relentless__under_min=40)
+    r.tick(T0 + 2 * H, seats__idle_with_work_min=40)
     x = r.inc()
     check("relapse inside relapse_h: same incident reopens", len(x) == 1 and x[0]["id"] == i and x[0]["state"] == "open"
           and x[0]["reopens"] == 1 and x[0]["rung"] == 0, x)
-    r.tick(T0 + 2 * H + 10 * M, relentless__under_min=0)
-    r.tick(T0 + 2 * H + 15 * M, relentless__under_min=50)
+    r.tick(T0 + 2 * H + 10 * M, seats__idle_with_work_min=0)
+    r.tick(T0 + 2 * H + 15 * M, seats__idle_with_work_min=50)
     check("a dip does not reset the told time", r.inc()[0]["sane_since"] is None and len(r.inc()) == 1, r.inc())
-    r.tick(T0 + 3 * H + 30 * M, relentless__under_min=0)
-    r.tick(T0 + 4 * H + 40 * M, relentless__under_min=0)
+    r.tick(T0 + 3 * H + 30 * M, seats__idle_with_work_min=0)
+    r.tick(T0 + 4 * H + 40 * M, seats__idle_with_work_min=0)
     check("closed again", r.inc()[0]["state"] == "closed", r.inc())
-    r.tick(T0 + 12 * H, relentless__under_min=40)
+    r.tick(T0 + 12 * H, seats__idle_with_work_min=40)
     check("past relapse_h it is a new incident", len(r.inc()) == 2, r.inc())
 
 
@@ -501,14 +497,14 @@ def test_ledger_unwritable():
     if os.path.exists(IN.told_path()):
         os.remove(IN.told_path())
     os.mkdir(IN.told_path())                 # no file can be read or written there
-    r.tick(T0 + 120, relentless__under_min=40)
+    r.tick(T0 + 120, seats__idle_with_work_min=40)
     check("a ledger that does not read alarms by the Conductor log", "incident ledger is torn" in open(r.log).read(), open(r.log).read())
     r = Rig("snapfail")
     r.tick(T0)
     os.remove(IN.snapshot_path())
     os.mkdir(IN.snapshot_path())
-    r.tick(T0 + 120, relentless__under_min=40)
-    r.tick(T0 + 240, relentless__under_min=40)
+    r.tick(T0 + 120, seats__idle_with_work_min=40)
+    r.tick(T0 + 240, seats__idle_with_work_min=40)
     check("a pass that cannot write alarms on the next tick", "could not be written" in open(r.log).read(), open(r.log).read())
 
 
@@ -709,7 +705,7 @@ def test_routes():
     check("spawn refuses it too", p.returncode != 0 and "wakes GHOST" in p.stderr + p.stdout, p.stderr + p.stdout)
     r = Rig("cliack")
     env.update(RM_OPS_WATCH_DIR=os.environ["RM_OPS_WATCH_DIR"], RM_DISPATCHER_STATE=os.environ["RM_DISPATCHER_STATE"])
-    r.tick(T0, relentless__under_min=40)
+    r.tick(T0, seats__idle_with_work_min=40)
     i = r.inc()[0]["id"]
     p = cli("ack", i, "--plan", "pool cleared next")
     check("rimflow ack is the real verb", p.returncode == 0 and r.inc()[0]["plan"] == "pool cleared next", p.stderr + p.stdout)
@@ -744,9 +740,9 @@ def test_owner_rung_revisited():
     waits the ack; each revisit clears the ack and plan and asks ONE fresh Operations run naming it; it never climbs."""
     rev = IN.load_table()["policy"]["owner_revisit_min"]
     r = Rig("revisit")
-    r.tick(T0, relentless__under_min=40)
+    r.tick(T0, seats__idle_with_work_min=40)
     for m in (30, 60, 240):
-        r.tick(T0 + m * M, relentless__under_min=100)
+        r.tick(T0 + m * M, seats__idle_with_work_min=100)
     x = r.inc()[0]
     check("revisit: at his rung", x["rung"] == IN.OWNER_RUNG, x)
     st_path = r.root + "/state/state.json"
@@ -757,9 +753,9 @@ def test_owner_rung_revisited():
         st.get("incident", {}).pop("runs", None)
         json.dump(st, open(st_path, "w"))
     clear_ask()
-    r.tick(T0 + (240 + rev - 1) * M, relentless__under_min=100)
+    r.tick(T0 + (240 + rev - 1) * M, seats__idle_with_work_min=100)
     check("revisit: not before owner_revisit_min", not r.evs("revisited"), r.evs("revisited"))
-    r.tick(T0 + (240 + rev) * M, relentless__under_min=100)
+    r.tick(T0 + (240 + rev) * M, seats__idle_with_work_min=100)
     e = r.evs("revisited")
     ask = r.asked("Operations") or {}
     check("revisit: unacked at his rung, revisited at owner_revisit_min, still his rung",
@@ -769,9 +765,9 @@ def test_owner_rung_revisited():
     clear_ask()
     t1 = T0 + (240 + rev) * M
     IN.ack(x["id"], "OPERATIONS", "pool restore lands at 18:00", now=t1 + 5 * M)          # default recover_min 60
-    r.tick(t1 + 70 * M, relentless__under_min=100)
+    r.tick(t1 + 70 * M, seats__idle_with_work_min=100)
     check("revisit: an ack shorter than the floor waits the floor", len(r.evs("revisited")) == 1, r.evs("revisited"))
-    r.tick(t1 + rev * M, relentless__under_min=90)                                   # the clock went back: news
+    r.tick(t1 + rev * M, seats__idle_with_work_min=90)                                   # the clock went back: news
     e = r.evs("revisited")
     check("revisit: past the floor it is revisited again, ack and plan cleared, last_plan kept",
           len(e) == 2 and not r.inc()[0].get("acked_t") and r.inc()[0].get("plan") is None
@@ -779,9 +775,9 @@ def test_owner_rung_revisited():
     clear_ask()
     t2 = t1 + rev * M
     IN.ack(x["id"], "OPERATIONS", "Steve's desk is off until Monday", recover_min=3 * rev, now=t2 + 1 * M)
-    r.tick(t2 + (rev + 5) * M, relentless__under_min=80)
+    r.tick(t2 + (rev + 5) * M, seats__idle_with_work_min=80)
     check("revisit: an ack longer than the floor is waited out", len(r.evs("revisited")) == 2, r.evs("revisited"))
-    r.tick(t2 + (3 * rev + 2) * M, relentless__under_min=80)
+    r.tick(t2 + (3 * rev + 2) * M, seats__idle_with_work_min=80)
     check("revisit: and revisited at its recover_by", len(r.evs("revisited")) == 3 and r.inc()[0]["rung"] == IN.OWNER_RUNG,
           r.evs("revisited"))
     check("revisit: never escalated past his rung", all(v["rung"] <= IN.OWNER_RUNG for v in r.evs("escalated")))
@@ -941,9 +937,9 @@ def test_quiet_on_the_real_path():
     """Through dispatcher.tick --apply: a revisit launched, answered with a plan, then a floor of nothing: no run, one row."""
     rev = IN.load_table()["policy"]["owner_revisit_min"]
     r = Rig("quietpath")
-    r.tick(T0, relentless__under_min=40)
+    r.tick(T0, seats__idle_with_work_min=40)
     for m in (30, 60, 240):
-        r.tick(T0 + m * M, relentless__under_min=100)
+        r.tick(T0 + m * M, seats__idle_with_work_min=100)
     st_path = r.root + "/state/state.json"
 
     def clear_ask():
@@ -953,21 +949,21 @@ def test_quiet_on_the_real_path():
         json.dump(st, open(st_path, "w"))
     clear_ask()
     t1 = T0 + (240 + rev) * M
-    r.tick(t1, relentless__under_min=120)
+    r.tick(t1, seats__idle_with_work_min=120)
     check("real path: the first revisit has nothing to compare with, and launches", len(r.evs("revisited")) == 1
           and r.asked("Operations"), r.evs("revisited"))
     clear_ask()
     x = r.inc()[0]
     IN.ack(x["id"], "OPERATIONS", "Steve's desk is off until Monday", now=t1 + 5 * M)
-    r.tick(t1 + rev * M, relentless__under_min=360)
+    r.tick(t1 + rev * M, seats__idle_with_work_min=360)
     check("real path: a floor later with the clock only risen: no revisit, no ask, a quiet row", len(r.evs("revisited")) == 1
           and len(r.evs("revisit_quiet")) == 1 and x["id"] not in (r.asked("Operations") or {}).get("ids", []), (r.evs("revisit_quiet"), r.asked("Operations")))
     check("real path: the snapshot counts it", [o for o in r.snap()["open"] if o["id"] == x["id"]][0].get("quiet_revisits") == 1, r.snap())
     clear_ask()
-    r.tick(t1 + 2 * rev * M, relentless__under_min=50)
+    r.tick(t1 + 2 * rev * M, seats__idle_with_work_min=50)
     check("real path: and that run names it", x["id"] in (r.asked("Operations") or {}).get("ids", []), r.asked("Operations"))
     check("real path: the reading moves and the next revisit launches", len(r.evs("revisited")) == 2
-          and "relentless.under_min" in " ".join(r.evs("revisited")[-1]["news"]), r.evs("revisited")[-1:])
+          and "seats.idle_with_work_min" in " ".join(r.evs("revisited")[-1]["news"]), r.evs("revisited")[-1:])
 
 
 def chain(name, metric="m.q-1", items=()):
@@ -1110,26 +1106,26 @@ def test_chains_through_step():
     check("chain: a clock back from the last quiet look launches, though above the old baseline", evs == ["revisited"]
           and "r.under_min" in " ".join(res["rows"][0]["news"]), res["rows"])
 
-    # blind check 60dac938: the real routes, two standing clocks; progress_age 60 to 70 over a floor means it reset and re-aged
+    # blind check 60dac938: the real routes, two standing clocks; tick_age 60 to 70 s over a floor means it reset and re-aged
     table = IN.load_table()
     rev = table["policy"]["owner_revisit_min"]
     def belt(age, under, name, t0=T0):
         path = os.path.join(TMP, name + ".jsonl")
-        ms = {"relentless.progress_age_min": {"class": "distressed", "event": False}, "relentless.under_min": {"class": "distressed", "event": False}}
+        ms = {"seats.tick_age_s": {"class": "distressed", "event": False}, "seats.idle_with_work_min": {"class": "distressed", "event": False}}
         IN.append([{"ev": "opened", "id": "work_belt-1", "at": IN.iso(t0), "t": t0, "state": "open", "rung": IN.OWNER_RUNG, "rung_t": t0, "told_t": t0 - 9 * H,
                     "told_at": IN.iso(t0 - 9 * H), "cause": "work_belt", "class": "distressed", "metrics": ms, "items": [], "reader": "Operations", "ack_min": 30,
                     "acked_t": t0 + M, "recover_by_t": t0 + H, "recover_by": IN.iso(t0 + H), "ack_by": "OPERATIONS", "plan": "waiting on the fix", "revisit_t": t0,
-                    "revisit_seen_t": t0, "revisit_status_t": t0, "revisits": 1, "revisit_read": {"relentless.progress_age_min": [True, "distressed", 60, True, 0],
-                                                                                                 "relentless.under_min": [True, "distressed", 100, True, 0]}}], path)
+                    "revisit_seen_t": t0, "revisit_status_t": t0, "revisits": 1, "revisit_read": {"seats.tick_age_s": [True, "distressed", 60, True, 0],
+                                                                                                 "seats.idle_with_work_min": [True, "distressed", 100, True, 0]}}], path)
         now = t0 + rev * M
-        pts = {"relentless.progress_age_min": {"m": "MEASURED", "v": age, "class": "distressed"}, "relentless.under_min": {"m": "MEASURED", "v": under, "class": "distressed"}}
+        pts = {"seats.tick_age_s": {"m": "MEASURED", "v": age, "class": "distressed"}, "seats.idle_with_work_min": {"m": "MEASURED", "v": under, "class": "distressed"}}
         return IN.step(table, IN.read_rows(path), {"t": now, "points": pts, "alarms": {}}, now)
     res = belt(70, 100 + rev, "beltreset")
     ev = [x for x in res["rows"] if x["ev"] in ("revisited", "revisit_quiet")]
     check("chain: real routes, a standing clock that reset and re-aged launches though it reads higher, its pair only aged",
           [x["ev"] for x in ev] == ["revisited"] and [r["id"] for r in res["rings"] if r.get("revisit")] == ["work_belt-1"]
-          and "relentless.progress_age_min" in " ".join(ev[0]["news"]) and "relentless.under_min" not in " ".join(ev[0]["news"]), res["rows"])
-    res = belt(60 + rev, 100 + rev, "beltaged")
+          and "seats.tick_age_s" in " ".join(ev[0]["news"]) and "seats.idle_with_work_min" not in " ".join(ev[0]["news"]), res["rows"])
+    res = belt(60 + rev * 60, 100 + rev, "beltaged")     # tick_age_s ages in seconds, idle_with_work_min in minutes
     ev = [x for x in res["rows"] if x["ev"] in ("revisited", "revisit_quiet")]
     check("chain: real routes, both clocks only aged: quiet", [x["ev"] for x in ev] == ["revisit_quiet"] and not res["rings"], res["rows"])
     x = IN.fold(IN.read_rows(os.path.join(TMP, "beltaged.jsonl")) + res["rows"])[0]["work_belt-1"]
@@ -1365,27 +1361,27 @@ def test_relapse_tamed():
     r.sch["publish"] = True                      # the tick takes ingest.lock only to publish: the filer runs under it
     r.fx = {"lock": _Lock, "incident_file": lambda x: (filed.append(x), (True, "filed"))[1]}
     plans = ["drop done entries from the priority list", "drop done entries again, the list refilled"]
-    r.tick(T0, relentless__under_min=40)
+    r.tick(T0, seats__idle_with_work_min=40)
     i = r.inc()[0]["id"]
     IN.ack(i, "OPERATIONS", plans[0], now=T0 + 5 * M)
     for m in (10, 40, 71):
-        r.tick(T0 + m * M, relentless__under_min=0)
+        r.tick(T0 + m * M, seats__idle_with_work_min=0)
     check("tame: the plan incident closed on its readings", r.inc()[0]["state"] == "closed", r.inc())
-    r.tick(T0 + 2 * H, relentless__under_min=40)
+    r.tick(T0 + 2 * H, seats__idle_with_work_min=40)
     IN.ack(i, "OPERATIONS", plans[1], now=T0 + 2 * H + 5 * M)
-    r.tick(T0 + 2 * H + 10 * M, relentless__under_min=0)
-    r.tick(T0 + 2 * H + 15 * M, relentless__under_min=50)       # 15:38 on 11-01: bad again before it closed
+    r.tick(T0 + 2 * H + 10 * M, seats__idle_with_work_min=0)
+    r.tick(T0 + 2 * H + 15 * M, seats__idle_with_work_min=50)       # 15:38 on 11-01: bad again before it closed
     x = r.inc()[0]
     check("tame: closed-then-back is one relapse; acks and a dip before closing are none (plan-20261101164253)",
           len(r.evs("reopened")) == 1 and len(r.evs("relapsing")) + len(r.evs("joined")) == 1 and len(r.evs("acked")) == 2
           and not x.get("tamed") and not r.evs("tamed") and not r.evs("withheld") and not filed, ([e["ev"] for e in r.rows()], x))
-    r.tick(T0 + 2 * H + 30 * M, relentless__under_min=0)
-    r.tick(T0 + 3 * H + 31 * M, relentless__under_min=0)
+    r.tick(T0 + 2 * H + 30 * M, seats__idle_with_work_min=0)
+    r.tick(T0 + 3 * H + 31 * M, seats__idle_with_work_min=0)
     check("tame: closed again", r.inc()[0]["state"] == "closed", r.inc())
     before = IN.read_rows()
     runs0, ask0 = len(r.alarm_runs()), (r.asked("Operations") or {}).get("ids") or []
     t2 = T0 + 4 * H
-    r.tick(t2, relentless__under_min=40)
+    r.tick(t2, seats__idle_with_work_min=40)
     st2 = json.load(open(r.sch["ops_status"]))
     ctrl = json.loads(json.dumps(TABLE))
     ctrl["policy"]["tame_relapses"] = 3
@@ -1408,7 +1404,7 @@ def test_relapse_tamed():
           and not model.mint_problems(name, set()) and all(q in filed[0]["text"] for q in plans)
           and filed[0]["from"] == TABLE["policy"]["structural_from"] and x.get("structural_filed") == name, (filed, name, x))
     for m in range(15, 9 * 60, 15):
-        r.tick(t2 + m * M, relentless__under_min=40)
+        r.tick(t2 + m * M, seats__idle_with_work_min=40)
     x = r.inc()[0]
     hows = [w["withheld"] for w in r.evs("withheld")]
     check("tame: filed once however many passes", len(filed) == 1, filed)
@@ -1668,19 +1664,22 @@ def test_seat_relapse_kinds_do_not_reopen():
           "opened" in evs and "reopened" in evs, evs)
 
 def test_retired_belt_keys_read_sane():
-    """A relentless key ops_watch stopped writing (its churn alarm gone) reads sane while relentless.retired is 1, so the
-    incident holding it closes on its readings; with the belt live the absent key stays unknown (the check can fail)."""
+    """A relentless key ops_watch no longer writes (its collector was removed 2026-11-18, and with it the relentless.retired
+    point) reads sane, so the incident holding it closes on its readings; an absent key of a family ops_watch still
+    collects stays unknown (the check can fail)."""
     table, rev, rows = at_his_rung("rl-1")
     key = "relentless.churn_item.SOME_ITEM"
     rows[0]["metrics"] = {key: {"class": "distressed", "event": False}}
     rows[0]["revisit_read"] = {}
     now = T0 + 2 * M
-    gone = {"t": now, "points": {"relentless.retired": {"m": "MEASURED", "v": 1, "class": "sane"}}, "alarms": {}}
+    gone = {"t": now, "points": {"seats.blind": {"m": "MEASURED", "v": 0, "class": "sane"}}, "alarms": {}}
     evs = [x["ev"] for x in IN.step(table, rows, gone, now)["rows"] if x["id"] == "rl-1"]
-    check("retired: an absent relentless key reads sane once the belt is retired", "sane" in evs, evs)
-    live = {"t": now, "points": {"relentless.retired": {"m": "MEASURED", "v": 0, "class": "sane"}}, "alarms": {}}
-    evs = [x["ev"] for x in IN.step(table, rows, live, now)["rows"] if x["id"] == "rl-1"]
-    check("control: with the belt live the absent key is unknown and the incident stays open", "sane" not in evs, evs)
+    check("removed family: an absent relentless key reads sane with no relentless.retired point", "sane" in evs, evs)
+    table, rev, rows = at_his_rung("rl-2")
+    rows[0]["metrics"] = {"seats.idle_with_work_min": {"class": "distressed", "event": False}}
+    rows[0]["revisit_read"] = {}
+    evs = [x["ev"] for x in IN.step(table, rows, gone, now)["rows"] if x["id"] == "rl-2"]
+    check("control: an absent key of a family still collected is unknown and the incident stays open", "sane" not in evs, evs)
 
 
 def test_cleared_red_group_keys_read_sane():
