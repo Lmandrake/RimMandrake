@@ -12,13 +12,12 @@ sha256 `b46c2b855c14d8a0811e17f019c9fc5a6451fce095ae8ff4d4bb271f01424e3b` (recor
 - All three agree on 12 claims. [measured]
 - The old labels call 4 claims PROBLEM. Codex and the blind reader each call 21 PROBLEM. [measured]
 - So the old labels are the outlier, not Codex. [guess ~80%]
-- The old labels often say "this needs a rare event". The instructions have no rule for rare events.
-- The instructions say: an input on the page that breaks a promise is a Problem. They do not say "unless rare".
-- The page already has a place for rare failures. That place is DOES NOT SURVIVE.
-- Recommendation: keep the instructions strict. Move each accepted rare failure to DOES NOT SURVIVE.
-- The Conductor makes each move, and you see it in the digest. That rule already exists.
-- Do not use the old labels as an answer key. Use only claims that all readers agree on.
-- A draft of the wording changes and a fair pass mark is below. Nothing is changed yet.
+- You ruled on rare failures by card 2026-11-19 13:27:48Z: the page says "not handled" and no fix is built.
+- By that rule, 14 of 35 claims are real and 21 are not. The new labels and one reason each are below the old table.
+- Of the 21 that Codex and the blind reader called PROBLEM, 8 move to "not handled" or polish and 13 stay real.
+  So most of the 21 were not rare: they break a promise in ordinary use. [measured, by my labelling]
+- All 14 real ones are already fixed and tested. No fix was built for this card.
+- The new labels agree with the 12 claims all three readers agreed on, so the pass mark below is unchanged.
 
 ## The table
 
@@ -73,6 +72,75 @@ Pairwise agreement [measured, from `src/RimMandrake/rimflow/code_review_calibrat
 Pattern of the 23 non-unanimous claims [measured]: the analyst alone 15, Codex alone 4, me alone 4. With two classes
 in use no claim splits three ways; each line below is one 2-to-1 split and what in the page or instructions lets it
 happen.
+
+## New labels by the page rule (owner card 2026-11-19 13:27:48Z)
+
+The rule is in `design/RimMandrake/standing_rulings.md` §A boundary page, Decision 4, and in
+`src/RimMandrake/rimflow/roles/code_review.md` §A Problem. **REAL** means the claim breaks a promise in ordinary
+operation: an input inside ACCEPTS at human or timer pace, with the world answering, plus the one failure the broken
+promise itself names, met alone. **not** means a rare failure (a failure the promise does not name, two failures at
+once, two events in one instant, or a shape no call site makes) or polish. Each rare one is now a line on the control
+page (`design/specs/2026-11-18-pipeline-control-surface/boundary.md`), under DOES NOT SURVIVE or under "handled today,
+not promised". Each claim is judged against today's page.
+
+| claim | analyst | Codex | blind | new | reason |
+|---|---|---|---|---|---|
+| c2.1 | POLISH | PROBLEM | POLISH | not | rare: two threads launching one name in one instant; no launcher does it (DNS two-threads-one-name) |
+| c2.2 | POLISH | POLISH | PROBLEM | REAL | a spec unit with no `--unit` in args is inside launch-through-one-door ("never read"); fixed be673ed895, round-two test 2 |
+| c2.3 | POLISH | PROBLEM | PROBLEM | REAL | another writer's lock is the failure kill-works-without-the-store names, met alone; fixed be673ed895, round-two test 3 |
+| c2.4 | POLISH | PROBLEM | PROBLEM | not | rare: a failed kill and a fork in its gap at once (DNS a-fork-while-a-kill-fails) |
+| c2.5 | PROBLEM | POLISH | POLISH | not | polish: LIFE CYCLES allows ended -> killed and no promise names the word the record holds; changed anyway in be673ed895 |
+| c2.6 | PROBLEM | PROBLEM | PROBLEM | REAL | a second stop with a shorter deadline is ordinary; three-named-stops' deadline not kept; fixed be673ed895, round-two test 6 |
+| c2.7 | POLISH | PROBLEM | PROBLEM | REAL | `--idem` is a documented key; same-command-twice; fixed be673ed895, round-two test 7 |
+| c2.8 | POLISH | PROBLEM | PROBLEM | REAL | a list starting `systemd-run` is the census's own shape; one-admission-point; fixed be673ed895 (census per argv), t_sites |
+| c2.9 | POLISH | PROBLEM | PROBLEM | not | polish: test strength with no broken verb; "usually" is now each verb's own p95 |
+| c3.1 | POLISH | PROBLEM | PROBLEM | REAL | a re-admission refused on a limit is ordinary and lost the first admission; fixed 53cb713db1, round-three test 1 |
+| c3.2 | POLISH | PROBLEM | PROBLEM | not | rare: a lock during a kill while the run ends (DNS a-lock-while-a-killed-run-ends) |
+| c3.3 | POLISH | PROBLEM | POLISH | not | rare: a locked store plus a repeat, a lock same-command-twice does not name; the second SIGKILL does nothing (DNS) |
+| c3.4 | POLISH | PROBLEM | PROBLEM | not | rare: a failed kill and an unreadable cgroup at once (DNS two-failures-at-once) |
+| c3.5 | POLISH | POLISH | PROBLEM | not | rare: two timers due in the same second (DNS two-timers-in-one-second) |
+| c3.6 | POLISH | PROBLEM | PROBLEM | REAL | today's callers carry a payload `--unit` (left_open_continue.py:370); fixed 53cb713db1, round-three test 6 |
+| c3.7 | POLISH | POLISH | PROBLEM | not | polish: a builder or alias is launch-code-in-a-new-shape |
+| c3.8 | POLISH | PROBLEM | POLISH | not | rare shape: needs `Delegate=`, which no unit sets (DNS a-child-cgroup) |
+| c3.9 | POLISH | PROBLEM | PROBLEM | REAL | a survivor is the failure kill-verified-dead names; LIFE CYCLES escalated -> back to pending; fixed 53cb713db1, round-three test 9 |
+| c3.10 | POLISH | PROBLEM | POLISH | not | outside plain-paths: no path has a space (DNS a-path-with-a-space) |
+| c3.11 | POLISH | POLISH | POLISH | not | outside ACCEPTS: a deadline is 1 s or more; refused today |
+| c4.1 | PROBLEM | PROBLEM | PROBLEM | REAL | killing again is ordinary; same-command-twice; fixed 9a8593dc91, t_review_round_four_p1 |
+| c4.2 | PROBLEM | PROBLEM | PROBLEM | REAL | `.service` is systemctl's own spelling, inside stop-target; fixed 9a8593dc91, t_review_round_four_p1 |
+| c4.3 | POLISH | POLISH | POLISH | not | outside: option forms no launch site uses |
+| c4.4 | POLISH | POLISH | POLISH | not | rare: a cgroup folder that cannot be listed (DNS, 0 of 66 measured) |
+| c4.5 | POLISH | POLISH | POLISH | not | polish: an annotated alias is launch-code-in-a-new-shape |
+| c4.6 | POLISH | POLISH | POLISH | not | polish: a builder in a builder is launch-code-in-a-new-shape |
+| c4.7 | POLISH | POLISH | POLISH | not | rare: a failed escalation and a second kill at once (DNS two-failures-at-once) |
+| c4.8 | POLISH | POLISH | POLISH | not | outside plain-paths: a `$` is refused by name |
+| c4.9 | POLISH | POLISH | POLISH | not | rare: a void in a judge's own second (DNS hand-command-in-a-run's-own-second) |
+| c4.10 | POLISH | PROBLEM | PROBLEM | REAL | a new hold with new words is his ordinary input; his-hold-refuses-launch "with his words"; fixed a6aac8a6fc, t_his_hold_refuses_launch |
+| c4.11 | POLISH | PROBLEM | PROBLEM | REAL | a corrupt store is an unreadable store, the failure probe-never-lies names; doctor said OK; fixed 9a8593dc91 |
+| c4.12 | POLISH | PROBLEM | PROBLEM | REAL | an unreadable store on pipe off's follow-up read is probe-never-lies' own failure, met alone; fixed 9a8593dc91 |
+| c4.13 | POLISH | PROBLEM | PROBLEM | REAL | run ids rm-probe-1 and rm-probe-10 are ordinary; void-never-moves-a-stage "flags no other run"; fixed a6aac8a6fc, t_void_never_moves_a_stage |
+| c4.14 | POLISH | POLISH | POLISH | not | polish: test strength |
+| c4.15 | POLISH | POLISH | PROBLEM | not | polish: test strength with no broken component described |
+
+Agreement of the new labels [measured]: analyst 23 / 35, Codex 26 / 35, blind reader 28 / 35, and 12 / 12 on the
+unanimous set. Four labels rest on the "failure the promise names" reading and are the likeliest to be contested: c2.3,
+c3.9, c4.11, c4.12.
+
+### Real in ordinary operation (14), each already fixed; no fix built for this card
+
+- **c2.2**: a spec unit with no `--unit` in args is inside launch-through-one-door ("never read"); fixed be673ed895, round-two test 2
+- **c2.3**: another writer's lock is the failure kill-works-without-the-store names, met alone; fixed be673ed895, round-two test 3
+- **c2.6**: a second stop with a shorter deadline is ordinary; three-named-stops' deadline not kept; fixed be673ed895, round-two test 6
+- **c2.7**: `--idem` is a documented key; same-command-twice; fixed be673ed895, round-two test 7
+- **c2.8**: a list starting `systemd-run` is the census's own shape; one-admission-point; fixed be673ed895 (census per argv), t_sites
+- **c3.1**: a re-admission refused on a limit is ordinary and lost the first admission; fixed 53cb713db1, round-three test 1
+- **c3.6**: today's callers carry a payload `--unit` (left_open_continue.py:370); fixed 53cb713db1, round-three test 6
+- **c3.9**: a survivor is the failure kill-verified-dead names; LIFE CYCLES escalated -> back to pending; fixed 53cb713db1, round-three test 9
+- **c4.1**: killing again is ordinary; same-command-twice; fixed 9a8593dc91, t_review_round_four_p1
+- **c4.2**: `.service` is systemctl's own spelling, inside stop-target; fixed 9a8593dc91, t_review_round_four_p1
+- **c4.10**: a new hold with new words is his ordinary input; his-hold-refuses-launch "with his words"; fixed a6aac8a6fc, t_his_hold_refuses_launch
+- **c4.11**: a corrupt store is an unreadable store, the failure probe-never-lies names; doctor said OK; fixed 9a8593dc91
+- **c4.12**: an unreadable store on pipe off's follow-up read is probe-never-lies' own failure, met alone; fixed 9a8593dc91
+- **c4.13**: run ids rm-probe-1 and rm-probe-10 are ordinary; void-never-moves-a-stage "flags no other run"; fixed a6aac8a6fc, t_void_never_moves_a_stage
 
 ## What causes each split
 
