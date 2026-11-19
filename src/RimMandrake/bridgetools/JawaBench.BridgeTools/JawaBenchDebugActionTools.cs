@@ -370,40 +370,50 @@ namespace JawaBench.BridgeTools
                     // (RitualSiegeWithSpecifics being the confirmed live example) reports
                     // here and this loop simply moves to the next method - it is what
                     // InitActions/PrepareNode both fail to do.
-                    IEnumerable<DebugActionNode> produced = null;
-                    try
+                    // c01.F7 (bridge GPT review 2026-11-15): a yielder is mod/vanilla code that reads game state, so it
+                    // runs on the main thread, one yielder per hop; the type scan above stays off it, so a long scan
+                    // never freezes the game. The node fields are read in the same hop.
+                    List<string[]> produced;
+                    string failure;
+                    var hop = await ctx.MainThread.InvokeAsync(() =>
                     {
-                        produced = (IEnumerable<DebugActionNode>)method.Invoke(null, null);
-                        // Force materialization now, inside the same try - a yielder can
-                        // defer its own exception into enumeration (yield return bodies do).
-                        produced = produced?.ToList();
-                    }
-                    catch (Exception e)
-                    {
-                        var inner = e is TargetInvocationException tie && tie.InnerException != null ? tie.InnerException : e;
-                        yieldersFailed.Add(new
+                        try
                         {
-                            declaringType = declaring,
-                            method = method.Name,
-                            error = inner.GetType().Name + ": " + inner.Message
-                        });
+                            var nodes = ((IEnumerable<DebugActionNode>)method.Invoke(null, null))?.ToList();
+                            if (nodes == null) return Tuple.Create<List<string[]>, string>(null, null);
+                            var rows = new List<string[]>();
+                            foreach (var n in nodes)
+                            {
+                                if (n == null) continue;
+                                string l, c, a;
+                                try { l = n.label; } catch { l = null; }
+                                try { c = n.category; } catch { c = null; }
+                                try { a = n.actionType.ToString(); } catch { a = null; }
+                                rows.Add(new[] { l, c, a });
+                            }
+                            return Tuple.Create<List<string[]>, string>(rows, null);
+                        }
+                        catch (Exception e)
+                        {
+                            var inner = e is TargetInvocationException tie && tie.InnerException != null ? tie.InnerException : e;
+                            return Tuple.Create<List<string[]>, string>(null, inner.GetType().Name + ": " + inner.Message);
+                        }
+                    }, cancellationToken).ConfigureAwait(false);
+                    produced = hop.Item1;
+                    failure = hop.Item2;
+                    if (failure != null)
+                    {
+                        yieldersFailed.Add(new { declaringType = declaring, method = method.Name, error = failure });
                         continue;
                     }
 
                     yieldersInvoked++;
                     if (produced == null) continue;
 
-                    foreach (var node in produced)
+                    foreach (var row in produced)
                     {
                         if (limit > 0 && matches.Count >= limit) break;
-                        if (node == null) continue;
-
-                        string label;
-                        string category;
-                        string actionType;
-                        try { label = node.label; } catch { label = null; }
-                        try { category = node.category; } catch { category = null; }
-                        try { actionType = node.actionType.ToString(); } catch { actionType = null; }
+                        string label = row[0], category = row[1], actionType = row[2];
 
                         if (q != null &&
                             (label == null || label.IndexOf(q, StringComparison.OrdinalIgnoreCase) < 0) &&
@@ -450,7 +460,7 @@ namespace JawaBench.BridgeTools
                 completenessWarning = truncated
                     ? "TRUNCATED (" + stopReason + "). matches[] is a FLOOR, not a complete list. Re-call with resumeFromType to continue."
                     : null,
-                ticksGame = TicksGameSafe()
+                ticksGame = await ctx.MainThread.InvokeAsync(() => TicksGameSafe(), cancellationToken).ConfigureAwait(false)
             }).ConfigureAwait(false);
         }
     }

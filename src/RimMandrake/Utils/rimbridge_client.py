@@ -1511,7 +1511,10 @@ class RimBridge:
         DetachedMapComponentCache duplicate key thrown in Map.FinalizeLoading), so every later tick was refused. A success
         reply is therefore held until get_game_info reads programState Playing; one that never gets there within
         LOAD_READY_WAIT_S (env RIMBRIDGE_LOAD_READY_WAIT_S, capped by the call deadline) comes back success False with
-        `stuckProgramState`. An explicit readiness other than "playable" (e.g. "mapData", asked for mid-load on purpose) is
+        `stuckProgramState`. RIMMANDRAKE_WAIT_LOAD_READY_UNTIL_CURRENTMAP_SET (SteveDesktop 2026-11-12): Playing is read
+        before Find.CurrentMap is set, and the first jawa/map_info then answers "No current map", so the hold also waits,
+        in the same budget, for jawa/map_info to answer success; one that never does comes back success False with
+        `noCurrentMap`. An explicit readiness other than "playable" (e.g. "mapData", asked for mid-load on purpose) is
         passed through untouched, as is a failure reply."""
         readiness = (params or {}).get("readiness")
         if readiness not in (None, "", "playable"):
@@ -1527,7 +1530,7 @@ class RimBridge:
         if left is not None:
             budget = max(0.0, min(budget, left - self.connect_timeout - DEADLINE_MARGIN_S))
         t0 = clock()
-        st, err = None, None
+        st, err, no_map = None, None, False
         while True:
             try:
                 gi, _ = _reply_dict(self.call("rimworld/get_game_info", check=False))
@@ -1536,15 +1539,29 @@ class RimBridge:
             except RimBridgeError as ex:          # a main thread busy finishing the load may not answer: keep waiting
                 st, err = None, str(ex)
             if st == "Playing":
-                d["programStateAfter"] = "Playing"
-                d["settledSeconds"] = round(clock() - t0, 1)
-                return _rewrap(out, d, wrapped)
+                try:
+                    mi, _ = _reply_dict(self.call("jawa/map_info", check=False))
+                    no_map = not (isinstance(mi, dict) and mi.get("success") is True)
+                    err = None if not no_map else "jawa/map_info: %s" % (
+                        (mi.get("message") or mi.get("error")) if isinstance(mi, dict) else str(mi)[:200])
+                except RimBridgeError as ex:      # not answered is not "no map": keep waiting, cause kept
+                    no_map, err = True, "jawa/map_info: %s" % ex
+                if not no_map:
+                    d["programStateAfter"] = "Playing"
+                    d["currentMapAfter"] = True
+                    d["settledSeconds"] = round(clock() - t0, 1)
+                    return _rewrap(out, d, wrapped)
             if clock() - t0 >= budget:
                 break
             sleep(LOAD_READY_POLL_S)
         d["loadReplySuccess"] = True
         d["success"] = False
         d["stuckProgramState"] = st
+        if st == "Playing" and no_map:
+            d["noCurrentMap"] = True
+            d["error"] = ("load_game_ready answered success and programState reads Playing, but no current map came within "
+                          "%.0f s (%s; RIMMANDRAKE_WAIT_LOAD_READY_UNTIL_CURRENTMAP_SET)" % (clock() - t0, err))
+            return _rewrap(out, d, wrapped)
         d["error"] = ("load_game_ready answered success but programState stayed %s for %.0f s (not Playing; %s). Read the "
                       "FIRST exception in Player.log; go_to_main_menu and load again cleared it in live r8 "
                       "(BRIDGE_LOAD_FIX_READY_WHILE_INITIALIZING)" % (st, clock() - t0, err or "get_game_info answered"))

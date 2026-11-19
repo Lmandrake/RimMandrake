@@ -713,6 +713,16 @@ namespace JawaBench.BridgeTools
                 if (m == "save")
                 {
                     string sourceSummary;
+                    // c05.F16 (bridge GPT review 2026-11-15): a file already at the path is not proof of this save.
+                    // Stamp it first; afterwards the file must exist, be non-empty and carry a new write time.
+                    bool existedBefore;
+                    DateTime writeBefore = DateTime.MinValue;
+                    try
+                    {
+                        existedBefore = File.Exists(path);
+                        if (existedBefore) writeBefore = File.GetLastWriteTimeUtc(path);
+                    }
+                    catch (Exception ex) { return Fail("Could not read the target path before saving: " + ex.GetType().Name + ": " + ex.Message); }
                     try
                     {
                         if (k == "scenario")
@@ -780,12 +790,25 @@ namespace JawaBench.BridgeTools
                     }
                     catch (Exception ex) { return Fail("Save threw: " + ex.GetType().Name + ": " + ex.Message); }
 
-                    var exists = File.Exists(path);
-                    long size = 0;
-                    if (exists) { try { size = new FileInfo(path).Length; } catch { } }
+                    bool exists;
+                    long size;
+                    DateTime writeAfter;
+                    try
+                    {
+                        exists = File.Exists(path);
+                        size = exists ? new FileInfo(path).Length : 0;
+                        writeAfter = exists ? File.GetLastWriteTimeUtc(path) : DateTime.MinValue;
+                    }
+                    catch (Exception ex) { return Fail("Save call returned but the file could not be read back: " + ex.GetType().Name + ": " + ex.Message); }
                     if (!exists)
                         return Fail("Save call returned but the file does not exist at '" + path + "'. " +
                                      "GameDataSaveLoader swallows its own write exceptions - check Player.log.");
+                    if (existedBefore && writeAfter == writeBefore)
+                        return Fail("Save call returned but the file at '" + path + "' is the one that was there before " +
+                                    "(write time unchanged, " + size + " bytes). GameDataSaveLoader swallows its own write " +
+                                    "exceptions - check Player.log.", new { existedBefore, writeTimeUtc = writeAfter.ToString("o") });
+                    if (size == 0)
+                        return Fail("Save call returned but the file at '" + path + "' is empty (0 bytes).");
 
                     return new
                     {
@@ -983,20 +1006,34 @@ namespace JawaBench.BridgeTools
                     try { Directory.CreateDirectory(folder); }
                     catch (Exception ex) { return Fail("Could not create/access folder '" + folder + "': " + ex.GetType().Name + ": " + ex.Message); }
 
+                    // c05.F16: list only the files THIS dump wrote (new, or a new write time), and an unreadable
+                    // listing is a failure, never an empty list.
+                    Dictionary<string, DateTime> before;
+                    try { before = Directory.GetFiles(folder, "dump_*.png").ToDictionary(f => f, f => File.GetLastWriteTimeUtc(f)); }
+                    catch (Exception ex) { return Fail("Could not list '" + folder + "' before the dump: " + ex.GetType().Name + ": " + ex.Message); }
+
                     try { GlobalTextureAtlasManager.DumpPawnAtlases(folder); }
                     catch (Exception ex) { return Fail("DumpPawnAtlases threw: " + ex.GetType().Name + ": " + ex.Message); }
 
                     List<string> written;
-                    try { written = Directory.GetFiles(folder, "dump_*.png").ToList(); }
-                    catch { written = new List<string>(); }
+                    int staleLeft;
+                    try
+                    {
+                        var after = Directory.GetFiles(folder, "dump_*.png");
+                        written = after.Where(f => !before.ContainsKey(f) || File.GetLastWriteTimeUtc(f) != before[f]).ToList();
+                        staleLeft = after.Length - written.Count;
+                    }
+                    catch (Exception ex) { return Fail("DumpPawnAtlases returned but '" + folder + "' could not be listed: " + ex.GetType().Name + ": " + ex.Message); }
 
                     return new
                     {
                         success = true,
-                        message = written.Count + " atlas PNG(s) written to " + folder + ".",
+                        message = written.Count + " atlas PNG(s) written to " + folder + "." +
+                                  (staleLeft > 0 ? " " + staleLeft + " older dump_*.png file(s) there were not rewritten and are not listed." : ""),
                         mode = mo,
                         folder,
                         filesWritten = written,
+                        olderDumpsNotListed = staleLeft,
                         ticksGame = TicksGameSafe()
                     };
                 }

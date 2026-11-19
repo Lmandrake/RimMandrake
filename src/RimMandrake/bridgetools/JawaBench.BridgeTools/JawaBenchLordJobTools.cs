@@ -438,14 +438,25 @@ namespace JawaBench.BridgeTools
 
                 // ---- 5. SetJob ------------------------------------------------------
                 // This is where CreateGraph and graph.ErrorCheck run, so a LordJob whose
-                // graph does not build fails HERE, before anything was disturbed.
+                // graph does not build fails HERE. 🔴 It is NOT before anything was disturbed:
+                // Verse 1.6 Lord.SetJob (Lord.cs:290-298) runs the old job's Cleanup() and sets
+                // curJob = the new job and curLordToil = null BEFORE CreateGraph, so a throw leaves
+                // the Lord holding a half-set new job (c07.F10, bridge GPT review 2026-11-15).
+                // The reply reads the Lord back and says what it holds now.
+                var jobRefBefore = lord.LordJob;
                 try { lord.SetJob(newJob); }
                 catch (Exception e)
                 {
+                    string jobAfter, toilAfter;
+                    try { jobAfter = LordJobName(lord); } catch { jobAfter = "(unreadable)"; }
+                    try { toilAfter = LordToilName(lord); } catch { toilAfter = "(unreadable)"; }
+                    bool disturbed = !ReferenceEquals(lord.LordJob, jobRefBefore) || toilAfter != toilBefore;
                     return Fail("Lord.SetJob threw " + e.GetType().Name + ": " + e.Message +
-                                " - the graph did not build. Nothing was applied; the Lord still holds '" +
-                                jobBefore + "'.",
-                        new { signatures = LordCtorSignatures(jobType), jobBefore, toilBefore });
+                                " - the graph did not build. " + (disturbed
+                                    ? "The Lord WAS disturbed: its old job '" + jobBefore + "' was cleaned up and it now " +
+                                      "holds '" + jobAfter + "' at toil '" + toilAfter + "'. Set a working job or remove the Lord."
+                                    : "The Lord still reads '" + jobBefore + "' at toil '" + toilBefore + "'."),
+                        new { signatures = LordCtorSignatures(jobType), jobBefore, toilBefore, jobAfter, toilAfter, disturbed });
                 }
 
                 int graphToilCount = -1;

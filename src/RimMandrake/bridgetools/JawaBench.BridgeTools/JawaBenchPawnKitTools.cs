@@ -935,6 +935,14 @@ namespace JawaBench.BridgeTools
                         "No valid nearby cell to place {0} x {1} near ({2},{3}) on {4}. Nothing moved - the split piece was merged back into the source.",
                         count, piece.def.defName, center.x, center.z, map));
                 }
+                // c06.F6 (bridge GPT review 2026-11-15): TryPlaceThing tries the centre cell first, and TryPlaceDirect
+                // absorbs a piece into a same-def stack there, which can be the source itself. Then nothing moved.
+                if (ReferenceEquals(resultingThing, found) || (!found.Destroyed && found.stackCount == stackBefore))
+                    return Fail(string.Format(
+                        "The split piece of {0} x {1} merged straight back into its source at ({2},{3}). Nothing moved. " +
+                        "Give 'at' a cell away from the source stack.",
+                        count, found.def.defName, center.x, center.z),
+                        new { stackCountBefore = stackBefore, stackCountAfter = found.Destroyed ? 0 : found.stackCount });
 
                 return new
                 {

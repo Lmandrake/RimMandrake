@@ -579,7 +579,18 @@ namespace JawaBench.BridgeTools
                     savedAnomQueue = live == null ? null : new Queue<bool>(live);
                     if (fAnomFactor != null) savedAnomFactor = fAnomFactor.GetValue(storyteller);
                 }
-                catch (Exception) { fAnomQueue = null; fAnomFactor = null; }
+                catch (Exception e)
+                {
+                    return Fail("Could not snapshot Storyteller.recentIncidentsAnomaly/recentAnomalyIncidentFactor (" +
+                                e.GetType().Name + ": " + e.Message + "). Refused before forecasting: the forecast would " +
+                                "change that scribed state with no way to put it back.");
+                }
+                // c04.F15 (bridge GPT review 2026-11-15): a field that could not be found is a snapshot that failed too;
+                // the forecast never runs without a snapshot it can restore.
+                if (fAnomQueue == null || fAnomFactor == null)
+                    return Fail("Storyteller." + (fAnomQueue == null ? "recentIncidentsAnomaly" : "recentAnomalyIncidentFactor") +
+                                " was not found by reflection (a game version change?). Refused before forecasting: the " +
+                                "forecast would change that scribed state with no way to put it back.");
 
                 Dictionary<IIncidentTarget, int> incCountsForTarget;
                 int[] incCountsForComp;
@@ -623,7 +634,10 @@ namespace JawaBench.BridgeTools
 
                 return new
                 {
-                    success = true,
+                    success = anomalyStateRestored,
+                    error = anomalyStateRestored ? null
+                        : "The forecast ran but the anomaly state was NOT restored (see Player.log): the live game's " +
+                          "recentIncidentsAnomaly/recentAnomalyIncidentFactor may now differ from before the call.",
                     numTestDays,
                     currentMapOnly,
                     threatBigCount,

@@ -903,7 +903,8 @@ namespace JawaBench.BridgeTools
                 "refuseIfDisplaces to make that an error instead. " +
                 "Call jawa/map_commit after a batch.",
             ResultDescription =
-                "success, placed (spawns that SUCCEEDED), survived (still on the map when the "
+                "success (false when any op failed), partial (some op failed and some spawned), error, "
+                + "placed (spawns that SUCCEEDED), survived (still on the map when the "
                 + "batch ended - these differ when a later op destroys an earlier one), "
                 + "lostToLaterOps, failed[], displaced[] naming everything this batch destroyed "
                 + "and whether this batch had placed it, and a read-back of each spawned thing.")]
@@ -1176,7 +1177,12 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true,
+                    // c05.F1 (bridge GPT review 2026-11-15): success means every op spawned. A batch with a failed op
+                    // is success=false, and partial says whether any op spawned at all.
+                    success = failures.Count == 0,
+                    partial = failures.Count > 0 && placed > 0,
+                    error = failures.Count == 0 ? null
+                        : failures.Count + " op(s) failed, " + placed + " spawned. See failed[].",
                     // 🔑 `placed` is the number of SPAWNS THAT SUCCEEDED, and it is not the
                     // number of things on the map. `survived` is. They differ whenever a
                     // later op's footprint covered an earlier one.

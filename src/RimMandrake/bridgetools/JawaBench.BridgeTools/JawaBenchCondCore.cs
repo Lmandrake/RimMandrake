@@ -52,6 +52,10 @@ namespace JawaBench.BridgeTools
     {
         internal const int MaxNodes = 64, MaxCells = 1024, MaxWatchers = 16, MaxSampleRows = 4096, MaxEvery = 60000;
         internal const int HardMaxTicks = 1200000;   // JawaBenchVitalsCore.HardAdvanceCap
+        // Danger: 16 watchers true every tick over HardMaxTicks is 19.2M event records held on the main thread and
+        // sent in one reply (bridge GPT review 2026-11-15 c08.F2). Past the cap an event is counted in
+        // watchDropped and in its watcher's events, not recorded. The same number as MaxSampleRows.
+        internal const int MaxWatchEvents = 4096;
 
         internal static readonly string[] Statuses = { "ok", "gone", "oob", "unbound", "error" };
         internal static readonly string[] Spatial = { "cell.terrain", "cell.is_water", "fw.depth", "fw.water_m", "fw.source",
@@ -63,8 +67,8 @@ namespace JawaBench.BridgeTools
         internal static readonly string[] NodeKinds = { "all", "any", "not", "cmp", "changed", "edge", "stays", "alarm" };
         internal static readonly string[] ArgOrder = { "cell", "rect", "reduce", "where", "mapId", "def", "pawn", "thing",
                                                        "f", "path", "source", "filter" };
-        internal static readonly string[] RunKeys = { "every", "mapId", "max_ticks", "on_unknown", "runKey", "sample",
-                                                      "snapshot_on_hit", "until", "watch" };
+        internal static readonly string[] RunKeys = { "every", "mapId", "max_events", "max_ticks", "on_unknown", "runKey",
+                                                      "sample", "snapshot_on_hit", "until", "watch" };
         internal static readonly string[] EvalKeys = { "mapId", "tree" };
 
         internal sealed class ProbeInfo
@@ -443,6 +447,7 @@ namespace JawaBench.BridgeTools
             public List<Watcher> Watch = new List<Watcher>();
             public List<KeyValuePair<string, Probe>> Sample, Snapshot;
             public int SampleEvery;
+            public int MaxEvents = MaxWatchEvents;
             public bool SampleChangeOnly;
             public int MaxTicks, Every = 1;
             public string OnUnknown = "stop", RunKey;
@@ -531,6 +536,8 @@ namespace JawaBench.BridgeTools
                     canonical["every"] = (double)c.Every;
                     canonical["on_unknown"] = c.OnUnknown;
                     canonical["runKey"] = c.RunKey;
+                    c.MaxEvents = IntIn(spec, "max_events", 1, MaxWatchEvents, "$", MaxWatchEvents);
+                    if (spec.ContainsKey("max_events")) canonical["max_events"] = (double)c.MaxEvents;
                 }
                 c.Tree = CompileNode(spec[root], "$." + root, "", false);
                 canonical[root] = c.Tree.Canonical;
@@ -1192,7 +1199,7 @@ namespace JawaBench.BridgeTools
             List<object> _gapOpen;
             Dictionary<string, object> _unknown;
             readonly List<object> _events = new List<object>();
-            int _seq;
+            int _seq, _watchDropped;
             readonly List<object> _rows = new List<object>();
             int _dropped;
             Dictionary<string, object> _lastRow;
@@ -1264,7 +1271,8 @@ namespace JawaBench.BridgeTools
                             ev["alarm"] = true;
                             w.Disarmed = new Dictionary<string, object> { { "tick", (double)tick }, { "why", "alarm" } };
                         }
-                        _events.Add(ev);
+                        if (_events.Count >= _c.MaxEvents) _watchDropped++;
+                        else _events.Add(ev);
                     }
                 }
             }
@@ -1420,7 +1428,7 @@ namespace JawaBench.BridgeTools
                             { "evals", (double)_evals }, { "nodeEvals", (double)_ev.NodeEvals }, { "reads", (double)_ev.Reads },
                             { "evalMsTotal", Math.Round(_msTotal, 3) }, { "evalMsMax", Math.Round(_msMax, 3) },
                         } },
-                    { "watch", _events }, { "watchers", watchers }, { "sample", _rows }, { "sampleDropped", (double)_dropped },
+                    { "watch", _events }, { "watchDropped", (double)_watchDropped }, { "watchers", watchers }, { "sample", _rows }, { "sampleDropped", (double)_dropped },
                     { "snapshot", _snapshot }, { "mutations", new List<object>() }, { "canonical", _c.Canonical },
                 };
             }

@@ -109,7 +109,7 @@ namespace JawaBench.BridgeTools
             // reaches `ticks`): a typo'd maxSeconds must not leave timers installed for days.
             maxSeconds = Math.Max(1, Math.Min(3600, maxSeconds));
             var failures = new List<string>();
-            int patched = 0, startTick = 0;
+            int patched = 0, startTick = 0, candidates = 0;
             var sw = Stopwatch.StartNew();
             // RIMMANDRAKE_BOUND_BRIDGE_MAIN_THREAD_WORK (GPT c02.F2): a second session would reset the first one's
             // counters and unpatch its timers by the shared Harmony id
@@ -128,6 +128,7 @@ namespace JawaBench.BridgeTools
                             BindingFlags.Public | BindingFlags.Instance, null, Type.EmptyTypes, null);
                         if (m != null && m.DeclaringType != typeof(MapComponent) && !m.IsAbstract) methods.Add(m);
                     }
+                    candidates = methods.Count;
                     JawaBenchMapCompTimer.Acc.Clear();
                     JawaBenchMapCompTimer.Depth = 0;
                     JawaBenchMapCompTimer.Foreign = 0;
@@ -205,9 +206,15 @@ namespace JawaBench.BridgeTools
                                     ",\"ticks\":" + elapsed + ",\"tickFrom\":" + startTick + ",\"realS\":" + JawaBenchTpsMath.F(sw.Elapsed.TotalSeconds, 1)) >= 0)
                                 persisted++;
                     }
+                    // c02.F5 (bridge GPT review 2026-11-15): no timer installed or no tick run is no measurement, so it
+                    // is not a success. The figures stay in the reply; `error` says which half is missing.
+                    string unmeasured = patched == 0
+                        ? "UNMEASURED: no MapComponentTick timer was installed (" + candidates + " candidate(s), " + failures.Count + " patch failure(s))"
+                        : ticksRan <= 0 ? "UNMEASURED: no game tick ran while the timers were armed (paused game?)" : null;
                     return (object)new
                     {
-                        success = true,
+                        success = unmeasured == null,
+                        error = unmeasured,
                         ticksElapsed = ticksRan,
                         realSeconds = Math.Round(sw.Elapsed.TotalSeconds, 1),
                         patchedMethods = patched,

@@ -58,10 +58,10 @@ namespace JawaBench.BridgeTools
                 "named def is not tradeable in this deal, when the transfer count clamps to zero, and - " +
                 "critically - when the colony cannot afford the deal, because vanilla's own cannot-afford " +
                 "branch dereferences the trade dialog and would throw with no dialog open. Read " +
-                "actuallyTraded, not success: a deal where every count clamped to zero still returns a " +
-                "true result from vanilla.",
+                "actuallyTraded: a deal where every count clamped to zero still returns a true result " +
+                "from vanilla. success is true only when TryExecute returned true AND actuallyTraded.",
             ResultDescription =
-                "success, executed, tryExecuteResult, actuallyTraded, defName, action, requestedCount, " +
+                "success (TryExecute true and actuallyTraded), error, executed, tryExecuteResult, actuallyTraded, defName, action, requestedCount, " +
                 "appliedCount, clampedBy, pricePerUnit, tradeableCount, cannotSellReasons[], " +
                 "colonyStackBefore/colonyStackAfter and silverBefore/silverAfter (independent map " +
                 "stack-count instruments, NOT read from the deal), traderName, negotiatorName, giftMode.")]
@@ -259,9 +259,15 @@ namespace JawaBench.BridgeTools
                         int stackAfter = MapStackCount(map, td);
                         int silverAfter = MapStackCount(map, ThingDefOf.Silver);
 
+                        // c10.F14 (bridge GPT review 2026-11-15): success is the game's own verdict. TryExecute false, or
+                        // a deal that moved nothing, is not a trade, whatever the call got as far as.
+                        bool traded = ok && actuallyTraded;
                         result = new
                         {
-                            success = true,
+                            success = traded,
+                            error = traded ? null
+                                : (!ok ? "TradeDeal.TryExecute returned false: the game refused the deal"
+                                       : "TradeDeal.TryExecute moved nothing (actuallyTraded=false)"),
                             executed = true,
                             dryRun = false,
                             tryExecuteResult = ok,

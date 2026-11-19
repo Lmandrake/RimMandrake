@@ -28,7 +28,8 @@ Semantics (the decisions §1 left open, made here and mirrored in C#):
     every later read UNKNOWN with the arm status.
   * Rect [x, z, w, h] covers x..x+w-1 and z..z+h-1 (inclusive cells); cells are read z-major, x-minor.
   * Caps: 64 nodes (tree nodes plus probe objects, across until and every watch tree), 1,024 rect cells across the
-    whole spec, 16 watchers, 4,096 sample rows (rows past the cap are counted in sampleDropped).
+    whole spec, 16 watchers, 4,096 sample rows (rows past the cap are counted in sampleDropped), 4,096 watch events
+    (`max_events` lowers it; events past the cap are counted in watchDropped and in their watcher's events).
   * Canonical JSON: keys sorted by code point, no spaces, integral numbers below 1e15 as integers, other numbers by
     the shortest of 15/16/17 significant digits that round-trips, positional when -6 < exponent < 15.
 
@@ -45,6 +46,9 @@ MAX_WATCHERS = 16
 MAX_SAMPLE_ROWS = 4096
 HARD_MAX_TICKS = 1200000       # JawaBenchVitalsCore.HardAdvanceCap
 MAX_EVERY = 60000
+# Danger: 16 watchers true every tick over HARD_MAX_TICKS is 19.2M event records held on the main thread and sent in
+# one reply (bridge GPT review 2026-11-15 c08.F2). The same number as MAX_SAMPLE_ROWS. Mirrors MaxWatchEvents.
+MAX_WATCH_EVENTS = 4096
 
 # The refusal names the core can emit; the selftest requires a vector for each, and the C# core to emit the same set.
 REFUSALS = ("json", "type", "unknown_key", "missing_key", "bad_value", "unknown_node", "unknown_probe",
@@ -78,7 +82,7 @@ NODE_KEYS = {"all": (), "any": (), "not": (), "cmp": ("tol",), "changed": (), "e
              "alarm": ()}
 # Arg check order is fixed (and mirrored in C#).
 ARG_ORDER = ("cell", "rect", "reduce", "where", "mapId", "def", "pawn", "thing", "f", "path", "source", "filter")
-RUN_KEYS = ("every", "mapId", "max_ticks", "on_unknown", "runKey", "sample", "snapshot_on_hit", "until", "watch")
+RUN_KEYS = ("every", "mapId", "max_events", "max_ticks", "on_unknown", "runKey", "sample", "snapshot_on_hit", "until", "watch")
 EVAL_KEYS = ("mapId", "tree")
 
 
@@ -321,6 +325,9 @@ class Compiler(object):
                 c.run_key = v
             canonical.update({"max_ticks": c.max_ticks, "every": c.every, "on_unknown": c.on_unknown,
                               "runKey": c.run_key})
+            c.max_events = self.int_in(spec, "max_events", 1, MAX_WATCH_EVENTS, "$", default=MAX_WATCH_EVENTS)
+            if "max_events" in spec:
+                canonical["max_events"] = c.max_events
         c.tree = self.node(spec[root], "$." + root, "", True, False)
         canonical[root] = c.tree.canonical
         if self.mode == "run":
@@ -658,6 +665,7 @@ class Compiled(object):
         self.sample = None
         self.sample_every = 0
         self.sample_change_only = False
+        self.max_events = MAX_WATCH_EVENTS
         self.snapshot = None
         self.max_ticks = 0
         self.every = 1
@@ -909,6 +917,7 @@ class Run(object):
         self.gap_open = None
         self.unknown = None
         self.events = []
+        self.watch_dropped = 0
         self.seq = 0
         self.rows = []
         self.dropped = 0
@@ -958,7 +967,10 @@ class Run(object):
                 if w.tree.kind == "alarm":
                     ev["alarm"] = True
                     w.disarmed = {"tick": tick, "why": "alarm"}
-                self.events.append(ev)
+                if len(self.events) >= self.c.max_events:
+                    self.watch_dropped += 1
+                else:
+                    self.events.append(ev)
 
     def take_sample(self, k, tick):
         if self.c.sample is None or k % self.c.sample_every != 0:
@@ -1062,7 +1074,7 @@ class Run(object):
                          "complete": not self.gaps},
             "cost": {"evals": self.evals, "nodeEvals": self.ev.node_evals, "reads": self.ev.reads,
                      "evalMsTotal": round(self.ms_total, 3), "evalMsMax": round(self.ms_max, 3)},
-            "watch": self.events,
+            "watch": self.events, "watchDropped": self.watch_dropped,
             "watchers": [{"name": w.name, "events": w.events, "unknowns": w.unknowns, "disarmed": w.disarmed}
                          for w in c.watch],
             "sample": self.rows, "sampleDropped": self.dropped, "snapshot": self.snapshot, "mutations": [],

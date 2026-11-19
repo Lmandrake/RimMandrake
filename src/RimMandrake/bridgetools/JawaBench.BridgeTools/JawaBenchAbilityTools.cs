@@ -756,7 +756,7 @@ namespace JawaBench.BridgeTools
                     preCast,
                     speedRestored,
                     ticksElapsed = 0,
-                    ticksGame = TicksGameSafe(),
+                    ticksGame = await ctx.MainThread.InvokeAsync(() => TicksGameSafe(), cancellationToken).ConfigureAwait(false),   // c07.F24: never off the main thread
                 };
             }
 
@@ -1064,7 +1064,7 @@ namespace JawaBench.BridgeTools
                     preCast,
                     speedRestored,
                     ticksElapsed = 0,
-                    ticksGame = TicksGameSafe(),
+                    ticksGame = await ctx.MainThread.InvokeAsync(() => TicksGameSafe(), cancellationToken).ConfigureAwait(false),   // c07.F24: never off the main thread
                 };
             }
 

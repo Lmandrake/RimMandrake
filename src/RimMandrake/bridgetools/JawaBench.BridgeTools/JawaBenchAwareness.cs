@@ -148,6 +148,13 @@ namespace JawaBench.BridgeTools
                 InstallStatus = JawaBenchTpsInstall.Run(plan.ConvertAll(kv => kv.Key),
                     (name, m) => { var hs = map[name]; _harmony.Patch((MethodBase)m, prefix: H(hs[0]), postfix: H(hs[1]), finalizer: H(hs[2])); },
                     () => _harmony.UnpatchAll(_harmony.Id), out detail);
+                // RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START: a native crash came out of the patch lambda
+                // above at bridge-registration. Which thread patched is the first question about it, and nothing
+                // recorded it; the detail and the log line now say.
+                string thread;
+                try { thread = UnityData.IsInMainThread ? "main" : "worker:" + System.Threading.Thread.CurrentThread.ManagedThreadId; }
+                catch { thread = "unknown"; }
+                detail = "thread=" + thread + "; " + detail;
                 InstallDetail = detail;
                 if (genEarly) GenerationHook = InstallStatus == "failed" ? "failed with the early install" : "installed early (install.generation-early) by " + by;
                 if (InstallStatus != "failed") Rec.InstallSeq = Rec.NextSeq();

@@ -34,9 +34,16 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
-def run(load_reply, states, params=None, wait_s="0.2"):
+NO_MAP = {"success": False, "message": "No current map."}
+HAS_MAP = {"success": True, "mapId": 0, "sizeX": 250, "sizeZ": 250}
+
+
+def run(load_reply, states, params=None, wait_s="0.2", maps=None):
     """One load_game_ready through RimBridge.call. `states`: successive get_game_info programStates (an Exception
-    instance is raised instead; the last entry repeats). -> (reply, number of get_game_info polls)."""
+    instance is raised instead; the last entry repeats). `maps`: successive jawa/map_info replies, the same way
+    (default: a map at once). -> (reply, number of get_game_info polls)."""
+    maps = maps or [HAS_MAP]
+    mpolls = {"n": 0}
     os.environ[C.LOAD_READY_WAIT_ENV] = wait_s
     b = C.RimBridge(token="t", timeout=30.0)
     polls = {"n": 0}
@@ -50,6 +57,12 @@ def run(load_reply, states, params=None, wait_s="0.2"):
             if isinstance(s, Exception):
                 raise s
             return {"status": "game_loaded", "state": {"programState": s}}
+        if name == "jawa/map_info":
+            m = maps[min(mpolls["n"], len(maps) - 1)]
+            mpolls["n"] += 1
+            if isinstance(m, Exception):
+                raise m
+            return json.loads(json.dumps(m))
         if name == C.LOAD_READY_TOOL:
             return json.loads(json.dumps(load_reply))
         raise AssertionError("unexpected call %s" % name)
@@ -104,6 +117,19 @@ def main():
     inner = json.loads(r["content"][0]["text"]) if isinstance(r, dict) and r.get("content") else {}
     check(inner.get("success") is False and inner.get("stuckProgramState") == "MapInitializing",
           "wrapped reply rewritten inside content[0].text")
+
+    # 8. RIMMANDRAKE_WAIT_LOAD_READY_UNTIL_CURRENTMAP_SET: Playing is read before Find.CurrentMap is set, and the
+    #    first jawa/map_info then answers "No current map". The hold also waits for a current map.
+    r, n = run(ok, ["Playing"], maps=[NO_MAP, NO_MAP, HAS_MAP], wait_s="30")
+    check(r.get("success") is True and r.get("currentMapAfter") is True,
+          "Playing with no current map yet -> held until map_info answers, then success True (%r)" % r)
+    check(n == 3, "it polled until the map came (%d polls)" % n)
+    r, _ = run(ok, ["Playing"], maps=[NO_MAP])
+    check(r.get("success") is False and r.get("stuckProgramState") == "Playing" and r.get("noCurrentMap") is True
+          and "current map" in str(r.get("error")).lower(),
+          "Playing but never a current map -> success False, the missing map named (%r)" % r)
+    r, _ = run(ok, ["Playing"], maps=[C.RimBridgeError("timed out waiting"), HAS_MAP], wait_s="30")
+    check(r.get("success") is True, "a map_info that does not answer is retried, then a map -> success True")
 
     print("\n%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
