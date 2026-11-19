@@ -71,7 +71,7 @@ CONSTRAINT = re.compile(r"^\s*(at most|at least|under|over|no more than|<=?|>=?)
                         r"per [a-z]+|[a-z]+/[a-z]+)(?![A-Za-z0-9]).*\bon\s+\S+", re.I)
 WALK_NEEDS = {"reload": r"\breload(s|ed|ing)?\b", "repeat": r"\brepeat(s|ed|ing)?\b", "second order": r"\b(second|another|different|other|opposite|reverse|reversed)\s+order\b|\border\s+reversed\b|\breverse\s+the\s+order\b"}
 TOOL_ROOT = "tool"
-# a `red` that names no broken version (relentless_improvement_loop_2026-11-03.md: "a test that catches no nameable broken
+# a `red` that names no broken version (improvement_loop_rules_2026-11-03.md: "a test that catches no nameable broken
 # version is decoration"): the whole field, lowercased and stripped of punctuation, is one of these. Always fullmatch.
 NO_RED = re.compile(r"(none|n ?a|nil|null|tbd|tba|todo|unknown|nothing|no(ne)? broken version|not applicable|"
                     r"cannot name one|can ?not be named|unnameable|nameless|same|see above|ditto|\?+)")

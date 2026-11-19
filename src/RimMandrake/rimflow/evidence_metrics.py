@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """evidence_metrics.py - a record of how Relentless is doing, kept as EVIDENCE, never as targets.
 
-Item METRICS_RECORD_BUILD_EVIDENCE_NOT_TARGETS; spec design/RimMandrake/relentless_improvement_loop_2026-11-03.md
+Item METRICS_RECORD_BUILD_EVIDENCE_NOT_TARGETS; spec design/RimMandrake/improvement_loop_rules_2026-11-03.md
 §Metrics are evidence, not targets. Owner, 2026-11-03: "track whatever metrics you'd like. We're not chasing metrics,
 we're just keeping a record of them as evidence." So nothing here carries a goal, threshold, alarm or pass/fail: it
 counts and records. A metric whose source is missing says UNMEASURED and why, never 0.

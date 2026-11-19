@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """regrade.py - a small independent regrade of closed items, with the owner's noise guard.
 
-Spec: design/RimMandrake/relentless_improvement_loop_2026-11-03.md (loop step 5 and "Regrade noise guard"); item
+Spec: design/RimMandrake/improvement_loop_rules_2026-11-03.md (loop step 5 and "Regrade noise guard"); item
 REGRADE_SAMPLE_BUILD_NOISE_GUARDED. Owner, 2026-11-03: "there's a lot of noise in these regradings, and I'd hate this to
 turn into a rabbit hole chasing noise." So:
 

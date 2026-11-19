@@ -16,7 +16,7 @@ Daily judging:
    --into ... --why "..." --seat BENCH`. A CONTRADICTION is reopened by a fail `verify` on the item only when its own
    latest run really failed on the item's sha; otherwise route or file it. Never close an item. Never guess a defName,
    an id or a path: read it.
-3. Regrade (item REGRADE_SAMPLE_BUILD_NOISE_GUARDED; spec design/RimMandrake/relentless_improvement_loop_2026-11-03.md,
+3. Regrade (item REGRADE_SAMPLE_BUILD_NOISE_GUARDED; spec design/RimMandrake/improvement_loop_rules_2026-11-03.md,
    "Regrade noise guard"; owner: "there's a lot of noise in these regradings, and I'd hate this to turn into a rabbit
    hole chasing noise."). `python3 src/RimMandrake/rimflow/regrade.py report` first: exit 3 means STOPPED, skip this
    step. Else `python3 src/RimMandrake/rimflow/regrade.py draw` (at most 3 closed items a day; it refuses beyond). For

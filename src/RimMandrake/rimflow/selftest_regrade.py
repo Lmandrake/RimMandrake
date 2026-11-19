@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """selftest_regrade.py - regrade.py's noise guard on a planted store and audit record.
 
-Item REGRADE_SAMPLE_BUILD_NOISE_GUARDED (spec design/RimMandrake/relentless_improvement_loop_2026-11-03.md, "Regrade
+Item REGRADE_SAMPLE_BUILD_NOISE_GUARDED (spec design/RimMandrake/improvement_loop_rules_2026-11-03.md, "Regrade
 noise guard"). Each check names the broken version it catches:
   cap       - at most 3 draws per UTC day, never a re-draw         (broken: a day drains the whole store)
   recorded  - one grader's VIOLATED is recorded, not acted on       (broken: one noisy grade files work)

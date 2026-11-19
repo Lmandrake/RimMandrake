@@ -1,4 +1,7 @@
-# Relentless improvement loop — owner, 2026-11-03
+# Improvement loop rules — owner, 2026-11-03
+
+Written for the Relentless Pipeline, retired since; the rules below are the owner's and stay cited by
+`regrade.py`, the findings judge prompt, `concept_tree.py`, `evidence_metrics.py` and `jam_classes`.
 
 Primary job now: get Relentless to skilful high productivity, offline and online. Owner,
 2026-11-03: *"Keep studying what jams relentless and fixing it, then improving our skills, Relentless

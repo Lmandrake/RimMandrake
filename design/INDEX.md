@@ -1093,7 +1093,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `relative_depth_climb_design_2026-10-12.md` | Relative depth and climbing out — design pass (2026-10-12) | — |
 | `relative_depth_climb_gpt_review_2026-10-12.md` | GPT review — relative depth and climbing out (2026-10-12) | — |
 | `release_proximity_2026-10-22.md` | Release proximity, 2026-10-22 (FOUNDRY, read-only ranking) | — |
-| `relentless_improvement_loop_2026-11-03.md` | Relentless improvement loop — owner, 2026-11-03 | — |
+| `improvement_loop_rules_2026-11-03.md` | Improvement loop rules — owner, 2026-11-03 | — |
 | `concept_tree_schema.md` | The acceptance tree: file format (2026-11-01) | — |
 | `relic_replacements_proposal.md` | Relic replacements for the five broken VWE relic precepts — PROPOSAL, awaiting owner approval | — |
 | `retired_eras_index_2026-11-18.md` | Retired eras: what was removed, where it lived, what stays and why (2026-11-18) | — |

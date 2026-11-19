@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """jam_classes.py — every Relentless jam is fixed as a CLASS (JAM_CLASS_BUILD_OPS_DETECTOR_PER_CLASS).
 
-Owner, 2026-11-03: "absolutely, fix the class should be the rule." (design/RimMandrake/relentless_improvement_loop_2026-11-03.md)
+Owner, 2026-11-03: "absolutely, fix the class should be the rule." (design/RimMandrake/improvement_loop_rules_2026-11-03.md)
 The registry is jam_classes.json beside this file. A jam is a row of the belt's journal (store/journal.jsonl) with
 do=alarm and a kind the registry lists; its reason is the why, less any "breaker open until <ts>: " prefix.
 
