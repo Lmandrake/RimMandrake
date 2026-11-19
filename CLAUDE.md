@@ -292,6 +292,10 @@ workaround without the permanent fix is not allowed. A mod's gaps still go throu
 
 *"I will not accept ANY system that pointlessly expends such statistical measurements based on failed system calls or behavior."* A run killed, timed out, never started or stopped by him or the Conductor spends no trial, turn, look or cycle: the tick classes it void_system, and `maturation_dispatch.py void <unit> --why "..."` (reversed by `unvoid`) voids any run by hand. Never answer "it's frozen" or "it's append-only". Full text: `standing_rulings.md` §No trial is spent by a system failure.
 
+## 🔴 No limit without the danger it guards — owner, 2026-10-31 to 2026-11-17
+
+*"Each element must defend precisely what it's protecting against and have evidence that it actually happens... but when it has... protect cheaply!"* (2026-11-16) · *"Please stop building arbitrary pauses into the system..."* · *"No time limits please."* · *"please get rid of these arbitrary cuts!"* Every cap, pause, timeout, wall time, retry bound, rate and text cut in our code, configs, role files and briefs names the danger it guards and the evidence that the danger happens (beside the number, on the boundary page under LIMITS, or in the brief); one that cannot is removed, not tuned, and a found one in pipeline machinery is fixed in the same run. Not lifted: his holds and stops, the per-run spend stop he ordered, the account order and leave lines, the machine-safety brakes. Full text, his dated words and the 2026-12-03 measurement: `standing_rulings.md` §No limit without the danger it guards.
+
 ## 🔴 A passing bar is an experience, never a tuning number — owner, 2026-11-16
 
 *"The mod passing bars should not specify flora and fauna yield rates! That would mean every time we renormalize every mod must repass its bars... drop that!"* No bar pins a yield rate, a stat value, any tuning number or an asset-variant count. The test: would this bar have to be re-passed after we renormalize numbers or add an art variant? Then it is not a bar. Gate: `src/RimMandrake/rimflow/bar_rule.py`; full text: `standing_rulings.md` §A passing bar is an experience.

@@ -203,7 +203,10 @@ PROMISES      each is one test of the same name
 ```
 
 - **How small it can be.** Three parts are required: ACCEPTS, DOES NOT SURVIVE, PROMISES. LIFE CYCLES is required
-  only when the component keeps state between calls. A tool with no state and no probes has a page of about five
+  only when the component keeps state between calls. LIMITS is required when the component enforces any limit (a
+  cap, pause, timeout, retry bound or text cut): each one with the danger it guards and the evidence that the danger
+  happens, or it is removed, not tuned (added 2026-11-19 by Crystallize 2026-W47: `design/RimMandrake/standing_rulings.md`,
+  the limits ruling of 2026-10-31 to 2026-11-17). A tool with no state and no probes has a page of about five
   lines. The control store, the largest case tonight, needs about 60 lines [guess ~60%]. A page over about 80 lines
   means two components. The evidence that so little is enough: 33 of tonight's 43 claims sort onto four life cycles
   and four input threads [measured counts, `00-problem.md`], so about eight entries would have placed three quarters

@@ -77,6 +77,8 @@ DEFAULT_MAX_S = None    # unbounded: no RuntimeMaxSec on the unit, no CLAUDE_SCO
 MIN_MAX_S = 60
 STOP_S = 600           # TimeoutStopSec: the stop-post steps' bound (finish, wrapup, the return's start)
 GRACE_S = 120          # finish + publish time on top of the run's own bound
+# The per-run stop guards a runaway unattended burn (owner 2026-11-12: "not burn 90M tokens overnight by itself"). The
+# 15 LEVEL names no danger and stopped 4 real runs (3 lessons): RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS.
 DEFAULT_BUDGET_USD = 15.0
 MODELS = ("fable", "opus", "sonnet")  # owner ladder 2026-11-12: Fable for blank-page design; Haiku is banned
 # The CLI alias "fable" resolved to claude-fable-5-1 (measured 2026-11-12); the ladder means Fable 5.2, so pass the full id.

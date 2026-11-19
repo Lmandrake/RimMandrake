@@ -586,9 +586,75 @@ Card: "Retest rule → Retest only after a code change". An item is tested once 
 
 A code version is `gate.code_version`: the chain's runtime hash, the runtime hash of every mod composed with it, its code slice and its declared inputs, without the harness and without a driver's result files. Every kind of verdict counts, GAP included: a row owed a live check stays owed however often it runs. A chain the harness stopped gets no verify at all, and one `HARNESS_REPAIR_CAUSE_<HEX>` item per distinct cause holds it until the repair closes. A flaky chain is reported, not repeated. `testq.py submit --retest-why REASON` is the human override, and a `--rows` job asks no permission. Code: `src/RimMandrake/Utils/testq/retest.py`, `gaps.settled`.
 
-## Every limit defends itself; parallel work is the default — owner, 2026-10-31
+## No limit without the danger it guards; parallel work is the default — owner, 2026-10-31 to 2026-11-17
 
-*"In general, any decision we make that is shown to simply limit progress, productivity, or parallel construction should be immediately attacked to force it to defend its requirement. Parallel subagent development must be maximized so long as it's reliable, work is fairly checked, etc. That's true of ALL architectural comparisons, ok? They MUST support this. And our handoff procedures and context management must be robust to this."* · *"Trial gets priority, not exclusion."* A limit states what it limits and what requires it, then is kept, loosened or removed. An architectural comparison that does not exercise parallel work does not decide which design is best. Review: `design/RimMandrake/parallel_review_2026-10-31/`.
+*"In general, any decision we make that is shown to simply limit progress, productivity, or parallel construction should be immediately attacked to force it to defend its requirement. Parallel subagent development must be maximized so long as it's reliable, work is fairly checked, etc. That's true of ALL architectural comparisons, ok? They MUST support this. And our handoff procedures and context management must be robust to this."* · *"Trial gets priority, not exclusion."* (2026-10-31.) An architectural comparison that does not exercise parallel work does not decide which design is best. Review: `design/RimMandrake/parallel_review_2026-10-31/`.
+
+**His test for any guard** (record `conversations/2026-11-16-0055-2020153c.md`, a session begun Sun 2026-11-15 4:55 PM
+PST; said of deterministic checks before a model reads a ticket): *"I don't mean to create needless ceremony (and please
+don't!) Each element must defend precisely what it's protecting against and have evidence that it actually happens...
+but when it has... protect cheaply!"*
+
+**His objections in the 14 days before this was written down**, verbatim from the conversation records (a record's
+name is its session start in UTC; the PST start is beside it):
+- `2026-11-06-0423-ff1dbc91.md` (began Thu 2026-11-05 8:23 PM PST), on the retired Relentless's pacing of 6 proofs every 30 minutes: *"I had no idea
+  we had arbitrary pacing... of course we should drop all this pacing control crap... the LLM's pace things slowly all
+  by themselves, we don't need to add to that."* And on its 5 run starts per tick (also retired): *"What's the reason to limit how many
+  runs per tick can change? I don't get it."*
+- `2026-11-06-0643-4d8425d6.md` (began 2026-11-05 10:43 PM PST): *"WHY must we wait 10 minutes?! All these arbitrary
+  pauses cost us a lot of time! Please stop building arbitrary pauses into the system..."*
+- `2026-11-06-2027-1f35a6cd.md` (began 2026-11-06 12:27 PM PST): *"I thought we just redesigned the system to eliminate
+  a huge number of arbitrary rules. Now yu're describing a similar system again...?"*
+- `2026-11-07-0444-79d5c12a.md` (began 2026-11-06 8:44 PM PST), on the test-tools grant that lapsed after 7 days: *"Why
+  is there even such a grant and time limit?"*
+- `2026-11-09-0336-eca4c96a.md` (began 2026-11-08 7:36 PM PST), on a 3-hour wall time given to a helper round: *"Why is
+  10:45pm a limit? No time limits please. GPT might be slowing it down"* (`detached_helper.py` has launched with no
+  wall time by default since).
+- `2026-11-12-1751-23399ea2.md` (began 2026-11-12 9:51 AM PST), on Explosive Knockback's throw caps of 40 and 60:
+  *"No caps please."*
+- `2026-11-12-2150-a0f60432.md` (began 2026-11-12 1:50 PM PST): *"WHY would anything cut off text at 600 characters?!
+  please get rid of these arbitrary cuts!"* (fixed for the text stores in `9fa4614958`,
+  `RIMMANDRAKE_STORE_TEXT_WHOLE_NO_CUTS`).
+- `2026-11-17-1807-c041be2c.md`: *"Drop 11-14 limits, old rule."*, quoted whole in §A limit from before the Maturation
+  Pipeline is suspect, below.
+
+Each limit was removed one at a time while new code kept adding new ones; Crystallize 2026-W47 adopted the rule below
+as its one change (delegated: evidence-for-ask; report
+`D:\ClaudeWork\rimmandrake\conductor\crystallize_2026W47\sweeps.md` §3 item 2, §5 cluster 8, §9 candidate 1).
+
+**The rule, for every agent and every program.**
+- **Scope:** every cap, pause, wait, timeout, wall time, retry or attempt bound, rate or per-tick count, concurrency
+  count, grant expiry and text cut in our code, configs, role files and briefs. A limit inside a mod's gameplay is a
+  design promise and is judged by that mod's design (his "No caps please" above removed one).
+- **Each limit names two things where it is set** (the comment beside the number, the component's boundary page under
+  LIMITS, or the brief): the **danger** it guards, meaning what goes wrong without it; and the **evidence** that the
+  danger happens, meaning an incident, measurement, record or lesson, with its date or path.
+- **A limit that cannot name both is removed, not tuned.** A bigger number is not a fix. When the danger is real but
+  nothing measured supports the LEVEL, the level is the defect, and the launcher picks the bound for the job it is
+  launching. Example: `detached_helper.py`'s default spend cap of $15
+  (`RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS`).
+- **When the evidence exists, the guard stays and is cheap** (his "protect cheaply!"). This rule removes no guard that
+  has its danger and evidence.
+- **Found in the wild:** a limit with no named danger in pipeline machinery is a pipeline defect (§The pipeline fixes
+  its own defects): file it with its acceptance test and remove it in the same run, or hand it off with the evidence
+  when removing it is outside your tools.
+- **Where limits are born:** a boundary page lists each limit the component enforces under LIMITS (§A boundary page
+  before pipeline code), and a helper brief that sets a limit says what it guards
+  (`src/RimMandrake/rimflow/roles/conductor.md`, helper launches).
+
+**What this does not lift.** His own rulings already name their danger by his word, and change only by his act or the
+Conductor's mindful act in their own sections: his holds (the six biome mods held on 2026-11-16, his OWNER bridge hold's
+45 minutes, his stops such as the 8:22 PM stop of pipeline reviews on 2026-11-18); the hard per-run spend stop he
+ordered (*"Don't let any burn go to 90M this time ok?"*, 2026-11-12, §No launched agent is told its spend; only a
+DEFAULT level with no evidence is in scope); the account order and leave lines (§Account and capacity budget); the
+machine-safety brakes (the clone pool's 16 clones and 80 GB, §Git); and no live flyer flight test without him.
+
+**Measured, so any later date can judge it.** `python3 src/RimMandrake/Utils/owner_objections.py conversations <start>
+<end>` reports `arbitrary_limit` **≤ 2 blocks** for the 14 days after 2026-11-19 (2026-11-20 to 2026-12-03).
+Baseline: 8 blocks in 7 records for 2026-11-05 to 2026-11-19 [measured; pinned by
+`src/RimMandrake/Utils/selftest_owner_objections.py` at `338b3cae50`]; the 14 days before that (2026-10-22 to
+2026-11-04) read 2, so part of the spike belongs to the retired pipelines and a fall is not all this rule's doing.
+Review date: 2026-12-03 (any 14-day window after adoption works).
 
 ## Relentless fixes the system first (said of the retired Relentless) — owner, 2026-11-03
 
@@ -1113,9 +1179,12 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
 - **Decision 1, the page comes before the code.** Card: *"Before a helper writes new pipeline code, what do we do
   first?"* He picked *"Write a one-page list (Recommended)"*: *"The page lists what the code accepts, which failures
   it does not handle, and what it promises. Each promise gets a test. A reviewer can only report a broken promise."*
-  The page is `design/specs/<component>/boundary.md`, with the parts ACCEPTS, DOES NOT SURVIVE, PROMISES, and LIFE
-  CYCLES when the component keeps state between calls. Entries are named with words, and a promise's test carries
-  the promise's name. Pipeline machinery owes a page when it is new, or when a change adds a state, an input form, a
+  The page is `design/specs/<component>/boundary.md`, with the parts ACCEPTS, DOES NOT SURVIVE, PROMISES, LIFE
+  CYCLES when the component keeps state between calls, and LIMITS when it enforces any limit. LIMITS lists each limit
+  the component enforces (a cap, pause, timeout, retry bound or text cut) with the danger it guards and the evidence
+  that the danger happens; a limit that cannot name both is removed, not tuned (owner 2026-11-16, the guard test in the
+  limits ruling of 2026-10-31 to 2026-11-17 above; LIMITS added by Crystallize 2026-W47, delegated). Entries are named
+  with words, and a promise's test carries the promise's name. Pipeline machinery owes a page when it is new, or when a change adds a state, an input form, a
   read of the outside world, or a verb that kills, deletes, locks or launches. A one-line fix owes none. An existing
   component gets its page when it is next extended, never in a sweep. One fresh reader that did not write the page
   reads it before code is cut to it. The cost he accepted: *"New code that kills runs goes live in half a day, not

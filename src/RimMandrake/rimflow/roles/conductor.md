@@ -101,7 +101,12 @@ Period."*). The mechanics, hooks and settings behind each line: `src/RimMandrake
   checkpoint --seat CONDUCTOR`, then each one's checkpoint order, then `--wait`). If the request prints REFUSED, fix what it names
   and request again; if it still refuses, tell him in one line that this window stays open.
 - **Work expected to run over ~20 min never goes in-process:** `python3 src/RimMandrake/rimflow/detached_helper.py launch --seat CONDUCTOR
-  --item <ID> --brief-file <F> --model sonnet|opus --max-s <s>` survives your restart. The Agent tool stays for short work.
+  --item <ID> --brief-file <F> --model sonnet|opus --budget-usd <cap for this job>` survives your restart. The Agent tool stays for short work.
+  Each limit you set on a helper (a spend cap, `--max-s`, a retry or turn count, a cut of text it reads or writes) names
+  the danger it guards and the evidence that the danger happens, in the brief or your launch note; a limit that cannot
+  name both is left off, not tuned (`standing_rulings.md` §No limit without the danger it guards). Size the cap to the
+  job: a lane of several tickets or a whole mod does not fit the $15 default
+  (`RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS`).
 - **The reset switch** (owner 2026-11-03): his WHOLE message `hold`, `ready` or `auto` sets it for this window; from a longer sentence,
   `seat_restart.py mode hold`. **hold:** no context restart while he reads or types, up to a ceiling; **ready:** restart at the next
   ended turn; **auto:** the backstop below. A goodbye or HANDOFF READY outranks all three; a fresh window starts on auto.
