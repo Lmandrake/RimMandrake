@@ -32,6 +32,7 @@ moment of launch (admit) and again when the unit itself starts (its ExecConditio
   grants        more of a consumable for a mod in one accounting window (`pipe grant <Mod> look +N`).
   queue         the advancing order (`pipe queue top|bottom|move|drop|add`): a position per mod and, apart from it, its
                 membership (critique 23); the tick's advancing list reads it (queue_apply).
+  mod_models    one mod's builder launches pinned to a model (`pipe model <Mod> fable|default`; mod_model.py).
   adjustments   the typed counts and limits (`pipe set|add|reset|limit`): a count's delta at a revision, a limit's
                 value; `pipe undo <act>` is a compensating act, refused with the later acts it would break.
   voids         one row per voided run; voiding twice changes nothing. A void never moves a stage.
@@ -57,6 +58,7 @@ unit name when the store cannot be read (emergency stopping never waits on it).
   pipe show [Mod] [--json]   pipe why <Mod>   pipe log [-n N]
   pipe void <run> --why ...   pipe grant <Mod> look +N --why ... --owner-said ...|--per-ruling ...
   pipe set|add|reset|limit|queue|undo ...   (consumable counts, limits and the queue: pipeline_control.py)
+  pipe model <Mod> <fable|default> --why ...   that mod's builders on that model, their caps scaled to its price
   pipe init [--import]   pipe doctor
 Exit codes: 0 done, 2 refused, 3 could not look (the store is unreadable), 4 failed (an error that is neither).
 Every write prints at most 3 lines (before -> after; act id + revision; the undo command). Selftest: selftest_control.py.
@@ -961,6 +963,80 @@ def set_limit(mod, res, n, why, owner_said=None, per_ruling=None, idem=None, p=N
         return {"act": a, "before": before, "after": n, "replayed": False}
 
 
+# One mod's builder launches on a pinned model (`pipe model <Mod> fable|default`; mod_model.py, its boundary page
+# design/specs/2026-11-19-mod-model-pin/boundary.md). A row per pinned mod; lifting the pin deletes it. A store made before
+# the table existed has no pin (empty, not unreadable), as with the adjustments above.
+MODEL_SQL = "CREATE TABLE IF NOT EXISTS mod_models (mod TEXT PRIMARY KEY, model TEXT NOT NULL, act TEXT, at REAL)"
+
+
+def _has_models(c):
+    return bool(c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='mod_models'").fetchone())
+
+
+def mod_models(p=None):
+    """-> {mod: model alias} of every pinned mod ({} when none is). Raises Unreadable: could not look is never none."""
+    c = read(p)
+    try:
+        if not _has_models(c):
+            return {}
+        return {r["mod"]: r["model"] for r in c.execute("SELECT mod, model FROM mod_models").fetchall()}
+    except sqlite3.Error as e:
+        raise Unreadable(_err(e))
+    finally:
+        c.close()
+
+
+def set_model(mod, model, why, owner_said=None, per_ruling=None, idem=None, p=None, now=None):
+    """`pipe model <Mod> <alias|default>`: pin the mod's builder launches to `model` (default: lift the pin). Refused,
+    naming it, for a model mod_model cannot pin or price. -> {"act", "before", "after", "replayed"}."""
+    now = time.time() if now is None else now
+    m = key(mod)
+    if not m:
+        raise Refused("pipe model names a mod")
+    after = None if model in (None, "default") else str(model).strip()
+    if after is not None:
+        sys.path.insert(0, HERE) if HERE not in sys.path else None
+        import mod_model as MM
+        try:
+            MM.pin_id(after)
+            MM.cap_scale(after)
+        except KeyError as e:   # role_launch.UnknownModel: named, nothing written
+            raise Refused(str(e))
+    with txn(p) as c:
+        hit = _idem_hit(c, idem)
+        if hit:
+            return {"act": hit, "before": None, "after": after, "replayed": True}
+        c.execute(MODEL_SQL)
+        r = c.execute("SELECT model FROM mod_models WHERE mod=?", (m,)).fetchone()
+        before = r["model"] if r else None
+        a = _act(c, "model", "mod:%s/model" % m, {"model": before}, {"model": after}, why, owner_said, per_ruling, idem,
+                 now=now)
+        if after is None:
+            c.execute("DELETE FROM mod_models WHERE mod=?", (m,))
+        else:
+            c.execute("INSERT OR REPLACE INTO mod_models (mod, model, act, at) VALUES (?,?,?,?)", (m, after, a["id"], now))
+        return {"act": a, "before": before, "after": after, "replayed": False}
+
+
+def cmd_model(o):
+    sc = scope_of(o.mod, unseeded=True)     # a wrong name is refused with the nearest names, as `pipe off` does
+    if not sc.startswith("mod:"):
+        raise Refused("pipe model takes a mod, not %s" % sc)
+    m = sc[4:]
+    r = set_model(m, o.model, o.why, owner_said=o.owner_said, per_ruling=o.per_ruling, idem=o.idem)
+    if r["replayed"]:
+        return ["%s model: already applied as %s (idempotency key %s): nothing changed" % (m, r["act"]["id"], o.idem)]
+    if r["after"]:
+        import mod_model as MM
+        now_ = "%s (%s), its builder caps x%g" % (r["after"], MM.pin_id(r["after"]), float(MM.cap_scale(r["after"])))
+    else:
+        now_ = "the shipped models and caps"
+    return ["%s builder model: %s -> %s; judges and the in-game driver keep theirs" % (
+                m, r["before"] or "the shipped models and caps", now_),
+            _who_line(r["act"]) + "; binds at the next launch",
+            "undo: pipe model %s %s --why \"...\"" % (m, r["before"] or "default")]
+
+
 def undo(act_id, why, owner_said=None, per_ruling=None, p=None, now=None, base=0):
     """`pipe undo <act>`: a compensating act (critique 16). A count or limit adjustment stops counting; a grant gets
     its negative (a look already consumed shows as a deficit); an OFF is lifted only while it is still the switch's
@@ -1040,8 +1116,8 @@ def _undo(act_id, why, owner_said, per_ruling, p, now, base):
             return {"ok": True, "why": None, "act": u, "after": after, "line": "%s: OFF %s undone; the OFF it replaced "
                     "is back, %s (%s)%s" % (a["scope"], act_id, prior.get("act") or "no act", str(prior.get("why"))[:60],
                                             "" if after == "OFF" else ", lapsed at its until: ON")}
-        return no("a %s act is not inverted by undo: use its own command (pipe on/off, maturation_dispatch.py unvoid, "
-                  "mod_owner_hold.py lift)" % a["kind"])
+        return no("a %s act is not inverted by undo: use its own command (pipe on/off, pipe model, maturation_dispatch.py "
+                  "unvoid, mod_owner_hold.py lift)" % a["kind"])
 
 
 def import_accounts(pc_dir, p=None, now=None):
@@ -2460,6 +2536,8 @@ def show(mod=None, p=None, now=None, as_json=False):
         nf = [dict(r) for r in c.execute("SELECT mod, COUNT(DISTINCT run) n FROM faults WHERE at>=? GROUP BY mod",
                                          (now - 86400,)).fetchall()]
         stops = [dict(r) for r in c.execute("SELECT * FROM stops WHERE state IN ('pending','seen')").fetchall()]
+        pins = ({r["mod"]: r["model"] for r in c.execute("SELECT mod, model FROM mod_models").fetchall()}
+                if _has_models(c) else {})
         lock = None
         try:        # WAL: a reader sees the last committed state; a writer holding the lock makes every act wait
             c.execute("PRAGMA busy_timeout=50")
@@ -2500,6 +2578,8 @@ def show(mod=None, p=None, now=None, as_json=False):
                                                 str(tr.get("decision") or "-") if rd else "UNMEASURED (%s)" % rd_why)
         if look:
             line += "  look %d left" % look[-1]["available"]
+        if pins.get(m):
+            line += "  builders on %s" % pins[m]
         out.append(line)
         if mod:
             out += ["  %s" % describe(s) for s in ms]
@@ -2796,6 +2876,9 @@ def main(argv=None):
     p.add_argument("mod")
     p.add_argument("resource")
     p.add_argument("n")
+    p = w(sub.add_parser("model"))
+    p.add_argument("mod")
+    p.add_argument("model", help="a pinnable alias (mod_model.pinnable: fable), or default to lift the pin")
     p = sub.add_parser("next")
     p.add_argument("within", nargs="?", default="30m")
     p.add_argument("--full", action="store_true", help="every reason in full (default: under 1,500 characters)")
@@ -2867,6 +2950,8 @@ def main(argv=None):
             lines = cmd_void(o)
         elif o.verb == "grant":
             lines = cmd_grant(o)
+        elif o.verb == "model":
+            lines = cmd_model(o)
         elif o.verb == "queue":
             lines = cmd_queue(o)
         elif o.verb == "next":

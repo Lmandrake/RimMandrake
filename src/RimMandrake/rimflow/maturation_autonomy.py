@@ -1227,7 +1227,11 @@ def _gate(cfg, s, row, live_total, ver):
     if n >= most:
         return False, ("steward_spent", "%d automatic %s runs on %s at this version, the most is %d" % (
             n, row["aut"], row["mod"], most))
-    cap = cfg.get("fix_cap_usd" if row["aut"] == "fixer" else "steward_cap_usd")
+    import mod_model as MM
+    try:        # a pinned mod's steward and fixer caps are scaled to its builders' model (mod_model.for_mod)
+        cap = MM.for_mod(cfg, row["mod"]).get("fix_cap_usd" if row["aut"] == "fixer" else "steward_cap_usd")
+    except KeyError as e:       # role_launch.UnknownModel: named, nothing launches
+        return False, ("model_unknown", str(e))
     if not (isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0):
         return False, ("no_cap", "no positive %s in the settings" % ("fix_cap_usd" if row["aut"] == "fixer"
                                                                     else "steward_cap_usd"))
@@ -1626,7 +1630,8 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
 def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=None):
     import maturation_dispatch as MD
     mod, s = row["mod"], st["mods"][row["mod"]]
-    model = cfg.get("steward_model", "opus")
+    import mod_model as MM
+    model = MM.for_mod(cfg, mod).get("steward_model", "opus")     # a pinned mod's steward and fixer: its pin
     retry = row.get("retry_of") or {}
     tries, filed = int(retry.get("tries") or 0) + 1, False
     if row["aut"] == "fixer":

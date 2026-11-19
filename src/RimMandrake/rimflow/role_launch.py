@@ -3364,6 +3364,21 @@ def launch_role(role, a):
     out = dict(role, enabled=True)
     if a.get("concept"):          # a stage-machine run: its concept folder arms the Stop hook role_result_before_stop
         out["designer_dir"] = a["concept"]
+        # its mod, so control admits it under that mod (a `pipe off <Mod>` refuses it at its start check), and that
+        # mod's builder model pin, read now: a run asked by run-now, the harvest's chain or the orphan sweep alike
+        # (mod_model.role_for; design/specs/2026-11-19-mod-model-pin/boundary.md)
+        out["mod"] = os.path.basename(os.path.normpath(str(a["concept"])))
+        import mod_model as MM
+        import control as C
+        try:
+            pinned = MM.role_for(out, out["mod"])
+        except (C.Unreadable, KeyError) as e:   # could not look, or a pin it cannot price: launch() refuses it, said
+            out["pin_refused"] = "the builder model pin of %s: %s: %s" % (out["mod"], type(e).__name__, e)
+        else:
+            if pinned.get("pin"):
+                a["why"] = "%s; model pinned for %s: %s, run budget x%g (pipe model)" % (
+                    a.get("why") or "", out["mod"], pinned["model"], pinned["pin"]["cap_x"])
+            out = pinned
     if a.get("pre_launch"):
         out["pre_launch"] = a["pre_launch"]
     if (a.get("run_now") or {}).get("parent"):     # the unit env names it for the pre-launch judge (RM_PARENT_UNIT)
@@ -3657,6 +3672,8 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
             return False, str(e), {}
     session = role.get("resume_session") or str(uuid.uuid4())     # claude -p --resume keeps the session id
     # a real launch owns a TMPDIR (run_tmp.py; TMP_SCRATCH_ENFORCE_MUTANTS_CLEAN_UP); a test's fake runner makes no dir
+    if role.get("pin_refused"):     # launch_role could not read or price the mod's model pin: nothing starts
+        return False, "REFUSED by control: %s" % role["pin_refused"], {}
     tmpdir = run_tmp.prepare(unit) if runner is subprocess.run else None
     import control as C     # the one admission point (control.py)
     mod = role.get("mod") or (os.path.basename(os.path.normpath(role["concept"])) if role.get("concept") else None)
@@ -3674,7 +3691,8 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
         "out": out, "err": err, "scope": scope, "marker": unit,
         "runner": role.get("runner", "claude"),
         "model_id": (role.get("codex_model") or os.environ.get("CODEX_MODEL") or "config")
-        if role.get("runner") == "codex" else model_id(role["model"]), "session": session}
+        if role.get("runner") == "codex" else model_id(role["model"]) or (
+            role["model"] if str(role["model"]).startswith("claude-") else None), "session": session}
 
 
 def scope_of(unit, seat, runner=subprocess.run):

@@ -154,6 +154,7 @@ import pipeline_pause as PP          # noqa: E402  the pipeline's pause: one swi
 import pipeline_control as PC       # noqa: E402  the one control store (`pipe`): counts, limits, switches, queue
 import mod_owner_hold as OH          # noqa: E402  the owner's hold: a held mod is never decided (mod_owner_hold.json)
 import run_void as RV            # noqa: E402  a VOID run spends no trial (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT)
+import mod_model as MM           # noqa: E402  one mod's builders on a pinned model, caps scaled (`pipe model`)
 
 UNM = "UNMEASURED"
 RELEASE_STAGES = ("offline_build", "blind_challenge", "in_game")
@@ -858,8 +859,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
     advancing mod and the mods to launch, in list order. Never launches on a mod twice in one tick, and at most one
     in-game run in all. bridge(purpose) -> (takeable, why) is asked only for an in-game launch otherwise decided."""
     rows, launches = [], []
-    cap = cfg.get("cap_usd")
-    cap_ok = isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0
+    base = cfg
     mods = st.setdefault("mods", {})
     live_total = occupancy(facts)
     drivers = live_drivers(facts)
@@ -880,6 +880,16 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
                 row["need"] = "%s: %s" % (mod, need)
         put.row = row
 
+        try:    # the mod's own settings: a pinned mod's builders on its model, their caps scaled (mod_model.for_mod)
+            cfg = MM.for_mod(base, mod)
+        except KeyError as e:       # role_launch.UnknownModel: a pin it cannot price launches nothing, said by name
+            put("model_unknown", str(e), "its builder model pin cannot be priced (%s); `pipe model %s default` lifts it"
+                % (e, mod))
+            continue
+        cap = cfg.get("cap_usd")
+        cap_ok = isinstance(cap, (int, float)) and not isinstance(cap, bool) and cap > 0
+        if cfg.get("_pin"):
+            row["pin"] = cfg["_pin"]
         if f.get("stage") == "blind_challenge":
             s.pop("owed_since", None)
             s.pop("watch", None)
@@ -1366,6 +1376,7 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
     one for each other, then ONE builder on all of them (a pilot's from its ledger packet as its holder). Booked in
     s["cert_red"]: the reds, the items, the unit, the stage it was found at. -> True when it started."""
     mod, s = row["mod"], st["mods"][row["mod"]]
+    cfg = MM.for_mod(cfg, mod)      # its builder on red deciders: the mod's pin (idempotent on execute's own view)
     reds, kr = row["cert_reds"], row.get("known_red") or {}
     mine = s.setdefault("cert_red_items", {})
     own = {t: cert_item_id(mod, t, set()) for t in reds}
@@ -2174,7 +2185,9 @@ def launch_stage(root, cfg, st, mod, cap, item, now=None, fx=None, launch=None, 
     its run.end at once. Any other mod launches as before. -> (rc, text, unit)."""
     launch = launch or M.launch_mod
     stage = (M.load(root, mod) or {}).get("stage")
-    model = cfg.get("ingame_model", "opus") if stage == "in_game" else cfg.get("model", "opus")
+    cfg = MM.for_mod(cfg, mod)      # its builders' pin; the judge and the live driver keep theirs
+    model = (cfg.get("ingame_model", "opus") if stage == "in_game" else MM.judge_model(cfg)
+             if stage == "blind_challenge" else cfg.get("model", "opus"))
     if not pilot_ledger(root, mod):
         return launch(root, mod, cap, item, seat=cfg.get("seat", "BENCH"), model=model, **kw)
     now = now or time.time()
@@ -2306,7 +2319,7 @@ def road_back_holder(root, cfg, st, mod, stage, opened, item, cap, now, fx):
             ", ".join(game6), "s" if len(game6) == 1 else "") if game6 else "") + (
         "\n" + M.game_brief(game) if game else "")), stage=stage, now=now, fx=fx)
     rc, text, unit = (fx.get("launch_brief") or AUT.launch_brief)(
-        item, led["brief"], cfg.get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
+        item, led["brief"], MM.for_mod(cfg, mod).get("steward_model", "opus"), cap, cfg.get("seat", "BENCH"),
         env=dict(led["env"], **({"RM_GAME_INSTANCE": game} if game else {})), **rkw)
     unit = unit if rc == 0 else None
     text = "%s%s%s; %s" % ("live holder (bridge and game allowed): " if live else "",
@@ -2380,7 +2393,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
             continue
         if no_slot(cfg, planned, put):
             continue
-        row.update(holder_items=items, cap=cfg.get("cap_usd"))
+        row.update(holder_items=items, cap=MM.for_mod(cfg, mod).get("cap_usd"))
         put("launch", "its road-back fixers are spent and its ledger is ready: one holder run on all %d open items "
             "(%s), nothing live on it (%s)" % (len(ids), ", ".join(ids), account[1]))
         launches = [m for m in launches if m != mod] + [mod]
@@ -2509,6 +2522,7 @@ def end_judge_run(root, mod, run, status):
 
 def execute(root, cfg, st, rows, launches, now, fx=None):
     fx = fx or {}
+    base = cfg
     do_file = fx.get("file", file_and_publish)
     do_publish = fx.get("publish", publish_filed)
     do_launch = fx.get("launch", lambda mod, cap, item, **kw: launch_stage(root, cfg, st, mod, cap, item, now, fx, **kw))
@@ -2524,6 +2538,7 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
         if row["mod"] not in launches:
             continue
         mod, s = row["mod"], st["mods"][row["mod"]]
+        cfg = MM.for_mod(base, mod)     # decide priced this pin already; the closures above read this binding
         blind = row.get("stage") == "blind_challenge"
         if row.get("holder_items"):     # pilot_holders: one holder run on the open road-back items
             rc, text, unit, item = road_back_holder(root, cfg, st, mod, row.get("stage"), row["holder_items"], None,
@@ -3059,6 +3074,13 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
         cfg = dict(cfg, advancing=C.queue_apply(cfg.get("advancing") or []))
     except C.Unreadable:    # the shipped order stands: the hold read above already holds every mod as UNREADABLE
         pass
+    # `pipe model` (mod_model.py): the builder model pins, read once for this tick's decide and execute; pins that
+    # cannot be read hold every mod, said, so a pinned mod never launches on the shipped model by a blind read
+    try:
+        cfg = dict(cfg, **{MM.PINS_KEY: fx["pins"]() if "pins" in fx else MM.read_pins()})
+    except C.Unreadable as e:
+        for m in cfg.get("advancing") or []:
+            holds.setdefault(OH.key(m), {"mod": OH.key(m), "date": "", "said": "model pins: %s" % e, "unreadable": True})
     cfg = dict(cfg, advancing=[m for m in cfg.get("advancing") or [] if OH.key(m) not in holds])
     # The pipeline's pause (pipeline_pause.py; RIMMANDRAKE_ADD_PAUSE_ALL_AND_UP_NEXT_HOLD_LEAKED), read at the moment of
     # deciding, no git hop; an --until that has passed resumes by itself (an applying tick moves it to history and says
@@ -3197,6 +3219,15 @@ VOID_ITEM = "RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT"
 
 
 def launch_kind(cfg, r, root=None):
+    try:
+        cfg = MM.for_mod(cfg, r.get("mod"))
+    except Exception as e:      # noqa: BLE001  unknown is said, never the shipped model shown as the truth
+        return {"kind": r.get("aut") or r.get("stage") or "run", "model": "%s (%s)" % (UNM, e), "cap_usd": None,
+                "rule": "model pin"}
+    return _launch_kind(cfg, r, root)
+
+
+def _launch_kind(cfg, r, root=None):
     """-> {"kind", "model", "cap_usd", "rule"}: what a launch row starts, read from the row the tick hands execute (a
     stage run on a pilot mod is its holder: its cap is holder_cap's, as execute will set it)."""
     if r.get("aut") in ("autolock", "autorepin"):
@@ -3220,7 +3251,8 @@ def launch_kind(cfg, r, root=None):
     if root is not None and isinstance(cap, (int, float)) and pilot_ledger(root, r["mod"]):
         cap = holder_cap(cfg, r, cap)
     return {"kind": ROLE_OF_STAGE.get(stage, "run"),
-            "model": cfg.get("ingame_model", "opus") if stage == "in_game" else cfg.get("model", "opus"),
+            "model": (cfg.get("ingame_model", "opus") if stage == "in_game" else MM.judge_model(cfg)
+                      if stage == "blind_challenge" else cfg.get("model", "opus")),
             "cap_usd": cap, "rule": {"blind_challenge": "decide_blind", "in_game": "decide_ingame"}.get(
                 stage, "decide (offline build)")}
 

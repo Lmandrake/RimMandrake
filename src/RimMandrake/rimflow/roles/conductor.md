@@ -268,6 +268,8 @@ Every hand act of yours on the pipeline is recorded by the tick (owner, 2026-11-
 ./pipe void <run> --why "..."                the run spends no trial or look (store and dispatch books); no stage moves
 ./pipe grant <Mod> look +1 --why "..." --owner-said "<his words>"   one more granted look
 ./pipe set|add|reset|limit|queue|undo ...     counts, limits and the queue (pipeline_control.py)
+./pipe model <Mod> fable|default --why "..."  that mod's builders (Designer, build, fixer, steward, holder) on Fable 5.2,
+                                             caps x2; judges and the in-game driver keep theirs (mod_model.py)
 python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said "<his words>"   lift his hold (store + mirror)
 python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE --why "..."
                                              your own lift (owner 2026-11-19: "Conductor should also be able to lift a Hold.
