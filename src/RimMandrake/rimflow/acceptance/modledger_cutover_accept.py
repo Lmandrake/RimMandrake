@@ -11,30 +11,46 @@ THE CONTRACT, per mod named. Each old hand-written store, `stage.json`, `journal
       top-level "_view" key, which `modledger.py lint --mod <Mod>` checks like the views under ledger/views/; or
   (b) gone from its place, with its last content kept read-only at archive_pre_ledger/<same relative path> (no write
       bit for anyone).
-And no writer is left: every .py under src/RimMandrake/ (selftests, acceptance tests and modledger*.py excepted) that
-names one of those three files AND writes a file (open(...,"w"/"a"), .write_text(, json.dump(, os.replace() must import
-modledger. The mod's ledger lints clean against origin/main.
-Exit 0 with "PASS n/n" only when all pass (expected 3 mods x 4 checks + 1 writer check = 13).
+The mod's ledger lints clean against origin/main. And no writer is left outside modledger: measured at run time by
+store_write_census.py (the Conductor's decision 2026-11-18 7:35 PM PST, item
+RIMMANDRAKE_NARROW_CUTOVER_WRITER_CHECK_EIGHT_OF_THIRTEEN_READ; the clause it replaced matched source text, counted 8
+readers among 13 "writers" and excused maturation.py, a real writer, for importing modledger inside a function): the
+pipeline selftests and each candidate's own selftests run under a hook that records every module opening one of the
+three stores for writing. A module the hook saw writing is a writer; one whose store-naming or writing functions never
+ran under any test is NOT MEASURED, named, and never counted as "does not write".
+Exit 0 with "PASS n/n" only when all pass (expected 3 mods x 4 checks + 1 writer check = 13); 3 when the census could
+not look (its planted probe write was not caught), else 1 on any FAIL, else 2 when a module is NOT MEASURED.
+
+    --writers-only --root R    the writer clause alone, on the tree at R (the selftest's fixture repos)
+    --census record.json       read a census record (store_write_census.py --out) instead of running one; refused as
+                               COULD NOT LOOK when the record was taken on other code
 """
-import glob
+import argparse
 import json
 import os
-import re
 import stat
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 import modledger as M                                            # noqa: E402
+import store_write_census as C                                   # noqa: E402
 
-ROOT = M.REPO_ROOT
+ap = argparse.ArgumentParser()
+ap.add_argument("mods", nargs="*")
+ap.add_argument("--writers-only", action="store_true")
+ap.add_argument("--root", default=M.REPO_ROOT)
+ap.add_argument("--census", help="a store_write_census.py --out record to read instead of running one")
+A = ap.parse_args()
+ROOT = os.path.abspath(A.root)
 OLD = ("stage.json", "journal.md", os.path.join("version", "stage_record.json"))
-res = []
+res = []                                     # "PASS", "FAIL", "NOT MEASURED" or "COULD NOT LOOK", one per check
 
 
-def check(name, ok, detail=""):
-    res.append(ok)
-    print(("PASS  " if ok else "FAIL  ") + name + ("" if ok else "  " + str(detail)))
+def check(name, ok, detail="", answer=None):
+    a = answer or ("PASS" if ok else "FAIL")
+    res.append(a)
+    print(a + "  " + name + ("" if a == "PASS" else "  " + str(detail)))
 
 
 def is_view(p):
@@ -55,7 +71,7 @@ def archived(c, rel):
     return os.path.exists(a) and not (os.stat(a).st_mode & (stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH))
 
 
-for mod in sys.argv[1:] or ["ExplosiveKnockback", "GimmeSomeSlack", "FlowWorks"]:
+for mod in ([] if A.writers_only else (A.mods or ["ExplosiveKnockback", "GimmeSomeSlack", "FlowWorks"])):
     c = os.path.join(ROOT, "design", "concepts", mod)
     for rel in OLD:
         p = os.path.join(c, rel)
@@ -64,19 +80,48 @@ for mod in sys.argv[1:] or ["ExplosiveKnockback", "GimmeSomeSlack", "FlowWorks"]
               "still a hand-written file" if os.path.exists(p) else "gone, no read-only archive")
     findings, _ = M.lint(ROOT, mod, base="origin/main")
     check("%s: the mod ledger lints clean" % mod, bool(M.read(ROOT, mod)) and findings == [], findings[:3])
-WRITE = re.compile(r"open\([^)]*['\"][wa]b?['\"]|\.write_text\(|json\.dump\(|os\.replace\(")
-names = re.compile(r"stage_record\.json|journal\.md|['\"/]stage\.json")
-left = []
-for py in glob.glob(os.path.join(ROOT, "src", "RimMandrake", "**", "*.py"), recursive=True):
-    b = os.path.basename(py)
-    if b.startswith("selftest_") or b.startswith("modledger") or "/acceptance/" in py:
-        continue
+WHAT = "no writer of the old stores is left outside modledger"
+if A.census:
     try:
-        s = open(py, encoding="utf-8").read()
-    except (OSError, UnicodeDecodeError):
-        continue
-    if names.search(s) and WRITE.search(s) and not re.search(r"^\s*(import|from)\s+\S*modledger", s, re.M):
-        left.append(os.path.relpath(py, ROOT))
-check("no writer of the old stores is left outside modledger (%d candidates)" % len(left), not left, sorted(left)[:12])
-print("PASS %d/%d" % (sum(res), len(res)) if all(res) else "FAIL %d of %d" % (res.count(False), len(res)))
-sys.exit(0 if all(res) else 1)
+        rec = json.load(open(A.census, encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        rec = {"status": "could_not_look", "cause": "the census record %s cannot be read: %s" % (A.census, e)}
+    if rec.get("status") == "ok" and (os.path.abspath(rec.get("root") or "") != ROOT
+                                      or rec.get("fingerprint") != C.fingerprint(ROOT)):
+        rec = {"status": "could_not_look", "cause": "the census record %s was taken on other code" % A.census}
+else:
+    rec = C.census(ROOT)
+if rec.get("status") != "ok":
+    check(WHAT, False, rec.get("cause"), answer="COULD NOT LOOK")
+else:
+    mods = rec["modules"]
+    writers = sorted(m for m, v in mods.items() if v["verdict"] == "WRITER")
+    unmeasured = sorted(m for m, v in mods.items() if v["verdict"] == "NOT_MEASURED")
+    seen = sum(1 for v in mods.values() if v["verdict"] == "NO_WRITE_SEEN")
+    tests = rec["tests"]
+    print("      census: %d tests (%d red, %d timed out), %d fixture writes; %d writers, %d not measured, %d no write "
+          "seen" % (len(tests), sum(1 for t in tests if t["rc"] not in (0, None)),
+                    sum(1 for t in tests if t["rc"] is None), rec["fixture_writes"], len(writers), len(unmeasured),
+                    seen))
+    for m in writers:
+        e = mods[m]["example"]
+        print("      WRITER        %s  (%d writes; e.g. %s %s under %s)" % (m, mods[m]["writes"], e["event"],
+                                                                         os.path.basename(e["path"]), e["test"]))
+    for m in unmeasured:
+        print("      NOT MEASURED  %s  (never ran: %s)" % (m, "; ".join(mods[m]["never_ran"][:4])
+                                                          + (" +%d" % (len(mods[m]["never_ran"]) - 4)
+                                                             if len(mods[m]["never_ran"]) > 4 else "")))
+    if writers:
+        check(WHAT + " (%d writers measured)" % len(writers), False, writers[:12])
+    elif unmeasured:
+        check(WHAT, False, "%d modules not measured: %s" % (len(unmeasured), unmeasured[:12]), answer="NOT MEASURED")
+    else:
+        check(WHAT + " (%d modules seen, none writing)" % seen, True)
+n = len(res)
+if all(a == "PASS" for a in res):
+    print("PASS %d/%d" % (n, n))
+    sys.exit(0)
+# a blind instrument outranks a fail, so its exit code is never read as an ordinary FAIL
+print(", ".join("%s %d" % (a, res.count(a)) for a in ("COULD NOT LOOK", "FAIL", "NOT MEASURED") if a in res)
+      + " of %d" % n)
+sys.exit(next(code for a, code in (("COULD NOT LOOK", 3), ("FAIL", 1), ("NOT MEASURED", 2)) if a in res))
