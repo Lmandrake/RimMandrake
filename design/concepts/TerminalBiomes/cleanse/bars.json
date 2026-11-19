@@ -76,7 +76,7 @@
       "accept": [
         "At normal colony zoom, cyan water and rainbow mats identify the Scald, gold-lit gardens beneath waveglass identify the Twilight, pale mineral forms stay readable as distinct silhouettes through the Grey’s murk, and dark fuel pools stand out against the Chill’s ice floor.",
         "In the Grey, a mineral-rich scene still leaves distinct pools and silhouettes rather than a white screen; the Twilight has dark ground between light columns.",
-        "The Twilight gardener has a living animal body moving at the ceiling and grazing a skylight rim; it is distinguishable from the well marker and a static roof ornament."
+        "The living giant moves far overhead beneath the waveglass and is distinguishable from a well marker or static roof ornament."
       ],
       "reject": [
         "The sea names change but the floor scenes are interchangeable blue water with recoloured fog.",
@@ -85,8 +85,8 @@
       ],
       "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
       "range": {
-        "varies": "All 4 seas; map-wide view and ordinary zoom at hull, forage patch, hazard edge and distant floor; naturally available fog/salt fall/steam/still-state variants with ordinary wild population, all kept lighting and overlays active; before/after reload and a season of growth. For Scald compare separate beach steam and submerged bubble views; never place beach sky underwater. Include Twilight ceiling tending and the ordinary camera view of the gardener; include overhead motion across projected floor walls and the parked hull under R13.",
-        "left_out": "No exact palette, variant count or compulsory beauty score. The world-map painting and modern art regeneration output are not changed or judged in this proposal. The gardener swims on a separate ceiling plane under R13. The ordinary view tests its presentation as a swimmer. Any fictional flyer’s flight proof uses deterministic tracker state under the standing ruling."
+        "varies": "All 4 seas; map-wide view and ordinary zoom at hull, forage patch, hazard edge and distant floor; naturally available fog/salt fall/steam/still-state variants with ordinary wild population, all kept lighting and overlays active; before/after reload and a season of growth. For Scald compare separate beach steam and submerged bubble views; never place beach sky underwater. Include the ordinary camera view of the living gardener moving far overhead.",
+        "left_out": "No exact palette, variant count or compulsory beauty score. The world-map painting and modern art regeneration output are not changed or judged in this proposal. The ordinary view tests the far-overhead gardener’s presentation as a swimmer. Any fictional flyer’s flight proof uses deterministic tracker state under the standing ruling."
       },
       "sees": {
         "instrument": "Future live look paired with T40 state export to verify scene identity and effective settings. A fresh reviewer sorts unlabeled play views against the accept/reject pictures.",
@@ -203,15 +203,15 @@
     },
     {
       "id": "B5",
-      "says": "A Twilight harvester can gather visibly more forage from the productive bank than from comparable open floor and read the current boundary, but entering carrying water moves an unsecured visitor toward the sink, and an announced undersurge brings that boundary onto the bank.",
+      "says": "A Twilight harvester can gather visibly more forage from the productive bank than from the floor’s other gathering ground, including the off-bank lit gardens, and read the current boundary, but entering carrying water moves an unsecured visitor toward the sink, and an announced undersurge brings that boundary onto the bank.",
       "meant": {
         "intent": "The signature joins temptation, legible boundary, carry and changing reach; an invisible harmless river or an unavoidable unloading trap both fail it.",
         "source": "the_twilight_deep.md §§3 and 7, underwater rivers and richest gathering ground, and the no-swimmable-river hard ban; delegated safe working edge from the current and readable-sign ruling.",
         "figurative": [
           {
             "word": "productive bank",
-            "stands_for": "Naturally richer accessible gathering ground than comparable open floor, judged by ordinary harvestable plants and successful gathering. It does not imply better crop stats or installed works.",
-            "accept": "The bank silt has denser harvestable stands than equally lit open floor even though the open floor’s soil is as fertile for planted crops."
+            "stands_for": "The best reachable natural gathering ground in ordinary play, judged by visible harvestable plants and successful gathering against the floor’s other forage ground, including lit gardens away from the current.",
+            "accept": "The bank offers a better ordinary harvest even than a lit garden away from the current, though the garden’s soil is as fertile for planted crops."
           },
           {
             "word": "read",
@@ -231,26 +231,27 @@
         ]
       },
       "accept": [
-        "The bank holds denser stands of harvestable plants than equally lit open floor. The harvester gathers there, sees the bed and stakes, and can withdraw after a surge warning and resume work later.",
+        "The bank offers visibly more forage than the reachable open-floor patches, including the lit gardens away from the current. A worker gathers there under ordinary orders, sees the bed and stakes, and can withdraw after a surge warning and resume later.",
         "A visitor entering the channel is interrupted and carried downstream; a harness or existing arrest works helps manage exposure without turning the centre into a swimming route."
       ],
       "reject": [
         "A bank grow-soil stat is higher but harvesters see and gather no more forage there than on comparable open floor, so the bank offers no reason to work near the current.",
+        "The bank beats matched dim floor, but lit gardens away from the current offer as much or more, so workers with ordinary orders gather there and never choose the bank.",
         "The terrain looks like harmless mud, the worker receives no warning, and movement to the sink is the first sign.",
         "A warning fires but the dry-looking bed is indistinguishable from bank silt, or the visible stake line misidentifies the widened reach.",
         "A pawn repeatedly walks through the centre faster than registration and never experiences carry.",
         "Current arrows move items while an ordinary colonist crosses safely, or the surge occupies the ship’s sole usable exit and all safe banks."
       ],
-      "lazy": "none: The explicit comparison requires visibly more forage and actual gathering; fertility, decoration or a bank label alone contradict the sentence.",
+      "lazy": "none: The explicit comparison includes the lit gardens away from the current and requires visibly more forage and successful gathering. A fertility number, decorative growth or an advantage over dim ground alone fails it.",
       "range": {
-        "varies": "Full authored Twilight fields at map sizes 150/250/325/400, all 8 bearings, straight/diagonal/overlap/eddy/sink/edge placements and generated obstruction patterns; first entry and repeated crossings, calm/surge/start/end, naked/harnessed, normal/downed, native/nonnative, haulables, walls/doors/ford/weir, no/8/40 colonists. Sweep registration phase 0..249 ticks and process phase 0..14, settings pace extrema, reload just before due movement, and both forage-before-haul and haul-before-forage order. Visual boundary sort covers ordinary zoom and map-wide views, dim ground versus gold columns, sparse and grown native clutter, calm, announced onset and expanded surge; not just a selected or debug-outlined channel. Compare reachable bank and equal-area open-floor patches matched for light, obstruction and recent harvest. Sample fresh authoring, mature growth and regrowth after comparable pressure, including dim and lit sites. Treat a recently cleared patch as depletion and test recovery over the declared cycle.",
+        "varies": "Full authored Twilight fields at map sizes 150/250/325/400, all 8 bearings, straight/diagonal/overlap/eddy/sink/edge placements and generated obstruction patterns; first entry and repeated crossings, calm/surge/start/end, naked/harnessed, normal/downed, native/nonnative, haulables, walls/doors/ford/weir, no/8/40 colonists. Sweep registration phase 0..249 ticks and process phase 0..14, settings pace extrema, reload just before due movement, and both forage-before-haul and haul-before-forage order. Visual boundary sort covers ordinary zoom and map-wide views, dim ground versus gold columns, sparse and grown native clutter, calm, announced onset and expanded surge; not just a selected or debug-outlined channel. Compare reachable bank patches with the strongest reachable off-bank forage alternatives in each ordinary floor view, including lit gardens away from the current. Compare similar patch areas and harvest histories with each patch’s actual light and ordinary routes. Sample fresh native seeding, mature growth and regrowth after comparable pressure. Include dim banks competing with lit gardens and banks under columns. Treat a recently cleared patch as depletion and test recovery over the declared cycle.",
         "left_out": "No cargo-float logistics, no guaranteed rescue from choosing to enter the centre, no new FlowWorks fertility/weir engine. Ordinary bank harvest does not promise to feed an arbitrarily large colony indefinitely. No silt-trap or worked-silt dependency."
       },
       "sees": {
-        "instrument": "M2 geometry and timing sweep plus T40 adapter trace of actual cell entry, current membership, displacement, job interruption, warning delivery and bank route. Kernel selftests are inputs, not a substitute for engine movement/reachability. Boundary legibility additionally requires a live look: a cold reader sorts unlabelled ordinary play views of dry-looking beds, bank silt and surge stakes, marking carrying-bed and outer stake-line boundaries before seeing T40 field overlays. Compare those marked regions to the exported calm/surge reach; a warning event alone cannot pass the visual clause. The same ordinary views compare matched bank and open-floor forage. T40 and T42 export reachable harvestable plants and completed gather jobs for the paired patches.",
+        "instrument": "M2 geometry and timing sweep plus T40 adapter trace of actual cell entry, current membership, displacement, job interruption, warning delivery and bank route. Kernel selftests are inputs, not a substitute for engine movement/reachability. Boundary legibility additionally requires a live look: a cold reader sorts unlabelled ordinary play views of dry-looking beds, bank silt and surge stakes, marking carrying-bed and outer stake-line boundaries before seeing T40 field overlays. Compare those marked regions to the exported calm/surge reach; a warning event alone cannot pass the visual clause. Use the same ordinary views to compare bank forage with reachable alternatives, including off-bank lit gardens. T40 and T42 export reachable harvestable plants, available harvest products and completed gather jobs by patch.",
         "start": "Generated full field with real bed/bank presentation, forage plants, an ordinary visitor path across and along it, actual ship reservation, no forced pawn teleport into the sink.",
         "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
-        "control": "A scripted teleport could look like current. Record pre-move field, due time, movement call and interrupted job; separate no-flow and blocked-edge controls must prevent the displacement. Verify bank forage completes while native growth and wildlife are running. For the visual sort hide selection labels, arrows and debug fields; include negative controls with bed art blended into bank silt and displaced stakes. A reader must reject those even when the warning fires. Sample calm, surge onset and full surge views with the same lighting and native clutter as the passing views. Compare matched light, area and harvest history with silt works off. Remove the natural bank habitat preference in a control that keeps the terrain’s declared fertility and visible weircomb. The bank still has to beat matched open floor in reachable gatherable plants and ordinary gathering.",
+        "control": "A scripted teleport could look like current. Record pre-move field, due time, movement call and interrupted job; separate no-flow and blocked-edge controls must prevent the displacement. Verify bank forage completes while native growth and wildlife are running. For the visual sort hide selection labels, arrows and debug fields; include negative controls with bed art blended into bank silt and displaced stakes. A reader must reject those even when the warning fires. Sample calm, surge onset and full surge views with the same lighting and native clutter as the passing views. With silt works off, keep both the bank and off-bank forage reachable under ordinary orders without a bank-only zone or hand-picked target. Record path lengths, recent harvest and the actual light at each patch. Require a visibly better harvest even against the lit off-bank option and record completed bank gathering. In separate matched-light copies, neutralize the R15 weight while holding terrain fertility and visible weircomb fixed to isolate the natural placement effect.",
         "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
         "live_only_why": "The carrying liquid looks like the surrounding water. State can prove bed/stake placement and warning delivery, but only the ordinary play view can show whether a cold reader distinguishes the dry-looking channel and stake line from harmless bank silt. Calibrated state and geometry still decide movement, timing and route access."
       },
@@ -320,9 +321,9 @@
     },
     {
       "id": "B7",
-      "says": "Beneath the Twilight’s waveglass, a visitor meets the protected giant animal gardener swimming along the ceiling and tending skylight rims over usable garden ground, and can inspect temporary gold light columns whose remaining life decreases while here and between visits to a retained floor.",
+      "says": "A Twilight visitor sees a living protected giant gardener beneath the waveglass and can inspect temporary gold light columns that age across visits, go dark at expiry and are replaced on eligible garden ground.",
       "meant": {
-        "intent": "The living lid requires its actual tending creature and temporary light habitat; removing either would defeat this land and native life. No campaign habitation or optional light economy is needed.",
+        "intent": "The living lid always has its protected animal, and its temporary light migrates through the native garden. The animal’s continued presence and the natural well lifecycle carry those two land promises.",
         "source": "the_twilight_deep.md §§3-6, ratified 2026-09-07 and waveglass amendment 2026-09-26; delegated protected-creature boundary for this version, not an owner ruling of immortality.",
         "figurative": [
           {
@@ -333,28 +334,27 @@
         ]
       },
       "accept": [
-        "A living giant animal moves along the ceiling, grazes an overgrown skylight rim clear so its light spreads again over usable garden ground, and seals a spent opening with secretion.",
+        "A living giant swims far overhead beneath the waveglass. The same individual is still there after departure, reload and return.",
         "The crew inspects a column, works in its garden, then returns after time away to the same still-active column with less time remaining.",
-        "An attempted attack is visibly refused because the gardener is protected in this version; the same living animal continues tending after reload, without a death reward or a roof-collapse encounter."
+        "A waning column reaches the end of its lifetime and goes dark. A new column opens on eligible ground on the ordinary schedule."
       ],
       "reject": [
-        "The waveglass remains with a label, a static ornament or a floor-walking animal in place of a living swimmer that does ceiling work.",
-        "The gardener goes through a tending animation but neither the skylight rim nor its light state responds.",
-        "The gardener can be killed or removed while the waveglass and columns continue as though it were present.",
-        "A gold well acts as a permanent lamp, or its countdown freezes while the retained floor ages and resumes only when the crew comes back."
+        "The waveglass remains with a label, a static ornament or a floor-walking animal in place of its living overhead swimmer.",
+        "The gardener can be killed or removed while the waveglass remains. A death followed by respawn leaves the same gap.",
+        "A gold well acts as a permanent lamp: its countdown freezes while the floor ages, or it reaches expiry and keeps shining. The garden also fails if eligible ground stays dark when a replacement is due."
       ],
       "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
       "range": {
-        "varies": "RM-only and campaign-enhanced loads with all inhabited-holdings extras off. Fresh and overlapping active wells in opening, standing and waning stages. Clear and overgrown rims, spent openings, gardener moving/grazing/patching/interrupted/reloaded and attempts at injury, death, starvation, hunting, slaughter, capture, transfer and map-unload removal. Natural glowers and normal dim/light variants, safe-bank/current intersections, 150..400-square maps and 0/8/40 colonists. Observe countdown and tending while occupied and over R14’s retained-floor absences, including reload while away. Sweep the R13 rim approach above floor walls, hull and busy paths. K11 stages waning, closure and replacement through the normal update path at the years-scale default. Use a naturally elapsed older save when available to corroborate turnover without changing the season requirement.",
-        "left_out": "No inhabited campaign reveal, town, rent, claims, culture, cages, lid-dark crisis, suulk pressure, pane impacts or killable-gardener/roof-collapse scenario. The protected creature is a delegated version limit, not a lore claim of immortality; all-off is an explicit opted-out sandbox. Explicitly abandoned floors and intentionally frozen sandbox wells are outside the retention/countdown promise."
+        "varies": "RM-only and campaign-enhanced loads with next-version extras off. First arrival, continuing and retained floors, including reload while away and return. Record the living gardener across applicable harm and removal paths. Cover isolated and overlapping wells in opening, standing and waning stages, expiry and replacement, and a pending replacement with eligible ground absent then restored. Include occupied and retained-away ticking, dim and gold-lit sites, current and ship exclusions, 150..400-square maps and 0/8/40 colonists. Keep the R7 years-scale default.",
+        "left_out": "Campaign habitation, pane impacts, lid-dark, suulk, interactive ceiling routing, rim jobs and a killable-gardener or roof-collapse scenario are deferred. Protection is a delegated version limit. Explicitly abandoned floors and opted-out sandbox floors are outside the retention promise."
       },
       "sees": {
-        "instrument": "T40 actual spawned-animal, tending-job, rim-cover, light, well-clock and Scribe trace, with T43 and M5 for R12 rim work. B2 judges the visible animal and columns. T43 traces R13’s ceiling position and associated rim target, with paired ground paths through overlapping cells. T40 compares the well ledger during standard retained visits under R14.",
-        "start": "Begin on a normally initialized Twilight floor at defaults. Record map and active well ids, remaining life, tick, rim cover and effective light. Trace a graze and the same active well during occupancy and ordinary absence, with an actual Scribe reload while away. For a patch, use a legitimately expired opening or K11’s separately declared boundary fixture and normal job dispatch.",
+        "instrument": "T40 reads the actual saved gardener identity and life state and records well clocks, lifecycle dispatch, LightLedger contributions and Scribe transitions. T43 supplies the overhead animal read and B2 judges its ordinary presentation. T46 records the live expiry and replacement branch for this bar independently of the K11 regression result.",
+        "start": "Begin with a normally initialized Twilight floor at defaults. Record its living gardener, map and well ids, remaining life and effective light. Trace the same gardener and active well during occupancy, ordinary absence and an actual Scribe reload while away. Use a second copy for the expiry and replacement reading: staged start state, normal update path. Initialize an otherwise valid waning well just before expiry, with reachable eligible ground for replacement. Run ordinary map ticks from there through closure and scheduled replacement. In a separate branch block eligible ground, let the replacement become due, then restore eligibility and let normal dispatch complete it.",
         "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
-        "control": "Require the spawned pawn’s stable identity, completed jobs, light restored by grazing and a spent rim sealed by patching. A separate interrupted-job control must leave the intended rim work undone. Compare the same well’s inspect countdown to its actual age, fixed lifespan and elapsed simulation ticks. A frozen clock must fail the reading even if its tooltip claims a finite life. Optional NotifyGardenerPassAdvance, lid-dark, suulk, pane and habitation paths are off. Ordinary tending leaves the active clock unchanged apart from normal aging. Reject an elevated sprite over a ground-running pawn, a frozen-while-away clock and a newly seeded well presented as the original on return. Confirm that the ceiling projection can overlap ground traffic without changing it, and that only the rim directly beneath the tending target changes.",
+        "control": "Read the same living gardener across attempts at harm or removal and through reload. A static label or replacement individual fails. Compare the countdown with age, lifespan and elapsed map ticks. At expiry require the expired id to lose its LightLedger contribution while any overlapping neighbour remains lit. Require normal dispatch to open a fresh id with its own light on eligible ground, and to retain a pending replacement while ground is blocked. A countdown-only control that leaves the old glow active or suppresses the due replacement must fail. From the staged start, use ordinary ticks and site eligibility with every kept mechanic on. Leave forced advance callbacks and deferred gardener jobs off.",
         "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
-        "live_only_why": "Not independently live-only: actual spawned-animal identity, completed tending jobs, rim/light changes, injury/removal refusal and clock transitions have state evidence calibrated against the game. B2 separately must pass the live presentation of the animal and columns; B7 cannot substitute a state trace for that visual result."
+        "live_only_why": "T40/T43/T46 can decide the persistence, protection, closure and replacement clauses from actual game state and lifecycle transitions. B2 separately judges the ordinary view of the animal and light columns."
       },
       "live_only": false,
       "touches": [
@@ -366,14 +366,14 @@
         "floor_access"
       ],
       "tests": {
-        "reject": "The living lid requires its actual tending creature and temporary light habitat; removing either would defeat this land and native life. No campaign habitation or optional light economy is needed.",
+        "reject": "The living lid always has its protected animal, and its temporary light migrates through the native garden. The animal’s continued presence and the natural well lifecycle carry those two land promises.",
         "renormalize": "The outcome survives retuning yields, durations, sizes and art variants. Ranges exercise changed values without locking them into the experience.",
         "first_version": "Land, life or the current signature, or a named necessary adapter; see census and definition."
       }
     },
     {
       "id": "B8",
-      "says": "Through a full-map season of sea visits, foraging, bank work, rescue and return travel, the crew keeps recognising each habitat and finding native life, with reachable Twilight gardens under tending and aging wells as the current alternates between workable banks and warned danger without a flood of hazards, an emptied floor, stalled travel or recurring errors.",
+      "says": "Through a full-map season of sea visits, foraging, bank work, rescue and return travel, the crew keeps recognising each habitat and finding native life, with reachable Twilight gardens under aging wells and ordinary foragers choosing the banks in calm as the current alternates between work and warned danger without a flood of hazards, an emptied floor, stalled travel or recurring errors.",
       "meant": {
         "intent": "The complete default version must remain recognisable and workable together; isolated proofs cannot hide a map-scale collapse or a reload/order defect.",
         "source": "delegated whole-version inference from owner’s 2026-11-16 cleansing brief and the kept promises; qualitative experience, not a mandated numerical equilibrium.",
@@ -396,24 +396,24 @@
         ]
       },
       "accept": [
-        "The expedition harvests among native life, responds to an undersurge, recovers a victim and returns by ship. After saving and loading during the visit, the crew still finds a reachable Twilight garden beneath tended light with less time left on the well.",
+        "Under ordinary orders, the expedition’s foragers choose the richer Twilight banks during calm while lit gardens away from the current remain available. The expedition harvests among native life, responds to an undersurge, recovers a victim and returns by ship. After saving and loading during the visit, the crew still finds a reachable Twilight garden beneath the columns with less time left on the well.",
         "Reversing whether the crew hauls or forages first changes the story without turning the banks into a continuous unavoidable sink or erasing the food chain."
       ],
       "reject": [
-        "Each isolated scene works, but combined growth hides every bank, predators erase the catch population, or the working Twilight floor has no reachable tended garden light.",
+        "Each isolated scene works, but combined growth hides every bank, predators erase the catch population, or the working Twilight floor has no reachable garden light, or ordinary workers gather only in the off-bank lit gardens because the banks offer no better harvest.",
         "The sky is locked clear, wildlife is suppressed or current is disabled for the season recording.",
         "Reload duplicates carrying victims or weather, a different action order blocks the ship, or repeated errors replace ordinary play."
       ],
       "lazy": "none: The sentence names the contrasted player outcome; each plausible shortcut below contradicts an explicit clause, rather than satisfying it.",
       "range": {
-        "varies": "Each of the 4 seas runs on a full 250-square floor for 15 game days at shipped defaults, with 150/325/400-square boundary coverage through M1/M2; test 1,8,40 colonists, native wildlife and ordinary predation/growth, real weather/atmosphere, current, wells, ordinary salvage and all kept dependency features. Include new arrival and day-100 continued-save regimes, mid-season Scribe save/reload, and matched copies reversing harvest/haul/shelter/rescue order. Twilight covers calm, surge, return to the retained floor, reachable gardens, ordinary tending and wells aging at the R7 years-scale default. Continue until a natural surge occurs if the season did not contain one. A naturally occurring light-stage transition can be recorded if it falls inside the trace. K11 separately stages the lifecycle boundaries. Time compression may skip rendering only: preserve all simulation ticks, RNG ordering, jobs, pathing, weather, temperature, plant/pawn ticks, hunger/thirst, movement, due times and save boundaries.",
+        "varies": "Each of the 4 seas runs on a full 250-square floor for 15 game days at shipped defaults, with 150/325/400-square boundary coverage through M1/M2; test 1,8,40 colonists, native wildlife and ordinary predation/growth, real weather/atmosphere, current, wells, ordinary salvage and all kept dependency features. Include new arrival and day-100 continued-save regimes, mid-season Scribe save/reload, and matched copies reversing harvest/haul/shelter/rescue order. Twilight covers calm, surge, return to the retained floor, reachable gardens, a living overhead gardener, ordinary bank foraging in calm with off-bank lit forage available, and wells aging at the R7 years-scale default. Continue until a natural surge occurs if the season did not contain one. A naturally occurring light-stage transition can be recorded if it falls inside the trace. B7 reads expiry and replacement in a separate start state. Time compression may skip rendering only: preserve all simulation ticks, RNG ordering, jobs, pathing, weather, temperature, plant/pawn ticks, hunger/thirst, movement, due times and save boundaries.",
         "left_out": "Next-version extras are off. No alternative planets, cosmetic variant quotas, universal food self-sufficiency or guaranteed survival of deliberately abandoned visitors. No requirement for well replacement inside the season. Leave well ages and lifetimes unedited throughout the whole trace."
       },
       "sees": {
         "instrument": "T42 whole-mod recorder and M3 calibrated whole-system model, anchored by real full-map traces; T40 checks ordinary action completion, native persistence, current reachability and reload. B2 separately judges presentation. A model with invented ecology or inactive dependencies cannot certify this bar.",
         "start": "A clean disposable fixed-world save with real full maps, healthy equipped expedition, native populations, a functional ship, all kept systems enabled and research available; configuration fingerprint and every gate recorded. Record baseline counts, causes and geometry before advancing.",
         "on": "All kept mechanics at shipped defaults; all DLC; no research/dev lock; next-version extras off; actual composed Baroque Biomes dependencies present. Never force the sky clear, suppress animals, disable growth, or replace real current with a staged dummy. Differential controls run in separate copies and do not count as the passing observation.",
-        "control": "A large scene can appear stable because actors cannot act or time barely advanced. Require completed ordinary jobs, genuine births/growth/feeding/drinking/death/remains events where relevant, actual elapsed game ticks, effective gates, naturally initiated current transitions, and stable well ids with finite countdowns advancing with elapsed map ticks alongside real tending and usable garden routes. Compare recorded event/state budgets to the calibrated model and use withheld action-order/reload traces; clean logs alone cannot pass.",
+        "control": "A large scene can appear stable because actors cannot act or time barely advanced. Require completed ordinary jobs, genuine births/growth/feeding/drinking/death/remains events where relevant, actual elapsed game ticks, effective gates, naturally initiated current transitions, and stable well ids with finite countdowns advancing with elapsed map ticks alongside the living gardener and usable garden routes. Record which patches ordinary foragers choose in calm and verify that lit off-bank forage was reachable without restricting work to the bank. Compare recorded event/state budgets to the calibrated model and use withheld action-order/reload traces; clean logs alone cannot pass.",
         "reset": "Use disposable copies of an existing fixed-world save and its local floor maps; restore that copy and settings snapshot after reading. Never modify the canonical world or reroll a planet.",
         "live_only_why": "Not live-only: state/geometry evidence can decide these outcomes once its adapter agrees with real game transitions; an uncalibrated model never passes a bar."
       },
@@ -469,7 +469,7 @@
     },
     {
       "id": "K8",
-      "what": "Record count/time budgets for growth, population, current exposure, safe route availability and errors over full-map traces; tune against qualitative bars, never promote a numeric budget into refusal. Keep matched bank/open-floor harvestable counts and job outcomes as diagnostic readings."
+      "what": "Record count/time budgets for growth, population, current exposure, safe route availability and errors over full-map traces; tune against qualitative bars, never promote a numeric budget into refusal. Keep harvestable counts and job outcomes for banks and off-bank lit gardens under actual light. Keep matched-light counts as a diagnostic control."
     },
     {
       "id": "K9",
@@ -481,11 +481,7 @@
     },
     {
       "id": "K11",
-      "what": "M1 stages records just before opening, waning, closure and replacement due time at the R7 years-scale default, then lets the normal update path cross each boundary. Check clock and light updates, persistence of a pending replacement without an eligible site, and opening on eligible ground when a site becomes available. Check fresh and migrated lifetimes, setting defaults and preservation of saved stage and identity. Starting tuning target is two to four in-game years for a new well. Cross-check ordinary elapsed-age dispatch against T42 and use a naturally aged save for unstaged boundary corroboration when available. Keep staged results labelled as checks."
-    },
-    {
-      "id": "K12",
-      "what": "Starting tunables for R12: one game day of accrued standing time to overgrow a clear rim and 75% of its current-stage light radius while overgrown. Check the same-stage radius before and after a completed graze, the unchanged age/expiry schedule, and persistence across reload. Check values guide tuning."
+      "what": "M1 stages records just before opening, waning, closure and replacement due time at the R7 years-scale default, then lets the normal update path cross each boundary. Check clock and light updates, persistence of a pending replacement without an eligible site, and opening on eligible ground when a site becomes available. Check fresh and migrated lifetimes, setting defaults and preservation of saved stage and identity. Starting tuning target is two to four in-game years for a new well. Cross-check ordinary elapsed-age dispatch against T42 and use a naturally aged save for unstaged boundary corroboration when available. Record this regression sweep as a check. B7 separately specifies its own staged start and ordinary-update observation of expiry and replacement."
     }
   ],
   "rules": [
@@ -539,7 +535,7 @@
     },
     {
       "id": "R7",
-      "rule": "Keep natural well lifecycle and gold glow. At shipped defaults each well has a finite years-scale lifetime, following the Twilight sheet’s hard ban and migrating light over time. Use actual current membership for sites and LightLedger for composed glow. At expiry the active light ends and the spent rim becomes a patch target. Ordinary tending never changes a well’s expiry. Leave tenancy, graze pressure, event-dependent flora, culture and the forced advance callback with their deferred extras. K11 stages lifecycle boundaries through the same update path. Preserve saved identities and migrate legacy week-clock records without resetting their stage or creating new wells at load.",
+      "rule": "Keep natural well lifecycle and gold glow. At shipped defaults each well has a finite years-scale lifetime, following the Twilight sheet’s hard ban and migrating light over time. Use actual current membership for sites and LightLedger for composed glow. At expiry remove that well’s active light and queue ordinary replacement on eligible ground. Leave rim work, tenancy, graze pressure, event-dependent flora, culture and the forced advance callback with their deferred extras. K11 stages lifecycle boundaries through the same update path. Preserve saved identities and migrate legacy week-clock records without resetting their stage or creating new wells at load.",
       "touches": [
         "twilight_light",
         "channel_field",
@@ -575,27 +571,6 @@
       ]
     },
     {
-      "id": "R12",
-      "rule": "Ceiling-garden growth accumulates on each clear standing skylight rim, starting when the well reaches standing or when it is grazed clear. After the K12 interval of standing simulation time the rim becomes visibly overgrown and reduces only that well’s current-stage light radius by the K12 factor. The reduced radius feeds both LightLedger and plant habitat until a completed graze clears it or the well closes. An interrupted graze has no effect. Persist the rim state and its elapsed standing time through Scribe. The well’s stage and age advance independently. Patching targets spent openings under R7.",
-      "touches": [
-        "twilight_light",
-        "native_ecology",
-        "habitat_picture",
-        "persistence"
-      ]
-    },
-    {
-      "id": "R13",
-      "rule": "Give the Twilight gardener a persistent, selectable animal pawn with an overhead-water position on the Twilight Waveglass Ceiling render layer. Its projected map cell pairs by identical x/z with the skylight rim anchor below. Route through contiguous ceiling-water cells; solid ceiling obstructions block it, while underlying hull, floor walls, doors and pawns do not. Its projection contributes no ground occupancy, reservation or collision, cannot change a ground path or be swept by bottom current, and is outside melee reach. Harm and removal commands give the existing protected-creature reason. Only a completed job at the target rim projection can graze or seal that rim. This is water-column swimming and uses the R13 state and presentation regime in T43.",
-      "touches": [
-        "habitat_picture",
-        "twilight_light",
-        "native_ecology",
-        "persistence",
-        "channel_field"
-      ]
-    },
-    {
       "id": "R14",
       "rule": "Use DivingInteraction’s ordinary retainable seabed site. At shipped defaults a standard gravship visit keeps the floor map ticking when the ship leaves, even with no player pawns there. A return to that retained site reuses the same map, ecology, gardener and well ledger. The ledger advances on ordinary map ticks during the absence; a save/load preserves elapsed age and does not advance time while the simulation is paused. Explicit vanilla discard or abandonment ends that floor; a legal subsequent landing there generates a new floor with its own occupants and ledger. Do not add a parallel retention ledger or claim a preserved floor after discard.",
       "touches": [
@@ -606,7 +581,7 @@
     },
     {
       "id": "R15",
-      "rule": "Use only authoritative Twilight bank cells painted with ordinary RM_BankSilt for the natural bank preference. Keep the existing terrain tag and static bank plants such as decorative weircomb. Favour the tagged silt for ordinary placement and regrowth of existing harvestable Twilight flora, including gloamurn and hoolimbre, using their existing harvest products with room for safe paths. C10 supplies the plants and C22 the bank. A fertility stat or decorative growth cannot satisfy B5. The TerminalBiomes silt-trap swap and worked-silt bonus stay off by default under T50.",
+      "rule": "On Twilight floors, use a local natural-spawn weight for RM_Gloamurn and RM_HoolimbrePlant at initial seeding and ordinary wild-plant replenishment. Multiply the selection weight of each eligible cell–species pair for those two plants when the cell is both in the authoritative bank and tagged RM_BankSilt. Keep the ordinary weight elsewhere. Apply the ordinary species habitat, light, occupancy and spacing checks before weighting, and preserve walkable routes and ordinary harvest products. Leave crop fertility unchanged. C10 supplies the existing plants, C22 the bank and C30 the missing spawn bias. Keep static bank weircomb as habitat dressing. T50 keeps worked-silt conversion off by default.",
       "touches": [
         "channel_field",
         "native_ecology",
@@ -646,7 +621,6 @@
         "R2",
         "R3",
         "R7",
-        "R13",
         "R15"
       ],
       "holds_together": "unknown",
@@ -664,12 +638,10 @@
         "R4",
         "R7",
         "R9",
-        "R12",
-        "R13",
         "R14"
       ],
       "holds_together": "unknown",
-      "why": "Transfer, hediffs, wells, off-state callbacks and holders can agree pairwise yet duplicate or strand an entity across a reload. Kernel serialization is not Scribe proof. The same protected gardener and its real tending job/rim state must survive a retained-map visit and save/reload without a duplicate or a death hidden by respawn.",
+      "why": "Transfer, hediffs, wells, off-state callbacks and holders can agree pairwise yet duplicate or strand an entity across a reload. Kernel serialization is not Scribe proof. The same protected gardener and the well ledger must survive a retained-map visit and save/reload without a duplicate or a death hidden by respawn.",
       "model": "M1 - Situation and transition generator"
     },
     {
@@ -695,12 +667,10 @@
         "R6",
         "R7",
         "R8",
-        "R12",
-        "R13",
         "R15"
       ],
       "holds_together": "argued",
-      "why": "Beach steam and submerged bubbles occupy separate maps. Twilight uses bed shape/stakes rather than visible liquid colour, and R13 keeps the ceiling swimmer’s projection independent of bank and hull pathing. Grey mineral crowding permits solitary fauna. These spatial roles have no logical conflict; final legibility is explicitly judged by B2/B5, not claimed from the argument.",
+      "why": "Beach steam and submerged bubbles occupy separate maps. Twilight uses bed shape/stakes rather than visible liquid colour, and the far-overhead swimmer shares no floor occupancy or pathing. Grey mineral crowding permits solitary fauna. These spatial roles have no logical conflict; final legibility is explicitly judged by B2/B5, not claimed from the argument.",
       "model": ""
     },
     {
@@ -716,8 +686,6 @@
         "R7",
         "R8",
         "R11",
-        "R12",
-        "R13",
         "R15"
       ],
       "holds_together": "unknown",
@@ -732,12 +700,10 @@
         "B7",
         "B8",
         "R7",
-        "R12",
-        "R13",
         "R14"
       ],
       "holds_together": "unknown",
-      "why": "On a working floor, well turnover, current avoidance, native growth and rim overgrowth could leave no reachable lit garden. The gardener implementation is absent locally. M5 checks whether grazing restores the current-stage radius and whether tending, protection and the finite clock agree across reload without accelerating expiry. R14 keeps the ordinary tick path active after departure. The same ledger and keeper must also survive a return.",
+      "why": "Well turnover, current avoidance and native growth could leave a working floor without reachable lit gardens. M5 checks light loss at expiry, ordinary replacement and site eligibility with the current and growth active. R14 keeps the ordinary tick path active after departure. The same ledger and living protected gardener must survive a return.",
       "model": "M5 - Light habitat and food-chain model"
     },
     {

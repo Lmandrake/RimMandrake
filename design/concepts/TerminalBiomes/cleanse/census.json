@@ -139,7 +139,7 @@
       "called_by": "Engine XML loading / biome roster consumption; no explicit local caller found",
       "serves": "Twilight living ground and forage",
       "fate": "life",
-      "why": "delegated: Keep the existing roster, habitats and ordinary harvests. Removing plants/normal light would defeat life; special processors, charge/wilt tricks, reactive pictures and harvest events are separate rows. Natural placement of existing harvestable plants on eligible ordinary RM_BankSilt supplies the gathering contrast with open floor. Weircomb’s existing silt-gated placement and static glow are habitat dressing, not proof of forage.",
+      "why": "delegated: Keep the existing roster, habitats and ordinary harvests. Removing plants/normal light would defeat life; special processors, charge/wilt tricks, reactive pictures and harvest events are separate rows. The unbuilt natural bank advantage is tracked in C30 under T44. Weircomb’s existing silt-gated placement and static glow are habitat dressing, not proof of forage.",
       "needed_by": "",
       "ticket": "T46"
     },
@@ -275,15 +275,15 @@
     },
     {
       "id": "C21",
-      "what": "Protected giant animal gardener on Twilight floor maps, with visible rim grazing and spent-opening patching",
+      "what": "Living protected giant gardener visible far overhead under the Twilight waveglass",
       "built": "absent",
       "evidence": "design/Jawa/worldbuilding/biomes/the_twilight_deep.md; src/RimMandrake/TerminalBiomes/Source/RM_MapComponent_WellLedger.cs",
       "proven": "missing",
       "called_by": "Promised by Twilight lore; current WellLedger has a theatrical callback but no local living gardener caller was found.",
       "serves": "The living roof has its keeper",
       "fate": "needed_by",
-      "why": "delegated: Removing the creature defeats the frozen no-roof-without-gardener ban. R13 places the linked animal in overhead water with ceiling-local motion and floor-projected, nonblocking selection. It can tend its rims through actual jobs while floor workers and the hull pass below. Protect it against harm and removal in this version. Tending restores light or seals spent rims without changing live-well expiry.",
-      "needed_by": "C20 / B7",
+      "why": "delegated: Removing the living creature while the roof persists violates the frozen no-roof-without-gardener ban and removes the giant from the Twilight’s ordinary view. Preserve the same living overhead animal across ordinary play and retained-floor visits. Defer interactive rim jobs and ceiling routing.",
+      "needed_by": "C20 / Twilight land / B2 and B7",
       "ticket": "T43"
     },
     {
@@ -295,7 +295,7 @@
       "called_by": "src/RimMandrake/TerminalBiomes/Source/RM_Thing_CargoFloat.cs; src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesMod.cs; src/RimMandrake/TerminalBiomes/Patches/RM_GenStep_TwilightChannels_Register.xml; src/RimMandrake/TerminalBiomes/Defs/MapGeneration/RM_TwilightChannels.xml",
       "serves": "Harvest beside water that carries you under",
       "fate": "signature",
-      "why": "delegated: Ordinary RM_BankSilt and its terrain-gated gathering habitat attract workers to the bank relative to comparable open floor. Current takes unsecured workers toward a recoverable sink. Removing the harvest advantage, carry or recovery breaks that chain. The silt-trap upgrade is a separate deferred mechanic.",
+      "why": "delegated: Ordinary RM_BankSilt identifies the bank for C30’s unbuilt spawn bias. The intended forage advantage draws workers away from off-bank alternatives, including lit gardens. Current takes unsecured workers toward a recoverable sink. Removing the harvest advantage, carry or recovery breaks that chain. The silt-trap upgrade is a separate deferred mechanic.",
       "needed_by": "",
       "ticket": "T44"
     },
@@ -376,6 +376,19 @@
       "why": "delegated: These are load/regression safeguards, not player extras or passing bars. Removing them can erase life or break an existing save even when an extra is off.",
       "needed_by": "C01, C07-C18 / inherited floor",
       "ticket": ""
+    },
+    {
+      "id": "C30",
+      "what": "Natural bank-forage advantage from weighted placement and refill of existing Twilight harvestable flora (the bank advantage formerly included in C10)",
+      "built": "absent",
+      "evidence": "RM_TwilightSea.xml lists RM_Gloamurn and RM_HoolimbrePlant as ordinary wild plants. RM_TwilightUnderstorey.xml gives the RM_BankSilt wildTerrainTags gate to decorative RM_Weircomb. No bank-specific harvestable spawn weighting was found in TerminalBiomes source.",
+      "proven": "missing",
+      "called_by": "Proposed Twilight natural wild-plant seeding and replenishment under R15.",
+      "serves": "The reason ordinary foragers choose the current’s bank over other gathering ground.",
+      "fate": "signature",
+      "why": "delegated: Without an actual forage advantage over other reachable ground, including off-bank lit gardens, the current does not tempt workers to gather beside it. The existing plants remain in C10.",
+      "needed_by": "",
+      "ticket": "T44"
     },
     {
       "id": "D01",
@@ -880,7 +893,7 @@
       "called_by": "Promised by cited design; adapter unavailable in this checkout",
       "serves": "Deferred experience",
       "fate": "next_version",
-      "why": "delegated: Special lore/weather episodes beyond minimal roof tending and ordinary well replacement.",
+      "why": "delegated: Special lore/weather episodes beyond the living protected keeper and ordinary well replacement.",
       "needed_by": "",
       "ticket": "T31"
     },
@@ -904,10 +917,10 @@
       "evidence": "src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesMod.cs",
       "proven": "missing",
       "called_by": "src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesMod.cs: settings UI and ExposeData only; source comments explicitly say no behaviour consumer",
-      "serves": "Unsupported inactive settings",
-      "fate": "recommend_retire",
-      "why": "delegated: Inert controls offer no experience and conflict with the October 15 release of cross-biome validation; recommend retirement, never implementation.",
-      "needed_by": "",
+      "serves": "Inherited settings compatibility under the 2026-10-15 owner card",
+      "fate": "needed_by",
+      "why": "The 2026-10-15 owner card releases cross-biome validation and explicitly keeps existing controls, default off and labelled unsupported. Removing these fields or controls would break the inherited settings floor.",
+      "needed_by": "C27 / inherited settings floor",
       "ticket": "T33"
     },
     {
@@ -948,6 +961,45 @@
       "why": "delegated: Ordinary bank terrain and native plant habitat already supply the signature’s forage attraction. The trap adds an independent building and maintenance loop. Retain shared FlowWorks river behavior.",
       "needed_by": "",
       "ticket": "T50"
+    },
+    {
+      "id": "X37",
+      "what": "Timed rim overgrowth, reduced light radius and gardener grazing to clear it",
+      "built": "absent",
+      "evidence": "Rim-cover state, light-radius factor and graze job absent from local TerminalBiomes source. Lore basis: the_twilight_deep.md §4 and 2026-09-26 amendment.",
+      "proven": "missing",
+      "called_by": "None in local source. Deferred proposal.",
+      "serves": "Deferred roof-work presentation or interaction.",
+      "fate": "next_version",
+      "why": "delegated: A timed maintenance loop can be removed while the protected gardener, naturally aging wells and reachable gardens remain.",
+      "needed_by": "",
+      "ticket": "T52"
+    },
+    {
+      "id": "X38",
+      "what": "Gardener job to patch a spent skylight rim",
+      "built": "absent",
+      "evidence": "Spent-rim target and patch job absent from local TerminalBiomes source. Lore basis: the_twilight_deep.md §4 and 2026-09-26 amendment.",
+      "proven": "missing",
+      "called_by": "None in local source. Deferred proposal.",
+      "serves": "Deferred roof-work presentation or interaction.",
+      "fate": "next_version",
+      "why": "delegated: Ordinary well expiry and replacement already move the light. A patch adds an interaction beyond the roof, its keeper and the bank/current signature.",
+      "needed_by": "",
+      "ticket": "T52"
+    },
+    {
+      "id": "X39",
+      "what": "Selectable ceiling-water plane with cell routing and floor-projected rim targets",
+      "built": "absent",
+      "evidence": "Selectable ceiling layer and ceiling-local routing absent from local TerminalBiomes source. Lore basis: the_twilight_deep.md §4 and 2026-09-26 amendment.",
+      "proven": "missing",
+      "called_by": "None in local source. Deferred proposal.",
+      "serves": "Deferred roof-work presentation or interaction.",
+      "fate": "next_version",
+      "why": "delegated: A far-overhead living swimmer can be visible and protected without selectable overhead cells or rim paths.",
+      "needed_by": "",
+      "ticket": "T52"
     }
   ],
   "scope_note": "Capability count is per player-facing behaviour, not per def. Ordinary species remain rostered when an attached extra is switched off. Evidence is source presence, not live proof. Missing foreign source is unknown, not globally unbuilt. No concept record or waivers were present.",

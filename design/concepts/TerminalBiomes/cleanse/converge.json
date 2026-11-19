@@ -1,0 +1,193 @@
+{
+ "mod": "TerminalBiomes",
+ "author": "codex",
+ "verifier": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "first_look": "review.json",
+ "rounds": [
+  {
+   "n": 1,
+   "records": [
+    {
+     "id": "R1",
+     "head": "core_promise_weakened",
+     "where": "bars.json B5 (says, meant.figurative 'productive bank', range, control); definition.md 'First Twilight work'; owner_pages.md signature line",
+     "evidence": "The frozen sheet promises the banks are the best ground on the floor: the_twilight_deep.md §3 'their banks are the richest ground in the sea', §5 'The banks are the wealth', §7 'River-bank harvest — the mud channels' banks: the richest gathering ground, nutrient-fed forever'. B5 only compares the bank with 'comparable open floor', matched for light ('equally lit open floor'; control: 'Compare matched light, area and harvest history'). Under that wording a dim bank that beats dim open floor passes, even while lit gardens away from the current give far more forage. Then no player has a reason to work beside the current, and the signature's temptation never happens.",
+     "would_pass": "B5 compares the bank with the floor's other forage ground the way a player chooses where to gather: in ordinary play the bank is visibly worth more than the gathering ground away from the current, lit garden floor included. Reject: 'workers with ordinary work orders gather in the light-column gardens and never need the banks.'",
+     "smallest_fix": "Add one reject picture to B5: 'The bank beats matched dim floor, but the lit gardens away from the current offer as much or more, so ordinary foragers never choose the bank.' Add one B8 reading: under ordinary orders, workers choose bank forage during calm."
+    },
+    {
+     "id": "R2",
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json R15; census.json C10 and C22; tickets.md T44",
+     "evidence": "R15 says 'Favour the tagged silt for ordinary placement and regrowth of existing harvestable Twilight flora, including gloamurn and hoolimbre'. It never says how. In source the only plant gated on the silt is RM_Weircomb (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Plants/RM_TwilightUnderstorey.xml:155 <wildTerrainTags><li>RM_BankSilt</li>), and the proposal rules weircomb out as forage. The proposal also closes the two engine levers it could use. Higher fertility is out: the B5 accept picture says the open floor's soil is 'as fertile for planted crops', and R15 says 'A fertility stat ... cannot satisfy B5'. Making the plants bank-only is out: T44 says 'without ... excluding all open-floor forage'. Vanilla wild-plant spawning has no per-terrain commonality bias. So the signature's temptation half has no build a builder could implement and a judge could check against the rule. C10 marks the plant row built: present, which hides that this part is missing.",
+     "would_pass": "R15 names the mechanism. Examples: bank-silt wild fertility above open floor, with crop fertility handled separately; a bank-only harvestable species added to the bank's spawn set; or a custom spawner weight on the tag. It also says which existing plants it applies to.",
+     "smallest_fix": "Name one mechanism in R15 and in T44's Work. Mark the C10 bank-advantage part built: absent, with T44 as its ticket."
+    },
+    {
+     "id": "R3",
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B7 (reject 4, accept 1 'seals a spent opening', sees.start) and B8 range; checks K11",
+     "evidence": "B7 rejects 'A gold well acts as a permanent lamp'. Its accept picture needs a spent opening that the gardener seals. But R7/K11 set lifetimes on a years scale ('two to four in-game years'). B8's season is '15 game days ... No requirement for well replacement inside the season'. B7.sees.start gets a spent opening from 'a legitimately expired opening or K11’s separately declared boundary fixture'. K11 is a check, and the brief says checks 'are never part of passing'. So no bar's own reading ever sees a well close or get replaced naturally. A build whose countdown ticks down but whose closure or replacement code never fires passes B7 and B8. That build is exactly the permanent lamp B7 claims to reject.",
+     "would_pass": "B7's evidence includes a closure and replacement that goes through the normal update path with every kept mechanic on. Its control tells it apart from a countdown that ticks but never closes.",
+     "smallest_fix": "Either make K11's boundary crossing an explicit part of B7's sees, labelled 'staged start state, normal update path', so the permanent-lamp reject can be evidenced; or drop the permanent-lamp reject and the patch clause from B7 and leave closure to the check. Say which on page two, next to Q1."
+    },
+    {
+     "id": "R4",
+     "head": "extra_without_argument",
+     "where": "bars.json R12, R13, K12, B7 accept 1 and reject 2; census.json C21 (why and needed_by); tickets.md T43",
+     "evidence": "C21's deletion argument covers only the creature existing: 'Removing the creature defeats the frozen no-roof-without-gardener ban' (the_twilight_deep.md §6 ban 2: 'no story, def, or event removes the giant and leaves the waveglass standing'). The proposal keeps three more mechanics. None of them exists in source; a grep of TerminalBiomes/Source finds no overgrowth or rim-cover code, no ceiling render layer and no protected-creature refusal. They are: (a) R12/K12 rim overgrowth that cuts a well's light radius after a timer and is cleared by a graze job; (b) R13, a new selectable ceiling-water plane with its own routing and the claim that harm commands give 'the existing protected-creature reason', though no such reason exists; (c) patch jobs that seal spent rims. Deleting (a) to (c) leaves the gardener alive, the roof standing and the wells finite. Ban 2 still holds, and land, life and the bank/current signature are untouched. The lore also places the lid 'far overhead, a sky and not a surface' (the 2026-09-26 amendment), so the ban does not need a pawn on the map. The owner asked to 'strip out the fluff'. Instead the cleanse invents a new timed maintenance loop and a new render and path system in 0.1.0.",
+     "would_pass": "Each of R12, R13 and the patch job gets its own deletion argument saying what land, life or signature breaks without it; or it moves to the next version, and the gardener's minimal form is whatever ban 2 needs.",
+     "smallest_fix": "Move R12/K12 overgrowth and grazing, and the patch job, to next_version.md with a ticket. Cut B7 to: a living protected gardener is present and the roof is never left without it. Either justify R13's ceiling plane against a far-overhead presentation, or defer it too. Remove the word 'existing' from R13's refusal reason."
+    },
+    {
+     "id": "R5",
+     "head": "contradicts_ruling_or_lore",
+     "where": "owner_pages.md line 34; census.json X33; next_version.md T33 entry; tickets.md T33",
+     "evidence": "standing_rulings.md:137-138, owner card 2026-10-15: 'No new mod builds a cross-biome switch; the existing ones stay, default off, labelled \"Unsupported: may work outside our biomes, not tested\"'. The proposal recommends retiring those existing controls, and page one gives the reason 'the cross-biome guarantee was already released'. That misstates the card: the card released validation and explicitly kept the controls. The brief allows recommending retirement for an extra that 'fights a standing ruling'; here the ruling protects the controls. Page one never tells the owner that saying yes would reverse his own card.",
+     "would_pass": "Either X33's fate is kept (inherited settings floor) under the 2026-10-15 card, or page one says plainly: 'Retiring these reverses your 2026-10-15 card, which kept them off and labelled unsupported.'",
+     "smallest_fix": "Rewrite the page-one retirement line to quote the card's 'existing ones stay' clause as what the recommendation would change. Or drop the recommendation and set X33's fate to needed_by C27 / inherited floor (then recommend_retire goes to 0 in result.json and on the pages)."
+    }
+   ],
+   "fixes": {
+    "fixes": [
+     {
+      "id": "R1",
+      "changed": "B5 compares ordinary bank harvest with the strongest reachable alternatives, including off-bank lit gardens, and rejects a bank that only beats dim ground. B8 observes workers choosing the bank during calm under ordinary orders.",
+      "where": "bars.json B5, B8 and season diagnostics, definition.md First Twilight work and signature, owner_pages.md signature and Productive bank, result.json signature, ambiguities.md 23, models.md M3, tickets.md T40, T42 and T44"
+     },
+     {
+      "id": "R2",
+      "changed": "Specified a Twilight wild-spawn weight for eligible RM_Gloamurn and RM_HoolimbrePlant on authoritative bank silt at seeding and refill. Split the missing bank advantage out of the present C10 flora roster, recorded it as absent with T44, and linked C22 to it.",
+      "where": "bars.json R15, census.json C10, C22 and C30, tickets.md T44, definition.md First Twilight work, ambiguities.md 23"
+     },
+     {
+      "id": "R3",
+      "changed": "B7 uses a labelled staged start with every kept mechanic enabled and reads normal updates through expiry, loss of old light and scheduled replacement. A countdown-only control fails. K11 remains a regression check and B8 uses unedited well ages.",
+      "where": "bars.json B7, B8, K11 and R7, owner_pages.md beside Q1, definition.md well lifecycle, ambiguities.md 16, models.md M1, M3 and M5, tickets.md T40, T42 and T46"
+     },
+     {
+      "id": "R4",
+      "changed": "Deferred timed rim overgrowth and grazing, spent-rim patching and the selectable ceiling plane under T52. The same living protected swimmer stays visible far overhead wherever the waveglass stands. Updated the dependent bars, models and tickets to the smaller scope.",
+      "where": "bars.json B2, B7, B8, R7, former R12/R13 and K12, and meetings, census.json C21 and X37–X39, next_version.md roof-work entries, tickets.md T43 and T52 and dependent tickets, definition.md gardener, models.md M1–M3 and M5, ambiguities.md 15, owner_pages.md scope, result.json counts"
+     },
+     {
+      "id": "R5",
+      "changed": "Kept the existing cross-biome controls under C27 and the 2026-10-15 card, default off with the required unsupported label. Removed the retirement recommendation and repurposed T33 to verify the inherited settings.",
+      "where": "owner_pages.md settings and counts, census.json X33, next_version.md former T33 entry, tickets.md T33, definition.md Settings, ambiguities.md 20, result.json counts"
+     }
+    ]
+   },
+   "verdicts": {
+    "R1": {
+     "verdict": "fixed",
+     "evidence": "bars.json B5 reject now reads 'The bank beats matched dim floor, but lit gardens away from the current offer as much or more, so workers with ordinary orders gather there and never choose the bank.' B5 says compares the bank with 'the floor’s other gathering ground, including the off-bank lit gardens'. meant 'productive bank' stands for 'the best reachable natural gathering ground ... including lit gardens away from the current'. B5 control requires 'a visibly better harvest even against the lit off-bank option' with no bank-only zone. B8 accept: 'Under ordinary orders, the expedition’s foragers choose the richer Twilight banks during calm while lit gardens away from the current remain available'. B8 reject and control also record which patches foragers choose. The owner_pages.md signature and definition.md signature both read 'offer the floor’s best forage, drawing workers away from even the lit gardens'."
+    },
+    "R2": {
+     "verdict": "fixed",
+     "evidence": "bars.json R15 now names the mechanism: 'a local natural-spawn weight for RM_Gloamurn and RM_HoolimbrePlant at initial seeding and ordinary wild-plant replenishment. Multiply the selection weight of each eligible cell–species pair ... when the cell is both in the authoritative bank and tagged RM_BankSilt ... Leave crop fertility unchanged.' tickets.md T44 Work repeats it: 'add a Twilight-only weight to the natural wild-plant choice ... Multiply the weight for eligible RM_Gloamurn and RM_HoolimbrePlant cell–species pairs'. census.json C10 no longer claims the advantage ('The unbuilt natural bank advantage is tracked in C30 under T44'). The new C30 row is 'built': 'absent', 'ticket': 'T44'. C22 links to 'C30’s unbuilt spawn bias'."
+    },
+    "R3": {
+     "verdict": "fixed",
+     "evidence": "bars.json B7 sees.start: 'Use a second copy for the expiry and replacement reading: staged start state, normal update path. Initialize an otherwise valid waning well just before expiry ... Run ordinary map ticks from there through closure and scheduled replacement', plus a blocked-ground branch. B7 control: 'A countdown-only control that leaves the old glow active or suppresses the due replacement must fail.' B7 reject now covers a well that 'reaches expiry and keeps shining'. The patch-sealing accept picture is gone. owner_pages.md Q1 adds: 'At the years scale, the well turnover bar starts near expiry and follows normal updates until the old light ends and a new well opens.' K11 stays a check and says 'B7 separately specifies its own staged start'."
+    },
+    "R4": {
+     "verdict": "fixed",
+     "evidence": "bars.json R12, R13 and K12 are removed. census.json adds X37 (timed rim overgrowth and grazing), X38 (patch job) and X39 (selectable ceiling-water plane), each 'fate': 'next_version', 'ticket': 'T52', with deletion reasoning. next_version.md lists all three under T52, and tickets.md T52 'Defer interactive gardener roof work' leaves them out of 0.1.0. B7 is cut to a living protected giant 'far overhead' that persists across departure, reload and return. C21 now reads 'Living protected giant gardener visible far overhead' and argues from ban 2. The word 'existing' is gone from the refusal reason: tickets.md T43 says 'give a readable protection reason if a command can target it'. One leftover reference in B2 is listed under regressions."
+    },
+    "R5": {
+     "verdict": "fixed",
+     "evidence": "census.json X33 is now 'fate': 'needed_by', 'needed_by': 'C27 / inherited settings floor', why: 'The 2026-10-15 owner card releases cross-biome validation and explicitly keeps existing controls, default off and labelled unsupported.' owner_pages.md now says '**No retirement recommendations.** The 2026-10-15 card keeps existing cross-biome controls off by default and labelled “Unsupported: may work outside our biomes, not tested”' and the counts read 'Recommend retirement 0'. result.json has 'recommend_retire': 0, and the census holds 38 next_version fates, consistent with 77 - 39 kept. tickets.md T33 is now 'Preserve existing unsupported cross-biome settings'. definition.md Settings quotes the card. The former next_version.md T33 entry is gone."
+    }
+   },
+   "changed_entries": [
+    "ambiguities.md Material ambiguities settled by the Designer",
+    "ambiguities.md Response to the fresh review",
+    "bars.json bars/B2",
+    "bars.json bars/B5",
+    "bars.json bars/B7",
+    "bars.json bars/B8",
+    "bars.json checks/K11",
+    "bars.json checks/K12",
+    "bars.json checks/K8",
+    "bars.json meetings",
+    "bars.json rules/R12",
+    "bars.json rules/R13",
+    "bars.json rules/R15",
+    "bars.json rules/R7",
+    "census.json rows/C10",
+    "census.json rows/C21",
+    "census.json rows/C22",
+    "census.json rows/C30",
+    "census.json rows/X31",
+    "census.json rows/X33",
+    "census.json rows/X37",
+    "census.json rows/X38",
+    "census.json rows/X39",
+    "definition.md An ordinary week",
+    "definition.md Edges and deletion arguments",
+    "definition.md Say the mod",
+    "definition.md Settings",
+    "definition.md The season’s turn",
+    "definition.md Using it: first hour, routine, and a large colony",
+    "definition.md What changes in the colony’s story",
+    "definition.md When it goes wrong and the readable sign",
+    "models.md M1 - Situation and transition generator",
+    "models.md M2 - Channel and landing geometry",
+    "models.md M3 - Whole sea season model",
+    "models.md M5 - Light habitat and food-chain model",
+    "next_version.md Next version, switched off",
+    "owner_pages.md Page one — what the mod now is",
+    "owner_pages.md Page two — what to check",
+    "result.json counts",
+    "result.json signature",
+    "tickets.md T31: Lid-dark crisis and theatrical gardener-passing events",
+    "tickets.md T33: Preserve existing unsupported cross-biome settings",
+    "tickets.md T33: Recommend retiring inert cross-biome controls",
+    "tickets.md T40: Situation recorder and transition adapter",
+    "tickets.md T42: Whole-mod season recorder and calibrated models",
+    "tickets.md T43: Keep the living protected gardener with the waveglass",
+    "tickets.md T43: Locate or supply the actual protected animal gardener and roof work",
+    "tickets.md T44: Finish channel terrain, safe arrival and rescue specification",
+    "tickets.md T46: Decouple natural well lifecycle and native flora from light economy",
+    "tickets.md T47: Defer and gate the inhabited campaign reveal",
+    "tickets.md T52: Defer interactive gardener roof work"
+   ],
+   "verifier_defects": [],
+   "author_usage": {
+    "codex_tokens": {
+     "input_tokens": 1545564,
+     "output_tokens": 17070
+    }
+   },
+   "author_error": null,
+   "open_after": [
+    {
+     "id": "G1.1",
+     "head": "regression",
+     "where": "bars.json bars/B2",
+     "evidence": "B2 changed in this fix (accept 3, range.left_out and range.varies were rewritten for the far-overhead gardener). Its sees.control still reads 'Pair the visual sort with T43’s ceiling-plane state and overlapping ground-path trace.' The ceiling plane was R13, which is removed. census.json X39 'Selectable ceiling-water plane with cell routing' is now next_version under T52, and the rewritten tickets.md T43 has no ceiling-plane state: it gives a far-overhead animal 'outside the floor’s movement and interaction space'. So a kept bar's evidence still relies on a moved extra (moved_extra_relied_on), and the instrument it names will not exist in 0.1.0.",
+     "would_pass": "B2's control pairs the visual sort only with instruments that exist in 0.1.0: T43's saved living-gardener identity and far-overhead presentation state, with ground paths independent. Nothing in B2 refers to a ceiling plane.",
+     "smallest_fix": "Replace the last sentence of B2 sees.control with: 'Pair the visual sort with T43’s saved living-gardener identity and far-overhead presentation read, and confirm floor paths are unchanged beneath it.'"
+    }
+   ]
+  }
+ ],
+ "open": [
+  {
+   "id": "G1.1",
+   "head": "regression",
+   "where": "bars.json bars/B2",
+   "evidence": "B2 changed in this fix (accept 3, range.left_out and range.varies were rewritten for the far-overhead gardener). Its sees.control still reads 'Pair the visual sort with T43’s ceiling-plane state and overlapping ground-path trace.' The ceiling plane was R13, which is removed. census.json X39 'Selectable ceiling-water plane with cell routing' is now next_version under T52, and the rewritten tickets.md T43 has no ceiling-plane state: it gives a far-overhead animal 'outside the floor’s movement and interaction space'. So a kept bar's evidence still relies on a moved extra (moved_extra_relied_on), and the instrument it names will not exist in 0.1.0.",
+   "would_pass": "B2's control pairs the visual sort only with instruments that exist in 0.1.0: T43's saved living-gardener identity and far-overhead presentation state, with ground paths independent. Nothing in B2 refers to a ceiling plane.",
+   "smallest_fix": "Replace the last sentence of B2 sees.control with: 'Pair the visual sort with T43’s saved living-gardener identity and far-overhead presentation read, and confirm floor paths are unchanged beneath it.'"
+  }
+ ],
+ "advisory_late": [],
+ "applyable": false,
+ "digest": "00377dd53cf177d636927f08f39e4901af305e18fefe6dfa280978ac2df556d7",
+ "seconds": 627,
+ "at": "2026-11-19T00:04:34"
+}

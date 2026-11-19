@@ -149,7 +149,7 @@ All scope decisions below are the Designer’s delegated calls, not new owner ru
 
 - **Lid-dark crisis and theatrical gardener-passing events** (T31).
   What: Lid-dark crisis and theatrical gardener-passing events.
-  Why outside land/life/signature: Special lore/weather episodes beyond minimal roof tending and ordinary well replacement.
+  Why outside land/life/signature: Special lore/weather episodes beyond the living protected gardener and ordinary well replacement.
   State: unknown; preserve source/defs and default off pending review/application.
 
 - **Chill warmth trails and immune-system shocks** (T32).
@@ -161,13 +161,9 @@ All scope decisions below are the Designer’s delegated calls, not new owner ru
   What: an aurora shock episode and its power harvest, implemented in DivingInteraction.
   Why outside land/life/signature: its timed hazard/reward loop is independent of ordinary drowned aurora and cold. Keep source/defs; gate default off.
 
-- **Inert cross-biome opt-in controls — recommend retirement; owner decides** (T33).
-  What: persisted unsupported settings with no behaviour consumer.
-  Why outside land/life/signature: no player experience and no authorised cross-biome requirement. Preserve fields, default off and labelled unsupported until decision.
-
 - **Campaign inhabited Twilight holdings** (T47).
   What: peaceful residents, bottom dwellings, plots, moorings and lamplight for the ark reveal; implementation and callers unavailable locally.
-  Why outside land/life/signature: native gardens, the animal-tended lid and the bank/current/rescue chain remain whole without a populated settlement reveal; the historical initial-version promise is deferred under this cleanse’s smaller scope, not retired.
+  Why outside land/life/signature: native gardens, the living lid with its protected gardener and the bank/current/rescue chain remain whole without a populated settlement reveal; the historical initial-version promise is deferred under this cleanse’s smaller scope, not retired.
   State: unknown; locate existing campaign work, preserve code/defs and gate placement/occupancy/availability behind a labelled next-version setting shipped off; no RM bar depends on it.
 
 - **Optional Scald floor vent pools**.
@@ -177,3 +173,18 @@ All scope decisions below are the Designer’s delegated calls, not new owner ru
 - **Twilight silt-trap fertility upgrade** (T50).
   What: the TerminalBiomes swap from ordinary bank silt to worked silt through FlowWorks’ silt trap, with breach reversion.
   Why outside land/life/signature: natural bank vegetation already draws workers. The engineered upgrade is a separate maintenance loop. Preserve the code and defs behind a default-off setting.
+
+- **Timed skylight rim overgrowth and grazing** (T52).
+  What: standing rims overgrow, reducing light until the gardener grazes the rim clear.
+  Why outside land/life/signature: reachable gardens, natural well drift and the protected animal remain without this maintenance loop.
+  State: absent locally; defer the former R12/K12.
+
+- **Spent-rim patching** (T52).
+  What: a gardener job to seal a spent opening.
+  Why outside land/life/signature: normal expiry ends the light and ordinary replacement moves it without a patch job.
+  State: absent locally.
+
+- **Interactive ceiling-water plane** (T52).
+  What: selectable overhead cells, ceiling routing and floor-projected rim targets.
+  Why outside land/life/signature: the living gardener can be seen and protected far overhead without interactive routes or rim targets.
+  State: absent locally; defer the former R13.
