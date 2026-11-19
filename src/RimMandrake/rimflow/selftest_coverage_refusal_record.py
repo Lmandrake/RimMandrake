@@ -297,6 +297,38 @@ def main():
                   (DS.load_state(d4).get("coverage_rounds") or [{}])[-1].get("parent"))
             check("a first call that dies is a void_system round: error_kind system",
                   rec.get("error_kind") == "system" and CJ.void_cause(rec), (rec.get("error"), rec.get("error_kind")))
+            first_look(d4)
+            rec, _ = CJ.run(d4, r4, script(["{}"], []))
+            check("output that is a JSON object but no CLI result of its own is a dead call: void_system (Codex r2-3)",
+                  rec.get("error_kind") == "system" and CJ.void_cause(rec), (rec.get("error"), rec.get("error_kind")))
+            r5 = os.path.join(root, "five")
+            d5 = concept(r5, item="FOO_DEAD2_ITEM")
+            gaps_bad = json.dumps({"structured_output": {"gaps": [bad_gap()]}, "session_id": "sess",
+                                   "usage": {"input_tokens": 1, "output_tokens": 1, "cache_read_input_tokens": 0,
+                                             "cache_creation_input_tokens": 0}})
+            seq = [answer("not_covered", [bad_gap()]), "DIE", gaps_bad]
+
+            def mixed(argv, cwd, env, timeout):
+                x = seq.pop(0) if seq else "DIE"
+                if x == "DIE":
+                    raise subprocess.TimeoutExpired(argv[:1], timeout)
+                return 0, x
+            rec, _ = CJ.run(d5, r5, mixed)
+            it5 = RC.counters()["items"].get("FOO_DEAD2_ITEM") or {}
+            check("a re-ask that died, then a later re-ask that answered malformed: the judge's own failure counts "
+                  "(the latest attempt decides: Codex r2-4)",
+                  rec.get("verdict") == "malformed" and not rec.get("void_system") and it5.get("malformed"),
+                  (rec.get("verdict"), rec.get("void_system"), it5))
+            calls = []
+            rd = CJ.llm_reader(d5, r5, "rm-coverage-judge-77", charge=True,
+                               runner=lambda *a: (calls.append(1), (_ for _ in ()).throw(
+                                   subprocess.TimeoutExpired(["claude"], 1)))[1])
+            check("a second reader that dies is marked dead", rd([{"clause": "x"}]) is None and getattr(rd, "dead", None))
+            stx = {"coverage_rounds": [{"judge": "rm-coverage-judge-77", "verdict": "covered", "tokens": 10,
+                                        "reader_void_system": "TimeoutExpired"}],
+                   "budget": {"charges": [{"ref": "rm-coverage-judge-77-reader", "kind": "unmeasured", "tokens": 0}]}}
+            check("a dead second reader's unmeasured charge is no judge spend (Codex r2-2): %s" % CJ.spend(CJ.rounds(stx)),
+                  CJ.spend(CJ.rounds(stx)) == 10)
     finally:
         CT.coverage_problem, CT.sign, DS.exam_errors, RC.status = saved
         for k, v in env.items():

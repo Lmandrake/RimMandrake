@@ -113,28 +113,32 @@ def _last_note(evs, item, marker):
 
 
 def voids():
-    """-> the standing hand voids (run_void.active), or {} when the void file cannot be read: every run then counts, as
-    the books had it. A verify run is voided by its run name, `<ID>/run-N@<config>`
-    (RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS: a fail recorded because of a harness fault)."""
+    """-> (the standing hand voids (run_void.active), None), or ({}, why) when the void file cannot be read: every run
+    then counts, as the books had it, and the verdict says the voids are UNMEASURED. A verify run is voided by its run
+    name, `<ID>/run-N@<config>` (RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS: a fail recorded because
+    of a harness fault)."""
     try:
         import run_void
-        return run_void.active()
-    except Exception:  # noqa: BLE001 - could not look: nothing is voided
-        return {}
+        return run_void.active(), None
+    except Exception as e:  # noqa: BLE001 - could not look: nothing is voided, and that is said
+        return {}, "%s: %s" % (type(e).__name__, e)
 
 
-def judge(item, evs, void=None):
+def judge(item, evs, void=None, unread=None):
     """-> None, or {"id", "kind": streak|wanted|diagnose, "why"} for an item that goes to a Test Pilot. Pure given
     `void` ({run name: void line}; None reads the standing voids): a voided run is in no streak."""
     if item.state not in OPEN_STATES or item.blocked or item.needs == "owner" or "_JUDGE_" in item.id:
         return None
-    void = voids() if void is None else void
+    if void is None:
+        void, unread = voids()
     sat = _last_note(evs, item, SAT)
     runs = [r for r in item.runs if r.index > sat and r.config not in NOT_A_TEST and r.name not in void]
     whole, worst, key = streaks(runs)
     if whole >= STREAK or worst >= STREAK:
         where = "in a row" if whole >= worst else "in a row on %s" % key
-        return {"id": item.id, "kind": "streak", "why": "%d non-pass runs %s" % (max(whole, worst), where)}
+        return {"id": item.id, "kind": "streak", "why": "%d non-pass runs %s%s" % (
+            max(whole, worst), where, "; the void ledger is UNMEASURED (%s): no run was taken out" % unread
+            if unread else "")}
     if _last_note(evs, item, WANTED) > sat:
         return {"id": item.id, "kind": "wanted", "why": "a seat asked for live observation"}
     if "_DIAGNOSE_" in item.id and item.needs in LIVE_NEEDS and sat < 0:
@@ -144,8 +148,8 @@ def judge(item, evs, void=None):
 
 def routed(world, evs):
     """-> every judge() verdict, in no promised order."""
-    void = voids()
-    return [v for v in (judge(item, evs, void) for item in world.items.values()) if v]
+    void, unread = voids()
+    return [v for v in (judge(item, evs, void, unread) for item in world.items.values()) if v]
 
 
 def route_line(verdict):

@@ -753,6 +753,16 @@ def void_cause(r):
     return str(err) if kind == "system" or (kind is None and SYSTEM_ERROR_RX.search(str(err))) else ""
 
 
+def is_cli_result(res):
+    """True when a parsed JSON object is the claude CLI's result of its own (the envelope: type "result", or the
+    fields a result carries). {} or another envelope ({"type": "error", ...}) is not: that call died
+    (Codex review r2-3)."""
+    if res.get("type") not in (None, "result"):
+        return False
+    return res.get("type") == "result" or any(k in res for k in (
+        "subtype", "is_error", "structured_output", "usage", "session_id", "result", "modelUsage"))
+
+
 def rounds(st, d=None, readers_as_rounds=False, voids=False):
     """-> every judge round on this concept, oldest first: stage.json's coverage_rounds, plus each earlier judge the
     budget charges name with no round on file (before the loop limit existed). An old round's verdict is known only when
@@ -788,7 +798,10 @@ def rounds(st, d=None, readers_as_rounds=False, voids=False):
     out = sorted(legacy.values(), key=lambda r: str(r.get("at"))) + recorded
     for r in out:
         if reader.get(r.get("judge")):
-            r["reader_tokens"] = reader.pop(r["judge"])
+            if r.get("reader_void_system"):     # its second reader died: that charge is void spend, shown apart
+                r["reader_void_tokens"] = reader.pop(r["judge"])
+            else:
+                r["reader_tokens"] = reader.pop(r["judge"])
     for j in sorted(reader):   # a reader whose judge has no round on file: its spend still counts, on a spend-only row
         out.append({"judge": None, "verdict": None, "tokens": reader[j], "reader_only": True, "reader_of": j,
                     "at": reader_at.get(j) or None})
@@ -1164,8 +1177,9 @@ def llm_reader(d, repo, unit, charge=True, runner=None):
                                                    dict(os.environ, RM_ROLE_UNIT=unit), READER_TIMEOUT_S)
         except OSError:          # never launched: nothing was spent
             return None
-        except subprocess.SubprocessError:    # it ran (a timeout): its spend is unknown
+        except subprocess.SubprocessError as e:    # it ran (a timeout): its spend is unknown, and void
             bill(None)
+            reader.dead = "the second reader did not answer: %s" % e    # its charge is no judge spend (rounds)
             return None
         try:
             res = json.loads(out or "null")
@@ -1399,6 +1413,7 @@ def record_round(d, rec):
         "void_system": void_cause(rec) or None, **round_counts(rec),
         # the detached run that asked for the Designer run this judge screens (role_launch.with_parent): run_void.children
         "parent": os.environ.get("RM_PARENT_UNIT") or None,
+        "reader_void_system": rec.get("reader_void_system"),
         "repair_blocks": repair_blocks(rec)})
     DS.write_json(DS.state_path(d), st)
     return st
@@ -1761,6 +1776,8 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         if dp["refused"]:
             rec["claims_refused"] = dp["refused"]
 
+    calls = []      # each judge call's end, in order: "dead" (a system cause) or "answered"
+
     def ask(call, wall, gaps_only=False):
         """-> (exit code, the well-formed verdict (or, gaps_only, a {gaps} answer) or None, session id). Charges what
         the call spent."""
@@ -1779,11 +1796,13 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             rec["error"] = "the judge did not answer: %s" % e
             rec["error_kind"] = "system"     # a dead call: a timeout, no process, output that is no JSON
             rec.setdefault("dead_calls", []).append(rec["error"])
+            calls.append("dead")
             return None, None, None
         except subprocess.SubprocessError as e:   # it ran (a timeout): its spend is unknown
             rec["error"] = "the judge did not answer: %s" % e
             rec["error_kind"] = "system"     # a dead call
             rec.setdefault("dead_calls", []).append(rec["error"])
+            calls.append("dead")
             unmeasured("the call did not finish: %s" % e)
             return None, None, None
         try:
@@ -1791,12 +1810,17 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         except ValueError as e:
             res = None
             rec["error"] = "the judge did not answer: %s" % e
+        if isinstance(res, dict) and not is_cli_result(res):
+            res = None      # {} or another envelope: no result of its own (Codex review r2-3)
+            rec["error"] = "the judge's output is a JSON object but no CLI result of its own (exit %s)" % code
         if not isinstance(res, dict):
             rec.setdefault("error", "the judge's output is not a JSON result (exit %s)" % code)
             rec["error_kind"] = "system"     # the CLI exited with no result of its own
             rec.setdefault("dead_calls", []).append(rec["error"])
+            calls.append("dead")
             unmeasured("no JSON result to measure")
             return code, None, None
+        calls.append("answered")
         tok = None
         try:
             import role_launch as RL
@@ -1912,6 +1936,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         # kept on file marked `malformed`, is not submitted, and the well-formed rows are the stored verdict.
         cv, given, errs = contract_errors(d, rec, st0.get("item"))
         dead0 = len(rec.get("dead_calls") or [])    # a re-ask below that dies leaves a malformed verdict nobody judged
+        calls0 = len(calls)
         left = timeout - (time.monotonic() - started)
         if errs and session and left >= REASK_MIN_S and row_errors(errs, cv)[1]:
             rec["contract_reasked"] = errs
@@ -1976,6 +2001,8 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             if reader == "auto":
                 reader = llm_reader(d, repo, unit, charge) if runner is default_runner else None
             unread = second_read(rec, cv["given"]["criteria"] if "given" in cv else given["criteria"], reader)
+            if getattr(reader, "dead", None):
+                rec["reader_void_system"] = reader.dead
             apply_bar_rule(rec)
             if rec.get("verdict") == "not_covered":
                 cv, given, errs = contract_errors(d, rec, st0.get("item"))
@@ -1983,7 +2010,8 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             rec["contract"] = {"ok": True, "submitted": False, "why": unread}
             rec["advisory"] = unread
         elif rec.get("verdict") == "not_covered":
-            dead = (rec.get("dead_calls") or [])[dead0:]
+            # void only when the LAST repair attempt died: a later re-ask that answered malformed is the judge's own
+            dead = (rec.get("dead_calls") or [])[dead0:] if calls[calls0:] and calls[-1] == "dead" else []
             if errs and dead:
                 # the re-ask that would have repaired the records died: the malformed verdict is the dead call's, so it
                 # is not submitted (the refusal contract counts no malformed verdict for it) and the round is void_system

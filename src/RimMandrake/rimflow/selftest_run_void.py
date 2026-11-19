@@ -183,6 +183,17 @@ def release_back(RV, MD, record):
        "a void_system run that heals (its record now counts) spends its release again")
     st = fresh()
     RV.sync_system(st, record, now=T0 + 1400)
+    st["mods"]["Fake"]["releases_used"]["rel-s"] = {"at": T0 + 1450, "unit": UB, "usd": 90.0}   # B reuses it
+    RV.sync_system(st, healed.get, now=T0 + 1600)
+    s = st["mods"]["Fake"]
+    ok(s["releases_used"]["rel-s"]["unit"] == UB and any(m["book"] == "releases_used" for m in s.get("voided") or []),
+       "a healed run whose release another run holds now: the newer one stands, the healed one's stays saved")
+    s["releases_used"].pop("rel-s")         # B's own run is voided later and gives it back
+    RV.sync_system(st, healed.get, now=T0 + 1700)
+    ok((s.get("releases_used") or {}).get("rel-s", {}).get("unit") == U2,
+       "the saved release is retried on its own: once free, the healed run (it counts) spends it again (Codex r1-1)")
+    st = fresh()
+    RV.sync_system(st, record, now=T0 + 1400)
     RV.sync_dispatch(st, {U2: {"id": "v-9", "unit": U2, "why": "his stop", "item": "X2"}})
     ok("rel-s" in st["mods"]["Fake"].get("releases_used", {}),
        "a hand void of a run already void_system leaves its release spent (the Conductor's line: void_system only)")
@@ -233,11 +244,25 @@ def pilot_void(RV, tmp):
        "three fails in a row route the item to a Test Pilot")
     ok(TP.judge(It, [], void={name: {"id": "v", "why": "harness fault"}}) is None,
        "the third fail hand-voided as a harness fault: two in a row, no streak")
+    real = RV.active
+    RV.active = lambda *a, **k: (_ for _ in ()).throw(PermissionError("denied"))
+    try:
+        v = TP.judge(It, [])
+    finally:
+        RV.active = real
+    ok(v and "UNMEASURED" in v["why"] and "denied" in v["why"],
+       "an unreadable void ledger is said as UNMEASURED on the verdict, never read as 'no voids' (Codex r1-7): %s"
+       % (v or {}).get("why"))
     got, bad = RV.resolve(tmp, {}, [name], verify_run=lambda n: n == name)
     ok(bad is None and [g[0] for g in got] == [name] and got[0][2] == "FAKE_ITEM",
        "void resolves a verify run by its name, the item from the name (%s)" % (bad or got))
     got, bad = RV.resolve(tmp, {}, ["FAKE_ITEM/run-9@full-578"], verify_run=lambda n: n == name)
     ok(bad and "unknown run" in bad, "a verify run the ledger does not hold is refused by name")
+    rel = {"stage": 5, "coverage_releases": [{"at": "2026-11-18T18:02:53Z", "granted_at": "2026-11-17T18:45:12Z",
+                                              "why": "locked-change chain FAKE_ITEM applies the grant"}]}
+    RV.sync_stage(rel, {name: {"id": "v-1", "unit": name, "item": "FAKE_ITEM", "why": "harness fault"}})
+    ok(len(rel.get("coverage_releases") or []) == 1,
+       "a voided verify run un-applies no coverage look its item's name happens to appear in (Codex r1-4)")
 
 
 def parent_children(RV, tmp):
@@ -253,7 +278,9 @@ def parent_children(RV, tmp):
         {"judge": "rm-coverage-judge-3", "at": "2026-11-18T18:07:00Z", "verdict": "covered"},
         {"judge": "rm-coverage-judge-4", "at": "2026-11-18T20:00:00Z", "verdict": "covered", "parent": P1}],
         "history": [{"at": "2026-11-18T18:04:00Z", "stage": 5, "what": "open", "parent": P2,
-                     "why": "run rm-role-designer-9, stage 5, budget 10"}]}
+                     "why": "run rm-role-designer-9, stage 5, budget 10"}],
+        "budget": {"charges": [{"at": "2026-11-18T18:06:30Z", "kind": "review", "tokens": 5,
+                                "ref": "rm-coverage-judge-2-reader"}]}}
     with open(os.path.join(d, "stage.json"), "w") as f:
         json.dump(st, f)
     t0 = RV.parse_time("2026-11-18T18:00:00Z")
@@ -262,7 +289,7 @@ def parent_children(RV, tmp):
        "children by parent: its own judges (one queued past its end too), an old parentless one by time, never the "
        "overlapping run's (%s)" % kids)
     kids2 = RV.children(root, "Fake", {"unit": P2, "at": t0, "ended": t0 + 1800})
-    ok(kids2 == ["rm-coverage-judge-2", "rm-coverage-judge-3", "rm-role-designer-9"],
+    ok(kids2 == ["rm-coverage-judge-2", "rm-coverage-judge-2-reader", "rm-coverage-judge-3", "rm-role-designer-9"],
        "the other run's children are its own (%s)" % kids2)
 
 

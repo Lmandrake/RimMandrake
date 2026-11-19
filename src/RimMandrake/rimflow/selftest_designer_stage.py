@@ -196,6 +196,13 @@ def main():
         check("no result.json: rejected, stage stays 0, the run is charged", not ok and st["stage"] == 0
               and st["budget"]["spent"] == 5000 and "no result.json" in errs[0], (ok, errs, st["stage"]))
 
+        DS.open_run(d, "run0b", repo=repo.root)
+        with open(os.path.join(d, "result.json"), "w") as f:
+            f.write("null")
+        ok, errs = DS.close_run(d, "run0b", 10, repo=repo.root)
+        check("a result.json that is there but no JSON object is refused on its merits, never read as no result.json "
+              "(a void_system close needs the file absent: Codex r4-2)",
+              not ok and errs and not any(str(e).startswith("no result.json") for e in errs), errs)
         # ---- stage 0: inventory with built/proven/scope separate
         put(d, "record.json", {"inventory": [inv(impl="absent")], "failure_modes": ["a", "b"]})
         DS.open_run(d, "run1", repo=repo.root)

@@ -122,8 +122,11 @@ def test_environment_to_cause_book():
 
 def test_unknown_and_mixed_to_builder():
     rs = {}
-    _, calls, route = harvest(rs, ["no result.json (a closing message is not a result)"], res=None)
-    check(rechained(rs) and "unknown" in route[0]["why"] and "-> builder" in route[0]["why"] and not any(calls.values()),
+    # the no-result shape is void_system now (test_void_system); with nothing to mark on the stage file it counts, and
+    # that countable rejection is the unknown route (an explicit seam: the real store is never touched here)
+    _, calls, route = harvest(rs, ["no result.json (a closing message is not a result)"], res=None,
+                              seams={"stage_void": lambda c, u, why: False})
+    check(route and rechained(rs) and "unknown" in route[0]["why"] and "-> builder" in route[0]["why"] and not any(calls.values()),
           "the Pyrelands shape (failed, no result, no environment signal) -> unknown -> builder with its reasons")
     rs = {}
     _, calls, route = harvest(rs, ["[cause:check] c1", "[cause:environment] box"])
@@ -201,15 +204,34 @@ def test_void_system():
     check(rechained(rs) and rs["chain_day"][key] == 3 and rs["chain_stages_day"][key] == ["4", "4", "4"],
           "its chain is given back and the stage is chained again: the count stays 3 (%r)" % rs.get("chain_day"))
     rs.pop("run_now", None)
-    acts, _, _ = harvest(rs, NR, res=GOOD, unit="rm-role-designer-2", seams=seam, stop_tries=2)
+    acts, _, _ = harvest(rs, NR, res=None, unit="rm-role-designer-2", seams=seam, stop_tries=2)
     check(len(marked) == 2 and "run_max_s" in marked[1][1] and rechained(rs),
           "a run stopped at run_max_s before it wrote result.json is void_system too: %r" % marked[1:])
     rs.pop("run_now", None)
+    RL.note_chain_unit(rs, "rm-role-designer-3", {"chain_key": key, "chain_stage": "4"}, T - 700)
+    before = rs["chain_day"][key]
     acts, _, _ = harvest(rs, NR, res=None, unit="rm-role-designer-3", seams=seam)
     check(len(marked) == 3 and not rechained(rs) and any(a.get("kind") == "role:Designer:system_fault"
                                                           and a.get("conductor_log") for a in acts),
           "the %d-th void run on one concept in a day is a system fault: nothing chained, the Conductor told"
           % RV.SYSTEM_FAULT_LIMIT)
+    check(rs["chain_day"][key] == before - 1, "the void at the limit still gives its own chain back (Codex r3-2)")
+    req = RL.chain_ask("Designer", rs, dict(designer_cfg(), chain_stages=True), C1, 4, T, lambda **kw: None,
+                       "u9", "PYRE_ITEM", "run", "sweep", "after")
+    check(req is None, "at the fault limit the sweep's chain_ask asks nothing either (Codex r3-1)")
+    check(RL.void_cause({"stop_tries": 1}, {"is_error": True, "subtype": "error_max_budget_usd"}, NR) is None,
+          "a run stopped once that still wrote a claude result of its own (is_error, a cap) counts (Codex r3-3)")
+    import tempfile
+    with tempfile.NamedTemporaryFile("w", delete=False) as f:
+        f.write("{}")
+    os.chmod(f.name, 0)
+    try:
+        unreadable = not os.access(f.name, os.R_OK)
+        check(not unreadable or RL.void_cause({"out": f.name}, {}, NR) is None,
+              "an output file that cannot be read is never taken as 'no result': not void (Codex r3-4)")
+    finally:
+        os.chmod(f.name, 0o600)
+        os.remove(f.name)
     rs, marked[:] = {}, []
     acts, calls, _ = harvest(rs, NR, res={"is_error": True, "api_error_status": 429,
                                           "usage": {k: 10 for k in RL.USAGE_KEYS}}, seams=seam)

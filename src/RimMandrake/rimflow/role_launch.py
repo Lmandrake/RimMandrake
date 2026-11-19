@@ -2558,11 +2558,14 @@ def void_cause(run, res, errs):
     claude result (an is_error, a cap, the agent's own end) is the run's: it counts."""
     if not errs or not all(str(e).startswith("no result.json") for e in errs):
         return None
+    if res:     # claude answered (an is_error, a cap, the agent's own end), whatever stop was asked: it counts
+        return None
+    out = run.get("out")
+    if out and os.path.exists(out) and not os.access(out, os.R_OK):
+        return None     # could not look at its output: never read as "no result" (it counts, as the books had it)
     if run.get("stop_tries"):
         return "stopped at run_max_s after %d stop(s), before it wrote result.json" % run["stop_tries"]
-    if not res:
-        return "the unit ended with no claude result of its own"
-    return None
+    return "the unit ended with no claude result of its own"
 
 
 def stage_void(concept, unit, cause):
@@ -2598,6 +2601,15 @@ def give_back_chain(rs, unit):
     return True
 
 
+def void_held(rs, concept, now):
+    """True when `concept` met run_void.SYSTEM_FAULT_LIMIT void_system runs today (void_route): nothing chains it,
+    harvest or sweep, until the day turns."""
+    import run_void as RV
+    day = day_of(now)
+    return sum(1 for f in rs.get("void_faults") or [] if isinstance(f, dict) and f.get("day") == day
+               and f.get("concept") == concept) >= RV.SYSTEM_FAULT_LIMIT
+
+
 def void_route(name, rs, cfg, run, cause, now, act, obs):
     """A void_system stage close (void_cause): no rejection is remembered (no arbiter on a second one), the chain that
     launched the dead run is given back, and the stage is chained again. At run_void.SYSTEM_FAULT_LIMIT void runs on
@@ -2609,6 +2621,7 @@ def void_route(name, rs, cfg, run, cause, now, act, obs):
     vf.append({"day": day, "concept": concept, "unit": run["unit"], "cause": cause, "at": now})
     rs["void_faults"] = vf
     n = sum(1 for f in vf if f.get("concept") == concept)
+    gave = give_back_chain(rs, run["unit"])     # the dead run's own chain, at the limit too
     head = "%s run %s on %s: VOID (void_system: %s)" % (name, run["unit"], os.path.basename(os.path.normpath(concept)),
                                                         cause)
     if n >= RV.SYSTEM_FAULT_LIMIT:
@@ -2618,7 +2631,6 @@ def void_route(name, rs, cfg, run, cause, now, act, obs):
             why="%s; %d void_system runs on it today (limit %d, %s): not chained, no retry spent" % (
                 head, n, RV.SYSTEM_FAULT_LIMIT, RV.ALARM_ID))
         return "system_fault"
-    gave = give_back_chain(rs, run["unit"])
     req = None
     if cfg.get("chain_stages") is True:
         status = obs.get("stage_status") or stage_status
@@ -2774,6 +2786,8 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
     asked (owner_held)."""
     if owner_held(name, rs, concept, now, act):
         return None
+    if void_held(rs, concept, now):
+        return None     # role:<Role>:system_fault was raised once by void_route; the sweep asks nothing either
     day = day_of(now)
     key = "%s %s" % (day, concept)
     cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)

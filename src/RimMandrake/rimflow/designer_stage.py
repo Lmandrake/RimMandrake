@@ -2294,6 +2294,11 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
         res, unparsed = None, str(e)
     else:
         unparsed = None
+        if not isinstance(res, dict) and os.path.exists(os.path.join(d, "result.json")):
+            # written but not a result: refused on its merits, never NO_RESULT (that names an absent file, which
+            # role_launch.void_cause may class void_system)
+            unparsed = "result.json holds %s, not a JSON object: a written result that is no result" % (
+                "null" if res is None else type(res).__name__)
     errs = [unparsed] if unparsed else result_errors(res, d, st, repo)
     if transport_error:
         errs.append("Codex transport failed: %s" % str(transport_error))

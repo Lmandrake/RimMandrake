@@ -232,6 +232,9 @@ def children(root, mod, rec):
         one = {m["field"]: [m["entry"]]} if m.get("field") in ("coverage_rounds", "results", "history") else {}
         runs.update(stage_runs(one))
         par.update({u: p for u, p in stage_parents(one).items() if p or u not in par})
+    for u in runs:      # a second reader's charge (<judge>-reader) is its judge's: it takes the judge's parent
+        if u.endswith("-reader") and not par.get(u) and par.get(u[:-len("-reader")]):
+            par[u] = par[u[:-len("-reader")]]
     me = rec.get("unit")
     return sorted(u for u, at in runs.items() if (me and par.get(u) == me) or (
         not par.get(u) and at is not None and t0 <= at <= t1))
@@ -524,12 +527,18 @@ def heal_system(s, record):
         rec = record(u)
         if isinstance(rec, dict) and rec.get("status") == "finished" and not system_cause(rec):
             back.append(m)
+    # a given-back release whose run no longer stands void_system (healed now, or earlier with the release's key then
+    # held by a newer run: it stayed saved) is spent again, retried on its own each read (Codex review r1-1)
+    still = {m.get("unit") for m in mv if m.get("class") == "void_system" and m["book"] != RELEASE_BOOK
+             and not any(m is b for b in back)}
+    back += [m for m in mv if m["book"] == RELEASE_BOOK and m.get("class") == "void_system"
+             and m.get("unit") not in still and not any(m is b for b in back)]
     if not back:
         return []
-    units = {m["unit"] for m in back if m.get("class") == "void_system"}
+    units = {m["unit"] for m in back if m.get("class") == "void_system" and m["book"] != RELEASE_BOOK}
     items = {m["entry"].get("item") for m in back if m["book"] == "steward"}
-    back += [m for m in mv if m.get("class") == "void_system" and (
-        (m["book"] in ("last_run", RELEASE_BOOK) and m.get("unit") in units) or
+    back += [m for m in mv if m.get("class") == "void_system" and not any(m is b for b in back) and (
+        (m["book"] == "last_run" and m.get("unit") in units) or
         (m["book"] == "road_back" and (m.get("entry") or {}).get("caused_by") in items))]
     done = [m for m in back if _restore(s, m)]
     s["voided"] = [m for m in mv if not any(m is d for d in done)]
@@ -677,6 +686,8 @@ def sync_stage(st, cur=None):
     cur = active() if cur is None else cur
     if not isinstance(st, dict):
         return st
+    # a verify run's void names an item but applied no coverage look: it is never attributed one by that name
+    cur = {u: r for u, r in cur.items() if not VERIFY_RUN.match(str(u))}
     vd = st.get("voided") if isinstance(st.get("voided"), dict) else {}
     for m in [m for m in vd.get("moved") or [] if m.get("unit") not in cur]:
         _stage_restore(st, m)
