@@ -747,6 +747,20 @@ def launch_argv(rec, msg, claude):
             "--setenv", "PATH=" + path, "--"] + cmd
 
 
+# A brief that names a skill's folder (skills/<name>/ or skills\<name>\, in this repo or ~/dev): most project skills are not
+# registered, so a helper reads only the skills its brief names by path (owner, 2026-11-19). skills/BY_WORK.md alone is the map,
+# not a skill. Boundary page: design/specs/2026-11-19-brief-skill-paths/boundary.md.
+SKILL_PATH = re.compile(r"skills[/\\][A-Za-z0-9][A-Za-z0-9_.-]*[/\\]")
+
+
+def skill_path_warning(brief):
+    """-> one WARNING line when the brief names no skill path, else None. It refuses nothing."""
+    if SKILL_PATH.search(brief or ""):
+        return None
+    return ("WARNING: the brief names no skill path (skills/<name>/SKILL.md); the helper sees no unregistered skill. "
+            "Name the paths for its kind of work from skills/BY_WORK.md")
+
+
 def card_refusal(item, brief, events_dir=None):
     """-> None, or the refusal for a brief on a by-card item that lacks a picked option's description verbatim
     (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART: "needs bigger art" was retold from memory as "check if the
@@ -872,7 +886,9 @@ def launch(seat, item, brief, model, max_s, budget, now=None, runner=subprocess.
         except Exception as e:  # noqa: BLE001
             tail = "preflight did not run (%s: %s); the launch carries on" % (type(e).__name__, e)
     # a refusal's text stays exactly the gate's own (its line is still in runs.jsonl); a launch shows the preflight's lines
-    return code, (text + "\n" + tail) if tail and code == 0 else text
+    text = (text + "\n" + tail) if tail and code == 0 else text
+    warn = skill_path_warning(brief) if code == 0 else None     # last, so it is the line a launcher's eye lands on
+    return code, (text + "\n" + warn) if warn else text
 
 
 def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, sleep, events_dir, skip_launch_checks, pf,

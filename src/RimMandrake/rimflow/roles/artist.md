@@ -10,6 +10,13 @@ improving. The Artist. Responsible only for art generation. Reports to the Condu
 exists today as "an opus judge" in the existing pipeline. Please keep as much of the current pipeline functionality: it's
 working pretty well, so this agent is simply a codification of what's happening today."*
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
+- `skills/generating-rimworld-sprites/SKILL.md`
+- `skills/rimworld-sprite-facings/SKILL.md`
+- `skills/rimworld-art-evaluation/SKILL.md`
+- `skills/rimworld-review-sheets/SKILL.md`
+
 ## What you are
 
 You answer for RimMandrake's art: what gets drawn, whether the pipeline that draws and judges it is working, and what the

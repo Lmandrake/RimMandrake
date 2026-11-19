@@ -1228,6 +1228,45 @@ def test_resumed_part():
           "resumed: a run that does not resume records its whole result (%s, want %d)" % (n.get("tokens"), n_tot))
 
 
+def _skill_warnings(text):
+    return [ln for ln in text.splitlines() if ln.startswith("WARNING:") and "skills/BY_WORK.md" in ln]
+
+
+def t_a_brief_naming_no_skill_gets_one_warning():
+    """Boundary page design/specs/2026-11-19-brief-skill-paths/boundary.md: most skills are not registered, so a brief
+    that names no skill path hands the helper none (owner, 2026-11-19)."""
+    for i, brief in enumerate(("Build the thing.", "Use the rimbridge skill.", "Map: skills/BY_WORK.md, pick one.")):
+        calls, run = recorder()
+        rc, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", brief, "sonnet", 600, 5, now=T0 + 1300 + i, runner=run,
+                             known=KNOWN, clone=CLONE)
+        check(rc == 0 and len(_skill_warnings(text)) == 1 and text.rstrip().splitlines()[-1].startswith("WARNING:"),
+              "skillwarn: a brief naming no skill path ends with one WARNING naming skills/BY_WORK.md (%r: rc %s, %r)"
+              % (brief, rc, text[-160:]))
+
+
+def t_a_brief_naming_a_skill_gets_no_warning():
+    for i, brief in enumerate(("Read skills/rimbridge/SKILL.md first.",
+                               "Read `~/dev/MandrakeWorkflows/skills/efficient-subagents/SKILL.md`.",
+                               r"Read D:\Luke\dev\RimMandrake\skills\rimworld-modding\SKILL.md first.")):
+        calls, run = recorder()
+        rc, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", brief, "sonnet", 600, 5, now=T0 + 1310 + i, runner=run,
+                             known=KNOWN, clone=CLONE)
+        check(rc == 0 and not _skill_warnings(text) and "WARNING: the brief names no skill" not in text,
+              "skillwarn: a brief naming a skill path gets no WARNING (%r: rc %s)" % (brief, rc))
+
+
+def t_the_warning_refuses_nothing():
+    calls, run = recorder()
+    rc, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "Build the thing.", "sonnet", 600, 5, now=T0 + 1320, runner=run,
+                         known=KNOWN, clone=CLONE)
+    check(rc == 0 and any(c[0][0].endswith("systemd-run") for c in calls),
+          "skillwarn: a warned launch still starts its unit (rc %s)" % rc)
+    rc, text = DH.launch("BENCH", "NOT_AN_ITEM", "Build the thing.", "sonnet", 600, 5, now=T0 + 1321, runner=run,
+                         known=KNOWN, clone=CLONE)
+    check(rc == 2 and not _skill_warnings(text) and text.startswith("refused:"),
+          "skillwarn: a refused launch's text stays the gate's own, no warning added (%r)" % text[:100])
+
+
 def main():
     test_refuse()
     test_launch_and_finish()
@@ -1247,6 +1286,9 @@ def main():
     test_windows_path()
     test_launch_checks()
     test_resumed_part()
+    t_a_brief_naming_no_skill_gets_one_warning()
+    t_a_brief_naming_a_skill_gets_no_warning()
+    t_the_warning_refuses_nothing()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

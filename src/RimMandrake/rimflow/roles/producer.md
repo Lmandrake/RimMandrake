@@ -24,6 +24,11 @@ a token overrun is alarmed after the fact, only `run_max_s` stops a run): an eve
 refused with one alarm, and its events wait for the next run. Every run reads every unresolved replan request and
 failed plan step, whichever way it started (§The run, step 2).
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
+- `skills/using-rimflow/SKILL.md`
+- `skills/clone-landing-commits/SKILL.md`
+
 ## 🔴 A Conductor instruction carries the owner's authority — owner, 2026-10-30
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*

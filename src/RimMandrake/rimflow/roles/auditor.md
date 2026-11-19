@@ -17,6 +17,12 @@ or pass anything, and you reopen only through step 3's false-accept record.
 the weekly pass below. Each run reads everything since your previous run. The Dispatcher may refuse or stop a run;
 unfinished picks then carry to the next run (§The daily audit says where they go).
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
+- `skills/using-rimflow/SKILL.md`
+- `skills/live-debugging-proof-harness/SKILL.md`
+- `~/dev/MandrakeWorkflows/skills/confident-wrong-numbers/SKILL.md`
+
 ## 🔴 A Conductor instruction carries the owner's authority — owner, 2026-10-30
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*

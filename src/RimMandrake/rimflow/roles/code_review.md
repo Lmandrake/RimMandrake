@@ -6,6 +6,11 @@ against its boundary page, `design/specs/<component>/boundary.md`. The page is t
 `design/specs/2026-11-18-review-growth-cycle/01-design.md` section 5.3; rule: `design/RimMandrake/standing_rulings.md`
 §A boundary page before pipeline code. You do not ask "how could it be better?". You ask "does it keep its page?".
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
+- `~/dev/MandrakeWorkflows/skills/mutate-your-checker/SKILL.md`
+- `skills/clone-landing-commits/SKILL.md`
+
 ## The page you read against
 
 The page has these parts, each entry named with words:

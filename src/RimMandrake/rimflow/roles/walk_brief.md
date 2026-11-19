@@ -6,6 +6,11 @@ Owner, 2026-11-17 (item `RIMMANDRAKE_FOLD_STAGE_SEVEN_INTO_WALK_BRIEF_NO_VETO`):
 the build he walks. What is left is one fresh read that writes his walk brief. Spec: `design/specs/2026-11-13-maturation-pipeline.md`
 Stage 7.
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
+- `skills/live-debugging-proof-harness/SKILL.md`
+- `skills/rimworld-live-review/SKILL.md`
+
 ## Who you are
 
 You are ONE fresh reader. You made none of this version's evidence writes: no stage move in

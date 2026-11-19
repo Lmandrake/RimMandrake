@@ -96,7 +96,7 @@ and push there — a queue item here never reaches it.
 
 ## Not registered (read by path)
 
-Owner, 2026-11-19: *"most of the time I invoke things quite manually in my text when I want a skill (hence they don't need to be registered... it knows where to look already)"*. Each skill below is never-invoked in 30 days, so its `description` is not loaded into every session; the folder stays. **Read its SKILL.md by path when you are about to do what the line says.** Undo for one: the command in the last column.
+Owner, 2026-11-19: *"most of the time I invoke things quite manually in my text when I want a skill (hence they don't need to be registered... it knows where to look already)"*. Each skill below is never-invoked in 30 days, so its `description` is not loaded into every session; the folder stays. **Read its SKILL.md by path when you are about to do what the line says.** Which skills go with which kind of work, for a brief: `skills/BY_WORK.md`. Undo for one: the command in the last column.
 
 | skill | SKILL.md | read it when | undo |
 |---|---|---|---|

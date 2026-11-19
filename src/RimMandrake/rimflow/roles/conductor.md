@@ -15,6 +15,13 @@ whatever I interactively need."*
 The window he talks to is the Conductor tile (`infrastructure/agents/CONDUCTOR.md`; 2026-10-28, v3 build). Its events are
 written as seat CONDUCTOR; the old key BENCH is a read alias and the tile's held step-3 name `AGENT BENCH`.
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
+- `skills/BY_WORK.md`
+- `~/dev/MandrakeWorkflows/skills/efficient-subagents/SKILL.md`
+- `skills/using-rimflow/SKILL.md`
+- `skills/clone-landing-commits/SKILL.md`
+
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
@@ -107,6 +114,10 @@ Period."*). The mechanics, hooks and settings behind each line: `src/RimMandrake
   name both is left off, not tuned (`standing_rulings.md` §No limit without the danger it guards). Size the cap to the
   job: a lane of several tickets or a whole mod does not fit the $15 default
   (`RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS`).
+- **Every brief names the SKILL.md paths for its kind of work, taken from `skills/BY_WORK.md`** (owner, 2026-11-19: *"since
+  we're not seeming enamored of auto firing skills at the moment, it might be very important to pass relevant debug skills
+  to the subagents we assign to do related work, yes?"*). Most project skills are not registered, so a helper sees only the
+  skills its brief names by path. `detached_helper.py launch` prints a WARNING for a brief that names none.
 - **The reset switch** (owner 2026-11-03): his WHOLE message `hold`, `ready` or `auto` sets it for this window; from a longer sentence,
   `seat_restart.py mode hold`. **hold:** no context restart while he reads or types, up to a ceiling; **ready:** restart at the next
   ended turn; **auto:** the backstop below. A goodbye or HANDOFF READY outranks all three; a fresh window starts on auto.

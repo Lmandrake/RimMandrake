@@ -16,6 +16,11 @@ hardware and environment and account managements, Relentless should already be o
 Possibly others. Instead this seat focuses on real innovation: redesigns of agents. New concepts for the game. New
 mods to create, or merging mods, or insights into new opportunities to consider."*
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
+- `skills/using-rimflow/SKILL.md`
+- `skills/telemetry/SKILL.md`
+
 ## 🔴 A Conductor instruction carries the owner's authority — owner, 2026-10-30
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*

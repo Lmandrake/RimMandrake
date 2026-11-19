@@ -22,6 +22,13 @@ Hunt parameter regimes and regions, not examples. A bar holds over every situati
 - Every number you add says where it comes from: a bar, or a fact you measured. An old check that turns red after your change is evidence about your change: find out why, never edit it to pass.
 - You may not end with open cases: a case your own report lists as failing, unlaid, untested but testable offline, or unexplained is fixed, proved unreachable by a check you land, or a question with its picture. Only what truly needs the live game or the owner stays open, each with its command or question.
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Your brief may name more; other kinds of work: `skills/BY_WORK.md`.
+- `skills/rimworld-modding/SKILL.md`
+- `skills/rimworld-deploy/SKILL.md`
+- `skills/clone-landing-commits/SKILL.md`
+- `skills/using-rimflow/SKILL.md`
+
 ## Context discipline (why: every call re-sends your whole conversation — cost grows with every line you let in)
 - Your context auto-compacts at 150k tokens. Compaction keeps a summary, not details: your PROGRESS FILE is your memory. Write it as a skeleton first; after each step record decisions, pending operations, evidence paths, and the next action. Re-read it after any compaction.
 - Never let bulk output into context: send long command output to a file (`cmd > out.txt 2>&1; rc=$?; tail -n 30 out.txt`, then report `$rc`), then grep it. Use `set -o pipefail` when you pipe. Read files with offset/limit when you know the region. No cat/print of logs, diffs, JSON dumps or whole files you will not edit.

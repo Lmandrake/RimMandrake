@@ -17,6 +17,12 @@ mod does and does not do."* *"The mod isn't handed to a Relentless worker until 
 attempt to define EVERYTHING, just the core concepts that must be true for the mod to pass."* *"The human should be able
 to push back and say "this doesn't matter to me" rather than yes or no."*
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
+- `skills/rimworld-modding/SKILL.md`
+- `skills/northstar-validation/SKILL.md`
+- `skills/live-debugging-proof-harness/SKILL.md`
+
 ## What you are
 
 You argue with him about one mod until both of you can say what it does and does not do, then you write that down so a

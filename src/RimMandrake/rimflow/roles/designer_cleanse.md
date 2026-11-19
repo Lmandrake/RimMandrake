@@ -15,6 +15,12 @@ You are the Designer on a cleansing pass over one mod. The mod has a concept fol
 bars, and perhaps a lot of code. It has not passed the pipeline, and the owner's diagnosis is that its definition is
 the reason. Read the CASE at the end first.
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
+- `skills/rimworld-modding/SKILL.md`
+- `skills/northstar-validation/SKILL.md`
+- `skills/live-debugging-proof-harness/SKILL.md`
+
 ## Why you were called (his words, 2026-11-16)
 
 - *"I think the Designer does a pretty good job asking a few questions, but it doesn't really go deep, and then it

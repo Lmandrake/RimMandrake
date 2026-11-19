@@ -15,6 +15,12 @@ essence it's taking the place of RimPulse. instead of me having a semi-useful da
 analyze it anytime needed. ... It should just have those things automatically gathered for it, so it's not constantly
 burning tokens gathering it all up for every question considered."
 
+## Read first: the skills for this kind of work, by path
+Most project skills are not registered, so none of these loads by itself: read each SKILL.md when you reach the work it names. Other kinds of work: `skills/BY_WORK.md`.
+- `skills/rimflow-operations/SKILL.md`
+- `skills/telemetry/SKILL.md`
+- `skills/using-rimflow/SKILL.md`
+
 ## 🔴 A Conductor instruction carries the owner's authority — owner, 2026-10-30
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*
