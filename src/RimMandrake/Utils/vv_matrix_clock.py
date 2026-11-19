@@ -8,12 +8,13 @@ timer passes it on Sundays) vv_laws.py prove as well, so a green matrix is known
 reading, <agent storage>/rimmandrake/vv_matrix/last.json, AFTER the runs end and never before (a reading written first
 could pass for an answer): {when, matrix_rc, matrix_verdict, prove_rc, prove_line, results}. matrix_verdict is the
 matrix's own VERDICT line; a run that printed none reads UNMEASURED with its exit code. Exit: the matrix's exit code,
-or the prove's when the matrix passed. Unit: src/RimMandrake/Utils/systemd/rm-vv-matrix.{service,timer}.
+or the prove's when the matrix passed; 3 when a run exited 0 but printed no answer. Unit: src/RimMandrake/Utils/systemd/rm-vv-matrix.{service,timer}.
 """
 import argparse
 import json
 import os
 import re
+import signal
 import subprocess
 import sys
 import time
@@ -29,11 +30,20 @@ def reading_path():
 
 
 def run(cmd, timeout):
+    """-> (rc, output). The child gets its own process group; on a timeout the WHOLE group is killed and reaped before
+    this returns, so no build or probe it started outlives the reading (rc 124). A Windows dotnet.exe started through
+    WSL interop dies with its interop parent [guess ~80%]."""
+    p = subprocess.Popen(cmd, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, start_new_session=True)
     try:
-        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout)
-        return r.returncode, (r.stdout or "") + (r.stderr or "")
+        out, _ = p.communicate(timeout=timeout)
+        return p.returncode, out or ""
     except subprocess.TimeoutExpired:
-        return 124, "timed out after %ds" % timeout
+        try:
+            os.killpg(p.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        out, _ = p.communicate()
+        return 124, (out or "") + "\ntimed out after %ds (process group killed)" % timeout
 
 
 def last(pattern, text):
@@ -61,12 +71,14 @@ def main(argv=None):
            "matrix_verdict": verdict or "UNMEASURED (no VERDICT line; exit %d)" % mrc,
            "matrix_why": [l.strip() for l in mout.splitlines()[-12:] if l.startswith("  ") and "red at" in l],
            "results": last(r"^results: (.+)$", mout), "prove_rc": None, "prove_line": "not run (no --prove)"}
-    rc = mrc
+    # an answer that is missing is not a pass: a zero exit with no VERDICT (or no proof line) is an exit of its own (3)
+    rc = mrc if verdict else (mrc or 3)
     if a.prove:
         prc, pout = run(pcmd, 3 * 3600)
-        rec["prove_rc"], rec["prove_line"] = prc, last(r"^laws proven: .+$", pout) or "UNMEASURED (no line; exit %d)" % prc
-        if mrc == 0:
-            rc = prc
+        line = last(r"^laws proven: .+$", pout)
+        rec["prove_rc"], rec["prove_line"] = prc, line or "UNMEASURED (no line; exit %d)" % prc
+        if rc == 0:
+            rc = prc if line else (prc or 3)
     rec["wall_s"] = round(time.time() - t0, 1)
     p = reading_path()
     os.makedirs(os.path.dirname(p), exist_ok=True)

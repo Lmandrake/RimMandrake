@@ -9,6 +9,13 @@ Offline, no build, no game. Proves:
   L4  name_failures names the law a red record's examples show; no examples -> [] (looked, none named)
   L5  judge: PROVEN only with a green baseline and a red planted run naming one of THIS family's laws; a red baseline,
       a green planted run, or a red by another family's law is NOT_PROVEN; a missing or timed-out record is UNMEASURED
+  L6  (Codex review 2026-11-18) zero work never proves: a baseline or planted run with no completed cases is UNMEASURED;
+      examples are matched one at a time, so two unrelated messages never make one law's text; a no-op or missing
+      source replacement and a family whose plant was removed are refused; a mutation run that times out is that
+      family's UNMEASURED with its cause (the run still records); lint on an unreadable law file prints its problems
+      and exits 1 instead of crashing
+  L7  the clock: a run that answered nothing (no VERDICT line) exits non-zero and its reading says UNMEASURED; the reading
+      is written after the runs; a timeout kills the child's whole process group
 Run: python3 src/RimMandrake/Utils/selftest_vv_laws.py
 """
 import copy
@@ -70,7 +77,10 @@ def main():
     cases = {
         "assertion text gone": lambda d: d["laws"][0]["check"].__setitem__("text", "volume went somewhere"),
         "unknown matrix family": lambda d: d["laws"][0].__setitem__("matrix_family", "made_up"),
-        "family with no planted break": lambda d: d["laws"][0].__setitem__("family", "nowhere"),
+        "law in an undeclared family": lambda d: d["laws"][0].__setitem__("family", "nowhere"),
+        "family whose plant was removed": lambda d: d["families"]["conservation"].pop("plant"),
+        "no-op source plant": lambda d: d["families"]["order"]["plant"].update(replace="return x > y;"),
+        "source plant without a replacement": lambda d: d["families"]["order"]["plant"].pop("replace"),
         "source plant found twice": lambda d: d["families"]["order"]["plant"].update(file="b.cs", find="dup;"),
         "source plant found nowhere": lambda d: d["families"]["order"]["plant"].update(find="return z;"),
         "unknown hook plant": lambda d: d["families"]["conservation"]["plant"].update(name="teleport"),
@@ -101,6 +111,84 @@ def main():
           V.judge(GOOD, "conservation", green, red_other))
     check("L5 no record is UNMEASURED", V.judge(GOOD, "conservation", [], red_mine)[0] == "UNMEASURED")
     check("L5 a timed-out run is UNMEASURED", V.judge(GOOD, "conservation", green, [dict(red_mine[0], timed_out=True)])[0] == "UNMEASURED")
+    # L6
+    zero = [{"failures": 0, "completed": 0, "exceptions": 0}]
+    check("L6 a baseline with no completed case is UNMEASURED", V.judge(GOOD, "conservation", zero, red_mine)[0] == "UNMEASURED",
+          V.judge(GOOD, "conservation", zero, red_mine))
+    check("L6 an empty baseline record is UNMEASURED", V.judge(GOOD, "conservation", [{}], red_mine)[0] == "UNMEASURED")
+    check("L6 a planted red with no completed case is UNMEASURED",
+          V.judge(GOOD, "conservation", green, [dict(red_mine[0], completed=0)])[0] == "UNMEASURED")
+    split_ex = {"family": "kernel_fuzz", "failures": 2, "completed": 300, "examples": ["EXCEPTION total volume access", "pulse 3: {in0}->{in1} other"]}
+    joined_doc = {"mod": "FlowWorks", "laws": [{"id": "volume_in_equals_out", "family": "conservation", "matrix_family": "kernel_fuzz",
+                                                 "sentence": "x", "check": {"file": "a.cs", "text": "total volume {in0}->{in1}"}}]}
+    split_ex["examples"] = ["seed 1: total volume access denied", "seed 2: 3->4 elsewhere"]
+    check("L6 two unrelated examples never jointly match one law", V.name_failures(split_ex, {"FlowWorks": joined_doc}) == [],
+          V.name_failures(split_ex, {"FlowWorks": joined_doc}))
+    import subprocess as sp
+    real_run = V.subprocess.run
+
+    def boom(*a, **k):
+        raise sp.TimeoutExpired(a[0] if a else "x", 1)
+    V.subprocess.run = boom
+    try:
+        res = V.prove_ep({"mod": "EmpirePursuit", "laws": [], "families": {"fire_gate": {"plant": {"kind": "mutation", "name": "m"}}}}, log=lambda *a: None)
+        check("L6 a mutation timeout is that family's UNMEASURED", res.get("fire_gate", {}).get("status") == "UNMEASURED"
+              and "timed out" in res["fire_gate"]["why"], res)
+    except Exception as ex:                              # noqa: BLE001 - an escape is the defect
+        check("L6 a mutation timeout is that family's UNMEASURED", False, repr(ex))
+    finally:
+        V.subprocess.run = real_run
+    import contextlib
+    import io
+    import tempfile
+    keep = dict(V.LAW_FILES)
+    bad = tempfile.mkdtemp()
+    open(os.path.join(bad, "bad.json"), "w").write("{broken")
+    V.LAW_FILES["FlowWorks"] = os.path.relpath(os.path.join(bad, "bad.json"), V.ROOT)
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            code = V.main(["lint"])
+        check("L6 lint on an unreadable law file prints the problem and exits 1", code == 1 and "unreadable" in buf.getvalue(), (code, buf.getvalue()[-200:]))
+    except Exception as ex:                              # noqa: BLE001
+        check("L6 lint on an unreadable law file prints the problem and exits 1", False, repr(ex))
+    finally:
+        V.LAW_FILES.clear()
+        V.LAW_FILES.update(keep)
+    # L7 the clock
+    import vv_matrix_clock as C
+    d7 = tempfile.mkdtemp()
+    reading = os.path.join(d7, "last.json")
+    real = (C.run, C.reading_path)
+    calls = []
+
+    def quiet(cmd, timeout):
+        calls.append(cmd)
+        assert not os.path.exists(reading), "reading written before the run"
+        return 0, ""
+    C.run, C.reading_path = quiet, (lambda: reading)
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            code = C.main(["--prove"])
+        import json as _j
+        rd = _j.load(open(reading))
+        check("L7 no answer: non-zero exit, UNMEASURED reading written after the runs", code != 0 and rd["matrix_verdict"].startswith("UNMEASURED")
+              and rd["prove_line"].startswith("UNMEASURED") and len(calls) == 2, (code, rd))
+    finally:
+        C.run, C.reading_path = real
+    import time as _t
+    t0 = _t.time()
+    rc, out = C.run(["sh", "-c", "sleep 30 & echo $! > %s/kid; sleep 30" % d7], 1)
+    kid = int(open(os.path.join(d7, "kid")).read().strip())
+    alive = True
+    for _ in range(20):
+        try:
+            os.kill(kid, 0)
+        except ProcessLookupError:
+            alive = False
+            break
+        _t.sleep(0.1)
+    check("L7 a timeout kills the whole process group", rc == 124 and not alive and _t.time() - t0 < 10, (rc, alive))
     print("vv laws: %d failed" % len(FAILS) if FAILS else "vv laws: all passed")
     return 1 if FAILS else 0
 

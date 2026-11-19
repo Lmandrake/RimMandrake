@@ -84,10 +84,10 @@
    }
   },
   {
-   "id": "flow_order_is_strict",
+   "id": "flow_order_is_irreflexive",
    "family": "flow_order",
    "matrix_family": "seq_orders",
-   "sentence": "The flow order is strict: a level never may flow to its own cell, never both ways between two cells, never round a 3-cycle.",
+   "sentence": "A level never may flow to its own cell (the flow order is irreflexive).",
    "check": {
     "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
     "text": "MayFlowBetween reflexive"
@@ -141,6 +141,16 @@
    "check": {
     "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
     "text": "recipe ratio broken"
+   }
+  },
+  {
+   "id": "flow_order_has_no_three_cycle",
+   "family": "flow_order",
+   "matrix_family": "seq_orders",
+   "sentence": "No three cells may each flow into the next and back to the first (no 3-cycle).",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "MayFlowBetween 3-cycle"
    }
   }
  ],

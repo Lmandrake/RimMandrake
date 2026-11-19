@@ -193,11 +193,13 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 					FlowKernelFuzz.LevelSet = fam.EndsWith("_levelset");
 					string r = FlowKernelFuzz.SurfaceRandomScenesSettleAndConserve();
 					FlowKernelFuzz.LevelSet = false;
-					attempted = completed = 1000;
+					attempted = 1000;
 					var m = System.Text.RegularExpressions.Regex.Match(r, @"(\d+) not at rest by pulse 150, (\d+) unbalanced, (\d+) with a wet step");
-					if (!m.Success) { errors = 1; examples.Add("unparsed: " + r); }
+					// an unreadable answer is UNMEASURED with no completed count, never a measured 0/1000 (Codex review 2026-11-18)
+					if (!m.Success) { errors = 1; unmeasured = true; completed = 0; examples.Add("unparsed: " + r); }
 					else
 					{
+						completed = 1000;
 						// a scene can fail more than one check: the family reports per-check counts, so the union is bounded by the sum
 						int a = int.Parse(m.Groups[1].Value), b = int.Parse(m.Groups[2].Value), c = int.Parse(m.Groups[3].Value);
 						failures = Math.Max(a, Math.Max(b, c));   // lower bound of failing scenes; the per-check split is in the example

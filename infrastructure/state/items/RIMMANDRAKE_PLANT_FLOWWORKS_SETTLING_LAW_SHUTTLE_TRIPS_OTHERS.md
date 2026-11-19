@@ -10,6 +10,11 @@ probe hook cannot see a cell's fluid or the sinks (they live in the test's Array
 sink), shuttling only between two same-fluid non-sink cells in a no-sink scene; or a staged-source plant in the
 kernel that makes a settled pool oscillate.
 
+Codex review (2026-11-18, finding 3): the shuttle as written need not reverse or continue: both endpoints must hold a
+level AND have room for another, so with depths [2,2] and water [U,U] the first move leaves [2U,0] and neither cell is
+eligible again; the pair is not kept between calls and need not be adjacent. A world-side plant should keep one pair,
+check the donor's stock and the receiver's room each call, and confirm the post-pulse state really alternates.
+
 ## criteria
 - Acceptance test: `python3 src/RimMandrake/Utils/vv_laws.py prove FlowWorks --family settling` prints
   `settling/kernel_fuzz PROVEN ... by settled_scene_reaches_fixed_point`; NOT_PROVEN today (watched, 2026-11-18).

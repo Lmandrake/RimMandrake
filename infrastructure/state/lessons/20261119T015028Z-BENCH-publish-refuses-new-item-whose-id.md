@@ -1,0 +1,1 @@
+./publish refuses a new item whose ID (its items/<ID>.md file name) carries a retired pipeline's name such as RELENTLESS: selftest_retired_era_gone.py reads the path as a retired-era remnant, and the refusal names the check, not the file. Name a new item for what it fixes (ERA_SPLIT_...), never with the retired word (2026-11-18).

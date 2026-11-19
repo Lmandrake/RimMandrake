@@ -8,7 +8,8 @@ and conservation laws/principles outlined that must be obeyed. Keep it in please
                                                                   each law family goes red under its planted break
     python3 src/RimMandrake/Utils/vv_laws.py name <rates.jsonl>    which laws a matrix run's red families broke
 
-The laws live beside each mod's kernel, one JSON per mod (LAW_FILES): a law is an id, a plain sentence, the matrix family
+`lint` checks references and plant definitions (texts present, a plant that changes something); only `prove` shows a
+family can actually go red. The laws live beside each mod's kernel, one JSON per mod (LAW_FILES): a law is an id, a plain sentence, the matrix family
 that checks it and the EXACT assertion text in source ({...} placeholders match anything). A law family names its
 planted break: `hook` (ShippedMatrixProbe --plant: state corrupted at the moment the shipped settings are written),
 `source` (one find/replace in the STAGED copy of a kernel file) or `mutation` (a named defect of
@@ -115,6 +116,8 @@ def lint(doc, read=_read, fams=None, mutations=None):
                 n = -1
             if n != 1 or not pl.get("find"):
                 p.append("%s: family %s's source plant is found %s time(s) in %s (want exactly 1)" % (mod, name, n, pl.get("file")))
+            if "replace" not in pl or pl.get("replace") == pl.get("find"):
+                p.append("%s: family %s's source plant changes nothing (replacement missing or equal to its find)" % (mod, name))
         elif kind == "mutation":
             names = mutation_names() if mutations is None else mutations
             if pl.get("name") not in names:
@@ -148,8 +151,8 @@ def name_failures(rec, docs=None):
         doc = (docs or {}).get(mod) or load(mod)
     except (OSError, ValueError):
         return ["(law file of %s unreadable)" % mod]
-    ex = "\n".join(rec.get("examples") or [])
-    return sorted(l["id"] for l in doc["laws"] if l["matrix_family"] == mf and text_re(l["check"]["text"]).search(ex))
+    exs = rec.get("examples") or []       # one message at a time: two unrelated messages never make one law's text
+    return sorted(l["id"] for l in doc["laws"] if l["matrix_family"] == mf and any(text_re(l["check"]["text"]).search(e) for e in exs))
 
 
 # ------------------------------------------------------------------ prove
@@ -164,6 +167,9 @@ def judge(doc, name, baseline, planted):
     if not baseline or not planted:
         return "UNMEASURED", "a run wrote no record"
     b, p = baseline[-1], planted[-1]
+    for who, r in (("baseline", b), ("planted run", p)):
+        if not isinstance(r.get("completed"), int) or r["completed"] <= 0 or not isinstance(r.get("failures"), int):
+            return "UNMEASURED", "the %s completed no case (record %s): zero work proves nothing" % (who, {k: r.get(k) for k in ("completed", "failures")})
     if b.get("timed_out") or p.get("timed_out") or b.get("unmeasured") or p.get("unmeasured"):
         return "UNMEASURED", "a run timed out or could not measure"
     if b.get("failures") or b.get("exceptions"):
@@ -215,8 +221,13 @@ def prove_ep(doc, only=None, log=print):
         if only and name != only:
             continue
         pl = fam["plant"]
-        r = subprocess.run([sys.executable, os.path.join(HERE, "mutate_empirepursuit_fuzz.py"), pl["name"]], cwd=ROOT,
-                           capture_output=True, text=True, timeout=3600)
+        try:
+            r = subprocess.run([sys.executable, os.path.join(HERE, "mutate_empirepursuit_fuzz.py"), pl["name"]], cwd=ROOT,
+                               capture_output=True, text=True, timeout=3600)
+        except (subprocess.TimeoutExpired, OSError) as ex:
+            results[name] = {"status": "UNMEASURED", "why": "the mutation run timed out or could not start: %s" % type(ex).__name__, "plant": pl}
+            log("  %-34s %-11s %s" % (name, "UNMEASURED", results[name]["why"]))
+            continue
         out = (r.stdout or "") + (r.stderr or "")
         mine = [l for l in _family_laws(doc, name) if text_re(l["check"]["text"]).search(out)]
         if r.returncode == 0 and mine:
@@ -245,6 +256,11 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.cmd == "lint":
         probs = lint_all()
+        if any("unreadable" in x for x in probs):
+            for x in probs:
+                print("PROBLEM", x)
+            print("laws: %d problem(s)" % len(probs))
+            return 1
         for mod in LAW_FILES:
             doc = load(mod)
             print("%s: %d laws in %d families; matrix families with no law yet: %s" % (
@@ -257,7 +273,7 @@ def main(argv=None):
         for line in open(a.rates, encoding="utf-8"):
             r = json.loads(line)
             if r.get("failures"):
-                print("%-28s %-30s %d/%d laws: %s" % (r["config"], r["family"], r["failures"], r["completed"], name_failures(r) or "none named"))
+                print("%-28s %-30s %d/%d laws: %s" % (r["config"], r["family"], r["failures"], r["completed"], ", ".join(name_failures(r)) or "none named"))
         return 0
     probs = lint_all()
     if probs:
