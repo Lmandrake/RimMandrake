@@ -211,7 +211,8 @@ def launched_run():
     """True in a run a unit launched (a detached helper or a Dispatcher role run: role_launch and detached_helper set
     RM_ROLE_UNIT). Such a run is a worker with a brief, not the seat's window: it gets no seat identity file (CONDUCTOR.md
     told helpers to delegate, not work) and does not consume the seat's doctrine delta
-    (RIMMANDRAKE_STRIP_CONDUCTOR_IDENTITY_HELPERS_TOLD_DELEGATE)."""
+    (RIMMANDRAKE_STRIP_CONDUCTOR_IDENTITY_HELPERS_TOLD_DELEGATE). Since RIMMANDRAKE_SLIM_OPERATIONS_START_PACKAGE_HALF_IS_UNRELATED
+    main() prints nothing at all for one: no "CONDUCTOR" title over the launcher's own --name, no role file written."""
     return bool(os.environ.get("RM_ROLE_UNIT"))
 
 
@@ -376,6 +377,8 @@ def main():
     event = payload.get("hook_event_name")
     if event not in ("SessionStart", "UserPromptSubmit"):
         return 0                                  # only these accept a title
+    if launched_run():
+        return 0                                  # a launched run keeps its launcher's --name and gets no seat context
 
     sid = payload.get("session_id") or ""
     # session ids are uuids; refuse anything that could escape the directory

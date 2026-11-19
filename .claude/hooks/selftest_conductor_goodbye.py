@@ -115,6 +115,7 @@ def test_message():
 def run(prompt, env_seat="BENCH", name="CONDUCTOR", schedule=None):
     env = dict(os.environ)
     env.pop("RIMFLOW_SEAT", None)
+    env.pop("RM_ROLE_UNIT", None)       # the Conductor window's view, even when a launched run tests (a role run prints nothing)
     env["AGENT_SEAT"] = env_seat
     env["CONDUCTOR_GOODBYE_SESSION_NAME"] = name               # test seam: no real session file is read
     if schedule:

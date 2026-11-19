@@ -163,6 +163,61 @@ ALARM_WORSE_SEP = "@worse"             # an alarm re-raised for getting worse is
 # that uses no MCP tool drops every MCP server's tools and instructions (OPS_ROLE_SHRINK_RUN_COST: 56,333 -> 48,098
 # tokens of start context, re-read every turn); no flag that touches permissions, settings or auth.
 LAUNCH_ARGS_OK = frozenset(("--strict-mcp-config", "--disable-slash-commands", "--exclude-dynamic-system-prompt-sections"))
+# `slim_start: true` (RIMMANDRAKE_SLIM_OPERATIONS_START_PACKAGE_HALF_IS_UNRELATED, owner by card 2026-11-19, "Slim the
+# start package"): the run's --settings also drop the owner's personal CLAUDE.md (written for his interactive seats) and
+# auto-memory. Measured 2026-11-19 by probe: `--setting-sources project,local` does NOT drop ~/.claude/CLAUDE.md (it
+# loads as a parent-directory file) and would drop the user settings' promptCacheTtl and plugins; `claudeMdExcludes`
+# in --settings does drop it. The project CLAUDE.md stays.
+def user_claude_mds():
+    """The user-level CLAUDE.md paths a slim run excludes: ~/.claude/CLAUDE.md, and CLAUDE_CONFIG_DIR's if set."""
+    out = [os.path.join(os.path.expanduser("~"), ".claude", "CLAUDE.md")]
+    cfg = os.environ.get("CLAUDE_CONFIG_DIR")
+    if cfg and os.path.join(cfg, "CLAUDE.md") not in out:
+        out.append(os.path.join(cfg, "CLAUDE.md"))
+    return out
+
+
+def slim_settings():
+    return {"claudeMdExcludes": user_claude_mds(), "autoMemoryEnabled": False}
+
+
+ROLE_REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
+
+
+def doc_sections(path, headings):
+    """-> the `## ` sections of a markdown file whose heading text starts with each of `headings`, in that order, as
+    one text. Raises ValueError naming a heading the file lacks (or one that matches twice), OSError if unreadable."""
+    with open(path, encoding="utf-8") as fh:
+        lines = fh.read().split("\n")
+    starts = [i for i, ln in enumerate(lines) if ln.startswith("## ")]
+    out = []
+    for h in headings:
+        hit = [i for i in starts if lines[i][3:].startswith(h)]
+        if len(hit) != 1:
+            raise ValueError("%s: heading %r matches %d sections, not 1" % (path, h, len(hit)))
+        end = next((j for j in starts if j > hit[0]), len(lines))
+        out.append("\n".join(lines[hit[0]:end]).strip())
+    return "\n\n".join(out)
+
+
+def launch_scope(job):
+    """Pure. The `inline_by_mode` key of a due job: "incident" for an incident-only run (run_now_job set its
+    `incident`), else its mode; an incident run that covers a slot (`covers`) is that slot's full run, so its mode."""
+    return "incident" if job.get("incident") and not job.get("covers") else job["mode"]
+
+
+def inline_instructions(role, scope, root=None):
+    """-> (text, None) with the sections `inline_by_mode[scope]` names from the role's instructions, or (None, None)
+    when the scope inlines nothing, or (None, cause) when they could not be read: the launch then says so and the run
+    reads the whole file (an Operations run is never refused for a doc; RIMMANDRAKE_SLIM_OPERATIONS_START_PACKAGE_HALF_IS_UNRELATED)."""
+    heads = (role.get("inline_by_mode") or {}).get(scope)
+    if not heads:
+        return None, None
+    path = os.path.join(root or ROLE_REPO, role["instructions"])
+    try:
+        return doc_sections(path, heads), None
+    except (OSError, ValueError) as e:
+        return None, "%s: %s" % (type(e).__name__, e)
 MODELS_OK = ("opus", "sonnet")         # model_by_mode: Sonnet is the floor (Agent_Policy; Haiku banned 2026-10-31)
 ALARM_KEY_PREFIX = "alarm:"            # an Operations-only alarm (no ledger item) in alarms_seen: "alarm:<aid>" (V2)
 ALARM_RUN_GAP_S = 3600                 # at least this long between two alarm runs of a role (review W, W1)
@@ -396,6 +451,12 @@ def validate_role(role):
     sbm = role.get("scope_by_mode", {})
     if not (isinstance(sbm, dict) and all(isinstance(v, str) for v in sbm.values())):
         raise ValueError("scope_by_mode %r is not a mapping of mode to text" % (sbm,))
+    ibm = role.get("inline_by_mode", {})
+    if not (isinstance(ibm, dict) and all(isinstance(v, list) and v and all(isinstance(h, str) and h for h in v)
+                                          for v in ibm.values())):
+        raise ValueError("inline_by_mode %r is not a mapping of mode to a list of headings" % (ibm,))
+    if "slim_start" in role and not isinstance(role["slim_start"], bool):
+        raise ValueError("slim_start %r is not true or false" % (role["slim_start"],))
     if "caps_advisory" in role and not isinstance(role["caps_advisory"], bool):
         raise ValueError("caps_advisory %r is not true or false" % (role["caps_advisory"],))
     for k in ("slot_late_s", "run_max_s"):
@@ -979,15 +1040,23 @@ def overspend_day(name, rs, item, daily, spent, budget, now, act, did):
                     "never starve it." % (name, daily))
 
 
-def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, unit, rows=None, reasons=None):
+def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, unit, rows=None, reasons=None,
+           scope=None, root=None):
     """The launch message. Every role is spend-blind (owner 2026-11-16): no message states its budget, cap or spend. Only
     a `token_aware: true` role (Operations; the Conductor, owner 2026-10-31) is told the ACCOUNT's band; every other
     role is token-blind (owner 2026-10-27): its message carries no band, runway, week, budget or cap,
     and no order to watch one (review T, F1). Nothing stops a run at its budget mid-run: the real bounds are
-    `run_max_s` (wall time) and the after-the-fact accounting (supervise_roles), both the Dispatcher's (F2)."""
+    `run_max_s` (wall time) and the after-the-fact accounting (supervise_roles), both the Dispatcher's (F2).
+    `scope` (default `mode`; "incident" for an incident-only run) picks `inline_by_mode`: those sections of the
+    instructions ride in the message, so the run does not open the file (RIMMANDRAKE_SLIM_OPERATIONS_START_PACKAGE_HALF_IS_UNRELATED)."""
+    inline, blind_doc = inline_instructions(role, scope or mode, root)
     lines = ["[RimFlow Dispatcher — a program, not a person; role launch %s]" % unit,
+             ("You are the RimFlow %s role, run headless by the Dispatcher. Your instructions for this trigger are "
+              "the sections of %s below; do what they say, then stop. Do not open that file on this run." % (
+                  role["name"], role["instructions"])) if inline else
              "You are the RimFlow %s role, run headless by the Dispatcher. Read %s and do what it says for this "
              "trigger, then stop." % (role["name"], role["instructions"]),
+             ("INLINE INSTRUCTIONS UNAVAILABLE (%s): read the file instead." % blind_doc) if blind_doc else "",
              "Trigger: %s %s." % (mode, trigger)]
     if mode == "alarm" and rows:
         # the alarm rows and the instructions that apply, so the run does not spend turns finding them
@@ -1000,6 +1069,8 @@ def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, 
             "- %s" % r for r in reasons]
     if role.get("scope_by_mode", {}).get(mode):
         lines.append(role["scope_by_mode"][mode])
+    if inline:
+        lines += ["----- your instructions (from %s) -----" % role["instructions"], inline, "----- end of instructions -----"]
     if role.get("token_aware") is True:
         lines += ["Throttle band: %s (account runway %.2f %s, week left %.0f%% %s; ops_watch status at %s)." % (
                       band_name, reading["runway"], reading["runway_m"], reading["week_left"], reading["week_left_m"],
@@ -1890,7 +1961,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             # pass), the incidents first, then the slot's full check; never the memory page alone (review g2r2).
             # Resolved before the band, which then judges the slot's mode (g2r3)
             cm, cc = next((m, c) for hh, m, c in today if hh == cv)
-            job = dict(job, mode=cm, cap=cc, trigger=(job.get("incident") or {}).get("trigger", job["trigger"]) +
+            job = dict(job, mode=cm, cap=cc, covers=cv, trigger=(job.get("incident") or {}).get("trigger", job["trigger"]) +
                        "; INCIDENT RUN that also covers the %s slot (%s): do the incidents first, then that slot's full "
                        "check" % (cv, cm))
         bname, b = band(cfg, r)
@@ -1996,7 +2067,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 job = dict(job, pre_launch=pre)
         # built before anything is consumed: a raise here leaves the slot due (review V, V7)
         message = prompt(cfg, job["mode"], job["trigger"], bname, r, budget, job["cap"] or 0, factor, spent, unit,
-                         rows=job.get("rows"), reasons=job.get("reasons"))
+                         rows=job.get("rows"), reasons=job.get("reasons"),
+                         scope=launch_scope(job))
         if packet:
             message += "\n\n" + packet
         tick_launch[name] = unit
@@ -3494,9 +3566,13 @@ def stoppost_handoff(name, words):
 
 
 def _control_settings(role):
-    """The run's PostToolUse hook: the stop channel of `pipe stop --write-now | --at-easy-spot` (control.py)."""
+    """The run's PostToolUse hook: the stop channel of `pipe stop --write-now | --at-easy-spot` (control.py); a
+    `slim_start` role's also drop the owner's personal CLAUDE.md and auto-memory (slim_settings)."""
     import control as C
-    return C.claude_settings(clone=role.get("clone"))
+    s = C.claude_settings(clone=role.get("clone"))
+    if role.get("slim_start") is True:
+        s = json.dumps(dict(json.loads(s), **slim_settings()))
+    return s
 
 
 def tmp_setenv(tmpdir):

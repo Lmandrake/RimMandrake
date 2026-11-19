@@ -31,6 +31,7 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 ROOT = os.environ["RM_DISPATCHER_STATE"]
 SOFT, HARD, CEIL = 110_000, 200_000, 400_000
 os.environ["SEAT_RESTART_NO_TICK"] = "1"
+os.environ.pop("RM_ROLE_UNIT", None)   # the hooks run as the Conductor window; a launched run (RM_ROLE_UNIT) prints nothing
 
 
 def sch(**kw):

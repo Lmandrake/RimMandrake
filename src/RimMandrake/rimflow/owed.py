@@ -141,6 +141,11 @@ def safe_banner_and_ids(seat="BENCH"):
     """-> (first line, the seat's open owed ids or None when the ledger could not be read), from one replay: the
     per-prompt hook needs both (the banner, and what tracks a promise in promise_scan)."""
     try:
+        led = os.path.dirname(model.EVENTS)
+        if not (os.path.exists(model.EVENTS) or os.path.isdir(os.path.join(led, model.SHARD_DIR))):
+            # no ledger at all is could-not-look, never "OWED 0" (a hook run with CLAUDE_PROJECT_DIR elsewhere replayed
+            # an empty world and said 0; found by RIMMANDRAKE_SLIM_OPERATIONS_START_PACKAGE_HALF_IS_UNRELATED)
+            raise FileNotFoundError("no ledger at %s" % led)
         w = model.replay()
         act, wait = split(w, seat)
         return banner(w, seat), [i.id for i in act + wait]

@@ -14,6 +14,7 @@ every run of non-word characters read as one space; letters of any script stay) 
 seat_restart.seats.BENCH.goodbye_phrases. "goodbye to the old pipe system" and "goodbye 取消" never fire. Only the
 Conductor window fires: AGENT_SEAT BENCH and a session name the BENCH seat answers to (CONDUCTOR if the schedule is
 unreadable). A window whose session file cannot be read gets one diagnostic line, never the close-out.
+A launched run (RM_ROLE_UNIT set: a Dispatcher role run or a detached helper) prints nothing at all, OWED line included.
 
 His whole message can also be the reset switch (src/RimMandrake/rimflow/reset_mode.py: hold / ready / auto,
 CONDUCTOR_RESET_FIX_KILLED_MID_READ): the same identity gate, then the switch is written by this hook, not left to the window.
@@ -232,6 +233,10 @@ def main():
     if not isinstance(prompt, str):
         return 0
     if GP is None or (os.environ.get("AGENT_SEAT") or "").strip().upper() != SEAT:
+        return 0
+    if os.environ.get("RM_ROLE_UNIT"):
+        # a launched run (Dispatcher role run or detached helper) is never the Conductor window: no OWED line, no
+        # close-out (RIMMANDRAKE_SLIM_OPERATIONS_START_PACKAGE_HALF_IS_UNRELATED: the per-run OWED line broke the cache)
         return 0
     sch = _load_schedule()
     phr = phrases(sch) or GP.phrases({})

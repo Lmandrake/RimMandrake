@@ -16,6 +16,7 @@ sys.path.insert(0, HERE)
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 import promise_scan as PS  # noqa: E402
 import seat_restart as SR  # noqa: E402
+os.environ.pop("RM_ROLE_UNIT", None)   # the hooks run as the Conductor window; a launched run (RM_ROLE_UNIT) prints nothing
 
 RESULTS = []
 

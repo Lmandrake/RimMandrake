@@ -25,6 +25,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import selftest_seat_restart as B  # noqa: E402  (sets RM_DISPATCHER_STATE etc. to its temp dir)
+os.environ.pop("RM_ROLE_UNIT", None)   # the hooks run as the Conductor window; a launched run (RM_ROLE_UNIT) prints nothing
 
 D, SR, T0 = B.D, B.SR, B.T0
 TMP = tempfile.mkdtemp(prefix="selftest_seat_restart_held_")

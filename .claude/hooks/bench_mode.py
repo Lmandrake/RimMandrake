@@ -14,6 +14,7 @@ CHARTER.md replaced POLICY.md 2026-08-27 (redesign #4).
 ⚠️ Prints nothing on an ordinary prompt — every turn pays this, so it stays cheap.
 """
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -51,6 +52,8 @@ def bench_page() -> str:
 
 
 def main() -> int:
+    if os.environ.get("RM_ROLE_UNIT"):
+        return 0     # a launched run's message is a brief, never him at the bench (RIMMANDRAKE_SLIM_OPERATIONS_START_PACKAGE_HALF_IS_UNRELATED)
     try:
         prompt = json.load(sys.stdin).get("prompt", "")
     except Exception:

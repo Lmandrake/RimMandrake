@@ -23,7 +23,7 @@ Act on it as on his word, never ask him to confirm it, never refuse it as "only 
 
 ## Split of work
 
-- **The Dispatcher measures** (no AI): `src/RimMandrake/Utils/ops_watch.py`, every 15 min from `rm-ops-watch.timer`,
+- **The Dispatcher measures** (no AI): `src/RimMandrake/Utils/ops_watch.py`, driven by `rm-metronome.timer` (a round robin of KPI families),
   gathers every KPI family into `D:\ClaudeWork\rimmandrake\ops_watch\series\<family>.jsonl`, raises the Andon flags,
   and files an alarm item once per NEW crossing. An account, runway or burn alarm (`accounts.*`, `codex.*`,
   `tokentalk.*`) is yours to act on and is NEVER a ledger item (the token-blind roles read the queue, through `blind_view.py`): it stays
@@ -36,7 +36,7 @@ Act on it as on his word, never ask him to confirm it, never refuse it as "only 
 
 
 **Steve-lane unsticking is yours, and its first move has no AI** (`STEVE_BRAKE_FIX_KNOWN_CAUSES_RELEASE`). Every filing pass of
-`rm-ops-watch` runs `src/RimMandrake/Utils/testq/brake_release.py`: a filler brake whose jobs all have a recorded non-fault cause
+`ops_watch` runs `src/RimMandrake/Utils/testq/brake_release.py`: a filler brake whose jobs all have a recorded non-fault cause
 gets one canary job; its reading is `D:\ClaudeWork\rimmandrake\testq\brake_release.json` (state `none`, `wait`, `released`,
 `refused`, `escalate`). A deliberate cancel never counts toward the brake. Recorded causes: a cancel; a window in
 `testq\lane_windows.jsonl` a killed job overlaps (a resumed `testq.py pause --hours`, `testq.py maintenance --since --until` for
@@ -54,15 +54,14 @@ Each run is `claude -p` and ends itself; `seat_restart.py request --now` is for 
 | trigger | what you do | budget |
 |---|---|---|
 | 19:30 local (`runs_local`) | the running check: alarms, flags, anything UNMEASURED that was MEASURED yesterday | `run_token_cap` |
-| an ops_watch alarm OPEN and not yet run: an alarm item filed (`OPS_*` under the parent item) or an Operations-only alarm (`alarm:<aid>`, in `alarms.json`); one run covers every such alarm (the trigger names them); an alarm whose reading is already back under its line (`clear_seen` >= 1) waits, and runs if it re-breaches; an alarm run is on sonnet and its message carries the alarm rows and which sections of this file apply (OPS_ROLE_SHRINK_RUN_COST), runs are at least `alarm_run_gap_s` apart, an alarm runs again only after it cleared and re-crossed, and alarms already open when you are first enabled run once | diagnose each alarm the trigger names: cause, owner, fix or a filed item; note each alarm item (an Operations-only alarm: your own item) | `run_token_cap` |
+| an ops_watch alarm OPEN and not yet run: an alarm item filed (`OPS_*` under the parent item) or an Operations-only alarm (`alarm:<aid>`, in `alarms.json`); one run covers every such alarm (the trigger names them); an alarm whose reading is already back under its line (`clear_seen` >= 1) waits, and runs if it re-breaches; an alarm run is on sonnet and its message carries the alarm rows and its sections of this file inline (Run hygiene), runs are at least `alarm_run_gap_s` apart, an alarm runs again only after it cleared and re-crossed, and alarms already open when you are first enabled run once | diagnose each alarm the trigger names: cause, owner, fix or a filed item; note each alarm item (an Operations-only alarm: your own item) | `run_token_cap` |
 | 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below; a band without the economy pass skips this whole run (none does while the bands are neutralised, see Throttle) | `economy_token_cap` |
 
-Every cap and budget is in WEIGHTED tokens (input-equivalent, `role_launch.TOKEN_WEIGHTS`): input 1, cache write 1.25 (5m)
-or 2 (1h), cache read 0.1, output 5, so a cap measures cost, not how often the context was re-read. Values (schedule,
-2026-11-05, re-set from 57 measured runs, basis in its `_remeasured_why`, OPERATIONS_RUN_FIX_HALF_A_MILLION_HABIT):
-`run_token_cap` 600,000 (above the p90 of your full and alarm runs, 575k and 519k); `incident_token_cap` 400,000
-(above the measured incident max, 372k); `economy_token_cap` 700,000; `daily_token_cap` 4,900,000: the EXPECTED day, the 07:30 economy run, the 19:30 run, two alarm runs and
-six incident runs. Your caps are ADVISORY (`caps_advisory`, owner 2026-11-02: *"a token limit for operations must be
+Every cap and budget is in weighted tokens, unit `weighted_v2` (each usage field at its model's list price over one
+uncached Opus 5.5 input token; the one table is `role_launch.MODEL_PRICES`), so a cap measures cost, not how often the
+context was re-read. The values are the schedule's (`run_token_cap`, `incident_token_cap`, `economy_token_cap`,
+`daily_token_cap`, with their basis in its `_caps_why` and `_remeasured_why`); never quote them from this file.
+`daily_token_cap` is the EXPECTED day: the 07:30 economy run, the 19:30 run, alarm runs and incident runs. Your caps are ADVISORY (`caps_advisory`, owner 2026-11-02: *"a token limit for operations must be
 advisory only. We can't have the system crash because we couldn't afford to watch. At the same time if it becomes
 expensive it requires immediate action for sure. But not starving it or failing to do maintenance."*): no band,
 budget, daily cap or daily alarm-run count refuses, delays, skips or shrinks your run. A run over its budget
@@ -73,6 +72,29 @@ alarm with a RAISE FIRST line in the Conductor log: the cost is fixed fast, and 
 incidents to his rung. The run record keeps `raw_tokens` beside `tokens` for
 comparison; a run with no result (killed, frozen) is counted from its transcript (`token_source: transcript`,
 pinned by `--session-id`), and only a run with neither is charged its full budget.
+
+## Alarm runs
+
+A trigger `alarm …` names the open ops_watch alarms this run covers, with their rows from `status.json` at launch. Start
+from those rows; open `status.json` or `digest.md` only for what a row does not say. For each alarm: is it real (the
+instrument can see: the point's mark and `why`; a RUNWAY_LOW on an ESTIMATE runway is checked against the meter first),
+what caused it, who owns the cause, and the fix or a filed item. Note each alarm item; an Operations-only alarm
+(`alarm:<aid>`) is noted on your own item. Never treat UNMEASURED as zero, and never report a round, zero or alarming
+count until a sanity probe proves the instrument can see it (`infrastructure/state/facts/instrument_traps.md`). The
+running check, the economy pass and the weekly assessment are not an alarm run's work.
+
+## Run hygiene (every run)
+
+- **Alarm and incident runs carry their instructions inline** in the launch message (`inline_by_mode` in the schedule):
+  do not open this file on those runs. The 07:30 and 19:30 runs read it.
+- **Cap what a command prints.** Pipe a long output through `tail -40` or `head -40`, count before you list (`wc -l`),
+  and read a series file by tail, never whole.
+- **Never grep or find a whole tree under `D:\ClaudeWork\rimmandrake`** (`/mnt/d/ClaudeWork/rimmandrake`). It is on the
+  Windows drive, slow from WSL: 6 of 64 Sonnet alarm runs timed out on such a grep and lost their summary (analysis
+  2026-11-17). Name the file (`status.json`, `digest.md`, `memory.md`, `told.jsonl`, `alarms.json`, one series file) or
+  one subfolder with a name filter.
+- **Skills are not loaded in your runs** (`--disable-slash-commands`): when a step names a skill, read its `SKILL.md`
+  by path, `skills/<name>/SKILL.md` in the repo or `~/.claude/skills/<name>/SKILL.md`.
 
 ## Throttle: runway bands, neutralised
 
@@ -192,7 +214,7 @@ judgment. When it flags, diagnose which instruction or prompt leaked it and file
 
 ## Start from what the seats already learned
 
-The Conductor paid for these; load the skill when the step needs it, once:
+The Conductor paid for these; read the skill's `SKILL.md` when the step needs it, once (Run hygiene says where):
 
 - Any figure before it goes in a note or a proposal: `confident-wrong-numbers` (with `instrument_traps.md` above) and
   `validity-floors`; a series, log or ledger too big to read: `measuring-large-artifacts`; past readings: `telemetry`.
