@@ -201,6 +201,30 @@ def item_id(line):
     return "LIVE_RESTORE_" + re.sub(r"\W+", "_", name).upper()
 
 
+def shared_hosts(rows):
+    """-> {item: host}: the broken rows of one pass ({"item", "line", "why"}) that are ONE outage. Two or more items
+    broken on the same subject (unit=/hook=/role=) with the same reason, digits aside, map to that subject's fixed host
+    `item_id(line)`; the host never maps to itself. A kept row (no why), a row with no promise line, and a subject that
+    names nothing share nothing (RIMMANDRAKE_CHARGE_SHARED_OUTAGE_ONCE_FORTY_FIVE_DEATHS: one stop of one shared timer
+    was read as 45 deaths). Pure."""
+    groups = {}
+    for r in rows:
+        line, why = r.get("line"), r.get("why")
+        if not line or not why or not isinstance(why, str) or not subject(line):
+            continue
+        groups.setdefault((subject(line), re.sub(r"\d+", "#", why)), []).append(r)
+    out = {}
+    for rs in groups.values():
+        if len({r["item"] for r in rs}) < 2:
+            continue
+        try:
+            host = item_id(rs[0]["line"])
+        except Exception:  # noqa: BLE001   a line live_line cannot parse names no host: nothing is excused
+            continue
+        out.update({r["item"]: host for r in rs if r["item"] != host})
+    return out
+
+
 def load_baseline(path=None):
     """The running system's promises, one live line each ('#' comments). A line that does not parse raises: the
     sweep must not silently watch less than the file says."""
@@ -359,7 +383,13 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, push
     rows = [r for r in rows if r["why"] != EXCUSED]
     rows += [{"item": "LIVE_RESTORE_" + arm.upper(), "line": None, "why": why} for arm, why in sorted(arms.items())]
     todo = []
-    for r in rows:
+    shared = shared_hosts(rows)
+    # A host no row already reads broken is filed broken too (its first sharer's line and reason). Every host's
+    # reading goes FIRST: a sharer's `sharedWith` excuses its death only when the ledger already holds the host, and
+    # the MAX_PER_PASS cut below keeps the head of the list. The report still counts the real promises only.
+    hosts = sorted(set(shared.values()) - {r["item"] for r in rows if r["why"]})
+    host_rows = [next(dict(r, item=h) for r in rows if shared.get(r["item"]) == h) for h in hosts]
+    for r in host_rows + rows:
         it = items.get(r["item"])
         if r["why"] and it is None:
             todo.append({"item": r["item"], "result": "broken", "detail": r["why"], "spawn": True,
@@ -368,6 +398,10 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, push
             todo.append({"item": r["item"], "result": "broken", "detail": r["why"]})
         elif not r["why"] and it is not None and it.live_broken:
             todo.append({"item": r["item"], "result": "kept", "detail": "sweep: running again"})
+    for t in todo:
+        if t["result"] == "broken" and t["item"] in shared:
+            t["sharedWith"] = shared[t["item"]]
+    todo.sort(key=lambda t: t["item"] not in shared.values())      # stable: hosts first, the rest in sweep order
     held = todo[MAX_PER_PASS:]        # a mass outage files over several passes, never a wall of commits in one
     todo = todo[:MAX_PER_PASS]
     errors = {}
@@ -492,7 +526,8 @@ def live_filer(todo, conf):
                                       "--name", t["item"], "--title", t["title"],
                                       "--why", "live sweep (deterministic, no AI): " + t["item"])
             if rc == 0:
-                rc, out = ing.rimflow("live", t["item"], "--result", t["result"], "--detail", t["detail"])
+                rc, out = ing.rimflow("live", t["item"], "--result", t["result"], "--detail", t["detail"],
+                                      *(("--shared-with", t["sharedWith"]) if t.get("sharedWith") else ()))
             if rc == 0 and t["result"] == "broken":    # a broken promise is raised, first in the BENCH queue
                 rrc, rout = ing.rimflow("raise", t["item"], "--reason", OW.RAISE_REASON)
                 if rrc != 0:

@@ -18,12 +18,15 @@ The fifteen consumables: six before this item (`granted_look`, `coverage_runs`, 
 | launch retries | `launch_tries` | `maturation_autonomy.tries_left` / `tries_most`, asked by every retry reader of the tick and of autonomy | `launch_tries` |
 | chained design runs | `chain_runs_day` | `role_launch.chain_cap` (`chain_cap_view`, `chain_capped`, `chain_ask`), `maturation_autonomy.designer_chain` | `chain_max_per_day`, else `CHAIN_MAX_PER_DAY` |
 | refusal counts | `refusals` (an item: `<Mod>@<version>` or an item id) | `refusal_contract.submit` (the item's alarm) | `ITEM_ALARM_AT` |
+| the Test Pilot streak (added by `RIMMANDRAKE_TYPE_PILOT_STREAK_AS_ITEM_ACCOUNT_ALREADY_ORDERED`) | `pilot_streak` (an item id) | `testpilot_route.judge` (one item), `routed` (every open item, one store read: `control.subjects`) | `STREAK` |
 | the stage spend ceiling | `spend_offline_build`, `spend_blind_challenge`, `spend_in_game`, in weighted tokens | `maturation_dispatch.stage_spend` (`ceiling_gate`, `refund`, `holder_cap`) | `stage_ceiling_usd` |
 
 ## ACCEPTS (the only inputs the readers are built for)
 
 - **an-account-by-mod.** A mod in the pipeline (`pipe` refuses another name with the nearest). A refusal account is an
-  item the refusal counters hold, a `<Mod>@<version>` of a pipeline mod, or a mod, read as `<Mod>@<its version>`.
+  item the refusal counters hold, a `<Mod>@<version>` of a pipeline mod, or a mod, read as `<Mod>@<its version>`. A
+  `pilot_streak` account is an item id (UPPER_SNAKE); `pipe` refuses a mod name, and takes an id the ledger does not
+  hold yet (the account waits for it; `pipe show` measures nothing for it).
 - **whole-numbers.** Every count and limit is a whole number; the spend accounts are weighted tokens
   (`maturation_dispatch.to_wt`), read back as dollars by the ceiling readers.
 - **a-measure-pipe-can-see.** `pipe set` lands the count on N against the count `pipe show` measures. Where `pipe` has
@@ -69,6 +72,10 @@ The fifteen consumables: six before this item (`granted_look`, `coverage_runs`, 
 - **stage-spend-reads-the-store.** `pipe add|limit <Mod> spend_<stage>` changes the ceiling gate at that stage (the
   offline build, the blind challenge, in-game) and a pilot holder's cap; one stage's account leaves the others; `pipe
   show <Mod>` prints it in weighted tokens.
+- **pilot-streak-reads-the-store.** `pipe add|limit <ITEM> pilot_streak` changes whether `testpilot_route.judge`
+  routes the item to a Test Pilot, and `routed` sees it too; another item's account is its own; `pipe undo` puts it
+  back. An unreadable store routes by the derived count and the default limit only, and each streak verdict says the
+  store is UNMEASURED.
 - **every-limit-read-goes-through-the-store.** Every function in `rimflow/` and `Utils/` that reads one of the
   consumables' limit names (a constant, a settings key) calls `PC.used` or `PC.limit` for that consumable; every reader
   `RESOURCES` lists calls `PC.used`. The census counts what it saw, so a scan that saw nothing is not a pass.

@@ -220,6 +220,7 @@ LIMIT_TOKENS = {
     "launch_tries": ["launch_tries"],
     "chain_runs_day": ["chain_max_per_day", "CHAIN_MAX_PER_DAY"],
     "refusals": ["ITEM_ALARM_AT"],
+    "pilot_streak": ["STREAK"],
     "spend_offline_build": ["stage_ceiling_usd"],
     "spend_blind_challenge": [],    # one setting, three per-stage accounts: maturation_dispatch.stage_spend reads all
     "spend_in_game": [],
@@ -595,6 +596,49 @@ def t_stage_spend_reads_the_store():
     run("undo", re.search(r"(ct_\w+)", out[1]).group(1), "--why", "t")
 
 
+def t_pilot_streak_reads_the_store():
+    """`pipe add|limit <ITEM> pilot_streak` changes testpilot_route.judge's verdict, one item's account leaves the
+    others, `routed` reads the store once and sees it too, and an unreadable store routes by the derived count only,
+    saying so (RIMMANDRAKE_TYPE_PILOT_STREAK_AS_ITEM_ACCOUNT_ALREADY_ORDERED)."""
+    import model
+    import pipeline_control as PC
+    import testpilot_route as TP
+
+    class It(object):
+        state, blocked, needs, history = "ready", False, "bridge", []
+
+        def __init__(self, iid, fails):
+            self.id = iid
+            self.runs = [model.Run(iid, n, "full-578", "fail", None, "abc", "2026-11-18T0%d:00:00Z" % n, n)
+                         for n in range(1, fails + 1)]
+
+    a, b = It("PSTREAK_FIX_ALPHA_THREE_MISSES", 3), It("PSTREAK_FIX_BETA_THREE_MISSES", 3)
+    two = It("PSTREAK_FIX_GAMMA_TWO_MISSES", 2)
+    kind = lambda it, adj=None: (TP.judge(it, [], void={}, adjusted=adj) or {}).get("kind")
+    check(kind(a) == "streak" and kind(two) is None, "base: three misses route, two do not")
+    rc, out, _ = run("limit", a.id, "pilot_streak", "4", "--why", "t")
+    aid = act_line(rc, out, "pipe limit <ITEM> pilot_streak")
+    check(kind(a) is None and kind(b) == "streak", "a raised limit holds that item only; another item's account is its own")
+    run("undo", aid, "--why", "t")
+    check(kind(a) == "streak", "pipe undo of the limit routes it again")
+    rc, out, _ = run("add", two.id, "pilot_streak", "+1", "--why", "t")
+    aid = act_line(rc, out, "pipe add <ITEM> pilot_streak")
+    check(kind(two) == "streak" and "account 3 of limit 3" in TP.judge(two, [], void={})["why"],
+          "an added miss routes an item two misses in, and the verdict names the account", TP.judge(two, [], void={}))
+
+    class W(object):
+        items = {i.id: i for i in (a, b, two)}
+    got = sorted(v["id"] for v in TP.routed(W, []))
+    check(got == sorted([a.id, b.id, two.id]), "routed() reads the store once and sees the adjusted item", got)
+    run("undo", aid, "--why", "t")
+    check(kind(two) is None and kind(two, adj=set()) is None, "undo of the add: two misses stand again")
+    rc, out, _ = run("limit", "Fx", "pilot_streak", "2", "--why", "t")
+    check(rc == 2 and "item" in out[0], "a mod name is refused: the streak is an item's account", out)
+    blind = TP.judge(a, [], void={}, adjusted="OperationalError: disk I/O error")
+    check(blind and "control store is UNMEASURED" in blind["why"] and kind(two, adj="x") is None,
+          "an unreadable store routes by the derived count only, and says so", blind)
+
+
 def t_every_limit_read_goes_through_the_store():
     test_reader_census()
 
@@ -632,6 +676,7 @@ def main():
         t_launch_tries_read_the_store()
         t_chain_runs_read_the_store()
         t_refusals_read_the_store()
+        t_pilot_streak_reads_the_store()
         t_stage_spend_reads_the_store()
         t_every_limit_read_goes_through_the_store()
         t_one_line_each_with_its_undo()

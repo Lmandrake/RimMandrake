@@ -1633,8 +1633,7 @@ def cmd_pilot(args, seat):
         got = testpilot_route.routed(w, evs)
         for v in got:
             print("%-48s %-9s %-8s %s" % (v["id"], w.items[v["id"]].owner, v["kind"], v["why"]))
-        print("%d item(s) routed to a Test Pilot; the streak is %d non-pass runs in a row."
-              % (len(got), testpilot_route.STREAK))
+        print("%d item(s) routed to a Test Pilot; %s." % (len(got), testpilot_route.DEFAULT_RULE))
         return
     if args.id not in w.items:
         die("no such item %s\n" % args.id)
@@ -2690,6 +2689,8 @@ def cmd_live(args, seat):
     ev = {"seat": seat, "event": "live", "id": args.id, "result": args.result}
     if args.detail:
         ev["detail"] = fulltext.fit(args.detail, 300)
+    if getattr(args, "shared_with", None):
+        ev["sharedWith"] = args.shared_with
     _emit(ev, w, quiet=True)
     it = _replay_now().items[args.id]
     print("%s live %s -> %s, outage %d" % (args.id, args.result, it.state, it.live_repeats))
@@ -4784,6 +4785,9 @@ def build_parser():
     s.add_argument("id")
     s.add_argument("--result", required=True, choices=("broken", "kept"))
     s.add_argument("--detail")
+    s.add_argument("--shared-with", dest="shared_with",
+                   help="broken only: the host item this outage is charged to (deadman_check.shared_hosts); the host "
+                        "takes the death, this item only reopens")
     s = add("guard", "show a class guard test failing on this instance, and record it; a fix that died closes only with one",
             cmd_guard)
     s.add_argument("id")

@@ -564,7 +564,7 @@ VERBS = {
     # `live` is the no-AI sweep's reading of it, RUNNER only: `broken` takes a done item back to ready, ONE OF THE TWO PATHS
     # OUT OF `done` (the other is a `fail` verify on the closed work, `_earned_run`), because the record of the close stands in the log and the same id must count the repeat; `kept`
     # returns it. A reader older than this entry refuses the verb into `world.errors` and leaves the item as it was.
-    "live":      {"who": ("RUNNER",), "req": ("result",), "opt": ("detail",)},
+    "live":      {"who": ("RUNNER",), "req": ("result",), "opt": ("detail", "sharedWith")},
     # `guard`: the class guard test a fix that died owes, shown failing on the instance by the cli (repeat_guard.py). State does
     # not move. A reader older than this entry refuses the verb into `world.errors` and leaves the item as it was.
     "guard":     {"who": "any",   "req": ("test", "testHash", "redExit"), "opt": ("redTail", "instance")},
@@ -2428,10 +2428,19 @@ def _apply_guard(ev, item):
     item.guard["deaths"] = item.deaths
 
 
-def _apply_live(ev, item):
-    """The sweep's reading. `broken` opens the item, counting the outage once (and a death when it broke a settled fix);
-    `kept` puts it back, except a fix that died and owes a guard: from KEPT_GATE_FROM that one stays open, since done
-    reached past the close would never meet the guard gate (GUARD_SEAM_DECIDE_KEPT_WALKS_OUT_UNGUARDED)."""
+def shared_outage(ev, item, items):
+    """A `broken` reading the sweep charged to another item: `sharedWith` names an item the ledger holds that is not this
+    one (RIMMANDRAKE_CHARGE_SHARED_OUTAGE_ONCE_FORTY_FIVE_DEATHS). One stop of one shared timer is one death, the host's,
+    not one per fix whose promise names it. Anything else (itself, unknown, empty, not a string) excuses nothing."""
+    host = ev.get("sharedWith")
+    return isinstance(host, str) and host != item.id and host in (items or {})
+
+
+def _apply_live(ev, item, items=None):
+    """The sweep's reading. `broken` opens the item, counting the outage once (and a death when it broke a settled fix,
+    unless the outage is `shared_outage`: then the host takes the death); `kept` puts it back, except a fix that died
+    and owes a guard: from KEPT_GATE_FROM that one stays open, since done reached past the close would never meet the
+    guard gate (GUARD_SEAM_DECIDE_KEPT_WALKS_OUT_UNGUARDED)."""
     if ev["result"] not in ("broken", "kept"):
         raise SchemaError("live: result must be broken or kept, got %r" % ev["result"])
     if ev["result"] == "broken":
@@ -2439,7 +2448,8 @@ def _apply_live(ev, item):
             raise TransitionError("%s is %s: a retired item holds no promise" % (item.id, item.state))
         if not item.live_broken:
             item.live_repeats += 1
-            if str(ev["ts"]) < DEATHS_FROM or item.state in ("done", "built", "validated"):
+            if (str(ev["ts"]) < DEATHS_FROM or item.state in ("done", "built", "validated")) \
+                    and not shared_outage(ev, item, items):
                 item.deaths += 1
         item.live_broken = ev.get("detail") or "broken"
         if item.state in ("done", "built", "validated"):
@@ -2806,7 +2816,7 @@ def _apply_item_verb(ev, index, item, seat, world):
         if item.state == "doing":
             to("ready")
     elif verb == "live":
-        _apply_live(ev, item)
+        _apply_live(ev, item, world.items)
     elif verb == "guard":
         _apply_guard(ev, item)
     elif verb == "close":

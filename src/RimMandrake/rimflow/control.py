@@ -914,6 +914,21 @@ def limit(mod, res, default, p=None):
         c.close()
 
 
+def subjects(res, p=None):
+    """-> {account key}: every subject holding a live adjustment (a count or a limit) of `res`. One read for a reader that
+    judges many subjects (testpilot_route.routed: every open item), so a subject outside it reads its pipeline count and
+    default limit unasked. Raises Unreadable."""
+    c = read(p)
+    try:
+        if not _has_adj(c):
+            return set()
+        return {r[0] for r in c.execute("SELECT DISTINCT mod FROM adjustments WHERE res=? AND state='live'", (res,))}
+    except sqlite3.Error as e:
+        raise Unreadable(_err(e))
+    finally:
+        c.close()
+
+
 def set_account(mod, res, n, why, measured=None, verb="set", owner_said=None, per_ruling=None, idem=None, p=None,
                 now=None):
     """`pipe set|add|reset <Mod> <res> <N>`: one adjustment at this revision. set/reset: the count reads N (0) now,

@@ -42,6 +42,7 @@ import fcntl
 import hashlib
 import json
 import os
+import re
 import socket
 import sys
 import time
@@ -273,6 +274,15 @@ def limit(mod, res, default, st=None):
     C = _C()
     try:
         return C.limit(mod, res, default)
+    except C.Unreadable as e:
+        raise Unreadable("the control store: %s" % e)
+
+
+def subjects(res):
+    """-> every account key holding a live adjustment of `res` (control.subjects). Raises Unreadable."""
+    C = _C()
+    try:
+        return C.subjects(res)
     except C.Unreadable as e:
         raise Unreadable("the control store: %s" % e)
 
@@ -609,9 +619,36 @@ def _m_spend(stage):
     return m
 
 
+def pilot_subject(ctx, name):
+    """The Test Pilot streak account a `pipe` line names: an item id, as the ledger writes it (the streak is an item's,
+    never a mod's). An id the ledger does not hold yet is taken: the account waits for the item, and the reply says
+    so. -> the id, or Refused for a name that is no item id."""
+    if not re.match(r"^[A-Z][A-Z0-9_]*$", str(name or "")):
+        raise Refused("pilot_streak is an item's account: name the item id (UPPER_SNAKE), not %r" % (name,))
+    return str(name)
+
+
+def m_pilot_streak(ctx, item):
+    """The item's Test Pilot streak as testpilot_route.judge counts it (non-pass runs in a row since its last sitting,
+    voided runs out, the worse of the whole item and one criterion or config) and its default limit (STREAK)."""
+    ctx._imp()
+    import testpilot_route as TP
+    try:
+        import model
+        evs = model.read()
+        it = model.replay(evs).items.get(item)
+    except Exception as e:      # noqa: BLE001  UNMEASURED, never 0
+        return UNM + " (the ledger: %s: %s)" % (type(e).__name__, e), TP.STREAK
+    if it is None:
+        return None, TP.STREAK
+    void, _unread = TP.voids()
+    return TP.streak_count(it, evs, void)[0], TP.STREAK
+
+
 SPEND_RES = {"offline_build": "spend_offline_build", "blind_challenge": "spend_blind_challenge",
              "in_game": "spend_in_game"}
-ACCOUNT_KEY = {"refusals": refusal_subject}     # a consumable not keyed by the mod alone: its subject
+ACCOUNT_KEY = {"refusals": refusal_subject,      # a consumable not keyed by the mod alone: its subject
+               "pilot_streak": pilot_subject}
 
 
 # name -> (short label, what it counts, measure(ctx, mod) -> (measured | None when it does not apply | UNM..., default
@@ -644,6 +681,9 @@ RESOURCES = {
                        m_chain, [("role_launch", "chain_cap"), ("maturation_autonomy", "designer_chain")]),
     "refusals": ("refusals", "refused verdicts on one item, <Mod>@<version> (refusal_contract.ITEM_ALARM_AT: the "
                  "item's alarm)", m_refusals, [("refusal_contract", "submit")]),
+    "pilot_streak": ("streak", "non-pass runs in a row on one item since its last Test Pilot sitting, voided runs out "
+                     "(testpilot_route.STREAK: past it the item goes to a Test Pilot)", m_pilot_streak,
+                     [("testpilot_route", "judge")]),
     "spend_offline_build": ("spend-build", "weighted tokens spent at the offline build (stage_ceiling_usd)",
                             _m_spend("offline_build"), [("maturation_dispatch", "stage_spend")]),
     "spend_blind_challenge": ("spend-blind", "weighted tokens spent at the blind challenge (stage_ceiling_usd)",

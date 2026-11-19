@@ -158,8 +158,9 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   queue reads it (`pipeline_control.py show` too: slice review 18). Tested by `t_queue`.
 - **counts-and-limits-are-adjustments.** `pipe set`, `add`, `reset` and `limit` write a change at a moment; a run
   that finishes afterwards still counts. A look count binds at admission as it reads: a look `pipe set|add` gives
-  back can be reserved, and an undone look grant reports the balance admission reads (slice review 7, 8). Tested by
-  `t_accounts`.
+  back can be reserved, and an undone look grant reports the balance admission reads (slice review 7, 8).
+  `subjects(res)` lists exactly the accounts holding a live adjustment of `res`, for a reader that judges many in one
+  read (`testpilot_route.routed`). Tested by `t_accounts`.
 - **a-test-never-touches-the-live-store.** Tested by `t_stop_review_fixes`.
 - **ended-run-is-recorded-ended.** A unit that ends by itself is recorded ended: its start check and end receipt run
   the first `control.py` still on disk (the run's clone, the launcher's, then the seat clones'), so a clone returned

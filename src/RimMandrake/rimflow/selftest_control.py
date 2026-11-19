@@ -1374,6 +1374,8 @@ def t_accounts():
           C.used("Graffiti", "blind_cycles_total", 3))
     check(C.used("Graffiti", "blind_cycles_total", C.UNM) == C.UNM, "an UNMEASURED count stays UNMEASURED")
     check(C.used("Cauldron", "blind_cycles_total", 4) == 4, "another mod's account is its own")
+    check("Graffiti" in C.subjects("blind_cycles_total") and "Cauldron" not in C.subjects("blind_cycles_total")
+          and C.subjects("no_such_account") == set(), "subjects() lists the accounts holding a live adjustment only")
     # critique 8: void a run from a previous visit: its window is given back, the current one is untouched
     C.grant("Graffiti", C.LOOK, 0, "open w1", win="w1")
     ok, _ = C.reserve("Graffiti", C.LOOK, "run_prev_visit", win="w1", base=1)

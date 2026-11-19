@@ -126,21 +126,47 @@ def voids():
         return {}, "%s: %s" % (type(e).__name__, e)
 
 
-def judge(item, evs, void=None, unread=None):
+DEFAULT_RULE = "the streak is %d non-pass runs in a row (`pipe limit <ITEM> pilot_streak N` moves one item's)" % STREAK
+
+
+def streak_count(item, evs, void):
+    """-> (the item's streak: the worse of its whole-item and one criterion or config non-pass runs in a row since its
+    last sitting, voided runs out; whole; worst; worst's name). The pipeline's own count of the `pilot_streak`
+    account (pipeline_control.m_pilot_streak reads it too)."""
+    sat = _last_note(evs, item, SAT)
+    runs = [r for r in item.runs if r.index > sat and r.config not in NOT_A_TEST and r.name not in void]
+    whole, worst, key = streaks(runs)
+    return max(whole, worst), whole, worst, key
+
+
+def judge(item, evs, void=None, unread=None, adjusted=None):
     """-> None, or {"id", "kind": streak|wanted|diagnose, "why"} for an item that goes to a Test Pilot. Pure given
-    `void` ({run name: void line}; None reads the standing voids): a voided run is in no streak."""
+    `void` ({run name: void line}; None reads the standing voids): a voided run is in no streak. The streak is the
+    item's `pilot_streak` account (RIMMANDRAKE_TYPE_PILOT_STREAK_AS_ITEM_ACCOUNT_ALREADY_ORDERED): its count and limit
+    are read through the control store, so `pipe add|limit <ITEM> pilot_streak` moves the verdict. `adjusted`: the
+    item ids holding a live adjustment (pipeline_control.subjects, read once by `routed`), or None to ask the store
+    for this item; a string is the store's read error. An unreadable store routes by the derived count and the
+    default limit, nothing new, and the verdict says so."""
     if item.state not in OPEN_STATES or item.blocked or item.needs == "owner" or "_JUDGE_" in item.id:
         return None
     if void is None:
         void, unread = voids()
-    sat = _last_note(evs, item, SAT)
-    runs = [r for r in item.runs if r.index > sat and r.config not in NOT_A_TEST and r.name not in void]
-    whole, worst, key = streaks(runs)
-    if whole >= STREAK or worst >= STREAK:
+    n, whole, worst, key = streak_count(item, evs, void)
+    u, lim, blind = n, STREAK, adjusted if isinstance(adjusted, str) else None
+    if blind is None and (adjusted is None or item.id in adjusted):
+        try:
+            import pipeline_control as PC
+            u, lim = PC.used(item.id, "pilot_streak", n), PC.limit(item.id, "pilot_streak", STREAK)
+        except Exception as e:  # noqa: BLE001 - could not look: the derived count and default stand, and that is said
+            u, lim, blind = n, STREAK, "%s: %s" % (type(e).__name__, e)
+    if u >= lim:
         where = "in a row" if whole >= worst else "in a row on %s" % key
-        return {"id": item.id, "kind": "streak", "why": "%d non-pass runs %s%s" % (
-            max(whole, worst), where, "; the void ledger is UNMEASURED (%s): no run was taken out" % unread
-            if unread else "")}
+        return {"id": item.id, "kind": "streak", "why": "%d non-pass runs %s%s%s%s" % (
+            n, where, "" if (u, lim) == (n, STREAK) else " (account %d of limit %d, pipe pilot_streak)" % (u, lim),
+            "; the void ledger is UNMEASURED (%s): no run was taken out" % unread if unread else "",
+            "; the control store is UNMEASURED (%s): the derived count and limit %d stood" % (blind, STREAK)
+            if blind else "")}
+    sat = _last_note(evs, item, SAT)
     if _last_note(evs, item, WANTED) > sat:
         return {"id": item.id, "kind": "wanted", "why": "a seat asked for live observation"}
     if "_DIAGNOSE_" in item.id and item.needs in LIVE_NEEDS and sat < 0:
@@ -149,9 +175,15 @@ def judge(item, evs, void=None, unread=None):
 
 
 def routed(world, evs):
-    """-> every judge() verdict, in no promised order."""
+    """-> every judge() verdict, in no promised order. The control store is read once for the items holding a
+    `pilot_streak` adjustment; an unreadable store is said in each streak verdict."""
     void, unread = voids()
-    return [v for v in (judge(item, evs, void, unread) for item in world.items.values()) if v]
+    try:
+        import pipeline_control as PC
+        adjusted = PC.subjects("pilot_streak")
+    except Exception as e:  # noqa: BLE001 - could not look: judge() says so on each verdict it gives
+        adjusted = "%s: %s" % (type(e).__name__, e)
+    return [v for v in (judge(item, evs, void, unread, adjusted) for item in world.items.values()) if v]
 
 
 def route_line(verdict):

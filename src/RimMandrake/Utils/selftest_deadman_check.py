@@ -95,6 +95,23 @@ def sweeps():
     many = ["unit=rm-dead%d.timer max_age=1h" % i for i in range(14)]
     r = DM.sweep(NOW, filer, {}, many, {}, chk)
     check(len(calls[0]) == DM.MAX_PER_PASS and r["held"] == 4 and len(r["broken"]) == 14, "a mass outage is capped and counted")
+    # one shared timer down under two fixes is ONE outage: the host is filed first, each fix's reading names it
+    # (RIMMANDRAKE_CHARGE_SHARED_OUTAGE_ONCE_FORTY_FIVE_DEATHS)
+    calls.clear()
+    r = DM.sweep(NOW, filer, {"A_FIX_1": It(live=DEAD), "C_FIX_1": It(live=DEAD)}, [], {}, chk)
+    got = [(t["item"], t.get("sharedWith"), bool(t.get("spawn"))) for t in calls[0]]
+    check(got == [("LIVE_RESTORE_RM_DEAD", None, True), ("A_FIX_1", "LIVE_RESTORE_RM_DEAD", False),
+                  ("C_FIX_1", "LIVE_RESTORE_RM_DEAD", False)], "a shared outage files its host first: %s" % got)
+    check(r["line"] == "2 promises, 0 kept, 2 broken", "the host filed for a shared outage is not a promise: " + r["line"])
+    calls.clear()
+    DM.sweep(NOW, filer, {"A_FIX_1": It(live=DEAD), "C_FIX_1": It(live=DEAD),
+                          "LIVE_RESTORE_RM_DEAD": It(state="ready", live_broken="it died", live_repeats=1)}, [], {}, chk)
+    got = [(t["item"], t.get("sharedWith")) for t in calls[0]]
+    check(got == [("A_FIX_1", "LIVE_RESTORE_RM_DEAD"), ("C_FIX_1", "LIVE_RESTORE_RM_DEAD")],
+          "a host already broken is not filed again, its sharers still name it: %s" % got)
+    calls.clear()
+    DM.sweep(NOW, filer, {"A_FIX_1": It(live=DEAD)}, [], {}, chk)
+    check(calls[0] == [{"item": "A_FIX_1", "result": "broken", "detail": "it died"}], "one fix alone shares nothing")
     # blind: nothing moves
     calls.clear()
     r = DM.sweep(NOW, filer, {"A": It(live=DEAD)}, [], {}, chk, sees=False)
