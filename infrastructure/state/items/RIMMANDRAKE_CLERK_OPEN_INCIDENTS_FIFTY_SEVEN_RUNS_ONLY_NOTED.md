@@ -1,0 +1,53 @@
+# RIMMANDRAKE_CLERK_OPEN_INCIDENTS_FIFTY_SEVEN_RUNS_ONLY_NOTED
+
+## What the card said
+
+<!-- answered 2026-11-19T16:14:11Z; recorded by `file` (OWNER); written by rimflow, never by hand -->
+
+**Question:** [owner-asked] Thu Nov 19, 8:07 AM PST. Hand-written in the Binding style; no tool has measured the wording. Operations is the scheduled agent that reads the health alarms and fixes or notes them. It costs about 4.6 million weighted tokens on a full day, 25 to 29 runs. 56% of that pays for the start package: the rule files, memory file and skill list each run loads before it reads its alarm. About half of the package has nothing to do with Operations. Each pick below makes one run cheaper. (Hard to read? Type STE, Binding or Both for a rewrite.) Which of these do I build?
+**Picked:** Slim the start package (Recommended)
+**Its description:** Why: it cuts every run, on either model, and the same change can later go to every role. Removes the skill list, your personal rule file and the memory file from Operations runs, and stops telling them they are the Conductor. Saves about 1.2 to 1.8M a day [guess]. Cost: small build, 1 day test; a rule only in your personal file is no longer seen.
+**His words:** Slim the start package (Recommended), Trim waste inside a run, Sonnet for follow-ups only, "If we escalate to (4) then we would likely give Sonnet Escalation: recognize something is fishy, so call out Opus to continue."
+**Other options:** Trim waste inside a run · Sonnet for follow-ups only · Sonnet for every run
+
+**Question:** [owner-asked] The second way to cut Operations is fewer runs. It was planned as about 10 runs a day and makes 25 to 29. Of 105 runs, about 13 landed a real fix; 57 only wrote a note, and those 57 were 38% of the spend. Two causes: a bug that treats "the plan is one hour older" as news and starts a follow-up run each hour, and five alarms that always get the same "nothing to fix" answer (unclaimed SteveDesktop incident, low lukas runway, standing wrap-up debris, idle pipeline, scratch dirt). Which of these do I build?
+**Picked:** Fix the news bug (Recommended)
+**Its description:** Why: 11 of 42 follow-up launches were set off by a reading that only aged. A reading that just gets older stops counting as news. Saves about 0.5 to 1.0M a day [guess]. Cost: small build with its test; a real jump in those readings is caught one step later. Works well with the program-answers pick: together they are the plan the analysis advises.
+**Picked:** Program answers 5 repeat alarms
+**Its description:** Why: a sixth look at those five alarms found something new 0 times. A program writes the same note the agent wrote, and calls the agent only when a reading leaves a stated range. Saves about 0.5 to 0.9M a day [guess]. Cost: small to medium build, 2 days test; a later look that would have found something is lost.
+**Picked:** Program follows open incidents
+**Its description:** Why: the biggest cut in run count. A program re-reads each open incident's numbers and calls the agent only when one crosses a stated line; one deep Opus run a day stays. Saves about 1.0 to 1.8M a day [guess, low confidence]; it includes the news-bug fix. Cost: medium build, 2 to 3 days test; each incident plan needs a line a program can check.
+**Other options:** Retire Operations
+
+**Question:** [owner-asked] One more item saves no tokens. On Nov 17 the fleet stopped twice when the lukas account hit its floor. The page showed "runway 10" for the next account, because runway is computed from each account's own burn, and an unused account burns nothing. No reading said how long the next account would last once the fleet moved onto it. Only two choices here: the reading is built or it is not. Do I build that reading and a short-window burn alarm?
+**Picked:** Build it now (Recommended)
+**Its description:** Why: it is the reading that would have warned of both Nov 17 stops, and it is a program, so it costs no tokens to run. Applies the fleet's measured burn to each account it could move to, and alarms on a fast burn inside a few hours. Cost: one detached build run and its tests.
+**Other options:** Not now
+
+**Owed by this card** (the close names where each was done or filed): needs a line a program can check
+
+Source: D:\ClaudeWork\rimmandrake\conductor\operations_role_analysis_20261117.md (filed from the owner's card answered ~8:10 AM PST 2026-11-19, recorded on RIMMANDRAKE_EXPLORE_OPERATIONS_OPTIONS_AFTER_WEDNESDAY_RESET). Filed by a Conductor helper; paperwork only, nothing built.
+
+## spec
+
+Card pick: "Program follows open incidents" (option d, the incident clerk, plus one daily Opus deep run). Analysis section 4 item 3 and section 5.
+
+The clerk re-polls the readings each open incident names, writes a "still X, no change" row and pushes the next revisit; it launches an Operations LLM run only when a reading crosses its plan's stated trigger or the rung changes. One deep Opus run a day stays. Prose plans that only a model can test keep their LLM revisit, and the clerk asks for a plan with a machine-checkable trigger line. The card's owed line is this item's: "each incident plan needs a line a program can check".
+
+Held: this contains the news-bug fix (option c), so it waits until RIMMANDRAKE_QUIET_OPS_REPEATS_AGING_COUNTS_AS_NEWS lands (rimflow block, --on that item, until done).
+
+## verify
+
+Acceptance test: a selftest written with the code, src/RimMandrake/rimflow/selftest_incident_clerk.py:
+- an open incident whose readings did not cross its trigger line gets a no-change row and a pushed revisit, and no LLM launch (1);
+- one whose reading crosses its trigger launches exactly one run (1);
+- a rung change launches one run (1);
+- a prose plan with no trigger line keeps its LLM revisit and is asked for a trigger line (1);
+- the daily deep run launches once a day on Opus (1).
+Expected `5 of 5`. Fails today because no clerk exists: `grep -c -i clerk src/RimMandrake/rimflow/incident.py` reads 0 on main ba23c55414 (watched).
+Live (analysis section 5 d, 2 to 3 days): incident launches per day fall from 9 to 11 [measured baseline] while fixes still land.
+
+## criteria
+
+- Clerk selftest 5 of 5; every incident and dispatcher selftest run after the change.
+- The close names where "a line a program can check" was done (the plan trigger-line format and the clerk that reads it), and carries `--live` (it touches an Operations alarm path).
