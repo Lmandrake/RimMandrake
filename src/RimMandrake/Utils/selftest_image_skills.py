@@ -60,7 +60,8 @@ def remnants(root: Path, files):
 def tracked_code():
     out = subprocess.run(["git", "-C", str(REPO), "ls-files", "--", "src/*.py", "src/*.sh", "skills/*.py",
                           "skills/*.sh"], capture_output=True, text=True, check=True).stdout
-    return [f for f in out.splitlines() if f]
+    me = str(Path(__file__).resolve().relative_to(REPO))          # its own planted examples are not readers
+    return [f for f in out.splitlines() if f and f != me]
 
 
 def resolver_in(env_extra):
