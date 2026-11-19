@@ -5,3 +5,107 @@ What it does not check: that every idea in every source has a row. That is the s
 LanternDeeps: 233 rows (91 added by the second reader), 29 lost, 20 record a move, 11 reshaped, 2 folded into shared machinery; 29 named sources, sources with no row: none; rows without five cells: none; rows with empty outcome: none; probe (an invented source name must be reported): seen; source files read in full: 74, listed but not on disk: none
   exit status: 0
   broken-copy probe exit status (must be 2): 2
+
+Not yet checked by this record: LeaningScrub, LongShade, Miasma, RustCathedral (their second reads had not been done when this was written).
+
+Measured for whoever takes LeaningScrub next (2026-11-18): design/concepts/LeaningScrub/ holds 3,774,046 bytes in 142 files, 130 of them distinct byte for byte; with its biome sheets, walk and 48 ledger items the sources are 4,172,822 bytes, and 2,562,955 bytes are left after the de-duplicating reader below marks every repeated line and sentence. The nine exam briefs under exam_runs/ each embed the tree.
+
+==== Appendix A: rowcheck.py (the check above) ====
+#!/usr/bin/env python3
+"""Row and source check for one rewrite_choices.md (second reader, 2026-11-18).
+usage: rowcheck.py <rewrite_choices.md> <sources_read_in_full.txt>
+Counts table rows under '## Every idea, row by row'; checks five cells and a non-empty outcome; checks every
+source name defined in a 'Source names:' / 'More source names:' paragraph appears in some row's source column;
+probe: an invented source name must be reported missing. Counts the listed full-read source files and checks each exists.
+Exit 0 only if every check ran and passed; 2 on a failed check; 3 if the page could not be parsed (no answer)."""
+import re,sys,os
+page,srclist=sys.argv[1],sys.argv[2]
+t=open(page,encoding='utf-8').read()
+m=re.search(r'^## Every idea, row by row\n(.*?)(?=^## )',t,re.S|re.M)
+if not m: print("UNMEASURED: no 'Every idea, row by row' section"); sys.exit(3)
+body=m.group(1)
+rows=[]
+for line in body.splitlines():
+    if not line.startswith('|'): continue
+    cells=[c.strip() for c in line.strip().strip('|').split('|')]
+    if cells[0]=='idea' or set(cells[0])<=set('-'): continue
+    rows.append(cells)
+if not rows: print("UNMEASURED: zero rows parsed"); sys.exit(3)
+bad5=[r[0][:50] for r in rows if len(r)!=5]
+empty=[r[0][:50] for r in rows if len(r)>2 and not r[2]]
+def has(r,w): return len(r)>2 and w in r[2].lower()
+lost=sum(1 for r in rows if len(r)>2 and r[2].lower().startswith('lost'))
+moved=sum(1 for r in rows if has(r,'moved'))
+resh=sum(1 for r in rows if has(r,'reshaped'))
+fold=sum(1 for r in rows if has(r,'folded'))
+names=set()
+for para in re.findall(r'(?:Source names|More source names)[:.](.*?)\n\n',body,re.S):
+    names|=set(re.findall(r'\*([^*]+)\*\s*=',para))
+names.add('zz invented source zz')  # probe
+srccol=' '.join(r[1].lower() for r in rows if len(r)>1)
+missing=sorted(n for n in names if n.lower() not in srccol)
+probe='seen' if 'zz invented source zz' in missing else 'NOT SEEN'
+missing=[n for n in missing if n!='zz invented source zz']
+files=[l.strip() for l in open(srclist) if l.strip() and not l.startswith('#')]
+gone=[f for f in files if not (os.path.exists(f) or f.startswith('git:'))]
+second=len(re.findall(r'^\|',(re.search(r'^### Added by the second reader.*?(?=^## )',t,re.S|re.M) or re.search('$^','')) .group(0) if re.search(r'^### Added by the second reader',t,re.M) else '',re.M))
+sec=re.search(r'^### Added by the second reader.*?(?=^## )',t,re.S|re.M)
+added=0
+if sec:
+    for line in sec.group(0).splitlines():
+        if line.startswith('|'):
+            c=[x.strip() for x in line.strip().strip('|').split('|')]
+            if c[0]!='idea' and not set(c[0])<=set('-'): added+=1
+print(f"{os.path.basename(os.path.dirname(page))}: {len(rows)} rows ({added} added by the second reader), {lost} lost, {moved} record a move, {resh} reshaped, {fold} folded into shared machinery; {len(names)-1} named sources, sources with no row: {missing or 'none'}; rows without five cells: {bad5 or 'none'}; rows with empty outcome: {empty or 'none'}; probe (an invented source name must be reported): {probe}; source files read in full: {len(files)}, listed but not on disk: {gone or 'none'}")
+sys.exit(0 if not(bad5 or empty or missing or gone) and probe=='seen' else 2)
+
+==== Appendix B: dedupe_read.py (reading aid: repeated lines are read once) ====
+#!/usr/bin/env python3
+"""Reading aid: write each source file's text to an output folder, with any line (or JSON string value) that an
+EARLIER file in the given order already contained replaced by a '(=)' mark, so repeated text is read once.
+JSON is flattened to 'key: value' lines first. usage: dedupe_read.py <outdir> <file>...  (order matters)"""
+import sys,os,json,re
+out=sys.argv[1]; os.makedirs(out,exist_ok=True)
+seen=set(); report=[]
+def flat(o,pre=''):
+    if isinstance(o,dict):
+        for k,v in o.items(): yield from flat(v,pre+k+'.')
+    elif isinstance(o,list):
+        for i,v in enumerate(o): yield from flat(v,pre)
+    else: yield pre.rstrip('.'),str(o)
+def norm(s): return re.sub(r'\s+',' ',s.strip())
+for i,p in enumerate(sys.argv[2:]):
+    raw=open(p,encoding='utf-8-sig',errors='replace').read()
+    lines=[]
+    if p.endswith('.json') or p.endswith('.jsonl'):
+        try:
+            objs=[json.loads(raw)] if p.endswith('.json') else [json.loads(l) for l in raw.splitlines() if l.strip()]
+            for o in objs:
+                for k,v in flat(o): lines.append(f"{k}: {v}")
+        except Exception as e:
+            lines=raw.splitlines()
+    else: lines=raw.splitlines()
+    res=[];rep=0
+    for l in lines:
+        n=norm(l)
+        # split long lines into sentences so a repeated sentence inside a new line is still marked
+        if len(n)>300:
+            parts=re.split(r'(?<=[.;!?])\s+',n); o=[]
+            for s_ in parts:
+                if len(s_)>50 and s_ in seen: o.append('(=)'); rep+=len(s_)
+                else:
+                    if len(s_)>50: seen.add(s_)
+                    o.append(s_)
+            j=' '.join(o); j=re.sub(r'(\(=\) ?){2,}','(=) ',j)
+            res.append(j)
+        else:
+            if len(n)>50 and n in seen: rep+=len(n); continue
+            if len(n)>50: seen.add(n)
+            res.append(l.rstrip())
+    name=f"{i:03d}_"+p.replace('/','__')+'.txt'
+    txt='\n'.join(res)
+    open(os.path.join(out,name),'w').write(txt)
+    report.append((len(raw),len(txt),p))
+tot=sum(r[0] for r in report); new=sum(r[1] for r in report)
+for a,b,p in report: print(f"{a:8d} -> {b:8d}  {p}")
+print("TOTAL",tot,"->",new)
