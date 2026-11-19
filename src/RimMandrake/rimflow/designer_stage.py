@@ -1483,7 +1483,7 @@ def _run_file(d, name, errs):
 def result_errors(res, d, st, repo=REPO):
     """Why this run's result.json cannot be accepted, or []."""
     if not isinstance(res, dict):
-        return ["no result.json (a closing message is not a result)"]
+        return [NO_RESULT + " (a closing message is not a result)"]
     out, stage = res.get("outcome"), st["stage"]
     if res.get("stage") != stage:
         return ["result is for stage %r; the state is at stage %d" % (res.get("stage"), stage)]
@@ -1755,7 +1755,7 @@ def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True):
             st["budget"]["spent"], st["budget"]["cap"], run, min(left, run_cap) if run_cap else left))
     budget = min(left, run_cap) if run_cap else left
     hashes = manifest_hashes(st["stage"], manifest)
-    retries = sum(1 for h in st.get("history") or [] if h["what"] == "retry" and h.get("stage") == st["stage"])
+    retries = stage_retries(st)
     st["running"] = {"run": run, "stage": st["stage"], "manifest": hashes, "reserved": budget, "at": now_iso(),
                      "inputs": inputs(d, st, repo), "owner_uncited": owner_uncited(repo, st.get("item"), d)}
     if st.get("status") == "waiting_owner":
@@ -1827,6 +1827,39 @@ _PARK_MASK = re.compile(r"rm-role-[a-z]+-\d+|\b\d{6,}\b")
 RELEASE_KINDS = ("coverage_release", "unblock")
 
 
+NO_RESULT = "no result.json"     # result_errors' reason when the run left none
+
+
+def stage_retries(st):
+    """-> the rejected or unclosed runs at the current stage, a void_system one (void_rejection) not counted."""
+    return sum(1 for h in st.get("history") or [] if isinstance(h, dict) and h.get("what") == "retry"
+               and h.get("stage") == st.get("stage") and not h.get("void_system"))
+
+
+def void_rejection(d, run, cause):
+    """RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS (run_void.py; owner 2026-11-18: "I will not accept ANY
+    system that pointlessly expends such statistical measurements based on failed system calls or behavior"): run's
+    rejected result was the machine's, not the run's (role_launch.void_cause: killed at run_max_s, or the unit ended
+    with no claude result of its own), so its rejection row and its retry row are marked `void_system` with the cause:
+    no retry in the packet, no rejection for rejection_parked. Only a rejection whose every reason is NO_RESULT is
+    marked (a result the run did write was judged on its merits). -> True when marked, False when there is nothing to
+    mark."""
+    st = load_state(d)
+    res = [r for r in st.get("results") or [] if isinstance(r, dict) and r.get("run") == run
+           and r.get("outcome") == "rejected"]
+    why = [str(w) for w in (res[-1].get("why") or [])] if res else []
+    if not why or not all(w.startswith(NO_RESULT) for w in why) or res[-1].get("void_system"):
+        return False
+    res[-1]["void_system"] = cause
+    pat = re.compile(r"run %s result rejected" % re.escape(run))
+    for h in st.get("history") or []:
+        if isinstance(h, dict) and h.get("what") == "retry" and pat.match(str(h.get("why") or "")):
+            h["void_system"] = cause
+    hist(st, "void_system", "run %s: %s; its rejection spends no retry" % (run, cause))
+    write_json(state_path(d), st)
+    return True
+
+
 def rejection_parked(st, repo=REPO):
     """Pure but for os.path.exists. -> why a ready concept whose last result is REJECTED is parked (a retry cannot
     help), or None when it is not parked (no rejected last result, or the rejection's cause is gone so a retry is due).
@@ -1836,7 +1869,7 @@ def rejection_parked(st, repo=REPO):
     results are rejections at the same stage with the same reasons, run names masked (a retry already met it: the
     identical-rejection route goes to the arbiter). Every cited path landed after the rejection = not parked, even
     after two identical rejections (GSS: rejected 09:14Z and 10:13Z for the file that landed at 10:12Z)."""
-    res = [r for r in (st or {}).get("results") or [] if isinstance(r, dict)]
+    res = [r for r in (st or {}).get("results") or [] if isinstance(r, dict) and not r.get("void_system")]
     if not res or res[-1].get("outcome") != "rejected":
         return None
     why = [str(w) for w in (res[-1].get("why") or [])]
@@ -2110,7 +2143,8 @@ def park_summary(d, st, kind, why):
     if owner_passed:
         gaps = []       # his certificate stands past them: they are not refusals, and the line below says so
     sent = [a for a in rec.get("asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]
-    rejected = [r for r in st.get("results") or [] if isinstance(r, dict) and r.get("outcome") == "rejected"]
+    rejected = [r for r in st.get("results") or [] if isinstance(r, dict) and r.get("outcome") == "rejected"
+                and not r.get("void_system")]
     code = code_present(rec)
     L = ["# %s: parked for you (%s)" % (mod, kind), "",
          "%s. Nothing runs on it, no Designer run and no judge, until your word on %s. Item %s, stage %s (%s)." % (

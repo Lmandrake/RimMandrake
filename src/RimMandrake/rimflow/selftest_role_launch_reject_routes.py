@@ -54,6 +54,8 @@ def harvest(rs, errs, res=GOOD, unit="rm-role-designer-1", seams=None, stage=4, 
            "cause_book": lambda key, said, now, role=None: (calls["cause_book"].append(key), dict(
                do="role_cause_attach", role=role, key=key, said=said, at_s=now) if s["cause_book"] else None)[1],
            "arbiter": lambda role, concept, item, sig, reasons: (calls["arbiter"].append(sig), s["arbiter"])[1]}
+    if "stage_void" in s:
+        obs["stage_void"] = s["stage_void"]
     RL._supervise_one("Designer", rs, designer_cfg(), obs, T, lambda **kw: acts.append(kw), set())
     route = [a for a in acts if a.get("do") == "role_hold" and "rejection cause" in a.get("why", "")]
     return acts, calls, route
@@ -177,8 +179,58 @@ def test_real_seams():
             os.environ["RM_OPS_WATCH_DIR"] = old
 
 
+def test_void_system():
+    """RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS: a run the machine stopped before it wrote
+    result.json is void_system: no stage_rejected, no remembered rejection, its chain given back, chained again; at
+    run_void.SYSTEM_FAULT_LIMIT on one concept in a day, a system fault and nothing chained."""
+    import run_void as RV
+    NR = ["no result.json (a closing message is not a result)"]
+    marked = []
+    seam = {"stage_void": lambda c, u, why: (marked.append((u, why)), True)[1]}
+    rs = {}
+    key = "%s %s" % (RL.day_of(T), C1)
+    rs["chain_day"], rs["chain_stages_day"] = {key: 3}, {key: ["4", "4", "4"]}
+    RL.note_chain_unit(rs, "rm-role-designer-1", {"chain_key": key, "chain_stage": "4"}, T - 700)
+    acts, calls, _ = harvest(rs, NR, res=None, seams=seam)
+    check(marked and marked[0][0] == "rm-role-designer-1" and "no claude result" in marked[0][1],
+          "a unit that ended with no claude result and no result.json is marked void_system: %r" % marked)
+    check(any(a.get("kind") == "role:Designer:stage_void" for a in acts)
+          and not any(a.get("kind") == "role:Designer:stage_rejected" for a in acts),
+          "it is said as VOID, never as a stage_rejected")
+    check(not (rs.get("rejections") or {}).get(C1), "no rejection is remembered: a second one goes to no arbiter")
+    check(rechained(rs) and rs["chain_day"][key] == 3 and rs["chain_stages_day"][key] == ["4", "4", "4"],
+          "its chain is given back and the stage is chained again: the count stays 3 (%r)" % rs.get("chain_day"))
+    rs.pop("run_now", None)
+    acts, _, _ = harvest(rs, NR, res=GOOD, unit="rm-role-designer-2", seams=seam, stop_tries=2)
+    check(len(marked) == 2 and "run_max_s" in marked[1][1] and rechained(rs),
+          "a run stopped at run_max_s before it wrote result.json is void_system too: %r" % marked[1:])
+    rs.pop("run_now", None)
+    acts, _, _ = harvest(rs, NR, res=None, unit="rm-role-designer-3", seams=seam)
+    check(len(marked) == 3 and not rechained(rs) and any(a.get("kind") == "role:Designer:system_fault"
+                                                          and a.get("conductor_log") for a in acts),
+          "the %d-th void run on one concept in a day is a system fault: nothing chained, the Conductor told"
+          % RV.SYSTEM_FAULT_LIMIT)
+    rs, marked[:] = {}, []
+    acts, calls, _ = harvest(rs, NR, res={"is_error": True, "api_error_status": 429,
+                                          "usage": {k: 10 for k in RL.USAGE_KEYS}}, seams=seam)
+    check(not marked and any(a.get("kind") == "role:Designer:stage_rejected" for a in acts),
+          "a claude result (is_error) is the run's own end: no void, the rejection counts")
+    rs = {}
+    acts, calls, _ = harvest(rs, ["lint: leaf x has no root"], res=None, seams=seam)
+    check(not marked, "a result the run wrote, judged on its merits, is never void")
+    rs = {}
+    acts, _, _ = harvest(rs, NR, res=None, seams={"stage_void": lambda c, u, why: False})
+    check(any(a.get("kind") == "role:Designer:stage_rejected" for a in acts),
+          "nothing to mark on the stage file: the rejection counts, as before")
+    req = RL.chain_ask("Designer", {}, dict(designer_cfg(), chain_stages=True), C1, 4, T, lambda **kw: None,
+                       "u0", "PYRE_ITEM", "run", "test", "after")
+    check(isinstance(req, dict) and req.get("chain_key") == key and req.get("chain_stage") == "4",
+          "a chain request carries its chain key and stage, so its launched unit is recorded against it: %r" % req)
+
+
 TESTS = (test_classifier, test_module_to_builder, test_check_and_bar_alarm_stands, test_environment_to_cause_book,
-         test_unknown_and_mixed_to_builder, test_second_identical_not_looped, test_real_seams)
+         test_unknown_and_mixed_to_builder, test_second_identical_not_looped, test_real_seams,
+         test_void_system)
 
 
 def main():

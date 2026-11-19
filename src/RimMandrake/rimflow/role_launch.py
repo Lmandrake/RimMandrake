@@ -2012,6 +2012,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                 rs["pending_launch"]["covered"] = [ck, rs["done"].get(ck), ck in rs["done"]]
                 rs["done"][ck] = "covered by " + job["key"]
             rs["pending_launch"]["run_now"] = rs.get("run_now")
+            note_chain_unit(rs, unit, rs.get("run_now"), now)
             rs["run_now_last"] = dict(rs.pop("run_now"), outcome="launched", unit=unit, decided=now)
         rs.pop("event_skip", None)
         mark(rs, job, "launch")
@@ -2496,12 +2497,27 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
                 why="%s run %s on %s: its stage state did not land on origin/main: %s" % (
                     name, run["unit"], run["concept"], str(e)))
         return
+    void = None if ok else void_cause(run, res, errs)
+    if void:
+        try:
+            if not (obs.get("stage_void") or stage_void)(run["concept"], run["unit"], void):
+                void = None     # nothing to mark: the rejection counts, as before
+        except Exception as e:  # noqa: BLE001 - said: the rejection then counts as before
+            act(do="alarm", kind="role:%s:stage_void" % name, ticket=run.get("item"), note=True,
+                why="%s run %s on %s: its system cause (%s) could not be marked void_system: %s: %s; the rejection "
+                    "counts" % (name, run["unit"], run["concept"], void, type(e).__name__, str(e)))
+            void = None
     try:
-        act(do="alarm" if not ok else "role_stage", kind="role:%s:stage_rejected" % name,
-            ticket=run.get("item"), note=True,
-            why="%s run %s on %s: %s" % (name, run["unit"], run["concept"], "stage result accepted" if ok
-                                         else "stage result REJECTED: " + "; ".join(errs[:4]) + (
-                                         " (+%d more)" % (len(errs) - 4) if len(errs) > 4 else "")))
+        if void:
+            act(do="alarm", kind="role:%s:stage_void" % name, ticket=run.get("item"), note=True,
+                why="%s run %s on %s: stage result VOID (void_system: %s): no retry or rejection is spent" % (
+                    name, run["unit"], run["concept"], void))
+        else:
+            act(do="alarm" if not ok else "role_stage", kind="role:%s:stage_rejected" % name,
+                ticket=run.get("item"), note=True,
+                why="%s run %s on %s: %s" % (name, run["unit"], run["concept"], "stage result accepted" if ok
+                                             else "stage result REJECTED: " + "; ".join(errs[:4]) + (
+                                             " (+%d more)" % (len(errs) - 4) if len(errs) > 4 else "")))
         # DESIGNER_STAGE_FIX_COMMIT_ITS_OWN_STATE: the advanced stage.json and renamed result files land on
         # origin/main now; before, they sat in the Designer's clone until a person committed them
         try:
@@ -2516,12 +2532,98 @@ def close_concept(name, rs, cfg, run, res, tok, now, act, obs):
         if ok:
             forget_rejections(rs, run["concept"])
             chain_next(name, rs, cfg, run, now, act, obs.get("stage_status") or stage_status)
+        elif void:
+            void_route(name, rs, cfg, run, void, now, act, obs)
         else:
             route_rejection(name, rs, cfg, run, res, list(errs or []), now, act, obs)
     except Exception as e:  # noqa: BLE001 - the close itself happened: said, never retried (it would refuse)
         act(do="alarm", kind="role:%s:stage_close" % name, ticket=run.get("item"), note=True,
             why="%s run %s on %s: after its designer_stage close: %s: %s" % (name, run["unit"], run["concept"],
                                                                       type(e).__name__, str(e)))
+
+
+def void_cause(run, res, errs):
+    """Pure. -> the system cause of a rejected stage close, or None (RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_
+    COUNTERS, run_void.py's rule): every reason is designer_stage's "no result.json" AND the machine stopped the run
+    before it could write one: stopped at run_max_s (a timeout), or the unit ended with no claude result of its own. A
+    claude result (an is_error, a cap, the agent's own end) is the run's: it counts."""
+    if not errs or not all(str(e).startswith("no result.json") for e in errs):
+        return None
+    if run.get("stop_tries"):
+        return "stopped at run_max_s after %d stop(s), before it wrote result.json" % run["stop_tries"]
+    if not res:
+        return "the unit ended with no claude result of its own"
+    return None
+
+
+def stage_void(concept, unit, cause):
+    """designer_stage.void_rejection: the run's no-result rejection marked void_system -> True when marked."""
+    import designer_stage as DS
+    return DS.void_rejection(concept, unit, cause)
+
+
+def note_chain_unit(rs, unit, req, now):
+    """A chained run-now launched as `unit`: its chain count is recorded against the unit (rs["chain_units"]), so a
+    void_system end can give that one chain back (give_back_chain). Entries older than two days are dropped."""
+    if not isinstance(req, dict) or not req.get("chain_key"):
+        return
+    book = {u: e for u, e in (rs.get("chain_units") or {}).items() if isinstance(e, dict)
+            and now - (e.get("at") or 0) < 2 * 86400}
+    book[unit] = {"key": req["chain_key"], "stage": req.get("chain_stage"), "at": now}
+    rs["chain_units"] = book
+
+
+def give_back_chain(rs, unit):
+    """-> True when the chain that launched `unit` was given back: today's count for its day and concept less one, and
+    its stage off the day's stage list (chain_cap_view's forward rule reads both)."""
+    e = (rs.get("chain_units") or {}).pop(unit, None)
+    counts = rs.get("chain_day") or {}
+    if not isinstance(e, dict) or not counts.get(e.get("key")):
+        return False
+    counts[e["key"]] -= 1
+    st = (rs.get("chain_stages_day") or {}).get(e["key"])
+    if isinstance(st, list) and e.get("stage") in st:
+        st.reverse()
+        st.remove(e["stage"])
+        st.reverse()
+    return True
+
+
+def void_route(name, rs, cfg, run, cause, now, act, obs):
+    """A void_system stage close (void_cause): no rejection is remembered (no arbiter on a second one), the chain that
+    launched the dead run is given back, and the stage is chained again. At run_void.SYSTEM_FAULT_LIMIT void runs on
+    one concept in a day it stops as a system fault (alarm role:<Role>:system_fault): nothing is chained and nothing is
+    spent. -> "rechained" | "not_chained" | "system_fault"."""
+    import run_void as RV
+    concept, item, day = run["concept"], run.get("item"), day_of(now)
+    vf = [f for f in rs.get("void_faults") or [] if isinstance(f, dict) and f.get("day") == day]
+    vf.append({"day": day, "concept": concept, "unit": run["unit"], "cause": cause, "at": now})
+    rs["void_faults"] = vf
+    n = sum(1 for f in vf if f.get("concept") == concept)
+    head = "%s run %s on %s: VOID (void_system: %s)" % (name, run["unit"], os.path.basename(os.path.normpath(concept)),
+                                                        cause)
+    if n >= RV.SYSTEM_FAULT_LIMIT:
+        act(do="alarm", kind="role:%s:system_fault" % name, ticket=item, note=True, conductor_log=True,
+            raise_first="%s: %d runs on %s died of a system cause today; nothing is chained until the cause is read." % (
+                name, n, os.path.basename(os.path.normpath(concept))),
+            why="%s; %d void_system runs on it today (limit %d, %s): not chained, no retry spent" % (
+                head, n, RV.SYSTEM_FAULT_LIMIT, RV.ALARM_ID))
+        return "system_fault"
+    gave = give_back_chain(rs, run["unit"])
+    req = None
+    if cfg.get("chain_stages") is True:
+        status = obs.get("stage_status") or stage_status
+        try:
+            stage = (status(concept) or {}).get("stage")
+        except Exception:  # noqa: BLE001 - the stage only labels the request
+            stage = None
+        req = chain_ask(name, rs, cfg, concept, stage, now, act, run["unit"], item, run.get("mode") or "run",
+                        "%s run %s was void_system (%s): the stage runs again" % (name, run["unit"], cause),
+                        "after its void run %s" % run["unit"])
+    act(do="role_hold", role=name, ticket=item, note=True, why="%s -> %s%s" % (
+        head, "re-chained" if req else "not chained (no chain_stages, cap reached or already asked)",
+        "; its chain given back" if gave else ""))
+    return "rechained" if req else "not_chained"
 
 
 def stage_close(concept, unit, tokens, sync=True):
@@ -2689,6 +2791,7 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
     counts[key] = counts.get(key, 0) + 1
     stages.setdefault(key, []).append(str(stage))
     req = {"at": now, "by": "Dispatcher", "mode": mode, "concept": concept, "chained_from": chained_from,
+           "chain_key": key, "chain_stage": str(stage),    # a void_system end of its run gives this chain back
            "why": "chain: %s, stage %s ready%s" % (cause, stage, (
                "; delegated: past the daily chain cap of %d on forward progress (stage %s not chained today, run %d "
                "of at most %d)" % (cap, stage, counts[key], 2 * cap)) if forward else "")}

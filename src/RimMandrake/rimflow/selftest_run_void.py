@@ -188,6 +188,36 @@ def release_back(RV, MD, record):
        "a hand void of a run already void_system leaves its release spent (the Conductor's line: void_system only)")
 
 
+def designer_void(tmp):
+    """A Designer run's no-result rejection marked void_system (designer_stage.void_rejection): no retry in the
+    packet's count, no rejection for rejection_parked (two in a row would park it); a judged rejection is never marked."""
+    import designer_stage as DS
+    d = os.path.join(tmp, "dv", "design", "concepts", "Fake")
+    os.makedirs(d)
+    NR = "no result.json (a closing message is not a result)"
+    st = {"stage": 3, "status": "ready", "item": "FAKE_ITEM", "budget": {"cap": 4000000, "spent": 0, "charges": []},
+          "results": [{"stage": 3, "outcome": "rejected", "run": "rm-role-designer-%d" % n, "at": "2026-11-18T0%d:00:00Z"
+                       % n, "why": [NR]} for n in (1, 2)],
+          "history": [{"at": "2026-11-18T0%d:00:00Z" % n, "stage": 3, "what": "retry",
+                       "why": "run rm-role-designer-%d result rejected: %s" % (n, NR)} for n in (1, 2)]}
+    with open(os.path.join(d, "stage.json"), "w") as f:
+        json.dump(st, f)
+    ok(DS.rejection_parked(DS.load_state(d)) and DS.stage_retries(DS.load_state(d)) == 2,
+       "before: two identical no-result rejections park the concept and count two retries")
+    ok(DS.void_rejection(d, "rm-role-designer-2", "killed at run_max_s") is True,
+       "void_rejection marks the killed run's no-result rejection")
+    ok(DS.void_rejection(d, "rm-role-designer-2", "again") is False, "a second mark is refused (nothing to mark)")
+    s2 = DS.load_state(d)
+    ok(DS.rejection_parked(s2) is None and DS.stage_retries(s2) == 1,
+       "after: the void rejection is no rejection for parking and no retry (retries %d)" % DS.stage_retries(s2))
+    ok(any(h.get("what") == "void_system" for h in s2["history"]), "the void is said in the stage history")
+    st["results"].append({"stage": 3, "outcome": "rejected", "run": "rm-role-designer-3", "at": "2026-11-18T03:00:00Z",
+                          "why": ["lint: leaf x has no root"]})
+    with open(os.path.join(d, "stage.json"), "w") as f:
+        json.dump(st, f)
+    ok(DS.void_rejection(d, "rm-role-designer-3", "x") is False, "a rejection judged on a written result is never void")
+
+
 def main():
     try:
         import run_void as RV
@@ -482,6 +512,7 @@ def main():
            "a run that wrote its result, or no record, has no system cause (could not look is not void)")
         judge_rounds(CJ)
         release_back(RV, MD, record)
+        designer_void(tmp)
     finally:
         RL.read_result, DH.killed = real_read, real_killed
         for k, v in keep.items():
