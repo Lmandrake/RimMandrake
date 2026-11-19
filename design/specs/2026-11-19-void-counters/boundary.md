@@ -2,7 +2,7 @@
 
 Code: `src/RimMandrake/rimflow/run_void.py` (`resolve`, `sync_system`, `heal_system`), the Designer chain count in
 `src/RimMandrake/rimflow/role_launch.py` (`refuse_now`, `give_back_chain`, `close_concept`, the chain sweep in
-`decide_roles`), the certificate rerun in `src/RimMandrake/rimflow/maturation_dispatch.py` (`cert_rerun_decide`,
+`decide_roles`, `never_opened`), the certificate rerun in `src/RimMandrake/rimflow/maturation_dispatch.py` (`cert_rerun_decide`,
 `cert_rerun_launch`) and the Designer's loop ceiling in `src/RimMandrake/rimflow/designer_stage.py` (`loop_start`,
 `loop_spend`, `ceiling_crossed_at`, `loop_ceiling`). Item: `RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE`, written
 2026-11-19. The owner, 2026-11-18: *"I will not accept ANY system that pointlessly expends such statistical measurements
@@ -57,6 +57,15 @@ the void rule is `run_void.py`'s docstring and `design/RimMandrake/pipeline_tria
   day's count less one and its stage off the day's list.
 - **no-sweep-while-the-role-is-off.** While a role's off switch is set, the chain sweep asks nothing for it, so a
   given-back chain is never re-asked and refused every tick.
+- **a-concept-no-run-opened-is-not-swept.** The chain sweep asks no run for a concept no run has opened (stage 0, no
+  result, no open run, no `open` row in its history: `role_launch.never_opened`), and the Designer stall reader
+  (`ops_watch._q_designer`) counts it as pending to nobody, by the same rule. The sweep is for a concept whose chain
+  broke; a new concept moves only on a hand run-now (`role_launch.py run-now`), after its mod's readiness list reads
+  READY and `pipe on <Mod>` cites it. Before this, `designer_stage.py init` on a new mod's concept was swept into an
+  opus Designer run 10 minutes later, the Designer role's `enabled: false` notwithstanding (that flag means "run-now
+  only", and every Designer run is a request, so it never stopped one). A concept whose first run opened and died
+  still has its `open` row and is swept as before. Added 2026-11-19 by
+  `RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS`.
 - **a-gate-refusal-keeps-its-chain.** A run-now refused by the stage machine, the band, the cap, the daily cap or the
   ops reading keeps its chain spent: the sweep re-asks a ready concept every tick, and the daily chain cap is what
   stops that ask-and-refuse loop.

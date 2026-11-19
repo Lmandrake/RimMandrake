@@ -403,7 +403,44 @@ def test_judge_stopped_run_charged_nothing():
               run.get("state"), closes, alarms))
 
 
-TESTS = (test_judge_stopped_run_charged_nothing, test_incident_run_cap_and_page, test_after_ready_covered_slot, test_ops_reading_points_not_mapping, test_stop_call_failed_is_not_ok, test_stop_reports_each_failure, test_failed_stop_reissued_each_tick,
+# ---------------------------------------------------------------- the orphan sweep never starts a new concept
+def test_new_concept_not_orphan_swept():
+    """RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS, the probe's case: a concept fresh from designer_stage init,
+    ready an hour (past the grace), its mod unknown to the control store (nothing holds it), the Designer row as the
+    schedule ships it (enabled false). The sweep asks no run. Control: the same concept once a run has opened on it
+    (that run died: its `open` row stays) is asked once, so the check can see an ask."""
+    import json
+    import shutil
+    import tempfile
+    import time
+    import designer_stage as DS
+    with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
+        role = [r for r in json.load(f)["roles"] if r.get("name") == "Designer"][0]
+    cfg = dict(RL.ROLE_DEFAULTS, **role)
+    tmp = tempfile.mkdtemp(prefix="selftest-role-launch-")
+    d = os.path.join(tmp, "WreckedMachines")
+    DS.init(d, "WreckedMachines", item="RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS")
+    st = DS.load_state(d)
+    now = time.time()
+    held, RL.owner_held = RL.owner_held, lambda *a: False     # unknown to the store: no hold of any kind
+    try:
+        acts, rs = [], {}
+        asked = RL.chain_sweep("Designer", rs, cfg, now, lambda **k: acts.append(k), lambda: [(d, st, now - 3600)])
+        check(role.get("enabled") is False and asked == [] and not rs.get("run_now"),
+              "a concept no run has opened is not swept into a Designer run (enabled %r): asked %d, run_now %r"
+              % (role.get("enabled"), len(asked), rs.get("run_now")))
+        opened = dict(st, history=st["history"] + [{"at": "2026-11-19T16:00:00Z", "stage": 0, "what": "open",
+                                                     "why": "run rm-role-designer-1, stage 0"}])
+        rs = {}
+        asked = RL.chain_sweep("Designer", rs, cfg, now, lambda **k: acts.append(k), lambda: [(d, opened, now - 3600)])
+        check(len(asked) == 1 and (rs.get("run_now") or {}).get("chained_from") == "orphan-sweep",
+              "control: a stage-0 concept whose first run opened (and died) is still swept: asked %d" % len(asked))
+    finally:
+        RL.owner_held = held
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+TESTS = (test_new_concept_not_orphan_swept, test_judge_stopped_run_charged_nothing, test_incident_run_cap_and_page, test_after_ready_covered_slot, test_ops_reading_points_not_mapping, test_stop_call_failed_is_not_ok, test_stop_reports_each_failure, test_failed_stop_reissued_each_tick,
          test_unit_state_and_scope_of, test_launch_result, test_launch_argv_shape, test_run_budget_usd_hard_stop, test_model_id, test_ops_reading,
          test_band, test_validate_role)
 

@@ -2889,7 +2889,8 @@ def _q_designer(q, now, pcache, cpath):
     longer than the threshold with no close is a stall too (measured runs take 2 to 11 min). A concept at
     waiting_owner whose owner has ANSWERED (designer_stage.owner_moved; DESIGNER_ANSWERED_MONITOR_WAITING_ON_NOBODY)
     is pending too, since his answer (designer_stage.owner_answered_at): only a run's open moves it back to ready, so
-    it is forgotten the same way. One still waiting on him, blocked or locked is not pending, nor is a ready concept
+    it is forgotten the same way. One still waiting on him, blocked or locked is not pending, nor is a concept no run
+    has opened (role_launch.never_opened: it waits on a hand run-now, the sweep's rule), nor is a ready concept
     whose rejected last result is PARKED (designer_stage.rejection_parked, the rule role_launch.chain_sweep retries
     by; RELAPSE_QUEUES_FIX_DIED_TWICE): the stall alarm counts exactly what the sweep should have moved. root: the concepts dir
     (default designer_stage.concepts_root(), the Designer clone's design/concepts); repo: the clone whose OWNER shard
@@ -2967,6 +2968,8 @@ def _q_designer(q, now, pcache, cpath):
             continue
         if st.get("status") != "ready":
             continue
+        if RL.never_opened(st):
+            continue      # the sweep's own rule: a new concept waits on a hand run-now, not on a stalled chain
         if DS.rejection_parked(st, repo):
             continue      # the sweep's own rule: a retry cannot help; role_launch.parked_record says so
         if chain_capped(st, f.parent):

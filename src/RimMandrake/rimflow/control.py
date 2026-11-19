@@ -364,9 +364,27 @@ def known_mods(advancing_only=False):
     return out
 
 
-def scope_of(t, strict=True):
+def mod_folders():
+    """-> the mods with a shipping folder (src/RimMandrake|RimStarWars|RimUtinni/<Mod>/About/About.xml), seeded or
+    not. RM_CONTROL_MOD_FOLDERS="A,B" names them for a test."""
+    env = os.environ.get("RM_CONTROL_MOD_FOLDERS")
+    if env is not None:
+        return [m for m in env.split(",") if m]
+    out = []
+    for tier in ("RimMandrake", "RimStarWars", "RimUtinni"):
+        d = os.path.join(REPO, "src", tier)
+        try:
+            out += sorted(x for x in os.listdir(d) if os.path.isfile(os.path.join(d, x, "About", "About.xml")))
+        except OSError:
+            pass
+    return out
+
+
+def scope_of(t, strict=True, unseeded=False):
     """'all' | 'Mod' | 'mod:M' | 'stage:S' | 'item:ID' | a RIMMANDRAKE_/RIMMASTER_ id | 'family:F' | a family name |
-    'role:R' -> the canonical scope. Raises Refused with the nearest names."""
+    'role:R' -> the canonical scope. Raises Refused with the nearest names. unseeded: a mod with a shipping folder
+    and no place in the pipeline yet is a mod too (`pipe off|on`: an admitted mod is switched off before its seed;
+    RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS)."""
     t = str(t or "").strip()
     if t == "all":
         return "all"
@@ -391,8 +409,9 @@ def scope_of(t, strict=True):
     m = key(name)
     if strict:
         mods = known_mods()
-        if m not in mods:
-            near = difflib.get_close_matches(m, mods, 4, .3)
+        folders = mod_folders() if unseeded else []
+        if m not in mods and m not in folders:
+            near = difflib.get_close_matches(m, mods + [f for f in folders if f not in mods], 4, .3)
             raise Refused("no mod %r in the pipeline; nearest: %s" % (m, ", ".join(near) or ", ".join(mods[:6])))
     return "mod:" + m
 
@@ -2565,7 +2584,7 @@ def _who_line(a):
 
 
 def cmd_switch(o, off):
-    scope = scope_of(o.target)
+    scope = scope_of(o.target, unseeded=True)
     r = switch(scope, off, o.why, owner_said=o.owner_said, per_ruling=o.per_ruling, idem=o.idem)
     if r["replayed"]:
         return ["%s: already applied as %s (idempotency key %s): nothing changed" % (scope, r["act"]["id"], o.idem)]

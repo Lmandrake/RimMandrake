@@ -2608,6 +2608,26 @@ def t_deadline_is_wall_clock():
           "pipe stop still states the deadline it set", r)
 
 
+def t_an_unseeded_mod_can_be_switched_off():
+    """Promise an-unseeded-mod-can-be-switched-off (RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS): WreckedMachines
+    was admitted with a shipping folder and no concept, and `pipe off WreckedMachines` read "no mod in the pipeline"."""
+    fresh()
+    env = {"RM_CONTROL_MOD_FOLDERS": "Wrecked,Other"}
+    rc, out, _ = pipe("off", "Wrecked", "--why", "admitted, not seeded: no pass until he says go", env=env)
+    check(rc == 0 and "mod:Wrecked ON -> OFF" in out, "`pipe off` takes a mod with a shipping folder, not seeded", out)
+    check("OFF" in (C.blocked(spec("w1", mod="Wrecked")) or ""), "its OFF row refuses a launch naming the mod")
+    import mod_owner_hold as OH
+    check((OH.held("design/concepts/Wrecked") or {}).get("control") is True,
+          "every hold reader sees it: mod_owner_hold.held on its concept path", OH.held("design/concepts/Wrecked"))
+    rc, out, _ = pipe("on", "Wrecked", "--why", "readiness READY", env=env)
+    check(rc == 0 and C.blocked(spec("w2", mod="Wrecked")) is None, "`pipe on` lifts it", out)
+    rc, out, _ = pipe("off", "Nowhere", "--why", "x", env=env)
+    check(rc != 0 and "no mod 'Nowhere'" in out, "a name with neither a concept nor a shipping folder is refused", out)
+    for verb in (["queue", "top", "Wrecked"], ["grant", "Wrecked", "look", "+1", "--owner-said", "go"]):
+        rc, out, _ = pipe(*(verb + ["--why", "x"]), env=env)
+        check(rc != 0 and "no mod 'Wrecked'" in out, "`pipe %s` still refuses an unseeded mod" % verb[0], out)
+
+
 def main():
     # its probe units have fixed names in the one user systemd: runs on one machine (sibling clones' ./publish) take
     # turns, or one run's unit is "already loaded" for the other (RIMMANDRAKE_SERIALIZE_CONTROL_SELFTEST_SIBLINGS_SHARE_UNIT_NAMES)
@@ -2625,7 +2645,7 @@ def main():
               t_permit_never_ghosts, t_before_is_read, t_hold_file_mirrors_the_store,
               t_his_hold_lifts_by_him_or_the_conductor, t_conductor_lift_only_from_its_window,
               t_conductors_lift_is_its_own_act, t_mirror_failure_is_an_alarm, t_held_stays_held_across_the_mirror,
-              t_next_fits_a_screen, t_deadline_is_wall_clock):
+              t_next_fits_a_screen, t_deadline_is_wall_clock, t_an_unseeded_mod_can_be_switched_off):
         print("== %s" % t.__name__)
         try:
             t()

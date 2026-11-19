@@ -24,7 +24,21 @@ Fix, to choose and land (the smallest one that holds):
 (a) a mod's first appearance in the control store reads OFF until a `./pipe on` that cites a READY readiness list
     (§No mod runs forward on a broken pipeline already requires the list); or
 (b) `chain_sweep` (orphan sweep only, not a harvest chain or a hand run-now) skips a role that is not enabled.
-Until one lands, the admission act sequence puts `./pipe off <Mod>` before `designer_stage.py init`.
+
+## landed (2026-11-19, detached run)
+Neither (a) nor (b) as written; the rule that holds is (c), plus `pipe off` on an unseeded mod:
+- (b) was not landed: `enabled: false` is the Designer's normal state ("run-now only", its `trigger` text), and both
+  roles that sweep (Designer, DesignerCodex) read false, so (b) would end the orphan sweep for good and bring back
+  OPS_DESIGNER_UNSTICK_READY_AND_WAITING_GZKV (3 recurrences).
+- (a) was not landed: every concept with a `stage.json` already has an act in the control store (12 of 12, measured
+  2026-11-19), so it would newly hold only unseeded mods; recorded in the control page's `next_version.md`.
+- (c) landed: the sweep skips a concept no run has opened (`role_launch.never_opened`: stage 0, no result, no open
+  run, no `open` history row), and the Designer stall reader skips it by the same rule. A first run that opened and
+  died is still swept. Promise `a-concept-no-run-opened-is-not-swept` (void-counters page); acceptance test
+  `test_new_concept_not_orphan_swept` in `selftest_role_launch.py`, which asked 1 run on the base and asks 0 now.
+- `pipe off|on <Mod>` takes a mod with a shipping folder (`src/<Tier>/<Mod>/About/About.xml`) that is not seeded yet;
+  promise `an-unseeded-mod-can-be-switched-off` (control page). `./pipe off WreckedMachines` against a temp store on
+  this tree wrote its OFF row; the live store was not touched.
 
 ## criteria
 A concept initialised for a mod that has no READY readiness list is never chained into a Designer run by the orphan

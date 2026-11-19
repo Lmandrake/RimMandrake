@@ -2982,12 +2982,23 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
 # a waiting_owner he has answered) sat until queues.designer.stalled_min rang: GimmeSomeSlack and Pyrelands, 4 h+.
 # Each decide tick of a chain_stages role now sweeps every concept the stall alarm counts as pending (the same rule:
 # designer_stage's ready, or waiting_owner answered) and asks its run once it has waited CHAIN_SWEEP_GRACE_S, through
-# chain_ask's cap and slot. Skipped: an open run, a last result REJECTED and PARKED (designer_stage.rejection_parked:
+# chain_ask's cap and slot. Skipped: a concept no run has opened (never_opened), an open run, a last result REJECTED and PARKED (designer_stage.rejection_parked:
 # a retry cannot help; parked_record says so, ops_watch's stall reader skips it by the same rule), a concept
 # already holding the slot or a queue place, and one a running run of this role works on. A rejected concept that is
 # not parked (the path its rejection cited has landed since, or an unlabelled rejection not yet met twice) is
 # re-chained with the rejection's reasons (RELAPSE_QUEUES_FIX_DIED_TWICE: GSS sat 6 h after its missing file landed).
 CHAIN_SWEEP_GRACE_S = 600    # a harvest chains at once; the sweep is for what no harvest will ever see
+
+
+def never_opened(st):
+    """True for a concept no run has opened: stage 0, no result, no open run, no `open` row in its history (what
+    designer_stage init leaves). The sweep and the Designer stall reader (ops_watch._q_designer) skip it: a new concept
+    moves only on a hand run-now, once its mod's readiness list reads READY and `pipe on <Mod>` cites it
+    (RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS: init on a new mod was swept into an opus Designer run 10
+    min later; the role's enabled false means run-now only and stops no request). A first run that opened and died
+    leaves its `open` row, so that concept is swept as before."""
+    return (isinstance(st, dict) and st.get("stage") == 0 and not st.get("results") and not st.get("running")
+            and not any(isinstance(h, dict) and h.get("what") == "open" for h in st.get("history") or []))
 
 
 def stage_concepts(repo=None):
@@ -3040,6 +3051,8 @@ def chain_sweep(name, rs, cfg, now, act, concepts, parked=None):
     for concept, st, since in rows:
         if since is None or not isinstance(st, dict) or st.get("running") or concept in held or now - since < grace:
             continue
+        if never_opened(st):
+            continue                    # a new concept: only a hand run-now starts it (never_opened)
         if lane and (st.get("runner") or "claude") != lane:
             continue
         if owner_held(name, rs, concept, now, act):

@@ -7,8 +7,8 @@ NEXT: admitted; nothing launches for WreckedMachines, the Designer included, unt
 test."
 So WreckedMachines is admitted and no pass runs: no Designer run, no build, no in-game stage, whatever the readiness
 list reads. Only his own go lifts this. Seeding, `designer_stage.py init` and the readiness list stay allowed only
-after `./pipe off WreckedMachines` (a newly seeded mod reads ON, and the orphan sweep would start an opus Designer run
-about 10 minutes after init: `RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS`).
+after `./pipe off WreckedMachines` (a newly seeded mod reads ON; the orphan sweep no longer starts a concept no run has
+opened, and `pipe off` now takes the unseeded mod: `RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS`).
 
 ## spec
 The owner, 2026-11-19 ~8:35 AM PST, in answer to the Conductor's recommendation "say 'Wrecked Machines on Fable' now as
@@ -43,8 +43,8 @@ item, as `RIMMANDRAKE_ADMIT_CONTAGION_AS_NEXT_BIOME` was Contagion's.
    treats that text as input, not as settled.
 
 ## the route (what admits it; each step is the Conductor window's act or its launch, not a helper's)
-There is no `design/concepts/WreckedMachines/` folder and no stage record yet, so `./pipe show WreckedMachines` reads
-"no mod 'WreckedMachines' in the pipeline". As Contagion's admission did (b38ed346e9), with a hold first:
+There is no `design/concepts/WreckedMachines/` folder and no stage record yet, so `./pipe show WreckedMachines` lists
+no consumables ("no mod 'WreckedMachines' in the pipeline"); `./pipe off WreckedMachines` works (its shipping folder). As Contagion's admission did (b38ed346e9), with a hold first:
 0. `./pipe off WreckedMachines --why "his hold 2026-11-19 ~9:05 AM PST: no Fable pass until he says go"` before
    anything below (see his hold above).
 1. Write `design/concepts/WreckedMachines/journal.md` (Stage now: Intake), `version/VERSION.json` (0.1.0, open) and

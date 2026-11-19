@@ -232,6 +232,44 @@ def t_no_sweep_while_the_role_is_off(tmp):
        "with the role's off switch set, the sweep asks nothing and spends no chain (%r)" % rs.get("chain_day"))
 
 
+def t_a_concept_no_run_opened_is_not_swept(tmp):
+    """The chain sweep, through the decide tick, and the Designer stall reader skip a concept no run has opened
+    (fresh from designer_stage init); one whose first run opened and died is still swept and still counted."""
+    import designer_stage as DS
+    import role_launch as RL
+    import selftest_dispatcher as SD
+    sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+    import ops_watch as OW
+    now = SD.at_local("10:15")
+    root = os.path.join(tmp, "fresh_concepts")
+    d = os.path.join(root, "FreshMod")
+    DS.init(d, "FreshMod")
+    fresh = DS.load_state(d)
+    opened = dict(fresh, history=fresh["history"] + [{"at": "2026-11-18T17:00:00Z", "stage": 0, "what": "open",
+                                                     "why": "run rm-role-designer-1, stage 0"}])
+
+    def drive(st):
+        o = SD.robs(SD.ops_status(now), off=None)
+        o["stage_concepts"] = lambda: [(d, st, now - 7200)]
+        acts, state = [], {"roles": {}}
+        role = SD.operations(chain_stages=True, runs_local=[], economy_pass_local=None)
+        RL.decide_roles({"roles": [role]}, state, o, now, lambda **k: acts.append(k), set(), None)
+        return [a for a in acts if a.get("do") == "role_hold" and "next stage chained" in str(a.get("why"))]
+    ok(RL.never_opened(fresh) and not RL.never_opened(opened), "never_opened reads init's state as never opened, and "
+       "one with an `open` row as opened")
+    ok(drive(fresh) == [], "the decide tick's sweep asks nothing for a concept no run has opened")
+    ok(len(drive(opened)) == 1, "a concept whose first run opened and died is still swept (the sweep can see)")
+    state_file = os.path.join(tmp, "dispatcher_state.json")
+    with open(state_file, "w") as f:
+        json.dump({"roles": {}}, f)
+    q = {"root": root, "repo": tmp, "state_file": state_file, "runs_dir": os.path.join(tmp, "no_runs")}
+    plist = OW._q_designer(q, now, {}, None)[0]
+    ok(plist == [], "the stall reader counts a concept no run has opened as pending to nobody (%r)" % plist)
+    DS.write_json(DS.state_path(d), opened)
+    plist = OW._q_designer(q, now, {}, None)[0]
+    ok(len(plist) == 1, "the stall reader still counts a ready concept a run has opened (%r)" % plist)
+
+
 def claim_void_mark_that_raises():
     """DOES NOT SURVIVE a-void-mark-that-raises (not a promise): the claim's own test, run on the base and failing
     there (the rejection counts), was recorded real; rare by the owner's card of 2026-11-19, so no fix: this pins what
@@ -306,6 +344,7 @@ def main():
         t_a_run_now_never_launched_gives_its_chain_back(tmp)
         t_a_gate_refusal_keeps_its_chain(tmp)
         t_no_sweep_while_the_role_is_off(tmp)
+        t_a_concept_no_run_opened_is_not_swept(tmp)
         t_void_runs_spend_nothing_on_the_loop_ceiling(tmp)
         claim_void_mark_that_raises()
     finally:

@@ -20,6 +20,10 @@ added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_
   named none [measured 2026-11-19], 6 of them on FeverWood design tickets while he held FeverWood.
 - **scope-names.** `all`, a mod in the pipeline, `stage:S`, `item:ID`, `family:F`, `role:R`. A wrong name is refused
   with the nearest names. `pipe queue` and `pipe grant` take a mod and refuse any other scope (slice review 4, 20).
+  `pipe off` and `pipe on` also take a mod not yet in the pipeline whose shipping folder exists
+  (`src/RimMandrake|RimStarWars|RimUtinni/<Mod>/About/About.xml`), so an admitted mod is switched off before it is
+  seeded (WreckedMachines, 2026-11-19, read "no mod in the pipeline"; item
+  `RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS`).
 - **stop-target.** A scope, or one unit named `rm-...` with or without `.service`. A unit with another name (the
   testq wake) is named `unit:NAME`. Exactly one stop mode.
 - **why-on-every-write.** Every command that changes something carries `--why`. A granted look carries his words;
@@ -201,6 +205,11 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **mirror-failure-is-an-alarm.** A mirror that cannot be written raises the alarm `control:owner_hold_mirror`, says
   ALARM and exits 5. It lifts nothing: a new hold holds from the store, the file is left whole, a lift lifts only the
   mod he named. The next mirror that is written clears the alarm. Tested by `t_mirror_failure_is_an_alarm`.
+- **an-unseeded-mod-can-be-switched-off.** `pipe off <Mod>` on a mod with a shipping folder but no concept folder and
+  no place on the advancing list writes its OFF row, which every hold reader (`mod_owner_hold.load`) and every launch
+  check honours at once; `pipe on <Mod>` then lifts it. A name with neither a concept nor a shipping folder is still
+  refused with the nearest names, and `pipe queue` and `pipe grant` still refuse an unseeded mod. Added 2026-11-19 by
+  `RIMMANDRAKE_HOLD_NEW_CONCEPT_DISABLED_DESIGNER_CHAINS`. Tested by `t_an_unseeded_mod_can_be_switched_off`.
 - **held-stays-held-across-the-mirror.** The shipped hold file, learned into an empty store and mirrored back, holds
   the same mods with the same words, dates and allowances, row for row. Tested by
   `t_held_stays_held_across_the_mirror`.
