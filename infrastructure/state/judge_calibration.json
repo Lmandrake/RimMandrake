@@ -754,12 +754,12 @@
      "planted (code_review_calibration.py): the 21 claims that are a rare failure the page lists as not handled, or polish, by the same rule; must not be admitted as Problems"
     ]
    },
-   "hash": "eb19bf11dcd11ca3",
+   "hash": "8a37d2250888521c",
    "last_run": {
-    "at": "2026-11-19T08:46:36Z",
-    "cases": "came out the other way: c2.1, c2.3, c2.4, c2.5, c2.7, c2.8, c2.9, c3.1, c3.10, c3.2, c3.3, c3.4, c3.6, c3.8, c3.9, c4.10, c4.11, c4.12, c4.13",
+    "at": "2026-11-19T13:54:07Z",
+    "cases": "came out the other way: c2.9, c3.4, c4.1, c4.14",
     "exit": 0,
-    "out": "sorted 35 of 35; 16 as labelled; answer: /mnt/d/ClaudeWork/rimmandrake/conductor/code_review_calibration_answer.md",
+    "out": "pass mark FAIL: agreed real caught 2 of 3 (limit all); agreed polish called problem 1 of 9 (limit 1); unscored: 31 of 35 as labelled",
     "results": "35 case rows"
    },
    "model_check": [
@@ -910,9 +910,10 @@
      "id": "c4.15"
     }
    ],
-   "reset_at": "2026-11-19T09:00:00Z",
+   "reset_at": "2026-11-19T13:54:07Z",
    "status": "FAILED",
-   "timeout_s": 540
+   "timeout_s": 540,
+   "was": "FAILED"
   },
   "coverage_judge": {
    "brief": [

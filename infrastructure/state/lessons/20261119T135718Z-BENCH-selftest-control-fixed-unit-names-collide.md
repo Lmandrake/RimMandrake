@@ -1,0 +1,3 @@
+selftest_control.py starts real transient units under fixed names (rm-probe-race-a/-b, selftest_control.py:247,255), so two runs at once in different clones collide: the second reads 'Unit rm-probe-race-b.service was already loaded or has a fragment file' and 3 real-unit checks go red (2026-11-19 13:5xZ, two selftest_control processes live, no code change of mine). A red there while another clone runs it is not evidence about your change: check ps for a second selftest_control and rerun alone. A fix would name the units per run (pid or random suffix).
+item: RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS
+home: src/RimMandrake/rimflow/selftest_control.py
