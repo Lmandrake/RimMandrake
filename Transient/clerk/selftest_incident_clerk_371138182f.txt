@@ -1,0 +1,17 @@
+371138182f8fe76b167dc1b9c1ffa5ce6014d477
+== selftest_incident_clerk
+PASS the-daily-deep-read-launches-once-a-day-on-opus: the launcher's account reading and its log name the same model (job_model)
+selftest_incident_clerk: 7 of 7 promises pass
+rc=0
+== selftest_incident_news
+PASS leaving-the-band-gets-its-run: out of band, the alarm run launches at once
+selftest_incident_news: OK (0 fails)
+rc=0
+== selftest_incident
+PASS control: with the collector blind the absent red key is unknown and the incident stays open
+selftest_incident: OK (0 fails)
+rc=0
+== selftest_dispatcher
+ok    E3: incident_step asks the ring gate (go=True): ['ring'] [{'do': 'incident', 'ring_hold': None, 'rows': [], 'rings': [{'how': 'doorbell', 'seat': 'FOUNDRY', 'id': 'i-1', 'text': 't'}], 'cursor': 0, 'snapshot': {}}]
+0 failure(s)
+rc=0
