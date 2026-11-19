@@ -876,6 +876,13 @@ def undo(act_id, why, owner_said=None, per_ruling=None, p=None, now=None, base=0
     own act. Refused, naming why, when a later act depends on it, when it was already undone, or for an act no undo
     inverts (stop, void, import, hold: their own commands). -> {"ok", "why", "act", "line", "after"}."""
     now = time.time() if now is None else now
+    r = _undo(act_id, why, owner_said, per_ruling, p, now, base)
+    if r["ok"] and r["act"]["scope"] == "all":   # the permit follows an undone all-switch too (permit-never-ghosts)
+        permit_sync(p=p, now=now)
+    return r
+
+
+def _undo(act_id, why, owner_said, per_ruling, p, now, base):
     no = lambda w: {"ok": False, "why": w, "act": None, "line": "NOT undone: " + w, "after": None}
     with txn(p) as c:
         a = c.execute("SELECT * FROM acts WHERE id=?", (act_id,)).fetchone()
@@ -924,10 +931,21 @@ def undo(act_id, why, owner_said=None, per_ruling=None, p=None, now=None, base=0
             if not sw or sw["act"] != act_id:
                 return no("%s OFF is no longer the switch's own act (now %s): `pipe on %s` lifts the current one" % (
                     act_id, sw["act"] if sw else "no switch", a["scope"]))
-            u = _act(c, "undo", a["scope"], dict(sw), None, why, owner_said, per_ruling, undoes=act_id, now=now)
-            c.execute("DELETE FROM switches WHERE scope=? AND layer='control'", (a["scope"],))
-            return {"ok": True, "why": None, "act": u, "after": "ON", "line": "%s: OFF %s undone (ON)" % (a["scope"],
-                                                                                                    act_id)}
+            prior = json.loads(a["before"] or "null")     # the switch row this off replaced (before-is-read)
+            if not (isinstance(prior, dict) and prior.get("layer") == "control" and prior.get("scope") == a["scope"]):
+                prior = None
+            u = _act(c, "undo", a["scope"], dict(sw), prior, why, owner_said, per_ruling, undoes=act_id, now=now)
+            if prior is None:
+                c.execute("DELETE FROM switches WHERE scope=? AND layer='control'", (a["scope"],))
+                return {"ok": True, "why": None, "act": u, "after": "ON", "line": "%s: OFF %s undone (ON)" % (
+                    a["scope"], act_id)}
+            cols = [r[1] for r in c.execute("PRAGMA table_info(switches)").fetchall()]
+            c.execute("INSERT OR REPLACE INTO switches (%s) VALUES (%s)" % (",".join(cols), ",".join("?" * len(cols))),
+                      [prior.get(k) for k in cols])
+            after = "OFF" if _live(prior, now) else "ON"
+            return {"ok": True, "why": None, "act": u, "after": after, "line": "%s: OFF %s undone; the OFF it replaced "
+                    "is back, %s (%s)%s" % (a["scope"], act_id, prior.get("act") or "no act", str(prior.get("why"))[:60],
+                                            "" if after == "OFF" else ", lapsed at its until: ON")}
         return no("a %s act is not inverted by undo: use its own command (pipe on/off, maturation_dispatch.py unvoid, "
                   "mod_owner_hold.py lift)" % a["kind"])
 
@@ -2357,9 +2375,24 @@ def log(n=10, p=None):
     rows = _q("SELECT * FROM acts ORDER BY rev DESC LIMIT ?", (n,), p)
     if not rows:
         return ["[] no acts yet (the store at %s is initialised and empty)" % (p or db_path())]
-    return ["%s r%d %s %-5s %s: %s%s" % (r["id"], r["rev"], r["at_pacific"], r["kind"], r["scope"], r["why"][:120],
-                                         " (his words: %s)" % r["owner_said"][:60] if r["owner_said"] else "")
-            for r in reversed(rows)]
+    return ["%s r%d %s %-5s %s: %s%s [%s -> %s]" % (
+        r["id"], r["rev"], r["at_pacific"], r["kind"], r["scope"], r["why"][:120],
+        " (his words: %s)" % r["owner_said"][:60] if r["owner_said"] else "", _brief(r["before"]), _brief(r["after"]))
+        for r in reversed(rows)]
+
+
+def _brief(raw, n=60):
+    """An act's stored before or after, short, for `pipe log` (before-is-read): a switch row as OFF <act> (<why>)."""
+    try:
+        v = json.loads(raw) if isinstance(raw, str) else raw
+    except ValueError:
+        v = raw
+    if v is None:
+        return "none"
+    if isinstance(v, dict) and "layer" in v and "why" in v:
+        return "OFF%s (%s)" % (" " + v["act"] if v.get("act") else "", str(v["why"])[:40])
+    t = v if isinstance(v, str) else json.dumps(v, sort_keys=True, default=str)
+    return t if len(t) <= n else t[:n - 3] + "..."
 
 
 def tick_now():

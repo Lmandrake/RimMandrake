@@ -1,0 +1,20 @@
+# The control store's acts copied to git (rimflow/control_acts_export.py; item
+# RIMMANDRAKE_EXPORT_CONTROL_ACTS_BELT_SPLIT_FROM_SLICE_FOUR; page design/specs/2026-11-19-control-acts-export/boundary.md).
+# Pushes infrastructure/state/control/acts.jsonl to origin/main by plumbing when the store holds a new act; touches no
+# working tree. Runs from the dispatch clone, like the tick.
+# Reading: D:\ClaudeWork\rimmandrake\control\acts_export.json (rewritten only by a run that pushed or found nothing to push)
+# Install:  cp src/RimMandrake/Utils/systemd/rm-control-acts-export.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-control-acts-export.timer
+# Off:      systemctl --user disable --now rm-control-acts-export.timer
+[Unit]
+Description=RimMandrake control acts export to git, from the dispatch clone
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/rimflow/control_acts_export.py
+Nice=10
+MemoryMax=256M
+TimeoutStartSec=5min

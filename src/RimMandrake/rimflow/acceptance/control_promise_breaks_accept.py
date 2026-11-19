@@ -122,6 +122,12 @@ brk("a-test-never-touches-the-live-store", "test_process() ignores RM_UNDER_SELF
 brk("ended-run-is-recorded-ended", "hook_cmd() does not fall through to the seat clones' control.py",
     ("[os.path.abspath(__file__)] + \\\n        [os.path.join(c, rel) for c in wrapup.seat_clones()]",
      "[os.path.abspath(__file__)]"))
+brk("permit-never-ghosts", "switch() leaves the permit alone when the all-switch moves",
+    ('        if scope == "all":      # the containment permit follows the all-switch from every caller, not only `pipe`',
+     '        if False:'))
+brk("before-is-read", "undo() of an OFF ignores its before and always leaves the scope ON",
+    ('            prior = json.loads(a["before"] or "null")     # the switch row this off replaced (before-is-read)',
+     '            prior = None'))
 brk("reused-name-runs-again", "_admit() never treats a reuse_name run as over",
     ('again = spec.get("reuse_name") and old is not None and old["state"] not in LIVE_STATES', "again = False"))
 

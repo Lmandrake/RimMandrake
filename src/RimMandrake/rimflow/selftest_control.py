@@ -2142,6 +2142,33 @@ def t_every_change_is_an_act():
           C.limit("Graffiti", "blind_cycles_total", 9) == 9, "latest first, both undo back to the default")
 
 
+def t_before_is_read():
+    """`pipe log` prints each act's before beside its after; `pipe undo` of an OFF laid over an earlier OFF puts that
+    earlier OFF back (its why and act), not ON; a lone OFF undoes to ON; a limit undoes by a compensating act."""
+    fresh()
+    o1 = C.switch("mod:Graffiti", True, "first off: the earlier reason")["act"]
+    o2 = C.switch("mod:Graffiti", True, "second off laid over it")["act"]
+    lines = C.log(5)
+    mine = [x for x in lines if x.startswith(o2["id"])]
+    check(len(mine) == 1 and o1["id"] in mine[0] and "first off" in mine[0] and "second off" in mine[0],
+          "pipe log prints an act's before (the OFF it replaced) beside its after", lines)
+    u = C.undo(o2["id"], "undo the second off")
+    sw = C._q("SELECT * FROM switches WHERE scope='mod:Graffiti' AND layer='control'", one=True)
+    check(u["ok"] and sw is not None and sw["act"] == o1["id"] and sw["why"].startswith("first off"),
+          "undo of an off over an earlier off restores that earlier off from its before", (u, sw and dict(sw)))
+    check("first off" in (u["line"] or "") and o1["id"] in (u["line"] or ""), "and its line names what it put back",
+          u["line"])
+    u1 = C.undo(o1["id"], "undo the restored first off")
+    check(u1["ok"] and C._q("SELECT * FROM switches WHERE scope='mod:Graffiti' AND layer='control'", one=True) is None,
+          "undo of the restored lone off leaves the scope ON", u1)
+    l1 = C.set_limit("Graffiti", "blind_cycles_total", 5, "limit five")["act"]
+    C.set_account("Graffiti", "blind_cycles_total", 3, "count three", measured=0)
+    ul = C.undo(l1["id"], "undo the limit")
+    check(ul["ok"] and C.limit("Graffiti", "blind_cycles_total", 9) == 9 and
+          sum(r["delta"] or 0 for r in C._q("SELECT * FROM adjustments WHERE kind='count' AND state='live'")) == 3,
+          "a limit undoes by a compensating act: the count set after it still counts", ul)
+
+
 # Each remaining promise's name, bound to the test its "Tested by" line names (the most specific one where it names
 # several); src/RimMandrake/Utils/boundary_check.py reads these. main() runs each function once, whatever its names.
 t_off_blocks_starts = t_race
@@ -2168,7 +2195,7 @@ def main():
               t_reused_name_runs_again, t_end_receipt_outlives_its_clone,
               t_stop_reaches_the_agent, t_kill_verified_dead, t_killed_run_needs_no_hand_step,
               t_stopped_run_spends_no_trial, t_probe_never_lies, t_same_command_twice, t_every_change_is_an_act,
-              t_permit_never_ghosts):
+              t_permit_never_ghosts, t_before_is_read):
         print("== %s" % t.__name__)
         try:
             t()

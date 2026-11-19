@@ -17,6 +17,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import subprocess
 import time
 
@@ -160,7 +161,8 @@ def rec_hash(text, field="reading"):
 
 def _call(prompt, model, timeout=600, system=None):
     """-> (answer dict, usd). One `claude -p` call, no tools, no settings, no MCP; run from /tmp (no project files)."""
-    r = subprocess.run(["claude", "-p", "--model", model, "--output-format", "json", "--strict-mcp-config", "--tools",
+    claude = shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")   # systemd's PATH lacks ~/.local/bin
+    r = subprocess.run([claude, "-p", "--model", model, "--output-format", "json", "--strict-mcp-config", "--tools",
                         "", "--setting-sources", "", "--system-prompt", system or SYSTEM], input=prompt, capture_output=True,
                        text=True, timeout=timeout, cwd="/tmp")
     try:

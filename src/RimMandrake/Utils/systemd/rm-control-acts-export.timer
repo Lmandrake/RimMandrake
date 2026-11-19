@@ -1,0 +1,12 @@
+# Every 15 min. See rm-control-acts-export.service. Live promise: max_age=2h on its reading.
+[Unit]
+Description=RimMandrake control acts export to git, every 15 min
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=15min
+AccuracySec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

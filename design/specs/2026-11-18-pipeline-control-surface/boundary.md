@@ -107,6 +107,12 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **every-change-is-an-act.** Each change is one record: who, when (Pacific), why, before, after. A write prints at
   most 3 lines. `pipe undo` reverses an act or refuses with the later acts in its way. Tested by
   `t_every_change_is_an_act`, `t_verbs`, `t_accounts`.
+- **before-is-read.** `pipe log` prints each act's before beside its after. `pipe undo` of an OFF puts back the switch
+  row its before held: an off laid over an earlier off undoes to that earlier off (its why and act), not to ON. A
+  count, limit or grant is undone by a compensating act, never by writing its before back: that before is a snapshot,
+  and writing it back would erase what was counted since. Added 2026-11-19 by
+  `RIMMANDRAKE_USE_OR_DROP_ACT_BEFORE_VALUE_NOBODY_READS` (the before was written and read by nothing). Tested by
+  `t_before_is_read`.
 - **binds-at-once-from-any-clone.** An act binds when its command returns. It needs no git, publish or tick. Tested
   by `t_clones`.
 - **verbs-answer-in-a-second.** A `pipe` verb usually answers in under 1 second on this machine: "usually" is each
@@ -138,5 +144,8 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **stop order:** pending → seen → done or escalated. escalated → back to pending or seen when the kill failed.
 - **switch:** on ↔ off, one row per scope and layer (ours, his). His layer moves only with his words. A timed off
   (`maturation_dispatch.py pause --until`) turns on by itself at its time, with no new act.
+
+The acts' copy in git (`infrastructure/state/control/acts.jsonl`, written by a timer) has its own page:
+`design/specs/2026-11-19-control-acts-export/boundary.md`.
 
 Later lists beside this page: `polish.md` (outside claims, not fixed) and `next_version.md` (what 0.2.0 might add).
