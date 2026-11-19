@@ -242,6 +242,9 @@
   "src/RimMandrake/rimflow/spend_watchdog.py::run::or-empty": 1
  },
  "reasons": {
+  "src/RimMandrake/rimflow/card_capture.py::_epoch::except-returns-empty": [
+   "RARE (card-capture-reads a-card-time-that-does-not-parse): None for an unparseable time; match skips the card (0 of 135 cards, 0 of 2,888 --by-card events, 2026-11-19)"
+  ],
   "src/RimMandrake/rimflow/designer_stage.py::_epoch::except-returns-empty": [
    "NOT A COLLAPSE: a parser of a string in hand: None for absent or off-format (callers: an-off-format-stage-timestamp)"
   ],
@@ -410,6 +413,59 @@
   ],
   "src/RimMandrake/rimflow/maturation.py::takes_game::except-returns-empty": [
    "NOT A COLLAPSE: inspects a callable in hand; no read"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::_by::or-empty": [
+   "NOT A COLLAPSE: no seat name reads as \"unknown\", the could-not-look answer"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::_clear::or-empty": [
+   "NOT A COLLAPSE: an unreadable run record is not finished, so the run stays the visit's automatic run (fail closed)"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::_ts::except-returns-empty": [
+   "RARE (maturation-dispatch-reads an-opening-time-that-does-not-parse): None for an unparseable time; add_blind/add_ingame then see no hand run; arrivals counts every run (fail closed)"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::_void::or-empty": [
+   "NOT A COLLAPSE: no seat name reads as RV.UNM, the could-not-look answer"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::add_blind::or-empty": [
+   "RARE (maturation-dispatch-reads a-mod-record-that-does-not-parse): M.load drops the parse reason, so cycle_decision sees no Conductor decision"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::end_ledger_runs::or-empty": [
+   "NOT A COLLAPSE: an unreadable run record is not finished, so no run.end is written and the run stays open (promise unreadable-run-record-ends-nothing)"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::forecast::or-empty": [
+   "NOT A COLLAPSE: an unread reading.json leaves clone_seen None, which the forecast lists as UNMEASURED"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::held_rows::or-empty": [
+   "NOT A COLLAPSE: next(...) over the facts in hand (no outside read); a lint misread"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::launch_stage::or-empty": [
+   "RARE (maturation-dispatch-reads a-mod-record-that-does-not-parse): an unparseable record reads stage None, so an in-game launch takes the offline model"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::main::or-empty": [
+   "NOT A COLLAPSE: no seat name reads \"\", which release refuses (\"no seat: pass --by\")",
+   "RARE (maturation-dispatch-reads an-unreadable-last-reading-at-release): an unreadable reading.json prints no stale-release warning"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::pilot_launch::or-empty": [
+   "NOT A COLLAPSE: an unreadable run record counts the run as live, so a second pilot launch is refused (fail closed)"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::pilot_ledger::except-returns-empty": [
+   "RARE (maturation-dispatch-reads an-unreadable-modledger-config): any exception reads as not a pilot, so the run launches the old way, not from the packet"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::pipeline_code::except-returns-empty": [
+   "NOT A COLLAPSE: None is the could-not-look answer; code_changed reads None as no change, so a failed launch is not retried on an unread tree"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::prioritise::or-empty": [
+   "RARE (maturation-dispatch-reads a-mod-record-that-does-not-parse): version None reaches AUT._gate, which then counts no earlier steward run of it"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::read_state::except-returns-empty": [
+   "NOT A COLLAPSE: {} only for FileNotFoundError (measured absent); an unparseable or unreadable state.json raises"
+  ],
+  "src/RimMandrake/rimflow/maturation_dispatch.py::reap_run::or-empty": [
+   "NOT A COLLAPSE: an unreadable record is not finished, so detached_helper finish runs (it reads the record itself)",
+   "NOT A COLLAPSE: an unreadable record after finish starts no return; the line says only the finish exit"
+  ],
+  "src/RimMandrake/rimflow/red_dispatch.py::night_details::except-returns-empty": [
+   "NOT A COLLAPSE: None is the documented cannot-be-read answer; decide checks `details is not None` before reading a PASS"
   ],
   "src/RimMandrake/rimflow/seat_restart.py::_clone_tidy::or-empty": [
    "NOT A COLLAPSE: seat_clones never returns None (a blind reading is an UNMEASURED risk row that alarms); `or []` covers a stand-in"
