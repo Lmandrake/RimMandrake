@@ -256,7 +256,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.cmd == "lint":
         probs = lint_all()
-        if any("unreadable" in x for x in probs):
+        if probs:                                      # print the problems before any summary could trip on the same file
             for x in probs:
                 print("PROBLEM", x)
             print("laws: %d problem(s)" % len(probs))

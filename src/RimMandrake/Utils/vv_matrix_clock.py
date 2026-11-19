@@ -29,15 +29,48 @@ def reading_path():
     return str(rmpaths.rm_path("vv_matrix", "last.json"))
 
 
+def ppid_table():
+    """{pid: parent pid} from /proc (Linux); {} when /proc cannot be read."""
+    t = {}
+    for d in os.listdir("/proc") if os.path.isdir("/proc") else []:
+        if d.isdigit():
+            try:
+                with open("/proc/%s/stat" % d) as f:
+                    t[int(d)] = int(f.read().rsplit(")", 1)[1].split()[1])
+            except (OSError, ValueError, IndexError):
+                continue
+    return t
+
+
+def descendants(pid, table=None):
+    """Every process below pid, whatever its session or group (a child that called setsid still counts)."""
+    table = ppid_table() if table is None else table
+    kids, out = {}, []
+    for c, par in table.items():
+        kids.setdefault(par, []).append(c)
+    todo = list(kids.get(pid, []))
+    while todo:
+        c = todo.pop()
+        out.append(c)
+        todo += kids.get(c, [])
+    return out
+
+
 def run(cmd, timeout):
-    """-> (rc, output). The child gets its own process group; on a timeout the WHOLE group is killed and reaped before
-    this returns, so no build or probe it started outlives the reading (rc 124). A Windows dotnet.exe started through
-    WSL interop dies with its interop parent [guess ~80%]."""
+    """-> (rc, output). The child gets its own process group; on a timeout its whole descendant tree (collected from /proc
+    first, so a descendant that left the group or session is included) and its group are killed and reaped before this
+    returns, so no build or probe it started outlives the reading (rc 124). A Windows dotnet.exe started through WSL
+    interop dies with its interop parent [guess ~80%]."""
     p = subprocess.Popen(cmd, cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, start_new_session=True)
     try:
         out, _ = p.communicate(timeout=timeout)
         return p.returncode, out or ""
     except subprocess.TimeoutExpired:
+        for d in descendants(p.pid):
+            try:
+                os.kill(d, signal.SIGKILL)
+            except (ProcessLookupError, PermissionError):
+                pass
         try:
             os.killpg(p.pid, signal.SIGKILL)
         except ProcessLookupError:

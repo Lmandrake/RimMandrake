@@ -189,6 +189,41 @@ def main():
             break
         _t.sleep(0.1)
     check("L7 a timeout kills the whole process group", rc == 124 and not alive and _t.time() - t0 < 10, (rc, alive))
+    esc = "import subprocess,time;p=subprocess.Popen(['sleep','30'],start_new_session=True);open(%r,'w').write(str(p.pid));time.sleep(30)" % os.path.join(d7, "esc")
+    rc2, _ = C.run([sys.executable, "-c", esc], 2)
+    epid = int(open(os.path.join(d7, "esc")).read().strip())
+    gone = False
+    for _ in range(20):
+        try:
+            os.kill(epid, 0)
+        except ProcessLookupError:
+            gone = True
+            break
+        _t.sleep(0.1)
+    if not gone:
+        try:
+            os.kill(epid, 9)
+        except ProcessLookupError:
+            pass
+    # (here an orphan is reaped by the host anyway, so the live case above cannot go red: the tree walk is checked directly)
+    table = {10: 1, 11: 10, 12: 11, 13: 12, 20: 1, 21: 20}           # pid -> parent; 12 and 13 may sit in other sessions
+    check("L7 the descendant walk finds the whole tree, other sessions included, and nothing else",
+          sorted(C.descendants(10, table)) == [11, 12, 13], C.descendants(10, table))
+    check("L7 a timeout kills a descendant that left the group", rc2 == 124 and gone, (rc2, gone))
+    keep2 = dict(V.LAW_FILES)
+    nolaws = os.path.join(bad, "nolaws.json")
+    open(nolaws, "w").write('{"mod": "FlowWorks", "families": {}}')
+    V.LAW_FILES["FlowWorks"] = os.path.relpath(nolaws, V.ROOT)
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            code = V.main(["lint"])
+        check("L6 lint on a law file with no laws prints its problem and exits 1", code == 1 and "no laws" in buf.getvalue(), (code, buf.getvalue()[-200:]))
+    except Exception as ex:                              # noqa: BLE001
+        check("L6 lint on a law file with no laws prints its problem and exits 1", False, repr(ex))
+    finally:
+        V.LAW_FILES.clear()
+        V.LAW_FILES.update(keep2)
     print("vv laws: %d failed" % len(FAILS) if FAILS else "vv laws: all passed")
     return 1 if FAILS else 0
 
