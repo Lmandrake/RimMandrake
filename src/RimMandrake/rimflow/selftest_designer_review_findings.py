@@ -202,6 +202,7 @@ SECTIONS = [
     examiner_is_author_by_id,
     lambda tmp: flawed_criterion_not_designers(),
     cli_repin_reads_concept_clone,
+    malformed_results_reject,
 ]
 
 

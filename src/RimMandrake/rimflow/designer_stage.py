@@ -917,7 +917,7 @@ def scene_errors(sc, tree=None, repo=REPO):
         if s["kind"] == "acceptance":
             for r in reqs:
                 own.setdefault(r, []).append(s["id"])
-    for s in [s for s in sc["scenes"] if isinstance(s, dict) and s.get("kind") == "interaction"]:
+    for s in [s for s in sc["scenes"] if isinstance(s, dict) and s.get("kind") == "interaction" and CT.txt(s.get("id"))]:
         for f in lst(s.get("features")):
             if f not in own:
                 errs.append("scene[%s]: feature %s has no acceptance scene of its own; an interaction scene never "
@@ -1472,7 +1472,10 @@ def result_errors(res, d, st, repo=REPO):
     if out not in OUTCOMES:
         return ["outcome %r is not one of %s" % (out, "/".join(OUTCOMES))]
     owner_ev = CT.owner_events(repo, clone_of(d))
-    rec = read_json(os.path.join(d, "record.json"))
+    try:
+        rec = read_json(os.path.join(d, "record.json"))
+    except Refused as e:    # the run's own file: a rejection, never a crash (RIMMANDRAKE_REJECT_MALFORMED_DESIGNER_RESULTS_NOT_CRASH)
+        return [str(e)]
     if out == "blocked":
         return [] if CT.txt(res.get("on")) else ["blocked names no dependency (on)"]
     if out == "return":
@@ -1488,6 +1491,9 @@ def result_errors(res, d, st, repo=REPO):
     # while owner_events above continues to merge evidence from both clones.
     artifact_repo = clone_of(d) or repo
     errs = record_errors(rec, artifact_repo, owner_ev, concept_of(st, d))
+    if rec is not None and (not isinstance(rec, dict) or any(not isinstance(rec.get(k, []), list) for k in (
+            "scope", "decisions", "asks", "inventory", "contradictions"))):
+        return errs     # record_errors named the shape; the checks below would only crash on it
     if out == "waiting_owner":
         if stage not in DIALOGUE:
             return ["only stages 1-2 send him questions; stage %d returns to stage 2 with the question" % stage]
@@ -2198,8 +2204,13 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
                      "stage" if tokens is not None else "unmeasured", "run %s" % run)
     else:
         raise Refused("runner must be claude or codex")
-    res = read_json(os.path.join(d, "result.json"))
-    errs = result_errors(res, d, st, repo)
+    try:
+        res = read_json(os.path.join(d, "result.json"))
+    except Refused as e:    # an unparseable result.json is a rejected result, charged, never a run left open
+        res, unparsed = None, str(e)
+    else:
+        unparsed = None
+    errs = [unparsed] if unparsed else result_errors(res, d, st, repo)
     if transport_error:
         errs.append("Codex transport failed: %s" % str(transport_error))
     # an input changed while the run worked (a late owner reply, an edited artifact it did not make): the result is
