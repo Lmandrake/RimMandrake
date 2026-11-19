@@ -1,5 +1,79 @@
 # The Stillsand: what the rewrite chose, what it lost, and why
 
+## Second reader, 2026-11-18
+
+A different agent from the one that wrote this page and the design read the sources again, starting with the ones
+the first pass read in part or not at all, and checked each idea in them against the rows below.
+
+**Rows added: 86**, in the table "Added by the second reader" at the end of "Every idea, row by row". Three of
+the first pass's rows were corrected in place and say so (the sun lance, the solar still, the roads ban).
+
+**The three most valuable things the first read missed.**
+
+1. **The hull wear was in the sources, and the frame is built.** The first design said *"No shared system for
+   hull wear was found in `src/`"* and gave drift no source. `src/RimUtinni/ShipShields/` wears a landed ship in
+   extreme heat and in blown sand, with his thermal veil and light screen as the answers (2026-09-02). The frozen
+   sheet says of anything that stands here: *"a structure is buried on its windward face and undercut on its
+   lee"*, and, as if for this crew, *"crawler-scale machines are the only settlements that make sense in a
+   landscape that buries fixed ones."* A kept idea already names the ship as a drum: the krayt attack is
+   *"weighted up by... vibration (drilling, a landing ship, the thumper)"*. With these came two doubts, both
+   flagged: the built heat line is 58 °C and much of this biome is measured cooler, and the dune gale carries no
+   falling sand, so the frame cannot see the biome's own storm.
+2. **Two of his own card picks were on the "recommended for dropping" list, and one is half the ship's gift.**
+   The cleanse of 2026-11-17 recommended retiring the sun lance and the mirage. He took both by card on
+   2026-09-30. The lance and the solar still are also the Stillsand's answer on record to his question of
+   2026-09-24, *"how can this biome uniquely add something to the ship?"*
+3. **What a firefight and a gale do here.** *"Fighting here starts a clock. Kill, loot fast, leave. A battle left
+   standing becomes a zuurrik bloom"*, and *"The gale blinds the swimmers... A player who learns this crosses the
+   Stillsand in the gale."* Both are built, both were ruled in, and neither was in the section on the Empire.
+
+Close behind: his word of 2026-10-20 that put roads back across the Stillsand (*"For now just replicate where we
+had roads before."*), which the first design's premise quoted the old ban against; the piinnok, the watcher whose
+lenses *"turn to follow"* and all sink when something large passes; the dead sandcrawler's note, *"We ran her
+until the sand had her. If you find her, start her once before you take her apart. She will know you."*; fine
+sand as *"a trade commodity"* by his card, which is what a crew pays for fuel with; and *"move in the shadow of
+your own landed ship."*
+
+**What changed in the design, and why.**
+
+- *Hull:* rewritten onto the built shield frame; the false sentence that no hull system exists is deleted; heat,
+  blown sand, drift and large animals each carry their source; one proposal of the second reader's own (ollim
+  cladding) is flagged as such. The two cut wears (*the dunes take the ship*, card of 2026-09-30; gale abrasion,
+  cut 2026-10-23) stay cut and are `NEEDS HIM` 2. No typed words of his exist for either cut; the question says so.
+- *Scope:* the lens kit (solar still and sun lance) is in 0.2.0 as the ship's gift; the sun lance is off the
+  dropping list; the piinnok is named in 0.1.0; the two found rites of the Jawa's own faith are in "later".
+- *Roads:* the premise sentence now gives the sheet's ban and his later word together.
+- *Cover and the Empire:* the gale keeps swimmers down; the zuurrik clock; raids that *"pick the side without a
+  wall"*.
+- *Fuel:* who sells (caravans exist because the vaalok was built) and what the crew pays with (sand).
+- *Power:* the ship's solar is no longer "unmeasured": an older pass read the code. It is still unwatched in play.
+- *Lines carried in:* nine, among them *"The light is a fixed condition, like the pressure at the bottom of a
+  sea"* and the gaanok's *"patient, visible, and correct."*
+- *Whose word wins:* the cleanse's lines were checked against his dated cards; the lance and the mirage fall to
+  earlier picks of his. **The locked tree is not edited.** Its root describes a colony that stays and names the
+  workshop; the design's status header says so, for a later Designer run to reconcile.
+
+**Measured counts** (script: `design/RimMandrake/biome_recheck_row_check_2026-11-18.py`, and the reader's own
+source list checked against disk): **271 rows** (185 from the first read, 86 added); **27 lost**, **19 moved** and
+5 more that record a move in part, 10 kept and reshaped, 1 folded into shared machinery, 214 kept. **Sources: 15
+read to the end, 9 read in part, 18 not opened.** Read to the end: all seven files this page lists for deletion
+(the roster json entry by entry, each eviction's reason cut at about 95 characters) and the cast bible it says to
+hold; the tree's `root.md`, `sheet.md` and `journal.md`; the cleanse's owner pages; his answers and the questions
+he was shown; the ship-gifts item. Read in part, at this biome's sections: the rites pass and register, the
+mechanics review, the fluff cuts, the watcher pitch, the shield rulings, the dunes design, the gale's weather def,
+the lens-chain item. **Not opened by the second reader:** the tree's `tree.json`, `scenes.json`, `record.json`,
+`plan.md`, `log.md`, `coverage_verdict.json` and stage-two and stage-three reviews; the cleanse's next-version
+list, definition, tickets, ambiguities and models; the validation walk; the rehearsal's notes, questions and
+record; and the Stillsand's forty-odd build items other than the one named. Every one of those stays on disk; an
+idea that lives only in them has not been checked by this pass.
+
+DELETE-READY: yes
+
+That line covers the seven files listed for deletion at the end of this page and nothing else. The cast bible
+stays held as that list says. What the same list says to do first still stands: move the sarlacc carve-out
+paragraph of `deep_desert.md` to the sarlacc's design, and repoint the tree's `sheet.md` and the build items that
+cite the two sheets by section.
+
 Companion to `design/concepts/Stillsand/design.md`, written 2026-11-18 by the same pass. Its job is to let the older
 files be deleted without fear: every distinct idea found in any source has a row saying what became of it. Nothing
 has been deleted. The older files this design replaces are listed at the end.
@@ -105,7 +179,7 @@ three* = `biomes/stillsand_turn3_development_2026-09-30.md`; *cast bible* =
 `design/concepts/Stillsand/cleanse/`; *walk* = `design/validation_walks/RimMandrake/Stillsand.md`; *owner answers* =
 `design/RimMandrake/designer_codex_2026-11-09/Stillsand/ANSWERS_OWNER.md`; *fluff cuts* =
 `design/RimMandrake/fluff_cuts_2026-10-23.md`; *experiences* = `design/RimMandrake/biome_experiences_2026-10-20.md`;
-*campaign lore* = `design/Jawa/reconciled_lore/01_campaign.md`.
+*campaign lore* = `design/Jawa/reconciled_lore/01_campaign.md`. Added by the second reader: *shield rulings* = `design/Jawa/proposals/ship_shields_deep_design.md` and `src/RimUtinni/ShipShields/`; *ship gifts* = `infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md`; *rites pass* = `design/Jawa/biome_rites_pass_2026-10-01.md` and `design/Jawa/salvation_rites_2026-10-01.md`; *watcher pitch* = `design/RimMandrake/watcher_creatures_pitch.md`; *mechanics review* = `design/RimMandrake/special_mechanics_review_2026-10-22.md`; *biome def* = `src/RimMandrake/Stillsand/Defs/BiomeDefs/` and `Defs/WeatherDefs/RM_DuneGale.xml`; *owner ledger* = his recorded words and cards, read with `src/RimMandrake/rimflow/owner_rulings.py`; *dunes design* = `design/MOVING_DUNES_DESIGN.md`.
 
 ### The place
 
@@ -137,7 +211,7 @@ three* = `biomes/stillsand_turn3_development_2026-09-30.md`; *cast bible* =
 | The hard bans of the dune sheet | dune sheet §6 | kept as rules | | |
 | No fire: there is no fuel | dune sheet §6; deep sheet §6 | kept, quoted as the fuel answer | | |
 | No corroded ruins: wreckage is scoured bright | dune sheet §6 | kept, quoted | | |
-| No roads through the deep dune | dune sheet §6 | kept, quoted: it is why the Jawa are out of their depth | | |
+| No roads through the deep dune | dune sheet §6 | kept, reshaped (corrected by the second reader): quoted as the sheet's ban, with his later word that put the roads back | Owner, 2026-10-20: *"For now just replicate where we had roads before."* | |
 | Solar power at full uptime forever; "infinite power in exchange for infinite logistics" | dune sheet §7; bedazzle §4.5 | kept as a consequence of the pinned sky; the power-station colony lost | Colony fantasy. | A landed-ship power bonus: small, needs the ship's power read. |
 | Optical-grade biosilica | dune sheet §7 | kept as a thing to take away | | |
 | Giant mass: hide, plate, tallow, bone | dune sheet §7 | kept; tallow cited for fuel | | |
@@ -294,9 +368,9 @@ three* = `biomes/stillsand_turn3_development_2026-09-30.md`; *cast bible* =
 | idea | source | what happened | why | the other choice, and its cost |
 |---|---|---|---|---|
 | Sand to glass to lens; sun furnace, lens bench | turn three §2.4; cast bible | kept in "later" | See above. | |
-| Solar still and solar oven | turn three §0, §2.4 | kept in "later" | | The still alone in 0.2.0, as ship's kit. |
+| Solar still and solar oven | turn three §0, §2.4 | kept in "later" (the oven); the still moved (later → 0.2.0; corrected by the second reader) | The still is half of the ship's gift. | |
 | Sieve; pearl and krayt lenses; crest-plate oven; brine dipping and salt | turn three; cleanse | kept in "later" | | |
-| The sun lance | turn three §4; cleanse | lost (recommended for dropping) | | |
+| The sun lance | turn three §4; cleanse | moved (recommended for dropping → 0.2.0; corrected by the second reader) | His card pick of 2026-09-30 and half of the ship's gift; see the added rows. | |
 | The wringing still | turn three §4; cast bible ruling 10 | kept in "later" | | |
 | The Sun-Debt as a counted ledger | turn three §2.3 | kept in "later" (campaign) | | |
 | The Return at a debt stone | turn three §2.3; review §8 | kept in "later"; flagged above | | |
@@ -322,7 +396,100 @@ three* = `biomes/stillsand_turn3_development_2026-09-30.md`; *cast bible* =
 | The walk's anti-guessing notes | walk | kept; they are test knowledge, not design | | |
 | Admission to the pipeline on Codex; held by the owner | tree | kept as a fact | | |
 
+### Added by the second reader
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| The ship's exposure tracker, its landing advisory and the thermal veil: *"reflect all external heat outward with a mild mirror sheen... so the temperature slowly climbs anyway"* (owner, 2026-09-02) | shield rulings | kept, quoted: now the design's hull answer for heat | The first read wrote that no hull system exists. | |
+| The light screen handles *"wind, ash, vapor... sand... completely"*; the stock sandstorm is in this biome's weather table | shield rulings; review §2; biome def | kept, cited | | |
+| The dune gale is written to carry no falling sand, so the shield frame cannot see it | biome def | kept as a build gap in the hull section | | Give the gale a sand rate: the dunes engine already moves the field. |
+| The tracker's heat line is 58 °C; the sheets give 52 to 70 °C in the dune sea and 26 to 43 °C in the far ring | shield rulings; dune sheet §2; deep sheet §0 | kept as an `UNMEASURED` flag | The built heat wear may not fire on much of this biome. | |
+| The heavy field *"resists impactors, blaster fire, and large animal assault"* | shield rulings | kept, quoted against krayt, muurrok and busters | | |
+| The krayt attack is *"weighted up by... vibration (drilling, a landing ship, the thumper)"* and goes *"toward whatever is making the most noise"* | turn three §2.5 | kept, quoted as wear on the hull (0.2.0, campaign layer) | A kept idea that names the ship; the cut one did not need reviving. | |
+| *"A structure is buried on its windward face and undercut on its lee"*; no *"permanent structure not either buried or actively dug out"* | dune sheet §6, §8 | kept, quoted: it is the source for drift on the hull | The first read gave drift no source. | |
+| *"Crawler-scale machines are the only settlements that make sense in a landscape that buries fixed ones"* | dune sheet §8 | kept, quoted | It is written about a ship. | |
+| *"Move in the shadow of your own landed ship"* | turn three §2.7 | kept, quoted: the ship as the fourth shade | | |
+| *"Where debris falls it makes shade, and shade makes a small living biome right beside it"*; a wreck's shade is *"a hard-edged permanent shape, and the player can see why that shape is worth owning"* | deep sheet §8, §9 | kept, quoted; read as the ship's own lee | | |
+| Ollim wood as hull cladding against heat | none (deep sheet §4b gives the wood) | kept as the second reader's proposal, flagged | His ruling names armour; no source puts ollim on a hull. | Leave it out: free. |
+| The lens kit as the biome's gift to the ship: *"the lens-glass solar still and sun lance, fuel-free on an open deck"* | ship gifts | moved (still: later → 0.2.0; lance: recommended for dropping → 0.2.0) | His every-biome ship question of 2026-09-24 outranks the cleanse; both are built. | Leave both where the first read had them: the Stillsand gives the ship nothing in two versions. |
+| The sun lance was his own card pick (slate IN, 2026-09-30), with gale static, dust devils, the mirage, glare and goggles, singing dunes, droids and the thumper | cast bible ruling 6 | kept, corrected: the lance is off the "recommended for dropping" list | The cleanse's retirement list is checked against his earlier cards. | |
+| Roads: *"For now just replicate where we had roads before."* (owner, 2026-10-20); 196 road links cross the Stillsand on the record | owner ledger; biome def | kept, corrected in the design | The sheet's *"No roads through the deep dune"* was the first design's premise; his later word replaced the ban. | |
+| Fine sand is *"a trade commodity"* (card, 2026-09-30); glass sand is the ingredient of the Pyrelands' Struck Glass rite (card, 2026-10-16) | cast bible §7; owner ledger | kept: named as what the crew pays for fuel with | | |
+| The free tier has no trader caravans without its own pack giant, the vaalok | bedazzle §2d; review §5; roster json | kept (built); cited for who sells | | |
+| *"The gale blinds the swimmers... swimmers stay down and strike rates collapse"*; *"A player who learns this crosses the Stillsand in the gale"* | turn three §2.2 | kept, quoted (0.2.0, with the gale) | It changes what the gale is for, for the crew and the Empire both. | |
+| The gale drowns the rumble; the oommok hunkers and *"its shadow stops moving"* | turn three §2.2; review §8 | kept with the gale | | |
+| A pawn carried off the map *"comes back: the next gale or dune pass drops the body, or the living pawn as a wanderer"* | turn three §2.2 | kept with the carry and return | | |
+| What a gale can uncover: a caravan, a hull, a sealed Jawa cache, a giant skeleton or a cave mouth | turn three §2.2 | moved with the gale (→ 0.2.0) | | |
+| The zuurrik's rule: *"fighting here starts a clock. Kill, loot fast, leave. A battle left standing becomes a zuurrik bloom"*; it never attacks the unwounded | review §6, §8 | kept, quoted in the Empire section and as a moment (0.2.0) | The first read listed the animal and not what it does to a firefight. | |
+| *"The veessa mills the dry dead, the zuurrik the wet"* | review §6 | kept | | |
+| The piinnok: *"the one thing that tracks anything: you"*; *"living geophones"*; better biosilica when butchered | review §6; watcher pitch | kept, quoted, with its moment; in 0.1.0 (built in the watcher kit) | Admitted by card 2026-09-30; the first read left it to "its own mod". | |
+| The two gaps the review named: nothing wakes to blood; *"the glass is only ever a plant"* | review §6 | kept (zuurrik and piinnok fill them) | | |
+| The Last Track: a dead crawler at the end of a tread, the drive turned over once: *"We ran her until the sand had her... She will know you."* | rites pass §9.1 | kept, reshaped: the crawler and its note are in the first day; the rite is in "later" | Ruled-kept 2026-10-02; rites since put under review. | The rite in 0.2.0: campaign layer, small. |
+| The Unspilled March: full water carried toward a mirage and none drunk: *"He is the pool that walks away."* | rites pass §9.2 | kept in "later", quoted | The Return's opposite, for the Jawa's own faith. | |
+| The Return is the Tribes' own; a Salvation colony cannot learn it (ruled 2026-10-01) | rites pass §9 | kept, stated | | |
+| Rites under review: *"Many of them are somewhat fluff"* (owner, 2026-10-23); the review's opinion on the Stillsand rites was "cut" | owner ledger; mechanics review | kept as the reason the rites stay in "later" | | |
+| *"The light is a fixed condition, like the pressure at the bottom of a sea"*; a stone's shadow *"will be exactly that shadow when your great-grandchildren find it"* | dune sheet §1 | kept, the first quoted | Dropped lines worth carrying. | |
+| *"The limiting danger is the light itself"*; shade shelters *"against merciless radiation, not merely heat. An animal caught in the open is being sterilised, not just cooked"* | dune sheet §2; deep sheet §3 | lost | One sun from geometry: no second kind of harm from the sky. | |
+| What ends dormancy: *"free water, a vibration, a temperature anomaly, blood"*; *"It wakes up because something did something"* | dune sheet §4 | kept (the landing is three of the four) | | |
+| *"Nothing is dormant-looking; everything is actually dormant. Absence of visible activity... proves nothing"* | dune sheet §5 | kept as the place's rule | | |
+| Buried finds are found *"when the dune moves off it or a giant's foot breaks the crust"* | dune sheet §8 | kept (caches); the giant's foot is not built | | |
+| Giants *"cannot be ambushed and cannot be outrun, only outlasted"* | dune sheet §7 | kept as flavour | | |
+| *"Pristine and buried"* here against *"corroded and standing"* elsewhere: *"Two utterly different salvage games, and a Jawa clan wants both"* | dune sheet §7 | kept | | |
+| *"Draw the desert so the line lands like a shout"*; giants *"drawn at a scale that breaks the composition on purpose"* | dune sheet §9 | kept as art direction | | |
+| *"If the dune sea's roster looks healthy, it is wrong"*, against his *"but we need to fill out that roster. That's silly. More!"* | dune sheet; owner ledger 2026-09-28 | kept: his later word made the fill-out, and every row of it is sparse | | |
+| Sand busters *"do not glide through the dune, they ERUPT from it"*; the ground must be dry; *"an eruption scar is the only mark it leaves"* | dune sheet amendment | kept | | |
+| The busters' carcass: giant chitin plate in the mirror palette | bedazzle §4.1 | kept as a thing to take away | | |
+| *"Digging is drumming"*; *"vibration is the dinner bell for everything subsurface"* | bedazzle §4.3 | kept | | |
+| *"A creature that watches you walk past is doing arithmetic, and this reads as far more alien than aggression"* | deep sheet §4 | kept (the gaanok) | | |
+| *"The prize is a full animal, and a dried one is worthless"*; nobody caches | deep sheet §4 | kept as flavour | | |
+| The fliers' guano, dropped prey and dead chicks are the only organic import; a nesting crag is *"the richest square kilometre of surface in the biome"* | deep sheet §4; fill-out §2.1 | kept with the soorrak | | |
+| The ollim *"nursing the very source of water that might sustain it"*; *"The bones and the tree are one system"*; a stand *"older than any ruin"* | deep sheet §4b | kept | | |
+| The cave beast: *"a huge shaggy thing deep in a cavern, with massive eggs a Jawa would cross a desert for"* | deep sheet §8 | kept (the guzzka) | | |
+| *"The weapon that wins is the one you can barely afford to use"*; fire-keeping sacred beside the Sun-Debt | deep sheet §8 | kept with the tribes (campaign layer) | | |
+| *"What is destroyed here stays destroyed"*; *"a predator that watches you go by without bothering to rise"* | deep sheet §1, §9 | kept as mood | | |
+| The sarlacc's three stages, dew ring and breach flood; *"The water in your cave becomes a mouth"* | deep sheet §6; turn three §2.5 | kept in the campaign layer, later | | |
+| The canon cast by name: war wyrm (ruled a burrower by card, 2026-09-09), krayt, greater krayt, kreetle, granite slug, scurrier, gizka; the bloddle plant; five canon pack beasts | bedazzle §2a; roster json | kept in the Star Wars layer | | |
+| *"That emptiness is the intended outcome… what you meet there should be something that arrived"* | bedazzle §4.6 | kept, as the admission test's second half | | |
+| *"Deep sand pools are NOT unwalkable, just very slowly. And they should be an entire terrain type... Muchly in the Stillsand."* (owner, typed) | bedazzle rulings | kept, his words now on the row | | |
+| The solar offer: the sun as *"the campaign's energy anchor"*, the gravship's appetite sited here on purpose; solar read from the code as following sky brightness | bedazzle §4.5; turn three §2.4 | kept, reshaped: stated as a reason a ship can stay, with the code reading | The first read marked it unmeasured; turn three had read the code. | |
+| The egg cistern and the solar catch-yard as ship parts | bedazzle §6 | lost | Never carded; the gift on record is the lens kit. | A hold rack for canteen eggs: small. |
+| The ikee's label *"drageye"*, the builder's word after he ruled the Stillsand's eye gets *"a new distinct label"* | review §1 | kept as an open naming row | | |
+| The nizzek, the drazzik clutch's hatchling, *"hostile from the shell"* | review §2; cast bible | kept (the wrong egg) | | |
+| The vozzik, a barely moving slug giant | bedazzle; roster json | lost from this biome | He moved it out on 2026-10-04 (*"This should go into the Warscar."*). | |
+| Ulgga, vosska and the ultriss pad moved in by his sheet notes of 2026-10-04; the kudda cut (*"It's dumb."*) | roster json | kept as ruled | | |
+| Dunealisk and korrum on the roster; dead trees purged (*"dead standing wood is imported treasure, never scenery"*) | roster json | kept as the record of the cast | | |
+| The Sun-Debt's words: *"The sun lends and the sand collects… We take back what was drawn"* | review §2; turn three §2.3 | kept in "later", quoted here | | |
+| The Debt as a valve: *"the krayt is the debt collector, and the storyteller agrees"*; a bad Return is *"a debt refused"* | turn three §2.3 | kept in "later" (campaign) | | |
+| *"The sand remembers water"*: wet sand draws swimmers, *"the rumble comes to the pour"* | turn three §2.3 | kept (the wet thumper is its use) | | |
+| Hourbloom's triggers include *"a breached cistern, a spilled tank"*; *"dead land proving it was never dead"* | fill-out §3.1 | kept in "later"; a ship's spill is a trigger | | 0.2.0: a bloom from the crew's own accident. |
+| The sand stalker under a fishing pool, waiting for *"a dune crawler, or a boot"*; the glass pearl, *"a lens that grew a skin"* | turn three §2.0 | kept with fishing | | |
+| The third-party sandworm as a reference only; the Long Hunger *"erupts, pulses tremor damage, submerges dropping salvage"* | turn three §2.0 | kept in the campaign layer | | |
+| The krayt's goods: skull, pearl *"in the gizzard stones"*, the graveyard scatter | turn three §2.0, §3.1 | kept in the Star Wars layer | | |
+| The dunes engine's own figures and limits: it cannot bury pawns, corpses or turrets; its wind wanders where the sheet's never turns | turn three §2.0; dunes design | kept as build notes | | |
+| The wake as *"a low travelling ridge with a spray of grains off its crest"*; *"Hard ground is therefore a moat"* | turn three §2.1 | kept | | |
+| *"A quiet map is not a safe map, and a loud one is not a warning"* | turn three §2.1 | kept as the sound bed's rule | | |
+| *"We can't have animals 'disappear spontaneously.' There needs to be SOME kind of indication of what happened to them."* (owner) | turn three §0 | kept: his words behind "nothing vanishes" | | |
+| The muurrok seen cruising: *"a line of glare moving across the dunes, a blade of light cutting the corrugation"*; *"one take, and is gone"*; its crest-plate | turn three §2.5 | kept with the muurrok (0.2.0) | | |
+| *"Yes and use the beam attack style from mechanics due to reflections"* (owner, typed) | cast bible ruling 3 | kept, his words now on the row | | |
+| The den quest as *"the Mandalorian beat"*: bait, drum, charges; the krayt *"spits acid"* | turn three §2.5 | kept in "later" (campaign) | | |
+| The cave: *"The hiss drops away at the mouth... Deeper, sometimes, is something breathing"*; *"To settle it, you must take it from whatever already lives in it"* | turn three §2.6 | kept | | |
+| A taken cave's *"cold hearth"*: *"the empty one is a sign too"*; a rockless map may seat one small tor | turn three §2.6 | kept (taken before); the mark itself was cut | | |
+| The lens chain's parts: a furnace that *"needs no fuel"*, pearl and krayt lenses, the still fed by brine, wet kills or the dead; an oven that is *"a stove for a biome with nothing to burn"* | turn three §2.4 | kept in "later", except the still, moved with the kit | | |
+| Lost with the one-sun ruling: the sand glare floor, the paved *"shade yard"*, cover that switches at 55° | turn three §2.7; cast bible | lost | 2026-10-19: roofs and parasols at every angle, no biome number. | |
+| *"The colony is a power plant keeping itself alive"*; *"Every counter feeds a danger"* | turn three §2.7 | lost as colony talk; the second kept as the biome's shape | | |
+| Skeletons: *"Luke passed one in the first film"*; *"you can find a skeleton with your eyes shut"*; a funnel in the ribs means it *"was taken from below"*; *"The biome keeps score"* | turn three §3.1 | kept | | |
+| The track table: crawler treads lead to *"a dead crawler at the end"*; oommok prints *"a day apart"*; a glasscrust scar is *"the oldest route on the map"*; *"The map is a page"* | turn three §3.2 | kept | | |
+| Raids *"arrive knowing your layout and pick the side without a wall"* | turn three §3.3 | kept, quoted in the Empire section | | |
+| The thumper as *"the drazzik's lie, made by hand"*; the wringing still: *"It is how the desert has always drunk"* | turn three §4 | kept with each | | |
+| The fill-out's lines: the gaanok *"patient, visible, and correct"*; the liikka's glints that *"have moved"*; the duumma's quiet sand; the loomma that *"cannot survive twenty minutes"* outside its shade | fill-out §2 | kept, the first two quoted | | |
+| *"Your color palette is too uniform per biome. Needs more variety."* (owner) | cast bible §2 | kept as art direction | | |
+| His answer on fortune names lens production (*"potentially including useful lens production"*, 2026-11-10) | owner answers | kept as support for bringing the kit forward | | |
+| The wetting technique *"the Stillsand is already developing for spilled water on the sand"* (owner, 2026-11-04) | owner ledger | kept in "later" with the thin film | | |
+| The Listening's limits: the geophone is taught by *"studying a ruukka corpse or a spent mound"*; *"the readout must stay coarse... or the biome's dread dies"* | review §8 | kept with the geophone (0.2.0) | | |
+
 ## Sources read, and the count
+
+*(The first read's own account follows. The second reader's reading and recount are at the top of this page.)*
 
 Measured after writing (a script counted the table rows and the first words of the "what happened" column):
 **21 source files, 185 rows**, of which **23 lost**, **18 record a move** (whole or in part), **7 kept, reshaped** and 1 folded into shared machinery. Every source named above is in at least one row's source column (checked by the same script).
