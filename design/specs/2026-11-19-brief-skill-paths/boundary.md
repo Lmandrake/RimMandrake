@@ -30,4 +30,4 @@ This page covers only the warning; the rest of `detached_helper.py` has no page 
 - **the-warning-refuses-nothing.** The warning never changes a launch's exit code or stops it, and a refused launch's
   text stays exactly the gate's own (no warning is added to it).
 
-Later lists beside this page: `polish.md` and `next_version.md` (none yet).
+Later lists beside this page: `polish.md` (two lines, from the two looks in `looks.md`) and `next_version.md` (none yet).
