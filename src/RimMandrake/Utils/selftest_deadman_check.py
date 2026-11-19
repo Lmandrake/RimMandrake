@@ -150,6 +150,45 @@ def sweeps():
         check(True, "a bad baseline line raises")
 
 
+def no_todoist():
+    """Owner, 2026-11-19: Todoist is retired as an alert route. With RM_TODOIST_ALARM_POSTS unset the real pusher's
+    sweep attempts no HTTP call to Todoist, the sweep still reports, and the report says the phone route is off."""
+    import types
+    import urllib.request
+    sys.path.insert(0, str(HERE / "ops_core"))
+    import phone_push as pp
+    keep_t, keep_ul = pp.todoist_transport, urllib.request.urlopen
+    keep_mod = sys.modules.get("todoist_api")
+    import importlib
+    importlib.reload(pp)
+    pp.STATE = TMP / "phone_push_off.json"
+    os.environ.pop("RM_TODOIST_ALARM_POSTS", None)
+    calls = []
+
+    def boom(*a, **k):
+        calls.append(a)
+        raise AssertionError("HTTP to Todoist attempted")
+    sys.modules["todoist_api"] = types.SimpleNamespace(Todoist=boom)
+    urllib.request.urlopen = boom
+    try:
+        pusher = DM.real_pusher()
+        chk = lambda line: "rm-dead.timer is inactive" if "dead" in line else None
+        refused = lambda todo, conf: {t["item"]: "ledger write refused" for t in todo}
+        arms = {"dispatcher": None, "ops_watch": "ops_watch last ran 61 min ago (limit 50 min)"}
+        r = DM.sweep(NOW, refused, {}, [DEAD], arms, chk, pusher=pusher)
+        check(not calls, "deadman with Todoist retired attempts no HTTP call: %r" % calls)
+        check(r["phone"] and all(x.startswith("phone off") for x in r["phone"]),
+              "the report says the phone route is off, never 'pushed': %r" % r.get("phone"))
+        check(r["line"], "the sweep still reports with the phone off")
+    finally:
+        urllib.request.urlopen = keep_ul
+        if keep_mod is None:
+            sys.modules.pop("todoist_api", None)
+        else:
+            sys.modules["todoist_api"] = keep_mod
+        pp.todoist_transport = keep_t
+
+
 def phones():
     """DEADMAN_WIRE_PHONE_WITHOUT_AI: a dead arm or a broken timer rings the phone through the real phone_push (its
     transport faked, its state in TMP), once per outage, whatever the filer did; recovery closes the key."""
@@ -158,6 +197,7 @@ def phones():
     pp.STATE = TMP / "phone_push.json"
     sent = []
     pp.todoist_transport = lambda title, body: sent.append((title, body))
+    os.environ["RM_TODOIST_ALARM_POSTS"] = "1"  # the routing is tested with the retired Todoist route switched back on
     chk = lambda line: "rm-dead.timer is inactive" if "dead" in line else None
     refused = lambda todo, conf: {t["item"]: "ledger write refused" for t in todo}
     arms = {"dispatcher": None, "ops_watch": "ops_watch last ran 61 min ago (limit 50 min)"}
@@ -293,6 +333,7 @@ def main():
 
     sweeps()
     phones()
+    no_todoist()
     receivers()
     # the pass reads the shard it files into, from a clone no other reader lists
     import ops_ledger as pc

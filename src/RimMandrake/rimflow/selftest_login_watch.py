@@ -534,10 +534,43 @@ def test_cloudflare_role_runs():
         RL.unlaunch = keep
 
 
+def test_phone_todoist_retired():
+    """Owner, 2026-11-19: Todoist is retired as an alert route. LW.phone with RM_TODOIST_ALARM_POSTS unset attempts no
+    HTTP call to Todoist and reports nothing sent."""
+    import types
+    import urllib.request
+    calls = []
+
+    def boom(*a, **k):
+        calls.append(a)
+        raise AssertionError("HTTP to Todoist attempted")
+    keep_mod, keep_ul, keep_env = sys.modules.get("todoist_api"), urllib.request.urlopen, dict(os.environ)
+    sys.modules["todoist_api"] = types.SimpleNamespace(Todoist=boom)
+    urllib.request.urlopen = boom
+    os.environ.pop("RM_TODOIST_ALARM_POSTS", None)
+    os.environ.pop("RM_LOGIN_PHONE", None)
+    os.environ["RM_PHONE_PUSH_STATE"] = os.path.join(tempfile.mkdtemp(), "pp.json")
+    try:
+        try:
+            r = LW.phone({"key": "login-stranded:BENCH:1", "title": "t", "detail": "d"})
+        except AssertionError as e:
+            r = "raised %s" % e
+        check("login_watch's phone attempts no HTTP call to Todoist: %r" % calls, not calls)
+        check("login_watch's phone reports nothing sent with Todoist retired: %r" % (r,), r is False)
+    finally:
+        urllib.request.urlopen = keep_ul
+        if keep_mod is None:
+            sys.modules.pop("todoist_api", None)
+        else:
+            sys.modules["todoist_api"] = keep_mod
+        os.environ.clear()
+        os.environ.update(keep_env)
+
+
 def main():
     for t in (test_dead_held, test_blip, test_switch, test_stranded, test_stranded_reader, test_limit_reset, test_quiet_and_gate, test_slot_back, test_alarm_run_retried_after_login_heals,
               test_probe, test_bad_usage_file, test_pick_and_way, test_give_back, test_release,
-              test_overnight_conductor_cloudflare, test_poke_release, test_poke_wire, test_cloudflare_role_runs):
+              test_overnight_conductor_cloudflare, test_poke_release, test_poke_wire, test_cloudflare_role_runs, test_phone_todoist_retired):
         t()
     print("selftest_login_watch: %s" % ("FAILED %d" % len(FAILS) if FAILS else "OK"))
     return 1 if FAILS else 0

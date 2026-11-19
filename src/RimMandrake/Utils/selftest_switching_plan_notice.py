@@ -12,6 +12,8 @@ sys.path.insert(0, str(HERE))
 import switching_plan as SP
 from ops_core import phone_push as PP
 
+os.environ['RM_TODOIST_ALARM_POSTS'] = '1'  # routing tested with the retired Todoist route back on
+
 NOW = 1_800_000_000
 plan = SP.load_plan()
 def rec(left, reset, stale=False):

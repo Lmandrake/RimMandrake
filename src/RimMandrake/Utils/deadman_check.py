@@ -13,7 +13,8 @@ has no item. On recovery it puts the item back. The ledger is the only state, so
 whose `line` reads "61 promises, 58 kept, 3 broken". A pass that cannot see systemd says so and touches nothing.
 With --file-alarms a dead arm (Dispatcher, ops_watch) or a broken timer promise (`unit=`) also rings the owner's phone
 through ops_core/phone_push.py, a fixed template with no AI in the path, once per outage (the key closes on recovery),
-whatever the ledger write did (DEADMAN_WIRE_PHONE_WITHOUT_AI). RM_DEADMAN_PUSH=0 turns the phone off.
+whatever the ledger write did (DEADMAN_WIRE_PHONE_WITHOUT_AI). RM_DEADMAN_PUSH=0 turns the phone off. Its only route,
+a Todoist task, is retired (owner, 2026-11-19) and off unless RM_TODOIST_ALARM_POSTS=1: the report says "phone off".
 
     ops_watch   $RM_OPS_WATCH_DIR/status.json  key "t" (epoch of the last pass; a metronome beat, ~1 min)  limit 50 min
     dispatcher  $RM_DISPATCHER_STATE/state.json key "last_ok_tick" (ISO; a dispatch beat, ~2 min)          limit 15 min
@@ -416,12 +417,15 @@ def phone(rows, pusher):
     send(row) -> bool and close(key) (ops_core/phone_push; a selftest double). The push dedups by key, so a broken row
     pushes once per outage and a failed send retries next pass. -> [what happened], for the report."""
     out = []
+    off = getattr(pusher, "route_off", lambda: None)()
     for r in rows:
         if not phone_worthy(r):
             continue
         pr = phone_row(r) if r["why"] else None
         try:
-            if pr:
+            if pr and off:
+                out.append("phone off %s: %s" % (pr["key"], off))
+            elif pr:
                 if pusher.send(pr):
                     out.append("pushed %s" % pr["key"])
             else:
@@ -432,7 +436,8 @@ def phone(rows, pusher):
 
 
 def real_pusher():
-    """ops_core/phone_push (Todoist due-now task), unless RM_DEADMAN_PUSH=0."""
+    """ops_core/phone_push, unless RM_DEADMAN_PUSH=0. Its Todoist route is retired (owner, 2026-11-19) and off unless
+    RM_TODOIST_ALARM_POSTS=1, so today the report reads "phone off" and nothing reaches the phone."""
     if os.environ.get("RM_DEADMAN_PUSH", "1") == "0":
         return None
     sys.path.insert(0, str(HERE / "ops_core"))

@@ -23,6 +23,7 @@ os.environ["RM_PHONE_PUSH_STATE"] = str(TMP / "phone.json")
 PP.STATE = TMP / "phone.json"
 PHONE = []
 PP.todoist_transport = lambda title, body: PHONE.append((title, body))  # never the owner's phone
+os.environ["RM_TODOIST_ALARM_POSTS"] = "1"  # routing tested with the retired Todoist route back on
 
 FAILS = []
 NOW = 1_800_000_000.0

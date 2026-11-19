@@ -26,8 +26,8 @@ Each tick (schedule key `login_watch`; off when absent or enabled false):
              request cancelled or a restart that left the same error standing alarms after rescue_wait_s. A
              Conductor window (kind conductor) is never restarted, the owner talks to it: it is POKED, a message into
              its own session socket (broadcast.py's inbox protocol) that starts a new turn with its context whole,
-             at most rescues_per_day, and his phone is told (ops_core/phone_push); still standing after poke_wait_s, it
-             alarms, to the phone too. PAUSE stops the pipeline, not the Conductor: the poke runs under PAUSE, a seat
+             at most rescues_per_day, and the phone row goes to ops_core/phone_push (its Todoist route is retired,
+             2026-11-19, so nothing reaches his phone today); still standing after poke_wait_s, it alarms. PAUSE stops the pipeline, not the Conductor: the poke runs under PAUSE, a seat
              restart does not. An auth or server error waits stranded_after_s, a rate limit waits for the reset its
              message names, or limit_wait_s when it names none (RATE_LIMIT_FIX_STRANDED_WINDOWS; 200 such records in
              transcripts, 10-2026).
@@ -403,7 +403,8 @@ def poke(a, bc=None):
 
 
 def phone(row):
-    """ops_core/phone_push (a Todoist due-now task on his phone), once per key; RM_LOGIN_PHONE=0 turns it off."""
+    """ops_core/phone_push, once per key; RM_LOGIN_PHONE=0 turns it off. Its Todoist route is retired (owner,
+    2026-11-19) and off unless RM_TODOIST_ALARM_POSTS=1, so today this returns False and nothing reaches the phone."""
     if os.environ.get("RM_LOGIN_PHONE") == "0":
         return False
     oc = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils", "ops_core")

@@ -4,9 +4,12 @@ stopped every WSL-side alarm for ~6 h; this runs as a Windows Scheduled Task wit
 Checks, every run:
   commits  GitHub origin/main (public repo, anonymous API) has no commit for -StaleMinutes  -> alert
   wsl      a real small write inside WSL (echo > ~/.hb_probe; sync) fails or hangs past -ProbeSeconds -> alert
-Alert = a Todoist Inbox task due a minute out (rings on the phone; same route as ops_core/phone_push.py). One alert per
-open cause; reminder every -RemindMinutes while it stays open; state clears when the cause goes green.
-Token: Todoist API token in <StateDir>\todoist_token (NOT in the repo). Pause (planned stop): create <StateDir>\paused.
+Alert = a line in <StateDir>\heartbeat.log. One alert per open cause; reminder every -RemindMinutes while it stays
+open; state clears when the cause goes green. The Todoist Inbox task it used to post is RETIRED (owner, 2026-11-19: "So
+Todoist is officially retired as any kind of alert: it just doesn't work in a timely manner. It's really only to
+maintain to do lists, as it says."): it is off unless -TodoistAlarmPosts is passed, so no alarm reaches the phone until
+the new alert route is built (RIMMASTER_DESIGN_PHONE_ALERTS_THAT_ACTUALLY_RING).
+Token (only with -TodoistAlarmPosts): <StateDir>\todoist_token (NOT in the repo). Pause (planned stop): create <StateDir>\paused.
 Test hooks: -FakeCommitAgeMinutes N, -FakeWslFail, -DryRun (log the alert, send nothing).
 #>
 param(
@@ -17,7 +20,8 @@ param(
   [string]$Repo = 'Lmandrake/RimMandrake',
   [int]$FakeCommitAgeMinutes = -1,
   [switch]$FakeWslFail,
-  [switch]$DryRun
+  [switch]$DryRun,
+  [switch]$TodoistAlarmPosts
 )
 $ErrorActionPreference = 'Stop'
 New-Item -ItemType Directory -Force -Path $StateDir | Out-Null
@@ -27,6 +31,7 @@ function Log($m) { Add-Content -Path $log -Value ("{0} {1}" -f (Get-Date -Format
 
 function Send-Phone($title, $body) {
   if ($DryRun) { Log "DRYRUN alert: $title | $body"; return }
+  if (-not $TodoistAlarmPosts) { Log "ALERT (todoist posting off, retired 2026-11-19): $title | $body"; return }
   $tf = Join-Path $StateDir 'todoist_token'
   if (-not (Test-Path $tf)) { Log "NO TOKEN at $tf; alert not sent: $title"; return }
   $tok = (Get-Content $tf -Raw).Trim()
@@ -89,5 +94,5 @@ foreach ($k in @('commits', 'wsl')) {
     if ($state.ContainsKey($k)) { Log "GREEN $k (recovered)"; $state.Remove($k) }
   }
 }
-if ($causes.Count -eq 0) { Log "ok commits=${age}min wsl=ok" }
+if ($causes.Count -eq 0) { Log "ok commits=${age}min wsl=ok todoist=$(if ($TodoistAlarmPosts) { 'on' } else { 'off' })" }
 ($state | ConvertTo-Json) | Set-Content -Path $stateFile

@@ -1,5 +1,6 @@
 # Installs the RimMandrake-Heartbeat scheduled task (every 10 min, runs whether or not WSL is up).
 # Usage: powershell -File install_heartbeat.ps1 -Script <path to heartbeat.ps1> [-TokenFrom <file>]
+# -TokenFrom only matters if heartbeat.ps1 runs with -TodoistAlarmPosts; Todoist is retired as an alert route (2026-11-19).
 param([Parameter(Mandatory)][string]$Script, [string]$StateDir = 'D:\ClaudeWork\heartbeat', [string]$TokenFrom)
 New-Item -ItemType Directory -Force -Path $StateDir | Out-Null
 Copy-Item $Script (Join-Path $StateDir 'heartbeat.ps1') -Force
