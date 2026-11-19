@@ -964,6 +964,9 @@ def test_owed_close():
     foot = DH.FOOTER.format(clone="C", item="SOME_ITEM_TO_BUILD", seat="BENCH", bound_text="b", budget=5)
     check("cli.py claim SOME_ITEM_TO_BUILD" in foot and "cli.py close SOME_ITEM_TO_BUILD --sha" in foot
           and DH.LEFT_OPEN in foot, "owed: the brief says claim at start, close or note LEFT OPEN: at the end")
+    check("cli.py wait SOME_ITEM_TO_BUILD --until" in foot and "left_open_continue.py" in foot,
+          "owed: the brief says to put a dated wait on an item whose left work is the owner's or the Conductor's "
+          "(RIMMANDRAKE_TEACH_HELPER_WAIT_OWNERS_TURN_RELAUNCHED_FABLE)")
     ok_env = {"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"}
 
     def ended(state, notes, env=None, item="SOME_ITEM_TO_BUILD", unreadable=False):

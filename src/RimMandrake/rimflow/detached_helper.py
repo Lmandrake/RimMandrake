@@ -105,6 +105,10 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
   --seat {seat} --why "..."` (an operational item also takes `--live`), or, when anything is left, write a note whose
   text starts `LEFT OPEN:` and says exactly what. A run that ends success with its item open and no such note is
   flagged to the Conductor.
+- A `LEFT OPEN:` note relaunches this brief in a fresh session (left_open_continue.py). When what is left is not a
+  helper's to do (the owner's decision, an act of the Conductor's, a date), also put a dated wait on the item, so it
+  is not relaunched for nothing: `python3 src/RimMandrake/rimflow/cli.py wait {item} --until <YYYY-MM-DD> --reason
+  "<who acts next and on what>" --seat {seat} --why "detached run"`.
 - Before you stop, and at least every 20 minutes: write your state, evidence paths and one imperative NEXT as
   `python3 src/RimMandrake/rimflow/cli.py note {item} --text "..." --seat {seat} --why "detached run"`, then publish the
   shard: `./publish -m "ledger: {item} note" infrastructure/state/ledger/events/{seat}.jsonl`. An event you write with
