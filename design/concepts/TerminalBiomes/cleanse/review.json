@@ -1,0 +1,901 @@
+{
+ "mod": "TerminalBiomes",
+ "author": "codex",
+ "reviewer": {
+  "runner": "claude",
+  "model": "opus"
+ },
+ "rounds": [
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "bars.json R7, B7 accept and reject, B8 says, accept and range; owner_pages.md Q1; ambiguities.md item 16",
+     "evidence": "design/Jawa/worldbuilding/biomes/the_twilight_deep.md hard ban 5: \"every light-well is temporary on a years scale; no fixed sacred/owned skylight outlives the lid's drift\". The same sheet's §3 says: \"the lid's slow life opens and closes them over years, so the bright places *migrate* and charts age\". Instead, R7 adopts the shipped clock as the 0.1.0 default (RM_WellKernel.Lifespan = (5+roll)*TicksPerDay, so 5 to 9 days). It reinterprets the ratified \"years scale\" as \"the upper bound against permanence\". B8 then depends on that reinterpretation: its accept requires \"a fading Twilight well gives way to a new light column\" inside the 15-day season, and its reject refuses a replacement that stalls. The brief says: \"Where your definition would contradict a standing ruling, change the definition to comply; if the mod cannot comply, report the conflict.\" The mod can comply. The proposal keeps the week clock because it is already built.",
+     "would_pass": "The 0.1.0 default follows the sheet: wells last on a years scale. B7 reads a finite countdown that is decreasing. Natural turnover is proven by K11's staged boundaries and does not need to happen inside B8's season. The page-two question is turned around: \"May 0.1.0 use the shipped week-scale clock?\", with the evidence for it and what B8 gains if he says yes.",
+     "smallest_fix": "In R7, make the years-scale reading the default, or make the week clock conditional on his yes to Q1. Remove natural turnover from B8's accept and reject unless he says yes. Restate Q1 with the years scale as the default taken."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "census.json D06, D07, D08; definition.md 'Read basis and limits' paragraph 3; bars.json meeting floor_access and B7 range.left_out; tickets.md T45",
+     "evidence": "The proposal says the DivingInteraction, SeaShores, Shared LightLedger and FlowWorks implementations \"are not in this checkout\". D06 says \"this checkout lacks the referenced FlowWorks source\". That is false. The tree contains src/RimMandrake/DivingInteraction/Source/RM_DivingSettings.cs, src/RimMandrake/SeaShores/Source/ (RM_SeaShoresMod.cs, RM_SeaShoreUtility.cs and others), src/RimMandrake/_Shared/LightLedger/LightLedger.cs, and src/RimMandrake/FlowWorks/ (RM_GenStep_TwilightChannels.cs itself casts to RimMandrake.FlowWorks.Rivers.RM_Building_BankWeir). Because of this false premise, a kept behaviour is left undefined: \"Floor identity and aging after ship departure are unknown\" (B7 left_out; the floor_access meeting is 'unknown'). Each expedition depends on it. With 5-to-9-day wells, whether the floor is kept, frozen or recreated on return decides what B1, B7 and B8 can show. ambiguities.md also cites \"fixes.json\", and no such file is in the proposal folder.",
+     "would_pass": "The definition states, from the DivingInteraction source that is present, what happens to a sea-floor map and its well clocks while the ship is away: kept and aging, kept and frozen, or recreated. The census rows D06 to D08 say built: present, with their files. The meeting floor_access is argued from that source, or stays unknown only for a cause that is named and true.",
+     "smallest_fix": "Read src/RimMandrake/DivingInteraction and SeaShores. Correct D06 to D08 and the read-basis paragraph. Add one rule for floor retention and well aging between visits. Remove the fixes.json reference or add the file."
+    },
+    {
+     "head": "figurative_unmarked",
+     "where": "bars.json B5 says (\"the productive bank\"); result.json and owner_pages.md signature (\"productive Twilight banks tempt workers\")",
+     "evidence": "The signature begins with an attraction: banks productive enough to tempt workers. B5 marks \"read\", \"carrying water\" and \"sink\" as figurative, but not \"productive\". No accept or reject picture compares the bank with the rest of the floor. The lore says \"their banks are the richest ground in the sea\" and calls bank harvest \"the richest gathering ground, nutrient-fed forever\" (the_twilight_deep.md §3, §7). The built RM_BankSilt is described as \"half-decent for planting\" (fertility 0.9 in src/RimMandrake/TerminalBiomes/Defs/TerrainDefs/RM_BankSilt.xml). Lazy build: bank forage no richer than the floor away from the channel. That build passes every B5 accept picture (\"A harvester reaches forage along the bank...\"), yet the temptation half of the chain is gone.",
+     "would_pass": "\"Productive\" is defined by a picture a player can see: the banks carry visibly more forage, or better forage, than the floor away from the channel. A reject picture is added: \"the bank is no richer than the open floor, so nothing draws a worker toward the current.\" The picture uses no yield number.",
+     "smallest_fix": "Add a figurative entry for \"productive\" to B5, with one accept picture. Add the lazy reject picture above. Name what makes the bank richer: the bank terrain, the flora placement gated on RM_BankSilt, or the silt-trap, and give each its fate."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "census.json C02 (built: absent, fate: land); tickets.md T49; bars.json B4 accept 2, range, reject 3; R6",
+     "evidence": "C02 is a new mechanic invented on this pass: localized boiling pools next to vents, overlaid on a new RM_ScaldFloorSubstrate floor terrain, with generator rules for pool retreat and a pool-free route from the hull. The source shows it is absent. Its \"why\" argues only that workers need somewhere to stand. It never says why deleting the floor pools would defeat land, life or the signature. The lore puts the floor \"at −350 m, where the boil gentles to mere heat\" (design/Jawa/worldbuilding/biomes/the_scald.md §4). Boiling contact already lives on the beach, where the six RM_ScaldWater terrains are kept. Hard ban 3 (\"crossing scald water always costs\") is met by the beach alone. A cleanse that adds a new generation feature works against his \"strip out the fluff\".",
+     "would_pass": "Either the Scald floor is the substrate only (mere heat, ambient temperature) and B4 is a beach-only contact bar, or C02.needed_by gives the deletion argument: what a player loses about the Scald's land if the floor has no contact pools, with its source.",
+     "smallest_fix": "Split C02. Keep the floor substrate as land, because it replaces the burn-everywhere bands. Either move the vent pools to the next version (delete them from T49, R6 and B4's floor clauses) or write their deletion argument into needed_by."
+    },
+    {
+     "head": "core_promise_weakened",
+     "where": "census.json (no row); bars.json B4 says and meant; definition.md 'Costs' paragraph (\"RM_ScaldMargin ... retreat ground\")",
+     "evidence": "The Scald's Always-true list says: \"The water burns to touch and comforts as it burns (the built terrains' double truth).\" §7 adds \"The baths — the cool margins as the planet's one sacred spa\", and §8 says \"The margins hurt and heal simultaneously\" (the_scald.md). The comfort is built: every Scald water terrain and RM_ScaldMargin carries <traversedThought>HotSpring</traversedThought> (RM_ScaldWater.xml lines 173, 214, 261, 295, 331, 388; RM_ScaldMargin.xml line 16, with a swimming-recreation note at line 19). The census gives this no row and no fate. B4 keeps only the burn, and the margin appears only as nonpotable \"retreat ground\". The brief says \"No row is left over\".",
+     "would_pass": "A census row for the Scald's comfort (the HotSpring thought on scald water, and bathing at the margin), with a fate and its reason. If it is kept, B4 names both halves: the water burns and comforts, and the margin comforts without burning, still undrinkable. If it is moved, next_version.md says why the 'double truth' is not land.",
+     "smallest_fix": "Add the census row. Add the comfort clause to B4's says, with one accept and one reject picture, or move it with its line in next_version.md."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B3 says (\"the Grey stays solitary and the Twilight supports shoals\") and sees",
+     "evidence": "B3 promises a contrast in grouping. Its instrument is \"T40 follows spawned entities, ingestion/drink jobs and death/remain reasons; T42 ... and M5 ... test persistence\". Its control reads thirst, food, injuries and deaths. Nothing reads group size or spacing. Plausible false pass: Grey animals spawn in herds (the engine's group spawning), or Twilight shoals spawn singly. Both pass every reading listed. The lore makes the contrast load-bearing: \"the shore stays solitary and must never learn otherwise from below\" (the_twilight_deep.md §5, hard ban 1).",
+     "would_pass": "B3's sees reads the size of each spawn group and the nearest-neighbour spacing over the season for the Grey and Twilight casts. Its control includes a mutant with Grey group spawning, which must refuse, and a mutant with single-spawned Twilight shoals, which must also refuse.",
+     "smallest_fix": "Add a grouping read and the two mutant controls to B3.sees. If it belongs in T40, add it to T40's acceptance test."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "definition.md gardener paragraph (\"moving through the overhead water beneath the waveglass\"); census.json C21; tickets.md T43; bars.json B2, B7",
+     "evidence": "The gardener is a new, kept, unbuilt creature (C21: built absent). It must be seen \"moving at the ceiling\" (B2, B7 accept). Nothing defines how a pawn is \"at the ceiling\" on RimWorld's flat grid. It is not said whether the gardener occupies cells, blocks paths, passes over walls and the hull, or can be reached in melee (B7 expects \"attempted attacks ... visibly refused\"). The engine's only standard way to show a pawn off the ground is flight (the MaxFlightTime stat and a flip-book animation, skills/rimworld-modding/references/flight.md). Choosing flight brings in the flyer rulings. Choosing not to fly means it walks among the floor workers. A builder and a judge would build two different creatures.",
+     "would_pass": "A rule says how the gardener is represented: a permanent flyer through the shared flight engine, or a non-colliding overhead pawn with a named render layer. It says how ceiling cells map to floor cells for tending, and which test regime applies.",
+     "smallest_fix": "Add one rule (for example, R13) that defines the gardener's representation and how it interacts with paths and contact. Point T43 and B7 at that rule."
+    }
+   ],
+   "reviewer_refusals": 7,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A low-skill crew can stay on the hull and choose a bank route while a current remains hazardous elsewhere.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "The crew spawns beside a hatch while its ship remains elsewhere, or returns by a pawn menu.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "On the Scald the crew steps off the hull onto hot mineral ground and reaches a mat patch by a pool-free path, with no channel or literal bank in sight.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "On the Twilight floor the crew unloads, works on the channel bank, returns to the hull and flies away.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 5,
+     "text": "The ship lands astride a live channel and unloading automatically carries the crew toward the sink.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "A gardener label or fixed roof ornament replaces the giant animal in the ordinary play view.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "The Twilight gardener has a living animal body moving at the ceiling and grazing a skylight rim; it is distinguishable from the well marker and a static roof ornament.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "At normal colony zoom, cyan water and rainbow mats identify the Scald, gold-lit gardens beneath waveglass identify the Twilight, pale mineral forms stay readable as distinct silhouettes through the Grey’s murk, and dark fuel pools stand out against the Chill’s ice floor.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "In the Grey, a mineral-rich scene still leaves distinct pools and silhouettes rather than a white screen; the Twilight has dark ground between light columns.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "A solid opaque overlay hides pawns, current boundaries or the only bank route.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 6,
+     "text": "The sea names change but the floor scenes are interchangeable blue water with recoloured fog.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Fishing produces labelled species that exist only as item icons; the floor roster silently fails to spawn.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "Twilight shoals gather among columns while a predator hunts separately; native Scald animals drink or occupy their water without dehydrating.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "The Grey behaves like a schooling ocean, or every Twilight predator is a stationary decorative prop.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "Native fauna die thirsty beside their own water, or vanish when moving between states.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "A caught nissik has a living floor counterpart; Grey sessile creatures are distributed over the floor without marching as a swarm.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "The entire submerged floor burns a worker continuously just for standing outside the hull, or leaving a pool requires reaching a beach margin that does not exist on that floor.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "On the beach an unprotected visitor takes a visible contact burn in boiling water, retreats to dry shore or the cooler margin and stops taking contact burns; the margin still cannot supply a drink.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "Visitors cross boiling pools without preparation or injury, or a still spell turns those pools into safe ordinary water.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "The cool bathing margin is freely drinkable because its description says so.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "On the floor a crew works on hot mineral ground without continuous contact burns, takes a burn only when entering a localized boiling pool, and returns to adjacent ordinary floor ground to stop further contact injury; the water overhead remains boiling above.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 6,
+     "text": "A protected working party still has preparation or protection cost; Scald natives survive their environment. Distillation, if enabled in the next version, produces a separate resource rather than changing lake potability.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "A visitor entering the channel is interrupted and carried downstream; a harness or existing arrest works helps manage exposure without turning the centre into a swimming route.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "The terrain looks like harmless mud, the worker receives no warning, and movement to the sink is the first sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "A warning fires but the dry-looking bed is indistinguishable from bank silt, or the visible stake line misidentifies the widened reach.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "Current arrows move items while an ordinary colonist crosses safely, or the surge occupies the ship’s sole usable exit and all safe banks.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "A harvester reaches forage along the bank, sees bed/stakes and a surge warning, and can withdraw beyond the widened reach before resuming work.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 6,
+     "text": "A pawn repeatedly walks through the centre faster than registration and never experiences carry.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A full sink deposits the victim outside the basin through a wall, repeats the arrival endlessly, or loses the victim on reload.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "The carried colonist is placed at a reachable basin location, marked sunk and worsening; a rescuer removes them from carrying water into safe shelter or a safe carrier and the condition starts improving.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "A roof placed over a live sink counts as rescue while the pawn is still in carrying water.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "The pawn is deleted at the sink, or only a log line mentions a missing colonist.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "A dead or interrupted rescuer leaves a findable victim or corpse; transferring the victim aboard the ship does not keep applying an off-map death ramp.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "The gardener goes through a tending animation but neither the skylight rim nor its light state responds.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "The gardener can be killed or removed while the waveglass and columns continue as though it were present.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "A gold well behaves as a permanent lamp, or inspection shows a countdown that stays fixed while the crew works on the floor.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "An attempted attack is visibly refused because the gardener is protected in this version; the same living animal continues tending after reload, without a death reward or a roof-collapse encounter.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "During an ordinary visit the crew inspects a lit column, works in its garden, then sees less time remaining on the same column after time has passed.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 6,
+     "text": "A living giant animal moves along the ceiling, grazes an overgrown skylight rim clear so its light spreads again over usable garden ground, and seals a spent opening with secretion.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 7,
+     "text": "The waveglass remains but the gardener is only a label, flag, static ornament or off-map ledger entry; no living animal performs the roof work.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "Reversing whether the crew hauls or forages first changes the story without turning the banks into a continuous unavoidable sink or erasing the food chain.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "The sky is locked clear, wildlife is suppressed or current is disabled for the season recording.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "Reload duplicates carrying victims or weather, a different action order blocks the ship, or repeated errors replace ordinary play.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "The expedition plans routes and harvests among native life, responds to an undersurge, recovers a victim and returns by ship; after saving and loading during the visit the same choices still make sense as a fading Twilight well gives way to a new light column over reachable garden ground.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "Each isolated scene works, but combined growth hides every bank, predators erase the catch population, or a fading well goes dark and its replacement stalls or lights only dangerous ground.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "The silt-trap's bank enrichment. FlowWorks' RM_Building_SiltTrap turns RM_BankSilt (fertility 0.9) into RM_BankSilt_Rich (1.4) within its radius and turns it back if the trap fails. TerminalBiomes patches that pair into the trap's swap table (src/RimMandrake/TerminalBiomes/Patches/RM_SiltTrap_SeaSwap.xml; terrains in Defs/TerrainDefs/RM_BankSilt.xml). The census cites that patch only as evidence that a FlowWorks interface exists (D06). It never lists player-built bank enrichment as a capability with a fate. That capability bears directly on the signature's 'productive banks', and RM_Weircomb is terrain-gated on RM_BankSilt.",
+   "loop_or_three_way": "B2, B7 and the standing flyer rulings meet in a three-way that bars.json does not list. B2 is live-only and passes only when a fresh reviewer sorts captured play views showing the giant gardener moving at the ceiling. B7 needs the same creature's movement and tending traced. The standing rulings say 'If it flies in the fiction, it flies in the game', 'NEVER live-test a flyer's flight without the owner present', and 'Don't try to capture images of flight. It doesn't work.' If the gardener is built on the flight engine (the only standard way to show a pawn above the floor), B2's unattended capture-and-sort is forbidden and, by the owner's own measurement, does not work. If it is built without flight, it walks the floor among workers and B2's and B7's 'at the ceiling' fails. Pairwise each holds; together, B2's instrument has no permitted form until the gardener's representation is ruled and, if it flies, the look is a joint session with him.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 715474
+   },
+   "blind_usage": {
+    "claude_weighted_tokens": 52435
+   }
+  },
+  {
+   "runner": "claude",
+   "model": "opus",
+   "refusals": [
+    {
+     "head": "core_promise_weakened",
+     "where": "bars.json B5 (says, meant.figurative 'productive bank', range, control); definition.md 'First Twilight work'; owner_pages.md signature line",
+     "evidence": "The frozen sheet promises the banks are the best ground on the floor: the_twilight_deep.md §3 'their banks are the richest ground in the sea', §5 'The banks are the wealth', §7 'River-bank harvest — the mud channels' banks: the richest gathering ground, nutrient-fed forever'. B5 only compares the bank with 'comparable open floor', matched for light ('equally lit open floor'; control: 'Compare matched light, area and harvest history'). Under that wording a dim bank that beats dim open floor passes, even while lit gardens away from the current give far more forage. Then no player has a reason to work beside the current, and the signature's temptation never happens.",
+     "would_pass": "B5 compares the bank with the floor's other forage ground the way a player chooses where to gather: in ordinary play the bank is visibly worth more than the gathering ground away from the current, lit garden floor included. Reject: 'workers with ordinary work orders gather in the light-column gardens and never need the banks.'",
+     "smallest_fix": "Add one reject picture to B5: 'The bank beats matched dim floor, but the lit gardens away from the current offer as much or more, so ordinary foragers never choose the bank.' Add one B8 reading: under ordinary orders, workers choose bank forage during calm."
+    },
+    {
+     "head": "kept_mechanic_undefined",
+     "where": "bars.json R15; census.json C10 and C22; tickets.md T44",
+     "evidence": "R15 says 'Favour the tagged silt for ordinary placement and regrowth of existing harvestable Twilight flora, including gloamurn and hoolimbre'. It never says how. In source the only plant gated on the silt is RM_Weircomb (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Plants/RM_TwilightUnderstorey.xml:155 <wildTerrainTags><li>RM_BankSilt</li>), and the proposal rules weircomb out as forage. The proposal also closes the two engine levers it could use. Higher fertility is out: the B5 accept picture says the open floor's soil is 'as fertile for planted crops', and R15 says 'A fertility stat ... cannot satisfy B5'. Making the plants bank-only is out: T44 says 'without ... excluding all open-floor forage'. Vanilla wild-plant spawning has no per-terrain commonality bias. So the signature's temptation half has no build a builder could implement and a judge could check against the rule. C10 marks the plant row built: present, which hides that this part is missing.",
+     "would_pass": "R15 names the mechanism. Examples: bank-silt wild fertility above open floor, with crop fertility handled separately; a bank-only harvestable species added to the bank's spawn set; or a custom spawner weight on the tag. It also says which existing plants it applies to.",
+     "smallest_fix": "Name one mechanism in R15 and in T44's Work. Mark the C10 bank-advantage part built: absent, with T44 as its ticket."
+    },
+    {
+     "head": "evidence_cannot_tell",
+     "where": "bars.json B7 (reject 4, accept 1 'seals a spent opening', sees.start) and B8 range; checks K11",
+     "evidence": "B7 rejects 'A gold well acts as a permanent lamp'. Its accept picture needs a spent opening that the gardener seals. But R7/K11 set lifetimes on a years scale ('two to four in-game years'). B8's season is '15 game days ... No requirement for well replacement inside the season'. B7.sees.start gets a spent opening from 'a legitimately expired opening or K11’s separately declared boundary fixture'. K11 is a check, and the brief says checks 'are never part of passing'. So no bar's own reading ever sees a well close or get replaced naturally. A build whose countdown ticks down but whose closure or replacement code never fires passes B7 and B8. That build is exactly the permanent lamp B7 claims to reject.",
+     "would_pass": "B7's evidence includes a closure and replacement that goes through the normal update path with every kept mechanic on. Its control tells it apart from a countdown that ticks but never closes.",
+     "smallest_fix": "Either make K11's boundary crossing an explicit part of B7's sees, labelled 'staged start state, normal update path', so the permanent-lamp reject can be evidenced; or drop the permanent-lamp reject and the patch clause from B7 and leave closure to the check. Say which on page two, next to Q1."
+    },
+    {
+     "head": "extra_without_argument",
+     "where": "bars.json R12, R13, K12, B7 accept 1 and reject 2; census.json C21 (why and needed_by); tickets.md T43",
+     "evidence": "C21's deletion argument covers only the creature existing: 'Removing the creature defeats the frozen no-roof-without-gardener ban' (the_twilight_deep.md §6 ban 2: 'no story, def, or event removes the giant and leaves the waveglass standing'). The proposal keeps three more mechanics. None of them exists in source; a grep of TerminalBiomes/Source finds no overgrowth or rim-cover code, no ceiling render layer and no protected-creature refusal. They are: (a) R12/K12 rim overgrowth that cuts a well's light radius after a timer and is cleared by a graze job; (b) R13, a new selectable ceiling-water plane with its own routing and the claim that harm commands give 'the existing protected-creature reason', though no such reason exists; (c) patch jobs that seal spent rims. Deleting (a) to (c) leaves the gardener alive, the roof standing and the wells finite. Ban 2 still holds, and land, life and the bank/current signature are untouched. The lore also places the lid 'far overhead, a sky and not a surface' (the 2026-09-26 amendment), so the ban does not need a pawn on the map. The owner asked to 'strip out the fluff'. Instead the cleanse invents a new timed maintenance loop and a new render and path system in 0.1.0.",
+     "would_pass": "Each of R12, R13 and the patch job gets its own deletion argument saying what land, life or signature breaks without it; or it moves to the next version, and the gardener's minimal form is whatever ban 2 needs.",
+     "smallest_fix": "Move R12/K12 overgrowth and grazing, and the patch job, to next_version.md with a ticket. Cut B7 to: a living protected gardener is present and the roof is never left without it. Either justify R13's ceiling plane against a far-overhead presentation, or defer it too. Remove the word 'existing' from R13's refusal reason."
+    },
+    {
+     "head": "contradicts_ruling_or_lore",
+     "where": "owner_pages.md line 34; census.json X33; next_version.md T33 entry; tickets.md T33",
+     "evidence": "standing_rulings.md:137-138, owner card 2026-10-15: 'No new mod builds a cross-biome switch; the existing ones stay, default off, labelled \"Unsupported: may work outside our biomes, not tested\"'. The proposal recommends retiring those existing controls, and page one gives the reason 'the cross-biome guarantee was already released'. That misstates the card: the card released validation and explicitly kept the controls. The brief allows recommending retirement for an extra that 'fights a standing ruling'; here the ruling protects the controls. Page one never tells the owner that saying yes would reverse his own card.",
+     "would_pass": "Either X33's fate is kept (inherited settings floor) under the 2026-10-15 card, or page one says plainly: 'Retiring these reverses your 2026-10-15 card, which kept them off and labelled unsupported.'",
+     "smallest_fix": "Rewrite the page-one retirement line to quote the card's 'existing ones stay' clause as what the recommendation would change. Or drop the recommendation and set X33's fate to needed_by C27 / inherited floor (then recommend_retire goes to 0 in result.json and on the pages)."
+    }
+   ],
+   "reviewer_refusals": 5,
+   "stranger": [
+    {
+     "bar": "B1",
+     "n": 1,
+     "text": "A low-skill crew can stay on the hull and choose a bank route while a current remains hazardous elsewhere.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 2,
+     "text": "The crew spawns beside a hatch while its ship remains elsewhere, or returns by a pawn menu.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 3,
+     "text": "On the Twilight floor the crew unloads, works on the channel bank, returns to the hull and flies away.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 4,
+     "text": "The ship lands astride a live channel and unloading automatically carries the crew toward the sink.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B1",
+     "n": 5,
+     "text": "On the Scald the crew steps off the hull onto hot mineral ground and reaches a mat patch by an ordinary walking path, with no channel or literal bank in sight.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 1,
+     "text": "The sea names change but the floor scenes are interchangeable blue water with recoloured fog.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 2,
+     "text": "In the Grey, a mineral-rich scene still leaves distinct pools and silhouettes rather than a white screen; the Twilight has dark ground between light columns.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 3,
+     "text": "At normal colony zoom, cyan water and rainbow mats identify the Scald, gold-lit gardens beneath waveglass identify the Twilight, pale mineral forms stay readable as distinct silhouettes through the Grey’s murk, and dark fuel pools stand out against the Chill’s ice floor.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 4,
+     "text": "A gardener label or fixed roof ornament replaces the giant animal in the ordinary play view.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 5,
+     "text": "A solid opaque overlay hides pawns, current boundaries or the only bank route.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B2",
+     "n": 6,
+     "text": "The Twilight gardener has a living animal body moving at the ceiling and grazing a skylight rim; it is distinguishable from the well marker and a static roof ornament.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 1,
+     "text": "Grey wildlife arrives in herds, a niim or noolim population only ever appears as dispersed singles, or Twilight predators remain stationary props.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 2,
+     "text": "Native fauna die thirsty beside their own water, or vanish when moving between states.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 3,
+     "text": "Niim swim together in a light column and noolim swim together in the dim gaps while a predator hunts separately, and native Scald life survives in its own water.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 4,
+     "text": "Fishing produces labelled species that exist only as item icons; the floor roster silently fails to spawn.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B3",
+     "n": 5,
+     "text": "A caught nissik has a living floor counterpart, and a Grey pool crowded with minerals still has dispersed individual animals.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 1,
+     "text": "An unprotected beach visitor crossing the boil gains a hot-spring mood thought and takes a contact burn from the same water.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 2,
+     "text": "The cooler bathing margin burns the bather or gives no bathing comfort.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 3,
+     "text": "Boiling water or the cooler margin supplies a drinking job.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 4,
+     "text": "The boil deals a contact burn but provides no hot-spring comfort, or it awards comfort while an unprotected crossing costs no injury.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B4",
+     "n": 5,
+     "text": "At the cooler margin a visitor bathes comfortably without further contact burns, then returns to dry shore and drinks from supplies brought ashore.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 1,
+     "text": "A pawn repeatedly walks through the centre faster than registration and never experiences carry.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 2,
+     "text": "Current arrows move items while an ordinary colonist crosses safely, or the surge occupies the ship’s sole usable exit and all safe banks.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 3,
+     "text": "The bank holds denser stands of harvestable plants than equally lit open floor. The harvester gathers there, sees the bed and stakes, and can withdraw after a surge warning and resume work later.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 4,
+     "text": "A warning fires but the dry-looking bed is indistinguishable from bank silt, or the visible stake line misidentifies the widened reach.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 5,
+     "text": "A bank grow-soil stat is higher but harvesters see and gather no more forage there than on comparable open floor, so the bank offers no reason to work near the current.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 6,
+     "text": "The terrain looks like harmless mud, the worker receives no warning, and movement to the sink is the first sign.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B5",
+     "n": 7,
+     "text": "A visitor entering the channel is interrupted and carried downstream; a harness or existing arrest works helps manage exposure without turning the centre into a swimming route.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 1,
+     "text": "A dead or interrupted rescuer leaves a findable victim or corpse; transferring the victim aboard the ship does not keep applying an off-map death ramp.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 2,
+     "text": "The carried colonist is placed at a reachable basin location, marked sunk and worsening; a rescuer removes them from carrying water into safe shelter or a safe carrier and the condition starts improving.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 3,
+     "text": "A roof placed over a live sink counts as rescue while the pawn is still in carrying water.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 4,
+     "text": "A full sink deposits the victim outside the basin through a wall, repeats the arrival endlessly, or loses the victim on reload.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B6",
+     "n": 5,
+     "text": "The pawn is deleted at the sink, or only a log line mentions a missing colonist.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 1,
+     "text": "An attempted attack is visibly refused because the gardener is protected in this version; the same living animal continues tending after reload, without a death reward or a roof-collapse encounter.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 2,
+     "text": "A gold well acts as a permanent lamp, or its countdown freezes while the retained floor ages and resumes only when the crew comes back.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 3,
+     "text": "The crew inspects a column, works in its garden, then returns after time away to the same still-active column with less time remaining.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 4,
+     "text": "A living giant animal moves along the ceiling, grazes an overgrown skylight rim clear so its light spreads again over usable garden ground, and seals a spent opening with secretion.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 5,
+     "text": "The waveglass remains with a label, a static ornament or a floor-walking animal in place of a living swimmer that does ceiling work.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 6,
+     "text": "The gardener goes through a tending animation but neither the skylight rim nor its light state responds.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B7",
+     "n": 7,
+     "text": "The gardener can be killed or removed while the waveglass and columns continue as though it were present.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 1,
+     "text": "The expedition harvests among native life, responds to an undersurge, recovers a victim and returns by ship. After saving and loading during the visit, the crew still finds a reachable Twilight garden beneath tended light with less time left on the well.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 2,
+     "text": "Reload duplicates carrying victims or weather, a different action order blocks the ship, or repeated errors replace ordinary play.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 3,
+     "text": "Each isolated scene works, but combined growth hides every bank, predators erase the catch population, or the working Twilight floor has no reachable tended garden light.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 4,
+     "text": "The sky is locked clear, wildlife is suppressed or current is disabled for the season recording.",
+     "labelled": "reject",
+     "sorted": "reject",
+     "mismatch": false
+    },
+    {
+     "bar": "B8",
+     "n": 5,
+     "text": "Reversing whether the crew hauls or forages first changes the story without turning the banks into a continuous unavoidable sink or erasing the food chain.",
+     "labelled": "accept",
+     "sorted": "accept",
+     "mismatch": false
+    }
+   ],
+   "missed_capability": "RM_FoundrySalvageCache (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Buildings/RM_FoundrySalvageCache.xml) is missing from census.json. It is a Forge-floor salvage set piece from Utinni (MayRequire mandrake.rut.patches; spawned by RUT_FoundryFloor_SalvageCache.xml) that lives in TerminalBiomes only so its ParentName can resolve. It has its own careful-deconstruction loot roll (RUT_SalvageLoot_Foundry). It is not a sea capability, gets no fate, and its loot path runs at default settings, so the 'resolved-state scan finds no ... extra' tests cannot account for it.",
+   "loop_or_three_way": "R1 × R14 × B1 (with B5's surge). R1 keeps the hull out of the current: 'Ship reservations and its bank access are excluded from authored current and surge reach'. That can only be done while the field is being laid out, which happens on first landing. R14 then reuses the same map, field included, on every later visit. B1 requires a safe landing 'on arrival, departure, re-entry'. On a return the field is already fixed and the player picks the new landing spot. So R1 can only hold through landing refusal or relocation, and that refusal must use the widened surge reach, not the calm one (B5: the surge 'brings that boundary onto the bank'). It must also account for structures the player built on the kept floor. Each pair holds alone, but no rule or model covers all three at once. The floor_access meeting and M2 treat landing as generation-time hull exclusion and never mention re-landing into a kept field.",
+   "defects": [],
+   "usage": {
+    "claude_weighted_tokens": 665246
+   },
+   "blind_usage": {
+    "claude_weighted_tokens": 52643
+   }
+  }
+ ],
+ "fix_run": {
+  "usage": {
+   "codex_tokens": {
+    "input_tokens": 3104366,
+    "output_tokens": 23619
+   }
+  },
+  "check_after": [],
+  "error": null
+ },
+ "remaining": [
+  {
+   "head": "core_promise_weakened",
+   "where": "bars.json B5 (says, meant.figurative 'productive bank', range, control); definition.md 'First Twilight work'; owner_pages.md signature line",
+   "evidence": "The frozen sheet promises the banks are the best ground on the floor: the_twilight_deep.md §3 'their banks are the richest ground in the sea', §5 'The banks are the wealth', §7 'River-bank harvest — the mud channels' banks: the richest gathering ground, nutrient-fed forever'. B5 only compares the bank with 'comparable open floor', matched for light ('equally lit open floor'; control: 'Compare matched light, area and harvest history'). Under that wording a dim bank that beats dim open floor passes, even while lit gardens away from the current give far more forage. Then no player has a reason to work beside the current, and the signature's temptation never happens.",
+   "would_pass": "B5 compares the bank with the floor's other forage ground the way a player chooses where to gather: in ordinary play the bank is visibly worth more than the gathering ground away from the current, lit garden floor included. Reject: 'workers with ordinary work orders gather in the light-column gardens and never need the banks.'",
+   "smallest_fix": "Add one reject picture to B5: 'The bank beats matched dim floor, but the lit gardens away from the current offer as much or more, so ordinary foragers never choose the bank.' Add one B8 reading: under ordinary orders, workers choose bank forage during calm."
+  },
+  {
+   "head": "kept_mechanic_undefined",
+   "where": "bars.json R15; census.json C10 and C22; tickets.md T44",
+   "evidence": "R15 says 'Favour the tagged silt for ordinary placement and regrowth of existing harvestable Twilight flora, including gloamurn and hoolimbre'. It never says how. In source the only plant gated on the silt is RM_Weircomb (src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Plants/RM_TwilightUnderstorey.xml:155 <wildTerrainTags><li>RM_BankSilt</li>), and the proposal rules weircomb out as forage. The proposal also closes the two engine levers it could use. Higher fertility is out: the B5 accept picture says the open floor's soil is 'as fertile for planted crops', and R15 says 'A fertility stat ... cannot satisfy B5'. Making the plants bank-only is out: T44 says 'without ... excluding all open-floor forage'. Vanilla wild-plant spawning has no per-terrain commonality bias. So the signature's temptation half has no build a builder could implement and a judge could check against the rule. C10 marks the plant row built: present, which hides that this part is missing.",
+   "would_pass": "R15 names the mechanism. Examples: bank-silt wild fertility above open floor, with crop fertility handled separately; a bank-only harvestable species added to the bank's spawn set; or a custom spawner weight on the tag. It also says which existing plants it applies to.",
+   "smallest_fix": "Name one mechanism in R15 and in T44's Work. Mark the C10 bank-advantage part built: absent, with T44 as its ticket."
+  },
+  {
+   "head": "evidence_cannot_tell",
+   "where": "bars.json B7 (reject 4, accept 1 'seals a spent opening', sees.start) and B8 range; checks K11",
+   "evidence": "B7 rejects 'A gold well acts as a permanent lamp'. Its accept picture needs a spent opening that the gardener seals. But R7/K11 set lifetimes on a years scale ('two to four in-game years'). B8's season is '15 game days ... No requirement for well replacement inside the season'. B7.sees.start gets a spent opening from 'a legitimately expired opening or K11’s separately declared boundary fixture'. K11 is a check, and the brief says checks 'are never part of passing'. So no bar's own reading ever sees a well close or get replaced naturally. A build whose countdown ticks down but whose closure or replacement code never fires passes B7 and B8. That build is exactly the permanent lamp B7 claims to reject.",
+   "would_pass": "B7's evidence includes a closure and replacement that goes through the normal update path with every kept mechanic on. Its control tells it apart from a countdown that ticks but never closes.",
+   "smallest_fix": "Either make K11's boundary crossing an explicit part of B7's sees, labelled 'staged start state, normal update path', so the permanent-lamp reject can be evidenced; or drop the permanent-lamp reject and the patch clause from B7 and leave closure to the check. Say which on page two, next to Q1."
+  },
+  {
+   "head": "extra_without_argument",
+   "where": "bars.json R12, R13, K12, B7 accept 1 and reject 2; census.json C21 (why and needed_by); tickets.md T43",
+   "evidence": "C21's deletion argument covers only the creature existing: 'Removing the creature defeats the frozen no-roof-without-gardener ban' (the_twilight_deep.md §6 ban 2: 'no story, def, or event removes the giant and leaves the waveglass standing'). The proposal keeps three more mechanics. None of them exists in source; a grep of TerminalBiomes/Source finds no overgrowth or rim-cover code, no ceiling render layer and no protected-creature refusal. They are: (a) R12/K12 rim overgrowth that cuts a well's light radius after a timer and is cleared by a graze job; (b) R13, a new selectable ceiling-water plane with its own routing and the claim that harm commands give 'the existing protected-creature reason', though no such reason exists; (c) patch jobs that seal spent rims. Deleting (a) to (c) leaves the gardener alive, the roof standing and the wells finite. Ban 2 still holds, and land, life and the bank/current signature are untouched. The lore also places the lid 'far overhead, a sky and not a surface' (the 2026-09-26 amendment), so the ban does not need a pawn on the map. The owner asked to 'strip out the fluff'. Instead the cleanse invents a new timed maintenance loop and a new render and path system in 0.1.0.",
+   "would_pass": "Each of R12, R13 and the patch job gets its own deletion argument saying what land, life or signature breaks without it; or it moves to the next version, and the gardener's minimal form is whatever ban 2 needs.",
+   "smallest_fix": "Move R12/K12 overgrowth and grazing, and the patch job, to next_version.md with a ticket. Cut B7 to: a living protected gardener is present and the roof is never left without it. Either justify R13's ceiling plane against a far-overhead presentation, or defer it too. Remove the word 'existing' from R13's refusal reason."
+  },
+  {
+   "head": "contradicts_ruling_or_lore",
+   "where": "owner_pages.md line 34; census.json X33; next_version.md T33 entry; tickets.md T33",
+   "evidence": "standing_rulings.md:137-138, owner card 2026-10-15: 'No new mod builds a cross-biome switch; the existing ones stay, default off, labelled \"Unsupported: may work outside our biomes, not tested\"'. The proposal recommends retiring those existing controls, and page one gives the reason 'the cross-biome guarantee was already released'. That misstates the card: the card released validation and explicitly kept the controls. The brief allows recommending retirement for an extra that 'fights a standing ruling'; here the ruling protects the controls. Page one never tells the owner that saying yes would reverse his own card.",
+   "would_pass": "Either X33's fate is kept (inherited settings floor) under the 2026-10-15 card, or page one says plainly: 'Retiring these reverses your 2026-10-15 card, which kept them off and labelled unsupported.'",
+   "smallest_fix": "Rewrite the page-one retirement line to quote the card's 'existing ones stay' clause as what the recommendation would change. Or drop the recommendation and set X33's fate to needed_by C27 / inherited floor (then recommend_retire goes to 0 in result.json and on the pages)."
+  }
+ ],
+ "applyable": false,
+ "digest": "71f378372d3f9058480bbde6e640be2839d00b66dc3c96669e8ea7915f2adb9f",
+ "seconds": 1421,
+ "at": "2026-11-18T23:53:07"
+}

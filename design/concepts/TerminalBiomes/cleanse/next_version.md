@@ -155,10 +155,10 @@ All scope decisions below are the Designer’s delegated calls, not new owner ru
 - **Chill warmth trails and immune-system shocks** (T32).
   What: Chill warmth trails and immune-system shocks.
   Why outside land/life/signature: Multiple triggered hazard/reward systems beyond ordinary brutal cold and drowned aurora.
-  State: unknown; preserve source/defs and default off pending review/application.
+  State: present in DivingInteraction; preserve source/defs and default off pending review/application.
 
 - **Chill aurora-surge shock and harvesting event** (T34).
-  What: a harvestable aurora shock-weather episode, reported built by the historical floor agenda; external source unknown.
+  What: an aurora shock episode and its power harvest, implemented in DivingInteraction.
   Why outside land/life/signature: its timed hazard/reward loop is independent of ordinary drowned aurora and cold. Keep source/defs; gate default off.
 
 - **Inert cross-biome opt-in controls — recommend retirement; owner decides** (T33).
@@ -169,3 +169,11 @@ All scope decisions below are the Designer’s delegated calls, not new owner ru
   What: peaceful residents, bottom dwellings, plots, moorings and lamplight for the ark reveal; implementation and callers unavailable locally.
   Why outside land/life/signature: native gardens, the animal-tended lid and the bank/current/rescue chain remain whole without a populated settlement reveal; the historical initial-version promise is deferred under this cleanse’s smaller scope, not retired.
   State: unknown; locate existing campaign work, preserve code/defs and gate placement/occupancy/availability behind a labelled next-version setting shipped off; no RM bar depends on it.
+
+- **Optional Scald floor vent pools**.
+  What: localized boiling-contact pools adjoining submerged vents, a design idea with no existing placement.
+  Why outside land/life/signature: the floor’s ambient heat and beach contact already express the Scald. Any future proposal must respect the floor’s mere-heat ruling.
+
+- **Twilight silt-trap fertility upgrade** (T50).
+  What: the TerminalBiomes swap from ordinary bank silt to worked silt through FlowWorks’ silt trap, with breach reversion.
+  Why outside land/life/signature: natural bank vegetation already draws workers. The engineered upgrade is a separate maintenance loop. Preserve the code and defs behind a default-off setting.
