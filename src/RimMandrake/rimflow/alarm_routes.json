@@ -20,6 +20,10 @@
     "chain": ["Conductor", "Operations:fresh", "owner"],
     "ladder": {"emergency": [45, 60], "distressed": [60, 240]}
   },
+  "_drainers": "incident.receiver_problem (RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL): a live program that works through alarm items filed --for seat --needs needs, and, when tags is set, only alarms of those ops_watch tags. The retired Relentless pool was the old drainer of every BENCH offline alarm; add a row here when a program takes that work, never a seat's sittings.",
+  "drainers": [
+    {"by": "red_dispatch.py on rm-red-dispatch.timer: one capped detached fixer per build-cop red item", "seat": "BENCH", "needs": ["offline"], "tags": ["NIGHTLY_RED"]}
+  ],
   "readers": {
     "BENCH": {"by": "Conductor quick checks and its sittings"},
     "OWNER": {"by": "the Conductor's sitting; never rung by a program"},

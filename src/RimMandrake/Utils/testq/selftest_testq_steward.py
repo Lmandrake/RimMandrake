@@ -55,6 +55,15 @@ def main():
         open(led, "w").close()
         for k in ("RIMFLOW_SEAT", "CLAUDE_PROJECT_DIR", "TESTQ_FILL_MODS"):
             os.environ.pop(k, None)
+        # RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL: the real routes table has no drainer for BENCH
+        # offline now the Relentless pool is retired; the ladder's filing runs against a fixture table that has one
+        real_routes = os.path.join(os.path.dirname(os.path.dirname(HERE)), "rimflow", "alarm_routes.json")
+        with open(real_routes, encoding="utf-8") as f:
+            routes = json.load(f)
+        routes["drainers"] = [{"by": "fixture", "seat": "BENCH", "needs": ["offline"]}]
+        with open(os.path.join(tmp, "routes.json"), "w", encoding="utf-8") as f:
+            json.dump(routes, f)
+        os.environ["RIMFLOW_ROUTES"] = os.path.join(tmp, "routes.json")
         ops = os.path.join(tmp, "ops_watch")      # the told ledger the T+120 rung writes (never the real one)
         os.makedirs(ops)
         os.environ.update(TESTQ_QUEUE=queue, RIMFLOW_LEDGER=led, RIMFLOW_ITEMS=items, TESTQ_INGEST_PUSH="0",
@@ -696,7 +705,12 @@ def main():
         W.rimflow = real_rf
         # T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): the L1 item goes only to a seat somebody picks up
         check(W.nobody_for(W.ALARM_SEAT, "offline") is None and W.nobody_for("BENCH", "live"),
-              "T2: the steward's L1 seat is relentless's pool; a needs=live BENCH item would have no receiver")
+              "T2: the steward's L1 seat has a drainer (fixture); a needs=live BENCH item would have no receiver")
+        os.environ["RIMFLOW_ROUTES"] = real_routes
+        nobody_real = W.nobody_for(W.ALARM_SEAT, "offline")
+        os.environ["RIMFLOW_ROUTES"] = os.path.join(tmp, "routes.json")
+        check(nobody_real and "Relentless pool" in nobody_real,
+              "T2: on the real table nothing drains the steward's BENCH offline item (the pool is retired): %s" % nobody_real)
         real_nf, real_ol = W.nobody_for, W.open_lane_item
         W.nobody_for, W.open_lane_item = (lambda s, n: "nobody drains %s" % s), (lambda w, now: None)
         inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "told": None}

@@ -207,18 +207,32 @@ def receivers():
     conf = {"clone": str(TMP / "stubclone"), "parent": "P", "for": "BENCH", "needs": "offline", "lock_wait_s": 1}
     todo = [{"item": "LIVE_RESTORE_X", "spawn": True, "title": "t", "result": "broken", "detail": "d"},
             {"item": "LIVE_RESTORE_Y", "result": "kept", "detail": "back"}]
+    # nothing drains BENCH offline in the real table now (RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL):
+    # the filing path runs against a fixture table with a drainer row
+    routes = json.loads((HERE.parent / "rimflow" / "alarm_routes.json").read_text(encoding="utf-8"))
+    routes["drainers"] = [{"by": "fixture", "seat": "BENCH", "needs": ["offline"]}]
+    (TMP / "routes.json").write_text(json.dumps(routes), encoding="utf-8")
+    rt = os.environ.get("RIMFLOW_ROUTES")
+    os.environ["RIMFLOW_ROUTES"] = str(TMP / "routes.json")
     res = DM.live_filer(todo, conf)
     seen = [json.loads(x) for x in log.read_text().splitlines()]
     check(res.get("LIVE_RESTORE_X") is None and [s[:2] for s in seen] == [["spawn", "--from"], ["live", "LIVE_RESTORE_X"],
           ["raise", "LIVE_RESTORE_X"], ["live", "LIVE_RESTORE_Y"]] and seen[0][seen[0].index("--for") + 1] == "BENCH",
-          "a broken promise is spawned for relentless's pool, recorded, then raised; a kept one is not raised: %s" % seen)
+          "a broken promise is spawned for a drainer, recorded, then raised; a kept one is not raised: %s" % seen)
     log.write_text("")
     res = DM.live_filer(todo, dict(conf, needs="live"))
     seen = [json.loads(x) for x in log.read_text().splitlines()]
     check("no receiver" in str(res.get("LIVE_RESTORE_X")) and [s[:2] for s in seen] == [["live", "LIVE_RESTORE_Y"]],
           "a new item nobody would pick up is not spawned; a reading on a filed item still goes: %s %s" % (res, seen))
-    check(OW.alarm_receiver_problem(dict(OW.alarm_conf(OW.load_rules()), clone=str(TMP))) is None,
-          "the real alarm conf (ops_watch_rules.json) files for a receiver")
+    if rt is None:
+        os.environ.pop("RIMFLOW_ROUTES", None)
+    else:
+        os.environ["RIMFLOW_ROUTES"] = rt
+    # RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL: the retired Relentless pool drained BENCH offline;
+    # nothing does now, so the dead-man's new items stay unfiled with "no receiver" until a drainer row exists
+    nobody = OW.alarm_receiver_problem(dict(OW.alarm_conf(OW.load_rules()), clone=str(TMP)))
+    check(nobody is not None and "Relentless pool" in nobody,
+          "the real alarm conf (ops_watch_rules.json) is told nobody drains BENCH offline: %s" % nobody)
 
 
 def main():

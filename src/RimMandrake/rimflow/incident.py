@@ -661,36 +661,27 @@ def reader_problem(reader, sch=None, table=None):
     return None
 
 
-RELENTLESS_RULES = os.path.join(HERE, "run_rules.json")
-
-
-def receiver_problem(seat, needs, sch=None, table=None, relentless=None):
+def receiver_problem(seat, needs, sch=None, table=None, tag=None):
     """T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH). -> why nobody picks up an alarm item filed `--for seat --needs needs`, or
     None. Every program that files an alarm (ops_watch, the dead-man, the steward) asks this before it spawns.
-    An offline alarm is picked up when relentless is on and drains that seat's pool for that needs (the 10-31
-    re-measure, D2: relentless workers repair alarms; it drains BENCH and FOUNDRY offline). A needs=owner alarm goes
-    to OWNER, the Conductor's sitting. Any other alarm needs a reader in the RO4 table (alarm_routes.json) that is
-    woken: a seat with no such reader is not a receiver, and the old fallback (BENCH, whose sittings no program
-    rings) is refused for it."""
-    if relentless is None:
-        try:
-            with open(os.environ.get("RIMFLOW_RELENTLESS_RULES") or RELENTLESS_RULES, encoding="utf-8") as f:
-                relentless = json.load(f)
-        except (OSError, ValueError):
-            relentless = {}
+    A needs=owner alarm goes to OWNER, the Conductor's sitting. Any other alarm needs a live program that drains it, a
+    `drainers` row of the RO4 table (alarm_routes.json) matching its seat, needs and (when the row names tags) the
+    alarm's tag, or a reader in that table that is woken: a seat with neither is not a receiver, and the old fallback
+    (BENCH, whose sittings no program rings) is refused for it.
+    RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL: this answered None for every BENCH offline alarm while
+    run_rules.json said the Relentless pool was enabled, but that pool's tick is retired (masked 2026-11-13) and nothing
+    worked through what ops_watch, the dead-man and the steward filed there. The retired pool's rules are no longer read."""
     if needs == "owner":
         return None if seat == "OWNER" else "a needs=owner alarm goes to OWNER, not %s" % seat
-    if (relentless.get("enabled") and seat in (relentless.get("pool_seats") or [])
-            and (needs in (relentless.get("pool_needs") or [])
-                 or ((relentless.get("game") or {}).get("enabled")     # relentless_game: the game mode drains these too
-                     and needs in ((relentless.get("game") or {}).get("pool_needs") or [])))):
-        return None
     table = table or load_table()
+    for d in table.get("drainers") or []:
+        if d.get("seat") == seat and needs in (d.get("needs") or []) and (not d.get("tags") or tag in d["tags"]):
+            return None
     r = table["readers"].get(seat)
     if r is None or r.get("seat") != seat:
-        return ("no program wakes %s for needs=%s: relentless drains %s for %s%s, and %s is no doorbell reader in %s"
-                % (seat, needs, relentless.get("pool_seats"), relentless.get("pool_needs"),
-                   "" if relentless.get("enabled") else " (relentless is off)", seat, ROUTES))
+        return ("no program wakes %s for needs=%s%s: no drainer in %s takes it (the Relentless pool that drained BENCH "
+                "offline is retired), and %s is no doorbell reader there"
+                % (seat, needs, " (tag %s)" % tag if tag else "", ROUTES, seat))
     return reader_problem(seat, sch, table)
 
 

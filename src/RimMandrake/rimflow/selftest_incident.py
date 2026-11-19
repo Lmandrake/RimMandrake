@@ -669,23 +669,30 @@ def test_routes():
     check("a seat with waking off is unwoken", "waking is off" in IN.reader_problem(
         "WORKER", {"seats": {"WORKER": {"wake": False}}}, table=bell))
     # T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): who picks up an alarm item, asked by every program that files one
-    rel = json.load(open(IN.RELENTLESS_RULES))
-    on = {"enabled": True, "pool_seats": ["BENCH", "FOUNDRY"], "pool_needs": ["offline"]}
-    check("T2: the live relentless rules drain BENCH offline, so ops_watch's alarm conf has a receiver",
-          IN.receiver_problem("BENCH", "offline") is None and "BENCH" in rel["pool_seats"] and rel["enabled"])
-    check("T2: an offline alarm for a pool seat is picked up", IN.receiver_problem("BENCH", "offline", relentless=on) is None)
-    check("T2: with relentless off, BENCH (no doorbell) is no receiver",
-          "relentless is off" in str(IN.receiver_problem("BENCH", "offline", relentless=dict(on, enabled=False))))
-    check("T2: with relentless off, a doorbell seat is still woken",
-          IN.receiver_problem("WORKER", "offline", table=bell, relentless={}) is None)
+    # RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL: the retired pool's run_rules.json no longer counts
+    drain = {"readers": TABLE["readers"], "drainers": [{"by": "fixture", "seat": "BENCH", "needs": ["offline"],
+                                                         "tags": ["NIGHTLY_RED"]}]}
+    check("T2: a BENCH offline alarm has no receiver now the Relentless pool is retired (run_rules.json not read)",
+          "Relentless pool" in str(IN.receiver_problem("BENCH", "offline")) and not hasattr(IN, "RELENTLESS_RULES"))
+    check("T2: the real table names red_dispatch as the drainer of the build cop's NIGHTLY_RED items",
+          IN.receiver_problem("BENCH", "offline", tag="NIGHTLY_RED") is None
+          and any("red_dispatch" in d["by"] for d in TABLE.get("drainers") or []))
+    check("T2: a drainer with tags takes only those tags",
+          IN.receiver_problem("BENCH", "offline", table=drain, tag="NIGHTLY_RED") is None
+          and "tag NIGHTLY_RED_OVERDUE" in str(IN.receiver_problem("BENCH", "offline", table=drain, tag="NIGHTLY_RED_OVERDUE"))
+          and IN.receiver_problem("BENCH", "offline", table=drain) is not None)
+    check("T2: a drainer without tags takes every alarm of its seat and needs",
+          IN.receiver_problem("BENCH", "offline", table=dict(drain, drainers=[{"seat": "BENCH", "needs": ["offline"]}]),
+                              tag="ANY") is None)
+    check("T2: a doorbell seat is still woken", IN.receiver_problem("WORKER", "offline", table=bell) is None)
     check("T2: a non-offline alarm for BENCH has no receiver",
-          "needs=live" in str(IN.receiver_problem("BENCH", "live", relentless=on)))
+          "needs=live" in str(IN.receiver_problem("BENCH", "live", table=drain)))
     check("T2: a needs=owner alarm goes to OWNER, and only OWNER",
-          IN.receiver_problem("OWNER", "owner", relentless=on) is None
-          and "goes to OWNER" in str(IN.receiver_problem("BENCH", "owner", relentless=on)))
-    check("T2: a seat nobody names is no receiver", IN.receiver_problem("NOBODY", "offline", relentless=on) is not None)
+          IN.receiver_problem("OWNER", "owner") is None
+          and "goes to OWNER" in str(IN.receiver_problem("BENCH", "owner")))
+    check("T2: a seat nobody names is no receiver", IN.receiver_problem("NOBODY", "offline", table=drain) is not None)
     check("T2: a doorbell seat whose waking is off is no receiver", "waking is off" in str(IN.receiver_problem(
-        "WORKER", "live", {"seats": {"WORKER": {"wake": False}}}, table=bell, relentless=on)))
+        "WORKER", "live", {"seats": {"WORKER": {"wake": False}}}, table=bell)))
     led = os.path.join(TMP, "cli_ledger.jsonl")
     open(led, "w").close()
     env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}

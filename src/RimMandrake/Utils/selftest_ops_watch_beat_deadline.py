@@ -49,7 +49,7 @@ def ok(c, w):
 conf = dict(OW.alarm_conf(OW.load_rules()))
 conf["clone"] = str(TMP / "clone")
 OW.qhome = lambda: TMP
-OW.alarm_receiver_problem = lambda conf: None
+OW.alarm_receiver_problem = lambda conf, tag=None: None
 todo = [{"name": "OPS_DEADLINE_T%d_X" % i, "title": "t", "aid": "A%d" % i} for i in range(6)]
 
 # 1. outside a beat: every alarm is filed

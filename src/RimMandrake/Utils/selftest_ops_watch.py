@@ -760,9 +760,19 @@ check("fixed id: the filer records `live <same id> --result broken` and spawns n
 # T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): a reopened alarm is raised, so the BENCH queue offers it first
 check("T2: a reopened alarm is raised after its `live`", _seen[1:] and _seen[1][:2] == ["raise", FIX], _seen)
 (TMP / "stub.log").write_text("")
+# RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL: nothing drains BENCH offline in the real table now the
+# Relentless pool is retired; the filing path is tested against a fixture table with a drainer row (tag "a")
+_routes = json.loads((HERE.parent / "rimflow" / "alarm_routes.json").read_text(encoding="utf-8"))
+_routes["drainers"] = [{"by": "fixture", "seat": "BENCH", "needs": ["offline"], "tags": ["a"]}]
+(TMP / "routes.json").write_text(json.dumps(_routes), encoding="utf-8")
+_rt = os.environ.get("RIMFLOW_ROUTES")
+os.environ["RIMFLOW_ROUTES"] = str(TMP / "routes.json")
+_res = OW.real_filer([{"name": "OPS_T2_NEW_Q", "title": "t", "aid": "b:x"}], _cf)
+check("T2: a new alarm whose tag no drainer takes is not filed: no receiver, nothing spawned",
+      "no receiver" in str(_res.get("OPS_T2_NEW_Q")) and not (TMP / "stub.log").read_text(), _res)
 _res = OW.real_filer([{"name": "OPS_T2_NEW_X", "title": "t", "aid": "a"}], _cf)
 _seen = [json.loads(l) for l in (TMP / "stub.log").read_text().splitlines()]
-check("T2: a new alarm for relentless's pool is spawned --for BENCH --needs offline, then raised",
+check("T2: a new alarm a drainer takes is spawned --for BENCH --needs offline, then raised",
       _res.get("OPS_T2_NEW_X") is None and [x[0] for x in _seen] == ["spawn", "raise"]
       and _seen[0][_seen[0].index("--for") + 1] == "BENCH" and _seen[1][1] == "OPS_T2_NEW_X", (_res, _seen))
 (TMP / "stub.log").write_text("")
@@ -780,6 +790,10 @@ check("T2: an alarm for a seat nobody wakes is not filed",
 _res = OW.real_filer([{"name": "OPS_T2_NEW_W", "title": "t", "aid": "a"}], _cf)
 check("T2: a failed raise leaves the alarm filed (a retry would re-spawn) and says so under _raise",
       _res.get("OPS_T2_NEW_W") is None and "raise refused" in str((_res.get("_raise") or {}).get("OPS_T2_NEW_W")), _res)
+if _rt is None:
+    os.environ.pop("RIMFLOW_ROUTES", None)
+else:
+    os.environ["RIMFLOW_ROUTES"] = _rt
 if _qh is None:
     os.environ.pop("TESTQ_QUEUE", None)
 else:
@@ -1454,6 +1468,12 @@ _fc.mkdir(parents=True, exist_ok=True)
 # this check is about the NUL: its clone answers the receiver question, or the live tree's rules decide it (T2 tests those)
 (_fc.parents[1] / "rimflow").mkdir(parents=True, exist_ok=True)
 (_fc.parents[1] / "rimflow" / "incident.py").write_text("def receiver_problem(seat, needs):\n    return None\n", encoding="utf-8")
+# RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL: a filing clone whose incident.py predates the drainer
+# table (no `tag`) would trust the retired pool, so it fails CLOSED and nothing spawns
+_old = OW.alarm_receiver_problem({"clone": str(TMP / "fake_clone"), "for": "BENCH", "needs": "offline"}, "x")
+check("receiver: an incident.py with no tag parameter fails closed", "predates the drainer table" in str(_old), _old)
+(_fc.parents[1] / "rimflow" / "incident.py").write_text("def receiver_problem(seat, needs, sch=None, table=None, tag=None):\n"
+                                                         "    return None\n", encoding="utf-8")
 _fr = OW.real_filer([{"name": "A", "title": "bad\x00", "aid": "x"}, {"name": "B", "title": "good", "aid": "y"}],
                     {"clone": str(TMP / "fake_clone"), "parent": "P", "for": "BENCH", "needs": "offline", "lock_wait_s": 1})
 check("filer: an alarm the spawn cannot carry costs itself, the next still files",

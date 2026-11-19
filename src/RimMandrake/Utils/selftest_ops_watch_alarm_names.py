@@ -106,7 +106,7 @@ stub.mkdir(parents=True)
 os.environ["STUB_LOG"] = str(TMP / "stub.log")
 os.environ["STUB_REFUSAL"] = str(TMP / "refusal.txt")
 CONF = {"clone": str(TMP / "stubclone"), "lock_wait_s": 1, "parent": "P", "for": "BENCH", "needs": "offline"}
-OW.alarm_receiver_problem = lambda conf: None     # the stub clone has no rimflow; who receives it is not this test
+OW.alarm_receiver_problem = lambda conf, tag=None: None     # the stub clone has no rimflow; who receives it is not this test
 res = OW.real_filer([{"name": NAME, "title": "t", "aid": "GAME_HEALTH:tps.health_breaches"},
                      {"name": "OPS_BAD", "title": "t", "aid": "X:y"}], CONF)
 seen = [json.loads(line) for line in (TMP / "stub.log").read_text().splitlines()]

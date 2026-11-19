@@ -45,7 +45,7 @@ def ok(c, w):
 
 conf = dict(OW.alarm_conf(OW.load_rules()))
 conf["clone"] = str(TMP / "clone")
-OW.alarm_receiver_problem = lambda c: None
+OW.alarm_receiver_problem = lambda c, tag=None: None
 (TMP / "data").mkdir(exist_ok=True)
 OW.qhome = lambda: TMP
 todo = [{"aid": "X:k", "name": "SCRATCH_DIRT_MEASURE_AT_END", "title": "t", "reopen": True, "expedite": None}]

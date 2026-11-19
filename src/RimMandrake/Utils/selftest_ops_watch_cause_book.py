@@ -383,7 +383,7 @@ def publish(n, message=""):
 ''')
     conf = dict(OW.alarm_conf(RULES))
     conf["clone"] = str(clone)
-    OW.alarm_receiver_problem = lambda c: None
+    OW.alarm_receiver_problem = lambda c, tag=None: None
     OW.qhome = lambda: TMP
     base = "NIGHTLY_COP_FIX_RED_WARIWE_XVFM"
     tw = ["%s_%s" % (base, OW.alarm_twist("%s#%d" % (base, k))) for k in (1, 2)]

@@ -65,6 +65,7 @@ import calendar
 import fnmatch
 import glob
 import importlib.util
+import inspect
 import json
 import math
 import os
@@ -4211,7 +4212,7 @@ def alarm_prefix(tg, tag, key, state, aid, pt=None):
     return "%s_%s" % (base, alarm_twist(base))
 
 
-def alarm_receiver_problem(conf):
+def alarm_receiver_problem(conf, tag=None):
     """T2: -> why nobody would pick up an alarm filed with this conf's `for`/`needs`, or None. Asks rimflow
     incident.receiver_problem in the filing clone, the tree whose ledger and relentless rules the item lands under
     (this tree's when that clone has none). A tree that cannot answer is a problem too: an alarm filed blind may rot
@@ -4223,9 +4224,22 @@ def alarm_receiver_problem(conf):
         spec = importlib.util.spec_from_file_location("ops_watch_incident", str(path))
         inc = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(inc)
-        return inc.receiver_problem(conf.get("for"), conf.get("needs"))
+        # `tag`: a drainer may take only some alarms (red_dispatch: the build cop's NIGHTLY_RED items). A filing clone
+        # whose incident.py predates the drainer table fails CLOSED: its answer trusts the retired Relentless pool
+        if "tag" not in inspect.signature(inc.receiver_problem).parameters:
+            return ("receiver check failed: %s predates the drainer table (it would trust the retired Relentless pool); "
+                    "sync that clone" % path)
+        return inc.receiver_problem(conf.get("for"), conf.get("needs"), tag=tag)
     except Exception as e:     # noqa: BLE001 -- any failure to answer is reported, never swallowed
         return "receiver check failed: %s: %s" % (type(e).__name__, e)
+
+
+def nobody_of(cache, conf, a):
+    """-> alarm_receiver_problem for this alarm's tag (the head of its aid), asked once per tag per pass."""
+    tag = (a.get("aid") or "").split(":", 1)[0]
+    if tag not in cache:
+        cache[tag] = alarm_receiver_problem(conf, tag or None)
+    return cache[tag]
 
 
 RAISE_REASON = "alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)"
@@ -4271,7 +4285,7 @@ def real_filer(todo, conf):
     spec = importlib.util.spec_from_file_location("ops_watch_ingest", str(path))
     ing = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(ing)
-    nobody = alarm_receiver_problem(conf)     # only a NEW item needs it: a note or a reopen goes to one already filed
+    nobodies = {}       # per alarm tag: only a NEW item needs it, a note or a reopen goes to one already filed
     res = {}
     # inside a metronome beat (OPS_METRONOME_MIGRATE_CLOCKS_FENCED) the pass is killed at the deadline: a filing is
     # started only when it and the publish still fit, the rest stay PENDING (FILING_DEFERRED, no try counted) and the
@@ -4333,8 +4347,8 @@ def real_filer(todo, conf):
                         if rc == 0:
                             res.setdefault("_renamed", {})[a["name"]] = new
                             a["name"] = new
-                elif nobody:            # stays PENDING with the reason on its entry, retried every pass
-                    rc, out = 1, "no receiver: " + nobody
+                elif nobody_of(nobodies, conf, a):     # stays PENDING with the reason on its entry, retried every pass
+                    rc, out = 1, "no receiver: " + nobodies[a.get("aid", "").split(":", 1)[0]]
                 else:
                     rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
                                           "--name", a["name"], "--title", a["title"],
