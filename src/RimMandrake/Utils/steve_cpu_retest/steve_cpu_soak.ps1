@@ -31,11 +31,23 @@ $end=([datetime]$s.end_utc).ToUniversalTime(); $run=$s.run; $CoreSecs=[int]$s.co
 function Finish($why){ $s.finished=$why; SaveState $s }
 if((Get-Date).ToUniversalTime() -ge $end){ L "SOAK END run=$run steps=0 reason=END: time (planned end passed while down)"; Finish 'END: time'; exit 0 }
 if(@(Get-Process prime95 -EA 0).Count){ L "SOAK REFUSED run=${run}: prime95 already running"; exit 0 }
+# The worker's own files on D:, not wsl.exe: as SYSTEM, wsl.exe cannot reach the user's runner distro (11-18 PROBES
+# worker_probe=blind whoami=nt authority\system; RIMMANDRAKE_UNBLIND_SOAK_WORKER_PROBE_SYSTEM_SEES_NO_DISTRO). worker.py
+# attempt_state's rule: `current` names the attempt; no result.json and a state.json under 120 s old (DEAD_AFTER_S) is a job.
+if(-not $TestqHome){ $TestqHome='D:\RimTest\testq' }
 function Busy(){ # why we must wait, or ''
   if(@(Get-Process RimWorldWin64 -EA 0).Count){return 'RimWorldWin64 running'}
-  $o=(wsl.exe -e bash -c "cd ~/rm/runner && python3 infrastructure/stevedesktop/worker.py status" 2>$null) -join "`n"
-  $script:probe=if($o -match '"busy"'){'answered'}else{'blind'}
-  if($o -match '"busy":\s*true'){return 'runner worker busy (testq job)'}
+  if(-not (Test-Path -LiteralPath $TestqHome)){ $script:probe='blind'; return '' }
+  $script:probe='answered'
+  $cur=Join-Path $TestqHome 'current'
+  if(-not (Test-Path -LiteralPath $cur)){ return '' }
+  try{ $aid=([IO.File]::ReadAllText($cur)).Trim() }catch{ $script:probe='blind'; return '' }
+  if(-not $aid){ return '' }
+  $ad=Join-Path (Join-Path $TestqHome 'attempts') $aid
+  if(Test-Path -LiteralPath (Join-Path $ad 'result.json')){ return '' }
+  $st=Join-Path $ad 'state.json'
+  if((Test-Path -LiteralPath $st) -and (((Get-Date)-(Get-Item -LiteralPath $st).LastWriteTime).TotalSeconds -lt 120)){
+    return "runner worker busy (testq attempt $aid)" }
   return '' }
 function Load($cpu){ # % busy of that CPU (or all) over 1 s, -1 = could not read
   try{ $n=if($cpu -lt 0){'_total'}else{"$cpu"}; return [int](Get-Counter "\Processor($n)\% Processor Time" -SampleInterval 1 -MaxSamples 1 -EA Stop).CounterSamples[0].CookedValue }catch{ return -1 } }
