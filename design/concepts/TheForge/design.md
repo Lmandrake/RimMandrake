@@ -6,7 +6,8 @@ biome "through the lens of Utinni". It replaces the older definition sheet, revi
 and cleanse proposal as the place to read; what happened to every idea in them is in
 `design/concepts/TheForge/rewrite_choices.md`. Nothing has been deleted yet. This is a design document only and it
 launches nothing. A second reader checked it against the sources on 2026-11-18 and repaired the hull, fuel, scope and
-`NEEDS HIM` sections; what changed and why is at the top of the choices page.
+`NEEDS HIM` sections; what changed and why is at the top of the choices page. A third run the same day read the
+roster file to its end; it changed two facts here (the tibidee is wired; the date of the lava snail's cut).
 
 **Kind, checked against the sheet's own header:** land. One volcanic massif, *"the only vertical skyline in the Dune
 Sea."* It has lava, not a sea; the seabed rulings do not apply.
@@ -365,7 +366,7 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - A watcher: the zhaskel, *"an ember-dark plated sitter in cooled-crust fissures"*, pitched under his 2026-10-08
   ruling that every biome gets one and never admitted at a sitting. (unbuilt; a proposal)
 - The two giants he said to wire in on 2026-09-29 (*"Wire in all waiting"*): the tibidee and the great aerofleet,
-  now the greater bulloo. (the greater bulloo is built; the tibidee's state was not checked)
+  now the greater bulloo. (the greater bulloo is built; the tibidee is wired in the campaign patch, `WildAnimals_TheForge.xml`)
 - The scanner's readings here. (built)
 - Campaign layer: beldons and the tibanna tap; the Contagion's testing ring; one floor of a foundry tower as a
   dungeon over open melt, *"richer or cooked"*. (ring built; the tap reported shipped 2026-09-28 and marked unknown
@@ -388,7 +389,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   and scald-gear economy; two-faiths map mechanics (all struck 2026-09-29). The fuel-saving keel brace (cut
   2026-10-23). The ship ideas among these are asked below and not revived.
 - Creatures offered and not chosen: the kettugal and the brazzok (2026-10-20, he picked the ummisk); the jobbosh
-  (2026-10-16, *"insufficiently alien"*); the lava snail and seven other vanilla rows (cut by card 2026-10-20).
+  (2026-10-16, *"insufficiently alien"*); the lava snail and seven other vanilla rows (cut by card on the evening of 2026-10-19, Pacific; the ledger stamps
+  it 2026-10-20 in universal time).
 - Three enrichments offered on 2026-09-30 and not picked: The Last Lift, Quench Crossings, The Anvil Answer. Only
   their names survive in the sources.
 - Worldgen scoring of hot tiles, in any version.

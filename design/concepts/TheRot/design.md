@@ -6,7 +6,9 @@ instruction to see every biome "through the lens of Utinni". It replaces the old
 and naming documents, kit specification and cleanse proposal as the place to read; what happened to every idea in
 them is in `design/concepts/TheRot/rewrite_choices.md`. Nothing has been deleted yet. This is a design document only
 and it launches nothing. A second reader checked it against the sources on 2026-11-18 and repaired the fuel, hull,
-scope and `NEEDS HIM` sections; what changed and why is at the top of the choices page.
+scope and `NEEDS HIM` sections; what changed and why is at the top of the choices page. A third run the same day
+read the roster file and the bars draft to their ends and corrected what the giant spares (a roof or a stockpile
+zone).
 
 **Kind, checked against the sheet's own header:** land. A fungal continent on the night shoulder of the storm wall.
 Its milky ponds are *"not water"* and are no sea; the seabed rulings do not apply.
@@ -125,7 +127,8 @@ Somebody puts down a crate of meat.
 
 - **The gut that walks.** The hwelgrue: huge, slow, tentacled, eye-spotted. It does not hunt. It grazes the open
   ground and eats what is lying on it: stores, corpses, and anyone who is down. *"It simply clears up after a
-  fight."*
+  fight."* It leaves whatever is under a roof or inside a stockpile zone, goods and the downed alike (read in the
+  built source; the drafted bar of 2026-10-22 names the same control).
 - **Something is still alive in there.** Whoever it swallowed can be heard: *"a muffled knocking and a voice through
   the hide that grows fainter as digestion goes on. The knocking is a clock and a name."* Select the giant and it
   says who and how long. Hurt it enough, in time, and they come out alive. His answer of 2026-11-10: *"A prompt,
@@ -306,7 +309,7 @@ source, named beside it.
 | Organic things in the open on live mat spoil fast and vanish; inside walls and roof they do not; a lean-to does not count; frozen stock keeps; metal is untouched. | Meat, a corpse and steel: open, lean-to, enclosed; a frozen stack outside in deep cold. | The same meat on dead cold ground at the forest's starving edge spoils at the ordinary rate. |
 | Stored native food warms its store, visibly in proportion to how much is stored. | A cold room filled in steps. | The same weight of imported food does nothing. |
 | A Prime gasses what comes near in the ordinary course of play, and feeds on what dies there; a Skulltop does the lesser version. | An animal wandering near each, with nobody forcing anything. | A burst fired by a debug helper proves nothing: it has to happen on the plant's own tick. |
-| The hwelgrue eats loose stores, corpses and the downed in the open, and nothing that is up and walking. | A stockpile, a corpse, a downed stranger and a healthy colonist in its path. | Things under a roof are left. |
+| The hwelgrue eats loose stores, corpses and the downed in the open, and nothing that is up and walking. | A loose stack on open ground, a corpse, a downed stranger and a healthy colonist in its path. | Things under a roof or inside a stockpile zone are left, the downed included. |
 | A swallowed person knocks, is named with a time on the giant, and is got out alive by hurting the giant in time; too late, a body comes out. | One prompt rescue, one late. | Never a missing-person letter with nothing on the map. |
 | What it ate that was metal comes back whole in a casting. | Feed it a marked, damaged steel item; wait. | The item has its mark and quality; nothing organic comes back. |
 | With the ship's engine on the map, the core's carrier pings and the ship hears it. | A map with the carrier and one without. | Only one giant in the world ever pings. |

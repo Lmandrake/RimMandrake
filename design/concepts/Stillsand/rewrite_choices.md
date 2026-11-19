@@ -53,11 +53,25 @@ your own landed ship."*
   earlier picks of his. **The locked tree is not edited.** Its root describes a colony that stays and names the
   workshop; the design's status header says so, for a later Designer run to reconcile.
 
-**Measured counts** (script: `design/RimMandrake/biome_recheck_row_check_2026-11-18.py`, and the reader's own
-source list checked against disk): **271 rows** (185 from the first read, 86 added); **27 lost**, **19 moved** and
-5 more that record a move in part, 10 kept and reshaped, 1 folded into shared machinery, 214 kept. **Sources: 15
+**Third run, 2026-11-18: the roster file read to its end.** The second reader's reading of
+`rosters/dune_sea_deep_desert.json` had each eviction's reason cut at about 95 characters. A third run read the
+file whole (943 lines: 110 evictions, 26 animals, 7 plants, 11 purged plants, 11 owed new things, 6 confidence
+notes). The reading reached each file's last line; the longest line in the file is 690 characters and the reading tool shows 2,000 characters of a line, so no entry was cut. **Rows added: 28**, in the table "Added by
+the second reader: the roster file read to its end"; two of the second reader's rows corrected in place.
+Recovered: his *"I meant pick one arid home."* (2026-09-22), which is where the one-home rule was first written
+and which the cut had hidden; his four sheet notes of 2026-10-04 in full, and the second half of the vozzik's
+move (*"This should be moved to the Rust Cathedral Biome."*); his eye on the giant mushroom (2026-09-20); the
+measure behind the size law and the predator law (*"nothing charges out of a bush; there is no bush"*); and
+three flags nobody closed (two eye tests left to him; the ban on night habits never checked; a dunealisk the
+file both refuses and lists). One false statement on this page came from the cut and is corrected: the korrum
+is not on this roster. The design did not need a repair: it names neither the korrum nor the dunealisk.
+
+**Measured counts** (script: `design/RimMandrake/biome_recheck_row_check_2026-11-18.py`, and the readers' own
+source lists checked against disk): **299 rows** (185 from the first read, 86 added by the second reader, 28 by
+the third run); **31 lost**, **19 moved** and 5 more that record a move in part, 11 kept and reshaped, 1 folded
+into shared machinery, 237 kept. **Sources: 15
 read to the end, 9 read in part, 18 not opened.** Read to the end: all seven files this page lists for deletion
-(the roster json entry by entry, each eviction's reason cut at about 95 characters) and the cast bible it says to
+(the roster json by the third run, with nothing cut) and the cast bible it says to
 hold; the tree's `root.md`, `sheet.md` and `journal.md`; the cleanse's owner pages; his answers and the questions
 he was shown; the ship-gifts item. Read in part, at this biome's sections: the rites pass and register, the
 mechanics review, the fluff cuts, the watcher pitch, the shield rulings, the dunes design, the gale's weather def,
@@ -69,7 +83,15 @@ idea that lives only in them has not been checked by this pass.
 
 DELETE-READY: yes
 
-That line covers the seven files listed for deletion at the end of this page and nothing else. The cast bible
+Restated 2026-11-18 after the roster was read to its end. The line covers seven files in
+`design/Jawa/worldbuilding/biomes/` and nothing else: `dune_sea.md`, `deep_desert.md`,
+`stillsand_bedazzle_2026-09-27.md`, `stillsand_bedazzle_review_2026-09-29.md`,
+`stillsand_turn3_development_2026-09-30.md` and `stillsand_roster_fillout_2026-09-27.md` (read to the end by the
+second reader, on that reader's statement above) and `rosters/dune_sea_deep_desert.json` (read to the end by the
+third run, nothing cut; every idea, ruling and owner word in it has a row). The roster is cited by path in
+comments in `src/RimUtinni/UtinniPatches/Patches/WildAnimals_Stillsand.xml` and
+`src/RimMandrake/Stillsand/Defs/ThingDefs_Races/RM_Siidda.xml`; those lines should point at this page before the
+file goes. The cast bible
 stays held as that list says. What the same list says to do first still stands: move the sarlacc carve-out
 paragraph of `deep_desert.md` to the sarlacc's design, and repoint the tree's `sheet.md` and the build items that
 cite the two sheets by section.
@@ -455,9 +477,9 @@ three* = `biomes/stillsand_turn3_development_2026-09-30.md`; *cast bible* =
 | The egg cistern and the solar catch-yard as ship parts | bedazzle §6 | lost | Never carded; the gift on record is the lens kit. | A hold rack for canteen eggs: small. |
 | The ikee's label *"drageye"*, the builder's word after he ruled the Stillsand's eye gets *"a new distinct label"* | review §1 | kept as an open naming row | | |
 | The nizzek, the drazzik clutch's hatchling, *"hostile from the shell"* | review §2; cast bible | kept (the wrong egg) | | |
-| The vozzik, a barely moving slug giant | bedazzle; roster json | lost from this biome | He moved it out on 2026-10-04 (*"This should go into the Warscar."*). | |
+| The vozzik, a barely moving slug giant | bedazzle; roster json | lost from this biome | He moved it out on 2026-10-04, in two notes: the free-tier animal (*"This should go into the Warscar."*) and the campaign-tier one (*"This should be moved to the Rust Cathedral Biome."*). The second note was cut off in the earlier reading; added after the roster was read to its end. | |
 | Ulgga, vosska and the ultriss pad moved in by his sheet notes of 2026-10-04; the kudda cut (*"It's dumb."*) | roster json | kept as ruled | | |
-| Dunealisk and korrum on the roster; dead trees purged (*"dead standing wood is imported treasure, never scenery"*) | roster json | kept as the record of the cast | | |
+| Dead trees purged (*"dead standing wood is imported treasure, never scenery"*) | roster json | kept as the record of the cast | Corrected after the roster was read to its end: this row also said the dunealisk and the korrum are on the roster. The korrum was removed from it (its one home is the Scarlands), and the dunealisk is both refused and listed; see the rows added from the full reading. | |
 | The Sun-Debt's words: *"The sun lends and the sand collects… We take back what was drawn"* | review §2; turn three §2.3 | kept in "later", quoted here | | |
 | The Debt as a valve: *"the krayt is the debt collector, and the storyteller agrees"*; a bad Return is *"a debt refused"* | turn three §2.3 | kept in "later" (campaign) | | |
 | *"The sand remembers water"*: wet sand draws swimmers, *"the rumble comes to the pour"* | turn three §2.3 | kept (the wet thumper is its use) | | |
@@ -486,6 +508,44 @@ three* = `biomes/stillsand_turn3_development_2026-09-30.md`; *cast bible* =
 | His answer on fortune names lens production (*"potentially including useful lens production"*, 2026-11-10) | owner answers | kept as support for bringing the kit forward | | |
 | The wetting technique *"the Stillsand is already developing for spilled water on the sand"* (owner, 2026-11-04) | owner ledger | kept in "later" with the thin film | | |
 | The Listening's limits: the geophone is taught by *"studying a ruukka corpse or a spent mound"*; *"the readout must stay coarse... or the biome's dread dies"* | review §8 | kept with the geophone (0.2.0) | | |
+
+### Added by the second reader: the roster file read to its end
+
+A third run, 2026-11-18, read `rosters/dune_sea_deep_desert.json` from its first line to its last (943 lines, 110
+evictions, 26 animals, 7 plants, 11 purged plants, 11 owed new things, 6 confidence notes), with no line or reason
+cut. The rows below are what that reading found without a row. Two of the second reader's rows were corrected in
+place and say so (the korrum; the vozzik).
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| *"I meant pick one arid home."* (owner, 2026-09-22, correcting a row added here the same day): the arid biomes he had listed were *"the CANDIDATE set, not an assignment"*, and *"a shared habitat class is NOT an in-game reason to multi-home an animal"*. The bokka's one home is the Long Shade; the korrum's wiring here was removed too, *"its one home is the Scarlands"* | roster json | kept as a rule; neither animal is on the Stillsand | His words, in the longest reason in the file; the earlier reading had its first 95 characters. It is where the one-home rule was first written down. | |
+| The size law the evictions measure against: a body size from 0.3 to 3.0 is banned on the surface (freeze ruling R22, *"one merged roster, strict intersection"*); 81 of the 110 rows cite it, each with its measured size | roster json | kept as the roster's rule, never as a bar | The first read's row has "enormous or grain-scale"; this is the measure behind it. A number here is the record of a sorting, not a promise. | |
+| The predator law: a hunter here strikes from under the sand or does not live here; pursuit hunters are refused (*"nothing charges out of a bush; there is no bush"*); one that ambushes from water is refused too | roster json | kept as the roster's rule, the line quoted | | |
+| No large herds on the surface (the deep sheet's seventh ban): the ronto and the skalder go to the Desert, *"where a herd is infrastructure"*; the beldon and the thranta are refused | roster json | kept as a rule; the animals kept elsewhere | | |
+| Animals this roster sent to the Desert (today the Long Shade's roster): eopie, falumpaset, the gorg and frilled gorg, jamel, reek, varactyl, uvak, worrt, shyrack, sketto, desert ave, sand prowler; and by his card *"adjust-and-keep in Desert"*, slowed to fit, the gutkurr and the wraid (the wraid *"as burst predator"*) | roster json | kept elsewhere | Where each landed after the Long Shade's later sittings was not checked by this reader. | |
+| Sent elsewhere: to the arid shrubland the longtail gorg, the urusai and (by his card) the massiff; to the Fall Line the mynock (*"parasite needs hosts/hulls"*), the scavrat (*"scurrying between wrecks is correct"*), the fuelmite (*"eats fuel"*) and the womp rat (*"Fall Line ship vermin"*); to the poison forest the crystal mit and the neebray; to the Wasteland the fission mouse; the two hornet queens through the Wasteland to the fungal jungle, their *"current final home"* | roster json | kept elsewhere | These are the "where an animal was sent from" notes. The Fall Line four are ship vermin by the roster's own words. | |
+| Refused on sight: the two crabs (*"recognizability, doubly strict here: a crab is a crab"*); the crystal fox (*"mineralized/shiny on sight"*); five animals of three retired donor mods (*"0% survival, mod retirement ruled"*) | roster json | lost (cut or refused) | | |
+| *"giants limited to the ruled five"*, under the sheet's *"sparse to the point of discomfort"*; two animals refused on that count | roster json | kept as the record | This roster itself lists more than five giants since his fill-out commission (*"More!"*); his later word wins, as the second reader's row on the fill-out says. | |
+| The dunealisk is in this file twice: refused (*"strict intersection evicts it despite the subsurface-donor pattern"*) and listed as an import (*"subsurface strike only — the one legal predator archetype"*, *"review-flagged"*) | roster json | kept as a flag (`UNSETTLED`) | The file disagrees with itself. A search of the built biome def and the campaign patch finds no dunealisk row in either. The second reader's row said it is on the roster; that row is corrected. | |
+| Two eye tests left to him and never recorded as done: whether the granite slug and the boulder mit pass the ban on a mineralised or shiny look (*"eye test is the owner's; stone-named but matte-dusty reads plausible"*) | roster json | kept as an open flag | The boulder mit is on this roster as a kept giant and has no other row on this page. | |
+| The bloddle measured: no green pixel on any of its three pictures, *"a bulbous rounded body with no leaf shapes"*, so it passes *"no green, no leaves"*; that it is not glassy or white is *"a separate stylistic note"* | roster json | kept (the canon plant, campaign layer) | | |
+| The ban on night habits (the dune sheet's first ban) was never checked on any animal: *"no register field covers activity cycles; def-level lint owed"* | roster json | kept as a flag (`UNMEASURED`) | Under a sun that never sets, an animal with a night habit would sleep or hunt on a clock this place does not have. | |
+| Every claim that an animal flies was unmeasured when the roster was made (*"register flies special is broken"*); the two leviathans were left out of every measure as *"not wild-roster material anyway"* | roster json | kept as the record | The soorrak's flight was built later and is real. | |
+| The gizka has two homes, the Pyrelands and the Stillsand (*"ruled 2026-09-14, reaffirmed at the 2026-09-27 sittings"*), as a protected icon; the kreetle has one, here; the scurrier was thinned to a tenth by his card of 2026-09-09 | roster json | kept as ruled | The first read's row says the two stay; this is the ruling behind each. No evictions. | |
+| The ikee *"had quietly tripled the roster's approved"* size when it was ported, which is why he shrank it; the spined gow's donor body was *"a mid-band SURFACE body, illegal on both arms"*, which is why it was grown | roster json | kept (the first read's row), reasons carried here | | |
+| The name offered in place of vekka: *"the shakkir swap is dead"* (his call, 2026-09-27) | roster json | lost | | |
+| The qorrax's picture is a donor's: *"our own recreated art owed"* | roster json | kept as a build fact (owed) | | |
+| The gaanok as the roster has it: a *"never-attacking follower; takes only the downed"* | roster json | kept, with the first read's note that the following is owed | The census calls the built animal an ordinary slow predator; by this line it should never attack at all. | |
+| The zuurrik is *"NOT a wildAnimals row"*: blood on sand wakes it, it *"strips the stain and the bodies beside it, then re-buries"*, and it *"keys to blood, never to a clock of day"* | roster json | kept (0.2.0, the second reader's row), detail carried here | | |
+| Build facts the roster records: the zuurrik and the vaalok wear placeholder pictures; the hourbloom's plant exists but *"the incident that names it is not wired"*; the light-eater is spelled two ways in this one file | roster json | kept as build facts | The hourbloom is in "later"; whoever brings it forward builds the incident first. | |
+| No fish: *"there is no water of any kind: no standing water, no ice, no fog, no condensate"*; *"the only brine is cavern seeps metres wide"* | roster json | kept as a rule | Sand fishing takes dune crawlers and pearls, not fish. | |
+| His four sheet notes of 2026-10-04, whole: the ulgga, *"Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level."*; the vosska, *"Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand"*; the ultriss pad, *"This is supposed to be in the most extreme desert ... Rename this to Ultriss Pad. RimMandrake tier."*; the truffle mole, *"Move this to the biome with all the Fuzz (Leaning?), Rim Mandrake level."* | roster json | kept as ruled, his words now on the row | The second reader's row names the moves and quotes only the kudda's. The vosska is one more sand swimmer by his word. | |
+| The ultriss pad is wired as the commonest plant on this roster by a wide margin | roster json | kept as ruled, with a flag | Read in the roster and in the built biome def. The sheet says the standing crop *"would fit in a bucket"*; nobody has looked at a map to see which wins. A weight is tuning, never a bar. | |
+| Plants purged: seven with Earth names or Earth houseplant bodies, under his card of 2026-09-09 (a planet-wide purge); and the giant mushroom, removed on his eye on 2026-09-20 (*"The giant mushroom seems misplaced"*), which lives in the Abyss | roster json | lost (purged); the mushroom kept elsewhere | | |
+| The ollim's first name: *"silverbole (owner to name; silver required)"* | roster json | kept, reshaped: named the ollim; whether its picture is silver was not checked | | A look at the tree's art: one glance. |
+| The plan before the siidda was built: dormant dune animals as reskins, because 107 donor rows already carried a dormancy mechanic | roster json | lost (the siidda was built on the game's own dormancy) | | |
+| The sand busters' bodies, by the amendment he ruled on 2026-09-24: *"giant or grain-scale only, sun-axis polarised, no nameable insect/spider silhouette"*; *"sand BUSTERS, they erupt, they do not swim"*; the mound is a structure; banned everywhere else by the campaign layer | roster json | kept (the first read's rows), the body rule carried here | | |
+| The roster's law sources: the dune sheet's section 6 and roster section, the deep sheet's section 6, freeze ruling R22, the assignment prep's sections 1 and 9, his cards of 2026-09-09 | roster json | kept as the record | The freeze rulings, the prep and the sitting item were not opened by this reader; none is on this page's delete list. | |
 
 ## Sources read, and the count
 

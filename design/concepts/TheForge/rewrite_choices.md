@@ -61,10 +61,20 @@ clock ends.
   brace is his cut of 2026-10-23, which stands. No locked Designer sheet or tree exists for this biome, so nothing
   is held for a Designer run to reconcile.
 
-**Measured counts** (script: `design/RimMandrake/biome_recheck_row_check_2026-11-18.py`, and the reader's own
-source list): **215 rows** (113 from the first read, 102 added); **27 lost**, **17 moved** and 6 more that record a move in part, 4 kept and reshaped, 1 folded into shared machinery, 165 kept, 1 the script could not class (a first-read row that begins "hiss kept"). **Sources: 32 read to the end,
-12 read in part, 12 not opened.** Read to the end: the three files this page lists for deletion (in the roster
-file, five of the eighty-four eviction reasons were cut at about 520 characters); the cast bible; the kit; the
+**Third run, 2026-11-18: the roster file read to its end.** The second reader's reading of
+`rosters/the_forge.json` had five of its eighty-four eviction reasons cut at about 520 characters. A third run read
+the file whole (634 lines: 84 evictions, 9 animals, 9 plants, 4 purged plants, 3 owed new things, 6 confidence
+notes). The reading reached each file's last line; the longest line in the file is 574 characters and the reading tool shows 2,000 characters of a line, so no entry was cut. **Rows added: 24**, in the table "Added by the
+second reader: the roster file read to its end". Recovered: his rulings that sent the gamma plants to the Abyss
+(2026-09-20) and the dewback to the oasis (2026-09-06); his card of 2026-09-09 behind eight cuts and two moves;
+the roster's own test, *"no heat story"*; an open flag that nobody measured whether the kept ground animals can
+live at Forge heat; and the pointers the evictions leave for other biomes' rosters. The design changed in two
+facts: the tibidee is wired in the campaign patch, and the lava snail's cut is dated 2026-10-19, Pacific.
+
+**Measured counts** (script: `design/RimMandrake/biome_recheck_row_check_2026-11-18.py`, and the readers' own
+source lists): **239 rows** (113 from the first read, 102 added by the second reader, 24 by the third run); **30 lost**, **17 moved** and 6 more that record a move in part, 5 kept and reshaped, 1 folded into shared machinery, 185 kept, 1 the script could not class (a first-read row that begins "hiss kept"). **Sources: 32 read to the end,
+12 read in part, 12 not opened.** Read to the end: the three files this page lists for deletion (the roster file
+by the third run, with nothing cut); the cast bible; the kit; the
 embargo spec; both slow-ground files; nineteen ledger items (the cycle, the ruled content, the enrichment and its
 seven splits and remainders, the sitting, the roster reconcile, the slot card, the voices audio, the first script,
 zersium, the ship's alloy forge, the ship gifts); his answers and the questions he was shown; the rehearsal's
@@ -81,10 +91,16 @@ bear on this biome). Every file not read to the end is one that stays.
 
 DELETE-READY: yes
 
-That line covers the three files listed at the end of this page and nothing else. What the first read says to do
-before deleting still stands. One more: the roster file is the only place the eighty-four evictions and their
-reasons are written; if another biome's roster work still wants to know where an animal was sent from, that table
-should be copied out first.
+Restated 2026-11-18 after the roster was read to its end. The line covers three files in
+`design/Jawa/worldbuilding/biomes/` and nothing else: `the_forge.md` and `forge_bedazzle_review_2026-09-28.md`
+(read to the end by the second reader, on that reader's statement above) and `rosters/the_forge.json` (read to the
+end by the third run, nothing cut; every idea, ruling and owner word in it has a row). What the first read says to
+do before deleting still stands. Two more. The roster file is the only place the eighty-four evictions and their
+reasons are written whole; the rows added from it carry his rulings and the pointers to other biomes, and if
+another biome's roster work wants the full table it should be copied out first. And the roster is cited by path in
+comments in `src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheForge.xml` and
+`src/RimMandrake/TheForge/Defs/BiomeDefs/RM_TheForge_Biome.xml`, in the kit, and in the open item
+`FORGE_MECHANICS_1`; those lines should point at this page before the file goes.
 
 Companion to `design/concepts/TheForge/design.md`, written 2026-11-18 by the same pass. Its job is to let the older
 files be deleted without fear: every distinct idea found in any source has a row saying what became of it. Nothing
@@ -440,6 +456,39 @@ and its `.json`; *cleanse* = `design/concepts/TheForge/cleanse/`; *walk* =
 | Blue gel has no built use; the greater bulloo is not bound to the columns | rehearsal; cleanse | kept as build facts | "Blue gel" under what the crew takes away is, today, a thing to sell. | |
 | The 2026-10-22 review's calls: the tower, *"decide whether the Foundry tower is real"*; the ummisk, *"keep as scenery"*; the brace, *"simplify or cut"* | mechanics review | kept as history | The tower call was never put to him; the first read placed the tower in 0.2.0, campaign layer. | |
 | The walk's list of theories already ruled out | walk | kept in the walk, which stays | | |
+
+### Added by the second reader: the roster file read to its end
+
+A third run, 2026-11-18, read `rosters/the_forge.json` from its first line to its last (634 lines, 84 evictions,
+9 animals, 9 plants, 4 purged plants, 3 owed new things, 6 confidence notes), with no line or reason cut. The rows
+below are what that reading found without a row.
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| The roster's admission test as it was applied animal by animal: *"no heat story"*; *"nothing unadapted admits to the massif"*; *"few means few"* (said of a slow producer that passed on speed and still went) | roster json | kept as the roster's rule | It is the sheet's test (the flash-interval, or the sky) turned into a reason on each of the eighty-four rows. | |
+| The gamma and septimum plants sent to the Abyss: *"owner ruling 2026-09-20, flora move approved; owner review 2026-09-11 (move)"*; the move mapping's claim that two of them were already there was *"MEASURED FALSE (audit 2026-09-12)"*, so they were added to the Abyss roster and not dropped | roster json | kept elsewhere (the Abyss) | His ruling, as the roster records it. These are three of the five reasons the earlier reading cut at 520 characters. | |
+| The dewback sent to the oasis: *"RULED move (owner 2026-09-06...)"*, *"the dew-drinking lizard was mis-cast to LavaField"* | roster json | kept elsewhere (the Weeping Stones' roster) | | |
+| His card of 2026-09-09 on Earth-nameable animals, planet-wide: the catfish (*"a catfish on a lava massif"*), brown bat, mole, axolotl, land octopus and night mule cut here; and under the ban on retextured Earth animals, the sonar rabbit and the tox sheep | roster json | lost (cut) | His card and the ban it made. | |
+| His card of 2026-09-09, ruling 3: the mudhorn *"kept as the shrubland's ONE huge-predator icon exception"*, and the massiff to the shrubland's medium band | roster json | kept elsewhere (the arid shrubland's roster) | | |
+| The cinderlisk: cut with the whole "-lisk" clade on 2026-09-10; *"the defName does not load"*; this roster still listed it as an import until 2026-09-21 | roster json | lost (cut) | The fourth of the five reasons cut short before. | |
+| Animals this roster sent to a named home: the shyrack to the Desert (*"slow cave-mouth ambusher"*), the iriaz to the grasslands (*"belongs with the Pyrelands ash-grazers"*), the scavrat to the Fall Line (*"the name is the job"*) | roster json | kept elsewhere | Where each landed after the later sittings was not checked by this reader. | |
+| Pointers the evictions leave for other rosters without moving the animal: the ray hound (*"Rust Cathedral lane if anywhere"*), the thunderbeast (*"Stormwall/wasteland lane, not vulcanism"*), the bloodletter petrel (the Wasteland's), the skalder and the uvak (*"that roster's call, not the Forge's"*), the crystal mantis (caverns or poison forest) | roster json | kept as the record | These are the "where an animal was sent from" notes the paragraph under DELETE-READY says to copy out first. | |
+| The other reasons an animal was refused: no standing water for fish, tadpoles and toads; the pollution register (*"the Forge's air is steam and ash, not smog-lure country"*); the lush register (the jungle rancor, the marsh haunt, the kaadu); a Gauranlen creature that *"does not function wild"*; a Final Fantasy animal; hive queens, because *"infestation axis is not wild-roster business"* | roster json | kept as the record | | |
+| Six chimeras judged by the sheet's heat law and not by their name prefix: `GRim*=Grindterra homeless; GR_*=VGE chimeras judged per sheet law` (the roster's words, correction pass of 2026-09-09) | roster json | kept as the record | All six were refused for no heat adaptation. | |
+| *"ONE roster for all three defs"*: the zones differ by height, and *"the sheet names no per-def fauna split"* | roster json | kept as a build fact | The first read's row covers the three defs as one place; this is the cast's side of it. | |
+| *"kept ground fauna tolerate 42-56 °C"*: marked UNMEASURED; the animals were picked by their descriptions because the register carries no heat-comfort figure | roster json | kept as a flag (`UNMEASURED`) | Nothing in this file closes it. Whether the kept ground animals live through Forge heat is a live read. | |
+| The lava snail as the roster cast it: *"lives between the rain-flashes by being too slow to care"*; the Grindterra retexture of it *"never gets a home (owner card)"* | roster json; slow-ground | lost (cut by his card of 2026-10-19 with seven other vanilla rows; the ummisk took the slot the next day) | The roster file was never updated after the cut and still lists the snail as an import. The first read's row "the lava snail's old slot" is the same loss. | |
+| The maguana: a *"magma-patterned camouflage lizard"*, *"moved from the Pyrelands cast where it had no story"*; the roster's weight for it and the wired weight differ, *"a pre-existing tuning drift... flagged for whoever owns fauna density tuning"* | roster json | kept in the campaign layer, with the flag | The fifth reason cut short before. A weight is tuning and never a bar. | |
+| His review of 2026-09 (the round-two move mapping) on the two giants: the great aerofleet is a *"rare creature wherever normal aerofleets end up"*; the tibidee belongs in *"volcanic areas"* | roster json | kept; the tibidee is wired in the campaign patch (read in `WildAnimals_TheForge.xml`) | The second reader left the tibidee's state unchecked; the design now says it is wired. | |
+| The aerofleet kept past the planet-wide trim of animals that live in too many biomes, because the sheet names the Forge its home: *"flagged for owner review"* | roster json | kept as an open flag | Never ruled in this file. | |
+| The lava flea's origin: *"SW canon lava-country herd hopper (Mustafar)"*, refused by the dune sea for its size and given a home here; it *"grazes the flash-flora at the skirts"* | roster json | kept in the campaign layer (the second reader's row), detail carried here | | |
+| Fireweed is the roster's commonest plant and its *"SIGNATURE"*, on a borrowed body: *"fiber yield needs the FORGE_MECHANICS_1 reconcile"* | roster json | kept as a plant; the fibre economy is lost (the first read's row) | | |
+| Fire lavender is *"the one donor plant that literally lives at Forge temperatures"*; the heatsink fungus is the sheet's *"even trees of shocking tolerance"*; both were ported from the retired caverns donor on 2026-09-20 | roster json | kept as build facts | | |
+| The crust as the roster names it: the sheet's *"beautiful heat-resistant mosses"*, a *"crust form on the rock between flashes"*, on a def shared with the Rot's spore kit | roster json | kept, reshaped: the built Forge has its own plant in that place, cinder crust | The review says cinder crust has no written identity; this line is the nearest thing to one. | |
+| The geyser grasses and bindweed are here by freeze ruling R12: *"the Forge is the geothermal field's densest point; geyser flora is its ground truth"* | roster json | kept (the second reader's row), reason carried here | | |
+| The three things the roster said were still owed: fleet fliers, because *"no small donor flier passes heat-adapted"*; the tibanna gland on the beldon, with a herd harvest system; the corpse-ring as an *"event, not roster"* | roster json | kept; each has its own row above | | |
+| The beldon's change is his *"adjust-and-keep pattern (owner card 2026-09-09), same treatment the Scald gave the sandos"*; its weight is held near zero | roster json | kept as a build fact (campaign layer) | | |
+| The roster's law sources: the sheet's sections 4 and 6, freeze ruling R12, the assignment prep's section 9, his cards of 2026-09-09 | roster json | kept as the record | The three files other than the sheet were not opened by this reader; none is on this page's delete list. | |
 
 ## Sources read, and the count
 

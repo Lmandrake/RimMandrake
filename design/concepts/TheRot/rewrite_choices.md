@@ -55,15 +55,28 @@ on a biome whose median is −18.8 °C.
   delegated list fell to his word: the 2026-11-11 pass that struck the mat root from the ship gifts. No locked
   Designer sheet or tree exists for this biome, so nothing is held for a Designer run to reconcile.
 
-**Measured counts** (script: `design/RimMandrake/biome_recheck_row_check_2026-11-18.py`, and the reader's own
-source list): **218 rows** (125 from the first read, 93 added); **35 lost**, **24 moved** and 6 more that record a move in part, 1 kept and reshaped, 1 folded into shared machinery, 154 kept, 3 the script could not class (first-read rows that begin "pleasure cup kept", "ping moved" and "weapon and helmet moved"). **Sources: 28 read to the end,
-12 read in part, 30 not opened.** Read to the end: four of the six files this page lists for deletion (the sheet,
-the review, the redo, the cast proposal); the mat spec; the open questions; his answers and his marks; nineteen
+**Third run, 2026-11-18: the roster file and the bars draft read to their ends.** The second reader's reading of
+`rosters/the_rot.json` had its sixty-three eviction reasons cut at about 150 characters, and its reading of
+`rot_northstar_bars_draft_2026-10-22.md` had a few long lines cut at 900. A third run read both whole (the roster:
+628 lines, 63 evictions, 9 animals, 30 plants, 2 purged plants, 5 owed new things, 6 confidence notes; the draft:
+92 lines, four bars, the summary table and the closing section). The reading reached each file's last line; the longest line in either file is 894 characters and the reading tool shows 2,000 characters of a line, so no entry was cut.
+**Rows added: 30**, in the table "Added by the second reader: the roster file and the bars draft read to their
+ends"; two earlier rows corrected in place. Recovered: his *"Yes cut the 6 fauna"* (2026-09-20) and *"CUT, all
+flying bats"* (2026-09-10); the bovine beetle's deletion from the game by his card of 2026-10-08, which an
+earlier row had kept; the roster's rule that *"nothing in any def text names the Assailants"*; his words on the
+mat root, whole; and the swallow's control, which the design had wrong. The design changed in one promise: the
+giant leaves what is under a roof or inside a stockpile zone, goods and the downed alike (the draft says so and
+the built source agrees), where the design's test had set a stockpile out to be eaten. One new flag: the draft
+doubts that Sheen-fall comes round by itself on a Rot map, and the design keeps that weather in 0.1.0.
+
+**Measured counts** (script: `design/RimMandrake/biome_recheck_row_check_2026-11-18.py`, and the readers' own
+source lists): **248 rows** (125 from the first read, 93 added by the second reader, 30 by the third run); **39 lost**, **24 moved** and 6 more that record a move in part, 1 kept and reshaped, 2 folded into shared machinery, 179 kept, 3 the script could not class (first-read rows that begin "pleasure cup kept", "ping moved" and "weapon and helmet moved"). **Sources: 30 read to the end,
+10 read in part, 30 not opened.** Read to the end: all six files this page lists for deletion (the sheet, the
+review, the redo and the cast proposal by the second reader; the roster file and the bars draft by the third
+run, with nothing cut); the mat spec; the open questions; his answers and his marks; nineteen
 ledger items of this biome (the giant, the swallow, the navigator and its two splits, the vat, the draught, the
 rite, the kin table, the wound wiring and its fix, the allergy port, the tier leaks, the sitting, the marks fold
-and four small ones); and the ship-gifts item. Read in part: the other two files listed for deletion, the roster
-file (every section and every row; the sixty-three eviction reasons cut at about 150 characters) and the bars
-draft (every bar; a few long lines cut at 900 characters); the rehearsal's notes (every paragraph, each cut at
+and four small ones); and the ship-gifts item. Read in part: the rehearsal's notes (every paragraph, each cut at
 1,300 characters) and questions (titles); the kit (the player-experience section and the six cards); the log def
 (the eight entries and both quest texts); the mechanics review (the Rot table, each row cut at about 500
 characters); the watcher pitch (the Rot row); the shield design and two of the frame's source files; the Sheen
@@ -73,16 +86,22 @@ was shown; the cleanse folder apart from his marks and a search for the blastpod
 its definition, owner pages and next-version list); the walk and the experiences table (the first read read the
 parts that bear on this biome); the Fungal Forest merge plan; the rites register; and thirteen closed items of art,
 naming and build-log work (among them `THEROT_RM_MOD_BUILD_1`, `ROT_FLORA_FAUNA_VERDICTS_1` and
-`ROT_RM_CAST_MIGRATION_1`). Every file not read to the end is one that stays, except the roster file and the bars
-draft as stated.
+`ROT_RM_CAST_MIGRATION_1`). Every file not read to the end is one that stays.
 
 DELETE-READY: yes
 
-That line covers the six files listed at the end of this page and nothing else. What the first read says to do
-before deleting still stands. Two more: the roster file is the only place the sixty-three evictions and their
-reasons are written, and its note on the fungi's growth floor is an open flag this page now carries; the eight
-log entries live in `src/RimMandrake/TheRot/Defs/Misc/RM_NavigatorLog.xml`, which is source and is not on any
-delete list.
+Restated 2026-11-18 after the roster file and the bars draft were read to their ends. The line covers six files
+and nothing else. In `design/Jawa/worldbuilding/biomes/`: `the_rot.md`, `rot_bedazzle_review_2026-10-02.md`,
+`rot_new_marks_redo_2026-10-02.md` and `rot_rm_cast_proposal_2026-09-24.md` (read to the end by the second
+reader, on that reader's statement above) and `rosters/the_rot.json` (read to the end by the third run, nothing
+cut). In `design/RimMandrake/`: `rot_northstar_bars_draft_2026-10-22.md` (read to the end by the third run,
+nothing cut). Every idea, ruling and owner word in the last two has a row. What the first read says to do before
+deleting still stands. Three more. The roster file is the only place the sixty-three evictions and their reasons
+are written whole, and its note on the fungi's growth floor is an open flag this page now carries. The bars draft
+is cited by path in `src/RimMandrake/TheRot/validation.py` (two failure messages and one unmeasured row, all for
+its first bar) and listed in `design/INDEX.md`; those should be repointed before the file goes. And the eight log
+entries live in `src/RimMandrake/TheRot/Defs/Misc/RM_NavigatorLog.xml`, which is source and is not on any delete
+list.
 
 Companion to `design/concepts/TheRot/design.md`, written 2026-11-18 by the same pass. Its job is to let the older
 files be deleted without fear: every distinct idea found in any source has a row saying what became of it. Nothing
@@ -280,7 +299,7 @@ answers* = `design/RimMandrake/designer_codex_2026-11-09/TheRot/ANSWERS_OWNER.md
 | Vorrugath: "a walking piece of the pale forest" | review census | kept, quoted | | |
 | Snoruuk and the shiro trap stay campaign-side | cast proposal | kept | | |
 | The nameable donor animals evicted; the vanilla zoo | sheet §0, §7b; roster json | lost (evicted) | | |
-| Bovine beetle milk, cricket eggs, dulcis | sheet §7b | kept where built as ordinary products | | |
+| Bovine beetle milk, cricket eggs, dulcis | sheet §7b | kept where built as ordinary products; the bovine beetle's milk is lost | Corrected after the roster was read to its end: the bovine beetle was moved out on 2026-09-19 and deleted from the game on 2026-10-08 by his card. | |
 | Chittik implanting bite | cleanse next_version | moved (→ 0.2.0) | | |
 | Spore allergy diseases | sheet §0; cleanse | lost (recommended for dropping here; the Contagion keeps its own) | | |
 | Spore-flesh as a Sheen infection | sheet §7b | moved (→ 0.2.0, with the Sheen) | | |
@@ -432,7 +451,7 @@ answers* = `design/RimMandrake/designer_codex_2026-11-09/TheRot/ANSWERS_OWNER.md
 | The angel moth and the anima colossus, named mollith and kerrugoth | cast proposal | kept in the roster | | |
 | No new creature was needed in 2026-09: *"18 rows already exceeds every neighbouring biome's fauna count"* | cast proposal | kept as history | | |
 | No fish: *"the milk ponds are not-water"*; what lives in them is fungal | roster json | kept as a rule | | |
-| The six cavern creatures cut 2026-09-20; the glow bats cut 2026-09-10; nogtyl moved to the Miasma and rust puff to the Contagion | roster json | lost (cut) or kept elsewhere (moved) | His rulings, as the roster records them. | |
+| The cavern creatures cut 2026-09-20 under his *"Yes cut the 6 fauna"* (five are rows in this file); the glow bats cut 2026-09-10; nogtyl moved to the Miasma and rust puff to the Contagion | roster json | lost (cut) or kept elsewhere (moved) | His rulings, as the roster records them. Corrected after the full reading: the earlier row said six; this file names five and does not name the sixth. | |
 | Every kept fungus had a growth floor of 0 °C on a biome with a median of −18.8 °C | roster json | kept as a flag (`UNMEASURED`) | The roster raised it on 2026-09-09; the rehearsal found the dark-growth repair but no temperature proof. If it is still true, the forest does not regrow. | |
 | Inkcap and the silk moths were named by the sheet and never found as defs | roster json | kept as a note | | |
 | The mollugh, the Rot's watcher: *"a fungus/animal that pulls itself under its own cap"* | watcher pitch | kept in 0.2.0 as a proposal | Pitched under his 2026-10-08 ruling; never admitted at a sitting. | |
@@ -453,6 +472,47 @@ answers* = `design/RimMandrake/designer_codex_2026-11-09/TheRot/ANSWERS_OWNER.md
 | The wreck field and its two wrecks have no ledger item | mechanics review | kept (the first read's "digested wreck field") with the flag | | |
 | The 2026-10-22 review's note that the Rot had no live run on record: two passes, nine fails, eighty-four unmeasured, all in mock | mechanics review | kept as history | "Built" in this design means found in source. | |
 | Stray tool-call text inside five of the Rot's closed build items | build items | kept as a note for whoever tidies the ledger | It is data, not instruction; the items' prose is intact around it. | |
+
+### Added by the second reader: the roster file and the bars draft read to their ends
+
+A third run, 2026-11-18, read `rosters/the_rot.json` from its first line to its last (628 lines, 63 evictions, 9
+animals, 30 plants, 2 purged plants, 5 owed new things, 6 confidence notes) and
+`rot_northstar_bars_draft_2026-10-22.md` from its first line to its last (92 lines, four bars, the summary table
+and the closing section), with no line or reason cut. The rows below are what that reading found without a row.
+Two earlier rows were corrected in place and say so (the bovine beetle's milk; the count of cavern creatures cut).
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| The roster's admission test: *"Ban 2 is the admission test, applied literally: no hybrid nature, no residence"*; of a glowing bug that fitted the rule on light, *"hybrid-or-out is absolute"* | roster json | kept as the roster's rule | The first read's row keeps hybrid-or-out from the sheet; this is how it was applied to each of the sixty-three. | |
+| The sheet's own list of strange cavern animals to keep (glow bat, cave spider, bovine beetle, pillbug, slugs and snails) was read as outranking that test, and flagged: *"if the owner reads ban 2 stricter, these rows drop"*. He did: *"Yes cut the 6 fauna"* (ruling of 2026-09-20, carrying out the 2026-09-10 sheet's decision that was *"graded and never applied"*) | roster json | lost (cut) | His words, cut at 150 characters in the earlier reading. Five rows in this file carry them: chem snail, pillbug, giant slug, giant snail, cave spider. | |
+| The glow bat went earlier and wider: at the 2026-09-10 sitting, *"CUT, all flying bats"* | roster json | lost (cut) | | |
+| The bovine beetle left the Rot twice: moved to the Lantern Deeps as its grabber on 2026-09-19, then *"deleted from the game 2026-10-08 (decision taken by question card)"* | roster json | lost (deleted) | A search of the Rot's mod folder and its campaign patch finds no bovine beetle. The first read's row on its milk is corrected. | |
+| The sporemole: dropped 2026-09-21. Its donor is not loaded, no port exists, and *"Porting would mean inventing a new creature wholesale from a name and a body-size number"* | roster json | lost (dropped) | The longest reason in the file; the earlier reading had its first 150 characters. | |
+| Six chimeras refused under the hybrid rule and not under the Grindterra card: *"a VGE animal/animal chimera is a pure-animal resident in the sheet's sense"* | roster json | kept as the record | | |
+| The other reasons an animal was refused: it lives in too many biomes already (the aerofleet, the drainers, the murkling, the bumbledrone; the animus vox *"to one strange home"*); its donor mod was retired for *"0% recognizability survival"*; it has an Earth name (sheep, yak, rat, mouse, monitor lizard: *"§7b's own evict-the-nameable rule"*); it is a quest or fantasy mod's animal; *"fire theme against a wet fungal gut"*; the pedigreed raptor, *"EVICT planet-wide — reads dinosaur"* | roster json | kept as the record | | |
+| Animals held back for another use: the feral nerf, *"reserve as livestock/faction-kind candidate"* (*"livestock is out of wild-roster scope"*); the strill and the gallatross, *"reserve for events"*; the bursa | roster json | kept as the record | No source read here builds on any of them. | |
+| Sent or pointed elsewhere: the fission mouse to the Wasteland as a reskin (its two siblings stay homeless); the boulder mit to the dune sea; pointers for the electric cricket (the Wasteland's *"brine-battery lane"*), the tetra slug (*"mineral goo-shelf lane"*), the crystal mit, the pebble mit, the giant amoeba and the snowstalker (*"ice-lane predator"*) | roster json | kept elsewhere, or kept as the record | These are the "where an animal was sent from" notes the paragraph under DELETE-READY speaks of. | |
+| *"the natives ARE the biome; Miasma's strays consolidate here"*: the weights of the two wild natives raised to match; the swarmling kept as *"one of its ≤2-3 ubiquity-trimmed homes"* | roster json | kept (the durrok, the mullgoth and the chittik, by their built names) | | |
+| His review of 2026-09 (the round-two move mapping) is what put the shiro trap, the angel moth and the snoruuk in the Rot | roster json | kept (the first read's rows and the second reader's), source carried here | | |
+| What each fungus is for, as the roster gives it: the glow-carpet is *"the glow-carpet heated floor"* and by far the commonest plant; the agarilux is the *"wood-substitute"*; the mycorrhiza is *"the mycelial network made visible"*; the mortal morel is *"fungal medicine"*; glowstool, shinecap and brightbell are the *"biological light"*; lilac beacon and violet wimple carry the lilac palette | roster json | kept as the flora | | |
+| The Agarilux Prime measured as a *"permanent predatory mushroom"* with a gas producer in its donor def: *"ban 8's proof that prizes defend themselves"*; the Skulltop is its sibling | roster json | kept (the first read's rows), detail carried here | | |
+| The grey lady shipped by its donor at a flammability of 40 where the next highest in the plant pool is 1.5, *"a typo in the donor mod, not a design"*, and clamped to 1 | roster json | kept as a build fact | | |
+| The blastpod shroom is still on this roster's plant list, at its lowest weight, *"wild-only per the owner's 2026-09-06 ruling, no sow tags"*, while the same file says the plant can only live in hot caves | roster json | kept as the flag the second reader filed (`RIMMANDRAKE_DECIDE_ROT_BLASTPOD_GROWS_ONLY_ABOVE_FIFTY_DEGREES`) | The file disagrees with itself; the built def's growth floor decides, and it is asked (`NEEDS HIM` 3). | |
+| The cold end's two remedies, named with the growth-floor flag: *"either temp-tolerance patches or a growth-law mechanic before the cold-end tiles grow anything"* | roster json | kept as a flag (`UNMEASURED`), with the second reader's row on the growth floor | | |
+| *"R25: nothing in any def text names the Assailants."* | roster json | kept as a rule | The design quotes the sheet's line on Assailant material in its own prose; that is a design page and not def text. | |
+| The dissolved Fungal Forest's *"425 tiles merged here under R29 — the creatures follow the tiles"* | roster json | kept as history | | |
+| The shore: *"54 Twilight Sea shore tiles are open sea"*, with a flag that two sea sheets both claim the sea's def; *"the Rot rules no sea water"* | roster json | kept elsewhere (the seas' designs), flag carried here | | |
+| The five things the roster said the sheet still owed, with what each needs: a heat gene, to be authored because *"no donor GeneDef"* exists; guardian mushrooms with a *"per-species defense repertoire"*; symbionts as *"three ratified bargain pairs"* on a *"live-preparation viability clock"*; the pale tree as an anima reskin with a *"Light-side psycast subset"*; health-share tagging *"on chosen keepers"* | roster json | kept; each has its own row above, build detail carried here | | |
+| The roster's law sources: the sheet's sections 4, 6 and 7b; freeze rulings R25, R29 and R30; the assignment prep's section 9; his cards of 2026-09-09 | roster json | kept as the record | The files other than the sheet were not opened by this reader; none is on this page's delete list. | |
+| The draft's standing: *"DRAFT — NOT VALIDATED"*; *"Only the owner validates"*; drafted on his card of 2026-10-22 (*"all four bars are to be DRAFTED for his validation"*); he was to validate, edit or strike each sentence, and the file records no answer | bars draft | kept as history | By the draft's own words none of the four was in the walk's north star when it was written. | |
+| The draft's rule for letting a bar in: its check written and run once, *"red on a planted defect, green on the clean tree"*; *"UNMEASURED is a legal outcome and is never a pass"* | bars draft | folded into shared machinery | The pipeline's own rules say both now. | |
+| Kin mending as built on 2026-10-22: only the mullgoth and the durrok carry it (*"carriers today"*), and only with two kin within twelve cells; of the five bodies wired to share wounds, *"exactly two"* mend | bars draft | kept in 0.2.0 as description | Which bodies mend is a build fact, never a bar. | |
+| The swallow's control: *"a downed colonist inside a stockpile or under a roof is not swallowed"*, marked in the draft as not yet proven | bars draft | kept; the design's promise is corrected to match | The design's test set *"a stockpile"* in the giant's path as a thing eaten. By the built source (`RM_Hwelgrue.cs`, `RM_HwelgrueSwallow.cs`) a stockpile zone and a roof each spare both goods and the downed. For a crew it means a zoned pile is safe and loose cargo is not. | |
+| The rescue as the draft reads it: knocking *"louder"* early and failing late; the cut is *"belly first, up to six parts"*; the pawn comes out alive | bars draft | kept (0.1.0, with the swallow) | | |
+| His words on the mat root, whole: *"Make it work anywhere... Needs food. Would grow in other biomes if tended with food. Rot doesn't require feeding due to sharing lore."* (2026-10-22); and the cap, *"It doesn't make enough to trivialize the deep deep dark. It just helps a lot."* (2026-09-17) | bars draft | kept, his words now on the row (the root in 0.2.0, the wild mat in 0.1.0) | The earlier rows quote each in part. | |
+| The ship carry of the root (*"minify, reinstall on substructure, launch, land"*) is a separate live check, *"not part of this bar until the engine behaviour is observed"* | bars draft | kept as a flag (`UNMEASURED`), with the second reader's row on a mat floor at launch | | |
+| The Sheen ladder as the draft reads the build: a roof stops it, the chitin helmet slows it to about a quarter, the symbiosis stops it, and it fades once the fall stops. And a doubt: *"forcing the weather is reliable; the biome-scoped rotation is the unreliable part"* | bars draft | kept in 0.2.0, with a flag (`UNMEASURED`) | The design keeps Sheen-fall as weather in 0.1.0. Whether it comes round by itself on a Rot map was doubted here and no later source read settles it. | |
+| Where the four bars stood on 2026-10-22: every live half unmeasured or never run; owed were a tool to wound a pawn through the bridge, a Rot test map, a long forced-weather run and the stockpile control | bars draft | kept as history | It agrees with the mechanics review's note of the same day. | |
 
 ## Sources read, and the count
 

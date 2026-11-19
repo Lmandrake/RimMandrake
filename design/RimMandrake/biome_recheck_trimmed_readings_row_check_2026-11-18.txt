@@ -1,0 +1,14 @@
+Row and source check after the third run of RIMMANDRAKE_CHECK_RESUMED_READERS_PAGES_FOR_TRIMMED_READING, 2026-11-18 (offline; documents only, no game).
+The third run read four files to their last line with nothing cut: rosters/the_forge.json (634 lines), rosters/the_rot.json (628), rot_northstar_bars_draft_2026-10-22.md (92), rosters/dune_sea_deep_desert.json (943); the longest line in any of them is 894 characters and the reading tool shows 2,000 characters of a line.
+Script: design/RimMandrake/biome_recheck_row_check_2026-11-18.py <page>. What it checks and does not check: see design/RimMandrake/biome_recheck_sleepingice_to_therot_row_check_2026-11-18.txt. It does not check that every idea in a source has a row; that is the reading.
+
+design/concepts/TheForge/rewrite_choices.md
+   {'rows': 239, 'added': 126, 'first': 113, 'counts': {'kept': 185, 'lost': 30, 'reshaped': 5, 'moved': 17, 'other': 1, 'folded': 1}, 'partial_moves': 6, 'bad': [], 'empty': [], 'names': 25, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 25}
+   VERDICT: PASS
+design/concepts/TheRot/rewrite_choices.md
+   {'rows': 248, 'added': 123, 'first': 125, 'counts': {'kept': 179, 'lost': 39, 'folded': 2, 'moved': 24, 'other': 3, 'reshaped': 1}, 'partial_moves': 6, 'bad': [], 'empty': [], 'names': 23, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 40}
+   VERDICT: PASS
+design/concepts/Stillsand/rewrite_choices.md
+   {'rows': 299, 'added': 114, 'first': 185, 'counts': {'kept': 237, 'lost': 31, 'reshaped': 11, 'folded': 1, 'moved': 19}, 'partial_moves': 5, 'bad': [], 'empty': [], 'names': 22, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 31}
+   VERDICT: PASS
+exit status: 0
