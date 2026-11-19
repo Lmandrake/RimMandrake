@@ -16,6 +16,18 @@ of `rewrite_choices.md`.
 the pipeline reads it by name yet; the locked `sheet.md`, `tree.json` and `scenes.json` beside it still describe the
 older settled-colony design and would be re-argued from this one when the hold lifts.
 
+**The locked Designer tree is not edited by this rewrite.** Its root is a colony that stays: *"Make a home on the
+branches, whose routes shape daily work and travel, above black water that remembers what you do and sometimes
+reaches up to change your plans."* (a delegated call, not his words). Two north-star bars were validated from it on
+2026-11-16 (`feverwood_branch_home`, `feverwood_water_memory`, in `design/validation_walks/RimMandrake/FeverWood.md`),
+under his card line of 2026-10-20: *"A world in the treetops above a black mirror nobody touches. You live on the
+branches, and the water remembers."* This document moves neither bar and changes neither file. A later Designer run
+has to reconcile them with the ship lens; until it does, the tree and the bars are the binding record and this is a
+proposal.
+
+**Second reader, 2026-11-18.** A second pass read the nine older biome files whole, and the rulings and ledger items
+behind them, and changed this document in eight places; they are listed at the top of `rewrite_choices.md`.
+
 **How to read the tags:** `NEEDS HIM` marks a question only the owner can settle, with the real answers and the
 default this document was written on. `UNSETTLED` marks a fact the sources do not fix. `UNMEASURED` marks an engine
 fact nobody has checked. "Built" means the census of 2026-11-17 (`cleanse/census.json`) found it in source; it does
@@ -35,6 +47,9 @@ it, under one water table that every pool is only a window onto, lives the **sek
 to be seen whole, that reaches up with tentacles, takes what comes near, and sets its victims' gear out at the
 water's edge as bait.
 
+> *"Below: the black mirrors, unrippled. Nothing goes in the water here. Everything remembers why."*
+> (`the_fever_wood.md` §1)
+
 > *"It's the classic Star Wars beast that is so big it can't even enter the screen, but it can reach up with
 > tentacles to lash out, grab, pull under."* (owner, 2026-09-23)
 
@@ -45,6 +60,10 @@ water's edge as bait.
 that fishes with scrap.** Jawa cannot walk past salvage. The sekkulaath does not need them (the mud feeds it); it
 baits them *"because it can, not because it is hungry"*. Everything in the first two versions serves that meeting,
 plus the one sound nobody forgets: the whole crown going silent at once.
+
+It is known and it is named, and that costs nothing: *"The horror is SCALE, not mystery."* His line for how much
+the player understands (2026-10-10): *"It is not an unknown mystery, but a mystery still for most of the game."*
+The one rule under everything is *"never explained to newcomers because the pools explain it themselves"*.
 
 The crew are small, hooded, skittish, weak in a brawl and at home in dry heat (`reconciled_lore/05_the_clan.md`).
 The heat here is the one familiar thing. The wet, the height, the noise and the water are not.
@@ -95,7 +114,8 @@ On the way down the player hears the crown at full voice: every bird makes its o
 sum (*"Each animal literally makes its own noise and just adds together"*, owner). The birds really fly, and they
 scatter from the descending hull.
 
-Then the landing is heard below. The sekkulaath has excellent hearing; noise near a pool calls it. At the pools
+Then the landing is heard below. The ship is *"the heaviest, loudest thing that ever came to the Fever Wood"*
+(the review of 2026-10-02). The sekkulaath has excellent hearing; noise near a pool calls it. At the pools
 nearest the ship a motionless limb rises and stands, and **the whole crown goes silent**. The ruling is that the
 crown goes quiet only for the water, so this silence means exactly one thing, and the crew learns what it means in
 their first minute: the hatch opens onto the quietest moment the Fever Wood ever has.
@@ -136,8 +156,9 @@ hull is in "The ship while it sits here", below.
   gathering job, and only while calm. *"The dairy is the alarm system, and every raid costs nectar before it costs
   blood."* A fight near a herd dries it; a fight on the far side of the map does not.
 - **The margin's honest goods.** Seep-oil from a squat barrel plant sitting in its own rainbow slick; potter's clay
-  from a root-plate; resin medicine scraped from bark. The oil and the clay stand inside some pool's reach. Reward
-  and hazard are the same walk. (The leaning half-dead tree that *"looks like a wreck and is not one"* is still
+  from a root-plate; resin medicine scraped from bark. The oil and the clay stand inside some pool's reach: the sheet's
+  *"still-water goods, hauled up from the mirrors' edges by people with excellent nerves"*. Reward and hazard are
+  the same walk. (The leaning half-dead tree that *"looks like a wreck and is not one"* is still
   here to look at, but it gives no timber: since the tree ruling of 2026-10-17 only true trees give wood.)
 - **Working a pool hard.** Every encounter at a pool, every item taken and every loud fight at the margin pushes
   that pool toward its big one. At a great pool the big one is the set-piece: many limbs and **the eye itself**.
@@ -177,13 +198,18 @@ its own two voices: the ground that refuses and the thing that hears."*
 - *It never traps.* His ruling of the same sitting: the hull *"is thick and can take a lot of damage in most
   situations, so no environment is immediately lethal"*, and the ship *"will advise course of action, but no more
   than that"*. Wear is a bill that grows, with a sign, and launching always ends it.
+- *What the built frame already sees here: almost nothing.* The shield tracker's heat case starts at 58 °C
+  outdoors or a heat wave (`ShieldHazardUtility.cs`), and the sheet measures this biome at 45.5 °C typical, 51.5 at
+  most. So the Fever Wood's heat wears the hull only in a heat wave, and both wears above are new kinds the frame
+  has to learn. No source gives the Fever Wood a weather or an air that wears metal.
 - `UNMEASURED`: whether Odyssey lets a ship land on refusing marsh at all. If it does not, the marsh's wear never
   happens and the water's is the whole of it.
-- *0.2.0:* the Mooring in full. If the ship stays beside a pool, *"a snare wraps a hull edge and holds. Launch while
-  moored and the wrapped section tears off into the pool (the porter sets its pieces down at the margin weeks
-  later)."* A crew that comes back finds its own hull plate set out as bait. He did not choose this on 2026-10-02;
-  his ruling of 2026-11-18 puts hull wear in, and this is the Fever Wood's own. It is moved, listed, and one line to
-  revert.
+- *Not in any version until he says: the Mooring in full.* If the ship stays beside a pool, *"a snare wraps a hull
+  edge and holds. Launch while moored and the wrapped section tears off into the pool (the porter sets its pieces
+  down at the margin weeks later)."* A crew that comes back finds its own hull plate set out as bait. On his card
+  of 2026-10-02 the mooring was offered by name and not chosen (he picked the oil boil only). The first pass of
+  this rewrite moved it into 0.2.0 on the strength of the hull-wear ruling; the second reader took it back out,
+  because a ship idea he passed over is his to bring back. It is question 2 under `NEEDS HIM`.
 
 **Fuel: a richer source, named, and sold nearby.** His ruling: *"Every biome has a fuel source, but for most its
 the hideously slow route of rendering biomass into chemfuel... A few biomes have richer sources. You can also buy
@@ -195,7 +221,9 @@ it."*
   barrel plant that carries it stands inside some pool's reach, so every drum is skimmed from under the water's
   nose, in pairs. The harvest is built; the recipe that turns the oil into chemfuel is not, and is 0.2.0.
 - *Buying it.* The only sellers the sources name are Sporefall's Wildsteam traders (the kit spec stocks goods at
-  *"Sporefall/Wildsteam traders"*), who are campaign layer. The crew pays in what the water set out as bait.
+  *"Sporefall/Wildsteam traders"*), who are campaign layer. The sheet gives the town *"stills running
+  nectar-liquor and seep-oil"* and calls the oil *"the still-burners' second source"*, so the refining is already
+  there in the lore. The crew pays in what the water set out as bait.
 - Not replete. The oil comes a plant at a time, and each plant is a walk to a pool.
 
 ## "OMG did you see that?"
@@ -227,7 +255,16 @@ Each of these can happen inside the visit. Each says what is on screen.
 9. **The ship is sinking.** *On screen:* one corner of the hull visibly lower than it was yesterday, and three
    hooded figures under it with a jack made of salvage, arguing. *Why it is funny:* the footings going in under the
    hull are the cargo.
-10. **Paying for fuel with bait** (0.2.0, campaign layer). *On screen:* a crew member counting gear the water laid out (a helmet, a rifle,
+10. **Mopping up** (0.2.0). *On screen:* ants from one edge, spiders from the other, the crew behind a shut
+   ramp; then hooded figures walking the churned ground between two heaps of dead raiders, picking it clean.
+   The sheet's words: *"the two-front war's leavings: stand back, let them, mop up."* The owner's design for the
+   wait in between: one comes, *"there's tension, then maybe the other arrives too"*, so the crew ends up
+   *"hoping the second column shows up, which is a genuinely novel thing to want during a raid"*.
+11. **The gift from the bottom** (0.2.0). *On screen:* a young one tipped from its cask into black water, and
+   within the hour something old and heavy set down at the margin. The built table can give a ship chunk, a
+   sealed ancient crate, an archite capsule, a persona core or a **gravcore**. *Why it lands:* the monster pays
+   its ransom in the one thing a gravship crew wants most.
+12. **Paying for fuel with bait** (0.2.0, campaign layer). *On screen:* a crew member counting gear the water laid out (a helmet, a rifle,
    somebody's boots) into a trader's hands for drums of fuel. *Why it lands:* the monster fishes with scrap, and the
    Jawa have found a way to spend it.
 
@@ -259,6 +296,8 @@ learn the rules the Empire has not.
 - **The lure (0.2.0).** *"Both enemies like helpless prey chained down and wounded."* Staking live bait spares the
   crew and raises the chance a raid comes at all, and *"if only one comes, that's not so good... they might look
   around."* They never arrive together: *"One comes, there's tension, then maybe the other arrives too."* Seen from
+  The bait has to be worth eating: since 2026-11-03 the built stake draws nothing for a rat or a chicken and
+  draws fully for a horse or a prisoner, and once a raid is drawn the bait cannot be untied. Seen from
   the ship this is the crew's best trick against a strike team: the oldest rule here is *"when both come at once,
   open the gates between them and stand back"*, and it does not say who the two have to be.
 - **Nobody here fights *for* the crew.** The Wildsteam's treetop town of Sporefall is campaign lore, placed by the
@@ -274,15 +313,19 @@ learn the rules the Empire has not.
 - An angered pool beside the ship (someone shot the gift-giver) that makes the nearest salvage not worth it.
 - *0.2.0:* the oil boil. On the hottest still days the seep-oil lifts into a low rainbow haze; oil gathering pays
   double; *"one spark (a gunshot, a torch, dry lightning) flashes fire along the haze, and a burning pool edge wakes
-  the deep."* A crew that fights in it burns its own camp.
+  the deep."* A crew that fights in it burns its own camp. The review's line for it:
+  *"A harvest window you work in silence and without guns."* The haze lies on the ground only, so a shot from a
+  boughway does not light it.
 
 **Stay, longer than the Empire would like:**
 - Broken sightlines among the trunks (above).
 - Pools the crew has learned and the Empire has not.
-- *0.2.0:* a crafted radioactive charge fouled into a pool suppresses the water for several days without a fight
+- A crafted radioactive charge fouled into a pool suppresses the water for several days without a fight
   (owner: *"Fouling the water with specific poisons or radioactive material will cause it to be supressed for
   several days as the material diffuses away."*). In the campaign only genuinely dangerous radioactive salvage
-  works; outside it the charge *"can be crafted from Uranium"*.
+  works; outside it the charge *"can be crafted from Uranium"*. His words name it twice (the ladder of 2026-09-23,
+  and on 2026-11-10 *"poison the water of that pool if you have the right poison on hand"*), so it is in 0.1.0
+  here; see question 1.
 - The closed crown, which slows the search from orbit by one step (his card of 2026-11-18). It is unbuilt.
 - A ship set down on firm ground outside every reach, which the place does not wear.
 
@@ -297,7 +340,8 @@ learn the rules the Empire has not.
 - **Resin medicine, ribbon plumage** sheared from the murrelith, **potter's clay**.
 - **A chellow**, if someone tames one: a beakless bird with a throat like *"a lamp with a bellows"*, and a private
   alarm that still goes quiet for water anywhere the ship lands near it.
-- *0.2.0:* **one great gift from the bottom** for a returned young (below), and wreck salvage.
+- *0.2.0:* **one great gift from the bottom** for a returned young (it can be a gravcore), wreck salvage, and
+  **chitin and salvage** from wherever the two raiders met.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -380,18 +424,22 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The closed crown as partial cover from orbit. (unbuilt; campaign layer, one entry in the pursuit; his card of
   2026-11-18)
 - Fuel by the slow route, and seep-oil as a trade good. (the base game's refining; the harvest is built)
+- The radioactive charge that quiets a pool without a fight. (built; his ladder of 2026-09-23 names it and the
+  validated water bar says "treatment"; moved in by the second reader, `NEEDS HIM` 1) With hull wear in, it is
+  also how a crew buys days of quiet for a ship parked in reach.
+- Limbs that nobody hurts sink back by themselves after a while, so a quiet pool does not fill up and a standing
+  sentinel does not mute the crown for good. (built; *"the pool breathes"*)
 - Natives are never seized and drink their own water. Every loss shows a sign.
 
 **0.2.0, the stop with company**
 - Sink-mud that catches by weight and never harms by itself, and the too-even green skin that hides it (*"firm
   ground — which is the lie"*). (unbuilt)
-- The lure: live bait, staggered raiders, the two fronts. (built)
+- The lure: live bait worth eating, staggered raiders, the two fronts, and what they leave. (built)
 - The oil boil. (built; owner's card of 2026-10-02)
 - Seep-oil rendered to chemfuel, and fuel on sale at Sporefall. (unbuilt)
-- The Mooring in full: the snare on a hull edge, the section torn off at launch, the crew's own plate set out as
-  bait on a later visit. (unbuilt; moved in by this revision)
-- The radioactive charge that quiets a pool without a fight. (built; `NEEDS HIM`, below) With hull wear in, it is
-  also how a crew buys days of quiet for a ship parked in reach.
+- The mirror list: a dated note of which pools *"moved lately"*, bought from Sporefall's traders, stale by the
+  time it is read. (built, but nothing sells it; the locked Designer sheet keeps it, so the cleanse's advice to
+  retire it does not stand. Campaign layer.)
 - The ransom of its young: a juvenile bought or carried from elsewhere, released into a pool, earns *"one great
   gift from the bottom"*. (built; owner's card of 2026-10-02) The cask is cargo; the gift is a reason to come back.
 - The ollareth, which *"screams, and the crown comes"*: its alarm, once what answers it is defined.
@@ -404,8 +452,12 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 **Later (a crew that stays, or a colony)**
 - The prison tank as an industry: products, teaching, neglect, escape, the escapee establishing in a pool and
-  maturing over days.
-- The reactive ant-hive dungeon, its farm, guards and sealing corridors.
+  maturing over days. One part of it belongs to a ship more than to a colony, by his ruling of 2026-09-23: a
+  young one can only ever be tamed by letting it out *"on a map without such pools"*, where it *"will escape and
+  simply wander wild"*; near pools it *"plops down into them and installs itself as a new tentacled horror"*.
+  Only a crew that carries the tank to another stop can do that. *"It remembers the tank..."*
+- The reactive ant-hive dungeon, its farm, guards and sealing corridors. (*"You decide how deep to go, and then
+  you decide too late."*)
 - Borers that extend their galleries through a trunk someone lives in; trunks that regrow and crush; sealant.
 - Routes that slowly move; plennith that makes the crown's soil; corvath that appears only after a feeding.
 - Ranching the four sap-drinkers; nests worth raiding; the doomed-herd incident.
@@ -419,7 +471,7 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - A Fever Wood heat kind (the one-sun ruling of 2026-10-19 replaced the "ambient" reading of 2026-10-02).
 - The lommerel, thavrik, nemmel, gorrameth and the arch-throwing tree (cut from this roster 2026-10-08, *"no longer
   needed"*).
-- **Recommended for dropping, not yet his:** the consumable mirror-list (the overlay does its job).
+- A lure that takes any animal at all (closed 2026-11-03: poor bait draws nothing).
 
 **Outside the biome's versions**
 - The whole animal rising. It is the campaign's, spent once, in the crater event
@@ -429,10 +481,30 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-One question is left. Three others were answered by his card of 2026-11-18 and are written into the design above:
-the crown is partial cover from orbit; the place wears the hull, in 0.1.0; seep-oil is the Fever Wood's richer fuel
+Three questions. Three others were answered by his card of 2026-11-18 and are written into the design above: the
+crown is partial cover from orbit; the place wears the hull, in 0.1.0; seep-oil is the Fever Wood's richer fuel
 source.
 
-1. **The no-fight charge: 0.1.0 or 0.2.0?** The cleanse asked this on 2026-11-17 and it is unanswered. Default
-   here: 0.2.0. His September ladder names it, so keeping it out of 0.1.0 is a real narrowing. Hull wear sharpens
-   the question a little: the charge is the one way to quiet a pool beside the ship without a fight.
+1. **The no-fight charge: 0.1.0 or 0.2.0?** (scope) The cleanse of 2026-11-17 proposed moving it out of the first
+   version and said itself that this *"needs your decision"*. Against moving it: his ladder of 2026-09-23 ends
+   with it; his answer of 2026-11-10 names poison at a pool as the one thing a player can do; the bar validated
+   on 2026-11-16 says "treatment"; it is built. Default here, changed by the second reader: **0.1.0**, because
+   his dated words outrank the cleanse. Saying 0.2.0 removes one line from each of two lists.
+2. **The Mooring in full: bring it back?** (hull) Offered by name on his card of 2026-10-02 (*"if you stay, a
+   tentacle wraps a hull edge and holds. Launch anyway and that section tears off into the pool"*) and not
+   chosen; he took the oil boil only. No words of his were recorded against it, and he passed over it before he
+   had said the ship lens or ruled hull wear in. Default here: out. Yes puts the snare, the torn-off section and
+   the crew's own plate as bait into 0.2.0. The same card passed over a rented trunk-top landing pad at
+   Sporefall and a steel saddle across two trunks; they come back with it or not at all.
+3. **Is there a fever in the Fever Wood?** (other) His freeze ruling of 2026-09-07, R15, says yes: *"the fever is
+   fungal — the wood's own spore load, which is also what Sporefall is named for and what the Wildsteam harvest
+   there. The hazard and the resource are the same thing, so living there is a bargain rather than an
+   accident."* It was never written into the sheet (whose ban 5 forbids a "fungal miracle"), and no sitting,
+   roster, build or cleanse after it mentions a disease. Default here: no fever, because nothing after R15
+   carries it and the first two versions already have their centre. If yes, it is a sickness a crew catches
+   within days and a thing the Wildsteam sell; and his shield ruling of 2026-09-02 already says what keeps
+   spores off a ship (*"spores aren't magical, just particulates"*, the light screen).
+
+Two readings this document rests on, flagged where they are used: "one step" of cover is one visibility band
+(cover), and an unbuilt fuel recipe goes in 0.2.0 (fuel). Both are asked once for every biome in
+`design/RimMandrake/biome_shared_machinery_2026-11-18.md`.
