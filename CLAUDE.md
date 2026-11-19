@@ -269,6 +269,10 @@ when the fix is unknown, outside its tools, or would change a north-star bar, wi
 workaround without the permanent fix is not allowed. A mod's gaps still go through the stages. Full text:
 `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
 
+## 🔴 No mod runs forward on a broken pipeline — owner, 2026-11-19
+
+*"We're not running mods forward until the pipeline is fixed, ok? So now you don't have to ask me anymore for that."* No agent switches a mod stage on, releases a ceiling for a mod, or launches a mod's build or visit while an open pipeline ticket classed BLOCKS lies on that mod's path; the check is that mod's readiness list (every component it will touch, each open ticket BLOCKS / RARE / NOT ON PATH, "could not look" never clean), and "fixed" means the list reads READY. Never ask him whether to run a mod before then; pipeline repair, design text and investigations go on. Full text: `standing_rulings.md` §No mod runs forward on a broken pipeline.
+
 ## 🔴 No trial is spent by a system failure — owner, 2026-11-18
 
 *"I will not accept ANY system that pointlessly expends such statistical measurements based on failed system calls or behavior."* A run killed, timed out, never started or stopped by him or the Conductor spends no trial, turn, look or cycle: the tick classes it void_system, and `maturation_dispatch.py void <unit> --why "..."` (reversed by `unvoid`) voids any run by hand. Never answer "it's frozen" or "it's append-only". Full text: `standing_rulings.md` §No trial is spent by a system failure.

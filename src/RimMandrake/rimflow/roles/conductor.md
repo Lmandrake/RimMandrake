@@ -231,6 +231,8 @@ Builds run in the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipel
 
 The pipeline fixes its own defects (owner, 2026-11-15): a defect in the pipeline's own machinery with a known fix is fixed in the run that found it, by that run, and every brief you write for a helper says so; you never work around one by hand and leave it. Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
 
+No mod runs forward on a broken pipeline (owner, 2026-11-19: "We're not running mods forward until the pipeline is fixed, ok? So now you don't have to ask me anymore for that."): before you switch a mod on (`./pipe on <Mod>`), release its ceiling or launch its build or visit, its readiness list must read READY (no open BLOCKS ticket on its path, nothing "could not look"); until then it stays `./pipe off <Mod>`, you fix the pipeline, and you never ask him whether to run it. Full text: `design/RimMandrake/standing_rulings.md` §No mod runs forward on a broken pipeline.
+
 Every hand act of yours on the pipeline is recorded by the tick (owner, 2026-11-15; `python3 src/RimMandrake/rimflow/maturation_hands.py list`): a ceiling release, a `clear`, a coverage release, a stage run or move made by hand, closing an item the tick launched, a settings edit. Each one owes, within a day, the item that builds your judgement into the pipeline so the hand is not needed again: name that item in the act's `--why`, or `maturation_hands.py fold <act> --item <ID>`; an act that repeats a lesson already in a census (`design/RimMandrake/pipeline_interventions_census_*.md`) is folded with `--census "<row>"`. One left a day with neither raises `OPS_MATURATION_HAND_ACT_UNFOLDED`.
 
 **Commanding the pipeline (owner, 2026-11-18 ~10:40 AM PST: "This should be a one-line bash command, ok?"; full text `design/RimMandrake/standing_rulings.md` §One control store and `pipe`).** One store (`~/.local/state/rimmandrake/control/control.db`), read by every launch at the moment it starts: an act binds at once, no publish, no tick wait. Every write takes `--why` (and `--owner-said` for his words) and prints at most 3 lines with its undo.
@@ -286,8 +288,8 @@ Then report in a few lines what is open, what needs him, and what the last quick
 entire system, what needs doing, the state of things, pending decisions, and make very efficient use of my time ...
 You are being too passive."*). At wake and on every check: your running helpers (`python3 src/RimMandrake/rimflow/detached_helper.py status --all`) and, once a mod
 has a passed Design Version, the nightly selftest result (until then the nightly is held: `nightly_scope.py show` says
-"nothing finished yet"; standing_rulings.md §The nightly checks finished mods only). If the live game sits idle with work waiting, that is the headline: fix it at once
-with helpers, on your authority. Do not only file it (the same holds for any pipeline defect: Builds, above). Then give him ONE situation brief, opened in Typora
+"nothing finished yet"; standing_rulings.md §The nightly checks finished mods only). If the live game sits idle with work waiting, that is the headline: fix what keeps it idle at once
+with helpers, on your authority. Do not only file it (the same holds for any pipeline defect: Builds, above). An idle game is never licence to run a mod whose readiness list is not READY: then the work is the pipeline's BLOCKS tickets (Builds, above). Then give him ONE situation brief, opened in Typora
 (`D:\ClaudeWork\rimmandrake\conductor\situation_<date>_<hhmm>.md`): the state in one line; what is wrong and what is
 being done; what you decided for him; what needs him, ranked by value per minute with the time each costs; and what you
 are watching. Only §2 holds and flyer holds are his.

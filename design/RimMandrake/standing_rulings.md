@@ -837,6 +837,42 @@ a judge, a fixer, a builder, the Designer's runs, a Conductor helper):
   `infrastructure/state/items/RIMMANDRAKE_HARDEN_PIPELINE_WHERE_HANDS_CLEANED_UP.md`. In the spec:
   `design/specs/2026-11-13-maturation-pipeline.md` §5 "The pipeline fixes its own defects".
 
+## No mod runs forward on a broken pipeline — owner, 2026-11-19
+
+His words (Thu 2026-11-19 ~6:05 AM PST, item `RIMMANDRAKE_ENACT_NO_MOD_RUNS_ON_BROKEN_PIPELINE_RULING`): *"Ok:
+standing rule. You offered to run GSS on a broken pipeline. We're not running mods forward until the pipeline is fixed,
+ok? So now you don't have to ask me anymore for that."* Half an hour earlier, by card (item
+`RIMMANDRAKE_PROVE_PIPELINE_READY_BEFORE_SLACK_CEILING_RELEASE`, answered 5:35 AM PST), he had released GimmeSomeSlack's
+ceiling *"but ONLY if we have repaired all tickets remaining for the pipeline stages it's about to engage, including the
+judges etc. The pipeline's ready, right?"*
+
+The incident: after his "One mod at a time" the Conductor switched GimmeSomeSlack on (`./pipe log`, act ct_000066, 5:28
+AM PST). A readiness check then found three open faults on its path, each able to give a stuck stage, a lost trial or a
+ghost run (`D:\ClaudeWork\rimmandrake\conductor\pipeline_ready_for_gimmesomeslack_20261119.md`, verdict NOT READY), and
+the Conductor offered him to run it anyway. GimmeSomeSlack was switched off again (act ct_000070, 6:00 AM PST).
+
+The rule, for every agent and program that can move a mod:
+- No agent switches a mod stage on, releases a ceiling for a mod, or launches a build, fix or in-game visit of a mod
+  while any open Maturation Pipeline ticket classed BLOCKS lies on that mod's path.
+- **The check is a readiness list for that mod**, like the GimmeSomeSlack one: every component the mod will touch, in
+  path order, judges and the road back included; each open pipeline ticket on it classed **BLOCKS** (can give a wrong
+  verdict, a lost trial, a ghost run or a stuck stage on this run), **RARE** (a rare failure listed, not fixed, under
+  §A boundary page before pipeline code, Decision 4) or **NOT ON PATH**; and for each component whether it was looked
+  at. "Could not look" is never counted as clean: a component not looked at keeps the list from reading READY.
+- **"Fixed" is measured by that list: it reads READY for that mod** (no BLOCKS row open, no component unlooked). Then
+  the mod runs under the usual rules: his holds, his one-mod-at-a-time card, the stage ceiling.
+- No agent asks him whether to run a mod before its list reads READY: the answer is already his, and it is no.
+- What continues: pipeline repair (the BLOCKS tickets first, each under §The pipeline fixes its own defects), design
+  text, investigations, read-only checks and readiness lists.
+- What it does not change: his holds and his other rulings (a ceiling only he can raise still waits for him); the tick
+  keeps running.
+- **The switch that holds it is one per mod:** `./pipe off <Mod> --why "no mod runs on a broken pipeline (owner
+  2026-11-19): readiness <path> NOT READY"`, lifted by `./pipe on <Mod>` only with a READY list's path in its `--why`.
+  It refuses every launch the tick makes for that mod (they carry the mod, `RM_CONTROL_MOD`); a helper the Conductor
+  launches by hand carries no mod, so for that the rule binds by itself. `./pipe off all` is the wrong switch: every run
+  is in scope `all` (`control.run_scopes`), so it would also stop the repair helpers this rule wants. Ledger calls made
+  under it: `--per-ruling RIMMANDRAKE_ENACT_NO_MOD_RUNS_ON_BROKEN_PIPELINE_RULING`.
+
 ## The nightly checks finished mods only — owner, 2026-11-15 (card)
 
 Asked what should happen to the nightly run (evidence: `D:\ClaudeWork\rimmandrake\conductor\nightly_reds_report_20261115.md`
