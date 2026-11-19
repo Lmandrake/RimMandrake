@@ -131,11 +131,15 @@ brk("before-is-read", "undo() of an OFF ignores its before and always leaves the
      '            prior = None'))
 brk("hold-file-mirrors-the-store", "mod_owner_hold.mirror() learns no file row the store lacks",
     ("mod_owner_hold.py", "    def change(doc):\n        C.import_owner(load_file(p))\n", "    def change(doc):\n"))
-brk("his-hold-lifts-only-with-his-words", "`pipe on` removes the switch rows of every layer, his included",
+brk("his-hold-lifts-by-him-or-the-conductor", "`pipe on` removes the switch rows of every layer, his included",
     ('old = c.execute("SELECT * FROM switches WHERE scope=? AND layer=?", (scope, layer)).fetchone()',
      'old = c.execute("SELECT * FROM switches WHERE scope=? AND (layer=? OR 1)", (scope, layer)).fetchone()'),
     ('c.execute("DELETE FROM switches WHERE scope=? AND layer=?", (scope, layer))',
      'c.execute("DELETE FROM switches WHERE scope=? AND (layer=? OR 1)", (scope, layer))'))
+brk("conductor-lift-only-from-its-window", "conductor_window() takes every process for the Conductor window",
+    ("mod_owner_hold.py", "    env = os.environ if env is None else env\n", "    return True, \"broken\"\n"))
+brk("conductors-lift-is-its-own-act", "the store records the Conductor's reason as his words (owner_said)",
+    ('{"per_ruling": CONDUCTOR_LIFT}', '{"owner_said": why.strip()}'))
 brk("mirror-failure-is-an-alarm", "a mirror that cannot be written is swallowed: no alarm, exit 0",
     ("mod_owner_hold.py", "        raise MirrorFailed(why)\n", "        return None\n"))
 brk("held-stays-held-across-the-mirror", "the mirror drops his design allowance from every row",

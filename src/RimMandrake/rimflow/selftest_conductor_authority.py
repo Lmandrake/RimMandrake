@@ -84,10 +84,12 @@ EXEMPT = {
     "src/RimMandrake/Utils/art/sheet_to_artifact.py": "the demand is about a question's wording, not an authority",
     "src/RimMandrake/Utils/modcheck/l1_donor_off_round.py": "--owner-present states he is physically there for a flyer "
                                                             "test (never without him); a fact, not an authority",
-    # RIMMANDRAKE_ROUTE_MODLEDGER_OWNER_GATES_VIA_CONDUCTOR: the hold list is his alone, never Conductor-routed
-    "src/RimMandrake/rimflow/mod_owner_hold.py": "OWNER ONLY: a mod is held and lifted by him alone (owner 2026-11-16, "
-                                                 "\"And stop the new biome mods work. Only Pyrelands as a biome mod "
-                                                 "right now.\"; CLAUDE.md: only he lifts one)",
+    # hold and allow-design take his words alone; lift takes his words or the Conductor's own route,
+    # --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE (owner, by card 2026-11-19)
+    "src/RimMandrake/rimflow/mod_owner_hold.py": "OWNER ONLY for hold and allow-design (owner 2026-11-16, \"And stop "
+                                                 "the new biome mods work. Only Pyrelands as a biome mod right now.\"); "
+                                                 "lift also takes the Conductor's lift by its own ruling (owner "
+                                                 "2026-11-19, \"Conductor should also be able to lift a Hold.\")",
     # optional provenance beside a required --why: nothing is refused for want of his words
     "src/RimMandrake/rimflow/maturation_dispatch.py": "void/unvoid: --why is required, --owner-said is optional "
                                                       "provenance; nothing is refused without it",

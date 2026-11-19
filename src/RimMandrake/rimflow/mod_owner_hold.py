@@ -22,13 +22,20 @@ nothing it cannot prove unheld (never a calm "no holds").
 The control store (control.py) is the one writer of his hold; mod_owner_hold.json is its mirror, a read copy the store
 writes (item RIMMANDRAKE_BUILD_HOLD_FILE_MIRROR_HE_SAID_COMMISSION_ALL; page
 design/specs/2026-11-18-pipeline-control-surface/boundary.md). Every write below changes the store first, then rewrites
-the file from the store's rows. A file row the store lacks is learned into the store, never dropped; only `lift` with his
-words lifts. A mirror that cannot be written raises the alarm control:owner_hold_mirror and exits 5; the store's hold
+the file from the store's rows. A file row the store lacks is learned into the store, never dropped; only `lift` lifts,
+with his words or as the Conductor's lift. A mirror that cannot be written raises the alarm control:owner_hold_mirror and exits 5; the store's hold
 stands.
 
   mod_owner_hold.py show            the list, each with his words, date and lift command
   mod_owner_hold.py hold <Mod> --said "<his words>" [--date D]   hold one (then publish mod_owner_hold.json)
   mod_owner_hold.py lift <Mod> --said "<his words>"   remove one (then publish mod_owner_hold.json)
+  mod_owner_hold.py lift <Mod> --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE --why "<reason>"
+      the Conductor's lift (owner, by card 2026-11-19: "yes... but Conductor should also be able to lift a Hold. We
+      work together, don't use me as a bottleneck alone."). Only from the Conductor window (AGENT_SEAT BENCH, no
+      RM_ROLE_UNIT: never a launched helper, role run, other seat or the tick). It writes a `delegated: scope` note on
+      the ledger first (his daily digest reads it; no note, no lift), then lifts in the store as the Conductor's act
+      (per_ruling that item, never his words); the mirror's `lifted` row says lifted_by CONDUCTOR. A lifted mod still
+      does not run while its readiness list is not READY (owner 2026-11-19, No mod runs forward on a broken pipeline).
   mod_owner_hold.py mirror          rewrite the file from the store (after an alarm; pipe doctor shows drift)
   mod_owner_hold.py allow-design <Mod> --said "<his words>"   the hold stays on builds; his words on the row allow a
       design-only pass (designer_cleanse.py run refuses a held mod without them; item
@@ -46,6 +53,33 @@ if HERE not in sys.path:
     sys.path.insert(0, HERE)
 PATH = os.path.join(HERE, "mod_owner_hold.json")
 LIFT = 'python3 src/RimMandrake/rimflow/mod_owner_hold.py lift %s --said "<his words>"'
+CONDUCTOR_LIFT = "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE"     # = control.CONDUCTOR_LIFT
+CLI = os.path.join(HERE, "cli.py")
+
+
+def conductor_window(env=None):
+    """-> (ok, why): is this process the Conductor window? Seat BENCH (AGENT_SEAT, else RIMFLOW_SEAT) and no
+    RM_ROLE_UNIT (every launched run, detached helper or role run, carries one). Anything else is not the Conductor."""
+    env = os.environ if env is None else env
+    if (env.get("RM_ROLE_UNIT") or "").strip():
+        return False, "a launched run (RM_ROLE_UNIT=%s) is not the Conductor window" % env["RM_ROLE_UNIT"]
+    seat = (env.get("AGENT_SEAT") or env.get("RIMFLOW_SEAT") or "").strip().upper()
+    if seat != "BENCH":
+        return False, "seat %s is not the Conductor's (BENCH)" % (seat or "unset")
+    return True, "the Conductor window"
+
+
+def _digest_note(mod, why):
+    """The Conductor's lift on the ledger, before it lifts: a BENCH note on CONDUCTOR_LIFT whose why starts
+    `delegated: scope:`, so his daily digest (delegated_digest.py) shows it. Raises RuntimeError when it is not written."""
+    import subprocess
+    text = "the Conductor lifted the owner hold on %s" % key(mod)
+    r = subprocess.run([sys.executable, CLI, "note", CONDUCTOR_LIFT, "--seat", "BENCH", "--text", text, "--why",
+                        "delegated: scope: %s per %s: %s" % (text, CONDUCTOR_LIFT, why.strip())],
+                       capture_output=True, text=True, timeout=120)
+    if r.returncode != 0:
+        raise RuntimeError("the digest note was not written (rimflow note exit %d: %s)"
+                           % (r.returncode, (r.stderr or r.stdout).strip()[-300:]))
 
 
 MIRROR_ALARM = "control:owner_hold_mirror"
@@ -163,15 +197,34 @@ def status(h):
     return "HELD BY OWNER %s: \"%s\" (lift: %s)" % (h["date"], h["said"], LIFT % h["mod"])
 
 
-def lift(mod, said, path=None):
+def lift(mod, said=None, path=None, per_ruling=None, why=None):
     """Lift his hold on `mod`: in the control store (binds at once), then the file is rewritten from the store (its
-    mirror). -> the hold removed. Raises KeyError when neither holds it, MirrorFailed (alarm raised) when the store
-    lifted it but the file could not be written. path: that file alone, no store (a fixture)."""
+    mirror). The authority is his words (`said`) or the Conductor's lift (`per_ruling` CONDUCTOR_LIFT with `why`, from
+    the Conductor window, its digest note written first). -> the hold removed. Raises KeyError when neither holds it,
+    ValueError when the authority is missing or not the Conductor's, RuntimeError when the digest note is not written
+    (nothing lifted), MirrorFailed (alarm raised) when the store lifted it but the file could not be written.
+    path: that file alone, no store and no note (a fixture)."""
+    his = isinstance(said, str) and bool(said.strip())
+    if his == bool(per_ruling):
+        raise ValueError("a lift takes his words (--said) or the Conductor's lift (--per-ruling %s --why \"...\"), "
+                         "one of them" % CONDUCTOR_LIFT)
+    if not his:
+        if (per_ruling or "").strip() != CONDUCTOR_LIFT or not (isinstance(why, str) and why.strip()):
+            raise ValueError("the Conductor's lift cites --per-ruling %s and carries --why" % CONDUCTOR_LIFT)
+        ok, who = conductor_window()
+        if not ok:
+            raise ValueError("only the Conductor window lifts by %s: %s" % (CONDUCTOR_LIFT, who))
     p = path or os.environ.get("RM_OWNER_HOLD_FILE") or PATH
     if path is None:
         import control as C
         f = load_file(p).get(key(mod))
-        gone = C.lift_owner(key(mod), said, date=(f or {}).get("date"), held_said=(f or {}).get("said"))
+        if f is None and key(mod) not in {m for m, r in C.mod_holds().items() if r.get("store")}:
+            raise KeyError("%s is not held" % mod)
+        if not his:
+            _digest_note(mod, why)      # no note, no lift: the Conductor's lift always reaches his digest
+        gone = C.lift_owner(key(mod), said if his else None, date=(f or {}).get("date"),
+                            held_said=(f or {}).get("said"), per_ruling=None if his else CONDUCTOR_LIFT,
+                            why=None if his else why)
         if f is None and gone is None:
             raise KeyError("%s is not held" % mod)
         _mirror_or_alarm(p, "lift %s" % key(mod))
@@ -183,9 +236,14 @@ def lift(mod, said, path=None):
             raise KeyError("%s is not held" % mod)
         gone = [h for h in doc["holds"] if key(h.get("mod")) == key(mod)][0]
         doc["holds"] = keep
-        doc.setdefault("lifted", []).append(dict(gone, lifted_said=said))
+        doc.setdefault("lifted", []).append(dict(gone, lifted_said=said) if his else _by_conductor(gone, why))
         return gone
     return _rewrite(p, change)
+
+
+def _by_conductor(row, why):
+    """The mirror's `lifted` row of a Conductor lift: lifted_by CONDUCTOR, its reason and ruling; no lifted_said."""
+    return dict(row, lifted_by="CONDUCTOR", lifted_why=why.strip(), per_ruling=CONDUCTOR_LIFT)
 
 
 def hold(mod, said, date=None):
@@ -219,13 +277,15 @@ def render(doc, rows, lifts):
     out["holds"] = holds
     old = {key(h.get("mod")): h for h in doc.get("holds") or [] if isinstance(h, dict)}
     lifted = [x for x in doc.get("lifted") or [] if isinstance(x, dict)]
-    have = {(key(x.get("mod")), x.get("date") or "", x.get("said") or "", x.get("lifted_said") or "") for x in lifted}
-    for m, d, w, ls in lifts:
-        if (m, d, w, ls) in have:
+    have = {(key(x.get("mod")), x.get("date") or "", x.get("said") or "", x.get("lifted_said") or "",
+             x.get("lifted_why") if x.get("lifted_by") == "CONDUCTOR" else None) for x in lifted}
+    for m, d, w, ls, cw in lifts:
+        if (m, d, w, ls, cw) in have:
             continue
         was = old.get(m) if old.get(m, {}).get("said") == w else None
-        lifted.append(dict(was or {"mod": m, "date": d, "said": w}, lifted_said=ls))
-        have.add((m, d, w, ls))
+        base = was or {"mod": m, "date": d, "said": w}
+        lifted.append(_by_conductor(base, cw) if cw is not None else dict(base, lifted_said=ls))
+        have.add((m, d, w, ls, cw))
     if lifted:
         out["lifted"] = lifted
     return out
@@ -346,7 +406,9 @@ def main(argv=None):
     sub.add_parser("show")
     lp = sub.add_parser("lift")
     lp.add_argument("mod")
-    lp.add_argument("--said", required=True, help="his words lifting it")
+    lp.add_argument("--said", default=None, help="his words lifting it")
+    lp.add_argument("--per-ruling", default=None, help="the Conductor's lift: %s" % CONDUCTOR_LIFT)
+    lp.add_argument("--why", default=None, help="the Conductor's reason (with --per-ruling)")
     ap_ = sub.add_parser("allow-design")
     ap_.add_argument("mod")
     ap_.add_argument("--said", required=True, help="his words allowing a design-only pass")
@@ -402,12 +464,17 @@ def _run(o):
               "src/RimMandrake/rimflow/mod_owner_hold.json" % (key(o.mod), key(o.mod)))
         return 0
     try:
-        lift(o.mod, o.said)
-    except (KeyError, C.Refused) as e:
-        print(str(e), file=sys.stderr)
+        lift(o.mod, o.said, per_ruling=o.per_ruling, why=o.why)
+    except (KeyError, ValueError, RuntimeError, C.Refused) as e:
+        print(str(e).strip("'\""), file=sys.stderr)
         return 1
-    print("lifted %s; publish it: ./publish -m \"owner hold: lift %s\" src/RimMandrake/rimflow/mod_owner_hold.json"
-          % (key(o.mod), key(o.mod)))
+    if o.said:
+        print("lifted %s; publish it: ./publish -m \"owner hold: lift %s\" src/RimMandrake/rimflow/mod_owner_hold.json"
+              % (key(o.mod), key(o.mod)))
+    else:
+        print("the Conductor lifted %s (his digest shows it); publish it: ./publish -m \"owner hold: Conductor lifts %s\" "
+              "src/RimMandrake/rimflow/mod_owner_hold.json infrastructure/state/ledger/events/BENCH.jsonl; it still runs "
+              "only when its readiness list reads READY" % (key(o.mod), key(o.mod)))
     return 0
 
 

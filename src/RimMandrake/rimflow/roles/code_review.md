@@ -82,3 +82,5 @@ One JSON object per finding (or per claim, when you are handed claims to sort ra
 true and decide only its class against today's page, even when the claim was made against older code. When you
 cannot search the repo, an input outside ACCEPTS counts as
 produced only if the page itself says it is ordinary.
+
+Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation.

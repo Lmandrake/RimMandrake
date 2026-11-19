@@ -249,6 +249,11 @@ Every hand act of yours on the pipeline is recorded by the tick (owner, 2026-11-
 ./pipe grant <Mod> look +1 --why "..." --owner-said "<his words>"   one more granted look
 ./pipe set|add|reset|limit|queue|undo ...     counts, limits and the queue (pipeline_control.py)
 python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said "<his words>"   lift his hold (store + mirror)
+python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE --why "..."
+                                             your own lift (owner 2026-11-19: "Conductor should also be able to lift a Hold.
+                                             We work together, don't use me as a bottleneck alone."); recorded as your act and
+                                             in his daily digest; this window only, never a helper; a lifted mod still waits
+                                             for its readiness list to read READY
 ```
 Always name the stop mode (owner, by card 2026-11-18: "we shouldn't rely on defaults"), and every brief you write that may stop a run says which. `maturation_dispatch.py pause|resume` are the same switch as `pipe off|on`; `maturation_dispatch.py next --within 30m` forecasts what will start.
 

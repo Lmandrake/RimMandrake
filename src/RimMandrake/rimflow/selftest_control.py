@@ -2325,12 +2325,61 @@ def t_hold_file_mirrors_the_store():
               and OH.drift()[0], "a bare mirror learns a row the store lacks and keeps it in the file")
 
 
-def t_his_hold_lifts_only_with_his_words():
-    """Promise his-hold-lifts-only-with-his-words: only `mod_owner_hold.py lift <Mod> --said` lifts his hold. `pipe on
-    <Mod>`, `pipe on all`, `pipe undo` of the hold, a lift without words, a hand edit deleting the file's row and
+CLI = os.path.join(HERE, "cli.py")
+LIFT_RULING = "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE"     # the owner's card of 2026-11-19
+
+
+@contextlib.contextmanager
+def conductor_ledger(file_item=True):
+    """The Conductor window (AGENT_SEAT BENCH, no RM_ROLE_UNIT) on a throwaway rimflow ledger, with the ruling's item
+    filed on it (file_item=False: not filed, so its digest note cannot be written). -> the ledger folder."""
+    d = tempfile.mkdtemp(prefix="conductor-ledger-", dir=TMP)
+    env = {"RIMFLOW_LEDGER": os.path.join(d, "events.jsonl"), "RIMFLOW_ITEMS": os.path.join(d, "items"),
+           "RIMFLOW_PROBE": "no-reading", "AGENT_SEAT": "BENCH", "RIMFLOW_SEAT": "BENCH"}
+    saved = {k: os.environ.get(k) for k in list(env) + ["RM_ROLE_UNIT"]}
+    os.environ.update(env)
+    os.environ.pop("RM_ROLE_UNIT", None)
+    try:
+        if file_item:
+            r = subprocess.run([PY, CLI, "file", LIFT_RULING, "--for", "BENCH", "--seat", "BENCH", "--title",
+                                "fixture item. Acceptance test: none, a fixture", "--why", "fixture"],
+                               capture_output=True, text=True, timeout=120)
+            check(r.returncode == 0, "the fixture ledger files the ruling's item", r.stderr[-300:])
+        yield d
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
+def ledger_notes(d):
+    out = []
+    for dp, _, fs in os.walk(d):
+        for f in fs:
+            if f.endswith(".jsonl"):
+                for line in open(os.path.join(dp, f), encoding="utf-8"):
+                    try:
+                        ev = json.loads(line)
+                    except ValueError:
+                        continue
+                    if ev.get("event") == "note" and ev.get("id") == LIFT_RULING:
+                        out.append(ev)
+    return out
+
+
+CONDUCTOR_ARGS = ("--per-ruling", LIFT_RULING, "--why", "Pyrelands needs it now")
+
+
+def t_his_hold_lifts_by_him_or_the_conductor():
+    """Promise his-hold-lifts-by-him-or-the-conductor: only `mod_owner_hold.py lift <Mod>` lifts his hold, with his
+    words (--said) or as the Conductor's lift (--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE
+    --why). `pipe on <Mod>`, `pipe on all`, `pipe undo` of the hold, a lift without words, with blank words, citing
+    another ruling, with no reason or with both his words and the ruling, a hand edit deleting the file's row and
     `pipe init --import` of that edited file each leave it held."""
     import mod_owner_hold as OH
-    with hold_fixture([], "lift_only") as hf:
+    with hold_fixture([], "lift_only") as hf, conductor_ledger():
         rc, out = ohcli("hold", "Graffiti", "--said", "stop Graffiti", "--date", "2026-11-19")
         act = C.mod_holds()["Graffiti"]["act"]
 
@@ -2359,9 +2408,73 @@ def t_his_hold_lifts_only_with_his_words():
         held("import of the edited file")
         OH.mirror()
         check("Graffiti" in file_holds(hf), "the next mirror writes the deleted row back from the store")
+        for bad, what in ((("--per-ruling", "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM", "--why", "go"), "another ruling"),
+                          (("--per-ruling", LIFT_RULING), "the ruling with no reason"),
+                          (("--per-ruling", LIFT_RULING, "--why", "  "), "the ruling with a blank reason"),
+                          (("--said", "go on", *CONDUCTOR_ARGS), "his words and the ruling both")):
+            rc, out = ohcli("lift", "Graffiti", *bad)
+            check(rc != 0, "a lift citing %s is refused" % what, (rc, out))
+            held("lift-citing-" + what.replace(" ", "-"))
         rc, out = ohcli("lift", "Graffiti", "--said", "go on Graffiti")
         check(rc == 0 and C.blocked(spec("lw-z", mod="Graffiti")) is None and "Graffiti" not in OH.load(),
               "`mod_owner_hold.py lift Graffiti --said` lifts it", (rc, out))
+        ohcli("hold", "Cauldron", "--said", "stop Cauldron", "--date", "2026-11-19")
+        rc, out = ohcli("lift", "Cauldron", *CONDUCTOR_ARGS)
+        check(rc == 0 and C.blocked(spec("lw-c", mod="Cauldron")) is None and "Cauldron" not in OH.load(),
+              "the Conductor's lift (`--per-ruling %s --why`) lifts it" % LIFT_RULING, (rc, out))
+        check("READY" in out, "the Conductor's lift says the mod still waits for its readiness list", out)
+
+
+def t_conductor_lift_only_from_its_window():
+    """Promise conductor-lift-only-from-its-window: the Conductor's lift is refused, and the mod stays held, from a
+    launched run (RM_ROLE_UNIT set: a detached helper, a role run), from another seat, and with no seat; from the
+    Conductor window (seat BENCH, no RM_ROLE_UNIT) it lifts."""
+    import mod_owner_hold as OH
+    with hold_fixture([], "lift_window"), conductor_ledger() as d:
+        ohcli("hold", "Graffiti", "--said", "stop Graffiti", "--date", "2026-11-19")
+        for env, what in (({"RM_ROLE_UNIT": "rm-detached-bench-x-1"}, "a launched helper"),
+                          ({"AGENT_SEAT": "OPERATIONS", "RIMFLOW_SEAT": "OPERATIONS"}, "another seat"),
+                          ({"AGENT_SEAT": "", "RIMFLOW_SEAT": ""}, "no seat")):
+            r = subprocess.run([PY, OHTOOL, "lift", "Graffiti", *CONDUCTOR_ARGS], capture_output=True, text=True,
+                               timeout=120, env=dict(os.environ, **env))
+            check(r.returncode != 0 and "Conductor window" in r.stderr and "Graffiti" in OH.load(),
+                  "the Conductor's lift from %s is refused and Graffiti stays held" % what, (r.returncode, r.stderr))
+        check(not ledger_notes(d), "a refused lift writes no digest note", ledger_notes(d))
+        rc, out = ohcli("lift", "Graffiti", *CONDUCTOR_ARGS)
+        check(rc == 0 and "Graffiti" not in OH.load(), "the Conductor window's lift lifts it", (rc, out))
+
+
+def t_conductors_lift_is_its_own_act():
+    """Promise conductors-lift-is-its-own-act: the Conductor's lift is recorded as the Conductor's act, never as his
+    words: the store act carries per_ruling the ruling's item and no owner_said; the mirror's lifted row says
+    lifted_by CONDUCTOR with its reason and no lifted_said; a BENCH ledger note whose why starts `delegated: scope:`
+    (his daily digest's class scope) is written before it lifts, and a lift whose note cannot be written lifts nothing."""
+    import mod_owner_hold as OH
+    sys.path.insert(0, os.path.dirname(HERE))
+    from contracts import blind as BL
+    with hold_fixture([{"mod": "Graffiti", "date": "2026-11-18", "said": "stop Graffiti now"}], "lift_act") as hf:
+        with conductor_ledger(file_item=False) as d:
+            rc, out = ohcli("lift", "Graffiti", *CONDUCTOR_ARGS)
+            check(rc != 0 and "digest note" in out and "Graffiti" in OH.load(),
+                  "a Conductor lift whose digest note cannot be written lifts nothing", (rc, out))
+        with conductor_ledger() as d:
+            rc, out = ohcli("lift", "Graffiti", *CONDUCTOR_ARGS)
+            check(rc == 0 and "Graffiti" not in OH.load(), "the Conductor's lift lifts it", (rc, out))
+            acts = [a for a in C._q("SELECT * FROM acts WHERE kind='lift'") if a["scope"] == "mod:Graffiti"]
+            check(len(acts) == 1 and acts[0]["per_ruling"] == LIFT_RULING and not acts[0]["owner_said"]
+                  and acts[0]["why"].startswith("the Conductor lifted his hold"),
+                  "the store act is the Conductor's: per_ruling the item, no owner_said", [dict(a) for a in acts])
+            rows = [x for x in json.load(open(hf, encoding="utf-8")).get("lifted", []) if x.get("mod") == "Graffiti"]
+            check(len(rows) == 1 and rows[0].get("lifted_by") == "CONDUCTOR" and "lifted_said" not in rows[0]
+                  and rows[0].get("lifted_why") == "Pyrelands needs it now" and rows[0].get("said") == "stop Graffiti now",
+                  "the mirror's lifted row says lifted_by CONDUCTOR, never his lifting words", rows)
+            OH.mirror()
+            rows2 = [x for x in json.load(open(hf, encoding="utf-8")).get("lifted", []) if x.get("mod") == "Graffiti"]
+            check(rows2 == rows, "a second mirror keeps the one Conductor lift row", rows2)
+            notes = ledger_notes(d)
+            check(len(notes) == 1 and notes[0]["why"].startswith("delegated: scope:") and "Graffiti" in notes[0]["text"]
+                  and BL.class_of(notes[0]["why"]) == "scope" and not notes[0].get("ownerSaid"),
+                  "a BENCH note `delegated: scope:` reaches his digest as class scope", notes)
 
 
 def t_mirror_failure_is_an_alarm():
@@ -2436,7 +2549,8 @@ def main():
               t_stop_reaches_the_agent, t_kill_verified_dead, t_killed_run_needs_no_hand_step,
               t_stopped_run_spends_no_trial, t_probe_never_lies, t_same_command_twice, t_every_change_is_an_act,
               t_permit_never_ghosts, t_before_is_read, t_hold_file_mirrors_the_store,
-              t_his_hold_lifts_only_with_his_words, t_mirror_failure_is_an_alarm, t_held_stays_held_across_the_mirror):
+              t_his_hold_lifts_by_him_or_the_conductor, t_conductor_lift_only_from_its_window,
+              t_conductors_lift_is_its_own_act, t_mirror_failure_is_an_alarm, t_held_stays_held_across_the_mirror):
         print("== %s" % t.__name__)
         try:
             t()

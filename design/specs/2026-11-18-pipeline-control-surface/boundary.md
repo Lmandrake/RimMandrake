@@ -22,10 +22,10 @@ added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_
   with the nearest names. `pipe queue` and `pipe grant` take a mod and refuse any other scope (slice review 4, 20).
 - **stop-target.** A scope, or one unit named `rm-...` with or without `.service`. A unit with another name (the
   testq wake) is named `unit:NAME`. Exactly one stop mode.
-- **why-on-every-write.** Every command that changes something carries `--why`. A granted look and lifting his hold
-  carry his words.
+- **why-on-every-write.** Every command that changes something carries `--why`. A granted look carries his words;
+  lifting his hold carries his words or the Conductor's lift (below).
 - **his-hold-as-a-file-row.** His hold is a row (mod, date, his words) in the store, written by `mod_owner_hold.py
-  hold|lift|allow-design` with his words. `mod_owner_hold.json` is its mirror: the store rewrites it after each of
+  hold|lift|allow-design` with his words (a lift may instead be the Conductor's, below). `mod_owner_hold.json` is its mirror: the store rewrites it after each of
   those writes (`mod_owner_hold.py mirror` rewrites it by hand), and a clone publishes it. A file row the store lacks
   (a hand edit, a clone not yet synced) is learned into the store by `pipe init --import` or the next mirror; a mod the
   store already holds keeps the store's words. The import may be run any number of times. Added 2026-11-19 by
@@ -89,13 +89,20 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **a-crash-between-the-hold-and-its-mirror.** The process dies after the store commits his hold, lift or allowance
   and before the file is rewritten. The store binds; the file is stale until the next mirror; `pipe doctor` prints the
   drift and its fix (`mod_owner_hold.py mirror`). No alarm is raised.
+- **a-forged-conductor-window.** A process that sets `AGENT_SEAT=BENCH` and clears `RM_ROLE_UNIT` itself passes
+  conductor-lift-only-from-its-window. The seat is a mark, not authentication; no launcher in this estate writes that
+  pair into a run [measured 2026-11-19: `detached_helper.py` and `role_clones.py` set `RM_ROLE_UNIT` on every launch].
+  No fix (owner 2026-11-19: a rare failure gets none).
+- **a-crash-between-the-digest-note-and-the-lift.** The process dies after the Conductor's `delegated: scope` note
+  is written and before the store lifts. His digest shows a lift that did not happen; the mod stays held, and the
+  next lift notes again and lifts. No fix (a split-second crash).
 
 ## PROMISES (each one is owed a test of the same name)
 
 - **off-blocks-starts.** After `pipe off` returns, nothing that had not begun can begin. Tested by `t_race`.
 - **one-admission-point.** Every pipeline launch site goes through `launch_unit`, and a site that does not turns the
   selftest red. Tested by `t_sites`.
-- **his-hold-refuses-launch.** A launch that names a mod he holds is refused, with his words, until he lifts it with his words.
+- **his-hold-refuses-launch.** A launch that names a mod he holds is refused, with his words, until he or the Conductor lifts it.
   `pipe on all` never lifts it. A new hold after a lift holds again. Tested by `t_owner_import`, `t_scope`.
 - **three-named-stops.** `pipe stop` is `--write-now`, `--at-easy-spot` or `--kill`. With none named it uses
   at-easy-spot and says so. A write-now order becomes a kill at its deadline. Tested by `t_stop`.
@@ -160,12 +167,25 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 
 - **hold-file-mirrors-the-store.** `mod_owner_hold.py hold`, `lift` and `allow-design` write the store first, then
   rewrite `mod_owner_hold.json` from the store's rows of his hold (his order kept, his lifts recorded with his
-  words). A mirror never drops a row the store lacks: it learns it first. A second mirror changes no byte. `pipe
+  words, the Conductor's with `lifted_by CONDUCTOR`). A mirror never drops a row the store lacks: it learns it first. A second mirror changes no byte. `pipe
   doctor` says whether the file is in step. Tested by `t_hold_file_mirrors_the_store`.
-- **his-hold-lifts-only-with-his-words.** Only `mod_owner_hold.py lift <Mod> --said "<his words>"` lifts his hold.
-  `pipe on <Mod>`, `pipe on all`, `pipe undo` of the hold, a lift with no or blank words, a hand edit deleting the
-  file's row and an import of that edited file each leave the mod held. Tested by
-  `t_his_hold_lifts_only_with_his_words`.
+- **his-hold-lifts-by-him-or-the-conductor.** Only `mod_owner_hold.py lift <Mod>` lifts his hold: with his words
+  (`--said "<his words>"`) or as the Conductor's lift (`--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE
+  --why "<reason>"`; owner, by card 2026-11-19: *"yes... but Conductor should also be able to lift a Hold. We work
+  together, don't use me as a bottleneck alone."*). `pipe on <Mod>`, `pipe on all`, `pipe undo` of the hold, a lift
+  with no or blank words, one citing another ruling, one with no or a blank reason, one carrying both his words and
+  the ruling, a hand edit deleting the file's row and an import of that edited file each leave the mod held. A lifted
+  mod still does not run while its readiness list is not READY (No mod runs forward on a broken pipeline, owner
+  2026-11-19). Tested by `t_his_hold_lifts_by_him_or_the_conductor`.
+- **conductor-lift-only-from-its-window.** The Conductor's lift is taken only from the Conductor window: seat BENCH
+  (`AGENT_SEAT`, else `RIMFLOW_SEAT`) and no `RM_ROLE_UNIT`. From a launched run (a detached helper, a role run),
+  another seat or no seat it is refused, writes no note, and the mod stays held. The Dispatch tick never calls a lift.
+  Tested by `t_conductor_lift_only_from_its_window`.
+- **conductors-lift-is-its-own-act.** The Conductor's lift is recorded as the Conductor's act, never as his words:
+  the store act carries `per_ruling` the ruling's item and no `owner_said`; the mirror's `lifted` row says `lifted_by
+  CONDUCTOR` with its reason and no `lifted_said`; a BENCH ledger note whose why starts `delegated: scope:` is written
+  first, so his daily digest (`delegated_digest.py`, class scope) shows it. A lift whose note cannot be written lifts
+  nothing. Tested by `t_conductors_lift_is_its_own_act`.
 - **mirror-failure-is-an-alarm.** A mirror that cannot be written raises the alarm `control:owner_hold_mirror`, says
   ALARM and exits 5. It lifts nothing: a new hold holds from the store, the file is left whole, a lift lifts only the
   mod he named. The next mirror that is written clears the alarm. Tested by `t_mirror_failure_is_an_alarm`.

@@ -9,7 +9,7 @@ selection may be submitted and filled whatever its pipeline stage.
   else, and by fill, sweep and the fault-window rerun (fault_monitor.rerun_job).
 
 One refusal stays: a mod on the owner's hold (src/RimMandrake/rimflow/mod_owner_hold.json, his 2026-11-16 hold on the
-biome mods other than Pyrelands; only he lifts it). An unreadable hold list refuses every test: nothing is queued that
+biome mods other than Pyrelands; he or the Conductor lifts it, owner 2026-11-19). An unreadable hold list refuses every test: nothing is queued that
 cannot be proved unheld. Ops jobs are not tests and are never refused: the requesters in OPS_REQUESTERS (the
 brake-release canary, the steward's repair wake). The machine-safety brakes (fault_monitor, the outage pause,
 brake_release) live in their own modules and are not this file's.
@@ -27,8 +27,8 @@ BAR_STAGES = ("6",)                                            # a test-table en
 KINDS = ("chains", "rows", "proofs")
 OPS_REQUESTERS = ("Operations.canary", "BENCH.steward-wake")   # brake_release.BY; steward.py's repair wake
 CLAUSE = "owner_hold"
-CRITERION = ("a mod on the owner's hold (rimflow/mod_owner_hold.json) is not tested on SteveDesktop until he lifts it "
-             "(owner 2026-11-16)")
+CRITERION = ("a mod on the owner's hold (rimflow/mod_owner_hold.json) is not tested on SteveDesktop until he or the "
+             "Conductor lifts it (owner 2026-11-16, 2026-11-19)")
 
 
 def repo_root():
@@ -146,6 +146,6 @@ def refusal(mod, sel, by, root=None):
         return _refuse(mod, "the owner-hold list cannot be read (%s)" % e, "the hold list reads",
                        "repair src/RimMandrake/rimflow/mod_owner_hold.json", "unreadable")
     if h:
-        return _refuse(mod, moh.status(h), "the owner lifts his hold on %s" % h["mod"],
-                       "only he lifts it: %s" % (moh.LIFT % h["mod"]), "held")
+        return _refuse(mod, moh.status(h), "the hold on %s is lifted" % h["mod"],
+                       "he or the Conductor lifts it: %s" % (moh.LIFT % h["mod"]), "held")
     return None

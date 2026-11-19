@@ -22,7 +22,8 @@ moment of launch (admit) and again when the unit itself starts (its ExecConditio
   switches      one row per (scope, layer). scope: all | mod:<M> | stage:<S> | item:<ID> | family:<F> | role:<R>.
                 layer: control (`pipe off`, `pipe stop`, `maturation_dispatch.py pause`) or owner (his hold, imported
                 from mod_owner_hold.json with his words). Any live row on one of a run's scopes refuses it. `pipe on`
-                lifts the control row only: his owner row stays (`mod_owner_hold.py lift` lifts it, with his words).
+                lifts the control row only: his owner row stays (`mod_owner_hold.py lift` lifts it, with his words or as the
+                Conductor's lift, CONDUCTOR_LIFT).
   runs          every admitted launch: the unit name fixed BEFORE systemd-run, family, mod, item, stage, role, model.
                 state: admitted -> started (its ExecCondition passed) -> ended | killed; or cancelled (a `pipe off`
                 committed first), refused (the condition found it no longer authorised), fail_launch (systemd-run said
@@ -566,19 +567,34 @@ def note(kind, scope, why, after=None, p=None, now=None):
         return _act(c, kind, scope, None, after, why, now=now)
 
 
-def lift_owner(mod, said, date=None, p=None, now=None, held_said=None):
-    """Lift his hold on `mod` in the store (his words required), and remember the lifted (mod, date), so the file
-    mirror's row stops holding at once. -> the store row lifted, or None when the store held no row for it."""
-    if not (isinstance(said, str) and said.strip()):
-        raise Refused("lifting his hold takes his words (--said)")
+# The Conductor may lift his hold too (owner, by card 2026-11-19: "yes... but Conductor should also be able to lift a
+# Hold. We work together, don't use me as a bottleneck alone."): cited by this item id, with the Conductor's reason.
+CONDUCTOR_LIFT = "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE"
+
+
+def lift_owner(mod, said=None, date=None, p=None, now=None, held_said=None, per_ruling=None, why=None):
+    """Lift his hold on `mod` in the store, and remember the lifted (mod, date), so the file mirror's row stops holding
+    at once. The authority is his words (`said`) or the Conductor's lift (`per_ruling` CONDUCTOR_LIFT and its `why`,
+    recorded as the Conductor's act: no owner_said), never both, never neither. -> the store row lifted, or None when
+    the store held no row for it."""
+    his = isinstance(said, str) and bool(said.strip())
+    cond = (per_ruling or "").strip() == CONDUCTOR_LIFT and isinstance(why, str) and bool(why.strip())
+    if his == bool(per_ruling):
+        raise Refused("lifting his hold takes his words (--said) or the Conductor's lift (--per-ruling %s --why "
+                      "\"...\"), one of them" % CONDUCTOR_LIFT)
+    if not his and not cond:
+        raise Refused("the Conductor's lift cites --per-ruling %s and carries --why" % CONDUCTOR_LIFT)
     now = time.time() if now is None else now
     with txn(p) as c:
         old = c.execute("SELECT * FROM switches WHERE scope=? AND layer='owner'", ("mod:" + key(mod),)).fetchone()
         d = date or (old["date"] if old else "") or ""
         w = held_said if held_said is not None else (old["said"] if old else "") or ""
-        _act(c, "lift", "mod:" + key(mod), dict(old) if old else None, {"lifted": [key(mod), d, w]},
-             "his hold lifted: %s" % said.strip(), owner_said=said.strip(), idem="lift:owner:%s:%s:%d" % (
-                 key(mod), d, int(now * 1000)), now=now)
+        if his:
+            text, kw = "his hold lifted: %s" % said.strip(), {"owner_said": said.strip()}
+        else:
+            text, kw = "the Conductor lifted his hold: %s" % why.strip(), {"per_ruling": CONDUCTOR_LIFT}
+        _act(c, "lift", "mod:" + key(mod), dict(old) if old else None, {"lifted": [key(mod), d, w]}, text,
+             idem="lift:owner:%s:%s:%d" % (key(mod), d, int(now * 1000)), now=now, **kw)
         c.execute("DELETE FROM switches WHERE scope=? AND layer='owner'", ("mod:" + key(mod),))
         return dict(old) if old else None
 
@@ -597,15 +613,19 @@ def lifted_owner(p=None):
 
 
 def owner_lifts(p=None):
-    """-> [(mod, date, his held words, his lifting words)] of every lift of his hold through the store, oldest first:
-    the mirror's `lifted` record (mod_owner_hold.mirror)."""
+    """-> [(mod, date, his held words, his lifting words, the Conductor's reason)] of every lift of his hold through
+    the store, oldest first: the mirror's `lifted` record (mod_owner_hold.mirror). His lift has the Conductor's reason
+    None; the Conductor's lift has his lifting words ""."""
     out = []
-    for a in _q("SELECT after, owner_said FROM acts WHERE kind='lift' ORDER BY rev", p=p):
+    for a in _q("SELECT after, owner_said, per_ruling, why FROM acts WHERE kind='lift' ORDER BY rev", p=p):
         try:
             m, d, w = json.loads(a["after"])["lifted"]
         except (ValueError, KeyError, TypeError):
             continue
-        out.append((m, d, w, a["owner_said"] or ""))
+        cw = None
+        if a["per_ruling"] == CONDUCTOR_LIFT and not a["owner_said"]:
+            cw = (a["why"] or "").split(": ", 1)[-1]
+        out.append((m, d, w, a["owner_said"] or "", cw))
     return out
 
 

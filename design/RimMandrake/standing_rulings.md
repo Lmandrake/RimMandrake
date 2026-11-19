@@ -1121,11 +1121,19 @@ and the system choked at their lack of precision I think."*
   seeded); the Designer and DesignerCodex chain sweeps, the harvest chain and a pending run-now skip it; it is on no
   idle, paused, stalled or Designer-stall reading, so it raises no alarm and no incident; `maturation_dispatch.py
   status` and the maturation page print **HELD BY OWNER** with his words and date. A run already live on it finishes.
-- **Only he lifts it:** `python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said "<his words>"`, then publish
-  `mod_owner_hold.json`; `mod_owner_hold.py show` lists the holds. A new hold is a row in the same file, with his words,
+- **He or the Conductor lifts it** (owner, by question card, Thu 2026-11-19 ~6:50 AM PST, item
+  `RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE`; picked "Yes, let it finish" on the hold-mirror run, his words:
+  *"yes... but Conductor should also be able to lift a Hold. We work together, don't use me as a bottleneck alone."*).
+  His lift: `python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said "<his words>"`. The Conductor's lift,
+  from the Conductor window (seat BENCH, not a launched run): `... lift <Mod> --per-ruling
+  RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE --why "<the Conductor's reason>"`; it is recorded as the
+  Conductor's act (never as his words) and writes a `delegated: scope` ledger event, so it reaches his daily digest. A
+  lift with neither is refused; no helper, other seat or the Dispatch tick lifts a hold, and `pipe on` never does. Then
+  publish `mod_owner_hold.json`; `mod_owner_hold.py show` lists the holds. A lifted mod still does not run while its
+  readiness list is not READY (§No mod runs forward on a broken pipeline, owner 2026-11-19). A new hold is a row in the same file, with his words,
   then `./pipe init --import` (safe to repeat), so that every launch refuses the mod and not only the tick.
 
-- **Design text on a held mod is allowed; the held mods will return** (owner, by question card, Thu 2026-11-19 ~5:35 AM PST, after six hand-launched helpers wrote design tickets for FeverWood, whose briefs named no mod so the hold never checked them). Picked "Design text is allowed"; his words: *"Design text is allowed, and we WILL return to the mods... they're not going to be deprecated, don't worry."* The option's description, verbatim: *"Why: design is cheap and loses nothing if the mod never ships. Only builds, tests and live runs stay held. Cost: tokens go to mods you set aside, and designs drift from what you last read."* So: the hold above binds the PIPELINE (its launches, chains, alarms); a helper may write design text on a held mod; builds, tests and live runs on it stay held; no mod is deprecated; no hold is lifted by this (only `mod_owner_hold.py lift`). Item `RIMMANDRAKE_ALLOW_DESIGN_TEXT_ON_HELD_MODS_THEY_RETURN`.
+- **Design text on a held mod is allowed; the held mods will return** (owner, by question card, Thu 2026-11-19 ~5:35 AM PST, after six hand-launched helpers wrote design tickets for FeverWood, whose briefs named no mod so the hold never checked them). Picked "Design text is allowed"; his words: *"Design text is allowed, and we WILL return to the mods... they're not going to be deprecated, don't worry."* The option's description, verbatim: *"Why: design is cheap and loses nothing if the mod never ships. Only builds, tests and live runs stay held. Cost: tokens go to mods you set aside, and designs drift from what you last read."* So: the hold above binds the PIPELINE (its launches, chains, alarms); a helper may write design text on a held mod; builds, tests and live runs on it stay held; no mod is deprecated; no hold is lifted by this (a hold is lifted only by `mod_owner_hold.py lift`, his or the Conductor's). Item `RIMMANDRAKE_ALLOW_DESIGN_TEXT_ON_HELD_MODS_THEY_RETURN`.
 
 ## Resetting a test scene is harness housekeeping, never a mod deliverable — owner, 2026-11-17
 
