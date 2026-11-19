@@ -14,7 +14,9 @@ fails would read as a catch). Then each break must turn its named test red.
           does not pass a named test (cause named); not a verdict about the tests
 
 `--only <promise> ...` runs those promises alone. A real `rm-probe` unit left by one break (a disabled kill leaves
-`sleep 300` running) is stopped before the next, or its name collides in the next test."""
+`sleep 300` running) is stopped after its test, or its name collides in the next test: only a unit (or escalation
+timer) whose systemd commands name that test's own temp store, never another run's (a machine-wide `rm-probe` sweep
+killed a sibling's real-agent drill, 2026-11-19, RIMMANDRAKE_SPARE_OTHER_RUNS_PROBE_UNITS_SWEEP_KILLED_DRILL)."""
 import hashlib
 import os
 import shutil
@@ -30,13 +32,39 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 import boundary_check as B  # noqa: E402
 
 RUN_ONE = r"""
-import shutil, sys
+import shutil, subprocess, sys
 sys.path.insert(0, ".")
 import selftest_control as S
+
+
+def own_units(tmp):
+    # this test's leftovers: rm-probe units and escalation timers whose commands name its own store, no others
+    r = subprocess.run(["systemctl", "--user", "list-units", "--all", "--no-legend", "--plain"], capture_output=True,
+                       text=True, timeout=30)
+    mine = []
+    for ln in r.stdout.replace("\u25cf", " ").splitlines():
+        w = ln.split()
+        if not w or not ("rm-probe" in w[0] or "rm-control-escalate" in w[0]):
+            continue
+        q = w[0][:-len(".timer")] + ".service" if w[0].endswith(".timer") else w[0]
+        props = subprocess.run(["systemctl", "--user", "show", "-p", "ExecStart", "-p", "ExecStopPost", "-p",
+                                "ExecCondition", q], capture_output=True, text=True, timeout=10).stdout
+        if tmp in props:
+            mine.append(w[0])
+    return mine
+
+
 try:
     getattr(S, sys.argv[1])()
 except Exception as e:      # noqa: BLE001  a test that raises is red, as in selftest_control.main()
     S.check(False, "%s raised %s: %s" % (sys.argv[1], type(e).__name__, e))
+try:
+    left = own_units(S.TMP)
+    if left:
+        subprocess.run(["systemctl", "--user", "stop"] + left, capture_output=True, timeout=60)
+        subprocess.run(["systemctl", "--user", "reset-failed"] + left, capture_output=True, timeout=60)
+except (OSError, subprocess.SubprocessError):
+    pass
 shutil.rmtree(S.TMP, ignore_errors=True)
 if S.FAILS:
     print("RED %s" % " | ".join(S.FAILS[:3])); sys.exit(1)
@@ -147,20 +175,17 @@ brk("held-stays-held-across-the-mirror", "the mirror drops his design allowance 
      '        if False:\n            r["design_allowed"]'))
 brk("reused-name-runs-again", "_admit() never treats a reuse_name run as over",
     ('again = spec.get("reuse_name") and old is not None and old["state"] not in LIVE_STATES', "again = False"))
-
-
-def stop_probe_units():
-    r = subprocess.run(["systemctl", "--user", "list-units", "--all", "--no-legend", "--plain"], capture_output=True,
-                       text=True, timeout=30)
-    units = [ln.split()[0] for ln in r.stdout.splitlines() if ln.split() and "rm-probe" in ln.split()[0]]
-    if units:
-        subprocess.run(["systemctl", "--user", "stop"] + units, capture_output=True, timeout=60)
-        subprocess.run(["systemctl", "--user", "reset-failed"] + units, capture_output=True, timeout=60)
+brk("permit-never-ghosts", "launch_unit() no longer re-writes the permit after an admission",
+    ("    permit_sync(p=p)    # admitted means `all` is on", "    pass    # admitted means `all` is on"))
+brk("deadline-is-wall-clock", "schedule_escalation() sets a monotonic --on-active timer again",
+    ('"--on-calendar=" + due,', '"--on-active=%d" % int(deadline_s),'))
+brk("next-fits-a-screen", "forecast_brief() gives each waiting mod's whole reason its own line",
+    ('groups.setdefault((b.get("decision"), _reason_head(b.get("why"))), []).append(str(b.get("mod")))',
+     'groups.setdefault((b.get("decision"), b.get("why"), b.get("mod")), []).append(str(b.get("mod")))'))
 
 
 def run_test(rimflow, test):
     """-> ("GREEN"|"RED"|"UNRUN"|"ERROR", line)."""
-    stop_probe_units()
     try:
         r = subprocess.run([sys.executable, "-c", RUN_ONE, test], cwd=rimflow, capture_output=True, text=True,
                            timeout=600)
@@ -244,8 +269,7 @@ def main(argv):
         print("PASS control_promise_breaks: %d of %d breaks rejected by their named test" % (len(names), len(names)))
         return 0
     finally:
-        stop_probe_units()
-        shutil.rmtree(tmp, ignore_errors=True)
+            shutil.rmtree(tmp, ignore_errors=True)
 
 
 if __name__ == "__main__":

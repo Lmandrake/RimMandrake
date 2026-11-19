@@ -2534,6 +2534,80 @@ def t_held_stays_held_across_the_mirror():
               "each store row carries his words, date and design allowance")
 
 
+def t_next_fits_a_screen():
+    """next-fits-a-screen: `pipe next` without --full prints under 1,500 characters: each start with when and its rule,
+    every waiting mod named on one line per reason; --full prints the tree's text whole (3,894-4,937 characters on the
+    live tree, 2026-11-19)."""
+    long_why = 'HELD BY OWNER 2026-11-16: "%s" (lift: python3 src/RimMandrake/rimflow/mod_owner_hold.py lift X)' % (
+        "And stop the new biome mods work. " * 6)
+    fc = {"at": 1000.0, "at_pac": "6:48 AM PST", "within_s": 1800.0, "step_s": 60,
+          "launches": [{"mod": "StartMod%d" % i, "at": 1000.0 + 60 * i, "at_pac": "6:5%d AM PST" % i,
+                        "launch": {"kind": "build", "model": "opus", "rule": "rule_%d" % i}} for i in range(3)],
+          "blocked": [{"mod": "WaitMod%02d" % i, "decision": "owner_hold",
+                       "why": long_why if i % 2 else "OFF by pipe (act ct_%06d at 4:40 PM): %s" % (i, "slow " * 40)}
+                      for i in range(14)] + [{"mod": "SettleMod", "decision": "settle", "why": "x" * 400}],
+          "unmeasured": ["Mod%d: UNMEASURED after its live run(s) %s end" % (i, "rm-detached-" + "y" * 90)
+                         for i in range(3)],
+          "roles": ["Designer: no scheduled slot (the role is disabled); %s" % ("z" * 300), "red_dispatch: UNMEASURED"]}
+    text_full = "\n".join("line %d %s" % (i, "w" * 200) for i in range(25))
+
+    class R:
+        def __init__(self, out, rc=0):
+            self.stdout, self.returncode, self.stderr = out, rc, ""
+
+    def runner(argv, **kw):
+        if argv[0] == "git":
+            return R("abc1234\n")
+        return R(json.dumps(fc) if argv[-1] == "--json" else text_full)
+    code, lines = C.forecast("30m", runner=runner)
+    out = "\n".join(lines)
+    check(code == C.OK and len(out) < C.NEXT_BRIEF_MAX, "pipe next fits under 1,500 characters", (len(out), out))
+    for x in fc["launches"]:
+        check(any(x["mod"] in ln and x["at_pac"] in ln and x["launch"]["rule"] in ln and "WILL START" in ln
+                  for ln in lines), "pipe next names each start, its time and its rule", (x["mod"], out))
+    for b in fc["blocked"]:
+        check(b["mod"] in out, "pipe next names every waiting mod", (b["mod"], out))
+    waits = [ln for ln in lines if ln.startswith("waits,")]
+    check(len(waits) <= len(fc["blocked"]) and len(waits) == 3, "one line per reason the mods wait (3 reasons here)",
+          waits)
+    code, lines = C.forecast("30m", runner=runner, full=True)
+    check(code == C.OK and "\n".join(lines[1:]) == text_full, "pipe next --full prints the tree's text whole",
+          len("\n".join(lines)))
+    fc["launches"] = [dict(fc["launches"][0], mod="Many%d" % i) for i in range(9)]
+    code, lines = C.forecast("30m", runner=runner)
+    check(len("\n".join(lines)) < C.NEXT_BRIEF_MAX and "and 4 more start(s): pipe next --full" in lines,
+          "past five starts, the rest are counted and pointed at --full", lines)
+    code, lines = C.forecast("30m", runner=lambda a, **k: R("abc\n") if a[0] == "git" else R("not json"))
+    check(code == C.FAILED and "cannot be read" in lines[-1], "unreadable forecast JSON is a failure named, never an "
+          "empty forecast", lines)
+
+
+def t_deadline_is_wall_clock():
+    """deadline-is-wall-clock: a write-now order's escalation timer is due at the wall-clock deadline the order states
+    (`--on-calendar`, in UTC, rounded up to the second), never after a monotonic count (`--on-active`): on this WSL2 VM
+    a 2-minute `--on-active` timer fired 105 s late and a 30 s one 58.8 s late, because the wall clock jumps ahead of
+    the monotonic one (the real-agent drill, 2026-11-19)."""
+    fresh()
+    got = []
+    import types
+    t0 = time.time()
+    C.schedule_escalation("rm-probe-wall", 120, DB,
+                          runner=lambda argv, **k: got.append(list(argv)) or types.SimpleNamespace(returncode=0))
+    t1 = time.time()
+    argv = got[0] if got else []
+    cal = [x for x in argv if x.startswith("--on-calendar=")]
+    check(not any(x.startswith("--on-active") for x in argv) and len(cal) == 1 and cal[0].endswith(" UTC"),
+          "the escalation timer is a wall-clock (--on-calendar ... UTC) timer, not --on-active", argv[:8])
+    if cal:
+        import calendar
+        due = calendar.timegm(time.strptime(cal[0][len("--on-calendar="):-len(" UTC")], "%Y-%m-%d %H:%M:%S"))
+        check(t0 + 120 <= due <= t1 + 121, "the timer is due at the stated deadline, rounded up to the second",
+              (due - t0, cal))
+    r = C.stop("rm-probe-wall2", "write_now", "wall clock", deadline_s=120, escalator=lambda *x: "timer probe")
+    check("escalates to --kill at" in r["units"][0]["said"] if r["units"] else True,
+          "pipe stop still states the deadline it set", r)
+
+
 def main():
     # its probe units have fixed names in the one user systemd: runs on one machine (sibling clones' ./publish) take
     # turns, or one run's unit is "already loaded" for the other (RIMMANDRAKE_SERIALIZE_CONTROL_SELFTEST_SIBLINGS_SHARE_UNIT_NAMES)
@@ -2550,7 +2624,8 @@ def main():
               t_stopped_run_spends_no_trial, t_probe_never_lies, t_same_command_twice, t_every_change_is_an_act,
               t_permit_never_ghosts, t_before_is_read, t_hold_file_mirrors_the_store,
               t_his_hold_lifts_by_him_or_the_conductor, t_conductor_lift_only_from_its_window,
-              t_conductors_lift_is_its_own_act, t_mirror_failure_is_an_alarm, t_held_stays_held_across_the_mirror):
+              t_conductors_lift_is_its_own_act, t_mirror_failure_is_an_alarm, t_held_stays_held_across_the_mirror,
+              t_next_fits_a_screen, t_deadline_is_wall_clock):
         print("== %s" % t.__name__)
         try:
             t()

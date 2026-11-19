@@ -107,7 +107,9 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **three-named-stops.** `pipe stop` is `--write-now`, `--at-easy-spot` or `--kill`. With none named it uses
   at-easy-spot and says so. A write-now order becomes a kill at its deadline. Tested by `t_stop`.
 - **stop-reaches-the-agent.** A writing stop order is shown to the running agent after its next tool call, from the
-  run's own clone. Tested by `t_stop_reaches_the_agent`, `t_stop`, `t_hooks_in_run_clone`.
+  run's own clone. Tested by `t_stop_reaches_the_agent`, `t_stop`, `t_hooks_in_run_clone`. Drilled on a real
+  `claude -p` (sonnet) in a throwaway unit by `control_agent_drill.py`: it heard `--at-easy-spot` 3.1 s and
+  `--write-now` 3.8 s after the order, wrote its note and ended by itself 10-11 s after it [measured 2026-11-19].
 - **kill-verified-dead.** `--kill` sends SIGKILL to the run's whole process group and its claude scope at once. It
   reports "killed" only after every process is seen gone. A survivor is reported and nothing is recorded killed. (His
   words, 11:28 AM.) Tested by `t_kill_verified_dead`, `t_stop`, `t_stop_review_fixes`.
@@ -164,6 +166,16 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   `RIMMANDRAKE_FORECAST_ON_SHARED_PLANNER_DROPIN_MIRROR_DEADMAN`. Tested by `t_permit_never_ghosts`.
 - **reused-name-runs-again.** A `reuse_name` launch is admitted again once its earlier run is over, and refused while
   that run is live. Tested by `t_reused_name_runs_again`.
+- **deadline-is-wall-clock.** A write-now order's escalation timer is due at the wall-clock deadline the order
+  states (`--on-calendar`, UTC, rounded up to the second), never after a monotonic count: on this WSL2 VM the wall
+  clock jumps ahead of the monotonic one, and a 2-minute `--on-active` deadline fired 105 s late, a 30 s one 58.8 s
+  late [measured 2026-11-19]. Added by `RIMMANDRAKE_DRILL_REAL_AGENT_WRITING_STOP_ONLY_STANDIN_TESTED`. Tested by
+  `t_deadline_is_wall_clock`.
+- **next-fits-a-screen.** `pipe next` prints fewer than 1,500 characters: each start with its time and rule (five at
+  most, then a count), one line per reason the other mods wait naming every mod, and each UNMEASURED part and role cut
+  to one short line. `pipe next --full` prints the dispatch tree's text whole. An unreadable forecast is a failure
+  named. Added 2026-11-19 by `RIMMANDRAKE_DRILL_REAL_AGENT_WRITING_STOP_ONLY_STANDIN_TESTED` (the default printed 3,894
+  characters). Tested by `t_next_fits_a_screen`.
 
 - **hold-file-mirrors-the-store.** `mod_owner_hold.py hold`, `lift` and `allow-design` write the store first, then
   rewrite `mod_owner_hold.json` from the store's rows of his hold (his order kept, his lifts recorded with his

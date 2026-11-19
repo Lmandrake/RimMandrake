@@ -1200,20 +1200,82 @@ def forecast_cmd(within="30m"):
         py, os.path.join(HERE, "maturation_dispatch.py"), "next", "--within", w]
 
 
-def forecast(within="30m", runner=subprocess.run):
-    """`pipe next [30m]` -> (rc, lines): the dispatch tree's own forecast, headed by the tree and its HEAD."""
+NEXT_BRIEF_MAX = 1500      # next-fits-a-screen: `pipe next` without --full prints fewer characters than this
+NEXT_STARTS_SHOWN = 5
+
+
+def _cut(s, n):
+    s = " ".join(str(s or "").split())
+    return s if len(s) <= n else s[:n - 1] + "…"
+
+
+def _reason_head(why):
+    """A waiting mod's reason, up to its first ` (` or `: ` (`HELD BY OWNER 2026-11-16`, `OFF by pipe`), at most 70
+    characters: mods that wait for the same reason share one line."""
+    s = " ".join(str(why or "no reason given").split())
+    cuts = [i for i in (s.find(" ("), s.find(": ")) if i >= 8]
+    return _cut(s[:min(cuts)] if cuts else s, 70)
+
+
+def forecast_brief(fc, head, limit=NEXT_BRIEF_MAX):
+    """The dispatch forecast (maturation_dispatch.forecast's JSON) in under `limit` characters: what starts, when and
+    by which rule; one line per reason the other mods wait, naming every mod; each UNMEASURED part and role cut to one
+    short line. A start is never cut; any other line past the limit is, and a last line says how many and where."""
+    mins = int(float(fc.get("within_s") or 0) // 60)
+    t0 = fc.get("at") or 0
+    out = ["%s, from %s, the next %d min (pipe next --full: every reason in full)" % (head, fc.get("at_pac", UNM), mins)]
+    starts = fc.get("launches") or []
+    for x in starts[:NEXT_STARTS_SHOWN]:
+        k = x.get("launch") or {}
+        out.append(_cut("WILL START %s (+%d min): %s %s, model %s, by %s" % (
+            x.get("at_pac", UNM), (float(x.get("at") or t0) - t0) // 60, x.get("mod"), k.get("kind", "run"),
+            k.get("model", UNM), k.get("rule", UNM)), 160))
+    if len(starts) > NEXT_STARTS_SHOWN:
+        out.append("and %d more start(s): pipe next --full" % (len(starts) - NEXT_STARTS_SHOWN))
+    if not starts:
+        out.append("NOTHING WILL START in the next %d min%s" % (mins, " (but see UNMEASURED below)"
+                                                               if fc.get("unmeasured") else ""))
+    keep = len(out)
+    groups = {}
+    for b in fc.get("blocked") or []:
+        groups.setdefault((b.get("decision"), _reason_head(b.get("why"))), []).append(str(b.get("mod")))
+    for (dec, why), mods in groups.items():
+        out.append("waits, %s, %s (%d): %s" % (dec, why, len(mods), ", ".join(mods)))
+    out += [_cut(u, 140) for u in fc.get("unmeasured") or []]
+    out += [_cut(str(r).split(";")[0], 120) for r in fc.get("roles") or []]
+    cut = 0
+    while len("\n".join(out)) > limit - 50 and len(out) > keep:
+        out.pop()
+        cut += 1
+    if cut:
+        out.append("+%d line(s) cut to fit: pipe next --full" % cut)
+    return out
+
+
+def forecast(within="30m", runner=subprocess.run, full=False):
+    """`pipe next [30m] [--full]` -> (rc, lines): the dispatch tree's own forecast, headed by the tree and its HEAD.
+    Without --full, forecast_brief of the tree's JSON (next-fits-a-screen); --full prints the tree's text whole."""
     tree, argv = forecast_cmd(within)
     root = tree.split(" ", 1)[0]
     try:
         h = runner(["git", "-C", root, "rev-parse", "--short", "HEAD"], capture_output=True, text=True, timeout=10)
         head = h.stdout.strip() if h.returncode == 0 else "HEAD UNMEASURED (git exit %d)" % h.returncode
-        r = runner(argv, capture_output=True, text=True, timeout=300)
+        r = runner(argv + ([] if full else ["--json"]), capture_output=True, text=True, timeout=300)
     except (OSError, subprocess.SubprocessError) as e:
         return FAILED, ["pipe next: the forecast could not run (%s: %s)" % (type(e).__name__, e)]
-    lines = ["forecast by %s at %s" % (tree, head)] + (r.stdout or "").rstrip("\n").splitlines()
     if r.returncode:
-        lines.append("pipe next: the forecast exited %d: %s" % (r.returncode, (r.stderr or "").strip()[-200:]))
-    return (OK if r.returncode == 0 else FAILED), lines
+        return FAILED, ["forecast by %s at %s" % (tree, head)] + (r.stdout or "").rstrip("\n").splitlines()[-5:] + [
+            "pipe next: the forecast exited %d: %s" % (r.returncode, (r.stderr or "").strip()[-200:])]
+    if full:
+        return OK, ["forecast by %s at %s" % (tree, head)] + (r.stdout or "").rstrip("\n").splitlines()
+    try:
+        fc = json.loads(r.stdout or "")
+        if not isinstance(fc, dict):
+            raise ValueError("not an object")
+    except ValueError as e:
+        return FAILED, ["forecast by %s at %s" % (tree, head), "pipe next: the forecast's JSON cannot be read (%s); "
+                        "pipe next --full prints its text" % e]
+    return OK, forecast_brief(fc, "forecast by %s at %s" % (tree.split(" (", 1)[0], head))
 
 
 def export_acts(path, p=None):
@@ -1977,15 +2039,19 @@ def schedule_escalation(unit, deadline_s, p=None, order=None, runner=subprocess.
     ended. -> line. The writer of the order may stand in a pool clone that is returned before the deadline, so the
     timer runs the first control.py that still exists: this one, then the seat clones' (detached_helper's resolver).
     The timer is named by its stop order (`order`, the stops row id), so a second deadline on one unit sets a second
-    timer instead of colliding with the first (round-two claim 6)."""
+    timer instead of colliding with the first (round-two claim 6). It is due at the deadline's WALL-CLOCK time, the time
+    the order states (deadline-is-wall-clock): an `--on-active` timer counts monotonic time, which on this WSL2 VM falls
+    behind the wall clock, and a 2-minute deadline fired 105 s late (control_agent_drill.py, 2026-11-19)."""
+    import math
     name = "rm-control-escalate-%s%s" % (unit[-60:], "-o%d" % order if order else "")
+    due = time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime(math.ceil(time.time() + deadline_s)))
     import detached_helper as DH
     import wrapup
     rel = os.path.join("src", "RimMandrake", "rimflow", "control.py")
     cands = [os.path.abspath(__file__)] + [os.path.join(c, rel) for c in wrapup.seat_clones()]
     try:
         r = runner(["systemd-run", "--user", "--quiet", "--collect", "--unit", name,
-                    "--on-active=%d" % int(deadline_s), "--timer-property=AccuracySec=1s",
+                    "--on-calendar=" + due, "--timer-property=AccuracySec=1s",
                     *DH.stop_resolver(cands, ["escalate", unit, "--db", os.path.abspath(p or db_path())])],
                    capture_output=True, text=True, timeout=10)
     except (OSError, subprocess.SubprocessError) as e:
@@ -2713,6 +2779,7 @@ def main(argv=None):
     p.add_argument("n")
     p = sub.add_parser("next")
     p.add_argument("within", nargs="?", default="30m")
+    p.add_argument("--full", action="store_true", help="every reason in full (default: under 1,500 characters)")
     p = sub.add_parser("export")
     p.add_argument("--to", default=os.path.join(REPO, "infrastructure", "state", "control", "acts.jsonl"))
     sub.add_parser("permit")
@@ -2784,7 +2851,7 @@ def main(argv=None):
         elif o.verb == "queue":
             lines = cmd_queue(o)
         elif o.verb == "next":
-            code, lines = forecast(o.within)
+            code, lines = forecast(o.within, full=o.full)
         elif o.verb == "export":
             lines = ["%d act(s) exported to %s" % (export_acts(o.to), o.to)]
         elif o.verb == "permit":
