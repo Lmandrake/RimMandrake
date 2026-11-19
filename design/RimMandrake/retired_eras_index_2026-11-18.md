@@ -88,7 +88,6 @@ radius), and the proposed new name.
 | `design/RimMandrake/relentless_improvement_loop_2026-11-03.md` | cited by `Utils/findings_judge_prompt.md` (the live findings judge), `rimflow/concept_tree.py`, `rimflow/evidence_metrics.py`, `rimflow/jam_classes.json` | fold what the findings judge still needs into its prompt, then delete |
 | `design/RimMandrake/relentless_recovery_plan_2026-11-05.md` | cited by `standing_rulings.md` (§3 "pause only what it touches"), `selftest_alarm_closed_reopen.py`, `selftest_ops_health_stamp.py` | move §3 into `standing_rulings.md`, then delete |
 | `design/RimMandrake/rimpulse_redesign_2026-10-23.md` | cited by `Utils/pulse/brief.py` and the docs map `rimflow/docs/README.md` | goes with the pulse package rename |
-| `src/RimMandrake/rimflow/selftest_foundry_literals.py` | a live guard: no code routes work to the FOUNDRY seat by a string literal (`FOUNDRY_LITERALS_EXCISE_FROM_CODE`) | `selftest_retired_seat_literals.py` |
 
 Old names inside live files (not paths, so the guard does not see them), for the same phase:
 
@@ -281,7 +280,7 @@ State after the third run (2026-11-18, about 6:45 PM PST). Steps 1 to 3 are done
 
 Renamed 2026-11-18, every live reference repointed in the same commit (history, open-item prose and recorded fixtures keep the old names): `rimflow_v3_2026-10-26.md` to `dispatcher_design_2026-10-26.md`; `rimflow_v3_arbiter_tiers_2026-10-27.md` to `dispatcher_arbiter_tiers_2026-10-27.md`; `rimflow_v3_flows.svg` to `dispatcher_flows.svg`; `rimflow_v3_golive_wave1.md` to `dispatcher_golive_wave1.md`; `rimflow_v3_responsibilities_2026-10-26.md` to `role_responsibilities_2026-10-26.md`; `rimflow_v3_risk_response_2026-10-29.md` to `dispatcher_risk_response_2026-10-29.md`; `rimflow_v3_audit_remeasure_2026-10-31.md` to `dispatcher_audit_remeasure_2026-10-31.md`; `rimflow_v3_roles.html` to `dispatcher_roles.html`; `rimflow_v3_trial_night_2026-10-28.md` to `dispatcher_trial_night_2026-10-28.md`; `relentless_tree_schema_2026-11-01.md` to `concept_tree_schema.md`.
 
-Renamed 2026-11-18 the same way: `sim/ralph_loop_sim.py` to `sim/loop_sim.py` and `sim/rimflow_v3_sim.py` to `sim/process_sim.py`, with their params, selftests and `rimflow_v3_sim_findings_2026-10-27.md` (now `process_sim_findings_2026-10-27.md`).
+Renamed 2026-11-18 the same way: `sim/ralph_loop_sim.py` to `sim/loop_sim.py` and `sim/rimflow_v3_sim.py` to `sim/process_sim.py`, with their params, selftests and `rimflow_v3_sim_findings_2026-10-27.md` (now `process_sim_findings_2026-10-27.md`); `rimflow/selftest_foundry_literals.py` to `rimflow/selftest_retired_seat_literals.py`.
 
 Left, in order:
 

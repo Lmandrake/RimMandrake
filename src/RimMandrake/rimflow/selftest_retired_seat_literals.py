@@ -8,7 +8,7 @@ FOUNDRY so the 2387 closed FOUNDRY items still replay from events/FOUNDRY.jsonl.
 (slot_allocator, slot_rules.json, helper_budget, block_agent_over_slots) moved to RELENTLESS; its old reader, run_rules
 staffing.seat, went with the retired tick (2026-11-18), so only the allocator's end is checked.
 
-    python3 src/RimMandrake/rimflow/selftest_foundry_literals.py
+    python3 src/RimMandrake/rimflow/selftest_retired_seat_literals.py
 """
 import ast
 import json
@@ -95,7 +95,7 @@ def main():
     check(SA.BUILDER in sr["seats"], "the allocator's builder key %r is a placed seat" % (SA.BUILDER,))
     per = SA.split_seats(7, sr["seats"], sr, "ELSEWHERE", "CRUISE")
     check(per.get(SA.BUILDER) == 7, "v3 split gives the builder key the whole machine total (%r)" % per)
-    print("selftest_foundry_literals: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
+    print("selftest_retired_seat_literals: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 
 
