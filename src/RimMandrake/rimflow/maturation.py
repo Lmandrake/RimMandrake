@@ -3350,10 +3350,11 @@ def ledger_ended(root, ids):
     return {i for i, (_, done) in last.items() if done}
 
 
-def ledger_items_caused_by(root, ids):
+def ledger_items_caused_by(root, ids, ended_too=False):
     """-> [{id, title, needs}] for the ledger items filed (file or spawn) with caused_by one of ids and not closed,
-    dropped or superseded since, read from every shard under infrastructure/state/ledger/events/. `needs` is the item's
-    current window (ledger_needs), None when it never had one."""
+    dropped or superseded since (ended_too: those as well), read from every shard under
+    infrastructure/state/ledger/events/. `needs` is the item's current window (ledger_needs), None when it never had
+    one."""
     d = os.path.join(root, "infrastructure", "state", "ledger", "events")
     want, filed, ended = set(ids), {}, set()
     for f in sorted(os.listdir(d)) if os.path.isdir(d) and want else []:
@@ -3371,7 +3372,7 @@ def ledger_items_caused_by(root, ids):
                     filed[e.get("id")] = e.get("title") or ""
                 elif e.get("event") in ("close", "drop", "supersede"):
                     ended.add(e.get("id"))
-    live = [k for k in sorted(filed) if k not in ended]
+    live = [k for k in sorted(filed) if ended_too or k not in ended]
     needs = ledger_needs(root, live)
     return [{"id": k, "title": filed[k], "needs": needs.get(k)} for k in live]
 

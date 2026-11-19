@@ -611,8 +611,69 @@ def false_hands_main():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def road_back_main():
+    """RIMMANDRAKE_COUNT_HAND_FIX_ON_UNBOOKED_ROAD_BACK_TICKET: the tick writes road_back as {caused_by, at, from}, so a
+    hand fixer on an item the steward filed, before the tick books a fixer on it, read as no hand act. Written before
+    the fix and watched failing on the base."""
+    if MH is None:
+        ok(False, "road back: maturation_hands.py exists")
+        return
+    root = tempfile.mkdtemp(prefix="mat_hands_rb_")
+    was = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(root, "state")
+    try:
+        MD.sdir()
+        os.makedirs(os.path.join(root, "design", "concepts", "R", "version"))
+        t0 = NOW - 3 * 3600
+        st = {"hands": {"since": t0 - 10, "last_tick": NOW - 60},
+              "mods": {"R": {"road_back": {"caused_by": "ROUTE_X", "at": t0, "from": "blind_challenge"},
+                             "steward": {"k": {"unit": "rm-steward", "item": "ROUTE_X"}}}}}
+        facts = {"R": {"stage": "offline_build", "runs_seen": [
+            {"unit": "rm-steward", "item": "ROUTE_X", "at": t0 + 5, "end": t0 + 9},
+            {"unit": "rm-hand-fix-me", "item": "FIX_ME", "at": t0 + 20},
+            {"unit": "rm-feature-r", "item": "BUILD_R_FEATURE", "at": t0 + 30}]}}
+        asked = []
+
+        def caused_by(ids):
+            asked.append(list(ids))
+            return ["FIX_ME"] if "ROUTE_X" in ids else []
+        fx = {"events": lambda: [], "known": lambda: set(), "caused_by": caused_by}
+        MH.observe(root, dict(CFG, advancing=["R"]), st, facts, NOW, {"needs_conductor": []}, fx)
+        acts = [a for a in MH.read_acts() if a["kind"] == "hand_run"]
+        ok([a["id"] for a in acts] == ["run-rm-hand-fix-me"],
+           "road back 1: a hand fixer on an item the road back's steward filed (no fixer booked) is one hand act; the "
+           "steward's own run and a feature build are none", [a["id"] for a in acts])
+        ok(len(asked) == 1, "road back 1b: the ledger is asked once per mod, only for a run nothing else classes", asked)
+        os.remove(os.path.join(MD.sdir(), MH.ACTS)) if os.path.exists(os.path.join(MD.sdir(), MH.ACTS)) else None
+        boom = dict(fx, caused_by=lambda ids: (_ for _ in ()).throw(OSError("ledger unreadable (selftest)")))
+        st["hands"].pop("road_back_error", None)
+        MH.observe(root, dict(CFG, advancing=["R"]), st, facts, NOW + 30, {"needs_conductor": []}, boom)
+        ok("ledger unreadable" in str(st["hands"].get("road_back_error") or ""),
+           "road back 2: a ledger read that fails costs only this source and is kept as could-not-look, never read "
+           "as no items", st["hands"].get("road_back_error"))
+        # the production reader: an item the steward filed and a fixer already closed still counts
+        ldir = os.path.join(root, "infrastructure", "state", "ledger", "events")
+        os.makedirs(ldir)
+        with open(os.path.join(ldir, "BENCH.jsonl"), "w") as f:
+            f.write(json.dumps({"event": "file", "id": "FIX_ME", "caused_by": "ROUTE_X", "title": "t"}) + "\n")
+            f.write(json.dumps({"event": "close", "id": "FIX_ME"}) + "\n")
+        os.remove(os.path.join(MD.sdir(), MH.ACTS)) if os.path.exists(os.path.join(MD.sdir(), MH.ACTS)) else None
+        real = {k: v for k, v in fx.items() if k != "caused_by"}
+        MH.observe(root, dict(CFG, advancing=["R"]), st, facts, NOW + 60, {"needs_conductor": []}, real)
+        acts = [a for a in MH.read_acts() if a["kind"] == "hand_run"]
+        ok([a["id"] for a in acts] == ["run-rm-hand-fix-me"] and not st["hands"].get("road_back_error"),
+           "road back 3: the ledger reader finds a steward-filed item even after it closed", [a["id"] for a in acts])
+    finally:
+        if was is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = was
+        shutil.rmtree(root, ignore_errors=True)
+
+
 SECTIONS = (("stalled", stalled_main), ("stop", stop_main), ("retry", retry_main), ("refund", refund_main), ("briefs", briefs_main),
-            ("acts", acts_main), ("chores", chores_main), ("false_hands", false_hands_main))
+            ("acts", acts_main), ("chores", chores_main), ("false_hands", false_hands_main),
+            ("road_back", road_back_main))
 
 if __name__ == "__main__":
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None

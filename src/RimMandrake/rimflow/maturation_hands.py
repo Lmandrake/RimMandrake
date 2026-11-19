@@ -159,12 +159,35 @@ def _fix_queue(s):
     return ids
 
 
+def _road_back_items(root, s, fx, h):
+    """-> the items the road back's steward runs filed (caused_by them, ended ones too: a fixer may close its item
+    fast), or None when the ledger could not be read (kept in h["road_back_error"] for this tick, never read as no items). The tick
+    writes road_back as {caused_by, at, from}: a fixer it has not booked yet is found here only
+    (RIMMANDRAKE_COUNT_HAND_FIX_ON_UNBOOKED_ROAD_BACK_TICKET)."""
+    rb = s.get("road_back")
+    if not isinstance(rb, dict) or not rb.get("caused_by"):
+        return set()
+    import maturation_autonomy as AUT
+    ids = AUT._road_back_ids(s, rb)
+    try:
+        if "caused_by" in fx:
+            got = fx["caused_by"](ids)
+        else:
+            import maturation as M
+            got = [x["id"] for x in M.ledger_items_caused_by(root, ids, ended_too=True)]
+    except Exception as e:      # noqa: BLE001  a blind ledger costs this source, never the tick
+        h["road_back_error"] = "%s: %s" % (e.__class__.__name__, e)
+        return None
+    return {str(x) for x in got}
+
+
 def collect(root, cfg, st, facts, now, fx=None):
     """-> the hand acts visible now (already-recorded ones included; observe keeps each id once)."""
     import maturation_dispatch as MD
     fx = fx or {}
     h = st.setdefault("hands", {})
     since = float(h.setdefault("since", now))
+    h.pop("road_back_error", None)      # this tick's reading only
     out = []
     recs, _bad = MD.read_releases()
     for r in recs:
@@ -194,12 +217,18 @@ def collect(root, cfg, st, facts, now, fx=None):
         f = (facts or {}).get(mod) or {}
         runs = [r for r in f.get("runs_seen") or [] if isinstance(r, dict) and r.get("unit")]
         queue = _fix_queue(s)
+        rb_items = False        # read once per mod, only when a run needs it
         w = s.get("watch") or {}
         for r in runs:
             at, item = r.get("at"), str(r.get("item") or "")
             # a launch record that never ran (launch_failed) worked on nothing: no run, no hand
             if r["unit"] in units or r.get("ran") is False or not isinstance(at, (int, float)) or at <= since:
                 continue
+            if item not in queue and not MD._is_blind_item(item) and not MD._is_ingame_item(item):
+                if rb_items is False:
+                    rb_items = _road_back_items(root, s, fx, h)
+                if rb_items and item in rb_items:
+                    queue = queue | {item}
             what = ("a blind judge" if MD._is_blind_item(item) else
                     "an in-game driver" if MD._is_ingame_item(item) else
                     "a fix on the tick's own ticket" if item in queue else
