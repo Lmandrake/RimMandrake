@@ -224,8 +224,11 @@ def test_killed_and_failed_launch():
           "launch and finish name the same scope")
     fcalls = non_systemctl(fcalls)
     nt = fcalls[0][0][fcalls[0][0].index("--text") + 1]
-    check(rc == 0 and "timeout" in nt and "UNMEASURED" in nt and "Terminated" in nt,
-          "killed: a run killed at its bound still ends with a note (%s)" % nt[:90])
+    with open(os.environ["RM_CONDUCTOR_LOG"]) as f:
+        klog = [ln for ln in f.read().splitlines() if unit in ln and "DETACHED RUN ENDED" in ln]
+    check(rc == 0 and "timeout" in nt and "Terminated" in nt and klog and "UNMEASURED" in klog[-1],
+          "killed: a run killed at its bound still ends with a note; its tokens read UNMEASURED in the log line (%s)"
+          % nt[:90])
     calls, run = recorder(rc=1, out="Failed to start transient service unit")
     rc, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "b", "sonnet", 600, 5, now=T0 + 2, runner=run, known=KNOWN,
                          clone=CLONE)
@@ -867,10 +870,15 @@ def test_result_kept_whole():
     nt = non_systemctl(fcalls)[0][0]
     nt = nt[nt.index("--text") + 1]
     # the owner, 2026-11-16 1:08 PM PST: "Please speak in terms of weighted tokens not money." The record keeps its
-    # dollars; the note (and the Conductor log line, the same words) says weighted tokens and no dollar figure
-    # (RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD)
-    check("weighted tokens" in nt and not re.search(r"USD|\$\s*\d", nt),
-          "cost: the note says weighted tokens, never a dollar figure (%s)" % nt[:160])
+    # dollars; the Conductor log line says weighted tokens and no dollar figure (RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_
+    # NO_LIVE_HOLD). The item note, which a resumed or continued run reads, carries no spend figure at all
+    # (RIMMANDRAKE_HIDE_CAP_STOP_FROM_RESUMED_RUN_READER_TRIMMED)
+    with open(os.environ["RM_CONDUCTOR_LOG"]) as f:
+        clog = [ln for ln in f.read().splitlines() if unit in ln and "DETACHED RUN ENDED" in ln]
+    check(clog and "weighted tokens" in clog[-1] and not re.search(r"USD|\$\s*\d", clog[-1]),
+          "cost: the log line says weighted tokens, never a dollar figure (%s)" % (clog[-1][:160] if clog else "no line"))
+    check("weighted tokens" not in nt and not re.search(r"USD|\$\s*\d", nt),
+          "cost: the item note carries no spend figure (%s)" % nt[:160])
     # the pure readers
     check(DH.result_cost(json.loads(_claude_json(total=None))) == (1.25, "sum of modelUsage costUSD"),
           "cost: no total_cost_usd -> the sum of modelUsage costUSD (equal on the 10 whole files of 2026-11-15)")

@@ -161,9 +161,13 @@ def run(argv, cap_usd, poll_s=POLL_S, grace_s=GRACE_S, projects=RL.PROJECTS, out
     usd, tok, u = hit
     if child_out.strip():       # what the stopped child printed goes to stderr: out stays one whole result JSON
         err.write("spend_watchdog: the stopped child's stdout: %s\n" % child_out.decode("utf-8", "replace")[-4000:])
+    # what a person reads says weighted tokens (owner 2026-11-16); cap_usd stays a field for the tools that need it.
+    # No resumed or continued run reads this text: finish keeps it out of the item note (detached_helper.cap_stopped)
+    cap_tok = cap_usd * 1e6 / rate(model)
     res = {"type": "result", "subtype": "error_max_budget_usd", "is_error": True, "session_id": sid,
-           "stopped_by": "spend_watchdog", "cap_usd": cap_usd,
-           "result": "Stopped by spend_watchdog at its cap ($%g); the session is resumable (--resume %s)." % (cap_usd, sid)}
+           "stopped_by": "spend_watchdog", "cap_usd": cap_usd, "cap_weighted_tokens": int(round(cap_tok)),
+           "result": "Stopped by spend_watchdog at its cap (≈{:,} weighted tokens); the session is resumable "
+                     "(--resume {}).".format(int(round(cap_tok)), sid)}
     if tok is None:             # a model not in MODEL_PRICES: stopped by name, its spend unmeasured
         res.update(result="Stopped by spend_watchdog: %s; the session is resumable (--resume %s)." % (
             u["unknown_model"], sid), unknown_model=u["unknown_model"])
@@ -173,8 +177,8 @@ def run(argv, cap_usd, poll_s=POLL_S, grace_s=GRACE_S, projects=RL.PROJECTS, out
                    cost_basis="spend_watchdog estimate: %d weighted_v2 tokens x %g list USD/M (%s)" % (
                        tok, rate(model), model or "?"),
                    usage={k: v for k, v in u.items() if k != "model_usage"}, modelUsage=u.get("model_usage") or {})
-        err.write("spend_watchdog: stopped session %s at ≈$%.2f of $%g (%d weighted tokens)\n" % (
-            sid, usd, cap_usd, tok))
+        err.write("spend_watchdog: stopped session {} at {:,} weighted tokens, its cap ≈{:,}\n".format(
+            sid, tok, int(round(cap_tok))))
     out.write(json.dumps(res) + "\n")
     out.flush()
     return 1

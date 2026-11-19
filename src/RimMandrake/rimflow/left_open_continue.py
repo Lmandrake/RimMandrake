@@ -86,9 +86,7 @@ def read_states(clone, ids):
 def capped(rec):
     """True when the spend watchdog (or claude's own budget stop) ended the run."""
     import role_launch as RL
-    res = RL.read_result({"out": rec.get("out") or "", "err": rec.get("err") or ""})
-    return isinstance(res, dict) and (res.get("stopped_by") == "spend_watchdog"
-                                      or res.get("subtype") == "error_max_budget_usd")
+    return DH.cap_stopped(RL.read_result({"out": rec.get("out") or "", "err": rec.get("err") or ""}))
 
 
 def last_left_open(notes, item, since):
@@ -228,12 +226,12 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
 
 
 def header(rec, p, now):
-    """The continuation's brief header. Never a word on spend, its cap or what is left of one."""
+    """The continuation's brief header. Never a word on spend, its cap, what is left of one or why a run was stopped:
+    a stopped run is "interrupted", nothing more (RIMMANDRAKE_HIDE_CAP_STOP_FROM_RESUMED_RUN_READER_TRIMMED)."""
     lines = ["CONTINUED BY ITSELF (left_open_continue.py, %s): continuation %d of at most %d a day for %s." % (
         local(now), p["n"], MAX_PER_DAY, rec.get("continue_root_item") or rec["item"])]
     if p.get("capped"):
-        lines.append("Your previous run %s on %s was stopped from outside before it finished; its launch asked for it "
-                     "to be carried on." % (rec["unit"], rec["item"]))
+        lines.append("Your previous run %s on %s was interrupted before it finished." % (rec["unit"], rec["item"]))
     else:
         lines.append("Your previous run %s on %s ended success with work left, so it is carried on without a hand "
                      "relaunch." % (rec["unit"], rec["item"]))

@@ -1117,6 +1117,15 @@ def conductor_line(text, now, path=None, head="DETACHED RUN ENDED"):
     return path
 
 
+def cap_stopped(res):
+    """True when a run's result JSON is a spend stop: the spend watchdog's, or claude's own budget stop."""
+    return isinstance(res, dict) and (res.get("stopped_by") == "spend_watchdog"
+                                      or res.get("subtype") == "error_max_budget_usd")
+
+
+INTERRUPTED = "interrupted before it finished; its session can be resumed"
+
+
 def outcome(rec, env):
     """-> (short status, weighted_v2 tokens or None, result tail). Reads claude's JSON and systemd's ExecStopPost
     variables. The tokens come from the result's modelUsage (the whole process, each model at its own list prices),
@@ -1324,9 +1333,14 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     # (cost_usd) for the stage ceiling; what a person reads says weighted tokens only (weighted_v2: MODEL_PRICES,
     # run_tokens)
     unmeasured = "UNMEASURED (%s)" % rec["unknown_model"] if rec.get("unknown_model") else "UNMEASURED"
-    text = ("DETACHED run %s ended %s after %d s, %s weighted tokens (model %s). Result: %s. Output %s; clone %s."
-            % (unit, st, took, unmeasured if tokens is None else "{:,}".format(tokens), rec["model"], tail or "-",
-               rec["out"], rec["clone"]))
+    # the item note is what a resumed or continued run reads (`rimflow show`): no spend, no token figure, no path to
+    # the result file that holds them, and a spend stop reads only "interrupted" (owner 2026-11-16: no launched agent
+    # is told its spend; RIMMANDRAKE_HIDE_CAP_STOP_FROM_RESUMED_RUN_READER_TRIMMED). The Conductor log line below and
+    # the record keep the cause, the tokens and the output path.
+    import role_launch as RL
+    capped = cap_stopped(RL.read_result({"out": rec["out"], "err": rec["err"]}))
+    text = ("DETACHED run %s ended %s after %d s (model %s). Result: %s. Clone %s."
+            % (unit, st, took, rec["model"], INTERRUPTED if capped else (tail or "-"), rec["clone"]))
     clone, seat, item = rec["clone"], rec["seat"], rec["item"]
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
     steps = [stop_scope(seat, unit, runner)]     # first: the unit is gone but claude is not
@@ -1364,9 +1378,9 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
         steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))
     try:
-        path = conductor_line("%s on %s (%s seat): %s, %d s, %s weighted tokens. %s. READ: rimflow show %s.%s"
+        path = conductor_line("%s on %s (%s seat): %s, %d s, %s weighted tokens. %s. Output %s. READ: rimflow show %s.%s"
                               % (unit, item, seat, st, took, unmeasured if tokens is None else "{:,}".format(tokens),
-                                 fulltext.clip(tail, 200, rec["out"]) or "-", item,
+                                 fulltext.clip(tail, 200, rec["out"]) or "-", rec["out"], item,
                                  " OWED: " + owed + "." if owed else ""), now, log_path)
         steps.append("conductor log " + path)
     except Exception as e:  # noqa: BLE001

@@ -67,6 +67,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_detached_helper.py", "seconds": 2.6},
     {"test": "src/RimMandrake/rimflow/selftest_left_open_continue.py", "seconds": 1.5},
     {"test": "src/RimMandrake/rimflow/selftest_spend_blind_agents.py", "seconds": 8},
+    {"test": "src/RimMandrake/rimflow/selftest_cap_stop_resume_blind.py", "seconds": 3},
     {"test": "src/RimMandrake/rimflow/selftest_launch_checks.py", "seconds": 1.5},
     {"test": "src/RimMandrake/rimflow/acceptance/guard_judge_certificate_accept.py", "args": ["--red-seen"], "seconds": 0.4},
     {"test": "src/RimMandrake/rimflow/acceptance/guard_certificate_binds_offline_bars_accept.py", "seconds": 0.5},
