@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Selftest for ralph_loop_sim.py (RALPH_LOOP_DESIGN_ONE_PROMPT_FOREVER): the invariants that must hold before a
+"""Selftest for loop_sim.py (RALPH_LOOP_DESIGN_ONE_PROMPT_FOREVER): the invariants that must hold before a
 Ralph-versus-v2/v3 comparison means anything. Determinism; the outside world (owner presence, owner arrivals, hidden
 defect draws) is the same as v2's on one seed; a loop never runs two iterations at once; no helper, ring or role ever
 fires; loop A never "accepts" anything and AB_test accepts only through B's live test; with no off-track iterations
@@ -12,8 +12,8 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import rimflow_v3_sim as S  # noqa: E402
-import ralph_loop_sim as R  # noqa: E402
+import process_sim as S  # noqa: E402
+import loop_sim as R  # noqa: E402
 
 FAILS = []
 

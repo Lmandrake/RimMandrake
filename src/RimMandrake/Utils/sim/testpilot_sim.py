@@ -2,8 +2,8 @@
 """testpilot_sim.py: the owner's three-agent proposal (Foundry + TestPilot + Conductor) in the same bottle as the zoo.
 Item TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD; design design/RimMandrake/testpilot_design_opus_2026-10-29.md.
 
-A sibling of ralph_loop_sim.py (imported, never edited: another helper owns it). It keeps the calibrated outside
-world of rimflow_v3_sim.py (owner presence, arrivals, ticket classes, hidden defects, discovery, quotas) and Ralph
+A sibling of loop_sim.py (imported, never edited: another helper owns it). It keeps the calibrated outside
+world of process_sim.py (owner presence, arrivals, ticket classes, hidden defects, discovery, quotas) and Ralph
 variant C+sub's builders (two Ralph builder loops split by area, bounded subagents), and replaces C's live runners
 with two TestPilots plus a blind critic gate.
 
@@ -50,8 +50,8 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import rimflow_v3_sim as S  # noqa: E402
-import ralph_loop_sim as R  # noqa: E402
+import process_sim as S  # noqa: E402
+import loop_sim as R  # noqa: E402
 
 OUT = os.environ.get("RM_TP_SIM_OUT", "/mnt/d/ClaudeWork/rimmandrake/testpilot/opus/sim")
 HOUR, DAY, WEEK = S.HOUR, S.DAY, S.WEEK

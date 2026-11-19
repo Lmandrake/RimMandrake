@@ -1112,7 +1112,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `dispatcher_golive_wave1.md` | RimFlow v3 go-live, wave 1 (runbook, written 2026-10-27, for Wednesday 2026-10-28 after the weekly token reset) | — |
 | `role_responsibilities_2026-10-26.md` | RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26) | — |
 | `dispatcher_risk_response_2026-10-29.md` | RimFlow v3 risk review: the Opus response (2026-10-29) | — |
-| `rimflow_v3_sim_findings_2026-10-27.md` | RimFlow v3 in a bottle: what the simulation says (2026-10-27) | — |
+| `process_sim_findings_2026-10-27.md` | RimFlow v3 in a bottle: what the simulation says (2026-10-27) | — |
 | `dispatcher_trial_night_2026-10-28.md` | RimFlow v3 trial night, 2026-10-28: one ordered runbook | — |
 | `rimflow_validation_levels_addendum_2026-10-07.md` | Rimflow redesign — addendum: the validation levels | — |
 | `rimpulse_redesign_2026-10-23.md` | RimPulse redesign: what it shows, what you need from it, three better ways (2026-10-23) | — |

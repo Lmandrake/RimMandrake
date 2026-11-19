@@ -2,7 +2,7 @@
 
 Item TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD. Brief v2: `D:\ClaudeWork\rimmandrake\testpilot\brief.md`. Written
 independently of GPT's design (not read). Sim: `src/RimMandrake/Utils/sim/testpilot_sim.py` (sibling of
-`ralph_loop_sim.py`, imports it, edits nothing), selftest `selftest_testpilot_sim.py` (32 checks). Results:
+`loop_sim.py`, imports it, edits nothing), selftest `selftest_testpilot_sim.py` (32 checks). Results:
 `D:\ClaudeWork\rimmandrake\testpilot\opus\sim\tables.md` and `results.json`, fingerprint `3b3d90cb6be2`, 240 members.
 Nothing in this document changes a live system.
 

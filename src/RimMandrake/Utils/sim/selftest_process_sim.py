@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Selftest for rimflow_v3_sim.py (RIMFLOW_SIM_BUILD_FACTORY_IN_A_BOTTLE): the invariants a process simulation must hold
+"""Selftest for process_sim.py (RIMFLOW_SIM_BUILD_FACTORY_IN_A_BOTTLE): the invariants a process simulation must hold
 before any of its comparisons mean anything. Determinism; paired outside world across policies; the Dispatcher never
 rings BENCH and never exceeds its caps; v2 never rings and never "accepts"; acceptance only through the Arbiter; token
 bookkeeping stays in range; the ABC discrepancy never lets one target cancel another; v3-only parameters are redrawn
@@ -12,7 +12,7 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import rimflow_v3_sim as S  # noqa: E402
+import process_sim as S  # noqa: E402
 
 FAILS = []
 

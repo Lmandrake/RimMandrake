@@ -1,7 +1,7 @@
 # The process model, explained (2026-10-29)
 
 Item `OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY`. For the owner, readable cold. It explains the model that exists today:
-`src/RimMandrake/Utils/sim/rimflow_v3_sim.py`, its parameters in `rimflow_v3_sim_params.json`, and its data in
+`src/RimMandrake/Utils/sim/process_sim.py`, its parameters in `process_sim_params.json`, and its data in
 `D:\ClaudeWork\rimmandrake\rimflow_sim\`. The plan for the model that replaces it is in
 `design/RimMandrake/process_model_v2_v3_design_2026-10-29.md`. Every number below was read from those files or
 recomputed from the ledger on 2026-10-29. Where a number is my arithmetic, I say so.
@@ -281,10 +281,10 @@ once ledger practice is stable, and v3 changes it again (the Dispatcher, lease-b
 
 ## 8. Where everything lives
 
-- Code: `D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\sim\rimflow_v3_sim.py`, params `rimflow_v3_sim_params.json`,
-  selftest `selftest_rimflow_v3_sim.py`.
+- Code: `D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\sim\process_sim.py`, params `process_sim_params.json`,
+  selftest `selftest_process_sim.py`.
 - Fit and experiments: `D:\ClaudeWork\rimmandrake\rimflow_sim\` (`calib_members*.jsonl`, `mcmc_state*.json`,
   `validation*.json`, `results*.json`, `exp_*.jsonl`, `deltas.txt`, `iso.txt`, GPT rounds `gpt_round*.md`).
 - Backtest and counterfactual: `D:\ClaudeWork\rimmandrake\v3_vs_v2\backtest*.json`, `v2_weeks.json`.
-- Findings: `D:\Luke\dev\RimMandrake\design\RimMandrake\rimflow_v3_sim_findings_2026-10-27.md`.
-- Commands: `rimflow_v3_sim.py [--structure park|pull] {calibrate|narrow|mcmc|validate|experiment NAME|report|one|backtest|counterfactual}`.
+- Findings: `D:\Luke\dev\RimMandrake\design\RimMandrake\process_sim_findings_2026-10-27.md`.
+- Commands: `process_sim.py [--structure park|pull] {calibrate|narrow|mcmc|validate|experiment NAME|report|one|backtest|counterfactual}`.

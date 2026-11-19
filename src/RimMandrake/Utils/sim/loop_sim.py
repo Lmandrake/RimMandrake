@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""ralph_loop_sim.py: the Ralph loop in the same bottle as v2 and v3. Item RALPH_LOOP_DESIGN_ONE_PROMPT_FOREVER;
-design design/RimMandrake/ralph_loop_design_2026-10-29.md. A sibling of rimflow_v3_sim.py: it imports that model,
+"""loop_sim.py: the Ralph loop in the same bottle as v2 and v3. Item RALPH_LOOP_DESIGN_ONE_PROMPT_FOREVER;
+design design/RimMandrake/ralph_loop_design_2026-10-29.md. A sibling of process_sim.py: it imports that model,
 keeps its calibrated outside world (owner presence, arrivals, ticket classes, hidden defects, discovery, cards, token
 quotas) and replaces only the factory.
 
@@ -27,16 +27,16 @@ Variants (all with no Dispatcher, no roles, no helpers, no orchestrating seat):
 
 Live testing is a fixed property of an item (keyed by ticket only): an item that needs a test cannot close untested.
 After 3 failed live rounds it is parked with its evidence (b_parked) and leaves the loop, never closed.
-Every output row carries FP, a fingerprint of this file, rimflow_v3_sim.py and the params; `report` refuses rows
+Every output row carries FP, a fingerprint of this file, process_sim.py and the params; `report` refuses rows
 from another fingerprint, so changed code cannot silently reuse old rows.
 
 Every Ralph parameter is ASSUMED with a range (RALPH_PRIORS). `ensemble` draws them per member from the range (keyed
 by member id), `oat` sweeps each one from lo to hi with the others at their midpoints, and `report` writes
 results.json and tables.md. Outputs go to RM_RALPH_SIM_OUT (default D:/ClaudeWork/rimmandrake/ralph_sim).
-    ralph_loop_sim.py --structure park ensemble [--quota today|unlimited] [--members 240] [--budget-s 400]
-    ralph_loop_sim.py --structure park oat [--members 40]
-    ralph_loop_sim.py report
-    ralph_loop_sim.py one --variant A [--member-idx 0]
+    loop_sim.py --structure park ensemble [--quota today|unlimited] [--members 240] [--budget-s 400]
+    loop_sim.py --structure park oat [--members 40]
+    loop_sim.py report
+    loop_sim.py one --variant A [--member-idx 0]
 Stdlib + numpy only. Offline.
 """
 import argparse
@@ -49,12 +49,12 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import rimflow_v3_sim as S  # noqa: E402
+import process_sim as S  # noqa: E402
 
 OUT = os.environ.get("RM_RALPH_SIM_OUT", "/mnt/d/ClaudeWork/rimmandrake/ralph_sim")
 HOUR, DAY, WEEK = S.HOUR, S.DAY, S.WEEK
 
-# keyed-randomness fields of our own, clear of rimflow_v3_sim's 1..36
+# keyed-randomness fields of our own, clear of process_sim's 1..36
 (F_ROFF, F_RSPIRAL, F_RUNST, F_RDROP, F_BTEST, F_BHIT, F_BBLIND, F_BFR, F_BDUR, F_COLL, F_SPIN, F_RTHETA,
  F_RVER) = range(101, 114)
 F_CPOK, F_CINV, F_CBMSG = range(114, 117)
@@ -112,10 +112,10 @@ SUB_PRIORS = {
 def fingerprint():
     import hashlib
     h = hashlib.sha1()
-    for f in (os.path.join(HERE, "ralph_loop_sim.py"), os.path.join(HERE, "rimflow_v3_sim.py"),
-              os.path.join(HERE, "rimflow_v3_sim_params.json")):
+    for f in (os.path.join(HERE, "loop_sim.py"), os.path.join(HERE, "process_sim.py"),
+              os.path.join(HERE, "process_sim_params.json")):
         data = open(f, "rb").read()
-        if f.endswith("ralph_loop_sim.py"):     # reporting code below the marker does not change a row
+        if f.endswith("loop_sim.py"):     # reporting code below the marker does not change a row
             data = data.split(b"# " + b"-" * 64 + b" reporting (outside the fingerprint)")[0]
         h.update(data)
     return h.hexdigest()[:12]
@@ -551,7 +551,7 @@ def cmd_ensemble(a):
             if time.time() - t0 > a.budget_s:
                 print("budget reached")
                 break
-            seed = 50000 + m["member"] * 97            # the seed rimflow_v3_sim's experiments used
+            seed = 50000 + m["member"] * 97            # the seed process_sim's experiments used
             rp = draw_rp(m["member"])
             rows = {p: compact(run_v3(P, m, seed, p, unlimited=a.quota == "unlimited")) for p in V3_COMPARE}
             for v in VARIANTS:

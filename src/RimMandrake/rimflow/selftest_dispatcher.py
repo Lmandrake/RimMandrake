@@ -1149,8 +1149,8 @@ def test_schedule_keeps_no_unread_helper_keys():
     hits = subprocess.run(["git", "-C", root, "grep", "-l", "-E", "|".join(PRUNED_SCHEDULE_KEYS), "--", "*.py"],
                           capture_output=True, text=True).stdout.split()
     code = [h for h in hits if h.startswith(("src/", ".claude/")) and not h.endswith("selftest_dispatcher.py")]
-    check("src/RimMandrake/Utils/sim/rimflow_v3_sim.py" in code, "reader scan sees the simulator's own key (sanity probe)")
-    code.remove("src/RimMandrake/Utils/sim/rimflow_v3_sim.py")
+    check("src/RimMandrake/Utils/sim/process_sim.py" in code, "reader scan sees the simulator's own key (sanity probe)")
+    code.remove("src/RimMandrake/Utils/sim/process_sim.py")
     check(not code, "no code reads a pruned key: %s" % code)
 
 

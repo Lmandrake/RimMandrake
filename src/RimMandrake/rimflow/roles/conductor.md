@@ -4,7 +4,7 @@ Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name
 `enabled` field, never this file (first switched on at Dispatcher wave 1, 2026-10-28, e35afe1dcc, with Operations). Activation table of its duties:
 `design/RimMandrake/role_responsibilities_2026-10-26.md` Part 4.
 Design: `design/RimMandrake/role_responsibilities_2026-10-26.md` §Conductor and Part 3 (Orphan homes 1, 2, 4, 6),
-`design/RimMandrake/dispatcher_design_2026-10-26.md` §2, §3. Caps: `design/RimMandrake/rimflow_v3_sim_findings_2026-10-27.md`
+`design/RimMandrake/dispatcher_design_2026-10-26.md` §2, §3. Caps: `design/RimMandrake/process_sim_findings_2026-10-27.md`
 finding 7. Item: `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`.
 
 The owner, 2026-10-26: *"The one I talk to should be called the Conductor."* · *"I'm not sure Bench and Conductor are

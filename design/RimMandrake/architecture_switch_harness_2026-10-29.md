@@ -456,7 +456,7 @@ arm gets a first forecast of accepted/day.
   both until every arm in contention has completed the newest era, which block 1 (the oldest tasks) does not reach.
   Every arm therefore runs block 2.
 - Calibrate the simulator. The measured `r_dur_mult`, `r_p_off`, `r_ctx_ite`, tokens per pass and critic rounds go
-  into `ralph_loop_sim.py`. It then forecasts day 2's leading indicators and accepted points per arm, written
+  into `loop_sim.py`. It then forecasts day 2's leading indicators and accepted points per arm, written
   down before day 2 starts.
 
 ### 4.4 Day 2: replay block 2, and the live crossover starts

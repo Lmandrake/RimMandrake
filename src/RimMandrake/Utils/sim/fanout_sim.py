@@ -55,8 +55,8 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import rimflow_v3_sim as S  # noqa: E402
-import ralph_loop_sim as R  # noqa: E402
+import process_sim as S  # noqa: E402
+import loop_sim as R  # noqa: E402
 import testpilot_sim as TP  # noqa: E402
 
 OUT = os.environ.get("RM_FANOUT_OUT", "/mnt/d/ClaudeWork/rimmandrake/fanout_sim_2026-11-01")

@@ -1,5 +1,5 @@
 {
- "_doc": "Parameters for rimflow_v3_sim.py (item RIMFLOW_SIM_BUILD_FACTORY_IN_A_BOTTLE). Every number says what it is: CALIBRATED (measured on disk, source given), CONFIG (read from dispatcher_schedule.json or the v3 design), DERIVED (computed from calibrated numbers by a stated rule), or ASSUMED (no measurement; a prior range that is swept, never fitted to a single value). Calibration window: ledger 7 d to 2026-10-27T06:25Z (rimflow_metrics.py --days 7 --json), spend census 7 d (D:\\ClaudeWork\\rimmandrake\\perpetual_ctx\\spend_census.json), owner messages 10-05..10-27 (D:\\ClaudeWork\\rimmandrake\\orch_record\\friction\\owner_classified.jsonl).",
+ "_doc": "Parameters for process_sim.py (item RIMFLOW_SIM_BUILD_FACTORY_IN_A_BOTTLE). Every number says what it is: CALIBRATED (measured on disk, source given), CONFIG (read from dispatcher_schedule.json or the v3 design), DERIVED (computed from calibrated numbers by a stated rule), or ASSUMED (no measurement; a prior range that is swept, never fitted to a single value). Calibration window: ledger 7 d to 2026-10-27T06:25Z (rimflow_metrics.py --days 7 --json), spend census 7 d (D:\\ClaudeWork\\rimmandrake\\perpetual_ctx\\spend_census.json), owner messages 10-05..10-27 (D:\\ClaudeWork\\rimmandrake\\orch_record\\friction\\owner_classified.jsonl).",
  "fixed": {
   "helper_ite_q": {
    "status": "CALIBRATED",

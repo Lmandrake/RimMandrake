@@ -9,7 +9,7 @@ Code: `src/RimMandrake/rimflow/arbiter_tiers.py` (+ `selftest_arbiter_tiers.py`)
 
 ## 1. Why
 
-The simulation (`rimflow_v3_sim_findings_2026-10-27.md`, findings 3-4) says an Arbiter that spends one AI verdict on
+The simulation (`process_sim_findings_2026-10-27.md`, findings 3-4) says an Arbiter that spends one AI verdict on
 every done claim, under today's token budget, costs 8-11 sound closes a day and +18-24 blocked hours a week. It cuts
 the defect fraction by only 1-2 points, and it mostly defers work. Most done claims either carry recorded evidence
 that decides them without judgment, or carry nothing that marks them as risky. Judgment is spent where it changes
@@ -201,7 +201,7 @@ owner.
 A rate needs its word: a rate becomes MEASURED at 30 or more outcomes of its kind. Below that it is UNMEASURED, and
 its point estimate is never quoted alone.
 
-**Before any binding decision**, re-run `src/RimMandrake/Utils/sim/rimflow_v3_sim.py` with the measured values in
+**Before any binding decision**, re-run `src/RimMandrake/Utils/sim/process_sim.py` with the measured values in
 place of these V3_ONLY priors:
 - `arb_fr_max` from the T2 false-reject rate at the strictness in use;
 - `arb_s_lo`/`arb_s_hi` from 1 - false-pass on calibration claims;

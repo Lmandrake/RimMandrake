@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""rimflow_v3_sim.py: a factory in a bottle. A discrete-event simulation of the RimFlow PROCESS (not the game, not
+"""process_sim.py: a factory in a bottle. A discrete-event simulation of the RimFlow PROCESS (not the game, not
 the mods): tickets with hidden true quality, two builder windows with helpers, the Dispatcher, the v3 roles, the owner
 as a scarce attention server, the test rig, and three weekly token budgets. Item RIMFLOW_SIM_BUILD_FACTORY_IN_A_BOTTLE;
 design rounds with GPT under D:\\ClaudeWork\\rimmandrake\\rimflow_sim\\gpt_round*.md; findings
-design/RimMandrake/rimflow_v3_sim_findings_2026-10-27.md.
+design/RimMandrake/process_sim_findings_2026-10-27.md.
 
 Honesty rules built in:
-  * Every parameter in rimflow_v3_sim_params.json is CALIBRATED, CONFIG, DERIVED or ASSUMED. ASSUMED ones are prior
+  * Every parameter in process_sim_params.json is CALIBRATED, CONFIG, DERIVED or ASSUMED. ASSUMED ones are prior
     ranges. `calibrate` draws parameter sets from the priors, runs each as today's v2, and keeps the sets whose output
     lands inside every target tolerance (ABC rejection). The kept ensemble is "baseline-summary-calibrated, conditional
     on the priors and the model structure"; it is NOT a validated predictor.
@@ -18,11 +18,11 @@ Honesty rules built in:
 Randomness: every draw is u01(seed, field, lineage...) (splitmix64), keyed by the identity of the thing it decides
 (ticket lineage, hour, seat stall number), so two policies on one seed see the same outside world (GPT r2 #11).
 
-    rimflow_v3_sim.py calibrate --n 400 --start 0 [--out DIR]     ABC draws (chunk with --start for <5 min calls)
-    rimflow_v3_sim.py validate [--seeds 3]                          re-run kept members on fresh seeds vs targets
-    rimflow_v3_sim.py experiment NAME [--members N] [--start i]     NAME in EXPERIMENTS
-    rimflow_v3_sim.py report                                        aggregate everything to results.json + report.md
-    rimflow_v3_sim.py one --policy v3.0 [--seed 1]                  one run of the median member, metrics printed
+    process_sim.py calibrate --n 400 --start 0 [--out DIR]     ABC draws (chunk with --start for <5 min calls)
+    process_sim.py validate [--seeds 3]                          re-run kept members on fresh seeds vs targets
+    process_sim.py experiment NAME [--members N] [--start i]     NAME in EXPERIMENTS
+    process_sim.py report                                        aggregate everything to results.json + report.md
+    process_sim.py one --policy v3.0 [--seed 1]                  one run of the median member, metrics printed
 Stdlib + numpy only. Offline; reads only the params file (and, for `calibrate --extract`, nothing else).
 """
 import argparse
@@ -37,7 +37,7 @@ import time
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-PARAMS = os.path.join(HERE, "rimflow_v3_sim_params.json")
+PARAMS = os.path.join(HERE, "process_sim_params.json")
 OUT = os.environ.get("RM_RIMFLOW_SIM_OUT", "/mnt/d/ClaudeWork/rimmandrake/rimflow_sim")
 
 HOUR, DAY = 3600, 86400

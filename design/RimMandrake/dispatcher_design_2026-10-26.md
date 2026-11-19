@@ -173,7 +173,7 @@ primaries are WORSE and BETTER does not outnumber them, or 1 is and none is BETT
 LOWER and the token ratio to v2) beside it. The standing is over the last 4 settled weeks (SUPERIOR needs 3 of 4 and
 no WORSE); before 4 settled weeks it is PROVISIONAL. A simulator counterfactual (what v2 would have done with that
 week's owner input) can only take a BETTER back, and counts only while its backtest on held-out v2 weeks passes; on
-2026-10-27 it failed (`rimflow_v3_sim_findings_2026-10-27.md`), so it reports UNMEASURED. Operations owns the
+2026-10-27 it failed (`process_sim_findings_2026-10-27.md`), so it reports UNMEASURED. Operations owns the
 assessment and sends it to him through its owner-only route; the Auditor re-checks the quality half token-blind.
 
 **His rulings (by card on `RIMFLOW_V3_BUILD_DISPATCHER_FIRST`, 2026-10-26 22:38 PDT):**

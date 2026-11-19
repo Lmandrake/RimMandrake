@@ -24,9 +24,9 @@ Rows and tables: `D:\ClaudeWork\rimmandrake\fanout_sim_2026-11-01\`.
 
 | simulator | concurrency before | fair? |
 |---|---|---|
-| `rimflow_v3_sim` (v2, v3.x) | real: seat cap 2 to 4, kappa defects | no merge cost |
-| `ralph_loop_sim` A, AB_test | serial; "+sub" only divides wall time; kappa forced 0 | no |
-| `ralph_loop_sim` AB_build, C | two lanes with assumed collisions | no |
+| `process_sim` (v2, v3.x) | real: seat cap 2 to 4, kappa defects | no merge cost |
+| `loop_sim` A, AB_test | serial; "+sub" only divides wall time; kappa forced 0 | no |
+| `loop_sim` AB_build, C | two lanes with assumed collisions | no |
 | `testpilot_sim` TP, TP+ | inherits C's divisor | no |
 | trio arena | serial builder then critic | no |
 | `testing_investment`, `ctx_strategy` | none, and they do not compare architectures | not needed |

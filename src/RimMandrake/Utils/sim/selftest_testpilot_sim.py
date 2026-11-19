@@ -12,8 +12,8 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import rimflow_v3_sim as S  # noqa: E402
-import ralph_loop_sim as R  # noqa: E402
+import process_sim as S  # noqa: E402
+import loop_sim as R  # noqa: E402
 import testpilot_sim as T  # noqa: E402
 
 FAILS = []

@@ -1,7 +1,7 @@
 # RimFlow v3 in a bottle: what the simulation says (2026-10-27)
 
 Item `RIMFLOW_SIM_BUILD_FACTORY_IN_A_BOTTLE`. Design under test: `design/RimMandrake/dispatcher_design_2026-10-26.md`.
-Code: `src/RimMandrake/Utils/sim/rimflow_v3_sim.py` (+ `_params.json`, selftest). Data: `D:\ClaudeWork\rimmandrake\rimflow_sim\`.
+Code: `src/RimMandrake/Utils/sim/process_sim.py` (+ `_params.json`, selftest). Data: `D:\ClaudeWork\rimmandrake\rimflow_sim\`.
 
 ## What it is
 
@@ -107,7 +107,7 @@ Confidence: HIGH = same sign in >95% of runs and robust to quota changes. MED = 
 - Share with all 9 jointly inside: 16% park, 15% pull.
 
 **Experiments.**
-- Run with `python3 src/RimMandrake/Utils/sim/rimflow_v3_sim.py --structure {park|pull} experiment <name>`.
+- Run with `python3 src/RimMandrake/Utils/sim/process_sim.py --structure {park|pull} experiment <name>`.
 - Names: versions, versions_unlimited, versions_q130, rollout, helper_cap, arbiter, auditor, auditor_cap, wake_caps(_unlimited), throttle, isolate, isolate_unlimited.
 - Each runs 1 warm v2 week plus 4 policy weeks (rollout runs 5).
 - Each uses 1 seed per member; isolate uses 2, to split seed noise from parameter spread.
