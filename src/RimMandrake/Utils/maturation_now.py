@@ -629,7 +629,11 @@ def run_view(rec, now, spend=read_spend):
 
 
 def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titles=None):
-    """-> {folder: [run]} with each run's stages placed (see the block comment above). titles: {item id: title}."""
+    """-> {folder: [run]} with each run's stages placed (see the block comment above). titles: {item id: title}.
+    A run is on the mod its launch recorded (env RM_CONTROL_MOD, every pipeline launch), else the one its item's id or
+    title names; never the one its notes cite: helpers on pipeline code cite a mod's concept path and read live on it,
+    filling max_live (RIMMANDRAKE_UNPLACE_MACHINERY_HELPERS_FROM_MODS_SLOT_TAKEN). A hand launch on a mod passes
+    `--env RM_CONTROL_MOD=<Mod>`."""
     out = {f: [] for f in folders}
     notes = notes or []
     by_unit = {}
@@ -639,9 +643,10 @@ def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titl
     cache = {}
     for rec in records or []:
         item = str(rec.get("item") or "")
-        if item not in cache:
-            cache[item] = item_mod(item, folders, notes, titles)
-        f = cache[item]
+        said = (rec.get("env") or {}).get("RM_CONTROL_MOD")
+        if not said and item not in cache:
+            cache[item] = item_mod(item, folders, None, titles)
+        f = (said if said in out else None) if said else cache[item]
         if not f:
             continue
         r = run_view(rec, now, spend)

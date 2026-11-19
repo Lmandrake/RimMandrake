@@ -459,6 +459,16 @@ def p9_cycles():
                          {"RIMMANDRAKE_LAY_SLACK_X": "Gimme Some Slack: the 21 close-fitting poses"}) == "GimmeSomeSlack"
           and M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"], notes2,
                          {"RIMMANDRAKE_LAY_SLACK_X": "lay the poses"}) == "FlowWorks")
+    # RIMMANDRAKE_UNPLACE_MACHINERY_HELPERS_FROM_MODS_SLOT_TAKEN: a helper on pipeline code whose notes cite a mod's
+    # concept path is no run on that mod; a launch's recorded RM_CONTROL_MOD places it with no inference
+    mach = [dict(r, item="RIMMANDRAKE_ADD_PAUSE_ALL_X") for r in fake_recs(now)]
+    cite = [{"id": "RIMMANDRAKE_ADD_PAUSE_ALL_X", "text": "found on design/concepts/FooMod/journal.md"}]
+    said = [dict(r, item="RIMMANDRAKE_RESCUE_X", env={"RM_CONTROL_MOD": "BarMod"}) for r in fake_recs(now)]
+    pl = M.runs_for_mods(["FooMod", "BarMod"], mach + said, cite, {}, now,
+                         spend=lambda r: ("UNMEASURED", None, "UNMEASURED"))
+    check("9 a machinery helper citing FooMod's concept path is placed on no mod; RM_CONTROL_MOD places a run",
+          pl["FooMod"] == [] and [r["item"] for r in pl["BarMod"]] == ["RIMMANDRAKE_RESCUE_X"] * 3, "%r" % {
+              k: [r["item"] for r in v] for k, v in pl.items()})
     check("9 'stopped before Stage 3' names no Stage 3", M.stages_named("Rows 1-3 done, stopped before Stage 3.") == [])
 
 
