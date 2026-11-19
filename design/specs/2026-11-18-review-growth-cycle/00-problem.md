@@ -84,6 +84,30 @@ read the runs; the health check reporting OK on a failed check; a run id matched
    every run one hour after its first commit, and its design was then completed by review, one case at a time, in
    production, by several runs editing the same file.
 
+## The second reading, by line author (an Opus analyst, 8:35 PM PST)
+
+Report: `D:\ClaudeWork\rimmandrake\conductor\control_review_rounds_real_or_treadmill_20261118.md`. Line authorship is
+measured by git; problem-or-polish is the analyst's judgment, its own confidence about 70%; it ran no probes.
+
+| round | claims | problem | polish | about old code | a fix missed a case | a fix added the fault |
+|---|---|---|---|---|---|---|
+| two | 9 | 2 | 7 | 9 | 0 | 0 |
+| three | 11 | 0 | 11 | 3 | 6 | 2 |
+| four | 15 | 2 | 13 | 6 | 7 | 2 |
+
+- **The count was not rising.** Round two's review made 15 claims; the ticket's "nine" counted only those about old
+  code, and the six about the round-one fix were fixed separately (dd34dd9e36). Counted one way the series is 15, 11,
+  15. The "9, 11, 15" in the round-four ticket and in the Conductor's earlier messages compared unlike counts.
+- **Real problems stayed flat and mild: 2, 0, 2**, all fixed. All four faults that a fix added are polish.
+- **No claim is about tonight's feature code.** Lines written by a review fix draw 14 to 25 claims per 1,000 lines;
+  old code draws about 3. Most say a fix missed an edge case or a test could be stricter.
+- The two readings agree on the mechanism: from round three on, most claims (8 of 11, then 9 of 15) are about the
+  previous round's fix. They differ on weight: the Conductor's sorting above counts the life-cycle chains as real
+  holes; the analyst judges nearly all of them unreachable on an ordinary day.
+
+So by the owner's own test (a constant count with a high polish share means the filter goes in), the control store
+met the condition before he stopped the cycle.
+
 ## Not yet known
 
 - Whether the same pattern holds on the other files reviewed tonight (coverage judge, publish tool, cutover check).
