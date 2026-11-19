@@ -14,7 +14,8 @@ one runs. A detached run lives in its own transient systemd unit and survives th
 launch: the item must be on the ledger, and FILED ON origin/main: the helper's clone is made from origin/main, so an item whose
 file event sits in an unpublished shard (OWNER.jsonl from --owner-said, say) is one the helper's `rimflow note` refuses for
 the whole run (lesson 20261107T214121Z-BENCH-detached-helper-item-not-origin). One fetch, then a search of every shard under
-infrastructure/state/ledger/events/ at origin/main; no hit refuses (exit 2) and names the local shard to publish first.
+infrastructure/state/ledger/events/ at origin/main; no hit refuses (exit 2) with the exact `./publish` command that passes
+(it publishes nothing itself; boundary design/specs/2026-11-19-launch-unpublished-item/boundary.md).
 It takes a pool clone <pool>/clones/<ITEM>.det through scratch_clone.py
 (reused, synced, when it exists), then starts role_launch's path: systemd-run --user + claude_bounded.sh -p, the
 model passed, NO wall-time limit by default (owner, 2026-11-08: "No time limits please"; --max-s none or 0). An explicit
@@ -240,8 +241,14 @@ def local_shards(item, repo=None):
     return found
 
 
-def origin_check(item, runner=subprocess.run, repo=None):
-    """-> None when `item` is filed on origin/main, else the one-line refusal text.
+def publish_command(item, shards):
+    """The one command that puts `item`'s filing on origin/main (boundary design/specs/2026-11-19-launch-unpublished-item:
+    seven lessons said "publish the shard first" and agents kept meeting the refusal). Printed, never run: no auto-publish."""
+    return './publish -m "ledger: %s filed" %s' % (item, " ".join(shards))
+
+
+def origin_check(item, runner=subprocess.run, repo=None, seat=None):
+    """-> None when `item` is filed on origin/main, else the one-line refusal text, holding the exact command that passes.
 
     One fetch (the ref could be stale), then `git grep` of every shard under EVENTS_REL at origin/main for lines holding the
     id, kept only if filed_ids() reads the item from one: a `file` event's id or a `spawn` event's name. An item found is
@@ -267,7 +274,11 @@ def origin_check(item, runner=subprocess.run, repo=None):
     if item in filed_ids((r.stdout or "").splitlines()):
         return None
     shards = local_shards(item, repo)
-    say = ("publish %s first" % ", ".join(shards)) if shards else "no local shard holds it either"
+    if shards:
+        say = "to pass, run in %s: %s" % (repo, publish_command(item, shards))
+    else:       # filed in another clone: its seat's shard (a plain file) and OWNER.jsonl (a provenance flag's)
+        say = "no local shard holds it either; to pass, run in the clone that filed it: %s" % publish_command(
+            item, ["%s/%s.jsonl" % (EVENTS_REL, s) for s in (seat or "<SEAT>", "OWNER")])
     return "refused: %s is not on %s; %s%s" % (item, ORIGIN_REF, say, " (%s; %s may be stale)" % (stale, ORIGIN_REF) if stale else "")
 
 
@@ -917,7 +928,7 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
         return 2, "refused: the ledger read 0 items (blind instrument), cannot check %s" % item
     if item not in known:
         return 2, "refused: %s is not a ledger item; file it first (rimflow namecheck, then file)" % item
-    unpublished = pf.gate("I6", origin_check, item, runner=runner, judge=_refusal)     # before a clone or a unit
+    unpublished = pf.gate("I6", origin_check, item, runner=runner, seat=seat, judge=_refusal)   # before a clone or a unit
     if unpublished:
         return 2, unpublished
     dest = clone or os.path.join(pool_root(), "clones", item + ".det")

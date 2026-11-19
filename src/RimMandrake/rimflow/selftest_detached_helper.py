@@ -557,7 +557,8 @@ def test_origin():
             reset()
             calls, run = recorder()
             rc, text = launch(run, clone=clone)
-            check(rc == 2 and text == "refused: %s is not on origin/main; publish %s/OWNER.jsonl first" % (item, DH.EVENTS_REL),
+            check(rc == 2 and text == "refused: %s is not on origin/main; to pass, run in %s: ./publish -m \"ledger: %s filed\" "
+                  "%s/OWNER.jsonl" % (item, repo, item, DH.EVENTS_REL),
                   "origin: refused, exit 2, one line naming the shard that holds the event (clone=%s): %s" % (bool(clone), text))
             check(calls == [] and len(os.listdir(DH.runs_dir())) == runs_before,
                   "origin: refused before any clone or unit, no record written (clone=%s)" % bool(clone))
@@ -577,12 +578,12 @@ def test_origin():
             f.write(shard_line("spawn", **{"from": "X", "name": item, "for": "BENCH"}) + "\n")
         reset()
         rc, text = launch(recorder()[1])
-        check(rc == 2 and text.endswith("publish %s/OWNER.jsonl, %s/RUNNER.jsonl first" % (DH.EVENTS_REL, DH.EVENTS_REL)),
+        check(rc == 2 and text.endswith('filed" %s/OWNER.jsonl %s/RUNNER.jsonl' % (DH.EVENTS_REL, DH.EVENTS_REL)),
               "origin: every local shard that holds it is named (%s)" % text[-70:])
         # nowhere locally either: said, not guessed
         reset()
         rc, text = launch(recorder()[1], known={"GHOST_ITEM_IN_NO_SHARD"}, it="GHOST_ITEM_IN_NO_SHARD")
-        check(rc == 2 and text.endswith("is not on origin/main; no local shard holds it either"), "origin: no shard holds it: %s" % text)
+        check(rc == 2 and "is not on origin/main; no local shard holds it either" in text, "origin: no shard holds it: %s" % text)
         # a failed fetch: said on a refusal (origin/main may be stale), not on a pass
         reset(fetch_rc=1)
         rc, text = launch(recorder()[1])
@@ -1267,6 +1268,82 @@ def t_the_warning_refuses_nothing():
           "skillwarn: a refused launch's text stays the gate's own, no warning added (%r)" % text[:100])
 
 
+def _origin_repo(name, shards):
+    """A temp repo whose working-tree ledger holds `shards` (file name -> event lines); -> its path."""
+    repo = os.path.join(TMP, name)
+    events = os.path.join(repo, *DH.EVENTS_REL.split("/"))
+    os.makedirs(events, exist_ok=True)
+    for n, lines in shards.items():
+        with open(os.path.join(events, n), "w") as f:
+            f.write("".join(ln + "\n" for ln in lines))
+    return repo
+
+
+def _origin_launch(repo, item, runner, seat="BENCH"):
+    real_repo, real_pool = DH.REPO, os.environ.get("RM_DETACHED_POOL")
+    DH.REPO, os.environ["RM_DETACHED_POOL"] = repo, os.path.join(TMP, "originpool2")
+    try:
+        GIT_CALLS.clear()
+        ORIGIN.update({"events": [], "fetch_rc": 0, "grep_rc": None})
+        return DH.launch(seat, item, "Build.", "sonnet", 600, 5, now=T0 + 330, runner=runner, known={item}, clone=CLONE)
+    finally:
+        DH.REPO = real_repo
+        if real_pool is None:
+            os.environ.pop("RM_DETACHED_POOL", None)
+        else:
+            os.environ["RM_DETACHED_POOL"] = real_pool
+        ORIGIN.update({"events": None, "fetch_rc": 0, "grep_rc": None})
+
+
+def t_an_unpublished_item_refusal_prints_the_publish_command():
+    """Boundary page design/specs/2026-11-19-launch-unpublished-item/boundary.md: the refusal names the exact command
+    (Crystallize 2026-W47 cluster 1: seven lessons, the refusal kept being met)."""
+    item = "UNPUBLISHED_ITEM_FILED_BY_CARD"
+    repo = _origin_repo("unpub1", {"OWNER.jsonl": [shard_line("file", id=item, title="t", seat="OWNER")],
+                                   "BENCH.jsonl": [shard_line("spawn", **{"from": "X", "name": item, "for": "BENCH"})],
+                                   "RUNNER.jsonl": [shard_line("note", id=item, text="mentions it only")]})
+    rc, text = _origin_launch(repo, item, recorder()[1])
+    want = 'to pass, run in %s: ./publish -m "ledger: %s filed" %s/BENCH.jsonl %s/OWNER.jsonl' % (
+        repo, item, DH.EVENTS_REL, DH.EVENTS_REL)
+    check(rc == 2 and text.count("\n") == 0 and text.endswith(want),
+          "unpub: the refusal ends with the exact ./publish command for every shard that files it (%r)" % text)
+    ORIGIN_FETCH = 1
+    real = DH.REPO
+    DH.REPO = repo
+    try:
+        GIT_CALLS.clear()
+        ORIGIN.update({"events": [], "fetch_rc": ORIGIN_FETCH, "grep_rc": None})
+        text = DH.origin_check(item, runner=recorder()[1], repo=repo, seat="BENCH")
+    finally:
+        DH.REPO = real
+        ORIGIN.update({"events": None, "fetch_rc": 0, "grep_rc": None})
+    check(text and want in text and text.index(want) < text.index("fetch exit 1") and text.count("\n") == 0,
+          "unpub: a failed fetch is named after the command, on the same line (%r)" % text)
+
+
+def t_an_unpublished_item_refusal_publishes_nothing():
+    item = "UNPUBLISHED_ITEM_NO_AUTO_PUBLISH"
+    repo = _origin_repo("unpub2", {"OWNER.jsonl": [shard_line("file", id=item, title="t", seat="OWNER")]})
+    runs_before = len(os.listdir(DH.runs_dir()))
+    calls, run = recorder()
+    rc, text = _origin_launch(repo, item, run)
+    git = [c[0][:2] for c in GIT_CALLS]
+    check(rc == 2 and calls == [] and git == [["git", "fetch"], ["git", "grep"]]
+          and len(os.listdir(DH.runs_dir())) == runs_before,
+          "unpub: refused with one fetch and one search only; no commit, push, clone, unit or record (%s, %d calls)"
+          % (git, len(calls)))
+
+
+def t_an_item_filed_nowhere_here_names_where_to_publish():
+    item = "ITEM_FILED_IN_ANOTHER_CLONE"
+    repo = _origin_repo("unpub3", {"BENCH.jsonl": [shard_line("note", id=item, text="x")]})
+    rc, text = _origin_launch(repo, item, recorder()[1], seat="STEVE")
+    want = ('no local shard holds it either; to pass, run in the clone that filed it: ./publish -m "ledger: %s filed" '
+            '%s/STEVE.jsonl %s/OWNER.jsonl' % (item, DH.EVENTS_REL, DH.EVENTS_REL))
+    check(rc == 2 and text.count("\n") == 0 and text.endswith(want),
+          "unpub: filed nowhere here -> the command for the clone that filed it, with the launch seat's shard (%r)" % text)
+
+
 def main():
     test_refuse()
     test_launch_and_finish()
@@ -1289,6 +1366,9 @@ def main():
     t_a_brief_naming_no_skill_gets_one_warning()
     t_a_brief_naming_a_skill_gets_no_warning()
     t_the_warning_refuses_nothing()
+    t_an_unpublished_item_refusal_prints_the_publish_command()
+    t_an_unpublished_item_refusal_publishes_nothing()
+    t_an_item_filed_nowhere_here_names_where_to_publish()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 
