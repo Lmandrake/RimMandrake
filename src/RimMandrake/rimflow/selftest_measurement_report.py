@@ -5,6 +5,7 @@ commit, keeps "could not look" (UNMEASURED) apart from a missing field, never ga
 Slack's live-end sweep output (a captured copy, so this runs in a second, not the sweep's three minutes) into the very
 numbers the sweep printed."""
 import copy
+import math
 import os
 import sys
 
@@ -103,7 +104,7 @@ def main():
     check("report: a worst case past its limit says so (negative headroom), it does not rewrite the verdict",
           r["worst"]["headroom"] < 0 and r["verdict"] == "PASS" and "PAST ITS LIMIT" in MR.render([r]), r)
     # Gimme Some Slack's live-end sweep, from its own printed lines
-    reps, unread = MR.gss_live_end_readings(SWEEP, SRC)
+    reps, unread, _ = MR.gss_live_end_readings(SWEEP, SRC)
     reps = [MR.build(x) for x in reps]
     by = {x["check"]: x for x in reps}
     check("gss: every check line the sweep printed is read (none left unread)", unread == [], unread)
@@ -128,11 +129,52 @@ def main():
           "CordLiveEnd.cs)", all(x["parity"].get("state") == "UNMEASURED" and x["parity"].get("why") for x in reps), reps)
     check("gss: the instrument-can-fail lines are the regressions, PASS",
           any(g["result"] == "PASS" and "sideways" in g["name"] for g in by["whip"]["regressions"]), by["whip"])
-    reps2, unread2 = MR.gss_live_end_readings(SWEEP.replace("tightest bend 0.206", "tightest bend ?"), SRC)
+    reps2, unread2, _ = MR.gss_live_end_readings(SWEEP.replace("tightest bend 0.206", "tightest bend ?"), SRC)
     check("gss: a line the reader cannot parse is named unread, never dropped or zeroed", unread2 != [], unread2)
-    reps3, _ = MR.gss_live_end_readings(SWEEP.replace("PASS poses, the fitting a box", "FAIL poses, the fitting a box"),
+    reps3, _, _ = MR.gss_live_end_readings(SWEEP.replace("PASS poses, the fitting a box", "FAIL poses, the fitting a box"),
                                         SRC)
     check("gss: a FAIL line is reported FAIL", any(x["verdict"] == "FAIL" for x in reps3), reps3)
+    # ---- the Codex review of the report (2026-11-18): four holes, each watched failing first
+    empty = SWEEP.replace("2004 of 13248 unlaid, every one with the fitting's middle within 0.749",
+                          "0 of 13248 unlaid, every one with the fitting's middle within 0.000")
+    reps4, _, _ = MR.gss_live_end_readings(empty, SRC)
+    b4 = {x["check"]: MR.build(x) for x in reps4}.get("poses, box/plate/strip", {})
+    check("empty: no unlaid pose is an EMPTY worst case, never a measured 0.0 with headroom",
+          b4.get("worst", {}).get("state") == "EMPTY" and "headroom" not in b4.get("worst", {})
+          and "EMPTY" in MR.render([b4]), b4.get("worst"))
+    zero = copy.deepcopy(GOOD)
+    zero["worst"] = {"value": 0.0, "limit": 0.2, "reads": "at most"}
+    check("empty: a worst case that really measured 0.0 stays a number", MR.build(zero)["worst"]["value"] == 0.0)
+    cut = SWEEP.splitlines()[0] + "\n"
+    reps5, unread5, missing5 = MR.gss_live_end_readings(cut, SRC)
+    check("cut short: a capture missing checks and controls names every one missing",
+          "shot" in missing5 and "poses, box/plate/strip" in missing5
+          and any("sideways" in m for m in missing5), missing5)
+    reps6, unread6, missing6 = MR.gss_live_end_readings(SWEEP, SRC)
+    check("cut short: the full capture misses nothing", missing6 == [] and unread6 == [], (missing6, unread6))
+    for bad_d in ([{}], [{"what": " "}], [" "]):
+        bad = copy.deepcopy(GOOD)
+        bad["parity"]["disagreements"] = bad_d
+        check("parity: a disagreement that names nothing (%r) is refused" % (bad_d,), refused(MR.build, bad) is not None)
+    for name, mut in (("a blank commit", lambda r: r["source"].update(commit=" ")),
+                      ("a blank instrument", lambda r: r["source"].update(instrument=" ")),
+                      ("a None exclusion", lambda r: r.update(exclusions=[None])),
+                      ("a blank exclusion", lambda r: r.update(exclusions=[" "])),
+                      ("a NaN worst value", lambda r: r["worst"].update(value=float("nan"))),
+                      ("an infinite limit", lambda r: r["worst"].update(limit=math.inf)),
+                      ("a NaN agreement", lambda r: r["parity"].update(agreement=float("nan")))):
+        bad = copy.deepcopy(GOOD)
+        mut(bad)
+        check("malformed: %s is refused" % name, refused(MR.build, bad) is not None)
+    lay = by.get("poses, lay alone", {})
+    check("gss: the lay-alone worst is the sweep's 0.206", lay.get("worst", {}).get("value") == 0.206, lay.get("worst"))
+    check("gss: every regression is read, by check",
+          sorted((c, g["name"], g["result"]) for c, x in by.items() for g in x["regressions"]) == sorted([
+              ("whip", "the old sideways whip folds a straight 0.7 tail under the bar", "PASS"),
+              ("poses, lay alone", "the tied loop is used on no pose", "PASS"),
+              ("poses, lay alone", "a hooked cord is refused by the bars and laid again", "PASS")]), by)
+    reps7, _, _ = MR.gss_live_end_readings(SWEEP.replace("PASS can fail:", "FAIL can fail:"), SRC)
+    check("gss: a FAIL control is read FAIL", any(g["result"] == "FAIL" for x in reps7 for g in x["regressions"]), reps7)
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

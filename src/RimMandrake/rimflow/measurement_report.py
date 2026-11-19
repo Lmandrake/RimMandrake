@@ -21,6 +21,7 @@ Exit 0 report printed; 2 a reading was refused or a line could not be read (name
 """
 import hashlib
 import json
+import math
 import os
 import re
 import subprocess
@@ -40,7 +41,12 @@ class Refused(ValueError):
 
 
 def _num(x):
-    return isinstance(x, (int, float)) and not isinstance(x, bool)
+    """A finite measured number: NaN or infinity is no reading."""
+    return isinstance(x, (int, float)) and not isinstance(x, bool) and math.isfinite(x)
+
+
+def _txt(x):
+    return isinstance(x, str) and bool(x.strip())
 
 
 def build(reading):
@@ -60,6 +66,8 @@ def build(reading):
             errs.append("parity UNMEASURED names no cause (why)")
     elif not _num(p.get("agreement")) or not isinstance(p.get("disagreements"), list):
         errs.append("parity needs agreement (a number) and disagreements (a list), or state UNMEASURED with why")
+    elif any(not (_txt(d) or (isinstance(d, dict) and _txt(d.get("what")))) for d in p["disagreements"]):
+        errs.append("every parity disagreement names what disagreed (what)")
     f = reading["family"]
     c = f.get("cases") if isinstance(f, dict) else None
     counted = isinstance(c, int) and not isinstance(c, bool) and c > 0
@@ -71,9 +79,15 @@ def build(reading):
         errs.append("exclusions is not a list")
     elif not ex and not str(reading.get("exclusions_none_why") or "").strip():
         errs.append("exclusions is empty with no exclusions_none_why (silence is not 'none')")
+    elif not all(_txt(e) for e in ex):
+        errs.append("every exclusion is a non-blank text")
     w = reading["worst"]
-    if not (isinstance(w, dict) and _num(w.get("value")) and _num(w.get("limit")) and w.get("reads") in READS):
-        errs.append("worst needs value and limit (numbers) and reads (%s)" % " or ".join(READS))
+    if isinstance(w, dict) and w.get("state") == "EMPTY":
+        # the subset the worst case is read over had no member: empty, not a measured zero
+        if not (_num(w.get("limit")) and w.get("reads") in READS and _txt(w.get("why"))):
+            errs.append("an EMPTY worst case still names its limit, reads and why")
+    elif not (isinstance(w, dict) and _num(w.get("value")) and _num(w.get("limit")) and w.get("reads") in READS):
+        errs.append("worst needs value and limit (finite numbers) and reads (%s), or state EMPTY" % " or ".join(READS))
     rg = reading["regressions"]
     if not isinstance(rg, list) or any(not (isinstance(g, dict) and str(g.get("name") or "").strip()
                                             and g.get("result") in REGRESSION_RESULTS) for g in rg):
@@ -82,12 +96,14 @@ def build(reading):
     if not isinstance(s, dict):
         errs.append("source is not an object")
     else:
-        errs += ["source has no %s" % k for k in ("commit", "settings", "instrument") if k not in s or s[k] in (None, "")]
+        errs += ["source has no %s" % k for k in ("commit", "instrument") if not _txt(s.get(k))]
+        errs += ["source has no settings" for _ in [1] if s.get("settings") in (None, "", {})]
     if errs:
         raise Refused("%s: %s" % (reading["check"], "; ".join(errs)))
     rep = json.loads(json.dumps(reading))
-    room = w["value"] - w["limit"] if w["reads"] == "at least" else w["limit"] - w["value"]
-    rep["worst"]["headroom"] = round(room, 9)
+    if w.get("state") != "EMPTY":
+        room = w["value"] - w["limit"] if w["reads"] == "at least" else w["limit"] - w["value"]
+        rep["worst"]["headroom"] = round(room, 9)
     return rep
 
 
@@ -110,10 +126,12 @@ def render(reports):
         out.append("  family       %s (%s)" % (f["generator"], "%d cases" % c if isinstance(c, int) else
                                                "cases UNMEASURED: %s" % c["why"]))
         out.append("  exclusions   %s" % ("; ".join(r["exclusions"]) or "none: %s" % r.get("exclusions_none_why")))
-        flag = "  PAST ITS LIMIT" if w["headroom"] < 0 else ""
-        out.append("  worst        %s, read %s %s: headroom %s%s" % (w["value"], w["reads"], w["limit"],
-                                                                     ("%.6f" % w["headroom"]).rstrip("0").rstrip("."),
-                                                                     flag))
+        if w.get("state") == "EMPTY":
+            out.append("  worst        EMPTY (%s), read %s %s" % (w["why"], w["reads"], w["limit"]))
+        else:
+            flag = "  PAST ITS LIMIT" if w["headroom"] < 0 else ""
+            out.append("  worst        %s, read %s %s: headroom %s%s" % (
+                w["value"], w["reads"], w["limit"], ("%.6f" % w["headroom"]).rstrip("0").rstrip("."), flag))
         out.append("  regressions  %s" % ("; ".join("%s %s" % (g["result"], g["name"]) for g in r["regressions"])
                                          or "none run"))
         out.append("  source       commit %s, instrument %s, settings %s" % (
@@ -131,6 +149,12 @@ GSS_PARITY = {"state": "UNMEASURED",
                      "no instrument compares the copy's numbers with the game's own (the C# suite "
                      "SelfTest/LiveEndSweepChecks.cs sweeps the game's cords on its own grid)"}
 _F = r"(-?[0-9.]+)"
+
+
+def _subset_worst(n, value, limit, why):
+    """The sweep prints max(..., default=0.0) over a subset: with no member, that 0.0 is no reading but EMPTY."""
+    return ({"state": "EMPTY", "limit": limit, "reads": "at most", "why": why} if n == 0 else
+            {"value": value, "limit": limit, "reads": "at most"})
 # check -> (line regex, reading built from g = (the line,) + its groups, so g[1] is the verdict); the families and exclusions are the sweep's own declared bounds
 # (its docstring), not measured here
 GSS_LINES = [
@@ -158,13 +182,14 @@ GSS_LINES = [
     ("poses, box/plate/strip", r"^(PASS|FAIL) poses, the fitting a box, plate or strip: ([0-9]+) of ([0-9]+) unlaid, "
                                r"every one with the fitting's middle within %s cell of the end's run \(limit %s; the grid's "
                                r"nearest is %s\)" % (_F, _F, _F),
-     lambda g, st: {"worst": {"value": float(g[4]), "limit": float(g[5]), "reads": "at most"},
+     lambda g, st: {"worst": _subset_worst(int(g[2]), float(g[4]), float(g[5]), "no pose was unlaid"),
                 "family": {"generator": "the same poses with a box, plate or strip fitting's body there", "cases": int(g[3])},
                 "exclusions": ["machine plugs (the next check)", "fittings nearer than 0.3 or beyond 2.5 cells"],
                 "observed": "%s of %s unlaid; the C# suite's grid nearest %s" % (g[2], g[3], g[6])}),
     ("poses, machine plug", r"^(PASS|FAIL) poses, the fitting a machine's plug: ([0-9]+) of ([0-9]+) unlaid, ([0-9]+) with "
                             r"the machine's footprint ON the end's run, the rest within %s cell of it \(limit %s\)" % (_F, _F),
-     lambda g, st: {"worst": {"value": float(g[5]), "limit": float(g[6]), "reads": "at most"},
+     lambda g, st: {"worst": _subset_worst(int(g[2]) - int(g[4]), float(g[5]), float(g[6]),
+                                           "no unlaid pose had its footprint off the run"),
                 "family": {"generator": "the same poses with a machine's footprint there", "cases": int(g[3])},
                 "exclusions": ["box, plate and strip fittings (the check above)", "fittings nearer than 0.3 or beyond 2.5 cells"],
                 "observed": "%s of %s unlaid, %s with the footprint on the run" % (g[2], g[3], g[4])}),
@@ -178,8 +203,9 @@ GSS_CONTROLS = [
 
 
 def gss_live_end_readings(text, source):
-    """The sweep's printed lines -> (readings, unread): one reading per check line it matched, and every PASS/FAIL line
-    it could not read (never dropped, never zeroed)."""
+    """The sweep's printed lines -> (readings, unread, missing): one reading per check line it matched, every PASS/FAIL
+    line it could not read, and every expected check or control the capture does not hold (a sweep cut short: never
+    dropped, never zeroed)."""
     lines = [ln for ln in text.splitlines() if re.match(r"^(PASS|FAIL) ", ln)]
     used, readings = set(), {}
     for name, rx, make in GSS_LINES:
@@ -194,12 +220,15 @@ def gss_live_end_readings(text, source):
     for name, rx, what in GSS_CONTROLS:
         for i, ln in enumerate(lines):
             m = re.match(rx, ln)
-            if m and name in readings:
+            if m and name in readings and i not in used:
                 readings[name]["regressions"].append({"name": what, "result": m.group(1)})
                 used.add(i)
                 break
     unread = [ln for i, ln in enumerate(lines) if i not in used]
-    return list(readings.values()), unread
+    missing = [name for name, _, _ in GSS_LINES if name not in readings]
+    missing += ["%s control: %s" % (name, what) for name, rx, what in GSS_CONTROLS
+                if not any(re.match(rx, ln) for ln in lines)]
+    return list(readings.values()), unread, missing
 
 
 def _sha(paths):
@@ -236,10 +265,10 @@ def main(argv=None):
         print("REFUSED: the sweep's source commit could not be read (git log)", file=sys.stderr)
         return 2
     p = subprocess.run([sys.executable, os.path.join(REPO, GSS_SWEEP)], capture_output=True, text=True, timeout=900)
-    readings, unread = gss_live_end_readings(p.stdout, src)
-    if unread or not readings:
-        print("REFUSED: %d line(s) of the sweep could not be read: %s" % (len(unread), unread or "no check line at all"),
-              file=sys.stderr)
+    readings, unread, missing = gss_live_end_readings(p.stdout, src)
+    if unread or missing:
+        print("REFUSED: the sweep's capture (exit %d) is not whole: %d line(s) unread %s; missing %s" % (
+            p.returncode, len(unread), unread, missing), file=sys.stderr)
         return 2
     try:
         reports = [build(r) for r in readings]
