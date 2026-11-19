@@ -16,7 +16,12 @@ LongShade: 232 rows (103 added by the second reader), 26 lost, 25 record a move,
   broken-copy probe exit status (must be 2): 2
   LongShade's 11 files are the ones its page lists under "Read to the end by the second reader". (The LeaningScrub line above was re-run after two rows were added to its page during the Long Shade read: the ship-register row and the truffle mole's move.)
 
-Not yet checked by this record: Miasma, RustCathedral (their second reads had not been done when this was written).
+Miasma: 342 rows (209 added by the second reader), 38 lost, 19 record a move, 2 reshaped, 2 folded into shared machinery; 21 named sources, sources with no row: none; rows without five cells: none; rows with empty outcome: none; probe (an invented source name must be reported): seen; source files read in full: 44, listed but not on disk: none
+  exit status: 0
+  broken-copy probe exit status (must be 2): 2 (one added row's outcome cell blanked; the check named the row)
+  Miasma's 44 files are the ones its page lists under "Read to the end by the second reader"; the files read in part (the cleanse's large JSON records, the 87 KB mechanics item, the Codex record) are named on the page with what was skipped. A search of the cleanse's three large records for a ship, hull, Empire or landing line returned only the gravship-foundation rule.
+
+Not yet checked by this record: RustCathedral (its second read had not been done when this was written).
 
 Measured for whoever takes LeaningScrub next (2026-11-18): design/concepts/LeaningScrub/ holds 3,774,046 bytes in 142 files, 130 of them distinct byte for byte; with its biome sheets, walk and 48 ledger items the sources are 4,172,822 bytes, and 2,562,955 bytes are left after the de-duplicating reader below marks every repeated line and sentence. The nine exam briefs under exam_runs/ each embed the tree.
 

@@ -15,6 +15,13 @@ anywhere else; nobody dives. (The open Grey Sea beyond the mouths is a different
 the pipeline reads it by name yet. The Miasma has no locked sheet or tree; its only pipeline material is the
 cleanse proposal of 2026-11-17, which this design supersedes and which was never applied.
 
+**Second reader, 2026-11-18.** A second reader who did not write this design read the sources to their ends and
+repaired it; what changed and why is at the top of `rewrite_choices.md`. In short: the hull section now rests on
+his shield rulings of 2026-09-02 and the built frame, and says plainly which wear is built, which is his ruling
+waiting on one flag, and which is this rewrite's proposal; the decay cell is named as the Miasma's row on his
+ship-gift register and described as it is built; the cast uses his names of 2026-10-08; and several lines say
+"as built" where the first read said "built".
+
 **Tags:** `NEEDS HIM` is a question only the owner can settle, with the real answers and the default used here.
 `UNSETTLED` is a fact the sources do not fix. `UNMEASURED` is an engine fact nobody has checked. "Built" means the
 census of 2026-11-17 (`cleanse/census.json`) found it in source; it does not mean it has passed anything.
@@ -45,6 +52,11 @@ The sheet lists them among the inhabitants: *"The Jawa — flotsam-combing crews
 surge; the delta is a harvest that restocks itself."* It is *"the planet's driftwood-and-salvage beach."* The crew
 know what a salvage beach is. What they do not know is mud, brine, fever, a food chain that clicks, or the size of
 the thing in the shallows whose children keep washing up at their feet with a price on them.
+
+His question to every biome, typed on 2026-09-24, was the lens seven weeks early: *"how can this biome uniquely add
+something to the ship?... What can they take and improve their ships environment with?"* The Miasma's row on that
+register (`infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md`) is the **decay cell**: *"power from rot, in a
+bed of delta loam, silt and salt."* (The pick is an agent's, carded to him; no answer was found.)
 
 What holds the place together is his own answer of 2026-11-10: *"Abundance forces difficult choices: there are
 competing worthwhile opportunities."* Every surge delivers more than a small crew can pick up.
@@ -78,11 +90,20 @@ of its own, and each surge may put the ship's footing in brine.
 The ship comes down through green-gold murk onto the only ground there is: roots, mud and salt crust. Which of
 the three it lands on matters for the rest of the stop, and the map says which is which: every map has a fresh
 end and a brine end, and trees, animals, sickness and the colour of the muck all sort along the line between
-them.
+them. Two trees bracket the line. The ilbareen lives only at the fresh end, and where brine has ever reached it
+stands dead and white for years: *"a flagpole, and a graveyard of them."* The brelloch, squat and armoured in its
+own salt, is *"the last living thing before the salt wins."* (As built the surge kills ilbareen where it reaches;
+the living canopy does not yet sort itself by band.)
+
+**Where to park is a three-way trade.** The fresh end has the fertile mud and the crops. The middle of the line
+has the worst air: the kit sorts the haze's load along the gradient, heaviest *"where everything settles,
+mid-gradient"* (the built exposure reads salinity). The brine end has the cleanest air, the firmest ground, the
+mother's water if there is one, and the salt.
 
 The ramp opens on a sound nobody aboard has heard before: *"the wet click-and-chitter of the arthropod floor,
 swarm-hum, channel-slap."* The mud is moving. It is scuttlers, *"in uncountable numbers... faintly comic; the
-entire food pyramid stands on their backs."* Something flowerlike closes on one.
+entire food pyramid stands on their backs."* The commonest, the karravel, is a coin-flat disc whose legs never
+show, and in numbers *"the ground appears to be sliding."* Something flowerlike closes on one.
 
 Before the first hour is out the player should have seen three things without hunting for them: the water in the
 channels thick with small swimming young; a plant eat a scuttler; and, among the roots at the last water line, a
@@ -91,7 +112,10 @@ drift of things the sea left, some of them metal.
 ## The first day
 
 - **The root-lines are the yard.** What the rivers carry and the sea throws back lodges in the roots: timber,
-  brined wreck frames and tanks, loose goods. The crew combs it. This is the work they came for.
+  brined wreck frames and tanks, loose goods. The crew combs it. This is the work they came for. The yard has a
+  plant: thrannock, a root-mass strung between two trees like *"a net someone left"*, hung with *"rags, shell,
+  splintered wood, salt-bleached plastic."* *"A freshly loaded thrannock means the water came up recently."* The
+  near roots hold a little wood and cloth; the metal, the wrecks and the crying are farther out.
 - **The mud is slow, the roots are the ground.** *"The trees drink what nothing else can; the roots are the only
   ground."* Fresh mud is fertile and miserable to cross; salt crust is firm and dead.
 - **The small are cheap.** The sea's young are everywhere in the shallows, *"small and almost charming and cheap
@@ -100,32 +124,55 @@ drift of things the sea left, some of them metal.
 - **Scuttlers are dinner.** Harvestable, renewable, and eaten by everything else too, including five kinds of
   plant that never touch a person or a tame animal.
 - **The flowers are honest.** A crew that has learned on every other stop not to touch the pretty thing can touch
-  these.
-- **The air is a wager.** The haze carries the mud's failed experiments. Sooner or later somebody is ill.
+  these. The commonest plant in the delta, the aphreen, has every growing tip flushed red and furred as if
+  inflamed: *"it looks diseased and it is perfectly healthy, and a player who learns that about aphreen has
+  learned how to read this biome."*
+- **The air is a wager, and the ship is the roof.** The haze carries the mud's failed experiments: *"the 15-day
+  clock and the hope are the same process."* Sooner or later somebody is ill. Separately, time spent outdoors in
+  the haze builds a mild exposure that clears under a roof (built). A crew that sleeps and works aboard pays less
+  of it than a colony in the open would.
+- **Sometimes the offer is there on the first day.** A warden mother, where there is one, sometimes arrives with a
+  stranded young of her own already calling from a cut-off pool. The roster's reason is the lens's reason: without
+  this *"the entire relationship waits on an irregular, storm-driven surge... the offer arrives with her."* A stop
+  too short to see a surge can still be asked the question.
 - **A dead meter in a compost bed is still reading current.** New maps hold one. Working out why teaches the crew
   to build a **decay cell**: a bed that makes power from ordinary rot. *"Opportunistic extra power, using waste
-  already on hand"* (his answer of 2026-11-10). Spoiled food, scraps, the day's butchering: it all goes in.
+  already on hand"* (his answer of 2026-11-10). The design is that spoiled food, scraps and the day's butchering
+  all go in: *"spoiled freight becomes power."* **As built it does not do that yet:** the cell needs the
+  electricity research and its hopper takes raw food, not rot (`NEEDS HIM` 7).
 
 ## The first week
 
 - **The surge.** *"No moon, no clockwork tide."* When storms far off pile the sea against the shore it comes up
   the channels, days apart and never on schedule, announced by *"a long exhale from seaward."* Brine wets ground
-  that was fresh. The salt line *"moves miles per surge."* Then it draws back.
+  that was fresh. The salt line *"moves miles per surge."* Then it draws back, never quite to the old line. The
+  warning is long enough to get the crew back aboard; it is not long enough to move anything that was put in the
+  wrong place.
 - **What the surge leaves, all at once.** New flotsam in the roots. Crops on unfloored ground the brine reached,
   dead. A tree that only lives in fresh water, the ilbareen, standing dead and white where the brine got to: the
   gauge that shows how far it came. And sometimes, in pools the water left behind, young of the sea that cannot
-  get back.
+  get back. And often, in the days after, a karrimeth mass: thousands of thumb-sized shells flowing through the
+  camp as one clicking body, *"the surge's aftermath made visible"*, a nuisance that *"strips forage and fills the
+  traps."*
 - **The orphans are an event, not a duty.** His words of 2026-11-10: *"the colony doesn't HAVE to rescue them,
   this was supposed to just be an event, not the center of the whole biome."* A stranded young cries, and the cry
   can be located. Some have been in the pool too long and are changed by it: *"gills going leathery, fins splaying
   into feet that don't quite work."* A crew member can carry one to connected water. Or pen it wet and sell it to
-  the next ordinary trader, for a great deal. Or leave it. The pools shrink.
+  the next ordinary trader, for a great deal. Or leave it. The pools shrink, and a
+  bozzuga, the ambush frog of the fresh roots, eats stranded young as readily as scuttlers.
 - **Sometimes there is a mother.** Not on every map: *"only sometimes. And babies can be swept in without the
   mother present as well."* Where there is one she is a **warden mother**: *"a not-so-gentle giant"* in the
-  shallows, an enormous barnacled sea elder, lethal within reach, who *"cannot get on dry land."* She can hear a
+  shallows, an enormous barnacled sea elder, lethal within reach, who *"cannot get on dry land"*: *"the sea's
+  memory dying in its lifeboat."* She is visibly old from the first sight of her, and her inspect line says so
+  outright (*"a player who is surprised by her death means this was built wrong"*). She can hear a
   stranded young and see it *"and will never cross the few metres of dry ground between. A colony can."* Carry
   her young back and she stops counting the crew as prey. Sell one and her nursery remembers for good. Harvest
-  inside her reach and tolerance ends on the spot.
+  inside her reach and tolerance ends on the spot. (As built she is not yet held to water on every step: her
+  destinations are checked and a recovery walk brings her back. The whole friendship rests on that line, so it is
+  owed work, not polish.)
+- **Her protection is a place.** *"A colony with its back to open water is nearly unraidable from that side. A
+  colony four tiles inland gets nothing."* A ship set down with its back to her channel has one side nobody
+  crosses. A ship parked inland has a neighbour.
 - **Triage.** A surge's leavings do not wait: the pools dry, and the next surge rearranges the yard. A crew of
   five to seven chooses.
 
@@ -136,7 +183,9 @@ Each can happen inside the visit. Each says what is on screen.
 1. **The floor moves.** *On screen:* the ramp comes down and the mud scatters in a thousand small armoured
    directions; a hooded figure lifts one foot, then the other.
 2. **The flower eats.** *On screen:* a lovely, slightly feverish-looking plant snaps shut on a scuttler. The Jawa
-   beside it backs away from every flower on the map, including the harmless ones.
+   beside it backs away from every flower on the map, including the harmless ones. The roster's best version is a
+   wave: *"a channel of braskeen snapping shut one after another as scuttlers cross is the biome's best ambient
+   moment."*
 3. **The sea comes to the ship.** *On screen:* a long breath from seaward, and water creeping up the channels,
    over the mud, around the landing gear; the white edge of salt left on everything when it goes.
 4. **The crying pool.** *On screen:* a puddle among the roots with something small and finned turning in it,
@@ -147,15 +196,25 @@ Each can happen inside the visit. Each says what is on screen.
    the whole time. Afterwards the shape in the channel is no longer still.
 7. **Too close.** *On screen:* a crew member combing flotsam a few cells inside her reach.
 8. **Plugging in the compost.** *On screen:* the crew shovelling spoiled rations into a bed of mud and salt with
-   wires in it, and the ship's lights coming up.
+   wires in it, and the ship's lights coming up. (The scene as designed. As built the bed takes raw food.)
 9. **The gauge.** *On screen:* after a surge, a row of trees gone white overnight, ending two cells short of the
    ship.
-10. **The swarm.** *On screen:* a humming cloud comes through the camp; the day after, a Jawa is in bed. The
-    trees it visited are in flower.
+10. **The swarm.** *On screen:* a humming gold cloud comes through the camp, *"the green-gold breath the biome is
+    named for, seen close up"*; the day after, a Jawa is in bed. (As built the cloud is an animal and the fever is
+    the biome's own clock: the two are not yet linked, and the old rule that the trees need the swarm was removed.)
+11. **The mass.** *On screen:* after a surge, the ground at the brine end starts to flow: a grey clicking carpet
+    goes round the landing gear, through the cook-fire and out the other side.
+12. **Too clean.** *On screen, if he rules the haze onto the ship's screen (`NEEDS HIM` 1):* the particulate
+    screen comes up and the scuttlers peel back from the hull in a ring; the ship stands in the only bare mud on
+    the map.
 
 *0.2.0 adds:* the survivor who gets up from the fever changed; the young that decide they belong to the crew and
-cannot leave the water; the beauty oil pressed from the ugliest mud on the planet; the creature that spits acid,
-the one that spits fire and the one that gets drunk on what it ferments; the cell that takes a corpse.
+cannot leave the water (one *"stops at the waterline and watches you walk inland. It is there when you come
+back."*); the beauty oil pressed from the ugliest mud on the planet; the lastvine (*"It is not a plant."*) that
+spits acid, the duskfire that spits fire (*"never fight one near anything you want to keep"*) and the fermatalis,
+*"usually drunk on it"*, which ferments whatever it breathes on and takes to a crew *"especially if you bring a
+drink"*; the cell that takes a corpse and gives back bones and a named skull. With the campaign's cast: the hell's
+lantern, a muffalo-sized worm whose pods *"glow a sickly orange"* in the dusk under the roots.
 
 ## When the Empire arrives
 
@@ -163,6 +222,9 @@ the one that spits fire and the one that gets drunk on what it ferments; the cel
   and the worst walking on the day side.
 - **The water is not theirs.** A strike team wading the brine shallows may be wading inside a warden mother's
   reach. She tolerates a crew that returned her young. She tolerates nobody else.
+- **A ship with its back to her channel is attacked from one side fewer.**
+- **Nobody shoots well here.** The haze takes a little off every shot and a surge's weather takes more, for
+  both sides (built; the amounts are tuning).
 - **The surge does not take sides.** A siege camp built on ground the next surge reaches is in brine with the
   crew's crops.
 - **The air does not take sides either.** A force that stages here for days breathes what the crew breathes.
@@ -176,8 +238,11 @@ the one that spits fire and the one that gets drunk on what it ferments; the cel
 - **Ordinary predators** of the channels and the mud, and the swarms, which bring fever rather than wounds.
 - **Other flotsam crews,** Jawa among them, work these root-lines in the campaign's world. They are rivals for
   the same yard and the nearest thing to neighbours; the biome mod places none of them.
+- **Buyers.** In the campaign the ones who come for a held young have names: the Deepwater vigil, who want it
+  *"for the sea"*, and margin traders, who want it *"for the pens."* They are not the same sale.
 - **The Wildsteam** hold a seat on this coast, Bitterleaf, and make pilgrimage here: *"come here when all hope is
-  lost, and you either die or return with hope found."* **The Deepwater vigil** watches the sea die from posts at
+  lost, and you either die or return with hope found."* *"A Wildsteam pilgrim in the muck is on the worst day of
+  their life, on purpose."* **The Deepwater vigil** watches the sea die from posts at
   the mouths. Both are campaign layer; whether either would fight the Empire is `UNSETTLED`.
 - **Nothing here hates the Empire.** The place is busy.
 
@@ -199,11 +264,15 @@ the one that spits fire and the one that gets drunk on what it ferments; the cel
 
 - **Flotsam:** timber, brined frames and tanks, loose goods. The reason to come.
 - **Silver for a stranded young,** and what it cost.
-- **The decay cell,** as knowledge: learned here, built anywhere there is rot. On a ship that always has spoiled
-  food and butchery waste, this is the stop's most lasting gain.
+- **The decay cell,** the Miasma's gift to the ship on his register: learned here, built on the deck, usable
+  anywhere there is rot. On a ship that always has spoiled food and butchery waste, this is the stop's most
+  lasting gain. *"The gravship becomes a scrapbook of everywhere it has been."*
 - **Scuttler meat, delta loam** (clean, fertile soil from the sickest ground), **delta salt, delta silt.**
-- **Thessamor wood** from the mangals.
-- *0.2.0:* **attar,** *"an expensive oil that restores beauty... the planet's loveliest luxury, pressed from its
+- **Thessamor wood** from the mangals; **liliana silk** (his moth of 2026-10-08, which *"never stops"* spinning)
+  and eggs; **sarrash cloth**; **sharpshrimp chitin**.
+- *0.2.0:* **a fever survived,** best of all the one that leaves a crew member **fever-tempered**, comfortable
+  across a wider span of heat and cold, which *"pays game-wide on a planet whose geography is temperature"*;
+  **attar,** *"an expensive oil that restores beauty... the planet's loveliest luxury, pressed from its
   ugliest mud"*; **a fever survived,** with what it left behind; **bizarre ingredients** from a spent cell's
   rotting bed (*"Decay cells, but they become a rotting bed that is part of Star Wars Cuisine ingredients"*,
   owner, 2026-10-02).
@@ -216,20 +285,38 @@ here as anywhere, but there is no end of biomass. What the Miasma offers instead
 ship running its lights and benches off decay cells is not burning its tanks to do it. *"Rot is power."* Fuel
 proper is bought: Bitterleaf, the Wildsteam seat on this coast, runs stills (*"stills running attar, liquor, and
 hope"*), and the flotsam crews trade. Both are campaign layer, and whether Bitterleaf's stills sell fuel is
-`UNSETTLED`.
+`UNSETTLED`. Bitterleaf is a sea-facing island with no road, so "on this coast" means a flight, not a walk. And
+the fuel-saving half of this paragraph holds only when the cell eats waste: as built it eats raw food, which on a
+hungry ship is fuel of another kind (`NEEDS HIM` 7).
 
-**What wears on the ship (owner's ruling of 2026-11-18: in 0.1.0, from what the sources already say).** **Brine.**
-The surge is the sources' own statement of it: *"what you built on fresh ground may be standing in brine
-tomorrow"*, and the review's phrase for a warden mother's shell is *"the only brine-proof plating on the planet"*,
-which says what brine does to every other plate. A hull whose footing a surge has reached is salted, and salt
-left on it goes on working.
-- *The answer by position:* land toward the fresh end and read the gauge trees; the brine comes up the gradient,
-  not from the sky.
-- *The answer by hand:* clean the crust off after a surge. (New, small work; no source describes it.)
-- *The answer by armour:* the brine-proof plate. It exists in one design idea that the owner did **not** choose on
-  2026-10-02, before the ship lens and before he ruled that biomes wear on hulls. `NEEDS HIM` below.
+**What wears on the ship (owner's ruling of 2026-11-18: in 0.1.0, from what the sources already say).** The frame
+exists and is not redesigned here: `src/RimUtinni/ShipShields/`, on his shield rulings of 2026-09-02. *"The
+environment is hostile and immediately goes to work on the ship... Its hull is thick and can take a lot of damage
+in most situations, so no environment is immediately lethal."* An unshielded hull in a hazard deteriorates, faster
+the longer it sits; the ship advises and never refuses. The October review said of this biome that it *"does
+nothing to your ship."* Read against the frame, there are three candidates, in order of how well sourced each is.
 
-The haze and the fever wear on the crew, not the ship, and are covered above.
+1. **Heat, on the hottest ground (built, nothing to add).** The frame already counts a map as a heat hazard at 58 C
+   outdoors or in a heat wave, and the sheet's temperatures for the deltas run to 59. On those days an unveiled
+   ship wears here as it would anywhere. *Answer:* the thermal veil. (Read from the code and the sheet; no map
+   temperature was measured.)
+2. **The haze (his ruling, one flag short of built).** His note on the particulate screen: *"Light kinetic
+   deflectors handle wind, ash, vapor, bio contamination, spores, smoke, sand, and rain damage completely as well
+   as repels small animals."* The Miasma's air is vapor and bio contamination by its own description (*"thick with
+   the Working's breath"*). As built the frame looks for pollution or a weather with a sand rate, and the haze has
+   neither, so today the frame does not see it. Counting the haze is one flag on one weather, not a new system.
+   *Answer:* the particulate screen. And because that screen *"repels small animals"*, a screened ship in this
+   biome stands in a ring of mud with no scuttlers on it and no swarm over it. `NEEDS HIM` 1.
+3. **Brine (this rewrite's proposal; no source says a hull wears from it).** One pitch he did not choose calls a
+   warden mother's shell *"the only brine-proof plating on the planet"*, which implies what brine does to other
+   plate; nothing else in the sources puts salt on a hull. What his rulings do settle is that no shield answers
+   it: *"Slow pressing things move through all shields... This is why nothing 'holds out water,' it just doesn't
+   work that way."* So if brine wears a ship whose footing a surge has reached, the answers are by position (land
+   above the dead ilbareen; the brine comes up the gradient, not from the sky), by hand (clean the crust off: new,
+   small work, no source describes it), or by armour (the plate he did not choose). The surge does not repaint the
+   deck itself: the built repaint leaves gravship foundations alone. `NEEDS HIM` 2.
+
+The fever wears on the crew, not the ship, and is covered above.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -245,8 +332,9 @@ The haze and the fever wear on the crew, not the ship, and are covered above.
 | The ground life is real: scuttlers in numbers, hunted by animals and by five plants that never take a person or a tame animal. | A generated map left to run with a pet walked past each predator plant. | |
 | The rainbow blooms are harmless in every way. | Touch, harvest and eat near each. | |
 | The haze never lifts and never rains, softens the light, and the air here makes people ill more often than elsewhere. | A stop of some weeks. | Rain. Clear sky. |
-| A dead meter found on the map teaches the decay cell; a cell fed ordinary rot gives real power. | Find, study, build, feed with spoiled food, run a bench from it. | A cell that runs on nothing. |
-| A hull a surge has reached is worn by salt until it is cleaned, and a ship landed above the surge's reach is not. | Two landings, one surge. | Wear with no brine. |
+| A dead meter found on the map teaches the decay cell; a cell fed ordinary rot gives real power. | Find, study, build, feed with spoiled food, run a bench from it. | A cell that runs on nothing. A cell that only takes good food (what is built today). |
+| *(Only if he says yes to `NEEDS HIM` 2; a proposal, not a sourced promise.)* A hull a surge has reached is worn by salt until it is cleaned, and a ship landed above the surge's reach is not. | Two landings, one surge. | Wear with no brine. |
+| *(Only if he says yes to `NEEDS HIM` 1.)* The haze wears an unscreened ship and a screened one is clean, with the small animals keeping off it. | Two ships, one screened, some days. | A screen that changes nothing visible. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary hot mangrove swamp
 (standing rule, every mod).
@@ -274,23 +362,28 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 **0.1.0, the stop**
 - The land: fertile mud, salt crust, mangal canopy, the fresh-to-brine gradient, the permanent haze and its
-  sickness. (built)
+  sickness. (built, except that the living canopy does not yet sort itself along the line)
 - The surge moving the salt line, the gauge trees, crops lost to brine. (built, except that the surge does not
   yet move real water)
 - Flotsam in the root-lines after every recession, and brined wrecks. (built; moved in, see `rewrite_choices.md`)
 - Stranding pools, the changed young and their cry; carrying one back; holding and selling one to an ordinary
   trader. (built; the cry while carried is not)
-- The warden mother where she occurs: water-bound, defending, tolerant after a return, unforgiving after a sale.
-  (built)
+- The warden mother where she occurs: water-bound, defending, tolerant after a return, unforgiving after a sale;
+  sometimes arriving with a stranded young of her own; old to look at and said to be old on inspection. (built,
+  except that she is not yet held to water on every step, and a return can credit the wrong mother where two
+  nurseries are close)
 - Scuttlers, plant predation, the swarm, the free nursery young, the ordinary predators, rainbow blooms and muck
   plants. (built)
-- The found meter and the decay cell. (built; moved in)
-- Brine on the hull, and its answers by position and by hand. (new, small)
+- The found meter and the decay cell, the Miasma's gift on his ship register. (built; moved in; as built it
+  takes raw food, not rot)
+- The ship's wear, on the built shield frame: heat on the hottest days (built); the haze on the particulate
+  screen (his ruling of 2026-09-02; one flag, if he says so); brine on the hull, with its answers by position and
+  by hand (this rewrite's proposal; new, small, if he says so).
 - Canopy and haze as one step of cover from orbit. (new, small, by his card)
 
 **0.2.0, the stop with company**
-- Fever-forging: a disease survived sometimes leaves a lasting change; the five strange ones he chose. (part
-  built)
+- Fever-forging: a disease survived sometimes leaves a lasting change; the five strange ones he chose
+  (swarm-marked, salt-blooded, loam-lunged, mother-dreamed, fever-tempered). (part built: the five are stand-ins)
 - Young that tame themselves to a crew that has not harmed them, their guard and attack work, and the weaker
   watch a rescued nursery's young keeps. (built in part)
 - Attar: the still, the oil, the glaze on artwork. (built)
@@ -301,13 +394,20 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Fever passed by the swarm's touch. (unbuilt)
 
 **Later (a crew that stays, a colony, or the campaign)**
-- The mother dying of age and one of her young taking the nursery; the heir's guard.
+- The mother dying of age and one of her young taking the nursery; the heir's guard. (The cleanse's own target
+  puts her death 30 to 60 days after a crew meets her, which is inside the outer edge of a stop: `NEEDS HIM` 6.
+  As built the heir is a name and a message; no guard passes to it.)
 - Canals that bring her water, and her, inland; a colony *"buying her protection with labour instead of
   location"*.
-- Water-only hauling by tame young; trees bound to hosts and castings; plants that show when they have fed.
-- The Recall of the Written-Off rite (the owner's pick of 2026-10-02; a second-version design by the census).
+- Water-only hauling by tame young (the roster's *"single best fit between a creature and an existing economy in
+  this biome"*: an orphan working the root-lines for a salvage crew; unbuilt); trees bound to hosts and castings;
+  plants that show when they have fed.
+- The Recall of the Written-Off rite (the owner's pick of 2026-10-02; a second-version design by the census;
+  rites were tabled on 2026-10-03). It is the one Miasma idea that attacks the ship itself: its reclaimers
+  *"dismantle powered structures (the gravship included) until the colony drives them off."*
 - Bitterleaf, the pilgrimage, the vigil's posts, the named nurseries: campaign layer.
-- The arthropod harvest as an industry; delta loam as an export trade.
+- The arthropod harvest as an industry (a trap and one dish were left out of the batch he picked on 2026-10-02);
+  delta loam as an export trade.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - Any medicine from this place (*"we have given medicine many times today"*); any gene machine; rain; a tide on a
@@ -315,27 +415,60 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - A rainbow bloom that harms (*"the rainbow flora never lies"*).
 - The mother at the centre of the biome, and a mother on every map (his answer of 2026-11-10).
 - The stranded as species of their own (they are a condition of the nursery's young).
+- **Raising a young into a leviathan.** His cut of 2026-09-23: *"the game isn't that long to watch it grow."* No
+  growth arc, no "it leaves for the sea", no later meeting with the grown adult.
+- **Salt gates and contested brine.** Declined 2026-09-23, when of five proposals he chose the warden mother
+  *"only, all the way."*
+- A conventional taming grind (*"animals in this project are not conquered, they agree"*); a second giant; a
+  second pollinator; an auction or appraisal game on the yard.
 - The grounded mother, the last dry deck, the scuttler appraisal, the first egg above water, the second-hand
   young, the mother's blind side (not chosen 2026-10-02); the Tide-reader boon (cut 2026-09-12); the pollination
-  gate (cut).
+  gate (removed 2026-11-02 by a delegated decision under his veto card, as *"invisible to the player"*).
 - **Recommended for dropping, not yet his:** world scoring and rarity (there is no worldgen in any version); the
-  map-wide manhunter lottery when a mother dies; the attar balm that changes injuries; the old medicinal mangrove
-  harvest.
+  map-wide rise in wild aggression when a mother dies at her site (built from the kit; his card of 2026-09-12
+  ruled its scope, *"marked sites only"*, so dropping it is his to confirm); the attar balm that changes injuries;
+  the old medicinal mangrove harvest.
 
 ## NEEDS HIM
 
-1. **The brine-proof plate.** On 2026-10-02 he chose the mother's price over the grounded mother: a dead warden
-   mother's body as a reef of *"ship-grade hull plate"*, *"the only brine-proof plating on the planet"*, guarded
-   by her young. That was before the ship lens and before his ruling that every biome wears on the hull and has
-   an answer in shield, armour or hands. It is the only armour answer to brine in any source. *Not revived*
-   (default: position and cleaning answer brine). *Revived for 0.2.0 or later:* scavenger against loyalty on the
-   biome's own giant, and a plate worth carrying to every wet stop afterwards. Large build.
-2. **The last dry deck.** Not chosen the same day: during a surge a flotsam crew retreats along the last roots to
-   the landed ship, *"dragging two workshop frames, and asks for passage to Bitterleaf with its livelihood."* It
-   was then one ship idea among five; under the lens it is the direct answer to "who else is here" and it is very
-   Jawa on both sides of the ramp. *Not revived* (default). *0.2.0:* a medium build and a real cost in deck.
-3. **Does a rescued young ever come aboard?** His words of 2026-09-23: *"now what when they love you but can only
-   survive in the water?"* For a colony the answer was that they inherit their mother's nursery. A ship leaves.
-   *They stay* (default: the stop ends with something in the channel watching the ship go, which may be the best
-   moment the biome has). *They can be carried wet* in some hold fitting: a new system, and it turns an orphan
-   into livestock.
+Each is tagged with one theme. Two ship ideas here are ones he already declined (2 and 3); neither is revived.
+
+1. **[hull] Does the haze count on the ship's shield frame?** His ruling of 2026-09-02 says the particulate screen
+   handles *"vapor, bio contamination, spores"* and *"repels small animals."* The built frame does not see the
+   Miasma's haze (no sand rate, not pollution). *Not counted* (default here: nothing is changed, and the only
+   built wear is heat on the hottest days). *Counted:* one flag on the haze weather; an unscreened ship wears
+   slowly the whole stop, and a screened one stands in a ring of clean mud.
+2. **[hull] Brine on the hull, and the brine-proof plate.** No source says a hull wears from brine; it is this
+   rewrite's proposal, and by his own words no shield holds out water. *No brine wear* (default: the
+   promise table carries brine only "if he says yes"). *Brine wears a ship whose footing a surge reached, answered
+   by position and by cleaning* (written out in the hull section, flagged; new, small work). *And the plate:* on 2026-10-02 he chose the mother's price
+   over the grounded mother, a dead warden mother's body as a reef of *"ship-grade hull plate"*, *"the only
+   brine-proof plating on the planet"*, guarded by her young. Not revived. Its own card said *"the choice comes
+   once, late"*, which is the case against it for a ship.
+3. **[other] The last dry deck.** Not chosen the same day: during a surge a flotsam crew retreats along the last
+   roots to the landed ship, *"dragging two workshop frames, and asks for passage to Bitterleaf with its
+   livelihood"*; *"taking them costs deck space or freight as the approach floods; refusing leaves them visibly
+   trying worse."* The reviewer's note beside it: he has rejected *"ship-centric gimmicks with no biome voice"*,
+   and this one has the voice. *Not revived* (default). *0.2.0:* a medium build and a real cost in deck.
+4. **[other] Does a rescued young ever come aboard?** His words of 2026-09-23: *"now what when they love you but
+   can only survive in the water?"* For a colony the answer was that they inherit their mother's nursery. A ship
+   leaves. *They stay* (default: the stop ends with something in the channel watching the ship go, which may be
+   the best moment the biome has; it is also what the roster wrote under his ruling, *"Do not solve it. No
+   land-walking upgrade, no tank, no carrying it around"*, and what the cleanse kept). *They can be carried wet*
+   in some hold fitting: a new system, it turns an orphan into livestock, and it breaks that line.
+5. **[scope] One signature, or the pieces.** His card of 2026-11-17 was "Land, life, one signature", and the
+   cleanse read it as the nursery alone, with the yard and the cell switched off. This design's 0.1.0 holds the
+   surge, the yard, the orphans, the mother where she occurs and the cell, on his answer of 2026-11-10
+   (*"competing worthwhile opportunities"*) and on *"Rot is power."* *The pieces* (default here). *One signature:*
+   then it is the surge and what it leaves, and the cell and the mother's price move to 0.2.0.
+6. **[scope] Her death.** The first read moved her dying of age, and her young inheriting, to "later" as a long
+   game. The cleanse's own target is 30 to 60 days after a crew meets an already-old mother, which a long stop
+   reaches. *Later* (default: nothing of it is promised in a stop, and she is only seen to be old). *0.2.0:* a
+   crew that stays its full six weeks can watch her fail, and leave a child on watch behind them.
+7. **[fuel] What the decay cell eats.** The promise is rot (*"using waste already on hand"*); the build takes raw
+   food. *Rot, as promised* (default; owed work on a built thing). *Raw food, as built:* then the cell is a way to
+   burn rations for light, and it stops being the thing that spares the ship's tanks.
+8. **[other] The sando aqua monster adult.** Placed here by his review of 2026-09-10 as *"bottom-walker adult — the
+   submerged herds"*, and held since 2026-10-02 (*"Ask the owner before building it"*) because it breaks "no
+   second giant" and "only the young side". Nobody asked. *Held* (default). *Built:* a second very large animal
+   in the mother's water.
