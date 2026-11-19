@@ -127,8 +127,16 @@ def verify_src_hash(dll):
 def build_staged(clean, gm):
     """ext4 clone: stage on D:, build with dotnet.exe there, copy the bundle back."""
     rel_art = os.path.relpath(ARTIFACT_DIR, REPO_ROOT)
-    if clean and os.path.isdir(ARTIFACT_DIR):
-        shutil.rmtree(ARTIFACT_DIR)
+    if clean:
+        # x.B4: each wipe under the lock its writer holds (the stage is shared by every clone; the clone's copy is
+        # written by this clone's copy-back), so a --clean never deletes under a build that is running
+        stage_art = os.path.join(winbuild.stage_dir("JawaBench"), rel_art)
+        with winbuild.stage_lock("JawaBench"):
+            if os.path.isdir(stage_art):
+                shutil.rmtree(stage_art)
+        with winbuild.clone_outputs_lock():
+            if os.path.isdir(ARTIFACT_DIR):
+                shutil.rmtree(ARTIFACT_DIR)
     extra = ["--no-incremental", "-p:JawaGmTools=%s" % ("true" if gm else "false"), src_hash_prop()]
     extra_dirs, late = [], []
     for env, prop in (("ORACLE_MOD_DIR", "OracleModDir"), ("INHABITED_MOD_DIR", "InhabitedModDir"), ("GSS_MOD_DIR", "GssModDir"),
@@ -144,9 +152,6 @@ def build_staged(clean, gm):
     if late:                                     # staged paths are known only after a dry stage
         _, rec = winbuild.stage_build(PROJECT, "Release", (), extra_dirs, dry_run=True, stage_name="JawaBench")   # the SAME stage as the build below
         extra += ["-p:%s=%s" % (p, winbuild.staged_win(rec, v)) for p, v in late]
-    stage_art = os.path.join(winbuild.BUILD_ROOT, "JawaBench", rel_art)
-    if clean and os.path.isdir(stage_art):
-        shutil.rmtree(stage_art)
     rc, rec = winbuild.stage_build(PROJECT, "Release", extra, extra_dirs,
                                    copy_back_dirs=[rel_art], stage_name="JawaBench")
     if rc:
@@ -554,8 +559,17 @@ def source_dirty():
         if "not a git repository" in (r.stderr or ""):
             return None                          # an export: no .git anywhere above it
         return ["?? git rev-parse failed: %s" % (r.stderr or "").strip()[:200]]
-    if os.path.realpath(r.stdout.strip()) != root:
-        return None                              # an export unpacked inside some other checkout
+    top = os.path.realpath(r.stdout.strip())
+    if top != root:
+        # x.B6: a tree inside some other checkout is an export only when that checkout tracks none of the companion
+        # sources; when it does track them, its status is the truth about them
+        dirs = [os.path.relpath(os.path.join(root, d), top) for d in dirs]
+        r = subprocess.run(["git", "-C", top, "ls-files", "--"] + dirs, capture_output=True, text=True)
+        if r.returncode != 0:
+            return ["?? git ls-files failed in %s: %s" % (top, (r.stderr or "").strip()[:200])]
+        if not r.stdout.strip():
+            return None                          # an export unpacked inside some other checkout
+        root = top
     r = subprocess.run(["git", "-C", root, "status", "--porcelain", "--untracked-files=normal", "--"] + dirs,
                        capture_output=True, text=True)
     if r.returncode != 0:

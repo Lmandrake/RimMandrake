@@ -4,9 +4,12 @@
 Offline: a temp GAME_ROOT/DEPLOY_DIR, the game-process and bridge-hold probes stubbed. Checks:
   identical bytes copy nothing; a failed replace leaves the old DLL byte-identical and no temp file behind;
   a readback mismatch exits non-zero and never says "deployed"; a running game or a foreign bridge hold refuses
-  before any byte is written, and --ignore-bridge-hold passes the hold; the bytes written are the verified bytes.
+  before any byte is written, and --ignore-bridge-hold passes the hold; the bytes written are the verified bytes;
+  --clean waits for the stage lock a peer build holds (x.B4); a tree inside a foreign checkout that TRACKS the
+  companion sources reads that checkout's status, and one that tracks none is an export (x.B6).
 BUILD_PY=<path> runs it against another copy of build.py placed in THIS directory (build.py finds the repo from
-its own path); that is how it was watched failing on the base: 6 of 8 checks FAIL there.
+its own path); that is how it was watched failing on the base: 6 of 8 checks FAIL there (2026-11-15), and the
+four x.B4/x.B6 checks added 2026-11-19: 3 FAIL on the base build.py (the untracked-export case already passed).
 """
 import contextlib
 import importlib.util
@@ -46,6 +49,70 @@ def run(B, dll, apply_it=True, **kw):
             code = e.code if e.code is not None else 0
             out.write("\nEXIT %s" % e.code)
     return code, out.getvalue()
+
+
+def clean_waits_for_stage_lock(B, tmp):
+    """x.B4: --clean must not wipe the shared stage while a peer build holds its stage lock."""
+    import threading
+    import time
+    W = getattr(B, "winbuild", None)
+    if W is None or not B.STAGED:
+        check(False, "clean_waits_for_stage_lock", "build.py is not on the staged route here (needs WSL)")
+        return
+    saved = (W.BUILD_ROOT, W.LOCK_DIR, W.stage_build, B.ARTIFACT_DIR, B.src_hash_prop)
+    try:
+        W.BUILD_ROOT, W.LOCK_DIR = os.path.join(tmp, "stage_root"), os.path.join(tmp, "locks")
+        B.ARTIFACT_DIR = os.path.join(tmp, "clone_art")          # never the clone's real artifacts
+        B.src_hash_prop = lambda: "-p:JawaSrcHash=selftest"
+        calls = []
+        W.stage_build = lambda *a, **k: (calls.append(k.get("dry_run")), (0, {}))[1]
+        rel_art = os.path.relpath(B.ARTIFACT_DIR, B.REPO_ROOT)
+        stage_art = os.path.join(W.BUILD_ROOT, "JawaBench", rel_art)
+        os.makedirs(stage_art)
+        os.makedirs(B.ARTIFACT_DIR)
+        if not hasattr(W, "stage_lock"):
+            check(False, "clean_waits_for_stage_lock", "winbuild has no stage_lock")
+            return
+        with W.stage_lock("JawaBench"):                       # a peer build mid-compile
+            t = threading.Thread(target=lambda: B.build_staged(True, False), daemon=True)
+            t.start()
+            time.sleep(0.5)
+            survived = os.path.isdir(stage_art)
+        t.join(10)
+        check(survived and not os.path.isdir(stage_art) and not os.path.isdir(B.ARTIFACT_DIR) and calls,
+              "clean_waits_for_stage_lock", (survived, os.path.isdir(stage_art), calls))
+    finally:
+        W.BUILD_ROOT, W.LOCK_DIR, W.stage_build, B.ARTIFACT_DIR, B.src_hash_prop = saved
+
+
+def foreign_checkout_status(B, tmp):
+    """x.B6: REPO_ROOT inside a foreign git checkout."""
+    import subprocess
+    saved = (B.REPO_ROOT, B.PROJECT)
+    top = os.path.join(tmp, "foreign")
+    root = os.path.join(top, "sub")
+    proj_dir = os.path.join(root, "src", "RimMandrake", "bridgetools", "JawaBench.BridgeTools")
+    os.makedirs(proj_dir)
+    open(os.path.join(top, "README"), "w").write("x")
+    cs = os.path.join(proj_dir, "A.cs")
+    open(cs, "w").write("class A {}")
+    g = lambda *a: subprocess.run(["git", "-C", top] + list(a), capture_output=True, text=True)
+    g("init", "-q")
+    g("-c", "user.name=t", "-c", "user.email=t@t", "add", "README")
+    g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "x")
+    try:
+        B.REPO_ROOT, B.PROJECT = root, os.path.join(proj_dir, "JawaBench.BridgeTools.csproj")
+        got = B.source_dirty()
+        check(got is None, "foreign_checkout_untracked_is_export", got)
+        g("-c", "user.name=t", "-c", "user.email=t@t", "add", "sub")
+        g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "y")
+        got = B.source_dirty()
+        check(got == [], "foreign_checkout_tracked_clean_reads_clean", got)
+        open(cs, "a").write("// a peer's edit")
+        got = B.source_dirty()
+        check(bool(got) and any("A.cs" in ln for ln in got), "foreign_checkout_tracked_dirty_reads_dirty", got)
+    finally:
+        B.REPO_ROOT, B.PROJECT = saved
 
 
 def main():
@@ -140,6 +207,8 @@ def main():
         open(os.path.join(B.DEPLOY_DIR, "JawaBench.Old.dll"), "wb").write(b"MZ stale")
         code, out = run(B, dll, apply_it=False)
         check("JawaBench.Old.dll" in out, "plan_names_stale_siblings", out[-200:])
+        clean_waits_for_stage_lock(B, tmp)
+        foreign_checkout_status(B, tmp)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("build deploy: %d failure(s)" % len(fails))

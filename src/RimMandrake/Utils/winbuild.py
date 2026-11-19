@@ -308,6 +308,28 @@ def exclusive(stage_name):
     return _flock("run-" + stage_name)
 
 
+def stage_dir(stage_name):
+    """The stage folder on D: for a stage name (the same one stage_build builds in)."""
+    return os.path.join(BUILD_ROOT, re.sub(r"[^A-Za-z0-9_.-]", "_", stage_name))
+
+
+def _stage_key(stage):
+    return "stage-%s-%s" % (os.path.basename(stage), hashlib.sha1(stage.encode()).hexdigest()[:10])
+
+
+def stage_lock(stage_name):
+    """The lock stage_build holds over one stage while it stages, compiles and copies back. A caller that wipes the
+    stage's outputs (build.py --clean) takes it first, so the wipe never lands under a peer clone's compile
+    (RIMMANDRAKE_MAKE_COMPANION_DEPLOY_ATOMIC_HELD x.B4). Never hold it around a stage_build call: flock is per open
+    file, so the call would wait on its own caller."""
+    return _flock(_stage_key(stage_dir(stage_name)))
+
+
+def clone_outputs_lock():
+    """The exclusive lock over THIS clone's copied-back outputs (the one a copy-back holds)."""
+    return _flock(_clone_pairs_lock())
+
+
 def _clone_pairs_lock():
     """The lock over THIS clone's dll/.srchash pairs. Only a clone's own copy-back writes them and only its own staging
     reads them, so the key is the clone: machine-wide, every build queued behind any tree's rsync of a large mod
@@ -360,7 +382,7 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
     rel_proj = os.path.relpath(csproj, ROOT)
     parts = rel_proj.split(os.sep)                       # src/<Tier>/<Mod>/Source/...
     mod = stage_name or (parts[2] if len(parts) > 3 else os.path.splitext(parts[-1])[0])
-    stage = os.path.join(BUILD_ROOT, re.sub(r"[^A-Za-z0-9_.-]", "_", mod))
+    stage = stage_dir(mod)
     dirs = minimal(needed_dirs(csproj) | {os.path.realpath(d) for d in extra_dirs})
     print("staging %s -> %s" % (rel_proj, win(stage) if os.path.isdir(BUILD_ROOT) else stage))
     for d in dirs:
@@ -371,7 +393,7 @@ def stage_build(csproj, config="Release", extra=(), extra_dirs=(), copy_back_dir
     os.makedirs(stage, exist_ok=True)
     # review night: one build per stage at a time, rsync through copy-back (a second build's rsync --delete would land
     # under the first one's compile); the lock is keyed by the stage path so every clone sharing BUILD_ROOT queues
-    with _flock("stage-%s-%s" % (os.path.basename(stage), hashlib.sha1(stage.encode()).hexdigest()[:10])):
+    with _flock(_stage_key(stage)):
         return _stage_build_locked(csproj, rel_proj, stage, dirs, record, config, extra, copy_back_dirs)
 
 
