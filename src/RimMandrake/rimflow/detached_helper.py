@@ -1165,6 +1165,57 @@ def _num(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool)
 
 
+def earlier_session_totals(rec, sid, root=None):
+    """-> (largest weighted_v2 tokens, largest dollars) an earlier run of claude session `sid` recorded as its session
+    total, each None when none is readable. A record from before RIMMANDRAKE_COUNT_RESUMED_RUN_TOKENS_ONCE_SESSION_
+    TOTAL_LOGGED has no `session`: its result file is read instead."""
+    import role_launch as RL
+    best = [None, None]
+    for p in glob.glob(os.path.join(runs_dir(root), "*.json")):
+        try:
+            with open(p, encoding="utf-8") as f:
+                r = json.load(f)
+        except (OSError, ValueError):
+            continue
+        if not isinstance(r, dict) or r.get("unit") == rec["unit"] or not (_num(r.get("at")) and r["at"] < rec["at"]):
+            continue
+        if "session" in r:
+            if r["session"] != sid:
+                continue
+            got = (r.get("session_tokens"), r.get("session_cost_usd"))
+        else:
+            res = RL.read_result({"out": r.get("out"), "err": r.get("err")})
+            if not isinstance(res, dict) or res.get("session_id") != sid:
+                continue
+            try:
+                got = (RL.run_tokens(res, r.get("model")), result_cost(res)[0])
+            except RL.UnknownModel:
+                got = (None, result_cost(res)[0])
+        best = [max(b, g) if _num(b) and _num(g) else (g if _num(g) else b) for b, g in zip(best, got)]
+    return best[0], best[1]
+
+
+def own_part(rec, res, tokens, usd, root=None):
+    """A resumed run's result reports the whole claude session so far (modelUsage, total_cost_usd), earlier runs
+    included (measured 2026-11-19: 26 of 26). -> (tokens, dollars, record fields): its own part, the session total
+    less the largest one an earlier run of the session recorded; the session totals under their own names. A spend
+    watchdog stop already measured this launch's turns only. An unreadable earlier total leaves the part None
+    (UNMEASURED), its cause in tokens_why."""
+    sid = res.get("session_id") if isinstance(res, dict) else None
+    if not rec.get("resume_session"):
+        return tokens, usd, {"session": sid, "session_tokens": tokens, "session_cost_usd": usd}
+    sid = rec["resume_session"]
+    pt, pu = earlier_session_totals(rec, sid, root)
+    if isinstance(res, dict) and res.get("stopped_by") == "spend_watchdog":
+        tot = [v + p if _num(v) and _num(p) else None for v, p in ((tokens, pt), (usd, pu))]
+        return tokens, usd, {"session": sid, "session_tokens": tot[0], "session_cost_usd": tot[1]}
+    fields = {"session": sid, "session_tokens": tokens, "session_cost_usd": usd}
+    if _num(tokens) and not _num(pt):
+        fields["tokens_why"] = "a resume of session %s whose earlier total no run record holds" % sid
+    return (tokens - pt if _num(tokens) and _num(pt) else None,
+            usd - pu if _num(usd) and _num(pu) else None, fields)
+
+
 def _model_sum(mu):
     """-> the sum of every model's costUSD, or None when any model has none (one model's figure is not the run's)."""
     if not isinstance(mu, dict) or not mu:
@@ -1332,11 +1383,17 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     if rec.get("finish_owed"):
         st = rec.get("result") or st
     usd, how = measured_cost(rec)       # read now, with the tokens, before anything else touches the file
+    import role_launch as RL
+    tokens, usd, split = own_part(rec, RL.read_result({"out": rec["out"], "err": rec["err"]}), tokens, usd)
+    if usd is None and split.get("tokens_why"):
+        how = "UNMEASURED: " + split["tokens_why"]
     took = int(now - rec["at"])
     # the owner, 2026-11-16: "Please speak in terms of weighted tokens not money." The dollars stay in the record
     # (cost_usd) for the stage ceiling; what a person reads says weighted tokens only (weighted_v2: MODEL_PRICES,
     # run_tokens)
-    unmeasured = "UNMEASURED (%s)" % rec["unknown_model"] if rec.get("unknown_model") else "UNMEASURED"
+    why = rec.get("unknown_model") or split.get("tokens_why")
+    unmeasured = "UNMEASURED (%s)" % why if why else "UNMEASURED"
+    resumed = " (its own part: a resume of session %s)" % rec["resume_session"] if rec.get("resume_session") else ""
     # the item note is what a resumed or continued run reads (`rimflow show`): no spend, no token figure, no path to
     # the result file that holds them, and a spend stop reads only "interrupted" (owner 2026-11-16: no launched agent
     # is told its spend; RIMMANDRAKE_HIDE_CAP_STOP_FROM_RESUMED_RUN_READER_TRIMMED). The Conductor log line below and
@@ -1382,8 +1439,8 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
         steps.append("publish " + (m.group(1)[:10] if m else "exit %d: %s" % (r.returncode, pub)))
     try:
-        path = conductor_line("%s on %s (%s seat): %s, %d s, %s weighted tokens. %s. Output %s. READ: rimflow show %s.%s"
-                              % (unit, item, seat, st, took, unmeasured if tokens is None else "{:,}".format(tokens),
+        path = conductor_line("%s on %s (%s seat): %s, %d s, %s weighted tokens%s. %s. Output %s. READ: rimflow show %s.%s"
+                              % (unit, item, seat, st, took, unmeasured if tokens is None else "{:,}".format(tokens), resumed,
                                  fulltext.clip(tail, 200, rec["out"]) or "-", rec["out"], item,
                                  " OWED: " + owed + "." if owed else ""), now, log_path)
         steps.append("conductor log " + path)
@@ -1393,7 +1450,7 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     import role_launch as RL
     rec.pop("finish_owed", None)
     rec.update(status="finished", ended=now, result=st, tokens=tokens, token_unit=RL.TOKEN_UNIT, steps=steps,
-               cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how, owed_close=owed)
+               cost_usd=usd if usd is not None else "UNMEASURED", cost_how=how, owed_close=owed, **split)
     write_record(rec)
     if isinstance(got, dict):   # work left: ONE continuation, its own unit (RIMMANDRAKE_CONTINUE_LEFT_OPEN_RUNS_WITHOUT_A_HAND_RELAUNCH)
         try:

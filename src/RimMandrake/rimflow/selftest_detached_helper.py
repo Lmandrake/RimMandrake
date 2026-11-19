@@ -1164,6 +1164,70 @@ def test_long_brief():
           "longbrief: an exec failure is recorded with its own words, not as a silent systemd-run (%s)" % text[:120])
 
 
+def test_resumed_part():
+    """RIMMANDRAKE_COUNT_RESUMED_RUN_TOKENS_ONCE_SESSION_TOTAL_LOGGED (measured 2026-11-19: 26 of 26 resumed runs
+    recorded their whole session): a resumed run's result reports the session so far; finish records its own part."""
+    import role_launch as RL
+    ok_env = {"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"}
+
+    def result(sid, inp, out, usd, **kw):
+        d = {"type": "result", "subtype": "success", "is_error": False, "result": "r", "session_id": sid,
+             "total_cost_usd": usd, "modelUsage": {RL.REF_MODEL: {"inputTokens": inp, "outputTokens": out,
+                                                                  "cacheReadInputTokens": 0,
+                                                                  "cacheCreationInputTokens": 0, "costUSD": usd}}}
+        d.update(kw)
+        return d
+
+    def run(name, at, res, resume=None, done=False, **extra):
+        unit = "rm-detached-bench-resumed-part-%s" % name
+        out = os.path.join(TMP, unit + ".out")
+        with open(out, "w") as f:
+            json.dump(res, f)
+        rec = {"unit": unit, "out": out, "err": out + ".err", "model": RL.REF_MODEL, "at": T0 + at, "clone": CLONE,
+               "seat": "BENCH", "item": "SOME_ITEM_TO_BUILD", "status": "finished" if done else "running"}
+        if resume:
+            rec["resume_session"] = resume
+        rec.update(extra)
+        DH.write_record(rec)
+        if not done:
+            DH.finish(unit, now=T0 + at + 100, env=ok_env, runner=recorder(out="PUBLISHED abcdef1234567")[1],
+                      item_reader=lambda c, i: None)
+        return DH.read_record(unit), RL.run_tokens(res, RL.REF_MODEL)
+
+    # an earlier run recorded before the fix (no session fields: its result file is read), then two resumes of it
+    a_res = result("sess-r", 1000, 100, 2.0)
+    a, a_tok = run("a", 5000, a_res, done=True, tokens=RL.run_tokens(a_res), ended=T0 + 5090)
+    b, b_tot = run("b", 5100, result("sess-r", 3000, 300, 5.0), resume="sess-r")
+    check(b.get("tokens") == b_tot - a_tok and b.get("session_tokens") == b_tot and b.get("session") == "sess-r",
+          "resumed: a resume records its own part (%s, want %d), the session total under its own name (%s)"
+          % (b.get("tokens"), b_tot - a_tok, b.get("session_tokens")))
+    check(abs((b.get("cost_usd") or 0) - 3.0) < 1e-9 and b.get("session_cost_usd") == 5.0,
+          "resumed: its dollars are its own part too (%s of a 5.0 session)" % b.get("cost_usd"))
+    c, c_tot = run("c", 5300, result("sess-r", 4000, 400, 6.5), resume="sess-r")
+    check(c.get("tokens") == c_tot - b_tot, "resumed: a second resume subtracts the largest earlier session total "
+          "(%s, want %d)" % (c.get("tokens"), c_tot - b_tot))
+    # a resume the spend watchdog stopped: its figure is already its own turns (spend_watchdog measures from launch)
+    w, w_tok = run("w", 5500, {"type": "result", "subtype": "error_max_budget_usd", "is_error": True, "session_id":
+                               "sess-r", "stopped_by": "spend_watchdog", "total_cost_usd": 1.0,
+                               "usage": {"input_tokens": 500, "output_tokens": 50, "cache_creation_input_tokens": 0,
+                                         "cache_read_input_tokens": 0}}, resume="sess-r")
+    check(w.get("tokens") == w_tok and w.get("session_tokens") == c_tot + w_tok,
+          "resumed: a watchdog stop keeps its own figure; the session total adds it (%s, %s)"
+          % (w.get("tokens"), w.get("session_tokens")))
+    # a resume whose earlier total is unreadable: UNMEASURED with its cause, never the session total, never 0
+    u, u_tot = run("u", 5700, result("sess-lost", 9000, 900, 9.0), resume="sess-lost")
+    with open(os.environ["RM_CONDUCTOR_LOG"]) as f:
+        line = [ln for ln in f.read().splitlines() if u["unit"] in ln][-1]
+    check(u.get("tokens") is None and "sess-lost" in (u.get("tokens_why") or "") and u.get("session_tokens") == u_tot
+          and u.get("cost_usd") == "UNMEASURED" and "UNMEASURED (" in line and "{:,}".format(u_tot) not in
+          line.split("weighted tokens")[0], "resumed: an unreadable earlier total is UNMEASURED with its cause (%s; %s)"
+          % (u.get("tokens_why"), line[:200]))
+    # a run that does not resume is recorded exactly as before
+    n, n_tot = run("n", 5900, result("sess-new", 700, 70, 1.5))
+    check(n.get("tokens") == n_tot and n.get("cost_usd") == 1.5 and not n.get("tokens_why"),
+          "resumed: a run that does not resume records its whole result (%s, want %d)" % (n.get("tokens"), n_tot))
+
+
 def main():
     test_refuse()
     test_launch_and_finish()
@@ -1182,6 +1246,7 @@ def main():
     test_hook_points_here()
     test_windows_path()
     test_launch_checks()
+    test_resumed_part()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

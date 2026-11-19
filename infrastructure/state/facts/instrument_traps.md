@@ -225,6 +225,16 @@ The general method is the global skill `~/.claude/skills/confident-wrong-numbers
   measured: `infrastructure/state/facts/oom_kills_2026-11-03.md`.
 - **A frozen design sheet can hold an image that is false for the setting, not merely stale** (a line that "its mother is the reason ships sink" in a world with no nautical ships). Check a metaphor against the WORLD, not just against other docs; a phrase can be consistent everywhere and still describe nothing that exists.
 - **Trust a registry sheet's status only after resolving its defNames.** The mineral registry CSV listed three rows as BUILT whose defs were gone (two salts merged into `RM_RawSalt`, fulgurite excised) and `RUT_TibannaGas`, which never existed. A free-text `defs` column cannot be checked; the CSV now has a machine-read `bindings` column that `gen_mineral_registry.py` resolves against the def dump plus the repo XML.
+- 🔴 **A sum of detached run tokens or dollars over runs that finished before the fix of 2026-11-19 counts resumed sessions more
+  than once (RIMMANDRAKE_COUNT_RESUMED_RUN_TOKENS_ONCE_SESSION_TOTAL_LOGGED).** A run launched with `--resume` gets a result whose `modelUsage` and `total_cost_usd` are the whole claude
+  session so far, and `detached_helper.finish` recorded that as the run's `tokens` and `cost_usd` (the record, the
+  Conductor log's `DETACHED RUN ENDED` line, the maturation books and stage ceiling built on them). Measured 2026-11-19: 27 of 27
+  resumed runs since 2026-11-18 that follow an earlier run of their session; on 2026-11-18 (PST) 81,158,999 of 371,342,565 recorded weighted tokens
+  (`design/experiments/2026-11-19-night-hypotheses/tools/check_resumed_run_tokens.py`, which prints the corrected
+  sum). Records since then carry their own part and `session`, `session_tokens`, `session_cost_usd`; old records are
+  not rewritten. The result's `usage` block is this process only (not cumulative) but leaves out subagents. Same trap,
+  not fixed: `coverage_judge` adds the tokens of a `--resume` re-ask to the first ask's, and `art_calibration` lists a
+  re-ask's `weighted_tokens` and `cost_usd` next to the first ask's.
 
 ## placeholder_lint texture tags
 - **`placeholder_lint` is blind to some texture tags and masks.** `texpaths()` keeps only tags whose name contains 'texpath', so it misses `texturePath` (terrain), `pollutedTexturePath` and `leaflessGraphicPath` (`donor_retire_census` srctex saw 21 of 55 StandIn texts; use `donor_retire_census.py standin`, any tag; `regen_eligibility`/`bulk_accept_renders` TEXTAGS lacked them too, so the gate refused those twins as 'renamed'). Its MASK regex `m(_(south|east|north|west))?$` matches any stem ending in lowercase m (AB_MangrovePalm), silently dropping real pictures as masks; RimWorld masks are `<path>_m` and `<path>_<facing>m` (`donor_retire_census.MASK_STEM`).

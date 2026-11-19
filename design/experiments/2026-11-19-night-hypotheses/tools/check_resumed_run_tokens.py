@@ -7,6 +7,10 @@ its own part: no more than (this result's session total) - (the largest session 
 session reported), with 2% + 2,000 slack.
 
     check_resumed_run_tokens.py <repo_root> <detached_records_dir> [--since <ISO time or epoch seconds, compared with the record's 'ended'>]
+        [--until <same>]
+
+It also prints one SUMS line over the window: the recorded tokens of every run, and the same with each resumed run
+counted at its own part (the corrected sum).
 
 Exit 0  PASS: at least one resumed run was checked and every one holds its own part only.
 Exit 1  FAIL: at least one resumed run's recorded tokens include an earlier run's.
@@ -33,8 +37,10 @@ def main(a):
     repo, folder = a[1], a[2]
     raw = a[a.index("--since") + 1] if "--since" in a else 0
     since = when(float(raw) if str(raw).replace(".", "", 1).isdigit() else raw)
-    if since is None:
-        print("VERDICT COULD-NOT-LOOK: --since %r is not a time" % (raw,))
+    raw_u = a[a.index("--until") + 1] if "--until" in a else "9999999999999"
+    until = when(float(raw_u) if str(raw_u).replace(".", "", 1).isdigit() else raw_u)
+    if since is None or until is None:
+        print("VERDICT COULD-NOT-LOOK: --since %r / --until %r is not a time" % (raw, raw_u))
         return 3
     try:
         sys.path.insert(0, os.path.join(repo, "src", "RimMandrake", "rimflow"))
@@ -59,17 +65,22 @@ def main(a):
             unread += 1
             continue
         by.setdefault(sid, []).append((end, rec["tokens"], total, bool(rec.get("resume_session")), rec.get("unit")))
-    checked, bad = 0, []
+    checked, bad, logged, fixed = 0, [], 0, 0
     for sid, runs in by.items():
         runs.sort()
         prev = 0
         for end, tokens, total, resumed, unit in runs:
-            if resumed and prev and end >= since:
+            inside = since <= end < until
+            logged += tokens if inside else 0
+            fixed += (min(tokens, total - prev) if resumed and prev else tokens) if inside else 0
+            if resumed and prev and inside:
                 checked += 1
                 own = total - prev
                 if tokens > own * 1.02 + 2000:
                     bad.append((unit, tokens, own))
             prev = max(prev, total)
+    print("SUMS recorded %d weighted tokens; each resumed run at its own part %d; over-count %d "
+          "(runs with a readable record and result only)" % (logged, fixed, logged - fixed))
     if bad:
         for unit, tokens, own in bad[:40]:
             print("  FAIL %s recorded %d, own part %d" % (unit, tokens, own))
