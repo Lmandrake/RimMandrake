@@ -316,7 +316,7 @@ a duplicate, write a pointer instead.
 - Committed *and pushed* is the only durable state: commit each finished unit and push at once. Proof of publication is `git merge-base --is-ancestor <sha> origin/main`, not an empty `git log origin/main..HEAD`.
 - The pre-push and PreToolUse hooks refuse a compound command whole: keep file writes and commits in separate Bash calls.
 - 🔴 **Worktrees are OFF** (owner, 2026-10-02, by card): never `isolation: "worktree"`, never `git worktree add` (`block_worktrees.py` refuses both). Writing helpers edit in the window's clone, one at a time when paths could overlap; the window commits explicit paths. Brief helpers that `reset --hard`, `checkout --` and `stash` are forbidden and a conflict is reported, never cleared.
-- **Clone pool: 16 clones / 80 GB** (GB line raised from 70 on 2026-11-18, owner: "You set the GB limit, so yes do as you think."; owner by card 2026-11-02 18:35 PST, "How hard should Relentless run this machine? → 8 workers, 16 clones / 70 GB", from 10 / 40; first approved 2026-10-31: "I trust you, but please monitor them carefully. They seem to propagate prolifically."). Refused at creation by `scratch_clone.py`; alarm `disk.pool_breach`.
+- **Clone pool: 16 clones / 80 GB** (GB line raised from 70 on 2026-11-18, owner: "You set the GB limit, so yes do as you think."; owner by card 2026-11-02 18:35 PST, "How hard should Relentless run this machine? → 8 workers, 16 clones / 70 GB", from 10 / 40; first approved 2026-10-31, for writers above 4: "I trust you, but please monitor them carefully. They seem to propagate prolifically."). Refused at creation by `scratch_clone.py`, which reuses an idle pushed clone first and reports count, GB and oldest. One alarm, `disk.pool_breach`: it also fires on any helper clone with unlanded work (pool, `rm/scratch`, session dir; PROTECTED is no excuse) after an idle hour, except a trailing lesson/ledger commit (the belt carries those) and a commit whose content origin/main already holds under another hash. A pool clone with unpushed work is never reused. Revert if a clone strands work or the pool passes 80 GB.
 - **Per-writer state, nothing shared:** ledger shards `ledger/events/<SEAT>.jsonl` (`merge=union`, `ledger_lint.py`; never `checkout --ours/--theirs` one); queue views are rendered on read (`rimflow queue <SEAT>`); lessons are one file each under `infrastructure/state/lessons/`; review status records under `infrastructure/state/code_review/`; artpipe state is outside git at `D:\ClaudeWork\rimmandrake\artpipe\`.
 - **Windows-side tools:** builds go through `winbuild.py <Mod|csproj>`; `codex.exe` needs `D:\ClaudeWork\rimmandrake\scratch\codex\` staging (`gpt_consult.py`, `codex_image.py` do it). 🔴 A committed mod DLL carries a `.srchash` and is pushed with it (hook `block_dll_source_mismatch.py`, on push); after a merge touching a mod's `Source/`, rebuild — never pick a side's DLL.
 - Drained historical work lives in `archive/*` tags on origin.
@@ -538,9 +538,10 @@ lands in the same file you already read.
 keyboard or mouse clock, and his touching, leaving or returning to the machine never gates, delays, yields,
 requeues or aborts anything: a bridge take, deploy, restart, dispatcher ring, seat restart, arena lane, TestPilot or
 runner. A seat MAY take the bridge, deploy and restart the game on its own when it is free, ours, or stale by the
-45-minute rule, and lists each act in his daily digest (class `bridge idle`). Still binding: his OWNER hold
-(below) and `./bridge` override, never a flyer's flight, and the game is never fullscreened or focused, so
-it does not steal his screen. The arena lane config key `owner_playing` is ignored and dropped.
+45-minute rule (`rimflow bridge idle --for "<what>"` reports it;
+`rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...` do it), and lists each act in his daily digest (class `bridge idle`). Still
+binding: his OWNER hold (below) and `./bridge` override, never a flyer's flight (`--flyer` or flight wording refuses),
+and the game is never fullscreened or focused, so it does not steal his screen. The arena lane config key `owner_playing` is ignored and dropped.
 
 🔴 **His OWNER hold is takeable 45 minutes after his last interaction** (owner, by question card 2026-10-30, "Should
 agents ever be allowed to take your hold?", typed: *"45 minutes after my last interaction, or I deliberately release
@@ -551,6 +552,9 @@ mouse or presence. Until then every take refuses, `--force` included, naming his
 signal refuses. The one exception is the Conductor's mindful cut (owner 2026-11-19, §Only five acts stay his): from the
 Conductor window, `rimflow bridge take|release --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why
 "<why>; lost: <what his sitting loses if this is wrong>; undo: <how he gets it back>"`, never for a flyer's flight. Code: `src/RimMandrake/rimflow/owner_interaction.py`, gate in `rimflow/cli.py` `_take_decision`.
+Seat OWNER is his authority, not his activity: an agent's `--owner-said`, `--by-card`, `--per-ruling` or `--why`
+restarts nothing (`is_his_act`). `host_guard` holds the same line across clones: a live OWNER lock takes no `--force`
+without the cli's verdict.
 
 🔴 **Holding the bridge is blanket authorization — never ask what to do with it** (owner,
 2026-09-19, verbatim: *"Never ask that. If you have bridge, you may start steam, launch

@@ -18,7 +18,8 @@ and its measurements live in the file it points at:
 | topic | full text |
 |---|---|
 | biome, roster, sea, naming-tier rulings | `design/RimMandrake/biome_rulings.md` |
-| north star, LLM transport, pits, DLC, git, code review, art, bridge, savegame options | `design/RimMandrake/standing_rulings.md` |
+| north star, LLM transport, pits, DLC, git, code review, art, bridge, savegame options, delegation, pipeline, judges, spend | `design/RimMandrake/standing_rulings.md` |
+| measurements and incident detail moved out of this file | `design/RimMandrake/CLAUDE.history.md` |
 | instruments that return a confident wrong number | `infrastructure/state/facts/instrument_traps.md` |
 | tools with surprising side effects | `infrastructure/state/facts/tool_traps.md` |
 | creature flight (stat, race flags, flip-book) | `skills/rimworld-modding/references/flight.md` |
@@ -30,9 +31,9 @@ and its measurements live in the file it points at:
 and is debugged through it; every live poking session ends by writing what it learned —
 including informative false theories — into that script. Agents write and approve those
 scripts. North-star bars: agents may add regression checks and new bars (owner 2026-10-26,
-*"Both autonomy questions are yes"*; `delegation_policy.md` §1); loosening a bar is the Conductor's mindful act (above). The 2026-10-01 build pause was
-**lifted by the owner 2026-10-02** (*"Build pause is lifted."*); every new mod still ships with
-its first script. Process: `design/RimMandrake/debug_process.md`.
+*"Both autonomy questions are yes"*; `delegation_policy.md` §1); loosening a bar is the Conductor's mindful act
+(§Only five acts stay his, below). Every new mod ships with its first script. Process:
+`design/RimMandrake/debug_process.md`; the 2026-10-01 build pause and its lifting: `infrastructure/agents/CHARTER.md`.
 
 ## 🔴 There is no worldgen feature, in any version — owner, 2026-08-15
 
@@ -58,7 +59,7 @@ its first script. Process: `design/RimMandrake/debug_process.md`.
 - ⛔ Never repoint owned content at a donor def to make it appear on today's map; ⛔ never
   cite a tile count as evidence that something is or is not built. Keep the paint list
   (`BIOME_PAINT_ONCE_AT_THE_END_1`). **About to report one of our biomes on zero tiles? You
-  have rediscovered this. Stop.** (It cost three reconciliation passes.)
+  have rediscovered this. Stop.**
 - 🔴 **`world/ASHKARR_WORLDMAP_tiles.csv` is a RECORD, not the planet** — *"It is a RECORD of
   the planet, not a rival to it."* It tells you the planet on its export date; the live
   system is the only instrument for "right now".
@@ -73,6 +74,10 @@ Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
 *"And stop the new biome mods work. Only Pyrelands as a biome mod right now."* The held list is `src/RimMandrake/rimflow/mod_owner_hold.json` (the PIPELINE launches, chains and alarms nothing on a held mod; he or the Conductor lifts one (owner, by card 2026-11-19: *"yes... but Conductor should also be able to lift a Hold. We work together, don't use me as a bottleneck alone."*): `mod_owner_hold.py lift <Mod> --said "…"` is his lift, `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_LIFT_HOLD_NOT_HIM_ALONE --why "…"` from the Conductor window is the Conductor's, recorded as its act (never as his words) and in his daily digest; no helper, other seat or the tick lifts one, and `pipe on` never does. A lifted mod still does not run while its readiness list is not READY (§No mod runs forward on a broken pipeline). **Design text on a held mod is allowed** (owner, by card 2026-11-19: *"Design text is allowed, and we WILL return to the mods... they're not going to be deprecated, don't worry."*): a helper may write design; builds, tests and live runs stay held; the held mods will return and are not deprecated.
 Full text: `standing_rulings.md` §Owner hold.
+
+## 🔴 No mod runs forward on a broken pipeline — owner, 2026-11-19
+
+*"We're not running mods forward until the pipeline is fixed, ok? So now you don't have to ask me anymore for that."* No agent switches a mod stage on, releases a ceiling for a mod, or launches a mod's build or visit while an open pipeline ticket classed BLOCKS lies on that mod's path; the check is that mod's readiness list (every component it will touch, each open ticket BLOCKS / RARE / NOT ON PATH, "could not look" never clean), and "fixed" means the list reads READY. Never ask him whether to run a mod before then; pipeline repair, design text and investigations go on. Full text: `standing_rulings.md` §No mod runs forward on a broken pipeline.
 
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)
 
@@ -112,9 +117,9 @@ search API. Authority: `biome_mod_architecture.md` §7 Q11a; detail in `biome_ru
 
 - **The game reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`,
   never this repo.** Writing a file is not deploying it.
-- **A cold load is ~15 minutes on the full list; a quicktest map is ~90 s.** Never
-  "restart and see". *(MEASURED 2026-09-07, second launch of a session; a first launch
-  after a reboot may run slower.)*
+- **A cold load on the full list costs many minutes; a quicktest map is ~90 s.** Never
+  "restart and see". The measured figures, which grow with the mod list, are in
+  `design/RimMandrake/CLAUDE.history.md` and the `rimworld-load-round` skill.
 - **`ModsConfig.xml` is the live mod list**, at
   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
   🔴 **Parse it** (`ET.parse(p).find("activeMods")`) for the active count — never `grep` it,
@@ -225,34 +230,39 @@ capture images of flight. It doesn't work."* Verify flight by a deterministic ST
 
 ## Queue items are NAMED, not numbered
 
-The grammar is `~/.claude/CLAUDE.md`'s `PROJECT_VERB_INTENTION_TWIST`; this project's slot 1 for new names is `RIMMANDRAKE`.
-The registry Id stays `rimmaster`; existing `RIMMASTER_*` names stay valid forever and are never renamed. `rimflow namecheck <NAME>`
-shows the parse and `file`/`spawn` refuse the rest. The registry is read from `$LODESTAR_ROOT/sync/registry.md` (default `~/dev/Lodestar`);
-if unreadable the refusal names that path. Older names (`SUBJECT_INTENT_TWIST`, `…_1`, `B*`/`C*`/`D*`/`W*`) stay valid forever, never
-renamed. History: `design/RimMandrake/ticket_naming_2026-10-10.md`.
+The grammar is `~/.claude/CLAUDE.md`'s `PROJECT_VERB_INTENTION_TWIST`; this project's slot 1 for new names is `RIMMANDRAKE`,
+and the registry Id stays `rimmaster`. Every older name (`RIMMASTER_*`, `SUBJECT_INTENT_TWIST`, `…_1`, `B*`/`C*`/`D*`/`W*`) stays
+valid forever and is never renamed. `rimflow namecheck <NAME>` shows the parse and `file`/`spawn` refuse the rest. The registry is
+read from `$LODESTAR_ROOT/sync/registry.md` (default `~/dev/Lodestar`); if unreadable the refusal names that path. History:
+`design/RimMandrake/ticket_naming_2026-10-10.md`.
 
 ## Correctness outranks seat ownership; wrong material is deleted
 
 User-level rule (fix a false statement on sight in anyone's file; delete, never supersede). Here: commit it at once by explicit path; full rule: CHARTER.
 
-## 🔑 Agents decide nearly everything, art included — owner, 2026-10-22
+## 🔴 Agents decide nearly everything; only five acts stay his, and the Conductor may do the rest, mindfully — owner, 2026-10-22 and 2026-11-19
 
 *"Nearly everything including art. An agent can absolutely ask another agent for an art ruling based on some prose
-constraints and requirements we can draft."* Taste calls go to a judge agent (not the maker); every delegated call is
-logged `--why "delegated: <class>"`, never as his approval, and reaches him in a daily digest.
-
-## 🔴 Only five acts stay his; the Conductor may do the rest, mindfully — owner, 2026-11-19
-
-*"I only want to preserve Flyer flights, replacing art I kept, pass at my walk, spending money, public publishing.
-Everything else the Conductor should mindfully be able to do."* His five: a live flyer flight test · replacing art he
-kept (its open exceptions stay open) · the pass at his walk (gameplay, fun, theme, UI) · spending money · publishing
-outside the private repos. Every other act that needed him is the **Conductor window's** (its own seat key, no
+constraints and requirements we can draft."* (2026-10-22) · *"I only want to preserve Flyer flights, replacing art I
+kept, pass at my walk, spending money, public publishing. Everything else the Conductor should mindfully be able to
+do."* (2026-11-19). Taste calls (art included) go to a judge agent, never the maker; every delegated call is logged
+`--why "delegated: <class>"`, never as his approval, and reaches him in a daily digest. His five: a live flyer flight
+test · replacing art he kept (its open exceptions stay open) · the pass at his walk (gameplay, fun, theme, UI) ·
+spending money · publishing outside the private repos. Every other act that needed him is the **Conductor window's** (its own seat key, no
 `RM_ROLE_UNIT`; no helper, seat, role or tick), logged `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS
 --why "<act and reason>"`, never as his words, and in his digest. Cutting his OWNER bridge hold, the account order or
 leave line, deleting work not ours, and loosening a bar also name `lost:` and `undo:` in the why. **Every card bound
 for him is reviewed by the Conductor first:** not one of the five and no evidence against the obvious answer, it acts
 now and alerts him after. Not changed: `~/.claude/CLAUDE.md` (no `push --force`), physical acts (a login, a screen he
 must look at). Full text: `standing_rulings.md` §Only five acts stay his; `delegation_policy.md` §2.
+
+## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
+
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
+
+## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11)
+
+`--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text; the whole card, the picked option's description included, is stamped from the card store: `src/RimMandrake/rimflow/card_capture.py`) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
 
 ## 🔴 The Evidence-for-Ask rule — owner, 2026-11-15
 
@@ -278,10 +288,6 @@ when the fix is unknown, outside its tools, or would change a north-star bar, wi
 workaround without the permanent fix is not allowed. A mod's gaps still go through the stages. Full text:
 `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
 
-## 🔴 No mod runs forward on a broken pipeline — owner, 2026-11-19
-
-*"We're not running mods forward until the pipeline is fixed, ok? So now you don't have to ask me anymore for that."* No agent switches a mod stage on, releases a ceiling for a mod, or launches a mod's build or visit while an open pipeline ticket classed BLOCKS lies on that mod's path; the check is that mod's readiness list (every component it will touch, each open ticket BLOCKS / RARE / NOT ON PATH, "could not look" never clean), and "fixed" means the list reads READY. Never ask him whether to run a mod before then; pipeline repair, design text and investigations go on. Full text: `standing_rulings.md` §No mod runs forward on a broken pipeline.
-
 ## 🔴 No trial is spent by a system failure — owner, 2026-11-18
 
 *"I will not accept ANY system that pointlessly expends such statistical measurements based on failed system calls or behavior."* A run killed, timed out, never started or stopped by him or the Conductor spends no trial, turn, look or cycle: the tick classes it void_system, and `maturation_dispatch.py void <unit> --why "..."` (reversed by `unvoid`) voids any run by hand. Never answer "it's frozen" or "it's append-only". Full text: `standing_rulings.md` §No trial is spent by a system failure.
@@ -300,34 +306,30 @@ workaround without the permanent fix is not allowed. A mod's gaps still go throu
 
 ## 🔴 Spend in weighted tokens; never hold the game for his look while he is away — owner, 2026-11-16
 
-*"Please speak in terms of weighted tokens not money. The money quotes don't translate meaningfully. Do not hold live testing when I can't go to the desktop such as now."* Every line a person reads states spend in weighted tokens, never dollars. A staged owner look is kept as a save and re-staged when he sits down; the game goes back to the tick. Full text: `standing_rulings.md` §Spend in weighted tokens.
+*"Please speak in terms of weighted tokens not money. The money quotes don't translate meaningfully. Do not hold live testing when I can't go to the desktop such as now."* Weighted tokens are the user-level rule (the one price table is `MODEL_PRICES` in `src/RimMandrake/rimflow/role_launch.py`). Here: a staged owner look is kept as a save and re-staged when he sits down; the game goes back to the tick. Full text: `standing_rulings.md` §Spend in weighted tokens.
 
 ## 🔴 Nothing reaches the owner unread — owner, 2026-10-22
 
 User-level rule. Here: a walkthrough means a zoomed capture of every station and connection, stared at; a naive judge is a fresh Opus that did not make it (`gpt_consult.py` for a big sheet). Sheet tools refuse without `<stem>.prereview.json` (`src/RimMandrake/Utils/art/prereview.py`). Full text: `standing_rulings.md` §Nothing reaches the owner unread.
 
-## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
-
-*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
-
-## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text; the whole card, the picked option's description included, is stamped from the card store: `src/RimMandrake/rimflow/card_capture.py`) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
-
 ## 🔴 An operational item is done only when it is running — owner, 2026-10-31
 
-User-level rule (*"We keep finding problems, making tickets, and they never get folded into operations."*). Here an operational item closes only on a promise that names **what must stay alive and its last reading**: `rimflow close <ID> --sha <sha> --live "unit=rm-foo.timer reading=<path> max_age=6h"` (or `hook=<file>`, or `once: <why>`). `rimflow` runs the check at close and **refuses an unproven close**; `rm-deadman` (`deadman_check.py`) rechecks every promise for good and **reopens the same item** (`rimflow live --result broken`, outage counted) if it dies. An alarm has one fixed item id, so a repeat reopens it instead of filing a new one. Never file a second ticket for a dead fix. Full text: `design/RimMandrake/parallel_review_2026-10-31/folded_into_operations.md`.
+User-level rule. Here an operational item closes only on a promise that names **what must stay alive and its last reading**: `rimflow close <ID> --sha <sha> --live "unit=rm-foo.timer reading=<path> max_age=6h"` (or `hook=<file>`, or `once: <why>`). `rimflow` runs the check at close and **refuses an unproven close**; `rm-deadman` (`deadman_check.py`) rechecks every promise for good and **reopens the same item** (`rimflow live --result broken`, outage counted) if it dies. An alarm has one fixed item id, so a repeat reopens it instead of filing a new one. Never file a second ticket for a dead fix. Full text: `design/RimMandrake/parallel_review_2026-10-31/folded_into_operations.md`.
 
 ## Git
 
 **Operating doc: `design/RimMandrake/GIT_WORKFLOW.md`** — read it before touching git.
-Work in your seat clone (`/home/mandrake/rm/bench`);
+Work in your seat clone (`/home/mandrake/rm/bench`) or the helper clone your brief names;
 `D:\Luke\dev\RimMandrake` is a read-only mirror. Land with `./publish` (prints `PUBLISHED <sha>`, skill `clone-landing-commits`),
-and keep file writes and commits in separate Bash calls (hooks refuse a compound command whole).
-🔴 **`git worktree` is OFF** (owner, by card; `block_worktrees.py`). **A bounded pool of up to 16 reused
-clones and 80 GB is approved** (GB line raised from 70 on 2026-11-18, owner: "You set the GB limit, so yes do as you think.") for writers above 4 (owner: "I trust you, but please monitor them carefully. They seem to
-propagate prolifically."), refused at creation by `scratch_clone.py` (an idle pushed clone is
-reused first); `scratch_clone.py` reports count, GB, oldest; one alarm, `disk.pool_breach`; any helper clone with unlanded work
-(pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 80 GB. A committed mod DLL
-travels with its `.srchash`. More: `standing_rulings.md` §Git.
+and keep file writes and commits in separate Bash calls (hooks refuse a compound command whole). Commit explicit
+paths only: the pathspec rides on the commit, never `git add -A`/`.`/`-a` (`block_blanket_git_stage.py`).
+🔴 **`git worktree` is OFF** (owner, by card 2026-10-02; `block_worktrees.py`). **A bounded pool of up to 16 reused
+clones and 80 GB is approved** for writers above 4 (owner: "I trust you, but please monitor them carefully. They seem to
+propagate prolifically."; GB line raised from 70 on 2026-11-18, owner: "You set the GB limit, so yes do as you think."),
+refused at creation by `scratch_clone.py`; its one alarm, `disk.pool_breach`, also fires on any helper clone left holding
+unlanded work after an idle hour. Revert if a clone strands work or the pool passes 80 GB. A committed mod DLL
+travels with its `.srchash`. The pool's reuse and alarm fine print, the landing wrappers and per-writer state:
+`standing_rulings.md` §Git.
 
 ## Each mod has its own Design Version
 
@@ -355,7 +357,7 @@ Check a file is still reachable before spending a review on it. Procedure:
 `src/RimMandrake/Utils/pipeline_tests.json`). Full text: `standing_rulings.md` §A boundary page before pipeline code.
 - **Before new pipeline code, its one-page list** (`design/specs/<component>/boundary.md`: what it accepts, which failures it does not survive, what it promises; each promise gets a test of the same name).
 - **Pipeline code is clean when every promise on its page has a test and it has had two looks**; a later edit stays clean while those tests pass. A full-file review finding nothing is not its bar.
-- **A review claim is fixed only if it breaks a promise on the page**; the others are one line on `polish.md` or `next_version.md` beside the page. His 8:22 PM stop of Codex and GPT reviews of pipeline code still stands until a calibrated review brief exists.
+- **A review claim is fixed only if it breaks a promise on the page**; the others are one line on `polish.md` or `next_version.md` beside the page. His 8:22 PM PST stop (2026-11-18) of Codex and GPT reviews of pipeline code still stands until a calibrated review brief exists.
 
 ## What is where
 
@@ -429,23 +431,22 @@ you stop). It errs toward ALLOWING: a hold with no event for 45 minutes is stale
 taken; `take --force` works on any seat's hold. ⭐ The owner overrides with `./bridge conductor|free`.
 **RELENTLESS** was the retired Relentless Pipeline's bridge holder (`model.bridge_identity`), not a seat: only old `bridge` events carry it.
 🔴 **His OWNER hold** (owner, by card 2026-10-30: *"45 minutes after my last interaction, or I deliberately release
-it"*): takeable only 45 min after his last deliberate interaction (a ledger event, `./bridge` or `./game` by his own
-hands, his chat prompt or card answer to any seat), `--force` included; an unmeasured signal refuses
+it"*): takeable only 45 min after his last deliberate interaction, `--force` included; an unmeasured signal refuses
 (`rimflow/owner_interaction.py`). Only the Conductor window may cut it sooner, as its mindful act (`--per-ruling
-RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "…; lost: …; undo: …"`, never for a flyer's flight). Seat OWNER is his authority, not his activity: an agent's `--owner-said`, `--by-card`,
-`--per-ruling` or `--why` restarts nothing (`is_his_act`). `host_guard` holds the same line across clones: a live OWNER
-lock takes no `--force` without the cli's verdict.
+RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "…; lost: …; undo: …"`, never for a flyer's flight). Seat
+OWNER is his authority, not his activity: an agent's provenance flag restarts nothing (`is_his_act`), and `host_guard`
+holds the same line across clones.
 🔴 **His presence at the machine is not an event** (owner, 2026-10-30: *"I really, really need you to strip "when I come
 back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*): nothing
 reads his input clock, and his touching, leaving or returning to the machine never gates, delays, yields, requeues or
-aborts a take, deploy, restart, ring, arena lane, TestPilot or runner. A seat MAY take the bridge, deploy and restart the
-game when the bridge is free, ours, or stale by the 45-min rule (`rimflow bridge idle --for "<what>"` reports it;
-`rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...` do it; each act goes in his
+aborts anything. A seat MAY take the bridge, deploy and restart the game when the bridge is free, ours, or stale by the
+45-min rule (`rimflow bridge take --idle-ok --for "<what>"`, `./game --idle-ok --why "<what>" ...`; each act goes in his
 daily digest, class `bridge idle`). Still binding: his OWNER hold (above) and `./bridge` override, never a flyer's
-flight (`--flyer` or flight wording refuses), never fullscreen or focus the game.
+flight, never fullscreen or focus the game. What counts as his interaction, and the full text:
+`standing_rulings.md` §The bridge is passed through one file.
 🔴 **Holding the bridge is blanket authorization** — *"Never ask that. If you have bridge, you may
 start steam, launch game, anything you need."* Game-state relays are STAMP-ONLY (*"burn tokens
-unnecessarily and rarely inform"*). Detail: `standing_rulings.md`.
+unnecessarily and rarely inform"*).
 
 ## Skills
 
