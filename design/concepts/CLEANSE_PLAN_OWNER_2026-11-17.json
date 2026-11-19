@@ -98,8 +98,10 @@
    "marks": {}
   },
   "TerminalBiomes": {
-   "approve": "digest",
-   "approved_digest": "c5c7316d22507d72d2e124fcec602a998df6750f212db60421209f56e978f1ed",
+   "approve": "fresh_review",
+   "approved_digest": null,
+   "edited_after_approval": "c5c7316d22507d72d2e124fcec602a998df6750f212db60421209f56e978f1ed",
+   "why": "edited after his approval only to drop row X30/ticket T30 (skylight tenancy, claim buoys, ageing charts), which he removed 2026-09-27; approved once a fresh converged review names the current digest (Conductor, item RIMMANDRAKE_ASK_CLEANSE_TENANCY_ROW_APPROVED_AFTER_HIS_CUT)",
    "marks": {}
   },
   "TheForge": {

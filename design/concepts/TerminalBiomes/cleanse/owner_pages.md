@@ -24,7 +24,7 @@ Next version, switched off:
 - Chill growers, extraction and fuel/drug processing.
 - Hesuun extrusion, fuselight explosion and tarnn wake.
 - Twilight plant charge, wilt and event spreading.
-- Lab-ending receiver, claims, charts and theatrical lid-dark events.
+- Lab-ending receiver and theatrical lid-dark events.
 - Chill warmth defence and harvestable aurora surges.
 - Inhabited campaign holdings and automatic Compact weir dressing.
 
@@ -32,7 +32,7 @@ Species remain rostered when attached extras stop. Existing code/defs stay behin
 
 **Recommend retiring:** inert cross-biome controls; they change nothing and the cross-biome guarantee was already released. I recommend; you decide.
 
-**Counts:** capabilities 71 before, 36 kept; next version 34; recommend retirement 1. Bars 0 before, 8 proposed; live-only bars 0 before, 2 proposed. Before bars are [measured] from the CASE’s empty old-bar set; capability counts come from this proposal’s source census. Checks 12; rules 11; unknown shared meetings 8; models 5; tickets 44; questions 1. These are proposal counts, not gameplay measurements.
+**Counts:** capabilities 70 before, 36 kept; next version 33; recommend retirement 1. Bars 0 before, 8 proposed; live-only bars 0 before, 2 proposed. Before bars are [measured] from the CASE’s empty old-bar set; capability counts come from this proposal’s source census. Checks 12; rules 11; unknown shared meetings 8; models 5; tickets 43; questions 1. These are proposal counts, not gameplay measurements.
 
 # Page two — what to check
 

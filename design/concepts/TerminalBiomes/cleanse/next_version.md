@@ -147,11 +147,6 @@ All scope decisions below are the Designer’s delegated calls, not new owner ru
   Why outside land/life/signature: Campaign ending content outside the sea visit promise; no worldgen or new planet.
   State: present; preserve source/defs and default off pending review/application.
 
-- **Twilight skylight tenancy, claim buoys and ageing charts** (T30).
-  What: Twilight skylight tenancy, claim buoys and ageing charts.
-  Why outside land/life/signature: Real-estate economy beyond temporary natural illumination.
-  State: unknown; preserve source/defs and default off pending review/application.
-
 - **Lid-dark crisis and theatrical gardener-passing events** (T31).
   What: Lid-dark crisis and theatrical gardener-passing events.
   Why outside land/life/signature: Special lore/weather episodes beyond minimal roof tending and ordinary well replacement.

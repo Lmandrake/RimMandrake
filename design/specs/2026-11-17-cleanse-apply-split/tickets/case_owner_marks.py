@@ -10,7 +10,7 @@ by proposal digest) and the proposal's census.json / converge.json; it never rea
 CLI `cleanse_plan.py check (<Mod> | --all) [--repo R] [--plan P]`: one line per mod `PLAN <Mod> <ANSWER> [...]`;
 exit 0 all APPROVED, 4 any COULD_NOT_LOOK, else 1.
 
-Input kinds read: the live repo (21 unedited approved, Abyss and TheRot awaiting their fresh review); Pyrelands; a
+Input kinds read: the live repo (digest mods approved, fresh_review mods awaiting their fresh review or approved by it); Pyrelands; a
 proposal copied under a name the plan does not hold; TheRot with its marks file deleted, with pleasure_brew dropped,
 with a converged current review; Abyss with the fishery row gone, renamed to a non-fishery id, with marks flipped, with
 a stale and a current review; a marks file that contradicts the plan, one with bold headers and no outer pipes, and an
@@ -122,10 +122,13 @@ def main():
     # the live repo, read in place (read only)
     code, lines, err = cli(ROOT, "--all")
     got = {ln.split()[1]: ln.split()[2] for ln in lines if len(ln.split()) >= 3}
-    want = {m: "APPROVED" for m in json.load(open(os.path.join(ROOT, PLAN_REL)))["mods"]}
-    want.update(Abyss="AWAITING_REVIEW", TheRot="AWAITING_REVIEW")
-    case("live --all", got == want and code == 1, "exit %s; differs at %s %s" % (
-        code, sorted(k for k in set(got) | set(want) if got.get(k) != want.get(k))[:6], err))
+    plan = json.load(open(os.path.join(ROOT, PLAN_REL)))["mods"]
+    # a digest mod reads APPROVED; a fresh_review mod reads AWAITING_REVIEW until its converged review lands
+    want = {m: ("APPROVED", "AWAITING_REVIEW") if e["approve"] == "fresh_review" else ("APPROVED",)
+            for m, e in plan.items()}
+    bad = sorted(k for k in set(got) | set(want) if got.get(k) not in want.get(k, ()))
+    code_want = 0 if got and all(a == "APPROVED" for a in got.values()) else 1
+    case("live --all", not bad and code == code_want, "exit %s; differs at %s %s" % (code, bad[:6], err))
     case("live --all names 23", len(got) == 23, "%d mods read" % len(got))
 
     root = fixture("pyre")

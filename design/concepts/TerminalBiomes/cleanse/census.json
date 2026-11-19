@@ -859,19 +859,6 @@
       "ticket": "T29"
     },
     {
-      "id": "X30",
-      "what": "Twilight skylight tenancy, claim buoys and ageing charts",
-      "built": "unknown",
-      "evidence": "design/Jawa/worldbuilding/biomes/the_twilight_deep.md; src/RimMandrake/TerminalBiomes/Source/RM_MapComponent_WellLedger.cs",
-      "proven": "stale",
-      "called_by": "src/RimMandrake/TerminalBiomes/Languages/English/Keyed/RM_TwilightLightEconomy.xml",
-      "serves": "Deferred experience",
-      "fate": "next_version",
-      "why": "delegated: Real-estate economy beyond temporary natural illumination.",
-      "needed_by": "",
-      "ticket": "T30"
-    },
-    {
       "id": "X31",
       "what": "Lid-dark crisis and theatrical gardener-passing events",
       "built": "unknown",
