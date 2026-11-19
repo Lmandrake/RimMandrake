@@ -7,6 +7,14 @@ the place to read; what happened to every idea in them is in `design/concepts/Cr
 Nothing has been deleted yet. The Cracked Lands are not on the owner's hold list, but only the Pyrelands is advancing
 as a biome mod: this is a design document only and it launches nothing.
 
+**Second reader, 2026-11-18:** a second agent that did not write this page read the older Cracked Lands files whole
+and repaired it. The hull section now rests on his shield rulings of 2026-09-02 (*"nothing 'holds out water'"*) and
+on the built frame, which already counts a sandstorm against an unscreened ship. The fossil case, which the first
+read recommended dropping, is this biome's part on the ship list and is kept. His four rulings of 2026-09-10 on the
+witnessed flood are in: its trigger is *the first gravship landing within range*. The plants and animals have their
+names and lines. What changed and why is at the top of `rewrite_choices.md`. The Cracked Lands have no locked sheet
+or tree, so there is nothing locked to leave unedited.
+
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/CrackedLands/`
 (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its path by sitting here. Nothing in
 the pipeline reads it by name yet. The Cracked Lands have no locked sheet or tree; their only pipeline material is
@@ -33,7 +41,10 @@ sea. Water comes to it, rarely, and leaves.
 Canyon country below the only dayside mountains that rain: mesas, hoodoos, slot canyons, clay pans split into
 polygons. *"Most of the time it is dry, cracked, shadowed and still."* Then the water comes down: *"violent downward
 floods of hot, crud-laden water that are fertilizer, life, death, disaster and damage all rolled into one"* (owner).
-It leaves soil in the shade, the only real soil on the dryland ladder, and then *"the water hides"* in the cracks.
+The water is the Contagion's runoff: *"red at the peaks, brown at the flats"*, sterilised by the sun on the way
+down, and *"the crud is the Contagion's dead, which is why it fertilizes."* It leaves soil in the shade, the only
+real soil on the dryland ladder, and then *"the water hides"* in the cracks. *"Everything alive here knows where
+the high ground is."*
 The animals here are divided *"by when it is alive"*: the Sealed, who sleep through the dry years under the clay;
 the Spenders, who live a whole life in the flood-weeks; the Patient, who wait in the shade line. *"You see nothing
 all day, and are watched the whole time."*
@@ -74,8 +85,14 @@ storm on the peaks can pull the next one forward. So the outer edge of a floor s
 the crew does not get to schedule. Most stops should be a few days on the fresh mud.
 
 A flood must be something a stop can meet. On a twenty-day default most short visits would see only the stillness.
-He already ruled the cure for a first visit: the campaign arranges a witnessed flood at least once. Beyond that the
-interval is tuning, and this design asks only that a crew which stays into its second week has heard the chimes.
+He already ruled the cure for a first visit: *"the plot organizes a witnessed flood at least once"*, and on
+2026-09-10 he ruled how. The invitation comes from a Moisture Farmer; the site is *"one canonical, fixed authored
+tile"*; and the trigger is the **first gravship landing within range** of the Cracked Lands, *"tied to player
+motion, not the calendar."* His constraint behind it: *"timing rides the plot, never weather RNG."* The quest spec's
+phrase for what the player is doing is *"choosing your moment to believe the warnings."* So the ship's first stop
+here is the one stop where the flood is promised. It is a campaign quest, designed and unbuilt (0.2.0 here; see
+`NEEDS HIM`). After it, floods run as a standing rare event. Beyond that the interval is tuning, and this design
+asks only that a crew which stays into its second week has heard the chimes.
 
 A season is fifteen days. Nothing in 0.1.0 needs one.
 
@@ -89,7 +106,9 @@ the ship down, and it is the most important decision of the stop: high bench or 
 
 On the ground it is silent and nothing moves. The pans are cracked into polygons. Along the foot of the walls, in
 the shade and nowhere else, runs a thin line of living colour. The walls carry old stain lines well above head
-height, and above the stains there are ledges cut by somebody, with steps.
+height, and above the stains there are ledges cut by somebody, with steps. Along the stain line itself sits a
+row of yellow, brain-folded globes: sevvuq, which grows at the tidemark and nowhere else. A player reads it as
+*"the water reaches here."*
 
 One pan near the landing site is *"slightly out of pattern — the polygons a touch too regular, the mounding a
 touch too high."*
@@ -109,7 +128,18 @@ refuge ledges and a way up to them; and, if a flood was recent, things half-buri
   burrows. They do nothing. Yet.
 - **The voice.** Long low calls down the crack network: tarruq, each answering the next. *"Wind, then tarruq, then
   wind."*
-- **The patient ones.** Ambushers at the seep and the shade line, and a plant with fangs.
+- **The patient ones.** Ambushers at the seep and the shade line, and a plant with fangs. There is *"no truce
+  here and there cannot be"*: the little open water this country has is *"the planet's ONE lethal water"*, because
+  nothing can see anything coming in a slot.
+- **None of it is green.** *"Only the Veqma shows green."* The rest of the shade line is violet ink-bladders under
+  rattling lavender bracts (nabbuq, food; *"a full bladder means water is stored underneath"*), coral rope reed
+  striped with dried mud (ruqqal, cloth: *"the Farmers' clothes end up the colour of their canyon"*), wire brooms
+  of copper and silver on the benches that hum before dry lightning (zennaq), a leafless slate-and-bone tree
+  leaning into the wall (harrovaq; *"old ones lean almost horizontal"*), and in the deepest slots cups of magenta
+  glass with a cyan rim that glow (luqqim, which *"lights the refuge ledges"*): *"the biome you hear in the stone,
+  and the biome you see in the slot."*
+- **The wall troll.** The uttaqar, *"a colossal, eyeless creature"* of the crags, at rest reads as rockfall: *"a
+  'rockfall' at the crag base that was not in yesterday's survey."*
 
 ## The first week
 
@@ -124,10 +154,18 @@ refuge ledges and a way up to them; and, if a flood was recent, things half-buri
   player watches. Irqit hatch as *"a sudden carpet of small frantic life between the roar and the dry."* A fresh
   line of salvage lies where the water left it, and half-buried hulls and speeders that were not there before.
 - **The pan gets up.** The muttavaq, a giant that has slept for years under a pan the crew took for ground, wakes
-  when the water reaches it, wades the wet floor feeding, and at the dry digs in wherever it stands and seals. It
-  is the same animal the whole time and can be inspected as one.
+  when the water reaches it, wades the wet floor feeding, and at the dry digs in wherever it stands and seals,
+  *"somewhere new."* It is *"neutral but unstoppable. It never hunts, never raids"*, and it *"also never stops:
+  walls, crops, buildings and pawns on its feeding line are things it walks through."* A ship is a building. It is
+  the same animal the whole time and can be inspected as one, and the flood does not hurt it.
 - **The fliers come to feed** and leave again. They really fly. Nothing nests here.
-- **The dry.** Within days the mud stiffens, the carpet dies, the fertility ends, and it is a quiet canyon again.
+- **Red mats on the wet clay.** Qirra opens only on ground the flood has just wetted and dies back as it dries;
+  it gives a little dye. Pale talus clasps root on the walls beside fossil rock.
+- **The ledges speak.** Each refuge pocket has a carving, and the old lines call the flood *"the mercy that kills,
+  then feeds."* (The carvings are built; their words are placeholders still owed to him.) Visitors and trained
+  animals run for the ledges by themselves when the warning starts. The crew has to be told.
+- **The dry.** Within days the mud stiffens, the carpet dies in *"drying windrows"* at the flood line, the
+  fertility ends, and it is a quiet canyon again.
 
 ## "OMG did you see that?"
 
@@ -139,7 +177,8 @@ Each can happen inside the visit. Each says what is on screen.
    moment later, far up the canyon, the first chime.
 3. **One more trip.** *On screen:* the near chime is ringing and one Jawa is still dragging a power cell toward
    the ledge. The water arrives on screen before the Jawa arrives at the ledge. Nothing in the game is more Jawa
-   than this, and it can kill.
+   than this, and it can kill. His words: *"you should never rely on a valley floor being safe for slow
+   transport, it's a gamble."*
 4. **The river.** *On screen:* a dry canyon becomes a brown river from wall to wall in the time it takes to read
    the alert. Whatever was stacked on the bed is in it.
 5. **The hill woke up.** *On screen:* the pan the crew stockpiled on heaves, cracks along lines *"radiating from a
@@ -152,7 +191,19 @@ Each can happen inside the visit. Each says what is on screen.
 8. **Launch on the chimes.** *On screen:* the ship lifting off the canyon floor with the roar already audible and
    half the salvage still on the bed.
 9. **The yard sale.** *On screen:* the crew down on fresh mud among hulls the flood just dealt out, working fast,
-   with the stain line on the wall behind them higher than the ship.
+   with the stain line on the wall behind them higher than the ship. What is still lying there after three days
+   *"is taken back by the mud."*
+10. **The water came through the ship.** *On screen:* a hull parked on the canyon floor, ramp shut, and brown
+    water rising in the corridor anyway. A roof shades; it does not elevate; and by his own rule nothing *"holds
+    out water."*
+11. **It walked through the wall.** *On screen:* the pan giant, awake and feeding up the wet floor, reaching the
+    crew's upstream barricade and not noticing it.
+12. **The rockfall moved.** *On screen:* a scree pile at the foot of the crag, seamed with old stone scars, turns
+    its eyeless head.
+
+**One of these needs saying plainly.** The tarruq's hush (2) is built, and since the build gave the tarruq a call
+there is something to hush; nobody has yet heard it in a live game. The river in 4 is, today, a capped patch of
+water and one light hit: wall to wall and harm that can kill are owed, as the Scope section says.
 
 ## When the Empire arrives
 
@@ -166,6 +217,7 @@ hates it... patrols through the best ambush terrain on the planet, where the loc
 - **The river is impartial.** If the chimes ring during a siege, the besiegers are standing where the water goes.
   Troopers are hit and drowned by the same rule as anyone. The crew has heard chimes before and they have not.
 - **The pans.** A camp pitched on a sleeping muttavaq is pitched on a sleeping muttavaq.
+- **No shield helps them either.** *"Slow pressing things move through all shields"*: the river is exactly that.
 - **In the open they see everything.** A ship on a bench has no cover at all; the probe needs only to look.
 
 ## Who else attacks; who hates the Empire
@@ -176,10 +228,18 @@ hates it... patrols through the best ambush terrain on the planet, where the loc
   here."* The tribes make *"the short sharp raid on the road itself."* All of them belong to the campaign layer;
   this biome supplies the ground they meet on.
 - **Rival salvage crews (0.2.0).** A flood is everybody's salvage strike. Other crews stake claims on the same
-  mud.
+  mud. By his cards of 2026-10-08 and 2026-10-09 the crew is drawn from an existing scavenger faction and it
+  *trades*: a short-lived shop on the mud, a visit and not a raid, hostile only *"once relations collapse."* In
+  the campaign they are Jawa with a crawler, which makes them the crew's own cousins working the same strike.
 - **The Moisture Farmers** are the only residents: high-bench homesteads, never the floor. Whether they shelter a
   hunted crew, sell to it, or sell it out is `UNSETTLED`.
-- **The ambushers** of the shade line; the uttaqar, a rock troll under the walls, if provoked.
+- **The ambushers** of the shade line; the uttaqar under the walls, if provoked: every wound it survives closes
+  as stone, so a fight that does not kill it leaves it harder to kill. *"Old uttaqar are effectively walking
+  petroglyphs, seamed with ossified wound-stone in layers a Farmer can read like tree rings."*
+- **On the road, in the sheet's words:** the Hutt toll that knows *"precisely where that line sits and stand[s] on
+  the correct side of it, smiling"*; the tribes, who never touch a cistern because *"settled water is legal water,
+  and they are the law's zealots"*; and the Geonosian column *"crossing the open flats in full sun, off-road,
+  unbothered"*, *"the sight that empties a toll post."*
 
 ## What forces the crew out; what lets them stay
 
@@ -201,7 +261,18 @@ hates it... patrols through the best ambush terrain on the planet, where the loc
 - **Crack-wax,** the sleepers' burrow lining, the Farmers' waterproofing.
 - **The bloom harvest,** whatever of it can be gathered before the dry; ink-bladder for the pot, rope reed for
   cloth.
-- **Fossils (0.2.0):** *"the ship's take is fossil cargo"*, cut from seams the flood exposes.
+- **Fossils (0.2.0):** *"the ship's take is fossil cargo"*, cut from seams the flood exposes: fern-mats and
+  trackway slabs, rarely *"a whole small animal in the stone"*. His words for why: *"the canyon walls are FULL of
+  the dead."* The quiet line under them, never stated in a tooltip: the deep strata hold pan-giants, *"some still
+  curled in the seal position. The pans have been sleeping here a very long time; not all of them woke."*
+- **The deck part: the fossil case (0.2.0, with the fossils).** This biome's entry on the list of what each place
+  gives the ship (`BIOME_SHIP_CONTRIBUTIONS_1`; `RM_FossilCase`, built): *"A whole small animal from the Cracked
+  Lands, curled in death in its slab of canyon stone, set behind glass... Bolted to a bulkhead it is the first
+  thing a visitor asks about, and the crew never tire of telling it."* The cast bible had it first: *"a gravship
+  galley with one bolted to the bulkhead."*
+- **The ship's ears.** The acoustic scanner every ship now carries was first pitched here, as "the Belly
+  Sounder"; he picked it on 2026-09-30 and it became a part for every biome. Its reading here: hidden water,
+  fossil strata, sealed pans.
 - **The Swale and the survey (0.2.0):** a seep-canal technique *"shaped for transient gravship players: the
   technique travels with the ship"*, and a survey of newly found hidden water, *"an exceptionally valuable thing
   to sell."*
@@ -213,14 +284,29 @@ hates it... patrols through the best ambush terrain on the planet, where the loc
 
 ## What the place does to the ship
 
-- **The flood.** A hull on the canyon floor is hit by the wall of water like everything else there. The sources
-  name the damage in general (*"disaster and damage"*; *"the farm that was built one meter too low"*) and nothing
-  ship-specific is built. The answers are the two the Farmers use, and one they do not have: park above the stain
-  line; build a wall *"facing the sun and the flood"* upstream of the hull; or launch on the chimes.
-- **Sandstorms** *"across the flats and the pans"* reach a ship on a bench. No source says they wear a hull, and
-  none is promised here.
+- **The flood goes through it.** His ruling on the shield sheet, 2026-09-02: *"Slow pressing things move through
+  all shields is long-standing canon, including the crew. This is why nothing 'holds out water,' it just doesn't
+  work that way."* So no shield mode answers the river. The cleanse of 2026-11-17 reached the same place from the
+  other side: *"a roof shades but does not elevate"*, and a covered or floored cell of the low bed is still in the
+  flood. A hull on the canyon floor is a roofed room on the canyon floor: the water comes aboard, and the crew
+  inside are hit and may drown like anyone caught on the bed. The hull itself is not broken by it. *"Its hull is
+  thick and can take a lot of damage in most situations, so no environment is immediately lethal"* (same sheet),
+  and the cleanse rules that the first version does not simulate collapse or goods being swept away. The answers
+  are the Farmers' two and one they do not have: park above the stain line; never the floor; or launch on the
+  chimes. (The Farmers' walls *"facing the sun and the flood"* stand on the benches, not the bed.) What is built
+  today is less than this: the flood skips roofed cells. That it must not is owed work.
+- **Sandstorms wear it, and that is built.** The campaign's weather for this biome includes sandstorms *"across
+  the flats and the pans."* The shared frame in `src/RimUtinni/ShipShields/` counts any weather that carries sand
+  as its particulate hazard: with no shield in particulate mode the things standing at the ship wear, a letter
+  warns after about six hours, and the wear doubles its pace. His words for the answer: *"Light kinetic deflectors
+  handle wind, ash, vapor, bio contamination, spores, smoke, sand, and rain damage completely."* A ship on a bench
+  is in the open for every storm; a ship in the cut is out of the sand and in the river's road. (The free biome's
+  own weather table has no sandstorm; the campaign's does.)
+- **The giant walks through it.** A muttavaq's feeding line goes through *"walls, crops, buildings and pawns."*
+  Nothing built makes it damage a structure yet (its trail is unbuilt), so this is the sheet's promise, 0.2.0 with
+  the trail.
 - **A ship-mounted chime was rejected by him** (2026-09-28: chimes work *"by being strung on lines up the canyons,
-  not magic"*). The ship hears the canyon's chimes like everyone else.
+  not magic"*), and so was the wax tank. The ship hears the canyon's chimes like everyone else.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -232,7 +318,7 @@ hates it... patrols through the best ambush terrain on the planet, where the loc
 | The river fills the open bed from wall to wall. | A canyon with a wide and a narrow reach. | A patch of water in the middle of a dry bed fails. |
 | Being caught means real harm, from impact and from drowning, that can kill and does not always. | Pawns left on the floor, several runs. | Never hurt fails; always dead fails. |
 | Prompt climbing gets people clear; slow freight is a gamble. | Two parties at the first chime: one drops everything, one finishes a haul. | A roofed room on the floor does not save anyone. |
-| A ship on the floor is in the river and can launch on the chimes. | The same landing ridden out and launched from. | A ship on a bench is untouched. |
+| A ship on the floor is in the river, crew aboard included, and can launch on the chimes. | The same landing ridden out with the ramp shut, and launched from. | A ship on a bench is untouched. A dry corridor inside a hull on the floor fails. |
 | After the water, the wetted bed is briefly fertile in the shade and then is not. | The bed followed from recede to dry. | A second flood does not stack it richer; unwetted cells gain nothing. |
 | Plants in wet mud visibly grow. | A soaked plant watched. | The same plant on dry ground. |
 | Irqit hatch as a carpet on wetted cells, live once, and die at the dry; fliers come to feed and really fly. | One recede through to the dry. | A flood elsewhere does not extend this carpet. A carried irqit still dies on time, visibly. |
@@ -265,7 +351,12 @@ Every feature is in one bucket.
 - The flood: wall to wall, with chimes and roar. (built as a capped patch today; wall to wall is owed)
 - The herald sequence before the chimes: wind, ticking, the tarruq's hush. (built)
 - Harm that can kill, by impact and drowning. (built as one light hit today; owed)
-- A hull on the floor in the river; launching on the chimes. (owed)
+- A hull on the floor in the river, the water aboard; launching on the chimes. (owed: today the flood skips
+  roofed cells)
+- Sandstorm wear on an unscreened ship, stopped by a particulate-mode shield. (built in the shared frame; campaign
+  weather only)
+- Sevvuq on the stain line, qirra on the wet clay, talus clasps on the walls, and the rest of the owned shade
+  flora. (built)
 - The wet aftermath: brief fertility in shade, visible growth, the irqit carpet, a feeding flier in the free
   roster. (built in part; the soil is permanent today, and the free flier is new)
 - The muttavaq's sleep, waking and sealing. The tarruq's calls. The rest of the cast as ordinary animals. (built)
@@ -273,14 +364,16 @@ Every feature is in one bucket.
 - Ordinary gathering: crack-wax, ink-bladder, rope reed and the other shade plants. (built)
 
 **0.2.0, the stop with company**
-- Rival salvage crews staking claims on the same mud. (designed; partly built)
-- Fossil seams the flood re-cuts, and what comes out of them. (built)
+- Rival salvage crews staking claims on the same mud, with their shop. (built in part)
+- Fossil seams the flood re-cuts, and what comes out of them; the fossil case on the bulkhead. (built)
 - The crack-wax suit, for working flooded ground. (built; its protection is missing)
 - Hidden water: the veqma's blush, the survey to sell or dig, the cistern; the Swale learned here and carried
   with the ship. (the Swale is built; the rest is not)
 - The uttaqar's wounds turning to stone, and its disguise as rock. The muttavaq dredging a trail through the
   floor. (built in part)
-- The witnessed-flood invitation. (designed; campaign layer)
+- The witnessed-flood invitation, fired by the first gravship landing within range. (designed; campaign layer;
+  `NEEDS HIM` 4)
+- The ledge carvings and their one-time thought. (built; their words are placeholders owed to him)
 - The ship's acoustic sounder readings here. (built)
 
 **Later (a crew that stays, a colony, or the campaign)**
@@ -299,17 +392,37 @@ Every feature is in one bucket.
   before this pass).
 - The vanilla zoo and flora; rain in the canyons; flier nests.
 - The planet-placement worker (worldgen is out in every version).
-- **Recommended for dropping, not yet his:** mood carvings on the ledges, the newer decorative fossil case, metal
-  and stone harvested from lithops.
+- Three GPT extensions he did not pick on 2026-09-30: the one-stay water survey, *"fossils remember the map"* and
+  *"muttavaq never disappears"*. The ruled versions of those three stand; only the extensions are out.
+- The wood yield of the harrovaq (removed in the build); the lightning the zennaq was to draw.
+- **Recommended for dropping, not yet his:** metal and stone harvested from lithops. (The first read also listed
+  the ledge carvings and the fossil case here. The second reader moved both to 0.2.0: the carvings are a pick of
+  his from the GPT card of 2026-09-30, and the case is the biome's part on the ship list.)
 
 ## NEEDS HIM
 
-1. **Does a deep cut count as cover from orbit?** The card names canopy, steam and fog. *Yes, one step, on the
-   canyon floor only* (default here): the landing becomes a real choice between hidden-and-floodable and
+Each is tagged with one theme word.
+
+1. **[cover] Does a deep cut count as cover from orbit?** The card names canopy, steam and fog. *Yes, one step, on
+   the canyon floor only* (default here): the landing becomes a real choice between hidden-and-floodable and
    safe-and-seen. *No:* the Cracked Lands have no cover anywhere, every stop is on the open clock, and the floor is
    simply the wrong place to park.
-2. **What does the flood do to a hull?** Nothing ship-specific is built. *Damage like any structure on the bed, and
-   the ship may launch on the chimes* (default). *The ship is grounded while the water is up:* closer to a trap
-   than the ladder allows. *The hull is proof against it and only what is outside is lost.*
-3. **Do the Farmers and the road shelter a hunted ship or sell it?** Campaign layer; it decides whether this is the
-   friendly stop or the dangerous one. *Not decided here.*
+2. **[hull] Does the river come aboard a ship parked on the floor?** His shield ruling says nothing holds out
+   water, and the cleanse says a roof does not elevate; neither was said about a gravship. *Yes: crew aboard are in
+   the flood, the hull is not damaged, and the ship may launch on the chimes* (default). *The hull is proof against
+   it and only what is outside is lost:* kinder, and it makes the floor a safe place to hide, which the Farmers'
+   "NEVER" says it is not. *The ship is grounded while the water is up:* closer to a trap than the ladder allows.
+3. **[other] Do the Farmers and the road shelter a hunted ship or sell it?** Campaign layer; it decides whether
+   this is the friendly stop or the dangerous one. *Not decided here.*
+4. **[scope] Is the witnessed flood part of the first stop?** He ruled on 2026-09-10 that the Farmers' invitation
+   fires on the first gravship landing within range. It is a campaign quest, unbuilt, and it is the only thing
+   that puts the biome's event inside a short visit. *0.2.0, with the campaign* (default, as the first read had
+   it). *0.1.0:* the first stop always meets the flood; one quest and a production "arm the flood" call to build.
+5. **[scope] The fossil case.** The cleanse recommended retiring it as decoration and the first read agreed.
+   It is also this biome's row on the ship list (an agent's pick of 2026-11-11, carded to him), and the cast bible
+   he accepted on 2026-09-28 has *"a gravship galley with one bolted to the bulkhead."* *Kept, 0.2.0 with the
+   fossils* (default). *Retired:* then the biome owes the ship another part, and the two he was offered (the chime
+   and the wax tank) he rejected.
+6. **[other] The words on the ledges.** The carvings are built with placeholder lines; drafts were written for him
+   on 2026-10-08 and never ruled. The one line with a source is the card's own: *"the mercy that kills, then
+   feeds."*

@@ -15,3 +15,7 @@ Continuation run, 2026-11-18 (counting script rebuilt in its own mktemp folder f
 design/concepts/Contagion/rewrite_choices.md: rows=236 second_reader_rows=120 lost=34 moved=7 (any move: 16) reshaped=5 folded=2 kept=188 other=0 named_sources=27 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=38 listed_paths_missing=none
 exit status: 0
 probe (an invented source name must be reported): seen
+
+design/concepts/CrackedLands/rewrite_choices.md: rows=208 second_reader_rows=93 lost=23 moved=18 (any move: 21) reshaped=5 folded=1 kept=161 other=0 named_sources=22 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=29 listed_paths_missing=none
+exit status: 0
+probe (an invented source name must be reported): seen
