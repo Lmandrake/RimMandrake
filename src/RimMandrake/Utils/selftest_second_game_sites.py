@@ -126,16 +126,6 @@ def launches(w):
           "live_session launch under b starts b directly and sees its port line: %s %s" % (r.stdout[-80:], r.stderr[-200:]))
     check(not [ln for ln in w.log_lines("PS ") if "steam://" in ln], "live_session under b never touched steam://")
     w.clear()
-    code = "import relentless_stage as S; print(S.Ops({'item': 'X', 'gen': 1}).launch()[0])"
-    a = w.start_a()
-    r = w.py(code, instance="b", timeout=60)
-    scripts = " ".join(w.log_lines("PS "))
-    check(r.stdout.strip() == "0" and w.gi("pid", "b").stdout.strip().isdigit() and "steam://" not in scripts, "relentless Ops.launch under b starts b directly: %s" % r.stderr[-160:])
-    w.clear()
-    r = w.py(code, timeout=60)
-    check("steam://rungameid/294100" in " ".join(w.log_lines("PS ") + w.log_lines("cmd ")) and not w.gi("pid", "b").stdout.strip(),
-          "relentless Ops.launch, nothing set, goes through Steam as before (game_instance.fire_a)")
-    w.clear()
     text = open(os.path.join(w.repo, "src/RimMandrake/Utils/modcheck/live_queue/prep_wsl.py"), encoding="utf-8").read()
     check("game_instance.py launch --wait" in text and "game_instance.py launch a --wait" in text
           and text.index("game_instance.py launch --wait") < text.index("game_instance.py launch a --wait")

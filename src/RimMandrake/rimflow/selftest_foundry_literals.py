@@ -21,7 +21,7 @@ ROOT = os.environ.get("FOUNDRY_LITERALS_ROOT") or os.path.dirname(os.path.dirnam
 PY = ["src/RimMandrake/Utils/ops_watch.py",
       "src/RimMandrake/Utils/install_wt_seat_profiles.py", "src/RimMandrake/Utils/ledger_sync.py",
       "src/RimMandrake/rimflow/detached_helper.py", "src/RimMandrake/rimflow/render.py",
-      "src/RimMandrake/rimflow/relentless.py", "src/RimMandrake/Utils/slot_allocator.py",
+      "src/RimMandrake/rimflow/run_store.py", "src/RimMandrake/Utils/slot_allocator.py",
       "src/RimMandrake/rimflow/helper_budget.py", ".claude/hooks/block_agent_over_slots.py"]
 JSON = {"src/RimMandrake/Utils/ops_watch_rules.json": ("token_talk",),
         "src/RimMandrake/rimflow/run_rules.json": ("staffing",),

@@ -3,7 +3,7 @@
 
     python3 src/RimMandrake/rimflow/selftest_priority_list.py
 
-The pool: relentless's real Effects.pool_order inside a real tick decides the launch. The ring: `cli.py next --peek` as
+(The pool case, the retired tick's Effects.pool_order, went with it.) The ring: `cli.py next --peek` as
 a process, which is what the Dispatcher runs. The alarms: the real ops_watch.run under the shipped rules, over a throwaway
 data clone whose ledger is the real format, down to the alarm handed to the filer and the row in the alarm log.
 """
@@ -25,10 +25,8 @@ os.environ["RM_STREAMS_BENCH"] = str(TMP / "data")
 os.environ.pop("RM_PRIORITY_LIST", None)
 
 import ops_watch as OW  # noqa: E402
-import selftest_relentless as SR  # noqa: E402
-from rimflow import model, priority_list as PL  # noqa: E402
+from rimflow import priority_list as PL  # noqa: E402
 
-R = SR.R
 FAILS = []
 RAN = 0
 T0 = 1793500000.0
@@ -67,74 +65,6 @@ def put(root, d):
     p = Path(PL.path(root))
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(d if isinstance(d, str) else json.dumps(d), encoding="utf-8")
-
-
-# ---------------------------------------------------------------- the pool: a listed item launches before a ranked one
-def pool():
-    books = TMP / "books"
-    evs = [filed("ITEM_RANKED_OLD", "2026-01-01T00:00:00Z"), filed("ITEM_RAISED", "2026-02-01T00:00:00Z"),
-           filed("ITEM_Z_LISTED", "2026-10-30T00:00:00Z"),
-           dict(seat="BENCH", event="raise", id="ITEM_RAISED", reason="plan", ts="2026-10-30T01:00:00Z", tsn=7)]
-    world = model.replay(evs, strict=True)
-
-    class Belt(SR.FakeWorld):
-        pool_order = R.Effects.pool_order
-
-        def first_touch_hold(self, item):    # pool_order consults it; the first-touch rule is selftest_first_touch's
-            return None
-
-        def concept_refusal(self, item):     # pool_order asks it of a mod item; the concept gate is selftest_relentless's
-            return None
-
-        def health(self):       # Operations' verdict: none fresh, no system items, so the list alone decides
-            return R.health_order(None, "selftest: no verdict", lambda: [])
-
-        def ledger_items(self):
-            return evs, world
-
-    def launched(setup):
-        x = SR.Rig(n=0, share=1.0, max_workers=1, staffing=None, pool_seats=["BENCH"], pool_needs=["offline"],
-                   pool_targets=["v1"], pool_kinds_exclude=[], pool_ids_exclude=[])
-        x.w = Belt(0)
-        x.w.books = str(books)
-        x.w.items = {i: "proposed" for i in world.items}
-        setup()
-        for _ in range(6):
-            x.tick()
-        got = [ln[0] for ln in x.w.launches]
-        x.done()
-        return got
-
-    shutil.rmtree(books, ignore_errors=True)
-    today = launched(lambda: None)
-    check("no list: the belt launches today's order, the raised item first", today[:1] == ["ITEM_RAISED"], today)
-    got = launched(lambda: put(books, doc([entry("ITEM_Z_LISTED")])))
-    check("a listed item launches before a ranked and a raised one, through a real tick", got[:1] == ["ITEM_Z_LISTED"], got)
-    def full_queue():
-        x = SR.Rig(n=0, share=1.0, max_workers=0, max_queued=1, staffing=None, pool_seats=["BENCH"], pool_needs=["offline"],
-                   pool_targets=["v1"], pool_kinds_exclude=[], pool_ids_exclude=[])
-        x.w = Belt(0)
-        x.w.books = str(books)
-        x.w.items = {i: "proposed" for i in world.items}
-        shutil.rmtree(books, ignore_errors=True)
-        x.tick()
-        early = [s["item"] for s in x.s.states()]
-        put(books, doc([entry("ITEM_Z_LISTED")]))
-        x.r["max_workers"] = 1
-        for _ in range(6):
-            x.tick()
-        x.done()
-        return early, [ln[0] for ln in x.w.launches]
-
-    early, got = full_queue()
-    check("a full line of ranked work: an item listed later still launches first",
-          "ITEM_Z_LISTED" not in early and got[:1] == ["ITEM_Z_LISTED"], (early, got))
-    put(books, doc([entry("ITEM_%d" % n) for n in range(31)]))
-    got = launched(lambda: None)
-    check("a list over the limit is not obeyed: today's order", got == today, got)
-    put(books, "{torn")
-    got = launched(lambda: None)
-    check("a torn list is not obeyed: today's order", got == today, got)
 
 
 # ---------------------------------------------------------------- the ring: `next --peek` as the Dispatcher runs it
@@ -360,7 +290,6 @@ def alarms():
 
 
 def main():
-    pool()
     ring()
     writer()
     alarms()

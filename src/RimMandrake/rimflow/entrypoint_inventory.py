@@ -48,6 +48,38 @@ RETIRED_BATCHES = ({  # RIMFLOW_RETIRE_DEAD_MODULES
 }, {  # RIMMANDRAKE_RETIRE_OLD_PIPELINE_REMNANTS_TEN_SLIPPED_INTO_LANES (design/RimMandrake/retired_eras_index_2026-11-18.md)
     "relentless_head_age": "by-hand read of the retired Relentless pool's order; only the deleted skills/relentless named it",
     "relentless_tickp95": "by-hand report on the retired Relentless tick (rm-relentless.timer masked 2026-11-13)",
+}, {  # RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES step 3 (its live parts moved first; the index lists where)
+    # (deleted modules whose names some live text still carries are listed in the index's step-3 note, not here)
+    "block_migrate": "one-shot over Relentless store items",
+    "relentless_account": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_answer": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_attrib": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_binding": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_books_left": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_boxrun": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_breakers": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_canary": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_cause": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_envcause": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_expedite": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_explain": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_incident": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_integrity": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_jobs": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_names": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_packet": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_pool_why": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_prooflines": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_reach": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_repair_slot": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_seeds": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_selfbuild": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_tickprof": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_trust": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_usage": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_wake": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "replay_unreached_closes": "replayed past Relentless closes (its item was dropped)",
+    "validator_replay": "replayed the retired supervisor's transitions",
 },)
 RETIRED = {name: why for batch in RETIRED_BATCHES for name, why in batch.items()}
 # Named dead by redesign.md, and not: retiring these takes a decision, not a delete.
@@ -56,7 +88,6 @@ KEPT = {
     "audit_prescreen": "role_launch imports it at module top (AP.STAMP); the Auditor's pre_launch runs it; only switched off",
     "audit_hardflag_file": "the Auditor's pre_launch runs it after audit_prescreen; goes with that role, not alone: only switched off",
     "fixture_guard_gate": "by-hand release fixture for cli._guard_refusals, named by evidence_gate_enforce_before_deletes_2026-11-06.md",
-    "replay_unreached_closes": "open CHECKER_WEAK_FIX_UNREACHED_READ_AS_PASS's contract proof runs its --selftest; judge again when that closes",
 }
 # (module, kind, a substring of the file): an instrument that cannot see these cannot be believed about a retired module.
 PROBES = (

@@ -68,13 +68,7 @@ def git(d, *a, env=None):
 def seed_wall(td: Path, O, old: float) -> None:
     """SELFTEST_LITTER_FIX_SEED_WALL_STRAGGLERS: selftest_relentless_seeds.py and selftest_relentless_wall.py left
     seedrepo*/seeddest*/wallsha256* git fixtures under ~/.seat-tmp/BENCH (~60 refusals a day)."""
-    rimflow = HERE.parent / "rimflow"
-    for t in ("seeds", "wall"):                       # the real selftests, clean: their TMPDIR is left as it was
-        tmp = td / f"run_{t}"
-        tmp.mkdir()
-        r = subprocess.run([sys.executable, str(rimflow / f"selftest_relentless_{t}.py")], capture_output=True, text=True,
-                           timeout=300, env={**os.environ, "TMPDIR": str(tmp), "SELFTEST_OWN_DIRS_REG": str(td / "reg2")})
-        check(r.returncode == 0 and list(tmp.iterdir()) == [], f"selftest_relentless_{t}.py passes and leaves its TMPDIR empty")
+    # (the two selftests named above were deleted with the retired tick; the killed-child case below still holds)
     tmp = td / "run_killed"
     tmp.mkdir()
     env = {**os.environ, "TMPDIR": str(tmp), "SELFTEST_OWN_DIRS_REG": str(td / "reg2")}

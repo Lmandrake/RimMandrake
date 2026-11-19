@@ -247,20 +247,6 @@ def sites(w):
         check(F.alive(pids[other]), "live_session.stop_game under %s: %s lives" % (inst, other))
         w.clear()
 
-    # rimflow/relentless_stage.py
-    code = ("import relentless_stage as S; o = S.Ops({'item': 'X', 'gen': 1}); print(o.running()); r = o.kill(); print(r[0]); "
-            "import time; time.sleep(0.3); print(o.running()); print(o.kill(force=True)[0])")
-    for inst, mine, other in ((None, "a", "b"), ("b", "b", "a")):
-        pids = {"a": w.start_a(), "b": w.start_b()}
-        r = w.py(code, instance=inst)
-        check(r.stdout.split() == ["True", "0", "False", "0"], "relentless Ops under %s: %s %s" % (inst, r.stdout.split(), r.stderr[-200:]))
-        check(F.wait_dead(pids[mine]) and F.alive(pids[other]), "relentless Ops.kill under %s stops %s; %s lives" % (inst, mine, other))
-        check(all("/IM" not in k for k in w.kills()), "relentless Ops.kill sends /PID only: %s" % w.kills())
-        w.clear()
-    r = w.py("import relentless_stage as S\ntry:\n    S.Ops({'item': 'X', 'gen': 1}).running()\nexcept RuntimeError as e:\n    print('RAISED')",
-             FAKE_PS_MODE="fail")
-    check("RAISED" in r.stdout, "relentless Ops.running when blind raises, never 'down'")
-
     # the three shell scripts: each kill line, cut out and run, because the rest of them starts the real Steam
     for rel, (var, base) in SHELL_SITES.items():
         text = open(os.path.join(w.repo, rel), encoding="utf-8").read()

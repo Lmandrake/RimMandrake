@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
-"""RW2 by planted workers on the real path: relentless.tick, a real git clone read by the real Effects methods, a
-Claude-format transcript read by the real parser. Only the units and the ledger are FakeWorld's."""
+"""RW2's pure parts: the tool-call classifier (pulse/time_ledger reads it), the tree delta and the stop gate. The
+planted-worker cases that drove the retired tick (relentless.tick over selftest_relentless's FakeWorld) went with it;
+circling.watch, which only that tick called, is filed for removal."""
 import json
 import os
-import re
 import shutil
-import subprocess
 import sys
 import tempfile
-import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling as C  # noqa: E402
 import run_store as R  # noqa: E402
-import selftest_relentless as SR  # noqa: E402
 
 BLOCK = R.rules(os.path.join(R.HERE, "run_rules.json"))["circling"]
 FAILS = []
@@ -27,232 +24,40 @@ def ok(cond, what):
         FAILS.append(what)
 
 
-class World(SR.FakeWorld):
-    circling_tree = R.Effects.circling_tree
-    transcripts = R.Effects.transcripts
 
 
-class Worker:
-    """One planted worker: a real clone, a real transcript, 120 s ticks."""
-
-    def __init__(self, c=None, **rules):
-        self.rig = SR.Rig(1, run_max_s=10**7, stale_s=10**7, circling=dict(BLOCK, **(c or {})), **rules)
-        self.rig.w = World(1)
-        self.rig.run_one("I0")
-        self.clone = tempfile.mkdtemp(prefix="circ-clone-")
-        self.git("init", "-q", "-b", "main")
-        self.git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "--allow-empty", "-m", "base")
-        self.base = self.git("rev-parse", "HEAD").strip()
-        s = self.rig.s
-        st = s.load("I0")
-        st["clone"], st["base"] = self.clone, self.base
-        s.save(st)
-        d = os.path.join(HOME, ".claude/projects", re.sub(r"[^A-Za-z0-9]", "-", self.clone))
-        os.makedirs(d, exist_ok=True)
-        self.log = os.path.join(d, "s.jsonl")
-        self.n = 0
-        self.tick_only()
-
-    def git(self, *a):
-        return subprocess.run(["git", *a], cwd=self.clone, check=True, capture_output=True, text=True).stdout
-
-    def _row(self, kind, block, t):
-        stamp = datetime.datetime.fromtimestamp(t, datetime.timezone.utc).isoformat().replace("+00:00", "Z")
-        with open(self.log, "a") as f:
-            f.write(json.dumps({"type": kind, "timestamp": stamp, "message": {"content": [block]}}) + "\n")
-
-    def tool(self, name, inp, secs):
-        """A tool that began now and takes `secs`, the transcript written before the tick that passes the time."""
-        t = self.rig.now
-        self.n += 1
-        self._row("assistant", {"type": "tool_use", "id": str(self.n), "name": name, "input": inp}, t)
-        self._row("user", {"type": "tool_result", "tool_use_id": str(self.n)}, t + secs)
-
-    def write(self, name, text):
-        with open(os.path.join(self.clone, name), "w") as f:
-            f.write(text)
-
-    def tick_only(self, dt=120):
-        return self.rig.tick(dt)
-
-    def hits(self):
-        return {h["kind"] for h in C.hits_seen(self.rig.s)}
-
-    def done(self):
-        self.rig.done()
-        shutil.rmtree(self.clone, ignore_errors=True)
 
 
-def run(worker, minutes, act):
-    for i in range(minutes // 2):
-        act(worker, i)
-        worker.tick_only()
-    return worker.hits()
 
 
-def t_test_share():
-    w = Worker()
-    w.write("a.py", "x = 1\n")
-    got = run(w, 40, lambda x, i: x.tool("Bash", {"command": "python3 src/run_selftests.py --only selftest_x.py"}, 110))
-    ok("test_share" in got, "S1 planted test-share worker named")
-    st = w.rig.st("I0")
-    ok(st["status"] == "running" and not w.rig.w.stops, "S4 named, not stopped: the run goes on")
-    w.done()
 
 
-def t_no_change():
-    w = Worker()
-    w.write("a.py", "x = 1\n")
-    got = run(w, 40, lambda x, i: x.tool("Read", {"file_path": "/same/file.py"}, 5))
-    ok("no_change" in got and "test_share" not in got, "S1 planted no-change worker named")
-    w.done()
 
 
-def t_aba():
-    w = Worker()
-    got = run(w, 16, lambda x, i: x.write("a.py", "x = %d\n" % (i % 2)))
-    ok("oscillation" in got, "S1 planted A-B-A worker named")
-    rows = C.samples_of(w.rig.s, "I0", w.rig.st("I0")["gen"])
-    ok(len(C._collapse([s.get("sub") for s in rows])) >= 5, "S1 the tree series really went A-B-A-B-A")
-    w.done()
 
 
-def t_aba_needs_the_limit():
-    w = Worker(c={"oscillation_limit": 3})
-    seq = ["x = 1\n", "x = 2\n", "x = 1\n"]
-    got = run(w, 6, lambda x, i: x.write("a.py", seq[i]))
-    ok("oscillation" not in got, "S1 one return under the limit is not named")
-    w.done()
 
 
-def t_churn_comment():
-    w = Worker()
-    w.write("a.py", "x = 1\n")
-
-    def act(x, i):
-        x.write("a.py", "x = 1\n# note %d\n" % i)
-        x.tool("Read", {"file_path": "/new/%d.py" % i}, 5)
-    got = run(w, 34, act)
-    ok("trivial_churn" in got and "no_change" not in got, "S2 comment-only churn named, its reads are not no-change")
-    w.done()
 
 
-def t_churn_tweak():
-    w = Worker()
-    w.write("a.py", "".join("line%d = 0\n" % n for n in range(50)))
-
-    def act(x, i):
-        x.write("a.py", "".join("line%d = %d\n" % (n, i if n == 0 else 0) for n in range(50)))
-        x.tool("Read", {"file_path": "/new/%d.py" % i}, 5)
-    got = run(w, 34, act)
-    ok("trivial_churn" in got, "S2 one number tweaked over and over named")
-    w.done()
 
 
-def t_churn_tracked():
-    """The same tweak in a file the base holds, two far-apart numbers at once, with fresh reads and tests between."""
-    w = Worker()
-    body = ["line%d = 0" % n for n in range(300)]
-    w.write("a.py", "\n".join(body) + "\n")
-    w.git("add", "a.py")
-    w.git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "-m", "body")
-    st = w.rig.s.load("I0")
-    st["base"] = w.git("rev-parse", "HEAD").strip()
-    w.rig.s.save(st)
-
-    def act(x, i):
-        now = list(body)
-        now[20], now[280] = "line20 = %d" % (i + 1), "line280 = %d" % (i + 1)
-        x.write("a.py", "\n".join(now) + "\n")
-        x.tool("Read", {"file_path": "/new/%d.py" % i}, 5)
-    got = run(w, 34, act)
-    ok("trivial_churn" in got, "S2 two far-apart numbers tweaked in a tracked file named: %s" % sorted(got))
-    w.done()
 
 
-def t_long_read():
-    w = Worker()
-    w.write("a.py", "x = 1\n")
-
-    def act(x, i):
-        x.tool("Read", {"file_path": "/repo/%d.py" % i}, 30)
-        x.tool("Bash", {"command": "grep -n thing /repo/%d.txt" % i}, 20)
-        x.tool("Bash", {"command": "python3 relentless.py learn --item I0 same words"}, 1)
-    got = run(w, 80, act)
-    ok(not got, "S3 80 min read-only investigation left alone: %s" % sorted(got))
-    w.done()
 
 
-def t_long_read_scripts():
-    w = Worker()
-    w.write("a.py", "x = 1\n")
-
-    def act(x, i):
-        x.tool("Bash", {"command": "python3 tools/survey.py --part %d > /tmp/o.txt" % i}, 60)
-    got = run(w, 80, act)
-    ok(not got, "S3 80 min investigation through script calls left alone: %s" % sorted(got))
-    w.done()
 
 
-def t_scripts_same_is_no_finding():
-    w = Worker()
-    w.write("a.py", "x = 1\n")
-    got = run(w, 40, lambda x, i: x.tool("Bash", {"command": "python3 tools/survey.py"}, 30))
-    ok("no_change" in got, "the one script over and over finds nothing: %s" % sorted(got))
-    w.done()
 
 
-def cycle(step, cmd="python3 src/run_selftests.py --only selftest_a.py"):
-    """An ordinary worker: `step` every 4 min, a test between, 80 min."""
-    w = Worker()
-
-    def act(x, i):
-        if i % 2 == 0:
-            step(x, i // 2)
-        x.tool("Bash", {"command": cmd}, 60)
-    got = run(w, 80, act)
-    w.done()
-    return got
 
 
-def fix_cycle(x, i):
-    x.write("a.py", "".join("v%d = %s\n" % (n, "fixed" if n <= i else "broken") for n in range(200)))
 
 
-def rewrite(x, i):
-    x.write("a.py", "".join("v%d = 'pass %d line %d'\n" % (n, i, n) for n in range(60)))
 
 
-def t_long_build_fresh_lines():
-    """The diff stays one size and moves on fresh lines: the total line count cannot see it."""
-    got = cycle(fix_cycle)
-    ok(not got, "S3 test-fix cycle, a different line of a new file each step, left alone: %s" % sorted(got))
-    got = cycle(rewrite)
-    ok(not got, "S3 a body rewritten at constant size left alone: %s" % sorted(got))
-    got = cycle(lambda x, i: x.write("a.py", "".join("v%d = 1\n" % n for n in range(i + 1))))
-    ok(not got, "S3 one line added per step left alone: %s" % sorted(got))
 
 
-def t_long_build_tracked():
-    w = Worker()
-    body = ["line%d = 0" % n for n in range(300)]
-    w.write("a.py", "\n".join(body) + "\n")
-    w.git("add", "a.py")
-    w.git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "-m", "body")
-    st = w.rig.s.load("I0")
-    st["base"] = w.git("rev-parse", "HEAD").strip()
-    w.rig.s.save(st)
-
-    def act(x, i):
-        if i % 2 == 0:
-            now = list(body)
-            for k in range(i // 2 + 1):
-                now[k * 7] = "line%d = 1" % (k * 7)
-            x.write("a.py", "\n".join(now) + "\n")
-        x.tool("Bash", {"command": "python3 src/run_selftests.py --only selftest_a.py"}, 60)
-    got = run(w, 80, act)
-    ok(not got, "S3 test-fix cycle in a tracked file left alone: %s" % sorted(got))
-    w.done()
 
 
 def t_delta():
@@ -270,154 +75,20 @@ def t_delta():
     ok(BLOCK["churn_max_lines"] < BLOCK["churn_moves"], "shipped thresholds: a line per move can never read as churn")
 
 
-def t_tree_reading_body_lines():
-    """A removed `-- x` line prints as `--- x`: no header, or the next hunk is charged to a wrong file."""
-    w = Worker()
-    w.write("a.sql", "-- one\nselect 1;\n++ two\n")
-    w.git("add", "a.sql")
-    w.git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "-m", "s")
-    w.write("a.sql", "select 2;\n")
-    r = C.tree_reading(w.clone, w.base)
-    r2 = C.tree_reading(w.clone, w.git("rev-parse", "HEAD").strip())
-    ok(list(r["marks"]) == ["a.sql"] and list(r2["marks"]) == ["a.sql"], "diff body lines are not headers: %s" % list(r2["marks"]))
-    w.done()
 
 
-def t_long_build():
-    w = Worker()
-
-    def act(x, i):
-        x.write("a.py", "".join("def f%d():\n    return %d\n" % (n, n) for n in range((i + 1) * 5)))
-        x.tool("Bash", {"command": "python3 src/run_selftests.py --only selftest_a.py"}, 60)
-        x.tool("Bash", {"command": "python3 src/RimMandrake/Utils/winbuild.py X"}, 50)
-    got = run(w, 80, act)
-    ok(not got, "S3 80 min build with a moving diff left alone: %s" % sorted(got))
-    w.done()
 
 
-def tracked_worker(n=300):
-    w = Worker()
-    body = ["line%d = 0" % k for k in range(n)]
-    w.write("a.py", "\n".join(body) + "\n")
-    w.git("add", "a.py")
-    w.git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "-m", "body")
-    st = w.rig.s.load("I0")
-    st["base"] = w.git("rev-parse", "HEAD").strip()
-    w.rig.s.save(st)
-    return w, body
 
 
-def t_long_build_any_direction():
-    """Blind checker's plants: a real line a step lands ahead of the earlier ones, so it is no new list position."""
-    test = "python3 src/run_selftests.py --only selftest_a.py"
-
-    def stepper(w, make):
-        def act(x, i):
-            if i % 2 == 0:
-                x.write("a.py", make(i // 2))
-            x.tool("Bash", {"command": test}, 60)
-        got = run(w, 80, act)
-        w.done()
-        return got
-
-    def fixed(body, at):
-        def make(k):
-            now = list(body)
-            for j in range(k + 1):
-                now[at(j)] = "line%d = 1" % at(j)
-            return "\n".join(now) + "\n"
-        return make
-    w, body = tracked_worker()
-    got = stepper(w, fixed(body, lambda j: 290 - j * 7))
-    ok(not got, "S3 tracked file, a fresh line a step working upward, left alone: %s" % sorted(got))
-    w, body = tracked_worker()
-    got = stepper(w, fixed(body, lambda j: 10 + j * 7))
-    ok(not got, "S3 the same working downward left alone: %s" % sorted(got))
-    got = stepper(Worker(), lambda k: "".join("v%d = 1\n" % n for n in range(k, -1, -1)))
-    ok(not got, "S3 new file, a new line a step at the top, left alone: %s" % sorted(got))
-    w, body = tracked_worker()
-    got = stepper(w, lambda k: "\n".join(body[:50] + ["new%d = 1" % n for n in range(k, -1, -1)] + body[50:]) + "\n")
-    ok(not got, "S3 tracked file, new entries newest first at one anchor, left alone: %s" % sorted(got))
-    w, body = tracked_worker()
-    got = stepper(w, lambda k: "\n".join(body[:100] + body[100 + k + 1:]) + "\n")
-    ok(not got, "S3 tracked file, a line deleted a step, left alone: %s" % sorted(got))
 
 
-def t_churn_tweak_upward():
-    """The other side of the same plants: moves that land anywhere but net nothing are still churn."""
-    w, body = tracked_worker()
-
-    def act(x, i):
-        now = list(body)
-        now[290 - (i % 3) * 7] = "line%d = %d" % (290 - (i % 3) * 7, i + 1)
-        x.write("a.py", "\n".join(now) + "\n")
-        x.tool("Read", {"file_path": "/new/%d.py" % i}, 5)
-    got = run(w, 34, act)
-    ok("trivial_churn" in got, "S2 one line a time tried and put back, three spots, named: %s" % sorted(got))
-    w.done()
 
 
-def t_long_read_any_tool():
-    """Blind checker's plants: an investigation by heredoc, by proof runs, through the web, an output file in the clone."""
-    def still(act):
-        w = Worker()
-        w.write("a.py", "x = 1\n")
-        got = run(w, 80, act)
-        w.done()
-        return got
-    got = still(lambda x, i: x.tool("Bash", {"command": "python3 - <<'E'\nimport json\nprint(%d)\nE" % i}, 60))
-    ok(not got, "S3 read-only through differing heredocs left alone: %s" % sorted(got))
-    got = still(lambda x, i: x.tool("Bash", {"command": "python3 src/proof_a.py --case %d" % i}, 100))
-    ok(not got, "S3 read-only through differing proof runs left alone: %s" % sorted(got))
-    got = still(lambda x, i: x.tool("WebFetch", {"url": "https://x/%d" % i}, 60))
-    ok(not got, "S3 read-only through the web left alone: %s" % sorted(got))
-
-    def redirected(x, i):
-        x.write("o.txt", "result %d\n" % i)
-        x.tool("Bash", {"command": "grep -n thing /repo/%d.txt > o.txt" % i}, 30)
-    got = still(redirected)
-    ok(not got, "S3 short output redirected into the clone left alone: %s" % sorted(got))
-
-    def alternating(x, i):
-        x.write("run.log", "result %d\n" % (i % 2))
-        x.write("o.txt", "result %d\n" % (i % 2))
-        x.tool("Bash", {"command": "grep -n thing /repo/%d.txt > o.txt" % i}, 30)
-    got = still(alternating)
-    ok(not got, "S3 output files flipping back and forth are no oscillation: %s" % sorted(got))
 
 
-def t_outputs_hide_no_circling():
-    """A result file must not read as the tree moving: the planted circlers still get named through it."""
-    w = Worker()
-    w.write("a.py", "x = 1\n")
-
-    def act(x, i):
-        x.write("o.txt", "stamp %d\n" % i)
-        x.tool("Bash", {"command": "python3 src/run_selftests.py --only selftest_x.py > o.txt 2>&1"}, 110)
-    got = run(w, 40, act)
-    ok("test_share" in got and "trivial_churn" not in got, "S1 tests redirected into the clone still test share: %s" % sorted(got))
-    w.done()
-    w, _ = tracked_worker(20)
-    w.write("a.py", "changed = 1\n")
-    w.tick_only()
-
-    def act2(x, i):
-        x.write("a.py", "changed = %d\n" % (i % 2))
-        x.tool("Bash", {"command": "grep -n x /repo/%d.txt > a.py" % i}, 30)
-    got = run(w, 16, act2)
-    ok("oscillation" in got, "a tracked file is work whatever redirected into it: %s" % sorted(got))
-    w.done()
-    ok(C.outputs_of([{"target": "cd x; python3 a.py --out=r.json 2>&1 | tee -a t.txt >> u.txt"}, {"target": None}])
-       == {"r.json", "t.txt", "u.txt"}, "outputs_of: --out, tee, append; 2>&1 is no file")
 
 
-def t_blind():
-    w = Worker()
-    shutil.rmtree(os.path.join(w.clone, ".git"))
-    got = run(w, 40, lambda x, i: x.tool("Bash", {"command": "python3 selftest_x.py"}, 110))
-    rows = open(os.path.join(w.rig.s.item_dir("I0"), "circling.jsonl")).read()
-    ok(not got and "unmeasured" in rows, "an unreadable clone is unmeasured, never a hit: %s" % sorted(got))
-    w.done()
 
 
 def verdict(d, c, **kw):
@@ -445,53 +116,8 @@ def t_gate():
     shutil.rmtree(d, ignore_errors=True)
 
 
-def t_stop_path():
-    """Past the gate, the same planted worker goes by the existing path: gen bumped, clone kept, reading carried."""
-    d = tempfile.mkdtemp(prefix="circ-s-")
-    on = dict(BLOCK, stop=True)
-    p = verdict(d, on)
-    real, C.VERDICT = C.VERDICT, p
-    try:
-        w = Worker(c={"stop": True})
-        w.write("a.py", "x = 1\n")
-        gen = w.rig.st("I0")["gen"]
-        for _ in range(25):
-            w.tool("Read", {"file_path": "/same.py"}, 5)
-            w.tick_only()
-            if w.rig.st("I0")["status"] != "running":
-                break
-        st = w.rig.st("I0")
-        ok(st["gen"] == gen + 1 and st["last_fail"]["class"] == "circling", "S4 past the gate: stopped, gen moved")
-        ok("no_change" in st["last_fail"]["detail"], "S4 the reading is carried to the next run")
-        ok(st["approach"] != "build", "S4 a stop forces a change of approach: %s" % st["approach"])
-        ok(w.rig.w.stops and os.path.exists(os.path.join(w.clone, "a.py")), "S4 work kept in the clone")
-        w.done()
-    finally:
-        C.VERDICT = real
-    shutil.rmtree(d, ignore_errors=True)
 
 
-def t_replay():
-    """The replay tool on stored runs: wrongful and missed counted, a run with no record unmeasured."""
-    bad, fine = Worker(), Worker()
-    bad.write("a.py", "x = 1\n")
-    fine.write("a.py", "x = 1\n")
-    run(bad, 40, lambda x, i: x.tool("Read", {"file_path": "/same.py"}, 5))
-    run(fine, 40, lambda x, i: x.tool("Read", {"file_path": "/n/%d.py" % i}, 5))
-    gb, gf = bad.rig.st("I0")["gen"], fine.rig.st("I0")["gen"]
-    v = C.replay(bad.rig.s, [{"item": "I0", "gen": gb, "label": "circling"}, {"item": "NOPE", "gen": 0, "label": "fine"}], BLOCK)
-    ok(v["circling"] == 1 and v["missed"] == 0 and v["wrongful"] == 0, "replay counts a caught run")
-    ok(v["unmeasured"] == ["NOPE gen 0"], "replay: no record is unmeasured")
-    v = C.replay(bad.rig.s, [{"item": "I0", "gen": gb, "label": "fine"}], BLOCK)
-    ok(v["fine"] == 1 and v["wrongful"] == 1, "replay counts a wrongful stop")
-    v = C.replay(bad.rig.s, [{"item": "I0", "gen": gb, "label": "fine"}] * 20, BLOCK)
-    ok(v["measured"] == 1, "replay: one run listed 20 times is one run")
-    v = C.replay(bad.rig.s, [{"item": "I0", "gen": gb, "label": "fine"}, {"item": "I0", "gen": gb, "label": "circling"}], BLOCK)
-    ok(v["measured"] == 0 and len(v["unmeasured"]) == 1, "replay: a run labelled both ways is unmeasured")
-    v = C.replay(fine.rig.s, [{"item": "I0", "gen": gf, "label": "circling"}], BLOCK)
-    ok(v["missed"] == 1, "replay counts missed waste")
-    bad.done()
-    fine.done()
 
 
 def t_classify():
@@ -517,12 +143,10 @@ def t_classify():
     ok(k("git -C /x log -3") == "reading", "git -C log is reading")
 
 
+
+
 def main():
-    for t in (t_classify, t_delta, t_tree_reading_body_lines, t_test_share, t_no_change, t_aba, t_aba_needs_the_limit,
-              t_churn_comment, t_churn_tweak, t_churn_tracked, t_long_read, t_long_read_scripts,
-              t_scripts_same_is_no_finding, t_long_build, t_long_build_fresh_lines, t_long_build_tracked, t_long_build_any_direction,
-              t_churn_tweak_upward, t_long_read_any_tool, t_outputs_hide_no_circling, t_blind,
-              t_gate, t_stop_path, t_replay):
+    for t in (t_classify, t_delta, t_gate):
         t()
     shutil.rmtree(HOME, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")

@@ -7,7 +7,6 @@ the builder/fixers so they act better from now on too").
   verbatim, and "you may not end with open cases".
 - the offline build (brief_text), the certificate (cert_brief) and the road-back fixer (fixer_brief) carry it.
 - the agent definitions rm-builder.md and rm-fixer.md carry the tripwire and the positive steps.
-- the Relentless worker's REDESIGN line names tuning between clauses, and states no spend.
 - no builder or rescue prompt says "the family" bare (owner: "Please don't say 'the family' by itself. It's
   baffling.").
 """
@@ -63,10 +62,6 @@ for agent in (".claude/agents/rm-builder.md", ".claude/agents/rm-fixer.md"):
     for words in (HUNT.rstrip("."), POSITIVE, "The tuning tripwire", "\"our own rule\""):
         check(words in t, "%s lacks %r" % (agent, words))
 
-rel = read("src/RimMandrake/rimflow/relentless.py")
-check("hunt parameter regimes and regions, not" in rel and "never tuned \"\n" in rel, "Relentless REDESIGN line lacks the regimes line")
-check("COST SO FAR" not in rel and "weighted tokens over %d generation" not in rel,
-      "Relentless worker prompt still states its spend")
 
 for p in ("src/RimMandrake/rimflow/roles/fable_rescue.md", ".claude/agents/rm-builder.md", ".claude/agents/rm-fixer.md"):
     check(not re.search(r"(?i)\bthe family\b", read(p)), "%s says 'the family' bare" % p)

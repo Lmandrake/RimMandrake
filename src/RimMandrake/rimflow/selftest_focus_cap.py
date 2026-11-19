@@ -18,7 +18,7 @@ import sys
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from rimflow import model, priority, relentless  # noqa: E402
+from rimflow import model, priority  # noqa: E402
 
 CLI = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cli.py")
 REAL = os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")
@@ -253,52 +253,12 @@ def direct_claim_held():
     check(y.run("claim", "UNCAPPEDB_FIX_NOT_STARTED").returncode == 0, "direct claim: a seat not listed is not capped")
 
 
-def relentless_reads_the_same_number():
-    x = Sandbox()
-    os.environ["RIMFLOW_SCHEDULE"] = x.sched
-    try:
-        fx = relentless.Effects.__new__(relentless.Effects)
-        n = relentless.Effects.focus_cap(fx)
-        check(n == x.cap["per_seat"], "relentless reads focus_cap.per_seat: %s" % n)
-
-        class F(object):
-            focus_cap = staticmethod(lambda: n)
-
-            @staticmethod
-            def mem_gb():
-                return 99
-
-        check(relentless.worker_cap(F, {"max_workers": 10}) == n, "the number is the ceiling on its places")
-        check(relentless.worker_cap(F, {"max_workers": 10}, extra=1) == n + 1, "a check still runs on top")
-
-        class Live(F):     # the path a run really takes: staffing set, top stage, budget wide, the Effects reader
-            focus_cap = staticmethod(lambda: relentless.Effects.focus_cap(fx))
-            budget = staticmethod(lambda: n + 5)
-            head_helpers = staticmethod(lambda: 0)
-            paused = staticmethod(lambda: False)
-
-        store = relentless.Store(os.path.join(x.d, "relentless"))
-        r = dict(relentless.rules(), max_workers=n + 7)
-        assert r.get("staffing"), "the shipped rules no longer set staffing: this no longer drives the live path"
-        with open(store.p("staffing_state.json"), "w") as f:
-            json.dump({"stage": len(r["staffing"]["stages"]) - 1}, f)
-        check(relentless.stage_places(store, Live, r)[3] == n, "stage_places, the live path, is held to the number")
-        check(relentless.admission(store, Live, r, 0, n) == "max_workers", "admission refuses the run past the number")
-        check(relentless.admission(store, Live, r, 0, n - 1) != "max_workers", "and admits the one under it")
-        with open(x.sched, "w") as f:
-            f.write("{broken")
-        check(relentless.Effects.focus_cap(fx) == 1, "damaged: the lowest, not unlimited")
-    finally:
-        del os.environ["RIMFLOW_SCHEDULE"]
-
-
 def main():
     planted_overflow()
     expired_wait_and_history()
     unlisted_seat_and_damage()
     reservations_hold_the_cap()
     direct_claim_held()
-    relentless_reads_the_same_number()
     print("FAILS: %d" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0
 

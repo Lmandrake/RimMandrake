@@ -23,7 +23,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, HERE)
-import selftest_relentless_live_round as S   # noqa: E402
+import selftest_live_proofs_dir as S         # noqa: E402  (t_proofs_file, carried out of the retired live round)
 
 ITEM = "LIVEPROOFS_WRAPPERS_EXCISE_OUT_OF_DIR"
 RULING = "612416958f"

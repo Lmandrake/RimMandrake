@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # selftest-timeout: 120
-"""RELENTLESS_FIX_CHECKBOX_TEST_SERIAL_LANE: (a) selftest_relentless_checkbox.py runs in run_selftests' dotnet serial
-lane; (b) provision_checkbox_venv.py makes the checkbox venv idempotently on any host (uv, or python3 -m venv + pip).
+"""RELENTLESS_FIX_CHECKBOX_TEST_SERIAL_LANE: (a) run_selftests' serial lanes hold (the checkbox test itself went with the
+retired tick); (b) provision_checkbox_venv.py makes the checkbox venv idempotently on any host (uv, or python3 -m venv + pip).
 Offline: the installer runs against a fake command runner over a temp folder; no network, no real venv is touched."""
 import io
 import json
@@ -26,10 +26,6 @@ def check(label, ok, detail=""):
 
 
 # (a) the serial lane
-name = "selftest_relentless_checkbox.py"
-check("(a) %s is in DOTNET_LANE" % name, name in rs.DOTNET_LANE)
-check("(a) _lane_of puts it in the dotnet lane", rs._lane_of(Path(name)) == "dotnet", rs._lane_of(Path(name)))
-check("(a) the test it names exists", os.path.isfile(os.path.join(HERE, "..", "rimflow", name)))
 src = open(os.path.join(HERE, "run_selftests.py"), encoding="utf-8").read()
 check("(a) the pool admits no test whose lane is busy (the gate the lane relies on)",
       "if _lane_of(t) not in busy - {None}" in src)

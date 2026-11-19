@@ -159,15 +159,12 @@
   "src/RimMandrake/Utils/worldpaths/crossings.py::_out::run": 1,
   "src/RimMandrake/Utils/worldpaths/design.py::_out::run": 1,
   "src/RimMandrake/Utils/worldpaths/preview.py::_out::run": 1,
-  "src/RimMandrake/rimflow/block_migrate.py::main::run": 1,
+  "src/RimMandrake/rimflow/checker_box.py::make_box::run": 1,
   "src/RimMandrake/rimflow/cli.py::_published::check_call": 1,
   "src/RimMandrake/rimflow/cli.py::_unpublished_commit::check_call": 1,
   "src/RimMandrake/rimflow/cli.py::git::check_output": 1,
   "src/RimMandrake/rimflow/gitindex.py::_git::check_output": 1,
   "src/RimMandrake/rimflow/host_guard.py::main::call": 1,
-  "src/RimMandrake/rimflow/relentless.py::main::run": 1,
-  "src/RimMandrake/rimflow/relentless_seeds.py::sandbox_run::run": 1,
-  "src/RimMandrake/rimflow/checker_box.py::make_box::run": 1,
   "src/RimMandrake/rimflow/testpilot_reload.py::main::call": 1
  }
 }

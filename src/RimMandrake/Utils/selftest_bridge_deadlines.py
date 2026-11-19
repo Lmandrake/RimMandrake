@@ -272,9 +272,6 @@ def t_policy():
     for rel in LP.READERS:
         txt = open(os.path.join(REPO, rel), encoding="utf-8").read()
         check(re.search(r"\bimport load_policy\b|load_policy\.", txt) is not None, "reader %s reads load_policy" % rel)
-    rg = open(os.path.join(REPO, "src/RimMandrake/rimflow/relentless_game.py"), encoding="utf-8").read()
-    check("load_policy" in rg and "load_unknown_s" not in rg and "load_per_mod_s" not in rg,
-          "relentless_game's cold-load bound is the policy's, the rival per-mod budget is gone")
     pr = open(os.path.join(REPO, "src/RimMandrake/FlowWorks/northstar/playtest_runner.py"), encoding="utf-8").read()
     check("playtest_run_wall_s" in pr and "default=1500" not in pr, "playtest_runner's wall limit is the policy's")
     d = LP.Deadline(10, clock=Clock())
@@ -295,7 +292,6 @@ ALLOW = {
     "src/RimMandrake/Utils/loadsweep/sweep_load.sh": "kills before each batch's launch",
     "src/RimMandrake/Utils/loadsweep/biome_load_proof.sh": "kills before each biome's tier write and launch",
     "src/RimMandrake/Utils/rimbench/gl_sheet_run.sh": "kills before each record's launch",
-    "src/RimMandrake/rimflow/relentless_stage.py": "game_down() before the staging's deploy and launch",
     "src/RimMandrake/Utils/game_instance.py": "the stopping tool itself: acts when asked, by pid, on no clock",
 }
 
