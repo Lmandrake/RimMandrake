@@ -279,7 +279,9 @@ def collect(root, cfg, st, facts, now, fx=None):
     if isinstance(was, dict) and was != vals:
         diff = ["%s: %s -> %s" % (k, json.dumps(was.get(k)), json.dumps(vals.get(k)))
                 for k in sorted(set(was) | set(vals)) if was.get(k) != vals.get(k)]
-        hid = hashlib.sha1(json.dumps([was, vals], sort_keys=True).encode()).hexdigest()[:10]
+        # keyed by tick time too: 4 -> 6, back to 4, then 6 again on later ticks is three edits
+        # (RIMMANDRAKE_KEY_SETTINGS_EDITS_BY_OCCURRENCE_ABAB_LOST_ONE)
+        hid = hashlib.sha1(json.dumps([was, vals, now], sort_keys=True).encode()).hexdigest()[:10]
         out.append(_act("settings-%s" % hid, now, "settings_edit", "-", "maturation_dispatch.json changed: %s" % "; ".join(diff)))
     h["cfg"] = vals
     last = h.get("last_tick")

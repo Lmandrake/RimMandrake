@@ -377,6 +377,13 @@ def acts_main():
         gaps = [a for a in MH.read_acts() if a["kind"] == "tick_gap"]
         ok(len(gaps) == 1 and "45 min" in gaps[0]["what"], "acts 17: a tick that did not run for 45 minutes is one act",
            gaps)
+        # RIMMANDRAKE_KEY_SETTINGS_EDITS_BY_OCCURRENCE_ABAB_LOST_ONE: 4 -> 6 (above), 6 -> 4, 4 -> 6 is three edits
+        t_ = NOW + 120 + 45 * 60
+        for k_, v_ in enumerate((4, 6)):
+            MH.observe(root, dict(cfg, max_live=v_), st2, {}, t_ + 60 * (k_ + 1), {"needs_conductor": []}, fx)
+        edits = [a for a in MH.read_acts() if a["kind"] == "settings_edit"]
+        ok(len(edits) == 3, "acts 17b: a setting changed 4 -> 6, back to 4, then to 6 again is three settings edits",
+           [a["what"] for a in edits])
 
         # an act from before the census is recorded folded by it
         st3 = {"hands": {"since": MH.BASELINE_TS - 7200, "last_tick": NOW - 60},
