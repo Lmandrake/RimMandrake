@@ -90,6 +90,11 @@ column that disagrees with `.claude/skills/`.
 - `skills/rimworld-savegame/SKILL.md`: when the large file is a save.
 - `skills/telemetry/SKILL.md`: when the answer is already recorded.
 
+## Design orders (three options with tradeoffs, a GPT skeptical teardown, a merge)
+- `~/dev/MandrakeWorkflows/skills/deep-design-3x2/SKILL.md`: his usual design order, run as one workflow (three real
+  solutions, GPT blind then critiquing, a re-measure, one merge, decisions back to him).
+- `~/dev/Dispatch/skills/chatgpt-consult/SKILL.md`: how to reach GPT for the second pass.
+
 ## Writing a helper's brief
 - `~/dev/MandrakeWorkflows/skills/efficient-subagents/SKILL.md`: scope, feed and bound a helper.
 - This page: name the paths for the helper's kind of work.
