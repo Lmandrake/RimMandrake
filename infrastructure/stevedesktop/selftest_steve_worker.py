@@ -96,6 +96,9 @@ if mode == "world_start_failed":     # 11-14 shape: runner.ensure_playing_map's 
           "{\"programState\": \"Entry\", \"hasCurrentGame\": false}}")
     print("started: False hasCurrentGame: False mapCount: None -> NOT FRESH (start refused: Timed out waiting "
           "for RimWorld readiness 'mapData'.)"); sys.exit(1)
+if mode == "tick_unread":     # 11-13 shape (J20261113T114138Z-7ba5eb): live_site's refusal of a kept game whose tick it cannot read
+    print("[stage-onist]: NOT READY: a game is Playing at tick None (unread or > 120000): a colony, not a test map; "
+          "not leaving it"); sys.exit(1)
 stale_mark = os.path.join(os.environ["TESTQ_HOME"], "mock_stale_once")
 if mode in ("stale", "stale-nokeep") or (mode == "stale-once" and not os.path.exists(stale_mark)):
     open(stale_mark, "w").close()
@@ -614,6 +617,17 @@ def main():
         check(kept_whole(wkept, wfix) and "first fatal: Error in static constructor" in (res.get("note") or ""),
               "the world-start failure keeps Player.log and names the TypeInitializationException line: %s"
               % res.get("note"))
+
+        # RIMMANDRAKE_DIAGNOSE_STEVE_GAME_VANISHES_FIVE_BEFORE_BREAKFAST gap (a): 11-13 two jobs found the kept game
+        # Playing with a tick the bridge could not read, each refused "a colony, not a test map", and the game was kept
+        tdowns = os.path.join(tmp, "tick_unread_downs")
+        rc, o = w(["start"], job(), MOCK_MODE="tick_unread", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
+                  TESTQ_CMD_DOWN="echo down >> %s" % tdowns, RM_GAME_LOGDIR=logdir, **load)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("cause") == "HARNESS" and os.path.exists(tdowns) and len(open(tdowns).readlines()) == 1
+              and "cold-starts" in (res.get("note") or ""),
+              "a kept game whose tick the bridge cannot read is stopped once so the next job cold-starts: %s %s"
+              % (res.get("cause"), res.get("note")))
 
         # RIMMANDRAKE_RESTART_GAME_AFTER_MAPDATA_TIMEOUT_THREE_JOBS_BURNED: the gate BEFORE the job, not after it.
         # 11-14 10:35 PST a game came up with AlienRace.HarmonyPatches dead in its static constructor and

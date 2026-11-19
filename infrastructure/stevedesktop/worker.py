@@ -175,6 +175,9 @@ NO_GAME_RE = re.compile(r'"status":\s*"no_game"')      # the bridge's answer whe
 # TypeInitializationException "Token 0x0 is not a valid MethodBase token"; the bridge never said no_game, so the
 # wounded pid 4400 was handed to Bacta and the filler lane braked)
 WORLD_START_FAILED_RE = re.compile(r"quicktest world start FAILED")
+# live_site's refusal of a kept game whose tick the bridge cannot read (11-13: J20261113T100132Z-0f3ad6 and
+# J20261113T114138Z-7ba5eb each kept it; RIMMANDRAKE_DIAGNOSE_STEVE_GAME_VANISHES_FIVE_BEFORE_BREAKFAST gap a)
+TICK_UNREAD_RE = re.compile(r"a game is Playing at tick None")
 GAME_FATAL_RE = re.compile(r"BadImageFormat|TypeLoadException|TypeInitializationException")   # loads, cannot make a world
 # RIMMANDRAKE_RESTART_GAME_AFTER_MAPDATA_TIMEOUT_THREE_JOBS_BURNED: the evidence that a RUNNING process can never make
 # a map again, so the next job must not inherit it (kept_game_unmappable). Two instruments, two sets of words.
@@ -1358,7 +1361,8 @@ class Attempt:
                 if self.res.get("cause") == "CANARY":
                     self.stop_game_for_next_job("canary red")
                 elif self.res.get("cause") == "HARNESS" and (NO_GAME_RE.search(tail or "")
-                                                             or WORLD_START_FAILED_RE.search(tail or "")):
+                                                             or WORLD_START_FAILED_RE.search(tail or "")
+                                                             or TICK_UNREAD_RE.search(tail or "")):
                     # STEVE_WORKER_UNSTICK_WOUNDED_GAME_KEPT_UP: pid 30296 answered the bridge but could not make a map
                     # (10-31, AlienRace BadImageFormat): 00238b and dd60e2 both reused it. Other HARNESS deaths keep it.
                     # 11-14: the same wound reached as modcheck's "quicktest world start FAILED" (no no_game string).
