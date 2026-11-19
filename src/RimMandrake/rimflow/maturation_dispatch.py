@@ -316,6 +316,7 @@ def gather(root, cfg, live=True):
              and _is_ingame_item(r.get("item"))]
     for mod in cfg.get("advancing") or []:
         f = M.build_facts(root, mod)
+        f["arrived"] = arrivals(M.load(root, mod))
         m = by.get(mod) or {}
         runs = m.get("runs", UNM) if m else []
         if isinstance(runs, list):
@@ -714,8 +715,27 @@ def void_units(f, s):
     return out
 
 
-def _off_ceiling(f, s, spent):
-    """Drop the void units from {unit: usd}; -> (kept usd, void usd), each rounded."""
+def arrivals(rec):
+    """-> {stage: epoch} the mod's latest arrival at each stage: its newest move into it from another stage (a cycle or
+    visit opened inside the stage, a road back from == to, is not an arrival), else the record's since for its stage."""
+    out = {}
+    for mv in (rec or {}).get("moves") or []:
+        t = _ts(mv.get("at"))
+        if t is not None and mv.get("to") and mv.get("from") != mv.get("to"):
+            out[mv["to"]] = max(out.get(mv["to"], t), t)
+    t = _ts((rec or {}).get("since"))
+    if t is not None and (rec or {}).get("stage") and rec["stage"] not in out:
+        out[rec["stage"]] = t
+    return out
+
+
+def _off_ceiling(f, s, spent, stage=None):
+    """Drop the void units, and every run started before the mod's latest arrival at the stage (it was spent on an
+    earlier pass: RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT), from {unit: usd}; -> (kept usd, void
+    usd), each rounded. An unread arrival counts every run."""
+    came, at = (f.get("arrived") or {}).get(stage), {r.get("unit"): r.get("at") for r in f.get("runs_seen") or []}
+    if came is not None:
+        spent = {u: v for u, v in spent.items() if not (isinstance(at.get(u), (int, float)) and at[u] < came)}
     void = void_units(f, s)
     v = round(sum(u_usd for u, u_usd in spent.items() if u in void), 2)
     return round(sum(u_usd for u, u_usd in spent.items() if u not in void), 2), v
@@ -731,7 +751,7 @@ def stage_spent(f, stage, ours, s=None, both=False):
         for u in [x.get("unit")] + list(x.get("killed_before") or []):
             if u and u not in spent:
                 spent[u] = (f.get("run_usd") or {}).get(u, x.get("cap") or 0.0)
-    kept, void = _off_ceiling(f, s, spent)
+    kept, void = _off_ceiling(f, s, spent, stage)
     return (kept, void) if both else kept
 
 
@@ -1015,7 +1035,7 @@ def offline_usd(f, s):
     for x in s.get("launches") or []:
         if x.get("stage") == "offline_build" and x.get("unit") not in spent:
             spent[x["unit"]] = (f.get("run_usd") or {}).get(x["unit"], x.get("cap") or 0.0)
-    return _off_ceiling(f, s, spent)[0]     # less every VOID run: his card of 2026-11-18 (void_units)
+    return _off_ceiling(f, s, spent, "offline_build")[0]     # less every VOID run: his card of 2026-11-18 (void_units)
 
 
 def red_deciders(f):

@@ -1,0 +1,156 @@
+{
+ "_doc": "GimmeSomeSlack, read 2026-11-19 from the live run records (maturation_dispatch.gather) and design/concepts/GimmeSomeSlack/version/stage_record.json: the 13 runs the status page placed in the Stage 6 (in-game) box, their start and dollars, and the stage record moves. RIMMANDRAKE_TRACE_SLACK_STAGE_SIX_SPEND_BEFORE_FIRST_VISIT.",
+ "box_runs": {
+  "6": {
+   "rm-detached-bench-rimmandrake-challenge-gss-blind-rests-on-1794731693": 20.0,
+   "rm-detached-bench-rimmandrake-complete-gimmesomeslack-cycl-1794826948": 3.0397347999999984,
+   "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-cycle-1794828223": 1.3049876,
+   "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1794834319": 30.0,
+   "rm-detached-bench-rimmandrake-fix-miner-judge-failed-slack-1794827680": 11.0630328,
+   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794774087": 7.950291800000003,
+   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794782365": 9.755191000000005,
+   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794814826": 11.872007399999996,
+   "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794822873": 10.964947999999998,
+   "rm-detached-bench-rimmandrake-prepare-slack-watched-sittin-1794878632": 1.0667284,
+   "rm-detached-bench-rimmandrake-route-gimmesomeslack-cycle-o-1794755734": 8.0,
+   "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794897953": 3.1602215999999994,
+   "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794935989": 1.2444840000000004
+  }
+ },
+ "cap_usd": 15,
+ "ceiling_usd": 100,
+ "col": "6",
+ "record": {
+  "moves": [
+   {
+    "at": "2026-11-14T21:28:26-08:00",
+    "from": "offline_build",
+    "to": "blind_challenge"
+   },
+   {
+    "at": "2026-11-15T08:16:19-08:00",
+    "from": "blind_challenge",
+    "to": "blind_challenge"
+   },
+   {
+    "at": "2026-11-15T14:33:13-08:00",
+    "from": "blind_challenge",
+    "to": "blind_challenge"
+   },
+   {
+    "at": "2026-11-15T17:51:38-08:00",
+    "from": "blind_challenge",
+    "to": "blind_challenge"
+   },
+   {
+    "at": "2026-11-15T19:20:57-08:00",
+    "from": "blind_challenge",
+    "to": "blind_challenge"
+   },
+   {
+    "at": "2026-11-15T23:33:31-08:00",
+    "from": "blind_challenge",
+    "to": "blind_challenge"
+   },
+   {
+    "at": "2026-11-16T01:28:36-08:00",
+    "from": "blind_challenge",
+    "to": "blind_challenge"
+   },
+   {
+    "at": "2026-11-16T03:25:09-08:00",
+    "from": "blind_challenge",
+    "to": "in_game"
+   },
+   {
+    "at": "2026-11-17T09:22:15-08:00",
+    "from": "in_game",
+    "to": "in_game"
+   }
+  ],
+  "since": "2026-11-17T09:22:15-08:00",
+  "stage": "in_game"
+ },
+ "run_usd": {
+  "rm-detached-bench-rimmandrake-challenge-gss-blind-rests-on-1794731693": 20.0,
+  "rm-detached-bench-rimmandrake-complete-gimmesomeslack-cycl-1794826948": 3.0397347999999984,
+  "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-cycle-1794828223": 1.3049876,
+  "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1794834319": 30.0,
+  "rm-detached-bench-rimmandrake-fix-miner-judge-failed-slack-1794827680": 11.0630328,
+  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794774087": 7.950291800000003,
+  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794782365": 9.755191000000005,
+  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794814826": 11.872007399999996,
+  "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794822873": 10.964947999999998,
+  "rm-detached-bench-rimmandrake-prepare-slack-watched-sittin-1794878632": 1.0667284,
+  "rm-detached-bench-rimmandrake-route-gimmesomeslack-cycle-o-1794755734": 8.0,
+  "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794897953": 3.1602215999999994,
+  "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794935989": 1.2444840000000004
+ },
+ "runs_seen": [
+  {
+   "at": 1794731693.825263,
+   "item": "RIMMANDRAKE_CHALLENGE_GSS_BLIND_RESTS_ON_ONE_TEST",
+   "unit": "rm-detached-bench-rimmandrake-challenge-gss-blind-rests-on-1794731693"
+  },
+  {
+   "at": 1794755734.243614,
+   "item": "RIMMANDRAKE_ROUTE_GIMMESOMESLACK_CYCLE_ONE_FAILURES_BACK",
+   "unit": "rm-detached-bench-rimmandrake-route-gimmesomeslack-cycle-o-1794755734"
+  },
+  {
+   "at": 1794774087.4986398,
+   "item": "RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_TWO_TESTS_FIRST",
+   "unit": "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794774087"
+  },
+  {
+   "at": 1794782365.8783774,
+   "item": "RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_THREE_TESTS_FIRST",
+   "unit": "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794782365"
+  },
+  {
+   "at": 1794814826.6049235,
+   "item": "RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_FIVE_FROM_PACKET",
+   "unit": "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794814826"
+  },
+  {
+   "at": 1794822873.9013891,
+   "item": "RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_SIX_TESTS_FIRST",
+   "unit": "rm-detached-bench-rimmandrake-judge-gimmesomeslack-blind-c-1794822873"
+  },
+  {
+   "at": 1794826948.4599118,
+   "item": "RIMMANDRAKE_COMPLETE_GIMMESOMESLACK_CYCLE_SIX_RECORD_NO",
+   "unit": "rm-detached-bench-rimmandrake-complete-gimmesomeslack-cycl-1794826948"
+  },
+  {
+   "at": 1794827680.702472,
+   "item": "RIMMANDRAKE_FIX_MINER_JUDGE_FAILED_SLACK_EIGHT_OF_TWENTY",
+   "unit": "rm-detached-bench-rimmandrake-fix-miner-judge-failed-slack-1794827680"
+  },
+  {
+   "at": 1794828223.2560177,
+   "item": "RIMMANDRAKE_CONFIRM_GIMMESOMESLACK_CYCLE_SIX_EXIT_MET",
+   "unit": "rm-detached-bench-rimmandrake-confirm-gimmesomeslack-cycle-1794828223"
+  },
+  {
+   "at": 1794834319.4983437,
+   "item": "RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE",
+   "unit": "rm-detached-bench-rimmandrake-drive-gimmesomeslack-in-game-1794834319"
+  },
+  {
+   "at": 1794878632.9852571,
+   "item": "RIMMANDRAKE_PREPARE_SLACK_WATCHED_SITTING_HE_SEES_THE_JUDGE",
+   "unit": "rm-detached-bench-rimmandrake-prepare-slack-watched-sittin-1794878632"
+  },
+  {
+   "at": 1794897953.8523614,
+   "item": "RIMMANDRAKE_ROUTE_GIMMESOMESLACK_VISIT_ONE_FAILURES_BACK",
+   "unit": "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794897953"
+  },
+  {
+   "at": 1794935989.330078,
+   "item": "RIMMANDRAKE_ROUTE_GIMMESOMESLACK_VISIT_ONE_FAILURES_BACK_RUN_TWO",
+   "unit": "rm-detached-bench-rimmandrake-route-gimmesomeslack-visit-o-1794935989"
+  }
+ ]
+}
