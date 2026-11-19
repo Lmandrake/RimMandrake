@@ -35,12 +35,13 @@ with open(page, "w") as f:
     f.write("# BOUNDARY: x\n\n## PROMISES\n\n- **off-blocks-starts.** a.\n- **kill-verified-dead.** b.\n\n## LIFE CYCLES\n\n"
             "- **run:** not a promise.\n")
 with open(tests, "w") as f:
-    f.write("def t_off_blocks_starts():\n    pass\n")
+    f.write("def t_off_blocks_starts():\n    pass\n\n\ndef main():\n    t_off_blocks_starts()\n")
 rc, out = run(page, tests)
 check("a promise with no test of its name: exit 1, named", rc == 1 and "kill-verified-dead" in out
       and "promises covered 1 of 2" in out, (rc, out[-300:]))
-with open(tests, "a") as f:
-    f.write("\n\ndef t_kill_verified_dead():\n    pass\n")
+with open(tests, "w") as f:      # boundary_check counts a test only if main() runs it (60274d0df2)
+    f.write("def t_off_blocks_starts():\n    pass\n\n\ndef t_kill_verified_dead():\n    pass\n\n\n"
+            "def main():\n    t_off_blocks_starts()\n    t_kill_verified_dead()\n")
 rc, out = run(page, tests)
 check("every promise tested: exit 0, `promises covered 2 of 2`", rc == 0 and "promises covered 2 of 2" in out, (rc, out[-300:]))
 rc, out = run(os.path.join(T, "absent.md"), tests)
