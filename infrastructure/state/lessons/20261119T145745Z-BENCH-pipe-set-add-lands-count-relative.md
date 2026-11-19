@@ -1,0 +1,1 @@
+pipe set/add lands the count relative to pipe's OWN measure (pipeline_control RESOURCES measure). A test fixture whose books differ from what the reader is handed makes 'pipe add <Mod> <res> -1' a no-op (clamped at 0 against a measured 0) and the reader looks store-blind: write the same books into the fixture's dispatch state.json (selftest_pipeline_control.put_books).

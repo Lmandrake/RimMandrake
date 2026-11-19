@@ -79,7 +79,8 @@ def fixture():
     with open(hold, "w") as f:
         json.dump({"holds": []}, f)
     os.environ.update(RM_PIPE_CONTROL_DIR=ctl, RM_MATURATION_DISPATCH_DIR=md, RM_PIPE_ROOT=root,
-                      RM_OWNER_HOLD_FILE=hold)
+                      RM_OWNER_HOLD_FILE=hold, RM_DISPATCHER_STATE=os.path.join(root, "dispatcher"))
+    os.makedirs(os.path.join(root, "dispatcher"))
     return root, st
 
 
@@ -213,7 +214,22 @@ LIMIT_TOKENS = {
     "coverage_malformed": ["MALFORMED_LIMIT"],
     "blind_cycles_visit": ["blind_auto_cycles_per_visit"],
     "blind_cycles_total": ["CYCLE_LIMIT"],
+    "ingame_runs_visit": ["ingame_auto_runs_per_visit"],
+    "steward_runs": ["steward_max_per_version"],
+    "fixer_runs": [],       # the same setting as steward_runs (a token names one consumable); its reader is listed
+    "launch_tries": ["launch_tries"],
+    "chain_runs_day": ["chain_max_per_day", "CHAIN_MAX_PER_DAY"],
+    "refusals": ["ITEM_ALARM_AT"],
+    "spend_offline_build": ["stage_ceiling_usd"],
+    "spend_blind_challenge": [],    # one setting, three per-stage accounts: maturation_dispatch.stage_spend reads all
+    "spend_in_game": [],
 }
+# how a reader names the consumable in its PC.used/PC.limit call (default: the name as a string literal)
+READ_RX = {r: r"PC\.SPEND_RES\[" for r in ("spend_offline_build", "spend_blind_challenge", "spend_in_game")}
+
+
+def read_rx(res):
+    return READ_RX.get(res, '"%s"' % res)
 
 
 def uses(path, tokens):
@@ -243,7 +259,7 @@ def test_reader_census():
         check(readers, "%s names its readers" % res)
         for mod, fn in readers:
             src = inspect.getsource(getattr(importlib.import_module(mod), fn))
-            check(re.search(r"PC\.used\([^)]*\"%s\"" % res, src) is not None,
+            check(re.search(r"PC\.used\([^)]*%s" % read_rx(res), src) is not None,
                   "%s.%s reads %s through PC.used" % (mod, fn, res))
     check(set(LIMIT_TOKENS) == set(PC.RESOURCES), "every consumable has its limit tokens in this census",
           sorted(set(PC.RESOURCES) ^ set(LIMIT_TOKENS)))
@@ -263,7 +279,7 @@ def test_reader_census():
                 if not body:
                     with open(path, encoding="utf-8") as fh:
                         body = fh.read()
-                ok = re.search(r"PC\.(used|limit)\([^)]*\"%s\"" % res, body) is not None
+                ok = re.search(r"PC\.(used|limit)\([^)]*%s" % read_rx(res), body) is not None
                 seen += 1
                 check(ok, "%s:%d %s uses %s (%s) %s" % (name, line, fn, tok, res, "through the store" if ok else
                                                          "WITHOUT the store: a bypass"))
@@ -374,16 +390,251 @@ def test_speed():
             check(len(out) <= 3, "%s prints at most 3 lines" % argv[0], out)
     check(worst < 2.0, "every verb runs under 2 s in-process (worst %.2f s)" % worst)
 
+# ---- the six more consumables (item RIMMANDRAKE_TYPE_SIX_MORE_CONSUMABLES_READERS_IN_LIVE_LANES; page
+# design/specs/2026-11-19-consumable-readers/boundary.md): each promise's test, by its name
+
+
+def act_line(rc, out, what):
+    """A `pipe` write: exit 0, at most 3 lines, its undo printed. -> the act id."""
+    m = re.search(r"undo: pipe undo (ct_\w+)", "\n".join(out))
+    check(rc == 0 and len(out) <= 3 and m is not None, "%s: one line in, at most 3 out, with its undo" % what, out)
+    return m.group(1) if m else "ct_missing"
+
+
+def put_books(mod, **books):
+    """Write `mod`'s books into the fixture's dispatch state.json, so `pipe`'s measure reads what the reader reads."""
+    p = os.path.join(os.environ["RM_MATURATION_DISPATCH_DIR"], "state.json")
+    with open(p) as fh:
+        st = json.load(fh)
+    st["mods"].setdefault(mod, {}).update(books)
+    with open(p, "w") as fh:
+        json.dump(st, fh)
+
+
+def honours(what, decide, base, n_add, limit_to, more=None):
+    """The reader at its base reading; `pipe add -N` moves it; `pipe undo` puts it back; `pipe limit` moves it; `pipe
+    limit default` puts it back. more: the consumable's name. decide() -> True when the reader stops (spent)."""
+    check(decide() is True, "%s: base: the reader reads it spent" % what, decide())
+    aid = act_line(*run("add", base, more, "-%d" % n_add, "--why", "t")[:2], what="add -%d %s" % (n_add, more))
+    check(decide() is False, "%s: `pipe add %s %s -%d` moves the reader" % (what, base, more, n_add), decide())
+    rc, out, _ = run("undo", aid, "--why", "t")
+    check(rc == 0 and decide() is True, "%s: `pipe undo` puts the reader back" % what, (out, decide()))
+    act_line(*run("limit", base, more, str(limit_to), "--why", "t")[:2], what="limit %s" % more)
+    check(decide() is False, "%s: `pipe limit %s %s %d` moves the reader" % (what, base, more, limit_to), decide())
+    run("limit", base, more, "default", "--why", "t")
+    check(decide() is True, "%s: `pipe limit ... default` restores the pipeline's own limit" % what, decide())
+
+
+def t_ingame_runs_read_the_store():
+    import maturation_dispatch as MD
+    s = {"ingame_auto": [{"visit_id": "0.1.0#1", "visit": 0, "unit": "rm-ig-0"}]}
+    f = {"mod": "Fx", "visit": 1, "version": "0.1.0", "exit": {}, "live_units": [], "owed": "run", "ingame_runs": []}
+    cfg = {"ingame_auto_runs_per_visit": 1, "settle_s": 180, "launch_tries": 3, "ingame_enabled": True}
+
+    def decide():
+        row = {"mod": "Fx"}
+
+        def put(decision, why, need=None):
+            row["decision"], row["why"] = decision, why
+        try:
+            MD.decide_ingame(cfg, dict(s), dict(f), row, put, time.time(), (True, "ok"), 0, [], (True, "ok"))
+        except Exception as e:      # noqa: BLE001  past the counter the fixture is thin; the counter is what is read
+            row.setdefault("decision", "past_counter (%s)" % type(e).__name__)
+        return row.get("decision") == "auto_spent"
+    honours("decide_ingame", decide, "Fx", 1, 2, "ingame_runs_visit")
+
+
+def t_steward_runs_read_the_store():
+    import maturation_autonomy as AUT
+    cfg = {"steward_max_per_version": 12, "steward_enabled": True, "steward_cap_usd": 8, "fix_cap_usd": 10,
+           "max_live": 2}
+
+    def gate(aut):
+        if aut == "steward":
+            row = {"mod": "Fx", "aut": "steward", "steward_key": "0.1.0|new"}
+            st = {"steward": {"0.1.0|k%d" % i: {"unit": "rm-s-%d" % i} for i in range(12)}}
+        else:
+            row = {"mod": "Fx", "aut": "fixer", "fix_item": "RIMMANDRAKE_FX_NEW"}
+            st = {"fixers": fixers}
+        go, got = AUT._gate(cfg, st, row, 0, "0.1.0")
+        return bool(got) and got[0] == "steward_spent"
+    fixers = {"RIMMANDRAKE_FX_%d" % i: {"unit": "rm-f-%d" % i} for i in range(12)}
+    put_books("Fx", fixers=fixers)      # pipe's measure of fixer_runs reads the tick's books: 12 here too
+    honours("_gate (steward)", lambda: gate("steward"), "Fx", 1, 13, "steward_runs")
+    honours("_gate (fixer)", lambda: gate("fixer"), "Fx", 1, 13, "fixer_runs")
+
+
+def t_launch_tries_read_the_store():
+    import maturation_dispatch as MD
+    import maturation_autonomy as AUT
+    fail = {"failed": "fatal: Unable to create index.lock: File exists", "tries": 3, "cycle": 2, "visit_id": "0.1.0#1"}
+    cfg = {"launch_tries": 3, "blind_auto_cycles_per_visit": 3, "settle_s": 180, "blind_enabled": True,
+           "steward_max_per_version": 12, "steward_enabled": True, "steward_cap_usd": 8, "max_live": 2}
+    f = {"mod": "Fx", "cycle": 2, "version": "0.1.0", "visit_first": 1, "live_units": [], "owed": "cycle", "exit": {}}
+
+    def blind():        # the production path: decide_blind hands the mod to retriable
+        row = {"mod": "Fx"}
+
+        def put(decision, why, need=None):
+            row["decision"], row["why"] = decision, why
+        try:
+            MD.decide_blind(cfg, {"blind_auto": [dict(fail)]}, dict(f), row, put, time.time(), (True, "ok"), 0, [])
+        except Exception as e:      # noqa: BLE001
+            row.setdefault("decision", "past_counter (%s)" % type(e).__name__)
+        return row.get("decision") == "stopped"
+
+    def steward():
+        row = {"mod": "Fx", "aut": "steward", "steward_key": "0.1.0|k"}
+        go, got = AUT._gate(cfg, {"steward": {"0.1.0|k": dict(fail)}}, row, 0, "0.1.0")
+        return bool(got) and got[0] == "steward_spent"
+
+    def swept():        # the void sweep's callbacks: each entry's mod found by entry_mods
+        st = {"mods": {"Fx": {"steward": {"0.1.0|k": dict(fail)}}}}
+        x = st["mods"]["Fx"]["steward"]["0.1.0|k"]
+        return not MD.still_retried(cfg, "steward", x, MD.entry_mods(st).get(id(x)))
+    for what, fn in (("decide_blind -> retriable", blind), ("_gate -> _retriable", steward),
+                     ("still_retried via entry_mods", swept)):
+        honours(what, fn, "Fx", 1, 4, "launch_tries")
+    check(not MD.retriable(cfg, dict(fail), mod="Gx"), "another mod's launch_tries account is its own")
+
+
+def t_chain_runs_read_the_store():
+    import role_launch as RL
+    now = time.time()
+    concept = os.path.join(os.environ["RM_PIPE_ROOT"], "design", "concepts", "Fx")
+    key = "%s %s" % (RL.day_of(now), concept)
+    rs = {"chain_day": {key: 8}, "chain_stages_day": {key: ["3"] * 8}}     # stage 3 again: a return, not forward
+    with open(os.path.join(os.environ["RM_DISPATCHER_STATE"], "state.json"), "w") as fh:
+        json.dump({"roles": {"Designer": dict(rs)}}, fh)      # the Dispatcher's books, as pipe's measure reads them
+    honours("role_launch.chain_capped", lambda: RL.chain_capped(dict(rs), {}, concept, "3", now), "Fx", 1, 9,
+            "chain_runs_day")
+    check(RL.chain_cap({}, os.path.join("x", "Gx"), 8) == (8, RL.CHAIN_MAX_PER_DAY),
+          "a concept's chain account is its folder's name, its own")
+
+
+def t_refusals_read_the_store():
+    import refusal_contract as RC
+    keep = {k: os.environ.get(k) for k in ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE",
+                                          "RM_JUDGE_CALIBRATION", "RM_CALIBRATION_ROOT")}
+    root = tempfile.mkdtemp(prefix="pipe_ref_")
+    try:
+        os.makedirs(os.path.join(root, "ops"))
+        os.environ.update(RM_REFUSAL_DIR=os.path.join(root, "refusals"), RM_OPS_WATCH_DIR=os.path.join(root, "ops"),
+                          RM_DISPATCHER_STATE=os.path.join(root, "dispatcher"))
+        crit = "the knockback scene pushes a pawn at least 3 cells"
+        with open(os.path.join(root, "scene.log"), "w") as fh:
+            fh.write("BlastAt 10,10\npawn Kira displaced 1 cell\nend\n")
+        with open(os.path.join(root, "brief.md"), "w") as fh:
+            fh.write("a calibrated brief\n")
+        with open(os.path.join(root, "cal.json"), "w") as fh:
+            json.dump({"families": {"scene_look": {"brief": ["brief.md"], "hash": RC.brief_hash(["brief.md"], root),
+                                                   "status": "CALIBRATED", "cases": {}}}}, fh)
+        os.environ.update(RM_JUDGE_CALIBRATION=os.path.join(root, "cal.json"), RM_CALIBRATION_ROOT=root)
+        given = {"root": root, "criteria": {"C1": crit}, "inputs": ["scene.log"]}
+        n = [0]
+
+        def refuse(item):
+            n[0] += 1
+            later = RC.counters()["items"].get(item, {}).get("refused")
+            v = {"item": item, "family": "scene_look", "sha": "sha%d" % n[0], "passed": [],
+                 "refusals": [{"clause": "C1", "criterion_hash": RC.criterion_hash(crit), "evidence": ["scene.log:2"],
+                               "observed": "pawn displaced 1 cell after the blast",
+                               "would_pass": "scene.log shows displaced >= 3 cells for pawn Kira after BlastAt",
+                               "smallest_fix": {"what": "raise KnockbackForce in RM_ExplosiveKnockback def to 6",
+                                                "attainable": "yes", "cost": "edit"},
+                               "criterion_verdict": "sound",
+                               "criterion_why": "Three cells is what the owner's line asks and the scene can show."}]}
+            if later:
+                v["refusals"][0]["new_since"] = "unfixed:C1"
+            r = RC.submit(v, given)
+            check(r["ok"] and r["counted"], "refusal %d on %s is counted" % (n[0], item), r.get("errors"))
+            # the item-count alarm only ("N refused verdicts"); the clause-repair line is its own count (CLAUSE_REPAIR_AT)
+            return any(a.get("subject") == "item:%s" % item and "refused verdicts" in str(a.get("why"))
+                       for a in r["alarms"])
+        for _ in range(RC.ITEM_ALARM_AT - 1):
+            refuse("ITEM_R")
+        rc, out, _ = run("add", "ITEM_R", "refusals", "-1", "--why", "one refusal was a harness fault")
+        act_line(rc, out, "add -1 refusals (an item account)")
+        check(refuse("ITEM_R") is False, "submit honours the store: the 4th refusal, one forgiven, raises no item alarm")
+        check(refuse("ITEM_R") is True, "the next refusal reaches the limit and alarms")
+        for _ in range(RC.ITEM_ALARM_AT - 1):
+            refuse("ITEM_L")
+        act_line(*run("limit", "ITEM_L", "refusals", "9", "--why", "a noisy family")[:2], what="limit refusals")
+        check(refuse("ITEM_L") is False, "submit honours a raised limit")
+        run("limit", "ITEM_L", "refusals", "default", "--why", "back")
+        check(refuse("ITEM_L") is True, "limit default alarms again at ITEM_ALARM_AT")
+        rc, out, _ = run("add", "NO_SUCH_ITEM_EVER", "refusals", "-1", "--why", "typo")
+        check(rc == 2 and "refused" in out[0], "an account the counters do not hold, and no mod, is refused", out)
+    finally:
+        for k, v in keep.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def t_stage_spend_reads_the_store():
+    import maturation_dispatch as MD
+    cfg = {"stage_ceiling_usd": 100}
+    over = lambda: MD.ceiling_gate(cfg, {}, "Fx", "in_game", 95.0, 10.0, "in-game acceptance", ([], 0))[0] is not None
+    honours("ceiling_gate (in_game)", over, "Fx", MD.to_wt(10), MD.to_wt(200), "spend_in_game")
+    blind = lambda: MD.ceiling_gate(cfg, {}, "Fx", "blind_challenge", 95.0, 10.0, "b", ([], 0))[0] is not None
+    honours("ceiling_gate (blind)", blind, "Fx", MD.to_wt(10), MD.to_wt(200), "spend_blind_challenge")
+    build = lambda: MD.ceiling_gate(cfg, {}, "Fx", "offline_build", 95.0, 10.0, "o", ([], 0))[0] is not None
+    honours("ceiling_gate (offline build)", build, "Fx", MD.to_wt(10), MD.to_wt(200), "spend_offline_build")
+    row = {"mod": "Fx", "stage": "in_game", "stage_usd": 50.0}
+    small = lambda: MD.holder_cap(cfg, row, 10.0) <= 50.0 + MD.READ_SLACK
+    honours("holder_cap (a pilot holder's cap)", small, "Fx", MD.to_wt(10), MD.to_wt(200), "spend_in_game")
+    rc, out, _ = run("add", "Fx", "spend_in_game", "-%d" % MD.to_wt(10), "--why", "t")
+    check(not MD.ceiling_gate(cfg, {}, "Fx", "blind_challenge", 95.0, 10.0, "b", ([], 0))[0] is None,
+          "a stage's account is its own: an in-game give-back leaves the blind challenge's ceiling")
+    shown = run("show", "Fx")[1]
+    check(any("spend_in_game" in l and "weighted tokens" in l for l in shown),
+          "pipe show <Mod> lists the adjusted spend account in weighted tokens", shown)
+    run("undo", re.search(r"(ct_\w+)", out[1]).group(1), "--why", "t")
+
+
+def t_every_limit_read_goes_through_the_store():
+    test_reader_census()
+
+
+SIX_MORE = ("ingame_runs_visit", "steward_runs", "fixer_runs", "launch_tries", "chain_runs_day", "refusals",
+            "spend_offline_build", "spend_blind_challenge", "spend_in_game")
+
+
+def t_one_line_each_with_its_undo():
+    """Each of the six (nine accounts) takes `pipe set`, `add`, `reset` and `limit` in one line, prints at most 3
+    lines with its undo, and `pipe undo` takes the act back."""
+    import pipeline_control as PC
+    for res in SIX_MORE:
+        check(res in PC.RESOURCES, "%s is a consumable pipe knows" % res)
+        who = "Fx@0.1.0" if res == "refusals" else "Fx"     # a refusal account is an item: here a mod's, by version
+        for argv in (("set", who, res, "2"), ("add", who, res, "+1"), ("reset", who, res), ("limit", who, res, "7")):
+            rc, out, _ = run(*(argv + ("--why", "t")))
+            aid = act_line(rc, out, "pipe %s %s" % (argv[0], res))
+            rc, out, _ = run("undo", aid, "--why", "t")
+            check(rc == 0 and len(out) <= 3, "pipe undo of `%s %s` takes the act back" % (argv[0], res), out)
+
+
 
 def main():
     keep = {k: os.environ.get(k) for k in ("RM_PIPE_CONTROL_DIR", "RM_MATURATION_DISPATCH_DIR", "RM_PIPE_ROOT",
-                                           "RM_OWNER_HOLD_FILE")}
+                                           "RM_OWNER_HOLD_FILE", "RM_DISPATCHER_STATE")}
     root, st = fixture()
     try:
         test_verbs_and_coverage(st)
         test_blind_reader()
         test_mutant()
         test_reader_census()
+        t_ingame_runs_read_the_store()
+        t_steward_runs_read_the_store()
+        t_launch_tries_read_the_store()
+        t_chain_runs_read_the_store()
+        t_refusals_read_the_store()
+        t_stage_spend_reads_the_store()
+        t_every_limit_read_goes_through_the_store()
+        t_one_line_each_with_its_undo()
         test_switches(root)
         test_tick_switch(root)
         test_speed()

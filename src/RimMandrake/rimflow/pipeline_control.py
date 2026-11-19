@@ -378,6 +378,42 @@ class Ctx:
     def mstate(self, mod):
         return (self.dstate().get("mods") or {}).get(mod) or {}
 
+    def reading(self):
+        """The tick's last reading (reading.json beside state.json): each mod's stage and stage_usd."""
+        if "reading" not in self._facts:
+            d = self.mdir or os.environ.get("RM_MATURATION_DISPATCH_DIR")
+            if not d:
+                self._imp()
+                import doorbell
+                d = os.path.join(doorbell.state_dir(), "maturation")
+            p = os.path.join(d, "reading.json")
+            try:
+                with open(p, encoding="utf-8") as f:
+                    self._facts["reading"] = json.load(f)
+            except FileNotFoundError:
+                self._facts["reading"] = {"_error": "%s: no reading yet" % p}
+            except (OSError, ValueError) as e:
+                self._facts["reading"] = {"_error": "%s: %s" % (p, e)}
+        return self._facts["reading"]
+
+    def refusal_counters(self):
+        if "refusals" not in self._facts:
+            self._imp()
+            try:
+                import refusal_contract as RC
+                self._facts["refusals"] = RC.counters()
+            except Exception as e:      # noqa: BLE001  UNMEASURED, never 0
+                self._facts["refusals"] = {"_error": "%s: %s" % (type(e).__name__, e)}
+        return self._facts["refusals"]
+
+    def version(self, mod):
+        self._imp()
+        try:
+            import maturation as M
+            return (M.load(self.root, mod) or {}).get("version") or UNM
+        except Exception:       # noqa: BLE001
+            return UNM
+
     def facts(self, mod, kind):
         k = (mod, kind)
         if k not in self._facts:
@@ -474,6 +510,111 @@ def m_blind_total(ctx, mod):
     return int(f.get("visit") or 0), M.CYCLE_LIMIT
 
 
+def m_ingame_visit(ctx, mod):
+    f = ctx.facts(mod, "ingame")
+    if f.get("_error"):
+        return UNM + " (%s)" % f["_error"], None
+    if ctx.stage(mod) != "in_game":
+        return None, None
+    vid = "%s#%s" % (f.get("version"), f.get("visit"))
+    ours = [x for x in ctx.mstate(mod).get("ingame_auto") or [] if x.get("visit_id") == vid]
+    return len(ours), int(ctx.cfg().get("ingame_auto_runs_per_visit", 1))
+
+
+def m_steward(ctx, mod):
+    """The steward runs on the mod's current version (maturation_autonomy._gate's count, the key in flight included)."""
+    ver = ctx.version(mod)
+    if ver == UNM:
+        return UNM, None
+    done = ctx.mstate(mod).get("steward") or {}
+    return len([k for k in done if str(k).startswith(str(ver))]), int(ctx.cfg().get("steward_max_per_version", 12))
+
+
+def m_fixer(ctx, mod):
+    return len(ctx.mstate(mod).get("fixers") or {}), int(ctx.cfg().get("steward_max_per_version", 12))
+
+
+def m_launch_tries(ctx, mod):
+    """The most tries spent by one of the mod's booked launches that failed (each book: blind, in-game, stewards,
+    fixers, a Stage 3 retry); None when none failed. The readers count each entry's own tries against the limit."""
+    s = ctx.mstate(mod)
+    ents = []
+    for k in ("blind_auto", "ingame_auto"):
+        ents += [x for x in s.get(k) or [] if isinstance(x, dict)]
+    for k in ("steward", "fixers"):
+        ents += [x for x in (s.get(k) or {}).values() if isinstance(x, dict)]
+    ents += [x for x in (s.get("launch_retry"), s.get("stopped")) if isinstance(x, dict)]
+    tries = [int(x.get("tries") or 1) for x in ents if x.get("failed") or x.get("launch_failed")]
+    return (max(tries) if tries else None), int(ctx.cfg().get("launch_tries", 3))
+
+
+def m_chain(ctx, mod):
+    ctx._imp()
+    import maturation_autonomy as AUT
+    r = AUT.designer_chain(mod, time.time(), raw=True)
+    return (UNM, None) if r is None else r[:2]
+
+
+def refusal_subject(ctx, name):
+    """The refusal account a `pipe` line names: an item in the refusal counters as written (Graffiti@0.1.0, an item
+    id), else a mod, read as <Mod>@<its version> (maturation_advance's item). -> the subject, or Refused."""
+    cs = ctx.refusal_counters()
+    items = cs.get("items") or {} if isinstance(cs, dict) and not cs.get("_error") else {}
+    if name in items:
+        return name
+    if "@" in str(name):        # <Mod>@<version>, before its first counted verdict: the mod must be the pipeline's
+        m, ver = str(name).split("@", 1)
+        return "%s@%s" % (mod_name(m, ctx), ver)
+    m = mod_name(name, ctx)
+    ver = ctx.version(m)
+    if ver == UNM:
+        raise Refused("%s has no readable stage record, so its refusal account (<Mod>@<version>) is unknown; name the "
+                      "item as the counters write it" % m)
+    return "%s@%s" % (m, ver)
+
+
+def m_refusals(ctx, subject):
+    ctx._imp()
+    import refusal_contract as RC
+    cs = ctx.refusal_counters()
+    if cs.get("_error"):
+        return UNM + " (%s)" % cs["_error"], RC.ITEM_ALARM_AT
+    it = (cs.get("items") or {}).get(subject)
+    if it is None:
+        return None, RC.ITEM_ALARM_AT
+    # a <Mod>@<version> subject is maturation.py advance's, whose family counts refusals in a window (FAMILY_TUNING)
+    tune = RC.FAMILY_TUNING.get("maturation_advance") if "@" in subject else None
+    if tune:
+        now = time.time()
+        return len([h for h in it.get("refused_at") or [] if now - float(h.get("at") or 0) < tune["window_s"]]), \
+            RC.ITEM_ALARM_AT
+    return int(it.get("refused") or 0), RC.ITEM_ALARM_AT
+
+
+def _m_spend(stage):
+    """The stage's spend on the mod's merits (the tick's last reading of it, reading.json's stage_usd) and the
+    ceiling, both in weighted tokens (maturation_dispatch.to_wt): the store keeps whole numbers."""
+    def m(ctx, mod):
+        if ctx.stage(mod) != stage:
+            return None, None
+        ctx._imp()
+        import maturation_dispatch as MD
+        c = ctx.cfg().get("stage_ceiling_usd")
+        lim = MD.to_wt(c) if MD._usd_ok(c, True) else None
+        rd = ctx.reading()
+        if rd.get("_error"):
+            return UNM + " (%s)" % rd["_error"], lim
+        row = (rd.get("mods") or {}).get(mod) or {}
+        usd = row.get("stage_usd") if row.get("stage") == stage else None
+        return (MD.to_wt(usd) if MD._usd_ok(usd) else UNM + " (no stage_usd in the tick's last reading)"), lim
+    return m
+
+
+SPEND_RES = {"offline_build": "spend_offline_build", "blind_challenge": "spend_blind_challenge",
+             "in_game": "spend_in_game"}
+ACCOUNT_KEY = {"refusals": refusal_subject}     # a consumable not keyed by the mod alone: its subject
+
+
 # name -> (short label, what it counts, measure(ctx, mod) -> (measured | None when it does not apply | UNM..., default
 #          limit), the readers that must call used()/limit() with this name: (module, function))
 RESOURCES = {
@@ -492,6 +633,24 @@ RESOURCES = {
     "blind_cycles_total": ("cycles", "blind cycles in this visit; past the limit the Conductor decides (CYCLE_LIMIT)",
                            m_blind_total, [("maturation", "evaluate"), ("maturation", "next_step"),
                                            ("maturation_autonomy", "_route")]),
+    "ingame_runs_visit": ("ingame-auto", "automatic in-game runs this visit (ingame_auto_runs_per_visit)",
+                          m_ingame_visit, [("maturation_dispatch", "decide_ingame")]),
+    "steward_runs": ("stewards", "automatic steward runs at this version (steward_max_per_version)",
+                     m_steward, [("maturation_autonomy", "_gate")]),
+    "fixer_runs": ("fixers", "automatic road-back fixer runs on the mod (steward_max_per_version)",
+                   m_fixer, [("maturation_autonomy", "_gate")]),
+    "launch_tries": ("tries", "tries of a booked launch that failed, each launch its own count (launch_tries)",
+                     m_launch_tries, [("maturation_autonomy", "tries_left")]),
+    "chain_runs_day": ("chains", "chained Designer runs on the concept today (chain_max_per_day)",
+                       m_chain, [("role_launch", "chain_cap"), ("maturation_autonomy", "designer_chain")]),
+    "refusals": ("refusals", "refused verdicts on one item, <Mod>@<version> (refusal_contract.ITEM_ALARM_AT: the "
+                 "item's alarm)", m_refusals, [("refusal_contract", "submit")]),
+    "spend_offline_build": ("spend-build", "weighted tokens spent at the offline build (stage_ceiling_usd)",
+                            _m_spend("offline_build"), [("maturation_dispatch", "stage_spend")]),
+    "spend_blind_challenge": ("spend-blind", "weighted tokens spent at the blind challenge (stage_ceiling_usd)",
+                              _m_spend("blind_challenge"), [("maturation_dispatch", "stage_spend")]),
+    "spend_in_game": ("spend-ingame", "weighted tokens spent at in-game acceptance (stage_ceiling_usd)",
+                      _m_spend("in_game"), [("maturation_dispatch", "stage_spend")]),
 }
 
 
@@ -515,12 +674,20 @@ def mod_name(name, ctx):
 
 
 def reading(ctx, mod, res, st):
-    """-> (measured, used, limit) for one consumable, or None when it does not apply to the mod now."""
+    """-> (measured, used, limit, adjusted: the store holds a count adjustment) for one consumable, or None when it does
+    not apply to the mod now."""
+    if res in ACCOUNT_KEY:
+        try:
+            mod = ACCOUNT_KEY[res](ctx, mod)
+        except Refused:
+            return None
     meas, dlim = RESOURCES[res][2](ctx, mod)
     u, lim = used(mod, res, meas if meas is not None else 0), limit(mod, res, dlim)
-    if meas is None and not u and lim == dlim:
+    big = 10 ** 15      # a count no consumable reaches: it moves only when the store holds an adjustment
+    adjusted = used(mod, res, big) != big
+    if meas is None and not u and lim == dlim and not adjusted:
         return None
-    return meas, u, lim
+    return meas, u, lim, adjusted
 
 
 # ---------------------------------------------------------------- the verbs
@@ -535,8 +702,8 @@ def _undo_line(a):
 
 def do_count(ctx, verb, mod, res, n, why, owner_said=None):
     """`pipe set|add|reset`: one adjustment in the control store (control.set_account), at this revision."""
-    mod = mod_name(mod, ctx)
     res = resource(res)
+    mod = ACCOUNT_KEY[res](ctx, mod) if res in ACCOUNT_KEY else mod_name(mod, ctx)
     meas, dlim = RESOURCES[res][2](ctx, mod)
     C = _C()
     m = meas if isinstance(meas, int) and not isinstance(meas, bool) else None
@@ -556,8 +723,8 @@ def do_count(ctx, verb, mod, res, n, why, owner_said=None):
 
 
 def do_limit(ctx, mod, res, n, why, owner_said=None):
-    mod = mod_name(mod, ctx)
     res = resource(res)
+    mod = ACCOUNT_KEY[res](ctx, mod) if res in ACCOUNT_KEY else mod_name(mod, ctx)
     _meas, dlim = RESOURCES[res][2](ctx, mod)
     C = _C()
     try:
@@ -678,8 +845,8 @@ def do_show(ctx, mod=None):
             r = reading(ctx, m, res, st)
             if r is None:
                 continue
-            meas, u, lim = r
-            mark = "*" if (meas if isinstance(meas, int) else 0) != u or lim != RESOURCES[res][2](ctx, m)[1] else ""
+            meas, u, lim, adjusted = r
+            mark = "*" if adjusted or lim != RESOURCES[res][2](ctx, m)[1] else ""     # the store moved it
             if mod:
                 cells.append("  %-21s %-9s %s (pipeline count %s)%s" % (res, _fmt(meas, u, lim), doc, meas,
                                                                       ", overridden" if mark else ""))
@@ -747,7 +914,8 @@ def main(argv=None):
                 ms = mod_name(a.mod, ctx)
                 lines = []
                 for r in RESOURCES:
-                    if used(ms, r, RESOURCES[r][2](ctx, ms)[0] or 0):
+                    rd = reading(ctx, ms, r, None)
+                    if rd and rd[1]:
                         lines.append(do_count(ctx, "reset", ms, r, 0, a.why, a.owner_said)[0])
                 lines = lines[:2] + (["(%d more reset; pipe log)" % (len(lines) - 2)] if len(lines) > 2 else []) \
                     or ["%s: every consumable already reads 0" % ms]

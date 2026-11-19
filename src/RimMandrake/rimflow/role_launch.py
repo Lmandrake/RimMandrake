@@ -2782,19 +2782,32 @@ def chain_cap_view(rs, cfg, concept, stage, now):
     day = day_of(now)
     counts = {k: v for k, v in (rs.get("chain_day") or {}).items() if k.startswith(day + " ")}
     key = "%s %s" % (day, concept)
-    cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)
+    n, cap = chain_cap(cfg, concept, counts.get(key, 0))
     stages = {k: list(v) for k, v in (rs.get("chain_stages_day") or {}).items() if k.startswith(day + " ")}
-    forward = (counts.get(key, 0) >= cap and stage is not None and str(stage) not in stages.get(key, [])
-               and len(stages.get(key, [])) == counts.get(key, 0) and counts.get(key, 0) < 2 * cap)
+    forward = (n >= cap and stage is not None and str(stage) not in stages.get(key, [])
+               and len(stages.get(key, [])) == counts.get(key, 0) and n < 2 * cap)
     return counts, stages, forward
+
+
+def chain_cap(cfg, concept, n):
+    """-> (today's chained runs on `concept`, chain_max_per_day) through the control store: `pipe set|add|reset|limit
+    <Mod> chain_runs_day ...` moves both (the account is the concept folder's name). An unreadable store reads the raw
+    count and cap: chain_ask's owner_held read refuses on that store first, so nothing is chained on it."""
+    import pipeline_control as PC
+    mod = os.path.basename(os.path.normpath(str(concept)))
+    cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)
+    try:
+        return PC.used(mod, "chain_runs_day", n), PC.limit(mod, "chain_runs_day", cap)
+    except PC.Unreadable:
+        return n, cap
 
 
 def chain_capped(rs, cfg, concept, stage, now):
     """True when chain_ask would HOLD `concept` on the per-concept daily chain cap right now (a deliberate hold that
     already raised role:<Role>:chain_cap once, so the stall reader must not count it too)."""
     counts, _stages, forward = chain_cap_view(rs, cfg, concept, stage, now)
-    cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)
-    return counts.get("%s %s" % (day_of(now), concept), 0) >= cap and not forward
+    n, cap = chain_cap(cfg, concept, counts.get("%s %s" % (day_of(now), concept), 0))
+    return n >= cap and not forward
 
 
 def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode, cause, after, reasons=None):
@@ -2808,10 +2821,10 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
         return None     # role:<Role>:system_fault was raised once by void_route; the sweep asks nothing either
     day = day_of(now)
     key = "%s %s" % (day, concept)
-    cap = cfg.get("chain_max_per_day", CHAIN_MAX_PER_DAY)
     counts, stages, forward = chain_cap_view(rs, cfg, concept, stage, now)
+    n, cap = chain_cap(cfg, concept, counts.get(key, 0))
     rs["chain_stages_day"] = stages
-    if counts.get(key, 0) >= cap and not forward:
+    if n >= cap and not forward:
         said = [k for k in rs.get("chain_cap_said") or [] if str(k).startswith(day + " ")]
         rs["chain_day"] = counts
         if key in said:
@@ -2820,9 +2833,9 @@ def chain_ask(name, rs, cfg, concept, stage, now, act, chained_from, item, mode,
         rs["chain_cap_said"] = said + [key]
         act(do="alarm", kind="role:%s:chain_cap" % name, ticket=item, note=True, conductor_log=True,
             raise_first="%s chained %s %d times today: it is looping; look at its stage history." % (
-                name, os.path.basename(os.path.normpath(concept)), counts[key]),
+                name, os.path.basename(os.path.normpath(concept)), n),
             why="%s on %s: stage %s ready but NOT chained (%s), %d chained runs today (chain_max_per_day %d)" % (
-                name, concept, stage, cause, counts[key], cap))
+                name, concept, stage, cause, n, cap))
         rs["chain_day"] = counts
         return None
     rs["chain_day"] = counts

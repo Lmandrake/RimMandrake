@@ -681,10 +681,22 @@ def ceiling_stop(stop):
     return bool(stop) and bool(stop.get("ceiling") or CEILING_WHY.match(str(stop.get("why") or "")))
 
 
+def stage_spend(cfg, mod, stage, usd):
+    """-> (the stage's spend, its ceiling) in dollars, through the mod's weighted-token account for the stage in the
+    control store (`pipe set|add|reset|limit <Mod> spend_<stage> ...`, PC.SPEND_RES): every ceiling reader (the gate,
+    the killed-run refund, a pilot holder's cap) asks this, never stage_ceiling_usd itself. A stage with no account, no
+    ceiling or no readable spend reads the pipeline's own numbers."""
+    ceiling = cfg.get("stage_ceiling_usd")
+    if stage not in PC.SPEND_RES or not _usd_ok(ceiling, True) or not _usd_ok(usd):
+        return usd, ceiling
+    return (from_wt(PC.used(mod, PC.SPEND_RES[stage], to_wt(usd))),
+            from_wt(PC.limit(mod, PC.SPEND_RES[stage], to_wt(ceiling))))
+
+
 def ceiling_gate(cfg, s, mod, stage, usd, cap, where, releases):
     """-> (why the next run may not start, or None; the release record id that lets it start past the ceiling, or
     None). releases: read_releases()'s (records, malformed); s: the mod's state (its releases_used)."""
-    ceiling = cfg.get("stage_ceiling_usd")
+    usd, ceiling = stage_spend(cfg, mod, stage, usd)
     over = over_ceiling(usd, cap, ceiling, where)
     if not over:
         return None, None
@@ -776,7 +788,8 @@ def refund(cfg, s, f, stage, usd, cap, unit):
         return None, ""
     if unit in (s.get("refunds") or {}):
         return None, "; the killed run %s was refunded once already" % unit
-    ceiling, spent = cfg.get("stage_ceiling_usd"), (f.get("run_usd") or {}).get(unit)
+    usd, ceiling = stage_spend(cfg, f.get("mod"), stage, usd)
+    spent = (f.get("run_usd") or {}).get(unit)
     if not (_usd_ok(spent, True) and _usd_ok(ceiling, True)):
         return None, ""
     need = round(usd + cap - ceiling, 2)
@@ -991,7 +1004,7 @@ def decide(cfg, st, facts, now, account=(True, ""), bridge=None, releases=None):
             s.pop("stopped")
             row["stop_lifted"], stop = "it was written on a run that had no refused bars to resolve", None
         if (stop and stop.get("launch_failed") and stop.get("code") and cfg.get("_code")
-                and stop["code"] != cfg["_code"] and int(stop.get("tries") or 1) < int(cfg.get("launch_tries", 3))):
+                and stop["code"] != cfg["_code"] and AUT.tries_left(cfg, mod, stop.get("tries"))):
             # the launch failed on a defect, not a transient fault, and the pipeline's code has changed since: one more
             # try on the same item (the Conductor's hand `clear` after a fix landed, 2026-11-15 12:18 PM PST)
             s["launch_retry"] = {"item": stop.get("item"), "filed": bool(stop.get("filed")),
@@ -1084,7 +1097,7 @@ def cert_red_decide(cfg, s, f, row, put, now, account, live_total, cap, releases
     # a launch that never started is tried again on a transient fault, or once the pipeline's code has changed since it
     # failed (FlowWorks' first was refused over the packet line before the packet builder learned to fit it), within
     # launch_tries (RIMMANDRAKE_RETRY_FAILED_LAUNCH_ONCE_CODE_CHANGES)
-    retry = bool(prior and not prior.get("unit") and int(prior.get("tries") or 1) < int(cfg.get("launch_tries", 3))
+    retry = bool(prior and not prior.get("unit") and AUT.tries_left(cfg, mod, prior.get("tries"))
                  and (AUT.transient(str(prior.get("failed") or "")) or (
                      cfg.get("_code") and prior.get("code") != cfg["_code"])))
     if prior and not retry and not set(reds) < set(prior.get("tests") or []):
@@ -1183,7 +1196,7 @@ def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the 
     if prior and prior.get("key") == key:
         # a rerun that left no result of its own by its bound was killed or timed out: void_system, it spends no rerun
         # of this build, so it is started again within launch_tries (RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE)
-        if prior.get("unit") and not mine and int(prior.get("tries") or 1) < int(cfg.get("launch_tries", 3)):
+        if prior.get("unit") and not mine and AUT.tries_left(cfg, mod, prior.get("tries")):
             void = "the rerun %s left no result within %d s (killed or timed out): void_system" % (
                 prior["unit"], RERUN_MAX_S)
         elif prior.get("unit"):
@@ -1191,7 +1204,7 @@ def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the 
                 "ended (ok %s, published %s%s)" % (mine.get("ok"), mine.get("published") or "nothing",
                                                    ", error: %s" % mine["error"] if mine.get("error") else "")
                 if mine else "left no result within %d s" % RERUN_MAX_S)))
-        retry = void or int(prior.get("tries") or 1) < int(cfg.get("launch_tries", 3)) and (
+        retry = void or AUT.tries_left(cfg, mod, prior.get("tries")) and (
             AUT.transient(str(prior.get("failed") or "")) or code_changed(cfg, prior))
         if not retry:
             return wait("the certificate rerun on this build did not start (%s)" % prior.get("failed"))
@@ -1418,7 +1431,7 @@ def cert_launch(root, cfg, st, row, now, fx, known, do_file):
     return False
 
 
-def retriable(cfg, x, killed=None):
+def retriable(cfg, x, killed=None, mod=None):
     """-> True when a blind or in-game book entry is a launch that NEVER STARTED on a transient fault (a git lock, its
     item not yet on origin/main: maturation_autonomy.transient) with tries left (launch_tries, 3). Such a launch judged
     nothing, so it is not the visit's automatic run; one that started, or failed any other way, is
@@ -1432,8 +1445,8 @@ def retriable(cfg, x, killed=None):
         # started: Gimme Some Slack's visit 1 started on launch try 3, was stopped for his look, and stood stopped
         # (RIMMANDRAKE_ENACT_TOKENS_NOT_DOLLARS_NO_LIVE_HOLD, 2026-11-16)
         kills = len(x.get("killed_before") or []) + 1
-        return not x.get("failed") and x["unit"] in (killed or {}) and kills < int(cfg.get("launch_tries", 3))
-    if int(x.get("tries") or 1) >= int(cfg.get("launch_tries", 3)):
+        return not x.get("failed") and x["unit"] in (killed or {}) and AUT.tries_left(cfg, mod, kills)
+    if not AUT.tries_left(cfg, mod, x.get("tries")):
         return False
     if not (x.get("failed") and x.get("never_started", True)):
         return False
@@ -1485,10 +1498,10 @@ def spent_tries(x):
     return ""
 
 
-def retried(cfg, retry):
+def retried(cfg, retry, mod=None):
     return (", try %d of %d after %s" % (
         len(retry.get("killed_before") or []) + 2 if retry.get("unit") else int(retry.get("tries") or 1) + 1,
-        int(cfg.get("launch_tries", 3)),
+        AUT.tries_most(cfg, mod),
         "a run killed before it wrote a result (%s)" % retry["unit"] if retry.get("unit")
         else "a failed launch, the pipeline's code having changed since" if code_changed(cfg, retry)
         and not AUT.transient(str(retry.get("failed") or ""))
@@ -1575,7 +1588,7 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
                 n, "; ".join((ex.get("why") or [])[:3]), summ, mod, (n or 0) + 1))
         return False
     mine = [x for x in ours if x.get("cycle") == n]
-    retry = mine[-1] if mine and retriable(cfg, mine[-1], f.get("killed")) else None
+    retry = mine[-1] if mine and retriable(cfg, mine[-1], f.get("killed"), mod) else None
     resume = bool(retry and retry.get("unit"))     # a killed judge's half-written cycle is resumed, not unfinished
     if owed == "no exit block" and not resume:
         put("cycle_unfinished", "nothing is live and %s has no exit block" % summ,
@@ -1637,7 +1650,7 @@ def decide_blind(cfg, s, f, row, put, now, account, live_total, releases=None):
     if retry:
         row["retry_of"] = dict(retry)
     put("launch", "blind cycle %s owed, nothing live or recorded on it, the visit's first automatic cycle%s (%s)" % (
-        n, retried(cfg, retry), account[1]))
+        n, retried(cfg, retry, mod), account[1]))
     return True
 
 
@@ -1685,7 +1698,7 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
             "each failed line item down its road back" % (n, "; ".join((ex.get("why") or [])[:3]), summ))
         return False
     mine = [x for x in ours if x.get("visit") == n]
-    retry = mine[-1] if mine and retriable(cfg, mine[-1], f.get("killed")) else None
+    retry = mine[-1] if mine and retriable(cfg, mine[-1], f.get("killed"), mod) else None
     resume = bool(retry and retry.get("unit"))     # a killed driver's half-written visit is resumed, not unfinished
     if owed == "no exit block" and not resume:
         put("visit_unfinished", "nothing is live and %s has no exit block" % summ,
@@ -1702,8 +1715,8 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
                if x.get("failed") else "the automatic in-game visit %s (%s) ended and wrote no record" % (n, x.get("unit")))
         put("stopped", why, "stopped, %s; never a second automatic try" % why)
         return False
-    per = int(cfg.get("ingame_auto_runs_per_visit", 1))
-    if len([x for x in ours if x is not retry]) >= per:
+    per = PC.limit(mod, "ingame_runs_visit", int(cfg.get("ingame_auto_runs_per_visit", 1)))
+    if PC.used(mod, "ingame_runs_visit", len([x for x in ours if x is not retry])) >= per:
         put("auto_spent", "the visit's %d automatic run(s) are spent" % per,
             "in-game visit %s is open and its automatic run is spent; launch it by hand: maturation.py launch %s "
             "--budget-usd <cap> --item <ID>" % (n, mod))
@@ -1753,7 +1766,7 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     if retry:
         row["retry_of"] = dict(retry)
     put("launch", "in-game visit %s owed, nothing live or recorded on it, the visit's automatic run%s, on game %s%s (%s)" % (
-        n, retried(cfg, retry), game, " (%s)" % "; ".join(whys) if whys else "", account[1]))
+        n, retried(cfg, retry, mod), game, " (%s)" % "; ".join(whys) if whys else "", account[1]))
     return True
 
 
@@ -2549,9 +2562,9 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None
                 done.append(row)
-            elif retriable(cfg, entry):
+            elif retriable(cfg, entry, mod=mod):
                 row.update(decision="launch_retry", why="the in-game launch never started on a transient fault (try %d "
-                           "of %d), the next tick tries it again: %s" % (entry["tries"], int(cfg.get("launch_tries", 3)),
+                           "of %d), the next tick tries it again: %s" % (entry["tries"], AUT.tries_most(cfg, mod),
                                                                          text))
             else:
                 row.update(decision="launch_failed", why=text,
@@ -2583,9 +2596,9 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                 row.update(decision="launched", unit=unit, item=item, why=text)
                 known.add(item) if isinstance(known, set) else None
                 done.append(row)
-            elif retriable(cfg, entry):
+            elif retriable(cfg, entry, mod=mod):
                 row.update(decision="launch_retry", why="the blind launch never started on a transient fault (try %d "
-                           "of %d), the next tick tries it again: %s" % (entry["tries"], int(cfg.get("launch_tries", 3)),
+                           "of %d), the next tick tries it again: %s" % (entry["tries"], AUT.tries_most(cfg, mod),
                                                                          text))
             else:
                 row.update(decision="launch_failed", why=text,
@@ -2624,11 +2637,11 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             row.update(decision="launched", unit=unit, item=item, why=text)
             known.add(item) if isinstance(known, set) else None
             done.append(row)
-        elif not unit and AUT.transient(text) and tries < int(cfg.get("launch_tries", 3)):
+        elif not unit and AUT.transient(text) and AUT.tries_left(cfg, mod, tries):
             s["launch_retry"] = {"item": item, "filed": filed, "tries": tries, "at": now, "refused": row["refused"],
                                  "failed": text}
             row.update(decision="launch_retry", why="the Stage 3 launch never started on a transient fault (try %d of "
-                       "%d), the next tick tries it again: %s" % (tries, int(cfg.get("launch_tries", 3)), text))
+                       "%d), the next tick tries it again: %s" % (tries, AUT.tries_most(cfg, mod), text))
         else:
             # a launch that never started is void_system (RIMMANDRAKE_VOID_SYSTEM_KILLED_RUNS_NO_TRIAL_SPENT; this
             # wrote `stopped`, spending the mod's turn on a system fault): its tries go on the mod's system faults and
@@ -2670,7 +2683,8 @@ def holder_launch(root, cfg, s, row, cap, fx=None):
         kw["session"] = plan["session_id"]
     if plan["reconcile"]:
         kw["reconcile"] = plan["why"]
-    if _usd_ok(cfg.get("stage_ceiling_usd"), True) and _usd_ok(row.get("stage_usd")):
+    usd, ceiling = stage_spend(cfg, mod, row.get("stage"), row.get("stage_usd"))
+    if _usd_ok(ceiling, True) and _usd_ok(usd):
         cap = row["cap"] = holder_cap(cfg, row, cap)
     return cap, kw
 
@@ -2678,7 +2692,7 @@ def holder_launch(root, cfg, s, row, cap, fx=None):
 def holder_cap(cfg, row, cap):
     """A pilot holder's cap is per mod and stage, not per run: what is left of stage_ceiling_usd at this stage, never
     less than the run cap (holder_launch; launch_kind reads the same rule for the forecast)."""
-    ceiling, usd = cfg.get("stage_ceiling_usd"), row.get("stage_usd")
+    usd, ceiling = stage_spend(cfg, row.get("mod"), row.get("stage"), row.get("stage_usd"))
     if _usd_ok(ceiling, True) and _usd_ok(usd):
         return max(cap, round(ceiling - usd, 2))
     return cap
@@ -2931,21 +2945,31 @@ def void_why(unit, record=None):
     return RV.system_cause((record or DH.read_record)(unit))
 
 
-def still_retried(cfg, book, x):
+def still_retried(cfg, book, x, mod=None):
     """-> True for a never-started launch the tick still tries again (its tries are the retry's own, not a trial):
     a blind or in-game one by retriable, a steward or fixer one by the gate's own rule (maturation_autonomy._gate)."""
     if book in ("blind_auto", "ingame_auto"):
-        return retriable(cfg, x)
+        return retriable(cfg, x, mod=mod)
     if book in ("steward", "fixers"):
-        return bool((AUT.transient(x.get("failed")) or code_changed(cfg, x))
-                    and int(x.get("tries") or 1) < int(cfg.get("launch_tries", 3)))
+        return bool((AUT.transient(x.get("failed")) or code_changed(cfg, x)) and AUT.tries_left(cfg, mod, x.get("tries")))
     return book != "holder_road_back"    # a holder run that never started is no try at its items
 
 
-def kill_resumed(cfg, book, x, why):
+def kill_resumed(cfg, book, x, why, mod=None):
     """-> True for a KILLED blind or in-game run the tick still resumes (retriable: fewer than launch_tries kills)."""
     return (book in ("blind_auto", "ingame_auto") and str(why).startswith(("killed", "its unit died"))
-            and not x.get("failed") and len(x.get("killed_before") or []) + 1 < int(cfg.get("launch_tries", 3)))
+            and not x.get("failed") and AUT.tries_left(cfg, mod, len(x.get("killed_before") or []) + 1))
+
+
+def entry_mods(st):
+    """-> {id(entry): mod} for every book entry in the tick's state (a list's dicts, a dict's dict values)."""
+    out = {}
+    for mod, s in ((st or {}).get("mods") or {}).items():
+        for v in (s.values() if isinstance(s, dict) else ()):
+            for x in (v if isinstance(v, list) else v.values() if isinstance(v, dict) else ()):
+                if isinstance(x, dict):
+                    out[id(x)] = mod
+    return out
 
 
 def system_fault_stop(cfg, st, rows, launches):
@@ -3008,8 +3032,9 @@ def _tick(root, cfg, apply, fx=None, now=None, page=True):
     d = sdir()
     st = read_state(os.path.join(d, "state.json"))
     record = fx.get("record") or DH.read_record
-    RV.sync_system(st, record, keep_failed=lambda b, x: still_retried(cfg, b, x),
-                   kills_left=lambda b, x, why: kill_resumed(cfg, b, x, why), now=now)
+    mod_of = entry_mods(st)     # sync_system's callbacks name no mod: each entry's own, for its launch_tries account
+    RV.sync_system(st, record, keep_failed=lambda b, x: still_retried(cfg, b, x, mod_of.get(id(x))),
+                   kills_left=lambda b, x, why: kill_resumed(cfg, b, x, why, mod_of.get(id(x))), now=now)
     aut = fx.get("autonomy", True)      # False: the per-stage decision alone (selftest_maturation_dispatch's layer)
     shipped = cfg                       # the file's own values, before widen adds discovered mods (maturation_hands)
     cfg = AUT.widen(root, cfg, st, apply, fx) if aut else cfg   # Designer concepts seen and seeded; the game queue

@@ -569,9 +569,15 @@ def submit(verdict, given=None, now=None):
             del hist[:-FAMILY_KEEP]
             _write(counters_path(), c)
             why = []
-            if refused and n_refused >= ITEM_ALARM_AT:
+            most = ITEM_ALARM_AT
+            import pipeline_control as PC      # the item's account: `pipe set|add|reset|limit <Mod> refusals ...`
+            try:
+                n_refused, most = PC.used(item, "refusals", n_refused), PC.limit(item, "refusals", ITEM_ALARM_AT)
+            except PC.Unreadable as e:  # the alarm tells and blocks nothing: the raw count still tells, said so
+                res["control"] = "UNMEASURED: the control store cannot be read (%s); the raw count was used" % e
+            if refused and n_refused >= most:
                 why.append("%d refused verdicts%s (limit %d)" % (
-                    n_refused, " in %d h" % (tune["window_s"] // 3600) if tune else "", ITEM_ALARM_AT))
+                    n_refused, " in %d h" % (tune["window_s"] // 3600) if tune else "", most))
             if res["repair_due"]:
                 why.append("clause %s refused %d times: criteria repair due" % (
                     ", ".join(res["repair_due"]), CLAUSE_REPAIR_AT))

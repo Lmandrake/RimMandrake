@@ -240,9 +240,11 @@ def designer_unit(mod, tail=600):
     return other
 
 
-def designer_chain(mod, now):
-    """-> (chained runs on this concept today, chain_max_per_day) from the Dispatcher's state and schedule, or None when
-    either cannot be read. role_launch.chain_ask asks no run-now past the cap, so a ready concept at it sits."""
+def designer_chain(mod, now, raw=False):
+    """-> (chained runs on this concept today, chain_max_per_day) from the Dispatcher's state and schedule, through the
+    control store (`pipe set|limit <Mod> chain_runs_day`, as role_launch.chain_cap reads them), or None when either
+    cannot be read. role_launch.chain_ask asks no run-now past the cap, so a ready concept at it sits. raw=True: the
+    Dispatcher's own count and cap, before the store (`pipe show`'s measure), or None."""
     try:
         import doorbell
         import role_launch as RL
@@ -270,6 +272,9 @@ def designer_chain(mod, now):
     # stages), so the cap holds a concept only once the Dispatcher has refused it today (chain_cap_said)
     said = any(str(k).startswith(day + " ") and os.path.basename(os.path.normpath(str(k).split(" ", 1)[1])) == mod
                for k in rs.get("chain_cap_said") or [])
+    if raw:
+        return n, cap
+    n, cap = PC.used(mod, "chain_runs_day", n), PC.limit(mod, "chain_runs_day", cap)
     if n >= cap and not said and n < 2 * cap:
         return None
     return n, cap
@@ -677,8 +682,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             # the pipeline's lock (or re-pin) is an act, not a run: no slot; tried once (transient faults up to
             # launch_tries)
             x = (s.get("steward") or {}).get(row["steward_key"])
-            if x and not (x.get("failed") and transient(x.get("failed")) and int(x.get("tries") or 1) <
-                          int(cfg.get("launch_tries", 3))):
+            if x and not (x.get("failed") and transient(x.get("failed")) and tries_left(cfg, row["mod"], x.get("tries"))):
                 row.update(decision="launch_failed", aut=None,
                            why=("the pipeline's 0.1.0 lock of %s was tried (%s) and VERSION.json still reads unlocked; "
                                 if row["aut"] == "autolock" else
@@ -786,7 +790,7 @@ def _stop_tickets(fx, row, s, dst, now, kind="stop", root=None, ver=None, cfg=No
     # untried tickets first, then any whose fixer launch failed (no unit): _gate retries or spends it
     # (RIMMANDRAKE_RETRY_FAILED_FIX_TICKET_LAUNCH_WHILE_PAUSED)
     todo = [t["id"] for t in tk if t["id"] not in fixed] + [
-        t["id"] for t in tk if t["id"] in fixed and _retriable(fixed[t["id"]], cfg)]
+        t["id"] for t in tk if t["id"] in fixed and _retriable(fixed[t["id"]], cfg, row["mod"])]
     ids = ", ".join(t["id"] for t in tk)
     if todo:
         row.update(aut="fixer", fix_item=todo[0], decision="fixer", need=None, fix_for=kind,
@@ -925,7 +929,7 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None
         # (RIMMANDRAKE_RETRY_ROAD_BACK_FIXER_AFTER_TRANSIENT_LAUNCH_FAIL)
         # untried items first, so a failure whose retries are spent never starves the items behind it
         todo = [x for x in items if x["id"] not in fixed] + [
-            x for x in items if x["id"] in fixed and _retriable(fixed[x["id"]], cfg)]
+            x for x in items if x["id"] in fixed and _retriable(fixed[x["id"]], cfg, row["mod"])]
         if todo:
             row.update(aut="fixer", fix_item=todo[0]["id"], decision="fixer",
                        why="road-back item %s (of %d open, caused by %s) gets one fixer run" % (
@@ -1166,7 +1170,20 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None,
                        "the Dispatcher's Designer launcher runs it (no Designer run live now)"))
 
 
-def _retriable(x, cfg):
+def tries_most(cfg, mod):
+    """-> launch_tries for `mod` through the control store (`pipe limit <Mod> launch_tries N`)."""
+    return PC.limit(mod, "launch_tries", int((cfg or {}).get("launch_tries", 3)))
+
+
+def tries_left(cfg, mod, tries):
+    """True while a booked launch that has spent `tries` (a started run: its kills) may try again: its count through
+    the control store (`pipe add <Mod> launch_tries -1` gives every failed launch of the mod one more) under
+    tries_most. Every launch-retry reader of the tick and of autonomy asks this; none compares launch_tries itself."""
+    return PC.used(mod, "launch_tries", int(tries or 1)) < PC.limit(mod, "launch_tries",
+                                                                     int((cfg or {}).get("launch_tries", 3)))
+
+
+def _retriable(x, cfg, mod=None):
     """A booked launch that failed (no unit) and may be tried again: a transient fault, or a defect whose code changed
     since (maturation_dispatch.code_changed), under launch_tries. One rule for _gate and the fixer selectors
     (RIMMANDRAKE_SHARE_GATE_RETRY_RULE_WITH_FIXER_SELECTORS: a spent failure first in line starved a retriable one)."""
@@ -1174,7 +1191,7 @@ def _retriable(x, cfg):
     if not (isinstance(x, dict) and x.get("failed") and not x.get("unit")):
         return False
     fresh_code = bool(x.get("code") and cfg.get("_code") and x["code"] != cfg["_code"])
-    return (transient(x["failed"]) or fresh_code) and int(x.get("tries") or 1) < int(cfg.get("launch_tries", 3))
+    return (transient(x["failed"]) or fresh_code) and tries_left(cfg, mod, x.get("tries"))
 
 
 def _gate(cfg, s, row, live_total, ver):
@@ -1188,7 +1205,7 @@ def _gate(cfg, s, row, live_total, ver):
         tries = int(x.get("tries") or 1)
         # a launch that failed on a defect is tried again once the pipeline's code changed since (the fix may have
         # landed); before this the Conductor cleared it by hand (maturation_dispatch.code_changed)
-        if not _retriable(x, cfg):
+        if not _retriable(x, cfg, row["mod"]):
             what = ("failed to launch %d times on a transient fault, the last: %s" % (tries, x["failed"])
                     if x.get("failed") and transient(x["failed"]) else "failed to launch: %s" % x["failed"]
                     if x.get("failed") else "ended and the state has not moved")
@@ -1200,7 +1217,13 @@ def _gate(cfg, s, row, live_total, ver):
     if not cfg.get("steward_enabled", True):
         return False, ("steward_off", "steward_enabled is off in maturation_dispatch.json")
     n = len([k for k in done if k != key and (row["aut"] != "steward" or str(k).startswith(str(ver)))])
-    most = int(cfg.get("steward_max_per_version", 12))
+    # through the control store: `pipe set|limit <Mod> steward_runs|fixer_runs ...`
+    if row["aut"] == "steward":
+        n, most = PC.used(row["mod"], "steward_runs", n), PC.limit(row["mod"], "steward_runs",
+                                                                  int(cfg.get("steward_max_per_version", 12)))
+    else:
+        n, most = PC.used(row["mod"], "fixer_runs", n), PC.limit(row["mod"], "fixer_runs",
+                                                                int(cfg.get("steward_max_per_version", 12)))
     if n >= most:
         return False, ("steward_spent", "%d automatic %s runs on %s at this version, the most is %d" % (
             n, row["aut"], row["mod"], most))
@@ -1668,9 +1691,9 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
     if ok:
         row.update(decision="launched", unit=unit, item=item, why=text)
         known.add(item) if isinstance(known, set) else None
-    elif transient(full) and tries < int(cfg.get("launch_tries", 3)):
+    elif transient(full) and tries_left(cfg, row["mod"], tries):
         row.update(decision="launch_retry", why="the %s launch failed on a transient fault (try %d of %d), the next "
-                   "tick tries it again: %s" % (row["aut"], tries, int(cfg.get("launch_tries", 3)), text))
+                   "tick tries it again: %s" % (row["aut"], tries, tries_most(cfg, row["mod"]), text))
     else:
         row.update(decision="launch_failed", why=text)
 
