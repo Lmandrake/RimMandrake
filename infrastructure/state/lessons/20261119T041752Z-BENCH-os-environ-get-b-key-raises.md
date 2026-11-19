@@ -1,0 +1,1 @@
+os.environ.get(b'KEY') raises TypeError (str keys only), it does not return None: a 'try str key, then bytes key' lookup wrapped in except TypeError silently reads a stripped os.environ as 'unknown'. Look the two keys up separately, each in its own try. (store_census_hook, 2026-11-18)
