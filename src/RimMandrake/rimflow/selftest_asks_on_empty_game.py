@@ -61,6 +61,52 @@ def root_with(scenes_src, tt):
     return root
 
 
+SUITE = '''
+import os, subprocess
+from modcheck import Suite
+suite = Suite("M")
+
+@suite.chain("scene_s")
+def scene_s(t):
+    for act in (lambda: open(%(w)r, "w").write("x"), lambda: subprocess.run(["touch", %(p)r]),
+                lambda: os.makedirs(%(d)r)):
+        try:
+            act()
+        except OSError:
+            pass
+    with t.component("c_vac"):
+        pass
+'''
+
+
+def suite_run():
+    """-> (certificate, [marks made]) for a Suite chain that writes, spawns and makes a dir before a vacuous row."""
+    out = tempfile.mkdtemp(prefix="aoeg_out_")
+    ROOTS.append(out)
+    marks = {"w": os.path.join(out, "written"), "p": os.path.join(out, "spawned"), "d": os.path.join(out, "made")}
+    root = root_with(None, table())
+    os.makedirs(os.path.join(root, "src/RimMandrake/M"))
+    with open(os.path.join(root, "src/RimMandrake/M/validation.py"), "w") as f:
+        f.write(SUITE % marks)
+    v = JC.certify(root, "M", to="in_game")
+    return v, [k for k, m in marks.items() if os.path.exists(m)]
+
+
+def t_suite_run_writes_and_launches_nothing():
+    """A Suite chain runs its setup for real (Pyrelands' save_fixture copies the live Saves folder): the --suite child
+    refuses every write, subprocess and mkdir, and still lists the vacuous row."""
+    v, made = suite_run()
+    ok(not made, "a Suite chain run on an empty game writes, spawns and makes nothing (made: %s)" % made)
+    ok([r["bar"] for r in v["rows"] if r["clause"] == "asks_on_empty_game"] == ["bar_suite"],
+       "the sealed Suite run still refuses the bar its vacuous row decides (%s)" % v["rows"])
+
+
+def t_refused_act_is_named():
+    v, _made = suite_run()
+    ok(any("sandbox refused 3" in d for d in v["did_not_run"]),
+       "the refused acts are named with their count, never silent (%s)" % v["did_not_run"])
+
+
 def main():
     v = JC.certify(root_with(SCENES, table()), "M", to="in_game")
     aoeg = [r for r in v["rows"] if r["clause"] == "asks_on_empty_game"]
@@ -68,8 +114,8 @@ def main():
        and "V_un" not in aoeg[0]["observed"] and aoeg[0]["would_pass"] and aoeg[0]["smallest_fix"],
        "the scene that passes a row on nothing refuses its bar, naming that row, with would_pass and a fix (%s)" % aoeg)
     ok(v["ok"] is False, "a vacuous row makes the in-game certificate refuse")
-    ok(any("no empty-game adapter" in d and "validation.py" in d for d in v["did_not_run"]),
-       "a scene in another harness is did_not_run, naming the adapter it needs (%s)" % v["did_not_run"])
+    ok(any("did not run" in d and "validation.py" in d for d in v["did_not_run"]),
+       "a Suite scene whose file is not there is did_not_run, naming the file (%s)" % v["did_not_run"])
     ok("asks_on_empty_game" in JC.summary(v) and "DID NOT RUN" in JC.summary(v),
        "the summary names the refusal and the clause that could not look")
     vb = JC.certify(root_with(SCENES, table()), "M", to="blind_challenge")
@@ -96,6 +142,8 @@ def main():
        and not [r for r in vg["rows"] if r["bar"] == "bar_gone"],
        "a FlowWorks entry missing from STAGE3_SCENES is did_not_run, never certified (%s)" % vg["did_not_run"])
     ok(any("proof.py" in d for d in vg["did_not_run"]), "an in-game test with no entry is did_not_run, not skipped")
+    t_suite_run_writes_and_launches_nothing()
+    t_refused_act_is_named()
     td = table()
     td["bars"].append({"id": "bar_undecided", "proves_at": "2", "decides": []})
     vd = JC.certify(root_with(SCENES, td), "M", to="in_game")

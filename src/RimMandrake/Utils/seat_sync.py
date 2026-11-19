@@ -231,6 +231,28 @@ def _unpark_added(g: Git, park: Path, moved: list[str]) -> list[str]:
     return stuck
 
 
+def _held_open(park: Path) -> bool:
+    """Does any process hold a file under the park open? A handle is only had by opening a name (inside .git here) or
+    from a holder, so once none is held no later save can reach the parked file. /proc unreadable: True (keep it)."""
+    root = str(park) + os.sep
+    try:
+        pids = [p for p in os.listdir("/proc") if p.isdigit()]
+    except OSError:
+        return True
+    for pid in pids:
+        try:
+            fds = os.listdir(f"/proc/{pid}/fd")
+        except OSError:
+            continue    # gone, or another user's (this estate runs its clones as one user)
+        for fd in fds:
+            try:
+                if os.readlink(f"/proc/{pid}/fd/{fd}").startswith(root):
+                    return True
+            except OSError:
+                continue
+    return False
+
+
 def _drop_park_if_restored(g: Git, park: Path, moved: list[str]) -> str:
     """After the move: the park is deleted only once every file is back at its path with the SAME bytes git was
     told to write. A mismatch keeps the park and says so — it is the only copy left."""
@@ -242,6 +264,9 @@ def _drop_park_if_restored(g: Git, park: Path, moved: list[str]) -> str:
     if kept:
         return (f"{len(kept)} untracked file(s) identical to upstream's were parked and did NOT come back as "
                 f"expected ({', '.join(kept[:4])}): the copies are in {park}, read them before deleting")
+    if _held_open(park):    # RIMMANDRAKE_GUARD_PARK_DROP_AGAINST_LATE_FD_SAVE: a save through that handle lands only here
+        return (f"{len(moved)} untracked file(s) already identical to upstream's were parked past the move; a process "
+                f"still holds one open, so the park is kept in {park} (a later save there is the only copy)")
     shutil.rmtree(park, ignore_errors=True)
     return f"{len(moved)} untracked file(s) already identical to upstream's were parked past the move"
 

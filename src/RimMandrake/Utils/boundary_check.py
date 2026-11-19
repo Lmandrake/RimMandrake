@@ -28,6 +28,7 @@ PAGES = {
     "design/specs/2026-11-18-pipeline-control-surface/boundary.md": "src/RimMandrake/rimflow/selftest_control.py",
     "design/specs/2026-11-19-probe-result/boundary.md": "src/RimMandrake/rimflow/selftest_probe_result.py",
     "design/specs/2026-11-19-stage-ceiling/boundary.md": "src/RimMandrake/rimflow/selftest_stage_ceiling_arrival.py",
+    "design/specs/2026-11-19-asks-on-empty-game/boundary.md": "src/RimMandrake/rimflow/selftest_asks_on_empty_game.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

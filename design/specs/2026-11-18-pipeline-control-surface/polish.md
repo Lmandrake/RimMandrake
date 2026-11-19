@@ -22,9 +22,7 @@ documented command produces its input. Each ticket below was dropped with this r
 
 | Ticket | What it says | Why no call site or command produces it |
 |---|---|---|
-| `RIMMANDRAKE_GUARD_PUBLISH_ROLLBACK_AGAINST_PEER_COMMIT` | A refused publish resets its commit and would take a peer's commit made on top of it. | Needs a bare `git commit` by a peer in the same clone during a publish. Writers land with `./publish`, which holds the clone lock. 3 rollbacks since 2026-11-03, 0 with a peer on top [measured by the analyst]. |
 | `RIMMANDRAKE_COMPARE_SHARD_MODE_IN_LEDGER_EQUIVALENCE_CODEX_SAW` | A commit that only changes a ledger shard's file mode reads as already landed. | Nothing commits a mode change of a shard. |
-| `RIMMANDRAKE_GUARD_PARK_DROP_AGAINST_LATE_FD_SAVE` | A write through a file handle opened before a park can be deleted with the park. | A race inside one instant, on a file identical to origin's copy. |
 | `RIMMANDRAKE_KEEP_SHA256_REFLOG_TIPS_FORTY_CHAR_FILTER` | The scratch cleaner ignores 64-character commit ids. | Every clone here is sha1 [measured: `git rev-parse --show-object-format`]. |
 | `RIMMANDRAKE_PIN_TMP_FILE_BASELINE_BEFORE_RENAME_NOT_AFTER` | A /tmp file changed between two system calls takes the new time as its baseline. | A race inside a system-call gap, on a file idle for hours. |
 | `RIMMANDRAKE_FIX_INCIDENT_CLOSES_ON_STALE_READING_THREE_FOUND` | Three `incident.py` claims: a close on a stale status, an unknown reading keeping an old sane-since, a torn row skipped. | Needs the watcher's own status stale while its incident pass runs, or a torn ledger line. Neither has been seen. If the watcher is ever stale beside an open incident, the sane-since claim is first. |

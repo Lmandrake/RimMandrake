@@ -793,6 +793,26 @@ def t_untracked_copy_identical_to_origins_does_not_stop_the_move(a, b):
     assert not [n for n in os.listdir(gd) if n.startswith(S.ADDED_PARK)], "a park was left behind after success"
 
 
+def t_a_file_held_open_keeps_its_park(a, b):
+    """RIMMANDRAKE_GUARD_PARK_DROP_AGAINST_LATE_FD_SAVE: an identical untracked file is parked, the move writes upstream's
+    copy at the path, and the park was deleted once the bytes matched; a writer still holding the parked file open then
+    saved into a file with no name left. A park is kept while any process holds one of its files open, and named."""
+    import glob
+    import seat_sync as S
+    peer_push(b, ADDED, "landed by the other seat\n")
+    write(a, ADDED, "landed by the other seat\n")
+    fd = os.open(os.path.join(a, ADDED), os.O_WRONLY | os.O_APPEND)     # an editor holds it open across the publish
+    try:
+        write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+        sha, log = quiet(P.publish, a, ["f.txt"], "mine")
+        os.write(fd, b"LATE\n")
+    finally:
+        os.close(fd)
+    kept = glob.glob(os.path.join(sh(a, "rev-parse", "--absolute-git-dir"), S.ADDED_PARK + "-*", ADDED))
+    assert kept and "LATE" in open(kept[0]).read(), "the save through the open file had no name left (%s)" % kept
+    assert os.path.dirname(os.path.dirname(kept[0])) in log or S.ADDED_PARK in log, log
+
+
 def t_a_different_untracked_file_is_refused_by_name_never_lost(a, b):
     """The other half of the same rule: untracked content that is NOT origin's is somebody's unsaved work. The
     refusal NAMES the path (the old one named only git's first collision) and the file is never overwritten."""
@@ -1237,6 +1257,28 @@ def rollback_world(a, absent=False):
 
 def side_files(a):
     return sorted(n for n in os.listdir(a) if ".publish-" in n)
+
+
+def t_refused_publish_keeps_a_peer_commit_made_during_the_checks(a, b):
+    """RIMMANDRAKE_GUARD_PUBLISH_ROLLBACK_AGAINST_PEER_COMMIT: the publish lock does not cover a plain `git commit`, and
+    a red door undid this run's commit with a bare `reset --soft <made>~1`, taking a peer's commit made on top of it
+    during the checks off the branch too. A refused publish never removes a commit it did not make."""
+    real = P.tree_checks
+
+    def peer_commits_then_red(top, changed):
+        write(a, "peer.txt", "peer\n")
+        sh(a, "add", "peer.txt")
+        sh(a, "commit", "-q", "-m", "peer, by hand")
+        raise P.Refuse("planted red door")
+    P.tree_checks = peer_commits_then_red
+    try:
+        write(a, "mine.txt", "mine\n")
+        why = refused(P.publish, a, ["mine.txt"], "mine")
+    finally:
+        P.tree_checks = real
+    assert why and "planted red door" in why, why
+    assert sh(a, "log", "-1", "--format=%s") == "peer, by hand", "the peer's commit was taken off the branch"
+    assert "HEAD moved" in why, "the refusal does not say it left HEAD alone: %s" % why
 
 
 def t_rollback_keeps_a_save_landing_before_the_undo_swap(a, b):

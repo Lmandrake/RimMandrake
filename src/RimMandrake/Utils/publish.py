@@ -1002,6 +1002,17 @@ def with_skip_trailers(top, msg, skips):
     return r.stdout
 
 
+def _undo(top, made, named):
+    """Take this run's refused commit back off HEAD, only if HEAD is still that commit: the publish lock does not cover
+    a peer's plain `git commit`, and a bare `reset --soft <made>~1` took one made on top of ours during the checks off
+    the branch too (RIMMANDRAKE_GUARD_PUBLISH_ROLLBACK_AGAINST_PEER_COMMIT). -> what was done, for the refusal."""
+    if run(top, "update-ref", "-m", "publish: undo a refused commit", "HEAD", made + "~1", made, check=False).returncode:
+        return ("HEAD moved past this run's commit %s during the checks (a commit made meanwhile), so HEAD was left as "
+                "it is: both commits are still on the branch, unpublished" % made[:12])
+    run(top, "reset", "-q", "--", *named)
+    return "this run's commit was undone: your files are as you left them"
+
+
 def _publish(top, paths, msg, cwd=None):
     skips = door_skips()
     if paths:
@@ -1025,14 +1036,12 @@ def _publish(top, paths, msg, cwd=None):
         _, track, _label = target_ref(top)
         fetched = run(top, "fetch", "-q", REMOTE, check=False).returncode == 0 and ref_exists(top, track)
         if not fetched or not is_ancestor(top, made + "~1", track):
-            run(top, "reset", "-q", "--soft", made + "~1")
-            run(top, "reset", "-q", "--", *named)
-            raise Refuse("%s is set, but %s (this run's commit was undone: your files are as you left them)"
+            raise Refuse("%s is set, but %s (%s)"
                          % (", ".join(v for v, _ in skips),
                             "earlier local commits sit under this run's commit and would land past the door with no "
                             "record: publish them first, without the skip" if fetched else
                             "%s could not be fetched, so whether earlier local commits would land past the door with no "
-                            "record cannot be told" % track))
+                            "record cannot be told" % track, _undo(top, made, named)))
     changed = _changed_since_origin(top)
     try:
         tree_checks(top, changed)
@@ -1043,9 +1052,7 @@ def _publish(top, paths, msg, cwd=None):
         # RIMMANDRAKE_UNDO_REFUSED_PUBLISH_COMMIT_NEXT_RUN_LANDED_IT: a refused commit left on HEAD was pushed by the next
         # publish ("no change in the named paths; pushing any local commits"), the refused file in it (2026-11-17): undo it,
         # so HEAD, the index and the working tree are as they were before this run
-        run(top, "reset", "-q", "--soft", made + "~1")
-        run(top, "reset", "-q", "--", *named)
-        raise Refuse("%s\n    (this run's commit was undone: your files are as you left them; fix, then publish again)" % e)
+        raise Refuse("%s\n    (%s; fix, then publish again)" % (e, _undo(top, made, named)))
     run(top, "fetch", "-q", REMOTE)
     _, track, label = target_ref(top)
     head = out(top, "rev-parse", "HEAD")

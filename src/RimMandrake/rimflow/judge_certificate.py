@@ -19,8 +19,9 @@ bar, every offline test that decides it (bar["offline_decides"]) is read on four
 Before an in-game visit (to="in_game") every in-game scene that decides a bar is also read on
   asks_on_empty_game the scene, run on an empty game (Utils/scene_empty_game.py: every bridge call a bare success), has no
                      row that reads PASS: a check that passes with nothing on the map tests nothing
-                     (RIMMANDRAKE_DRYRUN_SCENES_ON_EMPTY_GAME_THREE_PASSED). Only the FlowWorks scene harness
-                     (concept_scenes.py STAGE3_SCENES) has an adapter; a scene in any other harness is did_not_run.
+                     (RIMMANDRAKE_DRYRUN_SCENES_ON_EMPTY_GAME_THREE_PASSED). Two harnesses have an adapter: FlowWorks'
+                     concept_scenes.py STAGE3_SCENES and a file with a module-level modcheck suite whose chain the test
+                     names as its entry (suite_vacuous); a scene in any other harness is did_not_run.
 No model is called anywhere. `run_offline` is the path to pass for a stale table: it reruns the offline tests and stamps
 each with its build (`maturation.py certificate <Mod> --run`, zero tokens). A table that cannot be read is "did not run":
 the guard lets the mod through and says so.
@@ -536,7 +537,7 @@ def _asks_on_empty_game(root, tt, row, did_not_run):
     if utils not in sys.path:
         sys.path.insert(0, utils)
     import scene_empty_game as SE
-    tests, fw, other = tt["tests"], {}, {}
+    tests, fw, other, suites = tt["tests"], {}, {}, {}
     if not isinstance(tests, dict) or not isinstance(tt.get("bars"), list):
         did_not_run.append("asks_on_empty_game did not run: the table has no tests map or bars list")
         return
@@ -547,6 +548,8 @@ def _asks_on_empty_game(root, tt, row, did_not_run):
                 continue
             if t.get("file") == SE.FLOWWORKS_SCENES and t.get("entry"):
                 fw.setdefault(t["entry"], []).append((b["id"], d))
+            elif t.get("file") and t.get("entry"):     # maybe a modcheck Suite chain: the Suite adapter decides
+                suites.setdefault(str(t["file"]), {}).setdefault(str(t["entry"]), []).append((b["id"], d))
             else:
                 other.setdefault(str(t.get("file")), set()).add(d)
     if fw:
@@ -582,10 +585,53 @@ def _asks_on_empty_game(root, tt, row, did_not_run):
                         "every row of %s reads FAIL, UNMEASURED or ERROR when nothing is on the map" % entry,
                         "make each listed row read UNMEASURED when the event it judges was never seen (nothing spawned, "
                         "no draw, a vacuous read), then check: python3 src/RimMandrake/Utils/scene_empty_game.py")
+    for path, entries in sorted(suites.items()):
+        # RIMMANDRAKE_ADAPT_SUITE_SCENES_TO_EMPTY_GAME_FLOWWORKS_ONLY: a modcheck Suite file, its named chains run on an
+        # empty game in their own bounded process (scene_empty_game.suite_vacuous); a file with no suite falls back to
+        # "no empty-game adapter"
+        try:
+            r = subprocess.run([sys.executable, SE.__file__, "--root", root, "--suite", path, "--chains",
+                                ",".join(sorted(entries)), "--json"], capture_output=True, text=True,
+                               timeout=EMPTY_GAME_TIMEOUT_S)
+            got = json.loads(r.stdout.strip().splitlines()[-1]) if r.stdout.strip() else {
+                "did_not_run": "scene_empty_game.py --suite printed no verdict (rc %s): %s"
+                               % (r.returncode, (r.stderr or "").strip()[-160:])}
+        except (subprocess.TimeoutExpired, OSError, ValueError) as e:
+            got = {"did_not_run": "%s: %s" % (type(e).__name__, str(e)[:160])}
+        if not isinstance(got.get("vacuous"), list):
+            why = str(got.get("did_not_run") or "no verdict")
+            if "has no module-level modcheck suite" in why:
+                other.setdefault(path, set()).update(d for users in entries.values() for _b, d in users)
+            else:
+                did_not_run.append("asks_on_empty_game did not run on %d in-game test(s) in %s: %s"
+                                   % (sum(len(u) for u in entries.values()), path, why))
+            continue
+        if got.get("refused"):
+            did_not_run.append("asks_on_empty_game: the sandbox refused %d act(s) of %s's chains on an empty game (a "
+                               "chain that needed one may list too little): %s" % (len(got["refused"]), path,
+                                                                                    "; ".join(got["refused"][:3])))
+        missing = [e for e in sorted(entries) if e in (got.get("missing") or [])]
+        if missing:     # never run, so absence from the vacuous list establishes nothing
+            did_not_run.append("asks_on_empty_game did not run on %d in-game scene(s) %s: not a live chain of %s's suite"
+                               % (len(missing), ", ".join(missing[:6]), path))
+        vac = {}
+        for chain, comp in got["vacuous"]:
+            vac.setdefault(str(chain), []).append(str(comp))
+        for entry, users in sorted(entries.items()):
+            if entry not in vac:
+                continue
+            for bid, d in users:
+                row(bid, d, "asks_on_empty_game", "REFUSED",
+                    "on an empty game (every bridge call a bare success, nothing on the map) %s's chain %s reads PASS "
+                    "on row(s) %s" % (path, entry, ", ".join(vac[entry])),
+                    "every row of chain %s reads FAIL, UNMEASURED or ERROR when nothing is on the map" % entry,
+                    "make each listed row read UNMEASURED when the event it judges was never seen (nothing spawned, "
+                    "no draw, a vacuous read), then check: python3 src/RimMandrake/Utils/scene_empty_game.py --suite %s "
+                    "--chains %s" % (path, entry))
     if other:
         did_not_run.append("asks_on_empty_game did not run on %d in-game test(s) in %s: no empty-game adapter for that "
-                           "harness (only FlowWorks' concept_scenes.py STAGE3_SCENES has one; a modcheck Suite scene "
-                           "needs one that hands it a Suite over an EmptyGame and reads the Suite's rows)" % (sum(len(v) for v in other.values()),
+                           "harness (FlowWorks' concept_scenes.py STAGE3_SCENES and a file with a module-level modcheck "
+                           "suite have one; a test naming no entry chain has none)" % (sum(len(v) for v in other.values()),
                                                   ", ".join(sorted(other)[:4]) + (" ..." if len(other) > 4 else "")))
 
 
