@@ -45,6 +45,13 @@ The fifteen consumables: six before this item (`granted_look`, `coverage_runs`, 
   and comes back; a later visit to the stage reads it too.
 - **one-launch-tries-account-per-mod.** `launch_tries` moves every failed launch of the mod at once (each counts its
   own tries); one launch cannot be given a try alone.
+- **an-unreadable-maturation-record-reads-no-stage.** `pipeline_control.Ctx.stage` reads a mod's `record.json` through
+  `maturation.load`, None for absent and unreadable alike, so `pipe show` prints stage `-` for an unreadable record
+  (the record is written temp file + `os.replace`). Could-not-look lint read, 2026-11-19
+  (`RIMMANDRAKE_READ_ONLY_FILES_THAT_FAILED_PILOT_FOUND_ZERO`); no fix (owner by card 2026-11-19).
+- **a-refusal-subject-with-no-readable-version.** `reading` takes `refusal_subject`'s Refused (a mod whose version
+  reads UNMEASURED) as "does not apply", so `pipe show` omits that mod's refusal row instead of printing it
+  UNMEASURED. Same read, same ruling.
 
 ## PROMISES (each one is owed a test of the same name)
 

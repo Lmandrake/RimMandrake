@@ -42,8 +42,9 @@ the page has no LIFE CYCLES.
 - **lint-allowlist-is-counted.** A hit beyond its allowlist count (key: file, function, shape) is red, exit 1; a line
   moving inside its function changes nothing. A fixed hit leaves slack, which `--prune` removes, together with the
   `reasons` entry of a key no longer allowed (`reasons`: per key, one line per place, its class from reading it).
-- **lint-shadow-refuses-nothing.** With `--shadow` the lint prints its count and every hit beyond the allowlist and
-  exits 0, an unreadable file included. `./publish` runs it so (a `"shadow": true` check in
-  `publish_tree_checks.json`): it prints the lint's last line and refuses nothing.
+- **lint-refuses-a-new-place-at-publish.** Without `--shadow` the lint exits 1 on a hit beyond the allowlist and 3 on
+  a file it cannot parse, naming each. `./publish` runs it so (a refusing check in `publish_tree_checks.json`, no
+  `shadow`; armed 2026-11-19 by RIMMANDRAKE_ARM_COULD_NOT_LOOK_LINT_299_PLACES_ALLOWED), so a new place refuses the
+  publish. `--shadow` (a hand look) prints the same and exits 0.
 
 Later lists beside this page: `polish.md` and `next_version.md` (none yet).

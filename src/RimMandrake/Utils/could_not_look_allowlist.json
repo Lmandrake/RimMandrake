@@ -1,5 +1,5 @@
 {
- "_doc": "Places could_not_look_lint.py found when it was born (2026-11-19, RIMMANDRAKE_SHARE_PROBE_RESULT_TYPE_NINE_FILES_ROLL_OWN), keyed file::function::shape with a count. A count is a list of places to read, not a count of bugs. Fixed places leave slack: could_not_look_lint.py --prune. `reasons` holds, per key, one line per place in source order, classed by reading it (RIMMANDRAKE_LAUNCH_LINT_READS_AFTER_HE_RULES_PAGE_STRICTNESS): RARE (only a rare failure reaches it; the component's boundary page lists it as not handled, owner by card 2026-11-19) or NOT A COLLAPSE (why).",
+ "_doc": "Places could_not_look_lint.py found when it was born (2026-11-19, RIMMANDRAKE_SHARE_PROBE_RESULT_TYPE_NINE_FILES_ROLL_OWN), keyed file::function::shape with a count. A count is a list of places to read, not a count of bugs. Fixed places leave slack: could_not_look_lint.py --prune. `reasons` holds, per key, one line per place in source order, classed by reading it (RIMMANDRAKE_LAUNCH_LINT_READS_AFTER_HE_RULES_PAGE_STRICTNESS): RARE (only a rare failure reaches it; the component's boundary page lists it as not handled, owner by card 2026-11-19) or NOT A COLLAPSE (why). A third class, UNREAD (\"unread by owner's card 2026-11-19: only files that failed before are read\", RIMMANDRAKE_READ_ONLY_FILES_THAT_FAILED_PILOT_FOUND_ZERO), marks a place allowed without a reading: only the files where a could-not-look collapse was seen were read.",
  "places": {
   ".claude/hooks/role_result_before_stop.py::blocks_so_far::except-returns-empty": 1,
   ".claude/hooks/role_result_before_stop.py::blocks_so_far::or-empty": 1,
@@ -92,6 +92,7 @@
   "src/RimMandrake/rimflow/exam_retake.py::carry::or-empty": 1,
   "src/RimMandrake/rimflow/exam_retake.py::record::or-empty": 1,
   "src/RimMandrake/rimflow/incident.py::_epoch::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/incident.py::band_of::or-empty": 1,
   "src/RimMandrake/rimflow/incident.py::line_owed::or-empty": 1,
   "src/RimMandrake/rimflow/incident.py::read_rows::except-returns-empty": 2,
   "src/RimMandrake/rimflow/judge_certificate.py::_ended_items::except-returns-empty": 1,
@@ -162,8 +163,10 @@
   "src/RimMandrake/rimflow/modledger_backfill.py::compare::or-empty": 3,
   "src/RimMandrake/rimflow/modledger_backfill.py::plan::or-empty": 2,
   "src/RimMandrake/rimflow/pipeline_control.py::Ctx.stage::or-empty": 1,
+  "src/RimMandrake/rimflow/pipeline_control.py::Ctx.version::or-empty": 1,
   "src/RimMandrake/rimflow/pipeline_control.py::_stat::except-returns-empty": 1,
   "src/RimMandrake/rimflow/pipeline_control.py::journal::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/pipeline_control.py::reading::except-returns-empty": 1,
   "src/RimMandrake/rimflow/pipeline_pause.py::expire::except-returns-empty": 1,
   "src/RimMandrake/rimflow/red_dispatch.py::night_details::except-returns-empty": 1,
   "src/RimMandrake/rimflow/refusal_contract.py::_read::except-returns-empty": 1,
@@ -242,8 +245,121 @@
   "src/RimMandrake/rimflow/spend_watchdog.py::run::or-empty": 1
  },
  "reasons": {
+  ".claude/hooks/role_result_before_stop.py::blocks_so_far::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  ".claude/hooks/role_result_before_stop.py::blocks_so_far::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  ".claude/hooks/role_result_before_stop.py::main::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/Utils/maturation_convergence.py::stage3::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/Utils/maturation_now.py::convergence::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/Utils/maturation_now.py::dispatch_needs::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/Utils/maturation_now.py::dispatch_pipeline::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/Utils/maturation_now.py::display_name::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/Utils/maturation_now.py::parse_interventions::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read",
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/Utils/maturation_now.py::parse_utc::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/Utils/maturation_now.py::pipeline_units::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::_first_package_id::except-returns-empty": [
+   "NOT A COLLAPSE: an About.xml that does not parse matches no packageId; identity then says not deployed or unreadable"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::active_mods::except-returns-empty": [
+   "NOT A COLLAPSE: identity names None in `why` (\"no activeMods read from ...\")"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::check_visit::or-empty": [
+   "NOT A COLLAPSE: no rows read makes every in-game test RERUN (does not count): the strict answer"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::composed_into::except-returns-empty": [
+   "NOT A COLLAPSE: an absent Biomes.compose.json composes nothing (the answer); an unreadable one is COMPOSE_UNREADABLE"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::deployed_folder::except-returns-empty": [
+   "NOT A COLLAPSE: identity names the None folder in `why`"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::deployed_hash::except-returns-empty": [
+   "NOT A COLLAPSE: identity names a None hash in `why` (\"not deployed ... or a part of it cannot be read\")"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::game_build::except-returns-empty": [
+   "NOT A COLLAPSE: identity names None in `why` (\"no game build read from ...\")"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::game_build::or-empty": [
+   "NOT A COLLAPSE: identity names None in `why` (\"no game build read from ...\")"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::main::or-empty": [
+   "NOT A COLLAPSE: no Exit block gives no savegame; walk_build then says \"the walk savegame (none named) is not on disk\""
+  ],
+  "src/RimMandrake/rimflow/build_match.py::source_sha::except-returns-empty": [
+   "NOT A COLLAPSE: identity names None in `why` (\"no source sha for ...\")"
+  ],
+  "src/RimMandrake/rimflow/build_match.py::source_sha::or-empty": [
+   "NOT A COLLAPSE: identity names None in `why` (\"no source sha for ...\")"
+  ],
   "src/RimMandrake/rimflow/card_capture.py::_epoch::except-returns-empty": [
    "RARE (card-capture-reads a-card-time-that-does-not-parse): None for an unparseable time; match skips the card (0 of 135 cards, 0 of 2,888 --by-card events, 2026-11-19)"
+  ],
+  "src/RimMandrake/rimflow/conductor_closeout.py::_event_ts::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/conductor_closeout.py::dismissed_keys::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/control.py::_alive::except-returns-empty": [
+   "NOT A COLLAPSE: an absent /proc/<pid> is a dead process (the answer); any other OSError reads alive (fails safe)"
+  ],
+  "src/RimMandrake/rimflow/control.py::_unit_loaded::except-returns-empty": [
+   "NOT A COLLAPSE: None is the named third answer: abandoned() files the run under \"unreadable\", never \"gone\""
+  ],
+  "src/RimMandrake/rimflow/control.py::heartbeat::except-returns-empty": [
+   "NOT A COLLAPSE: a write, not a read: a heartbeat that fails to write leaves the file stale, which rm-deadman reads as dead"
+  ],
+  "src/RimMandrake/rimflow/control.py::reap_detached::or-empty": [
+   "RARE (pipeline-control-surface a-run-record-unreadable-right-after-its-kill-mark): mark_killed wrote the record in this call; a read failing just after falls back to this machine's state dir and seat BENCH"
+  ],
+  "src/RimMandrake/rimflow/coverage_judge.py::_read_text::except-returns-empty": [
+   "RARE (failed-before-reads an-unreadable-concept-file-gives-no-entries): absent and unreadable both read None; an absent file legitimately has no entries"
+  ],
+  "src/RimMandrake/rimflow/coverage_judge.py::entries.js::except-returns-empty": [
+   "RARE (failed-before-reads an-unreadable-concept-file-gives-no-entries): a concept file that does not parse gives no entries of its kind (0 of 325 concept JSON files unparseable, 2026-11-19)"
+  ],
+  "src/RimMandrake/rimflow/coverage_judge.py::grant_waits::or-empty": [
+   "NOT A COLLAPSE: designer_stage.read_json raises Refused on an unreadable VERSION.json; an absent one is unlocked"
+  ],
+  "src/RimMandrake/rimflow/coverage_judge.py::llm_reader.reader::except-returns-empty": [
+   "NOT A COLLAPSE: a reader that never launched returns None; second_read marks every gap NO_READ and the refusal is stored, the Designer not sent back",
+   "NOT A COLLAPSE: reader.dead names the timeout; judge() writes it to reader_void_system"
+  ],
+  "src/RimMandrake/rimflow/coverage_judge.py::look_balance::or-empty": [
+   "NOT A COLLAPSE: concept_of is None only for no state (a pure function of the state in hand); the mod falls back to the folder name"
+  ],
+  "src/RimMandrake/rimflow/coverage_judge.py::prior_verdict::except-returns-empty": [
+   "NOT A COLLAPSE: an unreadable verdict file gives no baseline, so a full judge runs: the strict path, no check is skipped"
+  ],
+  "src/RimMandrake/rimflow/coverage_judge.py::record_round::or-empty": [
+   "NOT A COLLAPSE: void_cause is a pure function of the record in hand; \"\" becomes None"
+  ],
+  "src/RimMandrake/rimflow/coverage_judge.py::stop_reason::or-empty": [
+   "NOT A COLLAPSE: concept_of is None only for no state (a pure function of the state in hand)"
+  ],
+  "src/RimMandrake/rimflow/coverage_judge.py::unproven_signatures::or-empty": [
+   "NOT A COLLAPSE: an unreadable verdict reads as an unproven signature (flagged): the strict side"
   ],
   "src/RimMandrake/rimflow/designer_stage.py::_epoch::except-returns-empty": [
    "NOT A COLLAPSE: a parser of a string in hand: None for absent or off-format (callers: an-off-format-stage-timestamp)"
@@ -345,6 +461,99 @@
   "src/RimMandrake/rimflow/designer_stage.py::working_record::or-empty": [
    "NOT A COLLAPSE: read_json: absent is the default; unparseable is caught and said 'repair it first'"
   ],
+  "src/RimMandrake/rimflow/detached_helper.py::_epoch::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/detached_helper.py::_launch_locked::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/detached_helper.py::context_tokens::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/detached_helper.py::dirty_shards::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/detached_helper.py::keep_off_result::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/detached_helper.py::local_shards::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/detached_helper.py::read_item::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/detached_helper.py::read_record::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/detached_helper.py::session_of::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/evidence_gate.py::_first_at::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/evidence_gate.py::_index_rows::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/evidence_gate.py::_iso::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/evidence_gate.py::_item_ids::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/evidence_gate.py::_load_state::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/evidence_gate.py::_receipt_wedged::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/evidence_gate.py::_state::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/evidence_gate.py::_wedge_from::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/evidence_gate.py::rescore::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read",
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/evidence_gate.py::shadow::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/exam_retake.py::carry::or-empty": [
+   "NOT A COLLAPSE: designer_stage.read_json raises Refused on an unreadable stage.json; `or {}` only turns a parsed null or an absent file into no record"
+  ],
+  "src/RimMandrake/rimflow/exam_retake.py::record::or-empty": [
+   "NOT A COLLAPSE: designer_stage.read_json raises Refused on an unreadable stage.json; `or {}` only turns a parsed null or an absent file into no record"
+  ],
+  "src/RimMandrake/rimflow/incident.py::_epoch::except-returns-empty": [
+   "NOT A COLLAPSE: None is the parse answer; callers test it before use"
+  ],
+  "src/RimMandrake/rimflow/incident.py::band_of::or-empty": [
+   "NOT A COLLAPSE: route_of is a pure lookup over a table in hand; None is no route (added 2026-11-19, read in this run)"
+  ],
+  "src/RimMandrake/rimflow/incident.py::line_owed::or-empty": [
+   "NOT A COLLAPSE: load_table raises on an unreadable table; route_of None is no route, and selftest_incident fails on a kind that reads None"
+  ],
+  "src/RimMandrake/rimflow/incident.py::read_rows::except-returns-empty": [
+   "NOT A COLLAPSE: no told.jsonl yet is no incidents (the answer); a torn or unreadable one returns None",
+   "NOT A COLLAPSE: None is the named \"torn ledger\" answer, apart from [] (docstring)"
+  ],
+  "src/RimMandrake/rimflow/judge_certificate.py::_ended_items::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/judge_certificate.py::_read_evidence::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/judge_certificate.py::_write_evidence::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/judge_certificate.py::grandfather::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read",
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/left_open_continue.py::main::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
   "src/RimMandrake/rimflow/maturation.py::_absent::except-returns-empty": [
    "NOT A COLLAPSE: False is 'not measured absent', the side that refuses to overwrite (promise absent-only-when-measured)"
   ],
@@ -414,6 +623,40 @@
   "src/RimMandrake/rimflow/maturation.py::takes_game::except-returns-empty": [
    "NOT A COLLAPSE: inspects a callable in hand; no read"
   ],
+  "src/RimMandrake/rimflow/maturation_autonomy.py::_iso_ts::except-returns-empty": [
+   "NOT A COLLAPSE: None is the parse answer; the `or 0` callers are listed on their own lines"
+  ],
+  "src/RimMandrake/rimflow/maturation_autonomy.py::chain_owed::or-empty": [
+   "RARE (failed-before-reads a-stage-time-that-does-not-parse): an unparseable locked_change time reads 0, so no chain is owed (0 of 700 stage.json history/release times unparseable, 2026-11-19)",
+   "RARE (failed-before-reads a-stage-time-that-does-not-parse): an unparseable release/stop/lock time reads 0, so it never blocks a chain (0 of 700 stage.json history/release times unparseable, 2026-11-19)"
+  ],
+  "src/RimMandrake/rimflow/maturation_autonomy.py::coverage_stopped::or-empty": [
+   "RARE (failed-before-reads a-stage-time-that-does-not-parse): an unparseable history time sorts as the oldest event (0 of 700 stage.json history/release times unparseable, 2026-11-19)"
+  ],
+  "src/RimMandrake/rimflow/maturation_autonomy.py::designer_chain::except-returns-empty": [
+   "RARE (failed-before-reads an-unreadable-dispatcher-state-or-schedule): None also means under the cap: the row reads designer_wait, role_launch.chain_ask still refuses at the launch (state.json written atomically)"
+  ],
+  "src/RimMandrake/rimflow/maturation_autonomy.py::designer_state::except-returns-empty": [
+   "RARE (failed-before-reads an-unreadable-concept-stage): None for absent and unreadable alike; _designer_lane says designer_unreadable, but final_stop/coverage_stopped see no stop first (stage.json written temp + os.replace)"
+  ],
+  "src/RimMandrake/rimflow/maturation_autonomy.py::designer_unit::except-returns-empty": [
+   "RARE (failed-before-reads an-unreadable-dispatcher-journal): the wait row then says no Designer run is live; it launches nothing (journal.jsonl is an appended local file)"
+  ],
+  "src/RimMandrake/rimflow/maturation_autonomy.py::exam_gate::or-empty": [
+   "NOT A COLLAPSE: designer_stage.read_json raises Refused on an unreadable stage.json; absent is no stage, so no gate"
+  ],
+  "src/RimMandrake/rimflow/maturation_autonomy.py::final_stop::or-empty": [
+   "RARE (failed-before-reads a-stage-time-that-does-not-parse): an unparseable final release time reads 0 (0 of 700 stage.json history/release times unparseable, 2026-11-19)",
+   "RARE (failed-before-reads a-stage-time-that-does-not-parse): an unparseable coverage_stop time reads 0, so it is not after the release (0 of 700 stage.json history/release times unparseable, 2026-11-19)",
+   "RARE (failed-before-reads a-stage-time-that-does-not-parse): an unparseable stop time reads 0 (0 of 700 stage.json history/release times unparseable, 2026-11-19)",
+   "RARE (failed-before-reads a-stage-time-that-does-not-parse): an unparseable release/lock time reads 0, so it is not after the stop (0 of 700 stage.json history/release times unparseable, 2026-11-19)"
+  ],
+  "src/RimMandrake/rimflow/maturation_autonomy.py::pilot_after::except-returns-empty": [
+   "NOT A COLLAPSE: None is read by _pilot_step as \"UNMEASURED: run_rules.json pilot_after_live_fails cannot be read\""
+  ],
+  "src/RimMandrake/rimflow/maturation_autonomy.py::resolve::or-empty": [
+   "RARE (failed-before-reads an-unreadable-maturation-record): maturation.load is None for absent and unreadable; the version falls back to None only when the facts carry none (record.json written temp + os.replace)"
+  ],
   "src/RimMandrake/rimflow/maturation_dispatch.py::_by::or-empty": [
    "NOT A COLLAPSE: no seat name reads as \"unknown\", the could-not-look answer"
   ],
@@ -464,8 +707,126 @@
    "NOT A COLLAPSE: an unreadable record is not finished, so detached_helper finish runs (it reads the record itself)",
    "NOT A COLLAPSE: an unreadable record after finish starts no return; the line says only the finish exit"
   ],
+  "src/RimMandrake/rimflow/maturation_hands.py::_json::except-returns-empty": [
+   "RARE (failed-before-reads an-unreadable-stage-file-hides-hand-acts): None for absent and unreadable alike; its two callers read it as no acts"
+  ],
+  "src/RimMandrake/rimflow/maturation_hands.py::_road_back_items::except-returns-empty": [
+   "NOT A COLLAPSE: the blind ledger read is kept in h[\"road_back_error\"] for this tick (RIMMANDRAKE_FOLD_RECORDED_HAND_ACTS_AFTER_KNOWN_FAILS)"
+  ],
+  "src/RimMandrake/rimflow/maturation_hands.py::collect::or-empty": [
+   "RARE (failed-before-reads an-unreadable-stage-file-hides-hand-acts): an unreadable stage.json shows no coverage release by hand (written temp + os.replace)",
+   "RARE (failed-before-reads an-unreadable-stage-file-hides-hand-acts): an unreadable stage_record.json shows no move by hand (written temp + os.replace)",
+   "RARE (failed-before-reads a-ledger-time-that-does-not-parse): an unparseable ledger ts reads 0, so its close is not seen (0 of 60,387 ledger events, 2026-11-19)"
+  ],
+  "src/RimMandrake/rimflow/maturation_hands.py::ts::except-returns-empty": [
+   "NOT A COLLAPSE: None is the parse answer; every caller tests it before use"
+  ],
+  "src/RimMandrake/rimflow/maturation_rescue.py::_exit_reds::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/maturation_rescue.py::_json::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read",
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/maturation_rescue.py::read_blind::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/maturation_rescue.py::read_ingame::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read",
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/maturation_rescue.py::ts::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/modledger.py::mods_with_ledgers::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/modledger.py::shard_names::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/modledger_backfill.py::_iso::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/modledger_backfill.py::_load::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/modledger_backfill.py::_store_dir::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/modledger_backfill.py::compare::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read",
+   "unread by owner's card 2026-11-19: only files that failed before are read",
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/modledger_backfill.py::plan::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read",
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/pipeline_control.py::Ctx.stage::or-empty": [
+   "RARE (consumable-readers an-unreadable-maturation-record-reads-no-stage): maturation.load is None for absent and unreadable; `pipe show` prints \"-\" (record.json written temp + os.replace)"
+  ],
+  "src/RimMandrake/rimflow/pipeline_control.py::Ctx.version::or-empty": [
+   "NOT A COLLAPSE: absent and unreadable records both read UNM (UNMEASURED), never a version (added since the lint, read in this run)"
+  ],
+  "src/RimMandrake/rimflow/pipeline_control.py::_stat::except-returns-empty": [
+   "NOT A COLLAPSE: no journal is the measured empty store (state() docstring); any other OSError raises"
+  ],
+  "src/RimMandrake/rimflow/pipeline_control.py::journal::except-returns-empty": [
+   "NOT A COLLAPSE: no journal is the measured empty store; any other read error raises Unreadable"
+  ],
+  "src/RimMandrake/rimflow/pipeline_control.py::reading::except-returns-empty": [
+   "RARE (consumable-readers a-refusal-subject-with-no-readable-version): refusal_subject refuses a mod whose version reads UNM; `pipe show` then omits its refusal row (added since the lint, read in this run)"
+  ],
+  "src/RimMandrake/rimflow/pipeline_pause.py::expire::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
   "src/RimMandrake/rimflow/red_dispatch.py::night_details::except-returns-empty": [
    "NOT A COLLAPSE: None is the documented cannot-be-read answer; decide checks `details is not None` before reading a PASS"
+  ],
+  "src/RimMandrake/rimflow/refusal_contract.py::_read::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/refusal_contract.py::_text_of::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/refusal_contract.py::default_fixer::except-returns-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::_at::except-returns-empty": [
+   "RARE (failed-before-reads a-verdict-time-that-does-not-parse): a verdict text that does not parse reads 0, so `back` puts the void verdict over it"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::_at::or-empty": [
+   "RARE (failed-before-reads a-verdict-time-that-does-not-parse): a verdict whose `at` does not parse reads 0, so `back` puts the void verdict over it"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::_raw_stage::except-returns-empty": [
+   "RARE (failed-before-reads an-unreadable-stage-file-hides-staged-runs): None for absent and unreadable alike (stage.json written temp + os.replace)"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::_stage_restore::or-empty": [
+   "RARE (failed-before-reads a-stage-time-that-does-not-parse): an unparseable entry time reads 0, so a restored entry goes after it (0 of 700 stage.json history/release times unparseable, 2026-11-19)"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::_stop_before::or-empty": [
+   "RARE (failed-before-reads a-stage-time-that-does-not-parse): an unparseable coverage_stop time reads 0, so it is before `at` (0 of 700 stage.json history/release times unparseable, 2026-11-19)"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::children::or-empty": [
+   "RARE (failed-before-reads an-unreadable-stage-file-hides-staged-runs): an unreadable stage.json gives no children from the stage; a recorded parent still finds them in the books"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::concept_dirs::except-returns-empty": [
+   "RARE (failed-before-reads an-unreadable-concepts-folder): design/concepts that cannot be listed gives no staged runs; an absent folder has none"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::parse_time::except-returns-empty": [
+   "NOT A COLLAPSE: None is the parse answer; the callers are listed on their own lines"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::resolve::or-empty": [
+   "RARE (failed-before-reads an-unreadable-stage-file-hides-staged-runs): an unreadable stage.json gives no staged runs for that concept"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::swap_verdict.judge_of::except-returns-empty": [
+   "NOT A COLLAPSE: text that does not parse has no judge; swap leaves it, and prior_verdict refuses the same file (a full judge)"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::swap_verdict.judge_of::or-empty": [
+   "NOT A COLLAPSE: a JSON null has no judge; swap leaves it, and prior_verdict refuses the same file (a full judge)"
+  ],
+  "src/RimMandrake/rimflow/run_void.py::void_spend::or-empty": [
+   "NOT A COLLAPSE: a run record that cannot be read lists the unit as UNMEASURED spend"
   ],
   "src/RimMandrake/rimflow/seat_restart.py::_clone_tidy::or-empty": [
    "NOT A COLLAPSE: seat_clones never returns None (a blind reading is an UNMEASURED risk row that alarms); `or []` covers a stand-in"
@@ -661,6 +1022,9 @@
    "NOT A COLLAPSE: no shard yet is [] (no work), the documented answer",
    "NOT A COLLAPSE: None is UNMEASURED: the restart holds (promise unreadable-shard-is-no-reading)",
    "NOT A COLLAPSE: a line that is not JSON is None, UNMEASURED (promise unreadable-shard-is-no-reading)"
+  ],
+  "src/RimMandrake/rimflow/spend_watchdog.py::run::or-empty": [
+   "unread by owner's card 2026-11-19: only files that failed before are read"
   ]
  }
 }

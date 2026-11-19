@@ -195,8 +195,11 @@ def t_lint_allowlist_is_counted():
           "--prune drops a fixed place's reason with it and keeps the open one's", (rc, left))
 
 
-def t_lint_shadow_refuses_nothing():
-    """--shadow prints the count and each new hit and exits 0, an unreadable file included; ./publish runs it so."""
+def t_lint_refuses_a_new_place_at_publish():
+    """A new hit exits 1 and an unparsable file 3; ./publish runs it as a refusing check; --shadow still exits 0."""
+    rc, out = lint(SHAPES)
+    check(rc == 1 and flagged(out) == [2, 4, 5, 11, 16, 26, 28] and "RED" in out, "a new hit is RED, exit 1",
+          (rc, out[-300:]))
     rc, out = lint(SHAPES, "--shadow")
     check(rc == 0 and flagged(out) == [2, 4, 5, 11, 16, 26, 28] and "SHADOW" in out, "shadow prints and exits 0",
           (rc, out[-300:]))
@@ -207,8 +210,8 @@ def t_lint_shadow_refuses_nothing():
     cfg = os.path.join(HERE, "..", "Utils", "publish_tree_checks.json")
     with open(cfg, encoding="utf-8") as fh:
         rows = [c for c in json.load(fh)["checks"] if c["test"].endswith("could_not_look_lint.py")]
-    check(len(rows) == 1 and rows[0].get("shadow") is True and "--shadow" in rows[0].get("args", []),
-          "./publish runs the lint as a shadow check", rows)
+    check(len(rows) == 1 and not rows[0].get("shadow") and "--shadow" not in rows[0].get("args", []),
+          "./publish runs the lint as a refusing check", rows)
 
 
 def main(argv=None):
@@ -216,7 +219,7 @@ def main(argv=None):
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
     for t in (t_probe_never_lies, t_blind_answers_keep_their_cause, t_looked_answers_read_plainly,
               t_four_answers_never_blur, t_lint_sees_both_shapes, t_lint_allowlist_is_counted,
-              t_lint_shadow_refuses_nothing):
+              t_lint_refuses_a_new_place_at_publish):
         if only is not None and t.__name__ not in only:
             continue
         print("== %s" % t.__name__)

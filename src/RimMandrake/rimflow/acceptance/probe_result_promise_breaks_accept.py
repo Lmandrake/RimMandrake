@@ -46,8 +46,10 @@ brk("lint-sees-both-shapes", "the except shape is never looked for", LINT,
     ("        if isinstance(n, ast.ExceptHandler):", "        if False:"))
 brk("lint-allowlist-is-counted", "any allowance, however small, covers every hit under its key", LINT,
     ("            if seen[k] > allowed.get(k, 0):", "            if not allowed.get(k, 0):"))
-brk("lint-shadow-refuses-nothing", "--shadow still exits 1 on a red", LINT,
-    ('    return 0 if shadow else rc', '    return rc'))
+brk("lint-refuses-a-new-place-at-publish", "./publish runs the lint as a shadow check again",
+    "src/RimMandrake/Utils/publish_tree_checks.json",
+    ('{"test": "src/RimMandrake/Utils/could_not_look_lint.py", ',
+     '{"test": "src/RimMandrake/Utils/could_not_look_lint.py", "args": ["--shadow"], "shadow": true, '))
 
 
 def one(tree, promise):

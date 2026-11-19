@@ -100,6 +100,10 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **a-crash-between-the-digest-note-and-the-lift.** The process dies after the Conductor's `delegated: scope` note
   is written and before the store lifts. His digest shows a lift that did not happen; the mod stays held, and the
   next lift notes again and lifts. No fix (a split-second crash).
+- **a-run-record-unreadable-right-after-its-kill-mark.** `reap_detached` reads the detached run's record just after
+  `mark_killed` wrote it in the same call; if that read fails, the `-return` unit gets this machine's dispatcher state
+  dir and seat BENCH instead of the record's (could-not-look lint read, 2026-11-19,
+  `RIMMANDRAKE_READ_ONLY_FILES_THAT_FAILED_PILOT_FOUND_ZERO`). No fix (owner by card 2026-11-19: a rare failure gets none).
 
 ## PROMISES (each one is owed a test of the same name)
 

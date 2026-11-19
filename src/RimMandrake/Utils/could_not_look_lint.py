@@ -15,7 +15,8 @@ shape, with a count, so a line moving inside its function is not a change. A hit
 a list of places to read, not a count of bugs: the shared answer type for a read is probe_result.py.
 
     python3 src/RimMandrake/Utils/could_not_look_lint.py              exit 0 green, 1 red, 3 UNREADABLE
-    ... --shadow     print the same, exit 0 always (what ./publish runs tonight: it refuses nothing)
+    ... --shadow     print the same, exit 0 always (a hand look; ./publish runs the lint refusing since
+                     RIMMANDRAKE_ARM_COULD_NOT_LOOK_LINT_299_PLACES_ALLOWED, 2026-11-19)
     ... --census     per-file counts of every place, allowlisted or not
     ... --prune      drop allowlist slack (places fixed since), and the `reasons` entry of a place no longer allowed
     ... --seed       write every current place onto the allowlist (once, at the lint's birth)
