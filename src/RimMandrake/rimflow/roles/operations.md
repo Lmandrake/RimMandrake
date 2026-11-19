@@ -171,7 +171,9 @@ so; where a note missed, check the reasoning that produced it before you repeat 
 up to 10 notes (one `--run` tag per run, the readings you judged or planned around, a deadline you can stand behind):
 `python3 src/RimMandrake/Utils/ops_episodes.py note --run <UTC yyyymmddThhmmZ> --reading <key from memory.json>
 --cmp '<' --value <n> --deadline +12h [--mode before] [--incident <id>]`. `at` grades the reading at the deadline,
-`before` at any point until it. A key memory.json does not hold, or a blind one, is refused. Notes that only restate
+`before` at any point until it. A key memory.json does not hold, or a blind one, is refused. A counter reading (kind
+`counter`) is graded on its rate per hour, not its level: a `--value` nearer the level is refused with the rate form
+to write instead. Notes that only restate
 today score exactly what no change scores; name the open incidents too, or the page counts them as left out.
 - **Before acking an ops incident, read its metric field in `told.jsonl`.** An ack that explained `plan.days_since_advance` for an incident that was `plan.blind` (carry bound under the metronome round robin) let the fix die twice. The carry bound is now derived (`ops_watch.compose_round_bound_s`).
 - **A round-robin pass that carries a reading it did not take (`ops_watch run --compose`) must never feed it to an edge-triggered alarm again:** each repeat counts toward `clear_passes` hysteresis, so one real reading can clear an alarm. Carried points are stamped `observed_at`; alarms see only points observed since the last alarm pass, and `last_measured` and digest history stamp from `observed_at`, not now.

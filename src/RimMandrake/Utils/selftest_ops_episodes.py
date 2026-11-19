@@ -163,6 +163,25 @@ n_wrong = add("bold", "disk.free_gb", "<", 30, incident="tps-1")        # says d
 n_blind = add("bold", "disk.free_gb", "==", 50, dl="+2h")               # no reading near its deadline
 n_ctr = add("bold", "t.ctr", ">", 5, dl="+10h")                         # a counter: graded on its rate per hour
 n_late = add("late", "disk.free_gb", ">", 10, dl="+48h")
+# a counter's note is graded on its rate per hour: a threshold nearer its LEVEL than its rate is refused, the rate form
+# shown (Crystallize 2026-W47 cluster 9: a level was written on three consecutive days, one note voided)
+CMEM = dict(MEM, readings=dict(MEM["readings"], **{
+    "plan.days_since_advance": {"state": "normal", "kind": "counter", "v": 0.042, "last": 14.86, "unit": "per hour"},
+    "codex.week_used_pct": {"state": "normal", "kind": "counter", "v": 1.69, "last": 44.0, "unit": "per hour"}}))
+for key, cmp, val in (("plan.days_since_advance", ">", 15), ("codex.week_used_pct", "<", 62)):
+    try:
+        oe.add_note("lvl", key, cmp, val, "+6h", memory=CMEM, incidents=INC, now=NOW, d=Path(TMP) / "lvl")
+        ok(False, "counter: a level threshold on %s is refused" % key)
+    except ValueError as e:
+        rd = CMEM["readings"][key]
+        rate = "%.4g" % ((val - rd["last"]) / 6.0)
+        ok("rate per hour" in str(e) and ("--value %s" % rate) in str(e) and ("--cmp '%s'" % cmp) in str(e)
+           and str(rd["last"]).rstrip("0").rstrip(".") in str(e),
+           "counter: a level threshold on %s is refused with the rate form --value %s (%s)" % (key, rate, e))
+ok(not (Path(TMP) / "lvl" / "judge_notes.jsonl").exists() or not oe.read_notes(Path(TMP) / "lvl" / "judge_notes.jsonl"),
+   "counter: a refused level note writes nothing")
+n_rate = oe.add_note("rate", "codex.week_used_pct", "<", 3, "+6h", memory=CMEM, incidents=INC, now=NOW, d=Path(TMP) / "rate")
+ok(n_rate["value"] == 3.0 and n_rate["v0"] == 1.69, "counter: a rate threshold on a counter is accepted, v0 its rate")
 import threading  # noqa: E402
 dl_ = Path(TMP) / "lock"
 ths = [threading.Thread(target=lambda: [oe.add_note("race", "disk.free_gb", ">", 1, "+6h", memory=MEM, incidents=INC,

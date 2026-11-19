@@ -20,7 +20,8 @@ EPISODES (14 d). What happened, not samples:
 
 JUDGE NOTES. At the end of a run Operations may leave up to 10 typed notes (one run tag):
   reading  a key memory.json holds (never a guessed one); its value now is recorded as v0
-  cmp      < <= > >= == !=      value  a number (a flag: 0 or 1; a counter: its rate per hour, as the page shows it)
+  cmp      < <= > >= == !=      value  a number (a flag: 0 or 1; a counter: its rate per hour, as the page shows it;
+                                       a value nearer a counter's level than its rate is refused, the rate form shown)
   deadline an ISO time or +Nh / +Nm from now      mode  at (the reading at the deadline) | before (at any point until)
   Graded once, after the deadline (a `before` note holds early the moment a measured sample satisfies it):
     held | missed | ungradable (no fresh measured reading: within the reading's staleness either side of the deadline
@@ -317,10 +318,31 @@ def add_note(run, reading, cmp, value, deadline, mode="at", incident=None, why=N
     v0 = rd.get("v", rd.get("last"))
     if rd.get("state") == "blind" or v0 is None:
         raise ValueError("%s is blind now (%s): a note against it could only be ungradable" % (reading, rd.get("why")))
+    level = counter_level_refusal(reading, rd, cmp, value, (dl - now) / H)
+    if level:
+        raise ValueError(level)
     d.mkdir(parents=True, exist_ok=True)
     with open(d / "judge_notes.lock", "w") as lk:     # check, number and append under one lock: no shared id
         fcntl.flock(lk, fcntl.LOCK_EX)
         return _append_note(d, run, by, now, reading, rd, cmp, value, dl, mode, v0, incident, why, incidents)
+
+
+def counter_level_refusal(reading, rd, cmp, value, hours):
+    """-> the refusal text when `value` on a COUNTER reading reads as a level, else None. A counter's note is graded on
+    its rate per hour `v` (series_for), not the level `last` the page also shows; a value nearer the level than the rate
+    is a level (Crystallize 2026-W47 cluster 9: written three days running after the lesson existed, one note voided).
+    The refusal gives the rate form: the rate that takes the level to `value` by the deadline. A counter with no level
+    recorded, or a level equal to its rate, cannot be told apart and is not refused."""
+    lvl, rate = rd.get("last"), rd.get("v")
+    if rd.get("kind") != "counter" or not all(isinstance(x, (int, float)) for x in (lvl, rate)) or lvl == rate:
+        return None
+    if abs(value - lvl) >= abs(value - rate):
+        return None
+    return ("%s is a counter: a note on it compares its rate per hour (now %.4g %s), not its level (now %g); --value %g "
+            "is nearer the level, so it reads as a level and would be graded as a rate. Rate form: --cmp '%s' --value %.4g "
+            "(the rate that takes the level from %g to %g in the %.4g h to the deadline), or any threshold in per-hour "
+            "terms" % (reading, rate, rd.get("unit") or "per hour", lvl, value, cmp, (value - lvl) / hours, lvl, value,
+                       hours))
 
 
 def _append_note(d, run, by, now, reading, rd, cmp, value, dl, mode, v0, incident, why, incidents):
