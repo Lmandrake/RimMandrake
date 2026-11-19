@@ -246,8 +246,8 @@ def test_words_through_the_real_hook():
               "his whole message %r sets %s and the window says so" % (said_, mode))
     os.remove(p)
     for said_ in ("hold on, one thing", "are you ready?", "put it on hold", "ready to go, do the hose", "auto mode for pipes", "holding"):
-        out = hook(said_)
-        check(not out and not os.path.exists(p), "%r is not the switch" % said_)
+        out = hook(said_)      # the hook prints the OWED line on every prompt (71e1181a33): no switch reply, no file
+        check("ONE line" not in out and not os.path.exists(p), "%r is not the switch" % said_)
     check(not hook("hold", {"AGENT_SEAT": "RUNNER"}) and not os.path.exists(p), "another seat's window: no switch")
     check(not hook("hold", {"CONDUCTOR_GOODBYE_SESSION_NAME": "SOMETHING ELSE"}) and not os.path.exists(p), "another name: no switch")
     check(not hook("hold", {"CONDUCTOR_GOODBYE_SESSION_NAME": "__UNREADABLE__"}) and not os.path.exists(p), "unreadable identity: no switch")
