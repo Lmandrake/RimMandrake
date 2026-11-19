@@ -260,6 +260,36 @@ def main():
             v, given = CJ.contract_verdict(d3, {"verdict": "covered", "gaps": [], "checklist": rows3}, "FOO")
             check("a covered verdict is a well-formed contract verdict with no refusals",
                   v["refusals"] == [] and not RC.check(v, given), RC.check(v, given))
+
+            # RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS: the re-ask that would repair the records
+            # DIES (a timeout). The malformed verdict is the dead call's: not submitted, no malformed count on the
+            # refusal contract, the round void_system; two such rounds stop nothing.
+            import subprocess
+            r4 = os.path.join(root, "four")
+            d4 = concept(r4, item="FOO_DEAD_ITEM")
+
+            def dies(answers):
+                def r(argv, cwd, env, timeout):
+                    if not answers:
+                        raise subprocess.TimeoutExpired(argv[:1], timeout)
+                    return 0, answers.pop(0)
+                return r
+            for n in (1, 2):
+                first_look(d4)
+                rec, _ = CJ.run(d4, r4, dies([answer("not_covered", [bad_gap()])]))
+            items = RC.counters()["items"].get("FOO_DEAD_ITEM") or {}
+            check("a dead re-ask: the malformed verdict is not submitted, the round void_system",
+                  rec.get("verdict") == "malformed" and rec.get("void_system") and rec["contract"].get("submitted") is False,
+                  (rec.get("verdict"), rec.get("void_system"), rec.get("contract")))
+            check("a dead re-ask counts no malformed verdict on the refusal contract", not items.get("malformed"), items)
+            st4 = DS.load_state(d4)
+            check("two dead re-asks: no malformed stop, and both rounds are counted apart",
+                  CJ.stop_reason(st4, d4) is None and len(CJ.rounds(st4, d4, voids=True)) == 2
+                  and CJ.rounds(st4, d4) == [], (CJ.stop_reason(st4, d4), len(CJ.rounds(st4, d4, voids=True))))
+            first_look(d4)
+            rec, _ = CJ.run(d4, r4, dies([]))
+            check("a first call that dies is a void_system round: error_kind system",
+                  rec.get("error_kind") == "system" and CJ.void_cause(rec), (rec.get("error"), rec.get("error_kind")))
     finally:
         CT.coverage_problem, CT.sign, DS.exam_errors, RC.status = saved
         for k, v in env.items():

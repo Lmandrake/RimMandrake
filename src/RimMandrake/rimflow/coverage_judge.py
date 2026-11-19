@@ -102,6 +102,13 @@ JUDGE_RUNS_MAX = 4
 # keeps meaning the same real spend (RIMMANDRAKE_WEIGH_TOKENS_BY_MODEL_OPUS_INPUT_UNIT).
 JUDGE_P90_TOKENS = 684906
 JUDGE_SPEND_MAX = 4 * JUDGE_P90_TOKENS   # an unmeasured judge run counts at the p90, never at 0
+# RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS (run_void.py; owner 2026-11-18: "I will not accept ANY
+# system that pointlessly expends such statistical measurements based on failed system calls or behavior"): a round whose
+# judge call died (no answer, a timeout, output that is no result of its own) is void_system. It is no run, no look, no
+# spend and no malformed verdict for the caps; it is counted apart, and JUDGE_FAULT_LIMIT of them since the last release
+# stop judging as a system fault (a judge that only dies is not left looping), never as a spent look.
+SYSTEM_ERROR_RX = re.compile(r"did not answer|not a JSON result|TimeoutExpired|timed out", re.I)  # a round from before
+JUDGE_FAULT_LIMIT = 2 * JUDGE_RUNS_MAX                                                            # error_kind existed
 STOP_EXIT = 3               # `run` exit when stopped: the pre-launch chain ends and the Designer's claude never starts
 UNIT_PREFIX = "rm-coverage-judge-"
 # how a later round's gap stands against the earlier verdicts: first (round 1 only), unfixed (named before, still open),
@@ -680,10 +687,28 @@ def delta_merge(rec, dp, repairs=None):
 READER_SUFFIX = "-reader"    # llm_reader's charge ref: its judge's unit + this
 
 
-def rounds(st, d=None, readers_as_rounds=False):
+def void_cause(r):
+    """-> why round (or verdict record) r is void_system, or "": its judge call died of a system cause (error_kind
+    "system", or, on a round written before error_kind, an error SYSTEM_ERROR_RX names) with no verdict, or a re-ask of
+    its refusal records died and left the verdict malformed (`void_system`). A judge's own failure (an answer with no
+    well-formed verdict, a runner exit, its cap) is not void: it counts."""
+    if not isinstance(r, dict):
+        return ""
+    if r.get("void_system"):
+        return str(r["void_system"])
+    err = r.get("error")
+    if r.get("verdict") is not None or not err:
+        return ""
+    kind = r.get("error_kind")
+    return str(err) if kind == "system" or (kind is None and SYSTEM_ERROR_RX.search(str(err))) else ""
+
+
+def rounds(st, d=None, readers_as_rounds=False, voids=False):
     """-> every judge round on this concept, oldest first: stage.json's coverage_rounds, plus each earlier judge the
     budget charges name with no round on file (before the loop limit existed). An old round's verdict is known only when
-    coverage_verdict.json is that judge's; its tokens are its charges, or the p90 when it was charged unmeasured."""
+    coverage_verdict.json is that judge's; its tokens are its charges, or the p90 when it was charged unmeasured.
+    A void_system round (void_cause) is left out, its reader's spend with it; voids=True keeps it, marked
+    `void_system`, for the fault count and the views that show it apart."""
     import run_void     # a VOID judge's charges build no round (its spend stays measured: run_void.sync_stage)
     recorded = [dict(r) for r in st.get("coverage_rounds") or [] if isinstance(r, dict)]
     known = {r.get("judge") for r in recorded} | run_void.stage_spend_refs(st)
@@ -714,7 +739,11 @@ def rounds(st, d=None, readers_as_rounds=False):
             r["reader_tokens"] = reader.pop(r["judge"])
     if reader:   # a reader whose judge has no round on file: its spend still counts, on a spend-only row
         out.append({"judge": None, "verdict": None, "tokens": sum(reader.values()), "reader_only": True})
-    return out
+    for r in out:
+        why = void_cause(r)
+        if why:
+            r["void_system"] = why
+    return out if voids else [r for r in out if not r.get("void_system")]
 
 
 def spend(rs):
@@ -733,7 +762,7 @@ def released_rounds(st, d, rs, rel):
     if isinstance(rel.get("judges_at"), list):
         before = set(rel["judges_at"])
         return [r for r in rs if r.get("reader_only") or r.get("judge") not in before]
-    old = rounds(st, d, readers_as_rounds=True)[int(rel.get("rounds_at") or 0):]
+    old = rounds(st, d, readers_as_rounds=True, voids=True)[int(rel.get("rounds_at") or 0):]   # the count it was written on
     keep = {r.get("judge") for r in old if not r.get("reader_phantom")}   # a phantom is dropped, never promoted
     return [r for r in rs if r.get("judge") in keep or r.get("reader_only")]
 
@@ -769,6 +798,12 @@ def stop_reason(st, d=None):
     rs = rounds(st, d)
     mod = (DS.concept_of(st, d) or {}).get("mod") or "?"
     rel = [x for x in st.get("coverage_releases") or [] if isinstance(x, dict)]
+    every = rounds(st, d, voids=True)
+    dead = [r for r in (released_rounds(st, d, every, rel[-1]) if rel else every) if r.get("void_system")]
+    if len(dead) >= JUDGE_FAULT_LIMIT:
+        return ("%d judge rounds%s died of a system cause (limit %d; the last: %s): a system fault, no look, run or "
+                "spend was counted for them" % (len(dead), " since the release" if rel else "", JUDGE_FAULT_LIMIT,
+                                                  _clip(dead[-1]["void_system"], 120)))
     if rel:
         after = released_rounds(st, d, rs, rel[-1])
         tail = _looks(after)
@@ -900,8 +935,8 @@ def release(d, why, now=None, after=None, item_state=None):
         DS.write_json(DS.state_path(d), st)
         return st
     rs = rounds(st, d)
-    rec = {"at": DS.now_iso(), "why": why, "rounds_at": len(rs),
-           "judges_at": [r.get("judge") for r in _looks(rs)]}   # the boundary by judge, never by a count
+    rec = {"at": DS.now_iso(), "why": why, "rounds_at": len(rs),    # the boundary by judge, never by a count; a
+           "judges_at": [r.get("judge") for r in _looks(rounds(st, d, voids=True))]}   # void one is before it too
     if isinstance(g, dict):
         waits = grant_waits(st, item_state, d)
         if waits:
@@ -1279,7 +1314,8 @@ def record_round(d, rec):
         "ids": sorted({i for g in gaps for i in g.get("ids") or []}),
         "tags": {t: sum(1 for g in gaps if g.get("new_since") == t) for t in TAGS if any(
             g.get("new_since") == t for g in gaps)},
-        "late": rec.get("late") or [], "error": rec.get("error"), **round_counts(rec),
+        "late": rec.get("late") or [], "error": rec.get("error"), "error_kind": rec.get("error_kind"),
+        "void_system": void_cause(rec) or None, **round_counts(rec),
         "repair_blocks": repair_blocks(rec)})
     DS.write_json(DS.state_path(d), st)
     return st
@@ -1641,9 +1677,13 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             res = json.loads(out or "null")
         except (OSError, subprocess.SubprocessError, ValueError) as e:
             rec["error"] = "the judge did not answer: %s" % e
+            rec["error_kind"] = "system"     # a dead call: a timeout, no process, output that is no JSON
+            rec.setdefault("dead_calls", []).append(rec["error"])
             return None, None, None
         if not isinstance(res, dict):
             rec["error"] = "the judge's output is not a JSON result (exit %s)" % code
+            rec["error_kind"] = "system"     # the CLI exited with no result of its own
+            rec.setdefault("dead_calls", []).append(rec["error"])
             return code, None, None
         tok = None
         try:
@@ -1664,9 +1704,11 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             so.get("verdict") in ("covered", "not_covered") and isinstance(so.get("checklist"), list)))
         if not ok:
             rec["error"] = "no well-formed verdict (exit %s)" % code
+            rec["error_kind"] = "judge"      # it answered: its own failure (a cap, a broken answer) counts
         elif code != 0:
             # RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: a runner that failed is not trusted for its verdict, however well formed
             rec["error"] = "the judge's runner exited %s: its verdict is not taken" % code
+            rec["error_kind"] = "judge"
             ok = False
         return code, so if ok else None, res.get("session_id")
 
@@ -1682,6 +1724,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         if so2:  # an answer that came back broken leaves the first one standing
             so, missing = so2, missing_rows(ids, so2["checklist"])
         rec.pop("error", None)
+        rec.pop("error_kind", None)
     def take(so, missing):
         """Fold one well-formed answer into rec (a later answer in the same session replaces an earlier one)."""
         extra = [dict(g, from_rows=True) for g in failed_part_gaps(so["checklist"], so["gaps"])]
@@ -1742,6 +1785,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         # error is one record's, only those records are re-asked (at most ROW_REASK_MAX times); one still broken is
         # kept on file marked `malformed`, is not submitted, and the well-formed rows are the stored verdict.
         cv, given, errs = contract_errors(d, rec, st0.get("item"))
+        dead0 = len(rec.get("dead_calls") or [])    # a re-ask below that dies leaves a malformed verdict nobody judged
         left = timeout - (time.monotonic() - started)
         if errs and session and left >= REASK_MIN_S and row_errors(errs, cv)[1]:
             rec["contract_reasked"] = errs
@@ -1754,6 +1798,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
                 errs = contract_errors(d, rec, st0.get("item"))[2] if rec["verdict"] == "not_covered" else []
                 cv, given = contract_verdict(d, rec, st0.get("item"))
             rec.pop("error", None)
+            rec.pop("error_kind", None)
         tries = 0
         while errs and rec.get("verdict") == "not_covered" and session and tries < ROW_REASK_MAX:
             rows, glob = row_errors(errs, cv)
@@ -1765,6 +1810,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             _c, so4, _s = ask([CLAUDE, "-p", row_reask_text(rows, cv, given, bad), "--resume", session]
                               + tail_for(GAPS_SCHEMA), timeout - (time.monotonic() - started), gaps_only=True)
             rec.pop("error", None)
+            rec.pop("error_kind", None)
             new = [g for g in (so4 or {}).get("gaps") or [] if isinstance(g, dict)]
             want = {i for g in bad for i in g.get("ids") or [REST_CLAUSE]}
             if not new or not want <= {i for g in new for i in g.get("ids") or [REST_CLAUSE]}:
@@ -1811,7 +1857,15 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             rec["contract"] = {"ok": True, "submitted": False, "why": unread}
             rec["advisory"] = unread
         elif rec.get("verdict") == "not_covered":
-            rec["contract"] = {k: v for k, v in RC.submit(cv, given).items() if k != "errors"}
+            dead = (rec.get("dead_calls") or [])[dead0:]
+            if errs and dead:
+                # the re-ask that would have repaired the records died: the malformed verdict is the dead call's, so it
+                # is not submitted (the refusal contract counts no malformed verdict for it) and the round is void_system
+                rec["contract"] = {"ok": False, "submitted": False, "void_system": dead[-1]}
+                rec["void_system"] = "a re-ask of its refusal records died (%s): its malformed verdict counts nothing" % (
+                    _clip(dead[-1], 120))
+            else:
+                rec["contract"] = {k: v for k, v in RC.submit(cv, given).items() if k != "errors"}
             if errs:
                 rec.update(verdict="malformed", malformed=errs)
             elif rec["contract"].get("advisory"):   # T6: only a CALIBRATED brief's refusal sends the Designer back

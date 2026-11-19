@@ -118,6 +118,39 @@ RECS = {U1: {"unit": U1, "item": ITEM1, "at": T0 + 21, "ended": T0 + 1008, "stat
              "result": "killed: success (killed TERM)", "cost_usd": "UNMEASURED", "out": "OUT_NONE"}}
 
 
+def judge_rounds(CJ):
+    """RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS: a coverage-judge round whose call died is
+    void_system: no run, look, spend or malformed verdict for the caps, counted apart, and a judge that only dies still
+    stops, as a system fault, at JUDGE_FAULT_LIMIT. A judge's own failure still counts."""
+    def rnd(n, **kw):
+        r = {"judge": "rm-coverage-judge-%d" % n, "verdict": None, "at": "2026-11-18T00:%02d:00Z" % n, "tokens": 0}
+        r.update(kw)
+        return r
+    dead = {"coverage_rounds": [rnd(n, error="TimeoutExpired: judge call timed out") for n in range(4)]}
+    ok(CJ.stop_reason(dead) is None and CJ.rounds(dead) == [],
+       "four timed-out judge rounds (no error_kind: written before it) spend no judge run (%s)" % CJ.stop_reason(dead))
+    ok(len(CJ.rounds(dead, voids=True)) == 4 and all(r.get("void_system") for r in CJ.rounds(dead, voids=True)),
+       "rounds(voids=True) keeps them, each marked void_system with its cause")
+    big = {"coverage_rounds": [rnd(n, error="x", error_kind="system", tokens=CJ.JUDGE_SPEND_MAX) for n in range(2)]}
+    ok(CJ.stop_reason(big) is None, "a dead round's spend is not judge spend (shown apart): %s" % CJ.stop_reason(big))
+    own = {"coverage_rounds": [rnd(n, error="no well-formed verdict (exit 0)", error_kind="judge") for n in range(4)]}
+    ok(str(CJ.stop_reason(own)).startswith("4 judge runs"),
+       "a judge that answered with no well-formed verdict is its own failure: it counts (%s)" % CJ.stop_reason(own))
+    mal = {"coverage_rounds": [rnd(n, verdict="malformed", void_system="a re-ask of its refusal records died")
+                               for n in range(CJ.MALFORMED_LIMIT)]}
+    ok(CJ.stop_reason(mal) is None, "a malformed verdict left by a dead re-ask counts toward no malformed cap")
+    mal2 = {"coverage_rounds": [rnd(n, verdict="malformed") for n in range(CJ.MALFORMED_LIMIT)]}
+    ok("malformed" in str(CJ.stop_reason(mal2)), "a judge's own malformed verdicts still stop judging")
+    loop = {"coverage_rounds": [rnd(n, error="the judge did not answer: x", error_kind="system")
+                                for n in range(CJ.JUDGE_FAULT_LIMIT)]}
+    why = str(CJ.stop_reason(loop))
+    ok("system cause" in why and "no look, run or spend was counted" in why,
+       "a judge that only dies stops at JUDGE_FAULT_LIMIT, as a system fault, never a spent look (%s)" % why[:90])
+    rel = dict(loop, coverage_releases=[{"at": "2026-11-18T01:00:00Z", "why": "x",
+                                         "judges_at": [r["judge"] for r in loop["coverage_rounds"]]}])
+    ok(CJ.stop_reason(rel) is None, "a release resets the system-fault count of the judge rounds")
+
+
 def main():
     try:
         import run_void as RV
@@ -410,6 +443,7 @@ def main():
         ok(RV.system_cause({"unit": "u", "status": "finished", "out": "OUT_OK", "result": "success"}) == ""
            and RV.system_cause(None) == "",
            "a run that wrote its result, or no record, has no system cause (could not look is not void)")
+        judge_rounds(CJ)
     finally:
         RL.read_result, DH.killed = real_read, real_killed
         for k, v in keep.items():
