@@ -11,14 +11,14 @@ on the same day for that mod. Spec §4.10: "A ledger plus old files still writte
   it agrees, or each disagreement is a named, explained difference (the Explosive Knockback compare at 872a7657e2: the
   journal says every in-game scene is UNRUN against 112 backfilled live rows; stage.json's `stage` is the Designer's inner
   step 5, a homonym; stage.json's blocked_on still names a refusal the lock lifted; 16 FIXED blind faults carry no judge verdict).
-- `stage.json`, `journal.md`, `version/stage_record.json` become generated views or move to `archive_pre_ledger/` read-only.
-- Every module writing them (designer_stage.py, coverage_judge.py, maturation*.py, maturation_now.py, concept_tree.py, ...)
+- `journal.md` and `version/stage_record.json` become generated views or move to `archive_pre_ledger/` read-only. `stage.json` is not in this cutover (DESIGN DECISION 2026-11-18 on this item): it stays the Designer stage machine's own state store and the mod ledger reads it, built by RIMMANDRAKE_KEEP_STAGE_JSON_DESIGNERS_LEDGER_READS_HOMONYM_NAMED.
+- Every module writing those two (measured 2026-11-18: maturation_autonomy.py, maturation_rescue.py, Utils/maturation_now.py)
   writes through `modledger append` instead, or is refused.
 
 ## verify
 
 Acceptance test: `python3 src/RimMandrake/rimflow/acceptance/modledger_cutover_accept.py ExplosiveKnockback GimmeSomeSlack FlowWorks`
-— expected `PASS 13/13`. Watched failing at filing on 6a171f08f2: `FAIL 12 of 13` (every old store hand-written; 8
+— expected `PASS 10/10` once `stage.json` leaves the test's list (it was 13/13 with it). Watched failing at filing on 6a171f08f2: `FAIL 12 of 13` (every old store hand-written; 8
 candidate writers outside modledger; only Explosive Knockback's ledger lint passed).
 
 ## criteria
