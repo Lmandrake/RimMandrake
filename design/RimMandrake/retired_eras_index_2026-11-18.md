@@ -34,7 +34,11 @@ A wisdom-bearing file was read before it went: any lesson it held that was not a
 (`src/RimMandrake/Utils/publish_tree_checks.json`). It fails on any tracked path, or any unmasked systemd user unit,
 whose name belongs to a retired era and is not allowed by a row of the two tables "Phase 2: renames" and "Kept on
 purpose" below. An allow row that matches nothing fails too. To keep something, add a row with its reason; to remove
-something, delete it and add a "Removed" row.
+something, delete it and add a "Removed" row. Since 2026-11-19 it also reads text (rule: `src/RimMandrake/rimflow/era_text.py`):
+an instruction file (CLAUDE.md, agent definitions, roles, SKILL.md files, seat files, the standing rulings, top-level
+`infrastructure/*.md`) must say on the line that a retired era or deleted module it names is past, and a record file
+(design doc, skill reference, lesson, fact) may instead open with the HISTORY head that
+`src/RimMandrake/Utils/era_history_mark.py --apply` writes (`design/INDEX.md` shows it as "📜 names a retired era").
 
 ## Removed
 
@@ -90,15 +94,15 @@ Old names inside live files (not paths, so the guard does not see them), for the
 
 - `src/RimMandrake/Utils/bridge_holder.py` `CODEX_SEATS`: the `CLAUDE_*` seats were the Claude Whittle workers; their
   ledger shards stay as history, so the names must keep replaying.
-- `./bridge foundry` and `set_agent_window.sh` still accept FOUNDRY; `model.bridge_identity` still accepts RELENTLESS
+- `set_agent_window.sh` refuses FOUNDRY and `./bridge foundry` is gone (2026-11-19); `model.bridge_identity` still accepts RELENTLESS
   for old `bridge` events; `cli.py` `RETIRED_SEATS` maps FOUNDRY to the Conductor's key (keep that mapping: old
   events name it).
 - `ops_watch.py` still reads the Relentless points (`c_relentless`, `rl_game_hold_idle`) and judges them retired;
-  `slot_allocator` and `slot_rules.json` keep a FOUNDRY seat key (`SLOTS_RENAME_FOUNDRY_KEY_RELENTLESS_READS_IT`).
+  `slot_allocator` and `slot_rules.json` keep a FOUNDRY seat key and a RELENTLESS key that "gets the whole machine total"
+  (`RIMMANDRAKE_RETIRE_FOUNDRY_SLOT_KEY_INDEX_NAMED_A_GHOST`; this index named it `SLOTS_RENAME_FOUNDRY_KEY_RELENTLESS_READS_IT`
+  before 2026-11-19, an item that never existed).
 - `src/RimMandrake/rimflow/live_retired.txt` and `src/RimMandrake/Utils/retired_loops_check.py` name the retired units on
   purpose: they keep them masked. Keep both.
-- `skills/using-rimflow/SKILL.md` uses FOUNDRY in two examples (`reassign --to FOUNDRY`, `next --seat FOUNDRY`); skills
-  are edited in curation sessions, so it is listed here, not edited.
 
 ## Kept on purpose
 
@@ -108,14 +112,15 @@ Old names inside live files (not paths, so the guard does not see them), for the
 
 ## Outside this repo
 
-Nothing outside the repo was changed by this item. What should go, for the Conductor:
+Nothing outside the repo was changed by the 2026-11-18 item; what moved on 2026-11-19 is under "Outside this repo:
+done". What remained, for the Conductor:
 
 - `~/.claude/skills/` links into MandrakeWorkflows: `artisan`, `artisan-head`, `artisan-judge`, `relentless-pipeline`,
   `whittle`. Done 2026-11-18 (below): the links stay, and RimMandrake sessions no longer see the skills.
 - Masked user units on Archmagi (`systemctl --user list-unit-files` shows them `masked`): `rm-relentless*`,
   `rm-artisan-now.*`, `rm-whittle-now.*`, `whittle-claude@.service`, `rm-pulse.service`. Keep the masks:
   `retired_loops_check.py` (deadman, every 15 min) alarms if one is unmasked. SteveDesktop's `whittle-claude@` mask
-  likewise (not checked from here).
+  likewise (read 2026-11-19 over ssh: masked, the only era unit there).
 - On disk, not in git: the Relentless store `/home/mandrake/rm/relentless/store` (read by live code: Phase 2), the clone
   pool `/home/mandrake/rm/relentless/clones` (live), the kept Ralph clone `/home/mandrake/rm/scratch/BENCH/ralph_flowworks`
   (ticket `RIMMANDRAKE_LAND_RALPH_FLOWWORKS_PIT_FEATURES`), `D:\ClaudeWork\rimmandrake\whittle_claude\`,
@@ -289,8 +294,8 @@ Left, in order:
 2. Done: `RIMMANDRAKE_RETIRE_CIRCLING_WATCH_ONLY_THE_DEAD_TICK_CALLED`. `circling.py` kept only `classify` and `_ts` (pulse/time_ledger read them; 341 lines went, its replay CLI with them; the rest went with time_ledger in step 4a); `run_store.Effects` lost `stop`, `circling_tree` and `transcripts`, which only `circling.watch` called; `run_rules.json` lost `same_failure_limit` and the eight `circling` keys only the watch read, keeping the four time_ledger reads.
 3. Text that still names a deleted module. Done: 25 alarm routes for kinds only the tick raised (measured with `alarm_census`: no live code raises them), the pre-push hook's lease fence, the masked unit copies `Utils/systemd/rm-store-ledger-diff.{service,timer}` (the host units stay masked: `retired_loops_check.py`), the `relentless_stage.py` mutants of `selftest_second_game_mutants.py`, the `_doc` of `item_exam.json` and `stage_dispute.json`; six more names joined the inventory batch. Done too: `run_rules.json` cut from 112 keys to 19 (the 93 the tick alone read went, with `circling.help_*` and `live.auto`; measured by quoting each key against every non-test file under `rimflow/`, `Utils/` and `.claude/hooks/`, then reading each word-collision hit by hand: `share`, `staffing`, `game`, `showings`, `stale_s`, `max_workers`, `proof_paths` are other things there). `selftest_run_rules_keys.py` (at the door) refuses a key no live file names. Two kept keys go with their tickets: `only_system_and_live` (running_now's panel) and `same_failure_limit` (`circling.watch`). `prove_relentless_s03_compare` joined the inventory batch. Left: the skills (`live-debugging-proof-harness`, `rimflow-operations`; curation sessions only) for `lightspeed_wire`, `relentless_game`, `relentless_live`, `relentless_live_round`, `relentless_reachfix`; and the bare word `relentless` (store paths, kept on purpose). Once a name has none, add it to the step-3 batch in `entrypoint_inventory.py`.
 4. Done: the sims, the v3 docs, `FOUNDRY.md`, both relentless_* docs, `RIMMANDRAKE_RETIRE_SETTER_ARBITER_SEAMS_EVERY_LAUNCH_REFUSED` (closed by another lane), `RIMMANDRAKE_RETIRE_LEASE_GUARD_TWENTY_FIVE_GHOST_LEASES` (bb0f483b3a) and the pulse package (4a, 4b).
-4a. Done: the pulse package's reach, measured with `era_reach.py --era-dir src/RimMandrake/Utils/pulse` (roots: every live importer, plus the scripts units run by path: `pulse.py update`, `streams.py collect`, `testing_metrics.py`). Before: 11 modules, 386 functions, 106 reached (89 once streams' panel renderer, reached only by its own `render` verb, counted dead). Deleted whole (no live importer): `agents_timeline.py`, `mission_page.py`, `time_ledger.py` with `time_ledger_replay/` (53 fixture files), `brief.py` (streams' panel took only its CSS) and their four selftests; with `time_ledger` went `rimflow/circling.py`, `selftest_circling.py` and `run_rules.json` `circling` (time_ledger was its only reader). Trimmed to what is reached: `pulse.py` 43 functions to 3 and a 10-line `main` (only `update` is run: rm-deploy-update), `pulse_core.py` 100 to 11 (the ledger readers and the owner-ask fold), `usage.py` 15 to 2 (`config`, `panel`), `streams.py` 53 to 36 (the panel renderer went; `collect`, `backfill`, `show` stay). `failreport.py` went: it appended to `~/.local/state/rm-dashboard/failures.jsonl`, which only the retired daemon read; winbuild, findings_judge.sh, rm-agent-improve and rm-selftests-nightly stop writing it. The testq steward still writes its `steve:lane` record there inline (its selftest reads it; nothing else does). `usage.json`, which `streams.budget` and `account_usage.py` read, has no writer since the daemon stopped (measured: the file is absent), so streams' budget measure reads UNMEASURED; left as it was.
-4b. Done: the pulse package's live part moved to `src/RimMandrake/Utils/ops_core/` as a cutover: `pulse.py` is `deploy_update.py` (verb `update`), `pulse_core.py` is `ops_ledger.py`, `selftest_pulse.py` is `selftest_ops_core.py`, `selftest_pulse_{deploy_on_ext4,sparse_dirs}.py` are `selftest_deploy_{on_ext4,sparse_dirs}.py`; `phone_push`, `streams`, `testing_metrics`, `usage` and their selftests keep their names. `rm-deploy-update.service` and `rm-streams-collect.service` run the new paths (repo copies and installed copies, the same sitting); the deploy checkout's sparse list holds `Utils/ops_core`. Removed with it: the `./pulse` launcher (only the retired dashboard verbs and `update` were behind it) and `design/RimMandrake/rimpulse_redesign_2026-10-23.md` (`git show 4b1c4a745c:design/RimMandrake/rimpulse_redesign_2026-10-23.md`). Kept on purpose, names live code and units read, not tree paths: the deploy checkout `/home/mandrake/rm/pulse-deploy` (ops_watch's `PULSE_DEPLOY`, `scratch_reap.py`, 66 tracked files measured 2026-11-18; a rename needs a fresh clone there, both units and ops_watch in one commit), its `.git/pulse_update_last_good` stamp (ops_watch `deploy_update_age`), the env names `RM_PULSE_STATE` and `RM_PULSE_DEPLOY`, and the state dir `~/.local/state/rm-dashboard/` (the steward's `failures.jsonl`, phone_push's `phone_push.json`). `skills/telemetry/references/history.md` still cites `$U/pulse/pulse.py:82` as history; skills are edited in curation sessions.
+4a. Done: the pulse package's reach, measured with `era_reach.py --era-dir src/RimMandrake/Utils/pulse` (roots: every live importer, plus the scripts units run by path: `pulse.py update`, `streams.py collect`, `testing_metrics.py`). Before: 11 modules, 386 functions, 106 reached (89 once streams' panel renderer, reached only by its own `render` verb, counted dead). Deleted whole (no live importer): `agents_timeline.py`, `mission_page.py`, `time_ledger.py` with `time_ledger_replay/` (53 fixture files), `brief.py` (streams' panel took only its CSS) and their four selftests; with `time_ledger` went `rimflow/circling.py`, `selftest_circling.py` and `run_rules.json` `circling` (time_ledger was its only reader). Trimmed to what is reached: `pulse.py` 43 functions to 3 and a 10-line `main` (only `update` is run: rm-deploy-update), `pulse_core.py` 100 to 11 (the ledger readers and the owner-ask fold), `usage.py` 15 to 2 (`config`, `panel`), `streams.py` 53 to 36 (the panel renderer went; `collect`, `backfill`, `show` stay). `failreport.py` went: it appended to `~/.local/state/rm-dashboard/failures.jsonl`, which only the retired daemon read; winbuild, findings_judge.sh, rm-agent-improve and rm-selftests-nightly stop writing it. The testq steward still writes its `steve:lane` record there inline (its selftest reads it; nothing else does). `usage.json`, which `streams.budget` and `account_usage.py` read, has no writer since the daemon stopped (it was present but last written 2026-11-03; moved out 2026-11-19), so streams' budget measure reads UNMEASURED (`RIMMANDRAKE_WIRE_STREAMS_GAME_STATE_OFF_A_FROZEN_SNAPSHOT`).
+4b. Done: the pulse package's live part moved to `src/RimMandrake/Utils/ops_core/` as a cutover: `pulse.py` is `deploy_update.py` (verb `update`), `pulse_core.py` is `ops_ledger.py`, `selftest_pulse.py` is `selftest_ops_core.py`, `selftest_pulse_{deploy_on_ext4,sparse_dirs}.py` are `selftest_deploy_{on_ext4,sparse_dirs}.py`; `phone_push`, `streams`, `testing_metrics`, `usage` and their selftests keep their names. `rm-deploy-update.service` and `rm-streams-collect.service` run the new paths (repo copies and installed copies, the same sitting); the deploy checkout's sparse list holds `Utils/ops_core`. Removed with it: the `./pulse` launcher (only the retired dashboard verbs and `update` were behind it) and `design/RimMandrake/rimpulse_redesign_2026-10-23.md` (`git show 4b1c4a745c:design/RimMandrake/rimpulse_redesign_2026-10-23.md`). Kept on purpose, names live code and units read, not tree paths: the deploy checkout `/home/mandrake/rm/pulse-deploy` (ops_watch's `PULSE_DEPLOY`, `scratch_reap.py`, 66 tracked files measured 2026-11-18; a rename needs a fresh clone there, both units and ops_watch in one commit), its `.git/pulse_update_last_good` stamp (ops_watch `deploy_update_age`), the env names `RM_PULSE_STATE` and `RM_PULSE_DEPLOY`, and the state dir `~/.local/state/rm-dashboard/` (the steward's `failures.jsonl`, phone_push's `phone_push.json`). `skills/telemetry/references/history.md` still cites `$U/pulse/pulse.py:82` as history, under its HISTORY head.
 
 Filed on the way: `RIMMANDRAKE_WIRE_WRAPUP_RESTORE_ORPHANED_BY_RETIRED_TICK` (nothing calls `wrapup restore` since the tick) and `RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL` (`incident.receiver_problem` still reads the retired pool as draining BENCH offline alarms), each with its acceptance test.
 
@@ -306,6 +311,50 @@ it) and `/home/mandrake/rm/relentless/clones` (the detached-helper pool, `detach
 live in it). A later rename needs: no detached run alive, the pool's clones moved or reaped, `RM_DETACHED_POOL` and
 `DEFAULT_ROOT` changed in one commit, and the 128 tracked files outside the ledger, conversations and replay fixtures that spell `rm/relentless` (measured 2026-11-18) updated.
 
+
+## State, 2026-11-19 (BENCH, item `RIMMANDRAKE_FINISH_RETIRED_ERA_REMAINS_TWENTY_ONE_NO_TICKETS`)
+
+The 2026-11-19 census (`D:\ClaudeWork\rimmandrake\conductor\retired_era_remains_20261119.md`) found 21 remains with no
+ticket, and 11 places that told a fresh agent to use a retired thing, while the guard read green. What was done:
+
+- **Lines that sent an agent to a deleted thing** (`ed3b6ca7a5`): `rm-builder.md`, `rm-judge.md`, `rm-consult.md` (the
+  Relentless Pipeline and `relentless.py`, and a "Relentless freeze" no live ruling backs); `BUILD.md`, `CHECK.md`,
+  `DECIDE.md` deleted; `./bridge foundry` removed; the proof-harness skill now names `proof_lint.py`/`proof_lines.py`;
+  11 role files, `standing_rulings.md` (the `relentless.py` review exception deleted), `delegation_policy.md`,
+  `GIT_WORKFLOW.md`, `GAME_STATE_WORKFLOW.md`, `Agent_Policy.md`, both facts trap files and 20 skill files rewritten to
+  what runs today. The installed `rm-dispatcher.service` comment now matches its repo copy.
+- **Dead things** (`d55f855dbd`): the note-box hook (wired on every tool call; nothing sets `RELENTLESS_GEN`) with its
+  module and test, and the telemetry exporter's RimPulse source. Outside the repo, nothing deleted: 87 era-named entries
+  of `D:\ClaudeWork\rimmandrake\` and 12 files of `~/.local/state/rm-dashboard/` MOVED to
+  `D:\ClaudeWork\retired-trees\rimmandrake_eras_20261119\` (`MANIFEST.md`, `MANIFEST.tsv`).
+- **Wisdom marked as history** (`2fe7aae28d`): 297 design docs, 49 lessons, 7 facts and 1 skill reference carry the
+  HISTORY head; core live docs (`maturation_pipeline.md`, `biome_mod_architecture.md`, `STRUCTURE.md`,
+  `VALIDATION_LADDER.md` and others) were fixed line by line instead; `lessons.py` reads past the head and no longer reads
+  the Whittle loop's `WC_ITEM`.
+- **The gate reads text** (`fbdf50a5b2`): watched red on the pre-fix tree, 2011 era text lines
+  (`D:\ClaudeWork\rimmandrake\conductor\era_finish_20261119\gate_prefix_run.txt`); green after, 1782 files read.
+- **Settled from "could not tell"**: `rm-dispatcher.service` is live (static, started by the live wakes; it ran
+  2026-11-19 06:31 PST; its timer is disabled). The Auditor and Innovator are scheduled roles in
+  `dispatcher_schedule.json`, both `enabled: false`. The store's `transcripts` (written by `scratch_clone.py`) and
+  `store/evidence_shadow.jsonl` (written by `rimflow close`) are live.
+
+Left, one ticket each, every one with its acceptance test watched failing:
+
+| ticket | what |
+|---|---|
+| `RIMMANDRAKE_RENAME_RUN_STORE_AND_POOL_OFF_TICK_PATH` | the store and pool under `/home/mandrake/rm/relentless`, and the `RELENTLESS_*` env names |
+| `RIMMANDRAKE_RETIRE_FOUNDRY_SLOT_KEY_INDEX_NAMED_A_GHOST` | the allocator's RELENTLESS and FOUNDRY keys and the FOUNDRY seat clone lists |
+| `RIMMANDRAKE_RENAME_FLEET_STATES_READER_STILL_NAMED_FOR_TICK` | `fleet_mods.relentless_states` |
+| `RIMMANDRAKE_RENAME_DEPLOY_CHECKOUT_OFF_THE_PULSE_NAME` | `pulse-deploy`, `RM_PULSE_*`, `rm-dashboard` |
+| `RIMMANDRAKE_RENAME_SEVEN_WORK_DIRS_STILL_NAMED_FOR_LOOPS` | seven `D:\ClaudeWork\rimmandrake\` dirs live code reads |
+| `RIMMANDRAKE_SWEEP_SELFTEST_TEXT_STILL_NAMING_THE_OLD_TICK` | 56 selftests naming the tick in text |
+| `RIMMANDRAKE_PROBE_STORE_LEFTOVERS_A_WEEK_FOR_ANY_READER` | 8 store leftovers last written 2026-11-04 to 11-06 |
+| `RIMMANDRAKE_SWEEP_STEVEDESKTOP_CLONES_CARRYING_LOOP_TREES` | SteveDesktop clones with `ralph/` and `whittle/` trees |
+| `RIMMANDRAKE_WIRE_HEALTH_VERDICT_READER_NOBODY_OBEYS_IT` | Operations' health verdict, whose one reader was the tick |
+| `RIMMANDRAKE_FIX_LIVE_PANEL_COUNTS_A_LOG_NOBODY_WRITES` | `running_now`'s Archmagi panel counting a dead run log as 0 |
+| `RIMMANDRAKE_WIRE_STREAMS_GAME_STATE_OFF_A_FROZEN_SNAPSHOT` | `streams.py` game state and budget from frozen RimPulse files |
+| `RIMMANDRAKE_ADD_AUTHORITY_LINE_NEW_CODE_REVIEW_ROLE_MISSED` | found on the way: `roles/code_review.md` lacks the authority line (red on origin) |
+
 ## UNMEASURED
 
 What this run could not settle, and what would settle it:
@@ -315,7 +364,8 @@ What this run could not settle, and what would settle it:
   `MODCHECK_SKIP_DEPLOY`.
 - Whether `DIRTY_CODE_REVIEW_LOOP_CONTINUE_NOT_DONE` (FOUNDRY's code-review loop over ~140 dirty C# files) should be
   re-filed in today's words: left open; `code_review_status.py` still measures the dirt.
-- SteveDesktop was not read (a soak is running there).
+- SteveDesktop: read 2026-11-19 (units above; its old clones still carry `ralph/` and `whittle/` trees:
+  `RIMMANDRAKE_SWEEP_STEVEDESKTOP_CLONES_CARRYING_LOOP_TREES`).
 
 ## Tickets
 
