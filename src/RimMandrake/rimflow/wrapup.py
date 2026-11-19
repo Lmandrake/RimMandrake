@@ -70,7 +70,7 @@ DEFAULT_DIR_WINDOWS = "D:\\ClaudeWork\\rimmandrake\\wrapup"     # a python.exe h
 #  - an item the Relentless supervisor started (relentless.py ledger_start writes this why, under the BENCH key it
 #    shares with the Conductor) is carried by the supervisor, whichever window's session happened to span it.
 SEAT_CLONES_DEFAULT = "/home/mandrake/rm/bench"     # = mirror.SEAT_CLONES
-RELENTLESS_START_WHY = "relentless supervisor takes the item"                                # = relentless.ledger_start
+RELENTLESS_START_WHY = "relentless supervisor takes the item"       # the retired relentless.ledger_start (old events)
 DEBT_AGE_S = 6 * 3600       # a debt older than this stands whoever owes it: an owner no wrap-up can name still shows
 # RELAPSE_WRAPUP_FIX_DIED_TWICE: every relapse of the wrap-up alarm (2026-11-05/06) was setting debts owed to a game
 # process that had since exited, voided by hand each time. Every debt is in-process state: DebugSettings, the loaded

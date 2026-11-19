@@ -26,7 +26,6 @@ import doorbell  # noqa: E402
 import incident as IN  # noqa: E402
 import ops_watch as OW  # noqa: E402
 import phone_push as PP  # noqa: E402
-import relentless as RN  # noqa: E402
 import role_launch as RL  # noqa: E402
 import pulse_core as PC  # noqa: E402
 
@@ -628,32 +627,16 @@ def test_alarms_reach_ledger():
     finally:
         D.HB.publish = real
     check("a rig's tick never computes the machine's real helper budget", not called, called)
-    r = Rig("relentless")
-    s = RN.Store(r.root + "/rn")
-    fx = RN.Effects(dict(RN.rules(), ops_watch_dir=r.root + "/ops"), s)
-    s.on_alarm = fx.alarm_signal
-    for rec in ({"kind": "jam", "why": "w"}, {"kind": "jam", "why": "again"}, {"kind": "step_raised", "why": "w"},
-                {"kind": "breaker_emergency", "why": "w"}):
-        s.journal(dict(rec, do="alarm", at="t"))
-    s.journal({"do": "enrol", "kind": "jam"})
-    check("relentless alarms join the ledger, a repeat inside the limit does not, breaker_emergency has its own row",
-          [x.get("kind") for x in IN.read_rows()] == ["jam", "step_raised"], IN.read_rows())
-    check("relentless's journalled alarms are the real sites: the journal keeps all four",
-          open(s.p("journal.jsonl")).read().count('"do": "alarm"') == 4)
-    r.tick(T0 + 60)
-    check("they open the work_belt incident", any(i["cause"] == "work_belt" for i in r.inc()), r.inc())
 
 
 def test_routes():
     found, unread, files = source_kinds()
     check("no alarm site in the tree is unreadable by the census", not unread, unread)
-    named = {"publish:index_lock", "publish:stuck", "budget:failed", "dry:live_runs_unsupervised", "breaker_emergency", "jam",
-             "understaffed", "books_stale", "step_raised", "lease_raised", "quarantine", "dead:x",
-             "relentless_attention_day_spend_limit", "relentless_attention_item_spend_limit:x", "queues.x.stalled_min",
-             "queues.x.pending", "queues.blind", "relentless.breaker_same_cause", "selftest_false_hit", "testing.red_x"}
-    check("the census sees the variable and dict forms, relentless", named <= found, sorted(named - found))
+    named = {"publish:index_lock", "publish:stuck", "budget:failed", "dry:live_runs_unsupervised", "dead:x",
+             "queues.x.stalled_min", "queues.x.pending", "queues.blind", "selftest_false_hit", "testing.red_x"}
+    check("the census sees the variable and dict forms", named <= found, sorted(named - found))
     check("the census walked every module that raises one", {os.path.basename(f) for f in files} >= {
-        "dispatcher.py", "relentless.py", "helper_budget.py", "role_launch.py", "signal_watch.py", "login_watch.py",
+        "dispatcher.py", "helper_budget.py", "role_launch.py", "signal_watch.py", "login_watch.py",
         "seat_restart.py"}, files)
     qd = os.path.join(TMP, "census_queue")
     os.makedirs(qd, exist_ok=True)
@@ -669,8 +652,7 @@ def test_routes():
     kinds = found | {t["key"].replace("*", "x") for t in RULES["targets"] if t.get("alarm")} | set(OW.ranges_of(RULES))
     missing = [k for k in sorted(kinds) if IN.route_of(TABLE, k) is None]
     check("every alarm kind is in the routing table", not missing, missing)
-    for kind in ("dead:x", "publish:stuck", "budget:failed", "jam", "relentless_attention_item_spend_limit:x",
-                 "relentless_attention_day_spend_limit", "queues.x.stalled_min", "queues.x.pending", "process.x"):
+    for kind in ("dead:x", "publish:stuck", "budget:failed", "queues.x.stalled_min", "queues.x.pending", "process.x"):
         t2 = dict(TABLE, routes=[x for x in TABLE["routes"] if not fnmatch.fnmatchcase(kind, x["match"])])
         check("%s dropped from the table is seen missing" % kind, kind in [k for k in sorted(kinds) if IN.route_of(t2, k) is None])
     seen = [x["match"] for x in TABLE["routes"]]

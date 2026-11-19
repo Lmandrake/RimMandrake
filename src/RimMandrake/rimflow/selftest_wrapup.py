@@ -22,7 +22,7 @@
       another process; debug_settings and difficulty_tune likewise; a get, a no-op set, a failed set owe nothing
   W17 WRAPUP_SEAT_CLONE_SILENCE_FALSE_ROWS: a seat clone (dirty, shared by every window of its seat) is carried, and
       an already-filed seat-clone row stops standing so sweep clears it; a claim whose latest start is the Relentless
-      supervisor's (relentless.py ledger_start's why, checked against its source) is not the session's
+      supervisor's (the retired relentless.py ledger_start's why, kept for its old events) is not the session's
 """
 import glob
 import json
@@ -560,9 +560,8 @@ try:
     since = 1793750400      # 2026-11-04T00:00:00Z
     got = [i for i, _ in wrapup.claims_of(evs, states, "BENCH", since)]
     check(got == ["MINE", "THEN"], "W17 the supervisor's start is carried; a window's own claim is filed: %r" % got)
-    with open(os.path.join(HERE, "relentless.py")) as f:
-        rsrc = f.read()
-    check('"start", item, "--why", "%s"' % W in rsrc, "W17 relentless.ledger_start still writes RELENTLESS_START_WHY")
+    check(W == "relentless supervisor takes the item",
+          "W17 RELENTLESS_START_WHY is the retired supervisor's exact start why (its old ledger events still replay)")
 finally:
     shutil.rmtree(TMP, ignore_errors=True)
 

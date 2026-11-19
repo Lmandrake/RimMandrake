@@ -233,8 +233,6 @@ r = run(mc, "review", "NoSuchMod", *BARE)
 check(r.returncode != 0 and CA.RULING in r.stderr, "modcheck review refuses a bare reason and names the route")
 check("--per-ruling" in run(mc, "validate", "-h").stdout, "modcheck validate offers the route")
 
-check("--per-ruling" in run(ROOT / "src/RimMandrake/rimflow/relentless.py", "unhold", "-h").stdout, "relentless unhold parses the route")
-
 check("CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM" in (ROOT / "src/RimMandrake/rimflow/model.py").read_text(encoding="utf-8"),
       "the seat refusal names the Conductor's route")
 
@@ -246,17 +244,17 @@ for verb in ("verify", "claim", "start"):
     ev = {"event": verb, "seat": "BENCH", "id": "I0"}
     check(M._who_refusal(ev, _it("OWNER")) is None, "BENCH may `%s` an item owned by OWNER" % verb)
     check(M._who_refusal(ev, _it("DESIGNER")) is not None, "BENCH still may not `%s` another seat's item" % verb)
-import run_store as RL  # noqa: E402
+import run_store as RS  # noqa: E402
 _leased = types.SimpleNamespace(load=lambda item: {"status": "running", "gen": 9})
-check(RL.guard("close", "I0", ["--per-ruling", CA.RULING, "--why", "done"], env={}, store=_leased) is None,
-      "relentless guard passes the Conductor's ruling with its text")
-check(RL.guard("close", "I0", ["--per-ruling", CA.RULING], env={}, store=_leased) is not None,
-      "relentless guard refuses the ruling without the Conductor's text")
-check(RL.guard("close", "I0", ["--why", "done"], env={}, store=_leased) is not None,
-      "relentless guard refuses a bare reason")
+check(RS.guard("close", "I0", ["--per-ruling", CA.RULING, "--why", "done"], env={}, store=_leased) is None,
+      "run_store guard passes the Conductor's ruling with its text")
+check(RS.guard("close", "I0", ["--per-ruling", CA.RULING], env={}, store=_leased) is not None,
+      "run_store guard refuses the ruling without the Conductor's text")
+check(RS.guard("close", "I0", ["--why", "done"], env={}, store=_leased) is not None,
+      "run_store guard refuses a bare reason")
 
 # The function-level census. The parser census above sees only argparse flags; the two gates that escaped (a refusal of
-# BENCH on an item owned by OWNER; relentless.guard reading argv for --owner-said) sat in plain functions. So: every
+# BENCH on an item owned by OWNER; the lease guard reading argv for --owner-said) sat in plain functions. So: every
 # function, in every tracked tool, that CONDITIONS on his words (owner_said / ownerSaid / "--owner-said" in an argv
 # test) must also mention the Conductor's route (per_ruling, perRuling, --per-ruling, conductor_authority, CA.) in the
 # same function; every file that COMPARES a seat or an item owner to "OWNER" must mention it somewhere in the file.
