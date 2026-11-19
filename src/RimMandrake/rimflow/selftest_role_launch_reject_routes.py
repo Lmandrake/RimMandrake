@@ -228,9 +228,22 @@ def test_void_system():
           "a chain request carries its chain key and stage, so its launched unit is recorded against it: %r" % req)
 
 
+def test_parent_unit():
+    """RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS: a run-now asked from a detached run carries its
+    unit as `parent` into the launch, whose unit env names it (RM_PARENT_UNIT) for the pre-launch judge."""
+    req = RL.with_parent({"by": "BENCH"}, {"RM_DETACHED_UNIT": "rm-detached-bench-x-1"})
+    check(req.get("parent") == "rm-detached-bench-x-1", "a run-now from a detached run names its parent: %r" % req)
+    check("parent" not in RL.with_parent({"by": "BENCH"}, {}), "a run-now from a window names none")
+    role = RL.launch_role(dict(designer_cfg(), clone="/tmp/c", seat="DESIGNER"),
+                          {"run_now": req, "concept": C1, "mode": "run"})
+    check(role.get("parent_unit") == "rm-detached-bench-x-1", "the launched role carries it: %r" % role.get("parent_unit"))
+    argv = RL.launch_argv(role, "rm-role-designer-7", "msg", "/tmp/o", "/tmp/e", "claude")
+    check("RM_PARENT_UNIT=rm-detached-bench-x-1" in argv, "the unit's env names it for the pre-launch judge")
+
+
 TESTS = (test_classifier, test_module_to_builder, test_check_and_bar_alarm_stands, test_environment_to_cause_book,
          test_unknown_and_mixed_to_builder, test_second_identical_not_looped, test_real_seams,
-         test_void_system)
+         test_void_system, test_parent_unit)
 
 
 def main():

@@ -287,7 +287,14 @@ def main():
                   CJ.stop_reason(st4, d4) is None and len(CJ.rounds(st4, d4, voids=True)) == 2
                   and CJ.rounds(st4, d4) == [], (CJ.stop_reason(st4, d4), len(CJ.rounds(st4, d4, voids=True))))
             first_look(d4)
-            rec, _ = CJ.run(d4, r4, dies([]))
+            os.environ["RM_PARENT_UNIT"] = "rm-detached-bench-parent-1"
+            try:
+                rec, _ = CJ.run(d4, r4, dies([]))
+            finally:
+                os.environ.pop("RM_PARENT_UNIT", None)
+            check("a judge round records the detached run that launched its Designer run (RM_PARENT_UNIT)",
+                  (DS.load_state(d4).get("coverage_rounds") or [{}])[-1].get("parent") == "rm-detached-bench-parent-1",
+                  (DS.load_state(d4).get("coverage_rounds") or [{}])[-1].get("parent"))
             check("a first call that dies is a void_system round: error_kind system",
                   rec.get("error_kind") == "system" and CJ.void_cause(rec), (rec.get("error"), rec.get("error_kind")))
     finally:

@@ -1868,8 +1868,9 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 # a launch that never happened (the except below gives the slot back)
                                 # without a second fetch: decide's preview fetched origin this tick (2 git fetches,
                                 # ~1.2 s each, in the beat: RIMMANDRAKE_FIT_DISPATCH_TICK_IN_ITS_BEAT)
+                                parent = (a.get("run_now") or {}).get("parent")    # RL.with_parent
                                 fx.get("stage_open", RL.stage_open)(a["concept"], a["unit"], a["budget"], commit=True,
-                                                                    sync=False)
+                                                                    sync=False, **({"parent": parent} if parent else {}))
                                 if role.get("runner") == "codex":
                                     RL.stage_runner(a["concept"], a["unit"], "codex")
                             out_p, err_p = RL.run_paths(root, a["unit"])
@@ -1883,6 +1884,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                        item=a["ticket"], seat=seat, runner=role.get("runner", "claude"),
                                        run_max_s=a.get("run_max_s"), state="running", tokens=None,
                                        **({"concept": a["concept"]} if a.get("concept") else {}),
+                                       **({"parent": a["run_now"]["parent"]} if (a.get("run_now") or {}).get("parent")
+                                          else {}),
                                        # a resume (role_launch.resume_due): its chain, so a resumed death counts on
                                        **({"resume_of": a["resume_of"], "resume_n": a.get("resume_n"),
                                            "resume_error": a.get("resume_error")}

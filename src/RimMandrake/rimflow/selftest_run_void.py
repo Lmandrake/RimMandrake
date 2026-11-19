@@ -240,6 +240,32 @@ def pilot_void(RV, tmp):
     ok(bad and "unknown run" in bad, "a verify run the ledger does not hold is refused by name")
 
 
+def parent_children(RV, tmp):
+    """A void's children are the Designer runs and judges its run launched (their recorded `parent`), never another
+    run's that overlapped it on the same concept; an entry with no parent recorded (written before) goes by time."""
+    root = os.path.join(tmp, "pc")
+    d = os.path.join(root, "design", "concepts", "Fake")
+    os.makedirs(d)
+    P1, P2 = "rm-detached-bench-a-1", "rm-detached-bench-b-2"
+    st = {"stage": 5, "coverage_rounds": [
+        {"judge": "rm-coverage-judge-1", "at": "2026-11-18T18:05:00Z", "verdict": "covered", "parent": P1},
+        {"judge": "rm-coverage-judge-2", "at": "2026-11-18T18:06:00Z", "verdict": "covered", "parent": P2},
+        {"judge": "rm-coverage-judge-3", "at": "2026-11-18T18:07:00Z", "verdict": "covered"},
+        {"judge": "rm-coverage-judge-4", "at": "2026-11-18T20:00:00Z", "verdict": "covered", "parent": P1}],
+        "history": [{"at": "2026-11-18T18:04:00Z", "stage": 5, "what": "open", "parent": P2,
+                     "why": "run rm-role-designer-9, stage 5, budget 10"}]}
+    with open(os.path.join(d, "stage.json"), "w") as f:
+        json.dump(st, f)
+    t0 = RV.parse_time("2026-11-18T18:00:00Z")
+    kids = RV.children(root, "Fake", {"unit": P1, "at": t0, "ended": t0 + 1800})
+    ok(kids == ["rm-coverage-judge-1", "rm-coverage-judge-3", "rm-coverage-judge-4"],
+       "children by parent: its own judges (one queued past its end too), an old parentless one by time, never the "
+       "overlapping run's (%s)" % kids)
+    kids2 = RV.children(root, "Fake", {"unit": P2, "at": t0, "ended": t0 + 1800})
+    ok(kids2 == ["rm-coverage-judge-2", "rm-coverage-judge-3", "rm-role-designer-9"],
+       "the other run's children are its own (%s)" % kids2)
+
+
 def main():
     try:
         import run_void as RV
@@ -536,6 +562,7 @@ def main():
         release_back(RV, MD, record)
         designer_void(tmp)
         pilot_void(RV, tmp)
+        parent_children(RV, tmp)
     finally:
         RL.read_result, DH.killed = real_read, real_killed
         for k, v in keep.items():

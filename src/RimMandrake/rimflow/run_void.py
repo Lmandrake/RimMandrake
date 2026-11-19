@@ -179,6 +179,24 @@ def stage_runs(st):
     return out
 
 
+def stage_parents(st):
+    """-> {unit: the detached run that launched it, or None when none was recorded} for the runs stage_runs names: a
+    coverage round's and a result's `parent`, and the `parent` on the history row that opened a Designer run
+    (role_launch carries RM_DETACHED_UNIT from the run-now request into both)."""
+    out = {}
+    for r in st.get("coverage_rounds") or []:
+        if isinstance(r, dict) and r.get("judge"):
+            out[r["judge"]] = r.get("parent") or None
+    for r in st.get("results") or []:
+        if isinstance(r, dict) and r.get("run") and (r.get("parent") or r["run"] not in out):
+            out[r["run"]] = r.get("parent") or None
+    for h in st.get("history") or []:
+        m = re.match(r"run (\S+?),? ", str((h or {}).get("why") or "")) if isinstance(h, dict) else None
+        if m and h.get("what") == "open" and (h.get("parent") or m.group(1) not in out):
+            out[m.group(1)] = h.get("parent") or None
+    return out
+
+
 def concept_dirs(root):
     d = os.path.join(root, "design", "concepts")
     try:
@@ -197,9 +215,11 @@ def _raw_stage(d):
 
 
 def children(root, mod, rec):
-    """-> the Designer runs and coverage judges a detached run started on MOD's concept: those that STARTED while it
-    was live (its record's at to its end; no slack after, so a run started once it ended is never taken). No launch
-    records its parent yet, so this is by time on the one concept; `void` prints every unit it takes."""
+    """-> the Designer runs and coverage judges a detached run started on MOD's concept: every one whose recorded
+    `parent` is its unit, whenever it started; and, for an entry with no parent recorded (written before launches
+    recorded one), those that STARTED while it was live (its record's at to its end; no slack after). An entry another
+    run launched is never taken, however it overlaps (Codex review of 5070199008, point 10). `void` prints every unit
+    it takes."""
     t0 = rec.get("at")
     t1 = next((rec[k] for k in ("ended", "returned") if isinstance(rec.get(k), (int, float))), None)
     if not isinstance(t0, (int, float)) or not mod:
@@ -207,11 +227,14 @@ def children(root, mod, rec):
     t1 = t1 if t1 is not None else time.time()
     st = _raw_stage(os.path.join(root, "design", "concepts", mod)) or {}
     # a voided stage file still names its moved runs: they are children too (a second void finds the same set)
-    runs = dict(stage_runs(st))
+    runs, par = dict(stage_runs(st)), dict(stage_parents(st))
     for m in ((st.get("voided") or {}).get("moved") or []):
-        runs.update(stage_runs({m["field"]: [m["entry"]]}) if m.get("field") in ("coverage_rounds", "results",
-                                                                                     "history") else {})
-    return sorted(u for u, at in runs.items() if at is not None and t0 <= at <= t1)
+        one = {m["field"]: [m["entry"]]} if m.get("field") in ("coverage_rounds", "results", "history") else {}
+        runs.update(stage_runs(one))
+        par.update({u: p for u, p in stage_parents(one).items() if p or u not in par})
+    me = rec.get("unit")
+    return sorted(u for u, at in runs.items() if (me and par.get(u) == me) or (
+        not par.get(u) and at is not None and t0 <= at <= t1))
 
 
 VERIFY_RUN = re.compile(r"^(?P<item>[A-Z0-9_]+)/run-\d+@.+$")    # model.Run.name: a Test Pilot verify run

@@ -1706,7 +1706,7 @@ def remaining(st):
     return b["cap"] - b["spent"]
 
 
-def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True):
+def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True, parent=None):
     """-> (packet text, this run's budget). Refuses (Refused) when a scene's
     recovery is open, the concept is locked, or it waits on him or a dependency. commit=False is the launcher's
     preview (its decide step): the same checks and packet, nothing written."""
@@ -1761,6 +1761,8 @@ def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True):
     if st.get("status") == "waiting_owner":
         st["status"] = "ready"
     hist(st, "open", "run %s, stage %d, budget %d" % (run, st["stage"], budget))
+    if parent:      # the detached run that asked for it (role_launch.with_parent): run_void.children reads it
+        st["running"]["parent"] = st["history"][-1]["parent"] = parent
     # built before the run is saved: a packet that raises leaves no run that never launched to be charged at the next
     # open (RIMMANDRAKE_BUILD_PACKET_BEFORE_SAVING_OPEN_RUN_PHANTOM_CHARGE)
     text = packet(d, st, hashes, budget, why, retries, manifest, repo)
@@ -2311,8 +2313,8 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
                             "reopens stage %d" % (s_from, ", ".join(moved), s_from))
     st["running"] = None
     if errs:
-        st["results"].append({"stage": st["stage"], "outcome": "rejected", "run": run, "at": now_iso(),
-                              "why": errs[:20]})
+        st["results"].append(dict({"stage": st["stage"], "outcome": "rejected", "run": run, "at": now_iso(),
+                                   "why": errs[:20]}, **({"parent": r["parent"]} if r.get("parent") else {})))
         hist(st, "retry", "run %s result rejected: %s" % (run, "; ".join(errs[:3])))
         if os.path.exists(os.path.join(d, "result.json")):
             os.replace(os.path.join(d, "result.json"), os.path.join(d, "result.%s.rejected.json" % safe(run)))
@@ -2321,6 +2323,8 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
     out, stage = res["outcome"], st["stage"]
     entry = {"stage": stage, "outcome": out, "run": run, "at": now_iso(), "inputs": inputs(d, st, repo),
              "owner_uncited": owner_uncited(repo, st.get("item"), d), "manifest": r["manifest"]}
+    if r.get("parent"):
+        entry["parent"] = r["parent"]
     # RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED: an accepted stage is a pin, so it records its anchor
     # too. These bytes land in a commit at or after this HEAD (land_state commits after this), so the window
     # [HEAD, HEAD-then] starts at the landing of exactly these bytes instead of at a later revert to them.

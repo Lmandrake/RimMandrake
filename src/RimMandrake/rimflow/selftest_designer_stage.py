@@ -177,8 +177,12 @@ def main():
 
         # ---- manifest and packets
         st = DS.load_state(d)
-        text, budget = DS.open_run(d, "run0", repo=repo.root)
+        text, budget = DS.open_run(d, "run0", repo=repo.root, parent="rm-detached-bench-parent-1")
         st = DS.load_state(d)
+        check("parent: the run's launching detached unit is recorded on its running entry and its open row",
+              st["running"].get("parent") == "rm-detached-bench-parent-1" and any(
+                  h.get("what") == "open" and h.get("parent") == "rm-detached-bench-parent-1" for h in st["history"]),
+              st["running"])
         check("packet: stage 0 injects core, grounding and scene contract by manifest, hashed into stage.json",
               set(st["running"]["manifest"]) == {"designer.md", "designer_grounding.md", "designer_scene_contract.md"}
               and "=== designer_grounding.md" in text and "=== designer_dialogue.md" not in text, st["running"])
@@ -187,6 +191,8 @@ def main():
         # ---- result protocol: a closing message is not a result
         ok, errs = DS.close_run(d, "run0", 5000, repo=repo.root)
         st = DS.load_state(d)
+        check("parent: the rejected result names it too", st["results"][-1].get("parent") == "rm-detached-bench-parent-1",
+              st["results"][-1])
         check("no result.json: rejected, stage stays 0, the run is charged", not ok and st["stage"] == 0
               and st["budget"]["spent"] == 5000 and "no result.json" in errs[0], (ok, errs, st["stage"]))
 

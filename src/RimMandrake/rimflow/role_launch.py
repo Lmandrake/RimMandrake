@@ -2218,6 +2218,14 @@ def run_now_request(sch, a, now):
                 **({"runner": selected} if selected else {}), **({"concept": concept} if concept else {}))
 
 
+def with_parent(req, env):
+    """Pure. A run-now asked from inside a detached run carries that run's unit as `parent` (RM_DETACHED_UNIT): the
+    launch records it on the run and in stage.json, so a void of the detached run takes exactly the Designer runs and
+    judges it launched (run_void.children; RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS)."""
+    p = str((env or {}).get("RM_DETACHED_UNIT") or "").strip()
+    return dict(req, parent=p) if p else req
+
+
 def run_now_job(cfg, req, now):
     """Pure. The due job for a run-now request: no slot (no slot gate, no after_role wait, no event cursor), its
     mode's cap, no pre-launch steps."""
@@ -2290,13 +2298,14 @@ def judge_sync(concept, timeout=45, repos=None):
     return notes
 
 
-def stage_open(concept, unit, budget, commit=False, sync=True):
+def stage_open(concept, unit, budget, commit=False, sync=True, parent=None):
     """designer_stage.open_run: (packet, run budget) or raises. decide previews (commit False, nothing written);
     execute commits just before systemd-run (DESIGNER_STAGES_REBUILD_LAUNCHER_HOLDS_LEASH). Fetches first (judge_sync)."""
     import designer_stage as DS
     notes = judge_sync(concept) if sync else []
     try:
-        return DS.open_run(concept, unit, budget or None, repo=DS.REPO, commit=commit)
+        return DS.open_run(concept, unit, budget or None, repo=DS.REPO, commit=commit,
+                           **({"parent": parent} if parent else {}))
     except DS.Refused as e:
         if notes:
             raise DS.Refused("%s (judged without a fresh origin: %s)" % (e, "; ".join(notes)))
@@ -3181,6 +3190,8 @@ def launch_role(role, a):
         out["designer_dir"] = a["concept"]
     if a.get("pre_launch"):
         out["pre_launch"] = a["pre_launch"]
+    if (a.get("run_now") or {}).get("parent"):     # the unit env names it for the pre-launch judge (RM_PARENT_UNIT)
+        out["parent_unit"] = a["run_now"]["parent"]
     return out
 
 
@@ -3386,7 +3397,9 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
             "--setenv", "RM_ROLE_UNIT=" + unit] + (
             # a Designer (Claude) stage run: .claude/hooks/role_result_before_stop.py checks result.json before it ends
             ["--setenv", "RM_DESIGNER_DIR=" + role["designer_dir"]] if role.get("designer_dir") and selected == "claude"
-            else []) + [
+            else []) + (
+            # the detached run that asked for this run: the coverage judge in its pre-launch records it (with_parent)
+            ["--setenv", "RM_PARENT_UNIT=" + role["parent_unit"]] if role.get("parent_unit") else []) + [
             # the run's own wall-time bound, independent of the Dispatcher (review r2 #2): claude_bounded sets it on
             # the scope (RuntimeMaxSec, TERM, then KILL after SCOPE_STOP_S), and the unit gets the same bound; so a
             # run is ended even if no tick ever supervises it again (timer off, dry-run root, unreadable state)
@@ -3731,6 +3744,7 @@ def main(argv=None):
                                         "concept": a.concept, "runner": a.runner}, now)
             if a.covers_slot:
                 req["covers_slot"] = True
+            req = with_parent(req, os.environ)
         except (OSError, ValueError) as e:
             print("REFUSED: %s" % e, file=sys.stderr)
             return 2

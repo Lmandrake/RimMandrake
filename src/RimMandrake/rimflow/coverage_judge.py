@@ -1397,6 +1397,8 @@ def record_round(d, rec):
             g.get("new_since") == t for g in gaps)},
         "late": rec.get("late") or [], "error": rec.get("error"), "error_kind": rec.get("error_kind"),
         "void_system": void_cause(rec) or None, **round_counts(rec),
+        # the detached run that asked for the Designer run this judge screens (role_launch.with_parent): run_void.children
+        "parent": os.environ.get("RM_PARENT_UNIT") or None,
         "repair_blocks": repair_blocks(rec)})
     DS.write_json(DS.state_path(d), st)
     return st
