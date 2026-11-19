@@ -15,7 +15,13 @@ never hand-walked.
 A run is continued when it ended success (exit 0) and either its item is still open with a `LEFT OPEN:` note written
 since the run began, or its brief is a lane (it says "lane" and bullets ticket ids) with tickets still open: the
 continuation then works the first open ticket. A run the spend watchdog stopped is continued only when its launch
-carried `--continue-on-cap N` (default 0), at most N times along its chain: a cap stays meaningful. Never continued:
+carried `--continue-on-cap N` (default 0), at most N times along its chain: a cap stays meaningful. A run whose own
+item is open works that item, the open lane tickets listed; a closed one hands off to the first open lane ticket whose
+dated wait is not running. A run that ended success with its item open and nothing said (no LEFT OPEN: note, none in
+its result text, no open lane ticket) is continued ONCE, kind `owed`, to close the item on its published sha or say
+what is left; an owed continuation that ends the same way is the alarm (RIMMANDRAKE_CLOSE_DETACHED_ITEM_AT_RUN_END:
+13 such runs were closed by hand in five days, 6 of them with work left, so a close from the exit alone is wrong).
+Boundary: design/specs/2026-11-19-run-end-continue/boundary.md. Never continued:
 a killed, voided or failed run, a closed item (a lane with every ticket closed), an owner-held mod, a paused pipeline,
 a `pipe off` switch on its scope; a gate that cannot be read is a named no. At most MAX_PER_DAY continuations per item
 (its chain's first item) in 24 h; the next one is the alarm ALARM_ID in the Conductor log and no launch. The header
@@ -45,7 +51,8 @@ import json, os, sys
 sys.path.insert(0, os.path.join("src", "RimMandrake", "rimflow"))
 import model
 items = model.replay(model.read()).items
-print(json.dumps({i: getattr(items.get(i), "state", None) for i in sys.argv[1:]}))
+print(json.dumps({i: {"state": getattr(items.get(i), "state", None), "wait_until": getattr(items.get(i), "wait_until", None)}
+                  for i in sys.argv[1:]}))
 """
 
 
@@ -73,7 +80,7 @@ def lane_tickets_of(rec):
 
 
 def read_states(clone, ids):
-    """-> {id: state or None} as the run's clone folds its ledger; raises when it cannot be read."""
+    """-> {id: {"state", "wait_until"}} as the run's clone folds its ledger; raises when it cannot be read."""
     if not ids:
         return {}
     r = subprocess.run([sys.executable, "-c", READ_STATES] + list(ids), cwd=clone, capture_output=True, text=True,
@@ -87,6 +94,22 @@ def capped(rec):
     """True when the spend watchdog (or claude's own budget stop) ended the run."""
     import role_launch as RL
     return DH.cap_stopped(RL.read_result({"out": rec.get("out") or "", "err": rec.get("err") or ""}))
+
+
+def _state(v):
+    """A lane read: {"state", "wait_until"}, or a bare state (a plan written before the waits were read)."""
+    return v.get("state") if isinstance(v, dict) else v
+
+
+def _wait(v):
+    return v.get("wait_until") if isinstance(v, dict) else None
+
+
+def result_left_open(rec):
+    """-> the run's own `LEFT OPEN:` paragraph from its result text (DH.result_left_open), its spend sentences taken
+    out, or "" when the result says none. A run that wrote it only there said what is left."""
+    import spend_talk
+    return spend_talk.strip(DH.result_left_open(rec)).strip()
 
 
 def last_left_open(notes, item, since):
@@ -143,11 +166,13 @@ def gate_no(rec, item, gates):
 
 
 def today(rec, now, root=None):
-    """-> the continuations of this chain's item (or this item) launched in the last DAY_S, oldest first."""
+    """-> the continuations of this chain's item (or this item) launched in the last DAY_S, oldest first. A refused or
+    failed launch ran nothing and spends no slot (no trial is spent by a system failure)."""
     import stop_resume as SR
     key = rec.get("continue_root_item") or rec.get("item")
     return sorted((r for r in SR.recent_records(root, now)
                    if r.get("continued_from") and (r.get("at") or 0) >= now - DAY_S
+                   and r.get("status") not in ("refused", "launch_failed")
                    and key in (r.get("continue_root_item"), r.get("item"))), key=lambda r: r.get("at") or 0)
 
 
@@ -196,18 +221,29 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
         return dict(base, act="none", why="its item's state could not be read from the run's clone")
     state = got.get("state")
     lane = lane_tickets_of(rec)
-    open_lane = [t for t in lane if (lane_states or {}).get(t) not in TERMINAL and (lane_states or {}).get(t)]
+    ls = lane_states or {}
+    open_lane = [t for t in lane if _state(ls.get(t)) and _state(ls.get(t)) not in TERMINAL]
     noted = last_left_open(got.get("notes"), item, rec.get("at") or 0)
+    said = "" if noted else result_left_open(rec)
+    if said:
+        noted = {"ts": "its result text", "text": said}
     item_open = bool(state) and state not in TERMINAL
+    kind = None
     if item_open and (noted or open_lane or cap):
         target = item
     elif open_lane:
-        target = open_lane[0]
+        free = [t for t in open_lane if not waiting({"wait_until": _wait(ls.get(t))}, now)]
+        if not free:
+            return dict(base, act="none", why="every open lane ticket waits: " + "; ".join(
+                "%s: %s" % (t, waiting({"wait_until": _wait(ls.get(t))}, now)) for t in open_lane))
+        target = free[0]
     elif not item_open:
         return dict(base, act="none", why="%s is %s" % (item, state or "absent from the ledger"))
+    elif rec.get("continue_kind") == "owed":
+        return dict(base, act="alarm", why="%s is still %s after a continuation asked only to close it or say what is "
+                                           "left, and it did neither" % (item, state))
     else:
-        return dict(base, act="none", why="%s is still %s with no LEFT OPEN: note since the run began and no open "
-                                         "lane ticket (finish flags it OWED)" % (item, state))
+        target, kind = item, "owed"
     waits = waiting(got, now) if target == item else None
     if waits:
         return dict(base, act="none", why=waits)
@@ -218,11 +254,13 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
     if len(done) >= MAX_PER_DAY:
         return dict(base, act="alarm", why="%d continuations of %s in 24 h already (%s)" % (
             len(done), rec.get("continue_root_item") or item, ", ".join(r["unit"] for r in done[-MAX_PER_DAY:])))
-    return dict(base, act="continue", target=target, open_lane=open_lane, capped=cap,
+    return dict(base, act="continue", target=target, open_lane=open_lane, capped=cap, kind=kind,
                 note={"ts": noted.get("ts"), "text": noted.get("text")} if noted else None,
                 n=int(rec.get("continue_n") or 0) + 1,
                 why=("stopped from outside; --continue-on-cap %d" % opt) if cap else
-                    ("LEFT OPEN note" if noted and target == item else "%d lane ticket(s) open" % len(open_lane)))
+                    "ended success with its item open and nothing said (OWED)" if kind == "owed" else
+                    ("LEFT OPEN note" + (" in its result" if said else "") if noted and target == item
+                     else "%d lane ticket(s) open" % len(open_lane)))
 
 
 def header(rec, p, now):
@@ -232,6 +270,13 @@ def header(rec, p, now):
         local(now), p["n"], MAX_PER_DAY, rec.get("continue_root_item") or rec["item"])]
     if p.get("capped"):
         lines.append("Your previous run %s on %s was interrupted before it finished." % (rec["unit"], rec["item"]))
+    elif p.get("kind") == "owed":
+        lines.append("Your previous run %s on %s ended success but left the item open and said nothing: no close, no "
+                     "LEFT OPEN: note. Your one job is to settle that. If its work is done and published, close the item "
+                     "on that sha (`python3 src/RimMandrake/rimflow/cli.py close %s --sha <sha> --seat %s --why \"...\"`). "
+                     "If work is left, do it and close, or write a note whose text starts LEFT OPEN: and says exactly "
+                     "what is left. Ending with neither raises an alarm to the Conductor."
+                     % (rec["unit"], rec["item"], rec["item"], rec.get("seat") or "BENCH"))
     else:
         lines.append("Your previous run %s on %s ended success with work left, so it is carried on without a hand "
                      "relaunch." % (rec["unit"], rec["item"]))
@@ -247,8 +292,10 @@ def header(rec, p, now):
     return "\n".join(lines) + "\n"
 
 
-def alarm(rec, p, now, log_path=None):
-    rec = DH.read_record(rec["unit"]) or rec
+def alarm(rec, p, now, log_path=None, root=None):
+    """The Conductor-log alarm, once per run. A log write that failed marks nothing, so the next pass raises it again.
+    -> plan with act alarmed | alarm_failed | none."""
+    rec = DH.read_record(rec["unit"], root) or rec
     if rec.get("continue_alarm"):
         return dict(p, act="none", why="alarm already raised")
     try:
@@ -256,10 +303,15 @@ def alarm(rec, p, now, log_path=None):
                           "(rimflow show %s) and relaunch by hand or close it." % (
                               ALARM_ID, rec["unit"], rec["item"], p["why"], rec["item"]), now, log_path, head=HEAD)
     except Exception as e:  # noqa: BLE001
-        p = dict(p, log_failed=str(e))
+        rec["continue_alarm_failed"] = {"at": now, "why": "%s: %s" % (type(e).__name__, e)}
+        DH.write_record(rec, root)
+        journal({"at": DH.iso(now), **{k: v for k, v in p.items() if k != "note"}, "act": "alarm_failed",
+                 "log_failed": str(e)}, root)
+        return dict(p, act="alarm_failed", log_failed="%s: %s" % (type(e).__name__, e))
     rec["continue_alarm"] = {"at": now, "why": p["why"]}
-    DH.write_record(rec)
-    journal({"at": DH.iso(now), **{k: v for k, v in p.items() if k != "note"}, "act": "alarm"})
+    rec.pop("continue_alarm_failed", None)
+    DH.write_record(rec, root)
+    journal({"at": DH.iso(now), **{k: v for k, v in p.items() if k != "note"}, "act": "alarm"}, root)
     return dict(p, act="alarmed")
 
 
@@ -271,8 +323,14 @@ def journal(row, root=None):
         pass
 
 
-def recheck(rec, now, gates=None, root=None):
-    """The continuation step's own look, minutes after finish planned it: the plan still stands? -> why not, or None."""
+def read_target(target):
+    """The step's own read of its target, from the clone the step runs in. -> read_item's dict, or None."""
+    return DH.read_item(DH.REPO, target)
+
+
+def recheck(rec, now, gates=None, root=None, reader=None):
+    """The continuation step's own look, minutes after finish planned it: the plan still stands? -> why not, or None.
+    The target is read again last (a close or a new dated wait since finish stops the launch)."""
     p = rec.get("continue_plan") or {}
     if p.get("act") != "continue":
         return "no continuation planned"
@@ -289,19 +347,30 @@ def recheck(rec, now, gates=None, root=None):
         return no
     if len(today(rec, now, root)) >= MAX_PER_DAY:
         return "limit"
-    return None
+    try:
+        got = (reader or read_target)(p["target"])
+    except Exception as e:  # noqa: BLE001
+        got, err = None, "%s: %s" % (type(e).__name__, e)
+    else:
+        err = "no ledger answer"
+    if not isinstance(got, dict):
+        return "the target %s could not be read again before launch (%s)" % (p["target"], err)
+    st = got.get("state")
+    if not st or st in TERMINAL:
+        return "the target %s is now %s" % (p["target"], st or "absent from the ledger")
+    return waiting(got, now)
 
 
-def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None):
+def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, reader=None):
     """The continuation unit's step: launch the planned continuation once. -> {act, why, ...}."""
     now = now or time.time()
     rec = DH.read_record(unit, root)
     if not rec:
         return {"unit": unit, "act": "none", "why": "no record"}
     p = dict(rec.get("continue_plan") or {})
-    why = recheck(rec, now, gates, root)
+    why = recheck(rec, now, gates, root, reader)
     if why == "limit":
-        return alarm(rec, dict(p, why="%d continuations in 24 h already" % MAX_PER_DAY), now, log_path)
+        return alarm(rec, dict(p, why="%d continuations in 24 h already" % MAX_PER_DAY), now, log_path, root)
     if why:
         if p.get("act") == "continue":
             rec["continue_skipped"] = {"at": now, "why": why}
@@ -321,13 +390,15 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None):
              "continue_root_item": rec.get("continue_root_item") or rec["item"], "continue_n": p["n"],
              "continue_brief_src": root_brief, "continue_on_cap": int(rec.get("continue_on_cap") or 0),
              "cap_continues_used": int(rec.get("cap_continues_used") or 0) + (1 if p.get("capped") else 0)}
+    if p.get("kind"):
+        extra["continue_kind"] = p["kind"]
     launch_fn = launch_fn or DH.launch
     try:
         code, out = launch_fn(rec.get("seat"), p["target"], text, rec.get("model"), rec.get("max_s") or "none",
                               rec.get("budget_usd") or 0.0, now=now, env=rec.get("env") or None,
                               clone=SR.given_clone(rec), extra=extra,
-                              skip_launch_checks="continuation of %s: the same work, whose launch checks already ran"
-                                                 % unit)
+                              skip_launch_checks=("continuation of %s: the same work, whose launch checks already ran"
+                                                  % unit) if p["target"] == rec.get("item") else None)
     except Exception as e:  # noqa: BLE001
         code, out = 1, "%s: %s" % (type(e).__name__, e)
     rec = DH.read_record(unit, root) or rec

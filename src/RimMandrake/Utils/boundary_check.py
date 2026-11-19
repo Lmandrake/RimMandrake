@@ -52,6 +52,7 @@ PAGES = {
     "design/specs/2026-11-19-mod-model-pin/boundary.md": "src/RimMandrake/rimflow/selftest_mod_model_pin.py",
     "design/specs/2026-11-19-closeout-matcher/boundary.md": "src/RimMandrake/rimflow/selftest_conductor_closeout.py",
     "design/specs/2026-11-19-role-clone-level/boundary.md": "src/RimMandrake/rimflow/selftest_role_clone_level.py",
+    "design/specs/2026-11-19-run-end-continue/boundary.md": "src/RimMandrake/rimflow/selftest_left_open_continue.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

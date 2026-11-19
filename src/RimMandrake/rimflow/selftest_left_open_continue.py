@@ -111,7 +111,12 @@ def fake_launch(seat, item, brief, model, max_s, budget, **kw):
     return 0, "DETACHED %s\n  item %s" % (unit, item)
 
 
-def go(rec, got, states=None, gates=None, now=T0 + 700):
+def open_reader(state="claimed", wait_until=None):
+    """the step's recheck of its target: open, no wait, unless told otherwise."""
+    return lambda target: {"state": state, "wait_until": wait_until, "notes": []}
+
+
+def go(rec, got, states=None, gates=None, now=T0 + 700, reader=None):
     """plan at finish, then the continuation unit's step."""
     del LAUNCHES[:]
     lane = (states or states_for(got.get("state")))(None, LOC.lane_tickets_of(rec))
@@ -120,7 +125,8 @@ def go(rec, got, states=None, gates=None, now=T0 + 700):
         rec = DH.read_record(rec["unit"])
         rec["continue_plan"] = p
         DH.write_record(rec)
-        res = LOC.run(rec["unit"], now=now + 30, launch_fn=fake_launch, gates=(gates or Gates()).as_dict())
+        res = LOC.run(rec["unit"], now=now + 30, launch_fn=fake_launch, gates=(gates or Gates()).as_dict(),
+                      reader=reader or open_reader())
     elif p["act"] == "alarm":
         res = LOC.alarm(rec, p, now)
     else:
@@ -156,7 +162,7 @@ def test_open_with_note():
     check("A: a Conductor log line says so", "LEFT OPEN CONTINUE" in log_text() and rec["unit"] in log_text())
     # H: a second pass launches nothing
     del LAUNCHES[:]
-    r2 = LOC.run(rec["unit"], now=T0 + 800, launch_fn=fake_launch, gates=Gates().as_dict())
+    r2 = LOC.run(rec["unit"], now=T0 + 800, launch_fn=fake_launch, gates=Gates().as_dict(), reader=open_reader())
     check("H: a second continuation step launches nothing", not LAUNCHES and r2["act"] != "continued", str(r2))
     hand = make_run(at=T0 + 10)
     p = LOC.plan(hand, {"state": "claimed", "notes": [note(LEFT, T0 + 500)]}, {}, now=T0 + 700, gates=Gates().as_dict())
@@ -165,15 +171,13 @@ def test_open_with_note():
     DH.write_record(rec2)
     make_run(at=T0 + 650, status="running")     # the Conductor relaunched it by hand first
     del LAUNCHES[:]
-    r3 = LOC.run(hand["unit"], now=T0 + 700, launch_fn=fake_launch, gates=Gates().as_dict())
+    r3 = LOC.run(hand["unit"], now=T0 + 700, launch_fn=fake_launch, gates=Gates().as_dict(), reader=open_reader())
     check("H: a hand relaunch already made means no continuation", not LAUNCHES and "already relaunched" in r3["why"],
           str(r3))
     old_note = make_run()
     p, _ = go(old_note, {"state": "claimed", "notes": [note(LEFT, T0 - 3600)]})
-    check("A: a LEFT OPEN note older than the run's start is no reason", p["act"] == "none", str(p))
-    nothing = make_run()
-    p, _ = go(nothing, {"state": "claimed", "notes": []})
-    check("A: open item with no note and no lane is not continued (finish flags it OWED)", p["act"] == "none", str(p))
+    check("A: a LEFT OPEN note older than the run's start is no reason (the run is owed, the old note not quoted)",
+          p.get("kind") == "owed" and not p.get("note"), str(p))
 
 
 def test_closed():
@@ -279,7 +283,7 @@ def test_gates():
     rec["continue_plan"] = p
     DH.write_record(rec)
     del LAUNCHES[:]
-    r = LOC.run(rec["unit"], now=T0 + 730, launch_fn=fake_launch, gates=Gates(held="HELD BY OWNER").as_dict())
+    r = LOC.run(rec["unit"], now=T0 + 730, launch_fn=fake_launch, gates=Gates(held="HELD BY OWNER").as_dict(), reader=open_reader())
     check("G: a hold set after finish stops the continuation step", not LAUNCHES and r["act"] == "none", str(r))
     def boom(mod):
         raise RuntimeError("store unreadable")
@@ -378,9 +382,183 @@ def test_waiting():
     check("W: a wait past its date continues", p["act"] == "continue", str(p))
 
 
+# ---------------------------------------------------------------- design/specs/2026-11-19-run-end-continue/boundary.md
+OWED_ITEM = "RIMMANDRAKE_OWED_TEST_ITEM_LEFT_SILENT"
+
+
+def t_an_owed_run_is_continued_to_close_or_say():
+    rec = make_run(item=OWED_ITEM, at=T0 + 40000)
+    p, _ = go(rec, {"state": "claimed", "notes": []}, now=T0 + 40700)
+    check("an-owed-run-is-continued-to-close-or-say: planned", p["act"] == "continue" and p.get("kind") == "owed",
+          str(p))
+    check("an-owed-run-is-continued-to-close-or-say: one launch", len(LAUNCHES) == 1, str(LAUNCHES)[:300])
+    if LAUNCHES:
+        L = LAUNCHES[0]
+        head = L["brief"].split("---- the previous run's brief")[0]
+        check("an-owed-run-is-continued-to-close-or-say: the header asks for a close on its sha or a LEFT OPEN note",
+              "--sha" in head and "LEFT OPEN:" in head and "nothing" in head.lower(), head)
+        check("an-owed-run-is-continued-to-close-or-say: no spend in the header", not SPEND.search(head), head)
+        check("an-owed-run-is-continued-to-close-or-say: the new run is of kind owed",
+              (L.get("extra") or {}).get("continue_kind") == "owed", str(L.get("extra")))
+
+
+def t_an_owed_continuation_that_ends_owed_again_is_an_alarm():
+    rec = {"unit": "rm-detached-bench-owed-first"}
+    again = make_run(item=OWED_ITEM + "_AGAIN", at=T0 + 41000, continued_from=rec["unit"], continue_kind="owed",
+                     continue_root_item=OWED_ITEM + "_AGAIN", continue_n=1)
+    open(LOG, "w").close()
+    p, _ = go(again, {"state": "claimed", "notes": []}, now=T0 + 41700)
+    check("an-owed-continuation-that-ends-owed-again-is-an-alarm", p["act"] == "alarm" and not LAUNCHES
+          and LOC.ALARM_ID in log_text(), "%s | %s" % (p, log_text()[-200:]))
+
+
+def t_a_left_open_in_the_result_counts_as_the_note():
+    text = ("Did step one. Spend was about $6.3 of the $20 bound. LEFT OPEN: step 2 is not done. It used 2,298,311 "
+            "weighted tokens. Then step 3 needs a live visit.")
+    rec = make_run(item=OWED_ITEM + "_RES", at=T0 + 42000, out={"result": text, "usage": {}})
+    check("a-left-open-in-the-result-counts-as-the-note: owed_close says nothing",
+          DH.owed_close(rec, "claimed", []) == "", DH.owed_close(rec, "claimed", []))
+    p, _ = go(rec, {"state": "claimed", "notes": []}, now=T0 + 42700)
+    check("a-left-open-in-the-result-counts-as-the-note: continued, not as owed",
+          p["act"] == "continue" and p.get("kind") != "owed", str(p))
+    if LAUNCHES:
+        head = LAUNCHES[0]["brief"].split("---- the previous run's brief")[0]
+        check("a-left-open-in-the-result-counts-as-the-note: the header quotes it",
+              "step 2 is not done" in head and "needs a live visit" in head, head)
+        check("a-left-open-in-the-result-counts-as-the-note: without its spend sentences",
+              "$" not in head and "weighted tokens" not in head and "Did step one" not in head, head)
+
+
+def t_a_lane_ticket_under_a_running_wait_is_skipped():
+    future, past = DH.iso(T0 + 9 * 86400), DH.iso(T0 - 600)
+    rec = make_run(item=LANE[0], brief=LANE_BRIEF, at=T0 + 43000)
+    lane_states = {LANE[0]: "done", LANE[1]: {"state": "proposed", "wait_until": future},
+                   LANE[2]: {"state": "proposed", "wait_until": past}, LANE[3]: "claimed"}
+    p, _ = go(rec, {"state": "done", "notes": []}, states=states_for("done", lane_states), now=T0 + 43700)
+    check("a-lane-ticket-under-a-running-wait-is-skipped: the next unwaited ticket", p.get("target") == LANE[2], str(p))
+    rec = make_run(item=LANE[0], brief=LANE_BRIEF, at=T0 + 44000)
+    waiting = {LANE[0]: "done"}
+    waiting.update({t: {"state": "proposed", "wait_until": future} for t in LANE[1:]})
+    p, _ = go(rec, {"state": "done", "notes": []}, states=states_for("done", waiting), now=T0 + 44700)
+    check("a-lane-ticket-under-a-running-wait-is-skipped: every one waits -> none", p["act"] == "none"
+          and "wait" in p["why"] and not LAUNCHES, str(p))
+
+
+def _planned(rec, got, lane=None, now=T0 + 700):
+    p = LOC.plan(rec, got, lane or {}, now=now, gates=Gates().as_dict())
+    r = DH.read_record(rec["unit"])
+    r["continue_plan"] = p
+    DH.write_record(r)
+    del LAUNCHES[:]
+    return p
+
+
+def t_the_step_rereads_the_target_before_launch():
+    for what, reader, want in (("closed since", open_reader("done"), "done"),
+                               ("now waiting", open_reader("claimed", DH.iso(T0 + 9 * 86400)), "wait"),
+                               ("unreadable", lambda t: None, "could not")):
+        rec = make_run(at=T0 + 45000)
+        _planned(rec, {"state": "claimed", "notes": [note(LEFT, T0 + 45500)]}, now=T0 + 45700)
+        r = LOC.run(rec["unit"], now=T0 + 45730, launch_fn=fake_launch, gates=Gates().as_dict(), reader=reader)
+        check("the-step-rereads-the-target-before-launch: %s" % what, not LAUNCHES and r["act"] == "none"
+              and want in r["why"], str(r))
+
+
+def t_launch_checks_are_skipped_only_for_the_same_item():
+    rec = make_run(item=LANE[0], brief=LANE_BRIEF, at=T0 + 46000)
+    lane_states = {LANE[0]: "done", LANE[1]: "proposed", LANE[2]: "proposed", LANE[3]: "claimed"}
+    go(rec, {"state": "done", "notes": []}, states=states_for("done", lane_states), now=T0 + 46700)
+    check("launch-checks-are-skipped-only-for-the-same-item: another ticket runs its checks",
+          LAUNCHES and LAUNCHES[0]["item"] == LANE[1] and not LAUNCHES[0].get("skip_launch_checks"),
+          str(LAUNCHES and LAUNCHES[0].get("skip_launch_checks")))
+    rec = make_run(at=T0 + 47000)
+    go(rec, {"state": "claimed", "notes": [note(LEFT, T0 + 47500)]}, now=T0 + 47700)
+    check("launch-checks-are-skipped-only-for-the-same-item: its own item skips them",
+          LAUNCHES and LAUNCHES[0].get("skip_launch_checks"), str(LAUNCHES[:1])[:200])
+
+
+def t_an_open_lane_item_is_its_own_target():
+    own = "RIMMANDRAKE_LANE_OWN_ITEM_STILL_OPEN"
+    rec = make_run(item=own, brief=LANE_BRIEF, at=T0 + 48000)
+    lane_states = {LANE[0]: "done", LANE[1]: "proposed", LANE[2]: "proposed", LANE[3]: "claimed"}
+    p, _ = go(rec, {"state": "claimed", "notes": []}, states=states_for("claimed", lane_states), now=T0 + 48700)
+    check("an-open-lane-item-is-its-own-target", p.get("target") == own and LAUNCHES
+          and LANE[1] in LAUNCHES[0]["brief"].split("---- the previous run's brief")[0], str(p))
+
+
+def t_a_refused_continuation_spends_no_daily_slot():
+    item = "RIMMANDRAKE_REFUSED_SLOTS_TEST_ITEM_THREE"
+    for i, st in enumerate(("refused", "launch_failed", "refused")):
+        make_run(item=item, at=T0 + 49000 + i, continued_from="z%d" % i, continue_root_item=item, status=st)
+    rec = make_run(item=item, at=T0 + 49100)
+    p, _ = go(rec, {"state": "claimed", "notes": [dict(note(LEFT, T0 + 49500), id=item)]}, now=T0 + 49700)
+    check("a-refused-continuation-spends-no-daily-slot", p["act"] == "continue", str(p))
+
+
+def t_an_alarm_whose_log_write_failed_is_retried():
+    rec = make_run(item="RIMMANDRAKE_ALARM_RETRY_TEST_ITEM_LOG_DOWN", at=T0 + 50000)
+    p = {"unit": rec["unit"], "item": rec["item"], "act": "alarm", "why": "test"}
+    orig = DH.conductor_line
+
+    def down(*a, **k):
+        raise OSError("disk full")
+    DH.conductor_line = down
+    try:
+        r = LOC.alarm(rec, p, T0 + 50700)
+    finally:
+        DH.conductor_line = orig
+    after = DH.read_record(rec["unit"])
+    check("an-alarm-whose-log-write-failed-is-retried: no alarm mark", r["act"] == "alarm_failed"
+          and not after.get("continue_alarm") and "disk full" in str(r), "%s %s" % (r, after.get("continue_alarm")))
+    r = LOC.alarm(rec, p, T0 + 50800)
+    check("an-alarm-whose-log-write-failed-is-retried: the next pass raises it", r["act"] == "alarmed"
+          and DH.read_record(rec["unit"]).get("continue_alarm"), str(r))
+
+
+def t_the_alarm_honours_the_run_root():
+    rec = make_run(item="RIMMANDRAKE_ALARM_ROOT_TEST_ITEM_ELSEWHERE", at=T0 + 50050)
+    p = {"unit": rec["unit"], "item": rec["item"], "act": "alarm", "why": "test"}
+    root = tempfile.mkdtemp(prefix="loc_root_")
+    rr = dict(rec, unit="rm-detached-bench-rootonly-1")
+    DH.write_record(rr, root)
+    LOC.alarm(rr, dict(p, unit=rr["unit"]), T0 + 50900, root=root)
+    check("the-alarm-honours-the-run-root", (DH.read_record(rr["unit"], root) or {}).get("continue_alarm")
+          and DH.read_record(rr["unit"]) is None
+          and os.path.exists(os.path.join(DH.runs_dir(root), "left_open_continue.jsonl")), root)
+
+
+def t_the_run_end_note_carries_no_spend_sentence():
+    calls = []
+
+    class R(object):
+        returncode, stdout, stderr = 0, "PUBLISHED abcdef1234567", ""
+
+    def runner(argv, **kw):
+        calls.append(list(argv))
+        return R()
+    clone = os.path.join(TMP, "clones", "notespend")
+    os.makedirs(clone, exist_ok=True)
+    rec = make_run(status="running", clone=clone, at=T0 + 51000,
+                   out={"result": "Visit 1 ran. Spend was about $21.6 of the $30 budget. Record at 99ff70d.", "usage": {}})
+    rec.pop("result")
+    DH.write_record(rec)
+    DH.finish(rec["unit"], now=T0 + 51700, env={"SERVICE_RESULT": "success", "EXIT_CODE": "exited", "EXIT_STATUS": "0"},
+              runner=runner, item_reader=lambda c, i: {"state": "done", "notes": []}, waker=lambda *a: None,
+              continuer=lambda r, p: "none")
+    notes = [a[a.index("--text") + 1] for a in calls if "note" in a and "--text" in a]
+    check("the-run-end-note-carries-no-spend-sentence", notes and "Record at 99ff70d" in notes[0]
+          and "$" not in notes[0] and "budget" not in notes[0], str(notes)[:300])
+
+
 def main():
     for t in (test_open_with_note, test_closed, test_lane, test_limit, test_capped, test_killed_voided, test_gates,
-              test_finish_kicks, test_launch_records_opt_in, test_waiting):
+              test_finish_kicks, test_launch_records_opt_in, test_waiting,
+              t_an_owed_run_is_continued_to_close_or_say, t_an_owed_continuation_that_ends_owed_again_is_an_alarm,
+              t_a_left_open_in_the_result_counts_as_the_note, t_a_lane_ticket_under_a_running_wait_is_skipped,
+              t_the_step_rereads_the_target_before_launch, t_launch_checks_are_skipped_only_for_the_same_item,
+              t_an_open_lane_item_is_its_own_target, t_a_refused_continuation_spends_no_daily_slot,
+              t_an_alarm_whose_log_write_failed_is_retried, t_the_alarm_honours_the_run_root,
+              t_the_run_end_note_carries_no_spend_sentence):
         try:
             t()
         except Exception as e:  # noqa: BLE001

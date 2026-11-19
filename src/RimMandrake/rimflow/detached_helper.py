@@ -1129,13 +1129,24 @@ def left_open_noted(notes, item, since):
     return False
 
 
+def result_left_open(rec):
+    """-> the paragraph of the run's result text that starts LEFT OPEN: (to the next blank line), or "". Two of the 13
+    runs that ended owed by 2026-11-19 wrote what was left there and not as a note."""
+    import role_launch as RL
+    res = RL.read_result({"out": rec.get("out") or "", "err": rec.get("err") or ""})
+    t = str(res.get("result") or "") if isinstance(res, dict) else ""
+    i = t.upper().find(LEFT_OPEN)
+    return re.split(r"\n\s*\n", t[i:], maxsplit=1)[0] if i >= 0 else ""
+
+
 def owed_close(rec, state, notes):
     """-> the plain line for a run that ended success with its item still open and no LEFT OPEN: note since it
-    began, or "". It closes nothing: only evidence closes an item."""
+    began (or in its result text), or "". It closes nothing: only evidence closes an item; left_open_continue
+    continues such a run once to close it or say what is left."""
     import model
     if not str(rec.get("result") or "").startswith("success (") or state in model.TERMINAL:
         return ""
-    if left_open_noted(notes, rec.get("item"), rec.get("at") or 0):
+    if left_open_noted(notes, rec.get("item"), rec.get("at") or 0) or result_left_open(rec):
         return ""
     return ("run %s ended success; item %s is still %s: close it with its published sha or say what is left "
             "(a note starting %s)" % (rec.get("unit"), rec.get("item"), state or "absent from the ledger", LEFT_OPEN))
@@ -1465,8 +1476,9 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
     # the record keep the cause, the tokens and the output path.
     import role_launch as RL
     capped = cap_stopped(RL.read_result({"out": rec["out"], "err": rec["err"]}))
+    import spend_talk       # the run's own words may state its spend ("$21.6 of the $30 budget", 2026-11-15)
     text = ("DETACHED run %s ended %s after %d s (model %s). Result: %s. Clone %s."
-            % (unit, st, took, rec["model"], INTERRUPTED if capped else (tail or "-"), rec["clone"]))
+            % (unit, st, took, rec["model"], INTERRUPTED if capped else (spend_talk.strip(tail) or "-"), rec["clone"]))
     clone, seat, item = rec["clone"], rec["seat"], rec["item"]
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
     steps = [stop_scope(seat, unit, runner)]     # first: the unit is gone but claude is not
