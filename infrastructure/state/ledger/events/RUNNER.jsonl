@@ -8803,3 +8803,5 @@
 {"seat":"RUNNER","event":"note","id":"OPS_SEAT_CLONE_DIRT_RESTORE_VTLF","text":"ops_watch: cleared at 2026-11-19T13:19:26Z (disk.seat_dirt now 0)","ts":"2026-11-19T13:19:35Z","tsn":1795094375065145178}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-19T13:30:57Z","tsn":1795095057880970244}
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_PAUSED_FYEB","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-19T13:31:02Z","tsn":1795095062996366405}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-19T13:33:36Z","tsn":1795095216773561244}
+{"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_PAUSED_FYEB","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-19T13:33:42Z","tsn":1795095222475716689}
