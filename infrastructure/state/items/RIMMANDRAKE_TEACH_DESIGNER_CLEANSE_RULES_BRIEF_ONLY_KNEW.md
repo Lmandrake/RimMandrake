@@ -9,3 +9,20 @@ FIX: fold into `designer.md` (and any stage-3/4 text the Designer reads) only wh
 NOT in scope: the "definition of a bar" in `design/specs/2026-11-16-designer-cleanse-and-bar-definition.md`, still marked proposed. No rule is restated twice: `designer_cleanse.md` points at `designer.md` for whatever moves.
 
 Acceptance test: not yet drafted (owed at launch, before any builder starts): a case file that reads `designer.md` and fails on base 0fd6e764c7 for each of the three rules above, plus a check that `designer_cleanse.md` does not restate them. Not launched: Codex runway reads 0.41 with the cleanse fleet and the judge ticket's round 4 running (2026-11-17 7:55 PM PST); launch when the fleet ends.
+
+## done 2026-11-19 (detached helper of the Conductor, item RIMMANDRAKE_READY_PIPELINE_FOR_WRECKED_MACHINES_HE_HOLDS_GO)
+- `roles/designer.md` (in every stage 0-5 packet of `designer_manifest.json`) now carries "What a first version may
+  contain" and "The fate of an extra" word for word from `designer_cleanse.md`, and his third answer with the truth
+  beside it: stage 4 still ends on the exam and stage 5 on coverage (the launcher enforces both; the card was about a
+  cleansed design). The text is COPIED, not moved: the cleanse launcher pastes `designer_cleanse.md` alone, so moving it
+  would strip the cleanse brief. `selftest_designer_first_version_rules.py` (in `publish_tree_checks.json`) keeps the
+  two copies equal.
+- Lane F's two objections (note 2026-11-18): rule 3 is stated without lifting the stage gates; Pyrelands and every
+  version locked before 2026-11-17 keep their scope (a Divergent change never moves the current bars), so no Write run
+  rewrites a locked version.
+- Open for the Conductor: whether the third answer should also replace stages 4 and 5 for ordinary (non-cleanse)
+  Designer runs. No ticket filed; it is a design question, not a defect.
+
+## verify
+Acceptance test: `python3 src/RimMandrake/rimflow/selftest_designer_first_version_rules.py` (16 checks): 14 FAIL on
+b2bdcaafc8, 16 PASS after. Mutations watched red: one word edited in the copy (6 FAIL), "still" gate line removed (2 FAIL).

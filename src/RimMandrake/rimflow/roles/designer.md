@@ -99,6 +99,81 @@ result is a retry that has spent budget.
 - **Recovery before work.** A scene that changed persistent state and never restored blocks every run until it is
   restored (`scene-end`) or held for his review (`scene-hold`); see `designer_scene_contract.md`.
 
+## His three answers on what a first version is (owner, by card 2026-11-17T06:24:09Z, 10:24 PM PST 2026-11-16)
+
+He answered three cards that night; the cards, word for word, are in
+`infrastructure/state/items/RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED.md`. The first two (what a first
+version may contain; the fate of an extra) are quoted below word for word from `roles/designer_cleanse.md`, the brief
+they were first written into; `selftest_designer_first_version_rules.py` keeps the two copies equal, so change both or
+neither. Read "this pass" as your run and "his pages" as what you put before him (`sheet.md` and your asks).
+
+**A Design Version locked before these answers keeps its scope.** A concept whose `version/VERSION.json` reads `locked`
+with a `locked_on` before 2026-11-17 keeps its locked bars: the answers bind its next version, never its current bars
+(a Divergent change never moves the current bars). Redefining a locked version is the cleanse pass's work
+(`roles/designer_cleanse.md`), and its proposal changes the mod only on his word.
+
+## What a first version may contain
+
+**A biome: land, life, and one signature** (owner, by card 2026-11-16).
+
+- **Land:** the ordinary ground of a biome: terrain, the look, the sky and weather, what the map is like to stand on
+  and build on.
+- **Life:** the ordinary plants and animals as a player meets them: what feeds a forager, what hunts, what is worth
+  taming, what the place sounds and moves like.
+- **One signature:** the one defining system a player would name when asked "what is it like to live there?". It is
+  one chain of cause and effect the player lives with, and its necessary parts may cross land, life and code (a
+  weather and a plant that form one cycle are one signature; a job the signature cannot work without belongs to it).
+  Name it in one sentence. Name the runner-up and why it lost.
+
+Classify by what the player experiences, never by what a feature is called. Land and life are not a drawer for
+extras: an unusual plant, animal, terrain or weather with a mechanic of its own stays only if deleting its
+player-facing behaviour would defeat land, life or the signature as you stated them. Say that deletion argument each
+time. Rosters: an animal belongs to one biome unless there is an in-game reason, but you do not evict anything from a
+roster on this pass (his ruling: evictions are stopped); note a multi-homed species and move on.
+
+Everything else is an **extra**: rituals, lore events, special quests, one-off interactions, custom jobs, bespoke
+letters, secondary mechanics, clever touches. An extra moves to the next version however good it is. The only extras
+that stay are those without which land, life or the signature would not work or would not be readable to the player
+(a warning the signature needs, the Mod Settings the standing ruling requires). Say which, and why, each time.
+
+Shared engines the mod leans on (creature behaviours, hazards, plant growth, wreckage) are dependencies, not extras:
+name them and what the mod needs from each; do not redesign them.
+
+**A mod that is not a biome:** the one promise in its root sentence, what that promise strictly needs, and nothing else.
+
+Standing rulings every mod keeps regardless: superb Mod Settings (on/off per major feature, defaults are shipped
+behaviour), every DLC assumed, no worldgen of any kind, our naming tiers, Direct Sun as one geometric rule, no animal or
+pawn vanishes without a readable sign, a flyer that flies in the fiction flies in the game. A biome of ours on zero
+world tiles is expected and is never a finding.
+
+## The fate of an extra
+
+Default, by his card: **next version, switched off.** Write it into the next-version list with one line on what it is
+and one on why it is not land, life or signature. If it is already built, write a switch-off ticket: its code and defs
+stay in the tree, behind a Mod Setting that defaults to off and is labelled as next version, so nothing untested runs
+and nothing it does can break a bar. The ticket carries its acceptance test: with default settings on a fresh map the
+extra's things, jobs, letters and incidents are absent (a state read) and the log is clean; with the setting on they
+are present. Where no such test can be written, say `Acceptance test: none, <reason>`.
+
+**Recommend retiring** an extra outright when it is frivolous in his sense: it serves no experience you can name, it
+duplicates something vanilla or a neighbour already does, or it fights a standing ruling or the signature. Retiring is
+his; your recommendation and its one-line reason go on his pages.
+
+Code that calls an extra proves coupling, not need. Keep an extra only when removing what the player sees of it would
+defeat land, life or the signature; record that argument in its `needed_by`. When kept code merely depends on an
+extra's code, the extra still moves, and its ticket includes the decoupling. Search the source for what calls it
+before you write the ticket. A waiver he already gave (in the concept's record) is never raised again.
+
+## His third answer: what gates a cleansed design
+
+The card asked what should gate a cleansed design, and he picked **One whole-mod check instead** of the cold-reader
+exam and the coverage judge. The card's description of it: *"One fresh reviewer hunts bars that conflict, promised
+mechanics with no spec, scenes with the main mechanic off, and tuning numbers; one round of fixes, then lock."* That
+check is the cleanse pass's gate (`designer_cleanse.py review`). The stage machine above is not changed by it: stage 4
+still ends on `exam.json` and stage 5 still on coverage, the launcher enforces both, and you do not skip them. What
+the answer asks of you here: write so that the check's four hunts would find nothing (no two bars that conflict, no
+promised mechanic without its spec, no scene with the main mechanic off, no tuning number in a bar).
+
 ## The working record, not the log
 
 `record.json` is what you start from (the packet carries a compact view of it) and what you keep current. `log.md`
