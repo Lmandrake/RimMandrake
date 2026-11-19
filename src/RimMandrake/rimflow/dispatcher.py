@@ -1896,10 +1896,14 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             started.append(run)
                             do_persist()     # on disk BEFORE systemd-run (with decide's slot mark): review round R, A
                             rs = st["roles"][a["role"]]
-                            ok, out = False, "launch raised"
+                            ok, out, planned = False, "launch raised", False
                             try:
                                 ok, out, rec = do_launch(role, a["unit"], a["message"], root, claude_exe())
-                                res = ("launched: " if ok else "failed: ") + out
+                                # a deliberate control OFF (pipe off|stop, a pause) refused it: a planned hold like
+                                # the off switch above, never a failure or an alarm
+                                # (RIMMANDRAKE_SEPARATE_CONTROL_OFF_FROM_LAUNCH_FAILED_180_ALARMS)
+                                planned = not ok and str(out).startswith("REFUSED by control:")
+                                res = ("launched: " if ok else "held at launch: " if planned else "failed: ") + out
                                 if ok:
                                     # the scope and marker recorded above stay authoritative
                                     run.update({k: v for k, v in (rec or {}).items() if k not in ("scope", "marker")})
@@ -1907,12 +1911,26 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                     run["consumed"] = rs.pop("pending_launch", None)
                                 else:
                                     runs.remove(run)            # systemd-run said no: nothing started
-                                    a["why"] = "%s — LAUNCH FAILED: %s" % (a["why"], out)
+                                    a["why"] = "%s — %s: %s" % (a["why"], "NOT LAUNCHED, held at launch" if planned
+                                                                else "LAUNCH FAILED", out)
                             except Exception as e:  # noqa: BLE001 - the run stays tracked: it may have started
                                 out = "%s: %s" % (type(e).__name__, str(e))
                                 raise
                             finally:
-                                if not ok:
+                                if planned:
+                                    # noted once per slot; the slot/event stays due and the next tick asks again
+                                    if a.get("blind"):
+                                        a["blind"] = dict(a["blind"], outcome="held_control")
+                                    if rs.get("held_control_key") == a["slot"]:
+                                        a["note"] = False
+                                    rs["held_control_key"] = a["slot"]
+                                    RL.unlaunch(rs, a["unit"])
+                                    if a.get("concept"):
+                                        try:     # never launched: the stage's open run is dropped, uncharged
+                                            fx.get("stage_abort", RL.stage_abort)(a["concept"], a["unit"])
+                                        except Exception:  # noqa: BLE001 - the next open charges it instead
+                                            pass
+                                elif not ok:
                                     # the note says the true outcome (review V, V4); a retry of the same job that
                                     # fails again is noted once: the journal and the rate-limited alarm keep the rest
                                     failed_before = rs.get("launch_failed_key") == a["slot"]
@@ -1939,6 +1957,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                             if back else "the run stays tracked in case it started")))
                                 else:
                                     rs.pop("launch_failed_key", None)
+                                    rs.pop("held_control_key", None)
                                 do_persist()
                     elif a["do"] == "role_stamp":
                         # a run finished done (role_launch FINISH_STAMP): the next pre-screen starts here. A failed

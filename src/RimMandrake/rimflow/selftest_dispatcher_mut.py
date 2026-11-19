@@ -1559,6 +1559,22 @@ def test_execute_role_launch():
               and al["why"] == "role Conductor launch FAILED (unit U1): no good; its slot/event stays due and is retried"
               and st["roles"]["Conductor"]["launch_failed_key"] == "k1" and "pending_launch" not in st["roles"]["Conductor"],
               "failed launch: %r" % al)
+    # a deliberate control OFF (pipe off/stop) refuses the launch: a planned hold, never launch_failed or an alarm
+    # (RIMMANDRAKE_SEPARATE_CONTROL_OFF_FROM_LAUNCH_FAILED_180_ALARMS: 180 alarm lines for one planned stop)
+    stc = fresh()
+    stc["roles"] = {"Conductor": {"pending_launch": _pending()}}
+    a = _role_act(note=True, blind=RL.blind("Conductor", "launched", "quick", "rm-role-conductor-1"))
+    acts = [a]
+    ex(acts, sch=sch, st=stc, role_launch=lambda *x: (False, "REFUSED by control: OFF (all, act ct_1)", {}))
+    check(not any(x.get("do") == "alarm" for x in acts) and a["blind"]["outcome"] == "held_control"
+          and a["result"] == "held at launch: REFUSED by control: OFF (all, act ct_1)"
+          and "NOT LAUNCHED, held at launch" in a["why"] and "LAUNCH FAILED" not in a["why"]
+          and not stc["roles"]["Conductor"].get("runs") and "pending_launch" not in stc["roles"]["Conductor"]
+          and "launch_failed_key" not in stc["roles"]["Conductor"], "control OFF is a planned hold: %r %r" % (a, acts[1:]))
+    a2 = _role_act(note=True)
+    stc["roles"]["Conductor"]["pending_launch"] = _pending()
+    ex([a2], sch=sch, st=stc, role_launch=lambda *x: (False, "REFUSED by control: OFF (all, act ct_1)", {}))
+    check(a2["note"] is False, "the same slot held by control again is noted once")
     # same slot failing again: first note kept? second time note False
     a2 = _role_act(note=True, blind=RL.blind("Conductor", "launched", "quick", "rm-role-conductor-1"))
     st["roles"]["Conductor"]["pending_launch"] = _pending()
