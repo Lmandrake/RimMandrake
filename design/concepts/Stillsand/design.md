@@ -17,6 +17,14 @@ file is in its path by sitting here; the root and leaves were written for a colo
 to reconcile them with this document. Where they disagree until then, the root is what the pipeline holds and this
 is what the owner asked for on 2026-11-18.
 
+**Second reader, 2026-11-18:** a second pass read every file this design replaces to its end and repaired this
+page. The hull section now stands on the campaign's built shield frame (the first pass wrote that no hull system
+existed) and on wear the sources name. The biome's gift to the ship, the lens kit, is in 0.2.0, and the sun lance
+is out of "recommended for dropping": he took it by card on 2026-09-30. The sentence that leaned on *"No roads
+through the deep dune"* is corrected, because his word of 2026-10-20 put the roads back. The zuurrik, the piinnok,
+the dead crawler and the gale's effect on the swimmers are now where a reader of the Empire section will meet
+them. The locked tree is still not edited. The count of what was added is at the top of `rewrite_choices.md`.
+
 **Tags:** `NEEDS HIM` is a question only the owner can settle, with the real answers and the default used here.
 `UNSETTLED` is a fact the sources do not fix. `UNMEASURED` is an engine fact nobody has checked. "Built" means the
 census of 2026-11-17 (`cleanse/census.json`) found it in source; it does not mean it has passed anything.
@@ -49,9 +57,11 @@ sentence: *"This is old Tatooine: the place Jawas were made for, and the place t
 the ramp without flinching. By the owner's ruling of 2026-09-30 the glare that blinds everyone else does nothing to
 them (*"the Jawa won't need it, but the slaves might"*).
 
-They are still in over their heads, because the roads they know stop at the edge of this. *"No roads through the
-deep dune."* The sheet's own word for the place is the right one: *"It is not a place you visit. It is the distance
-between places."* What lives here lives under the sand, feels every footfall, and has been asleep for years waiting
+They are still in over their heads, because they are road people and a ship does not land on a road. The frozen
+sheet banned roads here outright (*"No roads through the deep dune"*); his later word of 2026-10-20 put the old
+road lines back across it (*"For now just replicate where we had roads before."*), so on the world map a few
+roads cross the Stillsand and everything between them is this. The sheet's own word for the place is still the
+right one: *"It is not a place you visit. It is the distance between places."* What lives here lives under the sand, feels every footfall, and has been asleep for years waiting
 for something to do something. A ship landing is something.
 
 ## The clock on any stop
@@ -73,7 +83,10 @@ search by one step; full dark still pauses it."* The Stillsand has no canopy, no
 cloud. *"Sightlines. You can see anything coming from an hour away. So can it."* The one exception is the biome's
 own weather: for the day or two a dune gale lasts, *"the sky goes brown-gold and dim, sight shortens"*, and this
 design gives the search its one slower step for exactly that long (0.2.0, with the gale). A cave hides people, not
-a ship.
+a ship. The gale is also the one time the sand itself looks away: *"The gale blinds the swimmers. Their appraisal
+is by vibration, and the storm is all vibration, so swimmers stay down and strike rates collapse."* The older
+design's conclusion holds for a crew as well as a caravan: *"A player who learns this crosses the Stillsand in the
+gale."*
 
 ---
 
@@ -96,13 +109,19 @@ Before anyone has moved, the player can read the page:
   part of almost everything that grows here.
 - Under the hiss of the one wind, *"a sound you feel in your teeth before you hear it: a long, low rumble, moving.
   A line of sand lifts and falls, far out, travelling."*
+- And some of the glass is looking back. *"Half the 'light-pipe nubs' in a field are not plants."* They are the
+  lenses of the piinnok, the Stillsand's watcher: *"Walk past a nub field and a few glints turn to follow."*
 
 The Jawa do not cook when they step off the ramp. Anyone else aboard does.
 
 ## The first day
 
-- **The sun does not move.** The one sun from geometry, at this tile's own height in the sky, forever. A roof or a
-  parasol is shade at any angle. Standing shade is three things only: an ollim, a wreck or skeleton, and the rock.
+- **The sun does not move.** The one sun from geometry, at this tile's own height in the sky, forever. *"The light
+  is a fixed condition, like the pressure at the bottom of a sea."* A roof or a parasol is shade at any angle.
+  Standing shade is three things only: an ollim, a wreck or skeleton, and the rock. The ship is now a fourth, and
+  the largest: the sources already count on it (*"move in the shadow of your own landed ship"*), and the sheet
+  says what a fallen hull's shade becomes: *"Where debris falls it makes shade, and shade makes a small living
+  biome right beside it."*
 - **The sand is a medium, not a surface.** Vekka and qorrax swim under it. The player sees a wake and hears a
   rumble that grows with the size of the swimmer; the animal itself shows only when it breaches to strike. What it
   takes leaves a drag mark and a darker funnel. Nothing vanishes without a sign.
@@ -111,7 +130,10 @@ The Jawa do not cook when they step off the ramp. Anyone else aboard does.
 - **Eggs are canteens, and some are traps.** *"A large egg is portable water in a rigid shell, which is exactly why
   a Jawa prizes one."* Some clutches hatch on approach, and the newborn *"tries to drink the intruder."*
 - **The wrecks are bright.** *"Nothing rusts without an electrolyte; dayside wreckage is sand-scoured bright and
-  half-buried, never brown."* Hulls, cylinders and dead crawler treads come apart for ordinary salvage.
+  half-buried, never brown."* Hulls, cylinders and dead crawler treads come apart for ordinary salvage. A tread
+  line in the sand can end at a dead sandcrawler, the crew's own ancestral machine, with a note scratched on the
+  dash: *"We ran her until the sand had her. If you find her, start her once before you take her apart. She will
+  know you."* (The rite built on that note is in "later"; the crawler and the note need no rite.)
 - **The walk to the rock is the first expedition.** Deep sand is slow. The crossing is measured in water, in heat
   and in how much noise the party makes.
 - **A droid makes no ripple.** Swimmers strike what holds water. *"A droid is invisible to the food web... A Jawa
@@ -129,7 +151,10 @@ The Jawa do not cook when they step off the ramp. Anyone else aboard does.
   underneath it."* Its shade moves with it and small things live in that shade. *"Following a giant is how you
   cross the dune sea."*
 - **The follower.** A gaanok, *"taller than a wall and thin as famine"*, appears on the horizon behind any party
-  that walks out, and keeps its distance, and waits.
+  that walks out, and keeps its distance, and waits. *"Shooting it is spending water on a thing that has not
+  touched you... The horror is that it is patient, visible, and correct."*
+- **The glints that moved.** The liikka, a thumb-sized mirror-backed mite that eats light, is the one animal a
+  traveller actually sees: *"a scatter of stationary glints that turn out, on the next look, to have moved."*
 - **The sky's one owner.** A soorrak, a sail-winged giant that nests here because nothing can walk to its nest. It
   really flies. Its eggs are the biggest canteens on the map.
 - **The ground goes off.** Camping, digging and drilling on dry sand are a wager. The sand busters come up under
@@ -167,6 +192,16 @@ Each can happen inside the visit. Each says what is on screen.
     valuable thing in it."*
 11. *(0.2.0)* **The water that is not there.** *On screen:* a heat-struck passenger walks off toward a shimmer at
     the map's edge, and has to be fetched.
+12. **The field blinks.** *On screen:* a patch of glass nubs the crew has walked past all day; then every lens in
+    it sinks at once, and a moment later the rumble arrives. *"When a field's piinnok lenses all sink at once,
+    something large is moving under that sand."* *Why it lands:* the warning was free and they had been ignoring
+    it. (Built in the watcher kit; its place on this biome's roster is owed.)
+13. *(0.2.0)* **The stain boils.** *On screen:* after a fight on open sand the blood on the ground starts to
+    move. *"Kill something in the Stillsand and within the hour the stain boils with zuurrik stripping it, then
+    the bodies around it."* What is left is a picked skeleton and clean sand. *Why it is very Jawa:* *"Kill, loot
+    fast, leave."*
+14. **She will know you.** *On screen:* a tread line ending at a dead sandcrawler, and the crew, who came to strip
+    it, standing in the cab trying to make the drive turn over once first.
 
 ## When the Empire arrives
 
@@ -178,13 +213,20 @@ Each can happen inside the visit. Each says what is on screen.
   thing the swimmers have felt in years. The sand takes whoever is heaviest on it and leaves a funnel.
 - **The noise is on their side of the bill.** Drop pods, a siege camp and an ion emplacement are drums. The sand
   busters do not ask whose camp they are under.
+- **They saw the ship first.** The older design's note on any raid here: *"raids here see you too. They arrive
+  knowing your layout and pick the side without a wall."*
+- *0.2.0:* **every firefight starts a clock.** Blood on sand wakes the zuurrik, which strips the stain and the
+  bodies beside it and never touches the unwounded. *"A battle left standing becomes a zuurrik bloom."* A strike
+  team that wins on open sand has an hour to enjoy it. So has the crew.
 - **Shade is ground worth holding.** Under this sun a fight is also a fight for the skull, the wreck and the rock's
   lee. Whoever stands in the open is on a second clock.
 - **The cave is a redoubt for people.** A thick natural roof, one mouth, cool air. It does nothing for the ship.
 - *0.2.0:* **the thumper.** A staked drum that draws swimmers while its sand is wet (owner, 2026-09-30: *"thumper
   needs moisture not just thump"*). *"Bait a krayt away from your walls, or call one."* A crew that plants one
   beside a cordon and pours its last water on it has done the most Jawa thing in the campaign. **The gale** takes
-  the sun off everyone, blinds everyone, and buries a siege line as readily as a stockpile.
+  the sun off everyone, blinds everyone, and buries a siege line as readily as a stockpile. It also keeps the
+  swimmers down, so the gale is the one hour a strike team can cross deep sand safely, and the one hour the crew
+  can.
 
 ## Who else attacks; who hates the Empire
 
@@ -211,8 +253,12 @@ Each can happen inside the visit. Each says what is on screen.
 **Stay, as long as the clock allows:**
 - A secured cave: shade, cool, a seep, one door.
 - Droids to do the walking.
-- The sun itself: it never sets, so anything aboard that runs on light never stops (`UNMEASURED`: whether the
-  ship's own power can use it).
+- The sun itself: it never sets, so anything aboard that runs on light never stops. The older design read the
+  base game's solar generator and found it follows the sky's brightness, not the clock, so under the pinned sun
+  *"solar panels run at 100% forever with zero patches"*, and *"the dune gale... is then the only thing that ever
+  cuts the colony's power."* (That reading was of the code; nobody has watched it in a running game.)
+- The ship's own shadow: shade to work in on the lee side, and by the sheet's rule a place small life will come
+  to rent.
 - Nothing rots quickly in a cave the crew holds, and nothing rusts anywhere.
 
 ## Fuel, and the hull
@@ -225,22 +271,52 @@ fuel plan only for the desperate. The local find is salvage: a sand-sealed cylin
 chemfuel (the tank salvage table in `src/RimMandrake/Wreckage/Defs/ThingSetMakerDefs/RM_SalvageLoot.xml` lists it).
 The campaign's fuel ruling of 2026-08-15 names *"helixien gas (volcanic/deep-desert tiles)"* as one of the paths to
 fuel; no Stillsand source places a gas deposit on this biome, so this design does not claim one: `UNSETTLED`.
-**Where fuel is bought:** from the Jawa Trade Moot's crawlers if the campaign layer puts one on the map. Buying fuel
-from cousins who know exactly how badly the crew needs it is the intended kind of trade.
+**Where fuel is bought:** from the Jawa Trade Moot's crawlers if the campaign layer puts one on the map, and from
+ordinary trader caravans (the free tier has its own pack giant, the vaalok, built so that caravans come here at
+all). Buying fuel from cousins who know exactly how badly the crew needs it is the intended kind of trade.
+**What the crew pays with:** the sand. By his card of 2026-09-30 shovelled drift is glass sand at full yield and
+sifts to fine sand, *"a trade commodity"*; by his card of 2026-10-16 glass sand is also the ingredient another
+biome's rite needs. A crew that pays for fuel in sand it shovelled off its own ramp is the joke working.
 
-**The hull: the sun, and the sand.** His ruling of 2026-11-18 puts the biome's wear on the ship in 0.1.0.
-- *Heat (0.1.0).* A hull under a sun that never sets is a standing cooling load, at the one-sun rule's full value
-  for this tile's height in the sky. The answer is shade over the working decks and crew kept inside.
-- *Drift (0.1.0).* The dunes engine banks sand against the windward side of whatever stands in the wind. Around a
-  landed ship that means ramps, vents and outside fittings going under, a cell at a time, and hands with shovels;
-  shovelled drift is glass sand, which sells. `UNMEASURED`: whether drift builds against a gravship's hull today.
-- *Two stronger forms exist in the sources and the owner cut both before he stated the ship lens:* **the dunes take
-  the ship** (the landing thump as *"the loudest drum on the map"*, sand creeping up the hull cell by cell, dug out
-  or held off with ollim-wood anchors; out by his card of 2026-09-30) and **gale abrasion** (structure wear in a
-  dune gale; built, then cut 2026-10-23, restorable by reverting one commit). They are the second question under
-  `NEEDS HIM`.
+**The hull: the sun, the sand, and what the landing woke.** His ruling of 2026-11-18 puts the biome's wear on the
+ship in 0.1.0 and names the kinds: *"Heat... Rough weather... Different kinds of shields or armor. It's in there."*
+The frame is built: `src/RimUtinni/ShipShields/` (his eight shield rulings of 2026-09-02, recorded in
+`design/Jawa/proposals/ship_shields_deep_design.md`). This design adds no hull system. Every wear below has a
+source, named beside it.
 
-No shared system for hull wear was found in `src/`. The two 0.1.0 kinds need none.
+- *Heat on the hull (0.1.0; built, in the campaign tier).* The shield frame's exposure tracker wears the ship's
+  own structures while the map is in extreme heat and no shield covers it, with one advisory letter on landing
+  and never a refused landing. The answer he ruled is the **thermal veil**: *"It would reflect all external heat
+  outward with a mild mirror sheen to the shield, but also reflect all internal heat inward, so the temperature
+  slowly climbs anyway... Just use power for fuel"*. Under a sun that never sets the veil never gets a night off,
+  and here the power for it is free. `UNMEASURED`: the tracker calls a map hot at 58 °C outdoors or in a heat
+  wave. The dune sheet gives this ground 52 to 70 °C and the deep sheet's far-ring regions a median of 26 to
+  43 °C, so on some Stillsand tiles the built heat wear would fire and on others it would not. Nobody has read it
+  in a running game, and no bar pins the number.
+- *Blown sand (0.1.0; built for the stock sandstorm only).* The tracker also wears an unshielded ship while the
+  weather carries sand, and the biome's weather table includes the base game's sandstorm. The answer he ruled is
+  the light screen, which handles *"wind, ash, vapor, bio contamination, spores, smoke, sand, and rain damage
+  completely as well as repels small animals"*. The biome's own dune gale is written to carry no falling sand
+  (`RM_DuneGale.xml`), so the frame cannot see it today; teaching the frame the gale is the build, with the gale,
+  in 0.2.0.
+- *Drift (0.1.0, ordinary systems).* The frozen sheet says it of everything that stands here: *"a structure is
+  buried on its windward face and undercut on its lee"*, and bans any *"permanent structure not either buried or
+  actively dug out."* Its consolation is written for exactly this crew: *"crawler-scale machines are the only
+  settlements that make sense in a landscape that buries fixed ones."* The dunes engine banks sand against the
+  windward side of whatever stands in the wind; around a landed ship that means ramps, vents and outside fittings
+  going under a cell at a time, and hands with shovels. Shovelled drift is glass sand, which sells. `UNMEASURED`:
+  whether drift builds against a gravship's hull today (the engine clears the sand under a ship as it lands).
+- *Things that come up at it (0.2.0, with the creatures).* The landing is a drum. In the campaign layer the krayt
+  attack is *"weighted up by... vibration (drilling, a landing ship, the thumper)"*, and the krayt goes *"toward
+  whatever is making the most noise"*; in the free tier the muurrok and the busters answer the same noise. His
+  heavy field is the shield for it: it *"resists impactors, blaster fire, and large animal assault."*
+- *A proposal, flagged as the second reader's own:* ollim wood as cladding. The sources give the wood (*"armour
+  and structure that laughs at fire and folds to a hammer"*) and his ruling names armour among the answers; no
+  source puts ollim on a hull. It would be the scrap answer to the heat for a crew without a veil.
+- *Declined, and not revived here:* **the dunes take the ship** (sand climbing the hull until dug out, and the
+  landing raising the odds of an eruption by the ship's mass; out by his card of 2026-09-30) and **gale
+  abrasion** (structure wear in a dune gale; built, then cut on 2026-10-23 under his *"I cut, you veto"* card,
+  restorable by reverting one commit). They are the second question under `NEEDS HIM`.
 
 ## What the crew takes away
 
@@ -253,6 +329,12 @@ No shared system for hull wear was found in `src/`. The two 0.1.0 kinds need non
 - **Giant hide, plate and bone,** if something vast died within reach.
 - **Karrask plate,** from a livestock animal that sheds it.
 - **A cave the crew knows.** A second landing on the same tile starts with a harbour.
+- *0.2.0:* **the lens kit, the Stillsand's gift to the ship.** His instruction of 2026-09-24 for every biome:
+  *"how can this biome uniquely add something to the ship?"* The answer on record (`BIOME_SHIP_CONTRIBUTIONS_1`;
+  the lens chain is his typed ruling, choosing these two as the gift was an agent's pick) is *"the lens-glass
+  solar still and sun lance, fuel-free on an open deck"*. Both are built. The still makes water out of brine, wet
+  kills and eggs under the fixed sun; the lance is *"Archimedes' mirror in a biome where the sun never sets"*,
+  and it heats and never ignites.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -310,9 +392,13 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   ordinary slow predator today and its following is owed)
 - The small and the planted: grain-scale life, light-pipe nubs and glasscrust, tall and kneeling ollim and its
   loomma tenant, the murrowbulb crop. (built)
+- The piinnok, the watcher whose lenses follow a walker and sink when something large passes under. (built in the
+  watcher kit, admitted by his card of 2026-09-30; its roster row on this biome is owed)
 - The sand busters' eruption under work on dry sand. (built; moved in, see `rewrite_choices.md`)
 - Sand fishing; the wind and sand sound bed and the rumble. (built)
-- Heat on the hull and drift against it. (ordinary systems)
+- Heat and blown sand on the hull through the campaign's shield frame, answered by the thermal veil and the light
+  screen. (built in `src/RimUtinni/ShipShields/`; whether the heat wear fires at this biome's temperatures is
+  `UNMEASURED`) Drift against the hull. (ordinary systems)
 - The campaign's cast where the Star Wars and Utinni layers add it.
 
 **0.2.0, the stop with company**
@@ -326,12 +412,21 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Glare that blinds everyone but the Jawa, and the goggles for it. (built)
 - The mirage, and the passenger who chases it. (built; the cleanse recommended retiring it)
 - The ship scanner's readings here. (built)
+- The lens kit as the ship's gift from this biome: the solar still and the sun lance, on an open deck. (built;
+  moved here by the second reader, see `rewrite_choices.md`. The workshop that makes lenses stays in "later"; how
+  a visiting crew comes by the kit's lenses without it, by salvage or by trade, is `UNSETTLED`.)
+- Large things drawn to the landing, as wear on the hull; the frame taught to see the dune gale. (unbuilt)
 
 **Later (a crew that stays, or a colony)**
 - Learning to live here: glass sand to fine sand to sun glass and lenses, the sun furnace and lens bench, the solar
   oven and still, brine dipping and salt, the pearl and crest upgrades. (built)
 - The water ledger: the Sun-Debt, the Return at a debt stone, the pour, the wet line, the hourbloom that answers
-  it, the wringing still. (built; campaign faith)
+  it, the wringing still. (built; campaign faith. The Return belongs to the Deep Desert Tribes: by a ruling of
+  2026-10-01 a Salvation colony cannot learn it.)
+- The two rites the Jawa's own faith can find here (ruled-kept 2026-10-02, *"Accept all rites for now."*; since
+  put under review by his word of 2026-10-23 that many rites are *"somewhat fluff"*): the Last Track, at a dead
+  crawler; and the Unspilled March, walking full water toward a mirage and drinking none: *"He is the pool that
+  walks away. Walk after him with full skins. Do not drink. He is watching the water."* (unbuilt)
 - Giants' corpses becoming skeleton landmarks over a season; special outdoor desiccation.
 - The den quest, the sarlacc that comes to root at the seep, the krayt-den, sarlacc and debt-shrine cave kinds:
   campaign layer.
@@ -348,22 +443,28 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Krayts as events only (declined 2026-09-30: they stay wild). Kudda and truffle mole here (one home each, the Long
   Shade).
 - A biome heat kind, a glare floor, cover rules that change with a named region (the one-sun ruling of 2026-10-19).
-- **Recommended for dropping, not yet his:** the sun lance turret; arrivals delayed behind a dust plume; the extra
-  fossil scatter; the cooling draught. (The cleanse's recommendations, kept.)
+- **Recommended for dropping, not yet his:** arrivals delayed behind a dust plume; the extra fossil scatter; the
+  cooling draught. (The cleanse's recommendations, kept. The sun lance and the mirage were on the cleanse's list
+  too; both were his own card picks of 2026-09-30, so neither is on this one.)
 
 ## NEEDS HIM
 
-1. **Should the muurrok or the gale come forward into 0.1.0?** Both are built, both are his own asks (*"This biome
-   needs event level creatures"*; *"Call it a dune gale"*), and both are the kind of thing a player retells. They
-   are in 0.2.0 here because 0.1.0 already carries the busters and the swimmers and each addition is more to prove.
-   *As written* (default). *Muurrok forward:* the free tier's one leviathan is in the first version. *Gale forward:*
-   the biome's only weather and its only cover from orbit are in the first version; it needs the dunes engine's
-   owed live run.
-2. **How hard does the sand come for the ship?** *Heat and ordinary drift* (default: nothing he cut is revived).
-   *Bring back "the dunes take the ship":* the landing thump raises the odds of an eruption near the pad and sand
-   climbs the hull until dug out; it must never lock a launch. *Bring back gale abrasion in 0.2.0:* the gale wears
-   outside fittings; one revert.
+1. **[scope] Should the muurrok or the gale come forward into 0.1.0?** Both are built, both are his own asks
+   (*"This biome needs event level creatures"*; *"Call it a dune gale"*), and both are the kind of thing a player
+   retells. They are in 0.2.0 here because 0.1.0 already carries the busters and the swimmers and each addition
+   is more to prove. *As written* (default). *Muurrok forward:* the free tier's one leviathan is in the first
+   version. *Gale forward:* the biome's only weather, its only cover from orbit and the one safe hour on deep
+   sand are in the first version; it needs the dunes engine's owed live run.
+2. **[hull] The two wears on the ship that were cut: "the dunes take the ship" and gale abrasion.** The first he
+   put out by card on 2026-09-30, in a slate that also put out sinkholes and choosing prey by water; no typed
+   words came with that card. The second was built, then cut on 2026-10-23 under his card *"I cut, you veto"*,
+   and he did not veto it. On 2026-11-18 he ruled that every biome wears on the hull and that the answer is in
+   the sources. Neither is revived here. *Stay cut* (default: heat, blown sand, drift and what the landing wakes
+   carry the hull, each from a source he left standing). *Bring back "the dunes take the ship":* sand climbs the
+   hull until dug out and the landing raises the odds of an eruption near the pad; it must never lock a launch.
+   *Bring back gale abrasion in 0.2.0:* the gale wears outside fittings; one revert.
 
 Two things the cleanse proposal of 2026-11-17 decided are changed here by scope rather than asked, and each is a
 line under "Scope moves" in `rewrite_choices.md`: the sand busters are in 0.1.0, and the mirage is 0.2.0 instead
-of recommended for retirement.
+of recommended for retirement. The second reader added a third: the lens kit (solar still and sun lance) is in
+0.2.0 as the ship's gift, where the cleanse deferred the still and recommended retiring the lance.
