@@ -12,6 +12,14 @@ the pipeline reads it by name yet. Unlike most biomes the Cauldron has a Designe
 a locked sheet of seventeen leaves (`sheet.md`), thirty-five planned scenes and a passed exam, all written for a
 forty-colonist settlement. This design keeps the root's experience and re-aims it at a ship that stays weeks; the
 tree should be re-cut from this file, and until it is, the two disagree on scope and this file says where.
+**The locked sheet, root and tree describe a colony that stays and are NOT edited by this rewrite or by its second
+reader;** a later Designer run reconciles them.
+
+**Second reader, 2026-11-18:** a second agent that did not write this page read the six older biome files and the
+roster whole and repaired it. The hull section now rests on the owner's own words of 2026-10-09 and cites the built
+shield frame; the scab question now carries the related idea he declined; the suush's burst rests on his words; and
+the art law now says green is allowed in dewfall, as he ruled. What changed and why is at the top of
+`rewrite_choices.md`.
 
 **Tags:** `NEEDS HIM` is a question only the owner can settle, with the real answers and the default used here.
 `UNSETTLED` is a fact the sources do not fix. `UNMEASURED` is an engine fact nobody has checked. "Built" means the
@@ -35,8 +43,8 @@ It is not a sea, it is not dark, and the ship lands on it like any ground.
 dayside's scorched crust meets the nightside's hoarded volatiles, and where they touch they react. There is no
 volcano and no heat: *"It's all about the chemistry at the local site, not anything heat-based."* The ground
 exhales metal-rich gas through vents. The trees live on it, cannot get rid of the metal, and push it out into
-their own bark: *"the tree is slowly plating itself in its own tailings."* An old trunk is *"part tree, part slag
-heap."* Everything alive is *"either sealed or poisoned. There is no third strategy."* The pools look like water
+their own bark: *"The poison is not a weapon. It is metabolic waste, and the tree is slowly plating itself in its
+own tailings."* An old trunk is *"part tree, part slag heap."* Everything alive is *"either sealed or poisoned. There is no third strategy."* The pools look like water
 and are not.
 
 **Seen from the ship, this is the richest scrapyard the crew has ever landed in, and it is alive.** The sheet says
@@ -83,24 +91,33 @@ The approach is through the anger: a rainless sky full of lightning. `UNSETTLED`
 rough (see "What the place does to the ship").
 
 On the ground the light *"never changes and never comes from anywhere"*: no shadows, no noon, a dawn that will not
-resolve. The soil is black and slate, ringed with mineral stain. The trunks are bone-pale and streaked with grey
+resolve. *"Your eyes never adapt because there is nothing to adapt to."* It is faintly brighter toward the star,
+*"the only way the player can tell which way the sun is."* The soil is black and slate, ringed with mineral stain. The trunks are bone-pale and streaked with grey
 metal tears. Somewhere close a vent is puffing visibly, steadily, like something breathing. There are pools. Nothing
-is green: *"Anything green is a visitor, a mistake, or dying."*
+is green: *"Anything green is a visitor, a mistake, or dying."* (One exception, his ruling of 2026-10-03: the law
+lifts during dewfall, when the dew itself may flash green-amber.)
 
 Before the first hour is out the player should have learned three things by looking and by inspecting, without a
 worker being hurt: which trunks carry metal (flecks on the bark, and an assay on inspection); that the pools are
 chemistry and not drink; and where the nearest vent is and that it is active.
 
-A translucent gasbag drifts past the hatch at head height. It is docile. It is a suush. Do not shoot it.
+A translucent gasbag drifts past the hatch at head height. It is docile. It is a suush. Do not shoot it. His words
+when he asked for it (2026-09-26): it *"floats around the Cauldron feasting on the strange chemistry of its roiling
+atmosphere and... detonates when you shoot it... Make it both disturbing and beautiful... Docile, tamable, bizarre."*
 
 ## The first day
 
 - **The trees are ore.** Felling a thornwood is slow, exposed work and pays wood and metal together, more from the
   older, scabbier trunks. Ruled 2026-09-28: *"metal-infused trees are slow to fell, yield growth-scaled metal."*
   This is what the stop is for.
-- **Under the hull or in a suit.** A roof stops what comes out of the air. So does a complete environmental seal.
-  A robe does not. Direct contact with a pool, and smoke from a gas fire, are separate dangers that a roof does
-  nothing about.
+- **Under the hull or in a suit.** The air itself burns: an unsealed, unroofed body takes acid every hour it stands
+  outside, bloom or no bloom, whatever its faction; only the natives are spared. A roof stops what comes out of the
+  air. So does a complete environmental seal (the mod has a suit and helmet in vexxith to craft; his words:
+  *"Environmental/vacsuits will protect the players of course"*). A robe does not. Direct contact with a pool, and
+  smoke from a gas fire, are separate dangers that a roof does nothing about.
+- **Where the ship sits.** The bloom's dose is *"strongest near vents, not a whole-map toxin tax"*, and the vents
+  are leaking, stable or lately blown out. Setting down away from the leaking ones, and capping the near ones
+  first, is the first plan of the stop.
 - **The water problem.** Nothing here can be drunk. *"The one thing this wet-looking place cannot give you is a
   drink."* The crew is on ship's water until it has a filter running.
 - **The falter.** Before a bloom the vents' breathing visibly drops off, a message says so, and the small native
@@ -109,24 +126,32 @@ A translucent gasbag drifts past the hatch at head height. It is docile. It is a
   each other, the old hands are already walking for the roof."*
 - **The gas.** An uncapped vent leaks a visible, flammable cloud that pools and drifts. One spark and it carries
   fire along every connected patch of gas, over water as easily as ground, with toxic smoke and blasts that throw
-  loose goods. A gap with no gas in it, or a sealed wall, stops it; a pond does not.
+  loose goods. A gap with no gas in it, or a sealed wall, stops it; a pond does not. The cloud rides the wind, on a
+  heading that changes by the day, so the crew can see which way it will go. The dry storms overhead are real
+  lightning, and lightning is a spark.
 - **The ruin.** One corroded works stands on the map: wellhead, condenser stack, dead tanks, broken pipe, a spent
   filter cartridge. It is salvage, and studying its rig in place is how the crew learns to build its own.
-- **Food that bites back.** Every animal's meat is toxic and prized; the sulphur-yellow tsevrix roasts into
-  something safe; selvix is the local medicine herb. None of it is a larder.
+- **Food that bites back.** Every animal's meat is toxic and prized; the sulphur-yellow tsevrix (*"a spill of wet
+  lanterns that give no light"*) roasts into something safe, *"the only plant food in a biome whose meat is all
+  poison"*, and *"only to a camp with a fire"*; selvix is the local medicine herb. None of it is a larder, and the
+  one meal needs the one thing the giant punishes.
 
 ## The first week
 
 - **Cap and filter.** A gas-tap scaffold on a vent stops that vent's leak and banks condensate: *"a scavenger's
   answer to a hole in the world that breathes fire: a clamped scaffold of salvage steel."* A powered,
   cartridge-fed Filter-Works turns condensate into saleable reagent and toxic or acid water into water the crew can
-  drink. This is the point at which a stop can last.
+  drink. This is the point at which a stop can last. The cartridges are local craft and local salvage: *"crushed
+  crust-mineral, frond-felt from the xithess crowns, a wax seal at each end. Spent ones turn the colour of what
+  they caught. The ruins are full of spent ones."* And the scaffold has a rival: *"Every scaffold in the forest has
+  pry-marks on it, because something out there prefers to drink from the tap."*
 - **Fuel.** Xithess, the pale filter-frond plant, harvests straight to chemfuel, *"a fistful of the forest's own
   refinery"*; the amber sessarix resin boil does the same.
 - **The giant has opinions.** The vexxiss is *"a hill of slag that moves"*, eyeless and slow. It drinks vents dry
   for a while, pries ordinary taps off the ones it wants, and *"hates fire the way a lung hates smoke"*: it comes
-  for whoever lit one and beats the fire out. Tame, it can be sheared for vexxith, plate that acid and heat do
-  nothing to.
+  for whoever lit one and beats the fire out. A vent it has drunk stays quiet for days and then visibly recovers.
+  Tame, it can be sheared for vexxith, plate that acid and heat do nothing to; only a living one gives it (*"a
+  kill wastes the lode... a corpse's plates crumble"*), which is the whole reason not to shoot the fire marshal.
 - **Bound herds.** Rhossak keep to the grove they are bound to and read as bound; the galled ones carry edible
   galls.
 - **The ledger.** By the end of a week the Health tab is the story of the stop: who was outside in the second
@@ -139,12 +164,16 @@ A translucent gasbag drifts past the hatch at head height. It is docile. It is a
 Each can happen inside the visit. Each says what is on screen.
 
 1. **The balloon.** *On screen:* a docile floating gasbag drifts over the salvage pile; someone shoots it; it goes
-   off as a cloud of toxic gas over the whole work party. *Why it is funny:* it was not doing anything.
+   off as a cloud of toxic gas over the whole work party. *Why it is funny:* it was not doing anything. The source's
+   own summary: *"one joke with a fuse on it."* It can be tamed, and a crew that tames one has a pet that must
+   never be shot at, aboard a ship the Empire shoots at.
 2. **The yard goes up.** *On screen:* a spark at one end of a low haze; fire runs the length of it and across a
    pool, and the blast throws a week of stacked salvage in every direction. *"Blow back items like an explosion."*
-   For people whose wealth is piles, this is the worst thing that can be shown.
-3. **The fire marshal.** *On screen:* a Jawa lights a cooking fire. A hill gets up, walks over without hurry,
-   stamps the fire out and then turns to the cook.
+   For people whose wealth is piles, this is the worst thing that can be shown. The blast throws eligible pawns
+   too, and a Jawa is small.
+3. **The fire marshal.** *On screen:* a Jawa lights a cooking fire to roast the tsevrix. A hill gets up, walks
+   over without hurry, stamps the fire out and then turns to the cook. (The enrichment spec gave it a bellow and a
+   readable "bellows" sign so the player knows before it turns; the sound is out, the sign is worth keeping.)
 4. **Everything stops.** *On screen:* the vents' puffs thin out, the drummers freeze mid-step, the floating things
    hang still, and a line of hooded figures drops what it is carrying and runs for the ramp.
 5. **The tree pays.** *On screen:* a pale trunk comes down at last and what spills out with the wood is steel.
@@ -161,9 +190,10 @@ Each can happen inside the visit. Each says what is on screen.
 
 ## When the Empire arrives
 
-- **The air does not take sides.** Ambient acid and the bloom fall on every unsealed body of every faction.
-  `UNMEASURED`: whether Imperial armour counts as a full seal. If it does, their probe droids and troopers shrug
-  off the air and the crew's edge is everything else below.
+- **The air does not take sides.** His words (2026-10-09): *"raids from the empire suffer constant slow damage from
+  that ambient acidity when they raid the players there."* Ambient acid and the bloom fall on every unsealed body
+  of every faction. `UNMEASURED`: whether Imperial armour counts by its stats as a full seal. If it does, the
+  build contradicts his sentence, and that is the `NEEDS HIM` question below.
 - **Blasters are sparks.** A firefight in vent haze is a firefight in fuel. The crew chose which vents to cap, so
   the crew knows where the gas lies, and a line of troopers advancing through an uncapped hollow is standing in
   it. Lightning lights it too.
@@ -180,9 +210,12 @@ Each can happen inside the visit. Each says what is on screen.
   hound among them, against the sheet's own *"nothing fast"*. They are the things that chase.
 - **Ambushers.** The forest's own predators wait; the bedbug bites, the floating garsulix hunts.
 - **The vexxiss,** if provoked with fire, or over a vent.
-- **Nobody lives here.** Whoever came for the metal left ruins. There is no settlement, no ally, and no one to
-  buy from on the ground. Nothing here hates the Empire in particular; the vexxiss hates fire, and the Empire
-  brings a great deal of it.
+- **Nobody lives here, but somebody works here.** *"Whoever came before came for the metal and the gas, and had to
+  bring their own water."* The item descriptions name the Farmers five times: they cap vents (*"The Farmers cap
+  them. The forest keeps making more"*) and build small shrines to the river god. No source gives them a
+  settlement or a trader on the ground, so none is promised; a Farmer work party met at a wellhead would be new
+  content. Nothing here hates the Empire in particular; the vexxiss hates fire, and the Empire brings a great deal
+  of it.
 
 ## What forces the crew out; what lets them stay
 
@@ -213,12 +246,27 @@ Each can happen inside the visit. Each says what is on screen.
 
 ## What the place does to the ship
 
-- **Acid air on the hull.** Built: exposed player buildings on the ship's substructure slowly burn down toward a
-  floor, with one warning; vexxith is immune and one hull-liner rig stops it. That is the armour answer the
-  sources already name, and it is in 0.1.0 by his ruling of 2026-11-18.
+His ruling (card, 2026-11-18) names this biome's wear first after heat: *"Heat. Acid."* The wear below is his
+own, said a month earlier, and it is built. This design adds no hull system and proposes no wear of its own.
+
+- **Acid air on the hull (his words, built).** 2026-10-09: *"the Forge and Cauldron have ambient acidic
+  environments that would constantly damage the ship and even players, but materials like this allow the ship to
+  exist there without such damage."* Built in `src/RimMandrake/Cauldron/Source/RM_AcidAir.cs`: a player building
+  on the ship's substructure under open sky is sampled hourly and burns down toward a floor and no further, with
+  one message (*"The air here is eating the ship's hull. Vexxith plate or a hull liner rig will stop it."*). The
+  Forge shares the service. The armour answers are his: vexxith parts take none, and the biome's deck part, the
+  hull liner rig, *"glazes the whole ship's skin against acid, from ground vexxith plate"*
+  (`BIOME_SHIP_CONTRIBUTIONS_1`). So the hull's answer runs through the living giant.
+- **How it sits with the shield frame.** The shared frame is `src/RimUtinni/ShipShields/` (his shield rulings of
+  2026-09-02). It sees three hazards today (extreme heat, extreme cold, sand in the weather) and acid air is not
+  one of them; the Cauldron's sampler is the biome's own and lives in the free tier, where the shared file says a
+  ship touch belongs to the campaign tier. Folding the sampler under the frame is owed shared work, not a design
+  question. Whether a shield answers acid air is `UNSETTLED`: his words give the light screen *"wind, ash, vapor,
+  bio contamination, spores, smoke, sand, and rain damage completely"*, and reading acid air as vapor is this
+  page's reading, flagged as such.
 - **Hands-on work.** An older pitch that he neither took nor struck on 2026-09-28: the ship *"becomes the biome's
-  newest tree"*, growing crystal scab that is scrubbed off for trace metal. It is not built and not promised;
-  see `NEEDS HIM`.
+  newest tree"*, growing crystal scab that is scrubbed off for trace metal. It is not built and not promised.
+  Two days later he declined GPT's extension of it by name; see `NEEDS HIM`, where it is listed and not revived.
 - **The approach.** His ruling names *"rough weather turbulence in the approach"* among the ways biomes wear on a
   ship, and this is the biome with the angry sky. No Cauldron source describes a rough descent, so none is promised
   here; it belongs to whatever shared rule covers storm approaches.
@@ -302,6 +350,7 @@ Every feature is in one bucket.
 - Refining shed ossrith crystal to uranium.
 - The three rites (the Filtered Cup, the Engine Hour, the Capping) and Oomo's grudging shrine.
 - The scab on the ship, if he wants it.
+- A Farmer work party as an encounter (new here; the sources only name the Farmers in descriptions).
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - The bespoke soundscape, the engine underfoot as audio, directional hisses, the vexxiss bellow (sound out,
@@ -310,16 +359,31 @@ Every feature is in one bucket.
 - Volcanism, steam, geysers, any heat source; green foliage; rain.
 - The tile scorer and its rarity setting (worldgen is out in every version).
 - The frozen sheet's bans on grazers and fast animals, for the seven imports he kept.
+- GPT's extensions he declined on the enrichment card of 2026-09-30, *"None of these thanks"*: Scabweight (the
+  ship-scab extension), Pressure Lattice, ruin-learned filtercraft, Oomo's courtesy; and the Engine Below, not
+  picked. *"The ruled versions of those features still stand... only GPT's extensions are out."*
 - **Recommended for dropping, not yet his:** crystalmit bricks.
 
 ## NEEDS HIM
 
-1. **Does the ship grow scabs?** The pitch of 2026-09-28 he neither took nor struck. *No* (default): the built
-   acid wear and its liner are the whole of what the place does to the hull. *Yes, later:* scab to scrub, trace
-   metal for the trouble, a visible cost at launch if left; a new system. *Yes, instead of the acid wear:* gentler
-   and funnier, and the built sampler is retired.
-2. **Does Imperial armour count as sealed?** *Whatever the stats say* (default; needs measuring). *Never:* the air
-   fights for the crew every time. *Always:* the air is the crew's problem alone.
+1. **Does the ship grow scabs?** The record, in order. 2026-09-28: the pitch (*"The ship becomes the biome's newest
+   tree"*) was *"neither adopted nor struck"*. 2026-09-30: on the GPT enrichment card he declined the ship, vent
+   and tech group whole, *"None of these thanks"*, which included "Scabweight", GPT's extension of the scab; on the
+   same card he picked the vexxith loop, whose list of uses includes *"gravship scab-scrapers"*. 2026-10-09: he
+   described the hull wear as acid damage answered by material, which is what was built. This page does not revive
+   the scab. *No* (default): the built acid wear and its liner are the whole of what the place does to the hull.
+   *Yes, later:* scab to scrub, trace metal for the trouble; a new system. *Yes, instead of the acid wear:* the
+   built sampler is retired.
+2. **Imperial armour and the acid air.** His words say raiders *"suffer constant slow damage"* here. The build
+   spares anything whose stats make a full seal, and nobody has measured stormtrooper armour. *His sentence wins*
+   (default): raiders burn whatever they wear, unless a unit is plainly a sealed machine. *The stats win:* sealed
+   troopers shrug it off and the air is the crew's problem alone.
 3. **The locked tree is a settlement; this design is a stop.** The root's last promise (*"a prepared forty-colonist
    routine"*) is "later" here. *Re-cut the tree from this file when the hold lifts* (default). *Keep the tree and
    treat this as a second reading.*
+4. **Oomo's shrine: in, or later?** On 2026-10-15 he ruled the extras in by name: *"Everything except the
+   Seismometer"*, and the packet lists the Oomo shrine among them. The cleanse of 2026-11-17 moved it off and this
+   page files it under "later" as campaign-layer devotion a ship passes by. His word is the older and the more
+   direct. *Later* (as written here). *0.2.0, on the campaign layer,* with the ruin it stands in.
+
+Themes, for gathering these across biomes: 1 hull · 2 other · 3 locked-tree · 4 scope.
