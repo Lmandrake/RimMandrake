@@ -260,8 +260,41 @@ def failed_part_gaps(checklist, gaps):
     return out
 
 
+def shape_errors(so, gaps_only=False):
+    """-> what in a structured answer the program cannot read ([] = readable): every gap an object with list `ids`, and
+    (a whole verdict) every checklist row an object with list `parts`. `repairs` is not checked here: a value that is not
+    a list answers no slot (take), so every slot stays open. An answer that breaks this is recorded, never a crash."""
+    errs = []
+    for k, g in enumerate(so.get("gaps") or []):
+        if not isinstance(g, dict):
+            errs.append("gap %d is not an object" % (k + 1))
+        elif not (isinstance(g.get("ids", []), list) and all(isinstance(i, str) for i in g.get("ids") or [])):
+            errs.append("gap %d's ids is not a list of strings" % (k + 1))
+        elif not isinstance(g.get("evidence", []), list):
+            errs.append("gap %d's evidence is not a list" % (k + 1))
+    if gaps_only:
+        return errs
+    for k, r in enumerate(so.get("checklist") or []):
+        if not isinstance(r, dict):
+            errs.append("checklist row %d is not an object" % (k + 1))
+        elif not isinstance(r.get("id"), str):
+            errs.append("checklist row %d's id is not a string" % (k + 1))
+        elif not (isinstance(r.get("parts", []), list) and all(
+                isinstance(q, dict) and isinstance(q.get("ok"), bool) for q in r.get("parts") or [])):
+            errs.append("checklist row %s's parts are not objects each with a true/false ok" % r["id"])
+    return errs
+
+
+def prior_slots(prior):
+    """The earlier gaps a later look answers, by number (7_same_problem_rule.md rule 1). A record kept on file as
+    malformed counts for nothing: it is no slot, never carried and never reopened (it stays as `prior_malformed`)."""
+    return [g for g in (prior or {}).get("gaps") or [] if isinstance(g, dict) and g.get("gid") and not g.get("malformed")]
+
+
 def _usable(rec):
-    return isinstance(rec, dict) and rec.get("verdict") in ("covered", "not_covered")
+    """A verdict a later look may check against: covered or not_covered with no error. A covered word the program
+    refused (a row missing, an input moved, a sign refused) is a failed attempt and keeps the baseline (rule 6)."""
+    return isinstance(rec, dict) and rec.get("verdict") in ("covered", "not_covered") and not rec.get("error")
 
 
 def prior_verdict(d):
@@ -344,8 +377,13 @@ def entries(d, read=None):
         def put(h, lines):
             # a repeated heading is keyed by its occurrence (`#2`, ...): the second no longer hides the first
             # (RIMMANDRAKE_KEY_REPEATED_SHEET_HEADINGS_SECOND_HID_FIRST); a heading met once keeps its plain key
+            # a key already taken (a literal `A#2` heading after two `A`s, or before) takes the next free number
             seen[h] = seen.get(h, 0) + 1
-            out["sheet:%s" % h if seen[h] == 1 else "sheet:%s#%d" % (h, seen[h])] = "\n".join(lines)
+            key = "sheet:%s" % h if seen[h] == 1 else "sheet:%s#%d" % (h, seen[h])
+            while key in out:
+                seen[h] += 1
+                key = "sheet:%s#%d" % (h, seen[h])
+            out[key] = "\n".join(lines)
         for line in text.splitlines():
             if line.startswith("## "):
                 put(head, body)
@@ -390,11 +428,11 @@ def fix_claims(d, prior):
         return [], []
     if f.get("against") != prior.get("judge"):
         return [], ["%s is against %s, not the last verdict's %s" % (FIXES_FILE, f.get("against"), prior.get("judge"))]
-    gids = {g.get("gid") for g in prior.get("gaps") or [] if isinstance(g, dict)}
+    gids = {g.get("gid") for g in prior_slots(prior)}
     ok, refused, seen = [], [], set()
     for c in f.get("claims") or []:
         gap = c.get("gap") if isinstance(c, dict) else None
-        if gap not in gids:
+        if not isinstance(gap, str) or gap not in gids:
             refused.append("claim %r names no gap of %s" % (gap, prior.get("judge")))
         elif not CT.txt(c.get("evidence")):
             refused.append("claim on %s has no evidence" % gap)
@@ -418,7 +456,7 @@ def delta_plan(d, prior, read=None):
     changed = sorted(k for k in set(old_h) | set(now_h) if old_h.get(k) != now_h.get(k))
     claims, refused = fix_claims(d, prior)
     claimed = {c["gap"] for c in claims}
-    gaps = [g for g in prior.get("gaps") or [] if isinstance(g, dict)]
+    gaps = prior_slots(prior)
     rows = []
     for c in claims:
         rows += next((g.get("ids") or [] for g in gaps if g.get("gid") == c["gap"]), [])
@@ -480,6 +518,18 @@ def delta_prompt(d, repo, dp, round_no):
 # matches text: each earlier gap is a numbered slot the judge answers in `repairs`, and identity is the slot's number
 # and rows. Unsure = open.
 GID = re.compile(r"\bg\d+\b")
+
+
+ENTRY_KINDS = ("inv", "dec", "record", "leaf", "tree", "scene", "showcase", "rest", "floor", "exam", "sheet")
+
+
+def named_slots(g, gids):
+    """The slots a finding names by number: the gap numbers in its `since` before any newline. An entry key, a newline
+    and a passage (rule 4 (a)) is a citation: neither the key (a heading may hold `g1`) nor the quotation names a slot."""
+    head, sep, _q = str(g.get("since") or "").partition("\n")
+    if sep and head.strip().strip("`'\"").partition(":")[0] in ENTRY_KINDS:
+        return set()
+    return set(GID.findall(head)) & set(gids)
 QUOTE_MIN = 12     # characters: a changed passage shorter than this proves nothing (an id, a word)
 
 
@@ -509,7 +559,7 @@ def _slots(slots, rows, repairs, seen):
         if not isinstance(g, dict):
             continue
         ids = {i for i in g.get("ids") or [] if isinstance(i, str)}
-        named = set(GID.findall(str(g.get("since") or ""))) & gids
+        named = named_slots(g, gids)
         if repairs is None or g.get("from_rows") or g.get("new_since") == "unfixed":
             named |= {sl.get("gid") for sl in slots if ids & set(sl.get("ids") or [])}
         for gid in named:
@@ -620,7 +670,7 @@ def reopen_named(rec, new, slots):
     by_gid = {s.get("gid"): s for s in slots if isinstance(s, dict)}
     for g in new:
         ids = {i for i in g.get("ids") or [] if isinstance(i, str)}
-        named = set(GID.findall(str(g.get("since") or ""))) & set(by_gid)
+        named = named_slots(g, by_gid)
         if g.get("new_since") == "unfixed":
             named |= {gid for gid, s in by_gid.items() if ids & set(s.get("ids") or [])}
         if not named:
@@ -641,7 +691,7 @@ def reopen_named(rec, new, slots):
 
 def rejudge_slots(rec, prior, repairs):
     """A full re-judge on a refusing prior verdict: every earlier gap is a slot (rules 1-3)."""
-    slots = [g for g in prior.get("gaps") or [] if isinstance(g, dict) and g.get("gid")]
+    slots = prior_slots(prior)
     closed, still, naming = _slots(slots, rec.get("checklist"), repairs, rec.get("gaps") or [])
     rec["gaps"] = [g for g in rec.get("gaps") or [] if not any(g is x for x in naming)] + [
         dict(g, carried=True, new_since="unfixed") for g in still]
@@ -713,7 +763,7 @@ def rounds(st, d=None, readers_as_rounds=False, voids=False):
     recorded = [dict(r) for r in st.get("coverage_rounds") or [] if isinstance(r, dict)]
     known = {r.get("judge") for r in recorded} | run_void.stage_spend_refs(st)
     last = prior_verdict(d) if d else None
-    legacy, reader = {}, {}
+    legacy, reader, reader_at = {}, {}, {}
     for c in (st.get("budget") or {}).get("charges") or []:
         ref = c.get("ref") if isinstance(c, dict) else None
         if isinstance(ref, str) and ref.startswith(UNIT_PREFIX) and ref.endswith(READER_SUFFIX) and not readers_as_rounds:
@@ -721,13 +771,15 @@ def rounds(st, d=None, readers_as_rounds=False, voids=False):
             # Graffiti and LeaningScrub each read one phantom round)
             j = ref[:-len(READER_SUFFIX)]
             reader[j] = reader.get(j, 0) + (JUDGE_P90_TOKENS if c.get("kind") == "unmeasured" else int(c.get("tokens") or 0))
+            reader_at[j] = max(str(c.get("at") or ""), reader_at.get(j, ""))
             continue
         if isinstance(ref, str) and ref.startswith(UNIT_PREFIX) and ref not in known:
-            r = legacy.setdefault(ref, {"judge": ref, "at": c.get("at"), "verdict": None, "tokens": 0, "legacy": True})
-            if c.get("kind") == "unmeasured" or r["tokens"] is None:
-                r["tokens"] = None
+            r = legacy.setdefault(ref, {"judge": ref, "at": c.get("at"), "verdict": None, "tokens": None,
+                                        "unmeasured_calls": 0, "legacy": True})
+            if c.get("kind") == "unmeasured":
+                r["unmeasured_calls"] += 1
             else:
-                r["tokens"] += int(c.get("tokens") or 0)
+                r["tokens"] = (r["tokens"] or 0) + int(c.get("tokens") or 0)
     for r in legacy.values():
         if last and last.get("judge") == r["judge"]:
             r["verdict"] = last.get("verdict")
@@ -737,8 +789,9 @@ def rounds(st, d=None, readers_as_rounds=False, voids=False):
     for r in out:
         if reader.get(r.get("judge")):
             r["reader_tokens"] = reader.pop(r["judge"])
-    if reader:   # a reader whose judge has no round on file: its spend still counts, on a spend-only row
-        out.append({"judge": None, "verdict": None, "tokens": sum(reader.values()), "reader_only": True})
+    for j in sorted(reader):   # a reader whose judge has no round on file: its spend still counts, on a spend-only row
+        out.append({"judge": None, "verdict": None, "tokens": reader[j], "reader_only": True, "reader_of": j,
+                    "at": reader_at.get(j) or None})
     for r in out:
         why = void_cause(r)
         if why:
@@ -746,9 +799,18 @@ def rounds(st, d=None, readers_as_rounds=False, voids=False):
     return out if voids else [r for r in out if not r.get("void_system")]
 
 
+def _round_spend(r):
+    """One round's spend: its measured tokens plus the p90 for each call that ran and could not be measured
+    (`unmeasured_calls`: a judge that never launched spent 0). A round written before that count with no measured
+    token is one unmeasured call."""
+    t, u = r.get("tokens"), r.get("unmeasured_calls")
+    if not isinstance(u, int) or u < 0:
+        u = 1 if t is None else 0
+    return int(t or 0) + JUDGE_P90_TOKENS * u + int(r.get("reader_tokens") or 0)
+
+
 def spend(rs):
-    return sum((JUDGE_P90_TOKENS if r.get("tokens") is None else int(r["tokens"])) + int(r.get("reader_tokens") or 0)
-               for r in rs)
+    return sum(_round_spend(r) for r in rs)
 
 
 def _looks(rs):
@@ -759,12 +821,14 @@ def _looks(rs):
 def released_rounds(st, d, rs, rel):
     """-> the rounds since the release `rel` (a coverage_releases row): by its judges_at list, or (a release written
     before 2026-11-18) by its rounds_at count with the phantom reader rounds. Shared by stop_reason and `pipe show`."""
+    def after(r):   # an orphan reader's spend counts from the release when it was charged after it (unknown time: kept)
+        return not (r.get("at") and rel.get("at")) or str(r["at"]) > str(rel["at"])
     if isinstance(rel.get("judges_at"), list):
         before = set(rel["judges_at"])
-        return [r for r in rs if r.get("reader_only") or r.get("judge") not in before]
+        return [r for r in rs if (after(r) if r.get("reader_only") else r.get("judge") not in before)]
     old = rounds(st, d, readers_as_rounds=True, voids=True)[int(rel.get("rounds_at") or 0):]   # the count it was written on
     keep = {r.get("judge") for r in old if not r.get("reader_phantom")}   # a phantom is dropped, never promoted
-    return [r for r in rs if r.get("judge") in keep or r.get("reader_only")]
+    return [r for r in rs if (after(r) if r.get("reader_only") else r.get("judge") in keep)]
 
 
 def look_balance(st, d=None, rs=None, mod=None):
@@ -1080,23 +1144,40 @@ def llm_reader(d, repo, unit, charge=True, runner=None):
         argv = [CLAUDE, "-p", reader_prompt(items), "--model", MODEL, "--name", "COVERAGE SECOND READER %s" % unit,
                 "--output-format", "json", "--json-schema", json.dumps(READER_SCHEMA, separators=(",", ":")),
                 "--dangerously-skip-permissions"]
+        def bill(res):
+            # measuring and charging are apart: a call that ran and cannot be measured is charged unmeasured
+            if not charge:
+                return
+            tok = None
+            if isinstance(res, dict):
+                try:
+                    import role_launch as RL
+                    tok = RL.run_tokens(res, MODEL)     # modelUsage when the result has it; else usage as MODEL
+                except Exception:  # noqa: BLE001 - an unknown model is unmeasured, never weighed as another
+                    tok = None
+            try:
+                DS.charge(d, tok or 0, "review" if tok is not None else "unmeasured", unit + READER_SUFFIX)
+            except Exception:  # noqa: BLE001 - a charge we cannot write never fails the read
+                pass
         try:
             code, out = (runner or default_runner)(spend_watchdog.wrap(argv, READER_BUDGET_USD), repo,
                                                    dict(os.environ, RM_ROLE_UNIT=unit), READER_TIMEOUT_S)
-            res = json.loads(out or "null")
-        except (OSError, subprocess.SubprocessError, ValueError):
+        except OSError:          # never launched: nothing was spent
             return None
+        except subprocess.SubprocessError:    # it ran (a timeout): its spend is unknown
+            bill(None)
+            return None
+        try:
+            res = json.loads(out or "null")
+        except ValueError:
+            res = None
+        bill(res)
         if not isinstance(res, dict):
             return None
-        if charge:
-            try:
-                import role_launch as RL
-                tok = RL.run_tokens(res, MODEL)     # modelUsage when the result has it; else usage as MODEL
-                DS.charge(d, tok or 0, "review" if tok is not None else "unmeasured", unit + "-reader")
-            except Exception:  # noqa: BLE001 - a charge we cannot measure never fails the read
-                pass
-        grades = (res.get("structured_output") or {}).get("grades") if code == 0 else None
-        return grades if isinstance(grades, list) and len(grades) == len(items) else None
+        so = res.get("structured_output")
+        grades = so.get("grades") if code == 0 and isinstance(so, dict) else None
+        ok = isinstance(grades, list) and len(grades) == len(items) and all(isinstance(g, dict) for g in grades)
+        return grades if ok else None   # a grade that is not an object is no second read
     return reader
 
 
@@ -1310,7 +1391,7 @@ def record_round(d, rec):
     gaps = rec.get("gaps") or []
     st.setdefault("coverage_rounds", []).append({
         "judge": rec["judge"], "at": rec["at"], "verdict": rec.get("verdict"), "tree": rec.get("tree"),
-        "tokens": rec.get("tokens"), "gaps": len(gaps),
+        "tokens": rec.get("tokens"), "unmeasured_calls": int(rec.get("unmeasured_calls") or 0), "gaps": len(gaps),
         "ids": sorted({i for g in gaps for i in g.get("ids") or []}),
         "tags": {t: sum(1 for g in gaps if g.get("new_since") == t) for t in TAGS if any(
             g.get("new_since") == t for g in gaps)},
@@ -1361,10 +1442,10 @@ def repair_blocks(rec):
 
 
 def close_counts(st, d=None):
-    """-> the four counts over a concept's coverage rounds: looks (covered or not_covered: a malformed round is not a
-    look), refusals (not_covered), and the per-round counts summed (a round without one counts 0)."""
+    """-> the four counts over a concept's coverage rounds: looks (covered or not_covered: a malformed round, or a
+    covered word the program refused with an error, is not a look), refusals (not_covered), and the per-round counts summed (a round without one counts 0)."""
     rs = _looks(rounds(st, d))   # a legacy judge (charges only, verdict unknown) is a look its counts never saw
-    looks = [r for r in rs if r.get("verdict") in ("covered", "not_covered") or r.get("legacy")]
+    looks = [r for r in rs if (r.get("verdict") in ("covered", "not_covered") and not r.get("error")) or r.get("legacy")]
     out = {"looks": len(looks), "refusals": sum(1 for r in looks if r.get("verdict") == "not_covered")}
     # counted: written by the counting build (it carries a count; one it lacks is 0, the case's rule); a round with no
     # count, or a null one, was never counted
@@ -1412,8 +1493,10 @@ def _clip(s, n=160):
 
 
 def earlier_gaps(st, d):
-    """The gaps earlier rounds named: the previous verdict's in full, and every recorded round's ids."""
-    out = [{"ids": r.get("ids") or []} for r in st.get("coverage_rounds") or [] if isinstance(r, dict)]
+    """The gaps earlier looks named: the previous verdict's in full, and every recorded look's ids. A failed attempt
+    (an error, a timeout, a malformed answer) is no look: a first real look after one is still the first."""
+    out = [{"ids": r.get("ids") or []} for r in st.get("coverage_rounds") or [] if isinstance(r, dict)
+           and r.get("verdict") in ("covered", "not_covered") and not r.get("error")]
     last = prior_verdict(d)
     if last:
         out += [g for g in last.get("gaps") or [] if isinstance(g, dict)]
@@ -1432,7 +1515,7 @@ LATER_SEARCH = ("This is a later round, and the open search was round 1's: now o
 
 def prompt(d, repo, ids=(), prior=False, round_no=1):
     rel = CT.concept_rel(d, repo)
-    slots = [g for g in ((prior_verdict(d) or {}).get("gaps") or []) if isinstance(g, dict)] if prior else []
+    slots = prior_slots(prior_verdict(d)) if prior else []
     again = ("A previous judge's verdict is in %s/%s. Check each of its gaps first. A part it passed whose scene has not "
              "changed since stays passed unless you can quote the defect in the scene or the code. Tag every gap's "
              "`new_since`: `unfixed` (that verdict named it and it is still open), `changed` (it is new because an "
@@ -1540,7 +1623,10 @@ def plan(d, repo=None):
         return "skip", "no readable tree.json: %s" % e
     if not isinstance(tree, dict) or tree.get("dry_walk") is True:
         return "skip", "no real tree"
-    ex = DS.exam_errors(DS.read_json(os.path.join(d, "exam.json")), d, st, repo)
+    try:
+        ex = DS.exam_errors(DS.read_json(os.path.join(d, "exam.json")), d, st, repo)
+    except (DS.Refused, OSError, ValueError) as e:
+        return "error", "unreadable exam.json: %s" % e
     if ex:
         return "skip", "the exam does not pass: %s" % "; ".join(ex)
     why = CT.coverage_problem(d, repo, tree)
@@ -1664,6 +1750,10 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
            "tree": before[0], "sheet": before[1], "inputs": before[2], "verdict": None, "signed": False, "hashes": hashes,
            "entry_text": texts,
            "mode": "full" if dp is None else "delta", "prompt_chars": len(text)}
+    held_bad = [{k: g.get(k) for k in ("gid", "ids", "what", "malformed")} for g in (prior or {}).get("gaps") or []
+                if isinstance(g, dict) and g.get("malformed")]
+    if held_bad:   # evidence on file, never a slot (prior_slots)
+        rec["prior_malformed"] = held_bad
     if dp is not None:
         rec.update(against=dp["against"], claims=dp["claims"], changed=dp["changed"])
         if dp["refused"]:
@@ -1672,18 +1762,38 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
     def ask(call, wall, gaps_only=False):
         """-> (exit code, the well-formed verdict (or, gaps_only, a {gaps} answer) or None, session id). Charges what
         the call spent."""
+        def unmeasured(why):
+            # the call ran and its spend cannot be read: counted at the p90 by spend(), charged unmeasured
+            rec["unmeasured_calls"] = int(rec.get("unmeasured_calls") or 0) + 1
+            rec.setdefault("unmeasured_why", why)
+            if charge:
+                try:
+                    DS.charge(d, 0, "unmeasured", unit)
+                except Exception as e:  # noqa: BLE001
+                    rec["charge_error"] = str(e)
         try:
             code, out = runner(spend_watchdog.wrap(call, BUDGET_USD), repo, env, wall)   # the cap, from outside
-            res = json.loads(out or "null")
-        except (OSError, subprocess.SubprocessError, ValueError) as e:
+        except OSError as e:     # never launched: nothing was spent
             rec["error"] = "the judge did not answer: %s" % e
             rec["error_kind"] = "system"     # a dead call: a timeout, no process, output that is no JSON
             rec.setdefault("dead_calls", []).append(rec["error"])
             return None, None, None
+        except subprocess.SubprocessError as e:   # it ran (a timeout): its spend is unknown
+            rec["error"] = "the judge did not answer: %s" % e
+            rec["error_kind"] = "system"     # a dead call
+            rec.setdefault("dead_calls", []).append(rec["error"])
+            unmeasured("the call did not finish: %s" % e)
+            return None, None, None
+        try:
+            res = json.loads(out or "null")
+        except ValueError as e:
+            res = None
+            rec["error"] = "the judge did not answer: %s" % e
         if not isinstance(res, dict):
-            rec["error"] = "the judge's output is not a JSON result (exit %s)" % code
+            rec.setdefault("error", "the judge's output is not a JSON result (exit %s)" % code)
             rec["error_kind"] = "system"     # the CLI exited with no result of its own
             rec.setdefault("dead_calls", []).append(rec["error"])
+            unmeasured("no JSON result to measure")
             return code, None, None
         tok = None
         try:
@@ -1694,6 +1804,8 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             tok = None
             rec["unmeasured_why"] = str(e)    # an unknown model is named here, never weighed as another
         rec["tokens"] = (rec.get("tokens") or 0) + tok if tok is not None else rec.get("tokens")
+        if tok is None:
+            rec["unmeasured_calls"] = int(rec.get("unmeasured_calls") or 0) + 1
         if charge:
             try:
                 DS.charge(d, tok or 0, "review" if tok is not None else "unmeasured", unit)
@@ -1702,9 +1814,14 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         so = res.get("structured_output")
         ok = isinstance(so, dict) and isinstance(so.get("gaps"), list) and (gaps_only or (
             so.get("verdict") in ("covered", "not_covered") and isinstance(so.get("checklist"), list)))
+        bad = shape_errors(so, gaps_only) if ok else []
         if not ok:
             rec["error"] = "no well-formed verdict (exit %s)" % code
             rec["error_kind"] = "judge"      # it answered: its own failure (a cap, a broken answer) counts
+        elif bad:
+            rec["error"] = "no well-formed verdict (exit %s): %s" % (code, "; ".join(bad))
+            rec["error_kind"] = "judge"      # it answered, in a shape the program cannot read: its own failure
+            ok = False
         elif code != 0:
             # RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: a runner that failed is not trusted for its verdict, however well formed
             rec["error"] = "the judge's runner exited %s: its verdict is not taken" % code
@@ -1730,7 +1847,8 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         extra = [dict(g, from_rows=True) for g in failed_part_gaps(so["checklist"], so["gaps"])]
         rec.update(verdict=so["verdict"], checklist=so["checklist"], gaps=so["gaps"] + extra,
                    reasons=str(so.get("reasons") or ""))
-        for k in ("unchecked", "late", "dropped", "advisory_gaps", "covered_by_bar_rule", "answered", "repairs"):
+        for k in ("unchecked", "late", "dropped", "advisory_gaps", "covered_by_bar_rule", "answered", "repairs",
+                  "malformed"):
             rec.pop(k, None)
         if extra and rec["verdict"] == "covered" and not so["gaps"]:
             rec["verdict"] = "not_covered"  # its own rows failed: the rows outrank the word
@@ -1774,6 +1892,12 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             for g in rec["dropped"]:   # a dropped gap is shown too, never counted
                 g.setdefault("advisory_why", g.get("dropped"))
         apply_bar_rule(rec)
+        if rec["verdict"] == "not_covered" and not rec["gaps"]:
+            # a refusal that names nothing to repair is no refusal (a look's verdict is its gaps, rule 5): malformed,
+            # so it neither spends a refusal nor signs; rows it left unchecked are not a gap the Designer can fix
+            rec.update(verdict="malformed", malformed=[
+                "a not_covered verdict that names no gap and no failed part: nothing to repair"
+                + (" (rows unchecked: %s)" % ", ".join(rec["unchecked"]) if rec.get("unchecked") else "")])
 
     if so:
         take(so, missing)
@@ -1819,7 +1943,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             rest = [g for g in rec["gaps"] if not any(g is b for b in bad)]
             rec["gaps"] = rest[:at] + new + rest[at:]
             if slotted:
-                reopen_named(rec, new, [g for g in prior.get("gaps") or [] if isinstance(g, dict)])
+                reopen_named(rec, new, prior_slots(prior))
                 classify_new(rec, prior.get("entry_text"), texts, prior.get("judge"))
                 rec["verdict"] = "not_covered" if rec["gaps"] else "covered"
             else:
@@ -1878,10 +2002,15 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
                        or r["clause"] in bad_c]
             if suspect and not errs:
                 rec["criteria_suspect"] = suspect
-    tree2 = CT.load(d)
     if rec["verdict"] == "covered":
         rec["calibration"] = RC.status(CONTRACT_FAMILY)
-        if missing:
+        try:
+            tree2, tree_err = CT.load(d), None
+        except (OSError, ValueError) as e:
+            tree2, tree_err = None, e
+        if tree_err is not None:
+            rec["error"] = "tree.json could not be read when the judge answered (%s): not signed" % tree_err
+        elif missing:
             rec["error"] = "a covered verdict with no row for %s is not a covered verdict: not signed" % ", ".join(missing)
         elif fresh_key(d, tree2) != before:
             moved = [fn for fn, h in before[2].items() if fresh_key(d, tree2)[2].get(fn) != h]
