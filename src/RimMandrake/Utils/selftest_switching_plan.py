@@ -120,8 +120,9 @@ def manual_switch_cases(calls):
     clear()
     acts = go(day)
     check("use" in acts and "use steven --confirm testbox" in calls.read_text(), f"no manual switch on record: the plan still switches (got {acts})")
-    # the plan's own switch, in the log with its marker, is no manual switch: the priority still rules
-    use_at(NOW + 5, "lukas", "steven")
+    # the plan's own switch, in the log with its marker, is no manual switch: the priority still rules (the switcher
+    # logs it before `use` returns, so no later than the marker's `ended`)
+    use_at(NOW, "lukas", "steven")
     live_txt.write_text("steven")
     m = SP.read_markers()
     sw = SP.last_switch()
@@ -140,6 +141,44 @@ def manual_switch_cases(calls):
     check(SP.manual_switch(sw, {**lm, "x": {**lm["x"], "phase": "done"}}, "lukas") is None, "a done marker accounts for its switch")
     check(SP.manual_switch(sw, {}, "steven") is None, "a switch that put another account live is not this one's")
     check(SP.manual_switch({**sw, "ts": "garbage"}, {}, "lukas") is None, "a switch with no readable time holds nothing")
+    # RIMMANDRAKE_ATTRIBUTE_MANUAL_SWITCH_BY_LOG_NOT_OLD_MARKER: the plan's call makes ONE switch, the first of its
+    # transition in the log after its marker; his identical transition later in the window is his, not the marker's
+    clear()
+    dm = {"x": {"phase": "done", "at": SP.iso(NOW), "from": "lukas", "to": "system"}}
+    use_at(NOW + 20, "lukas", "system")
+    check(SP.manual_switch(SP.last_switch(), dm, "system") is None, "log: the plan's own switch after its done marker is the plan's")
+    use_at(NOW + 60, "system", "lukas")
+    use_at(NOW + 120, "lukas", "system")
+    check(SP.manual_switch(SP.last_switch(), dm, "system") is not None,
+          "log: his system->lukas->system after the plan's lukas->system is his, though the done marker is minutes old")
+    # a failed arm that changed nothing, then his own identical transition after the call ended: his
+    clear()
+    fm = {"x": {"phase": "failed", "at": SP.iso(NOW), "ended": SP.iso(NOW + 30), "from": "lukas", "to": "system"}}
+    use_at(NOW + 300, "lukas", "system")
+    check(SP.manual_switch(SP.last_switch(), fm, "system") is not None,
+          "log: his transition after the plan's failed call ended is his, not the failed marker's")
+    clear()
+    use_at(NOW + 31, "lukas", "system")
+    check(SP.manual_switch(SP.last_switch(), fm, "system") is not None,
+          "log: his transition one second after the plan's failed call ended is his")
+    clear()
+    use_at(NOW + 25, "lukas", "system")
+    check(SP.manual_switch(SP.last_switch(), fm, "system") is None,
+          "log: a switch that landed while the plan's (failed) call ran is the plan's")
+    # one shared second proves no order: the log's own order says the last of two same-transition switches is his
+    clear()
+    for frm, to in (("lukas", "system"), ("system", "lukas"), ("lukas", "system")):
+        use_at(NOW + 20, frm, to)
+    check(SP.manual_switch(SP.last_switch(), dm, "system") is not None,
+          "log: his repeat inside the same second as the plan's switch is still his (log order, not the stamp)")
+    # a pass that writes its marker records when its call ended
+    clear()
+    live_txt.write_text("lukas")
+    acts = go(day)
+    em = [m for m in SP.read_markers().values() if m.get("phase") in ("done", "failed")]
+    check("use" in acts and em and all(SP.epoch(m.get("ended")) is not None and SP.epoch(m["ended"]) >= SP.epoch(m["at"])
+                                       for m in em), f"log: the plan's marker carries when its call ended (got {em})")
+    clear()
 
     # the limits: spent, past its window, or the next switch ends it
     live_txt.write_text("lukas")

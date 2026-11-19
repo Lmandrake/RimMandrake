@@ -361,36 +361,61 @@ def is_spent(plan: dict, line: dict, live, lr: dict, now: float) -> bool:
             or (live in plan["order"] and w is not None and nr is not None and (WEEK - (nr - now)) / 3600 > w))
 
 
-def last_switch(path=None):
-    """The newest switch that changed the live account, from the switcher's own append-only log: {from, to, ts}, or None
-    when it has none. A malformed line is skipped (a line being appended right now)."""
+def switches(path=None) -> list | None:
+    """Every switch that changed the live account, oldest first, from the switcher's own append-only log; [] when it
+    has none, None when it cannot be read. A malformed line is skipped (a line being appended right now)."""
     try:
         text = Path(path or SWITCH_LOG).read_text(encoding="utf-8", errors="replace")
+    except FileNotFoundError:
+        return []
     except OSError:
         return None
-    for ln in reversed(text.splitlines()):
+    out = []
+    for ln in text.splitlines():
         try:
             r = json.loads(ln)
         except ValueError:
             continue
         if isinstance(r, dict) and r.get("op") == "use" and r.get("changed"):
-            return r
-    return None
+            out.append(r)
+    return out
 
 
-def manual_switch(sw, markers: dict, live):
+def last_switch(path=None):
+    """The newest switch that changed the live account: {from, to, ts}, or None when the log has none."""
+    return (switches(path) or [None])[-1]
+
+
+def manual_switch(sw, markers: dict, live, history=None):
     """The last switch when it put `live` there and the plan did not make it, else None. The plan writes its marker
-    before it calls `use` and the call ends inside STALE_PENDING_S, so a marker of the same transition in that span
-    before the switch accounts for it; a lapsed one never called `use`. A switch with no readable time is the plan's
-    to judge: nothing can say it is recent."""
+    before it calls `use` and the call ends inside STALE_PENDING_S; one call makes at most ONE switch, the first of its
+    transition in the switcher's log (`history`, default the log; by POSITION, a shared second proves no order) after
+    the marker, landing no later than the call `ended` (both stamps are this machine's wall clock, to the second).
+    Any other switch of that transition in the span is his (RIMMANDRAKE_ATTRIBUTE_MANUAL_SWITCH_BY_LOG_NOT_OLD_MARKER:
+    his own lukas->system->lukas->system inside 40 min was read as the plan's and a later pull could undo it). A
+    lapsed marker never called `use`. A switch with no readable time is the plan's to judge: nothing can say it is
+    recent; an unreadable log falls back to the marker's window alone."""
     ts = epoch((sw or {}).get("ts"))
     if ts is None or sw.get("to") != live:
         return None
+    if history is None:
+        history = switches()
     for m in markers.values():
         at = epoch(m.get("at"))
-        if (m.get("from") == sw.get("from") and m.get("to") == sw.get("to") and m.get("phase") != "lapsed"
+        if not (m.get("from") == sw.get("from") and m.get("to") == sw.get("to") and m.get("phase") != "lapsed"
                 and at is not None and 0 <= ts - at <= STALE_PENDING_S):
-            return None
+            continue
+        ended = epoch(m.get("ended"))
+        if ended is not None and ts > ended:
+            continue  # landed after the plan's call returned: not the plan's
+        if history:
+            same = [r for r in history if r.get("from") == sw.get("from") and r.get("to") == sw.get("to")
+                    and at <= (epoch(r.get("ts")) or -1) <= ts]
+            if not same or same[-1] != sw:  # sw is the newest switch: the log's last of its transition, or after it
+                same.append(sw)
+            if len(same) > 1:
+                continue  # the plan's switch is an earlier one in the log: this one is his
+        return None
     return sw
 
 
@@ -1035,8 +1060,10 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         res = armed_call(st, ["use", d["to"]], still)
         ok = (res.get("use") or (1,))[0] == 0
         lapsed = (res.get("use") or (1,))[0] is None and "lapsed" in str(res.get("use"))
+        # `ended`: a switch of this transition in the log after the call returned is his, not this marker's
         write_marker(d["key"], {"phase": "done" if ok else "lapsed" if lapsed else "failed", "at": iso(now), "from": live, "to": d["to"],
-                                "under": d.get("under"), "line": d.get("line"), "result": res})
+                                "under": d.get("under"), "line": d.get("line"), "result": res,
+                                "ended": iso(now + clock() - t2)})
         if ok:
             state.pop("stopped", None)
             save_state(state)
