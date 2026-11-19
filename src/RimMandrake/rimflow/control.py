@@ -659,7 +659,9 @@ def _account(c, mod, resource, win, base, exclude_run=None, used=None):
     voided = sum(r["qty"] for r in rows if r["state"] == "voided")
     held = sum(r["qty"] for r in rows if r["state"] == "held" and r["run"] != exclude_run)
     if used is not None:    # the caller's own validated count, or the store's charges where it holds more (a look
-        charged = max(used, charged)    # charged on a covered verdict counts though no refusal round shows it)
+        # charged on a covered verdict counts though no refusal round shows it); the store's charges carry the same
+        # typed adjustments as `used`, so a look `pipe set|add` gives back can be reserved (slice review 7)
+        charged = max(used, _used(c, mod, resource, charged))
     return {"base": base, "granted": g, "charged": charged, "voided": voided, "held": held,
             "available": base + g - charged - held}
 
@@ -971,7 +973,10 @@ def _undo(act_id, why, owner_said, per_ruling, p, now, base):
                 c.execute("INSERT INTO grants (mod, resource, win, qty, act, why, owner_said, at) VALUES (?,?,?,?,?,?,?,?)",
                           (g["mod"], g["resource"], g["win"], -g["qty"], u["id"], why.strip(), owner_said, now))
             g = gs[0]
-            acc = _account(c, g["mod"], g["resource"], g["win"], base)
+            # a look's base is its limit (1 unless `pipe limit` moved it), charges as admission reads them (slice
+            # review 8: undo reported the base-0 balance, a false deficit)
+            acc = (_account(c, g["mod"], LOOK, g["win"], _limit(c, g["mod"], LOOK, 1), used=0)
+                   if g["resource"] == LOOK else _account(c, g["mod"], g["resource"], g["win"], base))
             return {"ok": True, "why": None, "act": u, "after": acc, "line": "%s %s (window %s): grant %s undone, "
                     "available %d%s" % (g["mod"], g["resource"], g["win"] or "none", act_id, acc["available"],
                                         " (a deficit: %d already consumed past it)" % -acc["available"]
@@ -1896,6 +1901,8 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
             out["units"].append({"unit": r["unit"], "ok": not unset, "said": "stop order written (%s)%s%s" % (
                 mode, "; escalates to --kill at %s (%s)" % (pac(now + deadline_s), esc) if deadline_s else
                 "; no deadline", books)})
+    if scope == "all":      # `pipe stop all` writes an all-switch: the permit follows it (slice review 13)
+        permit_sync(p=p, now=now)
     return out
 
 
@@ -2586,7 +2593,10 @@ def cmd_grant(o):
         n = int(o.n)
     except ValueError:
         raise Refused("grant needs +N, got %r" % o.n)
-    m = scope_of(o.mod)[4:]
+    sc = scope_of(o.mod)
+    if not sc.startswith("mod:"):   # slice review 20: `all`[4:] was the mod ""
+        raise Refused("pipe grant takes a mod, not %s" % sc)
+    m = sc[4:]
     st = None
     try:
         with open(os.path.join(concepts_dir(), m, "stage.json"), encoding="utf-8") as f:
@@ -2611,6 +2621,9 @@ def doctor():
             if ok != "ok":      # a damaged store is not a healthy one (round-four claim 11)
                 raise Unreadable("corrupt: quick_check says %s" % str(ok)[:200].replace("\n", " | "))
             lines = ["store %s: quick_check ok, rev %d" % (db_path(), rev(c))]
+            c.execute("PRAGMA busy_timeout=3000")   # a held write lock is no healthy store (slice review 17)
+            c.execute("BEGIN IMMEDIATE")
+            c.execute("ROLLBACK")
         except sqlite3.Error as e:
             raise Unreadable(_err(e))
         finally:

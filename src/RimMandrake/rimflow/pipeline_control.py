@@ -655,7 +655,6 @@ def do_show(ctx, mod=None):
     st = state()
     mods = [mod_name(mod, ctx)] if mod else ctx.mods()
     out = []
-    q = st.get("queue")
     import control as C     # the switches live in control.py's store
     try:
         sw = [r for r in C.switches() if r["layer"] == "control"]
@@ -695,7 +694,10 @@ def do_show(ctx, mod=None):
     for r in sorted(sw, key=lambda r: r["scope"]):
         if r["scope"] != "all" and not r["scope"].startswith("mod:"):
             out.append("%s OFF: %s" % (r["scope"], r["why"]))
-    out.append("queue: %s" % (" > ".join(q) if q else "the shipped advancing order (no queue override)"))
+    try:    # the queue lives in control.py's store (slice review 18: this read the old journal's)
+        out.append(C.cmd_queue(argparse.Namespace(op=None))[0])
+    except (C.Unreadable, C.sqlite3.Error) as e:
+        raise Unreadable("the control store: %s" % e)
     return out
 
 

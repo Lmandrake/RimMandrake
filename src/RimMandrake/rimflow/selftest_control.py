@@ -1458,6 +1458,23 @@ def t_accounts():
           (C.used("Cauldron", "coverage_runs", 3), C.limit("Cauldron", "coverage_runs", 4)))
     rc, out, _ = pipe("set", "Graffiti", "coverage_runs", "4", "--why", "cli set")
     check(rc in (0, 2), "pipe set still answers (0 done or 2 refused for an unknown mod)", (rc, out))
+    # slice review 7 and 8 (RIMMANDRAKE_FIX_SLICE_REVIEW_TWENTY_FINDINGS_QUEUE_FIRST): a typed look count binds at
+    # admission as it reads, and an undone grant reports the balance admission reads (base 1)
+    fresh()
+    C.reserve("Graffiti", C.LOOK, "sr7-a", "w", base=1, used=0)
+    C.settle("sr7-a", True, "a refusing verdict")
+    C.set_account("Graffiti", C.LOOK, 0, "give the look back", measured=1, verb="set")
+    u = C.used("Graffiti", C.LOOK, 1)
+    ok, why = C.reserve("Graffiti", C.LOOK, "sr7-b", "w", base=1, used=u)
+    check(u == 0 and ok, "slice review 7: a look given back by pipe set is reserved, not refused on its old charge",
+          (u, ok, why))
+    fresh()
+    C.reserve("Graffiti", C.LOOK, "sr8-a", "w", base=1, used=0)
+    C.settle("sr8-a", True, "a refusing verdict")
+    g = C.grant("Graffiti", C.LOOK, 1, "one more", win="w", per_ruling="probe", base=1)
+    line = PC.do_undo(g["act"]["id"], "undo the grant")[0]
+    check("available 0" in line and "deficit" not in line,
+          "slice review 8: undoing a look grant reports available 0 on its base-1 account", line)
 
 
 def t_queue():
@@ -1532,6 +1549,13 @@ def t_queue():
           and "--full" in out.splitlines()[-1] and "# NEXT" in out and len(out) < 4000,
           "the compact queue view: running or touched today, at most 25, no prose, says --full",
           (out.count("## "), len(out), out[-200:]))
+    import pipeline_control as PC     # slice review 18: the retained `pipeline_control.py show` reads this store's queue
+    fresh()
+    ship = C.shipped_advancing()
+    C.queue_act("top", ship[-1], "queue probe", mods=ship)
+    q = [x for x in PC.do_show(PC.Ctx()) if x.startswith("queue")]
+    check(q and "store" in q[0] and q[0].split(": ", 1)[1].startswith(ship[-1]),
+          "slice review 18: pipeline_control.py show prints the store's queue, not the old journal's", q)
 
 
 def t_review_round_four_p1():
@@ -1679,6 +1703,15 @@ def t_permit_never_ghosts():
                   runner=lambda a, **k: ran.append(a) or subprocess.CompletedProcess(a, 0, "", ""))
     check(ran and os.path.exists(permit), "after a timed all-off expires, the next admitted launch re-writes the permit",
           (ran, os.path.exists(permit)))
+    fresh()     # slice review 13: `pipe stop all` and an undone `off all` move the permit too
+    C.permit_sync(p=DB)
+    C.stop("all", "at_easy_spot", "permit probe: stop all")
+    check(not os.path.exists(permit), "slice review 13: pipe stop all removes the permit")
+    fresh()
+    C.permit_sync(p=DB)
+    r = C.switch("all", True, "permit probe: off all")
+    C.undo(r["act"]["id"], "permit probe: undo the off")
+    check(os.path.exists(permit), "slice review 13: undoing off all writes the permit back")
     if not systemd_ok():
         UNRUN.append("permit ghost probe on a real probe unit: no user systemd here")
         return
@@ -1725,6 +1758,13 @@ def t_slices_review():
     except C.Refused:
         got = "refused"
     check(got == "refused", "slice review 4: pipe queue add all is refused (a mod only)", got)
+    o = types_ns(mod="all", resource="look", n="+1", why="x", owner_said=None, per_ruling="probe", idem=None)
+    try:
+        C.cmd_grant(o)
+        got = "accepted"
+    except C.Refused:
+        got = "refused"
+    check(got == "refused", "slice review 20: pipe grant all look is refused (a mod only)", got)
     real_root = C.DISPATCH_ROOT
     d = os.path.join(TMP, "dispatch_tree", "src", "RimMandrake", "rimflow")
     os.makedirs(d, exist_ok=True)
@@ -2066,6 +2106,16 @@ def t_probe_never_lies():
     check((blind.kind, empty.kind, gone.kind) == ("could_not_look", "empty", "empty"), "a cgroup without a readable"
           " cgroup.procs reads could not look;"
           " an empty one and a gone one read empty", (blind, empty, gone))
+    fresh()     # slice review 17: a store whose write lock is held is not reported healthy by `pipe doctor`
+    h = sqlite3.connect(DB, isolation_level=None)
+    h.execute("BEGIN IMMEDIATE")
+    try:
+        code, lines = C.doctor()
+    finally:
+        h.execute("ROLLBACK")
+        h.close()
+    check(code == C.UNREADABLE and "locked" in lines[0], "slice review 17: pipe doctor on a write-locked store says "
+          "locked, never ok", (code, lines[:1]))
 
 
 def t_same_command_twice():
@@ -2372,6 +2422,11 @@ def t_held_stays_held_across_the_mirror():
 
 
 def main():
+    # its probe units have fixed names in the one user systemd: runs on one machine (sibling clones' ./publish) take
+    # turns, or one run's unit is "already loaded" for the other (RIMMANDRAKE_SERIALIZE_CONTROL_SELFTEST_SIBLINGS_SHARE_UNIT_NAMES)
+    import fcntl
+    lock = open("/tmp/rm-selftest-control-%d.lock" % os.getuid(), "w")
+    fcntl.flock(lock, fcntl.LOCK_EX)
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,

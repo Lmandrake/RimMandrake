@@ -19,7 +19,7 @@ added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_
   detached helper names none unless it passes `--env RM_CONTROL_MOD=<Mod>`: 98 of 98 detached runs in the store
   named none [measured 2026-11-19], 6 of them on FeverWood design tickets while he held FeverWood.
 - **scope-names.** `all`, a mod in the pipeline, `stage:S`, `item:ID`, `family:F`, `role:R`. A wrong name is refused
-  with the nearest names.
+  with the nearest names. `pipe queue` and `pipe grant` take a mod and refuse any other scope (slice review 4, 20).
 - **stop-target.** A scope, or one unit named `rm-...` with or without `.service`. A unit with another name (the
   testq wake) is named `unit:NAME`. Exactly one stop mode.
 - **why-on-every-write.** Every command that changes something carries `--why`. A granted look and lifting his hold
@@ -43,6 +43,8 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
   kill finishes the same run.
 - **cgroup-folder-that-cannot-be-listed.** Linux does not do this for our own user's units: 0 of 66 folders under
   `user.slice` failed to list, and every `cgroup.procs` under our `user@1000.service` was readable [measured 2026-11-19].
+  If one ever could not be listed, the kill's walk skips it and reads its processes as none: a folder made
+  unlistable on purpose read `empty` (finding 16 of RIMMANDRAKE_FIX_SLICE_REVIEW_TWENTY_FINDINGS_QUEUE_FIRST, 2026-11-19).
 - **hand-command-in-a-run's-own-second.** A `pipe void` typed in the instant between a judge's start and its
   reservation. The held look is freed when that judge's process ends.
 - **deliberate-bypass.** An agent that calls `systemd-run` by hand. The store is not a security wall.
@@ -55,6 +57,16 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
   RIMMANDRAKE_FIX_SLICE_REVIEW_TWENTY_FINDINGS_QUEUE_FIRST, run on real systemd 2026-11-19). No launcher writes one:
   every `launch_unit` call site builds a bare name, and 0 of 170 runs in the live store carry the suffix
   [measured 2026-11-19].
+- **an-old-counter-journal.** The old `pipeline_control` journal (`control.jsonl` in its control folder) changed
+  after its import, unreadable at `pipe init --import`, or holding a `pc_` count act that `pipe undo` is asked to
+  reverse. Then a changed count is imported on top of the first import, a failed import still exits 0, and the `pc_`
+  undo reports success while the store's count is unchanged (findings 9, 10 and 11 of RIMMANDRAKE_FIX_SLICE_REVIEW_TWENTY_FINDINGS_QUEUE_FIRST, each reproduced on a
+  throwaway store 2026-11-19). No such journal exists on this machine, and the only code that writes one is that
+  `pc_` undo [measured 2026-11-19].
+- **a-permit-sync-overtaken-by-off-all.** A permit sync that read ON, then `pipe off all` commits and removes the
+  permit, then the first sync writes it back; two syncs at once may also share one temp file (finding 12 of RIMMANDRAKE_FIX_SLICE_REVIEW_TWENTY_FINDINGS_QUEUE_FIRST,
+  forced by a hook on a throwaway store 2026-11-19). Admission still refuses in the store: only a drop-in-gated
+  unit could start in that instant.
 
 Rare failures the code handles today but does not promise to (owner card 2026-11-19, `standing_rulings.md` §A
 boundary page before pipeline code, Decision 4: a rare failure is listed here, not fixed and not reviewed):
@@ -107,7 +119,8 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **unreadable-store-launches-nothing.** With the store missing, corrupt or locked, nothing launches. `pipe show`
   says `CONTROL UNREADABLE` with the cause, or `STORE LOCKED` before the last saved state. Tested by `t_unreadable`.
 - **probe-never-lies.** A failed `systemctl` call, an unreadable store or an unreadable `cgroup.procs` file is
-  reported as "could not look". It never reads as "nothing there". Tested by `t_probe_never_lies`,
+  reported as "could not look". It never reads as "nothing there". `pipe doctor` on a store whose write lock is held says locked and exits 3,
+  never ok (slice review 17). Tested by `t_probe_never_lies`,
   `t_review_round_four_p1`.
 - **same-command-twice.** A void, a settlement, an import or a keyed command sent twice has the effect of once.
   Tested by `t_same_command_twice`, `t_look`, `t_scope`, `t_owner_import`.
@@ -124,9 +137,12 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   by `t_clones`.
 - **verbs-answer-in-a-second.** A `pipe` verb usually answers in under 1 second on this machine: "usually" is each
   verb's own 95th-percentile time over its calls in `t_verbs` (`p95_of`), not every call. Tested by `t_verbs`.
-- **queue-order-is-the-store's.** `pipe queue` sets the order the tick advances mods in. Tested by `t_queue`.
+- **queue-order-is-the-store's.** `pipe queue` sets the order the tick advances mods in, and every view of the
+  queue reads it (`pipeline_control.py show` too: slice review 18). Tested by `t_queue`.
 - **counts-and-limits-are-adjustments.** `pipe set`, `add`, `reset` and `limit` write a change at a moment; a run
-  that finishes afterwards still counts. Tested by `t_accounts`.
+  that finishes afterwards still counts. A look count binds at admission as it reads: a look `pipe set|add` gives
+  back can be reserved, and an undone look grant reports the balance admission reads (slice review 7, 8). Tested by
+  `t_accounts`.
 - **a-test-never-touches-the-live-store.** Tested by `t_stop_review_fixes`.
 - **ended-run-is-recorded-ended.** A unit that ends by itself is recorded ended: its start check and end receipt run
   the first `control.py` still on disk (the run's clone, the launcher's, then the seat clones'), so a clone returned
@@ -135,8 +151,8 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   `ops_watch` reads `flow.ghost_runs` every run and alarms on any (`RIMMANDRAKE_END_GHOST_RUN_RECEIPT_NEVER_RAN_LUVL`). Added 2026-11-19 by
   `RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE` (4 runs stayed started for good). Tested by
   `t_end_receipt_outlives_its_clone`.
-- **permit-never-ghosts.** The containment permit beside the store follows every `all` switch, from `pipe` or any
-  caller of `switch()`, and every admitted launch re-writes it, so a timed all-off that lapsed by itself never leaves a
+- **permit-never-ghosts.** The containment permit beside the store follows every `all` switch, from `pipe`, `pipe stop
+  all`, `pipe undo` or any caller of `switch()` (slice review 13), and every admitted launch re-writes it, so a timed all-off that lapsed by itself never leaves a
   drop-in-gated unit skipped while its run sits `admitted`. Added 2026-11-19 by
   `RIMMANDRAKE_FORECAST_ON_SHARED_PLANNER_DROPIN_MIRROR_DEADMAN`. Tested by `t_permit_never_ghosts`.
 - **reused-name-runs-again.** A `reuse_name` launch is admitted again once its earlier run is over, and refused while
