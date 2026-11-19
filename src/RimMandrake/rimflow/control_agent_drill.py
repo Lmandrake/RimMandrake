@@ -286,6 +286,7 @@ def main(argv=None):
                          drill_writing(m, "--at-easy-spot" if m == "easy" else "--write-now", rec))
             print(lines[-1], flush=True)
         live_untouched(lines)
+        print(lines[-1], flush=True)
         verdict, code = "DRILL PASS %s: %s" % (TAG, "; ".join(
             "%s heard in %.1f s, ended %.1f s after the order" % (m, rec[m]["heard_s"], rec[m]["ended_s"])
             if m != "deaf" else "deaf killed %.0f s after the order" % rec[m]["killed_s"] for m in o.only)), 0
