@@ -11,23 +11,28 @@ selftest_<stem>.py / selftest_<stem>_*.py, each with store_census_hook/ first on
 each open-for-writing of a store (and each rename onto one) with the modules on the stack, and which functions started.
 Before the record is trusted, a planted writer is run the same way and must be caught.
 
-A CANDIDATE is a .py under src/RimMandrake that names a store (selftests, guard_* and acceptance tests, modledger*.py and
-the census itself excepted). Each module gets one verdict:
+A CANDIDATE is a .py under src/RimMandrake that names a store (selftests, guard_*_accept.py and acceptance tests,
+modledger*.py and the census itself excepted; a .py whose source cannot be decoded is a candidate too, never measured).
+Each module gets one verdict:
   WRITER         the hook saw it open a store for writing, or rename a file onto one. The stack is read from the write
                  outwards up to the first test or modledger frame: a write whose innermost frame is a test (a fixture,
                  a stub the module called back) or modledger blames nobody; otherwise the innermost module there that
                  names a store is blamed, so a generic helper it calls is not, and a module naming none only when no
-                 candidate is there. Nothing under a .git folder is a store;
-  NO_WRITE_SEEN  looked and saw no write: every function of it that names a store or holds a write call
-                 (open(...,"w"/"a"), .write_text(, json.dump(, os.replace() started at least once, and none wrote one;
-  NOT_MEASURED   some such function never started under any census test (named in never_ran): never "does not write".
-Writes that blame nobody are counted in fixture_writes. The record's status is "ok", or "could_not_look" with its
-cause when the hook cannot be shown to see (the probe was not caught) or no test could be found.
+                 candidate is there. A frame from a copy whose content differs from the module on disk is skipped.
+                 Nothing under a .git folder is a store;
+  NO_WRITE_SEEN  looked and saw no write: every scope of it (function, class or module body, lambda, generator) that
+                 names a store or holds a write call (open with a writing or non-literal mode, os.open, .write(,
+                 .writelines(, .write_text(, .write_bytes(, .dump(, os.replace/os.rename, a one-argument .replace( or
+                 any .rename(, shutil copy/move) started at least once in the module as it is on disk, and none wrote;
+  NOT_MEASURED   some such scope never started under any census test (named in never_ran): never "does not write".
+Writes that blame nobody are counted in fixture_writes. A Python child a test starts without the hook (-I/-S/-E, or
+an env that drops it) is listed in unhooked_children: whatever it did is unseen. The record's status is "ok", or
+"could_not_look" with its cause: the probe was not caught, the tree or the test list could not be read, or no
+configured test exists.
 
-Known limits, each reading the safe way or named: a process started with -I/-S/-E, or with an env that drops
-PYTHONPATH, carries no hook, so its code reads as never run; a function that ran only down a branch that does not write
-reads NO_WRITE_SEEN (the census measures functions, not every path); a write through a path handed to an unexercised
-function of another module is seen only when that function runs.
+Known limits: a scope that ran only down a branch that does not write reads NO_WRITE_SEEN (the census measures
+scopes, not every path); a write through a file handle a test opened and passed in is the test's open, so blames
+nobody; a store opened through a dir_fd by os.open is not resolved (its name alone decides).
 """
 import argparse
 import ast
@@ -42,13 +47,14 @@ import subprocess
 import sys
 import tempfile
 import time
+import tokenize
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 HOOK_DIR = os.path.join(HERE, "store_census_hook")
-SELF = ("src/RimMandrake/rimflow/store_write_census.py", "src/RimMandrake/rimflow/store_census_hook/sitecustomize.py")
+SELF = ("src/RimMandrake/rimflow/store_write_census.py",)
+SELF_DIR = "src/RimMandrake/rimflow/store_census_hook/"
 NAMES = re.compile(r"stage_record\.json|journal\.md|['\"/]stage\.json")
-WRITE = re.compile(r"open\([^)]*['\"][wa]b?['\"]|\.write_text\(|json\.dump\(|os\.replace\(")
 LEDGER_IDENTITY = ("RM_MODLEDGER_WRITER", "RM_MODLEDGER_TOKEN")    # as publish.py: a test is not the publisher
 PROBE = "src/RimMandrake/rimflow/census_probe_writer.py"
 PROBE_SRC = ("import os, sys\n\ndef plant(root):\n    c = os.path.join(root, 'design', 'concepts', 'Probe')\n"
@@ -57,78 +63,152 @@ PROBE_SRC = ("import os, sys\n\ndef plant(root):\n    c = os.path.join(root, 'de
 
 
 def excluded(rel):
+    """A test, modledger or the census itself: never a candidate, and the boundary where blame stops."""
     b = os.path.basename(rel)
-    return (b.startswith("selftest_") or b.startswith("guard_") or b.startswith("modledger")
-            or "/acceptance/" in rel or rel in SELF or rel == PROBE)
+    return (b.startswith("selftest_") or (b.startswith("guard_") and b.endswith("_accept.py"))
+            or b.startswith("modledger") or "/acceptance/" in rel or rel in SELF or rel == PROBE
+            or rel.startswith(SELF_DIR))
+
+
+WRITE_ATTRS = {"write", "writelines", "write_text", "write_bytes", "dump", "rename"}
+SHUTIL = {"copy", "copy2", "copyfile", "copytree", "move", "copyfileobj"}
+MODE = re.compile(r"^[rwaxbtU+]+$")
+
+
+def _opens_for_write(call):
+    """An open(...) / x.open(...) call: does it write, or can its mode not be told from the source?"""
+    named = isinstance(call.func, ast.Name)
+    lits = [a.value for a in call.args if isinstance(a, ast.Constant) and isinstance(a.value, str)]
+    modes = [m for m in lits if MODE.match(m)]
+    kw = {k.arg: k.value for k in call.keywords}
+    for k in ("mode", "flags"):
+        if k in kw:
+            v = kw[k]
+            if not (isinstance(v, ast.Constant) and isinstance(v.value, str)):
+                return True
+            modes.append(v.value)
+    if named and len(call.args) >= 2 and not (isinstance(call.args[1], ast.Constant)
+                                             and isinstance(call.args[1].value, str)):
+        return True                                    # open(p, mode_var): cannot be told, counted as a write
+    if isinstance(call.func, ast.Attribute) and isinstance(call.func.value, ast.Name) and call.func.value.id == "os":
+        return True                                    # os.open(p, flags): flags decide, counted as a write
+    return any(c in m for m in modes for c in "wax+")
+
+
+def _is_write_call(n):
+    if not isinstance(n, ast.Call):
+        return False
+    f = n.func
+    if (isinstance(f, ast.Name) and f.id == "open") or (isinstance(f, ast.Attribute) and f.attr == "open"):
+        return _opens_for_write(n)
+    if not isinstance(f, ast.Attribute):
+        return False
+    recv = f.value.id if isinstance(f.value, ast.Name) else None
+    return (f.attr in WRITE_ATTRS or (f.attr == "replace" and (recv == "os" or len(n.args) == 1))
+            or (recv == "shutil" and f.attr in SHUTIL))
 
 
 def store_functions(src):
-    """-> {first line of a code object: label}: the functions (module and class bodies included) holding a line that
-    names a store or makes a write call. A decorated def starts at its first decorator, as its code object does."""
+    """-> {"first line:name" of a code object: label}: the scopes (function, class or module body, lambda, generator)
+    holding a line that names a store or a write call. A decorated def starts at its first decorator, as its code
+    object does; module code starts at line 1."""
     tree = ast.parse(src)
-    scopes = []                                        # (start, end, first, label)
+    scopes = []                                        # (start, end, key, label)
     for n in ast.walk(tree):
-        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Lambda)):
-            first = min([d.lineno for d in getattr(n, "decorator_list", [])] + [n.lineno])
-            label = getattr(n, "name", "<lambda>")
-            scopes.append((first, n.end_lineno, first, "%s (line %d)" % (label, n.lineno)))
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            first = min([d.lineno for d in n.decorator_list] + [n.lineno])
+            scopes.append((first, n.end_lineno, "%d:%s" % (first, n.name), "%s (line %d)" % (n.name, n.lineno)))
+        elif isinstance(n, (ast.Lambda, ast.GeneratorExp)):
+            name = "<lambda>" if isinstance(n, ast.Lambda) else "<genexpr>"
+            scopes.append((n.lineno, n.end_lineno, "%d:%s" % (n.lineno, name), "%s (line %d)" % (name, n.lineno)))
+    lines = {i for i, line in enumerate(src.split("\n"), 1) if NAMES.search(line)}
+    lines |= {n.lineno for n in ast.walk(tree) if _is_write_call(n)}
     out = {}
-    for i, line in enumerate(src.split("\n"), 1):
-        if not (NAMES.search(line) or WRITE.search(line)):
-            continue
+    for i in sorted(lines):
         inner = [s for s in scopes if s[0] <= i <= s[1]]
         if inner:
-            s = max(inner, key=lambda s: s[0])
+            s = max(inner, key=lambda s: (s[0], -s[1]))
             out[s[2]] = s[3]
         else:
-            out[1] = "<module>"
+            out["1:<module>"] = "<module>"
     return out
+
+
+def _walk(root):
+    """-> sorted repo-relative paths of every .py under src/RimMandrake; raises OSError on a folder it cannot read."""
+    def boom(e):
+        raise e
+    out = []
+    for d, dirs, files in os.walk(os.path.join(root, "src", "RimMandrake"), onerror=boom):
+        dirs.sort()
+        out += [os.path.relpath(os.path.join(d, f), root).replace(os.sep, "/") for f in files if f.endswith(".py")]
+    if not out:
+        raise OSError("no .py under %s" % os.path.join(root, "src", "RimMandrake"))
+    return sorted(out)
+
+
+def _source(path):
+    """-> (source, None) or (None, why) for a .py read by its own coding cookie."""
+    try:
+        with tokenize.open(path) as f:
+            return f.read(), None
+    except (SyntaxError, UnicodeDecodeError, LookupError) as e:
+        return None, "%s: %s" % (type(e).__name__, e)
 
 
 def candidates(root):
-    """-> {repo-relative path: source} of every module that names a store, or raises OSError."""
+    """-> {repo-relative path: source or None (undecodable)}; raises OSError when the tree cannot be read."""
     out = {}
-    for py in sorted(glob.glob(os.path.join(root, "src", "RimMandrake", "**", "*.py"), recursive=True)):
-        rel = os.path.relpath(py, root).replace(os.sep, "/")
+    for rel in _walk(root):
         if excluded(rel):
             continue
-        try:
-            s = open(py, encoding="utf-8").read()
-        except UnicodeDecodeError:
-            continue
-        if NAMES.search(s):
+        s, why = _source(os.path.join(root, rel))
+        if s is None or NAMES.search(s):
             out[rel] = s
     return out
+
+
+def file_sha(path):
+    with open(path, "rb") as f:
+        return hashlib.sha256(f.read()).hexdigest()[:16]
 
 
 def fingerprint(root):
     """sha256 over every .py under src/RimMandrake: a record read later is trusted only on the same code."""
     h = hashlib.sha256()
-    for py in sorted(glob.glob(os.path.join(root, "src", "RimMandrake", "**", "*.py"), recursive=True)):
-        h.update(os.path.relpath(py, root).encode())
-        with open(py, "rb") as f:
+    for rel in _walk(root):
+        h.update(rel.encode())
+        with open(os.path.join(root, rel), "rb") as f:
             h.update(hashlib.sha256(f.read()).digest())
     return h.hexdigest()
 
 
 def select_tests(root, cands):
-    """-> ([{"test", "args"}], why_none): the pipeline tests (live_excluded out) and each candidate's own selftests."""
-    tests, live = {}, {}
+    """-> ([{"test", "args"}], [missing configured tests], why_none): the pipeline tests (live_excluded out) and each
+    candidate's own selftests. Raises ValueError/OSError when pipeline_tests.json cannot be read."""
+    tests, live, missing = {}, {}, []
     cfg_path = os.path.join(root, "src", "RimMandrake", "Utils", "pipeline_tests.json")
     if os.path.isfile(cfg_path):
-        cfg = json.load(open(cfg_path, encoding="utf-8"))
+        with open(cfg_path, encoding="utf-8") as f:
+            cfg = json.load(f)
         live = cfg.get("live_excluded") or {}
         for c in cfg.get("tests", ()):
-            if c["test"] not in live:
-                tests[c["test"]] = {"test": c["test"], "args": c.get("args") or []}
+            if c["test"] in live:
+                continue
+            if not os.path.isfile(os.path.join(root, c["test"])):
+                missing.append(c["test"])
+                continue
+            tests[c["test"]] = {"test": c["test"], "args": c.get("args") or []}
     for rel in cands:
         d, stem = os.path.dirname(rel), os.path.basename(rel)[:-3]
-        for t in sorted(glob.glob(os.path.join(root, d, "selftest_%s.py" % stem))
-                        + glob.glob(os.path.join(root, d, "selftest_%s_*.py" % stem))):
+        for t in sorted(glob.glob(os.path.join(root, d, "selftest_%s.py" % glob.escape(stem)))
+                        + glob.glob(os.path.join(root, d, "selftest_%s_*.py" % glob.escape(stem)))):
             t = os.path.relpath(t, root).replace(os.sep, "/")
             if t not in live:
                 tests.setdefault(t, {"test": t, "args": []})
-    return sorted(tests.values(), key=lambda c: c["test"]), (None if tests else "no census test found under %s" % root)
+    why = None if tests else "no runnable census test under %s%s" % (
+        root, " (%d configured tests missing)" % len(missing) if missing else "")
+    return sorted(tests.values(), key=lambda c: c["test"]), missing, why
 
 
 def _run(root, c, outdir, hook_dir, timeout):
@@ -140,9 +220,9 @@ def _run(root, c, outdir, hook_dir, timeout):
                RM_STORE_CENSUS_DIR=rec, RM_STORE_CENSUS_TEST=c["test"], TMPDIR=tdir)
     t0 = time.monotonic()
     try:
-        r = subprocess.run([sys.executable, os.path.join(root, c["test"])] + [str(a) for a in c["args"]], cwd=root,
-                           capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, env=env)
-        rc = r.returncode
+        rc = subprocess.run([sys.executable, os.path.join(root, c["test"])] + [str(a) for a in c["args"]], cwd=root,
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=timeout,
+                            stdin=subprocess.DEVNULL, env=env).returncode
     except subprocess.TimeoutExpired:
         rc = None
     finally:
@@ -151,17 +231,19 @@ def _run(root, c, outdir, hook_dir, timeout):
 
 
 def _read(rec):
-    """-> (writes, ran {module: set of first lines}, processes reporting)."""
+    """-> (events, ran {hook key: set of "first:name"}, processes reporting)."""
     writes, ran, procs = [], {}, 0
     for p in glob.glob(os.path.join(rec, "*.writes.jsonl")):
-        for line in open(p, encoding="utf-8"):
-            try:
-                writes.append(json.loads(line))
-            except ValueError:
-                continue
+        with open(p, encoding="utf-8", errors="replace") as f:
+            for line in f:
+                try:
+                    writes.append(json.loads(line))
+                except ValueError:
+                    continue
     for p in glob.glob(os.path.join(rec, "*.cov.json")):
         try:
-            d = json.load(open(p, encoding="utf-8"))
+            with open(p, encoding="utf-8") as f:
+                d = json.load(f)
         except ValueError:
             continue
         procs += 1
@@ -177,19 +259,22 @@ def _probe(outdir, hook_dir):
     os.makedirs(os.path.dirname(p))
     with open(p, "w") as f:
         f.write(PROBE_SRC)
+    key = PROBE + "#" + file_sha(p)
     r = _run(root, {"test": PROBE, "args": [root]}, outdir, hook_dir, 60)
     writes, ran, procs = _read(r["dir"])
-    caught = any(w.get("chain", [None])[0] == PROBE for w in writes) and 1 in ran.get(PROBE, set())
+    caught = any(w.get("event") == "open" and (w.get("chain") or [None])[0] == key for w in writes) \
+        and "1:<module>" in ran.get(key, set())
     return {"caught": caught, "detail": "probe exit %s, %d write(s) seen, %d process record(s)"
             % (r["rc"], len(writes), procs)}
 
 
 def census(root=REPO, workers=6, hook_dir=None, timeout=None):
-    """-> the record (a dict; see the module doc). Never raises for a test that fails or hangs: those are counted."""
+    """-> the record (a dict; see the module doc). Never raises for a test that fails or hangs: those are counted; a
+    tree or test list that cannot be read is could_not_look with its cause."""
     root = os.path.abspath(root)
     hook_dir = hook_dir or os.environ.get("RM_STORE_CENSUS_HOOK_DIR") or HOOK_DIR
-    rec = {"schema": 1, "root": root, "status": "could_not_look", "cause": None, "modules": {}, "fixture_writes": 0,
-           "tests": [], "probe": {}}
+    rec = {"schema": 2, "root": root, "status": "could_not_look", "cause": None, "modules": {}, "fixture_writes": 0,
+           "tests": [], "missing_tests": [], "unhooked_children": [], "probe": {}}
     outdir = tempfile.mkdtemp(prefix="store_census_")
     try:
         if not os.path.isfile(os.path.join(hook_dir, "sitecustomize.py")):
@@ -202,34 +287,44 @@ def census(root=REPO, workers=6, hook_dir=None, timeout=None):
             return rec
         try:
             cands = candidates(root)
-        except OSError as e:
-            rec["cause"] = "could not read the tree: %s" % e
+            real = {rel: file_sha(os.path.join(root, rel)) for rel in _walk(root)}
+            tests, rec["missing_tests"], why = select_tests(root, cands)
+            cfg_path = os.path.join(root, "src", "RimMandrake", "Utils", "pipeline_tests.json")
+            if timeout is None and os.path.isfile(cfg_path):
+                with open(cfg_path, encoding="utf-8") as f:
+                    timeout = json.load(f).get("timeout_s", 180)
+            rec["fingerprint"] = fingerprint(root)
+        except (OSError, ValueError, KeyError, TypeError, AttributeError) as e:
+            rec["cause"] = "could not read the tree or its test list: %s: %s" % (type(e).__name__, e)
             return rec
-        tests, why = select_tests(root, cands)
         if why:
             rec["cause"] = why
             return rec
-        if timeout is None:
-            cfg_path = os.path.join(root, "src", "RimMandrake", "Utils", "pipeline_tests.json")
-            timeout = json.load(open(cfg_path)).get("timeout_s", 180) if os.path.isfile(cfg_path) else 180
-        rec["fingerprint"] = fingerprint(root)
         with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
-            runs = list(ex.map(lambda c: _run(root, c, outdir, hook_dir, timeout), tests))
-        writes, ran = [], {}
+            runs = list(ex.map(lambda c: _run(root, c, outdir, hook_dir, timeout or 180), tests))
+        events, ran = [], {}
         for r in runs:
             w, rn, procs = _read(r.pop("dir"))
             r["processes"] = procs
-            writes += w
+            events += w
             for k, v in rn.items():
-                ran.setdefault(k, set()).update(v)
+                rel, _, h = k.partition("#")
+                if real.get(rel) == h:                 # only the module as it is on disk, never a differing copy
+                    ran.setdefault(rel, set()).update(v)
             rec["tests"].append(r)
         blamed = {}
-        for w in writes:
+        for w in events:
+            if w.get("event") == "unhooked_child":
+                rec["unhooked_children"].append({"test": w.get("test"), "why": w.get("path"),
+                                                 "chain": [k.partition("#")[0] for k in w.get("chain", [])][:6]})
+                continue
             chain = []                  # the src modules above the write, up to the first test or modledger frame
             for k in w.get("chain", []):
-                if excluded(k):
+                rel, _, h = k.partition("#")
+                if excluded(rel):
                     break
-                chain.append(k)
+                if real.get(rel) == h:
+                    chain.append(rel)
             if not chain:               # a test wrote it (a fixture, or a stub the module called back), or modledger did
                 rec["fixture_writes"] += 1
                 continue
@@ -241,15 +336,18 @@ def census(root=REPO, workers=6, hook_dir=None, timeout=None):
                 ws = blamed[rel]
                 m.update(verdict="WRITER", writes=len(ws),
                          example={"path": ws[0]["path"], "event": ws[0]["event"], "test": ws[0]["test"],
-                                  "chain": ws[0]["chain"][:6]})
+                                  "chain": [k.partition("#")[0] for k in ws[0]["chain"]][:6]})
             else:
-                try:
-                    need = store_functions(cands[rel])
-                except SyntaxError as e:
-                    need = {}
-                    m["never_ran"] = ["unparseable: %s" % e]
-                never = [lab for first, lab in sorted(need.items()) if first not in ran.get(rel, set())]
-                m["never_ran"] = m.get("never_ran", []) + never
+                src = cands[rel]
+                if src is None:
+                    m["never_ran"] = ["its source cannot be decoded: %s" % _source(os.path.join(root, rel))[1]]
+                else:
+                    try:
+                        need = store_functions(src)
+                        m["never_ran"] = [lab for key, lab in sorted(need.items(), key=lambda kv: int(kv[0].split(":")[0]))
+                                          if key not in ran.get(rel, set())]
+                    except SyntaxError as e:
+                        m["never_ran"] = ["its source cannot be parsed: %s" % e]
                 m["verdict"] = "NOT_MEASURED" if m["never_ran"] else "NO_WRITE_SEEN"
             rec["modules"][rel] = m
         rec["status"] = "ok"
@@ -276,10 +374,11 @@ def main(argv=None):
         by.setdefault(m["verdict"], []).append(rel)
     for v in ("WRITER", "NOT_MEASURED", "NO_WRITE_SEEN"):
         print("%-13s %d  %s" % (v, len(by.get(v, [])), ", ".join(by.get(v, []))))
-    print("%d tests, %d red, %d timed out; %d fixture writes" % (
-        len(rec["tests"]), sum(1 for t in rec["tests"] if t["rc"] not in (0, None)),
-        sum(1 for t in rec["tests"] if t["rc"] is None), rec["fixture_writes"]))
-    return 1 if by.get("WRITER") else (2 if by.get("NOT_MEASURED") else 0)
+    print("%d tests, %d red, %d timed out, %d configured tests missing; %d fixture writes; %d unhooked Python children"
+          % (len(rec["tests"]), sum(1 for t in rec["tests"] if t["rc"] not in (0, None)),
+             sum(1 for t in rec["tests"] if t["rc"] is None), len(rec["missing_tests"]), rec["fixture_writes"],
+             len(rec["unhooked_children"])))
+    return 1 if by.get("WRITER") else (2 if by.get("NOT_MEASURED") or rec["unhooked_children"] else 0)
 
 
 if __name__ == "__main__":
