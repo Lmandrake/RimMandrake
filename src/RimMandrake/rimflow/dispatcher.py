@@ -1680,7 +1680,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                  else git_lock)
     do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
     do_stamp = fx.get("finish_stamp", RL.AP.write_stamp)
-    do_resit, do_attach = fx.get("setter_resit", RL.setter_resit), fx.get("cause_attach", RL.cause_attach)
+    do_attach = fx.get("cause_attach", RL.cause_attach)
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
     do_conductor = fx.get("conductor_log", conductor_log)
     wants_ledger = apply and sch.get("ledger_notes") and any(a.get("note") for a in actions)
@@ -1947,18 +1947,6 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 ticket=a.get("ticket"), role=a.get("role"),
                                 why="role %s: finish stamp NOT written to %s: %s; its next pre-screen starts at the "
                                     "previous stamp" % (a.get("role"), a["path"], res)))
-                    elif a["do"] == "role_setter_resit":
-                        # a rejected stage's check/bar route (role_launch.to_setter decided it): only here, so a dry
-                        # run resets no exam and starts no Setter unit (RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK)
-                        try:
-                            res = do_resit(a["item"], a.get("resit_why") or "", a.get("resit_at"))
-                        except Exception as e:  # noqa: BLE001
-                            res = "error: %s: %s" % (type(e).__name__, str(e))
-                            actions.append(dict(
-                                do="alarm", kind="role:%s:setter_resit" % a.get("role"), at=iso(now), note=True,
-                                ticket=a.get("ticket"), role=a.get("role"),
-                                why="role %s: the exam resit of %s FAILED: %s; the stage_rejected alarm stands" % (
-                                    a.get("role"), a.get("item"), res)))
                     elif a["do"] == "role_cause_attach":
                         # load-attach-save under the book's lock; a busy book keeps the attachment for the next tick.
                         # One Busy this tick owes the rest at once, and no wait outruns the tick's act/note deadline

@@ -2,7 +2,8 @@
 """Selftest of RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK (Codex review of role_launch.py WP-15, 2026-11-06):
   A  the cause book's load-attach-save holds a writer lock that ops_watch's alarm pass holds too, so a concurrent
      update survives; a busy book defers the attach to the next tick (never written without the lock, never lost);
-  B  the Setter route's exam reset and unit kick are a dispatcher action: a dry run resets and kicks nothing;
+  B  a cause attach is a dispatcher action: a dry run writes nothing (the Setter route it once shared is retired:
+     RIMMANDRAKE_RETIRE_SETTER_ARBITER_SEAMS_EVERY_LAUNCH_REFUSED);
   C  a stage_close that raises after the run was marked finished is retried by the next supervision, not abandoned;
   D  a builder re-run of a rejected close is told every reason, in full (was: four, cut to 400 characters).
 Temp stores and fake seams only: no systemd, no git, no real ops dir or relentless store."""
@@ -175,31 +176,6 @@ def test_a_ops_watch_holds_the_lock():
 
 
 # ---- B. the action boundary
-def test_b_setter_is_an_action():
-    import run_store
-    import item_exam as RE
-    store = run_store.Store(os.path.join(TMP, "rel"))
-    RE.set_status(store, "PYRE_ITEM", state="validated", base="abc")
-    kicked = []
-    rs = {}
-    new_run(rs)
-    acts = tick(rs, obs_for(lambda c, u, t: (False, ["[cause:check] clause c3 asserts the old schema"]),
-                            setter=lambda item, reasons, now, role=None: RL.to_setter(item, reasons, now, store=store,
-                                                                                       role=role)))
-    resit = [a for a in acts if a.get("do") == "role_setter_resit"]
-    check(len(resit) == 1 and RE.status(store, "PYRE_ITEM").get("state") == "validated" and not kicked,
-          "B1 deciding the check route resets no exam and kicks nothing; it hands one action on")
-    calls = []
-    execute(list(resit), False, setter_resit=lambda *a: calls.append(a))
-    check(not calls and RE.status(store, "PYRE_ITEM").get("state") == "validated",
-          "B2 a dry run of that action resits nothing and starts no Setter unit")
-    execute(list(resit), True, setter_resit=lambda i, w, at: RL.setter_resit(
-        i, w, at, store=store, kicker=lambda s, it: kicked.append(it)))
-    stx = RE.status(store, "PYRE_ITEM")
-    check(stx.get("state") == "owed" and kicked == ["PYRE_ITEM"] and "c3" in stx.get("resit_why", ""),
-          "B3 applied, the exam is owed again with the reasons and its unit kicked: %r" % stx)
-
-
 def test_b_cause_attach_dry_writes_nothing():
     live_book()
     execute([dict(do="role_cause_attach", role="Designer", key=KEY, said="dry", at_s=T)], False)
@@ -276,7 +252,7 @@ def test_d_full_reasons():
 
 TESTS = (test_a_concurrent_update_survives, test_a_busy_book_defers, test_a_busy_once_owes_the_rest,
          test_a_ops_watch_holds_the_lock,
-         test_b_setter_is_an_action, test_b_cause_attach_dry_writes_nothing, test_c_close_raise_is_retried,
+         test_b_cause_attach_dry_writes_nothing, test_c_close_raise_is_retried,
          test_d_full_reasons)
 
 

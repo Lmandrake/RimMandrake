@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """Selftest of ROLES_FIX_REJECTED_STAGE_ROUTES_BY_CAUSE (WP-15): a REJECTED stage close routes by its cause class
-(module -> builder re-chain with the reasons, check/bar -> Setter, environment -> cause book attach, unknown/mixed ->
-builder) and a 2nd identical rejection goes to the arbiter instead of a second loop. Before, every rejection chained
+(module -> builder re-chain with the reasons, check/bar -> the alarm stands for the checker's owner, environment ->
+cause book attach, unknown/mixed -> builder) and a 2nd identical rejection is not looped again (its alarm stands).
+RIMMANDRAKE_RETIRE_SETTER_ARBITER_SEAMS_EVERY_LAUNCH_REFUSED: the Setter and arbiter seams (Relentless-era exams,
+stage_dispute) are gone from role_launch; check/bar and a repeat take the no-exam route. Before, every rejection chained
 nothing and waited for a person to re-press the same role (incident roles-20261106083416, Designer on Pyrelands).
 Pure: the real role_launch._supervise_one with fake obs and seams, no systemd, no git, no store."""
 import json
@@ -89,19 +91,16 @@ def test_module_to_builder():
           "the stage_rejected alarm still stands")
 
 
-def test_check_and_bar_to_setter():
+def test_check_and_bar_alarm_stands():
     for tag in ("check", "bar"):
         rs = {}
         acts, calls, route = harvest(rs, ["[cause:%s] clause c3 asserts the old schema" % tag])
-        check([a.get("item") for a in acts if a.get("do") == "role_setter_resit"] == ["PYRE_ITEM"],
-              "%s -> one role_setter_resit action for the Dispatcher to carry out" % tag)
-        check(calls["setter"] == [("PYRE_ITEM", ["[cause:%s] clause c3 asserts the old schema" % tag])]
-              and not rechained(rs) and route and "-> setter" in route[0]["why"],
-              "%s -> the Setter is handed the item and reasons, nothing re-chained: %r" % (tag, calls))
-    rs = {}
-    _, calls, route = harvest(rs, ["[cause:check] c1 wrong"], seams={"setter": None})
-    check(not rechained(rs) and "no Setter exam" in route[0]["why"],
-          "check with no exam for the item: the alarm stands for the checker's owner, no builder loop")
+        check(not [a for a in acts if a.get("do") == "role_setter_resit"] and not calls["setter"],
+              "%s -> no Setter resit is decided or handed on" % tag)
+        check(not rechained(rs) and route and "-> setter" in route[0]["why"] and "owes the fix" in route[0]["why"],
+              "%s -> the alarm stands for the checker's owner, no builder loop: %r" % (tag, route[0]["why"] if route else None))
+    check(not hasattr(RL, "to_setter") and not hasattr(RL, "setter_resit") and not hasattr(RL, "to_arbiter"),
+          "the Setter and arbiter seams are gone from role_launch")
 
 
 def test_environment_to_cause_book():
@@ -130,25 +129,13 @@ def test_unknown_and_mixed_to_builder():
           "mixed labels -> builder, not the Setter or the cause book")
 
 
-def test_second_identical_to_arbiter():
+def test_second_identical_not_looped():
     rs = {}
     harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-1")
     rs.pop("run_now", None)
     _, calls, route = harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-2")
-    check(len(calls["arbiter"]) == 1 and not rechained(rs) and "-> arbiter" in route[0]["why"],
-          "a 2nd identical rejection goes to the arbiter, not a second builder loop: %r" % calls)
-    rs = {}
-    harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-1")
-    rs.pop("run_now", None)
-    import stage_dispute as RD0
-    saved = RD0.role_stage_dispute
-    RD0.role_stage_dispute = None            # hermetic: the real entry would launch an arbiter
-    try:
-        _, calls, route = harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-2", seams={"arbiter": None})
-    finally:
-        RD0.role_stage_dispute = saved
-    check(not rechained(rs) and "not landed" in route[0]["why"],
-          "arbiter seam absent (WP-08 not landed): today's behaviour holds, the alarm stands and nothing re-chains")
+    check(not calls["arbiter"] and not rechained(rs) and "-> arbiter" in route[0]["why"] and "alarm stands" in route[0]["why"],
+          "a 2nd identical rejection is not looped again and hands nothing to an arbiter: %r" % route[0]["why"])
     rs = {}
     harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-1")
     rs.pop("run_now", None)
@@ -159,58 +146,12 @@ def test_second_identical_to_arbiter():
     check("rejections" not in rs, "an accepted close forgets the concept's rejections")
 
 
-def test_arbiter_seam_today():
-    try:
-        import stage_dispute as RD  # noqa: F401
-        landed = callable(getattr(RD, "role_stage_dispute", None))
-    except ImportError:
-        landed = False
-    if not landed:
-        check(RL.to_arbiter("Designer", C1, "X", "sig", ["r"]) is None,
-              "the real arbiter seam falls back (None) while stage_dispute has no role_stage_dispute")
-
-
-def test_dispute_fault_falls_back():
-    """WP-15/08 join: a fault inside the dispute path never breaks role_launch; the alarm stands, nothing re-chains."""
-    import stage_dispute as RD
-    saved_fn, saved_deps = RD.role_stage_dispute, RD.Deps
-    try:
-        for what, patch in (("entry raises", lambda: setattr(RD, "role_stage_dispute", lambda **k: 1 / 0)),
-                            ("arbiter launch raises", lambda: setattr(RD, "Deps", lambda: 1 / 0))):
-            RD.role_stage_dispute, RD.Deps = saved_fn, saved_deps
-            patch()
-            rs = {}
-            harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-1")
-            rs.pop("run_now", None)
-            _, calls, route = harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-2", seams={"arbiter": None})
-            check(route and not rechained(rs) and ("failed" in route[0]["why"] or "not landed" in route[0]["why"]),
-                  "%s: role_launch falls back (alarm stands, no re-chain)" % what)
-    finally:
-        RD.role_stage_dispute, RD.Deps = saved_fn, saved_deps
-
-
 def test_real_seams():
-    """The real WP-03 / WP-05 calls, on temp stores: the Setter seam decides a resit only for an existing exam and
-    writes nothing; setter_resit (the Dispatcher's act) resits it. The cause-book seam decides an attach only for a
-    live record; cause_attach writes it under the book lock."""
+    """The real WP-05 calls, on a temp book: the cause-book seam decides an attach only for a live record; cause_attach
+    writes it under the book lock."""
     import tempfile
     import cause_book as CB
-    import run_store
-    import item_exam as RE
     tmp = tempfile.mkdtemp(prefix="wp15-")
-    store = run_store.Store(os.path.join(tmp, "rel"))
-    kicked = []
-    kick = lambda st, item: kicked.append(item)  # noqa: E731
-    check(RL.to_setter("NO_EXAM", ["[cause:check] c1"], T, store=store) is None and not kicked,
-          "Setter seam: an item with no exam resits nothing")
-    RE.set_status(store, "HAS_EXAM", state="validated", base="abc")
-    todo = RL.to_setter("HAS_EXAM", ["[cause:check] c1"], T, store=store, role="Designer")
-    check(todo and todo["do"] == "role_setter_resit" and RE.status(store, "HAS_EXAM").get("state") == "validated"
-          and not kicked, "Setter seam: decides the resit and writes nothing: %r" % todo)
-    said = RL.setter_resit(todo["item"], todo["resit_why"], todo["resit_at"], store=store, kicker=kick)
-    st = RE.status(store, "HAS_EXAM")
-    check(kicked == ["HAS_EXAM"] and st.get("state") == "owed" and "c1" in st.get("resit_why", "") and "resit" in said,
-          "setter_resit: an existing exam is owed again with the reasons and its unit kicked: %r" % st)
     old = os.environ.get("RM_OPS_WATCH_DIR")
     os.environ["RM_OPS_WATCH_DIR"] = tmp
     try:
@@ -236,9 +177,8 @@ def test_real_seams():
             os.environ["RM_OPS_WATCH_DIR"] = old
 
 
-TESTS = (test_classifier, test_module_to_builder, test_check_and_bar_to_setter, test_environment_to_cause_book,
-         test_unknown_and_mixed_to_builder, test_second_identical_to_arbiter, test_arbiter_seam_today, test_dispute_fault_falls_back,
-         test_real_seams)
+TESTS = (test_classifier, test_module_to_builder, test_check_and_bar_alarm_stands, test_environment_to_cause_book,
+         test_unknown_and_mixed_to_builder, test_second_identical_not_looped, test_real_seams)
 
 
 def main():

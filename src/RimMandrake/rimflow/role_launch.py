@@ -2849,13 +2849,14 @@ def stage_turn(concept):
 # nothing whatever its cause (its alarm stood until a person re-pressed the same role), so a defect in the CHECK or the
 # ENVIRONMENT came back to the role that could not fix it. Now the rejection's cause class routes it:
 #   module       -> builder: the same role re-chained once, its run told the full reasons (chain_ask, under its cap)
-#   check | bar  -> Setter: the exam author resits the exam (item_exam: the exam for the run's item); with no exam
-#                   for that item the alarm stands for the checker's owner
+#   check | bar  -> the alarm stands for the checker's owner (RIMMANDRAKE_RETIRE_SETTER_ARBITER_SEAMS_EVERY_LAUNCH_REFUSED:
+#                   the Setter seam resat Relentless-era exams only, and every Setter unit it started was refused)
 #   environment  -> the cause book: attached to the live cause record (cause_book.attach), never a new item and never
 #                   a re-chain; with no live record the alarm stands and Operations' incident files it once
 #   unknown / mixed -> builder, with the full reasons (the owner of the work reads them first)
-# and a rejection IDENTICAL to the concept's previous one (same stage, class and reasons, run names masked) goes to the
-# arbiter (WP-08 stage_dispute) instead of a second loop. The class is the Marker's when one labelled the reasons
+# and a rejection IDENTICAL to the concept's previous one (same stage, class and reasons, run names masked) is not
+# looped a second time: its alarm stands (the Relentless-era arbiter is retired with the Setter).
+# The class is the Marker's when one labelled the reasons
 # (a "[cause:<class>]" tag, evidence.py marker `classes`); unlabelled, it is read off the run: an account death, an
 # is_error result or a stopped run is environment; a run that finished and was refused by the program check is module;
 # a failed run with nothing more said is unknown.
@@ -2911,39 +2912,11 @@ def forget_rejections(rs, concept):
             rs.pop("rejections")
 
 
-# RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK: the Setter and cause-book seams DECIDE only. Each returns the action that
-# carries its route out (role_setter_resit, role_cause_attach), which dispatcher.execute performs through setter_resit
-# and cause_attach, so a dry run (and any decision collected without --apply) resets no exam, starts no Setter unit and
-# writes no book. Before, decide called RE.set_status and RE.kick itself, and saved causes.json without a lock.
+# RELENTLESS_ROLE_LAUNCH_HARDEN_CAUSE_BOOK: the cause-book seam DECIDES only. It returns the action that carries its
+# route out (role_cause_attach), which dispatcher.execute performs through cause_attach, so a dry run (and any decision
+# collected without --apply) writes no book.
 CAUSE_ATTACH_WAIT_S = 5.0     # cause_attach's wait for the book lock (an ops_watch pass holds it across its filing)
 CAUSE_OWED_CAP = 50           # attachments kept to retry while the book stays busy (oldest dropped, said)
-
-
-def to_setter(item, reasons, now, store=None, role=None):
-    """The Setter seam: resit the run item's exam (item_exam, WP-03) with the check/bar reasons. Reads only.
-    -> the role_setter_resit action that resits it, or None when the item has no exam (nothing to resit; the alarm
-    stands for the checker's owner)."""
-    import run_store
-    import item_exam as RE
-    store = store or run_store.Store()
-    if not item or not RE.status(store, item):
-        return None
-    return dict(do="role_setter_resit", role=role, item=item, ticket=item, note=False,
-                resit_why="; ".join(str(r) for r in reasons), resit_at=iso(now),
-                why="%s rejection: resit the exam of %s (%d reason(s))" % (role or "role", item, len(reasons)))
-
-
-def setter_resit(item, resit_why, resit_at, store=None, kicker=None):
-    """dispatcher.execute's role_setter_resit: the exam owed again with the reasons, its Setter unit kicked.
-    -> what happened."""
-    import run_store
-    import item_exam as RE
-    store = store or run_store.Store()
-    if not RE.status(store, item):
-        return "no Setter exam for %s any more: nothing resat" % item
-    RE.set_status(store, item, state="owed", resit_why=resit_why, resit_at=resit_at)
-    why = (kicker or RE.kick)(store, item)
-    return "exam resit owed; " + ("unit did not start: " + why if why else "Setter unit " + RE.unit_name(item))
 
 
 def cause_book_path():
@@ -3012,19 +2985,6 @@ def owe_cause_attach(st, a):
     return dropped
 
 
-def to_arbiter(role, concept, item, sig, reasons):
-    """The arbiter seam (WP-08 stage_dispute). -> what happened, or None while WP-08 has not landed a role-stage
-    entry point: then today's arbiter-less behaviour holds (the alarm stands, nothing re-chains)."""
-    try:
-        import stage_dispute as RD
-    except ImportError:
-        return None
-    fn = getattr(RD, "role_stage_dispute", None)
-    if not callable(fn):
-        return None
-    return fn(role=role, concept=concept, item=item, sig=sig, reasons=list(reasons))
-
-
 def env_cause_key(name, cls_why):
     """Pure. The cause-book key of an environment rejection: one per role and environment signal."""
     return "role-env|%s|%s" % (name, _RUN_RX.sub("#", cls_why))
@@ -3048,18 +3008,10 @@ def route_rejection(name, rs, cfg, run, res, errs, now, act, obs, classes=None):
     said, taken = None, route
     try:
         if route == "arbiter":
-            said = (obs.get("arbiter") or to_arbiter)(name, concept, item, sig, errs)
-            if said is None:
-                said = "a 2nd identical rejection; the arbiter (WP-08 stage_dispute) is not landed: alarm stands"
-                taken = "alarm"
+            said, taken = "a 2nd identical rejection: not looped again, no arbiter (retired); alarm stands", "alarm"
         elif route == "setter":
-            todo = (obs.get("setter") or to_setter)(item, errs, now, role=name)
-            if todo is None:
-                said, taken = "no Setter exam for %s: the checker's owner owes the fix; alarm stands" % item, "alarm"
-            else:
-                act(**todo)
-                said = "exam resit of %s handed to the Dispatcher (role_setter_resit) with %d reason(s)" % (
-                    item, len(errs))
+            said, taken = "a %s rejection: the checker's owner owes the fix (no Setter: retired); alarm stands" % cls, \
+                "alarm"
         elif route == "cause_book":
             key = env_cause_key(name, cls_why)
             todo = (obs.get("cause_book") or to_cause_book)(key, head, now, role=name)
