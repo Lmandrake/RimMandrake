@@ -1,0 +1,17 @@
+HEAD 3407ef13db4a7e82dcd6901d222fc4436310ec62  Wed Nov 18 19:59:39 PST 2026
+61 door tests for a maturation.py change; without the row: 1 red ['src/RimMandrake/rimflow/selftest_calibration_rows_current.py']; real registry: 0 red []
+PASS the door refuses a maturation.py change once maturation_advance is not CALIBRATED
+rc=0
+ok   evidence_gate has a row in the registry
+ok   evidence_gate's row's brief includes src/RimMandrake/rimflow/evidence_gate.py
+ok   evidence_gate's row has a free_check
+ok   maturation_advance has a row in the registry
+ok   maturation_advance's row's brief includes src/RimMandrake/rimflow/maturation.py
+ok   maturation_advance's row has a free_check
+ok   evidence_gate reads CALIBRATED at its brief's current hash
+ok   maturation_advance reads CALIBRATED at its brief's current hash
+ALL PASS
+rc=0
+--- before (018d405e54, pre-fix acceptance runner):
+60 door tests for a maturation.py change; without the row: 2 red ['src/RimMandrake/rimflow/acceptance/guard_judge_certificate_accept.py', 'src/RimMandrake/rimflow/selftest_calibration_rows_current.py']; real registry: 2 red ['src/RimMandrake/rimflow/acceptance/guard_judge_certificate_accept.py', 'src/RimMandrake/rimflow/selftest_calibration_rows_current.py']
+UNMEASURED: the door is red with the real registry too, so this cannot tell the row's absence apart
