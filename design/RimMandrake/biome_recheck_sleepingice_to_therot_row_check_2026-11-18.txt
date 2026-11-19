@@ -16,3 +16,8 @@ design/concepts/TheForge/rewrite_choices.md
    {'rows': 215, 'added': 102, 'first': 113, 'counts': {'kept': 165, 'lost': 27, 'reshaped': 4, 'moved': 17, 'other': 1, 'folded': 1}, 'partial_moves': 6, 'bad': [], 'empty': [], 'names': 25, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 25}
    VERDICT: PASS
 exit status: 0
+
+design/concepts/TheRot/rewrite_choices.md
+   {'rows': 218, 'added': 93, 'first': 125, 'counts': {'kept': 154, 'lost': 35, 'folded': 1, 'moved': 24, 'other': 3, 'reshaped': 1}, 'partial_moves': 6, 'bad': [], 'empty': [], 'names': 23, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 39}
+   VERDICT: PASS
+exit status: 0

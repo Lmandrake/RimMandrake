@@ -5,7 +5,8 @@ mechanisms in `src/RimMandrake/EnvironmentalHazards/` and `CreatureBehaviors/`),
 instruction to see every biome "through the lens of Utinni". It replaces the older definition sheet, reviews, cast
 and naming documents, kit specification and cleanse proposal as the place to read; what happened to every idea in
 them is in `design/concepts/TheRot/rewrite_choices.md`. Nothing has been deleted yet. This is a design document only
-and it launches nothing.
+and it launches nothing. A second reader checked it against the sources on 2026-11-18 and repaired the fuel, hull,
+scope and `NEEDS HIM` sections; what changed and why is at the top of the choices page.
 
 **Kind, checked against the sheet's own header:** land. A fungal continent on the night shoulder of the storm wall.
 Its milky ponds are *"not water"* and are no sea; the seabed rulings do not apply.
@@ -56,6 +57,13 @@ the giant and typed: *"Like a huge maggot slow maggot covered in small wriggling
 old ship that's pinging from within begging the players to figure out how to kill it."* Something aboard a ship
 that came here before this one is still calling. The crew's console can hear it.
 
+That earlier ship's log is written, eight entries of it, and built. It is the story of a crew exactly like this
+one. *"Day nine. Something big came through camp in the night. Slow. Pale. It ate the cargo netting, the tarps, the
+galley. It did not touch us. It left the cutlery in a glossy lump by the ramp, clean as new."* *"Day fifteen.
+Engineer took the drive coil out to clean the spores off it. Left it on the mat for one hour. One hour. It is gone,
+and the pale thing is lying where it was, and we can hear the coil humming inside it."* And the last entry, which
+stops in the middle: *"Cut the beast open gently. It never meant us harm. It just keeps"*
+
 The crew are desert people on the cold side of the world. They will be lying on the floor a great deal.
 
 ## The clock on any stop
@@ -81,7 +89,8 @@ biological"*, and there is a lot of it.
 ## The first minutes
 
 The ship comes down through cap and fog into blue-gold light from below. The air is cold enough to hurt. The crew
-steps off the ramp onto a floor that is warm.
+steps off the ramp onto a floor that is warm. *"You land warm. That is the first wrong thing."* The sheet's way of
+saying it: *"air temperature is a lie about the ground."*
 
 Before anyone has decided anything: towers of pale fungus on every side, with room to walk between their stems; a
 milk-white pond catching the light; a wet shine already on the hull; and, on the pilot's console, a ping that is not
@@ -100,7 +109,10 @@ Somebody puts down a crate of meat.
   ordinary cutting. Stored, the food stays warm. A freezer full of it has to work harder, and the game shows why.
 - **The milk.** Shallows of fungal not-water. Native things drink it. Nobody else should. Mushroom bridges cross it.
 - **The fall.** What comes down from the sky is the Sheen, *"a reproductive sleet flung outward to colonize"*. *"No
-  water rain, ever."* In this version it is weather to look at and a shine on everything.
+  water rain, ever."* In this version it is weather to look at and a shine on everything, the ship included:
+  *"everything sheened is being considered for colonization."* It comes aboard with the crew. His reason for
+  ruling that gear only slows it (2026-09-17): *"incidental exposure every time you go in and out — you just can't
+  totally sterilize everything."*
 - **The armed ones.** Some mushrooms defend themselves. An Agarilux Prime *"releas[es] large clouds of extremely
   dangerous spores"*, and when what it gassed is dead it *"extends prehensile hyphae to feed on their rotting
   corpses."* Its little sibling the Skulltop *"produces toxic spores when anything gets close."* Both stand where
@@ -125,7 +137,8 @@ Somebody puts down a crate of meat.
 - **The cup.** A lussa crown, guarded by its own cloud of spores, cut and brewed on the day and drunk where it was
   cut: joy, and a good memory that lasts a while. *"You want some of this, you come to the biome and prepare it in
   your vessel, right now."* It cannot be carried away. This one was kept in 0.1.0 by the owner's own mark.
-- **Fuel in a pod.** Wild blastpods can be cut for a sac that burns, bursts, or renders to chemfuel.
+- **Fuel in a pod, perhaps.** A wild blastpod can be cut for a sac that burns, bursts, or renders to chemfuel. It
+  is built, and as built it cannot grow at any temperature the Rot has; see "Fuel, and the hull".
 
 ## "OMG did you see that?"
 
@@ -137,7 +150,8 @@ Each can happen inside the visit. Each says what is on screen.
    a smear. Beside it, untouched, the scrap pile.
 3. **It ate the scrap pile.** *On screen:* the hwelgrue crawling across the salvage yard, the yard empty behind it.
    The crew follows it for a day. A casting drops and cracks, and everything is in it, shining. *Why it is very
-   Jawa:* on the second day they are carrying rusty things *to* it.
+   Jawa:* on the second day they are carrying rusty things *to* it. The sheet's review saw it first: scavengers
+   follow it *"as crows follow a plough."*
 4. **The knocking.** *On screen:* after a fight, the giant moving off across the field, and from inside it a
    knocking, and a name over it, and a time.
 5. **The cap moves.** *On screen:* one of a row of pale caps beside the path unfolds into a mantis.
@@ -153,6 +167,15 @@ Each can happen inside the visit. Each says what is on screen.
     not. *"The longer you stay, the more you shine."* The inspect line says what the gloss is becoming.
 11. *(0.2.0)* **Cutting out the core.** *On screen:* the crew fighting the one giant that pings, by hand, with the
     ship's guns silent, because a hit from the ship's weapons costs the core its soundness.
+12. *(0.2.0)* **The console reads a dead crew's diary.** *On screen:* every few pings, a letter in another ship's
+    voice. *"The fog does not clear; it sticks."* *"Note for whoever reads this: cover what you keep."* Every
+    second entry puts a cache on the world map. The eighth is the camp *"past the third ridge"*, where *"the warm
+    mat took them in the way it takes everything, gently and completely."* What is there to carry home is a root
+    of the mat, for the ship. The log only goes on while the giant lives; the core only comes out when it dies.
+13. *(0.2.0, campaign layer)* **Digging up the floor to sell it.** *On screen:* Jawa with shovels cutting warm
+    fungal soil for the moisture farms, and every hybrid within earshot turning toward them. The fungal-soil
+    trade is built in the campaign tier: dig it, sell it by ship, and the digging *"sends distress through the
+    fungus and brings its creatures."*
 
 ## When the Empire arrives
 
@@ -165,6 +188,8 @@ Each can happen inside the visit. Each says what is on screen.
 - **The rot clock takes the rest.** Dead left outdoors are gone fast. So are a siege camp's unwalled stores.
 - **A camp on the mat is warm.** The Empire's shelter gets the floor's warmth exactly as the crew's does. The Rot
   is generous to everybody.
+- **They may already be following the giant.** Pitched with the hwelgrue on 2026-10-02 as a hook and never ruled
+  on or built: *"Imperial salvage crews have started following it too; a trail shared with rivals."* `UNSETTLED`.
 - *0.2.0:* **the Sheen marks whoever stands in it.** *"Breathing it without a compatible immune system virtually
   guarantees disease: the biome's border is enforced by its own breath."* A cordon that sits for two days under
   the fall is two days further along than a crew that slept under a roof. And a wounded native brings its kin.
@@ -197,43 +222,80 @@ Each can happen inside the visit. Each says what is on screen.
 
 ## Fuel, and the hull
 
-**Fuel: a richer source, named.** The owner ruled it on 2026-09-06: the blastpod shroom's chemfuel chain is taken in
-*"wild-only — it cannot be cultivated (by Jawa at least)"*, with his reason: *"a fungus that's energy rich enough
-to be chemfuel, that's not so bad as long as we're harvesting it."* So the Rot is a place a ship can refuel by
-foraging: slower than a pipe into a lake, faster than rendering, and only as fast as the crew can find wild pods.
-It is built, and this design moves it into 0.1.0 as the Rot's answer to his fuel ruling of 2026-11-18. (The sheet
-records with the ruling that it may be cut later if it plays hokey; that stays his.) The slow emergency route has more to work on here
-than anywhere on the night side. The fungal power generator was cut (*"that's stupid"*) and stays cut. **Where fuel
-is bought:** no source puts a seller here; `UNSETTLED`.
+**Fuel: the emergency route, with more to render than anywhere on the night side; and one named source that does
+not hold up.** The first read named wild blastpods as the Rot's richer source, on his ruling of 2026-09-06: the
+blastpod's chemfuel chain taken in *"wild-only — it cannot be cultivated (by Jawa at least)"*, *"a fungus that's
+energy rich enough to be chemfuel, that's not so bad as long as we're harvesting it"*, and it *"may be cut later if
+it plays hokey."* The second read found three things against leaning on it. The built plant
+(`RM_BlastpodShroom`) cannot grow below 50 °C (measured in its def), and the sheet gives this biome a maximum of
++24 °C. The roster said so on 2026-09-09: *"it can only live in hot caves; the wild-only ruling stands but its wild
+presence is cavern-gated, not surface."* The donor blastpod was purged from the Rot for that reason, its stand-in
+was purged too, and the roster records with his ruling of 2026-09-20 that no replacement be made: *"I don't want
+new versions of these silly plants."*
+And on 2026-11-17 he let the cleanse leave blastpod fuel switched off. So this design claims no richer source here.
+The slow rendering of biomass has a forest to work on. Blastpod fuel goes back where the cleanse put it, and the
+question is the third under `NEEDS HIM`. (`UNMEASURED`: whether map generation places grown pods that then simply
+never regrow. Filed as `RIMMANDRAKE_DECIDE_ROT_BLASTPOD_GROWS_ONLY_ABOVE_FIFTY_DEGREES`.) The fungal power generator
+was cut (*"that's stupid"*) and stays cut. **Where fuel is bought:** no source puts a seller in the Rot. What the
+Rot gives a crew that has to buy fuel is something to sell: in the campaign tier the warm soil itself, dug and sold
+to moisture farms by ship; in the free tier, mended salvage out of the giant.
 
-**The hull: the Rot leaves metal alone, and goes for everything else aboard.** His ruling of 2026-11-18 puts the
-biome's wear on the ship in 0.1.0 and says to find it in the sources. The sources here are unusually clear that the
-gut does not eat metal. What it wears on is what the ship carries:
+**The hull: the Rot spares metal, sticks to it, and eats what is left lying beside it.** His ruling of 2026-11-18:
+*"Hull wear: Yes in 0.1.0. It's easy, and most of the biome already talk about this."* The frame is built:
+`src/RimUtinni/ShipShields/` (his eight shield rulings of 2026-09-02, recorded in
+`design/Jawa/proposals/ship_shields_deep_design.md`). This design adds no hull system. Every wear below has a
+source, named beside it.
+
+- *The Sheen on the ship (0.1.0 by his rulings; the frame cannot see it yet).* The sources say what the Sheen does
+  to a ship in a dead crew's words: *"The fog does not clear; it sticks,"* and an engineer who *"took the drive
+  coil out to clean the spores off it."* His ruling of 2026-09-02 names the answer. He cut a special spore shield
+  (*"spores aren't magical, just particulates"*) and gave the job to the light screen, which *"handle[s] wind,
+  ash, vapor, bio contamination, spores, smoke, sand, and rain damage completely."* The built tracker wears an
+  unscreened ship's outside while a particulate hazard is up, but it knows that hazard only as pollution or as
+  weather carrying sand, and the three Sheen weathers carry none (measured in
+  `RM_RotSporeKit_SheenWeathers.xml`). Teaching the frame that Sheen-fall is particulate is the build, and it is
+  small. This is fouling that a screen stops. It is not the sheened hull, below.
+- *Whatever is left on the mat (0.1.0; built).* The giant *"only eats what lies in the open."* The dead crew
+  lost *"the cargo netting, the tarps, the galley"*, and then the drive coil, set down for one hour. The built
+  rule is the same: any loose thing on open ground is food, and only the metal comes back. A ship part taken off
+  to be cleaned is a loose thing. *"Cover what you keep."*
 - *The stores (0.1.0).* Anything organic outside walls and a roof is on the rot clock. Loading and unloading
   across open mat is a race.
 - *The cold room (0.1.0).* Living harvest heats whatever it is stored in. The ship's refrigeration is the part of
   the ship this biome attacks. The answers are more cooling, smaller stores, or cooking and eating it.
+- *Cold (built; mostly out of reach here).* The frame wears a ship in extreme cold, with the cryo envelope as his
+  answer. Its tracker calls a map cold at forty below or in a cold snap; the sheet measured the Rot's median at
+  −18.8 °C and its floor at −42 °C after the coldest tail was repainted as ice. On most Rot ground the cold wear
+  would not fire. `UNMEASURED` in a running game.
 - *The ship's guns (0.2.0).* They cannot be used on the one giant worth killing without ruining what is inside it.
 - *The crew (0.2.0).* The Sheen builds on whoever is outside.
-- *Not used:* **the sheened hull**, in which a landed ship *"slowly takes the Sheen"*, pale fruiting pockets
-  mature along its seams and cargo bays, and a ship that launches without scraping them seeds *"a small warm patch
-  of Rot mat"* wherever it lands next: *"the biome marks the ship by using it to travel."* He turned it down on
-  2026-10-02 (*"none of these hit the mark"*), before he stated the ship lens. It is the first question under
+- *What the ship gains (0.2.0).* Two parts, and they pull against each other. The **drive core**, cut out of the
+  one giant that carries it, is on record as the Rot's gift to the ship. The **living mat root** is his own
+  ruling of 2026-10-22: *"Can be installed on the gravship to help with heating in cold places as a reward. Needs
+  food."* It is won at the log's last camp, and the log stops when the giant dies. (A judging pass of 2026-11-11
+  took the root off the list of ship gifts because two other biomes also gave a heater. That was an agent's
+  tidying. His ruling stands above it.)
+- *Declined, and not revived here:* **the sheened hull**, in which a landed ship *"slowly takes the Sheen"*, pale
+  fruiting pockets mature along its seams and cargo bays (in the consult's harder version, late pockets cost deck
+  sections and the payload goes off inside the ship), and a ship that launches without scraping them seeds *"a
+  small warm patch of Rot mat"* wherever it lands next: *"the biome marks the ship by using it to travel."* He
+  turned it down on 2026-10-02 (*"none of these hit the mark"*). And **the launch siege**, pitched the same day
+  and not chosen: *"the warm mat grows up over the landing struts and holds the ship down for a few hours"* when a
+  joined crew member is aboard. Both were before he stated the ship lens. They are the first question under
   `NEEDS HIM`.
-
-No shared system for hull wear was found in `src/`. The two 0.1.0 kinds are the Rot's own built signature.
 
 ## What the crew takes away
 
-- **Chemfuel** from wild blastpods.
 - **Their own scrap, mended,** and other people's.
 - **Fungal timber, fibre, mushroom leather, fungal medicine;** food for as long as the cold room holds.
 - **Milk and silk,** and the animals that give them.
 - **Nothing brewed.** *"No stockpilable teas or symbionts."* What the cup gave stays in the drinker.
 - *0.2.0:* **the drive core,** cut out of the one giant that carries it and fitted to the ship, for a quarter more
   range at full soundness (his card of 2026-10-02); **a dead ship's log** that goes on naming salvage sites across
-  the planet for as long as its carrier lives; a **gut-mother** sac, grown aboard into a vat that returns the
-  implants and gear from any corpse.
+  the planet for as long as its carrier lives; **a root of the living mat**, from the log's last camp, that warms
+  a cabin on the cold side for as long as it is fed; a **gut-mother** sac, grown aboard into a vat that returns
+  the implants and gear from any corpse, with starter jars of it to sell (the one living thing he ruled may leave
+  the Rot). *Campaign layer:* **fungal soil**, dug and sold. *Asked:* chemfuel from wild blastpods.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -249,7 +311,8 @@ No shared system for hull wear was found in `src/`. The two 0.1.0 kinds are the 
 | What it ate that was metal comes back whole in a casting. | Feed it a marked, damaged steel item; wait. | The item has its mark and quality; nothing organic comes back. |
 | With the ship's engine on the map, the core's carrier pings and the ship hears it. | A map with the carrier and one without. | Only one giant in the world ever pings. |
 | A lussa crown defended by its spores can be cut, brewed that day and drunk on the spot for joy and a lasting good memory; it cannot be stored or carried off. | Brew and drink at the grove; try to stock one. | A crown cut yesterday will not brew. |
-| A wild blastpod yields a sac that renders to chemfuel; it cannot be sown. | Forage, render, fuel the ship. | No grow zone accepts it. |
+| Under Sheen-fall an unscreened ship's outside fouls, slowly and with a letter; a ship under the light screen does not. | Two ships through a fall, one screened. | Under a clear sky neither fouls. (The frame does not see Sheen today; this is the row that says it must.) |
+| A ship part or crate set down on open mat in the giant's path is eaten like anything else, and only its metal comes back. | A minified ship part and a crate, in the open and under a roof. | The roofed ones are left. |
 | The fliers fly, by the flight state. | A state read of the illoth's and dustveil's flight trackers (never a live look without the owner). | |
 | Nothing vanishes. | Every loss above; the mod's master setting switched off with someone swallowed. | The swallowed person is released, not deleted. |
 
@@ -288,11 +351,17 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The hwelgrue: grazing the open ground, swallowing the downed, the knocking and the rescue, castings that return
   metal, the first-sighting letter, the ping. (built; moved in, see `rewrite_choices.md`)
 - The pleasure cup, brewed live at a guarded lussa crown. (built; his mark)
-- Wild blastpod sacs and their chemfuel. (built; moved in)
+- The Sheen as fouling on an unscreened ship, on the built shield frame. (frame built; it cannot see Sheen yet)
 
 **0.2.0, the stop with company**
 - The drive core: one carrier in the world, soundness lost to ship weapons, cut out and fitted for range. The dead
   ship's log and its salvage sites. (built)
+- The log's last camp and the living mat root: a ship part by his ruling of 2026-10-22, fed off the Rot, budding.
+  (built; moved in from "later" by the second reader, see `rewrite_choices.md`)
+- Wild blastpod sacs and their chemfuel. (built, but the plant cannot grow at the Rot's temperatures; asked)
+- A watcher: the mollugh, *"a fungus/animal that pulls itself under its own cap"*, pitched under his 2026-10-08
+  ruling that every biome gets one and never admitted at a sitting. (unbuilt; a proposal)
+- Campaign layer: the fungal-soil trade, dug from the mat and sold by ship, with the distress it raises. (built)
 - The Sheen on people: the coating that builds outdoors, slows under gear and shelter, and can root; the chitin
   helmet against it. (built)
 - Shared wounds and kin mending. The chittik's implanting bite. (built)
@@ -304,8 +373,6 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The thrown spore weapon. The ambrosyx. (built)
 
 **Later (a crew that stays, or a colony)**
-- The portable living mat: the root won at the log's last camp, fed off the Rot, budding (his ruling of
-  2026-10-22: *"Can be installed on the gravship to help with heating in cold places as a reward"*).
 - The pale tree and its two levels of psylink. The grown furnace; the furnace-blood gene and a body that pushes
   heat.
 - The gourmet line. Exports for the Slime. The conscience about selling marked treasures. Industrial medicine.
@@ -317,7 +384,10 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - The sheened hull, the ground's heartbeat, Unseaming (*"none of these hit the mark"*, 2026-10-02). The first is
   asked again below.
-- The launch siege for the joined; the joined ear (pitched 2026-10-02, not chosen).
+- The launch siege for the joined; the joined ear (pitched 2026-10-02, not chosen). The first is asked again below.
+- Two giants offered beside the hwelgrue and not chosen (2026-10-02): the yssomar, the wound-bearer whose scars
+  are not its own; and the brullith that cannot lie down. *"No yssomar is built."*
+- The wound-tie surgery (held off the card). The grove's audible breath (offered with the heartbeat).
 - The Gut's Due and Standing in the Sheen rites; the Bought Quarrel (not chosen).
 - The fungal power generator (*"that's stupid"*). Cultivated blastpods.
 - Storable or exportable teas and symbionts. A general gene bank (the Slime's alone). A psycast economy. Any living
@@ -334,12 +404,22 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
    for. *Stay turned down* (default: the Rot spares metal and wears on stores, the cold room and the crew). *Bring
    it back in 0.2.0:* film, then fruiting pockets on seams and bays, scraped off in the fall before launch or
    carried to the next landing, where a small patch of the Rot takes root; a medium build, and the only biome that
-   uses the ship to travel.
+   uses the ship to travel. Asked with it, because it is the other ship idea he passed over the same day: the
+   launch siege, where the mat grips the struts of a ship carrying a joined crew member and the Unjoining is what
+   makes leaving easy. *Not chosen stays not chosen* (default).
 2. **How much of the giant is 0.1.0?** He let the cleanse put all of it in the next version on 2026-11-17, the day
    before the lens. This design brings the eating, the swallowing, the rescue, the castings and the ping into 0.1.0
    and leaves the core, the log and the vat at 0.2.0. *As written* (default). *All of it at 0.2.0, as he marked:*
    the first version is the cleanse's quiet metabolism and one cup. *All of it at 0.1.0:* the stop's prize is in the
    first version, with a world-unique carrier and a ship part to prove.
+
+3. **Is the blastpod the Rot's fuel?** His ruling of 2026-09-06 took the chemfuel chain in wild-only and said it
+   might be cut. Since then: the built plant cannot grow below 50 °C and the Rot never passes +24 °C; he kept its
+   two donor bodies purged on 2026-09-20 (*"I don't want new versions of these silly plants"*); and on 2026-11-17
+   he let the cleanse leave it switched off. *Emergency fuel only* (default: the Rot renders biomass like
+   anywhere, and has a great deal of it). *Blastpods are the richer source:* the plant is rewritten to grow on
+   the warm mat, and foraging pods becomes the Rot's refuelling; a small build and a design call on how common.
+   *Cut the chain:* one less thing.
 
 The cleanse proposal's own question to him still stands and is not re-asked here: whether exposed frozen meat
 should also be digested. This design keeps the cleanse's default, that frozen stock keeps.
