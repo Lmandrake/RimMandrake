@@ -1,8 +1,6 @@
 {
   "_": "What live code still reads of the retired Relentless tick's rules file (run_store.rules, and the readers named in each comment). The tick's other keys went with it on 2026-11-18 (RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES); git keeps them, see design/RimMandrake/retired_eras_index_2026-11-18.md. selftest_run_rules_keys.py refuses a key no live file names.",
   "enabled": true,
-  "_same_failure_limit": "RELENTLESS_STRIKES_HARDEN_CHANGE_TACK (owner 2026-11-02): two returns of one class change the approach. Read only by circling.watch, which only the retired tick called; it goes with RIMMANDRAKE_RETIRE_CIRCLING_WATCH_ONLY_THE_DEAD_TICK_CALLED.",
-  "same_failure_limit": 2,
   "run_max_s": 3600,
   "_warm_clones": "Released clones kept warm (reset to origin/main) for the next item instead of deleted and re-cloned at 3.6 GB each; counted in the pool cap (run_store.py through clone_park.py, DISK_CHURN_MEASURE_CLONES_EAT_THE_VHDX).",
   "warm_clones": 3,
@@ -18,18 +16,10 @@
     "plan_max_s": 500,
     "gate_plan_max_s": 180
   },
-  "_circling": "RW2, circling.py. Thresholds unmeasured: replay real runs before trusting one. stop stays false until circling_replay.json, written by `circling.py replay --write` from hand-labelled runs on this code and these numbers, shows wrongful stops under false_stop_limit; the flag alone stops nothing.",
+  "_circling": "Thresholds pulse/time_ledger.py reads (waste: a run whose selftests take at least test_share_min minutes and over test_share_limit of its working time; replay: false_stop_limit and replay_min_runs). Unmeasured: replay real runs before trusting one. circling.watch, which once stopped runs on them, went with the retired tick on 2026-11-18.",
   "circling": {
-    "enabled": true,
-    "stop": false,
     "test_share_limit": 0.6,
     "test_share_min": 25,
-    "no_change_min": 30,
-    "finding_min_new": 3,
-    "oscillation_limit": 2,
-    "churn_min": 25,
-    "churn_moves": 5,
-    "churn_max_lines": 4,
     "false_stop_limit": 0.05,
     "replay_min_runs": 20
   },

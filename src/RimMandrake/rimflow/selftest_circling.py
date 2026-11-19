@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""RW2's pure parts: the tool-call classifier (pulse/time_ledger reads it), the tree delta and the stop gate. The
-planted-worker cases that drove the retired tick (relentless.tick over selftest_relentless's FakeWorld) went with it;
-circling.watch, which only that tick called, is filed for removal."""
-import json
+"""selftest_circling.py -- the tool-call classifier pulse/time_ledger reads (circling.classify). The tree delta, the stop
+gate and circling.watch went with the retired tick (RIMMANDRAKE_RETIRE_CIRCLING_WATCH_ONLY_THE_DEAD_TICK_CALLED); their
+cases are in git with them."""
 import os
 import shutil
 import sys
@@ -10,9 +9,7 @@ import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling as C  # noqa: E402
-import run_store as R  # noqa: E402
 
-BLOCK = R.rules(os.path.join(R.HERE, "run_rules.json"))["circling"]
 FAILS = []
 HOME = tempfile.mkdtemp(prefix="circ-home-")
 os.environ["HOME"] = HOME
@@ -22,102 +19,6 @@ def ok(cond, what):
     print(("ok   " if cond else "FAIL ") + what)
     if not cond:
         FAILS.append(what)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def t_delta():
-    d = C.delta
-    ok(d({"a": list("abc")}, {"a": list("abc")}) == {}, "delta: same marks, nothing moved")
-    ok(d({"a": ["+1"]}, {"a": ["+2"]}) == {"a": {"+1": -1, "+2": 1}}, "delta: one line replaced")
-    ok(d({"a": ["+1", "+1"]}, {"a": ["+1"]}) == {"a": {"+1": -1}}, "delta: twin lines are counted, not merged")
-    ok(d({}, {"a": ["+%d" % n for n in range(C.DELTA_MAX + 1)]}) is None, "delta: past the cap, none kept")
-    net = C._net
-    move = lambda *m: {"raw": str(m), "delta": {"a": {x[1:]: 1 if x[0] == "^" else -1 for x in m}}}
-    ok(net([{"raw": "0"}, {"raw": "1"}]) is None, "a move with no delta is unknown, no hit")
-    ok(net([{"raw": "0"}, move("^+1"), move("v+1", "^+2"), move("v+2", "^+3")]) == 1, "one line tweaked three times nets 1")
-    ok(net([{"raw": "0"}, move("^+1", "^-0"), move("v+1", "^+2")]) == 1, "a replaced line nets 1 against the base")
-    ok(net([{"raw": "0"}] + [move("^+%d" % n) for n in range(6)]) == 6, "a fresh line a move nets a line a move")
-    ok(BLOCK["churn_max_lines"] < BLOCK["churn_moves"], "shipped thresholds: a line per move can never read as churn")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def verdict(d, c, **kw):
-    v = dict({"fingerprint": C.fingerprint(c), "measured": 30, "fine": 20, "circling": 10, "wrongful": 0}, **kw)
-    p = os.path.join(d, "v.json")
-    with open(p, "w") as f:
-        json.dump(v, f)
-    return p
-
-
-def t_gate():
-    d = tempfile.mkdtemp(prefix="circ-g-")
-    off = dict(BLOCK)
-    ok(BLOCK["stop"] is False and not C.stop_gate(off)[0], "S4 shipped rules: stopping is off")
-    ok(not os.path.exists(C.VERDICT), "S4 no replay verdict ships")
-    on = dict(BLOCK, stop=True)
-    ok(not C.stop_gate(on, os.path.join(d, "none.json"))[0], "S4 the flag alone stops nothing")
-    ok(not C.stop_gate(on, verdict(d, on, wrongful=1))[0], "S4 a replay at the limit does not beat it")
-    ok(not C.stop_gate(on, verdict(d, on, measured=19))[0], "S4 too few labelled runs")
-    ok(not C.stop_gate(on, verdict(d, on, circling=0))[0], "S4 a replay with no circling run proves nothing")
-    p = verdict(d, on)
-    ok(C.stop_gate(on, p)[0], "S4 a replay under the limit opens the gate")
-    ok(not C.stop_gate(dict(on, no_change_min=31), p)[0], "S4 a changed threshold voids the replay")
-    ok(not C.stop_gate(off, p)[0], "S4 a good replay with stop off stays report-only")
-    shutil.rmtree(d, ignore_errors=True)
-
-
-
-
 
 
 def t_classify():
@@ -143,10 +44,8 @@ def t_classify():
     ok(k("git -C /x log -3") == "reading", "git -C log is reading")
 
 
-
-
 def main():
-    for t in (t_classify, t_delta, t_gate):
+    for t in (t_classify,):
         t()
     shutil.rmtree(HOME, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")

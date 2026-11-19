@@ -1,4 +1,4 @@
-"""run_store.py -- the run store (Store: items, journal, locks under /home/mandrake/rm/relentless/store), the clone effects detached helpers use (Effects: bundle_clone, remove_clone, restore_bundle; circling's transcripts and stop), rules(), the rimflow guard and pilot_model.
+"""run_store.py -- the run store (Store: items, journal, locks under /home/mandrake/rm/relentless/store), the clone effects detached helpers use (Effects: bundle_clone, remove_clone, restore_bundle), rules(), the rimflow guard and pilot_model.
 
 Moved verbatim from rimflow/relentless.py (RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES):
 only the functions live code reaches (design/RimMandrake/retired_eras_index_2026-11-18.md).
@@ -21,7 +21,6 @@ except ImportError:
     import fulltext  # noqa: E402
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import circling  # noqa: E402
 import clone_park  # noqa: E402
 import clone_integrity  # noqa: E402
 
@@ -333,8 +332,6 @@ class Effects(object):
         self._budget = self._helpers = NOT_READ
         self.bounce = set()
         self.marked = set()
-        import role_launch as RL
-        self.RL = RL
 
 
     def git(self, cwd, *args, timeout=120):
@@ -714,24 +711,6 @@ class Effects(object):
 
 
 
-
-
-
-
-
-
-
-
-    def stop(self, run, force):
-        self.RL.stop(run["unit"], run.get("scope"), marker=run.get("marker"), force=force, seat=self.r["seat"])
-
-
-
-    def circling_tree(self, st, outputs=()):
-        return circling.tree_reading(st["clone"], st.get("base") or "HEAD", POOL_NOISE, outputs)
-
-    def transcripts(self, st):
-        return circling.transcript_paths(st["clone"], st["started_at"])
 
 
 
