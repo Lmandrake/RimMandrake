@@ -14,7 +14,7 @@ Raws land in _artsrc/raw/ (gitignored). Finals ship to:
   RimThemes/Utinni Shell/Loader/BGLoader.jpg    2560x1440  (RimThemes cold-load screen)
 
 Generate the raws (Windows-visible cwd required, /mnt/d ok):
-  python3 ../../../.claude/skills/generating-images/scripts/codex_image.py generate \
+  python3 ~/dev/MandrakeWorkflows/skills/generating-images/scripts/codex_image.py generate \
      --out raw/menu_ishko_raw.png --prompt "$MENU_PROMPT" --timeout 140
   python3 ... generate --out raw/loader_tactical_raw.png --prompt "$LOADER_PROMPT" --timeout 140
 Then:  python3 gen_bg.py   # crops+upscales the raws to the shipped finals

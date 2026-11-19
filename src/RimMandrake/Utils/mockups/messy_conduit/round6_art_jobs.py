@@ -4,7 +4,7 @@
 
 Owner: "The hose reel for the scrapper needs to look hacked together out of piecemeal [scrap parts]. The modern hose
 should not be neon, it should look like a real firehose."
-Codex $imagegen via skills/generating-images/scripts/codex_image.py, 5 at a time, reusing round 5's CODEX_HOMEs.
+Codex $imagegen via ~/dev/MandrakeWorkflows/skills/generating-images/scripts/codex_image.py, 5 at a time, reusing round 5's CODEX_HOMEs.
 Inputs/outputs outside git at D:\\ClaudeWork\\rimmandrake\\scratch\\mc_r6\\{in,raw}. Strands, Mouth and the Modern reel's coil are
 procedural (round6_art_install.py), not generated. Report: Transient/mc_art_round6_report.md.
 """
@@ -19,7 +19,8 @@ from PIL import Image
 R = rm_str("scratch", "mc_r6")
 HOMES = str(Path.home() / ".codex_workers/mc_r5") if codex_side() == "wsl" else rm_str("scratch", "mc_r5", "homes")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), *[".."] * 5))
-CI = os.path.join(REPO, "skills/generating-images/scripts/codex_image.py")
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+CI = str(IMAGE_SKILLS / "generating-images/scripts/codex_image.py")
 HOSE = os.path.join(REPO, "src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Hose")  # moved at the hose port
 
 BASE = ("RimWorld game sprite, seen from directly above (top-down, as RimWorld draws buildings and items), hand-painted "

@@ -18,13 +18,15 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-sys.path.insert(0, str(_RM_ROOT / 'skills' / 'generating-images' / 'scripts'))
+import os
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+sys.path.insert(0, str(IMAGE_SKILLS / 'generating-images' / 'scripts'))
 import pnglib  # noqa: E402
 from sea_creatures import CREATURES, FINAL, MOCKUPS, RAW, canvas_for  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 SKILLS = Path(str(_RM_ROOT / 'skills'))
-CHROMA = SKILLS / "generating-images/scripts/chroma_key.py"
+CHROMA = IMAGE_SKILLS / "generating-images/scripts/chroma_key.py"
 SHEET = SKILLS / "generating-rimworld-sprites/scripts/contact_sheet.py"
 
 

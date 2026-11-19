@@ -167,7 +167,7 @@ or a game restart.
 ## Owed (live check + follow-on, for whoever next holds the bridge)
 
 1. 🔴 **Art generation is BLOCKED, not done.** Attempted 6 times tonight
-   (`skills/generating-images/scripts/codex_image.py generate`), every call
+   (`~/dev/MandrakeWorkflows/skills/generating-images/scripts/codex_image.py generate`), every call
    timed out (105-180s) with `codex exec exceeded Ns`, despite `probe`
    reporting healthy auth (`auth_mode: chatgpt`) each time. Evidence this is
    contention, not a broken install: `/mnt/c/Users/Mandrake/.codex/thread-writer-locks/`
@@ -177,7 +177,7 @@ or a game restart.
    holding the CLI busy. Did not touch that process (not provably dead, not
    mine to kill). **The exact command to finish this, once Codex is free:**
    ```
-   python skills/generating-images/scripts/codex_image.py generate \
+   python ~/dev/MandrakeWorkflows/skills/generating-images/scripts/codex_image.py generate \
      --prompt "A single massive ancient tree, digital painted game asset, side view, centered and symmetric, full tree visible from root to crown. Colossal gnarled dark grey-brown trunk with thick deeply weathered bark and a wide flared root base. Towering dense canopy of silver-green foliage fading to warm waxy gold at the outer tips, the whole crown swept and leaning permanently to one side as if shaped by constant wind. Dim warm golden late-sunset lighting with soft directional highlights on the windward side. Flat solid green background, no ground, no shadow, no other objects, no text." \
      --chroma-key '#00ff00' --timeout 105 \
      --out <scratch>/sweetline_tree_raw.png

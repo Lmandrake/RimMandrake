@@ -12,7 +12,7 @@ instead of one careful remeasure.
 
 WHAT IT DOES
   1. chroma-keys the raw's flat #00ff00 to real alpha (via the shared
-     skills/generating-images/scripts/chroma_key.py, same threshold path the
+     ~/dev/MandrakeWorkflows/skills/generating-images/scripts/chroma_key.py, same threshold path the
      first cut used — the cut is not a second, divergent implementation).
   2. crops to the subject's alpha bbox. That is exactly how the shipped
      eopie_pair_gen_east.png was cut: raw subject x 462-1334, y 19-797 is
@@ -43,7 +43,9 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
-CHROMA = os.path.join(REPO, "skills", "generating-images", "scripts",
+from pathlib import Path
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+CHROMA = os.path.join(IMAGE_SKILLS, "generating-images", "scripts",
                       "chroma_key.py")
 
 # Harness leather, from the build scripts. Used only to FIND the collar, never

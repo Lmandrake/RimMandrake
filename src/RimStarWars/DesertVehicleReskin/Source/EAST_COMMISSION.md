@@ -166,7 +166,7 @@ two bodies meet. Two separated bodies leave that yoke spanning empty green.
 ## 4. The four commissions
 
 Every prompt below is complete and ready to paste. Constraints come first, the subject
-second, per `skills/generating-images/references/prompting.md`; every requirement is stated
+second, per `~/dev/MandrakeWorkflows/skills/generating-images/references/prompting.md`; every requirement is stated
 as the state to draw, never as a prohibition. `codex_image.py` prefixes `Use $imagegen to `
 and appends its own chroma-key clause, so each prompt begins with a verb and carries the
 size itself.
@@ -273,7 +273,7 @@ Species, palette and surface come from image 2: olive-green pebbled scale hide w
 ```bash
 cd /home/mandrake/rm/bench   # your seat clone; /mnt/d/Luke/dev/RimMandrake is a read-only mirror
 S=src/RimMandrake/DesertVehicleReskin/Source
-G=skills/generating-images/scripts
+G=${RM_IMAGE_SKILLS_ROOT:-$HOME/dev/MandrakeWorkflows/skills}/generating-images/scripts
 
 # --- 1. GENERATE. Four calls, four generations of the owner's quota. Prompts are §4;
 #        paste each one in place of <PROMPT 4a> etc. Add --dry-run to see the resolved

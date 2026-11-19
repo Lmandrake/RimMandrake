@@ -26,7 +26,9 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 VALIDATOR = HERE / "validate_sprite.py"
 REPO = HERE.parents[2]
-sys.path.insert(0, str(HERE.parents[1] / "generating-images" / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
+image_skills.add_to_path()
 import pnglib  # noqa: E402
 
 FAILS = []

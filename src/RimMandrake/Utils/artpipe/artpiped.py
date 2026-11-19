@@ -75,7 +75,7 @@ import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.js
 # The rollout-reading path (find the newest rollout-*.jsonl under a
 # CODEX_HOME, pull its last rate_limits) and the PNG-header reader both
 # already exist and are already selftested —
-# skills/generating-images/scripts/codex_grumpiness.py and codex_image.py's
+# generating-images/scripts/codex_grumpiness.py (MandrakeWorkflows) and codex_image.py's
 # own png_info() — so they are imported here rather than re-implemented.
 # codex_grumpiness's `after_mtime` parameter is also what fixes a real bug:
 # without it, `meter_after` for a job whose worker died before writing its
@@ -85,7 +85,7 @@ import artreg  # noqa: E402 — ART_REGEN_REGISTRY_1: sole writer of registry.js
 # file's own stated placeholder assumption, whereas this item's spec gives
 # the real six-row thresholds below, so only the READ paths are shared, not
 # the threshold judgment.
-sys.path.insert(0, str(common.REPO_ROOT / "skills" / "generating-images" / "scripts"))
+common.image_skills.add_to_path()
 import codex_grumpiness  # noqa: E402
 import codex_image  # noqa: E402
 
@@ -2057,7 +2057,7 @@ def _downscale_oversized_png(out_png: Path, sw: int, sh: int, tw: int, th: int) 
     kind of cutout art; BOX is the one resampler that left a file no worse
     than it found it.
     """
-    sys.path.insert(0, str(common.REPO_ROOT / "skills" / "generating-images" / "scripts"))
+    common.image_skills.add_to_path()
     import pnglib  # noqa: E402 — see generating-images/scripts/pnglib.py
     _, _, rgba = pnglib.read_png(out_png)
     resized = pnglib.resize_rgba(sw, sh, rgba, tw, th)

@@ -60,7 +60,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import common  # noqa: E402
 
-sys.path.insert(0, str(common.REPO_ROOT / "skills" / "generating-images" / "scripts"))
+common.image_skills.add_to_path()
 
 CANON_ROOT = common.CANON_ROOT
 IMG_EXT = {".png", ".jpg", ".jpeg", ".webp"}

@@ -8,7 +8,8 @@ of work, taken from this page** (`src/RimMandrake/rimflow/roles/conductor.md`); 
 WARNING for a brief that names none.
 
 Paths in this repo are relative to the clone root (on the mirror: `D:\Luke\dev\RimMandrake\skills\...`). Paths starting
-`~/dev/` are skills outside this repo (`D:\Luke\dev\...`), registered for every project on this machine. Read the skill
+`~/dev/` are skills outside this repo (`D:\Luke\dev\...`); most are not registered machine-wide either
+(`~/dev/Lodestar/claude/skills.md` says which), so they too are read by path. Read the skill
 when you are about to do the work, not before. Whether each one is registered is the table at the end.
 `src/RimMandrake/Utils/selftest_skills_by_work.py` refuses a skill folder missing from this page, and a registration
 column that disagrees with `.claude/skills/`.
@@ -62,8 +63,8 @@ column that disagrees with `.claude/skills/`.
 ## Art and sprites
 - `skills/generating-rimworld-sprites/SKILL.md`: game-ready sprites matching a reference (canvas, alpha, footprint).
 - `skills/rimworld-sprite-facings/SKILL.md`: north/south/east/west facings, mirrors, flip-books.
-- `skills/generating-images/SKILL.md`: a new raster image through Codex $imagegen.
-- `skills/editing-images/SKILL.md`: editing an existing image through Codex $imagegen.
+- `~/dev/MandrakeWorkflows/skills/generating-images/SKILL.md`: a new raster image through Codex $imagegen.
+- `~/dev/MandrakeWorkflows/skills/editing-images/SKILL.md`: editing an existing image through Codex $imagegen.
 - `skills/reading-rimworld-graphics/SKILL.md`: finding a texture on disk or in an AssetBundle.
 
 ## Judging art
@@ -103,8 +104,6 @@ column that disagrees with `.claude/skills/`.
 | skill | registered |
 |---|---|
 | `clone-landing-commits` | yes |
-| `editing-images` | no |
-| `generating-images` | no |
 | `generating-rimworld-sprites` | yes |
 | `gravship-layout` | no |
 | `live-debugging-proof-harness` | yes |

@@ -74,8 +74,10 @@ from pathlib import Path
 # --------------------------------------------------------------------------
 _HERE = Path(__file__).resolve().parent
 _REPO = _HERE.parents[2]
+sys.path.insert(0, str(_HERE))
+import image_skills  # noqa: E402  (generating-images lives in MandrakeWorkflows)
 for _p in (_REPO / "skills" / "generating-rimworld-sprites" / "scripts",
-           _REPO / "skills" / "generating-images" / "scripts"):
+           image_skills.GENERATING_SCRIPTS):
     if _p.is_dir() and str(_p) not in sys.path:
         sys.path.insert(0, str(_p))
 

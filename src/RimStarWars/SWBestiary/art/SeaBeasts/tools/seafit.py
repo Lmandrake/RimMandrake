@@ -18,7 +18,9 @@ import argparse
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(_RM_ROOT / 'skills' / 'generating-images' / 'scripts'))
+import os
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+sys.path.insert(0, str(IMAGE_SKILLS / 'generating-images' / 'scripts'))
 import pnglib  # noqa: E402
 
 # Bounding box measured at alpha >= 32: a handful of near-invisible stray

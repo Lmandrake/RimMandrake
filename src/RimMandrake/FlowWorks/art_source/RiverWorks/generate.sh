@@ -5,7 +5,7 @@
 set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"; REPO="$(cd "$HERE/../../../../.." && pwd)"
 LOOK="$1"; shift; TANK="$REPO/src/RimMandrake/FlowWorks/Textures/RimMandrake/FlowWorks/Tank/$LOOK/RM_LiquidTank.png"
-CI="$REPO/skills/generating-images/scripts/codex_image.py"; mkdir -p "$HERE/raw"
+CI="${RM_IMAGE_SKILLS_ROOT:-$HOME/dev/MandrakeWorkflows/skills}/generating-images/scripts/codex_image.py"; mkdir -p "$HERE/raw"
 RMS="$(python3 "$REPO/src/RimMandrake/Utils/rmpaths.py" scratch)" || exit 2
 case "$LOOK" in
  Scrapper) MAT="weathered grey-brown salvaged timber, mismatched planks, patched with rusty riveted scrap-metal plates, frayed rope lashings - the same rust, worn steel and old wood as image 2";;

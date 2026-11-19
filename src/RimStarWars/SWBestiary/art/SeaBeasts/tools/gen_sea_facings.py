@@ -23,7 +23,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sea_creatures import CREATURES, MOCKUPS, RAW, prompt_for  # noqa: E402
 
-GEN = str(_RM_ROOT / 'skills' / 'generating-images' / 'scripts' / 'codex_image.py')
+import os
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+GEN = str(IMAGE_SKILLS / 'generating-images' / 'scripts' / 'codex_image.py')
 # Measured on this batch: an `edit` carrying a ~1.5 Mpx mockup lands at
 # 120-170 s, not the ~80 s the skill measured for generate. Raised past the old
 # 210 s because the wrapper now HARVESTS on timeout instead of discarding the

@@ -1,6 +1,8 @@
 """Every mark's art: what to generate and how to bake it. `python3 manifest.py gen [--workers N]` generates what's missing into GEN;
 bake.py turns GEN into Textures/. Sizes are world cells on the wall's plane (see RM_GraffitiKernel.WallWorldHeight)."""
 import os, subprocess, sys, threading, queue, json
+from pathlib import Path
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
 
 GEN = "/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/gen3"
 HOME = "/mnt/d/ClaudeWork/rimmandrake/ralph_graffiti/codexhome_w%d"
@@ -236,7 +238,7 @@ def gen(workers):
             except queue.Empty:
                 return
             for attempt in range(2):
-                r = subprocess.run([sys.executable, f"{REPO}/skills/generating-images/scripts/codex_image.py", "generate", "--out", f"{GEN}/{n}.png",
+                r = subprocess.run([sys.executable, f"{IMAGE_SKILLS}/generating-images/scripts/codex_image.py", "generate", "--out", f"{GEN}/{n}.png",
                                     "--codex-home", HOME % w, "--timeout", "900", "--prompt", m["prompt"]], capture_output=True, text=True, cwd=REPO)
                 if r.returncode == 0:
                     break

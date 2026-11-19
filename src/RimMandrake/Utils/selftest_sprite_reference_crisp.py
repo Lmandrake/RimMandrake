@@ -23,7 +23,9 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[3]
 SCRIPTS = REPO / "skills" / "generating-rimworld-sprites" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(0, str(SCRIPTS.parents[1] / "generating-images" / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
+image_skills.add_to_path()
 import pnglib  # noqa: E402
 import selftest as sprite_selftest  # noqa: E402
 import validate_sprite  # noqa: E402

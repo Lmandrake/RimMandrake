@@ -15,8 +15,11 @@ until the validator passes offline.** The load is for learning things that
 cannot be computed. Canvas size and alpha can be computed.
 
 Builds on `generating-images` (engine, transparency) and `editing-images`
-(invariants, drift detection). Read
-`../generating-images/references/codex-contract.md` for the verified CLI facts.
+(invariants, drift detection), which live in MandrakeWorkflows:
+`~/dev/MandrakeWorkflows/skills/generating-images/SKILL.md` and
+`~/dev/MandrakeWorkflows/skills/editing-images/SKILL.md` (`D:\Luke\dev\MandrakeWorkflows\skills\...`;
+`src/RimMandrake/Utils/image_skills.py` resolves them, `$RM_IMAGE_SKILLS_ROOT` overrides). Read
+`~/dev/MandrakeWorkflows/skills/generating-images/references/codex-contract.md` for the verified CLI facts.
 
 ## 🔴 HOW BIG SHOULD THE TEXTURE BE? 128 px PER CELL OF OCCUPANCY
 
@@ -166,7 +169,7 @@ Match the reference's *aspect*, not its size. For a `512x640` reference
 **Ask for a transparent background directly in the prompt.** There is no
 `--chroma-key` flag on `generate`/`edit` any more (removed 2026-09-06) — the
 built-in tool emits real alpha when asked for it. See
-`../generating-images/SKILL.md`. `chroma_key.py` is now only a standalone
+`~/dev/MandrakeWorkflows/skills/generating-images/SKILL.md`. `chroma_key.py` is now only a standalone
 post-process script for the rare case that already has a flat key to cut.
 
 ### 3. Conform
@@ -254,7 +257,7 @@ More traps for this section: [references/traps.md](references/traps.md) § The v
 ### 5. Look at it
 
 ```bash
-python skills/generating-images/scripts/preview_alpha.py \
+python ~/dev/MandrakeWorkflows/skills/generating-images/scripts/preview_alpha.py \
   --input final_south.png --out _check.png --max-dim 128
 ```
 
@@ -305,7 +308,7 @@ Earned on this project's pilot; both rules are now non-negotiable.
 
 Phrase all three positively in the prompt — "every fitting terminates flush against
 the hull", never "no cables sticking out". See
-`../generating-images/references/prompting.md`.
+`~/dev/MandrakeWorkflows/skills/generating-images/references/prompting.md`.
 - **Generate creature sprites at 256 px, not 512.** 512-sourced and 256-sourced art are pixel-identical once downscaled to play sizes (RMSE 5-7 at every zoom), while 512 costs about 4x the atlas VRAM (183 renders: ~241 MB vs ~64 MB), a real out-of-memory axis on a large mod list. Default 256; `fill_queue.py` warns past it without an `oversize_reason`.
 - **Gate legibility with `art_zoom_sim.py`.** Downscale the candidate to on-screen tiers beside a same-tier vanilla control (vanilla small creatures ship at 128 px) and LOOK. Vanilla reads at 24-32 px through a thick dark keyline, a few bold shapes and body value clearly apart from the ground; fine detail and thin or absent outlines turn to mud.
 
@@ -412,8 +415,8 @@ Art generation answers to The Artist (`src/RimMandrake/rimflow/roles/artist.md`)
 - `../rimworld-sprite-facings/` — what north/south/east/west mean, multi-facing generation,
   cross-facing audits, Spastic appendages, flying flip-book frames.
 - `references/validation-plan.md` — the PROVE/EXPECT/LIES plan owed with every sprite, how sprite checks lie.
-- `../generating-images/` — engine, chroma key, alpha preview, prompting.
-- `../editing-images/` — invariants and drift detection.
+- `~/dev/MandrakeWorkflows/skills/generating-images/` — engine, chroma key, alpha preview, prompting.
+- `~/dev/MandrakeWorkflows/skills/editing-images/` — invariants and drift detection.
 
 ## Dependencies
 

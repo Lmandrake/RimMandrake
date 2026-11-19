@@ -12,7 +12,9 @@ from pathlib import Path
 REPO = Path(str(_RM_ROOT))
 OUT = REPO / "Transient" / "sea_monsters_mockups"
 OUT.mkdir(parents=True, exist_ok=True)
-GEN = REPO / "skills/generating-images/scripts/codex_image.py"
+import os
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+GEN = IMAGE_SKILLS / "generating-images/scripts/codex_image.py"
 
 STYLE = ("Game creature sprite in the painterly vanilla-RimWorld animal art style: "
          "real anatomy, rich surface detail, muted painterly palette, heavy clean black "

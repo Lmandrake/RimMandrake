@@ -110,7 +110,9 @@ from pathlib import Path
 
 # this file -> artpipe -> Utils -> RimMandrake -> src -> repo root.
 REPO_ROOT = Path(__file__).resolve().parents[4]
-sys.path.insert(0, str(REPO_ROOT / "skills" / "generating-images" / "scripts"))
+sys.path.insert(0, str(REPO_ROOT / "src" / "RimMandrake" / "Utils"))
+import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
+image_skills.add_to_path()
 import pnglib  # noqa: E402
 
 DEFAULT_WEEKLY_HIGH = 95.0
@@ -131,7 +133,7 @@ def control_for(job_id: str) -> dict:
 
 def write_rollout(codex_home: Path, weekly: float, five_h: float, resets_at=None) -> None:
     """Emit a rollout-*.jsonl line in the SAME shape
-    skills/generating-images/scripts/codex_grumpiness.py actually reads:
+    generating-images/scripts/codex_grumpiness.py (MandrakeWorkflows) actually reads:
     `rate_limits` sits at `payload.rate_limits`, a SIBLING of `payload.info`
     inside a `token_count` event — not a bare top-level key. artpiped.py
     reuses that module's read path rather than re-implementing it, so a mock

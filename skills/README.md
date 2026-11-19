@@ -59,8 +59,6 @@ and push there — a queue item here never reaches it.
 |---|---|
 | _(generated from each skill's own `description` — the text that actually decides when it loads, so no second copy can disagree)_ | |
 | `clone-landing-commits` | How to get a commit from a RimMandrake seat clone (/home/mandrake/rm/bench) onto origin/main and keep the clone level afterwards… |
-| `editing-images` | Modifies an existing image with a text prompt by attaching it to Codex's built-in $imagegen tool, then verifies what actually… |
-| `generating-images` | Generates raster images from a text prompt by driving the Codex CLI's built-in $imagegen tool, then retrieves, inspects and… |
 | `generating-rimworld-sprites` | Produces RimWorld-ready sprite art that matches an existing reference asset — correct canvas, real alpha, silhouette inside the… |
 | `gravship-layout` | Author, save and load RimWorld gravship layouts (ShipLayoutDefV2) as XML — write a ship directly with no map, no build and no… |
 | `live-debugging-proof-harness` | Write, run and read a LIVE proof of a RimWorld mod through the bridge — proof_all.py, proof_hose.py, a northstar/ runner… |
@@ -100,8 +98,6 @@ Owner, 2026-11-19: *"most of the time I invoke things quite manually in my text 
 
 | skill | SKILL.md | read it when | undo |
 |---|---|---|---|
-| `editing-images` | `D:\Luke\dev\RimMandrake\skills\editing-images\SKILL.md` | editing an existing image with Codex $imagegen and checking what changed | `ln -s ../../skills/editing-images .claude/skills/editing-images` |
-| `generating-images` | `D:\Luke\dev\RimMandrake\skills\generating-images\SKILL.md` | making a new raster image or transparent PNG with Codex $imagegen | `ln -s ../../skills/generating-images .claude/skills/generating-images` |
 | `gravship-layout` | `D:\Luke\dev\RimMandrake\skills\gravship-layout\SKILL.md` | writing, saving, loading or inspecting a gravship layout (ShipLayoutDefV2) as XML | `ln -s ../../skills/gravship-layout .claude/skills/gravship-layout` |
 | `reading-rimworld-graphics` | `D:\Luke\dev\RimMandrake\skills\reading-rimworld-graphics\SKILL.md` | finding or extracting a RimWorld texture on disk or in an AssetBundle | `ln -s ../../skills/reading-rimworld-graphics .claude/skills/reading-rimworld-graphics` |
 | `review-sheets` | `D:\Luke\dev\MandrakeWorkflows\skills\review-sheets\SKILL.md` | building an HTML sheet where a human keeps, cuts or ranks many items | `ln -s /mnt/d/Luke/dev/MandrakeWorkflows/skills/review-sheets .claude/skills/review-sheets` |

@@ -34,7 +34,9 @@ import facing_scale_lint as L  # noqa: E402
 import flier_guard as FG  # noqa: E402
 
 DEFAULT_ROWS = REPO / "Transient/facing_rescale_2026-10-16/after2.json"
-CODEX = REPO / "skills/generating-images/scripts/codex_image.py"
+sys.path.insert(0, str(HERE.parent))
+import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
+CODEX = image_skills.CODEX_IMAGE
 MODEL = os.environ.get("CODEX_MODEL", "gpt-5.6-sol")      # what rm-artpiped runs; codex_image's gpt-5.5 default 400s on ChatGPT auth
 CODEX_HOME = os.environ.get("FACING_REGEN_CODEX_HOME", str(Path.home() / ".codex_workers/facing_regen") if codex_side() == "wsl" else rm_str("scratch", "codex_home_facing_regen"))   # own home (one per parallel worker): never harvest the daemon's renders
 

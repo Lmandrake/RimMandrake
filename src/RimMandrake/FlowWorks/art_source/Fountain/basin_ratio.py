@@ -3,7 +3,9 @@ rim) as an ellipse and report minor/major. validate_sprite.py --upright-cylinder
 is the jet/column, so it cannot judge this shape.  usage: basin_ratio.py <png>..."""
 import os
 import sys
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../../../../skills/generating-images/scripts"))
+from pathlib import Path
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+sys.path.insert(0, str(IMAGE_SKILLS / "generating-images/scripts"))
 import pnglib  # noqa: E402
 
 for p in sys.argv[1:]:

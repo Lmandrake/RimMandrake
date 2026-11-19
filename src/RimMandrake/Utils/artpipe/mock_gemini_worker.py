@@ -49,7 +49,9 @@ sys.path.insert(0, str(HERE))
 import mock_codex_worker as _codex_mock  # noqa: E402 — reuse its PNG helpers + control_for
 
 REPO_ROOT = HERE.parents[3]
-sys.path.insert(0, str(REPO_ROOT / "skills" / "generating-images" / "scripts"))
+sys.path.insert(0, str(REPO_ROOT / "src" / "RimMandrake" / "Utils"))
+import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
+image_skills.add_to_path()
 import pnglib  # noqa: E402
 
 

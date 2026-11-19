@@ -42,7 +42,9 @@ OUT = HERE / "out"
 GUIDES = HERE / "guides"
 RESULTS = HERE / "results.json"
 ITEM = "BRIDGE_ART_REDRAW_CABINETS_GROW_SADDLES"
-CI = [sys.executable, str(R / "skills/generating-images/scripts/codex_image.py")]
+import os
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+CI = [sys.executable, str(IMAGE_SKILLS / "generating-images/scripts/codex_image.py")]
 HOMES = Path("/mnt/c/Users/Mandrake/.codex_workers")
 LOOKS = ["Scrapper", "Industrial", "Modern", "Futuristic"]
 # already-seeded worker homes (a NEW home cannot be seeded while the sandbox seed template lags the codex build)

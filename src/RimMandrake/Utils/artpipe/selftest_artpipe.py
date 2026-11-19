@@ -47,7 +47,9 @@ import fill_queue  # noqa: E402 — row_to_jobs() unit tests (ARTPIPE_FACING_COH
 import mock_codex_worker  # noqa: E402 — reused directly for write_rollout() in a couple of tests
 
 REPO_ROOT = HERE.parents[3]
-sys.path.insert(0, str(REPO_ROOT / "skills" / "generating-images" / "scripts"))
+sys.path.insert(0, str(REPO_ROOT / "src" / "RimMandrake" / "Utils"))
+import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
+image_skills.add_to_path()
 import pnglib  # noqa: E402
 import codex_grumpiness  # noqa: E402
 
@@ -1292,7 +1294,7 @@ def test_detector_meter_thresholds():
 def test_meters_flow_end_to_end_through_codex_grumpiness():
     """Below-cap note honored via reuse: rather than re-implementing the
     rollout-parsing artpiped.py now imports
-    skills/generating-images/scripts/codex_grumpiness.py for it. This proves
+    generating-images/scripts/codex_grumpiness.py (MandrakeWorkflows) for it. This proves
     the WHOLE chain works with that module's REAL rollout shape: mock writes
     a rollout the way codex_grumpiness actually reads it
     (payload.rate_limits, not a bare top-level key) -> the daemon's

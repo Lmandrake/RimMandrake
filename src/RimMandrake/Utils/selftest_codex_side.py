@@ -10,7 +10,7 @@ import unittest
 from unittest.mock import patch
 
 HERE = Path(__file__).resolve().parent
-sys.path[:0] = [str(HERE), str(HERE / "artpipe"), str(HERE.parents[2] / "skills/generating-images/scripts")]
+sys.path[:0] = [str(HERE), str(HERE / "artpipe")]
 import codex_side as side
 import agent_runner as ar
 import gpt_consult as gc

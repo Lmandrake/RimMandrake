@@ -58,6 +58,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import state_dir  # noqa: E402 — the one resolver; see its docstring
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
 
 # this file -> artpipe -> Utils -> RimMandrake -> src -> repo root.
 REPO_ROOT = state_dir.REPO_ROOT
@@ -147,10 +149,8 @@ def canon_brief(name: str, root: Path | None = None) -> str:
 
 
 HERE = Path(__file__).resolve().parent
-DEFAULT_WORKER_SCRIPT = (REPO_ROOT / "skills" / "generating-images" / "scripts"
-                          / "codex_image.py")
-DEFAULT_GEMINI_WORKER_SCRIPT = (REPO_ROOT / "skills" / "generating-images" / "scripts"
-                                / "gemini_image.py")
+DEFAULT_WORKER_SCRIPT = image_skills.CODEX_IMAGE
+DEFAULT_GEMINI_WORKER_SCRIPT = image_skills.GENERATING_SCRIPTS / "gemini_image.py"
 DEFAULT_VALIDATOR = (REPO_ROOT / "skills" / "generating-rimworld-sprites"
                       / "scripts" / "validate_sprite.py")
 MANIFEST_SCHEMA = HERE / "manifest.schema.json"
@@ -365,7 +365,7 @@ def _import_codex_image():
     `_default_codex_home_root()` and `codex_sandbox_preflight()` so both use
     the identical import path rather than two copies of the same
     sys.path dance."""
-    sys.path.insert(0, str(REPO_ROOT / "skills" / "generating-images" / "scripts"))
+    image_skills.add_to_path()
     import codex_image  # noqa: E402
     return codex_image
 

@@ -145,7 +145,7 @@ triggered.
 
 ## 2026-09-02 — sprite retry, 5 attempts, all failed: genuinely blocked, not skipped
 
-Ran the full retry budget (`skills/generating-images/scripts/codex_image.py
+Ran the full retry budget (`~/dev/MandrakeWorkflows/skills/generating-images/scripts/codex_image.py
 generate`, `#00ff00` chroma-key, 120s cap per the `generating-rimworld-sprites`
 skill's own guidance): attempt 1 timed out (`codex exec exceeded 120s`),
 attempt 2 failed fast with `ERROR: Selected model is at capacity. Please try a
@@ -192,7 +192,7 @@ from karrask (permanent shell, no shear job) already lives entirely in the defs
 built 2026-09-02, so the art itself needing no separate edit is consistent with
 the item's own bar, not a shortcut around it.
 
-Pipeline used (`skills/generating-images/scripts/chroma_key.py` +
+Pipeline used (`~/dev/MandrakeWorkflows/skills/generating-images/scripts/chroma_key.py` +
 `skills/generating-rimworld-sprites/scripts/validate_sprite.py --describe`,
 per `generating-rimworld-sprites/SKILL.md`):
 1. `chroma_key.py` on `karrask_opt3.png` → clean cut, 1453x768 subject,

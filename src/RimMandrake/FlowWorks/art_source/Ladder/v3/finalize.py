@@ -14,7 +14,9 @@ from PIL import Image
 HERE = Path(__file__).resolve().parent
 FA = HERE.parent.parent
 R = FA.parents[3]
-sys.path.insert(0, str(R / "skills/generating-images/scripts"))
+import os
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+sys.path.insert(0, str(IMAGE_SKILLS / "generating-images/scripts"))
 TEX = R / "src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Canals"
 LADDER_SETS = {"a": ("A", "A"), "b": ("B", "B"), "c": ("B", "C")}
 SPIKE_SETS = ("A", "B", "C")

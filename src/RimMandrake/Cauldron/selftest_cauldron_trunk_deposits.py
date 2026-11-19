@@ -26,6 +26,7 @@ from PIL import Image, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+IMAGE_SKILLS = os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills")
 DOC = os.path.join(REPO, "design/Jawa/worldbuilding/biomes/cauldron_trunk_deposits_design_2026-11-02.md")
 TEX = os.path.join(HERE, "Textures/Things/Plant")
 TREE_PNG = os.path.join(TEX, "RM_TwistingThornwood/TwistingThornwood_a.png")
@@ -208,7 +209,7 @@ EXISTING = {
     "rosters/cauldron.json": lambda t: os.path.exists(os.path.join(BIOMES, t)) and roster_keeps_thornwood(t),
     # skills
     "rimworld-art-evaluation": lambda t: os.path.exists(os.path.join(REPO, "skills", t, "SKILL.md")),
-    "editing-images": lambda t: os.path.exists(os.path.join(REPO, "skills", t, "SKILL.md")),
+    "editing-images": lambda t: os.path.exists(os.path.join(IMAGE_SKILLS, t, "SKILL.md")),   # MandrakeWorkflows
     # items
     "CAULDRON_TRUNK_DEPOSITS_DESIGN_CRYSTAL_FANS": item_filed,
     "CAULDRON_TRUNK_DEPOSITS_BUILD_SWEAT_SHOWS": item_filed,

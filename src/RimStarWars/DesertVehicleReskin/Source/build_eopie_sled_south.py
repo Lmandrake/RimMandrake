@@ -15,7 +15,7 @@ WHY EOPIE, TWO OF THEM
   than four, because bodySize 1.4 makes a pair the natural team for a light sled.
 
 HOW THE PAIR WAS GENERATED, so it can be redone
-  skills/generating-images codex_image.py edit, with TWO references in this
+  ~/dev/MandrakeWorkflows/skills/generating-images codex_image.py edit, with TWO references in this
   order and a #00ff00 chroma key (this install is chatgpt-auth, so there is no
   model-native alpha -- chroma key is the only route):
     1. Eopie_south, extracted from the Star Wars Animal Collection (Continued)

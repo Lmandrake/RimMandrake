@@ -8,7 +8,9 @@ import numpy as np
 
 ROOT = Path(str(_RM_ROOT))
 W = ROOT / "Transient/art_review_desert_wraps"
-GI = ROOT / "skills/generating-images/scripts"
+import os
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+GI = IMAGE_SKILLS / "generating-images/scripts"
 GS = ROOT / "skills/generating-rimworld-sprites/scripts"
 
 REF = {"wrap": W / "ref/ref_body_male_south_512.png",

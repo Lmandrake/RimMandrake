@@ -17,7 +17,9 @@ import time
 import uuid
 
 ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(ROOT / "skills/generating-images/scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
+image_skills.add_to_path()
 import codex_image as CX
 
 

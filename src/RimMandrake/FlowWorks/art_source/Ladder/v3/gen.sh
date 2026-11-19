@@ -5,7 +5,7 @@
 set -u
 R=/home/mandrake/rm/bench
 FA=$R/src/RimMandrake/FlowWorks/art_source
-CI="python3 $R/skills/generating-images/scripts/codex_image.py edit --model gpt-6.1-sol --timeout 560"
+CI="python3 ${RM_IMAGE_SKILLS_ROOT:-$HOME/dev/MandrakeWorkflows/skills}/generating-images/scripts/codex_image.py edit --model gpt-6.1-sol --timeout 560"
 H=/mnt/c/Users/Mandrake/.codex_workers
 LMAT=$FA/Ladder/raw/B_hung_north.png
 SMAT=$R/src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Canals/RM_Spikes.png

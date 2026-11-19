@@ -12,7 +12,7 @@ archive, which is a plain zip with the skill folder at top level:
 Writing the folder is therefore NOT shipping the skill - the same distinction
 this project already makes between writing a mod file and deploying it.
 
-    python src/RimMandrake/Utils/package_skill.py generating-images
+    python src/RimMandrake/Utils/package_skill.py generating-rimworld-sprites
     python src/RimMandrake/Utils/package_skill.py --all
     python src/RimMandrake/Utils/package_skill.py --all --check     # verify, write nothing
 

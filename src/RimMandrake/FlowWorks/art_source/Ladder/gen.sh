@@ -5,7 +5,7 @@ set -u
 tag=$1; home=$2
 R=/home/mandrake/rm/bench
 cd "$(dirname "$0")"
-CI="python3 $R/skills/generating-images/scripts/codex_image.py edit --model gpt-6.1-sol --codex-home $home --timeout 900"
+CI="python3 ${RM_IMAGE_SKILLS_ROOT:-$HOME/dev/MandrakeWorkflows/skills}/generating-images/scripts/codex_image.py edit --model gpt-6.1-sol --codex-home $home --timeout 900"
 LAD=$R/src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Canals/RM_Ladder.png
 RAI=$R/src/RimMandrake/FlowWorks/Textures/Things/Building/FlowWorks/Canals/RM_LadderRaised.png
 MAT="A crude scavenger ladder of weathered grey-brown timber poles, rungs lashed to the rails with tan rope, dark riveted iron bands at the joints, exactly the material, colours and painterly brushwork of image 2. Two heavy black wrought-iron hooks are forged onto the top ends of the rails."

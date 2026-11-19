@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """gpt_consult.py finds Codex with the image skills absent (RIMMANDRAKE_MOVE_IMAGE_SKILLS_TO_WORKFLOWS_GPT_TOOL_BORROWS).
 
-gpt_consult used to import `skills/generating-images/scripts/codex_image.py` for its Codex finder, so moving
+gpt_consult used to import the generating-images skill's codex_image.py for its Codex finder, so moving
 that skill out of the repo broke the ask-GPT tool. Each case runs in a fresh interpreter whose import of
 `codex_image` raises, as it would with the skill folder gone, and a fake HOME holding a Linux `codex`.
 """

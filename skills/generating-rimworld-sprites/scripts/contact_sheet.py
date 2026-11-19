@@ -23,8 +23,9 @@ import argparse
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]
-                       / "generating-images" / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src" / "RimMandrake" / "Utils"))
+import image_skills  # noqa: E402  (the image skills live in MandrakeWorkflows)
+image_skills.add_to_path()
 import pnglib  # noqa: E402
 
 # Sprites are judged at two scales. 420px shows craft; 96px is close to what a

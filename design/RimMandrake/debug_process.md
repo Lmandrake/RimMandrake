@@ -211,7 +211,7 @@ refuted; a result that makes no sense against the current model of the system.
 **Mechanism.** Use the Windows Codex CLI, read-only. Run
 `codex.exe exec --sandbox read-only --skip-git-repo-check -o answer.md "<read prompt.md as UTF-8 …>"`
 from `Transient/debug_gpt/<ITEM_ID>/` with stdin closed. Locate the binary the way
-`find_codex_cli()` in `skills/generating-images/scripts/codex_image.py` does. ⚠️ Through
+`find_codex_cli()` in `src/RimMandrake/Utils/codex_cli.py` does. ⚠️ Through
 Windows PowerShell's codepage, Codex reads `°`/`§` as mojibake. Say "read as UTF-8" in
 the prompt, or write it in ASCII. The maintained wrapper (§1 item 3) will own both.
 

@@ -12,7 +12,8 @@ from pathlib import Path
 ROOT = Path(str(_RM_ROOT))
 OUT = ROOT / "Transient/art_review_desert_wraps/raw"
 OUT.mkdir(parents=True, exist_ok=True)
-CODEX = ROOT / "skills/generating-images/scripts/codex_image.py"
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+CODEX = IMAGE_SKILLS / "generating-images/scripts/codex_image.py"
 
 BODY_STYLE = (
     "A single video-game sprite asset for a top-down colony-sim game, drawn as flat "

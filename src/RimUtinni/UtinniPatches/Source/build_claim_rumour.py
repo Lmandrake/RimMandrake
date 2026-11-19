@@ -5,7 +5,7 @@ The generator returns a large image on a flat #00ff00 key (this install is
 chatgpt-auth, so chroma-key is the only route to alpha). This does three things
 and nothing else:
 
-  1. chroma-keys the green via the shared skills/generating-images script,
+  1. chroma-keys the green via the shared ~/dev/MandrakeWorkflows/skills/generating-images script,
   2. crops to the subject and pads it square so the icon is centred and cannot
      be stretched by the aspect,
   3. downsamples premultiplied to 128x128 — plain averaging on a cutout drags
@@ -35,7 +35,9 @@ _atexit.register(_tw.report)
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD = os.path.dirname(HERE)
 REPO = os.path.abspath(os.path.join(MOD, "..", "..", ".."))
-CHROMA = os.path.join(REPO, "skills", "generating-images", "scripts",
+from pathlib import Path
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+CHROMA = os.path.join(IMAGE_SKILLS, "generating-images", "scripts",
                       "chroma_key.py")
 
 RAW = os.path.join(HERE, "claim_rumour_raw.png")

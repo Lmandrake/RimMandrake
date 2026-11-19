@@ -2,7 +2,7 @@
 
     python3 src/RimMandrake/Utils/mockups/messy_conduit/round5_art_jobs.py wave1|wave2 [--only name ...]
 
-Runs Codex $imagegen (skills/generating-images/scripts/codex_image.py) 6 at a time, each worker on its own CODEX_HOME.
+Runs Codex $imagegen (~/dev/MandrakeWorkflows/skills/generating-images/scripts/codex_image.py) 6 at a time, each worker on its own CODEX_HOME.
 Inputs/outputs live outside git at D:\\ClaudeWork\\rimmandrake\\scratch\\mc_r5\\{in,raw}. Report: Transient/mc_art_round5_report.md.
 Conform + install: round5_art_install.py (same folder).
 """
@@ -15,7 +15,8 @@ import os, subprocess, sys, threading, queue, time
 
 R = rm_str("scratch", "mc_r5")
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), *[".."] * 5))
-CI = os.path.join(REPO, "skills/generating-images/scripts/codex_image.py")
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+CI = str(IMAGE_SKILLS / "generating-images/scripts/codex_image.py")
 
 BASE = ("RimWorld game sprite, seen from directly above (top-down, as RimWorld draws buildings and items), hand-painted "
         "painterly style with crisp detail and a thin dark outline, like RimWorld's own shipping art. One object only, centred. "

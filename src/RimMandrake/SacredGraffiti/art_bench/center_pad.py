@@ -4,7 +4,10 @@ box centered on a square canvas with margin, and write the result."""
 _RM_ROOT = __import__("pathlib").Path(__file__).resolve().parents[4]  # repo root, derived (not hardcoded)
 import sys
 
-sys.path.insert(0, str(_RM_ROOT / 'skills' / 'generating-images' / 'scripts'))
+import os
+from pathlib import Path
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+sys.path.insert(0, str(IMAGE_SKILLS / 'generating-images' / 'scripts'))
 import pnglib  # noqa: E402
 
 def main(inp, out, canvas=640, margin=64):

@@ -228,7 +228,7 @@ ledger. The Windows Terminal profiles set the window; the manual path is
 The directory is the source; `<name>.skill` zips beside it are untracked packaging
 artifacts. **Which skill to load when is `CLAUDE.md`'s job**, not this file's.
 
-`editing-images` · `efficient-subagents` · `generating-images` ·
+`efficient-subagents` ·
 `generating-rimworld-sprites` · `gravship-layout` · `rimbridge` ·
 `rimworld-debug-testing` · `rimworld-deploy` · `rimworld-load-round` ·
 `rimworld-modding` · `rimworld-savegame` · `rimworld-start-prep`

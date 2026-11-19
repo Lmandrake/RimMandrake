@@ -245,7 +245,7 @@ the consistency at full resolution.
 ⚠️ **Codex `edit` hangs on roughly one call in four, with no error of its own.**
 Cap `--timeout` at **120 s** (a good call returns in ~80) and wrap every facing in a
 retry loop. 🔑 **The full measurement, the budgeting table and the harness bug that
-made it look worse than it is live in `../generating-images/SKILL.md` >
+made it look worse than it is live in `~/dev/MandrakeWorkflows/skills/generating-images/SKILL.md` >
 "Cost and timing"** — they are engine facts, not sprite facts, so they are kept in
 one place rather than two.
 

@@ -23,7 +23,9 @@ RAW = ROOT / "Transient/art_review_desert_wraps/matrix_raw"
 WORK = ROOT / "Transient/art_review_desert_wraps/matrix_work"
 WORK.mkdir(parents=True, exist_ok=True)
 BODYREF = ROOT / "Transient/art_review_desert_wraps/bodytype_refs"
-GI = ROOT / "skills/generating-images/scripts"
+import os
+IMAGE_SKILLS = Path(os.environ.get("RM_IMAGE_SKILLS_ROOT") or os.path.expanduser("~/dev/MandrakeWorkflows/skills"))  # image skills moved to MandrakeWorkflows 2026-11-19
+GI = IMAGE_SKILLS / "generating-images/scripts"
 GS = ROOT / "skills/generating-rimworld-sprites/scripts"
 
 # style slug -> Armoury Textures subfolder
