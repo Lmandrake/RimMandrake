@@ -12,7 +12,7 @@ DEFAULT_PHRASES = ("goodbye", "good bye", "bye", "gn", "good night", "goodnight"
 _APOS = re.compile(r"['’‘`ʼ]")
 _SEP = re.compile(r"[\W_]+", re.UNICODE)
 _SENTENCE = re.compile(r"[.!?\n]+")
-TRAILING = ("goodbye", "good bye")
+TRAILING = ("goodbye", "good bye", "good night", "goodnight")   # "Afk. Goodnight." (RIMMANDRAKE_RECOGNISE_GOODNIGHT_AS_LAST_SENTENCE_GOODBYE)
 
 
 def norm(text):
@@ -32,7 +32,7 @@ def phrases(cfg, default=DEFAULT_PHRASES):
 
 def is_goodbye(text, phr):
     """His whole message, or (owner 2026-11-01) a last sentence that says goodbye: the text before it goes to the next
-    window. Only the word itself ends a longer message; "bye", "gn" or "that's all" could end an ordinary request."""
+    window. Only goodbye or good night ends a longer message; "bye", "gn" or "that's all" could end an ordinary request."""
     n = norm(text)
     if not n:
         return False

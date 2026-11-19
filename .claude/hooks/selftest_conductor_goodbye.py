@@ -35,7 +35,9 @@ PH = G.phrases(LIVE)
 
 YES = ["goodbye", "Goodbye!", "  bye. ", "BYE", "gn", "GN!", "good night", "Good night!!", "good-night",
        "done for now.", "Done for now", "that's all", "That’s all.", "thats all", "goodbye\n", "good night 🌙",
-       "This is moronic. Goodbye.", "fix the hose\ngoodbye"]
+       "This is moronic. Goodbye.", "fix the hose\ngoodbye",
+       # RIMMANDRAKE_RECOGNISE_GOODNIGHT_AS_LAST_SENTENCE_GOODBYE: his real message 2026-11-19 07:23Z, refused all night
+       "Afk. Goodnight.", "Keep going. Good night!"]
 NO = ["goodbye to the old pipe system", "bye the way, check the hose", "ok bye", "that's all for the hose, now do Y",
       "gnome", "", "   ", "done", "good", "good night of testing ahead?", "say goodbye to FOUNDRY",
       "no goodbye yet", "goodbye? not yet", "bye bye pipes 2", "done for now with art; next: hoses",
