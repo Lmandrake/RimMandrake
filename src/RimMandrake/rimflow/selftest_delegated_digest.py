@@ -65,8 +65,26 @@ def stored_handles(tmp, text):
     return json.load(open(p))["handles"] if os.path.exists(p) else {}
 
 
+# a source count is a record count, not spend: the count table's number cells and the record-count headings may be
+# big (ledger 17832 records, 2026-11-18) and are the only places exempt from _BIG; prose stays under it
+# (RIMMANDRAKE_FIX_REAL_DIGEST_DETECTOR_BIG_NUMBER_COUNTS_GREW)
+# Exactly the page's schema: its eight source rows with five count cells, and its two record-count headings. A new
+# source shows up here as a big: leak until it is named, which is the loud way round.
+_SOURCE_ROWS = ("ledger events", "judge verdict files", "Delegated commits", "art mark acts", "delegated art installs",
+                "leftover deletions", "ceiling releases", "ledger deletions")
+_COUNT_ROW = re.compile(r"^(\| (?:%s) \| (?:measured|unmeasured) )((?:\| \d+ ){5})\|$"
+                        % "|".join(map(re.escape, _SOURCE_ROWS)), re.M)
+_COUNT_HEAD = re.compile(r"^(?:\*\*\d+ delegated record\(s\)\*\*|## leftovers \d+ record\(s\))$", re.M)
+
+
+def counts_blanked(text):
+    text = _COUNT_ROW.sub(lambda m: m.group(1) + re.sub(r"\d+", "N", m.group(2)) + "|", text)
+    return _COUNT_HEAD.sub(lambda m: re.sub(r"\d+", "N", m.group()), text)
+
+
 def leaks(text):
     text = re.sub(r"\b(sha|git|event) [0-9a-f]{12}\b", r"\1", text)   # a labelled sha is not a figure
+    text = counts_blanked(text)
     found = [p for p in PLANTS if p.lower() in text.lower()]
     found += ["unit:" + m.group() for m in _UNIT.finditer(text)]
     found += ["big:" + m.group() for m in _BIG.finditer(text)]
@@ -390,6 +408,13 @@ def test_real():
         check(rc == 0 and led and led[0] == "measured" and int(led[5]) > 0,
               "real: the ledger is measured and sees >0 delegated events in all time (%s)" % led)
         check(not leaks(p), "real: the real page passes the detector: %s" % leaks(p)[:5])
+        for plant, kind in (("- a call that spent 45,000 tokens", "token figure"), ("- it cost $0.34 today", "dollar figure"),
+                            ("- account drained 54321", "big bare number"), ("| ledger events | measured | 0 | 0 | 0 | 0 | 54321 tokens |", "unit in a count row"),
+                            ("| token usage | measured | 54321 |", "big number in a row that is not a source"),
+                            ("| token usage | measured | 0 | 0 | 0 | 0 | 54321 |", "big number in a five-cell non-source row"),
+                            ("## token usage 54321 record(s)", "big number in a heading that is not a count heading"),
+                            ("**54321 tokens record(s)**", "token figure dressed as a count heading")):
+            check(leaks(p + "\n" + plant + "\n"), "real: the real page with a planted %s in it is still refused" % kind)
         check(not os.path.exists(os.path.join(tmp, "s.json")), "real: a dry run writes no state")
 
 
