@@ -226,8 +226,11 @@ def prove_ep(doc, only=None, log=print):
         if only and name != only:
             continue
         pl = fam["plant"]
+        # only the fuzz family the laws are checked by: ladder runs first and a mutation run prints one FAIL line
+        mfs = sorted({l["matrix_family"] for l in _family_laws(doc, name)})
+        fuzz_only = ["--fuzz-only", mfs[0]] if len(mfs) == 1 else []
         try:
-            r = subprocess.run([sys.executable, os.path.join(HERE, "mutate_empirepursuit_fuzz.py"), pl["name"]], cwd=ROOT,
+            r = subprocess.run([sys.executable, os.path.join(HERE, "mutate_empirepursuit_fuzz.py"), pl["name"]] + fuzz_only, cwd=ROOT,
                                capture_output=True, text=True, timeout=3600)
         except (subprocess.TimeoutExpired, OSError) as ex:
             results[name] = {"status": "UNMEASURED", "why": "the mutation run timed out or could not start: %s" % type(ex).__name__, "plant": pl}

@@ -2,7 +2,7 @@
 """Mutation proof for the EmpirePursuit fuzz: plants each defect in the ladder kernel (or EmpireLadderMath), demands the
 fuzz FAILS, restores the file byte-identical. Exit 0 only if every mutation was caught.
 
-    python3 src/RimMandrake/Utils/mutate_empirepursuit_fuzz.py [name-substring]
+    python3 src/RimMandrake/Utils/mutate_empirepursuit_fuzz.py [name-substring] [--fuzz-only ladder|timers|math]
 """
 import os
 import sys
@@ -56,7 +56,12 @@ MATH_MUTATIONS = [
 ]
 
 if __name__ == "__main__":
-    only = sys.argv[1] if len(sys.argv) > 1 else None
-    rc = run_mutations(KERNEL, WRAPPER, KERNEL_MUTATIONS, only)
-    rc |= run_mutations(MATH, WRAPPER, MATH_MUTATIONS, only)
+    argv = sys.argv[1:]
+    fam = []
+    if "--fuzz-only" in argv:
+        i = argv.index("--fuzz-only")
+        fam, argv = argv[i:i + 2], argv[:i] + argv[i + 2:]
+    only = argv[0] if argv else None
+    rc = run_mutations(KERNEL, WRAPPER, KERNEL_MUTATIONS, only, fam)
+    rc |= run_mutations(MATH, WRAPPER, MATH_MUTATIONS, only, fam)
     sys.exit(rc)

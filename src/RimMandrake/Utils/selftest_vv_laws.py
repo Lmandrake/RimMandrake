@@ -138,6 +138,29 @@ def main():
         check("L6 a mutation timeout is that family's UNMEASURED", False, repr(ex))
     finally:
         V.subprocess.run = real_run
+    # the EP fuzz runs ladder first and a mutation run prints its first FAIL line only: every EmpireLadderMath mutation
+    # was caught by a ladder line, so a math law could never be shown (measured 2026-11-19, four of four math mutations)
+    seen = []
+
+    def fake(cmd, **k):
+        seen.append(list(cmd))
+        only = cmd[cmd.index("--fuzz-only") + 1] if "--fuzz-only" in cmd else None
+        line = "FAIL math seed 3: Repelled(5,3)=False vs exact 60%" if only == "math" else "FAIL ladder seed 85: step 4: contact outcome"
+        return sp.CompletedProcess(cmd, 0, "CAUGHT  60%% rule 50%%   %s\n1 caught, 0 missed; kernel restored\n" % line, "")
+    math_doc = {"mod": "EmpirePursuit", "families": {"contact": {"plant": {"kind": "mutation", "name": "m"}},
+                                                     "ladder_math": {"plant": {"kind": "mutation", "name": "60% rule 50%"}}},
+                "laws": [{"id": "contact_outcome_agrees_with_spec", "family": "contact", "matrix_family": "ladder", "sentence": "x",
+                          "check": {"file": "a.cs", "text": "contact outcome"}},
+                         {"id": "repelled_is_exactly_sixty_percent", "family": "ladder_math", "matrix_family": "math", "sentence": "x",
+                          "check": {"file": "a.cs", "text": "vs exact 60%"}}]}
+    V.subprocess.run = fake
+    try:
+        res = V.prove_ep(math_doc, log=lambda *a: None)
+        check("L6 a mutation proof runs only the fuzz family its laws are checked by, for every law family",
+              {k: v["status"] for k, v in res.items()} == {"contact": "PROVEN", "ladder_math": "PROVEN"}
+              and [c[-2:] for c in seen] == [["--fuzz-only", "ladder"], ["--fuzz-only", "math"]], (res, seen))
+    finally:
+        V.subprocess.run = real_run
     import contextlib
     import io
     import tempfile

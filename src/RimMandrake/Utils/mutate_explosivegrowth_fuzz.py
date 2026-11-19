@@ -73,7 +73,7 @@ def recover_stranded():
     return restored
 
 
-def run_mutations(kernel_rel, wrapper, mutations, only=None):
+def run_mutations(kernel_rel, wrapper, mutations, only=None, wrapper_args=()):
     kernel = os.path.join(REPO, kernel_rel)
     if recover_stranded():
         time.sleep(5)            # the restore must reach the staged copy before this run's first mutation (rsync window)
@@ -93,7 +93,7 @@ def run_mutations(kernel_rel, wrapper, mutations, only=None):
             open(kernel, "wb").write(mutant)
             time.sleep(5)
             os.utime(kernel, None)
-            p = subprocess.run([sys.executable, os.path.join(HERE, wrapper)], capture_output=True, text=True, errors="replace")
+            p = subprocess.run([sys.executable, os.path.join(HERE, wrapper)] + list(wrapper_args), capture_output=True, text=True, errors="replace")
             out = p.stdout + p.stderr
             built = "Build succeeded" in out or "fuzz " in out
             if p.returncode != 0 and built and "FAIL" in out and "error CS" not in out:

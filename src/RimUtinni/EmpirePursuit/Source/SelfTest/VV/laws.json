@@ -82,6 +82,176 @@
     "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
     "text": "would be scheduled at or before this tick"
    }
+  },
+  {
+   "id": "raid_never_under_an_hour_away",
+   "family": "timers",
+   "matrix_family": "timers",
+   "sentence": "A scheduled raid is at least one hour (2,500 ticks) after the moment it is scheduled.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "is under an hour from now"
+   }
+  },
+  {
+   "id": "warning_between_now_and_raid",
+   "family": "timers",
+   "matrix_family": "timers",
+   "sentence": "A raid warning is at least an hour from now and never after its raid.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "outside [now+1h, raid"
+   }
+  },
+  {
+   "id": "no_warning_hours_means_no_early_warning",
+   "family": "timers",
+   "matrix_family": "timers",
+   "sentence": "With no warning hours set, the warning is the raid itself.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "no warning hours but warn != raid"
+   }
+  },
+  {
+   "id": "timer_tick_is_the_next_hour_boundary",
+   "family": "timers",
+   "matrix_family": "timers",
+   "sentence": "A timer fires on the first hourly tick at or after it, and a tick already on the hour stays where it is.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "TimerIntervalTick is not the next hour boundary"
+   }
+  },
+  {
+   "id": "rung_fires_exactly_once",
+   "family": "timers",
+   "matrix_family": "timers",
+   "sentence": "Walking the hourly ticks, a scheduled rung fires exactly once, on its own hour tick.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "hour ticks, want exactly 1"
+   }
+  },
+  {
+   "id": "warning_fires_once_before_the_raid",
+   "family": "timers",
+   "matrix_family": "timers",
+   "sentence": "A warning set before its raid's hour fires exactly once, on its own hour tick, before the raid.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "warning hits {warnHits} at {firstWarn}, want one at {warnTick} before {raidTick}"
+   }
+  },
+  {
+   "id": "warning_on_the_raid_hour_never_fires",
+   "family": "timers",
+   "matrix_family": "timers",
+   "sentence": "A warning that falls on its raid's hour tick never fires on its own.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "warning fired on the raid tick"
+   }
+  },
+  {
+   "id": "live_contact_blocks_warn_and_fire",
+   "family": "timers",
+   "matrix_family": "timers",
+   "sentence": "No warning and no rung fire while a contact is live or the ladder is terminal.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "a live contact must block warn/fire"
+   }
+  },
+  {
+   "id": "postponed_rung_never_lost",
+   "family": "timers",
+   "matrix_family": "timers",
+   "sentence": "A postponed rung fires on an hour tick later than the one that postponed it.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "postponed rung would fire on or before the tick that postponed it"
+   }
+  },
+  {
+   "id": "endless_waves_keep_their_cadence",
+   "family": "timers",
+   "matrix_family": "timers",
+   "sentence": "With every gate open, endless waves fire exactly once per interval.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "endless waves fired {hits} times in 6 intervals"
+   }
+  },
+  {
+   "id": "repelled_is_exactly_sixty_percent",
+   "family": "ladder_math",
+   "matrix_family": "math",
+   "sentence": "A raid is repelled exactly when at least 60% of its raiders are dead or downed (or it had none).",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "vs exact 60%"
+   }
+  },
+  {
+   "id": "clamp_stays_on_the_ladder",
+   "family": "ladder_math",
+   "matrix_family": "math",
+   "sentence": "A clamped rung is between 1 and 6 and never under the floor (where the floor is on the ladder).",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "Clamp({rung},{floor})={c}"
+   }
+  },
+  {
+   "id": "success_climbs_one_rung",
+   "family": "ladder_math",
+   "matrix_family": "math",
+   "sentence": "After a success the next rung is one higher than the one fired, at least the floor and at most 6.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "success from {fr} floor {floor} -> {nx}"
+   }
+  },
+  {
+   "id": "failure_holds_the_rung",
+   "family": "ladder_math",
+   "matrix_family": "math",
+   "sentence": "After a failure the next rung is the one fired, raised to the floor if under it, at most 6.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "hold from {fr} floor {floor} -> {nx}"
+   }
+  },
+  {
+   "id": "decay_never_raises_a_rung",
+   "family": "ladder_math",
+   "matrix_family": "math",
+   "sentence": "More time away never raises a remembered rung.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "more time away raised the rung"
+   }
+  },
+  {
+   "id": "permanent_floor_never_falls",
+   "family": "ladder_math",
+   "matrix_family": "math",
+   "sentence": "The permanent floor never goes down.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "the permanent floor went DOWN"
+   }
+  },
+  {
+   "id": "starting_rung_keeps_a_remembered_tile",
+   "family": "ladder_math",
+   "matrix_family": "math",
+   "sentence": "A remembered higher rung for a tile is where the ladder starts again.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "a remembered higher rung was ignored"
+   }
   }
  ],
  "families": {
@@ -101,6 +271,18 @@
    "plant": {
     "kind": "mutation",
     "name": "probe timeout without the extra day"
+   }
+  },
+  "timers": {
+   "plant": {
+    "kind": "mutation",
+    "name": "timer floor under an hour"
+   }
+  },
+  "ladder_math": {
+   "plant": {
+    "kind": "mutation",
+    "name": "60% rule 50%"
    }
   }
  }

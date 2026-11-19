@@ -192,6 +192,276 @@
     "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
     "text": "[a settled surface scene kept a wet step]"
    }
+  },
+  {
+   "id": "seq_cell_fill_within_depth",
+   "family": "sequence_machine",
+   "matrix_family": "seq_sequences",
+   "sentence": "After any sequence of digging, filling in, supplying, pumping, pouring, burning, refilling and rain, every cell's fill stays between zero and its depth, and its depth at most superdeep (4).",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "0<=F<=D<=4 broken at c"
+   }
+  },
+  {
+   "id": "seq_wet_cell_names_its_fluid",
+   "family": "sequence_machine",
+   "matrix_family": "seq_sequences",
+   "sentence": "A cell holds a fluid exactly when it is wet: no wet cell without a fluid, no dry cell with one.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "wet without a fluid or dry with one"
+   }
+  },
+  {
+   "id": "seq_wet_cell_never_changes_fluid",
+   "family": "sequence_machine",
+   "matrix_family": "seq_sequences",
+   "sentence": "A cell that is wet before and after one action holds the same fluid: fluids never mix.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "(fluids never mix)"
+   }
+  },
+  {
+   "id": "seq_limited_body_never_overdrawn",
+   "family": "sequence_machine",
+   "matrix_family": "seq_sequences",
+   "sentence": "A limited water body's stock never goes below zero.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "limited body stock went negative"
+   }
+  },
+  {
+   "id": "seq_limited_body_never_over_capacity",
+   "family": "sequence_machine",
+   "matrix_family": "seq_sequences",
+   "sentence": "A limited water body's stock never rises above its capacity.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "above capacity"
+   }
+  },
+  {
+   "id": "seq_fluid_ledger_balances",
+   "family": "sequence_machine",
+   "matrix_family": "seq_sequences",
+   "sentence": "Per fluid, what the cells, limited bodies and tanks hold equals what they started with plus every declared input (limitless supply, refill, rain) minus every declared loss (overflow, burning, what a limitless body takes back).",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "ledger: holds"
+   }
+  },
+  {
+   "id": "seq_filling_in_restores_the_ground",
+   "family": "sequence_machine",
+   "matrix_family": "seq_sequences",
+   "sentence": "Filling every cell back in returns the ground to depth 0 and fill 0.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "not restored: D="
+   }
+  },
+  {
+   "id": "seq_credit_takes_what_it_promised",
+   "family": "sequence_machine",
+   "matrix_family": "seq_sequences",
+   "sentence": "A body takes back exactly the levels CreditableLevels promised it would take.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "but CreditAccepted took"
+   }
+  },
+  {
+   "id": "seq_supply_and_debit_agree",
+   "family": "sequence_machine",
+   "matrix_family": "seq_sequences",
+   "sentence": "A body that may supply one unit may also be debited that unit, and the reverse: a source never stutters.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "CanSupply and CanDebit disagree"
+   }
+  },
+  {
+   "id": "seq_burn_keeps_every_tick",
+   "family": "sequence_machine",
+   "matrix_family": "seq_sequences",
+   "sentence": "Burning neither loses nor invents ticks: the levels due times the ticks per level, plus what is carried, equals the ticks added.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "LevelsDue lost or invented ticks"
+   }
+  },
+  {
+   "id": "pit_width_is_the_widest_superdeep_block",
+   "family": "pit_width",
+   "matrix_family": "seq_pitwidth",
+   "sentence": "A pit's measured width at a cell is the side of the widest square of superdeep cells holding that cell.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "but the widest all-superdeep block holding"
+   }
+  },
+  {
+   "id": "digging_never_narrows_a_pit",
+   "family": "pit_width",
+   "matrix_family": "seq_pitwidth",
+   "sentence": "Digging one more cell superdeep never makes a pit narrower anywhere.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "narrowed the pit at"
+   }
+  },
+  {
+   "id": "hose_install_allows_a_route_that_fits",
+   "family": "hose_lay",
+   "matrix_family": "hose",
+   "sentence": "A hose install is allowed when the shortest route from the reel, pulled taut and given its 5% margin, fits the hose.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "(the length-bounded search missed a route that fits)"
+   }
+  },
+  {
+   "id": "hose_install_refuses_a_route_too_long",
+   "family": "hose_lay",
+   "matrix_family": "hose",
+   "sentence": "A hose install is refused when the shortest route from the reel, pulled taut and given its 5% margin, is longer than the hose.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "but CheckInstall allowed it"
+   }
+  },
+  {
+   "id": "hose_install_finds_every_route",
+   "family": "hose_lay",
+   "matrix_family": "hose",
+   "sentence": "An install that an unbounded route search cannot reach is refused as having no route.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "install: unbounded search finds no route but CheckInstall said"
+   }
+  },
+  {
+   "id": "hose_lay_is_deterministic",
+   "family": "hose_lay",
+   "matrix_family": "hose",
+   "sentence": "Laying the same hose twice with the same seed gives the same hose.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "Lay twice with one seed gave different hoses"
+   }
+  },
+  {
+   "id": "hose_lay_ends_attached",
+   "family": "hose_lay",
+   "matrix_family": "hose",
+   "sentence": "A laid hose starts at the reel's mouth and ends at the target cell's centre.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": ": endpoints not attached"
+   }
+  },
+  {
+   "id": "hose_lay_never_longer_than_hose",
+   "family": "hose_lay",
+   "matrix_family": "hose",
+   "sentence": "A laid hose is never longer than the hose.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "G1 laid hose longer than the hose"
+   }
+  },
+  {
+   "id": "hose_lay_never_through_a_wall",
+   "family": "hose_lay",
+   "matrix_family": "hose",
+   "sentence": "A laid hose, flat or plump, never runs through a wall.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "hose runs through a wall"
+   }
+  },
+  {
+   "id": "trail_carry_invariants_hold",
+   "family": "hose_trail",
+   "matrix_family": "trail",
+   "sentence": "After every action on a reel's hose its carry invariants hold: Carrying exactly when someone carries it, a winder exactly when a hand wind runs, a trail of at least one cell outside Stored and none in Stored, a pulled length within the hose, and a laid or dropped hose's far end on the trail's last cell.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "trail: invariant broken: "
+   }
+  },
+  {
+   "id": "trail_never_stretched_past_hose",
+   "family": "hose_trail",
+   "matrix_family": "trail",
+   "sentence": "Walking with a carried hose never pulls it longer than the hose.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "trail: stepping stretched the hose past its length"
+   }
+  },
+  {
+   "id": "trail_stays_on_the_reel_mouth",
+   "family": "hose_trail",
+   "matrix_family": "trail",
+   "sentence": "A carried hose's trail stays attached to the reel's mouth.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "trail: pulled hose is detached from the reel mouth"
+   }
+  },
+  {
+   "id": "trail_reaches_its_end_cell",
+   "family": "hose_trail",
+   "matrix_family": "trail",
+   "sentence": "A carried hose's trail reaches the cell it ends in.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "trail: pulled hose does not reach the end cell"
+   }
+  },
+  {
+   "id": "trail_visits_each_cell_once",
+   "family": "hose_trail",
+   "matrix_family": "trail",
+   "sentence": "No cell appears twice on a carried hose's trail.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "trail: a cell appears twice on the trail"
+   }
+  },
+  {
+   "id": "trail_never_through_a_wall",
+   "family": "hose_trail",
+   "matrix_family": "trail",
+   "sentence": "A carried hose's trail never runs through a wall.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "trail: the pulled hose runs through a wall"
+   }
+  },
+  {
+   "id": "winding_never_goes_backwards",
+   "family": "hose_trail",
+   "matrix_family": "trail",
+   "sentence": "Winding a hose in never reduces how much is wound.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "trail: wound length went backwards"
+   }
+  },
+  {
+   "id": "interrupted_wind_never_lengthens",
+   "family": "hose_trail",
+   "matrix_family": "trail",
+   "sentence": "An interrupted wind never leaves the hose longer than before.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/HoseFuzz.cs",
+    "text": "trail: interrupted wind lengthened the hose"
+   }
   }
  ],
  "families": {
@@ -248,6 +518,42 @@
     "kind": "hook",
     "name": "shuttle",
     "what": "one decilitre is moved back and forth between a kept pair of wet cells on alternate pulses (volume and bounds kept)"
+   }
+  },
+  "sequence_machine": {
+   "plant": {
+    "kind": "source",
+    "file": "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
+    "find": "\t\t\tint displaced = fill - (depth - 1);",
+    "replace": "\t\t\tint displaced = fill - depth;",
+    "what": "a fill-in displaces one level too few: a full cell raised by one level keeps a fill above its new brim"
+   }
+  },
+  "pit_width": {
+   "plant": {
+    "kind": "source",
+    "file": "src/RimMandrake/FlowWorks/Source/RM_PitTrapMath.cs",
+    "find": "for (int ox = x - w + 1; ox <= x; ox++)",
+    "replace": "for (int ox = x - w + 1; ox < x; ox++)",
+    "what": "the width search skips every square whose right edge is the cell itself, so a lone superdeep cell reads width 0"
+   }
+  },
+  "hose_lay": {
+   "plant": {
+    "kind": "source",
+    "file": "src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs",
+    "find": "            if (len * RouteMargin > maxLength) return \"route too long\";\n",
+    "replace": "",
+    "what": "an install whose route is longer than the hose is allowed"
+   }
+  },
+  "hose_trail": {
+   "plant": {
+    "kind": "source",
+    "file": "src/RimMandrake/FlowWorks/Source/Hose/HoseCarry.cs",
+    "find": "            if (PulledLength(w) > MaxLength + 1e-9)",
+    "replace": "            if (PulledLength(w) > MaxLength * 2 + 1e-9)",
+    "what": "a step is refused only past twice the hose's length, so walking stretches the hose"
    }
   }
  }
