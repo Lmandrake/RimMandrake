@@ -55,6 +55,7 @@ FLEET_CACHE = OUT_DIR + "/running_fleet.json"
 FLEET_STALE = 1800          # past this a last good reading stops being shown
 FLEET_EVERY = 300           # mods, receipts and the Needs you list cost about 5 s: refreshed after the page is on disk
 HOLD_CAP = 2700             # a bridge hold silent for 45 minutes is stale by the bridge's own rule: it stops counting as busy
+LIVE_RUNS_STALE = 2 * 86400  # danger: a log nobody writes reads as a measured 0 (measured: last row 2026-11-06)
 USUAL_DAYS = 6              # "usual" for a 24 h count: the six 24 h windows before this one
 TESTQ = AGENT + "/testq"
 HIST_CAP = 10200            # one sample a minute: about 7 days and a bit
@@ -595,7 +596,7 @@ def collect_archmagi_live(env, now, hist):
     lines = text.splitlines()
     days = [collections.Counter() for _ in range(USUAL_DAYS + 1)]
     bugs = set()
-    first = None
+    first = newest = None
     for i, line in enumerate(lines):
         try:
             d = json.loads(line)
@@ -607,6 +608,7 @@ def collect_archmagi_live(env, now, hist):
         if d.get("void"):     # a void row ends earlier rows (relentless_game.void_rows); it is not a run
             continue
         first = at if first is None else min(first, at)
+        newest = at if newest is None else max(newest, at)
         k = int((now - at) // 86400)
         if 0 <= k <= USUAL_DAYS:
             days[k][d.get("outcome")] += 1
@@ -614,6 +616,8 @@ def collect_archmagi_live(env, now, hist):
             bugs.add((d.get("item"), d.get("criterion")))
     if first is None:
         raise Unmeasured("runs.jsonl holds no rows")
+    if now - newest > LIVE_RUNS_STALE:
+        raise Unmeasured("runs.jsonl has no row for %d days: no writer since the retired live round" % ((now - newest) // 86400))
     whole = [sum(days[k].values()) for k in range(1, USUAL_DAYS + 1) if now - (k + 1) * 86400 >= first]
     out = {"rows": days[0], "bugs": len(bugs), "usual_rows": (min(whole), max(whole)) if whole else None}
     spans, why = guarded(lambda: bridge_intervals(env.bridge_events(), now))

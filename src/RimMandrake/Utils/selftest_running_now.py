@@ -325,6 +325,8 @@ check("Archmagi's busy share is bridge time over 24 h", abs(lv["busy"] - 1800 / 
 check("game up share comes from the page's own samples", lv["game_up"] == 0.5)
 broken = Fake(files={R.LIVE_RUNS: "{bad\n" + ROWS})
 check("a broken runs.jsonl line is UNMEASURED, never a short count", R.guarded(R.collect_archmagi_live, broken, NOW, [])[1] is not None)
+stale = Fake(files={R.LIVE_RUNS: json.dumps({"at": iso(NOW - 13 * 86400), "item": "A", "criterion": "A1", "outcome": "PASS"}) + "\n"})
+check("a run log with no row in 13 days is UNMEASURED with its cause, never 0 rows", (lambda r: r[0] is None and "no writer" in (r[1] or ""))(R.guarded(R.collect_archmagi_live, stale, NOW, [])))
 env.bridge = None
 lv2 = R.collect_archmagi_live(env, NOW, hist)
 check("no ledger: busy is UNMEASURED, not 0", lv2["busy"] is None)
