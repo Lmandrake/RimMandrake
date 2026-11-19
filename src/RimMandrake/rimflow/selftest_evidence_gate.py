@@ -12,9 +12,8 @@ redesign_final.md WP-09).
 6. cli.py end to end on a throwaway ledger + temp store: a close the record rejects still closes (shadow logs the
    disagreement), a refused close is logged as refuse, an unwritable shadow log never stops a close, and a throwaway
    ledger without RELENTLESS_ROOT writes nothing;
-7. the wiring that made it reject every close (EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE): relentless.verdict() writes the
-   Marker's entry, an offbox `skipped` run is not red, a pre-evidence candidate is the pre_record cohort, a pre-seal
-   writer's unsealed index tail no longer refuses every append after it;
+7. the wiring that made it reject every close (EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE): an offbox `skipped` run is not red, a
+   pre-evidence candidate is the pre_record cohort, a pre-seal writer's unsealed index tail no longer refuses every append after it;
 8. the reading WP-09c cites (EVIDENCE_SHADOW_FIX_REPORT_NEVER_READS_ZERO): a declared window that says what it left out, a
    row that records who closed, an owner close that is neither agreement nor disagreement and never verdict_gone, the
    unrunnable ruling, and the no-run rows that are the wedge cohort only when the snapshot holds the receipts;
@@ -576,33 +575,7 @@ def cli_end_to_end():
 
 def wiring():
     """EVIDENCE_SHADOW_FIX_REJECTS_EVERY_CLOSE: the predicate rejected all 70 shadow closes. Each cause, red-then-green."""
-    import relentless as R
     sha = "c" * 40
-    # W1. the Marker's verdict reaches the record: relentless.verdict() writes the `marker` entry (no harvest run)
-    root = os.path.join(TMP, "wire_root")
-    st_ = R.Store(root)
-    st_.save({"item": "WIRE_A", "status": "checking", "gen": 1, "candidate": {"sha": sha, "at": 1.0},
-              "check": {"nonce": "nW", "at": 1.0}, "contract": CONTRACT})
-    E.append(st_.dir, "WIRE_A", sha, "run", {"verdict": "green", "exit": 0, "exam_hash": EXAM["hash"]})
-    R.verdict(st_, "WIRE_A", "nW", "PASS", "ran it, green", defects=[], unreached=[])
-    marks = [e for e in E.read(st_.dir, "WIRE_A", sha) if e["kind"] == "marker"]
-    check(len(marks) == 1 and marks[0]["verdict"] == "PASS" and marks[0]["nonce"] == "nW",
-          "W1. relentless.verdict() appends the Marker's PASS to the candidate's record (%r)" % [m["verdict"] for m in marks])
-    j = G.judge(st_.dir, "WIRE_A", sha, False, None, REPO)
-    check(j["accepted"], "W1. so the predicate accepts that close (%s)" % j["reasons"])
-    got, _ = quiet(E.harvest, st_)
-    check(got == [], "W1. a later harvest adds nothing: the same nonce is one entry (%r)" % got)
-    # W1b. a receipt that cannot be written never costs the verdict
-    st_.save({"item": "WIRE_B", "status": "checking", "gen": 1, "candidate": {"sha": "d" * 40},
-              "check": {"nonce": "nB", "at": 1.0}, "contract": CONTRACT})
-    real_append = E.append_marker
-    E.append_marker = lambda *a, **k: (_ for _ in ()).throw(OSError("disk full"))
-    try:
-        (_, err) = quiet(R.verdict, st_, "WIRE_B", "nB", "PASS", "ok", defects=[], unreached=[])
-    finally:
-        E.append_marker = real_append
-    check(st_.load("WIRE_B")["check"]["verdict"] == "PASS" and "NOT written" in err,
-          "W1. an unwritable receipt is one stderr line and the verdict still stands")
     # W2. an offbox contract's box run is `skipped`: not red, the Marker decides
     sd = store("wire_skip")
     hold(sd, "SKIP", sha)

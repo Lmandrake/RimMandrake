@@ -14,8 +14,6 @@ sys.path[:0] = [str(HERE), str(HERE.parent / "rimflow")]
 import agent_runner as AR
 import role_launch as RL
 import designer_stage as DS
-import relentless as R
-import relentless_usage as RU
 import maturation_autonomy as MA
 
 
@@ -167,21 +165,6 @@ class CodexRunnerTests(unittest.TestCase):
         self.assertIn("from-config", cmd)
         self.assertEqual(RL.launch_role(role, {"run_now":{"runner":"codex"}})["runner"], "codex")
 
-    def test_relentless_argv(self):
-        with tempfile.TemporaryDirectory() as d:
-            fx = R.Effects.__new__(R.Effects)
-            fx.r = {"seat":"BENCH", "model":"sonnet", "runner":"codex"}
-            fx.RL = RL
-            run = {"unit":"test-codex", "out":d+"/out", "err":d+"/err"}
-            with patch.object(AR, "quota_gate", return_value=meter()), patch.object(R.subprocess, "run", return_value=subprocess.CompletedProcess([], 0, "", "")) as call:
-                self.assertIsNone(fx.launch({}, run, "worker task", "rm-builder", d, 600, {"TMPDIR":d}))
-            a = call.call_args.args[0]
-            cmd = a[a.index("--")+1:]
-            self.assertIn(d+"/src/RimMandrake/Utils/agent_runner.py", cmd)
-            self.assertEqual(cmd[cmd.index("--agent")+1], "rm-builder")
-            self.assertNotIn("--output-format", cmd)
-            self.assertEqual(run["runner"], "codex")
-
     def test_result_validation(self):
         with tempfile.TemporaryDirectory() as d:
             concept = str(Path(d)/"concept")
@@ -205,9 +188,6 @@ class CodexRunnerTests(unittest.TestCase):
 
     def test_spend_separation(self):
         self.assertEqual(RL.spent_today({"runs":[{"day":RL.day_of(1),"runner":"codex","tokens":100}]}, 1), 0)
-        with patch.object(RL, "read_result", return_value={"runner":"codex","codex_usage":"UNMEASURED"}):
-            self.assertEqual(RU.measure(RL, {"out":"missing"}), (0,"codex"))
-        self.assertEqual(R.charge(None, {"spent":0}, 100, 0, {}, "codex-unit", basis="codex"), 0)
 
 
     def test_killed_run_usage_is_read(self):

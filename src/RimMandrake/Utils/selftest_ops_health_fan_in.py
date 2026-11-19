@@ -51,10 +51,9 @@ ok("precondition: %s is system by words" % WORDY, H.is_system(it(WORDY), C, MODS
 ok("precondition: the content ids read as content bare", not any(H.is_system(it(i), C, MODS) for i in CONTENT))
 ok("precondition: art is a content kind and system/ops pipeline kinds", "art" in C["content_kinds"] and {"system", "ops"} <= set(C["pipeline_kinds"]))
 
-# the id relentless_game makes is the id the classifier knows
-import relentless_game as G  # noqa: E402
-GID = G.repair_id(types.SimpleNamespace(kind="proof_site_or_reach", fp="3fa9c01d77e2b4aa"))
-ok("relentless_game.repair_id output matches CAUSE_REPAIR_ID (%s)" % GID, bool(H.CAUSE_REPAIR_ID.match(GID)), GID)
+# a cause repair id of the shape the retired tick minted (its repair_id, last output kept as the fixture) still classifies
+GID = "GAMEENV_FIX_PROOFSITEREACH_3FA9C01D_ITEMS_WAIT"
+ok("a minted cause repair id matches CAUSE_REPAIR_ID (%s)" % GID, bool(H.CAUSE_REPAIR_ID.match(GID)), GID)
 
 # 1. the planted ledger: causes, their successors, and content in every disguise
 OPS = "OPS_JAM_UNNAMED_DIAGNOSE_NEW_KIND_KUQY"
@@ -94,14 +93,6 @@ for i in ["EXAM_CONTROL_ENFORCE_FOUR_NEVER_MISSED", "ARENA_TRIAL_RETIRE_HUNDRED_
 LEAKS = CONTENT + ["CHELLOW_SPRITE_REDO_EAST_FACING", "KRISSEK_HIVE_BUILD_WALLS", "KRISSEK_QUEEN_BUILD_THRONE", "SNOWDRIFT_DUNE_FIX_FLAT_TOP"]
 ok("no content item is system (caused_by content, caused_by words-only system, art caused_by alarm, blocks 3, non-cause snag)",
    not (got & set(LEAKS)), sorted(got & set(LEAKS)))
-
-# 2. the owner's pipeline-only pause admits fx.first plus pipeline prefixes: the same list feeds it, so the clause holds there
-import relentless as R  # noqa: E402
-fx = types.SimpleNamespace(first={i: n for n, i in enumerate(H.system_ids(world, rules, ROOT, NOW, repairs={"STORE_INCIDENT_GRAB_HELD"}))},
-                           owner_pause_rule={"pipeline_only": True, "pipeline_prefixes": []})
-passed = {i for i in world.items if R.owner_pipeline({"prefixes": []}, fx, i)}
-ok("under the pipeline-only pause every cause repair passes", set(CAUSES) <= passed, sorted(set(CAUSES) - passed))
-ok("under the pipeline-only pause no content item passes", not (passed & set(LEAKS)), sorted(passed & set(LEAKS)))
 
 # 3. fan_in: transitive, diamond counted once, a cycle ends, the item itself never counts, age weighs
 f = [it("A"), it("B", on="A"), it("C", on="A"), it("D", on="B", also=("C",)), it("E", on="D"),     # diamond A<-B,C<-D<-E

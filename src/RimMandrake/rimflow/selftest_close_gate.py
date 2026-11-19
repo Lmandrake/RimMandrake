@@ -248,46 +248,18 @@ def s4(a, b):
     check(item(i).state == "done", "--why lets that one through")
 
 
-def s4_relentless(a):
-    print("-- the supervisor's path: the blind PASS is the check, and the gate holds it too")
-    import relentless as RE
-
-    class Books(RE.Effects):
-        def __init__(self):
-            self.marked = set()
-            self.books = REPO
-
-        def rimflow(self, *args, timeout=60, seat=None):
-            rc, out = cli(*args, seat=seat or "BENCH")
-            return subprocess.CompletedProcess(args, rc, out, out)
-
-        def sync(self):
-            pass
-
-        def item_state(self, iid):
-            return {"state": item(iid).state}
-
-    fx = Books()
-    i = new("MARKER")
-    check(fx.ledger_close(i, a, "relentless: blind PASS") is None and item(i).state == "done",
-          "a blind PASS closes: the Marker's run is on the sha")
-    check([r.config for r in item(i).runs] == ["marker:blind-check"], "and the run says who judged it")
-
-
 def s7_marker_fail(a, b):
     print("-- a Marker FAIL is on the ledger, seen by the Close gate, locking once MARKER_FAIL_LOCKS is on")
-    import relentless as RE
 
-    class Books(RE.Effects):
-        def __init__(self):
-            self.marked = set()
-            self.books = REPO
-
-        def rimflow(self, *args, timeout=60, seat=None):
-            rc, out = cli(*args, seat=seat or "BENCH")
-            return subprocess.CompletedProcess(args, rc, out, out)
-
-    fx = Books()
+    def marker_fail(iid, sha, reasons):
+        """A Marker FAIL as the retired supervisor wrote it: a RUNNER `verify` fail under model.MARKER_CONFIG, unless the
+        ledger's last word on this sha already is that fail."""
+        runs = [r for r in item(iid).runs if r.config == model.MARKER_CONFIG and r.sha[:12] == sha[:12]]
+        if runs and runs[-1].result == "fail":
+            return None
+        rc, out = cli("verify", iid, "--sha", sha, "--result", "fail", "--level", "L0", "--config", model.MARKER_CONFIG,
+                      "--evidence", "blind check FAIL: %s" % reasons, seat="RUNNER")
+        return None if rc == 0 else out
 
     def locked(iid, sha, owner=False):
         keep = model.MARKER_FAIL_LOCKS
@@ -301,7 +273,7 @@ def s7_marker_fail(a, b):
     check(model.MARKER_FAIL_LOCKS is False, "the lock ships off (operations_design_2026-11-01 §9 step 2: not yet locking)")
     i = new("MARKERFAIL")
     passed(i, a)
-    check(fx.ledger_marker_fail(i, a, "the proof read red") is None, "the supervisor's FAIL write is accepted from RUNNER")
+    check(marker_fail(i, a, "the proof read red") is None, "the supervisor's FAIL write is accepted from RUNNER")
     runs = item(i).runs
     check([(r.config, r.result, r.sha[:12]) for r in runs][-1:] == [("marker:blind-check", "fail", a[:12])],
           "the ledger holds the Marker's FAIL on the candidate sha")
@@ -319,7 +291,7 @@ def s7_marker_fail(a, b):
     # on an open item moves nothing anyway, so this is the one probe that sees the _earned_run guard.
     before = (item(i).state, item(i).closed_sha, list(item(i).passed), list(item(i).outstanding))
     check(before[0] == "done", "the probe starts from a closed item: %s" % before[0])
-    fx.ledger_marker_fail(i, a, "a wrong FAIL after the close")
+    marker_fail(i, a, "a wrong FAIL after the close")
     after = item(i)
     check((after.state, after.closed_sha, list(after.passed), list(after.outstanding)) == before,
           "off, a Marker FAIL on a closed item's sha leaves it done, its passes and owed criteria unchanged: %s"
@@ -327,14 +299,14 @@ def s7_marker_fail(a, b):
 
     j = new("MARKERAPPEAL")
     passed(j, a)
-    fx.ledger_marker_fail(j, a, "a false fail")
+    marker_fail(j, a, "a false fail")
     ok("verify", j, "--sha", a, "--level", "L0", "--result", "pass", "--config", "marker:blind-check",
         "--evidence", "the appeal's blind PASS", seat="RUNNER")
     check(model.marker_lock(item(j), a) is None and locked(j, a)[0] == [], "a pass on that sha after it (the appeal) lifts it")
 
     k = new("MARKERNEWBUILD")
     passed(k, a)
-    fx.ledger_marker_fail(k, a, "broken build")
+    marker_fail(k, a, "broken build")
     check(sorted(locked(k, b)[0]) == ["fail", "unchecked"], "on, it holds a new build with no pass: %s" % locked(k, b)[0])
     passed(k, b)
     check(model.marker_lock(item(k), b) is None and locked(k, b)[0] == [], "a new build that passes lifts it")
@@ -472,7 +444,6 @@ def main():
         s2(old_c, new_c)
         s3(old_c, new_c)
         s4(old_c, new_c)
-        s4_relentless(old_c)
         s5_replay()
         s7_marker_fail(old_c, new_c)
         s6_every_way_to_done(old_c, new_c, led)

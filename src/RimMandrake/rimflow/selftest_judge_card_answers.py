@@ -207,19 +207,6 @@ def text_cases():
           "second reader" in p2 and "`severity` `problem`" in p2 and "stored as advisory: it blocks nothing" not in p2)
     check("coverage prompt: round 1 no longer says a later find 'never blocks'", "never blocks" not in p1)
     check("bar_rule docstring: the late rule is serious and confirmed", "late_confirmed" in (BR.__doc__ or ""))
-    fail = ("For each defect, state what you ran and saw, the attainable command result or observation that would "
-            "satisfy its clause, and the smallest product fix, proof repair, environment repair or clarification "
-            "needed to reach it")
-    rel_src, wall_src = src("src/RimMandrake/rimflow/relentless.py"), src("src/RimMandrake/rimflow/relentless_wall.py")
-    check("J3: the unwalled checker's FAIL line is GPT's", fail in rel_src and "so the next worker can fix it" not in
-          rel_src)
-    check("J3: the walled checker's FAIL line is GPT's", fail in wall_src and "so the next worker can fix it" not in
-          wall_src)
-    import relentless_wall as RW
-    rule = flat(" ".join(RW.RULE))
-    check("J1: the checker's measurement cause is GPT's rewording", "'measurement:' the proof or contract is wrong. "
-          "This includes demonstrated incompatible acceptance demands. Quote the demands, explain the incompatibility, "
-          "and state the clarification needed to make passing attainable." in rule, rule[1500:2300])
     mat = src("src/RimMandrake/rimflow/maturation.py")
     check("J3: lane 1 FAIL and UNSETTLED rows carry a path, GPT's words",
           "A FAIL row names the violated bar, the reproducing case and the attainable result that would pass it. An "

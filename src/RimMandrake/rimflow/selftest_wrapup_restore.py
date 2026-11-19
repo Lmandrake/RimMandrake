@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """selftest_wrapup_restore.py — WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF: settings debts that outlived their owners are
-paid by Relentless at its next bridge hold (wrapup.restore), and SettingsTransaction no longer leaks an unpayable debt.
+paid by `wrapup.py restore` (wrapup.restore), and SettingsTransaction no longer leaks an unpayable debt.
 
   R1  plans: the door's key + orig -> the exact write (debug_settings, difficulty_tune, mod_settings_field with a
       dotted type name); a door debt written before plans derives one; a legacy SettingsTransaction debt (prose undo)
@@ -15,16 +15,12 @@ paid by Relentless at its next bridge hold (wrapup.restore), and SettingsTransac
   R6  a debt with an unplanned cleanup is replayed but left owed, named; a debt with no plan is left, named
   R7  a void debt (owed to an exited game) is never replayed
   R8  probe(): the live proof's logic on a fake game -> 0 restored and paid; no such field -> 2 UNMEASURED
-  R9  the live round: relentless_live.wrapup_restore calls fx's hook and records it, a raising hook never stops the
-      release, a fake without one is recorded not asked; the real Fx has the hook; run() calls it before the release,
-      only when the health check passed
   R10 the CLI: `wrapup.py restore` prints its tally and exits 1 on a failed restore, 0 on a clean one, 2 with no bridge
   R11 restore's writes through the bridge door pay what they put back and never owe the reverse change
 """
 import glob
 import io
 import os
-import re
 import shutil
 import sys
 import tempfile
@@ -314,33 +310,6 @@ def main():
           "R11 a legacy write through the door owes no reverse debt: %r, owed %r" % (out, owed()))
     door("jawa/difficulty_tune", {"threatScale": 0.5})
     check(len(owed()) == 1, "R11 after restore the door owes again (the guard is released)")
-
-    # R9 the live round
-    import relentless_live as RL
-
-    class FxHook(object):
-        def __init__(self, ret=None, boom=False):
-            self.n, self.ret, self.boom = 0, ret, boom
-
-        def wrapup_restore(self):
-            self.n += 1
-            if self.boom:
-                raise TimeoutError("slow")
-            return self.ret
-
-    f = FxHook(ret=(0, "wrapup restore: 2 restored"))
-    check(RL.wrapup_restore(f) == {"exit": 0, "line": "wrapup restore: 2 restored"} and f.n == 1,
-          "R9 the hook is called and its outcome recorded")
-    rr = RL.wrapup_restore(FxHook(boom=True))
-    check(rr["exit"] is None and "TimeoutError" in rr["line"], "R9 a raising hook is recorded, never raised")
-    check(RL.wrapup_restore(object())["exit"] is None, "R9 a fake fx without the hook is recorded not asked")
-    check(callable(getattr(RL.Fx, "wrapup_restore", None)), "R9 the real Fx has the hook")
-    src = inspect.getsource(RL.run)
-    i_hook = src.find("wrapup_restore(fx)")
-    i_rel = src.find('fx.rimflow("bridge", "release", "--mine")', src.find("from the take on"))
-    check(0 < i_hook < i_rel and re.search(r'if \(row\.get\("health"\) or \{\}\).get\("ok"\):[^\n]*\n\s*row\["wrapup_restore"\] '
-                                           r'= wrapup_restore\(fx\)', src) is not None,
-          "R9 run() restores before the release, only after a passed health check")
 
     # R10 CLI
     reset()

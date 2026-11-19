@@ -17,8 +17,6 @@ them, `finish` refuses them at the finished sha, and the game phase's preflight 
    clause not outstanding, or an L0 one, is not named.
 5. preflight(): a missing script is refused (kind "refused") before a slot; a script absent from a lagging books tree
    but present at the built sha is not.
-6. finish gate: relentless.proof_text_owed refuses a sha whose proof line names a script the sha lacks, and passes once
-   the script is committed (a throwaway git repo).
 7. cli: prooflint() reads live_proofs/<ID>.txt under a root and names the bad lines; _prooflint_say prints them and
    never raises; `lint --proofs` is a parser option.
 8. Sanity: the lane's own refused_proof still refuses the `$` line, so 3 measures the lane's rule, not a copy.
@@ -292,29 +290,6 @@ try:
 finally:
     L.stale_build = _stale
 
-
-# 6. finish gate on a throwaway repo
-def git(repo, *a):
-    return subprocess.run(["git", *a], cwd=repo, env=ENV, capture_output=True, text=True, check=True).stdout.strip()
-
-
-import relentless as RL              # noqa: E402
-with tempfile.TemporaryDirectory() as repo:
-    git(repo, "init", "-q", "-b", "main")
-    os.makedirs(os.path.join(repo, "infrastructure/state/live_proofs"))
-    with open(os.path.join(repo, "infrastructure/state/live_proofs/I0.txt"), "w") as f:
-        f.write("live-proof A1: python3 src/a/proof.py --k v\n")
-    git(repo, "add", "-A")
-    git(repo, "commit", "-qm", "I0: line")
-    sha1 = git(repo, "rev-parse", "HEAD")
-    why = RL.proof_text_owed(repo, "I0", sha1, {})
-    ok(bool(why) and "src/a/proof.py" in why, "6 finish refuses a sha whose line names a script it lacks: %r" % (why or "")[:90])
-    os.makedirs(os.path.join(repo, "src/a"))
-    with open(os.path.join(repo, "src/a/proof.py"), "w") as f:
-        f.write("print(1)\n")
-    git(repo, "add", "-A")
-    git(repo, "commit", "-qm", "I0: script")
-    ok(RL.proof_text_owed(repo, "I0", git(repo, "rev-parse", "HEAD"), {}) is None, "6 the sha holding the script finishes")
 
 # 7. cli
 import cli as C                     # noqa: E402

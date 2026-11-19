@@ -8,7 +8,6 @@ import os
 import subprocess
 import sys
 import tempfile
-import types
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -109,16 +108,8 @@ def ops_watch_writer(path):
     OW.run_alarms(pt, rules, 1.0, set(), lambda todo, conf: {a["name"]: None for a in todo}, set())
 
 
-import relentless as R  # noqa: E402
 import dispatcher as D  # noqa: E402
 import detached_helper as DH  # noqa: E402
-
-
-def relentless_writer(method):
-    def write(path):
-        got = getattr(R.Effects, method)(types.SimpleNamespace(r={"staffing": {"conductor_log": path}}), "t")
-        return got
-    return write
 
 
 def steward_writer(path):
@@ -143,9 +134,7 @@ def detached_writer(path):
         os.environ["RM_DISPATCHER_STATE"] = str(TMP / "dispatcher")
 
 
-WRITERS = [("ops_watch", ops_watch_writer), ("relentless jam", relentless_writer("conductor_alarm")),
-           ("relentless attention", relentless_writer("conductor_attention")), 
-           ("steward", steward_writer), ("dispatcher", dispatcher_writer), ("detached_helper", detached_writer)]
+WRITERS = [("ops_watch", ops_watch_writer), ("steward", steward_writer), ("dispatcher", dispatcher_writer), ("detached_helper", detached_writer)]
 for label, w in WRITERS:
     stays_absent(label, w)
     writes_elsewhere(label, w)

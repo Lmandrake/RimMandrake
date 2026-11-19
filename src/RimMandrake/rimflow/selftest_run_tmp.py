@@ -4,7 +4,7 @@
 Proves: prepare makes a fresh 0700 dir; the launch argv carries TMPDIR/TMP/TEMP; a dead unit's dir goes, an active or
 unknown one stays, a young one stays, a dir some process of ours uses (env or cwd) stays, a dead dir with a .git stays
 as work, a crash's .reaping pin goes, a pid-name dir stays while its pid lives and goes after, drop(mine=True) frees
-the owner's own dir, and relentless's tick hook journals what it removed.
+the owner's own dir.
 """
 import os
 import subprocess
@@ -52,10 +52,10 @@ def main():
     import run_tmp
     rt = run_tmp.root()
     try:
-        d = run_tmp.prepare("rm-relentless-work-abc-g1")
+        d = run_tmp.prepare("rm-detached-work-abc-g1")
         ok(os.path.isdir(d) and (os.stat(d).st_mode & 0o777) == 0o700, "prepare makes a 0700 dir")
         open(os.path.join(d, "junk"), "w").close()
-        d2 = run_tmp.prepare("rm-relentless-work-abc-g1", runner=fake_systemctl({}))
+        d2 = run_tmp.prepare("rm-detached-work-abc-g1", runner=fake_systemctl({}))
         ok(d2 == d and os.listdir(d) == [], "prepare again starts empty (a relaunch inherits nothing)")
         try:
             run_tmp.path("../x")
@@ -72,10 +72,10 @@ def main():
                                        "claude")
         ok(not any(x.startswith("TMPDIR=") for x in argv), "no tmpdir, no TMPDIR (a fake runner's launch)")
 
-        names = {"dead": "rm-relentless-work-dead-g1", "active": "rm-relentless-work-live-g1",
-                 "unk": "rm-relentless-work-unk-g1", "young": "rm-relentless-work-young-g1",
-                 "env": "rm-relentless-work-env-g1", "cwd": "rm-relentless-work-cwd-g1",
-                 "work": "rm-relentless-work-repo-g1"}
+        names = {"dead": "rm-detached-work-dead-g1", "active": "rm-detached-work-live-g1",
+                 "unk": "rm-detached-work-unk-g1", "young": "rm-detached-work-young-g1",
+                 "env": "rm-detached-work-env-g1", "cwd": "rm-detached-work-cwd-g1",
+                 "work": "rm-detached-work-repo-g1"}
         for n in names.values():
             run_tmp.prepare(n)
         os.makedirs(os.path.join(rt, names["work"], "clone", ".git"))
@@ -147,7 +147,7 @@ def main():
         ok(run_tmp.drop(None) is None and run_tmp.drop("nope") is None, "drop of nothing is a no-op")
 
         # review fixes (GPT 2026-11-03): a reused live name, a pin's original name, an mmap-only user, a bare repo
-        ln = "rm-relentless-work-reuse-g1"
+        ln = "rm-detached-work-reuse-g1"
         run_tmp.prepare(ln)
         open(os.path.join(rt, ln, "keep"), "w").close()
         try:
@@ -170,7 +170,7 @@ def main():
         run_tmp.sweep(now=LATER(), runner=runner)
         ok(not os.path.exists(pin2), "the pin goes once that process ends")
 
-        mm = "rm-relentless-work-mmap-g1"
+        mm = "rm-detached-work-mmap-g1"
         run_tmp.prepare(mm)
         with open(os.path.join(rt, mm, "blob"), "wb") as f:
             f.write(b"z" * 4096)
@@ -188,7 +188,7 @@ def main():
             kid.kill()
             kid.wait()
 
-        bare = "rm-relentless-work-bare-g1"
+        bare = "rm-detached-work-bare-g1"
         run_tmp.prepare(bare)
         for sub in ("objects", "refs"):
             os.makedirs(os.path.join(rt, bare, "b.git", sub))
@@ -205,32 +205,6 @@ def main():
         ok(run_tmp.restore(a, b) and open(b).read() == "pin" and not os.path.exists(a), "restore renames when the name is free")
         ok(run_tmp.mounts_under("/") and not run_tmp.mounts_under(os.path.join(rt, bare)),
            "mounts_under sees / and finds nothing under a plain dir")
-
-        import relentless
-
-        class Store:
-            def __init__(self):
-                self.rows = []
-
-            def journal(self, rec):
-                self.rows.append(rec)
-
-        class Fx:
-            def sweep_run_tmp(self):
-                return {"removed": ["a"], "errors": []}
-        s, acts = Store(), []
-        relentless.run_tmp_sweep(s, Fx(), time.time(), acts, "start")
-        ok(s.rows and s.rows[0]["do"] == "run_tmp" and s.rows[0]["removed"] == ["a"], "the tick journals a removal")
-
-        class Boom:
-            def sweep_run_tmp(self):
-                raise OSError("x")
-        acts = []
-        relentless.run_tmp_sweep(Store(), Boom(), time.time(), acts, "end")
-        ok(acts and acts[0]["do"] == "error", "a raising sweep is an act, not the tick's end")
-        acts = []
-        relentless.run_tmp_sweep(Store(), object(), time.time(), acts, "end")
-        ok(acts == [], "a fake fx without the hook is untouched")
 
         # A zombie (exited, not yet reaped) reads EACCES on /proc/<pid>/environ; it holds no dir, so it is not blindness.
         # Before this, any zombie on the machine made prepare() refuse a relaunch (the 2026-11-14 nightly CRASH).

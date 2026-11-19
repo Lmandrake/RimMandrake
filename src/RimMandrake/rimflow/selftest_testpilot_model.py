@@ -2,8 +2,8 @@
 """Selftest: the Test Pilot runs on Fable 5.2 (owner 2026-11-16 10:13 PM: "Test Pilot should also run as Fable 5.2 when it's
 called. For obvious reasons. And it should get that same inspirational prompting we worked out, just with a live game flare").
 
-The tier is the `model:` line of .claude/agents/rm-testpilot.md. `--model` beats that line, so Relentless must pass the
-pilot's own model (relentless.pilot_model), and the bare CLI alias "fable" resolves to Fable 5.1, so the tier becomes an id
+The tier is the `model:` line of .claude/agents/rm-testpilot.md. `--model` beats that line, so a launcher must pass the
+pilot's own model (run_store.pilot_model), and the bare CLI alias "fable" resolves to Fable 5.1, so the tier becomes an id
 through the environment first, then detached_helper.MODEL_IDS. A builder keeps run_rules.json's model.
 
     python3 src/RimMandrake/rimflow/selftest_testpilot_model.py
@@ -12,7 +12,6 @@ import os
 import shutil
 import sys
 import tempfile
-import types
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
@@ -20,8 +19,7 @@ sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, HERE)
 
 import detached_helper                                  # noqa: E402
-import relentless                                       # noqa: E402
-import relentless_game                                  # noqa: E402
+import run_store                                        # noqa: E402
 from rimflow import testpilot_route as TR               # noqa: E402
 
 PASS, FAIL = [], []
@@ -41,13 +39,13 @@ def t_agent_file_is_fable():
 
 
 def t_pilot_model_reads_the_tier_and_maps_it():
-    got = relentless.pilot_model(ROOT, "rm-testpilot", "opus", env={})
+    got = run_store.pilot_model(ROOT, "rm-testpilot", "opus", env={})
     assert got == "claude-fable-5-2", "pilot_model gave %r, not Fable 5.2" % got
 
 
 def t_environment_names_the_id_first():
     env = {"ANTHROPIC_DEFAULT_FABLE_MODEL": "fable-from-env[1m]"}
-    got = relentless.pilot_model(ROOT, "rm-testpilot", "opus", env=env)
+    got = run_store.pilot_model(ROOT, "rm-testpilot", "opus", env=env)
     assert got == "fable-from-env", "the environment's id (less [1m]) must win, got %r" % got
 
 
@@ -57,46 +55,10 @@ def t_no_agent_file_or_line_keeps_the_default():
         os.makedirs(os.path.join(d, ".claude", "agents"))
         with open(os.path.join(d, ".claude", "agents", "x_nomodel.md"), "w") as f:
             f.write("---\nname: x_nomodel\ndescription: none\n---\nbody model: fable\n")
-        assert relentless.pilot_model(d, "x_nomodel", "opus", env={}) == "opus", "a body line is not the frontmatter"
-        assert relentless.pilot_model(d, "x_absent_agent", "opus", env={}) == "opus", "no file anywhere: the default"
+        assert run_store.pilot_model(d, "x_nomodel", "opus", env={}) == "opus", "a body line is not the frontmatter"
+        assert run_store.pilot_model(d, "x_absent_agent", "opus", env={}) == "opus", "no file anywhere: the default"
     finally:
         shutil.rmtree(d)
-
-
-class _Stop(Exception):
-    pass
-
-
-def _launched_model(agent):
-    """-> the role["model"] Effects.launch hands to launch_argv for `agent` (stopped there: nothing starts)."""
-    seen = {}
-
-    def argv(role, *a, **k):
-        seen["model"] = role["model"]
-        raise _Stop()
-    d = tempfile.mkdtemp()
-    fake = types.SimpleNamespace(r={"model": "opus", "seat": "TEST", "pilot_agent": "rm-testpilot",
-                                    "worker_agent": "rm-builder"},
-                                 RL=types.SimpleNamespace(launch_argv=argv))
-    run = {"unit": "selftest-unit", "out": os.path.join(d, "o", "run.json"), "err": os.path.join(d, "o", "run.err")}
-    try:
-        relentless.Effects.launch(fake, {}, run, "prompt", agent, ROOT, 60, {})
-    except _Stop:
-        pass
-    finally:
-        shutil.rmtree(d)
-    return seen.get("model")
-
-
-def t_relentless_launch_puts_the_pilot_on_fable_and_keeps_the_builder():
-    saved = os.environ.pop("ANTHROPIC_DEFAULT_FABLE_MODEL", None)
-    try:
-        assert _launched_model("rm-testpilot") == "claude-fable-5-2", "a sitting must launch on Fable 5.2"
-        assert _launched_model(relentless_game.STAGE_AGENT) == "claude-fable-5-2", "the stager's pilot fallback too"
-        assert _launched_model("rm-builder") == "opus", "a builder keeps run_rules.json's model"
-    finally:
-        if saved is not None:
-            os.environ["ANTHROPIC_DEFAULT_FABLE_MODEL"] = saved
 
 
 def t_pilot_brief_names_fable_and_holds_before_surprise():

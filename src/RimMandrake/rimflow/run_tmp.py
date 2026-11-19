@@ -8,11 +8,11 @@ tmpfs) filled with about 15 GB of agents' mutation scratch and the nightly selft
     prepare(name)   make <root>/<name> (0700) and return it; the launcher passes env(dir) to the run
     env(dir)        {TMPDIR, TMP, TEMP} -> dir
     drop(name)      delete <root>/<name> now if its run is over (an end path calls it; refused while live)
-    sweep()         delete every dir under <root> whose run is over (each Relentless tick, start and end; the hourly
-                    scratch_reap run): the guarantee behind every end path, a killed engine and a restart included
+    sweep()         delete every dir under <root> whose run is over (the hourly scratch_reap run): the guarantee
+                    behind every end path, a killed engine and a restart included
 
 <root> is ~/.seat-tmp/runs (env RM_RUN_TMP_ROOT): the ext4 disk, not the /tmp tmpfs, and inside scratch_reap's roots, so
-anything kept here is still judged by the reaper. <name> is the run's systemd unit (rm-relentless-work-<h>-g3), or
+anything kept here is still judged by the reaper. <name> is the run's systemd unit (rm-detached-bench-<item>-<n>), or
 pid-<pid>-<starttime>-<label> for a plain child process (pid_name()).
 
 A run is LIVE, and its dir stays, when any of these holds (any doubt is live):

@@ -72,17 +72,12 @@ ok("RM_INSTRUMENT_INCIDENTS overrides the store path", H.incident_repairs() == {
 v = H.verdict({}, {}, world, BARE, ROOT, NOW, stamp={"collector_sha": "x", "ledger": None})
 ok("verdict system_items holds the incident repairs", {OPEN_R, REFUSED_R} <= set(v["system_items"] or ()), v["system_items"])
 
-# 4. PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED: content by words, system under the shipped rules and the pipeline-only pause
+# 4. PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED: content by words, system under the shipped rules
 P = "PROOFLESS_WIRE_ENROL_487_BUILT_STRANDED"
 pw = types.SimpleNamespace(items={P: it(P), CONTENT: it(CONTENT)})
 ok("precondition: %s is content by its words alone" % P, P not in set(H.system_ids(pw, BARE, ROOT, NOW)))
 ids = H.system_ids(pw, SHIPPED, ROOT, NOW)
 ok("%s is system under the shipped rules" % P, P in ids, ids)
-import relentless as R  # noqa: E402
-fx = types.SimpleNamespace(first={i: n for n, i in enumerate(ids)}, owner_pause_rule={"pipeline_only": True, "pipeline_prefixes": []})
-pause = R.owner_pause(fx, [{"item": P, "status": "queued"}, {"item": CONTENT, "status": "queued"}])
-ok("the pipeline-only pause lets %s start" % P, bool(pause) and R.owner_pipeline(pause, fx, P), pause)
-ok("the pipeline-only pause still holds content", not R.owner_pipeline(pause, fx, CONTENT))
 
 print("selftest_ops_health_incidents: " + ("PASS" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS))))
 sys.exit(1 if FAILS else 0)

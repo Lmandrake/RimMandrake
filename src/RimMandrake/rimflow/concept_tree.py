@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""concept_tree.py - The Designer's tree (the Concept agent, renamed by card 2026-11-01; `authored_by: concept` stays, it is schema data): writer, door lint (Gate A) and the gate Relentless refuses a mod on.
+"""concept_tree.py - The Designer's tree (the Concept agent, renamed by card 2026-11-01; `authored_by: concept` stays, it is schema data): writer, door lint (Gate A) and the gate (a finished, signed, real tree).
 
 Format: design/RimMandrake/relentless_tree_schema_2026-11-01.md. Meaning: concept_agent_design_2026-11-01.md §5-§8, §11.
 
@@ -1063,7 +1063,7 @@ def certify(d, owner_event, repo=REPO, emit=None):
 
 
 def gate(d, repo=REPO, floor_file=None):
-    """What Relentless asks. -> (refusals, flags). Lint plus what only a finished, signed, real tree has."""
+    """The gate. -> (refusals, flags). Lint plus what only a finished, signed, real tree has."""
     errs, fl = lint(d, repo, floor_file)
     if errs and errs[0].startswith(("no tree.json", "tree.json")):
         return errs, fl
@@ -1093,47 +1093,6 @@ def gate(d, repo=REPO, floor_file=None):
         if why:
             errs.append("exam_waived: %s" % why)
     return errs, fl
-
-
-def item_file_text(repo, item):
-    """The item's body. A mod whose body cannot be read cites no tree, so it is refused: this door fails shut."""
-    try:
-        with open(os.path.join(repo, "infrastructure/state/items", item + ".md"), encoding="utf-8") as f:
-            return f.read()
-    except OSError:
-        return ""
-
-
-# A cite is a whole token: it starts after whitespace or opening punctuation and ends at whitespace, closing punctuation or
-# a sentence's full stop, so `tree.json.bak`, `tree.json~` and `x/design/concepts/...` are not cites of a tree.
-TREE_CITE = re.compile(r"(?<![^\s`'\"(\[<])design/concepts/[A-Za-z0-9_./-]+/tree\.json(?=$|[\s`'\")\]>,;:]|\.(?:\s|$))",
-                       re.I | re.M)
-
-
-def relentless_refusal(repo, item, kind, text):
-    """Why Relentless may not take this item, or None. A mod, or anything citing a concept tree, needs a passing gate.
-    Every other item passes untouched: the tooling half of intake is RA_S05_INTAKE_ENFORCE_TREE_FIRST's."""
-    cites = sorted(set(TREE_CITE.findall(text or "")))
-    if kind != "mod" and not cites:
-        return None
-    if not cites:
-        return "%s is a mod with no tree: `## verify` cites no design/concepts/<Mod>/tree.json" % item
-    errs = []
-    for cite in cites:     # every citation: one good tree in a comment does not vouch for the rest
-        d = os.path.join(repo, os.path.dirname(cite))
-        # realpath: a symlink or junction leaves as surely as `..` does; a cite in another case fails shut on Linux
-        if not os.path.realpath(d).startswith(os.path.realpath(os.path.join(repo, "design/concepts")) + os.sep):
-            errs.append("%s: leaves design/concepts" % cite)
-            continue
-        try:
-            errs += gate(d, repo)[0]
-            if kind == "mod" and load(d).get("kind") != "mod":
-                errs.append("%s is not a mod's tree" % cite)
-        except Exception as e:  # noqa: BLE001  a gate that cannot read refuses: this door fails shut
-            errs.append("unreadable: %s: %s" % (type(e).__name__, e))
-    if errs:
-        return "%s: tree not well defined (%d): %s" % (item, len(errs), "; ".join(errs[:4]))
-    return None
 
 
 # ---------------------------------------------------------------- writer

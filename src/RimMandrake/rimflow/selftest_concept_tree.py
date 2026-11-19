@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""selftest_concept_tree.py - the door: a good tree passes, each way of being bad is refused for its own reason, and
-Relentless cannot hand a mod over without the gate. Runs in a temp dir; touches no real concept and no ledger: `sign`'s
+"""selftest_concept_tree.py - the door: a good tree passes, each way of being bad is refused for its own reason. Runs in a temp dir; touches no real concept and no ledger: `sign`'s
 rimflow note is replaced by fake_note, which appends to the temp repo's own shard."""
 import copy
 import json
@@ -144,7 +143,7 @@ def ledger_cases(repo, d):
     os.remove(shard)
     errs, _ = CT.gate(d, repo)
     check("ledger: a forged stamp (no ledger event) is refused", errs == ["no coverage signature on the ledger"], errs)
-    fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed), unit="rm-relentless-work-abc-g1")
+    fake_note(repo, "FOO_CONCEPT_ITEM", CT.signature_text(d, repo, signed), unit="rm-detached-work-abc-g1")
     errs, _ = CT.gate(d, repo)
     check("ledger: a note from a non-judge run is refused", any("not written by a CoverageJudge run" in e for e in errs), errs)
     os.remove(shard)
@@ -189,7 +188,7 @@ def ledger_cases(repo, d):
     # sign itself: refuses any writer but a coverage judge run, writes nothing when the ledger write fails
     before = open(os.path.join(d, "tree.json"), "rb").read()
     saved = os.environ.get("RM_ROLE_UNIT")
-    os.environ["RM_ROLE_UNIT"] = "rm-relentless-work-abc-g1"
+    os.environ["RM_ROLE_UNIT"] = "rm-detached-work-abc-g1"
     check("sign: refused outside a coverage judge run", any("coverage judge run" in e for e in CT.sign(d, "CoverageJudge", repo)))
     os.environ.pop("RM_ROLE_UNIT")
     check("sign: refused with no role unit", any("coverage judge run" in e for e in CT.sign(d, "CoverageJudge", repo)))
@@ -268,12 +267,6 @@ def main():
         errs, _ = CT.gate(d, repo)
         check("positive: gate passes", not errs, errs)
         ledger_cases(repo, d)
-        text = "## verify\n\ndesign/concepts/Foo/tree.json\n"
-        check("relentless: passing mod admitted", CT.relentless_refusal(repo, "X", "mod", text) is None)
-        check("relentless: one good cite does not vouch for a bad one", "no tree.json" in (CT.relentless_refusal(
-            repo, "X", "mod", "<!-- %s -->\n## verify\ndesign/concepts/Missing/tree.json" % text) or ""))
-        check("relentless: a cite in other case is still a cite", "no tree.json" in (CT.relentless_refusal(
-            repo, "X", "mod", text + " design/concepts/Missing/tree.JSON") or ""))
         check("walk: save is not reload, order is not second order", all(
             re.search(rx, "Save once and repeat the same order", re.I) is None
             for name, rx in CT.WALK_NEEDS.items() if name != "repeat"))
@@ -282,21 +275,6 @@ def main():
             for name, rx in CT.WALK_NEEDS.items() if name != "repeat"))
         check("walk: the real words count", all(
             re.search(rx, "Reload, repeat it, then the second order", re.I) for rx in CT.WALK_NEEDS.values()))
-        outside = os.path.join(repo, "design", "elsewhere")
-        os.makedirs(outside, exist_ok=True)
-        os.symlink(outside, os.path.join(repo, "design", "concepts", "Linked"))
-        check("relentless: a symlink may not climb out", "leaves design/concepts" in (CT.relentless_refusal(
-            repo, "X", "mod", "design/concepts/Linked/tree.json") or ""))
-        os.remove(os.path.join(repo, "design", "concepts", "Linked"))
-        check("relentless: a cite may not climb out", "leaves design/concepts" in (CT.relentless_refusal(
-            repo, "X", "mod", text + " design/concepts/../../elsewhere/tree.json") or ""))
-        real_load = CT.load
-        CT.load = lambda dd: dict(real_load(dd), kind="tool")
-        real_gate = CT.gate
-        CT.gate = lambda dd, rr: ([], [])
-        check("relentless: a mod cannot cite a tool's tree", "not a mod's tree" in (
-            CT.relentless_refusal(repo, "X", "mod", text) or ""))
-        CT.load, CT.gate = real_load, real_gate
 
         good = CT.load(d)
         for name, edit, want in (
@@ -488,18 +466,8 @@ def main():
             except Exception as ex:
                 got = "raised %r" % ex
             check("gate: %s=x is refused, not raised" % nm, isinstance(got, list) and got != [], got)
-        check("TREE_CITE does not start mid-path", CT.TREE_CITE.findall("other/design/concepts/Foo/tree.json") == [])
         check("his ref is not a newline-tailed or unicode-digit ref", CT.his_words_problem({"1": {"ownerSaid": "x"}}, "OWNER:1\n", "x") is not None
               and CT.his_words_problem({"1": {"ownerSaid": "x"}}, "OWNER:\u0661", "x") is not None)
-        check("TREE_CITE stops at the file name", CT.TREE_CITE.findall("see design/concepts/Foo/tree.json.bak") == [])
-        check("TREE_CITE: a backup name is no cite", all(CT.TREE_CITE.findall("design/concepts/Foo/tree.json" + tail) == []
-                                                          for tail in ("~", "#1", "+old", ".orig", "%20")))
-        check("TREE_CITE: a cite in backticks, parentheses or ending a sentence is a cite (sanity)", all(
-            CT.TREE_CITE.findall(t) == ["design/concepts/Foo/tree.json"] for t in (
-                "`design/concepts/Foo/tree.json`", "(design/concepts/Foo/tree.json)", "see design/concepts/Foo/tree.json.",
-                "design/concepts/Foo/tree.json")))
-        check("relentless: a backup-named cite admits nothing", "no tree" in (CT.relentless_refusal(
-            repo, "X", "mod", "## verify\n\ndesign/concepts/Foo/tree.json~\n") or ""))
         t = copy.deepcopy(base)
         t["leaves"][0]["experience"] = "The player sees \ud800"
         write_raw(d, t)
@@ -717,16 +685,6 @@ def main():
             f.write(sheet.replace("DRY WALK\n", ""))
         check("dry: unbannered sheet refused", any("DRY WALK" in e for e in CT.lint(d2, repo2)[0]))
 
-        # relentless_refusal
-        check("relentless: mod with no tree refused", "no tree" in (CT.relentless_refusal(repo, "X", "mod", "body") or ""))
-        check("relentless: mod citing a missing tree refused",
-              CT.relentless_refusal(repo, "X", "mod", "design/concepts/Bar/tree.json") is not None)
-        check("relentless: non-mod citing an unsigned tree refused",
-              CT.relentless_refusal(repo, "X", "feature", text) is not None)
-        check("relentless: tooling item untouched", CT.relentless_refusal(repo, "X", "feature", "body") is None)
-        check("relentless: dry walk refused", CT.relentless_refusal(
-            repo2, "X", "mod", "design/concepts/_dry_walk/Foo/tree.json") is not None)
-        check("item_file_text: missing item reads empty, so a mod is refused", CT.item_file_text(repo, "NOPE") == "")
 
         tiers = CT.load_floor()[0]["tiers"]
         sweep = leaf("kept_shape", by="setter_sweep", root=["tool"], clause_kind="change")
@@ -734,27 +692,6 @@ def main():
         sweep["clause_kind"] = "preserve"
         check("setter_sweep: a preserve leaf is not (sanity)", CT.leaf_errors(sweep, "tool", tiers, set()) == [],
               CT.leaf_errors(sweep, "tool", tiers, set()))
-
-        # the wiring: lease asks, and a refused mod gets no worker
-        import relentless as R
-        src = open(R.__file__, encoding="utf-8").read()
-        check("pool_order filters mods through the gate", 'i.kind != "mod" or not self.concept_refusal(i.id)' in src)
-        check("enrol refuses", "relentless: REFUSED: %s\" % refusal" in src)
-        import selftest_relentless as SR
-        x = SR.Rig(2, share=1.0)
-        x.w.concept_refusal = lambda item: "no tree" if item == "I0" else None
-        for _ in range(4):
-            x.tick()
-        launched = str(x.w.launches)
-        check("lease: the refused mod gets no worker", "I0" not in launched, launched[:200])
-        check("lease: the other item still does (sanity)", "I1" in launched, launched[:200])
-        acts = []
-        R.lease(x.s, x.w, x.r, x.now, acts)
-        check("lease: the refusal is said", any(a.get("do") == "concept_refused" and a.get("item") == "I0" for a in acts), acts)
-        check("Effects has the method", hasattr(R.Effects, "concept_refusal"))
-        got = R.concept_refused(repo, "NOPE", "mod")
-        check("concept_refused: a mod with no body is refused", "no tree" in (got or ""), got)
-        check("concept_refused: a bugfix passes", R.concept_refused(repo, "NOPE", "feature") is None)
 
         # the role cannot start on its own
         with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
