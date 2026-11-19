@@ -21,6 +21,7 @@ So two defences, because the first alone could not have saved that session:
 import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -83,7 +84,10 @@ def main():
     # ---- the verdict line reaches stderr on every path --------------------------------------------
     # This is the defence that would actually have saved the measured session, so it is checked by
     # running the real tool, not by reading the source.
-    env = dict(os.environ, CODEX_HOME="/nonexistent-codex-home-for-selftest")
+    # No Codex is reachable on either side: no CODEX_HOME, and an empty HOME and bare PATH hide the Linux CLI
+    # (CODEX_HOME alone failed only the Windows side; on Linux the call answered and exited 0).
+    env = dict(os.environ, CODEX_HOME="/nonexistent-codex-home-for-selftest", HOME=tempfile.mkdtemp(),
+               PATH="/usr/bin:/bin")
     r = subprocess.run([sys.executable, str(HERE / "gpt_consult.py"), "say hi"],
                        capture_output=True, text=True, timeout=180, env=env)
     lines = [x for x in r.stderr.strip().split("\n") if x.strip()]

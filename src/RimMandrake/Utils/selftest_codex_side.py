@@ -18,7 +18,8 @@ import canon_check
 import common
 import ops_watch as ow
 
-cx = ar.CX
+cx = ar.CX          # the image skill's codex_image (agent_runner seeds isolated homes with it)
+cli = gc.codex_cli  # gpt_consult's and the shell launcher's own finder
 
 
 class RuntimeTests(unittest.TestCase):
@@ -74,7 +75,7 @@ class RuntimeTests(unittest.TestCase):
                 cx.codex_home(root / "invisible")
 
     def test_shell_launcher_override_and_multiple_images(self):
-        with patch.dict(os.environ, {"RM_CODEX_SIDE": "wsl"}), patch.object(cx, "CODEX_SCRATCH"), patch.object(cx, "FOREIGN_THUMB_DIR"), patch.object(cx, "find_codex_cli", return_value="codex.exe"), patch.object(cx, "base_codex_home", return_value=Path("/home")), patch.object(cx, "child_env", return_value={}), patch.object(cx, "codex_path", side_effect=lambda p: "WIN:" + str(p)), patch.object(subprocess, "run", return_value=subprocess.CompletedProcess([], 0)) as invoke:
+        with patch.dict(os.environ, {"RM_CODEX_SIDE": "wsl"}), patch.object(cli, "CODEX_SCRATCH"), patch.object(cli, "find_codex_cli", return_value="codex.exe"), patch.object(cli, "base_codex_home", return_value=Path("/home")), patch.object(cli, "child_env", return_value={}), patch.object(cli, "codex_path", side_effect=lambda p: "WIN:" + str(p)), patch.object(subprocess, "run", return_value=subprocess.CompletedProcess([], 0)) as invoke:
             self.assertEqual(side.main(["--codex", "win", "exec", "-C", "/repo", "-i", "/a.png", "/b.png", "--", "-"]), 0)
             self.assertEqual(side.codex_side(), "win")
             self.assertEqual(invoke.call_args.args[0], ["codex.exe", "exec", "-C", "WIN:/repo", "-i", "WIN:/a.png", "WIN:/b.png", "--", "-"])
@@ -109,7 +110,7 @@ class RuntimeTests(unittest.TestCase):
                     self.assertEqual(argv[argv.index("-C") + 1], kw["cwd"])
                     Path(argv[argv.index("-o") + 1]).write_text("ok")
                     return subprocess.CompletedProcess(argv, 0)
-                with patch.object(cx, "CODEX_SCRATCH", root / "scratch"), patch.object(cx, "base_codex_home", return_value=root), patch.object(cx, "find_codex_cli", return_value="codex"), patch.object(cx, "wsl_to_win", side_effect=lambda p: str(p)), patch.object(gc.codex_advice, "gate", return_value=0), patch.object(gc, "_receipt"), patch.object(gc, "_log_call"), patch.object(gc.subprocess, "run", side_effect=invoke):
+                with patch.object(cli, "CODEX_SCRATCH", root / "scratch"), patch.object(cli, "base_codex_home", return_value=root), patch.object(cli, "find_codex_cli", return_value="codex"), patch.object(cli, "wsl_to_win", side_effect=lambda p: str(p)), patch.object(gc.codex_advice, "gate", return_value=0), patch.object(gc, "_receipt"), patch.object(gc, "_log_call"), patch.object(gc.subprocess, "run", side_effect=invoke):
                     self.assertEqual(gc.main(["q", "--codex-home", str(root), "--lockdown", "--effort", "low"]), 0)
 
     def test_quota_uses_newest_account_reading_from_either_side(self):

@@ -98,9 +98,8 @@ def verdict(name, code):
     """The last line of stderr on every path, so a caller that captured only the output can still tell an
     answer from a wall (owner, 2026-11-17)."""
     print("[consult] VERDICT=%s exit=%d" % (name, code), file=sys.stderr, flush=True)
-sys.path.insert(0, str(ROOT / "skills" / "generating-images" / "scripts"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))          # review_identity (job receipts)
-import codex_image  # noqa: E402  (find_codex_cli, wsl_to_win, DEFAULT_MODEL, CODEX_SCRATCH)
+import codex_cli  # noqa: E402  (find_codex_cli, wsl_to_win, DEFAULT_MODEL, CODEX_SCRATCH; never the image skill)
 import codex_advice  # noqa: E402  (the Codex HOLD/EXHAUSTED gate)
 
 
@@ -216,18 +215,18 @@ def main(argv=None):
     ap.add_argument("--required", help="the rule that requires this review round: lets it run while the Codex "
                                        "advice is HOLD (never while EXHAUSTED)")
     a = ap.parse_args(argv)
-    codex_image.select_codex(a.codex)
+    codex_cli.select_codex(a.codex)
     if a.round is not None and not ROUND_RE.match(a.round):
         ap.error("--round %r: 1-80 chars of A-Z a-z 0-9 _ . : - (starting alphanumeric)" % a.round)
     refused = codex_advice.gate("gpt_consult", a.required)
     if refused:
         return refused
-    env = codex_image.child_env(codex_image.base_codex_home())
+    env = codex_cli.child_env(codex_cli.base_codex_home())
     if a.codex_home:
         home = Path(a.codex_home).expanduser().resolve()
         if not (home / "auth.json").is_file():
             sys.exit("--codex-home %s has no auth.json (set it up first; gpt_consult never seeds a home)" % home)
-        env = codex_image.child_env(home)
+        env = codex_cli.child_env(home)
     if a.prompt_file:
         question = Path(a.prompt_file).read_text(encoding="utf-8")
     elif a.question:
@@ -237,18 +236,18 @@ def main(argv=None):
     inlined = []
     prompt = build_prompt(question, a.file, inlined)
 
-    job = codex_image.CODEX_SCRATCH / ("consult-%s-%d-%s" % (time.strftime("%Y%m%d-%H%M%S"), os.getpid(),
+    job = codex_cli.CODEX_SCRATCH / ("consult-%s-%d-%s" % (time.strftime("%Y%m%d-%H%M%S"), os.getpid(),
                                                               uuid.uuid4().hex[:6]))   # unique per call, not per pid+s
     job.mkdir(parents=True, exist_ok=False)
     (job / "prompt.md").write_text(prompt, encoding="utf-8")
     answer = job / "answer.md"
-    cmd = [str(codex_image.find_codex_cli()), "exec", "--sandbox", "read-only",
-           "--skip-git-repo-check", "-o", codex_image.codex_path(answer),
+    cmd = [str(codex_cli.find_codex_cli()), "exec", "--sandbox", "read-only",
+           "--skip-git-repo-check", "-o", codex_cli.codex_path(answer),
            "-c", 'model_reasoning_effort="%s"' % a.effort]
     if a.model and a.model != "inherit":
         cmd += ["-m", a.model]
     if a.lockdown:
-        cmd += LOCKDOWN_ARGS + ["-C", codex_image.codex_path(job)]
+        cmd += LOCKDOWN_ARGS + ["-C", codex_cli.codex_path(job)]
     if a.events:
         cmd.append("--json")
     for i, img in enumerate(a.image):                       # codex reads Windows paths; stage beside the prompt
@@ -257,12 +256,12 @@ def main(argv=None):
             sys.exit("cannot read image %s" % img)
         dst = job / ("img%02d_%s" % (i, src.name))
         shutil.copyfile(src, dst)
-        cmd += ["-i", codex_image.codex_path(dst)]
+        cmd += ["-i", codex_cli.codex_path(dst)]
     if a.image:
         cmd.append("--")                                    # -i is VARIADIC: without this it eats the "-" below
     cmd.append("-")                                         # prompt from stdin
     print("[consult] %d chars, %d file(s), %d image(s), model %s, round %s, job %s" % (
-        len(prompt), len(a.file), len(a.image), a.model, a.round or "-", codex_image.codex_path(job)), file=sys.stderr)
+        len(prompt), len(a.file), len(a.image), a.model, a.round or "-", codex_cli.codex_path(job)), file=sys.stderr)
     started = time.time()
     events = Path(a.events) if a.events else None
     if events:
@@ -283,9 +282,9 @@ def main(argv=None):
     etok = None
     if events:
         etok = events_tokens(events.read_text(encoding="utf-8", errors="replace") if events.is_file() else "")
-        meta = {"job_win": codex_image.codex_path(job), "job": str(job), "rc": rc, "lockdown": bool(a.lockdown),
-                "codex_home_win": env["CODEX_HOME"] if codex_image.codex_side() == "win" else None,
-                "codex_home": env["CODEX_HOME"], "codex_side": codex_image.codex_side(),
+        meta = {"job_win": codex_cli.codex_path(job), "job": str(job), "rc": rc, "lockdown": bool(a.lockdown),
+                "codex_home_win": env["CODEX_HOME"] if codex_cli.codex_side() == "win" else None,
+                "codex_home": env["CODEX_HOME"], "codex_side": codex_cli.codex_side(),
                 "refused_tool_calls": len(REFUSED_TOOL_RE.findall(clog or ""))}
         Path(str(events) + ".meta.json").write_text(json.dumps(meta, indent=1) + "\n", encoding="utf-8")
     _log_call(job.name, a.model, prompt, answer.read_text(encoding="utf-8", errors="replace") if answered else "", rc, clog, etok,
@@ -322,7 +321,7 @@ def main(argv=None):
 
 
 def cli(argv=None):
-    """main() with no path out that lacks a verdict. An EnvError from codex_image (no CODEX_HOME, no CLI)
+    """main() with no path out that lacks a verdict. An EnvError from codex_cli (no CODEX_HOME, no CLI)
     used to escape as a bare traceback: exit 1, no --out file, no verdict -- indistinguishable from "the
     model had nothing to say" to a caller that lost the status (measured 2026-11-17)."""
     try:

@@ -22,13 +22,13 @@ def main(argv=None):
     import subprocess
     import sys
     from pathlib import Path
-    sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "skills/generating-images/scripts"))
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
     parser = argparse.ArgumentParser(add_help=False, allow_abbrev=False)
     parser.add_argument("--codex", choices=("wsl", "win"))
     selected, args = parser.parse_known_args(sys.argv[1:] if argv is None else argv)
     if selected.codex:
         os.environ["RM_CODEX_SIDE"] = selected.codex
-    import codex_image as cx
+    import codex_cli as cx
     cx.select_codex(selected.codex)
     path_flags = ("-C", "--cd", "-o", "--output-last-message", "--output-schema", "--add-dir")
     images = False

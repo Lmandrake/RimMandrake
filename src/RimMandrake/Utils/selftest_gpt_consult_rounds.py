@@ -35,9 +35,9 @@ def ok(name, got, want):
         FAILED.append(name)
 
 
-GC.codex_image.CODEX_SCRATCH = Path(T) / "codex"
-GC.codex_image.find_codex_cli = lambda: "/bin/true"
-GC.codex_image.wsl_to_win = lambda p: str(p)
+GC.codex_cli.CODEX_SCRATCH = Path(T) / "codex"
+GC.codex_cli.find_codex_cli = lambda: "/bin/true"
+GC.codex_cli.wsl_to_win = lambda p: str(p)
 GC.codex_advice.gate = lambda *a, **k: 0                 # the live Codex HOLD/EXHAUSTED advice is not under test
 _real_run = GC.subprocess.run
 ANSWER = {"text": "finding 1\n"}
@@ -65,7 +65,7 @@ try:
     rc2 = GC.main(["again", "-m", "m1"])                           # round from the environment
     os.environ.pop("RM_CONSULT_ROUND")
     ANSWER["text"] = None
-    rc3 = GC.main(["third", "-m", "m1", "--round", "PARSER_R2"])   # no answer: rc 1, still metered
+    rc3 = GC.main(["third", "-m", "m1", "--round", "PARSER_R2"])   # rc 124, no answer: DEADLINE, still metered
     ANSWER["text"] = "x\n"
     rc4 = GC.main(["untagged", "-m", "m1"])
     try:
@@ -76,7 +76,7 @@ try:
 finally:
     GC.subprocess.run = _real_run
 
-ok("consults return", (rc1, rc2, rc3, rc4), (0, 0, 1, 0))
+ok("consults return", (rc1, rc2, rc3, rc4), (0, 0, GC.EXIT_DEADLINE, 0))
 ok("a malformed --round is refused before any call", bad_round, 2)
 ok("a round name with a trailing newline is refused", GC.ROUND_RE.match("ROUND1\n"), None)
 calls, bad = gpt_call_log.read_records()

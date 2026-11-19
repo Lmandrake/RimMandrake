@@ -91,7 +91,7 @@ def boom():
     raise Started()
 
 
-GC.codex_image.find_codex_cli = boom
+GC.codex_cli.find_codex_cli = boom
 runs = []
 GC.subprocess.run = lambda *a, **k: runs.append(a) or (_ for _ in ()).throw(AssertionError("subprocess ran"))
 

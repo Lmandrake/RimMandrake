@@ -76,9 +76,9 @@ ok("an external review whose job never answered is only asserted", RI.identity(d
 
 # gpt_consult writes the receipt (codex faked: it writes the answer file)
 import gpt_consult as GC  # noqa: E402
-GC.codex_image.CODEX_SCRATCH = Path(T) / "codex"
-GC.codex_image.find_codex_cli = lambda: "/bin/true"
-GC.codex_image.wsl_to_win = lambda p: str(p)
+GC.codex_cli.CODEX_SCRATCH = Path(T) / "codex"
+GC.codex_cli.find_codex_cli = lambda: "/bin/true"
+GC.codex_cli.wsl_to_win = lambda p: str(p)
 _real_run = GC.subprocess.run
 
 
