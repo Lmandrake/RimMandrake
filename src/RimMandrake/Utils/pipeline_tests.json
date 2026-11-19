@@ -45,7 +45,9 @@
     "src/RimMandrake/rimflow/acceptance/probe_result_promise_breaks_accept.py",
     "src/RimMandrake/Utils/could_not_look_lint*.py",
     "pipe",
-    "design/specs/*/boundary.md"
+    "design/specs/*/boundary.md",
+    "infrastructure/state/judge_calibration.json",
+    "src/RimMandrake/rimflow/evidence_gate_corpus.json"
   ],
   "tests": [
     {"test": "src/RimMandrake/Utils/selftest_maturation_convergence.py", "seconds": 0.4},
@@ -103,7 +105,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_red_dispatch.py", "seconds": 0.3},
     {"test": "src/RimMandrake/rimflow/selftest_pipeline_pause.py", "seconds": 10.1},
     {"test": "src/RimMandrake/rimflow/selftest_refusal_contract.py", "seconds": 0.1},
-    {"test": "src/RimMandrake/rimflow/selftest_calibration_rows_current.py", "seconds": 0.1},
+    {"test": "src/RimMandrake/rimflow/selftest_calibration_rows_current.py", "inputs": ["infrastructure/state/judge_calibration.json", "src/RimMandrake/rimflow/evidence_gate_corpus.json"], "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_seat_restart.py", "seconds": 5.2},
     {"test": "src/RimMandrake/rimflow/selftest_seat_restart_answered_replay.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_seat_restart_death.py", "seconds": 7.4},
