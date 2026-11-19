@@ -60,20 +60,30 @@ def _pad(ws):
 def covered(sent, quote):
     """Do these quoted words record this sentence? Exact; the sentence inside a longer quote (he joined sentences); a
     quote of two or more words that is EXCERPT_SHARE of the sentence (half let "back up, then delete" lose the delete); or, for MIN_FUZZY_WORDS or more, the same words in
-    the same order but for a typo. Only an exact match survives a differing count of negations: "deploy today" is not
-    "do not deploy today", and a quote that joins a negated sentence on costs a dismissal, which is the safe side."""
+    the same order but for a typo, or the same letters with only the spaces moved ("mosto f" for "most of"). Only an
+    exact match survives a differing count of negations: "deploy today" is not "do not deploy today". `matches` also
+    tries each sentence of the quote, so a negation in another of its sentences does not hide this one."""
     if not sent or not quote:
         return False
     if sent == quote:
         return True
     if _negations(sent) != _negations(quote):
         return False
+    if "".join(sent) == "".join(quote):
+        return True
     if len(sent) >= 2 and _pad(sent) in _pad(quote):
         return True
     if len(quote) >= 2 and len(quote) >= EXCERPT_SHARE * len(sent) and _pad(quote) in _pad(sent):
         return True
     return len(quote) >= MIN_FUZZY_WORDS \
         and difflib.SequenceMatcher(None, sent, quote, autojunk=False).ratio() >= FUZZY_RATIO
+
+
+def matches(sent, quote, parts=()):
+    """Is this sentence recorded by this quote, taken whole or one of its sentences (`parts`) at a time? Each sentence of
+    a quote is his words as much as the whole: "Drop that." inside "No need to track Augur. Drop that." (2026-11-19
+    wake, design/specs/2026-11-19-closeout-matcher/boundary.md)."""
+    return covered(sent, quote) or any(covered(sent, p) for p in parts if p != quote)
 
 
 def _negations(ws):
@@ -96,8 +106,13 @@ def _event_ts(ev):
         return None
 
 
+def quote_parts(text):
+    """-> the word lists of a quote's sentences, cut as his messages are."""
+    return [w for w in (words(p) for p in SENTENCE_END.split(text or "") if p.strip()) if w]
+
+
 def ledger_quotes(root=None):
-    """-> [(event epoch, words)] of every ownerSaid on every shard. Raises Unmeasured on a bad line, no shards, or no
+    """-> [(event epoch, words, sentence word lists)] of every ownerSaid on every shard. Raises Unmeasured on a bad line, no shards, or no
     quote at all: a ledger with none is a blind instrument (1982 on 2026-11-01), not a clean window."""
     paths = glob.glob(os.path.join(root or REPO, "infrastructure", "state", "ledger", "events", "*.jsonl"))
     if not paths:
@@ -115,7 +130,7 @@ def ledger_quotes(root=None):
                         raise Unmeasured("bad line in %s: %s" % (p, e)) from e
                     at = _event_ts(ev)
                     if at is not None and isinstance(ev.get("ownerSaid"), str):
-                        out.append((at, words(ev["ownerSaid"])))
+                        out.append((at, words(ev["ownerSaid"]), quote_parts(ev["ownerSaid"])))
         except (OSError, UnicodeError) as e:
             raise Unmeasured("cannot read %s: %s" % (p, e)) from e
     if not out:
@@ -220,8 +235,8 @@ def unquoted(sents, ts, quotes):
     cannot be this message: without the time bar his old words clear his new ones. Ledger times are whole seconds, so
     the bar rounds up: an event in the same second may be older than the message."""
     since = math.ceil(ts) if ts else math.inf     # a message with no time cannot be placed after any quote
-    live = [q for at, q in quotes if at >= since]
-    return [" ".join(w) for w in sents if not any(covered(w, q) for q in live)]
+    live = [(q[1], q[2] if len(q) > 2 else ()) for q in quotes if q[0] >= since]
+    return [" ".join(w) for w in sents if not any(matches(w, q, parts) for q, parts in live)]
 
 
 def blind_gap(path, why):

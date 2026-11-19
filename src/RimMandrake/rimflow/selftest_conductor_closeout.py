@@ -190,7 +190,7 @@ def t_real_ledger():
     """Sanity probe: the instrument sees the real ledger, and a real quote clears a message saying it."""
     q = CC.ledger_quotes(REPO)
     check(len(q) > 100, "the real ledger yields quotes (%d)" % len(q))
-    at, w = max(q, key=lambda x: len(x[1]) if len(x[1]) < 30 else 0)
+    at, w = max(q, key=lambda x: len(x[1]) if len(x[1]) < 30 else 0)[:2]
     check(CC.covered(w, w), "a real quote covers itself")
 
 
@@ -268,7 +268,63 @@ def t_wired():
     check("req.update(closeout_check(path, cfg))" in src, "the goodbye request runs the check")
 
 
-for t in (t_diff, t_whose, t_exempt, t_dismiss, t_blind, t_real_ledger, t_carry, t_wired):
-    t()
-print("\nPASS: 0 failure(s)" if not fails else "\nFAIL: %d failure(s)" % fails)
-sys.exit(1 if fails else 0)
+AUGUR = ("No need to track Augur. Drop that. Acts census. Two cards. Phone alert discussion. "
+         "Then Crystallize for real this time.")
+SKILLS = ("We have been removing global skills lately that are rarely if ever called, to save tokens and with the "
+          "realization that %s the time I invoke things quite manually in my text when I want a skill (hence they don't "
+          "need to be registered... it knows where to look already). We should keep this in mind to minimize our overhead.")
+
+
+def t_a_short_sentence_inside_a_quoted_whole_matches():
+    tx, root = world("augur", [human(AUGUR, "u1")], [(AUGUR, AFTER)])
+    rc, res = run(tx, root)
+    check(rc == 0 and res["recorded"] == 1, "his whole message quoted word for word clears every short sentence in it "
+          "(2026-11-19 wake: listed 'partly on the ledger', rc %d)" % rc)
+    tx, root = world("augur2", [human("Drop that.", "u1")], [("No need to track Augur. Drop that.", AFTER)])
+    check(run(tx, root)[0] == 0, "a two-word sentence that is a sentence of a longer quote holding a 'no' clears it")
+
+
+def t_a_typo_fixed_quote_matches():
+    tx, root = world("mostof", [human(SKILLS % "mosto f", "u1")], [(SKILLS % "most of", AFTER)])
+    rc, res = run(tx, root)
+    check(rc == 0, "a quote fixing his 'mosto f' to 'most of' clears the message (2026-11-19 wake: a full gap, rc %d)" % rc)
+    tx, root = world("space", [human("Use mosto f it now.", "u1")], [("Use most of it now.", AFTER)])
+    check(run(tx, root)[0] == 0, "a short sentence whose quote only moves a space clears it")
+    tx, root = world("typo2", [human("Keep the rot beats small and quiet please. Ship it.", "u1")],
+                     [("Do not wait. Keep the rot beasts small and quiet please. Ship it.", AFTER)])
+    check(run(tx, root)[0] == 0, "a typo-fixed sentence inside a longer quote with a negation elsewhere clears it")
+
+
+def t_a_message_absent_from_the_ledger_is_a_gap():
+    tx, root = world("augur_gap", [human(AUGUR, "u1")], [("No need to track the hose", AFTER), ("Drop the art", AFTER)])
+    rc, res = run(tx, root)
+    check(rc == 1 and len(res["gaps"]) == 1 and len(res["gaps"][0]["miss"]) == 6,
+          "the Augur message with none of its sentences on the ledger is a gap missing all six")
+    tx, root = world("mostof_gap", [human(SKILLS % "mosto f", "u1")], [(AUGUR, AFTER)])
+    check(run(tx, root)[0] == 1, "the skills message with only another message on the ledger is a gap")
+    tx, root = world("augur_old", [human(AUGUR, "u1")], [(AUGUR, BEFORE)])
+    check(run(tx, root)[0] == 1, "his words quoted only BEFORE he said them are a gap")
+
+
+def t_a_quote_that_loses_his_negation_does_not_match():
+    tx, root = world("negpart", [human("Drop that.", "u1")], [("Never drop that. Keep going.", AFTER)])
+    check(run(tx, root)[0] == 1, "'Never drop that.' does not record his 'Drop that.'")
+    tx, root = world("negpart2", [human("Do not drop that.", "u1")], [("Drop that. Do not wait.", AFTER)])
+    check(run(tx, root)[0] == 1, "a quote whose 'not' sits in another sentence does not record his 'Do not drop that.'")
+    tx, root = world("negspace", [human("Use none of it.", "u1")], [("Use no ne of it.", AFTER)])
+    check(run(tx, root)[0] == 1, "a moved space that adds a negation does not record it")
+    tx, root = world("neg2b", [human("Do not deploy today.", "u1")], [("Fine. Deploy today.", AFTER)])
+    check(run(tx, root)[0] == 1, "a quote sentence that loses his not does not record it")
+
+
+def main():
+    for t in (t_diff, t_whose, t_exempt, t_dismiss, t_blind, t_real_ledger, t_carry, t_wired,
+              t_a_short_sentence_inside_a_quoted_whole_matches, t_a_typo_fixed_quote_matches,
+              t_a_message_absent_from_the_ledger_is_a_gap, t_a_quote_that_loses_his_negation_does_not_match):
+        t()
+    print("\nPASS: 0 failure(s)" if not fails else "\nFAIL: %d failure(s)" % fails)
+    return 1 if fails else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
