@@ -1064,7 +1064,8 @@ and the system choked at their lack of precision I think."*
   idle, paused, stalled or Designer-stall reading, so it raises no alarm and no incident; `maturation_dispatch.py
   status` and the maturation page print **HELD BY OWNER** with his words and date. A run already live on it finishes.
 - **Only he lifts it:** `python3 src/RimMandrake/rimflow/mod_owner_hold.py lift <Mod> --said "<his words>"`, then publish
-  `mod_owner_hold.json`; `mod_owner_hold.py show` lists the holds. A new hold is a row in the same file, with his words.
+  `mod_owner_hold.json`; `mod_owner_hold.py show` lists the holds. A new hold is a row in the same file, with his words,
+  then `./pipe init --import` (safe to repeat), so that every launch refuses the mod and not only the tick.
 
 ## Resetting a test scene is harness housekeeping, never a mod deliverable — owner, 2026-11-17
 

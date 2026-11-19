@@ -2247,10 +2247,19 @@ def import_live(p=None, now=None, hold_file=None, concepts=None, voids_file=None
     sys.path.insert(0, HERE) if HERE not in sys.path else None
     import mod_owner_hold as OH
     holds = OH.load_file(hold_file or OH.PATH)
+    import hashlib
+    lifted, held = lifted_owner(p), mod_holds(p, now)
     for m, h in sorted(holds.items()):
+        if (m, h.get("date") or "", h["said"]) in lifted:   # a stale mirror row of a hold he lifted never holds again
+            out.append("owner hold %s already lifted: not imported" % m)
+            continue
+        if held.get(m, {}).get("store") and held[m]["said"] == h["said"]:
+            out.append("owner hold %s already imported" % m)
+            continue
+        # the key carries his words: a new hold after a lift, same mod and day, is a new hold (round-four claim 10)
         r = switch("mod:" + m, True, "his hold (mod_owner_hold.json): " + h["said"], layer="owner", said=h["said"],
-                   date=h.get("date"), idem="import:owner:%s:%s" % (m, h.get("date")), p=p, now=now,
-                   per_ruling="mod_owner_hold.json",
+                   date=h.get("date"), idem="import:owner:%s:%s:%s" % (m, h.get("date"), hashlib.sha1(
+                       h["said"].encode("utf-8")).hexdigest()[:12]), p=p, now=now, per_ruling="mod_owner_hold.json",
                    extra={k: v for k, v in h.items() if k == "design_allowed"} or None)
         out.append("owner hold %s %s" % (m, "already imported" if r["replayed"] else "imported (%s)" % r["act"]["id"]))
     r = switch("family:relentless", True, "Relentless is retired (owner 2026-11-13, design/RimMandrake/"
@@ -2363,7 +2372,9 @@ def _stage_advanced_on_voided(c, mods=None):
         except (OSError, ValueError):
             continue
         hs = [h for h in st.get("history") or [] if isinstance(h, dict)]
-        if any(v["run"] in json.dumps(h) and (h.get("to") or h.get("stage") or h.get("what") in (
+        import re   # the whole name: rm-judge-1 is not named by rm-judge-10 or rm-judge-1-reader (round-four claim 13)
+        named = re.compile(r"(?<![\w.~-])%s(?![\w.~-])" % re.escape(v["run"]))
+        if any(named.search(json.dumps(h)) and (h.get("to") or h.get("stage") or h.get("what") in (
                 "advance", "signed", "locked", "covered")) for h in hs) or any(
                 isinstance(r, dict) and r.get("judge") == v["run"] and r.get("verdict") == "covered"
                 for r in st.get("coverage_rounds") or []):

@@ -1720,12 +1720,62 @@ def types_ns(**k):
     return types.SimpleNamespace(**k)
 
 
+# ---------------------------------------------------------------- promises of the boundary page, by name
+# design/specs/2026-11-18-pipeline-control-surface/boundary.md: a test here carries its promise's name.
+
+def t_his_hold_refuses_launch():
+    """Promise his-hold-refuses-launch: a new hold after a lift holds again, even on the same day with other words
+    (round-four claim 10: the import's key had no words, so the new hold was read as already imported)."""
+    fresh()
+    hf = os.path.join(TMP, "holds_again.json")
+    nov = os.path.join(TMP, "novoids.jsonl")
+
+    def write(said):
+        with open(hf, "w", encoding="utf-8") as f:
+            json.dump({"holds": [{"mod": "Graffiti", "date": "2026-11-18", "said": said}]}, f)
+    write("stop Graffiti")
+    C.import_live(DB, hold_file=hf, concepts=[], voids_file=nov)
+    check("HELD BY OWNER" in (C.blocked(spec("h1", mod="Graffiti")) or ""), "his hold refuses the launch")
+    rev1 = C._q("SELECT v FROM meta WHERE k='rev'", one=True)["v"]
+    C.import_live(DB, hold_file=hf, concepts=[], voids_file=nov)
+    check(C._q("SELECT v FROM meta WHERE k='rev'", one=True)["v"] == rev1, "the same hold imported twice writes nothing")
+    C.lift_owner("Graffiti", "go on", date="2026-11-18", held_said="stop Graffiti")
+    check(C.blocked(spec("h2", mod="Graffiti")) is None, "his lift opens it at once")
+    C.import_live(DB, hold_file=hf, concepts=[], voids_file=nov)
+    check(C.blocked(spec("h3", mod="Graffiti")) is None, "a stale file row of the lifted hold does not hold again")
+    write("no, stop it again")
+    C.import_live(DB, hold_file=hf, concepts=[], voids_file=nov)
+    b = C.blocked(spec("h4", mod="Graffiti")) or ""
+    check("no, stop it again" in b, "a new hold the same day, with other words, holds again with his new words", b)
+
+
+def t_void_never_moves_a_stage():
+    """Promise void-never-moves-a-stage: `pipe show` flags the voided run and no other (round-four claim 13: a run was
+    matched by substring, so voiding a judge flagged a stage its `-reader` run advanced)."""
+    fresh()
+    d = os.path.join(os.environ["RM_CONTROL_CONCEPTS"], "Graffiti")
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, "stage.json"), "w", encoding="utf-8") as f:
+        json.dump({"history": [{"to": "in_game", "run": "rm-coverage-judge-17-reader"}]}, f)
+    C.void("rm-coverage-judge-17", "voided by us", mod="Graffiti")
+    c = C.read()
+    try:
+        check(C._stage_advanced_on_voided(c) == [], "a run whose name only begins with the voided run's is not flagged",
+              C._stage_advanced_on_voided(c))
+        with open(os.path.join(d, "stage.json"), "w", encoding="utf-8") as f:
+            json.dump({"history": [{"to": "in_game", "run": "rm-coverage-judge-17"}]}, f)
+        check(len(C._stage_advanced_on_voided(c)) == 1, "the voided run itself is flagged, once",
+              C._stage_advanced_on_voided(c))
+    finally:
+        c.close()
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
               t_accounts, t_queue, t_review_round_four_p1,
-              t_slice4, t_slices_review):
+              t_slice4, t_slices_review, t_his_hold_refuses_launch, t_void_never_moves_a_stage):
         print("== %s" % t.__name__)
         try:
             t()
