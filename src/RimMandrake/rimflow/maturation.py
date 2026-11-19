@@ -2197,9 +2197,44 @@ def game_brief(game):
     return game_instance.brief(game)
 
 
+def live_twins(mod, stage, item, status=None):
+    """-> (the live detached runs a launch of MOD's STAGE under ITEM would twin, None) or (None, cause) when the
+    record folder cannot be listed (could not look is never "no twin"). A twin: a launching or running record
+    (detached_helper.live_status) whose env names this mod and stage, or whose item is this item. [] is looked, none
+    (design/specs/2026-11-19-maturation-launch-twin/boundary.md)."""
+    import detached_helper as DH
+    status = status or DH.live_status
+    try:
+        d = DH.runs_dir()
+        names = sorted(os.listdir(d))
+    except OSError as e:
+        return None, "%s: %s" % (type(e).__name__, e)
+    out = []
+    for n in names:
+        if not n.endswith(".json") or n.endswith(".out.json"):
+            continue
+        rec = DH.read_record(n[:-5])
+        if not rec or not rec.get("unit"):
+            continue
+        env = rec.get("env") if isinstance(rec.get("env"), dict) else {}
+        same = env.get("RM_CONTROL_MOD") == mod and env.get("RM_CONTROL_STAGE") == stage
+        if (same or (item and rec.get("item") == item)) and status(rec) in ("launching", "running"):
+            out.append({"unit": rec["unit"], "stage": env.get("RM_CONTROL_STAGE") or UNM, "item": rec.get("item") or UNM,
+                        "at": rec.get("at")})
+    return out, None
+
+
+def _twins_reader(runner, twins):
+    """The twin reader a launch uses: the one given, else live_twins for a real launch; a stand-in runner starts no
+    unit, so it has no twin to guard against and reads no records."""
+    if twins is not None:
+        return twins
+    return live_twins if runner is subprocess.run else None
+
+
 def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=subprocess.run, bridge=None,
                resume=None, bars=None, preface=None, env=None, session=None, reconcile=None, game=None, companion=None,
-               deployed=None):
+               deployed=None, twins=None):
     """-> (exit code, text, unit or None). Refuses (2) a missing or non-positive cap, a missing item, a mod at neither
     the offline build nor the blind challenge, one with no build work owed, and at the blind challenge a model below
     opus or a cycle already recorded or blocked, and at in-game acceptance a model other than opus, a visit already
@@ -2215,7 +2250,9 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     reconcile step (RIMMANDRAKE_RESUME_HOLDER_SESSIONS_TO_400K_KILL_AND_RESUME). game: the game an in-game run drives
     (the Dispatch step's free choice): it reaches the unit as RM_GAME_INSTANCE and the brief, and the bridge read is
     that game's. companion: a stand-in for companion_current (an in-game visit refuses a companion not current);
-    deployed: a stand-in for mod_deployed (an in-game visit refuses a game copy of the mod that differs from the repo)."""
+    deployed: a stand-in for mod_deployed (an in-game visit refuses a game copy of the mod that differs from the repo).
+    twins: a stand-in for live_twins: a live run on the same mod and stage, or the same item, refuses the launch
+    (RIMMANDRAKE_GUARD_HAND_LAUNCH_AGAINST_DISPATCHER_TWIN_RUN: a hand launch twinned the Dispatch step's cycle 6)."""
     if game:
         env = dict(env or {}, RM_GAME_INSTANCE=game)
     game = (env or {}).get("RM_GAME_INSTANCE") or "a"
@@ -2268,6 +2305,16 @@ def launch_mod(root, mod, budget_usd, item, model="opus", seat="BENCH", runner=s
     elif bars and set(bars) - set(f.get("refused_bars") or []):
         return 2, "REFUSED: the batch names bars %s is not refusing: %s" % (
             mod, ", ".join(sorted(set(bars) - set(f.get("refused_bars") or []))[:6])), None
+    read = _twins_reader(runner, twins)
+    if read is not None:
+        got, why = read(os.path.basename(os.path.normpath(mod)), f.get("stage"), item)
+        if got is None:
+            return 2, ("REFUSED: could not read the detached run records, so a twin run of %s's %s cannot be ruled out: "
+                       "%s" % (mod, f.get("stage"), why)), None
+        if got:
+            return 2, ("REFUSED: %s's %s already has a live run: %s; launch again when it ends (or stop it)" % (
+                mod, f.get("stage"), "; ".join("%s (stage %s, item %s)" % (x["unit"], x["stage"], x["item"])
+                                               for x in got))), None
     if preface:
         text = preface.rstrip("\n") + "\n\n---\n\n" + text
     if reconcile:
