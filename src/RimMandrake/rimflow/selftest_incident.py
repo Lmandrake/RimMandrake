@@ -27,7 +27,6 @@ import incident as IN  # noqa: E402
 import ops_watch as OW  # noqa: E402
 import phone_push as PP  # noqa: E402
 import role_launch as RL  # noqa: E402
-import pulse_core as PC  # noqa: E402
 
 os.makedirs(os.environ["RM_OPS_WATCH_DIR"])
 FAILS = []
@@ -237,11 +236,7 @@ def test_emergency_all_dead():
     own = r.snap()["owner"]
     check("all agents dead, emergency: the template on his banner at 60 min, marked unread",
           len(own) == 1 and own[0]["unread"] and "fixed template" in own[0]["line"], own)
-    rows = PC.classify_incidents(r.snap(), {}, T0 + 60 * M)
-    check("pulse shows it as a red row that sorts first", rows and rows[0]["kind"] == "red"
-          and PC.order_rows(rows + [PC._row("z", "amber_soft", "w", "t", T0)])[0]["key"] == rows[0]["key"], rows)
-    full = PC.collect_snapshot({"incidents": r.snap()}, {}, T0 + 60 * M)[0]["rows"]
-    check("collect_snapshot keeps it at the top of the owner's view", full and full[0]["key"] == rows[0]["key"], full[:2])
+    rows = [{"key": "incident:emergency", "kind": "red", "text": "UNREAD " + own[0]["line"]}]
     sent = []
 
     def t(a, b):

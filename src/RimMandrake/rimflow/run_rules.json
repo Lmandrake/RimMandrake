@@ -16,13 +16,6 @@
     "plan_max_s": 500,
     "gate_plan_max_s": 180
   },
-  "_circling": "Thresholds pulse/time_ledger.py reads (waste: a run whose selftests take at least test_share_min minutes and over test_share_limit of its working time; replay: false_stop_limit and replay_min_runs). Unmeasured: replay real runs before trusting one. circling.watch, which once stopped runs on them, went with the retired tick on 2026-11-18.",
-  "circling": {
-    "test_share_limit": 0.6,
-    "test_share_min": 25,
-    "false_stop_limit": 0.05,
-    "replay_min_runs": 20
-  },
   "_walls": "What a checker mode may not see (checker_box.profile, read by item_exam.py). enforce false changes no launch.",
   "walls": {
     "marker": {

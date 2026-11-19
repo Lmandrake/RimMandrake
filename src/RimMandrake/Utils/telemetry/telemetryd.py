@@ -5,7 +5,7 @@ Loop (1 s tick):
     every 15 s otherwise; all others every 15 s
   * host sampler every 60 s (volumes, VHDX, memory/commit) — the owner's 1/min for external metrics
   * deploy/mod-list detector every 10 min; directory sizes hourly; proof results hourly
-  * alert rules + sparklines every 15 s -> <state>/alerts.json (read by RimPulse)
+  * alert rules + sparklines every 15 s -> <state>/alerts.json (shown by cli.py)
   * retention daily (no per-deploy detectors: comparison is on demand, owner 2026-10-11)
   * heartbeat -> <state>/heartbeat.json every pass (rm-telemetry-health.timer watches it from WSL)
 

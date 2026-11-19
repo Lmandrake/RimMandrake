@@ -525,7 +525,7 @@ def whole_repo():
         return print("UNMEASURED: no git here to search for taskkill /IM")
     out = subprocess.run(["git", "-C", F.REPO, "grep", "-nE", r"taskkill.*/IM.*(RimWorld|GAME)|\"/IM\".*(RimWorld|GAME)", "--", "*.py", "*.sh", "*.ps1"],
                          capture_output=True, text=True).stdout
-    bad = [ln for ln in out.splitlines() if not re.search(r"selftest|fake_two_games|time_ledger_replay|^Transient/", ln.split(":")[0])]
+    bad = [ln for ln in out.splitlines() if not re.search(r"selftest|fake_two_games|^Transient/", ln.split(":")[0])]
     check(not bad, "no live taskkill /IM left: %s" % [b[:120] for b in bad])
 
 

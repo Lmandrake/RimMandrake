@@ -315,14 +315,8 @@ def flush_bench():
 
 
 def failreport(ok, cause=None):
-    """pulse failreport (`steve:lane` health row); the dispatch clone is sparse and has no Utils/pulse, so the same
-    record is written inline there."""
-    try:
-        sys.path.insert(0, os.path.join(HERE, "..", "pulse"))
-        import failreport as F
-        return F.report(LANE_TASK, ok, cause=cause, seat="RUNNER")
-    except ImportError:
-        pass
+    """The `steve:lane` health row, one line in failures.jsonl (the record RimPulse's failreport wrote; written
+    inline since failreport went with the dashboard, 2026-11-18). Nothing reads the file since the dashboard's daemon."""
     rec = {"ts": time.time(), "task": LANE_TASK, "status": "ok" if ok else "failed", "seat": "RUNNER"}
     if not ok and cause:
         rec["cause"] = " ".join(str(cause).split())[:200]

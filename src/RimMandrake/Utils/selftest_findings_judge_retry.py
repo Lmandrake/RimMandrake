@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ROLE_RUNS_BUILD_RESUME_AFTER_ACCOUNT_LOSS, the findings judge half: an account death retries ONCE after the reset
 (findings_judge_retry.decide), and findings_judge.sh schedules exactly that one retry. The script runs for real in a
-temp tree whose claude_bounded.sh, sync, pulse.py and systemd-run are fakes; nothing touches systemd or the clone."""
+temp tree whose claude_bounded.sh, sync and systemd-run are fakes; nothing touches systemd or the clone."""
 import json
 import os
 import shutil
@@ -44,7 +44,7 @@ def test_decide():
 
 def tree(d, result, rc):
     u = os.path.join(d, "src", "RimMandrake", "Utils")
-    os.makedirs(os.path.join(u, "pulse"))
+    os.makedirs(u)
     for f in ("findings_judge.sh", "findings_judge_retry.py", "findings_judge_prompt.md", "findings_judge_friday.md"):
         shutil.copy(os.path.join(HERE, f), u)
     for pkg in ("rimflow", "contracts"):     # role_launch (the classifier) and what it imports
@@ -56,8 +56,6 @@ def tree(d, result, rc):
         with open(p, "w") as f:
             f.write(body)
         os.chmod(p, 0o755)
-    with open(os.path.join(u, "pulse", "pulse.py"), "w") as f:
-        f.write("import sys\nopen(%r, 'a').write(' '.join(sys.argv[1:]) + '\\n')\n" % os.path.join(d, "pulse"))
 
 
 def run(result, rc, retry=False):
@@ -73,10 +71,9 @@ def run(result, rc, retry=False):
     calls = open(os.path.join(d, "calls")).read().splitlines() if os.path.exists(os.path.join(d, "calls")) else []
     retries = open(os.path.join(out, "retries.jsonl")).read().splitlines() \
         if os.path.exists(os.path.join(out, "retries.jsonl")) else []
-    pulse = open(os.path.join(d, "pulse")).read() if os.path.exists(os.path.join(d, "pulse")) else ""
     last = json.load(open(os.path.join(out, "last.json")))
     shutil.rmtree(d)
-    return p.returncode, calls, retries, pulse, last
+    return p.returncode, calls, retries, last
 
 
 def due_matches_verdict(call, retries):
@@ -94,7 +91,7 @@ def due_matches_verdict(call, retries):
 
 
 def test_script():
-    rc, calls, retries, pulse, last = run(OUTAGE, 1)
+    rc, calls, retries, last = run(OUTAGE, 1)
     check("an account death schedules exactly one retry", len(calls) == 1 and len(retries) == 1)
     c = calls[0] if calls else ""
     check("the retry is a user timer running the same script, marked as the retry",
@@ -106,13 +103,12 @@ def test_script():
     check("the elapsed timer unloads, so the next outage's retry is not refused", "RemainAfterElapse=no" in c)
     check("a one-shot due time fires when due, not on the calendar default's minute", "AccuracySec=1s" in c)
     check("its wait is the decided one", due_matches_verdict(c, retries))
-    check("the run still reads failed, the retry said", rc == 1 and not last["ok"] and "one retry" in pulse
-          and "failed" in pulse)
-    rc, calls, retries, _, _ = run(OUTAGE, 1, retry=True)
+    check("the run still reads failed", rc == 1 and not last["ok"])
+    rc, calls, retries, _ = run(OUTAGE, 1, retry=True)
     check("the retry itself schedules none (one retry only)", rc == 1 and not calls and not retries)
-    rc, calls, _, _, last = run(GOOD, 0)
+    rc, calls, _, last = run(GOOD, 0)
     check("a good run schedules none", rc == 0 and not calls and last["ok"])
-    rc, calls, _, _, _ = run({"is_error": True, "result": "some other failure"}, 1)
+    rc, calls, _, _ = run({"is_error": True, "result": "some other failure"}, 1)
     check("a non-account failure schedules none", rc == 1 and not calls)
 
 

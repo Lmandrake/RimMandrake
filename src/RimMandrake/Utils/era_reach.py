@@ -13,6 +13,7 @@ A name reached only through getattr(obj, "x") on a non-module object, exec or a 
 undefined names after any cut. A string path run as a script (land.sh, publish.py) is not an import: grep for those.
 usage: era_reach.py REPO [live|selftests] [--exclude-roots f1,f2] [--only-methods mod.Cls=m1,m2;mod.Cls2=m3]  -> JSON
 --roots mod.fn,...: extra roots, for code a unit runs by script path (systemd-run ... x.py verb), which no import shows.
+--era-dir DIR: treat every non-selftest module directly in DIR as the era set (and every file under DIR as era code).
 --only-methods: for that class, only the named methods (and what they call through self) are reached, never a method
 merely used by name somewhere: the duck-typed rule over-reaches on common names (launch, measure, stop).
 """
@@ -37,10 +38,17 @@ SUP_NAMES = {"sup"}
 
 files = subprocess.run(["git", "-C", REPO, "ls-files", "*.py"], capture_output=True, text=True, timeout=120,
                        check=True).stdout.split()
-era_mods = {os.path.basename(f)[:-3]: f for f in files
-            if os.path.dirname(f) == RF and os.path.basename(f)[:-3].split("_")[0] == "relentless"}
+ERA_DIR = sys.argv[sys.argv.index("--era-dir") + 1].rstrip("/") if "--era-dir" in sys.argv else None
+if ERA_DIR:     # every non-test module of one package is "era" (the pulse package: retired dashboard, live parts)
+    era_mods = {os.path.basename(f)[:-3]: f for f in files
+                if os.path.dirname(f) == ERA_DIR and not os.path.basename(f).startswith("selftest_")}
+else:
+    era_mods = {os.path.basename(f)[:-3]: f for f in files
+                if os.path.dirname(f) == RF and os.path.basename(f)[:-3].split("_")[0] == "relentless"}
 
 def is_era_file(f):
+    if ERA_DIR:
+        return f.startswith(ERA_DIR + "/")
     return f in era_mods.values() or "relentless" in os.path.basename(f)
 
 def parse(f):
@@ -173,7 +181,7 @@ for f in files:
         continue
     b = os.path.basename(f)
     if MODE == "live" and (b.startswith("selftest_") or b.startswith("test_") or "/testdata/" in f
-                           or "selftest_fixtures" in f or "time_ledger_replay" in f):
+                           or "selftest_fixtures" in f):
         continue
     t = parse(f)
     if t is None:

@@ -3,7 +3,7 @@
 
 run_rules.json was the retired Relentless tick's rules file; the tick's own keys went with it (2026-11-18). A key
 is LIVE when a non-test file under rimflow/, Utils/ or .claude/hooks/ quotes its name ("key" or 'key'). Checked: the
-top level and the circling, live and walls blocks. A `_x` comment key needs its sibling `x` (or is the file's `_`).
+top level and the live and walls blocks. A `_x` comment key needs its sibling `x` (or is the file's `_`).
 Static on purpose: a common word ("enabled", "seat") passes by another file's use of it, so this catches a key
 nothing names at all, not every dead one. A planted dead key and an orphaned comment must both be refused.
 
@@ -18,7 +18,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 RULES = os.path.join(HERE, "run_rules.json")
-BLOCKS = ("circling", "live", "walls")
+BLOCKS = ("live", "walls")
 
 
 def live_sources():

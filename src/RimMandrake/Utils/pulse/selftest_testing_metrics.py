@@ -246,65 +246,6 @@ with open(hp, "a") as f:
     f.write("{torn\n")
 check("a torn history line is skipped, not fatal", len(T.read_history(hp)) == 3)
 
-# ---------------------------------------------------------------- RimPulse panel + red rule
-import pulse_core as pc  # noqa: E402
-
-
-def snapd(steve, arch, live=None):
-    return {"days": [{"day": "2026-01-0%d" % i, "machines": {"steve": steve, "archmagi": arch}} for i in range(1, 8)],
-            "live": live or {}}
-
-
-M, U = T.M, T.U
-st = {"busy_pct": M(40.0), "rows_per_hour": M(12.0), "findings": M(2), "waste_pct": M(10.0)}
-ar = {"busy_pct": M(5.0), "rows_per_hour": U("no rows"), "findings": M(0), "waste_pct": U("no runs")}
-panel = pc.testing_panel(snapd(st, ar), NOW)
-check("panel has both machines side by side", [m["key"] for m in panel["machines"]] == ["steve", "archmagi"], panel)
-check("panel carries a 7-day series per metric", len(panel["machines"][0]["metrics"]["busy_pct"]["series"]) == 7)
-check("panel keeps UNMEASURED as null, never 0", panel["machines"][1]["metrics"]["rows_per_hour"]["series"][-1] is None)
-idle_empty = {"steve": {"idle_since": NOW - 2 * H, "pending": 0, "ssh_down_since": None, "paused": None}}
-rows = pc.classify_testing(idle_empty, {}, NOW)
-check("Steve idle 2 h with an empty queue: a warn for agents, not red", rows and rows[0]["kind"] == "warn"
-      and not any(r["kind"] == "red" for r in pc.owner_view(rows, NOW) if not r.get("agent")), rows)
-down_wait = {"steve": {"idle_since": NOW - 2 * H, "pending": 3, "ssh_down_since": NOW - 2 * H, "paused": None}}
-rows = pc.classify_testing(down_wait, {}, NOW)
-ov = [r for r in pc.owner_view(rows, NOW) if not r.get("agent")]
-check("Steve unreachable 2 h with 3 jobs waiting: red (his verb: wake SteveDesktop)", ov and ov[0]["kind"] == "red",
-      ov)
-rows = pc.classify_testing({"steve": dict(down_wait["steve"], ssh_down_since=NOW - 600)}, {}, NOW)
-check("unreachable 10 min: not red yet", not any(r["kind"] == "red" for r in rows), rows)
-rows = pc.classify_testing({"steve": {"idle_since": NOW - 600, "pending": 0, "ssh_down_since": None,
-                                      "paused": None}}, {}, NOW)
-check("idle 10 min: no row", rows == [], rows)
-rows = pc.classify_testing({"steve": {"idle_since": NOW - 2 * H, "pending": 2, "ssh_down_since": None,
-                                      "paused": {"since": iso(NOW - 2 * H), "cause": "CANARY"}}}, {}, NOW)
-check("paused lane 2 h with work waiting: WARN never red (owner 2026-10-26), says PAUSED, since and job (testq resume is an agent verb)",
-      rows and rows[0]["kind"] == "warn" and "PAUSED 120 min" in rows[0]["text"] and rows[0].get("agent"), rows)
-rows = pc.classify_testing({"steve": {"idle_since": NOW - 300, "pending": 0, "ssh_down_since": None,
-                                      "paused": {"since": iso(NOW - 300), "cause": "CANARY"}}}, {}, NOW)
-check("paused 5 min, queue empty: still a visible row, warn",
-      rows and rows[0]["kind"] == "warn" and "PAUSED" in rows[0]["text"], rows)
-
-# ---------------------------------------------------------------- phone brief line + judge
-import brief  # noqa: E402
-hp2 = os.path.join(tempfile.mkdtemp(prefix="hist2_"), "history.jsonl")
-today = {"schema": T.SCHEMA, "day": "2026-01-07", "generated": iso(NOW), "coverage": 1.0,
-         "machines": {"steve": st, "archmagi": ar}}
-T.append_if_changed(hp2, today)
-os.environ["RM_TESTING_HISTORY"] = hp2
-snap = {"charts": {"testing": pc.testing_panel({"days": [today], "live": {}}, NOW)},
-        "sources": {"testing": {"ok": True}}}
-live_snap = pc.collect_snapshot({"testing": {"days": [today], "live": {}}}, {}, NOW)[0]
-check("the real snapshot carries the panel under charts (where the widget and the brief read it)",
-      ((live_snap.get("charts") or {}).get("testing") or {}).get("day") == "2026-01-07",
-      sorted(k for k in live_snap if "test" in k))
-ln = brief.testing_line(snap)
-check("brief testing line names both machines", ln and "Steve" in ln["text"] and "Archmagi" in ln["text"], ln)
-check("brief line shows UNMEASURED words, not 0", ln and "unmeasured" in ln["text"].lower(), ln)
-check("judge passes the true line", brief.check_testing(ln["claim"]) == "pass", brief.check_testing(ln["claim"]))
-bad = dict(ln["claim"], values={**ln["claim"]["values"], "steve.busy_pct": 99.0})
-check("judge withholds a tampered number", brief.check_testing(bad).startswith("fail"), brief.check_testing(bad))
-
 # STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: a red canary on a dead colony ran nothing. Its "<canary red>" UNMEASURED
 # row is not a row run, and its lane hours are wasted, not productive
 qc = tempfile.mkdtemp(prefix="qc_")

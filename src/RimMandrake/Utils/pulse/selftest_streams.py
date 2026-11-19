@@ -147,64 +147,11 @@ check("the steward's T+120 rung tells Operations, never his remote queue (STEWAR
       not any(r["signal"] == "Steward escalation" for r in nd["remote"]), nd["remote"])
 
 
-# ---- hourly bucketing and staleness
+# ---- a series record
 def rec(t, **kw):
     return dict({"schema": S.SCHEMA, "t": t, "at": S.iso(t), "measures": {}, "badges": {}, "needed": {}, "steve": {},
                  "archmagi": {}, "brief": "b"}, **kw)
 
-
-top = (NOW // H) * H
-series = [rec(top - 2 * H + 60, measures={"A1": S.M(5, NOW)}), rec(top - 2 * H + 3000, measures={"A1": S.M(7, NOW)}),
-          rec(top + 10, measures={"A1": S.U("blind")}), rec(top - 200 * H)]
-sl = S.hourly(series, NOW)
-check("hourly: 168 slots, the last record of an hour wins", len(sl) == 168 and sl[-3]["measures"]["A1"]["v"] == 7, sl[-3])
-check("hourly: records older than 7 d are dropped, empty hours are None", sl[-2] is None and sum(1 for x in sl if x) == 2)
-check("stale: latest real record 2 min old is fresh", not S.stale([rec(NOW - 120)], NOW))
-check("stale: 46 min old greys the panel", S.stale([rec(NOW - 46 * 60)], NOW))
-check("stale: a backfill record does not count as fresh", S.stale([rec(NOW - 60, backfill=True)], NOW))
-
-# ---- the panel
-live = rec(NOW - 120, measures={"A1": S.U("art queue unreadable: fixture"), "D1": S.M(4, NOW - 120, n=9, oldest_d=12.0, unit="waits over 3 d"),
-                                "G2": S.M(0, NOW - 120, unit="% busy, 2 h")},
-           badges={"art": "build the instrument", "design": "YOU (remote)"}, needed={"remote": [], "in_person": [], "asks": {}},
-           steve={"state": "IDLE"}, archmagi={"state": "UP"})
-page = S.render([rec(NOW - 3 * H, measures={"A1": S.M(50, NOW - 3 * H)}), live], NOW)
-art = page[page.index("<h3>Art"):page.index("<h3>Design")]
-check("panel: UNMEASURED lead draws hollow with its reason", "UNMEASURED" in art and "art queue unreadable: fixture" in art, art[:400])
-check("panel: an UNMEASURED lead never shows a number", "<span class='v'>0" not in art and "<span class='v'>50" not in art)
-check("panel: a MEASURED 0 does show 0", "<span class='v'>0<small>" in page)
-check("panel: every measured value carries AS OF", page.count("AS OF") >= 3)
-check("panel: fresh is not greyed", "class=stale" not in page)
-check("panel: per-stream split absent draws hollow, not zero slots", "No per-stream split recorded" in page and "hollowbox" in page)
-check("panel: no pacing record draws the Pacing tile hollow with its reason", "<h2>Pacing</h2>" in page
-      and "No pacing recorded" in page, page[page.find("Pacing"):][:300])
-pac = {"at": S.iso(NOW - 120), "mode": "CRUISE", "token_mode": "CRUISE", "queue_mode": "PAYDOWN", "presence": "BENCH",
-       "seats": {"BENCH": 3, "RELENTLESS": 1}, "n_total": 4, "running": {"BENCH": 2, "RELENTLESS": 1},
-       "overage": {"owed_h": 3.2, "paying": True, "cut": 1, "plan": "owes 3.2 helper-h: N lowered by 1 (wanted 1) for about 3 h, due within 20 h"},
-       "why": "system 40% left, 1.99 d to reset -> P 1.40; fits 4.1",
-       "accounts": [{"name": "system", "pct_left": 40.0, "hours_to_reset": 48.0, "source": "MEASURED", "burn": True},
-                    {"name": "steven", "pct_left": 31.0, "hours_to_reset": 50.0, "source": "ESTIMATE", "burn": False,
-                     "rule": "steven: off-limits until 2026-10-28T15:00:00-07:00"},
-                    {"name": "lukas", "pct_left": None, "hours_to_reset": None, "source": "UNMEASURED", "burn": False}]}
-pg = S.render([dict(live, pacing=pac)], NOW)
-tile = pg[pg.index("<h2>Pacing</h2>"):pg.index("<h2>Builder slots</h2>")]
-check("pacing tile: mode and N per seat", "CRUISE" in tile and "BENCH <b>3</b>" in tile and "RELENTLESS <b>1</b>" in tile
-      and "2 running" in tile, tile[:600])
-check("pacing tile: the overage owed and the payback plan", "overage owed" in tile and "3.2 helper-h" in tile
-      and "lowered by 1" in tile, tile[:900])
-check("pacing tile: no debt says so", "overage owed: <b>0 helper-h</b>" in S.pacing_tile(dict(pac, overage={"owed_h": 0}), NOW))
-check("pacing tile: why the allocator chose it", "fits 4.1" in tile, tile[:600])
-check("pacing tile: each account's % left against the share of the week left before its reset",
-      "system" in tile and "40% left" in tile and "29% of the week" in tile and "31% left" in tile, tile[:900])
-check("pacing tile: the burn account is marked and a lent account shows its rule", "seats burn this" in tile
-      and "off-limits" in tile, tile[:900])
-check("pacing tile: an unmeasured account is hollow, never 0%", "lukas" in tile and "UNMEASURED" in tile
-      and "lukas 0%" not in tile, tile[:900])
-check("pacing tile: the override flag is named", "--owner-said" in tile, tile[-400:])
-check("panel: unrecorded hours in a state band are hollow", "class='hollow'" in page)
-old = S.render([dict(live, t=NOW - 50 * 60)], NOW)
-check("panel: a 50-min-old record greys the whole panel and says STALE", "class=stale" in old and "STALE" in old)
-check("panel: no series at all says so", "No stream record yet" in S.render([], NOW))
 
 # ---- write, tail-read, backfill order, routes
 sfile = Path(os.environ["RM_STREAMS_DIR"]) / "series.jsonl"
@@ -253,16 +200,6 @@ check("pacing(): carries the accounts with % left and hours to reset", any(a["na
       and a["pct_left"] == 40.0 for a in pc_.get("accounts") or []), pc_.get("accounts"))
 check("collect() records pacing every 15 min", "pacing" in S.collect.__code__.co_names or "pacing(" in
       Path(S.__file__).read_text().split("def collect")[1].split("def series_path")[0])
-
-os.environ["RM_STREAMS_DIR"] = str(Path(tempfile.mkdtemp()))
-S.DIR = Path(os.environ["RM_STREAMS_DIR"])
-S.append(dict(live, t=time.time() - 60, at=S.iso(time.time() - 60)))
-import brief  # noqa: E402
-code, ctype, body = brief.page("/streams", lambda: {}, Path(tempfile.mkdtemp()))
-check("brief.page serves /streams (loopback and tailnet share it)", code == 200 and b"Where you're needed" in body, code)
-code, ctype, body = brief.page("/streams.json", lambda: {}, Path(tempfile.mkdtemp()))
-check("/streams.json gives the latest record and the stale flag", code == 200 and json.loads(body)["stale"] is False)
-check("the brief carries the streams line", "streams</a>" in brief.streams_line(time.time()))
 
 print("\nselftest_streams: %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
 sys.exit(1 if FAILS else 0)

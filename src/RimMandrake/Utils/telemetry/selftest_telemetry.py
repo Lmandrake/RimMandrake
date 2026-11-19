@@ -1076,23 +1076,6 @@ def main(argv) -> int:
         check("[exc-dedupe] retention still prunes dedupe rows past the horizon",
               not con.execute("SELECT 1 FROM exc_seen WHERE src_ref='tps:dedupe:2:hgone'").fetchone())
 
-        # ---------------------------------------------------------------- RimPulse integration
-        sys.path.insert(0, os.path.join(os.path.dirname(HERE), "pulse"))
-        import pulse_core as pc
-        t = {"at": now, "grafana": "http://localhost:3000", "alerts": [
-            {"id": "disk:C", "level": "red", "text": "C: only 10 GB free", "since": now - 5},
-            {"id": "stall:1", "level": "amber", "text": "game froze 41 s", "since": now - 5}], "tier_armed": True}
-        rows = pc.classify_telemetry(t, {}, now)
-        check("pulse: red alert -> red row, amber -> warn row, armed tier -> run row",
-              [r["kind"] for r in rows] == ["red", "warn", "run"], [r["kind"] for r in rows])
-        acked = pc.classify_telemetry(t, {rows[1]["incident"]: {"at": now}}, now)
-        check("pulse: an ack holds for that incident", acked[1]["acked"])
-        stale = pc.classify_telemetry({**t, "at": now - 900}, {}, now)
-        check("pulse: stale alerts file -> one 'telemetry blind' row", len(stale) == 1 and "blind" in stale[0]["text"])
-        check("pulse: absent file -> no row (not installed is not an alarm)", pc.classify_telemetry(None, {}, now) == [])
-        strip = pc.build_strip(rows)
-        check("pulse: warn pill names telemetry, not 'test kill'", any(p["kind"] == "warn" and "froze" in p["text"] for p in strip), strip)
-
         # ---------------------------------------------------------------- wsl exporter tail
         import wsl_export
         f = os.path.join(tmp, "mw.jsonl")

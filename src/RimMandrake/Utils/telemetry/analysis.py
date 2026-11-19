@@ -4,9 +4,9 @@ Owner, 2026-10-11: coarse "watch out, something's wrong" alarms only (extremely 
 disk filling); version comparison is an on-demand tool (`telemetry around`), never a per-deploy
 ceremony. "Minimal is good, add functionality as needed by debugging."
 
-Alerts are not delivered here: they are written to <state>/alerts.json, which RimPulse reads
-(pulse_core.classify_telemetry) and turns into red/amber rows with its own ack, toast and digest
-machinery. RimPulse stays the one attention surface; Grafana alerting stays off (design §5.6).
+Alerts are not delivered here: they are written to <state>/alerts.json, which `telemetry` (cli.py) shows. RimPulse
+read it into red/amber rows until its reader went with the dashboard (2026-11-18). Grafana alerting stays off
+(design §5.6).
 
 Every detector prints its window counts and answers UNMEASURED when it cannot see, never "clean".
 """

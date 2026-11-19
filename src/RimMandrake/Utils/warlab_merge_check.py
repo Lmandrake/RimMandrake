@@ -13,7 +13,7 @@ OWNER, GONE = "ANCIENT_WAR_LAB_1", "ASSAILANT_DUNGEON_BUILD_1"
 # Records of what was true then; a dated log line or audit keeps the name it had.
 HISTORY = ("design/RimMandrake/mod_audit/", "design/RimMandrake/gpt_reviews/", "design/RimMandrake/world_remake_2026-10-19/",
            "infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md", "infrastructure/state/items/ASSAILANT_WARLAB_BUILD_MERGE.md",
-           "src/RimMandrake/Utils/warlab_merge_check.py", "src/RimMandrake/Utils/pulse/time_ledger_replay/",
+           "src/RimMandrake/Utils/warlab_merge_check.py",
            "conversations/", "infrastructure/state/handoffs/", "infrastructure/state/reconcile_manifest_2026-10-07.md",
            f"infrastructure/state/items/{OWNER}.md")  # the last only names where its folded build came from
 RECORD = ROOT / "infrastructure/state/delegated/2026-11-01/warlab_merge_gate_order.json"

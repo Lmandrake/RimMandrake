@@ -457,19 +457,6 @@ def staged_win(record, repo_path):
     return win(os.path.join(record["stage"], os.path.relpath(os.path.realpath(repo_path), ROOT)))
 
 
-def pulse_report(csproj, rc, stage=None):
-    """One build attempt for RimPulse's job history (RIMPULSE_FAILURES_BUILD_ONLY_THE_STUCK): a failure followed
-    by a pass is history, never an alarm. Never fails the build."""
-    try:
-        sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "pulse"))
-        from failreport import report
-        report("build:" + os.path.splitext(os.path.basename(csproj))[0], rc == 0,
-               cause=None if rc == 0 else "winbuild exit %d (see the build output)" % rc,
-               link=stage if rc and stage else None)
-    except Exception:  # noqa: BLE001
-        pass
-
-
 def _ce():
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import close_evidence
@@ -536,13 +523,11 @@ def main(argv=None):
         with _flock("inplace-%s" % hashlib.sha1(os.path.realpath(ROOT).encode()).hexdigest()[:10]):
             start = _ce_snapshot()
             rc = run_dotnet(win(csproj), os.path.dirname(csproj), a.configuration, extra)
-        pulse_report(csproj, rc)
         evidence_report(csproj, rc, a.configuration, start=start)
         return rc
 
     rc, rec = stage_build(csproj, a.configuration, extra, dry_run=a.dry_run)
     if not a.dry_run:
-        pulse_report(csproj, rc, rec.get("stage"))
         evidence_report(csproj, rc, a.configuration, rec)
     if rc or a.dry_run:
         return rc

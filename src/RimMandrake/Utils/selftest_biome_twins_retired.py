@@ -89,7 +89,7 @@ def give(names):
 
 def walk(exts):
     for dp, dns, fns in os.walk(SRC):
-        dns[:] = [d for d in dns if d not in ("bin", "obj", "__pycache__", "time_ledger_replay", "fixtures")]
+        dns[:] = [d for d in dns if d not in ("bin", "obj", "__pycache__", "fixtures")]
         for fn in fns:
             if fn.endswith(exts):
                 yield os.path.join(dp, fn)

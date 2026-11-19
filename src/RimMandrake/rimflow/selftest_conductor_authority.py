@@ -81,7 +81,6 @@ EXEMPT = {
     "src/RimMandrake/rimflow/red_dispatch.py": "builder_start only excludes OWNER start events from a builder count; it grants nothing",
     "src/RimMandrake/Utils/art/facing_scale_lint.py": "--owner-said is optional; without it the install runs under a "
                                                       "script reason, nothing is refused",
-    "src/RimMandrake/Utils/pulse/brief.py": "--why is accepted in its place, so no Conductor instruction is refused",
     "src/RimMandrake/Utils/art/sheet_to_artifact.py": "the demand is about a question's wording, not an authority",
     "src/RimMandrake/Utils/modcheck/l1_donor_off_round.py": "--owner-present states he is physically there for a flyer "
                                                             "test (never without him); a fact, not an authority",
@@ -265,7 +264,6 @@ OWNER_ONLY = {
     "src/RimMandrake/Utils/mod_completion.py": "reads ledger history for evidence, authorizes nothing",
     "src/RimMandrake/Utils/owner_queue.py": "reads his notes, authorizes nothing",
     "src/RimMandrake/Utils/pulse/pulse_core.py": "display of whose event it was, authorizes nothing",
-    "src/RimMandrake/Utils/pulse/mission_page.py": "display of what waits on him, authorizes nothing",
     "src/RimMandrake/Utils/artpipe/fill_queue.py": "verifies a recorded card ruling of his (evidence), authorizes nothing new",
     "src/RimMandrake/Utils/rimflow_metrics.py": "counts provenance, authorizes nothing",
     "src/RimMandrake/Utils/agent_improve.py": "reads his words from the ledger, authorizes nothing",

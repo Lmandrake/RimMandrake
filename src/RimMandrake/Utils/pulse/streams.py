@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""streams.py — the Level 1 stream collector and the RimPulse Streams panel.
+"""streams.py — the Level 1 stream collector (its RimPulse Streams panel went 2026-11-18 with the dashboard).
 
 Design: design/RimMandrake/work_allocation_framework_2026-10-26.md §3 (measures), §4.1 (Level 1), §5 (when the
 owner is the bottleneck), §7 (the panel). Items STREAM_METRICS_UNIFY_ONE_SERIES, MODCHECK_METRICS_RETIRE_INTO_HOURLY,
@@ -22,7 +22,6 @@ from __future__ import annotations
 import argparse
 import datetime
 import glob
-import html
 import json
 import os
 import re
@@ -47,7 +46,7 @@ DIR = Path(os.environ.get("RM_STREAMS_DIR", "/mnt/d/ClaudeWork/rimmandrake/strea
 BENCH = Path(os.environ.get("RM_STREAMS_BENCH", "/home/mandrake/rm/bench"))   # the data clone (the deploy is sparse)
 NIGHTLY = BENCH / "Transient" / "selftests_nightly.last"
 ART_OUT = BENCH / "Transient" / "biome_ffar"
-STALE_S = 45 * 60          # §7: no Level 1 record for 45 min greys the panel
+
 STEWARD_STALE_S = 5 * 60   # §6.1: steward.json older than this is STALE_HEARTBEAT, so G1 cannot be read from it
 DAY = 86400.0
 HOUR = 3600.0
@@ -178,7 +177,6 @@ def asks_now(events, now):
         (inp if a["class"] in ("hands", "walk") else rem).append(row)
     key = lambda r: -(r["age_d"] or 0)  # noqa: E731
     return sorted(rem, key=key), sorted(inp, key=key)
-
 
 # ---------------------------------------------------------------------------------------------- offline (O)
 _TEST_LINE = re.compile(r"^(FAIL|CRASH|UNMEASURED)\s+[\d.]+s\s+(\S+)")
@@ -476,7 +474,6 @@ def budget(now):
     worst = max(rows, key=lambda r: r["pct"])
     return M(worst["pct"], TM.epoch(worst["asof"]), accounts=rows, unit="% of the week used (highest account)")
 
-
 # ---------------------------------------------------------------------------------------------- badges + needs
 STREAMS = (   # key, title, lead measure, how the lead reads, good band (lo, hi) or None
     ("art", "Art", "A1", "rows awaiting your pick", (0, 30)),
@@ -486,9 +483,7 @@ STREAMS = (   # key, title, lead measure, how the lead reads, good band (lo, hi)
     ("live", "Live validation (SteveDesktop)", "G2", "% busy, 2 h", (70, 100)),
     ("walk", "Your live walk", "W1", "walks owed", None),
 )
-STREAM_MEASURES = {"art": ("A1", "A2", "A3", "A4", "A5"), "design": ("D1", "D2", "D3", "D4"),
-                   "dev": ("V0", "P1", "P2", "P3", "P4"), "offline": ("O1", "O2", "O3", "O4"),
-                   "live": ("G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9"), "walk": ("W1", "W2", "W3", "W4")}
+
 NAMES = {"A1": "Pick queue", "A2": "Generation rate", "A3": "Your ruling rate", "A4": "Override rate", "A5": "Purge share",
          "D1": "Waiting on you", "D2": "Answer latency", "D3": "Design in flight", "D4": "Blocker fan-in",
          "V0": "Built, not verified", "P1": "Real throughput", "P2": "Stale work in progress", "P3": "Clarification rate",
@@ -738,369 +733,9 @@ def backfill(days=7, step_h=1.0, path=None, events=None, src=None, now=None):
     return n
 
 
-# ---------------------------------------------------------------------------------------------- the panel (§7)
-# The panel draws what the records say; it computes no measure. Its only arithmetic is bucketing to hours.
-HOURS = 168
-ALARM = {"A1": 100, "D1": 10}
-STEVE_COLOR = {"RUNNING": "var(--mustard)", "BUSY": "var(--mustard)", "IDLE": "#4a4036", "IDLE_WAITING": "#6d5a2e",
-               "IDLE_EMPTY": "#4a4036", "EXHAUSTED": "#4a4036", "PAUSED": "var(--dim)", "DOWN": "var(--red)",
-               # §6.1 fault states: the unowned clock runs, so they draw red
-               "BRAKED": "var(--red)", "QUARANTINE": "var(--red)", "STALE_HEARTBEAT": "var(--red)"}
-ARCH_COLOR = {"DRIVING": "var(--mustard)", "BATCH": "var(--lk)", "UP": "#4a4036", "DOWN": "var(--red)"}
-BADGE_CLASS = {"agents": "ag", "steward": "sw", "YOU (remote)": "you", "YOU (in person)": "you",
-               "build the instrument": "bi"}
-
-
-def hourly(series, now, hours=HOURS):
-    """The last record of each hour over the last `hours` hours: [record or None] oldest first."""
-    top = int(now // HOUR)
-    slots = [None] * hours
-    for r in series:
-        i = hours - 1 - (top - int(r["t"] // HOUR))
-        if 0 <= i < hours and (slots[i] is None or r["t"] >= slots[i]["t"]):
-            slots[i] = r
-    return slots
-
-
-def latest_live(series):
-    real = [r for r in series if not r.get("backfill")]
-    return real[-1] if real else None
-
-
-def stale(series, now):
-    r = latest_live(series)
-    return r is None or now - r["t"] > STALE_S
-
-
-def spark(slots, key, band, w=336, h=44):
-    """Inline SVG: the value per hour as a line, broken where the hour is UNMEASURED (hollow ticks on the floor)
-    or unrecorded (nothing); the good band shaded; the alarm line dashed."""
-    vals = [((r or {}).get("measures") or {}).get(key) for r in slots]
-    nums = [m["v"] for m in vals if m and m.get("m") == "MEASURED" and isinstance(m.get("v"), (int, float))]
-    hi = max(nums + [band[1] if band else 0, ALARM.get(key, 0), 1])
-    hi = 100 if band == (70, 100) else hi * 1.08
-    n = len(slots)
-    X = lambda i: round(i * w / max(n - 1, 1), 1)  # noqa: E731
-    Y = lambda v: round(h - 3 - (h - 6) * (v / hi), 1)  # noqa: E731
-    parts = [f"<svg class='sp' viewBox='0 0 {w} {h}' preserveAspectRatio='none' role='img'>"]
-    if band:
-        y1, y0 = Y(band[1]), Y(band[0])
-        parts.append(f"<rect x='0' y='{min(y1, y0) - 1}' width='{w}' height='{max(abs(y0 - y1), 2)}' class='band'/>")
-    if key in ALARM:
-        parts.append(f"<line x1='0' x2='{w}' y1='{Y(ALARM[key])}' y2='{Y(ALARM[key])}' class='alarm'/>")
-    for d in range(1, 7):   # day ticks
-        parts.append(f"<line x1='{X(n - 1 - 24 * d)}' x2='{X(n - 1 - 24 * d)}' y1='0' y2='{h}' class='tick'/>")
-    run, last = [], None
-    for i, m in enumerate(vals):
-        if m and m.get("m") == "MEASURED" and isinstance(m.get("v"), (int, float)):
-            run.append(f"{X(i)},{Y(m['v'])}")
-            last = (X(i), Y(m["v"]))
-            continue
-        if m and m.get("m") == "UNMEASURED":
-            parts.append(f"<rect x='{X(i) - 0.6}' y='{h - 4}' width='1.6' height='3' class='hollow'/>")
-        if run:
-            parts.append(f"<polyline points='{' '.join(run)}' class='ln'/>" if len(run) > 1 else
-                         f"<circle cx='{run[0].split(',')[0]}' cy='{run[0].split(',')[1]}' r='1.6' class='dot'/>")
-            run = []
-    if run:
-        parts.append(f"<polyline points='{' '.join(run)}' class='ln'/>" if len(run) > 1 else "")
-    if last:
-        parts.append(f"<circle cx='{last[0]}' cy='{last[1]}' r='2.4' class='dot'/>")
-    parts.append("</svg>")
-    return "".join(parts)
-
-
-def state_band(slots, part, colors, w=336, h=12):
-    n = len(slots)
-    bw = w / n
-    out = [f"<svg class='bd' viewBox='0 0 {w} {h}' preserveAspectRatio='none'>"]
-    for i, r in enumerate(slots):
-        st = ((r or {}).get(part) or {}).get("state")
-        x = round(i * bw, 2)
-        if st in colors:
-            out.append(f"<rect x='{x}' y='0' width='{round(bw + .2, 2)}' height='{h}' fill='{colors[st]}'><title>"
-                       f"{html.escape(str(st))} {html.escape(str((r or {}).get('at')))}</title></rect>")
-        else:   # no record, or a state nobody can read for that hour: hollow, never a colour
-            out.append(f"<rect x='{x + .3}' y='{h - 2}' width='{round(max(bw - .6, .4), 2)}' height='1.2' class='hollow'/>")
-    for d in range(1, 7):
-        out.append(f"<line x1='{round(w - 24 * d * bw, 1)}' x2='{round(w - 24 * d * bw, 1)}' y1='0' y2='{h}' class='tick'/>")
-    out.append("</svg>")
-    return "".join(out)
-
-
-def _fmt(v):
-    if isinstance(v, float):
-        return f"{v:.1f}".rstrip("0").rstrip(".") if abs(v) < 1000 else f"{v:,.0f}"
-    return f"{v:,}" if isinstance(v, int) else html.escape(str(v))
-
-
-def _asof(m, now):
-    a = TM.epoch(m.get("asof")) if m and m.get("asof") else None
-    if a is None:
-        return ""
-    s = now - a
-    ago = f"{int(s // 60)} min" if s < 5400 else (f"{s / 3600:.0f} h" if s < 2 * DAY else f"{s / DAY:.0f} d")
-    return f"AS OF {datetime.datetime.fromtimestamp(a, MX._tz()).strftime('%a %H:%M')} ({ago} ago)"
-
-
-def cell(key, m, now, lead=False):
-    e = html.escape
-    name = NAMES.get(key, key)
-    if not m or m.get("m") != "MEASURED" or m.get("v") is None:
-        why = (m or {}).get("why") or "no record"
-        return (f"<div class='c un{' lead' if lead else ''}' title='{e(why)}'><span class='k'>{key}</span> {e(name)}"
-                f"<span class='v'>UNMEASURED</span><span class='why'>{e(why)}</span></div>")
-    x = m.get("x") or {}
-    return (f"<div class='c{' lead' if lead else ''}'><span class='k'>{key}</span> {e(name)}<span class='v'>{_fmt(m['v'])}"
-            f"<small> {e(str(x.get('unit', '')))}</small></span><span class='why'>{_asof(m, now)}</span></div>")
-
-
-def _items(rows):
-    e = html.escape
-    out = []
-    for r in rows or []:
-        age = f" <span class='st'>{r['age_d']:.0f} d</span>" if r.get("age_d") is not None else ""
-        lab = e(_short(r.get("label") or r["id"]))
-        out.append(f"<li><a href='{e(r['link'])}'>{lab}</a>{age}</li>" if r.get("link") else f"<li>{lab}{age}</li>")
-    return "<ul class='its'>" + "".join(out) + "</ul>" if out else ""
-
-
 def _short(s, n=96):
     s = " ".join(str(s).split())
     return s if len(s) <= n else s[:n - 1].rstrip() + "…"
-
-
-CSS2 = """
-main.wide{max-width:min(1100px,100vw)}
-.stale main>*:not(.hb){opacity:.42;filter:grayscale(1)}
-.brief{font-size:16px;margin:10px 0 4px}.brief b{color:var(--mustard)}
-.strip{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.strip a,.strip span{flex:1 1 96px;background:#241e19;border-radius:8px;
- padding:8px 10px;text-decoration:none;color:var(--ink)}.strip b{display:block;font-size:24px}.strip small{color:var(--dim);font-size:12px}
-.need{display:grid;grid-template-columns:1fr;gap:10px}@media(min-width:760px){.need{grid-template-columns:1fr 1fr}
- .rows{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}}
-.need section{background:#211b17;border-radius:8px;padding:8px 12px}.need h3{color:var(--mustard)}
-.sig{padding:6px 0;border-bottom:1px solid #2c251f}.sig .r{color:var(--faint);font-size:12px}
-.its li{padding:3px 0;border:0;font-size:13.5px}
-.row{padding:12px 0;border-bottom:1px solid #2c251f}.row h3{display:flex;justify-content:space-between;align-items:center;margin:0 0 4px;
- color:var(--ink);font-size:14.5px}
-.bdg{font-size:11.5px;border-radius:10px;padding:1px 8px;white-space:nowrap;font-weight:600}.bdg.ag{background:#2f2822;color:var(--dim)}
-.bdg.sw{background:#23323a;color:#bcd9e6}.bdg.you{background:var(--mustard);color:#191512}.bdg.bi{border:1px dashed var(--faint);color:var(--faint)}
-.sp{width:100%;height:44px;display:block;background:#1f1a16;border-radius:4px}.band{fill:#3d4a2c;opacity:.75}
-.ln{fill:none;stroke:var(--mustard);stroke-width:1.6;vector-effect:non-scaling-stroke}.dot{fill:var(--mustard)}
-.alarm{stroke:var(--red);stroke-dasharray:3 3;stroke-width:1;vector-effect:non-scaling-stroke}
-.tick{stroke:#2e2721;stroke-width:1;vector-effect:non-scaling-stroke}.hollow{fill:none;stroke:var(--faint);stroke-width:.8;vector-effect:non-scaling-stroke}
-.ax{display:flex;justify-content:space-between;color:var(--faint);font-size:11px}
-.c{font-size:13px;padding:3px 0;display:grid;grid-template-columns:auto 1fr;column-gap:6px}.c .k{color:var(--faint);font-size:11px;padding-top:2px}
-.c .v{grid-column:2;font-weight:600}.c .v small{color:var(--dim);font-weight:400}.c .why{grid-column:2;color:var(--faint);font-size:11.5px}
-.c.lead .v{font-size:22px}.c.un .v{font-weight:600;color:var(--faint);border:1px dashed var(--faint);border-radius:4px;padding:0 5px;
- justify-self:start;font-size:12px}.c.lead.un .v{font-size:13px}
-details summary{cursor:pointer;color:var(--dim);font-size:12.5px;margin-top:4px}
-.bd{width:100%;height:14px;display:block;background:#1f1a16;border-radius:3px}.key{font-size:11.5px;color:var(--dim)}
-.key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 3px 0 8px;vertical-align:-1px}
-.hollowbox{border:1px dashed var(--faint);border-radius:6px;padding:10px;color:var(--faint);font-size:13px}
-"""
-
-
-def render(series, now, base=""):
-    """The Streams page (§7). `series`: read_series() records, oldest first."""
-    from brief import CSS
-    e = html.escape
-    slots = hourly(series, now)
-    r = latest_live(series)
-    is_stale = stale(series, now)
-    head = (f"<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,"
-            f"initial-scale=1'><meta http-equiv='refresh' content='300'><title>RimPulse streams</title><style>{CSS}{CSS2}"
-            f"</style></head><body{' class=stale' if is_stale else ''}><main class='wide'>")
-    out = [head]
-    if r is None:
-        out.append("<div class='hb red'>No stream record yet: the rm-pulse-streams timer has not run "
-                   "(<code>systemctl --user status rm-pulse-streams.timer</code>).</div></main></body></html>")
-        return "".join(out)
-    age = (now - r["t"]) / 60
-    out.append(f"<div class='hb{' red' if is_stale else ''}'>Streams · AS OF {e(_hm(r['t']))} "
-               f"({age:.0f} min ago){' · STALE: no record for 45 min, every value below is old' if is_stale else ''}"
-               f" · <a href='{base}/brief'>brief</a></div>")
-    out.append(f"<div class='brief'>{e(r.get('brief') or '')}</div>")
-    ms = r.get("measures") or {}
-    nd = r.get("needed") or {}
-    a1, d1 = ms.get("A1") or {}, ms.get("D1") or {}
-    # your queue strip
-    def tile(m, label, sub):
-        if m.get("m") != "MEASURED":
-            return f"<span title='{e(m.get('why') or '')}'><b class='un'>?</b><small>{label}: UNMEASURED</small></span>"
-        return f"<a href='#needed'><b>{_fmt(m['v'])}</b><small>{label}{sub}</small></a>"
-    ax = a1.get("x") or {}
-    dx = d1.get("x") or {}
-    asks = nd.get("asks") or {}
-    out.append("<div class='strip'>" + tile(a1, "art rows to pick", f" · oldest sheet {_fmt(ax.get('oldest_d') or 0)} d")
-               + tile(d1, "waits over 3 d", f" of {_fmt(dx.get('n'))} · oldest {_fmt(dx.get('oldest_d') or 0)} d")
-               + f"<a href='#needed'><b>{_fmt(asks.get('hands', 0))}</b><small>hands-on jobs at home</small></a></div>")
-    # where you're needed
-    out.append("<h2 id='needed'>Where you're needed</h2><div class='need'>")
-    for title, key in (("Remote: decisions", "remote"), ("In person", "in_person")):
-        sigs = nd.get(key) or []
-        body = "".join(f"<div class='sig'><b>{e(s['signal'])}</b>: {e(s['text'])}<div class='r'>rule: {e(s['rule'])}</div>"
-                       f"{_items(s.get('items'))}</div>" for s in sigs)
-        if key == "in_person" and nd.get("walk_note"):
-            body += f"<div class='sig r'>{e(nd['walk_note'])}</div>"
-        out.append(f"<section><h3>{title}</h3>{body or '<div class=none>nothing is waiting on you here</div>'}</section>")
-    out.append("</div>")
-    # six stream rows
-    out.append("<h2>Streams, last 7 days</h2><div class='rows'>")
-    badges = r.get("badges") or {}
-    for key, title, lead, _desc, band in STREAMS:
-        b = badges.get(key, "agents")
-        out.append(f"<div class='row'><h3>{e(title)}<span class='bdg {BADGE_CLASS.get(b, 'ag')}'>{e(b)}</span></h3>")
-        out.append(cell(lead, ms.get(lead), now, lead=True))
-        if key == "live":
-            out.append(cell("G1", ms.get("G1"), now))
-        out.append(spark(slots, lead, band))
-        out.append(f"<div class='ax'><span>7 d ago</span>{_delta(slots, lead)}<span>{'band ' + str(band[0]) + '-' + str(band[1]) if band else 'no target band'}"
-                   f"{' · alarm ' + str(ALARM[lead]) if lead in ALARM else ''}{' · ticks = unmeasured hours' if _has_un(slots, lead) else ''}"
-                   f"</span><span>now</span></div>")
-        rest = [k for k in STREAM_MEASURES[key] if k != lead and not (key == "live" and k == "G1")]
-        nun = sum(1 for k in rest if (ms.get(k) or {}).get("m") != "MEASURED")
-        out.append(f"<details><summary>{len(rest)} more measures ({nun} unmeasured)</summary>"
-                   + "".join(cell(k, ms.get(k), now) for k in rest) + "</details></div>")
-    out.append("</div>")
-    # machines
-    out.append("<h2>SteveDesktop, by hour</h2>" + state_band(slots, "steve", STEVE_COLOR)
-               + "<div class='ax'><span>7 d ago</span><span>now</span></div>"
-               + _key(dict(STEVE_COLOR, FAULT=STEVE_COLOR["BRAKED"]), ("RUNNING", "IDLE_WAITING", "IDLE", "PAUSED", "FAULT"))
-               + f"<div class='m'>now: <b>{e(str((r.get('steve') or {}).get('state')))}</b> · {e(str((r.get('steve') or {}).get('why') or ''))}"
-               + ("" if (r.get("steve") or {}).get("steward") else " · steward not built: unowned idle cannot be coloured yet")
-               + "</div>")
-    out.append("<h2>Archmagi, by hour</h2>" + state_band(slots, "archmagi", ARCH_COLOR)
-               + "<div class='ax'><span>7 d ago</span><span>now</span></div>"
-               + _key(ARCH_COLOR, ("DRIVING", "BATCH", "UP", "DOWN"))
-               + f"<div class='m'>now: <b>{e(str((r.get('archmagi') or {}).get('state')))}</b> · "
-                 f"{e(str((r.get('archmagi') or {}).get('why') or ''))} · hollow = not recorded (game up/down is not "
-                 "rebuilt for hours before the collector ran)</div>")
-    out.append(pacing_tile(r.get("pacing"), now))
-    out.append("<h2>Builder slots</h2>")
-    if not any(x.get("slots") for x in slots if x):
-        out.append("<div class='hollowbox'>No per-stream split recorded: the allocator sets helpers per seat (Pacing, "
-                   "above); splitting them across the six streams is not built. Drawn hollow, not as zero slots.</div>")
-    else:
-        out.append(slots_chart(slots))
-    bm = ms.get("B") or {}
-    if bm.get("m") == "MEASURED":
-        acc = " · ".join(f"{e(a['name'])} {a['pct']:.0f}% used ({_fmt(a['per_day_left'])}%/day left until reset)"
-                         if a.get("per_day_left") is not None else f"{e(a['name'])} {a['pct']:.0f}%"
-                         for a in (bm.get("x") or {}).get("accounts") or [])
-        out.append(f"<h2>Token budget</h2><div class='m'>{acc} · {_asof(bm, now)}</div>")
-    else:
-        out.append(f"<h2>Token budget</h2>{cell('B', bm, now)}")
-    mc = r.get("modcheck") or {}
-    if mc:
-        aw = mc.get("all_work") or {}
-        out.append(f"<div class='foot'>modcheck today ({e(str(mc.get('day')))}): {_fmt(aw.get('executed_min') or 0)} live min "
-                   f"classified, waste {_fmt(round(100 * (aw.get('waste') or 0), 1))}% · alarms "
-                   f"{e(', '.join(map(str, mc.get('alarms') or [])) or 'none')}</div>")
-    out.append(f"<div class='foot'>One record every 15 min from streams.py (design/RimMandrake/work_allocation_framework_2026-10-26.md §3, §7). "
-               f"UNMEASURED never draws as 0. {sum(1 for x in series if x.get('backfill'))} hours before the collector started are "
-               "rebuilt from the ledger and testq (marked backfill); A1, O1, O3 and the budget hold only the present, so "
-               "they start when the collector does.</div></main></body></html>")
-    return "".join(out)
-
-
-def pacing_tile(pc_, now):
-    """Pacing: the allocator's mode and N per seat, why, and each account's % left against the share of its week left."""
-    e = html.escape
-    out = ["<h2>Pacing</h2>"]
-    if not isinstance(pc_, dict) or pc_.get("m") == "UNMEASURED" or not pc_.get("seats"):
-        why = (pc_ or {}).get("why") if isinstance(pc_, dict) else "this record predates the allocator wiring"
-        return out[0] + f"<div class='hollowbox'>No pacing recorded: {e(str(why))}. Drawn hollow, not as zero helpers.</div>"
-    run = pc_.get("running") or {}
-    seats = " · ".join(f"{e(k)} <b>{v}</b>" + (f" ({run[k]} running)" if k in run else "") for k, v in pc_["seats"].items())
-    out.append(f"<div class='m'><b>{e(pc_.get('mode') or '')}</b> {e(pc_.get('queue_mode') or '')} "
-               f"{e(pc_.get('presence') or '')} · {seats} · total {pc_.get('n_total')} · as of {e(str(pc_.get('at')))}</div>")
-    out.append(f"<div class='m'>why: {e(pc_.get('why') or '')}</div>")
-    ov = pc_.get("overage")
-    if isinstance(ov, dict):
-        owed = float(ov.get("owed_h") or 0)
-        if owed > 0:
-            out.append(f"<div class='m'>overage owed: <b>{owed:.1f} helper-h</b> · payback: {e(str(ov.get('plan') or ''))}</div>")
-        else:
-            out.append("<div class='m'>overage owed: <b>0 helper-h</b> · no payback due</div>")
-    rows = []
-    for a in pc_.get("accounts") or []:
-        tag = " · seats burn this" if a.get("burn") else ""
-        rule = f" · {e(a['rule'])}" if a.get("rule") else ""
-        if a.get("pct_left") is None or a.get("hours_to_reset") is None or a.get("source") not in ("MEASURED", "ESTIMATE"):
-            rows.append(f"<div class='m'>{e(a['name'])}: <b class='un'>?</b> {e(str(a.get('source') or 'UNMEASURED'))}{tag}{rule}</div>")
-            continue
-        wk = max(0.0, min(100.0, 100 * a["hours_to_reset"] / 168))
-        left = max(0.0, min(100.0, float(a["pct_left"])))
-        col = "#8fae6b" if left >= wk else ("#e0aa3e" if left >= 0.5 * wk else "#c9524a")
-        bar = (f"<svg class='sp' viewBox='0 0 200 14' preserveAspectRatio='none' style='height:14px'>"
-               f"<rect x='0' y='1' width='{2 * left:.1f}' height='8' fill='{col}'/>"
-               f"<rect x='{2 * wk:.1f}' y='0' width='1.5' height='14' fill='var(--faint)'/></svg>")
-        est = " (ESTIMATE)" if a.get("source") == "ESTIMATE" else ""
-        rows.append(f"<div class='m'>{e(a['name'])}: {left:.0f}% left · {a['hours_to_reset']:.0f} h to reset "
-                    f"({wk:.0f}% of the week){est}{tag}{rule}{bar}</div>")
-    out.append("".join(rows))
-    out.append("<div class='foot'>Bar = % of the week left; tick = share of the week's time left before that account resets "
-               "(bar left of the tick: burning faster than the week). Re-checked every 15 min by slot_allocator.py "
-               "(src/RimMandrake/Utils/slot_rules.json); the spawn hook refuses a helper over a seat's N. Only his word "
-               "overrides: <code>slot_allocator.py set --seat S --n N --owner-said \"...\"</code>.</div>")
-    return "".join(out)
-
-
-def _delta(slots, key, hours=72):
-    """The change over the last 3 days, from the hourly buckets (a slow series's line looks flat at full scale)."""
-    vals = [(i, ((r or {}).get("measures") or {}).get(key) or {}) for i, r in enumerate(slots)]
-    vals = [(i, m["v"]) for i, m in vals if m.get("m") == "MEASURED" and isinstance(m.get("v"), (int, float))]
-    if len(vals) < 2 or vals[-1][0] - vals[0][0] < hours // 2:
-        return ""
-    then = next((v for i, v in vals if i >= len(slots) - 1 - hours), vals[0][1])
-    d = vals[-1][1] - then
-    return f"<span>{'+' if d > 0 else ''}{_fmt(round(d, 1))} in 3 d</span>"
-
-
-def _has_un(slots, key):
-    return any((((r or {}).get("measures") or {}).get(key) or {}).get("m") == "UNMEASURED" for r in slots)
-
-
-def _key(colors, order):
-    return "<div class='key'>" + "".join(f"<i style='background:{colors[k]}'></i>{k.lower().replace('_', ' ')}" for k in order) + \
-        "<i class='hk' style='border:1px dashed var(--faint)'></i>not recorded</div>"
-
-
-def slots_chart(slots, w=336, h=40):
-    keys = [s[0] for s in STREAMS]
-    cols = dict(zip(keys, ("#e0aa3e", "#c9824a", "#8fae6b", "#6f9fb8", "#b48ad1", "#d0c27a")))
-    n = len(slots)
-    bw = w / n
-    out = [f"<svg class='sp' viewBox='0 0 {w} {h}' preserveAspectRatio='none'>"]
-    for i, r in enumerate(slots):
-        al = (r or {}).get("slots") or {}
-        tot = sum(v for v in al.values() if isinstance(v, (int, float))) or 0
-        y = h
-        for k in keys:
-            v = al.get(k) or 0
-            if v and tot:
-                hh = (h - 2) * v / max(tot, 4)
-                y -= hh
-                out.append(f"<rect x='{round(i * bw, 2)}' y='{round(y, 2)}' width='{round(bw + .2, 2)}' height='{round(hh, 2)}' "
-                           f"fill='{cols[k]}'/>")
-    out.append("</svg>")
-    return "".join(out) + "<div class='key'>" + "".join(f"<i style='background:{cols[k]}'></i>{k}" for k in keys) + "</div>"
-
-
-def _hm(t):
-    return datetime.datetime.fromtimestamp(t, MX._tz()).strftime("%a %H:%M")
-
-
-def page(path, now=None):
-    """/streams and /streams.json, served by brief.page on loopback 8765 and the tailnet listener."""
-    now = now if now is not None else time.time()
-    series = read_series(since=now - (HOURS + 1) * HOUR)
-    if path.endswith(".json"):
-        r = latest_live(series)
-        return 200, "application/json", json.dumps({"latest": r, "stale": stale(series, now), "records_7d": len(series)},
-                                                   default=str).encode()
-    return 200, "text/html; charset=utf-8", render(series, now).encode()
 
 
 # ---------------------------------------------------------------------------------------------- CLI
@@ -1113,8 +748,6 @@ def main(argv=None):
     b = sub.add_parser("backfill")
     b.add_argument("--days", type=float, default=7)
     sub.add_parser("show")
-    rn = sub.add_parser("render", help="write the panel HTML to a file (screenshots, review)")
-    rn.add_argument("out")
     a = ap.parse_args(argv)
     if a.cmd == "collect":
         rec = collect()
@@ -1128,10 +761,6 @@ def main(argv=None):
         return 0
     if a.cmd == "backfill":
         print(f"streams: backfilled {backfill(a.days)} hourly records")
-        return 0
-    if a.cmd == "render":
-        Path(a.out).write_text(page("/streams")[2].decode(), encoding="utf-8")
-        print(a.out)
         return 0
     if a.cmd == "show":
         s = read_series()
@@ -1147,7 +776,6 @@ def main(argv=None):
         return 0
     ap.print_help()
     return 2
-
 
 if __name__ == "__main__":
     sys.exit(main())

@@ -39,7 +39,6 @@ with open(out + "/history.jsonl", "a") as f:
     f.write(json.dumps(rec) + "\n")
 print(json.dumps(rec))
 PY
-st=failed; [ "$rc" = 0 ] && st=ok
 # an account death (usage limit / 429) retries ONCE after the reset, not 24 h later on the timer
 # (ROLE_RUNS_BUILD_RESUME_AFTER_ACCOUNT_LOSS); the retry runs with FINDINGS_JUDGE_RETRY=1, so it schedules none
 if [ "$rc" != 0 ] && [ -z "${FINDINGS_JUDGE_RETRY:-}" ] && \
@@ -56,12 +55,5 @@ if [ "$rc" != 0 ] && [ -z "${FINDINGS_JUDGE_RETRY:-}" ] && \
   src=$?
   echo "{\"at\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\", \"verdict\": \"$verdict\", \"unit\": \"$unit\", \"systemd_run_rc\": $src}" \
     >>"$OUT/retries.jsonl"
-  if [ "$src" = 0 ]; then
-    retry_note="; account death, one retry in ${wait_s}s ($unit)"
-  else       # the fixed name refuses a second retry while one is pending: said, not counted as scheduled
-    retry_note="; account death, retry NOT scheduled (systemd-run rc $src; one already pending?)"
-  fi
 fi
-python3 src/RimMandrake/Utils/pulse/pulse.py report findings_judge:daily "$st" --cause "findings judge exit $rc${retry_note:-}" \
-  --link "$OUT/last.json" >/dev/null 2>&1 || true
 exit "$rc"
