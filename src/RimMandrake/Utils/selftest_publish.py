@@ -959,6 +959,103 @@ def t_two_parks_in_one_second_never_share_a_dir(a, b):
     assert open(os.path.join(p2, ADDED)).read() == "second\n"
 
 
+def _with_env(**kv):
+    old = {k: os.environ.get(k) for k in kv}
+    os.environ.update(kv)
+
+    def undo():
+        for k, v in old.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    return undo
+
+
+def t_a_skipped_door_leaves_its_reason_on_the_landed_commit(a, b):
+    """RIMMANDRAKE_RECORD_DOOR_SKIP_FOUR_LANDINGS_LEFT_NO_TRACE. A skip only printed a line, so which landings skipped
+    the door could not be read afterwards. The reason now rides on the landed commit as a trailer, for both skips."""
+    write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+    undo = _with_env(RM_PUBLISH_SKIP_PIPELINE_CHECKS="selftest: pipeline door known red on base",
+                     RM_PUBLISH_SKIP_TREE_CHECKS="selftest: tree door known red on base")
+    try:
+        sha = P_quiet_publish(a, ["f.txt"], "mine")
+    finally:
+        undo()
+    body = sh(a, "log", "-1", "--format=%B", sha)
+    trailers = sh(a, "log", "-1", "--format=%(trailers:key=Door-skipped,valueonly)", sha)
+    assert sha == sh(a, "rev-parse", "origin/main"), "it did not land"
+    assert "RM_PUBLISH_SKIP_PIPELINE_CHECKS: selftest: pipeline door known red on base" in trailers, body
+    assert "RM_PUBLISH_SKIP_TREE_CHECKS: selftest: tree door known red on base" in trailers, body
+
+
+def t_a_skip_with_no_commit_of_its_own_is_refused(a, b):
+    """The other half: a skip whose landing makes no commit of its own (no paths, or nothing changed in them) has no
+    commit to carry its reason, so it is refused before anything moves."""
+    write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+    sh(a, "add", "f.txt")
+    sh(a, "commit", "-q", "-m", "by hand", "--", "f.txt")
+    tip = sh(a, "rev-parse", "origin/main")
+    undo = _with_env(RM_PUBLISH_SKIP_PIPELINE_CHECKS="selftest: no paths named")
+    try:
+        why = refused(P.publish, a, [], None)
+    finally:
+        undo()
+    assert why and "RM_PUBLISH_SKIP_PIPELINE_CHECKS" in why, why
+    assert sh(a, "rev-parse", "origin/main") == tip, "it landed anyway"
+
+
+def t_both_skip_reasons_survive_a_replace_trailer_config(a, b):
+    """Codex on the fix: with trailer.ifexists=replace in git config, the second Door-skipped trailer replaced the
+    first, so one skip's reason was lost."""
+    sh(a, "config", "trailer.ifexists", "replace")
+    write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+    undo = _with_env(RM_PUBLISH_SKIP_PIPELINE_CHECKS="pipeline why", RM_PUBLISH_SKIP_TREE_CHECKS="tree why")
+    try:
+        sha = P_quiet_publish(a, ["f.txt"], "mine")
+    finally:
+        undo()
+    trailers = sh(a, "log", "-1", "--format=%(trailers:key=Door-skipped,valueonly)", sha)
+    assert "pipeline why" in trailers and "tree why" in trailers, trailers
+
+
+def t_a_skip_never_carries_an_earlier_local_commit_past_the_door(a, b):
+    """Codex on the fix: a skip whose run also lands an earlier local commit could push that commit with no record
+    (e.g. this run's own commit dropped in the replay as already upstream). A skip lands only this run's commit."""
+    write(a, "g.txt", "an earlier commit\n")
+    sh(a, "add", "g.txt")
+    sh(a, "commit", "-q", "-m", "earlier, by hand", "--", "g.txt")
+    write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+    tip = sh(a, "rev-parse", "origin/main")
+    undo = _with_env(RM_PUBLISH_SKIP_PIPELINE_CHECKS="selftest: two commits")
+    try:
+        why = refused(P.publish, a, ["f.txt"], "mine")
+    finally:
+        undo()
+    assert why and "earlier" in why, why
+    assert sh(a, "rev-parse", "origin/main") == tip, "it landed anyway"
+    assert sh(a, "log", "-1", "--format=%s") == "earlier, by hand", "this run's commit was not undone"
+    assert open(os.path.join(a, "f.txt")).read() == LINES.replace("line 4", "LINE 4"), "the file was lost"
+
+
+def t_a_skip_reads_a_fresh_origin_not_a_stale_tracking_ref(a, b):
+    """Codex round 2: the earlier-commit guard read the local origin/main before any fetch. A commit already pushed
+    from here, with the tracking ref stale, read as unpublished and a valid skip landing was refused."""
+    o = sh(a, "rev-parse", "origin/main")
+    write(a, "g.txt", "already pushed\n")
+    sh(a, "add", "g.txt")
+    sh(a, "commit", "-q", "-m", "pushed by plain git", "--", "g.txt")
+    sh(a, "push", "-q", "origin", "HEAD:main")
+    sh(a, "update-ref", "refs/remotes/origin/main", o)          # the tracking ref is stale
+    write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+    undo = _with_env(RM_PUBLISH_SKIP_PIPELINE_CHECKS="selftest: stale ref")
+    try:
+        sha = P_quiet_publish(a, ["f.txt"], "mine")
+    finally:
+        undo()
+    assert sh(a, "log", "-1", "--format=%(trailers:key=Door-skipped,valueonly)", sha), "no trailer"
+
+
 def t_refuses_on_mnt(a, b):
     real = os.path.realpath
     P.os.path.realpath = lambda p: "/mnt/d/Luke/dev/RimMandrake" if p == a else real(p)

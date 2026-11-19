@@ -36,7 +36,9 @@ land.sh -m "subject" <path>...                  # land working-tree bytes of the
   `validation_map_and_rules.md` rule 10). A ledger- or lesson-only publish skips them; a check that times out warns.
   In a sparse clone (`scratch_clone.py`'s default) they run on a throwaway full checkout of HEAD (`git clone --shared`
   in the clone's git dir, about 20 s more), so a sparse clone publishes with no bypass and no un-sparsing.
-  `RM_PUBLISH_SKIP_TREE_CHECKS="<why>"` bypasses them once, out loud; a sparse clone is not a reason.
+  `RM_PUBLISH_SKIP_TREE_CHECKS="<why>"` bypasses them once, out loud; a sparse clone is not a reason. Either skip
+  (this one or `RM_PUBLISH_SKIP_PIPELINE_CHECKS`) writes a `Door-skipped: <VAR>: <why>` trailer on the landed commit
+  (`git log --format='%(trailers:key=Door-skipped)'` finds them), and is refused on a landing with no commit of its own.
 - `land.sh` (`src/RimMandrake/Utils/land.sh`; `/home/mandrake/.seat-tmp/land.sh` is a one-line wrapper) publishes ONE
   commit or explicit paths by plumbing, retries a lost push race, then runs `./sync --no-fetch` itself. `LAND_REPO`
   defaults to the clone the cwd is in. stdout is exactly `PUBLISHED <sha>`; pass it to `rimflow close --sha`.

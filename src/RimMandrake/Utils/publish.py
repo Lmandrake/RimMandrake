@@ -952,17 +952,61 @@ def _changed_since_origin(top):
     return [p for p in (r.stdout or "").splitlines() if p]
 
 
+SKIP_VARS = ("RM_PUBLISH_SKIP_TREE_CHECKS", "RM_PUBLISH_SKIP_PIPELINE_CHECKS")
+SKIP_TRAILER = "Door-skipped"
+
+
+def door_skips():
+    """-> [(variable, reason)] for each door skip set in the environment, the reason on one line."""
+    return [(v, " ".join(os.environ[v].split())) for v in SKIP_VARS if os.environ.get(v, "").strip()]
+
+
+def with_skip_trailers(top, msg, skips):
+    """The message with one `Door-skipped: <VAR>: <why>` trailer per skip, merged into any trailer block it has
+    (RIMMANDRAKE_RECORD_DOOR_SKIP_FOUR_LANDINGS_LEFT_NO_TRACE: a skip only printed a line, so an audit could not
+    tell which landings skipped the door)."""
+    if not skips:
+        return msg
+    args = [a for v, why in skips for a in ("--trailer", "%s: %s: %s" % (SKIP_TRAILER, v, why))]
+    # explicit policy: a trailer.ifexists=replace in config kept only the last skip's reason
+    r = subprocess.run(["git", "interpret-trailers", "--where", "end", "--if-exists", "add", "--if-missing", "add", *args],
+                       cwd=top, input=msg, capture_output=True, text=True, timeout=60)
+    if r.returncode:
+        raise Refuse("cannot write the door-skip trailer: %s" % (r.stderr or r.stdout).strip())
+    return r.stdout
+
+
 def _publish(top, paths, msg, cwd=None):
+    skips = door_skips()
     if paths:
         if not msg or not msg.strip():
             raise Refuse("a message is required (-m or -F)")
         named = rel_paths(top, paths, cwd or top)
-        made = commit(top, named, msg if msg.endswith("\n") else msg + "\n")
+        made = commit(top, named, with_skip_trailers(top, msg if msg.endswith("\n") else msg + "\n", skips))
         if not made:
             print("no change in the named paths; pushing any local commits")
         warn_owner_shard(top, named)
     else:
         named, made = [], None
+    if skips and not made:
+        raise Refuse("%s is set, but this landing makes no commit of its own to carry the reason (no paths named, or "
+                     "nothing changed in them): name the paths, so the skip is recorded on the landed commit"
+                     % ", ".join(v for v, _ in skips))
+    if skips:
+        # only this run's commit carries the reason: an earlier local commit would pass the door unrecorded. Read a
+        # fresh origin (a stale tracking ref called an already-pushed commit unpublished); unreadable is a refusal.
+        # (If the replay drops ours as already upstream, nothing lands under the skip, so no record is owed.)
+        _, track, _label = target_ref(top)
+        fetched = run(top, "fetch", "-q", REMOTE, check=False).returncode == 0 and ref_exists(top, track)
+        if not fetched or not is_ancestor(top, made + "~1", track):
+            run(top, "reset", "-q", "--soft", made + "~1")
+            run(top, "reset", "-q", "--", *named)
+            raise Refuse("%s is set, but %s (this run's commit was undone: your files are as you left them)"
+                         % (", ".join(v for v, _ in skips),
+                            "earlier local commits sit under this run's commit and would land past the door with no "
+                            "record: publish them first, without the skip" if fetched else
+                            "%s could not be fetched, so whether earlier local commits would land past the door with no "
+                            "record cannot be told" % track))
     changed = _changed_since_origin(top)
     try:
         tree_checks(top, changed)
