@@ -3866,6 +3866,400 @@
     "entry_exists": true,
     "why": "UNRUN: offline only, never the game in this run"
    }
+  },
+  "T_MODERN_FIT_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_fw_modern_fit.py",
+   "observes": "selftest_fw_modern_fit.py -- the Modern pipe system's FIT defects as offline checks (MODERN_FIT_REDRAW_ROUND_FOUR_PENDING).",
+   "reads": [],
+   "id": "T_MODERN_FIT_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_fw_modern_fit.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_PIPE_ATLAS_CELL_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_pipe_atlas_cell_geometry.py",
+   "observes": "selftest_pipe_atlas_cell_geometry.py -- PIPE_ATLAS_REBUILD_OTHER_LOOKS_KINK: every installed universal-pipe atlas is drawn on the cell vanilla Graphic_Linked shows (the inner 3/4 of each 4x4 tile, P = tile/8 of padding all round).",
+   "reads": [],
+   "id": "T_PIPE_ATLAS_CELL_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_pipe_atlas_cell_geometry.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_PLAYER_TRUTHS_ART_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_player_truths_art.py",
+   "observes": "selftest_player_truths_art.py -- the player-truth pilot's ART half (design/RimMandrake/player_truth_testing_pilot_2026-10-26.md).",
+   "reads": [],
+   "id": "T_PLAYER_TRUTHS_ART_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_player_truths_art.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_WEIR_LOOKS_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_weir_looks.py",
+   "observes": "selftest_weir_looks.py -- the weir looks redraw (WEIR_LOOKS_REDRAW_ONE_PER_PIPE_STYLE; owner 2026-10-24: \"Weirs by look: scavver/crude, industrial, modern, futuristic.\") as permanent offline checks on fw_scenes_weir.py.",
+   "reads": [],
+   "id": "T_WEIR_LOOKS_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_weir_looks.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_WEIR_MATERIAL_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_weir_material.py",
+   "observes": "selftest_weir_material.py -- RM_BankWeir's words and cost match its installed stone/concrete/metal looks (BANK_WEIR_FIX_TIMBER_TEXT_ON_STONE; looks installed at af7156fa3f: Scrapper stone rubble, Industrial stepped concrete, Modern smooth curtain, Futuristic white metal).",
+   "reads": [],
+   "id": "T_WEIR_MATERIAL_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_weir_material.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_WEIR_SPILL_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/Tools/selftest_weir_spill_animated.py",
+   "observes": "selftest_weir_spill_animated.py -- WEIR_SPILL_REDRAW_ANIMATED_NOT_PAINTED. Owner 2026-10-24, on the weir looks: \"The white water I'm hoping is merely an indicator of the design intention, not actual graphics. We will want to animate a much better design of water going over the weir.\"",
+   "reads": [],
+   "id": "T_WEIR_SPILL_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/Tools/selftest_weir_spill_animated.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_MODERN_BRIDGE_ART_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/art_source/ModernBridge/selftest_modern_bridge_art.py",
+   "observes": "Selftest for modern_bridge.py (MODERN_BRIDGE_REDRAW_BRIDGE_NOT_PLUMBING): Modern bridges carry no pipe colour.",
+   "reads": [],
+   "id": "T_MODERN_BRIDGE_ART_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/art_source/ModernBridge/selftest_modern_bridge_art.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_SUSPENSION_REDESIGN_ART_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/art_source/SuspensionRedesign/selftest_suspension_redesign.py",
+   "observes": "Pins SUSPENSION_BRIDGE_REDRAW_HEAVY_JUST_PAINTED on the art the game LOADS: the installed FlowWorks Textures, the base set and every look (Scrapper, Industrial, Modern, Futuristic) the style picker can draw.",
+   "reads": [],
+   "id": "T_SUSPENSION_REDESIGN_ART_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/art_source/SuspensionRedesign/selftest_suspension_redesign.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_CONSERVATION_ROUNDTRIP_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/northstar/selftest_conservation_roundtrip.py",
+   "observes": "POND_BED_DESIGN_LAKES_ARE_TALL_CANALS: the owner's conservation round trips, as an offline model.",
+   "reads": [],
+   "id": "T_CONSERVATION_ROUNDTRIP_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_conservation_roundtrip.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_HOLE_PRISON_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/northstar/selftest_hole_prison.py",
+   "observes": "Acceptance-driver fault injection plus selected production C# pit-room tests. Fake game outcomes verify assertions/cleanup; they never prove game behavior.",
+   "reads": [],
+   "id": "T_HOLE_PRISON_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_hole_prison.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_JAWA_SHALLOWS_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/northstar/selftest_jawa_shallows_proof.py",
+   "observes": "Offline checks for jawa_shallows_proof.py's pure verdicts (JAWA_DROWNING_PROVE_RAT_SIZED_IN_SHALLOWS). No bridge.",
+   "reads": [],
+   "id": "T_JAWA_SHALLOWS_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_jawa_shallows_proof.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_LEVEL_WATER_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/northstar/selftest_level_water.py",
+   "observes": "selftest_level_water.py -- the exact-level water reference (northstar/level_water.py) against the ruled numbers.",
+   "reads": [],
+   "id": "T_LEVEL_WATER_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_level_water.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_POND_CAPACITY_RULE_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/northstar/selftest_pond_capacity_rule.py",
+   "observes": "selftest_pond_capacity_rule -- offline proof of GOLDEN_PONDS_RECONCILE_TWO_FIFTHS.",
+   "reads": [],
+   "id": "T_POND_CAPACITY_RULE_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/northstar/selftest_pond_capacity_rule.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_BELT_FIXES_H_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_belt_fixes_h.py",
+   "observes": "Belt findings of 2026-10-22, fixed offline by fixer H (no game). Each check reads FlowWorks source and fails on the pre-fix code; each carries a planted regression that must fail (can-fail).",
+   "reads": [],
+   "id": "T_BELT_FIXES_H_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_belt_fixes_h.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_CALL_SITES_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_call_sites.py",
+   "observes": "selftest_flowworks_call_sites.py \u2014 the CALL SITES of the P4-P11 FlowWorks fixes.",
+   "reads": [],
+   "id": "T_CALL_SITES_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_call_sites.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_DRAWBRIDGE_ART_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_art.py",
+   "observes": "DRAWBRIDGE_LOOKS_WIRE_PICTURES_IN_WINGS: every drawbridge picture the code can ask for resolves to an installed PNG (no magenta, no silent stand-in) for every material x look, through the same candidate order the game uses (Source/RM_DrawbridgeMath.cs DrawbridgeArtPaths: the material's picture, else the look's; DRAWBRIDGE_LOOKS_FIX_HIS_PICKS_OUTRANK, owner by card 2026-10-22 \"Material picks win\").",
+   "reads": [],
+   "id": "T_DRAWBRIDGE_ART_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_drawbridge_art.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_FROZEN_HANDOVER_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_frozen_handover.py",
+   "observes": "FROZEN_OVERFLOW_DIG_FIX_ICE_POURS_LIQUID (offline, no game): reads FlowWorks source and fails on the pre-fix code.",
+   "reads": [],
+   "id": "T_FROZEN_HANDOVER_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_frozen_handover.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_GPT_B_FIXES_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py",
+   "observes": "selftest_flowworks_gpt_b.py \u2014 the FlowWorks pre-release GPT-consult fixes, builder B (terrain, pits, rivers).",
+   "reads": [],
+   "id": "T_GPT_B_FIXES_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_gpt_b.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_GPT_BATCH_A_FIXES_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_batch_a.py",
+   "observes": "selftest_flowworks_gpt_batch_a.py \u2014 FlowWorks GPT high-depth review (2026-10-23), batch A: the liquid-sim core.",
+   "reads": [],
+   "id": "T_GPT_BATCH_A_FIXES_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_gpt_batch_a.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_GPT_C_FIXES_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py",
+   "observes": "selftest_flowworks_gpt_c.py \u2014 the FlowWorks pre-release GPT-consult fixes, builder C (cross-cutting).",
+   "reads": [],
+   "id": "T_GPT_C_FIXES_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_gpt_c.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_LOOKS_ROUND_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_looks_round.py",
+   "observes": "FLOWWORKS_REVIEW_LOOKS_ROUND_1 \u2014 the parts of the owner's 2026-10-06 review a machine can check, read from the shipped XML (never from the generator's intentions):",
+   "reads": [],
+   "id": "T_LOOKS_ROUND_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_looks_round.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_REVIEW1022_LIQUIDNET_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_review1022_liquidnet.py",
+   "observes": "Offline code review of the liquid net, 2026-10-22. Each check reads FlowWorks source and fails on the pre-fix code; each carries a planted regression that must fail (can-fail).",
+   "reads": [],
+   "id": "T_REVIEW1022_LIQUIDNET_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_review1022_liquidnet.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_REVIEW1022_SHEET_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_review1022_sheet.py",
+   "observes": "Review 2026-10-22 (offline, no game) of RM_LiquidFire.cs, RM_SheetMath.cs, Sheet/RM_MapComponent_Sheet.cs and Sheet/RM_SheetFire.cs. Each check reads FlowWorks source and fails on the pre-fix code; each carries a planted regression that must fail (can-fail).",
+   "reads": [],
+   "id": "T_REVIEW1022_SHEET_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_review1022_sheet.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_SALT_BREAK_POTABLE_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_salt_break_potable.py",
+   "observes": "selftest_flowworks_salt_break_potable.py \u2014 the salt-water break sees every potable source (SALT_BREAK_FIX_MISSES_POTABLE_SOURCES).",
+   "reads": [],
+   "id": "T_SALT_BREAK_POTABLE_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_salt_break_potable.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_SPREADING_FUEL_IRRIGATION_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_spreading_fuel_irrigation.py",
+   "observes": "SPREADING_FUEL_FIX_IRRIGATES_CROPS (GPT review FA_core_sim_4.3), offline, no game, no dotnet.",
+   "reads": [],
+   "id": "T_SPREADING_FUEL_IRRIGATION_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_spreading_fuel_irrigation.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_SUSPENSION_ART_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_suspension_art.py",
+   "observes": "SUSPENSION_BRIDGE_BUILD_POSTS_AT_BOTH_ENDS: every texPath the suspension bridge defs name resolves to a real RGBA PNG in this mod's Textures folder (a grated deck: real holes, SUSPENSION_GRATE_BUILD_LET_THE_FIRE_UP), 256x256 (1 cell at 128 px/cell, rounded up), with real alpha: the anchor, tower and railing art has transparent corners (ground shows round them), and the railing edge is transparent ",
+   "reads": [],
+   "id": "T_SUSPENSION_ART_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_suspension_art.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_SWALE_STATIC_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_flowworks_swale.py",
+   "observes": "selftest_flowworks_swale.py \u2014 static half of the swale (CRACKEDLANDS_MECHANICS_BUILD_1 \u00a71).",
+   "reads": [],
+   "id": "T_SWALE_STATIC_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_swale.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_FREEZE_BIG_MAP_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_freeze_big_map.py",
+   "observes": "LEVEL_STAGING_DIAGNOSE_FREEZE_ON_BIG_MAP: offline proof that the 325-map staging->lay freeze is named by a profile, fixed in the source, and that pipe_levelling_perf_proof completed on the 325 map. No game, no bridge, no dotnet.",
+   "reads": [
+    "src/RimMandrake/FlowWorks/Source/Hose/HoseLayQueue.cs",
+    "src/RimMandrake/FlowWorks/Source/Hose/RM_MapComponent_Hoses.cs",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/Program.cs"
+   ],
+   "id": "T_FREEZE_BIG_MAP_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_freeze_big_map.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_HEAVY_TRUSS_LABELS_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_heavy_truss_labels.py",
+   "observes": "HEAVY_BRIDGE_RENAME_TRUSS_LIKE_THE_PHOTO (owner card 2026-10-25: \"Heavy bridge name -> Heavy truss bridge\"; the art is a truss, per his photo). Pins the player-facing names of the heavy deck, its grated variant and its anchor, and that the defNames (saves, patches, designators) did not move. Offline: reads the def XML and the C# message.",
+   "reads": [],
+   "id": "T_HEAVY_TRUSS_LABELS_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_heavy_truss_labels.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_HOSE_PIPE_SADDLE_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_hose_pipe_saddle.py",
+   "observes": "HOSE_SADDLE_FIX_STOPS_SHORT_OF_PIPE: a hose end lying BESIDE a pipe couples on a saddle clamped on the pipe.",
+   "reads": [],
+   "id": "T_HOSE_PIPE_SADDLE_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_hose_pipe_saddle.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_HOSE_PORT_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_hose_port.py",
+   "observes": "Hose port gates, offline (design/RimMandrake/hose_port_to_flowworks_design_FINAL_2026-10-10.md \u00a74 step 2; later steps add rows). No game, no bridge, no dotnet. Each row has a can-fail beside it.",
+   "reads": [],
+   "id": "T_HOSE_PORT_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_hose_port.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_PIPE_GIRTH_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_pipe_girth_half.py",
+   "observes": "PIPE_GIRTH_TUNE_HALF_AS_THICK (owner walk 2026-10-21: \"that pipe is crazy thick. Make the pipes half as thick\"): the ground pipe's girth is baked into each look's linked atlas (Graphic_Linked draws the PNG on a 1x1 cell quad; no C# mesh width exists for the ground pipe), so the ratio is asserted on the PNGs here. The C# SelfTest cannot: the winbuild stage copies no Textures folder; it asserts only",
+   "reads": [],
+   "id": "T_PIPE_GIRTH_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_pipe_girth_half.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_PUMP_STATION_PORTS_COMPILED_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_pump_station_ports_compiled.py",
+   "observes": "selftest_pump_station_ports_compiled.py -- RUN the production C# port rule, and bind the shipped DLL to it (offline).",
+   "reads": [],
+   "id": "T_PUMP_STATION_PORTS_COMPILED_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_pump_station_ports_compiled.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_TANK_ART_EDGES_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_tank_art_edges.py",
+   "observes": "TANK_FLANGE_FIX_HOVERS_MID_PIPE -- where each tank's DRAWN edge is, per pipe lane, measured from the installed art.",
+   "reads": [],
+   "id": "T_TANK_ART_EDGES_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_tank_art_edges.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_THERMOSTAT_SUBNOTCH_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_thermostat_subnotch.py",
+   "observes": "THERMOSTAT_FIX_IGNORES_SUBNOTCH_LIQUID: offline structural proof that the liquid thermostat counts a part-notch sheet (WaterDlAt > 0, FillAt == 0) and that each pin can go red. No game, no bridge, no dotnet (the C# cases MapControl_thermostat_energy / MapControl_thermostat_subnotch_liquid run the arithmetic under dotnet; this file is the independent second instrument, and --dotnet-mutant replays a",
+   "reads": [],
+   "id": "T_THERMOSTAT_SUBNOTCH_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_thermostat_subnotch.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_WRECKED_LINKS_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py",
+   "observes": "WRECKED_LINKS_FIX_RUINS_SNUB_THEIR_PIPES (owner 2026-11-06: \"For wrecked machines, they should ALL draw in the piping and conduit the same way, not only at a certain value of fixedness.\"). Reads the SHIPPED XML: every *_Wrecked ThingDef whose higher tiers take pipes or power carries the matching draw-in tag, and a tagged ruin holds no comp that could join a net. Tiers are resolved through ParentNa",
+   "reads": [],
+   "id": "T_WRECKED_LINKS_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/FlowWorks/selftest_wrecked_links_draw_in.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_POND_FILM_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_pond_film.py",
+   "observes": "POND_DRAWN_FIX_VERYSHALLOW_NEVER_MUDS: a drawn-down flat pond's residue is mud, not 25 very-shallow sources.",
+   "reads": [],
+   "id": "T_POND_FILM_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_pond_film.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_SHEET_KERNEL_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_sheet.py",
+   "observes": "Offline selftest of the FlowWorks sheet-water kernel (CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED, Stage 0).",
+   "reads": [],
+   "id": "T_SHEET_KERNEL_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_sheet.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+  },
+  "T_TRENCH_COVER_CSHARP_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/Utils/selftest_flowworks_trench_cover.py",
+   "observes": "Wrapper for the C# selftest of FlowWorks trench cover (TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT).",
+   "reads": [],
+   "id": "T_TRENCH_COVER_CSHARP_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/Utils/selftest_flowworks_trench_cover.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
   }
  },
  "bars": [
@@ -3883,7 +4277,9 @@
    ],
    "supports": [
     "sc_moat_raid",
-    "T_DIG_TIME_ARITHMETIC"
+    "T_DIG_TIME_ARITHMETIC",
+    "T_CALL_SITES_OFFLINE",
+    "T_GPT_B_FIXES_OFFLINE"
    ],
    "held": [
     "2026-11-12#12",
@@ -3914,7 +4310,10 @@
     "sc_one_surface"
    ],
    "supports": [
-    "sc_moat_raid"
+    "sc_moat_raid",
+    "T_LEVEL_WATER_OFFLINE",
+    "T_GPT_BATCH_A_FIXES_OFFLINE",
+    "T_SWALE_STATIC_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -3939,7 +4338,10 @@
     "sc_source_pays"
    ],
    "supports": [
-    "sc_moat_raid"
+    "sc_moat_raid",
+    "T_CONSERVATION_ROUNDTRIP_OFFLINE",
+    "T_POND_CAPACITY_RULE_OFFLINE",
+    "T_POND_FILM_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -3961,7 +4363,12 @@
     "PY_FLOWWORKS_SHEET_DROWN_MESSAGE"
    ],
    "supports": [
-    "sc_garden"
+    "sc_garden",
+    "T_FROZEN_HANDOVER_OFFLINE",
+    "T_GPT_BATCH_A_FIXES_OFFLINE",
+    "T_REVIEW1022_SHEET_OFFLINE",
+    "T_SPREADING_FUEL_IRRIGATION_OFFLINE",
+    "T_SHEET_KERNEL_OFFLINE"
    ],
    "held": [
     "2026-11-14#10d"
@@ -3988,7 +4395,9 @@
     "sc_fill_tiers"
    ],
    "supports": [
-    "sc_moat_raid"
+    "sc_moat_raid",
+    "T_GPT_C_FIXES_OFFLINE",
+    "T_SALT_BREAK_POTABLE_OFFLINE"
    ],
    "held": [
     "2026-11-12#1"
@@ -4015,7 +4424,10 @@
     "sc_canal_fire"
    ],
    "supports": [
-    "sc_moat_raid"
+    "sc_moat_raid",
+    "T_CALL_SITES_OFFLINE",
+    "T_REVIEW1022_SHEET_OFFLINE",
+    "T_SPREADING_FUEL_IRRIGATION_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -4064,7 +4476,8 @@
     "sc_moat_raid",
     "sc_pit_trap_raid",
     "T_PIT_LOOK_1114",
-    "PIT_LOOK_1114_LIVE"
+    "PIT_LOOK_1114_LIVE",
+    "T_GPT_B_FIXES_OFFLINE"
    ],
    "held": [
     "2026-11-12#11b",
@@ -4149,7 +4562,11 @@
    ],
    "supports": [
     "sc_moat_raid",
-    "sc_islands"
+    "sc_islands",
+    "T_MODERN_BRIDGE_ART_OFFLINE",
+    "T_BELT_FIXES_H_OFFLINE",
+    "T_DRAWBRIDGE_ART_OFFLINE",
+    "T_HEAVY_TRUSS_LABELS_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -4171,7 +4588,8 @@
     "sc_trench_cover"
    ],
    "supports": [
-    "sc_pit_trap_raid"
+    "sc_pit_trap_raid",
+    "T_TRENCH_COVER_CSHARP_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -4192,7 +4610,8 @@
     "sc_pawn_height"
    ],
    "supports": [
-    "sc_moat_raid"
+    "sc_moat_raid",
+    "T_JAWA_SHALLOWS_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -4217,7 +4636,11 @@
     "sc_hose_look"
    ],
    "supports": [
-    "sc_garden"
+    "sc_garden",
+    "T_FREEZE_BIG_MAP_OFFLINE",
+    "T_HOSE_PIPE_SADDLE_OFFLINE",
+    "T_HOSE_PORT_OFFLINE",
+    "T_PUMP_STATION_PORTS_COMPILED_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -4245,7 +4668,11 @@
    ],
    "supports": [
     "sc_moat_raid",
-    "sc_garden"
+    "sc_garden",
+    "T_CALL_SITES_OFFLINE",
+    "T_REVIEW1022_LIQUIDNET_OFFLINE",
+    "T_FREEZE_BIG_MAP_OFFLINE",
+    "T_THERMOSTAT_SUBNOTCH_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -4350,7 +4777,9 @@
     "PY_WEIR_INSTALLED",
     "sc_river"
    ],
-   "supports": [],
+   "supports": [
+    "T_GPT_B_FIXES_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [
     "T_RIVER",
@@ -4415,7 +4844,10 @@
     "PY_VALIDATION_V2_OFFLINE",
     "sc_walk"
    ],
-   "supports": [],
+   "supports": [
+    "T_BELT_FIXES_H_OFFLINE",
+    "T_SWALE_STATIC_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [
     "T_SETTINGS_SWEEP_OFFLINE",
@@ -4451,7 +4883,23 @@
     "sc_fill_tiers",
     "LOOK_STAGE8",
     "T_PIT_LOOK_1114",
-    "PIT_LOOK_1114_LIVE"
+    "PIT_LOOK_1114_LIVE",
+    "T_MODERN_FIT_OFFLINE",
+    "T_PIPE_ATLAS_CELL_OFFLINE",
+    "T_PLAYER_TRUTHS_ART_OFFLINE",
+    "T_WEIR_LOOKS_OFFLINE",
+    "T_WEIR_MATERIAL_OFFLINE",
+    "T_WEIR_SPILL_OFFLINE",
+    "T_MODERN_BRIDGE_ART_OFFLINE",
+    "T_SUSPENSION_REDESIGN_ART_OFFLINE",
+    "T_DRAWBRIDGE_ART_OFFLINE",
+    "T_GPT_C_FIXES_OFFLINE",
+    "T_LOOKS_ROUND_OFFLINE",
+    "T_SUSPENSION_ART_OFFLINE",
+    "T_HEAVY_TRUSS_LABELS_OFFLINE",
+    "T_PIPE_GIRTH_OFFLINE",
+    "T_TANK_ART_EDGES_OFFLINE",
+    "T_WRECKED_LINKS_OFFLINE"
    ],
    "held": [
     "2026-11-12#1",
@@ -4529,7 +4977,8 @@
    ],
    "supports": [
     "sc_moat_raid",
-    "sc_pit_trap_raid"
+    "sc_pit_trap_raid",
+    "T_HOLE_PRISON_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -4595,7 +5044,8 @@
    ],
    "supports": [
     "sc_dig_finds",
-    "T_DIG_TIME_ARITHMETIC"
+    "T_DIG_TIME_ARITHMETIC",
+    "T_LOOKS_ROUND_OFFLINE"
    ],
    "held": [
     "2026-11-12#12",
@@ -4720,7 +5170,10 @@
     "PY_FLOWWORKS_FLOOD_HOUR_CADENCE",
     "sc_one_surface"
    ],
-   "supports": [],
+   "supports": [
+    "T_CONSERVATION_ROUNDTRIP_OFFLINE",
+    "T_LEVEL_WATER_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [
     "T_LEVEL",
@@ -4764,7 +5217,9 @@
     "PY_FLOWWORKS_FUEL_MOAT",
     "sc_canal_fire"
    ],
-   "supports": [],
+   "supports": [
+    "T_REVIEW1022_SHEET_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [
     "T_FIRE",
@@ -4892,7 +5347,8 @@
    ],
    "supports": [
     "T_PIT_LOOK_1114",
-    "PIT_LOOK_1114_LIVE"
+    "PIT_LOOK_1114_LIVE",
+    "T_PLAYER_TRUTHS_ART_OFFLINE"
    ],
    "held": [
     "2026-11-12#4",
@@ -4952,7 +5408,10 @@
     "sc_hose_look",
     "LOOK_BLIND_READER"
    ],
-   "supports": [],
+   "supports": [
+    "T_HOSE_PIPE_SADDLE_OFFLINE",
+    "T_HOSE_PORT_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [
     "T_HOSE",
@@ -4978,7 +5437,9 @@
     "sc_one_network"
    ],
    "supports": [
-    "sc_garden"
+    "sc_garden",
+    "T_REVIEW1022_LIQUIDNET_OFFLINE",
+    "T_PUMP_STATION_PORTS_COMPILED_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -5001,7 +5462,8 @@
     "sc_trench_cover"
    ],
    "supports": [
-    "sc_pit_trap_raid"
+    "sc_pit_trap_raid",
+    "T_TRENCH_COVER_CSHARP_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -5023,7 +5485,10 @@
     "sc_hung_bridge",
     "LOOK_BLIND_READER"
    ],
-   "supports": [],
+   "supports": [
+    "T_SUSPENSION_REDESIGN_ART_OFFLINE",
+    "T_SUSPENSION_ART_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [
     "T_BRIDGES",
@@ -5043,7 +5508,9 @@
     "T_ICE",
     "sc_ice"
    ],
-   "supports": [],
+   "supports": [
+    "T_FROZEN_HANDOVER_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [
     "T_ICE"
@@ -5117,7 +5584,8 @@
     "sc_hole_prison"
    ],
    "supports": [
-    "sc_moat_raid"
+    "sc_moat_raid",
+    "T_HOLE_PRISON_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -5205,7 +5673,8 @@
     "sc_dig_and_read"
    ],
    "supports": [
-    "LOOK_BLIND_READER"
+    "LOOK_BLIND_READER",
+    "T_SHEET_KERNEL_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -5231,7 +5700,9 @@
     "PY_PUMP_DRAW_CONSERVES",
     "sc_source_pays"
    ],
-   "supports": [],
+   "supports": [
+    "T_POND_FILM_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [
     "T_STOCK",
@@ -5283,7 +5754,10 @@
     "PY_HOSE_FITTINGS",
     "sc_one_network"
    ],
-   "supports": [],
+   "supports": [
+    "T_MODERN_FIT_OFFLINE",
+    "T_TANK_ART_EDGES_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [
     "T_NET",
@@ -5376,5 +5850,107 @@
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   }
- ]
+ ],
+ "unlisted_suites": {
+  "selftest_hose_explore.py": "review tooling: asserts the offline hose explorer's 'no fit' verdict, a design tool, not the mod (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_b1_pristine_map.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (LIVE_SESSION_FIX_B1_NEEDS_PRISTINE_MAP:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_batch_reads.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest for BATCHREADS_BUILD_ROUND_TRIP_CUT (tickburst_2026-11-06/final.md L-d).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_big_pit_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline test of big_pit_scene.py's pure half:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_blind_reader.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_blind_reader.py -- offline proof of northstar/blind_reader.py (LOOK_BLIND_READER), 0 ticks, no reader call.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_bridge_args.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_canal_fill_front.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (CANAL_FILL_FRONT_TRACE_MOUTH_STAYS_DRY:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_climb_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for climb_proof.py's pure verdicts (PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_deep_lake_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for deep_lake_proof.py's pure verdicts (POND_ELEVATION_BUILD_LAKES_RUN_DEEP).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_deep_stone_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for deep_stone_live.job_gate (DEEP_STONE_FIX_NOBODY_PICKS_UP_SHOVEL).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_dig_finds_budget.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline price check for the dig_finds chain (QUARRY_DIG_FIX_VALIDATED_BUT_NEVER_FINISHES).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_diptych_host.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_diptych_host.py -- a diptych that cannot be composed because the HOST lacks Pillow is UNMEASURED, not FAIL.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_drawbridge_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (The drawbridge functional script runs every path offline (drawbridge_proof.py --mock, FakeBridge):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_droid_dig_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline mock of droid_dig_live.py (no bridge, no game):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_extensions.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest for the FlowWorks core/extension split (densification 2026-10-05).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_falsepass_early.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline guards for FW_PROOF_DRIVERS_FIX_EARLY_FALSE_PASS (GPT review FF_validation_suite_3.x / 4.x / 5.1 / 6.6 / 6.7).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_falsepass_late.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline guards for FW_PROOF_DRIVERS_FIX_LATE_FALSE_PASS (GPT review F_validation_suite 7.3 - 7.10 and 8.1 - 8.9).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_fetch_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_fetch_fallen (RIMMANDRAKE_REBUILD_FLOWWORKS_FETCH_SCENE_RAID_NEVER_CAME):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_fill_in_order.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (FILLIN_PROOF_FIX_ORDER_NEVER_FILLS:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_fill_scenes_dig_first.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (RIMMANDRAKE_PIN_FLOWWORKS_FILL_SCENE_FIXES_RED_BEFORE_GREEN:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_fixture_pit_prison_cleanup.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_fixture_pit_prison_cleanup.py -- offline:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_fixture_proofreach_walker.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest for fixture_proofreach_walker.py (PROOFREACH_FIX_PAWNLESS_READ_HAS_NO_WALKER).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_fw_walks.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of objects_sheet.py and river_scenes_walk.py (both authored offline, never yet run live) and their shared fw_walk_common.py.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_garden_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_garden (RIMMANDRAKE_REBUILD_FLOWWORKS_GARDEN_SCENE_MACHINES_NEVER_PIPED):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_geyser_pit_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline test of geyser_pit_scene.py's pure half (RIMMANDRAKE_FIX_GEYSER_PIT_G2_SCENE_NEEDS_A_LADDER):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_glow_tank_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline proof of glow_tank_live.py's crop row on a FROZEN fresh map (GLOWTANK_CROP_FIX_FROZEN_FRESH_MAP).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_gptfw_review_fixes.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline guards for the GPT validation-suite review fixes (GPT_FW_REVIEW_VERIFY_REMAINING_FINDINGS).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_gravel_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for gravel_live.py (DIG_SPOIL_BUILD_GRAVEL_PAYS_ITS_WAY + PIT_DIG_FIX_SAND_SLIDES_BACK_IN):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_gravel_stage.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_hole_prison_driver.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Fast acceptance-driver fault controls; combined selftest_hole_prison also runs production C# cases.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_hose_look_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_hose_look (RIMMANDRAKE_REBUILD_FLOWWORKS_HOSE_SCENE_PUMP_HAD_NO_SOURCE):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_human_review.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_human_review.py -- FlowWorks/human_review.py (the capability review sheet) does what it says.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_ice_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_ice (RIMMANDRAKE_REBUILD_FLOWWORKS_ICE_SCENE_BASIN_NEVER_FROZE):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_islands_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_islands (RIMMANDRAKE_REBUILD_FLOWWORKS_ISLANDS_SCENE_SPAWNED_A_DRAW_STYLE):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_joint_check.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest for joint_check (offline, no game):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_lines_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (The lines functional script runs every path offline (lines_proof.py --mock, FakeBridge):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_liquid_checks.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of liquid_checks.py's timing and verdict logic (WSL python3; no bridge).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_live_session.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of live_session.py:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_mission_fixture_probe.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest for mission_fixture_probe.py's judging (MISSION_PROBE_WIRE_PLAYER_MISSIONS_CHAIN).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_moat_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_moat_raid (RIMMANDRAKE_REBUILD_FLOWWORKS_MOAT_SCENE_PASSED_ON_REFUSED):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_mock_dll_identity.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_mock_dll_identity.py -- a clean --mock run never reads its own DLL as stale.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_modern_fittings_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for modern_fittings_live.py (MODERN_FITTINGS_PROBE_FAUCET_NEVER_SEEN).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_owner_look_regressions.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline test of owner_look_regressions.py's judges:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_owner_review_stage.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of owner_review_stage.py:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pawn_height_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_pawn_height (RIMMANDRAKE_REBUILD_FLOWWORKS_PAWN_HEIGHT_SCENE_ZEROS_PASSED):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pipe_levelling_perf_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest for pipe_levelling_perf_proof.py:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pit_escape_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of the pit ESCAPE row (pit_rescue_live.py --scene escape; PIT_ESCAPE_PROVE_LADDER_LEFT_DOWN, the live row for LADDER_PARITY_BUILD_NO_KEYS_REQUIRED A6:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pit_exposure_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline test of pit_exposure_live.py's judges (PIT_TEMPERATURE_SOFTENING_1):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pit_rescue_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of the pit rescue live driver (pit_rescue_live.py) against a fake bridge.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pit_superdeep_walk.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_pit_superdeep_walk.py -- offline proof of pit_superdeep_walk.py:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pit_trap_raid_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_pit_trap_raid (RIMMANDRAKE_REBUILD_FLOWWORKS_PITTRAP_SCENE_STOPPED_BY_OWN_RAID):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pit_water_fixes_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for pit_water_fixes_live.py verdicts.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_player_missions.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Selftest for player_missions.py:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_playtest_runner.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_playtest_runner.py - the launcher's pure logic:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_plot_unroof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_plot_unroof.py -- offline proof that extensions._prep_plot unroofs every cell it clears, before it clears them.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pond_pump.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of pond_pump.py's verdicts (WSL python3; no bridge).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_preflight_calm.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Every FlowWorks northstar proof that starts a fresh quicktest map must calm the site in its preflight (validation_core .site_calm, or .clear_threat_structures / jawa/quiet_site for the proofs that own their storyteller h) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_proof_hose.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of the hose live driver (proof_hose.py) and the FlowWorks manifest contract (hose port step 8, design FINAL \u00a73.10 G5.5).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_proof_tar_fire_gate.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline check of proof_tar_fire_gate.py's pure verdicts (SUMP_TAR_FIRE_NETWORK_1):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_propane_pour_sink.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (PROPANE_POUR_DIAGNOSE_DRAINS_TO_NOWHERE:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pump_return_readback.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Execute the production pour row with real modcheck verdicts; inject only transport/volume readings.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_raid_trench.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of raid_trench_proof.py's storyteller restore (WSL python3; no bridge).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_rail_walk_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline test of rail_walk_live.py's judges (RAIL_WALK_PROVE_NOBODY_WALKS_OFF_ANYWAY):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_reach_map_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for reach_map_proof.py (REACH_MAP_BUILD_WALLS_AND_DEPTH_AGREE):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_river_site.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of river_site:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_s5_third_draft.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_s5_third_draft.py -- scene S5's third draft in the sealed scenes file states the exactly-level numbers.) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_scenarios_map.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_scenarios_map.py -- offline proof that the thirteen composite scenarios are fit to build (no game).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_scratch_halts.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline self-test, TESTQ_SURPRISE_DIAGNOSE_SCRATCH_HALTS_CHAINS:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_sheet_overflow_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (The canal-overflow functional script runs every path offline (sheet_overflow_proof.py --mock, FakeBridge):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_sitting_gaps_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for sitting_gaps_proof.py:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_sluice_live_binding.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (SLUICE_BOX_PROVE_THE_DAILY_WASH:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_source_pays_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_source_pays (RIMMANDRAKE_REBUILD_FLOWWORKS_SOURCE_PAYS_SCENE_POND_NEVER_THERE):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_sprinkler_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of the sprinkler live driver (sprinkler_live.py):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_static_call_empty_arg.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_station_port_live_connects.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_station_port_live_connects -- GAMEENV_FIX_PROOFSITE_6C84B4B3_ITEMS_WAIT:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_suspension_bridge_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (The suspension bridge functional script runs every path offline (suspension_bridge_proof.py --mock, FakeBridge):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_suspension_bridge_reach.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (MIDCHANNEL_ISLAND_FILL_REACH_UNMEASURED:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_thirst_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of the thirst live driver (thirst_live.py):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_trench_cover_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks of trench_cover_proof.py (no bridge):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_trench_cover_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_trench_cover (RIMMANDRAKE_REBUILD_FLOWWORKS_TRENCH_SCENE_READ_LID_PROOF):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_trial_site.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (selftest_trial_site -- offline proof of TRIAL_SITE_REBUILD_FOR_FOURTEEN_MODS:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_underpass_reach_live.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (underpass_reach_live.py (UNDERPASS_REACH_VERIFY_WALK_UNDER_FOR_REAL) runs offline against a FakeBridge and its verdict is the right one:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_validation_case_names.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Every C# SelfTest case a validation.py chain asks for still exists (SELFTEST_FIX_DRAWBRIDGE_PROOF_PHBJ class guard).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_wakes_checks.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of wakes_checks.py's verdict logic (WSL python3; no bridge).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_walk_gaps_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for walk_gaps_proof.py:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_walk_scene.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline half of sc_walk (RIMMANDRAKE_FINISH_FLOWWORKS_WALK_SCENE_HALF_THE_BAR_UNASKED):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_wall_faces_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for wall_faces_proof.py (WATER_DEPTH_RESKIN_HE_LOOKS_FIRST L3):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_water_looks_proof.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for water_looks_proof.py:) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_water_walks.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline selftest of the decilitre / level-water reads of water_scenes_walk.py, its mock, annotate_water_scenes.py and the ACCUMULATING index.html of river_scenes_walk.py / objects_sheet.py (WALKS_FIX, 2026-10-17).) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_work_bar.py": "proof-harness: a northstar driver, scene or verdict test, run against fakes (Offline checks for work_bar.py (WORK_PRIORITY_FIX_ZERO_IGNORED_UNMANUAL):) (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_flowworks_driver_rows.py": "proof-harness: asserts validation.py's THIRST_LIVE / SPRINKLER_LIVE rows read the walk drivers' results (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_flowworks_proof_readers.py": "proof-harness: asserts two bridge-callable proof state readers, not the mod's behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_flowworks_readout_proof_parity.py": "proof-harness: asserts the proof readout reads what the player's readout shows, a test of the proof reader (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_flowworks_selftest_requests.py": "proof-harness: asserts every C# SelfTest case a validation.py chain reads is one it asked for (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_hose_cr2_detail.py": "proof-harness: asserts validation_hose's CR2 row reads its detail right (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_pause_arg.py": "proof-harness: asserts every bridge call to rimworld/pause_game names its argument correctly (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_proof_read_gaps.py": "proof-harness: asserts the proof readers' fixes for GPT validation-suite findings (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_review_map.py": "review tooling: asserts review_map.py lays out the owner's review sheet, not the mod (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_stage_proof_site.py": "proof-harness: asserts stage_proof_site.py against a fake bridge (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+  "selftest_style_readback.py": "proof-harness: asserts the any-building style reader the proofs call, not the mod's behaviour (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+ }
 }
