@@ -504,13 +504,14 @@ def decide_claim(claim):
     return (PASS if judge.passes(v, claim["polarity"]) else FAIL), "%s x%d: %s" % (v, len(vs), why)
 
 
-def apply_verdicts(doc, claims):
+def apply_verdicts(doc, claims, only_claimed=False):
+    """only_claimed: a filtered run (--only-chain) rewrites just the bars its selected components claim."""
     by_bar = {}
     for cl in claims:
         cl["outcome"], cl["outcome_why"] = decide_claim(cl)
         by_bar.setdefault(cl["bar"], []).append(cl)
     for row in doc.get("bars") or ():
-        if not row.get("visual"):
+        if not row.get("visual") or (only_claimed and row["id"] not in by_bar):
             continue
         st0 = row.get("state_status", row["status"])
         sev = row.get("state_evidence", row["evidence"])
@@ -705,7 +706,7 @@ def contract_records(doc, claims, record_runner, submit, log=_p):
 
 def judge_doc(doc, runner, model="(mock)", jobs=8, repeat_must=1, repeat_cannot=3, timeout=180,
               backoff_s=20.0, log=_p, open_runner=None, open_skip_why=None, record_runner=None, submit=None,
-              record_skip_why=None):
+              record_skip_why=None, only_claimed=False):
     """Pass 1 (open_runner, bar-blind) then pass 2 (runner, the bar statement), then the refusal records (record_runner
     asks the follow-ups, submit is refusal_contract.submit). open_runner None = no pass 1; record_runner or submit None =
     no records; each recorded as not run."""
@@ -719,7 +720,7 @@ def judge_doc(doc, runner, model="(mock)", jobs=8, repeat_must=1, repeat_cannot=
     else:
         ol = {"status": "not run: %s" % (open_skip_why or "no open runner given (the pass-2-only API)"), "looks": []}
     stats = execute(calls, texts, runner, jobs=jobs, backoff_s=backoff_s, log=log)
-    apply_verdicts(doc, claims)
+    apply_verdicts(doc, claims, only_claimed=only_claimed)
     models = sorted({m for c in calls for m in reported_models(c["raw"])})
     contract = (contract_records(doc, claims, record_runner, submit, log=log)
                 if record_runner is not None and submit is not None else
@@ -764,14 +765,18 @@ def main(argv=None):
         _p("refused: %s carries no components[] -- written by a driver before screenshot recording"
            % a.results)
         return 2
+    full = doc
     if a.only_chain:
-        doc["components"] = [c for c in doc["components"] if c.get("chain") in a.only_chain]
+        # judge a filtered view; the saved file keeps every chain's components (bar rows are shared, so only claimed ones change)
+        doc = dict(doc, components=[c for c in doc["components"] if c.get("chain") in a.only_chain])
     judge_doc(doc, claude_runner(a.model, a.timeout), model=a.model, jobs=a.jobs,
               repeat_must=a.repeat_must, repeat_cannot=a.repeat_cannot, timeout=a.timeout,
               open_runner=None if a.no_open_look else claude_runner(a.model, a.timeout),
               open_skip_why="--no-open-look" if a.no_open_look else None,
               record_runner=None if a.no_records else claude_runner(a.model, a.timeout),
-              submit=None if a.no_records else _rc_submit(), record_skip_why="--no-records" if a.no_records else None)
+              submit=None if a.no_records else _rc_submit(), record_skip_why="--no-records" if a.no_records else None,
+              only_claimed=bool(a.only_chain))
+    doc["components"] = full["components"]
     out = a.out or a.results
     B.write_results(out, doc)
     s = doc["summary"]
