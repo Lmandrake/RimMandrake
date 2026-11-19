@@ -529,7 +529,9 @@ FIXTURES = {
     # a real red
     "src/selftest_red.py": "import sys\nprint(open('src/red.txt').read())\nsys.exit(1)\n",
     # the planted hidden dependency: a verdict hanging on an mtime, which the probe keeps out of the record on purpose
-    "src/selftest_hidden.py": "import os, sys\nsys.exit(0 if os.stat('src/hidden.txt').st_mtime == 1000000000 else 1)\n",
+    # it lives in a fixture mod with a passed Design Version: --nightly runs only finished mods' tests (nightly_scope;
+    # owner by card 2026-11-15), and the audit samples inside that set (RIMMANDRAKE_FIX_KNOWN_RESULTS_AUDIT_NIGHTLY_SCOPED_TO_NOTHING)
+    "src/Fix/Hidden/selftest_hidden.py": "import os, sys\nsys.exit(0 if os.stat('src/hidden.txt').st_mtime == 1000000000 else 1)\n",
     # never cached
     "src/selftest_clock.py": "import time\nprint(time.time())\n",
     "src/selftest_network.py": ("import socket\ntry:\n    socket.create_connection(('127.0.0.1', 9), 1)\n"
@@ -542,6 +544,20 @@ FIXTURES = {
     "src/selftest_rewrites.py": "p = 'src/rw.txt'\nt = open(p).read()\nopen(p, 'w').write(t)\n",
     "src/selftest_touches.py": "import os\nopen('src/touched.txt').read()\nos.utime('src/touched.txt')\n",
 }
+HIDDEN = "src/Fix/Hidden/selftest_hidden.py"
+FINISHED_MOD = "design/concepts/Hidden/version/stage_record.json"
+
+
+def tp(name):
+    """-> the fixture test's repo-relative path."""
+    return HIDDEN if name == "hidden" else f"src/selftest_{name}.py"
+
+
+def tq(name):
+    """-> its record file's name (the path quoted, safe='')."""
+    return tp(name).replace("/", "%2F") + ".json"
+
+
 CACHEABLE = ["import", "data", "listing", "env", "tool", "absent", "shadow", "threads", "unrelated", "hidden"]
 NEVER = {"clock": "clock", "network": "network", "game": "external", "git": "git state", "machine": "machine state",
          "python_i": "unobserved", "env_cleared": "unobserved", "rewrites": "reads and writes", "touches": "changed during"}
@@ -558,6 +574,8 @@ def build(root: Path):
     (root / "src/hidden.txt").write_text("h\n")
     os.utime(root / "src/hidden.txt", (1000000000, 1000000000))
     (root / "src/rw.txt").write_text("rw\n")
+    (root / FINISHED_MOD).parent.mkdir(parents=True)
+    (root / FINISHED_MOD).write_text('{"stage": "passed"}\n')
     (root / "src/touched.txt").write_text("t\n")
     (root / "src/listed").mkdir()
     (root / "src/listed/a").write_text("a")
@@ -581,7 +599,7 @@ def moved_all(state: Path) -> list:
     why = {}
     for r in rows:
         why.setdefault(r["test"], []).extend(r["why"])
-    wanted = [f"src/selftest_{n}.py" for n in CACHEABLE]
+    wanted = [tp(n) for n in CACHEABLE]
     if not all(why.get(t) and all(w.startswith("changed during the run") for w in why[t]) for t in wanted):
         return []
     return [w for t in wanted for w in why[t]]
@@ -646,7 +664,7 @@ def run(root: Path, *args, extra=None, state=None, timeout=240):
 
 
 def st(states, name):
-    return states.get(f"src/selftest_{name}.py")
+    return states.get(tp(name))
 
 
 def fixture(root: Path):
@@ -678,7 +696,7 @@ def fixture(root: Path):
               + f"\n     stderr tail:\n{p.stderr[-1500:]}")
 
     def rec(name):
-        return recs.get(f"src%2Fselftest_{name}.py.json", [{}])[0]
+        return recs.get(tq(name), [{}])[0]
 
     eq("src/helper_b.py" in rec("import").get("files", {}), True, "measured: the transitive import is an input")
     eq("src/data.txt" in rec("data").get("files", {}), True, "measured: the data file is an input")
@@ -692,10 +710,10 @@ def fixture(root: Path):
     eq(any(k.startswith("/usr/lib/python") or k.startswith("/usr/bin/python") for k in rec("data").get("files", {})), True,
        "measured: the interpreter and its stdlib are inputs")
     for n, word in NEVER.items():
-        eq(f"src%2Fselftest_{n}.py.json" in recs, False, f"never cached: {n}")
+        eq(tq(n) in recs, False, f"never cached: {n}")
     refusals = [json.loads(ln) for ln in (state / "known_results/refusals.jsonl").read_text().splitlines()]
     for n, word in NEVER.items():
-        why = " ".join(w for r in refusals if r["test"] == f"src/selftest_{n}.py" for w in r["why"])
+        why = " ".join(w for r in refusals if r["test"] == tp(n) for w in r["why"])
         eq(word in why, True, f"refused for the right reason: {n} ({word})")
 
     t0 = time.time()
@@ -752,22 +770,22 @@ def fixture(root: Path):
     eq(st(s, "hidden"), "KNOWN PASS", "planted: outside the sample, still unseen")
     p, s = run(root, "--nightly", extra={"FIX_KNOB": "good", "RM_SELFTEST_AUDIT_RATE": "1"})
     eq(st(s, "hidden"), "FAIL", "planted: the audit ran it for real")
-    eq("!!! FALSE HIT src/selftest_hidden.py" in p.stdout, True, "planted: the alarm names it")
+    eq("!!! FALSE HIT " + HIDDEN in p.stdout, True, "planted: the alarm names it")
     eq(p.returncode, 1, "planted: the run is red")
-    eq((state / "known_results/records/src%2Fselftest_hidden.py.json").exists(), False, "planted: the record is deleted")
+    eq((state / "known_results/records" / tq("hidden")).exists(), False, "planted: the record is deleted")
     q = json.loads((state / "known_results/quarantine.json").read_text())
-    eq("src/selftest_hidden.py" in q, True, "planted: the test is quarantined")
+    eq(HIDDEN in q, True, "planted: the test is quarantined")
     runs = [json.loads(x) for x in (state / "known_results/runs.jsonl").read_text().splitlines()]
-    eq(runs[-1]["false_hits"], ["src/selftest_hidden.py"], "planted: the run log carries it")
+    eq(runs[-1]["false_hits"], [HIDDEN], "planted: the run log carries it")
 
     # quarantine: it passes, records nothing, and only a stated rerun lets it back
     os.utime(root / "src/hidden.txt", (1000000000, 1000000000))
     settle(root)
     p, s = run(root, extra={"FIX_KNOB": "good"})
     eq(st(s, "hidden"), "PASS", "quarantined: it runs, nothing is answered for it")
-    eq("QUARANTINED src/selftest_hidden.py" in p.stdout, True, "quarantined: and it says so")
+    eq("QUARANTINED " + HIDDEN in p.stdout, True, "quarantined: and it says so")
     p, s = run(root, "--no-cache", "--because", "hidden mtime restored", extra={"FIX_KNOB": "good"})
-    eq("src/selftest_hidden.py" in json.loads((state / "known_results/quarantine.json").read_text()), False,
+    eq(HIDDEN in json.loads((state / "known_results/quarantine.json").read_text()), False,
        "a passing --because run clears the quarantine")
 
     # a nightly that agrees is silent
@@ -870,7 +888,7 @@ def counterexamples(root: Path):
         eq("unobserved" in why, True, "and refused as unobserved")
         for n, word in (("renamed", "reads and writes"), ("system", "unobserved"), ("dotdot", "symlink"), ("tmpglob", "shared temp"), ("pycopy", "without the tracer")):
             why = " ".join(w for r in map(json.loads, (state / "known_results/refusals.jsonl").read_text().splitlines())
-                           if r["test"] == f"src/selftest_{n}.py" for w in r["why"])
+                           if r["test"] == tp(n) for w in r["why"])
             eq(st(s, n), "PASS", f"second reader: {n} is run every time")
             eq(word in why, True, f"second reader: {n} refused as {word}")
         (src / "cached_dep.py").write_text("VALUE = 2\n")
@@ -899,7 +917,7 @@ def blind_run_reader(state: Path):
     """moved_all retries only a run that refused EVERY cacheable test as changed during it; anything else stands."""
     kr = state / "known_results"
     kr.mkdir(parents=True)
-    rows = [{"test": f"src/selftest_{n}.py", "why": ["changed during the run: moved while it was being hashed: /x"]}
+    rows = [{"test": tp(n), "why": ["changed during the run: moved while it was being hashed: /x"]}
             for n in CACHEABLE]
     (kr / "refusals.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
     eq(moved_all(state)[:1], ["changed during the run: moved while it was being hashed: /x"],
