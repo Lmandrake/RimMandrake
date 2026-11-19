@@ -28,6 +28,15 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 	public static class MatrixFlags
 	{
 		public static bool Override, Record;
+		/// <summary>RIMMANDRAKE_REVIVE_SHIPPED_FUZZ_WITH_LAWS: a planted break (--plant), so a law family is seen to go red
+		/// at the shipped settings. "volume": one whole level (U decilitres: the kernel keeps water in whole levels, so a
+		/// single decilitre was measured to vanish, 2026-11-18) appears from nowhere in a wet cell (breaks volume
+		/// conservation); "bounds": a dug cell's depth is set to 5 (breaks 0 &lt;= F &lt;= D &lt;= 4), both on every seventh
+		/// hook call; "shuttle": on EVERY hook call one level moves between two neighbouring wet cells, the direction
+		/// flipping each call (volume and bounds kept, so only the settling law should see it). After the flags, never in a
+		/// normal run (Plant is null).</summary>
+		public static string Plant;
+		public static long Planted;
 		public static string CurrentCase = "(none)";
 		public static readonly List<(FieldInfo f, object v)> Forced = new List<(FieldInfo, object)>();
 		public static readonly List<FieldInfo> Tracked = new List<FieldInfo>();
@@ -64,6 +73,32 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 		{
 			HookCalls++;
 			if (Override) foreach (var (f, v) in Forced) f.SetValue(k, v);
+			if (Plant == "shuttle" && k.depth != null && k.water != null)
+			{
+				// one level between the first wet cell and the first OTHER dug cell with a level of room, the direction
+				// flipping each call, so the grid never holds one state (volume and bounds kept)
+				int U = RM_LevelSolve.U, a = -1, b = -1;
+				for (int i = 0; i < k.depth.Length && (a < 0 || b < 0); i++)
+				{
+					if (k.depth[i] == 0) continue;
+					if (a < 0 && k.water[i] >= U && k.water[i] + U <= k.depth[i] * U) a = i;
+					else if (b < 0 && k.water[i] >= U && k.water[i] + U <= k.depth[i] * U) b = i;
+				}
+				if (a >= 0 && b >= 0)
+				{
+					int from = HookCalls % 2 == 0 ? a : b, to = from == a ? b : a;
+					k.water[from] -= U; k.water[to] += U; Planted++;
+				}
+			}
+			if (Plant != null && Plant != "shuttle" && HookCalls % 7 == 3 && k.depth != null && k.water != null)
+			{
+				for (int i = 0; i < k.depth.Length; i++)
+				{
+					if (k.depth[i] == 0) continue;
+					if (Plant == "volume" && k.water[i] > 0 && k.water[i] + RM_LevelSolve.U <= k.depth[i] * RM_LevelSolve.U) { k.water[i] += RM_LevelSolve.U; Planted++; break; }
+					if (Plant == "bounds") { k.depth[i] = 5; Planted++; break; }
+				}
+			}
 			if (!Record) return;
 			var sb = new StringBuilder();
 			foreach (var f in Tracked)
@@ -126,6 +161,8 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 			string outPath = Arg(args, "--out");
 			var track = (Arg(args, "--track", "") ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries);
 			MatrixFlags.Configure(Arg(args, "--set", ""), track);
+			MatrixFlags.Plant = Arg(args, "--plant");
+			if (MatrixFlags.Plant != null && MatrixFlags.Plant != "volume" && MatrixFlags.Plant != "bounds" && MatrixFlags.Plant != "shuttle") { Console.WriteLine("VV: unknown --plant " + MatrixFlags.Plant); return 2; }
 			if (GenM == null || RunM == null || DigsF == null) { Console.WriteLine("VV: FlowKernelFuzz.Gen/Run not found by reflection"); return 3; }
 			if (mode == "rates") return Rates(args, outPath);
 			if (mode == "suite") return Suite(args, outPath);
@@ -206,7 +243,7 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 					["config"] = config, ["family"] = fam, ["n_requested"] = fam.StartsWith("surface_random") ? 1000 : n, ["base_seed"] = baseSeed,
 					["attempted"] = attempted, ["completed"] = completed, ["failures"] = failures, ["exceptions"] = errors,
 					["timed_out"] = timedOut, ["unmeasured"] = unmeasured, ["seconds"] = Math.Round(sw.Elapsed.TotalSeconds, 2),
-					["kernel_pulses_hooked"] = MatrixFlags.HookCalls - hook0,
+					["kernel_pulses_hooked"] = MatrixFlags.HookCalls - hook0, ["plant"] = MatrixFlags.Plant, ["planted"] = MatrixFlags.Planted,
 					["failing_seeds"] = seeds, ["examples"] = examples,
 				};
 				anyUnmeasured |= unmeasured;

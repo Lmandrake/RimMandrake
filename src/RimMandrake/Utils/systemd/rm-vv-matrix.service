@@ -1,0 +1,19 @@
+# The shipped-settings fuzz matrix with its written laws (RIMMANDRAKE_REVIVE_SHIPPED_FUZZ_WITH_LAWS; owner 2026-11-12:
+# "offline randomized validation scripts with sanity checks and conservation laws/principles outlined that must be
+# obeyed. Keep it in please. Especially since it's offline."). Offline: a staged C# build and Windows dotnet.exe, no game.
+# Runs from the ops deploy (ops_clocks.json "deploy"). Reading: <agent storage>/rimmandrake/vv_matrix/last.json.
+# NOT INSTALLED (lane brief: write it, record it UNRUN). Install, then add "rm-vv-matrix": "rm-vv-matrix.timer" to
+# ops_clocks.json "clocks" and close its item with --live "unit=rm-vv-matrix.timer reading=<last.json> max_age=30h":
+#   cp src/RimMandrake/Utils/systemd/rm-vv-matrix.{service,timer} ~/.config/systemd/user/
+#   systemctl --user daemon-reload && systemctl --user enable --now rm-vv-matrix.timer
+[Unit]
+Description=RimMandrake shipped-settings fuzz matrix with its laws (offline)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Nice=15
+TimeoutStartSec=8h
+# Sundays add the law proof (each law family must go red under its planted break)
+ExecStart=/bin/sh -c 'if [ "$(date +%%u)" = 7 ]; then exec python3 src/RimMandrake/Utils/vv_matrix_clock.py --prove; else exec python3 src/RimMandrake/Utils/vv_matrix_clock.py; fi'

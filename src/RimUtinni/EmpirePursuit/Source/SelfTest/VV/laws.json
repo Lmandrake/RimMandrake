@@ -1,0 +1,107 @@
+{
+ "mod": "EmpirePursuit",
+ "ticket": "RIMMANDRAKE_REVIVE_SHIPPED_FUZZ_WITH_LAWS",
+ "about": "Sanity principles the EmpirePursuit ladder kernel must obey at the shipped gates. The EmpirePursuitFuzz ladder family is a DIFFERENTIAL check: every decision of the kernel is compared with a written spec model, so most laws read 'agrees with the spec', and the direct invariants back them. Each family names a planted kernel defect from src/RimMandrake/Utils/mutate_empirepursuit_fuzz.py that must turn the fuzz red through one of its laws.",
+ "laws": [
+  {
+   "id": "fire_gate_agrees_with_spec",
+   "family": "fire_gate",
+   "matrix_family": "ladder",
+   "sentence": "The fire gate (shut inside the storyteller spacing, while terminal, or while a contact is live) equals the written spec's gate on every step.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "FireGate {gate} vs spec {sgate}"
+   }
+  },
+  {
+   "id": "fire_decision_agrees_with_spec",
+   "family": "fire_gate",
+   "matrix_family": "ladder",
+   "sentence": "Whether the ladder fires equals the written spec's decision.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "fire decision {fire} vs spec {sfire}"
+   }
+  },
+  {
+   "id": "never_fires_inside_storyteller_spacing",
+   "family": "fire_gate",
+   "matrix_family": "ladder",
+   "sentence": "A ladder rung never fires within the storyteller spacing of the last storyteller raid.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "fired inside the storyteller spacing"
+   }
+  },
+  {
+   "id": "ladder_state_agrees_with_spec",
+   "family": "ladder_state",
+   "matrix_family": "ladder",
+   "sentence": "Each map's ladder state (next rung, terminal, timers) equals the written spec's after every step.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "map {i} nextRung kernel {t.nextRung} vs spec {s.next}"
+   }
+  },
+  {
+   "id": "rung_index_agrees_with_spec",
+   "family": "ladder_state",
+   "matrix_family": "ladder",
+   "sentence": "The next rung the kernel picks equals the written spec's pick, from the same state.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "NextRungIndex {idx} vs spec {sidx}"
+   }
+  },
+  {
+   "id": "never_fires_below_next_rung",
+   "family": "ladder_state",
+   "matrix_family": "ladder",
+   "sentence": "A fired rung is never below the ladder's next rung (the ladder never steps back by firing).",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "fired a rung below nextRung"
+   }
+  },
+  {
+   "id": "contact_outcome_agrees_with_spec",
+   "family": "contact",
+   "matrix_family": "ladder",
+   "sentence": "A contact's outcome and its visibility change equal the written spec's for its kind.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "contact outcome {o} vs spec {so} on {d.kind}"
+   }
+  },
+  {
+   "id": "never_scheduled_in_the_past",
+   "family": "contact",
+   "matrix_family": "ladder",
+   "sentence": "A postponed or revived rung is always scheduled after the current tick, never at or before it.",
+   "check": {
+    "file": "src/RimUtinni/EmpirePursuit/Source/SelfTest/Fuzz/EmpirePursuitFuzz.cs",
+    "text": "would be scheduled at or before this tick"
+   }
+  }
+ ],
+ "families": {
+  "fire_gate": {
+   "plant": {
+    "kind": "mutation",
+    "name": "spacing off by a tick"
+   }
+  },
+  "ladder_state": {
+   "plant": {
+    "kind": "mutation",
+    "name": "Resolve ignores the floor"
+   }
+  },
+  "contact": {
+   "plant": {
+    "kind": "mutation",
+    "name": "probe timeout without the extra day"
+   }
+  }
+ }
+}

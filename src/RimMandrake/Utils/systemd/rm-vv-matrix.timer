@@ -1,0 +1,9 @@
+[Unit]
+Description=Shipped-settings fuzz matrix nightly at 02:40 local (Sundays add the law proof)
+
+[Timer]
+OnCalendar=*-*-* 02:40:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

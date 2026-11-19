@@ -1,0 +1,188 @@
+{
+ "mod": "FlowWorks",
+ "ticket": "RIMMANDRAKE_REVIVE_SHIPPED_FUZZ_WITH_LAWS",
+ "about": "Conservation laws and sanity principles the FlowWorks kernel must obey at the settings it SHIPS. Each law names the fuzz family of src/RimMandrake/Utils/vv_shipped_matrix.py that checks it and the exact assertion text in source; each family names a planted break that must turn it red (python3 src/RimMandrake/Utils/vv_laws.py prove FlowWorks).",
+ "laws": [
+  {
+   "id": "ledger_balances_every_pulse",
+   "family": "conservation",
+   "matrix_family": "kernel_fuzz",
+   "sentence": "The kernel's own ledger balances on every pulse: what it records moving in equals what it records moving out.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "kernel ledger"
+   }
+  },
+  {
+   "id": "volume_in_equals_out_plus_stored",
+   "family": "conservation",
+   "matrix_family": "kernel_fuzz",
+   "sentence": "Water is conserved: total volume after a pulse equals the volume before, plus declared external input (rain, limitless sources), minus what sinks drained.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "total volume"
+   }
+  },
+  {
+   "id": "sink_drain_accounted_cell_by_cell",
+   "family": "conservation",
+   "matrix_family": "kernel_fuzz",
+   "sentence": "Every decilitre a sink drains is accounted to a sink cell that held it at the start of the pulse.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "cells account for"
+   }
+  },
+  {
+   "id": "fluids_never_turn_into_each_other",
+   "family": "conservation",
+   "matrix_family": "kernel_fuzz",
+   "sentence": "Each fluid is conserved on its own: no pulse turns one fluid into another.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "one fluid became another"
+   }
+  },
+  {
+   "id": "fill_within_depth_within_four",
+   "family": "bounds",
+   "matrix_family": "kernel_fuzz",
+   "sentence": "No negative or overfilled cell: 0 <= fill <= depth <= 4 everywhere, every pulse.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "0<=F<=D<=4 broken"
+   }
+  },
+  {
+   "id": "water_never_above_the_brim",
+   "family": "bounds",
+   "matrix_family": "kernel_fuzz",
+   "sentence": "A cell's exact water is never negative and never above its brim (depth x U decilitres).",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "exact water above the brim"
+   }
+  },
+  {
+   "id": "finite_body_never_overdrawn",
+   "family": "bounds",
+   "matrix_family": "kernel_fuzz",
+   "sentence": "A finite liquid body is never debited below zero: its stock stays >= 0.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "unaffordable debit"
+   }
+  },
+  {
+   "id": "settled_scene_reaches_fixed_point",
+   "family": "settling",
+   "matrix_family": "kernel_fuzz",
+   "sentence": "With its inputs exhausted or steady, a scene settles: after the longest viscosity stride twice over it holds one state for 24 more pulses (no shuttle).",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "no fixed point after"
+   }
+  },
+  {
+   "id": "flow_order_is_strict",
+   "family": "flow_order",
+   "matrix_family": "seq_orders",
+   "sentence": "The flow order is strict: a level never may flow to its own cell, never both ways between two cells, never round a 3-cycle.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "MayFlowBetween reflexive"
+   }
+  },
+  {
+   "id": "flow_order_has_no_shuttle",
+   "family": "flow_order",
+   "matrix_family": "seq_orders",
+   "sentence": "No pair of cells may each flow into the other (a level would shuttle).",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "MayFlowBetween symmetric pair"
+   }
+  },
+  {
+   "id": "candidate_preference_is_total",
+   "family": "flow_order",
+   "matrix_family": "seq_orders",
+   "sentence": "Choosing between two different candidates always prefers exactly one of them.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "PrefersCandidate not a strict total order"
+   }
+  },
+  {
+   "id": "conversion_never_overspends_input",
+   "family": "conversion",
+   "matrix_family": "seq_conversion",
+   "sentence": "A converter never runs more batches than its input, output room and accrued budget allow, and never leaves an affordable batch unrun.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "Batches={bn} in={inU}"
+   }
+  },
+  {
+   "id": "conversion_budget_never_negative",
+   "family": "conversion",
+   "matrix_family": "seq_conversion",
+   "sentence": "A converter's accrued budget never goes negative.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "accrued budget went negative"
+   }
+  },
+  {
+   "id": "conversion_keeps_recipe_ratio",
+   "family": "conversion",
+   "matrix_family": "seq_conversion",
+   "sentence": "Input consumed and output produced keep the recipe's ratio exactly.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
+    "text": "recipe ratio broken"
+   }
+  }
+ ],
+ "families": {
+  "conservation": {
+   "plant": {
+    "kind": "hook",
+    "name": "volume",
+    "what": "one whole level of water (U decilitres) appears from nowhere in a wet cell before a pulse"
+   }
+  },
+  "bounds": {
+   "plant": {
+    "kind": "hook",
+    "name": "bounds",
+    "what": "a dug cell's depth is set to 5 before a pulse"
+   }
+  },
+  "settling": {
+   "plant": {
+    "kind": "hook",
+    "name": "shuttle",
+    "what": "one level is moved back and forth between two neighbouring wet cells on alternate pulses (volume and bounds kept)"
+   }
+  },
+  "flow_order": {
+   "plant": {
+    "kind": "source",
+    "file": "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
+    "find": "\t\t\treturn recipientDepth > donorDepth;",
+    "replace": "\t\t\treturn recipientDepth >= donorDepth;",
+    "what": "equal depths may flow: the order becomes reflexive"
+   }
+  },
+  "conversion": {
+   "plant": {
+    "kind": "source",
+    "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+    "find": "\t\t\tn = Math.Min(n, inputAvailable / inputUnits);\n",
+    "replace": "",
+    "what": "batches are no longer capped by the input on hand"
+   }
+  }
+ }
+}

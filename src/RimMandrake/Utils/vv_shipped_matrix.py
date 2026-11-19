@@ -312,9 +312,11 @@ def sibling_sources():
     return sorted(n for n in names if n != "FlowWorks" and os.path.isdir(os.path.join(base, n, "Source")))
 
 
-def stage_flowworks(control=False):
-    """control=True: the same stage with RM_FlowKernel.cs replaced by CONTROL_REV's, and a minimal compile list."""
-    dest = STAGE + ("_control" if control else "")
+def stage_flowworks(control=False, source_plants=(), tag=""):
+    """control=True: the same stage with RM_FlowKernel.cs replaced by CONTROL_REV's, and a minimal compile list.
+    source_plants: (repo-relative file, find, replace) applied to the STAGED copy before the build (vv_laws.py prove); a
+    planted stage gets its own folder (tag), so a normal run never builds a planted file."""
+    dest = STAGE + ("_control" if control else "") + (("_plant_" + tag) if tag else "")
     os.makedirs(dest, exist_ok=True)
     # the selftests read the mod's shipped Defs/, Patches/ and Tools/ (call-site and data pins), so they are staged
     rels = ["src/RimMandrake/FlowWorks/Source/", "src/RimMandrake/FlowWorks/Defs/", "src/RimMandrake/FlowWorks/Patches/",
@@ -326,6 +328,8 @@ def stage_flowworks(control=False):
     rels += ["src/RimMandrake/%s/%s/" % (m, sub) for m in ("Contagion", "TheRot", "GelatinousSlime") for sub in ("About", "Defs")]
     rels += ["src/RimMandrake/%s/Source/" % m for m in sibling_sources()]
     _rsync(rels, dest)
+    for rel, find, repl in source_plants:
+        _patch(os.path.join(dest, rel), find, repl)
     st = os.path.join(dest, "src", "RimMandrake", "FlowWorks", "Source", "SelfTest")
     _patch(os.path.join(st, "FlowKernelFuzz.cs"), PULSE_ANCHOR, PULSE_HOOK)
     vv = os.path.join(st, "VV")
@@ -393,11 +397,11 @@ def setstr(cfg):
     return ";".join("%s=%s" % (k, (1 if v else 0) if isinstance(v, bool) else v) for k, v in sorted(cfg.items()))
 
 
-def rates(dll, out, config, cfg, ns, cap, scale):
+def rates(dll, out, config, cfg, ns, cap, scale, plant=None):
     for fam, n in ns.items():
         n = max(1, n // scale)
         args = ["rates", "--config", config, "--set", setstr(cfg) if cfg else "", "--families", fam, "--n", str(n),
-                "--base", str(BASE_SEED), "--cap-seconds", str(cap), "--out", winbuild.win(out)]
+                "--base", str(BASE_SEED), "--cap-seconds", str(cap), "--out", winbuild.win(out)] + (["--plant", plant] if plant else [])
         rc, so, se, dt = _run(dll, args)
         sys.stdout.write(so)
         if rc:
@@ -470,6 +474,9 @@ def main(argv=None):
         print("  %-22s = (scene)  <- %s ..." % (f, e))
     print("  scribe drift:", d["scribe_drift"] or "none")
     print("  owner's saved settings (%d of the %d adapter-read keys present in the file) differ on:" % (d["owner_keys_seen"], len(d["settings_read"])), d["owner_diff"] or "none")
+    import vv_laws
+    law_problems = vv_laws.lint_all()
+    print("== laws ==", "every law checkable" if not law_problems else "PROBLEMS: " + "; ".join(law_problems))
     lint = static_lint(d)
     print("== static flag lint ==")
     for r in lint:
@@ -478,6 +485,9 @@ def main(argv=None):
     if a.lint_only:
         return 0
 
+    if law_problems:
+        print("VERDICT: FAIL\n  the law lists are not checkable: a red cannot be named (vv_laws.py lint)")
+        return 1
     run_dir = os.path.join(STAGE + "_results", time.strftime("%Y%m%dT%H%M%S"))
     os.makedirs(run_dir, exist_ok=True)
     json.dump({k: v for k, v in d.items()}, open(os.path.join(run_dir, "derived.json"), "w"), indent=1, default=str)
@@ -549,7 +559,9 @@ def main(argv=None):
                                                " TIMEOUT" if r["timed_out"] else ""))
         if r["config"] == "SHIPPED" or r["config"].startswith("SHIPPED_GATES"):
             if r["failures"] or r["exceptions"] or r["timed_out"]:
-                verdict.append("%s red at shipped: %d/%d" % (r["family"], r["failures"], r["completed"]))
+                import vv_laws
+                verdict.append("%s red at shipped: %d/%d; laws broken: %s" % (r["family"], r["failures"], r["completed"],
+                                                                         vv_laws.name_failures(r) or "none named by a law (read the examples)"))
             if r["family"] in ("kernel_fuzz", "fills_from_limitless", "surface_random") and r.get("kernel_pulses_hooked", 0) <= 0:
                 verdict.append("%s: no kernel pulse went through the hook" % r["family"])
     if a.quick:
