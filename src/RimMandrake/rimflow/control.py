@@ -596,6 +596,56 @@ def lifted_owner(p=None):
     return out
 
 
+def owner_lifts(p=None):
+    """-> [(mod, date, his held words, his lifting words)] of every lift of his hold through the store, oldest first:
+    the mirror's `lifted` record (mod_owner_hold.mirror)."""
+    out = []
+    for a in _q("SELECT after, owner_said FROM acts WHERE kind='lift' ORDER BY rev", p=p):
+        try:
+            m, d, w = json.loads(a["after"])["lifted"]
+        except (ValueError, KeyError, TypeError):
+            continue
+        out.append((m, d, w, a["owner_said"] or ""))
+    return out
+
+
+def hold_owner(mod, said, date=None, p=None, now=None, extra=None):
+    """Write his hold on `mod` into the store, with his words (the one writer of his hold; mod_owner_hold.py hold, then
+    its mirror). The same words held again change nothing. -> switch()'s dict."""
+    if not (isinstance(said, str) and said.strip()):
+        raise Refused("his hold carries his words (--said)")
+    now = time.time() if now is None else now
+    d = date or utc(now)[:10]
+    if extra is None:       # a hold held again keeps the design pass he allowed on it
+        da = mod_holds(p, now).get(key(mod), {})
+        extra = {"design_allowed": da["design_allowed"]} if da.get("store") and da.get("design_allowed") else None
+    import hashlib
+    return switch("mod:" + key(mod), True, "his hold: " + said.strip(), layer="owner", said=said.strip(),
+                  owner_said=said.strip(), date=d, extra=extra, p=p, now=now, idem="hold:owner:%s:%s:%s" % (
+                      key(mod), d, hashlib.sha1(said.strip().encode("utf-8")).hexdigest()[:12]))
+
+
+def allow_design_owner(mod, said, date, p=None, now=None):
+    """Write his words allowing a design-only pass onto the store's row of his hold on `mod`. The hold stays. -> the
+    allowance. Raises KeyError when the store holds no row for it."""
+    if not (isinstance(said, str) and said.strip()):
+        raise Refused("allow-design takes his words (--said)")
+    now = time.time() if now is None else now
+    with txn(p) as c:
+        old = c.execute("SELECT * FROM switches WHERE scope=? AND layer='owner'", ("mod:" + key(mod),)).fetchone()
+        if not old:
+            raise KeyError("%s is not held" % mod)
+        try:
+            ex = json.loads(old["extra"]) if old["extra"] else {}
+        except ValueError:
+            ex = {}
+        ex["design_allowed"] = {"said": said.strip(), "date": date}
+        _act(c, "allow_design", "mod:" + key(mod), dict(old), {"design_allowed": ex["design_allowed"]},
+             "design pass allowed on his hold: %s" % said.strip(), owner_said=said.strip(), now=now)
+        c.execute("UPDATE switches SET extra=? WHERE scope=? AND layer='owner'", (json.dumps(ex), "mod:" + key(mod)))
+        return ex["design_allowed"]
+
+
 # ---------------------------------------------------------------- accounts (reserve, settle, void, grant)
 
 def _account(c, mod, resource, win, base, exclude_run=None, used=None):
@@ -2119,6 +2169,30 @@ def call_sites(root=None):
 
 # ---------------------------------------------------------------- the import (cutover)
 
+def import_owner(holds, p=None, now=None):
+    """Learn every row of his hold file the store lacks (`pipe init --import`, and mod_owner_hold.mirror before it
+    writes): a row of a hold he lifted is not learned, and a mod the store already holds keeps the store's row (the
+    store is the writer; the file is its mirror). Never removes a hold. -> lines."""
+    import hashlib
+    now = time.time() if now is None else now
+    out = []
+    lifted, held = lifted_owner(p), mod_holds(p, now)
+    for m, h in sorted(holds.items()):
+        if (m, h.get("date") or "", h["said"]) in lifted:   # a stale mirror row of a hold he lifted never holds again
+            out.append("owner hold %s already lifted: not imported" % m)
+            continue
+        if held.get(m, {}).get("store"):
+            out.append("owner hold %s already imported" % m)
+            continue
+        # the key carries his words: a new hold after a lift, same mod and day, is a new hold (round-four claim 10)
+        r = switch("mod:" + m, True, "his hold (mod_owner_hold.json): " + h["said"], layer="owner", said=h["said"],
+                   date=h.get("date"), idem="import:owner:%s:%s:%s" % (m, h.get("date"), hashlib.sha1(
+                       h["said"].encode("utf-8")).hexdigest()[:12]), p=p, now=now, per_ruling="mod_owner_hold.json",
+                   extra={k: v for k, v in h.items() if k == "design_allowed"} or None)
+        out.append("owner hold %s %s" % (m, "already imported" if r["replayed"] else "imported (%s)" % r["act"]["id"]))
+    return out
+
+
 def import_live(p=None, now=None, hold_file=None, concepts=None, voids_file=None):
     """Seed the store from today's records, idempotently (each import act carries an idempotency key): his owner holds
     (mod_owner_hold.json, his words and date), the pipeline pause (pause.json), the retired Relentless family OFF, the
@@ -2128,22 +2202,7 @@ def import_live(p=None, now=None, hold_file=None, concepts=None, voids_file=None
     out = []
     sys.path.insert(0, HERE) if HERE not in sys.path else None
     import mod_owner_hold as OH
-    holds = OH.load_file(hold_file or OH.PATH)
-    import hashlib
-    lifted, held = lifted_owner(p), mod_holds(p, now)
-    for m, h in sorted(holds.items()):
-        if (m, h.get("date") or "", h["said"]) in lifted:   # a stale mirror row of a hold he lifted never holds again
-            out.append("owner hold %s already lifted: not imported" % m)
-            continue
-        if held.get(m, {}).get("store") and held[m]["said"] == h["said"]:
-            out.append("owner hold %s already imported" % m)
-            continue
-        # the key carries his words: a new hold after a lift, same mod and day, is a new hold (round-four claim 10)
-        r = switch("mod:" + m, True, "his hold (mod_owner_hold.json): " + h["said"], layer="owner", said=h["said"],
-                   date=h.get("date"), idem="import:owner:%s:%s:%s" % (m, h.get("date"), hashlib.sha1(
-                       h["said"].encode("utf-8")).hexdigest()[:12]), p=p, now=now, per_ruling="mod_owner_hold.json",
-                   extra={k: v for k, v in h.items() if k == "design_allowed"} or None)
-        out.append("owner hold %s %s" % (m, "already imported" if r["replayed"] else "imported (%s)" % r["act"]["id"]))
+    out += import_owner(OH.load_file(hold_file or OH.PATH), p=p, now=now)
     r = switch("family:relentless", True, "Relentless is retired (owner 2026-11-13, design/RimMandrake/"
                "retired_loops_2026-11-13.md): its launch sites stay closed", idem="import:family:relentless", p=p,
                now=now, per_ruling="retired_loops_2026-11-13")
@@ -2560,6 +2619,12 @@ def doctor():
         blind = [r["unit"] for r in ghosts()["unreadable"]]
         if blind:
             lines.append("UNREADABLE in systemd (left started): %s" % blind)
+        sys.path.insert(0, HERE) if HERE not in sys.path else None
+        import mod_owner_hold as OH
+        try:
+            lines += OH.drift()[1]
+        except OH.Unreadable as e:
+            lines.append("owner hold mirror: could not look (%s)" % e)
         return OK, lines
     except Unreadable as e:
         return UNREADABLE, ["CONTROL UNREADABLE: %s" % e,

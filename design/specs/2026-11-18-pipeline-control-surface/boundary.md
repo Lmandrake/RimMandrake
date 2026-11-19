@@ -24,8 +24,12 @@ added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_
   testq wake) is named `unit:NAME`. Exactly one stop mode.
 - **why-on-every-write.** Every command that changes something carries `--why`. A granted look and lifting his hold
   carry his words.
-- **his-hold-as-a-file-row.** His hold is a row (mod, date, his words) in `mod_owner_hold.json`, brought in by
-  `pipe init --import`. The import may be run any number of times.
+- **his-hold-as-a-file-row.** His hold is a row (mod, date, his words) in the store, written by `mod_owner_hold.py
+  hold|lift|allow-design` with his words. `mod_owner_hold.json` is its mirror: the store rewrites it after each of
+  those writes (`mod_owner_hold.py mirror` rewrites it by hand), and a clone publishes it. A file row the store lacks
+  (a hand edit, a clone not yet synced) is learned into the store by `pipe init --import` or the next mirror; a mod the
+  store already holds keeps the store's words. The import may be run any number of times. Added 2026-11-19 by
+  `RIMMANDRAKE_BUILD_HOLD_FILE_MIRROR_HE_SAID_COMMISSION_ALL`.
 - **plain-paths.** Paths of clones and of the store are made of letters, digits, `-`, `_`, `.` and `/` (259 of 259
   pool clone names [measured 2026-11-19]). A launch with a `$` in one is refused by name before it is admitted. A
   deadline is 1 whole second or more.
@@ -70,6 +74,9 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   admitted. The launch raises and its run waits for `reconcile`, which closes it abandoned.
 - **two-threads-one-name.** Outside one-name-one-run (claim 2.1). Today each admission gets its own run id
   (be673ed895).
+- **a-crash-between-the-hold-and-its-mirror.** The process dies after the store commits his hold, lift or allowance
+  and before the file is rewritten. The store binds; the file is stale until the next mirror; `pipe doctor` prints the
+  drift and its fix (`mod_owner_hold.py mirror`). No alarm is raised.
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -135,6 +142,21 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **reused-name-runs-again.** A `reuse_name` launch is admitted again once its earlier run is over, and refused while
   that run is live. Tested by `t_reused_name_runs_again`.
 
+- **hold-file-mirrors-the-store.** `mod_owner_hold.py hold`, `lift` and `allow-design` write the store first, then
+  rewrite `mod_owner_hold.json` from the store's rows of his hold (his order kept, his lifts recorded with his
+  words). A mirror never drops a row the store lacks: it learns it first. A second mirror changes no byte. `pipe
+  doctor` says whether the file is in step. Tested by `t_hold_file_mirrors_the_store`.
+- **his-hold-lifts-only-with-his-words.** Only `mod_owner_hold.py lift <Mod> --said "<his words>"` lifts his hold.
+  `pipe on <Mod>`, `pipe on all`, `pipe undo` of the hold, a lift with no or blank words, a hand edit deleting the
+  file's row and an import of that edited file each leave the mod held. Tested by
+  `t_his_hold_lifts_only_with_his_words`.
+- **mirror-failure-is-an-alarm.** A mirror that cannot be written raises the alarm `control:owner_hold_mirror`, says
+  ALARM and exits 5. It lifts nothing: a new hold holds from the store, the file is left whole, a lift lifts only the
+  mod he named. The next mirror that is written clears the alarm. Tested by `t_mirror_failure_is_an_alarm`.
+- **held-stays-held-across-the-mirror.** The shipped hold file, learned into an empty store and mirrored back, holds
+  the same mods with the same words, dates and allowances, row for row. Tested by
+  `t_held_stays_held_across_the_mirror`.
+
 ## LIFE CYCLES (a move not listed here is a defect)
 
 - **run:** admitted → started → ended or killed. admitted → cancelled (an off came first), refused (at its start
@@ -142,7 +164,8 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   crossed. A name that never ran, or a `reuse_name` name whose run is over, may be admitted again under a new run id.
 - **held look:** held → charged or released. charged → voided.
 - **stop order:** pending → seen → done or escalated. escalated → back to pending or seen when the kill failed.
-- **switch:** on ↔ off, one row per scope and layer (ours, his). His layer moves only with his words. A timed off
+- **switch:** on ↔ off, one row per scope and layer (ours, his). His layer moves only with his words, through
+  `mod_owner_hold.py`, and each move rewrites his file's mirror. A timed off
   (`maturation_dispatch.py pause --until`) turns on by itself at its time, with no new act.
 
 The acts' copy in git (`infrastructure/state/control/acts.jsonl`, written by a timer) has its own page:

@@ -2,15 +2,15 @@
 """Acceptance for RIMMANDRAKE_HARDEN_PROMISE_TESTS_SEVEN_BREAKS_SLIPPED_PAST.
 
 Every promise on `design/specs/2026-11-18-pipeline-control-surface/boundary.md` is owed a test of its name in
-`selftest_control.py` (`boundary_check.py`). This holds one deliberately broken stand-in of `control.py` per promise
+`selftest_control.py` (`boundary_check.py`). This holds one deliberately broken stand-in of `control.py` (or of `mod_owner_hold.py`, for his hold's mirror) per promise
 (the breaks of `promise_tests_broken_on_purpose.md`, RIMMANDRAKE_BREAK_EACH_PROMISE_DOES_ITS_NAMED_TEST_FAIL) and
 runs that promise's named test against it, in a private copy of src/RimMandrake/{rimflow,Utils,contracts} (temp dir):
-the real control.py is never edited. First the unbroken copy must pass every named test (else a test that always
+the real files are never edited. First the unbroken copy must pass every named test (else a test that always
 fails would read as a catch). Then each break must turn its named test red.
 
   exit 0  PASS: every break rejected by its named test
   exit 1  FAIL: a break slipped past (its named test passed), each named
-  exit 3  COULD NOT LOOK: a break no longer matches control.py exactly once, the copy failed, or the unbroken copy
+  exit 3  COULD NOT LOOK: a break no longer matches its file exactly once, the copy failed, or the unbroken copy
           does not pass a named test (cause named); not a verdict about the tests
 
 `--only <promise> ...` runs those promises alone. A real `rm-probe` unit left by one break (a disabled kill leaves
@@ -45,7 +45,8 @@ if S.UNRUN:
 print("GREEN"); sys.exit(0)
 """
 
-BREAKS = {}     # promise -> (the break in one line, [(text in control.py, its replacement)])
+BREAKS = {}     # promise -> (the break in one line, [(text in control.py, its replacement)]); an edit of another rimflow
+#                 file is (that file's name, text, replacement)
 
 
 def brk(promise, what, *edits):
@@ -128,6 +129,18 @@ brk("permit-never-ghosts", "switch() leaves the permit alone when the all-switch
 brk("before-is-read", "undo() of an OFF ignores its before and always leaves the scope ON",
     ('            prior = json.loads(a["before"] or "null")     # the switch row this off replaced (before-is-read)',
      '            prior = None'))
+brk("hold-file-mirrors-the-store", "mod_owner_hold.mirror() learns no file row the store lacks",
+    ("mod_owner_hold.py", "    def change(doc):\n        C.import_owner(load_file(p))\n", "    def change(doc):\n"))
+brk("his-hold-lifts-only-with-his-words", "`pipe on` removes the switch rows of every layer, his included",
+    ('old = c.execute("SELECT * FROM switches WHERE scope=? AND layer=?", (scope, layer)).fetchone()',
+     'old = c.execute("SELECT * FROM switches WHERE scope=? AND (layer=? OR 1)", (scope, layer)).fetchone()'),
+    ('c.execute("DELETE FROM switches WHERE scope=? AND layer=?", (scope, layer))',
+     'c.execute("DELETE FROM switches WHERE scope=? AND (layer=? OR 1)", (scope, layer))'))
+brk("mirror-failure-is-an-alarm", "a mirror that cannot be written is swallowed: no alarm, exit 0",
+    ("mod_owner_hold.py", "        raise MirrorFailed(why)\n", "        return None\n"))
+brk("held-stays-held-across-the-mirror", "the mirror drops his design allowance from every row",
+    ("mod_owner_hold.py", '        if rows[m].get("design_allowed"):\n            r["design_allowed"]',
+     '        if False:\n            r["design_allowed"]'))
 brk("reused-name-runs-again", "_admit() never treats a reuse_name run as over",
     ('again = spec.get("reuse_name") and old is not None and old["state"] not in LIVE_STATES', "again = False"))
 
@@ -172,38 +185,47 @@ def main(argv):
             shutil.copytree(os.path.join(REPO, "src", "RimMandrake", d), os.path.join(tmp, "src", "RimMandrake", d),
                             symlinks=True, ignore=shutil.ignore_patterns("__pycache__"))
         rimflow = os.path.join(tmp, "src", "RimMandrake", "rimflow")
-        target = os.path.join(rimflow, "control.py")
-        with open(target, encoding="utf-8") as f:
-            orig = f.read()
-        want = hashlib.sha256(orig.encode("utf-8")).hexdigest()
+        files = {}      # name -> its unbroken text
+        for n in names:
+            for e in BREAKS[n][1]:
+                name = e[0] if len(e) == 3 else "control.py"
+                if name not in files:
+                    with open(os.path.join(rimflow, name), encoding="utf-8") as f:
+                        files[name] = f.read()
         blind = []
         for n in names:     # the control: the unbroken copy passes every named test
             word, line = run_test(rimflow, B.test_name(n))
             if word != "GREEN":
                 blind.append("%s: unbroken, %s is %s (%s)" % (n, B.test_name(n), word, line))
         for n in names:
-            if any(orig.count(old) != 1 for old, _new in BREAKS[n][1]):
-                blind.append("%s: its break no longer matches control.py exactly once" % n)
+            for e in BREAKS[n][1]:
+                name, old = (e[0], e[1]) if len(e) == 3 else ("control.py", e[0])
+                if files[name].count(old) != 1:
+                    blind.append("%s: its break no longer matches %s exactly once" % (n, name))
         if blind:
             print("COULD NOT LOOK control_promise_breaks: %s" % "; ".join(blind))
             return 3
         slipped = []
         for n in names:
             what, edits = BREAKS[n]
-            src = orig
-            for old, new in edits:
-                src = src.replace(old, new)
-            with open(target, "w", encoding="utf-8") as f:
-                f.write(src)
+            src = dict(files)
+            for e in edits:
+                name, old, new = e if len(e) == 3 else ("control.py",) + tuple(e)
+                src[name] = src[name].replace(old, new)
+            for name in files:
+                with open(os.path.join(rimflow, name), "w", encoding="utf-8") as f:
+                    f.write(src[name])
             try:
                 word, line = run_test(rimflow, B.test_name(n))
             finally:
-                with open(target, "w", encoding="utf-8") as f:
-                    f.write(orig)
-            with open(target, "rb") as f:
-                if hashlib.sha256(f.read()).hexdigest() != want:
-                    print("COULD NOT LOOK control_promise_breaks: the copy did not restore after %s" % n)
-                    return 3
+                for name in files:
+                    with open(os.path.join(rimflow, name), "w", encoding="utf-8") as f:
+                        f.write(files[name])
+            for name in files:
+                with open(os.path.join(rimflow, name), "rb") as f:
+                    if hashlib.sha256(f.read()).hexdigest() != hashlib.sha256(files[name].encode("utf-8")).hexdigest():
+                        print("COULD NOT LOOK control_promise_breaks: the copy did not restore after %s" % n)
+                        return 3
             if word in ("UNRUN", "ERROR"):
                 print("COULD NOT LOOK control_promise_breaks: %s under the break of %s: %s" % (word, n, line))
                 return 3

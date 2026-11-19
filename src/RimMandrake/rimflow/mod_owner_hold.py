@@ -19,8 +19,17 @@ ledger rows are still recorded by the tick. Names match by the last path part, s
 RimMandrake/Cauldron and Cauldron are one mod. An unreadable or malformed file raises Unreadable: a reader launches
 nothing it cannot prove unheld (never a calm "no holds").
 
+The control store (control.py) is the one writer of his hold; mod_owner_hold.json is its mirror, a read copy the store
+writes (item RIMMANDRAKE_BUILD_HOLD_FILE_MIRROR_HE_SAID_COMMISSION_ALL; page
+design/specs/2026-11-18-pipeline-control-surface/boundary.md). Every write below changes the store first, then rewrites
+the file from the store's rows. A file row the store lacks is learned into the store, never dropped; only `lift` with his
+words lifts. A mirror that cannot be written raises the alarm control:owner_hold_mirror and exits 5; the store's hold
+stands.
+
   mod_owner_hold.py show            the list, each with his words, date and lift command
+  mod_owner_hold.py hold <Mod> --said "<his words>" [--date D]   hold one (then publish mod_owner_hold.json)
   mod_owner_hold.py lift <Mod> --said "<his words>"   remove one (then publish mod_owner_hold.json)
+  mod_owner_hold.py mirror          rewrite the file from the store (after an alarm; pipe doctor shows drift)
   mod_owner_hold.py allow-design <Mod> --said "<his words>"   the hold stays on builds; his words on the row allow a
       design-only pass (designer_cleanse.py run refuses a held mod without them; item
       RIMMANDRAKE_UPGRADE_DESIGNER_CLEANSE_SIXTY_FOUR_BARS_LOCKED). Nothing else reads the field: no build, chain or
@@ -39,8 +48,16 @@ PATH = os.path.join(HERE, "mod_owner_hold.json")
 LIFT = 'python3 src/RimMandrake/rimflow/mod_owner_hold.py lift %s --said "<his words>"'
 
 
+MIRROR_ALARM = "control:owner_hold_mirror"
+MIRROR_FAILED = 5      # exit codes: 0 done, 1 refused (not held, no words), 3 could not look, 5 mirror alarm
+
+
 class Unreadable(Exception):
     pass
+
+
+class MirrorFailed(OSError):
+    """The store was written; its mirror file could not be. The store's hold binds; the alarm is raised."""
 
 
 def key(name):
@@ -147,18 +164,18 @@ def status(h):
 
 
 def lift(mod, said, path=None):
-    """Lift his hold on `mod`: in the control store (binds at once) and in the file (its published mirror). -> the hold
-    removed. Raises KeyError when neither holds it."""
+    """Lift his hold on `mod`: in the control store (binds at once), then the file is rewritten from the store (its
+    mirror). -> the hold removed. Raises KeyError when neither holds it, MirrorFailed (alarm raised) when the store
+    lifted it but the file could not be written. path: that file alone, no store (a fixture)."""
     p = path or os.environ.get("RM_OWNER_HOLD_FILE") or PATH
-    gone = None
     if path is None:
         import control as C
         f = load_file(p).get(key(mod))
         gone = C.lift_owner(key(mod), said, date=(f or {}).get("date"), held_said=(f or {}).get("said"))
-        if f is None:
-            if gone is None:
-                raise KeyError("%s is not held" % mod)
-            return gone
+        if f is None and gone is None:
+            raise KeyError("%s is not held" % mod)
+        _mirror_or_alarm(p, "lift %s" % key(mod))
+        return f or gone
 
     def change(doc):
         keep = [h for h in doc["holds"] if key(h.get("mod")) != key(mod)]
@@ -169,6 +186,127 @@ def lift(mod, said, path=None):
         doc.setdefault("lifted", []).append(dict(gone, lifted_said=said))
         return gone
     return _rewrite(p, change)
+
+
+def hold(mod, said, date=None):
+    """Hold `mod` with his words: the store first (binds at once), then the mirror. -> the store's row. Raises
+    ValueError on empty words, MirrorFailed (alarm raised) when the file could not be written."""
+    import control as C
+    if not (isinstance(said, str) and said.strip()):
+        raise ValueError("a hold needs his words")
+    if date is not None and not (isinstance(date, str) and date.strip()):
+        raise ValueError("a hold's date must be a non-blank date string")
+    p = os.environ.get("RM_OWNER_HOLD_FILE") or PATH
+    C.import_owner(load_file(p))        # the file's rows the store lacks are learned first, never dropped
+    C.hold_owner(key(mod), said, date=date)
+    _mirror_or_alarm(p, "hold %s" % key(mod))
+    return C.mod_holds()[key(mod)]
+
+
+def render(doc, rows, lifts):
+    """-> the mirror document: the file's other keys kept, `holds` = the store's rows of his hold (the file's order
+    first, then the rest by date and name), `lifted` = the file's record plus every store lift not yet in it. Pure."""
+    out = dict(doc)
+    order = [key(h.get("mod")) for h in doc.get("holds") or [] if isinstance(h, dict)]
+    mods = [m for m in dict.fromkeys(order) if m in rows]
+    mods += sorted((m for m in rows if m not in mods), key=lambda m: (rows[m].get("date") or "", m))
+    holds = []
+    for m in mods:
+        r = {"mod": m, "date": rows[m].get("date") or "", "said": rows[m].get("said") or ""}
+        if rows[m].get("design_allowed"):
+            r["design_allowed"] = rows[m]["design_allowed"]
+        holds.append(r)
+    out["holds"] = holds
+    old = {key(h.get("mod")): h for h in doc.get("holds") or [] if isinstance(h, dict)}
+    lifted = [x for x in doc.get("lifted") or [] if isinstance(x, dict)]
+    have = {(key(x.get("mod")), x.get("date") or "", x.get("said") or "", x.get("lifted_said") or "") for x in lifted}
+    for m, d, w, ls in lifts:
+        if (m, d, w, ls) in have:
+            continue
+        was = old.get(m) if old.get(m, {}).get("said") == w else None
+        lifted.append(dict(was or {"mod": m, "date": d, "said": w}, lifted_said=ls))
+        have.add((m, d, w, ls))
+    if lifted:
+        out["lifted"] = lifted
+    return out
+
+
+def _store_rows():
+    import control as C
+    return {m: r for m, r in C.mod_holds().items() if r.get("store")}, C.owner_lifts()
+
+
+def mirror(path=None):
+    """Rewrite the hold file from the store, under the file's lock: its rows the store lacks are learned first, so a
+    mirror never drops a hold. -> the document written. Clears the mirror alarm."""
+    import control as C
+    p = path or os.environ.get("RM_OWNER_HOLD_FILE") or PATH
+
+    def change(doc):
+        C.import_owner(load_file(p))
+        rows, lifts = _store_rows()
+        new = render(doc, rows, lifts)
+        doc.clear()
+        doc.update(new)
+        return new
+    out = _rewrite(p, change)
+    if _alarms_on():
+        try:
+            import refusal_contract as RC
+            if any(a.get("subject") == MIRROR_ALARM for a in RC.open_alarms()):
+                RC.clear(MIRROR_ALARM, "mod_owner_hold.json written from the store again")
+        except Exception as e:      # noqa: BLE001  a stale alarm is said, never fatal to a good mirror
+            print("mod_owner_hold: the mirror alarm could not be cleared: %s" % e, file=sys.stderr)
+    return out
+
+
+def _alarms_on():
+    """Alarms reach the real alarm store only from the live control store; a test names its own RM_REFUSAL_DIR."""
+    import control as C
+    return C.is_live() or bool(os.environ.get("RM_REFUSAL_DIR"))
+
+
+def _mirror_or_alarm(p, what):
+    try:
+        mirror(p)
+    except Exception as e:      # noqa: BLE001  any failure to write the mirror is the alarm, never a silent lift
+        why = ("%s is in the control store (binding now), but its mirror %s could not be written: %s: %s. Fix the "
+               "cause, then `python3 src/RimMandrake/rimflow/mod_owner_hold.py mirror`" % (what, p, type(e).__name__,
+                                                                                          e))
+        if _alarms_on():
+            try:
+                import refusal_contract as RC
+                RC.alarm(MIRROR_ALARM, why, family="control")
+            except Exception as e2:     # noqa: BLE001
+                why += " (and the alarm could not be raised: %s)" % e2
+        raise MirrorFailed(why)
+
+
+def drift(path=None):
+    """-> (in_step, lines): does the hold file read exactly as the store would write it? Reads only."""
+    p = path or os.environ.get("RM_OWNER_HOLD_FILE") or PATH
+    try:
+        with open(p, encoding="utf-8") as f:
+            doc = json.load(f)
+        load_file(p)
+        rows, lifts = _store_rows()
+    except (OSError, ValueError) as e:
+        raise Unreadable("%s: %s" % (p, e))
+    except Exception as e:      # noqa: BLE001  the store could not be read
+        raise Unreadable("the control store: %s" % e)
+    want = render(doc, rows, lifts)["holds"]
+    have = doc.get("holds") or []
+    if want == have:
+        return True, ["owner hold mirror: in step (%d hold(s))" % len(want)]
+    w, h = {x["mod"]: x for x in want}, {key(x.get("mod")): x for x in have}
+    lines = ["owner hold mirror DRIFT (%s): fix with `python3 src/RimMandrake/rimflow/mod_owner_hold.py mirror`" % p]
+    lines += ["  the file holds %s; the store does not (it still holds: every reader reads the file too)" % m
+              for m in sorted(set(h) - set(w))]
+    lines += ["  the store holds %s; the file does not" % m for m in sorted(set(w) - set(h))]
+    lines += ["  %s differs between file and store" % m for m in sorted(set(w) & set(h)) if w[m] != h[m]]
+    if len(lines) == 1:
+        lines.append("  the rows are in another order")
+    return False, lines
 
 
 def design_allowed(h):
@@ -186,6 +324,12 @@ def allow_design(mod, said, path=None, date=None):
     if date is not None and not (isinstance(date, str) and date.strip()):
         raise ValueError("allow-design's date must be a non-blank date string")
     p = path or os.environ.get("RM_OWNER_HOLD_FILE") or PATH
+    if path is None:        # the store first, then its mirror
+        import control as C
+        C.import_owner(load_file(p))
+        C.allow_design_owner(key(mod), said, date or datetime.date.today().isoformat())
+        _mirror_or_alarm(p, "allow-design %s" % key(mod))
+        return [h for h in load_file(p).values() if key(h["mod"]) == key(mod)][0]
 
     def change(doc):
         rows = [h for h in doc["holds"] if key(h.get("mod")) == key(mod)]
@@ -207,7 +351,39 @@ def main(argv=None):
     ap_.add_argument("mod")
     ap_.add_argument("--said", required=True, help="his words allowing a design-only pass")
     ap_.add_argument("--date", default=None, help="the day he said it (default today)")
+    hp = sub.add_parser("hold")
+    hp.add_argument("mod")
+    hp.add_argument("--said", required=True, help="his words holding it")
+    hp.add_argument("--date", default=None, help="the day he said it (default today)")
+    sub.add_parser("mirror")
     o = ap.parse_args(argv)
+    import control as C
+    try:
+        return _run(o)
+    except MirrorFailed as e:
+        print("ALARM %s: %s" % (MIRROR_ALARM, e), file=sys.stderr)
+        return MIRROR_FAILED
+    except (Unreadable, C.Unreadable) as e:     # could not look: nothing was decided, the cause is named
+        print("COULD NOT LOOK: %s (nothing changed; pipe doctor names the fix)" % e, file=sys.stderr)
+        return 3
+
+
+def _run(o):
+    import control as C
+    pub = 'publish it: ./publish -m "owner hold: %s %s" src/RimMandrake/rimflow/mod_owner_hold.json'
+    if o.cmd == "mirror":
+        doc = mirror()
+        print("mod_owner_hold.json written from the store (%d hold(s)); %s" % (len(doc["holds"]), pub % ("mirror",
+                                                                                                         "store")))
+        return 0
+    if o.cmd == "hold":
+        try:
+            hold(o.mod, o.said, date=o.date)
+        except (ValueError, C.Refused) as e:
+            print(str(e), file=sys.stderr)
+            return 1
+        print("held %s; %s" % (key(o.mod), pub % ("hold", key(o.mod))))
+        return 0
     if o.cmd == "show":
         hs = load()
         if not hs:
@@ -219,7 +395,7 @@ def main(argv=None):
     if o.cmd == "allow-design":
         try:
             allow_design(o.mod, o.said, date=o.date)
-        except (KeyError, ValueError) as e:
+        except (KeyError, ValueError, C.Refused) as e:
             print(str(e), file=sys.stderr)
             return 1
         print("design pass allowed on held %s; publish it: ./publish -m \"owner hold: allow design %s\" "
@@ -227,7 +403,7 @@ def main(argv=None):
         return 0
     try:
         lift(o.mod, o.said)
-    except KeyError as e:
+    except (KeyError, C.Refused) as e:
         print(str(e), file=sys.stderr)
         return 1
     print("lifted %s; publish it: ./publish -m \"owner hold: lift %s\" src/RimMandrake/rimflow/mod_owner_hold.json"

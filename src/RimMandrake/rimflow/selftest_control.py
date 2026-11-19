@@ -2186,6 +2186,191 @@ t_a_test_never_touches_the_live_store = t_stop_review_fixes
 t_ended_run_is_recorded_ended = t_end_receipt_outlives_its_clone
 
 
+# ---------------------------------------------------------------- his hold: the store writes, the file mirrors it
+
+OHTOOL = os.path.join(HERE, "mod_owner_hold.py")
+
+
+def ohcli(*args):
+    r = subprocess.run([PY, OHTOOL] + list(args), capture_output=True, text=True, timeout=60, env=dict(os.environ))
+    return r.returncode, (r.stdout or "") + (r.stderr or "")
+
+
+@contextlib.contextmanager
+def hold_fixture(rows, name="mirror"):
+    """A fresh store, a hold file of `rows` named by RM_OWNER_HOLD_FILE, alarms in a folder of the test's own."""
+    fresh()
+    d = os.path.join(TMP, name)
+    shutil.rmtree(d, ignore_errors=True)
+    os.makedirs(os.path.join(d, "alarms"))
+    hf = os.path.join(d, "mod_owner_hold.json")
+    with open(hf, "w", encoding="utf-8") as f:
+        json.dump({"_doc": "kept as written", "holds": rows}, f, indent=2)
+    saved = {k: os.environ.get(k) for k in ("RM_OWNER_HOLD_FILE", "RM_REFUSAL_DIR")}
+    os.environ["RM_OWNER_HOLD_FILE"], os.environ["RM_REFUSAL_DIR"] = hf, os.path.join(d, "alarms")
+    try:
+        yield hf
+    finally:
+        os.chmod(d, 0o755)
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
+def file_holds(hf):
+    with open(hf, encoding="utf-8") as f:
+        return {h["mod"]: h for h in json.load(f)["holds"]}
+
+
+def t_hold_file_mirrors_the_store():
+    """Promise hold-file-mirrors-the-store: hold, lift and allow-design write the store first; the file is then
+    rewritten from the store's rows; a file row the store lacks is learned into the store, never dropped."""
+    import mod_owner_hold as OH
+    with hold_fixture([{"mod": "Graffiti", "date": "2026-11-18", "said": "stop Graffiti now"},
+                       {"mod": "Cauldron", "date": "2026-11-16", "said": "stop the new biome mods work"}]) as hf:
+        rc, out = ohcli("hold", "Pyrelands", "--said", "hold Pyrelands too", "--date", "2026-11-19")
+        st = {m: r for m, r in C.mod_holds().items() if r.get("store")}
+        check(rc == 0 and st.get("Pyrelands", {}).get("said") == "hold Pyrelands too",
+              "mod_owner_hold.py hold writes his hold into the store with his words", (rc, out, sorted(st)))
+        check(set(st) == {"Graffiti", "Cauldron", "Pyrelands"}, "the file's rows the store lacked are learned into "
+                                                                 "the store, never dropped", sorted(st))
+        fh = file_holds(hf)
+        check(list(fh) == ["Graffiti", "Cauldron", "Pyrelands"] and fh["Pyrelands"]["said"] == "hold Pyrelands too",
+              "the file is rewritten from the store: his rows in their order, the new hold after them", list(fh))
+        check(json.load(open(hf))["_doc"] == "kept as written", "the mirror keeps the file's _doc")
+        rc, out = ohcli("allow-design", "Pyrelands", "--said", "design it", "--date", "2026-11-19")
+        st = C.mod_holds()
+        check(rc == 0 and st["Pyrelands"].get("design_allowed") == {"said": "design it", "date": "2026-11-19"}
+              and file_holds(hf)["Pyrelands"].get("design_allowed") == {"said": "design it", "date": "2026-11-19"},
+              "allow-design writes the store's row, then the mirror", (rc, out, st.get("Pyrelands")))
+        rc, out = ohcli("lift", "Cauldron", "--said", "go on Cauldron")
+        doc = json.load(open(hf))
+        check(rc == 0 and "Cauldron" not in C.mod_holds() and "Cauldron" not in file_holds(hf)
+              and any(x.get("mod") == "Cauldron" and x.get("lifted_said") == "go on Cauldron"
+                      for x in doc.get("lifted") or []),
+              "a lift leaves the store, then the mirror drops the row and keeps his lifting words", (rc, out))
+        before = open(hf, "rb").read()
+        OH.mirror()
+        OH.mirror()
+        check(open(hf, "rb").read() == before, "mirroring again changes no byte (the file is the store's copy)")
+        check(OH.drift()[0], "pipe doctor's drift check reads the mirror in step", OH.drift())
+        rc, out, _ = pipe("doctor")
+        check("owner hold mirror: in step" in out, "pipe doctor says the mirror is in step", out)
+        rows = json.load(open(hf))
+        rows["holds"].append({"mod": "Stillsand", "date": "2026-11-19", "said": "hand-added"})
+        json.dump(rows, open(hf, "w"))
+        ok, lines = OH.drift()
+        check(not ok and any("Stillsand" in x for x in lines), "a row the store lacks reads as drift, with its mod",
+              lines)
+        rc, out = ohcli("lift", "Graffiti", "--said", "go on Graffiti")
+        check(rc == 0 and "Stillsand" in file_holds(hf) and C.mod_holds().get("Stillsand", {}).get("store"),
+              "a lift of another mod keeps the hand-added row: the mirror learns it into the store first", (rc, out))
+        rows = json.load(open(hf))
+        rows["holds"].append({"mod": "LeaningScrub", "date": "2026-11-19", "said": "hand-added too"})
+        json.dump(rows, open(hf, "w"))
+        OH.mirror()
+        check("LeaningScrub" in file_holds(hf) and C.mod_holds().get("LeaningScrub", {}).get("store")
+              and OH.drift()[0], "a bare mirror learns a row the store lacks and keeps it in the file")
+
+
+def t_his_hold_lifts_only_with_his_words():
+    """Promise his-hold-lifts-only-with-his-words: only `mod_owner_hold.py lift <Mod> --said` lifts his hold. `pipe on
+    <Mod>`, `pipe on all`, `pipe undo` of the hold, a lift without words, a hand edit deleting the file's row and
+    `pipe init --import` of that edited file each leave it held."""
+    import mod_owner_hold as OH
+    with hold_fixture([], "lift_only") as hf:
+        rc, out = ohcli("hold", "Graffiti", "--said", "stop Graffiti", "--date", "2026-11-19")
+        act = C.mod_holds()["Graffiti"]["act"]
+
+        def held(what):
+            b = C.blocked(spec("lw-" + what.split()[0], mod="Graffiti")) or ""
+            check("HELD BY OWNER" in b and "Graffiti" in OH.load(), "after %s Graffiti is still held by him" % what, b)
+        check(rc == 0, "the hold is written", out)
+        held("the hold")
+        for args in (("on", "Graffiti"), ("on", "mod:Graffiti"), ("on", "all")):
+            rc, out, _ = pipe(*args, "--why", "try to lift it")
+            if args[1] != "all":
+                check("still HELD BY OWNER" in out, "`pipe %s` says his hold stays" % " ".join(args), out)
+            held("pipe " + " ".join(args))
+        rc, out, _ = pipe("undo", act, "--why", "try to undo his hold")
+        check(rc != 0, "`pipe undo` of his hold act is refused", (rc, out))
+        held("pipe undo")
+        rc, out = ohcli("lift", "Graffiti")
+        check(rc != 0, "a lift without --said is refused", rc)
+        held("lift-without-words")
+        rc, out = ohcli("lift", "Graffiti", "--said", "  ")
+        check(rc != 0, "a lift with blank words is refused", (rc, out))
+        held("lift-with-blank-words")
+        json.dump({"holds": []}, open(hf, "w"))
+        held("hand-edit deleting the row")
+        C.import_live(DB, hold_file=hf, concepts=[], voids_file=os.path.join(TMP, "novoids.jsonl"))
+        held("import of the edited file")
+        OH.mirror()
+        check("Graffiti" in file_holds(hf), "the next mirror writes the deleted row back from the store")
+        rc, out = ohcli("lift", "Graffiti", "--said", "go on Graffiti")
+        check(rc == 0 and C.blocked(spec("lw-z", mod="Graffiti")) is None and "Graffiti" not in OH.load(),
+              "`mod_owner_hold.py lift Graffiti --said` lifts it", (rc, out))
+
+
+def t_mirror_failure_is_an_alarm():
+    """Promise mirror-failure-is-an-alarm: a mirror that cannot be written raises the alarm control:owner_hold_mirror,
+    exits 5 and lifts nothing: a new hold holds from the store, the file is left whole, and the other holds stay."""
+    import mod_owner_hold as OH
+    import refusal_contract as RC
+    with hold_fixture([{"mod": "Graffiti", "date": "2026-11-18", "said": "stop Graffiti now"},
+                       {"mod": "Cauldron", "date": "2026-11-16", "said": "stop the new biome mods work"}],
+                      "mirror_fails") as hf:
+        OH.mirror()
+        before = open(hf, "rb").read()
+        os.chmod(os.path.dirname(hf), 0o555)      # the mirror's folder cannot be written
+        rc, out = ohcli("hold", "Stillsand", "--said", "hold Stillsand", "--date", "2026-11-19")
+        alarms = RC.open_alarms()
+        check(rc == 5 and "ALARM" in out, "a hold whose mirror cannot be written exits 5 and says ALARM", (rc, out))
+        check(any(a.get("subject") == "control:owner_hold_mirror" for a in alarms),
+              "the alarm control:owner_hold_mirror is raised", alarms)
+        check("HELD BY OWNER" in (C.blocked(spec("mf1", mod="Stillsand")) or "") and "Stillsand" in OH.load(),
+              "the new hold holds from the store though its mirror failed")
+        check(open(hf, "rb").read() == before, "the failed mirror leaves the file whole")
+        rc, out = ohcli("lift", "Graffiti", "--said", "go on Graffiti")
+        check(rc == 5 and set(OH.load()) == {"Cauldron", "Stillsand"},
+              "a lift whose mirror fails lifts only the mod he named: the rest stay held", (rc, out, sorted(OH.load())))
+        os.chmod(os.path.dirname(hf), 0o755)
+        rc, out = ohcli("mirror")
+        check(rc == 0 and set(file_holds(hf)) == {"Cauldron", "Stillsand"} and OH.drift()[0],
+              "`mod_owner_hold.py mirror` writes the file from the store once it can", (rc, out))
+        check(not any(a.get("subject") == "control:owner_hold_mirror" for a in RC.open_alarms()),
+              "a mirror written again clears its alarm")
+        saved = os.environ["RM_CONTROL_DB"]
+        os.environ["RM_CONTROL_DB"] = os.path.join(TMP, "gone-hold.db")
+        try:
+            rc, out = ohcli("hold", "FlowWorks", "--said", "hold it")
+        finally:
+            os.environ["RM_CONTROL_DB"] = saved
+        check(rc == 3 and "COULD NOT LOOK" in out and "FlowWorks" not in file_holds(hf),
+              "a hold on an unreadable store exits 3, could not look, and writes no mirror row", (rc, out))
+
+
+def t_held_stays_held_across_the_mirror():
+    """Promise held-stays-held-across-the-mirror: the shipped hold file, learned into an empty store and mirrored back,
+    holds the same mods with the same words, dates and allowances, row for row, so the cutover changes no hold."""
+    import mod_owner_hold as OH
+    shipped = json.load(open(OH.PATH, encoding="utf-8"))
+    with hold_fixture(shipped["holds"], "shipped") as hf:
+        before = OH.load_file(hf)
+        OH.mirror()
+        after_store = {m: r for m, r in C.mod_holds().items() if r.get("store")}
+        after = OH.load()
+        check(sorted(after_store) == sorted(before) == sorted(after), "the store holds the shipped mods after the "
+              "mirror, and every reader still reads them held", (sorted(before), sorted(after_store)))
+        check(json.load(open(hf))["holds"] == shipped["holds"], "the mirrored rows equal the shipped rows exactly "
+                                                                 "(words, dates, allowances, order)")
+        check(all(after_store[m]["said"] == before[m]["said"] and after_store[m]["date"] == before[m]["date"]
+                  and after_store[m].get("design_allowed") == before[m].get("design_allowed") for m in before),
+              "each store row carries his words, date and design allowance")
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
@@ -2195,7 +2380,8 @@ def main():
               t_reused_name_runs_again, t_end_receipt_outlives_its_clone,
               t_stop_reaches_the_agent, t_kill_verified_dead, t_killed_run_needs_no_hand_step,
               t_stopped_run_spends_no_trial, t_probe_never_lies, t_same_command_twice, t_every_change_is_an_act,
-              t_permit_never_ghosts, t_before_is_read):
+              t_permit_never_ghosts, t_before_is_read, t_hold_file_mirrors_the_store,
+              t_his_hold_lifts_only_with_his_words, t_mirror_failure_is_an_alarm, t_held_stays_held_across_the_mirror):
         print("== %s" % t.__name__)
         try:
             t()
