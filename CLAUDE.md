@@ -313,7 +313,7 @@ and keep file writes and commits in separate Bash calls (hooks refuse a compound
 clones and 80 GB is approved** (GB line raised from 70 on 2026-11-18, owner: "You set the GB limit, so yes do as you think.") for writers above 4 (owner: "I trust you, but please monitor them carefully. They seem to
 propagate prolifically."), refused at creation by `scratch_clone.py` (an idle pushed clone is
 reused first); `scratch_clone.py` reports count, GB, oldest; one alarm, `disk.pool_breach`; any helper clone with unlanded work
-(pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
+(pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 80 GB. A committed mod DLL
 travels with its `.srchash`. More: `standing_rulings.md` §Git.
 
 ## Each mod has its own Design Version
