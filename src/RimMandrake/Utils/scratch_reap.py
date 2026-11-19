@@ -1366,13 +1366,63 @@ def needles(p: Path, kind: str) -> list[str]:
     return sorted(n)
 
 
-def mention_blocks(f: str, line: str, now: float) -> bool:
+def stamp_of_closed_item(f: str, ev: dict, needle: str | None) -> bool:
+    """The event names `needle` only in its own `session` stamp, and its item's prose sits in items/closed/: the stamp
+    says which session ran the item, not that anyone uses the dir. Every detached helper's claim/start carried one,
+    and each pinned its session for MENTION_DAYS (session_stale 203, 2026-11-16). Unknown either way: False (pins)."""
+    if not needle or ev.get("session") != needle or needle in json.dumps({k: v for k, v in ev.items() if k != "session"}):
+        return False
+    item = str(ev.get("id") or "")
+    parts = Path(f).parts
+    if not item or "/" in item or parts[-5:-1] != ("infrastructure", "state", "ledger", "events"):
+        return False
+    items = Path(*parts[:-5]) / "infrastructure" / "state" / "items"
+    if (items / f"{item}.md").exists():
+        return False
+    return (items / "closed" / f"{item}.md").is_file() or item in ended_items()
+
+
+LIFECYCLE = re.compile(r'"event":\s*"(close|drop|supersede|claim|start|file|live|reclaim|reconcile|implemented|block|unblock)"')
+ENDS = ("close", "drop", "supersede")
+_ENDED: tuple[int, set[str]] | None = None
+
+
+def ended_items() -> set[str]:
+    """Items whose last lifecycle event in the ledger corpus is a close, drop or supersede: an item with no prose file
+    lives only there (125 of 145 still-pinned session stamps, 2026-11-18). A later live, claim or file reads open.
+    Built once per corpus load."""
+    global _ENDED
+    c = corpus()
+    if _ENDED is not None and _ENDED[0] == id(c):
+        return _ENDED[1]
+    last: dict[str, tuple[str, str]] = {}
+    for f, text in c:
+        if not f.endswith(".jsonl"):
+            continue
+        for line in text.splitlines():
+            m = LIFECYCLE.search(line)
+            if not m:
+                continue
+            try:
+                ev = json.loads(line)
+                item, ts = str(ev["id"]), str(ev["ts"])
+            except (ValueError, KeyError, TypeError):
+                continue
+            if item not in last or ts >= last[item][0]:
+                last[item] = (ts, m.group(1))
+    _ENDED = (id(c), {i for i, (_, e) in last.items() if e in ENDS})
+    return _ENDED[1]
+
+
+def mention_blocks(f: str, line: str, now: float, needle: str | None = None) -> bool:
     """An old mention is history and a bundle keeps the work; an open item, a unit, or anything recent still holds.
     A mention we cannot date holds."""
     limit = MENTION_DAYS * 86400
     if f.endswith(".jsonl"):
         try:
             ev = json.loads(line)
+            if stamp_of_closed_item(f, ev, needle):
+                return False
             # a note on the cleaner's own items that lists what it refused is a report of the refusal, not a use of the
             # directory: letting it pin made every refusal write the note that renewed the next week's refusal
             if str(ev.get("id") or "").startswith(SELF_ITEMS) or (
@@ -1407,7 +1457,7 @@ def ledger_mentions(p: Path, kind: str, now: float | None = None) -> list[str]:
             found = None
             for m in rx.finditer(text):
                 line = text[text.rfind("\n", 0, m.start()) + 1: (text.find("\n", m.end()) + 1 or len(text) + 1) - 1]
-                if mention_blocks(f, line, now):
+                if mention_blocks(f, line, now, nd):
                     found = line
                     break
             if found is not None:
