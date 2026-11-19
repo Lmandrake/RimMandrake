@@ -830,7 +830,10 @@ def set_account(mod, res, n, why, measured=None, verb="set", owner_said=None, pe
         c.execute(ADJ_SQL)
         off = sum(r["delta"] or 0 for r in _adj(c, mod, res, "count"))
         raw = (measured + off) if _numeric(measured) else off
-        delta = n if verb == "add" else n - raw
+        if _numeric(measured):  # the count it reads lands exactly on the clamped target: no hidden debt below 0
+            delta = max(0, (max(0, raw) + n) if verb == "add" else n) - raw
+        else:
+            delta = n if verb == "add" else n - raw
         before = _used(c, mod, res, measured)
         a = _act(c, verb, "mod:%s/%s" % (mod, res), {"used": before, "measured": measured},
                  {"delta": delta, "reads": None}, why, owner_said, per_ruling, idem, now=now)
@@ -968,7 +971,7 @@ def _queue_rows(c):
 
 def _queue_order(rows, mods, members_only=True):
     mods = [key(m) for m in mods]
-    allm = mods + sorted(m for m, r in rows.items() if m not in mods and r["member"])
+    allm = mods + sorted(m for m, r in rows.items() if m not in mods and (r["member"] or not members_only))
     keep = [m for m in allm if not members_only or (rows.get(m) or {}).get("member", 1)]
     base = {m: i for i, m in enumerate(allm)}
     # a positioned mod sorts by its position; an unpositioned one keeps its shipped place after them
@@ -1012,27 +1015,31 @@ def queue_act(op, mod, why, n=None, mods=None, owner_said=None, per_ruling=None,
         before = _queue_order(rows, mods)
         a = _act(c, "queue", "mod:" + mod, {"order": before}, {"op": op, "n": n}, why, owner_said, per_ruling, idem,
                  now=now)
-        if op in ("drop", "add"):
-            pos = (rows.get(mod) or {}).get("pos")
-            if op == "add" and pos is None and mod not in [key(m) for m in mods]:
-                pos = max([r["pos"] for r in rows.values() if r["pos"] is not None] + [len(mods)]) + 1
+        unshipped = mod not in [key(m) for m in mods]
+        if op == "drop" or (op == "add" and not (unshipped and (rows.get(mod) or {}).get("pos") is None)):
+            # membership only: a dropped mod keeps its position, an added one returns to it (critique 23)
             c.execute("INSERT OR REPLACE INTO queue (mod, pos, member, act, at) VALUES (?,?,?,?,?)",
-                      (mod, pos, 1 if op == "add" else 0, a["id"], now))
+                      (mod, (rows.get(mod) or {}).get("pos"), 1 if op == "add" else 0, a["id"], now))
         else:
-            order = [m for m in before if m != mod]
-            at = 0 if op == "top" else len(order) if op == "bottom" else min(n - 1, len(order))
+            # a position: every member (and the target, member or not) is renumbered in the new order, so an
+            # unshipped mod added at the end leaves the others where they were; membership is never changed here
+            order = [m for m in _queue_order(rows, mods, members_only=False) if m != mod]
+            at = 0 if op == "top" else len(order) if op in ("bottom", "add") else min(n - 1, len(order))
             order.insert(at, mod)
             for i, m in enumerate(order):
-                member = (rows.get(m) or {}).get("member", 1)
+                r0 = rows.get(m) or {}
+                member = 1 if (m == mod and op == "add") else r0.get("member", 1)
                 c.execute("INSERT OR REPLACE INTO queue (mod, pos, member, act, at) VALUES (?,?,?,?,?)",
-                          (m, i + 1, 1 if m == mod else member, a["id"] if m == mod else (rows.get(m) or {}).get(
-                              "act"), now))
+                          (m, i + 1, member, a["id"] if m == mod else r0.get("act"), now))
         return {"act": a, "before": before, "after": _queue_order(_queue_rows(c), mods), "replayed": False}
 
 
 def shipped_advancing():
-    """-> maturation_dispatch.json's advancing list (the queue's base), read from this tree."""
-    with open(os.path.join(HERE, "maturation_dispatch.json"), encoding="utf-8") as f:
+    """-> maturation_dispatch.json's advancing list (the queue's base) from the live tick's tree (DISPATCH_ROOT), else
+    this tree: a queue edit renumbers against the list the tick reads (slice review 5). The tick may widen that list
+    with seeded Designer concepts before it applies the queue; those keep their place after the positioned mods."""
+    own = os.path.join(DISPATCH_ROOT, "src", "RimMandrake", "rimflow", "maturation_dispatch.json")
+    with open(own if os.path.isfile(own) else os.path.join(HERE, "maturation_dispatch.json"), encoding="utf-8") as f:
         return list(json.load(f).get("advancing") or [])
 
 
@@ -1053,7 +1060,10 @@ def cmd_queue(o):
                 "shipped list: %s" % " > ".join(mods)]
     if not o.mod:
         raise Refused("pipe queue %s <Mod>" % o.op)
-    m = scope_of(o.mod)[4:]
+    sc = scope_of(o.mod)
+    if not sc.startswith("mod:"):
+        raise Refused("pipe queue takes a mod, not %s" % sc)
+    m = sc[4:]
     r = queue_act(o.op, m, o.why or "", n=o.n, mods=mods, owner_said=o.owner_said, per_ruling=o.per_ruling,
                   idem=o.idem)
     if r["replayed"]:

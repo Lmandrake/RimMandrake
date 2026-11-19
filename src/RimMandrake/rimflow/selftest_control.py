@@ -1670,12 +1670,62 @@ def t_slice4():
           (r1.returncode, r1.stderr[-200:], ran_closed, ran_open, os.path.isdir(d)))
 
 
+def t_slices_review():
+    """Codex's review of slices 2-4 (RIMMANDRAKE_FIX_SLICE_REVIEW_TWENTY_FINDINGS_QUEUE_FIRST), findings 1-6, each red
+    on 1b79ae76b0; 7-20 are filed on that item."""
+    ship = ["A", "B", "C"]
+    fresh()
+    C.queue_act("drop", "B", "out", mods=ship)
+    C.queue_act("top", "B", "move a dropped one", mods=ship)
+    check(C.queue_apply(ship) == ["A", "C"], "slice review 1: moving a dropped mod keeps it out", C.queue_apply(ship))
+    fresh()
+    C.queue_act("add", "D", "a new member", mods=ship)
+    check(C.queue_apply(ship) == ["A", "B", "C", "D"], "slice review 2: adding a member keeps the others' order",
+          C.queue_apply(ship))
+    C.queue_act("drop", "D", "out again", mods=ship)
+    c = C.read()
+    try:
+        full = C._queue_order(C._queue_rows(c), ship, members_only=False)
+    finally:
+        c.close()
+    check("D" in full and "D" not in C.queue_apply(ship), "slice review 3: a dropped unshipped mod stays listed", full)
+    o = types_ns(op="add", mod="all", n=None, why="x", owner_said=None, per_ruling=None, idem=None)
+    try:
+        C.cmd_queue(o)
+        got = "accepted"
+    except C.Refused:
+        got = "refused"
+    check(got == "refused", "slice review 4: pipe queue add all is refused (a mod only)", got)
+    real_root = C.DISPATCH_ROOT
+    d = os.path.join(TMP, "dispatch_tree", "src", "RimMandrake", "rimflow")
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, "maturation_dispatch.json"), "w") as f:
+        json.dump({"advancing": ["X", "Y", "Z"]}, f)
+    C.DISPATCH_ROOT = os.path.join(TMP, "dispatch_tree")
+    try:
+        base = C.shipped_advancing()
+    finally:
+        C.DISPATCH_ROOT = real_root
+    check(base == ["X", "Y", "Z"], "slice review 5: queue verbs edit the live tick tree's shipped list", base)
+    fresh()
+    C.set_account("Graffiti", "coverage_runs", -5, "forgive", verb="add", measured=1)
+    r = C.set_account("Graffiti", "coverage_runs", 1, "one more", verb="add", measured=1)
+    check(C.used("Graffiti", "coverage_runs", 1) == 1 and r["after"] == 1,
+          "slice review 6: add -5 at 1 reads 0, then add +1 reads 1 (no hidden debt)",
+          C.used("Graffiti", "coverage_runs", 1))
+
+
+def types_ns(**k):
+    import types
+    return types.SimpleNamespace(**k)
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
               t_accounts, t_queue, t_review_round_four_p1,
-              t_slice4):
+              t_slice4, t_slices_review):
         print("== %s" % t.__name__)
         try:
             t()
