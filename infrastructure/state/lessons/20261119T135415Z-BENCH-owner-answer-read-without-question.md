@@ -1,0 +1,3 @@
+A short quoted answer of the owner's was built on as a ruling without the question it answered. Asked 2026-11-17 whether he had refused Peeper r2 for its facing size, he said 'Correct, not size.' (he no longer wanted the animal); two commits (a6deeef803, e4b1bbdf5e) read it as 'facing size is advisory' and stopped the art judge from refusing size jumps for two days, until he corrected it 2026-11-19 ('Allow the Judge to bounce incorrectly sized creatures'). Before citing a short answer of his (yes/no/'correct'/'not X') as a rule, quote the question beside the answer, and build only what that pair says.
+item: RIMMANDRAKE_RECONCILE_FACING_SCALE_GATE_WITH_SIZE_ADVISORY_ONLY
+home: deciding-and-superseding

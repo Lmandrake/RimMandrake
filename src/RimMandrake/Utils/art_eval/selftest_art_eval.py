@@ -230,20 +230,18 @@ def tuning_checks():
 
     # --- (b)/(c) measured hooks: inert without the policy keys; floor fails closed on a missing confidence
     pol = P.load_policy()
-    check("shipped F_SIZE_JUMP is never blocking (owner 2026-11-17 'Correct, not size.')", P.severity("F_SIZE_JUMP", {}, pol) == "polish")
     check("tuning keys OFF in severity_policy.md (replay: they pass purged art)",
           "measured" not in pol and "polish_below_confidence" not in pol["codes"]["DEPARTURE_MISSING"], pol.get("measured"))
     inv = P.card_facts({"invented": True, "gates": {"height_spread": 0.01}}, pol)
     check("no measured block -> no size_steady fact", "size_steady" not in inv, inv)
     p2 = copy.deepcopy(pol)
     p2["measured"] = {"size_steady_max_spread": 0.3}
-    p2["codes"]["F_SIZE_JUMP"]["default"] = "blocking"  # mechanism test on a copy; the shipped default is polish (owner 2026-11-17)
     p2["codes"]["F_SIZE_JUMP"]["polish_when"] = ["size_steady"]
     p2["codes"]["DEPARTURE_MISSING"]["polish_below_confidence"] = 0.5
     f_lo = P.card_facts({"invented": True, "gates": {"height_spread": 0.3}}, p2)
     f_hi = P.card_facts({"invented": True, "gates": {"height_spread": 0.31}}, p2)
     check("size_steady at/below the measured spread only", "size_steady" in f_lo and "size_steady" not in f_hi)
-    check("polish_when size_steady mechanism (copy with blocking default)", P.severity("F_SIZE_JUMP", f_lo, p2) == "polish"
+    check("F_SIZE_JUMP polish only when size_steady", P.severity("F_SIZE_JUMP", f_lo, p2) == "polish"
           and P.severity("F_SIZE_JUMP", f_hi, p2) == "blocking")
     check("confidence floor: below -> polish, at/above or missing/garbage -> blocking",
           [P.severity("DEPARTURE_MISSING", f_hi, p2, c) for c in (0.49, 0.5, None, "x")]

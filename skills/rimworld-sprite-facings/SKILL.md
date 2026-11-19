@@ -109,9 +109,6 @@ check had run (BENCH 2026-09-17).
 
 - 🔴 **Run a cross-facing size audit at WIRING time, for every creature facing
   set** — major-axis bbox spread across facings, flag anything over 15%. The
-  measured gate is `src/RimMandrake/Utils/art/facing_scale_lint.py` (owner
-  2026-10-15); the art judge reports a facing size jump as advice only and never
-  refuses or regenerates on it (owner 2026-11-17 "Correct, not size."). The
   sprite validator's structural gates check each facing against its own
   reference; they do not check facings against EACH OTHER, and that gap is
   exactly the anooba-looks-huge defect class (2026-09-16 audit: all 12 sets

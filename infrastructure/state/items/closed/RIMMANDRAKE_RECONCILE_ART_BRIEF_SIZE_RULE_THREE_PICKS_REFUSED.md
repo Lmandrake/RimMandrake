@@ -32,6 +32,16 @@ reads `art_judge_brief  CALIBRATED`. Watched failing 2026-11-17: FAILED, came ou
 - The brief's C2 and D4 lines are settled by the criteria fixer or by him, with his three picks as evidence.
 - The brief reads CALIBRATED at its new text, all 13 cases as planted.
 
+## correction 2026-11-19
+
+His 2026-11-17 "Correct, not size." answered the question "did you refuse Peeper r2 because of its facing size?": he
+purged it because he no longer wanted that animal. It was never a ruling about facing size, and the C2 rewording this
+item closed on (a6deeef803) is undone. Owner 2026-11-19 5:40 AM PST: "Allow the Judge to bounce incorrectly sized
+creatures". C2 refuses a facing size fault again; Peeper r2 is a planted refuse case again (C2 refuses it on size);
+his Durrok r2 and Gawpsack picks were style calls ("I was undoubtedly expressing style decisions.") and are `taste`
+rows, no planted case, because C2 may refuse both on size. The brief reads UNTESTED until
+`refusal_contract.py calibrate --model art_judge_brief` runs on the new text (11 planted cases).
+
 ## refs
 
 file: design/RimMandrake/art_judge_brief.md
