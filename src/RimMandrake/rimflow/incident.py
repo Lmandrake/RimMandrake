@@ -284,7 +284,7 @@ def revisit_reads(inc, status, bad, signals):
 
 def clock_unit_s(metric):
     """Seconds per unit of a metric whose value is "how long", or None for a plain value. A clock is graded by its rate:
-    one rising at one unit per unit of time only aged (lesson 20261117T015539Z-CONDUCTOR). plan.days_since_advance ages
+    one rising at one unit per unit of time only aged (lesson 20261119T033457Z-CONDUCTOR). plan.days_since_advance ages
     1/24 an hour and was read as news every hour (RIMMANDRAKE_QUIET_OPS_REPEATS_AGING_COUNTS_AS_NEWS: 6 of 42 incident
     launches named it)."""
     if NOT_CLOCK.search(metric):

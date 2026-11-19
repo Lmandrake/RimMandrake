@@ -1280,7 +1280,7 @@ def t_owner_said_authorizes_where_no_seat_is_configured():
 
 def t_note_with_an_owner_flag_is_his_and_help_says_so():
     """A note with --per-ruling is OWNER-authored by design (owner card 2026-10-11: the flag acts as OWNER), so it lands
-    as seat OWNER, in OWNER.jsonl; a helper's plain note takes --why alone (lesson 20261115T202149Z). `note --help`
+    as seat OWNER, in OWNER.jsonl; a helper's plain note takes --why alone (lesson 20261118T221239Z). `note --help`
     says so, the place the trap was hit."""
     fresh()
     ok("file", "NOTE_RULING_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")

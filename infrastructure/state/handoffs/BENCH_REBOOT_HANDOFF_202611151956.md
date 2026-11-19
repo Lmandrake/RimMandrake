@@ -52,7 +52,7 @@ He is at the keyboard (last typed ~11:56 AM PST). Nothing is waiting on a card. 
 <!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it with `lessons.py add` the moment it is learned, then cite `(filed: lessons)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
 - `claude-account use` refuses inside a Claude session and kills detached runs; a killed started run is not retried by the tick (filed: lessons, 2026-11-15; item RIMMANDRAKE_RETRY_RUN_KILLED_BY_ACCOUNT_SWITCH_CYCLE_KEPT).
 - Any owner-ledger line naming a concept's item id wakes its waiting Designer; a root citing any OWNER:<tsn> passed the owner check (filed: lessons 20261115T194521Z-BENCH-designer-owner-event-traps).
-- `./publish` from a sparse pool clone fails whole-tree checks that cannot see mod sources (filed: lessons 20261115T194926Z-BENCH-publish-tree-checks-blind-sparse-clone).
+- `./publish` from a sparse pool clone fails whole-tree checks that cannot see mod sources (filed: lessons 20261118T183659Z-BENCH-red-base-check-made-default-scratch).
 
 ## Closed since the last handoff (2)
 

@@ -1,5 +1,5 @@
 ## spec
-A helper added --per-ruling to a plain note and it was written into OWNER.jsonl as seat OWNER (lesson 20261115T202149Z;
+A helper added --per-ruling to a plain note and it was written into OWNER.jsonl as seat OWNER (lesson 20261118T221239Z;
 note 584622027d on STEVE_LANE_UNSTICK_BRAKED_UNOWNED_EB2A). Decided: the routing is INTENDED. cli.py resolve gives
 --owner-said, --by-card and --per-ruling OWNER's authority by the owner's card of 2026-10-11 (one field per kind of
 authority; "--per-ruling: act as OWNER under a standing ruling"), so the event is his and belongs in his shard; an agent's

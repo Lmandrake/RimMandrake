@@ -41,7 +41,7 @@ before touching the game.**
 
 <!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it with `lessons.py add` the moment it is learned, then cite `(filed: lessons)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
 - A helper's "exit met" and the pipeline reader's can disagree for format reasons (fault class keyed `cls`, fix proofs recorded inverted or with placeholders, an after-fix rerun saved in the wrong folder); the reader is now stricter and the neutral-fixer run reconciles (filed: lessons, by the reconcile runs; see `2f13be38482c`, `a9851ef3e8`, `18b41519f3`).
-- A Designer or Operations role run leaves files or a local commit in the bench clone that block `./publish`/`./sync`; compare with origin, clear, publish (filed: lessons `20261115T085138Z-BENCH-designer-role-run-writes-design-concepts`).
+- A Designer or Operations role run leaves files or a local commit in the bench clone that block `./publish`/`./sync`; compare with origin, clear, publish (filed: lessons `20261116T102838Z-BENCH-designer-commit-twin-landed`).
 - `disk.pool_breach` counted regenerated `queue/*.md` views as unlanded work (fixed `0b6cb86b94`) (see: OPS_WORKER_CLONE_POOL_RESTORE_HMOQ).
 - The nightly log this window first quoted (42 FAIL) was the previous night's 03:48 file, read after a drain had already run; check a log's time against the item's notes before quoting it (see: `RIMMANDRAKE_DRAIN_NIGHTLY_REDS_WHILE_PIPELINE_SLEEPS`).
 

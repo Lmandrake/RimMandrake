@@ -1,6 +1,6 @@
 ## spec
 ./publish from a sparse pool clone (scratch_clone.py's default cone) refused on 7 whole-tree checks that could not see the
-files they read (src mods, design/ records: lessons 20261115T194926Z and 20261115T195130Z); three helpers got past by hand
+files they read (src mods, design/ records: lessons 20261118T183659Z and 20261118T183659Z); three helpers got past by hand
 on 2026-11-15 (sparse-checkout disable, RM_PUBLISH_SKIP_TREE_CHECKS twice). Other checks went green blind (git grep skips
 out-of-cone files). Fix at the cause: publish.py tree_checks() detects a sparse clone (skip-worktree entries) and runs the
 checks on a throwaway full checkout of HEAD (`git clone --shared` inside the clone's git dir, removed after), so the commit

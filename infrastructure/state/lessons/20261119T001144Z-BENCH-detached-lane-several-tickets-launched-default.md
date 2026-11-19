@@ -1,1 +1,0 @@
-A detached lane of several tickets launched on the default spend cap (about 3.75M weighted tokens) is stopped mid-lane: the old-ticket sweep and the second-wave builds lane were both stopped that way on 2026-11-18 and had to be resumed. Launch any multi-ticket or census-sized run with --budget-usd set for the whole job.

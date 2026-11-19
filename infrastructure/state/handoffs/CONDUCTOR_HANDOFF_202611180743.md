@@ -131,7 +131,7 @@ you did when you resume it. (filed: lessons)
 - A pinned literal sha rots and takes a GREEN with it: `replay.py`'s `BASE` names no object, so three families never ran (filed: `lessons/20261118T055208Z-UNSEATED-pinned-literal-sha-code-rots-silently.md`).
 - A calibration status, not the wiring, decides whether a gate's refusal binds: an UNTESTED family stores refusals for ever (filed: `lessons/20261118T074301Z-UNSEATED-ticket-can-need-third-file-nobody.md`).
 - `owner_ev is not None` is not "we have a reading": `CT.owner_events` returns `{}` for an unreadable shard, so a real event reads as forged (filed: `lessons/20261118T045320Z-UNSEATED-guard-written-as-owner-ev-not.md`).
-- A pipe eats the exit code you are about to report; it told me a FAILING acceptance test had passed (filed: `lessons/20261118T032319Z-UNSEATED-pipe-eats-exit-code-you-are.md`).
+- A pipe eats the exit code you are about to report; it told me a FAILING acceptance test had passed (filed: `lessons/20261117T225720Z-UNSEATED-all-nine-silent-failure-instances-found.md`).
 - The pipeline door is red on main here and undoes your commit; prove innocence by stashing your own paths (filed: `lessons/20261118T041633Z-UNSEATED-pipeline-door-red-origin-main-this.md`).
 - A Linux-only reading must say UNMEASURED, not FAIL: `/proc` and `pidfd` absences were recorded as verdicts about the code (filed: `lessons/20261118T041633Z-UNSEATED-linux-only-reading-must-say-unmeasured.md`).
 - A handoff pointer's claim about the ledger is a claim; two were wrong (filed: `lessons/20261118T032326Z-UNSEATED-handoff-pointer-s-claim-about-ledger.md`).

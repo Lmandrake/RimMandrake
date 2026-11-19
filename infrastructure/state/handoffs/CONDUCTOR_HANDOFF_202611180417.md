@@ -135,7 +135,7 @@ all 10 were green). ⛔ **Never relax a door test you have not diagnosed.** Evid
 ## Traps learned
 
 <!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives — append it to the lessons file the moment it is learned, then cite `(filed: LESSONS)` or `(see: <doc>)`. Never re-explain a trap that is already recorded. -->
-- A pipe ate the exit code I was about to report: `test | tail` said 0 while the drain acceptance test under it was FAILING with 43 blocked items (filed: `lessons/20261118T032319Z-UNSEATED-pipe-eats-exit-code-you-are.md`).
+- A pipe ate the exit code I was about to report: `test | tail` said 0 while the drain acceptance test under it was FAILING with 43 blocked items (filed: `lessons/20261117T225720Z-UNSEATED-all-nine-silent-failure-instances-found.md`).
 - The Desktop cannot ssh to SteveDesktop at all, so every Steve reading taken here is UNREACHABLE while the machine is up and the soak runs; the route is the Colima tailscale container (filed: `lessons/20261118T033258Z-UNSEATED-desktop-cannot-ssh-stevedesktop-at-all.md`).
 - A handoff pointer's claim about the ledger is a claim, and two were wrong tonight (a missing acceptance test called written, a delegated decision called his) (filed: `lessons/20261118T032326Z-UNSEATED-handoff-pointer-s-claim-about-ledger.md`).
 - `seat_restart._proc_stat` read only `/proc`, so on darwin it answered None and the code spelled that "pid gone before the kill" and FAILED the restart; `kill_pid` raised AttributeError, reading as CRASH (filed: `lessons/20261118T041633Z-UNSEATED-linux-only-reading-must-say-unmeasured.md`).

@@ -52,8 +52,8 @@ def records_in_dir(root):
     return [(f.name, f.read_text(errors="replace")) for f in root.glob("*.md")]
 
 
-# A git call can hang (a held index.lock, a slow drvfs mount: lessons 20261119T084833Z-BENCH-git-index-lock-file-exists-refusal
-# and 20261117T030141Z-CONDUCTOR-rm-deploy-update-failed-3-runs); a hung read becomes "could not look", never a stuck
+# A git call can hang (a held index.lock, a slow drvfs mount: lesson
+# 20261119T084833Z-BENCH-git-index-lock-file-exists-refusal); a hung read becomes "could not look", never a stuck
 # selftest. 600 s is far past a measured read of the whole window (about 1 s, 2026-11-19).
 GIT_TIMEOUT_S = 600
 

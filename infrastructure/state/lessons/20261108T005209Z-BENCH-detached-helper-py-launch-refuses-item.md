@@ -1,1 +1,0 @@
-detached_helper.py launch refuses an item whose rimflow file event is not yet on origin/main ('publish infrastructure/state/ledger/events/OWNER.jsonl first'): ./publish the shard right after rimflow file, then launch.

@@ -8,10 +8,10 @@ element must defend precisely what it's protecting against and have evidence tha
 spend stop has its danger and evidence (a runaway unattended burn, *"not burn 90M tokens overnight by itself"* and
 *"Don't let any burn go to 90M this time ok?"*, 2026-11-12/13, the stop he ordered), but the default LEVEL of $15 has
 none: nothing measured says a run past $15 is a runaway, and the level stopped at least four legitimate runs, recorded
-in three lessons: an eleven-item batch (`infrastructure/state/lessons/20261115T183415Z-BENCH-detached-helper-py-launch-refuses-item.md`),
+in three lessons: an eleven-item batch (`infrastructure/state/lessons/20261117T142459Z-BENCH-relaunch-keeps-default-budget.md`),
 the GSS Fable relaunch whose `--resume` came back under the default after a `--budget-usd 0` launch
 (`20261117T142459Z-BENCH-relaunch-keeps-default-budget.md`), and the old-ticket sweep and the second-wave builds lane
-(`20261119T001144Z-BENCH-detached-lane-several-tickets-launched-default.md`).
+(`20261117T142459Z-BENCH-relaunch-keeps-default-budget.md`).
 
 Do: make `--budget-usd` REQUIRED on `detached_helper.py launch` (no default), as `maturation.py launch` already is
 (`REFUSED: a spend cap is required (--budget-usd > 0); there is no default`). The launcher picks the cap for the job it
