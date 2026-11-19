@@ -1,0 +1,31 @@
+PASS a-clock-that-only-aged-is-not-news: days_since_advance and list_age_h aged 1 h
+PASS a-clock-that-only-aged-is-not-news: inside the slack
+PASS a-clock-that-only-aged-is-not-news: a day clock rounded to 0.01 d aged an hour
+PASS a-clock-that-only-aged-is-not-news: graded over its own observed_at, not the status gap
+PASS a-clock-that-only-aged-is-not-news: revisit_reads keeps the point's observed_at
+PASS a-clock-that-only-aged-is-not-news: _d, _days and days_since_ names read in days, a plain count does not
+PASS a-clock-reset-is-news: days_since_advance reset to 0
+PASS a-clock-reset-is-news: a clock that crept while an hour passed moved
+PASS a-clock-reset-is-news: a rounded clock that rose well under the hour that passed moved
+PASS a-banded-count-inside-its-band-is-not-news: debris carries a band
+PASS a-banded-count-inside-its-band-is-not-news: 0->3, 3->0, 2->5
+PASS a-banded-count-inside-its-band-is-not-news: revisit_news finds no news
+PASS a-banded-count-leaving-its-band-is-news: up out of the band
+PASS a-banded-count-leaving-its-band-is-news: unmeasured or gone is news
+PASS a-banded-count-leaving-its-band-is-news: a fired signal is still news
+PASS the-five-repeat-alarms-are-program-routes-with-a-runbook: 5 of 5
+PASS the-five-repeat-alarms-are-program-routes-with-a-runbook: siblings stay role
+PASS in-band-opens-no-incident: none of the five at its band edge
+PASS out-of-band-opens-the-routes-incident: all five open their cause's incident
+PASS an-unmeasured-reading-calls-the-agent: every blind shape
+PASS an-unmeasured-reading-calls-the-agent: a measured in-band reading is the program's; an unbanded route is not this
+PASS an-unmeasured-reading-calls-the-agent: step opens its incident
+PASS a-program-answered-alarm-buys-no-alarm-run-and-is-noted-once: no run, one runbook note on the item
+PASS a-program-answered-alarm-buys-no-alarm-run-and-is-noted-once: the key is not marked seen
+PASS a-program-answered-alarm-buys-no-alarm-run-and-is-noted-once: the next tick notes nothing again
+PASS a-program-answered-alarm-buys-no-alarm-run-and-is-noted-once: an itemless alarm notes on the role's item
+PASS leaving-the-band-gets-its-run: out of band, the alarm run launches at once
+selftest_incident_news: OK (0 fails)
+PASS 2 cases
+PASS 5 of 5 program routes with a runbook
+selftest_incident: OK (0 fails)
