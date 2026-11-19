@@ -1,0 +1,27 @@
+design/concepts/Abyss/design.md	open=2	answered=7 (delegated=3, ruling=4)	numbers 1..9
+design/concepts/BlueDesert/design.md	open=1	answered=5 (delegated=4, ruling=1)	numbers 1..6
+design/concepts/Cauldron/design.md	open=1	answered=3 (delegated=0, ruling=3)	numbers 1..4
+design/concepts/Contagion/design.md	open=2	answered=6 (delegated=4, ruling=2)	numbers 1..8
+design/concepts/CrackedLands/design.md	open=2	answered=4 (delegated=4, ruling=0)	numbers 1..6
+design/concepts/FeverWood/design.md	open=1	answered=2 (delegated=1, ruling=1)	numbers 1..3
+design/concepts/GelatinousSlime/design.md	open=3	answered=3 (delegated=1, ruling=2)	numbers 1..6
+design/concepts/Greentide/design.md	open=1	answered=8 (delegated=5, ruling=3)	numbers 1..9
+design/concepts/LanternDeeps/design.md	open=1	answered=4 (delegated=3, ruling=1)	numbers 1..5
+design/concepts/LeaningScrub/design.md	open=2	answered=7 (delegated=5, ruling=2)	numbers 1..9
+design/concepts/LongShade/design.md	open=2	answered=4 (delegated=4, ruling=0)	numbers 1..6
+design/concepts/Miasma/design.md	open=3	answered=5 (delegated=4, ruling=1)	numbers 1..8
+design/concepts/RustCathedral/design.md	open=2	answered=6 (delegated=4, ruling=2)	numbers 1..8
+design/concepts/SleepingIce/design.md	open=2	answered=1 (delegated=1, ruling=0)	numbers 1..3
+design/concepts/Stillsand/design.md	open=2	answered=0 (delegated=0, ruling=0)	numbers 1..2
+design/concepts/TerminalBiomes/GreySea_design.md	open=0	answered=4 (delegated=2, ruling=2)	numbers 1..4
+design/concepts/TerminalBiomes/TheChill_design.md	open=1	answered=5 (delegated=4, ruling=1)	numbers 1..6
+design/concepts/TerminalBiomes/TheScald_design.md	open=2	answered=3 (delegated=3, ruling=0)	numbers 1..5
+design/concepts/TerminalBiomes/TwilightSea_design.md	open=1	answered=4 (delegated=3, ruling=1)	numbers 1..5
+design/concepts/TheForge/design.md	open=2	answered=1 (delegated=1, ruling=0)	numbers 1..3
+design/concepts/TheRot/design.md	open=2	answered=1 (delegated=1, ruling=0)	numbers 1..3
+design/concepts/TheSump/design.md	open=2	answered=8 (delegated=5, ruling=3)	numbers 1..10
+design/concepts/Warscar/design.md	open=1	answered=6 (delegated=4, ruling=2)	numbers 1..7
+design/concepts/Wastes/design.md	open=1	answered=7 (delegated=7, ruling=0)	numbers 1..8
+design/concepts/Webwork/design.md	open=2	answered=5 (delegated=5, ruling=0)	numbers 1..7
+design/concepts/WeepingStones/design.md	open=2	answered=5 (delegated=5, ruling=0)	numbers 1..7
+FILES=26 OPEN=43 ANSWERED=114 DELEGATED=83 RULING=31 TOTAL=157 EXPECT=26 files, 157 = 43 open + 114 answered (83 delegated + 31 ruling) VERDICT=PASS
