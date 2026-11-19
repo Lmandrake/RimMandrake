@@ -2865,7 +2865,7 @@ def blind_brief_text(root, mod, cap_usd=None):
         per = [x for x in ("Defs", "Patches") if os.path.isdir(os.path.join(root, sdir, x))]
         if per:
             L.append("- Per-type values: %s." % ", ".join("`%s/%s/`" % (sdir, x) for x in per))
-    L += ["", "**Where to spend lane 1.** Start with the %d offline bars (`proves_at` %s), and give them most of it; the "
+    L += ["", "**Where lane 1 starts.** Start with the %d offline bars (`proves_at` %s); they are the main work. The "
           "kernels below are the files their deciders read:" % (len(bars), " or ".join(OFFLINE_PROVES))]
     for b, deciders in bars:
         k = _kernel_files(tt, deciders, sdir)
@@ -2875,7 +2875,7 @@ def blind_brief_text(root, mod, cap_usd=None):
     if sdir:
         ks, nk = _globbed(root, sdir, r"(Math|Kernel)\.cs$", 15)
         L.append("")
-        L.append("After those, spend what is left on stage-6 bars whose logic plainly lives in a kernel (%d `*Math.cs` / "
+        L.append("After those, take the stage-6 bars whose logic plainly lives in a kernel (%d `*Math.cs` / "
                  "`*Kernel.cs` file(s) outside SelfTest%s). Write a bar whose logic is game-side as one `not_kernel` "
                  "row (verdict UNSETTLED, its `bars` naming only that bar's ids); do not stretch a kernel to cover it. "
                  "The exit defers such a row to Stage 6 when every bar it names proves at stage 6 or later; a "
@@ -3013,7 +3013,7 @@ def blind_brief_text(root, mod, cap_usd=None):
           "## Report (10 lines or fewer, plain words)", "",
           "Tag every number [measured] or [guess ~N%%]: lane 1 rows passing of total and how many UNSETTLED; lane 2 "
           "reruns matching of rerun; planted faults caught of planted; the Problem and Polish counts%s; shas; the tests "
-          "you edited; what you could not settle; whether the exit is met; spend." % (
+          "you edited; what you could not settle; whether the exit is met." % (
               " and how many are `miss_of`" if n >= 2 else "")]
     L += ["", "## Defects in the pipeline itself", "", SELF_FIX_RULE]
 
@@ -3896,7 +3896,7 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "## Report (10 lines or fewer, plain words)", "",
           "Tag every number [measured] or [guess ~N%%]: checks PASS of %d, FAIL, UNMEASURED; each owed case's outcome; "
           "each FAIL's filed item; strange things seen, explained, filed; the savegame path; the mod list "
-          "and game; whether the exit is met; bridge released; spend." % len(checks)]
+          "and game; whether the exit is met; bridge released." % len(checks)]
     steward = (read_text(root, mod, STEWARD_FILE) or "").strip()
     ivs, undated = MN.parse_interventions(read_text(root, mod, "journal.md") or "", "journal")
     first = _ts(f.get("opened"))

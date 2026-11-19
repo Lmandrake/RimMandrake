@@ -111,6 +111,19 @@ check("Spend bound" not in masrc, "A maturation_autonomy writes no 'Spend bound'
 import maturation as MT  # noqa: E402
 mtsrc = open(MT.__file__, encoding="utf-8").read()
 check("Spend bound" not in mtsrc and "see your spend" not in mtsrc, "A maturation briefs state no spend bound")
+# RIMMANDRAKE_HIDE_SPEND_IN_PROMPTS_COST_LINE_SURVIVED: a built brief neither asks the agent to report its spend nor
+# frames its work as spending a budget ("spend what is left"); a file path such as run_spend.jsonl is not a mention
+BRIEF_SPEND_RX = re.compile(r"(?i)\bspend\b|cost so far|high cost|what is left")
+for name in ("brief_text", "blind_brief_text", "ingame_brief_text"):
+    try:
+        bt = getattr(MT, name)(REPO, "Pyrelands")[0]
+    except Exception as e:      # a brief that cannot be built is not a brief that hides spend
+        check(False, "A maturation %s builds for Pyrelands (%s: %s)" % (name, type(e).__name__, e))
+        continue
+    hit = [ln.strip()[:90] for ln in bt.splitlines() if BRIEF_SPEND_RX.search(ln)]
+    check(not hit, "A maturation %s neither asks for spend nor frames work as spending (%d: %s)" % (name, len(hit), hit[:2]))
+check(BRIEF_SPEND_RX.search("whether the exit is met; spend.") and not BRIEF_SPEND_RX.search(
+    "- `design/concepts/Pyrelands/version/run_spend.jsonl`"), "C the brief spend pattern catches a report line, not a path")
 
 sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils", "testq"))
 import steward as TS  # noqa: E402
