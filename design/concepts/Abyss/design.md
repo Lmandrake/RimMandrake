@@ -31,7 +31,10 @@ repaired. The largest repairs: his three card answers on what the hide is for ar
 never opened them); the grain on the hull is sourced (a ship idea put to him on 2026-10-01); the rites moved to
 "later" on his ruling of 2026-10-23; six animals he cut are listed as cut; and what is and is not built of the
 hidden ship is stated plainly. The list and the reasons are in the section "Second reader" at the top of
-`rewrite_choices.md`. The Abyss has no locked Designer sheet or tree, so nothing here waits on a Designer run to
+`rewrite_choices.md`. Continued the same evening: the sixteen files first read in part were read to their
+end, with the four ledger items filed under the biome's older names, and 100 more rows were added (the rites'
+own design, the Empire's ladder, his planet rulings of 2026-09-07, the first names, the census and the dry-run
+record). The Abyss has no locked Designer sheet or tree, so nothing here waits on a Designer run to
 reconcile.
 
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/Abyss/`
@@ -39,7 +42,9 @@ reconcile.
 
 **Tags:** `NEEDS HIM` is a question only the owner can settle, with the real answers and the default used here.
 `UNSETTLED` is a fact the sources do not fix. `UNMEASURED` is an engine fact nobody has checked. "Built" means the
-census of 2026-11-17 (`cleanse/census.json`) found it in source; it does not mean it has passed anything.
+census of 2026-11-17 (`cleanse/census.json`) found it in source; it does not mean it has passed anything. Nothing
+of the Abyss has been watched working in the game except one recorded run of 2026-10-07 (loading, sign placement,
+flight eligibility and four cryptid checks) and the cold grip, seen once on an older build of the animal.
 
 ---
 
@@ -85,6 +90,11 @@ and light is what gives the ship away.** (Second reader, read from the source: t
 lamps and does not count light that grows. So the bargain has an answer the place itself supplies: hide by the
 light of living things.)
 
+The campaign's own gods say the same thing twice. The god of flight and the god of concealment *"reconcile in
+exactly one posture, hidden and watching for the instant to flee"* (`design/Jawa/biome_rites_pass_2026-10-01.md`),
+and the hungry war-sun is *fed by light cast into darkness* and starved by *"staying dark, hidden, and unfought"*
+(`design/Jawa/salvation_rites_2026-10-01.md`). A ship lying dark in the Abyss is in that posture.
+
 The crew are small, hooded, weak in a brawl and evolved for the dune sea. This is the cold side of the world. The
 Jawa see well in ordinary darkness. This is not ordinary darkness: it is in the air, and the sheet's ban is flat,
 *"no clean sensing"*. (`UNMEASURED`: whether the built sight penalty already ignores the xenotype's dark vision.
@@ -111,6 +121,14 @@ His words for the ordinary pace (2026-08-28): *"around every 5-8 days, keep 'em 
 Empire also raids as an ordinary storyteller enemy, by his ruling of the same day; the built delay is on the
 pursuit's own timers, and whether it slows those other raids nobody has read.)
 
+His rule for how the search opens (2026-09-27, in the ladder): *"Escallation isn't just 'more troopers' it's more
+kinds of raids that rapidly escalate until you move. Always start with probes that can be evaded."* The oldest
+source for the pause is in the same file: his rulings of 2026-08-05 and 06 that *dark/covered tiles PAUSE the
+orbital clock*. What is built slows the clock fourfold and does not stop it (asked under `NEEDS HIM`). The ladder
+also has the tile remember how far the search got, fading a step a season: *"the desert remembers, decaying"*. The
+same dark valley is not a free hide twice running. By the same design the storyteller's own Empire raids never
+advance the search. (Rung definitions exist in `src/RimUtinni/EmpirePursuit/` today; nobody has run them.)
+
 A season is fifteen days, so **the Abyss is the one stop where seasons pass and slow things can be seen**: a crop
 under a lamp tree, stone wearing away, a crew getting used to the dark. (The pursuit's numbers are marked
 provisional in its own source.)
@@ -127,7 +145,8 @@ lamps, *"lit like a harbor at night"*: blue glow against yellow, a carpet of glo
 
 Then the first gust arrives *"like an impact"*, and every gharrek on the map opens at once: flat, plate-shelled
 crawlers that were invisible on the obsidian lift their shells and show *"a map-wide carpet of fluttering
-gill-fans"* with a faint chemical glow, feed on the stirred air, and shut. Then stillness again.
+gill-fans"* with a faint chemical glow, feed on the stirred air, and shut. Then stillness again. (Known gap: the
+gharrek has its facings and no picture yet of the fans opening. This moment is owed its art.)
 
 The crew's first decision is in front of them before the ramp is down: how many lights to leave on.
 
@@ -146,20 +165,24 @@ The crew's first decision is in front of them before the ramp is down: how many 
   light only; the older line about heated space is not built, and a cornered one still fights.)
 - **The rattle.** The ombrathia hunts by the tremor of movement; its quills pick it up, and it *"raises them in a
   clattering hackle"* before it lunges. The rattle is the warning and it comes before the attack, not after.
-- **The grip.** The saevitha has no mouth. It kills by holding on and draining warmth.
+- **The grip.** The saevitha has no mouth. It kills by holding on and draining warmth. It has no mouth because
+  the picture came first: it and the ishvarith began as two drawings passed over for a livestock animal, and his
+  words of 2026-09-01 sent them here: *"Others get promoted to other crag creatures. The forsaken crags are the
+  dark biomes on the night side."* He approved both on 2026-09-02.
 - **The kin.** These are one family, and his rule for it (2026-10-05) is exact: pitch black, four glowing yellow
   eyes, soft sibilant names, *"the 'possibly of Sith origin' type."* Every one of them is described as *"less
   evolved than made, as if some old and patient cruelty once had the shaping of it."* The pack beast *"still bows
   its head to a hard voice."* The hauler works all night *"as if it remembered whose it was."* A crew that has been
   owned by nobody is surrounded by animals that remember an owner.
-- **The grain.** The Dark, where it dies, falls as fine corrosive grain. It wears unroofed stone and steel, and it
+- **The grain.** The Dark, where it dies, falls as fine corrosive grain. It wears unroofed stone and steel, never skin, and it
   leaves a rust-brown oily dust, tholin, that sweeps up and refines to fuel. *"Roof everything"*, and feed the
   heaters with what fell on the roof.
 - **The poor larder.** Berries, a slow black-and-violet fungus that grows only where grain has eaten the rock,
   milk and meat from the herds, and what can be fished from the mineral pools: veiljaws, black ribbon swimmers with
   pale hinged jaws and blind pits, and suturefins, flat things that ripple along the bottom with a pale seam like
   a stitch. Each catch is also alive in the pool, moving. (His mark of 2026-11-17, overruling an older roster note
-  that this water held no fish; the two creatures are the cleanse's designs.)
+  that this water held no fish; the two creatures are the cleanse's designs.) All of it grows slowly, by his
+  growth law of 2026-09-07: fast growth needs *water AND light* both, and the Abyss has no light of its own.
 
 ## The first weeks
 
@@ -168,11 +191,18 @@ The crew's first decision is in front of them before the ramp is down: how many 
   weighed against it. *"You are unfound, which is different."* (In the campaign layer, by his card of 2026-10-01
   that the free tier gets no ship touch. What is built, `RM_MapComponentShipCover`: a meter that few lit lamps
   anywhere on the map build and noise wears down. What is not: the engine's start does not yet break it, and
-  nothing outside the Abyss reads it, so today the pursuit is slowed by the biome alone.)
+  nothing outside the Abyss reads it, so today the pursuit is slowed by the biome alone.) (`UNSETTLED`: the built
+  meter calls the map quiet at four lit lamps or fewer anywhere on it, so a lamp in a far workshop counts the same
+  as one on the ramp. Whether the count belongs to the ship's surroundings or the whole map is open. The meter's
+  code sits in the free biome mod, against the campaign-only card; that is for whoever builds to reconcile and is
+  not a reason to remove it.)
 - **Probes still come.** His words, typed 2026-09-30: *"Yes but probe droids will still come that must be
   avoided."* A probe drifts in under the Dark looking for movement and light. His rule for it (card, 2026-11-10):
   *"ordinary work is safe between searches, but exposed activity becomes dangerous while a search probe passes."*
-  The crew beats it by being still and dark while it passes, or by destroying it before it reports. (Built: the
+  The crew beats it by being still and dark while it passes, by letting it leave having seen nothing, or by
+  destroying it before it reports. The campaign's ladder adds that a shot probe destroys itself, *"a kill is never
+  free loot"*, and gives the probe its letter, *"Probe landed"*, with a bar that fills as it sees. (The ladder's
+  probe sees by line of sight; the Abyss's own built probe does not, which is the gap named next.) (Built: the
   probe counts lamps and moving crew by distance alone, through walls, and reads no heat. Seeing through walls is
   a gap to close.) A probe that reports collapses the cover, and the search
   resumes at its ordinary pace: the Abyss becomes a five-to-eight-day stop like any other.
@@ -188,7 +218,9 @@ The crew's first decision is in front of them before the ramp is down: how many 
   shrink again, the moths return, and whatever was waiting is nearer than it was. His answer of 2026-11-10 is what
   the clearing is for: *"Wonder draws you out... then leaves you exposed when darkness returns."* The crew that
   walks out to look is the crew caught outside. The review's line: *"Every other biome's rare weather is a hazard.
-  This one is a gift."* It has a price that is built: the grain falls harder while the air is clear.
+  This one is a gift."* It has a price that is built: the grain falls harder while the air is clear. (In 0.2.0 it also shows the
+  sorter's rings standing in the open. Its name collides with the campaign's "nine unveilings"; neither has been
+  renamed and nobody has asked him.)
 - **The wear.** Weeks of grain on anything left unroofed. The hide is paid for in roofing, fuel, cold and the
   things the crew is not salvaging while it sits here.
 
@@ -230,7 +262,9 @@ of the hide. The main price is *"the weeks they are not earning."*
   so no environment is immediately lethal"*, and the ship *"will advise course of action, but no more than that"*.
   Launching always ends the wear, and ends the hide with it.
 - `UNMEASURED`: how the built etchfall sampler treats a hull today. A ship's own cells are probably roofed in the
-  engine's eyes and so spared; wearing the outside faces is the part to build.
+  engine's eyes and so spared; wearing the outside faces is the part to build. The census adds one fact: the
+  sampler wears natural rock and things built of steel and nothing else, so what a hull is made of decides whether
+  today's grain would touch it at all.
 - *0.2.0: the repair is here too.* The rescue ship in Lightfall's wall yields four kinds of fitting the crew's own
   ship accepts (hull plating, conduit loom, thruster liner, seal gaskets), and each repairs worn structure aboard
   (built, never loaded).
@@ -259,7 +293,8 @@ richer sources. You can also buy it."*
   The ship item adds that under cover *"trade ships cannot reach it"* (0.2.0). For a crew whose whole life is
   trade, that silence is the hide's real price. The only people the sources put here are the fugitive holds,
   *"some still occupied"*, and they are later.
-- Not replete. *"The hiding place must be poor."*
+- Not replete. *"The hiding place must be poor."* His fuel ruling of 2026-09-07 gives the general reason:
+  *"the fact that people have found SO MANY ways to get fuel is still evidence of its scarcity."*
 
 ## "OMG did you see that?"
 
@@ -281,7 +316,8 @@ Each can happen inside a stay. Each says what is on screen.
 7. **The Unveiling.** *On screen:* the Dark lifts and the country stands lit, etched and enormous, for a few
    hours. *Why it is beautiful, and why it twists:* it closes.
 8. **The probe.** *On screen:* a probe droid drifting between the crags, the ship dark, every crew member
-   standing still. *Why it is funny:* someone left a lamp on in the galley.
+   standing still. *Why it is funny:* someone left a lamp on in the galley. And when someone does shoot it, it
+   blows itself up: the one piece of Imperial hardware a Jawa cannot strip.
    And its twin, from his card: an Unveiling opens, half the crew walks out to stare at the lit country, and the
    air closes with them a long way from the ramp.
 9. **Sweeping the ship.** *On screen:* after an etchfall, hooded figures with brooms on and around the hull,
@@ -351,6 +387,8 @@ It arrives late, and it arrives into the same Dark.
 - **A lamp tree** dug up and carried; **glowberries**, a light in the hand.
 - **Etchcap,** a delicacy and a trade good, slow and scarce.
 - **Animals:** a pack beast, a milker, a sorter that tidies.
+- *Later:* **a rite.** His words of 2026-10-01: *"Just make a discoverable rite here in the deep dark that they can
+  perform later. That's the discoverable tech, or one of them anyway."*
 - *0.2.0:* **a great bone,** the Abyss's recorded gift to the ship (`BIOME_SHIP_CONTRIBUTIONS_1`, an agent's pick):
   set aboard, it is what lets a summ egg bond with the crew.
 - *0.2.0, from Lightfall only:* parts cut from the rescue ship in the chasm wall to restore the crew's own (his
@@ -459,9 +497,14 @@ shared-machinery file has the whole of it):
 **Later**
 - The four darkness rites the deep dark teaches (the Dark Vigil, the Blind Offering, the Snuffing, the Lightless
   Burial): campaign layer, and deferred with every biome rite by his ruling of 2026-10-23, *"hereby documented and
-  deferred to v2."* The first version of this page had them at 0.2.0.
+  deferred to v2."* The first version of this page had them at 0.2.0. Each is found at a place a hiding crew
+  would pass: an inscription where no light has reached, a Nhaleth circle, a ring of dead lamps, the rescue ship
+  in Lightfall. A fifth thing waits with them, the Unlit Wedding. The Snuffing's reason is the hide's own: the
+  hungry god is starved by *"staying dark, hidden, and unfought"*.
 - Fugitive holds, seep-works and their explosions, the wind-farm ruins as inhabited sites: campaign layer.
 - Lightfall as a landmark on the world: authored at the one painting pass.
+- The crags' place names (Gray Crags, Rimewall, Twilight Crags, Sunreach, Nightspill, Coldstone, The Verge): for
+  the same painting pass. They exist in no other Abyss file.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - Gust turbines and gust power (cut by card, 2026-10-01).
@@ -484,7 +527,7 @@ shared-machinery file has the whole of it):
 ## NEEDS HIM
 
 Each has the default this design uses, so nothing waits on him to read on. The first three are the first pass's;
-the rest were found by the second reader.
+the rest were found by the second reader (the ninth on reading the ladder to its end).
 
 1. **[scope] The hidden ship in 0.1.0.** On 2026-11-17 he approved it in 0.2.0. On 2026-11-18 he asked that the ship
    lens be the overriding priority for 0.1.0 and that the buckets stay *"a LITTLE open"*. New evidence for moving it:
@@ -512,6 +555,10 @@ the rest were found by the second reader.
    the brood in whatever dark the chasm floor keeps); the draft's sentence is his to edit. (0.2.0.)
 8. **[other] Two declined ship ideas, listed and not revived:** moths on the ship's own lamps lifting the cover, and
    the heatless stealth lamp (both on his card of 2026-10-01, neither chosen).
+9. **[cover] Pause, or four times slower?** His words, on 2026-08-05 and 06 as the ladder records them and again on
+   2026-11-18, are that full dark *pauses* the search. What is built multiplies every wait by four, and the
+   ladder's own text calls a refuge *"a slower ladder, never a frozen one"*. Default: the biome slows the search
+   fourfold, and the pause is what a ship holding its cover earns, because the search has lost it.
 
 Not a question: the Abyss has no locked Designer tree. Not asked again: where the greed line lies (his waiver),
 the gust turbines (cut), the rites (deferred by him).

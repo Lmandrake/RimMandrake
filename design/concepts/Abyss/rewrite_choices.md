@@ -5,7 +5,7 @@
 A different agent from the writer re-read the Abyss's sources before any old file is deleted, starting with the
 ledger items and with what the first read had named as unread.
 
-DELETE-READY: no, because eleven source files outside the delete list were not read to their end (named below)
+DELETE-READY: no, because one source file is not yet read to its end: `design/RimMandrake/special_mechanics_review_2026-10-22.md` from line 221 on (the other biomes' tables; its whole Abyss table is read). The continuation of 2026-11-18 read the other fifteen part-read files to their end and added 100 rows (the last five tables under "Every idea, row by row"); this section's counts below are the earlier ones until that file is finished.
 
 Every file on the delete list was read to its end by the second reader (`abyss.md`, the cast bible, the cryptid
 spec, the review, `rosters/abyss.json`), and so was every file in `design/concepts/Abyss/` but one, and every
@@ -523,6 +523,140 @@ More source names: *owner answers* = `design/RimMandrake/designer_codex_2026-11-
 | The body the free tier was owed: its own labels, its own weather names, its own flora | body item | kept (done or carried by the port) | | |
 | The old tile gate, the scorecards and the nine marks | review §2, §3, §11; sitting item | lost | A scoring programme and a rename check. | |
 | The cleanse's four instruments and fifty-one tickets, read to the end | cleanse | kept as they stand | | |
+
+#### Rows added when the part-read files were read to their end (second reader, continued 2026-11-18)
+
+More source names: *rites register* = `design/Jawa/salvation_rites_2026-10-01.md`; *rites pass* = `design/Jawa/biome_rites_pass_2026-10-01.md`; *salvation item* = `SALVATION_RITES_UNIFICATION_1`; *gated item* = `CONDITION_GATED_RITUALS_MOD_1` (closed); *codex record* = `record.json`, *codex questions* = `QUESTIONS.md` and *codex brief* = `designer_brief.md`, all three in `design/RimMandrake/designer_codex_2026-11-09/Abyss/`; *crags items* = the closed items filed under the biome's older names, `FORSAKENCRAGS_RM_MOD_BUILD_1`, `FORSAKEN_CRAGS_FAUNA_1`, `FORSAKEN_CRAGS_PREDATORS_BUILD_1` and `LIGHTFALL_CHASM_AUTHORING_1`. The census is `design/concepts/Abyss/cleanse/census.json`, cited as before under "cleanse census".
+
+##### The rites the deep dark teaches (all "later", by his ruling of 2026-10-23)
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| *"This mod is going to be specific to the utinni scenario. Just make a discoverable rite here in the deep dark that they can perform later. That's the discoverable tech, or one of them anyway."* | gated item (owner, typed, 2026-10-01) | kept in "later", quoted in the design | His own word that a rite is one of the things a crew carries away from the Abyss. The first read had the rites and not this sentence. | |
+| Where each rite is found: the Dark Vigil at *the inscription where no light has reached*; the Blind Offering at the Nhaleth circle; the Snuffing at the ring of dead lamps; the Lightless Burial at the rescue ship in Lightfall | rites register B2 | kept in "later", named in the design | Four places a crew in hiding would walk past. | |
+| Which god each rite moves, and how: the Vigil feeds Ishko by stillness; the Blind Offering settles a debt with Mob'Unloo; the Snuffing starves Sh'kaar; the Lightless Burial consoles Ozzik (*for now*, to be re-balanced) | salvation item; rites register §c | kept in "later" | | |
+| Sh'kaar is *fed by light cast into darkness* and starved by *"staying dark, hidden, and unfought"*. "The only appeasement a hungry god accepts is to be denied." | rites register §c3 | kept in "later", quoted in the design | It is the hidden ship said in the campaign's own religion. The design had the Snuffing's inscription and not the reason behind it. | |
+| The Snuffing makes the dark the other three rites need, *"so it is a colony's way in"*. Done well, *"the clan has hidden from him; fewer and later brute attacks"*. Failed, it is *"the clan lighting a night-rite in front of the god it was hiding from"*. | rites register §c3 | kept in "later", quoted | | |
+| Ta'Baa, the god of flight, and Ishko, the god of concealment, *"reconcile in exactly one posture, hidden and watching for the instant to flee"* | rites pass §8.2 | kept, quoted in "What this place is" | The best single sentence on what a hidden ship is doing, and it sat in another biome's rite. | Leave it there: it goes when that file goes. |
+| The dark itself always moves Ishko up and Sh'kaar down: *"together the two make darkness doubly sacred"* | rites register §c | kept in "later" | | |
+| The Dark Vigil in detail: an organiser and three still watchers, two hours, no light carried; a poor one is *"a long cold sit"*; a good one leaves Ishko's mark on the wall and lifts the dark's mood penalty for a season; repeated fine vigils count toward *"terraform the dark itself into a home"* | rites register §c1 | kept in "later", quoted | Ishko *alone does not punish a skipped rite*. | |
+| The Blind Offering in detail: name a debt, lay an item on a ring in the dark, everyone leaves; by morning *"it was not taken"*, or it is gone, or gone and replaced by *something small and strange*, never silver. *In the Abyss this is the Nhaleth exchange, never confirmed.* | rites register §c2 | kept in "later", quoted | The built unwatched exchange (0.2.0) is this rite's body. | |
+| The Lightless Burial in detail: *"the grave is the deepest dark"*; Ozzik under his pride is grief, *"we were once great, and we cannot bear the memory"*; a grave cut into rock and closed before any light returns; the dead *"went unseen"* | rites register §c4 | kept in "later", quoted | | |
+| The Unlit Wedding: the wedding held in absolute darkness, the canon *"mate only in total darkness"* made pious; the memory *"married in the dark"*; unlocked by learning any darkness rite | rites register §c5; rites file | kept in "later" | The first read had four rites. There is a fifth thing, a variant, deferred with them and with no queue item of its own. | |
+| Dark variants of the wedding and the funeral take no ritual slot (his card of 2026-10-01); the old claim of six ritual slots was false | gated item; rites register §a | kept in "later" | | |
+| How a rite is found: an inscription studied in place and in the dark (*a lamp brought to read it spoils the study and is a lit night-rite*); the study yields a rubbing; the letter reads *"The stone said what to do. It did not say who carved it."* | rites register §d | kept in "later", quoted | | |
+| The reason shown while a spot is lit, *"The spot is not dark: 34% light"*; a setting to count the Abyss's Dark as absolute darkness; the greyed row *"A rite the dark keeps."* | rites register §d | kept in "later" | | |
+| A Dark Vigil held at the rare wrong ring moves the lore toward the Sith whisper: *"a voice that is not one of the nine"*; it never becomes a visitor | rites register §f | kept in "later", campaign layer | | |
+| A darkness rite at the ship's shrine-heart puts the ship's lamps out first, so the gods' council *speaks out of the black* | rites register §f | kept in "later" | A ship idea nobody has ruled on; it needs the unbuilt voice layer. Not a promise of any version here. | |
+| The rites' home is the Salvation Rites mod; a Salvation crew cannot learn another faith's rites; five found rites a god at most, and with the Abyss's rites Mob'Unloo and Ozzik are at that limit | salvation item; rites register B11, B15 | kept in "later" | | |
+| The name "the Unveiling" collides with the campaign's "nine unveilings"; neither is renamed | rites register ("Still open") | kept as a known open naming question | Nobody has asked him. It is listed in the design beside the Unveiling. | |
+| His deferral also ordered every built rite removed, *"including art"*. Nothing of the Abyss's rites was ever built, so nothing was removed; they were first tabled on 2026-10-03 (*"table the rites until the biome mod is fully complete and checked out"*) | rites file | kept as the record | | |
+| Ishko's wall-mark outcome, built for the Dark Vigil, stays in the game with nothing calling it | rites file; rites register §a | kept as a build fact | | |
+| Ordinary night-side dark is not the Abyss's gate (another biome's rite *never reads the Abyss's absolute-darkness gate*); the Vigil *sits still in a dark nobody can see into* | rites pass §3.2, §7.2 | kept in "later" | | |
+| Laws on every rite: no rite grants a power, no god appears, nothing vanishes without a readable sign; his *"Rites are allowed everywhere"* (2026-10-01) | rites pass §0 and its rulings | kept in "later" | | |
+| At that pass Ishko was only ever fed, and Mob'Unloo had the fewest rites of any god | rites pass §11 | lost | A balance note for whoever re-balances the rites when they come back. | |
+
+##### The Empire's ladder, read to its end
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| *"Escallation isn't just 'more troopers' it's more kinds of raids that rapidly escalate until you move. Always start with probes that can be evaded."* | ladder (owner, 2026-09-27) | kept, quoted in the design | It is his rule that a probe comes first and can be evaded, three days before his Abyss words on probes. | |
+| *Dark/covered tiles PAUSE the orbital clock* (his rulings of 2026-08-05 and 06, as the ladder records them); the quiet rung *pauses under roof/dark* | ladder §1, §3 | kept: the earliest source for his card's *"full dark still pauses it"* | The first read had the pause from the 2026-11-18 card alone. | |
+| The same file says a refuge is *a slower ladder, never a frozen one*, and what is built is a fourfold slowing | ladder §4; pursuit note | kept as a question for him (pause, or four times slower) | His word, twice, is "pause". The built thing slows. | See `NEEDS HIM`. |
+| The file's header says "design only"; rung definitions now exist in `src/RimUtinni/EmpirePursuit/` (measured by the second reader, 2026-11-18) | ladder; `RUT_EmpireRungs.xml` | kept as a correction to a stale header | Whether each rung behaves as designed nobody has run. | |
+| The probe as the ladder designs it: one or two droids set down well away from the ship; a sighting is line of sight to the ship or a crew member for about two hours in all; it leaves after a day | ladder §3 | kept as the campaign's probe; the Abyss's own built probe differs (distance, through walls) and the difference is a known gap | | |
+| Three ways to beat a probe: shoot it before the sighting completes, stay out of sight (*"indoors, dark, under the hull"*), or *let it leave blind* | ladder §3 | kept; the design's two ways gain the third | | |
+| A shot probe destroys itself with a small blast: *"a kill is never free loot"* | ladder §3 | kept, quoted in the design | A scavenger crew that cannot scavenge the thing hunting it. | |
+| What each ending does: destroyed before it reports, the crew is quieter and the search does not advance; leaves blind, the next probe comes later; leaves with a sighting, the search advances | ladder §2 | kept | | |
+| The letter *"Probe landed"* with a bar showing how much it has seen; the quiet alert *"The sky is empty. For now."* | ladder §2, §3 | kept, quoted in the design | | |
+| The five visibility bands and their multipliers; an exposed crew on open sand gets two and a half to four days | ladder §2 | kept by reference; not re-derived | The clock's arithmetic is the shared file's. | |
+| The tile remembers how far the search got, fading a step a season: *"the desert remembers, decaying"*; landing back on it starts there | ladder §4 | kept as a campaign fact the design now states | A crew cannot use the same dark valley twice in a row for nothing. | |
+| The later steps: spotters who call it in, a strike, an ion cordon that stalls the ship for hours and never traps it, a breach, and *"Star Destroyer in orbit"* | ladder §3 | kept as the campaign's; the design lists them and does not restate them | | |
+| Ishko's boon, the Unseen Berth, takes one step off the search on this map | ladder §5 | kept in "later" (the gods' layer) | | |
+| The storyteller's own Empire raids never advance the search and are kept two days apart from it | ladder §5 | kept | It answers half of the design's `UNMEASURED` on those raids; whether the shadow slows them is still unread. | |
+| Four questions the ladder put to him (what the Empire knows after a move; may a step touch the ship; does the bombardment destroy buildings; one heat meter or two) | ladder §8 | kept as the campaign's open questions, not this biome's | | |
+| An arrival mode exists that walks raiders in through dark cells; the canon probe droid has no def and a stand-in kind is used | ladder §1 | kept as build facts | | |
+
+##### His planet rulings of 2026-09-07, read to the end
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| The growth law: fast growth only where *water AND light are both present*; where either is missing, growth is normal to dormant | freeze rulings R3 | kept: it is why the Abyss's larder is slow | The design said "slow fungus" without the rule behind it. The edge cases where "lit" is arguable were owed and never ruled. | |
+| Vents and geysers are a likelihood that *drops to zero on the terminator for sure* | freeze rulings R12 | kept: his source for the sheet's ban on geothermal | | |
+| *"We don't need to go around crowning things for the planet."* Say what a place does, never rank it | freeze rulings R9 | kept as a writing rule | The design's "only biome with full cover" states the pursuit's built list, which is a fact. The review's "best single idea on the planet" is a quoted opinion. | |
+| *"there will certainly be fliers that visit multiple biomes"* | freeze rulings R17 | kept: a krizzak met outside the Abyss is not a finding | | |
+| On the night side the wind runs along the ground toward the terminator and rises in the storm wall; at ground level local relief can dominate, *the most extreme of which are the high mountain ranges* | freeze rulings R4 | kept as lore: the crags' gusts are that local rule | | |
+| The night side's dirty ice is dust shed by the returning high wind, settling out, never weather | freeze rulings R27 | kept as lore beside the Dark's aurora-ash | | |
+| *"The player may INFER it; the player is never TOLD it"* (ruled for the war-made biomes) | freeze rulings R25 | kept as the manner of the kin's descriptions | Applying it to the Abyss's made lineage is the second reader's reading, not his ruling. | |
+| *"the fact that people have found SO MANY ways to get fuel is still evidence of its scarcity."* | freeze rulings R5 | kept, quoted beside tholin | | |
+| Eight tiles of a dissolved fungal forest go to the Abyss's old donor def: *a merged tile must be continuous with its new biome* | freeze rulings R29 | lost | Tile paint; the planet is painted once at the end. | |
+
+##### The first names, read to the end
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| *"Please change some of them to one syllable and some to theee syllable. Too many two syllable names sound all the same."* | names doc rule 7 (owner, typed, 2026-09-24) | kept as a naming rule for any later Abyss name | | |
+| Each first name's sound: *vrakk*, the quills leaving the back; *gruzz*, the rooting grunt itself; *ulkhorr*, *a word said into darkness*; *bhoruk*, *the bray farmers listen for before the gust-storm* | names doc batch 3a | lost | His smooth names of 2026-10-05 replaced the whole set. | Keep one as a Jawa nickname in a description. |
+| The first name for one of the kin was coined as *"Something made, not born"* | names doc batch 3a | kept, reshaped: the idea survives as the made lineage in every kin description | The lineage was in the cast before his sheet said so. | |
+| A real canon title, "Dark Beast", sat on a creature that was not that creature; the rename removed the false read | names doc flag 3 | kept (done by the rename to nevarithia) | | |
+| The donor's natures: a black bird *ridden into battle*; a *thief of the night* whose snout organs hum to its pack; an ox that *brays at the dawn of thunderstorms*; a boar-thing that digs for truffles | names doc batch 3a | lost | Donor text. Two of these animals he cut; the ported kin carry new descriptions. | |
+| The storm giant's donor form: *the Forsaken "dragon"*, fire breath, sixteen squares | names doc batch 3a | lost | It became the summ; fire breath is banned by his words. | |
+| A mutated cousin of the quill-hunter lives in the Contagion | names doc batch 3c | lost from this design | The Contagion's, under that biome's own naming rule. | |
+| One accent a biome: the crags hard and stopped, the night side hushed and sibilant | names doc rule 5 | lost for the Abyss | His smooth names sit nearer the night-side accent; the crag accent has no creature left. | |
+| A creature in several biomes has one name everywhere; a label and its description change together | names doc rule 6, "On acceptance" | kept as naming rules | | |
+| Art had been redrawn for two animals he then cut (the shadow charger and the thunderox) | names doc appendix B | lost | Superseded with the animals. | |
+
+##### What is built, from the census and the dry-run record read to their ends
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| An Unveiling announces the nearby rings: the sorter's cairns stand revealed | cleanse census; mechanics review row 2 | kept in 0.2.0 with the rings (built) | | |
+| The Unveiling as *a window to travel, hunt and see* | mechanics review row 2 | kept | | |
+| The gharrek has facings and no picture of its fans opening | cleanse census; codex record | kept as a known gap: the design's first moment is owed its art | | |
+| A tamed krizzak does not steal light; a wild one's feeding has no line-of-sight check | cleanse census | kept as a known gap (the promise "does not feed through a wall" is not built) | | |
+| Lamps of one neighbour mod's "deepfire" kind are spared by the Dark | cleanse census; codex record | kept as a build fact | | |
+| The grain's sampler wears natural rock and things built of steel, and nothing else | cleanse census | kept as a build fact, stated beside the hull wear | What a hull is made of decides whether the built grain would touch it. | |
+| The grain wears things and never skin; it is not clean water for the growth rules | cleanse census (hazard and growth engine rows) | kept, stated in the design | | |
+| The cover's code sits in the free biome mod, though his card of 2026-10-01 makes every ship touch campaign-only | cleanse census; codex record | kept as a known contradiction for whoever builds | *Not grounds to remove built cover.* | |
+| The cover calls the map quiet at four lit lamps or fewer anywhere on it: *"a small outlying workshop decide the fate of the whole ship"* | codex questions 04 | kept as `UNSETTLED` in the design (the ship's surroundings, or the whole map) | His card answer of 2026-11-10 says what work is safe, not where the count is taken. | |
+| The long-stay dream waits on the map's age, not on how long that crew member has lived there | codex questions 08; cleanse census | kept as a known gap (0.2.0) | | |
+| The sleeping mother fills seven cells square and is drawn fifteen across; awake she hunts for good, shrugs off nearly all harm and feels no pain; several workers cutting at once can wake her with no grace after the rumble | cleanse census; codex questions 06 | kept in 0.2.0 | *A warning can exist in code yet leave no useful action.* | |
+| Summ bone is a light, woody building stuff; a great bone can only be set on ship structure, and a script checks it can stand on a deck | cleanse census; contributions item | kept in 0.2.0 | | |
+| The wreck yields seven kinds of part from a finite stock; the three the ship refuses stay loot to sell or smelt; a fitting spends a repair budget on damaged things standing on ship structure | cleanse census; codex questions 07 | kept in 0.2.0 | *Restoring generic hit points may be less than the payoff* his words describe. | |
+| A summ sunburns readably under open sky and cools in shade or Dark; any summ the crew owns grows hungry and kills animals by itself, with a warning for tame victims; the built life stages stop growing | cleanse census; codex questions 09 | kept in 0.2.0 as built facts and one known gap (it must never stop growing) | | |
+| A Witchfire storm's rumble and flash can bring a hunting summ, with a letter | cleanse census; mechanics review row 3 | kept in 0.2.0 (built) | | |
+| Whose idea the nevarithia's knot of Dark is: the sheet calls it his ruling, the cast bible says that slate was never put to him | codex record ("halo authority") | kept in 0.2.0, flagged | Nobody has resolved it. | |
+| A tamed sorter's cairn gives a crew member a small memory on sight; the rings are *the wonder and the cryptid's cover story* | cleanse census; mechanics review row 9 | kept in 0.2.0 | | |
+| The cryptid's clear pocket is forgotten on save and load; the exchange returns at most one stack of each thing | cleanse census | kept as known gaps (0.2.0) | | |
+| The sounder's banded echoes must *harmonise with no clean sensing* | codex record ("sensor boundary") | kept as a rule for whoever builds | | |
+| The world face's swirl is drawn by the biomes' shell mod; the soundscape plays only for the map on screen | cleanse census | kept as build facts | | |
+| Nothing of the Abyss has been watched working: every existing check reads a definition, and the one recorded run (2026-10-07) covers loading, sign placement, flight eligibility and four cryptid checks | codex record (scene audit); mechanics review | kept as build facts in the design's status | | |
+| Three ways this biome fails: the Dark is *a numerical penalty and palette*; beauty and terror *never turn into each other*; a long stay is *arbitrary attrition* and not mounting dread | codex record (failure modes) | kept as tests the design is read against | Agent-written, never his. | |
+| *"The Dark is valuable enough to stay in and frightening enough to make that choice costly."* | codex questions (an agent's proposed root) | kept, quoted as an agent's line | | |
+| Nine questions were drafted for him and three reached him. Unasked: which demonstration first; what sends people out in an Unveiling; a lamp-thief's cost in work; the last sensible haul; what restores the ship's glory; what a season changes; what makes the summ worth it | codex questions; owner answers | kept as questions a Designer run may still ask | | |
+| *"Let's use more codex to do initial designer runs to the question stage on more mods such as all the rest of the baroque biomes"* | codex brief (owner, 2026-11-09) | kept as where the dry run came from | | |
+| The review's opinions on the Abyss: the lair, *"ask: largest single piece, rare... never run live"*; the Ship in the Wall, decide with the lair; the hidden ship, *keep*; gusts, *"gust thresholds invented"*. None of the Abyss was among its ten likeliest cuts | mechanics review rows 7, 14 to 16 | kept as opinions; his approval of 2026-11-17 is what placed each | | |
+| *"We need to re-examine the rites and special items within each map. Many of them are somewhat fluff"*; *"We need to review all of these special mechanics."* | mechanics review (owner, 2026-10-22) | kept, as why the review exists | | |
+| Etchfall was put on trial and kept by an agent under his card *"I cut, you veto"* | fluff cuts (2026-11-02) | kept | Nothing of the Abyss was cut in that pass. | |
+| The experiences file is the only home of the Abyss's experience line: the biome has no validation walk | experiences (header) | kept as a fact for whoever deletes files | That file must outlive any cleanup. | |
+| *"this one is about the ship"* | contributions item (owner, 2026-09-24) | kept, quoted | | |
+
+##### The ledger items filed under the biome's older names
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| *"Others get promoted to other crag creatures. The forsaken crags are the dark biomes on the night side."* | crags items (owner, 2026-09-01) | kept, quoted | It is the first thing he ever said about what lives here. | |
+| The saevitha and the ishvarith began as two pictures drawn for a livestock animal and passed over: *three pictures exist before their creatures do*. One had seven uneven eyes, a damp black hide and no mouth; the other was cat-large with eyes clustered on one side and a violet undertone | crags items (the fauna item) | kept, stated in the design | The saevitha kills by grip because the picture had no mouth. The first read had the mechanic and not where it came from. | |
+| *"The forsaken review sheet is reviewed and approved."* | crags items (owner, 2026-09-02) | kept: his approval of both predators | | |
+| The ishvarith's valve as he approved it: it *will not cross firelight or a heated space, so a lit camp neutralizes it without requiring fight stats* | crags items (the predators item) | kept, reshaped: light only is built; heated space is the older line that is not built | A crew weak in a brawl was given a predator that a lamp answers. | |
+| The third picture became the tellurox, livestock *"genetically modified by the Helix faction"*, and never a crag animal | crags items (the fauna item) | lost from this design | Another biome's animal by his correction. | |
+| The cold-drain grip was seen working in the live game on 2026-09-02 (on an older build of the animal) | crags items (the predators item) | kept as a build fact | It is the only Abyss predator mechanic ever watched working. | |
+| A crash the first build hit: a redeclared list of life stages is appended to the parent's, not replaced, unless marked to replace | crags items (the predators item) | lost from this design | An engine lesson; it lives in the modding skill. | |
+| Lightfall on the world: the chasm already existed under a generated name, "Clam Chasm", and only the name was authored | crags items (the Lightfall item) | lost | World authoring; the planet is repainted once at the end. | |
+| The crags' named regions: Gray Crags, Rimewall, Twilight Crags, Sunreach, Nightspill, Coldstone, The Verge | crags items (the mod build item) | kept in "later" with the world's painting | Place names that exist nowhere else in the Abyss's own files. | Lose them at the repaint. |
+| The six Forsaken vaults of the campaign's plot stand in other regions; none is in the crags | crags items (the mod build item) | kept as a campaign fact | | |
+| The donor's body before it was owned: fourteen donor animals, eight donor plants, donor sand and donor night weathers, vanilla diseases | crags items (the mod build item) | lost | All of it was replaced by the owned port; the animal list is in the roster rows above. | |
+| Colder and warmer variants of the biome, never ratified | crags items (the mod build item) | lost | Listed as owed in 2026-09 and never taken up. | |
 
 ## Sources read, and the count
 
