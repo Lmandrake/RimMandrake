@@ -71,7 +71,7 @@ Full text and incidents: `design/RimMandrake/biome_rulings.md`.
 
 ## 🔴 Six biome mods are HELD BY OWNER; Pyrelands is the only biome mod advancing — owner, 2026-11-16
 
-*"And stop the new biome mods work. Only Pyrelands as a biome mod right now."* The held list is `src/RimMandrake/rimflow/mod_owner_hold.json` (nothing launches, chains or alarms on a held mod; only he lifts one: `mod_owner_hold.py lift <Mod> --said "…"`).
+*"And stop the new biome mods work. Only Pyrelands as a biome mod right now."* The held list is `src/RimMandrake/rimflow/mod_owner_hold.json` (the PIPELINE launches, chains and alarms nothing on a held mod; only he lifts one: `mod_owner_hold.py lift <Mod> --said "…"`). **Design text on a held mod is allowed** (owner, by card 2026-11-19: *"Design text is allowed, and we WILL return to the mods... they're not going to be deprecated, don't worry."*): a helper may write design; builds, tests and live runs stay held; the held mods will return and are not deprecated.
 Full text: `standing_rulings.md` §Owner hold.
 
 ## Biomes, rosters and seas — owner rulings (full text: `design/RimMandrake/biome_rulings.md`)

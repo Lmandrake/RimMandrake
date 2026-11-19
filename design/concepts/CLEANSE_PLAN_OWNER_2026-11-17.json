@@ -102,6 +102,7 @@
    "approved_digest": null,
    "edited_after_approval": "c5c7316d22507d72d2e124fcec602a998df6750f212db60421209f56e978f1ed",
    "why": "edited after his approval only to drop row X30/ticket T30 (skylight tenancy, claim buoys, ageing charts), which he removed 2026-09-27; approved once a fresh converged review names the current digest (Conductor, item RIMMANDRAKE_ASK_CLEANSE_TENANCY_ROW_APPROVED_AFTER_HIS_CUT)",
+   "owner_reaffirmed": "2026-11-19 ~5:35 AM PST, by question card, \"It stands\" on the new counts 77 capabilities / 38 next-version entries / 46 tickets (was 70 / 33 / 43 when he approved; the change is the removal of the selling-light tenancy row, his 2026-09-27 word Remove). Item RIMMANDRAKE_RECORD_SEA_CLEANSE_APPROVAL_STANDS_AT_NEW_COUNTS. Approval is still read from converge.json (fresh_review); nothing here changes plan_check.",
    "marks": {}
   },
   "TheForge": {

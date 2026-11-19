@@ -11,6 +11,9 @@ One list, in mod_owner_hold.json beside this file. A mod on it:
   - the Designer and DesignerCodex chain (role_launch.chain_sweep, chain_ask) asks no run for it, and a run-now already
     pending on it is refused at launch (said once, no alarm);
   - ops_watch's queues.designer stall reader skips it.
+Design text written by a helper on a held mod is allowed (owner, by card 2026-11-19: "Design text is allowed, and we WILL
+return to the mods... they're not going to be deprecated, don't worry."); builds, tests and live runs stay held and the
+held mods are not deprecated. This file governs what the pipeline launches, nothing else.
 A run already live on a held mod is allowed to finish: nothing here stops, kills or reaps anything, and its spend and
 ledger rows are still recorded by the tick. Names match by the last path part, so design/concepts/Cauldron,
 RimMandrake/Cauldron and Cauldron are one mod. An unreadable or malformed file raises Unreadable: a reader launches

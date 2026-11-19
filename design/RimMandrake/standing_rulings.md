@@ -1067,6 +1067,8 @@ and the system choked at their lack of precision I think."*
   `mod_owner_hold.json`; `mod_owner_hold.py show` lists the holds. A new hold is a row in the same file, with his words,
   then `./pipe init --import` (safe to repeat), so that every launch refuses the mod and not only the tick.
 
+- **Design text on a held mod is allowed; the held mods will return** (owner, by question card, Thu 2026-11-19 ~5:35 AM PST, after six hand-launched helpers wrote design tickets for FeverWood, whose briefs named no mod so the hold never checked them). Picked "Design text is allowed"; his words: *"Design text is allowed, and we WILL return to the mods... they're not going to be deprecated, don't worry."* The option's description, verbatim: *"Why: design is cheap and loses nothing if the mod never ships. Only builds, tests and live runs stay held. Cost: tokens go to mods you set aside, and designs drift from what you last read."* So: the hold above binds the PIPELINE (its launches, chains, alarms); a helper may write design text on a held mod; builds, tests and live runs on it stay held; no mod is deprecated; no hold is lifted by this (only `mod_owner_hold.py lift`). Item `RIMMANDRAKE_ALLOW_DESIGN_TEXT_ON_HELD_MODS_THEY_RETURN`.
+
 ## Resetting a test scene is harness housekeeping, never a mod deliverable — owner, 2026-11-17
 
 His typed answer to a Conductor card (Tue 2026-11-17) on the proposed Pyrelands polish entry
