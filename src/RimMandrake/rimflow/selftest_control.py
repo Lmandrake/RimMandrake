@@ -1849,6 +1849,30 @@ def t_end_receipt_outlives_its_clone():
           "reconcile ends only the gone run, and its stop order is done", (out, st, stops))
 
 
+# Each remaining promise's name, bound to the test its "Tested by" line names (the most specific one where it names
+# several); src/RimMandrake/Utils/boundary_check.py reads these. main() runs each function once, whatever its names.
+t_off_blocks_starts = t_race
+t_one_admission_point = t_sites
+t_three_named_stops = t_stop
+t_stop_reaches_the_agent = t_hooks_in_run_clone
+t_kill_verified_dead = t_stop
+t_kill_works_without_the_store = t_review_claims_round_two
+t_killed_run_needs_no_hand_step = t_kill_bookkeeping
+t_stopped_run_spends_no_trial = t_stop_review_fixes
+t_look_charged_only_on_a_verdict = t_coverage_look
+t_void_gives_back_once = t_look
+t_unreadable_store_launches_nothing = t_unreadable
+t_probe_never_lies = t_review_round_four_p1
+t_same_command_twice = t_look
+t_every_change_is_an_act = t_verbs
+t_binds_at_once_from_any_clone = t_clones
+t_verbs_answer_in_a_second = t_verbs
+t_queue_order_is_the_stores = t_queue
+t_counts_and_limits_are_adjustments = t_accounts
+t_a_test_never_touches_the_live_store = t_stop_review_fixes
+t_ended_run_is_recorded_ended = t_end_receipt_outlives_its_clone
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,

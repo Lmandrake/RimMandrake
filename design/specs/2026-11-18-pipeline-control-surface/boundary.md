@@ -3,8 +3,8 @@
 Code: `src/RimMandrake/rimflow/control.py`. This page says where the control store stops. A claim about the store
 counts only if it quotes an entry here (`standing_rulings.md` §A boundary page before pipeline code). Written
 2026-11-18 11:50 PM PST. Read fresh 2026-11-19 by `RIMMANDRAKE_READ_CONTROL_PAGE_FRESH_BEFORE_CODE_IS_CUT`: 4 holes
-added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_READER_GOES`. "Tested by" names today's test in `selftest_control.py`; a test named for each
-promise is owed.
+added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_READER_GOES`. "Tested by" names today's test in `selftest_control.py`; each promise also has a test of its own name there, and
+`./publish` refuses a promise without one (`src/RimMandrake/Utils/boundary_check.py`).
 
 ## ACCEPTS (the only inputs the store is built for)
 
