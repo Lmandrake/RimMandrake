@@ -533,6 +533,28 @@ def test_cut_harvest_acts_are_carried():
     check(len(done) == 1 and done[0].get("carried_from"),
           "the next tick executes and journals the carried role_done once, marked carried_from: %s" % done)
     check(not D.load_state(root).get("acts_carry"), "the carry is spent once executed")
+    # Codex review of efe8abe6a8
+    st = {}
+    many = [{"do": "role_done", "unit": "u%d" % n, "at": "t"} for n in range(D.CARRY_MAX + 1 if hasattr(D, "CARRY_MAX")
+                                                                          else 201)] + [{"do": "role_stamp", "at": "t"}]
+    n = D.carry_acts(st, many, 1.0)
+    check(n == len(many) and len(st.get("acts_carry") or []) == len(many),
+          "no carried act is trimmed away, and a finish stamp (role_stamp) is carried too: %d of %d" % (
+              len(st.get("acts_carry") or []), len(many)))
+    st = {}
+    D.carry_acts(st, [{"do": "role_done", "unit": "j", "at": "t", "result": "noted"}], 1.0)
+    check(len(st.get("acts_carry") or []) == 1,
+          "an act stamped with a result but never journalled is still carried (journalled is the proof)")
+    sch, root2 = sched(), os.path.join(TMP, "carry_alarm")
+    os.makedirs(root2, exist_ok=True)
+    st = {"alarms": {"role:DesignerCodex:chain_cap": 99.0}, "seats": {}, "roles": {}}
+    acts = [{"do": "alarm", "kind": "role:DesignerCodex:chain_cap", "at": "t", "why": "x", "note": True,
+             "carried_from": "t0"}]
+    D.execute(acts, sch, st, root2, True, 100.0, {"lock": Lock, "note": lambda i, t: (True, ""),
+                                                  "publish": lambda n: "pushed"},
+              act_deadline=time.time() + 30, deadline=time.time() + 30)
+    check(acts[0].get("note") is not False and acts[0].get("result") != "repeat alarm (rate-limited)",
+          "a carried alarm is delivered, never swallowed by its own interrupted stamp: %s" % acts[0].get("result"))
 
 
 def main():

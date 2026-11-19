@@ -1707,7 +1707,9 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
             stamped = False
             if a["do"] == "alarm":
                 last = st["alarms"].get(a["kind"])
-                limited = last is not None and now - last < sch.get("alarm_every_s", 6 * 3600)
+                # a carried alarm (carry_acts) was decided by a tick cut before it was told: its own stamp, left by that
+                # tick, must not rate-limit it away
+                limited = last is not None and now - last < sch.get("alarm_every_s", 6 * 3600) and not a.get("carried_from")
                 worse = alarm_worse(sch, st, a) if limited else None
                 if limited and not worse:
                     a["note"] = False
@@ -2050,6 +2052,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 continue        # the snapshot stamp of a quiet tick is not a journal line
             a["result"] = res if apply else ("DRY: " + (res or "would %s" % a["do"]))
             journal(root, dict(a, message=None, pending=None) if a.get("message") or a.get("pending") else a)
+            a["journalled"] = True      # carry_acts' proof the act was said (a raise in journal leaves it carried)
         if deferred:
             # given back exactly as a killed tick gives back (tick's except): the next beat decides them again
             back = unreleased(st, deferred, now)
@@ -2171,20 +2174,22 @@ def phone_safe(send, row):
 # advanced, a chain asked) but its acts were never executed or journalled: DesignerCodex rm-role-designercodex-1794846919
 # on Cauldron ended 2026-11-16T16:43Z, the 16:45:42Z tick's observe was cut, and no role_done, role_stage or chain_cap
 # line was ever written. These acts record what happened, once; nothing re-derives them, so they are carried in state
-# and the next tick executes them first. (A launch, ring or stop is given back instead and decided again.)
-CARRY_DOES = ("role_done", "role_stage", "role_hold", "role_cause_attach")
-CARRY_MAX = 200
+# and the next tick executes them first. (A launch, ring or stop is given back instead and decided again.) Delivery is
+# at least once: a tick killed after it journalled a carried act but before it saved state runs it again (a second
+# journal line), which is the cheaper failure than the lost record. Nothing is trimmed: a carry that grows means every
+# tick is cut, which beat_starved already alarms.
+CARRY_DOES = ("role_done", "role_stage", "role_hold", "role_cause_attach", "role_stamp")
 
 
 def carry_acts(st, acts, now):
     """Keep the cut or raised tick's unexecuted harvest acts (CARRY_DOES, and role:* alarms) for the next tick. -> n."""
-    mine = [a for a in acts or [] if isinstance(a, dict) and "result" not in a and not a.get("carry_kept") and (
+    mine = [a for a in acts or [] if isinstance(a, dict) and not a.get("journalled") and not a.get("carry_kept") and (
         a.get("do") in CARRY_DOES or (a.get("do") == "alarm" and str(a.get("kind") or "").startswith("role:")))]
     keep = [dict(a, carried_from=a.get("carried_from") or a.get("at") or iso(now)) for a in mine]
     for a in mine:          # a second cut in the same tick carries nothing twice
         a["carry_kept"] = True
     if keep:
-        st["acts_carry"] = ((st.get("acts_carry") or []) + keep)[-CARRY_MAX:]
+        st["acts_carry"] = (st.get("acts_carry") or []) + keep
     return len(keep)
 
 
@@ -2644,6 +2649,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
         except Fenced as e:
             # not a fault: the metronome moved on. Give back what was not started; no alarm (the metronome journals it)
             back = unreserve(st) + unreleased(st, acts, now)
+            carry_acts(st, acts, now)       # a harvest's acts (and any carried ones not yet run) wait for the next tick
             journal(root, {"at": iso(now), "do": "fenced", "why": "%s; given back: %s" % (e, ", ".join(back) or "none")})
             raise
         except BaseException as e:
