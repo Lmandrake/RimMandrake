@@ -130,9 +130,12 @@ def seed_and_land(root, mod):
     if not made:
         return "had a record"
     import designer_stage as DS
-    p = subprocess.run([DS.LAND, "-m", "maturation: seed %s's stage record (Dispatch step, a Designer concept with no "
-                        "record)" % mod, "design/concepts/%s/%s" % (mod, M.RECORD)], cwd=root, capture_output=True,
-                       text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
+    try:
+        p = subprocess.run([DS.LAND, "-m", "maturation: seed %s's stage record (Dispatch step, a Designer concept with "
+                            "no record)" % mod, "design/concepts/%s/%s" % (mod, M.RECORD)], cwd=root,
+                           capture_output=True, text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
+    except subprocess.TimeoutExpired as e:      # the same cleanup as a refusal (RIMMANDRAKE_CLEAN_SEED_RECORD_WHEN_LANDING_TIMES_OUT)
+        p = subprocess.CompletedProcess(e.cmd, 124, "", "timed out after %ss" % e.timeout)
     if p.returncode:
         # the record made here never reached origin/main: remove it, so the next tick seeds again (a kept one read as
         # "had a record" and its seed_refused stood for good; RIMMANDRAKE_RETRY_SEED_LANDING_LOCAL_RECORD_KEPT_REFUSAL)
@@ -494,18 +497,20 @@ def autolock_and_land(root, mod, now=None, land=None):
           "decision": "locked 0.1.0 (the pipeline, Evidence-for-Ask ruling: no recorded evidence against it)",
           "reasons": why, "evidence": vrel, "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))}
     was = {}
-    for rel, obj in ((vrel, v), (drel, dg)):
-        os.makedirs(os.path.dirname(os.path.join(root, rel)), exist_ok=True)
-        try:
-            with open(os.path.join(root, rel), "rb") as f:
-                was[rel] = f.read()
-        except OSError:
-            was[rel] = None
-        with open(os.path.join(root, rel), "w", encoding="utf-8") as f:
-            json.dump(obj, f, indent=2)
-            f.write("\n")
     subject = "maturation: the pipeline locks %s's Design Version at 0.1.0 (Evidence-for-Ask ruling)" % mod
     try:
+        # written inside the try: a failure writing the second file puts the first back too
+        # (RIMMANDRAKE_ROLL_BACK_AUTOLOCK_WHEN_RECORD_DIR_FAILS)
+        for rel, obj in ((vrel, v), (drel, dg)):
+            try:
+                with open(os.path.join(root, rel), "rb") as f:
+                    was[rel] = f.read()
+            except OSError:
+                was[rel] = None
+            os.makedirs(os.path.dirname(os.path.join(root, rel)), exist_ok=True)
+            with open(os.path.join(root, rel), "w", encoding="utf-8") as f:
+                json.dump(obj, f, indent=2)
+                f.write("\n")
         if land:
             return land(subject, [vrel, drel])
         import designer_stage as DS
