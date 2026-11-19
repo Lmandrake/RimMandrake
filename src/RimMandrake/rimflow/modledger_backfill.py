@@ -20,6 +20,7 @@ import argparse
 import glob
 import hashlib
 import json
+import math
 import os
 import re
 import subprocess
@@ -139,10 +140,31 @@ NO_CHANGE_RE = re.compile(r"(?i)\bno code change\b|\bdid not occur\b|\bno (?:cod
                           r"\bnothing to fix\b|\bno defect (?:remains|found)\b")
 # rule 4: a fix text that is boilerplate (lifecycle, 'the record does not say how') is replaced by the landed commit's
 # subject; a bookkeeping commit (lesson, ledger) names no fix
-BOILER_RE = re.compile(r"(?i)record (?:does not|doesn't) say|names no change|beyond its title|^relentless:|"
-                       r"^published[;,]|^selftest green\.?$|^the fault's smallest_fix, shipped")
+BOILER_RE = re.compile(r"(?i)record (?:does not|doesn't) (?:say|describe)|names no change|beyond its title|"
+                       r"^relentless:|^published[;,]|^selftest green\.?$|^the fault's smallest_fix, shipped|"
+                       r"^(?:fixed|built|landed|done) (?:in|at|as) [0-9a-f]{7,40}\.?$")
 BOOKKEEP_RE = re.compile(r"(?i)^(?:ledger|lessons?|modledger|handoff|notes?|chore|journal)\b[:(]")
 # work orders: a pipeline ticket that takes the mod through a stage or a blind cycle names nothing wrong with the mod
+# the round-4 judge (mining_samples/<Mod>_round4.judge.json): a trap stating that a named thing is missing (EK 65),
+# a trap about pipeline code (FW 661: maturation.py), a note on how a fix's red was re-shown (EK 139), a sentence a
+# walk by the owner verified (GSS 341), the paths that say which mod a ticket's code and art are (GSS 0)
+ABSENT_RE = re.compile(r"(?i)\b(?:has no|have no|had no|lacks?|is missing|are missing|there is no|there are no)\s+"
+                       r"(?:an? |the |any )?`?([A-Za-z][\w.]*[A-Za-z0-9])")
+IDENT_RE = re.compile(r"`([^`\s]{3,80})`|\b([\w-]+\.(?:cs|py|json|xml|md))\b|"
+                      r"\b([A-Za-z][A-Za-z0-9]*_[A-Za-z0-9_]*[A-Za-z0-9])\b|\b([A-Z][a-z0-9]+(?:[A-Z][a-z0-9]*)+)\b")
+CODE_EXT = (".cs", ".py", ".json", ".xml")
+TODAY_EXT = CODE_EXT + (".md", ".txt")
+REDEMO_RE = re.compile(r"(?i)\bre-?demonstrat\w*|\boriginal red command\b")
+OWNER_WALK_RE = re.compile(r"(?i)\bwalked\b.{0,160}\bverified\b|\bverified (?:it |them )?in game\b")
+MODDIR_RE = re.compile(r"(?:\bsrc|\bTextures)[/\\]RimMandrake[/\\]([A-Z][A-Za-z]+)[/\\]|"
+                       r"\bdesign[/\\]concepts[/\\]([A-Z][A-Za-z]+)[/\\]")
+NOT_A_MOD = {"Utils"}
+ARTIFACT_RE = re.compile(r"(?i)(?:[A-Z]:\\|/mnt/[a-z]/|\b(?:src|design|infrastructure|Transient)/)[^\s()\"',;]+"
+                         r"\.(?:png|jpe?g|webp|gif|bmp|mp4|svg|pdf)\b")
+# danger: a FlowWorks trap shares two words with hundreds of later FlowWorks commits, and an unbounded list makes one
+# ticket's question longer than a reader batch (modledger_reader.BATCH_CHARS); the best lines by shared words go
+CURRENT_LATER = 6           # later work lines per question
+CURRENT_TODAY = 4           # today's lines per question
 WORK_ORDER_RE = re.compile(r"(?i)^maturation pipeline: take\b|\bblind (?:offline )?challenge cycle \d+\b")
 # --- the round-3 judge's rules (verdicts D:\ClaudeWork\rimmandrake\conductor\mining_samples\<Mod>_round3.judge.json):
 # every WRONG entry was a trap later work overtook, so a trap is mined only while it is still true today ---
@@ -468,16 +490,19 @@ def filter_trap(text, decisions=(), defects=(), fixed=False):
     """-> (kept text or None, [(reason, sentence)] dropped, [UNRUN sentences]). A trap's sentences are kept unless one
     is a status line (rule 1; a following 'It …' sentence about it leaves with it), a doc correction already made, a
     restatement of his ruling on the same ticket, or, on a ticket closed by a fix, the ticket's own defect (the
-    round-2 judge's GSS 257, EK 53/54/82/133, FlowWorks 386/690)."""
+    round-2 judge's GSS 257, EK 53/54/82/133, FlowWorks 386/690), or a note on how a fix's red was re-shown (the
+    round-4 judge's rule 6, EK 139). A sentence after a dropped one that leans on it (leans()) leaves with it."""
     kept, dropped, unrun, prev = [], [], [], False
     for s in _sentences(text):
         why = None
-        if STATUS_RE.search(s):
+        if dropped and leans(s):
+            why = "leans on a dropped sentence"
+        elif REDEMO_RE.search(s):
+            why = "how a fix's red was re-shown"
+        elif STATUS_RE.search(s):
             why = "status"
             if UNRUN_RE.search(s):
                 unrun.append(s)
-        elif prev and PRONOUN_RE.match(s):
-            why = "status"
         elif HISTORY_RE.search(s):
             why = "history"
         elif OWNER_RESTATE_RE.search(s) or any(coverage(s, d) >= 0.6 for d in decisions):
@@ -492,6 +517,17 @@ def filter_trap(text, decisions=(), defects=(), fixed=False):
     out = " ".join(kept).strip()
     out = re.sub(r";$", ".", out)
     return (out if len(out) >= 25 else None), dropped, unrun
+
+
+LEAN_WORDS = 5     # a sentence with fewer content words than this says nothing without the one before it (FW 72: 3)
+
+
+def leans(sentence):
+    """True when a sentence cannot stand without the one before it: it opens on a pronoun ('It runs only under ...'),
+    or it has fewer than LEAN_WORDS content words ('The caveat is filed as X.', FW 72; 'Stage 3 done does not mean the
+    scenes pass.', GSS 245; the round-4 judge's rule 2). 'The run4 probe ran with sticky back ON, so it reflects the
+    later setting.' stands (the round-2 judge, FW 690)."""
+    return bool(PRONOUN_RE.match(sentence)) or len(stems(sentence)) < LEAN_WORDS
 
 
 def words_of(text):
@@ -638,7 +674,7 @@ def pass_rows(reason):
 
 
 def _final_state(name, evs, S, state=None, landed=None, bulk=(), reading=None, subject_of=None, date_of=None,
-                 title=""):
+                 title="", mod_re=None, files_of=None):
     """-> (kind, body, sha, ledger ref pattern) for a ticket's FINAL rimflow state (the judges' rule 1), or None.
     `state` is rimflow's fold of the ticket: proposed / ready / doing (reopened included) state no fix; dropped and
     superseded nothing. done with noCode -> finding.withdrawn; done, built or validated with a verify pass ->
@@ -684,9 +720,13 @@ def _final_state(name, evs, S, state=None, landed=None, bulk=(), reading=None, s
     sha = pick[2]["sha"]
     ref = "ledger:%%s:%d" % pick[1]
     # rule 5: a close on a sha whose commit names nothing of the ticket (the HEAD deployed at a live pass) gives way
-    # to the last fix sha the ticket's text names
-    subj0 = subject_of(sha) if subject_of and close and pick is close else None
-    if subj0 is not None and name not in subj0 and len(stems(subj0) & stems(title)) < 2:
+    # to the last fix sha the ticket's text names; so does any build or close sha whose commit is bookkeeping (the
+    # round-4 judge, FW 94: a 'ledger:' commit). A close commit that names the mod is the ticket's work (GSS 341: 'Owner
+    # verified the GSS walkthrough in game'), never an older sha a note names
+    subj0 = subject_of(sha) if subject_of else None
+    off = subj0 is not None and name not in subj0 and (BOOKKEEP_RE.match(subj0) or (
+        pick is close and len(stems(subj0) & stems(title)) < 2 and not (mod_re and mod_re.search(subj0))))
+    if off:
         named = [x for x in fix_shas(evs, landed) if not landed(sha) or not x[0].startswith(landed(sha)[:12])]
         if named:
             best = max(named, key=lambda x: ((date_of(x[0]) if date_of else None) or "", named.index(x)))
@@ -699,7 +739,7 @@ def _final_state(name, evs, S, state=None, landed=None, bulk=(), reading=None, s
         # text states the build and what its live verifies read after it
         subj = subject_of(sha) if subject_of else None
         if subj and not BOOKKEEP_RE.match(subj):
-            did = subj
+            did = subject_clause(subj, title)
         else:
             did = "%s at %s; no change named by its record or commit" % (
                 "Fixed" if state == "done" else "Built", sha)
@@ -729,9 +769,48 @@ def _final_state(name, evs, S, state=None, landed=None, bulk=(), reading=None, s
     elif rows:      # rule 5: the PASS rows the close names are the test it ran
         test = rows
     else:
-        test = crit or "none recorded at %s (live: %s)" % ("close" if state == "done" else "build",
-                                                           (close[2].get("live") if close else None) or "-")
+        # the round-4 judge, GSS 341 and FW 756: the owner's walk that verified it in game, else the SelfTest files
+        # the fix commit touched, is the test before 'none recorded'
+        walk = next((clean_lead(t[2].get("text")) for t in reversed(evs) if t[2].get("event") == "note" and
+                     OWNER_WALK_RE.search(str(t[2].get("text") or ""))), None)
+        tests_ = [os.path.basename(f) for f in (files_of(sha) if files_of else None) or () if
+                  re.search(r"(?i)/SelfTest/|/selftest_[^/]*$", f)]
+        test = crit or (walk and "in game: " + walk) or (
+            tests_ and "the fix commit %s's checks: %s" % (sha, ", ".join(tests_[:4]))) or \
+            "none recorded at %s (live: %s)" % ("close" if state == "done" else "build",
+                                                (close[2].get("live") if close else None) or "-")
     return ("finding.claimed_fixed", {"text": fit(did, S["text"]), "test": fit(test, S["test"])}, sha, ref)
+
+
+_TICKET_TEXT = {}
+
+
+def other_mods_code(root, name, mod):
+    """True when a ticket's item file and ledger events name code or art paths of other mods only
+    (src/RimMandrake/<Mod>/, Textures/RimMandrake/<Mod>/, design/concepts/<Mod>/), none of `mod`'s."""
+    if name not in _TICKET_TEXT:
+        parts = []
+        for p_ in (os.path.join(root, "infrastructure", "state", "items", name + ".md"),
+                   os.path.join(root, "infrastructure", "state", "items", "closed", name + ".md")):
+            if os.path.exists(p_):
+                with open(p_, encoding="utf-8", errors="replace") as fh:
+                    parts.append(fh.read())
+        parts += [json.dumps(t[2], ensure_ascii=False) for t in ticket_events(root, {name}).get(name, [])]
+        _TICKET_TEXT[name] = {a or b for a, b in MODDIR_RE.findall("\n".join(parts))} - NOT_A_MOD
+    dirs = _TICKET_TEXT[name]
+    return bool(dirs) and mod not in dirs
+
+
+def subject_clause(subj, title):
+    """The clause of a commit subject ('A: x; y; z') that shares most words with the ticket's title, else the whole
+    subject (the round-4 judge, FW 756: a three-mod commit whose 'late deep-swim toggle recomputes' is the fix)."""
+    parts = [p_.strip() for p_ in re.split(r";\s+", subj) if p_.strip()]
+    if len(parts) < 2:
+        return subj
+    parts[0] = re.sub(r"^[^:]{1,60}:\s+", "", parts[0])
+    tw = stems(title)
+    best = max(parts, key=lambda p_: len(stems(p_) & tw))
+    return best if len(stems(best) & tw) >= 2 else subj
 
 
 def readings_path(root, mod):
@@ -888,6 +967,134 @@ def commit_date(root, sha):
 COMMIT_DATE = commit_date
 
 
+def _commit_info(root):
+    """-> {12-char sha: (message body, [paths touched])} of origin/main since 2026-08-01 (one `git log` per root):
+    what a later commit changed, for the currency check (the round-4 judge: the commits that overtook its four WRONG
+    traps named the files and scenes the traps name, never the trap's ticket or, often, the mod)."""
+    if root not in _INFO:
+        out = {}
+        if os.path.exists(os.path.join(root, ".git")):
+            r = subprocess.run(["git", "-C", root, "log", "origin/main", "--since=2026-08-01", "--name-only",
+                                "--format=%x1e%H%x1f%b%x1f"], capture_output=True, text=True, timeout=300)
+            for rec in r.stdout.split("\x1e")[1:]:
+                parts = rec.split("\x1f")
+                if len(parts) == 3:
+                    out[parts[0][:12]] = (" ".join(parts[1].split()),
+                                          [x.strip() for x in parts[2].split("\n") if x.strip()])
+        _INFO[root] = out
+    return _INFO[root]
+
+
+_INFO = {}
+COMMIT_INFO = _commit_info    # the selftest stands a fake in here (its fixture root is no git checkout)
+_TODAY = {}
+# records of past runs and judgings say what WAS (a cycle's faults, a visit's rows, a repair's calibration): never
+# what the mod's files say today
+TODAY_SKIP_DIRS = {"ledger", "views", ".git", "bin", "obj", "Textures", "Assemblies", "blind_challenge",
+                   "criterion_repairs", "in_game", "evidence", "pilot_throwaway", "next_version", "art_source", "review",
+                   "live_probes", "fix_demos"}
+TOKEN_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+
+
+def today_index(root, mod):
+    """-> ([(repo path, line number, line)], {token: [row]}) of the mod's own design and source files as they are
+    today (code, scenes, tables, sheets; never its journal, log, ledger, views or readings, which quote words that may
+    not have landed). The token map finds the lines that hold a name without a scan per question."""
+    if (root, mod) not in _TODAY:
+        rows, tok = [], {}
+        for base in (os.path.join(root, "design", "concepts", mod), os.path.join(root, "src", "RimMandrake", mod)):
+            for d, dirs, fs in os.walk(base):
+                dirs[:] = sorted(x for x in dirs if x not in TODAY_SKIP_DIRS and not x.startswith("rescue_"))
+                for f in sorted(fs):
+                    if f in ("journal.md", "log.md") or not f.endswith(TODAY_EXT) or f.endswith(".judge.json"):
+                        continue
+                    p = os.path.join(d, f)
+                    try:
+                        if os.path.getsize(p) > 2_000_000:
+                            continue
+                        with open(p, encoding="utf-8", errors="replace") as fh:
+                            for n, line in enumerate(fh, 1):
+                                if line.strip():
+                                    for t in set(TOKEN_RE.findall(line)):
+                                        tok.setdefault(t, []).append(len(rows))
+                                    rows.append((_rel(root, p), n, line.strip()))
+                    except OSError:
+                        pass
+        _TODAY[(root, mod)] = (rows, tok)
+    return _TODAY[(root, mod)]
+
+
+def idents(text):
+    """The names a sentence or a `where` points at: backticked words, snake_case and CamelCase names, file names."""
+    out = []
+    for m in IDENT_RE.finditer(str(text or "")):
+        x = next(g for g in m.groups() if g).strip(".")
+        if x not in out and len(x) >= 3:
+            out.append(x)
+    return out
+
+
+_STOP3 = set("the and for not was are but its has had any all one two can may did why how who new now out off own per "
+             "via yet got let see set use too run ran end".split())
+
+
+def _parts(text):
+    """Stems of a text with its snake_case and dotted names split ('sc_storeroom_mortar' -> storeroom, mortar), and
+    its three-letter words too ('sink cap': FW 451's overtaking commit is 'sink cap to 4 m')."""
+    t = re.sub(r"[_.]", " ", str(text or ""))
+    return stems(t) | {w for w in re.findall(r"\b[a-z]{3}\b", t.lower()) if w not in _STOP3}
+
+
+PHRASE_WEIGHT = 8          # a two-word phrase shared word for word outranks several loose words (FW 451: 'sink cap')
+
+
+def phrases(sentence):
+    """The sentence's two-word phrases of content words, lowercased ('sink cap', 'oracle scenes')."""
+    ws = re.findall(r"[a-z][a-z0-9]+", str(sentence or "").lower())
+    return {"%s %s" % (a, b) for a, b in zip(ws, ws[1:]) if len(a) >= 3 and len(b) >= 3 and
+            a not in _STOP | _STOP3 and b not in _STOP | _STOP3}
+
+
+def _rows_with(root, mod, name):
+    """-> the rows of today_index that hold `name` whole (each of its tokens, in order)."""
+    rows, tok = today_index(root, mod)
+    ts = TOKEN_RE.findall(name)
+    if not ts:
+        return []
+    cand = set(tok.get(ts[0], ()))
+    for t in ts[1:]:
+        cand &= set(tok.get(t, ()))
+    rx = re.compile(r"(?<![\w])%s(?![\w])" % re.escape(name))
+    return [i for i in sorted(cand) if rx.search(rows[i][2])]
+
+
+def today_lines(root, mod, sentence, where, skip=()):
+    """-> ['path:line: text'] of the mod's files today that hold a name the sentence or its `where` points at: lines
+    in a file the sentence names first, then those holding most of its names and words, at most CURRENT_TODAY (the
+    round-4 judge, EK 125: the scene's criterion today says a whole-cell band; FW 451: the known-red entry today drops
+    itself once the cap is 8)."""
+    names = [x for x in idents(sentence) + idents(where) if x not in skip]
+    files = [x for x in names if re.search(r"\.(?:cs|py|json|xml|md)$", x)]
+    keys = [x for x in names if x not in files]
+    if not keys:
+        return []
+    rows = today_index(root, mod)[0]
+    sw = _parts(sentence)
+    score = {}
+    for k in keys:
+        for i in _rows_with(root, mod, k):
+            score[i] = score.get(i, 0) + 1
+    ranked = sorted(score, key=lambda i: (-any(rows[i][0].endswith("/" + f) for f in files), -score[i],
+                                          -len(sw & _parts(rows[i][2])), rows[i][0], rows[i][1]))
+    return ["%s:%d: %s" % (rows[i][0], rows[i][1], fit(rows[i][2], 220)) for i in ranked[:CURRENT_TODAY]]
+
+
+def present_today(root, mod, name):
+    """True when a code file of the mod (C#, Python, JSON, XML) holds `name` as a whole word today."""
+    rows = today_index(root, mod)[0]
+    return any(rows[i][0].endswith(CODE_EXT) for i in _rows_with(root, mod, name))
+
+
 _MOD_TEXT = {}
 
 
@@ -959,6 +1166,53 @@ def drop_overtaken(root, mod, ev, tev, titles, states, mod_words, notes, raw_rea
     nstate = rimflow_states(root, sorted(nev), nev) if nev else {}
     low = mod_text(root, mod)
     commits = COMMITS(root) if traps else []
+    # the round-4 judge's class fix: what later commits of ANY ticket did to the files a trap names or to the mod's own
+    # files, and the trap ticket's own fix commits with their message body (GSS 170, EK 65, EK 125, FW 451)
+    info = COMMIT_INFO(root) if traps else {}
+    cmeta = {csha: (_iso(ts), subj) for ts, csha, subj in commits}
+    by_base, mod_shas = {}, []
+    prefixes = ("design/concepts/%s/" % mod, "src/RimMandrake/%s/" % mod)
+    for csha, (_body, files) in info.items():
+        if csha not in cmeta:
+            continue
+        for f in files:
+            by_base.setdefault(os.path.basename(f), []).append(csha)
+        if any(f.startswith(prefixes) for f in files):
+            mod_shas.append(csha)
+
+    words_of_c = {c_: _parts(cmeta[c_][1] + " " + (info.get(c_) or ("", []))[0]) for c_ in info if c_ in cmeta}
+    df = {}
+    for ws_ in words_of_c.values():
+        for x in ws_:
+            df[x] = df.get(x, 0) + 1
+    n_c = max(1, len(words_of_c))
+
+    def idf(ws_):
+        return sum(math.log(n_c / df.get(x, 1)) for x in ws_)
+
+    def own_shas(evs_):
+        """Every sha the trap's ticket stamps or names (newest last): its own fix commits (GSS 170: 'gss_four at
+        0416599c69' named the fix in a note with no 'fixed' beside the sha)."""
+        out_s = []
+        for t in evs_:
+            x = t[2].get("sha") if t[2].get("event") in ("close", "implemented") else None
+            if isinstance(x, str) and re.match(r"^[0-9a-f]{7,40}$", x):
+                out_s.append(x)
+            if t[2].get("event") in ("note", "close", "implemented"):
+                for k_ in ("text", "reason", "why"):
+                    out_s += SHA_RE.findall(str(t[2].get(k_) or ""))
+        res_ = []
+        for x in out_s:
+            tw = landed_sha(root, x) or x
+            tw = next((c_ for c_ in cmeta if c_.startswith(tw[:12]) or tw.startswith(c_)), None)
+            if tw and tw not in res_:
+                res_.append(tw)
+        return res_
+
+    def commit_line(csha, own=False):
+        body_ = (info.get(csha) or ("", []))[0]
+        return "%s %s %s: %s%s" % ("fix commit" if own else "commit", csha, cmeta[csha][0][:10], cmeta[csha][1],
+                                   (" | " + fit(body_, 300)) if body_ else "")
     cut, gone, asks = {}, {}, {}
 
     def out_(i, k, why):
@@ -978,6 +1232,11 @@ def drop_overtaken(root, mod, ev, tev, titles, states, mod_words, notes, raw_rea
                 "text", "reason", "why", "byCard", "title", "spec"))), None) or next(
                 (t for t in evs if t[2].get("event") == "file"), None)
             t0 = _iso(src[2].get("ts")) if src else ""
+            gone_ = next((x for x in ABSENT_RE.findall(sen) if x.lower() != mod.lower() and
+                          re.search(r"_|[a-z][A-Z]|\d", x) and present_today(root, mod, x)), None)
+            if gone_:
+                out_(i, k, ("the thing it says is missing is in the mod's code today", gone_))
+                continue
             if CONDITIONAL_RE.search(sen):
                 why = next((("the words it waits on are in the mod's files", q) for q in UNTIL_QUOTE_RE.findall(sen)
                             if q.lower() in low), None)
@@ -1005,28 +1264,52 @@ def drop_overtaken(root, mod, ev, tev, titles, states, mod_words, notes, raw_rea
                                                               fit(txt, 300)))
                      for ts, n, txt, fixed in later if ts > t0 and
                      len(tw & stems(txt)) >= OVERTAKE_MIN + (0 if n == tick else 1)]
-            if cand:
-                asks.setdefault(tick, []).append((i, k, t0, sen, [c for _n, c in sorted(
-                    cand, key=lambda x: -x[0])[:4]]))
+            sw = _parts(sen) - drop_w
+            pairs = phrases(sen)
+            named_f = {os.path.basename(x) for x in idents(sen) + idents(body.get("where")) if
+                       re.search(r"\.(?:cs|py|json|xml|md)$", x)}
+            seen_c = {c_.split(" ", 2)[1] for _n, c_ in cand if c_.startswith("commit ")}
+            # the ticket's own commits stated after it, newest first (the reader sees each with its date)
+            own = sorted((x for x in own_shas(evs) if cmeta[x][0] > t0), key=lambda x: cmeta[x][0], reverse=True)[:3]
+            more = {}
+            for csha in {x for b in named_f for x in by_base.get(b, ())} | set(mod_shas):
+                if csha in seen_c or csha in own or cmeta[csha][0] <= t0:
+                    continue
+                sh = sw & words_of_c.get(csha, set())
+                touched = named_f & {os.path.basename(f) for f in info[csha][1]}
+                if len(sh) >= (1 if touched else 2):
+                    low_c = (cmeta[csha][1] + " " + (info.get(csha) or ("", []))[0]).lower()
+                    more[csha] = idf(sh) + (5 if touched else 0) + PHRASE_WEIGHT * sum(1 for x in pairs if x in low_c)
+            cand = [(n_ * 10, c_) for n_, c_ in cand] + [(n_, commit_line(x)) for x, n_ in more.items()]
+            today = today_lines(root, mod, sen, body.get("where"), skip={mod})
+            lines_ = [commit_line(x, own=True) for x in own] + [c_ for _n, c_ in sorted(
+                cand, key=lambda x: (-x[0], x[1]))][:max(0, CURRENT_LATER - len(own))]
+            if lines_ or today:
+                asks.setdefault(tick, []).append((i, k, t0, sen, lines_, today))
     RECORDS_CURRENT[mod] = {}
     unread = 0
     for tick, qs in asks.items():
-        rtext = R.current_text(tick, titles.get(tick), [(t0, sen, cs) for _i, _k, t0, sen, cs in qs])
+        rtext = R.current_text(tick, titles.get(tick), [(t0, sen, cs, td) for _i, _k, t0, sen, cs, td in qs])
         RECORDS_CURRENT[mod][tick] = rtext
         rr = raw_readings.get(tick) or {}
         if not (isinstance(rr.get("current"), list) and rr.get("current_hash") == R.rec_hash(rtext, "current")):
             unread += 1
             continue
-        for n_, (i, k, _t0, _sen, cs) in enumerate(qs, 1):
+        for n_, (i, k, _t0, _sen, cs, td) in enumerate(qs, 1):
             if n_ in rr["current"]:
-                out_(i, k, ("the currency reader found later work made it false", cs[0][:120]))
+                out_(i, k, ("the currency reader found later work made it false", (cs or td)[0][:120]))
     out = []
     for i, e in enumerate(ev):
         if i not in cut:
             out.append(e)
             continue
         kind, subject, body, evidence, auth, sha = e
-        kept = " ".join(x for k, x in enumerate(_sentences(body["text"])) if k not in cut[i])
+        # the round-4 judge's rule 2 (GSS 245, FW 72): a sentence after a dropped one that leans on it leaves too
+        sents = _sentences(body["text"])
+        for k in range(min(cut[i]) + 1, len(sents)):
+            if k not in cut[i] and leans(sents[k]):
+                cut[i].add(k)
+        kept = " ".join(x for k, x in enumerate(sents) if k not in cut[i])
         if len(kept) >= 25:
             out.append((kind, "trap:" + slug(kept, 8), dict(body, text=kept), evidence, auth, sha))
     if gone:
@@ -1152,7 +1435,7 @@ def plan(root, mod):
     if no_bar:
         notes.append("left out: %d live rows whose scene decides no locked bar (the visit rows keep them)" % no_bar)
     # blind challenge faults: the finder's smallest_fix IS the proposed fix; its criterion is the acceptance
-    fault_ids, noted, fault_raw = set(), 0, {}
+    fault_ids, noted, fault_raw, pipe_faults = set(), 0, {}, 0
     for fp in sorted(glob.glob(os.path.join(vdir, "blind_challenge", "cycle_*", "lane2", "faults.json"))):
         d = _load(fp)
         faults = d if isinstance(d, list) else (d or {}).get("faults") or []
@@ -1175,6 +1458,13 @@ def plan(root, mod):
             seen = cause or titles.get(f["id"]) or (evl[0] if evl else None)
             rd = readings.get(f["id"]) or {}
             fbars = [b for b in rd.get("bars") or [] if b in locked] or split_bars(f.get("bar"), locked)
+            # the round-4 judge's rule 4 (EK 8): a fault on no bar of the mod ('(record format)'), noted for the
+            # Conductor, is a defect of the pipeline's own recorder: no finding of the mod
+            if not fbars and str(f.get("status") or "").upper() == "NOTED_FOR_CONDUCTOR" and \
+                    re.match(r"^\s*\(", str(f.get("bar") or "")) and "instrument" not in str(f.get("bar")):
+                fault_ids.add(f["id"])
+                pipe_faults += 1
+                continue
             add("finding.open", "finding:" + f["id"], {
                 "class": "polish" if str(f.get("class") or f.get("cls")).lower() == "polish" else "problem",
                 "bars": fbars, "tags": [] if fbars else (["instrument"] if "instrument" in str(f.get("bar")) else
@@ -1201,6 +1491,9 @@ def plan(root, mod):
                                                     "sha:%s" % sha if sha else None], None, sha)
             elif st.startswith("NOTED"):
                 noted += 1
+    if pipe_faults:
+        notes.append("left out: %d blind faults on no bar of the mod, noted for the Conductor (the pipeline's own "
+                     "recorder, the round-4 judge's rule 4)" % pipe_faults)
     if noted:
         notes.append("left out: %d fault status notes (NOTED_*: the finding.open carries the fact)" % noted)
     # criterion repairs: a decision on the bar whose scene was repaired
@@ -1306,6 +1599,8 @@ def plan(root, mod):
             sha_ok[sha] = landed_sha(root, sha)
         return sha_ok[sha]
 
+    mod_re = re.compile(r"(?i)\b(?:%s)\b" % "|".join(re.escape(x) for x in sorted(
+        {mod, spaced, word} | set(words) | set(cfg.get("backfill_title_names", {}).get(mod, []))) if x))
     rebased = work_orders = pipeline_tickets = ungrounded = 0
     ticket_ctx = {}
     claimed = {s for k, s, *_ in ev if k == "finding.claimed_fixed"}
@@ -1348,7 +1643,8 @@ def plan(root, mod):
         wo = bool(WORK_ORDER_RE.search(titles.get(name) or ""))
         state = None if wo else _final_state(name, tev.get(name, []), S, states.get(name), landed, bulk, rd,
                                              lambda x: SUBJECT_OF(root, x), lambda x: COMMIT_DATE(root, x),
-                                             titles.get(name) or "")
+                                             titles.get(name) or "", mod_re,
+                                             lambda x: (COMMIT_INFO(root).get((landed(x) or x)[:12]) or ("", []))[1])
         if state and state[2]:
             tw = landed(state[2])
             if not tw:
@@ -1496,17 +1792,22 @@ def plan(root, mod):
                 continue
             card = card if isinstance(card, str) or card is None else json.dumps(card, ensure_ascii=False)
             iid = e.get("id") if isinstance(e.get("id"), str) else None
-            # on a ticket that is not one of this mod's, his words count only when they name the mod themselves
+            # on a ticket that is not one of this mod's, his words count only when they name the mod themselves, and
+            # the ticket's code and art are not another mod's (the round-4 judge's rule 4, GSS 0: a FlowWorks tank
+            # ticket in the four GSS looks)
             if iid not in mined_items and not (squash(mod) in squash(said or card) or name_re.search(said or card)):
                 off_mod += 1
                 continue
-            cand.append((sp_, i, said, card, iid))
+            if iid not in mined_items and iid and other_mods_code(root, iid, mod):
+                off_mod += 1
+                continue
+            cand.append((sp_, i, said, card, iid, e.get("text") if isinstance(e.get("text"), str) else ""))
     by_ticket = {}
     for c_ in cand:
         if c_[4]:
             by_ticket.setdefault(c_[4], []).append(c_[2] or c_[3])
     RECORDS_OWNER[mod] = {t: R.owner_text(t, titles.get(t), mod, ws) for t, ws in by_ticket.items()}
-    for sp_, i, said, card, iid in cand:
+    for sp_, i, said, card, iid, etext in cand:
         # on a ticket the owner reader read, only the words it marked as a ruling about the mod
         orr = raw_readings.get(iid) or {}
         if iid in by_ticket and isinstance(orr.get("owner"), list) and orr.get("owner_hash") == R.rec_hash(
@@ -1520,8 +1821,14 @@ def plan(root, mod):
             continue
         subj = ("finding:" + iid) if iid and "finding:" + iid in mined else "q:" + slug(iid or words_, 12)
         auth = {"owner_said": words_} if said else {"by_card": words_}
-        add("decision", subj, {"said": words_} if said else {"text": words_},
-            ["path:%s:%d" % (_rel(root, sp_), i), ("item:" + iid) if iid else None], auth)
+        body_ = {"said": words_} if said else {"text": words_}
+        # the round-4 judge's rule 5 (GSS 378): words that point at a photo or file the event names cite it, with
+        # the event's own reading of it
+        art = ARTIFACT_RE.findall(etext or "")
+        if said and art:
+            body_["text"] = fit(etext, S["text"])
+        add("decision", subj, body_, ["path:%s:%d" % (_rel(root, sp_), i), ("item:" + iid) if iid else None] +
+            ["ext:" + a_[:150] for a_ in art[:2]], auth)
     ev = apply_judge_rules(ev, ticket_ctx, decider, tt.get("tests") if isinstance(tt.get("tests"), dict) else {}, S,
                            notes)
     ev = drop_overtaken(root, mod, ev, tev, titles, {n: states.get(n) or _fold(tev.get(n, [])) for n in items},
@@ -1586,6 +1893,9 @@ def apply_judge_rules(ev, ctx, decider, tests, S, notes):
         elif R.QUARANTINE_RE.search(text):
             count("trap: a test-queue quarantine note (lifecycle, the round-3 judge's rule 3)")
             continue
+        elif pipe_trap(text, body.get("where")):
+            count("trap about pipeline code under src/RimMandrake/rimflow/ (the round-4 judge's rule 4)")
+            continue
         else:
             kept, dropped, unrun = filter_trap(text, dec.get(tick, ()), c.get("defects", ()), c.get("fixed"))
             for why, _s in dropped:
@@ -1616,6 +1926,20 @@ def apply_judge_rules(ev, ctx, decider, tests, S, notes):
     if counts:
         notes.append("judge rules (round 2): " + "; ".join("%d %s" % (n, w) for w, n in sorted(counts.items())))
     return out
+
+
+_PIPE_FILES = None
+
+
+def pipe_trap(text, where):
+    """True when a trap names a pipeline file (a module of src/RimMandrake/rimflow/, or that folder) in its text or
+    its `where`: a defect of the pipeline's own reader, not of the mod (the round-4 judge, FW 661: 'Fixed in
+    maturation.py')."""
+    global _PIPE_FILES
+    if _PIPE_FILES is None:
+        _PIPE_FILES = {f for f in os.listdir(HERE) if f.endswith(".py") and not f.startswith(("selftest_", "__"))}
+    blob = "%s %s" % (text or "", where or "")
+    return "rimflow/" in blob or any(os.path.basename(m) in _PIPE_FILES for m in re.findall(r"[\w./-]+\.py\b", blob))
 
 
 def _bare(body):

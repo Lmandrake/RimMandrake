@@ -87,21 +87,26 @@ When unsure, keep. Answer with ONE JSON object and nothing else: {"<TICKET_ID>":
 
 
 CURRENT_SYSTEM = """You check whether old statements about a software mod are still true. For each ticket you get \
-its title and statements from it, numbered, each with the date it was stated and LATER work that may bear on it \
-(commits on the main branch, closes and notes on the mod's tickets, each with its date). Return the numbers of the \
+its title and statements from it, numbered, each with the date it was stated, LATER work that may bear on it \
+(commits on the main branch with their message, the ticket's own fix commits, closes and notes on the mod's tickets, \
+each with its date) and TODAY lines: what the mod's files say now, at the path and line given. Return the numbers of the \
 statements the later work plainly made false: the thing said impossible, missing, blocked or broken was done, added, \
 staged or fixed; the wording, bar, test or setting it describes was changed; the count or state it gives was \
-superseded. Keep (leave out of your answer) a statement the later work restates, confirms, only mentions, works around \
+superseded; a today line contradicts it (the scene it calls missing exists, the criterion it quotes now reads \
+otherwise, the known-red entry it cites is gone). Keep (leave out of your answer) a statement the later work restates, confirms, only mentions, works around \
 for one run, or does not clearly address, and every lasting fact about how a tool, test or instrument behaves or what \
 a past run showed. When unsure, keep. Answer with ONE JSON object and nothing else: {"<TICKET_ID>": [numbers made \
 false]}, one key per ticket (an empty list when none)."""
 
 
 def current_text(name, title, items):
-    """One ticket's limit traps as the currency reader sees them: [n] (stated <date>) text, then its later work."""
+    """One ticket's trap sentences as the currency reader sees them: [n] (stated <date>) text, then its later work,
+    then today's lines of the mod's files. `items` are (date, text, later lines[, today lines])."""
     return "=== CURRENT %s\nTITLE: %s\n%s" % (name, title or "-", "\n".join(
-        "[%d] (stated %s) %s\n%s" % (i + 1, str(t0)[:10] or "?", " ".join(str(t).split()), "\n".join(
-            "    later: " + " ".join(str(c).split()) for c in cs)) for i, (t0, t, cs) in enumerate(items)))
+        "[%d] (stated %s) %s\n%s" % (i + 1, str(it[0])[:10] or "?", " ".join(str(it[1]).split()), "\n".join(
+            ["    later: " + " ".join(str(c).split()) for c in it[2]] +
+            ["    today: " + " ".join(str(c).split()) for c in (it[3] if len(it) > 3 else ())]))
+        for i, it in enumerate(items)))
 
 
 def keep_text(name, title, defect, items):
@@ -151,7 +156,7 @@ def record_text(name, title, state, prose, evs, fault=None, fixrec=None, prose_p
 
 
 FIELD_VERSION = {"reading": PROMPT_VERSION, "owner": "owner-2026-11-16.2", "keep": "keep-2026-11-16.2",
-                 "current": "current-2026-11-16.2"}
+                 "current": "current-2026-11-19.5"}
 
 
 def rec_hash(text, field="reading"):
