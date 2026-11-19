@@ -255,6 +255,18 @@ def main():
         snap = read(root, "ExplosiveKnockback", M.RECORD)
         rec, made = M.seed_mod(root, "ExplosiveKnockback", live=False)
         ok(not made and read(root, "ExplosiveKnockback", M.RECORD) == snap, "a re-seed changes nothing")
+        # RIMMANDRAKE_KEEP_UNREADABLE_RECORD_WHEN_SEEDING_SAYS_NEVER: an unreadable record is not an absent one
+        with open(os.path.join(M.mod_dir(root, "ExplosiveKnockback"), M.RECORD), "w", encoding="utf-8") as f:
+            f.write("{not json (selftest)")
+        try:
+            M.seed_mod(root, "ExplosiveKnockback", live=False)
+            seed_err = None
+        except ValueError as e:
+            seed_err = e
+        ok(seed_err is not None and read(root, "ExplosiveKnockback", M.RECORD) == "{not json (selftest)",
+           "seeding over an unreadable record refuses and leaves the file as it was (%r)" % (seed_err,))
+        with open(os.path.join(M.mod_dir(root, "ExplosiveKnockback"), M.RECORD), "w", encoding="utf-8") as f:
+            f.write(snap)
         # a concept still at the Designer has a journal but no version/ folder (Graffiti, 2026-11-15: seed crashed)
         jd = os.path.join(root, "design", "concepts", "JournalOnlyMod")
         os.makedirs(jd)

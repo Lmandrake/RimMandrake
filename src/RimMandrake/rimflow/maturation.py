@@ -251,10 +251,15 @@ def _run_spend(m):
 
 
 def seed_mod(root, mod, live=True, gathered=None):
-    """-> (record, made). An existing record is returned untouched (made False): seeding never retypes state."""
+    """-> (record, made). An existing record is returned untouched (made False): seeding never retypes state. One that
+    exists but cannot be read raises ValueError and is left as it is
+    (RIMMANDRAKE_KEEP_UNREADABLE_RECORD_WHEN_SEEDING_SAYS_NEVER)."""
     have = load(root, mod)
     if have is not None:
         return have, False
+    if not _absent(os.path.join(mod_dir(root, mod), RECORD)):
+        raise ValueError("%s: %s exists or cannot be looked at, and cannot be read; seeding writes over no record"
+                         % (mod, rel(mod, RECORD)))
     m = None
     if gathered is not None:
         m = next((x for x in gathered.get("mods", []) if x["name"] == mod), None)
