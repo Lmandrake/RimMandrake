@@ -26,20 +26,20 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 
 | verdict | count |
 |---|---|
-| DONE | 31 |
+| DONE | 29 |
 | DONE_GUARD_OWED | 69 |
 | CLEARED | 30 |
 | DEAD | 73 |
 | DUPLICATE | 6 |
 | VALID_SMALL | 1 |
-| VALID_LARGE | 119 |
+| VALID_LARGE | 121 |
 | LIVE_ONLY | 38 |
 | KEEP | 7 |
 | NEEDS_HIM | 2 |
 | OUT | 2 |
 | total | 378 |
 
-## DONE (31)
+## DONE (29)
 
 | ticket | state at census | evidence |
 |---|---|---|
@@ -52,10 +52,8 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 | `CONTRACTS_EXCISE_ARBITER_REPLAY_FAMILIES` | ready | work landed b47c87d04b; its 1 selftest(s) exit 0 on HEAD in this run |
 | `DELEGATED_DIGEST_HARDEN_MUTATION_SURVIVORS` | proposed | the red-first mutation-kill selftest it asked for landed at 68b347c069; selftest_delegated_digest green |
 | `DEPLOY_GUARD_FIX_EXCLUDE_DIR_MISMATCH` | ready | deploy_def_guard.DEPLOY_EXCLUDE_DIRS now includes art_candidates (line 73); selftests green; work landed f160d57cf8 |
-| `DEV_SCRATCH_DIRS_MIGRATE_OFF_LODESTARS_LAWN` | ready | work landed 3b7594a392; its 2 selftest(s) exit 0 on HEAD in this run |
 | `DRVFS_ENOMEM_FIX_ORDER_SEVEN_RUNS_DRY` | ready | work landed 34283c8415; its 1 selftest(s) exit 0 on HEAD in this run |
 | `EVIDENCE_HEAD_SEAL_REPAIR_THREE_BEHIND` | ready | work landed 9df1e805ad; its 1 selftest(s) exit 0 on HEAD in this run |
-| `EVIDENCE_METRICS_WIRE_ONE_ROW_EVER` | ready | work landed 38c6a169d0; its 2 selftest(s) exit 0 on HEAD in this run |
 | `LESSONS_RETIRE_INBOX_AS_QUEUE` | ready | work landed 47595a6360; its 1 selftest(s) exit 0 on HEAD in this run |
 | `LOG_BOUND_DECIDE_COLD_LOAD_ALWAYS_GUILTY` | ready | work landed 9d974a4e3c; its 1 selftest(s) exit 0 on HEAD in this run |
 | `MIRROR_PACK_REPAIR_STILL_GRUMBLING` | ready | work landed 1a553c5002; its 2 selftest(s) exit 0 on HEAD in this run |
@@ -279,7 +277,7 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 |---|---|---|
 | `ROLE_HEADERS_RETIRE_ENABLED_PROSE` | proposed | built in part at 0e982afe59: no role file states its switch setting any more (selftest_role_headers_state_free.py, red before, green after); producer.md, auditor.md and innovator.md had said enabled while disabled. LEFT OPEN: the clock-time and cap half (18 clock lines, 27 cap lines in seven role files) is prose rework of live role instructions, more than an hour |
 
-## VALID_LARGE (119)
+## VALID_LARGE (121)
 
 | ticket | state at census | evidence |
 |---|---|---|
@@ -297,12 +295,14 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 | `CPU_RETEST_PROVE_MASKED_PAIR_AFTER_FLASH` | doing | SteveDesktop CPU retest after the soak drains; off-limits this run |
 | `CRITERIA_TEXT_FIX_CUT_AT_CAP` | proposed | model.CRITERION_TEXT_MAX is still 160 (model.py:338); a schema change on the ledger |
 | `CRITIC_CALIB_HARDEN_WALK_AND_HEADS_FALLBACK` | ready | art-critic residuals; not probed this run (UNMEASURED) |
+| `DEV_SCRATCH_DIRS_MIGRATE_OFF_LODESTARS_LAWN` | ready | work landed 22e48e7f0a, but its live line does not hold: D:\ClaudeWork\rimmandrake\artpipe\registry.jsonl is 70 h old (max 6 h), so rimflow refuses the close; needs the artpipe registry writer read (idle, or broken?) |
 | `DIRTY_CODE_REVIEW_LOOP_CONTINUE_NOT_DONE` | ready | retitle: review the C# files code_review_status still lists DIRTY (81 waves landed, last 55c201dd6f) |
 | `DISPATCHER_FIX_INCIDENT_BELLS_OVERWRITE` | proposed | four Codex round-4 findings on dispatcher.py, unverified; each needs a red test first |
 | `DISPATCHER_VERIFY_SAME_SECOND_HANDOFF` | proposed | dispatcher.py handoff verification on whole-second timestamps; needs a same-second test |
 | `DOORBELL_ARM_HARDEN_TWO_NARROW_RACES` | proposed | two races in doorbell.py (_disarm_if_mine, take_ring); concurrency work |
 | `DOORBELL_DELAY_FIX_FRESH_WINDOW_WAITS` | proposed | fresh-window wake delay; belongs with the conductor-restart work |
 | `DRIVERSITE_FIX_HIVE_HALTS_TWO_MAPS` | proposed | test-site hive clearing in the northstar driver; live |
+| `EVIDENCE_METRICS_WIRE_ONE_ROW_EVER` | ready | work landed 38c6a169d0 and its selftests pass, but a Relentless lease (gen 1, checking) still carries it, so close is refused; needs the lease released by its supervisor |
 | `FIRST_TOUCH_DECIDE_HARNESS_NAMES_A_MOD` | proposed | first_touch.py still holds items naming a mod; deciding whether system repairs are exempt is a design call |
 | `FOCUS_ENFORCE_HEADLESS_LAUNCH_ALLOWLIST` | proposed | headless launch allowlist; not built |
 | `FOUNDRY_RETIRE_REVIEW_DIRTY_FILES` | proposed | retitle: full-file review of cli.py, priority.py and the rest still DIRTY |
@@ -489,3 +489,15 @@ Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:4
 - Reds seen on HEAD in this run with no fix here: `selftest_focus_cap.py` ("the refused claim wrote no event"),
   `selftest_known_results.py` (planted case), `selftest_static_game_state.py` (`RIMMASTER_GUARD_WRECKED_LINKS_STATIC_LIST_TRIPS_RATCHET`),
   `selftest_scratch_reap.py` and `selftest_conductor_reset_mode.py` (no verdict in 170 s: UNMEASURED).
+- `RIMMANDRAKE_DECIDE_GUARDS_OWED_BY_LANDED_OLD_FIXES` (filed for the Conductor): the 69 DONE, GUARD OWED rows,
+  and why most of their deaths were not the fix.
+- Two DONE rows could not close and moved to VALID LARGE: `DEV_SCRATCH_DIRS_MIGRATE_OFF_LODESTARS_LAWN` (its live
+  line fails: the artpipe registry is 70 h old) and `EVIDENCE_METRICS_WIRE_ONE_ROW_EVER` (a Relentless lease still
+  carries it).
+
+## What the ledger holds after this run [measured, ledger replay 2026-11-18 ~4:20 PM PST]
+
+29 DONE rows closed with their sha (4 with a live line); 103 dropped (73 DEAD, 30 CLEARED, dependents released); 6
+superseded; every open row (VALID LARGE, LIVE ONLY, KEEP, NEEDS HIM, DONE GUARD OWED, VALID SMALL) carries an
+`OLD-ERA SWEEP 2026-11-18` note with its evidence. Item titles were not rewritten (rimflow has no retitle verb); the
+note says what each needs in today's words.
