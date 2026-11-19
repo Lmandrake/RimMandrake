@@ -1750,7 +1750,13 @@ def abort_run(d, run):
 
 def owner_moved(st, d, repo):
     w = st.get("waiting_owner_feed")
-    return w is not None and owner_feed(repo, st.get("item"), d) != w
+    if w is None:
+        return False
+    now = owner_feed(repo, st.get("item"), d)
+    if now is None:     # could not look is not his answer (RIMMANDRAKE_REFUSE_UNREADABLE_OWNER_FEED_BLIND_IS_NO_REPLY)
+        raise Refused("WAITING_OWNER UNMEASURED: the OWNER shard could not be read here, so whether he answered is "
+                      "unknown; nothing opens blind (rerun where OWNER.jsonl is readable)")
+    return now != w
 
 
 def owner_answered_at(st, d, repo=REPO):

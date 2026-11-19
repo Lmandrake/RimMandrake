@@ -203,6 +203,7 @@ SECTIONS = [
     lambda tmp: flawed_criterion_not_designers(),
     cli_repin_reads_concept_clone,
     malformed_results_reject,
+    unreadable_owner_feed_is_not_an_answer,
 ]
 
 
