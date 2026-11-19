@@ -58,8 +58,8 @@ Live pass line (the analysis's "First experiment", section 6), over the next >=1
 
 ## criteria
 
-- Offline check above PASS 3 of 3; the hook selftest passes; every selftest that reads role_launch.py, dispatcher_schedule.json or the hooks is run after the change.
-- The builder lands the code and marks it implemented. The close waits for the live pass line: the Conductor reads the dispatcher records after the run counts above and closes with `--live "role=Operations max_age=2d"`, citing the measurement.
+- C1 L0: Offline check above PASS 3 of 3; the hook selftest passes; every selftest that reads role_launch.py, dispatcher_schedule.json or the hooks is run after the change.
+- C2 L3: The live pass line (an evaluation of the dispatcher records and 5 transcripts, not a bridge act). The builder lands the code and marks it implemented. The close waits for the live pass line: the Conductor reads the dispatcher records after the run counts above and closes with `--live "role=Operations max_age=2d"`, citing the measurement.
 
 ## Close note
 
