@@ -58,3 +58,12 @@ output quoted in the commit message. A1 and A2 fail on base by construction (the
 and A4 are the ones that must be written carefully, because they are the regressions a reorder can introduce.
 
 The builder does not edit this acceptance section; a clause believed wrong goes to the Conductor with the evidence.
+
+## What the card said
+
+<!-- answered 2026-11-19T00:34:59Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** Before a mod's design is locked it passes two gates: the Designer exam (an agent answers scenario questions from the design alone) and the coverage judge (checks every promise has a test). Today the exam runs first. Measured Nov 4 to 15: 13 of 16 exams passed, only 3 of 14 judge looks signed, and six exams were retaken after a judge refusal changed the design. An agent decided 'judge first' as a delegated call; you have not ruled. Which order do you want?
+**Picked:** Retake only what changed (Recommended)
+**Its description:** Why: remove the waste without moving the gates. Keeps exam first; after a judge refusal, only the exam scenarios the repair touched are re-run. Buys most of the saving at a small build. Costs: needs a reliable map from a repair to the scenarios it touches. Recommended as the smallest change.
+**Other options:** Judge first, exam once · Leave the order as it is
