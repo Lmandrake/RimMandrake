@@ -145,6 +145,8 @@ SECTIONS = [
     seed_timeout_leaves_no_record,
     autolock_failure_before_landing_rolls_back,
     road_back_retries_transient_fixer,
+    ledger_after_failure_keeps_the_run,
+    launch_exception_books_code,
 ]
 
 

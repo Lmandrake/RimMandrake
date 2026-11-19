@@ -1554,7 +1554,10 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
             book = st["mods"][row["mod"]].setdefault("fixers" if row.get("aut") == "fixer" else "steward", {})
             book[row.get("fix_key") or row.get("fix_item") or row.get("steward_key")] = {
                 "item": row.get("item"), "unit": None, "at": now, "failed": "%s: %s" % (type(e).__name__, e),
-                "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1}
+                "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1,
+                # the code it failed on: _gate retries once the code changed
+                # (RIMMANDRAKE_BOOK_CODE_ON_LAUNCH_EXCEPTION_FRESH_FIX_SEEN)
+                **({"code": cfg["_code"]} if cfg.get("_code") else {})}
             row.update(decision="launch_failed", why="%s: %s" % (type(e).__name__, e))
 
 
@@ -1603,7 +1606,11 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
         ok = rc == 0 and bool(unit)
         text = "%s; %s" % (text, (text2 or "").splitlines()[0] if text2 else rc)
     if led:
-        text = "%s; %s" % (text, MD.ledger_after(root, st, mod, led, unit if ok else None, item, now))
+        try:
+            text = "%s; %s" % (text, MD.ledger_after(root, st, mod, led, unit if ok else None, item, now))
+        except Exception as e:  # noqa: BLE001  a started run is still started: its unit is booked, the fault is said
+            # (RIMMANDRAKE_KEEP_LAUNCHED_UNIT_WHEN_LEDGER_AFTER_FAILS)
+            text = "%s; ledger step after the launch FAILED (%s: %s)" % (text, type(e).__name__, e)
     book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else text,
                  "tries": tries, "filed": filed, "tried": None if ok else MD.tried_unit(text)}
     if not ok and cfg.get("_code"):
