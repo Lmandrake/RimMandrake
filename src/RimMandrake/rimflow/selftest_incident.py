@@ -1563,7 +1563,11 @@ ROLE_INCIDENT_SUFFIXES = {"supervise", "unit", "overtime", "stop_failed", "stage
                           "mod_owner_hold",
                           # the pipeline pause store unreadable: everything is held until it reads (pipeline_pause.py,
                           # b206c0d34f), alarmed once per outage
-                          "pipeline_pause"}
+                          "pipeline_pause",
+                          # a run the machine killed is void_system (4fe2af3f9e): stage_void says one was voided or could not
+                          # be marked; system_fault says SYSTEM_FAULT_LIMIT runs on one concept died of a system cause and
+                          # nothing chains until it is read. Both name a machinery fault, none a self-retrying doorbell
+                          "stage_void", "system_fault"}
 
 
 def test_role_relapse_kinds_do_not_reopen():

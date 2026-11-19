@@ -396,13 +396,21 @@ try:
           any("selftest_new.py" in t and "due " + _due in t for t in cop.values()), (_due, cop))
     check("WIRE: a red an entry on an OPEN item parks files nothing (the flow ledger's open items reach the list)",
           not any("selftest_parked.py" in t for t in spawned.values()), spawned)
+    # 797a08f5e7 (RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL): no program drains a BENCH offline alarm but
+    # red_dispatch's NIGHTLY_RED items, so the overdue chase is not spawned (an item nobody works) and its alarm waits PENDING
+    # with that cause named; the Conductor hears of an overdue red through the testing.* incident route, not a filed item
+    _od = json.loads((WIRE / "ops" / "alarms.json").read_text(encoding="utf-8")).get("NIGHTLY_RED_OVERDUE:testing.nightly_reds_overdue") or {}
     check("WIRE: the overdue red alarms, though its own item was filed this very pass; the fresh red is not overdue",
-          len(late) == 1 and OLD_RED in list(late.values())[0] and NEW_RED not in list(late.values())[0], spawned)
+          not late and _od.get("state") == "PENDING" and "no receiver" in str(_od.get("error")) and OLD_RED in str(_od.get("title"))
+          and NEW_RED not in str(_od.get("title")), (spawned, _od))
+    check("WIRE: the incident table carries the overdue reading to Operations (the Conductor's line comes from there)",
+          (__import__("incident").route_of(__import__("incident").load_table(), "testing.nightly_reds_overdue") or {}).get("route") == "role")
     check("WIRE: every filing is raised, so it is top priority", spawned and sorted(raised) == sorted(spawned), (raised, sorted(spawned)))
     _rc_args = [c for c in seen if c[0] == "spawn" and c[c.index("--name") + 1] in cop]
     check("WIRE: filed for the pool relentless drains", all(c[c.index("--for") + 1] == _wr["alarm"]["for"] for c in _rc_args) and _rc_args, _rc_args)
     _log = WCLOG.read_text(encoding="utf-8") if WCLOG.exists() else ""
-    check("WIRE: the overdue alarm reached the Conductor's log", late and list(late)[0] in _log, _log[-300:])
+    check("WIRE: the overdue alarm tells the Conductor's log only once it has filed an item, and none was (no line for an unfiled item)",
+          not late and "OPS_RED_OVERDUE_CHASE" not in _log, _log[-300:])
     _status = json.loads((WIRE / "ops" / "status.json").read_text(encoding="utf-8"))
     check("WIRE: the pass's own status shows the readings MEASURED", _status["points"]["testing.nightly_reds_overdue"].get("m") == "MEASURED"
           and _status["points"]["testing.nightly_reds_overdue"].get("v") == 1, _status["points"].get("testing.nightly_reds_overdue"))
