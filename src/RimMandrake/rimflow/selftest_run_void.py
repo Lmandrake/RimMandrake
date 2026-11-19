@@ -218,6 +218,28 @@ def designer_void(tmp):
     ok(DS.void_rejection(d, "rm-role-designer-3", "x") is False, "a rejection judged on a written result is never void")
 
 
+def pilot_void(RV, tmp):
+    """A Test Pilot verify recorded fail because of a harness fault: a hand void by its run name
+    (`maturation_dispatch.py void "<ID>/run-N@<config>" --why ...`) takes it out of the 3-in-a-row streak."""
+    import model
+    import testpilot_route as TP
+    name = "FAKE_ITEM/run-3@full-578"
+
+    class It(object):
+        id, state, blocked, needs, history = "FAKE_ITEM", "ready", False, "bridge", []
+        runs = [model.Run("FAKE_ITEM", n, "full-578", "fail", None, "abc", "2026-11-18T0%d:00:00Z" % n, n)
+                for n in (1, 2, 3)]
+    ok(TP.judge(It, [], void={}) and TP.judge(It, [], void={})["kind"] == "streak",
+       "three fails in a row route the item to a Test Pilot")
+    ok(TP.judge(It, [], void={name: {"id": "v", "why": "harness fault"}}) is None,
+       "the third fail hand-voided as a harness fault: two in a row, no streak")
+    got, bad = RV.resolve(tmp, {}, [name], verify_run=lambda n: n == name)
+    ok(bad is None and [g[0] for g in got] == [name] and got[0][2] == "FAKE_ITEM",
+       "void resolves a verify run by its name, the item from the name (%s)" % (bad or got))
+    got, bad = RV.resolve(tmp, {}, ["FAKE_ITEM/run-9@full-578"], verify_run=lambda n: n == name)
+    ok(bad and "unknown run" in bad, "a verify run the ledger does not hold is refused by name")
+
+
 def main():
     try:
         import run_void as RV
@@ -513,6 +535,7 @@ def main():
         judge_rounds(CJ)
         release_back(RV, MD, record)
         designer_void(tmp)
+        pilot_void(RV, tmp)
     finally:
         RL.read_result, DH.killed = real_read, real_killed
         for k, v in keep.items():

@@ -112,12 +112,25 @@ def _last_note(evs, item, marker):
     return -1
 
 
-def judge(item, evs):
-    """-> None, or {"id", "kind": streak|wanted|diagnose, "why"} for an item that goes to a Test Pilot. Pure."""
+def voids():
+    """-> the standing hand voids (run_void.active), or {} when the void file cannot be read: every run then counts, as
+    the books had it. A verify run is voided by its run name, `<ID>/run-N@<config>`
+    (RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS: a fail recorded because of a harness fault)."""
+    try:
+        import run_void
+        return run_void.active()
+    except Exception:  # noqa: BLE001 - could not look: nothing is voided
+        return {}
+
+
+def judge(item, evs, void=None):
+    """-> None, or {"id", "kind": streak|wanted|diagnose, "why"} for an item that goes to a Test Pilot. Pure given
+    `void` ({run name: void line}; None reads the standing voids): a voided run is in no streak."""
     if item.state not in OPEN_STATES or item.blocked or item.needs == "owner" or "_JUDGE_" in item.id:
         return None
+    void = voids() if void is None else void
     sat = _last_note(evs, item, SAT)
-    runs = [r for r in item.runs if r.index > sat and r.config not in NOT_A_TEST]
+    runs = [r for r in item.runs if r.index > sat and r.config not in NOT_A_TEST and r.name not in void]
     whole, worst, key = streaks(runs)
     if whole >= STREAK or worst >= STREAK:
         where = "in a row" if whole >= worst else "in a row on %s" % key
@@ -131,7 +144,8 @@ def judge(item, evs):
 
 def routed(world, evs):
     """-> every judge() verdict, in no promised order."""
-    return [v for v in (judge(item, evs) for item in world.items.values()) if v]
+    void = voids()
+    return [v for v in (judge(item, evs, void) for item in world.items.values()) if v]
 
 
 def route_line(verdict):

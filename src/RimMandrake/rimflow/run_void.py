@@ -214,9 +214,21 @@ def children(root, mod, rec):
     return sorted(u for u, at in runs.items() if at is not None and t0 <= at <= t1)
 
 
-def resolve(root, st, units=(), item=None, mod=None, since=None, record=None):
+VERIFY_RUN = re.compile(r"^(?P<item>[A-Z0-9_]+)/run-\d+@.+$")    # model.Run.name: a Test Pilot verify run
+
+
+def ledger_run(name):
+    """-> True when the ledger holds the verify run `name` (model.Run.name)."""
+    import model
+    m = VERIFY_RUN.match(name)
+    it = model.replay(model.read()).items.get(m.group("item")) if m else None
+    return bool(it) and any(r.name == name for r in it.runs)
+
+
+def resolve(root, st, units=(), item=None, mod=None, since=None, record=None, verify_run=None):
     """-> ([(unit, mod, item, rec)], refusal or None). A unit is known when it has a run record, sits in a dispatch book
-    or is named by a concept's stage.json; anything else is refused by name."""
+    or is named by a concept's stage.json, or is a verify run the ledger holds (`<ID>/run-N@<config>`, voided when a
+    harness fault recorded its fail: testpilot_route then counts it in no streak); anything else is refused by name."""
     import detached_helper as DH
     record = record or DH.read_record
     books = book_entries(st)
@@ -253,6 +265,12 @@ def resolve(root, st, units=(), item=None, mod=None, since=None, record=None):
         if u in seen:
             continue
         seen.add(u)
+        vm = VERIFY_RUN.match(u)
+        if vm and u not in in_book and u not in staged:
+            if not (verify_run or ledger_run)(u):
+                return [], "unknown run %s: the ledger holds no such verify run" % u
+            out.append((u, mod, vm.group("item"), None))
+            continue
         rec = record(u)
         if not rec and u not in in_book and u not in staged:
             return [], "unknown run %s: no run record, no dispatch book entry, no concept names it" % u
@@ -265,13 +283,13 @@ def resolve(root, st, units=(), item=None, mod=None, since=None, record=None):
 # ---- the verbs ------------------------------------------------------------------------------------------------------
 
 def void(root, st, units=(), item=None, mod=None, since=None, why="", by="", owner_said=None, record=None, p=None,
-         now=None):
+         now=None, verify_run=None):
     """Append one void line per run (and per Designer run or judge it started). -> (lines written, refusal or None).
     A unit already void is refused, never written twice; every void here is a HAND void: a run that genuinely failed
     on the mod's merits may be voided (his call), and its line says hand."""
     if not str(why or "").strip():
         return [], "a void says why (--why)"
-    got, bad = resolve(root, st, units, item, mod, since, record)
+    got, bad = resolve(root, st, units, item, mod, since, record, verify_run)
     if bad:
         return [], bad
     cur = active(p)
