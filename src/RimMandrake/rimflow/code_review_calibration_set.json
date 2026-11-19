@@ -1,0 +1,286 @@
+{
+ "about": "The code_review family's calibration set (RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS): the 35 claims of Codex's control-store review rounds two to four, 2026-11-18, with one analyst's labels (about 70% sure). expect refuse = a Problem, pass = polish or next_version. `claim` is the analyst's plain description with its trailing ticket or fix note removed; only `id` and `claim` reach the reviewer. Source: D:\\ClaudeWork\\rimmandrake\\conductor\\control_review_rounds_real_or_treadmill_20261118.md.",
+ "page": "design/specs/2026-11-18-pipeline-control-surface/boundary.md",
+ "claims": [
+  {
+   "id": "c2.1",
+   "round": 2,
+   "claim": "Two threads in one process launching the same unit name could share one admission. Retries under one name counted as one fault.",
+   "expect": "pass",
+   "analyst": "POLISH: needs concurrent same-name launches in one process, which nothing does. The fault undercount needs repeated launch failures.",
+   "tag": "blame measured; class guess ~70%"
+  },
+  {
+   "id": "c2.2",
+   "round": 2,
+   "claim": "A launch whose spec names a unit but whose command line does not would run under a name systemd picks.",
+   "expect": "pass",
+   "analyst": "POLISH: every caller that gives a spec unit also passes `--unit` (steward, designer_cleanse, left_open_continue, maturation_dispatch, boxrun, stop_resume).",
+   "tag": "measured"
+  },
+  {
+   "id": "c2.3",
+   "round": 2,
+   "claim": "An emergency `stop --kill` waits up to 3 s if another writer holds the store.",
+   "expect": "pass",
+   "analyst": "POLISH: 3 s of latency; no record is wrong",
+   "tag": "measured"
+  },
+  {
+   "id": "c2.4",
+   "round": 2,
+   "claim": "If `systemctl kill` fails, the fallback kills only the processes seen before, so a child forked in between survives unseen.",
+   "expect": "pass",
+   "analyst": "POLISH: needs a failed systemctl kill and a fork in the gap",
+   "tag": "measured"
+  },
+  {
+   "id": "c2.5",
+   "round": 2,
+   "claim": "A killed run whose own end hook lands first stays recorded \"ended\", not \"killed\". The clone is still reaped.",
+   "expect": "refuse",
+   "analyst": "PROBLEM, mild: an ordinary kill can race its own ExecStopPost, and the runs table records the wrong end state. No gate or spend is affected.",
+   "tag": "blame measured; class guess ~60%"
+  },
+  {
+   "id": "c2.6",
+   "round": 2,
+   "claim": "A second stop with a shorter deadline on the same unit could not set its timer (name clash), so the kill would come at the first, later deadline.",
+   "expect": "refuse",
+   "analyst": "PROBLEM, mild: re-issuing a stop with a shorter deadline is an ordinary input. The stop order promises a time that is not kept, although the receipt does say \"NOT set\".",
+   "tag": "blame measured; class guess ~55%"
+  },
+  {
+   "id": "c2.7",
+   "round": 2,
+   "claim": "`pipe stop --idem` was accepted but ignored.",
+   "expect": "pass",
+   "analyst": "POLISH: no caller passes `--idem` to stop",
+   "tag": "measured (grep)"
+  },
+  {
+   "id": "c2.8",
+   "round": 2,
+   "claim": "The launch census passed a function holding one routed launch and one direct `systemd-run`.",
+   "expect": "pass",
+   "analyst": "POLISH: test strength. The live census found 19 sites, all routed.",
+   "tag": "measured"
+  },
+  {
+   "id": "c2.9",
+   "round": 2,
+   "claim": "The speed test checked a pooled p95, so one slow verb could hide.",
+   "expect": "pass",
+   "analyst": "POLISH: test strength",
+   "tag": "measured"
+  },
+  {
+   "id": "c3.1",
+   "round": 3,
+   "claim": "A refused re-admission still deleted the first admission, so a third try could reuse the first run id.",
+   "expect": "pass",
+   "analyst": "POLISH: same reach as 2.1",
+   "tag": "measured"
+  },
+  {
+   "id": "c3.2",
+   "round": 3,
+   "claim": "When a store-locked emergency kill is booked later, a run that has already ended gets no void or books.",
+   "expect": "pass",
+   "analyst": "POLISH: needs a writer holding the store for 0.2 s during a kill plus the end race. Before the fix nothing at all was booked on this path.",
+   "tag": "measured"
+  },
+  {
+   "id": "c3.3",
+   "round": 3,
+   "claim": "`stop --idem` on a locked store kills again before it sees the replay.",
+   "expect": "pass",
+   "analyst": "POLISH: no caller uses stop `--idem`",
+   "tag": "measured"
+  },
+  {
+   "id": "c3.4",
+   "round": 3,
+   "claim": "The kill's final re-read treats \"could not read the cgroup\" as \"empty\", so it can report death unverified.",
+   "expect": "pass",
+   "analyst": "POLISH: needs a failed systemctl kill plus an unreadable cgroup. Not worse than before the fix (no re-read at all).",
+   "tag": "measured"
+  },
+  {
+   "id": "c3.5",
+   "round": 3,
+   "claim": "Two escalation timers due at the same moment both run the reaper on one run.",
+   "expect": "pass",
+   "analyst": "POLISH: needs two deadlines expiring in the same second. A later timer finds its order already done.",
+   "tag": "measured"
+  },
+  {
+   "id": "c3.6",
+   "round": 3,
+   "claim": "The unit-name reader reads a payload's own `--unit` as the systemd unit.",
+   "expect": "pass",
+   "analyst": "POLISH: every caller puts systemd's `--unit` first. maturation_dispatch and left_open_continue carry a payload `--unit` after it, and the first match wins.",
+   "tag": "measured"
+  },
+  {
+   "id": "c3.7",
+   "round": 3,
+   "claim": "The census still waved through a builder call in a function that also calls launch_unit, and missed aliases.",
+   "expect": "pass",
+   "analyst": "POLISH: test strength",
+   "tag": "measured"
+  },
+  {
+   "id": "c3.8",
+   "round": 3,
+   "claim": "The kill check ignores child cgroups.",
+   "expect": "pass",
+   "analyst": "POLISH, unreachable today: no pipeline unit sets Delegate=, so no child cgroups exist",
+   "tag": "measured (grep Delegate)"
+  },
+  {
+   "id": "c3.9",
+   "round": 3,
+   "claim": "A failed escalation kill retires the cooperative stop order, so the agent stops being told to stop.",
+   "expect": "pass",
+   "analyst": "POLISH: needs a kill that leaves a survivor",
+   "tag": "measured"
+  },
+  {
+   "id": "c3.10",
+   "round": 3,
+   "claim": "Hook commands break on paths with spaces.",
+   "expect": "pass",
+   "analyst": "POLISH: estate paths have no spaces. Round one had already rated it advice.",
+   "tag": "measured"
+  },
+  {
+   "id": "c3.11",
+   "round": 3,
+   "claim": "`--deadline 0.5s` rounds to 0 and silently means no deadline.",
+   "expect": "pass",
+   "analyst": "POLISH: an input nobody types",
+   "tag": "measured"
+  },
+  {
+   "id": "c4.1",
+   "round": 4,
+   "claim": "Killing an already-killed unit again re-runs its bookkeeping: the record is marked killed again, its `-return` unit is stopped and restarted, and the finish note is written again.",
+   "expect": "refuse",
+   "analyst": "PROBLEM, mild: \"kill it again\" is an ordinary input. It interrupts an in-flight clone return and doubles the ledger finish note.",
+   "tag": "blame measured; class guess ~50%"
+  },
+  {
+   "id": "c4.2",
+   "round": 4,
+   "claim": "`pipe stop rm-role-x.service` (the spelling systemctl shows) misses the run row and its Claude scope. The agent keeps running while the command reports success.",
+   "expect": "refuse",
+   "analyst": "PROBLEM: an ordinary input. The run is not recorded stopped and the agent's spend continues.",
+   "tag": "blame measured; reproduced by the lane's red test; class guess ~65%"
+  },
+  {
+   "id": "c4.3",
+   "round": 4,
+   "claim": "The new systemd-run option reader misses forms like `-uNAME`, `--root-directory` and the operand-free clock flags.",
+   "expect": "pass",
+   "analyst": "POLISH: no launch site uses those forms",
+   "tag": "measured (grep)"
+  },
+  {
+   "id": "c4.4",
+   "round": 4,
+   "claim": "The new cgroup walk silently treats an unscannable directory as empty.",
+   "expect": "pass",
+   "analyst": "POLISH: needs an unreadable cgroup dir",
+   "tag": "measured"
+  },
+  {
+   "id": "c4.5",
+   "round": 4,
+   "claim": "The census misses an annotated alias (`alias: list = argv`).",
+   "expect": "pass",
+   "analyst": "POLISH: test strength",
+   "tag": "measured"
+  },
+  {
+   "id": "c4.6",
+   "round": 4,
+   "claim": "A builder called inside another builder is exempt without checking where its argv goes.",
+   "expect": "pass",
+   "analyst": "POLISH: test strength",
+   "tag": "measured"
+  },
+  {
+   "id": "c4.7",
+   "round": 4,
+   "claim": "A failed escalation can put back a stop order after another kill finished the run.",
+   "expect": "pass",
+   "analyst": "POLISH: needs a failed kill and a concurrent successful kill",
+   "tag": "measured"
+  },
+  {
+   "id": "c4.8",
+   "round": 4,
+   "claim": "systemd expands `${...}` in hook paths.",
+   "expect": "pass",
+   "analyst": "POLISH: no estate path contains `$`",
+   "tag": "measured"
+  },
+  {
+   "id": "c4.9",
+   "round": 4,
+   "claim": "A void before a reservation leaves a look held. It is released (as a spurious fault) when the judge process dies.",
+   "expect": "pass",
+   "analyst": "POLISH: needs a void racing a judge's start (coverage_judge is the only reserve caller); it heals itself",
+   "tag": "measured; class guess ~65%"
+  },
+  {
+   "id": "c4.10",
+   "round": 4,
+   "claim": "Re-holding a mod on the same day with new words is not imported into the store.",
+   "expect": "pass",
+   "analyst": "POLISH / near NOT-A-BUG: `import_live` runs only at `init --import` (cutover), and every reader (`mod_owner_hold.load`) honours the file row with the new words anyway",
+   "tag": "measured"
+  },
+  {
+   "id": "c4.11",
+   "round": 4,
+   "claim": "`doctor` says OK after a failed integrity check.",
+   "expect": "pass",
+   "analyst": "POLISH: needs a corrupt store",
+   "tag": "measured"
+  },
+  {
+   "id": "c4.12",
+   "round": 4,
+   "claim": "`pipe off` says \"no run is live\" when its follow-up read failed.",
+   "expect": "pass",
+   "analyst": "POLISH: needs a read failure right after a successful write",
+   "tag": "measured"
+  },
+  {
+   "id": "c4.13",
+   "round": 4,
+   "claim": "The \"stage advanced on a voided run\" flag matches run ids by substring (rm-probe-1 inside rm-probe-10).",
+   "expect": "pass",
+   "analyst": "POLISH: a wrong FLAG line in a report, with no gate. Note that be673ed895's `run_X~2` ids make a prefix collision possible on a re-admitted unit.",
+   "tag": "measured; class guess ~65%"
+  },
+  {
+   "id": "c4.14",
+   "round": 4,
+   "claim": "The per-verb p95 estimator lets one slow call in five pass.",
+   "expect": "pass",
+   "analyst": "POLISH: test strength",
+   "tag": "measured"
+  },
+  {
+   "id": "c4.15",
+   "round": 4,
+   "claim": "Round three's new tests can pass while the behaviour they advertise fails (exit 4 is untested; thread exceptions are not collected).",
+   "expect": "pass",
+   "analyst": "POLISH: test strength",
+   "tag": "measured"
+  }
+ ]
+}
