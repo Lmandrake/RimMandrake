@@ -10,6 +10,13 @@ the six biome mods HELD BY OWNER: this is a design document only and it launches
 pass had left for him here (cover from orbit, fuel, the hull) and ruled on how long a stop lasts. The answers are
 written in below (see "The ship while it sits here"); the changes are listed at the top of `rewrite_choices.md`.
 
+**Second reader, 2026-11-18** (a different agent from the writer, before any old file is deleted): the sources were
+re-read, the ledger items among them, and this design was repaired in fourteen places. The largest: the fuel section
+now follows his freeze rulings R5 and R24 of 2026-09-07, which the first read had not opened; the bank ambusher is
+written as he ruled it on 2026-10-03; the shoal's blast-only hide is back in 0.1.0 on his typed words. The list and
+the reasons are in the section "Second reader" at the top of `rewrite_choices.md`. The Greentide has no locked
+Designer sheet or tree, so nothing here waits on a Designer run to reconcile.
+
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/Greentide/`
 (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its path by sitting here. Nothing in
 the pipeline reads it by name yet. The Greentide has no locked sheet or tree; its only pipeline material is the
@@ -109,8 +116,10 @@ landing hole that was not there at noon.
 - **The percussion gets close.** Trees fall by three hands: cracked by their own growth, gnawed through by the big
   insects at their bases, or shouldered over by the herd. A fall gives a warning and then damages whatever is under
   it, the crew's own things included.
-- **The water.** Something long and flat is in the deep reach and cannot be seen until it lunges. Just before it
-  does, the jungle's noise ducks out. *"Players learn to fear a quiet jungle."*
+- **The water.** Something long and flat is in the deep reach and cannot be seen until it lunges (the dhollock; the
+  game calls it the dhollollo). Just before it does, the jungle's noise ducks out. *"Players learn to fear a quiet
+  jungle."* Three animals divide the river between them, the deep reach, the open reach and the bank, and *"no
+  river crossing in the Greentide is free."*
 
 ## The first week
 
@@ -119,13 +128,18 @@ landing hole that was not there at noon.
   Three things hold it and one thing ends it: clearing by hand; a **dry-air blower** at a doorway, a downward
   curtain of dry air that the growth will not cross and that cools the room behind it, for as long as it has fuel
   and power; **grazers** that actually eat the growth line; and paving, which is permanent for the cells it covers.
-  *"Darkness brings roots. Light brings leaves and branches. The only thing that repels them is dry heat."*
+  *"Darkness brings roots. Light brings leaves and branches. The only thing that repels them is dry heat."* (His
+  image of the place. The built growth needs light; there is no separate night-time root engine, and none is
+  promised.) The blower needs its fuel, its power and its switch, and says which one failed.
 - **Neglect has stages.** The owner's answer of 2026-11-10: *"Recovery first, abandonment after prolonged neglect:
   warnings allow intervention, late response costs clearing and hauling, and continued neglect can force evacuation
   with supplies left behind."* On a ship that is the campaign's own loop arriving early: decide what to leave
   behind, and launch.
 - **The fever.** The jungle's one sickness of its own is the Frenzy: the sick work faster and faster, then collapse
-  for days. On a crew of five to seven with the Empire a week out, one coma is a real hole in the roster.
+  for days. His words (2026-09-22): *"It will kill you if not treated, but you can treat it in the coma stage after
+  benefiting from the rapid work."* On a crew of five to seven with the Empire a week out, one coma is a real hole in
+  the roster. Nothing milder lives here: he took flu and malaria out, and what is left (plague, gut worms, organ
+  decay, the Frenzy) gives a new crew no warning shots.
 - **The clearing.** Rarely the lid breaks: the steam lifts at once and the jungle *"stands naked"* under the full
   sun for a few hours. *"Clarity as the disaster."* The grazers bolt for shade. For once the crew can see the whole
   map, and so can everything else.
@@ -169,23 +183,33 @@ rasp blanches and dies away from the jungle."* He did not choose it that day (he
   so no environment is immediately lethal"*, and the ship *"will advise course of action, but no more than that"*.
 - The organism's name is `UNSETTLED`: the review's working name carries the note "Rename needed".
 
-**Fuel: a richer source, named, bought at the band's edge, and spent here faster than anywhere.** His ruling:
-*"Every biome has a fuel source, but for most its the hideously slow route of rendering biomass into chemfuel... A
-few biomes have richer sources. You can also buy it (the intended motivation to have to trade constantly, very
-Jawa)."*
+**Fuel: made here by those who live here, bought at the band's edge, and spent here faster than anywhere.** His
+ruling of 2026-11-18: *"Every biome has a fuel source, but for most its the hideously slow route of rendering biomass
+into chemfuel... A few biomes have richer sources. You can also buy it (the intended motivation to have to trade
+constantly, very Jawa)."* Two of his older rulings speak about this biome's fuel by name, and the first read had not
+found them (`_freeze_rulings_2026-09-07.md`):
 
-- *The emergency route* has the best feedstock on the planet: greenwood *"abundant beyond counting"*. It is still
-  the slow route.
-- *The richer source is resin.* The sheet lists, among what only the Greentide has, *"sap and resin — tapped from
-  trees growing too fast not to bleed: glue, lacquer, waterproofing, and rendered chemfuel — the dayside's fuel
-  economy."* Resin is a built harvest; the recipe that renders it to chemfuel is not, and is 0.2.0.
-- *Buying it.* The crew's own kind are already here: *"crawlers park at the band's edge"*, and *"the desert buys
-  [greenwood] by the crawler-load"*. A crew that fills the hold with wood has something every crawler wants. The
-  Wildsteam's two seats on the river are the other sellers. Both are campaign layer.
+> *"The fact that people have found SO MANY ways to get fuel is still evidence of its scarcity."* Sap-chemfuel is
+> *"not player-tappable — a settlement-level investment."* (R5)
+
+> *"Green wood does not burn; seasoned wood does. The Greentide's export is dried greenwood, and the drying is long,
+> space-hungry and settlement-scale"*, real, *"but never a supply a passing player taps."* (R24)
+
+A ship on the run is the passing player. So:
+
+- *The emergency route* is the slow one, like everywhere: biomass rendered to chemfuel in the ship's own refinery.
+  Greenwood, *"abundant beyond counting"*, is the feedstock. It is cut green and it stays green; it is not firewood.
+- *The richer source is real and it is not the crew's.* The sheet's *"sap and resin... rendered chemfuel — the
+  dayside's fuel economy"* is a settlement's industry: the Wildsteam, whose capital is on this river, make it. The
+  crew taps resin for sealing and lacquer (built) and does not render it to fuel.
+- *Buying it* is therefore the Greentide's real fuel answer, and it is the one he called very Jawa. The crew's own
+  kind are already here: *"crawlers park at the band's edge"*, and *"the desert buys [greenwood] by the
+  crawler-load"*. A crew that fills the hold with green wood has what every crawler came for, and the crawlers and
+  the Wildsteam's seats have the drums. Campaign layer, 0.2.0.
 - *Spending it.* The blower drains chemfuel all the time it runs (built). Holding the doors and the hull dry is
   paid for in the same drums the ship flies on. That is the Greentide's fuel joke: it sells fuel and eats it.
-- Not written as replete. The sheet's phrase *"the dayside's fuel economy"* is strong, and if he reads it that way
-  it is a one-word change here.
+- Not written as replete, and no longer written as a recipe the crew runs. Whether his ruling of 2026-11-18 was
+  meant to open sap-chemfuel to a ship's crew is the first question under NEEDS HIM.
 
 ## "OMG did you see that?"
 
@@ -194,28 +218,34 @@ Each can happen inside the visit. Each says what is on screen.
 1. **The cargo sinks.** *On screen:* a stack of salvage settles into black mud and is gone, a small marker in its
    place, and a hooded figure starts digging. *Why it is funny:* they put the next stack down beside it.
 2. **The bank stands up.** *On screen:* a stretch of riverbank that looked like every other stretch rises under a
-   walker and bites. *"The ground itself stands up."* The vurrak gives a moment's warning when weight lands, strikes
-   the cell it marked, and after that is an ordinary animal that bleeds. A pet running ahead only reveals it.
-   (`UNMEASURED`: whether a Jawa is heavy enough to set it off. Either answer is funny.)
+   walker and bites. *"The ground itself stands up."* As he ruled it by card on 2026-10-03: it bites the moment
+   weight lands, with almost no warning; it bites anything heavy enough, crew, trooper or beast; and the first time
+   one is ever revealed the game stops and says *"The bank moved."* After that it is an ordinary animal that bleeds,
+   eats what it bit and lies back down. Something light running ahead only reveals it. (The line between light and
+   heavy is a setting. `UNMEASURED`: which side of it a Jawa stands on. Either answer is funny.)
 3. **The quiet.** *On screen:* a flock of screaming magenta fliers goes silent mid-wheel; a second later the river
    opens. *Why it is alarming:* the player was warned and had one second.
 4. **The herd comes through.** *On screen:* huge copper-teal browsers shouldering trees over to eat the crowns,
    *"crash after crash"*, a line of new sun-gaps walking toward the ship. *Why it lands:* nothing is attacking. It
    is weather with legs.
 5. **The wrong fruit.** *On screen:* a crew member reaches into a sugar-drip plant, knocks a gall, and comes out
-   under a cloud of wasps, running for the ramp.
+   under a cloud of wasps. His words (2026-09-22): *"easy to kill and sting you for a very small irritating
+   HEDIFF, but multiple stings add up quickly and overwhelm."* The first sting is nothing. *Why it lands:* "You kill
+   the first six without thinking, and then you look at the screen." The answer is to leave, and there is always
+   time to.
 6. **The waddle.** *On screen:* the crew gorges on free fruit, then moves at a waddle, hungry again, trailing filth.
 7. **The doors.** *On screen:* the apron cleared on day one, grown shut on day four, and a blower's shimmer holding
    one doorway open in a wall of green.
 8. **The frenzy.** *On screen:* one Jawa doing three Jawas' work, eyes bright, for a day; then flat on the deck for
    several.
 9. **The shoal.** *On screen:* the water boils with small fast toothy things. The owner's words: *"crazy fast and
-   nearly unkillable except with explosives."*
+   nearly unkillable except with explosives."* Rifles do nothing to it. A reach with a shoal in it is ground the
+   crew routes around, until somebody decides it is worth a grenade.
 10. **Scraping the ship.** *On screen:* hooded figures on the hull in the steam, scraping the colony off the
    plate with whatever was in the hold, and the patch they cleared yesterday already furred over behind them.
    *Why it is funny:* the jungle has decided the ship is food, and it is not wrong about anything else here.
-11. **Wood for fuel** (0.2.0, campaign layer). *On screen:* a crawler at the band's edge, a heap of greenwood, and
-   two groups of Jawa haggling over drums. *Why it lands:* the crew is finally on the selling side of the jungle.
+11. **Wood for fuel** (0.2.0, campaign layer). *On screen:* a crawler at the band's edge, a heap of wet green wood
+   that will not burn for a season yet, and two groups of Jawa haggling over drums. *Why it lands:* the crew is finally on the selling side of the jungle.
 
 ## When the Empire arrives
 
@@ -223,16 +253,20 @@ There is no truce here and the Empire does not get one.
 
 - **Nobody can see.** The low steam costs accuracy and speed for everyone, and the understory blocks sight, shooting
   and witnessing. The Empire's probe and spotter each have to *see* the ship or the crew to succeed; at ground level
-  the Greentide gives them very little to see. Fights happen close.
+  the Greentide gives them very little to see. Fights happen close. (As built: what hides a thing is thicket between
+  the watcher and it, never the cell it stands in; a shot is blocked as a look is; and what nobody could see,
+  nobody witnessed.)
 - **The mud does not care whose boots.** Troopers mire where the crew has learned the roots. What a downed trooper
   drops, the mud takes, and the crew can dig it out after: the one battlefield where the salvage buries itself for
-  later.
+  later. (The kit set the sinking time for exactly this: *"battlefield drops vanish but hauling is safe."*)
 - **The water takes them.** The lunger, the bank and the shoal are hostile to whatever comes close.
 - **The trees take them.** A fall damages everything under it. A firefight among gnawed trunks is fought under them.
+- **Fire is not the tool, for either side.** His ruling: *"Fire will harm and burn things, but no they do not catch
+  fire themselves, just take damage."* A flame weapon here leaves a scorched hole, not a burning jungle.
 - **The clearing takes the cover away.** If the steam lifts during a fight, both sides can suddenly shoot.
 - *0.2.0:* a provoked herd shoulders walls the way it shoulders trees, and a siege camp is a wall; steam devils
   wander through both lines; giant ants raid whoever is there; and plants that grab, spit and burst stand in the
-  way of anything that pushes through them.
+  way of anything that pushes through them, with one that is not a plant at all waiting among them.
 
 ## Who else attacks; who hates the Empire
 
@@ -240,9 +274,13 @@ There is no truce here and the Empire does not get one.
   insects sting whoever disturbed them.
 - **Giant ants (0.2.0),** the jungle's own raiders, ours and franchise-free since the owner's card of 2026-10-22: a
   hidden hostile faction that assaults directly.
-- **Nobody here is on the crew's side by design.** The Wildsteam hold two seats on this river in the campaign's world
-  (*"safe harbor for the player"*, the sheet says), placed by the campaign layer and not by this biome. Whether
-  they fight the Empire is `UNSETTLED`. The droid enclaves at the river's salt graves *"wanting only solitude"*.
+- **Nobody here is on the crew's side by design.** The Wildsteam hold two seats on this river in the campaign's world,
+  their capital among them (his freeze ruling R10; *"safe harbor for the player"*, the sheet says), placed by the
+  campaign layer and not by this biome. Whether they fight the Empire is `UNSETTLED`. Their faith forbids *"cutting
+  a living tree"*, and they are *"the only faction that plants"*: fallen greenwood is theirs to buy, and a crew
+  seen felling a living giant is something no source has ruled on. The droid enclaves at the river's salt graves
+  *"wanting only solitude"*.
+- **Not here:** the sytheclaw. His sheet of 2026-10-08: *"This should not be in this biome."*
 
 ## What forces the crew out; what lets them stay
 
@@ -267,15 +305,19 @@ player is better.
 
 - **Food,** more than any other stop: fruit, gourds, sugar, tubers, the catch, meat.
 - **Greenwood,** weak, smoky and *"abundant beyond counting"*, on a world with almost no trees. *"The desert buys it
-  by the crawler-load."*
+  by the crawler-load."* It leaves green: *"green wood does not burn; seasoned wood does"*, and the drying is somebody
+  else's season of work.
 - **True hardwood,** only from a felled greatbole. *"The price gap between the two woods tells the biome's story."*
-- **Resin,** for sealing and lacquer, and from 0.2.0 rendered to fuel.
+- **Resin,** for sealing and lacquer.
 - **A hold full of greenwood,** which is what the crawlers at the band's edge sell fuel for.
 - **The stellock lace,** as knowledge: learned here, crafted anywhere.
 - **Tame grazers,** if the crew wants a living hedge-trimmer aboard.
 - *0.2.0:* **a marked survivor.** A crew member who has been through the Frenzy and lived carries it for life and is
   immune, so the next jungle stop is led by someone who cannot catch it (owner's card, 2026-09-25: *"survivors
   become specialists"*).
+- *0.2.0:* **the stench in a bag.** The grenade he asked for first, *"special smoke that makes beasts flee from the
+  stench"*, made from the jungle's own spore plant and good anywhere. The item that asked for it put the whole ship
+  lens in one line: "A colonist packs jungle in their bag before leaving for somewhere that has none."
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -288,9 +330,10 @@ player is better.
 | The low steam hides the floor, costs accuracy and speed, and lifts for a few hours in a clearing. | Shoot and walk under the steam and during a clearing. Watch the grazers. | The same shots on a map with the steam switched off. |
 | The understory blocks sight. | A watcher and a walker with mature leaf mounds between them. | The same line with the plants cut. |
 | The river predator is unseen until it lunges, and the noise ducks first. | Prey at the bank of a deep reach, with a calling flock overhead. | Shallow water with the same prey: no lunge, no hush. |
-| The bank ambusher bites what is heavy enough and is only revealed by what is light. | A person and a small animal walk the same bank cell. | A bank with no water near it holds none. |
+| The bank ambusher bites what is heavy enough at once, is only revealed by what is light, and stops the game the first time one is ever revealed. | A person and a small animal walk the same bank cell. | A bank with no water near it holds none. A second reveal does not pause. |
+| The shoal shrugs off everything but a blast. | A shoal in a reach; shoot it, then blast it. | The same shots on any other animal of its size kill it. |
 | A disturbed gall releases wasps on the one who disturbed it. | Harvest a host plant that carries a gall, and one that does not. | A gall spawned by hand proves nothing: the gall has to be on its host by the map's own making. |
-| The Frenzy speeds its victim, then drops them for days. | An ambient case run to its end, tended and untended. | Flu and malaria do not appear here. |
+| The Frenzy speeds its victim, then drops them for days; untreated it kills, and treated in the coma the patient lives. | An ambient case run to its end, tended and untended. | Flu and malaria do not appear here. |
 | The stellock lace stops all bleeding for a while and nothing else. | A bleeding patient with and without the lace, here and on another map. | The wounds are still there afterwards. |
 | Eating the yearning fruit feeds, then costs: early hunger, filth, a slow walk. | Two pawns, one fed fruit, one fed an ordinary meal. | |
 | Outside metal left in the jungle, the hull included, grows a visible rasp that wears it; scraping, a working blower and the ship's light screen each keep it off; it dies when the ship leaves, and a worn ship can always launch. | A landed ship and a steel wall, each with one face left alone, one scraped, one behind a blower. Run the days, then launch. | The same steel on another biome's map grows nothing. The blower with its fuel out: the rasp returns. |
@@ -330,8 +373,8 @@ shared-machinery file has the whole of it):
   count the light screen and a blower's dry air as cover against it.
 - *Cover from orbit.* The pursuit has one list for full shadow (the Abyss only) and no notion of partial cover. The
   Greentide needs a second, weaker entry.
-- *Fuel.* One recipe from resin to chemfuel, and traders who stock fuel. The slow biomass route is the base game's
-  own.
+- *Fuel.* Traders who stock fuel and take greenwood for it. The slow biomass route is the base game's own. No crew
+  recipe from resin is asked for (his ruling R5; see NEEDS HIM).
 
 ## Scope
 
@@ -344,8 +387,9 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   paving as the answers. (parts built; natural pressure on used ground at shipped settings is unproven)
 - Tree falls by three fellers; the gnawing krannock; the thurrock herd as browsers and fellers; the fellable
   greatbole and its hardwood. (built)
-- The dhollock's lunge and the hush; the vurrak's bank; the illisk shoal as an ordinary shoal; yammeth flocks that
-  really fly; sulleth grazers that seek shade in a clearing. (built; the vurrak moved in, see `rewrite_choices.md`)
+- The dhollock's lunge and the hush; the vurrak's bank; the illisk shoal, which nothing but a blast kills; yammeth
+  flocks that really fly; sulleth grazers that seek shade in a clearing. (built; the vurrak and the shoal's hide
+  moved in, see `rewrite_choices.md`)
 - Galls on their host plants and the wasps in them. (the wasps are built; natural gall placement is not)
 - The larder: brakkel, tumbel, sarquin, wollick, the catch, timber, resin; the yearning fruit with its tax. (built;
   the fruit's tax moved in)
@@ -355,14 +399,18 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   (unbuilt; campaign layer for the ship, on the shared hull-wear machinery; his ruling of 2026-11-18)
 - Canopy and steam as partial cover from orbit. (unbuilt; campaign layer, one entry in the pursuit; his card of
   2026-11-18)
-- Fuel by the slow route from greenwood; resin and greenwood as goods. (the base game's refining; the harvests are
+- Fuel by the slow route from greenwood; resin and green wood as goods. (the base game's refining; the harvests are
   built)
 
 **0.2.0, the stop with company**
 - Plants that act: the maddrick's closing ring, the gorbeleth's spitting throat, the phorrik's bursting bladders,
   the zhorrel's hanging strangler. (unbuilt)
-- The thurrock shouldering walls when provoked; the illisk's immunity to everything but blast; steam devils; the
-  zrrik, which heals itself by stabbing. (built)
+- The rooted ambusher: an animal that is a plant. His words (2026-09-22): it *waits, rooted and still*, *"one of
+  its leaves occasionally twitches if you watch carefully"*, it goes for *anything that comes close*, and it wakes
+  *"if others of its own kind activate nearby: swarm"*. "Something you walked past twice turns out to have been
+  waiting for you." (the shared kit exists; no creature is wired here, and its home biome was never ruled)
+- The thurrock shouldering walls when provoked; steam devils; the zrrik, which heals itself by stabbing. (built;
+  the zrrik has no place on the Greentide's animal list yet)
 - Giant ant raids. (built)
 - The fever mark and immunity for survivors; taking the Frenzy on purpose as a dose, to work at fever speed before
   a deadline and pay for it afterwards. (built)
@@ -370,16 +418,21 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The yearning fruit's seed passing through and sprouting where it lands. (built)
 - The stench grenade, the one tool that turns the jungle's animals. (built)
 - The ship's acoustic sounder readings here. (built)
-- Resin rendered to chemfuel; fuel bought from crawlers at the band's edge and at the Wildsteam's seats. (unbuilt)
+- Fuel bought from crawlers at the band's edge and at the Wildsteam's seats, and paid for in green wood. (unbuilt)
 
 **Later (a crew that stays, or a colony)**
 - The living greatbole tower: rooms mined into heartwood that heals shut, the sealant, the shaking and the
   catastrophe, fruitfall, fruit steaks and rind, grubs, seeds, the song, the cool sanctuary, pilgrims, servants.
 - Roads that move between visits; the river growing saltier along its course and ending in a grave; the habitable
   band; drip under the canopy.
-- The bottled growth extract. The cuisine system. The nine further reward ideas of 2026-09-22 that were never ruled.
+- The bottled growth extract. The cuisine system. The further reward ideas of 2026-09-22 that were never ruled
+  (medicines by the hour, live bloodstock, a desert cultivar, the field station, concealment, grown building, sole
+  supplier).
 - Ant carapace as a building stock; seeding and toxin weapons; branch travel for the canopy swinger.
-- The Ceded Room rite (the owner's own later ruling put it in a second version).
+- The Ceded Room rite. He wrote it with the ship in it (typed, 2026-10-02): *"Build it outside the ship and let it
+  be taken. Works better the better the room."* Then, on 2026-10-23, every such rite went to a second version:
+  *"All 'rituals' to interact with the Nine that are based on unique Baroque Biome content are hereby documented
+  and deferred to v2."* Not revived here.
 - Wildsteam domes, droid enclaves at the river graves, wild greatboles as dungeons: campaign layer.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
@@ -387,6 +440,12 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Danger that scales with the player (declined 2026-09-25).
 - Canon trees and the vanilla animals (*"we're making our own"*, 2026-09-22); the placeholder squirrel and alligator.
 - The dianoga here (*"It belongs only in tank prisons and the Fever Wood"*, 2026-09-23).
+- Regrowing a lost limb in a living chamber. He moved it to the Contagion on 2026-09-22 and named the grenades as
+  the jungle's reward instead: *"The Greentide keeps no limb-regrowth content."*
+- The sytheclaw on this roster (his sheet, 2026-10-08).
+- A Frenzy that can only be caught at the plant, with nothing to carry (declined 2026-09-22: the dose is an item).
+- Plant names in a Jawa register (ruled 2026-09-22: the names stay alien and organic, nobody's language).
+- An insect nest to find and rob (not chosen 2026-09-25).
 - The moulting giant, working between the crashes, the Uprooting rite (not chosen 2026-10-02). The hull rasp was
   on this line and is back in 0.1.0 by his ruling of 2026-11-18.
 - Churnmud seeded on other biomes (kept off and labelled unsupported, by the 2026-10-15 ruling).
@@ -394,9 +453,30 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-Nothing is left for him here. The three questions the first pass asked were answered by his card of 2026-11-18 and
-are written into the design above: canopy and steam are partial cover from orbit; resin is the Greentide's richer
-fuel source; the jungle wears the hull, by the rasp, in 0.1.0.
+Each has the default this design uses, so nothing waits on him to read on.
+
+1. **[fuel] May a ship's crew make chemfuel from resin, or only buy it?** His ruling R5 (2026-09-07) says
+   sap-chemfuel is *"not player-tappable — a settlement-level investment"*. His ruling of 2026-11-18 says *"a few
+   biomes have richer sources"* and names none. Default: the Wildsteam make it, the crew buys it, and no crew recipe
+   is built. The other answer: one recipe at 0.2.0, as the first version of this page had it.
+2. **[fuel] Does green wood sell as it is?** R24 says it does not burn until seasoned, and that drying is
+   settlement-scale. Default: yes, the crawlers buy it green and dry it themselves; the crew never burns it.
+3. **[hull] Did "Yes in 0.1.0" choose the rasp itself?** He passed over the hull rasp on 2026-10-02 and answered a
+   card that named it on 2026-11-18. Default: yes, the rasp is the Greentide's wear. If he meant hull wear in
+   general, the falling tree is the only wear here and the rasp's lines come out.
+4. **[cover] Is one step of cover one visibility band,** and does a clearing, which lifts the steam and leaves the
+   canopy, cost the step while it lasts? Asked once for every biome. Default: one band; a clearing costs nothing.
+5. **[scope] The shoal's blast-only hide in 0.1.0?** His typed words define the creature by it and it is built; the
+   cleanse deferred it by a delegated call. Default: 0.1.0.
+6. **[scope] The Ceded Room.** Not asked for: listed because it is his own ship idea and he deferred it
+   (2026-10-23, quoted under Scope). Default: it stays in a later version.
+7. **[other] Is the rooted ambusher the Greentide's?** He approved the creature on 2026-09-22 and never ruled which
+   biome is its home. Default: here, at 0.2.0.
+8. **[other] Does felling a living giant cost standing with the Wildsteam?** Their taboo is *"cutting a living
+   tree"*. His rulings name only the landmark's catastrophe as sacrilege. Default: felling an ordinary greatbole
+   costs nothing.
+9. **[other] Does a crew react to one of its own being given the Frenzy on purpose?** The item that holds his
+   ruling marks this as never ruled. Default: no reaction. (0.2.0.)
 
 Three questions the cleanse put to him on 2026-11-17 are answered here by scope instead of asked again, and each is
 a line under "Scope moves" in `rewrite_choices.md`: plants that act are 0.2.0, not absent; cuisine in 0.1.0 is
