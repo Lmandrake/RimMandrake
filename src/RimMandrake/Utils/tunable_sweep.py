@@ -58,12 +58,23 @@ def apply(cfg, paths):
 
 
 def scratch_copy(repo):
+    """-> (tmp dir, copy root): a checkout of `repo`'s HEAD plus its uncommitted files. The copy borrows objects from the
+    shared store (scratch_clone.store_path, never pruned or deleted) and fetches what only `repo` has, so a copy a killed
+    sweep leaves behind still reads its HEAD after `repo` is deleted (RIMMANDRAKE_STOP_SHARED_COPIES_OUTLIVING_THEIR_
+    LENDER: 15 copies borrowing from deleted clones, 2026-11-19). With no store it copies the objects (--dissociate)."""
+    import scratch_clone
     tmp = tempfile.mkdtemp(prefix="tunable_sweep_")
-    subprocess.run(["git", "-c", "core.hooksPath=/dev/null", "clone", "-q", "--shared", repo, tmp + "/r"],
-                   check=True, timeout=600)
     head = subprocess.run(["git", "-C", repo, "rev-parse", "HEAD"], capture_output=True, text=True, check=True,
-                          timeout=60).stdout
-    subprocess.run(["git", "-C", tmp + "/r", "checkout", "-q", "--detach", head.strip()], check=True, timeout=600)
+                          timeout=60).stdout.strip()
+    store = str(scratch_clone.store_path())
+    if os.path.exists(os.path.join(store, "HEAD")):
+        subprocess.run(["git", "-c", "core.hooksPath=/dev/null", "clone", "-q", "--shared", "--no-checkout", store,
+                        tmp + "/r"], check=True, timeout=600)
+        subprocess.run(["git", "-C", tmp + "/r", "fetch", "-q", "--no-tags", repo, head], check=True, timeout=600)
+    else:
+        subprocess.run(["git", "-c", "core.hooksPath=/dev/null", "clone", "-q", "--no-checkout", "--shared",
+                        "--dissociate", repo, tmp + "/r"], check=True, timeout=1800)
+    subprocess.run(["git", "-C", tmp + "/r", "checkout", "-q", "--detach", head], check=True, timeout=600)
     edits = subprocess.run(["git", "-C", repo, "diff", "--name-only", "HEAD"], capture_output=True, text=True,
                            check=True, timeout=120).stdout.split()
     for p in edits:

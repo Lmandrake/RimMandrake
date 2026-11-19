@@ -1540,6 +1540,49 @@ def t_live_race_loses_nothing_and_lands(a, b):
     assert got["outcomes"].get("landed", 0) >= 2 and got["written"] > 100, got
 
 
+# RIMMANDRAKE_RETRY_PUBLISH_ON_INDEX_LOCK_FAILED_TWICE_RUNNING: 2026-11-18 7:28 PM and 8:00 PM PST, ./publish in the
+# Conductor's clone exited 2 on "Unable to create .git/index.lock: File exists" while another process held the index.
+PROBE = ("import os,sys,time;p=sys.argv[1];fd=os.open(p,os.O_CREAT|os.O_EXCL|os.O_WRONLY);print('held',flush=True);"
+         "time.sleep(float(sys.argv[2]));os.close(fd);os.unlink(p)")
+
+
+def hold_index(a, seconds):
+    lock = os.path.join(a, ".git", "index.lock")
+    pr = subprocess.Popen([sys.executable, "-c", PROBE, lock, str(seconds)], stdout=subprocess.PIPE, text=True)
+    assert pr.stdout.readline().strip() == "held"
+    return pr, lock
+
+
+def t_index_lock_held_five_seconds_lands_on_its_own(a, b):
+    write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
+    pr, lock = hold_index(a, 5)
+    try:
+        sha, log = quiet(P.publish, a, ["f.txt"], "mine, under a held lock")
+    finally:
+        pr.kill()
+        pr.wait()
+        if os.path.exists(lock):
+            os.unlink(lock)
+    assert sha and "LINE 4" in show(a, "f.txt"), log
+
+
+def t_index_lock_held_long_exits_its_own_code_naming_the_holder(a, b):
+    write(a, "f.txt", LINES.replace("line 6", "LINE 6"))
+    pr, lock = hold_index(a, 120)
+    try:
+        r = subprocess.run([sys.executable, os.path.abspath(P.__file__), "-m", "mine, lock never freed", "f.txt"], cwd=a,
+                           capture_output=True, text=True, timeout=120,
+                           env=dict(os.environ, PUBLISH_INDEX_LOCK_WAIT="2"))
+    finally:
+        pr.kill()
+        pr.wait()
+        if os.path.exists(lock):
+            os.unlink(lock)
+    text = r.stdout + r.stderr
+    assert r.returncode == P.LOCK_HELD_EXIT and r.returncode not in (0, 2), (r.returncode, text)
+    assert "index.lock" in text and str(pr.pid) in text and "python" in text, text
+    assert "LINE 6" not in show(a, "f.txt"), "nothing was published"
+
 TESTS = [v for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 

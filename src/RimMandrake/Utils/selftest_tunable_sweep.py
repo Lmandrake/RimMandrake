@@ -75,6 +75,26 @@ def main():
        "a reader red on a bare rewrite is format-sensitive, not pinned: %s" % rep4)
     raw = json.load(open(os.path.join(d, "cfg.json")))
     ok(raw["cap"] == 4, "the real config is never touched")
+    # RIMMANDRAKE_STOP_SHARED_COPIES_OUTLIVING_THEIR_LENDER: a killed sweep leaves its copy; when the lender clone is
+    # deleted after, the copy must still read its own HEAD (it borrows from the store, never from the lender)
+    import shutil
+    store = tempfile.mkdtemp(prefix="tsweep_store_")
+    subprocess.run(["git", "init", "-q", "--bare", store], check=True)
+    os.environ["RM_OBJSTORE"] = store
+    try:
+        lender = fixture()
+        tmp, root = TS.scratch_copy(lender)
+        shutil.rmtree(lender)
+        r = subprocess.run(["git", "-C", root, "rev-parse", "HEAD^{commit}"], capture_output=True, text=True)
+        fs = subprocess.run(["git", "-C", root, "fsck", "--connectivity-only", "--no-dangling"], capture_output=True, text=True)
+        alt = os.path.join(root, ".git", "objects", "info", "alternates")
+        names = open(alt).read() if os.path.exists(alt) else ""
+        ok(r.returncode == 0 and fs.returncode == 0 and lender not in names,
+           "a copy left behind still reads its HEAD after its lender is deleted (rc %d, fsck %d, alternates %r)"
+           % (r.returncode, fs.returncode, names.strip()))
+        shutil.rmtree(tmp, ignore_errors=True)
+    finally:
+        del os.environ["RM_OBJSTORE"]
     print("RESULT: %s (%d failed)" % ("PASS" if not FAILS else "FAIL", FAILS))
     return 1 if FAILS else 0
 

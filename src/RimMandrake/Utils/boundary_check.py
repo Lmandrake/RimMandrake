@@ -54,6 +54,8 @@ PAGES = {
     "design/specs/2026-11-19-closeout-matcher/boundary.md": "src/RimMandrake/rimflow/selftest_conductor_closeout.py",
     "design/specs/2026-11-19-role-clone-level/boundary.md": "src/RimMandrake/rimflow/selftest_role_clone_level.py",
     "design/specs/2026-11-19-run-end-continue/boundary.md": "src/RimMandrake/rimflow/selftest_left_open_continue.py",
+    "design/specs/2026-11-19-card-brief-spend/boundary.md": "src/RimMandrake/rimflow/selftest_card_brief_spend.py",
+    "design/specs/2026-11-19-run-return-reap/boundary.md": "src/RimMandrake/rimflow/selftest_detached_reap.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

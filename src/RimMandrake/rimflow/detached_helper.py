@@ -62,6 +62,7 @@ import os
 import re
 import shlex
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -356,6 +357,17 @@ def hold_until_returned(dest, runner=subprocess.run, sleep=time.sleep, now=None,
         waited += RETURN_POLL_S
 
 
+def seat_identity(dest):
+    """A reused .det clone takes the seat clone's repo-local commit identity, as a new one does (scratch_clone.set_identity;
+    RIMMANDRAKE_SET_HELPER_CLONE_NOREPLY_GMAIL_SLIPS_ONTO_PUBLIC). -> its step line; never raises."""
+    try:
+        sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+        import scratch_clone as SC
+        return SC.set_identity(SC.Path(dest))
+    except Exception as e:  # noqa: BLE001
+        return "identity NOT set: %s: %s" % (type(e).__name__, e)
+
+
 def take_clone(item, runner=subprocess.run):
     """-> (clone path, log line). A pool clone named <ITEM>.det: made by scratch_clone.py, or reused and synced."""
     name = item + ".det"
@@ -366,7 +378,7 @@ def take_clone(item, runner=subprocess.run):
         if r.returncode:    # a stale clone builds stale code: refused, as a new clone that fails is
             # (RIMMANDRAKE_REFUSE_STALE_DET_CLONE_WHEN_SYNC_FAILS)
             raise RuntimeError("reused %s but its ./sync failed (exit %d): %s" % (dest, r.returncode, said))
-        return dest, "reused %s (sync exit 0: %s)" % (dest, said)
+        return dest, "reused %s (sync exit 0: %s; %s)" % (dest, said, seat_identity(dest))
     env = dict(os.environ, RM_SCRATCH_ROOT=pool_root(), RM_SEAT="clones")
     r = runner(["python3", os.path.join(REPO, "src", "RimMandrake", "Utils", "scratch_clone.py"), "clone",
                 "detached run for " + item, "--name", name, "--checkout", "--fetch"],
@@ -489,6 +501,105 @@ def clone_busy(clone):
     return SC.clone_in_use(SC.Path(clone))
 
 
+# A process that ignores SIGTERM gets SIGKILL after this long. Danger: one that never exits would hold the return step
+# (and so the clone) for good; the return unit's own RuntimeMaxSec=1800 is the only other bound.
+REAP_TERM_WAIT_S = 5
+
+
+def _proc_state(pid):
+    """-> the pid's /proc state letter, "gone" when /proc has no such pid, or "unknown" when its stat cannot be read."""
+    try:
+        with open("/proc/%d/stat" % pid, "rb") as f:
+            return f.read().rsplit(b")", 1)[1].split()[0].decode("ascii", "replace")
+    except FileNotFoundError:
+        return "gone"
+    except (OSError, IndexError):
+        return "unknown"
+
+
+def _alive(pid):
+    """True unless the pid is gone or a zombie (a zombie holds no cwd and no clone); a stat that cannot be read is alive:
+    could not look is never "gone"."""
+    return _proc_state(pid) not in ("gone", "Z")
+
+
+def scan_marked_live(marker, since=None, proc="/proc"):
+    """role_launch.scan_marked, less its zombie blind spot: a zombie's environ cannot be read, and scan_marked calls the
+    whole scan blind for it (measured 2026-11-19: one `[python3] <defunct>` of this uid made every scan blind). A zombie
+    holds no cwd and runs nothing, so it is ruled out here. -> (pids, None) or (pids, why blind)."""
+    import role_launch as RL
+    want = ("RM_ROLE_UNIT=%s" % marker).encode()
+    try:
+        names = [n for n in os.listdir(proc) if n.isdigit() and int(n) != os.getpid()]
+    except OSError as e:
+        return [], "%s unlistable (%s)" % (proc, type(e).__name__)
+    btime = RL._boot_time(proc) if since is not None else None
+    uid, out, todo, why = os.getuid(), [], names, None
+    for attempt in range(RL.SCAN_RETRIES + 1):      # a process mid-exec is unreadable for a moment (scan_marked's retry)
+        if attempt:
+            time.sleep(RL.SCAN_RETRY_S)
+        again, why = [], None
+        for n in todo:
+            try:
+                with open(os.path.join(proc, n, "environ"), "rb") as f:
+                    env = f.read()
+            except FileNotFoundError:
+                continue
+            except OSError:
+                if not _alive(int(n)):
+                    continue                    # a zombie or gone
+                try:
+                    if os.stat(os.path.join(proc, n)).st_uid != uid:
+                        continue
+                except OSError:
+                    continue
+                started = RL._started_at(proc, n, btime) if btime is not None else None
+                if started is not None and started < since - RL.SINCE_SLACK_S:
+                    continue
+                why = why or "pid %s environ unreadable" % n
+                again.append(n)
+                continue
+            if want in env.split(b"\0"):
+                out.append(int(n))
+        todo = again
+        if not todo:
+            break
+    return out, why
+
+
+def reap_leftovers(rec, scan=None, kill=os.kill, alive=_alive, sleep=time.sleep):
+    """End every process a finished run left running: each carries the run's RM_ROLE_UNIT=<unit> marker, whatever
+    cgroup it is in (run_selftests.py puts each test in a scope of rm-harness.slice, outside the run's own cgroup, so
+    stop_scope never reached it: RIMMANDRAKE_REAP_SELFTEST_CHILD_ENDED_RUN_LEFT_HOLDING_CLONE). TERM, then KILL after
+    REAP_TERM_WAIT_S. A blind scan ends nothing. -> one step line, or "" when the run left nothing running."""
+    try:
+        pids, blind = (scan or scan_marked_live)(rec["unit"], since=rec.get("at"))
+    except Exception as e:  # noqa: BLE001
+        pids, blind = [], "%s: %s" % (type(e).__name__, e)
+    if blind:
+        return "leftover scan blind (%s): no process ended" % blind
+    pids = [p for p in pids if p != os.getpid()]
+    if not pids:
+        return ""
+    for p in pids:
+        try:
+            kill(p, signal.SIGTERM)
+        except OSError:
+            pass
+    waited = 0.0
+    while waited < REAP_TERM_WAIT_S and any(alive(p) for p in pids):
+        sleep(0.1)
+        waited += 0.1
+    hard = [p for p in pids if alive(p)]
+    for p in hard:
+        try:
+            kill(p, signal.SIGKILL)
+        except OSError:
+            pass
+    return "ended %d leftover process(es) of the run (pids %s%s)" % (
+        len(pids), ", ".join(str(p) for p in pids), "; KILL after TERM: %s" % ", ".join(map(str, hard)) if hard else "")
+
+
 def evict_clone(item, clone, before=None):
     """-> (bundle dir or None, why the clone stayed or None). relentless Effects.remove_clone: every commit, stash and
     dirty file goes to the store's bundles first, then the clone is parked as a warm spare or removed. A bundle that
@@ -506,7 +617,8 @@ def _tail(r, n=140):
     return ((getattr(r, "stdout", "") or "") + (getattr(r, "stderr", "") or "")).strip()[-n:]
 
 
-def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None, publish_ledger=True, root=None, log_path=None):
+def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None, publish_ledger=True, root=None, log_path=None,
+                 scan=None):
     """The run's last step. -> (exit code, text). Gives the pool clone back after landing what can land and bundling the
     rest; keeps it (exit 1) when a bundle cannot be made. Once per run: a second call changes nothing."""
     now = now or time.time()
@@ -527,9 +639,10 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
         rec.update(returned=now, return_steps=["clone already gone"])
         write_record(rec, root)
         return 0, "returned %s: the clone was already gone" % unit
+    reaped = reap_leftovers(rec, scan)       # the run's own leftovers first: they are not "a process working in it"
     if (busy or clone_busy)(clone):
-        return 0, "kept %s: a process is working in it" % clone
-    steps = []
+        return 0, "kept %s: a process is working in it%s" % (clone, "; " + reaped if reaped else "")
+    steps = [reaped] if reaped else []
 
     def run(argv, what, timeout=300):
         r = runner(argv, cwd=clone, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL)

@@ -83,6 +83,33 @@ BASE_CONE = (".claude", "infrastructure", "skills", "src/RimMandrake/Utils", "sr
              "src/RimMandrake/rimflow")
 
 
+def identity_sources() -> list[Path]:
+    """Where a clone's commit identity is copied from: RM_IDENTITY_FROM (a test's fixture), else the seat clones."""
+    if os.environ.get("RM_IDENTITY_FROM"):
+        return [Path(os.environ["RM_IDENTITY_FROM"])]
+    return [RM / s for s in SEATS]
+
+
+def set_identity(dest: Path) -> str:
+    """Give `dest` the seat clone's repo-local user.name and user.email (RIMMANDRAKE_SET_HELPER_CLONE_NOREPLY_GMAIL_
+    SLIPS_ONTO_PUBLIC: RimMandrake is public, and a clone with no repo-local identity commits as ~/.gitconfig's Gmail
+    address; the seat clone holds the noreply one). -> what it did, for the uses record; never raises. A source it cannot
+    read is said, and dest is left as it was."""
+    for src in identity_sources():
+        got = {}
+        for k in ("user.name", "user.email"):
+            r = subprocess.run(["git", "-C", str(src), "config", "--local", "--get", k], capture_output=True, text=True,
+                               timeout=30)
+            if r.returncode == 0 and r.stdout.strip():
+                got[k] = r.stdout.strip()
+        if "user.email" in got:
+            for k, v in got.items():
+                git("config", k, v, cwd=dest)
+            return "identity %s from %s" % (got["user.email"], src)
+    return "UNMEASURED identity: no repo-local user.email in %s; the clone commits as the global identity" % (
+        ", ".join(str(p) for p in identity_sources()))
+
+
 def store_path() -> Path:
     return Path(os.environ.get("RM_OBJSTORE", RM / "store.git"))
 
@@ -314,6 +341,7 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
         rec["clone_s"] = round(time.time() - t1, 2)
         git("remote", "set-url", "origin", ORIGIN_URL, cwd=dest)
         git("config", "core.hooksPath", "infrastructure/githooks", cwd=dest)
+        rec["identity"] = set_identity(dest)
         if fetch:
             t2 = time.time()
             git("fetch", "-q", "origin", cwd=dest, timeout=900)
@@ -905,6 +933,7 @@ def pool_reuse(dest: Path, fetch: bool = False) -> Path | None:
             if fetch:
                 git("fetch", "-q", "origin", cwd=dest, timeout=900)
             git("checkout", "-q", "-B", "main", "refs/remotes/origin/main", cwd=dest)    # on main, as a fresh clone is
+            set_identity(dest)      # a clone made before the identity rule commits as the noreply one from now on
             return dest
         except Exception:
             if dest.exists() and not c.exists():

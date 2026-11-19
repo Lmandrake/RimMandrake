@@ -36,6 +36,7 @@ import concurrent.futures
 import contextlib
 import fcntl
 import fnmatch
+import glob
 import json
 import os
 import re
@@ -57,6 +58,57 @@ LOCK_TIMEOUT = float(os.environ.get("PUBLISH_LOCK_TIMEOUT", "600"))
 
 class Refuse(Exception):
     pass
+
+
+# A git call that finds .git/index.lock held retries until this many seconds have passed. Danger it guards: a lock a
+# killed git left behind never goes away, so an unbounded wait would stall every landing in the clone (2026-11-12: a
+# git killed at deploy_update's budget left index.lock and blocked every later pass). A live peer's hold is short: the
+# 2026-11-18 failures (7:28 PM, 8:00 PM PST) passed on the next try by hand.
+LOCK_WAIT_S = float(os.environ.get("PUBLISH_INDEX_LOCK_WAIT", "60"))
+LOCK_HELD_EXIT = 75         # EX_TEMPFAIL: the index lock stayed held; nothing was published; try again
+
+
+class IndexLockHeld(Refuse):
+    """.git/index.lock stayed held past LOCK_WAIT_S. Its text names the holder (pid and command) or says none has it open."""
+
+
+def lock_holders(top):
+    """-> [(pid, command)] of the processes that have this clone's .git/index.lock open, read from /proc/*/fd."""
+    try:
+        lock = os.path.realpath(os.path.join(subprocess.run(["git", "rev-parse", "--absolute-git-dir"], cwd=top,
+                                                            capture_output=True, text=True, timeout=30).stdout.strip(),
+                                             "index.lock"))
+    except (OSError, subprocess.SubprocessError):
+        return []
+    out = []
+    for d in glob.glob("/proc/[0-9]*/fd/*"):
+        try:
+            if os.readlink(d) != lock:
+                continue
+        except OSError:
+            continue
+        pid = int(d.split("/")[2])
+        try:
+            with open("/proc/%d/cmdline" % pid, "rb") as f:
+                cmd = f.read().replace(b"\0", b" ").decode("utf-8", "replace").strip()
+        except OSError:
+            cmd = "?"
+        if (pid, cmd) not in out:
+            out.append((pid, cmd))
+    return out
+
+
+def lock_wait(top, attempt, started):
+    """After a git call failed on a held index.lock: sleep and return True to retry, or raise IndexLockHeld."""
+    if time.monotonic() - started >= LOCK_WAIT_S:
+        held = lock_holders(top)
+        raise IndexLockHeld("%s/.git/index.lock stayed held for %d s; %s. Nothing was published. Run ./publish again "
+                            "once it is free." % (
+                                top, LOCK_WAIT_S, "held by " + "; ".join("pid %d: %s" % h for h in held) if held else
+                                "no process has it open: a git that was killed left it (remove it only when no git "
+                                "runs in this clone)"))
+    time.sleep(min(0.25 * (attempt + 1), 2.0))
+    return True
 
 
 class Stranded(Refuse):
@@ -83,12 +135,16 @@ def literal(paths):
 
 def run(top, *args, check=True):
     env = None if args[:1] and args[0] in HOOKED else git_env()
-    for i in range(12):                                  # a plain-git peer may hold .git/index.lock for a moment
+    started, i = time.monotonic(), 0
+    while True:                                          # a plain-git peer may hold .git/index.lock (LOCK_WAIT_S)
         r = subprocess.run(["git", *args], cwd=top, capture_output=True, text=True, errors="surrogateescape",
                            timeout=GIT_TIMEOUT_S, env=env)
-        if not (r.returncode and "index.lock" in r.stderr and i < 11):
+        if not (r.returncode and "index.lock" in r.stderr):
             break
-        time.sleep(0.25 * (i + 1))
+        if not check and time.monotonic() - started >= LOCK_WAIT_S:
+            break
+        lock_wait(top, i, started)
+        i += 1
     if check and r.returncode:
         raise Refuse("git %s failed: %s" % (" ".join(args[:3]), (r.stderr or r.stdout).strip()))
     return r
@@ -166,12 +222,14 @@ def commit(top, paths, msg):
     run(top, "add", "--all", "--", *paths)
     if not run(top, "diff", "--cached", "--quiet", "--", *paths, check=False).returncode:
         return None
-    for i in range(12):
+    started, i = time.monotonic(), 0
+    while True:
         r = subprocess.run(["git", "commit", "-q", "-F", "-", "--", *literal(paths)], cwd=top,
                            input=msg, capture_output=True, text=True)
-        if not (r.returncode and "index.lock" in r.stderr and i < 11):
+        if not (r.returncode and "index.lock" in r.stderr):
             break
-        time.sleep(0.25 * (i + 1))
+        lock_wait(top, i, started)
+        i += 1
     if r.returncode:
         raise Refuse("git commit failed: %s" % (r.stderr or r.stdout).strip())
     return out(top, "rev-parse", "HEAD")
@@ -1081,6 +1139,9 @@ def main(argv=None):
         if sha:
             print("close with: rimflow close <ID> --sha %s" % sha[:12])
         return 0
+    except IndexLockHeld as e:
+        print("REFUSED (index lock held): %s" % e, file=sys.stderr)
+        return LOCK_HELD_EXIT
     except Refuse as e:
         print("REFUSED: %s" % e, file=sys.stderr)
         return 2

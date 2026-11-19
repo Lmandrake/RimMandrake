@@ -19,6 +19,8 @@ fixed." So:
             name each one (where it was done or filed).
 
     python3 src/RimMandrake/rimflow/card_capture.py show <ITEM>          the card text a brief for ITEM must carry
+                    (its spend, token and account sentences out: no launched agent is told its spend; --whole for
+                    the person's whole card)
     python3 src/RimMandrake/rimflow/card_capture.py ingest <transcript.jsonl>...   cards from a transcript into the store
     python3 src/RimMandrake/rimflow/card_capture.py recent [--last N]    the store's newest cards
     python3 src/RimMandrake/rimflow/card_capture.py backfill --since YYYY-MM-DD [--apply]
@@ -329,19 +331,29 @@ def consequences(card):
     return out
 
 
-def flatten(card):
-    """-> the card as plain text: question, picked label, its description, his words, the other options."""
+def for_brief(text):
+    """-> text as a launched agent may read it: every spend, token or account sentence out, each "needs X" kept
+    (spend_talk; RIMMANDRAKE_STRIP_SPEND_TALK_FROM_CARD_BRIEFS_HAND_CUT)."""
+    import spend_talk
+    return spend_talk.strip(text or "")
+
+
+def flatten(card, brief=False):
+    """-> the card as plain text: question, picked label, its description, his words, the other options. brief: as a
+    launched agent may read it (for_brief on every part; an option left empty by that is not listed)."""
+    f = for_brief if brief else (lambda t: t)
     lines = []
     for q in (card or {}).get("questions") or []:
-        lines.append("Question: %s" % q.get("question", ""))
+        lines.append("Question: %s" % f(q.get("question", "")))
         for o in q.get("picked") or []:
-            lines.append("Picked: %s" % o.get("label", ""))
-            if o.get("description"):
-                lines.append("Its description: %s" % o["description"])
-        if q.get("his_words"):
-            lines.append("His words: %s" % q["his_words"])
-        if q.get("others"):
-            lines.append("Other options: %s" % " · ".join(q["others"]))
+            lines.append("Picked: %s" % f(o.get("label", "")))
+            if o.get("description") and f(o["description"]).strip():
+                lines.append("Its description: %s" % f(o["description"]))
+        if q.get("his_words") and f(q["his_words"]).strip():
+            lines.append("His words: %s" % f(q["his_words"]))
+        others = [x for x in (f(o) for o in q.get("others") or []) if x.strip()]
+        if others:
+            lines.append("Other options: %s" % " · ".join(others))
     return "\n".join(lines)
 
 
@@ -403,12 +415,14 @@ def item_cards(item, evs=None, events_dir=EVENTS):
 
 
 def brief_missing(brief, cards):
-    """-> each picked description a brief must hold verbatim (whitespace and quote style aside) and does not."""
+    """-> each picked description a brief must hold verbatim (whitespace and quote style aside) and does not, as a
+    brief may carry it: its spend, token and account sentences out (for_brief), so no gate asks for them."""
     b = norm(brief)
     out = []
     for c in cards:
         for d in descriptions(c):
-            if norm(d) not in b and d not in out:
+            d = for_brief(d).strip()
+            if d and norm(d) not in b and d not in out:
                 out.append(d)
     return out
 
@@ -446,6 +460,7 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd")
     s = sub.add_parser("show")
     s.add_argument("item")
+    s.add_argument("--whole", action="store_true", help="the whole card, spend sentences included (for a person)")
     s.add_argument("--events", default=EVENTS)
     s = sub.add_parser("ingest")
     s.add_argument("paths", nargs="+")
@@ -464,7 +479,7 @@ def main(argv=None):
             print("card_capture: no ledger event on %s carries a card (measured over %s)" % (a.item, EVENTS))
             return 1
         for c in cards:
-            print(flatten(c))
+            print(flatten(c, brief=not a.whole))
             owed = consequences(c)
             if owed:
                 print("Owed: " + "; ".join(owed))

@@ -87,6 +87,10 @@ def main() -> int:
     try:
         work = BASE / "work"
         sh("git", "init", "-q", "-b", "main", str(work))
+        # RIMMANDRAKE_SET_HELPER_CLONE_NOREPLY_GMAIL_SLIPS_ONTO_PUBLIC: a clone takes the seat clone's repo-local identity
+        sh("git", "-C", str(work), "config", "user.email", "fixture+noreply@users.example")
+        sh("git", "-C", str(work), "config", "user.name", "Fixture Seat")
+        os.environ["RM_IDENTITY_FROM"] = str(work)
         sh("git", "init", "-q", "--bare", str(BASE / "mirror.git"))
         commit_to_seed(work, "a.txt", "one\n")
         commit_to_seed(work, "sub/b.txt", "two\n")
@@ -239,6 +243,12 @@ def main() -> int:
         r1, _ = quiet(sc.clone, "pool test", "p1", True, [], False, False)
         r2, _ = quiet(sc.clone, "pool test", "p2", True, [], False, False)
         check(r1 == 0 and r2 == 0 and (pool / "p1").is_dir() and (pool / "p2").is_dir(), "pool clones under the cap are made")
+
+        def ident(c: Path) -> str:
+            return subprocess.run(["git", "-C", str(c), "config", "--local", "--get", "user.email"], capture_output=True,
+                                  text=True).stdout.strip()
+        check(ident(pool / "p1") == "fixture+noreply@users.example",
+              f"a new clone commits as the seat clone's repo-local identity: {ident(pool / 'p1')!r}")
         rd = sc.pool_reading()
         check(rd["count"] == 2 and rd["breach"] == 0 and (sc.state_dir() / "pool.json").exists(), f"pool reading: {rd['count']}")
         r3, _ = quiet(sc.clone, "pool test", "p3", True, [], False, False)
@@ -268,7 +278,10 @@ def main() -> int:
         # HELPERCLONE_FIX_STALE_FENCE_OF_A_STRANGER: the clone last served a relentless lease; its fence marker must not
         # follow it to the next owner, or the pre-push hook refuses every push in the name of a stranger's dead gen
         (pool / "p4" / ".git" / "relentless.json").write_text('{"item": "SOME_OTHER_ITEM_ENTIRELY", "gen": 7}')
+        sh("git", "-C", str(pool / "p4"), "config", "--local", "--unset", "user.email")     # made before the identity rule
         check(sc.pool_reuse(pool / "p6") == pool / "p6" and not (pool / "p4").exists(), "and blocks no reuse")
+        check(ident(pool / "p6") == "fixture+noreply@users.example",
+              f"a reused clone commits as the seat clone's repo-local identity: {ident(pool / 'p6')!r}")
         pu = subprocess.run(["git", "-C", str(pool / "p6"), "config", "--get-all", "remote.origin.pushurl"],
                             capture_output=True, text=True).stdout.strip()
         check(pu == "", f"a reused clone pushes to origin, not a consult's gag: pushurl={pu!r}")
