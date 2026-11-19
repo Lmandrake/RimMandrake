@@ -6,10 +6,17 @@ lens of Utinni". It replaces the frozen definition sheet, the survivor cast bibl
 place to read; what happened to every idea in them is in `design/concepts/Wastes/rewrite_choices.md`. Nothing has
 been deleted yet. This is a design document only and it launches nothing.
 
+**Second reader, 2026-11-18:** a different agent read the sources the first pass had read in part and repaired this
+page. What changed, and why, is at the top of `rewrite_choices.md`. The largest repairs: the hull wear is built
+(the first pass said it was not); four things the scope list called built are not; and three animals with his own
+rewritten descriptions (thuffor, frethik, kroffa) are now in the design.
+
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/Wastes/`
 (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its path by sitting here. Nothing in
 the pipeline reads it by name yet. The Wastes has no locked sheet or tree; its only pipeline material is the cleanse
-proposal of 2026-11-17, which this design supersedes and which was never applied.
+proposal of 2026-11-17, which this design supersedes and which was never applied. The Designer's first pass of
+2026-11-09 was a dry run: its root paragraph was never approved by the owner, and only its three card answers of
+2026-11-10 bind.
 
 **Tags:** `NEEDS HIM` is a question only the owner can settle, with the real answers and the default used here.
 `UNSETTLED` is a fact the sources do not fix. `UNMEASURED` is an engine fact nobody has checked. "Built" means the
@@ -37,17 +44,23 @@ do."*
 
 And what does live here is doing fine. The owner's ruling of 2026-09-28 turned the whole cast from sufferers into
 survivors: *"ugly warty life that was already tough enough to survive the waste products… creatures that already
-ate the waste of other beings, survived extreme environments."* They have plain ugly names (Scumrat, Boilhide,
-Sloghog) and they are content.
+ate the waste of other beings, survived extreme environments."* They have plain ugly names (Scumslider, Boilhide,
+Sloghog) and they are content. The cast bible's rule for every description: it is *"written as a creature that
+WON."* The sheet: *"Dangerous the way a cornered thing is dangerous, never the way a predator is ... something
+tougher than the ground got here first."*
 
 **Seen from the ship, the Wastes is three stops with one name.** By ruling it is one biome that varies only by
 where the tile sits: the **warm basins** (blinding salt-white under a low sun), the **margin**, and the **dark
 scour** (cold, high, lit only by the stormwall's glow on one horizon). Which one the crew lands in decides what the
-place hides, what it costs and how long the stop can run.
+place hides, what it costs and how long the stop can run. There is no rain and no snow in any of them (owner,
+2026-10-17: *"Sump, Wasteland, and Flooded Canyon should NOT be snowing! No precipitation"*). What falls from this
+sky is ash: *"The Ashen Wastes and Cinderdark are the planet's chimney soot."*
 
 It is also, from a scavenger's side of the counter, the best-stocked shelf on the planet: *"ground nobody can
 live on is ground nobody has stripped"*, and *"the prize compounds: every failed expedition adds itself to the
-hoard."* The people who usually die trying are Junkers. *"Junker corpses are more common than anyone else's."*
+hoard."* The hoard includes *"crashed ships that should have chosen differently"*, which is a thing for a crew
+to look at from its own ramp. The people who usually die trying are Junkers. *"Junker corpses are more common than
+anyone else's."*
 
 The crew are small, hooded, skittish and built for dry heat (`reconciled_lore/05_the_clan.md`). The basins look
 like home. That is the trap.
@@ -80,33 +93,70 @@ the choice of where to land.
   stormwall's glow on one horizon."* His ruling of 2026-08-05 pauses the orbital clock on dark tiles; only the
   Abyss is on the built list, and adding the scour's tiles is the small build this biome owes. At ground level
   the same rule as the Sump's holds: a watcher sees a target in darkness only from six cells
-  (`EmpireLadderMath.Sees`), so every lamp is a choice.
+  (`EmpireLadderMath.Sees`), so every lamp is a choice. The dark costs the crew its best instrument: the cleanse
+  found that darkness, ash cover and fresh cleaning all stop the plants being read by eye. In the scour the ground
+  is read by lamp, which is seen, or by glow. The sheet lists *"the radiotroph groves"* among its *"point-sources
+  of wrong light"*, and his art note on the radmoss asks for *"vivid odd luminescent coloration"*; whether the
+  shipped moss gives light is `UNMEASURED`. Whether the scour counts as full dark for the orbital pause is
+  `NEEDS HIM` 4.
 
 **Fuel (his ruling of 2026-11-18).** The Wastes is one of the **richer sources**, by three routes that are all in
 the sources.
 - **Soot bricks.** The sootgrazer *"eats deposition itself and presses what it can't burn into brick"*:
   *"fuel-grade soot bricks ... sells low but the supply is endless where the sky keeps falling."* A penned
-  sootgrazer on ash is a fuel plant with legs. (Built; two of its live checks failed on 2026-10-08 and were not
-  re-run.)
-- **Wartshrub.** A scarce wild shrub whose harvest is chemfuel outright. (Built; its harvest passed a live re-run
-  on 2026-10-08.)
+  sootgrazer on ash is a fuel plant with legs. (The animal and the brick are built; two of its live checks failed on 2026-10-08 and
+  were not re-run. The brick's shipped text says it *"burns dirty but burns"*, and nothing in the game takes it as
+  fuel: no stove, no generator, no ship. The consumer is the build.)
+- **Wartshrub.** A scarce wild shrub whose galls the cast bible calls *"a low-grade chemfuel"*, and whose
+  harvest as built is chemfuel outright. (Built; its harvest passed a live re-run on 2026-10-08 and again on
+  2026-11-06. It is the only fuel here that works today.)
 - **Buying it.** The Junkers *"claim ownership of the dump"* and extract *"usable nuclear (or worse) fuel"* from
-  it. Where the campaign places a Junker toll gate, the crew can buy.
+  it. Where the campaign places a Junker toll gate, the crew can buy. *This route is the first pass's proposal.*
+  No source has a Junker selling fuel; the one written deal runs the other way (the war-lab routes spec of
+  2026-09-27: the crew *"pays, in fuel and scrap, for the privilege of hauling the Junkers' worst garbage away for
+  them. To the Junkers this is the funniest deal ever struck"*).
 The fourth route is the one the sheet calls *"the cursed prize"*: the vault-roots' *"densely concentrated fuel
 deposits"*. Digging them out is *"exactly what the Junkers do and exactly what reopens the wound."* In these
 versions it stays cursed and unbuilt as a fuel: destroying a loaded root releases what it bound, and that is all.
-The Wastes is not replete. Rendering soot bricks into ship fuel is the small build this ruling asks for.
+The Wastes is not replete. Giving soot bricks something that burns them, the ship first, is the build this ruling
+asks for. Which route is the Wastes' own is `NEEDS HIM` 5.
 
-**What the place does to the ship (his ruling of 2026-11-18, in 0.1.0).** It sandblasts it and buries it. The
-sheet's ash storm is *"blinding, abrasive, conductive — and radiologically live"*, and the built storm already
-drifts ash over gear so that it has to be dug out afterwards. A ship that sits through storms is scoured, its
-yard is under drift and its apron has become some of the hottest ground on the map. In the terminator pockets
-only, the Cinderwire storm adds what the sheet calls *"EMP, burn, dose and burial in one weather event"*, a wind
-*"strong enough to throw wreckage"* that stuns powered things (0.2.0). The answers are a **shield** and a
-**shovel**: the aerosol screen learned in the Warscar is ruled to work on *"the Wasteland's ash fall"*; without
-one, the crew digs the yard out by hand and scrubs the apron after every blow. What is not built: any effect of
-ash on the hull itself. The promise below is written for the yard, the apron and the people, and marks the hull
-skin as owed.
+**What the place does to the ship (his ruling of 2026-11-18, in 0.1.0).** It wears it down from the hour it
+lands, and that is already built. The frame his ruling points at (`src/RimUtinni/ShipShields/`, his shield rulings
+of 2026-09-02) asks one question of a map for this kind of wear: is the air full of particulate? The Wastes is
+marked a polluted biome by patch (`RM_AerosolScreen_PollutedBiomes.xml`), and the frame reads that mark as yes
+(`ShieldHazardUtility.HasParticulateHazard`). So a ship with no screen up takes wear on its structures for the
+whole stop, in clear air too: a few parts at a time, at a pace that doubles after about six hours, with letters
+that advise and never refuse. The ash storm and the Cinderwire carry a sand rate of their own, which trips the
+same test a second way.
+
+The storm is the part a player sees. The sheet's ash storm is *"blinding, abrasive, conductive — and
+radiologically live"*, and the built storm drifts ash over gear so that it has to be dug out afterwards. A ship
+that sits through storms is scoured, its yard is under drift and its apron has become some of the hottest ground
+on the map. In the terminator pockets only, the Cinderwire adds what the sheet calls *"EMP, burn, dose and burial
+in one weather event"*, a wind *"strong enough to throw wreckage"* that stuns powered things (0.2.0).
+
+The answers are a **screen** and a **shovel**.
+- *The particulate screen.* His ruling: *"Light kinetic deflectors handle wind, ash, vapor, bio contamination,
+  spores, smoke, sand, and rain damage completely as well as repels small animals."* Ash is in his list. So are
+  small animals: a screened ship should keep the gripper out, which is a real price for a crew that enjoys it
+  (whether the built screen repels animals is `UNMEASURED`). One generator holds one field, and here one is
+  enough; the dark scour is cold, and not cold enough to trip the frame's cold test.
+- *The aerosol screen* learned in the Warscar, *"a clean-air dome over the ship in any polluted biome"*, ruled to
+  work on *"the Wasteland's ash fall"*.
+- *The shovel.* Without either, the crew digs the yard out by hand and scrubs the apron after every blow, and the
+  hull pays.
+A failing screen warns before it goes (his ruling: shields *"can predict and alert to let the crew return and
+leave"*). In the Wastes that warning is the honest end of a stop.
+
+What is this design's own reading: that the built wear, which is one rule for every polluted biome, is enough to
+be the Wastes' hull wear. Nothing in the sources gives the Wastes a hull wear of its own beyond the storm's
+adjectives. A storm that visibly pits the hull is a proposal, not a source.
+
+One cargo wears the ship from inside. The throat cask, drawn from the Stenchlands, in his words of 2026-10-09:
+*"constantly emitting terrible radiation. Extremely dangerous to be near, even with a specially sealed chamber.
+Ship malfunctions while it's onboard repeatedly. Feels like it's slowly causing armaggeddon just having it
+nearby."* It is built and has never been run live, and it belongs to the campaign layer (below).
 
 ---
 
@@ -137,17 +187,31 @@ something that was the crew's.
 - **The refuge is the ship.** His answer the same day on what makes an ordinary day matter: *"Keeping a habitable
   refuge leads. Resisting accumulated pollution at home makes the land matter between expeditions and requires
   ongoing maintenance."* Clean decks, a clean apron, a roof: the crew goes out to work and comes back to the one
-  place that is not killing it, and keeping it that way is a chore that never ends.
+  place that is not killing it, and keeping it that way is a chore that never ends. A roof stops what falls and
+  does nothing about the ground under it; shade removes no poison.
 - **Nothing rots.** *"Rot runs slow to nothing."* Food left out keeps. So does everything anyone ever left here:
   *"What you leave, you find again"*, with the sheet's warning attached: *"you may not want what you left here
   too long."*
 - **The salvage.** Rusted hulls, tanks, the wrecks of everyone who tried before, and sealed **warcasket
   sarcophagi**: *"a dead Junker in an adjusted warcasket is a sealed salvage-within-salvage: suit, tools, and the
   half-extracted core still in its grips."*
-- **The neighbours.** Scumrats, fat on what nothing else will touch. Boilhides, a herd whose hides are *"a
-  landscape of sealed boils"*, which run. A gravelgut, a low armoured slab that eats gravel and *"passes it as
-  smooth sorted pebbles the locals kick apart to read what is buried underneath."* None of them wants anything
-  from the crew, with one exception (below).
+- **The neighbours.** Scumsliders, heirs to *"the rat that made the dump its estate — fat on what nothing else
+  will touch, bald in patches, wart-knuckled, and doing fine."* Boilhides, a herd whose hides are *"a landscape of
+  sealed boils"*, each *"a pocket where its body walled poison off and moved on"*, which run. A gravelgut, a low
+  armoured slab that eats gravel and *"passes it as smooth sorted pebbles the locals kick apart to read what is
+  buried underneath."* A slagmole, which *"digs through vitrified crust like frost"* and is *"revenge-prone if dug
+  out."* A scabspinner, whose *"webs are half silk, half scab"*, hunting the small ones and fleeing people. None
+  of them wants anything from the crew, with one exception (below).
+- **The ones worth having.** The kroffa, a plated grazer: *"they keep their milk clean through all of it. That
+  milk is rich and sweet and good to drink raw, so they are the one animal in the Wastes that settlers seek
+  out."* *"A herd can be driven, but it cannot be hurried."* And the frethik, a palm-sized mite under a crown of
+  glassy hairs: *"They are salt."* It drinks brine and pushes the salt out through its hairs. *"Settlers keep them
+  as pets."* (Both descriptions were rewritten on his art-sheet notes of 2026-10-09: *"RimMandrake tier, NOT Star
+  Wars. Never was."*)
+- **The water has owners.** Natives drink the brine and people cannot. There are no fish: *"nothing vertebrate
+  lives in a half-charged voltaic cell."* What lives in a pool is the isi isi (his name, typed 2026-10-10), in his
+  words *"an alien being, a strange rubbery disc with a few thin, disturbing appendages hanging out for unknown
+  purposes."* (Campaign layer's animal; its shock is 0.2.0.)
 - **The rib-vaults.** *"The bones of creatures that did not understand what they wandered into are the
   monuments"*: the only architecture for miles and *"the traditional ash-storm shelter (with the traditional
   price: the bones lie where the dust settles thickest)."*
@@ -162,14 +226,23 @@ something that was the crew's.
   fixed forever, this is *"the single place the map is allowed to regenerate."* For a crew of scavengers it is
   the reason to sit through a storm.
 - **The cinderfelt.** A felt-grey mat that grows only on fresh ash fall and marks where the last storm laid its
-  load, *"the way the dosimeter lawn marks the ground."*
-- **The beetle that trades up.** A wild gripper arrives already carrying a piece of junk. It finds something of
-  the crew's that is worth more, swaps, and leaves. Hit it and it drops what it has. Tame it and it never steals
-  again. (All seven checks of this passed live on 2026-10-08.)
+  load, *"the way the dosimeter lawn marks the ground."* *"The flats grow a grey pelt, and where the felt is
+  thickest, the fall was — which is where the survey (and the dose) is."* It dies in about eight days as the fall
+  compacts, so a stop sees the pelt come and go.
+- **The beetle that trades up.** A wild gripper arrives already carrying a piece of junk (his art-sheet ruling:
+  it is *"always carrying something"*). It finds something of the crew's that is light, loose and worth more,
+  swaps, and leaves; the cast bible has its kind *"hauling scraps of everything back to middens it defends from
+  nobody."* Hit it and it drops what it has. Tame it and it never steals again. (All seven checks of this passed
+  live on 2026-10-08. A later combined gripper-and-brine check failed on 2026-11-06 with a fixture fault named and
+  no re-run; the newer reading is the one a builder meets.)
 - **The herd that pays.** A sloghog penned on poisoned ground *"periodically coughs up the poison as a stone you
   can sell"*; a sootgrazer on ash presses bricks. *"A kept herd is a slow refinery."* Both fit in a hold.
 - **The hill that walks.** Hours of warning: a tremor, dust, loose metal on the ground creeping to point at one
-  edge of the map. Then the Middenshell arrives. See the moments.
+  edge of the map. Then the Middenshell arrives. See the moments. Its range is the dark scour and the old war
+  ground, one to a map at most; a salt-basin stop will not meet one.
+- **Dry lightning.** There is thunder here and never rain. A strike that lights a grove burns with nothing to put
+  it out, and once roots hold poison (below, not built) it opens every vault in the grove and burns the moss that
+  would have warned of it. The weather alone can make hot, bare, unmarked ground.
 - **The dose adds up.** By the end of a week the question is who has been outside too much.
 
 ## "OMG did you see that?"
@@ -185,20 +258,38 @@ Each can happen inside the visit. Each says what is on screen.
    humps and there is a hull standing clear of the flat that was not there yesterday.
 4. **The Middenshell.** *On screen:* a living rampart **twenty cells wide**, *"landscape that turns out to be an
    animal"*, crossing the map at a crawl, wearing *"centuries of what it processed"* fused into its shell,
-   flattening whatever is in front of it and leaving a hot trail and a scatter of small bezoars behind. It is
-   never hostile. It *"does not fight, it does not hunt, it barely notices."* *Why it lands:* the crew can see
-   the salvage embedded in it going by, and it is the dose of a lifetime to stand close enough to pry at it.
+   flattening whatever is in front of it and leaving a hot trail and a scatter of small bezoars behind. His
+   first words for it: *"Bezoar Colossus loved, hardened shell of waste/scavenge debris/bezoars, TWENTY CELLS
+   WIDE."* By his art note it is a huge mineral-shelled tubeworm, and it crawls. The cast bible: *"the oldest
+   survivor on the planet's worst ground, wearing everything it ever ate"*, with *"ribs of something that lost"*
+   grouted into its shell. It is never hostile. It *"does not fight, it does not hunt, it barely notices."*
+   *"Being in front of it is a mistake the ground remembers."* *"Nobody made it, it simply refused to die."*
+   *Why it lands:* the crew can see the salvage embedded in it going by, and it is the dose of a lifetime to
+   stand close enough to pry at it.
 5. **The yard and the giant.** *On screen:* the route overlay runs through the crew's outdoor stockpile; the
    crew hauls scrap out of its path while the loose metal on the ground points the way it is coming. (It goes
-   around the ship itself: the built crawl avoids gravship parts.)
+   around the ship itself: the built crawl avoids gravship parts, natural rock and thick roof, and tears thin roof
+   and floors. A yard under an overhang is safe. Two defects sit under this moment: with the procession switched
+   off it arrives at once, and a blocked entrance sends it in at another edge with no new warning.)
 6. **The sloghog coughs.** *On screen:* a warty, barrel-bodied hog with *"content half-shut eyes"* stops grazing
    poison, heaves, and produces a dense lump worth money.
 7. **The sarcophagus.** *On screen:* a sealed warcasket is cracked open and inside is a dead Junker, a full set of
    tools, and a half-extracted core still in its grips, which the crew will now have to decide about.
 8. **The warm boulder** (dark scour). *On screen:* in the cold dark, one rock with no frost on it and steam where
    it sits. Something very hot bedded there, and it is still nearby.
-9. **The grimewing.** *On screen:* a half-bald scavenger bird riding a storm's edge, really flying, down onto
-   whatever the storm just dug up.
+9. **The grimewing.** *On screen:* a half-bald scavenger bird, *"wing gaps where feathers never grew back"*,
+   riding a storm's edge, really flying, down onto whatever the storm just dug up. *"It eats what the storm digs
+   up, never what walks."*
+10. **Nobody butchers a thuffor upwind.** *On screen:* the crew's new pack animal, *"a blind, six-legged mountain
+   of a grub-thing"*, gentle, slow, loaded with salvage, is shot by a probe's escort beside the ramp. *"The danger
+   comes when it dies: everything it ever ate leaves it in one choking cloud."* *Why it lands:* the Jawa bought
+   the best pack beast on the planet and nobody told them what was in it. (Campaign layer's animal; its
+   description is his rewrite of 2026-10-09. Whether the death cloud is wired is `UNMEASURED`.)
+11. **The only pretty thing.** *On screen:* night in a warm basin, and a pet frethik on a crate lid shedding its
+   salt. *"A frethik shedding its salt on a warm night glitters softly, and few other things in the Wastes are
+   pretty to look at."*
+12. **The wrong light** (dark scour). *On screen:* no lamps lit, the ship cold and dark, and out on the flat a
+   patch of moss glowing where the ground is worst. The crew walks around it. (Needs glowing moss: `UNMEASURED`.)
 
 ## When the Empire arrives
 
@@ -208,6 +299,10 @@ Each can happen inside the visit. Each says what is on screen.
   day out can choose to be inside for it.
 - **Nothing here will help either side.** No animal in the Wastes hunts people; the sheet bans it.
 - **In the scour, the dark.** Watchers see six cells. A cold, unlit ship is hard to find from the ground.
+- **The only cover at ground level is on the worst ground.** Tall scumgrass is *"waist-high, sight-blocking"* and
+  grows *"where the ground is richest — which here means worst."*
+- *A proposal, not a source:* the air that wears the ship could wear a parked lander and a cordon's emitters the
+  same way. The built wear is for the ship's own structures only.
 - *0.2.0:* **the Middenshell can be steered.** Its route bends toward waste stockpiles. A crew that stacks waste
   on the far side of a siege camp has aimed a twenty-cell animal at it, and nobody can call that an attack.
 - *0.2.0:* **the Cinderwire** (terminator pockets only) stuns powered buildings in pulses and strikes lightning.
@@ -225,7 +320,13 @@ Each can happen inside the visit. Each says what is on screen.
 - **The Junkers,** where the campaign places them: *"crude sovereigns of the dump"*, charging everyone for *"the
   rite of dropping waste here, making meager credit off a claim that is legally absurd and universally honored,
   because nobody else wants to enforce anything in a Wasteland."* They are who the crew trades with and who the
-  crew is trespassing on. Whether they fight the Empire is `UNSETTLED`.
+  crew is trespassing on. Whether they fight the Empire is `UNSETTLED`. His words of 2026-10-09 on who is inside
+  a Junker warcasket: *"there are both kinds. Passive scavengers are often unwillingly done to Junker society
+  members fallen onto rough times and usually irreversible. Elite Hostiles are celebrated members of society who
+  are a bit psychotic and too eager for conflict. You can see both in their trade caravans."* So a Junker caravan
+  carries both a victim and a volunteer, and the second one attacks. By an owner ruling recorded in
+  `design/V2_DREAMS.md` they are *"hostile-but-bribable scavengers"*, no longer everyone's permanent enemy.
+  Elsewhere they are the ones who *"arrive second and kill whoever arrived first."*
 - **Wildsteam and Deepwater** *"both sincerely care about the planet's future habitability and have no
   leverage"*. They want hands. So do the Junkers. The sheet: *"the players are the only hands all three can
   use."* Campaign layer.
@@ -255,29 +356,33 @@ Each can happen inside the visit. Each says what is on screen.
 - **Fuel:** soot bricks, wartshrub chemfuel, or barrels bought at a toll gate.
 - **Salt, glass and brine minerals** (the brine beds are 0.2.0).
 - **A tamed gripper,** which never steals from its own crew, by design.
-- **The dose** each of them is carrying.
+- **The dose** each of them is carrying. Leaving stops the dose and cures nothing.
+- **A kroffa for clean milk, a frethik for the galley,** and, where the campaign's cast is loaded, **a thuffor**
+  to carry the rest.
 - *0.2.0:* **the waste cask bay,** the Wastes' named gift to the ship: *"the only way a gravship may carry the
   planet's waste at all"*, with launch refused if a cask is loose or the bay is unsafe; and **paid cargo**: the
   tipping trade pays a crew to take casks. A penned sloghog beside the bay turns casks into bezoars in flight.
-- *0.2.0:* **a smolderback,** *"a living furnace that heats a shelter all winter and irradiates it the entire
-  time."*
+- *0.2.0:* **a smolderback** (its shipped label is *hessekh*, picked by his card of 2026-10-10), *"a living
+  furnace that heats a shelter all winter and irradiates it the entire time."* It doses everyone in its room and
+  nobody in the next one, so it can have a hold of its own. *"It is the keeping of it that costs."*
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
 | the player sees | the scene | what rules out a fake |
 |---|---|---|
-| Ground differs in how fast it harms, and the plants and the look of the ground are enough to tell better from worse before inspecting. | Two routes to the same wreck, one over thick moss and ash, one over bare crust, with the pollution overlay hidden (a look at a joint sitting, then the doses read from state). | The route that looked worse did dose more. A difference the eye cannot see must not exist. |
+| Ground differs in how fast it harms, and the plants and the look of the ground are enough to tell better from worse before inspecting. *(Not built: no plant reads pollution today. Vanilla's polluted-only plant flag is the cheapest honest route.)* | Two routes to the same wreck, one over thick moss and ash, one over bare crust, with the pollution overlay hidden (a look at a joint sitting, then the doses read from state). | The route that looked worse did dose more. A difference the eye cannot see must not exist. His answer of 2026-11-10 rules out a new overlay: *"landscape and existing inspection tools, not new UI."* |
 | A clean, roofed refuge stays habitable only with upkeep; tracked and blown contamination comes in. | A landed ship with a cleaned apron through two storms, tended and untended. | The untended ship's decks and apron measurably foul; cleaning that is done stays done until something new arrives. |
 | An ash storm doses people in the open, dirties ground, buries loose gear that can be dug up whole, and leaves cinderfelt on the fresh fall. | A natural storm with one pawn out, one roofed, and a crate in the open. | The dug-out crate is the same crate. Cinderfelt grows only where ash actually fell. |
 | After a storm there are finds on the map that were not there before, and some old ones are gone under. | Record the map's visible salvage before and after a natural storm. | The total hoard is finite and tracked: a find revealed is one that was buried, never spawned from nothing. |
-| Nothing rots, in the warm basins too. | Raw food left out in a basin for the visit. | The same food on another biome's map at the same temperature rots. |
-| Destroying a loaded vault-root releases what it bound, once. | Cut, burn and dig one; read the ground. | A root that had bound nothing releases nothing. |
-| Every resident is visibly marked, none hunts people, and the real flyer really flies. | A crew member walks through each species; the grimewing's flight read from its flight state. | A provoked gravelgut or gristleswarm fights; an unprovoked one never does. |
+| Nothing rots, in the warm basins too. *(Unknown whether built.)* | Raw food left out in a basin for the visit. | The same food on another biome's map at the same temperature rots. |
+| Destroying a loaded vault-root releases what it bound, once. *(Not built: roots hold nothing today.)* | Cut, burn and dig one; read the ground. | A root that had bound nothing releases nothing. |
+| Every resident is visibly marked, none hunts people, and the real flyer really flies. | A crew member walks through each species; the grimewing's flight read from its flight state. | A provoked gravelgut or gristleswarm fights; an unprovoked one never does. The scabspinner never makes crew or tame stock its routine prey. |
 | A wild gripper swaps its junk for something better of the crew's and drops its haul when hurt; a tamed one does not steal. | Unguarded valuables near a wild gripper; then the same with a tamed one. | The stolen thing is the thing recovered. Forbidden items are left alone. |
 | A sloghog on poisoned ground yields bezoars and a sootgrazer on ash yields soot bricks, faster there than on clean ground. | One of each penned on dirty ground and one of each on clean floor. | The clean-floor pair lag visibly. |
 | The Middenshell is announced hours ahead, crosses on a route the player can read, flattens what is in its path except the ship, doses whoever stands near, never attacks, and leaves a trail. | Let one arrive with a yard in its path and the ship beside it. | Shooting it does not turn it on the crew. Nothing it crushes vanishes without wreckage or a message. The ship's parts are untouched. |
 | In the dark scour an unlit crew is not seen by a watcher beyond a few cells; a lit one is. | A probe passes an unlit and a lamplit camp at the same distance on a scour tile. | The same pass on a basin tile sees both. |
 | Wartshrub and soot bricks give fuel. | Harvest one; pen the other; put the product in a tank. | |
+| A ship with no screen up is worn by the air of the Wastes, faster in a storm; a ship behind a particulate or aerosol screen is not. | Two landed ships through one storm, one screened. | The same unscreened ship on a clean biome's map takes no such wear. (The wear is built; this scene has never been run.) |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a dry, bleak flat with odd
 animals (standing rule, every mod).
@@ -309,31 +414,43 @@ Every feature is in one bucket.
 **0.1.0, the stop**
 - The land in its three families: salt, ash, broken ground, brine, preserved remains; old contamination laid once
   on ash flats, wreck surrounds and brine margins with cleaner ground left to build on; no rain, no snow; the
-  stormwall's glow on one horizon in the scour. (built; the horizon light's direction is owed)
-- Dose from ground and air, comparable by eye; the ship as the refuge that needs upkeep. (built on the pollution
-  grid; the by-eye comparison is the cleanse's own unproven hypothesis)
+  stormwall's glow on one horizon in the scour. (The land and weather list are built. The laid contamination is
+  not: nothing puts poison on a fresh map today. The horizon glow has no renderer.)
+- Dose from ground and air, comparable by eye; the ship as the refuge that needs upkeep. (Dose rides the built
+  pollution grid. The by-eye comparison is not built: the census of 2026-11-17 found no plant that reads
+  pollution.)
 - The ash storm: dose, dirtied ground, drift and burial, exhumation of buried salvage, cinderfelt. (built; the
-  "doses an unroofed pawn" check failed live on 2026-10-08 and the dunes binding was broken at the time; both are
-  defects to fix)
+  "doses an unroofed pawn" check failed live on 2026-10-08; a fix was recorded the same day
+  (`WASTELAND_TOXIC_BUILDUP_NEVER_APPLIES_1`) and the mechanics review of 2026-10-22 still lists the check as
+  failed with no re-run. The dunes binding has since been repaired in source. Not built: old contamination moving with the ash. Today a storm only
+  adds new pollution on random open cells, so the danger map grows and is never redrawn.)
 - A finite, tracked buried hoard laid down before the crew arrives. (not built; the cleanse specified it for a
   later version; moved in)
-- Preservation: nothing rots. (built)
-- Radmoss, vault-root and what destroying a loaded root does; scumgrass, pusberry, boilbulb, wartshrub. (built)
-- The cast as animals with ordinary lives: scumrat, slagmole, scabspinner, boilhide, gristleswarm and its soot
-  cousin, gravelgut, kroffa, frethik, scumslider, grimewing with real flight. (built)
+- Preservation: nothing rots. (unknown: the census could not find what makes it so in a warm basin)
+- Radmoss, vault-root and what destroying a loaded root does; scumgrass, pusberry, boilbulb, wartshrub. (The
+  plants and their harvests are built. Radmoss following dose, roots binding poison and roots releasing it are
+  not.) The vanilla grey grass, toxipotato and polux tree left the roster by his card of 2026-10-19.
+- The cast as animals with ordinary lives: scumslider (the scumrat, redrawn on his art note), slagmole,
+  scabspinner, boilhide, gristleswarm and its soot cousin, gravelgut, kroffa with clean milk, frethik with eggs,
+  the excretor, grimewing with real flight. (built; the grimewing has no flight flip-book yet)
 - The gripper's swap. (built; live pass; moved in)
 - Sloghog bezoars and sootgrazer soot bricks. (built; moved in; two failed live checks to fix)
 - The Middenshell: omen, arrival, readable route, crawl, crushing, proximity dose, trail. (built; eight of nine
   body checks and six of seven arrival checks passed live; the proximity dose failed and was not re-run. Moved in.)
-- Wrecks and sealed warcasket sarcophagi as salvage. (wrecks built; a real sealed corpse inside is not)
+- Wrecks and sealed warcasket sarcophagi as salvage. (wrecks built; a real sealed corpse inside is built in the
+  campaign layer, `RUT_JunkerSealedCorpses.xml`, and needs the Warcasket mod)
+- The air and the storm wearing an unscreened ship; the particulate screen and the aerosol screen as the answers.
+  (built in `src/RimUtinni/ShipShields/` and the Warscar; never run on a Wastes map)
 - Cover by family, and dark-scour tiles on the orbital pause list. (owed, small)
-- Soot bricks rendered to ship fuel. (owed, small)
+- Soot bricks burned as fuel, by the ship first. (owed: nothing consumes a soot brick today)
 
 **0.2.0, the stop with company**
 - The Middenshell's lure toward waste stockpiles and its tentacle that eats things near it. (built, never seen
   live)
-- The Deadlight Halo and the Cinderwire storm, with their staged warnings. (built; the dose-after-warning check
-  failed live)
+- The Deadlight Halo (*"shadows double, instrument clicks accelerate, and a sickly light rims every pawn"*) and
+  the Cinderwire storm (*"crawling static, levitating scraps and a deep electrical whine"*), with their staged
+  warnings. (built; the dose-after-warning check failed live. The Halo is on the biome's weather list today, so
+  holding it for 0.2.0 means taking it off.)
 - The smolderback: heat and dose in one animal. (built, never measured)
 - Waste casks, the cask bay, the launch refusal, herd-assisted processing aboard, reburial; the Rite of Tipping
   with its paid deliveries, evidence requests, containment grant and discovery. (built; the core passed live)
@@ -350,7 +467,11 @@ Every feature is in one bucket.
 - The dead Middenshell as a permanent bezoar quarry (it has to be killed first, which no stop does).
 - Vault-root ore as a fuel economy. The top-down healing of the land, which runs on a scale of ages.
 - Radiation-scrubbing drugs and the dive structure priced in a dose budget.
-- A second, native giant that passes through as a huge pawn.
+- A second, native giant that passes through as a huge pawn. (His words of 2026-10-21 on the titan passage:
+  *"Every biome should have something like this."* The Wastes' roster homes none. `NEEDS HIM` 6.)
+- The throat cask (campaign): his cargo that breaks the ship from inside.
+- The excretor's sheared bezoars; the isi isi's shock; the 626 existing map features (caves, junkyards, ruins)
+  planned for Wastes tiles at the end paint, which will make one Wastes landing differ from the next.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - Anomaly entities, bioweapon lifeforms, wildlife as the headline threat, unmarked wildlife, rain, anything that
@@ -358,20 +479,49 @@ Every feature is in one bucket.
 - The pathos reading of the fauna (revised 2026-09-28: survivors, not sufferers), and with it the donor cast.
 - Invented-exotic or Star Wars names for this cast (same ruling).
 - The dead brine-deposits toggle (deleted 2026-10-23).
+- Four enrichment ideas he declined on 2026-09-30 (*"None of these thanks."*): Waste Stratigraphy, Unburied
+  Ledger, Crime Strata, Rootglass Vaults. Two more offered that day and not picked: Glass Choir, and the Jawa
+  auctions. Only the names survive.
+- The Alien Bestiary's empty Wastes with manufactured servants only (unbuilt, and overtaken by his survivor ruling).
+- A spacing behaviour for the solitaries (ruled out at the sitting: it spawns alone).
 - **Recommended for dropping, not yet his:** the raw kroffa-milk mood bonus; special poisoning from raw pusberry
   (both the cleanse's recommendations).
 
 ## NEEDS HIM
 
-1. **"The creatures are its victims."** His experience line, picked on 2026-10-20, ends with those words. His
+1. *(other)* **"The creatures are its victims."** His experience line, picked on 2026-10-20, ends with those words. His
    ruling of 2026-09-28 says the opposite in as many words: survivors, *"never pitiable"*. This design follows the
    earlier, typed ruling for the creatures and reads "victims" as the unadapted dead (the rib-vaults, the
    Junkers). *Leave it* (default). *Re-pick the line* so its last clause matches the cast.
-2. **Is cargo you are paid to carry a 0.2.0 thing?** The tipping trade as built delivers casks to a licensed pad
+2. *(scope)* **Is cargo you are paid to carry a 0.2.0 thing?** The tipping trade as built delivers casks to a licensed pad
    on the player's land every few days. For a ship it is better as a single paid pickup: take casks aboard at a
    toll gate, be paid, and own the problem. *Keep the built pad contract for 0.2.0* (default; it exists).
    *Reshape it to a paid pickup:* very Jawa, and a rewrite of a quest that passed live.
-3. **Does the Middenshell touch the ship?** As built it goes around gravship parts and its tentacle will not take
+3. *(hull)* **Does the Middenshell touch the ship?** As built it goes around gravship parts and its tentacle will not take
    them. *Keep that* (default: the player loses a yard, never the campaign). *Let it crush what is in its path,
    ship included, with the hours of warning as the fairness:* a real reason to launch early, and one bad save
    away from ending a run.
+4. *(cover)* **Is the dark scour full dark for the search from orbit?** His card of 2026-11-18: *"full dark still
+   pauses it."* The sheet says the scour's only light is the stormwall's glow on one horizon. Only the Abyss is on
+   the built pause list. *Yes, add the scour's tiles* (default: a cold, poisoned, lightless flat becomes one of
+   the planet's real hides, and a stop there runs six to nine weeks at the edge). *No, it is one step, like ash:*
+   the glow counts as light, and the scour is only a slower clock.
+5. *(fuel)* **Which fuel is the Wastes' own?** Three are in the sources. *Wartshrub* (default for 0.1.0: built,
+   proven, scarce). *Soot bricks:* the sootgrazer exists and the brick burns in its own text, and nothing consumes
+   it; making the ship burn them is a build, and it turns a penned animal into a fuel plant. *Vault-root ore, "the
+   cursed prize":* unbuilt, the sheet's own, and the only one that tempts a crew to do harm. Buying from Junkers
+   is this design's proposal and has no source.
+6. *(scope)* **Does the Middenshell count as the Wastes' giant?** His words on the titan passage, 2026-10-21:
+   *"Every biome should have something like this."* The Wastes has the Middenshell, which is a building that
+   crawls, and no giant animal for the passage pool. *Yes, it counts* (default: one giant is enough for a place
+   whose rule is that wildlife is never the headline). *No, a second giant is owed:* a new creature at the roster
+   sitting, and a second thing walking through the yard.
+7. *(scope)* **Should the waste run exist?** The mechanics review of 2026-10-22 asked and nobody carried the
+   question to him: it *"sends waste away, which undoes the line 'nothing ever leaves'"*. His own hook answers
+   half of it (2026-10-12: the waste cannot leave the planet, because the only hyperdrive that fits is in the war
+   lab). *Keep it in the campaign layer* (default; it is built, with four stubs owed). *Fold its choice into the
+   tipping letters. Cut it.*
+8. *(hull)* **Is the throat cask Wastes content again?** His words of 2026-10-09 make it the one cargo that faults
+   the ship. An agent moved it out of the Wastes' count on 2026-10-23, to the campaign layer. *Leave it there*
+   (default). *Bring it into the Wastes' 0.2.0 with the cask bay:* one more live check, and the Stenchlands
+   arrive with the biome.
