@@ -85,6 +85,9 @@ if mode == "refuse":
     print("REFUSED: every selected chain of Mock is offline (c0)"); sys.exit(2)
 if mode == "crash":
     print("Traceback: boom"); sys.exit(3)
+if mode == "summary_refused":   # modcheck's per-mod summary line, then more output than the note's tail keeps
+    print("Mock                 REFUSED  validated must-show lines no component claims: line_a, line_b")
+    print("[modcheck] long tail " * 40); sys.exit(1)
 if mode == "no_game":
     print('{"status": "no_game", "message": "No game is currently loaded", "state": {"programState": "Entry"}}')
     print("hasCurrentGame: False mapCount: None -> NOT READY"); sys.exit(1)
@@ -576,6 +579,23 @@ def main():
         res = wait_result(o.get("attempt", "x"))
         check(res.get("cause") == "HARNESS" and not os.path.exists(hdowns),
               "a HARNESS death that names no lost game keeps the game: %s %s" % (res.get("cause"), res.get("note")))
+        # RIMMANDRAKE_KEEP_STEVE_PLAYER_LOG_PER_ATTEMPT_SEVENTEEN_BLIND: EVERY non-DONE attempt that reached the game
+        # keeps its Player.log, not only the named wounds (2 of 96 INVALID attempts held one, 11-06..14)
+        cfix = b"Exception in crash case\nend\n"
+        with open(game_log, "wb") as f:
+            f.write(cfix)
+        rc, o = w(["start"], job(), MOCK_MODE="crash", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
+                  TESTQ_CMD_DOWN="echo down >> %s" % hdowns, RM_GAME_LOGDIR=logdir, **load)
+        res = wait_result(o.get("attempt", "x"))
+        ckept = os.path.join(home, "attempts", o.get("attempt", "x"), "Player.log")
+        check(res.get("outcome") == "INVALID" and kept_whole(ckept, cfix) and "game log kept" in (res.get("note") or ""),
+              "any non-DONE attempt past load keeps Player.log beside it: %s %s" % (os.path.exists(ckept), res.get("note")))
+        rc, o = w(["start"], job(), MOCK_MODE="pass", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
+                  RM_GAME_LOGDIR=logdir, **load)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and not os.path.exists(os.path.join(home, "attempts", o.get("attempt", "x"),
+                                                                                "Player.log")),
+              "a DONE attempt copies no log: %s" % res.get("outcome"))
         # 11-14 repeat: HAR's static constructor died (TypeInitializationException), modcheck said "quicktest world
         # start FAILED" and never no_game, so pid 4400 was kept and Bacta inherited the wound
         wdowns = os.path.join(tmp, "world_start_downs")
@@ -766,6 +786,13 @@ def main():
         res = wait_result(o.get("attempt", "x"))
         check(res.get("cause") == "HARNESS" and "Windows fatal exception: access violation" in (res.get("note") or ""),
               "a faulthandler stack far above the last 300 chars still reaches the note: %s" % (res.get("note") or "")[:120])
+
+        rc, o = w(["start"], job(), MOCK_MODE="summary_refused")
+        res = wait_result(o.get("attempt", "x"))
+        note = res.get("note") or ""
+        check(res.get("cause") == "HARNESS" and note.startswith("modcheck exit 1 and no sheet JSON: first: ")
+              and "REFUSED  validated must-show lines no component claims: line_a" in note,
+              "the no-sheet note leads with modcheck's first REFUSED line, above the tail: %s" % note[:160])
 
         rc, o = w(["start"], job(), MOCK_MODE="refuse")
         res = wait_result(o.get("attempt", "x"))

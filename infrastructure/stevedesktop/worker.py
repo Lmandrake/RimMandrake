@@ -1525,8 +1525,13 @@ class Attempt:
                 return self.fail("INVALID", "HARNESS", "modcheck exit %s, no sheet; %s ... %s" % (
                     self.res["modcheck_exit"], re.sub(r"\s+", " ", text[m.start():m.start() + 600])[:250],
                     tail[-80:]))
-            return self.fail("INVALID", "HARNESS", "modcheck exit %s and no sheet JSON: %s"
-                             % (self.res["modcheck_exit"], tail[-300:]))
+            # the first REFUSED or exception line leads: the tail alone cut Graffiti's `REFUSED  validated must-show
+            # lines ...` off, and its deaths read UNKNOWN (RIMMANDRAKE_KEEP_STEVE_PLAYER_LOG_PER_ATTEMPT_SEVENTEEN_BLIND)
+            first = FIRST_CAUSE_RE.search(text)
+            return self.fail("INVALID", "HARNESS", "modcheck exit %s and no sheet JSON: %s%s"
+                             % (self.res["modcheck_exit"],
+                                "first: %s ... " % first.group(0).strip()[:160] if first else "",
+                                tail[-(300 - 180 if first else 300):]))
         rows = S.rows_from_summary(data.get("summary") or {})
         if self.job.get("situational"):
             self.res["situational"] = situational_digest(self.job["mod"], data.get("summary") or {})
@@ -1588,6 +1593,11 @@ class Attempt:
             self.stop.set()
             if self.res["outcome"] is None:
                 self.fail("INVALID", "HARNESS", "attempt ended in phase %s without a verdict" % self.phase)
+            # RIMMANDRAKE_KEEP_STEVE_PLAYER_LOG_PER_ATTEMPT_SEVENTEEN_BLIND: every non-DONE attempt that reached the
+            # game keeps its log (2 of 96 INVALID attempts 11-06..14 held one); the named wounds above keep theirs first
+            if self.res["outcome"] != "DONE" and self.phase in ("load", "attest", "run", "restart") \
+                    and not glob.glob(os.path.join(self.d, "Player*.log")):
+                self.keep_game_log()
             self.phase = "done"
             rc, msg = unpin(self.d)    # before the result: a start that follows it at once finds the clone on main
             if rc != 0:
@@ -1636,6 +1646,9 @@ def last_pid_line(rx, text):
     for found in re.finditer(rx, text[echoes[-1].end():] if echoes else text):
         pass
     return found
+
+
+FIRST_CAUSE_RE = re.compile(r"^.*(?:\bREFUSED\b|Traceback|Exception|Error:).*$", re.M)
 
 
 def refused_line(text):
