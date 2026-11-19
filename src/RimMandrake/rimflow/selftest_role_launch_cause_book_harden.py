@@ -177,7 +177,7 @@ def test_a_ops_watch_holds_the_lock():
 # ---- B. the action boundary
 def test_b_setter_is_an_action():
     import run_store
-    import relentless_exam as RE
+    import item_exam as RE
     store = run_store.Store(os.path.join(TMP, "rel"))
     RE.set_status(store, "PYRE_ITEM", state="validated", base="abc")
     kicked = []

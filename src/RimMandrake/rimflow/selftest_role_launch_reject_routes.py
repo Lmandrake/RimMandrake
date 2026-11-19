@@ -140,7 +140,7 @@ def test_second_identical_to_arbiter():
     rs = {}
     harvest(rs, ["decisions[d1]: no event"], unit="rm-role-designer-1")
     rs.pop("run_now", None)
-    import relentless_dispute as RD0
+    import stage_dispute as RD0
     saved = RD0.role_stage_dispute
     RD0.role_stage_dispute = None            # hermetic: the real entry would launch an arbiter
     try:
@@ -161,18 +161,18 @@ def test_second_identical_to_arbiter():
 
 def test_arbiter_seam_today():
     try:
-        import relentless_dispute as RD  # noqa: F401
+        import stage_dispute as RD  # noqa: F401
         landed = callable(getattr(RD, "role_stage_dispute", None))
     except ImportError:
         landed = False
     if not landed:
         check(RL.to_arbiter("Designer", C1, "X", "sig", ["r"]) is None,
-              "the real arbiter seam falls back (None) while relentless_dispute has no role_stage_dispute")
+              "the real arbiter seam falls back (None) while stage_dispute has no role_stage_dispute")
 
 
 def test_dispute_fault_falls_back():
     """WP-15/08 join: a fault inside the dispute path never breaks role_launch; the alarm stands, nothing re-chains."""
-    import relentless_dispute as RD
+    import stage_dispute as RD
     saved_fn, saved_deps = RD.role_stage_dispute, RD.Deps
     try:
         for what, patch in (("entry raises", lambda: setattr(RD, "role_stage_dispute", lambda **k: 1 / 0)),
@@ -196,7 +196,7 @@ def test_real_seams():
     import tempfile
     import cause_book as CB
     import run_store
-    import relentless_exam as RE
+    import item_exam as RE
     tmp = tempfile.mkdtemp(prefix="wp15-")
     store = run_store.Store(os.path.join(tmp, "rel"))
     kicked = []

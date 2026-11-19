@@ -19,7 +19,12 @@ import subprocess
 import time
 from pathlib import Path
 
-HOME = str(Path.home())
+from checker_box import (  # noqa: E402,F401
+    BOX_CONFIG, GIT_COPY_MAX, GIT_GRANT, GIT_NOTE, GRANTS, HIDDEN, HOME, ITEMS, ITEM_GRANT, ITEM_NOTE, UNIT_TMP,
+    VERDICT_SCRIPT, _ABSENT, _SAFE, _carve, _copy_objects, _link, _object_chain, _snapshot, box_config,
+    box_path_prepend, change_range, default_grants, denied, excludes, git_reads, grant_git, grant_items,
+    item_rev, make_box, profile, props, read_always, readonly, remove_box, skill_targets, tmp_env, unit_env,
+    unit_path,)
 WORDS = ("PASS", "WEAK", "FAIL", "UNMEASURED")
 UNMEASURED = "UNMEASURED"   # CHECKER_SANDBOX_FIX_BLIND_TO_STEVE: the box could not reach the evidence; no work goes back
 REACH_TAG = "CANNOT REACH:"
@@ -72,143 +77,10 @@ def narrow_word(word, reasons):
         return word
     head = (reasons or "").lstrip().upper()
     return "WEAK" if head.startswith("GAP:DIFF") else "PASS" if head.startswith("GAP:OTHER") else "UNTAGGED"
-VERDICT_SCRIPT = '''#!/usr/bin/env python3
-import json, os, sys, time
-HERE = os.path.dirname(os.path.abspath(__file__))
-USAGE = ('usage: verdict PASS|WEAK|FAIL|UNMEASURED "what you ran and saw" '
-         '[--defect "product|measurement|environment|unknown: a wrong thing your run showed"]... '
-         '[--control "how you showed your instrument can see"]... '
-         '[--unreached "evidence you could not reach, and the command that showed it"]... '
-         '[--propose ADAPTER_NAME|/read/path]...')
-a, defects, unreached, proposals, controls = sys.argv[1:], [], [], [], []
-pos = []
-while a:
-    x = a.pop(0)
-    if x in ("--defect", "--unreached", "--propose", "--control") and a:
-        y = " ".join(a.pop(0).split())      # the reader's own normalisation (relentless_wall.clean_list): agree on it
-        if y:
-            {"--defect": defects, "--unreached": unreached, "--propose": proposals, "--control": controls}[x].append(y)
-    else:
-        pos.append(x)
-if len(pos) != 2 or pos[0].upper() not in ("PASS", "WEAK", "FAIL", "UNMEASURED"):
-    sys.exit(USAGE)
-if any(d.split(":", 1)[0].strip().lower() == "product" for d in defects) and not controls:
-    sys.exit("a product: defect needs a --control: how you showed your instrument can see (green on a known-good case, "
-             "or it catches a fault you put in); without one, say unknown:")
-if controls and not defects:
-    sys.exit("--control backs a product: defect only")
-if pos[0].upper() == "UNMEASURED" and not unreached:
-    sys.exit("UNMEASURED needs at least one --unreached: name what you could not reach")
-if pos[0].upper() == "UNMEASURED" and defects:
-    sys.exit("a defect your run showed is a FAIL, not UNMEASURED: say FAIL and keep the --unreached lines")
-if proposals and pos[0].upper() != "UNMEASURED":
-    sys.exit("--propose is the reach repair of an UNMEASURED verdict only")
-if pos[0].upper() == "PASS" and (defects or unreached):
-    sys.exit("a PASS carries no --defect and no --unreached: evidence you could not reach is UNMEASURED, a defect is FAIL")
-with open(HERE + "/verdict.tmp", "w", encoding="utf-8") as f:
-    json.dump({"word": pos[0].upper(), "reasons": pos[1], "defects": defects, "unreached": unreached,
-               "proposals": proposals, "controls": controls, "at": time.time()}, f)
-os.replace(HERE + "/verdict.tmp", HERE + "/verdict.json")
-print("recorded")
-'''
-
-
-def profile(rules, mode="marker"):
-    """-> the mode's profile, or None. A profile names what it denies; a missing mode walls nothing and says so."""
-    return (rules.get("walls") or {}).get(mode)
 
 
 def enforced(rules, mode="marker"):
     return bool((profile(rules, mode) or {}).get("enforce"))
-
-
-def skill_targets(prof):
-    """-> the real paths the Marker's skill symlinks point at, when the profile names a skills folder. These are read only."""
-    root = prof.get("allow_read_skills")
-    if not root or not os.path.isdir(root):
-        return []
-    return sorted({os.path.realpath(os.path.join(root, n)) for n in os.listdir(root)} - {os.path.realpath(root)})
-
-
-# CHECKER_REACH_FIX_OTHER_STILL_DARK gen 5: walls.marker.deny holds /mnt/d/Luke/dev, so the D: mirror's untracked game
-# inventory (observed/inventory/bundle_textures, read by gametex/backfill/donor_standins/scale_panel as BUNDLES) was EACCES in
-# every box: selftest_facing_scale_lint and selftest_art_eval crashed with PermissionError, ART_LEDGER_VET_PURGE_BAN_REVIEW_
-# OWED's and NIGHTLY_COP_FIX_RED_AQJSGV_CFVH's Judges stayed blind, and no repair could open it (a read path is bound only
-# under a read_through root; a BindReadOnlyPaths under an InaccessiblePaths parent is still EACCES, measured 2026-11-06). A
-# `read_always` path is carved out of the deny list like a skill target and made read only: the same path, every box.
-# Prefixes only (no filesystem read), so relentless_reach.hidden answers the same inside a box.
-def read_always(prof):
-    """-> the profile's read_always paths: plain absolute paths, normalised, in order."""
-    out = []
-    for x in prof.get("read_always") or ():
-        if isinstance(x, str) and _SAFE.match(x):
-            q = os.path.normpath(x)
-            if q not in out and q != "/":
-                out.append(q)
-    return out
-
-
-def _carve(p, targets):
-    """-> the paths to deny in place of p so that every target stays reachable: p itself when no target is in it or under it,
-    nothing when p is inside a target, else p's children, each carved in turn."""
-    rp = os.path.realpath(p)
-    if any(rp == t or rp.startswith(t + "/") for t in targets):
-        return []
-    if not any(t.startswith(rp + "/") for t in targets):
-        return [p]
-    out = []
-    for c in sorted(os.listdir(rp)):
-        out += _carve(os.path.join(rp, c), targets)
-    return out
-
-
-def denied(prof, extra=()):
-    """Every path the unit may not see. deny_children: each thing under a root, so a clone made tomorrow is walled too.
-    Skill symlink targets (allow_read_skills) and read_always paths are carved out of the deny list; readonly() makes them
-    read only."""
-    out = list(prof["deny"]) + list(extra)
-    for root in prof.get("deny_children", ()):
-        out += [str(p) for p in sorted(Path(root).iterdir()) if str(p) not in prof.get("tmpfs", ())]
-    targets = skill_targets(prof) + [t for t in read_always(prof) if os.path.isdir(t) or os.path.isfile(t)]
-    if targets:
-        out = [q for p in out for q in _carve(p, targets)]
-    return sorted(set(out))
-
-
-def readonly(prof):
-    """The paths the unit may read and not write: the skill targets that sit inside a walled root (the ones the deny list
-    was carved around). A target elsewhere, such as under ~/.claude, is left as the host has it."""
-    roots = [os.path.realpath(r) for r in list(prof["deny"]) + list(prof.get("deny_children", ()))]
-    held = skill_targets(prof) + [t for t in read_always(prof) if os.path.exists(t)]
-    return [t for t in dict.fromkeys(held) if any(t == r or t.startswith(r + "/") for r in roots)]
-
-
-def unit_path(p):
-    """One path as a systemd list property reads it: unquoted, a space would split it into two entries."""
-    if not re.search(r"""[\s"'\\]""", p):
-        return p
-    return '"%s"' % p.replace("\\", "\\\\").replace('"', '\\"')
-
-
-def props(prof, box, extra=(), through_paths=()):
-    """systemd properties. Shared scratch comes up empty. A missing denied path fails the launch: a typo must not unwall.
-    The transcript folder is the box's: other runs' memory stays out, this run's stays in. `through_paths` (through()) are
-    bound read only over the empty scratch; '-': one gone since it was named is skipped, never a failed launch."""
-    out = []
-    for p in denied(prof, extra):
-        out += ["-p", "InaccessiblePaths=" + unit_path(p)]
-    for p in prof.get("tmpfs", ()):
-        out += ["-p", "TemporaryFileSystem=" + unit_path(p)]
-    for p in readonly(prof):
-        out += ["-p", "ReadOnlyPaths=" + unit_path(p)]
-    for p in through_paths:
-        out += ["-p", "BindReadOnlyPaths=-" + p]
-    for src, dst in git_reads(box):     # a git-granted box (grant_git): the shared object stores at box paths, read only;
-        out += ["-p", "BindReadOnlyPaths=-%s:%s" % (src, dst)]      # '-': a store gone since is git's error, not a launch's
-    for p in prof.get("write_through", ()):     # MARKER_WALL_FIX_HIDES_ONLY_THE_DIARY: the Windows build stage, bound
-        out += ["-p", "BindPaths=-" + unit_path(p)]     # as the host's drvfs so dotnet.exe is handed D:\, not a UNC path
-    return out + ["-p", "BindPaths=%s:%s/.claude/projects" % (Path(box, "projects"), HOME),
-                  "-p", "BindPaths=%s:%s" % (Path(box, "tmp"), UNIT_TMP)]     # tmp_env(): a short TMPDIR, still the box's
 
 
 # CHECKER_REACH_FIX_NAMED_SCRATCH_READ_ONLY (2026-11-05): 24 items held `unmeasured`, 17 of them on evidence under
@@ -219,7 +91,6 @@ def props(prof, box, extra=(), through_paths=()):
 # `never_through` (the worker run folders) is never bound.
 THROUGH_MAX = 24
 _THROUGH_WORD = re.compile(r"(?<![\w.~$@+/\\-])(?:[A-Za-z]:[\\/]|/)[\w.~@+-]*(?:[/\\][\w.~@+-]*)*")
-_SAFE = re.compile(r"^/[\w./@+~-]+$")
 
 
 def _host(word):
@@ -295,60 +166,6 @@ def through_lines(paths):
             "them as the evidence they are; a path in this list is never --unreached." % ", ".join(paths)]
 
 
-UNIT_TMP = "/tmp"
-
-
-def tmp_env(box):
-    """A walled run's TMPDIR: its box's tmp, which props() binds over the unit's /tmp. run_tmp's root (~/.seat-tmp/runs)
-    sits behind the wall, and Claude dies at start on a TMPDIR it cannot mkdir in, so no checker ever gave a verdict.
-    Named as /tmp, not <box>/tmp: 50 bytes of box path plus run_selftests' selftest_run_* dir and a test's own mkdtemp
-    passed AF_UNIX's 107-byte limit (CHECKER_TMPDIR_FIX_SOCKETS_DONT_FIT). relentless_disk.reap_boxes takes it with the tree."""
-    return {"TMPDIR": UNIT_TMP, "TMP": UNIT_TMP, "TEMP": UNIT_TMP}
-
-
-def unit_env(prof, box, cfg=None):
-    """A walled unit's environment: its TMPDIR, and the profile's `env`. Lodestar's helper is behind the wall, so without
-    RM_DATA_ROOT named here anything importing rmpaths crashes before its first check (207 Markers met that and worked round it).
-    PATH: relentless_box.json path_prepend (the checkbox venv: python3 with cv2/numpy) ahead of the supervisor's own."""
-    env = dict(tmp_env(box), **prof.get("env", {}))
-    pre = box_path_prepend(cfg)
-    if pre and "PATH" not in prof.get("env", {}):
-        env["PATH"] = ":".join(pre + [p for p in os.environ.get("PATH", "/usr/bin:/bin").split(":") if p and p not in pre])
-    return env
-
-
-# CHECKBOX_BUILD_BUILDER_TOOLCHAIN (owner 2026-11-06, redesign_final.md WP-02): every box carries the builder's toolchain -
-# git history at the candidate, python3 with cv2/numpy, the Windows build stage - as data in relentless_box.json.
-BOX_CONFIG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "relentless_box.json")
-
-
-def box_config(path=None):
-    """-> relentless_box.json as a dict; {} when it is missing or unreadable (a box then is what it was before WP-02)."""
-    try:
-        with open(path or BOX_CONFIG, encoding="utf-8") as f:
-            got = json.load(f)
-        return got if isinstance(got, dict) else {}
-    except (OSError, ValueError):
-        return {}
-
-
-def default_grants(cfg=None):
-    """-> the grants every box gets (relentless_box.json default_grants), known GRANTS only, in order."""
-    cfg = box_config() if cfg is None else cfg
-    return [g for g in dict.fromkeys(cfg.get("default_grants") or []) if g in GRANTS]
-
-
-def box_path_prepend(cfg=None):
-    """-> the path_prepend folders that exist, ~ expanded and _SAFE (a word with a space or colon would split PATH)."""
-    cfg = box_config() if cfg is None else cfg
-    out = []
-    for p in cfg.get("path_prepend") or []:
-        q = os.path.expanduser(str(p))
-        if _SAFE.match(q) and os.path.isdir(q) and q not in out:
-            out.append(q)
-    return out
-
-
 def toolchain(cfg=None):
     """-> [(name, shell command, why)] from relentless_box.json toolchain."""
     cfg = box_config() if cfg is None else cfg
@@ -389,232 +206,6 @@ def toolchain_probe(prof, box, extra=(), cfg=None, timeout=300):
     return rows
 
 
-def excludes(prof):
-    """The pathspec the Marker's tree and diff leave out: tree_exclude, and tree_from_parent (that comes in as a parent snapshot)."""
-    return [":(exclude)" + p for p in list(prof["tree_exclude"]) + list(prof.get("tree_from_parent", ()))]
-
-
-def change_range(source, parent, sha, base, item):
-    """-> (from, paths) for change.diff. sha^..sha alone made an item whose work landed in an earlier commit, the candidate
-    a later report or proof commit, look like no change (MARKER_DIFF_FIX_EARLIER_WORK_LOOKS_EMPTY). With the item's base an
-    ancestor of sha: base..sha over the paths the candidate or any commit since base naming the item touched (the set
-    Fx.changed reads), so other seats' commits landed meanwhile stay out. No base, base == sha, not an ancestor, or a git
-    error: (parent, None), the old diff."""
-    if not base or not item:
-        return parent, None
-    git = lambda *a: subprocess.run(["git", *a], cwd=source, capture_output=True, text=True, timeout=120)  # noqa: E731
-    try:
-        b = git("rev-parse", "-q", "--verify", base + "^{commit}")
-        s = git("rev-parse", "-q", "--verify", sha + "^{commit}")
-        if b.returncode or s.returncode or b.stdout.strip() == s.stdout.strip():
-            return parent, None
-        if git("merge-base", "--is-ancestor", base, sha).returncode:
-            return parent, None
-        own = git("show", "--format=", "--name-only", "--no-renames", "--diff-merges=first-parent", sha)
-        log = git("log", "--format=", "--name-only", "--no-renames", "--diff-merges=first-parent", "--fixed-strings",
-                  "--grep=" + item, "%s..%s" % (base, sha))
-    except (OSError, subprocess.SubprocessError):
-        return parent, None
-    if own.returncode or log.returncode:
-        return parent, None
-    paths = sorted(set(x for x in (own.stdout + log.stdout).splitlines() if x.strip()))
-    if not paths:
-        return parent, None
-    return base, [":(literal)" + p for p in paths]
-
-
-def make_box(prof, source, sha, nonce, grants=(), base=None, item=None, cfg=None):
-    """-> the box's path. Tree at sha with none of tree_exclude, the diff (change_range), the verdict script.
-    `grants` (a passed reach repair's, relentless_reachfix.grants) plus relentless_box.json default_grants (git_history
-    since CHECKBOX_BUILD_BUILDER_TOOLCHAIN): GIT_GRANT adds a read-only git history at sha (grant_git).
-    `base`/`item`: the item's base and id, so work landed before a later report commit is in change.diff."""
-    grants = list(dict.fromkeys(default_grants(cfg) + list(grants or ())))
-    if any(c.isspace() for c in str(prof["box_root"]) + nonce):
-        raise RuntimeError("box root with whitespace: systemd splits BindPaths on it")
-    box = Path(os.path.abspath(Path(prof["box_root"], nonce)))      # git runs in the source: a relative path would move
-    tree = box / "tree"
-    tree.mkdir(parents=True)
-    (box / "projects").mkdir()
-    (box / "tmp").mkdir(mode=0o700)
-    ex = excludes(prof)
-    # not `git archive`: it honours export-ignore, which would drop tracked proof files from the Marker's tree
-    env = dict(os.environ, GIT_INDEX_FILE=str(box / "export.index"))
-    subprocess.run(["git", "read-tree", sha], cwd=source, env=env, capture_output=True, timeout=300, check=True)
-    names = subprocess.run(["git", "ls-files", "-z", "--", ".", *ex], cwd=source, env=env, capture_output=True,
-                           timeout=300, check=True).stdout
-    x = subprocess.run(["git", "checkout-index", "-z", "--stdin", "--prefix=%s/" % tree], cwd=source, env=env,
-                       input=names, capture_output=True, timeout=500)
-    (box / "export.index").unlink(missing_ok=True)
-    if x.returncode:
-        raise RuntimeError("export failed: %s" % x.stderr)
-    if subprocess.run(["git", "rev-parse", "-q", "--verify", sha + "^"], cwd=source, capture_output=True).returncode:
-        # a root commit's change is all of it: diff from the empty tree, named by the repo's own hash
-        parent = subprocess.run(["git", "hash-object", "-t", "tree", "--stdin"], cwd=source, input=b"", capture_output=True,
-                                timeout=60, check=True).stdout.decode("ascii").strip()
-    else:
-        parent = sha + "^"
-    frm, only = change_range(source, parent, sha, base, item)
-    d = subprocess.run(["git", "diff", "--no-renames", frm, sha, "--", *(only or ["."]), *ex], cwd=source,
-                       capture_output=True, timeout=300, check=True)
-    (box / "change.diff").write_bytes(d.stdout)
-    snap = prof.get("tree_from_parent") or []
-    if snap and parent == sha + "^":
-        # the ledger and review state as of the candidate's parent: what a proof may read, never what the builder wrote since
-        _snapshot(source, parent, snap, tree, box)
-    (box / "nonce").write_text(nonce, encoding="ascii")
-    (box / "verdict").write_text(VERDICT_SCRIPT, encoding="utf-8")
-    os.chmod(box / "verdict", 0o755)
-    if ITEM_GRANT in (grants or ()):
-        try:    # the candidate's items (item_rev): the rev the reach probe granted, so a passed probe is what the box shows
-            grant_items(box, source, item_rev(sha))
-        except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as e:
-            shutil.rmtree(tree / ITEMS, ignore_errors=True)
-            (box / ITEM_NOTE).unlink(missing_ok=True)
-            (box / "item_grant_failed").write_text(str(e), encoding="utf-8")
-    if GIT_GRANT in (grants or ()):
-        try:
-            grant_git(box, source, sha)
-        except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as e:
-            # a grant that cannot be made leaves the plain box (its prompt says no git history), never a crashed tick
-            shutil.rmtree(tree / ".git", ignore_errors=True)
-            (box / GIT_NOTE).unlink(missing_ok=True)
-            (box / "git_grant_failed").write_text(str(e), encoding="utf-8")
-    return str(box)
-
-
-# CHECKER_REACH_BUILD_GIT_AND_GH_ADAPTERS gen 3: the git/gh/proc reach repairs gave adapters (a reading outside the box) and
-# the Judges stayed blind, because their IN-BOX proofs run git themselves: git rev-parse HEAD (testq_steward), git show
-# <rev>:path (scratch_reap's committed-saves guard), the objects of a fixed.sha (jam_classes), code commits (close_gate).
-# A passed git reach repair grants the box a history: tree/.git with HEAD detached at the candidate and no ref at all. Its
-# objects: the clean clone's own (a --shared clone holds tens of MB) COPIED in, and each object store it borrows from
-# (~/rm/store.git/objects) bound READ ONLY at a box path the alternates file names. The deny list is untouched: nothing
-# but those object stores becomes readable (a carve down to them opened every folder on the way; GPT-free opus review).
-# What it opens that the bare export does not: commit messages, and through `git show` the tree_exclude folders - the
-# prompt says those are workers' words. The wall stops accident, not a hostile Marker (module doc); refs to later commits
-# (origin/main, the supervisor's verdict commits) are never written, so --all walks the candidate's ancestry only.
-GIT_GRANT = "git_history"
-GIT_NOTE = "gitobj.json"
-# CHECKER_REACH_FIX_OTHER_STILL_DARK gen 3: tree_exclude keeps infrastructure/state/items out of every box, and a proof that
-# reads the live item glob (NIGHTSIDE_TITAN_JUDGE_GIANTS_IN_THE_DARK's selftest: "UMBRA_TITAN_POPULATE_BURNS_TO_WALK.md ...
-# whole items dir absent in export") classed `other`, whose repair binds HOST paths: it passed its probe and the Judge
-# stayed blind, since no bind puts a file into the exported tree. A passed items repair grants the box that folder from
-# git at the candidate (item_rev), read only. The prompt calls it filers' prose and says to judge by runs, not by it.
-# CHECKER_REACH_FIX_ITEMS_STILL_DARK: it was granted at the candidate's PARENT while the probe granted at the candidate.
-# A build may edit item prose (LEDGER_ONLY only makes a commit touching nothing else "no work"): WORLD_BEAUTY_VERIFY_
-# OFFLINE_BEAT_THE_GAME's candidate rewrote items/closed/PLANETARY_LOADSCREEN_RENDERS_2.md's verify clause, the probe read
-# the new text, the box held the old, and the Judge stayed blind. One rev, item_rev, serves the box and the probe.
-ITEM_GRANT = "item_prose"
-ITEMS = "infrastructure/state/items"
-ITEM_NOTE = "items.json"
-GRANTS = (GIT_GRANT, ITEM_GRANT)
-GIT_COPY_MAX = 2 << 30      # a borrower's own objects COPIED past this: no grant, the plain box
-# CHECKER_REACH_FIX_GH_DARK_SECOND: ~/rm/relentless/books borrows store.git yet holds 2.2 GB of its own LOOSE objects
-# (22915 of them, 28 MB packed), so every copy was refused and every git/gh/proc reach probe failed. The box root and the
-# clones share one filesystem: the own objects are HARDLINKED in (no bytes, no cap); only a file that cannot link (another
-# filesystem) is copied, and the cap counts those bytes. git never writes an existing object (packs and loose are 0444),
-# so a link exposes books to nothing a copy did not, short of a deliberate chmod - the wall stops accident (module doc).
-_link = os.link
-
-
-def _object_chain(source):
-    """-> [(real path, borrows)] for source's object folder and every alternate it borrows from, transitively."""
-    top = subprocess.run(["git", "rev-parse", "--path-format=absolute", "--git-common-dir"], cwd=source,
-                         capture_output=True, text=True, timeout=60, check=True).stdout.strip()
-    todo, out, seen = [os.path.join(top, "objects")], [], set()
-    while todo:
-        d = os.path.realpath(todo.pop(0))
-        if d in seen or not os.path.isdir(d):
-            continue
-        seen.add(d)
-        alts = []
-        try:
-            with open(os.path.join(d, "info", "alternates"), encoding="utf-8") as f:
-                alts = [ln.strip() for ln in f.read().splitlines() if ln.strip() and not ln.strip().startswith("#")]
-        except OSError:
-            pass
-        out.append((d, bool(alts)))
-        todo += [a if os.path.isabs(a) else os.path.join(d, a) for a in alts]
-    return out
-
-
-def _copy_objects(src, dst):
-    """A borrower's own objects (packs and loose), never its info/: its alternates name paths the box hides. Each file is
-    hardlinked; one that cannot link is copied, and copied bytes past GIT_COPY_MAX refuse the grant."""
-    copied = 0
-    for dp, dn, fn in os.walk(src):
-        rel = os.path.relpath(dp, src)
-        if rel == "info" or rel.startswith("info" + os.sep):
-            dn[:] = []
-            continue
-        out = os.path.normpath(os.path.join(dst, rel))
-        os.makedirs(out, exist_ok=True)
-        for n in fn:
-            s, d = os.path.join(dp, n), os.path.join(out, n)
-            if os.path.lexists(d):
-                continue
-            try:
-                _link(s, d)
-            except OSError:
-                copied += os.path.getsize(s)
-                if copied > GIT_COPY_MAX:
-                    raise RuntimeError("git grant: %s: over %d bytes of its own objects would be copied (cap %d)"
-                                       % (src, copied, GIT_COPY_MAX))
-                shutil.copy2(s, d)
-    return copied
-
-
-def grant_git(box, source, sha):
-    """tree/.git at sha: HEAD detached, no refs, the index read from sha, the shared stores bound read only (git_reads)."""
-    box = Path(box)
-    tree = box / "tree"
-    fmt = subprocess.run(["git", "rev-parse", "--show-object-format"], cwd=source, capture_output=True, text=True,
-                         timeout=60, check=True).stdout.strip() or "sha1"
-    subprocess.run(["git", "init", "-q", "--template=", "--object-format=" + fmt, str(tree)], capture_output=True,
-                   timeout=60, check=True)
-    gd = tree / ".git"
-    binds, host = [], []
-    for d, borrows in _object_chain(source):
-        if borrows:
-            _copy_objects(d, str(gd / "objects"))
-            continue
-        if not _SAFE.match(d):
-            raise RuntimeError("git grant: an object store systemd cannot bind: %s" % d)
-        dst = str(box / "gitobj" / str(len(binds)))
-        os.makedirs(dst)
-        binds.append([d, dst])
-        host.append(d)
-    (gd / "objects" / "info").mkdir(parents=True, exist_ok=True)
-    (gd / "objects" / "info" / "alternates").write_text("".join(b[1] + "\n" for b in binds), encoding="utf-8")
-    (gd / "HEAD").write_text(sha + "\n", encoding="ascii")
-    env = dict(os.environ, GIT_DIR=str(gd), GIT_WORK_TREE=str(tree), GIT_ALTERNATE_OBJECT_DIRECTORIES=":".join(host))
-    r = subprocess.run(["git", "read-tree", sha], env=env, capture_output=True, text=True, timeout=300)
-    if r.returncode:
-        raise RuntimeError("git grant: read-tree %s: %s" % (sha, r.stderr))
-    # the tree_exclude folders are not in the export: skip-worktree, so `git status` shows the tree, not 3000 deletions
-    names = subprocess.run(["git", "ls-files", "-z"], env=env, capture_output=True, timeout=300, check=True).stdout
-    gone = [n for n in names.split(b"\0") if n and not os.path.lexists(os.path.join(os.fsencode(str(tree)), n))]
-    if gone:
-        subprocess.run(["git", "update-index", "-z", "--skip-worktree", "--stdin"], env=env, input=b"\0".join(gone) + b"\0",
-                       capture_output=True, timeout=300, check=True)
-    (box / GIT_NOTE).write_text(json.dumps({"sha": sha, "binds": binds}), encoding="utf-8")
-
-
-def item_rev(sha):
-    """The rev the item_prose grant reads: the candidate itself, for make_box and the reach probe alike."""
-    return sha
-
-
-def grant_items(box, source, rev):
-    """tree/infrastructure/state/items as of rev, read only (_snapshot); a rev with no item file is no grant."""
-    box = Path(box)
-    tree = box / "tree"
-    _snapshot(source, rev, [ITEMS], tree, box)
-    n = sum(len(fn) for _, _, fn in os.walk(tree / ITEMS))
-    if not n:
-        raise RuntimeError("item grant: no %s at %s" % (ITEMS, str(rev)[:12]))
-    (box / ITEM_NOTE).write_text(json.dumps({"rev": rev, "files": n}), encoding="utf-8")
-
-
 def item_reads(box):
     """-> {rev, files} when the box was made with the item_prose grant, else {}."""
     try:
@@ -623,41 +214,6 @@ def item_reads(box):
         return got if isinstance(got, dict) and got.get("files") else {}
     except (OSError, ValueError):
         return {}
-
-
-def git_reads(box):
-    """-> [(object store, its path in the box)] a git-granted box binds read only, else []."""
-    try:
-        with open(os.path.join(str(box), GIT_NOTE), encoding="utf-8") as f:
-            binds = json.load(f).get("binds") or []
-    except (OSError, ValueError, AttributeError):
-        return []
-    root = os.path.abspath(str(box)) + "/"
-    return [(s, d) for s, d in (b for b in binds if isinstance(b, list) and len(b) == 2)
-            if isinstance(s, str) and isinstance(d, str) and _SAFE.match(s) and _SAFE.match(d) and d.startswith(root)]
-
-
-def _snapshot(source, parent, paths, tree, box):
-    env = dict(os.environ, GIT_INDEX_FILE=str(box / "snap.index"))
-    try:
-        subprocess.run(["git", "read-tree", parent], cwd=source, env=env, capture_output=True, timeout=300, check=True)
-        names = subprocess.run(["git", "ls-files", "-z", "--", *paths], cwd=source, env=env, capture_output=True,
-                               timeout=300, check=True).stdout
-        if names:
-            x = subprocess.run(["git", "checkout-index", "-z", "--stdin", "--prefix=%s/" % tree], cwd=source, env=env,
-                               input=names, capture_output=True, timeout=500)
-            if x.returncode:
-                raise RuntimeError("snapshot failed: %s" % x.stderr)
-    finally:
-        (box / "snap.index").unlink(missing_ok=True)
-    for p in paths:     # read only: a proof reads this state and cannot change it
-        for dp, dn, fn in os.walk(tree / p):
-            for n in fn:
-                os.chmod(os.path.join(dp, n), 0o444)
-
-
-def remove_box(box):
-    shutil.rmtree(box, ignore_errors=True)
 
 
 # What a blind checker reads of the work: the obligations and the paths, never the worker's account of them. A finish's
@@ -927,17 +483,6 @@ def audit(store, rules, sessions_of, inputs_of):
         if inputs is not None:
             out.append({"item": st["item"], "unit": chk.get("unit"), "would_deny": would_deny(inputs, prof)})
     return out
-
-
-# ---- blindness (CHECKER_SANDBOX_FIX_BLIND_TO_STEVE). Owner 2026-11-04: "the checker was unable to measure something, and
-# interpreted that as a wrong value rather than an inability that should have been reported up for fix and repair".
-# STEVE_DISK_MEASURE_ONLY_FORTY_GIGS_LEFT was done at gen 1 (ssh-verified) and went to gen 9 on FAILs that said "ssh
-# fails in this sandbox" and "/mnt/d/ClaudeWork/rimmandrake is an empty directory here". A FAIL that only says the box is
-# blind is read as UNMEASURED: it sends no work back. Measured on the store's 142 FAIL reasons (selftest_relentless_blind).
-HIDDEN = ("/mnt/d/ClaudeWork", "D:\\ClaudeWork", "D:/ClaudeWork", "/home/mandrake/rm/", "/home/mandrake/dev/", "~/dev/")
-_ABSENT = (r"\b(empty|absent|missing|not there|does not exist|doesn't exist|no such file|not found|FileNotFoundError|"
-           r"not visible|unreadable|cannot be read|could not be read|not reachable|unreachable|masked|mask\b|tmpfs|UNC path|"
-           r"Invalid argument|NOT VISIBLE)\b")
 _REACH = [re.compile(x, re.I) for x in (
     r"\b(could|can)\s?not\s+(be\s+)?(reach|see|read|run|start|open|ssh|measure|be run|be shown)\w*[^.;]{0,60}?"
     r"\b(here|sandbox|box|checker|walled)\b",

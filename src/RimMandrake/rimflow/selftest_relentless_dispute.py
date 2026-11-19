@@ -328,18 +328,20 @@ def t_malformed_and_exam(tmp):
 def t_role_entry(tmp):
     """WP-15/08 join: role_launch's 2nd identical rejection reaches a fresh arbiter's ruling through role_launch.to_arbiter."""
     import role_launch as RL
+    import run_store as RS          # the arbiter seam's live code (moved out of relentless/relentless_dispute)
+    import stage_dispute as SD
     store, repo, base, ev = setup(tmp, "role_entry")
     c, seen = Claude(store, rulings=["builder"]), []
     deps = deps_for(store, repo, tmp, c, seen)
-    saved = (R.Store, D.Deps, D.config)
-    R.Store, D.Deps, D.config = (lambda *a, **k: store), (lambda: deps), (lambda path=None: dict(CFG))
+    saved = (RS.Store, SD.Deps, SD.config)
+    RS.Store, SD.Deps, SD.config = (lambda *a, **k: store), (lambda: deps), (lambda path=None: dict(CFG))
     try:
         said = RL.to_arbiter("Designer", "/x/concept_a", IT, "4|module|decisions[d1]", ["decisions[d1]: no event"])
         off = dict(CFG, mode="off")
-        D.config = lambda path=None: off
+        SD.config = lambda path=None: off
         said_off = RL.to_arbiter("Designer", "/x/concept_a", IT, "sig", ["r"])
     finally:
-        R.Store, D.Deps, D.config = saved
+        RS.Store, SD.Deps, SD.config = saved
     rows = E._lines(os.path.join(E.item_dir(store, IT), "role_dispute.jsonl"))
     ok(said and "ruled builder" in said and len(c.calls) == 1 and c.calls[0]["agent"] == "rm-judge"
        and "decisions[d1]: no event" in c.calls[0]["prompt"], "10a to_arbiter -> one fresh arbiter rules: %r" % said)

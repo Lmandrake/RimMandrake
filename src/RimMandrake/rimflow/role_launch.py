@@ -2828,13 +2828,13 @@ def stage_turn(concept):
 # nothing whatever its cause (its alarm stood until a person re-pressed the same role), so a defect in the CHECK or the
 # ENVIRONMENT came back to the role that could not fix it. Now the rejection's cause class routes it:
 #   module       -> builder: the same role re-chained once, its run told the full reasons (chain_ask, under its cap)
-#   check | bar  -> Setter: the exam author resits the exam (relentless_exam's exam for the run's item); with no exam
+#   check | bar  -> Setter: the exam author resits the exam (item_exam: the exam for the run's item); with no exam
 #                   for that item the alarm stands for the checker's owner
 #   environment  -> the cause book: attached to the live cause record (cause_book.attach), never a new item and never
 #                   a re-chain; with no live record the alarm stands and Operations' incident files it once
 #   unknown / mixed -> builder, with the full reasons (the owner of the work reads them first)
 # and a rejection IDENTICAL to the concept's previous one (same stage, class and reasons, run names masked) goes to the
-# arbiter (WP-08 relentless_dispute) instead of a second loop. The class is the Marker's when one labelled the reasons
+# arbiter (WP-08 stage_dispute) instead of a second loop. The class is the Marker's when one labelled the reasons
 # (a "[cause:<class>]" tag, evidence.py marker `classes`); unlabelled, it is read off the run: an account death, an
 # is_error result or a stopped run is environment; a run that finished and was refused by the program check is module;
 # a failed run with nothing more said is unknown.
@@ -2899,11 +2899,11 @@ CAUSE_OWED_CAP = 50           # attachments kept to retry while the book stays b
 
 
 def to_setter(item, reasons, now, store=None, role=None):
-    """The Setter seam: resit the run item's exam (relentless_exam, WP-03) with the check/bar reasons. Reads only.
+    """The Setter seam: resit the run item's exam (item_exam, WP-03) with the check/bar reasons. Reads only.
     -> the role_setter_resit action that resits it, or None when the item has no exam (nothing to resit; the alarm
     stands for the checker's owner)."""
     import run_store
-    import relentless_exam as RE
+    import item_exam as RE
     store = store or run_store.Store()
     if not item or not RE.status(store, item):
         return None
@@ -2916,7 +2916,7 @@ def setter_resit(item, resit_why, resit_at, store=None, kicker=None):
     """dispatcher.execute's role_setter_resit: the exam owed again with the reasons, its Setter unit kicked.
     -> what happened."""
     import run_store
-    import relentless_exam as RE
+    import item_exam as RE
     store = store or run_store.Store()
     if not RE.status(store, item):
         return "no Setter exam for %s any more: nothing resat" % item
@@ -2992,10 +2992,10 @@ def owe_cause_attach(st, a):
 
 
 def to_arbiter(role, concept, item, sig, reasons):
-    """The arbiter seam (WP-08 relentless_dispute). -> what happened, or None while WP-08 has not landed a role-stage
+    """The arbiter seam (WP-08 stage_dispute). -> what happened, or None while WP-08 has not landed a role-stage
     entry point: then today's arbiter-less behaviour holds (the alarm stands, nothing re-chains)."""
     try:
-        import relentless_dispute as RD
+        import stage_dispute as RD
     except ImportError:
         return None
     fn = getattr(RD, "role_stage_dispute", None)
@@ -3029,7 +3029,7 @@ def route_rejection(name, rs, cfg, run, res, errs, now, act, obs, classes=None):
         if route == "arbiter":
             said = (obs.get("arbiter") or to_arbiter)(name, concept, item, sig, errs)
             if said is None:
-                said = "a 2nd identical rejection; the arbiter (WP-08 relentless_dispute) is not landed: alarm stands"
+                said = "a 2nd identical rejection; the arbiter (WP-08 stage_dispute) is not landed: alarm stands"
                 taken = "alarm"
         elif route == "setter":
             todo = (obs.get("setter") or to_setter)(item, errs, now, role=name)

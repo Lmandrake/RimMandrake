@@ -92,6 +92,10 @@ def main():
     om = json.loads(subprocess.run([sys.executable, walk, str(tmp), "live", "--only-methods", "relentless.C=__init__"],
                                    capture_output=True, text=True, timeout=120, check=True).stdout)["modules"]["relentless"]
     check("C.m" not in om["live"] and "C.__init__" in om["live"], "--only-methods: a method used by name but not named stays dead (%s)" % om["live"])
+    xr = json.loads(subprocess.run([sys.executable, walk, str(tmp), "live", "--roots", "relentless.dead"],
+                                   capture_output=True, text=True, timeout=120, check=True).stdout)["modules"]
+    check("dead" in xr["relentless"]["live"] and "unused" in xr["relentless_sub"]["live"],
+          "--roots: a script entry (a unit runs it by path) is reached with what it calls (%s)" % xr["relentless"]["live"])
     print("%d failed" % len(FAILS) if FAILS else "all ok")
     return 1 if FAILS else 0
 

@@ -12,6 +12,7 @@ Roots: every name a non-era file pulls from an era module (mode `live` skips tes
 A name reached only through getattr(obj, "x") on a non-module object, exec or a string table is NOT seen: check
 undefined names after any cut. A string path run as a script (land.sh, publish.py) is not an import: grep for those.
 usage: era_reach.py REPO [live|selftests] [--exclude-roots f1,f2] [--only-methods mod.Cls=m1,m2;mod.Cls2=m3]  -> JSON
+--roots mod.fn,...: extra roots, for code a unit runs by script path (systemd-run ... x.py verb), which no import shows.
 --only-methods: for that class, only the named methods (and what they call through self) are reached, never a method
 merely used by name somewhere: the duck-typed rule over-reaches on common names (launch, measure, stop).
 """
@@ -24,6 +25,9 @@ EXCL = set()
 if "--exclude-roots" in sys.argv:
     EXCL = set(sys.argv[sys.argv.index("--exclude-roots") + 1].split(","))
 ONLY = {}
+XROOTS = []
+if "--roots" in sys.argv:
+    XROOTS = [tuple(x.split(".", 1)) for x in sys.argv[sys.argv.index("--roots") + 1].split(",")]
 if "--only-methods" in sys.argv:
     for spec in sys.argv[sys.argv.index("--only-methods") + 1].split(";"):
         k, v = spec.split("=", 1)
@@ -179,6 +183,8 @@ for f in files:
         roots[(m, "<import>")].add(f)
     live_attrs |= aa
 
+for r in XROOTS:
+    roots[r].add("--roots")
 reached, parent = set(), {}
 stack = [(r, None) for r in roots]
 classes_reached = set()

@@ -459,7 +459,7 @@ class FakeWall:
         self.repo, self.root, self.boxes, self.removed = repo, root, [], []
 
     def install(self):
-        import relentless_wall as W
+        import checker_box as W
         self.saved = {k: getattr(W, k) for k in ("profile", "make_box", "props", "unit_env", "remove_box")}
         W.profile = lambda rules, role: {"box_root": self.root}
         W.make_box = self.make_box
@@ -469,7 +469,7 @@ class FakeWall:
         return self
 
     def restore(self):
-        import relentless_wall as W
+        import checker_box as W
         for k, v in self.saved.items():
             setattr(W, k, v)
 

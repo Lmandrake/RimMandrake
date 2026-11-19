@@ -477,8 +477,8 @@ def box_tools(box_cfg=None):
     binds (the same git and the same checkbox venv python), `probed: host`."""
     if box_cfg is None:
         try:
-            import relentless_wall
-            box_cfg = relentless_wall.box_config()
+            import checker_box
+            box_cfg = checker_box.box_config()
         except ImportError:
             box_cfg = {}
     shape = {k: box_cfg.get(k) for k in ("toolchain", "path_prepend", "default_grants", "reach_served")}
