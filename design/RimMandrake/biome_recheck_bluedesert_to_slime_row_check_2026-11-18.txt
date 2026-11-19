@@ -19,3 +19,24 @@ probe (an invented source name must be reported): seen
 design/concepts/CrackedLands/rewrite_choices.md: rows=208 second_reader_rows=93 lost=23 moved=18 (any move: 21) reshaped=5 folded=1 kept=161 other=0 named_sources=22 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=29 listed_paths_missing=none
 exit status: 0
 probe (an invented source name must be reported): seen
+
+design/concepts/GelatinousSlime/rewrite_choices.md: rows=205 second_reader_rows=100 lost=36 moved=10 (any move: 10) reshaped=4 folded=3 kept=152 other=0 named_sources=17 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=36 listed_paths_missing=none
+exit status: 0
+probe (an invented source name must be reported): seen
+
+All five pages of this item re-run together at the end of the continuation run:
+design/concepts/BlueDesert/rewrite_choices.md: rows=250 second_reader_rows=112 lost=34 moved=15 (any move: 15) reshaped=8 folded=2 kept=191 other=0 named_sources=16 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=31 listed_paths_missing=none
+exit status: 0
+  second-reader sections in BlueDesert: 1
+design/concepts/Cauldron/rewrite_choices.md: rows=214 second_reader_rows=88 lost=31 moved=20 (any move: 28) reshaped=5 folded=1 kept=156 other=1 named_sources=15 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=23 listed_paths_missing=none
+exit status: 0
+  second-reader sections in Cauldron: 1
+design/concepts/Contagion/rewrite_choices.md: rows=236 second_reader_rows=120 lost=34 moved=7 (any move: 16) reshaped=5 folded=2 kept=188 other=0 named_sources=27 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=38 listed_paths_missing=none
+exit status: 0
+  second-reader sections in Contagion: 1
+design/concepts/CrackedLands/rewrite_choices.md: rows=208 second_reader_rows=93 lost=23 moved=18 (any move: 21) reshaped=5 folded=1 kept=161 other=0 named_sources=22 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=29 listed_paths_missing=none
+exit status: 0
+  second-reader sections in CrackedLands: 1
+design/concepts/GelatinousSlime/rewrite_choices.md: rows=205 second_reader_rows=100 lost=36 moved=10 (any move: 10) reshaped=4 folded=3 kept=152 other=0 named_sources=17 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=36 listed_paths_missing=none
+exit status: 0
+  second-reader sections in GelatinousSlime: 1

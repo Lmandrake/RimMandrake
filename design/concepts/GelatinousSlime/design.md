@@ -14,6 +14,16 @@ root (`root.md`), a locked sheet of twelve leaves (`sheet.md`) and a chosen show
 cleanse proposal of 2026-11-17 that moved the gene journey out and asked him whether that was right. This design
 answers that question by scope (the journey is in) and says where it parts from each.
 
+**Second reader, 2026-11-18:** a second agent that did not write this page read the mod brief, the Titanoslime
+spec, the review, the gene lists and the roster whole (the first read had them in part) and repaired it. The gene
+run now follows his card of 2026-09-10: the seeker is drawn in the open and the needle goes in wherever the crew
+likes, so the coma is in a bunk aboard. The return from the last touch moves from "later" to 0.2.0, because the
+archive vat is this biome's part on the ship list and is built. The glurro is gone (cut before this pass; nothing
+of it is in source). The contact-point scrub on the hull is withdrawn: it was the cleaning half of a ship pitch he
+passed over on 2026-10-02. What does reach the ship is in the sources and is the giant. What changed and why is at
+the top of `rewrite_choices.md`. The locked sheet, root and tree (`sheet.md`, `root.md`, `tree.json`) describe a
+colony; they are not edited here, and a later Designer run reconciles them with this page.
+
 **Tags:** `NEEDS HIM` is a question only the owner can settle, with the real answers and the default used here.
 `UNSETTLED` is a fact the sources do not fix. `UNMEASURED` is an engine fact nobody has checked. "Built" means the
 cleanse census of 2026-11-17 or the bedazzle review of 2026-10-02 found it in source; it does not mean it has passed
@@ -48,12 +58,19 @@ catalogue of every gene that ever touched the place, available to anyone prepare
 has never been offered so much for nothing. Each of those gifts is the body beginning to read whoever took it.
 
 And the cure is the ship. The brief's law since 2026-09-10: *"drying biomes: desert/arid halt slimification... walk
-it dry."* A crew with a hull does not walk. For desert people the way out of the Slime is to go home.
+it dry."* A crew with a hull does not walk. For desert people the way out of the Slime is to go home. The brief is
+exact about it: in dry country a late film does not just hold, it fades, in about four or five days, *"slower than
+it grew; the walk must be earned."* The salt sea counts too (*"brine leaches the film"*). In ordinary country it
+only holds.
 
 His answers of 2026-11-10 keep it plain: no new rescue interface (*"We make it work in their existing ui... If you
 want to be nice just send a message at a certain critical moment of how much time left"*); the returned dead meet
 *"grief and moving on"*; and the weapon made from the giant makes its victims *"struggle now"*, nearby allies
 included.
+
+His words on the giant, 2026-09-20: *"I am now enchanted by the idea of a titanic green slime... It should have the
+devoured ability to swallow pawns whole of nearly any size."* And his ruling the next day, which matters to anyone
+parked beside one: growth is permanent. *"A fed slime is a permanently escalating threat."*
 
 ## The clock on any stop
 
@@ -99,33 +116,66 @@ member standing on bare slime has started to show a film.
 - **Stand on something.** A roof does not stop contact. A built floor that is not slime does. The ship's deck is
   the largest such floor on the map; planks from the ramp to the work site are the first job.
 - **The film.** Bare contact starts it. Early on it recedes by itself once the person is off the slime. Later it
-  does not. The ordinary health display shows the course; there is no special screen.
+  does not. The ordinary health display shows the course; there is no special screen. The brief's four steps:
+  touched (a sheen), slicked (a green tint, slower, clumsier, and it no longer goes by itself), half-absorbed
+  (heavy, painless, *placid*: they stop running from things), and returned to the flow. The art law for all of it:
+  *"film, tint, drip — never eyes, never buds, never new limbs."* That is the Contagion's business, not this
+  place's.
+- **Slippery.** His word of 2026-10-16: *"Natural slime should also be slippery."*
 - **The larder and the tanks.** Cooked slime is *"disgusting but fully edible."* When the body is thirsty it *"sweats
   into the sky and pulls down a warm green rain that fills every barrel"*, drinkable, standing briefly on bare
-  ground and draining back.
+  ground and draining back. The rain is the drink. The living slime is not: by his thirst ruling of 2026-10-17 it
+  is drunk only when there is nothing else, at *"a massive negative mood impact, a lingering laxative health issue
+  for a day"*, and the green kind is then *"full exposure to the absorption rules from that biome."*
 - **Stone is pressed, not quarried.** A compressor turns ooze into block. *"Construction here means eating the
   database."*
 - **The cure that starts a clock.** Raw slime *"instantly cures any poison in you, and most radiation"*, and then it
   starts on the one who swallowed it. For a crew fresh from the Cauldron this is the best offer on the planet and
   the worst.
-- **The antidote.** A deliberately toxic injection ends the Slime's hold. It hurts. A friend can give it.
-- **The neighbours.** Gelatid herds that *"pool together at night"*; the scoop-mouthed gappo, small, middling and
-  huge; the dwommo floating over all of it; the iron-crusted glurro in the channels; the fubbum, the one hunter,
-  which *"never hunts a pawn first."* None of them minds the crew. Some of the animals that wander in from next door
+- **The antidote.** A deliberately toxic injection ends the Slime's hold. It hurts. A friend can give it. It is
+  made from the thing itself, raw slime and neutroamine at a drug bench: *"cheap enough to keep two in the fridge,
+  dear enough that a caravan carrying none made a decision."*
+- **The neighbours.** Gelatid herds that *"pool together at night, and split again by morning with no apparent
+  sense of which half was which"*; the scoop-mouthed gappo, small, middling and huge; the dwommo, an amber bladder
+  floating over all of it (*"The Slime cannot touch it. The little herds below treat it as weather."*); the oomb,
+  small, middling and great, a spiked lobe that eats litter and *"leaves the ground clean behind it"*; the wuum,
+  budding copies of itself; the fubbum, the one hunter, with *"no interest in anything that stands taller than the
+  herds it hunts."* None of them minds the crew. The oomb and the wuum burst when they die, *"and what bursts out
+  burns like acid."*
+- **The plants.** Slime-grass, bellows, thumbstalk, and the readerbloom, a pale disc on a stalk that stands where
+  the flow beneath is dense: *"prospectors of a certain kind learned to read them as a sign, which is a polite way
+  of saying they learned where to stand and got read back."* Some of the animals that wander in from next door
   are part-read already and do not seem to have noticed.
 
 ## The first week
 
-- **The gene.** Pick one from the archive of *"everything that ever touched it"*. A handheld seeker finds where on
-  the map the current carrying it will pass. Walk out there, onto the open body, and draw it. The dose spoils, so
-  there is no doing this from the ship. Inject. *Coma.* Then the race: the reading runs fast in a comatose body,
-  and unless a friend reaches them with the antidote in time there is nothing left to bury. Whoever wakes has the
-  gene they wanted, one they did not choose, and a mark other people can see. The accepted gene lists (2026-09-06)
-  price all of it where this crew lives: *"costs land where Jawas live — haggling, sneaking, scavenging,
-  tinkering, warren life. A gene should make a Jawa argue with themselves."* And *"the marked are hard to love"*,
-  which matters in a clan whose whole future is who will lie down with whom.
+- **The gene.** By his card of 2026-09-10 the machine is a thing held in the hand: *"It is a machine you hold that
+  tells you WHERE you must go to extract (a scanner). Then you place it upon the slime, and it expends itself
+  sucking up just the right parts of the slime, becoming an injectible. Then it is used up once used to inject."*
+  So: pick one gene from the archive of *"everything that ever touched it"*. The seeker points to where on the
+  map the current carrying it will pass, and when. One crew member walks out there, onto the open body, sets it
+  down, and stands exposed while it drinks. Then the walk home with the dose, which keeps for days and no longer.
+  The needle can go in anywhere, *"including home in bed, which is the point: bring it back to your people."*
+  *Coma.* Then the race: the reading runs fast in a comatose body, and unless a friend gives the antidote in time
+  the bunk holds *"a smear."* *"A lone pawn cannot do this and live."* Whoever wakes has the gene they wanted, one
+  they did not choose, and a mark other people can see. The accepted gene lists (2026-09-06) price all of it where
+  this crew lives: *"costs land where Jawas live — haggling, sneaking, scavenging, tinkering, warren life. A gene
+  should make a Jawa argue with themselves."* And *"the marked are hard to love"*: *"One gene is a quirk; four is
+  a creature."* That matters in a clan whose whole future is who will lie down with whom. The seeker is crafted
+  blank at an ordinary bench; nobody has to sell one.
+- **What is on the list.** In the campaign's archive: a scavenger's nose that finds a third more in every wreck and
+  never closes; a trader's head that grieves over anything given away (*"that had VALUE"*); buoyant step, to *"wade
+  the Slime like a local"*; and resistance itself, whose price is the cure (*"you chose the wall over the well"*).
+  The riders nobody chooses include involuntary loud Jawaese when startled, a pocketing instinct, a snore, and one
+  he commissioned himself: the Reek, *"offensive even to other Jawas."*
 - **The giant.** A Titanoslime *"hunts by rolling over things."* It swallows prey whole, crew included, and what it
-  holds can be got out again while there is time, and the time is shown. What it eats makes it permanently bigger.
+  holds can be got out again while there is time, and the time is shown: about two hours for someone
+  crew-sized, during which they neither bleed nor starve. Down it or kill it and they fall out stunned and
+  acid-burned, with the film a step further on. Leave it and they are absorbed: the gear comes back, and *"there is
+  nothing to bury."* What it eats makes it permanently bigger, and a bigger one holds more at once and swallows
+  bigger things. It arrives small. *"Stages 4 and 5 are only ever earned on the player's map, so the player has
+  watched it happen."* It swallows flesh only: a machine it merely hits. Hurt, it always comes for whoever hurt
+  it. The cold nights slow it.
 - **The ruins.** *"Fence lines and dead irrigation sinking into slime-grass, every ruin a legible story of someone
   who thought they'd beaten the conversion rate."* Other people's abandoned gear, half absorbed.
 - **The ledger.** By the end of a week, anyone who has been careless with bare ground is past the stage where
@@ -135,9 +185,11 @@ member standing on bare slime has started to show a film.
 
 Each can happen inside the visit. Each says what is on screen.
 
-1. **The gene run.** *On screen:* one Jawa far out on the shining flat with a seeker, a needle, a pause, and then
-   flat on its back; and four more Jawa leaving the ramp at a dead run with the antidote, across ground that is far
-   slower to cross than it looks. *Why it lands:* the clock is on screen and the ground is slow.
+1. **The gene run.** *On screen:* one Jawa far out on the shining flat, standing still beside a device that is
+   drinking the ground, the film creeping up its legs, and a hill of green glass beginning to turn that way. Then
+   the long slow walk home with the dose. Then a bunk aboard, a needle, a body gone slack, a clock in the health
+   tab, and a friend with the other needle. *Why it lands:* every step is chosen and the clock is on screen. If the
+   friend is late there is *"a smear in the bed."*
 2. **What it came back with.** *On screen:* the survivor on its feet, with the tail it wanted and something it did
    not ask for.
 3. **The hill ate one of them.** *On screen:* a slope of green jelly rolls over a crew member, who is then visible
@@ -152,7 +204,15 @@ Each can happen inside the visit. Each says what is on screen.
    grazing, perfectly calm.
 8. **The night pool.** *On screen:* the knee-high herds drifting together at dusk into one mass, and the fubbum
    arriving.
-9. **The piece (0.2.0).** *On screen:* a chunk torn off the giant and thrown; everyone it lands on, and everyone
+9. **It grew.** *On screen:* the small hill that has been grazing by the ramp all week swallows a gappo, pauses,
+   and is visibly larger; the message says so. Nobody remembers deciding to keep it fed.
+10. **Through the wall.** *On screen:* the same hill, weeks and many meals later, the size of the ship's bow,
+    crossing the apron in a straight line through whatever is standing on it. (The wrecking is the giant-creature
+    machinery's, when that mod is loaded; nobody has watched this one do it.)
+11. **The one who came back (0.2.0).** *On screen:* a glass-fronted vat on the deck, three days of power, and a
+    dead crew member stepping out as they were the last time they touched the slime, *"and no memory of anything
+    since."* His question, which is the design: *"But are they the same?"* *"The old grave stays where it is."*
+12. **The piece (0.2.0).** *On screen:* a chunk torn off the giant and thrown; everyone it lands on, and everyone
    standing next to them, is at once coated and struggling. His words: *"a terrible bomb like weapon... Bioweapon
    after all."* A Jawa threw it. A Jawa is standing next to them.
 
@@ -165,7 +225,8 @@ It arrives on time. Nothing here hides the ship.
 - **The body reads them too.** Contact films any unprotected flesh. A week is longer than a raid lasts, so this
   matters to a siege and not to a strike. `UNMEASURED`: whether Imperial armour counts as protection.
 - **The hill does not take sides.** A Titanoslime rolls over whatever is in its way, by reflex and never by
-  intent. A cordon's emplacement is in its way if the crew can arrange that.
+  intent. A cordon's emplacement is in its way if the crew can arrange that. It swallows troopers as it swallows
+  anyone made of flesh, and every one it finishes makes it bigger, for good. It does not swallow droids.
 - **The rain** floods bare ground under a siege camp and not the crew's floors.
 - **The piece (0.2.0).** The one weapon this place gives is thrown by hand and coats friend and foe alike.
 - **No high ground, no walls, no rock.** The body is flat and there is nothing to build a fort from but pressed
@@ -200,11 +261,19 @@ It arrives on time. Nothing here hides the ship.
 - **Full tanks and a full larder,** of the least appetising food on the planet. *"A place to fill your belly and
   your tanks."*
 - **A gene,** chosen, with its rider and its mark, in one crew member for life and in their eggs after.
-- **Resistance,** the same way: the Slime-resistant gene is in the archive like any other.
+- **Resistance,** the same way: the Slime-resistant gene is in the archive like any other, and it shuts off the
+  cure with the hazard.
+- **The deck part: the archive vat (0.2.0).** This biome's entry on the list of what each place gives the ship
+  (`BIOME_SHIP_CONTRIBUTIONS_1`; `RM_ArchiveVat`, built): it *"grows a dead colonist back from the slime's last
+  reading of them, anywhere the ship goes."* His ask, 2026-10-02: *"An ability to resurrect someone from the last
+  time they touched the slime. Requires expensive helix tech."* The body files everyone who touches it, so a crew
+  that has stood on the Slime once carries its own back-ups away with it.
 - **Pressed block,** stone from a place with no stone.
 - **The antitoxin trick,** for as long as there is antidote to follow it with.
 - **Rendered cargo (0.2.0):** the slime pit makes safe food of the toxic and the indigestible, which is what the
-  hold is full of after the Cauldron and the Rot.
+  hold is full of after the Cauldron and the Rot. By his card of 2026-10-11 it also makes the Rot's ambrosyx into a
+  lavish dish with the addiction taken out. *"The gourmet chain now spans three biomes"*, and only a ship visits
+  three biomes.
 - **Fuel:** emergency-slow only. The body is biomass to the horizon and renders to fuel no faster than anything
   else does. The Helix and the margin-dwellers are the only people who might sell any, and both are campaign-layer
   traders not built into the biome.
@@ -213,16 +282,23 @@ It arrives on time. Nothing here hides the ship.
 
 ## What the place does to the ship
 
-The review of 2026-10-02 says it in so many words: the Slime *"does nothing to your ship."* It reads flesh, and a
-hull is not flesh. One pitch from that review was about the ship and he did not choose it, before he had stated the
-ship lens: *"The Landing You Cannot Take Back: landing on the body exposes the hull's organic residue to reading;
-clean the contact points..."*
-
-His ruling of 2026-11-18 puts what each biome does to the hull in 0.1.0 and says the sources mostly have it. Here
-they do not. This design's default, flagged as new and asked below: the hull is untouched, and the wear is at the
-**contact points**, the gear and the ramp, where the body climbs whatever organic the crew has tracked there. It is
-scrubbed off by hand before launch, or it rides along and keeps filming whoever uses the ramp until the ship
-reaches dry country. Hands-on work, no armour, and very little to build.
+- **By itself, nothing.** The review of 2026-10-02, in the plain words read to him on the card: the Slime *"does
+  nothing to your ship."* It reads flesh, and a hull is not flesh. The shared shield frame in
+  `src/RimUtinni/ShipShields/` agrees: the air is mild, the rain carries no sand, and this biome is not one of the
+  three marked as fouled air, so none of the frame's hazards is raised here. The ship's deck is built floor, and
+  built floor is what stops contact.
+- **Its giant, if the crew feeds it.** The Titanoslime spec is plain about the big ones: *"a stage-4 titanoslime
+  walking through a wall is the Titanic Creatures mod doing exactly what it was built for."* A giant only reaches
+  that size by eating on the map in front of the player, and by his ruling of 2026-09-21 it never shrinks again.
+  So the one thing here that damages a ship is a thing the crew allowed to grow next to it. That is the hull wear
+  the sources give this place, and it needs no new system: the giant-creature mod's wake does the wrecking where
+  that mod is loaded.
+- **Three ship ideas were put to him on 2026-10-02 and he chose none of them,** answering each card item in his own
+  words instead. They are listed in `NEEDS HIM` and not revived: the Landing You Cannot Take Back (the body reads
+  the hull's contact points; clean them or sell a passenger's gene), the Unfiled Hull (a swallowed ship inside the
+  oldest giant, stripped for *"a ship-grade part for the gravship"*), and the tamper-proof seal for freight.
+- **Withdrawn.** The first read's default, slime gathering at the contact points and scrubbed off by hand, was the
+  cleaning half of the first of those. It is not this page's to bring back.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -234,12 +310,12 @@ reaches dry country. Hands-on work, no armour, and very little to build.
 | Leaving for dry country, or a completed antidote treatment, ends the hold. | One late-stage pawn flown to desert, one treated. | The antidote is toxic and shows it. |
 | Slime gives food, block and poison relief by ordinary work, and raw slime's cure starts the film. | A cooked meal eaten, a block pressed, a poisoned pawn fed raw slime. | A free cure with no film fails. |
 | Organism rain leaves drinkable standing water on bare ground, none on floors or under roofs, and drains away. | One rain over mixed ground with barrels out. | Water that stays, or that cannot be drunk, fails. |
-| A chosen gene is found with the seeker, drawn in the open on the body, and spoils if not used. | The journey start to finish; one dose left to spoil. | A dose made at a bench or handed over by a helper is not the journey. |
-| The injection brings a coma and a race; a friend's antidote in time saves the patient; there is a message when little time is left. | One rescued, one not. | No new interface: the game's own, plus the one message. |
+| A chosen gene is found with the seeker and drawn in the open on the body, the carrier exposed while it drinks; the dose keeps for days and then spoils. | The journey start to finish; one dose left to spoil. | A dose made at a bench or handed over by a helper is not the journey. |
+| The injection, given anywhere, brings a coma and a race; a friend's antidote in time saves the patient; there is a message when little time is left. | One rescued aboard, one not. | No new interface: the game's own, plus the one message. Nobody rescues themselves. |
 | The survivor keeps the chosen gene, an unchosen one, and a mark others react to; it passes to offspring. | The rescued pawn, afterwards and a generation on. | A journey with no cost fails. |
 | The natives live as an ecology (herds that pool at night, three sizes of scoop-feeder, a real flier, a hunter of the herds); outsiders arrive part-read; nothing turns hostile from being read. | A week of the map left alone. | Flight is read from state, never watched unattended. |
 | The giant swallows prey whole, shows how long a rescue has, gives up the same person if freed in time, and keeps what it gains from feeding. | A crew member engulfed and cut free; an animal engulfed and digested; a save and reload after. | A giant that shrinks again unseen fails. |
-| The contact points of a landed ship gather slime, and it can be scrubbed off. | A ship through several days, gear cleaned and uncleaned. | New in this design; see `NEEDS HIM`. |
+| The Slime itself leaves a landed ship alone, and the deck counts as built floor. | A ship through several days, crew kept on deck. | A film on someone who never left the deck fails. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a mild wet plain with ordinary
 soft animals; switching a feature off stops what it does, clears film safely, releases anything swallowed and keeps
@@ -275,25 +351,30 @@ Every feature is in one bucket.
 - The gene journey: archive, seeker, extraction in the open, the perishable dose, coma, the friend's rescue with
   its one message, the rider, the mark, inheritance. (built)
 - Resistance as a gene taken the same way. (built)
-- The native ecology: gelatid, the gappo family, dwommo, glurro, fubbum; part-read visitors; nothing made hostile.
+- The native ecology: gelatid, the gappo family, dwommo, fubbum; part-read visitors; nothing made hostile.
   (built; several still wear stand-in art)
 - The Titanoslime: engulfing, visible rescue time, permanent growth. (built; his look at its art is owed)
 - The farm ruins as places. (built)
-- Slime on the ship's contact points, scrubbed by hand. (new in this design; unbuilt; `NEEDS HIM`)
+- The oomb family and the wuum; the four plants. (built)
+- The deck as built floor; nothing in the shield frame raised here. (built)
+- A fed giant walking through what is in its way. (the giant-creature mod's wake; unproven on this animal)
 
 **0.2.0, the stop with company**
 - The piece torn from the giant: a thrown weapon that coats friend and foe, on short-lived ground, and does not
   keep. (built)
 - A wounded giant leaking gelatids. (built)
 - The slime pit rendering toxic and indigestible cargo into food. (built)
-- The greater gappo's scoop leaving a clean channel behind it. The glurro's salve, which slows the reading. (built
-  in part)
+- The greater gappo's scoop leaving a clean channel behind it. (built in part)
+- Return from the last touch, by the archive vat on the deck: a dead crew member grown back as they were when they
+  last touched the slime, by expensive Helix technology. (built; his look at what carries over is owed)
 - A visible film on the body of whoever carries it. (built)
 - The ship's acoustic sounder readings here.
 
 **Later (a crew that stays, a colony, or the campaign)**
-- Return from the last touch: a dead person grown back as they were when they last touched the slime, by expensive
-  Helix technology, to a family that has moved on.
+- The returned meeting a family that has moved on (*"grief and moving on"*; the old marriage does not resume): the
+  rule is his and binds whenever a return happens; a family is a thing a crew that stays grows.
+- The seeker naming a tile on the Slime from anywhere in the world (the brief's design; whether it is built is
+  `UNMEASURED`).
 - Farms that convert back to slime; the farm ruins' ledger.
 - The sealed vault in the Slough that only a piece of the giant opens.
 - The Throat experiment: *"scoop tons of the living genetic database onto the gravship and pour it down the Glowing
@@ -311,19 +392,38 @@ Every feature is in one bucket.
 - Two rites not chosen (the Moving Grave, the Walked-Off Reading); the two hammers and the tamper-proof seal.
 - The vanilla zoo; meteorological rain; natural rock.
 - The planet-scoring worker and its rarity slider (worldgen is out in every version).
+- The glurro and its salve (built 2026-10-03, then cut; nothing of it is in source, and the cleanse records it as
+  *"already cut"*). The "Entry recorded" mote and the read-mark smears (cut 2026-10-23).
+- The Landing You Cannot Take Back, and with it the contact-point scrub this page's first read proposed (not
+  chosen, 2026-10-02).
+- GPT's lacquer and its rite of debts (not chosen, 2026-10-02). Slime in the eyes, the Rot-derived antidote and the
+  Helix selling blank seekers (*"not in this batch"*, 2026-10-02).
+- Patched donor animals: *"We absolutely don't want patched donor stuff in there, we would remake"* (2026-09-24).
 
 ## NEEDS HIM
 
-1. **What does the Slime do to the ship?** The sources say nothing, and the one ship pitch was not chosen on
-   2026-10-02. *Slime gathers at the contact points and is scrubbed off, or rides along* (default, new, small).
-   *Nothing:* the Slime is the one biome that leaves the hull alone, and says so. *The Landing You Cannot Take Back
-   in full:* a Helix broker pays to leave a passenger's sample open to the body, and a rival later turns up wearing
-   that gene; a quest, not hull wear.
-2. **Is the gene journey the heart of a stop, or an extra?** The cleanse asked this and defaulted to "extra". This
-   design defaults to *the heart*: it is his original ask, it is the chosen showcase, and it fits in a day. *An
-   extra:* 0.1.0 is larder, tanks and the film, and the journey waits.
-3. **Does flying to dry country cure as walking does?** The law says drying biomes halt slimification. *Yes, the
-   ship is the cure* (default). *Only time spent on dry ground counts, not the flight.* *The antidote only, for a
-   ship's crew:* the stop is then limited by doses carried.
-4. **The locked tree is a colony; this design is a stop.** *Re-cut the tree from this file when the hold lifts*
-   (default). *Keep the tree and treat this as a second reading.*
+Each is tagged with one theme word.
+
+1. **[hull] Three ship ideas he was offered on 2026-10-02 and did not choose; listed so nobody revives them.** He
+   answered that card in his own words: *"Grab a chunk of the giant..."* for the giant and *"An ability to
+   resurrect someone..."* for the new marks. Not chosen: **the Landing You Cannot Take Back** (the body reads the
+   hull's organic residue; clean the contact points, or take a broker's fee to leave a passenger's gene in the
+   archive); **the Unfiled Hull** (a small ship inside the oldest giant, got out by leading it onto dry ground,
+   then sold sealed, opened, or stripped for a bio-sealed hold); **the tamper-proof seal** (a lacquer for freight
+   crates). The first read asked him the first of these again. This page does not.
+2. **[scope] Is the gene journey the heart of a stop, or an extra?** The cleanse asked this and defaulted to
+   "extra". This design defaults to *the heart*: it is his original ask, it is the chosen showcase, and it fits in
+   a few days. *An extra:* 0.1.0 is larder, tanks and the film, and the journey waits.
+3. **[scope] The return from the last touch.** A leaf of the locked sheet (0.1.0); "later" in the first read; the
+   archive vat is built and is this biome's row on the ship list (an agent's pick of 2026-11-11, carded to him).
+   *0.2.0, as the deck part* (default). *0.1.0, as the locked sheet has it:* a clan of six gets its dead back on
+   the first visit that can pay for it. *Later:* the ship list then owes this biome another part. Owed either way:
+   his look at the list of what carries over, asked for on 2026-10-02 and never shown.
+4. **[other] Is a dry room aboard a cure?** As built, the film fades only on a map in dry country, however the
+   crew got there. The review notes that the same marker *"is usable on a building or a ship room."* Nobody has
+   designed that. *No: the cure is days spent in dry country, or the antidote* (default; as built). *Yes:* a dried
+   room on the ship lets a crew stay on the Slime as long as the Empire allows.
+5. **[other] His look at the giant.** Card of 2026-10-18: *"Can't judge from this sheet."* The in-game look at the
+   smallest and largest sizes is still owed.
+6. **[locked-tree] The locked tree is a colony; this design is a stop.** The tree is not edited. *Re-cut the tree
+   from this file when the hold lifts* (default). *Keep the tree and treat this as a second reading.*
