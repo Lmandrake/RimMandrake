@@ -181,9 +181,13 @@ def test_injection():
         cond = read(CONDUCTOR).strip()
         check(body == cond, "the hook injects CONDUCTOR.md, once and alone, for a BENCH role")
         check(len(body) <= 2 * H.MAX_IDENTITY_BYTES, "the combined identity stays bounded")
-        f = H.read_identity("AGENT FOUNDRY", "sid") or ""
-        check(f == read(os.path.join(ROOT, "infrastructure", "agents", "FOUNDRY.md")).strip(),
-              "FOUNDRY's injection is its own file only")
+        check(not H.read_identity("AGENT FOUNDRY", "sid") and not os.path.exists(os.path.join(ROOT, "infrastructure", "agents", "FOUNDRY.md")),
+              "a FOUNDRY window gets no identity: the seat is retired and its file is gone")
+        sw = subprocess.run(["bash", os.path.join(ROOT, "src", "RimMandrake", "Utils", "set_agent_window.sh"), "FOUNDRY"],
+                            capture_output=True, text=True,     # no session id and a temp project: it records nothing real
+                            env={**{k: v for k, v in os.environ.items() if k != "CLAUDE_CODE_SESSION_ID"},
+                                 "CLAUDE_PROJECT_DIR": tempfile.mkdtemp(prefix="sw-"), "AGENT_WINDOW_NO_COLOUR": "1"})
+        check(sw.returncode == 2 and "FOUNDRY" not in sw.stderr.split("\n")[0], "set_agent_window.sh refuses the retired seat (%r)" % sw.stderr[:120])
         check(H.display_title("AGENT BENCH") == "CONDUCTOR", "the BENCH conversation title says CONDUCTOR")
         check(H.display_title("AGENT BENCH — x") == "CONDUCTOR — x", "a detail suffix survives the rename")
         check(H.display_title("AGENT FOUNDRY") == "AGENT FOUNDRY", "FOUNDRY's title is unchanged")
