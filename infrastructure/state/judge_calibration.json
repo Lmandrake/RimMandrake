@@ -1226,7 +1226,7 @@
    ],
    "hash": "0ee972edfd0c3f9c",
    "last_run": {
-    "at": "2026-11-19T21:43:32Z",
+    "at": "2026-11-19T22:15:47Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -1259,9 +1259,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "c22c515310ce4c8d",
+   "hash": "e187d0b2e8646f66",
    "last_run": {
-    "at": "2026-11-19T21:43:32Z",
+    "at": "2026-11-19T22:15:47Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -1297,7 +1297,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-19T21:43:32Z",
+   "reset_at": "2026-11-19T22:15:47Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },
@@ -1318,7 +1318,7 @@
      "incendiary Station 6, owner 'Full pass'"
     ]
    },
-   "hash": "e2869a6d66da4ba8",
+   "hash": "1d477f04dcf517f8",
    "model_check": [
     "python3",
     "src/RimMandrake/rimflow/scene_look_calibration.py",
@@ -1338,7 +1338,7 @@
      "id": "one_m_pit_ladder_bar"
     }
    ],
-   "reset_at": "2026-11-19T03:58:06Z",
+   "reset_at": "2026-11-19T22:15:47Z",
    "status": "UNTESTED",
    "timeout_s": 1200,
    "was": "UNTESTED"

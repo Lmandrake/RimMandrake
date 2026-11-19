@@ -43,6 +43,7 @@ PAGES = {
     "design/specs/2026-11-19-seat-restart-reads/boundary.md": "src/RimMandrake/rimflow/selftest_seat_restart_reads.py",
     "design/specs/2026-11-19-designer-stage-reads/boundary.md": "src/RimMandrake/rimflow/selftest_designer_stage_reads.py",
     "design/specs/2026-11-19-maturation-reads/boundary.md": "src/RimMandrake/rimflow/selftest_maturation_reads.py",
+    "design/specs/2026-11-19-maturation-record/boundary.md": "src/RimMandrake/rimflow/selftest_maturation_record.py",
     "design/specs/2026-11-19-coverage-signoff-and-slots/boundary.md": "src/RimMandrake/rimflow/selftest_coverage_signoff.py",
     "design/specs/2026-11-19-maturation-dispatch-reads/boundary.md":
         "src/RimMandrake/rimflow/selftest_maturation_dispatch_reads.py",

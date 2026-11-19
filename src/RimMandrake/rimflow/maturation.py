@@ -1525,14 +1525,18 @@ def CT_txt(x):
 def add_spend(root, mod, stage, tokens, usd=None, wall_s=None, source=None, estimate=False):
     if stage not in WORDS:
         raise ValueError("no stage %r; stages are %s" % (stage, ", ".join(WORDS)))
-    rec = load(root, mod)
-    if rec is None:
-        raise ValueError("%s has no stage record; run seed first" % mod)
-    rec.setdefault("spend", []).append({
-        "stage": stage, "stages": [stage], "tokens": tokens if isinstance(tokens, int) else UNM,
-        "usd": usd if isinstance(usd, (int, float)) else UNM, "wall_s": wall_s if isinstance(wall_s, (int, float))
-        else UNM, "source": source or UNM, "kind": "estimate" if estimate else "measured", "at": iso(now_ts())})
-    write_text(root, mod, RECORD, dump(rec))
+    lk = _mod_lock(root, mod)     # read, change and write under the lock: a move landing in between is never erased
+    try:
+        rec = load(root, mod)
+        if rec is None:
+            raise ValueError("%s has no stage record; run seed first" % mod)
+        rec.setdefault("spend", []).append({
+            "stage": stage, "stages": [stage], "tokens": tokens if isinstance(tokens, int) else UNM,
+            "usd": usd if isinstance(usd, (int, float)) else UNM, "wall_s": wall_s if isinstance(wall_s, (int, float))
+            else UNM, "source": source or UNM, "kind": "estimate" if estimate else "measured", "at": iso(now_ts())})
+        write_text(root, mod, RECORD, dump(rec))
+    finally:
+        lk.close()
     return rec
 
 
