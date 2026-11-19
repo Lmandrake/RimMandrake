@@ -1,0 +1,1 @@
+Counting tool text in Claude Code transcripts: api-request-blob lines repeat tool results already in the session (9.6M of 50.1M characters on 2026-11-18). Count each result once by tool_use_id and keep only user/assistant lines, or a share comes out ~20% high (Read 49.4% read as 40.5% once deduped). Source: design/experiments/2026-11-19-night-hypotheses/06-large-reads.md
