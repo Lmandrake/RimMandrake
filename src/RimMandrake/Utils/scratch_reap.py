@@ -4,7 +4,7 @@ default; --apply deletes. Anything that exists nowhere else is BUNDLED first, lo
 
 Owner, 2026-10-18, by card (BUILDUP_BUILD_CLONES_STOP_BREEDING, Q2): "Reaper may delete stale scratch clones?
 -> Yes, after 24h, if fully pushed". Owner, 2026-10-31 (SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES): build it fully,
-folded into the operating design. Authority for bundle-then-delete: design/RimMandrake/delegation_policy.md §2.2,
+folded into the operating design. Authority for bundle-then-delete: design/RimMandrake/delegation_policy.md §2,
 class `leftovers`; the archive root and acts.jsonl are leftovers.py's, so the digest lists every act.
 Lesson behind the ledger check: a session scratchpad held the ONLY copy of CRACKEDLANDS_FULL_RENAME_1's three
 commits and a hand cleanup deleted it (2026-10-18). Lesson behind inner clones: one bad clone kept a whole session

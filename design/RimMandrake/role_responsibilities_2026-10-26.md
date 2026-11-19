@@ -185,7 +185,7 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
   the north star is one method of gathering evidence, not the whole bar - on a specific build, with evidence; work the verify backlog (L1–L3,
   GREEN-MIN/FULL; L4 is his); keep each mod's floor WIRED (every bar claimed by a check); run the judge protocol for
   taste calls (`delegation_policy.md` §4); the non-maker code-review gate (`code_review_status.py`); specify a check
-  that is red on the old build for every escape; take his north-star calls: regression checks and new bars are its own (delegated, `delegation_policy.md` §2.1), loosening goes to him as a draft through the Conductor.
+  that is red on the old build for every escape; take his north-star calls: regression checks and new bars are its own (delegated, `delegation_policy.md` §1), loosening goes to him as a draft through the Conductor.
 - **Inputs:** builds, results JSON, the walks, the ledger. **Outputs:** verdicts with evidence paths, check specs.
 - **Triggers:** a feature claims done (event); escapes. **Decides alone:** the verdict and its class (audited).
 - **Hands:** check specs to builders; bar defects to the Producer and, through the Conductor, to him. **Never:** build what it judges, care
@@ -578,7 +578,7 @@ Rules of the table:
 | A-5 | judge protocol for taste calls | the acting seat's judge helper | per call | Lukas's overturns | Fri |
 | A-6 | non-maker code review gate (D5) | GPT review through `code_review_status.py` | per commit | `code_review_status.py check` | Fri |
 | A-7 | escape → a check red on the old build, within 1 day | the fixing seat | per escape | GPT reviewer reads the check | Fri |
-| A-8 | north-star calls: regression checks and new bars (delegated, `delegation_policy.md` §2.1); check merges keep detection | BENCH drafts; builder + GPT reviewer for merges | per call / merge | Auditor sample; loosening a bar: Lukas validates | Fri |
+| A-8 | north-star calls: regression checks and new bars (delegated, `delegation_policy.md` §1); check merges keep detection | BENCH drafts; builder + GPT reviewer for merges | per call / merge | Auditor sample; loosening a bar: Lukas validates | Fri |
 
 ### Auditor (Sun)
 | # | duty | interim holder | trigger / cadence | independent checker | hands over |

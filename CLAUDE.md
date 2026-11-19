@@ -30,7 +30,7 @@ and its measurements live in the file it points at:
 and is debugged through it; every live poking session ends by writing what it learned —
 including informative false theories — into that script. Agents write and approve those
 scripts. North-star bars: agents may add regression checks and new bars (owner 2026-10-26,
-*"Both autonomy questions are yes"*; `delegation_policy.md` §2.1); loosening a bar stays his. The 2026-10-01 build pause was
+*"Both autonomy questions are yes"*; `delegation_policy.md` §1); loosening a bar is the Conductor's mindful act (above). The 2026-10-01 build pause was
 **lifted by the owner 2026-10-02** (*"Build pause is lifted."*); every new mod still ships with
 its first script. Process: `design/RimMandrake/debug_process.md`.
 
@@ -146,8 +146,7 @@ search API. Authority: `biome_mod_architecture.md` §7 Q11a; detail in `biome_ru
 ## North-star validation — owner, 2026-09-17
 
 The validated-hash covers the WHOLE `## north star` section, prose included. *"Change no code —
-you just re-validate when prose is corrected."* So: correct false text, then re-validate on his
-word the same sitting; write only state-independent prose there. Validation state is never
+you just re-validate when prose is corrected."* So: correct false text, then re-validate the same sitting, on his word or as the Conductor's act; write only state-independent prose there. Validation state is never
 written as prose — `modcheck floor --all` measures it. Walk-finding traps and the rest:
 `design/RimMandrake/standing_rulings.md`.
 
@@ -240,10 +239,20 @@ User-level rule (fix a false statement on sight in anyone's file; delete, never 
 
 *"Nearly everything including art. An agent can absolutely ask another agent for an art ruling based on some prose
 constraints and requirements we can draft."* Taste calls go to a judge agent (not the maker); every delegated call is
-logged `--why "delegated: <class>"`, never as his approval, and reaches him in a daily digest. Only the short list in
-`design/RimMandrake/delegation_policy.md` §2 still needs him (north-star bars, irreversible acts on others' work,
-replacing art he kept (except the art-eval pipeline's redraws, shown to him after with a revert — owner card
-2026-10-23 06:42), changing his rulings, outward/paid acts, flyer live tests, certifying a mod's first-touch Designer pass).
+logged `--why "delegated: <class>"`, never as his approval, and reaches him in a daily digest.
+
+## 🔴 Only five acts stay his; the Conductor may do the rest, mindfully — owner, 2026-11-19
+
+*"I only want to preserve Flyer flights, replacing art I kept, pass at my walk, spending money, public publishing.
+Everything else the Conductor should mindfully be able to do."* His five: a live flyer flight test · replacing art he
+kept (its open exceptions stay open) · the pass at his walk (gameplay, fun, theme, UI) · spending money · publishing
+outside the private repos. Every other act that needed him is the **Conductor window's** (its own seat key, no
+`RM_ROLE_UNIT`; no helper, seat, role or tick), logged `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS
+--why "<act and reason>"`, never as his words, and in his digest. Cutting his OWNER bridge hold, the account order or
+leave line, deleting work not ours, and loosening a bar also name `lost:` and `undo:` in the why. **Every card bound
+for him is reviewed by the Conductor first:** not one of the five and no evidence against the obvious answer, it acts
+now and alerts him after. Not changed: `~/.claude/CLAUDE.md` (no `push --force`), physical acts (a login, a screen he
+must look at). Full text: `standing_rulings.md` §Only five acts stay his; `delegation_policy.md` §2.
 
 ## 🔴 The Evidence-for-Ask rule — owner, 2026-11-15
 
@@ -253,7 +262,7 @@ new mod's Design Version, asked every time: a new mod is locked at 0.1.0 by the 
 pause for him takes the obvious answer instead and logs it `--per-ruling
 RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call and why>"`
 (it reaches his daily digest). It pauses only with concrete evidence against the obvious answer, and every ask carries
-that evidence. His own §2 holds above still wait for him, each ask with its evidence. Full text:
+that evidence. His five acts (above) still wait for him, each ask with its evidence. Full text:
 `design/RimMandrake/standing_rulings.md` §Evidence-for-Ask.
 **A limit from before the Maturation Pipeline is suspect** (owner, 2026-11-17: *"Don't keep telling me we can't do
 things when it's from pre-maturation pipeline decisions."*): never refuse on one; act, or ask him first quoting the old
@@ -377,7 +386,7 @@ through the art ledger's `art install` only. **Check for existing regenerated ar
 leaf somewhere in a review sheet"*). Detail: `standing_rulings.md`.
 
 **Options he must LOOK at ship as a savegame** — *"Save user review options as save games."*
-One map, a grid key, saves kept until he says delete or nothing reads them (then archive, delete, digest — delegation_policy §2.2); back up the Saves folder first.
+One map, a grid key, saves kept until he says delete or nothing reads them (then archive, delete, digest — delegation_policy §2); back up the Saves folder first.
 
 ## Tools
 
@@ -422,7 +431,8 @@ taken; `take --force` works on any seat's hold. ⭐ The owner overrides with `./
 🔴 **His OWNER hold** (owner, by card 2026-10-30: *"45 minutes after my last interaction, or I deliberately release
 it"*): takeable only 45 min after his last deliberate interaction (a ledger event, `./bridge` or `./game` by his own
 hands, his chat prompt or card answer to any seat), `--force` included; an unmeasured signal refuses
-(`rimflow/owner_interaction.py`). Seat OWNER is his authority, not his activity: an agent's `--owner-said`, `--by-card`,
+(`rimflow/owner_interaction.py`). Only the Conductor window may cut it sooner, as its mindful act (`--per-ruling
+RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "…; lost: …; undo: …"`, never for a flyer's flight). Seat OWNER is his authority, not his activity: an agent's `--owner-said`, `--by-card`,
 `--per-ruling` or `--why` restarts nothing (`is_his_act`). `host_guard` holds the same line across clones: a live OWNER
 lock takes no `--force` without the cli's verdict.
 🔴 **His presence at the machine is not an event** (owner, 2026-10-30: *"I really, really need you to strip "when I come
@@ -431,7 +441,7 @@ reads his input clock, and his touching, leaving or returning to the machine nev
 aborts a take, deploy, restart, ring, arena lane, TestPilot or runner. A seat MAY take the bridge, deploy and restart the
 game when the bridge is free, ours, or stale by the 45-min rule (`rimflow bridge idle --for "<what>"` reports it;
 `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...` do it; each act goes in his
-daily digest, `delegation_policy.md` §2.6). Still binding: his OWNER hold (above) and `./bridge` override, never a flyer's
+daily digest, class `bridge idle`). Still binding: his OWNER hold (above) and `./bridge` override, never a flyer's
 flight (`--flyer` or flight wording refuses), never fullscreen or focus the game.
 🔴 **Holding the bridge is blanket authorization** — *"Never ask that. If you have bridge, you may
 start steam, launch game, anything you need."* Game-state relays are STAMP-ONLY (*"burn tokens

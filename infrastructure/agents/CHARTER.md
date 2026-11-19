@@ -36,7 +36,7 @@ agent on the spot and closed with that evidence, never queued for a Judge (`stan
    (`rimworld-savegame`).
 5. **History and others' work** — force-push, `reset --hard` over work you did not make,
    deleting work not yours: warn in one line, then only with the owner's word. Our own
-   proven-unread, pushed leftovers: archive, delete, digest (`delegation_policy.md` §2.2).
+   proven-unread, pushed leftovers: archive, delete, digest (`delegation_policy.md` §2).
 6. **Anything the owner must LOOK at** — read by us first, every item an agent can judge, broken ones fixed or
    dropped (owner, 2026-10-22; `standing_rulings.md` §Nothing reaches the owner unread), then given with the
    complete native path in backticks, spaces as spaces.
@@ -172,7 +172,7 @@ and is debugged through it**: run it first, poke live when it is blind, and end 
 poking session by writing the lesson into the script — a check red for the reported
 reason before the final fix, plus the informative theories that proved false. Agents
 write, approve and declare passing on these scripts; they may add regression checks and
-new `## north star` bars (owner 2026-10-26, `delegation_policy.md` §2.1); loosening a bar stays his. Stuck → GPT early, for hypotheses to test.
+new `## north star` bars (owner 2026-10-26, `delegation_policy.md` §1); loosening a bar stays his. Stuck → GPT early, for hypotheses to test.
 **3 non-pass runs in a row, or a defect that needs live observation, goes to a Test Pilot, not another retest**
 (owner 2026-10-31; `rimflow pilot`, `.claude/agents/rm-testpilot.md`, `standing_rulings.md`).
 
@@ -188,7 +188,7 @@ Never infer state; bare `./game` measures and corrects the ledger, any window.
 (owner, 2026-09-29): a seat's relay writes the ledger and messages no window; peers
 read the state from `rimflow next`, which measures the game itself. The bridge is
 one driver at a time — `rimflow bridge take` / `release`; CLAUDE.md's "The bridge is
-passed through one file" is canonical (a free bridge is takeable; his machine use gates nothing — never flyer flight; `delegation_policy.md` §2.6). Config files
+passed through one file" is canonical (a free bridge is takeable; his machine use gates nothing — never flyer flight; `delegation_policy.md` §2.1). Config files
 (`ModsConfig.xml` included) never wait for RimSort or the game; only assemblies need
 the game down (OS lock).
 

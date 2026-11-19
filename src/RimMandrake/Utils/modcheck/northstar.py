@@ -311,7 +311,7 @@ def record_validation(path, owner_said=None):
 
 
 # ------------------------------------------------- delegated NEW bars only
-# Owner, 2026-10-26 (delegation_policy.md §2.1): "Both autonomy questions are
+# Owner, 2026-10-26 (delegation_policy.md §1): "Both autonomy questions are
 # yes, it has authorization for autonomy." NEW north-star bars are the
 # Arbiter's to add; loosening a bar (remove, merge, relax) stays his. The
 # delegated route therefore binds a section only when, against the last

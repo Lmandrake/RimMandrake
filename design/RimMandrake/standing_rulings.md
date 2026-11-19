@@ -6,6 +6,54 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (the window he talks to) carries his authority for every seat and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
+## 🔴 Only five acts stay his; the Conductor may do the rest, mindfully — owner, 2026-11-19
+
+*"I only want to preserve Flyer flights, replacing art I kept, pass at my walk, spending money, public publishing.
+Everything else the Conductor should mindfully be able to do. Of course question cards for me should get to me, but the
+Conductor should review them to ensure it can't just do them now and alert me later."* (Thu 2026-11-19 ~7:40 AM PST.)
+The same morning, by card: *"Conductor should also be able to lift a Hold. We work together, don't use me as a
+bottleneck alone."* (§Owner hold.) Item `RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`; the census of every act
+that needed him that morning: `D:\ClaudeWork\rimmandrake\conductor\owner_only_actions_census_20261119.md`.
+
+**The five acts that stay his** (no Conductor ruling, `--why` or `--per-ruling` does any of them):
+1. **A live flight test of a flyer** (§If it flies in the fiction; the bridge gate's flyer refusal).
+2. **Replacing art he KEPT**, and releasing a keep mark. The open exceptions stay open (`delegation_policy.md` §2).
+3. **The pass at his walk**, and his judgement of gameplay, fun, theme and UI (maturation Stage 8, `owner_event`).
+4. **Spending money or a purchase.**
+5. **Publishing outside the private repos** (a Steam Workshop upload, a public post).
+
+**Everything else is open to the Conductor**: the window he talks to (seat BENCH, no `RM_ROLE_UNIT`) and nobody else.
+No helper, other seat, role run or the tick gains anything; a Conductor instruction still carries his authority to them
+(§The Conductor speaks with the owner's authority), so a helper acts on what the Conductor decided, never on its own.
+That includes the acts the census recommended keeping: his OWNER bridge hold inside 45 minutes, the account order and
+the shared account's leave line, and deleting or overwriting work that is not ours.
+- **Recorded as the Conductor's act, never as his words:** `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS
+  --why "<the act, and the reason>"`. `rimflow` refuses that ruling outside the Conductor window and on a `--why` of
+  fewer than four words, and writes the why as `delegated: conductor act: …`, so every such act is a line of his daily
+  digest (class `conductor act`, `delegated_digest.py`). A tool that writes no ledger event writes that note itself.
+- **"Mindfully":** four acts must name what is lost if the act is wrong and how it is undone, in the `--why` as
+  `lost: <…>` and `undo: <…>` (each at least three words; the gate refuses an empty or one-word why): cutting his OWNER
+  bridge hold inside 45 minutes, changing the account order or the shared account's leave line, deleting or overwriting
+  work that is not ours, and loosening or removing a bar.
+- **Code:** `src/RimMandrake/rimflow/conductor_acts.py` (the five, the window check, the why rules; page
+  `design/specs/conductor-acts/boundary.md`).
+
+**His cards: the Conductor reviews each one first.** Every question card bound for him passes the Conductor. If its act
+is not one of the five and there is no concrete evidence against the obvious answer, the Conductor acts now and alerts
+him after: one digest line with the undo (the act's `--why` carries it). Only the rest reaches him. This sits beside
+§Evidence-for-Ask and widens it: a card's subject no longer stays his just because an older rule called it his.
+
+**What it does not change.**
+- His user-level instructions (`~/.claude/CLAUDE.md`) and other repos: this run changed neither. Its ban on `push
+  --force` and history rewrites still binds every agent, the Conductor included.
+- Physical acts stay physical: an interactive login, or a screen he must look at, is still asked of him in words.
+- His own words keep their own field: `--owner-said` and `--by-card` are only ever his, and the `## his words` section of
+  a Designer record is written only from them.
+- §No mod runs forward on a broken pipeline: a mod whose readiness list is not READY still does not run.
+
+**Test that it was applied:** `selftest_conductor_acts.py` (the five refused to a Conductor act; a helper refused every
+act; a mindful act refused without `lost:` and `undo:`), and each opened gate's own selftest.
+
 ## The pipeline never "blesses" a small change — owner, 2026-11-05
 
 *"Please make a ruling: The pipeline is NOT to be used to "bless" any change in the game. That's a huge expenditure
@@ -54,7 +102,8 @@ blesses a small change" above.
   2026-09-16). 🔴 **Owner ruled 2026-09-17 that this stays as it is** — verbatim: *"Change
   no code — you just re-validate when prose is corrected."* Bar-scoped hashing is
   **declined, not deferred** (`NORTHSTAR_HASH_SCOPE_1` dropped), so the remedy for false
-  text in a hashed section is: correct it, then re-validate on his word, same sitting.
+  text in a hashed section is: correct it, then re-validate (on his word, or as the Conductor's act under §Only five
+  acts stay his), same sitting.
   ⛔ Never leave false text standing to protect a hash — that trade is now ruled against.
   🔑 Therefore **write only state-independent prose inside that section** — never "binds
   nothing until validated", which is false the moment it is. And `modcheck/cli.py
@@ -387,7 +436,7 @@ gear on a pawn — **build them and save the game.**
   option is at which cell.
 - **Saves stay until he says delete** while he may still judge them. Not overwritten by the
   next review. A save nothing reads any more is a leftover: archive, delete, list in his
-  digest (owner card 2026-10-26, `delegation_policy.md` §2.2).
+  digest (owner card 2026-10-26, `delegation_policy.md` §2).
 - 🔴 **Back up the Saves folder's keepers first and stat it afterwards.**
   `rimworld/save_game` has silently written the CURRENT slot instead of `saveName`.
   Confirm a NEW file appeared and no existing one changed size — never trust the
@@ -460,6 +509,9 @@ There's also GPT capacity to monitor and exploit. Steven.lewis can be used once 
 roughly half of it is available for our use."* So: budget the two owned Claude accounts against their
 WEEKLY reset with a rough per-day share; keep a reserve for evening sessions with him; use steven only
 after both are depleted and never past about half of it; track GPT capacity too and use it.
+The fixed account order and the shared account's leave line may be changed by the Conductor as its mindful act
+(owner 2026-11-19, §Only five acts stay his): its `--why` names what is lost if wrong (`lost:`) and the undo (`undo:`).
+The money side stays his: nothing here buys capacity.
 
 ## The bridge is passed through one file
 
@@ -486,7 +538,7 @@ lands in the same file you already read.
 keyboard or mouse clock, and his touching, leaving or returning to the machine never gates, delays, yields,
 requeues or aborts anything: a bridge take, deploy, restart, dispatcher ring, seat restart, arena lane, TestPilot or
 runner. A seat MAY take the bridge, deploy and restart the game on its own when it is free, ours, or stale by the
-45-minute rule, and lists each act in his daily digest (`delegation_policy.md` §2.6). Still binding: his OWNER hold
+45-minute rule, and lists each act in his daily digest (class `bridge idle`). Still binding: his OWNER hold
 (below) and `./bridge` override, never a flyer's flight, and the game is never fullscreened or focused, so
 it does not steal his screen. The arena lane config key `owner_playing` is ignored and dropped.
 
@@ -496,7 +548,9 @@ it"*). Interaction means his deliberate acts only: any OWNER-attributed ledger e
 `./bridge conductor|free`, anything run on his words, card or ruling), a bare `./bridge`, his chat prompt to any
 seat window (the human-input signal `block_agent_over_slots.py` uses), and the hold's own events. Never his keyboard,
 mouse or presence. Until then every take refuses, `--force` included, naming his last interaction; an unmeasured
-signal refuses. Code: `src/RimMandrake/rimflow/owner_interaction.py`, gate in `rimflow/cli.py` `_take_decision`.
+signal refuses. The one exception is the Conductor's mindful cut (owner 2026-11-19, §Only five acts stay his): from the
+Conductor window, `rimflow bridge take|release --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why
+"<why>; lost: <what his sitting loses if this is wrong>; undo: <how he gets it back>"`, never for a flyer's flight. Code: `src/RimMandrake/rimflow/owner_interaction.py`, gate in `rimflow/cli.py` `_take_decision`.
 
 🔴 **Holding the bridge is blanket authorization — never ask what to do with it** (owner,
 2026-09-19, verbatim: *"Never ask that. If you have bridge, you may start steam, launch
@@ -505,8 +559,8 @@ Steam, launching the game, running a cold load, anything the session needs — n
 needs a question first. This supersedes asking-first instincts elsewhere in this file for
 anything gated only on "do you have the bridge."
 
-`src/RimMandrake/Utils/broadcast.py` is the owner's tool; the game-state relay above is its
-only carve-out, and since 2026-09-29 that relay is STAMP-ONLY — a seat running it writes the
+`src/RimMandrake/Utils/broadcast.py` is the owner's tool and the Conductor's (owner 2026-11-19, §Only five acts stay
+his; no other seat or helper runs it); the game-state relay above is its only other carve-out, and since 2026-09-29 that relay is STAMP-ONLY — a seat running it writes the
 ledger event and messages no window (owner: game-state broadcasts between agents *"burn tokens
 unnecessarily and rarely inform"*; `rimflow next` measures the game itself).
 🔴 Run commands yourself — a `!`-prefixed paste handed to the owner is the defect
@@ -780,8 +834,9 @@ The rule, for every agent and role that can pause for him:
   nothing argues against it>"`. It reaches his daily digest (`delegated_digest.py`). It is ours, never stored as his.
 - Pause only with concrete evidence against the obvious answer (a record, a measurement, his earlier words), and put
   that evidence on the ask. An ask without it is not sent.
-- What it does not change: his own holds (`delegation_policy.md` §2, his live walk, the Lock-stage first-touch
-  certification, quotations such as waivers and his words) still wait for him; each ask now carries its evidence.
+- What it does not change: the five acts that stay his (§Only five acts stay his: his live walk among them) still wait
+  for him, and a quotation of his words is written only from his words; each ask now carries its evidence. Every
+  other card is reviewed by the Conductor first and acted on when nothing argues against the obvious answer.
 - In code: `maturation_autonomy.version_evidence` / `autolock_and_land` (Design Version 0.1.0); `designer_stage`
   accepts a root or a flagship pick approved this way (`delegated: "evidence-for-ask"`, `CONDUCTOR:<tsn>`), and an ask
   whose `evidence_against` is filled still waits. The other places that still pause, with the obvious answer for each:
@@ -863,7 +918,8 @@ The rule, for every agent and program that can move a mod:
 - No agent asks him whether to run a mod before its list reads READY: the answer is already his, and it is no.
 - What continues: pipeline repair (the BLOCKS tickets first, each under §The pipeline fixes its own defects), design
   text, investigations, read-only checks and readiness lists.
-- What it does not change: his holds and his other rulings (a ceiling only he can raise still waits for him); the tick
+- What it does not change: his holds and his other rulings (a ceiling above the stage's still needs his word or the
+  Conductor's act, §Only five acts stay his); the tick
   keeps running.
 - **The switch that holds it is one per mod:** `./pipe off <Mod> --why "no mod runs on a broken pipeline (owner
   2026-11-19): readiness <path> NOT READY"`, lifted by `./pipe on <Mod>` only with a READY list's path in its `--why`.

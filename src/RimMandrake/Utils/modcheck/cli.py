@@ -36,7 +36,7 @@ mod's first GREEN. Both take his verbatim `--owner-said` and neither re-derives
 his judgement; `validate` with no `--owner-said` prints the bar and writes
 nothing, so the lines can be read to him first. `validate --delegated
 --judge-verdict <json>` binds NEW bars without his words (owner 2026-10-26,
-delegation_policy.md §2.1) and refuses any loosening against the section's last
+delegation_policy.md §1) and refuses any loosening against the section's last
 validated version in git history; the walk's `validated-by:` then names the
 class and the judge's verdict file.
 """
@@ -154,7 +154,7 @@ def main(argv=None):
     p_val.add_argument("--why", help="the Conductor's text; alone it grants nothing")
     p_val.add_argument("--delegated", action="store_true",
                        help="bind NEW bars without his words (owner 2026-10-26, "
-                            "delegation_policy.md §2.1): refused if the section "
+                            "delegation_policy.md §1): refused if the section "
                             "loosens its last validated version; needs --judge-verdict")
     p_val.add_argument("--judge-verdict",
                        help="with --delegated: the judge's verdict JSON under "
@@ -580,7 +580,7 @@ def _validate(mod, owner_said, delegated=False, judge_verdict=None):
             for row in loose:
                 print("  - %s" % row)
             print("Loosening a bar (remove, merge, relax) stays his "
-                  "(delegation_policy.md §2.1): use --owner-said.")
+                  "(delegation_policy.md §1): use --owner-said.")
             return 2
         owner_said = "%s; judge verdict %s%s" % (
             northstar.DELEGATED_WHY, rel,

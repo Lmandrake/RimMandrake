@@ -2200,7 +2200,7 @@ art_geometric_correction_delegated:
     drawing, no style or colour change) where a player-truth check measures
     the defect before and confirms it gone after; judged by a non-maker agent,
     logged delegated, archived for one-command revert, listed in the daily
-    digest. Text and procedure: design/RimMandrake/delegation_policy.md §2.3.
+    digest. Text and procedure: design/RimMandrake/delegation_policy.md §2.2.
 art_marks_newest_wins_delegated:
   ruled: true
   src: >
@@ -2222,7 +2222,7 @@ bridge_free_idle_restart_delegated:
     must hold: a watcher shows the bridge free (no other seat holds it) AND
     no owner input to the game for 20 minutes. Never for a flyer's flight.
     Each take/restart listed in his daily digest. Text:
-    design/RimMandrake/delegation_policy.md §2.6. Build:
+    design/RimMandrake/standing_rulings.md §The bridge is passed through one file. Build:
     BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH.
 leftovers_archive_then_delete_delegated:
   ruled: true
@@ -2235,7 +2235,7 @@ leftovers_archive_then_delete_delegated:
     nothing reads, patches aimed at retired mods). Conditions: a check proves
     nothing reads it AND everything is pushed; archive or bundle first; each
     deletion listed in his daily digest. Work not ours stays his. Text:
-    design/RimMandrake/delegation_policy.md §2.2. Build:
+    design/RimMandrake/delegation_policy.md §2. Build:
     LEFTOVERS_BUILD_ARCHIVE_THEN_DELETE.
 northstar_bars_additions_delegated:
   ruled: true
@@ -2245,7 +2245,7 @@ northstar_bars_additions_delegated:
     (b) new bars may be added without him: "Both autonomy questions are yes,
     it has authorization for autonomy." Loosening a bar (remove, merge, relax
     a threshold) was not asked and stays his. Text:
-    design/RimMandrake/delegation_policy.md §2.1;
+    design/RimMandrake/delegation_policy.md §1;
     design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md Part 1.
 v3_token_duties_split_by_kind:
   ruled: true

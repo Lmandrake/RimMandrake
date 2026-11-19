@@ -55,7 +55,7 @@ Regen prompt edits can re-insert 'keyline/outline' wording copied from the refer
 
 ## 5. Owner-KEPT art may be redrawn — and he sees every swap after, with a revert
 
-- **Rule:** owner card 2026-10-23 06:42: *"Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"* (delegation_policy §2.3 exception).
+- **Rule:** owner card 2026-10-23 06:42: *"Kept art judged really bad: may the pipeline redraw it on its own? → Yes, but show me after"* (delegation_policy §2.2 exception).
 - **Guard:** kept art routes like any other subject; a regen verdict redraws it. Only when the spec carries a
   revert record — `kept_install: [{mod, rel, sha}]`, every kept file — otherwise `HOLD_KEPT` (+ a kept-but-flagged
   line if not GOOD). A redraw is recorded `replaces_kept`, with `revert` (the `art.py install` argv lists that put the

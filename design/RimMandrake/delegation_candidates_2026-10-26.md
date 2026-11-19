@@ -4,7 +4,7 @@
 
 *BENCH helper, offline analysis. Asked for because of the owner's words on 2026-10-26: "asking me to review everything isn't
 very fire and forget … Could you make this determination yourself right now?" That request produced the first delegated
-class (`delegation_policy.md` §2.3, second exception). A decision class can be delegated when (1) a check MEASURES the
+class (`delegation_policy.md` §2.2, second exception). A decision class can be delegated when (1) a check MEASURES the
 defect or outcome, (2) the change is small and REVERSIBLE, and (3) a NON-MAKER judge confirms it. This document is a
 proposal. Nothing in it is in force until he answers the cards in §3.*
 

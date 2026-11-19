@@ -80,7 +80,7 @@ One verdict is not a pattern. Tuning to one key is how a judge learns a single s
 - **Art is judged against canon.** `design/RimStarWars/canon_references/` is the acceptance target for Star Wars subjects, and
   `art_judge_brief.md` A1-A5 hold: rig and engine limits are never a REDO.
 - **Queue art only for NONE, PLACEHOLDER or DONOR subjects, apart from the pipeline's own redraws.** Candidate art rounds and
-  kept art redrawn by the pipeline's regen verdict follow `delegation_policy.md` §2.3 and brief E3 (*replaced your kept art*,
+  kept art redrawn by the pipeline's regen verdict follow `delegation_policy.md` §2.2 and brief E3 (*replaced your kept art*,
   shown after, one-click revert). You never displace kept art by a call of your own; if it looks wrong, say so in the report.
 - A ✕ is delete and ban. A picture he kept is the owner's; a live slot of ours is not a defect because a judge dislikes it.
 - Never live-test a flyer's flight: flip-book stills only. Machines without an in-game capture are held, not judged.

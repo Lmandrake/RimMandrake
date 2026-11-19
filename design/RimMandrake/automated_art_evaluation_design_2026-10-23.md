@@ -492,7 +492,7 @@ Full text, evidence and code pointers: `skills/rimworld-art-evaluation/reference
 | 2 | weak → GPT | a TARGETED second look: GPT answers each Opus concern confirmed/refuted/unclear | GPT perceives less than Opus (§6); it settles named questions |
 | 3 | GPT strong accept → accept | strong = every concern refuted WITH evidence + no blocking finding of its own | a bare "looks fine" is not a refutation |
 | 4 | otherwise regen | the unrefuted blocking findings become explicit prompt edits; ≤ 3 rounds, then ESCALATE (one line) | a reroll repeats the defect; delegation_policy §4.5 |
-| 5 | — | owner-KEPT art may be redrawn on a regen verdict, only with a revert record; flagged *replaced your kept art* on the shadow sheet with a one-click revert | owner card 2026-10-23 06:42: *"Yes, but show me after"* (delegation_policy §2.3 exception) |
+| 5 | — | owner-KEPT art may be redrawn on a regen verdict, only with a revert record; flagged *replaced your kept art* on the shadow sheet with a one-click revert | owner card 2026-10-23 06:42: *"Yes, but show me after"* (delegation_policy §2.2 exception) |
 | 6 | — | Opus always first: the GPT-image generator is never the sole judge of its own output | independence |
 | 7 | shadow sheets after, turned off when good | `shadow.py`: gated art_sheet sheet, decision + verdicts per row, KEEP/OVERRIDE; prereview.json from the run; per-template streak, threshold a setting (30) | his experiment answer |
 | 8 | live walk → improve criteria | criteria ledger (`ledger.py`) → a named check/prompt/policy change + regression example; `runner.py regress` on every prompt version | his rule |

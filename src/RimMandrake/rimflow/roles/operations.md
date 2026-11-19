@@ -206,16 +206,17 @@ The Conductor paid for these; load the skill when the step needs it, once:
 - **Decides alone:** anything already ruled; resource budgets inside the slot rules (tightening). Files items for
   any fix (`rimflow spawn --from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --for CONDUCTOR`; names through
   `rimflow namecheck`).
-- **Hands to the Conductor:** any loosening (a raised N, a lowered bar, a wider budget). Loosening stays his. The
+- **Hands to the Conductor:** any loosening (a raised N, a lowered bar, a wider budget). The Conductor decides it (owner 2026-11-19,
+  `standing_rulings.md` §Only five acts stay his); only a purchase is his. The
   parent item is read by the blind roles, so a hand-up note on it carries no account, figure, runway or budget word (review roles r2 #1). A
   loosening that can be put in plan words (a lowered bar, a cut) goes as a plain note on the parent item. One that
   needs a figure to be understood (a raised N or cap, a wider budget) goes the owner-only route: write the proposal,
   with every figure and its series, window and MEASURED/ESTIMATE/UNMEASURED word, to
   `D:\ClaudeWork\rimmandrake\ops_watch\owner\OP-<yyyymmddThhmmZ>.md` (its id is `OP-<yyyymmddThhmmZ>`, a name the blind view passes intact), read it back and check every figure
   against its series (you are its reader of record; nothing reaches him unread), then put one note on
-  `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`: `OPS PROPOSAL <id>: <what it would change, in plan words>, for his decision;
-  owner-only file <path>`, with no figure, account or reason in it. The Conductor reads the file, brings it to him
-  and records his answer as `OPS DECISION <id>`; you carry out a yes. Answer a `QUESTION FOR OPERATIONS`
+  `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`: `OPS PROPOSAL <id>: <what it would change, in plan words>, for the Conductor's decision;
+  owner-only file <path>`, with no figure, account or reason in it. The Conductor reads the file, decides, and records
+  it as `OPS DECISION <id>`; you carry out a yes. Answer a `QUESTION FOR OPERATIONS`
   note the same way.
 - **Helpers:** none. His limit is two helpers at once across ALL roles together, counting descendants; until
   `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` gives a confirmed reservation from that one pool, you run no helper

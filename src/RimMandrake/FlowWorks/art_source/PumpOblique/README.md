@@ -42,7 +42,7 @@ The current version fixes all three v3 findings. It has not been judged by a fre
 ## Blocked: owner-kept art
 
 All four installed looks are owner-KEPT pictures (960ddf23f012, ea7ddc15b970, 87725568582f, afffd14b1d58), so
-`art.py install --why` refuses. Replacing kept art is his call (delegation_policy.md §2.3).
+`art.py install --why` refuses. Replacing kept art is his call (delegation_policy.md §2.2).
 
 ## Once he rules
 

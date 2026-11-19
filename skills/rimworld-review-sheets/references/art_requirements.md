@@ -57,7 +57,7 @@ set and never merges biome rosters.
    `owner_note` at ingest. Never paraphrase it into the prompt in place of the quote.
 10. **Links stay put.** Re-serving keeps the same port and token (`refresh_sheets.py`); a link he
     has open must keep working through every refresh. Check every URL returns 200 before giving it.
-11. **Per-picture ✕ is delete forever + ban** (owner card 2026-10-26 19:54, `delegation_policy.md` §2.3):
+11. **Per-picture ✕ is delete forever + ban** (owner card 2026-10-26 19:54, `delegation_policy.md` §2.2):
     `art.py enact` removes the game files and store bytes and records a ban (sha + perceptual hash) that
     sheets withhold, install refuses, and artpipe / art-eval discard and re-roll. His newest mark wins over
     an older keep; a live picture waits for its replacement. Only `art.py unban --owner-said` lifts a ban.
