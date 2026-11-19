@@ -68,7 +68,7 @@ the catch waits for it whatever you say here.
     {"id": "SOUTH_FRONT",   "q": "Which surface does south show? It must be the front, face toward camera.", "code": "F_SOUTH_NOT_FRONT", "not_modules": ["catch"]},
     {"id": "NORTH_REAR",    "q": "Which surface does north show? It must be the rear with no face or eyes.", "code": "F_NORTH_FACE", "not_modules": ["catch"]},
     {"id": "NO_OVERHEAD",   "q": "Is any facing an overhead/top-down view?", "code": "F_TOPDOWN", "not_modules": ["catch"]},
-    {"id": "SAME_SIZE",     "q": "Do all facings show the animal at the same size?", "code": "F_SIZE_JUMP", "not_modules": ["catch"]},
+    {"id": "SAME_SIZE",     "q": "Do all facings show the animal at the same size? (advice only; the measured gate is facing_scale_lint.py)", "code": "F_SIZE_JUMP", "not_modules": ["catch"]},
     {"id": "SAME_ANIMAL",   "q": "Same animal on every facing, every structure present and turned with the body?", "code": "F_INCONSISTENT", "not_modules": ["catch"]},
     {"id": "SIGNATURE",     "q": "Is the description's defining feature visible and legible?", "code": "DESC_MISS"},
     {"id": "ALIEN",         "q": "Does it read as alien rather than the Earth animal you named?", "code": "STYLE_EARTHLY", "when": "invented"},
