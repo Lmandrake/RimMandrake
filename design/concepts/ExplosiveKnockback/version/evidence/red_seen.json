@@ -1,0 +1,41 @@
+{
+ "T_HEAVY_KNOCK_RULE": {
+  "at": "2026-11-19T03:36:31Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "last": "explosive knockback kernel: 239/246 passed",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\nindex c4d5d6130c..dfda2370a6 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -519,7 +519,7 @@ namespace RimMandrake.ExplosiveKnockback\n                     lastNonPartialZ = z;\n                     lastNonPartialN = travelled;\n                 }\n-                if (pit)\n+                if (false)\n                 {\n                     // stops IN the first pit cell, open or covered: nothing is thrown across a pit (sheet thrown_into_pit_falls:\n                     // \"onto a covered cell falls through and breaks the cover; nothing is thrown across\"); the landing breaks\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+  ],
+  "patch_sha": "b2a8d1d6f0650439",
+  "rc": 1,
+  "test_blob": "7ab345005837a175d31c66ac382aa38256a7d9b0"
+ },
+ "T_KERNEL": {
+  "at": "2026-11-19T03:36:27Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py",
+  "last": "explosive knockback kernel: 239/246 passed",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\nindex c4d5d6130c..dfda2370a6 100644\n--- a/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n+++ b/src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs\n@@ -519,7 +519,7 @@ namespace RimMandrake.ExplosiveKnockback\n                     lastNonPartialZ = z;\n                     lastNonPartialN = travelled;\n                 }\n-                if (pit)\n+                if (false)\n                 {\n                     // stops IN the first pit cell, open or covered: nothing is thrown across a pit (sheet thrown_into_pit_falls:\n                     // \"onto a covered cell falls through and breaks the cover; nothing is thrown across\"); the landing breaks\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+  ],
+  "patch_sha": "b2a8d1d6f0650439",
+  "rc": 1,
+  "test_blob": "7ab345005837a175d31c66ac382aa38256a7d9b0"
+ },
+ "T_PROOFGATE": {
+  "at": "2026-11-19T03:42:34Z",
+  "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
+  "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py",
+  "last": "FAIL G1 gate misreads [True, True, True, False, False, True, True]",
+  "patch": "diff --git a/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py b/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\nindex be3442a71f..4697b1afea 100644\n--- a/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\n+++ b/src/RimMandrake/ExplosiveKnockback/proof_build_gate.py\n@@ -24,7 +24,7 @@ MESSAGE = (\"PROOF BUILD REQUIRED: the running ExplosiveKnockback DLL has no %s (\n def is_release_answer(resp):\n     \"\"\"True when a jawa/static_call answer says the proof type is not loaded.\"\"\"\n     text = repr(resp)\n-    return \"Type not found\" in text and \"RM_KnockbackProof\" in text\n+    return \"Type not found\" in text or \"RM_KnockbackProof\" in text\n \n \n def require_proof_build(resp, out=None):\n",
+  "patch_files": [
+   "src/RimMandrake/ExplosiveKnockback/proof_build_gate.py"
+  ],
+  "patch_sha": "db71d6c859e2bc5d",
+  "rc": 1,
+  "test_blob": "ff2d8fcdc479afbe28916ed93e97b6f5746c8819"
+ }
+}

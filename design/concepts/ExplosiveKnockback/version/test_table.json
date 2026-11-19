@@ -111,11 +111,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.11,
+    "seconds": 2.05,
     "last": "explosive knockback kernel: 246/246 passed",
-    "at": "2026-11-18T18:10:03Z",
+    "at": "2026-11-19T03:36:40Z",
     "result": "PASS",
-    "build": "a4df482449f02f6b065d",
+    "build": "0d3f55eb849d094f0003",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
    }
   },
@@ -134,9 +134,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.2,
+    "seconds": 4.27,
     "last": "explosiveknockback fuzz: 42001 cases, 922486 steps, 1.36s total -> OK",
-    "at": "2026-11-18T18:10:08Z",
+    "at": "2026-11-19T03:36:45Z",
     "result": "PASS",
     "build": "8afe2c39d6e415af503a",
     "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py"
@@ -158,9 +158,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.73,
+    "seconds": 3.61,
     "last": "explosiveknockback data: 15 RM_KnockbackExtension li checked (6 here, 9 in KineticArms)",
-    "at": "2026-11-18T18:10:10Z",
+    "at": "2026-11-19T03:36:48Z",
     "result": "PASS",
     "build": "2d1f270613ba37dc1e6b",
     "command": "python3 src/RimMandrake/Utils/lint_explosiveknockback_defs.py"
@@ -180,9 +180,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 36.05,
+    "seconds": 45.05,
     "last": "ExplosiveKnockback lint planted-defect selftest: 20/20 ok",
-    "at": "2026-11-18T18:10:46Z",
+    "at": "2026-11-19T03:37:33Z",
     "result": "PASS",
     "build": "17f915b8d7cf62d40e08",
     "command": "python3 src/RimMandrake/Utils/selftest_explosiveknockback_lint.py"
@@ -204,7 +204,7 @@
     "rc": 0,
     "seconds": 21.17,
     "last": "PASS storage census: closed exactly when hidden",
-    "at": "2026-11-18T18:11:08Z",
+    "at": "2026-11-19T03:37:55Z",
     "result": "PASS",
     "build": "c9870f6e6d6e2aaae543",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storage_census.py"
@@ -226,9 +226,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.25,
+    "seconds": 0.35,
     "last": "MOCK: PASS (41/41 scenes staged, all_green=False)",
-    "at": "2026-11-18T18:25:13Z",
+    "at": "2026-11-19T03:37:55Z",
     "result": "PASS",
     "build": "573583718df9b836a671",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py"
@@ -249,9 +249,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 4.78,
+    "seconds": 10.97,
     "last": "PASS proofgate (R1 P1 G1)",
-    "at": "2026-11-18T23:11:47Z",
+    "at": "2026-11-19T03:38:06Z",
     "result": "PASS",
     "build": "b109b45796aeeea809da",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_proofgate.py"
@@ -270,9 +270,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 10.27,
+    "seconds": 15.2,
     "last": "selftest_proof_restore_check: PASS (0 failure(s))",
-    "at": "2026-11-18T18:11:27Z",
+    "at": "2026-11-19T03:38:21Z",
     "result": "PASS",
     "build": "89b8b21cea392571f7f5",
     "command": "python3 src/RimMandrake/Utils/selftest_proof_restore_check.py"
@@ -291,9 +291,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.92,
+    "seconds": 2.91,
     "last": "settings screens selftest: 856/856 ok",
-    "at": "2026-11-18T18:11:29Z",
+    "at": "2026-11-19T03:38:24Z",
     "result": "PASS",
     "build": "4199c1886e4599a39e6b",
     "command": "python3 src/RimMandrake/Utils/selftest_settings_screens.py"
@@ -313,9 +313,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.04,
+    "seconds": 0.1,
     "last": "ok  cover breaks on every fall: Spring destroys the whole deck before 1 descent call(s); the detector skips covered cells (and so does a jump's at-once fall); other drops require an open pit at the falling cell; intact cover = ground; 4 mutants red",
-    "at": "2026-11-18T18:11:29Z",
+    "at": "2026-11-19T03:38:24Z",
     "result": "PASS",
     "build": "2402b18861ec6812061e",
     "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py"
@@ -340,9 +340,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.18,
+    "seconds": 2.14,
     "last": "explosive knockback settings sweep: PASS (24 runs, 0 faults, 2/2 coupling mutants caught) | static: 0 faults, 4/4 planted caught, 10/10 switch faults caught | PASS",
-    "at": "2026-11-18T18:11:31Z",
+    "at": "2026-11-19T03:38:26Z",
     "result": "PASS",
     "build": "f1bded6f74a84dc6a715",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_settings_sweep.py"
@@ -364,9 +364,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.91,
+    "seconds": 1.28,
     "last": "explosive knockback gas census: PASS (10 sources, tagged grid:RimMandrake.Cauldron.RM_MapComponent_VentGas; 0 faults; 5/5 planted faults caught)",
-    "at": "2026-11-18T18:11:31Z",
+    "at": "2026-11-19T03:38:28Z",
     "result": "PASS",
     "build": "163b4abb86a9ca27b61e",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_census.py"
@@ -389,7 +389,7 @@
     "rc": 0,
     "seconds": 0.04,
     "last": "explosive knockback gas clumps: PASS (0 faults, 11/11 planted faults caught)",
-    "at": "2026-11-18T18:11:32Z",
+    "at": "2026-11-19T03:38:28Z",
     "result": "PASS",
     "build": "3d68680cb0f2ede4684b",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_clumps.py"
@@ -412,11 +412,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 1.25,
+    "seconds": 2.18,
     "last": "explosive knockback kernel: 246/246 passed",
-    "at": "2026-11-18T18:11:33Z",
+    "at": "2026-11-19T03:38:30Z",
     "result": "PASS",
-    "build": "a4df482449f02f6b065d",
+    "build": "0d3f55eb849d094f0003",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py"
    }
   },
@@ -438,9 +438,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.03,
     "last": "PASS stage3 scenes: 0 failed",
-    "at": "2026-11-18T18:11:33Z",
+    "at": "2026-11-19T03:38:30Z",
     "result": "PASS",
     "build": "493bc22d3a780add438f",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage3_scenes.py"
@@ -462,9 +462,9 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.26,
+    "seconds": 0.31,
     "last": "explosive knockback hook scope: PASS (0 faults, 3/3 planted faults caught)",
-    "at": "2026-11-18T18:11:33Z",
+    "at": "2026-11-19T03:38:30Z",
     "result": "PASS",
     "build": "bd301ad97ed1cefc803e",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_hook_scope.py"
@@ -1778,13 +1778,220 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.03,
+    "seconds": 0.05,
     "last": "FRAME_BUDGET offline selftest: PASS (8 case(s), 0 failed)",
-    "at": "2026-11-18T18:25:13Z",
+    "at": "2026-11-19T03:38:30Z",
     "result": "PASS",
     "build": "2f111c9d4c9b1ff6e457",
     "command": "python3 src/RimMandrake/ExplosiveKnockback/validation.py --selftest"
    }
+  },
+  "T_BARRAGE_P99_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_barrage_p99.py",
+   "observes": "The barrage frame bar is the 99th-percentile frame inside the barrage-and-gas-chain window, at most 50 ms (RIMMANDRAKE_REPAIR_BARRAGE_FRAME_CRITERION_BASELINE_FAILS_TOO; owner 2026-11-15 ~7:28 PM PST, \"1 agree.\", to the 99th-percentile-in-the-window proposal: the mod-off control's single worst frame broke 50 ms on random list stalls).",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackMath.cs"
+   ],
+   "id": "T_BARRAGE_P99_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_barrage_p99.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 2.49,
+    "last": "ALL PASS",
+    "at": "2026-11-19T03:38:33Z",
+    "result": "PASS",
+    "build": "33a6c5a0f5e78dfb7d74",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_barrage_p99.py"
+   }
+  },
+  "T_GAS_INTO_PIT_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_into_pit.py",
+   "observes": "Offline check of the proof scene for sc_gas_shove_into_pit (design/concepts/ExplosiveKnockback/scenes.json): Stage 6 visit 1 (2026-11-15) read it UNMEASURED on every build, \"unknown scene\", because test_table.json named the entry gas_into_pit and RM_KnockbackProof had no such case (RIMMANDRAKE_WRITE_GAS_INTO_PIT_SCENE_UNKNOWN_EVERY_BUILD). The scene runs only in a game (its live command is in vers",
+   "reads": [],
+   "id": "T_GAS_INTO_PIT_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_into_pit.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS 0 failed",
+    "at": "2026-11-19T03:38:33Z",
+    "result": "PASS",
+    "build": "8e4abac9a763f9179afb",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_gas_into_pit.py"
+   }
+  },
+  "T_GOODS_OBSTACLES_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_goods_obstacles.py",
+   "observes": "Offline check of sc_goods_obstacles (design/concepts/ExplosiveKnockback/scenes.json; dl_goods_obstacles in record.json: a flying good treats a closed door as a wall and rebounds keeping about 70 percent, passes over sandbags, and stops on the last cell before deep water). Stage 6 visit 1 read it UNMEASURED: the entry goods_obstacles was named by version/test_table.json but absent from RM_Knockback",
+   "reads": [],
+   "id": "T_GOODS_OBSTACLES_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_goods_obstacles.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "PASS: 0 failed",
+    "at": "2026-11-19T03:38:33Z",
+    "result": "PASS",
+    "build": "68712c0887feecac7d03",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_goods_obstacles.py"
+   }
+  },
+  "T_JOURNAL_JOLT_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py",
+   "observes": "Offline checks of Explosive Knockback's journal lines and drawn jolt (blind cycle 2; steward's decisions 4, 6 and 7).",
+   "reads": [],
+   "id": "T_JOURNAL_JOLT_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 1,
+    "seconds": 0.08,
+    "last": "explosive knockback journal and jolt: FAIL (6 faults, 11/16 planted breaks caught)",
+    "at": "2026-11-19T03:38:33Z",
+    "result": "FAIL",
+    "build": "b7d7e7d732adf578a1c3",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_journal_jolt.py"
+   }
+  },
+  "T_LANDING_JOB_SEARCH_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_landing_job_search.py",
+   "observes": "Offline selftest: a pawn our knockback throws lands without vanilla's full job search (RIMMANDRAKE_FIX_WALK_RAID_SIX_FAILED_ROWS_AFTER_CRASHES, Test Pilot sitting 2026-11-16).",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_PawnFlyerPatches.cs"
+   ],
+   "id": "T_LANDING_JOB_SEARCH_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_landing_job_search.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "PASS landing job search: 0 failed",
+    "at": "2026-11-19T03:38:33Z",
+    "result": "PASS",
+    "build": "db5003067f0dbc329dd0",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_landing_job_search.py"
+   }
+  },
+  "T_SITUATION_MAP_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py",
+   "observes": "The situation map of Explosive Knockback as a permanent check (RIMMANDRAKE_RESCUE_KNOCKBACK_PAST_CEILING_CYCLE_SIX).",
+   "reads": [
+    "src/RimMandrake/ExplosiveKnockback/Source/RM_KnockbackPlan.cs",
+    "src/RimMandrake/ExplosiveKnockback/Source/SelfTest/KnockbackMap.cs"
+   ],
+   "id": "T_SITUATION_MAP_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 206.85,
+    "last": "explosive knockback map: PASS (every bar holds; 30 of 30 planted faults seen)",
+    "at": "2026-11-19T03:42:00Z",
+    "result": "PASS",
+    "build": "bc087d0106c9d897c10a",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_map.py"
+   }
+  },
+  "T_PIT_FETCH_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_pit_fetch.py",
+   "observes": "Offline geometry guard for Explosive Knockback's sc_pit_fetch (RM_KnockbackProof.cs case \"pit_goods_fetch\").",
+   "reads": [],
+   "id": "T_PIT_FETCH_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_pit_fetch.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "explosive knockback pit fetch geometry: PASS (0 faults; visit-2 layout caught: True)",
+    "at": "2026-11-19T03:42:00Z",
+    "result": "PASS",
+    "build": "4a477519d18bce87ae8c",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_pit_fetch.py"
+   }
+  },
+  "T_STOREROOM_BOMB_PIT_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storeroom_bomb_pit.py",
+   "observes": "Offline check of sc_storeroom_bomb_pit, the showcase (design/concepts/ExplosiveKnockback/scenes.json; RIMMANDRAKE_WRITE_STOREROOM_BOMB_PIT_SCENE_TABLE_NAMED_FIRST, 2026-11-15). The scene runs only in a game (its live command is in version/test_table.json); this proves what can be read without one:   N  storeroom_bomb_pit and its control lane are in RM_KnockbackProof.SceneNames, Build routes both t",
+   "reads": [],
+   "id": "T_STOREROOM_BOMB_PIT_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storeroom_bomb_pit.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.03,
+    "last": "PASS: 0 failed",
+    "at": "2026-11-19T03:42:00Z",
+    "result": "PASS",
+    "build": "b5dc2ca08bed066b2920",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_storeroom_bomb_pit.py"
+   }
+  },
+  "T_WALK_RAID_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py",
+   "observes": "Offline test of validation.py's walk_storeroom_raid leaf (scene sc_walk_raid) against a fake bridge (RIMMANDRAKE_GIVE_WALK_RAID_LIVE_MODE_STATIC_EXITS_ZERO). The fake is a tiny world: goods in a storeroom, a shelf and a closed locker, a covered pit cell, a vent-gas cloud; a blast requests and moves every good in its radius, a lit cloud bursts one cell a tick outward from the lit cell, saves and lo",
+   "reads": [],
+   "id": "T_WALK_RAID_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.93,
+    "last": "PASS walk_storeroom_raid leaf: 0 failed",
+    "at": "2026-11-19T03:42:01Z",
+    "result": "PASS",
+    "build": "0393d553a3718c8ab69b",
+    "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_walk_raid.py"
+   }
+  },
+  "T_BLIND_CYCLE1_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blind_cycle1.py",
+   "observes": "The blind challenge's own tests for Explosive Knockback 0.1.0, cycle 1, consolidated as a formal selftest. Runs blind lane 1 (game-logic properties, random cases with shrinking, the shipped settings swept; compiled against the shipped kernel) and the static wiring check of the two Problems cycle 1 fixed (goods fly wild; the gas goods cap is not rescaled by the weapons' cap scale). Record: design/c",
+   "reads": [],
+   "id": "T_BLIND_CYCLE1_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_blind_cycle1.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)"
+  },
+  "T_STAGE6_VISIT1_GUARDS_OFFLINE": {
+   "stage": "4-5",
+   "file": "src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage6_visit1.py",
+   "observes": "Offline guards for the proof-scene faults Stage 6 visit 1 found live (2026-11-15, design/concepts/ExplosiveKnockback/version/in_game/visit_1/SUMMARY.md). Each is a HARNESS fault: the mod behaved, the scene read it wrong. Read from the C# source, since the scenes only run in a game:   S1 spared_states reads each spared thing's cell a few ticks after the blast, not at the 300-tick verdict (a skipped",
+   "reads": [],
+   "id": "T_STAGE6_VISIT1_GUARDS_OFFLINE",
+   "kind": "offline",
+   "command": "python3 src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_stage6_visit1.py",
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)"
   }
  },
  "bars": [
@@ -1800,7 +2007,8 @@
    ],
    "supports": [
     "T_FUZZ",
-    "sc_storeroom_bomb_pit"
+    "sc_storeroom_bomb_pit",
+    "T_SITUATION_MAP_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -1839,7 +2047,8 @@
    "supports": [
     "T_SETTINGS_SWEEP_OFFLINE",
     "P_heavy_skip",
-    "P_in_pit_skip"
+    "P_in_pit_skip",
+    "T_STAGE6_VISIT1_GUARDS_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -1914,7 +2123,8 @@
     "sc_wall_stop"
    ],
    "supports": [
-    "T_FUZZ"
+    "T_FUZZ",
+    "T_SITUATION_MAP_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -1934,7 +2144,8 @@
     "sc_pawn_hits_pawn"
    ],
    "supports": [
-    "T_FUZZ"
+    "T_FUZZ",
+    "T_SITUATION_MAP_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -1954,7 +2165,9 @@
     "sc_door_water"
    ],
    "supports": [
-    "T_FUZZ"
+    "T_FUZZ",
+    "T_GOODS_OBSTACLES_OFFLINE",
+    "T_SITUATION_MAP_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -1999,7 +2212,11 @@
     "P_goods_fly_lands",
     "P_goods_fly_wall",
     "P_goods_fly_rebound",
-    "P_land_no_bump"
+    "P_land_no_bump",
+    "T_GOODS_OBSTACLES_OFFLINE",
+    "T_JOURNAL_JOLT_OFFLINE",
+    "T_SITUATION_MAP_OFFLINE",
+    "T_BLIND_CYCLE1_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -2020,7 +2237,9 @@
    ],
    "supports": [
     "sc_storeroom_bomb_pit",
-    "P_items"
+    "P_items",
+    "T_STOREROOM_BOMB_PIT_OFFLINE",
+    "T_BLIND_CYCLE1_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -2042,7 +2261,8 @@
    ],
    "supports": [
     "sc_storeroom_bomb_pit",
-    "P_shelf"
+    "P_shelf",
+    "T_STOREROOM_BOMB_PIT_OFFLINE"
    ],
    "held": [
     "1: Anything that draws its contents is open.",
@@ -2069,7 +2289,9 @@
    "supports": [
     "sc_storeroom_bomb_pit",
     "T_STAGE3_SCENES",
-    "P_container_thrown"
+    "P_container_thrown",
+    "T_JOURNAL_JOLT_OFFLINE",
+    "T_STOREROOM_BOMB_PIT_OFFLINE"
    ],
    "held": [
     "1: Anything that draws its contents is open.",
@@ -2182,7 +2404,9 @@
    ],
    "supports": [
     "sc_gas_shove_into_pit",
-    "P_gas_clumps"
+    "P_gas_clumps",
+    "T_GAS_INTO_PIT_OFFLINE",
+    "T_BLIND_CYCLE1_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -2243,7 +2467,10 @@
     "sc_storeroom_bomb_pit",
     "P_no_cross",
     "P_corpse_into_pit",
-    "P_land_no_bump_pit"
+    "P_land_no_bump_pit",
+    "T_GAS_INTO_PIT_OFFLINE",
+    "T_SITUATION_MAP_OFFLINE",
+    "T_STOREROOM_BOMB_PIT_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -2261,7 +2488,9 @@
    "decides": [
     "sc_pit_fetch"
    ],
-   "supports": [],
+   "supports": [
+    "T_PIT_FETCH_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
@@ -2337,7 +2566,9 @@
    "supports": [
     "sc_frame_probe_check",
     "T_STAGE3_SCENES",
-    "T_KERNEL"
+    "T_KERNEL",
+    "T_BARRAGE_P99_OFFLINE",
+    "T_LANDING_JOB_SEARCH_OFFLINE"
    ],
    "held": [],
    "offline_decides": [],
@@ -2374,7 +2605,10 @@
    ],
    "supports": [
     "sc_storeroom_bomb_pit",
-    "T_WALK_FRAME_JUDGE_OFFLINE"
+    "T_WALK_FRAME_JUDGE_OFFLINE",
+    "T_LANDING_JOB_SEARCH_OFFLINE",
+    "T_WALK_RAID_OFFLINE",
+    "T_STAGE6_VISIT1_GUARDS_OFFLINE"
    ],
    "held": [],
    "offline_decides": [],
@@ -2572,7 +2806,9 @@
     "T_SETTINGS_SWEEP_OFFLINE",
     "sc_all_fly_no_cap"
    ],
-   "supports": [],
+   "supports": [
+    "T_BLIND_CYCLE1_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [
     "T_KERNEL",
@@ -2638,7 +2874,9 @@
    "decides": [
     "sc_pit_fetch"
    ],
-   "supports": [],
+   "supports": [
+    "T_PIT_FETCH_OFFLINE"
+   ],
    "held": [],
    "offline_decides": [],
    "offline_green_today": false,
@@ -2694,7 +2932,8 @@
    ],
    "supports": [
     "sc_gas_shove_into_pit",
-    "P_gas_clumps"
+    "P_gas_clumps",
+    "T_GAS_INTO_PIT_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -2719,7 +2958,8 @@
     "P_goods_fly_midair",
     "P_goods_fly_lands",
     "P_goods_fly_wall",
-    "P_goods_fly_rebound"
+    "P_goods_fly_rebound",
+    "T_GOODS_OBSTACLES_OFFLINE"
    ],
    "held": [],
    "offline_decides": [
@@ -2822,7 +3062,8 @@
    "supports": [
     "sc_frame_probe_check",
     "T_STAGE3_SCENES",
-    "T_KERNEL"
+    "T_KERNEL",
+    "T_BARRAGE_P99_OFFLINE"
    ],
    "held": [],
    "offline_decides": [],
@@ -2986,5 +3227,9 @@
    "every_decider_runnable_today": true,
    "any_test_runnable_today": true
   }
- ]
+ ],
+ "unlisted_suites": {
+  "selftest_explosiveknockback_runner_advance.py": "pipeline machinery: tests knockback_runner.advance_scene (the live driver's tick advance) against a fake bridge, not the mod (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)",
+  "selftest_explosiveknockback_stage6_visit2.py": "proof-harness guards: the scene and site faults Stage 6 visit 2 found (a quicktest pond's dry bed and the like), so these test the proof harness, not a bar (RIMMANDRAKE_REGISTER_EK_SELFTESTS_THIRTEEN_NO_TABLE_ENTRY_SAW)"
+ }
 }
