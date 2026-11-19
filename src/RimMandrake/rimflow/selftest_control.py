@@ -109,7 +109,14 @@ def p95_of(ts):
 
 
 def slow_verbs(times, limit):
-    """-> the verbs whose OWN p95 is at or over `limit` seconds."""
+    """-> the verbs whose OWN p95 is at or over `limit` seconds.
+
+    LIMIT: 1 s. Danger it guards: a verb that reaches git, a clone, a test door or a sleep takes seconds on EVERY
+    call, and then the Conductor and every tick wait on it (boundary.md, promise verbs-answer-in-a-second;
+    planted fault: `main()` sleeps 1.1 s, RED). Evidence it can happen: that planted fault, and one publish refused
+    at 1.134 s on a busy machine (2026-11-19), which passed on rerun. So a verb whose call is over the limit is timed
+    again, up to 4 more times (`t_verbs`), and its fastest call counts: a broken verb is slow every time, a busy
+    machine stalls only some calls. (Load average 40 on 2026-11-19 stalled two calls in a row, 2.5 s.)"""
     return sorted(v for v, ts in times.items() if p95_of(ts) >= limit)
 
 
@@ -133,6 +140,10 @@ def t_verbs():
         ts = []
         for _ in range(5 if v in ("show", "why", "log") else 1):
             rc, out, el = pipe(*args)
+            for _ in range(4):  # a busy-machine stall (load 40 measured): time it again, keep the fastest call
+                if el < 1.0 or v == "grant":
+                    break
+                el = min(el, pipe(*args)[2])
             ts.append(el)
         times[v] = ts
         lines = [x for x in out.splitlines() if x.strip()]
