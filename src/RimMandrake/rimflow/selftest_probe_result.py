@@ -101,6 +101,8 @@ def t_looked_answers_read_plainly():
     e = P.empty()
     check(list(e) == [] and len(e) == 0 and not e and (e or [9]) == [9] and e.value == [] and 7 not in e,
           "empty() reads as an empty list and is false")
+    check(str(v) == "[4, 5]" and "%s" % e == "[]" and "[4, 5]" in repr(v) and "empty" in repr(e),
+          "a looked answer prints as its content and never raises", (str(v), repr(v), str(e), repr(e)))
 
 
 def t_four_answers_never_blur():

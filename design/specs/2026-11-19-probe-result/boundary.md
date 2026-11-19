@@ -30,7 +30,8 @@ the page has no LIFE CYCLES.
 - **blind-answers-keep-their-cause.** Each keeps its cause, which may not be blank. `str()` of one says which of the
   two it is and the cause, and printing one never raises.
 - **looked-answers-read-plainly.** `value(x)` reads as `x` (truth, iteration, `len`, index, `in`, `int`, `.value`);
-  `empty()` reads as an empty list and is false.
+  `empty()` reads as an empty list and is false. Printed into a log or failure line (`%s`, `%r`), one reads as `x`
+  (`[]` for empty) and never raises, as `control_kill_drill.py` and `selftest_control.py` print them.
 - **four-answers-never-blur.** `kind` is exactly one of `value`, `empty`, `could_not_look`, `failed`, and `ok` is true
   for the first two only. `value()` of a blind answer raises instead of hiding it.
 - **lint-sees-both-shapes.** The lint names `file:line` for `<call> or []` (also `{}`, `()`, `0`, `None`, `""`) and for
