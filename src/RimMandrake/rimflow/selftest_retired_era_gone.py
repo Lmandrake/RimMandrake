@@ -17,6 +17,14 @@ units, and is said so). Not scanned, on purpose (the owner's order keeps them): 
 closed-item prose, handoffs, evidence and code-review records, transcripts, Transient/) and mod content and its design
 (src/ outside rimflow/, Utils/ and bridgetools/; design/Jawa, design/concepts, design/RimStarWars, design/RimUtinni),
 where "foundry" or "pulse" are lore and feature words. Probes first: the checker must see a planted remnant before its verdict on the tree counts.
+
+Text too (RIMMANDRAKE_FINISH_RETIRED_ERA_REMAINS_TWENTY_ONE_NO_TICKETS, 2026-11-19): the path check above read green
+while rm-builder.md told every builder "In the Relentless Pipeline (relentless.py) you fill a place", because it never
+read a file. Now every instruction file (CLAUDE.md, agent definitions, roles, SKILL.md files, seat files, the standing
+rulings) must say, on the line, that a retired era or deleted module it names is past; a record file (design doc, skill
+reference, lesson, fact) may instead open with the HISTORY head that Utils/era_history_mark.py writes. The rule is
+rimflow/era_text.py. Watched red on the pre-fix tree: 2011 era text lines (evidence:
+D:\ClaudeWork\rimmandrake\conductor\era_finish_20261119\gate_prefix_run.txt).
 """
 import fnmatch
 import os
@@ -59,6 +67,9 @@ def era_unit(name):
 
 
 MASKED = ("masked", "masked-runtime")
+
+# --- Text: the rule lives in era_text.py (shared with Utils/era_history_mark.py).
+from era_text import HISTORY_LINE, HISTORY_MARK, check_text, mark_text, text_scope  # noqa: E402
 
 
 def read_allow(text):
@@ -173,7 +184,79 @@ def probes():
                       [("rm-foundry.service", "enabled"), ("rm-whittle.timer", "masked-runtime")], [])
     want(r == ["design/RimMandrake/Fleet Watch.md", "design/RimMandrake/rimflow v3.md", "unit:rm-foundry.service (enabled)"],
          f"spaced era names and a foundry unit are remnants; masked-runtime is masked (got {r})")
+    # The text check (step-1 class): the pre-fix lines that sent a fresh agent to a deleted thing must be refused.
+    bad = {".claude/agents/rm-builder.md": "In the Relentless Pipeline (`src/RimMandrake/rimflow/relentless.py`) you "
+                                           "fill a place as a Relentless-style Builder from MandrakeWorkflows.",
+           "infrastructure/agents/BUILD.md": "This seat's work moved to Relentless (`CLAUDE.md`, \"Relentless builds "
+                                             "and accepts the work that needs building\") (owner's ruling, 2026-08-27).",
+           "skills/live-debugging-proof-harness/SKILL.md": "tier. `hot_reload_defs` is not a speed path. "
+                                                           "`relentless_live.py` refuses proof lines",
+           "src/RimMandrake/rimflow/roles/designer_lock.md": "The Producer admits it. Relentless runs `gate` at the pool",
+           "CLAUDE.md": "./bridge [conductor|foundry|free]                   his override"}
+    for path, line in bad.items():
+        want(len(check_text(path, "# t\n" + line + "\n")) == 1, f"the pre-fix line in {path} is refused")
+    want(check_text(".claude/agents/rm-builder.md", HISTORY_LINE + "\n" + bad[".claude/agents/rm-builder.md"]) != [],
+         "a HISTORY head does not excuse a file every agent is handed")
+    want(check_text("design/RimMandrake/x_2026-10-01.md", "# t\n" + HISTORY_LINE + "\nRelentless runs the gate.\n") == [],
+         "a record file with a HISTORY head passes")
+    want(check_text("design/RimMandrake/x_2026-10-01.md", "# t\n\n\n\n\n" + HISTORY_LINE + "\nRelentless runs.\n") != [],
+         "a HISTORY mark below the head is not a head")
+    want(check_text("infrastructure/state/lessons/20261101T000000Z-BENCH-x.md", "Relentless reaps clones.\n") != [],
+         "an unmarked lesson naming a retired era is refused")
+    doc = "---\nname: x\n---\n# t\nRelentless runs the gate.\n"
+    marked = mark_text("design/RimMandrake/x_2026-10-01.md", doc)
+    want(marked is not None and marked.startswith("---\nname: x\n---\n> " + HISTORY_LINE) and
+         check_text("design/RimMandrake/x_2026-10-01.md", marked) == [], "the marker heads a record after its front matter")
+    want(mark_text("design/RimMandrake/x_2026-10-01.md", marked) is None, "a marked record is not marked twice")
+    lesson = mark_text("infrastructure/state/lessons/20261101T000000Z-BENCH-x.md", "Relentless reaps clones.\nhome: x\n")
+    want(lesson is not None and lesson.endswith("Relentless reaps clones.\nhome: x\n") and
+         check_text("infrastructure/state/lessons/20261101T000000Z-BENCH-x.md", lesson) == [],
+         "a lesson's first line takes the prefix and its footer is untouched")
+    want(mark_text(".claude/agents/rm-builder.md", "Relentless runs.\n") is None, "the marker never touches a live file")
+    want(text_scope("infrastructure/VALIDATION_LADDER.md") == "live" and
+         text_scope("infrastructure/state/lessons/20261101T000000Z-BENCH-x.md") == "mark" and
+         text_scope("skills/x/references/y.md") == "mark" and text_scope("skills/x/SKILL.md") == "live",
+         "a live pattern is one directory level; a record pattern is its subtree")
+    good = ["The Relentless Pipeline was retired 2026-11-13.", "the store `/home/mandrake/rm/relentless/store` stays",
+            "env `RELENTLESS_ROOT` and item `RIMMANDRAKE_LAND_RALPH_FLOWWORKS_PIT_FEATURES`",
+            'his words: *"Yes relentless fixes itself first."* Any fault goes first.',
+            "a trap the seat hit (FOUNDRY 2026-09-12, `RSW_Anooba`).", "> This is becoming a new Pipeline, better than Relentless",
+            "shards `FOUNDRY.jsonl` and `RELENTLESS.jsonl` replay", "`git show f2ce40bac8:whittle/x.md`",
+            "Measured 2026-09-01, FOUNDRY. `map_drop` on a map", "| 8 | Geonosian Foundry Hive | 4 |",
+            "**Distinct-from Jawa:** few, elite, relentless vs. many, ragged", "whittle the list down to five"]
+    for line in ["the relentless_live module refuses it", "the Relentless checker says yes", "rimpulse_x.md is read",
+                 "a relentless pipeline run builds it"]:
+        want(check_text("src/RimMandrake/rimflow/roles/x.md", line + "\n") != [], f"an era name is refused: {line[:40]}")
+    want(check_text("src/RimMandrake/rimflow/roles/x.md", 'he said *"first line\nthen writes it out for Relentless.\n'
+                    'end of it"* and so') == [], "the middle line of a quote spanning lines is his words")
+    want(check_text("src/RimMandrake/rimflow/roles/x.md", 'an open *"quote\n' + "x\n" * 5 + "pad " * 600 +
+                    '\nRelentless runs the gate.\n') != [], "an unclosed quote does not hide a line far below it")
+    want(check_text("src/RimMandrake/rimflow/roles/auditor.md", "the week's Relentless `retire` decisions\n") != [],
+         "the verb 'retire' is not a past marker")
+    for line in good:
+        want(check_text("src/RimMandrake/rimflow/roles/x.md", line + "\n") == [], f"a past or name-only line passes: {line[:40]}")
+    want(check_text("src/RimMandrake/rimflow/x.py", "relentless.py runs\n") == [] and
+         check_text("design/Jawa/x.md", "Foundry floor\n") == [], "code and lore are not read by the text check")
     return fails
+
+
+def text_problems(paths):
+    """-> (problems, files read) over the tracked paths in text scope."""
+    out, n = [], 0
+    for p in paths:
+        if text_scope(p) is None:
+            continue
+        try:
+            with open(os.path.join(REPO, p), encoding="utf-8") as f:
+                text = f.read()
+        except FileNotFoundError:
+            continue                      # tracked but deleted in this working tree: nothing to read
+        except (OSError, UnicodeError) as e:
+            out.append(f"{p}: UNREADABLE ({e})")
+            continue
+        n += 1
+        out += check_text(p, text)
+    return out, n
 
 
 def main():
@@ -203,18 +286,27 @@ def main():
         return 2
     units, cause = read_units()
     remnants, problems = check_tree(paths, units, allow)
+    texts, nread = text_problems(paths)
     for x in remnants:
         print("REMNANT " + x)
     for x in problems:
         print("PROBLEM " + x)
+    for x in texts:
+        print("ERA TEXT " + x)
     units_line = f"UNITS UNMEASURED: {cause}" if units is None else f"units read: {len(units)}"
-    print(units_line)
-    if remnants or problems:
-        print(f"FAIL: {len(remnants)} retired-era remnant(s), {len(problems)} allow-list problem(s). Delete the "
-              f"remnant (git is the archive; add its row to {INDEX}) or allow it there with a reason.")
+    print(units_line + f"; text files read: {nread}")
+    if nread == 0:
+        print("COULD NOT LOOK: no instruction or record file was read, so the text check saw nothing")
+        return 2
+    if remnants or problems or texts:
+        print(f"FAIL: {len(remnants)} retired-era remnant(s), {len(problems)} allow-list problem(s), {len(texts)} "
+              f"era text line(s). A remnant: delete it (git is the archive; add its row to {INDEX}) or allow it "
+              f"there with a reason. An era text line: say on the line that the thing is retired (or rewrite it to "
+              f"what runs today); a design doc, skill reference, lesson or fact may instead open with "
+              f"'{HISTORY_MARK}' (src/RimMandrake/Utils/era_history_mark.py adds it).")
         return 1
-    print(f"PASS: no retired-era path outside the {len(allow)} allow rows in {INDEX}"
-          + ("" if units is not None else "; units UNMEASURED"))
+    print(f"PASS: no retired-era path outside the {len(allow)} allow rows in {INDEX}, and no era text line in "
+          f"{nread} instruction and record files" + ("" if units is not None else "; units UNMEASURED"))
     return 0
 
 
