@@ -59,7 +59,9 @@ EXPLAIN = "EXPLAIN-AWAY"          # one attempt to prove an ODD/ALARMING observa
 # same section; selftest_testpilot_route pins both. The model: the agent file's `model:` line, which relentless.pilot_model reads.
 HOLDS = "HOW A SITTING HOLDS"     # the brief's marker for these steps (selftest pins it)
 POSITIVE_STEPS = ("The owner's positive steps: Get inventive. Innovate; do not just tune, and do not just diagnose: "
-                  "provide or repair what is broken. Think outside the box: collapse classes into one or invent new "
+                  "provide or repair what is broken. Provide bars where they are missing: that is not cheating, it is making "
+                  "it harder on yourself. Create instruments to prove your diagnoses. Think outside the box: collapse "
+                  "classes into one or invent new "
                   "ones as needed to find a way around the problem.")
 HOLDS_LINES = [
     "%s (owner, 2026-11-16): the builders' steps, with the live game as your instrument." % HOLDS,

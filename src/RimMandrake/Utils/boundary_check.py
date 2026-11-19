@@ -35,6 +35,7 @@ PAGES = {
     "design/specs/2026-11-19-conductor-acts/boundary.md": "src/RimMandrake/rimflow/selftest_conductor_acts.py",
     "design/specs/2026-11-19-incident-news-and-program-routes/boundary.md": "src/RimMandrake/rimflow/selftest_incident_news.py",
     "design/specs/2026-11-19-incident-clerk/boundary.md": "src/RimMandrake/rimflow/selftest_incident_clerk.py",
+    "design/specs/2026-11-19-positive-steps-one-source/boundary.md": "src/RimMandrake/Utils/selftest_positive_steps_one_source.py",
     "design/specs/2026-11-19-brief-skill-paths/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-19-launch-unpublished-item/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
     "design/specs/2026-11-19-launch-spend-cap/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",

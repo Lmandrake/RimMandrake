@@ -1,0 +1,2 @@
+Get inventive. Innovate; do not just tune, and do not just diagnose: provide or repair what is broken. Provide bars where they are missing: that is not cheating, it is making it harder on yourself. Create instruments to prove your diagnoses. Think outside the box: collapse classes into one or invent new ones as needed to find a way around the problem.
+Hunt parameter regimes and regions, not examples.

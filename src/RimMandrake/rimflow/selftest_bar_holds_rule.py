@@ -23,10 +23,8 @@ import maturation as M  # noqa: E402
 import maturation_autonomy as MA  # noqa: E402
 import maturation_dispatch as MD  # noqa: E402
 
-HUNT = "Hunt parameter regimes and regions, not examples."
-POSITIVE = ("Get inventive. Innovate; do not just tune, and do not just diagnose: provide or repair what is broken. "
-            "Think outside the box: collapse classes into one or invent new ones as needed to find a way around the "
-            "problem.")
+with open(os.path.join(ROOT, ".claude", "rm_positive_steps.md"), encoding="utf-8") as _fh:
+    POSITIVE, HUNT = [ln.strip() for ln in _fh.read().splitlines() if ln.strip()][:2]
 fails = []
 
 

@@ -1839,7 +1839,8 @@ HOW_A_BAR_HOLDS = "\n".join([
     "earlier builder's choice), and challenge our own rules first. Relaxing a bar is never yours: it is a question to "
     "the Conductor, with the map and a picture you have looked at.",
     "- The owner's positive steps: Get inventive. Innovate; do not just tune, and do not just diagnose: provide or "
-    "repair what is broken. Think outside the box: collapse classes into one or invent new ones as needed to find a way "
+    "repair what is broken. Provide bars where they are missing: that is not cheating, it is making it harder on "
+    "yourself. Create instruments to prove your diagnoses. Think outside the box: collapse classes into one or invent new ones as needed to find a way "
     "around the problem.",
     "- Every number you add says where it comes from: a bar, or a fact you measured.",
     "- An old check that turns red when you change something is evidence about your change: find out why. Never edit "
