@@ -2071,7 +2071,9 @@ def apply_rows(rows: list[dict], ctx: Ctx, max_s: float, failures: list[str], st
             r["deferred"] = True
             deferred += 1
             continue
+        t = time.time()
         freed += act(r, ctx, failures)
+        r["act_s"] = round(time.time() - t, 1)      # one 28 KB row once ran 525 s past the budget, unexplained
     return freed, deferred
 
 
@@ -2776,7 +2778,9 @@ def run(a, sd: Path) -> int:
            "tmp": dict(tmp, errors=tmp["errors"][:5], before=tmp_before, after=tmp_reading()), "run_tmp": runs_tmp,
            "orphan_bundles": orphans, "phase_s": phase_s,
            "borrow_walks": {"n": len(ctx.borrow_walks), "s": round(sum(ctx.borrow_walks), 1),
-                            "max_s": max(ctx.borrow_walks, default=0)}}
+                            "max_s": max(ctx.borrow_walks, default=0)},
+           "apply_slowest": [[r["path"], r["act_s"]] for r in sorted((r for r in rows if "act_s" in r),
+                                                                   key=lambda r: -r["act_s"])[:5]]}
     if a.apply:
         sanity_end(sd, end, rows, rec)
         record(sd, rec)

@@ -58,6 +58,18 @@ ok(order == ["/x/big"] and "/x/t1" in waits, "under pressure the biggest clone g
 order, _, _ = run(True, 10)
 ok(order[-1] == "/x/sess", "under pressure sessions are still last (%s)" % order)
 
+clock, real = [0.0], (s.act, s.time.time, s.apply_pressed)
+s.act, s.time.time, s.apply_pressed = ((lambda r, c, f: clock.__setitem__(0, clock[0] + (7 if r["path"] == "/x/t1" else 1)) or 0),
+                                       (lambda: clock[0]), (lambda: False))
+try:
+    rs = rows()
+    s.apply_rows(rs, None, 0, [], 0.0)
+finally:
+    s.act, s.time.time, s.apply_pressed = real
+secs = {r["path"]: r.get("act_s") for r in rs}
+ok(secs.get("/x/t1") == 7 and secs.get("/x/big") == 1 and secs.get("/x/young") is None,
+   "each acted row records its own seconds, and an unacted row none (%s)" % secs)
+
 real_free, real_tmp = s.free_gb, s.tmp_reading
 try:
     s.free_gb, s.tmp_reading = (lambda path="/": s.PRESSURE_GB - 1), (lambda: None)
