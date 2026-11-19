@@ -10,7 +10,7 @@ is reported up). The unit is the ITEM: the store keeps no per-obligation record,
 
 False closes are audited in two populations, never pooled: `random` (a seeded draw over every close, for an overall
 estimate) and `narrow_weak` (targeted: every close whose deciding verdict was a WEAK the live narrow rule read as PASS,
-relentless_wall.acted_weak, live since 2026-11-04T07:02Z, ede0dff499; and, before that rule existed, every ledger close
+weak_reading.acted_weak, live since 2026-11-04T07:02Z, ede0dff499; and, before that rule existed, every ledger close
 the Marker granted as a conditional pass because only a GAP:OTHER proof gap remained, e.g. the 14 of 2026-11-03: those
 items are `retired` in the store, so only the ledger shows them as closes). Both are stratified by closure age at audit.
 
@@ -35,7 +35,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
-from rimflow import relentless_trust, relentless_wall          # noqa: E402
+from rimflow import seed_trust, weak_reading                    # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 AUDITS = os.path.join(REPO, "infrastructure", "state", "close_audits.jsonl")
@@ -159,8 +159,8 @@ def load(store=STORE, ledger=LEDGER):
 
 
 def sensitivity_source(private=None, set_name="E1"):
-    """-> relentless_trust.compute() over the seeded set, or None when the private seed set is absent."""
-    private = private or str(relentless_trust.PRIVATE)
+    """-> seed_trust.compute() over the seeded set, or None when the private seed set is absent."""
+    private = private or str(seed_trust.PRIVATE)
     kp = os.path.join(private, "keys", set_name + ".json")
     if not os.path.exists(kp):
         return None
@@ -177,7 +177,7 @@ def sensitivity_source(private=None, set_name="E1"):
     if os.path.exists(rp):
         with open(rp, encoding="utf-8") as f:
             reads = {k: v["read"] for k, v in json.load(f).items()}
-    return relentless_trust.compute(results, reads, keys)
+    return seed_trust.compute(results, reads, keys)
 
 
 # ---------------------------------------------------------------- the metrics (pure)
@@ -187,7 +187,7 @@ def um(why):
 
 
 def ratio(k, n):
-    ci = relentless_trust.wilson(k, n)
+    ci = seed_trust.wilson(k, n)
     return {"k": k, "n": n, "rate": round(k / n, 3) if n else None, "ci95": [round(ci[0], 3), round(ci[1], 3)] if ci else None}
 
 
@@ -202,9 +202,9 @@ def closes(states):
 
 
 def narrow_weak(states, ledger=None):
-    """Closes whose deciding verdict was a WEAK the live rule read as PASS (relentless_wall.acted_weak), plus every ledger
+    """Closes whose deciding verdict was a WEAK the live rule read as PASS (weak_reading.acted_weak), plus every ledger
     close that was a Marker conditional pass on a GAP:OTHER gap (ledger_conditional): the store marks those `retired`."""
-    store = {i for i, (_, w, why) in closes(states).items() if w == "WEAK" and relentless_wall.acted_weak(w, why) == "PASS"}
+    store = {i for i, (_, w, why) in closes(states).items() if w == "WEAK" and weak_reading.acted_weak(w, why) == "PASS"}
     return sorted(store | set(ledger or {}))
 
 
@@ -400,7 +400,7 @@ def m_repair_leverage(snap):
 
 def m_sensitivity(sens):
     if sens is None:
-        return um("no seeded set (relentless_trust PRIVATE keys/E1.json) is readable here")
+        return um("no seeded set (seed_trust PRIVATE keys/E1.json) is readable here")
     cls = {c: {"caught": v["caught"], "n": v["n"], "ci95": v["ci"], "lost": v["lost"], "unrun": v["unrun"]}
            for c, v in sens["classes"].items()}
     ctl = sens["control"]

@@ -25,6 +25,9 @@ from checker_box import (  # noqa: E402,F401
     box_path_prepend, change_range, default_grants, denied, excludes, git_reads, grant_git, grant_items,
     item_rev, make_box, profile, props, read_always, readonly, remove_box, skill_targets, tmp_env, unit_env,
     unit_path,)
+
+from weak_reading import (  # noqa: E402,F401
+    _LETS, _STRONG, acted_weak, names_strong, narrow_word,)
 WORDS = ("PASS", "WEAK", "FAIL", "UNMEASURED")
 UNMEASURED = "UNMEASURED"   # CHECKER_SANDBOX_FIX_BLIND_TO_STEVE: the box could not reach the evidence; no work goes back
 REACH_TAG = "CANNOT REACH:"
@@ -68,15 +71,6 @@ RULE = (   # both Marker prompts: the unwalled and the walled one must never dif
     "never send work back to have a test written for a check you already made. Form, wording, citations, formatting "
     "and missing paperwork are never a gap: note them on a PASS.")
 SHADOW = "narrow_weak_1"   # RELENTLESS_WEAK_MEASURE_PASS_COLLAPSE: the narrower WEAK, recorded per verdict; LIVE since 2026-11-03 (acted_weak)
-
-
-def narrow_word(word, reasons):
-    """The verdict under the narrower WEAK: a gap counts only when it is a hunk of this commit's own diff. Shadow only:
-    nothing acts on it. A WEAK with no tag is UNTAGGED, never guessed."""
-    if word != "WEAK":
-        return word
-    head = (reasons or "").lstrip().upper()
-    return "WEAK" if head.startswith("GAP:DIFF") else "PASS" if head.startswith("GAP:OTHER") else "UNTAGGED"
 
 
 def enforced(rules, mode="marker"):
@@ -547,26 +541,6 @@ def read_as(word, reasons, defects=None, unreached=None):
         if b and not defect_said(reasons):
             return UNMEASURED, b
     return acted_weak(word, reasons), None
-
-
-def acted_weak(word, reasons):
-    """The narrower WEAK is the live rule (owner by card 2026-11-03, "Narrow it now": 172 of 207 shadowed WEAKs were
-    PASS under it). A WEAK holds only on GAP:DIFF, a hunk of this commit's own change put back with the proof still
-    green; GAP:OTHER (a mutant the checker wrote elsewhere) is a PASS; an untagged WEAK stays WEAK, never guessed."""
-    n = narrow_word(word, reasons)
-    n = "WEAK" if n == "UNTAGGED" else n
-    return n if n != "WEAK" or names_strong(reasons) else "PASS"
-
-
-_STRONG = re.compile(r"(?i)\bSTRONG:\s*\S.{8,}")
-_LETS = re.compile(r"(?i)\bLETS THROUGH:\s*\S.{8,}")
-
-
-def names_strong(reasons):
-    """JUDGE_WEAK_RETHINK_NAME_THE_STRONG_PROOF (owner 2026-11-05): a WEAK holds only when it names the strong proof and
-    the product defect the current proof lets through. Measured before the change: 269 returns in
-    7 days, 2 of a 15-sample fixed a product defect; the rest rewrote a test for a check the Judge had already run."""
-    return bool(_STRONG.search(reasons or "") and _LETS.search(reasons or ""))
 
 
 # ---- off-box measurements: a contract's `offbox` ADAPTER NAMES. Each name is a fixed command in run_rules.json

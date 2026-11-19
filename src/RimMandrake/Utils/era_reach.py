@@ -61,11 +61,15 @@ def import_aliases(tree, era):
                 top = a.name.split(".")[-1]
                 if top in era_mods:
                     mods[a.asname or a.name] = top
-        elif isinstance(n, ast.ImportFrom) and n.module:
-            m = n.module.split(".")[-1]
+        elif isinstance(n, ast.ImportFrom):
+            m = (n.module or "").split(".")[-1]
             if m in era_mods:
                 for a in n.names:
                     names[a.asname or a.name] = (m, a.name)
+            else:       # `from rimflow import relentless_x` / `from . import relentless_x`: the name is the module
+                for a in n.names:
+                    if a.name in era_mods:
+                        mods[a.asname or a.name] = a.name
     return mods, names
 
 def refs_in(node, mods, names, local, here):
@@ -149,6 +153,7 @@ for m, f in era_mods.items():
         if isinstance(s, ast.ImportFrom):
             if s.module and s.module.split(".")[-1] in era_mods:
                 imported.add(s.module.split(".")[-1])
+            imported |= {a.name for a in s.names if a.name in era_mods}      # from rimflow import relentless_x
             continue
         if isinstance(s, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
             for d in s.decorator_list:

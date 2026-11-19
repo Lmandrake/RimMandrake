@@ -49,6 +49,8 @@ def used():
     return 1
 def unused():
     return 2
+def by_package():
+    return 3
 def called_by_sup(sup):
     return sup.tick_only()
 '''
@@ -56,6 +58,11 @@ LIVE = '''
 import relentless as R
 def f():
     return R.live() + R.C().m()
+'''
+PKG = '''
+from rimflow import relentless_sub as RS
+def g():
+    return RS.by_package()
 '''
 TEST = '''
 import relentless as R
@@ -70,6 +77,7 @@ def main():
     (rf / "relentless.py").write_text(ERA)
     (rf / "relentless_sub.py").write_text(SUB)
     (rf / "user.py").write_text(LIVE)
+    (rf / "pkg_user.py").write_text(PKG)
     (rf / "selftest_user.py").write_text(TEST)
     subprocess.run(["git", "init", "-q", str(tmp)], check=True, timeout=120)
     subprocess.run(["git", "-C", str(tmp), "add", "."], check=True, timeout=120)
@@ -81,7 +89,8 @@ def main():
     check(set(m["dead"]) == {"dead", "via_sup", "C.n", "main"}, "dead: dead, via_sup, C.n, main (%s)" % m["dead"])
     check(m["live_consts"] == ["CONST"], "a constant a live function reads is live (%s)" % m["live_consts"])
     s = live["modules"]["relentless_sub"]
-    check(s["live"] == ["used"] and set(s["dead"]) == {"unused", "called_by_sup"}, "sub: used live, the rest dead (%s)" % s)
+    check(set(s["live"]) == {"used", "by_package"} and set(s["dead"]) == {"unused", "called_by_sup"},
+          "sub: used live (and by_package, reached as `from rimflow import relentless_sub`), the rest dead (%s)" % s)
     check(live["roots"].get("relentless.live") == ["src/RimMandrake/rimflow/user.py"], "the root names its call site")
     st = json.loads(subprocess.run([sys.executable, walk, str(tmp), "selftests"], capture_output=True, text=True, timeout=120,
                                    check=True).stdout)
