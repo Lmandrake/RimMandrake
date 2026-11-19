@@ -315,7 +315,13 @@ def gather(root, cfg, live=True):
              for r in (m.get("runs") if isinstance(m.get("runs"), list) else []) if r.get("live")
              and _is_ingame_item(r.get("item"))]
     for mod in cfg.get("advancing") or []:
-        f = M.build_facts(root, mod)
+        try:
+            f = M.build_facts(root, mod)
+        except PC.Unreadable as e:
+            # the counts live in the control store (slice 2): an unreadable store is a fact of the mod, and the hold
+            # read in _tick then holds every mod as UNREADABLE, never a crash
+            # (RIMMANDRAKE_HOLD_UNREADABLE_STORE_TICK_CRASH_BACK_SLICE_TWO)
+            f = {"mod": mod, "control_unreadable": "CONTROL UNREADABLE: %s" % e}
         f["arrived"] = arrivals(M.load(root, mod))
         m = by.get(mod) or {}
         runs = m.get("runs", UNM) if m else []
