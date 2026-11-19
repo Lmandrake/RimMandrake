@@ -663,8 +663,11 @@ def test_routes():
     # RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL: the retired pool's run_rules.json no longer counts
     drain = {"readers": TABLE["readers"], "drainers": [{"by": "fixture", "seat": "BENCH", "needs": ["offline"],
                                                          "tags": ["NIGHTLY_RED"]}]}
-    check("T2: a BENCH offline alarm has no receiver now the Relentless pool is retired (run_rules.json not read)",
-          "Relentless pool" in str(IN.receiver_problem("BENCH", "offline")) and not hasattr(IN, "RELENTLESS_RULES"))
+    # RIMMANDRAKE_NAME_RECEIVER_FOR_SEAT_ALARMS_PENDING_WITH_NONE: the Conductor seat receives every BENCH offline alarm
+    check("T2: the real table names the Conductor seat the receiver of every BENCH offline alarm (run_rules.json not read)",
+          IN.receiver_problem("BENCH", "offline") is None and IN.receiver_problem("BENCH", "offline", tag="ANY") is None
+          and any("Conductor" in d["by"] and not d.get("tags") for d in TABLE.get("drainers") or [])
+          and not hasattr(IN, "RELENTLESS_RULES"))
     check("T2: the real table names red_dispatch as the drainer of the build cop's NIGHTLY_RED items",
           IN.receiver_problem("BENCH", "offline", tag="NIGHTLY_RED") is None
           and any("red_dispatch" in d["by"] for d in TABLE.get("drainers") or []))

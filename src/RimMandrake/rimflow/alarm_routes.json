@@ -20,9 +20,10 @@
     "chain": ["Conductor", "Operations:fresh", "owner"],
     "ladder": {"emergency": [45, 60], "distressed": [60, 240]}
   },
-  "_drainers": "incident.receiver_problem (RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL): a live program that works through alarm items filed --for seat --needs needs, and, when tags is set, only alarms of those ops_watch tags. The retired Relentless pool was the old drainer of every BENCH offline alarm; add a row here when a program takes that work, never a seat's sittings.",
+  "_drainers": "incident.receiver_problem (RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL): a live program that works through alarm items filed --for seat --needs needs, and, when tags is set, only alarms of those ops_watch tags. The retired Relentless pool was the old drainer of every BENCH offline alarm; since RIMMANDRAKE_NAME_RECEIVER_FOR_SEAT_ALARMS_PENDING_WITH_NONE (Conductor's decision, 2026-11-19) the Conductor seat is: each alarm files or reopens its one fixed item, raised first in the BENCH queue, and a rule naming conductor_log writes its line to the Conductor log.",
   "drainers": [
-    {"by": "red_dispatch.py on rm-red-dispatch.timer: one capped detached fixer per build-cop red item", "seat": "BENCH", "needs": ["offline"], "tags": ["NIGHTLY_RED"]}
+    {"by": "red_dispatch.py on rm-red-dispatch.timer: one capped detached fixer per build-cop red item", "seat": "BENCH", "needs": ["offline"], "tags": ["NIGHTLY_RED"]},
+    {"by": "the Conductor seat (key BENCH, name CONDUCTOR): it works its raised BENCH items and reads conductor/log.md at every wake", "seat": "BENCH", "needs": ["offline"]}
   ],
   "readers": {
     "BENCH": {"by": "Conductor quick checks and its sittings"},

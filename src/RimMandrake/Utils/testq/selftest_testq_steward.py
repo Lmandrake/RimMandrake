@@ -709,8 +709,8 @@ def main():
         os.environ["RIMFLOW_ROUTES"] = real_routes
         nobody_real = W.nobody_for(W.ALARM_SEAT, "offline")
         os.environ["RIMFLOW_ROUTES"] = os.path.join(tmp, "routes.json")
-        check(nobody_real and "Relentless pool" in nobody_real,
-              "T2: on the real table nothing drains the steward's BENCH offline item (the pool is retired): %s" % nobody_real)
+        check(nobody_real is None,      # RIMMANDRAKE_NAME_RECEIVER_FOR_SEAT_ALARMS_PENDING_WITH_NONE
+              "T2: on the real table the Conductor seat receives the steward's BENCH offline item: %s" % nobody_real)
         real_nf, real_ol = W.nobody_for, W.open_lane_item
         W.nobody_for, W.open_lane_item = (lambda s, n: "nobody drains %s" % s), (lambda w, now: None)
         inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "told": None}

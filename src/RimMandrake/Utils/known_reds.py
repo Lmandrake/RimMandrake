@@ -169,8 +169,8 @@ def uncovered(v):
 #            normalised line is the same (one root cause, e.g. a full disk) are one group. A group is the ops_watch
 #            reading testing.red_<6 letters>; the wildcard alarm NIGHTLY_COP_FIX files and raises one item per group.
 #   DEADLINE the first night of a red's current streak + selftest.red_fix_deadline_h (testing_policy.json). Past it the
-#            red is in testing.nightly_reds_overdue, one fixed alarm (OPS_RED_OVERDUE_CHASE_*), owned or not; no drainer takes its item since
-#            797a08f5e7, so it stays PENDING and the testing.* incident route carries it to Operations.
+#            red is in testing.nightly_reds_overdue, one fixed alarm (OPS_RED_OVERDUE_CHASE_*), owned or not, filed for the Conductor
+#            seat (RIMMANDRAKE_NAME_RECEIVER_FOR_SEAT_ALARMS_PENDING_WITH_NONE) and told in the Conductor log.
 ROW = re.compile(r"^(PASS|FAIL|CRASH|SKIP\w*|FLAKY\w*|UNMEASURED)\s+[\d.]+s\s+(\S+)\s*$")
 EXC = re.compile(r"^[\w.]*(Error|Exception|Exit|Interrupt|Warning)\b:?")
 SKIP_LINE = re.compile(r"^(rc -?\d+|Traceback \(most recent call last\):|File \".*|[~^\s]+|ok\b.*|PASS\b.*|RESULT:.*|0 Error\(s\))$")

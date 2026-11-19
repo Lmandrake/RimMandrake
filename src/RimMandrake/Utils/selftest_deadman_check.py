@@ -228,11 +228,10 @@ def receivers():
         os.environ.pop("RIMFLOW_ROUTES", None)
     else:
         os.environ["RIMFLOW_ROUTES"] = rt
-    # RIMMANDRAKE_FIX_ALARM_RECEIVER_TRUSTS_RETIRED_RELENTLESS_POOL: the retired Relentless pool drained BENCH offline;
-    # nothing does now, so the dead-man's new items stay unfiled with "no receiver" until a drainer row exists
+    # RIMMANDRAKE_NAME_RECEIVER_FOR_SEAT_ALARMS_PENDING_WITH_NONE: the Conductor seat receives BENCH offline alarms, so the
+    # dead-man's new items are filed on the real table (797a08f5e7 had left them unfiled with "no receiver")
     nobody = OW.alarm_receiver_problem(dict(OW.alarm_conf(OW.load_rules()), clone=str(TMP)))
-    check(nobody is not None and "Relentless pool" in nobody,
-          "the real alarm conf (ops_watch_rules.json) is told nobody drains BENCH offline: %s" % nobody)
+    check(nobody is None, "the real alarm conf (ops_watch_rules.json) files for a receiver, the Conductor seat: %s" % nobody)
 
 
 def main():

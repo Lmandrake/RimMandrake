@@ -49,8 +49,8 @@ while the claim's lease is live, or for 2 h after a claim with no lease; a lapse
 incident pauses for at most CLAIM_HOLD_S (2 h) in all (incident claim_paused_s): a renewed lease is not a fix.
 
 Escalation (section 6.4), each at most once per incident:
-  T+10 min   spawn STEVE_LANE_UNSTICK_<STATE>_UNOWNED_<hex4> --for ALARM_SEAT (BENCH, relentless's home pool, which
-             its workers drain) --needs offline (from the steward's own item), naming the state and job ids, or note
+  T+10 min   spawn STEVE_LANE_UNSTICK_<STATE>_UNOWNED_<hex4> --for ALARM_SEAT (BENCH, the Conductor seat, which
+             works its raised items) --needs offline (from the steward's own item), naming the state and job ids, or note
              the still-open item of an earlier incident (never a duplicate); refused, with the reason on the incident,
              when rimflow incident.receiver_problem says nobody would pick it up (T2, ALARMS_REWIRE_OFF_RETIRED_BENCH);
              a failed `steve:lane` record lights the pulse health row
@@ -252,7 +252,7 @@ def publish():
 
 
 BENCH_SHARD = "infrastructure/state/ledger/events/BENCH.jsonl"
-# the L1 item's seat: relentless's home pool (run_rules.json pool_seats), which its workers drain; the T2 check
+# the L1 item's seat: the Conductor seat (alarm_routes.json drainers, RIMMANDRAKE_NAME_RECEIVER_FOR_SEAT_ALARMS_PENDING_WITH_NONE); the T2 check
 # (rimflow incident.receiver_problem) refuses the spawn if no program would pick it up
 ALARM_SEAT = "BENCH"
 # the T+120 rung's told-ledger metric: alarm_routes.json steve.* sends it to Operations (alarm_census reads it here)
