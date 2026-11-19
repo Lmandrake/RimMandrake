@@ -201,6 +201,7 @@ SECTIONS = [
     lambda tmp: speaker_owner_needs_his_words(),
     examiner_is_author_by_id,
     lambda tmp: flawed_criterion_not_designers(),
+    cli_repin_reads_concept_clone,
 ]
 
 

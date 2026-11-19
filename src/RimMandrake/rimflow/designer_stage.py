@@ -3130,7 +3130,7 @@ def main(argv=None):
         elif a.cmd == "unblock":
             unblock(a.dir, a.why)
         elif a.cmd == "repin":
-            print("re-pinned stage(s) %s: %s" % (", ".join(map(str, repin(a.dir, a.source, a.why, REPO))), a.dir))
+            print("re-pinned stage(s) %s: %s" % (", ".join(map(str, repin(a.dir, a.source, a.why))), a.dir))
         elif a.cmd == "scene-begin":
             scene_begin(a.dir, a.scene, a.recovery)
         elif a.cmd in ("scene-end", "scene-hold"):
