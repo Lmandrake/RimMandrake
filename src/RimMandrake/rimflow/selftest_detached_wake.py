@@ -6,7 +6,7 @@ Conductor log line stands.
     python3 src/RimMandrake/Utils/run_selftests.py --only src/RimMandrake/rimflow/selftest_detached_wake.py
 
 LIVE HALF, UNRUN (the ticket: never run by the building run): in the Conductor window, launch a 30-second detached run
-(`python3 src/RimMandrake/rimflow/detached_helper.py launch --seat BENCH --item <ID> --brief "Say done." --max-s 60`)
+(`python3 src/RimMandrake/rimflow/detached_helper.py launch --seat BENCH --item <ID> --brief "Say done." --max-s 60 --budget-usd 1`)
 and stay quiet: within a minute of its end the window wakes with "[RimFlow] 1 detached run(s) ended …" naming the run,
 its state and its result path.
 """

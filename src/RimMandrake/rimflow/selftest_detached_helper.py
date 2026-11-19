@@ -1344,6 +1344,75 @@ def t_an_item_filed_nowhere_here_names_where_to_publish():
           "unpub: filed nowhere here -> the command for the clone that filed it, with the launch seat's shard (%r)" % text)
 
 
+def _cli_launch(extra, records=()):
+    """main(['launch', ...] + extra) with launch() stubbed (no clone, no unit, no model run): -> (rc, text, caps the
+    stub was handed). `records` are run records written for this call, in their own state dir."""
+    import contextlib
+    import io
+    real_launch, real_state = DH.launch, os.environ["RM_DISPATCHER_STATE"]
+    os.environ["RM_DISPATCHER_STATE"] = tempfile.mkdtemp(prefix="cap_", dir=TMP)
+    caps = []
+    DH.launch = lambda *a, **k: caps.append(a[5]) or (0, "DETACHED stub")
+    buf = io.StringIO()
+    try:
+        for r in records:
+            DH.write_record(r)
+        with contextlib.redirect_stdout(buf):
+            try:
+                rc = DH.main(["launch", "--seat", "BENCH", "--item", "SOME_ITEM_TO_BUILD", "--brief", "b"] + extra)
+            except SystemExit as e:
+                rc = e.code
+    finally:
+        DH.launch, os.environ["RM_DISPATCHER_STATE"] = real_launch, real_state
+    return rc, buf.getvalue(), caps
+
+
+def _cap_rec(name, at, budget, **kw):
+    return dict({"unit": "rm-detached-bench-cap-%s" % name, "at": T0 + at, "budget_usd": budget, "seat": "BENCH",
+                 "item": "SOME_ITEM_TO_BUILD", "status": "finished"}, **kw)
+
+
+def t_a_launch_without_a_cap_is_refused():
+    """Boundary page design/specs/2026-11-19-launch-spend-cap/boundary.md: no default level (four runs stopped by $15)."""
+    rc, text, caps = _cli_launch([])
+    check(rc == 2 and caps == [] and "--budget-usd <USD>" in text and "--budget-usd 0" in text,
+          "cap: a launch with no --budget-usd and no --resume is refused before anything runs (rc %s, %s, %r)"
+          % (rc, caps, text[:160]))
+
+
+def t_an_explicit_cap_is_carried_unchanged():
+    got = [_cli_launch(["--budget-usd", v])[::2] for v in ("0", "40")]
+    check(got == [(0, [0.0]), (0, [40.0])], "cap: --budget-usd 0 and 40 reach the launch unchanged (%s)" % got)
+    rc, text, caps = _cli_launch(["--budget-usd", "-1"])
+    check(rc == 2 and caps == [], "cap: a negative cap is refused (rc %s, %r)" % (rc, text[:100]))
+
+
+def t_a_resume_carries_the_earlier_cap():
+    out = os.path.join(TMP, "cap-result.out")
+    with open(out, "w") as f:
+        json.dump({"type": "result", "session_id": "sess-capfile"}, f)
+    recs = [_cap_rec("old", 10, 15.0, session="sess-cap"), _cap_rec("zero", 20, 0.0, resume_session="sess-cap"),
+            _cap_rec("other", 30, 99.0, session="sess-other"), _cap_rec("file", 40, 33.0, out=out)]
+    rc, text, caps = _cli_launch(["--resume", "sess-cap"], recs)
+    check(rc == 0 and caps == [0.0] and "rm-detached-bench-cap-zero" in text,
+          "cap: --resume carries the newest record's cap, 0 as 0, and names it (rc %s, %s, %r)" % (rc, caps, text[:200]))
+    rc, text, caps = _cli_launch(["--resume", "sess-capfile"], recs)
+    check(rc == 0 and caps == [33.0], "cap: a record read by its result file's session id carries its cap (%s)" % caps)
+
+
+def t_a_resume_with_a_cap_takes_the_stated_cap():
+    rc, text, caps = _cli_launch(["--resume", "sess-cap", "--budget-usd", "60"], [_cap_rec("old", 10, 15.0, session="sess-cap")])
+    check(rc == 0 and caps == [60.0], "cap: --resume with --budget-usd takes the stated cap (%s)" % caps)
+
+
+def t_a_resume_whose_earlier_cap_cannot_be_read_is_refused():
+    for recs, why in (([], "no record"), ([_cap_rec("nocap", 10, None, session="sess-lost")], "no numeric budget_usd")):
+        rc, text, caps = _cli_launch(["--resume", "sess-lost"], recs)
+        check(rc == 2 and caps == [] and "sess-lost" in text and "--budget-usd" in text,
+              "cap: a resume whose earlier cap cannot be read is refused, no number guessed (%s: rc %s, %r)"
+              % (why, rc, text[:160]))
+
+
 def main():
     test_refuse()
     test_launch_and_finish()
@@ -1369,6 +1438,11 @@ def main():
     t_an_unpublished_item_refusal_prints_the_publish_command()
     t_an_unpublished_item_refusal_publishes_nothing()
     t_an_item_filed_nowhere_here_names_where_to_publish()
+    t_a_launch_without_a_cap_is_refused()
+    t_an_explicit_cap_is_carried_unchanged()
+    t_a_resume_carries_the_earlier_cap()
+    t_a_resume_with_a_cap_takes_the_stated_cap()
+    t_a_resume_whose_earlier_cap_cannot_be_read_is_refused()
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

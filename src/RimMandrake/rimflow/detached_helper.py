@@ -5,7 +5,7 @@ An in-process helper (the Agent tool) dies with its window, so a window past its
 one runs. A detached run lives in its own transient systemd unit and survives the window's restart:
 
   python3 src/RimMandrake/rimflow/detached_helper.py launch --seat BENCH --item ITEM_ID --brief-file F \
-      [--model fable|opus|sonnet] [--max-s none|SECONDS] [--budget-usd 15] [--continue-on-cap N]
+      --budget-usd USD|0 [--model fable|opus|sonnet] [--max-s none|SECONDS] [--resume SESSION] [--continue-on-cap N]
   python3 src/RimMandrake/rimflow/detached_helper.py status [--all]
   python3 src/RimMandrake/rimflow/detached_helper.py finish --unit U     (the unit's ExecStopPost; never by hand)
   python3 src/RimMandrake/rimflow/detached_helper.py return --unit U [--no-publish-ledger]   (the unit's last ExecStopPost)
@@ -20,7 +20,9 @@ It takes a pool clone <pool>/clones/<ITEM>.det through scratch_clone.py
 (reused, synced, when it exists), then starts role_launch's path: systemd-run --user + claude_bounded.sh -p, the
 model passed, NO wall-time limit by default (owner, 2026-11-08: "No time limits please"; --max-s none or 0). An explicit
 --max-s SECONDS still bounds it twice (the unit's RuntimeMaxSec and claude_bounded's scope). Spend is bounded by
-spend_watchdog.py, from outside the agent (never claude --max-budget-usd, which tells the agent its spend every turn:
+spend_watchdog.py, from outside the agent, at the cap the launch states (required, no default; 0 = none; a --resume
+without one carries the newest run record of that session's cap, and refuses when none is readable), never with
+claude --max-budget-usd, which tells the agent its spend every turn:
 owner 2026-11-16, RIMMANDRAKE_HIDE_SPEND_FROM_BUILDERS_CAP_NAGGED_EVERY_TURN); the brief states no spend or cap. The brief gets a footer: work in the clone, land with ./publish, put state, evidence and one
 imperative NEXT on the item as a rimflow note and publish the shard.
 finish: runs when the unit stops for any reason (done, failed, killed at its bound). It first KILLs and stops the run's
@@ -78,9 +80,9 @@ DEFAULT_MAX_S = None    # unbounded: no RuntimeMaxSec on the unit, no CLAUDE_SCO
 MIN_MAX_S = 60
 STOP_S = 600           # TimeoutStopSec: the stop-post steps' bound (finish, wrapup, the return's start)
 GRACE_S = 120          # finish + publish time on top of the run's own bound
-# The per-run stop guards a runaway unattended burn (owner 2026-11-12: "not burn 90M tokens overnight by itself"). The
-# 15 LEVEL names no danger and stopped 4 real runs (3 lessons): RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS.
-DEFAULT_BUDGET_USD = 15.0
+# The per-run stop guards a runaway unattended burn (owner 2026-11-12: "not burn 90M tokens overnight by itself"), and
+# has NO default level: a $15 default named no danger and stopped 4 real runs (3 lessons), so a launch states its cap,
+# and --resume carries the earlier run's (boundary design/specs/2026-11-19-launch-spend-cap/boundary.md).
 MODELS = ("fable", "opus", "sonnet")  # owner ladder 2026-11-12: Fable for blank-page design; Haiku is banned
 # The CLI alias "fable" resolved to claude-fable-5-1 (measured 2026-11-12); the ladder means Fable 5.2, so pass the full id.
 MODEL_IDS = {"fable": "claude-fable-5-2"}
@@ -701,6 +703,33 @@ def session_of(unit, root=None, projects=None):
         return None, None
     t = find_transcript(sid, projects)
     return sid, (context_tokens(t) if t else None)
+
+
+def earlier_cap(session, root=None):
+    """-> (cap, unit) of the newest run record of `session` (its `session`, its `resume_session`, or the session_id in a
+    result file of a record from before `session` was kept), or (None, why) when no record holds it or the newest one
+    has no numeric budget_usd. Never a fallback number: a resume that cannot read its cap is refused by its caller."""
+    best = None
+    try:
+        recs = list(all_records(root))
+    except OSError as e:
+        return None, "the run records are unreadable (%s)" % e
+    for r in recs:
+        sid = r.get("session") or None
+        if sid is None and r.get("out"):
+            try:
+                with open(r["out"], encoding="utf-8", errors="replace") as fh:
+                    m = re.search(r'"session_id"\s*:\s*"([A-Za-z0-9-]{8,64})"', fh.read())
+                sid = m.group(1) if m else None
+            except OSError:
+                sid = None
+        if session in (sid, r.get("resume_session")) and _num(r.get("at")) and (best is None or r["at"] > best["at"]):
+            best = r
+    if best is None:
+        return None, "no run record holds session %s" % session
+    if not _num(best.get("budget_usd")):
+        return None, "the newest run record of session %s (%s) has no numeric budget_usd" % (session, best["unit"])
+    return float(best["budget_usd"]), best["unit"]
 
 
 def _control_settings(rec):
@@ -1546,7 +1575,9 @@ def main(argv=None):
     g.add_argument("--brief-file")
     a.add_argument("--model", default="sonnet")
     a.add_argument("--max-s", default=DEFAULT_MAX_S, help="seconds, or none/0 for no wall-time limit (default)")
-    a.add_argument("--budget-usd", type=float, default=DEFAULT_BUDGET_USD)
+    a.add_argument("--budget-usd", type=float, default=None,
+                   help="the run's spend cap, stated per job (0 = none); required, no default. A --resume without it "
+                        "carries the earlier run's cap")
     a.add_argument("--clone", help="an existing clone to run in (default: a pool clone <ITEM>.det)")
     a.add_argument("--env", action="append", default=[], metavar="RM_KEY=VALUE",
                    help="an RM_ variable the run's unit carries (a pilot holder's RM_MODLEDGER_WRITER, say)")
@@ -1578,13 +1609,26 @@ def main(argv=None):
                 brief = fh.read()
         env = dict(kv.partition("=")[::2] for kv in args.env)
         bad = [k for k in env if not re.match(r"^RM_[A-Z0-9_]+$", k)]
+        budget, carried = args.budget_usd, ""
+        if budget is None and args.resume:
+            budget, src = earlier_cap(args.resume)
+            carried = "" if budget is None else "spend cap %g carried from %s (the run this resumes)\n" % (budget, src)
         if bad:
             rc, text = 2, "REFUSED: --env takes RM_ variables only, not %s" % ", ".join(bad)
+        elif budget is None and args.resume:
+            rc, text = 2, ("REFUSED: --resume %s states no --budget-usd and its earlier cap cannot be read: %s. State it: "
+                           "--budget-usd <USD>, or --budget-usd 0 for none" % (args.resume, src))
+        elif budget is None:
+            rc, text = 2, ("REFUSED: a spend cap is required: --budget-usd <USD> sized to this job, or --budget-usd 0 for "
+                           "none; there is no default (design/specs/2026-11-19-launch-spend-cap/boundary.md)")
+        elif budget < 0:
+            rc, text = 2, "REFUSED: --budget-usd %g is negative (0 = no cap)" % budget
         else:
             rc, text = launch({"CONDUCTOR": "BENCH"}.get(args.seat.upper(), args.seat.upper()), args.item, brief, args.model,
-                              args.max_s, args.budget_usd, clone=args.clone, skip_launch_checks=args.skip_launch_checks,
+                              args.max_s, budget, clone=args.clone, skip_launch_checks=args.skip_launch_checks,
                               env=env, resume_session=args.resume,
                               extra={"continue_on_cap": args.continue_on_cap} if args.continue_on_cap > 0 else None)
+            text = carried + text
     elif args.cmd == "finish":
         keep_off_result(args.unit)      # before anything prints: never into claude's result or error file
         rc, text = finish(args.unit)

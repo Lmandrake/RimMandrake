@@ -112,8 +112,8 @@ Period."*). The mechanics, hooks and settings behind each line: `src/RimMandrake
   Each limit you set on a helper (a spend cap, `--max-s`, a retry or turn count, a cut of text it reads or writes) names
   the danger it guards and the evidence that the danger happens, in the brief or your launch note; a limit that cannot
   name both is left off, not tuned (`standing_rulings.md` §No limit without the danger it guards). Size the cap to the
-  job: a lane of several tickets or a whole mod does not fit the $15 default
-  (`RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS`).
+  job: there is no default (a $15 one stopped four runs, `RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS`);
+  a launch without `--budget-usd` is refused, and a `--resume` without one carries the earlier run's cap.
 - **Every brief names the SKILL.md paths for its kind of work, taken from `skills/BY_WORK.md`** (owner, 2026-11-19: *"since
   we're not seeming enamored of auto firing skills at the moment, it might be very important to pass relevant debug skills
   to the subagents we assign to do related work, yes?"*). Most project skills are not registered, so a helper sees only the

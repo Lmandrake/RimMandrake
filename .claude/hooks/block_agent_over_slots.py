@@ -182,7 +182,7 @@ def decide(payload, now=None):
             f"Blocked: this {SA.seat_label(seat)} window is draining for its restart ({drain}). Running helpers finish; "
             "no new one starts, because the kill waits on every helper alive. Run the work OUTSIDE this window "
             "instead; it survives the restart: `python3 src/RimMandrake/rimflow/detached_helper.py launch --seat "
-            f"{SA.seat_label(seat)} --item <ID> --brief-file <F> --model sonnet|opus --max-s <s>`. Or file it in the "
+            f"{SA.seat_label(seat)} --item <ID> --brief-file <F> --model sonnet|opus --budget-usd <cap for this job>`. Or file it in the "
             "ledger: the fresh window picks it up. (CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE)"
         )
     ov = SA._override_live(SA.read_json(SA.streams_dir() / "slot_override.json"), now) or {}

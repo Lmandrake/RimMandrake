@@ -631,8 +631,9 @@ as its one change (delegated: evidence-for-ask; report
   danger happens, meaning an incident, measurement, record or lesson, with its date or path.
 - **A limit that cannot name both is removed, not tuned.** A bigger number is not a fix. When the danger is real but
   nothing measured supports the LEVEL, the level is the defect, and the launcher picks the bound for the job it is
-  launching. Example: `detached_helper.py`'s default spend cap of $15
-  (`RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS`).
+  launching. Example: `detached_helper.py`'s default spend cap of $15, removed 2026-11-19: `launch` now requires
+  `--budget-usd` and `--resume` carries the earlier run's cap
+  (`RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS`, `design/specs/2026-11-19-launch-spend-cap/boundary.md`).
 - **When the evidence exists, the guard stays and is cheap** (his "protect cheaply!"). This rule removes no guard that
   has its danger and evidence.
 - **Found in the wild:** a limit with no named danger in pipeline machinery is a pipeline defect (§The pipeline fixes
