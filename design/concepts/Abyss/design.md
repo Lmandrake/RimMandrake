@@ -9,7 +9,9 @@ it launches nothing.
 **A correction to this pass's own brief.** The brief called the Abyss "a sea biome: the ship is the only way down
 and back". It is not. Every source describes a dark highland: *"obsidian teeth in a fog that light cannot cross"*.
 The seabed rulings do not apply here. (The Abyss does have a fishery, by the owner's mark of 2026-11-17; it is in
-mineral pools on land.)
+mineral pools on land.) Where the word "sea" came from: on 2026-08-13 the owner's first idea for the donor's
+pitch-black biome was to *"pretend [it] is at the bottom of the ocean"* and *"'go to that biome' when we try to land
+on water"*. His sheet of 2026-09-06 made it a highland instead, and the seas later got a seabed of their own.
 
 **What the owner had already approved.** On 2026-11-17 he walked the cleanse proposal for the Abyss and approved its
 scope with four marks (`cleanse/owner_marks.md`): *"I saw how much you put into 0.2.0 Impressive, and the right
@@ -22,6 +24,15 @@ from orbit (*"full dark still pauses it"*), on fuel, and that a biome wears on t
 the first pass's question about the grain and the ship. The answers are written in below (see "The ship while it
 sits here"); the changes are listed at the top of `rewrite_choices.md`. The hidden-ship move is left exactly as the
 first pass made it, and is still his to revert.
+
+**Second reader, 2026-11-18** (a different agent from the writer, before any old file is deleted): every Abyss
+source was re-read, the ledger items and the owner's card answers of 2026-11-10 among them, and this design was
+repaired. The largest repairs: his three card answers on what the hide is for are now in the design (the first read
+never opened them); the grain on the hull is sourced (a ship idea put to him on 2026-10-01); the rites moved to
+"later" on his ruling of 2026-10-23; six animals he cut are listed as cut; and what is and is not built of the
+hidden ship is stated plainly. The list and the reasons are in the section "Second reader" at the top of
+`rewrite_choices.md`. The Abyss has no locked Designer sheet or tree, so nothing here waits on a Designer run to
+reconcile.
 
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/Abyss/`
 (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its path by sitting here.
@@ -50,13 +61,29 @@ one of the few biomes that measurably slows Imperial pursuit... no orbital eyes,
 walking pace and short knives."* And its star: *"The sensor shadow — the place to run to when the Empire is close.
 Refuge priced in darkness, breakage and cold."*
 
+The note that first worked his idea out said why hiding is the Jawa verb: *"They are small and overlooked, and
+being overlooked is the thing they are actually good at."*
+
 So the Abyss turns the other biomes inside out. Everywhere else the question is what a crew can see in a week
 before the Empire arrives. Here the crew came *because* the Empire is close, the Empire is slow to come, and the
 question is how long they dare stay. The design note that first worked his hiding idea out set the two rules this
 document keeps: *"The hiding place must be poor"*, and *"it must not be permanent."*
 
+**His three answers on what the hide is for** (by question card, 2026-11-10; `designer_codex_2026-11-09/Abyss/ANSWERS_OWNER.md`):
+
+> *When shelter turns frightening:* "Wonder draws you out: beauty offers something worth approaching, then leaves you
+> exposed when darkness returns. Shelter remains worth choosing, while wonder tempts the crew beyond it."
+
+> *Keeping a hidden colony working:* "Searches interrupt work: ordinary work is safe between searches, but exposed
+> activity becomes dangerous while a search probe passes."
+
+> *Why staying becomes frightening:* "Danger becomes more frequent: close threats and frightening reversals gradually
+> leave fewer peaceful stretches, giving a practical reason to depart at the cost of breathing room."
+
 And it gives the place its central bargain, which is already built: **light keeps the things in the Dark off you,
-and light is what gives the ship away.**
+and light is what gives the ship away.** (Second reader, read from the source: the cover counts the crew's own lit
+lamps and does not count light that grows. So the bargain has an answer the place itself supplies: hide by the
+light of living things.)
 
 The crew are small, hooded, weak in a brawl and evolved for the dune sea. This is the cold side of the world. The
 Jawa see well in ordinary darkness. This is not ordinary darkness: it is in the air, and the sheet's ban is flat,
@@ -79,6 +106,10 @@ crew the search reads as ordinary (five to eight days, times four), and up to tw
 with the ladder's later steps as far apart again. A ship that holds its cover does better still, because the
 search has lost it; then the edge is set by the place and not by the Empire. Most stays end well short of it, on
 food, on fuel, on the hull (below), or on a probe that got its report out.
+
+His words for the ordinary pace (2026-08-28): *"around every 5-8 days, keep 'em running"*. (`UNMEASURED`: the
+Empire also raids as an ordinary storyteller enemy, by his ruling of the same day; the built delay is on the
+pursuit's own timers, and whether it slows those other raids nobody has read.)
 
 A season is fifteen days, so **the Abyss is the one stop where seasons pass and slow things can be seen**: a crop
 under a lamp tree, stone wearing away, a crew getting used to the dark. (The pursuit's numbers are marked
@@ -111,36 +142,53 @@ The crew's first decision is in front of them before the ramp is down: how many 
   light. They settle on lamps and glow plants and the lit radius shrinks: *"a perimeter going dark one lamp at a
   time is the warning."* They scatter from heat. They really fly.
 - **Something waits for the lamp to fail.** The ishvarith, one of the Abyss's family of pitch-black, yellow-eyed
-  things, will not cross firelight or a heated space. Light is a wall against it until the moths eat the wall.
+  things, breaks for the dark when it is lit. Light is a wall against it until the moths eat the wall. (Built for
+  light only; the older line about heated space is not built, and a cornered one still fights.)
 - **The rattle.** The ombrathia hunts by the tremor of movement; its quills pick it up, and it *"raises them in a
   clattering hackle"* before it lunges. The rattle is the warning and it comes before the attack, not after.
 - **The grip.** The saevitha has no mouth. It kills by holding on and draining warmth.
+- **The kin.** These are one family, and his rule for it (2026-10-05) is exact: pitch black, four glowing yellow
+  eyes, soft sibilant names, *"the 'possibly of Sith origin' type."* Every one of them is described as *"less
+  evolved than made, as if some old and patient cruelty once had the shaping of it."* The pack beast *"still bows
+  its head to a hard voice."* The hauler works all night *"as if it remembered whose it was."* A crew that has been
+  owned by nobody is surrounded by animals that remember an owner.
 - **The grain.** The Dark, where it dies, falls as fine corrosive grain. It wears unroofed stone and steel, and it
   leaves a rust-brown oily dust, tholin, that sweeps up and refines to fuel. *"Roof everything"*, and feed the
   heaters with what fell on the roof.
 - **The poor larder.** Berries, a slow black-and-violet fungus that grows only where grain has eaten the rock,
-  milk and meat from the herds, and what can be fished from the mineral pools: black ribbon swimmers with pale
-  hinged jaws, and things that ripple along the bottom. Each catch is also alive in the pool, moving.
+  milk and meat from the herds, and what can be fished from the mineral pools: veiljaws, black ribbon swimmers with
+  pale hinged jaws and blind pits, and suturefins, flat things that ripple along the bottom with a pale seam like
+  a stitch. Each catch is also alive in the pool, moving. (His mark of 2026-11-17, overruling an older roster note
+  that this water held no fish; the two creatures are the cleanse's designs.)
 
 ## The first weeks
 
 - **The hidden ship.** While the ship sits with its engine cold and few lamps lit, cover builds: the search loses
   it. Starting the engine tears the cover away. Every lamp lit for the farm, the perimeter or the workshop is
-  weighed against it. (Built as `RM_MapComponentShipCover`; in the campaign layer, by his card of 2026-10-01 that
-  the free tier gets no ship touch.)
+  weighed against it. *"You are unfound, which is different."* (In the campaign layer, by his card of 2026-10-01
+  that the free tier gets no ship touch. What is built, `RM_MapComponentShipCover`: a meter that few lit lamps
+  anywhere on the map build and noise wears down. What is not: the engine's start does not yet break it, and
+  nothing outside the Abyss reads it, so today the pursuit is slowed by the biome alone.)
 - **Probes still come.** His words, typed 2026-09-30: *"Yes but probe droids will still come that must be
-  avoided."* A probe drifts in under the Dark looking for movement and light. The crew beats it by being still,
-  dark and cold, or by destroying it before it reports. A probe that reports collapses the cover, and the search
+  avoided."* A probe drifts in under the Dark looking for movement and light. His rule for it (card, 2026-11-10):
+  *"ordinary work is safe between searches, but exposed activity becomes dangerous while a search probe passes."*
+  The crew beats it by being still and dark while it passes, or by destroying it before it reports. (Built: the
+  probe counts lamps and moving crew by distance alone, through walls, and reads no heat. Seeing through walls is
+  a gap to close.) A probe that reports collapses the cover, and the search
   resumes at its ordinary pace: the Abyss becomes a five-to-eight-day stop like any other.
-- **Farming by lamp.** Crops grow under a lamp tree if they are also kept warm. Food is the reason to light up,
-  and lighting up is the cost. This is the hide's real ration.
+- **Farming by lamp.** Crops grow under a lamp tree if they are also kept warm. A lamp tree is living light, and
+  living light does not count against the ship's cover (built), so the farm is not what gives the hide away. Its
+  cost is the warmth: fuel, and the heaters' own lamps. This is the hide's real ration.
 - **The lane.** Ordinary research at the bench teaches heat-folding, and the fold lamp: a fuelled heater-lamp with
   a throat that holds a lane of clear air open, stopped by walls and fading with distance. The review's phrase for it: *"explicitly a heater
   that clears air, not a magical sensor."* It is the only clean line of sight on the map, and the crew chooses where
   it points.
 - **The Unveiling.** Rarely the Dark folds away wholesale and *"the actual map shows itself, naked and lit — then
   it simply folds back. The one moment you see what country you have been living in."* When it closes, the lamps
-  shrink again, the moths return, and whatever was waiting is nearer than it was.
+  shrink again, the moths return, and whatever was waiting is nearer than it was. His answer of 2026-11-10 is what
+  the clearing is for: *"Wonder draws you out... then leaves you exposed when darkness returns."* The crew that
+  walks out to look is the crew caught outside. The review's line: *"Every other biome's rare weather is a hazard.
+  This one is a gift."* It has a price that is built: the grain falls harder while the air is clear.
 - **The wear.** Weeks of grain on anything left unroofed. The hide is paid for in roofing, fuel, cold and the
   things the crew is not salvaging while it sits here.
 
@@ -156,7 +204,14 @@ other biome is on the pursuit's list.
 **Wear on the hull: the grain.** His ruling: *"Yes in 0.1.0. It's easy, and most of the biome already talk about
 this."* The Abyss has talked about it since its first sheet, whose star reads *"Refuge priced in darkness, breakage
 and cold"*, and the note that worked out his hiding idea said *"Something has to erode while you are down there."*
-What erodes is now settled: the ship.
+What erodes is now settled: the ship. The grain on the hull is in a source after all: the review of 2026-09-30
+offered him *"The Abyss etches the hull"*, slow wear on the ship's hull fittings with *"sweeping the tholin off
+pays for some of the repair"*, as a ship touch for the free tier, and on 2026-10-01 he chose no free-tier ship
+touch. This design puts the wear in the campaign layer.
+
+The same note holds the rule this wear must not break: *"Hiding must cost the thing the campaign is about — salvage
+and progress — not hit points."* So the wear is slow, a crew can answer it by hand, and it is never the main price
+of the hide. The main price is *"the weeks they are not earning."*
 
 - *What the player sees.* In an etchfall the grain ticks on the hull as it ticks on stone, and the outside of the
   ship wears like any steel left under the sky. Dry weather wears nothing. The dust it leaves on and around the
@@ -176,7 +231,11 @@ What erodes is now settled: the ship.
   Launching always ends the wear, and ends the hide with it.
 - `UNMEASURED`: how the built etchfall sampler treats a hull today. A ship's own cells are probably roofed in the
   engine's eyes and so spared; wearing the outside faces is the part to build.
-- *0.2.0: the rough way in.* The sheet's wind: *"Laminar flow hits the relief and the Dark's temperature mosaic
+- *0.2.0: the repair is here too.* The rescue ship in Lightfall's wall yields four kinds of fitting the crew's own
+  ship accepts (hull plating, conduit loom, thruster liner, seal gaskets), and each repairs worn structure aboard
+  (built, never loaded).
+- *0.2.0: the rough way in.* His own ruling on the planet's wind (2026-09-07) says the terminator's colliding air
+  makes *"the atmospheric volatile precipitates, the lightning, the ship damage"*. The sheet's wind: *"Laminar flow hits the relief and the Dark's temperature mosaic
   and shatters into micro-turbulence: wild vortices dancing among the crags, suddenly icy-still, then blasting"*,
   and of the wind machines that once stood here, *"the gust-shear snaps it"*. A ship coming down through that takes a knock on arrival unless its
   screen is up. It waits a version because its only answer is a shield and its only warning is the ship's own
@@ -189,6 +248,9 @@ richer sources. You can also buy it."*
 - *The richer source is tholin.* The sheet: *"the Dark's fallen grains are concentrated organic feedstock;
   chemfuel-adjacent industry from air."* It is built: swept up, refined, chemfuel. The crew scavenges its fuel out
   of the weather, off the roof and off the hull.
+- *His two words on tholin.* On 2026-09-07 he ruled tholins *"unharvestable — a similar keyword, not a fuel"*. On
+  2026-10-01, by card, he ruled that etchfall leaves sweepable tholin dust that refines into fuel, and that is
+  what was built. The later decision is the one this design follows.
 - *The hide spends it.* Heaters keep the rooms clear and the fold lamp is fuelled. What is left over after warmth
   is what goes in the ship's tanks. A crew that hides well leaves with less.
 - *The emergency route is at its worst here.* There is very little biomass in the Abyss to render: berries, a slow
@@ -214,12 +276,14 @@ Each can happen inside a stay. Each says what is on screen.
    is visibly full of more of them. His mark: *"YES TO FISH (WEIRD CREATURES)!"*
 5. **The vine turns.** *On screen:* the paddle vines along the hull slowly face the one lamp left on.
 6. **The helper.** *On screen:* a tamed sorter, stoop-backed, long-fingered, carrying one small item to the
-   stockpile *"at a crawl"*, with great seriousness. A scavenger crew has found the only creature on the planet
+   stockpile *"at a crawl"*, with great seriousness, and eating the filth on the way. A scavenger crew has found the only creature on the planet
    that likes tidying.
 7. **The Unveiling.** *On screen:* the Dark lifts and the country stands lit, etched and enormous, for a few
    hours. *Why it is beautiful, and why it twists:* it closes.
 8. **The probe.** *On screen:* a probe droid drifting between the crags, the ship dark, every crew member
    standing still. *Why it is funny:* someone left a lamp on in the galley.
+   And its twin, from his card: an Unveiling opens, half the crew walks out to stare at the lit country, and the
+   air closes with them a long way from the ramp.
 9. **Sweeping the ship.** *On screen:* after an etchfall, hooded figures with brooms on and around the hull,
    sweeping rust-brown dust into sacks and carrying the sacks to the refinery. *Why it is funny:* the thing eating
    the ship is the thing that fuels it, and they are not going to waste either.
@@ -260,8 +324,14 @@ It arrives late, and it arrives into the same Dark.
 - The hide is poor. Food, fuel and warmth run down, and nothing here is the salvage the campaign is about.
 - The grain eats what is left outside, and now the outside of the ship.
 - Nobody to trade with, for as long as the hide holds.
-- A lit farm and a hidden ship cannot both be had in full.
+- Lamps and a hidden ship cannot both be had in full; only light that grows is free of that cost.
+- The cover wears thin by itself in time (built, with the message *"the search will find it again. It can be built
+  up again after a few days"*). The hide was never permanent.
 - A probe that got its report out.
+- **The longer the stay, the fewer the quiet stretches.** His card of 2026-11-10: *"Danger becomes more frequent:
+  close threats and frightening reversals gradually leave fewer peaceful stretches, giving a practical reason to
+  depart at the cost of breathing room."* Nothing built does this yet and no source says how; it is the hide's own
+  clock in his words, and which version holds it is asked under `NEEDS HIM`.
 - *0.2.0:* the dread. *"You fear staying here too long will find the source of the nightmares themselves."* The
   free tier's whisper about the Nhaleth is that they *"are not visitors at all. They are whoever stays"*, and its
   sign after a long stay is a dream: *"Dreamt I didn't need the light."* For a crew in hiding, the rumour is about
@@ -281,6 +351,8 @@ It arrives late, and it arrives into the same Dark.
 - **A lamp tree** dug up and carried; **glowberries**, a light in the hand.
 - **Etchcap,** a delicacy and a trade good, slow and scarce.
 - **Animals:** a pack beast, a milker, a sorter that tidies.
+- *0.2.0:* **a great bone,** the Abyss's recorded gift to the ship (`BIOME_SHIP_CONTRIBUTIONS_1`, an agent's pick):
+  set aboard, it is what lets a summ egg bond with the crew.
 - *0.2.0, from Lightfall only:* parts cut from the rescue ship in the chasm wall to restore the crew's own (his
   words: *"You can't have two ships but you can cannibalize that one to improve yours. A rich haul. But only then do
   they discover that their ship only wants certain parts. It likes what it is and doesn't want deep redesign. Just
@@ -360,8 +432,8 @@ shared-machinery file has the whole of it):
 - The fishery of creepy dark pool creatures, living in the pools **(his mark; unbuilt)**.
 - The ordinary wreck field. (built)
 - **The hidden ship:** cover that builds on a quiet, dark, landed ship and breaks on engine start; probes that
-  still come; the report that ends the cover and restores the ordinary search. (cover and probes built; the
-  pursuit's response to a broken cover is unverified) **Moved in by this rewrite.**
+  still come; the report that ends the cover and restores the ordinary search. (the cover meter and probes are built;
+  the engine's start breaking the cover and the pursuit reading the cover are not) **Moved in by this rewrite.**
 - **The grain wears the hull:** etchfall on the outside of the landed ship; a roofed lean-to, patching by hand and
   the ship's light screen as the answers. (unbuilt; campaign layer, as every ship touch is by his card of
   2026-10-01; on the shared hull-wear machinery; his ruling of 2026-11-18)
@@ -369,7 +441,9 @@ shared-machinery file has the whole of it):
 **0.2.0, Lightfall and the long stay** (as he approved on 2026-11-17, except the line above)
 - The brood at the bottom of Lightfall: the landscape-sized sleeping mother, the clutch, the bone field, one wake
   meter fed by greed, the egg, the storms that follow a stolen egg home, the summing that *"never stops growing"*.
-- The Ship in the Wall and the fittings it yields; the great bone aboard.
+- The Ship in the Wall and the fittings it yields; the great bone aboard. The ship takes four kinds of part and
+  refuses three, in plain words: *"The ship will not take this. It does not want to be something else."* Where the
+  greed line lies may be learned by saving and loading (his words: *"that's pretty normal in these games"*).
 - The cryptid: rings, stocked dens and caches the sorter may or may not have made; the unwatched exchange; a clear
   pocket around nothing; whispers, tales and the long-stay dream.
 - Drifting clear pockets outdoors; the nevarithia's worn knot of Dark and its release at death.
@@ -380,9 +454,12 @@ shared-machinery file has the whole of it):
   later."*).
 - The roster's bespoke behaviours not yet built (corpse-stripping, spine spray, hungry digging, and the like);
   glow-globe poison; fungus spores.
-- The four darkness rites (campaign).
+- The lasting etch scar on a ship that has been here, if he wants it (asked under `NEEDS HIM`).
 
 **Later**
+- The four darkness rites the deep dark teaches (the Dark Vigil, the Blind Offering, the Snuffing, the Lightless
+  Burial): campaign layer, and deferred with every biome rite by his ruling of 2026-10-23, *"hereby documented and
+  deferred to v2."* The first version of this page had them at 0.2.0.
 - Fugitive holds, seep-works and their explosions, the wind-farm ruins as inhabited sites: campaign layer.
 - Lightfall as a landmark on the world: authored at the one painting pass.
 
@@ -394,25 +471,47 @@ shared-machinery file has the whole of it):
 - Geothermal anything; steady wind; water rain; permanent clear weather; clean sensing; sun-fed residents (the
   sheet's bans, all kept).
 - The four Lightfall options he did not pick (the Sink, the Lowered, the Mercy Engine, the Lantern Tide).
+- Six animals he cut on his sheet of 2026-10-05: the dusk rat (*"No longer needed, cut."*), the frostling, the
+  night ave, the sand prowler (*"doesn't belong here"*), the shadow charger and the thunderox.
+- Ship and light ideas put to him on 2026-10-01 and not chosen: moths drawn to the ship's own lamps as the free
+  tier's hide; cold-burn cells, a heatless "stealth light"; grafting glow onto any tree; a vigil rite at a ring.
+- This biome as the sea floor (his first idea of 2026-08-13, overtaken by his sheet of 2026-09-06).
+- Any eclipse: *"There are no eclipses on this planet"* (2026-10-01). The nevarithia's death looses its own knot
+  of Dark and nothing in the sky.
 - **Recommended for dropping, not yet his:** gill-ash as a second fuel line; the unused donor weather copies; the
   natural-placement worker and its rarity slider.
 
 ## NEEDS HIM
 
-Three questions are left. A fourth, whether the grain eats the ship, was answered by his ruling of 2026-11-18 and
-is written into the design above: it does, in 0.1.0, in any etchfall, whatever the engine is doing.
+Each has the default this design uses, so nothing waits on him to read on. The first three are the first pass's;
+the rest were found by the second reader.
 
-1. **The hidden ship in 0.1.0.** On 2026-11-17 he approved it in 0.2.0. On 2026-11-18 he asked that the ship lens
-   be the overriding priority for 0.1.0 and that the buckets stay *"a LITTLE open"*. *In 0.1.0* (this document's
-   default): the Abyss's first version is the hide, which is what the biome is for; it adds two promises and one
-   unverified link to an already *"daunting"* version. *Back to 0.2.0:* 0.1.0 is then a dark place to survive with
-   only the passive fourfold delay, and the ship is scenery for one more version. *In 0.1.0, and move lamp-crop
-   farming out to make room:* the hide gets poorer, which the hiding rule likes, and the cover-against-farm bargain
-   loses its farm.
-2. **Sharp-edged clear pockets outdoors.** The frozen sheet says *"clear pockets are real, sharp-edged, and
+1. **[scope] The hidden ship in 0.1.0.** On 2026-11-17 he approved it in 0.2.0. On 2026-11-18 he asked that the ship
+   lens be the overriding priority for 0.1.0 and that the buckets stay *"a LITTLE open"*. New evidence for moving it:
+   his own card of 2026-11-10, a week before that approval, answers "keeping a hidden colony working" with probes
+   (*"exposed activity becomes dangerous while a search probe passes"*). *In 0.1.0* (this document's default): the
+   Abyss's first version is the hide, which is what the biome is for; it adds two promises and two unbuilt links
+   (the engine breaking cover, the pursuit reading it) to an already *"daunting"* version. *Back to 0.2.0:* 0.1.0 is
+   then a dark place to survive with only the passive fourfold delay.
+2. **[other] Sharp-edged clear pockets outdoors.** The frozen sheet says *"clear pockets are real, sharp-edged, and
    unexplained to everyone in-world."* The built engine ties outdoor Dark to one shared outdoor temperature, so
    0.1.0 has none outdoors. The cleanse asked this on 2026-11-17 and it is unanswered. *Off until 0.2.0* (default).
-   *On in 0.1.0:* the drifting-pocket code exists and needs a lore-compatible reason and its own scene.
-3. **Does an Unveiling expose the ship?** New in this rewrite, not in any source. *No* (default; nothing built
-   changes). *Yes, while it lasts:* the most beautiful hours in the biome are the hours the Empire can see, which is
-   his own line, *"only to twist into nightmares just as swiftly"*, made literal.
+3. **[cover] Does an Unveiling expose the ship?** New in the rewrite, not in any source. *No* (default). *Yes, while
+   it lasts:* the most beautiful hours in the biome are the hours the Empire can see.
+4. **[scope] "Danger becomes more frequent" the longer the crew stays: which version?** His card of 2026-11-10.
+   Nothing is built and no source says how it happens. Default: named in the design as the hide's clock, built in
+   0.2.0 with the cryptid's signs, because 0.1.0 already has the hull, the larder and the probes to end a stay.
+5. **[hull] The lasting etch scar.** The review offered a mark the ship carries everywhere, *"I was in the Abyss"*;
+   he chose no free-tier ship touch on 2026-10-01 and has not been asked about it for the campaign. Default: the
+   hull wears and is repaired like any damage, with no lasting mark.
+6. **[hull] Wear against the hiding rule.** The note that worked out his hiding idea says a hide must cost *"salvage
+   and progress — not hit points"*. His ruling of 2026-11-18 puts hull wear in 0.1.0. Default: both stand; the wear
+   is slow and hand-answerable and is not the hide's main price.
+7. **[other] Is Lightfall's bottom clear or dark?** His sheet: *"the one place the Dark always dies"*. The biology
+   draft in use since 2026-10-01: the Dark there *"has never once lifted"*. Default: the sheet (clear above, with
+   the brood in whatever dark the chasm floor keeps); the draft's sentence is his to edit. (0.2.0.)
+8. **[other] Two declined ship ideas, listed and not revived:** moths on the ship's own lamps lifting the cover, and
+   the heatless stealth lamp (both on his card of 2026-10-01, neither chosen).
+
+Not a question: the Abyss has no locked Designer tree. Not asked again: where the greed line lies (his waiver),
+the gust turbines (cut), the rites (deferred by him).
