@@ -846,8 +846,10 @@ def ask_errors(ask, rec):
     rv = ask.get("review")
     if not isinstance(rv, dict) or rv.get("verdict") not in ("pass", "struck"):
         errs.append("%s: no structured review result (verdict pass|struck)" % w)
-    elif not CT.txt(rv.get("by")) or rv.get("by") == ask.get("author") or (CT.txt(ask.get("author")) and (
-            same_agent(rv["by"], ask["author"]) or same_agent(ask["author"], rv["by"]))):   # by id, as the exam's readers
+    elif not CT.txt(ask.get("author")):
+        errs.append("%s: names no author, so nothing shows its review is someone else's" % w)
+    elif not CT.txt(rv.get("by")) or rv.get("by") == ask.get("author") or (
+            same_agent(rv["by"], ask["author"]) or same_agent(ask["author"], rv["by"])):   # by id, as the exam's readers
         # (RIMMANDRAKE_MATCH_ASK_REVIEWER_TO_AUTHOR_BY_AGENT_ID)
         errs.append("%s: reviewed by its own author" % w)
     elif rv.get("verdict") == "struck":
@@ -1308,7 +1310,10 @@ def exam_control(d, leaf):
 def control_copy_errors(d, leaf, ids):
     """The control copy on disk is the current tree with `leaf` removed and named nowhere, or the reasons it is not."""
     how = "make it with `designer_stage.py exam-control %s --leaf %s` and rerun the control Reader on it" % (d, leaf)
-    rec = read_json(os.path.join(d, CONTROL_DIR, "copy.json"))
+    try:
+        rec = read_json(os.path.join(d, CONTROL_DIR, "copy.json"))
+    except Refused as e:    # a rejection of the run, never a crash that leaves it open
+        return ["exam: the control copy's %s; %s" % (e, how)]
     if not isinstance(rec, dict) or rec.get("leaf") != leaf:
         return ["exam: no control copy with %r removed (%s/copy.json); %s" % (leaf, CONTROL_DIR, how)]
     errs = []
@@ -1513,7 +1518,10 @@ def result_errors(res, d, st, repo=REPO):
         if stage not in DIALOGUE:
             return ["only stages 1-2 send him questions; stage %d returns to stage 2 with the question" % stage]
         errs += quick_look_errors(res, rec)
-        if st.get("item") and owner_feed(repo, st.get("item"), d) is None:
+        if not st.get("item"):
+            # his answers are read on the concept's item: with none, the wait could never see one
+            errs.append("waiting_owner needs the concept's item (stage.json item): his answers are read on it")
+        elif owner_feed(repo, st.get("item"), d) is None:
             # the wait's baseline: a null one never moves, so he would answer into a concept that waits for good
             # (RIMMANDRAKE_REFUSE_WAITING_RESULT_WITHOUT_FEED_BASELINE)
             errs.append("waiting_owner UNMEASURED: his feed (OWNER.jsonl) could not be read here, so the wait has no "
@@ -2084,7 +2092,14 @@ def _gap_lines(gaps, advisory=False):
 def park_summary(d, st, kind, why):
     """The one page he reads: what is settled, what is refused and why, the smallest fixes, what he must decide, and,
     when enough code exists, a loud offer of a quick look."""
-    rec = read_json(os.path.join(d, "record.json")) or {}
+    try:
+        rec = read_json(os.path.join(d, "record.json")) or {}
+    except Refused:
+        rec = {}
+    rec = rec if isinstance(rec, dict) else {}      # a malformed record is the run's to repair, never a crash here
+    rec = dict(rec, **{k: [] for k in ("asks", "decisions", "inventory") if not isinstance(rec.get(k), list)})
+    if not isinstance(rec.get("root"), dict):
+        rec["root"] = {}
     verdict = read_json(os.path.join(d, "coverage_verdict.json")) or {}
     mod = st.get("mod") or os.path.basename(os.path.abspath(d))
     done = sorted({r.get("stage") for r in st.get("results") or [] if isinstance(r, dict) and r.get("outcome") == "done"})
@@ -2105,7 +2120,7 @@ def park_summary(d, st, kind, why):
               "Enough code exists (%d built capabilities: %s). A short look in game could settle %s at once." % (
                   len(code), ", ".join(code), "the questions below"), ""]
         for a in sent:
-            look = a.get("quick_look") or {}
+            look = a.get("quick_look") if isinstance(a.get("quick_look"), dict) else {}
             if look.get("offer") and CT.txt(look.get("scene")):
                 L += [" ".join(look["scene"].split()), ""]
     L += ["## Settled", "",

@@ -325,6 +325,40 @@ def unreadable_live_proofs_noted(tmp):
     check("built: a missing live_proofs folder is no proofs, no note", not any("live" in n for n in notes), notes)
 
 
+def repair_check_leftovers(tmp):
+    """The Codex check of the follow-up repairs (2026-11-18): four were incomplete."""
+    from selftest_designer_stage import ask
+    # copy.json that does not parse is a rejection of the exam run
+    d = concept(tmp, "CopyBad", stage=4)
+    os.makedirs(os.path.join(d, DS.CONTROL_DIR))
+    put(d, os.path.join(DS.CONTROL_DIR, "copy.json"), "{")
+    got, err = crashes(DS.control_copy_errors, d, "l1", ["l1", "l2"])
+    check("repair: an unparseable exam_control/copy.json is an exam error, never a crash",
+          err is None and isinstance(got, list) and got and got != "REFUSED" and got[0] != "REFUSED", (got, err))
+    # park_summary over a malformed record writes his page
+    for i, rec in enumerate(([1], {"asks": 3, "root": [1], "decisions": 2})):
+        d = concept(tmp, "ParkBad%d" % i, stage=3)
+        put(d, "record.json", rec)
+        got, err = crashes(DS.park_summary, d, DS.load_state(d), "certification", "test")
+        check("repair: park_summary over record %r writes the page, never a crash" % (rec,),
+              err is None and isinstance(got, str) and got.startswith("#"), (got, err))
+    # an ask with no author cannot show its review is someone else's
+    a = ask(review={"verdict": "pass", "by": "agent:a0123456789abcdef"})
+    a.pop("author")
+    errs = DS.ask_errors(a, {})
+    check("repair: an ask that names no author is refused", any("no author" in e for e in errs), errs)
+    # an item-less concept cannot wait on him
+    d = os.path.join(tmp, "design/concepts/NoItem")
+    DS.init(d, "NoItem", None, cap=100000, reserve=10000)
+    st = DS.load_state(d)
+    st["stage"] = 1
+    DS.write_json(DS.state_path(d), st)
+    DS.open_run(d, "rm-role-designer-99", repo=tmp)
+    put(d, "result.json", {"run": "rm-role-designer-99", "stage": 1, "outcome": "waiting_owner"})
+    errs = DS.result_errors(DS.read_json(os.path.join(d, "result.json")), d, DS.load_state(d), tmp)
+    check("repair: a waiting_owner result on a concept with no item is refused", any("item" in e for e in errs), errs)
+
+
 # each child's section joins once its fix lands (every one was watched failing on base 25d20f71e0 first)
 SECTIONS = [
     lambda tmp: speaker_owner_needs_his_words(),
@@ -340,6 +374,7 @@ SECTIONS = [
     pin_anchor_from_concept_clone,
     waiting_result_needs_feed_baseline,
     unreadable_live_proofs_noted,
+    repair_check_leftovers,
 ]
 
 
