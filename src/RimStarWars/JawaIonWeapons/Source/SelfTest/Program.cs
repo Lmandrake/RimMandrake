@@ -66,7 +66,9 @@ namespace RimMandrake.StarWars.JawaIonWeapons.SelfTest
 
         private static void AssertClose(float got, float want, string msg, float eps = 0.0001f)
         {
-            if (Math.Abs(got - want) > eps)
+            // Written as !(<= eps), not (> eps): a NaN on either side compares false both ways and used to pass.
+            if (got == want) return;    // equal infinities: their difference is NaN
+            if (!(Math.Abs(got - want) <= eps))
                 throw new Exception($"{msg}: got {got}, want {want}");
         }
 
@@ -97,6 +99,24 @@ namespace RimMandrake.StarWars.JawaIonWeapons.SelfTest
         private static int Main()
         {
             // -------------------------------------- real not-a-Pawn guard clause --
+            // RIMMANDRAKE_FIX_ASSERTCLOSE_NAN_THREE_OTHER_SELFTESTS: the shared numeric assertion must reject a NaN on either
+            // side, and must still accept equal values (infinities included) and values within eps.
+            Case("AssertClose_rejects_NaN_and_nonfinite_mismatch", () =>
+            {
+                void MustThrow(float got, float want, string what)
+                {
+                    bool threw = false;
+                    try { AssertClose(got, want, what); } catch (Exception) { threw = true; }
+                    Assert(threw, "AssertClose accepted " + what);
+                }
+                MustThrow(float.NaN, 1f, "got NaN, want 1");
+                MustThrow(1f, float.NaN, "got 1, want NaN");
+                MustThrow(float.NaN, float.NaN, "got NaN, want NaN");
+                MustThrow(float.PositiveInfinity, 1f, "got +inf, want 1");
+                MustThrow(float.PositiveInfinity, float.NegativeInfinity, "got +inf, want -inf");
+                AssertClose(1f, 1.00005f, "within eps");
+                AssertClose(float.PositiveInfinity, float.PositiveInfinity, "equal infinities");
+            });
             Case("TransformValue_leaves_val_unchanged_when_Thing_is_not_a_Pawn", () =>
             {
                 var part = new StatPart_InverseBodySize();
