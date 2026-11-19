@@ -49,6 +49,8 @@
     {"match": "disk.seat_dirt", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "disk.*", "route": "role", "reader": "Operations", "cause": "disk"},
     {"match": "scratch:sanity:*", "route": "role", "reader": "Operations", "cause": "disk"},
+    {"match": "accounts.fleet_*", "route": "role", "reader": "Operations", "cause": "accounts", "_why": "the fleet-moved readings (RIMMANDRAKE_READ_FLEET_MOVED_RUNWAY_IDLE_ACCOUNT_READS_TEN): FLEET_STOP_NEAR is a stop forecast inside 4 h, one incident with the other account readings"},
+    {"match": "accounts.*.moved_runway", "route": "role", "reader": "Operations", "cause": "accounts", "_why": "as accounts.fleet_*: a reading with no target of its own; its band and silent flags go to Operations"},
     {"match": "accounts.*", "route": "role", "reader": "Operations", "cause": "accounts"},
     {"match": "codex.*", "route": "role", "reader": "Operations", "cause": "accounts"},
     {"match": "account:switch:*", "route": "program"},
