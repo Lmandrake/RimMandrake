@@ -61,7 +61,8 @@ Where a reading was measured it says `[measured]`; a guess carries its confidenc
 
 ## What is UNBUILT, and where it is filed
 
-Item RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS. Still open there: a certificate rerun is reached only
-by a hand void (a zero-token systemd unit with no detached run record: no system cause can be read); and a void's
-children are still found by time on one concept (`run_void.children`), since no Designer or judge launch records its
-parent unit yet.
+Item RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS. A certificate rerun is reached only by a hand void,
+and stays so: it is a zero-token systemd unit with no detached run record, so no system cause can be read from it.
+A void's children are the Designer runs and judges its run launched, by the `parent` a run-now from a detached run
+records (`role_launch.with_parent`, into the run, stage.json and the judge's round; da889bc937); an entry written before
+that, with no parent, still goes by time.
