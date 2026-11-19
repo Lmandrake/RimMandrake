@@ -30,16 +30,20 @@ import publish as P  # noqa: E402
 
 REG = os.path.join(ROOT, "infrastructure", "state", "judge_calibration.json")
 cfg = json.load(open(os.path.join(ROOT, P.PIPELINE_TESTS), encoding="utf-8"))
-sel = [c["test"] for c in P.pipeline_selection(ROOT, ["src/RimMandrake/rimflow/maturation.py"], cfg)]
+# whole rows, not names: the door runs a row's "args" too (publish._run_tree_checks), and a row run without them reads
+# red in both runs here (guard_judge_certificate_accept.py needs --red-seen), so this test could only say UNMEASURED
+sel = P.pipeline_selection(ROOT, ["src/RimMandrake/rimflow/maturation.py"], cfg)
 
 
 def door(reg):
     env = {k: v for k, v in os.environ.items() if k not in P.LEDGER_IDENTITY}
     env["RM_JUDGE_CALIBRATION"] = reg
 
-    def one(t):
+    def one(c):
+        t = c["test"]
+        argv = [sys.executable, os.path.join(ROOT, t)] + [str(x) for x in c.get("args") or []]
         try:
-            return t, subprocess.run([sys.executable, os.path.join(ROOT, t)], cwd=ROOT, capture_output=True, text=True,
+            return t, subprocess.run(argv, cwd=ROOT, capture_output=True, text=True,
                                      timeout=int(cfg.get("timeout_s", 180)), stdin=subprocess.DEVNULL, env=env).returncode
         except subprocess.TimeoutExpired:
             return t, None
@@ -60,6 +64,9 @@ print("%d door tests for a maturation.py change; without the row: %d red %s; rea
     "; timed out: %s" % (slow_cut + slow_real) if slow_cut or slow_real else ""))
 if red_real:
     print("UNMEASURED: the door is red with the real registry too, so this cannot tell the row's absence apart")
+    sys.exit(2)
+if slow_cut or slow_real:
+    print("UNMEASURED: a door test ran past its time, so the red or the green control is not established")
     sys.exit(2)
 ok = bool(red_cut)
 print("PASS the door refuses a maturation.py change once maturation_advance is not CALIBRATED" if ok else
