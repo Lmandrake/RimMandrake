@@ -1,0 +1,2637 @@
+[
+{
+"path": "CLAUDE.md",
+"class": "root",
+"bytes": 39902,
+"words": 5360,
+"per100": 1.51,
+"long": 2,
+"flagged": 20,
+"flag_kinds": {
+"pronoun": 19,
+"bare-id": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 125,
+"CLAUDE.md": 0,
+"roles+agents": 14,
+"skills": 12
+}
+},
+{
+"path": "PURPOSE.md",
+"class": "root",
+"bytes": 9457,
+"words": 1369,
+"per100": 4.75,
+"long": 29,
+"flagged": 9,
+"flag_kinds": {
+"pronoun": 9
+},
+"last_commit": "2026-11-17",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 1,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": ".claude/agents/rm-bridge.md",
+"class": "agent-def",
+"bytes": 6441,
+"words": 881,
+"per100": 4.88,
+"long": 11,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": ".claude/agents/rm-builder.md",
+"class": "agent-def",
+"bytes": 8921,
+"words": 1322,
+"per100": 4.69,
+"long": 22,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": ".claude/agents/rm-consult.md",
+"class": "agent-def",
+"bytes": 6136,
+"words": 836,
+"per100": 5.02,
+"long": 10,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": ".claude/agents/rm-fixer.md",
+"class": "agent-def",
+"bytes": 7510,
+"words": 1083,
+"per100": 4.62,
+"long": 13,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": ".claude/agents/rm-judge.md",
+"class": "agent-def",
+"bytes": 6379,
+"words": 856,
+"per100": 4.67,
+"long": 11,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": ".claude/agents/rm-testpilot.md",
+"class": "agent-def",
+"bytes": 20852,
+"words": 3098,
+"per100": 5.42,
+"long": 51,
+"flagged": 3,
+"flag_kinds": {
+"pronoun": 1,
+"shout": 2
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 3,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 0
+}
+},
+{
+"path": ".claude/commands/broadcast.md",
+"class": "agent-def",
+"bytes": 351,
+"words": 27,
+"per100": 3.7,
+"long": 0,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-10-30",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": ".claude/rm_agent_shared_block.md",
+"class": "agent-def",
+"bytes": 4227,
+"words": 622,
+"per100": 5.47,
+"long": 8,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": ".claude/rm_positive_steps.md",
+"class": "agent-def",
+"bytes": 404,
+"words": 69,
+"per100": 5.8,
+"long": 1,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/agents/Agent_Policy.md",
+"class": "seat",
+"bytes": 21688,
+"words": 2756,
+"per100": 4.32,
+"long": 50,
+"flagged": 10,
+"flag_kinds": {
+"pronoun": 2,
+"shout": 7,
+"above": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 10,
+"CLAUDE.md": 1,
+"roles+agents": 4,
+"skills": 1
+}
+},
+{
+"path": "infrastructure/agents/CHARTER.md",
+"class": "seat",
+"bytes": 15405,
+"words": 2193,
+"per100": 4.1,
+"long": 37,
+"flagged": 8,
+"flag_kinds": {
+"shout": 8,
+"bare-id": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 1,
+"roles+agents": 14,
+"skills": 1
+}
+},
+{
+"path": "infrastructure/agents/CODEX_PROPOSAL_ART_WORKER.md",
+"class": "seat",
+"bytes": 26083,
+"words": 2618,
+"per100": 3.51,
+"long": 25,
+"flagged": 4,
+"flag_kinds": {
+"pronoun": 4
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/agents/CODEX_PROPOSAL_GENERATING_IMAGES_SKILL_DRAFT.md",
+"class": "seat",
+"bytes": 14018,
+"words": 1281,
+"per100": 4.14,
+"long": 11,
+"flagged": 3,
+"flag_kinds": {
+"pronoun": 3
+},
+"last_commit": "2026-10-04",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/agents/CODEX_PROPOSAL_GRAPHICS_WORKFLOW.md",
+"class": "seat",
+"bytes": 30537,
+"words": 3076,
+"per100": 4.42,
+"long": 22,
+"flagged": 9,
+"flag_kinds": {
+"pronoun": 9
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/agents/CONDUCTOR.md",
+"class": "seat",
+"bytes": 1218,
+"words": 151,
+"per100": 3.97,
+"long": 3,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-13",
+"registered": null,
+"readers": {
+"code": 8,
+"CLAUDE.md": 1,
+"roles+agents": 3,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/agents/POLICY.md",
+"class": "seat",
+"bytes": 524,
+"words": 60,
+"per100": 1.67,
+"long": 1,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-18",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 1
+}
+},
+{
+"path": "infrastructure/agents/REP.md",
+"class": "seat",
+"bytes": 477,
+"words": 61,
+"per100": 3.28,
+"long": 1,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-04",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/artist.md",
+"class": "role",
+"bytes": 8374,
+"words": 1026,
+"per100": 3.41,
+"long": 15,
+"flagged": 3,
+"flag_kinds": {
+"pronoun": 2,
+"bare-id": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 3
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/auditor.md",
+"class": "role",
+"bytes": 17429,
+"words": 2674,
+"per100": 4.15,
+"long": 59,
+"flagged": 9,
+"flag_kinds": {
+"bare-id": 5,
+"shout": 1,
+"pronoun": 3
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 5,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/code_review.md",
+"class": "role",
+"bytes": 6007,
+"words": 931,
+"per100": 4.08,
+"long": 14,
+"flagged": 6,
+"flag_kinds": {
+"shout": 5,
+"pronoun": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/conductor.md",
+"class": "role",
+"bytes": 40292,
+"words": 5660,
+"per100": 4.15,
+"long": 108,
+"flagged": 8,
+"flag_kinds": {
+"shout": 5,
+"pronoun": 2,
+"bare-id": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 4,
+"CLAUDE.md": 1,
+"roles+agents": 2,
+"skills": 1
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/conductor_restart.md",
+"class": "role",
+"bytes": 10708,
+"words": 1673,
+"per100": 3.89,
+"long": 29,
+"flagged": 1,
+"flag_kinds": {
+"pronoun": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/criteria_fixer.md",
+"class": "role",
+"bytes": 2535,
+"words": 385,
+"per100": 4.68,
+"long": 8,
+"flagged": 1,
+"flag_kinds": {
+"bare-id": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/designer.md",
+"class": "role",
+"bytes": 21595,
+"words": 2966,
+"per100": 4.45,
+"long": 58,
+"flagged": 4,
+"flag_kinds": {
+"pronoun": 2,
+"above": 1,
+"shout": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 6,
+"CLAUDE.md": 1,
+"roles+agents": 8,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/designer_cleanse.md",
+"class": "role",
+"bytes": 23026,
+"words": 3714,
+"per100": 4.63,
+"long": 65,
+"flagged": 4,
+"flag_kinds": {
+"pronoun": 4
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/designer_dialogue.md",
+"class": "role",
+"bytes": 9088,
+"words": 1385,
+"per100": 4.55,
+"long": 22,
+"flagged": 1,
+"flag_kinds": {
+"pronoun": 1
+},
+"last_commit": "2026-11-18",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/designer_exam.md",
+"class": "role",
+"bytes": 8880,
+"words": 1239,
+"per100": 3.47,
+"long": 26,
+"flagged": 1,
+"flag_kinds": {
+"pronoun": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 5,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/designer_examples.md",
+"class": "role",
+"bytes": 9824,
+"words": 1400,
+"per100": 5.36,
+"long": 30,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-03",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/designer_grounding.md",
+"class": "role",
+"bytes": 6784,
+"words": 989,
+"per100": 4.15,
+"long": 16,
+"flagged": 1,
+"flag_kinds": {
+"shout": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/designer_lock.md",
+"class": "role",
+"bytes": 6768,
+"words": 1021,
+"per100": 4.02,
+"long": 23,
+"flagged": 1,
+"flag_kinds": {
+"pronoun": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 6,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/designer_scene_contract.md",
+"class": "role",
+"bytes": 9330,
+"words": 1209,
+"per100": 4.63,
+"long": 21,
+"flagged": 1,
+"flag_kinds": {
+"pronoun": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 7,
+"CLAUDE.md": 0,
+"roles+agents": 6,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/designer_write.md",
+"class": "role",
+"bytes": 7868,
+"words": 1072,
+"per100": 4.01,
+"long": 18,
+"flagged": 3,
+"flag_kinds": {
+"shout": 2,
+"pronoun": 1
+},
+"last_commit": "2026-11-18",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/fable_rescue.md",
+"class": "role",
+"bytes": 19456,
+"words": 3261,
+"per100": 4.57,
+"long": 67,
+"flagged": 3,
+"flag_kinds": {
+"pronoun": 3
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 3,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/innovator.md",
+"class": "role",
+"bytes": 18278,
+"words": 2775,
+"per100": 4.22,
+"long": 57,
+"flagged": 7,
+"flag_kinds": {
+"bare-id": 3,
+"shout": 1,
+"pronoun": 2,
+"above": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/operations.md",
+"class": "role",
+"bytes": 27080,
+"words": 4015,
+"per100": 4.38,
+"long": 85,
+"flagged": 4,
+"flag_kinds": {
+"bare-id": 2,
+"shout": 1,
+"pronoun": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/producer.md",
+"class": "role",
+"bytes": 15565,
+"words": 2317,
+"per100": 3.58,
+"long": 43,
+"flagged": 5,
+"flag_kinds": {
+"bare-id": 2,
+"shout": 1,
+"pronoun": 2
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/runner_options.md",
+"class": "role",
+"bytes": 15447,
+"words": 1483,
+"per100": 3.03,
+"long": 16,
+"flagged": 6,
+"flag_kinds": {
+"pronoun": 3,
+"bare-id": 4
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/roles/walk_brief.md",
+"class": "role",
+"bytes": 3485,
+"words": 396,
+"per100": 2.53,
+"long": 7,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "design/RimMandrake/CLAUDE.history.md",
+"class": "ruling",
+"bytes": 6140,
+"words": 968,
+"per100": 4.24,
+"long": 15,
+"flagged": 15,
+"flag_kinds": {
+"bare-id": 2,
+"shout": 14
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 1,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "design/RimMandrake/GIT_WORKFLOW.md",
+"class": "ruling",
+"bytes": 31842,
+"words": 1991,
+"per100": 3.72,
+"long": 37,
+"flagged": 2,
+"flag_kinds": {
+"shout": 1,
+"bare-id": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 4,
+"CLAUDE.md": 1,
+"roles+agents": 1,
+"skills": 1
+}
+},
+{
+"path": "design/RimMandrake/biome_rulings.md",
+"class": "ruling",
+"bytes": 17383,
+"words": 2549,
+"per100": 3.88,
+"long": 40,
+"flagged": 25,
+"flag_kinds": {
+"shout": 23,
+"bare-id": 3,
+"pronoun": 1
+},
+"last_commit": "2026-11-01",
+"registered": null,
+"readers": {
+"code": 3,
+"CLAUDE.md": 1,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "design/RimMandrake/debug_process.md",
+"class": "ruling",
+"bytes": 28737,
+"words": 4061,
+"per100": 4.63,
+"long": 70,
+"flagged": 8,
+"flag_kinds": {
+"pronoun": 6,
+"shout": 2
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 40,
+"CLAUDE.md": 1,
+"roles+agents": 4,
+"skills": 3
+}
+},
+{
+"path": "design/RimMandrake/delegation_policy.md",
+"class": "ruling",
+"bytes": 16053,
+"words": 2307,
+"per100": 5.03,
+"long": 47,
+"flagged": 4,
+"flag_kinds": {
+"shout": 2,
+"pronoun": 1,
+"bare-id": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 23,
+"CLAUDE.md": 1,
+"roles+agents": 4,
+"skills": 6
+}
+},
+{
+"path": "design/RimMandrake/standing_rulings.md",
+"class": "ruling",
+"bytes": 126133,
+"words": 18890,
+"per100": 4.47,
+"long": 357,
+"flagged": 59,
+"flag_kinds": {
+"shout": 54,
+"pronoun": 6
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 27,
+"CLAUDE.md": 1,
+"roles+agents": 7,
+"skills": 4
+}
+},
+{
+"path": "design/specs/2026-11-13-maturation-pipeline.md",
+"class": "ruling",
+"bytes": 80156,
+"words": 8481,
+"per100": 4.23,
+"long": 133,
+"flagged": 14,
+"flag_kinds": {
+"pronoun": 12,
+"shout": 2,
+"above": 1,
+"bare-id": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 7,
+"CLAUDE.md": 1,
+"roles+agents": 6,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/GAME_STATE_WORKFLOW.md",
+"class": "ruling",
+"bytes": 6479,
+"words": 629,
+"per100": 5.41,
+"long": 12,
+"flagged": 8,
+"flag_kinds": {
+"shout": 8,
+"pronoun": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 1,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "design/RimMandrake/art_judge_brief.md",
+"class": "brief",
+"bytes": 12420,
+"words": 1600,
+"per100": 3.25,
+"long": 28,
+"flagged": 29,
+"flag_kinds": {
+"bare-id": 29
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 3,
+"CLAUDE.md": 1,
+"roles+agents": 2,
+"skills": 4
+}
+},
+{
+"path": "design/RimMandrake/gpt_reviews/PROMPT.md",
+"class": "brief",
+"bytes": 1477,
+"words": 221,
+"per100": 4.98,
+"long": 2,
+"flagged": 2,
+"flag_kinds": {
+"shout": 2
+},
+"last_commit": "2026-10-07",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "design/RimMandrake/scene_look_judge_brief.md",
+"class": "brief",
+"bytes": 11614,
+"words": 1640,
+"per100": 4.76,
+"long": 32,
+"flagged": 4,
+"flag_kinds": {
+"shout": 4
+},
+"last_commit": "2026-11-18",
+"registered": null,
+"readers": {
+"code": 3,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "design/RimStarWars/canon_references/AGENT_BRIEF.md",
+"class": "brief",
+"bytes": 12534,
+"words": 1755,
+"per100": 3.7,
+"long": 29,
+"flagged": 12,
+"flag_kinds": {
+"shout": 7,
+"pronoun": 3,
+"above": 1,
+"bare-id": 1
+},
+"last_commit": "2026-10-22",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 1,
+"roles+agents": 0,
+"skills": 1
+}
+},
+{
+"path": "design/RimStarWars/canon_references/gpt_review/PROMPT.md",
+"class": "brief",
+"bytes": 1647,
+"words": 251,
+"per100": 3.98,
+"long": 5,
+"flagged": 1,
+"flag_kinds": {
+"shout": 1
+},
+"last_commit": "2026-10-07",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "skills/rimworld-art-evaluation/references/prompts/departures_brief.md",
+"class": "brief",
+"bytes": 2421,
+"words": 373,
+"per100": 3.75,
+"long": 9,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-05",
+"registered": null,
+"readers": {
+"code": 3,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 1
+}
+},
+{
+"path": "skills/rimworld-art-evaluation/references/prompts/gpt_targeted_second_look.md",
+"class": "brief",
+"bytes": 1588,
+"words": 221,
+"per100": 5.43,
+"long": 3,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-10-23",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 1
+}
+},
+{
+"path": "skills/rimworld-art-evaluation/references/prompts/opus_first_pass.md",
+"class": "brief",
+"bytes": 1722,
+"words": 241,
+"per100": 4.56,
+"long": 2,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-10-23",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "skills/rimworld-art-evaluation/references/prompts/preamble.md",
+"class": "brief",
+"bytes": 4481,
+"words": 756,
+"per100": 4.1,
+"long": 14,
+"flagged": 1,
+"flag_kinds": {
+"pronoun": 1
+},
+"last_commit": "2026-11-05",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "skills/rimworld-art-evaluation/references/prompts/regen_prompt_edit.md",
+"class": "brief",
+"bytes": 1723,
+"words": 257,
+"per100": 3.89,
+"long": 6,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-10-23",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 2
+}
+},
+{
+"path": "infrastructure/state/facts/README.md",
+"class": "facts",
+"bytes": 1294,
+"words": 211,
+"per100": 2.84,
+"long": 2,
+"flagged": 5,
+"flag_kinds": {
+"shout": 5,
+"pronoun": 1
+},
+"last_commit": "2026-08-27",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/almost_out_codex_log.md",
+"class": "facts",
+"bytes": 12791,
+"words": 239,
+"per100": 3.35,
+"long": 1,
+"flagged": 6,
+"flag_kinds": {
+"bare-id": 5,
+"shout": 1
+},
+"last_commit": "2026-10-25",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/biome_paint_list.md",
+"class": "facts",
+"bytes": 10790,
+"words": 630,
+"per100": 3.97,
+"long": 11,
+"flagged": 5,
+"flag_kinds": {
+"shout": 3,
+"bare-id": 2
+},
+"last_commit": "2026-11-06",
+"registered": null,
+"readers": {
+"code": 3,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 1
+}
+},
+{
+"path": "infrastructure/state/facts/biome_rosters.md",
+"class": "facts",
+"bytes": 5780,
+"words": 480,
+"per100": 2.71,
+"long": 8,
+"flagged": 5,
+"flag_kinds": {
+"shout": 5
+},
+"last_commit": "2026-10-21",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/clone_memory_peak.md",
+"class": "facts",
+"bytes": 4291,
+"words": 542,
+"per100": 2.95,
+"long": 13,
+"flagged": 2,
+"flag_kinds": {
+"above": 1,
+"pronoun": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/codex_live_2026-11-10.md",
+"class": "facts",
+"bytes": 3771,
+"words": 470,
+"per100": 4.04,
+"long": 6,
+"flagged": 1,
+"flag_kinds": {
+"pronoun": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/distress_signals.md",
+"class": "facts",
+"bytes": 5813,
+"words": 717,
+"per100": 4.74,
+"long": 14,
+"flagged": 12,
+"flag_kinds": {
+"shout": 10,
+"pronoun": 3
+},
+"last_commit": "2026-08-23",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/dump-is-pre-cherrypicker.md",
+"class": "facts",
+"bytes": 5165,
+"words": 701,
+"per100": 4.42,
+"long": 17,
+"flagged": 14,
+"flag_kinds": {
+"shout": 13,
+"pronoun": 2
+},
+"last_commit": "2026-09-05",
+"registered": null,
+"readers": {
+"code": 6,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/heap_reload_ratchet_2026-11-06.md",
+"class": "facts",
+"bytes": 7519,
+"words": 1150,
+"per100": 3.57,
+"long": 23,
+"flagged": 2,
+"flag_kinds": {
+"pronoun": 2
+},
+"last_commit": "2026-11-06",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/instrument_traps.md",
+"class": "facts",
+"bytes": 45694,
+"words": 6892,
+"per100": 4.21,
+"long": 152,
+"flagged": 52,
+"flag_kinds": {
+"shout": 50,
+"pronoun": 1,
+"bare-id": 2
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 4,
+"CLAUDE.md": 1,
+"roles+agents": 13,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/log_spam_rises_ee0fbaa8_2026-11-06.md",
+"class": "facts",
+"bytes": 2560,
+"words": 273,
+"per100": 2.93,
+"long": 6,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-06",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/logbound_deploy_2026-11-10.md",
+"class": "facts",
+"bytes": 3154,
+"words": 389,
+"per100": 4.88,
+"long": 4,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-10",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/naming_inventory.md",
+"class": "facts",
+"bytes": 7033,
+"words": 499,
+"per100": 3.01,
+"long": 7,
+"flagged": 7,
+"flag_kinds": {
+"shout": 7,
+"pronoun": 1
+},
+"last_commit": "2026-08-23",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/oom_kills_2026-10-31.md",
+"class": "facts",
+"bytes": 3888,
+"words": 408,
+"per100": 2.45,
+"long": 7,
+"flagged": 3,
+"flag_kinds": {
+"pronoun": 3
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/oom_kills_2026-11-03.md",
+"class": "facts",
+"bytes": 5988,
+"words": 735,
+"per100": 2.45,
+"long": 11,
+"flagged": 3,
+"flag_kinds": {
+"above": 2,
+"shout": 1
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/operations.md",
+"class": "facts",
+"bytes": 15273,
+"words": 2161,
+"per100": 3.79,
+"long": 44,
+"flagged": 3,
+"flag_kinds": {
+"above": 1,
+"bare-id": 2
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/post_incident_health_2026-11-02.md",
+"class": "facts",
+"bytes": 7015,
+"words": 244,
+"per100": 2.05,
+"long": 4,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/roll_arm_harvest_2026-08-24.md",
+"class": "facts",
+"bytes": 4516,
+"words": 533,
+"per100": 3.38,
+"long": 6,
+"flagged": 10,
+"flag_kinds": {
+"shout": 10,
+"pronoun": 1
+},
+"last_commit": "2026-08-24",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/roll_arm_harvest_2026-08-28.md",
+"class": "facts",
+"bytes": 3836,
+"words": 422,
+"per100": 3.79,
+"long": 7,
+"flagged": 4,
+"flag_kinds": {
+"shout": 2,
+"pronoun": 2
+},
+"last_commit": "2026-08-28",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/steve_c_drive_fill_2026-11-03.md",
+"class": "facts",
+"bytes": 3749,
+"words": 370,
+"per100": 3.24,
+"long": 9,
+"flagged": 1,
+"flag_kinds": {
+"bare-id": 1
+},
+"last_commit": "2026-11-03",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/steve_fault_diagnosis.md",
+"class": "facts",
+"bytes": 10465,
+"words": 1449,
+"per100": 2.9,
+"long": 23,
+"flagged": 7,
+"flag_kinds": {
+"shout": 6,
+"pronoun": 1
+},
+"last_commit": "2026-11-17",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/state/facts/tool_traps.md",
+"class": "facts",
+"bytes": 34854,
+"words": 5272,
+"per100": 4.02,
+"long": 121,
+"flagged": 15,
+"flag_kinds": {
+"shout": 12,
+"pronoun": 1,
+"bare-id": 2
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 4,
+"CLAUDE.md": 1,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "skills/BY_WORK.md",
+"class": "skill",
+"bytes": 8244,
+"words": 800,
+"per100": 5.0,
+"long": 4,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 17,
+"skills": 1
+}
+},
+{
+"path": "skills/README.md",
+"class": "skill",
+"bytes": 14777,
+"words": 586,
+"per100": 5.63,
+"long": 10,
+"flagged": 3,
+"flag_kinds": {
+"shout": 3
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 1,
+"roles+agents": 0,
+"skills": 1
+}
+},
+{
+"path": "skills/clone-landing-commits/SKILL.md",
+"class": "skill",
+"bytes": 4405,
+"words": 362,
+"per100": 3.04,
+"long": 5,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-07",
+"registered": true,
+"readers": {
+"code": 1,
+"CLAUDE.md": 1,
+"roles+agents": 5,
+"skills": 3
+}
+},
+{
+"path": "skills/generating-rimworld-sprites/SKILL.md",
+"class": "skill",
+"bytes": 24471,
+"words": 3025,
+"per100": 5.29,
+"long": 59,
+"flagged": 27,
+"flag_kinds": {
+"shout": 26,
+"pronoun": 3
+},
+"last_commit": "2026-11-19",
+"registered": true,
+"readers": {
+"code": 17,
+"CLAUDE.md": 1,
+"roles+agents": 3,
+"skills": 9
+}
+},
+{
+"path": "skills/gravship-layout/SKILL.md",
+"class": "skill",
+"bytes": 24269,
+"words": 2681,
+"per100": 5.04,
+"long": 52,
+"flagged": 27,
+"flag_kinds": {
+"shout": 23,
+"pronoun": 4
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 2
+}
+},
+{
+"path": "skills/live-debugging-proof-harness/SKILL.md",
+"class": "skill",
+"bytes": 22055,
+"words": 2590,
+"per100": 3.17,
+"long": 33,
+"flagged": 11,
+"flag_kinds": {
+"shout": 8,
+"pronoun": 1,
+"bare-id": 2
+},
+"last_commit": "2026-11-19",
+"registered": true,
+"readers": {
+"code": 6,
+"CLAUDE.md": 0,
+"roles+agents": 9,
+"skills": 11
+}
+},
+{
+"path": "skills/northstar-validation/SKILL.md",
+"class": "skill",
+"bytes": 17389,
+"words": 1664,
+"per100": 4.75,
+"long": 33,
+"flagged": 3,
+"flag_kinds": {
+"shout": 3
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 3,
+"skills": 3
+}
+},
+{
+"path": "skills/reading-rimworld-graphics/SKILL.md",
+"class": "skill",
+"bytes": 21305,
+"words": 2738,
+"per100": 4.67,
+"long": 59,
+"flagged": 21,
+"flag_kinds": {
+"shout": 20,
+"pronoun": 1
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 5
+}
+},
+{
+"path": "skills/rimbridge-companion/SKILL.md",
+"class": "skill",
+"bytes": 16326,
+"words": 1710,
+"per100": 4.33,
+"long": 31,
+"flagged": 17,
+"flag_kinds": {
+"shout": 17,
+"pronoun": 1
+},
+"last_commit": "2026-11-07",
+"registered": true,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 7
+}
+},
+{
+"path": "skills/rimbridge/SKILL.md",
+"class": "skill",
+"bytes": 28193,
+"words": 3033,
+"per100": 4.29,
+"long": 62,
+"flagged": 55,
+"flag_kinds": {
+"shout": 53,
+"pronoun": 2,
+"bare-id": 1
+},
+"last_commit": "2026-11-19",
+"registered": true,
+"readers": {
+"code": 803,
+"CLAUDE.md": 1,
+"roles+agents": 3,
+"skills": 35
+}
+},
+{
+"path": "skills/rimflow-operations/SKILL.md",
+"class": "skill",
+"bytes": 9641,
+"words": 951,
+"per100": 4.31,
+"long": 13,
+"flagged": 1,
+"flag_kinds": {
+"above": 1
+},
+"last_commit": "2026-11-19",
+"registered": true,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 2
+}
+},
+{
+"path": "skills/rimworld-art-evaluation/SKILL.md",
+"class": "skill",
+"bytes": 11959,
+"words": 950,
+"per100": 3.58,
+"long": 18,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 14,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 4
+}
+},
+{
+"path": "skills/rimworld-canon-references/SKILL.md",
+"class": "skill",
+"bytes": 15842,
+"words": 1962,
+"per100": 5.45,
+"long": 45,
+"flagged": 16,
+"flag_kinds": {
+"shout": 12,
+"pronoun": 4,
+"bare-id": 1
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 2
+}
+},
+{
+"path": "skills/rimworld-content-moderation/SKILL.md",
+"class": "skill",
+"bytes": 22350,
+"words": 3203,
+"per100": 4.81,
+"long": 65,
+"flagged": 27,
+"flag_kinds": {
+"shout": 21,
+"pronoun": 7
+},
+"last_commit": "2026-11-19",
+"registered": false,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 3
+}
+},
+{
+"path": "skills/rimworld-crew-and-nemesis-events/SKILL.md",
+"class": "skill",
+"bytes": 8267,
+"words": 993,
+"per100": 3.73,
+"long": 16,
+"flagged": 3,
+"flag_kinds": {
+"bare-id": 1,
+"shout": 2
+},
+"last_commit": "2026-10-10",
+"registered": false,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 4
+}
+},
+{
+"path": "skills/rimworld-custom-incidents/SKILL.md",
+"class": "skill",
+"bytes": 8600,
+"words": 857,
+"per100": 3.85,
+"long": 17,
+"flagged": 5,
+"flag_kinds": {
+"shout": 5
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 3
+}
+},
+{
+"path": "skills/rimworld-debug-testing/SKILL.md",
+"class": "skill",
+"bytes": 28834,
+"words": 3973,
+"per100": 4.33,
+"long": 66,
+"flagged": 36,
+"flag_kinds": {
+"shout": 34,
+"pronoun": 6
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 5,
+"skills": 11
+}
+},
+{
+"path": "skills/rimworld-deploy/SKILL.md",
+"class": "skill",
+"bytes": 23924,
+"words": 2799,
+"per100": 4.97,
+"long": 60,
+"flagged": 29,
+"flag_kinds": {
+"shout": 27,
+"pronoun": 2
+},
+"last_commit": "2026-11-07",
+"registered": true,
+"readers": {
+"code": 3,
+"CLAUDE.md": 1,
+"roles+agents": 2,
+"skills": 13
+}
+},
+{
+"path": "skills/rimworld-ideoligion/SKILL.md",
+"class": "skill",
+"bytes": 16629,
+"words": 1793,
+"per100": 4.18,
+"long": 29,
+"flagged": 13,
+"flag_kinds": {
+"shout": 12,
+"pronoun": 1
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 2
+}
+},
+{
+"path": "skills/rimworld-layout-layers/SKILL.md",
+"class": "skill",
+"bytes": 18869,
+"words": 2381,
+"per100": 4.79,
+"long": 50,
+"flagged": 17,
+"flag_kinds": {
+"pronoun": 4,
+"shout": 13,
+"above": 1
+},
+"last_commit": "2026-09-04",
+"registered": false,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 2
+}
+},
+{
+"path": "skills/rimworld-live-review/SKILL.md",
+"class": "skill",
+"bytes": 29533,
+"words": 4018,
+"per100": 4.23,
+"long": 77,
+"flagged": 25,
+"flag_kinds": {
+"shout": 23,
+"pronoun": 4
+},
+"last_commit": "2026-11-07",
+"registered": true,
+"readers": {
+"code": 5,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 9
+}
+},
+{
+"path": "skills/rimworld-load-round/SKILL.md",
+"class": "skill",
+"bytes": 26255,
+"words": 3485,
+"per100": 4.36,
+"long": 68,
+"flagged": 27,
+"flag_kinds": {
+"shout": 26,
+"pronoun": 2,
+"above": 1
+},
+"last_commit": "2026-11-07",
+"registered": true,
+"readers": {
+"code": 2,
+"CLAUDE.md": 1,
+"roles+agents": 1,
+"skills": 14
+}
+},
+{
+"path": "skills/rimworld-modding/SKILL.md",
+"class": "skill",
+"bytes": 29005,
+"words": 3646,
+"per100": 4.33,
+"long": 68,
+"flagged": 36,
+"flag_kinds": {
+"shout": 33,
+"pronoun": 6
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 13,
+"CLAUDE.md": 1,
+"roles+agents": 7,
+"skills": 14
+}
+},
+{
+"path": "skills/rimworld-quests/SKILL.md",
+"class": "skill",
+"bytes": 24409,
+"words": 2580,
+"per100": 4.07,
+"long": 52,
+"flagged": 25,
+"flag_kinds": {
+"shout": 22,
+"pronoun": 4
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 4,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 5
+}
+},
+{
+"path": "skills/rimworld-review-sheets/SKILL.md",
+"class": "skill",
+"bytes": 9925,
+"words": 1314,
+"per100": 4.64,
+"long": 26,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-07",
+"registered": true,
+"readers": {
+"code": 6,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 3
+}
+},
+{
+"path": "skills/rimworld-savegame/SKILL.md",
+"class": "skill",
+"bytes": 14282,
+"words": 1775,
+"per100": 4.39,
+"long": 35,
+"flagged": 20,
+"flag_kinds": {
+"shout": 20,
+"pronoun": 1
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 5,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 5
+}
+},
+{
+"path": "skills/rimworld-scenario-building/SKILL.md",
+"class": "skill",
+"bytes": 11925,
+"words": 1096,
+"per100": 5.57,
+"long": 22,
+"flagged": 29,
+"flag_kinds": {
+"shout": 28,
+"pronoun": 1
+},
+"last_commit": "2026-08-15",
+"registered": false,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 2
+}
+},
+{
+"path": "skills/rimworld-scene-composition/SKILL.md",
+"class": "skill",
+"bytes": 16924,
+"words": 2076,
+"per100": 4.19,
+"long": 40,
+"flagged": 12,
+"flag_kinds": {
+"shout": 10,
+"pronoun": 3
+},
+"last_commit": "2026-09-06",
+"registered": false,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 2
+}
+},
+{
+"path": "skills/rimworld-sprite-facings/SKILL.md",
+"class": "skill",
+"bytes": 28066,
+"words": 4023,
+"per100": 4.72,
+"long": 79,
+"flagged": 29,
+"flag_kinds": {
+"shout": 27,
+"pronoun": 2
+},
+"last_commit": "2026-11-19",
+"registered": false,
+"readers": {
+"code": 4,
+"CLAUDE.md": 0,
+"roles+agents": 2,
+"skills": 6
+}
+},
+{
+"path": "skills/rimworld-start-prep/SKILL.md",
+"class": "skill",
+"bytes": 26486,
+"words": 3385,
+"per100": 4.76,
+"long": 71,
+"flagged": 30,
+"flag_kinds": {
+"pronoun": 9,
+"shout": 23,
+"above": 2
+},
+"last_commit": "2026-11-19",
+"registered": false,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 1,
+"skills": 7
+}
+},
+{
+"path": "skills/rimworld-world-editing/SKILL.md",
+"class": "skill",
+"bytes": 25228,
+"words": 2644,
+"per100": 4.46,
+"long": 45,
+"flagged": 46,
+"flag_kinds": {
+"shout": 43,
+"pronoun": 3
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 3
+}
+},
+{
+"path": "skills/rimworld-xenotypes/SKILL.md",
+"class": "skill",
+"bytes": 24706,
+"words": 2786,
+"per100": 4.2,
+"long": 51,
+"flagged": 34,
+"flag_kinds": {
+"shout": 31,
+"pronoun": 7
+},
+"last_commit": "2026-11-07",
+"registered": false,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 3
+}
+},
+{
+"path": "skills/telemetry/SKILL.md",
+"class": "skill",
+"bytes": 5733,
+"words": 480,
+"per100": 5.0,
+"long": 11,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": false,
+"readers": {
+"code": 44,
+"CLAUDE.md": 0,
+"roles+agents": 3,
+"skills": 6
+}
+},
+{
+"path": "skills/using-rimflow/SKILL.md",
+"class": "skill",
+"bytes": 19878,
+"words": 2432,
+"per100": 4.73,
+"long": 52,
+"flagged": 16,
+"flag_kinds": {
+"shout": 13,
+"bare-id": 2,
+"above": 1,
+"pronoun": 1
+},
+"last_commit": "2026-11-19",
+"registered": true,
+"readers": {
+"code": 3,
+"CLAUDE.md": 1,
+"roles+agents": 12,
+"skills": 2
+}
+},
+{
+"path": "Fable_Review/rewrites/CHARTER.md",
+"class": "infra-doc",
+"bytes": 3968,
+"words": 590,
+"per100": 3.56,
+"long": 4,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-10-30",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "Fable_Review/rewrites/WINDOWS.md",
+"class": "infra-doc",
+"bytes": 2698,
+"words": 405,
+"per100": 2.72,
+"long": 6,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-10-30",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "GLOBAL_CLAUDE.md",
+"class": "infra-doc",
+"bytes": 11099,
+"words": 1575,
+"per100": 5.59,
+"long": 28,
+"flagged": 14,
+"flag_kinds": {
+"shout": 13,
+"pronoun": 2
+},
+"last_commit": "2026-10-30",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "LEXICON.md",
+"class": "infra-doc",
+"bytes": 4025,
+"words": 48,
+"per100": 2.08,
+"long": 0,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "README.md",
+"class": "infra-doc",
+"bytes": 4295,
+"words": 591,
+"per100": 3.38,
+"long": 12,
+"flagged": 4,
+"flag_kinds": {
+"pronoun": 4
+},
+"last_commit": "2026-11-18",
+"registered": null,
+"readers": {
+"code": 49,
+"CLAUDE.md": 1,
+"roles+agents": 0,
+"skills": 2
+}
+},
+{
+"path": "final.md",
+"class": "infra-doc",
+"bytes": 1240,
+"words": 155,
+"per100": 7.1,
+"long": 2,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-11-11",
+"registered": null,
+"readers": {
+"code": 14,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/DETERMINISM_ASSESSMENT.md",
+"class": "infra-doc",
+"bytes": 49790,
+"words": 6292,
+"per100": 4.55,
+"long": 115,
+"flagged": 65,
+"flag_kinds": {
+"shout": 28,
+"pronoun": 10,
+"bare-id": 37
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 8,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/README.md",
+"class": "infra-doc",
+"bytes": 1954,
+"words": 257,
+"per100": 6.61,
+"long": 5,
+"flagged": 1,
+"flag_kinds": {
+"shout": 1
+},
+"last_commit": "2026-08-26",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/REFRESH.md",
+"class": "infra-doc",
+"bytes": 3348,
+"words": 448,
+"per100": 4.24,
+"long": 8,
+"flagged": 0,
+"flag_kinds": {},
+"last_commit": "2026-08-14",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/STRUCTURE.md",
+"class": "infra-doc",
+"bytes": 15666,
+"words": 1052,
+"per100": 5.23,
+"long": 19,
+"flagged": 8,
+"flag_kinds": {
+"pronoun": 1,
+"shout": 7
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 1,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "infrastructure/VALIDATION_LADDER.md",
+"class": "infra-doc",
+"bytes": 4293,
+"words": 620,
+"per100": 4.19,
+"long": 8,
+"flagged": 12,
+"flag_kinds": {
+"bare-id": 10,
+"shout": 2
+},
+"last_commit": "2026-11-19",
+"registered": null,
+"readers": {
+"code": 2,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 4
+}
+},
+{
+"path": "src/RimMandrake/rimflow/docs/AGENTS.md",
+"class": "infra-doc",
+"bytes": 10569,
+"words": 1457,
+"per100": 3.77,
+"long": 15,
+"flagged": 2,
+"flag_kinds": {
+"bare-id": 1,
+"shout": 1
+},
+"last_commit": "2026-11-01",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/docs/COMPARISON.md",
+"class": "infra-doc",
+"bytes": 21280,
+"words": 2406,
+"per100": 4.66,
+"long": 45,
+"flagged": 8,
+"flag_kinds": {
+"pronoun": 8
+},
+"last_commit": "2026-10-30",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/docs/DESIGN_HISTORY.md",
+"class": "infra-doc",
+"bytes": 17895,
+"words": 2274,
+"per100": 4.57,
+"long": 43,
+"flagged": 20,
+"flag_kinds": {
+"pronoun": 5,
+"bare-id": 15
+},
+"last_commit": "2026-10-24",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/docs/README.md",
+"class": "infra-doc",
+"bytes": 23863,
+"words": 2684,
+"per100": 4.77,
+"long": 45,
+"flagged": 14,
+"flag_kinds": {
+"pronoun": 8,
+"bare-id": 6
+},
+"last_commit": "2026-11-18",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+},
+{
+"path": "src/RimMandrake/rimflow/docs/RIMFLOW_ideogram.md",
+"class": "infra-doc",
+"bytes": 13248,
+"words": 2007,
+"per100": 4.98,
+"long": 36,
+"flagged": 7,
+"flag_kinds": {
+"pronoun": 2,
+"shout": 5
+},
+"last_commit": "2026-10-30",
+"registered": null,
+"readers": {
+"code": 0,
+"CLAUDE.md": 0,
+"roles+agents": 0,
+"skills": 0
+}
+}
+]

@@ -88,7 +88,7 @@ SEATS="BENCH"     # FOUNDRY retired (owner by card 2026-11-02); its identity fil
 usage() {
     echo "usage: $0 {CONDUCTOR|BENCH} [detail]   (CONDUCTOR = seat BENCH's display name)" >&2
     echo "       $0 --preview | --reset-colour" >&2
-    echo "  identities: infrastructure/agents/<SEAT>.md   shared rules: infrastructure/agents/POLICY.md" >&2
+    echo "  identities: infrastructure/agents/<SEAT>.md   shared rules: infrastructure/agents/CHARTER.md" >&2
 }
 
 # --- colour --------------------------------------------------------------

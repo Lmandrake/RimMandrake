@@ -12,7 +12,7 @@ ROLE = os.path.join(HERE, "roles", "artist.md")
 MEMORY = os.path.join(ROOT, "design", "RimMandrake", "art_style_memory.md")
 LEDGER = os.path.join(ROOT, "infrastructure", "state", "art_eval", "criteria_ledger.jsonl")
 SCHEDULE = os.path.join(HERE, "dispatcher_schedule.json")
-SKILL = os.path.join(ROOT, ".claude", "skills", "rimworld-art-evaluation", "SKILL.md")
+SKILL = os.path.join(ROOT, "skills", "rimworld-art-evaluation", "SKILL.md")   # authored path: the skill is read by path, not registered
 
 FAILS = []
 

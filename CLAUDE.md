@@ -94,9 +94,12 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 ## No mod runs forward on a broken pipeline
 
 - Do not run a mod forward while an open pipeline ticket classed BLOCKS lies on that mod's path.
-- To run a mod forward is to switch a mod stage on, release a ceiling for the mod, or launch its build or visit.
-- The check is the mod's readiness list. It names every component the mod will touch. It marks each open ticket
-  BLOCKS, RARE or NOT ON PATH. A component you could not look at is never clean.
+- Each of these acts runs a mod forward:
+  - to switch a mod stage on;
+  - to release a stage ceiling (the spend limit of one stage) for the mod;
+  - to launch a build, a fix or an in-game visit of the mod.
+- The check is the mod's readiness list. The readiness list names every component the mod will touch. The readiness
+  list marks each open ticket BLOCKS, RARE or NOT ON PATH. A component you could not look at is never clean.
 - The pipeline is fixed for a mod when its readiness list reads READY.
 - Do not ask the owner whether to run a mod before then. Pipeline repair, design text and investigations continue.
 - Full text: `design/RimMandrake/standing_rulings.md` §No mod runs forward on a broken pipeline.
@@ -109,9 +112,10 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - `RUT_GreatboleHeartwood` is the blob that you can mine.
   - `RUT_GreatboleCore` is a 1×1 marker for bookkeeping.
 - An animal belongs to one biome, unless an in-game reason says otherwise. Fill a hole in a roster with a new creature.
-- Evictions are stopped. No pass edits a roster to enforce the one-biome rule. A species with more than one home is a
+- Evictions from a roster are stopped. No pass edits a roster to enforce the one-biome rule. A species with more than one home is a
   row on that biome's own review sheet, at that biome's sitting.
-- If each new question to the owner adds a clause to a procedure, stop. That work is human review work.
+- If each new question to the owner adds a clause to a procedure, stop. That work is human review work: put the cases
+  on a review sheet.
 - A sea biome describes its floor and its catch: the animals you meet there and what you can fish there. Only
   fish-sized creatures owe a catch.
 - In every sea, all fishable creatures are alive and move in the depths.
@@ -131,7 +135,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - An `RM_` roster can stand alone. It is never a thin fallback.
 - When a tier or provenance question makes more sub-questions, first ask if the category is necessary at all.
 - A donor mod's defName is not a canon source. Check canon with the Wookieepedia search API.
-- Authority: `design/RimMandrake/biome_mod_architecture.md` §7 Q11a. Full text: `design/RimMandrake/biome_rulings.md`.
+- Authority: `design/RimMandrake/biome_mod_architecture.md` §7 Q11a (a name that only sounds like Star Wars is not
+  IP). Full text: `design/RimMandrake/biome_rulings.md`.
 
 ## Facts you cannot guess
 
@@ -154,15 +159,16 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - An instrument here can return a confident wrong number. Before you trust a count, read the measured traps in
   `infrastructure/state/facts/instrument_traps.md`.
 - `Plant` ticks only `TickLong()`. A comp on a plant overrides `CompTickLong()`.
-- `MayRequire` on a top-level `<Operation>` has no effect. Guard with `PatchOperationFindMod`/`Conditional`. A composed
-  member's packageId never loads. A patch that matches nothing logs nothing. Detail:
-  `skills/rimworld-modding/references/project-engine-facts.md`.
+- `MayRequire` on a top-level `<Operation>` has no effect. Guard with `PatchOperationFindMod`/`Conditional`.
+- A member mod that is composed into `mandrake.rm.biomes` has no packageId of its own at runtime. So a `MayRequire`
+  that names a member id never loads.
+- A patch that matches nothing logs nothing. Detail: `skills/rimworld-modding/references/project-engine-facts.md`.
 - `modcheck run <Mod>` rewrites the live `ModsConfig.xml` (the expensive list).
 - When a new game does not start, read the FIRST exception in `Player.log`, not the loudest one.
 - Some tools have surprising side effects (subagent watchdog, mid-session hooks, card gates, `handoff.py`, two
   Conductor windows). Read `infrastructure/state/facts/tool_traps.md`.
 - Dumps and harvests go stale. Trust one only after its fingerprint matches the live mod set. The frozen `official`
-  dump is the only design target.
+  dump (`observed/inventory/DefDump_OFFICIAL/`) is the only design target.
 - Full text: `design/RimMandrake/standing_rulings.md` §Facts you cannot guess.
 
 ## North-star validation
@@ -172,7 +178,8 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   the owner's word or as the Conductor's act.
 - Write only prose that stays true in every state. Never write validation state as prose: `modcheck floor --all`
   measures it.
-- Walk-finding traps and the rest: `design/RimMandrake/standing_rulings.md` §North-star validation state.
+- The traps of walk findings, and all other detail: `design/RimMandrake/standing_rulings.md` §North-star validation
+  state.
 
 ## In-game LLM access is the Claude Code CLI, never a hosted API key
 
@@ -183,8 +190,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## A pit is a superdeep cell, not a building
 
-- The authority is the item `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`. It is not the 1127-line spec,
-  which is older than ten changed answers.
+- The authority is the item `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`.
+- Do not act on the 1127-line spec `design/RimMandrake/pit_superdeep_collapse_spec.md` before you read the item. Ten
+  of the spec's answers changed after the spec was written.
 - Summary: `design/RimMandrake/standing_rulings.md` §A pit is a SUPERDEEP cell.
 
 ## One Direct Sun, a pure function of geometry
@@ -288,7 +296,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   reason>"`. Never log it as his words. It goes into his digest.
 - Four acts also name `lost:` and `undo:` in the `--why`:
   - a cut of his OWNER bridge hold;
-  - a change to the account order or the leave line;
+  - a change to the account order or the leave line of the shared account;
   - a deletion of work that is not ours;
   - a looser bar.
 - The Conductor reviews every card for the owner first. A card can be outside the five acts, with no evidence
@@ -352,9 +360,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 - A run spends no trial, turn, look or cycle if it was killed, timed out or never started. The same applies when the
   owner or the Conductor stopped it.
-- The tick classes such a run `void_system`. To void any run by hand, use
-  `maturation_dispatch.py void <unit> --why "..."`. `unvoid` reverses it.
-- Do not answer that the record is frozen or append-only.
+- The pipeline tick (`maturation_dispatch.py tick`, a timed run) classes such a run `void_system`. To void any run by
+  hand, use `maturation_dispatch.py void <unit> --why "..."`. `unvoid` reverses a void.
+- Do not refuse to void a run because the record is frozen or append-only.
 - Full text: `design/RimMandrake/standing_rulings.md` §No trial is spent by a system failure.
 
 ## No limit without the danger it guards
@@ -376,6 +384,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## A passing bar is an experience, never a tuning number
 
+- A bar is a plain sentence about what the player sees or can do. A check is the code that decides a bar.
 - No bar pins a yield rate, a stat value, any tuning number or a count of asset variants.
 - The test: would we have to pass this bar again after we renormalize numbers or add an art variant? If yes, it is not
   a bar.
@@ -386,14 +395,17 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 - A judge turns away incomplete work. A judge does not turn away work only because it is not tuned to perfection.
 - Four rules:
-  1. Refuse only for one of three flaws: a promise not kept; a broken promise that nobody would notice; a test or
-     file that is itself wrong. Quote the promise. Everything else is advice.
+  1. Refuse only for one of three flaws. Quote the promise. Everything else is advice. The three flaws:
+     - a promise not kept;
+     - a broken promise that nobody would notice;
+     - a test or file that is itself wrong.
   2. Do one full inspection, then one check of the repairs, by reading the fix. Then the owner gets the short list.
   3. A refusal binds only "close this hole". Its numbers and methods are suggestions. A number binds only if the owner
      said it. Never change the mod to hit a test's number.
   4. A Designer "must not read as" line is a tip, not a thing to test. The exception is a line that is his words or
      the plain opposite of the promise.
-- The dials are who confirms a refusal and the number of looks (2).
+- Two settings (the dials) can change: who confirms a refusal, and the number of looks. The number of looks starts
+  at 2.
 - These rules bind only after the judge prompt is edited and recalibrated.
 - Full text: `design/RimMandrake/standing_rulings.md` §The judge refuses flaws, not polish.
 
@@ -444,7 +456,7 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Commit explicit paths only. The pathspec goes on the commit. Never use `git add -A`, `git add .` or `git commit -a`
   (`block_blanket_git_stage.py` refuses them).
 - `git worktree` is off (`block_worktrees.py`).
-- Writers above 4 may use a pool of up to 16 reused clones and 80 GB. `scratch_clone.py` refuses a new clone past
+- More than 4 writers at one time may use a pool of up to 16 reused clones and 80 GB. `scratch_clone.py` refuses a new clone past
   those limits. Monitor the pool carefully, because clones multiply fast.
 - The pool has one alarm, `disk.pool_breach`. It also fires on a helper clone that holds unlanded work after an idle
   hour.
@@ -492,8 +504,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - Before you write new pipeline code, write its one-page list: `design/specs/<component>/boundary.md`. The page says
   what the code accepts, which failures it does not survive, and what it promises. Each promise gets a test of the
   same name.
-- Pipeline code is clean when every promise on its page has a test and the code has had two looks. A later edit stays
-  clean while those tests pass. A full-file review that finds nothing is not its bar.
+- Pipeline code is clean when every promise on its page has a test and the code has had two looks. The two looks are
+  one full inspection against the page and one check that reads only the repairs. A later edit stays clean while those
+  tests pass. A full-file review that finds nothing is not the bar for pipeline code.
 - Fix a review claim only if it breaks a promise on the page. Write each other claim as one line on `polish.md` or
   `next_version.md` beside the page.
 - Codex and GPT reviews of pipeline code stay stopped until a calibrated review brief exists. The owner stopped them.
@@ -586,7 +599,9 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
   flyer's flight.
 - A ledger event in seat OWNER carries his authority. It is not proof that his own hands acted. So an agent's
   `--owner-said` or `--by-card` event does not restart his 45-minute clock (`is_his_act` in
-  `src/RimMandrake/rimflow/owner_interaction.py`). `host_guard` holds the same line across clones.
+  `src/RimMandrake/rimflow/owner_interaction.py`).
+- `host_guard` applies the same rule across clones: a live OWNER lock takes no `--force` without the verdict of the
+  `rimflow` cli.
 - His presence at the machine is not an event. Nothing reads his input clock. When he touches, leaves or returns to
   the machine, nothing is gated, delayed, yielded, requeued or aborted.
 - A seat may take the bridge when the bridge is free, ours, or stale by the 45-minute rule. Then it may also deploy
@@ -594,7 +609,9 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
   in his daily digest, class `bridge idle`.
 - These still bind: his OWNER hold, the `./bridge` override, no flyer flight, and never fullscreen or focus the game.
 - When you hold the bridge, you may start Steam, launch the game, or do anything else that you need. Do not ask.
-- Game-state relays are stamp-only. Longer relays use tokens and rarely inform.
+- A game-state relay is stamp-only: when a seat runs `./game`, the command writes the ledger event and messages no
+  window. Other windows read the game state with `rimflow next`. A message to each window uses tokens and rarely
+  informs.
 - What counts as his interaction, and the full text: `design/RimMandrake/standing_rulings.md` §The bridge is passed
   through one file.
 
