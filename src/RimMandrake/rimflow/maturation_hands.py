@@ -144,6 +144,13 @@ def tick_units(s):
             if isinstance(x, dict) and (x.get("unit") or x.get("tried")):
                 units.update([x.get("unit"), x.get("tried")])
                 items.add(x.get("item")) if x.get("unit") else None
+    # a voided run's entry is moved out of its book into `voided` (run_void.sync_dispatch): still the tick's own
+    # (RIMMANDRAKE_OWN_VOIDED_TICK_RUNS_ARCHIVE_HID_THEM)
+    for m in s.get("voided") or []:
+        x = m.get("entry") if isinstance(m, dict) else None
+        if isinstance(x, dict):
+            units.update([m.get("unit"), x.get("unit"), x.get("tried")] + list(x.get("killed_before") or []))
+            items.add(x.get("item")) if x.get("unit") else None
     units.discard(None)
     items.discard(None)
     return units, items
@@ -152,6 +159,9 @@ def tick_units(s):
 def _fix_queue(s):
     """The tick's own fix tickets for a mod: its fixer keys and what its road back names."""
     ids = {str(k).split("|")[0] for k in (s.get("fixers") or {})}     # a Test Pilot sitting's key is ITEM|pilot|<tsn>
+    # a voided fixer's entry sits in `voided` under its book key: its ticket is still the tick's
+    ids.update(str(m.get("key")).split("|")[0] for m in s.get("voided") or []
+               if isinstance(m, dict) and m.get("book") == "fixers" and m.get("key") is not None)
     rb = s.get("road_back") or {}
     for k in ("items", "ids"):
         if isinstance(rb.get(k), list):
@@ -437,7 +447,10 @@ def main(argv=None):
         print(text)
         return rc
     if o.cmd == "record":
-        aid = "manual-%s" % hashlib.sha1(("%s|%s|%s|%d" % (o.kind, o.mod, o.what, now)).encode()).hexdigest()[:10]
+        # one id per call: two records in one second with the same words are two acts
+        # (RIMMANDRAKE_SPLIT_MANUAL_HAND_ACT_IDS_WITHIN_ONE_SECOND)
+        aid = "manual-%s" % hashlib.sha1(("%s|%s|%s|%s|%r|%s" % (o.kind, o.mod, o.what, o.why, now,
+                                                                 os.urandom(8).hex())).encode()).hexdigest()[:12]
         _append(ACTS, dict(_act(aid, now, o.kind, o.mod, o.what, o.why), recorded=now))
         print("RECORDED %s; it needs a follow-up within a day: maturation_hands.py fold %s --item <ID>" % (aid, aid))
         return 0

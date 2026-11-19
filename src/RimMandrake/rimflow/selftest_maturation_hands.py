@@ -586,6 +586,26 @@ def false_hands_main():
         # Codex review 2026-11-18: an unconfirmed launch booked `tried` that then ran is the tick's own, not a hand's;
         # and a failed launch (never ran, end None) hides no later hand move
         ok(not any("rm-tick-judge" in a["id"] for a in acts), "false hands 3b (control): the tick's own judge is no act")
+        # RIMMANDRAKE_OWN_VOIDED_TICK_RUNS_ARCHIVE_HID_THEM: a tick run whose book entry run_void moved to `voided`
+        # is still the tick's own, never a hand
+        st_v = {"hands": {"since": t0 - 10, "last_tick": NOW - 60},
+                "mods": {"V": {"voided": [{"book": "blind_auto", "key": 0, "unit": "rm-v", "class": "void_hand",
+                                           "entry": {"unit": "rm-v", "item": "RIMMANDRAKE_JUDGE_V_BLIND_CYCLE_ONE"}},
+                                          {"book": "fixers", "key": "FIX_V", "unit": None, "class": "void_system",
+                                           "entry": {"unit": None, "tried": "rm-v-fix", "item": "FIX_V"}}]}}}
+        os.makedirs(os.path.join(root, "design", "concepts", "V", "version"), exist_ok=True)
+        facts_v = {"V": {"stage": "blind_challenge", "runs_seen": [
+            {"unit": "rm-v", "item": "RIMMANDRAKE_JUDGE_V_BLIND_CYCLE_ONE", "at": t0 + 60},
+            {"unit": "rm-v-fix", "item": "FIX_V", "at": t0 + 70}]}}
+        n_v = len(MH.read_acts())
+        MH.observe(root, dict(CFG, advancing=["V"]), st_v, facts_v, NOW, {"needs_conductor": []}, fx)
+        ok(len(MH.read_acts()) == n_v, "false hands 3c: a voided tick run (its entry moved to `voided`, booked unit or "
+           "tried) is no hand act", [a["id"] for a in MH.read_acts()][n_v:])
+        facts_v["V"]["runs_seen"].append({"unit": "rm-v-hand-fix", "item": "FIX_V", "at": t0 + 90})
+        MH.observe(root, dict(CFG, advancing=["V"]), st_v, facts_v, NOW + 30, {"needs_conductor": []}, fx)
+        ok([a["id"] for a in MH.read_acts()][n_v:] == ["run-rm-v-hand-fix"],
+           "false hands 3d: a later hand fix on a fixer ticket whose entry was voided is still one hand act",
+           [a["id"] for a in MH.read_acts()][n_v:])
         os.remove(os.path.join(MD.sdir(), MH.ACTS)) if os.path.exists(os.path.join(MD.sdir(), MH.ACTS)) else None
         late = "rm-detached-bench-rimmandrake-drive-g-in-game-1794834319"
         st["mods"]["G"]["ingame_auto"].append(
@@ -717,6 +737,21 @@ def fold_later_main():
         f = MH.read_folds().get(acts[0]["id"]) if acts else None
         ok(bool(f) and f.get("item") == "RIMMANDRAKE_FOLLOW_UP_F_ITEM",
            "fold later 3: a later tick that reads the ledger folds the act its reason names", f)
+        # RIMMANDRAKE_SPLIT_MANUAL_HAND_ACT_IDS_WITHIN_ONE_SECOND: two `record` calls in one second are two acts
+        real_time = MH.time.time
+        MH.time.time = lambda: NOW + 300.25
+        try:
+            import contextlib
+            import io
+            with contextlib.redirect_stdout(io.StringIO()):
+                for why in ("same words", "same words"):
+                    MH.main(["--root", root, "record", "--mod", "F", "--what", "timer paused by hand", "--why", why])
+        finally:
+            MH.time.time = real_time
+        man = [a for a in MH.read_acts() if a["kind"] == "manual"]
+        ok(len(man) == 2 and len({a["id"] for a in man}) == 2,
+           "record 1: two record calls in the same second with the same kind, mod and what are two acts",
+           [(a["id"], a["why"]) for a in man])
     finally:
         if was is None:
             os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
