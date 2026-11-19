@@ -30,6 +30,7 @@ PAGES = {
     "design/specs/2026-11-19-stage-ceiling/boundary.md": "src/RimMandrake/rimflow/selftest_stage_ceiling_arrival.py",
     "design/specs/2026-11-19-asks-on-empty-game/boundary.md": "src/RimMandrake/rimflow/selftest_asks_on_empty_game.py",
     "design/specs/2026-11-19-control-acts-export/boundary.md": "src/RimMandrake/rimflow/selftest_control_acts_export.py",
+    "design/specs/2026-11-19-void-counters/boundary.md": "src/RimMandrake/rimflow/selftest_void_counters.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

@@ -1179,13 +1179,19 @@ def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the 
         put("live", "certificate rerun %s (zero tokens) started %d s ago on %s" % (
             prior["unit"], age, "this build" if prior.get("key") == key else "an older build; this build reruns after it"))
         return "decided"
+    void = None
     if prior and prior.get("key") == key:
-        if prior.get("unit"):
+        # a rerun that left no result of its own by its bound was killed or timed out: void_system, it spends no rerun
+        # of this build, so it is started again within launch_tries (RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE)
+        if prior.get("unit") and not mine and int(prior.get("tries") or 1) < int(cfg.get("launch_tries", 3)):
+            void = "the rerun %s left no result within %d s (killed or timed out): void_system" % (
+                prior["unit"], RERUN_MAX_S)
+        elif prior.get("unit"):
             return wait("the zero-token certificate rerun %s on this build %s" % (prior["unit"], (
                 "ended (ok %s, published %s%s)" % (mine.get("ok"), mine.get("published") or "nothing",
                                                    ", error: %s" % mine["error"] if mine.get("error") else "")
                 if mine else "left no result within %d s" % RERUN_MAX_S)))
-        retry = int(prior.get("tries") or 1) < int(cfg.get("launch_tries", 3)) and (
+        retry = void or int(prior.get("tries") or 1) < int(cfg.get("launch_tries", 3)) and (
             AUT.transient(str(prior.get("failed") or "")) or code_changed(cfg, prior))
         if not retry:
             return wait("the certificate rerun on this build did not start (%s)" % prior.get("failed"))
@@ -1193,9 +1199,12 @@ def cert_rerun_decide(cfg, s, f, row, put, now, to="blind_challenge", what="the 
         return wait("the certificate rerun %s left its own build stale (a decider that changes what it reads?)"
                     % prior["unit"])
     row["cert_rerun_key"] = key
+    if void:
+        row["cert_rerun_void"] = void
     n = len({r.get("test") for r in (f.get("certificate") or {}).get("rows") or [] if r.get("status") == "REFUSED"})
     put("launch", "its certificate refuses only stale stamps (%d decider(s) last run on an older build), no decider "
-        "red: one zero-token `maturation.py certificate %s --run`, detached, for this build" % (n, mod))
+        "red: one zero-token `maturation.py certificate %s --run`, detached, for this build%s" % (
+            n, mod, "; again: %s" % void if void else ""))
     return "launch"
 
 
@@ -1209,8 +1218,8 @@ def cert_rerun_launch(cfg, st, row, now, fx):
         rc, text, unit = 1, "%s: %s" % (type(e).__name__, e), None
     unit = unit if rc == 0 else None
     s["cert_rerun"] = {"key": key, "unit": unit, "at": now, "failed": None if unit else str(text), "code": cfg.get("_code"),
-                       "tries": int(prior.get("tries") or 1) + 1 if prior.get("key") == key and not prior.get("unit")
-                       else 1}
+                       "tries": int(prior.get("tries") or 1) + 1 if prior.get("key") == key and (
+                           not prior.get("unit") or row.get("cert_rerun_void")) else 1}
     if unit:
         row.update(decision="launched", unit=unit, why=text)
         return True

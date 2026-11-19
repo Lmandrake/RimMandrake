@@ -52,8 +52,13 @@ DICT_BOOKS = ("steward", "fixers")
 RELEASE_BOOK = "releases_used"
 LIST_BOOKS = ("blind_auto", "ingame_auto", "launches", "holder_road_back", "pilot_launches", "ledger_runs")
 ONE_BOOKS = ("last_run", "cert_rerun", "cert_red")
-# books the automatic class reads: a run there that died of a system cause would otherwise count as its trial
-SYSTEM_BOOKS = DICT_BOOKS + ("blind_auto", "ingame_auto", "launches", "holder_road_back")
+# books the automatic class reads: a run there that died of a system cause would otherwise count as its trial. Not
+# ledger_runs: it is end_ledger_runs' bookkeeping (every unit in it sits in another book too), and its entry must stay
+# for the run.end; not cert_rerun: its unit has no detached record (cert_rerun_decide retries it on its own)
+SYSTEM_BOOKS = DICT_BOOKS + ("blind_auto", "ingame_auto", "launches", "holder_road_back", "pilot_launches")
+# single entries that go out (and come back) with their unit's `launches` entry: the builder's last run, and the
+# red-decider builder cert_red_decide reads as "ended and still red"
+FOLLOW_LAUNCH = ("last_run", "cert_red")
 UNM = "UNMEASURED"
 
 
@@ -282,6 +287,11 @@ def resolve(root, st, units=(), item=None, mod=None, since=None, record=None, ve
     if mod and since is not None:
         got = [u for m, b, k, x in books for u in _units_of(x) if m == mod and isinstance(x.get("at"), (int, float))
                and x["at"] >= since]
+        s = ((st or {}).get("mods") or {}).get(mod)     # a run sync_system already moved out, by its entry's saved at
+        for v in (s.get("voided") or []) if isinstance(s, dict) else []:
+            at = (v.get("entry") or {}).get("at") if isinstance(v, dict) else None
+            if v.get("class") == "void_system" and v.get("unit") and isinstance(at, (int, float)) and at >= since:
+                got.append(v["unit"])
         got += [u for u, (m, at) in staged.items() if m == mod and at is not None and at >= since]
         if not got:
             return [], "no run on %s since %s" % (mod, _iso(since))
@@ -489,8 +499,9 @@ def system_cause(rec, runner=None):
     never started; KILLED (detached_helper.killed: a signal stop, or a unit dead with its finish never run); a TIMEOUT;
     the CLI exiting non-zero with no result of its own ("exit-code ..."). Not system: "success ..." (it ended), and
     "exit-code/claude-error" (claude answered with an error of its own: a cap or the agent's, not the machine's). A
-    record that cannot be read, or whose result is "unknown" or absent, is "" here: UNMEASURED, left as the books had
-    it."""
+    record that cannot be read, or whose result is absent, is "" here: UNMEASURED, left as the books had it. A result
+    "unknown (...)" is a finish that ran without systemd's variables (by hand on a dead unit) and READ the agent's own
+    result JSON (outcome() writes "killed: unknown" when there is none): the run ended on its merits and counts."""
     import detached_helper as DH
     if not isinstance(rec, dict):
         return ""
@@ -521,7 +532,7 @@ def heal_system(s, record):
             and not (m["book"] == RELEASE_BOOK and m.get("class") == "void_system")]    # given back while void
     for m in mv:
         u = m.get("unit")
-        if m.get("class") != "void_system" or not u or m["book"] in ("last_run", "road_back", RELEASE_BOOK) \
+        if m.get("class") != "void_system" or not u or m["book"] in FOLLOW_LAUNCH + ("road_back", RELEASE_BOOK) \
                 or m in back:
             continue
         rec = record(u)
@@ -529,8 +540,8 @@ def heal_system(s, record):
             back.append(m)
     # a given-back release whose run no longer stands void_system (healed now, or earlier with the release's key then
     # held by a newer run: it stayed saved) is spent again, retried on its own each read (Codex review r1-1)
-    still = {m.get("unit") for m in mv if m.get("class") == "void_system" and m["book"] != RELEASE_BOOK
-             and not any(m is b for b in back)}
+    still = {m.get("unit") for m in mv if m.get("class") == "void_system" and m["book"] not in (
+        RELEASE_BOOK,) + FOLLOW_LAUNCH and not any(m is b for b in back)}
     back += [m for m in mv if m["book"] == RELEASE_BOOK and m.get("class") == "void_system"
              and m.get("unit") not in still and not any(m is b for b in back)]
     if not back:
@@ -538,7 +549,7 @@ def heal_system(s, record):
     units = {m["unit"] for m in back if m.get("class") == "void_system" and m["book"] != RELEASE_BOOK}
     items = {m["entry"].get("item") for m in back if m["book"] == "steward"}
     back += [m for m in mv if m.get("class") == "void_system" and not any(m is b for b in back) and (
-        (m["book"] == "last_run" and m.get("unit") in units) or
+        (m["book"] in FOLLOW_LAUNCH and m.get("unit") in units) or
         (m["book"] == "road_back" and (m.get("entry") or {}).get("caused_by") in items))]
     done = [m for m in back if _restore(s, m)]
     s["voided"] = [m for m in mv if not any(m is d for d in done)]
@@ -610,10 +621,12 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
                         keep.append(x)
                 if len(keep) != len(book):
                     s[b] = keep
-        lr = s.get("last_run")
-        if isinstance(lr, dict) and lr.get("unit") in {m["unit"] for m in moved if m["book"] == "launches"}:
-            moved.append({"book": "last_run", "key": None, "entry": s.pop("last_run"), "class": "void_system",
-                          "void": None, "why": "its run is void_system", "unit": lr["unit"], "faults": 0})
+        launched = {m["unit"] for m in moved if m["book"] == "launches"}
+        for b in FOLLOW_LAUNCH:
+            lr = s.get(b)
+            if isinstance(lr, dict) and lr.get("unit") and lr["unit"] in launched:
+                moved.append({"book": b, "key": None, "entry": s.pop(b), "class": "void_system",
+                              "void": None, "why": "its run is void_system", "unit": lr["unit"], "faults": 0})
         items = {m["entry"].get("item") for m in moved if m["book"] == "steward"}
         rb = s.get("road_back")
         if isinstance(rb, dict) and rb.get("caused_by") in items - {None}:
@@ -660,7 +673,7 @@ def void_spend(s, record):
     usd, unm, seen = 0.0, [], set()
     for m in s.get("voided") or []:
         u = m.get("unit")
-        if not u or m["book"] in ("last_run", "road_back") or u in seen:
+        if not u or m["book"] in FOLLOW_LAUNCH + ("road_back",) or u in seen:
             continue
         seen.add(u)
         c = (record(u) or {}).get("cost_usd")

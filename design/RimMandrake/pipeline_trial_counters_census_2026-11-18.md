@@ -10,8 +10,9 @@ ways: a **hand void** (`maturation_dispatch.py void <unit>... | --item ID | --mo
 [--owner-said "..."]`, reversed by `unvoid`; listed by `voids`), or **void_system**, classed automatically when its run
 record's own `result` (written at finish) shows a cause the machine can see: killed, its unit dead with its finish
 never run, timed out, the CLI exiting with no result of its own, a launch that never started and has no retry left.
-"success" counts; "exit-code/claude-error" (claude's own error: a cap, or the agent's) counts; "unknown" or no result is
-UNMEASURED and left as the books had it. 🔴 Never re-read the output file for "no result JSON": a detached run's out is
+"success" counts; "exit-code/claude-error" (claude's own error: a cap, or the agent's) counts; "unknown (...)" counts (a
+finish run without systemd's variables that read the agent's own result JSON: 13 of 618 records on 2026-11-19, 12 with
+a success JSON still on disk); no result is UNMEASURED and left as the books had it. 🔴 Never re-read the output file for "no result JSON": a detached run's out is
 not one JSON document, and reading it that way classed four old success runs void on the first live tick (2026-11-18
 ~11:10 AM PST; healed by `heal_system`, nothing launched: every mod read ceiling or owner_hold). A void run's book entries are
 moved to the mod's `voided` list in `state.json`, never deleted; a Designer `stage.json` is made to agree by
@@ -33,10 +34,10 @@ Where a reading was measured it says `[measured]`; a guess carries its confidenc
 | steward runs per version (`steward_max_per_version` 12) | the count of `steward` keys on the version | `_gate` | every killed or failed entry counted toward the 12 | void entries are not in the book, so not counted |
 | fixer once per road-back item (`fix_cap_usd`) | `mods.<Mod>.fixers` | `_gate` (`fixer_spent`) | as for the steward | as for the steward |
 | road back (`caused_by`) | `mods.<Mod>.road_back` | `_road_back`, `holder_spent`, `stop_tickets` | a route steward killed at launch still opened it | it goes with its steward's entry (hand or system void) |
-| holder one run per set of road-back items | `mods.<Mod>.holder_road_back`, `pilot_launches` | `holder_spent` | a killed holder "ended with them still open": no second automatic try; one that never started: spent | **void_system** (never started, or killed); hand void: yes |
+| holder one run per set of road-back items | `mods.<Mod>.holder_road_back`, `pilot_launches` | `holder_spent` | a killed holder "ended with them still open": no second automatic try; one that never started: spent | **void_system** (never started, or killed; a hand `pilot-launch` too, `pilot_launches` scanned since RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE); hand void: yes |
 | offline builder progress (one builder per refused set; a run that did not reduce the refusals stops the mod) | `mods.<Mod>.launches`, `last_run`, `stopped` | `decide`, `progressed` | a killed builder was judged as not progressing: **stopped** | a killed builder's launch and `last_run` are void_system: never judged. A `stopped` already written before this change is not undone (`clear` it) |
 | launch tries (`launch_tries` 3, `launch_failed`, `launch_retry`) | `tries` on each entry | `retriable`, `_gate`, `spent_tries` | the retry count of never-started launches; at 3 the trial was spent | it is the system-fault count: at 3 the entry is void_system, the faults are counted, and `system_fault` stops the mod without spending the trial |
-| certificate rerun (one zero-token rerun per build key) and red-decider builder | `mods.<Mod>.cert_rerun`, `cert_red` | `cert_rerun_decide`, `cert_red_decide`, `_clear` | a dead run spent it | hand void: yes. Automatic: **UNBUILT** (the rerun is a zero-token systemd unit with no detached run record) |
+| certificate rerun (one zero-token rerun per build key) and red-decider builder | `mods.<Mod>.cert_rerun`, `cert_red` | `cert_rerun_decide`, `cert_red_decide`, `_clear` | a dead run spent it | hand void: yes. Automatic: a red-decider builder whose `launches` entry is **void_system** takes `cert_red` out with it (and back on a heal); a rerun with no result of its own `RERUN_MAX_S` after its start (killed or timed out; its unit has no detached record) is started again within `launch_tries` (RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE) |
 | ceiling releases | `mods.<Mod>.releases_used` (release id → unit) | `ceiling_gate` | a launch that died spent the release | a **void_system** run's release is given back (`run_void.sync_system`; the Conductor's decision of 2026-11-18 1:05 PM PST, delegated, he may overrule); a run that heals spends it again; a hand void leaves it spent (e391a63413) |
 | stage spend ceiling (`stage_ceiling_usd` 100) | run records' `cost_usd`, `run_spend.json` | `stage_spent`, `offline_usd`, `ceiling_gate`, `reserve_refused` | dead runs' dollars counted (a run with no measured dollars at its cap); a killed run's dollars were refunded once when they alone held its retry | **off the ceiling** by his card of 2026-11-18 11:06 AM PST ("Does not count"): `void_units` (standing hand voids, the mod's `voided` list, runs killed before a result) are taken out; shown apart as `void_usd`; the killed-run refund is retired with it |
 
@@ -48,7 +49,8 @@ Where a reading was measured it says `[measured]`; a guess carries its confidenc
 | judge looks (`JUDGE_RUNS_MAX` 4, `NOT_COVERED_LIMIT`, `MALFORMED_LIMIT`, `JUDGE_SPEND_MAX`) | `coverage_rounds`, plus legacy rounds rebuilt from `budget.charges` refs | `coverage_judge.rounds`, `stop_reason`, `_caps` | every round counts, an errored or malformed one too; an unmeasured judge counts at the p90 | a hand-voided judge's round is out, as before. Automatic (ad019a7e19): a round whose call died (`error_kind` "system": no answer, a timeout, output that is no result; before error_kind, the error text) is **void_system**: no run, look, spend or malformed verdict; `rounds(voids=True)` shows it apart; `JUDGE_FAULT_LIMIT` (8) since the last release stop judging as a system fault. A judge that answered with no well-formed verdict counts |
 | Designer retries per stage | `history` `retry` rows, `results` `rejected` | `designer_stage` packet (retries), two rejections in a row | a killed stage run's "no result.json" rejection counts | hand void moves them out; automatic (4fe2af3f9e): a rejection whose every reason is "no result.json" and whose run left no claude result of its own (stopped at run_max_s, or the unit ended; an unreadable output file is not "no result") is **void_system** (`role_launch.void_cause`, `designer_stage.void_rejection`): no retry, no rejection for parking, none remembered |
 | Designer stage budget (`budget.cap`) | `budget.charges` | `over_budget` | spend | **unchanged** (true spend); void refs listed in `voided.spend_refs` |
-| Designer chain cap (`chain_max_per_day`, `role_launch.CHAIN_MAX_PER_DAY` 8) | Dispatcher `state.json` `roles.<Designer>.chain_day` ("day concept" → count) | `role_launch.chain_ask`, `maturation_autonomy.designer_chain` | a killed chain counts | each chained launch is recorded against its unit (`chain_units`); a void_system end gives that chain back and chains the stage again; 3 void runs on one concept in a day stop as `role:<Role>:system_fault`, nothing chained (4fe2af3f9e) |
+| Designer loop ceiling (`LOOP_CEILING_FACTOR` x the cap, then park) | `budget.charges` since `loop_start` | `designer_stage.loop_ceiling`, `ceiling_crossed_at` | a void run's or void judge's charge counted, and a void judge round could start the loop | no void charge counts toward the ceiling, its crossing or its start (`designer_stage.loop_void_refs`: hand voids, void_system judge rounds and readers, void_system Designer rejections); the void spend is shown apart in the ceiling's line (RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE) |
+| Designer chain cap (`chain_max_per_day`, `role_launch.CHAIN_MAX_PER_DAY` 8) | Dispatcher `state.json` `roles.<Designer>.chain_day` ("day concept" → count) | `role_launch.chain_ask`, `maturation_autonomy.designer_chain` | a killed chain counts | each chained launch is recorded against its unit (`chain_units`); a void_system end gives that chain back and chains the stage again; 3 void runs on one concept in a day stop as `role:<Role>:system_fault`, nothing chained (4fe2af3f9e); a run-now consumed with no launch because it expired, the pipeline is paused, the owner holds it or the role is off gives its chain back, and the sweep asks nothing while the role is off; a gate refusal (the stage machine, band, caps, ops reading) keeps its chain as the brake on an ask-and-refuse loop (RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE) |
 
 ## Counters outside the books
 
@@ -61,11 +63,12 @@ Where a reading was measured it says `[measured]`; a guess carries its confidenc
 
 ## What is UNBUILT, and where it is filed
 
-Item RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS. A certificate rerun is reached only by a hand void,
-and stays so: it is a zero-token systemd unit with no detached run record, so no system cause can be read from it.
-A void's children are the Designer runs and judges its run launched, by the `parent` a run-now from a detached run
+Item RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS. A void's children are the Designer runs and judges its run launched, by the `parent` a run-now from a detached run
 records (`role_launch.with_parent`, into the run, stage.json and the judge's round; da889bc937); an entry written before
 that, with no parent, still goes by time.
-Gaps the Codex review of this item found that are not built yet (unknown results finalised as counted, `--mod --since`
-on already-moved runs, books sync_system does not scan, a void mark whose write failed, a chain spent by a run-now that
-never launched, void spend in the Designer loop ceiling): RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE.
+The six gaps a Codex review of that item named were checked one by one in RIMMANDRAKE_CLOSE_VOID_GAPS_REVIEW_FOUND_SIX_MORE,
+each against a test run on the base first (`design/specs/2026-11-19-void-counters/boundary.md`, tests
+`src/RimMandrake/rimflow/selftest_void_counters.py`). Not real: an "unknown" result is a run with its own answer, and
+`ledger_runs` is bookkeeping, not a counter. Not handled, by the owner's card of 2026-11-19 (a rare failure): a void
+mark on stage.json that itself raises leaves that one rejection counted, said by its alarm. The rest are built (rows
+above).

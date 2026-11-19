@@ -2121,13 +2121,39 @@ def code_present(rec):
             if isinstance(e, dict) and e.get("impl") == "present" and e.get("id")]
 
 
+def loop_void_refs(st):
+    """-> the charge refs whose spend is void (owner 2026-11-18: no system failure spends a counter): a hand-voided run's
+    or judge's (run_void.sync_stage's spend_refs), a void_system judge round's and its second reader's
+    (coverage_judge.void_cause), a second reader that died, and a Designer run whose rejection is void_system
+    (void_rejection). Their spend is true spend, shown apart; the loop ceiling counts none of it."""
+    import coverage_judge as CJ
+    import run_void
+    refs = set(run_void.stage_spend_refs(st))
+    for r in st.get("coverage_rounds") or []:
+        if isinstance(r, dict) and r.get("judge"):
+            if CJ.void_cause(r):
+                refs |= {r["judge"], r["judge"] + CJ.READER_SUFFIX}
+            elif r.get("reader_void_system"):
+                refs.add(r["judge"] + CJ.READER_SUFFIX)
+    refs |= {"run %s" % r["run"] for r in st.get("results") or [] if isinstance(r, dict) and r.get("run")
+             and r.get("void_system")}
+    return refs
+
+
+def _loop_charges(st, void=False):
+    """-> the budget charges the loop counts (void=True: the void ones instead)."""
+    refs = loop_void_refs(st)
+    return [c for c in (st.get("budget") or {}).get("charges") or []
+            if isinstance(c, dict) and (str(c.get("ref") or "") in refs) == void]
+
+
 def loop_start(st):
     """-> epoch the current judge-and-rework loop began, or None when no judge has run (no loop: advisory budget). It
     begins at the first judge round (or the first judge charge, before rounds were recorded) and restarts when his word
-    lifts a park."""
-    ats = [epoch(r.get("at")) for r in st.get("coverage_rounds") or [] if isinstance(r, dict)]
-    ats += [epoch(c.get("at")) for c in (st.get("budget") or {}).get("charges") or []
-            if isinstance(c, dict) and str(c.get("ref") or "").startswith(JUDGE_REF)]
+    lifts a park. A void judge round or charge (loop_void_refs) begins none."""
+    import coverage_judge as CJ
+    ats = [epoch(r.get("at")) for r in st.get("coverage_rounds") or [] if isinstance(r, dict) and not CJ.void_cause(r)]
+    ats += [epoch(c.get("at")) for c in _loop_charges(st) if str(c.get("ref") or "").startswith(JUDGE_REF)]
     ats = [a for a in ats if a is not None]
     if not ats:
         return None
@@ -2136,12 +2162,17 @@ def loop_start(st):
 
 def loop_spend(st):
     """-> tokens charged since the loop began: every stage, retry, helper, review and judge run (an unmeasured run at
-    its reservation), or None when there is no loop."""
+    its reservation), or None when there is no loop. A void run's charge counts nothing (loop_void_spend shows it)."""
     start = loop_start(st)
     if start is None:
         return None
-    return sum(int(c.get("tokens") or 0) for c in (st.get("budget") or {}).get("charges") or []
-               if isinstance(c, dict) and (epoch(c.get("at")) or 0) >= start)
+    return sum(int(c.get("tokens") or 0) for c in _loop_charges(st) if (epoch(c.get("at")) or 0) >= start)
+
+
+def loop_void_spend(st):
+    """-> tokens of void charges since his word last lifted a park (all of them before any): true spend, shown apart."""
+    since = epoch(st.get("loop_since")) or 0
+    return sum(int(c.get("tokens") or 0) for c in _loop_charges(st, void=True) if (epoch(c.get("at")) or 0) >= since)
 
 
 def loop_ceiling(st):
@@ -2150,9 +2181,10 @@ def loop_ceiling(st):
     ceil = LOOP_CEILING_FACTOR * int((st.get("budget") or {}).get("cap") or DEFAULT_CAP)
     if spent is None or spent < ceil:
         return None
-    return "the judge-and-rework loop has spent %d tokens since %s, past its ceiling of %d (%dx the cap)" % (
+    void = loop_void_spend(st)
+    return "the judge-and-rework loop has spent %d tokens since %s, past its ceiling of %d (%dx the cap)%s" % (
         spent, datetime.datetime.fromtimestamp(loop_start(st), datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        ceil, LOOP_CEILING_FACTOR)
+        ceil, LOOP_CEILING_FACTOR, "; void spend %d shown apart, not counted" % void if void else "")
 
 
 def refusals_since_loop(st):
@@ -2220,8 +2252,7 @@ def ceiling_crossed_at(st):
     if start is None:
         return None
     ceil, tot = LOOP_CEILING_FACTOR * int((st.get("budget") or {}).get("cap") or DEFAULT_CAP), 0
-    for at, tokens in sorted((epoch(c.get("at")) or 0, int(c.get("tokens") or 0))
-                             for c in (st.get("budget") or {}).get("charges") or [] if isinstance(c, dict)):
+    for at, tokens in sorted((epoch(c.get("at")) or 0, int(c.get("tokens") or 0)) for c in _loop_charges(st)):
         if at >= start:
             tot += tokens
             if tot >= ceil:

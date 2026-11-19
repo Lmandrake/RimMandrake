@@ -1636,7 +1636,9 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
     roles = decide_order([r for r in sch.get("roles") or [] if role_shape_error(r) is None])
     def one(role):
         name = role.get("name", "?")
-        if role.get("chain_stages") is True:
+        # a role switched off asks nothing: its request would be refused and its chain given back, every tick
+        if role.get("chain_stages") is True and (obs.get("off") or (lambda p: None))(
+                wsl_path(role.get("off_file") or "")) is None:
             chain_sweep(name, rst.setdefault(name, {}), dict(ROLE_DEFAULTS, **role), now, act,
                         obs.get("stage_concepts") or stage_concepts, obs.get("rejection_parked"))
         if isinstance(rst.get(name), dict):
@@ -2261,14 +2263,24 @@ def covered_slot(rs, today, now, window_s=COVER_WINDOW_S):
     return None
 
 
+# a chained run-now consumed with no launch for one of these gives its chain back (it never started: no trial spent,
+# owner 2026-11-18); chain_ask asks nothing while a hold or pause stands, and the sweep nothing while the role is off,
+# so none is re-asked in a loop. Every other refusal (the stage machine, band, caps, ops reading) keeps its chain: the
+# sweep re-asks a ready concept every tick, and the daily chain cap is the brake on that ask-and-refuse loop
+# (design/specs/2026-11-19-void-counters/boundary.md)
+CHAIN_BACK_ON = ("expired", "pipeline paused", "owner hold", "off switch")
+
+
 def refuse_now(rs, how, now, job=None):
     """A run-now refused (or expired) is consumed, said once: one-shot, never retried by the ticks. A no-op for
-    a scheduled job."""
+    a scheduled job. One refused for a CHAIN_BACK_ON cause gives its chain back."""
     if job is not None and not job.get("manual"):
         return
     req = rs.pop("run_now", None)
     if req is not None:
         rs["run_now_last"] = dict(req, outcome="refused: " + how, decided=now)
+        if how in CHAIN_BACK_ON and isinstance(req, dict) and req.get("chain_key"):
+            give_back_req(rs, req)
 
 
 def concept_dir(cfg, concept):
@@ -2589,8 +2601,14 @@ def give_back_chain(rs, unit):
     """-> True when the chain that launched `unit` was given back: today's count for its day and concept less one, and
     its stage off the day's stage list (chain_cap_view's forward rule reads both)."""
     e = (rs.get("chain_units") or {}).pop(unit, None)
+    return give_back_req(rs, {"chain_key": e.get("key"), "chain_stage": e.get("stage")}) if isinstance(e, dict) else False
+
+
+def give_back_req(rs, req):
+    """-> True when the chain a request was charged (its chain_key and chain_stage) was given back."""
+    e = {"key": req.get("chain_key"), "stage": req.get("chain_stage")}
     counts = rs.get("chain_day") or {}
-    if not isinstance(e, dict) or not counts.get(e.get("key")):
+    if not counts.get(e.get("key")):
         return False
     counts[e["key"]] -= 1
     st = (rs.get("chain_stages_day") or {}).get(e["key"])

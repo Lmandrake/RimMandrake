@@ -105,6 +105,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_maturation_dispatch.py", "seconds": 73.3},
     {"test": "src/RimMandrake/rimflow/selftest_stage_ceiling_arrival.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_run_void.py", "seconds": 2.0},
+    {"test": "src/RimMandrake/rimflow/selftest_void_counters.py", "seconds": 4.0},
     {"test": "src/RimMandrake/rimflow/selftest_dispatch_two_games.py", "seconds": 3.8},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_hands.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_next_dispatch.py", "seconds": 1.2},
