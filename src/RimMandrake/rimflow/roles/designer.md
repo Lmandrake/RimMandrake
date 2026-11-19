@@ -112,7 +112,9 @@ path that does not exist.
 **Built, proven and in scope are three fields, never one.** Each `inventory` entry has `impl` (`present` with
 `impl_evidence`; `absent` with the `search_scope` you searched, since missing evidence is not evidence of absence; or
 `unknown`), `proof` (`current` with `proof_evidence`, `stale`, `missing`, or `exercised_unrecorded`: he may have run it by
-hand), and `scope` (`approved`, `not_opened`, `opened_by_owner` with a `scope_source` OWNER event, `open_question`,
+hand), and `scope` (`approved`, `not_opened`, `opened_by_owner` with a `scope_source` OWNER event carrying his words
+(`ownerSaid` or `byCard`), `opened_by_conductor` with a `scope_source` CONDUCTOR event (an OWNER-shard event per-ruling
+`CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` with none of his words; never stored under his name), `open_question`,
 `later`, `out`).
 
 ## Authority and provenance

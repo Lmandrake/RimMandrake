@@ -386,11 +386,136 @@ def first_pin_checks():
               and sorted(acc2.get("pinned_at") or {}) == sorted(DS.INPUT_FILES), (ok, errs, acc2.get("pinned_at")))
         check("7 the recorded anchor covers only file inputs, never the owner feed",
               "owner" not in (acc2.get("pinned_at") or {}), acc2.get("pinned_at"))
+
+        # 8 (edge 3) a close whose HEAD cannot be read records the pin as UNREAD, never as a pin with no anchor
+        # (which input_changes reads as a legacy pin: the last occurrence, the very rule the anchor replaced)
+        st = DS.load_state(d)
+        st["stage"], st["status"] = 2, "ready"
+        st["results"] = [r for r in st["results"] if r.get("stage", 0) < 2]
+        DS.write_json(DS.state_path(d), st)
+        real_errors, real_git = DS.result_errors, DS._git
+        DS.result_errors = lambda res, d_, st_, repo_=None: []
+        DS._git = lambda repo, *a: None if a[:1] == ("rev-parse",) and "HEAD^{commit}" in a else real_git(repo, *a)
+        try:
+            DS.open_run(d, "pin-run-blind", repo=root)
+            DS.write_json(os.path.join(d, "result.json"),
+                          {"run": "pin-run-blind", "stage": 2, "outcome": "done", "summary": "selftest"})
+            ok, errs = DS.close_run(d, "pin-run-blind", 1000, repo=root)
+        finally:
+            DS.result_errors, DS._git = real_errors, real_git
+        acc2 = [r for r in (DS.load_state(d).get("results") or []) if r.get("stage") == 2
+                and r.get("outcome") == "done"][-1]
+        got, why = anchored(d, root, acc2, "root")
+        check("8 a close that could not read HEAD records an anchor that reads UNMEASURED, not a legacy pin",
+              ok and sorted(acc2.get("pinned_at") or {}) == sorted(DS.INPUT_FILES) and got is None
+              and "UNMEASURED" in (why or ""), (ok, errs, acc2.get("pinned_at"), got, why))
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def tiny(commits):
+    """A scratch repo holding one concept folder whose sheet.md goes through `commits` (bytes, or None = the file is
+    absent in that commit), one commit each. -> (root, concept dir, [sha per commit])."""
+    base = os.path.expanduser("~/rm/scratch")
+    os.makedirs(base, exist_ok=True)
+    root = tempfile.mkdtemp(prefix="selftest-repin-edge-", dir=base)
+    d = os.path.join(root, "design", "concepts", "Edge")
+    os.makedirs(d)
+    git(root, "init", "-q", "-b", "main")
+    git(root, "config", "user.email", "selftest@example.invalid")
+    git(root, "config", "user.name", "selftest")
+    shas = []
+    for n, body in enumerate(commits):
+        p = os.path.join(d, "sheet.md")
+        if body is None:
+            if os.path.exists(p):
+                os.remove(p)
+        else:
+            with open(p, "wb") as f:
+                f.write(body)
+        with open(os.path.join(d, "other.txt"), "w") as f:
+            f.write("%d\n" % n)
+        git(root, "add", "-A")
+        git(root, "commit", "-q", "-m", "edge fixture %d" % n)
+        shas.append(git(root, "rev-parse", "HEAD"))
+    return root, d, shas
+
+
+def sheet_hash(body):
+    import hashlib
+    return hashlib.sha256(body.replace(b"\r\n", b"\n")).hexdigest()
+
+
+def anchor_edge_checks():
+    """8 RIMMANDRAKE_HARDEN_PIN_ANCHOR_THREE_EDGES_CODEX_FOUND: each edge of the recorded anchor reads UNMEASURED
+    (None, why), never a shorter list of changes."""
+    O, A, B, C = b"old\n", b"the pinned bytes\n", b"the B change\n", b"the C change\n"
+
+    def changes(d, root, pinned, anchor):
+        try:
+            return DS.input_changes(d, "sheet", root, sheet_hash(pinned), anchor)
+        except Exception as e:      # a crash is not a reading
+            return "CRASH", "%s: %s" % (type(e).__name__, e)
+    # edge 1: the anchor (HEAD at close) holds the old bytes; B lands before the pinned bytes do
+    root, d, sh = tiny([O, B, A, C])
+    try:
+        got, why = changes(d, root, A, sh[0])
+        check("8 edge 1: B landed between the recording commit and the pinned bytes: UNMEASURED, B does not escape",
+              got is None and "UNMEASURED" in (why or ""), (got, why))
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+    root, d, sh = tiny([O, A, C])
+    try:
+        got, why = changes(d, root, A, sh[0])
+        check("8 edge 1 control: the pinned bytes land right after the recording commit (close, then land): traced",
+              got == [sh[2]], (got, why))
+        got, why = changes(d, root, A, sh[1])
+        check("8 edge 1 control: an anchor that carries the pinned bytes itself is traced", got == [sh[2]], (got, why))
+        got, why = changes(d, root, C, sh[2])
+        check("8 edge 1 control: nothing changed since the pin is an empty list, a reading", got == [], (got, why))
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+    # edge 2: a shallow clone in which the anchor resolves but the history between it and HEAD is cut
+    root, d, sh = tiny([A, B, A + b"\n", C])
+    shallow = tempfile.mkdtemp(prefix="selftest-repin-shallow-", dir=os.path.expanduser("~/rm/scratch"))
+    try:
+        git(root, "config", "uploadpack.allowAnySHA1InWant", "true")
+        subprocess.run(["git", "clone", "-q", "--depth=1", "file://" + root, shallow], capture_output=True, check=True,
+                       timeout=120)
+        git(shallow, "fetch", "-q", "--depth=1", "origin", sh[0])
+        d2 = os.path.join(shallow, "design", "concepts", "Edge")
+        resolves = git(shallow, "rev-parse", "--verify", sh[0] + "^{commit}") == sh[0]
+        got, why = changes(d2, shallow, A, sh[0])
+        check("8 edge 2: a shallow clone whose history from the anchor is cut: UNMEASURED, never a partial list",
+              resolves and got is None and "UNMEASURED" in (why or ""), (resolves, got, why))
+        got, why = changes(d, root, A, sh[0])
+        check("8 edge 2 control: the same history, whole, lists every change", got == sh[1:], (got, why))
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+        shutil.rmtree(shallow, ignore_errors=True)
+    # edge 4: a blob that cannot be read is not the file's absence
+    root, d, sh = tiny([A, B, C, O])
+    real_git = DS._git
+    try:
+        DS._git = lambda repo, *a: None if a[:1] == ("show",) and a[1].split(":")[0] in (sh[1], sh[2]) \
+            else real_git(repo, *a)
+        got, why = changes(d, root, A, sh[0])
+        check("8 edge 4: a commit whose blob cannot be read is UNMEASURED, not 'the file was absent'",
+              got is None and "UNMEASURED" in (why or ""), (got, why))
+    finally:
+        DS._git = real_git
+        shutil.rmtree(root, ignore_errors=True)
+    root, d, sh = tiny([A, None, C])
+    try:
+        got, why = changes(d, root, A, sh[0])
+        check("8 edge 4 control: a commit that really deletes the file is a change, read as one",
+              got == [sh[1], sh[2]], (got, why))
     finally:
         shutil.rmtree(root, ignore_errors=True)
 
 
 def main():
+    anchor_edge_checks()
     root, d, shas = fixture()
     try:
         st = DS.load_state(d)

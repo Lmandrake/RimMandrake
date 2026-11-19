@@ -30,8 +30,10 @@ Injected with `designer.md` whenever the concept is at stage 4, resumed or not. 
 5. **Control**: one Reader run on a deliberately broken copy of the tree (a core leaf removed); it must miss what the
    real tree catches, or the scenarios do not discriminate. **The program makes the copy:** `designer_stage.py
    exam-control <dir> --leaf <id>` writes `exam_control/tree.json` and `exam_control/sheet.md` (the leaf gone, every line
-   and list entry naming its id gone) and `exam_control/copy.json` (which leaf, from which tree). Strip any paraphrase of
-   its rule from that copy by hand (below), then give the control Reader exactly that copy; it lands with `exam.json`. `designer_stage.py check`
+   and list entry naming its id gone) and `exam_control/copy.json` (which leaf, from which tree, which phrases). Nobody edits that copy by hand: name any
+   paraphrase of the removed rule to the program, `--strip "<phrase>"` (repeatable; below), then give the control Reader
+   exactly that copy; it lands with `exam.json`. `designer_stage.py check` regenerates the copy from the current tree and
+   the recorded phrases and refuses any difference, and
    refuses an exam whose `control` is absent, whose `broken_leaf` is not a leaf of the tree, whose `missed` is not true,
    whose `missed_ids` (the scenarios the control Reader got wrong) are empty, name no scenario, or include none sourced on
    the removed leaf, and whose copy is missing, was made from another tree, holds other leaves than the tree's minus that
@@ -68,7 +70,7 @@ Charge every Examiner, Challenger, Reader and Control run: `designer_stage.py ch
 These helpers run under this Designer run's own allowance (`slot_rules.json` `role_runs`, five), counted on your own
 session, never the Conductor's budget. A spawn refused `slots_full` means wait for one of yours to finish, then spawn:
 it is a wait, never a reason to end the run blocked.
-- **A control run must strip every mention of the removed leaf's rule.** Removing a core leaf from `tree.json` and its sheet lines is not enough: a `## delegated` or `## pruning` clause naming the same check (e.g. 'new-game cleanup') still lets the control Reader reject, so the control does not discriminate.
+- **A control run must strip every mention of the removed leaf's rule, and the program does the stripping.** Removing a core leaf from `tree.json` and its sheet lines is not enough: a `## delegated` or `## pruning` clause naming the same check (e.g. 'new-game cleanup') still lets the control Reader reject, so the control does not discriminate. Name the phrase to the program: `designer_stage.py exam-control <dir> --leaf <id> --strip "new-game cleanup"` drops every sheet line and list entry holding it and turns any other text holding it into `(removed)` (case and spacing aside); a phrase found in a retained leaf's `id` or `experience` is refused. The copy is never edited by hand: `check` refuses a copy that differs from the one the program generates.
 
 ## exam.json
 

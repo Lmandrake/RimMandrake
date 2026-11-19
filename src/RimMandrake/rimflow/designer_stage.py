@@ -26,6 +26,7 @@ One concept folder, design/concepts/<Mod>/, holds the persisted state and the ch
   status   <dir>                           stage, budget, staleness, open recovery
   spend    <dir>...                        per-stage weighted spend against the default cap (the cap's measurement)
   scene-begin <dir> --scene S --recovery TEXT | scene-end <dir> --scene S | scene-hold <dir> --scene S --until TEXT
+  exam-control <dir> --leaf L [--strip PHRASE]...   write the Stage 4 control copy (never edited by hand)
   manifest                                 the stage -> packet files table, with hashes
   showcases <dir>                          the showcase set: per showcase new coverage and overlap, what is uncovered
   turns [--root R]                         every turn that waits on him: waiting_owner, no OWNER event since it closed
@@ -70,7 +71,13 @@ LEGACY_CAPS = {500000: 50000}           # cap -> reserve of states made before t
 CHARGE_KINDS = ("stage", "retry", "review", "helper", "consult", "unmeasured")
 IMPL = ("present", "absent", "unknown")
 PROOF = ("current", "stale", "missing", "exercised_unrecorded")
-SCOPE = ("approved", "not_opened", "opened_by_owner", "open_question", "later", "out")
+SCOPE = ("approved", "not_opened", "opened_by_owner", "opened_by_conductor", "open_question", "later", "out")
+# Who opened a built thing's scope (RIMMANDRAKE_LABEL_CONDUCTOR_OPENED_SCOPE_NOT_HIS_WORDS, design decision 2026-11-18):
+# he did, in his own words (scope_source OWNER:<tsn>, an event carrying ownerSaid or byCard), or the Conductor did under
+# its standing authority (scope_source CONDUCTOR:<tsn>, an OWNER-shard event per-ruling CONDUCTOR_AUTHORITY and carrying
+# none of his words). The Conductor's opening is never stored under his name.
+OPENED_SCOPES = ("opened_by_owner", "opened_by_conductor")
+CONDUCTOR_AUTHORITY = "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
 SPEAKERS = ("owner", "conductor", "agent")
 OWNER_ONLY = ("root", "exam_waived", "floor_disable", "locked_change", "waiver", "his_words")
 # The Evidence-for-Ask rule (owner, 2026-11-15, item below): the root and the flagship pick may instead be approved by a
@@ -662,30 +669,73 @@ def inventory_errors(e, repo, owner_ev):
         errs.append("%s: proof current needs proof_evidence" % w)
     if e.get("scope") not in SCOPE:
         errs.append("%s: scope %r is not one of %s" % (w, e.get("scope"), "/".join(SCOPE)))
-    if e.get("scope") == "opened_by_owner":
-        # RIMMANDRAKE_CHECK_SCOPE_SOURCE_EVENT_EXISTS_FAKE_ID_OPENS: a prefix is not an event, so OWNER:999999 used to
-        # open a built capability's scope. The cited event must EXIST in the ledger this validator can ALREADY read:
-        # no git call, because a stalled `git show` would turn a real id into a forgery. Legacy records store several
-        # citations inside one space-separated string (design/concepts/ExplosiveKnockback/record.json), so split.
-        # Owner 2026-11-17: found / not-found-in-a-read-ledger / ledger-unreadable are three different answers.
-        cited = [t for s in lst(e.get("scope_source")) if isinstance(s, str) for t in s.split()
-                 if re.fullmatch(r"OWNER:[0-9]+", t)]
-        if not cited:
-            errs.append("%s: opened_by_owner needs scope_source OWNER:<tsn> (only he opens a built thing's scope)" % w)
-        elif not owner_ev:      # None (never read) or {} (CT.owner_events' reading of an unreadable shard)
-            errs.append("%s: opened_by_owner cites %s, UNMEASURED: OWNER.jsonl was not read here, so the scope stays "
-                        "shut and no citation is called forged; close this where the ledger is present" % (
-                            w, ", ".join(cited)))
-        else:
-            gone = [t for t in cited if t[6:] not in owner_ev]
-            if gone:
-                errs.append("%s: opened_by_owner scope_source %s finds no event in OWNER.jsonl (only an event of his "
-                            "opens a built thing's scope)" % (w, ", ".join(gone)))
+    if e.get("scope") in OPENED_SCOPES:
+        errs += scope_source_errors(e, w, owner_ev)
     return errs
 
 
 def lst(v):
     return v if isinstance(v, list) else ([v] if v else [])
+
+
+def _ledger_unread(owner_ev):
+    """None (never read), CT.owner_events' reading of an unreadable shard (OwnerEvents.unread), or a plain empty dict,
+    which cannot say which it was and is taken as unread (as source_errors takes it)."""
+    return owner_ev is None or bool(getattr(owner_ev, "unread", not owner_ev))
+
+
+def scope_source_errors(e, w, owner_ev):
+    """Why an inventory entry's opened scope (OPENED_SCOPES) is not opened by the event it cites, or [].
+    RIMMANDRAKE_CHECK_SCOPE_SOURCE_EVENT_EXISTS_FAKE_ID_OPENS: a prefix is not an event, so OWNER:999999 used to open a
+    built capability's scope. The cited event must EXIST in the ledger this validator can ALREADY read: no git call,
+    because a stalled `git show` would turn a real id into a forgery. Legacy records store several citations inside one
+    space-separated string (design/concepts/ExplosiveKnockback/record.json), so split.
+    Owner 2026-11-17: found / not-found-in-a-read-ledger / ledger-unreadable are three different answers.
+    opened_by_owner: at least one cited OWNER event carries his words (an OWNER-shard event with none of them is the
+    Conductor's or a seat's). opened_by_conductor: every citation is CONDUCTOR:<tsn>, each an event per-ruling
+    CONDUCTOR_AUTHORITY that carries none of his words (his words are stored as his: opened_by_owner)."""
+    scope = e.get("scope")
+    toks = [t for s in lst(e.get("scope_source")) if isinstance(s, str) for t in s.split()]
+    if scope == "opened_by_owner":
+        cited = [t for t in toks if re.fullmatch(r"OWNER:[0-9]+", t)]
+        if not cited:
+            return ["%s: opened_by_owner needs scope_source OWNER:<tsn> (only his words open a built thing's scope "
+                    "under his name; a Conductor event opens it as opened_by_conductor, CONDUCTOR:<tsn>)" % w]
+        if _ledger_unread(owner_ev):
+            return ["%s: opened_by_owner cites %s, UNMEASURED: OWNER.jsonl was not read here, so the scope stays "
+                    "shut and no citation is called forged; close this where the ledger is present" % (
+                        w, ", ".join(cited))]
+        gone = [t for t in cited if t[6:] not in owner_ev]
+        if gone:
+            return ["%s: opened_by_owner scope_source %s finds no event in OWNER.jsonl (only an event of his "
+                    "opens a built thing's scope)" % (w, ", ".join(gone))]
+        if not any(_his_word(owner_ev.get(t[6:])) for t in cited):
+            return ["%s: opened_by_owner scope_source %s carries none of his words (no ownerSaid or byCard): an "
+                    "OWNER-shard event without them is not his opening; a Conductor event per-ruling %s opens it as "
+                    "opened_by_conductor with scope_source CONDUCTOR:<tsn>" % (w, ", ".join(cited), CONDUCTOR_AUTHORITY)]
+        return []
+    cited = [t for t in toks if re.fullmatch(r"CONDUCTOR:[0-9]+", t)]
+    other = [t for t in toks if t not in cited]
+    if not cited or other:
+        return ["%s: opened_by_conductor needs scope_source CONDUCTOR:<tsn> and nothing else%s (the OWNER-shard event, "
+                "per-ruling %s, by which the Conductor opened it)" % (
+                    w, " (read %s)" % ", ".join(other) if other else "", CONDUCTOR_AUTHORITY)]
+    if _ledger_unread(owner_ev):
+        return ["%s: opened_by_conductor cites %s, UNMEASURED: OWNER.jsonl was not read here, so the scope stays shut "
+                "and no citation is called forged; close this where the ledger is present" % (w, ", ".join(cited))]
+    errs = []
+    for t in cited:
+        ev = owner_ev.get(t[10:])
+        if not isinstance(ev, dict):
+            errs.append("%s: opened_by_conductor scope_source %s finds no event in OWNER.jsonl" % (w, t))
+        elif _his_word(ev):
+            errs.append("%s: opened_by_conductor scope_source %s carries his own words: they are stored as his "
+                        "(opened_by_owner, OWNER:%s), never as the Conductor's" % (w, t, t[10:]))
+        elif ev.get("perRuling") != CONDUCTOR_AUTHORITY:
+            errs.append("%s: opened_by_conductor scope_source %s is not per-ruling %s (read %r): only the Conductor's "
+                        "standing authority opens a built thing's scope for it" % (
+                            w, t, CONDUCTOR_AUTHORITY, ev.get("perRuling")))
+    return errs
 
 
 # ---------------------------------------------------------------- what is already built (stage 0 must account for it)
@@ -822,7 +872,7 @@ def keep_or_remove(text):
 
 def ask_errors(ask, rec):
     """An ask that may reach him. Cites the decision it settles and its evidence; never offers to remove or shrink a
-    present capability unless he opened that scope; carries a structured review by someone other than its author."""
+    present capability unless its scope was opened (OPENED_SCOPES); carries a structured review by someone other than its author."""
     w = "ask[%s]" % ask.get("id")
     errs = []
     if not CT.txt(ask.get("text")):
@@ -838,8 +888,8 @@ def ask_errors(ask, rec):
         if e is None:
             errs.append("%s: about %s is not in the inventory" % (w, a))
         elif (ask.get("offers_removal") or keep_or_remove(ask.get("text"))) and e.get("impl") == "present" \
-                and e.get("scope") != "opened_by_owner":
-            errs.append("%s: offers to remove or shrink %s, which is built and whose scope he has not opened; ask what "
+                and e.get("scope") not in OPENED_SCOPES:
+            errs.append("%s: offers to remove or shrink %s, which is built and whose scope nobody has opened; ask what "
                         "correct behaviour is, or how to show it, instead" % (w, a))
     if not about and keep_or_remove(ask.get("text")):
         errs.append("%s: asks whether to keep or remove something without naming its inventory entry (about); "
@@ -944,7 +994,7 @@ def scene_errors(sc, tree=None, repo=REPO):
 # functionality, until efficient coverage is had. Doctrine: roles/designer_scene_contract.md "The showcase set".
 
 SHOWCASE_RULES = os.path.join(HERE, "showcase_rules.json")
-UNIT_SCOPES = ("approved", "opened_by_owner")
+UNIT_SCOPES = ("approved",) + OPENED_SCOPES
 
 
 def load_showcase_rules(path=None):
@@ -1273,26 +1323,83 @@ def _scrub(v, rx):
     return rx.sub("(removed)", v) if isinstance(v, str) else v
 
 
-def exam_control(d, leaf):
-    """Write the control copy for `leaf`: CONTROL_DIR/tree.json (the leaf gone, coverage dropped, every other mention of
-    its id blanked) and CONTROL_DIR/sheet.md (every line naming it gone), and CONTROL_DIR/copy.json recording which leaf,
-    from which tree. Paraphrases of its rule are the Designer's to strip after (designer_exam.md); the gate refuses a copy
-    that still names the id. -> the copy.json record."""
+def _phrase_rx(phrase):
+    """A stripped phrase, matched whatever its case and spacing."""
+    return re.compile(r"\s+".join(re.escape(w) for w in phrase.split()), re.I)
+
+
+def _strip_units(v, rx):
+    """v with a paraphrase stripped in whole units: a list entry holding it is dropped, any other text holding it
+    becomes exactly "(removed)". Never a word cut out of a sentence: that is how a rule gets reversed."""
+    if isinstance(v, dict):
+        return {k: _strip_units(x, rx) for k, x in v.items()}
+    if isinstance(v, list):
+        return [_strip_units(x, rx) for x in v if not (isinstance(x, str) and rx.search(x))]
+    return "(removed)" if isinstance(v, str) and rx.search(v) else v
+
+
+def control_copy(tree, sheet_text, leaf, strip=()):
+    """Pure. -> (the control tree, the control sheet's lines) for `leaf`: the leaf gone, coverage dropped, every list
+    entry and sheet line naming its id gone and any other mention blanked; then each `strip` phrase taken out in whole
+    units (_strip_units; every sheet line holding it dropped). exam_control writes this and control_copy_errors
+    regenerates it, so the copy on disk is the program's or it is refused."""
+    rx = _names_leaf(leaf)
+    bad = {k: v for k, v in tree.items() if k != "coverage"}
+    bad["leaves"] = [x for x in bad["leaves"] if not (isinstance(x, dict) and x.get("id") == leaf)]
+    bad = _scrub(bad, rx)
+    sheet = [ln for ln in (sheet_text or "").splitlines() if not rx.search(ln)]
+    for ph in strip or ():
+        prx = _phrase_rx(ph)
+        bad = _strip_units(bad, prx)
+        sheet = [ln for ln in sheet if not prx.search(ln)]
+    return bad, sheet
+
+
+def strip_errors(tree, leaf, strip):
+    """Why a strip list cannot be applied ([] = it can): each phrase is text with a word in it, and none is found in a
+    retained leaf's `id` or `experience` (stripping there would blank the very rule the control must keep)."""
+    if not isinstance(strip, (list, tuple)):
+        return ["strip is not a list of phrases"]
+    errs = []
+    kept = [x for x in tree.get("leaves") or [] if isinstance(x, dict) and x.get("id") != leaf]
+    for ph in strip:
+        if not isinstance(ph, str) or not ph.strip():
+            errs.append("strip phrase %r is not text with a word in it" % (ph,))
+            continue
+        prx = _phrase_rx(ph)
+        hit = [str(x.get("id")) for x in kept if any(isinstance(x.get(k), str) and prx.search(x[k])
+                                                     for k in ("id", "experience"))]
+        if hit:
+            errs.append("strip phrase %r is in the id or experience of retained leaf %s: a retained rule is never "
+                        "stripped (pick a phrase only the removed rule's paraphrases hold)" % (ph, ", ".join(hit)))
+    return errs
+
+
+def _read_sheet(d):
+    try:
+        with open(os.path.join(d, "sheet.md"), encoding="utf-8") as f:
+            return f.read()
+    except OSError:
+        return None
+
+
+def exam_control(d, leaf, strip=None):
+    """Write the control copy for `leaf` (control_copy): CONTROL_DIR/tree.json, CONTROL_DIR/sheet.md, and
+    CONTROL_DIR/copy.json recording which leaf, from which tree, and the `strip` phrases. A paraphrase of the removed
+    rule is named in `strip` and taken out by the program, never by hand
+    (RIMMANDRAKE_GUARD_CONTROL_COPY_RETAINED_RULES_ONE_WORD_REVERSES): the gate regenerates the copy from the tree and
+    that list and refuses any difference. -> the copy.json record."""
     try:
         tree = CT.load(d)
     except (FileNotFoundError, ValueError) as e:
         raise Refused("exam-control: tree.json cannot be read (%s)" % e)
     if leaf not in _leaf_ids(tree):
         raise Refused("exam-control: %r is not a leaf of the tree" % leaf)
-    rx = _names_leaf(leaf)
-    bad = {k: v for k, v in tree.items() if k != "coverage"}
-    bad["leaves"] = [x for x in bad["leaves"] if not (isinstance(x, dict) and x.get("id") == leaf)]
-    bad = _scrub(bad, rx)
-    try:
-        with open(os.path.join(d, "sheet.md"), encoding="utf-8") as f:
-            sheet = [ln for ln in f.read().splitlines() if not rx.search(ln)]
-    except OSError:
-        sheet = []
+    strip = list(strip or [])
+    errs = strip_errors(tree, leaf, strip)
+    if errs:
+        raise Refused("exam-control: %s" % "; ".join(errs))
+    bad, sheet = control_copy(tree, _read_sheet(d), leaf, strip)
     out = os.path.join(d, CONTROL_DIR)
     os.makedirs(out, exist_ok=True)
     with open(os.path.join(out, "tree.json"), "w", encoding="utf-8") as f:
@@ -1300,7 +1407,8 @@ def exam_control(d, leaf):
         f.write("\n")
     with open(os.path.join(out, "sheet.md"), "w", encoding="utf-8") as f:
         f.write("\n".join(sheet) + "\n")
-    rec = {"leaf": leaf, "base_tree": input_hash(d, "tree"), "by": "designer_stage.py exam-control",
+    rec = {"leaf": leaf, "base_tree": input_hash(d, "tree"), "base_sheet": input_hash(d, "sheet"),
+           "by": "designer_stage.py exam-control", "strip": strip,
            "at": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
     with open(os.path.join(out, "copy.json"), "w", encoding="utf-8") as f:
         json.dump(rec, f, indent=1)
@@ -1308,8 +1416,22 @@ def exam_control(d, leaf):
     return rec
 
 
+# The control copies hand-stripped before 2026-11-18, when the Designer still stripped paraphrases by hand: (sha256 of
+# exam_control/tree.json, of exam_control/sheet.md), CRLF-normalised (sha_file). They are not newly refused for differing
+# from the generated copy; any change to one, or to its tree, takes it off this list for good.
+HAND_STRIPPED = frozenset((
+    ("d32d058c3d2597913d83e489aa306804ee1944bb067853a9e2dd53db6a03295f",
+     "23d34bb6cea76e14abb3a3f59b49777761b84e854a33f308c4c0168a5176d65e"),     # GelatinousSlime
+    ("5d517802380a6774d3cfe86a3569f67b84027d4b5de1502eb0e6ee8772e8c388",
+     "3b555c751fe6e57149beb2494ca657a16abb3e9413c4459fcb33b5108c3b8898"),     # Graffiti
+    ("c250db30582277d2e24bac928002e2188448cecfd793b0e38aa332ce7e00eebd",
+     "640fb4e1afb5f4930a4244cc993158ce67277501afd3ecc82a041222f40be6db"),     # Stillsand
+))
+
+
 def control_copy_errors(d, leaf, ids):
-    """The control copy on disk is the current tree with `leaf` removed and named nowhere, or the reasons it is not."""
+    """The control copy on disk is the one the program generates from the current tree with `leaf` removed and the
+    recorded phrases stripped, or the reasons it is not."""
     how = "make it with `designer_stage.py exam-control %s --leaf %s` and rerun the control Reader on it" % (d, leaf)
     try:
         rec = read_json(os.path.join(d, CONTROL_DIR, "copy.json"))
@@ -1331,12 +1453,41 @@ def control_copy_errors(d, leaf, ids):
     rx = _names_leaf(leaf)
     if rx.search(CT.canon(bad)):
         errs.append("exam: the control copy's tree still names %r; %s" % (leaf, how))
+    sheet_path = os.path.join(d, CONTROL_DIR, "sheet.md")
     try:
-        with open(os.path.join(d, CONTROL_DIR, "sheet.md"), encoding="utf-8") as f:
-            if rx.search(f.read()):
-                errs.append("exam: the control copy's sheet.md still names %r; %s" % (leaf, how))
-    except OSError:
-        errs.append("exam: the control copy has no sheet.md; %s" % how)
+        with open(sheet_path, encoding="utf-8") as f:
+            sheet_now = f.read()
+    except (OSError, ValueError):
+        return errs + ["exam: the control copy has no readable sheet.md; %s" % how]
+    if rx.search(sheet_now):
+        errs.append("exam: the control copy's sheet.md still names %r; %s" % (leaf, how))
+    # the retained rules: the copy is the program's own output, byte for byte, or a hand edit could reverse one
+    # ("must not climb" -> "must climb") and the control Reader's miss would prove nothing
+    if (sha_file(os.path.join(d, CONTROL_DIR, "tree.json")), sha_file(sheet_path)) in HAND_STRIPPED:
+        return errs
+    if rec.get("base_tree") != input_hash(d, "tree"):
+        return errs     # made from another tree (said above): comparing it with this tree's copy would say nothing new
+    strip = rec.get("strip") if "strip" in rec else []
+    try:
+        tree = CT.load(d)
+    except (FileNotFoundError, ValueError):
+        tree = None
+    serr = strip_errors(tree, leaf, strip) if isinstance(tree, dict) and leaf in _leaf_ids(tree) else [
+        "the current tree.json cannot be read, or no longer has the leaf"]
+    if serr:
+        return errs + ["exam: the control copy cannot be regenerated to compare (%s); %s" % ("; ".join(serr), how)]
+    want, want_sheet = control_copy(tree, _read_sheet(d), leaf, strip)
+    more = " --strip ..." if strip else ""
+    if json.loads(json.dumps(want)) != bad:
+        errs.append("exam: the control copy's tree.json is not the copy the program generates from the current tree%s "
+                    "(edited by hand, or a strip the record does not name); name a paraphrase with --strip, never edit "
+                    "the copy; %s%s" % (" and the %d recorded phrase(s)" % len(strip) if strip else "", how, more))
+    # the sheet is compared only against the sheet the copy was made from: an exam carried past a sheet-only repair
+    # (exam_retake) keeps its control copy, and a copy made before base_sheet was recorded cannot say which sheet that was
+    if rec.get("base_sheet") == input_hash(d, "sheet") and sheet_now.replace("\r\n", "\n") != "\n".join(want_sheet) + "\n":
+        errs.append("exam: the control copy's sheet.md is not the copy the program generates from the current sheet%s "
+                    "(edited by hand, or a strip the record does not name); name a paraphrase with --strip, never edit "
+                    "the copy; %s%s" % (" and the %d recorded phrase(s)" % len(strip) if strip else "", how, more))
     return errs
 
 
@@ -2339,9 +2490,11 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
     # [HEAD, HEAD-then] starts at the landing of exactly these bytes instead of at a later revert to them.
     # read in the concept's own clone, where these bytes land (land_state) and repin traces them
     # (RIMMANDRAKE_ANCHOR_PIN_IN_CONCEPT_CLONE_NOT_DISPATCHER), not in the Dispatcher's clone that judges the close
+    # A HEAD that cannot be read is recorded as PIN_UNREAD, never left out: a pin with no anchor is a legacy pin to
+    # input_changes (the last occurrence), and this one is new (RIMMANDRAKE_HARDEN_PIN_ANCHOR_THREE_EDGES_CODEX_FOUND)
     pin_at = (_git(clone_of(d) or repo, "rev-parse", "--verify", "HEAD^{commit}") or b"").decode().strip()
-    if out == "done" and pin_at:
-        entry["pinned_at"] = {k: pin_at for k in INPUT_FILES}
+    if out == "done":
+        entry["pinned_at"] = {k: pin_at or PIN_UNREAD for k in INPUT_FILES}
     if out == "done" and stage == 2:
         st.pop("must_cite", None)
     for k in ("to", "decision", "on", "question", "summary", "quick_look", "by"):
@@ -2536,25 +2689,92 @@ def change_tied(ev, commit, repo, events):
     return False
 
 
+PIN_UNREAD = "unread-at-pin:?"     # a pin whose recording commit could not be read (never a git revision: `?` and `:`)
+
+
+def _git_rc(repo, *a):
+    """-> (exit code, stdout) of one git call; (None, b"") when it could not be run or ran past its time."""
+    import subprocess
+    try:
+        r = subprocess.run(["git", "-C", repo] + list(a), capture_output=True, timeout=120)
+    except (OSError, subprocess.SubprocessError):
+        return None, b""
+    return r.returncode, r.stdout
+
+
+def _blob_at(repo, commit, rel):
+    """-> (bytes, None) the file at a commit; (None, None) when the commit has no such file (asked of its tree, a
+    reading); (None, why) when that could not be read. A failed read is never the file's absence."""
+    rc, out = _git_rc(repo, "ls-tree", "-z", commit, "--", rel)
+    if rc != 0:
+        return None, "git ls-tree %s -- %s failed" % (commit[:10], rel)
+    if not out.strip(b"\0"):
+        return None, None
+    blob = _git(repo, "show", "%s:%s" % (commit, rel))
+    if blob is None:
+        return None, "git show %s:%s failed" % (commit[:10], rel)
+    return blob, None
+
+
+def _window_cut(repo, full):
+    """Why the history window [full, HEAD] cannot be read whole, or None. The anchor must be an ancestor of HEAD, and in
+    a shallow clone no commit of the window may be a shallow boundary (its parents are missing, so `git log` stops there
+    and a change behind it is not listed)."""
+    rc, _ = _git_rc(repo, "merge-base", "--is-ancestor", full, "HEAD")
+    if rc != 0:
+        return ("is not an ancestor of HEAD here" if rc == 1 else "could not be compared with HEAD") + \
+            " (a shallow or rewritten history)"
+    rc, out = _git_rc(repo, "rev-parse", "--is-shallow-repository")
+    if rc != 0:
+        return "whether this clone is shallow could not be read"
+    if out.strip() != b"true":
+        return None
+    rc, path = _git_rc(repo, "rev-parse", "--git-path", "shallow")
+    rc2, win = _git_rc(repo, "rev-list", "%s..HEAD" % full)
+    if rc != 0 or rc2 != 0:
+        return "this clone is shallow and its boundary could not be read"
+    try:
+        p = path.decode().strip()
+        with open(p if os.path.isabs(p) else os.path.join(repo, p), encoding="utf-8") as f:
+            cut = set(f.read().split())
+    except (OSError, ValueError) as e:
+        return "this clone is shallow and its boundary file could not be read (%s)" % e.__class__.__name__
+    hit = cut & set(win.decode().split())
+    return "this clone is shallow and its history is cut at %s, inside the window" % sorted(hit)[0][:10] if hit else None
+
+
 def input_changes(d, key, repo, pinned, anchor=None):
     """-> (commits, why): the commits (oldest first) that moved file input `key` from its pinned hash to the committed
     one, or (None, why) when that cannot be traced.
 
     RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED: `anchor` is the commit that RECORDED the pin, written at
     pin time (a result's `pinned_at[key]`), never read from a commit date. With it, the history read is the window
-    [anchor, HEAD] and the pin's own occurrence is the FIRST in that window, so an input that went A->B->A->C after
-    the pin owes a source for the B change too. Without it (a pin made before the field existed) the last occurrence
-    of the pinned hash is still the start, as before, until that stage's next pin records an anchor.
-    An anchor that was recorded but cannot be resolved or does not carry the pinned hash is UNMEASURED: (None, why),
-    never an empty list, which would read as "nothing changed since the pin" and let a re-pin pass unexamined."""
+    [anchor, HEAD], so an input that went A->B->A->C after the pin owes a source for the B change too. Without it (a
+    pin made before the field existed) the last occurrence of the pinned hash is still the start, as before, until that
+    stage's next pin records an anchor.
+    The pin's own occurrence in the window is the anchor commit itself (a re-pin records HEAD with the bytes committed),
+    or the first commit after it that changes the input (an accepted stage records HEAD at close and its bytes land in
+    the next commit, land_state). Every other case is UNMEASURED, (None, why), never a list, which would read as "this
+    is all that changed since the pin" and let a re-pin pass unexamined
+    (RIMMANDRAKE_HARDEN_PIN_ANCHOR_THREE_EDGES_CODEX_FOUND): the recorded anchor is PIN_UNREAD or does not resolve; it
+    is not an ancestor of HEAD, or a shallow clone cuts the window; another change landed between the anchor and the
+    pinned bytes; the pinned hash is in no commit of the window; a commit's file could not be read (which is not the
+    file's absence in that commit)."""
     rel = os.path.relpath(os.path.join(d, INPUT_FILES[key]), repo).replace(os.sep, "/")
     first = False
     if anchor:
+        if anchor == PIN_UNREAD:
+            return None, ("UNMEASURED: the commit that recorded the pinned %s could not be read when the pin was made, "
+                          "so the change since the pin cannot be read, and that is not 'no change'" % key)
         full = (_git(repo, "rev-parse", "--verify", "%s^{commit}" % anchor) or b"").decode().strip()
         if not full:
             return None, ("UNMEASURED: the commit that recorded the pinned %s (%s) does not resolve in this clone "
                           "(rewritten history, or a shallow clone): the change since the pin cannot be read, and that "
                           "is not 'no change'" % (key, str(anchor)[:10]))
+        cut = _window_cut(repo, full)
+        if cut:
+            return None, ("UNMEASURED: the commit that recorded the pinned %s (%s) %s: the history since the pin "
+                          "cannot be read whole, and a partial list is not the change" % (key, full[:10], cut))
         log = _git(repo, "log", "--reverse", "--format=%H", "%s..HEAD" % full, "--", rel)
         if log is None:
             return None, "UNMEASURED: git log of %s from the recorded pin %s failed" % (rel, full[:10])
@@ -2568,7 +2788,9 @@ def input_changes(d, key, repo, pinned, anchor=None):
     seen = []                       # (commit, hash after it)
     with tempfile.TemporaryDirectory(prefix="repin-", dir=os.path.dirname(os.path.abspath(state_path(d)))) as t:
         for c in order:
-            blob = _git(repo, "show", "%s:%s" % (c, rel))
+            blob, err = _blob_at(repo, c, rel)
+            if err:
+                return None, "UNMEASURED: %s: %s at that commit cannot be read, which is not its absence" % (err, key)
             p = os.path.join(t, INPUT_FILES[key])
             if blob is None:
                 if os.path.exists(p):
@@ -2586,6 +2808,11 @@ def input_changes(d, key, repo, pinned, anchor=None):
         return None, "the pinned %s (%s) is in no commit of %s: the change cannot be traced" % (
             key, str(pinned)[:10], rel)
     start = at[0] if first else at[-1]
+    if first and any(h != seen[0][1] for _, h in seen[:start]):
+        moved = next(c for c, h in seen[:start] if h != seen[0][1])
+        return None, ("UNMEASURED: %s changed %s after the commit that recorded the pin (%s) and before the pinned "
+                      "bytes (%s) landed in %s: which change the pin followed cannot be read, and leaving that commit "
+                      "out is not 'no change'" % (moved[:10], key, seen[0][0][:10], str(pinned)[:10], seen[start][0][:10]))
     return [c for i, (c, h) in enumerate(seen) if i > start and h != seen[i - 1][1]], ""
 
 
@@ -2766,7 +2993,10 @@ def repin(d, sources, why, repo=None, dry=False):
     os.makedirs(head, exist_ok=True)
     try:
         for fn in INPUT_FILES.values():
-            blob = _git(repo, "show", "HEAD:%s/%s" % (rel, fn))
+            blob, err = _blob_at(repo, "HEAD", "%s/%s" % (rel, fn))
+            if err:
+                raise Refused("UNMEASURED: %s: the committed %s cannot be read, so no change is called committed" % (
+                    err, fn))
             if blob is not None:
                 with open(os.path.join(head, fn), "wb") as f:
                     f.write(blob)
@@ -2815,13 +3045,13 @@ def repin(d, sources, why, repo=None, dry=False):
     # RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED: the anchor is RECORDED here, at pin time, so the next
     # trace reads the window [this commit, HEAD] instead of guessing which occurrence of the pinned hash was the pin.
     # HEAD is the right anchor: every file input was just checked equal to its committed blob (`committed` above).
-    pin_at = (_git(repo, "rev-parse", "--verify", "HEAD^{commit}") or b"").decode().strip() or None
+    # unreadable now (it was read a moment ago for `committed`): recorded as PIN_UNREAD, never the stale older anchor
+    pin_at = (_git(repo, "rev-parse", "--verify", "HEAD^{commit}") or b"").decode().strip() or PIN_UNREAD
     for r in accepted(st):
         if r["stage"] in plan:
             r["inputs"] = dict(r["inputs"], **{k: cur.get(k) for k in plan[r["stage"]]})
-            if pin_at:
-                r["pinned_at"] = dict(r.get("pinned_at") or {},
-                                      **{k: pin_at for k in plan[r["stage"]] if k in INPUT_FILES})
+            r["pinned_at"] = dict(r.get("pinned_at") or {},
+                                  **{k: pin_at for k in plan[r["stage"]] if k in INPUT_FILES})
             if "owner" in plan[r["stage"]]:
                 r["owner_uncited"] = frozen_now
             r.setdefault("repinned", []).append({"at": at, "inputs": plan[r["stage"]], "sources": list(sources)})
@@ -3133,6 +3363,9 @@ def main(argv=None):
     x = sub.add_parser("exam-control", help="write the Stage 4 control copy: the tree and sheet with one leaf removed")
     x.add_argument("dir")
     x.add_argument("--leaf", required=True)
+    x.add_argument("--strip", action="append", default=[], metavar="PHRASE",
+                   help="a paraphrase of the removed rule: the program drops every sheet line and list entry holding "
+                        "it and blanks any other text holding it (repeatable; never edit the copy by hand)")
     x = sub.add_parser("land", help="land the concept's stage.json and result files on origin/main (close does it)")
     x.add_argument("dir")
     x.add_argument("--run", default="catch-up")
@@ -3227,7 +3460,7 @@ def main(argv=None):
         elif a.cmd == "status":
             print(json.dumps(status(a.dir), indent=1))
         elif a.cmd == "exam-control":
-            rec = exam_control(a.dir, a.leaf)
+            rec = exam_control(a.dir, a.leaf, a.strip)
             print("control copy in %s: %s removed (%s)" % (os.path.join(a.dir, CONTROL_DIR), rec["leaf"],
                                                            json.dumps(rec)))
         elif a.cmd == "showcases":

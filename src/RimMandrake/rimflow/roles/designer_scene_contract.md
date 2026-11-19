@@ -65,7 +65,7 @@ file that he judges as the mod's face. In `scenes.json`, beside `scenes`:
 ```
 
 - **The unit** is a record.json inventory capability: every built entry (`impl: present`, whatever its scope: it ships
-  until it is removed) and every entry in scope (`approved`, `opened_by_owner`). A built entry scoped `out` is covered
+  until it is removed) and every entry in scope (`approved`, `opened_by_owner`, `opened_by_conductor`). A built entry scoped `out` is covered
   only through `coverage_rest` (its removal or absence check), never by a showcase. `exercises` names the capabilities
   the showcase really uses in play, not those it merely has on the map.
 - **Showcase 1 is the flagship he picked**: its `decision` names the record.json decision (speaker `owner`) that records
