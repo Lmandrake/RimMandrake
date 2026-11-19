@@ -152,6 +152,8 @@ TMP_PROTECTED = re.compile(r"^(systemd-private-.*|\.X11-unix|\.ICE-unix|\.XIM-un
                            r"|keyring-.*|runtime-.*|\.lock|.*\.sock|.*\.pid)$")
 COOLDOWN_MIN = 30
 BORROW_REFRESH_S = 120
+BORROW_WALK_SHARE = 0.2     # the borrower find may take at most this share of the time: 40-124 s a walk, every 120 s,
+                            # was half of every apply (2026-11-18: 19 rows in 1157 s, 358 deferred)
 CHANGED_CAP = 2000          # commits kept as patches; more is refused
 EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
 PIN = re.compile(r"^\.reaping-\d+-")      # a path renamed aside for deletion; a crash leaves one to be judged again
@@ -1425,7 +1427,21 @@ class Ctx:
     def __init__(self, now: float):
         self.now = now
         self.live = Live(now)
-        self.borrows = Borrows()
+        self.borrow_walks: list[float] = []         # seconds per borrower walk, for the run record
+        self.borrows = self._walk_borrows()
+
+    def _walk_borrows(self) -> "Borrows":
+        t = time.time()
+        b = Borrows()
+        self.borrow_walks.append(round(time.time() - t, 1))
+        return b
+
+    def borrow_refresh_s(self) -> float:
+        """BORROW_REFRESH_S, or longer when the last walk was slow: a walk of W s is redone W / BORROW_WALK_SHARE s after
+        it began. Every deletion still takes a fresh /proc snapshot and tree signature, and the ledger within CORPUS_REFRESH_S."""
+        walks = getattr(self, "borrow_walks", [])     # a Ctx built bare by a test has none
+        last = walks[-1] if walks else 0.0
+        return max(BORROW_REFRESH_S, last / BORROW_WALK_SHARE)
 
     def mounted(self, p: Path) -> list[str]:
         try:
@@ -1442,8 +1458,8 @@ class Ctx:
         global _CORPUS, _VOCAB
         self.now = time.time()
         self.live = Live(self.now)
-        if self.now - self.borrows.taken > BORROW_REFRESH_S:
-            self.borrows = Borrows()
+        if self.now - self.borrows.taken > self.borrow_refresh_s():
+            self.borrows = self._walk_borrows()
         if _CORPUS is not None and time.time() - _CORPUS_AT > CORPUS_REFRESH_S:     # after the scans: they take minutes
             _CORPUS = _VOCAB = None     # read again at the next ledger_mentions: the reservation evidence is current
 
@@ -2758,7 +2774,9 @@ def run(a, sd: Path) -> int:
            "blind_dirs": len(ctx.borrows.blind), "other_uid_procs": ctx.live.other_uid,
            "refused_bytes": sum(r["bytes"] or 0 for r in rows if r["verdict"] == "REFUSE"),
            "tmp": dict(tmp, errors=tmp["errors"][:5], before=tmp_before, after=tmp_reading()), "run_tmp": runs_tmp,
-           "orphan_bundles": orphans, "phase_s": phase_s}
+           "orphan_bundles": orphans, "phase_s": phase_s,
+           "borrow_walks": {"n": len(ctx.borrow_walks), "s": round(sum(ctx.borrow_walks), 1),
+                            "max_s": max(ctx.borrow_walks, default=0)}}
     if a.apply:
         sanity_end(sd, end, rows, rec)
         record(sd, rec)
