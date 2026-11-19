@@ -194,6 +194,13 @@ def packet_failure_leaves_no_run(tmp):
     DS.open_run(d, "rm-role-designer-51", repo=tmp)
     check("packet: the next open charges nothing for the run that never launched",
           DS.load_state(d)["budget"]["spent"] == 0, DS.load_state(d)["budget"])
+    for i, rec in enumerate(([1], {"asks": 3, "failure_modes": [1, 2]}, "{not json")):
+        d2 = concept(tmp, "PktRec%d" % i)
+        put(d2, "record.json", rec)
+        got, err = crashes(DS.open_run, d2, "rm-role-designer-%d" % (60 + i), repo=tmp)
+        check("packet: a malformed record.json (%r) still opens a run to repair it" % (rec,),
+              err is None and isinstance(got, tuple) and got[0] != "REFUSED"
+              and (DS.load_state(d2).get("running") or {}).get("run") == "rm-role-designer-%d" % (60 + i), (got, err))
 
 
 # each child's section joins once its fix lands (every one was watched failing on base 25d20f71e0 first)
@@ -204,6 +211,7 @@ SECTIONS = [
     cli_repin_reads_concept_clone,
     malformed_results_reject,
     unreadable_owner_feed_is_not_an_answer,
+    packet_failure_leaves_no_run,
 ]
 
 

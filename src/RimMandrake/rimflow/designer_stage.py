@@ -1732,9 +1732,12 @@ def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True):
     if st.get("status") == "waiting_owner":
         st["status"] = "ready"
     hist(st, "open", "run %s, stage %d, budget %d" % (run, st["stage"], budget))
+    # built before the run is saved: a packet that raises leaves no run that never launched to be charged at the next
+    # open (RIMMANDRAKE_BUILD_PACKET_BEFORE_SAVING_OPEN_RUN_PHANTOM_CHARGE)
+    text = packet(d, st, hashes, budget, why, retries, manifest, repo)
     if commit:
         write_json(state_path(d), st)
-    return packet(d, st, hashes, budget, why, retries, manifest, repo), budget
+    return text, budget
 
 
 def abort_run(d, run):
@@ -2774,12 +2777,17 @@ def scene_end(d, scene, held=False, until=None):
 def working_record(d):
     """The compact view a run starts from: entries with their source ids. log.md is not injected; a run loads an
     original excerpt by its source id when it relies on it."""
-    rec = read_json(os.path.join(d, "record.json"), {}) or {}
+    try:
+        rec = read_json(os.path.join(d, "record.json"), {}) or {}
+    except Refused as e:    # the run that opens is the one to repair it, so it still gets its packet
+        return "(%s: repair it first)" % e
+    if not isinstance(rec, dict):
+        return "(record.json is not an object: repair it first)"
     out = []
     if isinstance(rec.get("root"), dict):
         out.append("root: %s [%s]" % (rec["root"].get("text"), ",".join(lst(rec["root"].get("source")))))
     for sect in ("scope", "decisions", "asks", "inventory", "contradictions"):
-        rows = [e for e in rec.get(sect) or [] if isinstance(e, dict)]
+        rows = [e for e in rec.get(sect) or [] if isinstance(e, dict)] if isinstance(rec.get(sect), list) else []
         if not rows:
             continue
         out.append("%s:" % sect)
@@ -2792,7 +2800,7 @@ def working_record(d):
             out.append("- %s: %s%s [%s]" % (e.get("id"), e.get("text") or e.get("what") or "", extra,
                                              ",".join(lst(e.get("source")))))
     if rec.get("failure_modes"):
-        out.append("failure_modes: " + " | ".join(lst(rec["failure_modes"])))
+        out.append("failure_modes: " + " | ".join(map(str, lst(rec["failure_modes"]))))
     return "\n".join(out) or "(empty: record.json has no entries yet)"
 
 
