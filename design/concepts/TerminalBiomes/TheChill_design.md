@@ -4,12 +4,13 @@
 `src/RimMandrake/TerminalBiomes/`; its floor mechanics live in `src/RimMandrake/DivingInteraction/`, its beach
 pipework in `src/RimUtinni/PropaneLakeMechanics/`; older files call it the Propane Lake, and the frozen campaign
 twin is still `RUT_PropaneLake`). Written 2026-11-18 on the owner's instruction to see every biome "through the lens
-of Utinni". The same day's first pass wrote all four seas as one design
-(`design/concepts/TerminalBiomes/design.md`) and read thirteen of its sources by heading only. This file is the
-Chill written on its own with its sources read through; where the two disagree about the Chill, this file is the
-later and the fuller. What happened to every idea is in
+of Utinni". The same day's first pass wrote all four seas as one design and read thirteen of its sources by
+heading only; that combined design was retired on 2026-11-18 and kept only in git history, commit `b2530669e5`,
+once each sea had its own design. This file is the Chill written on its own with its sources read through. What
+happened to every idea, and what this file corrected against the combined design, is in
 `design/concepts/TerminalBiomes/TheChill_rewrite_choices.md`, which also says exactly which files were read whole
-and which were not. Nothing has been deleted. This is a design document only and it launches nothing.
+and which were not. None of the Chill's older source files has been deleted. This is a design document only and it
+launches nothing.
 
 **Kind, checked against the sheet's own header and his rulings:** a sea. *"Umbra is a region not a biome. The
 Propane Lake is an ocean-biome made of propane, definitely its own biome."* (owner, 2026-09-21.) So two rulings
@@ -120,8 +121,8 @@ lake *"the one real source — and inaccessible until very late game: terminator
 safety"*, adding that by the time a crew can reach it, fuel scarcity *"SHOULD NOT be the driving limiter — the
 player is getting ready to win."* Nothing here gates the landing. A cold-seized ship is the gate.
 
-**`UNSETTLED`: how the Empire's ladder reaches a ship on a sea floor.** No source says, for any sea. The combined
-design asked it as its first question and it is asked again below with what the Chill adds. The sections here
+**`UNSETTLED`: how the Empire's ladder reaches a ship on a sea floor.** No source says, for any sea. Each of the
+four sea designs asks it, and it is asked below with what the Chill adds. The sections here
 assume only what is safe in every answer: the clock runs, the probe comes, and the bombardment at the end does not
 care about fuel.
 
@@ -538,7 +539,7 @@ Every feature is in one bucket.
 ## NEEDS HIM
 
 1. **What does the Empire do about a ship at the bottom of this sea, and what does a bombardment do beside it?**
-   The first half is the combined design's question for all four seas. *The probe and the bombardment follow; the
+   The first half is the question all four sea designs ask. *The probe and the bombardment follow; the
    troops wait at the beach* (default; it needs the fewest new things). *Everything follows,* in cold kit, and
    the sea does to them what it does to the crew. *Nothing follows but the clock.* The Chill adds a second half
    that no other sea has: the last step of the ladder is ordnance from orbit, and the beach is beside the one

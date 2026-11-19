@@ -3,11 +3,12 @@
 **Status:** the design document for one of the four sea biomes carried by the mod
 `src/RimMandrake/TerminalBiomes/`: the Grey Sea (`RM_GreySea`; older files call its floor the Grey Deep). Written
 2026-11-18 on the owner's instruction to see every biome "through the lens of Utinni", by a pass that read the Grey
-Sea's sources in full. Earlier the same day one pass wrote all four seas as a single design
-(`design/concepts/TerminalBiomes/design.md`) from a partial read; for the Grey Sea this file replaces that one's Grey
-section, and differs from it in the places listed at the top of
+Sea's sources in full. Earlier the same day one pass wrote all four seas as a single design from a partial read;
+that combined design was retired on 2026-11-18 and kept only in git history, commit `b2530669e5`, once each sea had
+its own design. This file differs from its Grey section in the places listed at the top of
 `design/concepts/TerminalBiomes/GreySea_rewrite_choices.md`. What happened to every idea in the older sources is in
-that same page. Nothing has been deleted. This is a design document only and it launches nothing.
+that same page. None of the Grey Sea's older source files has been deleted. This is a design document only and it
+launches nothing.
 
 **Kind, checked against the sheet's own header:** a sea. The sheet defines *"the bottom of the Grey Sea"*. So two
 rulings shape every section below. *"You can't 'dive' as an individual pawn nor return as one. It's ship or
@@ -269,7 +270,8 @@ Each can happen inside the visit. Each says what is on screen.
     is a sea of solitary things, and the orruhmu punishes company"*, and Jawa do nothing alone.
 11. **The customer** (0.2.0). *On screen:* the crew hauls junk to the edge of the deepest pool, where a branching
     crystal thing the size of a building stands. It takes one of each thing it has never tasted and is not
-    interested in the second. Charge crawls along its limbs; something that has been in the pool since before the
+    interested in the second (his own paragraph, 2026-09-26: a new thing *"may be extraordinarily valuable once,
+    then nearly worthless thereafter because the Elder has already incorporated its chemistry into memory"*). Charge crawls along its limbs; something that has been in the pool since before the
     war comes up onto the shore. *Why it lands:* it is the only trader they have ever met that wants scrap for
     being strange, and it cannot be haggled with.
 12. **The exhibit** (0.2.0). *On screen:* a trooper who died on this floor a few days ago is standing in crystal
@@ -401,8 +403,8 @@ the Empire's search and the visibility dial; the one sun from geometry, which on
 
 ## Scope
 
-Every feature is in one bucket. Moves against the cleanse proposal and against the combined four-seas design are
-listed, with reasons, in `GreySea_rewrite_choices.md`.
+Every feature is in one bucket. Moves against the cleanse proposal and against the retired combined four-seas
+design are listed, with reasons, in `GreySea_rewrite_choices.md`.
 
 **0.1.0, the stop**
 - The floor as a place on the ship's layer: murk without penalty, pillars, domes, chimneys with crystallising
@@ -490,8 +492,6 @@ listed, with reasons, in `GreySea_rewrite_choices.md`.
 
 None of these is fixed here; this run changes no code.
 
-- The combined four-seas design says the Grey has *"thirteen kinds of catch, all rare"*. That was the card of
-  2026-09-27; the card of 2026-10-12 replaced it. The Grey has four and a rare table, and nine animals.
 - The giant's shipped description (*"the one place in the deep where a crew can rest in the light of something
   else's garden"*) was written for the creature's older home and reads against the Grey's ban on any glow but its
   mark.

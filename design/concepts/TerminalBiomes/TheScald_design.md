@@ -3,11 +3,10 @@
 **Status:** the one design document for the Scald (`RM_TheScald`), written 2026-11-18 on the owner's instruction to
 see every biome "through the lens of Utinni", and read in full this time. The Scald's biome, beach and weather live
 in `src/RimMandrake/TerminalBiomes/`; its sea floor lives in `src/RimMandrake/DivingInteraction/`
-(`RM_SeabedFloor_TheScald`). This file stands beside the same day's combined four-sea design
-(`design/concepts/TerminalBiomes/design.md`), which read the Scald's largest sources by heading only; where the two
-disagree about the Scald, this one was written from the whole of the sources and says why in
-`design/concepts/TerminalBiomes/TheScald_rewrite_choices.md`. Nothing has been deleted and the combined design has
-not been edited. This is a design document only and it launches nothing.
+(`RM_SeabedFloor_TheScald`). The same day's combined four-sea design read the Scald's largest sources by heading
+only; it was retired on 2026-11-18 and kept only in git history, commit `b2530669e5`, once each sea had its own design. What this
+design corrected against it is at the top of `design/concepts/TerminalBiomes/TheScald_rewrite_choices.md`. None of
+the Scald's older source files has been deleted. This is a design document only and it launches nothing.
 
 **Design Version this aims at:** 0.1.0, the stop.
 
@@ -472,8 +471,8 @@ Every feature is in one bucket. "In source" is my search of 2026-11-18, not a pa
 
 ## NEEDS HIM
 
-1. **What does the Empire do about a ship at the bottom of a sea?** The same question the combined design asks
-   for all four. *The probe and the bombardment follow; the troops wait at the beach and meet the ship when it
+1. **What does the Empire do about a ship at the bottom of a sea?** The same question each of the four sea
+   designs asks. *The probe and the bombardment follow; the troops wait at the beach and meet the ship when it
    lifts* (default; it needs the fewest new things). *Everything follows:* troopers on the floor, and the Scald
    does to them what it does to the crew. *Nothing follows but the clock:* the floor is safe from all but the
    last step.

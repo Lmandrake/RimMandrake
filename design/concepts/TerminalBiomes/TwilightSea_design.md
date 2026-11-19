@@ -2,11 +2,12 @@
 
 **Status:** the one design document for the Twilight Sea (`RM_TwilightSea`, in the mod
 `src/RimMandrake/TerminalBiomes/`), written 2026-11-18 on the owner's instruction to see every biome "through the
-lens of Utinni". Its sources were read in full this time. It stands beside the combined four-sea design
-(`design/concepts/TerminalBiomes/design.md`), which read the Twilight's largest files by heading only; where the two
-disagree about the Twilight, this one is right, and the disagreements are listed at the top of
+lens of Utinni". Its sources were read in full this time. The same day's combined four-sea design read the
+Twilight's largest files by heading only; it was retired on 2026-11-18 and kept only in git history, commit `b2530669e5`,
+once each sea had its own design. What this design corrected against it is listed at the top of
 `design/concepts/TerminalBiomes/TwilightSea_rewrite_choices.md`. That page says what became of every idea in every
-source. Nothing has been deleted. This is a design document only and it launches nothing.
+source. None of the Twilight's older source files has been deleted. This is a design document only and it launches
+nothing.
 
 **Kind, checked against the sheet's own header:** a sea. Two rulings shape every section. *"You can't 'dive' as an
 individual pawn nor return as one. It's ship or nothing."* (owner, 2026-09-26.) And *"You are either on their sea
@@ -464,8 +465,8 @@ Every feature is in one bucket. "Built" is source presence, not a pass.
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - Selling or leasing light in any form: skylight rights, tenancy, claim buoys, charts as items, poaching standing,
   techprints from the Compact. His typed ruling, 2026-09-27: *"The Compact does NOT sell light, that's not a
-  mechanic we accepted. Remove."* The code was removed that week. The cleanse of 2026-11-17 and the combined design
-  of 2026-11-18 both listed these as future work; they are not.
+  mechanic we accepted. Remove."* The code was removed that week. The cleanse of 2026-11-17 still lists these as
+  future work (its census row X30 and ticket T30); they are not.
 - Light calling the sea. His typed ruling, 2026-09-26: *"Actually attacking light makes more sense in the Grey and
   Scald (dark on the bottom) than it does on the beautiful lighted Twilight floor with lots of lighted
   everything."*

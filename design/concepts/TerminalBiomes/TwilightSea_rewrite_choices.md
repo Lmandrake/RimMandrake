@@ -2,10 +2,11 @@
 
 Companion to `design/concepts/TerminalBiomes/TwilightSea_design.md` (2026-11-18). This page exists so the older
 Twilight files can be deleted without fear: every distinct idea found in any source has a row saying what became of
-it. Nothing has been deleted.
+it. None of the Twilight's older source files has been deleted.
 
-**Why this page exists beside the combined one.** The same day's first run wrote the four seas as one design and
-read the Twilight's largest sources by heading only; its own report said the seas were not safe to delete on. This
+**Why this page exists.** The same day's first run wrote the four seas as one design ("the combined design";
+retired on 2026-11-18 and kept only in git history, commit `b2530669e5`) and read the Twilight's largest sources
+by heading only; its own report said the seas were not safe to delete on. This
 run read the Twilight's sources in full. What that changed is the next section. Which files were read to their end,
 which were read in part, and which were only searched is stated at the bottom, by name.
 
@@ -21,7 +22,8 @@ machinery · lost. Every lost, reshaped or moved row gives the other choice he c
 
 ## Where this differs from the combined design
 
-Five corrections, each from a source the combined run did not read through.
+Five corrections, each from a source the combined run did not read through. The combined design is retired; this
+list is the record of what was wrong in it for the Twilight.
 
 1. **There is no fishing on the floor.** The combined design promised *"the only ordinary fishing on the planet"*
    as *"nets in the light columns. It works like fishing."* He corrected that in his own words on 2026-09-26: *"you
@@ -118,7 +120,7 @@ One line each, so each can be reverted.
 `rosters/the_twilight_sea.json` (all in `design/Jawa/worldbuilding/biomes/`) · *landmark plan* =
 `design/Jawa/worldbuilding/enrichment/twilight_sea.csv` · *cleanse …* = the named file in
 `design/concepts/TerminalBiomes/cleanse/` · *combined design*, *combined choices page* =
-`design/concepts/TerminalBiomes/design.md`, `rewrite_choices.md` · *ledger* =
+the retired four-sea design and its choices page (git history, commit `b2530669e5`) · *ledger* =
 `infrastructure/state/ledger/events/OWNER.jsonl` · *hiding note* = `design/Jawa/worldbuilding/hiding_the_gravship.md`
 · *validation walk* = `design/validation_walks/RimMandrake/TerminalBiomes.md` · *sea surface removal note* =
 `design/RimMandrake/sea_surface_removal_2026-11-01.md` · *sea floor census* =
@@ -427,11 +429,11 @@ what they are about; the file for each is in the list at the bottom.
 | Techprints from the Compact | light §6 Q19 | lost ("DEAD — overturned by the 2026-09-27 ruling") | | Not open: his cut. |
 | Sun-sphere fed, not powered; cage on a floor anchor; walking under a cage; decor never dies | light §6 | carried with the later work | | |
 
-### The residents draft (`twilight_bottom_cast_draft_2026-10-29.md`: a delegated draft whose header says "Nothing on this sheet is ruled"; blessed by his card of 2026-10-31)
+### The residents draft (`twilight_bottom_cast_draft_2026-10-29.md`: a delegated draft, blessed by his card of 2026-10-31)
 
 | idea | source | what happened | why | the other choice, and its cost |
 |---|---|---|---|---|
-| Three holdings with chart names: Nine-Well Bank, Low Lantern, Farwake | residents §1 | kept in 0.2.0 (campaign layer) | The cast sheet was blessed by card on 2026-10-31 ("Twilight → Bless it with recommended answers"); its header still says nothing is ruled, and its ledger item still shows the blessing as owed. | |
+| Three holdings with chart names: Nine-Well Bank, Low Lantern, Farwake | residents §1 | kept in 0.2.0 (campaign layer) | The cast sheet was blessed by card on 2026-10-31 ("Twilight → Bless it with recommended answers"). | |
 | Free tier: houses lit and empty, or a generic water-people cast | residents §1 | kept | | |
 | Every teaching is "a chore, a refusal, a habit or an errand"; none is a sale of light and none is a fight | residents §2 | kept, quoted | It is how a crew that cannot read learns the floor: by watching the neighbours. | |
 | Vhessune, the well-keeper: never sows a waning well; first to walk her stakes to a new one; *"The light is lent, not given. Watch the rim, not the gold."* | residents §2.1 | kept (0.2.0) | Following her is how a crew finds the next well. | |
@@ -590,7 +592,7 @@ what they are about; the file for each is in the list at the bottom.
 | The biome's shipped description: "from the shore come niim, pallu, aluun and scalefish, and once in a long while the remains of a colo claw" | source, biome def (measured 2026-11-18) | kept | | |
 | Measured in source on 2026-11-18: eighteen animals on the free roster and three more by the campaign patch; eight wild plants; weather is Clear and Fog; the gripping terror ("what those hands close on they do not let go of: a hull, a mooring, a diver"), the dancing skresh, the bulloo ("weeping a thick gel that can be refined into fuel") | source, biome def and race defs | kept; the gripping terror's line is cited for the hull, the bulloo's for fuel | Two source lines the earlier passes did not use. | |
 | The Twilight Sea's five world-map passes of 2026-08-26, its ice fringe, its position | world definition §14 and tables | not this design's (the planet is painted once) | | |
-| The combined four-sea design of 2026-11-18 and its choices page: the Twilight section, its five moments, its promise rows, its three questions | combined design; combined choices page | kept, reshaped: carried into this design and corrected in five places (see "Where this differs from the combined design") | It read the Twilight's largest sources by heading only, and says so. | Keep the combined design as the Twilight's: it promises floor fishing and parks a mechanic he removed. |
+| The combined four-sea design of 2026-11-18 and its choices page: the Twilight section, its five moments, its promise rows, its three questions | combined design; combined choices page | kept, reshaped: carried into this design and corrected in five places (see "Where this differs from the combined design") | It read the Twilight's largest sources by heading only, and says so. | Not open: the combined design was retired on 2026-11-18. |
 | The world-map glass item, the sea-floor look item, the dusk-band items | item on the world-map glass; item on the sea-floor look; closed items on the dusk band | pointers only (rows above) | | |
 | The deep-water layer question of 2026-09-18: one biome for a no-fish surface and a fishable deep | closed item on the deep water layer | lost: dissolved by *"Just make the surface fishable"* (2026-09-20), then by "no surface" and "no fishing at the bottom" | | Not open. |
 
@@ -631,7 +633,7 @@ no row before the page was written). A row can count under more than one heading
 - `design/concepts/TerminalBiomes/cleanse/fixes.json`
 - `design/concepts/TerminalBiomes/cleanse/result.json`
 - `design/concepts/TerminalBiomes/cleanse/run.json`
-- `design/concepts/TerminalBiomes/design.md`
+- the combined four-sea design (the file `design.md` in this folder at the time; since retired)
 - `design/Jawa/worldbuilding/hiding_the_gravship.md`
 - `design/validation_walks/RimMandrake/TerminalBiomes.md`
 - `design/RimMandrake/sea_surface_removal_2026-11-01.md`
@@ -656,7 +658,7 @@ long lines cut at 2,500 characters; no line in them reached that length except i
 
 **Read in part (7), and what part:**
 
-- `design/concepts/TerminalBiomes/rewrite_choices.md`: its opening, its scope moves and its Twilight table; the other seas' tables not read.
+- the combined choices page (the file `rewrite_choices.md` in this folder at the time; since retired): its opening, its scope moves and its Twilight table; the other seas' tables not read.
 - `design/RimMandrake/special_mechanics_review_2026-10-22.md`: the opening, the tables for the sea floors, the sea shores and the Twilight, and the closing lists; the other biomes' tables not read.
 - `design/RimMandrake/sea_floor_census_2026-10-29.md`: everything up to its embedded script; the script itself not read.
 - `design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md`: his brief, the Twilight section, the rare-table row and the superseded rulings; the other seas' sections not read.
@@ -717,7 +719,7 @@ Not for deletion on this page alone:
 - `design/Jawa/worldbuilding/biomes/twilight_bottom_cast_draft_2026-10-29.md`: the blessed cast. This design keeps
   its seven people by name and one line each; the sheet has their houses, looks and reused defs, and its place of
   record is the campaign's cast file once it is moved there.
-- `design/Jawa/worldbuilding/biomes/terminator_sea.md`, `terminal_seas_cast_proposal_2026-09-25.md`, the cleanse
-  folder and the combined design: shared with the Grey Sea and the others.
+- `design/Jawa/worldbuilding/biomes/terminator_sea.md`, `terminal_seas_cast_proposal_2026-09-25.md` and the cleanse
+  folder: shared with the Grey Sea and the others.
 - `design/Jawa/worldbuilding/enrichment/twilight_sea.csv`: the painter's data.
 - `design/Jawa/worldbuilding/hiding_the_gravship.md`: a campaign concept, cited here.

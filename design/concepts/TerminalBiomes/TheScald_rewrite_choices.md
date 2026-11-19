@@ -2,11 +2,12 @@
 
 Companion to `design/concepts/TerminalBiomes/TheScald_design.md`, written 2026-11-18 by the same run. Its job is
 to let the Scald's older files be deleted without fear: every distinct idea found in any source has a row saying
-what became of it. Nothing has been deleted. The older files this design replaces are listed at the end.
+what became of it. None of the Scald's older source files has been deleted. The older files this design replaces
+are listed at the end.
 
-**Why this page exists beside the combined one.** The same day's combined four-sea pass
-(`design/concepts/TerminalBiomes/design.md` and `rewrite_choices.md`) said of itself that it was thinner than its
-sources and not safe to delete on. For the Scald it had read the floor specification, the flora pass, the kit and
+**Why this page exists.** The same day's combined four-sea pass (one design and one choices page for all four
+seas; retired on 2026-11-18 and kept only in git history, commit `b2530669e5`) said of itself that it was
+thinner than its sources and not safe to delete on. For the Scald it had read the floor specification, the flora pass, the kit and
 the steam specification by heading only, and had not opened the roster or the owner's card answers of
 2026-11-10. This run read those to the end. What that changed is the next section.
 
@@ -26,6 +27,8 @@ reshaped row leaves its last two cells empty, the reason is one already given in
 "Scope moves".
 
 ## What reading in full changed, against the combined design
+
+The combined design is retired; this list is the record of what was wrong in it for the Scald.
 
 1. **His three card answers of 2026-11-10 are now the frame.** *"A thriving world inside the heat"*; *"Prepared
    crews finish a short job"*; *"A useful working visit... before withdrawing when cooling or supplies become
@@ -141,7 +144,7 @@ review* = `special_mechanics_review_2026-10-22.md`; *floor census* = `sea_floor_
 `minerals_where_they_belong_design_2026-10-02.md`; *wreckage design* =
 `salvage_wreckage_everywhere_design_2026-10-02.md`; *surface removal* = `sea_surface_removal_2026-11-01.md`;
 *rulings* = `biome_rulings.md`. Elsewhere in `design/`: *cleanse* = `design/concepts/TerminalBiomes/cleanse/`;
-*combined design* = `design/concepts/TerminalBiomes/design.md` and `rewrite_choices.md`; *walk* =
+*combined design* = the retired four-sea design and its choices page (git history, commit `b2530669e5`); *walk* =
 `design/validation_walks/RimMandrake/TerminalBiomes.md`; *catch rosters* =
 `design/Jawa/worldbuilding/sea_catch_rosters_2026-09-24.md`; *world definition* =
 `design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md`; *shield design* =
@@ -432,7 +435,7 @@ kit; the roster; the history draft; the steam spec; the dive spec; `SCALD_MECHAN
 `SCALD_RIVER_REPAINT_1`, `SCALD_SHEET_REDOS_1`, `SCALD_PLANTDENSITY_UNSET_1`, `SCALDHIDE_R1_DESIGN_NEW_CREATURE`,
 `SAALLEN_BUILD_BLISTERS_ON_CUE`, `IMMERSION_DAMAGE_WIRE_NEVER_APPLIED`); the owner answers of 2026-11-10; the
 cleanse's `definition.md`, `owner_pages.md`, `ambiguities.md` and `next_version.md`; the floor census; the walk;
-the experiences table; and the combined `design.md` and `rewrite_choices.md`. Read to the end as references, not
+the experiences table; and the combined design and its choices page (since retired). Read to the end as references, not
 sources: `design/concepts/Greentide/design.md` and `design/RimMandrake/biome_shared_machinery_2026-11-18.md`.
 
 **Read in part, and where a second reader should look:**

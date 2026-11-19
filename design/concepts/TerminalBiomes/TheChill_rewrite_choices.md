@@ -2,11 +2,12 @@
 
 Companion to `design/concepts/TerminalBiomes/TheChill_design.md`, written 2026-11-18 by the same run. Its job is to
 let the Chill's older files be deleted without fear: every distinct idea found in any source has a row saying what
-became of it. Nothing has been deleted. The files this design stands in for are listed at the end.
+became of it. None of the Chill's older source files has been deleted. The files this design stands in for are
+listed at the end.
 
-**Why this page exists beside the combined one.** The same day's first pass wrote the four seas as one design and
-one choices page (`design/concepts/TerminalBiomes/rewrite_choices.md`) and said of itself that it read thirteen
-sources by heading only and was not safe to delete on. This page is the Chill alone, with its own sheets, passes,
+**Why this page exists.** The same day's first pass wrote the four seas as one design and one choices page ("the
+combined design"; retired on 2026-11-18 and kept only in git history, commit `b2530669e5`) and said of itself
+that it read thirteen sources by heading only and was not safe to delete on. This page is the Chill alone, with its own sheets, passes,
 agendas, specs and ledger items read through. The reading list at the end says, file by file, what was read whole
 and what was read in part; the parts not read are almost all the other three seas' sections of shared files.
 
@@ -16,7 +17,8 @@ missed"*; for 0.1.0 and 0.2.0 the *"OMG did you see that?"* of Jawa meeting alie
 overriding priority"*. Whose word wins when sources disagree: his latest dated words first, then a locked Designer
 sheet (there is none for this sea), then the cleanse of 2026-11-17.
 
-**What the full reading changed against the combined design.** Six things, each a row or a scope move below.
+**What the full reading changed against the combined design.** Six things, each a row or a scope move below. The
+combined design is retired; this list is the record of what was wrong or missing in it for the Chill.
 
 1. *His latest words on this sea were not in the combined design.* Two pages of his own card answers, dated
    2026-11-10, sit in a Designer rehearsal folder. They say what a floor visit and a fuel stop are for. This design
@@ -141,8 +143,8 @@ answers* = `designer_codex_2026-11-09/TheChillFloor/ANSWERS_OWNER.md` and
 *salvage design* = `salvage_wreckage_everywhere_design_2026-10-02.md`; *minerals design* =
 `minerals_where_they_belong_design_2026-10-02.md`; *gear matrix* = `exposure_gear_matrix_spec.md`; *liquid matrix*
 = `flowworks_liquid_matrix.md`. Elsewhere: *walk* = `design/validation_walks/RimMandrake/TerminalBiomes.md`;
-*cleanse* = `design/concepts/TerminalBiomes/cleanse/`; *combined design* =
-`design/concepts/TerminalBiomes/design.md` and its `rewrite_choices.md`; *art sheet* =
+*cleanse* = `design/concepts/TerminalBiomes/cleanse/`; *combined design* = the retired
+four-sea design and its choices page (git history, commit `b2530669e5`); *art sheet* =
 `Transient/biome_ffar/thechill_sheet_2026-10-05.decisions.json`; *items* = the ledger items named in the row,
 under `infrastructure/state/items/` or `items/closed/`; *ledger* = an event in
 `infrastructure/state/ledger/events/`; *source* = a file under `src/` named in the row.
@@ -171,7 +173,7 @@ under `infrastructure/state/items/` or `items/closed/`; *ledger* = an event in
 | "A dangerous place worth exploring: refuelling is one reason among several to visit" | his answers | kept, quoted | His card, 2026-11-10. | |
 | The floor exists "so that the player really feels the choice later to blow it up or not" | lab routes; items (`CHILL_WARLAB_ROUTES_1`) | kept, quoted | | |
 | "Eerily beautiful, alien and strange and mildly wonderful... delicate, entrancing, precious... totally unlike the dayside" | flora pass; items (`CHILL_GARDEN_DEFENSE_1`, `CHILL_FLOOR_LIGHT_1`) | kept, quoted | | |
-| "Visit alien sea floors by gravship... the Chill holds dark fuel" | cleanse (definition, owner pages) | kept in the combined design; not repeated | | |
+| "Visit alien sea floors by gravship... the Chill holds dark fuel" | cleanse (definition, owner pages) | lost from this design | The cleanse's own summary line; it stays in the cleanse's definition and owner pages. | Quote it at the top of the design: no cost. |
 | One signature for the whole mod (the Twilight's current), the Chill left as land and life only | cleanse (owner pages, ambiguities 1 and 7) | kept, reshaped: the Chill gets its own promises | His ruling of 2026-11-18 and his answers of 2026-11-10. | One signature: the Chill's first version is scenery and a thermometer. |
 | "The Chill should have no waves and be ominously dark compared to other bodies" | items (`SEA_FILMS_TUNE_PER_SEA_CHILL_UNLIT`); ledger | kept as the world-map look; cited for the floor's cover | His words, 2026-10-24. | |
 | The lake is a late stop: "the one real source — and inaccessible until very late game" | freeze rulings R5; propane design §2 | kept as cost, not lock | The lens lets a ship land anywhere it can survive. | A hard lock: against the shield ruling that no landing is refused. |
@@ -194,7 +196,7 @@ under `infrastructure/state/items/` or `items/closed/`; *ledger* = an event in
 | Umbra as the crags' tholin factory; the Dark is aurora-ash | sheet §3 | lost; flagged above | World lore; nothing a stop shows. | |
 | "Ignition has an engine": ground currents, static, dry lightning | sheet §3 | lost for the floor (no oxygen); kept for the beach as the reason pools burn only from a hot source | The fire ruling of 2026-09-27. | |
 | "Nothing hot has touched that lake since; a spacecraft's thruster is the first" | sheet §3 | kept, quoted | | |
-| "You are the only source of ignition on the hemisphere" | ice sheet | kept in the combined design; not repeated | | |
+| "You are the only source of ignition on the hemisphere" | ice sheet | lost from this design | It is the Sleeping Ice's line, about the beach seen from the ice; it stays in that sheet and in the Sleeping Ice's own choices page. | Quote it in the beach's first minutes: no cost. |
 | The machine: terramanufacture, one-tenth built, collapsing | sheet §3, §5 | lost; flagged above; one piece kept as the Return Comb | World lore; the Comb is what a crew can walk up to. | |
 | "Mutual learning, mutual destruction" | sheet §3 | lost (campaign) | The lab's story. | |
 | "The sea is fuel; every spark is weather" | sheet §5 | kept, reshaped: true on the beach only | The fire ruling of 2026-09-27. | |
@@ -462,7 +464,8 @@ Measured after writing, by a script (its output is recorded in `design/RimMandra
 
 **Read whole, to the end:** the sheet; the floor agenda with its consult appendix; the flora pass; the lab routes
 spec; the roster file; the cast proposal; the land names; the propane design; the garrison note; the shield
-design; the experiences table; the walk; both pages of his answers; the combined design and its choices page; the
+design; the experiences table; the walk; both pages of his answers; the combined design and its choices page (since
+retired); the
 Greentide's design (for the format) and the shared-machinery file; in the cleanse, `definition.md`,
 `owner_pages.md`, `ambiguities.md`, `next_version.md`, `fixes.json`, `result.json`, `run.json`; the art sheet's
 decisions; and 49 ledger items: `ANCIENT_WAR_LAB_1`, `ASSAILANT_WARLAB_BUILD_MERGE`,
@@ -550,5 +553,4 @@ rulings); and the multi-sea files, which the other three seas' pages must clear 
 `sea_surface_removal_2026-11-01.md`.
 
 **Not for deletion:** `design/concepts/TerminalBiomes/cleanse/` (never applied; it should be re-run from the four
-sea designs, not applied); the walk; both pages of his answers; the art sheet; the combined design and its choices
-page until the other three seas' own pages exist beside this one.
+sea designs, not applied); the walk; both pages of his answers; the art sheet.

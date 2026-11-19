@@ -2,25 +2,26 @@
 
 Companion to `design/concepts/TerminalBiomes/GreySea_design.md`, written 2026-11-18 by the same pass. Its job is to
 let the older Grey Sea files be deleted without fear: every distinct idea found in any source has a row saying what
-became of it. Nothing has been deleted. The files this design could replace, and the ones it must not, are listed at
-the end.
+became of it. None of the Grey Sea's older source files has been deleted. The files this design could replace, and
+the ones it must not, are listed at the end.
 
-**Why this page exists beside the four-seas page.** Earlier the same day one pass wrote all four seas as one design
-(`design.md`, `rewrite_choices.md` in this folder) and said of itself that it read thirteen of its source files by
-heading only. This pass read the Grey Sea's own sources to their ends (the list and the count are at the bottom) and
-searched the rest of `design/` and the ledger for the Grey by name. Where the two pages disagree about the Grey Sea,
-this one was written from the fuller read.
+**Why this page exists.** Earlier the same day one pass wrote all four seas as one design and one choices page
+("the four-seas design"; retired on 2026-11-18 and kept only in git history, commit `b2530669e5`) and said of
+itself that it read thirteen of its source files by heading only. This pass read the Grey Sea's own sources to their ends (the list and the count are at the bottom) and
+searched the rest of `design/` and the ledger for the Grey by name.
 
 ## What the fuller read changed against the four-seas design
 
+The four-seas design is retired; this list is the record of what was wrong or missing in it for the Grey Sea.
+
 1. **The catch is four kinds and a rare table, not thirteen, and the cast is nine animals.** The four-seas design
-   quotes the card of 2026-09-27 (*"keep all 13, rebalanced rare"*). His card of 2026-10-12 replaced it: *"Sallik in
+   quoted the card of 2026-09-27 (*"keep all 13, rebalanced rare"*). His card of 2026-10-12 replaced it: *"Sallik in
    the Grey Sea → Remove from the Grey Sea only"*. Seven catch creatures and their living bodies left the Grey that
    day; the pillar-snail had been deleted by card on 2026-10-08. The source (`RM_GreySea.xml`) agrees: nine animals,
    four catch rows.
 2. **A crusted ship can always tear free.** His card of 2026-10-08, recorded on the ledger: *"forced (tear-free)
    launch always available, costly, damages hull; no blocker-naming required."* Built the next day. The four-seas
-   design does not mention it. It is the Grey's answer to the day the Empire arrives.
+   design did not mention it. It is the Grey's answer to the day the Empire arrives.
 3. **The Brine Crown's retraction is a picture only** (card, 2026-10-19: *"brine crown retraction → picture only"*).
 4. **The lamp's three steps are in 0.1.0 here** (the four-seas design put them in 0.2.0). Reasons under "Scope
    moves".
@@ -131,8 +132,8 @@ pass* = `the_grey_deep_flora_pass_2026-09-27.md`; *sentinel* = `grey_deep_pool_s
 `RimMandrake/minerals_where_they_belong_design_2026-10-02.md`; *gear matrix* =
 `RimMandrake/exposure_gear_matrix_spec.md`; *scope cuts* = `RimMandrake/world_remake_2026-10-19/04_scope_cuts.md`;
 *experiences* = `RimMandrake/biome_experiences_2026-10-20.md`; *walk* =
-`validation_walks/RimMandrake/TerminalBiomes.md`; *four-seas design* and *four-seas choices* =
-`concepts/TerminalBiomes/design.md` and `rewrite_choices.md`. The cleanse folder
+`validation_walks/RimMandrake/TerminalBiomes.md`; *four-seas design* and *four-seas choices* = the
+retired combined design and its choices page (git history, commit `b2530669e5`). The cleanse folder
 (`concepts/TerminalBiomes/cleanse/`): *cleanse definition*, *cleanse pages* (`owner_pages.md`), *cleanse
 ambiguities*, *cleanse next version*, *cleanse models*, *cleanse tickets*, *cleanse census*, *cleanse bars*,
 *cleanse review*, *cleanse converge*, *cleanse fixes*, *cleanse result*, *cleanse run*. Ledger items
@@ -172,7 +173,7 @@ dressing item* = `TERMINAL_SEAS_FLOOR_DRESSING_1`; *generators item* = `SEABED_F
 | The cleanse run's counts and records | cleanse result; cleanse run | kept as history | | |
 | Next-version settings shipped off | cleanse tickets; cleanse next version | kept, reshaped: hull and lamp settings ship on | They moved into 0.1.0. | |
 | Inert cross-biome switches | cleanse next version; cleanse tickets | lost | Not the Grey's; the cleanse's recommendation to drop them stands on its own page. | |
-| The four-seas design's Grey section and rows | four-seas design; four-seas choices | kept, reshaped: replaced for this sea, with the nine differences listed above | A fuller read. | Keep the four-seas page for the Grey: it still says thirteen catches. |
+| The four-seas design's Grey section and rows | four-seas design; four-seas choices | kept, reshaped: replaced for this sea, with the nine differences listed above | A fuller read. | Not open: the four-seas page was retired on 2026-11-18. |
 | The floor pass's closing condition: he walks the floor live | floor pass item | kept as a stated dependency | | |
 | Per-question build list of the 2026-09-27 rulings | ruled content item | kept, reshaped: its catch row is superseded by the card of 2026-10-12 | His later card wins. | |
 
@@ -248,7 +249,7 @@ dressing item* = `TERMINAL_SEAS_FLOOR_DRESSING_1`; *generators item* = `SEABED_F
 
 | idea | source | what happened | why | the other choice, and its cost |
 |---|---|---|---|---|
-| "Actually attacking light makes more sense in the Grey and Scald (dark on the bottom)" | danger pass; Twilight danger; ledger | moved (next version → 0.1.0), quoted | Built; his redirect; seen inside a day. Flagged above. | 0.2.0, as the four-seas design has it: the first version's giant and watcher are rarely seen. |
+| "Actually attacking light makes more sense in the Grey and Scald (dark on the bottom)" | danger pass; Twilight danger; ledger | moved (next version → 0.1.0), quoted | Built; his redirect; seen inside a day. Flagged above. | 0.2.0, as the four-seas design had it: the first version's giant and watcher are rarely seen. |
 | The small sighted things drift into the light | danger pass; lamp item | kept, reshaped: two of the three named animals were cut on 2026-10-12 | Whether the clam still comes is unmeasured. | |
 | The fessk at the rim, never entering | danger pass; agenda | moved (next version → 0.1.0), quoted | With the lamp, above. | 0.1.0 alone, without the giant: the cheapest dread in the sea, and a warning of nothing. |
 | The giant reads a steady light as a rival's mark and breaks the lamp, not the ship, not the pawns | danger pass; agenda | moved (next version → 0.1.0), quoted | With the lamp, above. | |
@@ -397,7 +398,7 @@ made-up source name added, and failed on it as it should):
 
 **Read to the end (44 files).** In `design/Jawa/worldbuilding/biomes/`: the sheet, the drop, the danger pass, the
 flora pass, the sentinel, the agenda, the shore sheet, the cast proposal, the roster. In
-`design/concepts/TerminalBiomes/`: the four-seas design and choices; and in `cleanse/`: definition, owner pages,
+`design/concepts/TerminalBiomes/`: the four-seas design and choices (since retired); and in `cleanse/`: definition, owner pages,
 ambiguities, next version, models, tickets, census, bars, converge, fixes, result, run (the four large JSON files
 were flattened to text by a script and read as text). In `design/RimMandrake/`: the surface removal record, the
 floor census. The validation walk. Eighteen ledger items: the floor pass, ruled content, anchors, hull crust,
