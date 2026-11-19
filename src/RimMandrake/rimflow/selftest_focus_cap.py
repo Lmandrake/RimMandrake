@@ -119,12 +119,14 @@ def planted_overflow():
 
 
 def model_read(x):
-    """The sandbox's whole ledger: every file under it, as a bare model.read() here would read the real one."""
+    """The sandbox's whole ledger: the files the ledger is made of (model.ledger_files), as a bare model.read() here
+    would read the real one. Not every *.jsonl beside it: the ticket preflight logs each door's run to
+    preflight_runs.jsonl there, and a refused claim's run line read as a ledger event
+    (RIMMANDRAKE_FIX_FOCUS_CAP_REFUSED_CLAIM_STILL_TAKES_LEASE; the same trap as
+    RIMMANDRAKE_SCOPE_SELFTEST_LEDGER_READS_PREFLIGHT_LOG_TRIPS)."""
     evs = []
-    for root, _dirs, files in os.walk(x.ledger):
-        for name in files:
-            if name.endswith(".jsonl"):
-                evs.extend(model.read(os.path.join(root, name)))
+    for p in model.ledger_files(os.path.join(x.ledger, "events.jsonl")):
+        evs.extend(model.read(p))
     assert evs, "the sandbox ledger read empty"
     return evs
 
