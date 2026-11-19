@@ -194,6 +194,17 @@ def ek_unattended(base, rounds, ops):
           DS.standing_park(DS.load_state(d), d, root) and CJ.plan(d, root)[0] == "parked", CJ.plan(d, root))
     owner_line(root, item="OTHER_ITEM", ownerSaid="go on with the other one")
     check("lift: his word on another item does not lift it", CJ.plan(d, root)[0] == "parked", CJ.plan(d, root))
+    # RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS (owner 2026-11-19): the Conductor window's act lifts it; the
+    # same act written by a launched helper does not
+    import conductor_acts as CA
+    cw = CA.tagged("lift the coverage park: gaps 3 and 5 are reworkable, waive the rest", "lift park")
+    owner_line(root, perRuling=CA.RULING, why=cw, ranBy="BENCH", role_unit="rm-detached-bench-x-1")
+    check("lift: the five-acts ruling from a launched helper does not lift it", CJ.plan(d, root)[0] == "parked",
+          CJ.plan(d, root))
+    st0 = json.loads(json.dumps(DS.load_state(d)))
+    owner_line(root, perRuling=CA.RULING, why=cw, ranBy="BENCH")
+    check("lift: the Conductor window's act on the item lifts it", DS.standing_park(DS.load_state(d), d, root) is None)
+    check("lift: (the state was still parked before it)", isinstance(st0.get("park"), dict))
     owner_line(root, ownerSaid="rework gaps 3 and 5, waive the rest")
     check("lift: his ownerSaid on the item lifts it", DS.standing_park(DS.load_state(d), d, root) is None)
     judge.script[:] = [answer("covered", [], 700000)]

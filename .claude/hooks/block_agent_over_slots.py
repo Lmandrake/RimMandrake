@@ -225,8 +225,10 @@ def decide(payload, now=None):
             f"(mode {mode}, {src}).\n\nWhy N={n}: {why}\n\nRunning: {ids}\n\n"
             "Do not cancel a running helper to make room. Wait for one to finish, then spawn. The Dispatcher republishes the "
             "budget every tick; `python3 src/RimMandrake/rimflow/helper_budget.py show` shows it.\n"
-            "Only the owner's word raises N (the override flag):\n"
+            "His word or the Conductor's decision raises N (owner 2026-11-19: only five acts stay his):\n"
             f"    python3 src/RimMandrake/Utils/slot_allocator.py set --seat {label} --n <N> --owner-said \"<his exact words>\"\n"
+            f"    python3 src/RimMandrake/Utils/slot_allocator.py set --seat {label} --n <N> --per-ruling "
+            "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why \"<the Conductor's decision>\"\n"
             "(it holds until the burn account's weekly reset; `slot_allocator.py clear` drops it)."
             )
     return _gate(seat, rules, now, n, refuse)

@@ -79,6 +79,14 @@ def main():
     except L.Refused as e:
         check("owner-KEPT" in str(e) and "agent --why" in str(e), "--why alone may not displace an owner-kept picture")
 
+    # owner 2026-11-19 (only five acts stay his): a Conductor ruling never displaces a kept picture
+    for rul in ("RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS", "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"):
+        try:
+            L.install(mod, rel, sb, per_ruling=rul, why="the Conductor prefers this one")
+            check(False, "--per-ruling %s may not displace an owner-kept picture" % rul[:24])
+        except L.Refused as e:
+            check("stays his" in str(e), "--per-ruling %s may not displace an owner-kept picture" % rul[:24])
+
     # --per-ruling: an owner keep citing the ruling; may replace the kept one
     r = L.install(mod, rel, sb, per_ruling="FORD_STONES_REDRAW_LOOK_LIKE_A_SMUDGE", why="applying his ruling")
     idx = L.Index()

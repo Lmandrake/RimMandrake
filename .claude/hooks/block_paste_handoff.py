@@ -37,11 +37,11 @@ import os
 import re
 import sys
 
-# ✅ Commands that are genuinely the owner's to type. Matched against the command
+# ✅ Commands that are genuinely the owner's to type. broadcast.py left this list 2026-11-19: the Conductor window
+# runs it itself now (owner: only five acts stay his), so handing it to him is the defect. Matched against the command
 # text after the `!`. Keep this list SHORT — every entry is a hole in the rule.
 OWNERS_OWN = (
     re.compile(r"^\.?/?game\b"),                     # ./game up|down|loading — his verb
-    re.compile(r"\bbroadcast\.py\b"),                # OWNER ONLY by ruling
     re.compile(r"\b(gcloud|aws|az|gh)\s+auth\b"),    # interactive login, not runnable by us
     re.compile(r"\bssh-add\b|\bpasswd\b|\bsudo\b"),  # needs a human at a prompt
 )

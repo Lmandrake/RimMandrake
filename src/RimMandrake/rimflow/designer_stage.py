@@ -2260,8 +2260,9 @@ def fixable_park(st, d):
 
 def standing_park(st, d, repo=REPO, lines=None):
     """-> the park still waiting on him, or None: lifted by his own word (ownerSaid or byCard on an OWNER event
-    naming the item) after it was written, or, for a second refusal, by every gap being the Designer's alone
-    (designer_can_fix). A seat's note, a --per-ruling act or a rework helper never lifts it. An unreadable OWNER shard
+    naming the item) or the Conductor window's act under the five-acts ruling (owner 2026-11-19) after it was written,
+    or, for a second refusal, by every gap being the Designer's alone (designer_can_fix). A seat's note, another
+    --per-ruling act or a rework helper never lifts it. An unreadable OWNER shard
     keeps a park needing him standing."""
     park = st.get("park")
     if not isinstance(park, dict):
@@ -3263,9 +3264,12 @@ def epoch(iso):
 
 
 def his_answers(lines, item, since):
-    """tsns of OWNER-shard events naming `item` after `since` (epoch s) that carry his own word (ownerSaid or byCard):
-    the answer that takes a waiting turn off his doorstep. A seat's lifecycle move or a --per-ruling note also lands on
-    OWNER.jsonl, but it is not his answer to these asks."""
+    """tsns of OWNER-shard events naming `item` after `since` (epoch s) that carry his own word (ownerSaid or byCard), or
+    that are the Conductor window's act under the five-acts ruling (owner 2026-11-19: the Conductor reviews every card
+    bound for him and acts when nothing argues against the obvious answer; conductor_acts.is_conductor_event): the answer
+    that takes a waiting turn off his doorstep and lifts a park. A seat's lifecycle move or another --per-ruling note
+    also lands on OWNER.jsonl, but it is not an answer to these asks."""
+    import conductor_acts as CA
     out = []
     for ln in lines or []:
         if item not in ln:
@@ -3275,7 +3279,7 @@ def his_answers(lines, item, since):
         except ValueError:
             continue
         if (not isinstance(ev, dict) or ev.get("id") != item or ev.get("event") in LIFECYCLE
-                or not (CT.txt(ev.get("ownerSaid")) or CT.txt(ev.get("byCard")))):
+                or not (CT.txt(ev.get("ownerSaid")) or CT.txt(ev.get("byCard")) or CA.is_conductor_event(ev)[0])):
             continue
         try:
             tsn = int(ev.get("tsn"))

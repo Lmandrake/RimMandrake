@@ -788,8 +788,42 @@ def main():
     seq = [ln.replace("--json ", "").split()[0] for ln in calls.read_text().splitlines() if ln.strip()]
     check(all(s == "status" for s in seq), f"--dry-run calls nothing but status (got {seq})")
     manual_switch_cases(calls)
+    conductor_provenance_cases()
     print(f"{'FAILED ' + str(len(FAILS)) if FAILS else 'all passed'}")
     return 1 if FAILS else 0
+
+
+def ca_problems(plan):
+    """Every [CA] provenance string in the plan (the Conductor's act, owner 2026-11-19) names lost: and undo:
+    (conductor_acts.why_problem, mindful): the account order and the shared account's leave line are mindful acts."""
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "rimflow"))
+    import conductor_acts as CA
+    out = []
+
+    def walk(o, path):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                walk(v, path + [k])
+        elif isinstance(o, list):
+            for i, v in enumerate(o):
+                walk(v, path + [str(i)])
+        elif isinstance(o, str) and o.lstrip().startswith("[CA]"):
+            p = CA.why_problem(o.lstrip()[4:], mindful=True)
+            if p:
+                out.append("%s: %s" % (".".join(path), p))
+    walk(plan, [])
+    return out
+
+
+def conductor_provenance_cases():
+    import json as _j
+    shipped = os.path.join(os.path.dirname(os.path.abspath(__file__)), "switching_plan.json")
+    got = ca_problems(_j.load(open(shipped, encoding="utf-8")))
+    check(not got, f"the shipped plan's [CA] rules each name lost: and undo: ({got})")
+    bad = {"_order": "[CA] 2026-11-19 the Conductor moved lukas first, it resets sooner"}
+    good = {"_order": "[CA] 2026-11-19 lukas first, it resets sooner; lost: a day of system's budget may expire; "
+                      "undo: put system back first in order"}
+    check(ca_problems(bad) and not ca_problems(good), "a [CA] rule without lost: and undo: is caught, one with them passes")
 
 
 if __name__ == "__main__":

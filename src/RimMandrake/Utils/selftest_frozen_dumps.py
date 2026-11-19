@@ -339,6 +339,52 @@ def t_only_the_owner_can_write_a_freeze():
     shutil.rmtree(reg, ignore_errors=True)
 
 
+def t_the_conductor_window_may_freeze_as_its_act():
+    """Owner 2026-11-19 (only five acts stay his): `--by conductor` writes only from the Conductor window, under the
+    five-acts ruling, with a stated why, and its digest note is written before the registry line."""
+    reg = with_registry([entry(capturedUtc="2026-08-21T08:20:20Z")])
+    R = "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS"
+    why = "re-freeze the official dump: the mod set changed with the Pyrelands migration"
+    notes = []
+    saved = {k: os.environ.get(k) for k in ("AGENT_SEAT", "RM_ROLE_UNIT", "RIMFLOW_SEAT")}
+    try:
+        os.environ["AGENT_SEAT"] = "BENCH"
+        os.environ["RM_ROLE_UNIT"] = "rm-detached-bench-x-1"
+        try:
+            refresh.freeze(_capture(), by="conductor", why=why, per_ruling=R, note_writer=lambda *a: notes.append(a))
+            raise AssertionError("a launched helper's --by conductor froze")
+        except RuntimeError:
+            pass
+        os.environ.pop("RM_ROLE_UNIT")
+        for bad in (dict(why="ok", per_ruling=R), dict(why=why, per_ruling="CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM")):
+            try:
+                refresh.freeze(_capture(), by="conductor", note_writer=lambda *a: notes.append(a), **bad)
+                raise AssertionError("a Conductor freeze with %r wrote" % bad)
+            except RuntimeError:
+                pass
+        assert not notes, "a refused freeze wrote a digest note"
+        e, wrote = refresh.freeze(_capture(), by="conductor", why=why, per_ruling=R,
+                                  note_writer=lambda *a: notes.append(a))
+        assert wrote and e["by"] == "conductor" and e["per_ruling"] == R, e
+        assert len(notes) == 1, "the Conductor's freeze wrote %d digest notes" % len(notes)
+        def boom(*a):
+            raise RuntimeError("note not written")
+        lines0 = open(refresh._registry_path(), encoding="utf-8").read()
+        try:
+            refresh.freeze(_capture("2026-09-02T00:00:00Z"), by="conductor", why=why, per_ruling=R, note_writer=boom)
+            raise AssertionError("a freeze whose note failed wrote")
+        except RuntimeError:
+            pass
+        assert open(refresh._registry_path(), encoding="utf-8").read() == lines0, "a freeze with no note appended"
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        shutil.rmtree(reg, ignore_errors=True)
+
+
 def t_the_sha_it_writes_is_reproducible():
     """🔴 The defect this item was filed for. `OFFICIAL-2026-08-21` carried
     `e0f11692cf69e516`, which no code on this machine produces. A freeze is a

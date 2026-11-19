@@ -1317,6 +1317,9 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
             raise Refused(f"{target} holds {old_sha[:12]}, kept by a NEWER mark of his ({newer[0]['id']}, "
                           f"{newer[0].get('at') or newer[0].get('ts')}) than the pick ({mark['at']}) — the newest "
                           f"mark wins; an older pick never replaces it")
+    if old_protected and not ruling and kept_art_refusal(owner_said, by_card, per_ruling):
+        raise Refused(f"{target} holds {old_sha[:12]}, an owner-KEPT picture: "
+                      + kept_art_refusal(owner_said, by_card, per_ruling))
     if old_protected and not (ruling or owner_auth):
         raise Refused(f"{target} holds {old_sha[:12]}, an owner-KEPT picture — a mechanical "
                       f"install ({reason or 'agent --why'}) may not displace it; it needs his ruling "
@@ -1413,6 +1416,21 @@ def install_image(dest, img, **kw) -> dict:
     return install_bytes(dest, b.getvalue(), **kw)
 
 
+# Replacing art he KEPT is one of the five acts that stay his (owner 2026-11-19: "I only want to preserve Flyer
+# flights, replacing art I kept, ..."): a Conductor ruling alone (his authority relayed, or the Conductor's own act)
+# never displaces, retires or releases a kept picture. His words or card do; the open exceptions use --by-card.
+CONDUCTOR_RULINGS = ("CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM", "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS")
+
+
+def kept_art_refusal(owner_said=None, by_card=None, per_ruling=None):
+    """-> the refusal when the only authority is a Conductor ruling, else None."""
+    if not (owner_said or "").strip() and not (by_card or "").strip() and (per_ruling or "").strip() in CONDUCTOR_RULINGS:
+        return ("replacing art he KEPT stays his (owner 2026-11-19, only five acts stay his): --per-ruling %s does not "
+                "displace, retire or release a kept picture; his words (--owner-said) or his card (--by-card) do"
+                % per_ruling.strip())
+    return None
+
+
 def held_elsewhere(idx, sha: str, key) -> bool:
     """True when another LIVE slot (not `key`) holds exactly this picture: retiring the duplicate slot
     loses no kept picture, so it needs no owner words (the 44 extension-less twins, 2026-10-18)."""
@@ -1422,6 +1440,7 @@ def held_elsewhere(idx, sha: str, key) -> bool:
 def retire(dest, *, reason: str | None = None, owner_said: str | None = None, per_ruling: str | None = None,
            why: str | None = None) -> dict:
     """Remove a Textures file through the ledger: archive, delete, `live` with sha None."""
+    kept_no = kept_art_refusal(owner_said, None, per_ruling)
     owner_said = conductor_authority.words(owner_said, per_ruling, why)
     mod, rel = locate(dest)
     target = src_root().parent / mod / "Textures" / rel
@@ -1429,6 +1448,8 @@ def retire(dest, *, reason: str | None = None, owner_said: str | None = None, pe
         return {"status": "absent", "path": str(target)}
     idx = cached_index()
     old = sha256_file(target)
+    if idx.protected(old) and kept_no and not held_elsewhere(idx, old, (mod, rel)):
+        raise Refused(f"{target} is owner-kept ({old[:12]}): " + kept_no)
     if idx.protected(old) and not owner_said and not held_elsewhere(idx, old, (mod, rel)):
         raise Refused(f"{target} is owner-kept ({old[:12]}) — retiring it needs his words or "
                       + conductor_authority.ROUTE)
@@ -1761,6 +1782,8 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
         raise Refused(f"{sha[:12]} is in the art archive (his ✕ moved it out of the game) — a bare purge does not "
                       f"delete it; a newer ✕ of his deletes + bans it, or `art.py purge {sha[:12]} --owner-said \"…\"` (or --per-ruling)")
     prot = idx.protected(sha)
+    if prot and release_keep is True and kept_art_refusal(owner_said, by_card, per_ruling):
+        raise Refused(f"{sha[:12]}: " + kept_art_refusal(owner_said, by_card, per_ruling))
     w = Writer({e["id"] for e in idx.events})
     if release_keep is True:
         others = []

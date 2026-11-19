@@ -40,6 +40,13 @@ def t_only_the_window():
         check(not ok, "%s is refused --per-ruling %s at the cli" % (label, CA.RULING))
     ok, txt = CA.check("first-touch certify", WHY, env=WINDOW)
     check(ok, "the Conductor window may certify a first touch (%s)" % txt)
+    sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+    import broadcast as B
+    benv = {"RIMFLOW_PER_RULING": CA.RULING, "RIMFLOW_WHY": "the game is up after the reboot I ran myself"}
+    check(B.conductor_broadcast(dict(WINDOW, **benv)), "broadcast: the Conductor window may message windows")
+    check(not B.conductor_broadcast(dict(HELPER, **benv)), "broadcast: a launched helper stays stamp-only")
+    check(not B.conductor_broadcast(dict(WINDOW, RIMFLOW_WHY=benv["RIMFLOW_WHY"])),
+          "broadcast: the Conductor without the ruling stays stamp-only")
 
 
 def t_why_states_act_and_reason():

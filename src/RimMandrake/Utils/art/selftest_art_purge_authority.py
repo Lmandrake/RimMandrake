@@ -136,6 +136,14 @@ def test_library():
     check(m is None and pe and pe[0].get("per_ruling") == "OWNER.jsonl:1729700000" and "said" not in pe[0],
           "purge --per-ruling records per_ruling only")
 
+    # owner 2026-11-19 (only five acts stay his): a Conductor ruling never releases a keep (replacing kept art is his)
+    s5 = picture(L, next(colors), "condkept")
+    keep(L, s5, "condkept")
+    for rul in ("RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS", "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"):
+        m = refused(L.purge, s5, per_ruling=rul, why="the Conductor wants it gone", release_keep=True)
+        check(m is not None and "stays his" in m, f"a Conductor ruling ({rul[:24]}) does not release his keep ({m})")
+    check(L.Index().protected(s5), "…the keep is still active")
+
     # words route unchanged
     s4 = picture(L, next(colors), "words")
     keep(L, s4, "words")

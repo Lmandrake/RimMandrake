@@ -140,6 +140,7 @@ LEDGER_MSG = (
     "one. Use the dedicated tool instead of this file directly:\n"
     "    python3 src/RimMandrake/Utils/repair_torn_ledger.py                  # dry run\n"
     "    python3 src/RimMandrake/Utils/repair_torn_ledger.py --apply --owner-said \"…\"\n"
+    "    (or the Conductor's decision: --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why \"…\")\n"
     "It only ever removes lines that fail to parse — a line that parses, however "
     "wrong its content, is never touched by it.\n\n"
     "✅ COMMITTING the ledger is fine and is not what this refused — commit it after "

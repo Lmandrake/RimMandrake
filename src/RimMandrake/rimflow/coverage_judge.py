@@ -896,7 +896,8 @@ def stop_reason(st, d=None):
             tail = tail[:tail.index(cross) + 1]
             at = len(_looks(rs)) - len(_looks(after)) + len(tail)
             if rel[-1].get("final"):
-                return ("the final look (granted %s, after %s) at round %d was %s: the owner's to decide" % (
+                return ("the final look (granted %s, after %s) at round %d was %s: the owner's or the Conductor's to decide (its act "
+                        "under RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS)" % (
                     rel[-1].get("granted_at"), ", ".join(rel[-1].get("after") or []) or "nothing",
                     at, tail[-1].get("verdict") or "no verdict"))
             return "released for one more look at round %d; that look was %s" % (
@@ -991,7 +992,7 @@ def release(d, why, now=None, after=None, item_state=None):
         raise DS.Refused("a release says why")
     st = DS.load_state(d)
     if DS.standing_park(st, d):
-        raise DS.Refused("parked for him (%s): only his word on %s lifts a park, not a release" % (
+        raise DS.Refused("parked for him (%s): only his word or the Conductor's act on %s lifts a park, not a release" % (
             st["park"].get("kind"), st.get("item")))
     g = st.get("coverage_release_granted")
     if after:
@@ -1658,7 +1659,7 @@ def plan(d, repo=None):
     DS.lift_park(st, d, repo)   # in memory: `run` writes the lift, `status` only reads
     pk = DS.standing_park(st, d, repo)
     if pk:
-        return "parked", "parked for him (%s): %s; only his word on %s lifts it" % (
+        return "parked", "parked for him (%s): %s; only his word or the Conductor's act on %s lifts it" % (
             pk.get("kind"), pk.get("why"), st.get("item"))
     ceil = DS.loop_ceiling(st)
     if ceil:

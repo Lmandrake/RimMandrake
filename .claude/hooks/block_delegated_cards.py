@@ -3,7 +3,7 @@
 
 Item CARDS_ENFORCE_DELEGATED_CLASSES_STOP. design/RimMandrake/delegation_policy.md:
   s1 `scope`   - work order, which item next, helper count, whether to continue / start now or later
-  s2.4 `twin`  - applying an existing ruling to a case it does not name (campaign copy, sister biome, sibling def)
+  s1 `twin`    - applying an existing ruling to a case it does not name (campaign copy, sister biome, sibling def)
 Measured: 29 ordering cards (81% agreement), ~235 typed go-aheads, 9 twin cards (8 yes) in 3 weeks.
 
 A model reads each question, because regexes never generalised: five sealed reads of tuned patterns gave recall
@@ -123,13 +123,16 @@ def message(classes):
         lines.append("  - `scope` (s1): work order, which item next, helper count, continue/start now or later. "
                      "29 such cards in 3 weeks were answered with the recommended choice 81% of the time.")
     if "twin" in classes:
-        lines.append("  - `twin` (s2.4): applying an existing ruling to a case it does not name (campaign copy, "
+        lines.append("  - `twin` (s1): applying an existing ruling to a case it does not name (campaign copy, "
                      "sister biome, sibling def). 8 of 9 such cards were yes; changing what a ruling SAYS is still his.")
     lines.append("Decide it yourself, log it `rimflow note <ID> --why \"delegated: %s\" --text \"<the decision>\"`, "
                  "and list it in the daily digest (policy s3)." % "/".join(classes))
-    lines.append("If this is NOT really that class (a north star, kept art, his rulings changing, an outward or paid act, "
-                 "a flyer live test), say so in the question text: a model read it and can be wrong. If he asked to be "
-                 "asked, put [owner-asked] in the question text. Check: CARDS_ENFORCE_DELEGATED_CLASSES_STOP.")
+    lines.append("Every card bound for him is the Conductor's to review first (owner 2026-11-19, standing_rulings.md "
+                 "§Only five acts stay his): only his five acts (a flyer flight test, replacing art he kept, the pass at "
+                 "his walk, spending money, public publishing) or a card that carries concrete evidence against the "
+                 "obvious answer reach him; the rest the Conductor does now and lists in his digest with the undo. "
+                 "If this card is one of those, say so in the question text: a model read it and can be wrong. If he "
+                 "asked to be asked, put [owner-asked] in the question text. Check: CARDS_ENFORCE_DELEGATED_CLASSES_STOP.")
     return "\n".join(lines)
 
 

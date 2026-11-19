@@ -367,8 +367,9 @@ def compare(current, other):
 # someone would eventually re-freeze it to clear the warning, silently moving the
 # target everyone is building toward. **A mismatch, greater OR lesser, is expected.**
 #
-# ⛔ Only the OWNER re-freezes, deliberately. Nothing here does it automatically, and
-# `--freeze` refuses without an explicit `--by owner`.
+# ⛔ Only the OWNER re-freezes, deliberately, or the Conductor window as its recorded act (owner 2026-11-19, only five
+# acts stay his: `--by conductor --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS --why "..."`, which
+# writes its digest note first). Nothing here does it automatically, and `--freeze` refuses without an explicit `--by`.
 #
 # The registry is `infrastructure/state/dumps/REGISTRY.jsonl`, append-only, one JSON
 # object per line:
@@ -464,10 +465,25 @@ def registry_tamper():
     return bad
 
 
-def freeze(dump=None, by="", id_="", note="", known_damage=""):
+def _conductor_freeze(why, per_ruling, entry_id, note_writer=None):
+    """The Conductor's re-freeze (owner 2026-11-19): the window check and why rules of conductor_acts, then its digest
+    note on the ledger BEFORE anything is written. Raises RuntimeError on a refusal or an unwritten note."""
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "rimflow"))
+    import conductor_acts as CA
+    if per_ruling != CA.RULING:
+        raise RuntimeError("--by conductor needs --per-ruling %s (the Conductor's act, never his words)" % CA.RULING)
+    ok, txt = CA.check("re-freeze official dump", why)
+    if not ok:
+        raise RuntimeError(txt)
+    (note_writer or CA.digest_note)(CA.RULING, "re-freeze official dump",
+                                    "the Conductor re-froze the official def dump as %s" % entry_id, why)
+
+
+def freeze(dump=None, by="", id_="", note="", known_damage="", why="", per_ruling="", note_writer=None):
     """Build the freeze entry for the capture on disk; write it only for the owner.
 
-    -> (entry_dict, wrote_bool). Never writes unless `by == "owner"`.
+    -> (entry_dict, wrote_bool). Never writes unless `by == "owner"`, or `by == "conductor"` with the Conductor's act
+    (`per_ruling` the five-acts ruling, a `why` that conductor_acts.check accepts; its digest note is written first).
 
     🔴 **Only the OWNER re-freezes, and this is the only command that can.**
     Re-freezing moves the design target every seat authors against, so it must be
@@ -531,7 +547,7 @@ def freeze(dump=None, by="", id_="", note="", known_damage=""):
         "modlist_count": m.get("modCount") or fp.get("modCount"),
         "modlist_sha": fp.get("hash") or "see manifest.json",
         "path": "RimWorld by Ludeon Studios/DefDump",
-        "by": "owner", "at": captured[:10], "capturedUtc": captured,
+        "by": "conductor" if by == "conductor" else "owner", "at": captured[:10], "capturedUtc": captured,
         "gameVersion": m.get("gameVersion", ""),
         "note": note or ("the design target — build to this. A differing live mod "
                          "count, greater OR lesser, is NOT staleness. Only the "
@@ -569,10 +585,14 @@ def freeze(dump=None, by="", id_="", note="", known_damage=""):
         # the same, and for the same reason: the old number is the only way to tell a
         # changed algorithm from a changed capture.
         entry["supersededModlistSha"] = cur.get("modlist_sha")
+    if by == "conductor":
+        entry["per_ruling"], entry["why"] = per_ruling, why
     entry[SEAL_FIELD] = seal_of(entry)
 
-    if by != "owner":
+    if by not in ("owner", "conductor"):
         return entry, False
+    if by == "conductor":
+        _conductor_freeze(why, per_ruling, entry["id"], note_writer)
 
     tampered = registry_tamper()
     if tampered:
@@ -595,9 +615,9 @@ def freeze(dump=None, by="", id_="", note="", known_damage=""):
     try:
         marker = os.path.join(dump, _GP.KEEP_MARKER)
         with open(marker, "w", encoding="utf-8") as fh:
-            fh.write("frozen as %s by the owner on %s. Retention must not delete "
+            fh.write("frozen as %s by the %s on %s. Retention must not delete "
                      "this capture; it is the design target.\n"
-                     % (entry["id"], entry["at"]))
+                     % (entry["id"], entry["by"], entry["at"]))
     except OSError as exc:
         print("!! could not write the keep marker (%s) — this capture can be "
               "pruned by retention. Fix it before the next capture." % exc)
@@ -1024,7 +1044,10 @@ def main():
                          "WOULD write instead. Re-freezing moves the design "
                          "target, so it is a decision, never a way to clear a "
                          "warning.")
-    ap.add_argument("--by", default="", help="must be exactly `owner` for --freeze")
+    ap.add_argument("--by", default="", help="`owner` for --freeze, or `conductor` (the Conductor window's act, with "
+                    "--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS and --why)")
+    ap.add_argument("--per-ruling", dest="per_ruling", default="", help="with --by conductor: the five-acts ruling")
+    ap.add_argument("--why", default="", help="with --by conductor: the act and its reason")
     ap.add_argument("--freeze-id", default="",
                     help="override the entry id; default OFFICIAL-<capture date>")
     ap.add_argument("--known-damage", default="",
@@ -1040,7 +1063,7 @@ def main():
     if a.freeze:
         try:
             entry, wrote = freeze(a.dump, a.by, a.freeze_id, a.note,
-                                  a.known_damage)
+                                  a.known_damage, why=a.why, per_ruling=a.per_ruling)
         except (RegistryCorrupt, RuntimeError) as exc:
             sys.exit(str(exc))
         print(json.dumps(entry))
@@ -1050,7 +1073,7 @@ def main():
                 print("supersedes %s" % entry["supersedes"])
             print("appended to %s" % _registry_path())
             sys.exit(0)
-        print("\nDRY RUN — nothing written. Only the OWNER re-freezes.")
+        print("\nDRY RUN — nothing written. Only the OWNER re-freezes, or the Conductor window as its act.")
         print("\nTo write it:")
         print("  python3 src/RimMandrake/Utils/refresh.py --freeze --by owner")
         sys.exit(1)

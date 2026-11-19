@@ -73,7 +73,8 @@ BASH_WRITE = re.compile(r">>?\|?\s*\S*(?:%s|validation_walks)|\btee\b[^|;&]*(?:%
 BASH_FORGED = re.compile(r"state:[ \t]*VALIDATED\b|validated-hash:[ \t]*[0-9a-f]{8}", re.I)
 
 VALIDATE_CMD = ('python3 src/RimMandrake/Utils/modcheck/cli.py validate <mod> '
-                '--owner-said "<his verbatim words>"')
+                '--owner-said "<his verbatim words>"  (or, as the Conductor\'s act, owner 2026-11-19: '
+                '--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why "<the Conductor\'s decision>")')
 
 
 def _new_text(tool, tool_input):

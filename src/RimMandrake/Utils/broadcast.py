@@ -16,7 +16,11 @@ OWNER's `game` event, so there is no second command to forget:
 
 It prints what it recorded. Prose that merely mentions the game records nothing.
 
-🔴 THIS IS A USER TOOL. AGENTS DO NOT RUN IT — with ONE carve-out, added 2026-08-22.
+🔴 THIS IS A USER TOOL, AND THE CONDUCTOR'S (owner 2026-11-19, only five acts stay his): the Conductor window
+(seat BENCH, no RM_ROLE_UNIT) may send its windows a message as its act, with RIMFLOW_PER_RULING=
+RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS and RIMFLOW_WHY="<the act and reason>" (conductor_acts.check);
+mindfully, since his 2026-09-29 words below still say why it is rarely worth it. NO OTHER AGENT RUNS IT — with ONE
+carve-out, added 2026-08-22.
 ⭐ THE CARVE-OUT: when the owner SAYS "game up" / "game down" / "game loading" to an
 agent, that agent runs `./game <state> --said "<his words>"` immediately, which lands
 here. It is a relay of his sentence, in the moment, and nothing else — ⛔ a state an
@@ -322,6 +326,20 @@ def invoking_seat():
     return ran_by
 
 
+def conductor_broadcast(env=None):
+    """True when the Conductor window sends this as its act under the five-acts ruling (owner 2026-11-19): it may
+    message windows; every other agent's relay stays stamp-only."""
+    env = os.environ if env is None else env
+    if (env.get("RIMFLOW_PER_RULING") or "").strip() != "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS":
+        return False
+    sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "rimflow"))
+    try:
+        import conductor_acts as CA
+    except ImportError:
+        return False
+    return CA.check("broadcast", env.get("RIMFLOW_WHY") or "", env=env)[0]
+
+
 def record_game(state, text):
     """Append the OWNER's `game` event. Never fatal — the message still goes out."""
     import subprocess
@@ -472,7 +490,7 @@ def main(argv):
     # one legitimate agent path here), the ledger stamp above is the whole job and
     # no window is messaged, not even one blocked on the game. Window messaging is
     # the OWNER's alone; him running this himself is unchanged.
-    if state and invoking_seat() not in ("", "OWNER"):
+    if state and invoking_seat() not in ("", "OWNER") and not conductor_broadcast():
         print("  (agent relay: stamped only — no window messages; owner ruling 2026-09-29)")
         return 1 if stamp_failed else 0
 
