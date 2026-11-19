@@ -1119,10 +1119,39 @@ def _late(g):
     return g.get("new_since") == "late" and bool(g.get("miss_of"))
 
 
+NO_READ = "judge (no second read)"    # a gap's criterion_by when no second reader graded it
+
+
+def never_read(g):
+    """A carried gap whose criterion no second reader ever graded (the look that wrote it got no second read, so it
+    was stored advisory): it is read on the look that carries it, before it binds
+    (RIMMANDRAKE_READ_ADVISORY_PRIOR_GAP_BEFORE_IT_BINDS_UNREAD)."""
+    return isinstance(g, dict) and bool(g.get("carried")) and g.get("criterion_by") == NO_READ and not g.get("malformed")
+
+
+def carried_criteria(d, rec):
+    """-> {id: criterion text} for the rows of the never-read carried gaps (contract_verdict leaves carried rows out of
+    its criteria, so the reader would be shown an empty criterion for them)."""
+    ids = {i for g in rec.get("gaps") or [] if never_read(g) for i in g.get("ids") or [REST_CLAUSE]}
+    if not ids:
+        return {}
+    ent = entries(d)
+    out = {}
+    for c in ids:
+        e = ent.get("inv:%s" % c) or ent.get("leaf:%s" % c)
+        if c == REST_CLAUSE:
+            out[c] = REST_TEXT
+        elif e is not None:
+            out[c] = json.dumps(e, sort_keys=True)
+    return out
+
+
 def reader_items(rec, crit):
     """-> (the blocking gaps a second reader grades, what it is shown for each: the criterion text and the demand,
-    never the judge's own grade)."""
-    gaps = [g for g in rec.get("gaps") or [] if isinstance(g, dict) and not g.get("carried") and not g.get("malformed")]
+    never the judge's own grade). A carried gap was graded when written and is not shown again, except one no reader
+    ever graded (never_read)."""
+    gaps = [g for g in rec.get("gaps") or [] if isinstance(g, dict) and not g.get("malformed")
+            and (not g.get("carried") or never_read(g))]
     items = []
     for g in gaps:
         ids = list(g.get("ids") or []) or [REST_CLAUSE]
@@ -1218,7 +1247,7 @@ def second_read(rec, crit, reader):
     grades = reader(items)
     if not grades:
         for g in gaps:
-            g["criterion_by"] = "judge (no second read)"
+            g["criterion_by"] = NO_READ
         return ("no second reader graded the refusals' criteria: this refusal is stored and shown, the Designer is "
                 "not sent back")
     for g, gr in zip(gaps, grades):
@@ -1430,7 +1459,7 @@ def round_counts(rec):
     `owner_said` is False (a missing answer is not counted)."""
     every = [g for g in list(rec.get("gaps") or []) + list(rec.get("advisory_gaps") or []) if isinstance(g, dict)]
     new = [g for g in every if g.get("new_since") == "late" and not g.get("repair_passage")]
-    read = lambda g: g.get("criterion_by") not in ("program", "judge (no second read)")   # a reader that did read it
+    read = lambda g: g.get("criterion_by") not in ("program", NO_READ)   # a reader that did read it
     mine = [g for g in rec.get("gaps") or [] if isinstance(g, dict) and not g.get("carried")]
     return {"new_on_unchanged": sum(1 for g in new if g.get("passage") not in ("no_baseline", "unshown"))
             + sum(1 for g in rec.get("dropped") or [] if isinstance(g, dict) and not g.get("names_slot")),
@@ -2000,7 +2029,12 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             # the judge does not grade its own criterion: a second reader does, and may file a gap's kind as advisory
             if reader == "auto":
                 reader = llm_reader(d, repo, unit, charge) if runner is default_runner else None
-            unread = second_read(rec, cv["given"]["criteria"] if "given" in cv else given["criteria"], reader)
+            owed = [g for g in rec.get("gaps") or [] if never_read(g)]   # carried from a look no reader graded
+            unread = second_read(rec, dict(cv["given"]["criteria"] if "given" in cv else given["criteria"],
+                                           **carried_criteria(d, rec)), reader)
+            for g in owed:
+                if g.get("criterion_by") != NO_READ:
+                    g["first_read_at"] = unit   # this look gave it the reading its own look never had
             if getattr(reader, "dead", None):
                 rec["reader_void_system"] = reader.dead
             apply_bar_rule(rec)
@@ -2028,8 +2062,11 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             # the binding grade is the second reader's; a judge confessing its own criterion flawed is heard too
             bad_c = {i for g in rec.get("gaps") or [] if g.get("judge_criterion_verdict") in ("flawed", "unattainable")
                      for i in g.get("ids") or [REST_CLAUSE]}
+            # a carried gap first read at this look is in no refusal record (contract_verdict): its grade is heard here
+            late_c = {i for g in rec.get("gaps") or [] if g.get("first_read_at") == unit
+                      and g.get("criterion_verdict") in ("flawed", "unattainable") for i in g.get("ids") or [REST_CLAUSE]}
             suspect = [r["clause"] for r in cv["refusals"] if r.get("criterion_verdict") in ("flawed", "unattainable")
-                       or r["clause"] in bad_c]
+                       or r["clause"] in bad_c] + sorted(late_c - {r["clause"] for r in cv["refusals"]})
             if suspect and not errs:
                 rec["criteria_suspect"] = suspect
     if rec["verdict"] == "covered":
