@@ -487,6 +487,12 @@ def mechanic_toggles(t):
                     if not isinstance(r, dict) or r.get("success") is False:
                         raise ExpectationFailed("get_defs failed: %r" % (r,))
                     if r.get("notFound") or int(r.get("foundCount", 0)) != len(defs):
+                        if r.get("notFound") and any(d.endswith("RSW_Ollopom") for d in defs):
+                            import validation_core as _VC
+                            st, _c, why = _VC.missing_def_verdict(
+                                "mandrake.rsw.swbestiary", "mandrake.rm.creaturebehaviors", _VC.active_package_ids())
+                            if st == "UNMEASURED":
+                                _unmeasured(t, why)
                         bad.append("%s of %d carrier defs resolved; notFound=%r"
                                    % (r.get("foundCount"), len(defs), r.get("notFound")))
             if bad:

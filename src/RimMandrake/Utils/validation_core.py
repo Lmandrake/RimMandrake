@@ -66,6 +66,34 @@ def row(rows, rid, status, cls, detail):
     yield_check(rows)
 
 
+def active_package_ids():
+    """packageIds in ModsConfig activeMods, or None when the file could not be read or holds no activeMods block."""
+    try:
+        import xml.etree.ElementTree as ET
+        from game_paths import MODS_CONFIG
+        el = ET.parse(MODS_CONFIG).getroot().find("activeMods")
+        return None if el is None else [(li.text or "").strip() for li in el]
+    except Exception:
+        return None
+
+
+def missing_def_verdict(owner, own, active):
+    """A live row asked `get_defs` for a def and it came back `notFound`: whose fault is that?
+    owner  packageId of the mod that defines the def (None or blank = the asking mod's own def)
+    own    the asking mod's packageId
+    active packageIds loaded now, or None when the list could not be read
+    Returns (status, class, detail). Another mod's def with that mod not loaded is a list fact, never the asking mod's
+    defect. packageIds compare case-blind (RimWorld's own rule)."""
+    o = owner.strip().lower() if isinstance(owner, str) else ""
+    if not o or o == str(own).strip().lower():
+        return ("FAIL", "MOD", "the mod's own def is missing")
+    if not isinstance(active, (list, tuple, set, frozenset)):
+        return ("UNMEASURED", "HARNESS", "def owned by %s not found, and the loaded-mod list was not read" % owner)
+    if o in {str(a).strip().lower() for a in active}:
+        return ("FAIL", "MOD", "def owned by %s is missing, and that mod is loaded" % owner)
+    return ("UNMEASURED", "HARNESS", "def owned by %s not found: that mod is not on this list" % owner)
+
+
 def yield_check(rows, path=None):
     """Row boundary: when TESTQ_YIELD_FILE exists (testq wrote it on a bridge take), leave the rows measured so far
     beside it (<file>.rows.json, so the job does not redo them) and stop the proof. Unset or absent: nothing happens."""

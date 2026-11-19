@@ -473,5 +473,8 @@ check("11 tier: the gss list reads gimmesomeslack", tier_case(["core", "gss"], [
 check("11 control: an extra mod matches no tier", tier_case(["core", "gss", "fw", "x"], ["core", "gss", "fw", "x"]) is None)
 check("11 control: ModsConfig not what is running (edited mid-session) names no tier", tier_case(["core", "gss", "fw"], ["core", "gss"]) is None)
 
+check("12 gate: win32 refuses as HARNESS naming WSL python3", "HARNESS" in (PA.offline_gate_refusal("win32") or "") and "python3" in PA.offline_gate_refusal("win32"))
+check("12 control: linux has no refusal", PA.offline_gate_refusal("linux") is None)
+
 print("\n%s" % ("ALL PASS" if not FAILS else "FAILED: %s" % FAILS))
 sys.exit(1 if FAILS else 0)

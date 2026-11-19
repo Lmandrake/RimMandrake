@@ -251,6 +251,15 @@ def offline_gate():
     return {"red": red, "steps": steps, "spec_posix": spec, "spec_win": SCRATCH_WIN + "\\" + SPEC_NAME}
 
 
+def offline_gate_refusal(platform=None):
+    """The offline gate imports Unix-only modules (fcntl via winbuild): under Windows python it would die at O3 and be
+    charged to the mod. Returns the HARNESS refusal text there, None where the gate can run."""
+    if (platform or sys.platform) == "win32":
+        return "HARNESS: the offline gate cannot run under Windows python (no fcntl); run it under WSL python3: " \
+               "wsl.exe python3 %s --offline-gate" % os.path.abspath(__file__)
+    return None
+
+
 def offline_gate_from_windows():
     me = V._posix(os.path.abspath(__file__))
     r = subprocess.run(["wsl.exe", "python3", me, "--offline-gate"], capture_output=True, text=True, timeout=3600)
@@ -1102,6 +1111,11 @@ def main(argv=None):
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
     if a.offline_gate:
+        why = offline_gate_refusal()
+        if why:
+            print("UNMEASURED " + why)
+            print("GATE_JSON " + json.dumps({"red": [], "unmeasured": [why], "steps": {}}))
+            return 3
         g = offline_gate()
         print("GATE_JSON " + json.dumps(g, default=str))
         return 1 if g["red"] else 0
