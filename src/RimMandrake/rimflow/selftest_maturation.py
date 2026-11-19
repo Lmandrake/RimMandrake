@@ -951,6 +951,16 @@ def next_version_main(root):
         shown = sum(int(x.split("weighted tokens")[0].split(":")[-1]) for x in buf.getvalue().splitlines()
                     if x.strip().startswith("spend ") and "weighted tokens" in x)
         ok(shown == own + 70, "show: the same (%s, want %s)" % (shown, own + 70))
+        # the fall-back hour (Codex review): seeded 01:50-07:00, a run ended 20 min later at 01:10-08:00 is this version's
+        dst = dict(rec, seeded=dict(rec.get("seeded") or {}, at="2026-11-01T01:50:00-07:00"))
+        rows_dst = M.version_spend_rows(root, mod, dict(dst, spend=[]))
+        with open(rsp, "a") as f:
+            f.write(json.dumps({"stage": "designer", "stages": ["designer"], "tokens": 5, "unit": "rm-dst-run",
+                                "at": "2026-11-01T01:10:00-08:00"}) + "\n")
+        rows_dst = M.version_spend_rows(root, mod, dict(dst, spend=[]))
+        ok(any(x.get("unit") == "rm-dst-run" for x in rows_dst) and not any(
+            x.get("unit") == "rm-old-version-run" for x in rows_dst),
+           "times compare as instants, never as strings: a run 20 min after the seed across the DST fall-back counts")
         new = M.record_run_spend(root, mod, [{"unit": "rm-old-version-run", "end": 946684800.0, "live": False}],
                                  lambda r: ["designer"])
         ok(new == [], "record_run_spend writes no second row for an old version's unit (%s)" % new)

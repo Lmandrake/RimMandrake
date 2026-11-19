@@ -1556,9 +1556,19 @@ def version_spend_rows(root, mod, rec):
     version's runs would otherwise count as this one's (RIMMANDRAKE_SCOPE_RUN_SPEND_TO_VERSION_OLD_RUNS_LINGER). Every
     place spend is REPORTED reads this; record_run_spend reads spend_rows whole, so an old unit is never re-added."""
     own = len((rec or {}).get("spend") or [])
-    since = ((rec or {}).get("seeded") or {}).get("at")
+    since = _instant(((rec or {}).get("seeded") or {}).get("at"))
     rows = spend_rows(root, mod, rec)
-    return rows[:own] + [x for x in rows[own:] if not since or str(x.get("at") or "") >= since]
+    # compared as instants: iso() writes Pacific time with its offset, so strings misorder the fall-back hour
+    return rows[:own] + [x for x in rows[own:] if since is None or (_instant(x.get("at")) or -1e18) >= since]
+
+
+def _instant(s):
+    """An ISO time (any offset, or Z) -> epoch seconds, or None when absent or unreadable."""
+    try:
+        t = dt.datetime.fromisoformat(str(s).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return None
+    return (t if t.tzinfo else t.replace(tzinfo=PAC)).timestamp()
 
 
 def record_run_spend(root, mod, runs, stage_of):
