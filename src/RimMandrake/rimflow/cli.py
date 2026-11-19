@@ -3824,8 +3824,19 @@ def _take_decision(holder, seat, idle, force, purpose, owner=None):
 _FLIGHT_RE = re.compile(r"fl(?:y|ie|ew|own|ight)|take[-\s]*offs?|airborne|glid|soar|aloft|wingspan", re.I)
 
 
+# The one flight wording a delegated take admits: a read of a flyer's state with the game paused, by the tool that
+# refuses unless paused and still (his card 2026-11-13, RIMMANDRAKE_ADMIT_PAUSED_FLYER_READS_AT_BRIDGE_TAKE: "paused
+# reads allowed (no ticks, no pictures; anything moving still waits for him)"). Both the words and the tool's name must
+# be there, and they are cut out before the check, so any other flight word beside them still refuses.
+_PAUSED_FLYER_READ = re.compile(r"(?<!un)\bpaused flyer state read\b", re.I)
+_PAUSED_FLYER_TOOL = re.compile(r"\bflyer_tier_three_state_read\.py\b", re.I)
+
+
 def flight_purpose(text):
-    return bool(_FLIGHT_RE.search(text or ""))
+    text = text or ""
+    if _PAUSED_FLYER_READ.search(text) and _PAUSED_FLYER_TOOL.search(text):
+        text = _PAUSED_FLYER_TOOL.sub(" ", _PAUSED_FLYER_READ.sub(" ", text))
+    return bool(_FLIGHT_RE.search(text))
 
 
 def _delegated_gate(holder, seat, holder_idle, purpose, flyer, owner=None):
