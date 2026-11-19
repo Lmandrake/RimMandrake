@@ -1520,8 +1520,39 @@ def stale_check(root):
     return stale
 
 
+def designer_step_line(root, mod):
+    """-> the `Designer step: ...` text for design/concepts/<Mod>/stage.json, the Designer stage machine's own state
+    (a different thing from the pipeline stage the ledger holds). Four answers: `<0-5> (<status>)` plus `, blocked on
+    <text>`; `none (no stage.json)`; `UNMEASURED (<cause>)`."""
+    path = os.path.join(root, "design", "concepts", mod, "stage.json")
+    if not os.path.exists(path):
+        return "none (no stage.json)"
+    try:
+        with open(path, encoding="utf-8") as f:
+            d = json.load(f)
+    except (OSError, ValueError) as e:
+        return "UNMEASURED (stage.json unreadable: %s)" % _one(str(e))
+    if not isinstance(d, dict):
+        return "UNMEASURED (stage.json is not an object)"
+    step = d.get("stage")
+    if isinstance(step, bool) or not isinstance(step, int) or not 0 <= step <= 5:
+        return "UNMEASURED (stage.json has no step 0-5: %r)" % (step,)
+    line = "%d (%s)" % (step, d.get("status", "no status"))
+    if d.get("status") == "blocked" and d.get("blocked_on"):
+        line += ", blocked on " + _one(str(d["blocked_on"]))
+    return line
+
+
 def packet(root, mod, budget=None, stale=None):
-    return packet_from(mod, read(root, mod), budget, stale)
+    """packet_from plus the Designer-step line under its head; the line is charged to the budget, so `tokens` and
+    `over_budget` describe the text returned."""
+    line = "Designer step: " + designer_step_line(root, mod) + "\n"
+    cost = tokens(line)
+    text, info = packet_from(mod, read(root, mod), (budget or config()["packet_budget_tokens"]) - cost, stale)
+    head, _, rest = text.partition("\n")
+    second, _, rest2 = rest.partition("\n")
+    info["tokens"] += cost
+    return head + "\n" + second + "\n" + line + rest2, info
 
 
 # ---- views ----------------------------------------------------------------------------------------------------------

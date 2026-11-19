@@ -45,7 +45,7 @@ ap.add_argument("--root", default=M.REPO_ROOT)
 ap.add_argument("--census", help="a store_write_census.py --out record to read instead of running one")
 A = ap.parse_args()
 ROOT = os.path.abspath(A.root)
-OLD = ("stage.json", "journal.md", os.path.join("version", "stage_record.json"))
+OLD = ("journal.md", os.path.join("version", "stage_record.json"))
 res = []                                     # "PASS", "FAIL", "NOT MEASURED" or "COULD NOT LOOK", one per check
 
 

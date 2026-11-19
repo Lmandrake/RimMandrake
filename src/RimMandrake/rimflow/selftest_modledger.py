@@ -830,7 +830,7 @@ for i in range(40):
 put(r10, MOD, "OWNER", "question.answer", "q:backlog-answer", body={"said": "his backlog answer"},
     authority={"by_card": "Keep? -> yes"}, ts=ts(4), views=False)
 bfull, bfi = M.packet(r10, MOD, budget=100000)
-BUD = bfi["tokens"] // 3
+BUD = (bfi["tokens"] - M.tokens("Designer step: none (no stage.json)\n")) // 3 + M.tokens("Designer step: none (no stage.json)\n")   # a third of the body, plus the Designer line
 bl, bli = M.packet(r10, MOD, budget=BUD)
 check("a backlog over budget fits by the line rule, not by dropping", not bli["over_budget"] and
       bli["tokens"] <= BUD, (bli, BUD, bfi["tokens"]))
