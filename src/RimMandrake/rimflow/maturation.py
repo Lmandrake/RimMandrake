@@ -3179,12 +3179,16 @@ def read_ingame_exit(root, mod, n, tt=None):
     rows = _jsonl(os.path.join(d, "rows.jsonl"))
     if rows is None:
         why.append("rows.jsonl is missing")
+    # an earlier row counts against its check only as a real FAIL: an UNMEASURED row (a run the 540 s command bound
+    # split) or a FAIL the driver classed HARNESS or SITE is a system failure and spends nothing (standing_rulings, No
+    # trial is spent by a system failure); the check's last row must still read PASS
     last, earlier = {}, {}
     for r in rows or []:
         t = r.get("test") or r.get("id")
         if t:
-            if t in last and str(last[t].get("verdict", "")).upper() != "PASS":
-                earlier.setdefault(t, []).append(str(last[t].get("verdict", "")).upper() or "no verdict")
+            p = last.get(t) or {}
+            if str(p.get("verdict", "")).upper() == "FAIL" and str(p.get("class", "")).upper() not in ("HARNESS", "SITE"):
+                earlier.setdefault(t, []).append("FAIL")
             last[t] = r
     for t, _ in checks:
         claim = blk["ingame_rows"].get(t)

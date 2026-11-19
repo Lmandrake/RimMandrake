@@ -1649,9 +1649,11 @@ def identity(spec, broken=None):
 def write_visit(root, mod, n, exit_met=True, drop=None, fail=None, rerun_pass=False, site=True, game="archmagi",
                 sha="abc1234", strange=None, strange_open=None, strange_file=True, save=True, rows_file=True,
                 block=True, sha2=None, save_text="<?xml version=\"1.0\"?>\n<savegame><meta/></savegame>",
-                site_reading={"biome": "Pyrelands", "colonists_alive": 3}, off_build=None, off_build_all=False):
+                site_reading={"biome": "Pyrelands", "colonists_alive": 3}, off_build=None, off_build_all=False,
+                earlier=None):
     """A visit record in the layout maturation.py reads, every file present, with one thing broken on request.
-    off_build: "hash"/"build"/"list"/"none" breaks the last check's build identity (every check's with off_build_all)."""
+    off_build: "hash"/"build"/"list"/"none" breaks the last check's build identity (every check's with off_build_all).
+    earlier: (test, verdict, class) writes one earlier row of that check before its own row."""
     tt = json.load(open(os.path.join(root, "design", "concepts", mod, "version", "test_table.json")))
     walk_standin(root, tt)
     ids = [k for k, t in tt["tests"].items() if str(t.get("kind", "")).startswith("live") and str(t.get("stage")) == "6"]
@@ -1673,6 +1675,9 @@ def write_visit(root, mod, n, exit_met=True, drop=None, fail=None, rerun_pass=Fa
                        "mod_sha": sha2 if (sha2 and t == ids[-1]) else sha, "command": tt["tests"][t].get("command"), "evidence": "selftest",
                        "site": site_reading}
                 row.update(identity(tt["tests"][t], off_build if (off_build_all or t == ids[-1]) else None))
+                if earlier and t == earlier[0]:
+                    f.write(json.dumps(dict({k: v for k, v in row.items() if v is not None}, verdict=earlier[1],
+                                            **({"class": earlier[2]} if earlier[2] else {}))) + "\n")
                 f.write(json.dumps({k: v for k, v in row.items() if v is not None}) + "\n")
                 if t == fail and rerun_pass:
                     f.write(json.dumps(dict(row, verdict="PASS")) + "\n")
@@ -1842,6 +1847,13 @@ def ingame_main():
         chk(lambda: reads(dict(fail=live6[1], rerun_pass=True), "not_met", "an earlier row reads FAIL"),
             "a FAIL rerun PASS in the sitting: the later PASS does not hide the FAIL, not met "
             "(RIMMANDRAKE_CLOSE_EXIT_READER_LOOPHOLES)")
+        chk(lambda: reads(dict(earlier=(live6[1], "UNMEASURED", None)), "met"),
+            "an earlier UNMEASURED row (a harness split: visit 1's sc_four_looks) before a PASS spends nothing: met "
+            "(standing_rulings: no trial is spent by a system failure)")
+        chk(lambda: reads(dict(earlier=(live6[1], "FAIL", "HARNESS")), "met"),
+            "an earlier FAIL row the driver classed HARNESS before a PASS spends nothing: met")
+        chk(lambda: reads(dict(earlier=(live6[1], "FAIL", "MOD")), "not_met", "an earlier row reads FAIL"),
+            "an earlier FAIL row classed MOD before a PASS still counts: not met")
         broken = (
             (dict(exit_met=False), "the driver's block says exit_met false", "exit_met false"),
             (dict(fail=live6[1]), "a check's last row FAILs", live6[1]),
