@@ -1,0 +1,21 @@
+Row and source-coverage check over design/concepts/TerminalBiomes/GreySea_rewrite_choices.md of RIMMANDRAKE_REWRITE_GREY_SEA_DESIGN_READ_IN_FULL, run 2026-11-18 (offline; documents only, no game).
+What it checks: every table row under "Every idea, row by row" has five cells and an outcome that starts with one of the page's five words; every source name defined in the page's "Source names" paragraph appears in at least one row's source column, and every row's source is a defined name; every file path and ledger item the paragraph names exists on disk.
+What it does not check: that every idea in every source has a row. The page states which sources were read to the end (44), in part, by search and not at all; a source read in part can hold ideas with no row.
+Probes run first, each on a deliberately broken copy, each refused (exit 1): a made-up source name with a file that does not exist; a row whose outcome is not one of the five words; a defined source used in no row. An unreadable page exits 2 (could not look), not 1.
+exit status of the check on the real page: 0
+
+GreySea: 171 rows, 67 named sources, 35 source paths and 19 ledger items checked on disk
+outcomes: kept, reshaped 17; kept 122; moved 14; folded into shared machinery 1; lost 17
+lost/moved/reshaped rows with neither a reason nor an alternative: 0 []
+VERDICT: PASS
+
+--- probe 1 (made-up source)
+FAIL: source names with no row: ['phantom source']
+FAIL: defined sources not on disk: ['no_such_file_anywhere.md']
+VERDICT: FAIL
+--- probe 2 (bad outcome word)
+FAIL: rows whose outcome is not one of the five words: ['Ship or nothing: no pawn dives or returns alone']
+VERDICT: FAIL
+--- probe 3 (defined source used in no row)
+FAIL: source names with no row: ['landmarks']
+VERDICT: FAIL
