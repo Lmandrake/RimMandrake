@@ -17,7 +17,7 @@ a list of places to read, not a count of bugs: the shared answer type for a read
     python3 src/RimMandrake/Utils/could_not_look_lint.py              exit 0 green, 1 red, 3 UNREADABLE
     ... --shadow     print the same, exit 0 always (what ./publish runs tonight: it refuses nothing)
     ... --census     per-file counts of every place, allowlisted or not
-    ... --prune      drop allowlist slack (places fixed since)
+    ... --prune      drop allowlist slack (places fixed since), and the `reasons` entry of a place no longer allowed
     ... --seed       write every current place onto the allowlist (once, at the lint's birth)
     ... --files P... only these files; --allowlist PATH another allowlist
 """
@@ -50,7 +50,15 @@ def _empty(n):
 
 
 def _read_call(n):
-    return isinstance(n, ast.Call) and not (isinstance(n.func, ast.Attribute) and n.func.attr == "get")
+    """A call that may read the outside world. Not: `.get(...)` (a mapping in hand), `getattr(...)` (an object in hand),
+    or a string constant's `.join(...)` (lint reads, 2026-11-19: seat_restart.bridge_hold, designer_stage.done_items)."""
+    if not isinstance(n, ast.Call):
+        return False
+    f = n.func
+    if isinstance(f, ast.Attribute):
+        return not (f.attr == "get" or (f.attr == "join" and isinstance(f.value, ast.Constant)
+                                        and isinstance(f.value.value, str)))
+    return not (isinstance(f, ast.Name) and f.id == "getattr")
 
 
 def _returns(nodes):
@@ -149,6 +157,8 @@ def main(argv):
             else:
                 allowed.pop(k, None)
         allow["places"] = dict(sorted(allowed.items()))
+        if "reasons" in allow:      # a place no longer allowed takes its reason with it
+            allow["reasons"] = {k: v for k, v in sorted(allow["reasons"].items()) if k in allowed}
         with open(al_path, "w", encoding="utf-8") as fh:
             json.dump(allow, fh, indent=1)
             fh.write("\n")

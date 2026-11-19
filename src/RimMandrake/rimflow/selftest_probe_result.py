@@ -156,6 +156,10 @@ def t_lint_sees_both_shapes():
     check(rc == 1 and flagged(out) == [2, 4, 5, 11, 16, 26, 28], "the lint names exactly the shaped lines", (rc, out))
     rc, out = lint("def f():\n    r = _procs(cg)\n    if r is None:\n        raise RuntimeError('blind')\n    return r\n")
     check(rc == 0 and not flagged(out), "a read that says could-not-look is green", (rc, out))
+    rc, out = lint("def g(it, xs):\n    t = getattr(it, 'title', '') or ''\n    s = '; '.join(xs) or None\n"
+                   "    u = sep.join(xs) or None\n    return t, s, u\n")
+    check(rc == 1 and flagged(out) == [4], "getattr and a string constant's .join read nothing outside; a name's "
+          ".join still counts", (rc, out))
 
 
 def t_lint_allowlist_is_counted():
@@ -180,6 +184,15 @@ def t_lint_allowlist_is_counted():
     with open(al) as fh:
         left = json.load(fh)["places"]
     check(rc == 0 and list(left.values()) == [2], "--prune leaves the count that is still open", (rc, left))
+    k = "%s::a::or-empty" % os.path.join(TMP, "count.py")
+    gone = "%s::b::or-empty" % os.path.join(TMP, "count.py")
+    with open(al, "w") as fh:
+        json.dump({"places": {k: 2, gone: 1}, "reasons": {k: ["RARE: x", "RARE: y"], gone: ["RARE: fixed since"]}}, fh)
+    rc, out = lint(two, "--allowlist", al, "--prune", name="count.py")
+    with open(al) as fh:
+        left = json.load(fh)
+    check(rc == 0 and sorted(left["places"]) == [k] and sorted(left.get("reasons") or {}) == [k],
+          "--prune drops a fixed place's reason with it and keeps the open one's", (rc, left))
 
 
 def t_lint_shadow_refuses_nothing():

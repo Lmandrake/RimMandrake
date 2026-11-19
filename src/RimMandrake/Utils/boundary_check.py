@@ -36,6 +36,9 @@ PAGES = {
     "design/specs/2026-11-19-incident-news-and-program-routes/boundary.md": "src/RimMandrake/rimflow/selftest_incident_news.py",
     "design/specs/2026-11-19-incident-clerk/boundary.md": "src/RimMandrake/rimflow/selftest_incident_clerk.py",
     "design/specs/2026-11-19-brief-skill-paths/boundary.md": "src/RimMandrake/rimflow/selftest_detached_helper.py",
+    "design/specs/2026-11-19-seat-restart-reads/boundary.md": "src/RimMandrake/rimflow/selftest_seat_restart_reads.py",
+    "design/specs/2026-11-19-designer-stage-reads/boundary.md": "src/RimMandrake/rimflow/selftest_designer_stage_reads.py",
+    "design/specs/2026-11-19-maturation-reads/boundary.md": "src/RimMandrake/rimflow/selftest_maturation_reads.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

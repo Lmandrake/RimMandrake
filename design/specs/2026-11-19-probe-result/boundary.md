@@ -36,9 +36,12 @@ the page has no LIFE CYCLES.
   for the first two only. `value()` of a blind answer raises instead of hiding it.
 - **lint-sees-both-shapes.** The lint names `file:line` for `<call> or []` (also `{}`, `()`, `0`, `None`, `""`) and for
   an `except` whose body returns one of those. A `.get(...)` on the left reads a mapping already in hand and is not
-  flagged; neither is a name or an attribute on the left.
+  flagged; neither is `getattr(...)` (an object in hand), a string constant's `.join(...)`, a name or an attribute on
+  the left (the first two added 2026-11-19 by RIMMANDRAKE_LAUNCH_LINT_READS_AFTER_HE_RULES_PAGE_STRICTNESS, which read
+  both as lint misreads).
 - **lint-allowlist-is-counted.** A hit beyond its allowlist count (key: file, function, shape) is red, exit 1; a line
-  moving inside its function changes nothing. A fixed hit leaves slack, which `--prune` removes.
+  moving inside its function changes nothing. A fixed hit leaves slack, which `--prune` removes, together with the
+  `reasons` entry of a key no longer allowed (`reasons`: per key, one line per place, its class from reading it).
 - **lint-shadow-refuses-nothing.** With `--shadow` the lint prints its count and every hit beyond the allowlist and
   exits 0, an unreadable file included. `./publish` runs it so (a `"shadow": true` check in
   `publish_tree_checks.json`): it prints the lint's last line and refuses nothing.

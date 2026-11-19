@@ -1,5 +1,5 @@
 {
- "_doc": "Places could_not_look_lint.py found when it was born (2026-11-19, RIMMANDRAKE_SHARE_PROBE_RESULT_TYPE_NINE_FILES_ROLL_OWN), keyed file::function::shape with a count. A count is a list of places to read, not a count of bugs. Fixed places leave slack: could_not_look_lint.py --prune.",
+ "_doc": "Places could_not_look_lint.py found when it was born (2026-11-19, RIMMANDRAKE_SHARE_PROBE_RESULT_TYPE_NINE_FILES_ROLL_OWN), keyed file::function::shape with a count. A count is a list of places to read, not a count of bugs. Fixed places leave slack: could_not_look_lint.py --prune. `reasons` holds, per key, one line per place in source order, classed by reading it (RIMMANDRAKE_LAUNCH_LINT_READS_AFTER_HE_RULES_PAGE_STRICTNESS): RARE (only a rare failure reaches it; the component's boundary page lists it as not handled, owner by card 2026-11-19) or NOT A COLLAPSE (why).",
  "places": {
   ".claude/hooks/role_result_before_stop.py::blocks_so_far::except-returns-empty": 1,
   ".claude/hooks/role_result_before_stop.py::blocks_so_far::or-empty": 1,
@@ -9,7 +9,6 @@
   "src/RimMandrake/Utils/maturation_now.py::dispatch_needs::except-returns-empty": 1,
   "src/RimMandrake/Utils/maturation_now.py::dispatch_pipeline::except-returns-empty": 1,
   "src/RimMandrake/Utils/maturation_now.py::display_name::or-empty": 1,
-  "src/RimMandrake/Utils/maturation_now.py::live_facts::or-empty": 1,
   "src/RimMandrake/Utils/maturation_now.py::parse_interventions::or-empty": 2,
   "src/RimMandrake/Utils/maturation_now.py::parse_utc::except-returns-empty": 1,
   "src/RimMandrake/Utils/maturation_now.py::pipeline_units::except-returns-empty": 1,
@@ -48,7 +47,6 @@
   "src/RimMandrake/rimflow/designer_stage.py::close_run::or-empty": 2,
   "src/RimMandrake/rimflow/designer_stage.py::designer_clone::except-returns-empty": 1,
   "src/RimMandrake/rimflow/designer_stage.py::done_items::except-returns-empty": 1,
-  "src/RimMandrake/rimflow/designer_stage.py::done_items::or-empty": 1,
   "src/RimMandrake/rimflow/designer_stage.py::elsewhere_section::or-empty": 1,
   "src/RimMandrake/rimflow/designer_stage.py::entry_point_exists::except-returns-empty": 1,
   "src/RimMandrake/rimflow/designer_stage.py::epoch::except-returns-empty": 1,
@@ -56,6 +54,7 @@
   "src/RimMandrake/rimflow/designer_stage.py::input_hash::except-returns-empty": 1,
   "src/RimMandrake/rimflow/designer_stage.py::land_state::or-empty": 1,
   "src/RimMandrake/rimflow/designer_stage.py::loop_spend::or-empty": 1,
+  "src/RimMandrake/rimflow/designer_stage.py::loop_void_spend::or-empty": 2,
   "src/RimMandrake/rimflow/designer_stage.py::on_origin_main::except-returns-empty": 1,
   "src/RimMandrake/rimflow/designer_stage.py::owner_away::or-empty": 1,
   "src/RimMandrake/rimflow/designer_stage.py::park::or-empty": 1,
@@ -73,7 +72,6 @@
   "src/RimMandrake/rimflow/designer_stage.py::working_record::or-empty": 1,
   "src/RimMandrake/rimflow/detached_helper.py::_epoch::except-returns-empty": 1,
   "src/RimMandrake/rimflow/detached_helper.py::_launch_locked::or-empty": 1,
-  "src/RimMandrake/rimflow/detached_helper.py::_tail::or-empty": 1,
   "src/RimMandrake/rimflow/detached_helper.py::context_tokens::except-returns-empty": 1,
   "src/RimMandrake/rimflow/detached_helper.py::dirty_shards::except-returns-empty": 1,
   "src/RimMandrake/rimflow/detached_helper.py::keep_off_result::or-empty": 1,
@@ -100,7 +98,6 @@
   "src/RimMandrake/rimflow/judge_certificate.py::_read_evidence::except-returns-empty": 1,
   "src/RimMandrake/rimflow/judge_certificate.py::_write_evidence::except-returns-empty": 1,
   "src/RimMandrake/rimflow/judge_certificate.py::grandfather::or-empty": 2,
-  "src/RimMandrake/rimflow/launch_checks.py::_tail::or-empty": 1,
   "src/RimMandrake/rimflow/left_open_continue.py::main::or-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_absent::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::_git_show::except-returns-empty": 1,
@@ -123,7 +120,6 @@
   "src/RimMandrake/rimflow/maturation.py::record_run_spend::or-empty": 1,
   "src/RimMandrake/rimflow/maturation.py::takes_game::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation_autonomy.py::_iso_ts::except-returns-empty": 1,
-  "src/RimMandrake/rimflow/maturation_autonomy.py::_klass::or-empty": 1,
   "src/RimMandrake/rimflow/maturation_autonomy.py::chain_owed::or-empty": 2,
   "src/RimMandrake/rimflow/maturation_autonomy.py::coverage_stopped::or-empty": 1,
   "src/RimMandrake/rimflow/maturation_autonomy.py::designer_chain::except-returns-empty": 1,
@@ -135,7 +131,6 @@
   "src/RimMandrake/rimflow/maturation_autonomy.py::resolve::or-empty": 1,
   "src/RimMandrake/rimflow/maturation_dispatch.py::_by::or-empty": 1,
   "src/RimMandrake/rimflow/maturation_dispatch.py::_clear::or-empty": 1,
-  "src/RimMandrake/rimflow/maturation_dispatch.py::_tick::or-empty": 1,
   "src/RimMandrake/rimflow/maturation_dispatch.py::_ts::except-returns-empty": 1,
   "src/RimMandrake/rimflow/maturation_dispatch.py::_void::or-empty": 1,
   "src/RimMandrake/rimflow/maturation_dispatch.py::add_blind::or-empty": 1,
@@ -205,7 +200,6 @@
   "src/RimMandrake/rimflow/seat_restart.py::_turn_ended_since::except-returns-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::_turn_ended_since::or-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::background_commands::except-returns-empty": 4,
-  "src/RimMandrake/rimflow/seat_restart.py::bridge_hold::or-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::cmd_intile::or-empty": 3,
   "src/RimMandrake/rimflow/seat_restart.py::cmd_last_reply::or-empty": 2,
   "src/RimMandrake/rimflow/seat_restart.py::cmd_mode::or-empty": 1,
@@ -246,5 +240,371 @@
   "src/RimMandrake/rimflow/seat_restart.py::unanswered::except-returns-empty": 1,
   "src/RimMandrake/rimflow/seat_restart.py::work_since::except-returns-empty": 3,
   "src/RimMandrake/rimflow/spend_watchdog.py::run::or-empty": 1
+ },
+ "reasons": {
+  "src/RimMandrake/rimflow/designer_stage.py::_epoch::except-returns-empty": [
+   "NOT A COLLAPSE: a parser of a string in hand: None for absent or off-format (callers: an-off-format-stage-timestamp)"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::_ledger_meta::except-returns-empty": [
+   "NOT A COLLAPSE: False is the could-not-look answer: the caller returns None, unknown, never 'not ours'"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::_read_sheet::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md a-concept-file-unreadable-but-present): an unreadable sheet.md reads as no sheet in the control copy"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::_run_file::except-returns-empty": [
+   "NOT A COLLAPSE: the Refused text goes into errs before None: the failure is kept"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::ceiling_crossed_at::or-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-off-format-stage-timestamp): a charge with no readable time sorts first and is left out; measured 0 of 527 off-format"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::close_run::or-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-owner-shard-with-no-readable-copy): owner_uncited None (no OWNER.jsonl copy readable) reads as no uncited words",
+   "NOT A COLLAPSE: read_json: absent is None, unparseable raises"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::designer_clone::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-unreadable-designer-schedule): None reads this clone's design/concepts"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::done_items::except-returns-empty": [
+   "NOT A COLLAPSE: None is UNMEASURED; built_evidence notes it (promise unread-ledger-is-said-in-the-packet)"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::elsewhere_section::or-empty": [
+   "NOT A COLLAPSE: his_word reads an event already in hand; display text only"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::entry_point_exists::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md a-concept-file-unreadable-but-present): an unreadable proof script refuses the scene, with the wrong cause"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::epoch::except-returns-empty": [
+   "NOT A COLLAPSE: a parser of a string in hand (callers: an-off-format-stage-timestamp)"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::his_word_since_park::or-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-off-format-stage-timestamp): a park with no readable time counts every word of his; measured 0 of 527 off-format"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::input_hash::except-returns-empty": [
+   "NOT A COLLAPSE: no tree.json is None, absent; one that does not parse is hashed as bytes"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::land_state::or-empty": [
+   "NOT A COLLAPSE: read_json: absent is the default, unparseable raises"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::loop_spend::or-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-off-format-stage-timestamp): a charge with no readable time is left out of the loop's spend; measured 0 of 527 off-format"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::loop_void_spend::or-empty": [
+   "NOT A COLLAPSE: no loop_since means 'all of them before any', the documented 0",
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-off-format-stage-timestamp): a void charge with no readable time is left out; measured 0 of 527 off-format"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::on_origin_main::except-returns-empty": [
+   "NOT A COLLAPSE: None is the documented 'origin/main could not be read', its own error line in source_errors"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::owner_away::or-empty": [
+   "NOT A COLLAPSE: the mode file is one signal; with no mode the interaction clock decides, and unmeasured parks"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::park::or-empty": [
+   "NOT A COLLAPSE: read_json: absent is None, unparseable raises"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::park_summary::or-empty": [
+   "NOT A COLLAPSE: read_json: absent is None, unparseable raises (promise absent-is-default-unparseable-refuses)",
+   "NOT A COLLAPSE: read_json: absent is None, unparseable raises (promise absent-is-default-unparseable-refuses)",
+   "NOT A COLLAPSE: read_json: absent is None, unparseable raises (promise absent-is-default-unparseable-refuses)"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::pending_turn::or-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-off-format-stage-timestamp): a wait or park with no readable time counts every word of his; measured 0 of 527 off-format",
+   "NOT A COLLAPSE: read_json: absent is None, unparseable raises"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::refusals_since_loop::or-empty": [
+   "NOT A COLLAPSE: no loop_since means 'since the beginning', the documented 0",
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-off-format-stage-timestamp): a round with no readable time is left out; measured 0 of 527 off-format"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::rejection_parked::or-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-off-format-stage-timestamp): a release with no readable time is taken as before the rejection; measured 0 of 527 off-format"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::related_titles::or-empty": [
+   "NOT A COLLAPSE: the same memo's None is already said 'ledger UNMEASURED' by built_evidence in the same packet section"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::reopen_if_stale::or-empty": [
+   "NOT A COLLAPSE: next() over accepted records already in hand; no read",
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-owner-shard-with-no-readable-copy): owner_uncited None (no OWNER.jsonl copy readable) reads as no uncited words"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::repin::or-empty": [
+   "NOT A COLLAPSE: read_json: an absent VERSION.json refuses 'not locked'; unparseable raises"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::repin_sources::or-empty": [
+   "NOT A COLLAPSE: read_json: an absent VERSION.json refuses 'not locked'; unparseable raises"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::result_errors::or-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md an-owner-shard-with-no-readable-copy): owner_uncited None (no OWNER.jsonl copy readable) reads as no uncited words"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::sha_file::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md a-concept-file-unreadable-but-present): None for absent and unreadable alike"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::turn_file::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-designer-stage-reads/boundary.md a-concept-file-unreadable-but-present): an unreadable concept folder reads as no turn file"
+  ],
+  "src/RimMandrake/rimflow/designer_stage.py::working_record::or-empty": [
+   "NOT A COLLAPSE: read_json: absent is the default; unparseable is caught and said 'repair it first'"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::_absent::except-returns-empty": [
+   "NOT A COLLAPSE: False is 'not measured absent', the side that refuses to overwrite (promise absent-only-when-measured)"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::_git_show::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md unparseable-json-at-the-lock-commit): None for a path the commit lacks and for JSON that does not parse"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::_instant::except-returns-empty": [
+   "NOT A COLLAPSE: a parser of a value in hand: None is 'absent or unreadable' as documented"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::_is_savegame::except-returns-empty": [
+   "NOT A COLLAPSE: False refuses the exit: 'not a RimWorld save'"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::_jsonl::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): the shared JSON-lines reader: None for absent and unreadable alike"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::_ts::except-returns-empty": [
+   "NOT A COLLAPSE: a parser of a value in hand"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::blind_brief_text::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-record-that-does-not-parse): the brief loses the record's fields",
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable journal.md: no steward lines"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::brief_text::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-record-that-does-not-parse): the brief is an offline-build one whatever the stage",
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable journal.md: no 'Waiting on'/'Next' lines",
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable steward file reads as the standing default"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::commit_move::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-record-that-does-not-parse): commit_move raises MovedMeanwhile, nothing written"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::evaluate::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-record-that-does-not-parse): evaluate then refuses with the stage UNMEASURED",
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable journal.md reads as no Conductor hold"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::evidence_writers::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable rows.jsonl hides that visit's writers"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::ingame_brief_text::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-record-that-does-not-parse): the brief loses the record's fields",
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable steward file reads as the standing default",
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable journal.md: no interventions"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::ingame_debts::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable SUMMARY.md: no Owed or Unsettled text in the brief",
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable planted_results.jsonl: no planted misses",
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable lane1 rows file: no UNSETTLED rows"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::ledger_live_endings::except-returns-empty": [
+   "NOT A COLLAPSE: None is UNMEASURED, 'no partial count'; the Test Pilot step holds (promise unread-ledger-endings-is-none)"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::read_exit::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): reruns after fix: absent is none (its absence of reruns.jsonl is refused one line above)",
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): fixes.jsonl: absent is no fixes, which leaves faults open, the refusing side"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::read_run_spend::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable run_spend.jsonl reads as no spend rows"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::read_text::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): the shared reader: None for absent and unreadable alike"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::read_unrun::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable unrun.jsonl: no UNRUN rows in the brief"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::record_run_spend::or-empty": [
+   "RARE (design/specs/2026-11-19-maturation-reads/boundary.md a-mod-file-unreadable-but-present): an unreadable run_spend.jsonl is rewritten with only the new rows"
+  ],
+  "src/RimMandrake/rimflow/maturation.py::takes_game::except-returns-empty": [
+   "NOT A COLLAPSE: inspects a callable in hand; no read"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_clone_tidy::or-empty": [
+   "NOT A COLLAPSE: seat_clones never returns None (a blind reading is an UNMEASURED risk row that alarms); `or []` covers a stand-in"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_git_lines::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md git-failing-in-a-good-clone): None is UNMEASURED here, but _other_unpushed and _other_dirt read it as no paths"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_is_helper_notice::or-empty": [
+   "NOT A COLLAPSE: parses a record already in hand; no read"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_ledger_unfiled::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-ledger-that-cannot-be-replayed): model.read() raising lets the --ticket through unchecked"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_lines_not_on_origin::except-returns-empty": [
+   "NOT A COLLAPSE: None never equals 0: unpublished_shard then reports the shard unpublished, the side that holds"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_live_window::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-unreadable-session-file): an unreadable session file is skipped; measured 0 torn in 3,429,496 reads"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_log_after_goodbye::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-transcript-gone-between-listing-and-reading): an unreadable tail writes no AFTER GOODBYE lines; the wake replays them from the transcript"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_now_run::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): state.json present but unparseable reads as no record; writes are whole (os.replace)",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): a now stamp present but unparseable reads as no record; writes are whole (os.replace)",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): a now stamp set aside present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_one::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the doorbell armed file (the restart then fails as 'never armed its doorbell') present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_pending::or-empty": [
+   "NOT A COLLAPSE: an empty bridge reading makes bridge_hold say 'bridge unreadable' and hold (promise blind-bridge-reading-holds)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_proc_ppid::except-returns-empty": [
+   "NOT A COLLAPSE: None is 'cannot place': _holder_hold holds on it"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_read_json::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the shared reader: None for absent, unreadable and non-dict alike present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_reclaim::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): an in-tile mark, also the instant between its O_EXCL create and its fill (no relaunch that tick) present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_rewrite_own_killed::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the killed record (a wake would overwrite it) present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_schedule::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-unreadable-restart-schedule): the committed dispatcher_schedule.json unreadable reads as no seats"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_ts::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-off-format-transcript-timestamp): a parser: None for an absent or non-ISO time"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_turn_ended_since::except-returns-empty": [
+   "NOT A COLLAPSE: an unreadable transcript reads 'not ended since', the side that waits; never 'answered'"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::_turn_ended_since::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-off-format-transcript-timestamp): a record with no readable time counts as before the wake: not ended, the side that waits"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::background_commands::except-returns-empty": [
+   "NOT A COLLAPSE: None is UNMEASURED (/proc unreadable)",
+   "NOT A COLLAPSE: the window's own /proc entry gone: nothing of its can be cut off, a measured []",
+   "NOT A COLLAPSE: None is UNMEASURED",
+   "NOT A COLLAPSE: None is UNMEASURED"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::cmd_intile::or-empty": [
+   "NOT A COLLAPSE: no seat named reads '' and the tile claims nothing",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the killed record (the tile does not wait for the dying window) present but unparseable reads as no record; writes are whole (os.replace)",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): state.json (orphan_owed reads no request) present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::cmd_last_reply::or-empty": [
+   "NOT A COLLAPSE: no seat named reads '' and no seat's reply is shown",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-unreadable-session-file): the wake's own session id reads None; measured 0 torn in 3,429,496 reads"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::cmd_mode::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-unreadable-session-file): the window's session id reads None; --session names it; measured 0 torn in 3,429,496 reads"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::cmd_request::or-empty": [
+   "NOT A COLLAPSE: no seat named reads '' and the command refuses: no seat"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::cmd_status::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): state.json (a status print only) present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::cmd_wake::or-empty": [
+   "NOT A COLLAPSE: no seat named reads '' and no seat's record is shown",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the killed record (the wake prints less) present but unparseable reads as no record; writes are whole (os.replace)",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-unreadable-session-file): the wake's own session id reads None; measured 0 torn in 3,429,496 reads"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::consume_request::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the consumed request present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::cursor_scan::except-returns-empty": [
+   "NOT A COLLAPSE: None is UNMEASURED; human_since_offset passes it on (promise unreadable-transcript-is-no-reading)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::default_obs::or-empty": [
+   "NOT A COLLAPSE: '' when no transcript resolves: tx_summary('') cannot open it and reads None, UNMEASURED",
+   "NOT A COLLAPSE: '' when no transcript resolves: last_human('') reads None, fail closed"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::drain_of::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-unreadable-restart-schedule): readers fail open (None)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::drain_of::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): state.json present but unparseable reads as no record; writes are whole (os.replace)",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): a restart request present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::execute::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the killed record (restart_fallback reads no old pid) present but unparseable reads as no record; writes are whole (os.replace)",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the killed record (restart_abort says no armed record) present but unparseable reads as no record; writes are whole (os.replace)",
+   "NOT A COLLAPSE: an absent session file makes the identity check refuse: nothing killed",
+   "NOT A COLLAPSE: an absent session file reads status None, not idle: the fence holds"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::fallback_argv::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): machine.json present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::git_tree::except-returns-empty": [
+   "NOT A COLLAPSE: None is printed as 'UNMEASURED: run `git status`'"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::handoff_drain::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-unreadable-restart-schedule): readers fail open (False) when the schedule cannot be configured"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::handoff_drain::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): state.json present but unparseable reads as no record; writes are whole (os.replace)",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): a restart request present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::helpers_of::except-returns-empty": [
+   "NOT A COLLAPSE: None is UNMEASURED (listing unreadable); every caller holds on hs is None",
+   "NOT A COLLAPSE: None is UNMEASURED (a helper transcript unreadable or malformed); callers hold"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::helpers_of::or-empty": [
+   "NOT A COLLAPSE: the .meta.json description is a label only; an unreadable one shows no label"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::inherited_gaps::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the killed record (its gaps are lost) present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::intile_claim::except-returns-empty": [
+   "NOT A COLLAPSE: FileExistsError: another launch holds the claim, the O_EXCL election's answer"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::is_window_of::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-transcript-gone-between-listing-and-reading): an unreadable transcript is not taken for the seat's window"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::kick_fresh::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): state.json present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::kick_now::except-returns-empty": [
+   "NOT A COLLAPSE: False is 'not written', the truth of a write that failed"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::kick_now::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): state.json present but unparseable reads as no record; writes are whole (os.replace)",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): a restart request present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::last_assistant_text::except-returns-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-transcript-gone-between-listing-and-reading): '' for an unreadable transcript; promise_queue says UNMEASURED on '', last_dead_window passes to an older window"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::last_goodbye::except-returns-empty": [
+   "NOT A COLLAPSE: None, and cmd_request then refuses 'no goodbye of his': the window stays open"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::last_human::except-returns-empty": [
+   "NOT A COLLAPSE: None is fail-closed: cmd_request refuses, bringback holds (promise unreadable-transcript-is-no-reading)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::now_owed::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): a restart request present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::open_items::except-returns-empty": [
+   "NOT A COLLAPSE: None is printed as UNMEASURED by _wake_conductor's caller"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::orphan_owed::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): a restart request present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::queue_depth::except-returns-empty": [
+   "NOT A COLLAPSE: no transcript file yet is no queue, a measured 0; any other OSError raises"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::reg_start::except-returns-empty": [
+   "NOT A COLLAPSE: no procStart is None; _born and _live_window then hold or read the birth another way"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::restart_notice::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): the refused record (a notice line only) present but unparseable reads as no record; writes are whole (os.replace)",
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): state.json (a notice line only) present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::ring_hold::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md a-state-file-that-does-not-parse): a restart request present but unparseable reads as no record; writes are whole (os.replace)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::session_file::except-returns-empty": [
+   "NOT A COLLAPSE: no pid (TypeError/ValueError) names no file: None is 'no session file', and the open itself goes through _read_json"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::transcript_for::or-empty": [
+   "RARE (design/specs/2026-11-19-seat-restart-reads/boundary.md an-unreadable-session-file): an unreadable session file falls back to the listing's cwd and sessionId; measured 0 torn in 3,429,496 reads"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::tx_summary::except-returns-empty": [
+   "NOT A COLLAPSE: None is the documented UNMEASURED; callers hold or alarm on it (promise unreadable-transcript-is-no-reading)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::unanswered::except-returns-empty": [
+   "NOT A COLLAPSE: None is UNMEASURED; _answered needs == [] (promise unreadable-transcript-is-no-reading)"
+  ],
+  "src/RimMandrake/rimflow/seat_restart.py::work_since::except-returns-empty": [
+   "NOT A COLLAPSE: no shard yet is [] (no work), the documented answer",
+   "NOT A COLLAPSE: None is UNMEASURED: the restart holds (promise unreadable-shard-is-no-reading)",
+   "NOT A COLLAPSE: a line that is not JSON is None, UNMEASURED (promise unreadable-shard-is-no-reading)"
+  ]
  }
 }
