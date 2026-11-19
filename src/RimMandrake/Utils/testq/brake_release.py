@@ -22,6 +22,7 @@ Reading: QHOME/brake_release.json, rewritten every pass; the state, its reason a
 """
 import argparse
 import contextlib
+import copy
 import io
 import json
 import os
@@ -37,6 +38,94 @@ import testq as T  # noqa: E402
 BY = "Operations.canary"
 RELEASE_GRACE_S = 1800      # two rm-ops-watch passes: past this a known brake is a plain fault, and the ladder runs
 STATE = "brake_release.json"
+
+
+def read_cache_path():
+    """One cache per queue directory, so a selftest's temp queue never evicts the live one's."""
+    import hashlib
+    return os.environ.get("TESTQ_READ_CACHE") or "/tmp/rm_brake_release_reads_%s.json" % hashlib.sha1(
+        os.path.abspath(T.q()).encode()).hexdigest()[:10]
+
+
+@contextlib.contextmanager
+def records_once():
+    """A pass reads each queue file once (RIMMANDRAKE_SPEED_BRAKE_RELEASE_PASS_MISSES_ITS_BEAT): filler_jobs, brake_tail,
+    lane_proven_after and fill_plan each re-read every record, 7 walks and 3,159 json reads over the D: mount, so a
+    paused-lane pass took 11.9 s of its 15 s beat (2026-11-19; 145 s on 2026-11-13 before the lazy plan). The memo is
+    keyed on the path, lives for this pass only, hands each caller its own parse, and is off while submit() writes.
+    Under it, a local-disk cache (read_cache_path) keeps each file's text by (mtime, size): a stat is ~1 ms over D:, a read ~3 ms,
+    and done/ only grows (1,032 records on 2026-11-19). A cache that cannot be read or written only costs the reads."""
+    real, memo, cache = T.read_json, {}, read_cache_path()
+    try:
+        with open(cache, encoding="utf-8") as f:
+            disk = json.load(f)
+        if not isinstance(disk, dict):
+            disk = {}
+    except (OSError, ValueError):
+        disk = {}
+    seen, dirty = {}, [False]
+    qdir = os.path.abspath(T.q())
+
+    def text_of(key):
+        if not key.startswith(qdir + os.sep):
+            return None
+        try:
+            st = os.stat(key)
+        except OSError:
+            return None
+        stamp = [st.st_mtime_ns, st.st_size]
+        hit = disk.get(key)
+        if isinstance(hit, list) and len(hit) == 3 and hit[:2] == stamp:
+            seen[key] = hit
+            return hit[2]
+        try:
+            with open(key, encoding="utf-8") as f:
+                text = f.read()
+        except OSError:
+            return None
+        seen[key] = stamp + [text]
+        dirty[0] = True
+        return text
+
+    def once(path):
+        key = os.path.abspath(path)
+        if key not in memo:
+            text = text_of(key)
+            if text is None:
+                memo[key] = ("real", real(path))
+            else:
+                try:
+                    json.loads(text)
+                    memo[key] = ("text", text)
+                except ValueError:
+                    memo[key] = ("real", None)
+        kind, val = memo[key]
+        return json.loads(val) if kind == "text" else copy.deepcopy(val)
+    once.__wrapped_real__ = real
+    T.read_json = once
+    try:
+        yield memo
+    finally:
+        T.read_json = real
+        if dirty[0] or set(disk) - set(seen):
+            try:
+                tmp = cache + ".%d.tmp" % os.getpid()
+                with open(tmp, "w", encoding="utf-8") as f:
+                    json.dump(seen, f)
+                os.replace(tmp, cache)
+            except OSError:
+                pass
+
+
+@contextlib.contextmanager
+def live_reads():
+    """Inside records_once: real reads again, for the submit that writes the queue."""
+    memoized = T.read_json
+    T.read_json = getattr(memoized, "__wrapped_real__", None) or memoized
+    try:
+        yield
+    finally:
+        T.read_json = memoized
 
 
 def tail_ids(tails):
@@ -87,7 +176,7 @@ def submit(mod, req):
                            no_validity=False, no_sha_check=True, retest_why=why,
                            row_item=["%s=%s" % kv for kv in sorted(rows.items())])
     out = io.StringIO()
-    with contextlib.redirect_stdout(out):
+    with contextlib.redirect_stdout(out), live_reads():
         rc = T.cmd_submit(a)
     lines = out.getvalue().strip().splitlines()
     return rc, lines[-1] if lines else ""
@@ -156,7 +245,8 @@ def release_pass(now=None, mods=None):
     now = time.time() if now is None else now
     prev = T.read_json(T.q(STATE)) or {}
     import coverage     # the filler's own list (wired_mods.json; TESTQ_FILL_MODS overrides)
-    rec = decide(now, mods or coverage.fill_mods())
+    with records_once():
+        rec = decide(now, mods or coverage.fill_mods())
     rec.setdefault("canary", prev.get("canary"))
     rec.update(ts=S.utcnow(), epoch=now)
     S.dump(rec, T.q(STATE))
