@@ -275,7 +275,7 @@ I found no "fable" text in the repo `CLAUDE.md`, the charter, or `relentless_rul
 | Relentless stop and owner design lines | `D:\ClaudeWork\rimmandrake\conductor\RELENTLESS_NOW.md:3`; `design/RimMandrake/relentless_owner_design_2026-10-31.md:4, :29`; `design/RimMandrake/standing_rulings.md:533–538` |
 | Artisan per-loop table, failures, "accepted 0" | `ralph_*/events.log` under `D:\ClaudeWork\rimmandrake`; `D:\ClaudeWork\rimmandrake\conductor\ARTISAN_NOW.md:5`; `~/dev/MandrakeWorkflows/artisan/template/loop.sh` |
 | Whittle rounds and dollars | `D:\ClaudeWork\rimmandrake\whittle_claude\*\loop.log` (23 "round end" rows; 7 early rows carry tokens but no dollars) |
-| Whittle fleet total, 97 ghost tickets, worker overrun, offline loss | `D:\ClaudeWork\rimmandrake\conductor\WHITTLE_NOW.md:7`; `infrastructure/state/handoffs/BENCH_REBOOT_HANDOFF_202611121350.md:10, :21, :33` |
+| Whittle fleet total, 97 ghost tickets, worker overrun, offline loss | `D:\ClaudeWork\rimmandrake\conductor\WHITTLE_NOW.md:7`; `infrastructure/state/lessons/20261119T190257Z-BENCH-whittle-fleet-night-2026-11-11.md` (the 2026-11-12 handoff's figures, filed 2026-11-19 before that handoff was culled) |
 | Designer pass | `D:\ClaudeWork\rimmandrake\designer\ExplosiveKnockback\progress.md` |
 | Weekly closes (168, 465, 872, 1,202, then 40 this week), process-word share | my script over `infrastructure/state/ledger/events/*.jsonl`, `close` events |
 | Rulebook, hooks, selftests, lessons, commit classification, owner quotes | helper sweep; quotes at `infrastructure/state/ledger/events/OWNER.jsonl:2717` and nearby |

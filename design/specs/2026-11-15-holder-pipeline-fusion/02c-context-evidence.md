@@ -6,7 +6,7 @@
 Not found [measured: grep of /mnt/d/ClaudeWork/rimmandrake *.md, infrastructure/state/handoffs, ledger events, for 250k / 250,000 / past 200k / late in context / after compaction / context size].
 Nearest hits, none about fixes:
 - /mnt/d/ClaudeWork/rimmandrake/artisan_now_build/out/ARTISAN_NOW.md:260 "Context: 170k; warned at 250k, must wrap up at 350k." (artisan wrap-up limit)
-- infrastructure/state/handoffs/BENCH_REBOOT_HANDOFF_202611060419.md:103 "Agent spawns are refused once the window drains past 200k tokens" (spawn rule)
+- lesson `infrastructure/state/lessons/20261106T042131Z-BENCH-agent-spawns-are-refused-once-conductor.md` (removed by the lessons fold `4caab86e57`; read it with `git show 4caab86e57^:<that path>`): "Agent spawns are refused once a Conductor window drains past 200k tokens" (spawn rule)
 - base/design/RimMandrake/baseline_two_seat_system_2026-10-26.md:77 (cost is the whole context; not fixes)
 
 ## Step 2: measured from transcripts
