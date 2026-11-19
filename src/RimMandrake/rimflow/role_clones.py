@@ -10,28 +10,37 @@ the stage machine continues there.
 
   made     `role_clones.py ensure <name>...` (scratch_clone.py clone --dissociate: an independent copy, outside the
            pool and its cap). role_launch.launch refuses a launch whose clone is missing, naming this command.
-  level    the unit's first step is `./sync` in its clone (role_launch.launch_argv); a failed sync ends the unit
-           SYNC_FAILED_EXIT before any pre-step or model starts: a role never runs stale code.
+  level    before systemd-run, role_launch.launch runs `level`: a commit the clone holds that is not on origin/main
+           is landed with land.sh when it is ledger-only, and otherwise the launch is refused `STRANDED:` with the
+           one fix line (dispatcher: ONE role:<name>:not_running alarm). Then the unit's first step is `./sync` in its
+           clone (role_launch.launch_argv); a failed sync ends the unit SYNC_FAILED_EXIT before any pre-step or model
+           starts: a role never runs stale code. RIMMANDRAKE_LAND_STRANDED_ROLE_COMMIT_OPERATIONS_DEAD_FOUR_HOURS
+           (2026-11-19): a run's bare `git commit` of its shard made ./sync refuse every Operations launch for 4 h.
   landed   the unit's ExecStopPost runs `role_clones.py land --clone C --seat S` in its own transient unit: the safe
            classes of seat_dirt.py (conversation records, filed item prose) and the seat's ledger shard are published
-           from the clone. ops_watch's disk.seat_dirt counts and tidies every role clone with the seat clone, so any
+           from the clone, and `level` lands a shard the run committed without publishing. ops_watch's disk.seat_dirt counts and tidies every role clone with the seat clone, so any
            other dirt alarms after an hour, naming its clone.
   carried  wrapup.py treats a role clone as carried, like the seat clone: it lives on between runs.
 
     role_clones.py ensure NAME...          make the missing clones (prints each path, or why it failed)
     role_clones.py land --clone C --seat S publish what the run left (one JSON line; exit 1 on a failure)
+    role_clones.py level --clone C         land a stranded ledger-only commit (one JSON line; exit 1 unless level)
     role_clones.py list                    one JSON line per role clone on disk
 """
 import argparse
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 UTILS = os.path.join(os.path.dirname(HERE), "Utils")
 ROOT = os.environ.get("RM_ROLE_CLONE_ROOT", "/home/mandrake/rm/roles")     # = seat_dirt.ROLE_CLONE_ROOT
+LAND_SH = os.path.join(UTILS, "land.sh")
+SHARD_RE = re.compile(r"^infrastructure/state/ledger/events/[^/]+\.jsonl$")
+STRANDED = "STRANDED:"      # a launch refused by level starts with it; the dispatcher alarms role:<name>:not_running
 SYNC_FAILED_EXIT = 75       # EX_TEMPFAIL: the clone could not be levelled; nothing ran (a system failure, not a trial)
 NAME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
 
@@ -81,12 +90,75 @@ def _tidy(clone, settle_min):
     return seat_dirt.tidy(clone, settle_min=settle_min)
 
 
-def land(clone, seat, runner=subprocess.run, tidy=_tidy, exists=os.path.isdir):
+def _git(clone, *a, timeout=300):
+    return subprocess.run(["git", "-C", clone] + list(a), capture_output=True, text=True, timeout=timeout,
+                          stdin=subprocess.DEVNULL)
+
+
+def fix_line(clone, rows):
+    """The one shell line that lands each stranded commit (in order) and then levels the clone."""
+    env = "LAND_REPO=%s" % shlex.quote(clone)
+    lands = ["%s sh %s %s %s" % (env, shlex.quote(LAND_SH), r["sha"][:12], " ".join(shlex.quote(t) for t in r["touched"]))
+             for r in rows]
+    return " && ".join(lands + ["python3 %s --repo %s" % (shlex.quote(os.path.join(UTILS, "seat_sync.py")),
+                                                          shlex.quote(clone))])
+
+
+def level(clone, land_sh=None):
+    """Land what a role clone holds that is not on origin/main, when that is safe. -> {"state", "landed", "left", "fix",
+    "why"}; never raises. state: "level" (nothing ahead of the clone's own origin/main ref: no fetch made) · "landed"
+    (every stranded commit was ledger-only and is now published with land.sh <sha> <paths>) · "stranded" (a commit
+    that is not ledger-only, a merge, or one land.sh refused, stays; `fix` is the line that lands it) · "UNMEASURED"
+    (a git read or the fetch failed: could not look, never "level")."""
+    out = {"clone": clone, "state": None, "landed": [], "left": [], "fix": None, "why": None}
+    tool = land_sh or LAND_SH
+    try:
+        r = _git(clone, "rev-list", "refs/remotes/origin/main..HEAD", timeout=60)
+        if r.returncode:
+            return dict(out, state="UNMEASURED", why="git rev-list exit %d: %s" % (r.returncode, r.stderr.strip()[:200]))
+        if not r.stdout.strip():
+            return dict(out, state="level")
+        f = _git(clone, "fetch", "-q", "origin")
+        if f.returncode:
+            return dict(out, state="UNMEASURED", why="git fetch exit %d: %s" % (f.returncode, f.stderr.strip()[:200]))
+        sys.path.insert(0, UTILS)
+        import seat_sync
+        g = seat_sync.Git(clone)
+        refused = {}
+        for row in seat_sync.unlanded(g):
+            if len(row["parents"]) != 1 or not row["touched"] or not all(SHARD_RE.match(t) for t in row["touched"]):
+                continue
+            p = subprocess.run(["sh", tool, row["sha"]] + row["touched"], cwd=clone, capture_output=True, text=True,
+                               timeout=600, stdin=subprocess.DEVNULL, env=dict(os.environ, LAND_REPO=clone))
+            m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", p.stdout or "")
+            if p.returncode or not m:
+                refused[row["sha"]] = "land.sh exit %d: %s" % (p.returncode, ((p.stdout or "") + (p.stderr or "")).strip()[-200:])
+            else:
+                out["landed"].append(m.group(1))
+        if out["landed"]:
+            _git(clone, "fetch", "-q", "origin")
+            sync = os.path.join(UTILS, "seat_sync.py")
+            subprocess.run(["python3", sync, "--no-fetch", "--repo", clone], capture_output=True, text=True,
+                           timeout=600, stdin=subprocess.DEVNULL)
+        left = seat_sync.unlanded(seat_sync.Git(clone))
+    except Exception as e:  # noqa: BLE001 - one JSON answer, its cause named
+        return dict(out, state="UNMEASURED", why="%s: %s" % (type(e).__name__, str(e)[:200]))
+    out["left"] = [{"sha": r["sha"], "subject": r["subject"], "paths": r["touched"]} for r in left]
+    if not left:
+        return dict(out, state="landed" if out["landed"] else "level")
+    out["fix"] = fix_line(clone, left)
+    out["why"] = "%d commit(s) not on origin/main that are not ledger-only: %s" % (
+        len(left), "; ".join("%s%s" % (r["subject"], " (%s)" % refused[r["sha"]] if r["sha"] in refused else "")
+                             for r in left))
+    return dict(out, state="stranded")
+
+
+def land(clone, seat, runner=subprocess.run, tidy=_tidy, exists=os.path.isdir, leveller=None):
     """Publish what a finished run left in its role clone. -> {"ok", "tidy", "shard", "why"}; never raises.
     The shard goes first: an item the run filed is "filed on origin" only once its `file` event is there, and only then
     is its prose a safe class. The unit has stopped, so nothing is mid-write: the safe classes land at settle 0.
     Anything else stays and is counted by ops_watch's disk.seat_dirt after an hour."""
-    out = {"clone": clone, "seat": seat, "ok": True, "tidy": None, "shard": None, "why": None}
+    out = {"clone": clone, "seat": seat, "ok": True, "tidy": None, "shard": None, "level": None, "why": None}
     if not exists(os.path.join(clone, ".git")):
         return dict(out, ok=False, why="role clone %s is missing: nothing could be landed" % clone)
     shard = "infrastructure/state/ledger/events/%s.jsonl" % seat
@@ -107,12 +179,20 @@ def land(clone, seat, runner=subprocess.run, tidy=_tidy, exists=os.path.isdir):
                 out["shard"] = "PUBLISHED " + m.group(1)
     except Exception as e:  # noqa: BLE001 - a timeout or OSError is a failure with its cause, still one JSON line
         out.update(ok=False, shard="FAILED: %s: %s" % (type(e).__name__, str(e)[:200]))
+    # a shard the run committed but never published reads clean above: level lands it, and names any other strand
+    # (a test's fake runner gets no real git on a real clone unless it passes its own leveller)
+    lv = (leveller or (level if runner is subprocess.run else lambda c: {"state": "skipped"}))(clone)
+    out["level"] = lv["state"] + (": " + lv["why"] if lv.get("why") else "") + (
+        "; to pass: " + lv["fix"] if lv.get("fix") else "")
+    if lv["state"] in ("stranded", "UNMEASURED"):
+        out["ok"] = False
     try:
         out["tidy"] = tidy(clone, 0)
     except Exception as e:  # noqa: BLE001 - said in the result
         out.update(ok=False, tidy="FAILED: %s" % str(e)[:300])
     if not out["ok"]:
-        out["why"] = "; ".join(x for x in (out["shard"], out["tidy"]) if x and ("FAILED" in x or "UNMEASURED" in x))
+        out["why"] = "; ".join(x for x in (out["shard"], out["level"], out["tidy"])
+                               if x and ("FAILED" in x or "UNMEASURED" in x or x.startswith("stranded")))
     return out
 
 
@@ -133,8 +213,14 @@ def main(argv=None):
     lp = sub.add_parser("land")
     lp.add_argument("--clone", required=True)
     lp.add_argument("--seat", required=True)
+    vp = sub.add_parser("level")
+    vp.add_argument("--clone", required=True)
     sub.add_parser("list")
     a = ap.parse_args(argv)
+    if a.cmd == "level":
+        res = level(a.clone)
+        print(json.dumps(res))
+        return 0 if res["state"] in ("level", "landed") else 1
     if a.cmd == "ensure":
         bad = 0
         for n in a.names:

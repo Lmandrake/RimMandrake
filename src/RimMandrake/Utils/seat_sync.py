@@ -796,6 +796,52 @@ def reset_merging(g: Git, head: str, target: str, keep: list[str] | None = None)
     return f"{note}; {done}" if note else done
 
 
+def _local_commits(g: Git, head: str, up: str, named: set | frozenset = frozenset()):
+    """Each commit in up..head, oldest first: {"sha", "subject", "parents", "touched", "how", "diff"}. `how` names why
+    it is already upstream (patch-, content-equivalent, a landed twin ...), or is None for a commit NOT on origin/main,
+    whose `diff` lists the paths that differ. Yields lazily: plan() stops at the first unlanded one."""
+    cherry = {ln[2:].split()[0]: ln[0] for ln in g.lines("cherry", up, head)}
+    for c in g.lines("rev-list", "--reverse", f"{up}..{head}"):
+        row = {"sha": c, "subject": g.run("show", "-s", "--format=%h %s", c).strip(), "parents": [], "touched": [],
+               "how": None, "diff": []}
+        if cherry.get(c) == "-":
+            yield dict(row, how="patch-equivalent")
+            continue
+        if c in named:                    # a person's word, not a proof: the backup branch keeps it
+            yield dict(row, how="named superseded")
+            continue
+        parents = g.run("rev-list", "--parents", "-n1", c).split()[1:]
+        touched = (g.lines("diff", "--name-only", "-z", "--no-renames", parents[0], c) if len(parents) > 1
+                   else g.lines("diff-tree", "--no-commit-id", "--name-only", "-r", "-z", "--root", c))
+        row.update(parents=parents, touched=touched)
+        a, b = g.entries(head, touched), g.entries(up, touched)
+        if all(a.get(t) == b.get(t) for t in touched):
+            yield dict(row, how="content-equivalent")
+            continue
+        diff = [t for t in touched if a.get(t) != b.get(t) and not g.shard_upstream(head, up, t)]
+        if not diff:
+            yield dict(row, how="ledger lines upstream")
+            continue
+        # Judged by its own patch, not by HEAD's bytes: a twin whose file origin changed later, or a shard commit
+        # followed by a still-unlanded line, is landed all the same (RIMMANDRAKE_SKIP_LANDED_TWINS_PUBLISH_REPLAY_RESURRECTS_FILES).
+        twin = landed_twin(g, up, c)
+        if twin is not None:
+            yield dict(row, how=f"landed twin {twin[:10]}" if twin else "ledger lines upstream")
+            continue
+        yield dict(row, diff=diff)
+
+
+def unlanded(g: Git) -> list[dict]:
+    """Every local commit on HEAD that is NOT on refs/remotes/origin/main, oldest first, judged exactly as plan() judges
+    them (no fetch here: the caller fetches): [{"sha", "subject", "parents", "touched", "diff"}]. [] = none; a git
+    failure raises (could not look is never "none")."""
+    head = g.run("rev-parse", "HEAD").strip()
+    up = g.run("rev-parse", "refs/remotes/origin/main").strip()
+    if head == up:
+        return []
+    return [r for r in _local_commits(g, head, up) if not r["how"]]
+
+
 def plan(g: Git, superseded: tuple = ()) -> dict:
     gd = Path(g.run("rev-parse", "--absolute-git-dir").strip())
     for marker in ("rebase-merge", "rebase-apply", "MERGE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD"):
@@ -819,34 +865,12 @@ def plan(g: Git, superseded: tuple = ()) -> dict:
         if not full:
             raise Refused(f"--superseded {x!r} does not name exactly one commit (give at least 7 hex digits of a real sha)")
         named.add(full)
-    cherry = {ln[2:].split()[0]: ln[0] for ln in g.lines("cherry", up, head)}
-    for c in g.lines("rev-list", "--reverse", f"{up}..{head}"):
-        subj = g.run("show", "-s", "--format=%h %s", c).strip()
-        if cherry.get(c) == "-":
-            p["local"].append((subj, "patch-equivalent"))
+    for row in _local_commits(g, head, up, named):
+        if row["how"]:
+            p["local"].append((row["subject"], row["how"]))
             continue
-        if c in named:                    # a person's word, not a proof: the backup branch keeps it
-            p["local"].append((subj, "named superseded"))
-            continue
-        parents = g.run("rev-list", "--parents", "-n1", c).split()[1:]
-        touched = (g.lines("diff", "--name-only", "-z", "--no-renames", parents[0], c) if len(parents) > 1
-                   else g.lines("diff-tree", "--no-commit-id", "--name-only", "-r", "-z", "--root", c))
-        a, b = g.entries(head, touched), g.entries(up, touched)
-        if all(a.get(t) == b.get(t) for t in touched):
-            p["local"].append((subj, "content-equivalent"))
-            continue
-        diff = [t for t in touched if a.get(t) != b.get(t) and not g.shard_upstream(head, up, t)]
-        if not diff:
-            p["local"].append((subj, "ledger lines upstream"))
-            continue
-        # Judged by its own patch, not by HEAD's bytes: a twin whose file origin changed later, or a shard commit
-        # followed by a still-unlanded line, is landed all the same (RIMMANDRAKE_SKIP_LANDED_TWINS_PUBLISH_REPLAY_RESURRECTS_FILES).
-        twin = landed_twin(g, up, c)
-        if twin is not None:
-            p["local"].append((subj, f"landed twin {twin[:10]}" if twin else "ledger lines upstream"))
-            continue
-        raise Refused(f"local commit {subj} is NOT on origin/main ({len(diff)} path(s) differ, e.g. {diff[0]}). "
-                      f"Land it first (land.sh <sha> <paths>), then sync")
+        raise Refused(f"local commit {row['subject']} is NOT on origin/main ({len(row['diff'])} path(s) differ, e.g. "
+                      f"{row['diff'][0]}). Land it first (land.sh <sha> <paths>), then sync")
     # 2. files upstream stopped tracking stay on disk (with any local edit), so they never block the move
     p["keep"] = untracked_upstream(g, head, up)
     # 3. dirty tracked paths that the move would rewrite

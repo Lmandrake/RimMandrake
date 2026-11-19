@@ -3654,15 +3654,24 @@ def tmp_setenv(tmpdir):
     return sum((["--setenv", "%s=%s" % kv] for kv in run_tmp.env(tmpdir).items()), []) if tmpdir else []
 
 
-def launch(role, unit, msg, root, claude, runner=subprocess.run):
+def launch(role, unit, msg, root, claude, runner=subprocess.run, level=None):
     """-> (ok, out, run-record fields). Starts the transient unit and returns at once. ok False only when
     systemd-run itself said no; a raise (a timeout) leaves the caller's run record in place, since the unit may be up.
-    The scope is named by the launcher (role_scope), never looked up: the caller recorded it before this call."""
+    The scope is named by the launcher (role_scope), never looked up: the caller recorded it before this call.
+    A role clone is levelled first (role_clones.level; a test's fake runner gets none unless it passes `level`): a
+    stranded ledger-only commit is landed and the launch goes on; any other is refused `STRANDED:` with its fix line,
+    before a unit or a run record exists (RIMMANDRAKE_LAND_STRANDED_ROLE_COMMIT_OPERATIONS_DEAD_FOUR_HOURS)."""
     out, err = run_paths(root, unit)
+    lv = None
     if role_clones.is_role_clone(role.get("clone")):
         gone = role_clones.missing_why(role["clone"])
         if gone:
             return False, gone, {}
+        level = level or (role_clones.level if runner is subprocess.run else None)
+        lv = level(role["clone"]) if level else None
+        if lv and lv.get("state") == "stranded":
+            return False, "%s role %s is NOT RUNNING: its clone %s holds %s. To pass, run: %s" % (
+                role_clones.STRANDED, role.get("name"), role["clone"], lv.get("why"), lv.get("fix")), {}
     if role.get("runner", "claude") == "codex":
         sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "Utils"))
         import agent_runner
@@ -3687,7 +3696,11 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
     if r.returncode:
         return False, "systemd-run exit %d: %s" % (r.returncode, text), {}
     scope = role_scope(role["seat"], unit)
-    return True, "unit %s started (scope %s)" % (unit, scope), {
+    said = "" if not lv or lv.get("state") in ("level", None) else (
+        "; its clone's stranded ledger commit(s) landed: %s" % ", ".join(lv.get("landed") or []) if lv["state"] == "landed"
+        else "; its clone could not be checked for stranded commits (%s: %s), the unit's ./sync decides" % (
+            lv["state"], lv.get("why")))
+    return True, "unit %s started (scope %s)%s" % (unit, scope, said), {
         "out": out, "err": err, "scope": scope, "marker": unit,
         "runner": role.get("runner", "claude"),
         "model_id": (role.get("codex_model") or os.environ.get("CODEX_MODEL") or "config")

@@ -89,6 +89,7 @@ from contracts import blind_core as BC, compat as CC, jsonl as CJ  # noqa: E402
 import session_match as SM  # noqa: E402
 import doorbell  # noqa: E402
 import role_launch as RL  # noqa: E402
+import role_clones  # noqa: E402
 import seat_restart as SR  # noqa: E402
 import login_watch as LW  # noqa: E402
 import raise_ladder as RLD  # noqa: E402
@@ -588,6 +589,23 @@ def alarm_worse(sch, st, a):
         elif (add and v >= base + add) or (factor and base > 0 and v >= base * factor):
             said.append("impact %.4g -> %.4g, the stated step is %s" % (base, v, "x%g" % factor if factor else "+%g" % add))
     return "; ".join(said) or None
+
+
+def launch_failed_action(a, out, back, at):
+    """Pure. The alarm for a launch that did not start. A role clone holding a stranded commit (role_launch's
+    `STRANDED:` refusal) is the role NOT RUNNING until someone lands it: one fixed kind, role:<name>:not_running, told
+    to the Conductor with a RAISE FIRST line, rate-limited per kind like every alarm, so a refusal each tick is one alarm,
+    not one per launch (RIMMANDRAKE_LAND_STRANDED_ROLE_COMMIT_OPERATIONS_DEAD_FOUR_HOURS: 3 silent refusals in 4 h)."""
+    tail = "its slot/event stays due and is retried" if back else "the run stays tracked in case it started"
+    if str(out).startswith(role_clones.STRANDED):
+        return dict(do="alarm", kind="role:%s:not_running" % a["role"], at=at, note=True, conductor_log=True,
+                    ticket=a.get("ticket"), role=a["role"],
+                    raise_first="%s is NOT RUNNING: its role clone holds an unpublished commit; the alarm names the "
+                                "one line that lands it." % a["role"],
+                    why="role %s launch REFUSED (unit %s): %s; %s" % (a["role"], a["unit"], out, tail))
+    return dict(do="alarm", kind="role:%s:launch_failed" % a["role"], at=at, note=True,
+                ticket=a.get("ticket"), role=a["role"],
+                why="role %s launch FAILED (unit %s): %s; %s" % (a["role"], a["unit"], out, tail))
 
 
 def signal_alarm(sch, st, kind, why, now):
@@ -1957,12 +1975,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                             fx.get("stage_abort", RL.stage_abort)(a["concept"], a["unit"])
                                         except Exception:  # noqa: BLE001 - the next open charges it instead
                                             pass
-                                    actions.append(dict(
-                                        do="alarm", kind="role:%s:launch_failed" % a["role"], at=iso(now), note=True,
-                                        ticket=a.get("ticket"), role=a["role"],
-                                        why="role %s launch FAILED (unit %s): %s; %s" % (
-                                            a["role"], a["unit"], out, "its slot/event stays due and is retried"
-                                            if back else "the run stays tracked in case it started")))
+                                    actions.append(launch_failed_action(a, out, back, iso(now)))
                                 else:
                                     rs.pop("launch_failed_key", None)
                                     rs.pop("held_control_key", None)

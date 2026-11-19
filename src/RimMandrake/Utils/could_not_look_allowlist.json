@@ -169,6 +169,7 @@
   "src/RimMandrake/rimflow/pipeline_control.py::reading::except-returns-empty": 1,
   "src/RimMandrake/rimflow/pipeline_pause.py::expire::except-returns-empty": 1,
   "src/RimMandrake/rimflow/red_dispatch.py::night_details::except-returns-empty": 1,
+  "src/RimMandrake/rimflow/role_clones.py::existing::except-returns-empty": 1,
   "src/RimMandrake/rimflow/refusal_contract.py::_read::except-returns-empty": 1,
   "src/RimMandrake/rimflow/refusal_contract.py::_text_of::except-returns-empty": 1,
   "src/RimMandrake/rimflow/refusal_contract.py::default_fixer::except-returns-empty": 1,
@@ -782,6 +783,9 @@
   ],
   "src/RimMandrake/rimflow/red_dispatch.py::night_details::except-returns-empty": [
    "NOT A COLLAPSE: None is the documented cannot-be-read answer; decide checks `details is not None` before reading a PASS"
+  ],
+  "src/RimMandrake/rimflow/role_clones.py::existing::except-returns-empty": [
+   "NOT A COLLAPSE: FileNotFoundError on ROOT is a measured absence (no roles dir, so no role clone); any other OSError raises, and main() prints the empty set with its root and why"
   ],
   "src/RimMandrake/rimflow/refusal_contract.py::_read::except-returns-empty": [
    "unread by owner's card 2026-11-19: only files that failed before are read"

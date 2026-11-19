@@ -1,0 +1,230 @@
+#!/usr/bin/env python3
+"""selftest_role_clone_level.py — a stranded commit in a role clone never kills the role silently
+(RIMMANDRAKE_LAND_STRANDED_ROLE_COMMIT_OPERATIONS_DEAD_FOUR_HOURS). One check per promise of
+design/specs/2026-11-19-role-clone-level/boundary.md, same names. Offline: real git on a temp bare origin and its
+clones (land.sh pushes to that file remote only), fake launch runners, no systemd.
+"""
+import os
+import shlex
+import subprocess
+import sys
+import tempfile
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+TMP = tempfile.mkdtemp(prefix="rcl_")
+os.environ["RM_ROLE_CLONE_ROOT"] = os.path.join(TMP, "roles")          # read by role_clones at import
+for k, v in (("GIT_AUTHOR_NAME", "t"), ("GIT_AUTHOR_EMAIL", "t@t"), ("GIT_COMMITTER_NAME", "t"),
+             ("GIT_COMMITTER_EMAIL", "t@t")):
+    os.environ[k] = v
+sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+
+SHARD = "infrastructure/state/ledger/events/BENCH.jsonl"
+FAILS = []
+N = [0]
+
+
+def check(cond, name, said=""):
+    print(("PASS " if cond else "FAIL ") + name + (" (%s)" % said if said else ""))
+    if not cond:
+        FAILS.append(name)
+
+
+def git(repo, *a, check_rc=True):
+    r = subprocess.run(["git", "-C", repo] + list(a), capture_output=True, text=True)
+    if check_rc and r.returncode:
+        raise RuntimeError("git %s: %s" % (" ".join(a), r.stderr))
+    return r.stdout.strip()
+
+
+def fixture(name="Operations"):
+    """-> (clone, peer, origin): a bare origin, a role clone ROOT/<name> and a peer clone that moves origin."""
+    N[0] += 1
+    base = os.path.join(TMP, "f%d" % N[0])
+    origin, seed = os.path.join(base, "origin.git"), os.path.join(base, "seed")
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", origin], check=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", seed], check=True)
+    os.makedirs(os.path.join(seed, os.path.dirname(SHARD)))
+    with open(os.path.join(seed, ".gitattributes"), "w") as f:
+        f.write("infrastructure/state/ledger/events/*.jsonl merge=union\n")
+    with open(os.path.join(seed, SHARD), "w") as f:
+        f.write('{"n":0}\n')
+    with open(os.path.join(seed, "code.txt"), "w") as f:
+        f.write("one\n")
+    git(seed, "add", "--", ".gitattributes", SHARD, "code.txt")
+    git(seed, "commit", "-q", "-m", "seed")
+    git(seed, "remote", "add", "origin", origin)
+    git(seed, "push", "-q", "origin", "main")
+    clone = os.path.join(os.environ["RM_ROLE_CLONE_ROOT"], name)
+    if os.path.exists(clone):
+        subprocess.run(["rm", "-rf", clone], check=True)
+    os.makedirs(os.path.dirname(clone), exist_ok=True)
+    subprocess.run(["git", "clone", "-q", origin, clone], check=True)
+    peer = os.path.join(base, "peer")
+    subprocess.run(["git", "clone", "-q", origin, peer], check=True)
+    return clone, peer, origin
+
+
+def commit(repo, path, line, msg):
+    with open(os.path.join(repo, path), "a") as f:
+        f.write(line + "\n")
+    git(repo, "add", "--", path)
+    git(repo, "commit", "-q", "-m", msg, "--", path)
+    return git(repo, "rev-parse", "HEAD")
+
+
+def origin_file(origin, path):
+    return git(origin, "show", "main:" + path, check_rc=False)
+
+
+def level_after(clone):
+    git(clone, "fetch", "-q", "origin")
+    return git(clone, "rev-parse", "HEAD") == git(clone, "rev-parse", "origin/main")
+
+
+def mods():
+    import role_clones as RC
+    import role_launch as RL
+    return RC, RL
+
+def t_a_level_clone_launches_without_a_fetch():
+    RC, RL = mods()
+    level = getattr(RC, "level", None)
+    clone, peer, origin = fixture()
+    git(clone, "remote", "set-url", "origin", os.path.join(TMP, "no-such-remote.git"))
+    got = level(clone) if level else {}
+    check(got.get("state") == "level", "a-level-clone-launches-without-a-fetch", got.get("state"))
+
+
+def t_a_stranded_ledger_commit_is_landed_and_the_clone_levelled():
+    RC, RL = mods()
+    level = getattr(RC, "level", None)
+    clone, peer, origin = fixture()
+    mine = commit(clone, SHARD, '{"n":"mine"}', "ledger: ops note")
+    commit(peer, SHARD, '{"n":"peer"}', "ledger: peer note")
+    git(peer, "push", "-q", "origin", "main")
+    got = level(clone) if level else {}
+    body = origin_file(origin, SHARD)
+    check(got.get("state") == "landed" and len(got.get("landed") or []) == 1 and '"mine"' in body and '"peer"' in body
+          and level_after(clone), "a-stranded-ledger-commit-is-landed-and-the-clone-levelled",
+          "%s landed=%s" % (got.get("state"), got.get("landed")))
+
+
+def t_a_stranded_code_commit_refuses_with_the_exact_fix():
+    RC, RL = mods()
+    level = getattr(RC, "level", None)
+    clone, peer, origin = fixture()
+    before = git(origin, "rev-parse", "main")
+    code = commit(clone, "code.txt", "two", "code change")
+    got = level(clone) if level else {}
+    untouched = git(origin, "rev-parse", "main") == before
+    fix = got.get("fix") or ""
+    ran = subprocess.run(["sh", "-c", fix], capture_output=True, text=True) if fix else None
+    check(got.get("state") == "stranded" and untouched and code[:10] in fix and ran is not None and ran.returncode == 0
+          and "two" in origin_file(origin, "code.txt") and level_after(clone),
+          "a-stranded-code-commit-refuses-with-the-exact-fix",
+          "%s untouched=%s fix rc=%s" % (got.get("state"), untouched, ran and ran.returncode))
+
+
+def t_a_mixed_strand_lands_the_ledger_and_refuses_the_rest():
+    RC, RL = mods()
+    level = getattr(RC, "level", None)
+    clone, peer, origin = fixture()
+    led = commit(clone, SHARD, '{"n":"mixed"}', "ledger: mixed")
+    code = commit(clone, "code.txt", "three", "code change")
+    got = level(clone) if level else {}
+    fix = got.get("fix") or ""
+    check(got.get("state") == "stranded" and len(got.get("landed") or []) == 1 and '"mixed"' in origin_file(origin, SHARD)
+          and code[:10] in fix and led[:10] not in fix and "three" not in origin_file(origin, "code.txt"),
+          "a-mixed-strand-lands-the-ledger-and-refuses-the-rest", "%s landed=%s" % (got.get("state"), got.get("landed")))
+
+
+def t_could_not_look_is_unmeasured_not_level():
+    RC, RL = mods()
+    level = getattr(RC, "level", None)
+    clone, peer, origin = fixture()
+    commit(clone, SHARD, '{"n":"blind"}', "ledger: blind")
+    git(clone, "remote", "set-url", "origin", os.path.join(TMP, "no-such-remote.git"))
+    try:
+        got = level(clone) if level else {}
+        raised = None
+    except Exception as e:  # noqa: BLE001 - the promise is that it does not raise
+        got, raised = {}, e
+    check(raised is None and got.get("state") == "UNMEASURED" and got.get("why"),
+          "could-not-look-is-unmeasured-not-level", "%s %s" % (got.get("state"), raised or got.get("why")))
+
+
+def t_the_launch_refuses_a_stranded_clone_before_systemd_run():
+    RC, RL = mods()
+    level = getattr(RC, "level", None)
+    clone, peer, origin = fixture()
+    role = {"name": "Operations", "seat": "BENCH", "clone": clone, "model": "opus", "run_max_s": 1000}
+    called, asked = [], []
+    stranded = {"state": "stranded", "landed": [], "left": [{"sha": "abc1234", "subject": "x", "paths": ["code.txt"]}],
+                "fix": "LAND_REPO=%s sh land.sh abc1234 code.txt" % clone, "why": "1 commit not ledger-only"}
+    try:
+        ok, out, _ = RL.launch(role, "u1", "m", TMP, "/bin/claude", runner=lambda *a, **k: called.append(a),
+                               level=lambda c: (asked.append(c), stranded)[1])
+        ok2, out2, _ = RL.launch(dict(role, pin_refused="pin test"), "u2", "m", TMP, "/bin/claude",
+                                 runner=lambda *a, **k: called.append(a),
+                                 level=lambda c: {"state": "landed", "landed": ["abc"], "left": [], "fix": None})
+        err = None
+    except TypeError as e:          # the base commit's launch takes no level=
+        ok = ok2 = True
+        out = out2 = ""
+        err = e
+    check(err is None and not ok and not called and out.startswith("STRANDED:") and "NOT RUNNING" in out
+          and "Operations" in out and stranded["fix"] in out and asked == [clone]
+          and out2.startswith("REFUSED by control: pin test"),
+          "the-launch-refuses-a-stranded-clone-before-systemd-run", err or out[:120])
+
+
+def t_the_stop_post_land_lands_a_committed_shard():
+    RC, RL = mods()
+    level = getattr(RC, "level", None)
+    clone, peer, origin = fixture()
+    commit(clone, SHARD, '{"n":"committed"}', "ledger: committed, never published")
+    res = RC.land(clone, "BENCH", tidy=lambda c, settle_min: "nothing to land")
+    landed_ok = res["ok"] and '"committed"' in origin_file(origin, SHARD) and level_after(clone)
+    commit(clone, "code.txt", "four", "code change")
+    res2 = RC.land(clone, "BENCH", tidy=lambda c, settle_min: "nothing to land")
+    check(landed_ok and not res2["ok"] and "land.sh" in (res2.get("why") or ""),
+          "the-stop-post-land-lands-a-committed-shard", "first ok=%s second why=%s" % (res["ok"], (res2.get("why") or "")[:80]))
+
+
+def t_a_stranded_launch_raises_one_not_running_alarm():
+    RC, RL = mods()
+    level = getattr(RC, "level", None)
+    import dispatcher as D
+    act = getattr(D, "launch_failed_action", None)
+    a = {"role": "Operations", "unit": "u1", "ticket": "T1"}
+    if act:
+        one = act(a, "STRANDED: role Operations is NOT RUNNING: ... To pass: X", True, "now")
+        two = act(dict(a, unit="u2"), "STRANDED: role Operations is NOT RUNNING: ... To pass: X", True, "now")
+        other = act(a, "systemd-run exit 1: no", True, "now")
+        good = (one["kind"] == two["kind"] == "role:Operations:not_running" and one.get("conductor_log")
+                and "NOT RUNNING" in (one.get("raise_first") or "") and "To pass: X" in one["why"]
+                and other["kind"] == "role:Operations:launch_failed" and not other.get("conductor_log"))
+    else:
+        good = False
+    check(good, "a-stranded-launch-raises-one-not-running-alarm")
+
+
+def main():
+    t_a_level_clone_launches_without_a_fetch()
+    t_a_stranded_ledger_commit_is_landed_and_the_clone_levelled()
+    t_a_stranded_code_commit_refuses_with_the_exact_fix()
+    t_a_mixed_strand_lands_the_ledger_and_refuses_the_rest()
+    t_could_not_look_is_unmeasured_not_level()
+    t_the_launch_refuses_a_stranded_clone_before_systemd_run()
+    t_the_stop_post_land_lands_a_committed_shard()
+    t_a_stranded_launch_raises_one_not_running_alarm()
+    print("%d check(s) failed" % len(FAILS) if FAILS else "all checks passed")
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    finally:
+        subprocess.run(["rm", "-rf", TMP])

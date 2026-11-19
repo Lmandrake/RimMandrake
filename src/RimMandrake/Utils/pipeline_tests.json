@@ -60,6 +60,7 @@
     "src/RimMandrake/rimflow/selftest_failed_before_reads.py",
     "src/RimMandrake/rimflow/acceptance/lint_reads_failed_before_breaks_accept.py",
     "src/RimMandrake/Utils/could_not_look_lint*.py",
+    "src/RimMandrake/rimflow/role_clones*.py",
     "pipe",
     "design/specs/*/boundary.md",
     "infrastructure/state/judge_calibration.json",
@@ -154,7 +155,8 @@
     {"test": "src/RimMandrake/rimflow/selftest_holder_live_brief.py", "seconds": 1.0},
     {"test": "src/RimMandrake/rimflow/selftest_dispatch_pilot_holder.py", "seconds": 2.5},
     {"test": "src/RimMandrake/rimflow/selftest_offline_stage_road_back.py", "seconds": 1.5},
-    {"test": "src/RimMandrake/rimflow/selftest_stop_steps_outlive_launcher.py", "seconds": 2.0}
+    {"test": "src/RimMandrake/rimflow/selftest_stop_steps_outlive_launcher.py", "seconds": 2.0},
+    {"test": "src/RimMandrake/rimflow/selftest_role_clone_level.py", "seconds": 6.0}
   ],
   "live_excluded": {
     "src/RimMandrake/Utils/selftest_maturation_now.py": "runs on the live tree: the real concept journals, ledger shards and run records (its point 6)",
