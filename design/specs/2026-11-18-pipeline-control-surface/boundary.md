@@ -14,7 +14,7 @@ added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_
   is refused by name and never run.
 - **one-name-one-run.** A unit name is one run. A launcher that uses one name for every run says `reuse_name` (the
   stop-resume sweep and the testq wake do). Any other name that has run is refused as DUPLICATE, so a left-open run
-  is continued once.
+  is continued once. Each launch is its own call: two threads launching one name in the same instant are outside.
 - **a-launch-names-its-mods.** A launch is checked against the mods its spec names and no others. A hand-launched
   detached helper names none unless it passes `--env RM_CONTROL_MOD=<Mod>`: 98 of 98 detached runs in the store
   named none [measured 2026-11-19], 6 of them on FeverWood design tickets while he held FeverWood.
@@ -26,8 +26,9 @@ added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_
   carry his words.
 - **his-hold-as-a-file-row.** His hold is a row (mod, date, his words) in `mod_owner_hold.json`, brought in by
   `pipe init --import`. The import may be run any number of times.
-- **plain-paths.** Paths of clones and of the store have no `$` in them (a launch with one is refused by name before
-  it is admitted). A deadline is 1 whole second or more.
+- **plain-paths.** Paths of clones and of the store are made of letters, digits, `-`, `_`, `.` and `/` (259 of 259
+  pool clone names [measured 2026-11-19]). A launch with a `$` in one is refused by name before it is admitted. A
+  deadline is 1 whole second or more.
 - **one-machine.** One user on one Linux machine, the store on its ext4 disk, units under that user's systemd.
 
 Anything else is outside. Some outside inputs are refused by name today; refusing the rest is owed work.
@@ -45,6 +46,23 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
   built another way is not seen.
 - **corrupt-or-lost-store.** It is not repaired. Nothing launches (a promise below) and `pipe doctor` names the fix.
 - **a-store-locked-over-3-seconds.** The command says it could not look and exits 3. A unit kill does not wait.
+
+Rare failures the code handles today but does not promise to (owner card 2026-11-19, `standing_rulings.md` §A
+boundary page before pipeline code, Decision 4: a rare failure is listed here, not fixed and not reviewed):
+
+- **a-fork-while-a-kill-fails.** `systemctl kill` fails and a child forks before the fallback kill (review claim 2.4).
+  Today the fallback reads the cgroup again (be673ed895).
+- **a-lock-while-a-killed-run-ends.** A kill made on a locked store is booked later, and the run ended in between
+  (claim 3.2). Today it is booked by run id (53cb713db1).
+- **a-keyed-kill-repeated-on-a-locked-store.** `stop --idem` sent again while the store is locked (claim 3.3). Today
+  the replay is read before the kill (53cb713db1); a second SIGKILL to a dead run changes nothing.
+- **two-timers-in-one-second.** Two escalation timers of one run come due in the same second (claim 3.5). Today the
+  run is reaped once (53cb713db1, 9a8593dc91).
+- **a-child-cgroup.** No pipeline unit sets `Delegate=`, so no unit has a child cgroup [measured 2026-11-19, grep of
+  `src`]. Today the kill reads the whole subtree (53cb713db1; claim 3.8).
+- **a-path-with-a-space.** Outside plain-paths (claim 3.10). Today hook paths are quoted (53cb713db1).
+- **two-threads-one-name.** Outside one-name-one-run (claim 2.1). Today each admission gets its own run id
+  (be673ed895).
 
 ## PROMISES (each one is owed a test of the same name)
 
@@ -84,7 +102,8 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
   `t_every_change_is_an_act`, `t_verbs`, `t_accounts`.
 - **binds-at-once-from-any-clone.** An act binds when its command returns. It needs no git, publish or tick. Tested
   by `t_clones`.
-- **verbs-answer-in-a-second.** A `pipe` verb usually answers in under 1 second on this machine. Tested by `t_verbs`.
+- **verbs-answer-in-a-second.** A `pipe` verb usually answers in under 1 second on this machine: "usually" is each
+  verb's own 95th-percentile time over its calls in `t_verbs` (`p95_of`), not every call. Tested by `t_verbs`.
 - **queue-order-is-the-store's.** `pipe queue` sets the order the tick advances mods in. Tested by `t_queue`.
 - **counts-and-limits-are-adjustments.** `pipe set`, `add`, `reset` and `limit` write a change at a moment; a run
   that finishes afterwards still counts. Tested by `t_accounts`.
