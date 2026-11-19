@@ -524,30 +524,16 @@ def _named_mod(words, folders):
     return True, (win[0] if len(win) == 1 else None)
 
 
-def item_mod(item, folders, notes=None, titles=None):
-    """The mod an item id names, else the one its title names, else the one its ledger notes cite most by concept
-    path, else None. The title step: RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID (title "Gimme Some Slack:
-    ...") names GSS by a 5-letter word only, and its notes cite FlowWorks's concept paths more often than GSS's, so the GSS
-    Fable rescue was placed on no mod and its steward read spent after it (RIMMANDRAKE_SEE_RESCUE_RUN_ON_ITS_MOD)."""
+def item_mod(item, folders, titles=None):
+    """The mod an item id names, else the one its title names, else None. The title step:
+    RIMMANDRAKE_LAY_SLACK_CLOSE_FITTINGS_TWENTY_ONE_UNLAID (title "Gimme Some Slack: ...") names GSS by a 5-letter word
+    only (RIMMANDRAKE_SEE_RESCUE_RUN_ON_ITS_MOD). Never the mod its notes cite by concept path: helpers on pipeline code
+    cite one and read live on it, filling max_live (RIMMANDRAKE_UNPLACE_MACHINERY_HELPERS_FROM_MODS_SLOT_TAKEN)."""
     named, mod = _named_mod([w for w in str(item).upper().split("_") if w], folders)
     if named:
         return mod
     named, mod = _named_mod(re.findall(r"[A-Z0-9]+", str((titles or {}).get(item) or "").upper()), folders)
-    if named:
-        return mod
-    cites = {}
-    for e in notes or []:
-        if e.get("id") != item:
-            continue
-        for f in folders:
-            n = str(e.get("text") or "").count("design/concepts/%s/" % f)
-            if n:
-                cites[f] = cites.get(f, 0) + n
-    if cites:
-        top = max(cites.values())
-        win = [f for f, n in cites.items() if n == top]
-        return win[0] if len(win) == 1 else None
-    return None
+    return mod if named else None
 
 
 def stages_named(s):
@@ -631,9 +617,7 @@ def run_view(rec, now, spend=read_spend):
 def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titles=None):
     """-> {folder: [run]} with each run's stages placed (see the block comment above). titles: {item id: title}.
     A run is on the mod its launch recorded (env RM_CONTROL_MOD, every pipeline launch), else the one its item's id or
-    title names; never the one its notes cite: helpers on pipeline code cite a mod's concept path and read live on it,
-    filling max_live (RIMMANDRAKE_UNPLACE_MACHINERY_HELPERS_FROM_MODS_SLOT_TAKEN). A hand launch on a mod passes
-    `--env RM_CONTROL_MOD=<Mod>`."""
+    title names (item_mod). A hand launch on a mod whose id and title name none passes `--env RM_CONTROL_MOD=<Mod>`."""
     out = {f: [] for f in folders}
     notes = notes or []
     by_unit = {}
@@ -645,7 +629,7 @@ def runs_for_mods(folders, records, notes, journals, now, spend=read_spend, titl
         item = str(rec.get("item") or "")
         said = (rec.get("env") or {}).get("RM_CONTROL_MOD")
         if not said and item not in cache:
-            cache[item] = item_mod(item, folders, None, titles)
+            cache[item] = item_mod(item, folders, titles)
         f = (said if said in out else None) if said else cache[item]
         if not f:
             continue
@@ -941,7 +925,7 @@ def gather(root, live=True):
         m["runs"] = UNM if runs is None else runs.get(m["name"], [])
         for e in lf["notes"] or []:        # the same line form in a ledger note on one of the mod's items
             if "CONDUCTOR INTERVENED" in str(e.get("text") or "").upper() and \
-                    item_mod(e.get("id"), versioned, lf["notes"], lf.get("titles")) == m["name"]:
+                    item_mod(e.get("id"), versioned, lf.get("titles")) == m["name"]:
                 g, b = parse_interventions(e.get("text"), "ledger note on %s" % e.get("id"))
                 m["ivs"] += g
                 m["iv_bad"] += b

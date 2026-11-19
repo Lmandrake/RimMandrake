@@ -390,7 +390,7 @@ def p8_interventions(d, page):
     check("8 the live journals hold intervention lines to test against", sum(want.values()) >= 1, "none")
     for folder, n in sorted(want.items()):
         m = mod_of(d, folder)
-        got = len([i for i in (m or {}).get("ivs", []) if i.get("source") == "journal"]) + len((m or {}).get("iv_bad", []))
+        got = len([i for i in (m or {}).get("ivs", []) + (m or {}).get("iv_bad", []) if i.get("source") == "journal"])
         check("8 %s: %d journal intervention lines, %d on the page" % (folder, n, got), got == n)
         card = card_of(page, (m or {}).get("label", "?"))
         check("8 %s card shows a yellow arrow line per intervention" % folder,
@@ -448,21 +448,15 @@ def p9_cycles():
           and M.item_mod("RIMMANDRAKE_DESIGN_KNOCKBACK_FIRST_TOUCH", ["ExplosiveKnockback"]) == "ExplosiveKnockback"
           and M.item_mod("PYRELANDS_FINISH", ["Pyrelands", "PyrelandsMechanics"]) == "Pyrelands"
           and M.item_mod("RIMMANDRAKE_SOMETHING_ELSE", ["Pyrelands"]) is None)
-    notes = [{"id": "RIMMANDRAKE_DESIGN_PIPELINE", "text": "see design/concepts/FooMod/journal.md and design/concepts/FooMod/x"}]
-    check("9 an item naming no mod is the one its notes cite", M.item_mod("RIMMANDRAKE_DESIGN_PIPELINE", ["FooMod", "BarMod"], notes) == "FooMod")
-    # RIMMANDRAKE_SEE_RESCUE_RUN_ON_ITS_MOD: SLACK is too short a word and the notes cite FlowWorks more; the title says
-    notes2 = [{"id": "RIMMANDRAKE_LAY_SLACK_X", "text": "design/concepts/FlowWorks/a design/concepts/FlowWorks/b "
-               "design/concepts/GimmeSomeSlack/c"}]
-    check("9 an item its id does not name is the mod its title names, before its notes",
-          M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"], notes2) == "FlowWorks"
-          and M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"], notes2,
-                         {"RIMMANDRAKE_LAY_SLACK_X": "Gimme Some Slack: the 21 close-fitting poses"}) == "GimmeSomeSlack"
-          and M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"], notes2,
-                         {"RIMMANDRAKE_LAY_SLACK_X": "lay the poses"}) == "FlowWorks")
+    notes = [{"id": "RIMMANDRAKE_LAY_SLACK_X", "text": "design/concepts/FlowWorks/a design/concepts/GimmeSomeSlack/c"}]
+    check("9 an item its id does not name is the mod its title names, else none (never its notes' citations)",
+          M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"]) is None
+          and M.item_mod("RIMMANDRAKE_LAY_SLACK_X", ["GimmeSomeSlack", "FlowWorks"],
+                         {"RIMMANDRAKE_LAY_SLACK_X": "Gimme Some Slack: the 21 close-fitting poses"}) == "GimmeSomeSlack")
     # RIMMANDRAKE_UNPLACE_MACHINERY_HELPERS_FROM_MODS_SLOT_TAKEN: a helper on pipeline code whose notes cite a mod's
     # concept path is no run on that mod; a launch's recorded RM_CONTROL_MOD places it with no inference
     mach = [dict(r, item="RIMMANDRAKE_ADD_PAUSE_ALL_X") for r in fake_recs(now)]
-    cite = [{"id": "RIMMANDRAKE_ADD_PAUSE_ALL_X", "text": "found on design/concepts/FooMod/journal.md"}]
+    cite = [{"id": "RIMMANDRAKE_ADD_PAUSE_ALL_X", "text": "found on design/concepts/FooMod/journal.md"}] + notes
     said = [dict(r, item="RIMMANDRAKE_RESCUE_X", env={"RM_CONTROL_MOD": "BarMod"}) for r in fake_recs(now)]
     pl = M.runs_for_mods(["FooMod", "BarMod"], mach + said, cite, {}, now,
                          spend=lambda r: ("UNMEASURED", None, "UNMEASURED"))
