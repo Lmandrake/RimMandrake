@@ -935,7 +935,10 @@ def _run_tree_checks(top, cfg, what="tree check", base=None):
         res = list(ex.map(one, cfg["checks"]))
     wall = time.monotonic() - t0
     slow = [c["test"] for c, rc, _o, _t in res if rc is None]
-    red = [(c, o, rc) for c, rc, o, _t in res if rc not in (0, None)]
+    for c, _rc, o, _t in res:   # a shadow check is shown, never refused (could_not_look_lint.py --shadow)
+        if c.get("shadow"):
+            print("shadow %s %s: %s" % (what, c["test"], (o.strip().splitlines() or ["(no output)"])[-1]))
+    red = [(c, o, rc) for c, rc, o, _t in res if rc not in (0, None) and not c.get("shadow")]
     for t in slow:
         print("WARNING: %s %s ran past %d s: UNMEASURED, not refused" % (what, t, limit))
     notes, pre = {}, []

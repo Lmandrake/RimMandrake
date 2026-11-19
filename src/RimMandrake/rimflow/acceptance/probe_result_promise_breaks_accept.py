@@ -43,9 +43,9 @@ brk("looked-answers-read-plainly", "indexing a value always reads its first item
 brk("four-answers-never-blur", "value() of a blind answer passes it through", TYPE,
     ("        x.value     # noqa: B018  raises NotAnswered on a blind answer\n", ""))
 brk("lint-sees-both-shapes", "the except shape is never looked for", LINT,
-    ("            if isinstance(n, ast.ExceptHandler):", "            if False:"))
+    ("        if isinstance(n, ast.ExceptHandler):", "        if False:"))
 brk("lint-allowlist-is-counted", "any allowance, however small, covers every hit under its key", LINT,
-    ("        if seen[k] > allowed.get(k, 0):", "        if not allowed.get(k, 0):"))
+    ("            if seen[k] > allowed.get(k, 0):", "            if not allowed.get(k, 0):"))
 brk("lint-shadow-refuses-nothing", "--shadow still exits 1 on a red", LINT,
     ('    return 0 if shadow else rc', '    return rc'))
 

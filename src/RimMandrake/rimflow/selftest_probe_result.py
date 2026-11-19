@@ -49,8 +49,8 @@ def lint(text, *args, name="fixture.py"):
 
 def flagged(out, name="fixture.py"):
     """-> the line numbers the lint named in `name`."""
-    return sorted(int(w.split(":")[1]) for ln in out.splitlines() for w in ln.split()
-                  if w.startswith(name + ":") and w.split(":")[1].isdigit())
+    words = [os.path.basename(w) for ln in out.splitlines() for w in ln.split()]
+    return sorted(int(w.split(":")[1]) for w in words if w.startswith(name + ":") and w.split(":")[1].isdigit())
 
 
 def t_probe_never_lies():

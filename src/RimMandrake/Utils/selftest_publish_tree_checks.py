@@ -258,6 +258,13 @@ def main():
         check(bool(err) and "red.py" in err and "planted fault" in err and "fix-for-red.py" in err,
               "a red check refuses naming the check, its FAIL line and its fix")
         check(bool(err) and "green.py" not in err, "the refusal names only the red check")
+        cfg_sh = {"budget_s": 30, "timeout_s": 2, "checks": [{"test": "green.py", "fix": "f"},
+                  {"test": "red.py", "fix": "f", "shadow": True}]}
+        json.dump(cfg_sh, open(os.path.join(tmp, P.TREE_CHECKS), "w"))
+        err, out = call(tmp, ["src/a.py"])
+        check(err is None and "shadow" in out and "planted fault" in out,
+              "a shadow check prints its last line and refuses nothing (%r, %r)" % (err, out.strip()[-160:]))
+        fixture(tmp, ["green.py", "red.py"])
         err, out = call(tmp, ["infrastructure/state/ledger/events/BENCH.jsonl"])
         check(err is None and out == "", "a ledger-only change runs nothing")
         err, out = call(tmp, [])

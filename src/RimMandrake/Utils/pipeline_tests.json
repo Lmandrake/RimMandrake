@@ -54,6 +54,8 @@
     {"test": "src/RimMandrake/rimflow/selftest_run_rules_keys.py", "seconds": 1.0},
     {"test": "src/RimMandrake/rimflow/selftest_control.py", "seconds": 40},
     {"test": "src/RimMandrake/Utils/boundary_check.py", "inputs": ["design/specs/*/boundary.md"], "seconds": 0.1},
+    {"test": "src/RimMandrake/rimflow/selftest_probe_result.py", "seconds": 0.2},
+    {"test": "src/RimMandrake/rimflow/acceptance/probe_result_promise_breaks_accept.py", "seconds": 0.6},
     {"test": "src/RimMandrake/Utils/selftest_boundary_check.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_end_receipt_off_result.py", "seconds": 1.3},
     {"test": "src/RimMandrake/rimflow/selftest_codex_review_fixes.py", "seconds": 0.9},
