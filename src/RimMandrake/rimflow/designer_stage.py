@@ -49,6 +49,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, HERE)
 import concept_tree as CT  # noqa: E402
+import exam_retake as ER  # noqa: E402
 
 ROLES = os.path.join(HERE, "roles")
 MANIFEST = os.path.join(ROLES, "designer_manifest.json")
@@ -1448,6 +1449,9 @@ def exam_errors(ex, d, st, repo=REPO):
                             % ctl["broken_leaf"])
         if ctl.get("broken_leaf") in ids:
             errs += control_copy_errors(d, ctl["broken_leaf"], ids)
+    # RIMMANDRAKE_RETAKE_ONLY_TOUCHED_EXAM_SCENARIOS_CARD_ASKED_TWICE: an answer carried from an earlier exam stands only
+    # while its scenario and every unit of the tree and sheet it read are as they were when it was answered
+    errs += ER.carry_errors(ex, d)
     return errs
 
 
@@ -2366,6 +2370,12 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
     elif out == "blocked":
         st["status"], st["blocked_on"] = "blocked", res["on"]
     hist(st, "close", "run %s: stage %d %s" % (run, stage, out))
+    if out == "done" and stage == 4:
+        # the read map of the exam just accepted, recorded while the tree is the one it examined, so a retake after a
+        # coverage repair re-runs only the scenarios the repair touched (exam_retake.py); no map means a whole retake
+        rm = ER.record(d, repo=repo)
+        hist(st, "exam_map", "read map recorded for %d scenarios" % len(rm["scenarios"]) if "error" not in rm
+             else "no read map (a later retake is whole): %s" % rm["error"])
     if out == "waiting_owner" or (out == "return" and res.get("question")):
         away, why_away = owner_away()   # a step that ends in his certification, while he is away, parks
         if away:

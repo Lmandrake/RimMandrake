@@ -378,6 +378,15 @@ def ticket_runs(item):
     return [(r.get("unit"), r.get("status")) for r in DH.all_records() if r.get("item") == item]
 
 
+# RIMMANDRAKE_RETAKE_ONLY_TOUCHED_EXAM_SCENARIOS_CARD_ASKED_TWICE: a retake after a repair re-runs only the scenarios
+# the repair touched when the read map can tell; the whole exam otherwise (exam_retake.py)
+RETAKE_STEP = ("first run `python3 src/RimMandrake/rimflow/exam_retake.py plan design/concepts/%s`: PARTIAL re-runs "
+               "only the scenarios it names through two fresh Readers and a control Reader on a fresh "
+               "`designer_stage.py exam-control` copy, then `exam_retake.py carry <dir> --fresh <file>` carries the "
+               "other answers forward; NONE_TOUCHED means the exam stands; CANNOT_RUN names an input or a file of "
+               "fresh answers that cannot be read: fix that and run the plan again, never retake on it; WHOLE means ")
+
+
 def exam_gate(root, mod):
     """-> (errors, tree hash): the gate coverage_judge.plan reads before a stage-5 look (an exam that does not pass makes
     it skip). ([], None) when the concept is not at stage 5, is parked, or has no real tree."""
@@ -986,9 +995,10 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
         exam_step = ("the Cold Reader exam passes its gate on the current tree %s and sheet (the change left both as "
                      "examined), so it stands: no retake; confirm the gate reads clean (`coverage_judge.py status` names "
                      "no exam error) just before the look" % str(xth)[:12]) if xth and not xerrs else (
-                    "retake the Cold Reader exam on the new tree by "
+                    "retake the Cold Reader exam on the new tree: " + RETAKE_STEP % mod + "retake it by "
                     "src/RimMandrake/rimflow/roles/designer_exam.md in full (the Challenger's scenarios and the control "
-                    "copy included: an exam failing its gate makes the judge skip)")
+                    "copy included: an exam failing its gate makes the judge skip); once it passes, record its read "
+                    "map (`exam_retake.py record design/concepts/%s`) and land exam_reads.json with exam.json" % mod)
         _steward(row, "chain", "%s|chain|%s" % (ver, lc.get("at")),
                  "a locked change landed %s and no coverage look has followed it: re-pin, Cold Reader exam %s, "
                  "ONE coverage-judge look" % (lc.get("at"), "check" if xth and not xerrs else "retake"),
@@ -1360,16 +1370,19 @@ def steward_brief(root, mod, row):
                     "as named items caused by this item and do not advance.",
         "ready": "Every exit test passes: advance the mod one stage (no confirmation is owed).",
         "exam_retake": "The concept stands at Designer stage 5 and its Cold Reader exam fails its gate, so the coverage "
-                       "judge skips it and nothing else moves it. The gate reads: %s. Retake the exam by "
-                       "src/RimMandrake/rimflow/roles/designer_exam.md IN FULL (read the whole file first): frozen "
+                       "judge skips it and nothing else moves it. The gate reads: %s. To retake it, %sretake "
+                       "it by src/RimMandrake/rimflow/roles/designer_exam.md IN FULL (read the whole file first): frozen "
                        "inputs, the Examiner's scenarios, the Challenger's scenarios (a second fresh agent), the "
                        "Readers, and the control copy (`designer_stage.py exam-control design/concepts/%s --leaf <id>`, "
                        "its control Reader's missed_ids). Its Examiner, Challenger, Readers and control Reader are "
                        "fresh subagents you start (opus or sonnet), as that file says; they are not pipeline runs. "
                        "Never edit tree.json, the sheet or the scenes. Done when `coverage_judge.py status "
                        "design/concepts/%s` no longer reads \"the exam does not pass\" (it runs the exam gate; a "
-                       "retake opens no Designer run, so there is no result.json to check); land exam.json and exam_control/ with ./publish." % (
-                           row.get("steward_need") or row.get("why"), mod, mod),
+                       "retake opens no Designer run, so there is no result.json to check); then record its read map with "
+                       "`python3 src/RimMandrake/rimflow/exam_retake.py record design/concepts/%s` (it prints MAP "
+                       "RECORDED or why not) and land exam.json, exam_reads.json, exam_retake_plan.json and "
+                       "exam_control/ with ./publish." % (
+                           row.get("steward_need") or row.get("why"), RETAKE_STEP % mod, mod, mod, mod),
         "cycle_unfinished": "The blind cycle's record has no Exit block and nothing is live on it, so no program can "
                             "read whether it was met. Read the record folder (SUMMARY.md, lane1, lane2, "
                             "tests_edited.json) and `maturation.py next`. If the judging is all there and only its "
