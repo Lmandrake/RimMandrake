@@ -50,6 +50,12 @@ RETIRED_BATCHES = ({  # RIMFLOW_RETIRE_DEAD_MODULES
     "relentless_tickp95": "by-hand report on the retired Relentless tick (rm-relentless.timer masked 2026-11-13)",
 }, {  # RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES step 3 (its live parts moved first; the index lists where)
     # (deleted modules whose names some live text still carries are listed in the index's step-3 note, not here)
+    "relentless_bindjudge": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_broker": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_dispute": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_exam": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_release": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "relentless_stage": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
     "block_migrate": "one-shot over Relentless store items",
     "relentless_account": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
     "relentless_answer": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",

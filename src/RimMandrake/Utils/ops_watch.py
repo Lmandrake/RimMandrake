@@ -3256,8 +3256,8 @@ def c_relentless(now, rules, ctx):
         bad.append(str(behind_n))       # an unreadable books clone must reach relentless.blind (the MEASURED alarm cannot)
     else:
         pts["relentless.books_behind_min"] = acting(behind_min, behind=behind_n)
-    # its reader (rl_game_hold_idle) read relentless_broker/relentless_jobs, deleted with the tick: never measured again
-    pts["relentless.game_hold_idle_min"] = U("the game-hold reader went with relentless_broker.py (retired 2026-11-13)", "min")
+    # its reader (rl_game_hold_idle) read the tick's broker and jobs modules, deleted with it: never measured again
+    pts["relentless.game_hold_idle_min"] = U("the game-hold reader went with the retired tick's broker (2026-11-13)", "min")
     pct, got = rl_live_measured(rl_root(cfg) / "live", now, cfg)
     pts["relentless.live_measured_pct"] = U(got, "%") if pct is None else M(pct, "%", **got)
     if pct is None and "unreadable" in str(got):     # too few runs is idle, not blind; an unreadable file is blind

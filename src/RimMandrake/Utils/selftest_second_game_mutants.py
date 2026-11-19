@@ -22,7 +22,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 GI, GP, RW = "src/RimMandrake/Utils/game_instance.py", "src/RimMandrake/Utils/game_paths.py", "infrastructure/stevedesktop/rw_game.sh"
 LS = "src/RimMandrake/Utils/northstar_driver/live_session.py"
-RS = "src/RimMandrake/rimflow/relentless_stage.py"
 T_GI = "src/RimMandrake/Utils/selftest_game_instance.py"
 T_ST = "src/RimMandrake/Utils/selftest_second_game_sites.py"
 T_IK = "src/RimMandrake/rimflow/selftest_bridge_instance_key.py"
@@ -88,8 +87,6 @@ MUTANTS = [
     ("session_kills_by_name", LS, '        game_instance.stop()\n', '        sh(["taskkill.exe", "/IM", "RimWorldWin64.exe"], timeout=60)\n', T_GI, "sites"),
     ("clock_kills_the_game", LS, '        game_instance.stop()\n', '        if time.time() - 0 > 1500:\n            game_instance.stop()\n', T_DL, ""),
     ("session_any_game_is_running", LS, '        return game_instance.running()\n', '        return "RimWorldWin64" in sh(["tasklist.exe"], timeout=60)[1]\n', T_GI, "sites"),
-    ("stage_kills_by_name", RS, 'return self.instance().stop(force=force)', 'return self.sh(["taskkill.exe"] + (["/F"] if force else []) + ["/IM", "RimWorldWin64.exe"], timeout=60)', T_GI, "sites"),
-    ("stage_any_game_is_running", RS, 'return self.instance().running()', 'return "RimWorldWin64" in self.sh(["tasklist.exe"], timeout=60)[1]', T_GI, "sites"),
     ("biome_proof_kills_by_name", "src/RimMandrake/Utils/loadsweep/biome_load_proof.sh", 'python3 "$REPO/src/RimMandrake/Utils/game_instance.py" stop --force >/dev/null', BY_NAME, T_GI, "sites"),
     ("sweep_kills_by_name", "src/RimMandrake/Utils/loadsweep/sweep_load.sh", 'python3 "$DIR/../game_instance.py" stop --force >/dev/null', BY_NAME, T_GI, "sites"),
     ("gl_sheet_kills_by_name", "src/RimMandrake/Utils/rimbench/gl_sheet_run.sh", 'python3 "$REPO/src/RimMandrake/Utils/game_instance.py" stop --force >/dev/null', BY_NAME, T_GI, "sites"),
@@ -109,7 +106,6 @@ MUTANTS = [
     ("launch_ready_kills_every_game", LR, 'return game_instance.procs()    # Blind', 'return [dict(pid=g["pid"], start=g["start"]) for g in game_instance.games()]    # Blind', T_ST, "launches"),
     ("launch_ready_b_uses_steam", LR, 'if game_instance.current() != game_instance.DEFAULT:    # Steam', 'if False:    # Steam', T_ST, "launches"),
     ("session_b_uses_steam", LS, 'if game_instance.current() != game_instance.DEFAULT:        # Steam', 'if False:        # Steam', T_ST, "launches"),
-    ("stage_b_uses_steam", RS, 'if gi.current() != gi.DEFAULT:', 'if False:', T_ST, "launches"),
     ("prep_b_told_steam", U + "modcheck/live_queue/prep_wsl.py", 'print("next: launch directly -- python3 src/RimMandrake/Utils/game_instance.py launch --wait")', 'print("next: launch")', T_ST, "launches"),
     ("waiter_needs_the_token_line", U + "logwait.py", "(BRIDGE_LINES if token == BRIDGE_LINES[0] else (token,))", "(token,)", T_ST, "ready"),
     ("waiter_widens_every_wait", U + "logwait.py", "(BRIDGE_LINES if token == BRIDGE_LINES[0] else (token,))", "BRIDGE_LINES", T_ST, "ready"),
