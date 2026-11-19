@@ -775,11 +775,11 @@ def unaccounted(rec, refs):
     proof_evidence, source, anywhere in the entry), or record.json `built_reviewed` lists it with `covered_by` (an
     inventory id) or `not_a_capability` (why)."""
     inv = [e for e in (rec or {}).get("inventory") or [] if isinstance(e, dict)]
-    ids = {e.get("id") for e in inv}
+    ids = {e.get("id") for e in inv if isinstance(e.get("id"), str)}    # a bad id is record_errors' to refuse
     seen = json.dumps(inv)
-    for r in (rec or {}).get("built_reviewed") or []:
+    for r in lst((rec or {}).get("built_reviewed")):
         if isinstance(r, dict) and CT.txt(r.get("ref")) and (
-                r.get("covered_by") in ids or CT.txt(r.get("not_a_capability"))):
+                (isinstance(r.get("covered_by"), str) and r["covered_by"] in ids) or CT.txt(r.get("not_a_capability"))):
             seen += "\n" + json.dumps(r["ref"])
     out = []
     for ref in refs:
@@ -1460,6 +1460,16 @@ def quick_look_errors(res, rec):
     return [] if CT.txt(ql.get("why")) else ["quick_look declined without why"]
 
 
+def _run_file(d, name, errs):
+    """A run's own file, or None with its parse failure added to errs: a rejection, never a crash that leaves the run
+    open (RIMMANDRAKE_REJECT_MALFORMED_RUN_FILES_SECOND_PASS_EXAM_SCENES)."""
+    try:
+        return read_json(os.path.join(d, name))
+    except Refused as e:
+        errs.append(str(e))
+        return None
+
+
 def result_errors(res, d, st, repo=REPO):
     """Why this run's result.json cannot be accepted, or []."""
     if not isinstance(res, dict):
@@ -1535,12 +1545,13 @@ def result_errors(res, d, st, repo=REPO):
         lint_errs, _ = CT.lint(d, artifact_repo)
         errs += ["lint: %s" % e for e in lint_errs]
         tree = CT.load(d) if not lint_errs else None
-        errs += scene_errors(read_json(os.path.join(d, "scenes.json")), tree, artifact_repo)
-        errs += ["showcases: %s" % e for e in showcase_check(read_json(os.path.join(d, "scenes.json")), rec, tree,
-                                                              owner_ev, artifact_repo, concept=concept_of(st, d))]
-        errs += floor_errors(read_json(os.path.join(d, "floor.json")), tree, owner_ev=owner_ev)
+        sc3 = _run_file(d, "scenes.json", errs)
+        errs += scene_errors(sc3, tree, artifact_repo)
+        errs += ["showcases: %s" % e for e in showcase_check(sc3, rec, tree, owner_ev, artifact_repo,
+                                                              concept=concept_of(st, d))]
+        errs += floor_errors(_run_file(d, "floor.json", errs), tree, owner_ev=owner_ev)
     elif stage == 4:
-        errs += exam_errors(read_json(os.path.join(d, "exam.json")), d, st, repo)
+        errs += exam_errors(_run_file(d, "exam.json", errs), d, st, repo)
     elif stage == 5:
         # the judge signs concept=<its path in the concept's own clone>: the Dispatcher closing from its clone reads that one
         gate_errs, _ = CT.gate(d, clone_of(d) or repo)
@@ -1551,7 +1562,7 @@ def result_errors(res, d, st, repo=REPO):
             tree = CT.load(d)
         except (FileNotFoundError, ValueError):
             tree = None
-        sc5 = read_json(os.path.join(d, "scenes.json"))
+        sc5 = _run_file(d, "scenes.json", errs)
         # the showcase set names scenes, so the scenes it leans on must still meet the contract at the lock (a scene
         # added after stage 3 is checked here, not trusted by its id)
         # judged in the concept's own clone, as stage 3 judges them (RIMMANDRAKE_ALIGN_STAGE5_SCENE_CHECK_CLONE_READ_WRONG_TREE)
@@ -1897,7 +1908,8 @@ def owner_away():
 def code_present(rec):
     """Enough code exists to look at (E, owner note 1794527688430451936: the Designer often runs on a mod not written
     yet): record.json's inventory has a capability with impl `present`. -> the ids, [] when none."""
-    return [e.get("id") for e in (rec or {}).get("inventory") or []
+    inv = rec.get("inventory") if isinstance(rec, dict) else None
+    return [e.get("id") for e in (inv if isinstance(inv, list) else [])
             if isinstance(e, dict) and e.get("impl") == "present" and e.get("id")]
 
 
@@ -2785,7 +2797,7 @@ def working_record(d):
         return "(record.json is not an object: repair it first)"
     out = []
     if isinstance(rec.get("root"), dict):
-        out.append("root: %s [%s]" % (rec["root"].get("text"), ",".join(lst(rec["root"].get("source")))))
+        out.append("root: %s [%s]" % (rec["root"].get("text"), ",".join(map(str, lst(rec["root"].get("source"))))))
     for sect in ("scope", "decisions", "asks", "inventory", "contradictions"):
         rows = [e for e in rec.get(sect) or [] if isinstance(e, dict)] if isinstance(rec.get(sect), list) else []
         if not rows:
@@ -2798,7 +2810,7 @@ def working_record(d):
             elif sect == "asks":
                 extra = " status=%s" % e.get("status")
             out.append("- %s: %s%s [%s]" % (e.get("id"), e.get("text") or e.get("what") or "", extra,
-                                             ",".join(lst(e.get("source")))))
+                                             ",".join(map(str, lst(e.get("source"))))))
     if rec.get("failure_modes"):
         out.append("failure_modes: " + " | ".join(map(str, lst(rec["failure_modes"]))))
     return "\n".join(out) or "(empty: record.json has no entries yet)"

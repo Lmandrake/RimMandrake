@@ -203,6 +203,128 @@ def packet_failure_leaves_no_run(tmp):
               and (DS.load_state(d2).get("running") or {}).get("run") == "rm-role-designer-%d" % (60 + i), (got, err))
 
 
+def malformed_run_files_second_pass(tmp):
+    """RIMMANDRAKE_REJECT_MALFORMED_RUN_FILES_SECOND_PASS (Codex review of the split, items 2-4)."""
+    cases = [("exam.json '{' at stage 4", 4, {}, ("exam.json", "{"), {"outcome": "done"}),
+             ("scenes.json '{' at stage 3", 3, {}, ("scenes.json", "{"), {"outcome": "done"}),
+             ("record [1] on a stage-3 return with a question", 3, [1], None,
+              {"outcome": "return", "to": 2, "decision": "d", "question": "q?"}),
+             ("inventory id [] at stage 0", 0, {"inventory": [{"id": []}]}, None, {"outcome": "done"})]
+    for i, (name, stage, rec, extra, res) in enumerate(cases):
+        d = concept(tmp, "Bad2_%d" % i, stage=stage)
+        run = "rm-role-designer-%d" % (70 + i)
+        DS.open_run(d, run, repo=tmp)
+        put(d, "record.json", rec)
+        if extra:
+            put(d, extra[0], extra[1])
+        put(d, "result.json", dict(res, run=run, stage=stage))
+        got, err = crashes(DS.close_run, d, run, 500, repo=tmp)
+        st = DS.load_state(d)
+        # a return never reads the record but for its quick look: it may be accepted, as long as it does not crash
+        check("malformed 2: %s is judged and charged, never a crash or an open run" % name,
+              err is None and got and (got[0] is False or res["outcome"] == "return") and st.get("running") is None
+              and st["budget"]["spent"] == 500, (got, err))
+    d = concept(tmp, "PktSrc")
+    put(d, "record.json", {"asks": [{"id": "q", "source": [1]}], "root": {"text": "r", "source": [2]}})
+    got, err = crashes(DS.open_run, d, "rm-role-designer-80", repo=tmp)
+    check("malformed 2: non-string sources in record.json still give the repair run its packet",
+          err is None and isinstance(got, tuple) and got[0] != "REFUSED", (got, err))
+
+
+def ask_reviewer_is_author_by_id():
+    """RIMMANDRAKE_MATCH_ASK_REVIEWER_TO_AUTHOR_BY_AGENT_ID (Codex review of the split, item 5)."""
+    from selftest_designer_stage import ask
+    aid = "a0123456789abcdef"
+    a = ask(author="agent:%s (author)" % aid, review={"verdict": "pass", "by": "agent:%s (reviewer)" % aid})
+    errs = DS.ask_errors(a, {"inventory": []})
+    check("ask: its author's agent id under another label is its own review", any("own author" in e for e in errs),
+          errs)
+    b = ask(author="agent:%s (author)" % aid, review={"verdict": "pass", "by": "agent:afedcba9876543210 (reviewer)"})
+    check("ask: another agent's review passes this line", not any("own author" in e for e in DS.ask_errors(b, {})))
+
+
+def program_honours_criteria_suspect():
+    """RIMMANDRAKE_HONOUR_CRITERIA_SUSPECT_IN_PROGRAM_RESULT_TOO (Codex review of the split, item 6)."""
+    v = {"verdict": "not_covered", "criteria_suspect": True, "gaps": [{"gid": "g1", "what": "soak", "return_to": 3}]}
+    check("program: a verdict marked criteria_suspect is not a program return to stage 3",
+          DS.program_result({"stage": 5, "status": "ready"}, v, "r1") is None,
+          DS.program_result({"stage": 5, "status": "ready"}, v, "r1"))
+
+
+def pin_anchor_from_concept_clone(tmp):
+    """RIMMANDRAKE_ANCHOR_PIN_IN_CONCEPT_CLONE_NOT_DISPATCHER (Codex review of the split, item 7)."""
+    import subprocess
+
+    def git_repo(path):
+        os.makedirs(os.path.join(path, os.path.dirname(CT.OWNER_SHARD)), exist_ok=True)
+        open(os.path.join(path, CT.OWNER_SHARD), "a").close()
+        env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t",
+                   GIT_COMMITTER_EMAIL="t@t")
+        for c in (["init", "-q"], ["add", "-A"], ["commit", "-qm", "x"]):
+            subprocess.run(["git", "-C", path] + c, check=True, env=env, capture_output=True)
+        return subprocess.run(["git", "-C", path, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    a, b = os.path.join(tmp, "clone_a"), os.path.join(tmp, "clone_b")
+    head_a = git_repo(a)
+    os.makedirs(b)
+    with open(os.path.join(b, "b.txt"), "w") as f:
+        f.write("b")
+    head_b = git_repo(b)
+    d = os.path.join(b, "design/concepts/Pin")
+    DS.init(d, "Pin", ITEM, cap=100000, reserve=10000)
+    DS.open_run(d, "rm-role-designer-90", repo=a)
+    put(d, "record.json", {"inventory": [{"id": "x", "impl": "absent", "search_scope": "src", "proof": "missing",
+                                          "scope": "approved", "source": "b.txt"}], "failure_modes": ["a", "b", "c"]})
+    put(d, "result.json", {"run": "rm-role-designer-90", "stage": 0, "outcome": "done"})
+    os.environ["RM_STAGE_LAND"] = "0"
+    real = DS.built_evidence
+    DS.built_evidence = lambda *a_, **k: ([], [])     # this case is about the anchor, not stage 0's census
+    try:
+        ok, errs = DS.close_run(d, "rm-role-designer-90", 100, repo=a)
+    finally:
+        DS.built_evidence = real
+    pins = set(((DS.load_state(d).get("results") or [{}])[-1].get("pinned_at") or {}).values())
+    check("pin: a close judged from another clone anchors the pin in the concept's own clone",
+          ok and pins == {head_b} and head_a != head_b, (ok, errs, pins, head_a, head_b))
+
+
+def waiting_result_needs_feed_baseline(tmp):
+    """RIMMANDRAKE_REFUSE_WAITING_RESULT_WITHOUT_FEED_BASELINE (Codex review of the split, item 9)."""
+    d = concept(tmp, "WaitBase", stage=1)
+    DS.open_run(d, "rm-role-designer-95", repo=tmp)
+    put(d, "record.json", {"asks": [{"id": "a1", "status": "sent"}]})
+    put(d, "result.json", {"run": "rm-role-designer-95", "stage": 1, "outcome": "waiting_owner",
+                           "quick_look": {"offer": False, "why": "no code"}})
+    shard = os.path.join(tmp, CT.OWNER_SHARD)
+    os.replace(shard, shard + ".kept")
+    try:
+        errs = DS.result_errors(DS.read_json(os.path.join(d, "result.json")), d, DS.load_state(d), tmp)
+    finally:
+        os.replace(shard + ".kept", shard)
+    check("waiting: a waiting_owner result whose feed baseline cannot be read is refused UNMEASURED",
+          any("UNMEASURED" in e and "feed" in e for e in errs), errs)
+
+
+def unreadable_live_proofs_noted(tmp):
+    """RIMMANDRAKE_NOTE_UNREADABLE_LIVE_PROOFS_AS_UNMEASURED (Codex review of the split, item 10)."""
+    real = DS.os.listdir
+
+    def deny(p):
+        if os.path.normpath(p).endswith(os.path.normpath(DS.LIVE_PROOFS)):
+            raise PermissionError(13, "denied", p)
+        return real(p)
+    os.makedirs(os.path.join(tmp, DS.LIVE_PROOFS), exist_ok=True)
+    DS.os.listdir = deny
+    try:
+        _, notes = DS.built_evidence(tmp, "Foo")
+    finally:
+        DS.os.listdir = real
+    check("built: an unreadable live_proofs folder is a note (UNMEASURED), never 'no proofs'",
+          any("live" in n for n in notes), notes)
+    shutil.rmtree(os.path.join(tmp, DS.LIVE_PROOFS))
+    _, notes = DS.built_evidence(tmp, "Foo")
+    check("built: a missing live_proofs folder is no proofs, no note", not any("live" in n for n in notes), notes)
+
+
 # each child's section joins once its fix lands (every one was watched failing on base 25d20f71e0 first)
 SECTIONS = [
     lambda tmp: speaker_owner_needs_his_words(),
@@ -212,6 +334,7 @@ SECTIONS = [
     malformed_results_reject,
     unreadable_owner_feed_is_not_an_answer,
     packet_failure_leaves_no_run,
+    malformed_run_files_second_pass,
 ]
 
 
