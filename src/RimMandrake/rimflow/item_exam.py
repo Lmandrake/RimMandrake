@@ -89,14 +89,15 @@ def kick(store, item, cfg=None, runner=subprocess.run):
     d = item_dir(store, item)
     os.makedirs(d, exist_ok=True)
     max_s = int(cfg.get("unit_max_s", 3600))
-    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit_name(item),
+    argv = ["--user", "--quiet", "--collect",
             "-p", "StandardOutput=file:" + os.path.join(d, "unit.out"), "-p", "StandardError=file:" + os.path.join(d, "unit.err"),
             "-p", "RuntimeMaxSec=%d" % max_s, "--working-directory", os.path.dirname(tool),
             "--setenv", "RELENTLESS_ROOT=" + store.root, "--setenv", "PATH=" + os.environ.get("PATH", "/usr/bin:/bin"),
             "--", sys.executable, tool, "run", item]
     import control as C     # Relentless is retired: its family is OFF in the control store
     try:
-        r = C.launch_unit(argv, {"family": "relentless", "item": item}, runner=runner, capture_output=True, text=True,
+        r = C.launch_unit(argv, {"family": "relentless", "item": item, "unit": unit_name(item)}, runner=runner,
+                          capture_output=True, text=True,
                           timeout=60, stdin=subprocess.DEVNULL)
     except (OSError, subprocess.SubprocessError) as e:
         return "%s: %s" % (type(e).__name__, e)
@@ -180,13 +181,13 @@ def box_runner(rules, source, sha, files_dir, item=None, nonce=None, runner=subp
                 why = apply_patch(patch, rtree, runner)
                 if why:
                     return None, "PATCH_FAILED: " + why, False
-            unit = ["systemd-run", "--user", "--wait", "--pipe", "--collect", "--quiet", "-p", "WorkingDirectory=" + rtree,
+            unit = ["--user", "--wait", "--pipe", "--collect", "--quiet", "-p", "WorkingDirectory=" + rtree,
                     "-p", "RuntimeMaxSec=%d" % (timeout + 30)] + checker_box.props(prof, rbox) \
                 + sum((["--setenv", "%s=%s" % kv] for kv in dict(checker_box.unit_env(prof, rbox), **RUN_ENV).items()), []) \
                 + ["--"] + list(argv)
             try:
                 import control as C     # Relentless is retired: its family is OFF in the control store
-                q = C.launch_unit(unit, {"family": "relentless"}, runner=runner, capture_output=True, text=True,
+                q = C.launch_unit(unit, {"family": "relentless", "unit": "rm-relentless-check-%s-r%d" % (nonce, runs[0])}, runner=runner, capture_output=True, text=True,
                                   timeout=timeout + 60, stdin=subprocess.DEVNULL)
                 return q.returncode, _cap((q.stdout or "") + (q.stderr or "")), False
             except subprocess.TimeoutExpired as e:

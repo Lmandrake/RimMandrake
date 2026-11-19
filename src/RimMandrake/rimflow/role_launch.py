@@ -3401,7 +3401,7 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
         # sync ends the unit before anything starts (RIMMANDRAKE_MOVE_SEAT_CLONE_WRITERS_INTO_OWN_POOL_CLONES)
         cmd = ["/bin/sh", "-c", './sync 1>&2 || exit %d; exec "$@"' % role_clones.SYNC_FAILED_EXIT, "role-sync"] + cmd
     bound = scope_bound_s(role)
-    return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
+    return ["--user", "--quiet", "--collect",      # systemd-run's arguments; control.launch_unit names the unit
             "-p", "StandardOutput=file:" + out, "-p", "StandardError=file:" + err,
             "--working-directory", role["clone"],
             "--setenv", "AGENT_SEAT=" + role["seat"], "--setenv", "RIMFLOW_SEAT=" + role["seat"],

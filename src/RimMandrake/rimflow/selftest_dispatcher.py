@@ -1244,7 +1244,8 @@ def test_role_execute_and_dry():
     root = os.path.join(TMP, "roles_exec")
     ok, out, rec = RL.launch(role, "rm-role-conductor-1", "hello", root, "/opt/bin/claude", runner=fake_run)
     argv = calls[0]
-    check(ok and argv[:5] == ["systemd-run", "--user", "--quiet", "--collect", "--unit"],
+    check(ok and argv[:4] == ["systemd-run", "--user", "--quiet", "--collect"]
+          and argv[argv.index("--unit") + 1] == "rm-role-conductor-1",
           "launch: its own transient user unit (outlives the oneshot tick)")
     check("--setenv" in argv and "AGENT_SEAT=BENCH" in argv and any(a.startswith("PATH=/opt/bin:") for a in argv),
           "launch: seat env and claude's dir on PATH")

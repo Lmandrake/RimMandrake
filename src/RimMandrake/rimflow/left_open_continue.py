@@ -365,9 +365,9 @@ def kick_argv(rec):
     for k in ("RM_DETACHED_POOL", "RM_CONDUCTOR_LOG", "RELENTLESS_ROOT", "PATH", "WSL_INTEROP"):
         if os.environ.get(k):
             env += ["--setenv", "%s=%s" % (k, os.environ[k])]
-    return ["/usr/bin/systemd-run", "--user", "--quiet", "--collect", "--no-block", "--unit", rec["unit"] + "-continue",
+    return ["--user", "--quiet", "--collect", "--no-block",     # control.launch_unit names the unit
             "-p", "RuntimeMaxSec=1800", "-p", "WorkingDirectory=/", *env,
-            *DH.stop_resolver(candidates(rec, me), ["run", "--unit", rec["unit"]])]
+            "--", *DH.stop_resolver(candidates(rec, me), ["run", "--unit", rec["unit"]])]
 
 
 def candidates(rec, me):

@@ -320,11 +320,10 @@ def test_finish_kicks():
               "%s %s" % (kicked, after.get("continue_plan")))
     argv = LOC.kick_argv({"unit": "rm-detached-bench-x-1", "state": STATE, "seat": "BENCH", "clone": clone})
     check("I: the kick is its own --no-block unit running `run --unit`",
-          "--no-block" in argv and "rm-detached-bench-x-1-continue" in argv and argv[-3:] == ["run", "--unit",
+          "--no-block" in argv and "--unit" not in argv[:argv.index("--")] and argv[-3:] == ["run", "--unit",
                                                                                              "rm-detached-bench-x-1"],
           str(argv))
-    res = argv[argv.index("--") - 1] if "--" in argv else ""
-    scripts = argv[argv.index("-c") + 2:argv.index("--")]
+    scripts = argv[argv.index("-c") + 2:len(argv) - 1 - argv[::-1].index("--")]     # the resolver's own `--`
     check("I: the step never runs first from the run's own clone (its return deletes it)",
           scripts and not scripts[0].startswith(clone + "/"), str(scripts))
 

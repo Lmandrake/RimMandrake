@@ -3,13 +3,15 @@
 Code: `src/RimMandrake/rimflow/control.py`. This page says where the control store stops. A claim about the store
 counts only if it quotes an entry here (`standing_rulings.md` §A boundary page before pipeline code). Written
 2026-11-18 11:50 PM PST. Read fresh 2026-11-19 by `RIMMANDRAKE_READ_CONTROL_PAGE_FRESH_BEFORE_CODE_IS_CUT`: 4 holes
-added. The code is not yet cut to it. "Tested by" names today's test in `selftest_control.py`; a test named for each
+added. Code cut to it 2026-11-19 by `RIMMANDRAKE_CUT_CONTROL_STORE_TO_PAGE_ARGV_READER_GOES`. "Tested by" names today's test in `selftest_control.py`; a test named for each
 promise is owed.
 
 ## ACCEPTS (the only inputs the store is built for)
 
-- **launch-through-one-door.** A launch is `launch_unit(argv, spec)`. `argv` starts with `systemd-run` and names its
-  unit as `--unit NAME`, as all 9 of our call sites do, or names none. `spec` names one of the 9 launch families.
+- **launch-through-one-door.** A launch is `launch_unit(args, spec)`. `args` are systemd-run's arguments: its
+  options, `--`, then the payload; they are never read. The unit's name is the field `spec["unit"]`, and `spec` names
+  one of the 9 launch families. Only `launch_unit` writes `systemd-run`: an `args` that starts with it, or has no `--`,
+  is refused by name and never run.
 - **one-name-one-run.** A unit name is one run. A launcher that uses one name for every run says `reuse_name` (the
   stop-resume sweep and the testq wake do). Any other name that has run is refused as DUPLICATE, so a left-open run
   is continued once.
@@ -24,7 +26,8 @@ promise is owed.
   carry his words.
 - **his-hold-as-a-file-row.** His hold is a row (mod, date, his words) in `mod_owner_hold.json`, brought in by
   `pipe init --import`. The import may be run any number of times.
-- **plain-paths.** Paths of clones and of the store have no `$` in them. A deadline is 1 whole second or more.
+- **plain-paths.** Paths of clones and of the store have no `$` in them (a launch with one is refused by name before
+  it is admitted). A deadline is 1 whole second or more.
 - **one-machine.** One user on one Linux machine, the store on its ext4 disk, units under that user's systemd.
 
 Anything else is outside. Some outside inputs are refused by name today; refusing the rest is owed work.
@@ -38,7 +41,8 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
 - **hand-command-in-a-run's-own-second.** A `pipe void` typed in the instant between a judge's start and its
   reservation. The held look is freed when that judge's process ends.
 - **deliberate-bypass.** An agent that calls `systemd-run` by hand. The store is not a security wall.
-- **launch-code-in-a-new-shape.** The census of launch sites reads code written the way our 9 sites are written.
+- **launch-code-in-a-new-shape.** The census of launch sites finds a list whose first word is `systemd-run`; one
+  built another way is not seen.
 - **corrupt-or-lost-store.** It is not repaired. Nothing launches (a promise below) and `pipe doctor` names the fix.
 - **a-store-locked-over-3-seconds.** The command says it could not look and exits 3. A unit kill does not wait.
 

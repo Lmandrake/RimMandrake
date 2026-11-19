@@ -721,7 +721,7 @@ def launch_argv(rec, msg, claude):
         cmd = spend_watchdog.wrap(cmd, rec["budget_usd"], python="python3")
         mine = os.path.join(clone, "src", "RimMandrake", "rimflow", "spend_watchdog.py")
         cmd[1] = mine if os.path.exists(mine) else cmd[1]     # the clone's own copy, as with claude_bounded.sh
-    return ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
+    return ["--user", "--quiet", "--collect",      # systemd-run's arguments; control.launch_unit names the unit
             # append:, never file: — file: hands every ExecStopPost the file at offset 0 and finish's line overwrote the
             # head of claude's JSON (RIMMANDRAKE_KEEP_RUN_RESULT_WHOLE_FINISH_WRITES_OVER); finish also moves its own
             # output off these files (keep_off_result), so the JSON stays whole and alone

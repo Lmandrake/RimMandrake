@@ -242,16 +242,16 @@ def t_race():
     def runner_pausing(argv, **kw):     # the pause lands after admit, before systemd-run starts the unit
         C.switch("all", True, "pause inside the launch")
         return subprocess.run(argv, **kw)
-    res = C.launch_unit(["systemd-run", "--user", "--quiet", "--collect", "--unit", "rm-probe-race-a",
-                         "/bin/sh", "-c", "touch " + mark], spec("rm-probe-race-a"), runner=runner_pausing,
+    res = C.launch_unit(["--user", "--quiet", "--collect",
+                         "--", "/bin/sh", "-c", "touch " + mark], spec("rm-probe-race-a"), runner=runner_pausing,
                         capture_output=True, text=True, timeout=30)
     time.sleep(0.3)
     check(res.refused and res.returncode == C.LAUNCH_REFUSED_RC, "real unit, pause before start: the launcher gets "
                                                                    "REFUSED, never rc 0", (res.returncode, res.stderr))
     check(not os.path.exists(mark), "real unit, pause before start: its payload never ran")
     C.switch("all", False, "resume")
-    res = C.launch_unit(["systemd-run", "--user", "--quiet", "--collect", "--unit", "rm-probe-race-b",
-                         "/bin/sh", "-c", "touch %s; sleep 2" % mark], spec("rm-probe-race-b"), capture_output=True,
+    res = C.launch_unit(["--user", "--quiet", "--collect",
+                         "--", "/bin/sh", "-c", "touch %s; sleep 2" % mark], spec("rm-probe-race-b"), capture_output=True,
                         text=True, timeout=30)
     check(res.returncode == 0 and not res.refused, "real unit, no pause: it starts", (res.returncode, res.stderr))
     wait_for(lambda: os.path.exists(mark), 5)
@@ -346,7 +346,7 @@ def t_unreadable():
     cases.append(("wrong schema", schema, None))
     for name, p, _h in cases:
         called.clear()
-        res = C.launch_unit(["systemd-run", "--user", "--unit", "rm-probe-u-" + name.replace(" ", ""), "true"],
+        res = C.launch_unit(["--user", "--", "true"],
                             spec("rm-probe-u-" + name.replace(" ", "")), runner=runner, p=p)
         check(res.refused and res.unreadable and not called, "%s store: nothing launches (the runner is never called)"
               % name, (res.returncode, res.stderr, called))
@@ -386,7 +386,7 @@ def t_crash():
         return
     child2 = ("import sys, os, subprocess; sys.path.insert(0, %r); import control as C\n"
               "def run(argv, **kw):\n    r = subprocess.run(argv, **kw); os._exit(0)\n"
-              "C.launch_unit(['systemd-run', '--user', '--quiet', '--collect', '--unit', 'rm-probe-crash2', '/bin/sleep',"
+              "C.launch_unit(['--user', '--quiet', '--collect', '--', '/bin/sleep',"
               " '1'], {'family': 'probe', 'unit': 'rm-probe-crash2', 'mod': 'Graffiti', 'resources': [{'resource': "
               "C.LOOK, 'win': 'wc2', 'base': 1}]}, runner=run, capture_output=True, text=True, timeout=30)" % HERE)
     subprocess.run([PY, "-c", child2], timeout=60)
@@ -396,7 +396,7 @@ def t_crash():
     check(len(rows) == 1 and rows[0]["state"] == "ended", "a launcher that died after the unit started: exactly one "
                                                           "run, recorded ended by its unit", rows)
     check(a["charged"] == 0 and a["held"] == 0, "and no charge (it never settled: released)", a)
-    res = C.launch_unit(["systemd-run", "--user", "--unit", "rm-probe-crash2", "true"], spec("rm-probe-crash2"),
+    res = C.launch_unit(["--user", "--", "true"], spec("rm-probe-crash2"),
                         runner=lambda *x, **k: (_ for _ in ()).throw(AssertionError("ran")))
     check(res.refused and "DUPLICATE" in res.stderr, "a retry under the same unit is refused as DUPLICATE, never run",
           res.stderr)
@@ -554,7 +554,7 @@ def t_stop():
         f.write(TRAP)
     os.chmod(trap, 0o755)
     pidf = os.path.join(TMP, "child.pid")
-    res = C.launch_unit(["systemd-run", "--user", "--quiet", "--collect", "--unit", "rm-probe-kill1", trap, pidf],
+    res = C.launch_unit(["--user", "--quiet", "--collect", "--", trap, pidf],
                         spec("rm-probe-kill1", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "wk",
                                                                            "base": 1}]),
                         capture_output=True, text=True, timeout=30)
@@ -583,8 +583,8 @@ def t_stop():
     with open(stub, "w") as f:
         f.write(STUB)
     note, calls = os.path.join(TMP, "note.txt"), os.path.join(TMP, "calls.txt")
-    res = C.launch_unit(["systemd-run", "--user", "--quiet", "--collect", "--unit", "rm-probe-stub1",
-                         "--setenv", "RM_ROLE_UNIT=rm-probe-stub1", PY, stub, TOOL, DB, note, calls],
+    res = C.launch_unit(["--user", "--quiet", "--collect",
+                         "--setenv", "RM_ROLE_UNIT=rm-probe-stub1", "--", PY, stub, TOOL, DB, note, calls],
                         spec("rm-probe-stub1", mod="Graffiti", item="RIMMANDRAKE_PROBE_STOP_CHANNEL_STUB",
                              resources=[{"resource": C.LOOK, "win": "ws", "base": 1}]),
                         capture_output=True, text=True, timeout=30)
@@ -611,7 +611,7 @@ def t_stop():
     check(a["held"] == 0 and a["charged"] == 0, "its trial is released", a)
     # the deadline: an agent that ignores the order is killed
     C.switch("mod:Graffiti", False, "on again")
-    res = C.launch_unit(["systemd-run", "--user", "--quiet", "--collect", "--unit", "rm-probe-deaf1", "/bin/sleep",
+    res = C.launch_unit(["--user", "--quiet", "--collect", "--", "/bin/sleep",
                          "300"], spec("rm-probe-deaf1", mod="Graffiti"), capture_output=True, text=True, timeout=30)
     r = C.stop("Graffiti", "write_now", "deadline test", deadline_s=1)
     check("escalates to --kill" in r["units"][0]["said"] and "timer" in r["units"][0]["said"],
@@ -728,7 +728,8 @@ def t_coverage_look():
 def t_sites():
     sites = C.call_sites()
     bad = [s for s in sites if not s["routed"]]
-    check(len(sites) >= 18, "the census sees every systemd-run site (%d)" % len(sites), len(sites))
+    check({"rimflow/control.py", "rimflow/detached_helper.py"} <= {s["file"] for s in sites},
+          "the census sees the systemd-run literals left (control.py's own, a run's return step)", sites)
     check(not bad, "every systemd-run call site goes through control.launch_unit",
           ["%s:%s:%d %s" % (s["file"], s["func"], s["line"], s["why"]) for s in bad])
     root = os.path.join(TMP, "mutant", "rimflow")
@@ -738,7 +739,7 @@ def t_sites():
     m = C.call_sites(os.path.dirname(root))
     check([s for s in m if not s["routed"] and s["func"] == "go"], "a mutant launcher that bypasses launch_unit "
                                                                     "turns the census red", m)
-    # round-two claim 8: a direct systemd-run beside a launch_unit call in one function is not routed by that call
+    # round-two claim 8: only launch_unit writes `systemd-run`, so a literal is unrouted even beside or inside a call
     with open(os.path.join(root, "mixed.py"), "w") as f:
         f.write("import subprocess\nimport control as C\n\ndef go2():\n"
                 "    C.launch_unit(['systemd-run', '--user', '--unit', 'rm-probe-a', 'true'], {'family': 'probe'})\n"
@@ -748,9 +749,8 @@ def t_sites():
                 "def go3():\n    C.launch_unit(['true'], {'family': 'probe'})\n"
                 "    return ['systemd-run', '--user', 'x']\n")
     m = {(s["func"], s["line"]): s for s in C.call_sites(os.path.dirname(root)) if s["file"] == "rimflow/mixed.py"}
-    check(m.get(("go2", 5), {}).get("routed") is True and m.get(("go2", 6), {}).get("routed") is False
-          and m.get(("go2", 8), {}).get("routed") is False and m.get(("go3", 12), {}).get("routed") is False,
-          "claim r2-8: in a function that calls launch_unit, only the argv launch_unit consumes is routed",
+    check(len(m) == 4 and not any(v["routed"] for v in m.values()),
+          "claim r2-8: every systemd-run literal outside control.py is unrouted, the one handed to launch_unit too",
           {k: (v["routed"], v["why"]) for k, v in m.items()})
     os.unlink(os.path.join(root, "mixed.py"))
     with open(os.path.join(root, "detached_helper.py"), "w") as f:
@@ -811,7 +811,7 @@ def t_hooks_in_run_clone():
     def runner(argv, **k):
         got.append(list(argv))
         return types.SimpleNamespace(returncode=0, stdout="", stderr="", args=argv)
-    C.launch_unit(["systemd-run", "--user", "--unit", "rm-probe-hookclone", "true"], spec("rm-probe-hookclone"),
+    C.launch_unit(["--user", "--", "true"], spec("rm-probe-hookclone"),
                   runner=runner, p=DB, clone=rc)
     props = [a for a in (got[0] if got else []) if a.startswith(("ExecCondition=", "ExecStopPost="))]
     check(len(props) == 2 and all(mine in a for a in props), "the unit's start check and end receipt run the run "
@@ -994,8 +994,8 @@ def t_review_claims_eight():
     fresh()
     u = "rm-probe-claim4-%d" % os.getpid()
     marker = os.path.join(TMP, "claim4.ran")
-    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", u, "--on-active=2",
-            "--timer-property=AccuracySec=1s", "/usr/bin/touch", marker]   # the default accuracy is a minute
+    argv = ["--user", "--quiet", "--collect", "--on-active=2",
+            "--timer-property=AccuracySec=1s", "--", "/usr/bin/touch", marker]   # the default accuracy is a minute
     r1 = C.launch_unit(argv, spec(u, mod="Graffiti"), capture_output=True, text=True, timeout=30)
     r2 = C.launch_unit(argv, spec(u, mod="Cauldron"), capture_output=True, text=True, timeout=30)
     fired = wait_for(lambda: unit_state(u + ".timer") in ("inactive", "failed", ""), 10)
@@ -1039,14 +1039,23 @@ def t_review_claims_round_two():
     def runner(argv, **kw):
         seen.append(list(argv))
         return subprocess.CompletedProcess(argv, 0, "", "")
-    C.launch_unit(["systemd-run", "--user", "/bin/true"], spec("rm-probe-r2c2"), runner=runner)
-    check(seen and C.unit_of(seen[0]) == "rm-probe-r2c2", "claim r2-2: an argv without --unit is sent the spec's unit",
-          seen[:1])
+    C.launch_unit(["--user", "--", "/bin/true"], spec("rm-probe-r2c2"), runner=runner)
+    sent = seen[0] if seen else []
+    check(sent[sent.index("--") - 6:sent.index("--") - 4] == ["--unit", "rm-probe-r2c2"] if "--" in sent else False,
+          "claim r2-2: the spec's unit is the last --unit among systemd-run's options", sent)
     seen.clear()
     r = C.launch_unit(["systemd-run", "--user", "--unit", "rm-probe-r2c2-other", "/bin/true"], spec("rm-probe-r2c2b"),
                       runner=runner)
-    check(not seen and r.refused and r.returncode == C.LAUNCH_REFUSED_RC,
-          "claim r2-2: a spec and argv naming different units is refused before systemd-run", (seen, r.stderr))
+    check(not seen and r.refused and r.returncode == C.LAUNCH_REFUSED_RC and "launch-through-one-door" in r.stderr,
+          "launch-through-one-door: a systemd-run line of the caller's own is refused by name, never run",
+          (seen, r.stderr))
+    r = C.launch_unit(["--user", "/bin/true"], spec("rm-probe-r2c2c"), runner=runner)
+    check(not seen and r.refused and "--" in r.stderr, "launch-through-one-door: a launch with no `--` before its "
+                                                       "payload is refused by name, never run", (seen, r.stderr))
+    r = C.launch_unit(["--user", "--", "/bin/true"], spec("rm-probe-dollar"), runner=runner,
+                      p=os.path.join(TMP, "${HOME}", "control.db"))
+    check(not seen and r.refused and "plain-paths" in r.stderr, "plain-paths: a store path with $ is refused by name "
+                                                                "before admission, never run", (seen, r.stderr))
     # 3. an emergency kill on a locked store kills at once and records the kill when the store frees
     fresh()
     a = C.admit(spec("rm-probe-r2c3", mod="Graffiti"))
@@ -1118,7 +1127,7 @@ def t_review_claims_round_two():
     loaded = []
 
     def trunner(argv, **kw):
-        n = C.unit_of(argv)
+        n = argv[argv.index("--unit") + 1]
         if n in loaded:
             return subprocess.CompletedProcess(argv, 1, "", "Unit %s.timer already exists." % n)
         loaded.append(n)
@@ -1198,16 +1207,12 @@ def t_review_claims_round_three():
     fresh()
     seen = []
     runner = lambda argv, **kw: seen.append(list(argv)) or subprocess.CompletedProcess(argv, 0, "", "")
-    r = C.launch_unit(["systemd-run", "--user", "/bin/echo", "--unit", "payload"], spec("rm-probe-r3c6"), runner=runner)
+    r = C.launch_unit(["--user", "--", "/bin/echo", "--unit", "payload"], spec("rm-probe-r3c6"), runner=runner)
     sent = seen[0] if seen else []
     cmd = sent.index("/bin/echo") if "/bin/echo" in sent else -1
     check(not r.refused and "rm-probe-r3c6" in sent and 0 < sent.index("rm-probe-r3c6") < cmd
           and sent[cmd:] == ["/bin/echo", "--unit", "payload"],
           "claim r3-6: a payload --unit is not systemd-run's; the spec's unit goes before the command", sent)
-    check(C.unit_of(["systemd-run", "--user", "-p", "X=1", "--", "/bin/x", "--unit", "y"]) is None and
-          C.unit_of(["systemd-run", "-p", "--unit", "--unit=u1", "/bin/x"]) == "u1" and
-          C.unit_of(["systemd-run", "--user", "-u", "u2", "x"]) == "u2",
-          "claim r3-6: unit_of reads systemd-run's options only (operands, --, -u)")
     # 2. a locked emergency kill whose run ended first books that run (void, killed), not a stand-in
     fresh()
     a = started("rm-probe-r3c2", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w", "base": 1}])
@@ -1346,15 +1351,8 @@ def t_review_claims_round_three():
                 "    C.launch_unit(alias, spec)\n\n"
                 "def same_line(spec):\n    C.launch_unit(['systemd-run', 'a'], spec); subprocess.run(['systemd-run', 'b'])\n")
     m = C.call_sites(os.path.dirname(root))
-    got = {(s_["file"].split("/")[-1], s_["func"], s_["line"]): s_ for s_ in m}
-    same = sorted((s_["col"], s_["routed"]) for s_ in m if s_["func"] == "same_line")
-    check(got[("detached_helper.py", "launch_argv", 4)]["routed"] is False and "mixed" in
-          got[("detached_helper.py", "launch_argv", 4)]["why"], "claim r3-7: a builder run beside a launch_unit call is "
-                                                               "unrouted", got[("detached_helper.py", "launch_argv", 4)])
-    check(got[("alias.py", "go", 5)]["routed"] is False and got[("alias.py", "only_alias", 11)]["routed"] is True,
-          "claim r3-7: aliases are followed both ways", (got[("alias.py", "go", 5)], got[("alias.py", "only_alias", 11)]))
-    check([r_ for _c, r_ in same] == [True, False], "claim r3-7: two literals on one line are judged one by one", same)
-
+    check(len(m) == 5 and not any(s_["routed"] for s_ in m), "claim r3-7: a builder's literal, an alias and two "
+          "literals on one line are each unrouted", [(s_["func"], s_["line"], s_["routed"]) for s_ in m])
 
 def t_accounts():
     """Slice 2 (RIMMANDRAKE_TYPE_EVERY_CONSUMABLE_AS_ACCOUNT_OLD_COUNTERS_GO): the consumable counts and limits are
@@ -1558,17 +1556,6 @@ def t_review_round_four_p1():
     check(killed and killed[0][0] == "rm-role-probe-r4c2" and "claude-seat-BENCH-rm-role-probe-r4c2.scope" in killed[0]
           and C.run_state(a["run"])["state"] == "killed",
           "claim r4-2: stop <unit>.service finds the run and its claude scope", (killed, C.run_state(a["run"])["state"]))
-    # P1 #3: systemd-run's option forms: attached -u, operand-free --on-clock-change, --root-directory, last one wins
-    check(C.unit_of(["systemd-run", "-urm-a", "/bin/x"]) == "rm-a" and
-          C.unit_of(["systemd-run", "--on-clock-change", "--unit", "rm-b", "/bin/x"]) == "rm-b" and
-          C.unit_of(["systemd-run", "--root-directory", "/r", "--unit", "rm-c", "/bin/x"]) == "rm-c" and
-          C.unit_of(["systemd-run", "--unit", "rm-d", "-urm-e", "/bin/x"]) == "rm-e" and
-          C.unit_of(["systemd-run", "-pA=1", "-urm-f", "/bin/x"]) == "rm-f",
-          "claim r4-3: unit_of reads attached -u, operand-free flags, --root-directory, and the last declaration")
-    seen = []
-    runner = lambda argv, **kw: seen.append(list(argv)) or subprocess.CompletedProcess(argv, 0, "", "")
-    r = C.launch_unit(["systemd-run", "--user", "-urm-actual", "/bin/true"], spec("rm-recorded"), runner=runner)
-    check(r.refused and not seen, "claim r4-3: a spec unit and an attached -u naming another unit is refused", (r, seen))
     # #12: pipe off cannot read the live runs: says UNVERIFIED, never "no run is live"
     fresh()
     real_q = C._q
@@ -1776,7 +1763,7 @@ def t_reused_name_runs_again():
     refused as DUPLICATE (a left-open run is continued once), and a live one is refused either way."""
     fresh()
     fake = lambda a, **k: subprocess.CompletedProcess(a, 0, "", "")
-    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", "rm-probe-again", "true"]
+    argv = ["--user", "--quiet", "--collect", "--", "true"]
     r = C.launch_unit(argv, spec("rm-probe-again", reuse_name=True), runner=fake)
     C.condition(r.run)
     live = C.launch_unit(argv, spec("rm-probe-again", reuse_name=True), runner=fake)
@@ -1787,7 +1774,7 @@ def t_reused_name_runs_again():
           getattr(r2, "why", None))
     C.condition(r2.run)
     C.ended(r2.run, "success/exited/0")
-    once = ["systemd-run", "--user", "--unit", "rm-probe-once", "true"]
+    once = ["--user", "--", "true"]
     r3 = C.launch_unit(once, spec("rm-probe-once"), runner=fake)
     C.condition(r3.run)
     C.ended(r3.run, "success/exited/0")

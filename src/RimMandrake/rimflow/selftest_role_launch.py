@@ -155,7 +155,7 @@ def test_launch_result():
 def test_launch_argv_shape():
     role = {"name": "r", "seat": "SEAT", "clone": "/c", "model": "opus", "run_max_s": 1000}
     a = RL.launch_argv(role, "U", "MSG", "/o.json", "/e.err", "/bin/claude")
-    check(a[:4] == ["systemd-run", "--user", "--quiet", "--collect"] and a[4:6] == ["--unit", "U"], "head %r" % a[:6])
+    check(a[:3] == ["--user", "--quiet", "--collect"] and "--unit" not in a[:a.index("--")], "head %r" % a[:6])
     check("StandardOutput=file:/o.json" in a and "StandardError=file:/e.err" in a, "out/err files")
     check("--working-directory" in a and a[a.index("--working-directory") + 1] == "/c", "working dir is the clone")
     for e in ("AGENT_SEAT=SEAT", "RIMFLOW_SEAT=SEAT", "CLAUDE_SCOPE_UNIT=claude-seat-SEAT-U", "RM_ROLE_UNIT=U",

@@ -527,8 +527,8 @@ def kick(now=None, runner=subprocess.run, **kw):
     found = [x for x in scan(now=now, runner=runner, **kw) if x["act"] in ACTIONABLE]
     if not found:
         return "stop_resume: nothing owed"
-    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", SWEEP_UNIT, "-p", "RuntimeMaxSec=1800",
-            "/usr/bin/python3", os.path.abspath(__file__), "sweep"]
+    argv = ["--user", "--quiet", "--collect", "-p", "RuntimeMaxSec=1800",
+            "--", "/usr/bin/python3", os.path.abspath(__file__), "sweep"]
     import control as C     # the one admission point (control.py)
     r = C.launch_unit(argv, {"family": "stop_resume", "unit": SWEEP_UNIT, "reuse_name": True}, runner=runner, capture_output=True, text=True,
                       timeout=60, stdin=subprocess.DEVNULL)

@@ -68,9 +68,9 @@ def launch(name, payload):
     """One role-shaped unit: stdout and stderr to files, as role_launch does. -> (run record, rid, unit)."""
     unit = "rm-probe-receipt-%s-%d" % (name, os.getpid())
     out, err = os.path.join(TMP, name + ".out"), os.path.join(TMP, name + ".err")
-    res = C.launch_unit(["systemd-run", "--user", "--quiet", "--collect", "--unit", unit,
+    res = C.launch_unit(["--user", "--quiet", "--collect",
                          "-p", "StandardOutput=file:" + out, "-p", "StandardError=file:" + err,
-                         "/bin/sh", "-c", payload], {"family": "probe", "unit": unit},
+                         "--", "/bin/sh", "-c", payload], {"family": "probe", "unit": unit},
                         capture_output=True, text=True, timeout=30)
     check(res.returncode == 0 and not res.refused, "%s: the unit launches" % name, (res.returncode, res.stderr))
     ended = wait_for(lambda: (C.run_state(res.run) or {}).get("state") == "ended", 15)

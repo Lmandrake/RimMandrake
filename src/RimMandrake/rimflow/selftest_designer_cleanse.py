@@ -730,7 +730,7 @@ def test_fleet():
           "status.md: one plain line per mod with its state and why")
     check(json.load(open(os.path.join(sd, "status.json")))["mods"]["Demo"]["state"] == "running", "status.json")
     argv = DC.fleet_unit_argv(["--all-biomes-but", "Pyrelands", "--parallel", "4"], unit="u1")
-    check(argv[:2] == ["systemd-run", "--user"] and "--foreground" in argv and "RuntimeMaxSec" not in " ".join(argv),
+    check(argv[:1] == ["--user"] and "--" in argv and "--foreground" in argv and "RuntimeMaxSec" not in " ".join(argv),
           "fleet detaches into its own systemd user unit with no wall-time bound")
     os.environ["RM_OWNER_HOLD_FILE"] = "/x/hold.json"
     try:

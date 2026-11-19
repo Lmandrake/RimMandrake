@@ -1401,97 +1401,46 @@ def hook_script(clone=None):
 
 def hook_cmd(verb, run, p, clone=None):
     """-> one command line, each word quoted (systemd and sh both read single quotes): a path with a space stays one
-    argument (round-three claim 10)."""
+    argument (round-three claim 10). A path with `$` in it is outside the page (plain-paths): systemd would expand it."""
     import shlex
     py = "/usr/bin/python3" if os.path.exists("/usr/bin/python3") else sys.executable
-    return " ".join(shlex.quote(x) for x in (py, hook_script(clone), verb, run, "--db", os.path.abspath(p)))
+    words = (py, hook_script(clone), verb, run, "--db", os.path.abspath(p))
+    if any("$" in x for x in words):
+        raise Refused("plain-paths: a clone or store path has no $ in it: %s" % " ".join(words))
+    return " ".join(shlex.quote(x) for x in words)
 
 
-SR_VALUE_OPTS = {"--unit", "--property", "--description", "--slice", "--setenv", "--machine", "--host", "--uid",
-                 "--gid", "--nice", "--working-directory", "--root-directory", "--on-active", "--on-boot",
-                 "--on-startup", "--on-unit-active", "--on-unit-inactive", "--on-calendar", "--timer-property",
-                 "--path-property", "--socket-property", "--service-type", "--capsule"}
-SR_VALUE_SHORT = "upEMHDC"     # -u NAME | -uNAME, -p X=Y | -pX=Y, ... (the operand-free flags take nothing)
-
-
-def _sr_unit(argv):
-    """-> (index of the LAST unit declaration, its name, "sep" | "eq" | "att") within systemd-run's own options, or
-    (None, None, None). systemd-run reads its options up to the command (the first word that is not an option or an
-    option's operand) or `--`, and the last --unit wins; a payload's own `--unit` is the payload's (round-three claim 6;
-    attached -uNAME, --root-directory and the operand-free --on-clock-change: round-four claim 3)."""
-    n, last = 1, (None, None, None)
-    while n < len(argv):
-        a = str(argv[n])
-        if a == "--" or not a.startswith("-") or a == "-":
-            break
-        if a.startswith("--"):
-            name, eq, val = a.partition("=")
-            if name == "--unit":
-                if eq:
-                    last = (n, val, "eq")
-                elif n + 1 < len(argv):
-                    last = (n, argv[n + 1], "sep")
-            n += 2 if (name in SR_VALUE_OPTS and not eq) else 1
-            continue
-        flags = a[1:]       # a short cluster: -q, -t, -u NAME, -uNAME, -pX=Y
-        for k, ch in enumerate(flags):
-            if ch in SR_VALUE_SHORT:
-                rest = flags[k + 1:]
-                if ch == "u":
-                    last = (n, rest, "att") if rest else ((n, argv[n + 1], "sep") if n + 1 < len(argv) else last)
-                n += 1 if rest else 2
-                break
-        else:
-            n += 1
-    return last
-
-
-def unit_of(argv):
-    """-> the unit name systemd-run's own options give (--unit X, --unit=X, -u X), else None."""
-    return _sr_unit(argv)[1]
-
-
-def launch_unit(argv, spec, runner=None, p=None, clone=None, **kw):
+def launch_unit(args, spec, runner=None, p=None, clone=None, **kw):
     """THE launch primitive: every `systemd-run` that starts pipeline work goes through here (selftest_control
-    enumerates the call sites; an unrouted one fails it). admit(spec) first; a refusal returns a Launch with .refused
-    (rc LAUNCH_REFUSED_RC) and never runs systemd-run. An admitted run's unit carries ExecCondition (the start-time
-    re-check) and ExecStopPost (its end receipt). After systemd-run returns, the run's state decides: refused or
-    cancelled at start -> .refused, never "running". -> Launch. Raises what the runner raises (a timeout leaves the run
-    admitted for reconcile: an ambiguous start is investigated, never relaunched under the same name)."""
+    enumerates the call sites; an unrouted one fails it). `args` are systemd-run's arguments: its options, `--`, then
+    the payload; the unit's name is spec["unit"], a field, and control puts `--unit` last among the options, so the
+    name systemd runs is the one control records. args are never read. admit(spec) first; a refusal returns a Launch
+    with .refused (rc LAUNCH_REFUSED_RC) and never runs systemd-run. An admitted run's unit carries ExecCondition (the
+    start-time re-check) and ExecStopPost (its end receipt). After systemd-run returns, the run's state decides: refused
+    or cancelled at start -> .refused, never "running". -> Launch. Raises what the runner raises (a timeout leaves the
+    run admitted for reconcile: an ambiguous start is investigated, never relaunched under the same name)."""
     runner = runner or subprocess.run
     p = p or db_path()
-    i = 1 if argv and os.path.basename(str(argv[0])) == "systemd-run" else None
-    if i is None:       # not a unit (a test seam's stand-in command): admitted the same, run, and closed at once
-        try:
-            adm = admit(dict(spec, unit=spec.get("unit") or "rm-%s-%d" % (spec.get("family"), time.time_ns() // 1000)),
-                        p)
-        except Unreadable as e:
-            return _refusal(argv, str(e), unreadable=True)
-        if not adm["ok"]:
-            return _refusal(argv, adm["why"])
-        r = runner(argv, **kw)
-        _mark(adm["run"], "ended" if r.returncode == 0 else "fail_launch", "no unit: ran in the caller", p)
-        return r
-    named = unit_of(argv)
-    if spec.get("unit") and named and named != spec["unit"]:    # control would record one unit and systemd run another
-        return _refusal(argv, "the spec names unit %s and the argv --unit %s: one launch has one name" % (
-            spec["unit"], named))
-    if not named:       # the unit name is fixed BEFORE launch, so admission can key it and a stop can find it
-        argv = list(argv[:i]) + ["--unit", spec.get("unit") or "rm-%s-%d-%04x" % (
-            spec.get("family"), time.time_ns() // 1000, os.getpid() & 0xffff)] + list(argv[i:])
-    spec = dict(spec, unit=unit_of(argv))
+    args = list(args)
+    if args and os.path.basename(str(args[0])) == "systemd-run":
+        return _refusal(args, "launch-through-one-door: a launch passes systemd-run's arguments and names its unit "
+                              "in spec['unit']; control runs systemd-run")
+    if "--" not in args:
+        return _refusal(args, "launch-through-one-door: the payload follows `--` in a launch's arguments")
     try:
+        hook_cmd("condition", "run", p, clone)      # plain-paths, refused before anything is admitted
         adm = admit(spec, p)
     except Unreadable as e:
-        return _refusal(argv, str(e), unreadable=True)
+        return _refusal(args, str(e), unreadable=True)
+    except Refused as e:
+        return _refusal(args, str(e))
     if not adm["ok"]:
-        return _refusal(argv, adm["why"])
+        return _refusal(args, adm["why"])
     rid = adm["run"]
-    # the two receipts go right after `--unit <name>` (the options before it stay where callers expect them)
-    k, _name, form = _sr_unit(argv)
-    j = i if k is None else k + (2 if form == "sep" else 1)     # any place in the options is systemd-run's
-    full = list(argv[:j]) + ["-p", "ExecCondition=" + hook_cmd("condition", rid, p, clone),
-                             "-p", "ExecStopPost=-" + hook_cmd("ended", rid, p, clone)] + list(argv[j:])
+    j = args.index("--")
+    full = ["systemd-run"] + args[:j] + ["--unit", spec["unit"],
+                                         "-p", "ExecCondition=" + hook_cmd("condition", rid, p, clone),
+                                         "-p", "ExecStopPost=-" + hook_cmd("ended", rid, p, clone)] + args[j:]
     try:
         r = runner(full, **kw)
     except OSError as e:
@@ -1509,7 +1458,7 @@ def launch_unit(argv, spec, runner=None, p=None, clone=None, **kw):
         out.why = "the run's state cannot be read after launch: %s" % e
         return out
     if st and st["state"] in ("refused", "cancelled"):
-        return _refusal(argv, "%s at start: %s" % (st["state"], st["why"]), run=rid)
+        return _refusal(args, "%s at start: %s" % (st["state"], st["why"]), run=rid)
     if st and st["state"] == "admitted" and r.returncode != 0:
         _mark(rid, "fail_launch", "systemd-run exit %d" % r.returncode, p, fault=True)
     return out
@@ -2046,8 +1995,8 @@ def claude_settings(p=None, clone=None):
 
 # ---------------------------------------------------------------- the call-site census (no launch bypasses admit)
 
-# Files whose `systemd-run` starts no pipeline work (paths under src/RimMandrake), each with why. Every other site must
-# be routed: its function calls launch_unit, or it is a BUILDER whose every caller calls launch_unit.
+# Files whose `systemd-run` starts no pipeline work (paths under src/RimMandrake), each with why. A pipeline launch
+# passes systemd-run's arguments to launch_unit, which alone writes `systemd-run`: every other literal is a bypass.
 NOT_PIPELINE = {
     "Utils/timers_guard.py": "re-arms a paused timer (no model)",
     "Utils/clone_mem_probe.py": "a memory-probe scope (no model)",
@@ -2061,103 +2010,24 @@ BOOKKEEPING = {
     "rimflow/detached_helper.py:return_argv": "a finished run's clone-return step (starts no model)",
     "rimflow/role_launch.py:stoppost_handoff": "a finished run's wrap-up step, an ExecStopPost (starts no model)",
 }
-BUILDERS = {    # functions that only BUILD a systemd-run argv; every call of one must sit in a launch_unit caller
-    "rimflow/detached_helper.py:launch_argv",
-    "rimflow/role_launch.py:launch_argv",
-    "rimflow/designer_cleanse.py:fleet_unit_argv",
-    "rimflow/left_open_continue.py:kick_argv",
-}
 
 
 def _sr_list(node):
-    if isinstance(node, (ast_mod().List, ast_mod().Tuple)) and node.elts:
+    import ast
+    if isinstance(node, (ast.List, ast.Tuple)) and node.elts:
         e = node.elts[0]
-        return isinstance(e, ast_mod().Constant) and isinstance(e.value, str) and \
-            os.path.basename(e.value) == "systemd-run"
+        return isinstance(e, ast.Constant) and isinstance(e.value, str) and os.path.basename(e.value) == "systemd-run"
     return False
 
 
-def ast_mod():
-    import ast
-    return ast
-
-
-def _calls(fn, name):
-    ast = ast_mod()
-    for n in ast.walk(fn):
-        if isinstance(n, ast.Call):
-            f = n.func
-            if (isinstance(f, ast.Name) and f.id == name) or (isinstance(f, ast.Attribute) and f.attr == name):
-                yield n
-
-
-RUNS_ARGV = ("run", "Popen", "call", "check_call", "check_output", "runner", "execv", "execvp", "execvpe")
-
-
-def _cname(call):
-    f = call.func
-    return f.id if isinstance(f, ast_mod().Name) else f.attr if isinstance(f, ast_mod().Attribute) else None
-
-
-def _consumed_by(fn, site):
-    """-> "launch_unit" when the expression `site` in `fn` (a systemd-run argv literal, or a call of an argv builder)
-    reaches a launch_unit call (directly, through an expression around it, or through the names it is assigned to and
-    their aliases) and no call that runs an argv itself (RUNS_ARGV) takes it; else why not. Sites are AST nodes, so
-    two on one line are judged one by one (round-three claim 7)."""
-    ast = ast_mod()
-    parent = {}
-    for n in ast.walk(fn):
-        for ch in ast.iter_child_nodes(n):
-            parent[ch] = n
-    node = site
-    while node in parent and node is not fn:
-        up = parent[node]
-        if isinstance(up, ast.Call) and node is not up.func:
-            name = _cname(up)
-            if name == "launch_unit":
-                return "launch_unit"
-            if name in RUNS_ARGV:
-                return "%s() runs it directly" % name
-        elif isinstance(up, (ast.Assign, ast.AnnAssign)):
-            targets = up.targets if isinstance(up, ast.Assign) else [up.target]
-            names = {t.id for t in targets if isinstance(t, ast.Name)}
-            if not names:
-                return "it is assigned to something other than a name"
-            grew = True
-            while grew:     # aliases: `alias = argv`, `full = argv + [...]` carry the argv on
-                grew = False
-                for st in ast.walk(fn):
-                    if isinstance(st, ast.Assign) and st is not up and any(
-                            isinstance(x, ast.Name) and x.id in names for x in ast.walk(st.value)):
-                        for t in st.targets:
-                            if isinstance(t, ast.Name) and t.id not in names:
-                                names.add(t.id)
-                                grew = True
-            takers = set()
-            for call in ast.walk(fn):
-                if isinstance(call, ast.Call) and _cname(call) in RUNS_ARGV + ("launch_unit",) and any(
-                        isinstance(x, ast.Name) and x.id in names for a in list(call.args) + [k.value for k in
-                                                                                          call.keywords]
-                        for x in ast.walk(a)):
-                    takers.add(_cname(call))
-            run_by = sorted(takers - {"launch_unit"})
-            if run_by:
-                return "%s() runs %s directly" % ("(), ".join(run_by), "/".join(sorted(names)))
-            return "launch_unit" if takers else "no launch_unit call takes %s" % "/".join(sorted(names))
-        elif isinstance(up, ast.stmt):
-            return "it is a %s, not an argument of launch_unit" % type(up).__name__
-        node = up
-    return "no launch_unit call takes it"
-
-
 def call_sites(root=None):
-    """-> [{"file", "func", "line", "routed" (bool), "why"}] for every list literal whose first element is systemd-run in
-    every non-test .py under `root` (src/RimMandrake). The selftest fails on any routed=False."""
-    ast = ast_mod()
+    """-> [{"file", "func", "line", "col", "routed" (bool), "why"}] for every list literal whose first element is
+    systemd-run in every non-test .py under `root` (src/RimMandrake). Routed only when NOT_PIPELINE or BOOKKEEPING names
+    it; the selftest fails on any routed=False."""
+    import ast
+    import warnings
     root = root or os.path.join(REPO, "src", "RimMandrake")
-    funcs = {}      # "rel:func" -> FunctionDef
-    sites = []
-    trees = {}
+    out = []
     for d, _dirs, files in os.walk(root):
         parts = os.path.relpath(d, root).split(os.sep)
         if any(x.startswith(".") and x != "." for x in parts) or "__pycache__" in parts:
@@ -2168,72 +2038,26 @@ def call_sites(root=None):
             path = os.path.join(d, f)
             rel = os.path.relpath(path, root).replace(os.sep, "/")
             try:
-                import warnings
                 with open(path, encoding="utf-8") as fh, warnings.catch_warnings():
                     warnings.simplefilter("ignore")
                     tree = ast.parse(fh.read())
             except (OSError, SyntaxError, ValueError):
                 continue
-            trees[rel] = tree
 
-            def visit(node, stack):
+            def visit(node, fn):
                 for ch in ast.iter_child_nodes(node):
                     if isinstance(ch, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                        funcs["%s:%s" % (rel, ch.name)] = ch
-                        visit(ch, stack + [ch])
-                    else:
-                        if _sr_list(ch):
-                            sites.append((rel, stack[-1] if stack else None, ch))
-                        visit(ch, stack)
-            visit(tree, [])
-    callers = {}    # builder "rel:name" -> [(rel, enclosing FunctionDef or None, the Call node)]
-    by_name = {}
-    for b in BUILDERS:
-        by_name.setdefault(b.split(":")[1], []).append(b)
-    for rel, tree in trees.items():
-        def walk(node, fn):
-            for ch in ast.iter_child_nodes(node):
-                if isinstance(ch, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                    walk(ch, ch)
-                    continue
-                if isinstance(ch, ast.Call):
-                    f = ch.func
-                    # a bare name calls the builder of its own file; X.name calls a builder of that name elsewhere
-                    for b in by_name.get(f.id if isinstance(f, ast.Name) else f.attr if isinstance(f, ast.Attribute)
-                                         else None, []):
-                        if (b.split(":")[0] == rel) == isinstance(f, ast.Name):
-                            callers.setdefault(b, []).append((rel, fn, ch))
-                walk(ch, fn)
-        walk(tree, None)
-    out = []
-    for rel, fn, node in sites:
-        line, col = node.lineno, node.col_offset
-        name = fn.name if fn else "<module>"
-        k = "%s:%s" % (rel, name)
-        if rel in NOT_PIPELINE:
-            out.append({"file": rel, "func": name, "line": line, "col": col, "routed": True,
-                        "why": "not pipeline: " + NOT_PIPELINE[rel]})
-        elif k in BOOKKEEPING:
-            out.append({"file": rel, "func": name, "line": line, "col": col, "routed": True,
-                        "why": "bookkeeping: " + BOOKKEEPING[k]})
-        elif fn is not None and any(True for _ in _calls(fn, "launch_unit")):
-            how = _consumed_by(fn, node)
-            out.append({"file": rel, "func": name, "line": line, "col": col, "routed": how == "launch_unit",
-                        "why": "launch_unit runs this argv" if how == "launch_unit" else
-                        "UNROUTED: beside a launch_unit call, but %s" % how})
-        elif k in BUILDERS:
-            cs = callers.get(k) or []
-            # each CALL of the builder is judged like a literal: launch_unit must take what it returns (a builder
-            # called by another builder hands it on); one launch_unit call elsewhere in the caller proves nothing
-            bad = [(r, f.name if f else "<module>") for r, f, call in cs
-                   if f is None or not ("%s:%s" % (r, f.name) in BUILDERS or _consumed_by(f, call) == "launch_unit")]
-            out.append({"file": rel, "func": name, "line": line, "col": col, "routed": bool(cs) and not bad,
-                        "why": ("builder; every caller launches through launch_unit (%d)" % len(cs)) if cs and not bad
-                        else "builder called OUTSIDE launch_unit: %s" % ", ".join("%s:%s" % b for b in bad) if bad
-                        else "builder with no caller"})
-        else:
-            out.append({"file": rel, "func": name, "line": line, "col": col, "routed": False,
-                        "why": "UNROUTED: starts a unit without control.launch_unit"})
+                        visit(ch, ch.name)
+                        continue
+                    if _sr_list(ch):
+                        k = "%s:%s" % (rel, fn)
+                        why = ("not pipeline: " + NOT_PIPELINE[rel] if rel in NOT_PIPELINE else
+                               "bookkeeping: " + BOOKKEEPING[k] if k in BOOKKEEPING else
+                               "UNROUTED: starts a unit without control.launch_unit")
+                        out.append({"file": rel, "func": fn, "line": ch.lineno, "col": ch.col_offset,
+                                    "routed": not why.startswith("UNROUTED"), "why": why})
+                    visit(ch, fn)
+            visit(tree, "<module>")
     return out
 
 

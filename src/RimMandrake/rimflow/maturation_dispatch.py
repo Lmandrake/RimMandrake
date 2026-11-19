@@ -1210,7 +1210,7 @@ def cert_rerun_unit(mod, key, runner=subprocess.run, now=None):
     tick never waits on it). -> (rc, text, unit)."""
     unit = "rm-cert-rerun-%s-%d" % (re.sub(r"[^a-z0-9]+", "-", mod.lower()).strip("-"), int(now or time.time()))
     log = os.path.join(rerun_dir(), "%s.log" % mod)
-    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", unit, "-p", "RuntimeMaxSec=%d" % RERUN_MAX_S,
+    argv = ["--user", "--quiet", "--collect", "-p", "RuntimeMaxSec=%d" % RERUN_MAX_S,
             "-p", "StandardOutput=append:" + log, "-p", "StandardError=append:" + log, "--working-directory", REPO,
             "--setenv", "PATH=" + os.environ.get("PATH", "/usr/bin:/bin"), "--setenv", "RM_MATURATION_DISPATCH_DIR=" + sdir(),
             "--", sys.executable, os.path.abspath(__file__), "cert-rerun", mod, "--key", key, "--unit", unit]

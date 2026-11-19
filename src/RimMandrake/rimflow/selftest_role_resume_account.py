@@ -123,7 +123,7 @@ def test_resume_after_real_usage():
     argv = RL.launch_argv(role, a["unit"], a["message"], "o", "e", "/x/claude", session="NEW")
     check("the argv resumes the session", "--resume" in argv and argv[argv.index("--resume") + 1] == SID
           and "--session-id" not in argv)
-    check("same unit template", argv[:2] == ["systemd-run", "--user"] and argv[argv.index("--unit") + 1] == a["unit"]
+    check("same unit template", argv[:1] == ["--user"] and "RM_ROLE_UNIT=" + a["unit"] in argv
           and "--model" in argv and "role-pre-launch" not in argv)
     fresh_argv = RL.launch_argv(RL.launch_role(op, {"mode": "run"}), "U", "m", "o", "e", "/x/claude", session="NEW")
     check("a fresh run is unchanged: --session-id, no --resume", "--resume" not in fresh_argv

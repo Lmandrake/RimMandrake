@@ -2066,9 +2066,9 @@ def fleet_unit_argv(args, unit):
     if not os.environ.get("AGENT_SEAT"):
         env += ["--setenv", "AGENT_SEAT=BENCH", "--setenv", "RIMFLOW_SEAT=BENCH"]
     log = os.path.join(status_dir(), "fleet.log")
-    return ["systemd-run", "--user", "--collect", "--unit", unit, "-p", "WorkingDirectory=" + ROOT,
+    return ["--user", "--collect", "-p", "WorkingDirectory=" + ROOT,     # control.launch_unit names the unit
             "-p", "StandardOutput=append:" + log, "-p", "StandardError=append:" + log] + env + [
-            "python3", os.path.abspath(__file__), "fleet"] + list(args) + ["--foreground"]
+            "--", "python3", os.path.abspath(__file__), "fleet"] + list(args) + ["--foreground"]
 
 
 def fleet(mods, fx_for, runner="codex", parallel=4, model=None, effort=None, converge=False):
