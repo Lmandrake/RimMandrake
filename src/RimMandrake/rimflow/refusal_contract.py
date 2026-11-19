@@ -560,7 +560,7 @@ def submit(verdict, given=None, now=None):
                 if n_clause.get(rec["clause"], 0) >= CLAUSE_REPAIR_AT:
                     res["repair_due"].append(rec["clause"])
             hist = c["families"].setdefault(fam, [])
-            hist.append({"item": item, "refused": refused, "at": iso(now)})
+            hist.append({"item": item, "refused": bool(fresh), "at": iso(now)})   # family limits: unchanged
             del hist[:-FAMILY_KEEP]
             _write(counters_path(), c)
             why = []
@@ -573,7 +573,7 @@ def submit(verdict, given=None, now=None):
             if why:
                 res["alarms"].append(alarm("item:%s" % item, "; ".join(why), now, family=fam,
                                            detail={"clauses": it["clauses"], "repair_due": res["repair_due"]}))
-            trip = _family_trip(hist) if refused else None
+            trip = _family_trip(hist) if fresh else None
             if trip:
                 res["alarms"].append(alarm("family:%s" % fam, trip, now, family=fam))
         _write(counters_path(), c)

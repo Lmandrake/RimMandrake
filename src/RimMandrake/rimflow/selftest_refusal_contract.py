@@ -270,6 +270,9 @@ def advance_tuning(root):
     rs = [RC.submit(adv("Hand@0.1.0", n, "owner_said"), g, now=t0 + n * 60) for n in range(4)]
     check("(b) refusals of a hand step waiting on a person (owner_said) trip nothing and owe no criteria repair",
           not any(r["alarms"] or r["repair_due"] for r in rs), [(r["alarms"], r["repair_due"]) for r in rs])
+    fam = [h for h in RC.counters()["families"].get("maturation_advance") or [] if h.get("item") == "Hand@0.1.0"]
+    check("(b) the family limits are unchanged: a hand-step refusal still counts as refused in the family history",
+          len(fam) == 4 and all(h["refused"] for h in fam), fam)
     rs = [RC.submit(adv("Loop@0.1.0", n), g, now=t0 + n * 600) for n in range(4)]
     trip = [a for a in rs[-1]["alarms"] if a["subject"] == "item:Loop@0.1.0"]
     check("(c) four refused advances within an hour trip the item alarm, and it tells (told_at set)",
