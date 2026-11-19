@@ -1770,12 +1770,42 @@ def t_void_never_moves_a_stage():
         c.close()
 
 
+def t_reused_name_runs_again():
+    """Promise reused-name-runs-again: a launcher that reuses one unit name for every run (the stop-resume sweep, the
+    testq wake) says so (`reuse_name`) and is admitted again once the earlier run is over. Any other name that ran is
+    refused as DUPLICATE (a left-open run is continued once), and a live one is refused either way."""
+    fresh()
+    fake = lambda a, **k: subprocess.CompletedProcess(a, 0, "", "")
+    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", "rm-probe-again", "true"]
+    r = C.launch_unit(argv, spec("rm-probe-again", reuse_name=True), runner=fake)
+    C.condition(r.run)
+    live = C.launch_unit(argv, spec("rm-probe-again", reuse_name=True), runner=fake)
+    check(live.refused and "DUPLICATE" in live.stderr, "a reused name whose run is live is refused", live.stderr)
+    C.ended(r.run, "success/exited/0")
+    r2 = C.launch_unit(argv, spec("rm-probe-again", reuse_name=True), runner=fake)
+    check(not getattr(r2, "refused", False) and r2.returncode == 0, "a reused name whose run ended is admitted again",
+          getattr(r2, "why", None))
+    C.condition(r2.run)
+    C.ended(r2.run, "success/exited/0")
+    once = ["systemd-run", "--user", "--unit", "rm-probe-once", "true"]
+    r3 = C.launch_unit(once, spec("rm-probe-once"), runner=fake)
+    C.condition(r3.run)
+    C.ended(r3.run, "success/exited/0")
+    r4 = C.launch_unit(once, spec("rm-probe-once"), runner=fake)
+    check(r4.refused and "DUPLICATE" in r4.stderr, "a name that ran, not marked reused, is still refused", r4.stderr)
+    for f, site in (("stop_resume.py", "SWEEP_UNIT"), (os.path.join("..", "Utils", "testq", "steward.py"), "WAKE_UNIT")):
+        with open(os.path.join(HERE, f), encoding="utf-8") as fh:
+            src = fh.read()
+        check('"unit": %s, "reuse_name": True' % site in src, "%s launches %s with reuse_name" % (f, site))
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
               t_accounts, t_queue, t_review_round_four_p1,
-              t_slice4, t_slices_review, t_his_hold_refuses_launch, t_void_never_moves_a_stage):
+              t_slice4, t_slices_review, t_his_hold_refuses_launch, t_void_never_moves_a_stage,
+              t_reused_name_runs_again):
         print("== %s" % t.__name__)
         try:
             t()

@@ -2,16 +2,24 @@
 
 Code: `src/RimMandrake/rimflow/control.py`. This page says where the control store stops. A claim about the store
 counts only if it quotes an entry here (`standing_rulings.md` §A boundary page before pipeline code). Written
-2026-11-18 11:50 PM PST. **No fresh reader has read it yet, and the code is not yet cut to it.** "Tested by" names
-today's test in `selftest_control.py`; a test named for each promise is owed.
+2026-11-18 11:50 PM PST. Read fresh 2026-11-19 by `RIMMANDRAKE_READ_CONTROL_PAGE_FRESH_BEFORE_CODE_IS_CUT`: 4 holes
+added. The code is not yet cut to it. "Tested by" names today's test in `selftest_control.py`; a test named for each
+promise is owed.
 
 ## ACCEPTS (the only inputs the store is built for)
 
 - **launch-through-one-door.** A launch is `launch_unit(argv, spec)`. `argv` starts with `systemd-run` and names its
   unit as `--unit NAME`, as all 9 of our call sites do, or names none. `spec` names one of the 9 launch families.
+- **one-name-one-run.** A unit name is one run. A launcher that uses one name for every run says `reuse_name` (the
+  stop-resume sweep and the testq wake do). Any other name that has run is refused as DUPLICATE, so a left-open run
+  is continued once.
+- **a-launch-names-its-mods.** A launch is checked against the mods its spec names and no others. A hand-launched
+  detached helper names none unless it passes `--env RM_CONTROL_MOD=<Mod>`: 98 of 98 detached runs in the store
+  named none [measured 2026-11-19], 6 of them on FeverWood design tickets while he held FeverWood.
 - **scope-names.** `all`, a mod in the pipeline, `stage:S`, `item:ID`, `family:F`, `role:R`. A wrong name is refused
   with the nearest names.
-- **stop-target.** A scope, or one unit named `rm-...` with or without `.service`. Exactly one stop mode.
+- **stop-target.** A scope, or one unit named `rm-...` with or without `.service`. A unit with another name (the
+  testq wake) is named `unit:NAME`. Exactly one stop mode.
 - **why-on-every-write.** Every command that changes something carries `--why`. A granted look and lifting his hold
   carry his words.
 - **his-hold-as-a-file-row.** His hold is a row (mod, date, his words) in `mod_owner_hold.json`, brought in by
@@ -25,7 +33,8 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
 
 - **two-failures-at-once.** A kill that fails while the cgroup also cannot be read. A failed escalation while a second
   kill finishes the same run.
-- **cgroup-folder-that-cannot-be-listed.** Linux does not do this for our own user's units.
+- **cgroup-folder-that-cannot-be-listed.** Linux does not do this for our own user's units: 0 of 66 folders under
+  `user.slice` failed to list, and every `cgroup.procs` under our `user@1000.service` was readable [measured 2026-11-19].
 - **hand-command-in-a-run's-own-second.** A `pipe void` typed in the instant between a judge's start and its
   reservation. The held look is freed when that judge's process ends.
 - **deliberate-bypass.** An agent that calls `systemd-run` by hand. The store is not a security wall.
@@ -38,7 +47,7 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
 - **off-blocks-starts.** After `pipe off` returns, nothing that had not begun can begin. Tested by `t_race`.
 - **one-admission-point.** Every pipeline launch site goes through `launch_unit`, and a site that does not turns the
   selftest red. Tested by `t_sites`.
-- **his-hold-refuses-launch.** A mod he holds is refused at launch, with his words, until he lifts it with his words.
+- **his-hold-refuses-launch.** A launch that names a mod he holds is refused, with his words, until he lifts it with his words.
   `pipe on all` never lifts it. A new hold after a lift holds again. Tested by `t_owner_import`, `t_scope`.
 - **three-named-stops.** `pipe stop` is `--write-now`, `--at-easy-spot` or `--kill`. With none named it uses
   at-easy-spot and says so. A write-now order becomes a kill at its deadline. Tested by `t_stop`.
@@ -75,14 +84,17 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
 - **counts-and-limits-are-adjustments.** `pipe set`, `add`, `reset` and `limit` write a change at a moment; a run
   that finishes afterwards still counts. Tested by `t_accounts`.
 - **a-test-never-touches-the-live-store.** Tested by `t_stop_review_fixes`.
+- **reused-name-runs-again.** A `reuse_name` launch is admitted again once its earlier run is over, and refused while
+  that run is live. Tested by `t_reused_name_runs_again`.
 
 ## LIFE CYCLES (a move not listed here is a defect)
 
 - **run:** admitted → started → ended or killed. admitted → cancelled (an off came first), refused (at its start
   check), failed-to-launch, or abandoned (its launcher died). ended → killed only when a kill and the run's own end
-  crossed. A name that never ran may be admitted again under a new run id.
+  crossed. A name that never ran, or a `reuse_name` name whose run is over, may be admitted again under a new run id.
 - **held look:** held → charged or released. charged → voided.
 - **stop order:** pending → seen → done or escalated. escalated → back to pending or seen when the kill failed.
-- **switch:** on ↔ off, one row per scope and layer (ours, his). His layer moves only with his words.
+- **switch:** on ↔ off, one row per scope and layer (ours, his). His layer moves only with his words. A timed off
+  (`maturation_dispatch.py pause --until`) turns on by itself at its time, with no new act.
 
 Later lists beside this page: `polish.md` (outside claims, not fixed) and `next_version.md` (what 0.2.0 might add).

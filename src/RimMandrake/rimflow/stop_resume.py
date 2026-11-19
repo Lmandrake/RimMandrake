@@ -530,7 +530,7 @@ def kick(now=None, runner=subprocess.run, **kw):
     argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", SWEEP_UNIT, "-p", "RuntimeMaxSec=1800",
             "/usr/bin/python3", os.path.abspath(__file__), "sweep"]
     import control as C     # the one admission point (control.py)
-    r = C.launch_unit(argv, {"family": "stop_resume", "unit": SWEEP_UNIT}, runner=runner, capture_output=True, text=True,
+    r = C.launch_unit(argv, {"family": "stop_resume", "unit": SWEEP_UNIT, "reuse_name": True}, runner=runner, capture_output=True, text=True,
                       timeout=60, stdin=subprocess.DEVNULL)
     return "stop_resume: %d owed (%s); sweep unit %s" % (
         len(found), ", ".join("%s %s" % (x["act"], x["unit"]) for x in found[:6]),

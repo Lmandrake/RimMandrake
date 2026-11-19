@@ -474,7 +474,7 @@ def launch_wake(clone, brief_path, log_path, budget, max_s):
         r = C.launch_unit(["systemd-run", "--user", "--unit", WAKE_UNIT, "--collect", "-p", "RuntimeMaxSec=%d" % max_s,
                            "-p", "WorkingDirectory=%s" % clone, "--setenv=RIMFLOW_SEAT=BENCH",
                            "--setenv=PATH=%s" % os.environ.get("PATH", ""), "/bin/bash", "-c", cmd],
-                          {"family": "testq", "unit": WAKE_UNIT}, capture_output=True, text=True, timeout=60)
+                          {"family": "testq", "unit": WAKE_UNIT, "reuse_name": True}, capture_output=True, text=True, timeout=60)
     except (OSError, subprocess.SubprocessError) as e:
         return False, "systemd-run failed: %s" % e
     return r.returncode == 0, (r.stdout + r.stderr).strip()[-200:]

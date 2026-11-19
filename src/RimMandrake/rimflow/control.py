@@ -1242,11 +1242,13 @@ def _admit(spec, now, p, reaped):
             old = c.execute("SELECT id, state, pid, host FROM runs WHERE unit=?", (spec["unit"],)).fetchone()
             mine = old is not None and old["state"] == "admitted" and old["host"] == socket.gethostname() and (
                 old["pid"] == os.getpid() or not os.path.exists("/proc/%d" % (old["pid"] or 0)))
-            if old and (old["state"] in NEVER_RAN or mine):
+            again = spec.get("reuse_name") and old is not None and old["state"] not in LIVE_STATES
+            if old and (old["state"] in NEVER_RAN or mine or again):
                 # that name never ran a payload, or its admission is this process's own earlier try (or a dead
                 # launcher's) whose unit never reached its start check: it may be admitted again, under a run id of
                 # its own, so the earlier try's unit (which carries the old id) finds no admission at its start check,
-                # and every failed attempt is its own fault (round-two claim 1)
+                # and every failed attempt is its own fault (round-two claim 1); a launcher that reuses one name for
+                # every run (reuse_name) takes it again once the earlier run is over
                 n = old["id"].rsplit("~", 1)[1] if "~" in old["id"] else "1"
                 rid = "%s~%d" % (rid, (int(n) if n.isdigit() else 1) + 1)
                 replaced = old["id"]    # replaced only once every check below passes (round-three claim 1)
@@ -2161,7 +2163,7 @@ def call_sites(root=None):
         if any(x.startswith(".") and x != "." for x in parts) or "__pycache__" in parts:
             continue
         for f in files:
-            if not f.endswith(".py") or f.startswith("selftest") or f.startswith("test_"):
+            if not f.endswith(".py") or f.startswith("selftest") or f.startswith("test_") or f.endswith("_accept.py"):
                 continue
             path = os.path.join(d, f)
             rel = os.path.relpath(path, root).replace(os.sep, "/")
