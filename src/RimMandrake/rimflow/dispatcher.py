@@ -2166,6 +2166,33 @@ def phone_safe(send, row):
         return "FAILED: %s: %s" % (type(e).__name__, e)
 
 
+# RIMMANDRAKE_TRACE_ROLE_RUN_LOST_DONE_STRANDING_NOW_CAUGHT: the observe step holds decide, and decide harvests runs
+# first (supervise_roles). A step cut or a raise after a harvest kept its state effects (the run marked done, stage.json
+# advanced, a chain asked) but its acts were never executed or journalled: DesignerCodex rm-role-designercodex-1794846919
+# on Cauldron ended 2026-11-16T16:43Z, the 16:45:42Z tick's observe was cut, and no role_done, role_stage or chain_cap
+# line was ever written. These acts record what happened, once; nothing re-derives them, so they are carried in state
+# and the next tick executes them first. (A launch, ring or stop is given back instead and decided again.)
+CARRY_DOES = ("role_done", "role_stage", "role_hold", "role_cause_attach")
+CARRY_MAX = 200
+
+
+def carry_acts(st, acts, now):
+    """Keep the cut or raised tick's unexecuted harvest acts (CARRY_DOES, and role:* alarms) for the next tick. -> n."""
+    mine = [a for a in acts or [] if isinstance(a, dict) and "result" not in a and not a.get("carry_kept") and (
+        a.get("do") in CARRY_DOES or (a.get("do") == "alarm" and str(a.get("kind") or "").startswith("role:")))]
+    keep = [dict(a, carried_from=a.get("carried_from") or a.get("at") or iso(now)) for a in mine]
+    for a in mine:          # a second cut in the same tick carries nothing twice
+        a["carry_kept"] = True
+    if keep:
+        st["acts_carry"] = ((st.get("acts_carry") or []) + keep)[-CARRY_MAX:]
+    return len(keep)
+
+
+def take_carry(st):
+    """The acts an earlier tick carried (carry_acts), for this tick to execute first; the state no longer holds them."""
+    return [a for a in st.pop("acts_carry", None) or [] if isinstance(a, dict)]
+
+
 def unreleased(st, acts, now):
     """A tick that raised: give back every ring and recover decided but never released, and put back as pending every
     ring whose decided withdraw never ran (it may still be in the inbox: the next tick withdraws it). -> what."""
@@ -2526,7 +2553,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
             st = load_state(root)
         except StateUnreadable as e:
             return supervise_registry(sch, root, apply, now, obs, fx, e)
-        acts = []
+        acts = take_carry(st)       # an earlier cut or raised tick's harvest acts: executed first (carry_acts)
         deadline = time.time() + sch.get("tick_budget_s", 420)      # real clock: the service timeout is real time
         act_deadline = None
         if beat_end is not None:
@@ -2543,9 +2570,12 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
             # a step past its end: given back as a killed tick gives back, but the tick goes on and ends by itself
             steps[e.step] = "cut"
             back = unreserve(st) + unreleased(st, acts, now)
+            kept = carry_acts(st, acts, now)
             rec = {"at": iso(now), "do": "step_cut", "step": e.step, "where": cut_where(e),
                    "why": "%s ran past its end in the beat (%.1f s before the kill) and was cut; the next beat runs it "
-                          "again; given back: %s" % (e.step, beat_end - time.time(), ", ".join(back) or "none")}
+                          "again; given back: %s%s" % (e.step, beat_end - time.time(), ", ".join(back) or "none",
+                                                       "; %d harvest act(s) carried to the next tick" % kept
+                                                       if kept else "")}
             journal(root, rec)
             acts.append(rec)
         try:
@@ -2622,6 +2652,7 @@ def tick(sch, apply, obs=None, now=None, fx=None, still_owner=None, beat_end=Non
             # (review dispatcher-full #5)
             back = unreserve(st)
             rings = unreleased(st, acts, now)    # rings/recovers given back, withdraws kept pending
+            carry_acts(st, acts, now)            # what a harvest already did is said by the next tick
             st["alarm_carry"] = ("tick raised %s: %s; launches given back: %s; rings/recovers/withdraws undone: %s" % (
                 type(e).__name__, str(e), ", ".join(back) or "none", ", ".join(rings) or "none"))
             journal(root, {"at": iso(now), "do": "alarm", "kind": "tick:raised", "why": st["alarm_carry"]})

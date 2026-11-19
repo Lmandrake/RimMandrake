@@ -504,13 +504,45 @@ def test_designer_launch_fetches_once():
           "execute's stage_open commits without a second fetch (decide's preview fetched this tick): %s" % opened)
 
 
+def test_cut_harvest_acts_are_carried():
+    """RIMMANDRAKE_TRACE_ROLE_RUN_LOST_DONE_STRANDING_NOW_CAUGHT: the beat cut the observe step (which holds decide, and
+    decide harvests runs first) after a run was harvested: its state effects were saved (the run done, stage.json
+    advanced) but its role_done / role_stage / role:* alarm / role_hold acts were never executed or journalled
+    (DesignerCodex rm-role-designercodex-1794846919 on Cauldron, tick 2026-11-16T16:45:42Z, observe cut). They are
+    carried in state and executed first by the next tick."""
+    def harvest_then_slow(sch, st, o, now, apply, out=None):
+        st.setdefault("roles", {}).setdefault("DesignerCodex", {})["runs"] = [{"unit": "rm-role-x-1", "state": "done"}]
+        out.extend([{"do": "role_done", "role": "DesignerCodex", "unit": "rm-role-x-1", "at": "t", "why": "done"},
+                    {"do": "role_stage", "kind": "role:DesignerCodex:stage_rejected", "unit": "rm-role-x-1",
+                     "at": "t", "why": "stage result accepted"},
+                    {"do": "alarm", "kind": "role:DesignerCodex:chain_cap", "at": "t", "why": "not chained"},
+                    {"do": "alarm", "kind": "other:thing", "at": "t", "why": "re-derived next tick"}])
+        time.sleep(6)
+        return out
+    out, took, end, root = _cut_tick("carry", harvest_then_slow)
+    st = _cut_checks("harvest then cut", out, took, end, root, "observe")
+    carry = st.get("acts_carry") or []
+    check(sorted(a.get("do") + ":" + str(a.get("kind") or "") for a in carry)
+          == ["alarm:role:DesignerCodex:chain_cap", "role_done:", "role_stage:role:DesignerCodex:stage_rejected"],
+          "the cut tick carries the harvest's role acts in state (not the re-derivable alarm): %s"
+          % [a.get("do") for a in carry])
+    check(not any(x.get("do") == "role_done" for x in journal(root)), "the cut tick journalled no role_done itself")
+    out2, _, _, _ = _cut_tick("carry", lambda sch, st, o, now, apply, out=None: out, beat_s=6.0)
+    j = journal(root)
+    done = [x for x in j if x.get("do") == "role_done" and x.get("unit") == "rm-role-x-1"]
+    check(len(done) == 1 and done[0].get("carried_from"),
+          "the next tick executes and journals the carried role_done once, marked carried_from: %s" % done)
+    check(not D.load_state(root).get("acts_carry"), "the carry is spent once executed")
+
+
 def main():
     for t in (test_beat_deadline_defers, test_deferred_launch_is_given_back, test_deferred_ring_is_given_back, test_fence_stops_the_tick,
               test_tick_fenced_and_beat_end, test_apply_without_generation_refuses_when_owned, test_step_limit, test_cut_publish_child_dies,
               test_slow_observe_is_cut, test_cut_names_where_it_was, test_slow_execute_is_cut, test_slow_helper_budget_is_cut,
               test_killed_publish_leaves_the_helper_budget_its_slot, test_note_that_cannot_fit_is_not_started,
               test_note_child_is_bounded_by_the_deadline, test_note_and_publish_costs_are_measured,
-              test_starved_publish_keeps_its_floor, test_designer_launch_fetches_once):
+              test_starved_publish_keeps_its_floor, test_designer_launch_fetches_once,
+              test_cut_harvest_acts_are_carried):
         try:
             t()
         except Exception as e:  # noqa: BLE001
