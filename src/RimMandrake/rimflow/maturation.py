@@ -1274,10 +1274,27 @@ class MovedMeanwhile(RuntimeError):
     """The record on disk is not the one the move was evaluated on: another move landed first."""
 
 
+def _absent(path):
+    """True only when the path is measured absent; a stat that fails any other way is not absence."""
+    try:
+        os.lstat(path)
+    except FileNotFoundError:
+        return True
+    except OSError:
+        return False
+    return False
+
+
+class RollbackIncomplete(OSError):
+    """A move's write failed and at least one put-back failed too: the files named are left as the move wrote them."""
+
+
 def commit_move(root, mod, rec, jtext=None, extra=None, first=None, expect=None):
     """RIMMANDRAKE_WRITE_STAGE_MOVES_ATOMICALLY: one move is one locked write. Under the mod's lock the record is
     written first (a failed record write leaves no journal line), then the journal and any extra {path: text}; a later
-    write that fails puts every file already written back as it was and raises. `first` {path: text} are NEW files
+    write that fails puts every file already written back as it was and raises; every put-back is tried even when one
+    fails, and then RollbackIncomplete names each file left unrestored. An existing file that cannot be read is never
+    written over (its old text could not be put back). `first` {path: text} are NEW files
     written before the record (a pass record): one that already exists, even unreadable, raises before any write.
     expect (stage, version, number of moves): the record on disk must still read so under the lock, else
     MovedMeanwhile before any write."""
@@ -1297,17 +1314,27 @@ def commit_move(root, mod, rec, jtext=None, extra=None, first=None, expect=None)
         try:
             for p, text in todo:
                 was = read_text(root, mod, p)
+                if was is None and not _absent(os.path.join(mod_dir(root, mod), p)):
+                    raise OSError("%s exists or cannot be looked at, and cannot be read: its text could not be put "
+                                  "back" % rel(mod, p))
                 write_text(root, mod, p, text)
                 done.append((p, was))
-        except Exception:
+        except Exception as e:
+            left = []
             for p, was in reversed(done):
-                if was is None:
-                    try:
-                        os.remove(os.path.join(mod_dir(root, mod), p))
-                    except OSError:
-                        pass
-                else:
-                    write_text(root, mod, p, was)
+                try:
+                    if was is None:
+                        try:
+                            os.remove(os.path.join(mod_dir(root, mod), p))
+                        except FileNotFoundError:
+                            pass
+                    else:
+                        write_text(root, mod, p, was)
+                except Exception as be:
+                    left.append("%s (%s)" % (rel(mod, p), be))
+            if left:
+                raise RollbackIncomplete("the move failed (%s) and %d file(s) are left as it wrote them: %s"
+                                         % (e, len(left), "; ".join(left))) from e
             raise
     finally:
         lk.close()

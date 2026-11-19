@@ -467,6 +467,69 @@ def main():
         ok(read(root, "Pyrelands", M.RECORD) == rbefore and read(root, "Pyrelands", "journal.md") == jbefore
            and calls_[:2] == [M.RECORD, "journal.md"],
            "the record is written first; a failed journal write puts the record back (%s)" % calls_[:3])
+        # RIMMANDRAKE_FINISH_ROLLBACK_WHEN_A_RESTORE_WRITE_FAILS: a put-back that fails does not stop the others, and
+        # the error names every file left unrestored
+        rec_ = M.load(root, "Pyrelands")
+        nrec_ = dict(rec_, why_selftest="a move whose rollback half-fails")
+        rec_writes = []
+
+        def failing_back(r, m, p, text):
+            if p == "journal.md":
+                raise OSError("journal write failed (selftest)")
+            if p == M.RECORD:
+                rec_writes.append(text)
+                if len(rec_writes) == 2:
+                    raise OSError("record put-back failed (selftest)")
+            return real_write(r, m, p, text)
+        M.write_text = failing_back
+        err_ = None
+        try:
+            M.commit_move(root, "Pyrelands", nrec_, "journal (selftest)\n", first={"selftest_first.json": "{}\n"})
+        except Exception as e:
+            err_ = e
+        finally:
+            M.write_text = real_write
+        first_left = os.path.lexists(os.path.join(M.mod_dir(root, "Pyrelands"), "selftest_first.json"))
+        ok(isinstance(err_, getattr(M, "RollbackIncomplete", ())) and M.RECORD in str(err_) and "selftest_first.json" not in str(err_)
+           and not first_left and read(root, "Pyrelands", "journal.md") == jbefore,
+           "a failed record put-back still removes the new pass file and names the record as unrestored (%r, first "
+           "left %s)" % (err_, first_left))
+        real_write(root, "Pyrelands", M.RECORD, rbefore)
+        # two put-backs fail (the record write and the new file's removal): both are named
+        rec_writes.clear()
+        real_remove = os.remove
+
+        def failing_remove(path):
+            if path.endswith("selftest_first.json"):
+                raise PermissionError("remove refused (selftest)")
+            return real_remove(path)
+        M.write_text, os.remove = failing_back, failing_remove
+        err_ = None
+        try:
+            M.commit_move(root, "Pyrelands", nrec_, "journal (selftest)\n", first={"selftest_first.json": "{}\n"})
+        except Exception as e:
+            err_ = e
+        finally:
+            M.write_text, os.remove = real_write, real_remove
+        ok(isinstance(err_, getattr(M, "RollbackIncomplete", ())) and M.RECORD in str(err_)
+           and "selftest_first.json" in str(err_) and read(root, "Pyrelands", "journal.md") == jbefore,
+           "a failed removal and a failed record put-back are both named (%r)" % (err_,))
+        real_remove(os.path.join(M.mod_dir(root, "Pyrelands"), "selftest_first.json"))
+        real_write(root, "Pyrelands", M.RECORD, rbefore)
+        # an existing file that cannot be read is never written over: its old text could not be put back
+        upath = os.path.join(M.mod_dir(root, "Pyrelands"), "journal.md")
+        real_read = M.read_text
+        M.read_text = lambda r, m, p: None if p == "journal.md" else real_read(r, m, p)
+        err_ = None
+        try:
+            M.commit_move(root, "Pyrelands", nrec_, "journal (selftest)\n")
+        except Exception as e:
+            err_ = e
+        finally:
+            M.read_text = real_read
+        ok(err_ is not None and os.path.exists(upath) and read(root, "Pyrelands", "journal.md") == jbefore
+           and read(root, "Pyrelands", M.RECORD) == rbefore,
+           "an unreadable existing journal refuses the move and the record is put back (%r)" % (err_,))
 
         # hand steps on the later stages
         refused(M.advance(root, "Pyrelands", "in_game", by="BENCH", why="x"), "steward_confirms",
