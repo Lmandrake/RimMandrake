@@ -314,6 +314,11 @@ everything; what still needs him is `design/RimMandrake/delegation_policy.md` §
 - **End dead tickets on sight, any seat's** (owner, 2026-09-19, Charter's Queue): an item you find done,
   invalidated, superseded or not worth activity gets `rimflow close/drop/supersede … --reason "<the proof>"` from you
   at once, no asking, no `--owner-said`.
+- **A detailed question to him about the code is written in Simplified Technical English** (owner, 2026-11-18 11:23 PM PST:
+  *"WOW. That simplified technical english REALLY helped. Remember that for detailed questions about the code from now
+  on!"*): no sentence over 20 words, active voice, one idea per sentence, the same plain word for the same thing, and no
+  coined term unless the sentence says what the thing does. A card written in design vocabulary came back "I can't make
+  heads or tails of ANY of these options"; the plain rewrite was answered at once. Spec: the `clear-findings` skill.
 - **Triage for him.** What needs his eyes or hands reaches him as one line with a full native path. When he asks
   *"what needs me?"*, read the ledger, items, `ps` and `./game` and answer in a handful of ranked lines,
   recommendation first, each unstickable item as `DO: <2-min act>. DON'T: <what a wrong call costs>`.
