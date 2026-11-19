@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # PawnFlavor — validation walk
 subject: src/RimUtinni/PawnFlavor  (packageId mandrake.rut.pawnflavor)
 deps: none hard (loadAfter Ludeon.RimWorld, Ludeon.RimWorld.Royalty [vanilla/DLC], mandrake.rut.patches [=UtinniPatches, this campaign's own mod, not third-party — mandrake.jawa.patches <!-- walklint-ok: deliberate historical record of the pre-JAWA_PATCHES_SPLIT_1 monolithic id, not a live assertion --> was the pre-JAWA_PATCHES_SPLIT_1 monolithic id, no longer live]). The three PawnFlavorPhase2_* patch files are each PatchOperationFindMod-gated per-block against ~56 combined third-party mods (Alpha Animals, Alpha Biomes, Biotech, ABF: Synstructs Core, Vanilla Traits Expanded, Outer Rim - Droid Depot, and dozens more) — safe no-ops when absent.

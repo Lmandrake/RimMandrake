@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Donor retirement: save residue and morning deploy plan, 2026-10-19
 
 FOUNDRY, offline. Instruments: `donor_retire_census.py refs|srctex`, `save_adoption_check.py` (checked save:

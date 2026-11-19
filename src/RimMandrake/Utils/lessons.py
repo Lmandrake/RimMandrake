@@ -17,8 +17,7 @@ lesson. `LESSONS_INBOX.md` is a gitignored rendered view (listed in .gitignore, 
 tracked): rebuilt by `render` on demand; never edit it — an edit there is lost on
 the next render. A lesson's last line may be `home: <skill|doc path|NONE>`, its
 proposed durable home. Before it may come `item: <ID|NONE>`, the item the lesson was learned on: --item, else the
-session's item from the environment (RIMFLOW_ITEM, which close_evidence also reads, or WC_ITEM, set by the Whittle loop
-for its round's one item). The daily agent-improvement pass reads a lesson's task kind from it (design
+session's item from the environment (RIMFLOW_ITEM, which close_evidence also reads). The daily agent-improvement pass reads a lesson's task kind from it (design
 daily_agent_improvement_2026-11-02.md 4.3). Only the footer counts: the `item:`/`home:` lines at the end of the file,
 never a line of that shape inside the lesson text.
 """
@@ -32,7 +31,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.environ.get("LESSONS_ROOT") or os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 DIR = os.path.join(ROOT, "infrastructure", "state", "lessons")
 VIEW = os.path.join(ROOT, "infrastructure", "state", "LESSONS_INBOX.md")
-ITEM_ENV = ("RIMFLOW_ITEM", "WC_ITEM")
+ITEM_ENV = ("RIMFLOW_ITEM",)
 ITEM_ID = re.compile(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){2,}")   # agent_improve.ITEM_TOKEN's grammar: three words or more
 README = "README.md"
 
@@ -66,6 +65,11 @@ def content_words(text):
     return {w for w in re.findall(r"[a-z0-9]+", text.lower()) if len(w) > 2 and w not in STOP}
 
 
+# A lesson that names a retired era opens with this (Utils/era_history_mark.py, rimflow/era_text.LESSON_PREFIX); it is a
+# label, not the lesson, so a comparison of first lines reads past it.
+HISTORY_PREFIX = re.compile(r"^HISTORY: retired era \([^)]*\)\. ")
+
+
 def similar(text, limit=3, threshold=0.35):
     """Up to `limit` (score, path, first line) of existing lessons most like `text` (Jaccard on first line)."""
     mine = content_words(text.splitlines()[0] if text.strip() else "")
@@ -75,7 +79,7 @@ def similar(text, limit=3, threshold=0.35):
     for fp in lesson_files():
         try:
             with open(fp, encoding="utf-8") as f:
-                first = f.readline().strip()
+                first = HISTORY_PREFIX.sub("", f.readline().strip())
         except OSError:
             continue
         theirs = content_words(first)
@@ -233,7 +237,7 @@ def main():
     a.add_argument("--seat")
     a.add_argument("--slug", help="a few words for the filename (default: from the text)")
     a.add_argument("--home", help="proposed durable home: a skill, a doc path, or NONE")
-    a.add_argument("--item", help="the item it was learned on (default: $RIMFLOW_ITEM, else $WC_ITEM); NONE for none")
+    a.add_argument("--item", help="the item it was learned on (default: $RIMFLOW_ITEM); NONE for none")
     sub.add_parser("render", help="rebuild the gitignored (untracked) LESSONS_INBOX.md view")
     sub.add_parser("stats", help="counts by seat, age, home; oldest undrained lesson")
     sub.add_parser("list", help="count lessons and show the newest")

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # FlowWorks edge-case hunt, graded (2026-10-16)
 
 Model: gpt-6.1-sol (high). Six slices: FlowWorks_1core, 2hose, 3pits, 4machinery, 4liquids, 5rivers. Raw answers: `design/RimMandrake/gpt_consults/raw/<SLICE>_2026-10-16.md`. Each finding was traced against the real code (callers, guards, XML) by a read-only grader per slice; nothing was run, so VERIFIED means traced by reading, not reproduced live. Source tree: `src/RimMandrake/FlowWorks/`. No source was edited.

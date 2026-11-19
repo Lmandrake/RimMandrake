@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Operational facts salvaged from the superseded POLICY.md and seat files (2026-08-27)
 
 One line each; replace a line when superseded, never append a correction under it.

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Refusal contract for judges and gates (spec, nothing built)
 
 Item `RIMMANDRAKE_BIND_REFUSALS_TO_FIXES_NO_CEREMONY_LOOPS`. Owner ruling 2026-11-12 14:50 PST, verbatim in the item's

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Fulgurite and the lightning breaker: a design pass (2026-10-15)
 
 Read-only design pass, BENCH, one Opus 5.5 agent. Nothing in the game or the bridge was touched.

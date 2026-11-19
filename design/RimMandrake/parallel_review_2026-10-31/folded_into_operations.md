@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Are fixes folded into operations? (audit, 2026-10-31)
 
 Numbers are marked MEASURED, ESTIMATE or UNMEASURED. MEASURED ledger numbers come from a replay of all shards to 2026-10-31T23:10Z. Live checks were read at about 16:20 PDT the same day.

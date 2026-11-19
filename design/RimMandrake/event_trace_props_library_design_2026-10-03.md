@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Event trace props library — design (2026-10-03)
 
 Item: `EVENT_TRACE_PROPS_LIBRARY_1`, filed by the owner 2026-09-15: *"a new props library that's

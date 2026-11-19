@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Lightspeed: the no-LLM test lane (design, 2026-11-06)
 
 Owner, 2026-11-06: *"For the One test lane with no LLM in it, that's awesome! We should call this Lightspeed. I wonder

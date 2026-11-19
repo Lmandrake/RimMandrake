@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # 5. Fable independent review of the judge "flaws not polish" proposal
 
 Status: COMPLETE. Reviewer: Fable builder, 2026-11-17. Nothing but this file was changed; nothing was committed. Section 2 was written before files 2, 3 and 4 were read and is unedited.

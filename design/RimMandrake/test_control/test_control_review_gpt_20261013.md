@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 ## 1. Recommendation: install a test-state monitor and a local run governor
 
 **The measured gap justifies continuous observation now.** My earlier review tied cadence too closely to the question of pawn provenance. That was too narrow: colony survival, elapsed time, specimen decay, and UI blockage require continuous coverage even when every pawn’s origin is known.

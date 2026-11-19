@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # What enforces a close once a guard dies (EVIDENCE_GATE_DESIGN_ENFORCE_BEFORE_DELETES)
 
 Written 2026-11-06 by Relentless. Readings taken about 22:30Z. Corrects RIMFLOW_DELETE_CLOSE_GUARDS_ONE_PER_LANDING (WP-09c).

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # V&V methods, stage 2: an adversarial review of stage 1 (2026-10-16)
 
 Stage 2 of 3. It was written by a FOUNDRY helper working offline: no bridge, game or deploy was used. The only input

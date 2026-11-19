@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Ladder climbers — census (LADDER_PARITY_BUILD_NO_KEYS_REQUIRED, owner Q1 2026-10-23)
 
 Owner, verbatim: *"Needs a per-creature evaluation, unfortunately. Many mechs, droids, humans, animals should be able to climb, jump up alone, or slither along a ladder as long as they fit in a 1x1 cell area. Bigger things no, wheeled things no, and many creatures without arms no."*

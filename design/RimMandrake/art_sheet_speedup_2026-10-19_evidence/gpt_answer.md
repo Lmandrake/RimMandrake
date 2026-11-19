@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 **The pipeline needs fewer stages, not faster agents.** Remove browser startup from sheet builds, stop rebuilding unrelated sheets before opening the requested review, and cache reusable rows. Those changes address the measured delays directly.
 
 I reviewed only the supplied source. The excerpts lack original line numbers, so references below name functions and the exact statements or branches supporting each finding. Speed estimates are forecasts, not benchmarks.

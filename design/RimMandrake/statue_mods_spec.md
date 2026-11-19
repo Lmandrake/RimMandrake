@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Statue mods spec — Utinni statues (RUT_) and Flame statues (RM_)
 
 Item: `STATUE_ART_EXPANSION_1`. Owner ruling 2026-09-25 (typed): *"Let's focus on the two new

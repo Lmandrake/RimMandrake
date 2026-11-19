@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Owner rulings by question card, 2026-10-19 evening (FOUNDRY records; his words are the answers)
 
 Authority for each line: `--by-card` (question → picked option). Follow-through status in the last column.

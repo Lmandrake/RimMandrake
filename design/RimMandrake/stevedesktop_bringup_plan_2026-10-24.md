@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # SteveDesktop: second test machine, bring-up plan (2026-10-24)
 
 **Status:** Phase 1 is now executable: `infrastructure/stevedesktop/RUNBOOK.md` (built 2026-10-25), the owner's hands-on steps through Monday morning 2026-10-26. Nothing is installed on SteveDesktop yet. Items:

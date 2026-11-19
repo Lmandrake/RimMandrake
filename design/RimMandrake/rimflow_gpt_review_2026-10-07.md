@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 Rimflow needs one additional state, a real reservation mechanism, and a source check before dispatch. Its central error is treating **implementation completion, acceptance, and active work as the same lifecycle**. Changing `offline` to `bridge` alone would hide some duplicate work while preserving that error.
 
 I would choose **A over C**: keep one item, record when its implementation is complete, and track its remaining acceptance obligations on that item.

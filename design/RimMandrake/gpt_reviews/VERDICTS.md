@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # GPT top-ten review — verdicts (GPT_FULL_REVIEW_TOP10_1)
 
 Every concrete Part-1 (DEBUGGING) claim in the ten GPT reviews beside this file, checked against

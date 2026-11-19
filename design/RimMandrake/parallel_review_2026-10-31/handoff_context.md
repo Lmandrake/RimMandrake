@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # PARALLEL_BUILD_REVIEW_DEFEND_EVERY_LIMIT: handoff, context, concurrency
 
 Read-only review, offline, 2026-10-31, clone `/home/mandrake/rm/bench`. Nothing here was changed, committed or filed.

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Perpetual orchestrator context: grow-until-compaction vs handoff-and-restart
 
 Date: 2026-10-26. Author: BENCH research helper. Status: FINAL for this research round (one desk test owed, section 5/6).

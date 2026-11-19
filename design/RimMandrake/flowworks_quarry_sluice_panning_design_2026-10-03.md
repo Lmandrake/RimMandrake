@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # FlowWorks quarry digging, sluice mining, gold panning — design pass (2026-10-03)
 
 Item: `FLOWWORKS_QUARRY_DIGGING_1` (caused by `MINERALS_WHERE_THEY_BELONG_1`). Status: DESIGN, nothing

@@ -6,22 +6,22 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
-⚠️ **1859 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+⚠️ **1639 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
 
 ### `design/`
 
 | doc | title | status |
 |---|---|---|
-| `2026-10-25-rimflow-block-release.md` | RimFlow: typed `block --on --until` and the block frontier (RIM-1 design pass, 2026-10-25) | — |
+| `2026-10-25-rimflow-block-release.md` | RimFlow: typed `block --on --until` and the block frontier (RIM-1 design pass, 2026-10-25) | 📜 names a retired era |
 | `CANON_STORAGE_ARCHITECTURE_options.md` | How should we store the canon? — options, tradeoffs, and a recommendation | — |
 | `CHRONICLE_EVENT_SPINE.md` | RimChronicle event spine — one-page spec (CHRONICLE_EVENT_SPINE_1) | — |
-| `FABLE_WINDOW_PROPOSITION.md` | What to spend Fable on while we have it | ? proposition for the owner — bench, 2026-08-31, answering his high-priority ask |
+| `FABLE_WINDOW_PROPOSITION.md` | What to spend Fable on while we have it | ? proposition for the owner — bench, 2026-08-31, answering his high-priority ask · 📜 names a retired era |
 | `MOD_CONSOLIDATION_PLAN.md` | Mod Consolidation Plan — domain × tier cells, one big-bang merge | ? draft v3 — expansions adopted, pending owner sign-off |
 | `MOVING_DUNES_DESIGN.md` | MOVING_DUNES_DESIGN — real aeolian transport for RimWorld maps | — |
 | `NAMING_SCHEME_PLAN.md` | The Three-Tier Naming Scheme — RimMandrake / RimStarWars / RimUtinni | ? live as the grammar |
 | `RIMPROPERTY_ANIMAL_THEFT_SPEC.md` | RimProperty animal theft — RIMPROPERTY_ANIMAL_THEFT_1 | — |
-| `RM_GRAFFITI_SCOPE_WIDENING.md` | RM Graffiti — widening the base mod: punk-urban marks and ideoligion sigils | ? ruled and built, 2026-09-24 — forks f1-f10 ruled 2026-10-09 by question card, every recommendation accepted (§7) |
-| `V2_DREAMS.md` | V2 — dreams and hopes | ☁ aspirational |
+| `RM_GRAFFITI_SCOPE_WIDENING.md` | RM Graffiti — widening the base mod: punk-urban marks and ideoligion sigils | ? ruled and built, 2026-09-24 — forks f1-f10 ruled 2026-10-09 by question card, every recommendation accepted (§7) · 📜 names a retired era |
+| `V2_DREAMS.md` | V2 — dreams and hopes | ☁ aspirational · 📜 names a retired era |
 | `mondayreviewitems.md` | mondayreviewitems — design questions waiting on the owner | — |
 
 ### `design/Jawa/`
@@ -743,28 +743,28 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Custom_World.md` | Custom_World.md — How to Build a Crafted RimWorld (living playbook) |  |
 | `GIT_WORKFLOW.md` | Git workflow — the operating doc (2026-10-02) | — |
 | `Jev_Opportunities.md` | Jev opportunities — where a cheap typed-judgment model changes this project | — |
-| `RM_gelatinous_slime_mod.md` | The Gelatinous Slime Biome — GELATINOUS_SLIME_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built |
+| `RM_gelatinous_slime_mod.md` | The Gelatinous Slime Biome — GELATINOUS_SLIME_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built · 📜 names a retired era |
 | `RM_liquid_types_mod.md` | One Liquid System, Many Liquids — LIQUID_TYPES_MOD_1 (RimMandrake tier) | ? design brief — nothing here is built |
-| `RM_titanoslime_spec.md` | The Titanoslime — `RM_Titanoslime`, the Slime's own mouth | ? design spec — nothing here is built. item |
-| `agent_systems_assessment_2026-11-12.md` | Assessment of Relentless, Artisan and Whittle — 2026-11-12 | — |
+| `RM_titanoslime_spec.md` | The Titanoslime — `RM_Titanoslime`, the Slime's own mouth | ? design spec — nothing here is built. item · 📜 names a retired era |
+| `agent_systems_assessment_2026-11-12.md` | Assessment of Relentless, Artisan and Whittle — 2026-11-12 | 📜 names a retired era |
 | `alpha_biomes_census_2026-11-01.md` | Alpha Biomes census: the rest of the names, decided (2026-11-01) | — |
-| `alpha_biomes_retirement_2026-10-16.md` | Alpha Biomes retirement plan, 2026-10-16 (FOUNDRY helper) | — |
+| `alpha_biomes_retirement_2026-10-16.md` | Alpha Biomes retirement plan, 2026-10-16 (FOUNDRY helper) | 📜 names a retired era |
 | `ancient_machines_design.md` | ANCIENT MACHINES — the grade ladder, and the two layers above it | ? design, filed 2026-09-15 from the bench session recorded in
      infrastructure/state/items/rakatan_archotech_machines_1.md, and reconciled
      against that item's later rulings the same day (revised ratios, the 1.0
      donor rung, the withdrawal of "exceeds modern", the layer-1 assembly, the
      ninefold impulse api). that item is the authority on what the owner said
      and ruled |
-| `architecture_switch_harness_2026-10-29.md` | Build them all and switch: a harness that answers architecture questions in days (2026-10-29) | — |
-| `arena_verdict_summary_2026-11-01.md` | The arena trial: what it showed and what it did not (1 November 2026) | — |
+| `architecture_switch_harness_2026-10-29.md` | Build them all and switch: a harness that answers architecture questions in days (2026-10-29) | 📜 names a retired era |
+| `arena_verdict_summary_2026-11-01.md` | The arena trial: what it showed and what it did not (1 November 2026) | 📜 names a retired era |
 | `art_judge_brief.md` | Art judge brief — the written constraints an art-judging agent applies | — |
 | `art_ledger_design_2026-10-04.md` | Art ledger — one source of truth for every texture (design, 2026-10-04) | — |
-| `art_regen_registry_design.md` | Art Regeneration Registry + Dashboard Hub — design (ruled 2026-09-11) | — |
+| `art_regen_registry_design.md` | Art Regeneration Registry + Dashboard Hub — design (ruled 2026-09-11) | 📜 names a retired era |
 | `art_resolution_rootcause_2026-10-04.md` | Art resolution root cause — diagnosis (2026-10-04) | — |
 | `art_review_facts_spec.md` | Art review FACTS — the automatic sprite review ruleset | — |
 | `art_sheet_freshness_design_2026-10-14.md` | Art sheet freshness — fresh or refuse (2026-10-14) | — |
-| `art_sheet_speedup_2026-10-19.md` | Art review sheets: why a sheet takes hours, and the options to make it take minutes (2026-10-19) | — |
-| `art_size_audit_2026-11-03.md` | Art size audit -- every plant and animal we define | — |
+| `art_sheet_speedup_2026-10-19.md` | Art review sheets: why a sheet takes hours, and the options to make it take minutes (2026-10-19) | 📜 names a retired era |
+| `art_size_audit_2026-11-03.md` | Art size audit -- every plant and animal we define | 📜 names a retired era |
 | `art_style_memory.md` | Art style memory: what the owner likes, learned from his overrides | — |
 | `artist_biome_inspiration_design.md` | Artist biome inspiration ("the Muse") — design | — |
 | `artpipe_console_design_2026-09-26.md` | artpipe daemon console — design (2026-09-26) | — |
@@ -781,69 +781,77 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `automated_art_evaluation_design_2026-10-23.md` | Automated RimWorld art evaluation — design (2026-10-23) | — |
 | `balance_paradigm.md` | balance_paradigm.md — why we would change any number in this game |  |
 | `bars_pinning_tuning_numbers_census_2026-11-16.md` | Bars that pin a tuning number or an asset count — census, 2026-11-16 | — |
-| `baseline_two_seat_system_2026-10-26.md` | Baseline: the two-seat operating system, tagged 2026-10-26 | — |
+| `baseline_two_seat_system_2026-10-26.md` | Baseline: the two-seat operating system, tagged 2026-10-26 | 📜 names a retired era |
 | `bazaar_trade_window_design.md` | The Bazaar — the scavenger trade window | — |
 | `beautiful_tilemap.md` | Beautiful_Tilemap — concept spec | ☁ aspirational |
-| `beskar_armorer_quest_design_2026-10-09.md` | Beskar armorer quest: the decided design (2026-10-09) | — |
+| `beskar_armorer_quest_design_2026-10-09.md` | Beskar armorer quest: the decided design (2026-10-09) | 📜 names a retired era |
 | `big_creatures_walls_and_slots_2026-10-18.md` | Big creatures against slots, thin walls and roofs (DESIGN PASS, 2026-10-18) | — |
 | `biome_bars_sitting_2026-10-20.md` | Biome north-star sitting: Leaning Scrub, Cauldron, Contagion (prepared 2026-10-20) | — |
 | `biome_experiences_2026-10-20.md` | The experience, in the owner's words: Baroque Biomes (2026-10-20) | — |
-| `biome_map_makers_design_2026-10-10.md` | Per-biome map-makers + landform mutators — design draft (2026-10-10) | — |
+| `biome_map_makers_design_2026-10-10.md` | Per-biome map-makers + landform mutators — design draft (2026-10-10) | 📜 names a retired era |
 | `biome_mod_architecture.md` | Biome mod architecture — one RimMandrake.Biomes mod, one section per biome | — |
-| `biome_mod_unification_spec.md` | Biome mod unification — execution spec (BIOME_MOD_UNIFICATION_1) | — |
-| `biome_name_provenance_audit_2026-10-28.md` | Biome name provenance audit: the mineral sheet (2026-10-28) | — |
-| `biome_owner_cards_2026-10-22.md` | Owner question cards: retirement, leaning-scrub art, shell part, dead patches (2026-10-22) | — |
+| `biome_mod_unification_spec.md` | Biome mod unification — execution spec (BIOME_MOD_UNIFICATION_1) | 📜 names a retired era |
+| `biome_name_provenance_audit_2026-10-28.md` | Biome name provenance audit: the mineral sheet (2026-10-28) | 📜 names a retired era |
+| `biome_owner_cards_2026-10-22.md` | Owner question cards: retirement, leaning-scrub art, shell part, dead patches (2026-10-22) | 📜 names a retired era |
 | `biome_review_save_standard.md` | Standard biome review savegame — specification | — |
 | `biome_rulings.md` | Biome, roster and naming-tier rulings — owner's words | — |
-| `biome_sprint_kickoff_2026-10-15.md` | Biome sprint kickoff packet — Cauldron, Contagion, LeaningScrub + ExplosiveGrowth (BENCH, 2026-10-15) | — |
-| `biome_texture_regeneration_audit_2026-10-18.md` | Biome texture regeneration audit, 2026-10-18 | — |
+| `biome_shared_machinery_2026-11-18.md` | Shared biome machinery, seen from the ship | — |
+| `biome_sprint_kickoff_2026-10-15.md` | Biome sprint kickoff packet — Cauldron, Contagion, LeaningScrub + ExplosiveGrowth (BENCH, 2026-10-15) | 📜 names a retired era |
+| `biome_texture_regeneration_audit_2026-10-18.md` | Biome texture regeneration audit, 2026-10-18 | 📜 names a retired era |
 | `biome_transitions_judgment_2026-11-01.md` | Biome Transitions against the Baroque Biomes: judgment, 2026-11-01 | — |
-| `bottleneck_measure_2026-11-03.md` | Who waits on whom, measured again on Relentless (2026-11-03) | — |
-| `bridge_debugging_system.md` | Bridge debugging, observability, testing and process | — |
+| `bottleneck_measure_2026-11-03.md` | Who waits on whom, measured again on Relentless (2026-11-03) | 📜 names a retired era |
+| `bridge_debugging_system.md` | Bridge debugging, observability, testing and process | 📜 names a retired era |
 | `bridge_library_design.md` | rimdrive — the reusable Python bridge library (design) | — |
-| `bridge_system.md` | The RimMandrake live-game bridge — architecture, control and intention | — |
-| `bridge_validation_observatory.md` | Bridge Validation Observatory — design | — |
-| `build_system_practices_2026-11-03.md` | What mature build systems do that we could adopt (2026-11-03) | — |
-| `builder_agents_survey_2026-11-02.md` | Builder agents and rule sets worth learning from: a survey for Relentless (2026-11-02) | — |
+| `bridge_system.md` | The RimMandrake live-game bridge — architecture, control and intention | 📜 names a retired era |
+| `bridge_validation_observatory.md` | Bridge Validation Observatory — design | 📜 names a retired era |
+| `build_system_practices_2026-11-03.md` | What mature build systems do that we could adopt (2026-11-03) | 📜 names a retired era |
+| `builder_agents_survey_2026-11-02.md` | Builder agents and rule sets worth learning from: a survey for Relentless (2026-11-02) | 📜 names a retired era |
 | `building_camera_perspective_2026-10-14.md` | The building camera — measured from shipped art (2026-10-14) | — |
-| `buildup_prevention_design_2026-10-18.md` | Buildup prevention — design pass, 2026-10-18 | — |
-| `canal_cover_design_2026-10-17.md` | Canal cover: a shallow canal as a wet foxhole (design, 2026-10-17) | — |
-| `canal_overflow_flooding_2026-10-21.md` | Canal overflow: spilling out onto the world — design pass, 2026-10-21 | — |
-| `canon_materials_design_2026-10-09.md` | CANON_MATERIALS_DESIGN_1 — canon Star Wars materials: what they are for and where they come from | — |
+| `buildup_prevention_design_2026-10-18.md` | Buildup prevention — design pass, 2026-10-18 | 📜 names a retired era |
+| `canal_cover_design_2026-10-17.md` | Canal cover: a shallow canal as a wet foxhole (design, 2026-10-17) | 📜 names a retired era |
+| `canal_overflow_flooding_2026-10-21.md` | Canal overflow: spilling out onto the world — design pass, 2026-10-21 | 📜 names a retired era |
+| `canon_materials_design_2026-10-09.md` | CANON_MATERIALS_DESIGN_1 — canon Star Wars materials: what they are for and where they come from | 📜 names a retired era |
 | `canon_materials_gpt_consult_2026-10-09.md` | GPT consult (gpt-6.1-sol, high) on canon_materials_design_2026-10-09.md — 2026-10-09, verbatim answer | — |
-| `canon_metal_fabrication_2026-10-09.md` | Canon metal fabrication — what the factory ship can forge (2026-10-09) | — |
+| `canon_metal_fabrication_2026-10-09.md` | Canon metal fabrication — what the factory ship can forge (2026-10-09) | 📜 names a retired era |
 | `canopy_zoom_investigation_2026-10-18.md` | Canopy zoom — feasibility investigation (2026-10-18) | — |
 | `coastal_mesa_rationale.md` | Coastal Mesa — LLM-authored map improvement |  |
 | `code_review_c1_findings_2026-10-31.md` | Code review lane C1 findings, 2026-10-31 (item specs) | — |
 | `codex_experiment_scorecard_2026-11-15.md` | Codex experiment, scored — 2026-11-15 | — |
 | `codex_receiving_agent_design.md` | A receiving agent inside Codex — accelerating graphics generation | — |
-| `compaction_retention_test_2026-10-26.md` | Compaction retention test — 2026-10-26 | — |
+| `compaction_retention_test_2026-10-26.md` | Compaction retention test — 2026-10-26 | 📜 names a retired era |
 | `companion_handshake.md` | Companion handshake, campaign/test profiles and stale-target guards | — |
-| `concept_agent_design_2026-11-01.md` | The Designer (the Concept Agent, renamed by card 2026-11-01): design (2026-11-01) | — |
-| `concept_agent_gpt_review_2026-11-01.md` | Skeptical external review of the concept agent design (verbatim; not applied; the Conductor judges it) | — |
-| `conductor_briefing_2026-10-28.md` | Conductor Briefing and the goodbye lifecycle | — |
-| `convenience_replacements.md` | Convenience/automation mods: what we keep by building it ourselves | — |
+| `concept_agent_design_2026-11-01.md` | The Designer (the Concept Agent, renamed by card 2026-11-01): design (2026-11-01) | 📜 names a retired era |
+| `concept_agent_gpt_review_2026-11-01.md` | Skeptical external review of the concept agent design (verbatim; not applied; the Conductor judges it) | 📜 names a retired era |
+| `concept_tree_schema.md` | The acceptance tree: file format (2026-11-01) | 📜 names a retired era |
+| `conductor_briefing_2026-10-28.md` | Conductor Briefing and the goodbye lifecycle | 📜 names a retired era |
+| `convenience_replacements.md` | Convenience/automation mods: what we keep by building it ourselves | 📜 names a retired era |
 | `csuite_brief_2026-10-26.md` | The integrator layer — the owner's brief, verbatim (2026-10-26, ~19:40 PDT) | — |
-| `csuite_design_2026-10-26.md` | The C-suite layer: what sits above Bench and Foundry (design, 2026-10-26) | — |
-| `daily_agent_improvement_2026-11-02.md` | Daily agent improvement pass (and the transfer audit that motivated it) | — |
+| `csuite_design_2026-10-26.md` | The C-suite layer: what sits above Bench and Foundry (design, 2026-10-26) | 📜 names a retired era |
+| `daily_agent_improvement_2026-11-02.md` | Daily agent improvement pass (and the transfer audit that motivated it) | 📜 names a retired era |
 | `debug_process.md` | How we debug — debug through the script, leave the harness behind | — |
 | `debug_process_proposal.md` | — | — |
-| `deepfire_luminous_pigment_spec.md` | Deepfire — luminous pigment mod (`LuminousPigment`) — design spec | — |
-| `delegation_candidates_2026-10-26.md` | Delegation candidates: the classes to consider after art geometric correction (2026-10-26) | — |
+| `deepfire_luminous_pigment_spec.md` | Deepfire — luminous pigment mod (`LuminousPigment`) — design spec | 📜 names a retired era |
+| `delegation_candidates_2026-10-26.md` | Delegation candidates: the classes to consider after art geometric correction (2026-10-26) | 📜 names a retired era |
 | `delegation_policy.md` | Delegation policy — agents decide nearly everything, art included | — |
-| `deploy_plan_2026-10-22.md` | Deploy plan, 2026-10-22 (dry run only, nothing applied) | — |
+| `deploy_plan_2026-10-22.md` | Deploy plan, 2026-10-22 (dry run only, nothing applied) | 📜 names a retired era |
 | `derelict_gene_lab_mutator_2026-11-01.md` | The derelict gene lab: one more mutator, on vanilla's own ruin generator | — |
 | `derelict_structures_lessons_2026-10-19.md` | Derelict temple, biolab and archonexus: what the donor teaches before we drop it | — |
-| `designer_brief_for_gpt_2026-11-02.md` | The Designer, Relentless and RimWorld mods: a brief for an outside reader (2026-11-02) | — |
-| `donor_art_census_2026-10-18.md` | Donor art census and donor-mod retirement, 2026-10-18 | — |
+| `designer_brief_for_gpt_2026-11-02.md` | The Designer, Relentless and RimWorld mods: a brief for an outside reader (2026-11-02) | 📜 names a retired era |
+| `dispatcher_arbiter_tiers_2026-10-27.md` | RimFlow v3: the Arbiter by risk tier (2026-10-27) | 📜 names a retired era |
+| `dispatcher_audit_remeasure_2026-10-31.md` | RimFlow v3 audit: where it stands, re-measured (2026-10-31) | 📜 names a retired era |
+| `dispatcher_design_2026-10-26.md` | RimFlow v3 — the integrator layer (design of record, 2026-10-26) | 📜 names a retired era |
+| `dispatcher_golive_wave1.md` | RimFlow v3 go-live, wave 1 (runbook, written 2026-10-27, for Wednesday 2026-10-28 after the weekly token reset) | 📜 names a retired era |
+| `dispatcher_risk_response_2026-10-29.md` | RimFlow v3 risk review: the Opus response (2026-10-29) | 📜 names a retired era |
+| `dispatcher_trial_night_2026-10-28.md` | RimFlow v3 trial night, 2026-10-28: one ordered runbook | 📜 names a retired era |
+| `donor_art_census_2026-10-18.md` | Donor art census and donor-mod retirement, 2026-10-18 | 📜 names a retired era |
 | `donor_pack_port_plan_2026-10-14.md` | Plan: convert the Star Wars Animal Collection pack to our own defs | — |
 | `donor_pack_port_tracker.md` | Donor pack port tracker: mlie.starwarsanimalcollection (160 species) | — |
 | `donor_retirement_plan_2026-10-02.md` | Donor retirement — ordering plan (2026-10-02) | — |
-| `donor_save_residue_2026-10-19.md` | Donor retirement: save residue and morning deploy plan, 2026-10-19 | — |
+| `donor_save_residue_2026-10-19.md` | Donor retirement: save residue and morning deploy plan, 2026-10-19 | 📜 names a retired era |
 | `droid_oracle_voice_design.md` | Droid moments through the Oracle — Narrator letters, four consumers, live | ? ruled, live — droid_oracle_voice_design_1. fable pass 2026-09-08 |
 | `event_quest_wisdom.md` | Event and quest wisdom: what the crew/event mods teach before they retire | — |
-| `event_trace_props_library_design_2026-10-03.md` | Event trace props library — design (2026-10-03) | — |
-| `evidence_gate_enforce_before_deletes_2026-11-06.md` | What enforces a close once a guard dies (EVIDENCE_GATE_DESIGN_ENFORCE_BEFORE_DELETES) | — |
+| `event_trace_props_library_design_2026-10-03.md` | Event trace props library — design (2026-10-03) | 📜 names a retired era |
+| `evidence_gate_enforce_before_deletes_2026-11-06.md` | What enforces a close once a guard dies (EVIDENCE_GATE_DESIGN_ENFORCE_BEFORE_DELETES) | 📜 names a retired era |
 | `exotic_materials_census_2026-10-09.md` | Exotic materials census — 2026-10-09 | — |
 | `explosion_mods_characterized_2026-11-12.md` | Explosion mods on our lists, characterized (2026-11-12) | — |
 | `explosive_growth_bench_design_pass_2026-10-16.md` | Explosive growth: BENCH design pass on the consensus model (2026-10-16) | — |
@@ -852,34 +860,34 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `explosive_growth_gpt_review_2026-10-16.md` | — | — |
 | `explosive_growth_ruled_spec_2026-10-16.md` | Explosive growth: the ruled spec (2026-10-16) | — |
 | `explosive_growth_rulings_2026-10-16.md` | Explosive growth: owner rulings from the design-pass review (2026-10-16) | — |
-| `explosive_knockback_design_2026-10-06.md` | Explosive Knockback — design pass (2026-10-06) | — |
+| `explosive_knockback_design_2026-10-06.md` | Explosive Knockback — design pass (2026-10-06) | 📜 names a retired era |
 | `explosive_knockback_gpt_eval_2026-10-06.md` | — | — |
 | `exposure_gear_matrix_spec.md` | Exposure gear matrix — design spec | — |
 | `faction_authoring_mechanism.md` | faction_authoring_mechanism.md — How we make rich, differentiated factions |  |
-| `factions_unwanted_and_lingering_2026-10-20.md` | Unwanted and lingering factions: how a faction hangs around, and how we stop it (2026-10-20) | — |
-| `fanout_sim_refit_2026-11-01.md` | Fan-out on equal terms: simulator upgrade, census and refit | — |
-| `findings_curation_design_2026-10-29.md` | Findings curation: keeping what the test runs learn (design pass, 2026-10-29) | — |
-| `fire_and_forget_rimflow_2026-10-26.md` | Fire-and-forget RimFlow — second GPT perspective (2026-10-26) | — |
+| `factions_unwanted_and_lingering_2026-10-20.md` | Unwanted and lingering factions: how a faction hangs around, and how we stop it (2026-10-20) | 📜 names a retired era |
+| `fanout_sim_refit_2026-11-01.md` | Fan-out on equal terms: simulator upgrade, census and refit | 📜 names a retired era |
+| `findings_curation_design_2026-10-29.md` | Findings curation: keeping what the test runs learn (design pass, 2026-10-29) | 📜 names a retired era |
+| `fire_and_forget_rimflow_2026-10-26.md` | Fire-and-forget RimFlow — second GPT perspective (2026-10-26) | 📜 names a retired era |
 | `flier_authoring_architecture_2026-10-21.md` | Flier authoring architecture (2026-10-21) | — |
 | `flier_frame_registration_audit_2026-10-20.md` | Flier flip-book registration audit - 2026-10-20 | — |
 | `flowworks_bars_answers_2026-10-20.md` | FlowWorks bars sitting by question card, 2026-10-20 (owner picks) | — |
-| `flowworks_bars_sitting_2026-10-18.md` | FlowWorks north-star sitting — one page (prepared 2026-10-18) | — |
+| `flowworks_bars_sitting_2026-10-18.md` | FlowWorks north-star sitting — one page (prepared 2026-10-18) | 📜 names a retired era |
 | `flowworks_bridges_design_2026-10-17.md` | FlowWorks bridges: span anything (DESIGN, 2026-10-17) | — |
-| `flowworks_composite_review_scenarios_2026-10-21.md` | FlowWorks composite review scenarios — DESIGN ONLY (2026-10-21) | — |
+| `flowworks_composite_review_scenarios_2026-10-21.md` | FlowWorks composite review scenarios — DESIGN ONLY (2026-10-21) | 📜 names a retired era |
 | `flowworks_drawbridge_design_2026-10-20.md` | FlowWorks drawbridges (RULED DESIGN, 2026-10-20) | — |
 | `flowworks_drawbridge_pipes_gpt_review_2026-10-20.gpt_read.md` | GPT skeptical review: drawbridge + pipes-across-pits (2026-10-20) | — |
 | `flowworks_elevation_feasibility_2026-10-17.gpt_read.md` | — | — |
 | `flowworks_elevation_feasibility_2026-10-17.md` | Free per-cell elevation: engine feasibility and cost (helper A, double review, 2026-10-17) | — |
 | `flowworks_elevation_play_2026-10-17.gpt_read.md` | Outside read (GPT) for flowworks_elevation_play_2026-10-17.md — verbatim, evidence not authority | — |
 | `flowworks_elevation_play_2026-10-17.md` | Deeper digging: play, rules and coherence (PROPOSAL, 2026-10-17) | — |
-| `flowworks_finish_board_2026-10-18.md` | FlowWorks finish board (BENCH, written 2026-10-18) | — |
+| `flowworks_finish_board_2026-10-18.md` | FlowWorks finish board (BENCH, written 2026-10-18) | 📜 names a retired era |
 | `flowworks_hose_geometry_g2_2026-10-23.md` | FlowWorks hoses: geometry as physics (C0 / G1 / G2, bend limit, length) — 2026-10-23 | — |
 | `flowworks_level_surface_2026-10-17.gpt_read.md` | — | — |
-| `flowworks_level_surface_2026-10-17.md` | A level water surface: ruling audit and design (PROPOSAL, 2026-10-17) | — |
+| `flowworks_level_surface_2026-10-17.md` | A level water surface: ruling audit and design (PROPOSAL, 2026-10-17) | 📜 names a retired era |
 | `flowworks_line_widths_2026-10-20.md` | FlowWorks line widths: the spec (owner, by question card, 2026-10-20 21:38 PDT) | — |
 | `flowworks_liquid_matrix.md` | FlowWorks Liquid Matrix — the six faces × the liquid registry | — |
 | `flowworks_live_pass2_2026-10-19.md` | FlowWorks live pass 2: re-run only what changed (BENCH helper, 2026-10-19) | — |
-| `flowworks_live_session_plan_2026-10-18.md` | FlowWorks: one live session discharges every owed row (BENCH, 2026-10-18) | — |
+| `flowworks_live_session_plan_2026-10-18.md` | FlowWorks: one live session discharges every owed row (BENCH, 2026-10-18) | 📜 names a retired era |
 | `flowworks_map_controls_design_2026-10-16.md` | FlowWorks map controls: what else beside Source and Sink (design pass, 2026-10-16) |  |
 | `flowworks_mod_definition.md` | FlowWorks — mod definition | — |
 | `flowworks_modern_art_brief.md` | FlowWorks "Modern" art — what modern means, per building (2026-10-22) | — |
@@ -895,28 +903,28 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `flowworks_offline_status_2026-10-22.md` | FlowWorks offline status 2026-10-22 | — |
 | `flowworks_one_rebuild_plan_2026-10-17.md` | FlowWorks depth: the one big rebuild (PLAN, 2026-10-17) | — |
 | `flowworks_owner_questions_2026-10-22.md` | FlowWorks owner questions, 2026-10-22 (review helper) | — |
-| `flowworks_pipes_across_pits_design_2026-10-20.md` | FlowWorks: pipes, hoses, cords and conduit across pits (RULED DESIGN, 2026-10-20) | — |
-| `flowworks_pits_unified_model_2026-10-02.md` | FlowWorks + Pits — one model (2026-10-02) | — |
+| `flowworks_pipes_across_pits_design_2026-10-20.md` | FlowWorks: pipes, hoses, cords and conduit across pits (RULED DESIGN, 2026-10-20) | 📜 names a retired era |
+| `flowworks_pits_unified_model_2026-10-02.md` | FlowWorks + Pits — one model (2026-10-02) | 📜 names a retired era |
 | `flowworks_player_missions_C.md` | FlowWorks player missions — Approach C ("AI plays the mod"), built 2026-10-06 | — |
-| `flowworks_playtest_automation_2026-10-06.md` | FlowWorks playtest automation — three GPT reviews, merged (2026-10-06) | — |
-| `flowworks_playtest_campaign_2026-10-06.md` | FlowWorks playtest campaign — running log (from 2026-10-06) | — |
+| `flowworks_playtest_automation_2026-10-06.md` | FlowWorks playtest automation — three GPT reviews, merged (2026-10-06) | 📜 names a retired era |
+| `flowworks_playtest_campaign_2026-10-06.md` | FlowWorks playtest campaign — running log (from 2026-10-06) | 📜 names a retired era |
 | `flowworks_playtest_runner_A.md` | FlowWorks playtest runner — Approach A (in-game scenario runner) | — |
-| `flowworks_quarry_sluice_panning_design_2026-10-03.md` | FlowWorks quarry digging, sluice mining, gold panning — design pass (2026-10-03) | — |
-| `flowworks_remaining_2026-10-05.md` | FlowWorks — what is still missing (inventory, 2026-10-05) | — |
-| `flowworks_session_runbook_2026-10-18.md` | FlowWorks + HugeThings live session: one ordered runbook (BENCH, 2026-10-18) | — |
+| `flowworks_quarry_sluice_panning_design_2026-10-03.md` | FlowWorks quarry digging, sluice mining, gold panning — design pass (2026-10-03) | 📜 names a retired era |
+| `flowworks_remaining_2026-10-05.md` | FlowWorks — what is still missing (inventory, 2026-10-05) | 📜 names a retired era |
+| `flowworks_session_runbook_2026-10-18.md` | FlowWorks + HugeThings live session: one ordered runbook (BENCH, 2026-10-18) | 📜 names a retired era |
 | `flowworks_settings_audit_2026-10-18.md` | FlowWorks Mod Settings audit (F2, 2026-10-18) | — |
 | `flowworks_shows_wiring_2026-10-01.md` | FlowWorks `shows=` wiring — 2026-10-01 | — |
 | `flowworks_ticket_consolidation_2026-10-17.md` | FlowWorks ticket consolidation (2026-10-17) | — |
 | `flowworks_unified_depth_2026-10-17.md` | One ruler for all water: the unified depth spec (RULED 2026-10-17) | — |
-| `flowworks_walkthrough_2026-10-23.md` | FlowWorks walkthrough — save RM_fw_walkthrough_20261023e (2026-10-23) | — |
+| `flowworks_walkthrough_2026-10-23.md` | FlowWorks walkthrough — save RM_fw_walkthrough_20261023e (2026-10-23) | 📜 names a retired era |
 | `flowworks_water_solver_literature_review.md` | FlowWorks: CPU-Efficient Water Simulation on a Single-Valued Elevation Grid | — |
 | `fluff_cuts_2026-10-23.md` | Fluff cuts, 2026-10-23: the veto digest | — |
 | `flyer_stable_body_study.md` | Flyer stable-body study — 2026-10-08 | — |
 | `focused_testing_plan_2026-10-25.md` | Focused testing plan — 2026-10-25 | — |
-| `forge_slowground_concepts_2026-10-20.md` | The Forge's new slow-ground creature: three concepts, 2026-10-20 | — |
+| `forge_slowground_concepts_2026-10-20.md` | The Forge's new slow-ground creature: three concepts, 2026-10-20 | 📜 names a retired era |
 | `fountain_sculptures_v2_2026-10-23.md` | Fountain sculptures — v2 brainstorm (2026-10-23) | — |
-| `four_biomes_readiness_2026-10-19.md` | Four biomes readiness: Pyrelands, Leaning Scrub, Cauldron, Contagion (2026-10-19, offline) | — |
-| `fulgurite_lightning_design_pass_2026-10-15.md` | Fulgurite and the lightning breaker: a design pass (2026-10-15) | — |
+| `four_biomes_readiness_2026-10-19.md` | Four biomes readiness: Pyrelands, Leaning Scrub, Cauldron, Contagion (2026-10-19, offline) | 📜 names a retired era |
+| `fulgurite_lightning_design_pass_2026-10-15.md` | Fulgurite and the lightning breaker: a design pass (2026-10-15) | 📜 names a retired era |
 | `game_health_record.md` | The game-health record: metrics beyond TPS | — |
 | `geological_landforms_judgment_2026-11-02.md` | Geological Landforms: replicate or keep? Judgment, 2026-11-02 | — |
 | `giant_footprint_design_2026-10-07.md` | Huge Things — ground footprints for huge plants, hitboxes for huge pawns (2026-10-07) | — |
@@ -925,31 +933,31 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `git_experiments_2026-10-01.md` | Git workflow experiments 2026-10-01 | — |
 | `git_leftovers_triage_2026-10-02.md` | Shared-tree leftovers triage — 2026-10-02 | — |
 | `git_migration_baseline_2026-10-02.md` | Git migration baseline and Windows-path audit — 2026-10-02 | — |
-| `git_migration_drain_2026-10-02.md` | Git migration drain — Phase 6 part A (2026-10-02) | — |
-| `git_migration_freeze_2026-10-02.md` | Git migration freeze — Phase 6 part B (2026-10-02) | — |
-| `git_migration_launchers_2026-10-02.md` | Launcher migration to ext4 seat clones — 2026-10-02 | — |
-| `git_migration_phase4_2026-10-02.md` | Git migration Phase 4 — implementation record (2026-10-02) | — |
-| `git_migration_phase5_2026-10-02.md` | Git migration — Phase 5 (2026-10-02) | — |
-| `git_migration_phase5_artpipe_2026-10-02.md` | Git migration Phase 5 — artpipe state out of the repo (2026-10-02) | — |
+| `git_migration_drain_2026-10-02.md` | Git migration drain — Phase 6 part A (2026-10-02) | 📜 names a retired era |
+| `git_migration_freeze_2026-10-02.md` | Git migration freeze — Phase 6 part B (2026-10-02) | 📜 names a retired era |
+| `git_migration_launchers_2026-10-02.md` | Launcher migration to ext4 seat clones — 2026-10-02 | 📜 names a retired era |
+| `git_migration_phase4_2026-10-02.md` | Git migration Phase 4 — implementation record (2026-10-02) | 📜 names a retired era |
+| `git_migration_phase5_2026-10-02.md` | Git migration — Phase 5 (2026-10-02) | 📜 names a retired era |
+| `git_migration_phase5_artpipe_2026-10-02.md` | Git migration Phase 5 — artpipe state out of the repo (2026-10-02) | 📜 names a retired era |
 | `git_migration_phase7_2026-10-02.md` | Phase 7 — production subagent worktree pool (2026-10-02) | — |
 | `git_migration_phase8_2026-10-02.md` | Git migration phase 8 (docs) 2026-10-02 | — |
-| `git_migration_publish_build_2026-10-02.md` | Git migration — publish wrapper, build route, mirror, codex staging (2026-10-02) | — |
-| `git_plan_gpt_review_2026-10-02.md` | — | — |
+| `git_migration_publish_build_2026-10-02.md` | Git migration — publish wrapper, build route, mirror, codex staging (2026-10-02) | 📜 names a retired era |
+| `git_plan_gpt_review_2026-10-02.md` | — | 📜 names a retired era |
 | `git_plan_literature_check_2026-10-02.md` | Git plan literature check (2026-10-02) | — |
 | `git_research_2026-10-01.md` | Git workflow research, 2026-10-01 | — |
 | `git_windows_tool_probe_2026-10-01.md` | Windows binaries run from an ext4 (WSL) directory — probe, 2026-10-01 | — |
 | `git_workflow_fix_2026-10-01.md` | Git workflow fix — 2026-10-01 | — |
-| `git_workflow_plan_2026-10-01.md` | RimMandrake git workflow — integrated plan (2026-10-01) | — |
-| `git_workflow_review_gpt61_2026-10-01.md` | RimMandrake git workflow review — 2026-10-01 | — |
+| `git_workflow_plan_2026-10-01.md` | RimMandrake git workflow — integrated plan (2026-10-01) | 📜 names a retired era |
+| `git_workflow_review_gpt61_2026-10-01.md` | RimMandrake git workflow review — 2026-10-01 | 📜 names a retired era |
 | `git_x1_worktree_pool_2026-10-01.md` | X1: WorktreeCreate/WorktreeRemove pool hook experiment (2026-10-01) | — |
-| `git_x2_history_replay_2026-10-01.md` | Git X2 history replay (2026-10-01) | — |
+| `git_x2_history_replay_2026-10-01.md` | Git X2 history replay (2026-10-01) | 📜 names a retired era |
 | `glow_consumers_2026-10-20.md` | Who reads the sky glow — consequences of "Light follows the sun" (2026-10-20) | — |
-| `gpt_review_findings_2026-10-22.md` | GPT deep-review findings, 2026-10-22 (FOUNDRY helper) | — |
-| `gpt_review_plan_2026-10-22.md` | GPT deep-review round, 2026-10-22 (FOUNDRY helper) | — |
-| `graffiti_personality_pass_2026-11-07.md` | Graffiti personality pass, 2026-11-07 | — |
-| `graffiti_series_2026-11-07.md` | The Graffiti series: Graffiti, the Star Wars reskin, Sacred Graffiti | — |
-| `gss_cabling_method_review_2026-11-08.gpt.md` | GPT's answer to the GSS cabling method review, 2026-11-08 (verbatim) | — |
-| `gss_cabling_method_review_2026-11-08.md` | Gimme Some Slack cabling: how we are solving it, and why it got this far — 2026-11-08 | — |
+| `gpt_review_findings_2026-10-22.md` | GPT deep-review findings, 2026-10-22 (FOUNDRY helper) | 📜 names a retired era |
+| `gpt_review_plan_2026-10-22.md` | GPT deep-review round, 2026-10-22 (FOUNDRY helper) | 📜 names a retired era |
+| `graffiti_personality_pass_2026-11-07.md` | Graffiti personality pass, 2026-11-07 | 📜 names a retired era |
+| `graffiti_series_2026-11-07.md` | The Graffiti series: Graffiti, the Star Wars reskin, Sacred Graffiti | 📜 names a retired era |
+| `gss_cabling_method_review_2026-11-08.gpt.md` | GPT's answer to the GSS cabling method review, 2026-11-08 (verbatim) | 📜 names a retired era |
+| `gss_cabling_method_review_2026-11-08.md` | Gimme Some Slack cabling: how we are solving it, and why it got this far — 2026-11-08 | 📜 names a retired era |
 | `gss_flowworks_rulings_2026-10-11.md` | GimmeSomeSlack + FlowWorks — owner rulings, 2026-10-11 (by question card, BENCH) | — |
 | `gss_gpt_source_read_2026-10-06.md` | Gimme Some Slack: GPT source read, checked against the code (2026-10-06) | — |
 | `gss_gpt_source_read_A_2026-10-06.md` | — | — |
@@ -957,7 +965,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `gss_gpt_source_read_prompt_2026-10-06.md` | GPT source read of Gimme Some Slack - prompt (2026-10-06) | — |
 | `gss_looks_prereview.md` | Gimme Some Slack: looks pre-review recipe (2026-10-06) | — |
 | `gss_offline_fuzz_B.md` | Gimme Some Slack offline fuzz - Approach B (2026-10-06) | — |
-| `gss_ship_path_2026-10-22.md` | GimmeSomeSlack ship path — 2026-10-22 (FOUNDRY helper, offline) | — |
+| `gss_ship_path_2026-10-22.md` | GimmeSomeSlack ship path — 2026-10-22 (FOUNDRY helper, offline) | 📜 names a retired era |
 | `hook_dispatcher_decision_2026-11-06.md` | One dispatcher per tool: measured, not built | — |
 | `hose_carry_design_2026-10-04.md` | Hose carry design — colonist-deployed flexible hose (FLOWWORKS_HOSE_DEPLOY_DRAG_1) | — |
 | `hose_port_to_flowworks_design_2026-10-10.md` | Hose port: GimmeSomeSlack → FlowWorks — design (2026-10-10) | — |
@@ -966,28 +974,29 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `hose_port_to_flowworks_review_2026-10-10.md` | Review — hose port to FlowWorks design (2026-10-10) | — |
 | `hose_wire_algorithms_advisory_2026-10-28.md` | Hose and wire algorithms: advisory report (2026-10-28) | — |
 | `huge_footprints_perf.md` | HugeFootprints performance: current scheduler and retained measurements | — |
+| `improvement_loop_rules_2026-11-03.md` | Improvement loop rules — owner, 2026-11-03 | 📜 names a retired era |
 | `innovations.md` | Innovations: the list | — |
-| `jawa_scavenge_system_design_2026-10-03.md` | Jawa scavenging system: synthesis design (DRAFT for owner decisions) | — |
-| `jawa_scavenge_system_pitch_2026-10-03.md` | Jawa scavenging system: inventory and pitch (DRAFT, for owner cards) | — |
-| `kinetic_blast_weapons_design_2026-10-06.md` | Kinetic blast weapons — design (KINETIC_BLAST_WEAPONS_1) | — |
+| `jawa_scavenge_system_design_2026-10-03.md` | Jawa scavenging system: synthesis design (DRAFT for owner decisions) | 📜 names a retired era |
+| `jawa_scavenge_system_pitch_2026-10-03.md` | Jawa scavenging system: inventory and pitch (DRAFT, for owner cards) | 📜 names a retired era |
+| `kinetic_blast_weapons_design_2026-10-06.md` | Kinetic blast weapons — design (KINETIC_BLAST_WEAPONS_1) | 📜 names a retired era |
 | `kinetic_blast_weapons_gpt_eval_2026-10-06.md` | — | — |
-| `kit_art_designs_2026-10-16.md` | Biome-sprint kit art: guessed designs, 2026-10-16 (FOUNDRY helper) | — |
-| `ladder_climbers_2026-10-23.md` | Ladder climbers — census (LADDER_PARITY_BUILD_NO_KEYS_REQUIRED, owner Q1 2026-10-23) | — |
+| `kit_art_designs_2026-10-16.md` | Biome-sprint kit art: guessed designs, 2026-10-16 (FOUNDRY helper) | 📜 names a retired era |
+| `ladder_climbers_2026-10-23.md` | Ladder climbers — census (LADDER_PARITY_BUILD_NO_KEYS_REQUIRED, owner Q1 2026-10-23) | 📜 names a retired era |
 | `ladder_parity_2026-10-23.md` | Ladder parity — design (LADDER_PARITY_BUILD_NO_KEYS_REQUIRED) | — |
-| `lexicon_audit_2026-11-12.md` | Lexicon audit, 2026-11-12: every candidate word and what was decided | — |
+| `lexicon_audit_2026-11-12.md` | Lexicon audit, 2026-11-12: every candidate word and what was decided | 📜 names a retired era |
 | `light_ledger_design.md` | Light ledger — one radius per light, composed from every effect | — |
-| `lightspeed_2026-11-06.md` | Lightspeed: the no-LLM test lane (design, 2026-11-06) | — |
+| `lightspeed_2026-11-06.md` | Lightspeed: the no-LLM test lane (design, 2026-11-06) | 📜 names a retired era |
 | `liquid_connections_visuals_2026-10-16.md` | Liquid connections: pump, hose and joins (HOSE_JOINTS_REDESIGN_PUMP_TOO_PUNY) | — |
 | `liquid_containers_four_styles_2026-10-16.md` | Liquid containers in the four styles | — |
 | `liquid_litres_2026-10-16.md` | Liquids count in litres — LIQUID_LITRES_MIGRATE_DRUMS_ARE_DRUMS (2026-10-16) | — |
 | `liquid_network_semantics_design_2026-10-11.md` | FlowWorks liquid networks: what flows where, and who decides (2026-10-11) | — |
 | `liquids_framework_design.md` | Liquids Framework — one substance, many faces | — |
-| `live_fixer_2026-10-28.md` | Live Fixer: one seat, one ticket, one rig, no shuttle (proposal, 2026-10-28) | — |
-| `live_mods_filing_check_2026-11-05.blind_review.md` | — | — |
-| `live_mods_filing_check_2026-11-05.md` | Live-mods filing check: a deep design pass (2026-11-05) | — |
-| `live_needs_enforce_evidence_2026-11-06.md` | LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: evidence (2026-11-06) | — |
+| `live_fixer_2026-10-28.md` | Live Fixer: one seat, one ticket, one rig, no shuttle (proposal, 2026-10-28) | 📜 names a retired era |
+| `live_mods_filing_check_2026-11-05.blind_review.md` | — | 📜 names a retired era |
+| `live_mods_filing_check_2026-11-05.md` | Live-mods filing check: a deep design pass (2026-11-05) | 📜 names a retired era |
+| `live_needs_enforce_evidence_2026-11-06.md` | LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT: evidence (2026-11-06) | 📜 names a retired era |
 | `live_test_hang_runbook.md` | Live-test hang runbook | — |
-| `live_test_speed_assessment_2026-11-12.md` | Live-test speed: assessment and plan, 2026-11-12 | — |
+| `live_test_speed_assessment_2026-11-12.md` | Live-test speed: assessment and plan, 2026-11-12 | 📜 names a retired era |
 | `llm_ingame_wiring_spec.md` | The Oracle — in-game LLM wiring | ? spec — llm_ingame_wiring_1, bench 2026-08-31, green-lit by the owner, verbatim |
 | `llm_stack_assessment.md` | llm_stack_assessment.md — how far the live LLM stack gets us |  |
 | `llm_voice_preauthoring.md` | llm_voice_preauthoring.md — paste-ready LLM voice prompts (RimAI + RimDialogue) |  |
@@ -997,22 +1006,22 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `map_awareness.md` | Map awareness: who is on this map, and what do we actually know about why | — |
 | `map_content_injection_research.md` | Map content injection — the research path |  |
 | `map_generator_chooser_spec.md` | Map generator v0 — the CHOOSER (spec) | — |
-| `map_generator_round4_options.md` | Map generator round 4 — the chooser, as OPTIONS (Fable design pass, not ruled) | — |
-| `mattpocock_design_suggestions.md` | Matt Pocock's design skills: what they do, what to keep | — |
+| `map_generator_round4_options.md` | Map generator round 4 — the chooser, as OPTIONS (Fable design pass, not ruled) | 📜 names a retired era |
+| `mattpocock_design_suggestions.md` | Matt Pocock's design skills: what they do, what to keep | 📜 names a retired era |
 | `maturation_pipeline.md` | The Maturation Pipeline, as built | — |
-| `memory_clones_drives_2026-10-08.md` | Memory, clones, drives and configuration — audit and redesign (2026-10-08) | — |
+| `memory_clones_drives_2026-10-08.md` | Memory, clones, drives and configuration — audit and redesign (2026-10-08) | 📜 names a retired era |
 | `messy_conduit_design_2026-10-02.md` | Messy Conduit — design pass (2026-10-02) | — |
 | `messy_conduit_phase2_design_2026-10-02.md` | Messy Conduit — Phase 2 design (1b polish, aerial lines, flexible hoses, Northstar fast-track) | — |
 | `messyconduit_review_round2_owner_notes_2026-10-04.md` | MessyConduit (Gimme Some Slack) — owner review notes, round 2, 2026-10-04 | — |
-| `messyconduit_style_per_build_design.md` | Messy Conduit: choosing the art style when you build | — |
-| `messyconduit_test_extension_2026-10-04.md` | MessyConduit test extension: consult and proposal (2026-10-04) | — |
-| `mineral_abundance_registry_design_2026-10-03.md` | Mineral abundance registry — design (2026-10-03) | — |
+| `messyconduit_style_per_build_design.md` | Messy Conduit: choosing the art style when you build | 📜 names a retired era |
+| `messyconduit_test_extension_2026-10-04.md` | MessyConduit test extension: consult and proposal (2026-10-04) | 📜 names a retired era |
+| `mineral_abundance_registry_design_2026-10-03.md` | Mineral abundance registry — design (2026-10-03) | 📜 names a retired era |
 | `mineral_abundance_registry_gpt_consult_2026-10-03.md` | GPT consult, mineral abundance registry (2026-10-03) | — |
 | `mineral_scatterers_census_2026-11-05.md` | Mineable scatterers outside GenStep_RocksFromGrid — census, 2026-11-05 | — |
 | `minerals_census_2026-09-25.md` | Materials census: ores, gems, exotics — for the Scald sea floor decision | — |
-| `minerals_where_they_belong_design_2026-10-02.md` | MINERALS_WHERE_THEY_BELONG_1 — design (2026-10-02, BENCH design helper, DRAFT for the owner to rule on) | — |
+| `minerals_where_they_belong_design_2026-10-02.md` | MINERALS_WHERE_THEY_BELONG_1 — design (2026-10-02, BENCH design helper, DRAFT for the owner to rule on) | 📜 names a retired era |
 | `mines_mod_assessment_20261011.md` | Mines 2.0 (`Cain.Mineshaft`) assessment, 2026-10-11 | — |
-| `minesites_plasteel_ruin_grids_decision_2026-10-31.md` | Ancient mining ruin grids: plasteel and components cells (MINESITES_DECIDE_PLASTEEL_IN_RUIN_GRIDS) | — |
+| `minesites_plasteel_ruin_grids_decision_2026-10-31.md` | Ancient mining ruin grids: plasteel and components cells (MINESITES_DECIDE_PLASTEEL_IN_RUIN_GRIDS) | 📜 names a retired era |
 | `mod_completion_pilot_2026-10-26.md` | Mod completion pilot -- 2026-10-26 (MOD_COMPLETION_MEASURE_HOW_DONE_IS_DONE) | — |
 | `mod_deepdive_art_rule.md` | Deep dive: how far does "no donor art kept" reach? (mod audit card C17) | — |
 | `mod_deepdive_faces.md` | Deep dive: the facial-animation mods, and what a takeover would take | — |
@@ -1022,213 +1031,206 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `mod_deepdive_yayo.md` | Yayo's Combat 3 — deep dive (what it gives beyond normalisation) | — |
 | `mod_deepdive_yayo_full.md` | Yayo's Combat 3 — the full engine analysis | — |
 | `mod_definition_lessons_2026-11-02.md` | What three mods taught us about defining a mod (2026-11-02) — DRAFT | — |
-| `mod_description_designs_gpt_2026-11-02.md` | Mod description designs: GPT consult with web research (2026-11-02) | — |
-| `mod_validation_runner_spec.md` | modcheck — scripted mod-functionality validation (pre-playtest) | — |
-| `monitoring_concepts_2026-10-25.md` | RimMandrake monitoring concepts (2026-10-25) | — |
+| `mod_description_designs_gpt_2026-11-02.md` | Mod description designs: GPT consult with web research (2026-11-02) | 📜 names a retired era |
+| `mod_validation_runner_spec.md` | modcheck — scripted mod-functionality validation (pre-playtest) | 📜 names a retired era |
+| `monitoring_concepts_2026-10-25.md` | RimMandrake monitoring concepts (2026-10-25) | 📜 names a retired era |
 | `music_protocol.md` | music_protocol.md — adding our own music to the gravship campaign |  |
 | `narrative_dictionary_design.md` | Narrative Dictionary — design spec | ? approved-design, pilot not built |
 | `narrative_dictionary_pilot_plan.md` | Narrative Dictionary Pilot (Batch 1) — Implementation Plan | — |
-| `natural_bodies_as_canals_design_2026-10-11.md` | Natural bodies of water as filled canals — feasibility, gotchas, conservation tests (2026-10-11) | — |
+| `natural_bodies_as_canals_design_2026-10-11.md` | Natural bodies of water as filled canals — feasibility, gotchas, conservation tests (2026-10-11) | 📜 names a retired era |
 | `natural_bodies_as_canals_gpt_review_2026-10-11.md` | — | — |
-| `next_bridge_runbook_2026-10-22.md` | Next bridge sitting: one runbook (written 2026-10-22, offline) | — |
-| `next_sprint_plan_2026-10-15.md` | Next sprint — replicate the ratchet across more biomes (BENCH, 2026-10-15) | — |
+| `next_bridge_runbook_2026-10-22.md` | Next bridge sitting: one runbook (written 2026-10-22, offline) | 📜 names a retired era |
+| `next_sprint_plan_2026-10-15.md` | Next sprint — replicate the ratchet across more biomes (BENCH, 2026-10-15) | 📜 names a retired era |
 | `nine_voices_cast_bible.md` | The Nine Voices — cast bible for the thing in the walls | ? cast bible — nine_voices_cast_bible_1, bench 2026-08-31, green-lit by the owner.
      supersedes llm_voice_preauthoring.md part a (the single cradle-mind persona), which r-w6
      invalidated. part b (dynamic jawaese) of that doc is untouched and still live.
      sources |
 | `nine_voices_v1_lines.md` | The Nine Voices — v1 line corpus (BLESSED by the owner, 2026-09-11) | — |
 | `north_star_validation_spec.md` | North stars — binding a mod's intended EXPERIENCE to its validation run | — |
-| `northstar_coverage_audit_2026-10-03.md` | North-star coverage audit — 2026-10-03 (NORTHSTAR_COVERAGE_AUDIT_1) | — |
+| `northstar_coverage_audit_2026-10-03.md` | North-star coverage audit — 2026-10-03 (NORTHSTAR_COVERAGE_AUDIT_1) | 📜 names a retired era |
 | `northstar_densification_lessons.md` | Northstar densification — lessons from GimmeSomeSlack (2026-10-05) | — |
 | `northstar_helpers_gpt_review.md` | 1. What the plan gets wrong or misses | — |
 | `northstar_helpers_plan.md` | Northstar situational helpers — plan (not built) | — |
 | `northstar_human_review.md` | Northstar: the "for the human" review map | — |
 | `northstar_live_queue_2026-10-01.md` | Northstar live job queue — 2026-10-01 | — |
 | `northstar_pilot_scoping_2026-10-02.md` | Northstar pilot scoping (2026-10-02, read-only) | — |
-| `northstar_process_retro.md` | Northstar process retro: GimmeSomeSlack to its validated bar | — |
-| `northstar_review_2026-10-06.md` | Northstar review — 2026-10-06 (BENCH + GPT) | — |
+| `northstar_process_retro.md` | Northstar process retro: GimmeSomeSlack to its validated bar | 📜 names a retired era |
+| `northstar_review_2026-10-06.md` | Northstar review — 2026-10-06 (BENCH + GPT) | 📜 names a retired era |
 | `northstar_time_ledger_2026-10-01.md` | Northstar live pass 2026-10-01: time ledger | — |
 | `oasis_maker_machines_spec.md` | Oasis-Maker Machines — spec (OASIS_MAKER_MACHINES_1) | — |
-| `objstore_trial_2026-10-08.md` | Shared object store — trial with telemetry (2026-10-08) | — |
+| `objstore_trial_2026-10-08.md` | Shared object store — trial with telemetry (2026-10-08) | 📜 names a retired era |
+| `old_era_ticket_sweep_2026-11-18.md` | Old-era ticket sweep, 2026-11-18 | 📜 names a retired era |
 | `ollama.md` | ollama.md — installing Ollama on Windows |  |
-| `operating_modes_2026-10-26.md` | Operating modes: how many helpers, on what, under which review gates (2026-10-26) | — |
-| `operating_requirements_2026-11-01.md` | Operating requirements (2026-11-01) | — |
-| `operations_design_2026-11-01.md` | Operations: clockwork gatherers, one judge | — |
-| `operations_metronome_strategy_2026-11-02.md` | Operations: the metronome, the memory, and Groundhog Day | — |
-| `orchestration_design_record_2026-10-26.md` | Orchestration design record, 2026-10-26 | — |
-| `orchestration_review_2026-10-26.md` | Orchestration designs: GPT's skeptical review, checked against our numbers (2026-10-26) | — |
-| `owner_asks_audit_2026-11-04.md` | Owner-asks audit against delegation_policy.md §2 — 2026-11-04 | — |
-| `owner_cards_2026-10-27.md` | Cards for your next session (drafted 2026-10-26 for 2026-10-27) | — |
-| `owner_questions_answered_2026-11-01.md` | Your unanswered questions, answered | — |
-| `owner_walk_gss_flowworks_2026-10-11.md` | Owner walk: Gimme Some Slack + FlowWorks: scenes to stage (2026-10-11) | — |
-| `parallel_add_on_trial_design_2026-11-01.md` | Parallel add-on trial: design (TRIAL_PARALLEL_DESIGN_ADD_ON_EQUAL_ALLOWANCE) | — |
-| `perpetual_orchestrator_context_2026-10-26.md` | Perpetual orchestrator context: grow-until-compaction vs handoff-and-restart | — |
+| `operating_modes_2026-10-26.md` | Operating modes: how many helpers, on what, under which review gates (2026-10-26) | 📜 names a retired era |
+| `operating_requirements_2026-11-01.md` | Operating requirements (2026-11-01) | 📜 names a retired era |
+| `operations_design_2026-11-01.md` | Operations: clockwork gatherers, one judge | 📜 names a retired era |
+| `operations_metronome_strategy_2026-11-02.md` | Operations: the metronome, the memory, and Groundhog Day | 📜 names a retired era |
+| `orchestration_design_record_2026-10-26.md` | Orchestration design record, 2026-10-26 | 📜 names a retired era |
+| `orchestration_review_2026-10-26.md` | Orchestration designs: GPT's skeptical review, checked against our numbers (2026-10-26) | 📜 names a retired era |
+| `owner_asks_audit_2026-11-04.md` | Owner-asks audit against delegation_policy.md §2 — 2026-11-04 | 📜 names a retired era |
+| `owner_cards_2026-10-27.md` | Cards for your next session (drafted 2026-10-26 for 2026-10-27) | 📜 names a retired era |
+| `owner_questions_answered_2026-11-01.md` | Your unanswered questions, answered | 📜 names a retired era |
+| `owner_walk_gss_flowworks_2026-10-11.md` | Owner walk: Gimme Some Slack + FlowWorks: scenes to stage (2026-10-11) | 📜 names a retired era |
+| `parallel_add_on_trial_design_2026-11-01.md` | Parallel add-on trial: design (TRIAL_PARALLEL_DESIGN_ADD_ON_EQUAL_ALLOWANCE) | 📜 names a retired era |
+| `perpetual_orchestrator_context_2026-10-26.md` | Perpetual orchestrator context: grow-until-compaction vs handoff-and-restart | 📜 names a retired era |
 | `phase0_p6_save_rewrite_icons_NOTE.md` | Phase 0 P6 second pass: ideo-icon refs in the donor-free save (2026-10-16) | — |
 | `phase0_save_mutators_restore_NOTE.md` | Donor tile mutators stripped from the donor-free save — where to put them back | — |
 | `pipeline_diagnosis_20261116.md` | Why the mod pipeline keeps stopping: measured diagnosis, Mon 2026-11-16 | — |
 | `pipeline_interventions_census_2026-11-15.md` | Census: every time the Conductor stepped into the Maturation Pipeline | — |
 | `pipeline_launch_paths_census_2026-11-18.md` | Pipeline launch paths census, 2026-11-18 | — |
-| `pipeline_sleepers_census_2026-11-15.md` | Pipeline sleepers census, 2026-11-15 | — |
+| `pipeline_sleepers_census_2026-11-15.md` | Pipeline sleepers census, 2026-11-15 | 📜 names a retired era |
 | `pipeline_trial_counters_census_2026-11-18.md` | Every counter a Maturation Pipeline run can consume, and whether a system death spends it (2026-11-18) | — |
 | `pit_exposure_to_the_elements_2026-10-11.md` | Pit: "exposed to the elements" on vanilla's own temperature path — design pass, 2026-10-11 | — |
 | `pit_solvent_options_20261011.md` | Slime pit solvent: what is "the Rot's finest"? Options, 2026-10-11 | — |
 | `pit_superdeep_collapse_spec.md` | Pit → Superdeep collapse — design spec | — |
-| `pit_travel_jumpers_floaters_2026-10-20.md` | Pit travel: which creatures jump or float (tagged from lore, 2026-10-20) | — |
-| `planning_session_design_2026-11-01.md` | Planning sessions: orders for many days, without you | — |
+| `pit_travel_jumpers_floaters_2026-10-20.md` | Pit travel: which creatures jump or float (tagged from lore, 2026-10-20) | 📜 names a retired era |
+| `planning_session_design_2026-11-01.md` | Planning sessions: orders for many days, without you | 📜 names a retired era |
 | `plant_draw_layers_2026-10-14.md` | Plant draw layers: ground cover under everything (2026-10-14) | — |
 | `plant_economy_rule_2026-11-01.md` | The plant economy bar (2026-11-01) | — |
 | `player_truth_sweep_trials_2026-11-13.md` | Player-truth sweep, second trial: wider set, and a truth baked into a fixer (2026-11-13) | — |
 | `player_truth_testing_pilot_2026-10-26.md` | Player-truth testing pilot (FlowWorks: pits, ladders, pipes, hoses, levelling) | — |
 | `pond_depth_design_2026-10-16.md` | Ponds shallow out before they turn to mud: design (2026-10-16) | — |
-| `post_event_recovery_mode_2026-11-05.md` | Post-event recovery mode: a design, replayed on 2026-11-04 (OPS_RECOVERY_DESIGN_POST_EVENT_MODE) | — |
-| `power_poles_and_flexible_pipe_assessment_2026-10-02.md` | Power Poles Extended, suspended wires and flexible piping — assessment (2026-10-02) | — |
-| `process_model_explainer_2026-10-29.md` | The process model, explained (2026-10-29) | — |
-| `producer_cadence_2026-10-29.md` | Producer cadence: more than Wednesdays (design, 2026-10-29) | — |
-| `production_system_map_2026-11-12.md` | The RimMandrake production system: a map, 2026-11-12 | — |
-| `pyrelands_ash_redesign_2026-10-12.md` | Pyrelands ground: deep ash everywhere, and the burn feeds the field (2026-10-12) | — |
-| `queue_judgment_2026-11-01.md` | Queue judgment, 1 November 2026 | — |
-| `ratchet_workflow_and_token_burst_design_2026-10-11.md` | The ratchet workflow and the token burst to Wed 16:00 | — |
+| `post_event_recovery_mode_2026-11-05.md` | Post-event recovery mode: a design, replayed on 2026-11-04 (OPS_RECOVERY_DESIGN_POST_EVENT_MODE) | 📜 names a retired era |
+| `power_poles_and_flexible_pipe_assessment_2026-10-02.md` | Power Poles Extended, suspended wires and flexible piping — assessment (2026-10-02) | 📜 names a retired era |
+| `process_model_explainer_2026-10-29.md` | The process model, explained (2026-10-29) | 📜 names a retired era |
+| `process_sim_findings_2026-10-27.md` | RimFlow v3 in a bottle: what the simulation says (2026-10-27) | 📜 names a retired era |
+| `producer_cadence_2026-10-29.md` | Producer cadence: more than Wednesdays (design, 2026-10-29) | 📜 names a retired era |
+| `production_system_map_2026-11-12.md` | The RimMandrake production system: a map, 2026-11-12 | 📜 names a retired era |
+| `pyrelands_ash_redesign_2026-10-12.md` | Pyrelands ground: deep ash everywhere, and the burn feeds the field (2026-10-12) | 📜 names a retired era |
+| `queue_judgment_2026-11-01.md` | Queue judgment, 1 November 2026 | 📜 names a retired era |
+| `ratchet_workflow_and_token_burst_design_2026-10-11.md` | The ratchet workflow and the token burst to Wed 16:00 | 📜 names a retired era |
 | `reaction_mechanism_spec.md` | One reaction mechanism, four scales — spec | — |
 | `reel_fairlead_swivel_decision_2026-11-05.md` | Hose reel: payout guide (fairlead) and supply swivel — decided not needed (2026-11-05) | — |
 | `relative_depth_climb_design_2026-10-12.md` | Relative depth and climbing out — design pass (2026-10-12) | — |
 | `relative_depth_climb_gpt_review_2026-10-12.md` | GPT review — relative depth and climbing out (2026-10-12) | — |
-| `release_proximity_2026-10-22.md` | Release proximity, 2026-10-22 (FOUNDRY, read-only ranking) | — |
-| `improvement_loop_rules_2026-11-03.md` | Improvement loop rules — owner, 2026-11-03 | — |
-| `concept_tree_schema.md` | The acceptance tree: file format (2026-11-01) | — |
+| `release_proximity_2026-10-22.md` | Release proximity, 2026-10-22 (FOUNDRY, read-only ranking) | 📜 names a retired era |
 | `relic_replacements_proposal.md` | Relic replacements for the five broken VWE relic precepts — PROPOSAL, awaiting owner approval | — |
 | `retired_eras_index_2026-11-18.md` | Retired eras: what was removed, where it lived, what stays and why (2026-11-18) | — |
 | `retired_loops_2026-11-13.md` | Retired 2026-11-13: Relentless per-ticket work, the Artisan loops, the Whittle loops | — |
-| `retired_mutators_port_2026-10-19.md` | Retired-donor world-tile mutators and landmarks: ported to our own defs, 2026-10-19 | — |
-| `retirement_register_wave4_2026-10-20.md` | Retirement Wave 4 register (2026-10-20): what was cut, why, and how to bring it back | — |
-| `return_to_building_checklist_2026-11-01.md` | Before we return to normal building: workflow checklist (2026-11-01) | — |
+| `retired_mutators_port_2026-10-19.md` | Retired-donor world-tile mutators and landmarks: ported to our own defs, 2026-10-19 | 📜 names a retired era |
+| `retirement_register_wave4_2026-10-20.md` | Retirement Wave 4 register (2026-10-20): what was cut, why, and how to bring it back | 📜 names a retired era |
+| `return_to_building_checklist_2026-11-01.md` | Before we return to normal building: workflow checklist (2026-11-01) | 📜 names a retired era |
 | `rich_screenshot_art_prereview.md` | Rich-screenshot art pre-review — the contact board (2026-10-06) | — |
 | `rimbridge.md` | rimbridge.md — living context on RimBridgeServer (live game modification) |  |
-| `rimflow_gpt_review_2026-10-07.md` | — | — |
-| `rimflow_system_and_stuck_state_2026-10-07.md` | rimflow: the work-item system, and why items get stuck (2026-10-07) | — |
-| `dispatcher_design_2026-10-26.md` | RimFlow v3 — the integrator layer (design of record, 2026-10-26) | — |
-| `dispatcher_arbiter_tiers_2026-10-27.md` | RimFlow v3: the Arbiter by risk tier (2026-10-27) | — |
-| `dispatcher_audit_remeasure_2026-10-31.md` | RimFlow v3 audit: where it stands, re-measured (2026-10-31) | — |
-| `dispatcher_golive_wave1.md` | RimFlow v3 go-live, wave 1 (runbook, written 2026-10-27, for Wednesday 2026-10-28 after the weekly token reset) | — |
-| `role_responsibilities_2026-10-26.md` | RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26) | — |
-| `dispatcher_risk_response_2026-10-29.md` | RimFlow v3 risk review: the Opus response (2026-10-29) | — |
-| `process_sim_findings_2026-10-27.md` | RimFlow v3 in a bottle: what the simulation says (2026-10-27) | — |
-| `dispatcher_trial_night_2026-10-28.md` | RimFlow v3 trial night, 2026-10-28: one ordered runbook | — |
-| `rimflow_validation_levels_addendum_2026-10-07.md` | Rimflow redesign — addendum: the validation levels | — |
+| `rimflow_gpt_review_2026-10-07.md` | — | 📜 names a retired era |
+| `rimflow_system_and_stuck_state_2026-10-07.md` | rimflow: the work-item system, and why items get stuck (2026-10-07) | 📜 names a retired era |
+| `rimflow_validation_levels_addendum_2026-10-07.md` | Rimflow redesign — addendum: the validation levels | 📜 names a retired era |
 | `rimtalk_analysis.md` | rimtalk_analysis.md — RimTalk adoption analysis | → superseded `llm_stack_assessment.md` |
 | `rimworld_file_lore.md` | rimworld_file_lore.md — technical manual for editing RimWorld save / scenario / def files |  |
 | `rimworld_new_version_research_2026-10-20.md` | RimWorld new version research (2026-10-20) | — |
 | `river_works_mod_design_2026-10-03.md` | River Works — whole-mod design (SURFACE_RIVER_WEIRS_1), 2026-10-03 | — |
-| `rot_northstar_bars_draft_2026-10-22.md` | The Rot: four north-star bars, drafted for the owner | — |
-| `rot_open_questions_2026-10-22.md` | The Rot: open questions for the owner, 2026-10-22 | — |
-| `rot_warm_mat_portable_2026-10-22.md` | The Rot's warm mat, portable — design spec (2026-10-22) | — |
+| `role_responsibilities_2026-10-26.md` | RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26) | 📜 names a retired era |
+| `rot_northstar_bars_draft_2026-10-22.md` | The Rot: four north-star bars, drafted for the owner | 📜 names a retired era |
+| `rot_open_questions_2026-10-22.md` | The Rot: open questions for the owner, 2026-10-22 | 📜 names a retired era |
+| `rot_warm_mat_portable_2026-10-22.md` | The Rot's warm mat, portable — design spec (2026-10-22) | 📜 names a retired era |
 | `salvage_lift_policy_2026-11-01.md` | What Salvage may lift: the one list | — |
-| `salvage_wreckage_everywhere_design_2026-10-02.md` | SALVAGE_WRECKAGE_EVERYWHERE_1: design (placement, repair and salvage ruled 2026-10-03) | — |
+| `salvage_wreckage_everywhere_design_2026-10-02.md` | SALVAGE_WRECKAGE_EVERYWHERE_1: design (placement, repair and salvage ruled 2026-10-03) | 📜 names a retired era |
 | `save_authoring_pipeline.md` | Save-Based World Authoring Pipeline — RimWorld 1.6 Jawa Gravship Campaign | ⛔ dead |
 | `scald_steam_and_hazards_spec.md` | The Scald — steam weather and boiling-water hazards (design spec) | — |
 | `scene_look_judge_brief.md` | Scene look judge brief: a fresh player's eyes on a staged in-game scene | — |
 | `scurrier_male_commission_2026-10-14.md` | Scurrier male art commission (2026-10-14) | — |
-| `sea_dive_maps_spec.md` | Sea dive maps — design spec | — |
-| `sea_floor_census_2026-10-29.md` | Sea floor and catch census, 2026-10-29 | — |
+| `sea_dive_maps_spec.md` | Sea dive maps — design spec | 📜 names a retired era |
+| `sea_floor_census_2026-10-29.md` | Sea floor and catch census, 2026-10-29 | 📜 names a retired era |
 | `sea_shore_mutator_spec.md` | Sea shore tile mutator — design spec | — |
 | `sea_surface_removal_2026-11-01.md` | Sea surface removal, 2026-11-01: the owner's list | — |
-| `second_workstation_study_2026-10-24.md` | Second Windows workstation: would it pay? (study, 2026-10-24) | — |
+| `second_workstation_study_2026-10-24.md` | Second Windows workstation: would it pay? (study, 2026-10-24) | 📜 names a retired era |
 | `shadecraft_lessons_design_2026-10-31.md` | Shade gear learned by study: the design (2026-10-31) | — |
-| `ship_cargo_hoist_design_2026-10-01.md` | Ship cargo hoist — universal vertical cargo device (design, 2026-10-01) | — |
+| `ship_cargo_hoist_design_2026-10-01.md` | Ship cargo hoist — universal vertical cargo device (design, 2026-10-01) | 📜 names a retired era |
 | `shovels_v1_2026-10-25.md` | Shovels v1 — no digging bare-handed (SHOVELS_BUILD_NO_DIGGING_BARE_HANDED) | — |
-| `single_primary_design_2026-10-26.md` | One primary: a seat for you, an engine for the queue (2026-10-26) | — |
-| `sith_line_design.md` | Sith line — redesign of the Sanguophage xenotype | — |
+| `single_primary_design_2026-10-26.md` | One primary: a seat for you, an engine for the queue (2026-10-26) | 📜 names a retired era |
+| `sith_line_design.md` | Sith line — redesign of the Sanguophage xenotype | 📜 names a retired era |
 | `solar_mirrors_mod_design_2026-10-04.md` | Solar Mirrors — full design pass (SOLAR_MIRRORS_MOD_DESIGN_1) | — |
-| `sound_sourcing_options_2026-10-02.md` | Sound sourcing options (SOUND_SOURCING_ROUTE_1) — 2026-10-02 | — |
-| `spare_gpt_capacity.md` | Spare GPT capacity before its refresh | — |
-| `special_mechanics_review_2026-10-22.md` | Special mechanics, rites and items: review inventory (2026-10-22) | — |
+| `sound_sourcing_options_2026-10-02.md` | Sound sourcing options (SOUND_SOURCING_ROUTE_1) — 2026-10-02 | 📜 names a retired era |
+| `spare_gpt_capacity.md` | Spare GPT capacity before its refresh | 📜 names a retired era |
+| `special_mechanics_review_2026-10-22.md` | Special mechanics, rites and items: review inventory (2026-10-22) | 📜 names a retired era |
 | `sprinklers_design_2026-10-16.md` | Sprinklers: native pipe heads + VFE automation (SPRINKLERS_DESIGN_PIPES_THEN_PANACHE, 2026-10-16) | — |
-| `sprint_art_commissions_2026-10-16.md` | Sprint art commissions, 2026-10-16 (FOUNDRY helper) | — |
+| `sprint_art_commissions_2026-10-16.md` | Sprint art commissions, 2026-10-16 (FOUNDRY helper) | 📜 names a retired era |
 | `standing_rulings.md` | Standing owner rulings and process detail — full text | — |
-| `starwars_junk_reskin_2026-10-03.md` | Star Wars junk reskin — vanilla ancient junk, many variants (2026-10-03) | — |
+| `starwars_junk_reskin_2026-10-03.md` | Star Wars junk reskin — vanilla ancient junk, many variants (2026-10-03) | 📜 names a retired era |
 | `statue_expansion_assessment.md` | Statue Art Expansion — Assessment (STATUE_ART_EXPANSION_1) | — |
-| `statue_mods_spec.md` | Statue mods spec — Utinni statues (RUT_) and Flame statues (RM_) | — |
-| `status_pages_successor_2026-11-03.md` | Status pages: the successor to RimPulse (STATUS_PAGES_BUILD_REPLACE_RIMPULSE) | — |
-| `stevedesktop_bringup_plan_2026-10-24.md` | SteveDesktop: second test machine, bring-up plan (2026-10-24) | — |
+| `statue_mods_spec.md` | Statue mods spec — Utinni statues (RUT_) and Flame statues (RM_) | 📜 names a retired era |
+| `status_pages_successor_2026-11-03.md` | Status pages: the successor to RimPulse (STATUS_PAGES_BUILD_REPLACE_RIMPULSE) | 📜 names a retired era |
+| `stevedesktop_bringup_plan_2026-10-24.md` | SteveDesktop: second test machine, bring-up plan (2026-10-24) | 📜 names a retired era |
 | `sun_and_shade_modularity_2026-10-19.md` | Sun & Shade: standalone mod or part of Baroque Biomes? Design pass, 2026-10-19 | — |
-| `surface_river_weirs_design_2026-10-02.md` | Surface river weirs — design (SURFACE_RIVER_WEIRS_1), 2026-10-02 | — |
+| `surface_river_weirs_design_2026-10-02.md` | Surface river weirs — design (SURFACE_RIVER_WEIRS_1), 2026-10-02 | 📜 names a retired era |
 | `suspension_bridge_construction_design_2026-10-18.md` | Suspension bridge: how it is built (DESIGN, 2026-10-18) | — |
-| `tail_mods_art_retirement_2026-10-18.md` | Tail donor mods: art-bearing retirement census, 2026-10-18 | — |
+| `tail_mods_art_retirement_2026-10-18.md` | Tail donor mods: art-bearing retirement census, 2026-10-18 | 📜 names a retired era |
 | `temple_ruins_several_faiths_2026-11-01.md` | Temples of several faiths: ruined ones as mutators, living ones with their people | — |
 | `tentacle_twitch_design_2026-10-15.md` | Twitching tentacles: greater bulloo and zhool (2026-10-15) | — |
-| `tentative_plan_after_v2_lessons_2026-11-01.md` | Tentative plan: what to bring back from v2, and what must be new (2026-11-01) | — |
-| `test_orchestration_two_machines_2026-10-25.md` | Test orchestration on two machines: combined plan (2026-10-25) | — |
+| `tentative_plan_after_v2_lessons_2026-11-01.md` | Tentative plan: what to bring back from v2, and what must be new (2026-11-01) | 📜 names a retired era |
+| `test_orchestration_two_machines_2026-10-25.md` | Test orchestration on two machines: combined plan (2026-10-25) | 📜 names a retired era |
 | `test_site_saves_2026-10-15.md` | Clean saved test maps — design (TESTSITE_SAVES_BUILD_ONE_CALM_MAP, 2026-10-15) | — |
-| `test_tolerance_gpt_advice_2026-11-04.md` | Test tolerance: GPT's advice (2026-11-04) | — |
+| `test_tolerance_gpt_advice_2026-11-04.md` | Test tolerance: GPT's advice (2026-11-04) | 📜 names a retired era |
 | `testing_investment_sim_2026-10-27.md` | Where more testing would pay, and which kinds (2026-10-27) | — |
 | `testing_policy_2026-10-28.md` | Testing policy: the right test, at the right time (2026-10-28) | — |
-| `testpilot_design_opus_2026-10-29.md` | TestPilot: the owner's Foundry + TestPilot + Conductor proposal, evaluated and improved (Opus, 2026-10-29) | — |
-| `testpilot_merged_2026-10-29.md` | TestPilot: merged design, round 3 (2026-10-29) | — |
-| `testpilot_round2_opus_2026-10-29.md` | TestPilot round 2 (Opus): answer to GPT's independent design | — |
+| `testpilot_design_opus_2026-10-29.md` | TestPilot: the owner's Foundry + TestPilot + Conductor proposal, evaluated and improved (Opus, 2026-10-29) | 📜 names a retired era |
+| `testpilot_merged_2026-10-29.md` | TestPilot: merged design, round 3 (2026-10-29) | 📜 names a retired era |
+| `testpilot_round2_opus_2026-10-29.md` | TestPilot round 2 (Opus): answer to GPT's independent design | 📜 names a retired era |
 | `testq_preflight_2026-11-12.md` | testq preflight and the deploy memo (2026-11-12) | — |
-| `texregen_unproven_adjudication.md` | Live art with no pipeline record, adjudicated (TEXREGEN_UNPROVEN_ASK_THE_SHEETS) | — |
+| `texregen_unproven_adjudication.md` | Live art with no pipeline record, adjudicated (TEXREGEN_UNPROVEN_ASK_THE_SHEETS) | 📜 names a retired era |
 | `thirst_bottles_design_2026-10-16.md` | Thirst and bottles in FlowWorks, our own thirst (design, 2026-10-16) | — |
 | `thirst_fluids_design_2026-10-17.md` | Thirst and fluids: rulings, interactions and traffic (3x3 design, 2026-10-17) | — |
 | `ticket_naming_2026-10-10.md` | Ticket naming: SUBJECT_INTENT_TWIST (2026-10-10) | — |
 | `titan_passage_dark_side_calls_2026-11-05.md` | Titan passage on the dark side: can a giant live there? (calls, 2026-11-05) | — |
 | `tps_record.md` | The TPS record — TPS is measured all the time | — |
-| `tree_burst_design_2026-10-17.md` | Tree burst: water moves a giant only a bit along its life (2026-10-17) | — |
+| `tree_burst_design_2026-10-17.md` | Tree burst: water moves a giant only a bit along its life (2026-10-17) | 📜 names a retired era |
 | `tree_shade_model_2026-10-19.md` | Tree shade model for Direct Sun: design pass, 2026-10-19 | — |
 | `tree_size_proposal_2026-10-18.md` | Tree size: how big our trees should be (2026-10-18) | — |
-| `two_rimworld_instances_2026-11-07.md` | Two RimWorld instances on one machine (design, 2026-11-07) | — |
+| `two_rimworld_instances_2026-11-07.md` | Two RimWorld instances on one machine (design, 2026-11-07) | 📜 names a retired era |
 | `unified_direct_sun_heat_2026-10-19.md` | One Direct Sun, planet-wide: design pass, 2026-10-19 | — |
 | `utinni_discovery_achievements_design_2026-10-02.md` | Utinni discovery achievements — design pass (2026-10-02) | — |
 | `utinni_discovery_achievements_gpt_consult_2026-10-02.md` | — | — |
-| `v2_nine_rituals.md` | v2: the rituals of the Nine found in the Baroque Biomes | — |
-| `v3_health_daily_check_2026-10-29.md` | v3 health: the daily check (spec, 2026-10-29) | — |
-| `v3_keep_or_kill_evidence_2026-11-01.md` | Keep or kill v3: what we know, what we don't, and the date (2026-11-01) | — |
-| `validation_inventory_2026-11-12.md` | RimMandrake verification and validation: every scheme, 2026-11-12 | — |
+| `v2_nine_rituals.md` | v2: the rituals of the Nine found in the Baroque Biomes | 📜 names a retired era |
+| `v3_health_daily_check_2026-10-29.md` | v3 health: the daily check (spec, 2026-10-29) | 📜 names a retired era |
+| `v3_keep_or_kill_evidence_2026-11-01.md` | Keep or kill v3: what we know, what we don't, and the date (2026-11-01) | 📜 names a retired era |
+| `validation_inventory_2026-11-12.md` | RimMandrake verification and validation: every scheme, 2026-11-12 | 📜 names a retired era |
 | `validation_map_and_rules.md` | Validation map and rules | — |
 | `vee_port_plan_2026-10-22.md` | VEE world layers: port plan (2026-10-22) | — |
-| `venomvine_design_2026-10-16.md` | Venomvine: the Leaning Scrub grows teeth (design, 2026-10-16) | — |
-| `warp_cloud_factory_study_2026-11-11.md` | Warp cloud factory study — 2026-11-11 | — |
-| `watcher_creatures_kit_design_2026-10-02.md` | Watcher creatures kit — design (WATCHER_CREATURES_MOD_1) | — |
+| `venomvine_design_2026-10-16.md` | Venomvine: the Leaning Scrub grows teeth (design, 2026-10-16) | 📜 names a retired era |
+| `warp_cloud_factory_study_2026-11-11.md` | Warp cloud factory study — 2026-11-11 | 📜 names a retired era |
+| `watcher_creatures_kit_design_2026-10-02.md` | Watcher creatures kit — design (WATCHER_CREATURES_MOD_1) | 📜 names a retired era |
 | `watcher_creatures_pitch.md` | Watcher creatures — the full pitch (WATCHER_CREATURES_MOD_1) | — |
 | `watchers_mod_pitch_2026-09-30.md` | Watchers: a cross-biome mod of shy creatures (pitch, 2026-09-30) | — |
 | `wave4_sheet_gap_2026-10-22.md` | Wave 4 vs the owner's retirement sheet: the 11-mod gap (2026-10-22) | — |
-| `weather_sensing_descope_2026-10-19.md` | Weather sensing descope — inventory and options (2026-10-19) | — |
-| `webwork_spider_siege_2026-10-22.md` | The Webwork siege: the ollathrix come to you and spin (design spec, 2026-10-22) | — |
-| `webworks_open_questions_2026-10-22.md` | The Webwork: open questions for the owner (2026-10-22) | — |
+| `weather_sensing_descope_2026-10-19.md` | Weather sensing descope — inventory and options (2026-10-19) | 📜 names a retired era |
+| `webwork_spider_siege_2026-10-22.md` | The Webwork siege: the ollathrix come to you and spin (design spec, 2026-10-22) | 📜 names a retired era |
+| `webworks_open_questions_2026-10-22.md` | The Webwork: open questions for the owner (2026-10-22) | 📜 names a retired era |
 | `weir_review_2026-10-23.md` | Weir review — 2026-10-23 | — |
-| `work_allocation_framework_2026-10-26.md` | Work allocation: where Archmagi, SteveDesktop and the agents should spend their time (2026-10-26) | — |
-| `world_physics_audit_2026-10-20.md` | World physics audit — tidal lock, sun per tile, temperatures, Rings (2026-10-20) | — |
+| `work_allocation_framework_2026-10-26.md` | Work allocation: where Archmagi, SteveDesktop and the agents should spend their time (2026-10-26) | 📜 names a retired era |
+| `world_physics_audit_2026-10-20.md` | World physics audit — tidal lock, sun per tile, temperatures, Rings (2026-10-20) | 📜 names a retired era |
 | `world_remake_reinstate_list.md` | World remake: the mods to reinstate, and how | — |
 
 ### `design/RimMandrake/2026-11-07-pocock-design/`
 
 | doc | title | status |
 |---|---|---|
-| `01-design.md` | Pass 1: where Pocock's ideas could earn a trial in RimMandrake, and in Artisan | — |
-| `02-gpt.md` | Pass 2, step 2: the second model's critique of the design | — |
-| `02a-gpt-blind-prompt.md` | Blind prompt sent to the second model (pass 2, step 1), 2026-11-07 | — |
-| `02a-gpt-blind.md` | Pass 2, step 1: the second model's blind answer | — |
+| `01-design.md` | Pass 1: where Pocock's ideas could earn a trial in RimMandrake, and in Artisan | 📜 names a retired era |
+| `02-gpt.md` | Pass 2, step 2: the second model's critique of the design | 📜 names a retired era |
+| `02a-gpt-blind-prompt.md` | Blind prompt sent to the second model (pass 2, step 1), 2026-11-07 | 📜 names a retired era |
+| `02a-gpt-blind.md` | Pass 2, step 1: the second model's blind answer | 📜 names a retired era |
 | `02m-remeasure.md` | Re-measure of the starred claims, and of the claims the critique disputed | — |
-| `03-merged.md` | Merged: Pocock's ideas, trials, and the loops | — |
+| `03-merged.md` | Merged: Pocock's ideas, trials, and the loops | 📜 names a retired era |
 | `04-trial1-callers.md` | Trial 1: test the callers, not the kernels | — |
 | `05-gpt-review-trial1.md` | — | — |
-| `06-mined-live-bugs.md` | 06 — Live-found bugs, mined: where real bugs land, and which scenarios to write first | — |
-| `MERGE_DRAFT.md` | Merge draft for the Conductor: Pocock's ideas, trials, and the loops | — |
+| `06-mined-live-bugs.md` | 06 — Live-found bugs, mined: where real bugs land, and which scenarios to write first | 📜 names a retired era |
+| `MERGE_DRAFT.md` | Merge draft for the Conductor: Pocock's ideas, trials, and the loops | 📜 names a retired era |
 | `status.md` | Run status: Pocock design pass (Deep-Design-3x2), 2026-11-07 | — |
 
 ### `design/RimMandrake/agent_visibility_2026-11-04/`
 
 | doc | title | status |
 |---|---|---|
-| `design.md` | Seeing, steering and resuming pipeline agents: headless vs visible (design pass, 2026-11-04) | — |
-| `gpt_review.md` | GPT review of design.md (verbatim) | — |
-| `notebox_probe.md` | Note-delivery probe and the note box (report steps 3-4), 2026-11-05 | — |
-| `report.md` | Seeing, steering and resuming the pipeline's agents: report for Mandrake (2026-11-04) | — |
+| `design.md` | Seeing, steering and resuming pipeline agents: headless vs visible (design pass, 2026-11-04) | 📜 names a retired era |
+| `gpt_review.md` | GPT review of design.md (verbatim) | 📜 names a retired era |
+| `notebox_probe.md` | Note-delivery probe and the note box (report steps 3-4), 2026-11-05 | 📜 names a retired era |
+| `report.md` | Seeing, steering and resuming the pipeline's agents: report for Mandrake (2026-11-04) | 📜 names a retired era |
 
 ### `design/RimMandrake/art_sheet_speedup_2026-10-19_evidence/`
 
 | doc | title | status |
 |---|---|---|
-| `gpt_answer.md` | — | — |
-| `gpt_brief.md` | Review: make the RimMandrake art-review-sheet procedure MUCH faster and more reliable | — |
+| `gpt_answer.md` | — | 📜 names a retired era |
+| `gpt_brief.md` | Review: make the RimMandrake art-review-sheet procedure MUCH faster and more reliable | 📜 names a retired era |
 
 ### `design/RimMandrake/audits/`
 
@@ -1240,8 +1242,8 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
-| `build_spec.md` | BRIDGE_CONDITIONS: build spec (2026-11-06) | — |
-| `draft.md` | BRIDGE_CONDITIONS — composable wait / watch / sample primitives for live tests (draft, 2026-11-06) | — |
+| `build_spec.md` | BRIDGE_CONDITIONS: build spec (2026-11-06) | 📜 names a retired era |
+| `draft.md` | BRIDGE_CONDITIONS — composable wait / watch / sample primitives for live tests (draft, 2026-11-06) | 📜 names a retired era |
 | `gpt_enriched.md` | Bridge conditions — enriched design review | — |
 
 ### `design/RimMandrake/designer_codex_2026-11-09/`
@@ -1373,7 +1375,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `ANSWERS_OWNER.md` | LongShade: owner answers (by question card, Tue 2026-11-10 ~10:20 AM PST) | — |
-| `NOTES.md` | — | — |
+| `NOTES.md` | — | 📜 names a retired era |
 | `QUESTIONS.md` | — | — |
 | `QUESTIONS_OWNER.md` | — | — |
 | `designer_brief.md` | — | — |
@@ -1446,7 +1448,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `ANSWERS_OWNER.md` | TheForge: owner answers (by question card, Tue 2026-11-10 ~10:06 PM PST) | — |
 | `NOTES.md` | — | — |
-| `QUESTIONS.md` | — | — |
+| `QUESTIONS.md` | — | 📜 names a retired era |
 | `QUESTIONS_OWNER.md` | — | — |
 | `designer_brief.md` | — | — |
 
@@ -1517,10 +1519,10 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `ideas_gpt.md` | — | — |
-| `ideas_inside.md` | Fast testing, inside view + Jev (divergent pass, phase 1) | — |
+| `ideas_inside.md` | Fast testing, inside view + Jev (divergent pass, phase 1) | 📜 names a retired era |
 | `ideas_outside.md` | Fast testing: the OUTSIDE view (divergent, phase 1 of 3) | — |
-| `scored.md` | Fast testing: scored (phase 3 of 3), 2026-11-05 | — |
-| `scored_judge2.md` | Fast testing: ~120 ideas, merged and scored (FAST_TESTS_JUDGE_ONE_TWENTY_IDEAS) | — |
+| `scored.md` | Fast testing: scored (phase 3 of 3), 2026-11-05 | 📜 names a retired era |
+| `scored_judge2.md` | Fast testing: ~120 ideas, merged and scored (FAST_TESTS_JUDGE_ONE_TWENTY_IDEAS) | 📜 names a retired era |
 
 ### `design/RimMandrake/gpt_consults/`
 
@@ -1529,7 +1531,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Cauldron_edge_cases_2026-10-16.md` | Cauldron edge cases - graded GPT bug hunt | — |
 | `Contagion_edge_cases_2026-10-16.md` | Contagion edge-case hunt, graded (2026-10-16) | — |
 | `ExplosiveGrowth_edge_cases_2026-10-16.md` | ExplosiveGrowth edge cases: GPT bug-hunt, graded against the code | — |
-| `FlowWorks_edge_cases_2026-10-16.md` | FlowWorks edge-case hunt, graded (2026-10-16) | — |
+| `FlowWorks_edge_cases_2026-10-16.md` | FlowWorks edge-case hunt, graded (2026-10-16) | 📜 names a retired era |
 | `LeaningScrub_edge_cases_2026-10-16.md` | LeaningScrub edge-case consult, graded against the code | — |
 
 ### `design/RimMandrake/gpt_consults/raw/`
@@ -1568,7 +1570,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Scarlands.md` | — | — |
 | `Stillsand.md` | — | — |
 | `TerminalBiomes.md` | — | — |
-| `VERDICTS.md` | GPT top-ten review — verdicts (GPT_FULL_REVIEW_TOP10_1) | — |
+| `VERDICTS.md` | GPT top-ten review — verdicts (GPT_FULL_REVIEW_TOP10_1) | 📜 names a retired era |
 
 ### `design/RimMandrake/hose_port_gpt_review_2026-10-10/`
 
@@ -1593,12 +1595,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `ANSWERS_OWNER.md` | HugeThings: owner answers (by question card, Wed 2026-11-11 12:16 AM PST) | — |
-| `JUVENILE_PASSAGE_CLASSIFICATION.md` | Juvenile passage classification and spacing | — |
+| `JUVENILE_PASSAGE_CLASSIFICATION.md` | Juvenile passage classification and spacing | 📜 names a retired era |
 | `NOTES.md` | — | — |
-| `OWNER_BUILD_PLAN.md` | Owner-directed HugeThings build plan — 2026-11-11 | — |
+| `OWNER_BUILD_PLAN.md` | Owner-directed HugeThings build plan — 2026-11-11 | 📜 names a retired era |
 | `QUESTIONS.md` | — | — |
-| `REEFBACK_CALF_DECISION.md` | Reefback calf: retain size and Miasma placement | — |
-| `REEFBACK_NURSERY_COMBAT.md` | Reefback nursery combat | — |
+| `REEFBACK_CALF_DECISION.md` | Reefback calf: retain size and Miasma placement | 📜 names a retired era |
+| `REEFBACK_NURSERY_COMBAT.md` | Reefback nursery combat | 📜 names a retired era |
 | `REVIEW.md` | — | — |
 | `designer_brief.md` | — | — |
 | `review_brief.md` | — | — |
@@ -1607,7 +1609,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
-| `vet_leftovers.md` | LIGHTSPEED_VET_LEFTOVERS_FOR_BRIDGE_TOOLS: which Northstar leftovers a bridge capability drains | — |
+| `vet_leftovers.md` | LIGHTSPEED_VET_LEFTOVERS_FOR_BRIDGE_TOOLS: which Northstar leftovers a bridge capability drains | 📜 names a retired era |
 
 ### `design/RimMandrake/liquid_network_semantics_gpt_2026-10-11/`
 
@@ -1629,14 +1631,14 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `ACTIONS_NOW.md` | Mod audit: actions that need no owner decision | — |
 | `C05_generator_inertness_2026-11-03.md` | C05: do the world generators do anything after world creation? (2026-11-03) | — |
 | `FACTS_REGEN_DELTA.md` | Facts regeneration delta (2026-10-10) | — |
-| `GPT_PACKAGE.md` | Mod audit: the whole picture, for a GPT review | — |
-| `GPT_REVIEW_DISPOSITION.md` | GPT review disposition (2026-10-10) | — |
+| `GPT_PACKAGE.md` | Mod audit: the whole picture, for a GPT review | 📜 names a retired era |
+| `GPT_REVIEW_DISPOSITION.md` | GPT review disposition (2026-10-10) | 📜 names a retired era |
 | `OWNER_CARDS.md` | Mod audit: decisions for the owner | — |
 | `OWNER_RULINGS.md` | Owner rulings on the mod audit cards | — |
-| `RETIREMENT_WAVE_1.md` | RETIREMENT WAVE 1: the authoritative definition | — |
-| `RETIREMENT_WAVE_1_RUN_SHEET.md` | RETIREMENT WAVE 1: run sheet for the bridge session | — |
+| `RETIREMENT_WAVE_1.md` | RETIREMENT WAVE 1: the authoritative definition | 📜 names a retired era |
+| `RETIREMENT_WAVE_1_RUN_SHEET.md` | RETIREMENT WAVE 1: run sheet for the bridge session | 📜 names a retired era |
 | `RUBRIC.md` | Mod audit rubric | — |
-| `SCENARIO_BRIEF.md` | Scenario brief for the mod audit | — |
+| `SCENARIO_BRIEF.md` | Scenario brief for the mod audit | 📜 names a retired era |
 | `dead_entries_2026-10-16.md` | Dead and redundant mod-list entries, 2026-10-16 | — |
 | `memory_attribution_2026-11-02.md` | Full-list native memory attribution — 2026-11-02 (FULL_LIST_MEMORY_AUDIT_THIRTY_GB_PRIVATE) | — |
 | `planet_atmosphere_cost.md` | RW - Planet Atmosphere: what it costs (PLANET_ATMOSPHERE_CLOUD_COST_1) | — |
@@ -1660,7 +1662,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `batch_04.md` | Mod audit record: batch 04 (code_tweaks_qol_ui_3, 41 mods) | — |
 | `batch_05.md` | Mod audit batch 05 (code_tweaks_qol_ui_4): 40 mods | — |
 | `batch_06.md` | Mod audit batch 06 (star_wars_donors) | — |
-| `batch_07.md` | Mod audit batch 07: vanilla_expanded | — |
+| `batch_07.md` | Mod audit batch 07: vanilla_expanded | 📜 names a retired era |
 | `batch_08.md` | Mod audit: batch 08 (biomes_world), 14 mods | — |
 | `batch_09.md` | Mod audit record: batch 09 (creatures_animals) | — |
 | `batch_10.md` | Mod audit record: batch 10 (factions_pawns) | — |
@@ -1686,16 +1688,16 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
-| `round_1_2026-10-31.md` | North-star adversarial review, round 1 (2026-10-31) | — |
+| `round_1_2026-10-31.md` | North-star adversarial review, round 1 (2026-10-31) | 📜 names a retired era |
 
 ### `design/RimMandrake/northstar_trials/`
 
 | doc | title | status |
 |---|---|---|
 | `FlowWorks_runsheet.md` | FlowWorks north-star run-sheet (generated by runsheet.py) | — |
-| `FlowWorks_trial_plan.md` | FlowWorks north-star trial plan | — |
+| `FlowWorks_trial_plan.md` | FlowWorks north-star trial plan | 📜 names a retired era |
 | `Graffiti_trial_plan.md` | Graffiti north-star trial plan — the pipeline pilot | — |
-| `Pyrelands_trial_plan.md` | Pyrelands — north-star trial plan (the biome template) | — |
+| `Pyrelands_trial_plan.md` | Pyrelands — north-star trial plan (the biome template) | 📜 names a retired era |
 
 ### `design/RimMandrake/ops_diagnoses/`
 
@@ -1707,19 +1709,19 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
-| `PLAN.md` | The one plan: 8-10 helpers per seat, safely | — |
-| `arms.md` | Parallel review: the arms (PARALLEL_BUILD_REVIEW_DEFEND_EVERY_LIMIT) | — |
-| `codex_review.md` | — | — |
-| `folded_into_operations.md` | Are fixes folded into operations? (audit, 2026-10-31) | — |
-| `handoff_context.md` | PARALLEL_BUILD_REVIEW_DEFEND_EVERY_LIMIT: handoff, context, concurrency | — |
-| `use_now.md` | Use now: parallel capacity tonight (2026-10-31) | — |
+| `PLAN.md` | The one plan: 8-10 helpers per seat, safely | 📜 names a retired era |
+| `arms.md` | Parallel review: the arms (PARALLEL_BUILD_REVIEW_DEFEND_EVERY_LIMIT) | 📜 names a retired era |
+| `codex_review.md` | — | 📜 names a retired era |
+| `folded_into_operations.md` | Are fixes folded into operations? (audit, 2026-10-31) | 📜 names a retired era |
+| `handoff_context.md` | PARALLEL_BUILD_REVIEW_DEFEND_EVERY_LIMIT: handoff, context, concurrency | 📜 names a retired era |
+| `use_now.md` | Use now: parallel capacity tonight (2026-10-31) | 📜 names a retired era |
 
 ### `design/RimMandrake/player_role_2026-10-31/`
 
 | doc | title | status |
 |---|---|---|
-| `01-design.md` | Player role: can an agent tell us the game is confusing, dull, unreadable or broken as felt? | — |
-| `02-gpt.md` | GPT pass 2: critique of 01-design.md (02) | — |
+| `01-design.md` | Player role: can an agent tell us the game is confusing, dull, unreadable or broken as felt? | 📜 names a retired era |
+| `02-gpt.md` | GPT pass 2: critique of 01-design.md (02) | 📜 names a retired era |
 | `02a-gpt-blind.md` | GPT blind pass (02a) | — |
 | `02m-remeasure.md` | Pass 2 re-measure of the claims table (02m) | — |
 | `03-merged.md` | Player role: merged design | — |
@@ -1731,12 +1733,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `ev_art_review.md` | Evidence: art review sheet failures, 2026-10-11 (read-only trace) | — |
 | `ev_biomes.md` | Biome-mod evidence table (2026-10-11, read-only) | — |
-| `ev_existing_designs.md` | Census of existing process designs (read-only, 2026-10-11, /home/mandrake/rm/bench) | — |
-| `ev_git.md` | Evidence: git / parallelism failure modes (measured 2026-10-11/12, read-only) | — |
-| `ev_git_ledger.md` | Evidence: git + ledger, 2026-09-11..2026-10-11 (repo /home/mandrake/rm/bench) | — |
+| `ev_existing_designs.md` | Census of existing process designs (read-only, 2026-10-11, /home/mandrake/rm/bench) | 📜 names a retired era |
+| `ev_git.md` | Evidence: git / parallelism failure modes (measured 2026-10-11/12, read-only) | 📜 names a retired era |
+| `ev_git_ledger.md` | Evidence: git + ledger, 2026-09-11..2026-10-11 (repo /home/mandrake/rm/bench) | 📜 names a retired era |
 | `ev_lodestar.md` | Lodestar evidence (read-only, 2026-10-11) | — |
-| `ev_review_validation.md` | Evidence: owner review load, validation runs, RimPulse (measured 2026-10-11, bench clone) | — |
-| `ev_slowloops.md` | Slow-loop evidence (RimMandrake bench, measured 2026-10-11) | — |
+| `ev_review_validation.md` | Evidence: owner review load, validation runs, RimPulse (measured 2026-10-11, bench clone) | 📜 names a retired era |
+| `ev_slowloops.md` | Slow-loop evidence (RimMandrake bench, measured 2026-10-11) | 📜 names a retired era |
 | `gpt_review.md` | — | — |
 
 ### `design/RimMandrake/review_findings_2026-10-22/`
@@ -1744,7 +1746,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `dead_patches.md` | Dead patches found by review R (left DIRTY; decision owed) | — |
-| `flowworks_gpt_review.md` | FlowWorks GPT review, 2026-10-22 | — |
+| `flowworks_gpt_review.md` | FlowWorks GPT review, 2026-10-22 | 📜 names a retired era |
 | `ruled_values_questions.md` | Open question from review R (ruled values), 2026-10-22 | — |
 | `shell_bodypart_blast_radius.md` | BodyPartDef `Shell` blast radius (2026-10-22, run S) | — |
 
@@ -1752,9 +1754,9 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
-| `monitor_governor_build.md` | Test-state monitor + run governor — first build (GPT §5) | — |
-| `test_control_gpt_prompt_20261013.md` | Task: what should a live-game test harness WATCH, and what else should it INSTALL, so test runs stay controlled? | — |
-| `test_control_review_gpt_20261013.md` | — | — |
+| `monitor_governor_build.md` | Test-state monitor + run governor — first build (GPT §5) | 📜 names a retired era |
+| `test_control_gpt_prompt_20261013.md` | Task: what should a live-game test harness WATCH, and what else should it INSTALL, so test runs stay controlled? | 📜 names a retired era |
+| `test_control_review_gpt_20261013.md` | — | 📜 names a retired era |
 
 ### `design/RimMandrake/thirst_fluids_3x3_2026-10-17/`
 
@@ -1771,7 +1773,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
-| `expansion.md` | TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: expansion | — |
+| `expansion.md` | TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: expansion | 📜 names a retired era |
 | `final.md` | TICKBURST_PROVE_MANY_TICKS_ONE_FRAME: final (reframed after skeptical review) | — |
 | `gpt_review.md` | — | — |
 | `guard_audit.md` | TICKBURST guard audit: per-frame work under paused tick bursts | — |
@@ -1793,33 +1795,33 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
-| `STAGE1_report_2026-10-16.md` | V&V methods, stage 1: what we already do, and nine methods we don't (2026-10-16) | — |
-| `STAGE2_adversarial_review_2026-10-16.md` | V&V methods, stage 2: an adversarial review of stage 1 (2026-10-16) | — |
-| `STAGE3_gpt_skeptical_review_2026-10-16.md` | V&V methods, stage 3: GPT additions, skeptical review, minimum stack, graded (2026-10-16) | — |
-| `pilot1_shipped_matrix_2026-10-16.md` | V&V pilot 1: the shipped-configuration matrix, with honest counts (2026-10-16) | — |
+| `STAGE1_report_2026-10-16.md` | V&V methods, stage 1: what we already do, and nine methods we don't (2026-10-16) | 📜 names a retired era |
+| `STAGE2_adversarial_review_2026-10-16.md` | V&V methods, stage 2: an adversarial review of stage 1 (2026-10-16) | 📜 names a retired era |
+| `STAGE3_gpt_skeptical_review_2026-10-16.md` | V&V methods, stage 3: GPT additions, skeptical review, minimum stack, graded (2026-10-16) | 📜 names a retired era |
+| `pilot1_shipped_matrix_2026-10-16.md` | V&V pilot 1: the shipped-configuration matrix, with honest counts (2026-10-16) | 📜 names a retired era |
 | `water_scenes_for_approval_2026-10-16.md` | Six water scenes for your approval (about 10 minutes) | — |
 
 ### `design/RimMandrake/world_remake_2026-10-19/`
 
 | doc | title | status |
 |---|---|---|
-| `01_mod_inventory.md` | World remake 01: what every mod in the live list is to us (2026-10-19) | — |
+| `01_mod_inventory.md` | World remake 01: what every mod in the live list is to us (2026-10-19) | 📜 names a retired era |
 | `02_world_pipeline.md` | 02 — How the world and the start save are made, and what an early remake would take | — |
-| `03_ticket_impact.md` | World remake proposal: impact on the open queue (2026-10-19) | — |
-| `04_scope_cuts.md` | 04 — Scope cuts: what to stop building so v1 can ship (2026-10-19) | — |
-| `05_drop_closure.md` | World remake 05: dependency closure of the 124 "simply drop" mods (2026-10-19) | — |
-| `06_remake_runbook.md` | 06 — World remake runbook: gates, rehearsal, start save, rollback (2026-10-19) | — |
-| `07_deeper_drops.md` | World remake 07: deeper drops and a four-profile mod structure (2026-10-19) | — |
+| `03_ticket_impact.md` | World remake proposal: impact on the open queue (2026-10-19) | 📜 names a retired era |
+| `04_scope_cuts.md` | 04 — Scope cuts: what to stop building so v1 can ship (2026-10-19) | 📜 names a retired era |
+| `05_drop_closure.md` | World remake 05: dependency closure of the 124 "simply drop" mods (2026-10-19) | 📜 names a retired era |
+| `06_remake_runbook.md` | 06 — World remake runbook: gates, rehearsal, start save, rollback (2026-10-19) | 📜 names a retired era |
+| `07_deeper_drops.md` | World remake 07: deeper drops and a four-profile mod structure (2026-10-19) | 📜 names a retired era |
 | `08_wave2_prep.md` | World remake 08: Retirement Wave 2, prepared offline (2026-10-19) | — |
 | `09_second_look.md` | 09 Second look: what is KEPT (DEV and TEST) and the 12 HOLDs | — |
 | `10_minerals_framework.md` | 10 — MineralsFramework retirement (`MINERALS_FW_RETIRE_ITS_MAPGEN_IN_HOUSE`) | — |
-| `11_ruled_keepcut.md` | World remake 11: the keep/cut ruling applied (2026-10-20) | — |
+| `11_ruled_keepcut.md` | World remake 11: the keep/cut ruling applied (2026-10-20) | 📜 names a retired era |
 | `12_rocks_design.md` | 12 — Rocks: a design pass, and the question cards (2026-10-19, FOUNDRY design helper) | — |
-| `13_owner_rulings_2026-10-19.md` | Owner rulings by question card, 2026-10-19 evening (FOUNDRY records; his words are the answers) | — |
+| `13_owner_rulings_2026-10-19.md` | Owner rulings by question card, 2026-10-19 evening (FOUNDRY records; his words are the answers) | 📜 names a retired era |
 | `14_wave3_prep.md` | World remake 14: Retirement Wave 3, prepared offline (2026-10-20) | — |
-| `15_conductor_plan.md` | 15 — Unattended conductor for the development-world remake (runbook S0–S15), 2026-10-20 | — |
+| `15_conductor_plan.md` | 15 — Unattended conductor for the development-world remake (runbook S0–S15), 2026-10-20 | 📜 names a retired era |
 | `16_geo_landmarks.md` | 16 — Hand-placed geological landmarks, planned for the paint (2026-11-01) | — |
-| `PLAN.md` | Remaking the world, free of the unwanted mods — plan and three options (2026-10-19) | — |
+| `PLAN.md` | Remaking the world, free of the unwanted mods — plan and three options (2026-10-19) | 📜 names a retired era |
 
 ### `design/RimStarWars/`
 
@@ -3497,6 +3499,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `CLEANSE_PLAN_OWNER_2026-11-17.md` | The Designer Cleanse proposals are THE PLAN (owner, 2026-11-17, 9:04 PM PST) | — |
 
+### `design/concepts/Abyss/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Abyss: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Abyss: what the rewrite chose, what it lost, and why | — |
+
 ### `design/concepts/Abyss/cleanse/`
 
 | doc | title | status |
@@ -3508,6 +3517,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `owner_marks.md` | Abyss: the owner's marks on the cleanse proposal (2026-11-17, about 8:40 PM PST) | — |
 | `owner_pages.md` | Page one — what the Abyss would ship | — |
 | `tickets.md` | Proposal tickets | — |
+
+### `design/concepts/BlueDesert/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Blue Desert: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Blue Desert: what the rewrite chose, what it lost, and why | — |
 
 ### `design/concepts/BlueDesert/cleanse/`
 
@@ -3524,9 +3540,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `design.md` | The Cauldron: the design, seen from the ship | — |
 | `journal.md` | Cauldron: journal | — |
 | `log.md` | Cauldron dialogue record | — |
 | `plan.md` | Cauldron construction and proof plan | — |
+| `rewrite_choices.md` | The Cauldron: what the rewrite chose, what it lost, and why | — |
 | `root.md` | Cauldron adopted root | — |
 | `sheet.md` | Cauldron | — |
 
@@ -3557,10 +3575,12 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `design.md` | The Contagion: the design, seen from the ship | — |
 | `journal.md` | Contagion: journal | — |
 | `later_version.md` | Contagion: next Design Version (0.2.0) | — |
 | `log.md` | Contagion: Designer log (verbatim questions and answers) | — |
 | `plan.md` | Contagion, Design Version 0.1.0: plan | — |
+| `rewrite_choices.md` | The Contagion: what the rewrite chose, what it lost, and why | — |
 | `sheet.md` | Contagion: a red lid, a body that changes, and one dash when the sky clears | — |
 
 ### `design/concepts/Contagion/cleanse/`
@@ -3579,6 +3599,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `sheet.md` | Contagion: a red lid, a body that changes, and one dash when the sky clears | — |
+
+### `design/concepts/CrackedLands/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Cracked Lands: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Cracked Lands: what the rewrite chose, what it lost, and why | — |
 
 ### `design/concepts/CrackedLands/cleanse/`
 
@@ -3696,9 +3723,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `design.md` | The Fever Wood: the design, seen from the ship | — |
 | `journal.md` | FeverWood: journal | — |
 | `log.md` | FeverWood — stage 1 argument, rm-role-designercodex-1794804230 | — |
 | `plan.md` | FeverWood — stage 3 implementation and proof plan | — |
+| `rewrite_choices.md` | The Fever Wood: what the rewrite chose, what it lost, and why | — |
 | `sheet.md` | FeverWood | — |
 
 ### `design/concepts/FeverWood/cleanse/`
@@ -3789,9 +3818,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `design.md` | The Slime: the design, seen from the ship | — |
 | `journal.md` | GelatinousSlime: journal | — |
 | `log.md` | GelatinousSlime — Designer dialogue log | — |
 | `plan.md` | GelatinousSlime implementation and proof plan | — |
+| `rewrite_choices.md` | The Slime: what the rewrite chose, what it lost, and why | — |
 | `root.md` | GelatinousSlime adopted root | — |
 | `sheet.md` | GelatinousSlime | — |
 | `stage1_argument.md` | GelatinousSlime — stage 1 argument | — |
@@ -3935,6 +3966,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `SUMMARY.md` | Graffiti 0.1.0 — blind challenge, cycle 2 (visit 2) | — |
 
+### `design/concepts/Greentide/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Greentide: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Greentide: what the rewrite chose, what it lost, and why | — |
+
 ### `design/concepts/Greentide/cleanse/`
 
 | doc | title | status |
@@ -3945,6 +3983,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `next_version.md` | Next version, switched off | — |
 | `owner_pages.md` | Page one — what Greentide would be | — |
 | `tickets.md` | Implementation and instrument tickets | — |
+
+### `design/concepts/LanternDeeps/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Lantern Deeps: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Lantern Deeps: what the rewrite chose, what it lost, and why | — |
 
 ### `design/concepts/LanternDeeps/cleanse/`
 
@@ -3962,6 +4007,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `build_items_03.md` | Leaning Scrub: filed Stage 3 proof/product work | — |
+| `design.md` | The Leaning Scrub: the design, seen from the ship | — |
 | `edge_argument_02.md` | Leaning Scrub — internal stage 2 edge audit | — |
 | `journal.md` | LeaningScrub: journal | — |
 | `later_version.md` | Leaning Scrub: next Design Version | — |
@@ -3974,6 +4020,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `plan.md` | Leaning Scrub — implementation and proof plan | — |
 | `review_02.md` | Stage 2 independent review | — |
 | `review_root_validation_02.md` | Independent review of the root-validation question | — |
+| `rewrite_choices.md` | The Leaning Scrub: what the rewrite chose, what it lost, and why | — |
 | `sheet.md` | Leaning Scrub | — |
 | `turn_01.md` | Leaning Scrub — stage 1 | — |
 | `turn_02.md` | Leaning Scrub — stage 2 | — |
@@ -4009,6 +4056,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `bars.md` | LeaningScrub 0.1.0: the bars, locked as they stood on 2026-11-16 | — |
 | `test_table.md` | LeaningScrub 0.1.0 test table (read view of test_table.json) | — |
 
+### `design/concepts/LongShade/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Long Shade: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Long Shade: what the rewrite chose, what it lost, and why | — |
+
 ### `design/concepts/LongShade/cleanse/`
 
 | doc | title | status |
@@ -4019,6 +4073,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `next_version.md` | Deferred and recommended retirements | — |
 | `owner_pages.md` | Page one — what LongShade would become | — |
 | `tickets.md` | Proposal tickets — not filed or executed | — |
+
+### `design/concepts/Miasma/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Miasma: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Miasma: what the rewrite chose, what it lost, and why | — |
 
 ### `design/concepts/Miasma/cleanse/`
 
@@ -4108,6 +4169,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `polish.md` | Pyrelands Mechanics: Polish list | — |
 | `vision.md` | Pyrelands Mechanics (the Deep Desert Tribes) 0.1.0: the vision | — |
 
+### `design/concepts/RustCathedral/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Rust Cathedral: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Rust Cathedral: what the rewrite chose, what it lost, and why | — |
+
 ### `design/concepts/RustCathedral/cleanse/`
 
 | doc | title | status |
@@ -4118,6 +4186,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `next_version.md` | Next version — switched off | — |
 | `owner_pages.md` | Page one — what I propose | — |
 | `tickets.md` | Proposed work tickets | — |
+
+### `design/concepts/SleepingIce/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Sleeping Ice: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Sleeping Ice: what the rewrite chose, what it lost, and why | — |
 
 ### `design/concepts/SleepingIce/cleanse/`
 
@@ -4134,9 +4209,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
+| `design.md` | The Stillsand: the design, seen from the ship | — |
 | `journal.md` | Stillsand: journal | — |
 | `log.md` | Stillsand dialogue | — |
 | `plan.md` | Stillsand implementation and proof plan | — |
+| `rewrite_choices.md` | The Stillsand: what the rewrite chose, what it lost, and why | — |
 | `root.md` | Stillsand adopted root | — |
 | `sheet.md` | Stillsand | — |
 | `stage2_edges.md` | Stillsand stage 2 | — |
@@ -4160,6 +4237,19 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `sheet.md` | Stillsand | — |
 
+### `design/concepts/TerminalBiomes/`
+
+| doc | title | status |
+|---|---|---|
+| `GreySea_design.md` | The Grey Sea: the design, seen from the ship | — |
+| `GreySea_rewrite_choices.md` | The Grey Sea: what the rewrite chose, what it lost, and why | — |
+| `TheChill_design.md` | The Chill: the design, seen from the ship | — |
+| `TheChill_rewrite_choices.md` | The Chill: what the rewrite chose, what it lost, and why | — |
+| `TheScald_design.md` | The Scald: the design, seen from the ship | — |
+| `TheScald_rewrite_choices.md` | The Scald: what the rewrite chose, what it lost, and why | — |
+| `TwilightSea_design.md` | The Twilight Sea: the design, seen from the ship | — |
+| `TwilightSea_rewrite_choices.md` | The Twilight Sea: what was chosen, what was lost, and why | — |
+
 ### `design/concepts/TerminalBiomes/cleanse/`
 
 | doc | title | status |
@@ -4171,6 +4261,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `owner_pages.md` | Page one — what the mod now is | — |
 | `tickets.md` | Proposed work tickets | — |
 
+### `design/concepts/TheForge/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Forge: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Forge: what the rewrite chose, what it lost, and why | — |
+
 ### `design/concepts/TheForge/cleanse/`
 
 | doc | title | status |
@@ -4181,6 +4278,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `next_version.md` | Next version: switched off | — |
 | `owner_pages.md` | Page one — what I propose | — |
 | `tickets.md` | Proposed work; nothing implemented on this pass | — |
+
+### `design/concepts/TheRot/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Rot: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Rot: what the rewrite chose, what it lost, and why | — |
 
 ### `design/concepts/TheRot/cleanse/`
 
@@ -4194,6 +4298,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `owner_pages.md` | Page one — The Rot proposed first version | — |
 | `tickets.md` | Build and containment tickets | — |
 
+### `design/concepts/TheSump/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Sump: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Sump: what the rewrite chose, what it lost, and why | — |
+
 ### `design/concepts/TheSump/cleanse/`
 
 | doc | title | status |
@@ -4204,6 +4315,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `next_version.md` | Next version, switched off | — |
 | `owner_pages.md` | Page one — what the Sump becomes | — |
 | `tickets.md` | Proposal tickets | — |
+
+### `design/concepts/Warscar/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | Warscar: the design, seen from the ship | — |
+| `rewrite_choices.md` | Warscar: what the rewrite chose, what it lost, and why | — |
 
 ### `design/concepts/Warscar/cleanse/`
 
@@ -4216,6 +4334,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `owner_pages.md` | What the Warscar now is | — |
 | `tickets.md` | Warscar proposal tickets | — |
 
+### `design/concepts/Wastes/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Wastes: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Wastes: what the rewrite chose, what it lost, and why | — |
+
 ### `design/concepts/Wastes/cleanse/`
 
 | doc | title | status |
@@ -4227,6 +4352,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `owner_pages.md` | Page one — what the Wastes becomes | — |
 | `tickets.md` | Implementation and instrument tickets — proposal only | — |
 
+### `design/concepts/Webwork/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Webwork: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Webwork: what the rewrite chose, what it lost, and why | — |
+
 ### `design/concepts/Webwork/cleanse/`
 
 | doc | title | status |
@@ -4237,6 +4369,13 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `next_version.md` | Next version, switched off | — |
 | `owner_pages.md` | Page one — what Webwork now is | — |
 | `tickets.md` | Proposal tickets — no source changes on this pass | — |
+
+### `design/concepts/WeepingStones/`
+
+| doc | title | status |
+|---|---|---|
+| `design.md` | The Weeping Stones: the design, seen from the ship | — |
+| `rewrite_choices.md` | The Weeping Stones: what the rewrite chose, what it lost, and why | — |
 
 ### `design/concepts/WeepingStones/cleanse/`
 
@@ -4257,12 +4396,25 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `plan.md` | — | — |
 | `sheet.md` | Utility Creatures (rehearsal, item UTILITY_CREATURES_DESIGN_DIG_THIS_PIT_BOY) | — |
 
+### `design/experiments/2026-11-19-night-hypotheses/`
+
+| doc | title | status |
+|---|---|---|
+| `00-hypotheses.md` | Night hypotheses on running this factory better, 2026-11-19 | — |
+| `01-context-rent.md` | Experiment: how much of a run's spend is re-reading its own past ("context rent") | 📜 names a retired era |
+| `02-relaunch-and-log.md` | Experiment: what relaunches buy, what the Conductor's log asks for, and whether the log's token sums are true | — |
+| `03-cards-tickets-and-product-share.md` | Three quick measurements: his card answers, where tickets are born, and factory work against game work | — |
+| `04-shared-start.md` | Experiment: do helpers launched from one fixed path share their starting context? | — |
+| `05-builder-surprise.md` | Replay: does a builder's own report say where a later check finds a fault? | 📜 names a retired era |
+| `06-large-reads.md` | Replay: how much of a large file read does a session use later? | 📜 names a retired era |
+| `99-morning.md` | Morning summary, 2026-11-19 | — |
+
 ### `design/plans/`
 
 | doc | title | status |
 |---|---|---|
 | `2026-11-12-flowworks-water-solver-bakeoff.md` | FlowWorks water solver bakeoff: plan (2026-11-12) | — |
-| `2026-11-14-maturation-pipeline-build.md` | Building the Maturation Pipeline while its design still moves | — |
+| `2026-11-14-maturation-pipeline-build.md` | Building the Maturation Pipeline while its design still moves | 📜 names a retired era |
 | `2026-11-15-holder-pipeline-fusion-build.md` | Holder–pipeline fusion: build plan | — |
 
 ### `design/specs/`
@@ -4272,8 +4424,8 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `2026-11-12-designer-light-path-when-code-exists.md` | The Designer's light path when code exists (spec, nothing built) | — |
 | `2026-11-12-flowworks-natural-water-as-pits-feasibility.md` | FlowWorks: can natural water become real pits? Feasibility study | — |
 | `2026-11-12-flowworks-rivers-design.md` | FlowWorks rivers: final design report (2026-11-12) | — |
-| `2026-11-12-refusal-contract-for-judges-and-gates.md` | Refusal contract for judges and gates (spec, nothing built) | — |
-| `2026-11-12-ticket-preflight-before-any-token.md` | Ticket preflight: check everything Python can, before any token is spent (spec, nothing built) | — |
+| `2026-11-12-refusal-contract-for-judges-and-gates.md` | Refusal contract for judges and gates (spec, nothing built) | 📜 names a retired era |
+| `2026-11-12-ticket-preflight-before-any-token.md` | Ticket preflight: check everything Python can, before any token is spent (spec, nothing built) | 📜 names a retired era |
 | `2026-11-13-flowworks-dig-interface-census.md` | FlowWorks dig interface: census of every player-facing control (2026-11-13) | — |
 | `2026-11-13-maturation-pipeline.md` | The Maturation Pipeline | — |
 | `2026-11-13-mod-design-versions.md` | Mod Design Versions: a target that holds still long enough to pass | — |
@@ -4281,30 +4433,30 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `2026-11-15-conductor-restart-loses-nothing.gpt.md` | GPT adversarial read, verbatim | — |
 | `2026-11-15-conductor-restart-loses-nothing.md` | Conductor restarts lose nothing — measurement and design | — |
 | `2026-11-15-holder-pipeline-fusion.gpt.md` | — | — |
-| `2026-11-15-holder-pipeline-fusion.md` | Holder–pipeline fusion: the pipeline as a long-term holder's checklist | — |
+| `2026-11-15-holder-pipeline-fusion.md` | Holder–pipeline fusion: the pipeline as a long-term holder's checklist | 📜 names a retired era |
 | `2026-11-15-maturation-autonomy-section.md` | Maturation Pipeline: no step waits on the Conductor's hand (section to fold into maturation_pipeline.md) | — |
 | `2026-11-15-mod-ledger-entry-standard.md` | The mod ledger's entry standard: what goes in, how small, how it is searched | — |
 | `2026-11-16-designer-cleanse-and-bar-definition.md` | Designer Cleanse and the definition of a bar (2026-11-16, v2 after GPT's review) | — |
-| `2026-11-17-evidence-quality-three-changes.md` | Three changes to how the pipeline records evidence | — |
+| `2026-11-17-evidence-quality-three-changes.md` | Three changes to how the pipeline records evidence | 📜 names a retired era |
 | `2026-11-17-landing-checks-in-builder-gate.md` | Landing checks in the builder’s gate | — |
 | `2026-11-17-offline-testing-with-real-game-code-gpt-brainstorm.md` | Offline testing on real RimWorld code: a GPT design brainstorm (2026-11-17) | — |
 | `2026-11-17-record-pin-commit.md` | Recording the pin commit | — |
-| `2026-11-17-route-red-supporting-test.md` | Routing a red supporting test | — |
-| `geyser_in_pit_hot_tub_2026-11-12.md` | A geyser in a pit: it sinks, it bubbles, it is a hot tub | — |
+| `2026-11-17-route-red-supporting-test.md` | Routing a red supporting test | 📜 names a retired era |
+| `geyser_in_pit_hot_tub_2026-11-12.md` | A geyser in a pit: it sinks, it bubbles, it is a hot tub | 📜 names a retired era |
 | `water_solver_decision_2026-11-12.md` | FlowWorks natural water: which solver, and the water clock (2026-11-12) | — |
 
 ### `design/specs/2026-11-15-holder-pipeline-fusion/`
 
 | doc | title | status |
 |---|---|---|
-| `00-measure.md` | 00 Measure: Gimme Some Slack (GSS) as the worked example of pipeline state sprawl | — |
-| `01-design.md` | Holder–pipeline fusion: the pipeline as a long-term holder's checklist | — |
+| `00-measure.md` | 00 Measure: Gimme Some Slack (GSS) as the worked example of pipeline state sprawl | 📜 names a retired era |
+| `01-design.md` | Holder–pipeline fusion: the pipeline as a long-term holder's checklist | 📜 names a retired era |
 | `02a-gpt-blind.md` | — | — |
 | `02a-prompt.md` | — | — |
-| `02c-context-evidence.md` | 02c context evidence: fixes landing late in context (Relentless era) | — |
-| `02m-remeasure.md` | Re-measure of the starred claims (2026-11-15 ~9:15 PM PST, this run, a different method from `00-measure.md`) | — |
+| `02c-context-evidence.md` | 02c context evidence: fixes landing late in context (Relentless era) | 📜 names a retired era |
+| `02m-remeasure.md` | Re-measure of the starred claims (2026-11-15 ~9:15 PM PST, this run, a different method from `00-measure.md`) | 📜 names a retired era |
 | `02r-outside-practice.md` | Outside practice: sources used | — |
-| `status.md` | status (step | state | model | cost | note) | — |
+| `status.md` | status (step | state | model | cost | note) | 📜 names a retired era |
 
 ### `design/specs/2026-11-17-judge-flaws-not-polish/`
 
@@ -4314,7 +4466,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `2_conductor_suggestions.md` | The Conductor's position and suggestions (given to the owner before this review) | — |
 | `3_gpt_own_review_blind.md` | — | — |
 | `4_gpt_crosscompare_rulings_and_edits.md` | PART A. Cross-comparison | — |
-| `5_fable_independent_review.md` | 5. Fable independent review of the judge "flaws not polish" proposal | — |
+| `5_fable_independent_review.md` | 5. Fable independent review of the judge "flaws not polish" proposal | 📜 names a retired era |
 | `6_proposed_ruling_plain.md` | Proposed ruling: the judge refuses flaws, not polish | — |
 | `7_same_problem_rule.md` | When is a second-look finding the same problem as a first-look one? | — |
 | `7b_codex_critique_same_problem_rule.md` | — | — |
@@ -4327,12 +4479,43 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `00-problem.md` | Problem: commanding an agentic build pipeline simply, cheaply and safely | — |
-| `01-design.md` | 01 - Pipeline control surface: design pass 1 (Opus) | — |
+| `01-design.md` | 01 - Pipeline control surface: design pass 1 (Opus) | 📜 names a retired era |
 | `02-gpt.md` | GPT critique (pass 2) | — |
 | `02a-gpt-blind.md` | GPT blind answer: pipeline control surface | — |
-| `02m-remeasure.md` | 02m - Re-measure of the starred claims in 01-design.md section 6 | — |
+| `02m-remeasure.md` | 02m - Re-measure of the starred claims in 01-design.md section 6 | 📜 names a retired era |
 | `03-merged.md` | Pipeline control surface: merged design (Deep-Design-3x2, 2026-11-18) | — |
+| `boundary.md` | BOUNDARY: the control store and `pipe`, Design Version 0.1.0 | — |
+| `next_version.md` | Next version list: what Design Version 0.2.0 of the control store might add | — |
+| `polish.md` | Later list: polish for the control store, and for pipeline files that have no page yet | — |
+| `promise_tests_broken_on_purpose.md` | Each promise broken on purpose: does the test of its name go red? | — |
 | `status.md` | Run status (Deep-Design-3x2, pipeline control surface, 2026-11-18) | — |
+
+### `design/specs/2026-11-18-review-growth-cycle/`
+
+| doc | title | status |
+|---|---|---|
+| `00-problem.md` | Why the Codex review count rose on the control store: the timeline, read claim by claim | — |
+| `01-design.md` | Ending the review treadmill on pipeline code: a design for the owner to react to | — |
+| `04-calibration-20261119.md` | The code_review brief's first calibration: 16 of 35, FAILED | — |
+| `05-three-way-labels-20261119.md` | Three readings of 35 old control-store review claims (2026-11-19) | — |
+
+### `design/specs/2026-11-19-asks-on-empty-game/`
+
+| doc | title | status |
+|---|---|---|
+| `boundary.md` | BOUNDARY: the certificate's asks_on_empty_game clause, Design Version 0.1.0 | — |
+
+### `design/specs/2026-11-19-probe-result/`
+
+| doc | title | status |
+|---|---|---|
+| `boundary.md` | BOUNDARY: probe results and the could-not-look lint, Design Version 0.1.0 | — |
+
+### `design/specs/2026-11-19-stage-ceiling/`
+
+| doc | title | status |
+|---|---|---|
+| `boundary.md` | BOUNDARY: the stage ceiling's spend count, Design Version 0.1.0 | — |
 
 ### `design/validation_walks/`
 
@@ -4346,9 +4529,9 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 |---|---|---|
 | `AcousticScanner.md` | RimMandrake: Acoustic Scanner — validation walk | — |
 | `Aftermath.md` | RimMandrake: Aftermath — validation walk | — |
-| `AssailantSalvage.md` | RimUtinni: Assailant Salvage — validation walk | — |
+| `AssailantSalvage.md` | RimUtinni: Assailant Salvage — validation walk | 📜 names a retired era |
 | `AtmosphericBase.md` | RimMandrake: AtmosphericBase — validation walk | — |
-| `BlueDesert.md` | RimMandrake: Blue Desert — validation walk | — |
+| `BlueDesert.md` | RimMandrake: Blue Desert — validation walk | 📜 names a retired era |
 | `Cauldron.md` | RimMandrake: The Cauldron — validation walk | — |
 | `Contagion.md` | RimMandrake: The Contagion — validation walk | — |
 | `CrackedLands.md` | RimMandrake: Cracked Lands — validation walk | — |
@@ -4362,7 +4545,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `FlowWorks.md` | RimMandrake FlowWorks — validation walk | — |
 | `FlowWorksRivers.md` | FlowWorks Rivers (River Works) — validation walk | — |
 | `GelatinousSlime.md` | RimMandrake: The Gelatinous Slime — validation walk | — |
-| `GimmeSomeSlack.md` | GimmeSomeSlack (was MessyConduit) — validation walk | — |
+| `GimmeSomeSlack.md` | GimmeSomeSlack (was MessyConduit) — validation walk | 📜 names a retired era |
 | `Graffiti.md` | RimMandrake: Graffiti Framework — validation walk | — |
 | `GravshipAstronautFix.md` | Missing North Facings — Vanilla Gravship Expanded — validation walk | — |
 | `GravshipLanding.md` | RimMandrake: Gravship Landing Reveal — validation walk | — |
@@ -4370,9 +4553,9 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `HostileFlora.md` | RimMandrake: Hostile Flora — validation walk | — |
 | `HugeThings.md` | RimMandrake: Huge Things — validation walk | — |
 | `Inhabited.md` | Inhabited (local) — validation walk | — |
-| `KeelHoist.md` | KeelHoist — validation walk | — |
+| `KeelHoist.md` | KeelHoist — validation walk | 📜 names a retired era |
 | `KineticArms.md` | RimMandrake: Kinetic Arms — validation walk | — |
-| `LeaningScrub.md` | RimMandrake: Leaning Scrub — validation walk | — |
+| `LeaningScrub.md` | RimMandrake: Leaning Scrub — validation walk | 📜 names a retired era |
 | `LoadTracer.md` | Load Tracer (local) — validation walk | — |
 | `LongShade.md` | RimMandrake: Long Shade — validation walk | — |
 | `LoreStages.md` | RimMandrake: Lore Stages — validation walk | — |
@@ -4407,7 +4590,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `StructureInjections.md` | StructureInjections — validation walk | — |
 | `TerminalBiomes.md` | RimMandrake: Terminal Biomes — validation walk | — |
 | `TheBazaar.md` | RimMandrake: The Bazaar — validation walk | — |
-| `TheForge.md` | RimMandrake: The Forge — validation walk | — |
+| `TheForge.md` | RimMandrake: The Forge — validation walk | 📜 names a retired era |
 | `TheRot.md` | RimMandrake: The Rot — validation walk | — |
 | `TheSump.md` | RimMandrake: the Sump — validation walk | — |
 | `TheftHauler.md` | TheftHauler — validation walk | — |
@@ -4460,7 +4643,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
-| `AftermathRites.md` | AftermathRites — validation walk | — |
+| `AftermathRites.md` | AftermathRites — validation walk | 📜 names a retired era |
 | `Antiquities.md` | Antiquities — validation walk | — |
 | `AshkarrInhabited.md` | AshkarrInhabited — validation walk | — |
 | `AshkarrLandmarkArt.md` | AshkarrLandmarkArt — validation walk | — |
@@ -4474,19 +4657,19 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `EmpirePursuit.md` | EmpirePursuit — validation walk | — |
 | `FactionSlate.md` | FactionSlate — validation walk | — |
 | `FallLineArrivals.md` | FallLineArrivals — validation walk | — |
-| `LanternDeeps.md` | LanternDeeps — validation walk | — |
+| `LanternDeeps.md` | LanternDeeps — validation walk | 📜 names a retired era |
 | `LongHunger.md` | LongHunger — validation walk | — |
 | `MenuShell.md` | MenuShell — validation walk | — |
-| `PawnFlavor.md` | PawnFlavor — validation walk | — |
+| `PawnFlavor.md` | PawnFlavor — validation walk | 📜 names a retired era |
 | `PyrelandsMechanics.md` | RimUtinni: Pyrelands Mechanics — validation walk | — |
-| `ResearchRetag.md` | ResearchRetag — validation walk | — |
+| `ResearchRetag.md` | ResearchRetag — validation walk | 📜 names a retired era |
 | `RestrainingBolts.md` | RestrainingBolts — validation walk | — |
 | `Rites.md` | Rites — validation walk | — |
 | `RiverSteam.md` | RiverSteam — validation walk | — |
 | `ShipMemory.md` | ShipMemory — validation walk | — |
 | `StructureInjectionsRUT.md` | StructureInjectionsRUT — validation walk | — |
-| `UnfinishedLine.md` | UnfinishedLine — validation walk | — |
-| `UtinniPatches.md` | UtinniPatches — validation walk | — |
+| `UnfinishedLine.md` | UnfinishedLine — validation walk | 📜 names a retired era |
+| `UtinniPatches.md` | UtinniPatches — validation walk | 📜 names a retired era |
 | `UtinniShell.md` | UtinniShell — validation walk | — |
 | `UtinniStatues.md` | UtinniStatues — validation walk | — |
 | `VaultDungeons.md` | VaultDungeons — validation walk | — |

@@ -387,7 +387,7 @@ git tag `art-snapshot-2026-10-04`. Sheet snapshots: `infrastructure/state/art/sh
   writers (refused over an owner-kept picture); scripts call `artwrite.TextureWriter` (`copy`/`save`/`put`/`sync`,
   sync = ledger-safe rmtree). Rewired: `artpipe_state.py collect`, both `port_fauna.py`, `wire_art.py`,
   `gen_races_mod.py`, and 28 per-mod `Source/*.py` writers. Not rewired: the `Utils/mockups/messy_conduit/*`
-  writers (FOUNDRY mid-round), `MessyConduit/validation.py` + `northstar_matrix/run_live.py` (fixtures/game dir),
+  writers (a FOUNDRY round then, a seat since retired), `MessyConduit/validation.py` + `northstar_matrix/run_live.py` (fixtures/game dir),
   `extract_bundle*.py` (generic, caller picks dest), `BlastDoorFrameAsyncFix/build_frameasync_east.py` (writes a
   stale path in the old repo).
 - **Guard (2026-10-04, blocking):** `art_guard.py` (rule) + `.claude/hooks/block_unledgered_texture.py`, run by

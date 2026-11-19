@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # The Forge's new slow-ground creature: three concepts, 2026-10-20
 
 `FORGE_SNAILHOLE_FILL_EMPTY_SHELL_LEFT_BEHIND`: LavaSnail (Odyssey) was cut from RM_/RUT_TheForge

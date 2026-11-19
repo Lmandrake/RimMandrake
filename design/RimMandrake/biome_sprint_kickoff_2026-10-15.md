@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Biome sprint kickoff packet — Cauldron, Contagion, LeaningScrub + ExplosiveGrowth (BENCH, 2026-10-15)
 
 **Owner, by card 2026-10-15 ~16:45 PDT:** *"Which shape should the next sprint take? → Three biomes deep"*. That is

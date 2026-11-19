@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # World remake 07: deeper drops and a four-profile mod structure (2026-10-19)
 
 FOUNDRY, offline. No game, no bridge, no ModsConfig write. **Nothing here is a ruling**; every row is a

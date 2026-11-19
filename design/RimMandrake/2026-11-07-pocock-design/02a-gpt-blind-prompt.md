@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Blind prompt sent to the second model (pass 2, step 1), 2026-11-07
 
 You are advising a solo game-mod developer ("the owner") whose code is written almost entirely by AI agents. Answer from

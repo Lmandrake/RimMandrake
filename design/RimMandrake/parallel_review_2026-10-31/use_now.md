@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Use now: parallel capacity tonight (2026-10-31)
 
 Item: PARALLEL_BUILD_REVIEW_DEFEND_EVERY_LIMIT. Read-only review; measured 15:52 to 16:00 PDT with all three arms in their first task.

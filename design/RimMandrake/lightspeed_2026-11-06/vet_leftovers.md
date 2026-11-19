@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # LIGHTSPEED_VET_LEFTOVERS_FOR_BRIDGE_TOOLS: which Northstar leftovers a bridge capability drains
 
 Date: 2026-11-06. Seat: BENCH. Evidence: `vet_leftovers.json` beside this file (one row per unit, with `cls`, `mod`, `id`, `q1`, `code`, `bucket`, `q2`, `capability` and `home`).

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26)
 
 Status: **DESIGN, companion to `design/RimMandrake/dispatcher_design_2026-10-26.md`** (the design of record). Part 1 is the

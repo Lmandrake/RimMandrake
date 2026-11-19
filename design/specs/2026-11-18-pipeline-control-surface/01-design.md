@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # 01 - Pipeline control surface: design pass 1 (Opus)
 
 Status: pass 1 of Deep-Design 3x2, 2026-11-18, complete. It was written blind to `02a-gpt-blind.md`, which landed at 10:44 and was not read. Design only: no code changed, nothing launched. It has not been reviewed: the GPT critique pass is next, and `code_review_status` reads DIRTY.

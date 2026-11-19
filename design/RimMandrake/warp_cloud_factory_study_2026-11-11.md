@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 Warp offers one worthwhile addition: learn from corrections to our reviews.  
 Its reviewer proposes instruction changes for human review; it never merges them itself.  
 The files establish that mechanism, but do not establish that it has improved real reviews.  

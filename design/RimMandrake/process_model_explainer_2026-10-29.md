@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # The process model, explained (2026-10-29)
 
 Item `OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY`. For the owner, readable cold. It explains the model that exists today:

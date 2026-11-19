@@ -165,7 +165,7 @@ defName/packageId/folder → new, with tier and confidence). Owner reviews the
 + one bridge window for the world re-import):** freeze other seats' writes to
 `src/` with a MECHANISM, not an announcement (review finding 5): a rimflow
 blocking item plus a temporary PreToolUse hook refusing `src/` writes that
-lack the sprint tag — a peer FOUNDRY window mid-build otherwise ships against
+lack the sprint tag — a peer window mid-build (then the FOUNDRY seat, since retired) otherwise ships against
 half-renamed defs. The sweep explicitly includes queue files and design specs
 citing old defNames/packageIds (FOUNDRY.md verifiably cites `Jawa_Armoury`-era
 names today). Then apply

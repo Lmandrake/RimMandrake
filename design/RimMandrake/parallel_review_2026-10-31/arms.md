@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Parallel review: the arms (PARALLEL_BUILD_REVIEW_DEFEND_EVERY_LIMIT)
 
 STATUS: complete. Read-only review, not committed. Replay was running and was not touched.

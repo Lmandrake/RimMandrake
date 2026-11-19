@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Fan-out on equal terms: simulator upgrade, census and refit
 
 2026-11-01. Item `ARCH_SIM_MEASURE_FANOUT_EQUAL_TERMS`. Offline; no game, trial, pin or arm code touched.

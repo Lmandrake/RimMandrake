@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 <!-- status: proposition for the owner — BENCH, 2026-08-31, answering his high-priority ask:
      "search the remainders of V2_DREAMS and our additional mod ideas; what could Fable spec out
      while we retain access." Ranked, decision-ready. Nothing below is started without his word

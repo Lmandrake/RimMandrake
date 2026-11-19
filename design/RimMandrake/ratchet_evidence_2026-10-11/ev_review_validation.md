@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Evidence: owner review load, validation runs, RimPulse (measured 2026-10-11, bench clone)
 Window: Sep 11 - Oct 11 (Transient is pruned ~14 d, so older sheets come from git history; conversations/ only covers Oct 2-12; ledger shards only start 2026-09-24; by_card flag exists only from 2026-10-11).
 

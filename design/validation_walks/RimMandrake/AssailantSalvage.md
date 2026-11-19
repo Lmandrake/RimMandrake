@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RimUtinni: Assailant Salvage — validation walk
 subject: src/RimMandrake/AssailantSalvage  (dev source folder, own About.xml packageId `mandrake.rut.assailantsalvage`)
 deps: `Ludeon.RimWorld` only; no C#, no Mod Settings; not wired into any map generation (ANCIENT_WAR_LAB_1 is separate)

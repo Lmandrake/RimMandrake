@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Fast testing, inside view + Jev (divergent pass, phase 1)
 
 Status: COMPLETE (phase 1 inside view + Jev). Generate-only; no scoring or selection.

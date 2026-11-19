@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Test tolerance: GPT's advice (2026-11-04)
 
 Asked by the Conductor on the owner's words (standing_rulings.md, "Broken tests are expected"). Case file: `D:\ClaudeWork\rimmandrake\conductor\test_tolerance_consult\` (context.md, churn_census.txt, item_histories.txt). This is design input, not ruled; build items cite it by section.

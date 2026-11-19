@@ -330,7 +330,7 @@ sun"*, I read Direct Sun as running on every sunlit map of the shipped world, wi
 
 If he says no, the build adds an opt-in list, which is a one-line gate.
 
-**Queue changes** (ledger, FOUNDRY shard, `--by-card "Sun heat design pass → 55 C everywhere / pure
+**Queue changes** (ledger, FOUNDRY shard of the seat since retired, `--by-card "Sun heat design pass → 55 C everywhere / pure
 geometry, no biome kind"`):
 - **Filed:**
   - `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES` (code and XML; replaces

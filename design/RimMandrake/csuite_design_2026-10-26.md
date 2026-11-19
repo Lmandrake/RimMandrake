@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # The C-suite layer: what sits above Bench and Foundry (design, 2026-10-26)
 
 Source brief: `design/RimMandrake/csuite_brief_2026-10-26.md` (owner, verbatim). Evidence: `D:\ClaudeWork\rimmandrake\csuite\evidence.md`, `D:\ClaudeWork\rimmandrake\csuite\frustration_census.md`, `D:\ClaudeWork\rimmandrake\orch_record\friction_census.md`, plus the design docs named per section.

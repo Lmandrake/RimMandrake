@@ -40,7 +40,7 @@ hunts magenta squares.
 ## L3 — Opus evaluation (new class of testing; reserved for Opus-grade judgment)
 
 Art quality, style coherence with the shipping game, thematic concepts — calls
-beyond FOUNDRY's grade that still need no human. **This is an AUTOMATED cycle
+beyond the builder's grade that still need no human. **This is an AUTOMATED cycle
 with the bridge in the evaluator's own hands** (owner, 2026-09-01): an Opus agent takes
 the bridge (`rimflow bridge take`/`release`, like anyone), stages the scene on
 a throwaway map, `jawa/clear_ui` + screenshot, judges, and returns graded

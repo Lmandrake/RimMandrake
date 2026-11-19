@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # ResearchRetag — validation walk
 subject: src/RimUtinni/ResearchRetag  (packageId `mandrake.rut.researchretag`)
 deps: no modDependencies/loadAfter declared; About.xml instead carries a 52-entry `forceLoadAfter` list of every third-party packageId that owns a patched ResearchProjectDef (e.g. als.gravtech, oskarpotocki.vfe.tribals, vanillaexpanded.vfespacer — full list in About.xml), so this mod always loads after them without hard-requiring any one.

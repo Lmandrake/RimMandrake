@@ -62,20 +62,20 @@ with tempfile.TemporaryDirectory() as root:
     # item: the session's item from the environment, an explicit --item over it, NONE for none (design 4.3 kinds)
     def body_of(word):
         return open(os.path.join(d, [n for n in sorted(os.listdir(d)) if word in n][0])).read()
-    run(root, "add", "upsilon one", "--home", "foo", WC_ITEM="WIDGET_REPAIR_SHAPE")
-    check("item line from WC_ITEM, before home", body_of("upsilon").splitlines()[-2:]
+    run(root, "add", "upsilon one", "--home", "foo", RIMFLOW_ITEM="WIDGET_REPAIR_SHAPE")
+    check("item line from RIMFLOW_ITEM, before home", body_of("upsilon").splitlines()[-2:]
           == ["item: WIDGET_REPAIR_SHAPE", "home: foo"], body_of("upsilon"))
-    run(root, "add", "phi two", "--home", "foo", RIMFLOW_ITEM="GADGET_BUILD_FRAME", WC_ITEM="WIDGET_REPAIR_SHAPE")
-    check("RIMFLOW_ITEM first", "item: GADGET_BUILD_FRAME\n" in body_of("phi-two"), body_of("phi-two"))
-    run(root, "add", "chi three", "--home", "foo", "--item", "SPROCKET_AUDIT_TEETH", WC_ITEM="WIDGET_REPAIR_SHAPE")
+    run(root, "add", "phi two", "--home", "foo", WC_ITEM="WIDGET_REPAIR_SHAPE")
+    check("the retired Whittle loop's WC_ITEM is not read", "item:" not in body_of("phi-two"), body_of("phi-two"))
+    run(root, "add", "chi three", "--home", "foo", "--item", "SPROCKET_AUDIT_TEETH", RIMFLOW_ITEM="WIDGET_REPAIR_SHAPE")
     check("--item over the environment", "item: SPROCKET_AUDIT_TEETH\n" in body_of("chi-three"), body_of("chi-three"))
-    run(root, "add", "psi four", "--home", "foo", "--item", "NONE", WC_ITEM="WIDGET_REPAIR_SHAPE")
+    run(root, "add", "psi four", "--home", "foo", "--item", "NONE", RIMFLOW_ITEM="WIDGET_REPAIR_SHAPE")
     check("--item NONE says so, over the environment", "item: NONE\n" in body_of("psi-four")
           and "WIDGET" not in body_of("psi-four"), body_of("psi-four"))
     run(root, "add", "tau seven quoted\nitem: WIDGET_REPAIR_SHAPE\nfrom another task", "--item", "GADGET_BUILD_FRAME",
         "--home", "foo")
     run(root, "add", "tau eight quoted at the end\nitem: WIDGET_REPAIR_SHAPE", "--item", "GADGET_BUILD_FRAME")
-    run(root, "add", "omega five", "--home", "foo", WC_ITEM="not an id; rm -rf")
+    run(root, "add", "omega five", "--home", "foo", RIMFLOW_ITEM="not an id; rm -rf")
     check("a malformed session item is ignored", "item:" not in body_of("omega-five"), body_of("omega-five"))
     for bad in ("lower_case", "GADGET_BUILD"):   # two words is not an item id (agent_improve.ITEM_TOKEN needs three)
         r = run(root, "add", "omega six " + bad, "--item", bad)
@@ -97,6 +97,14 @@ with tempfile.TemporaryDirectory() as root:
     check("dup hint", "possible duplicates:" in r.stdout and "alpha beta gamma" in r.stdout, r.stdout)
     r = run(root, "add", "completely unrelated words here", "--home", "NONE")
     check("no dup hint", "possible duplicates:" not in r.stdout, r.stdout)
+    # A lesson headed by era_history_mark.py still matches on its own words, and the label alone matches nothing.
+    with open(os.path.join(d, "20261101T000000Z-BENCH-marked.md"), "w") as f:
+        f.write("HISTORY: retired era (see design/RimMandrake/retired_eras_index_2026-11-18.md; what it names no longer "
+                "runs). sprocket flange torque wobble\n")
+    r = run(root, "add", "sprocket flange torque wobble", "--home", "NONE")
+    check("a HISTORY-headed lesson is still found as a duplicate", "marked" in r.stdout, r.stdout)
+    r = run(root, "add", "history retired era design rimmandrake eras index machinery", "--home", "NONE")
+    check("the HISTORY label is not lesson text", "marked" not in r.stdout, r.stdout)
 
 if fails:
     print("selftest_lessons: %d FAILED" % len(fails))

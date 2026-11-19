@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # GPT review of design.md (verbatim)
 
 Model: gpt-6.1-sol via src/RimMandrake/Utils/gpt_consult.py (effort high), 2026-11-04 22:29-22:35Z. Job dir: D:\ClaudeWork\rimmandrake\scratch\codex\consult-20261104-142934-164943. Prompt: D:\ClaudeWork\rimmandrake\agent_visibility\gpt_prompt.md, with design.md v1 and ten source files attached. The answer below is unedited.

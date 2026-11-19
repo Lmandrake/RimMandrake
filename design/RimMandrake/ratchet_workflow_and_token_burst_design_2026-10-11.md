@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # The ratchet workflow and the token burst to Wed 16:00
 
 *Design, BENCH design lead, 2026-10-11 evening (v2, revised after GPT's skeptical review). Answers the owner's two

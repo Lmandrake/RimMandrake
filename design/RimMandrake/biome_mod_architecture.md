@@ -405,7 +405,7 @@ count decides what is done first.
 because their twins are the double-maintenance costing now; then the rest in whatever
 order the kit work is already moving.
 
-🔑 **The rows are FILED, one item per mod, all for FOUNDRY** (2026-09-21): 21 standalone
+🔑 **The rows are FILED, one item per mod, all for FOUNDRY, the build seat then, since retired** (2026-09-21): 21 standalone
 `<NAME>_RM_MOD_BUILD_1` items, plus `TERMINALBIOMES_RM_MOD_BUILD_1` (four biomes, one
 mod) and `LANTERNDEEPS_RM_MOD_BUILD_1` (injection layer, skips step 3). Warscar is
 `SCARLANDS_STANDALONE_MOD_1`, filed earlier. Each item's `spec` carries steps 1–6 in

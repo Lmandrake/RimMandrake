@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Release proximity, 2026-10-22 (FOUNDRY, read-only ranking)
 
 Owner order 2026-10-22: *"Focus on work for the mods closest to release."* This ranks OUR mods (RM_/RSW_/RUT_), not the donor SHIP list.

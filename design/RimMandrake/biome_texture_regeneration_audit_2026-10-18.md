@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Biome texture regeneration audit, 2026-10-18
 
 Owner request, 2026-10-18: *"Ensure the biome textures have been regenerated."* Read-only on art. Measured at git

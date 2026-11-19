@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Canal cover: a shallow canal as a wet foxhole (design, 2026-10-17)
 
 Item: `CANAL_COVER_DESIGN_WET_FOXHOLE` (design, offline, for BENCH). Owner, verbatim (2026-10-17):

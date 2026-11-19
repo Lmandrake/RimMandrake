@@ -53,7 +53,7 @@ goes on to 5 and 6 (rule 1). Each arrow back is an objection becoming line items
 **Deleted by his picks (2026-11-12, 22:55Z):** the Relentless acceptance exam (1), the Relentless live round (2),
 the L1 expectations manifests (6; already deleted, 4594675ed9), the player-truth sweep (9; deletion put on hold by
 the Conductor at 23:08Z, then "re-examine" by his 23:18Z ruling), `modcheck run --extended` (13; deleted,
-99a2633071). The Relentless retirement scope is in
+99a2633071). The scope of the Relentless retirement (retired 2026-11-13) is in
 `D:\ClaudeWork\rimmandrake\conductor\validation_inventory_20261112\RELENTLESS_RETIRE_SCOPE.md`.
 
 **Vocabulary that this map replaces.** RimFlow's levels L0, L1, L2, GREEN-MIN, GREEN-FULL, L3, L4
@@ -402,7 +402,7 @@ nobody had filed. Each item carries a grep acceptance test, watched failing on 3
 | `RIMMANDRAKE_RECOUNT_INVENTORY_KERNELS_ONE_FILTER_THREE_ANSWERS` | §0 says 72 fuzz/kernel tests ran and 71 passed; the table row says 81 PASS; a filename filter gives 74. And "3 of 110" `validation.py` files with `shows=` dates from 2026-10-03, when 137 files exist today |
 | `RIMMANDRAKE_CORRECT_INVENTORY_SKIPPED_MEANS_TIER_NOT_CACHE` | §2 defines SKIPPED as "skipped on unchanged evidence". The 3 SKIPPED are deployed-tier tests; the cache answered 0. The same row garbles the RESULT line |
 | `RIMMANDRAKE_RECOUNT_NEVER_BUILT_ONE_SAID_THREE_LISTED` | §0 counts 1 designed-never-built scheme; §4 lists more (the scene runner and the observatory have no table row) |
-| `RIMMANDRAKE_REWORD_STOPPED_A_FREEZE_IS_NOT_A_PAUSE` | "STOPPED with Relentless on 2026-11-06" mixes the 2026-11-06 freeze with the later owner pause; the Relentless store still runs detached helpers |
-| `RIMMANDRAKE_STRIP_FOUNDRY_ACCEPTANCE_PROSE_RETIRED_TWICE` | CLAUDE.md still calls Relentless' live round "the acceptance sweep for every mod" (stopped, and picked for deletion). `testing_policy_2026-10-28.md` §2.10 says FOUNDRY owns FlowWorks, and `infrastructure/VALIDATION_LADDER.md` L3 says "beyond FOUNDRY's grade", after FOUNDRY's retirement |
+| `RIMMANDRAKE_REWORD_STOPPED_A_FREEZE_IS_NOT_A_PAUSE` | "STOPPED with Relentless on 2026-11-06" mixes the 2026-11-06 freeze with the later owner pause; the store at `rm/relentless` still runs detached helpers |
+| `RIMMANDRAKE_STRIP_FOUNDRY_ACCEPTANCE_PROSE_RETIRED_TWICE` | CLAUDE.md was calling Relentless' live round "the acceptance sweep for every mod" (stopped, and picked for deletion). `testing_policy_2026-10-28.md` §2.10 says FOUNDRY owns FlowWorks, and `infrastructure/VALIDATION_LADDER.md` L3 says "beyond FOUNDRY's grade", after FOUNDRY's retirement |
 
 The card draft's seventh point (flyer paused state reads) he answered by card: rule 11.

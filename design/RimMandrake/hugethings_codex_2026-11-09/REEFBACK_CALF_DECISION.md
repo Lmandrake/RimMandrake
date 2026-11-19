@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Reefback calf: retain size and Miasma placement
 
 2026-11-11 — REEFBACK_CALF_MEASURE_TITAN_ON_LAND. Delegated design decision, not owner approval. Fresh independent Opus ruled **KEEP both**; exact brief, raw response and process receipt: `whittle/ht-reefback-calf/evidence/design_prompt.txt`, `design_raw.json`, `design_call.json` (same evidence directory). Call rc0, successful response, tools disabled, fresh print session; prompt SHA-256 `4d1fe5d44f6bcc65e39cd1147cba009ca54d5801e9b508436674b7d777f4457f`, response SHA-256 `259c223d2b2a428917b871ffa9926bc0c610b9b49a1c9e098899bcb79bfe45b2`.

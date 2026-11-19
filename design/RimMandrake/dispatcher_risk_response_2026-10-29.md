@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RimFlow v3 risk review: the Opus response (2026-10-29)
 
 Item: V3_WORKFLOW_AUDIT_EVERY_CLOCK_AND_DOOR, step 3 of 3. Responds to `design/RimMandrake/rimflow_v3_gpt_risk_review_2026-10-29.md` (GPT, verbatim) which reviewed `design/RimMandrake/rimflow_v3_workflow_as_built_2026-10-29.md`. DESIGN ONLY: nothing here is ticketed yet.

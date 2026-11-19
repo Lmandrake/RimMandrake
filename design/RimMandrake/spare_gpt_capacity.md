@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Spare GPT capacity before its refresh
 
 A standing brainstorm: what to point GPT (Codex) at when its weekly allowance will reset unspent and Claude's is

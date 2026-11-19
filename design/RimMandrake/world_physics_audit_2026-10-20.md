@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # World physics audit — tidal lock, sun per tile, temperatures, Rings (2026-10-20)
 
 Item `WORLD_PHYSICS_AUDIT_LOCKED_SUN_TEMPS_RINGS`. Owner (2026-10-20, AFK): *"Finally, ensure we are

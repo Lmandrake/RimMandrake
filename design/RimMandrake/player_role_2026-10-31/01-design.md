@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Player role: can an agent tell us the game is confusing, dull, unreadable or broken as felt?
 
 Pass 1 of a Deep-Design-3x2 run, 2026-10-31. Item: `PLAYER_ROLE_DESIGN_EMPTY_CHAIR_AT_TABLE`.

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Test orchestration on two machines: combined plan (2026-10-25)
 
 **Asked by:** Lukas, 2026-10-25 16:20 PDT. He asked for a full design pass, three alternatives from GPT, an independent

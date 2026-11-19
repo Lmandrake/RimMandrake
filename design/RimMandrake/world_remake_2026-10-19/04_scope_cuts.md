@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # 04 — Scope cuts: what to stop building so v1 can ship (2026-10-19)
 
 *Final after GPT enrichment (§9). The numbers in §1, §3 and §6 include the GPT finds that were verified against the repo.*

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RimFlow v3 — the integrator layer (design of record, 2026-10-26)
 
 Status: **DESIGN, approved to build.** Owner, 2026-10-26 22:2x PDT: *"Ok, we ARE going to build this, I just wanted

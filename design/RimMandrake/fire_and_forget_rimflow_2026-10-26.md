@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Fire-and-forget RimFlow — second GPT perspective (2026-10-26)
 
 Owner, 2026-10-26: *"How can we make this into more of a Devin-style fire-and-forget building system that uses human review time as rare and valuable. That understands testing is vital to get things done, but testing itself is valueless in terms of productivity. What would fire-and-forget RimFlow look like?"*

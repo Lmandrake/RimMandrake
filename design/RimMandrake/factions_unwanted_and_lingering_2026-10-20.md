@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Unwanted and lingering factions: how a faction hangs around, and how we stop it (2026-10-20)
 
 FOUNDRY, offline, while the owner was away. Every engine claim below was read from the RimWorld 1.6 source

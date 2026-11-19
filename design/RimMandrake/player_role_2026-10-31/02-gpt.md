@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # GPT pass 2: critique of 01-design.md (02)
 
 Consult id: consult-20261031-102551-3244271 (gpt_consult.py, model gpt-6.1-sol, web on, answered in about 9 min). Design sent inline as "a design", author not named; prompt asked for citation verification, per-solution critique and improvement, missed options, starred-claim check, and a pick. Answer verbatim below. GPT is guidance, not authority; its citation verdicts are unchecked by me.

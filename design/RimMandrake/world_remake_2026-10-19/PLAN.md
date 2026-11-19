@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Remaking the world, free of the unwanted mods — plan and three options (2026-10-19)
 
 Author: FOUNDRY. For: Lukas. Status: FOR YOUR REVIEW. GPT reviewed it (section 8); I verified its points against the evidence files and changed the plan accordingly — this version recommends Option D.

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # LanternDeeps — validation walk
 RETIRED: this walk documents the mod's PRE-REBUILD implementation. It was rebuilt
 donor-free and renamed to src/RimMandrake/LanternDeeps (packageId mandrake.rm.lanterndeeps,

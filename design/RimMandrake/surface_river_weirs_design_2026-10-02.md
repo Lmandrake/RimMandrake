@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Surface river weirs — design (SURFACE_RIVER_WEIRS_1), 2026-10-02
 
 Design only, for the owner to rule on. Nothing here is built, filed or claimed. Engine facts are

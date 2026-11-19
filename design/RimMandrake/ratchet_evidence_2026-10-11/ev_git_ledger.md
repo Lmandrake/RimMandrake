@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Evidence: git + ledger, 2026-09-11..2026-10-11 (repo /home/mandrake/rm/bench)
 Commits: `git log --since=2026-09-11` = 8726. Per day: 09-11 160, 12 222, 13 183, 14 72, 15 75, 16 106, 17 370, 18 372, 19 183, 20 465, 21 108, 22 65, 23 192, 24 489, 25 303, 26 357, 27 150, 28 151, 29 173, 30 139, 10-01 280, 02 248, 03 686, 04 381, 05 251, 06 326, 07 357, 08 475, 09 428, 10 649, 11 310.
 Subject keyword (non-exclusive grep -ci): revert 14, correct 167, "fix false" 2, stale 233, rebuild 121, re-serve|reserve 16, again 64. Sum of these = ~600 (~7%).

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Assessment of Relentless, Artisan and Whittle — 2026-11-12
 
 For Mandrake. Written by a Fable 5.2 helper for the Conductor, read-only: no code, ledger or game was touched.

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Note-delivery probe and the note box (report steps 3-4), 2026-11-05
 
 Item `STATION_NOTEBOX_BUILD_WHISPER_AT_NEXT_TURN`. Owner, 2026-11-05: *"1 yes, 2 send a note is fine for now. 3 no 4 yes."*

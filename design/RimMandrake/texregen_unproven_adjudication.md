@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Live art with no pipeline record, adjudicated (TEXREGEN_UNPROVEN_ASK_THE_SHEETS)
 
 Generated 2026-11-04T23:50:46-0800 at `e87f41b812` by `src/RimMandrake/Utils/art/unproven_adjudicate.py` from `/mnt/d/ClaudeWork/rimmandrake/scratch/texregen_unproven/census5/census.json` (roster: `design/RimMandrake/texregen_unproven_roster_snapshot.json`, 916 rows). Data: `design/RimMandrake/texregen_unproven_adjudication.json`. Every picture the texture audit classes UNPROVEN (no artpipe / install / donor / derived record of its exact bytes), in the def view and on every roster row, gets one of three verdicts (OWNER_PICKED, HAND_MADE, STAND_IN), keyed on the commit that first brought those bytes into the repo. Meanings and the basis labels: the tool's docstring.

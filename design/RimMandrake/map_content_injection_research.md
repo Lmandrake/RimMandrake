@@ -771,7 +771,7 @@ Owner, by card, 2026-09-06 (later the same day, after the §9 review):
    the same plan; the convergence gap is measured on every sheet. Filed:
    `MAPGEN_GL_SHEET_1` (bridge), `MAPGEN_PAINTER_V1_1` (offline),
    `MAPGEN_CONVERGENCE_LOOP_1` (the standing iteration, both sheets side by side).
-8. **§9.3 is the path, ruled "yes, go."** Filed for FOUNDRY: `LANDFORM_RECIPE_ROUNDTRIP_1`
+8. **§9.3 is the path, ruled "yes, go."** Filed for FOUNDRY (the build seat then, since retired): `LANDFORM_RECIPE_ROUNDTRIP_1`
    (can Geological Landforms load a landform file we wrote — decides the terrain
    route), `TERRAIN_GRID_RENDERER_1` (offline grid → PNG, the iteration loop),
    `CORPUS_MAP_STATISTICS_1` (hash-only topology features over the 44 + vanilla

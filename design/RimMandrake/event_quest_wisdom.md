@@ -1,6 +1,6 @@
 # Event and quest wisdom: what the crew/event mods teach before they retire
 
-_Written 2026-10-10 by FOUNDRY on the owner's typed order: retire the mods that add crew and events,
+_Written 2026-10-10 by the FOUNDRY seat (since retired) on the owner's typed order: retire the mods that add crew and events,
 "but study them so we can make our own custom quests like this easily ... Study them deeply and make
 skills about it." Offline pass: mod XML read from the installed folders, every DLL decompiled with
 `ilspycmd` (1.6 assemblies), vanilla engine claims checked against decompiled 1.6 through RimSage and

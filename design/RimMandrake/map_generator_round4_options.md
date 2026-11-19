@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Map generator round 4 — the chooser, as OPTIONS (Fable design pass, not ruled)
 
 Item: `infrastructure/state/items/MACRO_GENERATOR_V0_1.md`. Round 3's comparator

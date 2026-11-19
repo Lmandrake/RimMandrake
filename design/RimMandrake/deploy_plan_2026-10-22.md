@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Deploy plan, 2026-10-22 (dry run only, nothing applied)
 
 Measured offline from `/home/mandrake/rm/foundry` while the game was up and BENCH held the bridge.

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # MINERALS_WHERE_THEY_BELONG_1 — design (2026-10-02, BENCH design helper, DRAFT for the owner to rule on)
 
 Item: `MINERALS_WHERE_THEY_BELONG_1`. Census it rests on: `design/RimMandrake/minerals_census_2026-09-25.md`

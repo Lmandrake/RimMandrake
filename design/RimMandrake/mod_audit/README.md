@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Mod audit: every mod in the full game list, once and for all
 
 Owner order, 2026-10-10: a thorough analysis of **every** mod in the large game list, kept as a long-term

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Sprint art commissions, 2026-10-16 (FOUNDRY helper)
 
 Owner, `--owner-said`: *"try to commission all art you can so it doesn't bottleneck us (within this sprint of course)"* and

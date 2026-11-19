@@ -202,19 +202,19 @@ this?* A rule is durable; a queue is meant to be consumed.
 | `design/V2_DREAMS.md` | Deferred `[v2]` bodies, kept intact. Append-only; every seat may write to it directly. |
 | `infrastructure/state/TEST_PLAN.md` | How deployed material gets proved in-game. Written by a retired seat; still cited by `load_session.py`. |
 | game state | One `game` event on the ledger, measured or owner-announced (`./game`). The old `status/game.json` stamp and its directory are gone. |
-| `infrastructure/state/queue/<WINDOW>.md` | Rendered views (`BENCH`, `FOUNDRY`, plus hand-written `HUMAN`), rewritten on every rimflow write. File work with `rimflow file --for <WINDOW>`. |
+| `infrastructure/state/queue/<SEAT>.md` | Rendered views of a seat's queue (gitignored; `rimflow queue <SEAT>` renders one on read), plus hand-written `HUMAN`. File work with `rimflow file --for <SEAT>`. |
 
-### The two windows — since 2026-08-27 (redesign #4)
+### The Conductor's window and the helpers it launches — since 2026-11-13
 
-**BENCH · FOUNDRY.** Two earlier splits (the 2026-08-14 names, then the four seats
-DECIDE/BUILD/CHECK/REP) are retired; legacy items keep their old owners in the ledger.
-The Windows Terminal profiles set the window; the manual path is
-`./src/RimMandrake/Utils/set_agent_window.sh <WINDOW>`.
+**The Conductor (seat key `BENCH`).** Earlier splits are retired: the 2026-08-14 names, the four seats
+DECIDE/BUILD/CHECK/REP, then BENCH · FOUNDRY (2026-08-27 to 2026-11-02); legacy items keep their old owners in the
+ledger. The Windows Terminal profiles set the window; the manual path is
+`./src/RimMandrake/Utils/set_agent_window.sh <WINDOW>`, which refuses the retired FOUNDRY.
 
-| Window | Role | Its question |
+| Who | Role | Its question |
 |---|---|---|
-| `BENCH` | with the owner | what does he need done, decided, or seen right now? |
-| `FOUNDRY` | the autonomous queue | does it exist, does it pass, and is it closed? |
+| `BENCH` | the Conductor, with the owner | what does he need done, decided, or seen right now? |
+| helpers | launched by the Conductor in the Maturation Pipeline (`src/RimMandrake/rimflow/detached_helper.py`) | does it exist, does it pass, and is it closed? |
 
 ---
 

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # UnfinishedLine — validation walk
 subject: src/RimUtinni/UnfinishedLine  (packageId `mandrake.rut.unfinishedline`)
 deps: mandrake.rsw.droidworks, mandrake.rut.droidrepairjobs; the two factions come from mandrake.rut.patches

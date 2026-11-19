@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Planning sessions: orders for many days, without you
 
 Design only; nothing here is built or live. Item `PLANNING_BUILD_DAYS_OF_ORDERS_NO_HOME`. Written 2026-11-01. Counts are

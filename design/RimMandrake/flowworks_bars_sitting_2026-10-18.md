@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # FlowWorks north-star sitting — one page (prepared 2026-10-18)
 
 Item: `FLOWWORKS_BARS_JUDGE_FIVE_IN_ONE_SITTING`. Bars: `design/validation_walks/RimMandrake/FlowWorks.md`

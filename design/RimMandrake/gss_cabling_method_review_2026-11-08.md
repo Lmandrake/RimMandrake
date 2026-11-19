@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Gimme Some Slack cabling: how we are solving it, and why it got this far — 2026-11-08
 
 *Written for the owner after the live GSS sitting of 2026-11-08, at his request (about 1:30 PM PST): "Please write up

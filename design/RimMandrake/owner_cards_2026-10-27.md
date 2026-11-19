@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Cards for your next session (drafted 2026-10-26 for 2026-10-27)
 
 > ⛔ **STALE — do not serve (2026-10-29).** Every question here was answered by his RimFlow v3 rulings of

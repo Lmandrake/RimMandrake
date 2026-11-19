@@ -14,9 +14,9 @@ pipeline is not RimFlow.
 
 It replaced three loops, retired on 2026-11-13 (`design/RimMandrake/retired_loops_2026-11-13.md`):
 
-- **Relentless** (`src/RimMandrake/rimflow/relentless.py`): ticket-by-ticket build and judge.
-- **Artisan**: art making and judging.
-- **Whittle**: small-fix grinding.
+- **Relentless** (the deleted `src/RimMandrake/rimflow/relentless.py`): ticket-by-ticket build and judge.
+- **Artisan** (retired): art making and judging.
+- **Whittle** (retired): small-fix grinding.
 
 They stay off. The pipeline does not start them.
 

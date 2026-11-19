@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # v2: the rituals of the Nine found in the Baroque Biomes
 
 **Deferred to v2 by the owner, 2026-10-23, verbatim:**

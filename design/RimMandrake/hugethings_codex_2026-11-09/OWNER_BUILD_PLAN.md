@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Owner-directed HugeThings build plan — 2026-11-11
 
 Authority: [ANSWERS_OWNER.md](ANSWERS_OWNER.md), all eight answered cards. This plan translates those answers into build work; it does not certify first touch, live behavior or owner acceptance. The earlier QUESTIONS/REVIEW/NOTES files are historical reading/drafts, not competing requirements.

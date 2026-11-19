@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Retirement Wave 4 register (2026-10-20): what was cut, why, and how to bring it back
 
 FOUNDRY, offline. Owner, 2026-10-20: *"So long as we retain knowledge of these mods for when we wish to re-rule them, rebuild them,

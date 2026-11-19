@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Slow-loop evidence (RimMandrake bench, measured 2026-10-11)
 1. rm-codebase-health.timer: every 15 min; 636 timed runs journaled 2026-10-02..10-11 (journal retention starts 10-02): wall median 1.2 s, p90 2.0 s, max 3.9 s, total 12 min. Not a wall-clock sink. Output files were gitignored 2026-10-02 (commit 3532bfb228), so the 130-170 commit churn ended then (163 commits to codebase_health_last.json 09-11..10-01).
    Metrics sampled (red/blue/green/grey/total): 09-11 22/334/1686/144/2186; 09-16 38/633/1724/337/2732; 09-19 29/849/1831/430/3139; 09-25 3/1383/1808/387/3581; 09-29 22/1625/1831/763/4241; 10-01 22/1624/1781/1153/4580; now 20/787/1963/4276/7046. Green flat ~1.7-1.96k for a month while the file universe tripled (grey = unscored). Several snapshots show unmeasured ~2000-2700 (green=0): measurement glitches.

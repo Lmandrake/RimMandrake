@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RimMandrake: Leaning Scrub — validation walk
 subject: src/RimMandrake/LeaningScrub  (packageId `mandrake.rm.leaningscrub`)
 deps: `mandrake.rm.environmentalhazards`, `brrainz.harmony`; ships composed inside the Baroque Biomes mod (Biomes.compose.json)

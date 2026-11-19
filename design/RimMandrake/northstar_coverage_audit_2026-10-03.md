@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # North-star coverage audit — 2026-10-03 (NORTHSTAR_COVERAGE_AUDIT_1)
 
 Every `validation.py` under `src/` (**111**, `git ls-files 'src/**/validation.py'`; the item said 55 when filed) compared against its mod's intended function: About.xml description, defs, Mod Settings fields and cited design docs. Six Sonnet readers, one per batch of ~19, each row read from source; one row (WreckedMachines) spot-checked by hand and confirmed. Treat a row as evidence, not a finding: re-read the mod before building against it.

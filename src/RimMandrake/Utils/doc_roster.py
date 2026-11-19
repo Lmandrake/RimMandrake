@@ -104,15 +104,21 @@ STATUS_MARK = {"dead": "⛔ dead", "superseded-by": "→ superseded",
                "aspirational": "☁ aspirational", "live": ""}
 
 
+ERA_MARK = "HISTORY: retired era"   # rimflow/era_text.HISTORY_MARK
+
+
 def doc_status(text: str, head_lines: int = 40) -> str:
     """-> a short status mark for the index, '' for live, '—' when unmarked.
 
     Only the head is read: a status buried at line 900 is not a status, because
     nobody would have got that far before believing the document.
     """
-    m = STATUS_RE.search("\n".join(text.splitlines()[:head_lines]))
+    head = "\n".join(text.splitlines()[:head_lines])
+    # A doc headed by Utils/era_history_mark.py names a retired era; say so beside whatever status it has.
+    era = "📜 names a retired era" if ERA_MARK in head else ""
+    m = STATUS_RE.search(head)
     if not m:
-        return "—"                       # unmarked. NOT the same as live.
+        return era or "—"                # unmarked. NOT the same as live.
     raw = m.group(1)
     kind = raw.split(";")[0].split(":")[0].strip().lower()
     mark = STATUS_MARK.get(kind, "? " + kind)
@@ -125,6 +131,8 @@ def doc_status(text: str, head_lines: int = 40) -> str:
     #     <!-- status: live ; numbers-superseded-by: <path> ; <date> ; <why> -->
     if "numbers-superseded-by" in raw.lower():
         mark = (mark + " · " if mark else "") + "⚠ do not quote its numbers"
+    if era:
+        mark = (mark + " · " if mark else "") + era
     if kind == "superseded-by":
         # Name the successor here too. "Superseded" without a forwarding address
         # tells the reader to stop and gives them nowhere to go.

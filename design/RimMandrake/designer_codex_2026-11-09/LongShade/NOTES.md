@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 DRY RUN — LongShade Designer, stages 0–1 only. All findings and proposed requirements are agent-authored. The single experience quotation in QUESTIONS.md is attributed to the owner's chosen row in `design/RimMandrake/biome_experiences_2026-10-20.md:18`; that file-backed attribution is not approval of the proposed ROOT.
 
 The mod was found at the requested path, `src/RimMandrake/LongShade`. No name-search substitute was needed. Only this working folder was written. The source mirror, ledger, items and game were not changed.

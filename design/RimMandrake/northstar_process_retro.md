@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Northstar process retro: GimmeSomeSlack to its validated bar
 
 Item `NORTHSTAR_PROCESS_RETRO_1`, written 2026-10-31. Owner's ask, 2026-10-05: review the process, not the mod; say what

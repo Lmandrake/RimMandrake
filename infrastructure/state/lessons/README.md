@@ -6,7 +6,7 @@ skill owns it, and say which home you propose. File one with
     python3 src/RimMandrake/Utils/lessons.py add "<the lesson>" [--seat BENCH] --home <skill-or-doc|NONE> [--item <ID|NONE>]
 
 which creates `infrastructure/state/lessons/<utc>-<seat>-<slug>.md`; commit that path. `--item` names the item you
-learned it on (default: the session's `$RIMFLOW_ITEM`, else the Whittle loop's `$WC_ITEM`). The daily agent-improvement
+learned it on (default: the session's `$RIMFLOW_ITEM`). The daily agent-improvement
 pass reads the lesson's task kind from it, and a change built on lessons with no item cannot have its generalization
 checked (design `daily_agent_improvement_2026-11-02.md` 4.3). Curation
 folds a lesson into its skill and **deletes its file**; the Auditor does it every week with a

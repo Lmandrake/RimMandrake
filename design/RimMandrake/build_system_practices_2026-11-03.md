@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # What mature build systems do that we could adopt (2026-11-03)
 
 Owner ask, 2026-11-03: "what are other things mature build systems do? Please do some research on this now and see if we can't get some even better ideas across the board to level up our performance."

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Owner walk: Gimme Some Slack + FlowWorks: scenes to stage (2026-10-11)
 
 Owner, 2026-10-11: *"The priority then is to build the human-review sheets for me to walk through them and provide

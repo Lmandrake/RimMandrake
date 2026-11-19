@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RimMandrake git workflow review — 2026-10-01
 
 Asked by Lukas ("tell me how these worktrees are better… the original git trauma might have been better"). Claude's brief and GPT-6.1 Sol (ultra, via the Codex app CLI) reply, verbatim. Evidence: RimMandrake git log 09-18..10-01 and `design/RimMandrake/git_workflow_fix_2026-10-01.md`.

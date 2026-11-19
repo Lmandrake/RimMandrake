@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 <!-- status: design spec — nothing here is built. Item: TITANOSLIME_SLIME_BIOME_1 (BENCH, kind design;
      a FOUNDRY build pass closes it). Every engine claim is MEASURED from the RimWorld 1.6 decompile
      via RimSage on 2026-09-20 unless tagged [INVENTED] (a number chosen here, tune at build) or

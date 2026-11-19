@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # 15 — Unattended conductor for the development-world remake (runbook S0–S15), 2026-10-20
 
 FOUNDRY helper, offline. No game, bridge or live ModsConfig was touched writing this. **Order** (owner, 2026-10-19

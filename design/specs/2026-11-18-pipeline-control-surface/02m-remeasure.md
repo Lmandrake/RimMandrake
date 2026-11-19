@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # 02m - Re-measure of the starred claims in 01-design.md section 6
 
 Measured 2026-11-18 10:30 to 11:00 AM PST (all times Pacific), bench HEAD `1254cfe5e8` (includes the pause switch `b206c0d34f`, 10:50), dispatch clone at `50d19ea89a`. Read-only except this file. Probes: units named `rm-probe-*` that touch a file, drop-ins removed and `daemon-reload` run after; scratch under `/home/mandrake/.seat-tmp/`.

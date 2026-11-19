@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # World remake proposal: impact on the open queue (2026-10-19)
 
 FOUNDRY, offline, read-only on the ledger. **Proposal judged:** remake the world and savegame fresh now

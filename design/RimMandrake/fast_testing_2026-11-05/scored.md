@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Fast testing: scored (phase 3 of 3), 2026-11-05
 
 Scorer: a fresh Opus that wrote none of the ideas. Inputs: `ideas_inside.md` (40 concepts + Jev), `ideas_outside.md`

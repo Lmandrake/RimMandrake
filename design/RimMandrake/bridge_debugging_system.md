@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Bridge debugging, observability, testing and process
 
 Status: DRAFT for GPT deep review — 2026-10-10, FOUNDRY (offline pass; no bridge taken, no game touched). Complete: sections 0–7.

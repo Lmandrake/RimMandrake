@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RimMandrake: The Forge — validation walk
 subject: src/RimMandrake/TheForge  (dev source folder, own About.xml packageId `mandrake.rm.theforge`, never deployed standalone: the biome ships COMPOSED inside `mandrake.rm.biomes`, RimMandrake: Baroque Biomes, so test that) <!-- walklint-ok: mandrake.rm.biomes is the GENERATED composed packageId of Biomes.compose.json; no About.xml under src/ declares it -->
 feature: biome-core

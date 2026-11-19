@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Next sprint — replicate the ratchet across more biomes (BENCH, 2026-10-15)
 
 **Owner, verbatim (2026-10-15 ~16:30 PDT):** *"If these three mods look pretty good (close to done) in all ways including

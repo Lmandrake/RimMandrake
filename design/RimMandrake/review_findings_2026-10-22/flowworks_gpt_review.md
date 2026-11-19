@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # FlowWorks GPT review, 2026-10-22
 
 **Fixed 2026-10-22 (FOUNDRY):** rows 1-5. The kernel rows (dried-tier order, door drain, pulse allocations) landed at `fa912947d`, each with a SheetWaterChecks case. The looks rows (redraw on a tint/band rung via the `RM_WaterLooks` mesh flag and watcher, reused tint buffer) landed at `a6d324164`, with WaterLookChecks cases. Row 6 is left as is: `Dried` stays unsaved by design, and is now reported first in the next pulse.

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # FlowWorks: pipes, hoses, cords and conduit across pits (RULED DESIGN, 2026-10-20)
 
 Owner, verbatim (2026-10-20): *"Do a background design pass. We need to think about how pipes and conduit work across

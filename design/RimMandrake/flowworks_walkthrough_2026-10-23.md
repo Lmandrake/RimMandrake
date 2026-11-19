@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # FlowWorks walkthrough — save RM_fw_walkthrough_20261023e (2026-10-23)
 
 *For Lukas, walking FlowWorks in game, and for the seat that files his notes. Written 2026-10-23 ~04:30 PDT from the

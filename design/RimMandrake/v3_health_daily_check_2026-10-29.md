@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # v3 health: the daily check (spec, 2026-10-29)
 
 Item: `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`. Written by a BENCH design helper (Opus); FOUNDRY builds.

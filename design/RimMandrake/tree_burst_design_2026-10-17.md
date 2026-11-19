@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Tree burst: water moves a giant only a bit along its life (2026-10-17)
 
 **Authority:** the owner's card write-in of 2026-10-17, verbatim in

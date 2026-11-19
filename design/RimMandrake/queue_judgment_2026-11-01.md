@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Queue judgment, 1 November 2026
 
 Is anything from the older workflows still active while you replan? Yes, a little, and most of it is small. Nothing in the ledger or the code was changed by this pass. Every item here has only been judged, not acted on.

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 DRY RUN — TheForge, stages 0 and 1. This is an agent-authored proposal and question bank, with guesses, not approvals or a sent dialogue turn. Only the historical sentence immediately below is Mandrake's wording.
 
 The experience, in the owner's words (2026-10-20):

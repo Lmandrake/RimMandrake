@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # V&V methods, stage 3: GPT additions, skeptical review, minimum stack, graded (2026-10-16)
 
 Stage 3 of 3. A FOUNDRY helper ran three `gpt_consult.py` consults (gpt-6.1-sol, effort high, 2026-10-16) over

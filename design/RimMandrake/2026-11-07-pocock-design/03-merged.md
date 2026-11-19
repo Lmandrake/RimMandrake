@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Merged: Pocock's ideas, trials, and the loops
 
 *Merged 2026-11-07 16:42 PST from `MERGE_DRAFT.md` (14:19 PST) by the detached helper on

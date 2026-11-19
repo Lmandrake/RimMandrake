@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # GPT's answer to the GSS cabling method review, 2026-11-08 (verbatim)
 
 Asked by the GSS method-review helper through `src/RimMandrake/Utils/gpt_consult.py` (model gpt-6.1-sol, high effort, round `gss_method_review_20261108`, sent 13:28 PST). Inlined with the question: `gss_cabling_method_review_2026-11-08.md` sections 1-6; `CordShapeAudit.cs` (whole); the strip pose and `StripFits` excerpts of `CordBuilder.cs` and `CordAudit.cs` at 2b6615d56f; the `SpanCurveDrip` and `LayDrop` doc comments; `LabWorld.cs`; `SittingChecks.cs`; the Python oracle's header; `FIXES_20261108.md`; excerpts of the p15a and p18b judge reports; `ralph/RATCHET.md`. Images: captures 121520, 121559, 121612, 121848. GPT's answer is guidance, not authority.

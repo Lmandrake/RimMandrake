@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RETIREMENT WAVE 1: run sheet for the bridge session
 
 One page. Definition, gates and rollback: `RETIREMENT_WAVE_1.md`. Every command runs from the FOUNDRY clone

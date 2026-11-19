@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 The reports identify serious problems, but overstate both the safety of immediate expansion and what the replay can establish. **The proposed add-on has the right ingredients; it is not yet a fair comparison.**
 
 This review uses only the inlined reports. “Reproduced” below retains their stated scope; it does not mean I independently exercised the code.

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # A level water surface: ruling audit and design (PROPOSAL, 2026-10-17)
 
 Item: `WATER_SURFACE_REPAIR_LEVEL_OR_BUST` (superseded by `WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES`). **RULED 2026-10-17

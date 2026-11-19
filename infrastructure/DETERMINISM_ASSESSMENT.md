@@ -37,7 +37,7 @@ and each has drifted from disk on its own schedule:
 
 | Registry | keyed by | who writes it |
 |---|---|---|
-| `src/<tier>/<Name>/` | the folder itself | FOUNDRY |
+| `src/<tier>/<Name>/` | the folder itself | helpers the Conductor launches (FOUNDRY until that seat was retired) |
 | `design/validation_walks/<tier>/<Name>.md` | file basename (`northstar.find_walk`) | agents |
 | that walk's `subject:` header line | a path, written by hand | agents |
 | `infrastructure/state/modcheck_status.json` | `<Name>` | `modcheck/status.py` |

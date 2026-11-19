@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Live-mods filing check: a deep design pass (2026-11-05)
 
 Status: BUILT by LIVE_NEEDS_ENFORCE_ABSENCE_NOW_EXPLICIT (2026-11-06; enforced at the gate, derived, `live-without:` opt-out); its evidence: `design/RimMandrake/live_needs_enforce_evidence_2026-11-06.md`. The text below is the design as amended by that item. Owner direction (Mandrake, 2026-11-05): add a check, at filing or proof-write time, that a proof names every mod it needs, and auto-infer a missing name when the proof code reaches into a named mod. His words: "Yes. Do a deep design pass in the concept though to make sure it's well reasoned."

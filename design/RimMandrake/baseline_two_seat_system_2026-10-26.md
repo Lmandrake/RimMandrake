@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Baseline: the two-seat operating system, tagged 2026-10-26
 
 **Tag:** `system-baseline-two-seat-2026-10-26` (annotated, on the published commit that adds this file).

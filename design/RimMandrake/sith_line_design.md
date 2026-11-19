@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Sith line — redesign of the Sanguophage xenotype
 
 item: `SANGUOPHAGE_KEPT_UNREACHABLE_1` · status: DESIGN, nothing built · author: BENCH design helper, 2026-10-09

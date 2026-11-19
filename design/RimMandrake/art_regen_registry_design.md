@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Art Regeneration Registry + Dashboard Hub — design (ruled 2026-09-11)
 
 Owner asked for a system tracking the massive art regeneration: what is

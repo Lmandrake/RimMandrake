@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Northstar review — 2026-10-06 (BENCH + GPT)
 
 Asked by the owner, 2026-10-05, typed: *"do a review of the northstar skill, the lessons learned in the two mods

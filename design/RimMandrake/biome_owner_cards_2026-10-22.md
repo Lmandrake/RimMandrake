@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Owner question cards: retirement, leaning-scrub art, shell part, dead patches (2026-10-22)
 
 Prepared by a FOUNDRY helper, read-only, 2026-10-22 4:45 PM PDT. 14 cards, ordered by how much each answer unblocks.

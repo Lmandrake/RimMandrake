@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Biome-sprint kit art: guessed designs, 2026-10-16 (FOUNDRY helper)
 
 Owner, `--owner-said`: *"Go ahead and queue all pending art"*. By card (kit art ahead of the sprint): *"Let me guess the

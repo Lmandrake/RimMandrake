@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # BRIDGE_CONDITIONS — composable wait / watch / sample primitives for live tests (draft, 2026-11-06)
 
 Status: DRAFT (first-stage designer, BENCH). Offline design only: no game, bridge, ledger or deploy was touched.

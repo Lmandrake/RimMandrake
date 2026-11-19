@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Reefback nursery combat
 
 2026-11-11 — `RIMMANDRAKE_RECONCILE_HUGETHINGS_REEFBACK_NURSERY_COMBAT`, A1L0/A2L0 only. Delegated design, not owner approval. Fresh tools-disabled Opus selected KEEP for a local young-only profile after receiving exact source and a hunting model fixed before tuning. Brief, unedited result and process receipt: `whittle/ht-reefback-combat/evidence/design_prompt.txt`, `design_raw.json`, `design_call.json` (rc0). Final independent Codex judgment: `whittle/ht-reefback-combat/JUDGE.md`.

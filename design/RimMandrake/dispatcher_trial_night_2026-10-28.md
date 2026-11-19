@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RimFlow v3 trial night, 2026-10-28: one ordered runbook
 
 **History, not a procedure:** the night is over, and `v3_ready.py` and `v3_cutover.py`, which this runbook calls, are retired (RIMFLOW_RETIRE_DEAD_MODULES); their source is in git history.

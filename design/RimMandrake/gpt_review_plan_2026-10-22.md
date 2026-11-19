@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # GPT deep-review round, 2026-10-22 (FOUNDRY helper)
 
 Owner order 2026-10-22 (verbatim): *"Please package up each of the mods we are trying to mature and fully deploy in this push and last push. Send each of them to gpt for deep code review. Ask it to really drill down and skeptically review the design, implementation, bug check, everything. Submit only one per 15 minutes to avoid jamming gpt consult. Include the design docs with each to ensure it understands the context and intention. Also include outstanding concerns and the validation plans and evidence and methods. Especially ask advice on improving the lodestar plans to make it as efficient as possible to validate without wasted time. Finally include the associated art for analysis as well."*

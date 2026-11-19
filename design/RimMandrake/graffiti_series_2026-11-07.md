@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # The Graffiti series: Graffiti, the Star Wars reskin, Sacred Graffiti
 
 Written 2026-11-07 so that the second and third Artisan loops can start cold from this page. Nothing here is built. Every motif and bar below is **proposed** until Mandrake says otherwise; no `## north star` section was touched. Repo paths are relative to `D:\Luke\dev\RimMandrake\` (the read-only mirror); a loop reads them in its own clone. MEASURED means I read it from the file or page today; UNMEASURED means I did not.

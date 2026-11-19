@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Pass 2, step 1: the second model's blind answer
 
 *2026-11-07 14:01-14:03 PST. Model gpt-6.1-sol via `gpt_consult.py`, job `consult-20261107-140058-263774-ce1bb4`, 158 s, round `POCOCK_DESIGN_BLIND`. Prompt: `02a-gpt-blind-prompt.md` (facts only; it had not seen `01-design.md`, which did not exist yet). Verbatim below.*

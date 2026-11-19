@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Post-event recovery mode: a design, replayed on 2026-11-04 (OPS_RECOVERY_DESIGN_POST_EVENT_MODE)
 
 Status: DESIGN. Nothing here is built. This is step 7 of the retired Relentless recovery plan (`git show 9e35e61381:design/RimMandrake/relentless_recovery_plan_2026-11-05.md`).

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # status (step | state | model | cost | note)
 00 measure | complete | sonnet ($ANTHROPIC_DEFAULT_SONNET_MODEL=unset) | 61k subagent tokens | rm-fixer used read-only; general-purpose refused by hook
 02r outside practice | complete | this run + web-fetch sonnet | 53k subagent tokens | quotes fetched from 5 primary pages

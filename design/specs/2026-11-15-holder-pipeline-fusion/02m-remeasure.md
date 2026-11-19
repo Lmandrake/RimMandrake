@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Re-measure of the starred claims (2026-11-15 ~9:15 PM PST, this run, a different method from `00-measure.md`)
 
 | claim | pass 1 | new value and method | moved? |

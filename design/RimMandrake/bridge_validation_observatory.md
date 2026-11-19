@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Bridge Validation Observatory — design
 
 Status: DRAFT (planning pass, Opus 5.5, 2026-10-03). Nothing is built. Item to file when this is accepted:

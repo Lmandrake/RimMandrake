@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RimFlow v3: the Arbiter by risk tier (2026-10-27)
 
 Item `ARBITER_REDESIGN_RISK_TIERED_VERDICTS` (caused by `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS`).

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Messy Conduit: choosing the art style when you build
 
 status: **DESIGN, nothing built.** Design pass 2026-10-04 (FOUNDRY), item `MESSYCONDUIT_STYLE_PER_BUILD_DESIGN_1`.

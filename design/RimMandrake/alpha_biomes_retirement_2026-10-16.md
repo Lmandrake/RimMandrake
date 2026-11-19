@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Alpha Biomes retirement plan, 2026-10-16 (FOUNDRY helper)
 
 Owner, by card: *"Should Alpha Biomes retire as a donor too -> Yes, retire it"*. Umbrella item `ALPHA_BIOMES_RETIRE_THE_LAST_PLANT_DONOR`. Package `sarg.alphabiomes`, workshop 1841354677 (readable on this machine at `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\1841354677`). The ports are done; the census of every other name is `design/RimMandrake/alpha_biomes_census_2026-11-01.md`.

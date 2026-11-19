@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Tentative plan: what to bring back from v2, and what must be new (2026-11-01)
 
 **Status: TENTATIVE.** Owner, 2026-11-01: *"Not yet, write them as a tentative plan."* Nothing here is a goal or a

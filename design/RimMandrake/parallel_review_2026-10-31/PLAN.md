@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # The one plan: 8-10 helpers per seat, safely
 
 Checked against live code and `rimflow show`, 31 October, about 18:30 PDT. Not yet safe at 8-10: the lanes still lack a way to test exact work, and a dead helper's result can still be lost. Nothing below is filed by this plan.

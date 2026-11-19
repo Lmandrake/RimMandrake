@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Art review sheets: why a sheet takes hours, and the options to make it take minutes (2026-10-19)
 
 Owner, 2026-10-19: *"The art sheet has taken 1 hour 38 minutes so far. This is abysmal. … Make it faster, make it more

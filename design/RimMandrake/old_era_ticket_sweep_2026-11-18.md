@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Old-era ticket sweep, 2026-11-18
 
 Item `RIMMANDRAKE_WORK_VALID_OLD_ERA_TICKETS_NO_STALE_CRUD`, a detached run, 2:45 PM PST onward. The Conductor, on the owner's words of 2026-11-18 about 2:10 PM PST: *"Of those old-era tickets, any of them not worked but found still valid should be worked and closed at this time. No more stale pipeline crud."*

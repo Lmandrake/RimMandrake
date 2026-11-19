@@ -6,7 +6,7 @@ while it is off, any seat may add a `proposed` line. The Conductor's digest poin
 
 **What belongs here:** real innovation only: `agent` (a redesign of an agent or role), `concept` (a new game
 concept), `mod` (a new mod, a merge or a split), `opportunity` (a new opportunity to consider). Optimization of the
-plan (Producer), hardware, environment and accounts (Operations) or sub-component behaviour (FOUNDRY) does not.
+plan (Producer), hardware, environment and accounts (Operations) or sub-component behaviour (the build pipeline) does not.
 
 **Rules:** one line per innovation; update the line in place when its state changes; never delete a line.
 States: `proposed` → `accepted` (his yes) → `running` (trial live) → `adopted` (kept at its kill date) or `killed`

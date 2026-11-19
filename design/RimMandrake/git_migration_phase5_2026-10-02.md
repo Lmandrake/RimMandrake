@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Git migration — Phase 5 (2026-10-02)
 
 Plan: `design/RimMandrake/git_workflow_plan_2026-10-01.md` §2.4 rows 5–7, §2.5 lessons, §2.3 artpipe, §4 row 5.

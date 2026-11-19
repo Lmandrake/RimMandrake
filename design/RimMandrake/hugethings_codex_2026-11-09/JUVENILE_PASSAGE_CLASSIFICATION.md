@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Juvenile passage classification and spacing
 
 2026-11-11 — delegated design; not owner approval. Fresh independent tools-disabled Opus: KEEP AdultTier lineage eligibility, GetTier and conservative DefQualifies; REDO only T3 spacing using a separate maximum-supported-stage SpacingTier. Exact neutral brief, raw response and process receipt are in `whittle/ht-juvenile-tier/evidence/design_prompt.txt`, `design_raw.json` and `design_call.json`.

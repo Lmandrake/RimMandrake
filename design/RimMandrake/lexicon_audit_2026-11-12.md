@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Lexicon audit, 2026-11-12: every candidate word and what was decided
 
 This paper is the reasoning behind `LEXICON.md` at the repo root. The Lexicon file itself holds entries only

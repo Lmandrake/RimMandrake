@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # FlowWorks + Pits — one model (2026-10-02)
 
 > Owner, 2026-10-02: *"We absorbed a mod called Pits into FlowWorks. I have this weird feeling that

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Owner-asks audit against delegation_policy.md §2 — 2026-11-04
 
 Item `OWNER_ASKS_AUDIT_FIFTY_NINE_DEEP` (GPT rec 4, `design/RimMandrake/rimpulse_gpt_review_2026-10-22.md`).

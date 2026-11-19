@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Live Fixer: one seat, one ticket, one rig, no shuttle (proposal, 2026-10-28)
 
 Status: design for `LIVE_FIXER_DESIGN_ONE_SEAT_NO_SHUTTLE`, §9 decided (2026-10-28); build owed. Nothing here edits the v3 design of record or the

@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Keep or kill v3: what we know, what we don't, and the date (2026-11-01)
 
 For the owner, to set the date on `V3_JUDGMENT_DATE_DECIDE_KEEP_OR_KILL`. Readings are from about 19:20 UTC on 1 November.

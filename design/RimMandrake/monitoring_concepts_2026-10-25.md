@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # RimMandrake monitoring concepts (2026-10-25)
 
 Owner ask (verbatim): "consider the magnificent Lodestar Companion for things we might want to monitor on this system too. Then do several suggestions for an improved monitoring system, given Rimflow runs this system rather than Lodestar. Ticket monitoring, understanding which mods are being worked on, let's see many concepts on what we might actually benefit from tracking not just for fun but to inspire different choices and logic."

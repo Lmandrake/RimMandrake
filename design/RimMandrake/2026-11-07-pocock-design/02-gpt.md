@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Pass 2, step 2: the second model's critique of the design
 
 *2026-11-07 14:08-14:12 PST. Model gpt-6.1-sol via `gpt_consult.py`, round `POCOCK_DESIGN_CRITIQUE`. Consult ids: blind `consult-20261107-140058-263774-ce1bb4` (158 s), critique `consult-20261107-140826-364742-c2199f` (203 s). It was sent `01-design.md` as "a design ... written independently by someone else", with the independence note and provenance tags stripped (copy at `/tmp/pocock_measure/crit/DESIGN.md`), plus the blind prompt and its own blind answer. Prompt: below the line, then the answer verbatim.*

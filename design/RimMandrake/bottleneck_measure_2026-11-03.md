@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Who waits on whom, measured again on Relentless (2026-11-03)
 
 Item `HARNESS_BOTTLENECK_MEASURE_WHO_WAITS_ON_WHOM`. The owner asked on 2026-10-22: *"You see game time as the

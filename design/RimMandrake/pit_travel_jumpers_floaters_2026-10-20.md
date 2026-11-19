@@ -1,3 +1,5 @@
+> HISTORY: retired era, see design/RimMandrake/retired_eras_index_2026-11-18.md. This file's mentions of Relentless, Artisan, Whittle, FOUNDRY, RimPulse or rimflow v3 are history (that machinery no longer runs); the rest is as current as its own status says.
+
 # Pit travel: which creatures jump or float (tagged from lore, 2026-10-20)
 
 Owner, by card 2026-10-20, typed: *"2 now, (1) later during the animal normalization pass (blocked by biomes being
