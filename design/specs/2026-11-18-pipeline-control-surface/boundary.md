@@ -56,16 +56,16 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
 - **three-named-stops.** `pipe stop` is `--write-now`, `--at-easy-spot` or `--kill`. With none named it uses
   at-easy-spot and says so. A write-now order becomes a kill at its deadline. Tested by `t_stop`.
 - **stop-reaches-the-agent.** A writing stop order is shown to the running agent after its next tool call, from the
-  run's own clone. Tested by `t_stop`, `t_hooks_in_run_clone`.
+  run's own clone. Tested by `t_stop_reaches_the_agent`, `t_stop`, `t_hooks_in_run_clone`.
 - **kill-verified-dead.** `--kill` sends SIGKILL to the run's whole process group and its claude scope at once. It
   reports "killed" only after every process is seen gone. A survivor is reported and nothing is recorded killed. (His
-  words, 11:28 AM.) Tested by `t_stop`, `t_stop_review_fixes`.
+  words, 11:28 AM.) Tested by `t_kill_verified_dead`, `t_stop`, `t_stop_review_fixes`.
 - **kill-works-without-the-store.** `pipe stop <unit> --kill` kills by unit name when the store is locked or
   unreadable. Tested by `t_review_claims_round_two`.
 - **killed-run-needs-no-hand-step.** A killed detached run's record is closed and its clone returned by the command.
-  Tested by `t_kill_bookkeeping`.
+  Tested by `t_killed_run_needs_no_hand_step`, `t_kill_bookkeeping`.
 - **stopped-run-spends-no-trial.** A stopped or voided run charges nothing, in the store and in the dispatch books.
-  Tested by `t_stop_review_fixes`, `t_void_books_by_run_id`.
+  Tested by `t_stopped_run_spends_no_trial`, `t_stop_review_fixes`, `t_void_books_by_run_id`.
 - **look-charged-only-on-a-verdict.** A granted look is held before its judge runs and charged only on a valid
   verdict. Of two judges racing for the last look, one gets it. A judge that dies gives it back. Tested by `t_look`,
   `t_coverage_look`.
@@ -75,12 +75,13 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
 - **unreadable-store-launches-nothing.** With the store missing, corrupt or locked, nothing launches. `pipe show`
   says `CONTROL UNREADABLE` with the cause, or `STORE LOCKED` before the last saved state. Tested by `t_unreadable`.
 - **probe-never-lies.** A failed `systemctl` call, an unreadable store or an unreadable `cgroup.procs` file is
-  reported as "could not look". It never reads as "nothing there". Tested by `t_review_round_four_p1`.
+  reported as "could not look". It never reads as "nothing there". Tested by `t_probe_never_lies`,
+  `t_review_round_four_p1`.
 - **same-command-twice.** A void, a settlement, an import or a keyed command sent twice has the effect of once.
-  Tested by `t_look`, `t_scope`, `t_owner_import`.
+  Tested by `t_same_command_twice`, `t_look`, `t_scope`, `t_owner_import`.
 - **every-change-is-an-act.** Each change is one record: who, when (Pacific), why, before, after. A write prints at
-  most 3 lines. `pipe undo` reverses an act or refuses with the later acts in its way. Tested by `t_verbs`,
-  `t_accounts`.
+  most 3 lines. `pipe undo` reverses an act or refuses with the later acts in its way. Tested by
+  `t_every_change_is_an_act`, `t_verbs`, `t_accounts`.
 - **binds-at-once-from-any-clone.** An act binds when its command returns. It needs no git, publish or tick. Tested
   by `t_clones`.
 - **verbs-answer-in-a-second.** A `pipe` verb usually answers in under 1 second on this machine. Tested by `t_verbs`.

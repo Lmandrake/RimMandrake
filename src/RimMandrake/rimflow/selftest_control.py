@@ -1849,22 +1849,265 @@ def t_end_receipt_outlives_its_clone():
           "reconcile ends only the gone run, and its stop order is done", (out, st, stops))
 
 
+# The seven promises whose renamed test let a deliberate break pass (RIMMANDRAKE_HARDEN_PROMISE_TESTS_SEVEN_BREAKS_SLIPPED_PAST;
+# acceptance/control_promise_breaks_accept.py): each now has a test of its own that checks the promise itself.
+
+def _dead(us):
+    return [{"unit": u, "dead": True, "ms": 1, "survivors": [], "said": "1 process(es) killed"} for u in us]
+
+
+def t_stop_reaches_the_agent():
+    """A writing stop order is shown to the running agent after its next tool call, from the run's own clone: the
+    PostToolUse hook exits 2 (the only exit whose text Claude Code shows the agent) with the order and its item."""
+    fresh()
+    u = "rm-probe-reach1"
+    a = C.admit(spec(u, mod="Graffiti", item="RIMMANDRAKE_PROBE_STOP_REACHES_AGENT"))
+    C.condition(a["run"])
+    C.stop(u, "write_now", "reach test", deadline_s=60, escalator=lambda *x: "-")
+    code, text = C.hook(DB, unit=u)
+    check(code == 2 and "STOP ORDER, write now" in text and "RIMMANDRAKE_PROBE_STOP_REACHES_AGENT" in text,
+          "the hook hands a write-now order to the agent: exit 2, the order and its item", (code, text[:120]))
+    check(C._q("SELECT state FROM stops WHERE unit=?", (u,), one=True)["state"] == "seen", "the order reads seen")
+    rc = os.path.join(TMP, "reachclone")    # the run's own clone: its rimflow is this one, by a link
+    os.makedirs(os.path.join(rc, "src", "RimMandrake"), exist_ok=True)
+    if not os.path.exists(os.path.join(rc, "src", "RimMandrake", "rimflow")):
+        os.symlink(HERE, os.path.join(rc, "src", "RimMandrake", "rimflow"))
+    cmd = json.loads(C.claude_settings(DB, clone=rc))["hooks"]["PostToolUse"][0]["hooks"][0]["command"]
+    r = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=30, env=dict(os.environ, RM_ROLE_UNIT=u))
+    check(os.path.join(rc, "src", "RimMandrake", "rimflow", "control.py") in cmd and r.returncode == 2 and
+          "STOP ORDER, write now" in r.stderr, "the run clone's hook command exits 2 with the order on stderr",
+          (cmd[-80:], r.returncode, r.stderr[:120]))
+    u2 = "rm-probe-reach2"
+    b = C.admit(spec(u2, mod="Graffiti"))
+    C.condition(b["run"])
+    C.stop(u2, "at_easy_spot", "reach test easy", escalator=lambda *x: "-")
+    code, text = C.hook(DB, unit=u2)
+    check(code == 2 and "STOP ORDER, at the next easy spot" in text, "an at-easy-spot order reaches it too: exit 2",
+          (code, text[:120]))
+
+
+def t_kill_verified_dead():
+    """--kill reports "killed" only after every process is seen gone; a survivor is reported and nothing is recorded
+    killed. The survivor is made by the real kill_units over a stand-in cgroup whose process is read as alive."""
+    fresh()
+    child = subprocess.Popen(["/bin/sleep", "30"])
+    real = (C._cgroup_pids, C._systemctl, C._alive)
+    C._cgroup_pids = lambda unit: ([child.pid], "/probe-kill-verified")
+    C._systemctl = lambda args, timeout=10: (0, "")
+    try:
+        for alive, want in ((lambda pid: True, "survivor"), (real[2], "dead")):
+            fresh()
+            u = "rm-detached-probe-killverified-%s" % want
+            a = C.admit(spec(u, mod="Graffiti"))
+            C.condition(a["run"])
+            reaped = []
+            C._alive = alive
+            r = C.stop(u, "kill", "kill verified test", killer=lambda us: C.kill_units(us, wait_s=0.05),
+                       reaper=lambda *x: reaped.append(x) or "reaped")
+            row = r["units"][0]
+            state = C.run_state(a["run"])["state"]
+            if want == "survivor":
+                check(not row["ok"] and "SURVIVED" in row["said"] and state == "started" and not reaped,
+                      "a survivor is reported, its run is not recorded killed and nothing is reaped",
+                      (row, state, reaped))
+            else:
+                check(row["ok"] and row["dead"] and state == "killed" and reaped,
+                      "with every process gone the run reads killed", (row, state))
+    finally:
+        C._cgroup_pids, C._systemctl, C._alive = real
+        child.kill()
+        child.wait()
+
+
+def t_killed_run_needs_no_hand_step():
+    """A killed detached run's record is closed and its clone returned by `pipe stop --kill` itself: control.py's own
+    kill path (no reaper passed) marks the record finished/killed and starts the `<unit>-return` unit that runs
+    finish and the clone's return. That unit's systemd-run is caught here, never started."""
+    import detached_helper as DH
+    fresh()
+    st = os.path.join(TMP, "dstate-nohand")
+    os.makedirs(os.path.join(st, "detached"), exist_ok=True)
+    unit = "rm-detached-bench-probe-no-hand-step-1"
+    clone = os.path.join(TMP, "pool", "clones", "RIMMANDRAKE_PROBE_NO_HAND_STEP.det")
+    os.makedirs(clone, exist_ok=True)
+    DH.write_record({"unit": unit, "seat": "BENCH", "item": "RIMMANDRAKE_PROBE_NO_HAND_STEP", "clone": clone,
+                     "model": "opus", "at": time.time() - 60, "state": st, "status": "running",
+                     "clone_how": "given " + clone, "out": os.path.join(st, "detached", unit + ".out.json"),
+                     "err": os.path.join(st, "detached", unit + ".err")}, st)
+    a = C.admit(spec(unit, family="detached", mod="Graffiti"))
+    C.condition(a["run"])
+    started, real_run = [], subprocess.run
+
+    def run(argv, *k, **kw):
+        if argv and argv[0] in ("systemd-run", "systemctl"):
+            started.append(list(argv))
+            return subprocess.CompletedProcess(argv, 0, "", "")
+        return real_run(argv, *k, **kw)
+    os.environ["RM_DISPATCHER_STATE"] = st
+    subprocess.run = run
+    try:
+        r = C.stop(unit, "kill", "no hand step test", killer=_dead)
+    finally:
+        subprocess.run = real_run
+        os.environ.pop("RM_DISPATCHER_STATE", None)
+    rec = DH.read_record(unit, st) or {}
+    check(C.run_state(a["run"])["state"] == "killed" and rec.get("status") == "finished" and
+          str(rec.get("result")).startswith("killed"), "the kill itself closes the detached record (finished, killed)",
+          (C.run_state(a["run"])["state"], rec.get("status"), r["units"][0].get("bookkeeping")))
+    ret = [x for x in started if x[0] == "systemd-run" and unit + "-return" in x]
+    check(ret and ret[0][-2:] == ["reap", unit], "and starts the unit that returns its clone (control.py reap)",
+          started)
+
+
+def t_stopped_run_spends_no_trial():
+    """A stopped or voided run charges nothing, in the store and in the dispatch books: every stop mode releases the
+    run's held trial and voids one already charged; a void gives a charged look back."""
+    fresh()
+    vf = os.path.join(TMP, "voids-spend.jsonl")
+    os.environ["RM_RUN_VOIDS_FILE"] = vf
+    try:
+        import run_void as RV
+        for mode in C.STOP_MODES:
+            for charged in (False, True):
+                u = "rm-probe-spend-%s-%s" % (mode.replace("_", ""), "charged" if charged else "held")
+                w = "w-" + u
+                a = C.admit(spec(u, mod="Graffiti", resources=[{"resource": C.LOOK, "win": w, "base": 1}]))
+                C.condition(a["run"])
+                if charged:
+                    C.settle(a["run"], True, "a verdict before the stop")
+                pre = C.account("Graffiti", C.LOOK, w, 1)
+                C.stop(u, mode, "spend test", deadline_s=60 if mode == "write_now" else None,
+                       escalator=lambda *x: "-", killer=_dead, reaper=lambda *x: "-")
+                acc = C.account("Graffiti", C.LOOK, w, 1)
+                check((pre["held"], pre["charged"]) == ((0, 1) if charged else (1, 0)) and acc["held"] == 0 and
+                      acc["charged"] == 0 and acc["available"] == 1,
+                      "pipe stop --%s: a run whose trial was %s charges nothing" % (
+                          mode.replace("_", "-"), "charged" if charged else "held"), (pre, acc))
+                check(u in RV.active(vf), "pipe stop --%s: the run is void in the dispatch books" % mode.replace(
+                    "_", "-"))
+        a = C.admit(spec("rm-probe-spend-void", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "wv",
+                                                                           "base": 1}]))
+        C.condition(a["run"])
+        C.settle(a["run"], True, "a verdict")
+        C.void(a["run"], "a system fault after all")
+        acc = C.account("Graffiti", C.LOOK, "wv", 1)
+        check(acc["charged"] == 0 and acc["available"] == 1, "a voided run charges nothing", acc)
+    finally:
+        os.environ.pop("RM_RUN_VOIDS_FILE", None)
+
+
+def t_probe_never_lies():
+    """A failed `systemctl` call and an unreadable cgroup.procs read as "could not look", never as "nothing there"."""
+    real_sc, real_root = C._systemctl, C.CGROUP_ROOT
+    C._systemctl = lambda args, timeout=10: (1, "Failed to connect to bus: No such file or directory")
+    try:
+        pids, why = C._cgroup_pids("rm-probe-blind1")
+        res = C.kill_units(["rm-probe-blind1"], wait_s=0)
+    finally:
+        C._systemctl = real_sc
+    check(pids is None and "systemctl show failed" in why, "a failed systemctl show reads could not look, not empty",
+          (pids, why))
+    check(res[0]["dead"] is None and "UNVERIFIED" in res[0]["said"] and "nothing was running" not in res[0]["said"],
+          "and the kill says death UNVERIFIED, never nothing was running", res)
+    root = os.path.join(TMP, "cgroot")
+    os.makedirs(os.path.join(root, "probe.slice", "rm-probe-blind2.service"), exist_ok=True)
+    os.makedirs(os.path.join(root, "probe.slice", "empty.service"), exist_ok=True)
+    with open(os.path.join(root, "probe.slice", "empty.service", "cgroup.procs"), "w") as f:
+        f.write("")
+    C.CGROUP_ROOT = root
+    try:
+        blind = C._procs("/probe.slice/rm-probe-blind2.service")
+        empty = C._procs("/probe.slice/empty.service")
+        gone = C._procs("/probe.slice/gone.service")
+    finally:
+        C.CGROUP_ROOT = real_root
+    check(blind is None and empty == [] and gone == [], "a cgroup without a readable cgroup.procs reads could not look;"
+          " an empty one and a gone one read empty", (blind, empty, gone))
+
+
+def t_same_command_twice():
+    """A void, a settlement or a keyed command sent twice has the effect of once (the import's twice is
+    t_owner_import's): the keyed ones by their --idem key, from Python and from the `pipe` command line."""
+    fresh()
+    n = lambda kind: len(C._q("SELECT id FROM acts WHERE kind=?", (kind,)))
+    r1 = C.switch("mod:Cauldron", True, "twice off", idem="k-off")
+    r2 = C.switch("mod:Cauldron", True, "twice off", idem="k-off")
+    check(n("off") == 1 and r2["replayed"] and r2["act"]["id"] == r1["act"]["id"], "an off sent twice is one act",
+          (n("off"), r2.get("replayed")))
+    C.grant("Graffiti", C.LOOK, 1, "twice grant", win="wg", idem="k-grant")
+    C.grant("Graffiti", C.LOOK, 1, "twice grant", win="wg", idem="k-grant")
+    check(C.account("Graffiti", C.LOOK, "wg", 1)["available"] == 2 and n("grant") == 1,
+          "a grant of +1 sent twice adds one", C.account("Graffiti", C.LOOK, "wg", 1))
+    C.set_account("Graffiti", "blind_cycles_total", 1, "twice add", measured=0, verb="add", idem="k-add")
+    C.set_account("Graffiti", "blind_cycles_total", 1, "twice add", measured=0, verb="add", idem="k-add")
+    check(C.used("Graffiti", "blind_cycles_total", 0) == 1, "an add of 1 sent twice adds one",
+          C.used("Graffiti", "blind_cycles_total", 0))
+    a = C.admit(spec("rm-probe-twice1", mod="Graffiti"))
+    C.condition(a["run"])
+    C.stop("rm-probe-twice1", "at_easy_spot", "twice stop", escalator=lambda *x: "-", idem="k-stop")
+    r = C.stop("rm-probe-twice1", "at_easy_spot", "twice stop", escalator=lambda *x: "-", idem="k-stop")
+    check(r["replayed"] and len(C._q("SELECT id FROM stops WHERE unit='rm-probe-twice1'")) == 1,
+          "a stop sent twice writes one order", r)
+    outs = [pipe("off", "Pyrelands", "--why", "twice cli", "--idem", "k-cli") for _ in range(2)]
+    check([o[0] for o in outs] == [0, 0] and len(C._q("SELECT id FROM acts WHERE idem='k-cli'")) == 1,
+          "pipe off --idem sent twice from the command line is one act", [o[1][-120:] for o in outs])
+    C.grant("Graffiti", C.LOOK, 0, "open wt", win="wt")
+    C.reserve("Graffiti", C.LOOK, "run_twice_look", win="wt", base=1)
+    C.settle("run_twice_look", True, "verdict")
+    C.settle("run_twice_look", True, "verdict again")
+    check(C.account("Graffiti", C.LOOK, "wt", 1)["charged"] == 1, "a settlement sent twice charges once")
+    C.void("run_twice_look", "void")
+    C.void("run_twice_look", "void again")
+    acc = C.account("Graffiti", C.LOOK, "wt", 1)
+    check(acc["charged"] == 0 and acc["available"] == 1, "a void sent twice gives back once", acc)
+
+
+def t_every_change_is_an_act():
+    """Each change is one record: who, when (Pacific), why, before, after. A write prints at most 3 lines; `pipe undo`
+    reverses an act or refuses naming the later acts in its way. `before` is the state the change replaced: the OFF
+    row a second off overwrote (its why and act), the account before a grant, the limit before a new limit."""
+    fresh()
+    act = lambda aid: C._q("SELECT * FROM acts WHERE id=?", (aid,), one=True)
+    o1 = C.switch("mod:Graffiti", True, "first off")["act"]
+    o2 = C.switch("mod:Graffiti", True, "second off")["act"]
+    on = C.switch("mod:Graffiti", False, "on again")["act"]
+    g = C.grant("Graffiti", C.LOOK, 2, "two looks", win="wa", base=1)["act"]
+    l1 = C.set_limit("Graffiti", "blind_cycles_total", 5, "limit five")["act"]
+    l2 = C.set_limit("Graffiti", "blind_cycles_total", 7, "limit seven")["act"]
+    s = C.set_account("Graffiti", "blind_cycles_total", 0, "back to zero", measured=2)["act"]
+    rows = [act(x["id"]) for x in (o1, o2, on, g, l1, l2, s)]
+    check(len(C._q("SELECT id FROM acts")) == 7, "seven changes are seven acts", len(C._q("SELECT id FROM acts")))
+    check(all(r["who"] == C.who() and r["at_pacific"] == C.pac(r["ts"]) and r["why"] for r in rows),
+          "every act records who, when in Pacific, and why", [(r["who"], r["at_pacific"], r["why"]) for r in rows])
+    b = [json.loads(r["before"]) for r in rows]
+    check(b[0] is None and (b[1] or {}).get("why") == "first off" and (b[1] or {}).get("act") == o1["id"] and
+          (b[2] or {}).get("why") == "second off", "an off's and an on's before is the switch row they replaced", b[:3])
+    check((b[3] or {}).get("available") == 1 and b[4] == {"limit": None} and b[5] == {"limit": 5} and
+          b[6] == {"used": 2, "measured": 2}, "a grant's, a limit's and a set's before is the state they changed",
+          b[3:])
+    af = [json.loads(r["after"]) for r in rows]
+    check(af[1].get("why") == "second off" and af[3] == {"grant": 2} and af[5] == {"limit": 7},
+          "and their after is what they wrote", af)
+    rc, out, _ = pipe("off", "Cauldron", "--why", "three lines")
+    lines = [x for x in out.splitlines() if x.strip()]
+    last = C._q("SELECT * FROM acts ORDER BY rev DESC LIMIT 1", one=True)
+    check(rc == 0 and len(lines) <= 3 and last["id"] in out and last["why"] == "three lines",
+          "a write prints at most 3 lines, naming its act", lines)
+    u = C.undo(l1["id"], "undo the first limit")
+    check(not u["ok"] and l2["id"] in u["why"], "undo refuses an act with a later act in its way, naming it", u)
+    check(C.undo(l2["id"], "undo the second")["ok"] and C.undo(l1["id"], "then the first")["ok"] and
+          C.limit("Graffiti", "blind_cycles_total", 9) == 9, "latest first, both undo back to the default")
+
+
 # Each remaining promise's name, bound to the test its "Tested by" line names (the most specific one where it names
 # several); src/RimMandrake/Utils/boundary_check.py reads these. main() runs each function once, whatever its names.
 t_off_blocks_starts = t_race
 t_one_admission_point = t_sites
 t_three_named_stops = t_stop
-t_stop_reaches_the_agent = t_hooks_in_run_clone
-t_kill_verified_dead = t_stop
 t_kill_works_without_the_store = t_review_claims_round_two
-t_killed_run_needs_no_hand_step = t_kill_bookkeeping
-t_stopped_run_spends_no_trial = t_stop_review_fixes
 t_look_charged_only_on_a_verdict = t_coverage_look
 t_void_gives_back_once = t_look
 t_unreadable_store_launches_nothing = t_unreadable
-t_probe_never_lies = t_review_round_four_p1
-t_same_command_twice = t_look
-t_every_change_is_an_act = t_verbs
 t_binds_at_once_from_any_clone = t_clones
 t_verbs_answer_in_a_second = t_verbs
 t_queue_order_is_the_stores = t_queue
@@ -1879,7 +2122,9 @@ def main():
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
               t_accounts, t_queue, t_review_round_four_p1,
               t_slice4, t_slices_review, t_his_hold_refuses_launch, t_void_never_moves_a_stage,
-              t_reused_name_runs_again, t_end_receipt_outlives_its_clone):
+              t_reused_name_runs_again, t_end_receipt_outlives_its_clone,
+              t_stop_reaches_the_agent, t_kill_verified_dead, t_killed_run_needs_no_hand_step,
+              t_stopped_run_spends_no_trial, t_probe_never_lies, t_same_command_twice, t_every_change_is_an_act):
         print("== %s" % t.__name__)
         try:
             t()

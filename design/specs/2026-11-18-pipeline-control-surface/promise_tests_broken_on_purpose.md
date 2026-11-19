@@ -14,9 +14,11 @@ Tests: `src/RimMandrake/rimflow/selftest_control.py`. Design asking for it:
 - For 6 of those 7, a different test in the same file caught the break.
 - For 1 promise, no test in the file caught the break. That promise is "every change is an act".
   The act can lose its "before" value and every test still passes.
-- `boundary_check.py` says "23 of 23 covered". That count is not true for 7 of them.
+- `boundary_check.py` said "23 of 23 covered". That count was not true for 7 of them.
 - We filed one ticket to fix the 7 tests: `RIMMANDRAKE_HARDEN_PROMISE_TESTS_SEVEN_BREAKS_SLIPPED_PAST`.
-- The ticket has a test that keeps all 23 breaks. Today that test fails with 7 slipped.
+- The ticket has a test that keeps all 23 breaks. On the base it failed with 7 slipped.
+- **Fixed 2026-11-19** by that ticket: each of the 7 promises has a test of its own name. Now 23 of 23 breaks are
+  caught by their named test [measured]. `control.py` was not changed: no new test was red on it.
 - We did not change `control.py` or the tests in this run.
 
 ## Counts
@@ -97,3 +99,13 @@ the binding in `selftest_control.py` picked a different one; the other four list
   acceptance script does the same). The clean pass reads 7.
 - Copy: a pool scratch clone of origin/main `fcd5241fb8` (same `control.py` and `selftest_control.py` bytes as this
   item's clone); logs were in `/tmp/bep/` (not kept).
+
+## What the `before` break would have hidden
+
+Under the `every-change-is-an-act` break (`_act()` stores `before` as null), `./pipe log` showed nothing wrong: it
+prints id, revision, time, kind, scope and why, never `before`. `pipe undo` also worked: it reads the live switch,
+adjustment and grant rows, not `before` [measured: no code reads `acts.before`]. So the loss was silent. What was
+lost is the only record of the state a change replaced: a second `pipe off` or `pipe stop` overwrites the earlier
+OFF row (its why, its act, his words); a grant replaces the account it changed; `pipe limit` replaces a limit. With
+`before` null, the store and its `export_acts` file could not say what any of those were. `t_every_change_is_an_act`
+now checks `before` (and who, when, why, after) on an off over an off, an on, a grant, two limits and a set.
