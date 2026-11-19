@@ -6,12 +6,17 @@ LanternDeeps: 233 rows (91 added by the second reader), 29 lost, 20 record a mov
   exit status: 0
   broken-copy probe exit status (must be 2): 2
 
-LeaningScrub: 316 rows (161 added by the second reader), 36 lost, 8 record a move, 7 reshaped, 2 folded into shared machinery; 41 named sources, sources with no row: none; rows without five cells: none; rows with empty outcome: none; probe (an invented source name must be reported): seen; source files read in full: 56, listed but not on disk: none
+LeaningScrub: 318 rows (163 added by the second reader), 36 lost, 8 record a move, 7 reshaped, 2 folded into shared machinery; 41 named sources, sources with no row: none; rows without five cells: none; rows with empty outcome: none; probe (an invented source name must be reported): seen; source files read in full: 56, listed but not on disk: none
   exit status: 0
   broken-copy probe exit status (must be 2): 2
   LeaningScrub's 56 files are the ones its page lists under "Read to the end by the second reader"; the concept folder's pipeline files (tree, scenes, records, exam runs, version) were not read in full and the page says so. A search of all of them for a ship, hull, Empire or landing idea returned no line (the same search returns lines in the review and the shield design, so it can see one).
 
-Not yet checked by this record: LongShade, Miasma, RustCathedral (their second reads had not been done when this was written).
+LongShade: 232 rows (103 added by the second reader), 26 lost, 25 record a move, 7 reshaped, 2 folded into shared machinery; 22 named sources, sources with no row: none; rows without five cells: none; rows with empty outcome: none; probe (an invented source name must be reported): seen; source files read in full: 11, listed but not on disk: none
+  exit status: 0
+  broken-copy probe exit status (must be 2): 2
+  LongShade's 11 files are the ones its page lists under "Read to the end by the second reader". (The LeaningScrub line above was re-run after two rows were added to its page during the Long Shade read: the ship-register row and the truffle mole's move.)
+
+Not yet checked by this record: Miasma, RustCathedral (their second reads had not been done when this was written).
 
 Measured for whoever takes LeaningScrub next (2026-11-18): design/concepts/LeaningScrub/ holds 3,774,046 bytes in 142 files, 130 of them distinct byte for byte; with its biome sheets, walk and 48 ledger items the sources are 4,172,822 bytes, and 2,562,955 bytes are left after the de-duplicating reader below marks every repeated line and sentence. The nine exam briefs under exam_runs/ each embed the tree.
 

@@ -15,6 +15,16 @@ desert: *"the livable one"*, the largest biome on the planet, dry, rocky, landab
 the pipeline reads it by name yet. The Long Shade has no locked sheet or tree; its only pipeline material is the
 cleanse proposal of 2026-11-17, which this design supersedes and which was never applied.
 
+**Second reader, 2026-11-18:** a reader who did not write this design read the sheet, the sitting, the shade
+ideation, the cast bible, his rulings on the ledger and the mod's own definitions, and repaired this file. What
+changed and why is at the top of `rewrite_choices.md`. The largest repairs: the ship's shade filling with animals
+is not a cleanse leftover but his own card pick of 2026-09-30; the hull wear now names the one hazard the built
+ship-shield frame already sees here, the sandstorm; this place does have a fuel plant; the gnomon line and the farm
+on the horizon were cut by him, not left unruled; and the ultracactus has lived in the Stillsand since 2026-10-05.
+
+**There is no locked Designer tree here** to hold apart from this design: the only pipeline material is the
+cleanse proposal, which was never applied.
+
 **Tags:** `NEEDS HIM` is a question only the owner can settle, with the real answers and the default used here.
 `UNSETTLED` is a fact the sources do not fix. `UNMEASURED` is an engine fact nobody has checked. "Built" means the
 census of 2026-11-17 (`cleanse/census.json`) found it in source; it does not mean it has passed anything.
@@ -54,8 +64,17 @@ a landed hull:
 > eventually, something whale-sized that has walked this line for a very long time and does not know you have
 > moved in."*
 
-An earlier design pass said it in six words: *"hospitality you cannot decline."* Every other biome threatens the
-ship. This one moves in under it.
+An earlier design pass said it in six words: *"hospitality you cannot decline."* The review of 2026-09-29: *"every
+other biome threatens the ship; this one is hospitable to it, and hospitality is the threat."* He picked exactly
+this by card on 2026-09-30 (the Shipfall Commons): *"small animals take the ramp shadow, herds press the hull,
+pirrik circle, eventually the gloomcast walks over. Launch is never blocked; occupants get a readable dispersal
+job."* It is built. Every other biome threatens the ship. This one moves in under it.
+
+His verdict on the whole place, typed at the sitting of 2026-09-29, is the brief for everything below: *"It's
+ok... but a tad boring unless we get really strict about the dashing animal behavior. If we can do that it's quite
+interesting. But the shade should be more interesting. That's where everything's hanging out."* And: *"Maybe some
+of those shady spots aren't so natural after all?"* The ideation that answered him put it in one line: *"the light
+is the law, and the shade is where everything is kept."*
 
 ## The clock on any stop
 
@@ -73,9 +92,11 @@ stay here exactly as long as it dares.
 
 **What cover this place gives, and which kind (same card: canopy, steam and fog slow the search by one step).**
 **None.** No canopy, no steam, no fog, a sky that is clear and gold for ever, and long sight lines across open
-pavement. Shade is not cover: a hull in a shadow is still a hull. This is the price of the easiest living on the
-day side. (*0.2.0:* the smoke haze that drifts in from the Pyrelands' fires dims the sun over the whole map; it is
-the natural candidate for one step of cover while it lasts, and that is `NEEDS HIM` below, not assumed.)
+pavement. Shade is not cover: a hull in a shadow is still a hull. A sandstorm blows through now and then and is
+not on his list of what slows the search either. This is the price of the easiest living on the day side.
+(*0.2.0:* the smoke haze that drifts in from the Pyrelands' fires dims the sun over the whole map; it is the
+natural candidate for one step of cover while it lasts, and that is `NEEDS HIM` 3, not assumed. His card of
+2026-11-17 on the Pyrelands' own smoke weather was *"Next version"*.)
 
 ---
 
@@ -110,14 +131,27 @@ begins to tell on them.
   first, then a herd staging against the lee side before its next crossing, then something that hunts by waiting.
   This is game delivered to the ramp, and it is also a predator under the landing gear.
 - **Shade can be carried and built.** Parasols and any quick roof are real shade. A party under parasols can work
-  ground no native can stand on.
+  ground no native can stand on. His words: *"Actual shadow-casting gear doubles down on the idea of heat building
+  up. I like it. Parisols, shade tents, simple shields you can stand behind."* The standing shield, a tall panel
+  of stretched hide on a braced frame, is *"the one piece that works under a low sun."*
+- **A full shadow is a safe shadow; an empty one is not.** Every patch here is crowded, so *"a perfect, deep,
+  dew-ringed shadow with nothing in it is the loudest warning on the map... The animals know; the player learns to
+  watch the animals."* He kept this as a rule by card (2026-10-04, admitted 2026-10-08): every hidden danger in
+  the shade empties its patch.
 - **The shade is the dig site.** The wind never reverses, so *"everything that blows across this desert ends up
   in a shadow: nutrients, and also bones, debris and wreckage."* Heaps lie in the lee of the big shade-casters and
   can be searched once each, for scrap, bone and now and then a real find. Every heap is inside a shadow, and
   every shadow has tenants.
 - **Soft ground and hard ground are opposite bargains.** Sand holds the rocks that cast shade, and things can
-  come up through it. Hardpan is safe from below and bare of shelter. Deep sand can be walked, *"just very
-  slowly."*
+  come up through it. Hardpan is safe from below and bare of shelter: *"Safety and shelter are on opposite ground,
+  and every crossing is a choice between them."* Deep sand can be walked, *"just very slowly."* Where to set the
+  ship down is the same choice.
+- **Three plants worth knowing.** The **shadespire**, *"the only vertical that grows"*: a rare banded column three
+  or four metres tall that is its own small patch, with tenants and a pale fringe at its shadow's edge; felling
+  one gives dense pale wood *"and removes the shelter."* **Pavecrust**, a grey lichen on bare hardpan whose
+  *"harvested scraps burn slowly and hot"*. **Maidenbloom**, a fat rosette that grows only where a giant has
+  stopped, *"the visible proof of it"* (his name: *"Middenbloom sounds disgusting. Maidenbloom is better."*). All
+  three are built and on the map.
 
 ## The first week
 
@@ -149,7 +183,8 @@ Each can happen inside the visit. Each says what is on screen.
    things along the rim, and one still shape in the best spot that nothing stands near. *Why it lands:* the crew
    has to walk through all of it to get to the ramp.
 3. **The whale parks.** *On screen:* the largest animal on the planet's day side walks up to the ship, lies down
-   in its shade with its flock wheeling in, and radiates the heat of its crossing at the hull.
+   in its shade with its flock wheeling in, and radiates the heat of its crossing at the hull. Its tread is heard
+   through the ground before it is seen.
 4. **The shadow that closes.** *On screen:* an overheated animal sprints for a dark patch on the pavement, drops
    into it, and the patch folds over it *"like a book"*. A drag mark. *Why it is alarming:* the player's eye had
    already marked that patch as the next stop.
@@ -165,10 +200,22 @@ Each can happen inside the visit. Each says what is on screen.
    bone, and a sealed component case.
 10. **Clearing the shade.** *On screen:* the console is worked, and the whole court under the hull gets up and
     runs for the rocks in order of size, the whale last.
+11. **The herd at the rim, deciding.** *On screen:* a chorn stands with its forelegs in the light and its body in
+    the dark, facing the next rock. It stands a long time. Then the whole herd goes at once, flat out across the
+    gold. *"The last calf is two strides behind. It makes it."*
+12. **The empty shadow.** *On screen:* the best patch for a hundred cells, deep, dew-ringed, and nothing in it,
+    with six animals crowded into a worse one beside it. A newcomer walks toward the good one.
 
 *0.2.0 adds:* the road of dead machines across the widest gap, each one stride from the next, and the dead
 sandcrawler at its end with the whole country sheltering in its shadow; the rival Jawa clan that comes back for that hull, to be paid, traded with or argued with;
-the fruit that looks safe; a herd stampeding for the roof; the sky going orange with other people's smoke.
+the fruit that looks safe; a herd stampeding for the roof; the sky going orange with other people's smoke; and
+**the swimmer's road**. One young sarlacc comes up out of the deep desert *"following water"*, a wake under the
+soft sand moving rim to rim, and it is heading for the largest ring of dew on the map, which is the one round the
+biggest shadow, which is the ship. *"You have days. You can see the route."* The sources' three answers are all a
+crew's: be parked on hardpan, which *"a swimmer cannot cross"*; meet it out in the gap, where *"every metre costs
+it water"*; or send the droids, because *"the swimmer ignores droids... The Jawa fantasy."* His condition for it:
+*"we can't have animals 'disappear spontaneously.' There needs to be SOME kind of indication of what happened to
+them."*
 
 ## When the Empire arrives
 
@@ -214,12 +261,20 @@ too wide for them.
 ## What the crew takes away
 
 - **Meat and hides,** steadily, from the ship's own shadow.
-- **Midden finds:** scrap, bone, slag, and the occasional component cache or old corpse with its gear.
+- **Midden finds:** scrap, bone, slag, and the occasional component cache or old corpse with its gear. Vanilla
+  items only, by his card of 2026-10-03; a heap is searched once and is spent (his later card, 2026-10-08).
 - **What the sun graves were carrying.**
-- **Ultracactus pad,** the forage of the open ground: *"The ultracactus is not canon, I made it."* (owner,
-  2026-09-27).
-- **Tame stock:** *"the pack and draught animals the campaign runs on."*
-- **Flat pavement stone.**
+- **Forage:** dewfringe sprigs from the shadows' rims and maidenbloom hearts from the dung grounds. (The
+  ultracactus, which he made and named, moved to the Stillsand with his moves of 2026-10-05, as the ultriss pad.
+  It is no longer this biome's.)
+- **Tame stock:** *"the pack and draught animals the campaign runs on."* Of the biome's own animals the chorn and
+  the gennok carry packs.
+- **Flat pavement stone,** and pale shadespire wood.
+- **For the ship itself: the long-shade mast.** His question of 2026-09-24 to every biome: *"how can this biome
+  uniquely add something to the ship?... What can they take and improve their ships environment with?"* This
+  biome's answer on the register is *"a tall black-chitin vane whose lee runs the length of an open deck under a
+  low sun... shade a roof cannot give without closing the deck."* It is built. An agent chose it, not he; the
+  cleanse recommends retiring it (`NEEDS HIM` 4).
 - *0.2.0:* steel and components off the wreck road, at the cost of the road; a negotiated hull or its price; the
   prepared vorrel, *"a euphoric delicacy that is a controlled near-miss with a lethal parasite"*; mirrak hide,
   which casts deeper shade.
@@ -227,14 +282,29 @@ too wide for them.
 ## Fuel, and what this place does to the ship
 
 **Fuel: the emergency-slow kind, and worse than most; this is where you buy it.** (Owner's ruling of 2026-11-18:
-*"You can also buy it (the intended motivation to have to trade constantly, very Jawa)."*) Nothing in any Long
-Shade source is a fuel. The vegetation is meagre by law (*"No lush"*), so even rendering biomass is thin work.
-What this country has instead is people on roads: settlements on the big patches, herder camps, crawlers. Those
-belong to the campaign layer, and they are where a crew fills its tanks for silver, salvage and hides. The Long
-Shade is the trading stop.
+*"You can also buy it (the intended motivation to have to trade constantly, very Jawa)."*) One plant here is a
+fuel and it is built: **pavecrust**, the hardpan lichen, harvests straight to chemfuel, one unit a patch, on
+ground nothing else wants. It is thin gleaning, a crew on its knees with scrapers, which is the emergency-slow
+route with a Jawa's posture. The rest of the vegetation is meagre by law (*"No lush"*), so rendering biomass is
+thinner still. What this country has instead is people on roads: settlements on the big patches, herder camps,
+crawlers. Those belong to the campaign layer, and they are where a crew fills its tanks for silver, salvage and
+hides. The Long Shade is the trading stop.
 
 **What wears on the ship (owner's ruling of 2026-11-18: in 0.1.0, from what the sources already say).** Less than
-anywhere else, and all of it is company:
+anywhere else. The frame is the built one, `src/RimUtinni/ShipShields/`, on his shield rulings saved 2026-09-02
+(*"The environment is hostile and immediately goes to work on the ship... Its hull is thick"*): a ship in a hazard
+its shield is not set for takes slow wear near the hull, faster after about six hours, with advice and never a
+refusal. It knows three hazards. Heat needs 58 degrees of air and this place is in the twenties. Cold does not
+apply. The third does:
+- **The sandstorm.** The biome's own weather table carries the base game's sandstorm at a low weight (4 in 99,
+  read from the biome definition), and the frame recognises a particulate hazard by exactly that weather's sand
+  rate. So this is already true in the built game: a ship that sits through a Long Shade sandstorm without its
+  particulate screen wears. His ruling on that screen: *"Light kinetic deflectors handle wind, ash, vapor... sand,
+  and rain damage completely as well as repels small animals."* *Answer:* the particulate screen, the cheap one.
+  Note what else that sentence does here: a screened ship *repels small animals*, so the first rung of the court
+  under the hull does not arrive. The crew chooses between a clean hull and game at the ramp.
+
+The rest is company:
 - **Heat at the hull from a resting giant.** The megafauna *"absorb enormous heat on the crossing and radiate it
   fiercely once shade is reached"*; an earlier pass had it radiating *"the crossing's furnace-heat into your
   courtyard."* A gloomcast lying against the ship warms what is next to it. This is ordinary air temperature, not
@@ -245,8 +315,13 @@ anywhere else, and all of it is company:
   launch."* *Answer:* the dispersal step before lift; keep cargo aboard or walled.
 - **The direct sun on the lit side,** mild at this angle and constant. *Answer:* none needed that the sources
   name; no shield is invented here.
-- (`UNMEASURED`: the khorrak, a resident that eats steel and slag. Whether it will eat stacked salvage or anything
-  built is not established by anything read for this design; if it does, it belongs on this list.)
+- **Where it is parked.** On soft sand, things can come up under it and, in 0.2.0, the swimmer can reach its dew
+  ring. On hardpan nothing can, and there is no natural shade for a day's walk. *Answer:* the sheet's own bargain,
+  made once at landing.
+- (`UNMEASURED`: the khorrak, a resident that eats steel and slag. What the sources describe is a tamed khorrak
+  penned among iron slowly turning it to an alloy, *"the knowledge you keep is a working animal, not a research
+  node"*. Whether a wild one will eat stacked salvage or anything built is not established by anything read for
+  this design; if it does, it belongs on this list.)
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -299,8 +374,13 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The gloomcast as moving shade, its followers, its sand-feeding and plain dung. (built)
 - The mirrak, with look-then-inspect and a readable loss. (built)
 - The dakkra holding a shadow. (built)
-- The ship's shade filling by stages, and the console clearing it. (built; moved in, see `rewrite_choices.md`)
-- The lee-side heaps and searching them. (built; moved in)
+- The ship's shade filling by stages, and the console clearing it. (built; his card pick of 2026-09-30; moved in
+  against the cleanse, see `rewrite_choices.md`)
+- The lee-side heaps and searching them. (built; his card pick of 2026-09-30; moved in)
+- The empty patch as the tell of a held shadow. (his rule by card; the static markers are built)
+- The shadespire, pavecrust and maidenbloom as plants on the map; pavecrust scraps as a thin fuel. (built; their
+  special growing rules are not)
+- The sandstorm as the one hazard the ship-shield frame sees here. (built)
 - The sun graves and their loads. (built; moved in)
 - The native roster, ordinary forage, taming and stock; fliers that really fly. (built)
 - What the place does to the landed ship, as stated above. (a resting giant's warmth is new, small work)
@@ -326,7 +406,12 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The harbour ladder for a built base; thin buildings farming the dew line; living off the rim.
 - Named wide gaps (*"named at the repaint window, with the owner — not before"*); known routes as something to
   map; settlements, herder camps and tribe holdings as places.
-- The desperate moisture farm, the waiting camp, the gnomon line and the other shade ideas never ruled.
+- The shade ideas he set aside with *"Will consider the rest later"* (2026-09-29) and never returned to: the
+  desperate moisture farm besieged by the ecosystem, the waiting camp at the last patch, the shade-rent men at a
+  dead crawler, the broken caravan in the gap, route cairns, the shade-cool cellars, the dew wells that still
+  bead water, the dry vaporator stands, shade debt, the skellok carpet, the noon stone, reading and mimicking the
+  herds' calls.
+- A hardpan terrain of our own, and the dew condenser as something learned.
 - The sun god's precepts and the two found rites, the Shade Tithe and the Shadow Walk (parked or tabled by him).
 - The ship's shade awning, pavement flooring and vorrel galley.
 - Walking with the giant across the world map (the Stillsand's by an earlier boundary).
@@ -337,24 +422,52 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   crossing"*).
 - Pursuit predators; boom-and-bust populations; any day and night; rain; fire that starts here.
 - Shade as a connected network to travel within (*"That was wrong"*, owner, 2026-09-05).
+- **The gnomon line and the farm on the horizon with its heliograph** (cut 2026-09-29, his words: *"No on 6 7."*).
+  The ideation's own rulings section still shows them as "not yet ruled"; the ledger note written minutes later is
+  the record. Heliograph signalling survives only inside the separate Solar Mirrors mod, where he liked it.
 - The name thommak (it is the gloomcast); the sand-lion row; the kreetle and gizka rows here.
+- Cut from this biome's cast on his word of 2026-10-05 (*"Go ahead and do the moves and cuts now please."*):
+  kudda, ossik, thurra and the mature fleshbeast. Moved out the same day: the ultracactus, the ulgga and the
+  vosska to the Stillsand, the ommok to the Miasma, the truffle mole to the Leaning Scrub.
+- The sun god's country as built content (*"Ignore ideoligion concept for now."*, 2026-09-29), with its event the
+  Searing; a sarlacc egg clutch in the middens (cut by its own pass).
 - Colonists that plan routes by shade (his answer of 2026-11-10: they react; the beasts are the evolved ones).
-- **Recommended for dropping, not yet his:** the lure awning (ordinary roofs and the hull already do it); the
-  chitin shade mast (against parasols-and-roofs); haze lengthening shadows by its own multiplier (against pure
-  geometry); the tazzok's ash-only schedule (its ash act is gone).
+- **Recommended for dropping by the cleanse, not his:** haze lengthening shadows by its own multiplier (against
+  pure geometry); the tazzok's ash-only schedule (its ash act is gone). The cleanse also recommended retiring the
+  lure awning and the shade mast. This design does not follow it on either: he admitted the lure awning by card
+  on 2026-10-08 (*"the one biome where you can bait with geometry"*) and it is built, so it sits in 0.2.0 with the
+  other admitted extras; and the mast is this biome's gift to the ship (`NEEDS HIM` 4).
 
 ## NEEDS HIM
 
-1. **The discussion he said was owed.** On 2026-11-10 he wrote *"We need a deeper design discussion here"* about
+Each is tagged with one theme word.
+
+1. **[other] The discussion he said was owed.** On 2026-11-10 he wrote *"We need a deeper design discussion here"* about
    what people do when they overheat, and it has not been held. This design is written on the cleanse's default:
    a crew member in harmful direct sun, before the heatstroke turns serious, goes to the nearest reachable shade
    they can actually recover in, then resumes; drafted and broken people are left alone. It is a rule for every
    biome and it is unbuilt. *That default.* *Something lighter:* a warning and nothing automatic. *Something
    smarter:* which contradicts his own "they aren't evolved beings from that biome".
-2. **Is this the crew's home ground?** The design plays the Long Shade as the one place the crew is competent on
+2. **[other] Is this the crew's home ground?** The design plays the Long Shade as the one place the crew is competent on
    foot and the ship is the novelty. If instead the clan's roads are in the deep desert or elsewhere, the crew is
    as lost here as anywhere and the jokes change sides. *Home ground* (default). *Not home:* rewrite the tone, not
    the mechanics.
-3. **Does the smoke haze hide the ship?** His card gives canopy, steam and fog one step of cover. Haze is none of
-   the three and does the same job to the eye. *No cover in 0.1.0; one step under haze when haze arrives in 0.2.0*
-   (default). *Never:* the Long Shade is the planet's bare table. *Now:* pull the haze into 0.1.0 with it.
+3. **[cover] Does the smoke haze hide the ship?** His card gives canopy, steam and fog one step of cover. Haze is
+   none of the three and does the same job to the eye. *No cover in 0.1.0; one step under haze when haze arrives
+   in 0.2.0* (default). *Never:* the Long Shade is the planet's bare table. *Now:* pull the haze into 0.1.0 with
+   it.
+4. **[hull] Does the ship keep its mast?** The long-shade mast is this biome's entry on the list he asked for on
+   2026-09-24 (what each biome adds to the ship). An agent picked it on 2026-11-11 after a judge found the lure
+   awning *"only shaded its footprint"*; it was carded to him for review and no answer is recorded. The cleanse of
+   2026-11-17 recommends retiring it as against the rule that shade gear is parasols and roofs. *Keep it as the
+   ship's gift* (default here: the lens makes the ship the point, and an open deck is what a roof cannot shade).
+   *Retire it:* the Long Shade then gives the ship nothing, and something else must be chosen.
+5. **[scope] One signature, or the pieces he picked?** His card of 2026-11-17: a biome's first version holds
+   *"Land, life, one signature."* The cleanse chose real and false shelter as the signature and switched off the
+   ship's shade filling up, the heaps, the sun graves, the wreck road, the vorrel and the rest. This design brings
+   the first three back into 0.1.0. Two of them (the ship as refuge, the heaps) are his own card picks of
+   2026-09-30, and the lens of 2026-11-18 makes the ship the subject. *As this design has it* (default). *Strictly
+   one signature:* 0.1.0 is the sun, the dash, the gloomcast and the mirrak, and the ship's shade is just shade.
+6. **[other] Should lightning strike here?** The sheet bans fire that starts here (*"Ash and smoke ARRIVE; they do
+   not originate"*). The biome's weather table carries dry thunderstorms at weight 4 in 99. *Remove them*
+   (default). *Keep them:* rare fires on ground the sheet says never burns of itself.

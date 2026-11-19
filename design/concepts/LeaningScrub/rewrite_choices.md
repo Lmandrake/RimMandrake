@@ -6,7 +6,7 @@ A second reader, who did not write the design or this page, read the Scrub's old
 the ledger and the design documents the first read did not open, and checked the design against them (item
 `RIMMANDRAKE_RECHECK_LANTERNDEEPS_TO_RUSTCATHEDRAL_CHOICES`).
 
-**Rows added: 161**, in the section "Added by the second reader" below. The page now has 316 rows. Eight of
+**Rows added: 163**, in the section "Added by the second reader" below. The page now has 318 rows. Eight of
 the first read's rows were wrong and are corrected in place; each says so.
 
 **The three most valuable things the first read missed**
@@ -67,7 +67,7 @@ ship, and thunderstep herds converging on a launching ship (both 2026-09-28). A 
 wake, was declined by card on 2026-10-16.
 
 **Measured counts** (script: every table row under "Every idea, row by row"; outcome words counted in the "what
-happened" column; an invented source name is reported missing, which shows the check can see absence): **316
+happened" column; an invented source name is reported missing, which shows the check can see absence): **318
 rows, 36 lost, 8 record a move, 7 reshaped, 2 folded into shared machinery; 41 named
 sources, each in at least one row; 56 source files read to their end.** The check and its broken-copy probe
 are recorded in `design/RimMandrake/biome_recheck_lanterndeeps_to_rustcathedral_row_check_2026-11-18.txt`.
@@ -469,6 +469,8 @@ items named in the row; *owner ledger* = `infrastructure/state/ledger/events/OWN
 | Living cane as a spiked building material for fences and traps | vine design | moved (proposed → later) | Never built. | |
 | The Long Shade's built Shipfall Commons (a landed ship's shade draws wildlife) | mechanics review | kept as a note in `NEEDS HIM` 1 | The declined lee has a living relative. | |
 | The Scrub among "the open crossings... closest to the crew's home desert"; "the joke cannot be that they are out of their depth" | shared machinery | kept, quoted | It shapes what the "did you see that" can be here. | |
+| His question to every biome, 2026-09-24: "how can this biome uniquely add something to the ship?... What can they take and improve their ships environment with?"; this biome's answer on that register is the wind vaporator (an agent's pick, carded to him) | small items (`BIOME_SHIP_CONTRIBUTIONS_1`) | kept (0.2.0, where his ruling of 2026-11-16 put the vaporator); named in the design as the ship's gift | Found while reading the Long Shade; no first-read design in this batch cites the register. | Pull the vaporator alone into 0.1.0 so the stop changes the ship. |
+| The truffle mole (pikkut) moved here from the Long Shade on 2026-10-05 | source | kept as a build fact | | |
 
 #### The place, its sound and its people
 

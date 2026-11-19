@@ -318,7 +318,11 @@ Each can happen inside the visit. Each says what is on screen.
   *"takes dye badly and light beautifully, and a coat of it is the closest a person gets to being hard to see out
   here."*
 - **Vissler arms,** shed still twitching when the runs flush. *"Hunters buy them."*
-- *0.2.0:* plans recovered from a dead farmstead, and a vaporator the crew can build elsewhere.
+- *0.2.0:* plans recovered from a dead farmstead, and a vaporator the crew can build elsewhere. This is the
+  Scrub's gift to the ship itself. His question of 2026-09-24 to every biome was *"how can this biome uniquely add
+  something to the ship?"*, and this biome's entry on that register (`BIOME_SHIP_CONTRIBUTIONS_1`; an agent's
+  pick, carded to him) is the wind vaporator: *"a powered, buildable fog-catch that combs a thin, reliable margin
+  of water out of the passing wind, any number of them."*
 
 ## Fuel, and what this place does to the ship
 

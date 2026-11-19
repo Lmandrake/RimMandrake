@@ -1,5 +1,87 @@
 # The Long Shade: what the rewrite chose, what it lost, and why
 
+## Second reader, 2026-11-18
+
+A second reader, who did not write the design or this page, read the Long Shade's sheet, sitting, review and shade
+ideation to their ends, his rulings on the ledger, and the mod's own definitions, and checked the design against
+them (item `RIMMANDRAKE_RECHECK_LANTERNDEEPS_TO_RUSTCATHEDRAL_CHOICES`).
+
+**Rows added: 103**, in the section "Added by the second reader" below. The page now has 232 rows. Eight of
+the first read's rows were wrong or stale and are corrected in place; each says so.
+
+**The three most valuable things the first read missed**
+
+1. **The ship's shade filling up is his own pick, and the hull wear he asked for is already built here.** The first
+   read presented the Shipfall Commons as a cleanse runner-up it was bringing back. It was picked by his card on
+   2026-09-30 (*"small animals take the ramp shadow, herds press the hull, pirrik circle, eventually the gloomcast
+   walks over"*). And where the first read wrote *"no shield is invented here"*, the built ship-shield frame
+   already sees one hazard on this biome's own weather table: the sandstorm. A ship that sits through one without
+   its particulate screen wears today. His ruling on that screen also says it *"repels small animals"*, which
+   sets a clean hull against game at the ramp.
+2. **Two ideas the design kept as "never ruled" he had cut; and he had admitted seven it barely mentions.** His
+   words of 2026-09-29, on the ledger: *"No on 6 7. Will consider the rest later."* Six was the gnomon line and
+   seven the farm on the horizon with its heliograph. On 2026-10-08 he admitted, by card, the empty patch, the
+   tollok, the stampede, lure awnings, the mirror field, the harrok and the Jawa clan that comes back. The empty
+   patch (*"a perfect, deep, dew-ringed shadow with nothing in it is the loudest warning on the map"*) is now in
+   the design's first day.
+3. **The biome on disk is not the biome in the September sheets.** On 2026-10-05 (*"Go ahead and do the moves and
+   cuts now please."*) the ultracactus he invented went to the Stillsand with three animals, two more went to
+   other biomes and four were cut. The design still sent the crew home with ultracactus pad. And three plants the
+   first read never met are built and growing: the shadespire (*"the only vertical that grows"*), maidenbloom
+   (his name), and pavecrust, whose scraps *"burn slowly and hot"* and harvest to chemfuel. The design said
+   nothing here is a fuel.
+
+Also found: his question of 2026-09-24 to every biome (*"how can this biome uniquely add something to the
+ship?"*) and this biome's answer on that register, the long-shade mast, which the design had under "recommended
+for dropping"; the swimmer's road in full (it heads for the largest ring of dew, which is the ship's; hardpan
+stops it; droids are ignored); the unread three quarters of the shade ideation, with its best lines; the rule
+that crew react to heat and never plan routes applied to one more line the ideation had the other way.
+
+**What the second reader changed in the design, and why**
+
+- *Hull wear rewritten* to open with the sandstorm on the built frame, and to add where the ship is parked (soft
+  sand or hardpan). The khorrak note now says what the sources actually describe.
+- *Fuel corrected:* pavecrust is a thin, real, built fuel plant; the trading conclusion stands.
+- *What the crew takes away corrected:* ultracactus out, dewfringe sprig and maidenbloom heart in, shadespire wood,
+  and the mast as the ship's gift.
+- *Scope corrected:* the gnomon line and the farm on the horizon moved from "later" to "dropped" with his words;
+  the ideas he set aside (*"Will consider the rest later"*) are named one by one in "later"; the lure awning is
+  no longer recommended for dropping (he admitted it); the cut and moved cast is listed.
+- *Carried in:* his verdict on the biome and what he asked for; the empty-patch rule; the three built plants; the
+  standing shield; the herd at the rim; the swimmer's road as a ship story; the Shipfall Commons card.
+- *`NEEDS HIM` grew from three to six,* each tagged with a theme.
+
+**What the second reader could not settle.** Whether a wild khorrak eats salvage or anything built. Whether the
+sandstorm weather is present without the Odyssey expansion's definition (every expansion is assumed, so it is).
+Whether he answered the card that showed him the ship gifts.
+
+**Ship ideas he declined or cut:** none found. The shade awning for the ship drew *"If it's easier than I think
+let's do it. Assess."*, was assessed as already true of any landed ship, and was overtaken by the Shipfall
+Commons, which he picked. The mast is an agent's pick he has not answered (`NEEDS HIM` 4).
+
+**Measured counts** (script: every table row under "Every idea, row by row"; outcome words counted in the "what
+happened" column; an invented source name is reported missing, which shows the check can see absence): **232
+rows, 26 lost, 25 record a move, 7 reshaped, 2 folded into shared machinery; 22 named
+sources, each in at least one row; 11 source files read to their end.** The check and its broken-copy probe
+are recorded in `design/RimMandrake/biome_recheck_lanterndeeps_to_rustcathedral_row_check_2026-11-18.txt`.
+
+**Read to the end by the second reader:** `desert.md`; the sitting of 2026-09-27; the review of 2026-09-29; the
+shade ideation; the cleanse's owner pages; the owner answers and the notes of the 2026-11-09 Codex dry run; the
+enrichment, shade-extras and Jawa-return items; `ShieldHazardUtility.cs`.
+**Read in part:** the cast bible (all prose; the art-queue table and per-sprite size lines trimmed); the ship
+register (its text and the rows for these five biomes); the cleanse's ambiguity list (each entry's first lines);
+the walk (north star to the end); the biome definition (its move record, roster and weather) and the fill-plant definitions (labels, descriptions, harvests); the ledger (every
+event carrying his words or a card on the Long Shade's items); the mechanics review's Long Shade table; shared
+machinery by search. **Not read:** the cleanse's definition, next-version list, census, bars, tickets, models and
+review; the Codex dry run's question bank and record; `rosters/desert.json`; the Solar Mirrors design (its own
+mod); `desert_ecology_feasibility.md`; thirty other items.
+
+DELETE-READY: yes
+
+That line covers the three older files the first read listed and the shade ideation, which the first read held
+back as mostly unread: all four were read to their ends and every idea found in them has a row. The cast bible
+stays held as the art pipeline's brief.
+
 Companion to `design/concepts/LongShade/design.md`, written 2026-11-18 by the same pass. Its job is to let the
 older files be deleted without fear: every distinct idea found in any source has a row saying what became of it.
 Nothing has been deleted. The older files this design replaces are listed at the end.
@@ -145,12 +227,12 @@ under `design/Jawa/worldbuilding/`); *cleanse* = `design/concepts/LongShade/clea
 | The harbour ladder: small life, herd staging, predator tenancy, the giant's visit | sitting §4.1 | kept, reshaped: it happens to the ship (0.1.0); for a built base it is "later" | | |
 | "Hospitality you cannot decline" | sitting §4.1 | kept, quoted | | |
 | A landed ship is already the largest harbour by the grid's own logic | review slate 1 | kept, quoted in the choices above | | |
-| Shipfall Commons: staged gathering, arrival messages, console dispersal | cleanse, mechanics review | moved (next version → 0.1.0) | See scope moves. | Leave it off: the stop has no ship moment of its own. |
+| Shipfall Commons: staged gathering, arrival messages, console dispersal | cleanse, mechanics review | moved (next version → 0.1.0) | See scope moves. It was his card pick of 2026-09-30 (added by the second reader). | Leave it off: the stop has no ship moment of its own. |
 | A visitor that size "must delay and damage, never hard-block a launch" | review slate 1 | kept, quoted; the rule under hull wear | | |
-| The shade awning as a ship module | sitting §6, review slate 1 | lost (the hull already casts) | The cleanse recommends retiring the built lure awning for the same reason. | Keep it as a hunting tool: one more building doing a roof's job. |
+| The shade awning as a ship module | sitting §6, review slate 1 | lost (the hull already casts) | That was the assessment he asked for ("If it's easier than I think let's do it. Assess."), not a refusal; the Shipfall Commons he then picked does the job (corrected by the second reader). The built lure awning is a different thing, admitted by his card of 2026-10-08. | Keep it as a hunting tool: one more building doing a roof's job. |
 | Pavement flooring and the vorrel galley as ship gifts | sitting §6 | kept in "later" | | |
 | The megafauna radiate the crossing's heat once in shade | sheet §4c, sitting §4.1 | kept, quoted; made the hull-wear line | His card of 2026-11-18 asked for wear found in the sources. | |
-| The chitin shade mast | cleanse | lost (recommended for dropping; his to confirm) | Against parasols-and-roofs. | |
+| The chitin shade mast | cleanse | kept as the biome's gift to the ship; `NEEDS HIM` 4 (corrected by the second reader; the first read had "lost, recommended for dropping") | It is this biome's entry on the ship register he asked for on 2026-09-24. | Retire it as the cleanse recommends: against parasols-and-roofs. |
 | Haze lengthening shadows by its own multiplier | cleanse, sitting §4.2 | lost (recommended for dropping; his to confirm) | Against pure geometry. | |
 | Solar Mirrors | mechanics review | kept as its own mod, not this design | | |
 
@@ -166,7 +248,7 @@ under `design/Jawa/worldbuilding/`); *cleanse* = `design/concepts/LongShade/clea
 | Arriving overheated at a shelter already full | sheet §4 | kept as what a full hull-shadow means for the next arrival | | |
 | Long-range signalling before a crossing | sheet §4 | lost | See above. | A call-and-answer behaviour: new, and warning-flavoured. |
 | A herd is a mobile shade structure; leggy bodies | sheet §4 | kept as lore and art direction | Herd mutual shading is not built. | |
-| The ultracactus: the buried canopy; "not canon, I made it" | sheet §4b, amendment | kept, quoted | | |
+| The ultracactus: the buried canopy; "not canon, I made it" | sheet §4b, amendment | lost from this biome: moved to the Stillsand on 2026-10-05 as the ultriss pad (corrected by the second reader; the first read had "kept") | His moves of that day. His words about it are kept in the design. | |
 | The open ground as a roof over a living layer | sheet §4b | kept | It is what the gloomcast strains. | |
 | Shade plants that defend: vines with venom, leaching moss | sheet §4b, cleanse | moved (next version → 0.2.0) | | |
 | The vorrel cycle | sheet §4b, mechanics review | moved (next version → 0.2.0) | See above. | |
@@ -187,8 +269,8 @@ under `design/Jawa/worldbuilding/`); *cleanse* = `design/concepts/LongShade/clea
 | The dakkra and the other four draft fillers (sollak, gennok, tebbra, pirrik) | sitting rulings | kept | | |
 | The qorrax, bound to deep sand | sheet amendment | kept | | |
 | Dewback in as mount; Blurrg out; sand-lion row dead | sitting rulings | kept (dropped list for the last) | | |
-| One-home rulings: kreetle, gizka, kudda, pikkut | sitting rulings | kept | Evictions are stopped; nothing here moves an animal. | |
-| The fourteen invented rows moved to the free tier | sitting rulings | kept (done) | | |
+| One-home rulings: kreetle, gizka, kudda, pikkut | sitting rulings | kept for kreetle and gizka; kudda was cut and the pikkut went to the Leaning Scrub on 2026-10-05 (corrected by the second reader) | His later word. Evictions are stopped; nothing here moves an animal. | |
+| The fourteen invented rows moved to the free tier | sitting rulings | kept (done); six of the fourteen are still cast here (corrected by the second reader) | The rest were cut or moved on 2026-10-05. | |
 | Animals from this folder that live elsewhere | cleanse | kept as build facts | | |
 | The canon cast and plants added by the campaign patch | cleanse | kept where the patch puts them | | |
 | Khorrak eats steel and slag | cleanse | kept; flagged unmeasured under hull wear | | |
@@ -224,8 +306,8 @@ under `design/Jawa/worldbuilding/`); *cleanse* = `design/concepts/LongShade/clea
 | Named wide gaps; the last patch before a gap | sheet §8, sitting §4.5, rulings | kept in "later" (*"at the repaint window"*) | | |
 | Known viable routes worth mapping | sheet §7 | kept in "later" | | |
 | Settlements on the big patches; herder camps "by smoke"; tribe holdings | sheet §8 | kept in the campaign layer; named as where fuel is bought | The fuel ruling of 2026-11-18. | |
-| The desperate moisture farm besieged by the ecosystem | shade ideation 2E | kept in "later" (never ruled) | It is the ship's own situation happening to somebody else. | 0.2.0 as a place to visit: a new inhabited site. |
-| The waiting camp; the gnomon line; the farm on the horizon; the smaller ideas | shade ideation | kept in "later" (never ruled) | Mostly not read. | |
+| The desperate moisture farm besieged by the ecosystem | shade ideation 2E | kept in "later" (set aside by him with "Will consider the rest later"; its sharpened form, the farm on the horizon, he cut) | It is the ship's own situation happening to somebody else. | 0.2.0 as a place to visit: a new inhabited site. |
+| The waiting camp; the gnomon line; the farm on the horizon; the smaller ideas | shade ideation | lost for the gnomon line and the farm on the horizon (cut by him, 2026-09-29); the waiting camp kept in "later"; the smaller ideas admitted by his card of 2026-10-08 (corrected by the second reader; the first read had all four "later, never ruled") | "No on 6 7. Will consider the rest later." Each has its own row below. | |
 | The sun god's country: shade-piety, the Shade Tithe, the Searing | review slate 2, shade ideation §0 | kept in "later" (parked by him) | | |
 | The Shadow Walk rite | mechanics review | kept in "later" | | |
 | Reliable game; herd beasts; pavement stone; crevice shelter | sheet §7 | kept | | |
@@ -247,7 +329,142 @@ under `design/Jawa/worldbuilding/`); *cleanse* = `design/concepts/LongShade/clea
 | The nine-mark scorecard | review | lost | A scoring frame from an earlier programme. | |
 | Probe sight and the visibility dial | ladder | kept as the reason there is no cover | | |
 
+### Added by the second reader, 2026-11-18
+
+More source names: *sitting notes* = the owner's typed rulings and cards kept as ledger notes on
+`LONGSHADE_DESIGN_SITTING_1`, `LONGSHADE_BEDAZZLE_SITTING_1`, `LONGSHADE_SHADE_EXTRAS_1` and
+`LONGSHADE_MIDDENS_DESIGN_1` (`infrastructure/state/ledger/`); *enrichment item* =
+`infrastructure/state/items/closed/LONGSHADE_GPT_ENRICHMENT_1.md`; *ship register* =
+`infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md`; *shield rulings* =
+`design/Jawa/proposals/ship_shields_deep_design.md` (his ruled table, saved 2026-09-02); *shield code* =
+`src/RimUtinni/ShipShields/Source/`; *codex notes* = `NOTES.md` in
+`design/RimMandrake/designer_codex_2026-11-09/LongShade/`; *small items* = the Long Shade's other ledger items named
+in the row; *owner ledger* = `infrastructure/state/ledger/events/OWNER.jsonl`; *shared machinery* =
+`design/RimMandrake/biome_shared_machinery_2026-11-18.md`; *source* = the mod's own files under
+`src/RimMandrake/LongShade/`, read on 2026-11-18.
+
+#### His rulings the first read did not find
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| "No on 6 7. Will consider the rest later. Rule them and build it, ticket it out." (the gnomon line and the farm on the horizon, cut) | sitting notes, codex notes | lost: cut by him on 2026-09-29; the design's "later, never ruled" is corrected | The ideation's own rulings section predates this note by minutes and still says "not yet ruled". | |
+| The Shipfall Commons was his card pick of 2026-09-30: "small animals take the ramp shadow, herds press the hull, pirrik circle, eventually the gloomcast walks over. Launch is never blocked; occupants get a readable dispersal job." | enrichment item, source | kept (0.1.0), quoted in the design | The first read presented it as a cleanse runner-up brought back; it is his pick. | |
+| The same card: the gloomcast as moving shade with footfalls "heard before it is seen"; heat you can hear; lee-side middens; shade gear learned by study | enrichment item | kept (each in its bucket) | | |
+| "It's ok for the heat sound to be where the camera is rather than your people." | enrichment item | kept as a build ruling for the sound beds (0.2.0) | | |
+| The shade awning for the ship: "If it's easier than I think let's do it. Assess." (assessed: a landed ship is already a harbour at no cost; no build ruled) | sitting notes | kept as history: not declined, and overtaken by the Shipfall Commons | The first read's row says "lost (the hull already casts)", which is the assessment, not his refusal. | |
+| "the shade should be more interesting. That's where everything's hanging out."; "Maybe some of those shady spots aren't so natural after all?"; "Broken down sand crawlers and other vehicles. Desperate moisture farmers." | sitting notes, shade ideation §0 | kept, the first two quoted in the design | They are the brief the mirrak, the road and the empty patch answer. | |
+| "I like the golden hour concept. A perpetual beautiful sunset." | sitting notes | kept | | |
+| "Ignore ideoligion concept for now." (the sun god's country parked) | sitting notes | kept in the dropped list as built content, with his words | | |
+| "Middenbloom sounds disgusting. Maidenbloom is better." | sitting notes | kept, quoted | | |
+| "The cephalope needs a new name and our own recreated art. It was intended to be a deadly predator swimming in the sand... Fill gaps in the animal and plant roster creatively and show me what you make for review." | sitting notes | kept (the qorrax; the fillers) | | |
+| All seven small ideas admitted by card on 2026-10-08: the empty patch, tollok, the stampede, lure awnings, the mirror field, the harrok, the Jawa return | small items (`LONGSHADE_SHADE_EXTRAS_1`), sitting notes | kept (0.2.0, except the empty patch in 0.1.0 and the mirror field as its own mod) | The first read listed the lure awning only as a retirement candidate. | |
+| The empty patch as a design rule: "every hidden-danger shade feature empties its patch" | sitting notes, shade ideation N1 | kept (0.1.0), quoted in the design | | |
+| Middens: vanilla items only; the clean patch as a warning seen on the ground; the vrekka builds the heaps (cards of 2026-10-03) | sitting notes | kept | | |
+| Middens are searched once and spent (later card, 2026-10-08), replacing the regrowing heap | codex notes | kept; the design's "searched once" stands | | |
+| "Go ahead and do the moves and cuts now please." (2026-10-05): kudda, ossik, thurra and the mature fleshbeast cut; ommok to the Miasma, truffle mole to the Leaning Scrub, ulgga, vosska and the ultracactus to the Stillsand | owner ledger, source | lost from this biome; the design's dropped list and forage are corrected | The first read still sent the crew home with ultracactus pad. | |
+| Renames of the same day: jellypot to dunejelly, groundrunner to oreclaw, sollak to chorn, skarrok to ski'ra'lim, ultracactus to ultriss pad | source | kept as the names the design should use | | |
+| The mirror field: "Solar Mirrors. Heliostats. Static mirrors."; its four extensions, "I like all four" (solar furnace, blinding defence, heliograph signals, mirror greenhouse) | sitting notes | kept as its own mod, outside this design | | |
+| Audio: "vanilla until sound work"; numbers ship as first guesses marked provisional | sitting notes | kept as build rulings | | |
+| His question to every biome, 2026-09-24: "how can this biome uniquely add something to the ship?... What can they take and improve their ships environment with?" | ship register | kept, quoted in the design | No first-read design in this batch cites it. | |
+| "Landing in a biome changes your ship, not just your stores — the gravship becomes a scrapbook of everywhere it has been." | ship register | kept here | | |
+| The long-shade mast as this biome's gift to the ship (an agent's pick of 2026-11-11, carded to him, unanswered) | ship register, source | kept, reshaped: from "recommended for dropping" to the ship's gift, with `NEEDS HIM` 4 | The lens makes the ship the point. | Retire it as the cleanse recommends: the biome gives the ship nothing. |
+| Card of 2026-11-17 on the Pyrelands' own smoke weather: "Next version"; his words "the choking smoke that sometimes come as its own weather" | owner ledger | kept as context for the haze (0.2.0) | | |
+| Card of 2026-11-17: a first version holds "Land, life, one signature" | owner ledger | kept as `NEEDS HIM` 5 | | |
+
+#### The ship, the hull and fuel
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| The sandstorm is on the biome's weather table (4 in 99) and the built frame reads its sand rate as a particulate hazard | source, shield code | kept: the design's first hull-wear line | The first read said no shield applies here and invented nothing; the built game already wears an unscreened ship in a sandstorm. | |
+| The particulate screen "repels small animals" | shield rulings | kept: a screened ship loses the first rung of its court | A real choice between a clean hull and game at the ramp. | |
+| "The environment is hostile and immediately goes to work on the ship... Its hull is thick" | shield rulings | kept, quoted | | |
+| The swimmer heads for "the largest dew-ring on soft sand", which is the biggest shade | shade ideation 6.3 | kept (0.2.0), reshaped: the biggest shade is the ship | | |
+| Its answers: a hardpan moat ("a swimmer cannot cross it"), a decoy ring, meeting it in the gap where "every metre costs it water" | shade ideation 6.3 | kept (0.2.0); landing on hardpan is the crew's version | | |
+| The droid runner: "The swimmer ignores droids... send a droid to strip the wreck in the lee of the mouth. The Jawa fantasy" | shade ideation S3 | kept (0.2.0), quoted | Already true of the built creature. | |
+| The rooting: "a well with a mouth", pearls, the Rite of Offering; "the silent evacuation of a whole patch"; one a map, ever | shade ideation S2, 6.3 | kept at the campaign tier (0.2.0) | | |
+| The old rooting (a map that starts with one) | shade ideation S4 | kept in "later" | | |
+| A sarlacc egg clutch in the middens | shade ideation | lost (cut by its own pass) | | |
+| Pavecrust: the hardpan lichen whose "harvested scraps burn slowly and hot"; it harvests to chemfuel | review, source | kept (0.1.0): the biome's one fuel plant | The first read said nothing here is a fuel. | |
+| Shadespire: "the only vertical that grows"; its own small patch; dense pale wood; "felling one erases a harbour" | review, source | kept (0.1.0) | | |
+| Pavement stone cut for the ship's floor; the vorrel galley | sitting §6, review slate 6 | kept in "later" (already rowed by the first read; the hardpan terrain it needs does not exist) | | |
+| A hardpan terrain of our own | review slate 6, shade ideation | moved (proposed, unbuilt → later) | No such terrain is in source. | |
+| The khorrak's real promise: a tamed one penned with iron turns it to alloy; "the knowledge you keep is a working animal, not a research node" | review slate 5 | kept (0.2.0); the hull worry stays unmeasured | | |
+| "every other biome threatens the ship; this one is hospitable to it, and hospitality is the threat" | review slate 1 | kept, quoted in the design | | |
+| The awning's picture: sippra and tebbra in the wake, "a dakkra takes tenancy under the landing struts", the flock on the hull, the giant "standing bs-16 where you wanted to park" | review slate 1 | kept as the picture of the built commons | | |
+| The commons is off the ship: nothing wild stands on the deck and rides away | source | kept as a build fact | | |
+| Smallest fliers are admitted through the first rung, ahead of their own | codex notes | kept as an owed fix | | |
+| "Ash is also grit: it abrades" | sheet §4 | lost with the ash act (cut 2026-10-23) | It would have been a second particulate hazard. | |
+| "the ship is the harbour, the sun is the god, the heat is the sound" | review | kept here | | |
+
+#### The place and its animals
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| "The Long Shade is the biome where position is the whole game." | sitting §1 | kept here | | |
+| The reward is "a POSITION — a rim, a staging post, a toll point, the lee of a rock, the best roof for miles"; "appraisal, then tenure" | sitting §1 | kept, reshaped: the crew appraises and never gets tenure | Tenure is a settler's reward. | |
+| The test for any idea here: "can you point at the ground it happens on — and is it still worth holding tomorrow?" | sitting §1 | kept for its first half | | |
+| "activity has a *map*, not a rhythm" | sitting §1, sheet §4 | kept here | | |
+| "twenty seconds of everything you have, repeated for a lifetime" | sheet §4 | kept here | | |
+| "a herd that picks the wrong next patch dies as a unit" | sheet §4 | kept here | | |
+| Interception mid-dash, "when the prey is committed and physically cannot turn back" | sheet §4 | kept as lore | | |
+| "A herd is infrastructure. Break it up and you have not scattered the animals, you have destroyed the shade they were making." | sheet §4 | kept here | | |
+| "You would walk across a stand of them and register nothing" (the ultracactus) | sheet §4b | lost from this biome with the plant (moved 2026-10-05) | | |
+| "A patch that looks like the best shelter for a kilometre may be somebody's." | sheet §4b | kept here | | |
+| The vorrel as "the jumping cholla's trick, run through a corpse"; "a body in a shadow is how new patches get colonised" | sheet §4b | kept (0.2.0) | | |
+| The megafauna carry "seeds, riders and parasites between patch-networks that are otherwise sealed from each other" | sheet §4c | kept as lore | | |
+| No unsheltered nests or safe young | sheet ban 7 | kept as a build constraint | | |
+| A wide gap as "a landmark, a border, a toll point, an ambush and a story" | sheet §8 | kept in "later" | | |
+| The staging post as income: tolls and caravan traffic at the last patch; "the only geography on the planet defined by what cannot cross it" | sitting §4.5 | kept in "later" | | |
+| The middens as "aeolian archaeology — the planet's own sorting machine has been running for a million years and the player just has to know where it files things" | sitting §4.4 | kept here | | |
+| The haze as "imported generosity — the only biome whose best days are another biome's disasters"; "caravans move like it is a holiday" | sitting §4.2 | kept (0.2.0) | | |
+| The dew line: "a wall becomes an agricultural instrument"; the Oasis Maker already makes water pockets | sitting §4.3 | kept in "later" | | |
+| The vorrel as "risk cuisine — the only luxury on the planet that can kill the cook's customer"; a botched preparation is the parasite | sitting §4.6 | kept (0.2.0) | | |
+| Strict dashing is four things: the open costs, size bounds the cost, routes run shade to shade, rest is what shade is for | shade ideation §1 | kept as the build's shape | Most of it was never read by the first pass. | |
+| "'nothing pursues' stops being a ban we police and becomes physics the animals obey" | shade ideation §1 | kept here | | |
+| Every ordinary job routed shade to shade by a path cost | shade ideation §1.2 | kept for natives; lost for crew (they react, by his answer of 2026-11-10) | | |
+| The pause at the rim before a run | shade ideation §1.2 | kept: a new moment in the design | | |
+| The engine can pin one long shadow direction, so "What you see is what shelters you"; shadows "all parallel... like the map was combed" | shade ideation §1.3, §3.1, 6.1 | kept; it corrects the sheet's "cannot be rendered" | | |
+| Shadows point away from the planet's sunward point, longer nearer the terminator | shade ideation §3.1 | kept, as pure geometry | | |
+| Size words: close-country, gap-runner, open-walker | shade ideation 6.1 | kept as vocabulary | | |
+| "The last calf is two strides behind. It makes it." | shade ideation 6.1 | kept, quoted in the design | | |
+| The shimmer: "a dry rising hiss that is not insects and not wind — the sound of exposure" | shade ideation 6.1, review slate 3 | kept (0.2.0, the sound beds) | | |
+| "Every work order on this map is now a route." | shade ideation 6.1 | lost (his answer of 2026-11-10: crew react, they do not plan) | | |
+| An "endless sunset" mood that fades: "beauty first, then the realisation it never ends" | shade ideation §3.3 | kept in "later" | | |
+| Dust-lit air with motes in the light and none in the shade | shade ideation §3.2 | kept as art direction | | |
+| Route cairns: study one and see the chain it marks | shade ideation D3 | kept in "later" (set aside by him) | | |
+| The shade-cool cellars under an old patch | shade ideation D4 | kept in "later" (set aside by him) | | |
+| The dew wells that still bead water into stone basins | shade ideation D5 | kept in "later" (set aside by him) | | |
+| Sunstruck bodies at the rim: half-dead, still dangerous, free meat past what is eating it | shade ideation F4 | lost (never built; it would fall out of a heat model he replaced) | | |
+| The heat-shimmer false horizon: an overheated runner overshoots | shade ideation F5 | lost (never built) | | |
+| The dry vaporator stands as an accidental chain of shade | shade ideation N5 | kept in "later" (set aside by him) | | |
+| The shade-rent men at a dead crawler: "Deal with them, displace them, or become them" | shade ideation I3 | kept in "later" (set aside by him) | Becoming them is Very Jawa. | 0.2.0 with the crawler. |
+| The broken caravan in the gap, its crew under the carts with a day's water | shade ideation I4 | kept in "later" (set aside by him) | | |
+| The waiting camp: "a rescue whose obstacle is 40 cells of sunlight" | shade ideation I2 | kept in "later" (the first read's row; set aside by him, not unruled) | | |
+| The road can be rebuilt: haul a hulk into the gap | shade ideation 6.4, cast bible | kept with the road (0.2.0) | | |
+| A herd arriving "at the empty sand where it stood", and standing there calling | shade ideation 6.4 | kept with the road (0.2.0) | | |
+| Towing the crawler takes the map's biggest shadow, and every tenant stampedes | shade ideation I5 | kept (0.2.0) | | |
+| Shade debt: herders demand a right of way through the yard | shade ideation W4 | kept in "later" (set aside by him) | | |
+| The skellok: insects that lay themselves in a line to carry shade; "the only black pigment on the dayside" | shade ideation W5 | kept in "later" (set aside by him) | | |
+| The noon stone: a shaft with no shadow, "a kiln the planet built" | shade ideation W6 | kept in "later" (set aside by him) | | |
+| The long listeners: read the calls, or mimic one to hold a herd | shade ideation W7 | kept in "later" (set aside by him) | | |
+| The first-year walk-through of the whole package | shade ideation 6.8 | lost (a colony's year) | | |
+| The gnomon's two tips, one found only in haze; chains of gnomons | shade ideation 6.7 | lost (cut by him) | | |
+| The heliograph as a building the colony keeps | shade ideation 6.6 | lost (cut by him; the idea lives on in Solar Mirrors) | | |
+| The Searing: the golden hour goes white and every creature freezes in whatever shade it has | review slate 2 | lost as built content (parked by him) | | |
+| The gloomcast as the sun god's opposite, "the thing that carries shade" | review slate 2 | kept as lore | | |
+| The four later fills as written: the scarp-dropper, the midden-worker, the rim-walker, the ash-answerer | review, cast bible | kept; all four are on the map as ordinary animals, their special behaviours unbuilt | | |
+| The free tier's cast as it stands today | source | kept: bokka, khorrak, dunejelly, gulloth, oreclaw, gloomcast, chorn, gennok, tebbra, dakkra, pirrik, mirrak, harrok, ski'ra'lim, vrekka, sippra, tazzok | | |
+| The standing shield: "the one piece that works under a low sun" | cast bible | kept, quoted in the design | | |
+| The gloomcast "painted as a piece of the sky", hide folds "like awnings" | cast bible | kept as art direction | | |
+| No shadow painted into any sprite; the mirrak is the one subject that is a shadow | cast bible | kept as art law | | |
+| Dry thunderstorms on the weather table against "ash and smoke ARRIVE; they do not originate" | source, sheet ban 5 | kept as `NEEDS HIM` 6 | | |
+| The biome def still carries a private heat kind and offset | codex notes, source | kept as owed compliance work (the design already says so) | | |
+| The Long Shade among "the open crossings... closest to the crew's home desert" | shared machinery | kept; it supports the design's home-ground reading, which stays `NEEDS HIM` 2 | | |
+
 ## Sources read, and the count
+
+*(The first read's own account follows, unchanged. The second reader's counts and reading list are at the top of
+this page.)*
 
 Measured after writing (a script counted the table rows and the first words of the "what happened" column):
 **12 source files, 129 rows**, of which **15 lost** (whole or in part), **22 record a move**, **4 kept,
@@ -274,9 +491,10 @@ built, proven and fate); **the cleanse definition** (four paragraphs found by se
 In `design/Jawa/worldbuilding/biomes/`: `desert.md`, `long_shade_bedazzle_2026-09-27.md`,
 `longshade_bedazzle_review_2026-09-29.md`.
 
-Hold these: `longshade_shade_ideation_2026-09-29.md`, because most of it was not read by this pass and it holds
-unruled ideas (the gnomon line, the farm on the horizon, the sarlacc section) that have no other home;
-`longshade_bedazzle_cast_2026-09-29.md`, because it is the art pipeline's brief.
+Hold this: `longshade_bedazzle_cast_2026-09-29.md`, because it is the art pipeline's brief.
+`longshade_shade_ideation_2026-09-29.md` was held by the first read as mostly unread. The second reader read it to
+its end and gave every idea a row (the gnomon line and the farm on the horizon were cut by him; the sarlacc
+section is in the design), so it joins the list above.
 
 Not for deletion: `rosters/desert.json` (not read); `design/concepts/LongShade/cleanse/` (superseded by this
 design, never applied; it should be re-run from this file, not applied); the validation walk.
