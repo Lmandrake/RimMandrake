@@ -136,6 +136,8 @@ def seed_and_land(root, mod):
                            capture_output=True, text=True, timeout=300, env=dict(os.environ, LAND_REPO=root))
     except subprocess.TimeoutExpired as e:      # the same cleanup as a refusal (RIMMANDRAKE_CLEAN_SEED_RECORD_WHEN_LANDING_TIMES_OUT)
         p = subprocess.CompletedProcess(e.cmd, 124, "", "timed out after %ss" % e.timeout)
+    except OSError as e:    # land.sh could not start (RIMMANDRAKE_CLEAN_SEED_RECORD_WHEN_LAND_CANNOT_START)
+        p = subprocess.CompletedProcess(DS.LAND, 126, "", "%s: %s" % (type(e).__name__, e))
     if p.returncode:
         # the record made here never reached origin/main: remove it, so the next tick seeds again (a kept one read as
         # "had a record" and its seed_refused stood for good; RIMMANDRAKE_RETRY_SEED_LANDING_LOCAL_RECORD_KEPT_REFUSAL)
@@ -504,9 +506,12 @@ def autolock_and_land(root, mod, now=None, land=None):
         for rel, obj in ((vrel, v), (drel, dg)):
             try:
                 with open(os.path.join(root, rel), "rb") as f:
-                    was[rel] = f.read()
-            except OSError:
-                was[rel] = None
+                    b = f.read()
+            except FileNotFoundError:
+                b = None    # only a missing file is absent: one that cannot be read is never overwritten
+            except NotADirectoryError:
+                b = None
+            was[rel] = b    # (RIMMANDRAKE_ABORT_AUTOLOCK_WHEN_BACKUP_UNREADABLE: any other read error raises here)
             os.makedirs(os.path.dirname(os.path.join(root, rel)), exist_ok=True)
             with open(os.path.join(root, rel), "w", encoding="utf-8") as f:
                 json.dump(obj, f, indent=2)
@@ -601,6 +606,8 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
     locked = fx.get("version_locked", lambda m: version_locked(root, m))
     evidence = fx.get("version_evidence", lambda m: version_evidence(root, m))
     queue = st.setdefault("ingame_queue", {})
+    acts = set()    # autolock / autorepin mods this tick: acts, not runs, so they take no slot at the gates below
+    # (RIMMANDRAKE_COUNT_NO_SLOT_FOR_AUTOLOCK_OR_REPIN_ACTS)
     for row in rows:
         mod, f = row["mod"], facts.get(row["mod"]) or {}
         s = mods.setdefault(mod, {})
@@ -612,7 +619,9 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
         elif dec in LAUNCH or f.get("owed") != "run":
             queue.pop(mod, None)
         _mark_worked(s, ver, row.get("stage"), f.get("live_units"), now, f.get("ended_runs"))
-        dst = None if dec in ("live", "settling") else dstate(mod)
+        # a Conductor hold reads no Designer state either: no stop route may launch past it
+        # (RIMMANDRAKE_KEEP_CONDUCTOR_HOLD_ABOVE_COVERAGE_STOP_FIXERS)
+        dst = None if dec in ("live", "settling") or dec in HOLDS else dstate(mod)
         fs, cs = final_stop(dst), coverage_stopped(dst)
         if fs:
             rel, stop = fs
@@ -671,11 +680,12 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             else:
                 row["retry_of"] = dict(x or {})
                 launches = [m for m in launches if m != mod] + [mod]
+                acts.add(mod)
             continue
         # one automatic run per state, then a steward or fixer within the caps
         if row.get("aut"):
             launches = [m for m in launches if m != mod]
-            ok, why = _gate(cfg, s, row, None if base is None else base + len(launches), ver)
+            ok, why = _gate(cfg, s, row, None if base is None else base + len([m for m in launches if m not in acts]), ver)
             if ok:
                 launches = launches + [mod]
             else:
@@ -762,7 +772,11 @@ def _stop_tickets(fx, row, s, dst, now, kind="stop", root=None, ver=None):
             return
     if not tk:
         return
-    todo =[t["id"] for t in tk if t["id"] not in fixed]
+    # untried tickets first, then any whose fixer launch failed (no unit): _gate retries or spends it
+    # (RIMMANDRAKE_RETRY_FAILED_FIX_TICKET_LAUNCH_WHILE_PAUSED)
+    todo = [t["id"] for t in tk if t["id"] not in fixed] + [
+        t["id"] for t in tk if t["id"] in fixed and isinstance(fixed[t["id"]], dict) and fixed[t["id"]].get("failed")
+        and not fixed[t["id"]].get("unit")]
     ids = ", ".join(t["id"] for t in tk)
     if todo:
         row.update(aut="fixer", fix_item=todo[0], decision="fixer", need=None, fix_for=kind,
@@ -1555,11 +1569,12 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
         except Exception as e:      # noqa: BLE001  one row's failure is that row's PAUSE, never the tick's crash
             book = st["mods"][row["mod"]].setdefault("fixers" if row.get("aut") == "fixer" else "steward", {})
             book[row.get("fix_key") or row.get("fix_item") or row.get("steward_key")] = {
-                "item": row.get("item"), "unit": None, "at": now, "failed": "%s: %s" % (type(e).__name__, e),
+                "item": row.get("item") or row.get("filed_item"), "unit": None, "at": now, "failed": "%s: %s" % (type(e).__name__, e),
                 "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1,
                 # the code it failed on: _gate retries once the code changed
                 # (RIMMANDRAKE_BOOK_CODE_ON_LAUNCH_EXCEPTION_FRESH_FIX_SEEN)
-                **({"code": cfg["_code"]} if cfg.get("_code") else {})}
+                **({"code": cfg["_code"]} if cfg.get("_code") else {}),
+                **({"filed": True} if row.get("filed_item") else {})}
             row.update(decision="launch_failed", why="%s: %s" % (type(e).__name__, e))
 
 
@@ -1594,10 +1609,14 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
             spec = advance_checks(row)      # the launch re-reads the gate first (GATE_FIRST)
             ok, text = (do_file(item, title, why, **({"spec": spec} if spec else {})) if item else
                         (False, "no free item name"))
-        filed = ok
+        # an established filing is never undone by a failed republish, and the row carries the filed item so a raise
+        # below books it (RIMMANDRAKE_KEEP_FILED_STEWARD_ITEM_ACROSS_LAUNCH_FAILURES)
+        filed = ok or bool(retry.get("item") and retry.get("item") == item and retry.get("filed"))
+        if filed:
+            row["filed_item"] = item
         brief = (steward_brief(root, mod, row).replace("%(item)s", str(item)).replace("%(cap)s", str(row["cap"]))
                  if ok else "")
-    unit, led = None, None
+    unit, led, full = None, None, None
     if ok and MD.pilot_ledger(root, mod):       # a pilot mod's run starts from its ledger packet (modledger.launch)
         led = MD.ledger_open(root, mod, row["aut"], brief, stage=row.get("stage"), now=now)
         brief = led["brief"]
@@ -1606,6 +1625,9 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
                                                                      if row.get("stage") else {}))
         rc, text2, unit = do_launch(item, brief, model, row["cap"], cfg.get("seat", "BENCH"), env=cenv)
         ok = rc == 0 and bool(unit)
+        # the failure record and the transient test read the whole output; the row's why shows its first line
+        # (RIMMANDRAKE_READ_WHOLE_LAUNCH_OUTPUT_FOR_TRANSIENT_FAULTS)
+        full = "%s; %s" % (text, " | ".join(ln for ln in (text2 or "").splitlines() if ln.strip()) if text2 else rc)
         text = "%s; %s" % (text, (text2 or "").splitlines()[0] if text2 else rc)
     if led:
         try:
@@ -1613,8 +1635,9 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
         except Exception as e:  # noqa: BLE001  a started run is still started: its unit is booked, the fault is said
             # (RIMMANDRAKE_KEEP_LAUNCHED_UNIT_WHEN_LEDGER_AFTER_FAILS)
             text = "%s; ledger step after the launch FAILED (%s: %s)" % (text, type(e).__name__, e)
-    book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else text,
-                 "tries": tries, "filed": filed, "tried": None if ok else MD.tried_unit(text)}
+    full = full or text     # no launch was tried: the filing's own text
+    book[key] = {"item": item, "unit": unit, "at": now, "cap": row.get("cap"), "failed": None if ok else full,
+                 "tries": tries, "filed": filed, "tried": None if ok else MD.tried_unit(full)}
     if not ok and cfg.get("_code"):
         book[key]["code"] = cfg["_code"]
     if ok and row["aut"] == "steward" and row.get("steward_kind") in ("exit_not_met", "exit_met", "builder_stalled"):
@@ -1622,7 +1645,7 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
     if ok:
         row.update(decision="launched", unit=unit, item=item, why=text)
         known.add(item) if isinstance(known, set) else None
-    elif transient(text) and tries < int(cfg.get("launch_tries", 3)):
+    elif transient(full) and tries < int(cfg.get("launch_tries", 3)):
         row.update(decision="launch_retry", why="the %s launch failed on a transient fault (try %d of %d), the next "
                    "tick tries it again: %s" % (row["aut"], tries, int(cfg.get("launch_tries", 3)), text))
     else:
