@@ -1,0 +1,1 @@
+A watcher built on 'tail -F' of a file under /mnt/d (the Windows drive) delivered no lines for 30 minutes while eight matching lines were written; a watcher on that drive must poll the line count (wc -l, then sed the new range). Missing them cost a half hour of unseen builder results on 2026-11-18.

@@ -1,0 +1,1 @@
+A 'rimflow file' whose name has 10 words is refused, and piping its output through 'grep -c PREFLIGHT' or to /dev/null hides the refusal: the Conductor told the owner twice that a debt was filed when it was not (2026-11-18). After filing, read the command's own exit status, or 'rimflow show <ID>', before saying it is filed.
