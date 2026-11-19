@@ -43,6 +43,7 @@
     {"test": "src/RimMandrake/Utils/selftest_maturation_convergence.py", "seconds": 0.4},
     {"test": "src/RimMandrake/rimflow/selftest_mod_owner_hold.py", "seconds": 0.4},
     {"test": "src/RimMandrake/rimflow/selftest_pipeline_control.py", "seconds": 2.4},
+    {"test": "src/RimMandrake/rimflow/selftest_run_rules_keys.py", "seconds": 1.0},
     {"test": "src/RimMandrake/rimflow/selftest_control.py", "seconds": 40},
     {"test": "src/RimMandrake/rimflow/selftest_end_receipt_off_result.py", "seconds": 1.3},
     {"test": "src/RimMandrake/rimflow/selftest_codex_review_fixes.py", "seconds": 0.9},

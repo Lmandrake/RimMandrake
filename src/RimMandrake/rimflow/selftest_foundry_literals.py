@@ -5,8 +5,8 @@ FOUNDRY is retired (owner, by card 2026-11-02, "What should happen to FOUNDRY?" 
 "FOUNDRY" in these files is a seat some program still names: a default, a view, a budget-less bucket, a foreign seat.
 Comments and docstrings are history and stay. Deliberately NOT scanned: model.SEATS and cli.RETIRED_SEATS, which keep
 FOUNDRY so the 2387 closed FOUNDRY items still replay from events/FOUNDRY.jsonl. The machine-total helper budget key
-(slot_allocator, slot_rules.json, helper_budget, block_agent_over_slots) moved with its reader, relentless_rules
-staffing.seat, to RELENTLESS: both ends are scanned here, so one cannot drift back alone.
+(slot_allocator, slot_rules.json, helper_budget, block_agent_over_slots) moved to RELENTLESS; its old reader, run_rules
+staffing.seat, went with the retired tick (2026-11-18), so only the allocator's end is checked.
 
     python3 src/RimMandrake/rimflow/selftest_foundry_literals.py
 """
@@ -24,7 +24,6 @@ PY = ["src/RimMandrake/Utils/ops_watch.py",
       "src/RimMandrake/rimflow/run_store.py", "src/RimMandrake/Utils/slot_allocator.py",
       "src/RimMandrake/rimflow/helper_budget.py", ".claude/hooks/block_agent_over_slots.py"]
 JSON = {"src/RimMandrake/Utils/ops_watch_rules.json": ("token_talk",),
-        "src/RimMandrake/rimflow/run_rules.json": ("staffing",),
         "src/RimMandrake/Utils/slot_rules.json": ("seats", "enforce_seats", "fallback_n", "split")}
 WORD = re.compile(r"\bFOUNDRY\b")
 
@@ -89,14 +88,11 @@ def main():
             check(isinstance(d.get(sec), (dict, list)), "%s has section %s" % (rel, sec))
             hits = json_hits(d.get(sec), sec)
             check(not hits, "%s: no FOUNDRY value in %s %s" % (rel, sec, hits))
-    # both ends of the budget key agree: Relentless reads its budget under the key the allocator places
+    # the allocator places its builder key, a seat it publishes
     sys.path.insert(0, os.path.join(ROOT, "src/RimMandrake/Utils"))
     import slot_allocator as SA
-    rr = json.load(open(os.path.join(ROOT, "src/RimMandrake/rimflow/run_rules.json"), encoding="utf-8"))
     sr = json.load(open(os.path.join(ROOT, "src/RimMandrake/Utils/slot_rules.json"), encoding="utf-8"))
-    key = rr["staffing"]["seat"]
-    check(key == SA.seat_label(SA.BUILDER) and SA.BUILDER in sr["seats"],
-          "staffing.seat %r is the published name of the allocator's builder key %r, a placed seat" % (key, SA.BUILDER))
+    check(SA.BUILDER in sr["seats"], "the allocator's builder key %r is a placed seat" % (SA.BUILDER,))
     per = SA.split_seats(7, sr["seats"], sr, "ELSEWHERE", "CRUISE")
     check(per.get(SA.BUILDER) == 7, "v3 split gives the builder key the whole machine total (%r)" % per)
     print("selftest_foundry_literals: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

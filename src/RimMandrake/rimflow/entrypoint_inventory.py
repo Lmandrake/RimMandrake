@@ -56,6 +56,7 @@ RETIRED_BATCHES = ({  # RIMFLOW_RETIRE_DEAD_MODULES
     "relentless_exam": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
     "relentless_release": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
     "relentless_stage": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
+    "prove_relentless_s03_compare": "the retired Relentless tick (its last mention, run_rules.json, went 2026-11-18)",
     "block_migrate": "one-shot over Relentless store items",
     "relentless_account": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",
     "relentless_answer": "the retired Relentless tick (no live file reached it, era_reach.py 2026-11-18)",

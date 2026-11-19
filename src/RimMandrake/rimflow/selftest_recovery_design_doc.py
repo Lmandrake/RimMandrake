@@ -2,8 +2,7 @@
 """Selftest for the post-event recovery mode design (OPS_RECOVERY_DESIGN_POST_EVENT_MODE).
 
 The design is a doc, so this checks two things: its required parts are present, and the facts it states that the
-repo itself holds are true:
-  * run_rules.json carries the breaker numbers the 429 replay rests on (3 failures, 900 s, cap 1800 s);
+repo itself holds are true (the breaker numbers it cites lived in the retired tick's rules and went with it, 2026-11-18):
   * the ledger's supersede/close rows for HARNESS_REPAIR_CAUSE_* match what §7.1 says the hand triage did.
 A negative control runs the same checks on a copy with one part cut out and on a ledger with a target changed; both must
 fail, so a green run cannot come from a checker that sees nothing.
@@ -18,7 +17,6 @@ import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 DOC = os.path.join(ROOT, "design", "RimMandrake", "post_event_recovery_mode_2026-11-05.md")
-RULES = os.path.join(ROOT, "src", "RimMandrake", "rimflow", "run_rules.json")
 LEDGER = os.path.join(ROOT, "infrastructure", "state", "ledger", "events")
 
 REQUIRED = [  # (what, regex) — each must match the doc
@@ -145,11 +143,6 @@ def structure_problems(text):
     return out
 
 
-def rules_problems(rules):
-    want = {"launch_breaker": 3, "breaker_cool_s": 900, "breaker_cool_max_s": 1800}
-    return ["rules %s=%r, doc says %r" % (k, rules.get(k), v) for k, v in want.items() if rules.get(k) != v]
-
-
 def ledger_events(paths):
     rows = []
     for p in paths:
@@ -187,10 +180,8 @@ def main():
     fails = []
     with open(DOC, encoding="utf-8") as f:
         text = f.read()
-    with open(RULES, encoding="utf-8") as f:
-        rules = json.load(f)
     rows = ledger_events(sorted(glob.glob(os.path.join(LEDGER, "*.jsonl"))))
-    for name, probs in (("doc", doc_problems(text)), ("structure", structure_problems(text)), ("rules", rules_problems(rules)), ("ledger", ledger_problems(rows))):
+    for name, probs in (("doc", doc_problems(text)), ("structure", structure_problems(text)), ("ledger", ledger_problems(rows))):
         fails += ["%s: %s" % (name, p) for p in probs]
 
     # negative controls: the instrument must see a cut part, a changed number and a changed triage target
@@ -224,8 +215,6 @@ def main():
     one = re.sub(r"(^### 7\.1 [\s\S]*?^\| 02:45Z \|[^\n]*\| )[^|\n]+( \|$)", "\\1\u2014\\2", text, count=1, flags=re.M)
     if one == text or not structure_problems(one):
         fails.append("control: a 7.1 step with its reading removed passed")
-    if not rules_problems(dict(rules, breaker_cool_max_s=3600)):
-        fails.append("control: a changed breaker cap passed")
     bent = [dict(r, by="SOMETHING_ELSE") if r.get("id") == "HARNESS_REPAIR_CAUSE_C1644394" and r.get("event") == "supersede"
             else r for r in rows]
     if not ledger_problems(bent):

@@ -64,13 +64,13 @@ up confusion, then write it all out for Relentless as build items. Filed: `BAROQ
 `GSS_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`, `FLOWWORKS_SCRIPT_MEASURE_PREP_AND_CONTROLS`,
 `SOLAR_SCRIPT_MEASURE_SITE_PREP_AND_CONTROLS`; the trigger is `FIRST_TOUCH_BUILD_DESIGNER_READS_FIRST`.
 
-How the trigger works (`src/RimMandrake/rimflow/first_touch.py`): Relentless gives no worker to an unstarted item that
+How the trigger worked (`src/RimMandrake/rimflow/first_touch.py`): the retired Relentless tick gave no worker to an unstarted item that
 names a mod (its id, title or a `src/` path) while that mod has no pass on record (system-class items, Operations' `first` set, are exempt: owner card 2026-11-05 "Let all system work through"; new mod features still wait), and files the pass once,
 `needs=owner`, as `<FOLDER>_DESIGN_FIRST_TOUCH` (the four above, and every Baroque Biomes compose member, map to their
 filed items in `src/RimMandrake/rimflow/designer_passes.json`). A pass is on record when its item closes `done`, or when
 `design/concepts/<Folder>/tree.json` passes `gate`. So closing the pass item `done` is what releases the held work: close
 it only after the build items are filed. `python3 src/RimMandrake/rimflow/first_touch.py status [<Tier/Folder>...]` reads
-which mods are on record. The hold is the rule `first_touch_hold` in `run_rules.json`. A pass's concept folder
+which mods are on record. The hold was the tick's `first_touch_hold` rule, which went with the tick on 2026-11-18. A pass's concept folder
 starts its stage state with `designer_stage.py init`.
 
 Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation; the rules are in `designer.md`.
