@@ -11,8 +11,8 @@ over 2026-11-12..17). This tool adds nothing to the run; it reads that stream an
 
 Line 1 is the owner's ruling (by card 2026-10-03): REQUIRED CHECKS PROVEN, from required_checks_report.py (the normative
 rules, design section 2.4), for the mod whose checkout script made the run. It is the count of THIS run only when the
-mod's newest live result started inside the run's window; otherwise it reads UNMEASURED for this run and names the
-result it could see. Below it: findings (new / recurring / resolved, this run's result against the previous live one)
+mod's newest live result carries this run's `bridge_run` (proof_all.py records its client's run id); otherwise it reads
+UNMEASURED for this run and names the result it could see (a start inside the window is context, never proof). Below it: findings (new / recurring / resolved, this run's result against the previous live one)
 and where the bridge time went (tick calls, reads, writes, waits between calls). No LLM, no quota, and the report never
 gates a run: it exits 0 whatever the checks say.
 
@@ -48,9 +48,9 @@ def _utc(s):
         return None
     try:
         t = dt.datetime.fromisoformat(str(s).replace("Z", "+00:00"))
-    except (ValueError, TypeError):
+        return t.astimezone(dt.timezone.utc) if t.tzinfo else t.astimezone().astimezone(dt.timezone.utc)
+    except (ValueError, TypeError, OverflowError, OSError):
         return None
-    return t.astimezone(dt.timezone.utc) if t.tzinfo else t.astimezone().astimezone(dt.timezone.utc)
 
 
 def fold(run_id, logs):
@@ -125,8 +125,9 @@ def split(calls):
         sp["waits_ms"], sp["waits_cause"] = None, "no readable times"
     elif sp["unanswered"]:
         sp["waits_ms"], sp["waits_cause"] = None, "%d call(s) went unanswered, so their span is unknown" % sp["unanswered"]
-    elif sp["busy_ms"] > sp["wall_ms"] + 1000:
-        sp["waits_ms"], sp["waits_cause"] = None, "calls overlapped (%s of call time in %s of wall)" % (_s(sp["busy_ms"]), _s(sp["wall_ms"]))
+    elif sp["busy_ms"] > sp["wall_ms"]:
+        sp["waits_ms"], sp["waits_cause"] = None, ("call time exceeds the logged wall (%s in %s): calls overlapped, or the "
+                                                    "log's 1-second times hide the wall" % (_s(sp["busy_ms"]), _s(sp["wall_ms"])))
     else:
         sp["waits_ms"] = max(0, sp["wall_ms"] - sp["busy_ms"])
     sp["top_tools"] = sorted(by_tool.items(), key=lambda kv: -kv[1])[:5]
@@ -136,19 +137,25 @@ def split(calls):
 
 
 def owns(run_id, script, started, bridge_run, t0, t1, others):
-    """-> (yes, how). A result is THIS run's when it carries our bridge_run; never when it carries another; without one,
-    when it started inside our window (WINDOW_SLACK_S before the first call at most) and inside no other run of the
-    same script."""
+    """-> (yes, how). A result is THIS run's only when it carries our bridge_run (proof_all.py records it from
+    2026-11-18). Without one a start inside our window cannot prove it (a predecessor's result can start seconds before
+    our first call), so it is never counted as ours; `how` says what the window shows, as context."""
     if bridge_run:
         return (bridge_run == run_id), "bridge_run %s" % bridge_run
+    return False, "the result names no bridge_run, and a time-window join cannot prove it is this run's (" + _window(
+        run_id, script, started, t0, t1, others) + ")"
+
+
+def _window(run_id, script, started, t0, t1, others):
+    """What the time window alone says about a result start: context for an unlinked result, never a join."""
     if started is None:
-        return False, "no readable start time"
+        return "no readable start time"
     if not (t0 - dt.timedelta(seconds=WINDOW_SLACK_S) <= started <= t1):
-        return False, "started outside the run window"
+        return "started outside the run window"
     for r, (a, b, scr) in others.items():
         if scr == script and _utc(a) - dt.timedelta(seconds=WINDOW_SLACK_S) <= started <= _utc(b):
-            return False, "started inside run %s of the same script" % r
-    return True, "joined by time window"
+            return "started inside run %s of the same script" % r
+    return "started inside this run's window"
 
 
 def mod_for_script(script, manifest_path=MANIFEST):

@@ -5,7 +5,8 @@ A synthetic bridge call log (the shape rimbridge_client.py writes) and synthetic
   R1  a run id the log does not hold is "could not look" (exit 2), and no report file is written
   R2  the time split: tick calls, reads, writes and waits (wall minus in-call time) in ms; a call with no end is counted
       as unanswered, never as 0 ms
-  R3  line 1 is "required checks proven: P of R" when a result of THIS run exists (its start inside the run window)
+  R3  line 1 is "required checks proven: P of R" when a result of THIS run exists (it carries this run's bridge_run);
+      a result that only STARTED inside the window, with no bridge_run, is UNMEASURED for this run
   R4  a newest result from another run makes line 1 UNMEASURED for this run, naming that result; never its count as ours
   R5  a script that names no mod with a required-check manifest is UNMEASURED with that cause
   R6  findings: new / recurring / resolved, this run's result against the previous live one
@@ -84,7 +85,7 @@ def rcr(started, proven=3, required=5, path="proof_all_X.json"):
 def results(d):
     a = {"mod": "GimmeSomeSlack", "mode": "live", "started": local("2026-11-16T09:00:00Z"),
          "rows": [{"id": "A", "status": "FAIL"}, {"id": "B", "status": "UNMEASURED"}, {"id": "C", "status": "PASS"}]}
-    b = {"mod": "GimmeSomeSlack", "mode": "live", "started": local("2026-11-17T10:00:00Z"),
+    b = {"mod": "GimmeSomeSlack", "mode": "live", "started": local("2026-11-17T10:00:00Z"), "bridge_run": "aaaaaaaaaaaa",
          "rows": [{"id": "A", "status": "FAIL"}, {"id": "B", "status": "PASS"}, {"id": "C", "status": "PASS"}, {"id": "D", "status": "FAIL"}]}
     pa, pb = os.path.join(d, "proof_all_20261116T090000.json"), os.path.join(d, "proof_all_20261117T100000.json")
     json.dump(a, open(pa, "w"))
@@ -122,6 +123,11 @@ def main():
     first = O.render(rep).splitlines()[0]
     check("R3 line 1 is required checks proven, P of R", first.startswith("required checks proven: 3 of 5") and pb in first, first)
 
+    pw = os.path.join(d, "window_only.json")
+    json.dump({"mode": "live", "started": local("2026-11-17T10:00:00Z"), "rows": []}, open(pw, "w"))
+    f3 = O.render(O.build(rid, [log], required=rcr(local("2026-11-17T10:00:00Z"), path=pw), result_glob=os.path.join(d, "none_*.json"))).splitlines()[0]
+    check("R3 a window-only result (no bridge_run) is UNMEASURED for this run", f3.startswith("required checks proven: UNMEASURED")
+          and "names no bridge_run" in f3, f3)
     rep4 = O.build(rid, [log], required=rcr("2026-11-07T03:10:35", path="proof_all_20261107T031035.json"), result_glob=os.path.join(d, "none_*.json"))
     f4 = O.render(rep4).splitlines()[0]
     check("R4 another run's result: UNMEASURED for this run, never its count", f4.startswith("required checks proven: UNMEASURED")
@@ -171,7 +177,7 @@ def main():
     d10 = tempfile.mkdtemp()
     json.dump({"mode": "live", "started": local("2026-11-16T09:00:00Z"), "rows": [{"id": "A", "status": "FAIL"}, {"id": "B", "status": "FAIL"}]},
               open(os.path.join(d10, "proof_all_a.json"), "w"))
-    json.dump({"mode": "live", "started": local("2026-11-17T10:00:00Z"), "rows": [{"id": "A", "status": "PASS"}]},
+    json.dump({"mode": "live", "started": local("2026-11-17T10:00:00Z"), "bridge_run": rid, "rows": [{"id": "A", "status": "PASS"}]},
               open(os.path.join(d10, "proof_all_b.json"), "w"))
     f10 = O.findings(os.path.join(d10, "proof_all_*.json"), rid, "proof_all.py", O._utc("2026-11-17T10:00:00Z"), O._utc("2026-11-17T10:00:55Z"), {})
     check("R9 a check absent now is absent, never resolved", f10.get("resolved") == ["A"] and f10.get("absent") == ["B"], f10)
@@ -180,6 +186,25 @@ def main():
     check("R9 an unreadable result makes the comparison UNMEASURED, naming it", f11.get("status", "").startswith("UNMEASURED") and "proof_all_c.json" in f11["status"], f11)
     r12 = O.build(rid, [d10, log], required=rcr(local("2026-11-17T10:00:00Z")))
     check("R9 a log that cannot be read (a directory) is not counted as read", r12["logs_readable"] == 1 and r12["logs_unread"] == [d10], r12.get("logs_unread"))
+    log13 = os.path.join(d, "l13.jsonl")
+    with open(log13, "w") as f:
+        for e in [ev("u1", "start", "2026-11-17T10:00:00Z", run=rid, script="proof_all.py", tool="jawa/a", mutating=False),
+                  ev("u2", "start", "2026-11-17T10:00:02Z", run=rid, script="proof_all.py", tool="jawa/b", mutating=False),
+                  ev("u2", "end", "2026-11-17T10:00:03Z", ms=1000),
+                  ev("u3", "start", "2026-11-17T10:00:20Z", run=rid, script="proof_all.py", tool="jawa/c", mutating=False),
+                  ev("u3", "end", "2026-11-17T10:00:21Z", ms=1000)]:
+            f.write(json.dumps(e) + "\n")
+    s13 = O.split(O.fold(rid, [log13])[0])
+    check("R9 an unanswered call spanning later calls makes waits unknown, never known", s13["waits_ms"] is None
+          and "unanswered" in (s13["waits_cause"] or ""), s13)
+    log14 = os.path.join(d, "l14.jsonl")
+    with open(log14, "w") as f:
+        for e in [ev("v1", "start", "2026-11-17T10:00:00Z", run=rid, script="proof_all.py", tool="jawa/a", mutating=False),
+                  ev("v1", "end", "2026-11-17T10:00:00Z", ms=900)]:
+            f.write(json.dumps(e) + "\n")
+    s14 = O.split(O.fold(rid, [log14])[0])
+    check("R9 call time above the logged wall (even by under a second) makes waits unknown", s14["waits_ms"] is None and s14["waits_cause"], s14)
+    check("R9 an out-of-range time is unreadable, never a crash", O._utc("9999-12-31T23:59:59-01:00") is None)
     print("obs report: %d failed" % len(FAILS) if FAILS else "obs report: all passed")
     return 1 if FAILS else 0
 

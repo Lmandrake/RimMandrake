@@ -1004,6 +1004,13 @@ class Proof(object):
     # ------------------------------------------------------------------ run
     def identity_start(self):
         try:
+            # the bridge client's run id, so obs_report.py joins this result to its calls exactly
+            # (RIMMANDRAKE_BUILD_OBSERVATORY_SMALL_PROVEN_FIRST); absent if the client cannot be imported
+            import rimbridge_client as _rbc
+            self.res["bridge_run"] = _rbc._RUN_ID
+        except Exception as ex:  # noqa: BLE001 - recorded as absent: obs_report then reads UNMEASURED for the run
+            self.res["bridge_run_error"] = repr(ex)
+        try:
             self.res["run_identity"] = _RI().run_start(V.MOD, "proof_all")
         except Exception as ex:  # noqa: BLE001 - recorded as absent: the report then reads unrecorded, never fresh
             self.res["run_identity_error"] = repr(ex)
