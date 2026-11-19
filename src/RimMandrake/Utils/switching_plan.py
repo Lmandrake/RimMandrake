@@ -544,8 +544,13 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
             return {**base, "do": "stop", "key": stop_key(live, lr, now),
                     "why": f"switch {key} failed and {live} at {p}% is spent: hard stop, the switch is retried "
                            "from the stopped fleet"}
+        # RIMMANDRAKE_SKIP_RESTOP_OF_STOPPED_FLEET_PUSH_EACH_PASS: a stop already recorded on live is never stopped
+        # again (record_stop would re-stamp it and send a new red phone push every pass)
+        stopped_here = (state.get("stopped") or {}).get("account") == live
         if m and m.get("phase") != "failed":
             age = now - (epoch(m.get("at")) or 0)
+            if m.get("phase") == "pending" and age < STALE_PENDING_S and under and stopped_here:
+                return {**base, "do": "stopped", "why": f"hard-stopped on {live}; transition {key} is still pending"}
             if m.get("phase") == "pending" and age < STALE_PENDING_S and under:
                 return {**base, "do": "stop", "key": stop_key(live, lr, now),
                         "why": f"transition {key} is pending yet live is still {live} at {p}% <= its "
@@ -555,6 +560,9 @@ def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict
                         "why": f"transition {key} already {m.get('phase')}: never repeated; live is still {live} "
                                "(a done switch that reads back as the old account is a human's move: respected)"}
         if target in stale:
+            if under and stopped_here:
+                return {**base, "do": "stopped", "why": f"hard-stopped on {live}; {target} cannot be confirmed: "
+                                                        + "; ".join(stale[target])}
             if under:
                 return {**base, "do": "stop", "key": stop_key(live, lr, now),
                         "why": f"{live} at {p}% <= its line and {target} cannot be confirmed: "

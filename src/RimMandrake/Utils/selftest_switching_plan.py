@@ -417,6 +417,16 @@ def main():
     mk = {SP.switch_key("system", "lukas", R(98, 120)): {"phase": "pending", "at": SP.iso(NOW - 600)}}
     d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system", state={"_markers": mk})
     check(d["do"] == "stop", f"a pending switch that never landed while live is under its line: stop (got {d['do']})")
+    # RIMMANDRAKE_SKIP_RESTOP_OF_STOPPED_FLEET_PUSH_EACH_PASS: once that stop is recorded for live, the next
+    # passes are "stopped", never a fresh stop (record_stop would re-stamp it and send a new red phone push each pass)
+    d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system",
+          state={"_markers": mk, "stopped": {"account": "system"}})
+    check(d["do"] == "stopped", f"a pending switch over a fleet already stopped on live: stopped, not a new stop (got {d['do']})")
+    d = D({**off, "system": R(0, 100), "lukas": R(98, 120, age=999)}, "system", polled=True,
+          state={"stopped": {"account": "system"}})
+    check(d["do"] == "stopped", f"an unconfirmed target over a fleet already stopped on live: stopped, not a new stop (got {d['do']})")
+    d = D({**off, "system": R(0, 100), "lukas": R(98, 120, age=999)}, "system", polled=True)
+    check(d["do"] == "stop", f"control: an unconfirmed target with live spent and no stop recorded: stop (got {d['do']})")
     d = D({**off, "system": R(0.9, 100), "lukas": R(98, 120)}, None)
     check(d["do"] == "skip", "live account unknown: skip")
 
