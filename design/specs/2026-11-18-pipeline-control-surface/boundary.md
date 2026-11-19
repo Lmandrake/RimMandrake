@@ -88,6 +88,13 @@ Anything else is outside. Some outside inputs are refused by name today; refusin
 - **counts-and-limits-are-adjustments.** `pipe set`, `add`, `reset` and `limit` write a change at a moment; a run
   that finishes afterwards still counts. Tested by `t_accounts`.
 - **a-test-never-touches-the-live-store.** Tested by `t_stop_review_fixes`.
+- **ended-run-is-recorded-ended.** A unit that ends by itself is recorded ended: its start check and end receipt run
+  the first `control.py` still on disk (the run's clone, the launcher's, then the seat clones'), so a clone returned
+  before the receipt does not leave its run `started`. A run whose receipt still never ran (systemd reads its unit gone)
+  is ended by `pipe doctor`, its stop orders done; a unit systemd cannot read is left started and named UNREADABLE.
+  `ops_watch` reads `flow.ghost_runs` every run and alarms on any (`RIMMANDRAKE_END_GHOST_RUN_RECEIPT_NEVER_RAN_LUVL`). Added 2026-11-19 by
+  `RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE` (4 runs stayed started for good). Tested by
+  `t_end_receipt_outlives_its_clone`.
 - **reused-name-runs-again.** A `reuse_name` launch is admitted again once its earlier run is over, and refused while
   that run is live. Tested by `t_reused_name_runs_again`.
 

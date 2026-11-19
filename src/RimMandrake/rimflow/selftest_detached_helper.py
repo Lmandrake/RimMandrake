@@ -459,9 +459,10 @@ def _test_return():
     rc, text = DH.launch("BENCH", "SOME_ITEM_TO_BUILD", "Build.", "sonnet", 600, 5, now=T0 + 99, runner=run, known=KNOWN, clone=CLONE)
     argv = calls[0][0]
     # control.py's own end receipt (launch_unit adds it: `control.py ended <run>`) is not one of the helper's steps
-    posts = [a for a in argv if a.startswith("ExecStopPost=") and "control.py ended" not in a]
-    check(any(a.startswith("ExecCondition=") and "control.py condition" in a for a in argv)
-          and any("control.py ended" in a for a in argv), "argv: control.py's start check and end receipt ride along")
+    rcpt = lambda a, verb: "control.py" in a and "-- %s " % verb in a     # its resolver: candidates, --, the verb
+    posts = [a for a in argv if a.startswith("ExecStopPost=") and not rcpt(a, "ended")]
+    check(any(a.startswith("ExecCondition=") and rcpt(a, "condition") for a in argv)
+          and any(rcpt(a, "ended") for a in argv), "argv: control.py's start check and end receipt ride along")
     unit = argv[argv.index("--unit") + 1]
     check(len(posts) == 3 and posts[0].endswith("finish --unit " + unit) and "wrapup.py" in posts[1]
           and posts[2].startswith("ExecStopPost=-/usr/bin/systemd-run ") and "--no-block" in posts[2]

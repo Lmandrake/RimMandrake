@@ -1969,7 +1969,22 @@ def c_flow(now, rules, ctx):
         out["steve.incident_unclaimed_min"] = steve_incident_unclaimed(world, model, now, rules, lane_fault_since(now))
     except Exception as e:  # noqa: BLE001  a bad steve_incident rule costs this reading, not the family's
         out["steve.incident_unclaimed_min"] = U("steve_incident: %s: %s" % (type(e).__name__, str(e)))
+    out["flow.ghost_runs"] = ghost_runs_reading()
     return out
+
+
+def ghost_runs_reading():
+    """flow.ghost_runs (RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE): runs the control store holds started
+    whose unit systemd reads gone, so their end receipt never ran. `pipe doctor` ends them. A unit systemd cannot read
+    is listed, never counted; an unreadable store is UNMEASURED."""
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "rimflow"))
+        import control
+        g = control.ghosts()
+    except Exception as e:  # noqa: BLE001  could not look: said, never a 0
+        return U("control store or systemd unreadable: %s: %s" % (type(e).__name__, str(e)[:200]))
+    return M(len(g["gone"]), "runs the store holds started that systemd reads gone",
+             gone=[r["unit"] for r in g["gone"]], unreadable=[r["unit"] for r in g["unreadable"]])
 
 
 def lane_fault_since(now):

@@ -1401,10 +1401,17 @@ def hook_script(clone=None):
 
 def hook_cmd(verb, run, p, clone=None):
     """-> one command line, each word quoted (systemd and sh both read single quotes): a path with a space stays one
-    argument (round-three claim 10). A path with `$` in it is outside the page (plain-paths): systemd would expand it."""
+    argument (round-three claim 10). A path with `$` in it is outside the page (plain-paths): systemd would expand it.
+    It runs the first control.py that still exists when systemd runs it: the run's clone's, the launcher's, then the
+    seat clones' (detached_helper's resolver). Either clone may be returned before the end receipt, and a receipt that
+    cannot start leaves its run `started` for good (RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE)."""
     import shlex
-    py = "/usr/bin/python3" if os.path.exists("/usr/bin/python3") else sys.executable
-    words = (py, hook_script(clone), verb, run, "--db", os.path.abspath(p))
+    import detached_helper as DH
+    import wrapup
+    rel = os.path.join("src", "RimMandrake", "rimflow", "control.py")
+    cands = ([os.path.join(os.path.abspath(clone), rel)] if clone else []) + [os.path.abspath(__file__)] + \
+        [os.path.join(c, rel) for c in wrapup.seat_clones()]
+    words = DH.stop_resolver(cands, [verb, run, "--db", os.path.abspath(p)])
     if any("$" in x for x in words):
         raise Refused("plain-paths: a clone or store path has no $ in it: %s" % " ".join(words))
     return " ".join(shlex.quote(x) for x in words)
@@ -1466,7 +1473,8 @@ def launch_unit(args, spec, runner=None, p=None, clone=None, **kw):
 
 def reconcile(p=None, now=None, min_age_s=300, unit_loaded=None):
     """Close admitted runs whose unit never started and whose launcher is gone: abandoned, reservations released. The
-    condition fences them (an abandoned run's unit, if it ever starts, is refused). -> [unit]."""
+    condition fences them (an abandoned run's unit, if it ever starts, is refused). A started run whose unit systemd
+    reads gone (its end receipt never ran) is ended, its stop orders done. -> [unit]."""
     now = time.time() if now is None else now
     unit_loaded = unit_loaded or _unit_loaded
     rows = _q("SELECT * FROM runs WHERE state='admitted' AND admitted_at < ?", (now - min_age_s,), p)
@@ -1476,6 +1484,22 @@ def reconcile(p=None, now=None, min_age_s=300, unit_loaded=None):
         if not alive and unit_loaded(r["unit"]) is False:
             if _mark(r["id"], "abandoned", "never started; its launcher (pid %s) is gone" % r["pid"], p, now, True):
                 out.append(r["unit"])
+    for r in ghosts(p, now, unit_loaded)["gone"]:
+        ended(r["id"], "end receipt missed: systemd reads the unit gone (reconcile)", p, now)
+        out.append(r["unit"])
+    return out
+
+
+def ghosts(p=None, now=None, unit_loaded=None, min_age_s=60):
+    """Started runs against systemd: -> {"gone": [row] (systemd reads the unit inactive or not loaded: its end receipt
+    never ran), "unreadable": [row] (systemd could not be read: left as it is, never read as ended)}."""
+    now = time.time() if now is None else now
+    unit_loaded = unit_loaded or _unit_loaded
+    out = {"gone": [], "unreadable": []}
+    for r in _q("SELECT * FROM runs WHERE state='started' AND started_at < ?", (now - min_age_s,), p):
+        st = unit_loaded(r["unit"])
+        if st is not True:
+            out["gone" if st is False else "unreadable"].append(r)
     return out
 
 
@@ -2485,7 +2509,10 @@ def doctor():
             raise Unreadable(_err(e))
         finally:
             c.close()
-        lines.append("reconcile: abandoned %s" % (reconcile() or "[] none"))
+        lines.append("reconcile: abandoned or ended %s" % (reconcile() or "[] none"))
+        blind = [r["unit"] for r in ghosts()["unreadable"]]
+        if blind:
+            lines.append("UNREADABLE in systemd (left started): %s" % blind)
         return OK, lines
     except Unreadable as e:
         return UNREADABLE, ["CONTROL UNREADABLE: %s" % e,

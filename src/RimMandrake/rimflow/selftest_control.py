@@ -1786,13 +1786,76 @@ def t_reused_name_runs_again():
         check('"unit": %s, "reuse_name": True' % site in src, "%s launches %s with reuse_name" % (f, site))
 
 
+def t_end_receipt_outlives_its_clone():
+    """Promise ended-run-is-recorded-ended (RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE): a unit's end
+    receipt named one control.py, in a clone that was gone by the time it ran (the run's own, returned before the
+    receipt; or the launcher's, when the run's clone did not exist yet at launch), so 4 runs stayed `started` for good
+    (measured 2026-11-19). The start check and end receipt fall through to a seat clone's control.py."""
+    import shlex
+    import types
+    seat = os.path.join(TMP, "seatclone")
+    os.makedirs(os.path.join(seat, "src", "RimMandrake"))
+    os.symlink(HERE, os.path.join(seat, "src", "RimMandrake", "rimflow"))
+    real = C.__file__
+    for case in ("its own clone, returned before the receipt", "a clone that did not exist at launch"):
+        fresh()
+        rc = os.path.join(TMP, "goneclone")
+        shutil.rmtree(rc, ignore_errors=True)
+        if case.startswith("its own"):
+            os.makedirs(os.path.join(rc, "src", "RimMandrake"))
+            os.symlink(HERE, os.path.join(rc, "src", "RimMandrake", "rimflow"))
+        got = []
+        os.environ["RM_WRAPUP_SEAT_CLONES"] = seat
+        C.__file__ = os.path.join(TMP, "deadlauncher", "control.py")    # the launcher's clone, returned too
+        try:
+            C.launch_unit(["--user", "--", "true"], spec("rm-probe-ghost"), p=DB, clone=rc,
+                          runner=lambda a, **k: got.append(list(a)) or types.SimpleNamespace(returncode=0, stdout="",
+                                                                                             stderr="", args=a))
+        finally:
+            C.__file__ = real
+            os.environ.pop("RM_WRAPUP_SEAT_CLONES")
+        shutil.rmtree(rc, ignore_errors=True)
+        props = {a.split("=", 1)[0]: a.split("=", 1)[1] for a in (got[0] if got else []) if a.startswith("Exec")}
+        rid = "run_rm-probe-ghost"
+        for prop, want in (("ExecCondition", "started"), ("ExecStopPost", "ended")):
+            r = subprocess.run(shlex.split(props.get(prop, "false").lstrip("-")), capture_output=True, text=True,
+                               timeout=30)
+            st = (C.run_state(rid, DB) or {}).get("state")
+            check(st == want, "%s: with %s gone, the unit's %s still records it %s" % (case, rc, prop, want),
+                  (st, r.returncode, r.stderr[-200:]))
+    # a ghost left from before the fix: reconcile (`pipe doctor`) ends a started run whose unit systemd reads gone,
+    # its pending stop order done; a run whose unit cannot be read is left started and named unreadable
+    fresh()
+    fake = lambda a, **k: subprocess.CompletedProcess(a, 0, "", "")
+    runs = {}
+    for u in ("rm-probe-ghost-gone", "rm-probe-ghost-blind", "rm-probe-ghost-live"):
+        runs[u] = C.launch_unit(["--user", "--", "true"], spec(u), runner=fake, p=DB).run
+        C.condition(runs[u], p=DB)
+    C.stop("rm-probe-ghost-gone", "at_easy_spot", "order", p=DB)
+    seen = {"rm-probe-ghost-gone": False, "rm-probe-ghost-blind": None, "rm-probe-ghost-live": True}
+    later = time.time() + 3600
+    try:
+        g = C.ghosts(DB, later, unit_loaded=seen.get)
+    except AttributeError as e:
+        g = {"gone": [], "unreadable": [], "err": str(e)}
+    check([r["unit"] for r in g["gone"]] == ["rm-probe-ghost-gone"] and
+          [r["unit"] for r in g["unreadable"]] == ["rm-probe-ghost-blind"],
+          "ghosts: gone and unreadable are told apart, a live unit is neither", g)
+    out = C.reconcile(DB, later, unit_loaded=seen.get)
+    st = {u: C.run_state(r, DB)["state"] for u, r in runs.items()}
+    stops = [x["state"] for x in C._q("SELECT state FROM stops", (), DB)]
+    check(out == ["rm-probe-ghost-gone"] and st == {"rm-probe-ghost-gone": "ended", "rm-probe-ghost-blind": "started",
+                                                   "rm-probe-ghost-live": "started"} and stops == ["done"],
+          "reconcile ends only the gone run, and its stop order is done", (out, st, stops))
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
               t_accounts, t_queue, t_review_round_four_p1,
               t_slice4, t_slices_review, t_his_hold_refuses_launch, t_void_never_moves_a_stage,
-              t_reused_name_runs_again):
+              t_reused_name_runs_again, t_end_receipt_outlives_its_clone):
         print("== %s" % t.__name__)
         try:
             t()
