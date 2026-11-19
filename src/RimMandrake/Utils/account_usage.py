@@ -177,11 +177,22 @@ def registry(strict: bool = False) -> dict[str, str]:
 
 
 def config() -> dict:
+    """The poll's config. No file is a machine with no remotes ({}); a file that cannot be read, does not parse or
+    whose `remotes` is not a list of hosts is "could not look": {"unreadable": why}, so poll() never takes it for "no
+    remotes" and warms a login a remote may hold live (RIMMANDRAKE_HARDEN_ACCOUNT_USAGE_POLL_RACES_CODEX_FLAGGED)."""
     p = Path(os.environ.get("RM_ACCOUNT_USAGE_CONF") or ACCOUNTS_DIR / "account_usage.json")
     try:
-        return json.loads(p.read_text())
-    except (OSError, ValueError):
+        cfg = json.loads(p.read_text())
+    except FileNotFoundError:
         return {}
+    except (OSError, ValueError) as e:
+        return {"unreadable": f"{p} unreadable ({type(e).__name__})"}
+    if not isinstance(cfg, dict):
+        return {"unreadable": f"{p} unreadable (not a JSON object)"}
+    rem = cfg.get("remotes", [])
+    if not (isinstance(rem, list) and all(isinstance(t, str) and t for t in rem)):
+        return {"unreadable": f"{p} unreadable (remotes is not a list of hosts)"}
+    return cfg
 
 
 def machine_name() -> str:
@@ -248,6 +259,19 @@ def _reading(auth_out: str, usage_out: str, want_email: str, now: float) -> tupl
     return (fig, "") if fig else (None, "/usage held no weekly figure")
 
 
+def _same_login(before: str, after: str) -> bool:
+    """The login answering `auth status` after /usage is the one that answered before it: a switch in between would
+    file one login's quota under the other's name (RIMMANDRAKE_HARDEN_ACCOUNT_USAGE_POLL_RACES_CODEX_FLAGGED). Two
+    switches inside one /usage call (A to B and back) are the race left open: the live probe is not run under the
+    switcher's lock because `claude-account use` waits only 5 s for it and would refuse the switch for the probe's
+    length (each such switch also stops every Claude process, so two in one call are not an expected sequence)."""
+    try:
+        a, b = json.loads(before), json.loads(after)
+    except ValueError:
+        return False
+    return isinstance(a, dict) and isinstance(b, dict) and (a.get("email") or "").lower() == (b.get("email") or "").lower()
+
+
 def probe_local(config_dir: str | None, want_email: str, now: float) -> tuple[dict | None, str]:
     env = _env(config_dir)
     rc, auth = _run([CLAUDE, "auth", "status"], env, 30)
@@ -256,6 +280,11 @@ def probe_local(config_dir: str | None, want_email: str, now: float) -> tuple[di
     rc, use = _run([CLAUDE, *USAGE_ARGS], env)
     if rc != 0:
         return None, f"/usage exited {rc}"
+    rc, after = _run([CLAUDE, "auth", "status"], env, 30)
+    if rc != 0:
+        return None, "auth status after /usage failed"
+    if not _same_login(auth, after):
+        return None, "the login changed during /usage (a switch landed); reading refused"
     return _reading(auth, use, want_email, now)
 
 
@@ -355,11 +384,13 @@ def remote_live(target: str) -> tuple[str | None, str | None]:
 def probe_remote(target: str, want_email: str, now: float) -> tuple[dict | None, str]:
     """The remote's live login, read with that machine's own environment (its sessions' config dir)."""
     script = (f'cd "$(mktemp -d)" && claude auth status; echo {SEP}; '
-              f'claude {" ".join(USAGE_ARGS)}; cd / ')
+              f'claude {" ".join(USAGE_ARGS)}; echo {SEP}; claude auth status; cd / ')
     rc, out = _ssh(target, script)
-    if SEP not in out:
+    if out.count(SEP) != 2:
         return None, f"remote probe failed ({rc})"
-    auth, use = out.split(SEP, 1)
+    auth, use, after = out.split(SEP)
+    if not _same_login(auth.strip(), after.strip()):
+        return None, "the login changed during /usage (a switch landed); reading refused"
     return _reading(auth.strip(), use.strip(), want_email, now)
 
 
@@ -427,15 +458,17 @@ def carry_model_weeks(prev: dict | None, now: float) -> dict:
 
 
 def _basis_time(r: dict | None) -> float:
+    """When the record's figures were measured: measured_at (a RimPulse reading republished at a later poll keeps its
+    own time there), else ts."""
     if not r:
         return 0.0
-    return epoch(r.get("measured_at") if r.get("source") == "ESTIMATE" else r.get("ts")) or 0.0
+    return epoch(r.get("measured_at") or r.get("ts")) or 0.0
 
 
 def carry(name: str, prev: dict | None, now: float, why: str) -> dict:
     """ESTIMATE from the last MEASURED reading while its window has not reset; else UNMEASURED."""
     if prev and prev.get("source") in ("MEASURED", "ESTIMATE") and prev.get("week_pct_used") is not None:
-        basis = prev.get("measured_at") if prev.get("source") == "ESTIMATE" else prev.get("ts")
+        basis = prev.get("measured_at") or prev.get("ts")
         wk = epoch(prev.get("week_resets_at"))
         if basis and wk and wk > now:
             fig = dict(prev)
@@ -466,7 +499,11 @@ def poll(now: float | None = None) -> dict:
         else:
             why[n].append(f"live on {here}: {w}")
     # 2. live on a remote
-    remote_ok, live_remote = True, set()
+    remote_ok, live_remote = not cfg.get("unreadable"), set()
+    if cfg.get("unreadable"):
+        for k in why:
+            if k not in got:
+                why[k].append(f"config {cfg['unreadable']}: the remotes are unknown")
     for target in cfg.get("remotes") or []:
         mach, rn = remote_live(target)
         if not rn:
@@ -487,6 +524,9 @@ def poll(now: float | None = None) -> dict:
     for name in reg:
         if name in got or name == live_here:
             continue
+        if name in live_remote:  # live on a remote whose probe failed: its vault copy here is never run either
+            why[name].append(f"no vault probe on {here}: live on a remote")
+            continue
         exp = vault_token_valid_until(name)
         if not exp:
             why[name].append(f"no vault login on {here}")
@@ -505,7 +545,18 @@ def poll(now: float | None = None) -> dict:
                 continue
         try:
             with Lock():
-                fig, w = probe_local(str(ACCOUNTS_DIR / name), reg[name], now)
+                # a switch may have landed since step 1: the login live here NOW is read under the switcher's lock,
+                # and a vault dir that just became the live login is never probed (its twin is the live credential);
+                # nor one whose token the remote probes and the lock wait have brought inside the margin
+                now_live, exp = live_email(), vault_token_valid_until(name)
+                if not now_live:
+                    fig, w = None, "the live login here is unreadable under the switcher's lock; not vault-probed"
+                elif now_live == reg[name]:
+                    fig, w = None, "became the live login here during the poll; not vault-probed"
+                elif not exp or exp < max(now, clock()) + VAULT_MARGIN:
+                    fig, w = None, "vault token came inside the refresh margin during the poll; not vault-probed"
+                else:
+                    fig, w = probe_local(str(ACCOUNTS_DIR / name), reg[name], now)
         except (OSError, TimeoutError) as e:
             fig, w = None, str(e)
         if fig:
