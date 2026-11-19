@@ -614,12 +614,18 @@ def collect_archmagi_live(env, now, hist):
             days[k][d.get("outcome")] += 1
         if k == 0 and d.get("outcome") == "FAIL":
             bugs.add((d.get("item"), d.get("criterion")))
+    # a dead proof-run log blinds only the rows and bugs; busy and game_up below do not read it
     if first is None:
-        raise Unmeasured("runs.jsonl holds no rows")
-    if now - newest > LIVE_RUNS_STALE:
-        raise Unmeasured("runs.jsonl has no row for %d days: no writer since the retired live round" % ((now - newest) // 86400))
-    whole = [sum(days[k].values()) for k in range(1, USUAL_DAYS + 1) if now - (k + 1) * 86400 >= first]
-    out = {"rows": days[0], "bugs": len(bugs), "usual_rows": (min(whole), max(whole)) if whole else None}
+        rows_why = "runs.jsonl holds no rows"
+    elif now - newest > LIVE_RUNS_STALE:
+        rows_why = "runs.jsonl has no row for %d days: no writer since the retired live round" % ((now - newest) // 86400)
+    else:
+        rows_why = None
+    if rows_why:
+        out = {"rows": None, "bugs": None, "usual_rows": None, "rows_why": rows_why}
+    else:
+        whole = [sum(days[k].values()) for k in range(1, USUAL_DAYS + 1) if now - (k + 1) * 86400 >= first]
+        out = {"rows": days[0], "bugs": len(bugs), "usual_rows": (min(whole), max(whole)) if whole else None, "rows_why": None}
     spans, why = guarded(lambda: bridge_intervals(env.bridge_events(), now))
     out["busy"] = share_of(spans, now - 86400, now) if spans is not None else None
     out["busy_why"] = why
@@ -851,15 +857,21 @@ def live_row(s, y, d, busy_means):
     r = d.get("rows") or {}
     total = sum(r.values())
     measured = r.get("PASS", 0) + r.get("FAIL", 0)
+    rows_blind = "rows" in d and d["rows"] is None
     words = " ".join("%s %d" % (k, r.get(k, 0)) for k in ("PASS", "FAIL", "UNMEASURED", "REFUSED") if r.get(k) or k in ("PASS", "FAIL"))
-    if total:
+    if rows_blind:
+        tile(s, 222, y, 338, "PROOF ROWS BY RESULT", "UNMEASURED", WARN, None, clip(d.get("rows_why") or "no proof-run log", 52), WARN)
+    elif total:
         low = measured / total < 0.3
         note = "%s, %d of %d measured%s; normal over 30%%" % ("low" if low else "ok", measured, total, ", most said nothing" if low else "")
         tile(s, 222, y, 338, "PROOF ROWS BY RESULT", words, TEXT, measured / total, note, WARN if low else DIM, "PASS and FAIL measured something; UNMEASURED and REFUSED ran or were turned away without an answer")
     else:
         tile(s, 222, y, 338, "PROOF ROWS BY RESULT", "none", DIM, None, "low, no live proof ran in 24 h; normal: some every day", WARN)
     b = d.get("bugs")
-    tile(s, 726, y, 130, "BUGS FOUND", "%d" % b, BAD if b else TEXT, None, *against(b, 20, "0-20"), "Distinct clauses with a FAIL in 24 h. Some will turn out to be the harness, not the mod.")
+    if b is None:
+        tile(s, 726, y, 130, "BUGS FOUND", "UNMEASURED", WARN, None, "no proof-run log", WARN)
+    else:
+        tile(s, 726, y, 130, "BUGS FOUND", "%d" % b, BAD if b else TEXT, None, *against(b, 20, "0-20"), "Distinct clauses with a FAIL in 24 h. Some will turn out to be the harness, not the mod.")
     tile(s, 864, y, 162, "FALSIFIED EXPECTATIONS", "not recorded", DIM, None, "nothing records these yet", DIM, "A player expectation a live test proved false. No program writes this down yet.")
 
 
@@ -1136,8 +1148,9 @@ def live_text(name, d):
         return "%s UNMEASURED" % name
     busy = "UNMEASURED" if d.get("busy") is None else "%d%%" % round(d["busy"] * 100)
     r = d.get("rows") or {}
+    rows = "UNMEASURED" if "rows" in d and d["rows"] is None else (" ".join("%s %d" % kv for kv in sorted(r.items())) or "none")
     return "%s 24 h: busy %s; proof rows %s; bugs found %s; falsified expectations not recorded" % (
-        name, busy, " ".join("%s %d" % kv for kv in sorted(r.items())) or "none", d.get("bugs"))
+        name, busy, rows, "UNMEASURED" if "rows" in d and d["bugs"] is None else d.get("bugs"))
 
 
 # --------------------------------------------------------------------------- chains: fixed text, checked against code
@@ -1602,6 +1615,8 @@ def phone_copy(p, chips):
         if not d:
             return "%s UNMEASURED" % name
         busy = "UNMEASURED" if d.get("busy") is None else "%d%%" % round(d["busy"] * 100)
+        if "rows" in d and d["rows"] is None:
+            return "%s: busy %s; proof rows UNMEASURED (%s)" % (name, busy, d.get("rows_why"))
         r = d.get("rows") or {}
         return "%s: busy %s; PASS %d, FAIL %d, no answer %d; bugs %s" % (name, busy, r.get("PASS", 0), r.get("FAIL", 0), r.get("UNMEASURED", 0) + r.get("REFUSED", 0), d.get("bugs"))
 

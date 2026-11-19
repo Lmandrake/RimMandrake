@@ -326,7 +326,12 @@ check("game up share comes from the page's own samples", lv["game_up"] == 0.5)
 broken = Fake(files={R.LIVE_RUNS: "{bad\n" + ROWS})
 check("a broken runs.jsonl line is UNMEASURED, never a short count", R.guarded(R.collect_archmagi_live, broken, NOW, [])[1] is not None)
 stale = Fake(files={R.LIVE_RUNS: json.dumps({"at": iso(NOW - 13 * 86400), "item": "A", "criterion": "A1", "outcome": "PASS"}) + "\n"})
-check("a run log with no row in 13 days is UNMEASURED with its cause, never 0 rows", (lambda r: r[0] is None and "no writer" in (r[1] or ""))(R.guarded(R.collect_archmagi_live, stale, NOW, [])))
+lvs = R.collect_archmagi_live(stale, NOW, hist)
+check("a run log with no row in 13 days blinds rows and bugs with its cause, never 0 rows", lvs["rows"] is None and lvs["bugs"] is None and "no writer" in lvs["rows_why"])
+stale.bridge = [(NOW - 3600, "taken"), (NOW - 1800, "released")]
+lvs = R.collect_archmagi_live(stale, NOW, hist)
+check("a dead run log leaves busy and game up measured", abs(lvs["busy"] - 1800 / 86400) < 1e-6 and lvs["game_up"] == 0.5)
+check("the live text names the blind rows, not a 0", "proof rows UNMEASURED; bugs found UNMEASURED" in R.live_text("x", lvs))
 env.bridge = None
 lv2 = R.collect_archmagi_live(env, NOW, hist)
 check("no ledger: busy is UNMEASURED, not 0", lv2["busy"] is None)
