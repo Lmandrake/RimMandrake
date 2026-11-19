@@ -102,6 +102,77 @@ def main() -> int:
         r = land(seat, "-m", "typo", "no_such_file.txt", env={"LAND_SYNC": "0"})
         check(r.returncode == 2 and "not in worktree or origin" in r.stderr and git(o, "rev-parse", "main") == tip,
               "-m mode: a path in neither the worktree nor origin is refused")
+
+        # sha-mode replay onto a moved origin, in a fresh world: the merged tree and the author must be the commit's
+        o2, s2, p2 = f"{td}/o2.git", f"{td}/s2", f"{td}/p2"
+        git(td, "init", "-q", "--bare", "-b", "main", o2)
+        git(td, "clone", "-q", o2, s2)
+        body = "".join(f"line {i} of a file long enough for rename detection\n" for i in range(40))
+        Path(s2, "ren_a.txt").write_text(body)
+        git(s2, "add", "--", "ren_a.txt"); git(s2, "commit", "-q", "-m", "init"); git(s2, "push", "-q", "origin", "HEAD:main")
+        git(td, "clone", "-q", o2, p2)
+
+        # RIMMANDRAKE_KEEP_AUTHOR_ON_LAND_REPLAY_COMMIT_TREE: the replayed commit keeps its author and author date
+        Path(p2, "q.txt").write_text("q\n")
+        git(p2, "add", "--", "q.txt"); git(p2, "commit", "-q", "-m", "peer q"); git(p2, "push", "-q", "origin", "HEAD:main")
+        Path(s2, "auth.txt").write_text("authored elsewhere\n")
+        git(s2, "add", "--", "auth.txt")
+        git(s2, "commit", "-q", "-m", "auth", "--author", "Xavier Q <xq@example.org>",
+            "--date", "2001-02-03T04:05:06+00:00", "--", "auth.txt")
+        r = land(s2, git(s2, "rev-parse", "HEAD"), "auth.txt", env={"LAND_SYNC": "0"})
+        got = git(o2, "log", "-1", "--format=%an|%ae|%at", "main")
+        check(r.returncode == 0 and got == "Xavier Q|xq@example.org|981173106",
+              f"sha mode: the replayed commit keeps its author and date (got {got!r})")
+
+        # RIMMANDRAKE_SCOPE_LAND_REPLAY_TREE_AFTER_RENAME_MERGE: upstream renamed the listed path; the merge carries
+        # our edit to the unlisted new name, so the landing must refuse (it would publish an unchecked path)
+        git(p2, "pull", "-q", "--ff-only", "origin", "main")
+        git(p2, "mv", "ren_a.txt", "ren_b.txt"); git(p2, "commit", "-q", "-m", "rename"); git(p2, "push", "-q", "origin", "HEAD:main")
+        tip2 = git(o2, "rev-parse", "main")
+        Path(s2, "ren_a.txt").write_text(body.replace("line 7 of", "LINE SEVEN of"))
+        git(s2, "add", "--", "ren_a.txt"); git(s2, "commit", "-q", "-m", "edit a", "--", "ren_a.txt")
+        r = land(s2, git(s2, "rev-parse", "HEAD"), "ren_a.txt", env={"LAND_SYNC": "0"})
+        check(r.returncode == 2 and "ren_b.txt" in r.stderr and git(o2, "rev-parse", "main") == tip2,
+              f"sha mode: a merge that moves the change onto an unlisted path is refused, origin unchanged "
+              f"(rc {r.returncode}: {r.stderr.strip()[-160:]})")
+
+        # Codex review of the fix (RIMMANDRAKE_LITERAL_LAND_PATHSPECS_AND_FETCH_TIP_CODEX_SAW): a newline in a renamed
+        # path split into two listed-looking names and passed the scope check
+        git(s2, "fetch", "-q", "origin"); git(s2, "reset", "-q", "--hard", "origin/main")
+        Path(s2, "nl.txt").write_text(body)
+        git(s2, "add", "--", "nl.txt"); git(s2, "commit", "-q", "-m", "nl"); git(s2, "push", "-q", "origin", "HEAD:main")
+        git(p2, "pull", "-q", "--ff-only", "origin", "main")
+        git(p2, "mv", "nl.txt", "nl.txt\nnl.txt"); git(p2, "commit", "-q", "-m", "nl rename"); git(p2, "push", "-q", "origin", "HEAD:main")
+        tip2 = git(o2, "rev-parse", "main")
+        Path(s2, "nl.txt").write_text(body.replace("line 9 of", "LINE NINE of"))
+        git(s2, "add", "--", "nl.txt"); git(s2, "commit", "-q", "-m", "edit nl", "--", "nl.txt")
+        r = land(s2, git(s2, "rev-parse", "HEAD"), "nl.txt", env={"LAND_SYNC": "0"})
+        check(r.returncode == 2 and git(o2, "rev-parse", "main") == tip2,
+              f"sha mode: a renamed path holding a newline is not read as two listed paths (rc {r.returncode})")
+        r = land(s2, git(s2, "rev-parse", "HEAD"), "nl.txt", '"nl.txt\\nnl.txt"', env={"LAND_SYNC": "0"})
+        check(r.returncode == 2 and "git quotes" in r.stderr and git(o2, "rev-parse", "main") == tip2,
+              f"sha mode: listing git's quoted spelling of that path does not let it through (rc {r.returncode})")
+
+        # ... -m mode read a listed path as a glob: 'a[1].txt' also staged a1.txt
+        git(s2, "fetch", "-q", "origin"); git(s2, "reset", "-q", "--hard", "origin/main")
+        Path(s2, "a[1].txt").write_text("x\n"); Path(s2, "a1.txt").write_text("x\n")
+        git(s2, "add", "--", "a[1].txt", "a1.txt"); git(s2, "commit", "-q", "-m", "globs")
+        git(s2, "push", "-q", "origin", "HEAD:main")
+        Path(s2, "a[1].txt").write_text("y\n"); Path(s2, "a1.txt").write_text("NOT LISTED\n")
+        r = land(s2, "-m", "only the bracket file", "a[1].txt", env={"LAND_SYNC": "0"})
+        check(r.returncode == 0 and git(o2, "show", "main:a1.txt") == "x" and git(o2, "show", "main:a[1].txt") == "y",
+              f"-m mode: a listed path is literal, never a glob (rc {r.returncode})")
+
+        # ... a clone whose fetch refspec has no origin/main: the failed rev-parse printed its argument into UP
+        s3 = f"{td}/s3"
+        git(td, "clone", "-q", o2, s3)
+        git(s3, "config", "remote.origin.fetch", "+refs/heads/topic:refs/remotes/origin/topic")
+        git(s3, "update-ref", "-d", "refs/remotes/origin/main")
+        tip2 = git(o2, "rev-parse", "main")
+        Path(s3, "t.txt").write_text("t\n")
+        r = land(s3, "-m", "from a topic-only clone", "t.txt", env={"LAND_SYNC": "0"})
+        check(r.returncode == 0 and git(o2, "rev-parse", "main^") == tip2,
+              f"-m mode: a clone with no origin/main lands on the fetched tip (rc {r.returncode}: {r.stderr.strip()[-120:]})")
     print(f"{'ALL PASS' if not FAILS else f'{len(FAILS)} FAIL'}")
     return 1 if FAILS else 0
 

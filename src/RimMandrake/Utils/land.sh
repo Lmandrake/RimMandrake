@@ -30,6 +30,9 @@ else
 fi
 covered() {
   p=$1; shift
+  # git quotes a path holding a newline, tab, quote or backslash: that line is not the path, so it can match no
+  # listed path (a caller listing the quoted spelling would otherwise pass it); such a path is refused by name
+  case $p in \"*) die "'$p' holds a character git quotes; land.sh cannot check it against the list: use ./publish";; esac
   for a in "$@"; do
     a=${a%/}
     [ "$p" = "$a" ] && return 0
@@ -44,27 +47,40 @@ trap 'rm -f "$TMPB" "$TMPB.push" "$IDX"' EXIT
 # fetch origin and build N on top of it (re-run when the push loses a race)
 build() {
   git fetch -q "$REM" "$BR"
-  UP=$(git rev-parse "$REM/$BR" 2>/dev/null || git rev-parse FETCH_HEAD)
+  # --verify -q: a failed bare rev-parse echoes its argument to stdout, which then sat in UP above the real sha
+  UP=$(git rev-parse --verify -q "$REM/$BR^{commit}" || git rev-parse --verify -q "FETCH_HEAD^{commit}") \
+    || die "cannot read $REM/$BR after the fetch"
 
   if [ "$MODE" = sha ]; then
     [ "$(git rev-list --parents -n1 "$C" | wc -w)" -eq 2 ] || die "$C is a root or merge commit"
     if git merge-base --is-ancestor "$C" "$UP"; then die "$C is already an ancestor of $REM/$BR"; fi
     git cherry "$UP" "$C" "$C^" 2>/dev/null | grep -q '^-' && die "$C is already on $REM/$BR (patch-equivalent)"
-    git diff-tree --no-commit-id --name-only -r -z "$C^" "$C" | tr '\0' '\n' > "$TMPB"
+    # one path per line: git quotes a path holding a newline (or a quote or backslash), so it never reads as a
+    # listed one; never -z through tr, which split such a path into two listed-looking names
+    git -c core.quotePath=false diff-tree --no-commit-id --name-only -r "$C^" "$C" > "$TMPB"
     [ -s "$TMPB" ] || die "$C changes no paths"
     while IFS= read -r f; do
       covered "$f" "$@" || die "$C changes '$f', outside the listed paths"
     done < "$TMPB"
     T=$(git merge-tree --write-tree --merge-base="$C^" "$UP" "$C") || die "conflict replaying $C onto $UP"
-    N=$(GIT_AUTHOR_NAME=$(git show -s --format=%an "$C") GIT_AUTHOR_EMAIL=$(git show -s --format=%ae "$C") \
-        GIT_AUTHOR_DATE=$(git show -s --format=%aI "$C") \
-        git show -s --format=%B "$C" | git commit-tree "$T" -p "$UP" -F -)
+    # the merge detects renames: our edit to a listed path can land on upstream's new, unlisted name; check what
+    # the published commit itself changes, not only what $C changed
+    git -c core.quotePath=false diff-tree --no-commit-id --name-only -r "$UP" "$T" > "$TMPB"
+    while IFS= read -r f; do
+      covered "$f" "$@" || die "replaying $C onto $UP changes '$f', outside the listed paths (an upstream rename?)"
+    done < "$TMPB"
+    # the GIT_AUTHOR_* prefixes belong on commit-tree: on the left of the pipe they reached only git show
+    AN=$(git show -s --format=%an "$C"); AE=$(git show -s --format=%ae "$C"); AD=$(git show -s --format=%aI "$C")
+    N=$(git show -s --format=%B "$C" | GIT_AUTHOR_NAME=$AN GIT_AUTHOR_EMAIL=$AE GIT_AUTHOR_DATE=$AD \
+        git commit-tree "$T" -p "$UP" -F -)
   else
     rm -f "$IDX"
     GIT_INDEX_FILE=$IDX git read-tree "$UP"
     for p in "$@"; do
-      [ -e "$p" ] || [ -n "$(git ls-tree "$UP" -- "$p")" ] || die "path '$p' not in worktree or origin"
-      if [ -e "$p" ]; then GIT_INDEX_FILE=$IDX git add -A -- "$p"; else GIT_INDEX_FILE=$IDX git rm -q -r --cached -- "$p"; fi
+      # --literal-pathspecs: a listed path is that path, never a glob ('a[1].txt' also matched a1.txt)
+      [ -e "$p" ] || [ -n "$(git --literal-pathspecs ls-tree "$UP" -- "$p")" ] || die "path '$p' not in worktree or origin"
+      if [ -e "$p" ]; then GIT_INDEX_FILE=$IDX git --literal-pathspecs add -A -- "$p"
+      else GIT_INDEX_FILE=$IDX git --literal-pathspecs rm -q -r --cached -- "$p"; fi
     done
     T=$(GIT_INDEX_FILE=$IDX git write-tree)
     [ "$T" != "$(git rev-parse "$UP^{tree}")" ] || die "nothing to land: paths already identical on $REM/$BR"
