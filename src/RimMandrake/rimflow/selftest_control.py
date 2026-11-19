@@ -901,7 +901,11 @@ def t_review_claims_eight():
     # 7. every fault-metered release sounds the fault alarm (_mark fault=True, _reap)
     fresh()
     alarms = []
-    C._fault_alarm = lambda run, p=None: alarms.append(run)
+
+    def spy(run, p=None):   # through its own connection, as the real alarm reads: only a committed fault counts
+        if C._q("SELECT COUNT(*) n FROM faults WHERE run=?", (run,), p, one=True)["n"]:
+            alarms.append(run)
+    C._fault_alarm = spy
     try:
         a = C.admit(spec("rm-probe-claim7", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w7", "base": 3}]))
         C._mark(a["run"], "fail_launch", "claim 7", fault=True)
@@ -912,16 +916,42 @@ def t_review_claims_eight():
         C.reserve("Graffiti", C.LOOK, "run_claim7_next", win="w7", base=3)
         check("run_claim7_holder" in alarms, "claim 7: _reap (a dead holder's look released) sounds the fault alarm",
               alarms)
+        C.switch("mod:Graffiti", False, "on")
+        b = C.admit(spec("rm-probe-claim7-stop", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w7b",
+                                                                            "base": 1}]))
+        C.condition(b["run"])
+        C.stop("rm-probe-claim7-stop", "at_easy_spot", "claim 7 stop", escalator=lambda *x: "-")
+        check(b["run"] in alarms, "claim 7: a stop that releases a live run's trial as a fault sounds the alarm", alarms)
     finally:
         C._fault_alarm = real_alarm
     # 8. a unit skipped at its start check (store unreadable) and then ended is not left admitted
     fresh()
-    a = C.admit(spec("rm-probe-claim8", mod="Graffiti"))
+    a = C.admit(spec("rm-probe-claim8", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w8", "base": 1}]))
     code, _ = C.condition(a["run"], p=os.path.join(TMP, "nostore.db"))
     C.ended(a["run"], "success/exited/0")
+    C.ended(a["run"], "success/exited/0")
     st = C.run_state(a["run"])["state"]
-    check(code == 2 and st not in C.LIVE_STATES, "claim 8: a unit skipped unreadable then ended is not left admitted",
-          (code, st))
+    nf = C._q("SELECT COUNT(*) n FROM faults WHERE run=?", (a["run"],), one=True)["n"]
+    check(code == 2 and st == "refused" and C.account("Graffiti", C.LOOK, "w8", 1)["held"] == 0 and nf == 1,
+          "claim 8: a unit skipped unreadable then ended reads refused, its trial released as one fault (twice ended: "
+          "still one)", (code, st, nf))
+    # a unit-targeted cooperative stop of a run that had not started: cancelled, and no order or timer is left for it
+    fresh()
+    a = C.admit(spec("rm-probe-claim3b", mod="Graffiti"))
+    timers = []
+    r = C.stop("rm-probe-claim3b", "write_now", "claim 3b", deadline_s=60, escalator=lambda *x: timers.append(x) or "-")
+    left = C._q("SELECT * FROM stops WHERE unit='rm-probe-claim3b' AND state IN ('pending','seen')")
+    check(r["cancelled"] == ["rm-probe-claim3b"] and not left and not timers,
+          "a write-now stop of an unstarted run cancels it and leaves no order or escalation timer", (r, left, timers))
+    # a run recorded killed finishes its earlier stop orders (an escalation timer then finds nothing to do)
+    fresh()
+    a = C.admit(spec("rm-probe-claim6b", mod="Graffiti"))
+    C.condition(a["run"])
+    C.stop("rm-probe-claim6b", "write_now", "claim 6b order", deadline_s=60, escalator=lambda *x: "-")
+    C.stop("rm-probe-claim6b", "kill", "claim 6b kill", killer=kill_ok, reaper=lambda *x: "-")
+    left = C._q("SELECT * FROM stops WHERE unit='rm-probe-claim6b' AND state IN ('pending','seen')")
+    check(C.run_state(a["run"])["state"] == "killed" and not left,
+          "a run recorded killed leaves no pending stop order behind", left)
     # 4 (not reproduced; kept as a guard): re-admitting an ambiguous admission while its old unit is still queued:
     # systemd refuses the second transient unit under that name, so the new admission is fail_launch and the old unit's
     # start check refuses it; the old payload never runs on the new admission
@@ -930,14 +960,17 @@ def t_review_claims_eight():
         return
     fresh()
     u = "rm-probe-claim4-%d" % os.getpid()
-    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", u, "--on-active=2", "/bin/true"]
-    C.launch_unit(argv, spec(u, mod="Graffiti"), capture_output=True, text=True, timeout=30)
+    marker = os.path.join(TMP, "claim4.ran")
+    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", u, "--on-active=2", "/usr/bin/touch", marker]
+    r1 = C.launch_unit(argv, spec(u, mod="Graffiti"), capture_output=True, text=True, timeout=30)
     r2 = C.launch_unit(argv, spec(u, mod="Cauldron"), capture_output=True, text=True, timeout=30)
-    wait_for(lambda: unit_state(u + ".timer") in ("inactive", "failed", ""), 10)
-    time.sleep(1.0)
+    fired = wait_for(lambda: unit_state(u + ".timer") in ("inactive", "failed", ""), 10)
+    done = wait_for(lambda: unit_state(u) in ("inactive", "failed", ""), 10)
     row = C.run_state(u)
-    check(r2.returncode != 0 and row["state"] == "fail_launch" and not row["started_at"],
-          "claim 4 guard: the old queued unit never starts on the re-admission", (r2.returncode, dict(row)))
+    check(r1.returncode == 0 and r2.returncode != 0 and fired and done and not os.path.exists(marker)
+          and row["state"] == "fail_launch" and not row["started_at"],
+          "claim 4 guard: the old queued unit's payload never runs on the re-admission",
+          (r1.returncode, r2.returncode, fired, done, os.path.exists(marker), dict(row)))
 
 
 def main():

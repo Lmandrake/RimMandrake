@@ -885,6 +885,8 @@ def _mark(run, state, why, p=None, now=None, fault=False, frm=("admitted",)):
         n = c.execute("UPDATE runs SET state=?, ended_at=?, why=? WHERE id=? AND state IN (%s)" % ",".join("?" * len(frm)),
                       (state, now, why, run) + tuple(frm)).rowcount
         k = _release(c, "run=?", (run,), "%s: %s" % (state, why), now, fault) if n else 0
+        if n:   # a run that reached a terminal state owes no stop order (an escalation then finds nothing to do)
+            c.execute("UPDATE stops SET state='done', ended_at=? WHERE run=? AND state IN ('pending','seen')", (now, run))
     if fault and k:
         _fault_alarm(run, p)
     return bool(n)
@@ -1172,6 +1174,7 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
     scope = ("unit:" + t[5:] if t.startswith("unit:") else "unit:" + t) if unit_target else scope_of(t)
     if deadline_s is None and mode == "write_now":
         deadline_s = WRITE_NOW_DEADLINE_S
+    faulted = []
     try:
         with txn(p) as c:
             act = None
@@ -1188,7 +1191,8 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
             else:   # its admitted, unstarted run is fenced too: its start check refuses it
                 cancelled = _cancel_in_scope(c, scope, "stopped: " + why, now)
             runs = _live_runs(c, scope)
-            if unit_target and not runs:
+            if unit_target and not runs and (mode == "kill" or not cancelled):
+                # a cooperative order is never written for a run just cancelled before its start: nothing would end it
                 runs = [_stand_in(scope[5:], mode == "kill")]
             if unit_target:
                 act = _act(c, "stop", scope, None, {"mode": mode, "deadline_s": deadline_s}, why, owner_said,
@@ -1197,7 +1201,8 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
                 if r["id"]:     # its trials released: a stopped run is void and charges nothing (fail_system)
                     c.execute("INSERT OR IGNORE INTO voids VALUES (?,?,?,?,?,?)",
                               (r["id"], r["mod"], act["id"], "stopped (%s): %s" % (mode, why.strip()), owner_said, now))
-                    _release(c, "run=?", (r["id"],), "fail_system: stopped (%s): %s" % (mode, why), now, True)
+                    if _release(c, "run=?", (r["id"],), "fail_system: stopped (%s): %s" % (mode, why), now, True):
+                        faulted.append(r["id"])
                     c.execute("UPDATE reservations SET state='voided', settled_at=? WHERE run=? AND state='charged'",
                               (now, r["id"]))
                 if mode != "kill":
@@ -1212,6 +1217,8 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
         runs = [_stand_in(scope[5:], True)]
         store_err = str(e)
     out = {"scope": scope, "mode": mode, "act": act, "cancelled": cancelled, "units": [], "store": store}
+    for x in faulted:   # after the commit: a live run's trial released by the stop is a metered fault
+        _fault_alarm(x, p)
     for r in runs:      # a stopped run spends no trial in the dispatch books either (run_void.py; card 2026-11-18)
         if store and r.get("id"):
             r["books"] = void_books(r["unit"], r.get("mod"), "stopped (%s): %s" % (mode, why), owner_said,
@@ -1363,8 +1370,9 @@ def hook(p=None, unit=None, now=None, stdin=None):
                           (unit,)).fetchone()
             if not s:
                 return 0, ""
-            c.execute("UPDATE stops SET state='seen', seen_at=COALESCE(seen_at, ?), seen_n=seen_n+1 WHERE id=?",
-                      (now, s["id"]))
+            if not c.execute("UPDATE stops SET state='seen', seen_at=COALESCE(seen_at, ?), seen_n=seen_n+1 WHERE id=? "
+                             "AND state IN ('pending','seen')", (now, s["id"])).rowcount:
+                return 0, ""    # it ended between the lookup and the mark: a done order is never revived
             a = c.execute("SELECT * FROM acts WHERE id=?", (s["act"],)).fetchone()
             r = c.execute("SELECT item FROM runs WHERE unit=?", (unit,)).fetchone()
         finally:
