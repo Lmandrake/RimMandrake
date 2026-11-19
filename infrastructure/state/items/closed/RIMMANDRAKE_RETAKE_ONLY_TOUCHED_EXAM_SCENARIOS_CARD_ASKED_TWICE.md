@@ -90,8 +90,7 @@ python3 src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py
 - A6: the order of the gates is unchanged: the coverage judge still does not look at a tree whose exam has not passed.
 
 ## acceptance
-Acceptance test: a new selftest (written as `selftest_exam_partial_retake.py`, since merged into
-`src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py`) driving the retake through A1 to A6 with fixed stage
+Acceptance test: `src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py` driving the retake through A1 to A6 with fixed stage
 dicts and fixed read records (no model call), registered in the pipeline test table. It is watched FAILING on the base
 commit before the build (A1, A4 and A5 fail by construction: today a retake re-runs every scenario), with the failing
 output quoted in the commit message. Expected: 6 cases, 6 pass after the build. Not yet watched failing at filing: the
