@@ -259,23 +259,25 @@ def t_void_runs_spend_nothing_on_the_loop_ceiling(tmp):
         return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
     J1, J2 = DS.JUDGE_REF + "1", DS.JUDGE_REF + "2"
     t1, t2, t3, t4, t5 = (T0 + 60 * n for n in (1, 2, 3, 4, 5))
+    # run U5 is hand-voided INSIDE the loop: counted, it would cross the ceiling at t5 + 30 (second look)
     charges = [(t1, 100, J1), (t1, 50, J1 + "-reader"), (t2, 1500, "run U9"), (t3, 1000, "run U8"),
-               (t4, 100, J2), (t5, 300, "run U7")]
+               (t4, 100, J2), (t5, 300, "run U7"), (t5 + 30, 1700, "run U5")]
     st = {"budget": {"cap": 1000, "spent": sum(c[1] for c in charges),
                      "charges": [{"at": iso(a), "tokens": n, "kind": "stage", "ref": r} for a, n, r in charges]},
           "coverage_rounds": [{"judge": J1, "at": iso(t1), "verdict": None, "error": "timeout", "error_kind": "system"},
                               {"judge": J2, "at": iso(t4), "verdict": "not_covered"}],
           "results": [{"run": "U8", "outcome": "rejected", "at": iso(t3), "void_system": "killed",
                        "why": ["no result.json (a closing message is not a result)"]}],
-          "voided": {"spend_refs": ["run U9"]}}
+          "voided": {"spend_refs": ["run U9", "run U5"]}}
     ok(DS.loop_start(st) == t4, "a void_system judge round starts no loop: it starts at the first real round (%s)"
        % DS.loop_start(st))
     ok(DS.loop_spend(st) == 400 and DS.loop_ceiling(st) is None,
-       "void charges (a void judge and its reader, a hand-voided run, a void_system run) do not count: %s"
+       "void charges (a void judge and its reader, a hand-voided run, a void_system run, one inside the loop) do "
+       "not count: %s"
        % DS.loop_spend(st))
     st["budget"]["charges"].append({"at": iso(t5 + 60), "tokens": 1700, "kind": "stage", "ref": "run U6"})
     ceil = DS.loop_ceiling(st)
-    ok(DS.ceiling_crossed_at(st) == t5 + 60 and ceil and "void spend 2650" in ceil,
+    ok(DS.ceiling_crossed_at(st) == t5 + 60 and ceil and "void spend 4350" in ceil,
        "the crossing is the real charge that met the ceiling, the void spend shown apart: %r" % ceil)
 
 
