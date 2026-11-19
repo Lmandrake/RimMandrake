@@ -233,6 +233,19 @@ def t_cross_seat_claim_is_still_refused():
             "CHECK took over BUILD's live item")
 
 
+def t_wait_on_proposed_names_its_path_to_pass():
+    """RIMMANDRAKE_NAME_CLAIM_WHEN_WAIT_REFUSES_PROPOSED_OWED_ITEM: owed items are filed
+    `proposed`, and `wait` refuses them; the refusal must say how to pass (claim, then wait,
+    then release), or a sweep that parks an owed item on its trigger has nothing to act on."""
+    evs = [filed("PROPOSED_OWED_ITEM_1", seat="BUILD", for_="BUILD"),
+           ev(seat="BUILD", event="wait", id="PROPOSED_OWED_ITEM_1",
+              until="2099-01-01T00:00:00Z", reason="r")]
+    refuses(lambda: model.replay(evs, strict=True), "claim",
+            "a proposed item took a wait")
+    refuses(lambda: model.replay(evs, strict=True), "release",
+            "a proposed item took a wait")
+
+
 def t_filing_for_another_seat_is_fine():
     w = model.replay([filed("FILED_BY_DECIDE_1", seat="DECIDE", for_="BUILD")],
                      strict=True)

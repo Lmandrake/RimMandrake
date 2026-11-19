@@ -2719,7 +2719,11 @@ def _apply_item_verb(ev, index, item, seat, world):
         item.started_at = ev["ts"]
     elif verb == "wait":
         if item.state not in ("ready", "doing"):
-            raise TransitionError("%s is `%s`: only started work waits (ready or doing)." % (item.id, item.state))
+            path = (" To park it on its trigger: `rimflow claim %s`, then `rimflow wait %s --until ... "
+                    "--reason ...`, then `rimflow release %s --token <the claim's token>` (the wait stays; "
+                    "the item reads ready)." % (item.id, item.id, item.id)) if item.state == "proposed" else ""
+            raise TransitionError("%s is `%s`: only started work waits (ready or doing).%s"
+                                  % (item.id, item.state, path))
         item.wait_until, item.wait_reason = ev["until"], ev["reason"]
     elif verb == "unwait":
         item.wait_until = item.wait_reason = None
