@@ -108,6 +108,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_stage_ceiling_arrival.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_run_void.py", "seconds": 2.0},
     {"test": "src/RimMandrake/rimflow/selftest_void_counters.py", "seconds": 4.0},
+    {"test": "src/RimMandrake/rimflow/selftest_incident_news.py", "inputs": ["design/specs/2026-11-19-incident-news-and-program-routes/boundary.md", "src/RimMandrake/rimflow/alarm_routes.json"], "seconds": 0.2},
     {"test": "src/RimMandrake/rimflow/selftest_dispatch_two_games.py", "seconds": 3.8},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_hands.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_next_dispatch.py", "seconds": 1.2},

@@ -1822,6 +1822,20 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                     rs["alarm_recover_hold"] = rec
                 else:
                     rs.pop("alarm_recover_hold", None)
+                # a repeat alarm a program answers (RIMMANDRAKE_QUIET_OPS_REPEATS_AGING_COUNTS_AS_NEWS, owner's card
+                # 2026-11-19): its banded program route reads in band, so the runbook line is noted on its item once
+                # and no run is bought; left unseen, so the tick its reading leaves the band launches the run
+                prog = program_answered(reading_cache["s"])
+                pa = sorted(k for k in fresh if k in prog)
+                if pa:
+                    fresh = [k for k in fresh if k not in prog]
+                    for k in pa:
+                        if k not in (rs.get("program_noted") or []):
+                            act(do="role_hold", role=name, note=True, ticket=prog[k][0] or role["ledger_item"],
+                                why="%s alarm %s: program answer, no run: %s" % (name, k, prog[k][1]))
+                rs["program_noted"] = sorted(k for k in set(rs.get("program_noted") or []) | set(pa) if k in open_items)
+                if not rs["program_noted"]:
+                    rs.pop("program_noted")
                 # daily limits, held as data in the schedule (review X, X1): at most alarm_runs_per_alarm_per_day runs
                 # for one alarm key and alarm_runs_per_day alarm runs in all, so a flapping alarm cannot make a paid
                 # run every cycle. Absent = no limit. Limited keys stay unseen: they wait for tomorrow (or clearing).
@@ -2189,6 +2203,31 @@ def _open_alarms(alarms):
         elif a.get("for") == "Operations":
             out.append((ALARM_KEY_PREFIX + str(aid) + tail, aid, a))
     return out
+
+
+def program_answered(status, table=None):
+    """Pure but for reading alarm_routes.json. -> {alarm key: (its ledger item or None, note text)} for each OPEN alarm
+    whose every alarm row under that key is on a banded program route reading MEASURED inside its band
+    (incident.program_answer): the program writes the runbook line and no alarm run is bought. A routing table that
+    does not read answers nothing, so every alarm keeps its run (never a quiet answer on a blind table)."""
+    if not isinstance(status, dict):
+        return {}
+    try:
+        import incident as IN
+        table = table or IN.load_table()
+    except Exception:  # noqa: BLE001 - no table read: no program answers
+        return {}
+    pts = status.get("points") if isinstance(status.get("points"), dict) else {}
+    out, agent = {}, set()
+    for k, aid, a in _open_alarms(status.get("alarms")):
+        metric = str(aid).split(":", 1)[1] if ":" in str(aid) else str(aid)
+        rt = IN.route_of(table, metric)
+        ans = IN.program_answer(rt, pts.get(metric))
+        if not ans or ans[0] != "program":
+            agent.add(k)
+            continue
+        out[k] = (a.get("item"), "%s (%s; an agent run is called once it leaves the band)" % (rt["runbook"], ans[1]))
+    return {k: v for k, v in out.items() if k not in agent}
 
 
 def alarm_keys(alarms):

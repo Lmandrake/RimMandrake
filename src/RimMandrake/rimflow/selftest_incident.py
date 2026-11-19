@@ -1160,7 +1160,7 @@ def test_each_field_of_a_reading():
     res, ev = look(due(), plain)
     check("chain: a class-less key with no alarm, unchanged: quiet", [x["ev"] for x in ev] == ["revisit_quiet"] and not res["rings"], res["rows"])
     res, ev = look(due(), plain, {"ops:m.z": {"state": "OPEN"}})
-    check("chain: only its standing flag differs", IN.revisit_reads({"metrics": {"m.z": {}}}, {"points": {"m.z": plain}}, {"m.z": {}}, [])["m.z"] == [True, None, 3, True, 0])
+    check("chain: only its standing flag differs", IN.revisit_reads({"metrics": {"m.z": {}}}, {"points": {"m.z": plain}}, {"m.z": {}}, [])["m.z"][:5] == [True, None, 3, True, 0])   # [5]: its observed_at
     launched("chain: an alarm coming open on a class-less key launches, class, value and mark unchanged", res, ev)
     look, due = two("standingoff", [True, None, 3, True, 0])
     res, ev = look(due(), plain, {"ops:m.z": {"state": "OPEN"}})

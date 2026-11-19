@@ -56,8 +56,9 @@ BAD = ("distressed", "emergency")
 ACTIONS = ("claim", "start", "close", "implemented", "drop")     # a note is not one: the 2026-11-01 diagnosis was a note
 NOT_READERS = ("DISPATCHER", "RUNNER", "RELENTLESS")
 OWNER_RUNG = 3
-CLOCK_UNIT_S = {"min": 60, "h": 3600, "s": 1}         # a metric ending _<unit> reads "how long", unless NOT_CLOCK says it is a rate or a peak
+CLOCK_UNIT_S = {"min": 60, "h": 3600, "s": 1, "d": 86400, "days": 86400}   # a metric ending _<unit> reads "how long", unless NOT_CLOCK says it is a rate or a peak
 NOT_CLOCK = re.compile(r"(_per_h|_max_s)$")
+DAYS_CLOCK = re.compile(r"(^|[._])days_since_")    # plan.days_since_advance: a day clock whose unit is not its last word
 NEWS_EVS = ("joined", "sane", "relapsing", "reopened", "escalated")
 FULL_READS = ("alarm_run", "fresh_run")      # a whole Operations run (~450k, plan-20261101164253): what a tamed incident stops buying
 
@@ -251,8 +252,17 @@ def revisit_ring(inc, was_plan, news=()):
             " (was: %s)" % str(was_plan)[:60] if was_plan else "", i, i, ", ".join(sorted(inc["metrics"]))))}
 
 
+def observed_t(p):
+    """The epoch a status point was itself observed at (its x.observed_at), or None."""
+    x = p.get("x") if isinstance(p, dict) else None
+    return _epoch(x["observed_at"]) if isinstance(x, dict) and x.get("observed_at") else None
+
+
 def revisit_reads(inc, status, bad, signals):
-    """What this incident's metrics read now: {metric: [standing?, class, value, measured?, signals fired so far]}."""
+    """What this incident's metrics read now: {metric: [standing?, class, value, measured?, signals fired so far,
+    observed at]}. The last is the point's own observation epoch: a collector's reading lags the status pass by up to
+    its max age, so a clock is graded over its own time (a 6 h revisit read plan.list_age_h 5 to 8 min off the status
+    time, 2026-11-16..17)."""
     points = (status.get("points") or {}) if isinstance(status, dict) else {}
     fired = {}
     for _, r in signals:
@@ -261,34 +271,71 @@ def revisit_reads(inc, status, bad, signals):
     out = {}
     for m in inc["metrics"]:
         p = points.get(m) if isinstance(points.get(m), dict) else {}
-        out[m] = [m in bad, p.get("class"), p.get("v"), p.get("m") == "MEASURED", fired.get(m, 0)]
+        out[m] = [m in bad, p.get("class"), p.get("v"), p.get("m") == "MEASURED", fired.get(m, 0), observed_t(p)]
     return out
 
 
 def clock_unit_s(metric):
-    """Seconds per unit of a metric whose value is "how long", or None for a plain value."""
-    return None if NOT_CLOCK.search(metric) else CLOCK_UNIT_S.get(metric.rsplit("_", 1)[-1])
+    """Seconds per unit of a metric whose value is "how long", or None for a plain value. A clock is graded by its rate:
+    one rising at one unit per unit of time only aged (lesson 20261117T015539Z-CONDUCTOR). plan.days_since_advance ages
+    1/24 an hour and was read as news every hour (RIMMANDRAKE_QUIET_OPS_REPEATS_AGING_COUNTS_AS_NEWS: 6 of 42 incident
+    launches named it)."""
+    if NOT_CLOCK.search(metric):
+        return None
+    if DAYS_CLOCK.search(metric):
+        return 86400
+    return CLOCK_UNIT_S.get(metric.rsplit("_", 1)[-1])
 
 
-def reading_moved(metric, old, new, elapsed_s=None, slack_s=0):
+def in_band(band, v):
+    """True when v is a number inside band ({min, max}, inclusive, either may be absent), else False."""
+    if not isinstance(v, (int, float)) or isinstance(v, bool):
+        return False
+    return not ((isinstance(band.get("min"), (int, float)) and v < band["min"])
+                or (isinstance(band.get("max"), (int, float)) and v > band["max"]))
+
+
+def reading_moved(metric, old, new, elapsed_s=None, slack_s=0, band=None):
     """Did one metric move? A signal fired, a standing alarm came or went, its class or measured mark changed, its value
     changed. A clock metric that rose by the status time elapsed (within slack_s) only aged; any other change means it
-    reset or stalled: 60 to 70 over a 240 min floor is progress that re-aged, and a value on a sane metric counts too."""
+    reset or stalled: 60 to 70 over a 240 min floor is progress that re-aged, and a value on a sane metric counts too.
+    A metric whose route states a `band` (a flapping count: wrapup.debris_standing, 8 of 42 incident launches) moves
+    only when it leaves the band or its reading goes unmeasured: inside it, its alarm coming and going is not news."""
     if old is None or new is None:
         return old != new
+    if band:
+        return old[3] != new[3] or old[4] != new[4] or not new[3] or in_band(band, old[2]) != in_band(band, new[2])
     if old[0] != new[0] or old[1] != new[1] or old[3] != new[3] or old[4] != new[4]:
         return True
     if old[2] == new[2]:
         return False
     unit = clock_unit_s(metric)
+    seen = [r[5] if len(r) > 5 and isinstance(r[5], (int, float)) else None for r in (old, new)]
+    if unit and None not in seen and seen[1] > seen[0]:
+        elapsed_s = seen[1] - seen[0]           # both points' own observation times (revisit_reads)
     if unit and elapsed_s is not None and isinstance(old[2], (int, float)) and isinstance(new[2], (int, float)):
-        return abs((new[2] - old[2]) * unit - elapsed_s) > slack_s
+        # one step of a value's decimal rounding is not movement: days_since_advance is written to 0.01 d (864 s), so
+        # an hour reads 0.04 or 0.05 d. Whole numbers keep the slack alone (a minute clock is graded to the minute);
+        # capped at half the time elapsed
+        steps = [x for x in (value_step(old[2]), value_step(new[2])) if 0 < x < 1]    # 18.0 beside 17.96 is 0.01 too
+        quantum = min(max(steps) * unit, abs(elapsed_s) / 2.0) if steps else 0.0
+        return abs((new[2] - old[2]) * unit - elapsed_s) > slack_s + quantum + 1e-6
     return True
 
 
-def revisit_news(inc, reads, fresh, rows, out, now, pol, events=None, status_t=None):
+def value_step(v):
+    """The rounding step a value was written at, from its shortest repr: 17.96 -> 0.01, 5 -> 1, an unrounded float -> 0."""
+    s = repr(float(v))
+    if "e" in s or "." not in s:
+        return 0.0
+    frac = s.split(".", 1)[1].rstrip("0")
+    return 10.0 ** -len(frac) if len(frac) < 10 else 0.0
+
+
+def revisit_news(inc, reads, fresh, rows, out, now, pol, events=None, status_t=None, table=None):
     """-> why this revisit needs a run, or [] when nothing moved since the last one. Anything not known to be unchanged is
-    news: no earlier look, a blind status, no plan a run wrote (an auto-ack from an item action is not an answer)."""
+    news: no earlier look, a blind status, no plan a run wrote (an auto-ack from an item action is not an answer).
+    `table`: the routing table whose routes' `band`s grade a banded metric (reading_moved)."""
     seen_t = inc.get("revisit_seen_t")
     if not seen_t or inc.get("revisit_read") is None:
         return ["no earlier revisit to compare with"]
@@ -303,7 +350,8 @@ def revisit_news(inc, reads, fresh, rows, out, now, pol, events=None, status_t=N
     was_t = inc.get("revisit_status_t")          # both readings' own times: a status may lag the pass that read it
     elapsed = status_t - was_t if status_t and was_t else now - seen_t
     slack = pol.get("revisit_clock_slack_min", 0) * 60
-    moved = sorted(m for m in set(old) | set(reads) if reading_moved(m, old.get(m), reads.get(m), elapsed, slack))
+    moved = sorted(m for m in set(old) | set(reads) if reading_moved(m, old.get(m), reads.get(m), elapsed, slack,
+                                                                     band_of(table, m)))
     if moved:
         news.append("readings moved: %s%s" % (", ".join(moved[:4]), " +%d more" % (len(moved) - 4) if len(moved) > 4 else ""))
     if any(r.get("id") == inc["id"] and r.get("ev") in NEWS_EVS and r.get("t", 0) > seen_t for r in list(rows) + out):
@@ -314,6 +362,33 @@ def revisit_news(inc, reads, fresh, rows, out, now, pol, events=None, status_t=N
     if now - inc.get("revisit_t", 0) >= pol.get("revisit_quiet_max_min", 1440) * 60:
         news.append("no run has read it for %d min, the most a quiet incident waits" % ((now - inc.get("revisit_t", 0)) // 60))
     return news
+
+
+def band_of(table, metric):
+    """The `band` the route of `metric` states, or None (no table, no route, or a route with no band)."""
+    b = (route_of(table, metric) or {}).get("band") if table else None
+    return b if isinstance(b, dict) and b else None
+
+
+def program_answer(rt, point):
+    """A banded program route (RIMMANDRAKE_QUIET_OPS_REPEATS_AGING_COUNTS_AS_NEWS: a repeat alarm the agent always
+    answered "nothing to fix") -> ("program", why) while its status point is MEASURED inside the band: the program
+    writes the route's runbook note and no agent is called; ("agent", why) when the reading is outside the band or could
+    not be read (never "in band" on a blind reading); None for any other route (role, owner, or program with no band)."""
+    if not rt or rt.get("route") != "program" or not isinstance(rt.get("band"), dict) or not rt["band"]:
+        return None
+    b = rt["band"]
+    span = "[%s, %s]" % (b.get("min", "-inf"), b.get("max", "inf"))
+    if not isinstance(point, dict):
+        return "agent", "no reading of it in status.json: could not look, so the band does not answer"
+    v = point.get("v")
+    if point.get("m") != "MEASURED":
+        return "agent", "its reading is %s, not MEASURED: the band does not answer" % point.get("m")
+    if not isinstance(v, (int, float)) or isinstance(v, bool):
+        return "agent", "its reading %r is not a number: the band does not answer" % (v,)
+    if in_band(b, v):
+        return "program", "reading %s inside its band %s" % (v, span)
+    return "agent", "reading %s left its band %s" % (v, span)
 
 
 def relapse_of(incs, cause, metrics, now, relapse_h):
@@ -446,7 +521,10 @@ def step(table, rows, status, now, cursor=0, events=None, standing=None):
     for metric, b in sorted(dict(bad, **fired).items()):
         rt = route_of(table, metric) or {"route": "role", "reader": "Operations", "cause": "unrouted"}
         if rt["route"] == "program":
-            continue
+            ans = program_answer(rt, (status.get("points") or {}).get(metric) if fresh else None)
+            if ans is None or ans[0] == "program":
+                continue
+            rt = dict(rt, route="role")          # out of its band or unread: the agent is called, as a role route
         cls = b["class"] or rt.get("class") or "distressed"
         cause = rt.get("cause") or metric
         g = groups.setdefault(cause, {"metrics": {}, "reader": "owner" if rt["route"] == "owner" else rt["reader"],
@@ -542,7 +620,7 @@ def step(table, rows, status, now, cursor=0, events=None, standing=None):
         if due is not None and now >= due and not inc.get("sane_since") and inc["rung"] >= OWNER_RUNG:
             looked.add(inc["id"])
             reads = revisit_reads(inc, status, bad, signals)
-            news = revisit_news(inc, reads, fresh, rows, out, now, pol, events, status_t)
+            news = revisit_news(inc, reads, fresh, rows, out, now, pol, events, status_t, table)
             if news:
                 revisit(inc, reads, news)
             else:
@@ -568,7 +646,7 @@ def step(table, rows, status, now, cursor=0, events=None, standing=None):
             if due is None or due - now > pol.get("revisit_batch_min", 0) * 60:
                 continue
             reads = revisit_reads(inc, status, bad, signals)
-            news = revisit_news(inc, reads, fresh, rows, out, now, pol, events, status_t)
+            news = revisit_news(inc, reads, fresh, rows, out, now, pol, events, status_t, table)
             if news:                                     # with none it waits for its own time and is re-armed then
                 revisit(inc, reads, news)
     live = [x for x in incs.values() if x["state"] == "open"]
