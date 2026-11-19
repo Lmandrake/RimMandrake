@@ -26,6 +26,7 @@ TOP = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "
 # page -> its tests file, repo-relative. A new boundary page is added here.
 PAGES = {
     "design/specs/2026-11-18-pipeline-control-surface/boundary.md": "src/RimMandrake/rimflow/selftest_control.py",
+    "design/specs/2026-11-19-probe-result/boundary.md": "src/RimMandrake/rimflow/selftest_probe_result.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")
