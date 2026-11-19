@@ -1,0 +1,7 @@
+ok   base: three fails in a row route the item
+ok   a voided middle run breaks the streak (derived from ordered valid runs)
+ok   pipe limit <ITEM> pilot_streak 4: one line, its undo
+ok   judge() honours the raised limit: three fails no longer route the item
+ok   limit default routes it again
+ok   pipe add <ITEM> pilot_streak -1: one fail forgiven, no streak
+PASS: 0 failure(s)

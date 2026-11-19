@@ -482,6 +482,33 @@ def test_starved_publish_keeps_its_floor():
     check(not st.get("publish_starved"), "a publish failing for another reason is not starved by time (no floor taken)")
 
 
+def test_publish_failing_half_stuck_goes_first():
+    """RIMMANDRAKE_RESERVE_PUBLISH_BEAT_STARVED_THIRD_STUCK_ALARM: three publish:stuck alarms (2026-11-15 14:58Z,
+    11-16 04:36Z, 11:40Z) were a publish starved by the beat's own acts. A publish failing for half of publish_stuck_s
+    or more runs before any act; younger, it keeps its place at the end."""
+    sch = dict(sched(), publish_stuck_s=1800)
+    for name, age, first in (("pub_first", 1200.0, True), ("pub_last", 600.0, False), ("pub_none", None, False)):
+        root = os.path.join(TMP, name)
+        os.makedirs(root, exist_ok=True)
+        order = []
+        st = {"seats": {}, "alarms": {}, "beat_costs": {"note": 0.1, "publish": 0.1}}
+        if age is not None:
+            st["publish_fail_since"] = 100.0 - age
+        fx = {"lock": Lock, "note": lambda i, t: order.append("note") or (True, "ok"),
+              "publish": lambda n: order.append("publish %d" % n) or "pushed"}
+        D.execute([dict(alarms(1)[0], kind="k0")], sch, st, root, True, 100.0, fx,
+                  act_deadline=time.time() + 10, deadline=time.time() + 10)
+        want = ["publish 0", "note"] if first else ["note", "publish 1"]
+        check(order == want, "a publish failing for %s s (stuck at 1800) %s: %s" % (
+            age, "goes first, before the acts, and once" if first else "keeps its place after the acts", order))
+        if first:
+            check("publish_fail_since" not in st, "the early publish that pushed ends the failure clock")
+    check(D.early_publish_due({"publish_stuck_s": 1800}, {"publish_fail_since": 0.0}, 900.0)
+          and not D.early_publish_due({"publish_stuck_s": 1800}, {"publish_fail_since": 0.0}, 899.0)
+          and not D.early_publish_due({}, {}, 1e9) and not D.early_publish_due({}, {"publish_fail_since": "x"}, 1e9),
+          "early_publish_due: half of publish_stuck_s exactly, not before; no clock or a non-number is never due")
+
+
 def test_designer_launch_fetches_once():
     # decide's preview (stage_open) fetched origin seconds ago; execute's commit must not fetch again (2 git fetches)
     sch, root = sched(), os.path.join(TMP, "designer_once")
@@ -563,7 +590,8 @@ def main():
               test_slow_observe_is_cut, test_cut_names_where_it_was, test_slow_execute_is_cut, test_slow_helper_budget_is_cut,
               test_killed_publish_leaves_the_helper_budget_its_slot, test_note_that_cannot_fit_is_not_started,
               test_note_child_is_bounded_by_the_deadline, test_note_and_publish_costs_are_measured,
-              test_starved_publish_keeps_its_floor, test_designer_launch_fetches_once,
+              test_starved_publish_keeps_its_floor, test_publish_failing_half_stuck_goes_first,
+              test_designer_launch_fetches_once,
               test_cut_harvest_acts_are_carried):
         try:
             t()

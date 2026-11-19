@@ -1,0 +1,18 @@
+PASS a block naming only a done item is lifted by the tick as an act, naming the item (read autounblock / launch, launches ['C'])
+PASS the act is booked under its reason's key and owes no Needs Conductor line
+PASS the lift takes no slot
+PASS execute lands the lift once and books it (read [('C', ['RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS'])], {'item': None, 'unit': None, 'at': 1795130000.0, 'failed': None, 'items': ['RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS'], 'tries': 1, 'landed': 'PUBLISHED abc1234'})
+PASS a dropped item is closed too: lifted
+PASS a superseded item is closed too: lifted
+PASS a reason naming no item is a plain pause, as before (read designer_blocked)
+PASS the same block after one lift is not lifted again (read designer_blocked / paused, launches [])
+PASS its need names the closed item, the earlier lift, the reason still owed and the hand command (C: PAUSED, the Designer re-blocked on the reason the pipeline lifted once (2026-11-19 14:13 PST); its items (RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS) are closed, so what is owed is the reason's own text: RIMMANDRAKE_EARN_CALIBRATION_BOTH_WAYS: coverage_judge brief is UNTESTED, its verdict is advisory. Hand lift: `python3 src/RimMandrake/rimflow/designer_stage.py unblock design/concepts/C --why ...`)
+PASS a new reason is a new block, with its own one lift
+PASS an open item gets its fixer run, not a lift (read fixer)
+PASS an id the ledger does not hold is no lift (read None)
+PASS blocked_closed: an empty ledger, no state, no reason
+PASS an OWNER HOLD naming a done item stays his
+PASS the lift writes ready, and a landing that raises puts stage.json back byte for byte (saw ['ready'])
+PASS a landed lift leaves the concept ready, its reason in history
+PASS a failed lift reads launch_failed with the error, booked as a failed try (read RuntimeError: land.sh exited 1: push refused)
+0 failure(s)

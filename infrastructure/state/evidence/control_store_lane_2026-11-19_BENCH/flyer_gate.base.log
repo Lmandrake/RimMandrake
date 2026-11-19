@@ -1,0 +1,14 @@
+FAIL the ticket's acceptance: a paused flyer state read takes a free bridge
+FAIL the read is admitted in any case, with the subject after it
+PASS a flyer flight test still refuses
+PASS --flyer still refuses, whatever the purpose says
+PASS still refused: 'paused flyer state read'
+PASS still refused: 'flyer_tier_three_state_read.py'
+PASS still refused: 'paused flyer state read (flyer_tier_three_state_read.py), then unpause and watch it fly'
+PASS still refused: 'paused flyer state read (flyer_tier_three_state_read.py) and a takeoff picture'
+PASS still refused: 'unpaused flyer state read (flyer_tier_three_state_read.py)'
+PASS still refused: 'paused flight read'
+PASS still refused: 'glide test'
+PASS still refused: 'butterfly airborne check'
+PASS a purpose naming no flight is unchanged (FlowWorks is no flight)
+2 failure(s)

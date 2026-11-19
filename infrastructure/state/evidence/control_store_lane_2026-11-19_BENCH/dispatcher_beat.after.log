@@ -1,0 +1,107 @@
+ok    a ring is started before the beat deadline only: ['A']
+ok    alarms still run past the act deadline (their carry is already popped)
+ok    both alarms stamped: ['k0', 'k1']
+ok    the deferred ring is given back, the rung one kept
+ok    one `deferred` line names the ring: [{'at': '1970-01-01T00:01:40Z', 'do': 'deferred', 'why': 'beat deadline: 1 act(s) not started (ring); given back: ring B'}]
+ok    deferral is not an alarm
+ok    the notes already made are still published: [2]
+ok    the deferred launch's reservation is given back (its slot is due again)
+ok    a reservation of no deferred act is not touched (unreserve's alarm keeps it)
+ok    no ring is started past the beat deadline
+ok    the deferred ring has no result
+ok    the never-released ring is given back: nothing to verify
+ok    its wake is off the caps: [{'seat': 'BENCH', 'at': 100.0}]
+ok    the deferral names the ring
+ok    only the act before the fence ran
+ok    the fenced acts keep no stamp
+ok    a dry tick is never fenced (it acts nothing)
+ok    a fenced tick journals `fenced`
+ok    a fenced tick is not a raised tick
+ok    a fenced tick carries no alarm to the next
+ok    a tick at its beat's end defers its ring and still runs its alarm: ran ['alarm']
+ok    the deferred tick saved its state, no alarm carried
+ok    one deferring beat: still a working tick, streak 1
+ok    beat 5 deferring in a row alarms beat_starved
+ok    a starved tick stops the dead-man's last_ok_tick: 2026-11-19T23:32:49Z
+ok    a beat that fits ends the streak and stamps last_ok_tick again
+ok    beat_deadline reads METRONOME_DEADLINE
+ok    a beat with time left defers nothing
+ok    outside a beat there is no deadline
+ok    an unreadable METRONOME_DEADLINE is no deadline
+dispatcher: the metronome's dispatch phase owns rm-dispatcher.timer, which is active; an --apply tick without --metronome-gen acts nothing
+ok    an owned clock, old timer 'active': --apply without --metronome-gen acts nothing
+dispatcher: the metronome's dispatch phase owns rm-dispatcher.timer, which is unmeasured (rc 1); an --apply tick without --metronome-gen acts nothing
+ok    an owned clock, old timer 'unmeasured (rc 1)': --apply without --metronome-gen acts nothing
+dispatcher: the metronome's dispatch phase owns rm-dispatcher.timer, which is ; an --apply tick without --metronome-gen acts nothing
+ok    an owned clock, old timer '': --apply without --metronome-gen acts nothing
+2026-11-19T23:32:40Z nothing to do (dry-run)
+ok    a dry tick still runs while owned
+2026-11-19T23:32:40Z nothing to do (apply)
+ok    owned with the old timer measured inactive: an on-demand wake (seat_restart) runs
+2026-11-19T23:32:40Z nothing to do (apply)
+ok    before cutover the old timer's --apply tick runs
+ok    metronome_owner reads the real phase table
+ok    dispatcher has step_limit
+ok    a step past its end is cut (a BaseException, so `except Exception` cannot swallow it): StepCut('slow')
+ok    the cut restores SIGALRM and stops its timer
+ok    a step inside its end leaves no timer running
+ok    an end already passed cuts the step before it starts
+ok    a publish child is killed when its wait is cut (its own session: nothing else stops it): pid 2435704 alive False
+ok    slow decide: the tick returns, it does not raise: ''
+ok    slow decide: the tick ends inside its beat (took 1.01 s, 0.99 s left)
+ok    slow decide: the journal names the cut step 'observe': ['step_cut', 'step_cut']
+ok    slow decide: no tick:raised
+ok    slow decide: state saved, no alarm carried, the cut counts toward beat_starved
+ok    slow decide: tick_steps.jsonl records the cut and the tick's seconds: [{'apply': True, 'at': '2026-11-19T23:32:42Z', 'helper_budget': 'cut', 'left': 0.993, 'obs': 0.0, 'observe': 'cut', 'total': 1.006}]
+ok    slow decide: the ring it decided is given back
+ok    a step_cut names the function it was cut in (which part of decide is slow): ['dispatcher.tick > selftest_dispatcher_beat.slow_designer_close', 'dispatcher.tick']
+ok    slow act: the tick returns, it does not raise: ''
+ok    slow act: the tick ends inside its beat (took 1.50 s, 0.50 s left)
+ok    slow act: the journal names the cut step 'execute': ['step_cut', 'step_cut']
+ok    slow act: no tick:raised
+ok    slow act: state saved, no alarm carried, the cut counts toward beat_starved
+ok    slow act: tick_steps.jsonl records the cut and the tick's seconds: [{'apply': True, 'at': '2026-11-19T23:32:44Z', 'decide': 0.0, 'execute': 'cut', 'helper_budget': 'cut', 'left': 0.499, 'obs': 0.0, 'total': 1.5}]
+ok    slow act: the ring not yet started is given back
+ok    slow act: no time left, so the helper budget is not started
+ok    slow helper budget: the tick returns, it does not raise: ''
+ok    slow helper budget: the tick ends inside its beat (took 1.50 s, 0.50 s left)
+ok    slow helper budget: the journal names the cut step 'helper_budget': ['ring', 'publish', 'step_cut']
+ok    slow helper budget: no tick:raised
+ok    slow helper budget: state saved, no alarm carried, the cut counts toward beat_starved
+ok    slow helper budget: tick_steps.jsonl records the cut and the tick's seconds: [{'apply': True, 'at': '2026-11-19T23:32:45Z', 'decide': 0.0, 'execute': 0.0, 'helper_budget': 'cut', 'left': 0.498, 'obs': 0.0, 'publish': 0.0, 'total': 1.502}]
+ok    slow helper budget: the acts before it ran
+ok    a publish killed at its deadline still leaves the helper budget its slot: ran [1], cuts []
+ok    the slow-publish tick ends inside its beat
+ok    a note measured at 5 s is not started with 2 s left before the notes' end: []
+ok    it says not noted: not noted: tick budget spent (the journal holds it)
+ok    the alarm nobody was told is unstamped, so the next beat says it again
+ok    a note that fits is started and noted: noted
+ok    in a beat the note child's timeout ends at the notes' deadline, never 120 s: [2.9999804496765137]
+ok    a 0.25 s note is measured: {'note': 0.25, 'publish': 0.0}
+ok    a fast reading pulls a 5 s mean down, not to itself: {'note': 3.584, 'publish': 0.0}
+ok    the publish's seconds are measured too: {'note': 3.584, 'publish': 0.0}
+ok    after a publish starved by the beat, a note that would eat its floor waits; the publish runs: noted [] published [0]
+ok    a publish that pushed ends the starvation
+ok    with no starved publish the same note is started
+ok    a publish killed by the beat marks it starved: True
+ok    a publish failing for another reason is not starved by time (no floor taken)
+ok    a publish failing for 1200.0 s (stuck at 1800) goes first, before the acts, and once: ['publish 0', 'note']
+ok    the early publish that pushed ends the failure clock
+ok    a publish failing for 600.0 s (stuck at 1800) keeps its place after the acts: ['note', 'publish 1']
+ok    a publish failing for None s (stuck at 1800) keeps its place after the acts: ['note', 'publish 1']
+ok    early_publish_due: half of publish_stuck_s exactly, not before; no clock or a non-number is never due
+ok    execute's stage_open commits without a second fetch (decide's preview fetched this tick): [{'commit': True, 'sync': False}]
+ok    harvest then cut: the tick returns, it does not raise: ''
+ok    harvest then cut: the tick ends inside its beat (took 1.00 s, 1.00 s left)
+ok    harvest then cut: the journal names the cut step 'observe': ['step_cut', 'step_cut']
+ok    harvest then cut: no tick:raised
+ok    harvest then cut: state saved, no alarm carried, the cut counts toward beat_starved
+ok    harvest then cut: tick_steps.jsonl records the cut and the tick's seconds: [{'apply': True, 'at': '2026-11-19T23:32:49Z', 'helper_budget': 'cut', 'left': 0.998, 'obs': 0.0, 'observe': 'cut', 'total': 1.001}]
+ok    the cut tick carries the harvest's role acts in state (not the re-derivable alarm): ['role_done', 'role_stage', 'alarm']
+ok    the cut tick journalled no role_done itself
+ok    the next tick executes and journals the carried role_done once, marked carried_from: [{'at': 't', 'carried_from': 't', 'do': 'role_done', 'result': None, 'role': 'DesignerCodex', 'unit': 'rm-role-x-1', 'why': 'done'}]
+ok    the carry is spent once executed
+ok    no carried act is trimmed away, and a finish stamp (role_stamp) is carried too: 202 of 202
+ok    an act stamped with a result but never journalled is still carried (journalled is the proof)
+ok    a carried alarm is delivered, never swallowed by its own interrupted stamp: None
+0 failure(s)

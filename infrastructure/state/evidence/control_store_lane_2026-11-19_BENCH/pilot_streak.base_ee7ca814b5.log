@@ -1,0 +1,7 @@
+ok   base: three fails in a row route the item
+ok   a voided middle run breaks the streak (derived from ordered valid runs)
+FAIL pipe limit <ITEM> pilot_streak 4: one line, its undo  (got ["pipe: refused: no consumable 'pilot_streak'; nearest: launch_tries, stewards, look, tries (all: pipe show <Mod>)"])
+FAIL judge() honours the raised limit: three fails no longer route the item
+ok   limit default routes it again
+FAIL pipe add <ITEM> pilot_streak -1: one fail forgiven, no streak  (got ["pipe: refused: no consumable 'pilot_streak'; nearest: launch_tries, stewards, look, tries (all: pipe show <Mod>)"])
+FAIL: 3 failure(s)

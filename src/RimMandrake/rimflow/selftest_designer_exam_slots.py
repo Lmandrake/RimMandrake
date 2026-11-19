@@ -156,6 +156,9 @@ def res(root, st, dst, tickets, runs=None, live=()):
     fx = {"designer_state": lambda m: dst, "version_locked": lambda m: False, "open_items": lambda ids: [],
           "version_evidence": lambda m: [], "designer_unit": lambda m: None, "designer_chain": lambda m: None,
           "blocked_tickets": lambda m, d: None if tickets is None else [{"id": t} for t in tickets],
+          # no closed item to lift: the fixture's ledger holds only the open ticket (a lift has its own test,
+          # selftest_tick_pauses.py, RIMMANDRAKE_LIFT_DESIGNER_BLOCK_NAMING_DONE_ITEM_SLIME_WAITS)
+          "blocked_closed": lambda m, d: [],
           "ticket_runs": lambda i: (runs or {}).get(i, [])}
     rows = [{"mod": "C", "stage": "designer", "decision": "not_offline", "why": "decide's reading", "need": "C: design"}]
     rows, launches = MA.resolve(root, dict(CFG), st, facts, rows, [], NOW, fx)

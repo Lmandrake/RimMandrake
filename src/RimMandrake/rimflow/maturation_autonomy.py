@@ -361,6 +361,7 @@ def stop_tickets(dst, s, items):
     return [{"id": i} for i in out]
 
 
+ACTS = ("autolock", "autorepin", "autounblock")     # the pipeline's acts on a concept: one landing each, no run, no slot
 ITEM_NAME = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){3,}\b")
 
 
@@ -375,6 +376,83 @@ def blocked_tickets(dst, items):
         if x is not None and x.state and x.state not in model.TERMINAL and i not in out:
             out.append(i)
     return [{"id": i} for i in out]
+
+
+def blocked_closed(dst, items):
+    """-> [ids]: the ledger items a blocked Designer's blocked_on names, in the order named, when it names at least one
+    and every one named is closed (done, dropped, superseded); else []. A word the ledger does not hold (an alarm name,
+    an unknown id) is no lift: it may name a condition that still stands
+    (RIMMANDRAKE_LIFT_DESIGNER_BLOCK_NAMING_DONE_ITEM_SLIME_WAITS, design/specs/2026-11-19-tick-pauses/boundary.md)."""
+    import model
+    named = []
+    for i in ITEM_NAME.findall(str((dst or {}).get("blocked_on") or "") if isinstance(dst, dict) else ""):
+        if i not in named:
+            named.append(i)
+    if not named or any(items.get(i) is None or items[i].state not in model.TERMINAL for i in named):
+        return []
+    return named
+
+
+def unblock_key(dst):
+    """The steward key of the pipeline's one lift of this block: the reason's own text, hashed (a new reason is a new
+    block, and gets its own one lift)."""
+    return "unblock|%s" % hashlib.sha1(str((dst or {}).get("blocked_on") or "").encode("utf-8")).hexdigest()[:12]
+
+
+def unblock_and_land(root, mod, items, now=None, land=None, unblock=None):
+    """The pipeline's lift of a Designer block whose named items are all closed: designer_stage.unblock, then stage.json
+    landed in one landing. -> the landing's last line. An unlanded lift is no lift: stage.json is put back byte for
+    byte, and the act's own retry count decides."""
+    import designer_stage as DS
+    d = M.mod_dir(root, mod)
+    rel = "design/concepts/%s/stage.json" % mod
+    with open(os.path.join(root, rel), "rb") as f:
+        was = f.read()
+    why = ("every item the block names is closed (%s): the Maturation tick lifts it once, and the Designer's next run "
+           "re-reads its gate (RIMMANDRAKE_LIFT_DESIGNER_BLOCK_NAMING_DONE_ITEM_SLIME_WAITS)" % ", ".join(items))
+    subject = "maturation: the pipeline lifts %s's Designer block, its items closed (%s)" % (mod, ", ".join(items))
+    try:
+        (unblock or DS.unblock)(d, why)
+        if land:
+            return land(subject, [rel])
+        p = subprocess.run([DS.LAND, "-m", subject, rel], cwd=root, capture_output=True, text=True, timeout=300,
+                           env=dict(os.environ, LAND_REPO=root))
+        if p.returncode:
+            raise RuntimeError("land.sh exited %d: %s" % (p.returncode, p.stderr.strip()))
+        return (p.stdout.strip().splitlines() or ["PUBLISHED ?"])[-1]
+    except Exception:
+        with open(os.path.join(root, rel), "wb") as f:
+            f.write(was)
+        raise
+
+
+def _unblock_route(fx, row, s, dst):
+    """A blocked Designer with no open fix ticket whose reason names only closed items: the pipeline lifts the block
+    once (autounblock, an act like the autorepin: no brief, no run, one landing). The same reason standing again after
+    that lift is not lifted again: the row names the closed items, the earlier lift and the hand command."""
+    try:
+        closed = (fx["blocked_closed"](row["mod"], dst) if "blocked_closed" in fx
+                  else blocked_closed(dst, ledger_items()))
+    except Exception:       # noqa: BLE001  an unreadable ledger leaves the plain pause
+        return
+    if not closed:
+        return
+    mod, key, ids = row["mod"], unblock_key(dst), ", ".join(closed)
+    x = (s.get("steward") or {}).get(key)
+    if x and x.get("landed") and not x.get("failed"):
+        at = time.strftime("%Y-%m-%d %H:%M %Z", time.localtime(float(x.get("at") or 0)))
+        row["why"] = ("%s; it names only closed items (%s), and the pipeline lifted this same block once (%s: %s): the "
+                      "Designer blocked on it again, so what its reason says is still owed" % (
+                          str(row.get("why") or ""), ids, at, x.get("landed")))
+        row["need"] = ("%s: PAUSED, the Designer re-blocked on the reason the pipeline lifted once (%s); its items (%s) "
+                       "are closed, so what is owed is the reason's own text: %s. Hand lift: `python3 src/RimMandrake/"
+                       "rimflow/designer_stage.py unblock design/concepts/%s --why ...`" % (
+                           mod, at, ids, str(dst.get("blocked_on")), mod))
+        return
+    row.update(aut="autounblock", decision="autounblock", steward_key=key, need=None, unblock_items=list(closed),
+               why="the Designer is blocked on %s, and every item it names is closed (%s): the pipeline lifts the "
+                   "block once, and the Designer's next run re-reads its gate" % (str(dst.get("blocked_on")), ids))
+    row["steward_why"] = "the lift of a Designer block whose items are closed (%s)" % ids
 
 
 def ticket_runs(item):
@@ -678,15 +756,18 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
                 # a Designer blocked on a filed fix item (a pipeline defect) gets that item's one fixer run; the mod
                 # stays paused meanwhile (RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)
                 _stop_tickets(fx, row, s, dst, now, kind="blocked", cfg=cfg)
-        if row.get("aut") in ("autolock", "autorepin"):
-            # the pipeline's lock (or re-pin) is an act, not a run: no slot; tried once (transient faults up to
+        if row.get("aut") in ACTS:
+            # the pipeline's lock (re-pin, lift) is an act, not a run: no slot; tried once (transient faults up to
             # launch_tries)
             x = (s.get("steward") or {}).get(row["steward_key"])
             if x and not (x.get("failed") and transient(x.get("failed")) and tries_left(cfg, row["mod"], x.get("tries"))):
                 row.update(decision="launch_failed", aut=None,
-                           why=("the pipeline's 0.1.0 lock of %s was tried (%s) and VERSION.json still reads unlocked; "
-                                if row["aut"] == "autolock" else
-                                "the pipeline's re-pin of %s was tried (%s) and the grant still waits on the re-pin; ")
+                           why=({"autolock": "the pipeline's 0.1.0 lock of %s was tried (%s) and VERSION.json still "
+                                             "reads unlocked; ",
+                                 "autorepin": "the pipeline's re-pin of %s was tried (%s) and the grant still waits on "
+                                              "the re-pin; ",
+                                 "autounblock": "the pipeline's lift of %s's Designer block was tried (%s) and stage.json "
+                                                "still reads blocked; "}[row["aut"]])
                            % (mod, str(x.get("failed") or x.get("landed") or "ended")) +
                            "`maturation_dispatch.py clear %s --why ...` un-pauses it" % mod)
                 if row.get("repin_sources") is not None:
@@ -777,6 +858,9 @@ def _stop_tickets(fx, row, s, dst, now, kind="stop", root=None, ver=None, cfg=No
                 row.update(decision="live", waits_on="%s (fix ticket %s)" % (unit, t["id"]), need=None,
                            why="%s and stays paused; its fix ticket %s has a live run %s" % (lead, t["id"], unit))
                 return
+    if kind == "blocked" and tk == []:
+        _unblock_route(fx, row, s, dst)
+        return
     if kind == "stop" and root is not None and tk is not None:
         try:
             owed = repin_owed(root, row["mod"], dst, fx["ledger_items"]() if "ledger_items" in fx else None)
@@ -1266,7 +1350,7 @@ PAUSE_WHY = {
 
 def _klass(cfg, s, row, now, queue):
     dec = row.get("decision")
-    if dec in LAUNCH or (row.get("aut") and dec in ("steward", "fixer", "pilot", "autolock", "autorepin")):
+    if dec in LAUNCH or (row.get("aut") and dec in ("steward", "fixer", "pilot") + ACTS):
         k, txt = "launch", "moving: %s %s" % (row.get("aut") or "run", row.get("unit") or row.get("item") or "")
         if row.get("fix_item") and row["fix_item"] not in txt:
             txt = "%s on %s" % (txt.rstrip(), row["fix_item"])
@@ -1605,6 +1689,14 @@ def execute(root, cfg, st, rows, launches, now, fx=None):
                     "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
                 row.update(decision="launched", why="the pipeline locked %s at 0.1.0 (his Evidence-for-Ask ruling): %s"
                            % (row["mod"], text))
+                continue
+            if row["aut"] == "autounblock":  # RIMMANDRAKE_LIFT_DESIGNER_BLOCK_NAMING_DONE_ITEM_SLIME_WAITS: an act too
+                text = fx.get("autounblock", unblock_and_land)(root, row["mod"], row["unblock_items"], now=now)
+                st["mods"][row["mod"]].setdefault("steward", {})[row["steward_key"]] = {
+                    "item": None, "unit": None, "at": now, "failed": None, "items": list(row["unblock_items"]),
+                    "tries": int((row.get("retry_of") or {}).get("tries") or 0) + 1, "landed": text}
+                row.update(decision="launched", why="the pipeline lifted %s's Designer block, every item it named closed "
+                           "(%s): %s" % (row["mod"], ", ".join(row["unblock_items"]), text))
                 continue
             if row["aut"] == "autorepin":    # RIMMANDRAKE_REPIN_WHEN_GRANT_ITEMS_CLOSE: an act like the autolock
                 text = fx.get("autorepin", repin_and_land)(root, row["mod"], row["repin_sources"], now=now)

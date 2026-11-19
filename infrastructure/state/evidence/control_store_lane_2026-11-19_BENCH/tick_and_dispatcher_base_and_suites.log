@@ -1,0 +1,23 @@
+base (dispatcher.py at eba1e8b813, before this change):
+FAIL  a publish failing for 1200.0 s (stuck at 1800) goes first, before the acts, and once: ['note', 'publish 1']
+FAIL  test_publish_failing_half_stuck_goes_first crashed: module 'dispatcher' has no attribute 'early_publish_due'
+
+base (maturation_autonomy.py at eba1e8b813): selftest_tick_pauses.py: FAIL a block naming only a done item is lifted ... (read designer_blocked / paused); then AttributeError: no attribute 'unblock_key'
+mutants: no once-only check -> 1 FAIL; no stage.json restore -> red
+selftest_dispatcher.py rc=0 0 failure(s)
+selftest_dispatcher_beat.py rc=0 0 failure(s)
+selftest_dispatcher_blocked_top_cursor.py rc=0 PASS: 0 failure(s)
+selftest_dispatcher_busy_replay.py rc=0 RESULT: PASS
+selftest_dispatcher_control_off_not_failure.py rc=0 0 failure(s)
+selftest_dispatcher_incident_bells.py rc=0 PASS: 0 failure(s)
+selftest_dispatcher_mut.py rc=0 0 failure(s)
+selftest_dispatcher_mut2.py rc=0 0 failure(s)
+selftest_dispatcher_r2.py rc=0 0 failure(s)
+
+[exited with code 0]
+selftest_designer_exam_slots.py rc=0 0 GREEN: 0 failed
+selftest_maturation_autonomy.py rc=0 0 ALL PASS
+selftest_maturation_autonomy_review_findings.py rc=0 0 PASS: 0 failure(s)
+selftest_maturation_dispatch.py rc=0 0 ALL PASS
+
+[exited with code 0]

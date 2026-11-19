@@ -1,0 +1,26 @@
+ok   model: an outage of one settled fix alone is a death and owes a guard
+FAIL model: a shared outage is no death of the items that share it  got: (1, 1, [])
+FAIL model: a shared outage owes no guard on those items  got: 
+ok   model: a shared outage still reopens the item and counts as an outage
+ok   model: the host takes the death
+FAIL model: `kept` after a shared outage puts the item back to done  got: ('ready', [])
+ok   model: a later outage of its own is a death
+ok   model: sharedWith naming the item itself excuses nothing
+ok   model: sharedWith naming an item the ledger does not hold excuses nothing
+ok   model: sharedWith '' excuses nothing
+ok   model: sharedWith None excuses nothing
+ok   model: sharedWith 7 excuses nothing
+ok   model: sharedWith ['x'] excuses nothing
+FAIL deadman: shared_hosts exists  got: 
+FAIL deadman: two items down on one unit for one reason share its host  got: no shared_hosts
+FAIL deadman: the host's own row never maps to itself  got: no shared_hosts
+FAIL deadman: one item and the host are one outage too  got: no shared_hosts
+FAIL deadman: one item broken alone shares nothing  got: no shared_hosts
+FAIL deadman: no rows, nothing shared  got: no shared_hosts
+FAIL deadman: the same unit broken for a different reason is not the shared outage  got: no shared_hosts
+FAIL deadman: reasons that differ only in their digits are one reason  got: no shared_hosts
+FAIL deadman: different units never share  got: no shared_hosts
+FAIL deadman: rows that are kept (no reason) or have no promise line are ignored  got: no shared_hosts
+FAIL deadman: two items on one hook share the hook's host  got: no shared_hosts
+FAIL deadman: two items on one role share the role's host  got: no shared_hosts
+FAIL: 15 failure(s)

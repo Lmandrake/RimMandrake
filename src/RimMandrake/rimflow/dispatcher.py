@@ -1666,6 +1666,13 @@ def git_lock(wait_s=90):
             time.sleep(2)
 
 
+def early_publish_due(sch, st, now):
+    """A publish failing since publish_fail_since for at least half of publish_stuck_s: the beat publishes before its
+    acts. Pure."""
+    since = st.get("publish_fail_since")
+    return isinstance(since, (int, float)) and now - since >= sch.get("publish_stuck_s", 1800) / 2.0
+
+
 def beat_cost(st, what):
     """The measured seconds of a beat's note or publish (st["beat_costs"]); 0 before any reading."""
     v = (st.get("beat_costs") or {}).get(what)
@@ -1720,6 +1727,66 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
     ledger_ok = lk is not None
     notes = 0
     deferred = []
+    def publish_step(n):
+        """The beat's publish of the ledger shard (n notes written this tick; 0 retries an earlier stopped publish),
+        its starvation and stuck bookkeeping and the stuck alarm."""
+        t0 = time.time()
+        try:
+            out = do_publish(n)       # also retries an earlier publish that stopped (ingest.unpublished)
+        except Exception as e:  # noqa: BLE001
+            out = "error: %s: %s" % (type(e).__name__, str(e))
+        took = time.time() - t0
+        timing["publish"] = round(took, 3)
+        # starved by the beat (skipped, or killed at its deadline): the next beat's notes leave it its cost
+        starved_pub = (out or "").startswith(("publish skipped: tick budget", "publish KILLED"))
+        if starved_pub:
+            st["publish_starved"] = True
+            if (out or "").startswith("publish KILLED"):
+                measure_cost(st, "publish", max(took, beat_cost(st, "publish")))
+        else:
+            st.pop("publish_starved", None)
+            if out == "pushed" or (out or "").endswith("; pushed"):
+                measure_cost(st, "publish", took)
+        if out is not None:
+            journal(root, {"at": iso(now), "do": "publish", "result": out})
+        # the next tick retries a failed publish by itself; one that stays failed is a stuck clone. Each publish
+        # the tick tried says one of these. None is nothing unpublished on the shard: the stopped commit reached
+        # origin another way (the RUNNER ingest pushes in this clone), so the clone is level and not stuck
+        # (RIMMANDRAKE_CLEAR_PUBLISH_STUCK_ON_LEVEL_SHARD: two kills 37 min apart rang publish-20261117143919)
+        if out is None or out == "pushed" or out.endswith("; pushed"):
+            st.pop("publish_fail_since", None)
+        elif out:
+            st.setdefault("publish_fail_since", now)
+        stuck = now - st.get("publish_fail_since", now) >= sch.get("publish_stuck_s", 1800)
+        # a young lock (ingest.py says "under N s: another git may be running") is traffic the next tick retries,
+        # not a jam; one that persists trips publish_stuck_s (PUBLISH_ALARM_HARDEN_FRESH_LOCK_IS_TRAFFIC)
+        # a publish that waited out another git's lock and then pushed is a success (RIMMANDRAKE_QUIET_LOCK_ALARM_ON_A_PUSH_THAT_WAITED)
+        pushed = out == "pushed" or (out or "").endswith("; pushed")
+        jam = "index.lock" in (out or "") and "another git may be running" not in out and not pushed
+        if out and (jam or stuck):    # a stuck lock silently stops all publishing (review S, F3)
+            key = "publish:index_lock" if jam else "publish:stuck"
+            if now - st["alarms"].get(key, -1e18) >= sch.get("alarm_every_s", 6 * 3600):
+                st["alarms"][key] = now
+                signal_alarm(sch, st, key, "ledger publish: " + out, now)
+                al = dict(do="alarm", kind=key, at=iso(now), note=True, result="raised",
+                          why="ledger publish: " + out)
+                al["conductor"] = do_conductor(sch, dict(al, raise_first="Ledger publishing is stuck."), now)
+                # routed like every other note: never raw onto a token-blind item (night review N4)
+                item, text = route_note(sch, sch.get("alarm_item"), "dispatcher alarm: " + al["why"])
+                if item and ledger_ok and time.time() < deadline:
+                    try:
+                        ok, o2 = do_note(item, text)
+                        al["ledger"] = "noted" if ok else "note failed: " + o2
+                    except Exception as e:  # noqa: BLE001
+                        al["ledger"] = "note failed: %s" % str(e)
+                journal(root, al)
+
+    # RIMMANDRAKE_RESERVE_PUBLISH_BEAT_STARVED_THIRD_STUCK_ALARM: a publish failing for half of publish_stuck_s goes
+    # FIRST in a beat, before any act (role launches and notes spent the beat three times, 2026-11-15/16, and the
+    # starved publish tripped publish:stuck). This beat's own notes then wait for the next beat's publish.
+    published_early = bool(apply and ledger_ok and sch.get("publish") and beat and early_publish_due(sch, st, now))
+    if published_early:
+        publish_step(0)
     book_busy = False       # role_cause_attach: the cause book was busy once this tick
     try:
         for i, a in enumerate(actions):
@@ -2122,57 +2189,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 out = "error: %s: %s" % (type(e).__name__, str(e))
             timing["owed_sources"] = round(time.time() - t0, 3)
             journal(root, {"at": iso(now), "do": "owed_sources", "result": out})
-        if apply and ledger_ok and sch.get("publish"):
-            t0 = time.time()
-            try:
-                out = do_publish(notes)       # also retries an earlier publish that stopped (ingest.unpublished)
-            except Exception as e:  # noqa: BLE001
-                out = "error: %s: %s" % (type(e).__name__, str(e))
-            took = time.time() - t0
-            timing["publish"] = round(took, 3)
-            # starved by the beat (skipped, or killed at its deadline): the next beat's notes leave it its cost
-            starved_pub = (out or "").startswith(("publish skipped: tick budget", "publish KILLED"))
-            if starved_pub:
-                st["publish_starved"] = True
-                if (out or "").startswith("publish KILLED"):
-                    measure_cost(st, "publish", max(took, beat_cost(st, "publish")))
-            else:
-                st.pop("publish_starved", None)
-                if out == "pushed" or (out or "").endswith("; pushed"):
-                    measure_cost(st, "publish", took)
-            if out is not None:
-                journal(root, {"at": iso(now), "do": "publish", "result": out})
-            # the next tick retries a failed publish by itself; one that stays failed is a stuck clone. Each publish
-            # the tick tried says one of these. None is nothing unpublished on the shard: the stopped commit reached
-            # origin another way (the RUNNER ingest pushes in this clone), so the clone is level and not stuck
-            # (RIMMANDRAKE_CLEAR_PUBLISH_STUCK_ON_LEVEL_SHARD: two kills 37 min apart rang publish-20261117143919)
-            if out is None or out == "pushed" or out.endswith("; pushed"):
-                st.pop("publish_fail_since", None)
-            elif out:
-                st.setdefault("publish_fail_since", now)
-            stuck = now - st.get("publish_fail_since", now) >= sch.get("publish_stuck_s", 1800)
-            # a young lock (ingest.py says "under N s: another git may be running") is traffic the next tick retries,
-            # not a jam; one that persists trips publish_stuck_s (PUBLISH_ALARM_HARDEN_FRESH_LOCK_IS_TRAFFIC)
-            # a publish that waited out another git's lock and then pushed is a success (RIMMANDRAKE_QUIET_LOCK_ALARM_ON_A_PUSH_THAT_WAITED)
-            pushed = out == "pushed" or (out or "").endswith("; pushed")
-            jam = "index.lock" in (out or "") and "another git may be running" not in out and not pushed
-            if out and (jam or stuck):    # a stuck lock silently stops all publishing (review S, F3)
-                key = "publish:index_lock" if jam else "publish:stuck"
-                if now - st["alarms"].get(key, -1e18) >= sch.get("alarm_every_s", 6 * 3600):
-                    st["alarms"][key] = now
-                    signal_alarm(sch, st, key, "ledger publish: " + out, now)
-                    al = dict(do="alarm", kind=key, at=iso(now), note=True, result="raised",
-                              why="ledger publish: " + out)
-                    al["conductor"] = do_conductor(sch, dict(al, raise_first="Ledger publishing is stuck."), now)
-                    # routed like every other note: never raw onto a token-blind item (night review N4)
-                    item, text = route_note(sch, sch.get("alarm_item"), "dispatcher alarm: " + al["why"])
-                    if item and ledger_ok and time.time() < deadline:
-                        try:
-                            ok, o2 = do_note(item, text)
-                            al["ledger"] = "noted" if ok else "note failed: " + o2
-                        except Exception as e:  # noqa: BLE001
-                            al["ledger"] = "note failed: %s" % str(e)
-                    journal(root, al)
+        if apply and ledger_ok and sch.get("publish") and not published_early:
+            publish_step(notes)
     finally:
         if lk is not None:
             lk.close()

@@ -2400,7 +2400,7 @@ def pilot_holders(root, cfg, st, facts, rows, launches, now, fx=None):
     return rows, launches
 
 
-NO_SLOT_AUT = ("autolock", "autorepin")     # the pipeline's acts on a concept, not runs: they take no slot
+NO_SLOT_AUT = ("autolock", "autorepin", "autounblock")     # the pipeline's acts on a concept, not runs: no slot
 
 
 def takes_slot(row):
@@ -3230,7 +3230,7 @@ def launch_kind(cfg, r, root=None):
 def _launch_kind(cfg, r, root=None):
     """-> {"kind", "model", "cap_usd", "rule"}: what a launch row starts, read from the row the tick hands execute (a
     stage run on a pilot mod is its holder: its cap is holder_cap's, as execute will set it)."""
-    if r.get("aut") in ("autolock", "autorepin"):
+    if r.get("aut") in NO_SLOT_AUT:
         return {"kind": r["aut"], "model": "none (an act: one landing, no run)", "cap_usd": 0,
                 "rule": "maturation_autonomy %s" % r["aut"]}
     if r.get("aut"):

@@ -1,0 +1,12 @@
+PASS carried: file with RM_ROLE_UNIT set exits 0 (0 )
+PASS carried: event has role_unit == rm-role-arbiter-1793300000 (got 'rm-role-arbiter-1793300000')
+PASS mutation: role_unit check distinguishes units
+PASS carried: a second verb (note) is stamped too (0 )
+PASS identical: unset -> no role_unit key
+PASS identical: empty -> no role_unit key
+FAIL identical: unset and empty write the same event (minus ts/tsn/id)
+PASS identical: stamped and unstamped events differ ONLY by role_unit (['event', 'for', 'id', 'kind', 'preflight', 'preflight_ms', 'preflight_run', 'seat', 'target', 'title', 'ts', 'tsn'] vs ['event', 'for', 'id', 'kind', 'preflight', 'preflight_ms', 'preflight_run', 'seat', 'target', 'title', 'ts', 'tsn'])
+FAIL validated: malformed unit 'rm role arbiter' refused loudly, nothing written
+FAIL validated: malformed unit 'xxxxxxxxxxxxxxxxxxxx' refused loudly, nothing written
+PASS model: role_unit is a universal field
+3 failure(s)

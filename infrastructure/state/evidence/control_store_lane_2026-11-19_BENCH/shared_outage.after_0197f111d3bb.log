@@ -1,0 +1,105 @@
+ok   model: an outage of one settled fix alone is a death and owes a guard
+ok   model: a shared outage is no death of the items that share it
+ok   model: a shared outage owes no guard on those items
+ok   model: a shared outage still reopens the item and counts as an outage
+ok   model: the host takes the death
+ok   model: `kept` after a shared outage puts the item back to done
+ok   model: a later outage of its own is a death
+ok   model: sharedWith naming the item itself excuses nothing
+ok   model: sharedWith naming an item the ledger does not hold excuses nothing
+ok   model: sharedWith '' excuses nothing
+ok   model: sharedWith None excuses nothing
+ok   model: sharedWith 7 excuses nothing
+ok   model: sharedWith ['x'] excuses nothing
+ok   deadman: shared_hosts exists
+ok   deadman: two items down on one unit for one reason share its host
+ok   deadman: the host's own row never maps to itself
+ok   deadman: one item and the host are one outage too
+ok   deadman: one item broken alone shares nothing
+ok   deadman: no rows, nothing shared
+ok   deadman: the same unit broken for a different reason is not the shared outage
+ok   deadman: reasons that differ only in their digits are one reason
+ok   deadman: different units never share
+ok   deadman: rows that are kept (no reason) or have no promise line are ignored
+ok   deadman: two items on one hook share the hook's host
+ok   deadman: two items on one role share the role's host
+PASS: 0 failure(s)
+ok    fresh stamps: both alive
+ok    stale and missing stamps are faults
+ok    future stamp is a fault
+ok    arm: a timer started 3 s ago is not dead
+ok    arm: stale stamp + old timer still alarms
+ok    arm: a restart buys one limit, not silence
+ok    arm: a missing stamp stays a fault beside a fresh timer
+ok    arm: a future start buys nothing
+ok    arm: paused with its restart armed is excused
+ok    stamps read (dry dispatcher counts)
+ok    live mode: the live stamp, not the fresher dry one
+ok    live mode: a stale live Dispatcher is a fault despite fresh dry ticks
+ok    mode: an owning phase with --apply -> live, ExecStart ignored
+ok    mode: an owning phase without --apply -> dry
+ok    mode: the shipped table's dispatch phase ticks --apply -> live
+ok    mode: --apply in ExecStart -> live
+ok    mode: no --apply -> dry
+ok    mode: systemctl failure -> unknown, not dry
+ok    last_ok_tick null (every tick raised): no stamp, last_tick does not count
+ok    last_ok_tick is the stamp, not last_tick
+ok    pre-Q state (no last_ok_tick key): last_tick
+ok    stamp nan is a fault
+ok    stamp inf is a fault
+ok    stamp True is a fault
+ok    status.json t NaN -> None, not alive
+ok    torn status.json -> None, not fresh
+ok    a dead promise reopens its own item and files nothing new
+ok    the one report line: 2 promises, 1 kept, 1 broken
+ok    the line reaches live_sweep.json
+ok    still dead: no second event
+ok    recovery closes the item itself
+ok    a baseline promise files its fixed id
+ok    a returning outage reuses the id
+ok    repeat 2 reads needs-fold
+ok    a dead arm has a fixed id too
+ok    once, dropped and an item in work are not swept
+ok    a retired fixed id is not swept
+ok    a mass outage is capped and counted
+ok    a shared outage files its host first: [('LIVE_RESTORE_RM_DEAD', None, True), ('A_FIX_1', 'LIVE_RESTORE_RM_DEAD', False), ('C_FIX_1', 'LIVE_RESTORE_RM_DEAD', False)]
+ok    the host filed for a shared outage is not a promise: 2 promises, 0 kept, 2 broken
+ok    a host already broken is not filed again, its sharers still name it: [('A_FIX_1', 'LIVE_RESTORE_RM_DEAD'), ('C_FIX_1', 'LIVE_RESTORE_RM_DEAD')]
+ok    one fix alone shares nothing
+ok    a blind pass reopens nothing and says so
+ok    a filer that raises is reported
+ok    a failed publish is on the report
+ok    the next pass pushes it, and the flag clears
+ok    nothing tried settles nothing
+ok    a blind pass keeps the debt
+ok    a paused promise neither reopens nor ends an outage
+ok    a ledger line cannot hide a baseline line
+ok    a moved reading= path is swept at its new home
+ok    a pause whose restart is gone excuses nothing
+ok    a pause with its restart armed is excused
+ok    timer period parsed
+ok    no period is unknown
+ok    baseline: 48 lines, one id each
+ok    a bad baseline line raises
+ok    a dead ops_watch and a broken timer each ring the phone, though the ledger write was refused: ['RimMandrake: dead-man LIVE_RESTORE_OPS_WATCH is red', 'RimMandrake: dead-man LIVE_RESTORE_RM_DEAD is red']
+ok    the fixed phone line: deadman_check (no AI): ops_watch last ran 61 min ago (limit 50 min). The ledger holds LIVE_RESTORE_OPS_WATCH; restore it, then the sweep puts it back.
+ok    the report says what was pushed: ['pushed deadman:LIVE_RESTORE_RM_DEAD', 'pushed deadman:LIVE_RESTORE_OPS_WATCH']
+ok    still dead: no second ring
+ok    a dead Dispatcher rings too
+ok    ops_watch recovered then died again: a new ring
+ok    a broken non-timer promise goes to the ledger only
+ok    a failing phone is reported and the sweep still writes its line: ['push failed LIVE_RESTORE_OPS_WATCH: OSError: no network']
+ok    no pusher (run without --file-alarms): no phone
+ok    deadman with Todoist retired attempts no HTTP call: []
+ok    the report says the phone route is off, never 'pushed': ['phone off deadman:LIVE_RESTORE_RM_DEAD: Todoist retired as an alert route (owner, 2026-11-19); RM_TODOIST_ALARM_POSTS=1 turns it back on', 'phone off deadman:LIVE_RESTORE_OPS_WATCH: Todoist retired as an alert route (owner, 2026-11-19); RM_TODOIST_ALARM_POSTS=1 turns it back on']
+ok    the sweep still reports with the phone off
+ok    a broken promise is spawned for a drainer, recorded, then raised; a kept one is not raised: [['spawn', '--from', 'P', '--for', 'BENCH', '--needs', 'offline', '--name', 'LIVE_RESTORE_X', '--title', 't', '--why', 'live sweep (deterministic, no AI): LIVE_RESTORE_X'], ['live', 'LIVE_RESTORE_X', '--result', 'broken', '--detail', 'd'], ['raise', 'LIVE_RESTORE_X', '--reason', 'alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)'], ['live', 'LIVE_RESTORE_Y', '--result', 'kept', '--detail', 'back']]
+ok    a new item nobody would pick up is not spawned; a reading on a filed item still goes: {'LIVE_RESTORE_X': 'no receiver: no program wakes BENCH for needs=live: no drainer in /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIX_CONTROL_STORE_COUNTS_AND_TICK_PAUSES.det/src/RimMandrake/rimflow/alarm_routes.json takes it (the Relentless pool that drained BENCH offline is retired), and BENCH is no doorbell reader there', 'LIVE_RESTORE_Y': None, '_publish': 'ok'} [['live', 'LIVE_RESTORE_Y', '--result', 'kept', '--detail', 'back']]
+ok    the real alarm conf (ops_watch_rules.json) files for a receiver, the Conductor seat: None
+ok    a sweep reads its own clone's shards as well: [PosixPath('/a'), PosixPath('/d')]
+write /home/mandrake/.seat-tmp/BENCH/selftest_deadman_8ppsxy95/home/.config/systemd/user/rm-deadman.service
+write /home/mandrake/.seat-tmp/BENCH/selftest_deadman_8ppsxy95/home/.config/systemd/user/rm-deadman.timer
+plan only: pass --apply to write and enable
+ok    install plan writes nothing
+0 failure(s)
+real-ledger replay (model at ee7ca814b5 vs 0197f111d3bb): 70405 events, 9201 items, deaths 603 vs 603, 0 items differ, 0 sharedWith events
