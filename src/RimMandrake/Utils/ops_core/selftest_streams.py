@@ -201,5 +201,25 @@ check("pacing(): carries the accounts with % left and hours to reset", any(a["na
 check("collect() records pacing every 15 min", "pacing" in S.collect.__code__.co_names or "pacing(" in
       Path(S.__file__).read_text().split("def collect")[1].split("def series_path")[0])
 
+# ---- game state and budget come from live readers, each with its age (WIRE_STREAMS_GAME_STATE_OFF_A_FROZEN_SNAPSHOT)
+gr = lambda implies, at=NOW - 30, **kw: S.game_reading({"implies": implies, "evidence": "probe says " + str(implies), "at": at}, **kw)  # noqa: E731
+check("game: probe UP is UP with its reading time", gr("UP")[0] == "UP" and gr("UP")[2] == S.iso(NOW - 30), gr("UP"))
+check("game: probe DOWN is DOWN", gr("DOWN")[0] == "DOWN", gr("DOWN"))
+check("game: LOADING is not UP", gr("LOADING")[0] == "LOADING", gr("LOADING"))
+check("game: a probe that could not look is UNKNOWN with its evidence, never DOWN", gr(None)[0] == "UNKNOWN" and "probe says" in gr(None)[1], gr(None))
+check("game: UP with a bridge call in the last 15 min is DRIVING", gr("UP", last=NOW - 60, now=NOW)[0] == "DRIVING", gr("UP", last=NOW - 60, now=NOW))
+check("game: UP with a stale bridge call stays UP", gr("UP", last=NOW - 3600, now=NOW)[0] == "UP")
+check("game: DOWN is never DRIVING", gr("DOWN", last=NOW - 60, now=NOW)[0] == "DOWN")
+acc = {"lukas": {"week_pct_left": 100.0, "age_min": 8.5, "measured_at": S.iso(NOW - 510), "hours_to_week_reset": 140.0, "stale": False},
+       "steven": {"week_pct_left": 51.0, "age_min": 8.5, "measured_at": S.iso(NOW - 510), "hours_to_week_reset": 142.0, "stale": False},
+       "system": {"week_pct_left": None, "age_min": None, "measured_at": None, "hours_to_week_reset": None, "stale": True}}
+b = S.budget(NOW, acc)
+check("budget: the lowest LEFT among measured accounts, with its age", b["m"] == "MEASURED" and b["v"] == 51.0 and "LEFT" in b["x"]["unit"], b)
+check("budget: an unmeasured account is listed unmeasured, not 0 left", any(r["name"] == "system" and r["pct_left"] is None for r in b["x"]["accounts"]), b)
+check("budget: no account measured is UNMEASURED", S.budget(NOW, {"x": {"week_pct_left": None}})["m"] == "UNMEASURED")
+check("budget: no readings at all is UNMEASURED", S.budget(NOW, {})["m"] == "UNMEASURED")
+src_text = Path(S.__file__).read_text()
+check("streams reads neither pulse_now.json nor the rm-dashboard usage.json", "pulse_now.json" not in src_text and 'STATE_DIR / "usage.json"' not in src_text)
+
 print("\nselftest_streams: %s (%d failed)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
 sys.exit(1 if FAILS else 0)

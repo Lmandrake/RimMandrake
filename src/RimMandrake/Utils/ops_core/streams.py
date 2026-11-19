@@ -429,7 +429,7 @@ def count_harness_mods():
     return len({os.path.dirname(p) for p in glob.glob(str(BENCH / "src/*/*/validation.py"))})
 
 
-def archmagi(now, br=None, snap=None, src=None):
+def archmagi(now, br=None, game=None, src=None):
     """G9 bridge busy over 24 h, and Archmagi's state now: DOWN / UP / DRIVING (an agent called the bridge in the
     last 15 min) / BATCH (a testq Archmagi-lane job is running)."""
     br = br if br is not None else TM.load_bridge()
@@ -444,35 +444,46 @@ def archmagi(now, br=None, snap=None, src=None):
         out["G9"] = M(TM.pct(TM.length(sp), now - lo), last, window_h=round((now - lo) / HOUR, 1),
                       longest_idle_min=round(max([e - s for s, e in TM.gaps(sp, lo, now)] or [0]) / 60, 1),
                       unit="% bridge held, 24 h", note="'game UP and undriven while bridge items are ready' is not measured")
-    state, why = "UNKNOWN", "no pulse snapshot"
-    snap = snap if snap is not None else _read_json(pc.STATE_DIR / "pulse_now.json")
-    chip = next((c for c in (snap or {}).get("chips") or [] if c.get("label") == "rimworld"), None)
-    if chip:
-        title = str(chip.get("title") or "")
-        up = " UP" in f" {title}"
-        state, why = ("UP", title) if up else ("DOWN", title)
-        if up and last and now - last <= 15 * 60:
+    state, why, as_of = game_reading(game if game is not None else probe_game(), last, now, src)
+    return out, {"state": state, "why": why, "last_bridge_call": iso(last), "as_of": as_of}
+
+
+def probe_game():
+    """The live game reading: rimflow.probe.measure() (process and bridge port), never a file a daemon wrote once."""
+    rf = os.path.join(os.path.dirname(UTILS), "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import probe
+    return probe.measure()
+
+
+def game_reading(g, last=None, now=None, src=None):
+    """probe reading -> (state, why, as_of). A probe that could not look is UNKNOWN with its evidence, never DOWN."""
+    as_of = iso(g["at"]) if g.get("at") else None
+    why = str(g.get("evidence") or "no evidence")
+    state = g.get("implies")
+    if state not in ("UP", "DOWN", "LOADING"):
+        return "UNKNOWN", why, as_of
+    if state == "UP":
+        if last and now and now - last <= 15 * 60:
             state = "DRIVING"
-        if up and src and any((r["job"].get("lane") or "").lower() == "archmagi" for r in src.get("running") or []):
+        if src and any((r["job"].get("lane") or "").lower() == "archmagi" for r in src.get("running") or []):
             state = "BATCH"
-    return out, {"state": state, "why": why, "last_bridge_call": iso(last)}
+    return state, why, as_of
 
 
-def budget(now):
-    import usage
-    st = _read_json(pc.STATE_DIR / "usage.json") or {}
-    p = usage.panel(st, usage.config(), now)
-    rows = []
-    for a in p["accounts"]:
-        if a["role"] != "owned" or a["pct"] is None:
-            continue
-        left_d = max((a["resets_at"] or now) - now, 0) / DAY
-        rows.append({"name": a["name"], "pct": a["pct"], "state": a["state"], "per_day_left": round((100 - a["pct"]) / left_d, 1)
-                     if left_d >= 0.04 else None, "resets_in_d": round(left_d, 2), "asof": iso(a["measured_at"])})
-    if not rows:
-        return U("no account usage measured (usage.json empty or stale)")
-    worst = max(rows, key=lambda r: r["pct"])
-    return M(worst["pct"], TM.epoch(worst["asof"]), accounts=rows, unit="% of the week used (highest account)")
+def budget(now, acc=None):
+    """The lowest week LEFT among the accounts account_usage measured, with the reading's time."""
+    if acc is None:
+        import account_usage
+        acc = account_usage.read_now(now)["accounts"]
+    rows = [{"name": n, "pct_left": a.get("week_pct_left"), "hours_to_reset": a.get("hours_to_week_reset"), "asof": a.get("measured_at"),
+             "stale": bool(a.get("stale"))} for n, a in sorted(acc.items())]
+    known = [r for r in rows if r["pct_left"] is not None and r["asof"]]
+    if not known:
+        return U("no account has a week reading (account_usage latest.json absent or all unmeasured)")
+    worst = min(known, key=lambda r: r["pct_left"])
+    return M(worst["pct_left"], TM.epoch(worst["asof"]), accounts=rows, unit="% of the week LEFT (lowest account)")
 
 # ---------------------------------------------------------------------------------------------- badges + needs
 STREAMS = (   # key, title, lead measure, how the lead reads, good band (lo, hi) or None
@@ -709,7 +720,7 @@ def backfill(days=7, step_h=1.0, path=None, events=None, src=None, now=None):
         ms.update(guard(art_rates, ("A2", "A3", "A5"), t, art))
         ms.update(guard(live_measures, ("G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8"), sub, cut, t, hm))
         ms["G1"] = U(NO_REBUILD)
-        g9, _ = archmagi(t, br, snap={"chips": []})
+        g9, _ = archmagi(t, br, game={"implies": None, "evidence": "backfill: no game reading for that hour", "at": t})
         ms.update(g9)
         drove = br.get("spans") and TM.length(TM.clip(br["spans"], t - HOUR, t)) > 0
         busy = TM.length(_spans(sub["attempts"], [], t - HOUR, t, t)) if sub["attempts"] else 0
