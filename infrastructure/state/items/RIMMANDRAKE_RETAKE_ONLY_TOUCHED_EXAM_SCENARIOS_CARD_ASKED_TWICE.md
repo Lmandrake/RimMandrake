@@ -41,6 +41,34 @@ implement it now and don't return to me with this item, ok?"*
 - The four outcomes stay distinct: retaken, carried forward, whole exam retaken because the map could not tell, and
   the retake could not run.
 
+## the map (DESIGN DECISION 2026-11-18, the Conductor's delegate; it binds the builder like the acceptance section)
+The map's unit is the LEAF, not the file. Every Reader is handed the whole `tree.json` and `sheet.md`
+(roles/designer_exam.md step 4), so a file-level read record would say every repair touches every scenario. Where the
+text above says "file", read "leaf".
+- **Recorded at exam time:** `exam.json` gains `reads`: `{scenario id: [leaf ids its Readers said they relied on]}`,
+  written when the exam is scored (step 4 already asks each Reader for "the leaf it relied on"). A scenario's
+  `expect_source` leaf always counts as read too.
+- **A leaf is touched** when `concept_tree.leaf_hash` differs between the tree the exam was taken on and the repaired
+  tree, or a `sheet.md` line tagged `[leaf:<id>]` was added, removed or changed.
+- **A scenario is retaken** when it read a touched leaf, or its own text is new or changed. Every other answer is
+  carried, marked with the exam it came from.
+- **The whole exam is retaken, never a guess,** when: a leaf was added or removed; tree content outside `leaves`
+  (and outside `coverage`) changed; a sheet line with no leaf tag changed; `reads` is missing, lacks a scenario or
+  names a leaf the exam's tree lacks; a tree, sheet or exam cannot be read; the exam was taken on another tree.
+  Every exam that exists today has no `reads`, so its first retake is whole; partial retakes start with the next exam.
+- **Not inputs:** files a Reader never sees (`scenes.json`, `record.json`, the floor). A repair to those alone is
+  "looked, none touched".
+- **The control run** is carried when its broken leaf is untouched and none of its `missed_ids` is retaken; otherwise
+  it is made again with `exam-control` and re-run.
+- One pure function carries all of it: `designer_stage.exam_retake_plan(old_tree, new_tree, old_sheet, new_sheet,
+  exam, scenarios=None)` -> `{"mode": "none"|"partial"|"whole", "retake", "carry", "touched_leaves", "why"}`.
+Measured over the git history of eight concepts' `tree.json` (2026-11-18): 30 of 45 tree edits changed leaves only,
+with a median of 8% of the leaves changed; 13 added or removed a leaf; 2 changed tree content outside the leaves.
+
+Acceptance test for the map: `python3 src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py` (33 checks; on
+b4c47bd15 in a throwaway `git clone --shared`, watched: 32 red, 1 green). It stands beside `selftest_exam_partial_retake.py`
+(A1 to A6 through the stage machine), which the building run still writes first.
+
 ## refs
 file: src/RimMandrake/rimflow/designer_stage.py
 file: src/RimMandrake/rimflow/maturation_autonomy.py
@@ -48,6 +76,7 @@ file: src/RimMandrake/rimflow/coverage_judge.py
 
 ## verify
 python3 src/RimMandrake/Utils/run_selftests.py --only selftest_designer_stage selftest_maturation_autonomy selftest_exam_partial_retake
+python3 src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py
 
 ## criteria
 - A1: a repair that touches files read by 2 of 10 scenarios re-runs exactly those 2; the other 8 answers are carried
