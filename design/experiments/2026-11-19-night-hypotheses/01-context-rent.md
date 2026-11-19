@@ -86,8 +86,9 @@ make cutting look worse, not better.
 entering context costs Fable 80 times what re-reading it costs, and Opus 40 times [from `MODEL_PRICES`]. So the
 lever is *what a run reads into context and how often it starts*, not how long it runs. Two more readings follow
 from that, both [measured]:
-- `tools/what_fills_context.py`: tool results put 50.1 million characters into helpers' contexts; `Read` carries
-  49.4% in 923 calls, and 86% of that is in results over 20,000 characters; `Bash` carries 50.3% in 9,893 calls.
+- `tools/what_fills_context.py`: tool results put 40.5 million characters into helpers' contexts, each result counted
+  once; `Read` carries 40.5% in 581 calls, and 88% of that is in results over 20,000 characters; `Bash` carries 59.3%
+  in 9,505 calls. (The tool's first version counted 9.6 million characters twice; `06-large-reads.md`.)
 - `tools/entry_and_ttl.py`: every session writes its starting context new (median 56,625 tokens written, 11,266
   read at the first request).
 

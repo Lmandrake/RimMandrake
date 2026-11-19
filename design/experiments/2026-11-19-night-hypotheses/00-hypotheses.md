@@ -88,16 +88,18 @@ the cheapest experiment, and where it stands this morning.
 - **Claim.** A helper should never read a file over about 20,000 characters into its own context. A script or a
   cheaper reader returns the lines that matter.
 - **Overturns.** Reading the whole file is the careful thing to do.
-- **Fact.** Tool results put 50.1 million characters into helpers' contexts. 923 `Read` calls carry 49.4% of that,
-  and 86% of what `Read` carries is in results over 20,000 characters. 9,893 `Bash` results carry the other half
-  [measured: `tools/what_fills_context.py`]. Entry cost is 36% of detached spend, and 49% for Fable, whose cache
+- **Fact.** Tool results put 40.5 million characters into helpers' contexts, each result counted once. 581 `Read`
+  calls carry 40.5% of that, and 88% of what `Read` carries is in results over 20,000 characters. 9,505 `Bash`
+  results carry 59.3% [measured: `tools/what_fills_context.py`, corrected in `06-large-reads.md`]. Entry cost is 36% of detached spend, and 49% for Fable, whose cache
   write is priced at 80 times its cache read [measured: `01-context-rent.md`; the ratio is from `MODEL_PRICES`].
 - **False if.** Runs that digest big files miss facts a whole read would have caught. The biome second-reader runs
   are the hard case: their job *is* to read every file to the end, and the owner had already caught trimmed
   readings (`RIMMANDRAKE_CHECK_RESUMED_READERS_PAGES_FOR_TRIMMED_READING`).
 - **Cheapest experiment.** Replay: for each big `Read`, count how many of its lines the session later quotes or
   edits. A low share means the digest loses little. About an hour of scripting. Not run.
-- **Stands.** The fact is measured. The claim is risky exactly where reading in full was his order.
+- **Stands.** Replayed in `06-large-reads.md`. Large reads are 36% of tool text, not half. Later turns quote,
+  edit or name 13% of their lines. 94% of large reads are second readers' reads, which he ordered whole; outside
+  that class the saving ceiling is about 1% of detached spend. Not worth a rule.
 
 ### `RIMMANDRAKE_RESTART_FRESH_AFTER_LONG_STOP_COLD_RESUME_REWRITES`
 
@@ -178,7 +180,8 @@ the cheapest experiment, and where it stands this morning.
 - **Cheapest experiment.** Replay: for last night's closed fix tickets, take the ticket text as the prediction and
   the commit's line count as the result; see whether the largest overshoots are the fixes that later drew claims.
   Only one file has per-round claim data, so tonight it would have been four data points. Not run.
-- **Stands.** Untested. The most speculative of the ten, and the one I would most like to see tried.
+- **Stands.** The sealed prediction is untested. A weaker form was replayed in `05-builder-surprise.md`: does the
+  builder's own report, admitting a doubt or not, predict a later fault? No: 8 of 93 and 5 of 56, 9% each.
 
 ---
 

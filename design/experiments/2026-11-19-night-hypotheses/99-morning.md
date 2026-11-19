@@ -29,13 +29,13 @@ New text is the expensive part. For Fable, new text costs 80 times more than old
 | Cut a helper when its context gets large. | Refuted. A replay showed cuts cost more. |
 | Let helpers share one starting context. | Not tested. It could save about 14 million a day. |
 | Give each helper only the rules of its role. | Cost measured at 15% of spend. Value not tested. |
-| Do not read large files whole into context. | Fact measured. Large reads are half of all tool text. |
+| Do not read large files whole into context. | Replayed. Large reads are 36% of tool text. Second readers make 94%. |
 | After a long stop, start fresh. Do not resume. | Cost measured. A cold resume costs 0.5 million. |
 | Make a "left open" note name who acts next. | True, but too small to build. It wastes 0.4%. |
 | Split the Conductor log into acts and records. | Supported. Half the entries ask for nothing. |
 | Act on a card's recommendation, and let you undo. | Refuted. You change the answer 4 times in 10. |
 | Give factory work a fixed share of tokens. | Numbers measured. The decision is yours. |
-| Check a fix only when it surprises its builder. | Not tested. It is the boldest idea. |
+| Check a fix only when it surprises its builder. | Replayed, against. Sure and doubtful reports failed equally. |
 
 ## What the experiments showed
 
@@ -57,7 +57,6 @@ New text is the expensive part. For Fable, new text costs 80 times more than old
 - **Share the starting context.** Launch two one-turn helpers from one fixed path. Read what the second one
   writes. This is the cheapest test with the largest possible gain. It needs your word, because it launches runs.
 - **Fresh start against cold resume.** At the next long stop, resume half the lanes and restart the other half.
-- **Large reads.** Count how much of each large file a session uses later. This is a replay. It costs little.
 - **A filtered log tail.** Hide the repeated lines from the Conductor for ten turns. Check that no answer changes.
 
 ## What I would NOT do, and why
