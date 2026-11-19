@@ -2192,6 +2192,8 @@ def program_result(st, verdict, run):
         return None
     if isinstance(verdict.get("contract"), dict) and verdict["contract"].get("advisory"):
         return None     # advisory where park_summary and coverage_judge also read it
+    if verdict.get("criteria_suspect"):     # as designer_can_fix (RIMMANDRAKE_HONOUR_CRITERIA_SUSPECT_IN_PROGRAM_RESULT_TOO)
+        return None
     if verdict.get("tree") and st.get("tree_now") and verdict["tree"] != st["tree_now"]:
         return None
     judge = verdict.get("judge") or "the coverage judge"

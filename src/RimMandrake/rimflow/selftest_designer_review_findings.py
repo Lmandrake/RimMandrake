@@ -336,6 +336,7 @@ SECTIONS = [
     packet_failure_leaves_no_run,
     malformed_run_files_second_pass,
     lambda tmp: ask_reviewer_is_author_by_id(),
+    lambda tmp: program_honours_criteria_suspect(),
 ]
 
 
