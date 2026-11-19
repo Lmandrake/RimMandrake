@@ -325,8 +325,20 @@ def remote_argv(host, args):
     # a far clone older than game_instance.py would ignore the name and take game a's lock on b's behalf
     older = ('test -f src/RimMandrake/Utils/game_instance.py || { echo "%s on %s has no game_instance.py: update it"; exit 2; }; '
              % (RUNNER_DIR, machine)) if inst else ""
-    cmd = "cd %s && %s%spython3 src/RimMandrake/rimflow/host_guard.py %s" % (
-        RUNNER_DIR, older, "RM_GAME_INSTANCE=%s " % inst if inst else "", " ".join(shlex.quote(a) for a in args))
+    # RIMMASTER_FIX_REMOTE_TAKE_HOLDS_LOCK_NOBODY_READS: the command ran with whatever the login shell gave it, from
+    # ~/rm/runner's env file, older than ~/rm/gameb's code: b's take landed under <RM_DATA_ROOT>/instances while the
+    # game's tools read RM_INSTANCES_ROOT (11-07: take printed gen 1, status read FREE). The far clone's own env file
+    # now sets the environment, so the take, a status and that clone's rw_game.sh name one lock file.
+    env = "infrastructure/stevedesktop/testcentre_env.sh"
+    if inst:
+        sourced = ('test -f %s || { echo "%s on %s has no %s: update it"; exit 2; }; . %s; '
+                   'test -n "${RM_INSTANCES_ROOT:-}" || { echo "%s on %s: %s sets no RM_INSTANCES_ROOT, so game %s\'s '
+                   'lock cannot be found: update it"; exit 2; }; ' % (env, RUNNER_DIR, machine, env, env, RUNNER_DIR,
+                                                                  machine, env, inst))
+    else:
+        sourced = "if test -f %s; then . %s; fi; " % (env, env)
+    cmd = "cd %s && unset RM_INSTANCES_ROOT; %s%s%spython3 src/RimMandrake/rimflow/host_guard.py %s" % (
+        RUNNER_DIR, older, sourced, "RM_GAME_INSTANCE=%s " % inst if inst else "", " ".join(shlex.quote(a) for a in args))
     return ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=8", "-o", "LogLevel=ERROR", target, cmd]
 
 
