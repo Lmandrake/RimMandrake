@@ -1,0 +1,2 @@
+ops_episodes notes on a COUNTER reading (memory.json kind 'counter', e.g. codex.week_used_pct) grade its per-hour rate 'v', not the level 'last': a note '< 62' against codex used % (level 44) compared 1.69 %/h and holds trivially. Read the '(now X)' echo before trusting a note; note counters in per-hour terms. Note 20261119T0330Z#1 is void for this reason.
+home: src/RimMandrake/rimflow/roles/operations.md
