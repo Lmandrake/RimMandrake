@@ -826,8 +826,13 @@ def t_a_refused_move_puts_the_parked_identical_copy_back(a, b):
     write(a, ADDED, "origin's version\n")
     write(a, "f.txt", LINES.replace("line 4", "LINE 4"))
     real = S._reset_keep_moved
+    gd = sh(a, "rev-parse", "--absolute-git-dir")
+    seen = []
 
-    def boom(*args, **kw):
+    def boom(*args, **kw):          # record that the park really happened before the refusal: else this proves nothing
+        seen.append((os.path.lexists(os.path.join(a, ADDED)),
+                     [n for n in os.listdir(gd) if n.startswith(S.ADDED_PARK)
+                      and os.path.isfile(os.path.join(gd, n, ADDED))]))
         raise S.Refused("planted: the reset refused after the park")
     S._reset_keep_moved = boom
     try:
@@ -835,9 +840,123 @@ def t_a_refused_move_puts_the_parked_identical_copy_back(a, b):
     finally:
         S._reset_keep_moved = real
     assert why and "planted" in why, why
+    assert seen and seen[0][0] is False and seen[0][1], f"the file was never parked before the refusal: {seen}"
     assert open(os.path.join(a, ADDED)).read() == "origin's version\n", "the parked copy did not come back"
-    gd = sh(a, "rev-parse", "--absolute-git-dir")
     assert not [n for n in os.listdir(gd) if n.startswith(S.ADDED_PARK)], "the park outlived the refusal"
+
+
+def _writer_in_the_gap(S, dst, text):
+    """Patch Path.mkdir so a save lands at dst when the restore makes dst's parent: the step every restore (old
+    check-then-rename and new) takes after any 'is it free?' check and before the move. -> the undo."""
+    real = S.Path.mkdir
+
+    def mkdir(self, *a, **kw):
+        r = real(self, *a, **kw)
+        if os.path.abspath(str(self)) == os.path.dirname(os.path.abspath(dst)) and not os.path.lexists(dst):
+            with open(dst, "w") as f:
+                f.write(text)
+        return r
+    S.Path.mkdir = mkdir
+    return lambda: setattr(S.Path, "mkdir", real)
+
+
+def t_a_restore_never_overwrites_a_save_landing_after_its_check(a, b):
+    """RIMMANDRAKE_HARDEN_PUBLISH_PARK_RESTORE_RACE_CODEX_FOUND (1). A writer saves at the parked path between the
+    restore's 'is it free?' check and the move back: that save is somebody's work and must survive; the parked copy
+    stays in the park, which is kept."""
+    import seat_sync as S
+    write(a, ADDED, "origin's version\n")
+    g = S.Git(a)
+    park, moved = S._park_added(g, [ADDED])
+    dst = os.path.join(a, ADDED)
+    undo = _writer_in_the_gap(S, dst, "A SAVE MADE IN THE GAP\n")
+    try:
+        S._unpark_added(g, park, moved)
+    finally:
+        undo()
+    assert open(dst).read() == "A SAVE MADE IN THE GAP\n", "the restore overwrote a save it did not park"
+    assert open(os.path.join(park, ADDED)).read() == "origin's version\n", "the parked copy was lost"
+
+
+def t_a_stop_tracking_restore_never_overwrites_a_save_in_the_gap(a, b):
+    """The same race in the sibling park (files upstream stopped tracking, rm-untrack-keep-*), found by Codex on the fix:
+    the reset refuses, and a save lands at the kept path before it is moved back."""
+    import seat_sync as S
+    write(a, "kept.txt", "ours, untracked upstream\n")
+    sh(a, "add", "kept.txt")
+    sh(a, "commit", "-q", "-m", "kept", "--", "kept.txt")
+    g = S.Git(a)
+    head = sh(a, "rev-parse", "HEAD")
+    dst = os.path.join(a, "kept.txt")
+    undo = _writer_in_the_gap(S, dst, "A SAVE MADE IN THE GAP\n")
+    real_run = S.Git.run
+
+    def run(self, *args, **kw):
+        if args[:3] == ("reset", "-q", "--keep"):
+            raise S.Refused("planted: the reset refused")
+        return real_run(self, *args, **kw)
+    S.Git.run = run
+    try:
+        why = None
+        try:
+            S._reset_keep_moved(g, head, head + "~1", ["kept.txt"])
+        except S.Refused as e:
+            why = str(e)
+    finally:
+        S.Git.run = real_run
+        undo()
+    assert why and "planted" in why, why
+    assert open(dst).read() == "A SAVE MADE IN THE GAP\n", "the restore overwrote a save it did not park"
+    gd = sh(a, "rev-parse", "--absolute-git-dir")
+    kept = [os.path.join(gd, n, "kept.txt") for n in os.listdir(gd) if n.startswith("rm-untrack-keep")]
+    assert kept and open(kept[0]).read() == "ours, untracked upstream\n", f"the kept copy was lost: {kept}"
+
+
+def t_a_park_dir_that_cannot_be_made_is_a_refusal(a, b):
+    """Codex on the fix: making the park dir raised a bare OSError (ENOSPC), which skipped every caller's Refused
+    rollback. It must be a Refused."""
+    import seat_sync as S
+    real = S.Path.mkdir
+
+    def full(self, *a, **kw):
+        if S.ADDED_PARK in str(self):
+            raise OSError(28, "No space left on device")
+        return real(self, *a, **kw)
+    write(a, ADDED, "origin's version\n")
+    S.Path.mkdir = full
+    try:
+        S._park_added(S.Git(a), [ADDED])
+        raised = None
+    except S.Refused as e:
+        raised = "Refused"
+    except OSError as e:
+        raised = "OSError %s" % e
+    finally:
+        S.Path.mkdir = real
+    assert raised == "Refused", raised
+    assert open(os.path.join(a, ADDED)).read() == "origin's version\n", "the file left its path"
+
+
+def t_two_parks_in_one_second_never_share_a_dir(a, b):
+    """RIMMANDRAKE_HARDEN_PUBLISH_PARK_RESTORE_RACE_CODEX_FOUND (2). A retained park (a copy that could not come
+    back) is the only copy left: a second park in the same process and second must not reuse its dir."""
+    import seat_sync as S
+    g = S.Git(a)
+    real = S.time.strftime
+    S.time.strftime = lambda fmt, *t: "20261118_180000"
+    real_rand, draws = S.os.urandom, iter([b"\0\0\0", b"\0\0\0", b"\1\1\1"])
+    S.os.urandom = lambda n: next(draws, None) or real_rand(n)     # the second park draws the first's name once
+    try:
+        write(a, ADDED, "first\n")
+        p1, _ = S._park_added(g, [ADDED])
+        write(a, ADDED, "second\n")
+        p2, _ = S._park_added(g, [ADDED])
+    finally:
+        S.time.strftime = real
+        S.os.urandom = real_rand
+    assert p1 != p2, f"two parks share {p1}"
+    assert open(os.path.join(p1, ADDED)).read() == "first\n", "the second park overwrote the retained first"
+    assert open(os.path.join(p2, ADDED)).read() == "second\n"
 
 
 def t_refuses_on_mnt(a, b):

@@ -176,9 +176,36 @@ def untracked_added(g: Git, head: str, target: str, keep: list[str] | None = Non
     return same, [u for u in ul if u not in set(same)]
 
 
+def _new_park(prefix: str, gd: Path) -> Path:
+    """A fresh park dir, made exclusively: a retained park is the only copy left, so it is never reused (two parks can
+    share a second and a pid). A failure to make it (ENOSPC, EACCES) is a Refused, so callers roll back as for any
+    refusal (RIMMANDRAKE_HARDEN_PUBLISH_PARK_RESTORE_RACE_CODEX_FOUND)."""
+    for _ in range(64):
+        park = gd / f"{prefix}-{time.strftime('%Y%m%d_%H%M%S')}-{os.getpid()}-{os.urandom(3).hex()}"
+        try:
+            park.mkdir()
+            return park
+        except FileExistsError:
+            continue
+        except OSError as e:
+            raise Refused(f"cannot make a park dir under {gd}: {e}; nothing was moved") from e
+    raise Refused(f"64 park names under {gd} were all taken; nothing was moved")
+
+
+def _restore_noreplace(src: Path, dst: Path) -> bool:
+    """Move a parked path back only if nothing is at dst, atomically (renameat2 RENAME_NOREPLACE): a check-then-rename
+    replaced a save landing between the two. -> False (the copy stays parked) when dst is taken or the move fails."""
+    try:
+        dst.parent.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        return False
+    libc = ctypes.CDLL(None, use_errno=True)
+    return libc.renameat2(-100, os.fsencode(src), -100, os.fsencode(dst), 1) == 0   # AT_FDCWD, RENAME_NOREPLACE
+
+
 def _park_added(g: Git, same: list[str]) -> tuple[Path, list[str]]:
     """Rename each identical untracked file aside inside .git (same filesystem, so instant). -> (park dir, moved)."""
-    park = Path(g.run("rev-parse", "--absolute-git-dir").strip()) / f"{ADDED_PARK}-{time.strftime('%Y%m%d_%H%M%S')}-{os.getpid()}"
+    park = _new_park(ADDED_PARK, Path(g.run("rev-parse", "--absolute-git-dir").strip()))
     moved: list[str] = []
     try:
         for u in same:
@@ -187,24 +214,21 @@ def _park_added(g: Git, same: list[str]) -> tuple[Path, list[str]]:
             os.rename(os.path.join(g.repo, u), dst)
             moved.append(u)
     except OSError as e:
-        _unpark_added(g, park, moved)
-        raise Refused(f"parking the untracked copy of {u} aside failed: {e}; nothing was moved") from e
+        stuck = _unpark_added(g, park, moved)
+        raise Refused(f"parking the untracked copy of {u} aside failed: {e}; "
+                      + (f"{len(stuck)} parked copy(ies) could not go back and are kept in {park}: {', '.join(stuck[:4])}"
+                         if stuck else "nothing was moved")) from e
     return park, moved
 
 
-def _unpark_added(g: Git, park: Path, moved: list[str]) -> None:
-    """Put every parked file back at its path (the reset refused, or died). A path re-created meanwhile is left
-    alone and its copy stays in the park."""
-    stuck = False
-    for u in moved:
-        dst = Path(g.repo) / u
-        if os.path.lexists(dst):
-            stuck = True
-            continue
-        dst.parent.mkdir(parents=True, exist_ok=True)
-        os.rename(park / u, dst)
+def _unpark_added(g: Git, park: Path, moved: list[str]) -> list[str]:
+    """Put every parked file back at its path (the reset refused, or died). -> the paths whose copy stays in the park.
+
+    A path re-created meanwhile is left alone (_restore_noreplace), and its copy stays in the park."""
+    stuck = [u for u in moved if not _restore_noreplace(park / u, Path(g.repo) / u)]
     if not stuck:
         shutil.rmtree(park, ignore_errors=True)
+    return stuck
 
 
 def _drop_park_if_restored(g: Git, park: Path, moved: list[str]) -> str:
@@ -259,7 +283,10 @@ def reset_keep(g: Git, head: str, target: str, keep: list[str] | None = None) ->
         note = _reset_keep_moved(g, head, target, keep)
     except BaseException:
         if park is not None and g.run("rev-parse", "HEAD", check=False).strip() != target:
-            _unpark_added(g, park, parked)          # the branch did not move: put our copies back
+            stuck = _unpark_added(g, park, parked)  # the branch did not move: put our copies back
+            if stuck:
+                print(f"seat_sync: {len(stuck)} parked copy(ies) could not go back (the path was taken meanwhile) "
+                      f"and are kept in {park}: {', '.join(stuck[:4])}", file=sys.stderr)
         raise
     if park is not None:
         back = _drop_park_if_restored(g, park, parked)
@@ -272,8 +299,7 @@ def _reset_keep_moved(g: Git, head: str, target: str, keep: list[str]) -> str:
         g.run("reset", "-q", "--keep", target)
         _check_displaced(g, head, target)
         return ""
-    stamp = time.strftime("%Y%m%d_%H%M%S")
-    aside = Path(g.run("rev-parse", "--absolute-git-dir").strip()) / f"rm-untrack-keep-{stamp}"
+    aside = _new_park("rm-untrack-keep", Path(g.run("rev-parse", "--absolute-git-dir").strip()))
     moved, notes = [], []
     nul = "\0".join(keep) + "\0"
     try:
@@ -289,14 +315,7 @@ def _reset_keep_moved(g: Git, head: str, target: str, keep: list[str]) -> str:
             g.run("reset", "-q", "--pathspec-from-file=-", "--pathspec-file-nul", inp=nul)
             raise
     finally:
-        stuck = []
-        for k in moved:
-            src, dst = aside / k, Path(g.repo) / k
-            if os.path.lexists(dst):
-                stuck.append(k)
-                continue
-            dst.parent.mkdir(parents=True, exist_ok=True)
-            os.rename(src, dst)
+        stuck = [k for k in moved if not _restore_noreplace(aside / k, Path(g.repo) / k)]
         if not stuck:
             shutil.rmtree(aside, ignore_errors=True)
         else:
