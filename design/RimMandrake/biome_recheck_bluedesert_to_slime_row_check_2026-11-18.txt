@@ -9,3 +9,9 @@ probe (an invented source name must be reported): seen
 design/concepts/Cauldron/rewrite_choices.md: rows=214 second_reader_rows=88 lost=31 moved=20 (any move: 28) reshaped=5 folded=1 kept=156 other=1 named_sources=15 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=23 listed_paths_missing=none
 exit status: 0
 probe (an invented source name must be reported): seen
+
+Continuation run, 2026-11-18 (counting script rebuilt in its own mktemp folder from the rules above; rebuilt script re-run on the Cauldron page gave the same figures as the first run: rows=214 second_reader_rows=88 lost=31 moved=20).
+
+design/concepts/Contagion/rewrite_choices.md: rows=236 second_reader_rows=120 lost=34 moved=7 (any move: 16) reshaped=5 folded=2 kept=188 other=0 named_sources=27 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=38 listed_paths_missing=none
+exit status: 0
+probe (an invented source name must be reported): seen

@@ -36,9 +36,10 @@ is strongest near vents, that the gas rides a daily wind heading, and that a bla
 **What I changed in the design, and why**
 
 - *What the place does to the ship* now quotes his words, describes the wear as built (hourly, to a floor, one
-  message, shared with the Forge), names the deck part, and says how it sits with the shield frame: the frame does
-  not see acid air today and the sampler lives in the free tier. Nothing in it is this page's proposal; the one
-  reading (acid air as "vapor" for the light screen) is flagged.
+  message, shared with the Forge), names the deck part, and says how it sits with the shield frame. Corrected later the
+  same day while reading the Contagion: this paragraph first said the frame does not see the Cauldron's air. It
+  does. A patch marks the Cauldron as fouled air and the frame's particulate hazard reads that mark, so the frame's
+  own slow wear runs here beside the acid sampler. Nothing in the section is this page's proposal.
 - *When the Empire arrives* opens with his sentence that raiders suffer the air; the armour question in `NEEDS HIM`
   is rewritten around the conflict between that sentence and the build.
 - *NEEDS HIM* 1 (the scab) now carries the three dated records in order and says it is not revived. A fourth

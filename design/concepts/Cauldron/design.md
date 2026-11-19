@@ -258,12 +258,14 @@ own, said a month earlier, and it is built. This design adds no hull system and 
   hull liner rig, *"glazes the whole ship's skin against acid, from ground vexxith plate"*
   (`BIOME_SHIP_CONTRIBUTIONS_1`). So the hull's answer runs through the living giant.
 - **How it sits with the shield frame.** The shared frame is `src/RimUtinni/ShipShields/` (his shield rulings of
-  2026-09-02). It sees three hazards today (extreme heat, extreme cold, sand in the weather) and acid air is not
-  one of them; the Cauldron's sampler is the biome's own and lives in the free tier, where the shared file says a
-  ship touch belongs to the campaign tier. Folding the sampler under the frame is owed shared work, not a design
-  question. Whether a shield answers acid air is `UNSETTLED`: his words give the light screen *"wind, ash, vapor,
-  bio contamination, spores, smoke, sand, and rain damage completely"*, and reading acid air as vapor is this
-  page's reading, flagged as such.
+  2026-09-02). It already sees the Cauldron: the frame's particulate hazard reads a fouled-air mark, and a patch
+  that ships with the Warscar mod puts that mark on the Wastes, the Cauldron and the Contagion
+  (`src/RimMandrake/Scarlands/Patches/RM_AerosolScreen_PollutedBiomes.xml`). So an unscreened ship here takes two
+  wears at once: the frame's slow fouling of the things at the ship, which a shield in particulate mode stops, and
+  the Cauldron's own acid sampler on the substructure, which lives in the free tier and which only vexxith plate
+  or the liner answers. His words give the light screen *"wind, ash, vapor, bio contamination, spores, smoke, sand,
+  and rain damage completely"*. Whether a raised screen should also quiet the acid sampler is `UNSETTLED`; folding
+  the sampler under the frame is owed shared work.
 - **Hands-on work.** An older pitch that he neither took nor struck on 2026-09-28: the ship *"becomes the biome's
   newest tree"*, growing crystal scab that is scrubbed off for trace metal. It is not built and not promised.
   Two days later he declined GPT's extension of it by name; see `NEEDS HIM`, where it is listed and not revived.

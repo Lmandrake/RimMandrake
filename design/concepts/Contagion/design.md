@@ -7,6 +7,15 @@ what happened to every idea in them is in `design/concepts/Contagion/rewrite_cho
 yet. The Contagion is one of the six biome mods HELD BY OWNER: this is a design document only and it launches
 nothing.
 
+**Second reader, 2026-11-18:** a second agent that did not write this page read the older Contagion files again and
+repaired it. What the place does to the ship now rests on his shield rulings of 2026-09-02 and on what is built: the
+Contagion is already marked as a fouled-air biome and the shared shield frame already wears an unscreened ship here.
+The first read's goo on the hull was its own proposal and is withdrawn. Two creatures the first read had no line for
+are in (the ogleknot and the Unblinking), the blistered bulloo is named, and two scenes now say plainly what the
+build does not do yet. What changed and why is at the top of `rewrite_choices.md`. The locked sheet and tree
+(`sheet.md`, `tree.json`) describe a colony that settles the valley; they are not edited here, and a later Designer
+run reconciles them with this page.
+
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/Contagion/`
 (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its path by sitting here. Nothing in
 the pipeline reads it by name yet. The Contagion has a locked sheet (`sheet.md`, Design Version 0.1.0, with his
@@ -39,7 +48,8 @@ tiles, red pools on the map). It is not a sea and the ship lands on it like any 
 This is the old war's bioweapon with the governor off. Everywhere else it is starved of water; here it has all it
 wants, so it mutates faster than it can finish anything. *"Ferociously effective at infecting, hopeless at
 holding."* The storm is its cage: the dayside sun sterilises whatever leaves the cloud, which is why the rivers
-that rise here *"arrive in the lowlands clean."*
+that rise here *"arrive in the lowlands clean."* *"The dry, bright edge is its quarantine; the desert does
+not fight it, the desert just stops shielding it."*
 
 His register for everything that lives here, typed 2026-09-27: *"bizarre one or two-word descriptions of the
 strangeness of the thing. Eyegore. Fleshsop. Bloody Mess."* And one order: *"really gross fleshy flapping skin
@@ -52,7 +62,9 @@ crew's own bodies, a little every day they work under it. The crew is from the d
 clear sky. Here the clear sky is what kills, and it is also the moment the hull can be seen.
 
 His answers of 2026-11-10: the Burn and lasting mutation are the spine; clear skies allow *"one dash, at a cost"*;
-and a trip for tissue that misses still brings *"other useful tissue"*.
+and a trip for tissue that misses still brings *"other useful tissue"*. And two he typed on 2026-10-15. What
+touches a body: *"Bloom time, stronger in burn, and contact."* What the Sunbeam does about it: *"Stops current
+mutations. No protection if you get exposed again later."*
 
 ## The clock on any stop
 
@@ -108,17 +120,25 @@ slime.
   work, for whoever is willing to stand in the light.
 - **The water's edge.** The red pools are where the Bloodlurk waits: *"all forelimb and siphon, that holds still
   better than anything alive should."*
-- **Nothing here feeds you.** No forage, no meat worth the name. The larder is the ship's.
+- **Nothing here feeds you.** No forage, no meat worth the name, no fish (*"the red water is the organism's
+  excreted spore/toxin load"*). The larder is the ship's. Nor is the red a drink: by his thirst ruling of
+  2026-10-17, red slime swallowed as a last resort *"is Contagion: full mutation exposure right away."*
+- **The ground gives you away.** Gorestalk stands *"like stood-up entrails, faintly peristaltic"* and blocks the
+  sight line; Toothmoss, *"a carpet of small grinding teeth"*, is slow and loud to cross. (Lashgrass that
+  *"flinch[es] away from footsteps in a spreading wave; the ground telling everything where you are"* is the
+  description; the flinch itself is unbuilt and sits in "later".)
 
 ## The first week
 
-- **Touched.** A crew member who works out in the Bloom shows an early touched state, with one message when the
-  change begins. Then the changes come from a mixed deck, harmful and mixed, capped, never the same one twice on a
+- **Touched.** A crew member who works out in the Bloom, or is caught by a Burn, or stands next to an Unfinished,
+  shows an early touched state, with one message when the change begins. Walking back inside stops the dose, not a
+  change already under way. Then the changes come from a mixed deck, harmful and mixed, capped, never the same one twice on a
   body.
 - **The arrest.** Held on the patient, a Sunbeam's lens stops the change where it is. What has already changed
-  stays, and the treatment leaves a burn. (How a crew comes by a Sunbeam in 0.1.0 is `NEEDS HIM`.)
+  stays, and the treatment leaves a burn. It works at the warning stage too, before anything has grown: that is
+  the moment the warning is for. A crew member who goes out again starts again. (How a crew comes by a Sunbeam in 0.1.0 is `NEEDS HIM`.)
 - **The tissue run.** What the crew came for. Take a sample from a donor; carry it to a Bloody Mess; read the odds
-  before committing; come back later for what grew. A batch that misses the wanted part still brings matched,
+  before committing; come back about four days later for what grew (the host dies making it: one batch each). A batch that misses the wanted part still brings matched,
   usable tissue: a kidney, a liver, a lung, a heart.
 - **The Unfinished.** The goo buds them constantly, each *"half-made its own way"*; most are nuisances, *"some roll
   a monster"*; they live days and die into slime and mulch.
@@ -126,7 +146,15 @@ slime.
   the rest. Nothing just disappears.
 - **The Repulsor.** A powered Helix device that punches a hole in the cloud. It warns first that its Burn covers
   the whole map and everyone in the open, then clears the sky, and stops when the power does.
-- **The zhool.** A creature whose red haze turns ordinary plants into flesh plants, here and nowhere else.
+- **The zhool.** *"A gas-filled, veined bell trailing loose tendrils through the canopy"* whose red haze turns
+  ordinary plants into flesh plants, in our biomes only. With it drifts the blistered bulloo, *"an unfortunate
+  visitor"*: a clean gas-bag that blew in on the wind and caught what lives here.
+- **Plants that burst.** The flesh plants do not grow old; they rupture (his card of 2026-10-17: *"Contagion
+  rupture is their burst"*), and what comes out of a rupture can be a Bloody Mess or a zhool. Built in the shared
+  growth machinery; nobody has yet counted how many hosts a wet week makes that way.
+- **Wrecks and the ship's ears.** Eroded hull fragments lie on the peaks as on any ground. The ship's acoustic
+  scanner has a reading for this biome too (his card of 2026-10-06: every biome of ours carries one): pods, wrecks
+  and caves.
 
 ## "OMG did you see that?"
 
@@ -153,6 +181,23 @@ Each can happen inside the visit. Each says what is on screen.
    good liver. Somebody will buy a liver.
 10. **The tick.** *On screen:* a dog-sized thing *"swollen tight with red water"* that *"sloshes audibly when it
     walks"*, and a native punctures it to drink.
+11. **The rendering vat.** *On screen:* a house-sized slug crossing in front of the ramp, *"whose translucent belly
+    shows the last three things it swallowed, at three stages of not existing any more."* One of them has legs the
+    crew recognises from yesterday.
+12. **It stings with it anyway.** *On screen:* a big segmented thing in the Eyebark *"whose raised tail ends not in
+    a sting but in an eye"*, and the eye comes down like a sting.
+13. **The stare.** *On screen:* a knot of eyeballs on stilt legs that *"stops dead to stare, every eye turning a
+    different way at once"*; and, in the wet sand by the ramp, a lidded globe on a stub of red tissue that watches
+    the crew work and sinks into the goo when the light comes. (The first is the ogleknot, built. The second is the
+    Unblinking, his by his word of 2026-10-08, *"Of course it can get another creature. Just make one"*, designed
+    and not built: 0.2.0.)
+14. **The tree gave birth.** *On screen:* a swollen flesh plant splits, and what slides out is a pool that starts
+    to creep.
+
+**Two of these are in the text and not yet in the build.** The Danglemaw (3) ships as a slow, hard-hitting lurker
+near Eyebark: the cast bible itself waived the true drop from the canopy for the first version. The Fleshsop (8)
+fights as a pack that answers every hit; walking out in a line is its description, not yet its behaviour. Both
+scenes are kept because they are the creature, and both are owed.
 
 ## When the Empire arrives
 
@@ -173,7 +218,9 @@ Each can happen inside the visit. Each says what is on screen.
 - **The valley,** as above, impartially.
 - **The Unfinished** that roll a monster.
 - **The Ascendant Helix watch.** *"They love the genetic diversity of the out-of-control weapon's creativity;
-  observation posts at the valley mouths."* They buy samples, and they are the only people here. Their caravan and
+  observation posts at the valley mouths."* They buy samples (his note of 2026-09-30: *"I like the helix offering to purchase strange scans of the
+  beasts here. You assume the risks"*), and they are the only people here. Their own name for the place is "the
+  Overdrive". Their caravan and
   contracts are 0.2.0 by his word. Whether they fight the Empire, sell to it, or report a stolen ship parked in
   their test ground is `UNSETTLED`.
 - **The Rust Cathedral's enmity** toward this place is ideological and belongs to the campaign layer.
@@ -203,20 +250,35 @@ Each can happen inside the visit. Each says what is on screen.
 - **Fuel:** emergency-slow only. This is the most biomass on the planet and none of it is fuel except by rendering
   it down the slow way. The only people who might sell any are the Helix curators, in 0.2.0; whether they stock
   fuel is `UNSETTLED`.
+- **The deck part: a Cloud Repulsor on a hardpoint.** This biome's entry on the list of what each place gives the
+  ship (`BIOME_SHIP_CONTRIBUTIONS_1`; `RM_CloudRepulsorShip`, built, untested). Here it forces the Burn. Anywhere
+  else the ship lands it *"holds the sky clear"*: no rain, no fog, for as long as it has power. The ground device
+  can arrive as a quest reward; the hardpoint is stocked by the curators (0.2.0).
 - **Whatever changed.** It leaves with the crew. *"Including you."*
 
 ## What the place does to the ship
 
-No Contagion source says what this place does to a landed hull. The sources name three things that touch
-everything else here, and this design picks the first as its default and asks (see `NEEDS HIM`):
+The first read said no source covers this. Two do, and one of them is built.
 
-- **The goo comes aboard from the ground up.** The Bloody Mess is *"an extension of the terrain itself"* that
-  *"creeps"* and *"eats everything dead."* Default: it creeps onto whatever of the hull touches the ground and has
-  to be scraped off by hand, or burned off by a Burn, which sterilises it. That gives the Repulsor's ship
-  hardpoint (ruled 2026-09-27 as *"the ship touch"*, 0.2.0 here) a second job: the hull's own cleaning lamp.
-  New in this design, unbuilt, and marked as such in the scope.
-- **The Burn and the scald rain** are in the sheet as weather. Nothing built makes either damage a structure.
-- **The hull is otherwise the answer, not the victim:** it is the roof.
+- **His ruling, 2026-09-02** (the shield sheet, `design/Jawa/proposals/ship_shields_deep_design.md`): *"The
+  environment is hostile and immediately goes to work on the ship. The ship will know what's visibly dangerous and
+  will advise course of action, but no more than that. Its hull is thick and can take a lot of damage in most
+  situations, so no environment is immediately lethal."* The proposal he was ruling on names this place by its old
+  name, among the maps *"guarded by physics"*: *"the ocular forest's spore/toxin load."* And his answer to what
+  stops it: *"Light kinetic deflectors handle wind, ash, vapor, bio contamination, spores, smoke, sand, and rain
+  damage completely as well as repels small animals."*
+- **What is built.** The Contagion is marked a fouled-air biome (a patch in the Warscar mod marks the Wastes, the
+  Cauldron and the Contagion; it ships with that mod because the marker's code lives there). The shared frame in
+  `src/RimUtinni/ShipShields/` reads that mark as its particulate hazard. With no shield in particulate mode, the
+  things standing at the ship wear a little at a time, a letter warns after about six hours that the fouling is
+  getting worse, and the wear then doubles its pace. A powered shield switched to its particulate mode stops all of
+  it. The ship says so on landing and does not refuse to land.
+- **So the wear here is the air itself:** spore, red rain and whatever the rain carries, working into the gear
+  parked at the ramp. Nothing in it is this page's proposal.
+- **The hull is otherwise the answer, not the victim:** it is the roof, and the biggest one on the map.
+- **Not carried forward.** The first read proposed goo creeping onto the hull and a hardpoint Repulsor as *"the
+  hull's own cleaning lamp"*. Neither is in any source. They are withdrawn in favour of the sourced wear and stay
+  in the choices page as rows.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -276,7 +338,9 @@ Every feature is in one bucket.
 - Flesh flora; zhool haze; the grotesque cast with each creature's promised trick; the new smaller Zhool'Iza.
   (built; the Zhool'Iza is owed)
 - Mulch as plain fertiliser.
-- The goo on the hull, scraped or burned off. (new in this design; unbuilt; `NEEDS HIM`)
+- The fouled air wearing an unscreened ship, stopped by a particulate-mode shield. (built in the shared frame;
+  never proven on this biome)
+- The ogleknot; the blistered bulloo. (built)
 
 **0.2.0, the stop with company** (the first three by his word of 2026-11-16)
 - The Coalescence, all of it.
@@ -286,6 +350,7 @@ Every feature is in one bucket.
 - The Rawshade: a creature that stands still in a Burn so that small things shelter under it, *"Then the skirt
   comes down."* (designed 2026-11-02)
 - Red water made drinkable by a day in the sun. Red sap as repellent and sealant. (items exist; uses do not)
+- The Unblinking: a watcher the goo budded and never finished. (designed 2026-10-08 on his word; unbuilt)
 - The Sunbeam's extra harm to natives, if it is not already wanted in 0.1.0. (built)
 
 **Later (a crew that stays, a colony, or the campaign)**
@@ -294,6 +359,10 @@ Every feature is in one bucket.
   Burns.
 - A whole season of the valley's ecology holding together.
 - Steering a gestation toward a wanted part.
+- Lashgrass that flinches from footsteps; Eyebark whose eyes follow; the Halfmade Tree's front moving.
+- The peaks drawn on the world map as the planet's rain makers (his words of 2026-10-24: *"Contagion-stained
+  mountains (the only place we use Contagion) is particularly important, and to draw those as wet/water
+  generators"*; by card, a look only: *"they weep"*).
 - The three rites (the Sunning, the Unfinished Laid Down, the Kept Mistake); they live in the rites mod.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
@@ -303,22 +372,49 @@ Every feature is in one bucket.
 - A touched outcome that is a net gain (the sheet's ban, his ruling).
 - Bars that pin yields, creature numbers or art variant counts (2026-11-16).
 - The donor cast, the exotic draft names, "Eyegore", the Fleshsop that *"needs to be loved to live another day"*.
-- Edible forage. Any native that persists under open sky.
+- Edible forage. Any native that persists under open sky. Fish.
+- A spore membrane for the ship (cut by him 2026-09-02: *"spores aren't magical, just particulates."*).
+- Goo creeping onto the hull, and the Repulsor as a hull-cleaning lamp (the first read's own proposals; withdrawn).
+- The seven other ideas of the GPT consult of 2026-09-30: he picked three by card (Draftprints, the Dive,
+  Bodyprints) and *"GPT's seven other ideas were not picked, so they are out."* The record does not name them.
+- The Shambles here: he moved it to the Rot on 2026-10-05 (*"this belongs in the Rot, not here."*).
+- Eye grass: purged, *"I don't want new versions of these silly plants."* The donor's own ocular giant, never
+  admitted.
 - **Recommended for dropping, not yet his:** the duplicate seed-fist fertiliser, the unused donor plants, the
   planet-scoring worker.
 
 ## NEEDS HIM
 
-1. **Where does a 0.1.0 crew get a Sunbeam and a Repulsor?** Both are sold only by the Helix curators, and Helix
-   trade is 0.2.0 by his word of 2026-11-16; the arrest and the Repulsor are 0.1.0 leaves of the locked sheet.
-   *Found as salvage in a dead visitor's Burn shelter on the map* (default; the sheet has *"the ruins of visitors
-   who learned the clock too late"*; one new placement to build). *The curators' caravan sells devices in 0.1.0
-   and only contracts and prints wait.* *Both devices move to 0.2.0 with their sellers,* and a touched crew member
-   in 0.1.0 cannot be arrested.
-2. **What does this place do to the hull?** No source says. *Goo creeps onto it and is scraped or burned off*
-   (default, new). *Nothing: here the hull is purely the refuge.* *The scald rain wears it,* borrowed from the
-   Scald.
-3. **Does a Burn show the ship to orbit?** *For as long as the sky is clear* (default). *No:* the lid's step is
-   constant and a forced Burn is free. *A forced one only.*
-4. **Do the Helix sell out a stolen ship?** Unsettled anywhere. It decides whether trading with the only people
-   here is safe. *Not decided here* (default: they buy and say nothing).
+Each is tagged with one theme word.
+
+1. **[other] Is the built way to a Sunbeam enough for a ship on the run?** He ruled the sellers by card on
+   2026-10-15: *"Quests plus a visiting Helix trader."* As built, the Sunbeam also carries the ordinary
+   ranged-weapon trade tag and a standard reward tag, so any arms trader or quest reward can bring one with Helix
+   trade switched off; the Repulsor comes as a quest reward only. Nothing on the map supplies either.
+   *As built* (default): a crew that wants one buys it before it lands. *Also found as salvage in a dead visitor's
+   Burn shelter* (the sheet has *"the ruins of visitors who learned the clock too late"*; one new placement).
+2. **[hull] Does a raised particulate screen keep the Bloom off the crew standing inside its bubble?** His words
+   give the light screen *"bio contamination, spores"* handled *"completely"*, and the shield design protects *"the
+   ship and a bubble around it"*. As built, the touched dose reads only what is overhead and never asks about a
+   shield. *No, the screen protects the ship and its gear* (default; as built). *Yes, inside the bubble:* then the
+   screen is the answer to this biome's spine for anyone who stays by the ramp, and the trip away from it is the
+   whole risk.
+3. **[hull] A ship idea he cut, listed so nobody revives it:** the spore membrane, a sealed positive-pressure skin
+   for exactly this biome, with its research gated behind a Helix story beat. Cut on the shield sheet, 2026-09-02:
+   *"spores aren't magical, just particulates."* Not revived here.
+4. **[cover] Does a Burn show the ship to orbit?** *For as long as the sky is clear* (default). *No:* the lid's step
+   is constant and a forced Burn is free. *A forced one only.*
+5. **[other] Do the Helix sell out a stolen ship?** Unsettled anywhere. It decides whether trading with the only
+   people here is safe. *Not decided here* (default: they buy and say nothing).
+6. **[scope] The Rawshade.** His words, 2026-10-24, on the art sheet: *"Make (C) into a new creature, it's very
+   cool. New name, description, behavior."* The cleanse of 2026-11-17 recommended retiring it as a duplicate of the
+   Danglemaw; his earlier word wins, so it stays, at 0.2.0. Its shade is *"truly safe"* only because it *"does not
+   hunt anything as large as a person"* (prey up to body size 0.7). Whether a Jawa is under that line is
+   `UNMEASURED`. *Safe for a Jawa as for anyone* (default). *A Jawa is prey:* the false shelter is false for this
+   crew in particular.
+7. **[scope] Bodyprints in 0.1.0.** His card of 2026-10-16 kept the Dive and Bodyprints *"in THIS sprint"*; reading
+   that as 0.1.0 was an agent's call, and the cleanse deferred the phases. *In 0.1.0* (default, as the locked sheet
+   has it). *A plain corpse or remnant now, the phases in 0.2.0.*
+8. **[locked-tree] The locked sheet and tree describe a colony that settles the valley** (*"Colonists within one
+   dash of a refuge"*, the season's turn). This page describes a stop. The tree is not edited; a Designer run
+   reconciles them.
