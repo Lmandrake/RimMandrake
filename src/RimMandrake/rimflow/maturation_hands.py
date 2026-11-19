@@ -299,13 +299,48 @@ def _known(fx):
     return HC.known_items()
 
 
+def _fold_named(fx, h, fresh, now):
+    """Fold every open act whose reason names a ledger item: this tick's new acts at once, the older open ones every
+    LEDGER_S (one recorded on a tick whose ledger read failed, or by `record --why`), so none stays open for want of a
+    second look (RIMMANDRAKE_FOLD_RECORDED_HAND_ACTS_AFTER_KNOWN_FAILS). A read that fails, or reads no item at all,
+    is could-not-look: h["fold_error"], nothing folded, retried next tick; never a verdict on the acts."""
+    # a read that failed last tick is retried now, over every open act, not only at the next due sweep
+    sweep = now - float(h.get("fold_at") or 0) >= LEDGER_S or bool(h.get("fold_error"))
+    folds = read_folds()
+    todo = [(a, ID_RX.findall(a.get("why") or "")) for a in read_acts()
+            if a["id"] not in folds and (a["id"] in fresh or sweep)]
+    todo = [(a, named) for a, named in todo if named]
+    if not todo:
+        if sweep:
+            h["fold_at"] = now
+            h.pop("fold_error", None)   # nothing left to look up: no lookup is failing
+        return
+    try:
+        known = _known(fx)
+    except Exception as e:      # noqa: BLE001  a blind ledger costs this fold, never the tick
+        h["fold_error"] = "%s: %s" % (e.__class__.__name__, e)
+        return
+    if not known:
+        h["fold_error"] = "the ledger read no items at all (blind)"
+        return
+    h.pop("fold_error", None)
+    if sweep:
+        h["fold_at"] = now
+    for a, named in todo:
+        hit = [n for n in named if n in known]
+        if hit:
+            _append(FOLDS, {"id": a["id"], "at": now, "item": hit[0], "by": "maturation_hands",
+                            "why": "its reason names the item"})
+
+
 def observe(root, cfg, st, facts, now, rd, fx=None):
     """One pass: record the new acts, fold what folds by itself, write rd['hand_acts'] and a Needs Conductor line per
     overdue act. -> rd. A failure in here must never cost the tick: the caller guards it."""
     fx = fx or {}
+    h = st.setdefault("hands", {})
     have = {a["id"] for a in read_acts()}
     new = [a for a in collect(root, cfg, st, facts, now, fx) if a["id"] not in have]
-    seen, known = set(), None
+    seen = set()
     for a in new:
         if a["id"] in seen:
             continue
@@ -313,20 +348,15 @@ def observe(root, cfg, st, facts, now, rd, fx=None):
         _append(ACTS, dict(a, recorded=now))
         if a["at"] <= BASELINE_TS:
             _append(FOLDS, {"id": a["id"], "at": now, "census": BASELINE_FOLD, "by": "maturation_hands"})
-            continue
-        named = ID_RX.findall(a["why"])
-        if named:
-            known = _known(fx) if known is None else known
-            hit = [n for n in named if n in known]
-            if hit:
-                _append(FOLDS, {"id": a["id"], "at": now, "item": hit[0], "by": "maturation_hands",
-                                "why": "its reason names the item"})
+    _fold_named(fx, h, seen, now)
     acts, folds = read_acts(), read_folds()
     open_ = [a for a in acts if a["id"] not in folds]
     over = [a for a in open_ if now - a["at"] >= DAY_S]
     rd["hand_acts"] = {"recorded": len(acts), "open": len(open_), "overdue": len(over),
                        "oldest_h": round(max([now - a["at"] for a in open_] or [0]) / 3600.0, 1),
                        "ids": [a["id"] for a in over][:8], "alarm": ALARM_NAME}
+    if h.get("fold_error"):
+        rd["hand_acts"]["fold_error"] = h["fold_error"]
     for a in over[:5]:
         rd.setdefault("needs_conductor", []).append(
             "hand act %s (%s on %s: %s) has had no follow-up item or census row for %d h: build the hand's judgement "

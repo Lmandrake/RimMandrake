@@ -678,9 +678,56 @@ def road_back_main():
         shutil.rmtree(root, ignore_errors=True)
 
 
+def fold_later_main():
+    """RIMMANDRAKE_FOLD_RECORDED_HAND_ACTS_AFTER_KNOWN_FAILS: the automatic fold ran only on acts collected that tick, so
+    an act appended on a tick whose ledger read failed (or a `record --why` naming an item) stayed open forever.
+    Written before the fix and watched failing on the base."""
+    if MH is None:
+        ok(False, "fold later: maturation_hands.py exists")
+        return
+    root = tempfile.mkdtemp(prefix="mat_hands_fold_")
+    was = os.environ.get("RM_MATURATION_DISPATCH_DIR")
+    os.environ["RM_MATURATION_DISPATCH_DIR"] = os.path.join(root, "state")
+    try:
+        MD.sdir()
+        os.makedirs(os.path.join(root, "design", "concepts", "F", "version"))
+        t0 = NOW - 3 * 3600
+        # a sweep just ran: the retry must come from the failed read, not from a sweep falling due
+        st = {"hands": {"since": t0 - 10, "last_tick": NOW - 60, "fold_at": NOW - 10},
+              "mods": {"F": {"cleared": [{"at": t0 + 30, "why": "fixed by RIMMANDRAKE_FOLLOW_UP_F_ITEM, retry"}]}}}
+
+        def blind():
+            raise OSError("ledger unreadable (selftest)")
+        try:
+            MH.observe(root, dict(CFG, advancing=["F"]), st, {}, NOW, {"needs_conductor": []},
+                       {"events": lambda: [], "known": blind})
+        except Exception:   # noqa: BLE001  the base let a failed read out (the tick's guard caught it)
+            pass
+        acts = MH.read_acts()
+        ok(len(acts) == 1 and acts[0]["id"] not in MH.read_folds(),
+           "fold later 1: on a tick whose ledger read fails the act is recorded and not folded",
+           [(a["id"], a["id"] in MH.read_folds()) for a in acts])
+        rd = {"needs_conductor": []}
+        MH.observe(root, dict(CFG, advancing=["F"]), st, {}, NOW + 60, rd,
+                   {"events": lambda: [], "known": lambda: set()})
+        ok(acts and acts[0]["id"] not in MH.read_folds(),
+           "fold later 2: a ledger read of no items at all is blind, never a verdict: nothing folds", MH.read_folds())
+        MH.observe(root, dict(CFG, advancing=["F"]), st, {}, NOW + 120, {"needs_conductor": []},
+                   {"events": lambda: [], "known": lambda: {"RIMMANDRAKE_FOLLOW_UP_F_ITEM"}})
+        f = MH.read_folds().get(acts[0]["id"]) if acts else None
+        ok(bool(f) and f.get("item") == "RIMMANDRAKE_FOLLOW_UP_F_ITEM",
+           "fold later 3: a later tick that reads the ledger folds the act its reason names", f)
+    finally:
+        if was is None:
+            os.environ.pop("RM_MATURATION_DISPATCH_DIR", None)
+        else:
+            os.environ["RM_MATURATION_DISPATCH_DIR"] = was
+        shutil.rmtree(root, ignore_errors=True)
+
+
 SECTIONS = (("stalled", stalled_main), ("stop", stop_main), ("retry", retry_main), ("refund", refund_main), ("briefs", briefs_main),
             ("acts", acts_main), ("chores", chores_main), ("false_hands", false_hands_main),
-            ("road_back", road_back_main))
+            ("road_back", road_back_main), ("fold_later", fold_later_main))
 
 if __name__ == "__main__":
     only = sys.argv[sys.argv.index("--only") + 1] if "--only" in sys.argv else None
