@@ -1,0 +1,13 @@
+Row and source-coverage check over design/concepts/TerminalBiomes/TheScald_rewrite_choices.md, item RIMMANDRAKE_REWRITE_SCALD_SEA_DESIGN_READ_IN_FULL, run 2026-11-18 16:14 PST (offline; documents only, no game).
+What it checks: every table row under "Every idea, row by row" has five cells and a non-empty outcome; every source name defined in the page's "Source names" paragraph appears in at least one row's source column; a made-up source name is reported as missing (the probe that shows the check can see absence).
+What it does not check: that every idea in every source has a row. The page states which sources were read to the end, in part, by search and not at all; a source read in part can hold ideas with no row.
+A second check compared every quoted phrase in the design and the choices page with the repository text: 146 fragments, 8 not found by the script. Those 8 were read by hand: 4 are his ledger words (the script's corpus missed the ledger's quoting), 3 are quotes of the combined design (left out of the corpus on purpose), and 1 was a paraphrase set in quote marks, now reworded.
+
+rows: 209; named sources: 35; sources with no row: none; rows without five cells: none; rows with empty outcome: 0
+outcome by first words: {'kept': 136, 'lost': 38, 'kept, reshaped': 7, 'moved': 24, '0.2.0': 4}; rows recording a loss (whole or in part): 39; rows recording a move: 30
+lost/moved/reshaped rows with neither a reason nor an alternative: 22 ['A new hot mineral substrate, with boiling pools on', 'Chimneys as lit smoker columns', "Marine snow; the shimmer band at a field's edge", 'Walkers graze the boundary of a heat field', 'The feen: scalding swarms that defend a chimney; n', '"Pilgrims read their traffic the way sailors read ', 'Mee and faa on the Scald', 'Chillbrace, a cold plant', 'Wreck loot as a separate table', 'Gold, silver, uranium; Chimney Iron that smelts to', 'Mother-of-Scaldpearl on the chimney flanks; jewell', 'Seep Salt and Pyrinth on the floor', 'Gem clusters and Star Wars gas seeps', 'Unbranded ancient machines on every floor, never h', 'The Scald Wrecked Rakatan Vessel in one hex; hidde', 'The air bladder and the rebreather; one dive stat ', 'No private steam-health currency', 'The steam-catch: "the tap of the world"', 'The Unanswered Wound rite', 'Steam and sound only', 'The inert cross-biome switch', "The combined design's Scald section and its rows"]
+exit status of the check: 0
+
+Probe:
+rows: 209; named sources: 36; sources with no row: ['made-up source']; rows without five cells: none; rows with empty outcome: 0
+exit status of the probe run: 1 (non-zero is the expected result)
