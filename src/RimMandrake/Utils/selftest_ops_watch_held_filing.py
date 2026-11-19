@@ -77,9 +77,9 @@ check("light pass: it filed inside the beat's deadline", calls and calls[0]["in_
 check("light pass: a deferred alarm is OPEN on its item", a.get("state") == "OPEN" and a.get("item") == "SELFTEST_FIX_HELD_AAAA", a)
 check("light pass: its deferral stops (deferred_at gone, deferred_n unchanged)", "deferred_at" not in a
       and a.get("deferred_n") == 14, a)
-check("light pass: a reopen stays a reopen and keeps its expedite",
+check("light pass: a reopen stays a reopen, and an old state's expedite is no longer carried (the route retired)",
       calls and [t for t in calls[0]["todo"] if t["name"] == "SELFTEST_FIX_REOPEN_DDDD"][0]["reopen"] is True
-      and [t for t in calls[0]["todo"] if t["name"] == "SELFTEST_FIX_REOPEN_DDDD"][0]["expedite"] == ["X"], calls)
+      and "expedite" not in [t for t in calls[0]["todo"] if t["name"] == "SELFTEST_FIX_REOPEN_DDDD"][0], calls)
 check("light pass: a real failure is not retried there (the alarm pass keeps it)",
       b.get("state") == "PENDING" and b.get("tries") == 3 and b.get("error") == "no receiver: x", b)
 check("light pass: an OPEN alarm is untouched", st["DISK:disk.full"]["item"] == "OPS_DISK_FULL_CCCC")

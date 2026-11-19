@@ -14,8 +14,8 @@ and no reading said so. Each check fails on the code before the change:
 4. rules: a "returned" or "blind_fail" journal act is not progress; churn SLIs are incident SLIs whose units match.
 5. ops_health.incident names the incident SLIs reading bad, and verdict carries it.
 6. run_alarms files health.incident_slis at once under ONE fixed id and a repeat reopens that id (no new item).
-7. The Steve unclaimed alarm names an owner: its todo carries the STEVE_LANE_UNSTICK_* ids to expedite, its title says
-   so, and expedite_owner runs `relentless.py expedite set <id> --level expedited --by Operations` without a worker env.
+7. The Steve unclaimed alarm names its incident and no retired owner: the Relentless expedite route is gone (the tick
+   that read it retired 2026-11-13), from the code and from the shipped rules.
 8. CHURN_WATCH_BUILD_NAMES_EVERY_BOUNCER: one relentless.churn_item.<ID> reading per item that is bouncing, whose spend
    rises with nothing landed, or that is stuck in game/checking; the same-class repeat is windowed to a failure inside
    the window (B7: old A,A + new B is not churn); a held item no longer churning reads 0, and UNMEASURED when only the
@@ -276,30 +276,18 @@ def main():
     # 7
     (TMP / "ops" / "alarms.json").unlink()
     st = {"key": "steve.incident_unclaimed_min", "op": ">", "value": 60, "alarm": True, "tag": "STEVE_INCIDENT_UNCLAIMED",
-          "name": "OPS_STEVE_UNSTICK_UNCLAIMED", "marks": ["MEASURED"], "title_field": "first", "expedite_field": "first"}
+          "name": "OPS_STEVE_UNSTICK_UNCLAIMED", "marks": ["MEASURED"], "title_field": "first"}
     sent.clear()
     OW.run_alarms({"steve.incident_unclaimed_min": {"m": "MEASURED", "v": 90, "x": {"first": ["STEVE_LANE_UNSTICK_ABCD"]}}},
                   {"alarms": {"clear_passes": 1}, "targets": [st]}, NOW, set(), filer)
     a = sent[-1][0] if sent else {}
-    ok(a.get("expedite") == ["STEVE_LANE_UNSTICK_ABCD"] and "owner: Relentless, STEVE_LANE_UNSTICK_ABCD expedited" in a.get("title", ""),
-       "7: the unclaimed-incident alarm carries its owner (the incident item, expedited)", a)
-    ok(OW.target_problem(dict(st, expedite_field=3)) is not None, "7: a bad expedite_field is a bad target", None)
-    clone = TMP / "clone"
-    (clone / "src/RimMandrake/rimflow").mkdir(parents=True)
-    rec = TMP / "rec.json"
-    (clone / "src/RimMandrake/rimflow/relentless.py").write_text(
-        "import json, os, sys\nopen(%r, 'w').write(json.dumps({'argv': sys.argv[1:], 'gen': os.environ.get('RELENTLESS_GEN')}))\n"
-        "sys.exit(3 if 'BAD' in sys.argv[3] else 0)\n" % str(rec))
-    os.environ["RELENTLESS_GEN"] = "4"
-    out = OW.expedite_owner(["STEVE_LANE_UNSTICK_ABCD"], {"clone": str(clone)}, "why")
-    got = json.loads(rec.read_text())
-    ok(out == {"STEVE_LANE_UNSTICK_ABCD": None} and got["argv"][:7] == ["expedite", "set", "STEVE_LANE_UNSTICK_ABCD", "--level",
-                                                                     "expedited", "--by", "Operations"] and got["gen"] is None,
-       "7: expedite_owner runs relentless expedite set --by Operations, worker env stripped", (out, got))
-    out = OW.expedite_owner(["BAD_ITEM"], {"clone": str(clone)}, "why")
-    ok(str(out.get("BAD_ITEM", "")).startswith("exit 3"), "7: a refusal is said per id, never raised", out)
-    del os.environ["RELENTLESS_GEN"]
-    ok(OW.expedite_of(st, {"x": {"first": ["x; rm -rf", "OK_ID"]}}) == ["OK_ID"], "7: only item-shaped ids are expedited", None)
+    ok("STEVE_LANE_UNSTICK_ABCD" in a.get("title", "") and "Relentless" not in a.get("title", "") and not a.get("expedite"),
+       "7: the unclaimed-incident alarm names the incident and no retired owner (nothing is expedited)", a)
+    ok(not hasattr(OW, "expedite_owner") and not hasattr(OW, "steve_incident_early") and "relentless.py" not in
+       open(OW.__file__, encoding="utf-8").read(), "7: ops_watch hands nothing to the retired tick", None)
+    RULES_SHIPPED = json.loads((Path(OW.__file__).parent / "ops_watch_rules.json").read_text())
+    ok(not any(t.get("expedite_field") for t in RULES_SHIPPED["targets"]) and "expedite_after_min" not in
+       RULES_SHIPPED.get("steve_incident", {}), "7: the shipped rules expedite nothing", None)
     # 8
     t1, old = NOW - 2 * HOUR, NOW - 40 * HOUR
     a_a_b = [(old, "harness"), (old + 60, "harness"), (t1, "evidence")]

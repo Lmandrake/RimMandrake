@@ -2017,46 +2017,6 @@ def steve_incident_unclaimed(world, model, now, rules, fault_since=None):
              ages={n: round(a, 1) for a, n in old})
 
 
-STEVE_EXPEDITE_RENEW_S = 3.5 * 3600     # under relentless_expedite's 4 h life: a still-unclaimed incident is set again
-STEVE_EXPEDITE_FILE = "steve_incident_expedited.json"
-
-
-def steve_incident_early(point, rules, now, expediter=None):
-    """Operations hands a steward incident to Relentless BEFORE the alarm: every one the reading names unclaimed for
-    rules steve_incident.expedite_after_min is expedited (`relentless.py expedite set --by Operations`, past every enrol
-    cap), once per STEVE_EXPEDITE_RENEW_S (ops_dir()/STEVE_EXPEDITE_FILE). Without it the incident waited for an enrol
-    slot: Relentless takes enrol_per_tick (2) a tick, ticks ~5 min apart, and on 2026-11-06 5CB3 (spawned 11:56:22Z)
-    was enrolled at 12:22:59Z and rang the 30-min alarm (OPS_STEVE_UNSTICK_UNCLAIMED_ETBS). `expediter(ids, why)` ->
-    {id: None | refusal}. -> flags: a refusal is said and retried next pass, never raised."""
-    after = ((rules.get("steve_incident") or {}).get("expedite_after_min"))
-    if not is_num(after) or not isinstance(point, dict) or point.get("m") != "MEASURED":
-        return []
-    ages = (point.get("x") or {}).get("ages") or {}
-    path = ops_dir() / STEVE_EXPEDITE_FILE
-    done = {k: v for k, v in _obj(read_json(path)).items() if is_num(v) and now - v < STEVE_EXPEDITE_RENEW_S}
-    due = sorted(i for i, a in ages.items() if is_num(a) and a >= after and i not in done)
-    if not due:
-        return []
-    if expediter is None:
-        conf = alarm_conf(rules)
-        expediter = lambda ids, why: expedite_owner(ids, conf, why)     # noqa: E731
-    got = expediter(due, "steward incident unclaimed >= %s min: Operations hands it to Relentless before the "
-                         "STEVE_INCIDENT_UNCLAIMED alarm" % fmt(after))
-    flags = []
-    for i in due:
-        if (got or {}).get(i, "no answer") is None:
-            done[i] = now
-        else:
-            flags.append({"rule": "steve_expedite", "key": "steve.incident_unclaimed_min", "value": ages.get(i),
-                          "window": "now", "detail": "expedite of %s refused: %s" % (i, str((got or {}).get(i, "no answer")))})
-    try:
-        atomic_json(path, done)
-    except OSError as e:
-        flags.append({"rule": "steve_expedite", "key": "steve.incident_unclaimed_min", "value": None, "window": "now",
-                      "detail": "%s not written: %s" % (STEVE_EXPEDITE_FILE, str(e))})
-    return flags
-
-
 def c_process(now, rules, ctx):
     rx = re.compile(rules["process_regex"])
     r = subprocess.run(["git", "-C", str(data_clone()), "log", "--since=@%d" % int(now - 7 * DAY), "--no-renames",
@@ -2575,65 +2535,6 @@ def rl_books_behind(books, now):
         return None, "books clone unreadable: %s" % r.stderr
     ts = [int(x) for x in r.stdout.split() if x.isdigit()]
     return (0.0, 0) if not ts else (round(max(now - min(ts), 0) / 60.0, 1), len(ts))
-
-
-def rl_broker_turn_ended(items_dir, item, g, now):
-    """-> when a broker item's turn ended (epoch), or None while the broker still owns it: relentless_broker.over, the
-    predicate the item's own step (relentless_game._broker_holds) acts on. The clock is the later of the batch's start
-    and its job's end: a batch that ran an hour and ended a minute ago has held idle for a minute."""
-    rf = str(HERE.parent / "rimflow")
-    if rf not in sys.path:
-        sys.path.insert(0, rf)
-    import relentless_broker as RB
-    import relentless_jobs as RJ
-
-    class Store:        # all relentless_broker.over and relentless_jobs.table read of a store
-        @staticmethod
-        def p(*a):
-            return os.path.join(str(Path(items_dir).parent), *a)
-    if not RB.over(Store, item, g, now):
-        return None
-    ended = RJ.table(Store, RB.KIND).get("ended")
-    return max(x for x in (g.get("proved_at"), ended, 0) if is_num(x) and finite(x))
-
-
-def rl_game_hold_idle(items_dir, now):
-    """-> (minutes the running game has been held by a game-phase holder that does not use it, {holder, kind}), or
-    (None, why). RELENTLESS_GAME_HOLD_UNSTICK_IDLE_LIVE_ITER: one live user at a time, so an idle holder parks every other game item
-    (ATMOSBASE_PROOF_FIX_UNLIT_LEAVES_DARK_LAMP held it 47 min on 2026-11-03, bridge free, ten items waiting). Counted:
-    a `proving` item whose prove pid is gone (minutes since proved_at), and a live-iterating worker (minutes since it
-    last held the bridge for its item, or since the FAIL). relentless_game.lapse_holds frees both within live_idle_s
-    (20 min) on a tick; above 30 the release is not happening. A broker batch has no prove pid by design: its liveness is
-    the job's lock, read here as its own step reads it (rl_broker_turn_ended), or a working batch reads as an idle holder
-    (LIVE_SESSION_FIX_OUTRUNS_FOREGROUND_WINDOW, 30.4 min, 2026-11-06). selftest_relentless_game_hold_agrees runs this
-    and the actor over one table."""
-    try:
-        names = sorted(os.listdir(items_dir))
-    except OSError as e:
-        return None, "items unreadable: %s" % str(e)
-    worst, who = 0.0, {"holder": None, "kind": None}
-    for n in names:
-        st = read_json(Path(items_dir) / n / "state.json")
-        if not isinstance(st, dict):
-            continue
-        g, li, since, kind = st.get("game") or {}, st.get("live_iter"), None, None
-        if st.get("status") == "game" and g.get("phase") == "proving" and g.get("broker"):
-            try:
-                since = rl_broker_turn_ended(items_dir, n, g, now)
-            except Exception as e:  # noqa: BLE001 - a reader that cannot look at the job says so, never 0
-                return None, "broker turn of %s unreadable: %s: %s" % (n, type(e).__name__, str(e))
-            kind = "proving, broker turn over"
-        elif st.get("status") == "game" and g.get("phase") == "proving":
-            pid = g.get("prove_pid")
-            if not (is_num(pid) and os.path.exists("/proc/%d" % int(pid))):
-                since, kind = g.get("proved_at"), "proving, pid gone"
-        elif st.get("status") == "running" and isinstance(li, dict):
-            since, kind = (li.get("bridge_seen") or li.get("at")), "live_iter"
-        if is_num(since) and finite(since) and since <= now + 300:
-            m = round(max(now - since, 0) / 60.0, 1)
-            if m > worst:
-                worst, who = m, {"holder": n, "kind": kind}
-    return worst, who
 
 
 def rl_live_measured(live_dir, now, cfg):
@@ -3354,12 +3255,8 @@ def c_relentless(now, rules, ctx):
         bad.append(str(behind_n))       # an unreadable books clone must reach relentless.blind (the MEASURED alarm cannot)
     else:
         pts["relentless.books_behind_min"] = acting(behind_min, behind=behind_n)
-    held, who = rl_game_hold_idle(store / "items", now)
-    if held is None:
-        pts["relentless.game_hold_idle_min"] = U(who, "min")
-        bad.append(str(who))
-    else:
-        pts["relentless.game_hold_idle_min"] = acting(held, **who)
+    # its reader (rl_game_hold_idle) read relentless_broker/relentless_jobs, deleted with the tick: never measured again
+    pts["relentless.game_hold_idle_min"] = U("the game-hold reader went with relentless_broker.py (retired 2026-11-13)", "min")
     pct, got = rl_live_measured(rl_root(cfg) / "live", now, cfg)
     pts["relentless.live_measured_pct"] = U(got, "%") if pct is None else M(pct, "%", **got)
     if pct is None and "unreadable" in str(got):     # too few runs is idle, not blind; an unreadable file is blind
@@ -4121,8 +4018,8 @@ def target_problem(tg):
         return "bad marks %r on %s" % (tg["marks"], tg["key"])
     if tg.get("worse") is not None and step_problem(tg["worse"]):
         return "bad worse %s on %s: %s" % (str(tg["worse"])[:40], tg["key"], step_problem(tg["worse"]))
-    if tg.get("expedite_field") is not None and not (isinstance(tg["expedite_field"], str) and tg["expedite_field"]):
-        return "bad expedite_field %r on %s" % (tg["expedite_field"], tg["key"])
+    if "expedite_field" in tg:      # the Relentless expedite route it fed retired with the tick (2026-11-13)
+        return "expedite_field on %s is retired: nothing expedites any more" % tg["key"]
     return None
 
 
@@ -4334,34 +4231,6 @@ def alarm_receiver_problem(conf):
 RAISE_REASON = "alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)"
 
 
-def expedite_of(tg, pt):
-    """The fixer items an alarm hands to Relentless: the ids its point names in the target's `expedite_field` (OPS_CHURN_
-    MEASURE_RETURNS_ARE_NOT_PROGRESS: STEVE_INCIDENT_UNCLAIMED came back 12 times as OPS_STEVE_UNSTICK_UNCLAIMED_*, each
-    time one more item nobody claimed, while the steward's own STEVE_LANE_UNSTICK_* item sat unclaimed under it)."""
-    f = (tg or {}).get("expedite_field")
-    ids = ((pt or {}).get("x") or {}).get(f) if f else None
-    ids = [ids] if isinstance(ids, str) else ids
-    return [i for i in ids or [] if isinstance(i, str) and re.fullmatch(r"[A-Z][A-Z0-9_]+", i)][:3]
-
-
-def expedite_owner(ids, conf, why):
-    """-> {id: None | refusal}. `relentless.py expedite set <id> --level expedited --by Operations` from the filing clone,
-    the escalation route the owner gave Operations (card 2026-11-03). Its own process, without a Relentless worker's
-    environment (relentless_expedite.WORKER_ENV refuses those). A refusal costs that id only and is said, never raised."""
-    out = {}
-    env = {k: v for k, v in os.environ.items()
-           if k not in ("RELENTLESS_GEN", "RELENTLESS_HELP_NONCE", "RELENTLESS_ROOT", "RELENTLESS_SUPERVISOR")}
-    for i in ids:
-        try:
-            r = subprocess.run([sys.executable, str(Path(conf["clone"]) / "src/RimMandrake/rimflow/relentless.py"),
-                                "expedite", "set", i, "--level", "expedited", "--by", "Operations", "--why", why],
-                               capture_output=True, text=True, timeout=120, env=env)
-            out[i] = None if r.returncode == 0 else ("exit %d: %s" % (r.returncode, (r.stderr or r.stdout).strip()))
-        except (OSError, subprocess.SubprocessError, KeyError) as e:
-            out[i] = "%s: %s" % (type(e).__name__, str(e))
-    return out
-
-
 def already_filed(out, name):
     """Did rimflow refuse a spawn only because `name` is already an item? (_mint_or_die's 'NAME already exists')"""
     return isinstance(out, str) and ("%s already exists" % name) in out
@@ -4477,9 +4346,6 @@ def real_filer(todo, conf):
                         res[a["name"]] = None
                         res.setdefault("_already", []).append(a["name"])
                         continue
-                if rc == 0 and a.get("expedite"):
-                    res.setdefault("_expedite", {}).update(expedite_owner(a["expedite"], conf, "ops_watch alarm %s: "
-                                                                          "nobody claimed it, Operations hands it to Relentless" % a.get("aid")))
                 if rc == 0 and not a.get("note_only"):
                     rrc, rout = ing.rimflow("raise", a["name"], "--reason", RAISE_REASON)
                     if rrc != 0:    # filed but not first: the alarm stands (a retry would re-spawn), the miss is logged
@@ -4820,7 +4686,6 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                 tg = next((t for t in good_targets(rules) if t.get("alarm") and t["tag"] == aid.split(":", 1)[0]
                            and fnmatch.fnmatchcase(key, t["key"])), {})
                 todo.append({"note_only": True, "item": cur["item"], "name": "note:" + aid, "aid": aid,
-                             "expedite": expedite_of(tg, points.get(key)) if worse else [],
                              "noted": names if fresh else None, "told": worse[1] if worse else None,
                              "worse": worse[0] if worse else None, "conductor_log": worse[2] if worse else None,
                              "text": "ops_watch: " + "; ".join(lines)})
@@ -4836,7 +4701,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
                 # real, so keep retrying the filing under the name and title it got when it crossed
                 todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "reopen": bool(cur.get("reopen")),
                              "conductor_log": cur.get("conductor_log"), "key": aid.split(":", 1)[1],
-                             "expedite": cur.get("expedite") or [], "cause": cur.get("cause"), "spec": cur.get("spec")})
+                             "cause": cur.get("cause"), "spec": cur.get("spec")})
             return
         key = aid.split(":", 1)[1]
         tag = aid.split(":", 1)[0]
@@ -4893,16 +4758,12 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None, closed_at=No
         said = said[0] if isinstance(said, list) and said else said
         if isinstance(said, str) and said:
             title = "Ops alarm %s: %s -- %s" % (tag, said, title.split(": ", 1)[1])
-        owners = expedite_of(tg, pt)
-        if owners:      # the owner is named in the title, so the alarm item is never one more unclaimed item
-            title = "%s; owner: Relentless, %s expedited by Operations" % (title, ", ".join(owners))
-        cur["title"] = title[:160] if not owners else title[:300]  # cut-ok: an item title (one line); a name the title cut is told in the first note (titled_names)
+        cur["title"] = title[:160]  # cut-ok: an item title (one line); a name the title cut is told in the first note (titled_names)
         cur["noted"] = titled_names(cur["title"], pt, tg)   # what the title shows is told; a name it cut, the first note says
-        cur["expedite"] = owners
         cur["conductor_log"] = tg.get("conductor_log")     # a retry that files later still owes the Conductor its line
         cur["spec"] = red_launch_checks(pt)
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log"),
-                     "key": key, "reopen": bool(cur.get("reopen")), "expedite": owners, "cause": cur.get("cause"),
+                     "key": key, "reopen": bool(cur.get("reopen")), "cause": cur.get("cause"),
                      "spec": cur["spec"]})
     for aid in sorted(set(ts) | set(state)):
         try:
@@ -5025,7 +4886,7 @@ def file_held(filer, rules, now):
             continue
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": cur.get("conductor_log"),
                      "key": aid.split(":", 1)[-1], "reopen": bool(cur.get("reopen")),
-                     "expedite": cur.get("expedite") or [], "cause": cur.get("cause")})
+                     "cause": cur.get("cause")})
     if not todo:
         return state
     cb = cause_mods()[0]
@@ -5675,15 +5536,6 @@ def run(now=None, rules=None, filer=None, families=None, compose=False, still_ow
         points = dict(carried, **points)        # this pass's own readings win
     if release is not None:
         sick += steve_release_finish(release)
-    if filer is real_filer and "steve.incident_unclaimed_min" in points and not observed_at(points["steve.incident_unclaimed_min"]):
-        try:        # this pass's own reading, never a carried one (ETBS: before the alarm, not at it)
-            fence("the steve incident expedite")
-            sick += steve_incident_early(points["steve.incident_unclaimed_min"], rules, now)
-        except Fenced:
-            raise
-        except Exception as e:  # noqa: BLE001  the pass outlives its early hand, and says so
-            sick.append({"rule": "steve_expedite", "key": "steve.incident_unclaimed_min", "value": None, "window": "now",
-                         "detail": "early expedite failed: %s: %s" % (type(e).__name__, str(e))})
     for fam, key in (("relentless", "relentless.blind"), ("seats", "seats.blind"), ("plan", "plan.blind"),
                      ("disk", "disk.scratch_outside_blind")):
         if (whole or fam in families) and not counts_as_measured(points.get(key)):

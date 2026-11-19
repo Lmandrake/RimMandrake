@@ -323,12 +323,13 @@ def test_dispatcher_breaks_on_worse():
 
 
 # Every target key that states a step today. Dropping one goes red; a new row with a step may be added freely.
-# (arena.push_refused_24h left with the arena trial, owner card 2026-11-05, 1f0e666566.)
+# (arena.push_refused_24h left with the arena trial, owner card 2026-11-05, 1f0e666566; relentless.game_hold_idle_min left
+# with its reader, relentless_broker.py, in the retired-era split.)
 STATED_STEPS = {
     "accounts.*.loan_runway", "accounts.*.runway", "codex.runway", "companion.grant_hours_left",
     "disk.c_free_gb", "disk.d_free_gb", "disk.pool_breach", "disk.root_free_gb", "disk.scratch_ok_age_h", "disk.tmp_free_gb",
     "disk.tmp_used_pct", "flow.untriaged_findings", "health.drifted_slis", "health.spent_slis", "queues.artpipe.stalled_min",
-    "queues.testq.stalled_min", "relentless.books_behind_min", "relentless.game_hold_idle_min",
+    "queues.testq.stalled_min", "relentless.books_behind_min",
     "relentless.live_measured_pct", "steve.incident_unclaimed_min", "steve.invalid_streak", "steve.seats_absent_min",
     "steve.unowned_stall_min", "timers.failed_units", "tps.health_breaches"}
 

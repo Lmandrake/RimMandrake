@@ -28,7 +28,7 @@ import ops_watch as OW  # noqa: E402
 # (RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS; tunable_sweep.py ops_watch_rules.json --only 'targets/*').
 PIN_TARGETS = {
     "relentless.books_behind_min": {"value": 30, "worse": {"factor": 2}},
-    "relentless.game_hold_idle_min": {"value": 30, "worse": {"factor": 2}}}
+}
 
 
 def pin_rules(r):
@@ -218,8 +218,8 @@ check(pts["relentless.progress_age_min"]["v"] > 170, "a running timer with no pr
 
 # ------------------------------------------------------------------ what only a tick can end: books lag and an idle game hold
 # Only the belt's tick levels the books clone and frees a hold; a stopped belt has no tick, and ops_watch still measures both.
-BOOKS, HOLD = "relentless.books_behind_min", "relentless.game_hold_idle_min"
-STALE, IDLE = "RELENTLESS_BOOKS_STALE:" + BOOKS, "RELENTLESS_GAME_HOLD_IDLE:" + HOLD
+BOOKS = "relentless.books_behind_min"
+STALE = "RELENTLESS_BOOKS_STALE:" + BOOKS
 g("clone", str(TMP / "belt/origin.git"), str(TMP / "belt/up"))
 PASS_RULES = json.loads(json.dumps(RULES))
 for tg in PASS_RULES["targets"]:      # never the real Conductor log
@@ -285,17 +285,6 @@ pts, al = whole_pass(HAND_ARMED, STOP + 60 * 60)
 check(pts[BOOKS]["v"] == 50.0 and STALE in al, "no tick readable, so the stop has no date: the full age (%s)" % pts[BOOKS])
 level()
 put_tick(LAST_STAMP)
-
-idle = STORE / "items" / "HOLD_ITEM"
-idle.mkdir()
-(idle / "state.json").write_text(json.dumps({"status": "running", "live_iter": {"at": STOP + 60}}))
-pts, al = whole_pass(BARE, STOP + 60 * 60)
-check(pts[HOLD]["v"] == 59.0 and IDLE in al, "instrument: an idle game hold, stopped with no restart armed: the alarm rings (%s)" % pts[HOLD]["v"])
-pts, al = whole_pass(HAND_ARMED, STOP + 60 * 60)
-check(pts[HOLD]["v"] == 0 and pts[HOLD]["x"]["holder"] == "HOLD_ITEM" and IDLE not in al, "hand-armed: no tick to free it, no alarm, the holder still named (%s)" % pts[HOLD])
-(idle / "state.json").write_text(json.dumps({"status": "running", "live_iter": {"at": LAST_STAMP - 35 * 60}}))
-pts, al = whole_pass(HAND_ARMED, STOP + 60 * 60)
-check(pts[HOLD]["v"] == 35.0 and IDLE in al, "a hold 35 min idle at the stop stays late (%s)" % pts[HOLD])
 
 print("selftest_timerstop_planned_reading: %s" % ("OK" if not FAILS else "FAIL %d" % len(FAILS)))
 sys.exit(1 if FAILS else 0)
