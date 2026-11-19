@@ -924,6 +924,42 @@ def next_version_main(root):
        and json.loads(kept) == old, "a locked new version: a new record at preflight, the old one kept whole (%s)" % r)
     ok("version change: %s to 9.9.9" % old["version"] in (read(root, mod, "journal.md") or ""),
        "the journal says the version moved")
+    # RIMMANDRAKE_SCOPE_RUN_SPEND_TO_VERSION_OLD_RUNS_LINGER: RUN_SPEND outlives next-version and its rows name no
+    # version; show and next report only this version's (at on or after seeded.at), and record_run_spend still writes
+    # no second row for an old unit
+    rsp = os.path.join(root, "design", "concepts", mod, M.RUN_SPEND)
+    had = os.path.isfile(rsp)
+    keep = open(rsp).read() if had else None
+    os.makedirs(os.path.dirname(rsp), exist_ok=True)
+    with open(rsp, "a") as f:
+        f.write(json.dumps({"stage": "designer", "stages": ["designer"], "tokens": 50, "unit": "rm-old-version-run",
+                            "at": "2000-01-01T00:00:00Z"}) + "\n")
+        f.write(json.dumps({"stage": "designer", "stages": ["designer"], "tokens": 70, "unit": "rm-new-version-run",
+                            "at": "2999-01-01T00:00:00Z"}) + "\n")
+    try:
+        rec = M.load(root, mod)
+        own = sum(x["tokens"] for x in rec.get("spend") or [] if isinstance(x.get("tokens"), (int, float)))
+        nx = M.next_step(root, mod)["spend"]
+        got = sum(t["tokens"] for t in nx.values())
+        ok(got == own + 70, "next: this version's spend leaves out the earlier version's run row (%s, want %s)"
+           % (got, own + 70))
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            M.main(["--root", root, "show", mod])
+        shown = sum(int(x.split("weighted tokens")[0].split(":")[-1]) for x in buf.getvalue().splitlines()
+                    if x.strip().startswith("spend ") and "weighted tokens" in x)
+        ok(shown == own + 70, "show: the same (%s, want %s)" % (shown, own + 70))
+        new = M.record_run_spend(root, mod, [{"unit": "rm-old-version-run", "end": 946684800.0, "live": False}],
+                                 lambda r: ["designer"])
+        ok(new == [], "record_run_spend writes no second row for an old version's unit (%s)" % new)
+    finally:
+        if had:
+            with open(rsp, "w") as f:
+                f.write(keep)
+        else:
+            os.remove(rsp)
     ok(MN.read_mod(root, mod, MN.designer_names())["column"] == "2",
        "the status page reads the stage from the record (preflight, column 2)")
     with open(vp, "w") as f:

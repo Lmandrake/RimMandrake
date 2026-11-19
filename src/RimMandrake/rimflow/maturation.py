@@ -1550,6 +1550,17 @@ def spend_rows(root, mod, rec):
     return rows
 
 
+def version_spend_rows(root, mod, rec):
+    """-> spend_rows scoped to this version: the record's own entries, plus the Dispatch run rows that ended on or
+    after the record's seeded.at. RUN_SPEND outlives next-version and its rows name no version, so an earlier
+    version's runs would otherwise count as this one's (RIMMANDRAKE_SCOPE_RUN_SPEND_TO_VERSION_OLD_RUNS_LINGER). Every
+    place spend is REPORTED reads this; record_run_spend reads spend_rows whole, so an old unit is never re-added."""
+    own = len((rec or {}).get("spend") or [])
+    since = ((rec or {}).get("seeded") or {}).get("at")
+    rows = spend_rows(root, mod, rec)
+    return rows[:own] + [x for x in rows[own:] if not since or str(x.get("at") or "") >= since]
+
+
 def record_run_spend(root, mod, runs, stage_of):
     """RIMMANDRAKE_RESERVE_CAP_BEFORE_LAUNCH: write one spend row per ENDED run on this mod that neither the record nor
     RUN_SPEND holds yet (the blind and in-game stages had none: one blind reconcile measured 3,013,781 tokens and was
@@ -1734,7 +1745,7 @@ def next_step(root, mod):
             "since": rec.get("since"), "to": to, "passed": [p["clause"] for p in res["verdict"]["passed"]],
             "refusals": [{k: r[k] for k in ("clause", "observed", "would_pass", "smallest_fix")} for r in prog + hand],
             "hand_steps": res["hand_steps"], "cycles": rec.get("cycles"),
-            "spend": spend_by_stage({"spend": spend_rows(root, mod, rec)}),
+            "spend": spend_by_stage({"spend": version_spend_rows(root, mod, rec)}),
             "launch": ("maturation.py launch %s --budget-usd <cap> --item <ID> (or the Dispatch step, "
                        "maturation_dispatch.py)" % mod) if cur == "offline_build" and prog else
             ("maturation.py launch %s --budget-usd <cap> --item <ID> (blind cycle %d; or the Dispatch step, "
@@ -3100,12 +3111,7 @@ def walk_identity(root, mod, rec):
 def pass_cost(root, mod, rec):
     """A pass's cost: this version's spend rows (the record's and the Dispatch run rows since it was seeded, spend_rows)
     in weighted tokens. Tokens no row measured read UNMEASURED, never 0."""
-    own = len((rec or {}).get("spend") or [])
-    since = ((rec or {}).get("seeded") or {}).get("at")
-    rows = spend_rows(root, mod, rec)
-    # RUN_SPEND outlives next-version and its rows name no version: a run that ended before this version was seeded
-    # is an earlier version's cost
-    rows = rows[:own] + [x for x in rows[own:] if not since or str(x.get("at") or "") >= since]
+    rows = version_spend_rows(root, mod, rec)     # an earlier version's Dispatch run rows are its cost, not this one's
     known = [x["tokens"] for x in rows if isinstance(x.get("tokens"), (int, float))]
     return {"weighted_tokens": sum(known) if known else UNM, "entries": len(rows),
             "tokens_unmeasured": len(rows) - len(known), "by_stage": spend_by_stage({"spend": rows}),
@@ -3907,7 +3913,7 @@ def main(argv=None):
         print("%s %s: %s since %s; blind cycles %s; arrivals at the walk brief %s; moves %d"
               % (o.mod, rec["version"], label(rec["stage"]), rec["since"], rec.get("cycles"),
                  rec.get("pre_human_arrivals"), len(rec.get("moves") or [])))
-        for st, t in spend_by_stage({"spend": spend_rows(root, o.mod, rec)}).items():
+        for st, t in spend_by_stage({"spend": version_spend_rows(root, o.mod, rec)}).items():
             # weighted tokens only (the owner, 2026-11-16: "Please speak in terms of weighted tokens not money.")
             print("  spend %s: %s weighted tokens, %s s wall, %d entries (%d estimates, %d unmeasured fields)"
                   % (" + ".join(label(x) for x in st.split("+")), t["tokens"], round(t["wall_s"]), t["entries"],
