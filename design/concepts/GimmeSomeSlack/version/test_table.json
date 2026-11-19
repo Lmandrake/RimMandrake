@@ -2913,31 +2913,6 @@
     "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
    }
   },
-  "P_B4_downed_wire_bursts": {
-   "id": "P_B4_downed_wire_bursts",
-   "kind": "live_minimal",
-   "stage": "6",
-   "file": "src/RimMandrake/GimmeSomeSlack/validation.py",
-   "entry": "B4_downed_wire_bursts",
-   "entry_exists": true,
-   "observes": "older proof row, evidence for cut_live_and_dead_ends (proof_leaves.ROW_LEAVES), not the scene contract",
-   "reads": [
-    "src/RimMandrake/GimmeSomeSlack/validation.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_proof_leaves.py",
-    "src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py"
-   ],
-   "support_only": true,
-   "leaves": [
-    "cut_live_and_dead_ends"
-   ],
-   "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live",
-   "why_game": "a live state read through the bridge on the gimmesomeslack tier",
-   "runs_today": {
-    "ran": false,
-    "why": "live: offline-only run",
-    "last_live": "PASS in J20261113T075443Z-3da526 (SteveDesktop, 35aaf354ea, 2026-11-13): 156 rows, 154 PASS, FAIL M2c_no_sharp_bends and SC_no_two_cords_alike (ledger, BENCH shard)"
-   }
-  },
   "P_B4b_sparks_thrown_ticking": {
    "id": "P_B4b_sparks_thrown_ticking",
    "kind": "live_minimal",
@@ -6262,7 +6237,6 @@
     "P_B3_whip_live_ends",
     "P_SW3_break_readout_off_no_glow_no_whip",
     "P_SW4_sparks_only_overlay_shut_no_glow",
-    "P_B4_downed_wire_bursts",
     "P_B4b_sparks_thrown_ticking",
     "P_B4c_spark_intensity_scales_downed",
     "P_B4d_spark_budget_shared_visible_first",
@@ -7199,7 +7173,6 @@
     "P_B3_whip_live_ends",
     "P_SW3_break_readout_off_no_glow_no_whip",
     "P_SW4_sparks_only_overlay_shut_no_glow",
-    "P_B4_downed_wire_bursts",
     "P_B4b_sparks_thrown_ticking",
     "P_B4c_spark_intensity_scales_downed",
     "P_B4d_spark_budget_shared_visible_first",
