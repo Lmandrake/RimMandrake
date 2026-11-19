@@ -450,12 +450,16 @@ def t_owner_import():
         "at": "2026-11-17T18:45:12Z"}})], voids_file=os.path.join(TMP, "novoids.jsonl"))
     check(any("look Graffiti window grant:2026-11-17T18:45:12Z" in x for x in lines), "a grant still waiting on its fixes "
                                                                                "imports as an opening balance", lines)
+    rev1 = C._q("SELECT v FROM meta WHERE k='rev'", one=True)["v"]
     lines2 = C.import_live(DB, hold_file=hf, concepts=[], voids_file=os.path.join(TMP, "novoids.jsonl"))
+    check(C._q("SELECT v FROM meta WHERE k='rev'", one=True)["v"] == rev1, "a second import writes no act (revision "
+                                                                           "unchanged)")
     holds = C.mod_holds()
     check(set(holds) == {"Graffiti", "Cauldron"} and holds["Graffiti"]["said"] == "stop Graffiti now",
           "the import holds every mod of the file with his words", holds)
     check(holds["Cauldron"].get("design_allowed", {}).get("said") == "design only", "his design-only words travel")
-    check(all("already" in x or "OFF" in x or "voids" in x for x in lines2), "a second import changes nothing", lines2)
+    check(all("already" in x or "OFF" in x or "voids" in x or "nothing to import" in x for x in lines2),
+          "a second import changes nothing", lines2)
     check(C.blocked({"family": "relentless", "unit": "x"}) is not None, "the retired Relentless family is OFF")
     import mod_owner_hold as OH
     os.environ.pop("RM_OWNER_HOLD_FILE", None)
@@ -1352,10 +1356,114 @@ def t_review_claims_round_three():
     check([r_ for _c, r_ in same] == [True, False], "claim r3-7: two literals on one line are judged one by one", same)
 
 
+def t_accounts():
+    """Slice 2 (RIMMANDRAKE_TYPE_EVERY_CONSUMABLE_AS_ACCOUNT_OLD_COUNTERS_GO): the consumable counts and limits are
+    typed accounts in this store. `set` is an adjustment at a revision (critique 8); `undo` is a compensating act,
+    refused with the later acts it would break (critique 16); pipeline_control's readers read this store."""
+    fresh()
+    # the item's acceptance command
+    C.set_account("Graffiti", "blind_cycles_visit", 0, "t")
+    r = C.undo(C.log(1)[0].split()[0], "t")
+    check(r["ok"], "acceptance: set_account then undo of its act", r)
+    # critique 8: set while another run completes (the adjustment is at a revision: later runs still count)
+    fresh()
+    C.set_account("Graffiti", "blind_cycles_total", 0, "back to zero", measured=2)
+    check(C.used("Graffiti", "blind_cycles_total", 2) == 0, "set 0 at measured 2 reads 0")
+    check(C.used("Graffiti", "blind_cycles_total", 3) == 1, "critique 8: a run completing after the set still counts",
+          C.used("Graffiti", "blind_cycles_total", 3))
+    check(C.used("Graffiti", "blind_cycles_total", C.UNM) == C.UNM, "an UNMEASURED count stays UNMEASURED")
+    check(C.used("Cauldron", "blind_cycles_total", 4) == 4, "another mod's account is its own")
+    # critique 8: void a run from a previous visit: its window is given back, the current one is untouched
+    C.grant("Graffiti", C.LOOK, 0, "open w1", win="w1")
+    ok, _ = C.reserve("Graffiti", C.LOOK, "run_prev_visit", win="w1", base=1)
+    C.settle("run_prev_visit", True, "a covered verdict")
+    C.void("run_prev_visit", "a system fault after all")
+    check(C.account("Graffiti", C.LOOK, "w1", 1)["available"] == 1 and C.account("Graffiti", C.LOOK, "w2", 1)[
+        "available"] == 1, "critique 8: voiding a previous visit's run gives back that window only")
+    # critique 16: set -> set -> undo first is refused (with the later act named) and keeps the later set
+    fresh()
+    a1 = C.set_account("Graffiti", "coverage_runs", 5, "first", measured=0)
+    a2 = C.set_account("Graffiti", "coverage_runs", 2, "second", measured=0)
+    r = C.undo(a1["act"]["id"], "undo first")
+    check(not r["ok"] and a2["act"]["id"] in r["why"] and C.used("Graffiti", "coverage_runs", 0) == 2,
+          "critique 16: set -> set -> undo first is refused naming the later set, which stands", r)
+    r = C.undo(a2["act"]["id"], "undo second")
+    check(r["ok"] and C.used("Graffiti", "coverage_runs", 0) == 5, "undoing the latest set puts back the one before",
+          (r, C.used("Graffiti", "coverage_runs", 0)))
+    r = C.undo(a2["act"]["id"], "again")
+    check(not r["ok"] and "already undone" in r["why"], "critique 16: a repeated undo is refused", r)
+    # adds commute: undoing an earlier add keeps a later add
+    fresh()
+    b1 = C.set_account("Graffiti", "coverage_malformed", 1, "add one", verb="add", measured=0)
+    C.set_account("Graffiti", "coverage_malformed", 2, "add two", verb="add", measured=0)
+    r = C.undo(b1["act"]["id"], "undo the first add")
+    check(r["ok"] and C.used("Graffiti", "coverage_malformed", 0) == 2, "undoing an earlier add keeps a later add",
+          C.used("Graffiti", "coverage_malformed", 0))
+    # limits: set -> set -> undo first refused; undo second restores the first; `default` clears it
+    l1 = C.set_limit("Graffiti", "blind_cycles_total", 5, "five")
+    l2 = C.set_limit("Graffiti", "blind_cycles_total", 2, "two")
+    check(C.limit("Graffiti", "blind_cycles_total", 3) == 2, "the latest limit binds")
+    check(not C.undo(l1["act"]["id"], "x")["ok"], "an earlier limit under a later one is not undone")
+    C.undo(l2["act"]["id"], "back to five")
+    check(C.limit("Graffiti", "blind_cycles_total", 3) == 5, "undoing the later limit restores the earlier")
+    C.set_limit("Graffiti", "blind_cycles_total", None, "default")
+    check(C.limit("Graffiti", "blind_cycles_total", 3) == 3, "limit default reads the pipeline's own setting")
+    # critique 16: grant -> consume -> undo grant shows the deficit
+    fresh()
+    g = C.grant("Graffiti", C.LOOK, 1, "one more look", win="w", owner_said="give it one more", base=1)
+    for run in ("run_g1", "run_g2"):
+        C.reserve("Graffiti", C.LOOK, run, win="w", base=1)
+        C.settle(run, True, "a covered verdict")
+    r = C.undo(g["act"]["id"], "the grant was a mistake", base=1)
+    check(r["ok"] and r["after"]["available"] == -1 and "deficit" in r["line"],
+          "critique 16: grant -> consume -> undo grant shows the deficit", r)
+    # undo after the stage advanced: the grant's own window is compensated, the new window is untouched
+    check(C.account("Graffiti", C.LOOK, "w_next", 1)["available"] == 1, "critique 16: undo after advancement leaves "
+                                                                        "the new window untouched")
+    # an off act is undone by identity; an act a later one replaced is refused
+    o1 = C.switch("mod:Graffiti", True, "off one")
+    C.switch("mod:Graffiti", True, "off two")
+    check(not C.undo(o1["act"]["id"], "x")["ok"], "an off a later off replaced is not undone")
+    # the readers: pipeline_control reads this store, fails closed on an unreadable one
+    import pipeline_control as PC
+    fresh()
+    C.set_account("Graffiti", "granted_look", 0, "spent", measured=1)
+    C.set_limit("Graffiti", "coverage_runs", 7, "seven")
+    check(PC.used("Graffiti", "granted_look", 1) == 0 and PC.limit("Graffiti", "coverage_runs", 3) == 7,
+          "pipeline_control.used/limit read the control store", (PC.used("Graffiti", "granted_look", 1),
+                                                                   PC.limit("Graffiti", "coverage_runs", 3)))
+    old = os.environ["RM_CONTROL_DB"]
+    os.environ["RM_CONTROL_DB"] = os.path.join(TMP, "absent-acc.db")
+    try:
+        PC.used("Graffiti", "granted_look", 1)
+        got = "no raise"
+    except PC.Unreadable as e:
+        got = "Unreadable: %s" % e
+    finally:
+        os.environ["RM_CONTROL_DB"] = old
+    check(got.startswith("Unreadable"), "an unreadable control store fails pipeline_control's readers closed", got)
+    # opening balances from the old journal, imported once
+    pcd = os.path.join(TMP, "pc-old")
+    os.makedirs(pcd, exist_ok=True)
+    with open(os.path.join(pcd, "control.jsonl"), "w") as f:
+        for i, (sec, name, after) in enumerate((("counts", "Cauldron/coverage_runs", -1),
+                                               ("limits", "Cauldron/coverage_runs", 9))):
+            f.write(json.dumps({"id": "pc_old%d" % i, "verb": "set", "sec": sec, "name": name, "before": None,
+                                "after": after, "why": "old", "who": "t", "at": "x", "at_pacific": "x", "ts": 1}) + "\n")
+    for _ in range(2):
+        C.import_accounts(pcd)
+    check(C.used("Cauldron", "coverage_runs", 3) == 2 and C.limit("Cauldron", "coverage_runs", 4) == 9,
+          "the old journal's counts and limits are imported as opening balances, once",
+          (C.used("Cauldron", "coverage_runs", 3), C.limit("Cauldron", "coverage_runs", 4)))
+    rc, out, _ = pipe("set", "Graffiti", "coverage_runs", "4", "--why", "cli set")
+    check(rc in (0, 2), "pipe set still answers (0 done or 2 refused for an unknown mod)", (rc, out))
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
-              t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three):
+              t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
+              t_accounts):
         print("== %s" % t.__name__)
         try:
             t()

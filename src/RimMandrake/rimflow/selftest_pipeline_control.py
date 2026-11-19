@@ -103,12 +103,13 @@ def test_verbs_and_coverage(st):
           "the fixture's granted look is spent: judging stops", CJ.stop_reason(st))
     rc, out, secs = run("add", "Fx", "granted_look", "-1", "--why", "the look died on a system fault")
     check(rc == 0 and len(out) <= 3 and "1/1 -> 0/1" in out[0], "add -1 prints before -> after in <= 3 lines", out)
-    check(any(l.startswith("undo: pipe undo pc_") for l in out), "the act prints its undo command", out)
-    act_id = re.search(r"act (pc_\w+)", "\n".join(out)).group(1)
+    # the counts live in control.py's store now (slice 2, RIMMANDRAKE_TYPE_EVERY_CONSUMABLE_AS_ACCOUNT_OLD_COUNTERS_GO)
+    check(any(l.startswith("undo: pipe undo ct_") for l in out), "the act prints its undo command", out)
+    act_id = re.search(r"act (ct_\w+)", "\n".join(out)).group(1)
     check("look" not in (CJ.stop_reason(st) or ""),
           "the real reader (coverage_judge.stop_reason) sees the look given back", CJ.stop_reason(st))
     rc, out, _ = run("undo", act_id, "--why", "test undo")
-    check(rc == 0 and len(out) <= 3 and "undoes %s" % act_id in out[0], "undo prints what it put back", out)
+    check(rc == 0 and len(out) <= 3 and "%s undone" % act_id in out[0], "undo prints what it put back", out)
     check("look" in (CJ.stop_reason(st) or ""), "after undo the look is spent again",
           CJ.stop_reason(st))
     rc, out, _ = run("set", "Fx", "look", "0", "--why", "label works too")
@@ -144,6 +145,8 @@ def test_verbs_and_coverage(st):
     check(rc == 2 and "blind_challenge" in out[0], "a wrong stage is refused with the nearest names", out)
     rc, out, _ = run("undo", "pc_nope", "--why", "typo")
     check(rc == 2 and "no act" in out[0], "an unknown act id is refused", out)
+    rc, out, _ = run("undo", "ct_nope", "--why", "typo")
+    check(rc == 2 and "no act" in out[0], "an unknown control act id is refused", out)
     try:
         with contextlib.redirect_stderr(io.StringIO()):
             PC.main(["add", "Fx", "granted_look", "-1"])
@@ -302,7 +305,8 @@ def test_switches(root):
         rc, out, _ = run("show", "Fx")
         check(rc == 0 and any("granted_look" in l for l in out), "show <Mod> lists each consumable with its doc", out)
         rc, out, _ = run("log", "-n", "3")
-        check(rc == 0 and len(out) == 3 and all(l.startswith("pc_") for l in out), "log -n 3 prints the last 3", out)
+        check(rc == 0 and len(out) == 3 and all(l.startswith("ct_") for l in out), "log -n 3 prints the control "
+                                                                                   "store's last 3", out)
     finally:
         os.environ["RM_OWNER_HOLD_FILE"] = hold
 
@@ -327,6 +331,7 @@ def test_journal_replay_and_damage(root):
     import pipeline_control as PC
     d = os.environ["RM_PIPE_CONTROL_DIR"]
     PC._CACHE.clear()
+    PC.act("queue", None, ["Fx", "Rx"], "the queue is the journal's last section (counts moved to control.py)", "queue")
     live = PC.state()
     with open(os.path.join(d, PC.JOURNAL)) as f:
         lines = f.read().splitlines()
@@ -352,7 +357,7 @@ def test_journal_replay_and_damage(root):
         check("line" in str(e), "an unreadable journal raises Unreadable naming the line", str(e))
     import mod_owner_hold as OH
     # the switches moved to control.py's SQLite store (its unreadable case: selftest_control.t_unreadable); this
-    # journal now holds counts, limits and the queue only, so a torn journal stops their readers, not the hold reader
+    # journal now holds the queue only (counts and limits: control.py, slice 2), so a torn journal stops its reader
     OH.load()
     check(True, "a torn counts journal leaves the owner-hold reader on control.py's store")
     rc, out, _ = run("show")

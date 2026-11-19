@@ -251,18 +251,30 @@ def _ck(mod, res):
     return "%s/%s" % (os.path.basename(os.path.normpath(str(mod))), res)
 
 
+def _C():
+    if HERE not in sys.path:
+        sys.path.insert(0, HERE)
+    import control as C
+    return C
+
+
 def used(mod, res, measured, st=None):
-    """The count every reader compares with its limit: the pipeline's own count plus the store's override, never
-    below 0. Raises Unreadable on a store that cannot be read."""
-    st = st if st is not None else (empty() if isolated() else state())
-    off = st["counts"].get(_ck(mod, res)) or 0
-    return max(0, measured + off) if isinstance(measured, (int, float)) and not isinstance(measured, bool) else measured
+    """The count every reader compares with its limit: the pipeline's own count plus the control store's
+    adjustments (control.used: typed accounts, slice 2), never below 0. Raises Unreadable on a store that cannot be
+    read. `st` is accepted for old callers and not read: the counts left this journal."""
+    C = _C()
+    try:
+        return C.used(mod, res, measured)
+    except C.Unreadable as e:
+        raise Unreadable("the control store: %s" % e)
 
 
 def limit(mod, res, default, st=None):
-    st = st if st is not None else (empty() if isolated() else state())
-    v = st["limits"].get(_ck(mod, res))
-    return default if v is None else v
+    C = _C()
+    try:
+        return C.limit(mod, res, default)
+    except C.Unreadable as e:
+        raise Unreadable("the control store: %s" % e)
 
 
 def off(mod=None, item=None, stage=None, st=None):
@@ -505,10 +517,10 @@ def mod_name(name, ctx):
 def reading(ctx, mod, res, st):
     """-> (measured, used, limit) for one consumable, or None when it does not apply to the mod now."""
     meas, dlim = RESOURCES[res][2](ctx, mod)
-    ov = st["counts"].get(_ck(mod, res))
-    if meas is None and not ov and st["limits"].get(_ck(mod, res)) is None:
+    u, lim = used(mod, res, meas if meas is not None else 0), limit(mod, res, dlim)
+    if meas is None and not u and lim == dlim:
         return None
-    return meas, used(mod, res, meas if meas is not None else 0, st), limit(mod, res, dlim, st)
+    return meas, u, lim
 
 
 # ---------------------------------------------------------------- the verbs
@@ -522,41 +534,40 @@ def _undo_line(a):
 
 
 def do_count(ctx, verb, mod, res, n, why, owner_said=None):
+    """`pipe set|add|reset`: one adjustment in the control store (control.set_account), at this revision."""
     mod = mod_name(mod, ctx)
     res = resource(res)
-    st = state()
     meas, dlim = RESOURCES[res][2](ctx, mod)
-    k = _ck(mod, res)
-    old = st["counts"].get(k) or 0
-    if not isinstance(meas, int) or isinstance(meas, bool):
-        # the pipeline's own count is not readable here (UNMEASURED) or does not apply now: `add` moves the override
-        # by N as given; `set`/`reset` pin the override to N (the count reads N plus whatever the pipeline counts)
-        note = "pipeline count %s; override stored as given" % ("not applicable now" if meas is None else meas)
-        new = old + n if verb == "add" else (0 if verb == "reset" else n)
-        before_u, target = old, new
-    else:
-        note = "pipeline count %d" % meas
-        before_u = max(0, meas + old)
-        target = max(0, before_u + n if verb == "add" else 0 if verb == "reset" else n)
-        new = target - meas
-    a = act("counts", k, new or None, why, verb, owner_said)
-    lim = limit(mod, res, dlim, state())
-    return ["%s %s used %s -> %s (%s, override %+d)" % (mod, res, _fmt(None, before_u, lim), _fmt(None, target, lim),
-                                                       note, new),
-            "act %s at %s" % (a["id"], a["at_pacific"]), _undo_line(a)]
+    C = _C()
+    m = meas if isinstance(meas, int) and not isinstance(meas, bool) else None
+    try:
+        r = C.set_account(mod, res, n, why, measured=m, verb=verb, owner_said=owner_said)
+        lim = limit(mod, res, dlim)
+    except C.Unreadable as e:
+        raise Unreadable("the control store: %s" % e)
+    except C.Refused as e:
+        raise Refused(str(e))
+    note = ("pipeline count %d" % m) if m is not None else "pipeline count %s; adjustment total pinned" % (
+        "not applicable now" if meas is None else meas)
+    a = r["act"]
+    return ["%s %s used %s -> %s (%s, adjustment %+d)" % (mod, res, _fmt(None, r["before"], lim),
+                                                         _fmt(None, r["after"], lim), note, r["delta"]),
+            "act %s rev %s at %s" % (a["id"], a["rev"], a["at_pacific"]), _undo_line(a)]
 
 
 def do_limit(ctx, mod, res, n, why, owner_said=None):
     mod = mod_name(mod, ctx)
     res = resource(res)
-    k = _ck(mod, res)
-    st = state()
     _meas, dlim = RESOURCES[res][2](ctx, mod)
-    old = st["limits"].get(k)
-    a = act("limits", k, None if n == "default" else int(n), why, "limit", owner_said)
-    return ["%s %s limit %s -> %s (pipeline default %s)" % (mod, res, dlim if old is None else old,
+    C = _C()
+    try:
+        r = C.set_limit(mod, res, None if n == "default" else int(n), why, owner_said=owner_said)
+    except C.Unreadable as e:
+        raise Unreadable("the control store: %s" % e)
+    a = r["act"]
+    return ["%s %s limit %s -> %s (pipeline default %s)" % (mod, res, dlim if r["before"] is None else r["before"],
                                                             dlim if n == "default" else n, dlim),
-            "act %s at %s" % (a["id"], a["at_pacific"]), _undo_line(a)]
+            "act %s rev %s at %s" % (a["id"], a["rev"], a["at_pacific"]), _undo_line(a)]
 
 
 STAGES = ("designer", "offline_build", "blind_challenge", "in_game", "his_walk")
@@ -596,6 +607,18 @@ def do_switch(ctx, on, t, why, owner_said=None):
 
 
 def do_undo(act_id, why, owner_said=None):
+    """`pipe undo <act>`: a control-store act (ct_...) is undone there (control.undo, a compensating act refused with
+    the later acts it would break); a pc_ act is one of this journal's (the queue, until slice 3)."""
+    if not str(act_id).startswith("pc_"):
+        C = _C()
+        try:
+            r = C.undo(act_id, why, owner_said=owner_said)
+        except C.Unreadable as e:
+            raise Unreadable("the control store: %s" % e)
+        if not r["ok"]:
+            raise Refused(r["why"])
+        return [r["line"], "act %s rev %s at %s" % (r["act"]["id"], r["act"]["rev"], r["act"]["at_pacific"]),
+                "(an undo is itself an act: pipe log)"]
     js = journal()
     a = next((x for x in js if x.get("id") == act_id), None)
     if not a:
@@ -616,13 +639,16 @@ def _short(v):
 
 
 def do_log(n):
-    js = journal()
-    if not js:
-        return ["no acts yet (the journal %s is empty or absent)" % os.path.join(control_dir(), JOURNAL)]
-    return ["%s %s %-6s %s %s: %s -> %s  (%s)%s" % (
-        a["id"], a.get("at_pacific", UNM), a.get("verb"), a["sec"], a.get("name") or "", _short(a.get("before")),
-        _short(a.get("after")), a.get("why"), "  undoes " + a["undoes"] if a.get("undoes") else "")
-        for a in js[-n:]]
+    """The acts of the one control store (control.log): counts, limits, switches, stops and voids live there now; the
+    queue's journal acts follow, marked, while the queue still lives here (slice 3)."""
+    C = _C()
+    try:
+        out = C.log(n)
+    except C.Unreadable as e:
+        raise Unreadable("the control store: %s" % e)
+    q = [a for a in journal() if a.get("sec") == "queue"][-n:]
+    return out + ["%s %s queue: %s -> %s  (%s)" % (a["id"], a.get("at_pacific", UNM), _short(a.get("before")),
+                                                  _short(a.get("after")), a.get("why")) for a in q]
 
 
 def do_show(ctx, mod=None):
@@ -654,7 +680,7 @@ def do_show(ctx, mod=None):
             if r is None:
                 continue
             meas, u, lim = r
-            mark = "*" if st["counts"].get(_ck(m, res)) or st["limits"].get(_ck(m, res)) is not None else ""
+            mark = "*" if (meas if isinstance(meas, int) else 0) != u or lim != RESOURCES[res][2](ctx, m)[1] else ""
             if mod:
                 cells.append("  %-21s %-9s %s (pipeline count %s)%s" % (res, _fmt(meas, u, lim), doc, meas,
                                                                       ", overridden" if mark else ""))
@@ -719,7 +745,7 @@ def main(argv=None):
                 ms = mod_name(a.mod, ctx)
                 lines = []
                 for r in RESOURCES:
-                    if state()["counts"].get(_ck(ms, r)) or RESOURCES[r][2](ctx, ms)[0]:
+                    if used(ms, r, RESOURCES[r][2](ctx, ms)[0] or 0):
                         lines.append(do_count(ctx, "reset", ms, r, 0, a.why, a.owner_said)[0])
                 lines = lines[:2] + (["(%d more reset; pipe log)" % (len(lines) - 2)] if len(lines) > 2 else []) \
                     or ["%s: every consumable already reads 0" % ms]

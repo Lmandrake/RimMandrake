@@ -29,6 +29,8 @@ moment of launch (admit) and again when the unit itself starts (its ExecConditio
                 no), abandoned (reconcile: it never started and its launcher is gone).
   reservations  a consumable held for a run: held -> charged at VALIDATED settlement, or released; charged -> voided.
   grants        more of a consumable for a mod in one accounting window (`pipe grant <Mod> look +N`).
+  adjustments   the typed counts and limits (`pipe set|add|reset|limit`): a count's delta at a revision, a limit's
+                value; `pipe undo <act>` is a compensating act, refused with the later acts it would break.
   voids         one row per voided run; voiding twice changes nothing. A void never moves a stage.
   faults        the system-fault meter: every fail_system settlement (its own alarm, FAULT_LIMIT a day per mod). A void
                 or a system fault charges nothing and its spend is not the mod's (card, 2026-11-18).
@@ -122,6 +124,9 @@ CREATE TABLE IF NOT EXISTS refusals (id INTEGER PRIMARY KEY AUTOINCREMENT, at RE
 CREATE TABLE IF NOT EXISTS stops (id INTEGER PRIMARY KEY AUTOINCREMENT, unit TEXT NOT NULL, run TEXT, mode TEXT NOT NULL,
   act TEXT, why TEXT, at REAL, deadline REAL, state TEXT NOT NULL, seen_at REAL, seen_n INTEGER DEFAULT 0,
   ended_at REAL, said TEXT);
+CREATE TABLE IF NOT EXISTS adjustments (id INTEGER PRIMARY KEY AUTOINCREMENT, act TEXT NOT NULL, mod TEXT NOT NULL,
+  res TEXT NOT NULL, kind TEXT NOT NULL, verb TEXT, delta INTEGER, value INTEGER, state TEXT NOT NULL DEFAULT 'live',
+  undone_by TEXT, at REAL);
 CREATE INDEX IF NOT EXISTS runs_state ON runs (state);
 CREATE INDEX IF NOT EXISTS res_acct ON reservations (mod, resource, win, state);
 CREATE INDEX IF NOT EXISTS stops_unit ON stops (unit, state);
@@ -740,6 +745,206 @@ def grant(mod, resource, n, why, win="", owner_said=None, per_ruling=None, idem=
         c.execute("INSERT INTO grants (mod, resource, win, qty, act, why, owner_said, at) VALUES (?,?,?,?,?,?,?,?)",
                   (mod, resource, win, n, a["id"], why.strip(), owner_said, now))
         return {"replayed": False, "act": a, "before": before, "after": _account(c, mod, resource, win, base, used=used)}
+
+
+# ---------------------------------------------------------------- typed counts and limits (slice 2), and undo
+# The consumables the pipeline counts from its own records (coverage looks, runs and verdicts, blind cycles) are typed
+# accounts here: an adjustment row per `pipe set|add|reset` (a delta written at a revision, so a run that completes
+# after a set still counts: critique 8) and per `pipe limit` (the latest live row binds; NULL = the pipeline's own
+# default). `undo` is a compensating act, refused with the later acts it would break (critique 16). Item
+# RIMMANDRAKE_TYPE_EVERY_CONSUMABLE_AS_ACCOUNT_OLD_COUNTERS_GO; readers: pipeline_control.used / .limit.
+
+ADJ_SQL = ("CREATE TABLE IF NOT EXISTS adjustments (id INTEGER PRIMARY KEY AUTOINCREMENT, act TEXT NOT NULL, mod TEXT "
+           "NOT NULL, res TEXT NOT NULL, kind TEXT NOT NULL, verb TEXT, delta INTEGER, value INTEGER, state TEXT NOT NULL "
+           "DEFAULT 'live', undone_by TEXT, at REAL)")
+
+
+def _has_adj(c):
+    """A store initialised before slice 2 has no adjustments table: it has no adjustment (empty, not unreadable)."""
+    return bool(c.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='adjustments'").fetchone())
+
+
+def _adj(c, mod, res, kind):
+    if not _has_adj(c):
+        return []
+    return [dict(r) for r in c.execute("SELECT * FROM adjustments WHERE mod=? AND res=? AND kind=? AND state='live' "
+                                       "ORDER BY id", (mod, res, kind)).fetchall()]
+
+
+def _numeric(v):
+    return isinstance(v, int) and not isinstance(v, bool)
+
+
+def _used(c, mod, res, measured):
+    off = sum(r["delta"] or 0 for r in _adj(c, mod, res, "count"))
+    return max(0, measured + off) if _numeric(measured) else measured
+
+
+def _limit(c, mod, res, default):
+    rows = _adj(c, mod, res, "limit")
+    return default if not rows or rows[-1]["value"] is None else rows[-1]["value"]
+
+
+def used(mod, res, measured, p=None):
+    """The count a reader compares with its limit: the pipeline's own `measured` count plus every live adjustment,
+    never below 0 (a non-number, e.g. UNMEASURED, is returned as it is). Raises Unreadable."""
+    c = read(p)
+    try:
+        return _used(c, key(mod), res, measured)
+    except sqlite3.Error as e:
+        raise Unreadable(_err(e))
+    finally:
+        c.close()
+
+
+def limit(mod, res, default, p=None):
+    """The most allowed: the latest live `pipe limit`, else `default` (the pipeline's own setting). Raises Unreadable."""
+    c = read(p)
+    try:
+        return _limit(c, key(mod), res, default)
+    except sqlite3.Error as e:
+        raise Unreadable(_err(e))
+    finally:
+        c.close()
+
+
+def set_account(mod, res, n, why, measured=None, verb="set", owner_said=None, per_ruling=None, idem=None, p=None,
+                now=None):
+    """`pipe set|add|reset <Mod> <res> <N>`: one adjustment at this revision. set/reset: the count reads N (0) now,
+    given the pipeline's own `measured` count (None or UNMEASURED: the adjustment total is pinned to N); add: moves it
+    by N. -> {"act", "before", "after", "replayed"}."""
+    if verb not in ("set", "add", "reset"):
+        raise Refused("a count is set, add or reset, not %r" % verb)
+    if not str(res or "").strip():
+        raise Refused("a count names its consumable")
+    n = 0 if verb == "reset" else int(n)
+    now = time.time() if now is None else now
+    mod = key(mod)
+    with txn(p) as c:
+        hit = _idem_hit(c, idem)
+        if hit:
+            return {"act": hit, "before": None, "after": _used(c, mod, res, measured), "replayed": True}
+        c.execute(ADJ_SQL)
+        off = sum(r["delta"] or 0 for r in _adj(c, mod, res, "count"))
+        raw = (measured + off) if _numeric(measured) else off
+        delta = n if verb == "add" else n - raw
+        before = _used(c, mod, res, measured)
+        a = _act(c, verb, "mod:%s/%s" % (mod, res), {"used": before, "measured": measured},
+                 {"delta": delta, "reads": None}, why, owner_said, per_ruling, idem, now=now)
+        c.execute("INSERT INTO adjustments (act, mod, res, kind, verb, delta, at) VALUES (?,?,?, 'count', ?,?,?)",
+                  (a["id"], mod, res, verb, delta, now))
+        return {"act": a, "before": before, "after": _used(c, mod, res, measured), "replayed": False, "delta": delta}
+
+
+def set_limit(mod, res, n, why, owner_said=None, per_ruling=None, idem=None, p=None, now=None):
+    """`pipe limit <Mod> <res> <N|default>` (n None = the pipeline's own default). -> {"act", "before", "after"}."""
+    now = time.time() if now is None else now
+    mod = key(mod)
+    n = None if n in (None, "default") else int(n)
+    with txn(p) as c:
+        hit = _idem_hit(c, idem)
+        if hit:
+            return {"act": hit, "before": None, "after": _limit(c, mod, res, None), "replayed": True}
+        c.execute(ADJ_SQL)
+        before = _limit(c, mod, res, None)
+        a = _act(c, "limit", "mod:%s/%s" % (mod, res), {"limit": before}, {"limit": n}, why, owner_said, per_ruling,
+                 idem, now=now)
+        c.execute("INSERT INTO adjustments (act, mod, res, kind, verb, value, at) VALUES (?,?,?, 'limit', 'limit', ?,?)",
+                  (a["id"], mod, res, n, now))
+        return {"act": a, "before": before, "after": n, "replayed": False}
+
+
+def undo(act_id, why, owner_said=None, per_ruling=None, p=None, now=None, base=0):
+    """`pipe undo <act>`: a compensating act (critique 16). A count or limit adjustment stops counting; a grant gets
+    its negative (a look already consumed shows as a deficit); an OFF is lifted only while it is still the switch's
+    own act. Refused, naming why, when a later act depends on it, when it was already undone, or for an act no undo
+    inverts (stop, void, import, hold: their own commands). -> {"ok", "why", "act", "line", "after"}."""
+    now = time.time() if now is None else now
+    no = lambda w: {"ok": False, "why": w, "act": None, "line": "NOT undone: " + w, "after": None}
+    with txn(p) as c:
+        a = c.execute("SELECT * FROM acts WHERE id=?", (act_id,)).fetchone()
+        if not a:
+            ids = [r[0] for r in c.execute("SELECT id FROM acts ORDER BY rev DESC LIMIT 200").fetchall()]
+            return no("no act %r in the store; nearest: %s (pipe log)" % (
+                act_id, ", ".join(difflib.get_close_matches(act_id, ids, n=3, cutoff=0.3)) or "none"))
+        a = dict(a)
+        prior = c.execute("SELECT id FROM acts WHERE undoes=?", (act_id,)).fetchone()
+        if prior:
+            return no("%s is already undone (by %s)" % (act_id, prior[0]))
+        adj = c.execute("SELECT * FROM adjustments WHERE act=?", (act_id,)).fetchone() if _has_adj(c) else None
+        if adj:
+            adj = dict(adj)
+            later = [dict(r) for r in c.execute(
+                "SELECT * FROM adjustments WHERE mod=? AND res=? AND kind=? AND state='live' AND id>? ORDER BY id",
+                (adj["mod"], adj["res"], adj["kind"], adj["id"])).fetchall()]
+            if adj["kind"] == "count" and adj["verb"] == "add":    # adds commute; a later set or reset pinned the count
+                later = [r for r in later if r["verb"] in ("set", "reset")]
+            if later:
+                return no("%s %s/%s is under later act(s) %s: undo those first (latest first)" % (
+                    act_id, adj["mod"], adj["res"], ", ".join(r["act"] for r in later)))
+            u = _act(c, "undo", a["scope"], {"undoes": act_id}, {"stops_counting": adj["id"]}, why, owner_said,
+                     per_ruling, undoes=act_id, now=now)
+            c.execute("UPDATE adjustments SET state='undone', undone_by=? WHERE id=?", (u["id"], adj["id"]))
+            after = (_limit(c, adj["mod"], adj["res"], None) if adj["kind"] == "limit"
+                     else sum(r["delta"] or 0 for r in _adj(c, adj["mod"], adj["res"], "count")))
+            return {"ok": True, "why": None, "act": u, "after": after, "line": "%s %s/%s: %s undone (%s now %s)" % (
+                adj["kind"], adj["mod"], adj["res"], act_id, "limit" if adj["kind"] == "limit" else "adjustment total",
+                "the pipeline default" if after is None else after)}
+        gs = [dict(r) for r in c.execute("SELECT * FROM grants WHERE act=?", (act_id,)).fetchall()]
+        if gs:
+            u = _act(c, "undo", a["scope"], {"undoes": act_id}, {"grant": -sum(g["qty"] for g in gs)}, why, owner_said,
+                     per_ruling, undoes=act_id, now=now)
+            for g in gs:
+                c.execute("INSERT INTO grants (mod, resource, win, qty, act, why, owner_said, at) VALUES (?,?,?,?,?,?,?,?)",
+                          (g["mod"], g["resource"], g["win"], -g["qty"], u["id"], why.strip(), owner_said, now))
+            g = gs[0]
+            acc = _account(c, g["mod"], g["resource"], g["win"], base)
+            return {"ok": True, "why": None, "act": u, "after": acc, "line": "%s %s (window %s): grant %s undone, "
+                    "available %d%s" % (g["mod"], g["resource"], g["win"] or "none", act_id, acc["available"],
+                                        " (a deficit: %d already consumed past it)" % -acc["available"]
+                                        if acc["available"] < 0 else "")}
+        if a["kind"] == "off":
+            sw = c.execute("SELECT * FROM switches WHERE scope=? AND layer='control'", (a["scope"],)).fetchone()
+            if not sw or sw["act"] != act_id:
+                return no("%s OFF is no longer the switch's own act (now %s): `pipe on %s` lifts the current one" % (
+                    act_id, sw["act"] if sw else "no switch", a["scope"]))
+            u = _act(c, "undo", a["scope"], dict(sw), None, why, owner_said, per_ruling, undoes=act_id, now=now)
+            c.execute("DELETE FROM switches WHERE scope=? AND layer='control'", (a["scope"],))
+            return {"ok": True, "why": None, "act": u, "after": "ON", "line": "%s: OFF %s undone (ON)" % (a["scope"],
+                                                                                                    act_id)}
+        return no("a %s act is not inverted by undo: use its own command (pipe on/off, maturation_dispatch.py unvoid, "
+                  "mod_owner_hold.py lift)" % a["kind"])
+
+
+def import_accounts(pc_dir, p=None, now=None):
+    """Opening balances: the old pipeline_control journal's counts and limits (control.jsonl, folded) become
+    adjustments here, once each (idempotency key per key and value). -> lines."""
+    path = os.path.join(pc_dir, "control.jsonl")
+    try:
+        with open(path, encoding="utf-8") as f:
+            lines = [json.loads(x) for x in f if x.strip()]
+    except FileNotFoundError:
+        return ["old counters: no journal at %s ([] nothing to import)" % path]
+    except (OSError, ValueError) as e:
+        raise Unreadable("the old counter journal %s: %s" % (path, e))
+    st = {"counts": {}, "limits": {}}
+    for x in lines:
+        if x.get("sec") in st:
+            if x.get("after") is None:
+                st[x["sec"]].pop(x.get("name"), None)
+            else:
+                st[x["sec"]][x["name"]] = x["after"]
+    out = []
+    for sec, rows in sorted(st.items()):
+        for k, v in sorted(rows.items()):
+            mod, _, res = k.partition("/")
+            idem = "import:pc:%s:%s:%s" % (sec, k, v)
+            why = "opening balance from %s (%s)" % (path, sec)
+            r = (set_account(mod, res, int(v), why, verb="add", idem=idem, per_ruling="import", p=p, now=now)
+                 if sec == "counts" else set_limit(mod, res, v, why, idem=idem, per_ruling="import", p=p, now=now))
+            out.append("%s %s = %s %s" % (sec, k, v, "already imported" if r["replayed"] else "imported (%s)" %
+                                          r["act"]["id"]))
+    return out or ["old counters: the journal holds no count or limit ([] nothing to import)"]
 
 
 def fmt_acct(a):
@@ -1833,6 +2038,11 @@ def import_live(p=None, now=None, hold_file=None, concepts=None, voids_file=None
                      idem="import:void:%s" % v.get("id"), p=p, now=now)
             n += 0 if r["replayed"] else 1
         out.append("voids: %d standing in voids.jsonl, %d newly imported" % (len(act_v), n))
+    try:    # the old pipeline_control counters and limits, as opening balances (slice 2)
+        import pipeline_control as PC
+        out += import_accounts(PC.control_dir(), p=p, now=now)
+    except Exception as e:      # noqa: BLE001
+        out.append("old counters: could not be imported (%s: %s)" % (type(e).__name__, e))
     return out
 
 
