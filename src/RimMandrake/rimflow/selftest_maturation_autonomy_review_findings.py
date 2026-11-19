@@ -144,6 +144,7 @@ def launch_exception_books_code(tmp):
 SECTIONS = [
     seed_timeout_leaves_no_record,
     autolock_failure_before_landing_rolls_back,
+    road_back_retries_transient_fixer,
 ]
 
 

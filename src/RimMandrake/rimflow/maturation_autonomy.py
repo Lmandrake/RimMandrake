@@ -897,7 +897,10 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None):
         if _pilot_step(s, row, items, endings):
             return True
         fixed = s.setdefault("fixers", {})
-        todo = [x for x in items if x["id"] not in fixed]
+        # a fixer whose launch failed (no unit) goes back to _gate, which retries it or calls it spent
+        # (RIMMANDRAKE_RETRY_ROAD_BACK_FIXER_AFTER_TRANSIENT_LAUNCH_FAIL)
+        todo = [x for x in items if x["id"] not in fixed
+                or (isinstance(fixed[x["id"]], dict) and fixed[x["id"]].get("failed") and not fixed[x["id"]].get("unit"))]
         if todo:
             row.update(aut="fixer", fix_item=todo[0]["id"], decision="fixer",
                        why="road-back item %s (of %d open, caused by %s) gets one fixer run" % (
