@@ -573,20 +573,21 @@ namespace RimMandrake.FlowWorks.SelfTest
 				w.k.edgeSinksEnabled = band > 0; w.k.viscosityEnabled = true; 
 				// WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES: totals, rest and the level check read the WATER (fill + part) so the family
 				// holds at the shipped exact-level flags as well as at the whole-notch ones (part is null there: water = fill).
-				float startTotal = Enumerable.Range(0, 64).Sum(i => w.WaterLevels(i)) + (pond?.stock ?? 0f);
+				// exact, in decilitres (RIMMANDRAKE_WRITE_LAWS_FOR_EIGHT_FUZZ_FAMILIES_STILL_UNNAMED: a float sum of levels at
+				// 1e-3, ten decilitres, could not see a one-decilitre leak; the kernel's float sink is rounded back per pulse)
+				long startDl = w.TotalDl();
 				var digs = Enumerable.Range(0, 64).Where(i => w.k.depth[i] > 0).ToList();
-				string prev = null; int lastChange = 0; float worst = 0f, drained = 0f;
+				string prev = null; int lastChange = 0; float worst = 0f; long drainedDl = 0;
 				for (int p = 1; p <= 200; p++)
 				{
 					w.Pulse(digs);
 					worst = Math.Max(worst, w.k.worstImbalance);
-					drained += w.k.sinkDrained;
+					drainedDl += (long)Math.Round(w.k.sinkDrained * (double)RM_LevelSolve.U);
 					string now = string.Join(",", digs.Select(c => w.k.WaterOf(c)));
 					if (now != prev) lastChange = p;
 					prev = now;
 				}
-				float endTotal = Enumerable.Range(0, 64).Sum(i => w.WaterLevels(i)) + (pond?.stock ?? 0f) + drained;
-				bool rest = lastChange <= 150, bal = worst <= 0.001f && Math.Abs(endTotal - startTotal) < 0.001f;
+				bool rest = lastChange <= 150, bal = worst <= 0.001f && w.TotalDl() + drainedDl == startDl;
 				// At rest, no wet cell stands 2+ above a dug neighbour in its own network (sealed/sink-free scenes only;
 				// a sink band empties toward the edge, and a different-fluid wall cannot happen here: one fluid).
 				bool level = true;
@@ -611,7 +612,11 @@ namespace RimMandrake.FlowWorks.SelfTest
 				if ((!rest || !bal || !level) && firstBad == null) firstBad = $"scene {t}: rest={rest} (last change {lastChange}) bal={bal} level={level}\n{w.Grid()}";
 			}
 			string line = $"{total} scenes: {notAtRest} not at rest by pulse 150, {unbalanced} unbalanced, {steep} with a wet step of 2+";
-			return notAtRest == 0 && unbalanced == 0 && steep == 0 ? "OK: " + line : "BROKEN: " + line + "\n" + firstBad;
+			// one marker per check that failed, so a law is named only by its own failure (vv laws.json)
+			string broken = string.Join(" ", new[] { notAtRest > 0 ? "[a surface scene never came to rest]" : null,
+				unbalanced > 0 ? "[a surface scene did not conserve its water]" : null,
+				steep > 0 ? "[a settled surface scene kept a wet step]" : null }.Where(x => x != null));
+			return notAtRest == 0 && unbalanced == 0 && steep == 0 ? "OK: " + line : "BROKEN: " + line + " " + broken + "\n" + firstBad;
 		}
 
 		/// <summary>A channel touching both pools takes the fluid of whichever fills it first and never mixes after.</summary>

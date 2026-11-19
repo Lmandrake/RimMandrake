@@ -162,6 +162,36 @@
     "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
     "text": "connected to a limitless source ends"
    }
+  },
+  {
+   "id": "surface_scene_comes_to_rest",
+   "family": "surface_settling",
+   "matrix_family": "surface_random",
+   "sentence": "A random 8x8 surface scene comes to rest: its water stops changing by pulse 150 of 200, with no shuttle of any period.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "[a surface scene never came to rest]"
+   }
+  },
+  {
+   "id": "surface_scene_conserves_water",
+   "family": "surface_settling",
+   "matrix_family": "surface_random",
+   "sentence": "A surface scene conserves its water to the decilitre: cells plus pond stock plus what the sinks drained stays constant, and the kernel's ledger balances every pulse.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "[a surface scene did not conserve its water]"
+   }
+  },
+  {
+   "id": "settled_surface_is_level",
+   "family": "surface_settling",
+   "matrix_family": "surface_random",
+   "sentence": "In a sinkless surface scene at rest, no wet cell stands 3 or more decilitres of surface above a dug neighbour.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "[a settled surface scene kept a wet step]"
+   }
   }
  ],
  "families": {
@@ -211,6 +241,13 @@
     "find": "\t\t\tbool hasLim = exLimMouths.Count > 0;",
     "replace": "\t\t\tbool hasLim = false;",
     "what": "a limitless source's mouths are ignored: no limitless water enters a pit"
+   }
+  },
+  "surface_settling": {
+   "plant": {
+    "kind": "hook",
+    "name": "shuttle",
+    "what": "one decilitre is moved back and forth between a kept pair of wet cells on alternate pulses (volume and bounds kept)"
    }
   }
  }
