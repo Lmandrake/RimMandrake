@@ -96,6 +96,22 @@ def road_back_retries_transient_fixer(tmp):
     MA._road_back(s, row, lambda ids: [{"id": "FIX_ITEM", "needs": "offline"}])
     check("road back: a fixer whose launch failed on a transient fault is routed to the gate again, not spent",
           row.get("decision") == "fixer" and row.get("fix_item") == "FIX_ITEM", row)
+    # Codex review of the fix: an exhausted failure first in line must not starve an untried item behind it
+    s2 = {"road_back": {"caused_by": "STEW_ITEM", "at": 1}, "steward": {},
+          "fixers": {"A_ITEM": {"item": "A_ITEM", "unit": None, "failed": "fatal: index.lock exists", "tries": 3}}}
+    row = {"mod": "C", "stage": "blind_challenge"}
+    MA._road_back(s2, row, lambda ids: [{"id": "A_ITEM", "needs": "offline"}, {"id": "B_ITEM", "needs": "offline"}])
+    check("road back: an untried item goes before one whose failed launches may be spent",
+          row.get("decision") == "fixer" and row.get("fix_item") == "B_ITEM", row)
+    go, why = MA._gate({"fix_cap_usd": 5, "max_live": 2, "launch_tries": 3}, s2,
+                       {"mod": "C", "aut": "fixer", "fix_item": "A_ITEM"}, 0, "0.1.0")
+    check("road back: the gate calls a three-times-failed transient launch spent", go is False and why[0] == "fixer_spent",
+          (go, why))
+    s["fixers"]["FIX_ITEM"].update(failed="fatal: index.lock exists")
+    row = {"mod": "C", "stage": "blind_challenge"}
+    MA._road_back(s, row, lambda ids: [{"id": "FIX_ITEM", "needs": "offline"}])
+    go, why = MA._gate({"fix_cap_usd": 5, "max_live": 2, "launch_tries": 3}, s, dict(row, aut="fixer"), 0, "0.1.0")
+    check("road back: a once-failed transient fixer launch is let through the gate again", go is True, (go, why))
     s["fixers"]["FIX_ITEM"].update(unit="rm-unit-1", failed=None)
     row = {"mod": "C", "stage": "blind_challenge"}
     MA._road_back(s, row, lambda ids: [{"id": "FIX_ITEM", "needs": "offline"}])
