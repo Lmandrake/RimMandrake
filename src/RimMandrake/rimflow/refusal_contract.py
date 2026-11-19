@@ -105,7 +105,12 @@ def _told(why, now):
         import incident
         with open(SCHEDULE, encoding="utf-8") as f:
             sch = json.load(f)
-        incident.signal(sch, ALARM_ID, why, now)
+        # A process that moved the rows (a selftest) moves their told row too, unless it named its own ops folder:
+        # selftest_control set RM_REFUSAL_DIR alone and paged the Conductor from a temp dir (refusals-20261119145232).
+        moved = state_dir() != REAL_DIR and not os.environ.get("RM_OPS_WATCH_DIR")
+        if moved:
+            os.makedirs(state_dir(), exist_ok=True)
+        incident.signal(sch, ALARM_ID, why, now, path=os.path.join(state_dir(), "told.jsonl") if moved else None)
         return None
     except Exception as e:  # noqa: BLE001 - the row on disk stands; the failure to tell is written into it
         return "%s: %s" % (type(e).__name__, str(e))

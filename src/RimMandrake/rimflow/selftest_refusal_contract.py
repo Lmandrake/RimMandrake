@@ -306,6 +306,28 @@ def advance_tuning(root):
     check("(d) a failed write raises (its own answer), never 'no trip'", got != "no raise", got)
 
 
+def told_stays_in_test_dir(root):
+    """RIMMANDRAKE_SCOPE_ALARM_TOLD_ROW_SELFTEST_PAGED_CONDUCTOR: selftest_control pointed RM_REFUSAL_DIR at a temp dir
+    and nothing else; its alarm's told row still went to the live told ledger and paged the Conductor
+    (refusals-20261119145232, eight rows in five minutes). A process that moved the rows moves their told row with them."""
+    saved = {k: os.environ.pop(k, None) for k in ("RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE")}
+    real_ops, live = incident.REAL_OPS, os.path.join(root, "live_ops")
+    os.makedirs(live)
+    incident.REAL_OPS = live                       # stands in for the live ledger's folder
+    os.environ["RM_REFUSAL_DIR"] = iso = os.path.join(root, "iso")
+    try:
+        row = RC.alarm("control:test_mirror", "a test alarm", now=1794300000)
+    finally:
+        incident.REAL_OPS = real_ops
+        for k, v in saved.items():
+            if v is not None:
+                os.environ[k] = v
+    check("an alarm under a moved RM_REFUSAL_DIR writes no told row to the live ledger",
+          not os.path.exists(os.path.join(live, "told.jsonl")), os.listdir(live))
+    check("its told row lands beside its own rows", os.path.exists(os.path.join(iso, "told.jsonl")) and not
+          row.get("told_error"), (os.listdir(iso) if os.path.isdir(iso) else "no dir", row.get("told_error")))
+
+
 def main():
     env = {k: os.environ.get(k) for k in ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE",
                                           "RM_JUDGE_CALIBRATION", "RM_CALIBRATION_ROOT")}
@@ -331,6 +353,7 @@ def main():
             cli(root)
             release_cli(root)
             advance_tuning(root)
+            told_stays_in_test_dir(root)
     finally:
         for k, v in env.items():
             if v is None:
