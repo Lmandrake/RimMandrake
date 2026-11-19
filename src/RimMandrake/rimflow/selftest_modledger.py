@@ -315,6 +315,29 @@ handwrite(r5, "JUDGE.J1", base_ev(writer="JUDGE.J1", run="J1", kind="note", key=
 check("lint refuses a judge shard that changed after its seal", "SEALED_CHANGED" in codes(M.lint(r5, MOD, None)[0]),
       M.lint(r5, MOD, None)[0])
 
+# an empty seal from a clone that lacks the shard origin already holds is refused (RIMMANDRAKE_SEAL_JUDGE_SHARD_FROM_SYNCED_CLONE_SEALED_EMPTY)
+import subprocess
+import tempfile
+_sg = tempfile.mkdtemp(prefix="seal_origin_")
+_og, _cl = os.path.join(_sg, "origin"), os.path.join(_sg, "clone")
+_run = lambda *a, cwd: subprocess.run(a, cwd=cwd, check=True, capture_output=True)
+os.makedirs(_og)
+_run("git", "init", "-q", "-b", "main", cwd=_og)
+_run("git", "config", "user.email", "t@t", cwd=_og)
+_run("git", "config", "user.name", "t", cwd=_og)
+_ld = os.path.join(_og, os.path.relpath(M.ledger_dir(r, MOD), r))
+os.makedirs(_ld)
+open(os.path.join(_ld, "JUDGE.J9.jsonl"), "w").write('{"x":1}\n{"x":2}\n')
+_run("git", "add", "-A", cwd=_og)
+_run("git", "commit", "-q", "-m", "shard", cwd=_og)
+_run("git", "clone", "-q", _og, _cl, cwd=_sg)
+os.remove(os.path.join(_cl, os.path.relpath(_ld, _og), "JUDGE.J9.jsonl"))      # the clone lacks the shard
+why = refuses(M.seal, _cl, MOD, "J9", ts=ts(15))
+check("an empty seal is refused when origin/main holds the judge shard", why and "behind" in why, why)
+why = refuses(M.seal, clone(r), MOD, "J11", ts=ts(15))     # not a git tree: origin cannot say, so no refusal
+check("an empty seal where origin cannot say is still allowed (a judge that wrote nothing)", why is None, why)
+shutil.rmtree(_sg, ignore_errors=True)
+
 # ---- views: hand-edited and stale -----------------------------------------------------------------------------------
 vdir = M.views_dir(r, MOD)
 check("views exist after append", all(os.path.exists(os.path.join(vdir, v)) for v in M.VIEWS), os.listdir(vdir))

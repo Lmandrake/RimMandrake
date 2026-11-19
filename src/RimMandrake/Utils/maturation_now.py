@@ -58,6 +58,7 @@ import glob
 import html
 import json
 import os
+import threading
 import re
 import sys
 import xml.etree.ElementTree as ET
@@ -1653,7 +1654,7 @@ class Phone:
                 g.polygon([(x, y + 12), (x + 20, y + 12), (x + 20, y), (x + 40, y + 22), (x + 20, y + 44),
                            (x + 20, y + 32), (x, y + 32)], fill=YELLOW, outline=INK)
                 g.text((x + 46, y + 22), str(n), font=f, fill=YELLOW, anchor="lm")
-        tmp = path + ".tmp.png"
+        tmp = "%s.%d.%d.tmp.png" % (path, os.getpid(), threading.get_ident())     # one name per writer: a shared one raced
         im.save(tmp, "PNG", optimize=True)
         os.replace(tmp, path)
         return im.size

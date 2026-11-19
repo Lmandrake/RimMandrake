@@ -544,6 +544,37 @@ def p12_phone():
         shutil.rmtree(out, ignore_errors=True)
 
 
+def p12b_phone_concurrent_save():
+    """RIMMANDRAKE_TRACE_PHONE_IMAGE_TMP_FILE_VANISHED_ONCE: two writers of one phone image must not share a temp name
+    (one's os.replace took the other's temp file: FileNotFoundError on x.png.tmp.png)."""
+    import importlib.util
+    import threading
+    spec = importlib.util.spec_from_file_location("matnow_phone_race", PROG)
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    out = tempfile.mkdtemp(prefix="maturation_now_phone_race_")
+    errs = []
+
+    def work():
+        try:
+            for _ in range(15):
+                p = m.Phone()
+                p.text("race", "h1", True, gap=4)
+                p.save(os.path.join(out, "x.png"))
+        except Exception as e:      # noqa: BLE001
+            errs.append("%s: %s" % (type(e).__name__, e))
+    try:
+        ts_ = [threading.Thread(target=work) for _ in range(4)]
+        for t in ts_:
+            t.start()
+        for t in ts_:
+            t.join()
+        check("12b four concurrent writers of one phone image all succeed", not errs, str(errs[:2]))
+        check("12b no temp file is left", sorted(os.listdir(out)) == ["x.png"], str(os.listdir(out)))
+    finally:
+        shutil.rmtree(out, ignore_errors=True)
+
+
 def p13_versionless():
     """RIMMANDRAKE_SHOW_VERSIONLESS_MOD_GRAFFITI_ON_MAP: a folder with a stage record but no VERSION.json is on the map."""
     t = temp_tree()
@@ -742,6 +773,7 @@ def main():
     p10_reactions()
     p11_unmeasured(page_of(REPO))
     p12_phone()
+    p12b_phone_concurrent_save()
     p13_versionless()
     p14_measured_dollars()
     p15_slots()

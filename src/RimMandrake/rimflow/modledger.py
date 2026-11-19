@@ -821,11 +821,38 @@ def grant(root, mod, lease, version=None, ts=None, views=True):
     return tok
 
 
+def _origin_shard_bytes(root, mod, shard):
+    """-> (bytes, cause): the shard on origin/main (fetched first), b"" when origin has none; or (None, cause) when git
+    could not answer (not a git tree, no origin, no network). The caller then cannot tell, and does not refuse."""
+    import subprocess
+    cause, out = None, None
+    try:
+        rel = os.path.relpath(os.path.join(ledger_dir(root, mod), shard + ".jsonl"), root)
+        subprocess.run(["git", "-C", root, "fetch", "-q", "origin", "main"], capture_output=True, timeout=60, check=True)
+        r = subprocess.run(["git", "-C", root, "show", "origin/main:" + rel.replace(os.sep, "/")],
+                           capture_output=True, timeout=30)
+        if r.returncode == 0:
+            out = r.stdout
+        elif b"exists on disk, but not in" in r.stderr or b"does not exist" in r.stderr:
+            out = b""
+        else:
+            cause = "git show: " + r.stderr.decode("utf-8", "replace").strip()[:200]
+    except (OSError, subprocess.SubprocessError) as e:
+        cause = "%s: %s" % (type(e).__name__, e)
+    return out, cause
+
+
 def seal(root, mod, run, ts=None, views=True):
     """DISPATCH seals JUDGE.<run> when the run ends: its hash and line count, so a later edit is detectable."""
     shard = "JUDGE.%s" % run
     _check_writer(shard)
     data = _shard_bytes(root, mod, shard)
+    if not data.strip():
+        theirs, _could_not_look = _origin_shard_bytes(root, mod, shard)
+        if theirs and theirs.strip():
+            raise ModLedgerError("%s is empty here but origin/main holds %d bytes of it: this clone is behind; sync it "
+                                 "before sealing (an empty seal makes the whole-tree lint refuse every publish)"
+                                 % (shard, len(theirs)))
     body = {"shard": shard, "sha256": hashlib.sha256(data).hexdigest(), "bytes": len(data),
             "lines": data.count(b"\n"), "line_sha": [_line_sha(l) for l in data.split(b"\n") if l.strip()]}
     if len(_canon(body).encode("utf-8")) > std()["line_bytes"] // 2:
