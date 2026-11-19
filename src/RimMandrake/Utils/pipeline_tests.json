@@ -75,6 +75,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_build_match.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_autonomy.py", "seconds": 36.3},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_autonomy_review_findings.py", "seconds": 1.0},
+    {"test": "src/RimMandrake/rimflow/selftest_measurement_report.py", "seconds": 0.3},
     {"test": "src/RimMandrake/rimflow/selftest_maturation_dispatch.py", "seconds": 73.3},
     {"test": "src/RimMandrake/rimflow/selftest_run_void.py", "seconds": 2.0},
     {"test": "src/RimMandrake/rimflow/selftest_dispatch_two_games.py", "seconds": 3.8},
