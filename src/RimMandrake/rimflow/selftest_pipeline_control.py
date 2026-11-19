@@ -119,8 +119,8 @@ def test_verbs_and_coverage(st):
     check(rc == 0 and "-> 0/1" in out[0], "reset reads 0", out)
     rc, out, _ = run("set", "Fx", "granted_look", "1", "--why", "back")
     # the caps after a release: coverage_runs since it
-    st2 = concept(dict(st, mod="Rx", coverage_releases=[], coverage_rounds=[{"judge": "j%d" % i, "verdict": "covered", "tokens": 1}
-                                                          for i in range(4)]))
+    st2 = concept(dict(st, mod="Rx", coverage_releases=[], coverage_rounds=[{"judge": "j%d" % i, "verdict": None, "error": "exited 1",
+                                                           "error_kind": "judge", "tokens": 1} for i in range(4)]))
     check("4 judge runs" in (CJ.stop_reason(st2) or ""), "four runs stop judging (base)", CJ.stop_reason(st2))
     run("limit", "Rx", "coverage_runs", "6", "--why", "an exception")
     check(CJ.stop_reason(st2) is None, "limit 6 on coverage_runs lets judging go on", CJ.stop_reason(st2))

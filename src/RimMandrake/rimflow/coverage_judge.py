@@ -502,9 +502,9 @@ def delta_prompt(d, repo, dp, round_no):
         body.append("- %s: %s" % (k, "REMOVED" if v is None else json.dumps(v, ensure_ascii=False)))
     if not dp["changed"]:
         body.append("(none)")
-    body += ["", "## Gaps still open, carried on file. A carried gap is closed when every row on its ids that you "
-             "write this look is all ok; one you find still open, write its row with the part not ok. It also needs its "
-             "`repairs` row to say repaired."]
+    body += ["", "## Gaps still open, carried on file. A carried gap is closed only when you write a row for "
+             "every one of its ids this look and each is all ok; one you find still open, write its row with the part not "
+             "ok. It also needs its `repairs` row to say repaired."]
     body += ["- %s: %s" % (g.get("gid"), " ".join(str(g.get("what") or "").split())) for g in dp["carried"]] or ["(none)"]
     body += ["", "Write `checklist` with one row for each of these ids, none skipped: %s. This is a later round, and "
              "the open search was round 1's: do not hunt for new gaps elsewhere. Answer `covered` only when every gap "
@@ -538,8 +538,9 @@ def _slots(slots, rows, repairs, seen):
     `repairs` answer, or None for an answer in the old form (read by its rows, RIMMANDRAKE_CLOSE_CARRIED_GAPS_REPAIRED_
     WITHOUT_CLAIM_FORM); seen: every finding this look, kept or dropped. A finding names a slot by its number in `since`,
     or (tagged `unfixed`, a failed part, or any finding in the old form) by sharing its rows. A slot closes only
-    when its answer says repaired (old form: every id has a row this look), every row on its ids this look is all ok,
-    and nothing names it. -> (closed, still open (with `second_look` notes), the findings that named a slot)."""
+    when its answer says repaired (old form: no answer needed), every one of its ids has a row this look and every row
+    on its ids is all ok, and nothing names it (RIMMANDRAKE_REQUIRE_PASSING_ROW_TO_CLOSE_REPAIRED_SLOT: a repaired
+    answer with no row on its ids closed the slot, and coverage could sign). -> (closed, still open (with `second_look` notes), the findings that named a slot)."""
     by_id = {}
     for r in rows or []:
         if isinstance(r, dict):
@@ -572,10 +573,10 @@ def _slots(slots, rows, repairs, seen):
     for sl in slots:
         ids = list(sl.get("ids") or [])
         readable = all(isinstance(i, str) for i in ids)   # an id that is not a row name could not be read: open
-        rows_ok = readable and all(ok(r) for i in ids for r in by_id.get(i) or [])
+        rows_ok = readable and all(by_id.get(i) for i in ids) and all(ok(r) for i in ids for r in by_id.get(i) or [])
         if said is None:
-            good = bool(ids) and readable and all(by_id.get(i) for i in ids) and rows_ok
-        else:
+            good = bool(ids) and rows_ok
+        else:   # a slot with no ids has no row to require: its answer alone closes it (boundary page)
             good = said.get(sl.get("gid")) is True and rows_ok
         if good and sl.get("gid") not in notes:
             closed.append(sl)
@@ -869,9 +870,34 @@ def look_balance(st, d=None, rs=None, mod=None):
             "base": base, "lim": base + granted}
 
 
+def since_signoff(rs):
+    """-> the rounds after the last `covered` verdict among rs, or rs when none reads covered. A sign-off ends a run of
+    strikes, looks and spend: the next refusal starts a new count (RIMMANDRAKE_RESET_COVERAGE_STRIKES_AFTER_SIGNOFF_OLD_
+    TWO_COUNTED; Graffiti, rounds nc, nc, covered, nc, stopped on its first refusal after passing)."""
+    last = max((i for i, r in enumerate(rs) if not r.get("reader_only") and r.get("verdict") == "covered"), default=-1)
+    return rs[last + 1:]
+
+
+def counting_window(st, d, rs):
+    """-> (the release still standing or None, the rounds the strike, run and spend caps count, their since-label, the
+    rounds the malformed cap counts, its since-label). The window starts at the later of the last release and the last sign-off; a sign-off
+    after a release ends that release's one look. The malformed count is the brief failing its contract, not a look at
+    the design, so a sign-off does not reset it: it counts from the release, as before. Shared with `pipe show`."""
+    rel = [x for x in st.get("coverage_releases") or [] if isinstance(x, dict)]
+    after = released_rounds(st, d, rs, rel[-1]) if rel else rs
+    tail = since_signoff(after)
+    bad_since = " since the release" if rel else ""
+    if len(tail) < len(after):
+        return None, tail, " since the sign-off", after, bad_since
+    if rel:
+        return rel[-1], after, " since the release", after, bad_since
+    return None, rs, "", rs, bad_since
+
+
 def stop_reason(st, d=None):
     """-> why judging stops on this concept now, or None. After a release, one more look: its refusal stops again (an
-    error, a timeout or a malformed round is no look; the caps count them)."""
+    error, a timeout or a malformed round is no look; the caps count them). A sign-off resets the counts
+    (counting_window)."""
     rs = rounds(st, d)
     mod = (DS.concept_of(st, d) or {}).get("mod") or "?"
     rel = [x for x in st.get("coverage_releases") or [] if isinstance(x, dict)]
@@ -881,8 +907,9 @@ def stop_reason(st, d=None):
         return ("%d judge rounds%s died of a system cause (limit %d; the last: %s): a system fault, no look, run or "
                 "spend was counted for them" % (len(dead), " since the release" if rel else "", JUDGE_FAULT_LIMIT,
                                                   _clip(dead[-1]["void_system"], 120)))
-    if rel:
-        after = released_rounds(st, d, rs, rel[-1])
+    standing, win, since, bad_win, bad_since = counting_window(st, d, rs)
+    if standing:
+        after = win
         tail = _looks(after)
         # the one look is a well-formed answer: an error or a timeout is no look and a malformed round is not one
         # (the caps below still count them); its refusal stops judging again. The count of refusing looks and its
@@ -895,30 +922,32 @@ def stop_reason(st, d=None):
             cross = refused[max(1, min(len(refused), len(refused) - (used - lim))) - 1]
             tail = tail[:tail.index(cross) + 1]
             at = len(_looks(rs)) - len(_looks(after)) + len(tail)
-            if rel[-1].get("final"):
+            if standing.get("final"):
                 return ("the final look (granted %s, after %s) at round %d was %s: the owner's or the Conductor's to decide (its act "
                         "under RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS)" % (
-                    rel[-1].get("granted_at"), ", ".join(rel[-1].get("after") or []) or "nothing",
+                    standing.get("granted_at"), ", ".join(standing.get("after") or []) or "nothing",
                     at, tail[-1].get("verdict") or "no verdict"))
             return "released for one more look at round %d; that look was %s" % (
                 at, tail[-1].get("verdict") or "no verdict")
         # RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: the caps still bind after a release, counted from it
-        return _caps(after, " since the release", mod)
-    nc = PC.used(mod, "coverage_not_covered", sum(1 for r in rs if r.get("verdict") == "not_covered"))
+        return _caps(after, since, mod, bad_win, bad_since)
+    nc = PC.used(mod, "coverage_not_covered", sum(1 for r in win if r.get("verdict") == "not_covered"))
     lim = PC.limit(mod, "coverage_not_covered", NOT_COVERED_LIMIT)
     if nc >= lim:
-        return "%d not_covered verdicts (limit %d)" % (nc, lim)
-    return _caps(rs, "", mod)
+        return "%d not_covered verdicts%s (limit %d)" % (nc, since, lim)
+    return _caps(win, since, mod, bad_win, bad_since)
 
 
-def _caps(rs, since, mod="?"):
-    """The run, spend and malformed caps over rounds rs -> why judging stops, or None. Each count and limit is read
-    through pipeline_control (`pipe show <Mod>`), so a one-line act moves it."""
-    bad = PC.used(mod, "coverage_malformed", sum(1 for r in rs if r.get("verdict") == "malformed"))
+def _caps(rs, since, mod="?", bad_rs=None, bad_since=None):
+    """The run, spend and malformed caps over rounds rs (the malformed cap over bad_rs when given: a sign-off does not
+    reset it) -> why judging stops, or None. Each count and limit is read through pipeline_control (`pipe show <Mod>`),
+    so a one-line act moves it."""
+    bad_rs, bad_since = (rs, since) if bad_rs is None else (bad_rs, bad_since or "")
+    bad = PC.used(mod, "coverage_malformed", sum(1 for r in bad_rs if r.get("verdict") == "malformed"))
     lim = PC.limit(mod, "coverage_malformed", MALFORMED_LIMIT)
     if bad >= lim:
         return "%d malformed verdicts%s (limit %d): the coverage brief FAILED its refusal contract" % (
-            bad, since, lim)
+            bad, bad_since, lim)
     runs, lim = PC.used(mod, "coverage_runs", len(_looks(rs))), PC.limit(mod, "coverage_runs", JUDGE_RUNS_MAX)
     if runs >= lim:
         return "%d judge runs%s (limit %d)" % (runs, since, lim)

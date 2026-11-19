@@ -451,12 +451,13 @@ class Ctx:
         return self._facts[k]
 
 
-def _cov_since(c):
-    """-> (the rounds the caps count: since the last release, else all; True when a release stands), by
-    coverage_judge's own released_rounds, so the count shown is the count the stop reads."""
+def _cov_since(c, malformed=False):
+    """-> (the rounds the caps count: since the later of the last release and the last sign-off, else all; True when a
+    release still stands), by coverage_judge's own counting_window, so the count shown is the count the stop reads.
+    malformed=True: the malformed cap's rounds (a sign-off does not reset them)."""
     st, d, rs, cj = c
-    rel = [x for x in st.get("coverage_releases") or [] if isinstance(x, dict)]
-    return (cj.released_rounds(st, d, rs, rel[-1]) if rel else rs), bool(rel)
+    standing, win, _since, bad_win, _bad_since = cj.counting_window(st, d, rs)
+    return (bad_win if malformed else win), bool(standing)
 
 
 def m_granted_look(ctx, mod):
@@ -470,18 +471,16 @@ def m_granted_look(ctx, mod):
     return (sum(1 for r in c[3]._looks(after) if r.get("verdict") == "not_covered"), 1) if rel else (None, None)
 
 
-def _cov_count(pred, lim_name, before_release_only=False):
+def _cov_count(pred, lim_name, before_release_only=False, malformed=False):
     def m(ctx, mod):
         c = ctx.coverage(mod)
         if c is None:
             return None, None
         if isinstance(c, dict):
             return UNM + " (%s)" % c["_error"], None
-        after, rel = _cov_since(c)
-        if before_release_only:     # stop_reason counts these over every round, and only while no release stands
-            if rel:
-                return None, None
-            after = c[2]
+        after, rel = _cov_since(c, malformed)
+        if before_release_only and rel:     # stop_reason counts these only while no release stands
+            return None, None
         if pred is None:            # the run cap counts looks (coverage_judge._looks), not every round
             return len(c[3]._looks(after)), getattr(c[3], lim_name)
         return sum(1 for r in after if pred(r)), getattr(c[3], lim_name)
@@ -620,13 +619,13 @@ ACCOUNT_KEY = {"refusals": refusal_subject}     # a consumable not keyed by the 
 RESOURCES = {
     "granted_look": ("look", "refusing coverage looks since the last release (a release grants exactly one look)",
                      m_granted_look, [("coverage_judge", "look_balance")]),
-    "coverage_runs": ("cov-runs", "coverage-judge runs (since the last release, if any)",
+    "coverage_runs": ("cov-runs", "coverage-judge runs (since the last sign-off or release, if any)",
                       _cov_count(None, "JUDGE_RUNS_MAX"), [("coverage_judge", "_caps")]),
-    "coverage_not_covered": ("cov-nc", "not_covered coverage verdicts (before any release)",
+    "coverage_not_covered": ("cov-nc", "not_covered coverage verdicts (since the last sign-off; none while a release stands)",
                              _cov_count(lambda r: r.get("verdict") == "not_covered", "NOT_COVERED_LIMIT", True),
                              [("coverage_judge", "stop_reason")]),
     "coverage_malformed": ("cov-bad", "malformed coverage verdicts (since the last release, if any)",
-                           _cov_count(lambda r: r.get("verdict") == "malformed", "MALFORMED_LIMIT"),
+                           _cov_count(lambda r: r.get("verdict") == "malformed", "MALFORMED_LIMIT", malformed=True),
                            [("coverage_judge", "_caps")]),
     "blind_cycles_visit": ("blind-auto", "automatic blind cycles this visit (blind_auto_cycles_per_visit)",
                            m_blind_visit, [("maturation_dispatch", "decide_blind")]),

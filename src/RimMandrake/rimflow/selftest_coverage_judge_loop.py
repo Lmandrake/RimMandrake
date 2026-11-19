@@ -40,8 +40,9 @@ def check(name, ok, got=""):
         FAILS.append(name)
 
 
-def answer(verdict, gaps, tokens, repairs=None):
-    res = {"structured_output": {"verdict": verdict, "gaps": [dict(g) for g in gaps], "reasons": "r", "checklist": []},
+def answer(verdict, gaps, tokens, repairs=None, checklist=()):
+    res = {"structured_output": {"verdict": verdict, "gaps": [dict(g) for g in gaps], "reasons": "r",
+                                 "checklist": [dict(r) for r in checklist]},
            "session_id": "sess"}
     if repairs is not None:   # the repair check's numbered slots (7_same_problem_rule.md): {"g1": True, ...}
         res["structured_output"]["repairs"] = [{"gap": g, "repaired": ok, "evidence": "x"} for g, ok in repairs.items()]
@@ -308,7 +309,8 @@ def healthy(root):
     gaps1 = [{"what": "a", "where": "x", "return_to": 3, "ids": ["l1"], "new_since": "first"},
              {"what": "b", "where": "y", "return_to": 3, "ids": ["l2"], "new_since": "first"}]
     judge = Judge([answer("not_covered", gaps1, 700000)] * (CJ.NOT_COVERED_LIMIT - 1)
-                  + [answer("covered", [], 700000, {"g1": True, "g2": True})])   # the judge says both are repaired
+                  + [answer("covered", [], 700000, {"g1": True, "g2": True},   # the judge says both are repaired,
+                            [{"id": i, "parts": [{"what": i, "ok": True}]} for i in ("l1", "l2")])])   # with its rows
     recs = [CJ.run(d, os.path.join(root, "healthy"), judge, now=1794200000 + i)[0] for i in range(CJ.NOT_COVERED_LIMIT)]
     st = DS.load_state(d)
     check("healthy: refusals below the limit then covered -> signed, never stopped, no alarm",
@@ -382,9 +384,10 @@ def loopholes(root):
 
     st = {"coverage_releases": [{"rounds_at": 1}],
           "coverage_rounds": [{"judge": "j0", "verdict": "not_covered", "tokens": 1}] +
-                             [{"judge": "j%d" % i, "verdict": "covered", "tokens": 1} for i in range(1, 1 + CJ.JUDGE_RUNS_MAX)]}
+                             [{"judge": "j%d" % i, "verdict": None, "error": "exited 1", "error_kind": "judge", "tokens": 1}
+                              for i in range(1, 1 + CJ.JUDGE_RUNS_MAX)]}   # not covered: a sign-off resets the caps
     why = CJ.stop_reason(st)
-    check("after a release the run cap still binds, counted from the release (%d covered looks)" % CJ.JUDGE_RUNS_MAX,
+    check("after a release the run cap still binds, counted from the release (%d failed looks)" % CJ.JUDGE_RUNS_MAX,
           bool(why) and "since the release" in why, why)
     st = {"coverage_releases": [{"rounds_at": 0}],
           "coverage_rounds": [{"judge": "j%d" % i, "verdict": "malformed", "tokens": 1} for i in range(CJ.MALFORMED_LIMIT)]
