@@ -295,6 +295,11 @@ python3 src/RimMandrake/Utils/code_review_status.py list               every rec
     when a full review finds no high-severity issue; smaller bugs can stay (filed, not blocking). Authority: *"What
     should clean mean for relentless.py and relentless_game.py? → Only serious ones count: a file is clean when a full
     review finds no high-severity issue; smaller bugs can stay"*. Every other file keeps the rule above.
+  - **Pipeline machinery is under a different rule (owner card, 2026-11-18, answered 11:19 to 11:25 PM PST):** for
+    a file matched by `pipeline_files` in `src/RimMandrake/Utils/pipeline_tests.json`, the two lines above do not
+    apply. Such a file is clean when every promise on its boundary page has a test and it has had its two looks; a
+    later edit stays clean while those tests pass and the page is unchanged. Full text: §A boundary page before
+    pipeline code. Mods, defs, C#, art tooling and every other file keep the rule above.
 - **Diff-scoped (incremental) review is only valid once a file is CLEAN.** Before
   that first clean mark, review the whole file — never just the diff.
 - A single edit after `mark-clean` makes the file DIRTY again — `check` will say
@@ -999,6 +1004,51 @@ just send it a nudge to die swiftly."* Design: `design/specs/2026-11-18-pipeline
   (`run_void.py`); a void never moves a stage, and `pipe show` flags a stage advanced on a voided run.
 - **Unreadable store:** nothing launches, and `pipe show` says `CONTROL UNREADABLE: <cause>`; `pipe doctor` names the
   fix. `pipe stop <unit> --kill` still works by unit name.
+
+## A boundary page before pipeline code — owner, by card 2026-11-18
+
+Three decisions by question card (Wed 2026-11-18, answered 11:19 to 11:25 PM PST; three `--by-card` notes on
+`RIMMANDRAKE_DESIGN_REVIEW_TREADMILL_FIX_COUNT_WAS_FLAT`). He picked the recommended option each time. Why he was
+asked: four Codex reviews of the control store made 15, 11 and 15 claims with 2, 0 and 2 real problems, and each
+repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/00-problem.md`]. Design:
+`design/specs/2026-11-18-review-growth-cycle/01-design.md`, section 5.
+
+"Pipeline machinery" below means a file matched by `pipeline_files` in `src/RimMandrake/Utils/pipeline_tests.json`.
+
+- **Decision 1, the page comes before the code.** Card: *"Before a helper writes new pipeline code, what do we do
+  first?"* He picked *"Write a one-page list (Recommended)"*: *"The page lists what the code accepts, which failures
+  it does not handle, and what it promises. Each promise gets a test. A reviewer can only report a broken promise."*
+  The page is `design/specs/<component>/boundary.md`, with the parts ACCEPTS, DOES NOT SURVIVE, PROMISES, and LIFE
+  CYCLES when the component keeps state between calls. Entries are named with words, and a promise's test carries
+  the promise's name. Pipeline machinery owes a page when it is new, or when a change adds a state, an input form, a
+  read of the outside world, or a verb that kills, deletes, locks or launches. A one-line fix owes none. An existing
+  component gets its page when it is next extended, never in a sweep. One fresh reader that did not write the page
+  reads it before code is cut to it. The cost he accepted: *"New code that kills runs goes live in half a day, not
+  one hour."*
+- **Decision 2, when pipeline machinery is clean.** Card: *"When is a piece of pipeline code 'clean'?"* He picked
+  *"Promises tested + two looks (Recommended)"*: *"gives review a stopping point ... later edits stay clean while
+  promise tests pass. Costs: needs the boundary page; a real case left off the page is not looked for."* The two
+  looks are one full inspection against the page and one recheck that reads only the repairs. A third look happens
+  only for a new page version. This replaces, for pipeline machinery only, "Only a full-file review returning zero
+  significant findings" cleans a file (§Code isn't clean until a review says so).
+- **Decision 3, the open complaints of 2026-11-18.** Card: *"What do we do with these 18?"* He picked *"Fix only
+  real problems (Recommended)"*: *"A complaint that breaks a promise on the list gets fixed. The others go on a
+  'later' list."* A claim outside the page goes to `polish.md` or `next_version.md` beside the page as one line: no
+  ticket, no repair. For pipeline machinery with no page yet, a claim is a Problem only if a call site in the repo or
+  a documented command produces the input. This replaces his "Fix all 24" of 7:47 PM the same evening.
+- **Changing a page after it has passed** is next-version work: a new accepted input, survived failure or promise is
+  written for the next Design Version and never added to the current one's bars. Moving a failure to DOES NOT SURVIVE
+  accepts a risk: the Conductor decides it (delegated, logged) and he sees it in the daily digest.
+- **What this does not change.** Code that is not pipeline machinery keeps the old rule whole. "The test is built
+  with the item" and "The pipeline fixes its own defects" stand. 🔴 **His stop of 8:22 PM PST the same evening is not
+  lifted by this card:** *"Go ahead and stop the review growth cycle now. I don't want to pay for that anymore."* No
+  Codex or GPT review of pipeline machinery runs, and no ticket is filed from a review finding, until the review
+  brief of design section 5.3 exists and is calibrated (a later item; the ruling "only a calibrated brief's refusal
+  sends work back" applies). Until then no pipeline file can earn its two looks, and `code_review_status.py check`
+  reading DIRTY on one is the expected state, not a finding.
+- **First page (the pilot):** the control store, `design/specs/2026-11-18-pipeline-control-surface/boundary.md`.
+- **Test that this was applied:** a new pipeline component has a `boundary.md` committed before its first code
+  commit; a review finding on pipeline machinery quotes a page entry or sits on a later list.
 
 ## Owner hold: six biome mods stop, Pyrelands stays — owner, 2026-11-16
 

@@ -337,7 +337,12 @@ refusal sends work back; "nothing could ever pass" is the `REFUSAL_NOTHING_COULD
 Every file is DIRTY until `python3 src/RimMandrake/Utils/code_review_status.py check <path>`
 says CLEAN (content-hash based; `mark-clean` only after a full-file review finds nothing).
 Check a file is still reachable before spending a review on it. Procedure:
-`standing_rulings.md` §Code review.
+`standing_rulings.md` §Code isn't clean until a review says so.
+🔴 **Pipeline machinery is under a different rule — owner, by card 2026-11-18** (a file matched by `pipeline_files` in
+`src/RimMandrake/Utils/pipeline_tests.json`). Full text: `standing_rulings.md` §A boundary page before pipeline code.
+- **Before new pipeline code, its one-page list** (`design/specs/<component>/boundary.md`: what it accepts, which failures it does not survive, what it promises; each promise gets a test of the same name).
+- **Pipeline code is clean when every promise on its page has a test and it has had two looks**; a later edit stays clean while those tests pass. A full-file review finding nothing is not its bar.
+- **A review claim is fixed only if it breaks a promise on the page**; the others are one line on `polish.md` or `next_version.md` beside the page. His 8:22 PM stop of Codex and GPT reviews of pipeline code still stands until a calibrated review brief exists.
 
 ## What is where
 

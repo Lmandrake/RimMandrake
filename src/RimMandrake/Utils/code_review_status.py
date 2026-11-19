@@ -7,7 +7,9 @@ byte-identical to what was recorded at the last `mark-clean`. Anything else
 — no entry, or any edit since (committed or not) — is DIRTY. There is no
 other way to earn CLEAN: fixing a finding does not clean a file, only a
 full-file review returning zero significant findings does, recorded here
-with `mark-clean`.
+with `mark-clean`. (Pipeline machinery is under a different rule since the
+owner's card of 2026-11-18: standing_rulings.md, section "A boundary page
+before pipeline code".)
 
 🔴 This is not a Python-only tool. It covers ANY file that contributes to
 what the game actually loads — .py tooling, .cs mod source, .xml Defs and

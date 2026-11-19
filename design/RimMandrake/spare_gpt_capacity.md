@@ -24,6 +24,8 @@ run **without** a Claude wrapper.
    ones: those with a named selftest, validator or compiler outcome.
 3. **Clear the code-review debt.** Every file is DIRTY until a full-file review says CLEAN. Run Codex reviews across
    the DIRTY set, starting with the most-used mods, and mark files clean on Codex receipts. Findings become items.
+   Pipeline machinery is not in this set (owner card, 2026-11-18): `standing_rulings.md` §A boundary page before
+   pipeline code.
 4. **Settle reconcile items.** The top of the Conductor's queue is RECONCILE items: commits already exist, and someone
    has to rule whether they complete the item. GPT can judge commit against item text and return the verdict line.
 5. **Art pre-review.** GPT reviews art sheets well (owner, 2026-10-23). Use it for art-eval second looks,

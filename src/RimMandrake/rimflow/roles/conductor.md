@@ -354,4 +354,4 @@ never done in-window.
   `canon.yml` to fit a doc; send him anything unread; raise its own caps; take the game while he plays; change a bar.
 
 ## Review briefs
-- **Put 'FULL-FILE review, every line, including previously-clean files' in every code-review brief.** Reviewers twice marked files clean after reading only the changed lines; `code_review_status.py` allows only a full-file review to clean a file, and no doc permits 'diff since last clean mark'.
+- **Put 'FULL-FILE review, every line, including previously-clean files' in every code-review brief.** Reviewers twice marked files clean after reading only the changed lines; `code_review_status.py` allows only a full-file review to clean a file, and no doc permits 'diff since last clean mark'. **Not for pipeline machinery** (owner card, 2026-11-18): it is reviewed against its boundary page, twice, and no Codex or GPT review of it runs until the calibrated review brief exists (`standing_rulings.md` §A boundary page before pipeline code).
