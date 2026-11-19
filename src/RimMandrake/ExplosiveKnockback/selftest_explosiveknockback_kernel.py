@@ -17,7 +17,6 @@ import os
 import shutil
 import subprocess
 import sys
-import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STAGE = os.environ.get("WINBUILD_ROOT", rm_str("build")) + "/ExplosiveKnockbackSelfTest"
@@ -34,13 +33,19 @@ def main(extra=()):
     if dotnet is None or not os.path.isdir(os.path.dirname(STAGE)):
         print("UNMEASURED: no Windows dotnet.exe / D: staging root on this machine")
         return (1, "UNMEASURED") if extra else 1
-    os.makedirs(os.path.join(STAGE, "SelfTest"), exist_ok=True)
-    for f in ("RM_KnockbackMath.cs", "RM_KnockbackPlan.cs", "RM_KnockbackVerdicts.cs"):
-        shutil.copy2(os.path.join(HERE, "Source", f), os.path.join(STAGE, f))
-    for f in ("Program.cs", "KnockbackFuzz.cs", "KnockbackSweep.cs", "KnockbackMap.cs", "RimMandrakeExplosiveKnockback.SelfTest.csproj"):
-        shutil.copy2(os.path.join(HERE, "Source", "SelfTest", f), os.path.join(STAGE, "SelfTest", f))
-    with open(os.path.join(tempfile.gettempdir(), "explosiveknockback_selftest.lock"), "w") as lk:
+    # the lock is machine-wide (/tmp, not the per-seat TMPDIR) and covers the staging too: every clone stages into
+    # the same folder (RIMMANDRAKE_RESTAGE_CSHARP_SUITES_FRESH_MTIME_STALE_FAULT_BINARY)
+    with open(os.path.join("/tmp", "explosiveknockback_selftest.lock"), "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
+        for d in ("obj", "bin"):     # retained outputs can look newer than fresh sources (a clock step back): build clean
+            shutil.rmtree(os.path.join(STAGE, "SelfTest", d), ignore_errors=True)
+        os.makedirs(os.path.join(STAGE, "SelfTest"), exist_ok=True)
+        # shutil.copy, never copy2: a fresh mtime makes dotnet rebuild; an old one ran a stale binary, the last planted
+        # fault or another clone's build (RIMMANDRAKE_RESTAGE_CSHARP_SUITES_FRESH_MTIME_STALE_FAULT_BINARY)
+        for f in ("RM_KnockbackMath.cs", "RM_KnockbackPlan.cs", "RM_KnockbackVerdicts.cs"):
+            shutil.copy(os.path.join(HERE, "Source", f), os.path.join(STAGE, f))
+        for f in ("Program.cs", "KnockbackFuzz.cs", "KnockbackSweep.cs", "KnockbackMap.cs", "RimMandrakeExplosiveKnockback.SelfTest.csproj"):
+            shutil.copy(os.path.join(HERE, "Source", "SelfTest", f), os.path.join(STAGE, "SelfTest", f))
         r = run_interop_captured([dotnet, "run", "--project", win(os.path.join(STAGE, "SelfTest",
                             "RimMandrakeExplosiveKnockback.SelfTest.csproj")), "-c", "Release"] + (["--"] + list(extra) if extra else []),
                            capture_output=True, text=True, stdin=subprocess.DEVNULL)

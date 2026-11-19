@@ -26,7 +26,6 @@ import os
 import shutil
 import subprocess
 import sys
-import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 STAGE = os.environ.get("WINBUILD_ROOT", rm_str("build")) + "/ExplosiveKnockbackMapSelfTest"
@@ -78,10 +77,12 @@ FAULTS = [
 
 def stage(fault=None):
     os.makedirs(os.path.join(STAGE, "SelfTest"), exist_ok=True)
+    # shutil.copy, never copy2: a fresh mtime makes dotnet rebuild; an old one ran a stale binary, the last planted
+    # fault or another clone's build (RIMMANDRAKE_RESTAGE_CSHARP_SUITES_FRESH_MTIME_STALE_FAULT_BINARY)
     for f in SOURCE:
-        shutil.copy2(os.path.join(HERE, "Source", f), os.path.join(STAGE, f))
+        shutil.copy(os.path.join(HERE, "Source", f), os.path.join(STAGE, f))
     for f in SELFTEST:
-        shutil.copy2(os.path.join(HERE, "Source", "SelfTest", f), os.path.join(STAGE, "SelfTest", f))
+        shutil.copy(os.path.join(HERE, "Source", "SelfTest", f), os.path.join(STAGE, "SelfTest", f))
     if fault is None:
         return True
     _, name, old, new = fault
@@ -110,8 +111,11 @@ def main(argv):
     if dotnet is None or not os.path.isdir(os.path.dirname(STAGE)):
         print("UNMEASURED: no Windows dotnet.exe / D: staging root on this machine")
         return 1
-    with open(os.path.join(tempfile.gettempdir(), "explosiveknockback_map_selftest.lock"), "w") as lk:
+    # machine-wide (/tmp, not the per-seat TMPDIR): every clone stages into the same folder
+    with open(os.path.join("/tmp", "explosiveknockback_map_selftest.lock"), "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
+        for d in ("obj", "bin"):     # retained outputs can look newer than fresh sources (a clock step back): build clean
+            shutil.rmtree(os.path.join(STAGE, "SelfTest", d), ignore_errors=True)
         stage()
         rc, out = run(dotnet, ["--map"] + (["--map-examples"] if "--examples" in argv else []))
         lines = [l for l in out.splitlines() if l.startswith(("KNOCKBACK MAP", "HOLDS", "BREAKS", "CASE", "knockback map"))]
