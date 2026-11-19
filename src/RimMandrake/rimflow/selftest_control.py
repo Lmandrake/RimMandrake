@@ -102,6 +102,16 @@ def wait_for(pred, t=10.0, step=0.05):
 
 # ---------------------------------------------------------------- verbs, lines, times, exit codes
 
+def p95_of(ts):
+    ts = sorted(ts)
+    return ts[int(0.95 * (len(ts) - 1))]
+
+
+def slow_verbs(times, limit):
+    """-> the verbs whose OWN p95 is at or over `limit` seconds."""
+    return sorted(v for v, ts in times.items() if p95_of(ts) >= limit)
+
+
 def t_verbs():
     fresh()
     times = {}
@@ -129,10 +139,14 @@ def t_verbs():
         if v in ("off", "on", "off-all", "on-all", "off-stage", "off-item", "off-family", "void", "grant"):
             check(len(lines) <= 3, "pipe %s prints at most 3 lines" % v, lines)
     allt = sorted(x for ts in times.values() for x in ts)
-    p95 = allt[int(0.95 * (len(allt) - 1))]
-    print("     measured: %d pipe calls (fresh python each), p95 %.0f ms, max %.0f ms" % (len(allt), p95 * 1000,
-                                                                                       allt[-1] * 1000))
-    check(p95 < 1.0, "every pipe verb's p95 is under 1 s", p95)
+    worst = max(times, key=lambda v: p95_of(times[v]))
+    print("     measured: %d pipe calls (fresh python each), worst verb p95 %.0f ms (%s), max %.0f ms" % (
+        len(allt), p95_of(times[worst]) * 1000, worst, allt[-1] * 1000))
+    check(not slow_verbs(times, 1.0), "every pipe verb's p95 is under 1 s",
+          {v: round(p95_of(times[v]), 3) for v in slow_verbs(times, 1.0)})
+    # round-two claim 9: the check is per verb (a pooled p95 passed one verb at 1.5 s among fast ones)
+    check(slow_verbs(dict({"slow": [1.5]}, **{"v%d" % i: [0.2] * 5 for i in range(8)}), 1.0) == ["slow"],
+          "claim r2-9: one slow verb among fast ones fails the p95 check")
     check(allt[-1] < 2.0, "every pipe verb is under 2 s", allt[-1])
     rc, out, _ = pipe("off", "Grafiti", "--why", "typo")
     check(rc == 2 and "Graffiti" in out, "a wrong mod is refused (2) with the nearest name", (rc, out))
@@ -720,6 +734,21 @@ def t_sites():
     m = C.call_sites(os.path.dirname(root))
     check([s for s in m if not s["routed"] and s["func"] == "go"], "a mutant launcher that bypasses launch_unit "
                                                                     "turns the census red", m)
+    # round-two claim 8: a direct systemd-run beside a launch_unit call in one function is not routed by that call
+    with open(os.path.join(root, "mixed.py"), "w") as f:
+        f.write("import subprocess\nimport control as C\n\ndef go2():\n"
+                "    C.launch_unit(['systemd-run', '--user', '--unit', 'rm-probe-a', 'true'], {'family': 'probe'})\n"
+                "    argv = ['systemd-run', '--user', '--unit', 'rm-probe-b', 'true']\n"
+                "    subprocess.run(argv)\n"
+                "    subprocess.Popen(['systemd-run', '--user', '--unit', 'rm-probe-c', 'true'])\n\n"
+                "def go3():\n    C.launch_unit(['true'], {'family': 'probe'})\n"
+                "    return ['systemd-run', '--user', 'x']\n")
+    m = {(s["func"], s["line"]): s for s in C.call_sites(os.path.dirname(root)) if s["file"] == "rimflow/mixed.py"}
+    check(m.get(("go2", 5), {}).get("routed") is True and m.get(("go2", 6), {}).get("routed") is False
+          and m.get(("go2", 8), {}).get("routed") is False and m.get(("go3", 12), {}).get("routed") is False,
+          "claim r2-8: in a function that calls launch_unit, only the argv launch_unit consumes is routed",
+          {k: (v["routed"], v["why"]) for k, v in m.items()})
+    os.unlink(os.path.join(root, "mixed.py"))
     with open(os.path.join(root, "detached_helper.py"), "w") as f:
         f.write("def launch_argv(rec):\n    return ['systemd-run', '--user', 'x']\n\n"
                 "def bad(runner):\n    runner(launch_argv({}))\n")
@@ -974,10 +1003,154 @@ def t_review_claims_eight():
           (r1.returncode, r2.returncode, fired, done, os.path.exists(marker), dict(row)))
 
 
+def t_review_claims_round_two():
+    """Codex's round-two claims on control.py (RIMMANDRAKE_SPLIT_CONTROL_REVIEW_ROUND_TWO_NINE_UNTRIED), each red on base
+    19d3e29026 (D:\\ClaudeWork\\scratch\\control_claims_round2_20261118\\probe_base.log). Claims 8 and 9 sit in t_sites and
+    t_verbs. Children: RIMMANDRAKE_FENCE_LAUNCH_IDENTITY_ONE_ID_TWO_PAYLOADS (1, 2),
+    RIMMANDRAKE_HARDEN_EMERGENCY_KILL_LOCK_FORK_AND_END_RACE (3, 4, 5), RIMMANDRAKE_KEEP_STOP_DEADLINES_TWO_TIMERS_ONE_NAME
+    (6, 7)."""
+    dead = lambda us: [{"unit": u, "dead": True, "ms": 1, "survivors": [], "said": "1 process(es) killed"} for u in us]
+    # 1. two admissions of one unit in one process: the first one's unit never starts on the second's admission
+    fresh()
+    a = C.admit(spec("rm-probe-r2c1", mod="Graffiti"))
+    b = C.admit(spec("rm-probe-r2c1", mod="Cauldron"))
+    C.switch("mod:Graffiti", True, "round two claim 1")
+    code, line = C.condition(a["run"])
+    check(b["ok"] and a["run"] != b["run"] and code == 1,
+          "claim r2-1: a re-admission gets its own run id; the replaced admission's unit is refused at start",
+          (a["run"], b["run"], code, line))
+    check(C.condition(b["run"])[0] == 0, "claim r2-1: the re-admission's own unit starts on its own admission")
+    fresh()
+    s = spec("rm-probe-r2c1b", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w", "base": 9}])
+    for _ in range(3):
+        r = C.admit(s)
+        C._mark(r["run"], "fail_launch", "round two claim 1b", fault=True)
+    check(C.faults("Graffiti") == 3, "claim r2-1: three failed launches under one name meter three faults",
+          C.faults("Graffiti"))
+    check(C.account("Graffiti", C.LOOK, "w", 9)["held"] == 0, "claim r2-1: no failed attempt keeps its reservation held")
+    # 2. the unit launched is the unit admitted
+    fresh()
+    seen = []
+
+    def runner(argv, **kw):
+        seen.append(list(argv))
+        return subprocess.CompletedProcess(argv, 0, "", "")
+    C.launch_unit(["systemd-run", "--user", "/bin/true"], spec("rm-probe-r2c2"), runner=runner)
+    check(seen and C.unit_of(seen[0]) == "rm-probe-r2c2", "claim r2-2: an argv without --unit is sent the spec's unit",
+          seen[:1])
+    seen.clear()
+    r = C.launch_unit(["systemd-run", "--user", "--unit", "rm-probe-r2c2-other", "/bin/true"], spec("rm-probe-r2c2b"),
+                      runner=runner)
+    check(not seen and r.refused and r.returncode == C.LAUNCH_REFUSED_RC,
+          "claim r2-2: a spec and argv naming different units is refused before systemd-run", (seen, r.stderr))
+    # 3. an emergency kill on a locked store kills at once and records the kill when the store frees
+    fresh()
+    a = C.admit(spec("rm-probe-r2c3", mod="Graffiti"))
+    C.condition(a["run"])
+    locked = threading.Event()
+
+    def holder():   # another writer holds the store for 1.2 s
+        hold = C.connect(DB)
+        hold.execute("BEGIN IMMEDIATE")
+        locked.set()
+        time.sleep(1.2)
+        hold.execute("ROLLBACK")
+        hold.close()
+    th = threading.Thread(target=holder)
+    killed_at = []
+    th.start()
+    locked.wait(5)
+    t0 = time.monotonic()
+    try:
+        r = C.stop("rm-probe-r2c3", "kill", "round two claim 3",
+                   killer=lambda us: killed_at.append(time.monotonic() - t0) or dead(us), reaper=lambda *x: "-")
+    finally:
+        th.join()
+    st = C.run_state(a["run"])["state"]
+    check(killed_at and killed_at[0] < 1.0, "claim r2-3: a unit kill on a locked store kills within 1 s", killed_at)
+    check(st == "killed" and r["units"][0]["ok"], "claim r2-3: the kill is recorded once the store frees", (st, r))
+    # 4. a process that entered the cgroup after the snapshot, when systemctl's kill failed: killed or a survivor
+    p1 = subprocess.Popen(["sleep", "300"])
+    p2 = subprocess.Popen(["sleep", "300"])
+    real_cg, real_sc, real_procs = C._cgroup_pids, C._systemctl, getattr(C, "_procs", None)
+    C._cgroup_pids = lambda u: ([p1.pid], "probe.slice/rm-probe-r2c4.service")
+    C._procs = lambda cg: [x for x in (p1.pid, p2.pid) if C._alive(x)]
+    C._systemctl = lambda args, timeout=10: (1, "Failed to kill unit: timeout") if args[0] == "kill" else (0, "")
+    try:
+        res = C.kill_units(["rm-probe-r2c4"], wait_s=0.5)
+    finally:
+        C._cgroup_pids, C._systemctl = real_cg, real_sc
+        if real_procs is None:
+            del C._procs
+        else:
+            C._procs = real_procs
+    time.sleep(0.05)
+    alive2 = p2.poll() is None
+    for x in (p1, p2):
+        x.kill()
+        x.wait(5)
+    check(not (res[0]["dead"] is True and alive2),
+          "claim r2-4: a late cgroup member after a failed systemctl kill is killed or named, never 'dead'",
+          (res, alive2))
+    # 5. an end receipt landing while the kill verifies: still killed
+    fresh()
+    a = C.admit(spec("rm-probe-r2c5", mod="Graffiti"))
+    C.condition(a["run"])
+    C.stop("rm-probe-r2c5", "kill", "round two claim 5", killer=lambda us: C.ended(a["run"], "signal/KILL/9") and dead(us),
+           reaper=lambda *x: "-")
+    check(C.run_state(a["run"])["state"] == "killed", "claim r2-5: an end receipt during the kill's verify reads killed",
+          C.run_state(a["run"])["state"])
+    a = C.admit(spec("rm-probe-r2c5b", mod="Graffiti"))
+    C.condition(a["run"])
+    C.stop("rm-probe-r2c5b", "kill", "nothing running", killer=lambda us: C.ended(a["run"], "success/exited/0") and [
+        {"unit": u, "dead": None, "ms": 1, "survivors": [], "said": "nothing was running in it"} for u in us],
+        reaper=lambda *x: "-")
+    check(C.run_state(a["run"])["state"] == "ended", "claim r2-5: a run that ended on its own (nothing killed) stays ended",
+          C.run_state(a["run"])["state"])
+    # 6. two deadlines on one unit: two timers; a timer not set reads not ok
+    fresh()
+    a = C.admit(spec("rm-probe-r2c6", mod="Graffiti"))
+    C.condition(a["run"])
+    loaded = []
+
+    def trunner(argv, **kw):
+        n = C.unit_of(argv)
+        if n in loaded:
+            return subprocess.CompletedProcess(argv, 1, "", "Unit %s.timer already exists." % n)
+        loaded.append(n)
+        return subprocess.CompletedProcess(argv, 0, "", "")
+    esc = lambda *x: C.schedule_escalation(*x, runner=trunner)
+    C.stop("rm-probe-r2c6", "write_now", "one hour", deadline_s=3600, escalator=esc)
+    C.stop("rm-probe-r2c6", "write_now", "five s", deadline_s=5, escalator=esc)
+    check(len(set(loaded)) == 2, "claim r2-6: two deadlines on one unit set two escalation timers", loaded)
+    r = C.stop("rm-probe-r2c6", "write_now", "not set", deadline_s=5,
+               escalator=lambda *x: "escalation timer NOT set (exit 1: probe)")
+    check(not r["units"][0]["ok"], "claim r2-6: a stop whose escalation timer was not set is not ok", r["units"])
+    # 7. pipe stop --idem: a replay writes nothing
+    fresh()
+    a = C.admit(spec("rm-probe-r2c7", mod="Graffiti"))
+    C.condition(a["run"])
+    real_esc = C.schedule_escalation
+    C.schedule_escalation = lambda *x, **k: "-"
+    outs = []
+    try:
+        for _ in range(2):
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = C.main(["stop", "rm-probe-r2c7", "--write-now", "--why", "round two claim 7", "--idem", "k-r2c7"])
+            outs.append((rc, buf.getvalue()))
+    finally:
+        C.schedule_escalation = real_esc
+    n = C._q("SELECT COUNT(*) n FROM stops WHERE unit='rm-probe-r2c7'", one=True)["n"]
+    m = C._q("SELECT COUNT(*) n FROM acts WHERE kind='stop'", one=True)["n"]
+    check(n == 1 and m == 1 and outs[1][0] == 0 and "already" in outs[1][1],
+          "claim r2-7: a second pipe stop with the same --idem writes no order and no act, and says so", (n, m, outs))
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
-              t_hooks_in_run_clone, t_review_claims_eight):
+              t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two):
         print("== %s" % t.__name__)
         try:
             t()
