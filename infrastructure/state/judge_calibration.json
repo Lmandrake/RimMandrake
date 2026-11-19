@@ -1169,7 +1169,7 @@
    ],
    "hash": "0ee972edfd0c3f9c",
    "last_run": {
-    "at": "2026-11-19T03:58:06Z",
+    "at": "2026-11-19T04:13:20Z",
     "cases": "822 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "evidence corpus: 55 false closes, 55 rejected; 767 valid closes, 767 accepted - OK",
@@ -1202,9 +1202,9 @@
     "src/RimMandrake/rimflow/selftest_maturation.py",
     "--submit"
    ],
-   "hash": "651594d195f979e4",
+   "hash": "f61450f68960e43e",
    "last_run": {
-    "at": "2026-11-19T03:58:06Z",
+    "at": "2026-11-19T04:13:20Z",
     "cases": "3 planted case(s) ran and came out as planted",
     "exit": 0,
     "out": "ALL PASS",
@@ -1240,7 +1240,7 @@
      "id": "locked_version_passes"
     }
    ],
-   "reset_at": "2026-11-19T03:58:06Z",
+   "reset_at": "2026-11-19T04:13:20Z",
    "status": "CALIBRATED",
    "was": "CALIBRATED"
   },

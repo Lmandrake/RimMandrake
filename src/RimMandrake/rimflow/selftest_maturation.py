@@ -737,10 +737,25 @@ def main():
             rows_ = M.spend_rows(twin, "Pyrelands", M.load(twin, "Pyrelands"))
             want_tokens = sum(x["tokens"] for x in rows_ if isinstance(x.get("tokens"), (int, float))
                               and x.get("unit") != "rm-old-version-run")
+            # RIMMANDRAKE_TUNE_ADVANCE_REFUSAL_ALARM_BLOCKS_NOTHING_AS_CODED: the advance alarm only tells: an OPEN
+            # item alarm on this mod@version blocks no advance
+            ap = RC.alarms_path()
+            alarms_was = open(ap).read() if os.path.isfile(ap) else None
+            os.makedirs(os.path.dirname(ap), exist_ok=True)
+            with open(ap, "w") as f:
+                json.dump({"item:Pyrelands@%s" % ver: {"id": RC.ALARM_ID, "subject": "item:Pyrelands@%s" % ver,
+                                                         "open": True, "why": "selftest: a tripped advance alarm"}}, f)
             r = M.advance(twin, "Pyrelands", "passed", by="CONDUCTOR", why="his walk passed it",
                           owner="OWNER:4242000000000000001")
             ok(r["ok"] and M.load(twin, "Pyrelands")["stage"] == "passed", "the pass moves the record (%s)"
                % [x["clause"] for x in r["verdict"]["refusals"]])
+            ok(r["ok"] and not RC.may_judge("Pyrelands@%s" % ver),
+               "an open advance alarm on the mod@version (may_judge False) blocks no advance: it only tells")
+            if alarms_was is None:
+                os.remove(ap)
+            else:
+                with open(ap, "w") as f:
+                    f.write(alarms_was)
             pr = os.path.join(twin, "design", "concepts", "Pyrelands", M.PASS_RECORD_DIR, "%s.json" % ver)
             rec_ = json.load(open(pr)) if os.path.isfile(pr) else {}
             need = ("mod", "version", "passed_on", "commit", "owner_said", "bars", "evidence", "cost", "cycles", "build")

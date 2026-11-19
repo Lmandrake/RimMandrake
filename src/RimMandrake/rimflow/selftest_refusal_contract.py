@@ -248,6 +248,61 @@ def release_cli(root):
     os.remove(path)
 
 
+def advance_tuning(root):
+    """RIMMANDRAKE_TUNE_ADVANCE_REFUSAL_ALARM_BLOCKS_NOTHING_AS_CODED: the maturation_advance alarm counts within a
+    rolling 24 hours, never counts a hand step waiting on a person, and only tells (nothing reads may_judge to block)."""
+    os.environ["RM_REFUSAL_DIR"] = os.path.join(root, "adv_tune")
+    crit = dict(CRIT, owner_said="the owner's words are on the ledger for this move")
+    g = {"root": root, "criteria": crit, "inputs": ["scene.log", "player.log"]}
+
+    def adv(item, n, clause="C1"):
+        v = good(item=item, family="maturation_advance", sha="sha%d" % n)
+        v["refusals"][0]["clause"] = clause
+        v["refusals"][0]["criterion_hash"] = RC.criterion_hash(crit[clause])
+        v["passed"] += [{"clause": c, "evidence": ["player.log"]} for c in crit if c not in ("C2", clause)]
+        v["refusals"][0]["new_since"] = "unfixed:%s" % clause if n else "first"
+        return v
+    t0 = 1794100000
+    rs = [RC.submit(adv("Spread@0.1.0", n), g, now=t0 + n * 25 * 3600) for n in range(4)]
+    check("(a) four refused advances 25 hours apart do not trip the item alarm",
+          all(r["counted"] for r in rs) and not any(a["subject"].startswith("item:") for r in rs for a in r["alarms"]),
+          [r["alarms"] for r in rs])
+    rs = [RC.submit(adv("Hand@0.1.0", n, "owner_said"), g, now=t0 + n * 60) for n in range(4)]
+    check("(b) refusals of a hand step waiting on a person (owner_said) trip nothing and owe no criteria repair",
+          not any(r["alarms"] or r["repair_due"] for r in rs), [(r["alarms"], r["repair_due"]) for r in rs])
+    rs = [RC.submit(adv("Loop@0.1.0", n), g, now=t0 + n * 600) for n in range(4)]
+    trip = [a for a in rs[-1]["alarms"] if a["subject"] == "item:Loop@0.1.0"]
+    check("(c) four refused advances within an hour trip the item alarm, and it tells (told_at set)",
+          trip and trip[0].get("told_at"), rs[-1]["alarms"])
+    ok_v = good(item="Loop@0.1.0", family="maturation_advance", sha="sha9")
+    ok_v["refusals"] = []
+    ok_v["passed"] += [{"clause": "C1", "evidence": ["scene.log:2"]}, {"clause": "owner_said", "evidence": ["player.log"]}]
+    r = RC.submit(ok_v, g, now=t0 + 3000)
+    check("(c) a passing advance after the trip is accepted: the alarm only tells", r["ok"] and r["counted"], r)
+    with open(RC.counters_path(), "w") as f:
+        f.write("{torn")
+    try:
+        RC.submit(adv("Torn@0.1.0", 0), g, now=t0)
+        got = "no raise"
+    except (OSError, ValueError) as e:
+        got = "raised %s" % type(e).__name__
+    check("(d) an unreadable counter store raises (its own answer), never reads as no history",
+          got.startswith("raised"), got)
+    os.remove(RC.counters_path())
+    r = RC.submit(adv("Fresh@0.1.0", 0), g, now=t0)
+    check("(d) empty history: counted, no trip", r["counted"] and not r["alarms"], r)
+    d = RC.state_dir()
+    os.chmod(d, 0o500)
+    try:
+        RC.submit(adv("Fresh@0.1.0", 1), g, now=t0 + 60)
+        got = "no raise"
+    except OSError as e:
+        got = type(e).__name__
+    finally:
+        os.chmod(d, 0o700)
+    check("(d) a failed write raises (its own answer), never 'no trip'", got != "no raise", got)
+
+
 def main():
     env = {k: os.environ.get(k) for k in ("RM_REFUSAL_DIR", "RM_OPS_WATCH_DIR", "RM_DISPATCHER_STATE",
                                           "RM_JUDGE_CALIBRATION", "RM_CALIBRATION_ROOT")}
@@ -264,7 +319,7 @@ def main():
             h = RC.brief_hash(["brief.md"], root)
             with open(os.path.join(root, "cal.json"), "w") as f:
                 json.dump({"families": {fam: {"brief": ["brief.md"], "hash": h, "status": "CALIBRATED", "cases": {}}
-                                        for fam in ("scene_look", "gate_x", "healthy")}}, f)
+                                        for fam in ("scene_look", "gate_x", "healthy", "maturation_advance")}}, f)
             os.environ.update(RM_JUDGE_CALIBRATION=os.path.join(root, "cal.json"), RM_CALIBRATION_ROOT=root)
             malformed(root)
             store_and_counts(root, ops)
@@ -272,6 +327,7 @@ def main():
             advisory(root)
             cli(root)
             release_cli(root)
+            advance_tuning(root)
     finally:
         for k, v in env.items():
             if v is None:

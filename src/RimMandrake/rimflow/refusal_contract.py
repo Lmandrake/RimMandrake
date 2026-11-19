@@ -25,7 +25,9 @@ it never counts against the item. `submit` checks, stores every record whole (re
 answers a repeat (same item, clause, criterion hash, evidence content and sha) from the cache uncounted, and counts:
 
   the 3rd refusal of one clause on one item      -> repair_due (the neutral fixer, T5) and the item's alarm row
-  the 4th refused verdict on one item            -> the item's alarm row; may_judge(item) is False until it is cleared
+  the 4th refused verdict on one item            -> the item's alarm row; may_judge(item) reads False until it is cleared
+                                                    (no production caller asks may_judge: the alarm TELLS, it blocks
+                                                    nothing; maturation_advance is pinned alarm-only, FAMILY_TUNING)
   a 2nd malformed verdict from one brief         -> the family's alarm row (brief FAILED)
   a family refusing >70% of its last 20, or all of its last 8 across >=3 items -> the family's alarm row
 
@@ -182,6 +184,14 @@ MALFORMED_ALARM_AT = 2      # a 2nd malformed verdict from one brief on one item
 FAMILY_WINDOW, FAMILY_RATE = 20, 0.70
 FAMILY_ALL_WINDOW, FAMILY_ALL_ITEMS = 8, 3
 FAMILY_KEEP = 50
+# RIMMANDRAKE_TUNE_ADVANCE_REFUSAL_ALARM_BLOCKS_NOTHING_AS_CODED (owner 2026-11-18: "If we just implemented 'a change I
+# can veto' where it would be stopping currently known needed work, then the rule we just implemented isn't useful.
+# Please assess how it should actually be tuned given what we know"): a family here counts its item and clause alarms
+# within a rolling window, not for the item's life, and never counts a clause whose fix is a hand step waiting on a
+# person. The family limits are unchanged. maturation_advance is ALARM-ONLY: maturation.py advance never asks
+# may_judge, so a trip tells the Conductor and stops no advance.
+FAMILY_TUNING = {"maturation_advance": {"window_s": 86400,
+                                        "uncounted": ("owner_said", "steward_confirms", "conductor_decision")}}
 LINE_RE = re.compile(r"^(?P<ref>.+?):(?P<a>\d+)(?:-(?P<b>\d+))?$")
 WORD_RE = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_.'-]*")
 
@@ -527,20 +537,36 @@ def submit(verdict, given=None, now=None):
         if fresh or not verdict["refusals"]:
             res["counted"] = True
             it["verdicts"] += 1
-            refused = bool(fresh)
-            if refused:
-                it["refused"] += 1
+            tune = FAMILY_TUNING.get(fam)
+            alarming = [r for r in fresh if not tune or r["clause"] not in tune["uncounted"]]
+            refused = bool(alarming)
+            if fresh:
+                it["refused"] += 1      # the life count stays: tag_new_since and check read it
             for rec in fresh:
-                n = it["clauses"][rec["clause"]] = it["clauses"].get(rec["clause"], 0) + 1
-                if n >= CLAUSE_REPAIR_AT:
+                it["clauses"][rec["clause"]] = it["clauses"].get(rec["clause"], 0) + 1
+            if tune:
+                hist_at = [h for h in it.get("refused_at") or [] if now - float(h.get("at") or 0) < tune["window_s"]]
+                if alarming:
+                    hist_at.append({"at": now, "clauses": [r["clause"] for r in alarming]})
+                it["refused_at"] = hist_at
+                n_refused = len(hist_at)
+                n_clause = {}
+                for h in hist_at:
+                    for cl in h["clauses"]:
+                        n_clause[cl] = n_clause.get(cl, 0) + 1
+            else:
+                n_refused, n_clause = it["refused"], it["clauses"]
+            for rec in alarming:
+                if n_clause.get(rec["clause"], 0) >= CLAUSE_REPAIR_AT:
                     res["repair_due"].append(rec["clause"])
             hist = c["families"].setdefault(fam, [])
             hist.append({"item": item, "refused": refused, "at": iso(now)})
             del hist[:-FAMILY_KEEP]
             _write(counters_path(), c)
             why = []
-            if it["refused"] >= ITEM_ALARM_AT:
-                why.append("%d refused verdicts (limit %d)" % (it["refused"], ITEM_ALARM_AT))
+            if refused and n_refused >= ITEM_ALARM_AT:
+                why.append("%d refused verdicts%s (limit %d)" % (
+                    n_refused, " in %d h" % (tune["window_s"] // 3600) if tune else "", ITEM_ALARM_AT))
             if res["repair_due"]:
                 why.append("clause %s refused %d times: criteria repair due" % (
                     ", ".join(res["repair_due"]), CLAUSE_REPAIR_AT))

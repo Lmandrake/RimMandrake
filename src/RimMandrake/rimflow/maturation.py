@@ -82,7 +82,9 @@ RECORD = "version/stage_record.json"
 # otherwise, and the pipeline locks it itself (locked_by "pipeline", per_ruling this id)
 EVIDENCE_FOR_ASK = "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME"
 # RIMMANDRAKE_COUNT_ADVANCE_REFUSALS_SO_A_LOOP_RINGS: the one brief `advance` judges with, and the row
-# infrastructure/state/judge_calibration.json carries for it
+# infrastructure/state/judge_calibration.json carries for it. ALARM-ONLY (RIMMANDRAKE_TUNE_ADVANCE_REFUSAL_ALARM_BLOCKS_
+# NOTHING_AS_CODED): a trip tells the Conductor; `advance` never asks refusal_contract.may_judge, so it blocks nothing.
+# Its counts run in a rolling 24 h and skip hand steps waiting on a person (refusal_contract.FAMILY_TUNING)
 ADVANCE_FAMILY = "maturation_advance"
 PAC = MN.PAC
 
