@@ -324,16 +324,42 @@ def row_runs(recs):
     return out
 
 
-def latest_decision(sig, names, spawns, lines):
+def latest_decision(sig, names, spawns, lines, cover_kinds=None):
     """The newest of: a decisions-file line on sig, a `rimflow spawn --from <one of its findings>` (work), a ledger
-    retype of one of them (retype) or an item of one's name (item), both from read_ledger. undo -> None."""
+    retype of one of them (retype) or an item of one's name (item), both from read_ledger. undo -> None.
+    RIMMANDRAKE_ANNOTATE_FOLD_MEMORY_BESIDE_STANDING_WORK_COVER: a `memory` made while a cover decision (cover_kinds,
+    findings_fold_rules.json) stands annotates it, never replaces it: that decision is returned unchanged (as, into,
+    ts: covering and the outcome clock do not move) with the newest note under "memory". An undo right after a note
+    removes that note only; any other undo clears the decision."""
+    kinds = set(cover_kinds if cover_kinds is not None else _cover_kinds())
     ds = [{"as": e.get("as") or "work", "into": e.get("name"), "by": e.get("seat"), "ts": e.get("ts") or "",
            "why": e.get("why") or "spawned from %s" % e["from"], "src": "ledger"}
           for e in spawns if e["from"] in names] + \
         [dict(d, src="decisions") for d in lines if d["sig"] == sig]
     # ties (one-second clock) go to the later entry, and a decisions line outranks a spawn: an undo right after wins
-    last = ds[max(range(len(ds)), key=lambda k: (ds[k]["ts"], k))] if ds else None
-    return None if not last or last["as"] == "undo" else last
+    cur, notes, after_note = None, [], False
+    for k in sorted(range(len(ds)), key=lambda k: (ds[k]["ts"], k)):
+        e = ds[k]
+        if e["as"] == "undo":
+            if after_note and notes:
+                notes.pop()
+            else:
+                cur, notes = None, []
+            after_note = False
+        elif e["as"] == "memory" and cur is not None and cur["as"] in kinds:
+            notes.append({"into": e.get("into"), "ts": e["ts"], "by": e.get("by"), "why": e.get("why")})
+            after_note = True
+        else:
+            cur, notes, after_note = e, [], False
+    if cur is None:
+        return None
+    return dict(cur, memory=notes[-1]) if notes else cur
+
+
+def _cover_kinds():
+    """The rules file's cover_kinds, for a caller that passes none (fold passes its loaded rules')."""
+    with open(os.environ.get("FINDINGS_FOLD_RULES") or RULES_PATH, encoding="utf-8") as f:
+        return json.load(f)["cover_kinds"]
 
 
 def state_at(timeline, states, item, at):
@@ -388,7 +414,7 @@ def fold(finds, spawns, states, recs, decision_lines, rules, now, timeline=None)
             if measured else None
         s["health"] = any(n.startswith("STEVE_LANE_") for n in s["findings"]) or \
             any(rx.search(s["text"]) for rx in rules["_mh"])
-        d = latest_decision(sig, set(s["findings"]), spawns, decision_lines)
+        d = latest_decision(sig, set(s["findings"]), spawns, decision_lines, rules["cover_kinds"])
         s["decision"] = d
         s["failed_since_decision"] = sum(1 for n in s["findings"] if d and raw[n]["at"] > d["ts"]) + \
             sum(1 for at, j, v, dt, _ in tl if d and v == "FAIL" and at > d["ts"] and
@@ -446,7 +472,8 @@ def render_md(t):
 
     def dec(s):
         d = s["decision"]
-        return "; decided %s into %s at %s" % (d["as"], d.get("into") or "-", d["ts"])
+        return "; decided %s into %s at %s%s" % (d["as"], d.get("into") or "-", d["ts"], "; also in memory: %s" % (
+            d["memory"].get("into") or "-") if isinstance(d.get("memory"), dict) else "")
 
     def sect(title, pick, extra=lambda s: ""):
         rows = sorted(((k, s) for k, s in sigs.items() if pick(s)), key=lambda x: (-x[1]["count"], x[0]))

@@ -76,8 +76,29 @@ def run(checks, cwd, timeout_s=120, runner=subprocess.run):
     return {"ok": not refusals, "refusals": refusals, "did_not_run": dnr, "ms": int((time.time() - t0) * 1000)}
 
 
-def block_for(kind, mod=None, to=None, cmd=None):
-    """-> the `## launch-checks` block a filer writes into an item: "advance" (mod, to) or "fix_red" (cmd)."""
+_MOD = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]*$")
+_OWNER_EVENT = re.compile(r"^OWNER:[0-9]+$")
+# each gate's own read-only preview (RIMMANDRAKE_PREVIEW_THREE_GATES_READ_ONLY_FOR_LAUNCH_CHECKS): exit 0 it would open,
+# 1 it refuses with its own words, 126 it could not look (CANNOT_RUN: did not run)
+GATE_PREVIEWS = {
+    "designer_open": "python3 src/RimMandrake/rimflow/designer_stage.py open design/concepts/%(mod)s --run launch-check "
+                     "--preview",
+    "coverage_judge": "python3 src/RimMandrake/rimflow/coverage_judge.py status design/concepts/%(mod)s --would-judge",
+    "certify": "python3 src/RimMandrake/rimflow/concept_tree.py certify design/concepts/%(mod)s --owner-event "
+               "%(owner_event)s --check",
+}
+
+
+def block_for(kind, mod=None, to=None, cmd=None, owner_event=None):
+    """-> the `## launch-checks` block a filer writes into an item: "advance" (mod, to), "fix_red" (cmd), or a gate's
+    preview: "designer_open" or "coverage_judge" (mod), "certify" (mod, owner_event OWNER:<tsn>). A missing or
+    malformed mod or event raises ValueError: no half block is written."""
+    if kind in GATE_PREVIEWS:
+        if not isinstance(mod, str) or not _MOD.match(mod):
+            raise ValueError("block_for %s: mod %r is not a concept folder name" % (kind, mod))
+        if kind == "certify" and not (isinstance(owner_event, str) and _OWNER_EVENT.match(owner_event)):
+            raise ValueError("block_for certify: owner_event %r is not OWNER:<tsn>" % (owner_event,))
+        return "%s\nmust-pass: %s\n" % (HEAD, GATE_PREVIEWS[kind] % {"mod": mod, "owner_event": owner_event})
     if kind == "advance":
         return "%s\nmust-pass: python3 src/RimMandrake/rimflow/maturation.py gate %s --to %s\n" % (HEAD, mod, to)
     if kind == "fix_red":

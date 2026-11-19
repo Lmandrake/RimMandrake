@@ -856,7 +856,7 @@ def look_balance(st, d=None, rs=None, mod=None):
         return None
     rs = rounds(st, d) if rs is None else rs
     mod = mod or (DS.concept_of(st, d) or {}).get("mod") or (os.path.basename(os.path.abspath(d)) if d else "?")
-    refused = [r for r in _looks(released_rounds(st, d, rs, rel[-1])) if r.get("verdict") == "not_covered"]
+    refused = [r for r in _looks(released_rounds(st, d, rs, rel[-1])) if is_refusal(r)]
     win = C.look_window(st)
     try:
         gone = C.voided([r.get("judge") for r in refused])
@@ -892,6 +892,28 @@ def counting_window(st, d, rs):
     if rel:
         return rel[-1], after, " since the release", after, bad_since
     return None, rs, "", rs, bad_since
+
+
+def is_refusal(r):
+    """A round that counts as a refusal (a strike toward NOT_COVERED_LIMIT, a granted look's refusal, a park's second
+    refusal): a not_covered verdict judged on the inputs that are still there. A not_covered whose inputs changed while
+    the judge read them (`stale_inputs`) judged material that is gone: it is stored and shown and counts as no refusal
+    (RIMMANDRAKE_REVALIDATE_INPUTS_BEFORE_REFUSAL_STALE_THIRD_STRIKE). Its run and spend still count in the caps."""
+    return isinstance(r, dict) and r.get("verdict") == "not_covered" and not r.get("stale_inputs")
+
+
+def moved_inputs(d, before):
+    """-> the inputs (INPUT_FILES, "tree.json" for the tree or the sheet) that differ from fresh_key `before` now; []
+    when none moved. A tree that cannot be read now has moved."""
+    try:
+        now = fresh_key(d, CT.load(d))
+    except (OSError, ValueError) as e:
+        return ["tree.json (unreadable now: %s)" % type(e).__name__]
+    if now == before:
+        return []
+    moved = [fn for fn, h in before[2].items() if now[2].get(fn) != h]
+    moved += [fn for fn, i in (("tree.json", 0), ("sheet.md", 1)) if now[i] != before[i] and fn not in moved]
+    return moved
 
 
 def stop_reason(st, d=None):
@@ -931,7 +953,7 @@ def stop_reason(st, d=None):
                 at, tail[-1].get("verdict") or "no verdict")
         # RIMMANDRAKE_HASH_EVERY_COVERAGE_INPUT: the caps still bind after a release, counted from it
         return _caps(after, since, mod, bad_win, bad_since)
-    nc = PC.used(mod, "coverage_not_covered", sum(1 for r in win if r.get("verdict") == "not_covered"))
+    nc = PC.used(mod, "coverage_not_covered", sum(1 for r in win if is_refusal(r)))
     lim = PC.limit(mod, "coverage_not_covered", NOT_COVERED_LIMIT)
     if nc >= lim:
         return "%d not_covered verdicts%s (limit %d)" % (nc, since, lim)
@@ -1472,7 +1494,7 @@ def record_round(d, rec):
         "void_system": void_cause(rec) or None, **round_counts(rec),
         # the detached run that asked for the Designer run this judge screens (role_launch.with_parent): run_void.children
         "parent": os.environ.get("RM_PARENT_UNIT") or None,
-        "reader_void_system": rec.get("reader_void_system"),
+        "reader_void_system": rec.get("reader_void_system"), "stale_inputs": rec.get("stale_inputs") or None,
         "repair_blocks": repair_blocks(rec)})
     DS.write_json(DS.state_path(d), st)
     return st
@@ -1675,6 +1697,12 @@ def default_runner(argv, cwd, env, timeout):
     return r.returncode, r.stdout
 
 
+# `status --would-judge`, a launch check's read of the judge's own plan: 0 it would judge, 1 it would not (the plan's
+# reason printed), 126 it could not look (launch_checks.CANNOT_RUN: did not run, never a refusal). A plan value not
+# named here is 126 too: an answer nobody classed is no answer.
+WOULD_JUDGE_EXIT = {"judge": 0, "skip": 1, "stopped": 1, "parked": 1, "ceiling": 1, "error": 126}
+
+
 def plan(d, repo=None):
     """-> (what, why): what `run` would do now: "judge", "skip", "stopped" (the loop limit), "parked" (waiting on
     his word), "ceiling" (the loop reached twice the cap: `run` parks it) or "error"."""
@@ -1714,8 +1742,8 @@ def plan(d, repo=None):
     if stop:
         return "stopped", stop
     prior = prior_verdict(d)
-    if prior and (prior.get("advisory") or (prior.get("contract") or {}).get("advisory")) \
-            and RC.status(CONTRACT_FAMILY) != "CALIBRATED":
+    if prior and not prior.get("stale_inputs") and (prior.get("advisory") or (prior.get("contract") or {}).get(
+            "advisory")) and RC.status(CONTRACT_FAMILY) != "CALIBRATED":
         return "skip", "advisory verdict %s waits for a calibrated coverage brief" % prior.get("judge")
     dp = delta_plan(d, prior)
     if dp is not None and not dp["claims"] and not dp["changed"]:
@@ -1750,7 +1778,8 @@ def run(d, repo=None, runner=default_runner, timeout=TIMEOUT_S, now=None, charge
         return {"stopped": why}, "stopped: %s%s" % (why, counts)
     if what != "judge":
         prior = prior_verdict(d)
-        if prior and (prior.get("advisory") or (prior.get("contract") or {}).get("advisory")):
+        if prior and not prior.get("stale_inputs") and (prior.get("advisory") or (prior.get("contract") or {}).get(
+                "advisory")):     # a stale refusal's advisory waits on no brief: it is no answer to hand back
             return prior, "%s: %s" % (what, why)
         return None, "%s: %s" % (what, why)
     unit = UNIT_PREFIX + "%d" % int(now or time.time())
@@ -2110,6 +2139,14 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
                        or r["clause"] in bad_c] + sorted(late_c - {r["clause"] for r in cv["refusals"]})
             if suspect and not errs:
                 rec["criteria_suspect"] = suspect
+    if rec.get("verdict") == "not_covered":
+        stale = moved_inputs(d, before)
+        if stale:
+            # judged on inputs that changed under it: no strike, no park, no stop, and the Designer is not sent back
+            # on it; the next look judges what is there now
+            rec["stale_inputs"] = stale
+            rec["advisory"] = ("the %s changed while the judge read it: this refusal judged inputs that are gone; it is "
+                               "stored and shown and counts as no refusal" % ", ".join(stale))
     if rec["verdict"] == "covered":
         rec["calibration"] = RC.status(CONTRACT_FAMILY)
         try:
@@ -2154,7 +2191,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
     parked = None
     if not rec["signed"]:
         parked = DS.loop_ceiling(st) and ("ceiling", DS.loop_ceiling(st))
-        if not parked and rec.get("verdict") == "not_covered" and DS.refusals_since_loop(st) >= 2 \
+        if not parked and is_refusal(rec) and DS.refusals_since_loop(st) >= 2 \
                 and not DS.designer_can_fix(rec):   # gaps the Designer fixes alone are rework, not his question
             away, why_away = DS.owner_away()
             if away:    # the second refusal while he is away parks (RIMMANDRAKE_PARK_UNATTENDED_DESIGNER_LOOPS)
@@ -2165,7 +2202,9 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         DS.write_json(os.path.join(d, VERDICT_FILE), rec)
         DS.park(d, parked[0], parked[1], repo)
         return rec, msg + "; parked: %s" % parked[1]
-    stop = None if rec["signed"] else stop_reason(st, d)
+    # a stale refusal stops nothing here: the next plan() reads the caps against the stage state then current, so
+    # hold() never writes blocked over a state that moved while the judge read it
+    stop = None if rec["signed"] or rec.get("stale_inputs") else stop_reason(st, d)
     if stop:
         rec["stopped"] = stop
         DS.write_json(os.path.join(d, VERDICT_FILE), rec)
@@ -2184,6 +2223,9 @@ def main(argv=None):
     r.add_argument("--timeout", type=int, default=TIMEOUT_S)
     s = sub.add_parser("status")
     s.add_argument("dir")
+    s.add_argument("--would-judge", action="store_true", help="exit 0 only when plan() says judge; skip, stopped, parked "
+                   "and ceiling exit 1; error (could not look) exits 126 (RIMMANDRAKE_PREVIEW_THREE_GATES_READ_ONLY_FOR_"
+                   "LAUNCH_CHECKS)")
     rl = sub.add_parser("release", help="one more judge look on a stopped concept")
     rl.add_argument("dir")
     rl.add_argument("--why", required=True)
@@ -2194,6 +2236,8 @@ def main(argv=None):
     if a.cmd == "status":
         what, why = plan(d)
         print("%s: %s" % (what, why))
+        if a.would_judge:
+            return WOULD_JUDGE_EXIT.get(what, 126)
         return 2 if what == "error" else 0
     if a.cmd == "release":
         try:

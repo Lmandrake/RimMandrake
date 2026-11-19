@@ -1048,10 +1048,11 @@ def coverage_summary(d, repo=REPO):
     return "not signed: %s" % why
 
 
-def certify(d, owner_event, repo=REPO, emit=None):
+def certify(d, owner_event, repo=REPO, emit=None, check=False):
     """The owner's certificate: built from his OWNER event and the judge verdict on file, checked exactly as the gate
     checks it, then a ledger note (the BENCH shard, never OWNER.jsonl), then the stamp. Nothing here can make an event
-    his: with no ownerSaid or byCard event of his on this item, newer than the verdict, it refuses."""
+    his: with no ownerSaid or byCard event of his on this item, newer than the verdict, it refuses. check=True runs
+    every check and stops before the note and the stamp (a launch check's read-only preview)."""
     errs, _fl = lint(d, repo)
     if errs:
         return errs
@@ -1078,6 +1079,8 @@ def certify(d, owner_event, repo=REPO, emit=None):
     why = owner_certificate_problem(d, repo, cov)
     if why:
         return [why]
+    if check:
+        return []
     tree["coverage"] = cov
     note = "%s concept=%s tree=%s sheet=%s owner=%s judge=%s verdict=%s gaps=%s fixes=%s gaps_sha=%s" % (
         OWNER_MARK, concept_rel(d, repo), cov["tree_hash"], cov["sheet_hash"] or "none", ref, v["run"], v["verdict"],
@@ -1273,6 +1276,8 @@ def main(argv=None):
             p.add_argument("--item")
         if name == "certify":
             p.add_argument("--owner-event", required=True, help="OWNER:<tsn> of his ownerSaid or byCard event")
+            p.add_argument("--check", action="store_true", help="every check certify runs, no ledger note, no stamp: "
+                           "exit 0 would certify, 1 refuses, 126 could not look")
         if name == "carry":
             p.add_argument("--card", required=True, help="OWNER:<tsn> of his card the tree or sheet edit was made under")
         if name == "askcheck":
@@ -1299,6 +1304,13 @@ def main(argv=None):
         if rc == 0:
             print(coverage_summary(a.dir))
         return rc
+    if a.cmd == "certify" and a.check:
+        try:
+            errs = certify(a.dir, a.owner_event, check=True)
+        except (OSError, ValueError) as e:    # no answer: launch_checks reads 126 as did-not-run, never a refusal
+            print("certify --check: COULD NOT LOOK: %s: %s" % (type(e).__name__, e))
+            return 126
+        return report(errs, [], "certify --check")
     if a.cmd == "certify":
         rc = report(certify(a.dir, a.owner_event), [], "certify")
         if rc == 0:

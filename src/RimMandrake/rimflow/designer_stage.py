@@ -712,6 +712,25 @@ def lst(v):
     return v if isinstance(v, list) else ([v] if v else [])
 
 
+def _is_id(v):
+    return isinstance(v, str) and bool(v.strip())
+
+
+def _ids(v):
+    """-> (the string ids of a list field, a short repr of each entry that is not one). A run's result.json can carry
+    any JSON: a dict id used to reach a set or dict lookup and crash close_run, leaving the run open
+    (RIMMANDRAKE_REFUSE_MALFORMED_IDS_CLOSE_RUN_CRASHES_INSTEAD); a non-string id is a rejection reason instead."""
+    good, bad = [], []
+    for x in lst(v):
+        (good if _is_id(x) else bad).append(x)
+    return good, [_clip_repr(x) for x in bad]
+
+
+def _clip_repr(x, n=60):
+    r = json.dumps(x, sort_keys=True, default=str) if not isinstance(x, str) else repr(x)
+    return r if len(r) <= n else r[:n - 3] + "..."
+
+
 def _ledger_unread(owner_ev):
     """None (never read), CT.owner_events' reading of an unreadable shard (OwnerEvents.unread), or a plain empty dict,
     which cannot say which it was and is taken as unread (as source_errors takes it)."""
@@ -791,7 +810,8 @@ def done_items(repo):
             w = model.replay(model.read())
             _DONE_MEMO.clear()
             _DONE_MEMO.update(stamp=stamp, done={i: (getattr(it, "title", "") or "") for i, it in w.items.items()
-                                                 if it.state == "done"})
+                                                 if it.state == "done"},
+                              closed={i: it.state for i, it in w.items.items() if it.state in CLOSED_STATES})
     except Exception:  # an unreadable ledger is reported as UNMEASURED by the caller
         _DONE_MEMO.clear()
         return None
@@ -799,6 +819,15 @@ def done_items(repo):
 
 
 _DONE_MEMO = {}
+CLOSED_STATES = ("done", "dropped", "superseded")     # model.TERMINAL
+
+
+def closed_items(repo):
+    """{item id: its terminal state (CLOSED_STATES)} from the same ledger fold as done_items, or None when the ledger
+    cannot be read (UNMEASURED, never 'nothing closed'). A test repo patches this function."""
+    if done_items(repo) is None or "closed" not in _DONE_MEMO:
+        return None
+    return dict(_DONE_MEMO["closed"])
 
 
 def mod_prefixes(mod, aliases=()):
@@ -913,8 +942,9 @@ def ask_errors(ask, rec):
         errs.append("%s: no text" % w)
     if not CT.txt(ask.get("decision")):
         errs.append("%s: names no unresolved decision it settles" % w)
-    inv = {e.get("id"): e for e in rec.get("inventory") or [] if isinstance(e, dict)}
-    about = lst(ask.get("about"))
+    inv = {e.get("id"): e for e in rec.get("inventory") or [] if isinstance(e, dict) and _is_id(e.get("id"))}
+    about, bad = _ids(ask.get("about"))
+    errs += ["%s: about entry %s is not an inventory id (a string)" % (w, b) for b in bad]
     if not about and not lst(ask.get("owner_cites")):
         errs.append("%s: cites neither an inventory entry nor his statements" % w)
     for a in about:
@@ -962,7 +992,7 @@ def scene_errors(sc, tree=None, repo=REPO):
         return ["scenes.json is missing or has no scenes list"]
     errs, leaves = [], None
     if isinstance(tree, dict):
-        leaves = {x.get("id") for x in CT.lst(tree.get("leaves")) if isinstance(x, dict)}
+        leaves = {x.get("id") for x in CT.lst(tree.get("leaves")) if isinstance(x, dict) and _is_id(x.get("id"))}
     own = {}
     for i, s in enumerate(sc["scenes"]):
         w = "scene[%s]" % (s.get("id", i) if isinstance(s, dict) else i)
@@ -996,8 +1026,10 @@ def scene_errors(sc, tree=None, repo=REPO):
                         "plausible alternative it excludes)" % w)
         if s.get("hold") not in HOLDS:
             errs.append("%s: hold %r is not one of %s" % (w, s.get("hold"), "/".join(HOLDS)))
-        reqs = lst(s.get("requirement")) if s["kind"] == "acceptance" else lst(s.get("features"))
-        if not reqs:
+        field = "requirement" if s["kind"] == "acceptance" else "features"
+        reqs, bad = _ids(s.get(field))
+        errs += ["%s: %s entry %s is not a leaf id (a string)" % (w, field, b) for b in bad]
+        if not reqs and not bad:
             errs.append("%s: %s" % (w, "no requirement (leaf id)" if s["kind"] == "acceptance"
                                      else "an interaction scene names the features (leaf ids) it joins"))
         if s["kind"] == "interaction" and len(reqs) < 2:
@@ -1010,7 +1042,7 @@ def scene_errors(sc, tree=None, repo=REPO):
             for r in reqs:
                 own.setdefault(r, []).append(s["id"])
     for s in [s for s in sc["scenes"] if isinstance(s, dict) and s.get("kind") == "interaction" and CT.txt(s.get("id"))]:
-        for f in lst(s.get("features")):
+        for f in _ids(s.get("features"))[0]:
             if f not in own:
                 errs.append("scene[%s]: feature %s has no acceptance scene of its own; an interaction scene never "
                             "stands in for one" % (s["id"], f))
@@ -1917,6 +1949,7 @@ def open_run(d, run, run_cap=None, repo=REPO, manifest=MANIFEST, commit=True, pa
             charge_state(st, prev.get("reserved", 0), "unmeasured", "run %s never closed" % prev.get("run"))
             hist(st, "retry", "run %s never closed; its reservation %d is charged" % (prev.get("run"), prev.get("reserved", 0)))
         st["running"] = None
+    lift_closed_block(st, repo)     # a block whose item closed is read again; commit writes the lift with the rest
     why = reopen_if_stale(d, st, repo)
     try:
         if st.get("status") == "locked":
@@ -2229,10 +2262,12 @@ def loop_ceiling(st):
 
 
 def refusals_since_loop(st):
-    """not_covered judge rounds since the loop began (or since his word last lifted a park)."""
+    """not_covered judge rounds since the loop began (or since his word last lifted a park); a round judged on inputs
+    that changed mid-judge (stale_inputs) is no refusal."""
     since = epoch(st.get("loop_since")) or 0
     return sum(1 for r in st.get("coverage_rounds") or [] if isinstance(r, dict)
-               and r.get("verdict") == "not_covered" and (epoch(r.get("at")) or 0) >= since)
+               and r.get("verdict") == "not_covered" and not r.get("stale_inputs")   # coverage_judge.is_refusal
+               and (epoch(r.get("at")) or 0) >= since)
 
 
 # RIMMANDRAKE_UNPARK_DESIGNER_WHEN_IT_CAN_FIX_GAPS_ALONE (owner card 2026-11-15 on Graffiti, "Rework, and stop parking
@@ -2527,7 +2562,12 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
             # role_launch.void_cause may class void_system)
             unparsed = "result.json holds %s, not a JSON object: a written result that is no result" % (
                 "null" if res is None else type(res).__name__)
-    errs = [unparsed] if unparsed else result_errors(res, d, st, repo)
+    try:
+        errs = [unparsed] if unparsed else result_errors(res, d, st, repo)
+    except (TypeError, AttributeError, KeyError, ValueError, IndexError) as e:
+        # a result.json shape no rule above names (RIMMANDRAKE_REFUSE_MALFORMED_IDS_CLOSE_RUN_CRASHES_INSTEAD): a crash
+        # here left `running` set, so the next open charged the reservation as a retry; it is a rejection instead
+        errs = ["result.json has a shape the validator cannot read (%s: %s)" % (type(e).__name__, _clip_repr(str(e), 160))]
     if transport_error:
         errs.append("Codex transport failed: %s" % str(transport_error))
     # an input changed while the run worked (a late owner reply, an edited artifact it did not make): the result is
@@ -2697,6 +2737,61 @@ def lift_block(st):
     blocked_on showed a stop that had been released as the Designer's why. The reason stays in history. -> the reason."""
     st["status"] = "ready"
     return st.pop("blocked_on", None)
+
+
+_BLOCK_ITEM = re.compile(r"^\s*([A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+)\s*(?::|$)")
+
+
+def closed_blocker(st, closed):
+    """-> (item, its state) when the concept is blocked on a ledger item that is closed, else None
+    (RIMMANDRAKE_UNBLOCK_CONCEPTS_WHOSE_BLOCKER_CLOSED_DAYS_AGO: FlowWorks and PyrelandsMechanics sat blocked a week on
+    items closed on the ledger, because nothing re-read a block when its item closed). The item is the block reason's
+    leading id (`ITEM: why`, as a Designer result's `on` names it). None, and the block stands, when the ledger was not
+    read (closed is None), when the reason names an owner hold (his word lifts it), the coverage stop (the alarm id
+    refusal_contract.ALARM_ID, or a standing coverage_stop: `coverage_judge.py release` lifts it) or a cleanse block."""
+    if not isinstance(st, dict) or st.get("status") != "blocked" or not isinstance(closed, dict):
+        return None
+    on = str(st.get("blocked_on") or "")
+    m = _BLOCK_ITEM.match(on)
+    if not m or "OWNER HOLD" in on or st.get("coverage_stop") or st.get("cleanse"):
+        return None
+    import refusal_contract as RC
+    item = m.group(1)
+    if item == RC.ALARM_ID or item not in closed:
+        return None
+    return item, closed[item]
+
+
+def lift_closed_block(st, repo=REPO, closed=None):
+    """In memory: lift a block whose item closed (closed_blocker), its history naming the item and its state, so the
+    gate is read again (it refuses with its own words if something is still owed). -> the item, or None."""
+    cb = closed_blocker(st, closed_items(repo) if closed is None else closed)
+    if not cb:
+        return None
+    on = lift_block(st)
+    hist(st, "unblock", "its block's item %s is %s on the ledger: the block lifts and the gate is read again (was "
+                        "blocked on %s)" % (cb[0], cb[1], on))
+    return cb[0]
+
+
+def unblock_closed(root, repo=REPO, apply=False):
+    """-> [(concept dir, item)] of every concept under root blocked on a closed item; apply writes each lift. Raises
+    Refused when the ledger cannot be read (could not look: nothing is lifted)."""
+    closed = closed_items(repo)
+    if closed is None:
+        raise Refused("UNMEASURED: the ledger could not be read; no block is lifted")
+    out = []
+    for name in sorted(os.listdir(root)):
+        d = os.path.join(root, name)
+        if not os.path.isfile(state_path(d)):
+            continue
+        st = load_state(d)
+        item = lift_closed_block(st, repo, closed)
+        if item:
+            out.append((d, item))
+            if apply:
+                write_json(state_path(d), st)
+    return out
 
 
 def unblock(d, why):
@@ -3399,6 +3494,21 @@ def ask_mark(a):
             % EVIDENCE_FOR_ASK)
 
 
+def open_preview(d, run, run_cap=None):
+    """`open --preview`: the open gate's own answer, read only. -> 0 would open, 1 refuses (the gate's words printed),
+    126 could not look (launch_checks reads 126 as did-not-run, never a refusal)."""
+    try:
+        open_run(d, run, run_cap, commit=False)
+    except Refused as e:
+        print("REFUSED: %s" % e)
+        return 1
+    except Exception as e:      # an unreadable file or a fault in the gate: no answer, never a refusal or an open
+        print("COULD NOT LOOK: %s: %s" % (type(e).__name__, e))
+        return 126
+    print("open: would open %s" % os.path.basename(os.path.abspath(d)))
+    return 0
+
+
 def status(d, repo=REPO):
     st = load_state(d)
     s, changed = stale_stage(d, st, repo)
@@ -3429,6 +3539,10 @@ def main(argv=None):
         # a hand close states its spend: with no --tokens close_run charges the whole reservation as unmeasured,
         # which a steward's hand exam does not spend (RIMMANDRAKE_REQUIRE_TOKENS_ON_HAND_CLOSE_PHANTOM_RESERVATION)
         x.add_argument("--run-cap" if name == "open" else "--tokens", type=int, required=name == "close")
+        if name == "open":
+            # RIMMANDRAKE_PREVIEW_THREE_GATES_READ_ONLY_FOR_LAUNCH_CHECKS: the launcher's own preview, for a launch check
+            x.add_argument("--preview", action="store_true", help="open_run(commit=False): exit 0 would open, 1 refuses "
+                           "(its words printed), 126 could not look; no packet printed, nothing written")
     x = sub.add_parser("charge")
     x.add_argument("dir")
     x.add_argument("--tokens", type=int, required=True)
@@ -3445,6 +3559,9 @@ def main(argv=None):
     x = sub.add_parser("land", help="land the concept's stage.json and result files on origin/main (close does it)")
     x.add_argument("dir")
     x.add_argument("--run", default="catch-up")
+    x = sub.add_parser("unblock-closed", help="lift every block whose ledger item is closed (dry unless --apply)")
+    x.add_argument("--root", help="the concepts folder (default: this clone's design/concepts)")
+    x.add_argument("--apply", action="store_true")
     x = sub.add_parser("unblock")
     x.add_argument("dir")
     x.add_argument("--why", required=True)
@@ -3506,6 +3623,8 @@ def main(argv=None):
         elif a.cmd == "init":
             init(a.dir, a.mod, a.item, a.cap, a.reserve, a.alias, a.runner, a.draft, a.draft_by)
             print("init %s: stage 0" % a.dir)
+        elif a.cmd == "open" and a.preview:
+            return open_preview(a.dir, a.run, a.run_cap)
         elif a.cmd == "open":
             text, budget = open_run(a.dir, a.run, a.run_cap)
             print(text)
@@ -3555,6 +3674,17 @@ def main(argv=None):
                     r["order"], r["id"], r["exercises"], r["new"], r["overlap"], ",".join(r["overlapped"])))
             print("\n".join(errs) if errs else "showcase set accepted")
             return 1 if errs else 0
+        elif a.cmd == "unblock-closed":
+            try:
+                rows = unblock_closed(a.root or os.path.join(REPO, "design", "concepts"), apply=a.apply)
+            except Refused as e:
+                print("unblock-closed: %s" % e, file=sys.stderr)
+                return 126
+            for d, item in rows:
+                print("%s %s: blocked on %s, which is closed" % ("lifted" if a.apply else "would lift",
+                                                                  os.path.basename(d), item))
+            if not rows:
+                print("unblock-closed: no concept is blocked on a closed item (ledger read)")
         elif a.cmd == "unblock":
             unblock(a.dir, a.why)
         elif a.cmd == "repin":

@@ -54,7 +54,9 @@ RULE_TEXT = (
     "`declared_data`; only `experience` gaps block, the rest are stored as advisory.")
 
 _TUNING = [r"\byield (rates?|fields?|values?|amounts?|numbers?)\b", r"\byield and \w+ fields?\b",
-           r"\b(ingestible|yield) (and \w+ )?fields?\b", r"\bingestible\b",
+           # no bare "ingestible": "Repair its ingestible definition so the eating action completes" is a player who
+           # cannot eat, an experience (RIMMANDRAKE_SPARE_EXPERIENCE_GAPS_FROM_BAR_WORD_DETECTOR); its fields still match
+           r"\b(ingestible|yield) (and \w+ )?fields?\b",
            r"\b(meat|leather)\s?amount\b", r"\bmarket ?value\b", r"\bnutrition (value|field)s?\b",
            r"\bstat (values?|bases?|numbers?)\b", r"\bstatbases\b",
            r"\b(yield|burn|spawn|growth|drop|regen\w*|decay|heal\w*|hunger|commonality|fire) ?rates?\b",

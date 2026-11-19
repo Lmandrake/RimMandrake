@@ -249,6 +249,8 @@ even doing?"*
 
 Builds run in the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`); you launch helpers with `python3 src/RimMandrake/rimflow/detached_helper.py`. The pipelines before it are retired (owner 2026-11-13 and 2026-11-18); what they left: `design/RimMandrake/retired_eras_index_2026-11-18.md`.
 
+An exam, re-certify or coverage-judge item you file by hand carries the gate's own read-only preview as its `## launch-checks` block: `launch_checks.block_for("designer_open"|"coverage_judge", mod=...)` or `block_for("certify", mod=..., owner_event="OWNER:<tsn>")` (exit 1 refuses the launch with the gate's words; 126 did not run).
+
 The pipeline fixes its own defects (owner, 2026-11-15): a defect in the pipeline's own machinery with a known fix is fixed in the run that found it, by that run, and every brief you write for a helper says so; you never work around one by hand and leave it. Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
 
 No mod runs forward on a broken pipeline (owner, 2026-11-19: "We're not running mods forward until the pipeline is fixed, ok? So now you don't have to ask me anymore for that."): before you switch a mod on (`./pipe on <Mod>`), release its ceiling or launch its build or visit, its readiness list must read READY (no open BLOCKS ticket on its path, nothing "could not look"); until then it stays `./pipe off <Mod>`, you fix the pipeline, and you never ask him whether to run it. Full text: `design/RimMandrake/standing_rulings.md` §No mod runs forward on a broken pipeline.
