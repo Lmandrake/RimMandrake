@@ -644,9 +644,9 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             row["need"] = ("%s: PAUSED, coverage judging stopped %s; nothing moves on it until `coverage_judge.py "
                            "release design/concepts/%s --why ...` (one more look, on his word)" % (mod, cs.get("at"), mod))
             launches = [m for m in launches if m != mod]
-            _stop_tickets(fx, row, s, dst, now, root=root, ver=ver)
+            _stop_tickets(fx, row, s, dst, now, root=root, ver=ver, cfg=cfg)
         elif dec in LAUNCH and s.get("road_back") and row.get("stage") in ROAD_BACK_STAGES and \
-                _road_back(s, row, open_items, now, moved=True, endings=endings):
+                _road_back(s, row, open_items, now, moved=True, endings=endings, cfg=cfg):
             # RIMMANDRAKE_RUN_ROAD_BACK_FIXERS_SAME_STAGE_SKIPPED_THEM: the road back's items get their fixers before
             # the next cycle or visit launches (a blind_challenge -> blind_challenge road back launched at once)
             launches = [m for m in launches if m != mod]
@@ -661,7 +661,7 @@ def resolve(root, cfg, st, facts, rows, launches, now, fx=None):
             if row.get("decision") == "designer_blocked":
                 # a Designer blocked on a filed fix item (a pipeline defect) gets that item's one fixer run; the mod
                 # stays paused meanwhile (RIMMANDRAKE_BUDGET_DESIGNER_EXAM_HELPERS_FIVE_READERS_ZERO_SLOTS)
-                _stop_tickets(fx, row, s, dst, now, kind="blocked")
+                _stop_tickets(fx, row, s, dst, now, kind="blocked", cfg=cfg)
         if row.get("aut") in ("autolock", "autorepin"):
             # the pipeline's lock (or re-pin) is an act, not a run: no slot; tried once (transient faults up to
             # launch_tries)
@@ -736,7 +736,7 @@ def _repin_route(fx, root, row, dst, ver):
         mod, _repin_cmd(mod, sources), said)
 
 
-def _stop_tickets(fx, row, s, dst, now, kind="stop", root=None, ver=None):
+def _stop_tickets(fx, row, s, dst, now, kind="stop", root=None, ver=None, cfg=None):
     """RIMMANDRAKE_RUN_FIX_TICKETS_WHILE_PAUSED: a coverage-stopped mod stays paused, but its own open fix tickets get
     one fixer run each (the road-back fixer, extended): a live run on a ticket is waited on and booked as its run, an
     earlier run on it counts as spent, and the status names the ticket. No ticket or an unreadable ledger: as before.
@@ -775,8 +775,7 @@ def _stop_tickets(fx, row, s, dst, now, kind="stop", root=None, ver=None):
     # untried tickets first, then any whose fixer launch failed (no unit): _gate retries or spends it
     # (RIMMANDRAKE_RETRY_FAILED_FIX_TICKET_LAUNCH_WHILE_PAUSED)
     todo = [t["id"] for t in tk if t["id"] not in fixed] + [
-        t["id"] for t in tk if t["id"] in fixed and isinstance(fixed[t["id"]], dict) and fixed[t["id"]].get("failed")
-        and not fixed[t["id"]].get("unit")]
+        t["id"] for t in tk if t["id"] in fixed and _retriable(fixed[t["id"]], cfg)]
     ids = ", ".join(t["id"] for t in tk)
     if todo:
         row.update(aut="fixer", fix_item=todo[0], decision="fixer", need=None, fix_for=kind,
@@ -875,7 +874,7 @@ def pilot_run_model(root, default):
     return RL.pilot_model(root, "rm-testpilot", default)
 
 
-def _road_back(s, row, open_items, now=None, moved=False, endings=None):
+def _road_back(s, row, open_items, now=None, moved=False, endings=None, cfg=None):
     """-> True when the mod's open road back decides the row: a fixer on its next open item, fixers spent, or an
     unreadable ledger. Keyed on the road back being open, never on a stage change: blind_challenge -> blind_challenge
     is the road back ROADS_BACK draws for a blind cycle, so the stage never changes.
@@ -915,8 +914,7 @@ def _road_back(s, row, open_items, now=None, moved=False, endings=None):
         # (RIMMANDRAKE_RETRY_ROAD_BACK_FIXER_AFTER_TRANSIENT_LAUNCH_FAIL)
         # untried items first, so a failure whose retries are spent never starves the items behind it
         todo = [x for x in items if x["id"] not in fixed] + [
-            x for x in items if x["id"] in fixed and isinstance(fixed[x["id"]], dict)
-            and fixed[x["id"]].get("failed") and not fixed[x["id"]].get("unit")]
+            x for x in items if x["id"] in fixed and _retriable(fixed[x["id"]], cfg)]
         if todo:
             row.update(aut="fixer", fix_item=todo[0]["id"], decision="fixer",
                        why="road-back item %s (of %d open, caused by %s) gets one fixer run" % (
@@ -1013,7 +1011,7 @@ def _route(root, cfg, s, f, row, ver, dstate, locked, open_items, fx_dunit=desig
                      lc.get("at"), str(lc.get("why")), exam_step))
         return
     # an open road back: its filed items are fixed before the mod moves on, whether or not the steward moved its stage
-    if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now, endings=endings):
+    if stage in ROAD_BACK_STAGES and _road_back(s, row, open_items, now, endings=endings, cfg=cfg):
         return
     if row.get("road_back_closed") and dec == "stopped":
         s.pop("stopped", None)
@@ -1156,6 +1154,17 @@ def _designer_lane(row, mod, ver, dst, locked, dunit=designer_unit, dchain=None,
                        "the Dispatcher's Designer launcher runs it (no Designer run live now)"))
 
 
+def _retriable(x, cfg):
+    """A booked launch that failed (no unit) and may be tried again: a transient fault, or a defect whose code changed
+    since (maturation_dispatch.code_changed), under launch_tries. One rule for _gate and the fixer selectors
+    (RIMMANDRAKE_SHARE_GATE_RETRY_RULE_WITH_FIXER_SELECTORS: a spent failure first in line starved a retriable one)."""
+    cfg = cfg or {}
+    if not (isinstance(x, dict) and x.get("failed") and not x.get("unit")):
+        return False
+    fresh_code = bool(x.get("code") and cfg.get("_code") and x["code"] != cfg["_code"])
+    return (transient(x["failed"]) or fresh_code) and int(x.get("tries") or 1) < int(cfg.get("launch_tries", 3))
+
+
 def _gate(cfg, s, row, live_total, ver):
     """-> (go, (decision, why)) for a steward or fixer launch: once per key, the version's count, the cap, the slots."""
     if row.get("aut") == "fixer":
@@ -1164,12 +1173,10 @@ def _gate(cfg, s, row, live_total, ver):
         key, done = row["steward_key"], s.setdefault("steward", {})
     if key in done:
         x = done[key]
-        tries, most_tries = int(x.get("tries") or 1), int(cfg.get("launch_tries", 3))
+        tries = int(x.get("tries") or 1)
         # a launch that failed on a defect is tried again once the pipeline's code changed since (the fix may have
         # landed); before this the Conductor cleared it by hand (maturation_dispatch.code_changed)
-        fresh_code = bool(x.get("code") and cfg.get("_code") and x["code"] != cfg["_code"])
-        if not (x.get("failed") and not x.get("unit") and (transient(x["failed"]) or fresh_code)
-                and tries < most_tries):
+        if not _retriable(x, cfg):
             what = ("failed to launch %d times on a transient fault, the last: %s" % (tries, x["failed"])
                     if x.get("failed") and transient(x["failed"]) else "failed to launch: %s" % x["failed"]
                     if x.get("failed") else "ended and the state has not moved")
@@ -1599,6 +1606,7 @@ def _execute_one(root, cfg, st, row, now, do_file, do_launch, known, do_publish=
         if retry.get("item") and retry.get("filed", str(retry.get("failed") or "").startswith("filed ")):
             # the last try filed its item and the launch never started: publish again, launch the same item
             item = retry["item"]
+            row["filed_item"] = item        # before the republish: a raise there keeps the filing
             ok, text = (do_publish or MD.publish_filed)(item)
             text = "retry %d of %s, filed earlier; %s" % (tries, item, text)
         else:

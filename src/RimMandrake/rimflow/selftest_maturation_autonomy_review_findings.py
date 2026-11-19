@@ -91,7 +91,7 @@ def autolock_failure_before_landing_rolls_back(tmp):
 def road_back_retries_transient_fixer(tmp):
     """RIMMANDRAKE_RETRY_ROAD_BACK_FIXER_AFTER_TRANSIENT_LAUNCH_FAIL (finding 3)."""
     s = {"road_back": {"caused_by": "STEW_ITEM", "at": 1}, "steward": {},
-         "fixers": {"FIX_ITEM": {"item": "FIX_ITEM", "unit": None, "failed": "TimeoutExpired: timed out", "tries": 1}}}
+         "fixers": {"FIX_ITEM": {"item": "FIX_ITEM", "unit": None, "failed": "fatal: index.lock exists", "tries": 1}}}
     row = {"mod": "C", "stage": "blind_challenge"}
     MA._road_back(s, row, lambda ids: [{"id": "FIX_ITEM", "needs": "offline"}])
     check("road back: a fixer whose launch failed on a transient fault is routed to the gate again, not spent",
@@ -297,6 +297,50 @@ def acts_take_no_slot(tmp):
           "B" in launches and rows[1].get("decision") != "slots_full", (launches, rows[1].get("decision")))
 
 
+def spent_failure_never_starves_retry(tmp):
+    """The Codex check of the repairs (RIMMANDRAKE_SHARE_GATE_RETRY_RULE_WITH_FIXER_SELECTORS): two failed items, A
+    spent (3 tries), B retriable (1 try): both selectors pick B, in the road back and in a paused mod's tickets."""
+    cfg = {"launch_tries": 3}
+    book = lambda: {"A_ITEM": {"item": "A_ITEM", "unit": None, "failed": "fatal: index.lock exists", "tries": 3},  # noqa: E731
+                    "B_ITEM": {"item": "B_ITEM", "unit": None, "failed": "fatal: index.lock exists", "tries": 1}}
+    s = {"road_back": {"caused_by": "STEW_ITEM", "at": 1}, "steward": {}, "fixers": book()}
+    row = {"mod": "C", "stage": "blind_challenge"}
+    MA._road_back(s, row, lambda ids: [{"id": "A_ITEM", "needs": "offline"}, {"id": "B_ITEM", "needs": "offline"}],
+                  cfg=cfg)
+    check("retry rule: the road back skips a spent failure for a retriable one", row.get("fix_item") == "B_ITEM", row)
+    s = {"fixers": book()}
+    row = {"mod": "P", "stage": "blind_challenge"}
+    MA._stop_tickets({"stop_tickets": lambda m, dst, s_: [{"id": "A_ITEM"}, {"id": "B_ITEM"}],
+                      "ticket_runs": lambda i: []}, row, s, _blocked_dst(), 1.8e9, cfg=cfg)
+    check("retry rule: a paused mod's tickets skip a spent failure for a retriable one", row.get("fix_item") == "B_ITEM",
+          row)
+    s = {"road_back": {"caused_by": "STEW_ITEM", "at": 1}, "steward": {},
+         "fixers": {"A_ITEM": dict(book()["A_ITEM"])}}
+    row = {"mod": "C", "stage": "blind_challenge"}
+    MA._road_back(s, row, lambda ids: [{"id": "A_ITEM", "needs": "offline"}], cfg=cfg)
+    check("retry rule: with only spent failures left, the road back reads fixer_spent",
+          row.get("decision") == "fixer_spent", row)
+
+
+def raising_republish_keeps_filing(tmp):
+    """RIMMANDRAKE_SHARE_GATE_RETRY_RULE_WITH_FIXER_SELECTORS, its second half: a republish that RAISES keeps the
+    established filing."""
+    st = {"mods": {"S": {"steward": {"S|k": {"item": "S_ITEM_A", "unit": None, "failed": "filed S_ITEM_A; boom",
+                                            "tries": 1, "filed": True}}}}}
+    row = dict(_steward_row(), retry_of={"item": "S_ITEM_A", "unit": None, "tries": 1, "filed": True,
+                                         "failed": "filed S_ITEM_A; boom"})
+
+    def pub(item):
+        raise OSError("fatal: index.lock exists")
+    fx = {"launch_brief": lambda *a, **k: (1, "never", None), "known": lambda: set(),
+          "file": lambda *a, **k: (True, "filed again"), "publish": pub}
+    with patched((MD, "pilot_ledger", lambda root, mod: False), (MA, "steward_brief", lambda root, mod, row: "brief")):
+        MA.execute(tmp, {}, st, [row], {"S"}, 1.8e9, fx=fx)
+    e = st["mods"]["S"]["steward"]["S|k"]
+    check("filed: a republish that raises keeps the item and filed=True", e.get("item") == "S_ITEM_A"
+          and e.get("filed") is True, e)
+
+
 # each child's section joins once its fix lands (every one was watched failing on base first)
 SECTIONS = [
     seed_timeout_leaves_no_record,
@@ -311,6 +355,8 @@ SECTIONS = [
     seed_any_exec_failure_cleans,
     autolock_keeps_unreadable_record,
     acts_take_no_slot,
+    spent_failure_never_starves_retry,
+    raising_republish_keeps_filing,
 ]
 
 
@@ -333,5 +379,6 @@ if __name__ == "__main__":
                        road_back_retries_transient_fixer, ledger_after_failure_keeps_the_run,
                        launch_exception_books_code, hold_beats_coverage_stop, stop_tickets_retry_failed_launch,
                        filed_item_kept_on_failure, full_launch_output_seen, seed_any_exec_failure_cleans,
-                       autolock_keeps_unreadable_record, acts_take_no_slot]
+                       autolock_keeps_unreadable_record, acts_take_no_slot,
+                       spent_failure_never_starves_retry, raising_republish_keeps_filing]
     sys.exit(main())
