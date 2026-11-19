@@ -1278,28 +1278,43 @@ def hook_cmd(verb, run, p, clone=None):
     return " ".join(shlex.quote(x) for x in (py, hook_script(clone), verb, run, "--db", os.path.abspath(p)))
 
 
-SR_VALUE_OPTS = {"-u", "--unit", "-p", "--property", "--description", "--slice", "-E", "--setenv", "-M", "--machine",
-                 "-H", "--host", "--uid", "--gid", "--nice", "--working-directory", "-D", "--on-active", "--on-boot",
-                 "--on-startup", "--on-unit-active", "--on-unit-inactive", "--on-calendar", "--on-timezone-change",
-                 "--on-clock-change", "--timer-property", "--path-property", "--socket-property", "--service-type",
-                 "--capsule", "-C"}     # a value given as --opt=value is one word either way
+SR_VALUE_OPTS = {"--unit", "--property", "--description", "--slice", "--setenv", "--machine", "--host", "--uid",
+                 "--gid", "--nice", "--working-directory", "--root-directory", "--on-active", "--on-boot",
+                 "--on-startup", "--on-unit-active", "--on-unit-inactive", "--on-calendar", "--timer-property",
+                 "--path-property", "--socket-property", "--service-type", "--capsule"}
+SR_VALUE_SHORT = "upEMHDC"     # -u NAME | -uNAME, -p X=Y | -pX=Y, ... (the operand-free flags take nothing)
 
 
 def _sr_unit(argv):
-    """-> (index of the --unit/-u word, name, "sep" | "eq") within systemd-run's own options, or (None, None, None).
-    The options end at the command (the first word that is not an option or an option's operand) or at `--`: a
-    payload's own `--unit` is the payload's (round-three claim 6)."""
-    n = 1
+    """-> (index of the LAST unit declaration, its name, "sep" | "eq" | "att") within systemd-run's own options, or
+    (None, None, None). systemd-run reads its options up to the command (the first word that is not an option or an
+    option's operand) or `--`, and the last --unit wins; a payload's own `--unit` is the payload's (round-three claim 6;
+    attached -uNAME, --root-directory and the operand-free --on-clock-change: round-four claim 3)."""
+    n, last = 1, (None, None, None)
     while n < len(argv):
         a = str(argv[n])
-        if a == "--" or not a.startswith("-"):
-            return None, None, None
-        if a in ("--unit", "-u"):
-            return (n, argv[n + 1], "sep") if n + 1 < len(argv) else (None, None, None)
-        if a.startswith("--unit="):
-            return n, a.split("=", 1)[1], "eq"
-        n += 2 if a in SR_VALUE_OPTS else 1
-    return None, None, None
+        if a == "--" or not a.startswith("-") or a == "-":
+            break
+        if a.startswith("--"):
+            name, eq, val = a.partition("=")
+            if name == "--unit":
+                if eq:
+                    last = (n, val, "eq")
+                elif n + 1 < len(argv):
+                    last = (n, argv[n + 1], "sep")
+            n += 2 if (name in SR_VALUE_OPTS and not eq) else 1
+            continue
+        flags = a[1:]       # a short cluster: -q, -t, -u NAME, -uNAME, -pX=Y
+        for k, ch in enumerate(flags):
+            if ch in SR_VALUE_SHORT:
+                rest = flags[k + 1:]
+                if ch == "u":
+                    last = (n, rest, "att") if rest else ((n, argv[n + 1], "sep") if n + 1 < len(argv) else last)
+                n += 1 if rest else 2
+                break
+        else:
+            n += 1
+    return last
 
 
 def unit_of(argv):
@@ -1345,7 +1360,7 @@ def launch_unit(argv, spec, runner=None, p=None, clone=None, **kw):
     rid = adm["run"]
     # the two receipts go right after `--unit <name>` (the options before it stay where callers expect them)
     k, _name, form = _sr_unit(argv)
-    j = i if k is None else k + (2 if form == "sep" else 1)
+    j = i if k is None else k + (2 if form == "sep" else 1)     # any place in the options is systemd-run's
     full = list(argv[:j]) + ["-p", "ExecCondition=" + hook_cmd("condition", rid, p, clone),
                              "-p", "ExecStopPost=-" + hook_cmd("ended", rid, p, clone)] + list(argv[j:])
     try:
@@ -1573,6 +1588,8 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
         raise Refused("no stop mode %r (%s)" % (mode, ", ".join(STOP_MODES)))
     killer = killer or kill_units
     t = str(target or "").strip()
+    if t.endswith(".service"):  # `pipe stop rm-x.service` is rm-x: the run row and its claude scope (round-four claim 2)
+        t = t[:-len(".service")]
     unit_target = t.startswith("unit:") or t.startswith("rm-")
     scope = ("unit:" + t[5:] if t.startswith("unit:") else "unit:" + t) if unit_target else scope_of(t)
     if deadline_s is None and mode == "write_now":
@@ -1605,6 +1622,9 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
         if unit_target and not runs and (mode == "kill" or not cancelled):
             # a cooperative order is never written for a run just cancelled before its start: nothing would end it
             runs = [_stand_in(scope[5:], mode == "kill")]
+            done = c.execute("SELECT state FROM runs WHERE unit=?", (scope[5:],)).fetchone()
+            if done and done["state"] not in LIVE_STATES:
+                runs[0]["terminal"] = done["state"]     # its bookkeeping was its own end's or kill's: no second reap
         if unit_target:
             act = _act(c, "stop", scope, None, {"mode": mode, "deadline_s": deadline_s}, why, owner_said,
                        per_ruling, idem, now=now)
@@ -1727,12 +1747,13 @@ def _finish_kill(r, res, act, why, store, p, reaper, books):
     if not ok:      # something survived or death is unverified: never recorded killed, the clone kept
         row["bookkeeping"] = "NOT recorded killed and its clone kept: %s" % row["said"]
         return row
-    moved = True    # a run the store cannot name (a stand-in) is reaped as before: nothing to gate it on
+    moved = not r.get("terminal")   # a stand-in is reaped as before, unless the store holds its run already ended
     if store and r.get("id"):   # only the kill that moves the run to killed reaps it (two kills: once, claim r3-5)
         moved = _mark(r["id"], "killed", "pipe stop --kill (%s): %s" % (act["id"], why), p,
                       frm=("started", "admitted") + (("ended",) if row["dead"] else ()))
     if not moved:
-        row["bookkeeping"] = "already recorded killed by another kill: its bookkeeping is that kill's"
+        row["bookkeeping"] = ("its run is already %s: its bookkeeping was that end's" % r["terminal"]) if r.get(
+            "terminal") else "already recorded killed by another kill: its bookkeeping is that kill's"
     else:
         row["bookkeeping"] = (reaper or reap_detached)(r, act, why) if r.get("family") == "detached" or \
             str(r["unit"]).startswith("rm-detached-") else "no bookkeeping owed (family %s)" % r.get("family")
@@ -2371,10 +2392,12 @@ def cmd_switch(o, off):
     if off:
         try:
             live = [x for x in _q("SELECT * FROM runs WHERE state='started'") if _in_scope(x, scope)]
-        except Unreadable:
-            live = []
-        tail = ("; %d run(s) live in it, untouched: stop with pipe stop %s --write-now | --at-easy-spot | --kill"
-                % (len(live), o.target)) if live else "; new starts only (no run is live in it)"
+        except Unreadable as e:     # could not look is never "none live" (round-four claim 12)
+            live = None
+            tail = "; live runs in it UNVERIFIED (%s): pipe show, then pipe stop %s if one is" % (e, o.target)
+        if live is not None:
+            tail = ("; %d run(s) live in it, untouched: stop with pipe stop %s --write-now | --at-easy-spot | --kill"
+                    % (len(live), o.target)) if live else "; new starts only (no run is live in it)"
         lines.append(_who_line(r["act"]) + tail)
     else:
         t = tick_now()
@@ -2489,9 +2512,15 @@ def cmd_grant(o):
 def doctor():
     try:
         c = read()
-        ok = c.execute("PRAGMA quick_check").fetchone()[0]
-        lines = ["store %s: quick_check %s, rev %d" % (db_path(), ok, rev(c))]
-        c.close()
+        try:
+            ok = c.execute("PRAGMA quick_check").fetchone()[0]
+            if ok != "ok":      # a damaged store is not a healthy one (round-four claim 11)
+                raise Unreadable("corrupt: quick_check says %s" % str(ok)[:200].replace("\n", " | "))
+            lines = ["store %s: quick_check ok, rev %d" % (db_path(), rev(c))]
+        except sqlite3.Error as e:
+            raise Unreadable(_err(e))
+        finally:
+            c.close()
         lines.append("reconcile: abandoned %s" % (reconcile() or "[] none"))
         return OK, lines
     except Unreadable as e:

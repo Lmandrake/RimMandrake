@@ -1533,11 +1533,90 @@ def t_queue():
           (out.count("## "), len(out), out[-200:]))
 
 
+def t_review_round_four_p1():
+    """Codex's review of the round-three fix (RIMMANDRAKE_SPLIT_CONTROL_REVIEW_ROUND_FOUR_FIFTEEN_UNTRIED): its three P1s
+    and two could-not-look-read-as-none findings, each red on 16ded1e1fb; the other ten are on that item."""
+    dead = lambda us: [{"unit": u, "dead": True, "ms": 1, "survivors": [], "said": "1 process(es) killed"} for u in us]
+    none_running = lambda us: [{"unit": u, "dead": None, "ms": 1, "survivors": [], "said": "nothing was running in it"}
+                               for u in us]
+    # P1 #1: a second, later kill of a run already killed does not reap it again
+    fresh()
+    a = C.admit(spec("rm-detached-probe-r4c1"))
+    C.condition(a["run"])
+    reaps = []
+    rp = lambda *x: reaps.append(1) or "-"
+    C.stop("rm-detached-probe-r4c1", "kill", "first", killer=dead, reaper=rp)
+    C.stop("rm-detached-probe-r4c1", "kill", "second", killer=none_running, reaper=rp)
+    check(len(reaps) == 1, "claim r4-1: a later kill of a run already killed does not reap it again", len(reaps))
+    # P1 #2: `<unit>.service` names the same run (its claude scope included)
+    fresh()
+    a = C.admit(spec("rm-role-probe-r4c2", extra_units=["claude-seat-BENCH-rm-role-probe-r4c2.scope"]))
+    C.condition(a["run"])
+    killed = []
+    C.stop("rm-role-probe-r4c2.service", "kill", "suffixed", killer=lambda us: killed.append(list(us)) or dead(us),
+           reaper=lambda *x: "-")
+    check(killed and killed[0][0] == "rm-role-probe-r4c2" and "claude-seat-BENCH-rm-role-probe-r4c2.scope" in killed[0]
+          and C.run_state(a["run"])["state"] == "killed",
+          "claim r4-2: stop <unit>.service finds the run and its claude scope", (killed, C.run_state(a["run"])["state"]))
+    # P1 #3: systemd-run's option forms: attached -u, operand-free --on-clock-change, --root-directory, last one wins
+    check(C.unit_of(["systemd-run", "-urm-a", "/bin/x"]) == "rm-a" and
+          C.unit_of(["systemd-run", "--on-clock-change", "--unit", "rm-b", "/bin/x"]) == "rm-b" and
+          C.unit_of(["systemd-run", "--root-directory", "/r", "--unit", "rm-c", "/bin/x"]) == "rm-c" and
+          C.unit_of(["systemd-run", "--unit", "rm-d", "-urm-e", "/bin/x"]) == "rm-e" and
+          C.unit_of(["systemd-run", "-pA=1", "-urm-f", "/bin/x"]) == "rm-f",
+          "claim r4-3: unit_of reads attached -u, operand-free flags, --root-directory, and the last declaration")
+    seen = []
+    runner = lambda argv, **kw: seen.append(list(argv)) or subprocess.CompletedProcess(argv, 0, "", "")
+    r = C.launch_unit(["systemd-run", "--user", "-urm-actual", "/bin/true"], spec("rm-recorded"), runner=runner)
+    check(r.refused and not seen, "claim r4-3: a spec unit and an attached -u naming another unit is refused", (r, seen))
+    # #12: pipe off cannot read the live runs: says UNVERIFIED, never "no run is live"
+    fresh()
+    real_q = C._q
+
+    def q(sql, args=(), p=None, one=False):
+        if "state='started'" in sql:
+            raise C.Unreadable("probe: locked")
+        return real_q(sql, args, p, one)
+    C._q = q
+    try:
+        rc, buf = None, io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = C.main(["off", "Graffiti", "--why", "claim r4-12"])
+    finally:
+        C._q = real_q
+    out = buf.getvalue()
+    check(rc == 0 and "UNVERIFIED" in out and "no run is live" not in out,
+          "claim r4-12: an off that cannot read the live runs says so", out)
+    # #11: doctor with a failed integrity check is not OK
+    real_read = C.read
+
+    class Fake:
+        def __init__(self, c):
+            self.c = c
+
+        def execute(self, sql, *a):
+            if "quick_check" in sql:
+                return types_ns(fetchone=lambda: ("*** in database main ***\nPage 3: btreeInitPage() returns error",))
+            return self.c.execute(sql, *a)
+
+        def close(self):
+            self.c.close()
+    import types
+    types_ns = lambda **k: types.SimpleNamespace(**k)
+    C.read = lambda p=None, timeout=1.5: Fake(real_read(p, timeout))
+    try:
+        code, lines = C.doctor()
+    finally:
+        C.read = real_read
+    check(code == C.UNREADABLE and "fix:" in " ".join(lines), "claim r4-11: doctor fails on a quick_check that is not ok",
+          (code, lines))
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
-              t_accounts, t_queue):
+              t_accounts, t_queue, t_review_round_four_p1):
         print("== %s" % t.__name__)
         try:
             t()
