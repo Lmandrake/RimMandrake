@@ -35,7 +35,8 @@ a script that could emit it would eventually emit it wrongly.
     handoff.py --wake         the READ side: latest handoff + live pointer status + the one-screen
                               ledger state file it regenerates (ledger_state.py)
     handoff.py --harvest      lesson sections since the last drain -> Transient/
-    handoff.py --cull [--apply]  superseded+harvested handoffs older than 30 days
+    handoff.py --cull [--apply]  handoffs a newer one from the same window replaced 7+ days
+                              ago, lessons filed; could-not-tell ones are listed and kept
     handoff.py --since <sha>  window start override (default: the last handoff)
 
 The content checks and the wake/harvest/cull modes are audit-driven (2026-09-17,
@@ -70,7 +71,9 @@ BRIDGE = os.path.join(ROOT, "infrastructure", "state", "BRIDGE")
 
 TODO = "<<< WRITE THIS >>>"
 WHOSE = "<<< WHOSE? >>>"
-CULL_DAYS = 30  # owner ruling 2026-09-18: superseded + harvest-covered + older
+# Owner, by card 2026-11-18 (RIMMASTER_SETTLE_HANDOFF_CULL_AGE_TWO_RULINGS_DISAGREE): "7 days after replaced
+# (Recommended)". Replaces the 2026-09-18 rule (30 days of the handoff's own age).
+CULL_DAYS = 7
 
 # The sections a script cannot produce. Each is a real question the next seat
 # will ask on wake, in the order they will ask it.
@@ -908,41 +911,166 @@ def harvest(since_ts):
     return 0
 
 
-def cull(apply_):
-    """Handoffs that have served both consumers — superseded by a newer one for
-    the same seat AND committed before the last lessons drain — and are older
-    than CULL_DAYS. Owner ruling 2026-09-18: delete at 30 days, git is the
-    archive. Without --apply this only lists."""
-    drain = last_drain_ts()
-    now = datetime.datetime.now(datetime.timezone.utc)
+LESSON_SECTIONS = ("The one thing to carry forward", "Traps learned")
+CITATION = re.compile(r"\((?:filed|see):([^)]*)\)", re.I)
+EMPTY_LESSON = re.compile(r"^(nothing( new)?( this wave)?|none( new)?( this wave)?|n/?a|-+)\.?$", re.I)
+_STAMP_RE = re.compile(r"_HANDOFF_(\d{12})\.md$")
+
+
+def _norm(text):
+    """Lowercased, markup-free, whitespace-collapsed: a lesson filed with other emphasis or wrapping still matches."""
+    text = re.sub(r"<!--.*?-->", " ", text, flags=re.S)
+    text = re.sub(r"[`*_>#]", "", text.lower())
+    return " ".join(text.split())
+
+
+def lesson_units(text):
+    """The lesson-bearing units of a handoff (carry-forward + Traps): each bullet with its indented continuation, each
+    prose paragraph as one unit. Comments, fences, unfilled markers and 'nothing this wave' are skipped. None when the
+    handoff has NEITHER heading: a free-form handoff's lessons cannot be found, so it is "could not tell", never
+    "no lessons"."""
+    lines = re.sub(r"<!--.*?-->", lambda m: "\n" * m.group(0).count("\n"), text, flags=re.S).splitlines()
+    units, seen = [], False
+    for title in LESSON_SECTIONS:
+        i = next((n for n, l in enumerate(lines) if l.startswith("## " + title)), None)
+        if i is None:
+            continue
+        seen, cur, bullet = True, None, False
+        for line in lines[i + 1:]:
+            if line.startswith("## "):
+                break
+            if TODO in line or line.strip().startswith("```"):
+                continue
+            starts = re.match(r"^\s?(?:[-*+]|\d+\.)\s", line)
+            if starts or not line.strip() or (bullet and not line[:1].isspace()):
+                if cur is not None:     # a bullet, a blank, or unindented prose after a bullet ends the unit
+                    units.append(cur)
+                cur, bullet = (line, bool(starts)) if line.strip() else (None, False)
+            else:                       # a bullet's indented continuation, or the next line of a paragraph
+                cur = line if cur is None else cur + " " + line.strip()
+        if cur is not None:
+            units.append(cur)
+    if not seen:
+        return None
+    out = []
+    for u in units:
+        bare = re.sub(r"^\s*(?:[-*+]|\d+\.)\s+", "", u).strip()
+        if len(bare) >= 12 and not EMPTY_LESSON.match(_norm(bare)):
+            out.append(u)
+    return out
+
+
+def _filed(unit, corpus):
+    """A unit is filed when it cites a durable home -- `(filed: X)` / `(see: X)` where X is not a handoff -- or its
+    text is in the lessons corpus. A citation of "this handoff" or of another handoff file points at a file the cull
+    deletes, so it is not a filing."""
+    for m in CITATION.finditer(unit):
+        target = m.group(1).strip()
+        if target and not re.search(r"\b(?:this|the) handoff\b|_HANDOFF_\d", target, re.I):
+            return True
+    return bool(corpus) and _norm(unit) in corpus
+
+
+def lessons_corpus():
+    """Normalized text of everything ever filed as a lesson: every line any commit added to the lessons dir or the old
+    inbox (a lesson filed and later folded still counts), plus the working tree."""
+    rels = ("infrastructure/state/lessons", "infrastructure/state/LESSONS_INBOX.md")
+    added = [l[1:] for l in sh("git", "log", "-p", "--format=", "--no-color", "--", *rels).splitlines()
+             if l.startswith("+") and not l.startswith("+++")]
+    for rel in rels:
+        p = os.path.join(ROOT, rel)
+        for f in ([os.path.join(p, n) for n in os.listdir(p)] if os.path.isdir(p) else [p]):
+            try:
+                added.append(io.open(f, encoding="utf-8", errors="replace").read())
+            except (IOError, OSError):
+                pass
+    return _norm("\n".join(added))
+
+
+def _when(fn, times):
+    """A handoff's date, ledger-format UTC: its filename stamp (UTC, written by the tool), else its commit time, else
+    None. The stamp outranks git: a later edit or a batch commit moves the commit time (CONDUCTOR_HANDOFF_202611180743
+    was committed AFTER the 17:27 handoff that replaced it, measured 2026-11-19)."""
+    m = _STAMP_RE.search(fn)
+    if m:
+        try:
+            return datetime.datetime.strptime(m.group(1), "%Y%m%d%H%M").strftime("%Y-%m-%dT%H:%M:00Z")
+        except ValueError:
+            pass
+    return times.get(fn) or None
+
+
+def cull_plan(now=None, corpus=None):
+    """-> (candidates, stays). A candidate is a committed handoff that a newer handoff from the same window replaced
+    CULL_DAYS or more ago and whose lessons are all filed. Everything else stays, with its reason; "could not tell"
+    (unreadable, no date, no lesson headings) is its own reason and is never a candidate. The newest dated handoff of
+    each window always stays."""
+    now = now or datetime.datetime.now(datetime.timezone.utc)
     times = _corpus_commit_times()
-    newest, info = {}, []
-    for fn in handoff_files(all_seats=True):
-        ts = times.get(fn, "")
-        st = _HANDOFF_RE.match(fn).group(1)
-        info.append((fn, st, ts))
-        if ts and (st not in newest or ts > newest[st][1]):
-            newest[st] = (fn, ts)
+    windows, stays = {}, []
+    for fn in sorted(handoff_files(all_seats=True)):
+        when = _when(fn, times)
+        if not when:
+            stays.append((fn, "could not tell: no date (no filename stamp, no commit)"))
+            continue
+        windows.setdefault(_canonical(_HANDOFF_RE.match(fn).group(1)), []).append((when, fn))
     cands = []
-    for fn, st, ts in info:
-        if not ts or newest.get(st, (None,))[0] == fn:
-            continue  # uncommitted, or a seat's latest — never culled
-        age = (now - datetime.datetime.fromisoformat(
-            ts.replace("Z", "+00:00"))).days
-        if age < CULL_DAYS or drain is None or ts >= drain:
-            continue  # too young, or not harvest-covered yet
-        cands.append((fn, ts, age))
+    for rows in windows.values():
+        rows.sort()
+        stays.append((rows[-1][1], "newest of its window"))
+        for (_, fn), (sup_ts, sup_fn) in zip(rows, rows[1:]):
+            days = (now - datetime.datetime.fromisoformat(sup_ts.replace("Z", "+00:00"))).total_seconds() / 86400.0
+            if fn not in times:
+                stays.append((fn, "uncommitted"))
+                continue
+            if days < CULL_DAYS:
+                stays.append((fn, "replaced %.1f d ago by %s (< %d)" % (days, sup_fn, CULL_DAYS)))
+                continue
+            try:
+                text = io.open(os.path.join(HANDOFFS, fn), encoding="utf-8").read()
+            except (IOError, OSError, UnicodeDecodeError) as e:
+                stays.append((fn, "could not tell: unreadable (%s)" % e.__class__.__name__))
+                continue
+            units = lesson_units(text)
+            if units is None:
+                stays.append((fn, "could not tell: no lesson headings"))
+                continue
+            if corpus is None and units:
+                corpus = lessons_corpus()
+            loose = [u for u in units if not _filed(u, corpus)]
+            if loose:
+                stays.append((fn, "%d unfiled lesson line(s), first: %s" % (len(loose), " ".join(loose[0].split())[:90])))
+                continue
+            cands.append((fn, sup_fn, days))
+    return cands, stays
+
+
+def cull(apply_):
+    """List (or with --apply delete) the handoffs `cull_plan` marks; every handoff that stays is counted by reason, and
+    every could-not-tell one is named. Git is the archive. A missing handoff folder is could-not-look (exit 2), never
+    "nothing to cull"."""
+    if not os.path.isdir(HANDOFFS):
+        print("COULD NOT LOOK: no handoff folder at %s" % HANDOFFS)
+        return 2
+    cands, stays = cull_plan()
+    for fn, sup_fn, days in sorted(cands):
+        print("%s  (replaced by %s %.1f d ago; lessons filed)" % (fn, sup_fn, days))
+    kinds = {}
+    for fn, why in stays:
+        k = ("could not tell" if why.startswith("could not tell") else "with unfiled lessons" if "unfiled" in why
+             else "replaced < %d d ago" % CULL_DAYS if why.startswith("replaced") else why)
+        kinds[k] = kinds.get(k, 0) + 1
+    for fn, why in sorted(stays):
+        if why.startswith("could not tell") or "unfiled" in why:
+            print("STAYS %s  (%s)" % (fn, why))
+    print("stay: %s" % ("; ".join("%d %s" % (n, k) for k, n in sorted(kinds.items())) or "none"))
     if not cands:
-        print("nothing to cull: no handoff is superseded + harvest-covered + "
-              "older than %d days" % CULL_DAYS)
+        print("nothing to cull: no handoff was replaced %d+ days ago with its lessons filed" % CULL_DAYS)
         return 0
-    for fn, ts, age in sorted(cands):
-        print("%s  (%s, %dd)" % (fn, ts, age))
     if apply_:
         for fn, _, _ in cands:
             os.remove(os.path.join(HANDOFFS, fn))
-        print("deleted %d — commit the deletions with explicit paths; git is "
-              "the archive." % len(cands))
+        print("deleted %d — commit the deletions with explicit paths; git is the archive." % len(cands))
     else:
         print("%d candidate(s). `--cull --apply` deletes them." % len(cands))
     return 0
@@ -1085,8 +1213,8 @@ def main():
                     help="extract lesson sections since the last lessons "
                          "drain into Transient/ for the curation sitting")
     ap.add_argument("--cull", action="store_true",
-                    help="list handoffs superseded + harvest-covered + older "
-                         "than %d days" % CULL_DAYS)
+                    help="list handoffs a newer one from the same window replaced "
+                         "%d+ days ago, lessons filed (could-not-tell ones listed, kept)" % CULL_DAYS)
     ap.add_argument("--apply", action="store_true",
                     help="with --cull: actually delete the candidates")
     ap.add_argument("--since", help="commit to measure the window from")
