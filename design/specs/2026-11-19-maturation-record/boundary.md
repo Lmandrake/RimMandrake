@@ -40,12 +40,10 @@ this one, `design/specs/2026-11-19-maturation-reads/boundary.md`; the record's o
   `every_bar_has_a_check_that_runs` clause counts as owed scene parts (a deciding scene whose `owed_parts_item` is
   still open on the ledger), kept through the walk and live-red exemptions as `evaluate` keeps it: the builder is
   never launched with `refused_bars=[]` while the exit refuses on such a bar, and its brief names the open item.
-
-## OWED (this item builds each, one publish at a time; each moves up to PROMISES with its check)
-
-- *next-version-sets-aside-numbered-evidence.* `next_version` moves the previous version's numbered evidence (the
+- **next-version-sets-aside-numbered-evidence.** `next_version` moves the previous version's numbered evidence (the
   three kinds above) to `version/previous/<old version>/` under the same relative path, before the new record is
-  written, and names every moved path in its result (`archived`) and on its CLI line: the new version's cycle 1,
-  visit 1 and arrival 1 start empty, and the old version's evidence is kept.
+  written, and names every moved path in its result (`archived`, `aside`), its journal entry and its CLI line; an
+  archive path already taken refuses the move before anything moves. The new version's cycle 1, visit 1 and arrival 1
+  start empty, and the old version's evidence is kept (`modledger.py` still reads its fault ids).
 
-Later lists beside this page: `polish.md` and `next_version.md` (none yet).
+Later lists beside this page: `polish.md`; `next_version.md` (none yet).

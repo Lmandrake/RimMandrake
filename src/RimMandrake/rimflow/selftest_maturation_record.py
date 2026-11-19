@@ -147,11 +147,71 @@ def t_build_facts_refuses_what_evaluate_refuses():
         ST.restore(was)
 
 
+OLD_EVIDENCE = {"version/blind_challenge/cycle_1/SUMMARY.md": "old cycle 1\n",
+                "version/blind_challenge/cycle_2/SUMMARY.md": "old cycle 2\n",
+                "version/in_game/visit_1/rows.jsonl": '{"test": "old", "result": "PASS"}\n',
+                "version/walk_brief/arrival_1.md": "old arrival 1\n"}
+
+
+def rollover_root(name):
+    """-> a root holding MOD's passed 0.1.0 (two blind cycles, one visit, one arrival) and VERSION.json at 0.2.0."""
+    root = fresh(name, stage="passed", cycles={"visit": 2, "total": 2}, pre_human_arrivals=1)
+    for p, text in dict(OLD_EVIDENCE, **{"version/blind_challenge/notes.md": "not numbered\n"}).items():
+        M.write_text(root, MOD, p, text)
+    M.write_text(root, MOD, "version/VERSION.json", json.dumps({"mod": MOD, "version": "0.2.0",
+                                                                "state": "locked 2026-11-19"}))
+    M.write_text(root, MOD, "journal.md", "# journal\n\n- **Stage now:** passed.\n\n## History\n")
+    return root
+
+
+def t_next_version_sets_aside_numbered_evidence():
+    """next_version moves the previous version's numbered cycles, visits and arrival briefs to version/previous/<old>/,
+    names them, and the new version's cycle 1, visit 1 and arrival 1 start empty: no old exit is read as the new one's."""
+    root = rollover_root("roll")
+    d = M.mod_dir(root, MOD)
+    r = M.next_version(root, MOD, "BENCH", "selftest: 0.2.0 opened")
+    check(r.get("ok") and M.load(root, MOD).get("version") == "0.2.0", "the version moves", r)
+    check(M.cycle_numbers(root, MOD) == [] and M.visit_numbers(root, MOD) == []
+          and not os.path.exists(os.path.join(d, "version/walk_brief/arrival_1.md")),
+          "the new version has no cycle, visit or arrival evidence", (M.cycle_numbers(root, MOD),
+                                                                       M.visit_numbers(root, MOD)))
+    kept = {p: M.read_text(root, MOD, p.replace("version/", "version/previous/0.1.0/", 1)) for p in OLD_EVIDENCE}
+    check(kept == OLD_EVIDENCE, "the old version's evidence is kept whole under version/previous/0.1.0/", kept)
+    want = sorted(M.rel(MOD, p.rsplit("/", 1)[0] if "/cycle_" in p or "/visit_" in p else p) for p in OLD_EVIDENCE)
+    check(sorted(r.get("archived") or []) == want, "the result names every path it set aside", r.get("archived"))
+    check("set aside in `version/previous/0.1.0`" in (M.read_text(root, MOD, "journal.md") or ""),
+          "the journal entry says where the evidence went")
+    check(M.read_text(root, MOD, "version/blind_challenge/notes.md") == "not numbered\n",
+          "a file that is not numbered evidence stays where it is")
+    # the new version's first blind cycle: no folder reads as past it, and its exit is absent until a judge writes it
+    rec = M.load(root, MOD)
+    M.write_text(root, MOD, M.RECORD, M.dump(dict(rec, stage="blind_challenge", cycles={"visit": 1, "total": 1})))
+    bf = M.blind_facts(root, MOD)
+    check(not any("past" in b for b in bf.get("blocked") or []) and (bf.get("exit") or {}).get("state") == "absent",
+          "the new version's cycle 1 is neither blocked as past nor read from the old exit",
+          (bf.get("blocked"), (bf.get("exit") or {}).get("state")))
+    # the CLI line names the moved paths, so the caller lands them
+    root = rollover_root("roll_cli")
+    import contextlib
+    import io
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        rc = M.main(["--root", root, "next-version", MOD, "--by", "BENCH", "--why", "selftest"])
+    check(rc == 0 and all(w in buf.getvalue() for w in want), "the CLI line names every path set aside",
+          buf.getvalue()[-300:])
+    # an archive folder that already exists is refused before anything moves
+    root = rollover_root("roll_taken")
+    M.write_text(root, MOD, "version/previous/0.1.0/blind_challenge/cycle_1/SUMMARY.md", "already here\n")
+    r = M.next_version(root, MOD, "BENCH", "selftest")
+    check(not r.get("ok") and M.load(root, MOD).get("version") == "0.1.0" and M.cycle_numbers(root, MOD) == [1, 2],
+          "an archive path already taken refuses the move, and nothing moves", r)
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
     for t in (t_spend_write_holds_the_mod_lock, t_stage_spend_unmeasured_when_no_row_measured,
-              t_build_facts_refuses_what_evaluate_refuses):
+              t_build_facts_refuses_what_evaluate_refuses, t_next_version_sets_aside_numbered_evidence):
         if only is not None and t.__name__ not in only:
             continue
         print("== %s" % t.__name__)

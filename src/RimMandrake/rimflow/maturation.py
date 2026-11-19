@@ -1503,6 +1503,14 @@ def next_version(root, mod, by, why):
             "cycles": {"visit": 0, "total": 0}, "pre_human_arrivals": 0, "spend": [],
             "moves": [{"from": "%s at %s" % (old, rec.get("stage")), "to": stage, "at": iso(t), "by": by, "why": why,
                        "version_from": old, "version_to": new}]}
+    # the old version's numbered evidence is set aside first: the new counters start at 0, and a cycle_2 or visit_1
+    # left in place reads as the new version's (design/specs/2026-11-19-maturation-record/boundary.md)
+    aside = "%s/%s" % (PREVIOUS_DIR, re.sub(r"[^0-9A-Za-z.-]", "_", str(old)))
+    moves = [(p, aside + "/" + p[len("version/"):]) for p in numbered_evidence(root, mod)]
+    taken = [b for _, b in moves if not _absent(os.path.join(mod_dir(root, mod), b))]
+    if taken:
+        return {"ok": False, "why": "the previous version's evidence cannot be set aside: %s already exist(s)"
+                % ", ".join(rel(mod, b) for b in taken)}
     jtext = read_text(root, mod, "journal.md")
     if jtext is not None:
         when = pac_heading(t)
@@ -1510,10 +1518,43 @@ def next_version(root, mod, by, why):
                                                                                                     RECORD))
         jtext = jtext.rstrip("\n") + "\n\n" + "\n".join([
             "### %s, version change: %s to %s (by %s)" % (when, old, new, by), "", "- Why: %s" % why,
-            "- The %s record (at %s) is kept as `%s`." % (old, label(rec.get("stage")), keep),
+            "- The %s record (at %s) is kept as `%s`." % (old, label(rec.get("stage")), keep)] + (
+            ["- Its numbered evidence (%d cycle, visit and arrival paths) is set aside in `%s`." % (len(moves), aside)]
+            if moves else []) + [
             "- Was, \"Stage now\": %s" % (was or "none"), "- Record: `%s`." % RECORD]) + "\n"
-    commit_move(root, mod, nrec, jtext, extra={keep: dump(rec)})
-    return {"ok": True, "why": why, "from": old, "to": new, "stage": stage, "kept": rel(mod, keep)}
+    done = []
+    try:
+        for a, b in moves:
+            os.makedirs(os.path.dirname(os.path.join(mod_dir(root, mod), b)), exist_ok=True)
+            os.rename(os.path.join(mod_dir(root, mod), a), os.path.join(mod_dir(root, mod), b))
+            done.append((a, b))
+        commit_move(root, mod, nrec, jtext, extra={keep: dump(rec)})
+    except Exception as e:
+        left = []
+        for a, b in reversed(done):
+            try:
+                os.rename(os.path.join(mod_dir(root, mod), b), os.path.join(mod_dir(root, mod), a))
+            except OSError as be:
+                left.append("%s (%s)" % (rel(mod, b), be))
+        if left:
+            raise OSError("next-version failed (%s) and %d set-aside path(s) could not be moved back: %s"
+                          % (e, len(left), "; ".join(left))) from e
+        raise
+    return {"ok": True, "why": why, "from": old, "to": new, "stage": stage, "kept": rel(mod, keep),
+            "archived": [rel(mod, a) for a, _ in moves], "aside": rel(mod, aside) if moves else None}
+
+
+PREVIOUS_DIR = "version/previous"
+
+
+def numbered_evidence(root, mod):
+    """-> the version's numbered evidence present (paths under the mod's folder): blind cycle folders, in-game visit
+    folders and walk-brief arrival files, each numbered by a record counter next_version starts again at 0."""
+    out = []
+    for d, rx in ((BLIND_DIR, r"cycle_\d+$"), (INGAME_DIR, r"visit_\d+$"), (WALK_BRIEF_DIR, r"arrival_\d+\.md$")):
+        full = os.path.join(mod_dir(root, mod), d)
+        out += ["%s/%s" % (d, f) for f in sorted(os.listdir(full) if os.path.isdir(full) else []) if re.match(rx, f)]
+    return out
 
 
 def CT_txt(x):
@@ -4125,9 +4166,9 @@ def main(argv=None):
         return 0 if r["ok"] else 2
     if o.cmd == "next-version":
         r = next_version(root, o.mod, o.by, o.why)
-        print(("NEXT VERSION %s: %s -> %s, at %s (old record kept as %s)" % (o.mod, r["from"], r["to"], label(r["stage"]),
-                                                                           r["kept"])) if r["ok"] else
-              "REFUSED: %s" % r["why"])
+        print(("NEXT VERSION %s: %s -> %s, at %s (old record kept as %s%s)" % (
+            o.mod, r["from"], r["to"], label(r["stage"]), r["kept"], "; evidence set aside in %s, land it and the old paths: %s" % (
+                r["aside"], ", ".join(r["archived"])) if r["archived"] else "")) if r["ok"] else "REFUSED: %s" % r["why"])
         return 0 if r["ok"] else 2
     if o.cmd == "spend":
         add_spend(root, o.mod, o.stage, o.tokens, o.usd, o.wall_s, o.source, o.estimate)

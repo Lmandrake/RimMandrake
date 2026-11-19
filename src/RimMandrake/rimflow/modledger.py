@@ -240,7 +240,10 @@ def _blind_fault_ids(root):
     faults.json): a recorded name, like a legacy id. An unreadable or malformed file records nothing (never a crash)."""
     ids = set()
     pat = os.path.join(root, "design", "concepts", "*", "version", "blind_challenge", "cycle_*", "lane*", "faults.json")
-    for fp in glob.glob(pat):
+    # an earlier version's cycles are set aside by maturation.py next-version (version/previous/<version>/): still recorded
+    old = os.path.join(root, "design", "concepts", "*", "version", "previous", "*", "blind_challenge", "cycle_*", "lane*",
+                       "faults.json")
+    for fp in glob.glob(pat) + glob.glob(old):
         try:
             with open(fp, encoding="utf-8") as fh:
                 d = json.load(fh)
