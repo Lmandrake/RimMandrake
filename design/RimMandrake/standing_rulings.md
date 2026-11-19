@@ -191,6 +191,8 @@ card 2026-10-15). Spec + retrofit of existing mods:
 
 ## Direct Sun — one model, a pure function of geometry — owner, 2026-09-29 and 2026-10-19
 
+The rule as the root `CLAUDE.md` carried it: Direct Sun feeds **vanilla** heat (felt temperature → Heatstroke), 55 °C at the zenith × sin(sun angle), the sun angle from the tile's planet position; no per-biome heat kind, number or exception. Shade gear is parasols and roofs (a tent is any quick roof). Volcanic/steam/fog heat is plain air temperature. And **no animal or pawn ever vanishes without a readable sign.**
+
 2026-09-29 (Long Shade sitting): *"If we implement the heat load, then places like the Deep Desert
 and volcanic biomes should absolutely roast you similarly. It can't be a new "kind" of heat."*
 2026-09-30: *"The biome takes its sun angle from its latitude ok the planet not a region
@@ -514,6 +516,8 @@ The fixed account order and the shared account's leave line may be changed by th
 The money side stays his: nothing here buys capacity.
 
 ## The bridge is passed through one file
+
+**RELENTLESS** was the retired Relentless Pipeline's bridge holder (`model.bridge_identity`), not a seat: only old `bridge` events carry it.
 
 One window drives the live game at a time — not for ownership, for attributability.
 Who holds it is in **`infrastructure/state/BRIDGE`**, one glanceable line written by
@@ -1304,3 +1308,99 @@ task."*).
 - The 173 alarm tasks our senders had left open in the Inbox he shares with Steve were completed 2026-11-19
   (`D:\ClaudeWork\rimmandrake\conductor\todoist_alarm_tasks_closed_20261119.md`). To-do lists synced into Todoist
   (Lodestar Burning, Hestia) are unaffected.
+
+## The root CLAUDE.md holds rule lines and pointers only — owner, 2026-11-19
+
+Asked by card (2026-11-19 ~12:58 PM PST) how far to drain the project `CLAUDE.md` (41,213 characters, loaded into every
+session and helper), he picked option (1), "Drain to rule line plus pointer", and typed: *"I have no idea why it says
+regroup, cut nothing. Old likely obsolete guidance. (1) and use Simplified Technical English when rewriting Claude.md
+entries please. No more oracular oddities. No provenance either, that's for git."*
+- Each `CLAUDE.md` entry is a plain heading, the rule in Simplified Technical English (no sentence over 20 words, active
+  voice, one idea per sentence, the same word for the same thing) and a pointer to the file that holds its full text.
+- `CLAUDE.md` carries no provenance: no dates, no "by card", no quoted owner words, no incident stories, no
+  measurements kept for history. Those live in the rule's home (this file, `biome_rulings.md`, `CLAUDE.history.md`, a
+  facts file).
+- No emphatic riddles or emoji shouting. A warning keeps its force by stating what the wrong move costs.
+- **Superseded:** the 2026-09-23 spring-cleaning ruling for `CLAUDE.md`, "regroup, cut nothing". It no longer binds the
+  root `CLAUDE.md`. What still holds from it: evidence moves to a home, it never vanishes (the Crystallize merge gate,
+  `checkable.py compare`).
+- The drain itself: item `RIMMANDRAKE_DRAIN_CLAUDE_MD_RULE_LINES_OLD_RULING_OBSOLETE`; report
+  `D:\ClaudeWork\rimmandrake\conductor\crystallize_2026W47\claude_md_drain.md`.
+
+## 🔴 There is no worldgen feature, in any version — owner, 2026-08-15
+
+- **OUT, permanently:** any automated or programmatic worldgen; worldgen as a
+  player-facing capability. ⛔ v2 is not a parking space for it — mark such work
+  dead, never deferred.
+- 🔑 **Players never generate anything. They receive a savegame holding the fixed
+  world** — one hand-made world, frozen, shipped. A faction, ideoligion or setting
+  absent when it freezes is absent from every player's game forever.
+- ⛔ **Do not build anything that produces ALTERNATIVE planets** (owner, 2026-08-18).
+  No seed sweeps, no variants, no knobs that could roll a second world. ✅ Author
+  THE map, judged by realism first, iterated by LOOKING (`worldview.py`); target and
+  references: `design/Jawa/worldbuilding/the_one_map.md`.
+
+## 🔴 The pipelines before the Maturation Pipeline are retired — owner, 2026-11-13 and 2026-11-18
+
+*"Nothing of that era should remain. No more collisions or confusion."* (2026-11-18). Builds run in the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`); the Conductor launches helpers (`src/RimMandrake/rimflow/detached_helper.py`); design goes to the Designer (`src/RimMandrake/rimflow/roles/designer.md`), ops alarms to Operations. Every retired era, what was removed and what still carries an old name (no `relentless*` module is left; some live paths and names still say relentless, FOUNDRY or pulse, and each rename is a ticket listed there): `design/RimMandrake/retired_eras_index_2026-11-18.md`; `selftest_retired_era_gone.py` refuses a remnant at `./publish`. The daily findings judging and the Friday memory sweep are `rm-findings-judge.timer`. FOUNDRY is not a seat: `rimflow` maps it to the Conductor's key (`RETIRED_SEATS` in `cli.py`), as does the FlowWorks lane (`infrastructure/state/flowworks_lane.json`, field `seat`).
+
+## Facts you cannot guess — the root CLAUDE.md list, with its rulings (owner, 2026-08-27 and 2026-10-24)
+
+This is the list as the root `CLAUDE.md` carried it until 2026-11-19, word for word. The detail behind each fact is in the file the fact names.
+
+- **The game reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`,
+  never this repo.** Writing a file is not deploying it.
+- **A cold load on the full list costs many minutes; a quicktest map is ~90 s.** Never
+  "restart and see". The measured figures, which grow with the mod list, are in
+  `design/RimMandrake/CLAUDE.history.md` and the `rimworld-load-round` skill.
+- **`ModsConfig.xml` is the live mod list**, at
+  `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
+  🔴 **Parse it** (`ET.parse(p).find("activeMods")`) for the active count — never `grep` it,
+  and never cite a mod count written in a doc. ModsConfig describes the NEXT load.
+- 🔴 **Never restore the owner's mod list; only canonical world saves are precious** (owner, 2026-10-24):
+  *"Never worry about my mod list restoration! … Until I start playing (months from now likely) you never need
+  to "restore" mods to anything or worry about harming save games other than canonical world saves."* Leave
+  ModsConfig on whatever tier serves the work; no "restore before release" step. Every save except the canonical
+  world saves (`infrastructure/state/CANONICAL_SAVE.md`) is disposable.
+- **Never guess a defName, field, or namespace.** RimSage (`mcp__rimsage__*`, Windows
+  Desktop only), the def, the About.xml, or `measure` — and 🔴 **a number about a large
+  artifact comes from `measure`, never from a scan** (`block_blind_scan.py` refuses).
+  `0` means measured zero; ignorance answers `UNMEASURED`.
+- 🔴 **Instrument-blindness is a user-level rule.** Measured traps here (ledger key is `id` not `item`, `python.exe` CRLF,
+  `grep -c` exit 1, zsh no word-split, `ls|wc` on a missing dir, `*south*` mask glob, creature
+  census by description not defName, "is there a mod for X" across BOTH mod roots incl.
+  inactive …): `infrastructure/state/facts/instrument_traps.md`.
+- 🔴 **`Plant` only ticks `TickLong()`** — a comp on a plant overrides `CompTickLong()`.
+  🔴 **`MayRequire` on a top-level `<Operation>` is IGNORED** — guard with
+  `PatchOperationFindMod`/`Conditional`; a composed member's packageId never loads. A patch
+  that matches nothing logs nothing. Detail: `skills/rimworld-modding/references/project-engine-facts.md`.
+- 🔴 **`modcheck run <Mod>` REWRITES the live `ModsConfig.xml`** (expensive list). When a new
+  game won't start, read the **FIRST** exception in `Player.log`, not the loudest. More
+  (600 s subagent watchdog, mid-session hooks, card gates, `handoff.py` and two Conductor
+  windows): `infrastructure/state/facts/tool_traps.md`.
+- **Dumps and harvests decay** (owner, 2026-08-27): trust one only after its fingerprint
+  matches the live mod set; the frozen `official` dump is the sole design target.
+
+## Sittings with the owner keep the advanced-zoom mod — owner, 2026-11-03
+
+*"there was a standing rule that the advanced zoom capabilities were always to be included in mod lists where the human sat with Conductor, so I can zoom in and study things."* Any mod list built for a sitting with him includes it.
+
+## If it flies in the fiction, it flies in the game — owner, 2026-09-19
+
+*"Standing rule: we make flyers flyers when we can, ok?"* Real flight, triggered by touching
+the def, not a sweep. Flight is the **`MaxFlightTime` STAT** (Core, not a donor); the animation
+is a **whole-body directional flip-book** (`flyingAnimationFramePathPrefix`), ⛔ never a Spastic
+wing render-tree. Mechanics: `skills/rimworld-modding/references/flight.md`.
+
+🔴🔴 **NEVER live-test a flyer's flight without the owner present** — *"For the third time, do
+not do live testing of flyers without a human present. It doesn't work."* and *"Don't try to
+capture images of flight. It doesn't work."* Verify flight by a deterministic STATE read of
+`Pawn_FlightTracker`; a visual check is a joint session or it waits.
+
+## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11)
+
+`--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text; the whole card, the picked option's description included, is stamped from the card store: `src/RimMandrake/rimflow/card_capture.py`) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
+
+## 🔴 Never send him to a computer you can reach yourself — owner, 2026-10-31
+
+User-level rule; here the route is Tailscale.

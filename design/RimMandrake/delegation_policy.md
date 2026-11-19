@@ -56,9 +56,10 @@ money, public publishing. Everything else the Conductor should mindfully be able
 should get to me, but the Conductor should review them to ensure it can't just do them now and alert me later."* Full
 text: `standing_rulings.md` §Only five acts stay his. Code: `src/RimMandrake/rimflow/conductor_acts.py`.
 
-1. **A live flight test of a flyer** — *"do not do live testing of flyers without a human present"* (CLAUDE.md,
-   flight). The bridge gate refuses a take whose purpose names flight or that passes `--flyer`; the refusal is
-   self-declared, so a seat that will fly anything passes `--flyer`.
+1. **A live flight test of a flyer** — *"do not do live testing of flyers without a human present"*
+   (`standing_rulings.md` §If it flies in the fiction, it flies in the game). The bridge gate refuses a take whose
+   purpose names flight or that passes `--flyer`; the refusal is self-declared, so a seat that will fly anything
+   passes `--flyer`.
 2. **Replacing art he KEPT**, and releasing a keep mark (`art.py purge --release-keep`). *"Why are we replacing items for
    which I know I have good versions?"* (2026-10-19). `art.py install --reason` refuses over an owner-kept picture; no
    Conductor act or delegated call works around that refusal. **The open exceptions stay open:**

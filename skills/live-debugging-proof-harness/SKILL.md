@@ -270,7 +270,8 @@ More traps for this section: [references/traps.md](references/traps.md) § Befor
 ## Flyers
 
 🔴 **Never live-test a flyer's flight without the owner present.** He has said it three
-times (repo `CLAUDE.md`, "NEVER live-test a flyer's flight"). A proof row about flight
+times (repo `CLAUDE.md` §If it flies in the fiction, it flies in the game; his words in
+`design/RimMandrake/standing_rulings.md`, same heading). A proof row about flight
 reads `Pawn_FlightTracker` state through a debug `[Tool]`. A visual flight bar waits
 for a joint session (item FLYERFRAMES_PROVE_JOINT_SESSION, needs=owner). Never file a
 live-flight bar that only an unattended screenshot hunt could close. The proof-line
