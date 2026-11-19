@@ -25,3 +25,12 @@ file: design/RimMandrake/standing_rulings.md
 ## verify
 python3 src/RimMandrake/rimflow/acceptance/code_review_brief_accept.py   # exit 0
 Acceptance test: watched failing on a6aac8a6fc7c: 4 of 4 fail. Expected: 4 pass.
+
+## What the card said
+
+<!-- answered 2026-11-19T08:39:22Z; recorded by `note` (OWNER); written by rimflow, never by hand -->
+
+**Question:** The new review rule needs written instructions for the reviewer. We test the instructions before use: the reviewer sorts 35 old complaints, and we count how many it sorts correctly. Codex does the reviews, so the test calls Codex. Your stop says no Codex reviews of pipeline code. Do we run this test?
+**Picked:** Run the Codex test once (Recommended)
+**Its description:** Codex sorts the 35 old complaints one time. It reviews no new code and no ticket comes from it. I recommend it because reviews cannot restart without tested instructions. Cost: Codex tokens for one read of 35 complaints, amount unknown. Reviews stay stopped until you say start.
+**Other options:** Test with Claude Opus, not Codex · Do not write instructions now
