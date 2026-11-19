@@ -151,6 +151,43 @@ def judge_rounds(CJ):
     ok(CJ.stop_reason(rel) is None, "a release resets the system-fault count of the judge rounds")
 
 
+def release_back(RV, MD, record):
+    """The Conductor's decision of 2026-11-18 1:05 PM PST on RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS:
+    a ceiling release spent by a void_system run is given back; a hand void leaves it spent; a run that heals spends it
+    again."""
+    def fresh():
+        return {"mods": {"Fake": {"steward": {"k2": {"item": "X2", "unit": U2, "at": T0 + 1200, "failed": None,
+                                                     "tries": 1}},
+                                  "releases_used": {"rel-s": {"at": T0 + 1200, "stage": "blind_challenge", "usd": 90.0,
+                                                              "unit": U2},
+                                                    "rel-o": {"at": T0 + 50, "stage": "blind_challenge", "usd": 80.0,
+                                                              "unit": U1}}}}}
+    st = fresh()
+    RV.sync_system(st, record, now=T0 + 1400)
+    s = st["mods"]["Fake"]
+    ok("rel-s" not in s.get("releases_used", {}) and "rel-o" in s.get("releases_used", {}),
+       "a ceiling release spent by a void_system run is given back; one spent by a run that counts stays spent")
+    m = [x for x in s.get("voided") or [] if x["book"] == "releases_used"]
+    ok(len(m) == 1 and m[0]["class"] == "void_system" and m[0]["unit"] == U2 and m[0].get("faults") == 0
+       and RV.faults(s) == 1,
+       "the release sits in voided (void_system, its run's unit) and adds no system fault of its own (%s)" % RV.faults(s))
+    rel = [{"id": "rel-s", "mod": "Fake", "stage": "blind_challenge", "read_usd": 95.0, "release_usd": 20.0}]
+    why, rid = MD.ceiling_gate({"stage_ceiling_usd": 100}, s, "Fake", "blind_challenge", 95.0, 10.0, "x", (rel, 0))
+    ok(rid == "rel-s", "the ceiling gate reads the given-back release as fresh again (%s, %s)" % (why, rid))
+    once = copy.deepcopy(st)
+    RV.sync_system(st, record, now=T0 + 1500)
+    ok(st == once, "sync_system with a given-back release is idempotent")
+    healed = dict(RECS, **{U2: dict(RECS[U2], result="success (exited 0)")})
+    RV.sync_system(st, healed.get, now=T0 + 1600)
+    ok("rel-s" in st["mods"]["Fake"].get("releases_used", {}),
+       "a void_system run that heals (its record now counts) spends its release again")
+    st = fresh()
+    RV.sync_system(st, record, now=T0 + 1400)
+    RV.sync_dispatch(st, {U2: {"id": "v-9", "unit": U2, "why": "his stop", "item": "X2"}})
+    ok("rel-s" in st["mods"]["Fake"].get("releases_used", {}),
+       "a hand void of a run already void_system leaves its release spent (the Conductor's line: void_system only)")
+
+
 def main():
     try:
         import run_void as RV
@@ -420,10 +457,10 @@ def main():
              "void": None, "why": "it ended with no result JSON (success (exited 0))", "unit": U1, "faults": 1}],
             "system_faults": [{"at": T0, "book": "steward", "key": "k1", "unit": U1, "cause": "x", "n": 1}]}}}
         st3["mods"]["Fake"]["voided"].append({"book": "releases_used", "key": "rel-b", "entry": {"unit": U2, "usd": 9.0},
-                                              "class": "void_system", "void": None, "why": "x", "unit": U2, "faults": 1})
+                                              "class": "void_hand", "void": "v-1", "why": "x", "unit": U2})
         RV.sync_system(st3, record, now=T0 + 10)
         ok(st3["mods"]["Fake"].get("releases_used", {}).get("rel-b"),
-           "heal: a ceiling release an earlier build moved out goes back: it stays spent")
+           "heal: a ceiling release an earlier build moved out under a hand void goes back: it stays spent")
         s3 = st3["mods"]["Fake"]
         ok(s3["steward"].get("k1", {}).get("unit") == U1 and not s3["voided"] and RV.faults(s3) == 0,
            "heal: a void_system entry whose record reads success is back in its book, its fault dropped")
@@ -444,6 +481,7 @@ def main():
            and RV.system_cause(None) == "",
            "a run that wrote its result, or no record, has no system cause (could not look is not void)")
         judge_rounds(CJ)
+        release_back(RV, MD, record)
     finally:
         RL.read_result, DH.killed = real_read, real_killed
         for k, v in keep.items():

@@ -45,8 +45,11 @@ SYSTEM_FAULT_LIMIT = 3
 # the dispatch books a run can sit in: dict books keyed by state key or item, list books of launch entries, and single
 # entries holding one run
 DICT_BOOKS = ("steward", "fixers")
-# NOT voided: releases_used. A ceiling release a dead run spent stays spent: un-spending it would let spend past the
-# stage ceiling, which only he releases (the census's proposal)
+# releases_used is reached by the automatic class only: a ceiling release a void_system run spent is given back (the
+# Conductor's decision of 2026-11-18 1:05 PM PST on RIMMANDRAKE_EXTEND_VOID_TO_JUDGE_DESIGNER_AND_PILOT_COUNTERS: "a
+# ceiling release spent by a voided run IS given back ... reverse that for void_system runs only"; that run's spend is
+# off the ceiling too). A hand void leaves it spent.
+RELEASE_BOOK = "releases_used"
 LIST_BOOKS = ("blind_auto", "ingame_auto", "launches", "holder_road_back", "pilot_launches", "ledger_runs")
 ONE_BOOKS = ("last_run", "cert_rerun", "cert_red")
 # books the automatic class reads: a run there that died of a system cause would otherwise count as its trial
@@ -338,6 +341,9 @@ def sync_dispatch(st, cur=None):
         # a hand void of a run already classed void_system makes it a hand void: the owner's or Conductor's stop is
         # his call, not a fault of the machine, so it leaves the system-fault count (it comes back if he unvoids it)
         hand = {m.get("unit") for m in mv if m.get("class") == "void_system" and m.get("unit") in cur}
+        spent = [m for m in mv if m["book"] == RELEASE_BOOK and m.get("unit") in hand and _restore(s, m)]
+        if spent:       # a hand void leaves a release spent: the one its run's void_system class gave back is spent again
+            mv = s["voided"] = [m for m in mv if not any(m is x for x in spent)]
         for m in mv:
             if m["book"] == "road_back" and m.get("class") == "void_system" and _caused_by_hand(m, mv, hand):
                 m["unit"] = next(x.get("unit") for x in mv if x.get("unit") in hand and x["book"] == "steward"
@@ -465,12 +471,14 @@ def heal_system(s, record):
     """A void_system entry whose record no longer shows a system cause (the class was fixed, or the record was
     repaired) goes back to its book and its fault is dropped; so does the road back its steward opened. -> [units]."""
     mv = s.get("voided") or []
-    # an entry moved from a book voids no longer reach (releases_used, 2026-11-18: a spent ceiling release must stay
-    # spent) goes back whatever its class
-    back = [m for m in mv if m["book"] not in DICT_BOOKS + LIST_BOOKS + ONE_BOOKS + ("road_back",)]
+    # an entry an earlier build moved from a book voids no longer reach goes back whatever its class (a release moved
+    # under a hand void, which leaves it spent); a void_system run's release stays given back until that run heals
+    back = [m for m in mv if m["book"] not in DICT_BOOKS + LIST_BOOKS + ONE_BOOKS + ("road_back",)
+            and not (m["book"] == RELEASE_BOOK and m.get("class") == "void_system")]    # given back while void
     for m in mv:
         u = m.get("unit")
-        if m.get("class") != "void_system" or not u or m["book"] in ("last_run", "road_back") or m in back:
+        if m.get("class") != "void_system" or not u or m["book"] in ("last_run", "road_back", RELEASE_BOOK) \
+                or m in back:
             continue
         rec = record(u)
         if isinstance(rec, dict) and rec.get("status") == "finished" and not system_cause(rec):
@@ -480,7 +488,7 @@ def heal_system(s, record):
     units = {m["unit"] for m in back if m.get("class") == "void_system"}
     items = {m["entry"].get("item") for m in back if m["book"] == "steward"}
     back += [m for m in mv if m.get("class") == "void_system" and (
-        (m["book"] == "last_run" and m.get("unit") in units) or
+        (m["book"] in ("last_run", RELEASE_BOOK) and m.get("unit") in units) or
         (m["book"] == "road_back" and (m.get("entry") or {}).get("caused_by") in items))]
     done = [m for m in back if _restore(s, m)]
     s["voided"] = [m for m in mv if not any(m is d for d in done)]
@@ -561,6 +569,14 @@ def sync_system(st, record, keep_failed=None, kills_left=None, now=None):
         if isinstance(rb, dict) and rb.get("caused_by") in items - {None}:
             moved.append({"book": "road_back", "key": None, "entry": s.pop("road_back"), "class": "void_system",
                           "void": None, "why": "its steward run is void_system", "unit": None, "faults": 0})
+        sys_units = {m["unit"] for m in moved if m.get("unit")} | {
+            m.get("unit") for m in s.get("voided") or [] if m.get("class") == "void_system" and m.get("unit")}
+        rel = s.get(RELEASE_BOOK)
+        for k, x in list(rel.items()) if isinstance(rel, dict) else []:
+            if isinstance(x, dict) and x.get("unit") in sys_units:
+                moved.append({"book": RELEASE_BOOK, "key": k, "entry": rel.pop(k), "class": "void_system",
+                              "void": None, "faults": 0, "unit": x["unit"],
+                              "why": "its run %s is void_system: the ceiling release is given back" % x["unit"]})
         if unmeasured:
             s["void_unmeasured"] = sorted(unmeasured)
         else:

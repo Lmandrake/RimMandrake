@@ -954,7 +954,8 @@ that."*
   `design/specs/2026-11-18-pipeline-control-surface/03-merged.md`, Rulings 1): the stage ceiling counts what the mod
   cost on its merits; a void run's spend stays measured and is shown apart as void spend (`void_usd`), and the
   system-fault alarm catches a fault loop. The old killed-run refund is retired with it (nothing is charged to give
-  back). A ceiling release a void run spent stays spent: un-spending a release is not in his ruling.
+  back). A ceiling release a **void_system** run spent is given back (the Conductor's decision of 2026-11-18 1:05 PM
+  PST, delegated by evidence-for-ask, in his digest; he may overrule); a hand void leaves the release spent.
 - Census of every counter and what is not yet reached: `design/RimMandrake/pipeline_trial_counters_census_2026-11-18.md`.
 
 ## One control store and `pipe` — owner, 2026-11-18
