@@ -17,6 +17,8 @@
     "revisit_batch_min": 30,
     "revisit_quiet_max_min": 1440,
     "revisit_clock_slack_min": 2,
+    "deep_read_local": "07:00",
+    "_deep_read_why": "the incident clerk (design/specs/2026-11-19-incident-clerk/boundary.md; owner's card 2026-11-19, \"one deep Opus run a day stays\"): a plan acked with --trigger is re-read by the program, which rings a run only when the line is crossed or cannot be read, or the rung moves; once a day from this local time every open untamed incident at his rung is re-read by one Operations run on Opus, whatever its line says. 07:00 sits inside cover_window_s of the 07:30 economy slot, so that run covers the slot instead of adding one (role_launch.covered_slot). null: no deep read.",
     "chain": ["Conductor", "Operations:fresh", "owner"],
     "ladder": {"emergency": [45, 60], "distressed": [60, 240]}
   },

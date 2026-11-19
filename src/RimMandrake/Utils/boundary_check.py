@@ -34,6 +34,7 @@ PAGES = {
     "design/specs/2026-11-19-consumable-readers/boundary.md": "src/RimMandrake/rimflow/selftest_pipeline_control.py",
     "design/specs/2026-11-19-conductor-acts/boundary.md": "src/RimMandrake/rimflow/selftest_conductor_acts.py",
     "design/specs/2026-11-19-incident-news-and-program-routes/boundary.md": "src/RimMandrake/rimflow/selftest_incident_news.py",
+    "design/specs/2026-11-19-incident-clerk/boundary.md": "src/RimMandrake/rimflow/selftest_incident_clerk.py",
 }
 SECTIONS = ("PROMISES", "SURVIVES")
 HEAD_RX = re.compile(r"^##\s+(\S+)")

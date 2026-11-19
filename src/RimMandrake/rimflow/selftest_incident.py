@@ -39,7 +39,7 @@ T0 = float(int(time.time()))
 SHIPPED = IN.load_table(IN.ROUTES)
 PINNED_POLICY = dict(ack_within_min=30, recover_min=60, sustain_min=60, event_quiet_min=420, relapse_h=6, tame_relapses=2,
                      tame_window_h=24, min_step_min=15, status_max_age_min=45, runs_per_hour=2, owner_revisit_min=240,
-                     revisit_batch_min=30, revisit_quiet_max_min=1440, revisit_clock_slack_min=2,
+                     revisit_batch_min=30, revisit_quiet_max_min=1440, revisit_clock_slack_min=2, deep_read_local=None,
                      ladder={"emergency": [45, 60], "distressed": [60, 240]})
 IN.ROUTES = os.path.join(TMP, "alarm_routes.json")
 json.dump(dict(SHIPPED, policy=dict(SHIPPED["policy"], **PINNED_POLICY)), open(IN.ROUTES, "w"))

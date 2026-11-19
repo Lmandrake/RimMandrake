@@ -133,7 +133,12 @@ do nothing, exit.
    comes only with news, named in the ask and in `rimflow incidents`: when the readings and your plan have not moved since
    the last one it is re-armed with no run (a `revisit_quiet` row in `told.jsonl`), for at most `revisit_quiet_max_min`
    (a day), and an ack with no plan of yours counts as no answer. One run takes every revisit due inside
-   `revisit_batch_min`. So write a plan you can stand behind for a day. The
+   `revisit_batch_min`. So write a plan you can stand behind for a day. **Give every ack a trigger line a program can
+   check:** `rimflow ack <id> --plan "<next>" --trigger "<metric> <op> <number>[; after <YYYY-MM-DDTHH:MMZ>]"` (a
+   `status.json` key; `;` joins clauses, any one true calls a run). With a line, the incident clerk re-reads it each
+   tick and writes a "still X, no change" `revisit_quiet` row instead of a run; it calls a run only when the line is
+   crossed or cannot be read, the rung moves or a metric joins, and one deep Opus run re-reads every incident at his rung
+   each morning. A plan whose test only you can read keeps its model revisits: say so in the plan and give no line. The
    routing table `rimflow/alarm_routes.json` is yours: every alarm kind has a route there or a selftest fails.
 1. Read `digest.md`. For each open alarm: is it real (the instrument can see: check the point's mark and `why`), who
    owns the cause, and what moves it. A RUNWAY_LOW on an ESTIMATE runway is checked against the meter first. A lent account alarms on `accounts.<account>.loan_runway` (its allowance against the lent window); its `runway` stays the week figure and raises nothing.

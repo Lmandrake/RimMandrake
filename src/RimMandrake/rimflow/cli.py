@@ -1924,11 +1924,13 @@ def _schedule_or_none():
 def cmd_ack(args, seat):
     import incident
     try:
-        row = incident.ack(args.id, seat, args.plan, args.recover_min)
+        row = incident.ack(args.id, seat, args.plan, args.recover_min, trigger=args.trigger)
     except ValueError as e:
         die("%s\n" % e)
     print("%s acked by %s; recover by %s. An ack gives ownership: past that time it moves up the chain, acked or not."
           % (args.id, seat, row["recover_by"]))
+    print("trigger line: %s (the incident clerk re-reads it; a run is called when it is crossed)" % row["trigger"]
+          if row.get("trigger") else "no trigger line: at his rung its revisits stay model reads (--trigger gives one)")
 
 
 def _answered(incident, inc):
@@ -4714,6 +4716,9 @@ def build_parser():
     s.add_argument("id")
     s.add_argument("--plan", required=True, help="what happens next")
     s.add_argument("--recover-min", dest="recover_min", type=int, help="minutes to recovery (default: the table's)")
+    s.add_argument("--trigger", help="the plan's line a program can check: '<metric> <op> <number>' (op < <= > >= == !=, "
+                   "metric a status.json key) or 'after <YYYY-MM-DDTHH:MMZ>', joined by ';', any one true calls a run "
+                   "(design/specs/2026-11-19-incident-clerk/boundary.md)")
 
     s = add("incident-line", "write the line he sees first; not an ack", cmd_incident_line)
     s.add_argument("id")

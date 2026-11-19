@@ -240,16 +240,23 @@ def ring_of(table, inc, now, rung=None):
     return {"id": inc["id"], "how": how or "doorbell", "reader": reader, "seat": None if how else reader, "text": why}
 
 
-def revisit_ring(inc, was_plan, news=()):
+def revisit_ring(inc, was_plan, news=(), was_trigger=None, deep=False):
     """The ring of an incident at his rung whose plan ran out: one fresh Operations run, batched with the pass's other
-    fresh rings (dispatcher.incident_execute). The news comes first: the run's `why` is cut at 300 characters."""
+    fresh rings (dispatcher.incident_execute). The news comes first: the run's `why` is cut at 300 characters. Every
+    one asks for a trigger line (the incident clerk reads it; a plan with none keeps model revisits)."""
     i = inc["id"]
-    return {"id": i, "how": "fresh_run", "reader": "Operations:fresh", "seat": None, "revisit": True, "text": (
+    r = {"id": i, "how": "fresh_run", "reader": "Operations:fresh", "seat": None, "revisit": True, "text": (
         "INCIDENT %s (%s, at his rung, revisit %d). News: %s. Its plan ran out%s. Re-read it now: fixed, say so (it closes "
-        "on its readings); else rimflow ack %s --plan \"<the current next step>\" [--recover-min N]; and rewrite his line, "
-        "rimflow incident-line %s \"<line>\". Metrics: %s." % (
+        "on its readings); else rimflow ack %s --plan \"<the current next step>\" --trigger \"<metric> <op> <number>[; "
+        "after <YYYY-MM-DDTHH:MMZ>]\" [--recover-min N] (a program re-reads the line and calls a run only when it is "
+        "crossed%s); and rewrite his line, rimflow incident-line %s \"<line>\". Metrics: %s." % (
             i, inc["class"], inc.get("revisits", 0), "; ".join(news) or "none recorded",
-            " (was: %s)" % str(was_plan)[:60] if was_plan else "", i, i, ", ".join(sorted(inc["metrics"]))))}
+            " (was: %s)" % str(was_plan)[:60] if was_plan else "", i,
+            "; the last plan had no line, so it kept model revisits" if not was_trigger else "", i,
+            ", ".join(sorted(inc["metrics"]))))}
+    if deep:
+        r["deep"] = True
+    return r
 
 
 def observed_t(p):
@@ -391,6 +398,113 @@ def program_answer(rt, point):
     return "agent", "reading %s left its band %s" % (v, span)
 
 
+TRIGGER_OPS = {"<": lambda a, b: a < b, "<=": lambda a, b: a <= b, ">": lambda a, b: a > b, ">=": lambda a, b: a >= b,
+               "==": lambda a, b: a == b, "!=": lambda a, b: a != b}
+TRIGGER_METRIC = re.compile(r"^([A-Za-z0-9_.:\-]+)\s*(<=|>=|==|!=|<|>)\s*(-?\d+(?:\.\d+)?)$")
+TRIGGER_AFTER = re.compile(r"^after\s+(\d{4}-\d\d-\d\dT\d\d:\d\d(?::\d\d)?)Z$", re.I)
+CLERK_NEWS_EVS = ("reopened", "escalated")      # a rung change: the only state move a held trigger line does not answer
+
+
+def parse_trigger(text):
+    """A plan's trigger line (`rimflow ack --trigger`) -> [("metric", key, op, number) | ("after", epoch, iso)], one per
+    `;` part; the line is crossed when any part is true. Raises ValueError naming the part that does not parse
+    (design/specs/2026-11-19-incident-clerk/boundary.md, a-trigger-line)."""
+    parts = [x.strip() for x in str(text or "").split(";") if x.strip()]
+    if not parts:
+        raise ValueError("--trigger: an empty line; write <metric> <op> <number> or after <YYYY-MM-DDTHH:MMZ>, joined by ;")
+    out = []
+    for part in parts:
+        m, a = TRIGGER_METRIC.match(part), TRIGGER_AFTER.match(part)
+        if m:
+            out.append(("metric", m.group(1), m.group(2), float(m.group(3))))
+        elif a:
+            ts = a.group(1) + (":00" if len(a.group(1)) == 16 else "")
+            out.append(("after", _epoch(ts), ts + "Z"))
+        else:
+            raise ValueError("--trigger: %r is neither <metric> <op> <number> (op one of %s) nor after "
+                             "<YYYY-MM-DDTHH:MMZ> (UTC)" % (part, " ".join(TRIGGER_OPS)))
+    return out
+
+
+def trigger_state(clauses, status, now, fresh):
+    """-> ("crossed" | "blind" | "held", [one text per clause that decided it]). Crossed when any clause is true; else
+    blind when any metric clause could not be read (a stale status, an absent, unmeasured or non-number point: never
+    "held" on a reading nobody made); else held, each clause's reading named."""
+    points = (status.get("points") or {}) if isinstance(status, dict) else {}
+    crossed, blind, held = [], [], []
+    for c in clauses:
+        if c[0] == "after":
+            (crossed if now >= c[1] else held).append("after %s%s" % (c[2], ": the time came" if now >= c[1] else ""))
+            continue
+        _, key, op, n = c
+        p = points.get(key)
+        v = p.get("v") if isinstance(p, dict) else None
+        if not fresh:
+            blind.append("%s: status not fresh" % key)
+        elif not isinstance(p, dict):
+            blind.append("%s: no reading in status.json" % key)
+        elif p.get("m") != "MEASURED":
+            blind.append("%s: its reading is %s, not MEASURED" % (key, p.get("m")))
+        elif not isinstance(v, (int, float)) or isinstance(v, bool):
+            blind.append("%s: its reading %r is not a number" % (key, v))
+        elif TRIGGER_OPS[op](v, n):
+            crossed.append("%s reads %s (%s %s)" % (key, v, op, "%g" % n))
+        else:
+            held.append("%s %s (line %s %s)" % (key, v, op, "%g" % n))
+    if crossed:
+        return "crossed", crossed
+    if blind:
+        return "blind", blind
+    return "held", held
+
+
+def clerk_trigger(inc, status, now, fresh):
+    """The incident clerk's reading of an incident's trigger line -> trigger_state, or None when its plan has none (an
+    auto-ack's plan is no run's and carries none). A stored line that does not parse is blind, never held."""
+    line = inc.get("trigger")
+    if not line or inc.get("auto_ack") or not inc.get("plan"):
+        return None
+    try:
+        clauses = parse_trigger(line)
+    except ValueError as e:
+        return "blind", ["its stored line does not parse: %s" % e]
+    return trigger_state(clauses, status, now, fresh)
+
+
+def clerk_news(inc, tstate, rows, out, now, pol):
+    """-> why a revisit whose plan carries a trigger line needs a run, or []. Only the line crossed or blind, a rung
+    change, a metric that joined since the last look, or a day unread is news: a moved reading the line does not name, a
+    rewritten plan or an item action is not (the run that wrote the line said what matters; boundary
+    a-change-the-trigger-does-not-name)."""
+    news = []
+    if tstate[0] == "crossed":
+        news.append("trigger crossed: %s" % "; ".join(tstate[1]))
+    elif tstate[0] == "blind":
+        news.append("its trigger line could not be read: %s" % "; ".join(tstate[1]))
+    seen_t = inc.get("revisit_seen_t") or 0
+    moved = sorted({r["ev"] for r in list(rows) + out if r.get("id") == inc["id"] and r.get("ev") in CLERK_NEWS_EVS
+                    and r.get("t", 0) > seen_t})
+    if moved:
+        news.append("its rung moved since the last look (%s)" % ", ".join(moved))
+    read = inc.get("revisit_read")
+    new = sorted(set(inc["metrics"]) - set(read)) if isinstance(read, dict) else []
+    if new:
+        news.append("a metric joined since the last look: %s" % ", ".join(new))
+    if now - inc.get("revisit_t", 0) >= pol.get("revisit_quiet_max_min", 1440) * 60:
+        news.append("no run has read it for %d min, the most a quiet incident waits" % ((now - inc.get("revisit_t", 0)) // 60))
+    return news
+
+
+def deep_read_at(pol, now):
+    """Epoch of today's deep read (policy deep_read_local "HH:MM", this machine's local time), or None when unset."""
+    hhmm = pol.get("deep_read_local")
+    if not hhmm:
+        return None
+    hh, mm = (int(x) for x in str(hhmm).split(":", 1))
+    lt = time.localtime(now)
+    return time.mktime((lt.tm_year, lt.tm_mon, lt.tm_mday, hh, mm, 0, 0, 0, -1))
+
+
 def relapse_of(incs, cause, metrics, now, relapse_h):
     """The closed incident of this cause that `metrics` reopen: the newest one closed inside relapse_h that held one of
     them. A cause is a routing family (every ops:* alarm is ops_watch), so a different metric under it is a new problem,
@@ -502,12 +616,14 @@ def step(table, rows, status, now, cursor=0, events=None, standing=None):
         else:
             rings.append(r)
 
-    def revisit(inc, reads, news):
-        was = inc.get("plan")
+    def revisit(inc, reads, news, deep=False):
+        was, line = inc.get("plan"), (inc.get("trigger") if not inc.get("auto_ack") else None)
+        f = dict(deep=True) if deep else {}
         emit("revisited", inc, rung_t=now, acked_t=None, ack_by=None, plan=None, last_plan=was, recover_by=None,
              recover_by_t=None, ack_cleared_t=now, revisits=inc.get("revisits", 0) + 1, revisit_t=now, revisit_seen_t=now, revisit_read=reads,
-             revisit_status_t=status_t, revisit_plan=None, auto_ack=False, quiet_revisits=0, news=news)
-        ring(inc, revisit_ring(inc, was, news))
+             revisit_status_t=status_t, revisit_plan=None, auto_ack=False, quiet_revisits=0, news=news,
+             trigger=None, last_trigger=line, trigger_owed=not line, **f)
+        ring(inc, revisit_ring(inc, was, news, line, deep))
 
     looked = set()
     status_t = status.get("t") if isinstance(status, dict) else None
@@ -579,13 +695,24 @@ def step(table, rows, status, now, cursor=0, events=None, standing=None):
             emit("opened", inc, cause=cause, reopens=0, **fields)
         ring(inc, ring_of(table, inc, now))
 
+    deep_t = deep_read_at(pol, now)
+    if deep_t is not None and now >= deep_t and not any(
+            r.get("ev") == "revisited" and r.get("deep") and r.get("t", 0) >= deep_t for r in rows):
+        # the daily deep read (owner's card 2026-11-19, "one deep Opus run a day stays"): every open untamed incident at
+        # his rung that is not recovering is re-read by one Opus run, whatever its trigger line says
+        for inc in sorted(incs.values(), key=lambda x: x["id"]):
+            if (inc["state"] == "open" and inc["rung"] >= OWNER_RUNG and not inc.get("sane_since")
+                    and not inc.get("tamed")):
+                looked.add(inc["id"])
+                revisit(inc, revisit_reads(inc, status, bad, signals),
+                        ["the daily deep read (once a day, on Opus), whatever its trigger line says"], deep=True)
     for inc in sorted(incs.values(), key=lambda x: x["id"]):
         if inc["state"] != "open":
             continue
         if inc["items"] and not inc.get("acked_t") and events is not None:
             hit = item_acted(events(), inc["items"], ack_since(inc))
             if hit:
-                emit("acked", inc, acked_t=now, ack_by=hit[1], plan="%s on %s" % (hit[2], hit[0]), auto_ack=True,
+                emit("acked", inc, acked_t=now, ack_by=hit[1], plan="%s on %s" % (hit[2], hit[0]), auto_ack=True, trigger=None,
                      recover_by_t=now + pol["recover_min"] * 60, recover_by=iso(now + pol["recover_min"] * 60))
         if inc["items"] and events is not None and not any(m in bad or m in fired for m in inc["metrics"]):
             # its repair item(s) closed and no metric reads bad now: closed with the repair, not after sustain_min
@@ -617,16 +744,31 @@ def step(table, rows, status, now, cursor=0, events=None, standing=None):
         elif False in states and inc.get("sane_since"):
             emit("relapsing", inc, sane_since=None)
         due = next_due(table, inc)
-        if due is not None and now >= due and not inc.get("sane_since") and inc["rung"] >= OWNER_RUNG:
+        at_his = inc["rung"] >= OWNER_RUNG and not inc.get("sane_since") and inc["id"] not in looked
+        tstate = clerk_trigger(inc, status, now, fresh) if at_his else None     # the incident clerk: its plan's line
+        if tstate and tstate[0] == "crossed":
+            # a crossing does not wait for the revisit: the plan said this is what calls a run (and the line goes with it)
+            looked.add(inc["id"])
+            revisit(inc, revisit_reads(inc, status, bad, signals), clerk_news(inc, tstate, rows, out, now, pol))
+        elif due is not None and now >= due and at_his:
             looked.add(inc["id"])
             reads = revisit_reads(inc, status, bad, signals)
-            news = revisit_news(inc, reads, fresh, rows, out, now, pol, events, status_t, table)
+            if tstate:
+                news = clerk_news(inc, tstate, rows, out, now, pol)
+            else:
+                news = revisit_news(inc, reads, fresh, rows, out, now, pol, events, status_t, table)
             if news:
                 revisit(inc, reads, news)
+            elif tstate:
+                still = "still %s, no change" % "; ".join(tstate[1])
+                emit("revisit_quiet", inc, rung_t=now, revisit_seen_t=now, revisit_read=reads, revisit_status_t=status_t, revisit_plan=inc["plan"],
+                     quiet_revisits=inc.get("quiet_revisits", 0) + 1, news=None, clerk=True, still=still, trigger_owed=False,
+                     why="the clerk: trigger line %r not crossed, %s: re-armed, no run" % (inc["trigger"], still))
             else:
                 emit("revisit_quiet", inc, rung_t=now, revisit_seen_t=now, revisit_read=reads, revisit_status_t=status_t, revisit_plan=inc["plan"],
-                     quiet_revisits=inc.get("quiet_revisits", 0) + 1, news=None,
-                     why="readings and plan unchanged since %s: re-armed, no run" % iso(inc["revisit_t"]))
+                     quiet_revisits=inc.get("quiet_revisits", 0) + 1, news=None, clerk=False, still=None, trigger_owed=True,
+                     why="readings and plan unchanged since %s: re-armed, no run; no trigger line, so its revisits stay "
+                         "model reads until a run acks with --trigger" % iso(inc["revisit_t"]))
         elif due is not None and now >= due and not inc.get("sane_since"):
             r = next_rung(table, inc)
             f = dict(rung=r, rung_t=now, acked_t=None, ack_by=None, plan=None, recover_by=None, recover_by_t=None)
@@ -646,7 +788,9 @@ def step(table, rows, status, now, cursor=0, events=None, standing=None):
             if due is None or due - now > pol.get("revisit_batch_min", 0) * 60:
                 continue
             reads = revisit_reads(inc, status, bad, signals)
-            news = revisit_news(inc, reads, fresh, rows, out, now, pol, events, status_t, table)
+            tstate = clerk_trigger(inc, status, now, fresh)        # a plan with a line is graded by the clerk here too
+            news = (clerk_news(inc, tstate, rows, out, now, pol) if tstate else
+                    revisit_news(inc, reads, fresh, rows, out, now, pol, events, status_t, table))
             if news:                                     # with none it waits for its own time and is re-armed then
                 revisit(inc, reads, news)
     live = [x for x in incs.values() if x["state"] == "open"]
@@ -664,10 +808,15 @@ def step(table, rows, status, now, cursor=0, events=None, standing=None):
     return {"rows": out, "rings": rings, "keys": keys, "cursor": len(rows), "snapshot": snap}
 
 
-def ack(iid, seat, plan, recover_min=None, path=None, now=None):
-    """The ack verb. -> the row. Raises ValueError on an unknown or closed id, or no plan: an ack names what is next."""
+def ack(iid, seat, plan, recover_min=None, path=None, now=None, trigger=None):
+    """The ack verb. -> the row. Raises ValueError on an unknown or closed id, or no plan: an ack names what is next.
+    `trigger`: the plan's line a program can check (parse_trigger; refused when it does not parse). An ack without one
+    stores none: a new plan never inherits the old plan's line."""
     if not (plan or "").strip():
         raise ValueError("--plan: an ack says what happens next")
+    if trigger is not None:
+        parse_trigger(trigger)
+        trigger = "; ".join(x.strip() for x in trigger.split(";") if x.strip())
     now = time.time() if now is None else now
     rows = read_rows(path)
     if rows is None:
@@ -677,7 +826,7 @@ def ack(iid, seat, plan, recover_min=None, path=None, now=None):
         raise ValueError("%s is not an open incident (rimflow incidents)" % iid)
     mins = recover_min or load_table()["policy"]["recover_min"]
     row = {"ev": "acked", "id": iid, "at": iso(now), "t": now, "acked_t": now, "ack_by": seat, "plan": plan.strip(), "auto_ack": False,
-           "recover_by_t": now + mins * 60, "recover_by": iso(now + mins * 60)}
+           "trigger": trigger, "recover_by_t": now + mins * 60, "recover_by": iso(now + mins * 60)}
     append([row], path)
     return row
 

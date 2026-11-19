@@ -598,10 +598,13 @@ def signal_alarm(sch, st, kind, why, now):
         st["incident_failed"] = "signal of %s lost: %s: %s" % (kind, type(e).__name__, str(e))
 
 
-def incident_run(sch, st, role, mode, why, now, ids=None):
+def incident_run(sch, st, role, mode, why, now, ids=None, model=None):
     """One run the chain asks for, inside the shared per-hour budget. -> what happened. `ids`: the incidents this run
     answers; an Operations run for them covers the next scheduled slot when it is due soon (role_launch.covered_slot,
-    cover_window_s), so the daily cap is asked for one run, not two, and a refusal on it is read back by denied_runs."""
+    cover_window_s), so the daily cap is asked for one run, not two, and a refusal on it is read back by denied_runs.
+    `model`: the model this run must launch on whatever the role's model_by_mode says (the daily deep read: opus)."""
+    if model is not None and model not in RL.MODELS_OK:
+        raise ValueError("incident_run model %r: one of %s" % (model, ", ".join(RL.MODELS_OK)))
     ist = st.setdefault("incident", {})
     runs = [t for t in ist.get("runs") or [] if now - t < 3600]
     limit = IN.load_table()["policy"]["runs_per_hour"]
@@ -614,6 +617,8 @@ def incident_run(sch, st, role, mode, why, now, ids=None):
     if role == "Operations":
         rs["run_now"]["covers_slot"] = True
         rs["run_now"]["ids"] = list(ids or [])
+    if model:
+        rs["run_now"]["model"] = model
     ist["runs"] = runs + [now]
     return "%s run asked for" % role
 
@@ -827,7 +832,10 @@ def incident_execute(a, sch, st, root, now, do_ring, do_conductor, do_file=None)
         else:
             text = ("INCIDENTS %s all reach him next: one run, take them in order (rimflow incidents); write his line for each "
                     "(rimflow incident-line <id> \"<line>\"). First: %s" % (", ".join(ids), fresh[0]["text"]))
-        res = incident_run(sch, st, "Operations", "run", text, now, ids)
+        deep = any(r.get("deep") for r in fresh)
+        if deep:        # the daily deep read (incident.step): it stays on Opus (owner's card 2026-11-19)
+            text = "DAILY DEEP READ (on Opus) of every open incident at his rung. " + text
+        res = incident_run(sch, st, "Operations", "run", text, now, ids, model="opus" if deep else None)
         said.append(res)
         if res.startswith("held") or "already asked" in res:
             ist["held"].extend(fresh)           # asked again next tick, as one run

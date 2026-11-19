@@ -1945,7 +1945,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             rs["waiting"] = [job["key"], wait]
             return
         rs.pop("waiting", None)
-        r = codex_reading() if cfg.get("runner") == "codex" else reading(mode_model(cfg, job.get("mode"))
+        r = codex_reading() if cfg.get("runner") == "codex" else reading(job_model(cfg, job)
                                                                           if cfg.get("model") else None)
         if r["state"] != "MEASURED" and cfg.get("degraded_reading_ok") is True:
             # the role that reports the problem must not be refused by it (owner-authority brief 2026-11-01, Operations
@@ -2124,7 +2124,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         act(do="role_launch", role=name, unit=unit, ticket=job["item"], note=True, mode=job["mode"], budget=budget,
             slot=job["key"], band=bname, seat=role["seat"], run_max_s=max_s_of({}, cfg), account=pk.get("account"),
             why="%s %s, band %s, budget %d (cap %d x %.1f), %d used today, unit %s, model %s%s" % (
-                name, job["trigger"], bname, budget, job["cap"] or 0, factor, spent, unit, mode_model(cfg, job["mode"]),
+                name, job["trigger"], bname, budget, job["cap"] or 0, factor, spent, unit, job_model(cfg, job),
                 (", account %s (%s)" % (pk["account"], pk["state"])) if pk.get("account") else ""),
             # the blind item's note: role, mode, unit and a fixed outcome; execute swaps the outcome for the true one
             # (held / failed: review V, V4), never for a reason or an error text (review dispatcher-full #2)
@@ -3340,6 +3340,13 @@ def mode_model(role, mode):
     return (role.get("model_by_mode") or {}).get(mode) or role["model"]
 
 
+def job_model(role, job):
+    """The model a due job launches on: its run-now request's own `model` when the Dispatcher pinned one (the incident
+    clerk's daily deep read: opus, design/specs/2026-11-19-incident-clerk/boundary.md), else mode_model."""
+    pinned = (job.get("manual") or job.get("run_now") or {}).get("model")
+    return pinned if pinned in MODELS_OK else mode_model(role, job.get("mode"))
+
+
 def launch_role(role, a):
     """The schedule entry execute launches for action `a`: the entry itself, or a copy carrying the model for this
     run's mode (mode_model); for a run-now, a copy that is enabled for this one launch and runs the request's
@@ -3347,7 +3354,7 @@ def launch_role(role, a):
     selected = (a.get("run_now") or {}).get("runner")
     if selected:
         role = dict(role, runner=selected)
-    model = mode_model(role, a.get("mode"))
+    model = job_model(role, a)
     if model != role["model"]:
         role = dict(role, model=model)
     if a.get("resume"):                       # account_death: the cut-off run's session, continued
