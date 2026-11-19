@@ -2142,6 +2142,13 @@ def keeps_work(p: Path) -> bool:
     return bool(bad)
 
 
+def handed_over(p: Path) -> bool:
+    """A fixture dir sweep_fixtures leaves to the clone judgment: a git repo or a save inside a name that proves nothing.
+    A selftest_ name under ~/.seat-tmp is the runner's own prefix; in /tmp anyone can pick it."""
+    tr = tmp_root()
+    return (not p.name.startswith("selftest_") or (tr is not None and p.parent == tr)) and keeps_work(p)
+
+
 def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
     """Remove selftest fixtures a day untouched. run_selftests.py cleans its own; this catches a test run by hand or
     killed. Nothing is archived: the commits in a fixture's `c` clone are unpushed by construction. A path anything
@@ -2152,10 +2159,7 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
             out["deferred"] += 1
             continue
         tree = None if guard(p) else Tree(p)
-        tr = tmp_root()
-        # a selftest_ name under ~/.seat-tmp is the runner's own prefix; in /tmp anyone can pick it, so it proves nothing
-        if tree is not None and (not p.name.startswith("selftest_") or (tr is not None and p.parent == tr)) \
-                and keeps_work(p):
+        if tree is not None and handed_over(p):
             out["held"] += 1                        # a mkdtemp name proves nothing: clones and saves get the full judgment
             continue
         if tree is None or tree.capped or tree.errors:
@@ -2453,6 +2457,8 @@ def measure(now: float, rows: list[dict] | None, prev: dict) -> dict:
     """The readings. Before work, `rows` is None and what only a judged run knows comes from the last run's record."""
     fx_ages = []
     for p in fixture_dirs():
+        if handed_over(p):      # a clone row already: counted here too, 1201 of 1222 'stale' were these (2026-11-16)
+            continue
         age = fixture_age_h(p, now)
         if age is not None:
             fx_ages.append(age)
