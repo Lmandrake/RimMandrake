@@ -1660,6 +1660,45 @@ def t_slice4():
           (r1.returncode, r1.stderr[-200:], ran_closed, ran_open, os.path.isdir(d)))
 
 
+def t_permit_never_ghosts():
+    """Promise permit-never-ghosts (RIMMANDRAKE_FORECAST_ON_SHARED_PLANNER_DROPIN_MIRROR_DEADMAN): the permit follows
+    every `all` switch, the CLI's or a caller's, and a timed all-off that expires by itself is caught at the next
+    admitted launch, so a drop-in-gated unit is never skipped while its run sits `admitted` (a ghost)."""
+    fresh()
+    permit = C.permit_path(DB)
+    open(permit, "w").close()
+    now = time.time()
+    C.switch("all", True, "permit probe: timed", until=now + 60, now=now)
+    check(not os.path.exists(permit), "a Python-level switch on all removes the permit (no CLI needed)")
+    C.switch("all", False, "permit probe: on")
+    check(os.path.exists(permit), "a Python-level switch back on writes the permit")
+    C.switch("all", True, "permit probe: timed again", until=time.time() + 1)
+    time.sleep(1.2)
+    ran = []
+    C.launch_unit(["--", "true"], spec("rm-probe-permit-a"),
+                  runner=lambda a, **k: ran.append(a) or subprocess.CompletedProcess(a, 0, "", ""))
+    check(ran and os.path.exists(permit), "after a timed all-off expires, the next admitted launch re-writes the permit",
+          (ran, os.path.exists(permit)))
+    if not systemd_ok():
+        UNRUN.append("permit ghost probe on a real probe unit: no user systemd here")
+        return
+    os.unlink(permit)       # the state a timed all-off left behind before the fix
+    prefix = "rm-probe-r4ghost%d-" % os.getpid()
+    unit = prefix + "a"
+    marker = os.path.join(TMP, "ghost.ran")
+    d = C.install_dropin(prefix, permit)
+    try:
+        r = C.launch_unit(["--user", "--quiet", "--collect", "--", "/usr/bin/touch", marker], spec(unit),
+                          capture_output=True, text=True, timeout=30)
+        wait_for(lambda: os.path.exists(marker), 10)
+        st = C.run_state(r.run, DB) if getattr(r, "run", None) else None
+    finally:
+        C.remove_dropin(prefix)
+    check(os.path.exists(marker) and st and st["state"] != "admitted" and not os.path.isdir(d),
+          "an admitted launch on a gated prefix runs (the permit is written at admission), never a ghost",
+          (os.path.exists(marker), st and st["state"], r.returncode, getattr(r, "why", None)))
+
+
 def t_slices_review():
     """Codex's review of slices 2-4 (RIMMANDRAKE_FIX_SLICE_REVIEW_TWENTY_FINDINGS_QUEUE_FIRST), findings 1-6, each red
     on 1b79ae76b0; 7-20 are filed on that item."""
@@ -2128,7 +2167,8 @@ def main():
               t_slice4, t_slices_review, t_his_hold_refuses_launch, t_void_never_moves_a_stage,
               t_reused_name_runs_again, t_end_receipt_outlives_its_clone,
               t_stop_reaches_the_agent, t_kill_verified_dead, t_killed_run_needs_no_hand_step,
-              t_stopped_run_spends_no_trial, t_probe_never_lies, t_same_command_twice, t_every_change_is_an_act):
+              t_stopped_run_spends_no_trial, t_probe_never_lies, t_same_command_twice, t_every_change_is_an_act,
+              t_permit_never_ghosts):
         print("== %s" % t.__name__)
         try:
             t()

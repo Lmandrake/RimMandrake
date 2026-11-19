@@ -61,6 +61,8 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
 - **a-child-cgroup.** No pipeline unit sets `Delegate=`, so no unit has a child cgroup [measured 2026-11-19, grep of
   `src`]. Today the kill reads the whole subtree (53cb713db1; claim 3.8).
 - **a-path-with-a-space.** Outside plain-paths (claim 3.10). Today hook paths are quoted (53cb713db1).
+- **a-permit-write-that-fails-after-admission.** The permit's folder cannot be written in the instant after a run is
+  admitted. The launch raises and its run waits for `reconcile`, which closes it abandoned.
 - **two-threads-one-name.** Outside one-name-one-run (claim 2.1). Today each admission gets its own run id
   (be673ed895).
 
@@ -115,6 +117,10 @@ boundary page before pipeline code, Decision 4: a rare failure is listed here, n
   `ops_watch` reads `flow.ghost_runs` every run and alarms on any (`RIMMANDRAKE_END_GHOST_RUN_RECEIPT_NEVER_RAN_LUVL`). Added 2026-11-19 by
   `RIMMANDRAKE_END_GHOST_RUNS_STORE_SAYS_STARTED_SYSTEMD_GONE` (4 runs stayed started for good). Tested by
   `t_end_receipt_outlives_its_clone`.
+- **permit-never-ghosts.** The containment permit beside the store follows every `all` switch, from `pipe` or any
+  caller of `switch()`, and every admitted launch re-writes it, so a timed all-off that lapsed by itself never leaves a
+  drop-in-gated unit skipped while its run sits `admitted`. Added 2026-11-19 by
+  `RIMMANDRAKE_FORECAST_ON_SHARED_PLANNER_DROPIN_MIRROR_DEADMAN`. Tested by `t_permit_never_ghosts`.
 - **reused-name-runs-again.** A `reuse_name` launch is admitted again once its earlier run is over, and refused while
   that run is live. Tested by `t_reused_name_runs_again`.
 

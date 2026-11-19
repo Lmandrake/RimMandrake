@@ -470,6 +470,14 @@ def switch(scope, off, why, layer="control", until=None, said=None, owner_said=N
         raise Refused("no layer %r" % layer)
     if layer == "owner" and not (said or owner_said):
         raise Refused("his hold carries his words (--owner-said)")
+    try:
+        return _switch(scope, off, why, layer, until, said, owner_said, per_ruling, idem, p, now, date, extra)
+    finally:
+        if scope == "all":      # the containment permit follows the all-switch from every caller, not only `pipe`
+            permit_sync(p=p, now=now)
+
+
+def _switch(scope, off, why, layer, until, said, owner_said, per_ruling, idem, p, now, date, extra):
     with txn(p) as c:
         hit = _idem_hit(c, idem)
         if hit:
@@ -1446,6 +1454,7 @@ def launch_unit(args, spec, runner=None, p=None, clone=None, **kw):
     if not adm["ok"]:
         return _refusal(args, adm["why"])
     rid = adm["run"]
+    permit_sync(p=p)    # admitted means `all` is on: a timed all-off that lapsed by itself left no permit behind
     j = args.index("--")
     full = ["systemd-run"] + args[:j] + ["--unit", spec["unit"],
                                          "-p", "ExecCondition=" + hook_cmd("condition", rid, p, clone),
@@ -2629,8 +2638,6 @@ def main(argv=None):
             code, lines = doctor()
         elif o.verb in ("on", "off"):
             lines = cmd_switch(o, o.verb == "off")
-            if o.target == "all" and len(lines) > 1:    # the containment permit follows the all-switch at once
-                lines[1] += "; " + permit_sync()
         elif o.verb == "stop":
             code, lines = cmd_stop(o)
         elif o.verb == "show":
