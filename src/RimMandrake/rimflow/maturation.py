@@ -1915,13 +1915,17 @@ def build_facts(root, mod):
     out["bar_fp"] = bar_fingerprints(tt)
     walk = _walk_deciders(tt, bad) if isinstance(bad, list) else []
     live_red = live_known_red_owed(root, tt, [b for b in bad if b not in walk]) if isinstance(bad, list) else {}
-    stops = {}
+    stops, owed = {}, {}
     if isinstance(bad, list):     # a scene that stops at MISSING TOOL undeclared is build work too (as evaluate counts it)
         stops = {k: v for k, v in undeclared_stops(root, mod, tt).items() if k != "__did_not_run__"}
-        bad = bad + sorted(b for b in stops if b not in bad)
+        # a scene still owing script parts to an open item refuses its bar past the walk and live-red exemptions, as
+        # evaluate counts it (design/specs/2026-11-19-maturation-record/boundary.md)
+        owed = owed_scene_parts(root, mod, tt)
+        bad = bad + sorted(b for b in set(stops) | set(owed) if b not in bad)
     out.update({
-        "refused_bars": [b for b in bad if b in stops or b not in walk and b not in live_red]
+        "refused_bars": [b for b in bad if b in stops or b in owed or b not in walk and b not in live_red]
         if isinstance(bad, list) else UNM,
+        "owed_scene_parts": owed,
         "live_red_owed": sorted(live_red),
         "bars_total": n if isinstance(n, int) else UNM, "walk_bars": walk,
         "build_refusals": [r["clause"] for r in refs if r["clause"] in BUILD_CLAUSES],
@@ -1998,6 +2002,10 @@ def brief_text(root, mod, cap_usd=None, bars=None):
     else:
         L += ["", "## Bars with a deciding check that does not run (%d of %s)" % (len(ids), f.get("bars_total", UNM)), ""]
         L += _bar_lines(tt, set(ids)) or ["- none"]
+    sp = {b: i for b, i in (f.get("owed_scene_parts") or {}).items() if b in set(mine)}
+    if sp:
+        L += ["", "Of these, a deciding scene still owes script parts to an open item (scenes.json `owed_parts_item`); "
+              "work and close it: %s." % "; ".join("`%s` (%s)" % (b, ", ".join(i)) for b, i in sorted(sp.items()))]
     if f.get("walk_bars"):
         L += ["", "Bars his Stage 8 walk helps decide (a hand step for the Conductor, not yours): %s."
               % ", ".join(f["walk_bars"])]

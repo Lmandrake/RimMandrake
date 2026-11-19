@@ -102,10 +102,56 @@ def t_stage_spend_unmeasured_when_no_row_measured():
           (rc, line))
 
 
+def t_build_facts_refuses_what_evaluate_refuses():
+    """A bar the table flags runnable whose deciding scene owes script parts to an open item: evaluate refuses the exit
+    on it, so build_facts hands it to the builder in refused_bars (it was [] there: the builder had nothing to do)."""
+    import selftest_maturation as ST
+    root = os.path.join(TMP, "owed")
+    os.environ["MATURATION_CLOCK"] = str(ST.CLOCK)
+    was = ST.isolate(root)
+    try:
+        ST.copy_mods(root)
+        mod = "FlowWorks"
+        M.seed_mod(root, mod, live=False)
+        tt = json.loads(ST.read(root, mod, "version/test_table.json"))
+        bar = next(b for b in tt["bars"] if b.get("decides") and b.get("every_decider_runnable_today") is True)
+        before = M.build_facts(root, mod)
+        check(before.get("stage") == "offline_build" and isinstance(before.get("refused_bars"), list)
+              and bar["id"] not in before["refused_bars"], "the fixture: %s at offline build, %s not refused"
+              % (mod, bar["id"]), before.get("refused_bars"))
+        owed = "RIMMANDRAKE_BUILD_SELFTEST_RECORD_SCENE_PARTS_OWED"
+        with open(os.path.join(M.mod_dir(root, mod), "scenes.json"), "w") as f:
+            json.dump({"scenes": [{"id": bar["decides"][0], "owed_parts_item": [owed]}]}, f)
+        ev = os.path.join(root, "infrastructure", "state", "ledger", "events")
+        os.makedirs(ev, exist_ok=True)
+        with open(os.path.join(ev, "BENCH.jsonl"), "w") as f:
+            f.write(json.dumps({"seat": "BENCH", "event": "file", "id": owed, "title": "selftest"}) + "\n")
+        res = M.evaluate(root, mod, "blind_challenge", by="selftest", why="owed scene parts")
+        cl = [r for r in res["verdict"]["refusals"] if r["clause"] == "every_bar_has_a_check_that_runs"]
+        check(cl and owed in json.dumps(cl) and bar["id"] in json.dumps(cl), "evaluate refuses the exit on the bar",
+              json.dumps(cl)[:200])
+        f = M.build_facts(root, mod)
+        check(isinstance(f.get("refused_bars"), list) and bar["id"] in f["refused_bars"],
+              "build_facts lists the bar in refused_bars", f.get("refused_bars"))
+        check(sorted(set(before["refused_bars"]) | {bar["id"]}) == sorted(f["refused_bars"]),
+              "and nothing else changes", (before["refused_bars"], f.get("refused_bars")))
+        text, _ = M.brief_text(root, mod)
+        check("`%s` (%s)" % (bar["id"], owed) in text, "the builder's brief names the bar's open owed item",
+              [x for x in text.splitlines() if bar["id"] in x][:3])
+        with open(os.path.join(ev, "BENCH.jsonl"), "a") as fh:
+            fh.write(json.dumps({"seat": "BENCH", "event": "close", "id": owed}) + "\n")
+        f = M.build_facts(root, mod)
+        check(sorted(f.get("refused_bars") or []) == sorted(before["refused_bars"]),
+              "once the owed item closes, the bar leaves refused_bars", f.get("refused_bars"))
+    finally:
+        ST.restore(was)
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
-    for t in (t_spend_write_holds_the_mod_lock, t_stage_spend_unmeasured_when_no_row_measured):
+    for t in (t_spend_write_holds_the_mod_lock, t_stage_spend_unmeasured_when_no_row_measured,
+              t_build_facts_refuses_what_evaluate_refuses):
         if only is not None and t.__name__ not in only:
             continue
         print("== %s" % t.__name__)
