@@ -186,6 +186,8 @@ def test_launch_and_finish():
     check("success" in nt and "Built it" in nt and "600 s" in nt, "finish: the note says how it ended (%s)" % nt[:80])
     check(fcalls[1][0][0] == "./publish" and fcalls[1][0][-1] == "infrastructure/state/ledger/events/BENCH.jsonl",
           "finish: the seat shard is published")
+    msg2 = argv[argv.index("-p", argv.index("--")) + 1]
+    check("OWNER.jsonl" in msg2, "argv: the footer says an OWNER-authority event's shard is published too")
     with open(os.environ["RM_CONDUCTOR_LOG"]) as f:
         log = f.read()
     check(log.count("DETACHED RUN ENDED") == 1 and "SOME_ITEM_TO_BUILD" in log, "finish: one Conductor log line")
@@ -278,14 +280,16 @@ def det_clone(item, how=None, status="finished", unit=None, path=None, state=Non
     return unit, path
 
 
-def sh_runner(shard_dirty=False):
-    """Records every call; `git status` on the shard says dirty or clean, ./publish prints a sha."""
+def sh_runner(shard_dirty=False, others=()):
+    """Records every call; `git status` on the shard says dirty or clean (`others`: more dirty shards, e.g. OWNER),
+    ./publish prints a sha."""
     calls = []
 
     def run(argv, **kw):
         calls.append(list(argv))
         if argv[:3] == ["git", "status", "--porcelain"]:
-            return R(0, " M infrastructure/state/ledger/events/BENCH.jsonl\n" if shard_dirty else "")
+            return R(0, (" M infrastructure/state/ledger/events/BENCH.jsonl\n" if shard_dirty else "")
+                     + "".join(" M infrastructure/state/ledger/events/%s.jsonl\n" % o for o in others))
         if argv[0] == "./publish":
             return R(0, "PUBLISHED abcdef1234567")
         return R(0, "")
@@ -345,6 +349,24 @@ def _test_return():
     sync = [i for i, c in enumerate(calls) if c[0] == "./sync"]
     check(len(pubs) == 1 and calls[pubs[0]][-1].endswith("events/BENCH.jsonl") and pubs[0] < sync[0],
           "return: a shard the run left dirty is published, before the clone is levelled")
+    # RIMMANDRAKE_PUBLISH_EVERY_DIRTY_SHARD_OWNER_FILES_WENT_UNSENT: a --per-ruling / --owner-said / --by-card event
+    # lands in OWNER.jsonl, not the seat's shard; a return that published only the seat's shard bundled two file events
+    unit, clone = det_clone("OWNER_SHARD")
+    calls, run = sh_runner(shard_dirty=True, others=("OWNER",))
+    seen, ev = fake_evictor()
+    DH.return_clone(unit, now=T0, runner=run, evictor=ev, busy=not_busy)
+    pubs = [c for c in calls if c[0] == "./publish"]
+    check(len(pubs) == 1 and pubs[0][-2:] == ["infrastructure/state/ledger/events/BENCH.jsonl",
+                                             "infrastructure/state/ledger/events/OWNER.jsonl"],
+          "return: every dirty shard is published, the OWNER shard a --per-ruling filing wrote included (%s)" % pubs)
+    unit, clone = det_clone("OWNER_ONLY")
+    calls, run = sh_runner(shard_dirty=False, others=("OWNER",))
+    seen, ev = fake_evictor()
+    DH.return_clone(unit, now=T0, runner=run, evictor=ev, busy=not_busy)
+    pubs = [c for c in calls if c[0] == "./publish"]
+    check(len(pubs) == 1 and pubs[0][-1] == "infrastructure/state/ledger/events/OWNER.jsonl",
+          "return: a dirty OWNER shard alone is published too (%s)" % pubs)
+    check(DH.dirty_shards("/nonexistent/clone", "BENCH") == [], "dirty_shards: a clone git cannot read answers []")
     unit, clone = det_clone("OLD_RELEASE")
     calls, run = sh_runner(shard_dirty=True)
     seen, ev = fake_evictor(bundle="/store/orphans/bundles/OLD_RELEASE-1")

@@ -107,12 +107,30 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
   flagged to the Conductor.
 - Before you stop, and at least every 20 minutes: write your state, evidence paths and one imperative NEXT as
   `python3 src/RimMandrake/rimflow/cli.py note {item} --text "..." --seat {seat} --why "detached run"`, then publish the
-  shard: `./publish -m "ledger: {item} note" infrastructure/state/ledger/events/{seat}.jsonl`.
+  shard: `./publish -m "ledger: {item} note" infrastructure/state/ledger/events/{seat}.jsonl`. An event you write with
+  --per-ruling, --owner-said or --by-card (a `file` under a ruling, say) lands in OWNER.jsonl: publish that shard too.
 - This run ends when your turn ends: a helper or command still running in the background then is killed and its work
   is lost. Run helpers and long commands in the foreground and take their results before your last message; never end
   "waiting" for anything.
 - Nobody reads your stdout until you end; the note is what the Conductor sees. End with a 5-line summary.
 """
+
+
+def dirty_shards(clone, seat, runner=subprocess.run):
+    """RIMMANDRAKE_PUBLISH_EVERY_DIRTY_SHARD_OWNER_FILES_WENT_UNSENT: -> every ledger shard under events/ the clone has
+    changed, the seat's own first. A --per-ruling/--owner-said/--by-card event lands in OWNER.jsonl, not the seat's
+    shard; publishing only the seat's left two file events to ride into an orphan bundle (2026-11-19). [] when git
+    cannot answer (then the seat's shard is still published by its caller)."""
+    try:
+        r = runner(["git", "status", "--porcelain", "--untracked-files=all", "--", EVENTS_REL], cwd=clone,
+                   capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+    except Exception:  # noqa: BLE001
+        return []
+    if getattr(r, "returncode", 1):
+        return []
+    paths = {ln[3:].strip() for ln in (r.stdout or "").splitlines() if ln[3:].strip().endswith(".jsonl")}
+    own = "%s/%s.jsonl" % (EVENTS_REL, seat)
+    return sorted(paths, key=lambda p: (p != own, p))
 
 
 def state_dir():
@@ -505,9 +523,9 @@ def return_clone(unit, now=None, runner=subprocess.run, evictor=None, busy=None,
             steps.append("conversations: " + _tail(r))
     shard = "infrastructure/state/ledger/events/%s.jsonl" % seat
     if publish_ledger:
-        r = run(["git", "status", "--porcelain", "--", shard], "shard status", 60)
-        if r.returncode == 0 and (r.stdout or "").strip():
-            r = run(["./publish", "-m", "ledger: %s returned its clone" % item, shard], "publish")
+        shards = dirty_shards(clone, seat, lambda argv, **kw: run(argv, "shard status", 60))
+        if shards:
+            r = run(["./publish", "-m", "ledger: %s returned its clone" % item] + shards, "publish")
             m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", _tail(r, 400))
             steps.append("publish " + (m.group(1)[:10] if m else "FAILED: " + _tail(r, 100)))
     run(["./sync"], "sync")
@@ -1338,8 +1356,9 @@ def finish(unit, now=None, env=None, runner=subprocess.run, log_path=None, item_
         r = runner(["python3", cli, "note", item, "--text", text, "--seat", seat, "--why", "detached run ended"],
                    cwd=clone, capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
         steps.append("note exit %d" % r.returncode)
-        r = runner(["./publish", "-m", "ledger: detached run on %s ended" % item,
-                    "infrastructure/state/ledger/events/%s.jsonl" % seat],
+        own = "infrastructure/state/ledger/events/%s.jsonl" % seat
+        r = runner(["./publish", "-m", "ledger: detached run on %s ended" % item, own]
+                   + [p for p in dirty_shards(clone, seat) if p != own],
                    cwd=clone, capture_output=True, text=True, timeout=300, stdin=subprocess.DEVNULL)
         pub = ((r.stdout or "") + (r.stderr or "")).strip()
         m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", pub)
