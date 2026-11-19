@@ -9,16 +9,16 @@ talking to Mandrake.
 | Term | Means |
 |---|---|
 | **Conductor** | The one window he talks to: it decides, routes the work and starts helpers. Also provides collaborative live-game development and testing for smaller items or generates excellent tickets for large work orders. |
-| **Relentless Pipeline** | Supervisor pipeline: no AI, tickets on disk, staffs builder/fixers until blind judge passes each one. Different builder/fixers may be chosen. |
-| **Relentless worker** | Builder/Judge pair filling one Relentless Pipeline place. Builder works one ticket over fresh passes, state on disk. Blind Judge, who never saw the work, sets the exam before and marks it after. |
-| **Artisan** | One loop on one whole piece of work (e.g. mod). Fresh passes are held to a frozen experience description. Blind judge screens each done-claim. |
-| **Whittle** | Minimalist artisan that takes one small well defined ticket with acceptance criteria per round and proves it before taking the next. |
-| **Designer** | Experimental agent: Interactive analysis to produce better fleshed out mod ideas before any code or when inconsistencies are discovered that need refinement. |
+| **Maturation Pipeline** | The one pipeline that carries each mod, stage by stage, from design to his walk. |
+| **Judge** | An agent that did not build the work and decides whether it passes or is refused against what the work promised. |
+| **Designer** | The Maturation Pipeline role that argues a mod idea into a well-defined design before any code, and again when an inconsistency needs refining. |
 | **Operations** | The role that watches the production system's health and raises the alarm. |
 | **Dispatcher** | The clock that starts scheduled roles; there is no AI in it. |
-| **Test Pilot** | One live debugging sitting on one stuck item/ticket, ending in measured cause and check that it produces the fail. |
+| **Test Pilot** | One live debugging sitting on one stuck item/ticket, ending in measured cause and check that it produces the fail. Also called Test Drive. |
+| **Fable Rescue** | A Fable run sent to a stuck mod when ordinary building could not finish it. "Rescuer" and "Rescue agent" mean it. |
 | **Foundry** | The old builder window; retired, folded into the Conductor now. |
 | **Bench** | The old name for the window he talks to; retired, it is the Conductor now. |
+| **Relentless** | The retired pipeline era before the Maturation Pipeline; some live paths and names still say it. |
 
 ## The game and the proof
 
@@ -35,6 +35,9 @@ talking to Mandrake.
 | **UNMEASURED** | The proof could not ask the question; never a soft pass. |
 | **Blocked** | Cannot move until a named other thing is finished or fixed. |
 | **Ruling** | A decision of his that stands until he reverses it. |
+| **Bar** | A key capability a mod promises the player, judged as an experience; never a tuning number. |
+| **Walk** | His own sitting in the game that passes or refuses a mod; only he does it. |
+| **Hold** | His stop on a mod: nothing launches on it until he or the Conductor lifts it. |
 
 ## Mods, layers and machines
 
@@ -44,6 +47,7 @@ talking to Mandrake.
 | **Gimme Some Slack (GSS)** | Power cables with slack in them: loose cords on the floor and overhead lines between masts. |
 | **Huge Things** | Huge plants and animals that behave like their size. |
 | **Pyrelands** | A hot savanna biome that burns on a cycle of its own. |
+| **Graffiti** | (his to write) |
 | **Explosive Knockback** | Every blast throws everything light near it away from its centre. |
 | **Baroque Biomes** | Our family of exotic biomes, each a mod of its own. |
 | **Star Wars layer** | Everything that would suit any Star Wars scenario unchanged: races, droids, weapons. |
