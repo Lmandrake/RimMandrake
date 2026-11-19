@@ -5,7 +5,9 @@
 owner's instruction to see every biome "through the lens of Utinni". It replaces the frozen definition sheet, the
 two rosters, the "make it shine" options, the stocked-pool design, the bedazzle review and the cleanse proposal as
 the place to read; what happened to every idea in them is in `design/concepts/WeepingStones/rewrite_choices.md`.
-Nothing has been deleted yet. This is a design document only and it launches nothing.
+Nothing has been deleted yet. This is a design document only and it launches nothing. A second reader checked
+it against every source on 2026-11-18 and corrected it where the sources said otherwise; the corrections are listed
+at the top of the choices page.
 
 **Who reads this next:** a Designer run on this concept is handed the list of files in
 `design/concepts/WeepingStones/` (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its
@@ -17,6 +19,11 @@ applied.
 `UNSETTLED` is a fact the sources do not fix. `UNMEASURED` is an engine fact nobody has checked. "Built" means the
 census of 2026-11-17 (`cleanse/census.json`) or the special-mechanics review of 2026-10-22 found it in source; it
 does not mean it has passed anything, except where a live result is named.
+
+**Names.** This file uses the names the owner gave at the art sheet of 2026-10-10, which are the labels the game
+shows: the *burra burra* (older documents: burrak), the *iaala* (karrek), the *fan eel* (vizhik), the *dewglider*
+(kirruk), the *softstone* (the wild ikkal) and the *colossia*. Quotations from older documents keep the older
+word.
 
 ---
 
@@ -71,8 +78,10 @@ in this design's five, and the place a battered crew comes to drink, eat, trade 
 ship parked at a pool that half the desert visits counts as loud to the search. If it does, every wait is halved
 and the outer edge is about two weeks. The sources do not say.)
 
-**Cover from orbit (his ruling of 2026-11-18: partial cover, by biome).** **None in clear air**, and the base
-state of the sky is *"clear and windy"*. Ordinary fog, when it comes, is one step for as long as it stands. The
+**Cover from orbit (his ruling of 2026-11-18: partial cover, by biome).** **None in clear air**, and clear
+is about two thirds of the sky here. Fog is one step for as long as it stands, and fog is about a quarter of this
+biome's weather (25 parts in 102 in the biome's own weather table), so a crew that waits can usually have a
+fogged day. The
 hot seep oases are a separate case: the sheet gives them *"ground-steam instead of fog"*, and steam is one step by
 his ruling; whether a seep oasis map actually has standing steam is `UNMEASURED`. Overhangs hide people, not a
 ship.
@@ -84,16 +93,30 @@ dayside comes to the water. The sheet's own list of who is found at an oasis run
 *"market-day happens at the water's edge."* The crew arrives with a hold full of whatever the last stop was worth
 and leaves with fuel. Who sells, and at what price, is campaign layer.
 
-**What the place does to the ship (his ruling of 2026-11-18, in 0.1.0).** Almost nothing, and this design does not
-invent a harsh wear for a place whose sources give it none. The review of 2026-10-02 says in so many words that
-the Weeping Stones *"does nothing to your ship"*. What the sheet does give is its own physics and its own palette:
-*"every cold shaded face of it weeps"*, and *"verdigris where metal meets moss."* A hull that stands here for
-weeks is a tall cold shaded face in a wet wind. So the wear is the gentlest on the planet and half of it is a
-gift: **the ship's shaded side weeps.** Water films it and runs down; moss and weep-mat take hold in the seams;
-exposed metal goes green. The answer is hands-on and small (scrape and wipe, or leave it and take off looking like
-a ruin), and a crew that sets a basin under the drip has a trickle of free water. The *"odd sandstorm"* scours
-like any sandstorm. None of this is built. It is the small build his ruling asks of this biome, and it is new: see
-the choices page.
+**What the place does to the ship (his ruling of 2026-11-18, in 0.1.0).** Little, and two things that are already
+built. His ruling names *"Heat ... Rough weather ... Different kinds of shields or armor"*, and the frame for it
+exists in `src/RimUtinni/ShipShields/`: an unshielded hull on a hazardous map loses structure slowly, faster after
+some hours, with warning letters and never a hard stop.
+
+- **Sandstorms.** Any weather that carries sand counts as a particulate hazard in that frame, and sandstorms are in
+  this biome's sky (6 parts in 102). They are rare; while one blows, the hull wears. His answer of 2026-09-02 is
+  the particulate screen: *"Light kinetic deflectors handle wind, ash, vapor, bio contamination, spores, smoke,
+  sand, and rain damage completely as well as repels small animals."*
+- **Killing heat, at the hottest oases only.** The frame's heat hazard begins at 58 °C outdoors. The old
+  measurement of this biome puts the ninetieth tile at 57 °C and the hottest at 63.5 °C, so only the hot seep oases
+  reach it. His answer is the thermal veil, which will *"reflect all external heat outward with a mild mirror
+  sheen to the shield, but also reflect all internal heat inward, so the temperature slowly climbs anyway."* One
+  generator holds one field at a time.
+- On an ordinary tile in clear air or fog, nothing wears the hull. The review of 2026-10-02 says the Weeping
+  Stones *"does nothing to your ship"*, and for most landings that stays true. (`UNMEASURED`: neither wear has
+  been watched on a Weeping Stones map.)
+
+**A proposal, not from any source: the ship weeps.** The first pass of this design invented one more wear, from
+the sheet's physics (*"every cold shaded face of it weeps"*) and its palette (*"verdigris where metal meets
+moss"*): a hull that stands here for weeks is a tall cold shaded face in a wet wind, so its shaded side films with
+water, moss takes the seams, bare metal greens, and a basin set under the drip gives a trickle of water. It is
+gentle and half a gift. No source contains it and nothing builds it. It is kept here marked as a proposal, behind
+the two built wears; see `NEEDS HIM`.
 
 ---
 
@@ -108,9 +131,14 @@ From above, the tile is *"the most legible tile on the world"*: concentric rings
 then sand."* The ship has to come down on the dry shoulder outside the green. Everything at the water looks up.
 Nothing leaves. A pool is the one place on Ash'karr where a ship landing is not a reason to stop drinking.
 
+The campaign already has a line for this moment, in its Narrator's voice (`design/Jawa/worldbuilding/
+sacred_sites_pass_1.md`; the hook that would speak it is not built): *"A single trembling drop holds itself
+against the whole desert's want to drink it. The ship's hull throws its shadow across the water and does not
+spill a drop of its own — a good beginning, and it is noticed as one."*
+
 The ramp comes down into white glare and a wet wind. Blade-grass covers the hillside in tufts that all face one
 way, *"like iron filings"*. On the shaded side of every rock there is a black wet streak and something green
-holding on beside it.
+holding on beside it. (The streak is owed: nothing known draws it today. The green is built.)
 
 Then the crew walks down to the water, and into the densest crowd of large animals any of them has ever stood in.
 The sheet calls it *"pilgrimage density"*. There are herds drinking in rotation. There is a placid
@@ -137,24 +165,36 @@ middle of it, very small, being ignored.
   Salvecomb, a single arched frond *"serrated along its windward edge like a comb's teeth"*, the medicine plant.
   A dewgourd, if someone else grew it: the owner's spec was *"a large melon like gourd that takes a long time to
   grow but is then worth a lot of food and keeps for a long time."*
-- **Timber is scarce.** The only trees are rockfingers, from his own brief: *"long terrible shadows from the rims
-  of tall rocks… very scraggly and hardy."*
+- **The plants are a map of the water.** *"The flora is also the biome's plumbing diagram."* A weep-mat marks a
+  wet face (*"a face without one is a face that has gone dry"*); a shadefern *"marks which side of a rock is the
+  cold side"*; *"a dripfringe curtain over a dark mouth means water below."* A crew that has watered at these
+  pools all its life reads them without being told.
+- **Timber is scarce.** Two trees, both thin on the ground: the rockfinger, from his own brief (*"long terrible
+  shadows from the rims of tall rocks… very scraggly and hardy"*; the roster adds *"you meet the shadow before
+  the tree"*), and the talvessar, an ember-leaf tree he placed here on 2026-10-19.
+- **The wild pool is gentle.** By his card of 2026-09-24 the nastiness is what pens breed: *"the pen makes the
+  monster."* A line in a wild pool brings up the softstone, which *"a child can lift"*; the duul, *"the
+  janitor"* (*"It is edible in the sense that most things are"*); the ullo, *"the wedding bell"*, whose
+  *"light goes out in your hands"*; and now and then the vobbal, which stacks pebbles and offerings into towers
+  in the shallows, and which *"some oases forbid catching."*
 - **The fish.** His verdict of 2026-09-24 on the pool stock: *"Make the fish nasty and way too active. And some
-  shouldn't be fish but alien beasts you really wonder if we should be eating."* The first crew member to wade in
-  with a net finds out.
+  shouldn't be fish but alien beasts you really wonder if we should be eating."* The first crew member to put a
+  hand into a pen finds out.
 
 ## The first week
 
 - **Netting stock.** A wild pool holds a thin wild stock. A crew member with a net can take breeders: skarrin,
-  *"a forearm-long pool fish that spends as much time above the water as in it"*; karrek, *"a boiling crowd of
-  little armored fish that hit thrown feed like one animal and leave nothing"*; the vizhik, an eel *"never where
-  you left it"*, which escapes. (As built today the wild skarrin outruns the handler before the net is thrown, and
-  that is filed as a defect in how capture works.)
+  *"a forearm-long pool fish that spends as much time above the water as in it"*; the iaala, *"a boiling crowd of
+  little armored fish that hit thrown feed like one animal and leave nothing"*; the fan eel, *"never where
+  you left it"*, which escapes. The net is thrown, and a fast fish can be out from under it before it lands. That
+  is his ruling of 2026-10-07, not a defect: *"It's supposed to depend on how fast they are. Whether the net can
+  hit the right place."*
 - **A pen for the length of a stop.** A pen drawn over a stretch of pool beside the ship, stocked, fed and read.
   The owner's answer of 2026-11-10 on the routine: *"Care automatically; harvest only on orders. Use existing
   RimWorld animal tools for this work; do not invent new UI. Deliberate harvest orders protect breeding stock,
-  while the player must notice overcrowding."* Whatever the pen yields before the Empire arrives goes into the
-  hold.
+  while the player must notice overcrowding."* That is the rule to build to; today's workers harvest on their own and keep no reserve. Whatever the pen
+  yields before the Empire arrives goes into the hold. (`UNSETTLED`: a stop's pen is small, and in a small pen the
+  breeders that must be kept may already be a crowd. Nothing yet says which gives way.)
 - **The ones that are not fish.** In the same water live the loomu, *"a cat-sized, boneless, dove-grey thing that
   ... repeats what it hears at the bank: the feed whistle, the wind through the vanes, a child's laugh, its
   keeper's name for it"*; the huldu, *"body-warm, with a pulse you can feel through the skin"*, which when lifted
@@ -162,16 +202,20 @@ middle of it, very small, being ignored.
   doormat-sized floor-thing that knows the feed schedule better than the apprentice does."* The stocked-pool
   design's line for all three: *"They are the best eating in the biome. Everyone says so. Nobody says it
   comfortably."* Whoever cooks one and whoever eats one remembers doing it.
-- **The pool reads back.** A healthy pen cuts rings on the water. A thin one is hungry. A silent one is in
-  trouble.
+- **The pool reads back.** A healthy pen cuts rings on the water; a thin one is hungry; a silent one is in
+  trouble. That is the design. Today the pen's state is a line of text when the pen is selected, and nothing is
+  drawn on the water.
 - **The vhorrin.** A pen left crowded or left to crash, because the crew was busy with something else, can turn
   out one fish that is *"the same stock, grown past the point where the pen can hold anything else"*. It eats the
-  farm. It has to be culled, deliberately, and a culled vhorrin is a great deal of meat.
+  farm (as designed; the built vhorrin takes one fish's place and then eats nothing). It has to be culled,
+  deliberately, and a culled vhorrin is a great deal of meat. Because care is automatic and harvest is on
+  orders, a crew that only tends will crowd its own pen; in his words, *"the player must notice overcrowding."*
 - **Who else is at the water.** Sillik on the wet faces, licking the film. A ssurr at the bank, crest-fan open,
   courting: *"harmless, spectacular, beloved."* Mirrik rising off the pool, *"the dew-smoke"*, really flying. A
-  burrak wallowing out a new basin. The tirbak, *"the walking cistern"*, the caravan mount of the oasis string.
+  burra burra wallowing out a new basin. The tirbak, *"the walking cistern"*, the caravan mount of the oasis string.
   Out past the scrub, the vhakk, *"the warden"*, which *"never hunts at water"* and owns the approaches instead.
-  *"Its patrol is the oasis's outermost wall."*
+  *"Its patrol is the oasis's outermost wall."* (Its shipped description says the opposite, that it ambushes
+  drinkers from the shallows: see `NEEDS HIM`.)
 - **The road in and out is where things die.** *"Violence lives on the approaches and in scarcity, never at full
   water."* Errands away from the pool pass through the warden's ground.
 
@@ -187,7 +231,7 @@ Each can happen inside the visit. Each says what is on screen.
    perhaps two seconds to get that Jawa up the ramp.
 3. **The boil.** *On screen:* a handful of feed hits a stocked pen and the surface erupts; a handler pulls back
    an arm with rather less sleeve on it.
-4. **The escape.** *On screen:* an eel leaves the pen, crosses wet stone on its gills, and is in the next pool
+4. **The escape.** *On screen:* a fan eel leaves the pen, crosses wet stone on its gills, and is in the next pool
    before anyone has put down the bucket.
 5. **The one that says your name.** *On screen:* a loomu in the seep-warm water at the bank gives a Jawa's own
    trading cry back to it, in its own voice, and then again. *Why it is funny, and then not:* it is on the menu.
@@ -199,7 +243,7 @@ Each can happen inside the visit. Each says what is on screen.
    rattles, and dances at another one, in the middle of the crew's bucket line.
 9. **The warden's turn.** *On screen:* a hauler coming back along the approach with something low and
    blade-backed pacing it through the scrub, which stops, exactly, where the green begins.
-10. **The ship weeps.** *On screen:* a week in, the hull's shaded flank has a black wet streak down it and a line
+10. **The ship weeps** (if the proposal is taken). *On screen:* a week in, the hull's shaded flank has a black wet streak down it and a line
     of moss in a seam, and a sillik is licking it.
 
 ## When the Empire arrives
@@ -254,13 +298,15 @@ better than it is used to.
 - **Full water tanks.**
 - **Fuel, bought.**
 - **A hold of fish,** and the memory of what some of it was.
+- **Iaala paste,** a ration *"that keeps"*, and **huldu fur,** which he called *"a trading commodity"*.
 - **Breeding stock in a wet skin,** for the next water the crew can pen. The stocked-pool design's own picture:
   *"A colonist nets breeding stock at a strange oasis, carries it home in a wet skin."*
 - **Medicine and keeping food:** salvecomb, bladder-fruit, a dewgourd.
-- **A tirbak,** if one can be bought or tamed: a pack animal that carries its own water for days.
+- **A tirbak,** if one can be bought or tamed: a pack animal that carries its own water for days. (Tirbak and
+  vellak walk in traders' caravans as pack beasts, which is where a crew buys one.)
 - *0.2.0:* **the ancient condenser.** The Weeping Stones' named gift to the ship: the oldest stone-crab on the
   world carries a running ancient water machine, and a crew can cut it out. *"It weeps water with no power or fuel
-  wherever it is installed."* One per world. See `NEEDS HIM`.
+  wherever it is installed."* One per world. As built it fills flasks that nothing yet drinks. See `NEEDS HIM`.
 - *0.2.0:* **dewsilk,** from the cocoons of a tamed mirrik swarm: *"fiercely hydrophilic"*, the cloth of moisture
   cloaks and comb-sails.
 
@@ -272,14 +318,14 @@ better than it is used to.
 | Predators and prey drink at the same water; nothing starts a hunt near it. | A hungry predator and its prey at a full pool, wild and tamed. | The same pair far from water: the hunt happens. |
 | Whoever lands the first guilty blow near the water is turned on by the animals there; defending oneself is not a breach. | A raider fires on a crew member at the pool; on another run the crew member fires first. | The defender who shoots back is not punished. The same shots on the dry shoulder draw no retribution. |
 | Shade under an overhang protects from the sun where the sun is high. | A pawn in the open and one under an overhang, on a high-sun tile and on a low-sun tile. | No local heat field: the difference follows the sun's angle. |
-| Wild pool stock can be netted alive and carried. | A handler nets a breeder from a wild pool and puts it in a pen. | The capture has to be possible for an ordinary handler against an ordinary fish; the animal that was netted is the animal in the pen. |
+| Wild pool stock can be netted alive and carried. | A handler nets a breeder from a wild pool and puts it in a pen. | A net that lands on the fish takes it; a fish that has moved off is missed, by his ruling of 2026-10-07. The animal that was netted is the animal in the pen. |
 | A pen is cared for without orders and harvested only on orders, with existing animal tools; breeders are not sold off by accident. | A stocked, fed pen through the days of a stop with a harvest order given once. | A pen left with no reserve set must not be emptied by helpful workers. Real births, not repeated wild captures, are what count as a farm. |
 | The pool's state can be read from the water before a loss: productive, thin, crowded, silent. | Four pens in the four states, looked at with the inspect pane closed (a joint sitting). | A fed, crowded pen must not look reassuring. |
 | A mismanaged pen breeds a vhorrin, which eats the stock in its pen and leaves remains; culling it ends that and yields meat; the pen can recover. | Crowd one pen and starve another; cull; restock. | Save and reload with a vhorrin mid-meal. A well-kept pen never breeds one. |
-| The fish are nasty: a pen bites the hand that feeds it, and one species escapes over wet stone by a route the player can see. | Feed a pen bare-handed; watch a vizhik pen at a low wall. | The escaped eel is somewhere reachable, not gone. |
-| Eating the ones that are not fish is remembered by the eater and the cook. | Two meals, one of murrin and one of huldu, served to the same pawns. | A callous eater does not mind. |
-| The natives carry the comb and live their lives at the water; the real flyers really fly. | Sillik, ssurr, mirrik, burrak, tirbak, vhakk, vellak and kirruk on one map; flight read from flight state. | The vhakk hunts on the approach and stops at the green. |
-| A hull that stands here weeps on its shaded side, greens where metal is bare, and gives a trickle of water to a basin set under it. | A ship parked for the length of a stop, one side to the sun. | The sunlit side stays dry and clean. Wiping it off works. |
+| The fish are nasty: a pen bites the hand that feeds it, and one species escapes over wet stone by a route the player can see. | Feed a pen bare-handed; watch a fan eel pen. | The escaped eel is somewhere reachable, not gone. |
+| Eating the ones that are not fish is remembered by the eater (built) and the cook (owed). | Two meals, one of murrin and one of huldu, served to the same pawns. | A callous eater does not mind. |
+| The natives carry the comb and live their lives at the water; the real flyers really fly. | Sillik, ssurr, mirrik, burra burra, tirbak, vhakk, vellak and dewglider on one map; flight read from flight state. | The vhakk hunts on the approach and stops at the green. |
+| An unshielded hull wears in a sandstorm and, at the hottest oases, in killing heat; a shielded one does not; on a mild tile in clear air or fog nothing wears it. | A ship parked through a sandstorm, shielded and unshielded; the same on a hot seep tile. | No wear on a mild tile in clear air. (If the weeping-hull proposal is taken it adds a row: the shaded side wets and greens, the sunlit side stays dry, and wiping it off works.) |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a dry bright upland with pools
 and a lot of animals (standing rule, every mod).
@@ -309,34 +355,42 @@ Every feature is in one bucket.
 
 **0.1.0, the stop**
 - The land: dry stone, weeping shaded faces, green pool margins, the open seep exception; clear and windy, fog,
-  the odd sandstorm; no rain, no snow. (built)
+  the odd sandstorm; no rain, no snow. (the ground, pools, plants and weather are built; nothing known draws the wet
+  streak on the stone, which is owed)
 - The one sun with overhang shade. (built; the cleanse found local heat fields and arrival advice that contradict
   the later roof-and-parasol ruling, to be corrected)
 - The truce: no hunt at full water, and retribution for the first guilty blow, for crew, raiders and Empire
   alike. (built, never seen live)
-- The cast as animals with ordinary lives: sillik, mirrik, ssurr, tirbak, burrak, vhakk, vellak, kirruk, the
-  murrin, the gorrask as an animal, with the campaign's eight canon beasts where the patch puts them. (built; the
-  mirrik's natural spawning is unproven)
-- The plants: dewblade, weep-mat, verdimoss, shadefern, bladderquill and its fruit, salvecomb, rockfinger,
-  dripfringe, steamfrond, dewgourd. (built)
-- Fishing, and netting live stock. (built; the capture is broken as designed and owed a repair)
+- The cast as animals with ordinary lives: sillik, mirrik, ssurr, tirbak, burra burra, vhakk, vellak, dewglider,
+  colossia, the murrin, the gorrask as an animal, with the campaign's eight canon beasts where the patch puts them.
+  (built; the mirrik is missing from the biome's animal list and no other route onto the map is known; the vhakk's
+  shipped description contradicts the ambush ban)
+- The plants: dewblade, weep-mat, verdimoss, shadefern, bladderquill and its fruit, salvecomb, rockfinger, talvessar,
+  dripfringe, steamfrond and its korrim spice, dewgourd. (built)
+- Fishing for the six gentle wild fish, and netting live stock with a thrown net that a fast fish can escape, by
+  his ruling. (built; the net job failed its last recorded live run, 2026-10-07, on another biome's map)
 - The stocked pen for the length of a stop: care without orders, harvest on orders, the readable water, the
-  nasty fish, the vizhik's escape. (built offline)
-- The ones that are not fish, and the doubt. (built)
-- The vhorrin, its cull and the pen's recovery. (built offline)
+  nasty fish, the fan eel's escape. (built offline in part: the jobs exist, but harvest takes no orders and keeps
+  no reserve, nothing is drawn on the water, and the escape is a silent move to dry ground)
+- The ones that are not fish, and the doubt. (built for the eater; the cook's memory is not)
+- The vhorrin, its cull and the pen's recovery. (built offline: it appears and can be culled; it does not yet eat
+  the stock, and recovery is unproven)
 - Water for the ship. (built by being water)
-- The ship's shaded side weeping. (new; owed, small)
+- Hull wear from sandstorms and, at the hottest oases, from heat, answered by his shields. (built in
+  `src/RimUtinni/ShipShields/`; never watched here)
+- The ship's shaded side weeping. (a proposal of this design, in no source; owed only if he takes it)
 - No cover in clear air; fog as one step. (owed, small)
 
 **0.2.0, the stop with company**
 - The walking condenser: the oldest gorrask, the pool that forms round it for a season and dries when it leaves,
   and the three choices (guide it, sell where it goes next, or cut the machine out for the ship). (built; a closed
-  item records the pool forming and the three choices firing end to end, from a debug spawn)
+  item records the pool forming and the three choices firing end to end, from a debug spawn. As built the sale
+  pays at once and delivers nothing, and the cut kills the crab without the truce answering)
 - Its two quests, each closing the other: the Hutts' capture for the Arena, or keeping it free with the moisture
   farmers against hunters. (built, never run)
 - Dewsilk from a tamed mirrik swarm's cocoons. (built)
 - Rare catches from the pools. (built in part)
-- The burrak's dug basins becoming new small pools. (not built)
+- The burra burra's dug basins becoming new small pools. (not built)
 - The loomu doing anything with what it repeats; the special ways the pool beasts are caught. (not built)
 - Sound: each oasis's own chord from its vanes, and silence at a dead one. (not built)
 - The ship's acoustic scanner readings here. (built)
@@ -344,13 +398,15 @@ Every feature is in one bucket.
 **Later (a crew that stays, a colony, or the campaign layer)**
 - The oasis-maker: an ancient machine that grows a pool ring by ring beside shaded rock, *"a treasure type"*. His
   own words when he asked for it: *"Unfortunately it's not very important for the Jawa utinni scenario but it's a
-  nice mod component."*
+  nice mod component."* Later the same day he added that they are *"sold but very expensive. Same tech as moisture
+  farming itself."*
 - The recapture ladder: condenser fins, shade-lids, cistern shafts, the servo-vented enclosure, *"the visible
-  endgame of desert wealth."* The ancient vane arrays as salvage.
+  endgame of desert wealth."* The ancient vane arrays as salvage, and the named condensers as things a scavenger can
+  repair (his ruling of 2026-10-03: *"it's a scavenger game, so this really should be honored"*).
 - The pen as a farm across seasons: retained breeders, repeated surplus, the annual lockout.
 - The faction faces at the water, the 186 named pools and their loadouts, the Hutt palaces, the Imperial metering
   station: campaign.
-- The Refused Toll (his words: *"This is pretty cool ... Gotta do it."*), tabled with all rites on 2026-10-03 and
+- The Refused Toll (his words: *"This is pretty cool ... Gotta do it."*), deferred with all rites on 2026-10-23 and
   blocked on a kind of site that does not exist yet.
 - Pilgrim and courtship choreography at the pools. Truce-stones and Oomo tokens.
 - The four close misses of 2026-10-02 (the fish walk, the pilgrim passage through the ship, the dewsilk casket,
@@ -358,7 +414,10 @@ Every feature is in one bucket.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - Wind-hour (*"nah."*) and the born-and-dying water (*"nah too much."*), both dead by his word, 2026-09-24.
-- Restorable vane arrays in four states (redirected into the oasis-maker the same day).
+- Restorable vane arrays in four states (redirected into the oasis-maker the same day). The four-state draft only:
+  a condenser a scavenger can repair is kept, under "later", by his ruling of 2026-10-03.
+- Ambrosia at the pools (cut by his card, 2026-10-19, after his art note of 2026-10-10 had asked for it to be
+  special).
 - The truce as diplomacy or neutral ground (redirected into animal retribution the same day).
 - An ambush predator at the pool margin; a toll on unsettled water; any native without the comb; rain-fed
   ecology; snow (sheet bans).
@@ -369,19 +428,44 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-1. **Is the pen still the signature, for a ship?** His experience line ends *"Keep the oasis healthy, or it
-   breeds something wrong"*, and the cleanse built 0.1.0 on seasons of husbandry. A ship is here for a month at
+Each carries a theme word in brackets. Seven: scope 3, other 2, hull 1, cover 1.
+
+1. **[scope] Is the pen still the signature, for a ship?** His experience line ends *"Keep the oasis healthy, or
+   it breeds something wrong"*, and the cleanse built 0.1.0 on seasons of husbandry. A ship is here for a month at
    most. This design keeps the pen as something a crew runs for the length of a stop, with the vhorrin as what
    happens when the Empire distracts it, and makes the truce the thing the stop turns on. *Keep that split*
    (default). *Make the truce the signature outright and move the pen to 0.2.0:* a smaller, sharper first version
    that sets his own line aside for a version. *Hold the cleanse's reading:* the pen across seasons, which no
    visit sees.
-2. **Cutting the machine out of the crab.** The Weeping Stones' gift to the ship costs the oldest animal on the
-   world its water, and there is one. His words chose the walking condenser and the two quests; the ship-gifts
-   list was filled in by an agent. *Leave it as one of three choices in 0.2.0* (default). *Make sparing it pay as
-   well as taking it,* so the Jawa answer is not always the knife.
-3. **The pilgrim passage.** One of his four close misses: the landed ship blocks the pilgrims' way to the water,
-   and the crew either launches or grants *"a permanent public passage"* through it, where *"closing it later is
-   a recorded breach."* It was offered before he stated the ship lens. It is the only idea in the Weeping Stones'
-   sources about what the ship does to the place, and it turns the claim law on the crew. *Leave it a close miss*
-   (default, on his ruling that it not be re-pitched as new). *Look at it again under the lens.*
+2. **[other] Cutting the machine out of the crab, and what its water is for.** The Weeping Stones' gift to the
+   ship costs the oldest animal on the world its life, and there is one. His words chose the walking condenser and
+   the two quests; the ship-gifts list was filled in by an agent. As built, the plant fills flasks of water that
+   nothing on the ship or in the crew uses. *Leave it as one of three choices in 0.2.0 and give its water a use
+   aboard* (default). *Make sparing the crab pay as well as taking the machine,* so the Jawa answer is not always
+   the knife. *Leave it a trophy.*
+3. **[scope] The pilgrim passage: declined, listed so it is not revived.** The landed ship blocks the pilgrims'
+   way to the water, and the crew either launches or grants *"a permanent public passage"* through it, where
+   *"closing it later is a recorded breach."* He was shown it on 2026-10-02 with three other ideas and typed:
+   *"None of these. Close misses."* That was before he stated the ship lens. It is the only idea in the Weeping
+   Stones' sources about what the ship does to the place. *Leave it declined* (default). *Look at it again under
+   the lens:* his to raise, not this design's.
+4. **[hull] The weeping hull.** This design's own invention, in no source (see "What the place does to the
+   ship"). *Keep it as a gentle third wear* (default in the text, flagged). *Cut it:* the built sandstorm and
+   heat wears are then the whole answer to his hull ruling here, and on a mild day the Weeping Stones leaves the
+   ship alone.
+5. **[other] The vhakk: his picture against his ban.** His art note of 2026-10-10 asked for *"something low and
+   lurking that lays in the water and watches, same niche as an alligator"*. The description written from it now
+   ships, and has the vhakk wait *"at the water's edge for whatever comes down to drink"* and drag it under. The
+   sheet bans a predator whose hunting ground is the pool, and the built truce stops any hunt there. *It looks as
+   he asked and behaves as the ban says:* it lies in the shallows and watches, and hunts only on the approaches
+   (default; only the description changes). *His note changes the ban:* the warden becomes the one thing that
+   strikes at the water, and the truce needs an exception.
+6. **[scope] The ivvol's protection.** Its shipped description says a pen with an ivvol loses fewer eels and never
+   breeds a vhorrin. Nothing in the code does that, and the question of whether it should (*"real small
+   mechanical bonus, or farmer superstition the numbers never confirm?"*) was drafted on 2026-09-24 and never put
+   to him. The cleanse recommends dropping it because it removes the cost of bad husbandry. *Farmers' belief only*
+   (default). *Make it real.*
+7. **[cover] Is a ship at a crowded pool loud?** The search halves every wait for a loud crew. An oasis is where
+   half the desert comes, and market-day happens at the water's edge. The sources do not say whether that counts.
+   *Not loud* (default: the stop lasts about a month). *Loud:* about two weeks, and the kindest stop on the planet
+   becomes the shortest.
