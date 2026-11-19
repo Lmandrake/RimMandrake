@@ -1,0 +1,1 @@
+detached_helper.py launch takes 1-2 minutes (pool clone prepare): a foreground Bash call with the default 120 s timeout is moved to the background mid-launch. Run launches with run_in_background, one command per batch of launches, and read the record line from its output.
