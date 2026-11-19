@@ -961,7 +961,8 @@ def t_review_claims_eight():
     fresh()
     u = "rm-probe-claim4-%d" % os.getpid()
     marker = os.path.join(TMP, "claim4.ran")
-    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", u, "--on-active=2", "/usr/bin/touch", marker]
+    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", u, "--on-active=2",
+            "--timer-property=AccuracySec=1s", "/usr/bin/touch", marker]   # the default accuracy is a minute
     r1 = C.launch_unit(argv, spec(u, mod="Graffiti"), capture_output=True, text=True, timeout=30)
     r2 = C.launch_unit(argv, spec(u, mod="Cauldron"), capture_output=True, text=True, timeout=30)
     fired = wait_for(lambda: unit_state(u + ".timer") in ("inactive", "failed", ""), 10)
