@@ -16,3 +16,8 @@ design/concepts/Wastes/rewrite_choices.md
    {'rows': 260, 'added': 143, 'first': 117, 'counts': {'kept': 216, 'lost': 20, 'reshaped': 2, 'folded': 4, 'moved': 18}, 'partial_moves': 2, 'bad': [], 'empty': [], 'names': 31, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 15}
    VERDICT: PASS
 exit status: 0
+
+design/concepts/Webwork/rewrite_choices.md
+   {'rows': 233, 'added': 106, 'first': 127, 'counts': {'kept': 190, 'lost': 26, 'reshaped': 3, 'folded': 1, 'moved': 12, 'other': 1}, 'partial_moves': 3, 'bad': [], 'empty': [], 'names': 34, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 21}
+   VERDICT: PASS
+exit status: 0

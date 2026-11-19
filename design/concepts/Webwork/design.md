@@ -7,6 +7,11 @@ bedazzle review, the kit spec and the cleanse proposal as the place to read; wha
 in `design/concepts/Webwork/rewrite_choices.md`. Nothing has been deleted yet. This is a design document only and it
 launches nothing.
 
+**Second reader, 2026-11-18:** a different agent read the sources the first pass had read in part and repaired this
+page; what changed, and why, is at the top of `rewrite_choices.md`. The largest repairs: the place is hot, and that
+heat is a built wear on the hull; convergence, the droid preference and the web's mark are not built; and the look
+of the ollathrix, the three ways into a nest and the debris-pile ambush are now in the design.
+
 **Who reads this next:** a Designer run on this concept is handed the list of files in `design/concepts/Webwork/`
 (`src/RimMandrake/rimflow/designer_cleanse.py`, `case_text`), so this file is in its path by sitting here. Nothing in
 the pipeline reads it by name yet. The Webwork has no locked sheet or tree; its only pipeline material is the
@@ -15,12 +20,15 @@ cleanse proposal of 2026-11-17, which this design supersedes and which was never
 **Tags:** `NEEDS HIM` is a question only the owner can settle, with the real answers and the default used here.
 `UNSETTLED` is a fact the sources do not fix. `UNMEASURED` is an engine fact nobody has checked. "Built" means the
 census of 2026-11-17 (`cleanse/census.json`) or the special-mechanics review of 2026-10-22 found it in source; it
-does not mean it has passed anything. That review found every recorded Webwork run was a mock: the scripts are
-proven, the live game is not.
+does not mean it has passed anything. That review found every recorded Webwork run was a mock. Later live runs
+exist: on 2026-11-06 the traction lance passed, the remains and the silk harvest were partial and the siege
+failed (`designer_codex_2026-11-09/Webwork/NOTES.md`).
 
 **Names.** The owner species is the **ollathrix**, an invented spider of ours (his pick, 2026-09-23). When the
 campaign layer is active it wears the canon Wyyyschokk's skin and its silk is called Shokkweave; in the free biome
-the silk is **thrixweave**. This document uses the free names.
+the silk is **thrixweave**. This document uses the free names. One ollathrix, three ollathrix. Everything here was
+invented first, on his instruction of 2026-09-23: *"we should just invent our own complete roster of fauna, flora,
+etc. that make it a rich place THEN look for Star Wars specific injection opportunistically."*
 
 ---
 
@@ -43,7 +51,13 @@ seconds before it lands upon them, and know nothing more."*
 One law runs the whole place: *"the entire biome is a single organism of shadow."* The owners are as big as an
 elephant on *"too many sharp legs"* and they are **helpless in direct sunlight**. *"Direct sunlight is lethal to
 the owners; clearings are the only safe ground."* The sheet's summary of how to live here is five words: *"a
-clearing is the fortress."*
+clearing is the fortress."* A later item says the same thing in eleven words: *"the Webwork is the one place on
+the planet where the hungry sun protects you."*
+
+The sun protects and it also cooks. This is an extreme-heat biome (the old sheet measured 38.6, 49.2 and 58.2 °C
+at its tenth, middle and ninetieth tile, under an overhead sun), and the bedazzle review drew the consequence:
+*"the sunlit clearing that keeps the owners out is also where colonists overheat, while the canopy that is cool is
+never safe."*
 
 **Seen from the ship, the owner has already said what happens.** His card answer of 2026-10-22: *"Landing a ship
 into a webwork will surely get a response it's only quiet if you walk into it."* The crew does not get the hush.
@@ -74,28 +88,44 @@ the first hour, and from then on the stop lasts as long as the crew can keep its
 
 **Cover from orbit (his ruling of 2026-11-18: partial cover, by biome): the canopy, one step, and it is the worst
 bargain on the planet.** The sealed canopy that hides a ship from above is the shade the owners hunt in. A ship in
-a sunlit clearing is safe from them and plain to the sky. A ship tucked under the canopy's edge has its step of
-cover and has parked inside the web. Where to land is the whole decision, and neither answer is free.
+a sunlit clearing is safe from them and plain to the sky, and it stands in the heat. A ship tucked under the
+canopy's edge has its step of cover, is cool, and has parked inside the web. Where to land is the whole decision,
+and neither answer is free. The canopy is one plant's work: the dulloth, whose leaves are *"the size of doors"*,
+in his art note *"like lilly pads grown straight up out of the ground above you to the scale of a tree."* *"From
+below it is a ceiling; from above, a sealed floor of dark green."* That floor is what the ship comes down through.
 
 **Fuel (his ruling of 2026-11-18).** A **richer source**, named in the sheet: the still-tree. *"The
 still-burners — the Wildsteam's belching flame weapons, fueled by liquors and oils tapped from the trees and
 fermented in their stills: one fuel item that is also a drink and a trade good."* The tree is built (the tavrosk,
 *"a squat tree that is mostly trunk ... it looks kept, like a barrel someone owns"*); tapping it and fermenting
-the sap is not, and is the small build for 0.2.0. The emergency route has good feedstock too: this is a jungle, and
+the sap is built as far as the drink (the tree is harvested for tavrosk liquor today); burning that liquor as
+fuel is not, and is the small build for 0.2.0. The emergency route has good feedstock too: this is a jungle, and
 its margin scrub, the brennoth, *"looks like kindling because it is."* Fuel can be **bought** from the Wildsteam,
 who are at war on this biome's far side and *"pay for mandibles"*; a crew with fresh mandibles has the one
 currency they want. Campaign layer.
 
-**What the place does to the ship (his ruling of 2026-11-18, in 0.1.0).** It is spun in. The built siege work
-already has living spiders spinning silk toward a target from shaded cells, and **wrapping doors**: a wrapped door
-will not open until the wrap is cut or burned off. On a Webwork map that work is aimed at the ship. Every hour the
-hull sits within reach of shade, there is more silk on it, across its ramp and over its doors, and silk laid
-across open ground is shade for the next spider. The answers are hands-on and the sheet names them: **blades and
-fire** (*"only fire provides the kind of protection and offense needed to drive them back"*), and **sunlight**:
-a hull standing in a kept clearing cannot be reached at all. What is not built: the spinning and door-wrapping
-run today only in the siege incident on a neighbouring tile; pointing them at a landed ship on the home map is the
-small build. (A second, stranger wear is in the sources and was not chosen in October: roots that thread the
-ship's doorframes. See `NEEDS HIM`.)
+**What the place does to the ship (his ruling of 2026-11-18, in 0.1.0).** Two things, one for each place a ship
+can stand.
+
+*In the clearing, the sun.* This wear is built. The frame his ruling points at (`src/RimUtinni/ShipShields/`, his
+shield rulings of 2026-09-02) wears an unshielded ship's structures whenever the air outside is 58 °C or hotter
+(`ShieldHazardUtility.HasHeatHazard`): a few parts at a time, faster after about six hours, with letters that
+advise and never refuse. The old sheet's hottest tenth of Webwork tiles reach that; which tiles do after the
+planet is painted is `UNMEASURED`. The answer is the thermal veil, in his words a field that *"would reflect all
+external heat outward with a mild mirror sheen to the shield, but also reflect all internal heat inward, so the
+temperature slowly climbs anyway."* A mirrored ship in a sunlit gap is safe from the owners and is the brightest
+thing the search could ask for.
+
+*At the canopy's edge, the silk.* It is spun in. The built siege work already has living spiders spinning silk
+toward a target from shaded cells, and **wrapping doors**: a wrapped door will not open until the wrap is cut or
+burned off. On a Webwork map that work is aimed at the ship. Every hour the hull sits within reach of shade, there
+is more silk on it, across its ramp and over its doors, and silk laid across open ground is shade for the next
+spider. The answers are hands-on and the sheet names them: **blades and fire** (*"only fire provides the kind of
+protection and offense needed to drive them back"*), and **sunlight**: a hull standing in a kept clearing cannot
+be reached at all. *This half is the first pass's proposal.* The spinning and door-wrapping run today only in the
+siege incident on a neighbouring tile; pointing them at a landed ship on the home map is a build, and no source
+asks for it. (A third, stranger wear is in the sources and was not chosen in October: roots that thread the ship's
+doorframes. See `NEEDS HIM` 1.)
 
 ---
 
@@ -107,18 +137,24 @@ planet."* The ship gets none of that. It comes down through the canopy or into a
 
 Then nothing, for long enough to lower the ramp.
 
-Cables as thick as a leg span between braided trunks. Finer strands hang across the easy ways through. Pale
+Cables as thick as a leg span between braided trunks. Finer strands hang across the easy ways through. This is
+his picture (2026-10-12): *"it should still look like a jungle with web shit through it. Thick powerful cables
+running through are the main portions with thinner local webs and the finer carpet where the spiders have 'sites'
+they use."* The trunks are kollavane, each *"a standing braid of dozens ... visibly several ages at once."* Pale
 flowers stand *"in runs and arcs that trace the web"*, faintly glowing, *"like a graveyard's flowers"*. There is
 no birdsong, no insect noise, nothing running away. A crew used to the desert's emptiness may take a minute to
 understand that this emptiness was made.
 
 At the edge of the gap the ship tore, where the sun reaches the ground, something stops. It is as big as an
-elephant, it is all legs, and it does not come into the light. It stays where it is.
+elephant, it is all legs, and it does not come into the light. It is *"bone-white to dead-silk cream"*: *"a white
+spider in a green gloom is the 'green and white hellscape' made animal."* It has *"one pale ring of small
+colourless eyes around a raised head-boss"* and *"reads blind"*, because it hunts by feel. It stays where it is.
 Others arrive beside it.
 
 Before the first hour is out the player should have seen three things without going looking: the web answer the
 landing; an ollathrix come to the edge of sunlight and hold there; and the shade line itself, as the most
-important line on the map.
+important line on the map. He asked for that line to be readable (2026-10-12): *"Big shade patches. A bright
+sunlit regions should shine and be clearly visible."*
 
 ## The first day
 
@@ -139,7 +175,15 @@ important line on the map.
   answer of 2026-11-10: *"The existing ollathrix are enough. Ordinary elephant-wide spiders hunting together ...
   coordination must be convincing."*
 - **Water.** There is none on the ground. The brimlock is *"a leaning trunk swollen into a drum-tight bladder"*
-  that *"audibly sloshes when struck. Cut one and water runs out."*
+  that *"audibly sloshes when struck. Cut one and water runs out."* The roster adds a price: the spill *"draws
+  churn regrowth to the cut"*, so drinking closes the clearing (whether that pulse is built is `UNMEASURED`).
+- **The ground is pipework.** The root mat underfoot is the threllick, the stolen river's plumbing: *"you are
+  walking on pipework"*, and it is why walking is slow.
+- **The piles.** A dormant ollathrix hides under what his ruling of 2026-09-11 calls *"a small debris pile"*,
+  *"built out of the local environment"*. *"Too clever..."* The counterplay is the kit's: *"shoot the suspicious
+  pile or eat the ambush."*
+- **An overcast day is ordinary weather.** This jungle's weather table has rain, fog and thunderstorms. Each one
+  is the wall coming down.
 - **Food.** Fellome pods hang in strings along the web-lines where the pollen-dusted owners pass: good calories,
   everywhere, free, and every string of them is beside a line.
 - **The droids stay aboard.** Anything mechanical that walks out under the canopy is the first thing attacked.
@@ -153,13 +197,26 @@ important line on the map.
 - **The beetles.** Quarrok are great insects that *"hate them instinctively"* and chew through web anchors,
   *"neutral, unbothered"*. Where they have been, the web is cut and blind.
 - **The mites.** Vennick are fist-sized, run the silk, and eat eggs. They are harmless, *"which makes a mite trail
-  a living treasure map to a nest."*
+  a living treasure map to a nest."* *"Never alone: vennick read as a current, not as animals."* The roster's
+  summary of the two: *"the player's two instruments against the owner are both animals used well."*
+- **The evidence.** A cravvet *"parked on a stain means a fresh kill site."* A skennet is *"built for one sprint
+  it will eventually lose."* The sivvern is *"the only thing in the sky."*
 - **The nest.** One on every map, by his card of 2026-09-24: woven *"from great masses of young trees and the
   rotting hides of victims"*, ringed with rust-red blooms that grow only on hide-rot, silk in its walls, clutches
-  inside, guardians waking when it is touched. A living nest lays again in twenty to thirty days.
+  inside, guardians waking when it is touched. A living nest lays again in twenty to thirty days. Its parts: the
+  clutches, each *"a pale mass of leathery eggs packed in silk"*; the silk walls; the hide mass, *"the only warm
+  colour in the biome"* (*"a nest is where the missing went"*); and the mother beside the clutch, *"the one place
+  a guaranteed Ollathrix sits — every other one on the map is a roll."*
+- **Three ways in.** Follow the mites, free and slow, and *"arrive felt"*. Burn a corridor, which is unfelt and is
+  also *"a light-moat pointing at the nest, so every Ollathrix on the map converges on the fire."* Or lure the
+  beetles along a route for *"the only silent approach"* (0.2.0). What comes out, in order of worth: eggs, wall
+  silk, the mother's mandibles and fangs, and the dead's gear, *"the consolation take"* (later).
 - **The eggs.** *"The smuggler's jackpot, priced in risk."* An egg in a crew member's hands marks them to every
-  web they pass. Set on a shelf aboard, it is quiet. Dropping it does not shake the hunters at once. The eggs
-  spoil, and they never hatch: nobody farms these.
+  web they pass. Set on a shelf aboard, it is quiet. *"Drop the eggs and the web loses you within a day; keep them
+  and it never does."* Off the Webwork nothing hears them at all: *"the mark is not a curse; it is a signal only
+  web can hear."* The eggs spoil in about fifteen days (*"a countdown to a buyer — it is smuggling, not
+  hoarding"*), and they never hatch: *"a hatching egg is a tamed Ollathrix by the back door."* With no campaign
+  loaded the buyer is any orbital trader: *"sell them to the sky."*
 - **The run home.** His answer of 2026-11-10: *"A prepared escape route is essential. Clearing and guarding the
   return path matters; improvised retreat is unreliable once noticed."* The stop's whole plan is a sunlit path
   from the nest to the ramp, cut and burned before anyone touches a clutch.
@@ -195,6 +252,10 @@ Each can happen inside the visit. Each says what is on screen.
    inside. Somebody finds the cutting torch.
 10. **The brimlock.** *On screen:* a thirsty crew member puts a blade into a swollen trunk and gets a face full
     of someone's river.
+11. **The suspicious pile.** *On screen:* a heap of leaf litter and sticks beside the path that is slightly too
+    tidy. One Jawa points at it. Another shoots it. It stands up.
+12. **The wrong corridor.** *On screen:* the crew burns a clean sunlit lane straight to the nest and every white
+    shape on the map starts walking toward the smoke.
 
 ## When the Empire arrives
 
@@ -214,8 +275,8 @@ a single slash."*
 - *0.2.0:* **the traction lance,** a crewed tether emplacement learned from a junction cut out of the web's own
   plumbing, which reels a target in along the ground: a downed crew member out of danger, or, in the words of the idea he
   chose, *"an ollathrix out into the sun"*.
-- *0.2.0:* **cocoons.** Downed people in the shade are wrapped and have a clock on them. That goes for both
-  sides.
+- *0.2.0:* **cocoons.** Downed people in the shade are wrapped and have a clock on them: a day, by his card of
+  2026-10-22. That goes for both sides.
 
 ## Who else attacks; who hates the Empire
 
@@ -254,7 +315,11 @@ silk and a clutch down a path it prepared, and lifts with the web still ringing.
   do so *"at a steep price"*.
 - **Eggs,** if they are sold before they spoil. In the free biome they are simply very valuable; the campaign adds
   who buys them.
-- **Mandibles,** which the Wildsteam pay for.
+- **Mandibles,** which the Wildsteam pay for, and **fangs.** His words of 2026-09-13: *"Wyyyschokk fangs on a
+  tribal pendant showing the bravery of the person. These should have social consequences for being worn by
+  implying the person is quite brave (with those factions), and be a trade good elsewhere on planet regardless."*
+  (Campaign layer; the item is open.)
+- **Tavrosk liquor,** a drink and a trade good today.
 - **Fuel** from the still-trees (0.2.0), and water from the brimlocks.
 - **The knowledge that sunlight is a wall,** which is worth something at the next green place.
 - *0.2.0:* **the traction lance,** the Webwork's named gift to the ship: *"a crewed tether emplacement that reels
@@ -317,8 +382,10 @@ Every feature is in one bucket.
 - The ship's landing answered. (the response is specified; the adapter from a landing to the web is an owed
   ticket)
 - The ollathrix as it is: one race, one kind; dormant ambushers with a visible tell; spit, mandibles, venom;
-  convergence; sunlight as its wall, counted through real tree shade. (built; the convergence that acts on
-  web-sense was the last piece wired)
+  convergence; sunlight as its wall, counted through real tree shade. (The body, the spit, the dormant ambush
+  and the sun-scald are built. Convergence is not: the census of 2026-11-17 found the hunter's convergence,
+  coordinated pursuit and the debris-pile burst absent from the ordinary animal's wiring. The web's mark and
+  thrum are silently off, because the code looks up two definitions that no longer exist.)
 - Droids attacked first, among prey the owners can equally reach; sunlight and unreachability still win. (the
   preference is specified and its implementation is an owed ticket; the free biome names no Star Wars machine, so
   what counts as a droid is supplied by the campaign layer)
@@ -326,25 +393,34 @@ Every feature is in one bucket.
   small crew can afford to keep one is the cleanse's open measurement)
 - Thrixweave as the sole source, by cutting, butchery and the nest; rare steep resale. (built; the live trader
   check has never run)
-- The nest, its blooms, its finite guardians, its clutches, re-laying. (built)
-- The egg: inert, perishable, valuable, and the carried mark. (built)
+- The nest, its blooms, its finite guardians, its clutches, re-laying. (The nest, guardians, clutches and
+  re-laying are built; the placing can give up and leave a map with no nest. The rust-red ring and the flowers
+  that follow the web are not placed by anything yet.)
+- The egg: inert, perishable, valuable, and the carried mark. (The egg is built. The carried mark is not
+  working: see the mark defect above.)
 - Quarrok and vennick doing their jobs; the vennick's run toward clutches. (quarrok built; the vennick's
   clutch-seeking moved in)
 - The trace cast: skennet, cravvet, the flying sivvern; the sixteen invented plants as ordinary plants, with the
   brimlock's water and the fellome's food. (built)
 - Silk spun at the ship and its doors wrapped. (built for the siege; pointing it at a landed ship is owed)
 - Canopy as one step of cover. (owed, small)
+- The heat of the clearing on crew and hull; the thermal veil as the answer. (the heat kind and the shield
+  frame are built; never run on a Webwork map)
 
 **0.2.0, the stop with company**
 - The siege on the next tile over: the owners arrive at a home beside the Webwork, spin, wrap doors, cocoon the
-  downed, and leave after days. *"The one thing that makes the biome come to you."* (built, never run live)
+  downed, and leave after days. His order of 2026-10-22: *"Make a webwork event into neighboring biomes where
+  spiders come in and start spinning webs as a map attack. Their version of a raid. Siege"*, and his card the
+  same day: they work in shade only, the silk yields thrixweave, a cocooned person dies after a day, the silk
+  stays until cut. (built; failed its live run of 2026-11-06, and as written it can arrive across open sun)
 - Cocoons with a rescue clock, on the home map too. (built)
 - The traction lance, its rigging in cloth, devilstrand or thrixweave, and learning it from a cut junction (or from
-  the Sump's draw-joints). (built)
+  the Sump's draw-joints). (built; passed live 2026-11-06. Nothing places gutter junctions any more, so today it
+  can only be learned in the Sump.)
 - The giant the spiders ate: a wrapped skeleton bigger than a building, read bone by bone, whose loaded bones
   creak and come down. (built)
 - Plants that act: the snap-trap, the needle-wand, the bait bell. (built in part)
-- Tapping the still-tree for liquor, trade good and fuel. (not built)
+- The still-tree's liquor as fuel. (the liquor is built; nothing burns it)
 - Beetles herded along a route to cut a corridor. (not built)
 - Webfall spoiling aim; passive stickiness of web underfoot. (built)
 - The spiders' pale flowers showing which lines are live and which abandoned. (not built as a state; see the
@@ -367,7 +443,10 @@ Every feature is in one bucket.
 - Castes or guilds of the owner (one race, one kind, by card 2026-09-23).
 - A web front that creeps without spiders. His words, 2026-10-22: *"Webs don't creep they are made by spiders."*
   With it went harvesting from the creeping border.
-- The living colossus, falling sheets of web, the Cut Cocoon and the testimony rite (not chosen 2026-10-02).
+- The living colossus (the morravell, *"the one thing the web cannot hold"*, whose feeding opens *"a line of
+  fresh sun-holes"*), falling sheets of web, the Cut Cocoon and the testimony rite (not chosen 2026-10-02).
+- Castes by another door: the parked guild names and the donor hatchling (one race, one kind).
+- A player-built sticky trap (deliberately never built); the commanded slick-or-locked web.
 - An egg that hatches as an item, or a second egg def (ruled out 2026-09-24).
 - An attack-free grace period on foot (rejected by his card of 2026-10-22).
 - The egg broker as a Bazaar tab (cut 2026-10-23).
@@ -378,17 +457,37 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-1. **Roots in the ship.** On 2026-10-02 he was offered *"Your Hull Is a Trellis"*: where a living silk gutter
+1. *(hull)* **Roots in the ship.** On 2026-10-02 he was offered *"Your Hull Is a Trellis"*: where a living silk gutter
    touches a landed ship, pale roots thread an inside doorframe, thicken, force the door and split the frame;
    *"cut it out, or take off: the supply is severed but the damage flies with you."* He did not choose it that
-   day. He was offered the Greentide's hull rasp the same week, did not choose that either, and on 2026-11-18
+   day: the card recommended taking all three new ideas and he took the lance only. The review called it *"the
+   biome acting on the ship in its own voice (the plantation occupies structures), not a ship gadget."* He was
+   offered the Greentide's hull rasp the same week, did not choose that either, and on 2026-11-18
    said yes to it by name. *Silk and wrapped doors only* (default: built parts, and the owners' own hand).
    *Add the roots:* a second wear that works in the dark while nobody is watching, and a new system.
-2. **Does an Imperial probe count as a droid?** If yes, the Webwork eats the first step of the search and becomes
+2. *(other)* **Does an Imperial probe count as a droid?** If yes, the Webwork eats the first step of the search and becomes
    the best hide on the planet for a crew that can stand to live there. *Yes, and say so in the design*
    (recommended: it follows from two things he has already ruled). *No:* the probe is exempt and the Webwork is
    simply dangerous to everyone.
-3. **The plants that act.** The cleanse recommends retiring the snap-trap's bite, the needle-wand's volley and
+3. *(scope)* **The plants that act.** The cleanse recommends retiring the snap-trap's bite, the needle-wand's volley and
    the bait bell's lure as duplicating the spiders. Under the lens a plant that closes on a Jawa's foot is the
-   kind of thing he asked for by name. This design parks them in 0.2.0 instead of retiring them. *Keep them for
+   kind of thing he asked for by name, and his art notes of 2026-10-05 ask for both to look the part: the
+   kessaroth with *"eager, visceral flytrap-like mouths, one shown already fed"*, the norrveth *"twice as big and
+   DANGEROUS"*. This design parks them in 0.2.0 instead of retiring them. *Keep them for
    0.2.0* (default). *Retire them* as the cleanse recommends.
+4. *(hull)* **Which wear is the Webwork's own?** Three candidates. *The heat of the clearing* is built and comes
+   from the sources, and it is the same wear as every hot biome's. *Silk on the hull and wrapped doors* is the
+   first pass's proposal, from parts built for the siege. *Roots in the doorframes* is question 1. Default here:
+   heat is the 0.1.0 wear because it exists; silk at the canopy's edge is written as a proposal.
+5. *(cover)* **Is the bargain right?** This design sets the canopy's one step of cover against the owners' shade,
+   and the clearing's safety against heat and a plain view from orbit. No source states it; it follows from his
+   cover ruling and the sheet. *Keep it* (default). *Give the clearing a step too* when the thermal veil is up or
+   webfall is drifting: kinder, and it dissolves the choice.
+6. *(other)* **Two animals called wyyyschokk.** Under the campaign the skinned ollathrix and an older generic
+   bestiary animal both carry the name, and the older one can be tamed, sheared and bred, which the Webwork's
+   first ban forbids for its owner. A closed item calls this *"a decision for a card"* and no card was sent.
+   *Leave both* (default: the older one has no home on this planet). *Rename or retire the older one.*
+7. *(scope)* **Should the cut cocoon exist as a thing to find?** The rite was not chosen on 2026-10-02. Its found
+   site is one of the best pictures in the sources: *"a silk cocoon on a sunlit rock, cut open from the inside,
+   empty, knife marks on the inner wall and boot prints going away into the light. Someone got out."* *Leave it
+   out* (default). *Place it as scenery with no rite attached:* small, and it tells a crew that people do leave.

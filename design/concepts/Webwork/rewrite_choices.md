@@ -1,5 +1,78 @@
 # The Webwork: what the rewrite chose, what it lost, and why
 
+## Second reader, 2026-11-18
+
+A different agent from the one that wrote this page and the design read sources the first pass had read in part
+or not at all, and checked each idea in them against the rows below. This reading is not complete: the second
+reader reached its spending limit, and the files it did not open are named under "Sources read, and the count".
+
+**Rows added: 106**, in the tables under "Added by the second reader" at the end of "Every idea, row by row".
+
+**The three most valuable things the first read missed.**
+
+1. **The Webwork is hot, and that is a built wear on the hull.** The design never mentions heat. The bedazzle
+   review and a closed build item both say this is an extreme-heat biome (38.6, 49.2 and 58.2 °C at the tenth,
+   middle and ninetieth tile of the old measurement) and draw the consequence: *"the sunlit clearing that keeps
+   the owners out is also where colonists overheat, while the canopy that is cool is never safe."* The shield
+   frame his ruling points at wears an unshielded ship at 58 °C. So the landing bargain has a second half, and
+   the Webwork has one hull wear that exists today. The first pass's silk-on-the-hull is its own proposal and is
+   now flagged as one.
+2. **The biome's signature is not built.** The design's scope list said convergence was built, "the last piece
+   wired", and that the carried egg's mark was built. The cleanse census, which the first pass did not open,
+   says convergence, coordinated pursuit, the droid preference and the debris-pile burst are absent from the
+   ordinary animal. The Designer's notes add that the web's mark and thrum are silently off, because the code
+   looks up two definitions that no longer exist. The nest's bloom ring and the flowers that trace the web are
+   placed by nothing. Going the other way, tavrosk liquor is built.
+3. **His own words for the place, and the heist's plan.** Five things he said had no row: the web's look
+   (*"a jungle with web shit through it"*), the shade he asked to be readable (*"Big shade patches. A bright
+   sunlit regions should shine"*), the siege in his words and his four card answers on it, the debris pile the
+   ambusher hides under (*"Too clever..."*), and the fang pendant (*"showing the bravery of the person"*). The
+   sitting record's unread sections held what the ollathrix looks like (*"a white spider in a green gloom"*,
+   *"reads blind"*), the nest's parts, the three ways in, and the rules of the egg aboard a ship (*"a signal only
+   web can hear"*; *"sell them to the sky"*).
+
+Close behind: the morravell, the living giant not chosen on 2026-10-02, in the words it was offered in (*"a
+moving source of sunlight in a biome where light is safety"*); the cut cocoon's found site; his art notes asking
+for the two acting plants to look *"DANGEROUS"* and *"already fed"*; and two creatures both labelled wyyyschokk
+under the campaign, one of them tameable, left for a card nobody sent.
+
+**What changed in the design, and why.**
+
+- *Heat:* a paragraph in "What this place is"; the landing bargain now has heat on the clearing's side.
+- *Hull wear:* split in two. The clearing's heat is built and sourced, with his thermal-veil ruling quoted.
+  Silk and wrapped doors is kept and marked as the first pass's proposal.
+- *Scope, 0.1.0:* five lines corrected for what is and is not built (convergence, the mark, the nest's signs,
+  the liquor, the lance's lesson), and the later live results set beside the header's "every run was a mock".
+- *The first minutes and first day:* his picture of the web; the ollathrix's colour and blindness; the shade he
+  asked for; the debris piles; the weather that brings overcast; pipework underfoot; water that costs the
+  clearing.
+- *The first week:* the nest's parts, the three ways in, the ranked takes, the cast's lines, the egg's rules
+  aboard.
+- *Moments:* two added (the suspicious pile; the wrong corridor).
+- *Takeaways:* fangs, with his words; tavrosk liquor.
+- *The siege:* his order and his four answers; its failed live run.
+- *Dropped list:* the morravell by name, the guild names, the player-built trap.
+- *NEEDS HIM:* theme tags on the first three; question 1 now carries the card's own wording; four added (which
+  wear is the Webwork's own; whether the cover bargain is right; the two wyyyschokk; the cut cocoon as a find).
+
+**A ship idea he did not choose, listed and not revived:** *"Your Hull Is a Trellis"*, roots in the ship's
+doorframes, offered by card on 2026-10-02 with a recommendation to take all three new ideas; he took the lance
+only (a card, so there are no words of his to quote). It is `NEEDS HIM` 1 in the design.
+
+**Measured counts** (script, after writing; it reports an invented source name as missing): **233 rows**
+(127 from the first pass, 106 added); **26 lost**; **12 record a move**, and
+3 more in part; **3 kept, reshaped**; 1 folded into shared machinery; 190 kept; 1 row of
+the first pass's has a mixed outcome. Rows with a missing cell: 0. **Source files read to the end by the second
+reader: 28**; in large part: 3; by search: 5.
+
+DELETE-READY: no, because the second reader stopped short of the cleanse's files, three large closed items, the
+Designer's question files and the egg market draft in full. For the six files on the deletion list itself the
+position is better: the second reader read five of them to the end (both rosters, the review, the kit spec, the
+roster json) and the first pass read the sixth, the sheet, whole. The two held files stay held. A third reader
+with the list under "Not read by the second reader" can settle this in one sitting.
+
+---
+
 Companion to `design/concepts/Webwork/design.md`, written 2026-11-18 by the same pass. Its job is to let the older
 files be deleted without fear: every distinct idea found in any source has a row saying what became of it. Nothing
 has been deleted. The older files this design replaces are listed at the end.
@@ -101,6 +174,19 @@ Source names: *sheet* = `biomes/the_webwork.md`; *sitting record* =
 `design/RimMandrake/biome_owner_cards_2026-10-22.md`; *experiences* =
 `design/RimMandrake/biome_experiences_2026-10-20.md`; *fluff cuts* = `design/RimMandrake/fluff_cuts_2026-10-23.md`;
 *ship gifts* = `infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md`.
+
+Added by the second reader: *owner rulings* = `python3 src/RimMandrake/rimflow/owner_rulings.py --grep`;
+*art sheet* = `Transient/biome_ffar/webwork_sheet_2026-10-05.decisions.json`; *silk spec* =
+`biomes/kits/shokkweave_sole_source_spec.md`; *census* = `design/concepts/Webwork/cleanse/census.json`;
+*Designer notes* = `design/RimMandrake/designer_codex_2026-11-09/Webwork/NOTES.md`; *shield frame* =
+`src/RimUtinni/ShipShields/` with `design/Jawa/proposals/ship_shields_deep_design.md`; and these items under
+`infrastructure/state/items/` (closed ones in `closed/`): *fang pendant item* = `WYYYSCHOKK_FANG_PENDANT_1`;
+*heat item* = `WEBWORK_HEAT_SHADE_BUILD_1`; *lance item* = `WEBWORK_TRACTION_LANCE_BUILD_1`; *dead giant item* =
+`WEBWORK_DEAD_GIANT_BUILD_1`; *Felled Noon item* = `WEBWORK_FELLED_NOON_RITE_1`; *identity item* =
+`WYYYSCHOKK_IDENTITY_COLLISION_1`; *feralisk item* = `WYYYSCHOKK_FERALISK_MERGE_1`; *structures item* =
+`WEBWORK_WEB_STRUCTURES_1`; *reckoning item* = `WEBWORK_EGG_RECKONING_QUEST_1`; *broker item* =
+`WEBWORK_EGG_BROKER_CHANNEL_1`; *eggs item* = `SHOKKWEAVE_RETIRE_EGGS_MOVE_TO_HUTTS`; *first script items* = the
+five `*_FIRST_SCRIPT_1` items and `WEBWORK_COVERAGE_GAPS_1`.
 
 ### The place
 
@@ -259,6 +345,141 @@ Source names: *sheet* = `biomes/the_webwork.md`; *sitting record* =
 | Tickets and switch-offs | cleanse | kept as they stand, except where a feature moved | | |
 | The mechanics review's dispositions | mechanics review | kept as history | | |
 
+### Added by the second reader
+
+Rows for ideas found in sources the first pass read in part or not at all. Same columns, same words.
+
+**His words and rulings that had no row**
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| "Some silk carpet is ok but it should still look like a jungle with web shit through it. Thick powerful cables running through are the main portions with thinner local webs and the finer carpet where the spiders have “sites” they use." (2026-10-12) | owner rulings | kept, quoted in the first minutes | The first pass described exactly this and never said it was his. | |
+| "But the trees above should have shade canopy that produces areas of shade ... Big shade patches. A bright sunlit regions should shine and be clearly visible." (2026-10-12) | owner rulings | kept, quoted beside the shade line | The shade line is the most important line on the map, and he asked for it to be readable in these words. | |
+| "Make a webwork event into neighboring biomes where spiders come in and start spinning webs as a map attack. Their version of a raid. Siege" (2026-10-22) | owner rulings | kept, quoted (0.2.0) | The first pass quoted the mechanics review about the siege, not him. | |
+| His siege card the same day: "shaded only / yields thrixweave / dies after a day / stays until cut" | owner rulings | kept (0.2.0): spiders work in shade only; siege silk can be cut for thrixweave; a cocooned crew member dies after a day; the silk stays until cut | These four answers are the siege's rules and had no row. | |
+| "I actually don't mind very small amounts of Shokkweave appearing in the stock of the Wildsteam faction, and even more rare ones in the Hutt's. That's ok." (2026-10-07) | owner rulings | kept in the campaign layer, quoted | It names who the rare resellers are. | |
+| "(2) but it has a small chance of SPAWNING an emergent Shokk to get you" (2026-09-11, on harvesting border web) | silk spec | kept, reshaped: the border web is gone, and the chance that deliberate cutting brings a spider out is built and stays | His teeth on the silk harvest outlived the feature they were ruled for. | |
+| The ambusher's hide: "built out of the local environment to look like a small debris pile. Too clever..." Counterplay: "shoot the suspicious pile or eat the ambush." | kit spec ruling 7 | kept, quoted; a new moment | The first pass wrote "a visible tell" and left out what it is. | |
+| The fang pendant: "Wyyyschokk fangs on a tribal pendant showing the bravery of the person. These should have social consequences for being worn by implying the person is quite brave (with those factions), and be a trade good elsewhere on planet regardless." (2026-09-13) | fang pendant item | kept in the campaign layer, quoted; fangs are a takeaway | A trophy a Jawa can wear to market. The item is open; a fang-drop recipe exists. | |
+| "The Shokk feels like it's becoming its own MandrakeStarWars level mod..." (2026-09-11), later inverted by card: mechanisms live in the free biome and only the skin is Star Wars | kit spec ruling 6, sitting record §6 | kept as a build fact | | |
+| "we should just invent our own complete roster of fauna, flora, etc. that make it a rich place THEN look for Star Wars specific injection opportunistically" (2026-09-23) | flora roster | kept, quoted in the names note | | |
+| The stuff-rolled gear number, 0.05: "the owner's own number" | silk spec | kept as a build fact; no promise pins it | | |
+| His art notes: the brimlock, "a strangely stubby trunk with almost translucent bladders for water, with swirls of spiral-like leaves hanging down like a willow"; the dulloth, "like lilly pads grown straight up out of the ground above you to the scale of a tree" | art sheet | kept, quoted where each plant appears | His pictures are better than the roster's. | |
+| His art notes on the plants that act: the kessaroth, "eager, visceral flytrap-like mouths, one shown already fed, on muscular stalks"; the norrveth, "twice as big and DANGEROUS" | art sheet | kept, quoted; set under `NEEDS HIM` 3 as evidence | He asked for both to look like threats five weeks before the cleanse proposed retiring what they do. | |
+| His art notes on the animals: the skennet, "an awkward, nervous, bone-pale runner on stilt legs (only two) with eerily long very thin arms ... Keep the alien vibe"; the vennick, "a line of little creatures ... mite-orange" | art sheet | kept, quoted | | |
+| The biome may generate on new worlds: his card of 2026-10-22 kept the worker on by default | open questions Q1 | kept as it stands (the first pass's row says "kept as it is" without the card) | | |
+| Paint the new Webwork and retire the old campaign copy at the paint (card, 2026-10-22) | open questions Q5 | kept as a build fact | | |
+| The titan battle's open detail: "giant spiders" may mean a pack of ollathrix or a new spider; never asked | open questions Q3 | kept in "later", with the detail recorded | His November answer ("the existing ollathrix are enough") leans to a pack. | |
+| "time of day = location, permanently" (2026-10-19): there is no noon hour to wait for | Felled Noon item | kept in "later" with the rite | | |
+| The Wildsteam's egg bounty is the legal outlet and pays less: "virtue pays less" | egg market draft, sitting record §6 | kept in the campaign layer, quoted | | |
+
+**The ship: hull, cover and fuel**
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| The Webwork is an extreme-heat biome: 38.6, 49.2 and 58.2 °C at the tenth, middle and ninetieth tile of the old measurement, under an overhead sun | review finding 2, heat item | kept; the design now says the place is hot | The design never mentions heat. | |
+| "The sunlit clearing that keeps the owners out is also where colonists overheat, while the canopy that is cool is never safe." | review finding 2 | kept, quoted, as the second half of the landing bargain | The clearing costs something even to desert people. | |
+| The built shield frame wears an unshielded ship's structures when the air outside is 58 °C or hotter | shield frame | kept; a sourced hull wear, built, for the hottest Webwork tiles | It is the only hull wear here that exists today without a new build. Which tiles reach 58 after the paint is `UNMEASURED`. | |
+| His thermal ruling (2026-09-02): the veil "would reflect all external heat outward with a mild mirror sheen to the shield, but also reflect all internal heat inward, so the temperature slowly climbs anyway" | shield frame | kept, quoted | A mirrored ship in a sunlit clearing is also the most visible thing on the planet. | |
+| The hull trellis was on a card whose recommended answer was "all three"; he took the lance only (2026-10-02). The review: "the biome acting on the ship in its own voice (the plantation occupies structures), not a ship gadget. Applies to any building" | review §5, §7, §8 | lost (not chosen); stays `NEEDS HIM` 1, now with the card's own wording | | |
+| Stored eggs are quiet and a carried egg is heard only by web: "The mark is not a curse; it is a signal only web can hear." A caravan carrying eggs "is felt on every Webwork map it enters" | sitting record §4c | kept, quoted; the design now says eggs in the hold are safe everywhere, and in hands only off the Webwork | It is the ship's version of the smuggler's price. | |
+| "Drop the eggs and the web loses you within a day; keep them and it never does." | sitting record §4c | kept, quoted | | |
+| The free biome's sale route: "sell them to the sky" (orbital traders buy at full value) | sitting record §4b | kept, quoted | The first pass said only that the campaign adds who buys. | |
+| The egg rots in about fifteen days: "a countdown to a buyer — it is smuggling, not hoarding" | sitting record §4a | kept, quoted | Fifteen days is inside a stop's clock and decides the next landing. | |
+| "A hatching egg is a tamed Ollathrix by the back door." | sitting record §4a | kept, quoted | | |
+| Tavrosk liquor is built: the tree is harvested for it today | census, review §1 | kept; the design said tapping was not built and is corrected. Burning it as fuel is what is not built | | |
+| The lance is learned from a gutter junction, and nothing places gutters any more | Designer notes | kept as a defect on the 0.2.0 line (the Sump's draw-joints still teach it) | | |
+| The lance passed a live run on 2026-11-06; the remains and the harvest were partial; the siege failed | Designer notes | kept as build facts | The design's header says every recorded run was a mock. Later runs exist. | |
+| A pulled target costs power and tether by its size; walls stop the pull; a snapped line is used up | lance item | kept (0.2.0) | | |
+| "Cutting it trips the web alarm ... so the owners come" (the junction) | lance item | kept (0.2.0) | | |
+
+**What is built and what is not**
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| Convergence, the droid preference, coordinated pursuit and the debris-pile burst are absent from the ordinary animal's wiring | census, Designer notes | kept as a build fact; the design's "built; the last piece wired" is corrected to "not built" | The biome's signature has no hunter behind it yet. | |
+| The web's mark and thrum look up two definitions that do not exist, so marking is silently off and the carried egg is not seen | Designer notes | kept as a defect; the design's "the carried mark (built)" is corrected | Promises 4 and 9 cannot pass on today's source. | |
+| Whether a ship landing draws any response is unknown; a letter is not a response | census | kept (the design already called the adapter owed) | | |
+| The nest's rust-red ring and the flowers that follow the web are not placed by anything | census | kept as a build fact; the design's "the nest, its blooms (built)" is corrected | The nest cannot yet be read at a distance. | |
+| The nest's hide mass and its victims' gear are not built | census | kept in "later" (the first pass's row), now marked not built | | |
+| The guaranteed nest can fail to place: the search gives up after a fixed number of tries | Designer notes | kept as a defect against "a nest on every map" | | |
+| Deliberate cutting can bring a hostile ollathrix out (built) | census | kept; added to the silk line | | |
+| An ordinary crew member doing the cutting job failed live on 2026-11-04; direct destruction yields silk | Designer notes | kept as a defect on promise 7 | | |
+| The siege can arrive across open sun and walk through it | Designer notes | kept as a defect against his "shaded only" | | |
+| The sivvern has its directional flight frames | census | kept as a build fact | | |
+| The sun-scald is a light effect, "worded as light, never as heat", and reads shade at a threshold | heat item | kept | Heat is the crew's problem and light is the spiders'. | |
+| A wall-lamp corridor must never replace the burned ring: the scald keys on real sunlight | kit spec §4 | kept (the design has his lamp ruling) | | |
+| Dimming the whole map to make the gloom was rejected: it "would dim the clearings too and blunt the light-moat's own instrument" | kit spec §4 | kept as a build rule | | |
+| The Webwork's weather table has rain, fog and thunderstorms | review §2 | kept; the design now says what makes an overcast day | The moat's off-switch is ordinary weather, and it is common in a jungle. | |
+| "Night assaults as core rhythm" is dead; overcast assaults remain | kit spec ruling 2 | kept | | |
+| Two creatures are labelled wyyyschokk under the campaign: the generic tameable egg-layer and the skinned ollathrix. Four options, "a decision for a card", never carded | identity item | kept as a `NEEDS HIM` question | A tameable wyyyschokk anywhere contradicts the ban on a tamed owner. | |
+| The local name: "Wyyyschokk to the galaxy, Feralisk on this world"; the donor lisk clade retired by his sitting of 2026-09-10 | feralisk item | kept in the campaign layer | | |
+| The commandable adhesive was built as a three-stage sticky condition with a player switch on sheet web; a craftable trap was deliberately not built | structures item | lost (the first pass's row; now with what it was) | | |
+| The egg reckoning as specified: three paths (pay, capture alive, plant the egg); a juvenile hatches at night; an undiscovered kill costs no goodwill; its numbers were never ruled | reckoning item, egg market draft | kept in the campaign layer | | |
+| The broker would need its own price code, because the game never pays a premium when the player sells | broker item | kept in "later" with the quest | | |
+| The Hutt egg caravan stocks one to three eggs | eggs item | kept in the campaign layer | | |
+
+**The owner species, the nest and the cast**
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| What the ollathrix looks like: "bone-white to dead-silk cream"; "A white spider in a green gloom is the 'green and white hellscape' made animal" | sitting record §1a | kept, quoted in the first minutes | The design never says what colour the thing at the shade line is. | |
+| "A smooth, faintly translucent abdomen through which the darker gut shows"; "hairless, glossy chitin with a matte silk-dust bloom"; pale legs "with a dark blade-edge along each foreleg" | sitting record §1a | kept, quoted in part | | |
+| "One pale ring of small colourless eyes around a raised head-boss — reads blind" | sitting record §1a | kept, quoted | It hunts by feel; that is why standing still works. | |
+| "Too many sharp legs under a low, wide, white body; the head carried forward and low, mouthparts open" | sitting record §1a | kept as art direction | | |
+| "A spider the size of an elephant, weight for weight closer to a horse" (the shipped description) | review §1 | kept, quoted | | |
+| One ollathrix, three ollathrix | sitting record §1b | kept | | |
+| The dormant ambusher and the roaming hunter are one kind in two states | sitting record §1a | kept | | |
+| "1,000 eggs a year" is carried by re-laying, never by a hatchling | sitting record §4a | kept | | |
+| The nest's parts: the clutch, "a pale mass of leathery eggs packed in silk"; the silk walls; the hide mass, "the only warm colour in the biome"; the mother beside the clutch | sitting record §3a | kept; the design's nest line now names them | | |
+| "A nest is where the missing went." | sitting record §3a | kept, quoted | | |
+| The mother: "the one place a guaranteed Ollathrix sits — every other one on the map is a roll" | sitting record §3a | kept, quoted | | |
+| "The nest is the one place all four colours meet" | sitting record §3a | kept as art direction | | |
+| Three ways in: follow the mites and "arrive felt"; burn a corridor, which is "a light-moat pointing at the nest, so every Ollathrix on the map converges on the fire"; herd the beetles for "the only silent approach" | sitting record §3b | kept, quoted in the first week | It is the heist's plan in three lines and the design had none of it. | |
+| The takes, ranked: eggs, wall silk, mandibles, and the hide-mass gear, "the consolation take" | sitting record §3c | kept | | |
+| "A beetle lawnmower is not a silk farm": beetle- and fire-destroyed nest parts drop nothing | sitting record §3c, kit spec §5 | kept, quoted | | |
+| Quarrok: "dull bronze-black under a dusting of silk lint, jaws like shears — unhurried, unbothered, and always at work on an anchor"; "a demolition crew of one"; it never fights a spider | fauna roster | kept, quoted | | |
+| Vennick: "never alone: vennick read as a current, not as animals"; "quick on silk, poor off it" | fauna roster | kept, quoted | | |
+| "The player's two instruments against the owner are both animals used well" | fauna roster | kept, quoted | Very Jawa. | |
+| Skennet: "built for one sprint it will eventually lose"; "the crop, and the visible hunt" | fauna roster | kept, quoted | | |
+| Cravvet: "jaws built for cracking what mandibles left"; "parked on a stain means a fresh kill site"; it reads as "evidence" | fauna roster | kept, quoted | The first pass's row left the cravvet's use out. | |
+| Sivvern: "the only thing in the sky" | fauna roster | kept, quoted | | |
+| The motion rule: "almost none — churn in the thicket, a mite-stream on a line, then the burst" | fauna roster, sheet §9 | kept, quoted | | |
+| "Two is the ceiling" for prey; no canon animal is to be added unless it is "a fourth war" | fauna roster | kept as a rule for whoever adds to the cast | | |
+| "The thicket is not a forest; it is a wall that grew inward until it drank its own river." | flora roster | kept, quoted | | |
+| Kollavane: "a standing braid of dozens ... visibly several ages at once"; its dead wood is "the biome's only timber — you never fell a living one, you salvage what the braid discarded" | flora roster | kept, quoted | | |
+| Vessark: "a fight in slow motion"; where it wins a gap opens, where it loses a path closes | flora roster | kept, quoted | | |
+| Dulloth: leaves "the size of doors"; "From below it is a ceiling; from above, a sealed floor of dark green"; "the light-moat begins with felling these" | flora roster | kept, quoted | It is what a ship comes down through. | |
+| Cutting a brimlock for water "draws churn regrowth to the cut" | flora roster | kept; added to the water line | Drinking closes your clearing. Whether the pulse is built is `UNMEASURED`. | |
+| Threllick: "you are walking on pipework"; the slow ground is the fiction | flora roster | kept, quoted | | |
+| Sellith, "a dripping gutter"; varrisk, "a planted field nobody tends", "where it stops, the desert has won" | flora roster | kept, quoted in part | | |
+| Kessaroth: "pinning damage, not death; in this biome being held is the death"; "a trap, honestly declared" | flora roster | kept, quoted (0.2.0) | | |
+| Norrveth: "a norrveth's history is written on its stem"; "a weapon on a stand" | flora roster | kept, quoted (0.2.0) | | |
+| Sorrivel: "A sorrivel in bloom means you are standing in a larder."; "an invitation — which is the lie" | flora roster | kept, quoted (0.2.0) | | |
+| "Two rows are deliberately deceptive": the bait must look attractive and the pods must look free. "An art pass that 'fixes' either has broken the design." | flora roster | kept, quoted as a rule | | |
+| Fellome: "gleaning someone's fields, on their silk, under their sense" | flora roster | kept, quoted | | |
+| Ruddreth: "a warning flag"; "never anywhere clean" | flora roster | kept, quoted | | |
+| Brennoth is also "the reason a careless fire at the margin runs" | flora roster | kept; added to the clearing line | | |
+| A shade-cloth lesson learned from the dulloth | census | kept in "later" (the first pass's row), now named | | |
+
+**Ideas not chosen, in the words that were offered**
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| The morravell: "the one thing the web cannot hold"; "where it fed, the canopy is open and the sun falls"; "its trail is a line of fresh sun-holes: safe ground for a day or two"; "the only loud thing in the Webwork" | review §3 | lost (not chosen, card 2026-10-02) | The first pass's row gave it one line. It is "the giant as a moving source of sunlight in a biome where light is safety", and a ship crew would follow one. | Reopen the card: a new animal and its art, and his titan words of 2026-10-21 ask every biome for a giant. |
+| Sheetfall: "shoot the suspension knots before it settles, or the owners have a shaded bridge until you destroy it" | review §5 | lost (not chosen) | | |
+| The Cut Cocoon's found site: "a silk cocoon on a sunlit rock, cut open from the inside, empty, knife marks on the inner wall and boot prints going away into the light. Someone got out." | review §6 | lost as a rite (not chosen); the picture is kept as a find the design may place | Nothing was ruled about the object, only the rite. Placing it is this reader's proposal. | |
+| Testimony Beneath Sh'kaar: the colony names one real loss, bare to the sky, once per loss | review §5 | lost (not chosen) | | |
+| The Felled Noon's found site: a great stump in old sun, with "a ring of bleached ollathrix legs at the edge of the light where something waited and burned" | Felled Noon item, review §6 | kept in "later", quoted | | |
+| "The Webwork is the one place on the planet where the hungry sun protects you." The owners gather at the shade line for the rite, "not pacified and nothing is bargained" | Felled Noon item | kept in "later", quoted in the design's opening | The first sentence is the biome in eleven words. | |
+| Rites considered and not offered: brimlock water given back; a vigil against the shadow; anything with the owners as a party | review §6 | lost | | |
+| The dead giant in full: about one map in four; limb piles, ribs you can walk under, pelvis, neck and skull; four chapters, "pinned, bound, cut, eaten"; each piece read yields silk; the last wrapping draws the whole outline; loaded bones creak for hours, then fall | dead giant item | moved (→ 0.2.0, the first pass's row), with the detail carried | "The ollathrix took a creature bigger than a house." | |
+| The parked guild names nettik, chirrik, rothrik; the donor "baby evil spider" | sitting record §0, §1a | lost (dead by his card: one race, one kind) | | |
+| The first-script items and the coverage audit | first script items | kept as history | | |
+| The old roster's rule for evictions: "eaten". Rival ambushers went because "the shadow that lands must be" the owner's; a living colossus went because "a giant the spiders could not eat would falsify" the sheet | roster json | kept as the rule for whoever adds an animal; the 57 named evictions are lost from this design | Evictions are stopped by his ruling; the list is history. | |
+| No fish: "a fishable cell anywhere in this biome would falsify the sheet's central image" | roster json | kept, quoted | | |
+| "Baby evil spider in the Web biome" and the feralisk to be "reskinned" to the web's spider (his review notes, 2026-09) | roster json | lost | Overtaken by his card of 2026-09-23: one race, one kind, and an invented spider of ours. | |
+
 ## Sources read, and the count
 
 Measured after writing: a script counted the table rows and the first words of the "what happened" column; the file
@@ -281,6 +502,35 @@ build-ready: a second reader should check it for ideas with no row here); the ca
 `WildsteamEggBounty`.
 
 **20 source files opened, 127 rows**, of which **17 lost**, **14 record a move** (whole or in part), **2 kept, reshaped** and 1 folded into shared machinery.
+
+**Second reader's sources, 2026-11-18.** Counted as a file opened and read to its last line.
+
+*Read to the end (28):* the sitting record; the roster json; the fauna roster; the flora roster, the kit spec, the open-questions
+file and the bedazzle review (every line, with lines longer than about 1,300 characters cut at that length; the
+review's findings and card at 520 to 700); the silk spec; the Designer's `NOTES.md` and `ANSWERS_OWNER.md`; the
+items `SHOKKWEAVE_RETIRE_EGGS_MOVE_TO_HUTTS`, `WYYYSCHOKK_FANG_PENDANT_1`, `WEBWORK_DEAD_GIANT_BUILD_1`,
+`WEBWORK_TRACTION_LANCE_BUILD_1`, `WEBWORK_FELLED_NOON_RITE_1`, and closed `WEBWORK_SCORING_SITTING_1`,
+`EGG_PROXIMITY_HATCH_TRIGGER_1`, `WEBWORK_COVERAGE_GAPS_1`, `SHOKK_RSW_MOD_1`, `WEBWORK_DESIGN_SITTING_1`,
+`WEBWORK_HEAT_SHADE_BUILD_1`, `WEBWORK_EGG_BROKER_CHANNEL_1`, `WEBWORK_EGG_RECKONING_QUEST_1`,
+`WYYYSCHOKK_IDENTITY_COLLISION_1`, `WEBWORK_WEB_STRUCTURES_1`, `WEBWORK_BASE_PORT_BUILD_1`,
+`WYYYSCHOKK_FERALISK_MERGE_1`; `src/RimUtinni/ShipShields/Source/ShieldHazardUtility.cs`.
+
+*Read in large part (3):* the cleanse census (every one of its 75 rows by its description, build state and fate;
+not the evidence paths); the art sheet of 2026-10-05 (every note of his); the five `*_FIRST_SCRIPT_1` items
+(their openings; they are one template).
+
+*Read by search (5):* his recorded rulings (`owner_rulings.py`, nine searches); the egg market draft (its ruling
+and owner lines); `ship_shields_deep_design.md` (the ruled table); the Webwork flora defs (the liquor harvest);
+the art sheet of 2026-11-03 (no notes in it).
+
+*Not read by the second reader:* the three largest closed items, `SHOKKWEAVE_SOLE_SOURCE_1`,
+`WEBWORK_RM_MOD_BUILD_1` and `WEBWORK_KIT_BUILD_1` (their rulings were read at the specs and sitting record they
+cite, not in the items); the cleanse's `definition.md`, `ambiguities.md`, `next_version.md`, `tickets.md`,
+`bars.json`, `models.md`, `review.json`, `converge.json` and `fixes.json` beyond what the first pass read; the
+Designer's `QUESTIONS.md`, `QUESTIONS_OWNER.md` and `record.json`; the validation walk; the egg market draft in
+full; `design/RimMandrake/biome_owner_cards_2026-10-22.md` beyond the first pass's reading; the sheet again (the first pass read it whole); the campaign mods `EggReckoning` and
+`WildsteamEggBounty`. The second reader ran out of its spending limit before these. None of the cleanse or
+Designer files is on the deletion list below.
 
 ## The older files this design replaces, ready to delete on his word
 
