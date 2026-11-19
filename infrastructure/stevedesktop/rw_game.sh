@@ -5,7 +5,7 @@
 #   rw_game.sh status         running? pid, session, bridge port from Player.log
 #   rw_game.sh up [--wait]    start the game unless running; --wait blocks until the bridge
 #                             announces its port in a Player.log written after the launch (max 600 s)
-#   rw_game.sh down           graceful taskkill, then /F after 90 s
+#   rw_game.sh down           graceful taskkill, then /F after 90 s; each stop's refusal or failure is named
 #   rw_game.sh init           renew the test companion profile; seed Prefs.xml if it lacks
 #                             runInBackground True (game must be stopped for that half)
 #
@@ -144,14 +144,41 @@ EOF
     echo "Prefs.xml: seeded from Prefs.template.xml"
 }
 
+# -> 0 gone, 1 still there, 2 the list could not be read
+look_gone() { local p; p=$(pid_of) || return 2; [ -z "$p" ] && return 0; return 1; }
+# RIMMANDRAKE_STOP_STEVE_GAME_FORCE_KILL_LEFT_IT_RUNNING (11-16: "force stop left the game running", a hand taskkill /F
+# then killed it). Each stop's own words and exit are kept: a stop game_instance REFUSED (its bridge check) sent nothing
+# and is not "survives /F"; a taskkill that failed says why. After /F the process is polled RW_FORCE_WAIT_S (30) s, not
+# looked at once at 3 s: Windows can take seconds to tear a large process down, and the worker's down timeout is 300 s.
 down() {
     local pid; pid=$(pid_of) || { echo "REFUSED: the game list could not be read; nothing stopped"; return 2; }
     [ -n "$pid" ] || { echo "already stopped"; return 0; }
-    python3 "$GI" stop "$pid" >/dev/null
-    for _ in $(seq 18); do sleep 5; gone && { echo "stopped (graceful)"; return 0; }; done
-    python3 "$GI" stop "$pid" --force >/dev/null; sleep 3
-    gone || { echo "FAILED: pid $pid survives taskkill /F"; return 1; }
-    echo "stopped (forced after 90 s)"
+    local out rc g waited
+    out=$(python3 "$GI" stop "$pid" 2>&1); rc=$?
+    if [ "$rc" -ne 0 ] && printf '%s' "$out" | grep -q 'REFUSED'; then
+        echo "REFUSED: graceful stop of pid $pid not sent (game_instance exit $rc): $(printf '%s' "$out" | tail -n 3 | tr '\n' ' ')"
+        return 2
+    fi
+    for _ in $(seq $(( ${RW_DOWN_GRACE_S:-90} / 5 ))); do
+        sleep 5; look_gone; g=$?
+        [ "$g" -eq 0 ] && { echo "stopped (graceful)"; return 0; }
+        [ "$g" -eq 2 ] && { echo "UNMEASURED: the game list could not be read after the graceful stop of pid $pid"; return 2; }
+    done
+    out=$(python3 "$GI" stop "$pid" --force 2>&1); rc=$?
+    local said; said=$(printf '%s' "$out" | tail -n 3 | tr '\n' ' ')
+    if [ "$rc" -ne 0 ]; then
+        look_gone && { echo "stopped (forced after ${RW_DOWN_GRACE_S:-90} s; the stop exited $rc: $said)"; return 0; }
+        echo "FAILED: taskkill /F of pid $pid not done (game_instance exit $rc): $said"; return 1
+    fi
+    waited=0
+    while :; do
+        look_gone; g=$?
+        [ "$g" -eq 0 ] && { echo "stopped (forced after ${RW_DOWN_GRACE_S:-90} s, gone ${waited} s after /F)"; return 0; }
+        [ "$g" -eq 2 ] && { echo "UNMEASURED: the game list could not be read ${waited} s after taskkill /F of pid $pid"; return 2; }
+        [ "$waited" -ge "${RW_FORCE_WAIT_S:-30}" ] && break
+        sleep 1; waited=$(( waited + 1 ))
+    done
+    echo "FAILED: pid $pid survives taskkill /F for ${waited} s; taskkill said: $said"; return 1
 }
 
 # One driver per game (BRIDGE_LOCK_WIDEN_ONE_PER_HOST): up/down/init take this machine's host guard for their own
