@@ -42,7 +42,8 @@ line to <dir>/runs.jsonl, an error included: the wrap-up itself never fails sile
     wrapup.py owe --kind setting|scene --what TEXT [--undo TEXT] [--owner KEY]    -> prints the token
     wrapup.py paid TOKEN
     wrapup.py list | sweep | resolve KEY --why TEXT
-    wrapup.py restore [--probe]     (python.exe, bridge held) replay every owed setting's `plan`, then sweep
+    wrapup.py restore [--probe]     (python.exe, bridge held) replay every owed setting's `plan`, then sweep;
+                                    `rimflow bridge release` runs it before a seat gives back its own hold
 
 State dir: RM_WRAPUP_DIR (default D:\\ClaudeWork\\rimmandrake\\wrapup). Names no host or account.
 """
@@ -169,7 +170,7 @@ def owe(kind, what, undo=None, owner=None, extra=None):
     tok = "%s-%s" % (time.strftime("%Y%m%dT%H%M%S", time.gmtime()), uuid.uuid4().hex[:8])
     body = dict(extra or {})
     body.update({"token": tok, "kind": kind, "what": what, "undo": undo, "owner": owner or owner_key(),
-                 "at": _iso(_now()), "cwd": os.getcwd()})
+                 "at": _iso(_now()), "ns": time.time_ns(), "cwd": os.getcwd()})
     try:
         _write_json(_p("debts", tok + ".json"), body)
     except OSError as e:
@@ -698,7 +699,8 @@ def _door():
 
 def restore(call, world=None):
     """WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF: put back every setting the register still owes to the RUNNING game, then
-    sweep. Run by Relentless with the bridge held (relentless_live.run, after the proof, before the release), so the
+    sweep. Run with the bridge held, before a seat releases its own hold (`rimflow bridge release`, through
+    restore_at_release; the retired Relentless tick ran it from relentless_live.run), so the
     debts that outlived their owners (a killed proof, a script that calmed the site and never restored it) are paid by
     construction instead of waiting for a relaunch or a hand. `call(tool, params) -> reply dict`.
     Newest debt first: two transactions stacked on one field restore the oldest one's pre-run value last.
@@ -714,7 +716,8 @@ def restore(call, world=None):
             debts.append(d)
     # exact plans first, newest first; then the plans that CHECK a forced value is gone (a legacy debt kept no
     # pre-value), so every exact write has run before a check is asked
-    debts.sort(key=lambda d: d["token"], reverse=True)
+    # the token's time is to the second: `ns` breaks a tie inside one second (two stacked transactions), else token
+    debts.sort(key=lambda d: (d["token"][:15], d.get("ns") or 0, d["token"]), reverse=True)
     debts.sort(key=lambda d: any(st.get("not") for st in D.plan_of(d)))
     D.RESTORING[0] += 1                         # the door pays what these writes put back and owes nothing
     try:
@@ -748,6 +751,56 @@ def restore(call, world=None):
                                "restored": out["restored"], "failed": out["failed"], "left": out["left"],
                                "void": out["void"], "swept": out["swept"]})
     return out
+
+
+# under the 120 s the wrap-up's own World.release_bridge gives `rimflow bridge release`: wslpath (10) + this (90)
+RESTORE_AT_RELEASE_S = 90
+WINDOWS_DIRS = ("/mnt/c/WINDOWS/system32", "/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0")
+
+
+def owed_plans(world=None):
+    """-> tokens of the setting debts restore() would replay now (a plan, not void). Read on this side: no bridge."""
+    world = world or World()
+    D = _door()
+    out = []
+    for f in glob.glob(_p("debts", "*.json")) + glob.glob(_p("debts", "filed", "*.json")):
+        d = _read_json(f)
+        if (isinstance(d, dict) and d.get("kind") == "setting" and d.get("token") and D.plan_of(d)
+                and not void_debt(world, d.get("at"))):
+            out.append(d["token"])
+    return out
+
+
+def restore_at_release(runner=subprocess.run, world=None, timeout=None, env=None):
+    """RIMMANDRAKE_WIRE_WRAPUP_RESTORE_ORPHANED_BY_RETIRED_TICK: `rimflow bridge release` calls this while the releasing
+    seat still holds the bridge, so a setting a run forced and still owes goes back at the end of every hold (the retired
+    Relentless tick did it from relentless_live.run; nothing did after). Spawns `python.exe wrapup.py restore` (the one
+    interpreter here that reaches the bridge) only when a planned debt is owed. Never raises; never a verdict on the
+    release. -> (exit, line): exit None = not run or timed out, the line says which."""
+    env = dict(os.environ if env is None else env)
+    if env.get("RM_UNDER_SELFTEST") and runner is subprocess.run:
+        return None, "not run: under a selftest"
+    try:
+        toks = owed_plans(world)
+    except Exception as e:  # noqa: BLE001  unreadable register: say so, the release goes on
+        return None, "UNMEASURED: the debt register could not be read: %s: %s" % (type(e).__name__, str(e))
+    if not toks:
+        return None, "not run: no planned setting debt is owed"
+    script, timeout = os.path.join(HERE, "wrapup.py"), timeout or RESTORE_AT_RELEASE_S
+    have = [d for d in (env.get("PATH") or "").split(os.pathsep) if d]
+    env["PATH"] = os.pathsep.join(have + [d for d in WINDOWS_DIRS + tuple(sorted(glob.glob(
+        "/mnt/c/Users/*/AppData/Local/Microsoft/WindowsApps"))) if d not in have and os.path.isdir(d)])
+    try:
+        r = runner(["wslpath", "-w", script], capture_output=True, text=True, timeout=10)
+        path = (r.stdout or "").strip() or script
+        r = runner(["python.exe", path, "restore"], capture_output=True, text=True, timeout=timeout,
+                   stdin=subprocess.DEVNULL, env=env)
+    except subprocess.TimeoutExpired:
+        return None, "timed out after %ds (%d debt(s) owed)" % (timeout, len(toks))
+    except Exception as e:  # noqa: BLE001
+        return None, "could not run: %s: %s" % (type(e).__name__, str(e))
+    lines = [x for x in ((r.stdout or "") + "\n" + (r.stderr or "")).splitlines() if x.strip()]
+    return r.returncode, (lines[0] if lines else "exit %d, no output" % r.returncode)
 
 
 def _bridge_call():

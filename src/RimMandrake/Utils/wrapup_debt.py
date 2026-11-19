@@ -153,7 +153,8 @@ def settings_write(tool, params, out):
 # ---------------------------------------------------------------- the restore plan: an undo a machine can replay
 # WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF: an undo written as prose ("set it back to its pre-run value") waits for a
 # human; 11 rows stood on that. A setting debt carries `plan` = [{"tool", "params"}], the exact bridge writes that put
-# the game back, and wrapup.restore() replays it at Relentless's next bridge hold, checking each reply (step_ok).
+# the game back, and wrapup.restore() replays it when a seat releases its own bridge hold (`rimflow bridge release`,
+# wrapup.restore_at_release), checking each reply (step_ok).
 
 def step(tool, expect=None, **params):
     """One bridge write of a plan. `expect` = {reply field: value} the reply must carry (a tool with no valueAfter)."""

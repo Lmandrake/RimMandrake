@@ -120,7 +120,8 @@ class SettingsTransaction(object):
 
     def plan(self):
         """The bridge writes restore() would make, as data (WRAPUP_SETTINGS_DEBT_RESTORE_TIDY_ELF): a kill between a
-        change and restore() leaves the debt on the register, and wrapup.restore replays this at the next bridge hold.
+        change and restore() leaves the debt on the register, and wrapup.restore replays this when the next
+        bridge hold is released (`rimflow bridge release`).
         Without it the debt's undo was prose and nothing could pay it once filed. A cleanup with no step is named in
         the debt's `unplanned`, so the replay never pays what it could not undo."""
         steps = [st for _, _, st in reversed(self.cleanups) if st]

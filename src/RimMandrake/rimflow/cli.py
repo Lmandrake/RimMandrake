@@ -3544,6 +3544,28 @@ def _bridge_hold(hk):
     return holder, tok
 
 
+def _restore_owed_settings(seat, holder):
+    """RIMMANDRAKE_WIRE_WRAPUP_RESTORE_ORPHANED_BY_RETIRED_TICK: before a seat gives back its OWN hold, the settings the
+    wrap-up register still owes go back through it (wrapup.restore_at_release; outside the bridge lock, which a 90 s
+    replay must not hold, so the hold is re-read just before it). A crossed release never replays: the real holder may
+    still be working. A take that crosses this seat DURING the replay is an override its taker chose. Never stops the
+    release. -> the line printed, or None when not asked."""
+    if not holder or holder != seat:
+        return None
+    if _bridge_hold(model.DEFAULT_BRIDGE_HOST)[0] != seat:     # re-read just before: it changed hands since the top read
+        return None
+    try:
+        import wrapup
+        code, line = wrapup.restore_at_release()
+    except Exception as e:  # noqa: BLE001
+        code, line = None, "%s: %s" % (type(e).__name__, str(e))
+    if line.startswith("not run: "):
+        return line
+    line = "wrapup restore before release: %s%s" % (line, "" if code in (0, None) else " (exit %d)" % code)
+    print(line)
+    return line
+
+
 def _bridge_release(seat, w, holder, expect_token=None):
     """`bridge release` — allowed even on someone else's lock, but never unrecorded.
 
@@ -4089,6 +4111,8 @@ def cmd_bridge(args, seat):
             print("bridge release --mine: %s does not hold the %s bridge (holder: %s) - nothing released"
                   % (seat, hk, now or "nobody"))
             return 0
+        if hk == model.DEFAULT_BRIDGE_HOST:
+            _restore_owed_settings(seat, now)
         # 🔴 CHECK + RELEASE ATOMICALLY (review M5, TOCTOU): a take landing between the check above and the release
         # used to be released out from under its seat. Under the bridge lock (which every take's re-check + append
         # also holds) the hold is RE-READ, and released only while it is still THIS seat's take (same holder, same
@@ -4118,6 +4142,7 @@ def cmd_bridge(args, seat):
             _, w = load()
             return _bridge_give(args, seat, w, w.bridge_holder)
     if args.action == "release":
+        _restore_owed_settings(seat, holder)
         return _bridge_release(seat, w, holder)
     if args.action == "idle":
         owner = _owner_verdict([("his hold's own event", since)], evs) if holder == "OWNER" else None
