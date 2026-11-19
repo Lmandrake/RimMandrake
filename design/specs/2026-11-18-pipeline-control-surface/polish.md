@@ -38,3 +38,6 @@ finding while the stop stands. Its other two findings were proven and fixed by
 
 - A second reader whose process ends with no JSON is not marked dead, so its charge counts toward the judge spend
   cap. Needs the reader's process to die without output.
+
+- `pipe next` prints the full owner-hold quote on every held mod: 18 lines, 3,894 characters and 10.3 s on
+  2026-11-19 (RIMMANDRAKE_PROVE_PIPELINE_CONTROL_ASKS_MET_HE_ASKED_BEFORE). One short line per held mod would do.
