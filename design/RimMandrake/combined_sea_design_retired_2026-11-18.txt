@@ -1,0 +1,28 @@
+Combined four-seas design retired 2026-11-18 (item RIMMANDRAKE_RETIRE_COMBINED_SEA_DESIGN_TWO_SEAS_FOUND_WRONG, published 57435f310cce).
+Deleted whole: the combined design and its choices page in design/concepts/TerminalBiomes/ (git history, commit b2530669e5). Each sea's own design and choices page in that folder replaces them.
+
+REMOVED LINES AND THE OWNER WORDS THAT REFUTE EACH
+1. Twilight: 'The only ordinary fishing on the planet. Nets in the light columns. It works like fishing.' and 'In the Twilight, the only place on the planet where a crew can simply fish.'
+   His typed correction, 2026-09-26: "you don't fish at the bottom of the ocean, I had meant the shoreline fishing."
+2. Twilight, under Later: 'The Twilight's light economy: tenancy, claim buoys, ageing charts ... the Compact's permits'; and 'what they sell is "dock-rights, air, lamplight, and charts."'
+   His typed ruling, 2026-09-27: "The Compact does NOT sell light, that's not a mechanic we accepted. Remove."
+3. Scald: 'and, one to a sea if that, the elder sando.' (and the choices row 'The elder sando | scald agenda | kept')
+   His words on the Scald review sheet, 2026-10-05: "Move this to the Twilight Sea, it does not belong in the Scald"; of the elder: "Rename this to the Gripping Terror and move it to the Twilight Sea."
+4. Grey: 'Thirteen kinds of catch, all rare by his ruling'.
+   His card, 2026-10-12: "Sallik in the Grey Sea -> Remove from the Grey Sea only" (four catch kinds and a rare table, nine animals).
+5. Chill: keelgrass counted among 'Ten crystal plants'.
+   His words, 2026-10-06: "cut no longer needed".
+6. Twilight: the well clock 'answered here by scope'. His own words settle it, 2026-09-26: "the light can move around slowly over a week".
+
+OWNER WORDS IN THE COMBINED DESIGN WITH NO HOME IN A PER-SEA DESIGN (checked quote by quote, whitespace-normalised search)
+- One: from his Brine Elder paragraph (2026-09-26), "extraordinarily valuable once, then nearly worthless thereafter". Re-homed in GreySea_design.md (moment 11, The customer). Its full text stays in the_grey_deep_content_2026-09-26.md, which the Grey page holds.
+- Every other owner quote found in the two deleted files (each read to its end) is in at least one per-sea design or choices page.
+- Not his words, though the combined page attributed them to his card: 'always force open from the inside' is the Grey danger pass's wording of the never-a-tomb card (the Grey design states the rule and quotes "never a tomb").
+
+MEASURED AFTER THE CHANGE
+references to the deleted files by path under design/, src/, skills/, infrastructure/state/items, infrastructure/agents: 0
+cleanse plan check (cleanse folder not edited): PLAN TerminalBiomes APPROVED
+Grey catch item's acceptance command (! grep -q 'Thirteen kinds of catch' on the deleted file) exit: 0
+
+NOT DONE HERE, AND WHY
+The cleanse folder's tenancy row (census X30, ticket T30, next_version entry) is still there: the owner approved that proposal by digest on 2026-11-17, and by the code of cleanse_plan.py an edit of its bytes reads CHANGED_SINCE_APPROVAL (read from the code, not run). Filed for him as RIMMANDRAKE_ASK_CLEANSE_TENANCY_ROW_APPROVED_AFTER_HIS_CUT.
