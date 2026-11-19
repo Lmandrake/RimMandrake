@@ -907,9 +907,17 @@ def _receipt(line):
         pass
 
 
-def hook_cmd(verb, run, p):
+def hook_script(clone=None):
+    """-> the control.py a run's hooks run: its own clone's when it has one (it lives until the run's return, after
+    claude and the ExecStopPost receipts), else this one. A continuation launches from the previous run's clone, which
+    that run's return deletes: a hook naming the launcher's file is dead for the whole new run."""
+    own = clone and os.path.join(os.path.abspath(clone), "src", "RimMandrake", "rimflow", "control.py")
+    return own if own and os.path.isfile(own) else os.path.abspath(__file__)
+
+
+def hook_cmd(verb, run, p, clone=None):
     py = "/usr/bin/python3" if os.path.exists("/usr/bin/python3") else sys.executable
-    return "%s %s %s %s --db %s" % (py, os.path.abspath(__file__), verb, run, os.path.abspath(p))
+    return "%s %s %s %s --db %s" % (py, hook_script(clone), verb, run, os.path.abspath(p))
 
 
 def unit_of(argv):
@@ -921,7 +929,7 @@ def unit_of(argv):
     return None
 
 
-def launch_unit(argv, spec, runner=None, p=None, **kw):
+def launch_unit(argv, spec, runner=None, p=None, clone=None, **kw):
     """THE launch primitive: every `systemd-run` that starts pipeline work goes through here (selftest_control
     enumerates the call sites; an unrouted one fails it). admit(spec) first; a refusal returns a Launch with .refused
     (rc LAUNCH_REFUSED_RC) and never runs systemd-run. An admitted run's unit carries ExecCondition (the start-time
@@ -956,8 +964,8 @@ def launch_unit(argv, spec, runner=None, p=None, **kw):
     # the two receipts go right after `--unit <name>` (the options before it stay where callers expect them)
     j = next((n + 2 for n, a in enumerate(argv) if a == "--unit"), None) or \
         next((n + 1 for n, a in enumerate(argv) if str(a).startswith("--unit=")), i)
-    full = list(argv[:j]) + ["-p", "ExecCondition=" + hook_cmd("condition", rid, p),
-                             "-p", "ExecStopPost=-" + hook_cmd("ended", rid, p)] + list(argv[j:])
+    full = list(argv[:j]) + ["-p", "ExecCondition=" + hook_cmd("condition", rid, p, clone),
+                             "-p", "ExecStopPost=-" + hook_cmd("ended", rid, p, clone)] + list(argv[j:])
     try:
         r = runner(full, **kw)
     except OSError as e:
@@ -1193,16 +1201,20 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
     return out
 
 
-def schedule_escalation(unit, deadline_s, p=None):
+def schedule_escalation(unit, deadline_s, p=None, runner=subprocess.run):
     """A transient timer (bookkeeping, not pipeline work): at the deadline, `escalate` kills the run if it has not
-    ended. -> line."""
+    ended. -> line. The writer of the order may stand in a pool clone that is returned before the deadline, so the
+    timer runs the first control.py that still exists: this one, then the seat clones' (detached_helper's resolver)."""
     name = "rm-control-escalate-%s" % unit[-60:]
-    py = "/usr/bin/python3" if os.path.exists("/usr/bin/python3") else sys.executable
+    import detached_helper as DH
+    import wrapup
+    rel = os.path.join("src", "RimMandrake", "rimflow", "control.py")
+    cands = [os.path.abspath(__file__)] + [os.path.join(c, rel) for c in wrapup.seat_clones()]
     try:
-        r = subprocess.run(["systemd-run", "--user", "--quiet", "--collect", "--unit", name,
-                            "--on-active=%d" % int(deadline_s), "--timer-property=AccuracySec=1s", py,
-                            os.path.abspath(__file__), "escalate", unit, "--db", os.path.abspath(p or db_path())],
-                           capture_output=True, text=True, timeout=10)
+        r = runner(["systemd-run", "--user", "--quiet", "--collect", "--unit", name,
+                    "--on-active=%d" % int(deadline_s), "--timer-property=AccuracySec=1s",
+                    *DH.stop_resolver(cands, ["escalate", unit, "--db", os.path.abspath(p or db_path())])],
+                   capture_output=True, text=True, timeout=10)
     except (OSError, subprocess.SubprocessError) as e:
         return "escalation timer NOT set (%s)" % e
     return "timer %s" % name if r.returncode == 0 else "escalation timer NOT set (exit %d: %s)" % (
@@ -1316,10 +1328,11 @@ def hook(p=None, unit=None, now=None, stdin=None):
     return 2, text
 
 
-def claude_settings(p=None):
-    """-> the `--settings` JSON a run's claude carries: its PostToolUse hook reads the stop channel (`hook`)."""
+def claude_settings(p=None, clone=None):
+    """-> the `--settings` JSON a run's claude carries: its PostToolUse hook reads the stop channel (`hook`), from the
+    run's own clone (hook_script)."""
     py = "/usr/bin/python3" if os.path.exists("/usr/bin/python3") else sys.executable
-    cmd = "%s %s hook --db %s" % (py, os.path.abspath(__file__), os.path.abspath(p or db_path()))
+    cmd = "%s %s hook --db %s" % (py, hook_script(clone), os.path.abspath(p or db_path()))
     return json.dumps({"hooks": {"PostToolUse": [{"matcher": "*", "hooks": [{"type": "command", "command": cmd,
                                                                               "timeout": 5}]}]}})
 

@@ -3257,7 +3257,7 @@ def launch_argv(role, unit, msg, out, err, claude, session=None, tmpdir=None):
     bounded = os.path.join(role["clone"], "src", "RimMandrake", "Utils", "claude_bounded.sh")
     path = os.path.dirname(claude) + ":" + os.environ.get("PATH", "/usr/bin:/bin")
     cmd = [bounded, "-p", msg, "--model", role["model"], "--name", "ROLE %s %s" % (role["name"], unit)] \
-        + ["--settings", _control_settings()] \
+        + ["--settings", _control_settings(role)] \
         + list(role.get("launch_args") or []) + ["--output-format", "json", "--dangerously-skip-permissions"] \
         + (["--resume", role["resume_session"]] if role.get("resume_session")      # continues that session (resume_due)
            else ["--session-id", session] if session else [])     # its transcript, found when no result is
@@ -3359,10 +3359,10 @@ def stoppost_handoff(name, words):
     return "-" + " ".join(shlex.quote(w) for w in argv)
 
 
-def _control_settings():
+def _control_settings(role):
     """The run's PostToolUse hook: the stop channel of `pipe stop --write-now | --at-easy-spot` (control.py)."""
     import control as C
-    return C.claude_settings()
+    return C.claude_settings(clone=role.get("clone"))
 
 
 def tmp_setenv(tmpdir):
@@ -3394,7 +3394,7 @@ def launch(role, unit, msg, root, claude, runner=subprocess.run):
     r = C.launch_unit(launch_argv(role, unit, msg, out, err, claude, session, tmpdir),
                       {"family": "role", "unit": unit, "role": role.get("name"), "mod": mod, "model": role.get("model"),
                        "extra_units": [role_scope(role["seat"], unit)]},
-                      runner=runner, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+                      runner=runner, clone=role.get("clone"), capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     text = ((r.stdout or "") + (r.stderr or "")).strip()
     if getattr(r, "refused", False):
         return False, "REFUSED by control: %s" % r.why, {}

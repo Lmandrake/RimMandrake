@@ -668,9 +668,9 @@ def session_of(unit, root=None, projects=None):
     return sid, (context_tokens(t) if t else None)
 
 
-def _control_settings():
+def _control_settings(rec):
     import control as C
-    return C.claude_settings()
+    return C.claude_settings(clone=rec.get("clone"))
 
 
 def launch_argv(rec, msg, claude):
@@ -689,7 +689,7 @@ def launch_argv(rec, msg, claude):
     cmd = [bounded, "-p"] + ([] if via_file else [msg]) + [
            "--model", MODEL_IDS.get(rec["model"], rec["model"]), "--name", "DETACHED %s %s" % (seat, rec["item"]),
            "--output-format", "json", "--dangerously-skip-permissions",
-           "--settings", _control_settings()]     # its PostToolUse hook: the stop channel (`pipe stop --write-now`)
+           "--settings", _control_settings(rec)]     # its PostToolUse hook: the stop channel (`pipe stop --write-now`)
     if rec.get("resume_session"):       # a mod's holder session (modledger.resume_plan), carried into this clone
         cmd += ["--resume", rec["resume_session"]]
     # the spend cap is enforced from outside: the agent is never told its spend (owner 2026-11-16, spend_watchdog.py);
@@ -955,8 +955,8 @@ def _launch_locked(seat, item, brief, model, max_s, budget, now, runner, clone, 
     cspec = {"family": "detached", "unit": unit, "item": item, "model": model, "mod": cenv.get("RM_CONTROL_MOD"),
              "stage": cenv.get("RM_CONTROL_STAGE"), "extra_units": [scope_name(seat, unit)]}
     try:
-        r = C.launch_unit(launch_argv(rec, msg, claude_bin()), cspec, runner=runner, capture_output=True, text=True,
-                          timeout=60, stdin=subprocess.DEVNULL)
+        r = C.launch_unit(launch_argv(rec, msg, claude_bin()), cspec, runner=runner, clone=rec.get("clone"),
+                          capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     except OSError as e:                # it never ran (E2BIG, ENOENT): no unit can exist, nothing to ask systemd
         rec["status"] = "launch_failed"
         rec["why"] = "systemd-run could not be started: %s" % e

@@ -738,9 +738,82 @@ def t_void_books_by_run_id():
         os.environ.pop("RM_RUN_VOIDS_FILE", None)
 
 
+def t_hooks_in_run_clone():
+    """RIMMANDRAKE_POINT_CONTROL_HOOKS_AT_RUN_CLONE_LAUNCHER_DELETED: a continuation is launched from the PREVIOUS run's
+    clone, which its return then deletes, so a hook path taken from the launcher's own control.py is dead for the whole
+    new run (stop channel, start check and end receipt; measured 2026-11-18 on a live unit). The hooks name the RUN's
+    clone's control.py when it has one, and the launcher's only when it has none."""
+    fresh()
+    import types
+    rc = os.path.join(TMP, "runclone")     # its rimflow is this one, by a link: the hook really runs from it
+    mine = os.path.join(rc, "src", "RimMandrake", "rimflow", "control.py")
+    os.makedirs(os.path.dirname(os.path.dirname(mine)))
+    os.symlink(HERE, os.path.dirname(mine))
+    cmd = json.loads(C.claude_settings(DB, clone=rc))["hooks"]["PostToolUse"][0]["hooks"][0]["command"]
+    check(mine in cmd and cmd.endswith("hook --db " + DB), "the PostToolUse hook runs the run clone's control.py", cmd)
+    r = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=30,
+                       env=dict(os.environ, RM_ROLE_UNIT="rm-probe-nobody"))
+    check(r.returncode == 0 and not r.stdout and not r.stderr, "that hook command runs, silent with no stop order",
+          (r.returncode, r.stdout[-200:], r.stderr[-200:]))
+    bare = json.loads(C.claude_settings(DB, clone=os.path.join(TMP, "noclone")))["hooks"]["PostToolUse"][0]
+    check(os.path.abspath(C.__file__) in bare["hooks"][0]["command"],
+          "a clone without control.py falls back to the launcher's own", bare)
+    got = []
+
+    def runner(argv, **k):
+        got.append(list(argv))
+        return types.SimpleNamespace(returncode=0, stdout="", stderr="", args=argv)
+    C.launch_unit(["systemd-run", "--user", "--unit", "rm-probe-hookclone", "true"], spec("rm-probe-hookclone"),
+                  runner=runner, p=DB, clone=rc)
+    props = [a for a in (got[0] if got else []) if a.startswith(("ExecCondition=", "ExecStopPost="))]
+    check(len(props) == 2 and all(mine in a for a in props), "the unit's start check and end receipt run the run "
+          "clone's control.py", props)
+    import detached_helper as DH
+    import role_launch as RL
+    for name, f, arg in (("detached_helper", DH._control_settings, {"clone": rc}),
+                         ("role_launch", RL._control_settings, {"clone": rc})):
+        try:
+            s = f(arg)
+        except TypeError as e:
+            s = "TypeError: %s" % e
+        check(mine in s, "%s's run carries its own clone's hook" % name, s[:160])
+    for name, mod in (("detached_helper", DH), ("role_launch", RL)):
+        src = open(mod.__file__, encoding="utf-8").read()
+        call = src[src.index("C.launch_unit(launch_argv("):][:400]
+        want = 'clone=%s.get("clone")' % ("rec" if name == "detached_helper" else "role")
+        check(want in call, "%s passes its run's clone to launch_unit (%s)" % (name, want), call[:200])
+    # the stop order's escalation timer: written by whoever ran `pipe stop` (a helper in a pool clone, often), fired
+    # at the deadline: it falls through to a seat clone's control.py when the writer's clone is gone
+    got = []
+    os.environ["RM_WRAPUP_SEAT_CLONES"] = rc        # the seat clone of this test: the link above
+    try:
+        C.schedule_escalation("rm-probe-esc", 60, DB,
+                              runner=lambda argv, **k: got.append(list(argv)) or types.SimpleNamespace(returncode=0))
+    finally:
+        os.environ.pop("RM_WRAPUP_SEAT_CLONES")
+    argv = got[0] if got else []
+    i = argv.index("--timer-property=AccuracySec=1s") + 1 if "--timer-property=AccuracySec=1s" in argv else len(argv)
+    own = os.path.abspath(C.__file__)
+    tail = argv[i:]
+    seat = os.path.join(os.path.realpath(rc), "src", "RimMandrake", "rimflow", "control.py")
+    check(own in tail and seat in tail[tail.index(own) + 1:] if own in tail else False,
+          "the escalation timer names a seat clone's control.py after the writer's own", tail[:6])
+    gone = os.path.join(TMP, "gone", "control.py")
+    if own in tail:
+        # a hook prints nothing (its line goes to the journal): exit 0 against this store is escalate having run;
+        # the resolver with no script left exits 1 and names the candidates
+        r = subprocess.run([gone if x == own else x for x in tail], capture_output=True, text=True, timeout=30)
+        check(r.returncode == 0 and not r.stderr, "with the writer's clone gone the timer still runs escalate",
+              (r.returncode, r.stderr[-200:]))
+        r = subprocess.run([x for x in tail if x not in (own, seat)][:3] + [gone] +
+                           tail[tail.index("--"):], capture_output=True, text=True, timeout=30)
+        check(r.returncode != 0 and "no stop-step script" in r.stderr, "control: with no control.py left it fails "
+              "loudly, naming the candidates", (r.returncode, r.stderr[-200:]))
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
-              t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites):
+              t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
+              t_hooks_in_run_clone):
         print("== %s" % t.__name__)
         try:
             t()
