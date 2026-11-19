@@ -810,10 +810,125 @@ def t_hooks_in_run_clone():
         check(r.returncode != 0 and "no stop-step script" in r.stderr, "control: with no control.py left it fails "
               "loudly, naming the candidates", (r.returncode, r.stderr[-200:]))
 
+def t_review_claims_eight():
+    """The eight Codex claims on control.py (RIMMANDRAKE_SPLIT_CONTROL_STORE_REVIEW_CLAIMS_EIGHT_UNTRIED), each a red
+    case on the base it was filed against; claim 4 did not reproduce and is kept as a guard with a real unit."""
+    fresh()
+    real_sc, real_alarm = C._systemctl, C._fault_alarm
+    # 1. a failed `systemctl show` is "could not look", never "nothing was running"
+    C._systemctl = lambda args, timeout=10: (1, "Failed to connect to bus: No such file or directory")
+    try:
+        res = C.kill_units(["rm-probe-claim1"], wait_s=0)
+    finally:
+        C._systemctl = real_sc
+    check(res[0]["dead"] is None and "nothing was running" not in res[0]["said"] and "UNVERIFIED" in res[0]["said"],
+          "claim 1: a failed cgroup read is death UNVERIFIED, never nothing was running", res)
+    # 2. an emergency kill (store unreadable) still finds the run's claude scope by its name
+    calls = []
+    C._systemctl = lambda args, timeout=10: (0, "claude-seat-BENCH-rm-role-probe-claim2.scope loaded active running x\n"
+                                             if args[0] == "list-units" else "")
+    try:
+        r = C.stop("rm-role-probe-claim2", "kill", "claim 2", p=os.path.join(TMP, "nostore.db"),
+                   killer=lambda us: calls.append(list(us)) or [
+                       {"unit": u, "dead": True, "ms": 1, "survivors": [], "said": "1 process(es) killed"} for u in us])
+    finally:
+        C._systemctl = real_sc
+    check(calls and "claude-seat-BENCH-rm-role-probe-claim2.scope" in calls[0] and not r["store"],
+          "claim 2: an emergency kill with the store unreadable kills the run's claude scope too", calls)
+    C._systemctl = lambda args, timeout=10: (1, "Failed to connect to bus") if args[0] == "list-units" else (0, "")
+    try:
+        r = C.stop("rm-role-probe-claim2b", "kill", "claim 2b", p=os.path.join(TMP, "nostore.db"),
+                   killer=lambda us: [{"unit": u, "dead": None, "ms": 1, "survivors": [],
+                                       "said": "nothing was running in it"} for u in us])
+    finally:
+        C._systemctl = real_sc
+    check(not r["units"][0]["ok"] and "UNVERIFIED" in r["units"][0]["said"],
+          "claim 2: a claude scope that cannot be listed leaves the kill UNVERIFIED, never ok", r["units"])
+    # 3. a unit-targeted stop fences an admitted (unstarted) run: its later start check refuses it
+    fresh()
+    a = C.admit(spec("rm-probe-claim3", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w3", "base": 1}]))
+    C.stop("rm-probe-claim3", "kill", "claim 3", killer=lambda us: [
+        {"unit": u, "dead": None, "ms": 1, "survivors": [], "said": "nothing was running in it"} for u in us],
+        reaper=lambda *x: "-")
+    code, line = C.condition(a["run"])
+    check(code == 1 and C.account("Graffiti", C.LOOK, "w3", 1)["held"] == 0,
+          "claim 3: after `pipe stop <unit> --kill` an admitted run's unit is refused at start, its trial released",
+          (code, line))
+    # 5. a failed launch with a reservation can be admitted again under its name
+    fresh()
+    sp = spec("rm-probe-claim5", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w5", "base": 2}])
+    a = C.admit(sp)
+    C._mark(a["run"], "fail_launch", "claim 5", fault=True)
+    try:
+        b = C.admit(sp)
+        got = b["ok"]
+    except C.Unreadable as e:
+        got = "Unreadable: %s" % e
+    check(got is True and C.account("Graffiti", C.LOOK, "w5", 2)["held"] == 1,
+          "claim 5: a fail_launch run with a released reservation is re-admitted (not an unreadable store)", got)
+    # 6. escalate acts only on an order whose deadline has passed, and names that order
+    fresh()
+    a = C.admit(spec("rm-probe-claim6", mod="Graffiti"))
+    C.condition(a["run"])
+    t0 = time.time()
+    C.stop("rm-probe-claim6", "write_now", "claim 6 first", deadline_s=60, now=t0, escalator=lambda *x: "-")
+    C.stop("rm-probe-claim6", "at_easy_spot", "claim 6 second", now=t0 + 1, escalator=lambda *x: "-")
+    killed = []
+    kill_ok = lambda us: killed.append(us) or [{"unit": u, "dead": True, "ms": 1, "survivors": [], "said": "killed"}
+                                               for u in us]
+    early = C.escalate("rm-probe-claim6", now=t0 + 10, killer=kill_ok, reaper=lambda *x: "-")
+    check(not killed and "ESCALATED" not in early, "claim 6: an escalation before any order's deadline kills nothing",
+          early)
+    C.escalate("rm-probe-claim6", now=t0 + 61, killer=kill_ok, reaper=lambda *x: "-")
+    rows = {r["why"]: r["state"] for r in C._q("SELECT why, state FROM stops WHERE unit='rm-probe-claim6'")}
+    check(killed and rows.get("claim 6 first") == "escalated" and rows.get("claim 6 second") != "escalated",
+          "claim 6: the escalation names the order whose deadline passed, not the newest", rows)
+    # 7. every fault-metered release sounds the fault alarm (_mark fault=True, _reap)
+    fresh()
+    alarms = []
+    C._fault_alarm = lambda run, p=None: alarms.append(run)
+    try:
+        a = C.admit(spec("rm-probe-claim7", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w7", "base": 3}]))
+        C._mark(a["run"], "fail_launch", "claim 7", fault=True)
+        check(a["run"] in alarms, "claim 7: _mark(fault=True) sounds the fault alarm", alarms)
+        dead = subprocess.Popen([PY, "-c", "pass"])
+        dead.wait()
+        C.reserve("Graffiti", C.LOOK, "run_claim7_holder", win="w7", base=3, pid=dead.pid)
+        C.reserve("Graffiti", C.LOOK, "run_claim7_next", win="w7", base=3)
+        check("run_claim7_holder" in alarms, "claim 7: _reap (a dead holder's look released) sounds the fault alarm",
+              alarms)
+    finally:
+        C._fault_alarm = real_alarm
+    # 8. a unit skipped at its start check (store unreadable) and then ended is not left admitted
+    fresh()
+    a = C.admit(spec("rm-probe-claim8", mod="Graffiti"))
+    code, _ = C.condition(a["run"], p=os.path.join(TMP, "nostore.db"))
+    C.ended(a["run"], "success/exited/0")
+    st = C.run_state(a["run"])["state"]
+    check(code == 2 and st not in C.LIVE_STATES, "claim 8: a unit skipped unreadable then ended is not left admitted",
+          (code, st))
+    # 4 (not reproduced; kept as a guard): re-admitting an ambiguous admission while its old unit is still queued:
+    # systemd refuses the second transient unit under that name, so the new admission is fail_launch and the old unit's
+    # start check refuses it; the old payload never runs on the new admission
+    if not systemd_ok():
+        UNRUN.append("claim 4 guard with a queued real unit: no user systemd here")
+        return
+    fresh()
+    u = "rm-probe-claim4-%d" % os.getpid()
+    argv = ["systemd-run", "--user", "--quiet", "--collect", "--unit", u, "--on-active=2", "/bin/true"]
+    C.launch_unit(argv, spec(u, mod="Graffiti"), capture_output=True, text=True, timeout=30)
+    r2 = C.launch_unit(argv, spec(u, mod="Cauldron"), capture_output=True, text=True, timeout=30)
+    wait_for(lambda: unit_state(u + ".timer") in ("inactive", "failed", ""), 10)
+    time.sleep(1.0)
+    row = C.run_state(u)
+    check(r2.returncode != 0 and row["state"] == "fail_launch" and not row["started_at"],
+          "claim 4 guard: the old queued unit never starts on the re-admission", (r2.returncode, dict(row)))
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
-              t_hooks_in_run_clone):
+              t_hooks_in_run_clone, t_review_claims_eight):
         print("== %s" % t.__name__)
         try:
             t()

@@ -94,6 +94,7 @@ STOP_MODES = ("write_now", "at_easy_spot", "kill")
 DEFAULT_STOP_MODE = "at_easy_spot"  # his default (card 2026-11-18); `pipe` always prints which mode it used
 WRITE_NOW_DEADLINE_S = 300
 KILL_WAIT_S = 1.0
+ESCALATE_SLACK_S = 2.0              # a deadline timer may fire this early against the wall clock
 UNM = "UNMEASURED"
 LIVE_STATES = ("admitted", "started")
 NEVER_RAN = ("fail_launch", "refused")    # its unit ended without its payload (a cancelled or abandoned one may still start: fenced)
@@ -606,15 +607,16 @@ def account(mod, resource, win="", base=0, p=None, used=None):
 
 def _reap(c, now):
     """Release held reservations whose holder process is gone (same host; fenced by /proc): a crashed judge never
-    keeps its look. -> count."""
-    n = 0
+    keeps its look. -> [run] released (metered as faults: the caller sounds _fault_alarm after its commit)."""
+    out = []
     host = socket.gethostname()
     for r in c.execute("SELECT * FROM reservations WHERE state='held' AND pid IS NOT NULL AND host=?",
                        (host,)).fetchall():
         if not os.path.exists("/proc/%d" % r["pid"]):
-            n += _release(c, "id=?", (r["id"],), "fail_system: its holder (pid %d) died before settling" % r["pid"],
-                          now, True)
-    return n
+            if _release(c, "id=?", (r["id"],), "fail_system: its holder (pid %d) died before settling" % r["pid"],
+                        now, True):
+                out.append(r["run"])
+    return out
 
 
 def reserve(mod, resource, run, win="", base=0, qty=1, p=None, now=None, pid=None, used=None):
@@ -622,8 +624,16 @@ def reserve(mod, resource, run, win="", base=0, qty=1, p=None, now=None, pid=Non
     gets it. -> (True, account) or (False, why). Raises Unreadable (fail closed: the caller runs nothing)."""
     now = time.time() if now is None else now
     mod = key(mod)
+    reaped = []
+    out = _reserve(mod, resource, run, win, base, qty, p, now, pid, used, reaped)
+    for x in dict.fromkeys(reaped):     # after the commit: a dead holder's look released is a metered fault
+        _fault_alarm(x, p)
+    return out
+
+
+def _reserve(mod, resource, run, win, base, qty, p, now, pid, used, reaped):
     with txn(p) as c:
-        _reap(c, now)
+        reaped += _reap(c, now)
         mine = c.execute("SELECT state FROM reservations WHERE run=? AND mod=? AND resource=? AND win=?",
                          (run, mod, resource, win)).fetchone()
         if mine:
@@ -765,6 +775,14 @@ def admit(spec, p=None, now=None):
         raise Refused("a launch spec names its family (%s) and its unit: %r" % (", ".join(FAMILIES), spec))
     if spec.get("mod"):
         spec["mod"] = key(spec["mod"])
+    reaped = []
+    out = _admit(spec, now, p, reaped)
+    for x in dict.fromkeys(reaped):     # after the commit: a dead holder's look released is a metered fault
+        _fault_alarm(x, p)
+    return out
+
+
+def _admit(spec, now, p, reaped):
     with txn(p) as c:
         rows = blocking(c, run_scopes(spec), now)
         why = describe(rows[0]) if rows else None
@@ -776,12 +794,13 @@ def admit(spec, p=None, now=None):
                 # that name never ran a payload, or its admission is this process's own earlier try (or a dead
                 # launcher's) whose unit never reached its start check: it may be admitted again
                 c.execute("DELETE FROM runs WHERE unit=?", (spec["unit"],))
-                c.execute("DELETE FROM reservations WHERE run=? AND state='held'", ("run_" + spec["unit"],))
+                c.execute("DELETE FROM reservations WHERE run=? AND state IN ('held','released')",
+                          ("run_" + spec["unit"],))     # a fail_launch's released rows keep the UNIQUE key
             elif old:
                 why = ("DUPLICATE: unit %s is already admitted (state %s): an ambiguous start is investigated, never "
                        "relaunched under the same name" % (spec["unit"], old["state"]))
         if not why:
-            _reap(c, now)
+            reaped += _reap(c, now)
             for res in spec.get("resources") or []:
                 acc = _account(c, key(res.get("mod") or spec.get("mod")), res["resource"], res.get("win", ""),
                                int(res.get("base", 0)), used=res.get("used"))
@@ -843,9 +862,13 @@ def ended(run, result=None, p=None, now=None):
             return "no run %s" % run
         if r["state"] == "started":
             c.execute("UPDATE runs SET state='ended', ended_at=?, result=? WHERE id=?", (now, result, run))
+        elif r["state"] == "admitted":  # its start check never passed (the store unreadable there): it never ran
+            c.execute("UPDATE runs SET state='refused', ended_at=?, result=?, why=? WHERE id=?",
+                      (now, result, "its unit ended before its start check passed (unreadable store, or never run)",
+                       run))
         c.execute("UPDATE stops SET state='done', ended_at=? WHERE run=? AND state IN ('pending','seen')", (now, run))
         n = _release(c, "run=?", (run,), "ended (%s) with no validated settlement" % result, now,
-                     fault=r["state"] == "started")
+                     fault=r["state"] in LIVE_STATES)
     if n:
         _fault_alarm(run, p)
     return "ENDED %s %s" % (run, result)
@@ -861,9 +884,10 @@ def _mark(run, state, why, p=None, now=None, fault=False, frm=("admitted",)):
     with txn(p) as c:
         n = c.execute("UPDATE runs SET state=?, ended_at=?, why=? WHERE id=? AND state IN (%s)" % ",".join("?" * len(frm)),
                       (state, now, why, run) + tuple(frm)).rowcount
-        if n:
-            _release(c, "run=?", (run,), "%s: %s" % (state, why), now, fault)
-        return bool(n)
+        k = _release(c, "run=?", (run,), "%s: %s" % (state, why), now, fault) if n else 0
+    if fault and k:
+        _fault_alarm(run, p)
+    return bool(n)
 
 
 class Launch(subprocess.CompletedProcess):
@@ -1044,7 +1068,9 @@ def _systemctl(args, timeout=10):
 def _cgroup_pids(unit):
     """-> (pids now in the unit's cgroup, or None when it cannot be read; the cgroup path)."""
     rc, out = _systemctl(["show", "-p", "ControlGroup", "--value", unit], 5)
-    cg = out.strip() if rc == 0 else ""
+    if rc != 0:     # a failed read is "could not look", never an empty cgroup (a unit that does not exist reads rc 0)
+        return None, "systemctl show failed (rc %d): %s" % (rc, out.strip()[:120])
+    cg = out.strip()
     if not cg:
         return [], ""
     procs = os.path.join("/sys/fs/cgroup", cg.lstrip("/"), "cgroup.procs")
@@ -1107,6 +1133,23 @@ def _live_runs(c, scope):
             if _in_scope(r, scope)]
 
 
+def _stand_in(unit, find_scopes=False):
+    """-> the row a stop uses for a unit the store cannot name (unreadable, or no run row): its claude scope
+    (claude-seat-<seat>-<unit>.scope, role_launch.role_scope) is a cgroup of its own that the unit's kill misses, so a
+    kill lists it from systemd by name; a listing that fails is carried as scope_err (the kill then reads UNVERIFIED)."""
+    row = {"id": None, "unit": unit, "spec": "{}", "item": None, "mod": None, "family": "?"}
+    if find_scopes:
+        pat = "claude-seat-*-%s.scope" % unit
+        rc, out = _systemctl(["list-units", "--all", "--plain", "--no-legend", "--type=scope", pat], 5)
+        if rc != 0:
+            row["scope_err"] = "its claude scope (%s) could not be listed (rc %d: %s): death UNVERIFIED" % (
+                pat, rc, out.strip()[:80])
+        else:
+            found = [w for w in (ln.replace("\u25cf", " ").split() for ln in out.splitlines()) if w]
+            row["spec"] = json.dumps({"extra_units": [w[0] for w in found if w[0].endswith(".scope")]})
+    return row
+
+
 def _extra_units(run):
     try:
         spec = json.loads(run.get("spec") or "{}")
@@ -1142,9 +1185,11 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
                                                           owner_said, utc(now)[:10], None, act["id"],
                                                           act["at_pacific"], act["who"]))
                 cancelled = _cancel_in_scope(c, scope, "stopped: " + why, now)
+            else:   # its admitted, unstarted run is fenced too: its start check refuses it
+                cancelled = _cancel_in_scope(c, scope, "stopped: " + why, now)
             runs = _live_runs(c, scope)
             if unit_target and not runs:
-                runs = [{"id": None, "unit": scope[5:], "spec": "{}", "item": None, "mod": None, "family": "?"}]
+                runs = [_stand_in(scope[5:], mode == "kill")]
             if unit_target:
                 act = _act(c, "stop", scope, None, {"mode": mode, "deadline_s": deadline_s}, why, owner_said,
                            per_ruling, now=now)
@@ -1164,7 +1209,7 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
         if not (unit_target and mode == "kill"):
             raise
         act, cancelled, store = None, [], False
-        runs = [{"id": None, "unit": scope[5:], "spec": "{}", "item": None, "mod": None, "family": "?"}]
+        runs = [_stand_in(scope[5:], True)]
         store_err = str(e)
     out = {"scope": scope, "mode": mode, "act": act, "cancelled": cancelled, "units": [], "store": store}
     for r in runs:      # a stopped run spends no trial in the dispatch books either (run_void.py; card 2026-11-18)
@@ -1176,6 +1221,9 @@ def stop(target, mode, why, deadline_s=None, owner_said=None, per_ruling=None, p
     if mode == "kill":
         for r in runs:
             res = killer([r["unit"]] + _extra_units(r))
+            if r.get("scope_err"):
+                res = list(res) + [{"unit": "claude-seat-*-%s.scope" % r["unit"], "dead": None, "ms": 0,
+                                    "survivors": [], "said": r["scope_err"]}]
             # dead: every process that was in the unit (and its claude scope) is gone; a unit with nothing running is
             # fine; a cgroup that could not be read is UNVERIFIED, and a survivor is a failure
             bad = [x for x in res if x["dead"] is False or (x["dead"] is None and "nothing was running" not in x["said"])]
@@ -1225,17 +1273,20 @@ def escalate(unit, p=None, now=None, killer=None, reaper=None):
     """The deadline of a stop order passed: kill the run if it has not ended, and say so (an act). -> line."""
     now = time.time() if now is None else now
     with txn(p) as c:
-        s = c.execute("SELECT * FROM stops WHERE unit=? AND state IN ('pending','seen') ORDER BY id DESC",
-                      (unit,)).fetchone()
-        if not s:
-            return "ESCALATE %s: nothing to do (its stop order is done or absent)" % unit
+        s = c.execute("SELECT * FROM stops WHERE unit=? AND state IN ('pending','seen') AND deadline IS NOT NULL "
+                      "AND deadline <= ? ORDER BY id DESC", (unit, now + ESCALATE_SLACK_S)).fetchone()
+        if not s:   # a timer acts on an order whose deadline passed, never on a newer one that has none yet
+            return "ESCALATE %s: nothing to do (no pending stop order's deadline has passed)" % unit
         a = _act(c, "escalate", "unit:" + unit, {"mode": s["mode"]}, {"mode": "kill"},
                  "the %s stop order's deadline passed (%s) and the run had not ended: escalated to --kill" % (
                      s["mode"], pac(s["deadline"] or now)), now=now)
         c.execute("UPDATE stops SET state='escalated', ended_at=? WHERE id=?", (now, s["id"]))
         r = c.execute("SELECT * FROM runs WHERE unit=?", (unit,)).fetchone()
-    r = dict(r) if r else {"id": None, "unit": unit, "spec": "{}", "family": "?"}
+    r = dict(r) if r else _stand_in(unit, True)
     res = (killer or kill_units)([unit] + _extra_units(r))
+    if r.get("scope_err"):
+        res = list(res) + [{"unit": "claude-seat-*-%s.scope" % unit, "dead": None, "ms": 0, "survivors": [],
+                            "said": r["scope_err"]}]
     bad = [x for x in res if x["dead"] is False or (x["dead"] is None and "nothing was running" not in x["said"])]
     if bad:
         return "ESCALATION FAILED %s (%s): %s; NOT recorded killed" % (unit, a["id"], "; ".join(x["said"] for x in bad))
