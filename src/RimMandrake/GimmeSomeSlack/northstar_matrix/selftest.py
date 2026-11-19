@@ -346,6 +346,44 @@ def main(argv=None):
           CS.frame_ok((300, 200), (30, 20), 10) and not CS.frame_ok((300, 200), (30, 20), 12))
     shutil.rmtree(td, ignore_errors=True)
 
+    # ---------------------------------------------------------------- 10. one settings write per board
+    # RIMMANDRAKE_TRIM_GSS_PROOF_SETTINGS_READS_THIRTY_SEVEN_PERCENT: in the logged run 4d0e9a2ae543 the 225 settings writes
+    # (each one Apply = a whole-map regenerate, ~375 ms) were 62.8 s of the 146.7 s in jawa/mod_settings_fields; a board
+    # wrote defaults and then each key on its own. A board now sends them as ONE setmany probe (one Apply).
+    class _Rec(object):
+        def __init__(self, reply):
+            self.cmds, self.reply = [], reply
+
+        def probe(self, cmd, wait_s=0):
+            self.cmds.append(cmd)
+            return self.reply(cmd)
+
+    def _new(cmd):
+        if cmd.startswith("setmany:"):
+            ks = [t.split("=", 1)[0] for t in cmd[8:].split(";") if "=" in t]
+            return {"success": "slack" not in ks, "cmd": "setmany", "set": {k: k != "slack" for k in ks}}
+        return {"success": True, "cmd": cmd}
+
+    bs = {"slack": "0", "cordsPerConnection": "1", "style": "CordStyle.StarWars", "sprawlCap": "5", "enabled": "True"}
+    rec = _Rec(_new)
+    got = RL.apply_board_settings(rec, bs) if hasattr(RL, "apply_board_settings") else None
+    check("ST1 a board's settings go in ONE probe (defaults first, catalog-key order, renames applied, enabled left for later)",
+          rec.cmds == ["setmany:defaults;cordsPerConnection=1;slack=0;loopBudget=5;style=StarWars"], rec.cmds)
+    check("ST1n a key the game refused reads False, the others True",
+          got == {"slack": False, "cordsPerConnection": True, "style": True, "sprawlCap": True}, got)
+    old = _Rec(lambda c: {"success": False, "cmd": c, "error": "unknown command"} if c.startswith("setmany:")
+               else {"success": not c.startswith("set:slack"), "cmd": c})
+    got = RL.apply_board_settings(old, bs) if hasattr(RL, "apply_board_settings") else None
+    check("ST2 a DLL without setmany falls back to defaults + one set: per key, same answer",
+          old.cmds[1:] == ["defaults", "set:cordsPerConnection=1", "set:slack=0", "set:loopBudget=5", "set:style=StarWars"]
+          and got == {"slack": False, "cordsPerConnection": True, "style": True, "sprawlCap": True}, (old.cmds, got))
+    pcs = open(os.path.join(HERE, "..", "Source", "GimmeSomeSlackProbe.cs"), encoding="utf-8").read()
+    i = pcs.find('cmd.StartsWith("setmany:")')
+    blk = pcs[i:pcs.index("\n            }\n", i)] if i >= 0 else ""
+    check("ST3 the probe's setmany applies the settings once, after every key is set",
+          blk.count("GimmeSomeSlackSettings.Apply()") == 1 and blk.rfind("Apply()") > blk.rfind("SetValue(")
+          and "ResetToDefaults()" in blk, i)
+
     npass = sum(ok for _, ok in RES)
     print("\n%d/%d checks passed (%d negative controls among them)" % (
         npass, len(RES), sum(nm.split()[0].endswith("n") for nm, _ in RES)))

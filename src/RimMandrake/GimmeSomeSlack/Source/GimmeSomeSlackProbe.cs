@@ -128,6 +128,29 @@ namespace RimMandrake.GimmeSomeSlack
                 GimmeSomeSlackSettings.Apply();
                 return "{\"success\":true,\"cmd\":\"defaults\"}";
             }
+            // RIMMANDRAKE_TRIM_GSS_PROOF_SETTINGS_READS_THIRTY_SEVEN_PERCENT: "setmany:[defaults;]k=v;k2=v2" sets every key and
+            // applies ONCE (each Apply regenerates the whole map, ~375 ms on a full list; a matrix board wrote defaults and then
+            // each key with its own Apply). A key that does not take is reported in set/errors; the others still apply.
+            if (cmd.StartsWith("setmany:"))
+            {
+                var done = new List<string>();
+                var errs = new List<string>();
+                foreach (string tok in cmd.Substring(8).Split(';').Select(t => t.Trim()).Where(t => t.Length > 0))
+                {
+                    if (tok == "defaults") { GimmeSomeSlackSettings.ResetToDefaults(); continue; }
+                    string[] kv = tok.Split(new[] { '=' }, 2);
+                    FieldInfo fi = kv.Length == 2 ? typeof(GimmeSomeSlackSettings).GetField(kv[0], BindingFlags.Public | BindingFlags.Static) : null;
+                    try
+                    {
+                        if (fi == null) throw new ArgumentException(kv.Length == 2 ? "no settings field " + kv[0] : "not key=value");
+                        fi.SetValue(null, fi.FieldType.IsEnum ? Enum.Parse(fi.FieldType, kv[1]) : Convert.ChangeType(kv[1], fi.FieldType, CultureInfo.InvariantCulture));
+                        done.Add(J.S(kv[0]) + ":true");
+                    }
+                    catch (Exception e) { done.Add(J.S(kv[0]) + ":false"); errs.Add(J.S(kv[0]) + ":" + J.S(e.Message)); }
+                }
+                GimmeSomeSlackSettings.Apply();
+                return "{\"success\":" + J.B(errs.Count == 0) + ",\"cmd\":\"setmany\",\"set\":{" + string.Join(",", done) + "},\"errors\":{" + string.Join(",", errs) + "}}";
+            }
             if (cmd.StartsWith("set:"))
             {
                 string[] kv = cmd.Substring(4).Split(new[] { '=' }, 2);

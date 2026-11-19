@@ -308,6 +308,24 @@ def _vc():
     return validation_core
 
 
+def apply_board_settings(B, settings):
+    """Defaults, then every board setting but the master switch `enabled` (applied after the build: controls), as ONE
+    probe `setmany:` - one Apply, one whole-map regenerate, where defaults plus a set: per key paid one each (~375 ms
+    apiece on the full list; RIMMANDRAKE_TRIM_GSS_PROOF_SETTINGS_READS_THIRTY_SEVEN_PERCENT). A GSS DLL without setmany
+    answers "unknown command" and gets the old per-key writes. -> {catalog key: took (bool)}."""
+    # the settings field sprawlCap was renamed loopBudget (A12/B15, 2026-10-06); catalogs written before 2026-10-11
+    # say sprawlCap, and set:sprawlCap answered "no settings field" (ratsnest boards ran at the default budget,
+    # proof_all 2026-10-10), so an old catalog's key is translated here
+    pairs = [(k, SETTING_RENAMES.get(k, k), v.replace("CordStyle.", "")) for k, v in sorted(settings.items()) if k != "enabled"]
+    r = B.probe("setmany:" + ";".join(["defaults"] + ["%s=%s" % (fk, v) for _, fk, v in pairs])) or {}
+    if isinstance(r.get("set"), dict):
+        return {k: r["set"].get(fk) is True for k, fk, _ in pairs}
+    if r.get("error") != "unknown command":
+        return {k: False for k, _, _ in pairs}            # the write failed as a whole: no key is known to have taken
+    B.probe("defaults")
+    return {k: bool(B.probe("set:%s=%s" % (fk, v)).get("success")) for k, fk, v in pairs}
+
+
 class LiveBridge(object):
     def __init__(self):
         sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
@@ -455,6 +473,16 @@ class MockBridge(object):
         if cmd == "defaults":
             self.settings = {}
             return {"success": True}
+        if cmd.startswith("setmany:"):
+            took = {}
+            for t in cmd[8:].split(";"):
+                if t == "defaults":
+                    self.settings = {}
+                elif "=" in t:
+                    k, v = t.split("=", 1)
+                    self.settings[k] = v
+                    took[k] = True
+            return {"success": True, "cmd": "setmany", "set": took, "errors": {}}
         if cmd == "census":
             return {"success": True, "ticksGame": self.ticks_game, "enabled": self.settings.get("enabled", "True") != "False",
                     "invisibleApplied": self.settings.get("enabled", "True") != "False", "layerVisible": self.settings.get("enabled", "True") != "False",
@@ -730,17 +758,7 @@ class Run(object):
         tb0, wb0 = self.eng_ticks(), time.time()
         rect = "%d,%d,%d,%d" % tuple(b["bbox"])
         self.progress("board %s %s scenes %d bbox %s" % (b["id"], b["settings"], len(b["scenes"]), rect))
-        B.probe("defaults")
-        set_res = {}
-        for k, v in sorted(b["settings"].items()):
-            v2 = v.replace("CordStyle.", "")
-            if k == "enabled":
-                continue                                  # master switch: applied after the build (controls)
-            # the settings field sprawlCap was renamed loopBudget (A12/B15, 2026-10-06); catalogs written before 2026-10-11
-            # say sprawlCap, and set:sprawlCap answered "no settings field" (ratsnest boards ran at the default budget,
-            # proof_all 2026-10-10), so an old catalog's key is translated here
-            fk = SETTING_RENAMES.get(k, k)
-            set_res[k] = B.probe("set:%s=%s" % (fk, v2)).get("success")
+        set_res = apply_board_settings(B, b["settings"])
         unset = sorted(k for k, ok in set_res.items() if not ok)
         if unset:                                         # a board whose settings did not take is not the board specified
             self.row("S0_settings_%s" % b["id"], "FAIL", "HARNESS", {"not_set": unset, "settings": b["settings"]})

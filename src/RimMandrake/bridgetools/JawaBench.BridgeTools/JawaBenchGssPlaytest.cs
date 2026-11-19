@@ -525,10 +525,18 @@ namespace JawaBench.BridgeTools
         }
 
         /// <summary>A w x h rect of clean, standable, unroofed, unfogged ground with no building/pawn/item (plants cleared),
-        /// 10 cells from the edge, searched outward from near.</summary>
-        private static bool GFindRect(GCtx c, IntVec3 near, int w, int h, out CellRect rect) => GFindRectOn(c.map, c.run.seed, near, w, h, out rect);
+        /// 10 cells from the edge, searched outward from near. When no rect is clean (a modded map: visit 1 on RM_TheRot went
+        /// INVALID "no clean site" on three scenes), the best candidate is prepared instead and what was cleared is recorded in
+        /// evidence <c>siteCleared</c> (RIMMANDRAKE_CLEAR_SLACK_WALK_SITE_ON_MODDED_MAPS).</summary>
+        private static bool GFindRect(GCtx c, IntVec3 near, int w, int h, out CellRect rect)
+        {
+            if (GFindRectOn(c.map, c.run.seed, near, w, h, out rect)) return true;
+            bool ok = GPrepareSiteOn(c.map, c.run.seed, near, w, h, out rect, out Dictionary<string, object> cleared);
+            c.ev["siteCleared"] = cleared;
+            return ok;
+        }
 
-        private static bool GFindRectOn(Map m, int seed, IntVec3 near, int w, int h, out CellRect rect)
+        private static List<KeyValuePair<int, IntVec3>> GSiteCandidates(Map m, int seed, IntVec3 near, int w, int h)
         {
             var rng = new System.Random(seed * 7919 + w * 31 + h);
             var keyed = new List<KeyValuePair<int, IntVec3>>();
@@ -538,24 +546,79 @@ namespace JawaBench.BridgeTools
                     var o = new IntVec3(x, 0, z);
                     keyed.Add(new KeyValuePair<int, IntVec3>((o - near).LengthHorizontalSquared + rng.Next(0, 64), o));
                 }
-            foreach (var kv in keyed.OrderBy(k => k.Key))
+            return keyed.OrderBy(k => k.Key).ToList();
+        }
+
+        /// <summary>The one test of a clean site cell, used by the search and by the re-check after a prepare.</summary>
+        private static bool GSiteClean(Map m, IntVec3 x)
+        {
+            if (x.Fogged(m) || x.Roofed(m) || x.GetEdifice(m) != null || x.GetFirstPawn(m) != null || !x.Standable(m)) return false;
+            TerrainDef t = m.terrainGrid.TopTerrainAt(x);
+            if (t == null || t.IsWater || !t.affordances.Contains(TerrainAffordanceDefOf.Light)) return false;
+            return !x.GetThingList(m).Any(th => !(th is Plant) && th.def.category != ThingCategory.Filth);
+        }
+
+        private static bool GFindRectOn(Map m, int seed, IntVec3 near, int w, int h, out CellRect rect)
+        {
+            foreach (var kv in GSiteCandidates(m, seed, near, w, h))
             {
                 var r = new CellRect(kv.Value.x, kv.Value.z, w, h);
-                bool ok = true;
-                foreach (IntVec3 x in r.Cells)
-                {
-                    if (x.Fogged(m) || x.Roofed(m) || x.GetEdifice(m) != null || x.GetFirstPawn(m) != null || !x.Standable(m)) { ok = false; break; }
-                    TerrainDef t = m.terrainGrid.TopTerrainAt(x);
-                    if (t == null || t.IsWater || !t.affordances.Contains(TerrainAffordanceDefOf.Light)) { ok = false; break; }
-                    if (x.GetThingList(m).Any(th => !(th is Plant) && th.def.category != ThingCategory.Filth)) { ok = false; break; }
-                }
-                if (!ok) continue;
+                if (!r.Cells.All(x => GSiteClean(m, x))) continue;
                 foreach (IntVec3 x in r.Cells) foreach (Thing th in x.GetThingList(m).ToList()) if (th is Plant || th.def.category == ThingCategory.Filth) th.Destroy(DestroyMode.Vanish);
                 rect = r;
                 return true;
             }
             rect = default(CellRect);
             return false;
+        }
+
+        /// <summary>No clean rect: take the candidate (of the nearest 400) needing the fewest cells changed that holds no pawn and
+        /// no building of the player's, and make it clean - vanish its plants, items, filth and non-player buildings (natural rock
+        /// included), lay soil where the ground is water or takes no light building, unroof and unfog it. Counts what it did in
+        /// <paramref name="cleared"/>; false (with the reason there) when no candidate qualifies or the made site still fails
+        /// <see cref="GSiteClean"/>. The map is a throwaway test map; nothing is restored.</summary>
+        private static bool GPrepareSiteOn(Map m, int seed, IntVec3 near, int w, int h, out CellRect rect, out Dictionary<string, object> cleared)
+        {
+            cleared = new Dictionary<string, object>();
+            rect = default(CellRect);
+            bool Forbidden(IntVec3 x) => x.GetFirstPawn(m) != null
+                || x.GetThingList(m).Any(th => th.def.category == ThingCategory.Building && th.Faction == Faction.OfPlayer);
+            CellRect best = default(CellRect); int bestDirty = int.MaxValue;
+            foreach (var kv in GSiteCandidates(m, seed, near, w, h).Take(400))
+            {
+                var r = new CellRect(kv.Value.x, kv.Value.z, w, h);
+                int dirty = 0; bool bad = false;
+                foreach (IntVec3 x in r.Cells)
+                {
+                    if (Forbidden(x)) { bad = true; break; }
+                    if (!GSiteClean(m, x)) dirty++;
+                }
+                if (!bad && dirty < bestDirty) { best = r; bestDirty = dirty; if (dirty == 0) break; }
+            }
+            if (bestDirty == int.MaxValue) { cleared["reason"] = "every candidate holds a pawn or a player's building"; return false; }
+            int things = 0, buildings = 0, terrain = 0, roofs = 0, fog = 0;
+            TerrainDef soil = TerrainDefOf.Soil;
+            foreach (IntVec3 x in best.Cells)
+            {
+                foreach (Thing th in x.GetThingList(m).ToList())
+                {
+                    if (th is Pawn || th.Destroyed) continue;
+                    if (th.def.category == ThingCategory.Building) buildings++; else things++;
+                    try { th.Destroy(DestroyMode.Vanish); } catch (Exception e) { Log.Warning("[JawaBench.playtest] site clear " + th + ": " + e.Message); }
+                }
+                TerrainDef t = m.terrainGrid.TopTerrainAt(x);
+                if (t == null || t.IsWater || !t.affordances.Contains(TerrainAffordanceDefOf.Light) || t.passability == Traversability.Impassable)
+                { m.terrainGrid.SetTerrain(x, soil); terrain++; }
+                if (x.Roofed(m)) { m.roofGrid.SetRoof(x, null); roofs++; }
+                if (x.Fogged(m)) { m.fogGrid.Unfog(x); fog++; }
+            }
+            var still = best.Cells.Where(x => !GSiteClean(m, x)).Take(4).Select(x => x.x + "," + x.z).ToList();
+            cleared["rect"] = best.minX + "," + best.minZ + " " + w + "x" + h;
+            cleared["dirtyCells"] = bestDirty; cleared["things"] = things; cleared["buildings"] = buildings;
+            cleared["terrain"] = terrain; cleared["roofs"] = roofs; cleared["fog"] = fog;
+            if (still.Count > 0) { cleared["reason"] = "still not clean after clearing: " + string.Join(" ", still); return false; }
+            rect = best;
+            return true;
         }
 
         private static Thing GSpawn(GCtx c, string defName, IntVec3 at, Rot4? rot = null)
@@ -1050,6 +1113,23 @@ namespace JawaBench.BridgeTools
                     "equal", diff == 0 && missing == 0 && extra == 0, "diffKeys", diffKeys, "builds", comp.Builds, "planned", comp.LastPlanned, "reused", comp.LastReused);
             }
 
+            /// <summary>Cord edges with an end in the rect whose key carries a dead-end flag: a terminal, wall-terminal or stub-device end
+            /// on a cell with no powered net (the same nodes and the same live test as the 'L'/'D' flags in CordBuilder's edge key).</summary>
+            internal static int DeadEndEdges(Map m, CellRect r)
+            {
+                GCore.CordGraph g = m.GetComponent<GSS.RM_MapComponent_CordGraph>()?.Graph;
+                if (g == null) return 0;
+                int n = 0;
+                foreach (GCore.CordEdge e in g.CordEdges())
+                {
+                    GCore.CordNode a = g.Nodes[e.A], b = g.Nodes[e.B];
+                    if (!r.Contains(new IntVec3(a.Cell.X, 0, a.Cell.Z)) && !r.Contains(new IntVec3(b.Cell.X, 0, b.Cell.Z))) continue;
+                    foreach (GCore.CordNode nd in new[] { a, b })
+                        if ((nd.Type == GCore.NodeType.Terminal || nd.WallTerminal || nd.Type == GCore.NodeType.StubDevice) && !GSS.CordWorldAdapter.IsLive(m, nd.Cell)) { n++; break; }
+                }
+                return n;
+            }
+
             /// <summary>One line per observable GSS fact in the rect: laid cords (key@geometry), hose reels (state, end, trail,
             /// geometry), anchors (each link's partner cell and state, fallen cords).</summary>
             internal static List<string> Snapshot(Map m, CellRect r)
@@ -1111,8 +1191,17 @@ namespace JawaBench.BridgeTools
                 if (why == null) yield return PUntil(() => r2.carry == GHose.HoseCarryState.Carrying && r2.trail.Count >= 4, 5000);
                 carryNote = why ?? ("carry " + r2.carry + " trail " + r2.trail.Count);
             }
-            foreach (PWait x in GFrames(4)) yield return x;
+            // the floor run is cut between the battery (hooked at minX+2) and the lamp (at minX+9), so the save holds a live end and a
+            // dead end: without it the walk's red "after the reload a cut line draws as whole" could not show (RIMMANDRAKE_CUT_SLACK_WALK_FLOOR_LINE_BEFORE_SAVE)
+            var cutCell = new IntVec3(r.minX + 6, 0, z);
+            cutCell.GetFirstThing(m, ThingDefOf.PowerConduit)?.Destroy(DestroyMode.Vanish);
+            m.powerNetManager.UpdatePowerNetsAndConnections_First();
+            foreach (PWait x in GSettle(m)) yield return x;
             c.Phase("observe");
+            var floor = new CellRect(r.minX, z - 3, 15, 7).ClipInsideMap(m);
+            int cutFloorKeys = GssLambdaHome.DeadEndEdges(m, floor);
+            c.ev["cutFloorKeys"] = cutFloorKeys;
+            if (cutFloorKeys == 0) { c.Invalid("the cut floor run reads no cord with a dead end (cutFloorKeys 0): the save would not test a cut line"); yield break; }
             var s0 = GSnapshot(m, r.ExpandedBy(2).ClipInsideMap(m));
             int ticksAtSave = TicksGameSafe();
             string save = "JBPT_" + c.run.id;

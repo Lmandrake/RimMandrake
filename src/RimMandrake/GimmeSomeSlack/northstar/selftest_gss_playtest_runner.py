@@ -57,6 +57,8 @@ def main():
     n += _resume_wait(G)
     n += _resume_deadline(G, pend, end)
     n += _save_reload_b_source(src)
+    n += _site_prepare_source(src)
+    n += _cut_floor_line_source(src)
     print("%d/%d passed" % (n, n))
     return 0
 
@@ -223,6 +225,50 @@ def _save_reload_b_source(src):
     topo = src[src.index("string GTopo(string l)"):]
     topo = topo[:topo.index("\n\n")]
     assert '"cord "' in topo and "geom" in topo, topo
+    n += 1
+    return n
+
+
+def _body(src, sig):
+    b = src[src.index(sig):]
+    return b[:b.index("\n        }\n")]
+
+
+def _site_prepare_source(src):
+    """RIMMANDRAKE_CLEAR_SLACK_WALK_SITE_ON_MODDED_MAPS: on a modded map (visit 1, RM_TheRot) no rect was clean and three
+    scenes went INVALID "no clean site". The GSS site search now prepares the best candidate itself when none is clean,
+    records what it cleared (siteCleared), and never clears a cell holding a pawn or a player's building."""
+    n = 0
+    find = src[src.index("private static bool GFindRect(GCtx c"):]
+    find = find[:find.index("\n\n")]
+    assert "GPrepareSiteOn(" in find, "GFindRect gives up on a modded map instead of preparing a site"
+    assert 'c.ev["siteCleared"]' in find, "GFindRect does not record what it cleared"
+    n += 1
+    prep = _body(src, "private static bool GPrepareSiteOn(")
+    assert "GetFirstPawn" in prep and "Faction.OfPlayer" in prep, "the prepare step may clear a pawn or a player's building"
+    for act in ("SetRoof(", "Unfog(", "SetTerrain(", "Destroy(DestroyMode.Vanish)"):
+        assert act in prep, "the prepare step does not " + act
+    assert "GSiteClean(" in prep, "the prepare step does not re-check the site it made"
+    n += 1
+    # the clean predicate is one function, used by both the search and the re-check
+    on = _body(src, "private static bool GFindRectOn(")
+    assert "GSiteClean(" in on, "the search and the re-check judge clean differently"
+    n += 1
+    return n
+
+
+def _cut_floor_line_source(src):
+    """RIMMANDRAKE_CUT_SLACK_WALK_FLOOR_LINE_BEFORE_SAVE: the save fixture held an unbroken floor run, so 'a cut line draws
+    as whole after the reload' could not read red. A now cuts a conduit between the battery and the lamp before the
+    snapshot, counts the floor cords with a dead end (cutFloorKeys), and goes INVALID when that count is 0."""
+    n = 0
+    a = _body(src, "GScnSaveReloadA(GCtx c)")
+    snap = a.index("GSnapshot(")
+    cut = a.find("cutCell")
+    assert 0 <= cut < snap and re.search(r"\.Destroy\(DestroyMode\.\w+\)", a[cut:snap]), "A saves an unbroken floor run"
+    n += 1
+    assert 'c.ev["cutFloorKeys"]' in a, "A does not record its dead-end floor keys"
+    assert re.search(r"cutFloor\w* == 0\)[^;]*c\.Invalid\(", a), "A does not refuse a save with no cut floor line"
     n += 1
     return n
 
