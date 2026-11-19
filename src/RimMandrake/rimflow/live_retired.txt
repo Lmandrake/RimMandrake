@@ -20,3 +20,4 @@ unit=rm-artisan-now.timer        # Artisan loops retired, owner 2026-11-13: the 
 unit=rm-artisan-now.service      # Artisan loops retired, owner 2026-11-13 (retired_loops_2026-11-13.md)
 unit=rm-whittle-now.timer        # Whittle loops retired, owner 2026-11-13: the page that watched them goes with them
 unit=rm-whittle-now.service      # Whittle loops retired, owner 2026-11-13 (retired_loops_2026-11-13.md)
+hook=notebox_deliver.py         # Relentless note box: nothing sets RELENTLESS_GEN, removed 2026-11-19 (RIMMANDRAKE_FINISH_RETIRED_ERA_REMAINS_TWENTY_ONE_NO_TICKETS)

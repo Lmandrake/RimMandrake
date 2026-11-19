@@ -8,7 +8,6 @@ E:\\telemetry\\inbox\\wsl\\wsl_<utc-day>.jsonl, each row tagged `src`:
 
   memwatch_sample / memwatch_event   ~/.local/state/rm-memwatch/{samples,events}.jsonl (cursor tail)
   objstore                           ~/.local/state/rm-objstore/samples.jsonl
-  pulse                              ~/.local/state/rm-dashboard/metrics.jsonl (alarm open/close/ack)
   ledger                             both seat clones' ledger shards; deduped by line hash (`_h`),
                                      because union-merge pulls reorder and duplicate lines
   selftests                          ~/.local/state/rm-selftests/last_run.json when it changes
@@ -151,8 +150,6 @@ def collect(st: dict) -> list[dict]:
         rows.append({"src": "memwatch_event", **r})
     for r in tail(os.path.join(S, "rm-objstore", "samples.jsonl"), st, "obj"):
         rows.append({**r, "src": "objstore", "ts": r.get("ts") or r.get("at") or time.time()})
-    for r in tail(os.path.join(S, "rm-dashboard", "metrics.jsonl"), st, "pulse"):
-        rows.append({"src": "pulse", **r})
     for r in ledger_rows(st):
         rows.append({**r, "src": "ledger"})
     lr = os.path.join(S, "rm-selftests", "last_run.json")

@@ -253,11 +253,6 @@
           },
           {
             "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/notebox_deliver.py\" Stop 2>/dev/null || true",
-            "timeout": 15
-          },
-          {
-            "type": "command",
             "timeout": 60,
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/role_result_before_stop.py\""
           }
@@ -322,11 +317,6 @@
       {
         "matcher": "*",
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/notebox_deliver.py\" PostToolUse 2>/dev/null || true",
-            "timeout": 15
-          },
           {
             "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/switch_checkpoint_signal.py\" 2>/dev/null || true",
