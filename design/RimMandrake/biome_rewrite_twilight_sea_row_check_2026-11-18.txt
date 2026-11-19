@@ -1,0 +1,10 @@
+Row and source check for design/concepts/TerminalBiomes/TwilightSea_rewrite_choices.md, 2026-11-18 (the Twilight Sea, read in full)
+Probe (a file with no row must be refused; exit 0 means the probe was the only miss):
+rows 391 {'lost': 28, 'moved': 42, 'reshaped': 18, 'folded': 2} full 45 part 7 miss ['PROBE/not_a_real_file.md']
+probe exit=0
+Real run (exit 0 and 'miss []' means every source file listed has a row naming it):
+rows 391 {'lost': 28, 'moved': 42, 'reshaped': 18, 'folded': 2} full 44 part 7 miss []
+written
+run exit=0
+Lost, moved or reshaped rows with no other choice given:
+0 of 391 rows
