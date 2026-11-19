@@ -1,0 +1,1 @@
+A role run's bare git commit of its ledger shard leaves the tree clean, so a lander that reads only git status (role_clones.land before 774dff5a6e) publishes nothing, and the role clone's ./sync then refuses every later launch: Operations ran no run for 4 h on 2026-11-19. Judge a clone by commits ahead of origin/main (seat_sync.unlanded), never by dirt alone.
