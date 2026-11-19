@@ -5,7 +5,8 @@ shared kit in `src/RimMandrake/EnvironmentalHazards/`), rewritten 2026-11-18 on 
 biome "through the lens of Utinni". It replaces the older definition sheet, review, cast bible, kit specification
 and cleanse proposal as the place to read; what happened to every idea in them is in
 `design/concepts/TheForge/rewrite_choices.md`. Nothing has been deleted yet. This is a design document only and it
-launches nothing.
+launches nothing. A second reader checked it against the sources on 2026-11-18 and repaired the hull, fuel, scope and
+`NEEDS HIM` sections; what changed and why is at the top of the choices page.
 
 **Kind, checked against the sheet's own header:** land. One volcanic massif, *"the only vertical skyline in the Dune
 Sea."* It has lava, not a sea; the seabed rulings do not apply.
@@ -41,6 +42,12 @@ gas that burns off every exposed plant; hours of boiling rain; and then the lava
 light stone ripen on the crust, the crust cracks, and it all goes back to lava. One turn takes five to seven days.
 A stop sees it several times. The cleanse proposal put the lesson well: the crew *"learns the difference between
 ground that belongs to it and ground it is borrowing."*
+
+The cycle is his. He typed it on 2026-09-29: *"This is a biome of fire and water. The open lava is horrible, hot,
+deadly. The occasional washes of superheated gas burst ignite much of the map. Then the torrential rains pour down,
+causing flooding. There should be huge plumes of steam and transformation of the lava vents to temporary basalt
+shingle and pumice chunk."* And the end of it: *"Eventually glowing cracks form on the rock covering, and the whole
+thing melts back into lava again, destroying them."*
 
 For this crew there are two more things. The sheet says whose mountain it is to them: *"the Jawa sacred geography
 sees Sh'kaar's forge — the war-sun's anvil."* They are parking a stolen ship on their own god's workbench. And the
@@ -90,9 +97,12 @@ in the lava — but there is movement there."* It is a machine. What it is doing
 - **The works.** His answer of 2026-11-10: *"Old works shape ordinary journeys."* Towers are whole, permanent and
   cannot be entered, mined or salvaged. Broken remains around them can be.
 - **The herds.** Bulloos, small and great, float in the vapor columns and feed on the vapor itself. Fleet fliers
-  dart in to eat and out again. A jossur rides the updrafts above them and hunts.
-- **On the ground,** few and tough: the dhoggur, a placid ash-forager; a slug that eats metal; and along the lava's
-  lip, the ummisk, a colony of tubes riding a cushion of its own steam.
+  dart in to eat and out again. A jossur rides the updrafts above them and hunts: *"The columns are pasture, and
+  every pasture gets its wolf."*
+- **On the ground,** few and tough: the dhoggur, a placid ash-forager, in his words of 2026-10-16 *"a bizarre
+  creature that constantly snuffles and digs at the ashy minerals freshly deposited by volcanic sputter. Very tough
+  heat resistant hide"*; a slug that eats metal; and along the lava's lip, the ummisk, a colony of tubes riding a
+  cushion of its own steam.
 - **A short burst.** Even in the still phase the mountain throws brief showers of boiling rain. A crew member
   caught outside is hurt, not killed, and learns to look for a roof.
 
@@ -102,15 +112,22 @@ in the lava — but there is movement there."* It is a machine. What it is doing
 2. **The gas.** A wash of it ignites every exposed thing that can burn. Bare bank does not burn.
 3. **The rain.** Hours of it, boiling. A roof stops it. Everything unroofed is scalded. *"Mosses drink in the
    seconds between fall and flash"*: the flash plants open and grow at a rate they never otherwise reach.
-4. **The mountain wakes.** An outcrop that has been in view since landing unfolds and stands up. It is a dhokkur,
-   a plated giant that drinks the rain and sleeps as stone the rest of the time. Julmox, sealed flat against the
-   rock until now, fan out to crop the wet growth. Knuckle-sized dhuvvox uncurl from nodules in the ash.
+4. **The mountain wakes.** *"Half the outcrops on the skirts are stone. The other half are waiting for rain."* An
+   outcrop that has been in view since landing unfolds and stands up. It is a dhokkur, a plated giant that drinks
+   the rain and sleeps as stone the rest of the time. *"It is not angry. It has never needed to be."* Julmox,
+   *"a row of dull kettles on the skirts"* until now, fan out to crop the wet growth: *"Pasture is wherever it last
+   rained."* Knuckle-sized dhuvvox uncurl from nodules in the ash that anyone would take for slag. *"The old hands
+   tell time by them. When the dhuvvox run, you reap; when they still, you are already late for shelter."*
 5. **The crust.** The rain quenches the lava. A skin of basalt and pumice forms over it, firm enough to walk.
 6. **The gardens.** On the crust, floatstone gardens seed and ripen: lace-walled globes of a stone that is light,
-   strong, will not burn and is good to look at. They are cut like any plant and carried to the bank. This is the
+   strong, will not burn and is good to look at. The stone is his, typed 2026-09-29: *"Ultra-light pumice made of
+   what looks like spun glass whirled into tangles. Super strong and light building material, not flammable, quite
+   valuable, and the walls it makes look like swirled stone spun sugar made into blocks. Very beautiful."* They are
+   cut like any plant and carried to the bank. *"A block of floatstone weighs what a lie weighs."* This is the
    expedition: two days and more of borrowed ground.
 7. **The cracks.** The crust starts to glow along its seams. The deadline can be read at any time. Gardens nobody
-   cut lift off in a puff of dust and are gone, with a count of what was lost. His answer: *"orderly retreat before
+   cut lift off in a puff of dust and are gone, *"the one form the lava never gets back"*, with a count of what was
+   lost. His answer: *"orderly retreat before
    melting... loads may be abandoned and delayed rescues remain risky."*
 8. **The melt.** It is lava again. Whatever was still on it is gone, and the game says what.
 
@@ -141,6 +158,11 @@ Each can happen inside the visit. Each says what is on screen.
    less salvage.
 10. *(0.2.0)* **The giant has a road.** *On screen:* the dhokkur walks the path it has walked for a thousand rains.
     The crew's tent was on it.
+11. *(campaign layer)* **A blade for the anvil.** *On screen:* a Jawa at the lip of a lava lake throws its own
+    weapon into the melt, in front of the rest of the crew. The rite is the Anvil Gift, kept by the owner
+    2026-10-02, and its inscription is found hammered into an obsidian slab: *"This is where the sun hammers. Give
+    him a blade and he will not come for yours. For a while."* *Why it is very Jawa:* the god is theirs, the
+    mountain is his, and the price is a thing they could have sold.
 
 ## When the Empire arrives
 
@@ -169,12 +191,15 @@ Each can happen inside the visit. Each says what is on screen.
   have no guns to speak back."* Tibanna, the gas every blaster burns, comes only from the beldon herds over this
   mountain (*"no tibanna source but the beldons"*), and the Empire meters it. A crew that milks a beldon under the
   garrison's nose is doing something the whole planet wants done. Campaign layer; a review of 2026-09-28 reports the tap shipped
-  there.
+  there. Two rulings of 2026-09-12 shape it. Taming a beldon is *"brutal-but-possible"*: *"breaking the monopoly is a
+  campaign act, not a pen."* And the embargo's clock has two ends: the crew can break the meter (an assault or heist
+  on the station; the garrison *"must be beatable"*), and if nobody does, the Empire wins the clock and the
+  resistance goes quiet.
 - **The Deep Desert Tribes** climb the ash to see the fire once. *"Pyrelands fire is collected; Forge fire is only
   witnessed."* They take nothing and they are not the Empire's friends. Campaign layer.
 - **The tenders in the melt** take no side that anyone can see.
 - **The Contagion** *"will often push into this place and die, always testing."* Its dead red ring at the skirts is
-  the one border on the planet it cannot cross.
+  the one border on the planet it cannot cross. *"You can watch it lose."*
 
 ## What forces the crew out; what lets them stay
 
@@ -201,30 +226,75 @@ uncomfortable one"* (a heat exchanger feeding the ship's engine from a vent) was
 stated the ship lens; it is the first question under `NEEDS HIM`. **Where fuel is bought:** nowhere a fugitive would
 want to ask. The only station on the mountain is the Empire's.
 
-**The hull: boiling rain, fire, and borrowed ground.** His ruling of 2026-11-18 puts the biome's wear on the ship in
-0.1.0 and names *"heat"* and *"different kinds of shields or armor."*
-- *Rain and fire (0.1.0).* Every turn of the cycle, the gas wash sets fire to what will burn around the ship and
-  the rain scalds what is unroofed. Outside fittings, stores on the apron and anyone on deck take it. The answers
-  are a bare, roofed apron and nothing flammable outdoors. (`UNMEASURED`: whether boiling rain damages buildings
-  or only people; fire damages both.)
-- *Borrowed ground (0.1.0).* The crust returns to lava and damages whatever stands on it. A ship must sit on
-  permanent bank. (`UNMEASURED`: whether the landing picker can put a ship on crust at all. If it can, the melt
-  warning has to name the ship.)
-- *The armour (0.2.0).* The mountain grows its own answer. Floatstone is light, strong and does not burn, and an
-  airtight ship hull made of it is built in source, behind a study of the gardens. A crew that plates its outside
-  work in the stone it risked the crust for has closed the loop.
+**Tibanna is not fuel.** The embargo's own law: *"Tibanna is not propane."* It is blaster gas; *"no conversion route
+exists in either direction."* A hold full of poached tibanna buys fuel somewhere else. It does not burn in the engine.
 
-No shared system for hull wear was found in `src/`. The two 0.1.0 kinds are ordinary fire and ordinary terrain
-damage.
+**Power is the thing this mountain gives free.** When he struck the vent machines on 2026-09-29 he kept the plain
+version: *"lets just keep vent-based power as an option (already present in game)."* The game's own geothermal
+generator, on the densest geyser field on the planet. It matters for the hull, below.
+
+**The hull: lava, heat, ash and rain.** His ruling of 2026-11-18: *"Hull wear: Yes in 0.1.0. It's easy, and most of
+the biome already talk about this."* The frame is built: `src/RimUtinni/ShipShields/` (his eight shield rulings of
+2026-09-02, recorded in `design/Jawa/proposals/ship_shields_deep_design.md`). This design adds no hull system. Every
+wear below has a source, named beside it.
+
+- *Setting down on lava (0.1.0; built, in the campaign tier).* The one landing he named: *"Landing on lava should be
+  the worst case causing immediate severe damage (don't do that)."* The frame fires one burst at the moment of
+  landing, and no shield setting prevents it. `UNSETTLED`, read from source and not run in a game: the check
+  (`HasLavaAtLanding` in `ShieldHazardUtility.cs`) looks for lava anywhere on the map, not under the ship, and
+  every Forge map is generated with open lava. As written, every landing on this mountain would take the burst
+  wherever the ship sits. His words describe a mistake the pilot can avoid; this design reads them that way (the
+  burst is for a ship set down on or against lava), and the difference is filed as
+  `RIMMANDRAKE_NARROW_LAVA_LANDING_BURST_WHOLE_MAP_SCAN`.
+- *Heat (0.1.0; built).* The frame wears the ship's own structures while the map is in extreme heat and no shield
+  covers it, with an advisory letter and never a refused landing. Its design names *"any volcanic-tile approach"*.
+  The answer he ruled is the **thermal veil**: *"It would reflect all external heat outward with a mild mirror
+  sheen to the shield, but also reflect all internal heat inward, so the temperature slowly climbs anyway... but
+  not nearly as badly as it would in an active fire/volcano. Just use power for fuel."* Here the power is free.
+  `UNMEASURED`: the tracker calls a map hot at 58 °C outdoors, in a heat wave, or under the game's own lava-flow
+  condition. The sheet measured this ground at 42 to 56 °C, so on some Forge maps the built heat wear would not
+  fire at all. Nobody has read it in a running game, and no bar pins the number.
+- *Ash, steam and boiling rain (ruled; the frame cannot see them yet).* His light screen *"handle[s] wind, ash,
+  vapor, bio contamination, spores, smoke, sand, and rain damage completely as well as repels small animals."* The
+  built tracker knows a particulate hazard only as pollution or as weather that carries sand. No weather this mod
+  ships sets that field (measured by search of `src/RimMandrake/TheForge/`; the donor ash weathers were not read:
+  `UNMEASURED`). So today the rain phase and the ash fall do nothing to a ship, shielded or not. Teaching the
+  frame the Forge's rain phase is the build; it is in 0.2.0 with the question under `NEEDS HIM` 3, because the
+  one source that put rain on the hull was struck.
+- *Fire (0.1.0, ordinary systems).* The gas wash lights what will burn. Outside fittings and stores on the apron
+  burn like anything else. By the kit's specification scald is dealt to unroofed pawns, not to buildings: a crew
+  member on deck is scalded and the deck is not.
+- *Borrowed ground (0.1.0).* The crust returns to lava and destroys or burns whatever stands on it, with a count.
+  A ship must sit on permanent bank. (`UNMEASURED`: whether the landing picker can put a ship on crust at all. If
+  it can, the melt warning has to name the ship.)
+- *The armour: floatstone (0.1.0; built).* On 2026-09-24 he asked of every biome *"how can this biome uniquely add
+  something to the ship?"* The Forge's answer on record, by his card of 2026-10-03, is the **spunstone hull and
+  the floatstone door**: *"Gravship hull laid from floatstone in the grain... Pearl-white, airtight, and far
+  tougher than its weight has any right to be"*, and a door *"so light that a push swings it wide and it falls
+  shut on its own weight a breath later."* Both are built, behind a study of ripe gardens (about three study sessions, by the
+  build's own note). Floatstone does not burn, so a hull of it is the mountain's own answer to the
+  gas wash. The first read put this in 0.2.0; the second reader moved it to 0.1.0, because the hull is in 0.1.0
+  by his ruling and this is the only armour the sources give the Forge. `UNSETTLED`: how many trips onto the
+  crust a meaningful piece of hull should cost. A garden gives one block and a hull cell takes seven; the
+  Designer rehearsal drafted that question for him and it was never asked.
+- *Declined, and not revived here:* **the scour** (*"every burst scours the parked ship (minor exterior
+  damage/ash filth on unroofed ship tiles during boiling rain)"*, struck 2026-09-29 with the heat exchanger it
+  came with) and **the floatstone keel brace** (a brace threaded through the ship that saved launch fuel and rang
+  like glass at launch; he picked it by card from a consult of 2026-09-30, it was built, and it was cut on 2026-10-23 under his
+  *"I cut, you veto"* card as *"small effect; the only ship hook"*; restorable by reverting one commit). They are
+  the third question under `NEEDS HIM`.
 
 ## What the crew takes away
 
-- **Floatstone:** building stone that weighs little in the hold.
+- **Floatstone:** building stone that weighs little in the hold; and, studied, a hull and a door for the ship.
 - **Dhokkur hide,** from the one giant, if the crew dares: heat-shielding.
 - **Julmox,** tame, as a herd that knows how to sit out a rain.
 - **Firevine wood,** and what the flash plants give.
 - **Salvage** from the broken works.
-- *0.2.0:* blue gel from the bulloos; a floatstone hull. *Campaign layer:* tibanna.
+- *0.2.0:* blue gel from the bulloos. *Campaign layer:* tibanna; and **zersium**, the ore that turns steel into
+  durasteel on the ship's alloy forge. By his cards of 2026-10-09 it is a rare local ore with one home biome, and
+  that biome is this one: *"I like the forge makes that mineral."* It is built in the campaign tier. A live read
+  the same day found most new Forge maps carried none, so its placement is owed a retune.
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -238,11 +308,13 @@ damage.
 | Floatstone cut on the crust and carried to the bank builds ordinary walls that do not burn, and a stack of it weighs less than stone. | One trip, cut to wall; a fire test against a wood wall; a carried-weight comparison. | |
 | Cracks warn; uncut gardens leave with dust and a count; the crust returns to lava and what was left on it is lost with a readable account. | A crew that leaves on the warning, one that leaves late, a crate left behind. | No pawn vanishes: a body or a located loss, every time. |
 | The rain wakes the dhokkur, the julmox and the dhuvvox, and they seal again after. | Watch one of each through a turn. | The same animal after reload is the same animal. |
-| A dhokkur asleep cannot be told from an outcrop until it wakes, and wakes with a groan, dust and water. | A fresh crew walking past one before the first rain. | |
+| A dhokkur asleep reads as an outcrop until it wakes, and wakes with a groan, dust and water. The sources allow it one quiet tell: *"the gutter-lines converge too regularly for stone. The tooltip lies; the sprite may only whisper."* | A fresh crew walking past one before the first rain. | |
 | Bulloos float in the vapor columns and are fed by them; away from a column they need ordinary feed. | A wild herd over a vent; a tame one led away. | A bulloo with no column and no feed starves. |
 | The fliers fly, by the flight state. | A state read of the fleet flier's and the jossur's flight trackers (never a live look without the owner). | |
 | The jossur hunts; a hurt native can turn. | A jossur with a small colony animal in reach; a provoked julmox. | A roster where nothing can hurt anyone fails his line. |
-| Fire and rain reach the parked ship's outside like anything else's, and a roofed bare apron keeps them off. | A ship with stores on an open apron and one with a roofed bare apron, through a turn. | |
+| Fire reaches the parked ship's outside like anything else's, and a bare apron keeps it off; a crew member on an open deck in the rain is scalded. | A ship with stores on an open apron and one with a bare apron, through a turn. | |
+| A crew that studies ripe gardens learns to lay a floatstone hull and hang a floatstone door on the ship, and neither burns in the gas wash. | Researchers at ripe gardens through one growth phase; then one hull cell and one door built aboard; then a gas wash. | Before the study the two are not offered. A wooden fitting beside them burns. |
+| A ship set down on or against lava takes immediate severe damage, once, with a letter that says why; a ship set down on bank well clear of lava does not. | Two landings on one Forge map. | The second landing is the control: as written today it would also take the burst (see the hull section). |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a hot volcanic map with towers on
 it (standing rule, every mod).
@@ -276,7 +348,11 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   fed by vapor; fleet flier and jossur; dhoggur, metal-eating slug as an ordinary forager, ummisk. (built; vapor
   feeding is not)
 - The dhokkur's wake as a show: groan, dust, pouring water. (built; moved in, see `rewrite_choices.md`)
-- Fire and rain on the parked ship's outside; melt under anything on crust. (ordinary systems)
+- Fire on the parked ship's outside; melt under anything on crust. (ordinary systems)
+- The shield frame's wear here: the lava landing and extreme heat, with the thermal veil as the answer. (built, in
+  the campaign tier; the lava check is filed as too wide)
+- Studying the gardens; the spunstone hull and the floatstone door, the Forge's gift to the ship by his card of
+  2026-10-03. (built; moved in by the second reader, see `rewrite_choices.md`)
 
 **0.2.0, the stop with company**
 - The dhoggur's swell. The slug's metal diet. The jossur's stoop. (built)
@@ -285,22 +361,36 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The swarm of extra dhuvvox in the rain, and their countdown. (built)
 - The four phase voices: the sound of the mountain. (built)
 - Bulloo gel and bulloos that split. (built)
-- Studying the gardens; the floatstone hull and door. (built)
+- Ash and boiling rain as wear the shield frame can see, and the light screen as the answer. (unbuilt; asked)
+- A watcher: the zhaskel, *"an ember-dark plated sitter in cooled-crust fissures"*, pitched under his 2026-10-08
+  ruling that every biome gets one and never admitted at a sitting. (unbuilt; a proposal)
+- The two giants he said to wire in on 2026-09-29 (*"Wire in all waiting"*): the tibidee and the great aerofleet,
+  now the greater bulloo. (the greater bulloo is built; the tibidee's state was not checked)
 - The scanner's readings here. (built)
 - Campaign layer: beldons and the tibanna tap; the Contagion's testing ring; one floor of a foundry tower as a
-  dungeon over open melt. (ring built; the tap reported shipped 2026-09-28 and marked unknown by the census; towers unknown)
+  dungeon over open melt, *"richer or cooked"*. (ring built; the tap reported shipped 2026-09-28 and marked unknown
+  by the census; towers unknown)
+- Campaign layer: zersium ore for the ship's alloy forge (built; placement owed a retune); the Anvil Gift, a rite
+  to the crew's own god at a lava lake (kept by him 2026-10-02; build state not checked).
 
 **Later (a crew that stays, or a colony)**
 - The embargo's clock, the station and the resolution he ruled must come: campaign.
-- Two faiths, one mountain, as content.
+- Two faiths, one mountain, as content. The second Forge rite, the Flawed Masterwork (kept, pending an engine
+  check), which needs a masterwork and a vent forge.
+- Breaking the meter, or the Empire winning the clock (both ends ruled 2026-09-12).
 - Geothermal work beyond what the game already gives; learning the towers' craft and carrying it away.
 - Fungus as a study source. A colony of forty on the banks.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - Life in the lava. Any telling of what the machines are for. Ordinary rain. Carrying Forge fire away, in the
   Tribes' canon. Any tibanna source but the beldons.
-- The ship's heat exchanger; vent machines beyond the game's own; the fireweed and scald-gear economy; two-faiths
-  map mechanics; the fuel-saving keel brace (all struck or waived earlier). The first is asked again below.
+- The ship's heat exchanger and the scour that came with it; vent machines beyond the game's own; the fireweed
+  and scald-gear economy; two-faiths map mechanics (all struck 2026-09-29). The fuel-saving keel brace (cut
+  2026-10-23). The ship ideas among these are asked below and not revived.
+- Creatures offered and not chosen: the kettugal and the brazzok (2026-10-20, he picked the ummisk); the jobbosh
+  (2026-10-16, *"insufficiently alien"*); the lava snail and seven other vanilla rows (cut by card 2026-10-20).
+- Three enrichments offered on 2026-09-30 and not picked: The Last Lift, Quench Crossings, The Anvil Answer. Only
+  their names survive in the sources.
 - Worldgen scoring of hot tiles, in any version.
 - **Recommended for dropping, not yet his:** the fungus's promise to cool a room; bulloos that explode; the inert
   settings knobs. (The cleanse's recommendations, kept.)
@@ -316,6 +406,14 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 2. **Does landing beside the Empire's station change the search?** *No; the ordinary search* (default; the station
    is the campaign layer's). *Yes:* the first contact here is not a probe; the garrison has eyes. That makes the
    Forge the most dangerous landing on the planet and the tibanna raid its reason.
+3. **Two things he cut that touched the hull: the scour and the keel brace.** The scour (boiling rain doing minor
+   damage and leaving ash on the ship's unroofed tiles) was struck on 2026-09-29 as half of the heat exchanger,
+   before the ship lens and before his 2026-11-18 ruling that hull wear is in 0.1.0; his own light-screen ruling of
+   2026-09-02 names *"ash"* and *"rain damage"* as things a screen stops. The keel brace was cut on 2026-10-23
+   under *"I cut, you veto"* as *"small effect; the only ship hook"*. *Both stay out* (default: the Forge's wear is
+   the lava landing, heat and fire, and its armour is floatstone). *The scour comes back in 0.2.0 on the shield
+   frame:* rain and ash wear an unscreened ship; a small build on the cycle's rain phase. *The brace comes back:*
+   one commit to revert; a second ship gift beside the hull and door.
 
 The cleanse proposal of 2026-11-17 asked him nothing. One of its readings is changed here by scope rather than
 asked: it wrote the first version for a colony that *"settles among dark foundry towers"*. The same cycle is kept,

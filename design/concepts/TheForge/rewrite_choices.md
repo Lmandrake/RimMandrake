@@ -1,5 +1,91 @@
 # The Forge: what the rewrite chose, what it lost, and why
 
+## Second reader, 2026-11-18
+
+A different agent from the one that wrote this page and the design read the sources again, starting with the ones
+the first pass read by heading or not at all, and checked each idea in them against the rows below.
+
+**Rows added: 102**, in the table "Added by the second reader" at the end of "Every idea, row by row". Four of the
+first pass's rows were corrected in place and say so (the scour; the keel brace; the garden study and door; the
+floatstone hull).
+
+**The three most valuable things the first read missed.**
+
+1. **The hull rulings are his, they are built, and one of them names this ground.** The first design said *"No
+   shared system for hull wear was found in `src/`"*. `src/RimUtinni/ShipShields/` holds his eight shield rulings
+   of 2026-09-02, and one is about lava: *"Landing on lava should be the worst case causing immediate severe damage
+   (don't do that)."* The thermal veil is his answer to heat, *"not nearly as badly as it would in an active
+   fire/volcano"*, and it runs on power, which this mountain gives free by his own word of 2026-09-29. Reading the
+   built frame turned up a real doubt: its lava check looks at the whole map, and every Forge map has lava, so as
+   written every landing here would take the worst case. That is filed
+   (`RIMMANDRAKE_NARROW_LAVA_LANDING_BURST_WHOLE_MAP_SCAN`) and flagged in the design.
+2. **The Forge's gift to the ship, by his card, was parked in 0.2.0.** His question of 2026-09-24: *"how can this
+   biome uniquely add something to the ship?"* The answer on record (his card of 2026-10-03) is the spunstone hull
+   and the floatstone door, both built. A stone that will not burn, grown on the ground the gas wash burns, is the
+   armour; it is in 0.1.0 now.
+3. **Zersium.** By his cards of 2026-10-09 the ore that makes durasteel on the ship's alloy forge has one home
+   biome, and it is this one: *"I like the forge makes that mineral."* The first read has no row for it. It is the
+   one thing on this mountain the ship's own machinery needs.
+
+Close behind: his own typed words for the cycle (*"This is a biome of fire and water..."*) and for floatstone
+(*"swirled stone spun sugar made into blocks. Very beautiful."*), which the first read knew only through the
+cleanse's summary; the Anvil Gift, a rite he kept on 2026-10-02 in which a Jawa throws its own weapon into the lava
+for its own god (*"Give him a blade and he will not come for yours. For a while."*); the cast bible's lines, never
+opened by the first read (*"Half the outcrops on the skirts are stone. The other half are waiting for rain."* *"A
+block of floatstone weighs what a lie weighs."*); and the embargo's second card, which had already ruled how the
+clock ends.
+
+**What changed in the design, and why.**
+
+- *Hull:* rewritten onto the built shield frame: the lava landing, heat and the thermal veil, with their flags.
+  The false sentence that no hull system exists is deleted. Ordinary fire stays. Nothing in the section is the
+  second reader's invention: every wear has a source, named beside it.
+- *The first design's own hull wear was a struck idea.* It put *"fire and rain on the parked ship's apron"* in
+  0.1.0 and listed it as new. Rain on the ship is the scour, which he struck on 2026-09-29 with the heat exchanger.
+  The rain half is taken out of 0.1.0 and asked (`NEEDS HIM` 3). By the kit's specification the rain scalds
+  people, not buildings, so the promise now says that.
+- *Three ship ideas he struck or cut here* are listed with dates and his words and not revived: the heat exchanger
+  (`NEEDS HIM` 1, as before), the scour and the keel brace (`NEEDS HIM` 3, new). The first read called the brace
+  "waived"; it was picked by card, built, and cut on 2026-10-23 under his *"I cut, you veto"* card.
+- *Scope:* the garden study, spunstone hull and floatstone door moved from 0.2.0 to 0.1.0. Zersium, the Anvil Gift,
+  the two wired-in giants and the zhaskel (a proposal, never admitted) are named in 0.2.0. The embargo's two ends
+  and the second rite are named in "later". The dropped list gains the creatures and enrichments that were offered
+  and not chosen.
+- *Fuel:* the class is unchanged (emergency only). Two sourced sentences added: tibanna is not fuel, by the
+  embargo's own law; and vent power is free, by his word.
+- *Promises:* two added (the hull and door; the lava landing with its control). One corrected: the sleeping dhokkur
+  has one quiet tell, by the cast bible.
+- *Lines carried in:* his two typed passages; nine lines from the cast bible, the kit and the rites.
+- *Whose word wins:* each cleanse line was checked against his dated words. The cleanse's "next version" for the
+  hull and door falls to his card of 2026-10-03 and his hull ruling of 2026-11-18. The cleanse's "waived" for the
+  brace is his cut of 2026-10-23, which stands. No locked Designer sheet or tree exists for this biome, so nothing
+  is held for a Designer run to reconcile.
+
+**Measured counts** (script: `design/RimMandrake/biome_recheck_row_check_2026-11-18.py`, and the reader's own
+source list): **215 rows** (113 from the first read, 102 added); **27 lost**, **17 moved** and 6 more that record a move in part, 4 kept and reshaped, 1 folded into shared machinery, 165 kept, 1 the script could not class (a first-read row that begins "hiss kept"). **Sources: 32 read to the end,
+12 read in part, 12 not opened.** Read to the end: the three files this page lists for deletion (in the roster
+file, five of the eighty-four eviction reasons were cut at about 520 characters); the cast bible; the kit; the
+embargo spec; both slow-ground files; nineteen ledger items (the cycle, the ruled content, the enrichment and its
+seven splits and remainders, the sitting, the roster reconcile, the slot card, the voices audio, the first script,
+zersium, the ship's alloy forge, the ship gifts); his answers and the questions he was shown; the rehearsal's
+notes; the cleanse's owner pages and next-version list. Read in part: the rehearsal's questions (all six, each
+paragraph cut at about 800 characters); the walk (every line, each cut at 500 characters); the shield design (his
+rulings table and the thermal veil section) and two of the frame's source files; the rites pass (the Forge section
+and the summary rows); the watcher pitch (the Forge row); the mechanics review (the Forge table, whole); the
+2026-10-23 cut digest (the brace's entry); the built spunstone parts (labels and descriptions); and two long build
+logs, `FORGE_MECHANICS_1` and `THEFORGE_RM_MOD_BUILD_1` (headings and every line naming the owner). Not opened by
+this reader: the rehearsal's `record.json` and `designer_brief.md`; the cleanse's definition (the first read read
+it whole), `ambiguities.md`, `models.md`, `tickets.md`, `bars.json`, `census.json`, `review.json` and
+`converge.json`; the experiences table, the campaign lore and the pulse def (the first read read the parts that
+bear on this biome). Every file not read to the end is one that stays.
+
+DELETE-READY: yes
+
+That line covers the three files listed at the end of this page and nothing else. What the first read says to do
+before deleting still stands. One more: the roster file is the only place the eighty-four evictions and their
+reasons are written; if another biome's roster work still wants to know where an animal was sent from, that table
+should be copied out first.
+
 Companion to `design/concepts/TheForge/design.md`, written 2026-11-18 by the same pass. Its job is to let the older
 files be deleted without fear: every distinct idea found in any source has a row saying what became of it. Nothing
 has been deleted. The older files this design replaces are listed at the end.
@@ -71,16 +157,19 @@ in the design's Scope section.
 - **Extra dhuvvox swarm and countdown:** next version → 0.2.0.
 - **Phase voices:** next version → 0.2.0.
 - **Bulloo gel and fission:** next version → 0.2.0.
-- **Garden study, floatstone hull and door:** next version → 0.2.0. The hull is the Forge's armour under his
-  ruling.
+- **Garden study, floatstone hull and door:** next version → 0.1.0 (the first read had 0.2.0; moved by the second
+  reader). The hull is the Forge's armour under his ruling, and with the door it is the Forge's gift to the ship by
+  his card of 2026-10-03.
+- **Named in 0.2.0 by the second reader, not moves against the cleanse:** zersium and the Anvil Gift (campaign
+  layer); the tibidee and the greater bulloo; the zhaskel (a proposal); ash and rain on the shield frame (asked).
 - **Scanner readings:** next version → 0.2.0.
 - **Campaign gas tap, testing ring, one tower floor:** next version → 0.2.0, campaign layer.
 - **Stayed "later" from the cleanse's "next version":** fungus study. Not a move.
 - **Kept as the cleanse recommended (retire):** fungus cooling, bulloo detonation, inert knobs, world scoring.
 - **Settling the mountain; forty colonists; the full-season trace:** first version → later.
 - **New, not in any source:** the Empire's troops as newcomers to the cycle (a reading of built behaviour: the
-  phases do not ask who is standing where); fire and rain on the parked ship's apron as the hull's wear; "never
-  park on crust"; the reading of the mountain as the crew's own god's ground, from the sheet's line on Jawa sacred
+  phases do not ask who is standing where); fire on the parked ship's apron (the first read also listed rain
+  here; rain on the ship is the struck scour, see the second reader's section); "never park on crust"; the reading of the mountain as the crew's own god's ground, from the sheet's line on Jawa sacred
   geography.
 
 ## Every idea, row by row
@@ -93,7 +182,19 @@ and its `.json`; *cleanse* = `design/concepts/TheForge/cleanse/`; *walk* =
 `design/validation_walks/RimMandrake/TheForge.md`; *owner answers* =
 `design/RimMandrake/designer_codex_2026-11-09/TheForge/ANSWERS_OWNER.md`; *experiences* =
 `design/RimMandrake/biome_experiences_2026-10-20.md`; *campaign lore* = `design/Jawa/reconciled_lore/01_campaign.md`;
-*pulse def* = `src/RimMandrake/TheForge/Defs/GameConditionDefs/RM_ForgePulse.xml`.
+*pulse def* = `src/RimMandrake/TheForge/Defs/GameConditionDefs/RM_ForgePulse.xml`. Added by the second reader:
+*shield rulings* = `design/Jawa/proposals/ship_shields_deep_design.md` and `src/RimUtinni/ShipShields/`; *ship gifts*
+= `infrastructure/state/items/BIOME_SHIP_CONTRIBUTIONS_1.md` and
+`src/RimMandrake/TheForge/Defs/ThingDefs_Buildings/RM_SpunstoneParts.xml`; *cycle item* =
+`infrastructure/state/items/FORGE_CYCLE_MECHANICS_1.md`; *ruled content* =
+`infrastructure/state/items/closed/FORGE_RULED_CONTENT_1.md`; *enrichment* =
+`infrastructure/state/items/closed/FORGE_GPT_ENRICHMENT_1.md` and the items split from it; *slot card* =
+`infrastructure/state/items/closed/FORGE_SLOT_DECIDE_NEEDS_A_DESCRIPTION.md`; *zersium items* =
+`ZERSIUM_FORGE_BIOME_1.md` and `SHIP_ALLOY_FORGE_1.md` in `infrastructure/state/items/`; *rites pass* =
+`design/Jawa/biome_rites_pass_2026-10-01.md`; *watcher pitch* = `design/RimMandrake/watcher_creatures_pitch.md`;
+*rehearsal* = `NOTES.md` and `QUESTIONS.md` in `design/RimMandrake/designer_codex_2026-11-09/TheForge/`; *mechanics review*
+= `design/RimMandrake/special_mechanics_review_2026-10-22.md`; *fluff cuts* =
+`design/RimMandrake/fluff_cuts_2026-10-23.md`.
 
 ### The place
 
@@ -210,10 +311,10 @@ and its `.json`; *cleanse* = `design/concepts/TheForge/cleanse/`; *walk* =
 | Geothermal vent benches | kit F6; review | kept in "later" | | |
 | The beldon tibanna tap | kit F2; review | moved (→ 0.2.0, campaign layer) | | |
 | The Ship Drinks the Mountain | review slate B | lost (struck); `NEEDS HIM` | | See above. |
-| "Every burst scours the parked ship" | review slate B | kept, reshaped: ordinary fire and rain on the ship's outside in 0.1.0 | His ruling of 2026-11-18. | |
-| Fuel-saving keel brace | cleanse next_version | lost (waived) | | |
-| Garden study; floatstone door | cleanse | moved (→ 0.2.0) | | |
-| Floatstone airtight ship hull | cleanse | moved (→ 0.2.0); it is the armour | | 0.1.0: the hull answer is in the first version, with a research step to prove. |
+| "Every burst scours the parked ship" | review slate B | lost (struck 2026-09-29 with the heat exchanger); `NEEDS HIM` 3 | Corrected by the second reader: the first read kept it reshaped as fire and rain on the ship's outside. Ordinary fire stays in 0.1.0 and is no part of the struck idea; rain on the ship is the struck idea. | |
+| Fuel-saving keel brace | cleanse next_version | lost (cut 2026-10-23 under his "I cut, you veto" card); `NEEDS HIM` 3 | Corrected by the second reader: the first read called it waived. | Revert one commit. |
+| Garden study; floatstone door | cleanse | moved (cleanse next version → 0.1.0) | Corrected by the second reader: the first read had 0.2.0. His card of 2026-10-03 makes these the Forge's gift to the ship. | |
+| Floatstone airtight ship hull | cleanse | moved (cleanse next version → 0.1.0); it is the armour | Corrected by the second reader: the first read had 0.2.0 and named 0.1.0 as the other choice. | 0.2.0: the first stop has wear and no local answer. |
 | Scanner readings | cleanse | moved (→ 0.2.0) | | |
 | "Many paths to fuel": helixien gas on volcanic tiles | campaign lore | kept as a noted source line; nothing built; `NEEDS HIM` | | |
 | The embargo: goods, enforcement, heat and interest, quest beats | embargo spec | kept in "later" (campaign) | Read by heading only. | |
@@ -233,7 +334,116 @@ and its `.json`; *cleanse* = `design/concepts/TheForge/cleanse/`; *walk* =
 | Eight proposed bars | cleanse owner_pages | kept as history; the thirteen promises in the design are the proposal to argue from | | |
 | The walk's intended-function lines | walk | kept; only the north star and three creature lines were read | | |
 
+### Added by the second reader
+
+| idea | source | what happened | why | the other choice, and its cost |
+|---|---|---|---|---|
+| His own words for the cycle: *"This is a biome of fire and water. The open lava is horrible, hot, deadly..."* through *"the whole thing melts back into lava again, destroying them."* | cycle item | kept, quoted in the design | The first read took the cycle from the cleanse's summary and never quoted the man who typed it. | |
+| His own words for floatstone: *"Ultra-light pumice made of what looks like spun glass whirled into tangles... the walls it makes look like swirled stone spun sugar made into blocks. Very beautiful."* | ruled content; cast bible §4 | kept, quoted in the design | | |
+| The spunstone hull and the floatstone door as the Forge's gift to the ship, by his card of 2026-10-03 | ship gifts | moved (first read 0.2.0 → 0.1.0), by the second reader | Hull is in 0.1.0 by his ruling of 2026-11-18, and this is the only armour the sources give the Forge. Both parts are built. | Leave it in 0.2.0: the first stop on the Forge then has wear and no local answer to it. |
+| His question to every biome, 2026-09-24: *"how can this biome uniquely add something to the ship?"*; and the item's own line, *"the gravship becomes a scrapbook of everywhere it has been"* | ship gifts | kept, quoted in the design | | |
+| *"Landing on lava should be the worst case causing immediate severe damage (don't do that)."* | shield rulings | kept in 0.1.0 (built in the campaign tier), quoted | The one hull ruling that names this biome's ground. The first read did not open the shield frame and wrote that no hull system exists. | |
+| The built lava check looks at the whole map, so every Forge landing would take the burst | shield rulings | kept as a flag (`UNSETTLED`), and filed as `RIMMANDRAKE_NARROW_LAVA_LANDING_BURST_WHOLE_MAP_SCAN` | Read from source, not run. His words describe a mistake a pilot can avoid. | Leave it: the Forge becomes the one biome that damages every ship on arrival, which nobody ruled. |
+| The thermal veil: *"reflect all external heat outward with a mild mirror sheen... but not nearly as badly as it would in an active fire/volcano. Just use power for fuel"* | shield rulings | kept in 0.1.0 (built), quoted | | |
+| The heat tracker's threshold (58 °C outdoors, a heat wave, or the game's lava-flow condition) against the sheet's 42 to 56 °C | shield rulings; sheet §0 | kept as a flag (`UNMEASURED`) | On some Forge maps the built heat wear would never fire. | |
+| The light screen: *"handle wind, ash, vapor, bio contamination, spores, smoke, sand, and rain damage completely as well as repels small animals"* | shield rulings | kept in 0.2.0 as a build the frame owes, and asked (`NEEDS HIM` 3) | The built frame sees particulate only as pollution or sand-carrying weather; nothing the Forge mod ships sets that. | 0.1.0: a small build, but the only source that put rain on the hull was struck. |
+| No hard landing gate: *"The environment is hostile and immediately goes to work on the ship. The ship will know what's visibly dangerous and will advise course of action, but no more than that."* | shield rulings | kept | The advisory letter and never a refused landing. | |
+| *"Slow pressing things move through all shields... This is why nothing 'holds out water'"* | shield rulings | folded into shared machinery | True of every biome's shield. | |
+| The scour: *"every burst scours the parked ship (minor exterior damage/ash filth on unroofed ship tiles during boiling rain)"*, to stay *"annoyance-grade, not hull-loss-grade"* | review slate B; ruled content | lost (struck 2026-09-29 with the heat exchanger); `NEEDS HIM` 3 | A ship idea he struck is listed, not revived. The first read's row above kept it reshaped; that row is corrected. | |
+| The floatstone keel brace: braces *"threaded through a gravship"* that cut launch fuel and *"ring glassily at launch"* | enrichment §1; fluff cuts | lost (picked by card from the 2026-09-30 consult, built, then cut 2026-10-23 under his *"I cut, you veto"* card); `NEEDS HIM` 3 | The cut's stated reason: *"simplify or cut: small effect; the only ship hook"*. The first read called it waived. | Revert commit `061f5d693`. |
+| The brace's open question: should it also raise how much substructure a ship can hold, since the game has no payload | enrichment (keelwork remainder) | lost with the brace | | |
+| Zersium: a rare local ore with one home biome, and that biome is the Forge; *"I like the forge makes that mineral."* Steel and zersium make durasteel on the ship's alloy forge | zersium items | kept in 0.2.0, campaign layer; now in the design under what the crew takes away | Canon material, so campaign tier. It is the one ore on the planet the ship's own forge needs from one place. The first read has no row for it. | |
+| Zersium placement as read live 2026-10-09: four new Forge maps carried 24, 0, 0 and 0 ore cells | zersium items | kept as a build flag | Placement owed a retune. | |
+| The alloy forge aboard: *"Durasteel earlier, plasteel later"*; exotic metals never forged | zersium items | kept as a fact of the ship, not of this biome | | |
+| Asteroids as a second zersium source: *"It's ok if it's both"* | zersium items | kept elsewhere (the asteroid item) | | |
+| Three enrichments offered on 2026-09-30 and not picked: The Last Lift, Quench Crossings, The Anvil Answer | enrichment | lost (not picked by card) | Only the three names are in any source; what they were is not on disk in the files read. | |
+| Spunstone bonding: *"material science, not a vent machine"*; a study of ripe gardens, a hidden research project, a letter naming who studied the samples | enrichment §2 | moved (first read 0.2.0 → 0.1.0), with the hull and door it unlocks | | |
+| Foundry salvage as the second thing to study | enrichment (spunstone sources); rehearsal | kept in 0.2.0, campaign layer | The patch exists by the rehearsal's reading. | |
+| *"High-speed doors and advanced structural parts"*, which became the floatstone door and the spunstone hull | enrichment (spunstone sources) | moved (first read 0.2.0 → 0.1.0) | | |
+| The door's own text: *"so light that a push swings it wide and it falls shut on its own weight a breath later. Nobody slows for it."* | ship gifts | kept, quoted in the design | | |
+| The four voices as written: a *"subterranean, turbine-like throb"*; vents coughing; *"a deafening hiss"*; basalt that *"ticks and sings like glass"*; and before the melt *"the harmony drops out and a deep cracking pulse begins"* | enrichment §3 | kept in 0.2.0 (the first read's row), lines carried here | | |
+| *"Just use vanilla until we get around to sound work."* (2026-10-03) | enrichment (voices audio) | kept | | |
+| Steam fronts as built: the game's blind smoke, puddles, and added heat through ordinary heatstroke; vapour animals unharmed; four builder choices still owed his review | enrichment (plume fronts) | kept in 0.2.0, with the owed review noted | | |
+| By source reading, the built front's heat crosses walls and roofs | rehearsal | kept as a build flag | It contradicts his answer of 2026-11-10 (*"Walls stop the immediate front"*); the build owes the fix before 0.2.0. | |
+| Dhokkur ways as built: a polished trail it keeps; a wall in its way is moved whole, then packed up, then damaged; two questions to him still open (what shoving means; whether tracks fade) | enrichment (dhokkur ways) | kept in 0.2.0, open questions noted | | |
+| By source reading, the dhokkur goes to the nearest vent and never revisits its saved tracks | rehearsal | kept as a build flag | "The giant has a road" (moment 10) is not true of the build as read. | |
+| The dhuvvox clock in full: a click and sparks as each nodule opens; a countdown; slowing in the last quarter-hour; *"every survivor visibly curls back into a persistent nodule; none vanishes"*; a scuttle that slows | enrichment §7 | kept in 0.2.0 | The pawn stays its own nodule, by his card of 2026-10-08. | |
+| The dhoggur in his words, by card 2026-10-16: *"a bizarre creature that constantly snuffles and digs at the ashy minerals freshly deposited by volcanic sputter. Very tough heat resistant hide."* | slot card | kept, quoted in the design | | |
+| The jobbosh, offered for the same slot and dropped: *"insufficiently alien"* | slot card | lost (dropped by card 2026-10-16) | | |
+| The dhoggur's swell as he settled it 2026-10-16: only attacks set it off; death on shrinking kept, *"it is the price of the swell"* | rehearsal; walk | kept in 0.2.0 with both rulings | | |
+| The crescendo anole, the small ground slot the dhoggur took | review; roster json | lost (replaced by card 2026-10-16) | | |
+| *"Wire in all waiting"* (2026-09-29): the tibidee and the great aerofleet into the rosters, the fleet flier's finished art, the flash-growth class onto the plants, three held art debts | ruled content | kept; the two giants are now named in the design's 0.2.0 | The first read left the giants to "where the campaign patch puts them". The great aerofleet is the built greater bulloo; the tibidee's state was not checked. | |
+| Fumeriders: the sheet's name for the drifting jelly-fleets | sheet §4; roster json | kept, reshaped: the built free tier calls them bulloo and greater bulloo; the name fumerider is lost | The built roster's names. | Rename them back: labels only. |
+| The scald-armour stat left *"granted-by-nothing ON PURPOSE"* after the gear economy was struck | ruled content | kept as a build fact | | |
+| The re-score at the cycle's close: the Forge's two remaining gaps (touching the ship; discoverable technology) to be recorded as *"owner-accepted misses, not silent drops"* | cycle item | kept as history | The ship lens reopened the first; it is `NEEDS HIM` 1 and 3. Spunstone answered the second. | |
+| *"lets just keep vent-based power as an option (already present in game)"* (2026-09-29) | ruled content | kept, quoted in the design | It is why the thermal veil's power is free here. | |
+| Vent smelter, kiln and forge: no fuel, no power, on a geyser; reported shipped as defs 2026-09-28, then struck the next day | kit F6; review; ruled content | lost (struck), with a flag | `UNSETTLED`: whether the three defs are still in the campaign tier. The Flawed Masterwork rite needs one. | |
+| The Anvil Gift: a weapon *"thrown into the melt by its last user"* at a lava lake; a line hammered into an obsidian slab *"among the twisted remains of older weapons fused to the rock"*; readable only in still heat | rites pass | kept in 0.2.0, campaign layer; now moment 11 in the design | Kept by him 2026-10-02. A Jawa giving up a weapon to its own god on that god's mountain is the lens. The first read has no row for either rite. | |
+| *"This is where the sun hammers. Give him a blade and he will not come for yours. For a while."* | rites pass | kept, quoted in the design | | |
+| *"an explosion burning your own stuff pleases him; he's fed, then lenient a while"* | rites pass | kept in the campaign layer | The gods' engine. | |
+| The Flawed Masterwork: a masterwork finished at a vent forge, and its maker scratching one flaw into it *"so the crown never quite fits"*; found on *"a tower tender's tool rack... where every tool bears the same small scratch"* | rites pass | kept in "later" | Kept by him pending an engine check. It needs a masterwork, a vent forge and the inside of a tower: not a stop. | |
+| The zhaskel: *"an ember-dark plated sitter in cooled-crust fissures"*, never in lava | watcher pitch | kept in 0.2.0 as a proposal | Pitched under his 2026-10-08 ruling that every biome gets a watcher; never admitted at a sitting. | |
+| *"Tibanna is not propane."* No route from one to the other | embargo spec §0 | kept, quoted in the design's fuel answer | It settles that a hold of tibanna is not fuel. | |
+| The game has no ammunition, so the embargo bites through the price of making blasters and through trader stock | embargo spec §1 | kept in "later" (campaign) | | |
+| Metered and unmetered gas; unmetered gas is contraband and hums | embargo spec §2, §4 | kept in "later" (campaign) | | |
+| Buying the Empire's gas draws no attention: *"the Empire wants you dependent"*; poaching the herds draws it every time | embargo spec §4 | kept in "later" (campaign), with a flag | `UNSETTLED`: no source ties a poached beldon to the search clock a stop runs on. | |
+| The fixer who buys kyber sells tibanna: one Hutt contact, both trades | embargo spec §4 | kept in "later" (campaign) | | |
+| The clock is never a gauge; it shows as traders' shelves thinning and prices climbing; the crew's own smuggling speeds it: *"Getting armed makes everyone else's drought worse"* | embargo spec §5 | kept in "later" (campaign) | | |
+| Seven beats: the Meter, the Ration, the Hutt lane, the Poach, the Shipment, the Gun-Runner, the Resolution | embargo spec §6 | kept in "later" (campaign) | | |
+| Arming the resistance *"buys them time, never victory — no uprising, no Rebellion, no liberation event"* | embargo spec §6 | kept as a rule | | |
+| Card T1, 2026-09-12: every other tibanna source in the mod stack is cut | embargo spec | kept as a built rule | | |
+| Card T2, 2026-09-12: break the meter (the garrison *"must be beatable"*), or the Empire wins the clock | embargo spec | kept in "later"; now stated in the design | The first read's row called the resolution unruled in shape; it is ruled. | |
+| *"They don't need the Forge; they need everyone else not to have it."* | sheet §8; embargo spec | kept, line carried here | | |
+| *"The Empire holds the gas, and everyone's ammunition knows it."* | sheet §5 | kept, line carried here | | |
+| The dhokkur's text: *"Half the outcrops on the skirts are stone. The other half are waiting for rain."* ... *"It is not angry. It has never needed to be. Its hide turns the boiling rain, and the boiling rain is the worst thing this mountain knows how to say."* | cast bible §3 | kept, quoted in the design | The first read did not open the cast entries. | |
+| The dhokkur's tell: *"the gutter-lines converge too regularly for stone. The tooltip lies; the sprite may only whisper."* | cast bible §3; enrichment §6 | kept; the design's promise is corrected to allow the one quiet tell | The first read's promise said it cannot be told from an outcrop at all. | |
+| The dhokkur's body: *"more cistern than face"*; rain gutters running to a drinking maw; *"the one cast member painted by the water, not the fire"* | cast bible §3 | kept as art direction | | |
+| The julmox's text: *"a row of dull kettles on the skirts"*; *"they turn stone-film into meat. Pasture is wherever it last rained."* | cast bible §3 | kept, quoted in the design | | |
+| The jossur's text: *"The columns are pasture, and every pasture gets its wolf"*; grounded, *"folded weapon"*, not walking bird; *"the reason the herds keep their young in the middle of the smoke"* | cast bible §3 | kept, quoted in the design | | |
+| The dhuvvox's text: *"think them slag... and the slag hatches"*; *"The old hands tell time by them. When the dhuvvox run, you reap; when they still, you are already late for shelter."* | cast bible §3 | kept, quoted in the design | | |
+| The garden's text: *"light enough that a grown one strains at its own root"*; *"the most beautiful quarry on the planet"*; *"the one form the lava never gets back"* | cast bible §4 | kept, quoted in part in the design | | |
+| The stone's text: *"A block of floatstone weighs what a lie weighs."* *"The Farmers sell it by the promise instead of the weight. Nobody has ever asked for the weight back."* | cast bible §4 | kept, quoted in part in the design | | |
+| A built floatstone wall is a tinted ordinary wall; the spun-sugar swirl needs its own wall art, *"only if the owner asks"* | cast bible §4, §7 | kept as a build fact, flagged | `UNSETTLED`: his words say the walls *look* like spun sugar, and today they do not. | |
+| The crust's three grounds: basalt shingle (*"the treasure floor"*), pumice chunk, glowing crack | cast bible §5; cycle item | kept | | |
+| Flight frames for the jossur are not drawn; it flies without a wing-beat | cast bible §3, §7 | kept as a build fact | | |
+| The tower floor as written: a pocket map at furnace heat, melt channels, a salvage cache; *"You leave the way you came, richer or cooked."* | kit F4; review | kept in 0.2.0, campaign layer; line carried into the design | | |
+| The tower's garrison was never cast: no tender creature exists | review | kept as a build fact | The 0.2.0 tower owes it. | |
+| Floor after floor by chained doorways | kit F4 | lost (one floor ruled 2026-09-12) | *"untested engine territory"*; more floors only *"if a quicktest proves the seam clean"*. | |
+| The Contagion's probe as an event: a tongue of red pushed up the slope that blackens and dies within hours. *"You can watch it lose."* | kit F5 | kept in 0.2.0, campaign layer; line carried into the design | | |
+| The dying creep is in no biome's plant list, so it can never take hold | kit F5 | kept as a rule | | |
+| Lava by the game's own fields: shallow lava can be walked and burns and ignites; deep lava cannot be entered | kit (header) | kept as "lava is lava" | | |
+| The rain is *"brutal to stand in, survivable to sprint through"* | kit F1 | kept, line carried here | | |
+| *"Farming here means learning the mountain's breathing"*; growth in the window many times normal and near nothing outside it: *"the RHYTHM is the mechanic"* | kit F1 | kept as description; farming itself is "later" | A crew on a stop does not farm. | |
+| Sky animals *"never wander off across the ash like ground animals; the columns are their pasture, and hunting them means going where the columns are"* | kit F3 | kept | | |
+| Drifters are not scalded: *"they live in the steam"* | kit F3 | kept as a build fact | | |
+| Fleet fliers *"race in, eat fireweed, and retreat before they perish"* | sheet §4; kit F3 | kept | | |
+| The beldon as shipped by its donor hunts and bursts when it dies; the hunting was stripped to match *"placid"* | roster json | kept as a build fact (campaign layer) | | |
+| The lava flea: *"the one ground herd"*, a hopper that carries cargo | roster json | kept in the campaign layer | A pack animal is a Jawa thing; no source builds on it. | |
+| No fish: *"no persistent liquid water"* | roster json | kept as a rule | | |
+| Purged plants; *"the Forge is clean heat, not contamination"* | roster json | kept as the record | | |
+| Fireweed and fire lavender are Earth plant names, flagged for his eye and never ruled | roster json | kept as an open flag | | |
+| Magma cactus, tinkle grass, the geyser grasses and bindweed | review; roster json | kept where the built roster has them | | |
+| Cinder crust has no picture and no written identity | review; cast bible §8 | kept as a build fact (owed) | | |
+| The brazzok's lore: herds standing in lines *"reading as towers on the skyline"*; *"Rumour says the ancients grew the first towers from brazzok shells."* | slow-ground | lost (not chosen 2026-10-20), line carried here | | |
+| The kettugal's detail: *"slow because the bowl must stay level"*; hit, *"its bowl spills burning slag"*; sheared for slag beads | slow-ground | lost (not chosen 2026-10-20) | | |
+| The ummisk as pitched: *"it is the moss that drinks between fall and flash: a walking colony"*; no head and no face | slow-ground | kept as its description | | |
+| His order for the slot: *"Create something truly alien and interesting based on the Forge description. Be impressive."* | slow-ground | kept as the record | | |
+| The sheet's light and shape: *"the herds' soft enormous rounds against hard geometry"*; *"in the melt, slow deliberate movement that is not alive"*; beldon amber over everything | sheet §9 | kept as art direction, lines carried here | | |
+| Foundries *"sunk deep into the magma below and yet remaining whole"* | sheet §8 | kept as the towers' lore | | |
+| Sh'kaar's lava lakes and craters; the ancient vent as *"the right kind of joke"* | sheet §8 | kept in the campaign layer | The Anvil Gift stands on the lake. | |
+| *"The fire that owes nothing may not be taken."* *"the one flame older than the theft"* | sheet §8 | kept, lines carried here | | |
+| An older document puts this massif on the Scald rim beside two other biomes; the measured map does not: *"Sh'kaar's ownership stands; the geography updates"* | sheet §0 | lost | The planet is painted once, at the end. | |
+| Three things owed to a canon sitting: the witnessed-fire precept into the faiths document, the smeltery into the planet's history, the Empire's operation into the faction roster | sheet (Owed) | kept in "later" (campaign) | | |
+| The rehearsal's finding that on the free tier the ruined works are *"largely a description"* | rehearsal | kept: it produced his first answer, and promise 1 | | |
+| Three drafted questions he was never shown: which scene is shown first; what a successful trip onto the crust should buy; what a crew can do about the jossur | rehearsal | kept as open | The second is flagged in the hull section. | |
+| Five risks found by reading source, among them a survivor left on returning lava when no safe cell is near, and crust left behind if the cycle is ended early | rehearsal | kept as build notes for the next Designer run | The first breaks the design's promise that no pawn vanishes. | |
+| Blue gel has no built use; the greater bulloo is not bound to the columns | rehearsal; cleanse | kept as build facts | "Blue gel" under what the crew takes away is, today, a thing to sell. | |
+| The 2026-10-22 review's calls: the tower, *"decide whether the Foundry tower is real"*; the ummisk, *"keep as scenery"*; the brace, *"simplify or cut"* | mechanics review | kept as history | The tower call was never put to him; the first read placed the tower in 0.2.0, campaign layer. | |
+| The walk's list of theories already ruled out | walk | kept in the walk, which stays | | |
+
 ## Sources read, and the count
+
+The second reader's counts and source list are at the top of this page; what follows is the first read's.
 
 Measured after writing (a script counted the table rows and the first words of the "what happened" column):
 **17 source files, 113 rows**, of which **15 lost**, **19 record a move** (whole or in part), **4 kept, reshaped** and 0 folded into shared machinery. Every source named above is in at least one row's source column (checked by the same script).

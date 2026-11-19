@@ -11,3 +11,8 @@ design/concepts/Stillsand/rewrite_choices.md
    {'rows': 271, 'added': 86, 'first': 185, 'counts': {'kept': 214, 'lost': 27, 'reshaped': 10, 'folded': 1, 'moved': 19}, 'partial_moves': 5, 'bad': [], 'empty': [], 'names': 22, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 27}
    VERDICT: PASS
 exit status: 0
+
+design/concepts/TheForge/rewrite_choices.md
+   {'rows': 215, 'added': 102, 'first': 113, 'counts': {'kept': 165, 'lost': 27, 'reshaped': 4, 'moved': 17, 'other': 1, 'folded': 1}, 'partial_moves': 6, 'bad': [], 'empty': [], 'names': 25, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 25}
+   VERDICT: PASS
+exit status: 0
