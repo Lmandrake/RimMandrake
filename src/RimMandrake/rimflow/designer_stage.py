@@ -83,10 +83,16 @@ OWNER_ONLY = ("root", "exam_waived", "floor_disable", "locked_change", "waiver",
 # The Evidence-for-Ask rule (owner, 2026-11-15, item below): the root and the flagship pick may instead be approved by a
 # recorded delegated call: an OWNER.jsonl event per-ruling that item, why "delegated: evidence-for-ask: ..." (so it
 # reaches his daily digest) and about this concept, cited as CONDUCTOR:<tsn> and stored speaker conductor, delegated
-# "evidence-for-ask", never as his. An ask carrying evidence_against still waits for him. The other OWNER_ONLY kinds
-# and the Lock stage's first-touch certification (concept_tree certify --owner-event) stay his.
+# "evidence-for-ask", never as his. An ask carrying evidence_against still waits for him.
 EVIDENCE_FOR_ASK = "RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME"
 EFA_WHY = "delegated: evidence-for-ask"
+# Only five acts stay his (owner 2026-11-19, conductor_acts.py): every OWNER_ONLY kind but his_words may instead be the
+# Conductor window's act: speaker conductor, delegated "conductor-act", citing CONDUCTOR:<tsn>, an OWNER.jsonl event
+# under that ruling about this concept (conductor_acts.is_conductor_event). A waiver, exam waiver or floor disable drops
+# a requirement, so its why names lost: and undo:. his_words records his words: only he writes it. An ask carrying
+# evidence_against still waits for him (the card rule beside Evidence-for-Ask).
+CONDUCTOR_ACT = "conductor-act"
+MINDFUL_KINDS = ("exam_waived", "floor_disable", "waiver")
 SOURCE = re.compile(r"(OWNER|CONDUCTOR):[0-9]+|ITEM:[A-Za-z0-9_]+|log\.md#L[0-9]+|[A-Za-z0-9_./-]+(:[0-9]+)?")
 SCENE_KINDS = ("acceptance", "exploration", "interaction")
 STAGED_BY = ("script", "hand", "mock")
@@ -191,6 +197,9 @@ def owner_uncited(repo, item, d=None):
             tsns.append(tsn)
             if ev.get("perRuling") == EVIDENCE_FOR_ASK and str(ev.get("why") or "").startswith(EFA_WHY):
                 delegated.add(tsn)
+            elif (ev.get("perRuling") == "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS"
+                  and str(ev.get("why") or "").startswith("delegated: conductor act:")):
+                delegated.add(tsn)          # the Conductor's act, cited CONDUCTOR:<tsn> (conductor_acts.py)
     cited = ""
     for name in ("record.json", "tree.json"):
         try:
@@ -551,6 +560,23 @@ def efa_problem(owner_ev, srcs, concept):
                                                            (concept or {}).get("mod") or "the concept"))
 
 
+def conductor_act_problem(owner_ev, srcs, concept, kind):
+    """Why no CONDUCTOR:<tsn> in srcs is the Conductor window's act under the five-acts ruling about this concept, or
+    None (owner 2026-11-19)."""
+    import conductor_acts as CA
+    if owner_ev is None:
+        return "a Conductor act cannot be checked blind (OWNER.jsonl unread)"
+    last = "cites no CONDUCTOR:<tsn>"
+    for s in [s for s in srcs if isinstance(s, str) and s.startswith("CONDUCTOR:")]:
+        ev = owner_ev.get(s.split(":", 1)[1])
+        ok, why = CA.is_conductor_event(ev, act="loosen a bar" if kind in MINDFUL_KINDS else "designer " + kind)
+        if ok and about_concept(ev, concept):
+            return None
+        last = "%s: %s" % (s, why if not ok else "not about %s" % ((concept or {}).get("mod") or "the concept"))
+    return ("is not a recorded Conductor act about this concept (%s): a CONDUCTOR:<tsn> whose OWNER.jsonl event is "
+            "per-ruling %s from the Conductor window" % (last, CA.RULING))
+
+
 def ask_waits(rec, ans):
     """Why the ask `ans` cannot be answered by delegation, or None."""
     a = next((a for a in (rec or {}).get("asks") or [] if isinstance(a, dict) and a.get("id") == ans), None)
@@ -607,10 +633,18 @@ def authority_errors(e, where, owner_ev, concept=None, rec=None):
             why = ask_waits(rec, e.get("answers"))
             if why:
                 errs.append("%s: a delegated root %s" % (where, why))
+        elif e["kind"] != "his_words" and sp == "conductor" and e.get("delegated") == CONDUCTOR_ACT:
+            why = conductor_act_problem(owner_ev, srcs, concept, e["kind"])
+            if why:
+                errs.append("%s: %s %s" % (where, e["kind"], why))
+            why = ask_waits(rec, e.get("answers")) if e.get("answers") else None
+            if why:
+                errs.append("%s: a Conductor act %s" % (where, why))
         elif sp != "owner" or not owner_src:
-            errs.append("%s: %s is owner-only (his words on an OWNER event), not %s; a Conductor instruction "
-                        "(per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM) carries decisions, but this is a "
-                        "quotation" % (where, e["kind"], sp))
+            errs.append("%s: %s is owner-only (his words on an OWNER event), not %s; the Conductor window may do it as "
+                        "its act (speaker conductor, delegated \"%s\", source CONDUCTOR:<tsn> per-ruling %s), "
+                        "except his_words, which is his quotation" % (where, e["kind"], sp, CONDUCTOR_ACT,
+                                                                      "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS"))
         else:
             if owner_ev is not None and e.get("words"):
                 why = CT.his_words_problem(owner_ev, owner_src[0], e["words"])

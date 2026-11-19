@@ -14,11 +14,12 @@ they are the seat queue, read with --seat. Reading the hold here as well keeps a
 A Designer turn that closed waiting_owner is his too, until an OWNER event naming its item lands
 (DESIGNER_TURNS_FIX_LEFT_ON_THE_DOORSTEP; designer_turns() reads designer_stage.pending_turns): its asks are the line.
 
-A mod's first-touch pass item (<FOLDER>_DESIGN_FIRST_TOUCH, needs=owner) is his only to certify, so it is his only once
+A mod's first-touch pass item (<FOLDER>_DESIGN_FIRST_TOUCH, needs=owner) is his (or the Conductor's) to certify, so it is listed only once
 there is something to certify: an accepted result in its concept folder, or its waiting turn
 (OWNER_QUEUE_FIX_FIRST_TOUCH_NEEDS_PASS: 43 of 53 rows had no Designer output). Until then the ledger is untouched, the item
 stays open and needs_you() names it under "awaiting_designer". A concepts root that cannot be read keeps every row listed.
-His own lock of the mod's Design Version (version/VERSION.json state locked, locked_by owner) is that certification
+His own lock of the mod's Design Version (version/VERSION.json state locked, locked_by owner), or the Conductor window's
+lock under the five-acts ruling (locked_by conductor, owner 2026-11-19, conductor_acts.lock_problem), is that certification
 (RIMMANDRAKE_CERTIFY_FIRST_TOUCH_BY_OWNER_LOCK: Graffiti sat under Needs Mandrake after his "Lock as 0.1.0 now"); a
 pipeline lock certifies nothing. needs_you() names such a row under "certified".
 
@@ -173,6 +174,17 @@ def designer_passes(root=None):
     return got
 
 
+def _conductor_lock_ok(v):
+    """The Conductor window's lock certifies too (owner 2026-11-19, conductor_acts.lock_problem); an unread ledger is
+    False, so the row stays his."""
+    try:
+        import concept_tree as CT
+        import conductor_acts as CA
+        return CA.lock_problem(v, CT.owner_events(CT.REPO)) is None
+    except Exception:       # noqa: BLE001
+        return False
+
+
 def read_certified(root):
     """-> {first-touch pass ids whose concept folder holds a Design Version HE locked}, or None when `root` cannot be read.
     A folder answers for its own pass id and for its stage.json item when that is a first-touch row."""
@@ -188,7 +200,9 @@ def read_certified(root):
                 v = json.load(f)
         except (OSError, ValueError):
             continue
-        if not isinstance(v, dict) or v.get("state") != "locked" or v.get("locked_by") != "owner":
+        if not isinstance(v, dict) or v.get("state") != "locked" or v.get("locked_by") not in ("owner", "conductor"):
+            continue
+        if v.get("locked_by") == "conductor" and not _conductor_lock_ok(v):
             continue
         out.add(first_touch.pass_item_id(n))
         try:

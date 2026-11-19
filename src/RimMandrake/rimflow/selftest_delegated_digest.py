@@ -429,6 +429,13 @@ def test_triage_and_bridge_free_classed():
     check(class_of("delegated: bridge free (ours)") == "bridge idle", "bridge free -> bridge idle")
     check(class_of("delegated: evidence-for-ask: Contagion q04 answered as the Designer's own guess") ==
           "evidence-for-ask", "Evidence-for-Ask call -> its own class, not unclassified")
+    # RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS: the Conductor's act under the five-acts ruling is a digest line
+    import conductor_acts as CA
+    cw = CA.tagged("certify Pyrelands first touch, the spec is complete", "first-touch certify")
+    ev = [{"seat": "OWNER", "event": "note", "id": "A_B_C", "why": cw, "perRuling": CA.RULING, "ranBy": "BENCH",
+           "ts": "2026-11-19T16:00:00Z"}]
+    check(len(D.ledger_read(ev)["items"]) == 1, "a Conductor act under the five-acts ruling is read from the ledger")
+    check(class_of(cw) == "conductor act", "a Conductor act -> its own class, not unclassified")
 
 
 def main():

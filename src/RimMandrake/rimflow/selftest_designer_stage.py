@@ -881,6 +881,44 @@ def evidence_for_ask(repo, root_src, good, flood, tree):
             rc(owner_ev=None), "Evidence-for-Ask")
     refuses("evidence-for-ask: a conductor root that does not say it is delegated stays owner-only",
             rc(root=dict(droot, delegated="")), "owner-only")
+    # RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS (owner 2026-11-19): the Conductor window's act approves every
+    # owner-only kind but his_words; a launched helper's event under the same ruling does not
+    import conductor_acts as CA
+
+    def cact(text, why, hands="BENCH", unit=None):
+        repo.tsn += 1
+        evd = {"tsn": str(repo.tsn), "id": "CA_X", "seat": "OWNER", "text": text, "why": CA.tagged(why),
+               "perRuling": CA.RULING, "ranBy": hands}
+        if unit:
+            evd["role_unit"] = unit
+        with open(repo.owner, "a") as f:
+            f.write(json.dumps(evd) + "\n")
+        return "CONDUCTOR:%d" % repo.tsn
+    ca_ok = cact("Foo root a_root", "approve the Foo root as written, nothing on record argues against it")
+    ca_helper = cact("Foo root a_root", "approve the Foo root as written, nothing on record argues against it",
+                     unit="rm-detached-bench-x-1")
+    ca_mind = cact("Foo floor f1 off", "disable the Foo multiplayer floor line; lost: a multiplayer check nobody runs; "
+                   "undo: set the floor line back to applicable")
+    ca_plain = cact("Foo floor f1 off", "disable the Foo multiplayer floor line, it cannot apply")
+    ev2 = CT.owner_events(repo.root)
+    croot = {"text": "climb out", "source": [ca_ok], "speaker": "conductor", "delegated": "conductor-act"}
+    check("five acts: a root approved by the Conductor window's act is accepted", rc(owner_ev=ev2, root=croot) == [], rc(owner_ev=ev2, root=croot))
+    refuses("five acts: a root under the same ruling from a launched helper is refused",
+            rc(owner_ev=ev2, root=dict(croot, source=[ca_helper])), "not a recorded Conductor act")
+    refuses("five acts: a Conductor act answering an ask with evidence against it still waits for him",
+            rc(owner_ev=ev2, root=dict(croot, answers="a_root"),
+               asks=[ask(id="a_root", decision="root", evidence_against="his 11-10 card says the opposite")]),
+            "waits for him")
+    refuses("five acts: his_words is never the Conductor's act",
+            rc(owner_ev=ev2, root=dict(croot), his_words=None, decisions=[{"id": "hw", "kind": "his_words", "text": "x",
+                                                             "source": [ca_ok], "speaker": "conductor",
+                                                             "delegated": "conductor-act"}]), "owner-only")
+    check("five acts: a floor disable as the Conductor's act with lost: and undo: is accepted",
+          rc(owner_ev=ev2, decisions=[{"id": "fd", "kind": "floor_disable", "text": "x", "source": [ca_mind], "speaker": "conductor",
+                         "delegated": "conductor-act"}]) == [], "")
+    refuses("five acts: a floor disable as the Conductor's act without lost: and undo: is refused",
+            rc(owner_ev=ev2, decisions=[{"id": "fd", "kind": "floor_disable", "text": "x", "source": [ca_plain],
+                           "speaker": "conductor", "delegated": "conductor-act"}]), "lost:")
     oroot = {"text": "climb out", "source": [root_src], "speaker": "owner"}
     check("owner root: his event about this concept is accepted", rc(root=oroot) == [], rc(root=oroot))
     refuses("owner root: an OWNER event about another concept does not approve this root (any OWNER:<tsn> passed)",

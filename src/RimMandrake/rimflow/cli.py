@@ -64,10 +64,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
+    from . import conductor_acts, driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
+    from rimflow import conductor_acts, driver_lock, fulltext, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -3660,11 +3660,54 @@ def _bridge_release(seat, w, holder, expect_token=None):
     return _bridge_release_write(seat, w, holder)
 
 
+def _ruling_only_owner(seat):
+    """Seat OWNER reached by --per-ruling (or --why) alone, with none of his words or cards: a ruling is not his act,
+    so it does not cut his OWNER bridge hold (measured 2026-11-19: a launched helper's `bridge take --per-ruling <any
+    item>` re-took his fresh hold as OWNER). Only the Conductor's mindful cut, below, does."""
+    return seat == "OWNER" and bool(getattr(model, "PER_RULING", "")) and not getattr(model, "OWNER_SAID", "") \
+        and not getattr(model, "BY_CARD", "")
+
+
+CUT_MARK = "the Conductor cut his OWNER hold"
+
+
+def _hold_events(w, evs):
+    """His hold's own event for the 45-min rule, unless the hold's last take was the Conductor's cut (CUT_MARK): that
+    take is the Conductor's act, not his interaction, so it does not restart his clock (his other acts still do)."""
+    last = None
+    for ev in evs or ():
+        if ev.get("event") == "bridge" and ev.get("state") == "taken" and ev.get("seat") == "OWNER":
+            last = ev
+    if last and str(last.get("override") or "").startswith(CUT_MARK):
+        return []
+    return [("his hold's own event", w.bridge_since)]
+
+
+def _conductor_cut(owner, purpose, flyer):
+    """His OWNER hold, held inside 45 min, met by a ruling-only OWNER take or release: -> the override text when it
+    is the Conductor window's mindful act under the five-acts ruling (owner 2026-11-19: its why names lost: and undo:,
+    never for a flyer's flight); else dies with the refusal."""
+    if getattr(model, "PER_RULING", "") != conductor_acts.RULING:
+        die(_owner_refusal(owner) + "\n  a --per-ruling is not his act; only the Conductor window's mindful act under "
+            "%s cuts his hold sooner" % conductor_acts.RULING)
+    if flyer or flight_purpose(purpose):
+        die("refused: flyer flight stays his (owner 2026-11-19); the Conductor does not cut his hold for it")
+    ok, txt = conductor_acts.check("owner bridge hold", getattr(model, "AGENT_WHY", ""))
+    if not ok:
+        die(txt)
+    return CUT_MARK + " inside 45 min, its mindful act per %s (%s)" % (
+        conductor_acts.RULING, owner[1] if owner else "his last interaction UNMEASURED")
+
+
 def _bridge_release_locked(seat, w):
     """A plain release, decided on a fresh replay under the bridge lock. 🔴 A seat may not release his OWNER hold
     until 45 min after his last interaction (owner, by card 2026-10-30): release-then-take would cut it otherwise."""
     evs, w2 = load()
     holder = w2.bridge_holder
+    if holder == "OWNER" and _ruling_only_owner(seat):
+        owner = _owner_verdict(_hold_events(w2, evs), evs)
+        if not owner[0]:
+            _conductor_cut(owner, None, False)
     if holder == "OWNER" and seat != "OWNER":
         owner = _owner_verdict([("his hold's own event", w2.bridge_since)], evs)
         if not owner[0]:
@@ -3859,7 +3902,10 @@ def _bridge_take(args, seat, w, holder, purpose):
 def _bridge_take_locked(args, seat, evs, w):
     holder = w.bridge_holder
     idle = _idle_seconds(w.last_seen.get(holder)) if holder else None
-    owner = _owner_verdict([("his hold's own event", w.bridge_since)], evs) if holder == "OWNER" else None
+    owner = _owner_verdict(_hold_events(w, evs), evs) if holder == "OWNER" else None
+    cut = None
+    if holder == "OWNER" and _ruling_only_owner(seat) and not (owner and owner[0]):
+        cut = _conductor_cut(owner, args.purpose, getattr(args, "flyer", False))
     why, refusal = _take_decision(holder, seat, idle, args.force, w.bridge_purpose, owner=owner)
     if refusal:
         die(refusal)
@@ -3883,6 +3929,8 @@ def _bridge_take_locked(args, seat, evs, w):
         ev["override"] = (
             "took the bridge with --force while %s still held it (%s)" % (holder, why)
             if args.force else "took the bridge: %s" % why)
+    if cut:
+        ev["override"] = cut
     # 🔴 BRIDGE_LOCK_CROSS_CLONE_RACE_1: the OTHER clone's take is not in this clone's ledger
     # until it is pushed. The shared lock on the common drive is what it can see at once.
     shared = model.read_shared_bridge()
@@ -5084,6 +5132,13 @@ def _resolve_command_seat(args):
             "quote. %r has spaces or punctuation in it." % per_ruling[:80])
     if per_ruling:
         _check_per_ruling(per_ruling)
+    if per_ruling == conductor_acts.RULING:
+        # owner 2026-11-19: only five acts stay his; the rest is the Conductor window's, recorded as its act (never his
+        # words), its why tagged `delegated: conductor act:` so his daily digest lists it
+        ok, txt = conductor_acts.cli_gate(model.AGENT_WHY)
+        if not ok:
+            die(txt)
+        model.AGENT_WHY = conductor_acts.tagged(model.AGENT_WHY)
     if getattr(args, "by_card", None) is not None:
         by_card = _find_card(by_card)
     model.BY_CARD, model.PER_RULING = by_card, per_ruling

@@ -385,6 +385,33 @@ def main():
         ok("locked" in [p["clause"] for p in e["verdict"]["passed"]],
            "evidence-for-ask: VERSION.json locked by the pipeline under the Evidence-for-Ask ruling passes the lock "
            "clause (read %s)" % [r["clause"] for r in e["verdict"]["refusals"]])
+        # RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS: the Conductor window's lock counts (it names its ledger
+        # event); the same lock by a launched helper does not
+        import conductor_acts as CA
+        cshard = os.path.join(root, "infrastructure", "state", "ledger", "events", "OWNER.jsonl")
+        os.makedirs(os.path.dirname(cshard), exist_ok=True)
+        cwhy = CA.tagged("lock SpineTestMod at 0.1.0: the Designer pass is complete", "design version lock")
+        with open(cshard, "a") as f:
+            f.write(json.dumps({"seat": "OWNER", "event": "note", "id": "X", "ts": "2026-11-19T16:00:00Z",
+                                "tsn": 9190000001, "perRuling": CA.RULING, "why": cwhy, "ranBy": "BENCH"}) + "\n")
+            f.write(json.dumps({"seat": "OWNER", "event": "note", "id": "X", "ts": "2026-11-19T16:00:01Z",
+                                "tsn": 9190000002, "perRuling": CA.RULING, "why": cwhy, "ranBy": "BENCH",
+                                "role_unit": "rm-detached-bench-x-1"}) + "\n")
+        synthetic(root, state="locked", locked_by="conductor", per_ruling=CA.RULING, conductor_event="OWNER:9190000001")
+        e = M.evaluate(root, "SpineTestMod", "preflight", by="BENCH", why="x")
+        ok("locked" in [p["clause"] for p in e["verdict"]["passed"]],
+           "five acts: the Conductor window's lock passes the lock clause (read %s)"
+           % [r["clause"] for r in e["verdict"]["refusals"]])
+        synthetic(root, state="locked", locked_by="conductor", per_ruling=CA.RULING, conductor_event="OWNER:9190000002")
+        refused(M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="x"), "locked",
+                "a 'conductor' lock whose event a launched helper wrote")
+        synthetic(root, state="locked", locked_by="conductor", per_ruling=CA.RULING)
+        refused(M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="x"), "locked",
+                "a 'conductor' lock that names no ledger event")
+        # the pass at his walk stays his: a Conductor event is not his word (owner_event)
+        ev_, why_ = M.owner_event(root, "OWNER:9190000001")
+        ok(ev_ is None and "no byCard or ownerSaid" in why_, "five acts: the Conductor's act never passes his walk (%s)"
+           % why_)
         synthetic(root, state="locked", locked_by="owner")
         refused(M.advance(root, "SpineTestMod", "preflight", by="", why="x"), "by", "a move that names no seat")
         r = M.advance(root, "SpineTestMod", "preflight", by="BENCH", why="locked on his word")

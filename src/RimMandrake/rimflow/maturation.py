@@ -685,6 +685,16 @@ def _reached(root, stage):
 PASS_REFUSED = re.compile(r"\b(not|n't|never|don'?t|do not)\b[^.]{0,30}\bpass", re.I)
 
 
+CONDUCTOR_ACTS = "RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS"     # = conductor_acts.RULING
+
+
+def _conductor_lock_problem(root, v):
+    """None when VERSION.json's lock is the Conductor window's act (owner 2026-11-19, conductor_acts.lock_problem)."""
+    import concept_tree as CT
+    import conductor_acts as CA
+    return CA.lock_problem(v, CT.owner_events(root, REPO))
+
+
 def owner_event(root, owner):
     """RIMMANDRAKE_REQUIRE_OWNER_EVENT_TO_PASS: --owner-said for a pass is OWNER:<tsn>, an event of his on the OWNER
     shard carrying byCard or ownerSaid that does not refuse the pass. -> (event, observed) or (None, why not)."""
@@ -916,13 +926,16 @@ def evaluate(root, mod, to, steward=None, conductor=None, owner=None, by=None, w
             # pipeline under his Evidence-for-Ask ruling (a new mod's 0.1.0 with no recorded evidence against it)
             by_ = str((v or {}).get("locked_by") or "")
             lk = bool(re.match(r"^locked(\s|$)", st)) and (by_ == "owner" or (
-                by_ == "pipeline" and (v or {}).get("per_ruling") == EVIDENCE_FOR_ASK))
+                by_ == "pipeline" and (v or {}).get("per_ruling") == EVIDENCE_FOR_ASK) or (
+                by_ == "conductor" and _conductor_lock_problem(root, v) is None))
             clause("locked", "the Design Version is locked (VERSION.json state locked, by him or by the pipeline "
                    "under the Evidence-for-Ask ruling)",
                    lk, [rel(mod, "version/VERSION.json")],
                    observed="VERSION.json state is %s, locked_by %s" % (st or UNM, by_ or UNM),
-                   would_pass="VERSION.json state reads locked, locked_by owner (his words in owner_words) or "
-                              "locked_by pipeline with per_ruling %s" % EVIDENCE_FOR_ASK,
+                   would_pass="VERSION.json state reads locked, locked_by owner (his words in owner_words), "
+                              "locked_by pipeline with per_ruling %s, or locked_by conductor with per_ruling %s and "
+                              "conductor_event OWNER:<tsn> (the Conductor window's act, owner 2026-11-19)"
+                              % (EVIDENCE_FOR_ASK, CONDUCTOR_ACTS),
                    fix="finish the Designer pass; the Dispatch step then locks a new mod at 0.1.0 itself, or asks him "
                        "with the recorded evidence against 0.1.0", cost="rerun",
                    why_sound="the Design Versions ruling, and his Evidence-for-Ask ruling of 2026-11-15 (the obvious "
@@ -1401,7 +1414,8 @@ def lock_bars(root, mod, by, why, add=(), remove=(), source=None, show=None, blo
     list the test table is compared with. The first record derives them from the lock itself: coverage_judge's
     required_ids (record.json inventory, then tree.json leaves) at VERSION.json's locked_from_commit, less
     bars_moved_to_next_version, plus bars_added_after_lock. Any --add/--remove (a bar his card added or moved) cites his
-    event, OWNER:<tsn>; an agent never changes a bar on its own word. -> {"ok", "why", "ids"}."""
+    event, OWNER:<tsn>, or the Conductor window's act under the five-acts ruling (owner 2026-11-19; a removal names
+    lost: and undo:); an agent never changes a bar on its own word. -> {"ok", "why", "ids"}."""
     import concept_tree as CT
     show = show or (lambda c, p: _git_show(root, c, p))
     v, verr = read_json(root, mod, "version/VERSION.json")
@@ -1413,9 +1427,15 @@ def lock_bars(root, mod, by, why, add=(), remove=(), source=None, show=None, blo
     if add or remove:
         m = re.match(r"^OWNER:(\d+)$", str(source or "").strip())
         ev = CT.owner_events(root, REPO).get(m.group(1)) if m else None
-        if not isinstance(ev, dict) or not str(ev.get("ownerSaid") or ev.get("byCard") or "").strip():
-            return {"ok": False, "why": "--source %r is not one of his OWNER events with his words: a bar is added or "
-                    "removed only on his card" % source}
+        his = isinstance(ev, dict) and bool(str(ev.get("ownerSaid") or ev.get("byCard") or "").strip())
+        if not his:
+            # owner 2026-11-19: the Conductor window may add a bar, and remove one mindfully (lost: / undo: in its why)
+            import conductor_acts as CA
+            ok, cwhy = CA.is_conductor_event(ev, act="loosen a bar" if remove else "add a bar")
+            if not ok:
+                return {"ok": False, "why": "--source %r is neither one of his OWNER events with his words nor the "
+                        "Conductor's act under %s (%s): an agent never changes a bar on its own word"
+                        % (source, CA.RULING, cwhy)}
     cur, _ = read_json(root, mod, LOCKED_BARS)
     hist = list(cur.get("history") or []) if isinstance(cur, dict) else []
     if isinstance(cur, dict) and cur.get("version") == v.get("version") and isinstance(cur.get("ids"), list):
@@ -4006,6 +4026,12 @@ def main(argv=None):
         if load(root, o.mod) is None:
             print("REFUSED: %s has no stage record; run maturation.py seed %s first" % (o.mod, o.mod))
             return 1
+        if o.per_ruling == CONDUCTOR_ACTS:      # owner 2026-11-19: the Conductor window's act, never a helper's
+            import conductor_acts as CA
+            ok, txt = CA.check("advance %s" % o.mod, o.why)
+            if not ok:
+                print("REFUSED: %s" % txt)
+                return 1
         res = advance(root, o.mod, o.to, by=o.by, why=o.why, steward=o.steward_confirms,
                       conductor=o.conductor_decision, owner=o.owner_said or (("per-ruling %s: %s" % (o.per_ruling, o.why)) if o.per_ruling else None), waits_on=o.waits_on,
                       game_only=[x.strip() for x in (o.game_only or "").split(",") if x.strip()] or None)

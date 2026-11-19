@@ -74,6 +74,36 @@ def forge(d, base, event):
     CT.put(d, tree)
 
 
+def conductor_certify():
+    """Owner 2026-11-19 (RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS): the Conductor window's act certifies,
+    recorded certified_by conductor and never as his words; a launched helper's act under the same ruling does not."""
+    import conductor_acts as CA
+    tmp = tempfile.mkdtemp(prefix="concept_conductor_certify_")
+    why = CA.tagged("certify past the coverage verdict: both gaps are claimed fixed with evidence", "coverage certify")
+    try:
+        repo, d = fixture(tmp)
+        with open(os.path.join(repo, CT.OWNER_SHARD), "a", encoding="utf-8") as f:
+            f.write(json.dumps(ev(3001, "2026-11-13T23:00:00Z", perRuling=CA.RULING, why=why, ranBy="BENCH",
+                                  role_unit="rm-detached-bench-x-1")) + "\n")
+            f.write(json.dumps(ev(3002, "2026-11-13T23:01:00Z", perRuling=CA.RULING, why=why, ranBy="BENCH")) + "\n")
+        notes = []
+        got = CT.certify(d, "OWNER:3001", repo, emit=lambda r, i, t: notes.append(t))
+        check("conductor: a launched helper's act under the five-acts ruling certifies nothing",
+              len(got) == 1 and "not the Conductor's act" in got[0] and notes == [], got)
+        got = CT.certify(d, "OWNER:3002", repo, emit=lambda r, i, t: notes.append(t))
+        check("conductor: the Conductor window's act certifies", got == [], got)
+        cov = CT.load(d).get("coverage") or {}
+        check("conductor: recorded certified_by conductor, its words the Conductor's act, never his",
+              cov.get("certified_by") == "conductor" and str(cov.get("owner_words")).startswith("the Conductor's act: ")
+              and "ownerSaid" not in json.dumps(cov), cov)
+        errs, _ = CT.gate(d, repo)
+        check("conductor: the gate passes on the Conductor's certificate", errs == [], errs)
+        check("conductor: the summary says the Conductor's act",
+              CT.coverage_summary(d, repo).startswith("passed as the Conductor's act"), CT.coverage_summary(d, repo))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
     tmp = tempfile.mkdtemp(prefix="concept_owner_certify_")
     notes = []
@@ -374,6 +404,7 @@ def main():
               and "already certified another" in got[0], got)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+    conductor_certify()
     print("selftest_concept_owner_certify: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
     return 1 if FAILS else 0
 

@@ -195,6 +195,22 @@ with tempfile.TemporaryDirectory() as root:
     certs = Q.read_certified(root)
     check("his lock certifies; a pipeline lock, a draft, a garbled VERSION.json and no VERSION.json do not",
           certs == {"LOCKED_DESIGN_FIRST_TOUCH"})
+    # RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS: the Conductor window's lock certifies when its ledger event
+    # is the Conductor's act (conductor_acts.lock_problem); one whose event is not certifies nothing
+    concept("CondLocked", ["result.run-10.json"])
+    version("CondLocked", '{"state": "locked", "locked_by": "conductor", "conductor_event": "OWNER:1"}')
+    concept("CondBad", ["result.run-11.json"])
+    version("CondBad", '{"state": "locked", "locked_by": "conductor", "conductor_event": "OWNER:2"}')
+    real = Q._conductor_lock_ok
+    Q._conductor_lock_ok = lambda v: v.get("conductor_event") == "OWNER:1"
+    try:
+        certs = Q.read_certified(root)
+    finally:
+        Q._conductor_lock_ok = real
+    check("the Conductor's lock certifies; a 'conductor' lock whose event is not its act does not",
+          certs == {"LOCKED_DESIGN_FIRST_TOUCH", "CONDLOCKED_DESIGN_FIRST_TOUCH"})
+    check("a 'conductor' lock with no ledger event to read certifies nothing",
+          real({"state": "locked", "locked_by": "conductor"}) is False)
     check("an unreadable concepts root certifies nothing (None)", Q.read_certified(os.path.join(root, "no_such")) is None)
 
 ft = {i: ftit(i) for i in ("BARE_DESIGN_FIRST_TOUCH", "DONE_DESIGN_FIRST_TOUCH", "TURN_DESIGN_FIRST_TOUCH", "HELD_DESIGN_FIRST_TOUCH", "SAID_DESIGN_FIRST_TOUCH")}

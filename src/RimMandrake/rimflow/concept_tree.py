@@ -13,6 +13,10 @@ Format: design/RimMandrake/concept_tree_schema.md. Meaning: concept_agent_design
   certify  <dir> --owner-event OWNER:<tsn>     the owner's certificate (signed_by owner): his ownerSaid/byCard event on
                                                this item, newer than the judge verdict on file, past that verdict. See
                                                "the owner's certificate" below; it never reads as a judge pass
+                                               Or the Conductor's act (owner 2026-11-19): an OWNER:<tsn> event
+                                               from the Conductor window under --per-ruling
+                                               RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS (conductor_acts.py);
+                                               recorded certified_by conductor, never as his words
   askcheck <dir> "question"                    does this question re-raise a waiver? Exit 1 when it may; with no
                                                tree.json yet it prints HISTORY_NOT_CHECKED (exit 0), never "clear"
   hash     <dir>                               tree_hash
@@ -740,6 +744,26 @@ def his_word(e):
     return None
 
 
+def conductor_word(e, act="coverage certify"):
+    """The Conductor's act on this event under the five-acts ruling (owner 2026-11-19, conductor_acts.py), as the
+    words a certificate records: "the Conductor's act: <its why>", else None. Never his words: his_word stays his."""
+    try:
+        import conductor_acts as CA
+    except ImportError:
+        return None
+    ok, _ = CA.is_conductor_event(e, act=act)
+    return ("the Conductor's act: %s" % CA._bare(e.get("why"))) if ok else None
+
+
+def certifier_word(e):
+    """-> (words, by): his words ("owner"), else the Conductor's act ("conductor"), else (None, None)."""
+    w = his_word(e)
+    if w:
+        return w, "owner"
+    w = conductor_word(e)
+    return (w, "conductor") if w else (None, None)
+
+
 def judge_verdict(d):
     """The judge verdict on file: {run, verdict, gaps, at, gids}, or None."""
     v = _read_json(os.path.join(d, VERDICT_FILE))
@@ -816,8 +840,9 @@ def owner_event_problem(d, repo, ref, verdict, events=None):
     e = (owner_events(repo) if events is None else events).get(m.group(1)) if m else None
     if e is None:
         return "%s finds no event in OWNER.jsonl" % ref, None
-    if not his_word(e):
-        return "%s holds no ownerSaid or byCard: an agent's --why or --per-ruling event certifies nothing" % ref, e
+    if not certifier_word(e)[0]:
+        return ("%s holds no ownerSaid or byCard and is not the Conductor's act under the five-acts ruling: an agent's "
+                "--why or another --per-ruling event certifies nothing" % ref), e
     item = stage_item(d)
     if not item or not caused_by_mod(repo, d, e.get("id")):
         return ("%s is on %s, not this concept's item (%s) nor one caused by it or by a refusal record under %s" %
@@ -837,7 +862,7 @@ def owner_certificate_problem(d, repo, cov):
     why, e = owner_event_problem(d, repo, cov.get("owner_event"), v)
     if why:
         return "owner certificate: " + why
-    if cov.get("owner_words") != his_word(e):
+    if cov.get("owner_words") != certifier_word(e)[0]:
         return "owner certificate: its words are not the words on %s" % cov.get("owner_event")
     if (cov.get("judge_run"), cov.get("judge_verdict"), cov.get("judge_gaps")) != (v["run"], v["verdict"], v["gaps"]):
         return "owner certificate: a judge verdict newer than the one he passed past is on file (%s %s)" % (
@@ -871,8 +896,8 @@ def carry_event_problem(d, repo, ref, cov, events=None):
     e = (owner_events(repo) if events is None else events).get(m.group(1)) if m else None
     if e is None:
         return "%s finds no event in OWNER.jsonl" % ref
-    if not his_word(e):
-        return "%s holds no ownerSaid or byCard: an agent's event carries nothing" % ref
+    if not certifier_word(e)[0]:
+        return "%s holds no ownerSaid or byCard and is not the Conductor's act: an agent's event carries nothing" % ref
     if not caused_by_mod(repo, d, e.get("id")):
         return "%s is on %s, not this concept's item nor one caused by it" % (ref, e.get("id"))
     t, t0 = ev_epoch(e), ev_epoch({"ts": cov.get("owner_at")})
@@ -1013,7 +1038,8 @@ def coverage_summary(d, repo=REPO):
         claim = "all claimed fixed" if n and got == n else "%d of %s claimed fixed" % (got, n)
         m = re.fullmatch(r"(?:OWNER:)?([0-9]+)", str(cov.get("owner_event") or ""))
         on = (owner_events(repo).get(m.group(1)) or {}).get("id") if m else None
-        line = "passed on the owner's word (%s%s, %s: \"%s\"); last judge verdict %s (%s gaps, %s; %s)" % (
+        line = "passed %s (%s%s, %s: \"%s\"); last judge verdict %s (%s gaps, %s; %s)" % (
+            "as the Conductor's act" if cov.get("certified_by") == "conductor" else "on the owner's word",
             cov.get("owner_event"), " on %s" % on if on and on != stage_item(d) else "", cov.get("owner_at"),
             cov.get("owner_words"), cov.get("judge_verdict"), n, claim, cov.get("judge_run"))
         return line if not why else "owner certificate NOT valid: %s (was: %s)" % (why, line)
@@ -1043,7 +1069,8 @@ def certify(d, owner_event, repo=REPO, emit=None):
     if spent:
         return ["%s; a newer OWNER event of his must cover what is here now, or, for an edit made under a later card "
                 "of his, `concept_tree.py carry %s --card OWNER:<tsn>`" % (spent, concept_rel(d, repo))]
-    cov = {"signed_by": OWNER_SIGNER, "owner_event": ref, "owner_words": his_word(e), "owner_at": e.get("ts"),
+    words, by = certifier_word(e)
+    cov = {"signed_by": OWNER_SIGNER, "owner_event": ref, "owner_words": words, "certified_by": by, "owner_at": e.get("ts"),
            "judge_run": v["run"], "judge_verdict": v["verdict"], "judge_gaps": v["gaps"], "judge_at": v.get("at"),
            "judge_gids": v["gids"], "judge_gaps_sha": v["gaps_sha"],
            "fixes_hash": fixes_hash(d), "tree_hash": tree_hash(tree), "sheet_hash": sheet_hash(d),
