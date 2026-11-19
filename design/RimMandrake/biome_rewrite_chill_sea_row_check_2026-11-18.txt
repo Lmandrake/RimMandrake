@@ -1,0 +1,9 @@
+Row and source-coverage check over design/concepts/TerminalBiomes/TheChill_rewrite_choices.md (item RIMMANDRAKE_REWRITE_CHILL_SEA_DESIGN_READ_IN_FULL), run 2026-11-18 (offline; documents only, no game).
+What it checks: every table row under "Every idea, row by row" has five cells and an outcome that starts with one of the page's defined words; every source name defined in the page's "Source names" paragraph appears in at least one row's source column; every ledger item named as read whole exists as a file under infrastructure/state/items/ or items/closed/; a made-up source name is reported as missing (the probe that shows the check can see absence).
+What it does not check: that every idea in every source has a row. The page states which sources were read to the end, in part, by search and not at all; a source read in part can hold ideas with no row.
+The count of lost, moved and reshaped rows whose last two cells are both empty is reported, not failed: their reason is in the outcome cell or under the page's "Scope moves".
+exit status of the check: 0
+
+item prose files named: 49 of which not found on disk: [] ; ledger-only ids: 10
+TheChill: 259 rows, 36 named sources, sources with no row: none; rows with wrong cell count: 0; rows with empty outcome: 0; outcomes: {'kept': 196, 'reshaped': 10, 'lost': 39, 'moved': 13, 'folded': 1}; rows whose outcome starts with none of the defined words: []; lost/moved/reshaped rows with neither a reason nor an alternative: 4 ['"Pipes of flowing propane... if ruptured, spew bur', 'The raid in the gas with non-flammable weapons', 'Gas vents that puff and self-ignite; the violent r', 'Inert cross-biome switches']; probe (an invented source name must be reported): seen
+item ids named in the read-whole paragraph: 49
