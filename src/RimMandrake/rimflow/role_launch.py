@@ -262,10 +262,13 @@ def finite(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
 
 
-def ops_reading(status, account, now, stale_s=OPS_STALE_S):
+def ops_reading(status, account, now, stale_s=OPS_STALE_S, model=None):
     """Pure. status = parsed status.json (or None), account = resolved label (or None).
-    -> {"state": "MEASURED", "account", "runway", "runway_m", "week_left", "week_left_m", "at"}
-       or {"state": "UNMEASURED", "why"}."""
+    -> {"state": "MEASURED", "account", "runway", "runway_m", "week_left", "week_left_m", "at", "week_limit"}
+       or {"state": "UNMEASURED", "why"}.
+    model = the run's model (alias or id): week_left is then the LOWER of the all-models point and that model's own
+    weekly limit (`accounts.<label>.model_week_left_pct.<scope>`, ops_watch), week_limit names which one; a model
+    with no such point reads the all-models figure (RIMMANDRAKE_READ_FABLE_WEEKLY_METER_USAGE_LINE_NEVER_SHOWED)."""
     if not isinstance(status, dict):
         return {"state": "UNMEASURED", "why": "ops_watch status.json missing or unreadable"}
     at = utc_epoch(status.get("at"))
@@ -292,6 +295,15 @@ def ops_reading(status, account, now, stale_s=OPS_STALE_S):
                 account, key, p.get("m") or "absent", (" (%s)" % p["why"]) if p.get("why") else "",
                 "" if p.get("m") not in ("MEASURED", "ESTIMATE") else ", value %r not a finite number" % (p.get("v"),))}
         out[name], out[name + "_m"] = float(p["v"]), p["m"]
+    out["week_limit"] = "all models"
+    if model:
+        import account_usage as AU
+        pre = "accounts.%s.model_week_left_pct." % account
+        scopes = {k[len(pre):]: v for k, v in pts.items() if k.startswith(pre) and isinstance(v, dict)}
+        scope = AU.scope_for(model, scopes)
+        p = scopes.get(scope) or {}
+        if scope and p.get("m") in ("MEASURED", "ESTIMATE") and finite(p.get("v")) and float(p["v"]) < out["week_left"]:
+            out["week_left"], out["week_left_m"], out["week_limit"] = float(p["v"]), p["m"], scope
     return out
 
 
@@ -1577,13 +1589,21 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
     reading_cache = {}
     tick_launch = {}      # role -> the unit decide is launching now, until its role_launch action is built (V7)
 
-    def reading():
-        # one status.json read per tick: the alarm keys come from the same snapshot the reading judged (review night r3)
+    def reading(model=None):
+        # one status.json read per tick: the alarm keys come from the same snapshot the reading judged (review night r3);
+        # a role's model reads the lower of the all-models and that model's weekly limit (same snapshot)
         if "r" not in reading_cache:
             reading_cache["s"] = obs["ops"]()
-            reading_cache["r"] = ops_reading(reading_cache["s"], obs["account"](), now,
+            reading_cache["acct"] = obs["account"]()
+            reading_cache["r"] = ops_reading(reading_cache["s"], reading_cache["acct"], now,
                                              sch.get("ops_stale_s", OPS_STALE_S))
-        return reading_cache["r"]
+        if not model:
+            return reading_cache["r"]
+        key = ("r", model)
+        if key not in reading_cache:
+            reading_cache[key] = ops_reading(reading_cache["s"], reading_cache["acct"], now,
+                                             sch.get("ops_stale_s", OPS_STALE_S), model=model)
+        return reading_cache[key]
 
     def ledger():
         """One ledger read per tick, shared by every role that triggers on it. UNMEASURED: one alarm per outage
@@ -1838,7 +1858,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             rs["waiting"] = [job["key"], wait]
             return
         rs.pop("waiting", None)
-        r = codex_reading() if cfg.get("runner") == "codex" else reading()
+        r = codex_reading() if cfg.get("runner") == "codex" else reading(mode_model(cfg, job.get("mode"))
+                                                                          if cfg.get("model") else None)
         if r["state"] != "MEASURED" and cfg.get("degraded_reading_ok") is True:
             # the role that reports the problem must not be refused by it (owner-authority brief 2026-11-01, Operations
             # slot 07:30 REFUSED 'accounts.system.runway is absent'): launch on the most cautious reading, say so

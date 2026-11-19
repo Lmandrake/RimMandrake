@@ -498,6 +498,18 @@ def c_accounts(now, rules, ctx):
         mk = (lambda v, u, **x: M(v, u, **x)) if src == "MEASURED" else \
             (lambda v, u, **x: E(v, "account_usage reading is an ESTIMATE%s" % (" (stale)" if a.get("stale") else ""), u, **x))
         out[k + "week_left_pct"] = mk(left, "% of the weekly quota left", measured_at=a.get("measured_at"))
+        # each per-model weekly limit as its own point (RIMMANDRAKE_READ_FABLE_WEEKLY_METER_USAGE_LINE_NEVER_SHOWED): a
+        # launch of that model reads the lower of the two (role_launch.ops_reading); a window reset since the reading
+        # is no point at all, so the all-models figure alone applies, never a guessed 100
+        for scope, w in sorted((a.get("model_weeks") or {}).items()):
+            if (w or {}).get("pct_left") is None:
+                continue
+            if w.get("carried_from"):    # the record's source could not see it: the last reading, carried
+                out[k + "model_week_left_pct." + scope] = E(w["pct_left"], "carried from the reading at %s" % w[
+                    "carried_from"], "%% of the %s weekly limit left" % scope, scope=scope, measured_at=w["carried_from"])
+            else:
+                out[k + "model_week_left_pct." + scope] = mk(w["pct_left"], "%% of the %s weekly limit left" % scope,
+                                                             scope=scope, measured_at=a.get("measured_at"))
         out[k + "hours_to_reset"] = mk(h, "h to the weekly reset") if h is not None else U("no reset time")
         rate, how = None, None
         try:

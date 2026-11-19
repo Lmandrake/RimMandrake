@@ -28,7 +28,7 @@ Brake: a file HOLD in the output dir makes every pass passive (the owner's or an
 gate (the account_failover cutover gate was removed 2026-10-28: that script is retired and never wrote its marker).
 
     switching_plan.py check [--dry-run]   one pass (the timer runs this every 5 min)
-    switching_plan.py status [--rate R]   what the next pass would do, the pool, the notice and the week ahead
+    switching_plan.py status [--rate R] [--model M]   what the next pass would do (as a run of M sees each level), the pool, the notice and the week ahead
                                           (simulate() at R %/h, default the pool's pace); acts on nothing
     switching_plan.py install [--deploy D] the durable systemd user timer account-plan.timer
 
@@ -790,6 +790,27 @@ def meter_now() -> dict:
     return account_usage.read_now().get("accounts") or {}
 
 
+def levelled(meter: dict, model=None) -> dict:
+    """Pure. The meter as a run of `model` sees it: each account's week figures are the LOWER of its all-models
+    weekly limit and that model's own (account_usage.week_left_for), `week_limit` naming which; `model_weeks_left`
+    carries every per-model limit as LEFT. model None (the plan's `level_model` unset) changes no figure: the machine
+    runs every model, so only the all-models limit is the whole account's level
+    (RIMMANDRAKE_READ_FABLE_WEEKLY_METER_USAGE_LINE_NEVER_SHOWED)."""
+    sys.path.insert(0, str(HERE))
+    import account_usage
+    out = {}
+    for n, r in (meter or {}).items():
+        r = dict(r or {})
+        r["model_weeks_left"] = {k: (w or {}).get("pct_left") for k, w in (r.get("model_weeks") or {}).items()}
+        lv, lim, h = account_usage.week_left_for(r, model)
+        r["week_limit"] = lim
+        if lim != "all models":
+            r.update(week_pct_left=lv, week_pct_used=round(100 - lv, 1), hours_to_week_reset=h,
+                     week_resets_at=r["model_weeks"][lim].get("resets_at"))
+        out[n] = r
+    return out
+
+
 def meter_poll() -> None:
     rc, out = run([sys.executable, str(HERE / "account_usage.py"), "poll"], timeout=420)
     log({"do": "meter_poll", "rc": rc, "out": out})
@@ -918,6 +939,8 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         return 0
     st = switcher_status()
     live = st.get("live")
+    raw_meter_fn = meter_fn
+    meter_fn = lambda: levelled(raw_meter_fn(), plan.get("level_model"))  # noqa: E731  unset: all-models only
     meter = meter_fn()
     t1 = clock()
     now += t1 - t0  # a slow status or meter read moves time on too: windows are judged when the pass acts
@@ -1093,16 +1116,19 @@ def install(deploy: str) -> str:
     return f"{UNIT}.timer -> {script}"
 
 
-def status(rate=None) -> int:
+def status(rate=None, model=None) -> int:
     plan, state, now = load_plan(), load_state(), time.time()
-    meter = meter_now()
+    meter = levelled(meter_now(), model or plan.get("level_model"))
     live = switcher_status().get("live")
     hold = (OUT / "HOLD").exists()
     mk = read_markers()
     d = decide(meter, live, now, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live))
     pl = pool(meter, now, plan, live)
     rate = rate if rate is not None else pl.get("rate_pct_h")
-    print(json.dumps({"live": live, "hold": hold, "next_pass": {"do": "passive", "why": f"{OUT / 'HOLD'} present",
+    print(json.dumps({"live": live, "hold": hold, "level_model": model or plan.get("level_model"),
+                      "levels": {n: {"week_pct_left": r.get("week_pct_left"), "week_limit": r.get("week_limit"),
+                                     "model_weeks_left": r.get("model_weeks_left")} for n, r in meter.items()},
+                      "next_pass": {"do": "passive", "why": f"{OUT / 'HOLD'} present",
                                                                 "would_do": d} if hold else d,
                       "pool": pl, "notice": read_json(OUT / "notice.json"), "stopped": state.get("stopped")},
                      indent=1, sort_keys=True))
@@ -1122,6 +1148,8 @@ def main(argv=None) -> int:
     p.add_argument("--dry-run", action="store_true")
     p = sub.add_parser("status")
     p.add_argument("--rate", type=float, default=None, help="burn %%/h for the week ahead (default: the pool's pace)")
+    p.add_argument("--model", default=None, help="read each account's level as a run of this model sees it (the "
+                   "lower of all-models and its own weekly limit); acts on nothing")
     p = sub.add_parser("install")
     p.add_argument("--deploy", default=__import__("ops_clocks").deploy(),
                    help="the one Operations deploy (systemd/ops_clocks.json)")
@@ -1131,7 +1159,7 @@ def main(argv=None) -> int:
     if a.cmd == "install":
         print(install(a.deploy))
         return 0
-    return status(a.rate)
+    return status(a.rate, a.model)
 
 
 if __name__ == "__main__":

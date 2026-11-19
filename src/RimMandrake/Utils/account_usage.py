@@ -40,6 +40,9 @@ FILE CONTRACT (schema 1), under $RM_ACCOUNT_USAGE_DIR (default /mnt/d/ClaudeWork
   latest.json   {"schema", "updated", "accounts": {name: newest record}}, rewritten atomically each poll
 Readers: `account_usage.py now --json` (latest + derived pct_left, hours_to_reset, age, stale) or
 `account_usage.read_now()`. Times are ISO-8601 with offset; percentages are percent USED, as /usage shows.
+Every per-model weekly limit (/usage's "Current week (Fable)" lines, `other_weeks`) is read too: read_now gives each
+as LEFT in `model_weeks`, the status line prints each, and week_left_for(row, model) is an account's level for a
+run of that model (the lower of all-models and the model's own; RIMMANDRAKE_READ_FABLE_WEEKLY_METER_USAGE_LINE_NEVER_SHOWED).
 
   account_usage.py poll                 read every account once, append the series (the timer runs this)
   account_usage.py now [--json]         the newest reading per account (no polling)
@@ -399,6 +402,18 @@ def pulse_reading(name: str) -> dict | None:
     return record(name, float(t), "MEASURED", "plan usage endpoint, via RimPulse usage.json", None, fig, iso(float(t)))
 
 
+def carry_model_weeks(prev: dict | None, now: float) -> dict:
+    """The per-model weekly limits of the last reading, for a record whose source cannot see them (RimPulse's endpoint
+    reading has the all-models week only): each limit whose window has not reset, stamped `carried_from` (the time it
+    was read), so a reader can tell it is older than the record; a reset window is dropped (unknown now), never kept."""
+    if not prev or prev.get("source") not in ("MEASURED", "ESTIMATE"):
+        return {}
+    basis = prev.get("measured_at") or prev.get("ts")
+    return {k: dict(v, carried_from=v.get("carried_from") or basis)
+            for k, v in (prev.get("other_weeks") or {}).items()
+            if isinstance(v, dict) and (epoch(v.get("resets_at")) or 0) > now}
+
+
 def _basis_time(r: dict | None) -> float:
     if not r:
         return 0.0
@@ -488,7 +503,8 @@ def poll(now: float | None = None) -> dict:
             continue
         pr = pulse_reading(name)
         if pr and now - _basis_time(pr) <= PULSE_FRESH:
-            got[name] = dict(pr, ts=iso(now), why="; ".join(why[name]))
+            got[name] = dict(pr, ts=iso(now), why="; ".join(why[name]),
+                             other_weeks=carry_model_weeks(prev.get(name), now))
             continue
         basis = max((prev.get(name), pr), key=_basis_time)
         got[name] = carry(name, basis, now, "; ".join(why[name]))
@@ -536,7 +552,45 @@ def derive_record(r: dict, now: float) -> dict:
         reset_passed = rs is not None and rs <= now
         d[f"{k}_pct_left"] = None if used is None or reset_passed else round(100 - used, 1)
         d[f"hours_to_{k}_reset"] = None if rs is None or reset_passed else round((rs - now) / 3600, 2)
+    # every per-model weekly limit /usage shows beside the all-models one ("Current week (Fable)"), as LEFT: a scope
+    # whose window has reset since the reading is None (unknown now), never 100 and never 0
+    d["model_weeks"] = {}
+    for scope, w in sorted((r.get("other_weeks") or {}).items()):
+        used, rs = (w or {}).get("pct_used"), epoch((w or {}).get("resets_at"))
+        gone = rs is not None and rs <= now
+        d["model_weeks"][scope] = {"pct_left": None if used is None or gone else round(100 - used, 1),
+                                   "hours_to_reset": None if rs is None or gone else round((rs - now) / 3600, 2),
+                                   "resets_at": (w or {}).get("resets_at"), "carried_from": (w or {}).get("carried_from")}
     return d
+
+
+def scope_for(model, scopes) -> str | None:
+    """The per-model weekly limit a run of `model` also spends, or None. A scope is named by /usage ("Fable",
+    "Opus", "Sonnet only"); its first word matched as a word inside the model alias or id ("fable",
+    "claude-fable-5-2", "Fable 5.2") is the match. No model -> None (only the all-models limit applies)."""
+    if not isinstance(model, str) or not model.strip():
+        return None
+    words = set(re.split(r"[^a-z0-9]+", model.lower()))
+    for scope in scopes or ():
+        head = (scope.split() or [""])[0].lower()
+        if head and head != "all" and head in words:
+            return scope
+    return None
+
+
+def week_left_for(d: dict, model=None) -> tuple[float | None, str, float | None]:
+    """The level of one account for a run of `model`: the LOWEST of the all-models weekly limit and that model's
+    own weekly limit, as (pct_left, limit_name, hours_to_that_limit's_reset). d is a derive_record() row.
+    The all-models figure unknown -> (None, "all models", None): a per-model figure alone never makes a level.
+    The model's own scope absent or unknown now (its window reset since the reading) -> the all-models figure."""
+    left, h = d.get("week_pct_left"), d.get("hours_to_week_reset")
+    if left is None:
+        return None, "all models", None
+    scope = scope_for(model, (d.get("model_weeks") or {}).keys())
+    m = (d.get("model_weeks") or {}).get(scope) or {}
+    if scope and m.get("pct_left") is not None and m["pct_left"] < left:
+        return m["pct_left"], scope, m.get("hours_to_reset")
+    return left, "all models", h
 
 
 # ------------------------------------------------------------------ timer
@@ -578,7 +632,13 @@ def _fmt(d: dict) -> str:
     def f(k):
         p, h = d.get(f"{k}_pct_left"), d.get(f"hours_to_{k}_reset")
         return "?" if p is None else f"{p:g}% left" + ("" if h is None else f", resets in {h:.1f} h")
-    return (f"{d['account']:<8} {d['source']:<10} week {f('week'):<28} session {f('session'):<28} "
+    def mw(scope, w):
+        p, h = w.get("pct_left"), w.get("hours_to_reset")
+        return f" · {scope} week " + ("? (window reset since the reading)" if p is None else
+                                f"{p:g}% left" + ("" if h is None else f", resets in {h:.1f} h")
+                                + (f" (read {w['carried_from']})" if w.get("carried_from") else ""))
+    models = "".join(mw(s, w) for s, w in (d.get("model_weeks") or {}).items())
+    return (f"{d['account']:<8} {d['source']:<10} week {f('week'):<28}{models} session {f('session'):<28} "
             f"{'STALE ' if d['stale'] else ''}measured {d.get('measured_at') or 'never'} ({d.get('machine') or '-'})")
 
 

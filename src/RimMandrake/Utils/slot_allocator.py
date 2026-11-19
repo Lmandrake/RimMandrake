@@ -668,7 +668,11 @@ def _ops(inp, rules, total, why):
     return total, adv
 
 
-def gather(now=None, rules=None):
+def gather(now=None, rules=None, model=None):
+    """model = the model the helpers being allocated run (alias or id), or None: the account's level is then the LOWER
+    of its all-models weekly limit and that model's own (account_usage.week_left_for; `week_limit` names which).
+    None reads the all-models limit only, as before. Every per-model limit is carried as LEFT in `model_weeks_left`."""
+    import account_usage as AU
     now = now or time.time()
     rules = rules or load_rules()
     root = projects_dir()
@@ -688,12 +692,21 @@ def gather(now=None, rules=None):
                        hours_to_week_reset=a.get("hours_to_week_reset"), week_resets_at=a.get("week_resets_at"),
                        session_pct_used=a.get("session_pct_used") if a.get("session_pct_left") is not None else None,
                        measured_at=a.get("measured_at"))
+            inp["model_weeks_left"] = {k: w.get("pct_left") for k, w in (a.get("model_weeks") or {}).items()}
+            lv, lim, lh = AU.week_left_for(a, model)
+            inp["week_limit"] = lim
+            if lim != "all models":
+                inp.update(week_pct_left=lv, week_pct_used=round(100 - lv, 1), hours_to_week_reset=lh,
+                           week_resets_at=(a.get("model_weeks") or {})[lim].get("resets_at"))
         for name, o in meter.items():
             if (name == acc or o.get("week_pct_left") is None or o.get("stale")
                     or o.get("source") not in ("MEASURED", "ESTIMATE")):
                 continue  # a stale poll (account_usage keeps source MEASURED, flags stale) offers nothing
-            inp["spare"].append({"account": name, "pct_left": o["week_pct_left"], "pct_used": o.get("week_pct_used"),
-                                 "hours_to_reset": o.get("hours_to_week_reset"), "resets_at": o.get("week_resets_at"),
+            ol, olim, oh = AU.week_left_for(o, model)
+            inp["spare"].append({"account": name, "pct_left": ol, "pct_used": round(100 - ol, 1) if olim != "all models"
+                                 else o.get("week_pct_used"), "limit": olim,
+                                 "hours_to_reset": oh, "resets_at": o.get("week_resets_at") if olim == "all models"
+                                 else (o.get("model_weeks") or {})[olim].get("resets_at"),
                                  "source": o.get("source")})
     except Exception as e:  # noqa: BLE001
         inp["meter_error"] = f"{type(e).__name__}: {e}"
@@ -1145,7 +1158,9 @@ def _decide_core(inp, state, rules, now, advisory=False):
     else:
         mode, pending, since = _token(inp, state, rules, now, P)
         h = inp["hours_to_week_reset"]
-        why.append(f"{inp['account']} {inp['week_pct_left']:.0f}% left, {h / 24:.2f} d to reset -> P {P:.2f}"
+        lim = inp.get("week_limit")
+        of = f" of its {lim} limit" if lim not in (None, "all models") else ""
+        why.append(f"{inp['account']} {inp['week_pct_left']:.0f}% left{of}, {h / 24:.2f} d to reset -> P {P:.2f}"
                    + (" (ESTIMATE)" if inp.get("source") == "ESTIMATE" else ""))
         if pending:
             why.append(f"{pending['to']} line crossed {(now - pending['since']) / 60:.0f} min ago, needs {tk['cross_hold_h']} h")
@@ -1370,10 +1385,10 @@ def line(dec):
             + (f", {seats}" if seats else "") + f" (total {dec['n_total']}) | {dec['why']}")
 
 
-def compute(now=None, rules=None, seat="BENCH"):
+def compute(now=None, rules=None, seat="BENCH", model=None):
     now = now or time.time()
     rules = rules or load_rules()
-    inp = gather(now, rules)
+    inp = gather(now, rules, model)
     inp["seat"] = seat
     prev = read_json(streams_dir() / "allocation.json") or {}
     return decide(inp, prev.get("state") or {}, rules, now)
@@ -1442,6 +1457,8 @@ def main(argv=None):
     n.add_argument("--json", action="store_true")
     n.add_argument("--write", action="store_true")
     n.add_argument("--seat", default=os.environ.get("AGENT_SEAT") or "BENCH")
+    n.add_argument("--model", help="the helpers' model: the level is the lower of all-models and its own weekly "
+                   "limit (read-only: never with --write, which publishes the all-models allocation)")
     s = sub.add_parser("set")
     s.add_argument("--n", type=int)
     s.add_argument("--seat")
@@ -1468,7 +1485,10 @@ def main(argv=None):
         print(why, file=sys.stdout if ok else sys.stderr)
         return 0 if ok else 2
     if a.cmd == "now":
-        dec = publish(seat=seat_key(a.seat)) if a.write else compute(seat=seat_key(a.seat))
+        if a.write and a.model:
+            print("refused: --model is read-only; allocation.json is the all-models allocation", file=sys.stderr)
+            return 2
+        dec = publish(seat=seat_key(a.seat)) if a.write else compute(seat=seat_key(a.seat), model=a.model)
         print(json.dumps(dec, indent=1, sort_keys=True, default=str) if a.json else line(dec))
         return 0
     if a.cmd == "clear":
