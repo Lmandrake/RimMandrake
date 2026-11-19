@@ -1,0 +1,8 @@
+Row and source check by the second reader over the rewrite_choices.md pages of RIMMANDRAKE_RECHECK_SLEEPINGICE_TO_THEROT_CHOICES, run 2026-11-18 (offline; documents only, no game).
+Script: design/RimMandrake/biome_recheck_row_check_2026-11-18.py <page>. What it checks: every table row under 'Every idea, row by row' has five cells and a non-empty outcome; every source name defined in the 'Source names' paragraph appears in some row's source cell; an invented source name is reported missing (the probe that shows the check can see absence). It counts rows by the first word of the outcome cell and counts the rows under 'Added by the second reader'.
+What it does not check: that every idea in every source has a row. That is the reading itself; each page's 'Second reader' section says which files were read to the end, which in part, and which were not opened.
+
+design/concepts/SleepingIce/rewrite_choices.md
+   {'rows': 226, 'added': 84, 'first': 142, 'counts': {'kept': 164, 'lost': 32, 'moved': 19, 'reshaped': 9, 'folded': 1, 'other': 1}, 'partial_moves': 2, 'bad': [], 'empty': [], 'names': 24, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 33}
+   VERDICT: PASS
+exit status: 0
