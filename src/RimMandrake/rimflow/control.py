@@ -1064,6 +1064,123 @@ def cmd_queue(o):
                                  "changed by the next one)"]
 
 
+# ---------------------------------------------------------------- slice 4: forecast, export, containment permit
+# Item RIMMANDRAKE_FORECAST_ON_SHARED_PLANNER_DROPIN_MIRROR_DEADMAN.
+
+DISPATCH_ROOT = "/home/mandrake/rm/dispatch"     # rm-maturation-dispatch.service's tree: `pipe next` runs ITS code
+PERMIT_NAME = "permit"
+DROPIN_NAME = "50-rm-control-permit.conf"
+
+
+def forecast_cmd(within="30m"):
+    """-> (the tree named, argv): `maturation_dispatch.py next --within W` from the tree the live tick runs (its own
+    decide/prioritise/admit, dry, on a moving clock: critique 19's limit, an agent's result is not forecast), else
+    this tree, said so."""
+    w = str(within or "30m").strip()
+    if not (w[:-1] if w[-1:] in "smhd" else w).isdigit():
+        raise Refused("pipe next takes a window like 30m, 2h, 1d, got %r" % within)
+    own = os.path.join(DISPATCH_ROOT, "src", "RimMandrake", "rimflow", "maturation_dispatch.py")
+    py = "/usr/bin/python3" if os.path.exists("/usr/bin/python3") else sys.executable
+    if os.path.isfile(own):
+        return "%s (the live tick's tree)" % DISPATCH_ROOT, [py, own, "next", "--within", w]
+    return "%s (this tree: the tick's tree has no maturation_dispatch.py)" % REPO, [
+        py, os.path.join(HERE, "maturation_dispatch.py"), "next", "--within", w]
+
+
+def forecast(within="30m", runner=subprocess.run):
+    """`pipe next [30m]` -> (rc, lines): the dispatch tree's own forecast, headed by the tree and its HEAD."""
+    tree, argv = forecast_cmd(within)
+    root = tree.split(" ", 1)[0]
+    try:
+        h = runner(["git", "-C", root, "rev-parse", "--short", "HEAD"], capture_output=True, text=True, timeout=10)
+        head = h.stdout.strip() if h.returncode == 0 else "HEAD UNMEASURED (git exit %d)" % h.returncode
+        r = runner(argv, capture_output=True, text=True, timeout=300)
+    except (OSError, subprocess.SubprocessError) as e:
+        return FAILED, ["pipe next: the forecast could not run (%s: %s)" % (type(e).__name__, e)]
+    lines = ["forecast by %s at %s" % (tree, head)] + (r.stdout or "").rstrip("\n").splitlines()
+    if r.returncode:
+        lines.append("pipe next: the forecast exited %d: %s" % (r.returncode, (r.stderr or "").strip()[-200:]))
+    return (OK if r.returncode == 0 else FAILED), lines
+
+
+def export_acts(path, p=None):
+    """Write every act, in revision order, as one JSON line each to `path` (replaced whole, atomically): the store's
+    audit as a file a belt can commit. -> count."""
+    rows = _q("SELECT * FROM acts ORDER BY rev", (), p)
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+    tmp = "%s.tmp.%d" % (path, os.getpid())
+    with open(tmp, "w", encoding="utf-8") as f:
+        for r in rows:
+            f.write(json.dumps(r, sort_keys=True, ensure_ascii=False) + "\n")
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, path)
+    return len(rows)
+
+
+def permit_path(p=None):
+    return os.path.join(os.path.dirname(os.path.abspath(p or db_path())), PERMIT_NAME)
+
+
+def permit_sync(permit=None, p=None, now=None):
+    """The containment permit: present while the store reads and no live `all` switch blocks; removed otherwise (an
+    unreadable store is closed). -> line."""
+    permit = permit or permit_path(p)
+    now = time.time() if now is None else now
+    try:
+        c = read(p)
+        try:
+            rows = blocking(c, ["all"], now)
+            r = rev(c)
+        finally:
+            c.close()
+        why = describe(rows[0]) if rows else None
+    except (Unreadable, sqlite3.Error) as e:
+        why, r = "CONTROL UNREADABLE: %s" % e, None
+    if why:
+        try:
+            os.unlink(permit)
+        except FileNotFoundError:
+            pass
+        return "permit removed (%s): %s" % (permit, why)
+    os.makedirs(os.path.dirname(permit), exist_ok=True)
+    with open(permit + ".tmp", "w", encoding="utf-8") as f:
+        f.write("rev %s at %s\n" % (r, pac(now)))
+    os.replace(permit + ".tmp", permit)
+    return "permit written (%s, rev %s)" % (permit, r)
+
+
+def dropin_text(permit):
+    return ("# rm-control containment (control.py, slice 4): a unit of this prefix starts only while the control\n"
+            "# store's permit exists (permit_sync; `pipe off all` or an unreadable store removes it).\n"
+            "[Unit]\nConditionPathExists=%s\n" % permit)
+
+
+def install_dropin(prefix, permit, root=None):
+    """Write <prefix>.service.d/50-rm-control-permit.conf and daemon-reload. -> the directory. The live prefixes
+    (rm-detached-, rm-role-) are the Conductor's to install; a test uses a private rm-probe- prefix."""
+    root = root or os.path.join(os.path.expanduser("~"), ".config", "systemd", "user")
+    d = os.path.join(root, prefix + ".service.d")
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, DROPIN_NAME), "w", encoding="utf-8") as f:
+        f.write(dropin_text(permit))
+    rc, out = _systemctl(["daemon-reload"], 30)
+    if rc:
+        raise RuntimeError("daemon-reload failed (rc %d): %s" % (rc, out.strip()[:120]))
+    return d
+
+
+def remove_dropin(prefix, root=None):
+    root = root or os.path.join(os.path.expanduser("~"), ".config", "systemd", "user")
+    d = os.path.join(root, prefix + ".service.d")
+    try:
+        os.unlink(os.path.join(d, DROPIN_NAME))
+        os.rmdir(d)
+    except FileNotFoundError:
+        pass
+    _systemctl(["daemon-reload"], 30)
+
+
 def fmt_acct(a):
     return "available %d = %d base + %d granted - %d charged - %d held%s" % (
         a["available"], a["base"], a["granted"], a["charged"], a["held"],
@@ -2575,6 +2692,11 @@ def main(argv=None):
     p.add_argument("mod")
     p.add_argument("resource")
     p.add_argument("n")
+    p = sub.add_parser("next")
+    p.add_argument("within", nargs="?", default="30m")
+    p = sub.add_parser("export")
+    p.add_argument("--to", default=os.path.join(REPO, "infrastructure", "state", "control", "acts.jsonl"))
+    sub.add_parser("permit")
     p = sub.add_parser("queue")
     p.add_argument("op", nargs="?", choices=("list",) + QUEUE_OPS)
     p.add_argument("mod", nargs="?")
@@ -2628,6 +2750,8 @@ def main(argv=None):
             code, lines = doctor()
         elif o.verb in ("on", "off"):
             lines = cmd_switch(o, o.verb == "off")
+            if o.target == "all" and len(lines) > 1:    # the containment permit follows the all-switch at once
+                lines[1] += "; " + permit_sync()
         elif o.verb == "stop":
             code, lines = cmd_stop(o)
         elif o.verb == "show":
@@ -2642,6 +2766,12 @@ def main(argv=None):
             lines = cmd_grant(o)
         elif o.verb == "queue":
             lines = cmd_queue(o)
+        elif o.verb == "next":
+            code, lines = forecast(o.within)
+        elif o.verb == "export":
+            lines = ["%d act(s) exported to %s" % (export_acts(o.to), o.to)]
+        elif o.verb == "permit":
+            lines = [permit_sync()]
     except Refused as e:
         print("pipe: REFUSED: %s" % e)
         return REFUSED

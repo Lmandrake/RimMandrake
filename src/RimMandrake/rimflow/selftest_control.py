@@ -1612,11 +1612,70 @@ def t_review_round_four_p1():
           (code, lines))
 
 
+def t_slice4():
+    """Slice 4 (RIMMANDRAKE_FORECAST_ON_SHARED_PLANNER_DROPIN_MIRROR_DEADMAN): `pipe next` runs the dispatch tree's own
+    forecast; export_acts writes the store's acts as JSONL; a prefix drop-in gates a unit on the store-written permit
+    (proved on a private rm-probe- prefix only: the live prefixes' install is the Conductor's, UNRUN here)."""
+    fresh()
+    C.switch("mod:Graffiti", True, "slice 4 export")
+    out = os.path.join(TMP, "export", "acts.jsonl")
+    n = C.export_acts(out)
+    with open(out) as f:
+        rows = [json.loads(x) for x in f]
+    check(n == 1 and rows[0]["kind"] == "off" and rows[0]["scope"] == "mod:Graffiti",
+          "export_acts writes every act as one JSON line", (n, rows))
+    check(C.export_acts(out) == 1, "a second export rewrites the same file, no duplicates")
+    tree, argv = C.forecast_cmd("30m")
+    check(argv[-3:] == ["next", "--within", "30m"] and os.path.isfile(argv[1]) and tree,
+          "pipe next runs maturation_dispatch next from the dispatch tree (or this one, named)", (tree, argv))
+    try:
+        C.forecast_cmd("soon")
+        got = "accepted"
+    except C.Refused:
+        got = "refused"
+    check(got == "refused", "pipe next refuses a window it cannot read", got)
+    permit = os.path.join(TMP, "permit")
+    txt = C.dropin_text(permit)
+    check("ConditionPathExists=%s" % permit in txt and "[Unit]" in txt, "the drop-in gates on the permit file", txt)
+    fresh()
+    C.permit_sync(permit)
+    check(os.path.exists(permit), "permit_sync writes the permit while nothing blocks all")
+    C.switch("all", True, "slice 4 all off")
+    C.permit_sync(permit)
+    check(not os.path.exists(permit), "pipe off all removes the permit")
+    C.switch("all", False, "slice 4 on")
+    C.permit_sync(permit, p=os.path.join(TMP, "absent-permit.db"))
+    check(not os.path.exists(permit), "an unreadable store leaves no permit (closed)")
+    if not systemd_ok():
+        UNRUN.append("slice 4 drop-in on a real probe unit: no user systemd here")
+        return
+    prefix = "rm-probe-r4dropin%d-" % os.getpid()
+    unit = prefix + "x"
+    marker = os.path.join(TMP, "dropin.ran")
+    d = C.install_dropin(prefix, permit)
+    try:
+        r1 = subprocess.run(["systemd-run", "--user", "--quiet", "--collect", "--unit", unit, "/usr/bin/touch", marker],
+                            capture_output=True, text=True, timeout=30)
+        wait_for(lambda: unit_state(unit) in ("inactive", "failed", ""), 10)
+        ran_closed = os.path.exists(marker)
+        C.permit_sync(permit)
+        r2 = subprocess.run(["systemd-run", "--user", "--quiet", "--collect", "--unit", unit + "2", "/usr/bin/touch",
+                             marker], capture_output=True, text=True, timeout=30)
+        wait_for(lambda: os.path.exists(marker), 10)
+        ran_open = os.path.exists(marker)
+    finally:
+        C.remove_dropin(prefix)
+    check(r1.returncode == 0 and not ran_closed and ran_open and not os.path.isdir(d),
+          "a probe-prefix unit is skipped with no permit and runs with one; the drop-in is removed after",
+          (r1.returncode, r1.stderr[-200:], ran_closed, ran_open, os.path.isdir(d)))
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
               t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three,
-              t_accounts, t_queue, t_review_round_four_p1):
+              t_accounts, t_queue, t_review_round_four_p1,
+              t_slice4):
         print("== %s" % t.__name__)
         try:
             t()
