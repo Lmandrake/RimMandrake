@@ -53,12 +53,14 @@ def run(tmp, *args, **over):
 
 
 def lines(tmp):
+    """The temp ledger's events. Only the files the ledger is made of (model.ledger_files): the ticket preflight logs
+    preflight_runs.jsonl beside it, and its rows are not events (RIMMANDRAKE_SCOPE_SELFTEST_LEDGER_READS_PREFLIGHT_LOG_
+    TRIPS; here RIMMANDRAKE_FIX_ROLE_UNIT_STAMP_SELFTEST_RED_ON_MAIN)."""
+    import model  # noqa: E402
     out = []
-    for dp, _, fs in os.walk(tmp):
-        for f in sorted(fs):
-            if f.endswith(".jsonl"):
-                with open(os.path.join(dp, f), encoding="utf-8") as fh:
-                    out += [json.loads(l) for l in fh if l.strip()]
+    for p in model.ledger_files(os.path.join(tmp, "events.jsonl")):
+        with open(p, encoding="utf-8") as fh:
+            out += [json.loads(l) for l in fh if l.strip()]
     return out
 
 
@@ -67,8 +69,13 @@ def last_for(tmp, iid):
     return evs[-1] if evs else None
 
 
+# Per-write stamps: the clock (ts/tsn) and the ticket preflight's own run id and duration, which differ on every
+# write whatever RM_ROLE_UNIT holds.
+PER_WRITE = ("ts", "tsn", "id", "title", "preflight_ms", "preflight_run")
+
+
 def strip_time(ev):
-    return {k: v for k, v in ev.items() if k not in ("ts", "tsn", "id", "title")}
+    return {k: v for k, v in ev.items() if k not in PER_WRITE}
 
 
 def main():
