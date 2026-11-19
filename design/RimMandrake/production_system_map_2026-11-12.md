@@ -158,7 +158,7 @@ Around the ladder sit checks that do not belong to any one item:
 | Test queue job | Runs a live proof with no AI in the loop | A "verify" event on the item, written by the RUNNER | 836 done |
 | Art evaluation | That a sprite is good enough to show him | Accept, regenerate, or escalate; then a review sheet | 347 runs on record; `art` + `art_eval` + `artpipe` are 86k lines |
 | The owner's look | That it is right | The only L4 | 68 waiting |
-| Dead-man check | That a thing promised "running" is still running | Reopens the item and rings his phone | every 15 minutes |
+| Dead-man check | That a thing promised "running" is still running | Reopens the item (its phone route, a Todoist task, never rang and is retired since 2026-11-19) | every 15 minutes |
 | Ledger and queue lint | That the work record is well-formed | Refuses the commit | hooks |
 
 **Where the proofs stand today.** The Conductor audited four mods this morning, asking of every bar, tree leaf

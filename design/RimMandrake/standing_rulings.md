@@ -1150,3 +1150,20 @@ Reset as a mod deliverable."*
   terrain a mod corrupts) is still a mod finding, since that is play, not test reset.
 - **Owed:** the harness saves before and reloads after each scene where it does not yet
   (`RIMMANDRAKE_SAVE_RELOAD_AROUND_EVERY_TEST_SCENE`).
+
+## Todoist is for to-do lists only, never an alert route — owner, 2026-11-19
+
+*"So Todoist is officially retired as any kind of alert: it just doesn't work in a timely manner. It's really only to
+maintain to do lists, as it says."* (typed into a card, 2026-11-19 6:10 AM PST). To "May we close our own old alarm
+tasks there?" he picked **"Close them, and stop posting"** (*"Why: fix the source too. We close ours and switch the three
+senders off until the new alerts are built. Cost: until then no alarm reaches the phone at all, not even as a silent
+task."*).
+- No program, hook, unit or agent posts an alarm, alert, page or "ring his phone" message as a Todoist task. The
+  Todoist posts of `ops_core/phone_push.py` (deadman_check, login_watch, switching_plan) and `windows/heartbeat.ps1` are
+  off by default: `RM_TODOIST_ALARM_POSTS=1` / `-TodoistAlarmPosts` is the switch, and nothing sets it.
+- Until the new alert route is built, **no alarm reaches his phone**; each alarm still goes to its own log, alarms
+  file and ledger. Which route replaces it is his open choice on `RIMMASTER_DESIGN_PHONE_ALERTS_THAT_ACTUALLY_RING`,
+  with the Todoist backup rung struck from every option.
+- The 173 alarm tasks our senders had left open in the Inbox he shares with Steve were completed 2026-11-19
+  (`D:\ClaudeWork\rimmandrake\conductor\todoist_alarm_tasks_closed_20261119.md`). To-do lists synced into Todoist
+  (Lodestar Burning, Hestia) are unaffected.
