@@ -1,0 +1,7 @@
+Row and source check over rewrite_choices.md pages re-read by RIMMANDRAKE_RECHECK_BLUEDESERT_TO_SLIME_CHOICES, run 2026-11-18 (offline; documents only, no game).
+What it checks: every table row under "Every idea, row by row" has five cells and a non-empty outcome; every source name defined in the page's "Source names" paragraph appears in at least one row's source column; every path in the second reader's read-whole list exists; with the probe, a made-up source name is reported as missing (showing the check can see absence).
+What it does not check: that every idea in every source has a row, or that a listed file was in fact read to its end; the page states which sources were read in part and which not at all.
+
+design/concepts/BlueDesert/rewrite_choices.md: rows=250 second_reader_rows=112 lost=34 moved=15 (any move: 15) reshaped=8 folded=2 kept=191 other=0 named_sources=16 sources_with_no_row=none malformed_rows=0 read_whole_by_second_reader=31 listed_paths_missing=none
+exit status: 0
+probe (an invented source name must be reported): seen
