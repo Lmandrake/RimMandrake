@@ -39,6 +39,14 @@ SKILL_IN_CMD_RE = re.compile(r"skills/([\w.-]+)/SKILL\.md")
 
 def unwired(name):
     """True if `skills/<name>` exists but nothing in .claude/skills reaches it."""
+    # Listed in skills/README.md "Not registered (read by path)" = unwired on purpose.
+    try:
+        rd = open(os.path.join(ROOT, "skills", "README.md"), encoding="utf-8").read()
+        m = re.search(r"^## Not registered \(read by path\)\s*$(.*?)(?=^## |\Z)", rd, re.S | re.M)
+        if m and re.search(r"^\|\s*`%s`\s*\|" % re.escape(name), m.group(1), re.M):
+            return False
+    except OSError:
+        pass
     link = os.path.join(ROOT, ".claude", "skills", name)
     # `os.path.exists` follows the link, so a DANGLING symlink reports missing too —
     # which is right: a broken link is exactly as invisible as no link.

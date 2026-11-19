@@ -450,7 +450,7 @@ unnecessarily and rarely inform"*).
 
 ## Skills
 
-Roster: `skills/README.md`. Most reached for: `rimworld-modding` · `rimworld-deploy`
+Roster: `skills/README.md`; dormant skills are not registered (read by path: its "Not registered" table). Most reached for: `rimworld-modding` · `rimworld-deploy`
 · `rimworld-load-round` · `rimbridge` · `efficient-subagents` ·
 `generating-rimworld-sprites`. Lessons go to `infrastructure/state/lessons/` (one file each:
 `python3 src/RimMandrake/Utils/lessons.py add "…"`); skills are edited only in fresh-context

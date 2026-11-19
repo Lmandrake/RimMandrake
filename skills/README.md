@@ -20,8 +20,8 @@ resolves inside the checkout and dangles the moment the skill is not there.
 ✅ **Enforced since 2026-08-22**: `.claude/hooks/warn_skill_unwired.py` warns (never
 blocks) when a `SKILL.md` is written or committed with no working symlink, and hands over
 that exact command. ⚠️ A **dangling** symlink is as invisible as none, and the hook treats
-it the same. `python3 skills/validate_skills.py` re-measures the set (2026-10-11: 35 skill
-dirs; 34 wired into this repo plus `review-sheets` linked in from outside it).
+it the same. A skill listed in the "Not registered (read by path)" table below is unwired on purpose
+(the hook stays quiet for it). `python3 skills/validate_skills.py` re-measures the set.
 
 ## Editing a skill
 
@@ -93,3 +93,34 @@ and push there — a queue item here never reaches it.
 | `telemetry` | Query recorded history before re-measuring anything about the game, a live test, the bridge, host memory, disks or the art… |
 | `using-rimflow` | Use before ANY rimflow / src/RimMandrake/rimflow/cli.py call — file, claim, start, close, drop, supersede, note, next, seat… |
 <!-- doc_roster:END -->
+
+## Not registered (read by path)
+
+Owner, 2026-11-19: *"most of the time I invoke things quite manually in my text when I want a skill (hence they don't need to be registered... it knows where to look already)"*. Each skill below is never-invoked in 30 days, so its `description` is not loaded into every session; the folder stays. **Read its SKILL.md by path when you are about to do what the line says.** Undo for one: the command in the last column.
+
+| skill | SKILL.md | read it when | undo |
+|---|---|---|---|
+| `editing-images` | `D:\Luke\dev\RimMandrake\skills\editing-images\SKILL.md` | editing an existing image with Codex $imagegen and checking what changed | `ln -s ../../skills/editing-images .claude/skills/editing-images` |
+| `generating-images` | `D:\Luke\dev\RimMandrake\skills\generating-images\SKILL.md` | making a new raster image or transparent PNG with Codex $imagegen | `ln -s ../../skills/generating-images .claude/skills/generating-images` |
+| `gravship-layout` | `D:\Luke\dev\RimMandrake\skills\gravship-layout\SKILL.md` | writing, saving, loading or inspecting a gravship layout (ShipLayoutDefV2) as XML | `ln -s ../../skills/gravship-layout .claude/skills/gravship-layout` |
+| `reading-rimworld-graphics` | `D:\Luke\dev\RimMandrake\skills\reading-rimworld-graphics\SKILL.md` | finding or extracting a RimWorld texture on disk or in an AssetBundle | `ln -s ../../skills/reading-rimworld-graphics .claude/skills/reading-rimworld-graphics` |
+| `review-sheets` | `D:\Luke\dev\MandrakeWorkflows\skills\review-sheets\SKILL.md` | building an HTML sheet where a human keeps, cuts or ranks many items | `ln -s /mnt/d/Luke/dev/MandrakeWorkflows/skills/review-sheets .claude/skills/review-sheets` |
+| `rimworld-art-evaluation` | `D:\Luke\dev\RimMandrake\skills\rimworld-art-evaluation\SKILL.md` | judging game art or a regen before it reaches the owner | `ln -s ../../skills/rimworld-art-evaluation .claude/skills/rimworld-art-evaluation` |
+| `rimworld-canon-references` | `D:\Luke\dev\RimMandrake\skills\rimworld-canon-references\SKILL.md` | grading Star Wars creature, species or droid work against the canon library | `ln -s ../../skills/rimworld-canon-references .claude/skills/rimworld-canon-references` |
+| `rimworld-content-moderation` | `D:\Luke\dev\RimMandrake\skills\rimworld-content-moderation\SKILL.md` | deciding which content from a large mod stack stays in the campaign | `ln -s ../../skills/rimworld-content-moderation .claude/skills/rimworld-content-moderation` |
+| `rimworld-crew-and-nemesis-events` | `D:\Luke\dev\RimMandrake\skills\rimworld-crew-and-nemesis-events\SKILL.md` | designing events about who joins, is taken or returns to a fixed crew | `ln -s ../../skills/rimworld-crew-and-nemesis-events .claude/skills/rimworld-crew-and-nemesis-events` |
+| `rimworld-custom-incidents` | `D:\Luke\dev\RimMandrake\skills\rimworld-custom-incidents\SKILL.md` | building an IncidentDef, IncidentWorker or storyteller pacing | `ln -s ../../skills/rimworld-custom-incidents .claude/skills/rimworld-custom-incidents` |
+| `rimworld-debug-testing` | `D:\Luke\dev\RimMandrake\skills\rimworld-debug-testing\SKILL.md` | testing through a throwaway quicktest colony instead of a cold load | `ln -s ../../skills/rimworld-debug-testing .claude/skills/rimworld-debug-testing` |
+| `rimworld-ideoligion` | `D:\Luke\dev\RimMandrake\skills\rimworld-ideoligion\SKILL.md` | designing or authoring ideoligions (IdeoPresetDef, FactionDef ideo block) | `ln -s ../../skills/rimworld-ideoligion .claude/skills/rimworld-ideoligion` |
+| `rimworld-layout-layers` | `D:\Luke\dev\RimMandrake\skills\rimworld-layout-layers\SKILL.md` | assessing a structure by power, pipe, roof and floor layers | `ln -s ../../skills/rimworld-layout-layers .claude/skills/rimworld-layout-layers` |
+| `rimworld-modding` | `D:\Luke\dev\RimMandrake\skills\rimworld-modding\SKILL.md` | authoring, patching or debugging any mod Def, XML patch, C# or Harmony, or reading Player.log | `ln -s ../../skills/rimworld-modding .claude/skills/rimworld-modding` |
+| `rimworld-quests` | `D:\Luke\dev\RimMandrake\skills\rimworld-quests\SKILL.md` | designing or debugging a QuestScriptDef | `ln -s ../../skills/rimworld-quests .claude/skills/rimworld-quests` |
+| `rimworld-savegame` | `D:\Luke\dev\RimMandrake\skills\rimworld-savegame\SKILL.md` | reading, grepping or editing a .rws savegame | `ln -s ../../skills/rimworld-savegame .claude/skills/rimworld-savegame` |
+| `rimworld-scenario-building` | `D:\Luke\dev\RimMandrake\skills\rimworld-scenario-building\SKILL.md` | authoring a scenario, game-creation settings or storyteller | `ln -s ../../skills/rimworld-scenario-building .claude/skills/rimworld-scenario-building` |
+| `rimworld-scene-composition` | `D:\Luke\dev\RimMandrake\skills\rimworld-scene-composition\SKILL.md` | making a scattered site (ruin, camp, wreck) read as one authored place | `ln -s ../../skills/rimworld-scene-composition .claude/skills/rimworld-scene-composition` |
+| `rimworld-sprite-facings` | `D:\Luke\dev\RimMandrake\skills\rimworld-sprite-facings\SKILL.md` | any north/south/east/west facing, mirror or flip-book question on sprites | `ln -s ../../skills/rimworld-sprite-facings .claude/skills/rimworld-sprite-facings` |
+| `rimworld-start-prep` | `D:\Luke\dev\RimMandrake\skills\rimworld-start-prep\SKILL.md` | getting the mod list and load order right before RimWorld launches | `ln -s ../../skills/rimworld-start-prep .claude/skills/rimworld-start-prep` |
+| `rimworld-world-editing` | `D:\Luke\dev\RimMandrake\skills\rimworld-world-editing\SKILL.md` | editing the planet (tiles, biomes, rivers, roads, landmarks) from the bridge | `ln -s ../../skills/rimworld-world-editing .claude/skills/rimworld-world-editing` |
+| `rimworld-xenotypes` | `D:\Luke\dev\RimMandrake\skills\rimworld-xenotypes\SKILL.md` | authoring, spawning or debugging xenotypes and genes | `ln -s ../../skills/rimworld-xenotypes .claude/skills/rimworld-xenotypes` |
+| `northstar-validation` | `D:\Luke\dev\RimMandrake\skills\northstar-validation\SKILL.md` | running a mod's north-star suites live without the harness eating the sitting (was never linked) | `ln -s ../../skills/northstar-validation .claude/skills/northstar-validation` |
+| `telemetry` | `D:\Luke\dev\RimMandrake\skills\telemetry\SKILL.md` | querying recorded history before re-measuring the game, bridge, disks or art pipeline | `ln -s ../../skills/telemetry .claude/skills/telemetry` |

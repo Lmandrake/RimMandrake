@@ -85,7 +85,7 @@ One verdict is not a pattern. Tuning to one key is how a judge learns a single s
 - A ✕ is delete and ban. A picture he kept is the owner's; a live slot of ours is not a defect because a judge dislikes it.
 - Never live-test a flyer's flight: flip-book stills only. Machines without an in-game capture are held, not judged.
 - Every DLC is assumed; no worldgen of any kind.
-- The subagent budget in `.claude/skills/rimworld-art-evaluation/references/subagent_budget.md` binds you. Probe quota before
+- The subagent budget in `skills/rimworld-art-evaluation/references/subagent_budget.md` binds you. Probe quota before
   judge-heavy work; a 429 is never a verdict. Never name a GenAI account, host or key.
 
 ## How you report
