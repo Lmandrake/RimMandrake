@@ -6,7 +6,10 @@ brief (roles/code_review.md) and the control store's page (design/specs/2026-11-
 boundary.md) and sorts the 35 claims of code_review_calibration_set.json (id and claim text only; the labels stay
 here) as problem, polish or next_version. It reads no code: the call runs `gpt_consult.py --lockdown` (no tools).
 A problem is a refusal (`got: refuse`), anything else a pass; one row per claim goes to $RM_CALIBRATION_RESULTS, and
-refusal_contract.judge_cases compares them with the labels.
+refusal_contract.judge_cases compares them with the labels. The labels are `page_rule` (owner card 2026-11-19
+13:27:48Z: a rare failure is "not handled", not a Problem), not the analyst's `expect`. The run also prints the pass
+mark on the 12 `agreed` claims (every agreed real one caught, at most one agreed polish called a problem; "always
+polish" scores 9 of 12) and the agreement on all 35, unscored.
 
 It spends one Codex call, so it runs only from `refusal_contract.py calibrate --model code_review`, never on a
 schedule. Owner card 2026-11-19 about 12:40 AM PST: "Codex sorts the 35 old complaints one time. It reviews no new
@@ -31,6 +34,7 @@ BRIEF = "src/RimMandrake/rimflow/roles/code_review.md"
 CONSULT = os.path.join(REPO, "src", "RimMandrake", "Utils", "gpt_consult.py")
 ANSWER_DIR = "/mnt/d/ClaudeWork/rimmandrake/conductor"
 CLASSES = ("problem", "polish", "next_version")
+CONSULT_S = 500   # the first call took 211 s [measured, gpt_call_log round code_review_calibration]; under the 540 s cap
 
 
 def load_set():
@@ -61,24 +65,43 @@ def parse(answer):
     return {str(r["id"]): r for r in rows if isinstance(r, dict) and r.get("id") and r.get("class") in CLASSES}
 
 
+def label(c):
+    """-> refuse | pass: the page rule's label (real = a Problem), else the analyst's."""
+    return {"real": "refuse", "not": "pass"}.get(c.get("page_rule"), c["expect"])
+
+
 def results(cal, parsed):
     """-> the case rows: a claim Codex did not sort gets no row (judge_cases reads it as did not run)."""
-    return [{"id": c["id"], "expect": c["expect"], "got": "refuse" if parsed[c["id"]]["class"] == "problem" else "pass",
+    return [{"id": c["id"], "expect": label(c), "got": "refuse" if parsed[c["id"]]["class"] == "problem" else "pass",
              "class": parsed[c["id"]]["class"], "page_entry": parsed[c["id"]].get("page_entry"),
              "why": parsed[c["id"]].get("why")} for c in cal["claims"] if c["id"] in parsed]
 
 
+def pass_mark(cal, rows):
+    """-> (passed, caught, real, false_alarms, polish, agree, sorted) on the `agreed` claims; an agreed claim not
+    sorted counts against the mark."""
+    got = {r["id"]: r["got"] for r in rows}
+    agreed = [c for c in cal["claims"] if c.get("agreed")]
+    real = [c["id"] for c in agreed if label(c) == "refuse"]
+    polish = [c["id"] for c in agreed if label(c) == "pass"]
+    caught = sum(got.get(i) == "refuse" for i in real)
+    false_alarms = sum(got.get(i) != "pass" for i in polish)
+    agree = sum(r["got"] == r["expect"] for r in rows)
+    return caught == len(real) and false_alarms <= 1, caught, len(real), false_alarms, len(polish), agree, len(rows)
+
+
 def run():
     cal = load_set()
-    out = os.path.join(ANSWER_DIR, "code_review_calibration_answer.md")
+    out = os.path.join(ANSWER_DIR, "code_review_calibration_answer_page_rule.md")
     with tempfile.TemporaryDirectory() as tmp:
         ask = os.path.join(tmp, "ask.md")
         with open(ask, "w", encoding="utf-8") as f:
             f.write(prompt(cal))
         cmd = [sys.executable, CONSULT, "--prompt-file", ask, "-f", BRIEF, "-f", cal["page"], "--out", out,
-               "--lockdown", "--round", "code_review_calibration", "--timeout", "1500",
-               "--required", "owner card 2026-11-19: run the Codex calibration of the code_review brief once"]
-        p = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True, timeout=1700)
+               "--lockdown", "--round", "code_review_calibration", "--timeout", str(CONSULT_S),
+               "--required", "owner card 2026-11-19 13:27:48Z: one more Codex calibration of the code_review brief, "
+                             "after the page rule"]
+        p = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True, timeout=CONSULT_S + 30)
     if p.returncode != 0:
         print("UNRUN: gpt_consult exit %d: %s" % (p.returncode, (p.stderr.strip().splitlines() or [""])[-1]))
         print("command: %s" % " ".join(cmd))
@@ -90,8 +113,10 @@ def run():
             json.dump({"cases": rows}, f, indent=1)
     for r in rows:
         print("%-6s expect %-6s got %-6s %-12s %s" % (r["id"], r["expect"], r["got"], r["class"], r["page_entry"]))
-    agree = sum(r["got"] == r["expect"] for r in rows)
+    ok, caught, real, fa, polish, agree, n = pass_mark(cal, rows)
     print("sorted %d of %d; %d as labelled; answer: %s" % (len(rows), len(cal["claims"]), agree, out))
+    print("pass mark %s: agreed real caught %d of %d (limit all); agreed polish called problem %d of %d (limit 1); "
+          "unscored: %d of %d as labelled" % ("PASS" if ok else "FAIL", caught, real, fa, polish, agree, n))
     return 0 if rows else 1
 
 

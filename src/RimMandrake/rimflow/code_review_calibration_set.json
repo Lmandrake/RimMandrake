@@ -1,5 +1,5 @@
 {
- "about": "The code_review family's calibration set (RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS): the 35 claims of Codex's control-store review rounds two to four, 2026-11-18, with one analyst's labels (about 70% sure). expect refuse = a Problem, pass = polish or next_version. `claim` is the analyst's plain description with its trailing ticket or fix note removed; only `id` and `claim` reach the reviewer. Source: D:\\ClaudeWork\\rimmandrake\\conductor\\control_review_rounds_real_or_treadmill_20261118.md. `page_rule` (real or not) and `page_rule_why` are the labels by the owner's page rule (card 2026-11-19 13:27:48Z, standing_rulings.md section A, Decision 4: a rare failure is not handled, not a Problem), set beside `expect`, which stays the analyst's; the calibration scores against `page_rule`. Table: design/specs/2026-11-18-review-growth-cycle/05-three-way-labels-20261119.md.",
+ "about": "The code_review family's calibration set (RIMMANDRAKE_WRITE_REVIEW_BRIEF_CALIBRATE_ON_THIRTY_FIVE_CLAIMS): the 35 claims of Codex's control-store review rounds two to four, 2026-11-18, with one analyst's labels (about 70% sure). expect refuse = a Problem, pass = polish or next_version. `claim` is the analyst's plain description with its trailing ticket or fix note removed; only `id` and `claim` reach the reviewer. Source: D:\\ClaudeWork\\rimmandrake\\conductor\\control_review_rounds_real_or_treadmill_20261118.md. `page_rule` (real or not) and `page_rule_why` are the labels by the owner's page rule (card 2026-11-19 13:27:48Z, standing_rulings.md section A, Decision 4: a rare failure is not handled, not a Problem), set beside `expect`, which stays the analyst's; the calibration scores against `page_rule`. Table: design/specs/2026-11-18-review-growth-cycle/05-three-way-labels-20261119.md. `agreed` marks the 12 claims all three readers (analyst, Codex, a blind reader) and the page rule label alike; the pass mark is read on them (05-three-way-labels-20261119.md, 'a fair pass mark').",
  "page": "design/specs/2026-11-18-pipeline-control-surface/boundary.md",
  "claims": [
   {
@@ -60,7 +60,8 @@
    "analyst": "PROBLEM, mild: re-issuing a stop with a shorter deadline is an ordinary input. The stop order promises a time that is not kept, although the receipt does say \"NOT set\".",
    "tag": "blame measured; class guess ~55%",
    "page_rule": "real",
-   "page_rule_why": "a second stop with a shorter deadline is ordinary; three-named-stops' deadline not kept; fixed be673ed895, round-two test 6"
+   "page_rule_why": "a second stop with a shorter deadline is ordinary; three-named-stops' deadline not kept; fixed be673ed895, round-two test 6",
+   "agreed": true
   },
   {
    "id": "c2.7",
@@ -200,7 +201,8 @@
    "analyst": "POLISH: an input nobody types",
    "tag": "measured",
    "page_rule": "not",
-   "page_rule_why": "outside ACCEPTS: a deadline is 1 s or more; refused today"
+   "page_rule_why": "outside ACCEPTS: a deadline is 1 s or more; refused today",
+   "agreed": true
   },
   {
    "id": "c4.1",
@@ -210,7 +212,8 @@
    "analyst": "PROBLEM, mild: \"kill it again\" is an ordinary input. It interrupts an in-flight clone return and doubles the ledger finish note.",
    "tag": "blame measured; class guess ~50%",
    "page_rule": "real",
-   "page_rule_why": "killing again is ordinary; same-command-twice; fixed 9a8593dc91, t_review_round_four_p1"
+   "page_rule_why": "killing again is ordinary; same-command-twice; fixed 9a8593dc91, t_review_round_four_p1",
+   "agreed": true
   },
   {
    "id": "c4.2",
@@ -220,7 +223,8 @@
    "analyst": "PROBLEM: an ordinary input. The run is not recorded stopped and the agent's spend continues.",
    "tag": "blame measured; reproduced by the lane's red test; class guess ~65%",
    "page_rule": "real",
-   "page_rule_why": "`.service` is systemctl's own spelling, inside stop-target; fixed 9a8593dc91, t_review_round_four_p1"
+   "page_rule_why": "`.service` is systemctl's own spelling, inside stop-target; fixed 9a8593dc91, t_review_round_four_p1",
+   "agreed": true
   },
   {
    "id": "c4.3",
@@ -230,7 +234,8 @@
    "analyst": "POLISH: no launch site uses those forms",
    "tag": "measured (grep)",
    "page_rule": "not",
-   "page_rule_why": "outside: option forms no launch site uses"
+   "page_rule_why": "outside: option forms no launch site uses",
+   "agreed": true
   },
   {
    "id": "c4.4",
@@ -240,7 +245,8 @@
    "analyst": "POLISH: needs an unreadable cgroup dir",
    "tag": "measured",
    "page_rule": "not",
-   "page_rule_why": "rare: a cgroup folder that cannot be listed (DNS, 0 of 66 measured)"
+   "page_rule_why": "rare: a cgroup folder that cannot be listed (DNS, 0 of 66 measured)",
+   "agreed": true
   },
   {
    "id": "c4.5",
@@ -250,7 +256,8 @@
    "analyst": "POLISH: test strength",
    "tag": "measured",
    "page_rule": "not",
-   "page_rule_why": "polish: an annotated alias is launch-code-in-a-new-shape"
+   "page_rule_why": "polish: an annotated alias is launch-code-in-a-new-shape",
+   "agreed": true
   },
   {
    "id": "c4.6",
@@ -260,7 +267,8 @@
    "analyst": "POLISH: test strength",
    "tag": "measured",
    "page_rule": "not",
-   "page_rule_why": "polish: a builder in a builder is launch-code-in-a-new-shape"
+   "page_rule_why": "polish: a builder in a builder is launch-code-in-a-new-shape",
+   "agreed": true
   },
   {
    "id": "c4.7",
@@ -270,7 +278,8 @@
    "analyst": "POLISH: needs a failed kill and a concurrent successful kill",
    "tag": "measured",
    "page_rule": "not",
-   "page_rule_why": "rare: a failed escalation and a second kill at once (DNS two-failures-at-once)"
+   "page_rule_why": "rare: a failed escalation and a second kill at once (DNS two-failures-at-once)",
+   "agreed": true
   },
   {
    "id": "c4.8",
@@ -280,7 +289,8 @@
    "analyst": "POLISH: no estate path contains `$`",
    "tag": "measured",
    "page_rule": "not",
-   "page_rule_why": "outside plain-paths: a `$` is refused by name"
+   "page_rule_why": "outside plain-paths: a `$` is refused by name",
+   "agreed": true
   },
   {
    "id": "c4.9",
@@ -290,7 +300,8 @@
    "analyst": "POLISH: needs a void racing a judge's start (coverage_judge is the only reserve caller); it heals itself",
    "tag": "measured; class guess ~65%",
    "page_rule": "not",
-   "page_rule_why": "rare: a void in a judge's own second (DNS hand-command-in-a-run's-own-second)"
+   "page_rule_why": "rare: a void in a judge's own second (DNS hand-command-in-a-run's-own-second)",
+   "agreed": true
   },
   {
    "id": "c4.10",
@@ -340,7 +351,8 @@
    "analyst": "POLISH: test strength",
    "tag": "measured",
    "page_rule": "not",
-   "page_rule_why": "polish: test strength"
+   "page_rule_why": "polish: test strength",
+   "agreed": true
   },
   {
    "id": "c4.15",

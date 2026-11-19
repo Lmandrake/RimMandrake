@@ -26,12 +26,12 @@
    ],
    "cases": {
     "bad": [
-     "planted (art_calibration.py): the 5 NOT_ACCEPT rows of infrastructure/state/art_eval/regression.jsonl (owner REDO or PURGED), judged blind (Peeper r2 left out: he purged it for art style, not size, owner 2026-11-17, a taste case no written line refuses)",
+     "planted (art_calibration.py): the 6 NOT_ACCEPT rows of infrastructure/state/art_eval/regression.jsonl (owner REDO or PURGED), judged blind (Peeper r2, purged because he no longer wanted that animal, owner 2026-11-17/19, is refused on C2 facing size)",
      "planted (art_calibration.py): north_from_south_RM_DecayDrake_r2, owner-picked art whose north.png is its own south.png: refused on C1 with a rear-view redraw (point 27)",
      "infrastructure/state/art_eval/criteria_ledger.jsonl owner overrides (55 rows): a corpus, not run"
     ],
     "good": [
-     "planted (art_calibration.py): the 5 ACCEPT rows of infrastructure/state/art_eval/regression.jsonl (owner kept or picked), judged blind as candidates",
+     "planted (art_calibration.py): the 3 ACCEPT rows of infrastructure/state/art_eval/regression.jsonl (owner kept or picked), judged blind as candidates (Durrok r2 and Gawpsack live left out: his picks were style calls, owner 2026-11-17, and C2 may refuse their facing size, owner 2026-11-19)",
      "planted (art_calibration.py): kept_RM_Gawpsack_live, a picture the owner KEPT (CL-030) that the art-eval pipeline banded REALLY_BAD, staged with his keep: E3 forbids a REDO"
     ]
    },
@@ -721,12 +721,8 @@
      "id": "regress_RM_DecayDrake_r2"
     },
     {
-     "expect": "pass",
-     "id": "regress_RM_Durrok_r2"
-    },
-    {
-     "expect": "pass",
-     "id": "regress_RM_Gawpsack_live"
+     "expect": "refuse",
+     "id": "regress_RM_Peeper_r2"
     },
     {
      "expect": "refuse",
@@ -752,10 +748,10 @@
    ],
    "cases": {
     "bad": [
-     "planted (code_review_calibration.py): the 4 claims the analyst labelled Problem (c2.5 a killed run recorded ended, c2.6 a shorter second stop deadline not kept, c4.1 a second kill re-runs bookkeeping, c4.2 a stop by the .service name misses the agent); must be admitted"
+     "planted (code_review_calibration.py): the 14 claims that break a promise in ordinary operation by the owner's page rule (card 2026-11-19 13:27:48Z; c2.2, c2.3, c2.6, c2.7, c2.8, c3.1, c3.6, c3.9, c4.1, c4.2, c4.10, c4.11, c4.12, c4.13); must be admitted"
     ],
     "good": [
-     "planted (code_review_calibration.py): the 31 claims of the control store's review rounds two to four, 2026-11-18, that one analyst labelled polish (about 70% sure); must not be admitted as Problems"
+     "planted (code_review_calibration.py): the 21 claims that are a rare failure the page lists as not handled, or polish, by the same rule; must not be admitted as Problems"
     ]
    },
    "hash": "eb19bf11dcd11ca3",
@@ -771,18 +767,18 @@
     "src/RimMandrake/rimflow/code_review_calibration.py",
     "run"
    ],
-   "note": "Reviews of pipeline code stay stopped until the owner says start (his stop of 2026-11-18 8:22 PM PST); CALIBRATED here does not restart them. Labels: src/RimMandrake/rimflow/code_review_calibration_set.json.",
+   "note": "Reviews of pipeline code stay stopped until the owner says start (his stop of 2026-11-18 8:22 PM PST); CALIBRATED here does not restart them. Labels: `page_rule` in src/RimMandrake/rimflow/code_review_calibration_set.json (owner card 2026-11-19 13:27:48Z); this row needs all 35 as labelled, and the run's last line is the owner's pass mark on the 12 agreed claims.",
    "planted": [
     {
      "expect": "pass",
      "id": "c2.1"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c2.2"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c2.3"
     },
     {
@@ -790,7 +786,7 @@
      "id": "c2.4"
     },
     {
-     "expect": "refuse",
+     "expect": "pass",
      "id": "c2.5"
     },
     {
@@ -798,11 +794,11 @@
      "id": "c2.6"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c2.7"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c2.8"
     },
     {
@@ -810,7 +806,7 @@
      "id": "c2.9"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c3.1"
     },
     {
@@ -830,7 +826,7 @@
      "id": "c3.5"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c3.6"
     },
     {
@@ -842,7 +838,7 @@
      "id": "c3.8"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c3.9"
     },
     {
@@ -890,19 +886,19 @@
      "id": "c4.9"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c4.10"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c4.11"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c4.12"
     },
     {
-     "expect": "pass",
+     "expect": "refuse",
      "id": "c4.13"
     },
     {
@@ -916,7 +912,7 @@
    ],
    "reset_at": "2026-11-19T09:00:00Z",
    "status": "FAILED",
-   "timeout_s": 1800
+   "timeout_s": 540
   },
   "coverage_judge": {
    "brief": [

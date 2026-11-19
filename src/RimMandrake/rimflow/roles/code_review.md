@@ -30,8 +30,8 @@ look happens only for a new page version.
 
 A finding is a **Problem** only for one of these three reasons. Quote the page entry by its name and words.
 
-1. **A promise is not kept.** Name the promise (or the LIFE CYCLES move), an input inside ACCEPTS or a failure that
-   is not under DOES NOT SURVIVE that breaks it, and the record, gate, commit or spend that comes out wrong.
+1. **A promise is not kept in ordinary operation.** Name the promise (or the LIFE CYCLES move), the ordinary input
+   or the named failure (below) that breaks it, and the record, gate, commit or spend that comes out wrong.
 2. **A promise could be broken and no test would go red.** Describe the broken component that would get through.
    A stricter test with no broken component described is not this reason.
 3. **The page or a test is itself wrong.** Quote the wrong line and say what is true instead.
@@ -39,6 +39,17 @@ A finding is a **Problem** only for one of these three reasons. Quote the page e
 An input outside ACCEPTS that is mishandled and not refused is a Problem only if a call site in the repo or a
 documented command produces it: search for one and cite it. Otherwise it is polish. A failure listed under DOES NOT
 SURVIVE is never a Problem, unless the component then reports something false about it (that breaks a promise).
+
+**A rare failure is not a Problem, even when it breaks a promise.** Owner, by card 2026-11-19 13:27:48Z: the page
+lists each rare failure it does not survive, and no fix is built (`standing_rulings.md` §A, Decision 4). Ordinary
+operation is an input inside ACCEPTS, at human or timer pace, with the world answering; plus the one failure a promise
+names as its own subject, met alone (a promise that says what happens when the store is locked, or when a read fails,
+is broken in ordinary operation when that one failure breaks it). Rare is anything that needs more: a failure the
+broken promise does not name (a failed call, kill or read, a locked or corrupt store, a crash), a second failure while
+the first is handled, two events in the same instant, or an input or code shape no call site produces. A rare failure
+is class `polish`, and its `why` begins `not handled:` and gives the one plain line for DOES NOT SURVIVE. A false
+report counts as a Problem only for a failure the promise names. The page's lines "handled today, not promised" are
+rare failures too.
 
 Each Problem is a refusal record of the `code_review` family (`src/RimMandrake/rimflow/refusal_contract.py`):
 `evidence` (file:line and the page entry), `observed`, `would_pass`, and `smallest_fix`. The smallest fix is "refuse
@@ -51,6 +62,8 @@ the input" before "handle the input". Only a CALIBRATED brief's refusal sends wo
   current version's bars.
 - **A stricter test with no broken component described, a style point, robustness against an input outside ACCEPTS
   that nothing produces, a failure under DOES NOT SURVIVE**: one line on `polish.md` beside the page.
+- **A rare failure** (§A Problem): one plain line for the page's DOES NOT SURVIVE. The page's owner writes it there;
+  no fix is built.
 
 No ticket and no repair lane come from either list. A polish line is promoted only when it fires in a real run or
 someone shows a call site that produces its input.
@@ -66,5 +79,6 @@ One JSON object per finding (or per claim, when you are handed claims to sort ra
 ```
 
 `reason` is set only for a problem. Sorting claims made by another reader, take each claim's described behaviour as
-true and decide only its class against the page. When you cannot search the repo, an input outside ACCEPTS counts as
+true and decide only its class against today's page, even when the claim was made against older code. When you
+cannot search the repo, an input outside ACCEPTS counts as
 produced only if the page itself says it is ordinary.
