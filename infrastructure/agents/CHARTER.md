@@ -1,83 +1,102 @@
 # CHARTER — binds the Conductor and its helpers
 
-*Adopted 2026-08-27 (owner's ruling, this date), replacing POLICY.md, the four seat
-files, and most of the process prose. Git holds everything removed. **This file does
-not grow: a new line must delete the line it replaces.***
+*Adopted 2026-08-27 (owner's ruling, this date). The charter replaced POLICY.md, the four seat files, and most of the
+process prose. Git holds everything removed. **This file does not grow: a new line must delete the line it
+replaces.***
 
 ## Posture
 
-**Act first.** Anything git can undo — edits, deletes, renames, docs, queue items —
-gets no verification, no filing, no report beyond one line: do it, commit explicit
-paths, push, "Done, `<hash>`." The owner's word closes, opens, or overrides anything,
-instantly and without re-derivation; when he says a thing is validated, it is. He is
-never refused by a tool rule — find the flag or override (`--owner-said "<his
-words>"`), run it yourself, and never hand him a command to paste. When he is present
-you are at his side: do what he says, ask questions the moment they exist. He opts
-work *into* rigor ("careful with this one"), never out of it.
+**Act first.** Anything git can undo gets no verification, no filing and no report beyond one line. Examples: edits,
+deletes, renames, docs, queue items. Do it, commit explicit paths, push, and say "Done, `<hash>`."
+
+The owner's word closes, opens or overrides anything, instantly and without re-derivation. When he says that a thing
+is validated, it is validated.
+
+A tool rule never refuses him. When a tool refuses an act that he asked for, find the flag or override
+(`--owner-said "<his words>"`). Run the command yourself. Never hand him a command to paste.
+
+When he is present, you are at his side. Do what he says. Ask each question the moment it exists.
+
+He opts work *into* rigor ("careful with this one"), never out of it.
 
 **See it, fix it, then** (owner, 2026-11-05: *"if you know what's wrong and it's easy to fix, it should NOT just be
 "added to the ticket and wait." That's old foundry behavior. If you see something, fix it RIGHT THEN, ok? Standing
-policy."*). Every seat and helper: a known, small fix (a proof argument, a live line, a timeout, a packageId, a
-worded criterion, an unanswered hold whose answer exists) is made on the spot, published, and then the fixer runs the item's remaining check itself and closes it; the item goes
-back to a build only if real build work remains, never for one more generation just to re-check (owner, 2026-11-05).
-A diagnosis is never written onto a ticket in place of the fix. A ticket is filed only for what is not small, and it says why. And the pipeline never "blesses" a small change (owner, 2026-11-05): a quick manual validation is done by the
-agent on the spot and closed with that evidence, never queued for a Judge (`standing_rulings.md`).
+policy."*).
+
+- This rule binds every seat and helper.
+- Make a known, small fix on the spot. Examples: a proof argument, a live line, a timeout, a packageId, a worded
+  criterion, an unanswered hold whose answer exists.
+- Publish the fix. Then the fixer runs the item's remaining check itself and closes the item.
+- The item goes back to a build only if real build work remains. Never send it back for one more generation just to
+  re-check (owner, 2026-11-05).
+- Never write a diagnosis onto a ticket in place of the fix.
+- File a ticket only for a fix that is not small. The ticket says why.
+- The pipeline never "blesses" a small change (owner, 2026-11-05). For a small change, the agent does a quick manual
+  validation on the spot. Then the agent closes the item with that evidence. Never queue a small change for a Judge
+  (`standing_rulings.md`).
 
 ## The expensive list — the only things that get ceremony
 
-1. **A cold-load slot** (~15 min on the full list, MEASURED 2026-09-07). Batch questions; write the Player.log strings that
-   will decide each before launch (`rimworld-load-round`).
-2. **`deploy_custom_mods.py --apply`** — read the plan first; never deploy over
-   another window's uncommitted files.
-3. **`ModsConfig.xml` writes** (`rimworld-start-prep`). Unattended mod-list
-   experiments: snapshot to `infrastructure/state/modlists/`, sweep dependents,
-   announce loudly where he reads.
-4. **Savegame writes** to the frozen world or ship saves — back up first
-   (`rimworld-savegame`).
-5. **History and others' work** — force-push, `reset --hard` over work you did not make,
-   deleting work not yours: warn in one line, then only with the owner's word. Our own
-   proven-unread, pushed leftovers: archive, delete, digest (`delegation_policy.md` §2).
-6. **Anything the owner must LOOK at** — read by us first, every item an agent can judge, broken ones fixed or
-   dropped (owner, 2026-10-22; `standing_rulings.md` §Nothing reaches the owner unread), then given with the
-   complete native path in backticks, spaces as spaces.
+1. **A cold-load slot** (~15 min on the full list, MEASURED 2026-09-07). Batch the questions for one load. Before
+   launch, write the Player.log strings that will decide each question (`rimworld-load-round`).
+2. **`deploy_custom_mods.py --apply`**. Read the plan first. Never deploy over the uncommitted files of another
+   window.
+3. **`ModsConfig.xml` writes** (`rimworld-start-prep`). An unattended mod-list experiment does three things: snapshot
+   to `infrastructure/state/modlists/`, sweep dependents, and announce loudly where he reads.
+4. **Savegame writes** to the frozen world or ship saves. Back up first (`rimworld-savegame`).
+5. **History and others' work**: a force-push, a `reset --hard` over work you did not make, or deleting work not
+   yours. Warn in one line. Then act only with the owner's word. A leftover can be our own, proven unread and
+   pushed. If all three are true, archive the leftover, delete it, and report it in the digest (`delegation_policy.md`
+   §2).
+6. **Anything the owner must LOOK at.** First we read it. An agent checks every item that an agent can judge. The
+   agent fixes or drops each broken item (owner, 2026-10-22; `standing_rulings.md` §Nothing reaches the owner unread). Then
+   give it to him with the complete native path in backticks, spaces as spaces.
 
-Ceremony means: the one pre-check the tool names, evidence in the closing commit,
-spec/verify prose only here. Everything not on this list — including maps, saves,
-colonies and deployed mod folders outside the repo — is not precious; the repo is the
-protected thing.
+Ceremony means three things: the one pre-check that the tool names, evidence in the closing commit, and spec/verify
+prose. Only items on this list get spec/verify prose. Everything that is not on this list is not precious. That
+includes maps, saves, colonies and deployed mod folders outside the repo. The repo is the protected thing.
 
 ## Git
 
-CLAUDE.md owns the rules ("Git" + the Transient rule); `design/RimMandrake/GIT_WORKFLOW.md`
-is the operating doc. Charter's additions only: commit when a unit of work exists, and work
-only in your seat clone (`/home/mandrake/rm/<seat>`) — `D:\Luke\dev\RimMandrake` is a
-read-only mirror.
+CLAUDE.md owns the rules: its "Git" section and its Transient rule. `design/RimMandrake/GIT_WORKFLOW.md` is the
+operating doc. The charter adds only two rules:
 
-Worktrees are OFF and helpers write in the window's clone: CLAUDE.md "Git" and `Agent_Policy.md` "Helpers in this repo".
+- Commit when a unit of work exists.
+- Work only in your seat clone (`/home/mandrake/rm/<seat>`). `D:\Luke\dev\RimMandrake` is a read-only mirror.
+
+Worktrees are OFF, and helpers write in the window's clone: CLAUDE.md "Git" and `Agent_Policy.md` "Helpers in this
+repo".
 
 ## Queue
 
-An item is one line — `SUBJECT_INTENT_TWIST · lane · the ask` (grammar: `design/RimMandrake/ticket_naming_2026-10-10.md`) — plus optional
-prose in `infrastructure/state/items/<ID>.md` for expensive-list items only. 🔑 **On
-close/drop/supersede the prose moves to `items/closed/<ID>.md`** — so `items/*.md` is
-the LIVE set and a sweep stops walking finished work; `rimflow show` resolves both.
-Reboot handoffs are not items and live in `infrastructure/state/handoffs/`. The
-ledger — the frozen `events.jsonl` plus one `ledger/events/<SEAT>.jsonl` shard per
-seat since 2026-09-23, written only by `rimflow` — is the truth; `queue/<SEAT>.md` files are
-gitignored rendered views you never edit — read one with `rimflow queue <SEAT>`, which
-renders first (`queue/HUMAN.md` is the owner's hand-written inbox and stays tracked). Close: `rimflow close <ID> --sha <commit>`, commit
-carrying `Closes: <ID>`, push.
+An item is one line: `SUBJECT_INTENT_TWIST · lane · the ask`. The grammar is in
+`design/RimMandrake/ticket_naming_2026-10-10.md`. Only an expensive-list item gets optional prose, in
+`infrastructure/state/items/<ID>.md`.
 
-🔴 **THE PIPELINES BEFORE THE MATURATION PIPELINE ARE RETIRED** (owner, 2026-11-13 and 2026-11-18): builds run in the Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`), launched by the Conductor; what the old eras left: `design/RimMandrake/retired_eras_index_2026-11-18.md`.
+🔑 **On close/drop/supersede the prose moves to `items/closed/<ID>.md`.** So `items/*.md` is the LIVE set, and a sweep
+stops walking finished work. `rimflow show` resolves both.
 
-🔴 **ANY SEAT ENDS AN ITEM IT FINDS DEAD — owner's ruling, 2026-09-19.** The moment
-any seat finds a queue item **completed, totally invalidated, superseded, or otherwise
-no longer worth considering for activity**, that seat ends it itself — no routing to
-the owning seat, no `--owner-said`, no asking. Ownership gates work in flight
-(`claim`, `start`, `block`, `verify`, `reclaim`, `renew`, `release`, `implemented`, `reconcile`),
-never the three terminal verbs. `implemented` is not terminal: it records published code and the
-level-tagged criteria still owed (`built` -> `validated` -> `done`); only `done`, `drop` and
-`supersede` end an item:
+Reboot handoffs are not items. They live in `infrastructure/state/handoffs/`.
+
+The ledger is the truth. The ledger is the frozen `events.jsonl`, plus one `ledger/events/<SEAT>.jsonl` shard per seat
+since 2026-09-23. Only `rimflow` writes the ledger. The `queue/<SEAT>.md` files are gitignored rendered views. Never
+edit them. Read one with `rimflow queue <SEAT>`, which renders it first. `queue/HUMAN.md` is the owner's hand-written
+inbox, and it stays tracked.
+
+Close: `rimflow close <ID> --sha <commit>`, commit carrying `Closes: <ID>`, push.
+
+🔴 **THE PIPELINES BEFORE THE MATURATION PIPELINE ARE RETIRED** (owner, 2026-11-13 and 2026-11-18). Builds run in the
+Maturation Pipeline (`design/specs/2026-11-13-maturation-pipeline.md`). The Conductor launches them. What the old eras
+left: `design/RimMandrake/retired_eras_index_2026-11-18.md`.
+
+🔴 **ANY SEAT ENDS AN ITEM IT FINDS DEAD — owner's ruling, 2026-09-19.** A seat can find a queue item **completed,
+totally invalidated, superseded, or otherwise no longer worth considering for activity**. Then that seat ends the item
+itself, the moment it finds it. Do not route it to the owning seat. Do not use `--owner-said`. Do not ask.
+
+Ownership gates work in flight (`claim`, `start`, `block`, `verify`, `reclaim`, `renew`, `release`, `implemented`,
+`reconcile`). Ownership never gates the three terminal verbs. `implemented` is not terminal. It records published code
+and the level-tagged criteria still owed (`built` -> `validated` -> `done`). Only `done`, `drop` and `supersede` end an
+item:
 
 ```
 rimflow close <ID> --sha <commit> --reason "<what proves it done>"
@@ -85,130 +104,172 @@ rimflow drop  <ID> --reason "<what proves it dead>"
 rimflow supersede <ID> --by <NEW_ID> --reason "<why the successor replaces it>"
 ```
 
-The ledger event stamps the **ruling seat** automatically — that is the record of who
-called it, and `--reason` is the ruling itself, mandatory in practice on another seat's
-item. ⛔ **The evidence bar is unchanged**: done means proven, dead means probed. This
-removed the seat boundary, not the requirement to have looked. **Stale default:** one
-grep/probe — if it doesn't prove the item live, `rimflow drop <ID> --reason
-"stale-drop: <the probe>"`; real work re-files itself. Naming: CLAUDE.md's "Queue items are NAMED" section. Helpers, lanes and groupings are named too, never coded: no C6, A5 or "Lane A2" (they collide with legacy ledger ids; hook `block_agent_coded_name.py`). v2 ideas
-go straight to `design/V2_DREAMS.md`, any window, no permission.
+The ledger event stamps the **ruling seat** automatically. That stamp is the record of who called it. `--reason` is the
+ruling itself. On another seat's item, `--reason` is mandatory in practice. ⛔ **The evidence bar is unchanged**: done
+means proven, dead means probed. This ruling removed the seat boundary, not the requirement to have looked.
+
+**Stale default:** run one grep or probe. If the probe does not prove the item live, run `rimflow drop <ID> --reason
+"stale-drop: <the probe>"`. Real work re-files itself.
+
+Naming: CLAUDE.md's "Queue items are NAMED" section. Helpers, lanes and groupings are named too, never coded: no C6, A5
+or "Lane A2". Such codes collide with legacy ledger ids (hook `block_agent_coded_name.py`).
+
+v2 ideas go straight to `design/V2_DREAMS.md`, from any window, with no permission.
 
 ## Done means running — owner, 2026-10-31
 
-An operational item (hook, unit, timer, ops rule, alarm) is done only when it names what must stay alive and its last
-reading: close with `--live "unit=… reading=… max_age=…"`. `rimflow` refuses an unproven close, and `rm-deadman`
-reopens the same item if it dies. CLAUDE.md "An operational item is done only when it is running"; full text
-`design/RimMandrake/parallel_review_2026-10-31/folded_into_operations.md`.
+An operational item is a hook, unit, timer, ops rule or alarm. Such an item is done only when it names what must stay
+alive and its last reading. Close it with `--live "unit=… reading=… max_age=…"`. `rimflow` refuses an unproven close.
+If the item dies, `rm-deadman` reopens the same item. The rule: CLAUDE.md "An operational item is done only when it is
+running". Full text: `design/RimMandrake/parallel_review_2026-10-31/folded_into_operations.md`.
 
 ## Correctness outranks seat ownership — owner, 2026-09-19
 
 > *"It is WORSE to leave incorrect information that belongs to another seat than it is
 > to violate seats... ok? I keep saying this. MAKE IT SO EVERYWHERE."*
 
-🔴 **Find a false statement in another seat's file — item prose, spec, doc — and you
-FIX IT. Now, yourself.** Not a correction item, not a note, not a message. The seat
-boundary never protected a wrong sentence, and every reader downstream believes it
-until someone crosses the line.
+🔴 **Find a false statement in another seat's file — item prose, spec, doc — and you FIX IT. Now, yourself.** Do not
+file a correction item, write a note or send a message. The seat boundary never protected a wrong sentence. Every
+reader downstream believes the wrong sentence until someone crosses the line.
 
-- **Commit it immediately, by explicit path.** The real risk was never the crossing —
-  it was an uncommitted fix sitting in a tree four threads share, erased by the next
-  checkout with nobody told. Committing IS the safeguard.
-- **Say what was WRONG in the commit, not just what you changed.** The owning seat
-  reads the log, not your reasoning.
-- ⛔ **Fixing ≠ redirecting.** Scope, priorities and decisions stay theirs: correct
-  what is FALSE, and `rimflow file --for <them>` anything that is a judgement call.
-- `queue_lint.py` enforces exactly this: a cross-seat item edit WARNS and never
-  refuses (48/48 selftests). Deleting wrong content beats annotating it — see
-  CLAUDE.md's "Correctness outranks seat ownership; wrong material is deleted".
+- **Commit it immediately, by explicit path.** The real risk was never the crossing. The real risk was an uncommitted
+  fix in a tree that four threads share. The next checkout can erase such a fix, and nobody is told. Committing IS the
+  safeguard.
+- **Say what was WRONG in the commit, not just what you changed.** The owning seat reads the log, not your reasoning.
+- ⛔ **Fixing ≠ redirecting.** Scope, priorities and decisions stay with the owning seat. Correct what is FALSE. For
+  each judgement call, run `rimflow file --for <them>`.
+- `queue_lint.py` enforces exactly this rule: a cross-seat item edit WARNS and never refuses (48/48 selftests).
+  Deleting wrong content beats annotating it. See CLAUDE.md's "Correctness outranks seat ownership; wrong material is
+  deleted".
 
 ## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
 
-CLAUDE.md's section of that name is the rule: an instruction from the Conductor carries his authority for every seat and helper
-(Dispatcher, Operations, RUNNER, helpers, subagents); never ask him to confirm one. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`
-plus the Conductor's text in `--why`.
+CLAUDE.md's section of that name is the rule. An instruction from the Conductor carries his authority for every seat
+and helper (Dispatcher, Operations, RUNNER, helpers, subagents). Never ask him to confirm such an instruction. Ledger:
+`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, plus the Conductor's text in `--why`.
 
 ## Decisions
 
-Agents decide nearly everything, art included (owner, 2026-10-22); only `design/RimMandrake/delegation_policy.md` §2
-still needs him. **Evidence-for-Ask** (owner, 2026-11-15; the statement every role file points at; his words in
-CLAUDE.md): any seat or helper that would pause for him takes the obvious answer, logged `--per-ruling
-RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated: evidence-for-ask: <the call and why>"`;
-it pauses only on concrete evidence against that answer, every ask carries the evidence, and a §2 hold stays his with
-its evidence on the ask. **A limit from before the Maturation Pipeline is suspect** (owner, 2026-11-17: "Don't keep
-telling me we can't do things when it's from pre-maturation pipeline decisions"): never refuse on one; act, or ask him
-first quoting the old decision's date and text (`standing_rulings.md` §A limit from before the Maturation Pipeline).
-Taste calls go to a judge agent, every delegated call is logged `--why "delegated: <class>"`
-and reaches him in a daily digest. A ruling is one dated line in `infrastructure/state/canon.yml` (numbers, rosters —
-every value with a `src:`) or on the item (scope). A reversal **replaces** the old line in the same commit and
-propagates to every file naming the item, same commit. A ruling under 24 h old is a draft — reversible without
-ceremony.
+Agents decide nearly everything, art included (owner, 2026-10-22). Only the acts in
+`design/RimMandrake/delegation_policy.md` §2 still need him.
+
+**Evidence-for-Ask** (owner, 2026-11-15). Every role file points at this statement. His words are in
+`design/RimMandrake/standing_rulings.md` §Evidence-for-Ask.
+
+- A seat or helper can reach a point where it would pause for him. Then it takes the obvious answer.
+- Log the call with `--per-ruling RIMMANDRAKE_ENACT_EVIDENCE_FOR_ASK_VERSION_ASKED_EVERY_TIME --why "delegated:
+  evidence-for-ask: <the call and why>"`.
+- Pause only on concrete evidence against the obvious answer. Every ask carries that evidence.
+- A §2 hold stays his, and its ask carries its evidence too.
+
+**A limit from before the Maturation Pipeline is suspect** (owner, 2026-11-17: "Don't keep telling me we can't do
+things when it's from pre-maturation pipeline decisions"). Never refuse an act because of such a limit. Act, or ask him
+first. If you ask, quote the old decision's date and text (`standing_rulings.md` §A limit from before the Maturation
+Pipeline).
+
+Taste calls go to a judge agent. Log every delegated call with `--why "delegated: <class>"`. Each delegated call
+reaches him in a daily digest.
+
+A ruling is one dated line, in one of two places:
+
+- a ruling on numbers or rosters: `infrastructure/state/canon.yml`, every value with a `src:`;
+- a ruling on scope: the item.
+
+A reversal **replaces** the old line in the same commit. The same commit propagates the reversal to every file that
+names the item. A ruling under 24 h old is a draft: you can reverse it without ceremony.
 
 ## Rules and lessons
 
-An enforced rule is a **hook** (`.claude/hooks/`); propose the hook, not a paragraph.
-A default worth stating is a **line in this charter**, replacing one. Everything else
-is deleted — git is the archive. Lessons: one file each into
-`infrastructure/state/lessons/` (`python3 src/RimMandrake/Utils/lessons.py add "…"`, which refuses a near-twin of an existing lesson: `--merge <that file>` or `--distinct "<why>"`), at any time and at reboot; skills are edited
-only in a fresh-context curation session, never at end-of-context. A fact that
-outgrows its doc goes to `infrastructure/state/facts/` — unbudgeted, never dropped
-for space.
+An enforced rule is a **hook** (`.claude/hooks/`). Propose the hook, not a paragraph. A default worth stating is a
+**line in this charter**, and it replaces a line. Delete everything else: git is the archive.
+
+Lessons:
+
+- Write one file for each lesson into `infrastructure/state/lessons/`, with `python3
+  src/RimMandrake/Utils/lessons.py add "…"`.
+- `lessons.py` refuses a near-twin of an existing lesson. Then pass `--merge <that file>` or `--distinct "<why>"`.
+- Write lessons at any time and at reboot.
+
+Edit skills only in a fresh-context curation session, never at end-of-context.
+
+When a fact outgrows its doc, move the fact to `infrastructure/state/facts/`. That folder is unbudgeted, and a fact
+there is never dropped for space.
 
 ## Instruments, in order — and dumps decay
 
-**RimSage** (`mcp__rimsage__*`: defs + engine C#, no load) → **`measure`/the def
-dump** (post-patch truth; never a bare number from a scan — `MEASURED`/`UNMEASURED`/
-`REFUSED`) → **quicktest via bridge** (~90 s) → **cold load** (expensive list).
-**Be suspicious of every dump and harvest: it answers only for the mod set and moment
-it captured.** Check currency by fingerprint, never timestamp; the frozen `official`
-dump is the design target and only the owner re-freezes it. The silent-failure traps
-(patches, deploys, defName guessing) are CLAUDE.md's "Facts you cannot guess".
+Use the instruments in this order:
 
-Which kind of testing to run, and when, and its tunables: `design/RimMandrake/testing_policy_2026-10-28.md` and `src/RimMandrake/rimflow/testing_policy.json` (owner, 2026-10-28: "Let's get smarter about the testing we do and only use appropriate kinds of testing when/where it will help us.").
+1. **RimSage** (`mcp__rimsage__*`): defs and engine C#, with no load.
+2. **`measure`/the def dump**: the truth after patches. Never take a bare number from a scan. Each answer is
+   `MEASURED`, `UNMEASURED` or `REFUSED`.
+3. **quicktest via bridge** (~90 s).
+4. **cold load** (on the expensive list).
+
+**Be suspicious of every dump and harvest: it answers only for the mod set and moment it captured.** Check the
+currency of a dump by fingerprint, never by timestamp. The frozen `official` dump is the design target. Only the owner
+re-freezes it. The silent-failure traps (patches, deploys, defName guessing) are in CLAUDE.md's "Facts you cannot
+guess".
+
+Which kind of testing to run, when, and its tunables: `design/RimMandrake/testing_policy_2026-10-28.md` and
+`src/RimMandrake/rimflow/testing_policy.json` (owner, 2026-10-28: "Let's get smarter about the testing we do and only
+use appropriate kinds of testing when/where it will help us.").
 
 ## How we debug — owner, 2026-10-01
 
-`design/RimMandrake/debug_process.md` is the process. **Every mod has a functional script
-and is debugged through it**: run it first, poke live when it is blind, and end every
-poking session by writing the lesson into the script — a check red for the reported
-reason before the final fix, plus the informative theories that proved false. Agents
-write, approve and declare passing on these scripts; they may add regression checks and
-new `## north star` bars (owner 2026-10-26, `delegation_policy.md` §1); loosening a bar stays his. Stuck → GPT early, for hypotheses to test.
-**3 non-pass runs in a row, or a defect that needs live observation, goes to a Test Pilot, not another retest**
-(owner 2026-10-31; `rimflow pilot`, `.claude/agents/rm-testpilot.md`, `standing_rulings.md`).
+`design/RimMandrake/debug_process.md` is the process. **Every mod has a functional script and is debugged through
+it.**
 
-The 2026-10-01 build pause was lifted by the owner 2026-10-02 (*"Build pause is lifted."*);
-every new mod still ships with its first script (`debug_process.md` §2).
+- Run the script first. When the script is blind, poke the live game.
+- End every poking session with the lesson written into the script. The lesson is a check that is red for the reported
+  reason before the final fix. Add the informative theories that proved false.
+- Agents write, approve and declare passing on these scripts.
+- Agents may add regression checks and new `## north star` bars (owner 2026-10-26, `delegation_policy.md` §1).
+- Loosening a bar stays his.
+- When you are stuck, go to GPT early, for hypotheses to test.
+- **3 non-pass runs in a row, or a defect that needs live observation, goes to a Test Pilot, not another retest**
+  (owner 2026-10-31; `rimflow pilot`, `.claude/agents/rm-testpilot.md`, `standing_rulings.md`).
+
+The owner lifted the 2026-10-01 build pause on 2026-10-02 (*"Build pause is lifted."*). Every new mod still ships with
+its first script (`debug_process.md` §2).
 
 ## Game state and the bridge
 
-He says it, you run it: `./game --said "<his words>" up|down|loading`. A restart you call
-yourself: `./game --why "<your reason>" <state>` — never `--said`. Ledger provenance, one field per kind of authority: CLAUDE.md "Owner authority on the ledger".
-Never infer state; bare `./game` measures and corrects the ledger, any window.
-`broadcast.py` is his, with that single carve-out — and the carve-out is STAMP-ONLY
-(owner, 2026-09-29): a seat's relay writes the ledger and messages no window; peers
-read the state from `rimflow next`, which measures the game itself. The bridge is
-one driver at a time — `rimflow bridge take` / `release`; CLAUDE.md's "The bridge is
-passed through one file" is canonical (a free bridge is takeable; his machine use gates nothing — never flyer flight; `delegation_policy.md` §2.1). Config files
-(`ModsConfig.xml` included) never wait for RimSort or the game; only assemblies need
-the game down (OS lock).
+- When he says a game state, you run it: `./game --said "<his words>" up|down|loading`.
+- For a restart that you call yourself, run `./game --why "<your reason>" <state>`. Never use `--said` for it.
+- Ledger provenance takes one field per kind of authority: CLAUDE.md "Owner authority on the ledger".
+- Never infer the game state. In any window, bare `./game` measures the state and corrects the ledger.
+- `broadcast.py` is his, with that single carve-out: a seat may relay a game state with `./game`. The carve-out is
+  STAMP-ONLY (owner, 2026-09-29). A seat's relay writes the ledger and messages no window. Peers read the state from
+  `rimflow next`, which measures the game itself.
+- The bridge has one driver at a time: `rimflow bridge take` / `release`. CLAUDE.md's "The bridge is passed through one
+  file" is canonical. A free bridge is takeable, and his machine use gates nothing. Never fly a flyer on the bridge
+  (`delegation_policy.md` §2.1).
+- Config files (`ModsConfig.xml` included) never wait for RimSort or the game. Only assemblies need the game down (OS
+  lock).
 
 ## Windows
 
-**the Conductor** (with the owner; `CONDUCTOR.md`) and the helpers it launches (`rm-builder`, `rm-judge`); every model choice, seat and subagent alike:
-`Agent_Policy.md`. Subagents: spawn freely, always with `model`; a subagent's return
-is evidence, never a finding, and no subagent writes shared state. Queue views render on every `rimflow` write — no loop, no
-publisher, no staleness.
+The windows are **the Conductor** (with the owner; `CONDUCTOR.md`) and the helpers it launches (`rm-builder`,
+`rm-judge`). `Agent_Policy.md` holds every model choice, for seats and subagents alike.
 
-**Rebooting a window is prepared, not improvised** (owner, 2026-09-06). At a real
-wave boundary — subagents all reported, everything committed and pushed, nothing
-mid-edit — and above all the moment you would say *"that's all I have for now"*,
-write the handoff with `RIMFLOW_SEAT=<SEAT> python3 src/RimMandrake/Utils/handoff.py`
-(the env var is required on any machine without a seat profile; it REFUSES rather than guess), fill
-the four sections it leaves marked (it lands `conversations/` itself; `--check` refuses while a record is
-uncommitted — owner 2026-10-18), pass `--check`, then say **HANDOFF READY** as
-your last line and start nothing new. The phrase is the signal, and only a seat may say it — the script refuses to.
-On a seat with a restart the phrase fires it: the Stop hook `.claude/hooks/handoff_restart.py` requests the
-restart and the Dispatcher relaunches the window 20 s after its helpers finish (owner, 2026-11-01: "20 seconds, build it
-now and implement."). The Conductor's window closes on his goodbye instead, and otherwise he reboots on his own clock.
-Say it **once**: until real work comes in, `handoff.py` reports ALREADY HANDED OFF
-and writes nothing, because a signal given every idle turn is not a signal.
+- Spawn subagents freely, always with `model`.
+- A subagent's return is evidence, never a finding.
+- No subagent writes shared state.
+- Queue views render on every `rimflow` write: no loop, no publisher, no staleness.
+
+**Rebooting a window is prepared, not improvised** (owner, 2026-09-06).
+
+- Prepare at a real wave boundary: all subagents reported, everything committed and pushed, nothing mid-edit. Above
+  all, prepare the moment you would say *"that's all I have for now"*.
+- Write the handoff with `RIMFLOW_SEAT=<SEAT> python3 src/RimMandrake/Utils/handoff.py`. The env var is required on
+  any machine without a seat profile. Without it, `handoff.py` REFUSES rather than guess.
+- Fill the four sections that `handoff.py` leaves marked. `handoff.py` lands `conversations/` itself. `--check` refuses
+  while a record is uncommitted (owner 2026-10-18).
+- Pass `--check`. Then say **HANDOFF READY** as your last line, and start nothing new.
+- The phrase is the signal, and only a seat may say it. The script refuses to say it.
+- On a seat with a restart, the phrase fires the restart. The Stop hook `.claude/hooks/handoff_restart.py` requests the
+  restart. The Dispatcher relaunches the window 20 s after its helpers finish (owner, 2026-11-01: "20 seconds, build it
+  now and implement.").
+- The Conductor's window closes on his goodbye instead. Otherwise he reboots the Conductor's window on his own clock.
+- Say the phrase **once**. Until real work comes in, `handoff.py` reports `ALREADY HANDED OFF` and writes nothing. A
+  signal given every idle turn is not a signal.
