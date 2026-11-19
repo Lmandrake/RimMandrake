@@ -29,6 +29,17 @@ This is the entry point of design/RimMandrake/scene_look_judge_brief.md for nort
   pass 2  the statement prompt above, a DIFFERENT fresh call that never sees pass 1: the bar's text is its one
           expectation sentence. Unchanged, so bar verdicts carry their old meaning.
 `--no-open-look` skips pass 1 (recorded as not run, with why).
+
+REFUSAL RECORDS (RIMMANDRAKE_EMIT_REFUSAL_RECORDS_FROM_NORTHSTAR_FRAME_FAILS; standing_rulings.md §A refusal carries its
+path to pass). After pass 2, each bar the judge answered NO (a must) or YES (a cannot), or UNJUDGEABLE, gets ONE fresh
+follow-up call (RECORD_PROMPT) for its would_pass, smallest_fix and criterion verdict; a YES costs nothing extra. One
+contract verdict per run (family scene_look_judge_brief: the passed bars and these refusals, given the bar texts and the
+judged captures) goes through refusal_contract.submit and its result is kept as judge.contract. A bar whose judge could
+not run (a dead call, a throttle, no image, a split vote) is "could not look" and one whose follow-up could not run is
+"could not record": neither is a refusal, a pass or a malformed record, and a run with any bar it could not record
+submits nothing. Bar statuses are unchanged by any of this. Known limit: the follow-up is staged with the first refusing
+capture only; another capture of the same bar reaches it by name and reason, not by its pixels.
+`--no-records` skips it (recorded as not run, with why).
 """
 import argparse
 import hashlib
@@ -76,6 +87,33 @@ EXPECTED: nothing looks odd. ODD: something looks strange. WRONG: something is c
 small, too zoomed out or covered to tell; that is a real answer, never a guess.
 """
 OPEN_PROMPT_SHA256 = hashlib.sha256(OPEN_PROMPT.encode("utf-8")).hexdigest()
+
+# The refusal record's follow-up (scene_look_judge_brief.md "Every refusal is a record"): asked only of a bar a judge
+# refused or could not judge, by a fresh call shown the bar, its capture and that judge's reason.
+RECORD_PROMPT = """\
+Read the image at this path: {image}
+
+A judge looking at this RimWorld screenshot was asked whether this statement is true of it:
+
+  "{bar}"
+
+It answered {verdict}, because: {why}{others}
+
+{goal} Write the refusal's path to pass. Answer with a single JSON object as the LAST thing you write:
+
+  {{"would_pass": "<what a capture that passes would show, concretely>",
+    "smallest_fix": {{"what": "<the smallest change to the mod or the capture that would get there>",
+                      "attainable": "yes" | "no", "cost": "edit" | "rerun" | "new instrument" | "owner"}},
+    "criterion_verdict": "sound" | "flawed" | "unattainable",
+    "criterion_why": "<one sentence: is the statement a fair bar a correct mod could pass, that a player would notice?>"}}
+
+When the image could not be judged, the fix is a re-shot capture (cost "rerun") that shows what the statement is about.
+"""
+RECORD_PROMPT_SHA256 = hashlib.sha256(RECORD_PROMPT.encode("utf-8")).hexdigest()
+RECORD_GOAL = {judge.MUST: "The statement is a requirement: a passing capture shows it TRUE.",
+               judge.CANNOT: "The statement describes a defect the owner would reject: a passing capture shows it is "
+                             "NOT true (the defect is absent)."}
+RECORD_FAMILY = "scene_look_judge_brief"
 OPEN_LOOKS = ("EXPECTED", "ODD", "WRONG", "COULD NOT SEE")
 THROTTLE_RE = re.compile(r"rate.?limit|\b429\b|overloaded|usage limit|too many requests|quota", re.I)
 SPLIT = "SPLIT"
@@ -350,24 +388,14 @@ def _depth_before(text, pos):
     return depth
 
 
-def parse_open(raw):
-    """-> (look, where, first_noticed, cause). look is one of OPEN_LOOKS, or None with the cause: an error or throttle
-    envelope, no result text, or a LAST JSON object that is missing, unreadable or not a look (an earlier object is never
-    salvaged: the final answer is the answer)."""
-    try:
-        e = json.loads(raw)
-    except (ValueError, TypeError):
-        return None, "", "", "unreadable answer: the CLI envelope is not JSON"
-    if not isinstance(e, dict):
-        return None, "", "", "unreadable answer: the CLI envelope is not an object"
-    if e.get("is_error") or is_throttle(True, raw):
-        return None, "", "", "the judge could not run: %s" % str(e.get("result") or e.get("error") or "error envelope")[:300]
-    text = e.get("result")
+def _final_object(text):
+    """-> (the JSON object that ENDS the answer text, None) or (None, why it is unreadable). An earlier object is never
+    salvaged: the final answer is the answer."""
     if not isinstance(text, str) or not text.strip():
-        return None, "", "", "unreadable answer: no result text"
+        return None, "unreadable answer: no result text"
     tail = text.rstrip().rstrip("`").rstrip()            # a closing code fence may follow the object
     if not tail.endswith("}"):
-        return None, "", "", "unreadable answer: the answer does not end with its JSON object"
+        return None, "unreadable answer: the answer does not end with its JSON object"
     end = len(tail) - 1
     dec = json.JSONDecoder()
     obj = None
@@ -381,7 +409,25 @@ def parse_open(raw):
                 obj = o
             break
     if not isinstance(obj, dict):
-        return None, "", "", "unreadable answer: the final JSON object does not decode"
+        return None, "unreadable answer: the final JSON object does not decode"
+    return obj, None
+
+
+def parse_open(raw):
+    """-> (look, where, first_noticed, cause). look is one of OPEN_LOOKS, or None with the cause: an error or throttle
+    envelope, no result text, or a LAST JSON object that is missing, unreadable or not a look (an earlier object is never
+    salvaged: the final answer is the answer)."""
+    try:
+        e = json.loads(raw)
+    except (ValueError, TypeError):
+        return None, "", "", "unreadable answer: the CLI envelope is not JSON"
+    if not isinstance(e, dict):
+        return None, "", "", "unreadable answer: the CLI envelope is not an object"
+    if e.get("is_error") or is_throttle(True, raw):
+        return None, "", "", "the judge could not run: %s" % str(e.get("result") or e.get("error") or "error envelope")[:300]
+    obj, cause = _final_object(e.get("result"))
+    if cause:
+        return None, "", "", cause
     look = str(obj.get("look", "")).strip().upper().replace("_", " ")
     if look not in OPEN_LOOKS:
         return None, "", "", "unreadable answer: look %r is not one of %s" % (obj.get("look"), "/".join(OPEN_LOOKS))
@@ -503,9 +549,166 @@ def apply_verdicts(doc, claims):
     return doc
 
 
+def parse_record(raw):
+    """-> ({would_pass, smallest_fix, criterion_verdict, criterion_why} as the follow-up wrote them, None) or (None, why
+    the follow-up gave no answer: it could not run or its answer is unreadable). The fields are not judged here: the
+    refusal contract judges them."""
+    try:
+        e = json.loads(raw)
+    except (ValueError, TypeError):
+        return None, "unreadable answer: the CLI envelope is not JSON"
+    if not isinstance(e, dict):
+        return None, "unreadable answer: the CLI envelope is not an object"
+    if e.get("is_error") or is_throttle(True, raw):
+        return None, "the follow-up could not run: %s" % str(e.get("result") or e.get("error") or "error envelope")[:300]
+    obj, cause = _final_object(e.get("result"))
+    if cause:
+        return None, cause
+    return {k: obj.get(k) for k in ("would_pass", "smallest_fix", "criterion_verdict", "criterion_why")}, None
+
+
+def _judged(cl):
+    """-> ("pass" | "refuse", None) for a claim its judge decided, or (None, why it could not look)."""
+    if cl["problem"]:
+        return None, cl["problem"]
+    calls = cl["calls"]
+    if any(c["throttled"] for c in calls):
+        return None, "judge throttled"
+    dead = [c for c in calls if not c["ok"]]
+    if dead:
+        return None, dead[0]["why"] or "judge could not run"
+    err = [c for c in calls if _error_envelope(c["raw"])]
+    if err:     # the process ran, the CLI says the call failed: no answer of the judge's, never a refusal
+        return None, "the judge could not run: %s" % str(err[0]["raw"])[:300]
+    if cl.get("outcome") == PASS:
+        return "pass", None
+    if cl.get("outcome") == FAIL or any(c["verdict"] == judge.UNJUDGEABLE for c in calls):
+        return "refuse", None
+    return None, cl.get("outcome_why") or "no verdict"   # a split vote
+
+
+def _rc():
+    """refusal_contract (src/RimMandrake/rimflow), imported by its path."""
+    rimflow = os.path.join(os.path.dirname(_UTILS), "rimflow")
+    if rimflow not in sys.path:
+        sys.path.insert(0, rimflow)
+    import refusal_contract
+    return refusal_contract
+
+
+def _error_envelope(raw):
+    try:
+        e = json.loads(raw)
+    except (ValueError, TypeError):
+        return False
+    return isinstance(e, dict) and bool(e.get("is_error"))
+
+
+def _deciding_call(cl):
+    """The call whose answer decided a refused claim: its first UNJUDGEABLE when that left it UNMEASURED, else its
+    first (a FAIL is unanimous)."""
+    if cl.get("outcome") != FAIL:
+        return next((c for c in cl["calls"] if c["verdict"] == judge.UNJUDGEABLE), cl["calls"][0])
+    return cl["calls"][0]
+
+
+def _counters_for(item):
+    """-> (the item's counted refusals, {clause: count}) from the refusal store, or (None, why it could not be read)."""
+    try:
+        RC = _rc()
+        it = RC._item(RC.counters(), item)
+        return int(it.get("refused") or 0), dict(it.get("clauses") or {})
+    except Exception as e:  # noqa: BLE001 - an unreadable store: submit counts the truth
+        return None, "the refusal store could not be read: %s" % e
+
+
+def contract_records(doc, claims, record_runner, submit, log=_p):
+    """The run's refusal-contract verdict: passed bars, and one record per refused (or unjudgeable) bar whose follow-up
+    answered. -> the judge.contract record."""
+    texts = doc.get("bar_text") or {}
+    item = str(doc.get("item") or "northstar:%s" % (doc.get("mod") or "?"))
+    by_bar = {}
+    for cl in claims:
+        by_bar.setdefault(cl["bar"], []).append(cl)
+    passed, refused, no_look, no_rec = [], [], [], []
+    for bar in sorted(by_bar):
+        kinds = [(cl, _judged(cl)) for cl in by_bar[bar]]
+        bad = [cl for cl, (k, _w) in kinds if k == "refuse"]
+        blind = [(cl, w) for cl, (k, w) in kinds if k is None]
+        # every claim that could not look is named, whether or not another claim refused the bar
+        no_look += [{"clause": bar, "component": cl["component"], "cause": str(w)[:300]} for cl, w in blind]
+        if bad:
+            refused.append((bar, bad))
+        elif not blind:
+            passed.append({"clause": bar, "evidence": sorted({cl["image"] for cl in by_bar[bar]})})
+    prior, clauses = _counters_for(item)
+    recs, followups = [], []
+    for bar, bad in refused:
+        why_of = [(c, _deciding_call(c)) for c in bad]
+        cl, call = why_of[0]
+        text = (texts.get(bar) or {}).get("text") or ""
+        others = "".join("\nAnother capture of this statement (%s) was answered %s, because: %s" % (
+            os.path.basename(c["image"]), k["verdict"], k["why"] or "(no reason given)") for c, k in why_of[1:])
+        goal = RECORD_GOAL.get(cl["polarity"], RECORD_GOAL[judge.MUST])
+        t0 = time.time()
+        try:
+            ok, raw = record_runner(lambda path: RECORD_PROMPT.format(
+                image=path, bar=text, verdict=call["verdict"], why=call["why"] or "(no reason given)", others=others,
+                goal=goal), cl["image"])
+        except rmpaths.RmDataRootUnset:
+            raise
+        except Exception as ex:  # noqa: BLE001 - a staging or subprocess error: the follow-up could not run
+            ok, raw = False, "%s: %s" % (type(ex).__name__, ex)
+        followups.append({"clause": bar, "image": cl["image"], "image_sha256": cl.get("image_sha256"), "ok": ok,
+                          "raw": raw, "ms": int((time.time() - t0) * 1000), "models_reported": reported_models(raw)})
+        fields, cause = parse_record(raw) if ok else (None, "the follow-up could not run: %s" % str(raw)[:300])
+        if fields is None:
+            no_rec.append({"clause": bar, "cause": cause})
+            log("record %-32s could not record: %s" % (bar[:32], cause[:80]))
+            continue
+        rec = dict({"clause": bar, "criterion_hash": _rc().criterion_hash(text),
+                    "evidence": sorted({c["image"] for c in bad}),
+                    "observed": "; ".join(dict.fromkeys("%s: %s" % (k["verdict"], k["why"]) for _c, k in why_of))},
+                   **fields)
+        if prior:   # after the item's first counted refusal: a clause refused before is unfixed, a new one is late
+            rec["new_since"] = ("unfixed:%s" % bar) if clauses.get(bar) else "late"
+        recs.append(rec)
+    judged = [p["clause"] for p in passed] + [r["clause"] for r in recs]
+    out = {"status": "ran", "prompt_sha256": RECORD_PROMPT_SHA256, "item": item, "records": len(recs),
+           "passed": len(passed), "could_not_look": no_look, "could_not_record": no_rec, "followups": followups}
+    if prior is None:
+        out["counters"] = clauses     # why new_since could not be set; submit reads the store itself
+    if no_rec:   # a refusal without its record is no verdict: never submitted as fewer refusals (or an all-pass)
+        out.update(submitted=False, why="incomplete: %d refused bar(s) could not be recorded (%s); nothing submitted" % (
+            len(no_rec), ", ".join(r["clause"] for r in no_rec)))
+        return out
+    if not judged:
+        out.update(submitted=False, why="no bar was judged: nothing to record")
+        return out
+    pairs = sorted({"%s=%s" % (c["image"], c.get("image_sha256")) for bar in judged for c in by_bar[bar]})
+    sha = hashlib.sha256("\n".join(pairs).encode("utf-8")).hexdigest()[:16]   # which content is at which capture
+    inputs = sorted({e for p in passed for e in p["evidence"]} | {e for r in recs for e in r["evidence"]})
+    verdict = {"item": item, "family": RECORD_FAMILY, "sha": sha, "passed": passed, "refusals": recs}
+    given = {"inputs": inputs, "criteria": {b: (texts.get(b) or {}).get("text") or "" for b in judged}, "sha": sha}
+    try:
+        res = submit(verdict, given)
+    except Exception as ex:  # noqa: BLE001 - the store could not take it: said, never read as submitted
+        out.update(submitted=False, why="submit failed: %s: %s" % (type(ex).__name__, ex), verdict=verdict)
+        return out
+    out.update(submitted=True, sha=sha, **{k: res.get(k) for k in ("ok", "errors", "counted", "advisory", "pointer",
+                                                                   "calibration", "repair_due", "alarms")
+                                          if k in res})
+    log("records: %d refusal(s), %d passed, %d could not look, %d could not record -> %s" % (
+        len(recs), len(passed), len(no_look), len(no_rec), res.get("pointer") or res.get("errors")))
+    return out
+
+
 def judge_doc(doc, runner, model="(mock)", jobs=8, repeat_must=1, repeat_cannot=3, timeout=180,
-              backoff_s=20.0, log=_p, open_runner=None, open_skip_why=None):
-    """Pass 1 (open_runner, bar-blind) then pass 2 (runner, the bar statement). open_runner None = no pass 1, recorded."""
+              backoff_s=20.0, log=_p, open_runner=None, open_skip_why=None, record_runner=None, submit=None,
+              record_skip_why=None):
+    """Pass 1 (open_runner, bar-blind) then pass 2 (runner, the bar statement), then the refusal records (record_runner
+    asks the follow-ups, submit is refusal_contract.submit). open_runner None = no pass 1; record_runner or submit None =
+    no records; each recorded as not run."""
     texts = doc.get("bar_text") or {}
     claims, calls = plan_calls(doc, repeat_must, repeat_cannot)
     log("judge: %d claim(s), %d call(s), %d undecidable before asking; jobs=%d model=%s" % (
@@ -518,6 +721,9 @@ def judge_doc(doc, runner, model="(mock)", jobs=8, repeat_must=1, repeat_cannot=
     stats = execute(calls, texts, runner, jobs=jobs, backoff_s=backoff_s, log=log)
     apply_verdicts(doc, claims)
     models = sorted({m for c in calls for m in reported_models(c["raw"])})
+    contract = (contract_records(doc, claims, record_runner, submit, log=log)
+                if record_runner is not None and submit is not None else
+                {"status": "not run: %s" % (record_skip_why or "no record runner or submit given")})
     prev = (doc.get("judge") or {}).get("open_look")
     if prev:                                         # every earlier look is kept, also across a run that skipped pass 1
         ol["earlier"] = (prev.get("earlier") or []) + [{k: v for k, v in prev.items() if k != "earlier"}]
@@ -526,12 +732,17 @@ def judge_doc(doc, runner, model="(mock)", jobs=8, repeat_must=1, repeat_cannot=
         "model_requested": model, "models_reported": models,
         "prompt_sha256": PROMPT_SHA256, "repeat_must": repeat_must, "repeat_cannot": repeat_cannot,
         "jobs": jobs, "timeout_s": timeout, "wall_s": round(time.time() - t0, 1), "stats": stats, "open_look": ol,
+        "contract": contract,
         "claims": [{k: v for k, v in cl.items() if k != "calls"} | {
             "calls": [{"k": c["k"], "verdict": c["verdict"], "why": c["why"], "ok": c["ok"],
                        "throttled": c["throttled"], "attempts": c["attempts"], "ms": c["ms"],
                        "raw": c["raw"]} for c in cl["calls"]]} for cl in claims],
     }
     return doc
+
+
+def _rc_submit():
+    return _rc().submit
 
 
 def main(argv=None):
@@ -545,6 +756,7 @@ def main(argv=None):
     ap.add_argument("--repeat-cannot", type=int, default=3)
     ap.add_argument("--only-chain", action="append", help="judge only these chains (repeatable)")
     ap.add_argument("--no-open-look", action="store_true", help="skip pass 1 (the bar-blind open look); recorded as not run")
+    ap.add_argument("--no-records", action="store_true", help="write no refusal-contract records; recorded as not run")
     a = ap.parse_args(argv)
     with open(a.results, encoding="utf-8") as f:
         doc = json.load(f)
@@ -557,7 +769,9 @@ def main(argv=None):
     judge_doc(doc, claude_runner(a.model, a.timeout), model=a.model, jobs=a.jobs,
               repeat_must=a.repeat_must, repeat_cannot=a.repeat_cannot, timeout=a.timeout,
               open_runner=None if a.no_open_look else claude_runner(a.model, a.timeout),
-              open_skip_why="--no-open-look" if a.no_open_look else None)
+              open_skip_why="--no-open-look" if a.no_open_look else None,
+              record_runner=None if a.no_records else claude_runner(a.model, a.timeout),
+              submit=None if a.no_records else _rc_submit(), record_skip_why="--no-records" if a.no_records else None)
     out = a.out or a.results
     B.write_results(out, doc)
     s = doc["summary"]

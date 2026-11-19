@@ -87,18 +87,9 @@ def pass2_prompt(path):
     return judge._PROMPT.format(image=path, req_id=BAR_ID, req_text=BAR, framing=judge._FRAMING[judge.MUST])
 
 
-def _error_envelope(raw):
-    """True when the CLI's envelope says the call itself failed (is_error): no answer of the judge's."""
-    try:
-        e = json.loads(raw)
-    except (ValueError, TypeError):
-        return False
-    return isinstance(e, dict) and bool(e.get("is_error"))
-
-
 def grade(case, ok, raw):
     """-> (got, detail). got None = the judge could not run (the case did not run)."""
-    if not ok or JC.is_throttle(ok, raw) or _error_envelope(raw):
+    if not ok or JC.is_throttle(ok, raw) or JC._error_envelope(raw):
         return None, {"error": "the judge could not run: %s" % str(raw)[:300]}
     if case["pass"] == 1:
         look, where, first, cause = JC.parse_open(raw)
