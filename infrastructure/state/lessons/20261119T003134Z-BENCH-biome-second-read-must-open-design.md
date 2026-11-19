@@ -1,0 +1,1 @@
+A biome second read must open design/Jawa/worldbuilding/biomes/_freeze_rulings_2026-09-07.md and search it for the biome and for the word fuel: it holds dated owner rulings per biome (R5 on every fuel source, R24 on greenwood) that no biome sheet repeats, and the Greentide's first rewrite contradicted two of them.
