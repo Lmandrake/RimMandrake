@@ -1147,10 +1147,215 @@ def t_review_claims_round_two():
           "claim r2-7: a second pipe stop with the same --idem writes no order and no act, and says so", (n, m, outs))
 
 
+def t_review_claims_round_three():
+    """Codex's round-three claims on the round-two fix (RIMMANDRAKE_SPLIT_CONTROL_REVIEW_ROUND_THREE_ELEVEN_UNTRIED),
+    each red on origin/main 0117263ccf (D:\\ClaudeWork\\scratch\\control_claims_round2_20261118\\probe3_base.log).
+    Children: RIMMANDRAKE_KEEP_FIRST_ADMISSION_ON_REFUSED_REPLACEMENT_ID_REUSE (1, 6),
+    RIMMANDRAKE_BOOK_LOCKED_KILLS_BY_RUN_TIMERS_REAP_TWICE (2, 3, 4, 5, 8, 9),
+    RIMMANDRAKE_TRACE_CENSUS_ALIASES_HALF_SECOND_READ_AS_ZERO (7, 10, 11)."""
+    dead = lambda us: [{"unit": u, "dead": True, "ms": 1, "survivors": [], "said": "1 process(es) killed"} for u in us]
+    noreap = lambda *x: "-"
+
+    def started(unit, **kw):
+        a = C.admit(spec(unit, **kw))
+        C.condition(a["run"])
+        return a
+
+    def lock_for(sec):
+        ev = threading.Event()
+
+        def holder():
+            h = C.connect(DB)
+            h.execute("BEGIN IMMEDIATE")
+            ev.set()
+            time.sleep(sec)
+            h.execute("ROLLBACK")
+            h.close()
+        th = threading.Thread(target=holder)
+        th.start()
+        ev.wait(5)
+        return th
+    # 1. a re-admission refused on a resource keeps the first admission; a replacement frees the old held look
+    fresh()
+    a = C.admit(spec("rm-probe-r3c1"))
+    b = C.admit(spec("rm-probe-r3c1", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w", "base": 0}]))
+    c = C.admit(spec("rm-probe-r3c1"))
+    check(not b["ok"] and c["ok"] and c["run"] != a["run"] and C.condition(a["run"])[0] == 1,
+          "claim r3-1: a refused re-admission leaves the first in place; the next replacement still gets its own id",
+          (a["run"], b, c))
+    fresh()
+    s1 = spec("rm-probe-r3c1b", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w", "base": 1}])
+    a = C.admit(s1)
+    b = C.admit(s1)
+    check(b["ok"] and C.account("Graffiti", C.LOOK, "w", 1)["held"] == 1 and C.condition(a["run"])[0] == 1,
+          "claim r3-1: a replacement takes the last look its own first try held, releases that try's, and fences it",
+          (b, C.account("Graffiti", C.LOOK, "w", 1)))
+    # 6. a payload's own --unit is the payload's; the spec's unit goes into systemd-run's options
+    fresh()
+    seen = []
+    runner = lambda argv, **kw: seen.append(list(argv)) or subprocess.CompletedProcess(argv, 0, "", "")
+    r = C.launch_unit(["systemd-run", "--user", "/bin/echo", "--unit", "payload"], spec("rm-probe-r3c6"), runner=runner)
+    sent = seen[0] if seen else []
+    cmd = sent.index("/bin/echo") if "/bin/echo" in sent else -1
+    check(not r.refused and "rm-probe-r3c6" in sent and 0 < sent.index("rm-probe-r3c6") < cmd
+          and sent[cmd:] == ["/bin/echo", "--unit", "payload"],
+          "claim r3-6: a payload --unit is not systemd-run's; the spec's unit goes before the command", sent)
+    check(C.unit_of(["systemd-run", "--user", "-p", "X=1", "--", "/bin/x", "--unit", "y"]) is None and
+          C.unit_of(["systemd-run", "-p", "--unit", "--unit=u1", "/bin/x"]) == "u1" and
+          C.unit_of(["systemd-run", "--user", "-u", "u2", "x"]) == "u2",
+          "claim r3-6: unit_of reads systemd-run's options only (operands, --, -u)")
+    # 2. a locked emergency kill whose run ended first books that run (void, killed), not a stand-in
+    fresh()
+    a = started("rm-probe-r3c2", mod="Graffiti", resources=[{"resource": C.LOOK, "win": "w", "base": 1}])
+    th = lock_for(1.0)
+    try:
+        C.stop("rm-probe-r3c2", "kill", "claim r3-2", killer=lambda us: C.ended(a["run"], "signal/KILL/9") and dead(us),
+               reaper=noreap)
+    finally:
+        th.join()
+    v = C._q("SELECT COUNT(*) n FROM voids WHERE run=?", (a["run"],), one=True)["n"]
+    check(v == 1 and C.run_state(a["run"])["state"] == "killed",
+          "claim r3-2: a locked kill whose end receipt landed first still voids and records that run killed",
+          (v, C.run_state(a["run"])["state"]))
+    # 3. an --idem replay on a locked store changes nothing and kills nothing
+    fresh()
+    started("rm-probe-r3c3")
+    calls = []
+    k = lambda us: calls.append(us) or dead(us)
+    C.stop("rm-probe-r3c3", "kill", "first", killer=k, reaper=noreap, idem="k3")
+    th = lock_for(1.0)
+    try:
+        r = C.stop("rm-probe-r3c3", "kill", "replay", killer=k, reaper=noreap, idem="k3")
+    finally:
+        th.join()
+    check(len(calls) == 1 and r["replayed"], "claim r3-3: a locked --idem replay kills nothing and says replayed",
+          (len(calls), r))
+    # 4. an unreadable final reread (or a kill that used the whole budget) is UNVERIFIED, never dead
+    gone = subprocess.Popen(["true"])
+    gone.wait()
+    real = (C._cgroup_pids, C._systemctl, C._procs)
+
+    def slow_fail(args, timeout=10):
+        if args[0] == "kill":
+            time.sleep(0.3)
+            return 1, "Failed to kill unit: timeout"
+        return 0, ""
+    C._cgroup_pids = lambda u: ([gone.pid], "probe.slice/rm-probe-r3c4.service")
+    C._procs = lambda cg: None
+    C._systemctl = slow_fail
+    try:
+        res = C.kill_units(["rm-probe-r3c4"], wait_s=0.1)
+        live = subprocess.Popen(["sleep", "300"])
+        C._procs = lambda cg: [live.pid]    # a member that survives SIGKILL is named, not just "not dead"
+        C._systemctl = lambda args, timeout=10: (1, "Failed") if args[0] == "kill" else (0, "")
+        real_kill = os.kill
+        os.kill = lambda pid, sig: None if pid == live.pid else real_kill(pid, sig)
+        try:
+            res2 = C.kill_units(["rm-probe-r3c4b"], wait_s=0.2)
+        finally:
+            os.kill = real_kill
+            live.kill()
+            live.wait(5)
+    finally:
+        C._cgroup_pids, C._systemctl, C._procs = real
+    check(res[0]["dead"] is None and "UNVERIFIED" in res[0]["said"],
+          "claim r3-4: an unreadable final cgroup reread is death UNVERIFIED", res)
+    check(res2[0]["dead"] is False and live.pid in res2[0]["survivors"],
+          "claim r3-4: a late member that does not die is named a survivor", res2)
+    # 8. the fallback read covers descendant cgroups; an unreadable descendant is UNVERIFIED
+    root = os.path.join(TMP, "cgfs")
+    os.makedirs(os.path.join(root, "u.service", "child"))
+    with open(os.path.join(root, "u.service", "cgroup.procs"), "w") as f:
+        f.write("")
+    with open(os.path.join(root, "u.service", "child", "cgroup.procs"), "w") as f:
+        f.write("4242\n")
+    real_root = C.CGROUP_ROOT
+    C.CGROUP_ROOT = root
+    try:
+        got = C._procs("/u.service")
+        os.makedirs(os.path.join(root, "u.service", "child2"))     # a cgroup with no readable cgroup.procs
+        got2 = C._procs("/u.service")
+    finally:
+        C.CGROUP_ROOT = real_root
+    check(got == [4242] and got2 is None, "claim r3-8: the cgroup read walks descendants; an unreadable one is None",
+          (got, got2))
+    # 5. two due escalation timers, or two concurrent kills, reap one detached run once
+    for how in ("escalate", "stop"):
+        fresh()
+        u = "rm-detached-probe-r3c5-%s" % how
+        started(u)
+        t0 = time.time()
+        reaps = []
+        slow = lambda us: time.sleep(0.3) or dead(us)
+        rp = lambda *x: reaps.append(1) or "-"
+        if how == "escalate":
+            C.stop(u, "write_now", "one", deadline_s=5, now=t0, escalator=noreap)
+            C.stop(u, "write_now", "two", deadline_s=5, now=t0, escalator=noreap)
+            ths = [threading.Thread(target=C.escalate, args=(u,), kwargs={"now": t0 + 10, "killer": slow, "reaper": rp})
+                   for _ in range(2)]
+        else:
+            ths = [threading.Thread(target=C.stop, args=(u, "kill", "x%d" % i), kwargs={"killer": slow, "reaper": rp})
+                   for i in range(2)]
+        [x.start() for x in ths]
+        [x.join() for x in ths]
+        check(len(reaps) == 1, "claim r3-5: two concurrent %s kills of one detached run reap it once" % how, len(reaps))
+    # 9. a failed escalation keeps the order deliverable and the escalate verb fails
+    fresh()
+    started("rm-probe-r3c9")
+    t0 = time.time()
+    C.stop("rm-probe-r3c9", "write_now", "order", deadline_s=5, now=t0, escalator=noreap)
+    bad = lambda us: [{"unit": u, "dead": False, "ms": 1, "survivors": [1], "said": "SURVIVED: pids [1]"} for u in us]
+    line = C.escalate("rm-probe-r3c9", now=t0 + 10, killer=bad, reaper=noreap)
+    code, text = C.hook(unit="rm-probe-r3c9")
+    check(line.startswith("ESCALATION FAILED") and code == 2 and "STOP ORDER" in text,
+          "claim r3-9: after a failed escalation the hook still delivers the stop order", (line, code, text[:60]))
+    # 10. hook commands survive a path with a space
+    import shlex
+    d = os.path.join(TMP, "with space")
+    os.makedirs(d, exist_ok=True)
+    p = os.path.join(d, "c.db")
+    parts = shlex.split(C.hook_cmd("condition", "run_x", p))
+    hk = json.loads(C.claude_settings(p))["hooks"]["PostToolUse"][0]["hooks"][0]["command"]
+    check(parts[-1] == p and shlex.split(hk)[-1] == p, "claim r3-10: a db path with a space stays one argument",
+          (parts, hk))
+    # 11. a deadline under 1 s is refused, never silently none
+    for v in ("0.5s", "0", "-3m"):
+        try:
+            C.parse_dur(v)
+            got = "accepted"
+        except C.Refused:
+            got = "refused"
+        check(got == "refused", "claim r3-11: --deadline %s is refused" % v, got)
+    check(C.parse_dur("90s") == 90 and C.parse_dur("5m") == 300, "a whole deadline still parses")
+    # 7. the census: a builder called beside launch_unit, an alias run directly, two literals on one line
+    root = os.path.join(TMP, "mutant3", "rimflow")
+    os.makedirs(root)
+    with open(os.path.join(root, "detached_helper.py"), "w") as f:
+        f.write("import control as C\n\ndef launch_argv(rec):\n    return ['systemd-run', '--user', 'x']\n\n"
+                "def mixed(runner):\n    C.launch_unit(['true'], {'family': 'probe'})\n    runner(launch_argv({}))\n\n"
+                "def good(spec):\n    C.launch_unit(launch_argv({}), spec)\n")
+    with open(os.path.join(root, "alias.py"), "w") as f:
+        f.write("import subprocess\nimport control as C\n\ndef go(spec):\n"
+                "    argv = ['systemd-run', '--user', 'true']\n    C.launch_unit(argv, spec)\n    alias = argv\n"
+                "    subprocess.run(alias)\n\n"
+                "def only_alias(spec):\n    argv = ['systemd-run', '--user', 'true']\n    alias = argv\n"
+                "    C.launch_unit(alias, spec)\n\n"
+                "def same_line(spec):\n    C.launch_unit(['systemd-run', 'a'], spec); subprocess.run(['systemd-run', 'b'])\n")
+    m = C.call_sites(os.path.dirname(root))
+    got = {(s_["file"].split("/")[-1], s_["func"], s_["line"]): s_ for s_ in m}
+    same = sorted((s_["col"], s_["routed"]) for s_ in m if s_["func"] == "same_line")
+    check(got[("detached_helper.py", "launch_argv", 4)]["routed"] is False and "mixed" in
+          got[("detached_helper.py", "launch_argv", 4)]["why"], "claim r3-7: a builder run beside a launch_unit call is "
+                                                               "unrouted", got[("detached_helper.py", "launch_argv", 4)])
+    check(got[("alias.py", "go", 5)]["routed"] is False and got[("alias.py", "only_alias", 11)]["routed"] is True,
+          "claim r3-7: aliases are followed both ways", (got[("alias.py", "go", 5)], got[("alias.py", "only_alias", 11)]))
+    check([r_ for _c, r_ in same] == [True, False], "claim r3-7: two literals on one line are judged one by one", same)
+
+
 def main():
     for t in (t_void_books_by_run_id, t_verbs, t_scope, t_race, t_look, t_unreadable, t_crash, t_clones, t_void_stage, t_owner_import, t_stop,
               t_stop_review_fixes, t_kill_bookkeeping, t_coverage_look, t_sites,
-              t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two):
+              t_hooks_in_run_clone, t_review_claims_eight, t_review_claims_round_two, t_review_claims_round_three):
         print("== %s" % t.__name__)
         try:
             t()
