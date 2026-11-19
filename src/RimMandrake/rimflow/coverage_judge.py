@@ -1459,7 +1459,9 @@ def round_counts(rec):
     `owner_said` is False (a missing answer is not counted)."""
     every = [g for g in list(rec.get("gaps") or []) + list(rec.get("advisory_gaps") or []) if isinstance(g, dict)]
     new = [g for g in every if g.get("new_since") == "late" and not g.get("repair_passage")]
-    read = lambda g: g.get("criterion_by") not in ("program", NO_READ)   # a reader that did read it
+    # a reader that did read it, in this round: a carried gap's grade was counted by the round that graded it
+    read = lambda g: g.get("criterion_by") not in ("program", NO_READ) and (
+        not g.get("carried") or g.get("first_read_at") == rec.get("judge"))
     mine = [g for g in rec.get("gaps") or [] if isinstance(g, dict) and not g.get("carried")]
     return {"new_on_unchanged": sum(1 for g in new if g.get("passage") not in ("no_baseline", "unshown"))
             + sum(1 for g in rec.get("dropped") or [] if isinstance(g, dict) and not g.get("names_slot")),
@@ -2062,8 +2064,8 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             # the binding grade is the second reader's; a judge confessing its own criterion flawed is heard too
             bad_c = {i for g in rec.get("gaps") or [] if g.get("judge_criterion_verdict") in ("flawed", "unattainable")
                      for i in g.get("ids") or [REST_CLAUSE]}
-            # a carried gap first read at this look is in no refusal record (contract_verdict): its grade is heard here
-            late_c = {i for g in rec.get("gaps") or [] if g.get("first_read_at") == unit
+            # a carried gap is in no refusal record (contract_verdict): its grade, from whichever look read it, is heard
+            late_c = {i for g in rec.get("gaps") or [] if g.get("carried")
                       and g.get("criterion_verdict") in ("flawed", "unattainable") for i in g.get("ids") or [REST_CLAUSE]}
             suspect = [r["clause"] for r in cv["refusals"] if r.get("criterion_verdict") in ("flawed", "unattainable")
                        or r["clause"] in bad_c] + sorted(late_c - {r["clause"] for r in cv["refusals"]})

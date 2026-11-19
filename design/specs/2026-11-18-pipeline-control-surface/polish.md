@@ -31,16 +31,12 @@ documented command produces its input. Each ticket below was dropped with this r
 | `RIMMANDRAKE_VERIFY_PREEXISTING_CODEX_FINDINGS_FULL_FILE_HAUL` | About 14 unverified claims from the 2026-11-17 full-file reviews. | Each is a failure path (a failed git call, an unreadable or malformed file, a failed census) or a stricter test. The one ordinary claim was fixed by `RIMMANDRAKE_ALIGN_STAGE5_SCENE_CHECK_CLONE_READ_WRONG_TREE`. The list is in the dropped ticket's text. |
 | `RIMMANDRAKE_READ_ODD_RESULT_SHAPE_AS_BLIND_NOT_CRASH` | The SteveDesktop worker raises on a `result.json` that is a list or a number. | The harness only writes an object there. A 3-line fix is written and unlanded (`D:\ClaudeWork\rimmandrake\lane4\RIMMANDRAKE_READ_ODD_RESULT_SHAPE_AS_BLIND_NOT_CRASH.patch`; test `src/RimMandrake/rimflow/acceptance/worker_result_shape_accept.py`). |
 
-## Not ticketed, and not sorted by this run: three findings on `coverage_judge.py`
+## Not ticketed: one finding on `coverage_judge.py`
 
 From the one Codex review that ran before his 8:22 PM stop
 (`D:\ClaudeWork\rimmandrake\conductor\one_agent_reviews\coverage_judge.r1.md`). No ticket may be filed from a review
-finding while the stop stands. The first two are reached by an ordinary second look, so by the rule above they would
-be Problems. They wait for the Conductor.
+finding while the stop stands. Its other two findings were proven and fixed by
+`RIMMANDRAKE_PROVE_TWO_COVERAGE_JUDGE_FAULTS_OVERTURN_DOUBLED` (owner card 2026-11-19).
 
-- A look that carries a gap whose criterion a reader called flawed counts that overturn again: the close line's
-  "overturned" reads 2 for one grading. A red case exists outside the repo
-  (`D:\ClaudeWork\rimmandrake\conductor\one_agent_reviews\case_carried_grades_counted_once.py`).
-- The same look's verdict omits `criteria_suspect`. No gate goes wrong.
 - A second reader whose process ends with no JSON is not marked dead, so its charge counts toward the judge spend
   cap. Needs the reader's process to die without output.
