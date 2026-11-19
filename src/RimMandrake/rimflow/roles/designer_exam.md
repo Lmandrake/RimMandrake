@@ -84,6 +84,6 @@ it is a wait, never a reason to end the run blocked.
  "accept_where_reject_core": 0, "challenger_misses": [{"id": "s7", "accounted": "..."}]}
 ```
 
-Or the tree carries `exam_waived` in his words on an OWNER event (the gate checks it); the Conductor cannot waive it.
+Or the tree carries `exam_waived` in his words on an OWNER event, or as the Conductor window's act (owner 2026-11-19: speaker conductor, delegated "conductor-act", its why naming lost: and undo:); the gate checks both. No other agent waives it.
 
 Authority: a Conductor instruction carries his authority (`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`), never his quotation; the rules are in `designer.md`.

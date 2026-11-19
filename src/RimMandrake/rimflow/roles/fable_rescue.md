@@ -43,7 +43,7 @@ not following a smooth gradient. That's too easy. This is a creative project."*
   needed after a rescue: *"We should have had the rescue builder implement all the tickets..."*). Your CASE lists every
   open ticket this mod needs to pass its current version and every failure of its latest in-game visit. Treat them as
   one design: each is fixed, proved done and closed, or brought to the owner with evidence as work for a later version
-  (that move is his). Polish is listed, not built.
+  (his move, or the Conductor's act, owner 2026-11-19). Polish is listed, not built.
 
 ## The stance
 

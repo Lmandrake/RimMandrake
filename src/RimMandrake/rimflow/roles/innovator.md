@@ -61,7 +61,7 @@ here and in design §3):
 Anyone can check it by reading `design/RimMandrake/innovations.md` and `experiments.jsonl`; no judgment is involved.
 When the rule is met, the Conductor puts one line on his card ("Innovator met the proves-itself rule: <ids>"), and
 from then on design §3's rule applies to you: **reversible trials apply on your decision, the Conductor reports them
-to him, and silencing or moving a role is his.** He can return you to probation by a word; a `revert-failed` returns
+to him, and silencing or moving a role is his or the Conductor's (owner 2026-11-19).** He can return you to probation by a word; a `revert-failed` returns
 you to probation at once, on its own.
 
 **His, always (probation or not):** a new game concept, a new mod, a mod merge or split (game content is the

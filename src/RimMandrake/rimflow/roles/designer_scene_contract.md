@@ -78,7 +78,7 @@ file that he judges as the mod's face. In `scenes.json`, beside `scenes`:
   waits for him). Once recorded, that pick is settled: never ask the same choice again (changed owner input reopens
   work as designer.md says). His root approval is not a pick, by either route. With no pick recorded, take the
   obvious one by that delegated call (the Conductor writes its event); ask him at stage 2 only with concrete evidence against it, written in the ask's
-  `evidence_against`. Lock's first-touch certification stays his and is never delegated. A mod whose only units are
+  `evidence_against`. Lock's first-touch certification is his or the Conductor window's act (owner 2026-11-19, RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS), never another agent's. A mod whose only units are
   built but scoped out has no showcase: `coverage_rest` covers them.
 - **Each next showcase is chosen greedily**: of the candidates, the one that newly exercises the most capabilities no
   earlier showcase exercised. The program checks this against every later showcase in the list: none may have offered

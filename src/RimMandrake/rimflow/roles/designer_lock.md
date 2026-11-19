@@ -2,8 +2,7 @@
 
 Injected with `designer.md` at stage 5. One versioned order, no avoidable rework:
 
-1. **The root is already his.** Stage 1 recorded his approval of the exact root text and its OWNER event. If the walk's
-   root is not yet VALIDATED, that is his word only:
+1. **The root is already his.** Stage 1 recorded his approval of the exact root text and its OWNER event. If the walk's root is not yet VALIDATED, that is his word, or the Conductor window's act (owner 2026-11-19, --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why on validate):
    `python3 src/RimMandrake/Utils/modcheck/cli.py validate <mod> --owner-said "<his words>"`. If it was not validated
    before stage 3 wrote the tree, the `write` that stamps `root_hash` changes the tree, and the launcher reopens stage 3
    and 4: `return` to stage 2 with the decision "root validation" rather than rewriting here.
@@ -36,9 +35,8 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    against another judge is ignored, so the next round needs a new one.
    **The owner may pass coverage on his own word**, past a `not_covered` verdict. He did so first on ExplosiveKnockback on 2026-11-13
    (OWNER:1794608649743135329: "Yes, fix it like that, and then please record this as an actual Pass."). That stamp is
-   `concept_tree.py certify <dir> --owner-event OWNER:<tsn>` (`signed_by: owner`), and it is his alone. The gate takes it only on an
-   OWNER.jsonl event that holds his `ownerSaid` or `byCard`, names this concept's item, and is newer than the verdict on file. It must
-   also match that verdict and the current `coverage_fixes.json`. An agent's `--why` or `--per-ruling` event certifies nothing, and
+   `concept_tree.py certify <dir> --owner-event OWNER:<tsn>` (`signed_by: owner`), his, or the Conductor window's act under RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS (owner 2026-11-19; recorded `certified_by: conductor`, never as his words). The gate takes it only on an OWNER.jsonl event that holds his `ownerSaid` or `byCard` or is that Conductor act, names this concept's item, and is newer than the verdict on file. It must
+   also match that verdict and the current `coverage_fixes.json`. Any other agent's `--why` or `--per-ruling` event certifies nothing, and
    lint and the other gate checks still run. Status and the lock page read "passed on the owner's word" beside the judge's
    verdict, never as a judge pass. You never certify.
 4. **The gate**: `concept_tree.py gate <dir>` passes, and `designer_stage.py showcases <dir>` accepts the showcase set:
@@ -52,7 +50,7 @@ Injected with `designer.md` at stage 5. One versioned order, no avoidable rework
    owner 2026-11-17).
 6. Write `result.json` `done`. The launcher then marks the concept `locked`.
 
-Changing a locked tree: his word only, for an edit, removal or waiver (a `locked_change` decision with his OWNER event); a
+Changing a locked tree: his word, or the Conductor window's act (owner 2026-11-19: speaker conductor, delegated "conductor-act", source CONDUCTOR:<tsn>; a waiver names lost: and undo:), for an edit, removal or waiver (a `locked_change` decision); a
 new concept comes back through the Designer as an amendment. Either gives a new hash and a new signature. A wrap-up that
 matters is a scripted step or a check, never an instruction (owner, 2026-11-03, `AGENT_WRAPUP_ENFORCE_ASKING_NEVER_WORKED`).
 
