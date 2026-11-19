@@ -357,10 +357,10 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
 # ---------------------------------------------------------------- the bounded clone pool
 # WORKER_CLONES_MONITOR_POOL_NOT_RABBITS. Owner, 2026-10-31: bounded pool of about 10 reused clones for writers above 4 (widened to 16 clones / 70 GB by the owner's card 2026-11-02 18:35 PST, "How hard should Relentless run this machine? → 8 workers, 16 clones / 70 GB"),
 # "I trust you, but please monitor them carefully. They seem to propagate prolifically." Revert line (PLAN.md section 4):
-# a clone strands work, or the pool passes 70 GB. `git worktree` stays banned. Enforced HERE, at creation, because every
+# a clone strands work, or the pool passes the GB line (70, raised to 80 on 2026-11-18). `git worktree` stays banned. Enforced HERE, at creation, because every
 # pool clone (relentless builders' and checkers') is made by this file; the reading below is what RimPulse and ops_watch show.
 POOL_MAX_CLONES = 16
-POOL_MAX_BYTES = 70 * 10**9
+POOL_MAX_BYTES = 80 * 10**9   # 70 -> 80 GB 2026-11-18: owner "You set the GB limit, so yes do as you think."; 16 clones of 4.2-5.6 GB measured 72.6 GB
 POOL_IDLE_S = 3600
 POOL_WARM = "warm-"     # relentless_disk.WARM
 

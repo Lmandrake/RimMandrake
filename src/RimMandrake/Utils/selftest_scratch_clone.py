@@ -519,6 +519,18 @@ def main() -> int:
         r5, _ = quiet(sc.clone, "pool test", "p5", True, [], False, False)
         check(r5 == 1 and not (pool / "p5").exists(), "the byte cap refuses too")
 
+        # The shipped disk line is 80 GB (owner 2026-11-18, "You set the GB limit"): 16 clones of 4.2-5.6 GB must fit.
+        _saved = {k: os.environ.pop(k, None) for k in ("RM_POOL_MAX_CLONES", "RM_POOL_MAX_BYTES")}
+        try:
+            _cmax, _bmax = sc.pool_cap()
+            check(_cmax == 16, f"the clone count cap stays 16: {_cmax}")
+            check(74 * 10**9 <= _bmax, f"16 clones totalling 74 GB are not over the shipped line: {_bmax / 1e9} GB")
+            check(81 * 10**9 > _bmax, f"a pool at 81 GB is over the shipped line: {_bmax / 1e9} GB")
+        finally:
+            for k, v in _saved.items():
+                if v is not None:
+                    os.environ[k] = v
+
         # A helper's clone outside the pool: its unlanded work is an alarm too, and PROTECTED is no excuse for one.
         import scratch_reap as sr
         scr = BASE / "scratch" / "BENCH"

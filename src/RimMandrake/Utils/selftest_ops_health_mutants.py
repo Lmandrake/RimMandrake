@@ -21,7 +21,7 @@ MUTANTS = [
     (RU, '"unit": "%"', '"unit": "banana"', "rules: infra_share unit"),
     (RU, '"unit": "GB free on /tmp"', '"unit": "GB free on /nowhere"', "rules: tmp unit"),
     (RU, '"unit": "GB free on /"', '"unit": "GB free on /mnt/x"', "rules: root unit"),
-    (RU, '"unit": "GB the pool holds (cap 70.0)"', '"unit": "GB the pool holds (cap 99)"', "rules: pool unit"),
+    (RU, '"unit": "GB the pool holds (cap 80.0)"', '"unit": "GB the pool holds (cap 99)"', "rules: pool unit"),
     (RU, '"unit": "nightly reds no known-red entry parks"', '"unit": "nightly reds"', "rules: nightly_reds unit"),
     (RU, '"key": "disk.tmp_free_gb", "unit"', '"key": "disk.nope_free_gb", "unit"', "rules: tmp key"),
     (RU, '"key": "disk.pool_gb", "unit"', '"key": "disk.pool_nope", "unit"', "rules: pool key"),

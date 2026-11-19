@@ -310,7 +310,7 @@ Work in your seat clone (`/home/mandrake/rm/bench`);
 `D:\Luke\dev\RimMandrake` is a read-only mirror. Land with `./publish` (prints `PUBLISHED <sha>`, skill `clone-landing-commits`),
 and keep file writes and commits in separate Bash calls (hooks refuse a compound command whole).
 🔴 **`git worktree` is OFF** (owner, by card; `block_worktrees.py`). **A bounded pool of up to 16 reused
-clones and 70 GB is approved** for writers above 4 (owner: "I trust you, but please monitor them carefully. They seem to
+clones and 80 GB is approved** (GB line raised from 70 on 2026-11-18, owner: "You set the GB limit, so yes do as you think.") for writers above 4 (owner: "I trust you, but please monitor them carefully. They seem to
 propagate prolifically."), refused at creation by `scratch_clone.py` (an idle pushed clone is
 reused first); `scratch_clone.py` reports count, GB, oldest; one alarm, `disk.pool_breach`; any helper clone with unlanded work
 (pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour (except a trailing lesson/ledger commit: the belt carries those, and a commit whose content origin/main already holds under another hash), and a pool one with unpushed work is never reused. Revert if a clone strands work or the pool passes 70 GB. A committed mod DLL
