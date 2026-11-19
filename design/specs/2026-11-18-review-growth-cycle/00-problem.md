@@ -1,6 +1,6 @@
 # Why the Codex review count rose on the control store: the timeline, read claim by claim
 
-Written by the Conductor (Fable) on 2026-11-18 about 8:45 PM PST, on the owner's order: *"I think you, as Fable, need to
+Written by the Conductor (Fable) on 2026-11-18 at 8:28 PM PST, on the owner's order: *"I think you, as Fable, need to
 now look DEEPLY at some of these timelines to see 'are the fixes being introduced by sloppy coders, or is it indeed an
 ever-growing spec/input domain that's improperly bounded?' Then we design the relevant fix."* This file is the problem
 statement for that design. Nothing here is a ruling.
