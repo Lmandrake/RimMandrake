@@ -27,19 +27,26 @@ _KEYS = {}
 
 
 def _key(fn):
-    """-> "src/RimMandrake/...#sha16" for a file under src/RimMandrake, else None (cached per file name)."""
-    if fn in _KEYS:
-        return _KEYS[fn]
+    """-> "src/RimMandrake/...#sha16" for a file under src/RimMandrake, else None (cached per file name and its
+    size and mtime, so a copy rewritten after its first sight is hashed again)."""
     s = str(fn).replace("\\", "/")
     i = s.rfind(_MARK)
-    k = None
-    if i >= 0:
-        try:
-            with open(fn, "rb") as f:
-                k = s[i:] + "#" + hashlib.sha256(f.read()).hexdigest()[:16]
-        except OSError:
-            k = s[i:] + "#unreadable"
-    _KEYS[fn] = k
+    if i < 0:
+        return None
+    try:
+        st = os.stat(fn)
+        stamp = (st.st_size, st.st_mtime_ns)
+    except OSError:
+        return s[i:] + "#unreadable"
+    hit = _KEYS.get(fn)
+    if hit and hit[0] == stamp:
+        return hit[1]
+    try:
+        with open(fn, "rb") as f:
+            k = s[i:] + "#" + hashlib.sha256(f.read()).hexdigest()[:16]
+    except OSError:
+        k = s[i:] + "#unreadable"
+    _KEYS[fn] = (stamp, k)
     return k
 
 
@@ -117,15 +124,23 @@ if _OUT:
                 break
             if not a.startswith("--") and any(c in a[1:] for c in "ISE"):
                 return "started with %s" % a
-        if env is not None:
-            try:
-                pp = os.fsdecode(env.get("PYTHONPATH") or env.get(b"PYTHONPATH") or "")
-                has_dir = bool(env.get("RM_STORE_CENSUS_DIR") or env.get(b"RM_STORE_CENSUS_DIR"))
-            except (AttributeError, TypeError):
-                return None
-            if _HERE not in pp.split(os.pathsep) or not has_dir:
-                return "started with an env that drops the hook"
+        if env is None:
+            env = os.environ                # inherited: a test may have stripped the hook from its own environment
+        pp, has_dir = _env(env, "PYTHONPATH"), _env(env, "RM_STORE_CENSUS_DIR")
+        if _HERE not in pp.split(os.pathsep) or not has_dir:
+            return "started with an env that drops the hook"
         return None
+
+    def _env(env, name):
+        """-> env[name] as text, str or bytes keys, "" when absent or unreadable."""
+        for k in (name, os.fsencode(name)):
+            try:
+                v = env.get(k)
+            except (TypeError, AttributeError):
+                continue
+            if v:
+                return os.fsdecode(v)
+        return ""
 
     def _audit(event, args):
         if getattr(_BUSY, "on", False):

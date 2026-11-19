@@ -24,7 +24,8 @@ Each module gets one verdict:
                  names a store or holds a write call (open with a writing or non-literal mode, os.open, .write(,
                  .writelines(, .write_text(, .write_bytes(, .dump(, os.replace/os.rename, a one-argument .replace( or
                  any .rename(, shutil copy/move) started at least once in the module as it is on disk, and none wrote;
-  NOT_MEASURED   some such scope never started under any census test (named in never_ran): never "does not write".
+  NOT_MEASURED   some such scope never started under any census test (named in never_ran), or two such scopes share a
+                 line and a name (two lambdas on one line), so no start can tell them apart: never "does not write".
 Writes that blame nobody are counted in fixture_writes. A Python child a test starts without the hook (-I/-S/-E, or
 an env that drops it) is listed in unhooked_children: whatever it did is unseen. The record's status is "ok", or
 "could_not_look" with its cause: the probe was not caught, the tree or the test list could not be read, or no
@@ -73,6 +74,7 @@ def excluded(rel):
 WRITE_ATTRS = {"write", "writelines", "write_text", "write_bytes", "dump", "rename"}
 SHUTIL = {"copy", "copy2", "copyfile", "copytree", "move", "copyfileobj"}
 MODE = re.compile(r"^[rwaxbtU+]+$")
+AMBIGUOUS = "ambiguous:"                               # a required scope no start can vouch for
 
 
 def _opens_for_write(call):
@@ -90,8 +92,11 @@ def _opens_for_write(call):
     if named and len(call.args) >= 2 and not (isinstance(call.args[1], ast.Constant)
                                              and isinstance(call.args[1].value, str)):
         return True                                    # open(p, mode_var): cannot be told, counted as a write
-    if isinstance(call.func, ast.Attribute) and isinstance(call.func.value, ast.Name) and call.func.value.id == "os":
-        return True                                    # os.open(p, flags): flags decide, counted as a write
+    if isinstance(call.func, ast.Attribute):
+        if isinstance(call.func.value, ast.Name) and call.func.value.id == "os":
+            return True                                # os.open(p, flags): flags decide, counted as a write
+        if any(not (isinstance(a, ast.Constant) and isinstance(a.value, str)) for a in call.args[:2]):
+            return True                                # p.open(mode_var), io.open(p, mode_var): counted as a write
     return any(c in m for m in modes for c in "wax+")
 
 
@@ -123,12 +128,15 @@ def store_functions(src):
             scopes.append((n.lineno, n.end_lineno, "%d:%s" % (n.lineno, name), "%s (line %d)" % (name, n.lineno)))
     lines = {i for i, line in enumerate(src.split("\n"), 1) if NAMES.search(line)}
     lines |= {n.lineno for n in ast.walk(tree) if _is_write_call(n)}
+    shared = {k for k in (s[2] for s in scopes) if sum(1 for t in scopes if t[2] == k) > 1}
     out = {}
     for i in sorted(lines):
         inner = [s for s in scopes if s[0] <= i <= s[1]]
         if inner:
             s = max(inner, key=lambda s: (s[0], -s[1]))
-            out[s[2]] = s[3]
+            # two scopes with one identity (two lambdas on a line): one starting cannot vouch for the other
+            out[AMBIGUOUS + s[2] if s[2] in shared else s[2]] = s[3] + (", shares its line and name" if s[2] in shared
+                                                                         else "")
         else:
             out["1:<module>"] = "<module>"
     return out
@@ -174,8 +182,13 @@ def file_sha(path):
 
 
 def fingerprint(root):
-    """sha256 over every .py under src/RimMandrake: a record read later is trusted only on the same code."""
+    """sha256 over every .py under src/RimMandrake and the pipeline test list: a record read later is trusted only on
+    the same code and the same tests."""
     h = hashlib.sha256()
+    cfg = os.path.join(root, "src", "RimMandrake", "Utils", "pipeline_tests.json")
+    if os.path.isfile(cfg):
+        with open(cfg, "rb") as f:
+            h.update(b"pipeline_tests.json" + hashlib.sha256(f.read()).digest())
     for rel in _walk(root):
         h.update(rel.encode())
         with open(os.path.join(root, rel), "rb") as f:
@@ -344,7 +357,7 @@ def census(root=REPO, workers=6, hook_dir=None, timeout=None):
                 else:
                     try:
                         need = store_functions(src)
-                        m["never_ran"] = [lab for key, lab in sorted(need.items(), key=lambda kv: int(kv[0].split(":")[0]))
+                        m["never_ran"] = [lab for key, lab in sorted(need.items(), key=lambda kv: kv[1])
                                           if key not in ran.get(rel, set())]
                     except SyntaxError as e:
                         m["never_ran"] = ["its source cannot be parsed: %s" % e]

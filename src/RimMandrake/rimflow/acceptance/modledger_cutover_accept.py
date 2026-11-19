@@ -158,7 +158,8 @@ else:
     for m in writers:
         e = mods[m]["example"]
         print("      WRITER        %s  (%d writes; e.g. %s %s under %s)" % (m, mods[m]["writes"], e["event"],
-                                                                         os.path.basename(e["path"]), e["test"]))
+                                                                         os.path.basename(e["path"]) if e.get("path") else "an unresolved path",
+                                                                         e["test"]))
     for m in unmeasured:
         print("      NOT MEASURED  %s  (never ran: %s)" % (m, "; ".join(mods[m]["never_ran"][:4])
                                                           + (" +%d" % (len(mods[m]["never_ran"]) - 4)

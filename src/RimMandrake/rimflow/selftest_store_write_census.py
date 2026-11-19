@@ -83,6 +83,12 @@ MODS = {
     "fx_dirfd.py": "import os\n\ndef save(c):\n    v = os.path.join(c, 'version')\n    os.makedirs(v, exist_ok=True)\n"
                    "    t = os.path.join(c, 't.tmp')\n    open(t, 'w').write('{}')\n    fd = os.open(v, os.O_RDONLY)\n"
                    "    try:\n        os.replace(t, 'stage_record.json', dst_dir_fd=fd)\n    finally:\n        os.close(fd)\n",
+    # Codex round 2: two lambdas on one line, only the clean one called
+    "fx_twolambda.py": "STORE = 'stage.json'\ncallbacks = (lambda: None, lambda: open(STORE, 'w'))\n",
+    # an attribute open with a mode from a variable, never called
+    "fx_attrmode.py": "STORE = 'stage.json'\n\ndef save(p, mode):\n    return p.open(mode)\n",
+    # a decorated class naming a store, its body run on import: measured, not a false NOT_MEASURED
+    "fx_decorated.py": "def identity(c):\n    return c\n\n\n@identity\nclass Reader:\n    STORE = 'stage.json'\n",
     # starts a Python child with -I: the hook cannot follow it (names stage.json only here)
     "fx_spawner.py": "import subprocess, sys\n\ndef go():\n    # writes 'stage.json' in the child\n"
                      "    subprocess.run([sys.executable, '-I', '-c', 'pass'], check=True)\n",
@@ -108,8 +114,24 @@ TESTS = {
     "selftest_fx_reldir.py": "import fx_reldir, tempfile\nfx_reldir.save(tempfile.mkdtemp())\n",
     "selftest_fx_conversion.py": "import fx_conversion, tempfile\nfx_conversion.save(tempfile.mkdtemp())\n",
     "selftest_fx_dirfd.py": "import fx_dirfd, tempfile\nfx_dirfd.save(tempfile.mkdtemp())\n",
+    "selftest_fx_twolambda.py": "import fx_twolambda\nfx_twolambda.callbacks[0]()\n",
+    "selftest_fx_attrmode.py": "import fx_attrmode\n",
+    "selftest_fx_decorated.py": "import fx_decorated\n",
+    # a copy identical to fx_unexercised.py, loaded (its hash cached), then rewritten clean and called: the rewritten
+    # copy must not stand in for the real one
+    "selftest_fx_unexercised_reload.py":
+        "import importlib.util, os, tempfile\nhere = os.path.dirname(os.path.abspath(__file__))\n"
+        "d = tempfile.mkdtemp()\np = os.path.join(d, 'src', 'RimMandrake', 'rimflow', 'fx_unexercised.py')\n"
+        "os.makedirs(os.path.dirname(p))\nopen(p, 'w').write(open(os.path.join(here, 'fx_unexercised.py')).read())\n"
+        "def load():\n    spec = importlib.util.spec_from_file_location('fxu_copy', p)\n"
+        "    m = importlib.util.module_from_spec(spec)\n    spec.loader.exec_module(m)\n    return m\n"
+        "load()\nopen(p, 'w').write('import os\\n\\ndef save(c):\\n    return 1  # rewritten clean, longer\\n')\n"
+        "load().save(0)\n",
+    # strips the hook from its own environment, then starts a child that inherits that
+    "selftest_fx_spawner_env.py": "import os, subprocess, sys\nos.environ.pop('PYTHONPATH', None)\n"
+                                  "subprocess.run([sys.executable, '-c', 'pass'], check=True)\n",
     # a different copy of fx_unexercised.py, run from elsewhere: it must not stand in for the real one
-    "selftest_fx_copy.py": "import os, subprocess, sys, tempfile\nd = tempfile.mkdtemp()\n"
+    "selftest_fx_unexercised_copy.py": "import os, subprocess, sys, tempfile\nd = tempfile.mkdtemp()\n"
                            "p = os.path.join(d, 'src', 'RimMandrake', 'rimflow', 'fx_unexercised.py')\nos.makedirs(os.path.dirname(p))\n"
                            "open(p, 'w').write('import os\\n\\ndef save(c):\\n    return 1\\n\\nsave(0)\\n')\n"
                            "subprocess.run([sys.executable, p], check=True)\n",
@@ -219,6 +241,18 @@ if C is not None:
        % M.get("src/RimMandrake/rimflow/fx_latin1.py"))
     ok(nm("fx_undecodable.py", "decoded"), "an undecodable .py is a candidate never measured, not skipped (%r)"
        % M.get("src/RimMandrake/rimflow/fx_undecodable.py"))
+    ok(nm("fx_twolambda.py", "shares its line"), "two lambdas on one line, one called: the other is NOT_MEASURED (%r)"
+       % M.get("src/RimMandrake/rimflow/fx_twolambda.py"))
+    ok(nm("fx_attrmode.py", "save"), "p.open(mode_var) never called is NOT_MEASURED (%r)"
+       % M.get("src/RimMandrake/rimflow/fx_attrmode.py"))
+    ok(v.get("fx_decorated.py") == "NO_WRITE_SEEN", "a decorated class body run on import is measured (%r)"
+       % M.get("src/RimMandrake/rimflow/fx_decorated.py"))
+    ran = {t["test"].split("/")[-1]: t["rc"] for t in rec.get("tests", [])}
+    ok(ran.get("selftest_fx_unexercised_copy.py") == 0 and ran.get("selftest_fx_unexercised_reload.py") == 0,
+       "the two copy tests ran and passed, so the copy checks above saw a copy run (%r)"
+       % {k: ran.get(k) for k in ("selftest_fx_unexercised_copy.py", "selftest_fx_unexercised_reload.py")})
+    ok(any("drops the hook" in (u.get("why") or "") and u.get("test", "").endswith("selftest_fx_spawner_env.py")
+           for u in un), "a child inheriting an env stripped of the hook is listed as unhooked (%r)" % un[:3])
     noisy = [t for t in rec.get("tests", []) if t["test"].endswith("selftest_fx_reader_noisy.py")]
     ok(noisy and noisy[0]["rc"] == 1, "a red test printing bytes that are not text is counted, not a crash (%r)" % noisy)
     blind = C.census(root, workers=2, hook_dir=os.path.join(root, "no_such_hook_dir"))
@@ -283,6 +317,10 @@ if C is not None:
         json.dump(good, f)
     rc, out = oracle(r2, args=("--writers-only", "--census", forged))
     ok(rc == 2, "oracle --census: a whole record of this tree is read as measured (exit %s: %s)" % (rc, tail(out)))
+    utils(r2, json.dumps({"tests": [{"test": "src/RimMandrake/rimflow/selftest_fx_reader.py"}]}))
+    rc, out = oracle(r2, args=("--writers-only", "--census", forged))
+    ok(rc == 3 and "other code" in out, "oracle --census: a record taken before pipeline_tests.json changed is "
+       "COULD NOT LOOK (exit %s: %s)" % (rc, tail(out)))
 
 # the store clauses: a JSON view must be an object, an archive must be a file
 rv = tempfile.mkdtemp(prefix="census_view_")
