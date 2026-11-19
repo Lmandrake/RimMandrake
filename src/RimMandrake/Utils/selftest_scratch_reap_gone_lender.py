@@ -110,6 +110,22 @@ def cases(td: Path, origin: Path):
     logged = [Path(a.get("path", "")).name for a in acts(td / "archive") if "lender" in a.get("evidence", "")]
     check({"detached_clone", "own_commit_clone", "review_clone"} <= set(logged), f"acts.jsonl records all three ({logged})")
 
+    # 6. a chain (real: /tmp/rim-judge-review.nUCjic/sparse -> its sibling full -> a deleted codex lane clone): the
+    #    direct lender lives, the one behind it is gone. Both go, the borrower first (its lender waits for it).
+    l6 = clone(origin, lenders / "l6")
+    commit(l6, "c.txt", "chained work")
+    mid = borrower(l6, s / "chain_mid")
+    leaf = borrower(mid, s / "chain_leaf")
+    shutil.rmtree(l6)
+    for c in (mid, leaf):
+        age(c)
+    seen = {}
+    for _ in range(2):
+        rc, rows = run_reaper("--apply")
+        seen.update({k: rows[k]["verdict"] for k in ("chain_mid", "chain_leaf") if k in rows})
+    check(not leaf.exists() and not mid.exists() and seen.get("chain_leaf") == "DELETED",
+          f"a borrower whose lender's lender is gone goes, then that lender ({seen})")
+
     # 5. over the preserve cap: stays refused, deletes nothing
     l5 = clone(origin, lenders / "l5")
     commit(l5, "big.txt", "x" * 5000)

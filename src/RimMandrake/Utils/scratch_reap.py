@@ -1128,13 +1128,22 @@ def dirty_files(c: Path) -> tuple[list[str], int, int, int, str | None]:
 
 
 def lender_gone(dotgit: Path) -> bool:
-    """An alternates line naming a dir no longer there: the lender was deleted, and what only it held went with it."""
-    try:
-        lines = (dotgit / "objects" / "info" / "alternates").read_text(errors="surrogateescape").splitlines()
-    except OSError:
-        return False
-    return any(x.strip() and not x.startswith("#") and not os.path.isdir(os.path.join(dotgit / "objects", x.strip()))
-               for x in lines)
+    """An alternates line naming a dir no longer there, here or in a lender's own alternates (git follows the chain):
+    the lender was deleted, and what only it held went with it."""
+    todo, seen = [str(dotgit / "objects")], set()
+    while todo:
+        objs = os.path.realpath(todo.pop())
+        if objs in seen:
+            continue
+        seen.add(objs)
+        if not os.path.isdir(objs):
+            return True
+        try:
+            lines = Path(objs, "info", "alternates").read_text(errors="surrogateescape").splitlines()
+        except OSError:
+            continue
+        todo += [os.path.join(objs, x.strip()) for x in lines if x.strip() and not x.startswith("#")]
+    return False
 
 
 def orphan_files(c: Path) -> tuple[list[str], int, int, int, str | None]:
