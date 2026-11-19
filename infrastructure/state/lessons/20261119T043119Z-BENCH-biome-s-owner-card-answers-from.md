@@ -1,0 +1,1 @@
+A biome's owner card answers from the 2026-11-09 Designer dry runs live in design/RimMandrake/designer_codex_2026-11-09/<Biome>/ANSWERS_OWNER.md, outside the biome's own folders: a rewrite or second read that skips that file misses dated owner words (the Abyss first rewrite missed all three of his answers on what the hide is for).
