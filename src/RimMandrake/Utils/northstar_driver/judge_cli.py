@@ -149,7 +149,7 @@ def image_problem(path):
         with Image.open(path) as im:             # verify() checks structure only: decode the pixels too (truncated files)
             im.load()
     except ImportError:
-        pass
+        return "cannot decode the screenshot: Pillow is not installed (a header check is not a readable image)"
     except Exception as ex:
         return "screenshot fails to decode: %s" % ex
     return None
@@ -283,7 +283,12 @@ def execute(calls, texts, runner, jobs=8, backoff_s=20.0, log=_p):
         cl = call["claim"]
         t0 = time.time()
         call["attempts"] += 1
-        ok, raw = runner(_prompt_for(cl, texts[cl["bar"]]["text"]), cl["image"])
+        try:
+            ok, raw = runner(_prompt_for(cl, texts[cl["bar"]]["text"]), cl["image"])
+        except rmpaths.RmDataRootUnset:
+            raise                                    # the documented by-name failure
+        except Exception as ex:                      # noqa: BLE001 - a staging or subprocess error: the judge could not run
+            ok, raw = False, "%s: %s" % (type(ex).__name__, ex)
         call["ms"] = int((time.time() - t0) * 1000)
         call["ok"], call["raw"] = ok, raw
         call["throttled"] = is_throttle(ok, raw)
@@ -329,6 +334,22 @@ def execute(calls, texts, runner, jobs=8, backoff_s=20.0, log=_p):
 
 # ------------------------------------------------------------------ pass 1: the open look
 
+def _depth_before(text, pos):
+    """Open-brace depth at `pos`, counting braces outside JSON strings only."""
+    depth, in_str, esc = 0, False, False
+    for ch in text[:pos]:
+        if in_str:
+            esc, in_str = (False, in_str) if esc else (ch == "\\", ch != '"')
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth = max(0, depth - 1)
+    return depth
+
+
 def parse_open(raw):
     """-> (look, where, first_noticed, cause). look is one of OPEN_LOOKS, or None with the cause: an error or throttle
     envelope, no result text, or a LAST JSON object that is missing, unreadable or not a look (an earlier object is never
@@ -356,7 +377,8 @@ def parse_open(raw):
         except ValueError:
             continue
         if stop == end + 1:              # the object that ENDS the answer, decoded string-aware (stop is an absolute index)
-            obj = o
+            if _depth_before(text, st) == 0:     # and a top-level one: never an inner object of a broken outer answer
+                obj = o
             break
     if not isinstance(obj, dict):
         return None, "", "", "unreadable answer: the final JSON object does not decode"
@@ -497,7 +519,7 @@ def judge_doc(doc, runner, model="(mock)", jobs=8, repeat_must=1, repeat_cannot=
     apply_verdicts(doc, claims)
     models = sorted({m for c in calls for m in reported_models(c["raw"])})
     prev = (doc.get("judge") or {}).get("open_look")
-    if prev and prev.get("status") == "ran":
+    if prev:                                         # every earlier look is kept, also across a run that skipped pass 1
         ol["earlier"] = (prev.get("earlier") or []) + [{k: v for k, v in prev.items() if k != "earlier"}]
     doc["judge"] = {
         "judged_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),

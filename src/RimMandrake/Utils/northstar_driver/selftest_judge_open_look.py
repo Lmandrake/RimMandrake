@@ -173,6 +173,9 @@ def main():
     err_env = json.dumps({"type": "result", "is_error": True, "result": 'API Error: 429 {"look": "EXPECTED"}'})
     trunc = json.dumps({"type": "result", "is_error": False, "result": 'e.g. {"look": "EXPECTED"} ... my answer: {"look": "WRO'})
     braces = json.dumps({"type": "result", "is_error": False, "result": 'Seen. {"look": "ODD", "where": "sign {A} by the rim", "first_noticed": "it"}'})
+    nested = json.dumps({"type": "result", "is_error": False, "result": '{"answer":{"look":"EXPECTED"}'})
+    pn = J.parse_open(nested)
+    check("O8 an inner object of a broken outer answer is never the answer", pn[0] is None and pn[3], pn)
     pe, pt, pb = J.parse_open(err_env), J.parse_open(trunc), J.parse_open(braces)
     check("O8 error envelope is could-not-look even holding a look", pe[0] is None and "could not run" in pe[3], pe)
     check("O8 truncated final answer is never salvaged from an earlier example", pt[0] is None and pt[3], pt)
@@ -185,12 +188,19 @@ def main():
     check("O9 a rerun keeps the earlier doubt and its evidence", any("pitA" in x for x in r9["bar_ladder"].get("doubts", []))
           and "pass-1 doubt" in r9["bar_ladder"]["evidence"], r9["bar_ladder"])
     check("O9 the earlier open-look record is kept", len(d9["judge"]["open_look"].get("earlier") or []) == 1, list(d9["judge"]["open_look"]))
+    d9 = J.judge_doc(d9, Bar(), jobs=1, backoff_s=0, log=lambda s: None)                              # a run that skips pass 1
+    d9 = J.judge_doc(d9, Bar(), open_runner=Open({}, []), jobs=1, backoff_s=0, log=lambda s: None)
+    e9 = d9["judge"]["open_look"].get("earlier") or []
+    check("O9 history survives ran -> skipped -> ran", len(e9) == 3 and any(x.get("doubts") == 1 for x in e9), [x.get("status") for x in e9])
 
     # O10 raising runner, truncated image, pixel size
     def boom(prompt_for, image):
         raise PermissionError("stage dir not writable")
     d10 = J.judge_doc(make_doc(tempfile.mkdtemp()), Bar(), open_runner=boom, jobs=1, backoff_s=0, log=lambda s: None)
     ol10 = d10["judge"]["open_look"]
+    d10b = J.judge_doc(make_doc(tempfile.mkdtemp()), boom, open_runner=boom, jobs=1, backoff_s=0, log=lambda s: None)
+    check("O10 a raising pass-2 runner is UNMEASURED (could not run), the run still completes",
+          all(r["status"] == UNMEASURED and "could not run" in r["evidence"] for r in d10b["bars"]), [r["evidence"][:80] for r in d10b["bars"]])
     check("O10 a raising runner is could-not-look, pass 2 still runs", ol10.get("could_not_look") == 5 and
           all("PermissionError" in x["cause"] for x in ol10["looks"]) and all(r["status"] == PASS for r in d10["bars"]), ol10.get("looks", [{}])[0])
     tp = os.path.join(tempfile.mkdtemp(), "trunc.png")

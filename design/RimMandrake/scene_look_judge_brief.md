@@ -73,7 +73,9 @@ are judged by THIS brief through ONE entry point, `src/RimMandrake/Utils/northst
   answer is a pass-1 doubt unless the bar itself promises the look. The refusal-contract record for a north-star frame
   FAIL is not written yet (`RIMMANDRAKE_EMIT_REFUSAL_RECORDS_FROM_NORTHSTAR_FRAME_FAILS`).
 - The exact image judged: the run's own capture file, named in the judge record with its sha256, pixel size and crop
-  note (`judge_cli.py` judges a byte copy and deletes only the copy).
+  note (`judge_cli.py` judges a byte copy and deletes only the copy). On this route the crop is the capture tool's own
+  `__cell_rect` file, never enlarged by the judge, so its provenance is that file and the source it names; no crop box or
+  scale factor is recorded (the section "Keep the exact image judged" below asks them of a presenter who crops).
 - Calibration: pass 2's prompt is unchanged by the fold; pass 1 is new and has no consequence beyond the doubts it lists.
   This brief stays UNTESTED in `infrastructure/state/judge_calibration.json` until its planted cases run
   (`RIMMANDRAKE_SEED_SCENE_LOOK_CALIBRATION_BRIM_PIT_PAIR`).
