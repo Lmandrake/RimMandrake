@@ -1127,6 +1127,43 @@ def dirty_files(c: Path) -> tuple[list[str], int, int, int, str | None]:
     return paths, tracked, untracked, size, None
 
 
+def lender_gone(dotgit: Path) -> bool:
+    """An alternates line naming a dir no longer there: the lender was deleted, and what only it held went with it."""
+    try:
+        lines = (dotgit / "objects" / "info" / "alternates").read_text(errors="surrogateescape").splitlines()
+    except OSError:
+        return False
+    return any(x.strip() and not x.startswith("#") and not os.path.isdir(os.path.join(dotgit / "objects", x.strip()))
+               for x in lines)
+
+
+def orphan_files(c: Path) -> tuple[list[str], int, int, int, str | None]:
+    """dirty_files for a clone whose lender is gone, read without HEAD: its .git whole (refs, index, reflog, its own
+    objects), every index entry whose blob no store holds, every file the index does not match, every untracked file
+    not disposable. Those bytes are all the clone has that the mirror lacks. Counted as neither tracked nor untracked:
+    the index is inside the .git."""
+    ls, mod, oth = (git(c, *a) for a in (("ls-files", "-s", "-z"), ("diff-files", "--name-only", "-z"),
+                                          ("ls-files", "-z", "--others")))
+    if ls.returncode or mod.returncode or oth.returncode:
+        return [], 0, 0, 0, "cannot read the index of a clone whose lender is gone"
+    ents = [(m.split()[1], p) for m, p in (e.split("\t", 1) for e in ls.stdout.split("\0") if e) if not m.startswith("160000")]
+    chk = git(c, "cat-file", "--batch-check", stdin="".join(s + "\n" for s in sorted({s for s, _ in ents})))
+    if chk.returncode:
+        return [], 0, 0, 0, f"cannot check the index blobs ({chk.stderr.strip()})"
+    lost = {ln.split()[0] for ln in chk.stdout.splitlines() if ln.endswith(" missing")}
+    idx = {p: s for s, p in ents}
+    stat = [p for p in mod.stdout.split("\0") if p in idx and os.path.isfile(c / p) and not os.path.islink(c / p)]
+    hashed = git(c, "hash-object", "--no-filters", "--stdin-paths", stdin="".join(p + "\n" for p in stat)) if stat else None
+    if hashed is not None and hashed.returncode:
+        return [], 0, 0, 0, f"cannot hash the worktree ({hashed.stderr.strip()})"
+    same = {p for p, h in zip(stat, hashed.stdout.split() if hashed else []) if idx[p] == h}   # stat-dirty only (touched)
+    keep = {p for s, p in ents if s in lost} | (set(mod.stdout.split("\0")) - same) | {
+        p for p in oth.stdout.split("\0") if p and not disposable(p)}
+    paths = [".git"] + sorted(p for p in keep if p and os.path.lexists(c / p))
+    size = Tree(c / ".git").size + sum(os.lstat(c / p).st_size for p in paths[1:])
+    return paths, 0, 0, size, None
+
+
 def filtered_paths(c: Path) -> list[str]:
     """Tracked paths a content filter stands between: git's status answers for the filtered bytes, not the file. A filter
     is named by an attribute and defined in any config, so the attribute is what is asked. Unreadable counts as filtered."""
@@ -1260,7 +1297,12 @@ def clone_state(c: Path) -> dict:
     hard.extend(f"{c}: {x}" for x in gitlink_files(c))
     dead: list[str] = []
     tips, n, changed, err = unique_commits(c, dead)
-    if err:
+    orphan = bool(err) and lender_gone(dotgit)
+    if orphan:                  # its commits went with the lender; what it holds of its own is kept instead of refused
+        out["broken"] = f"lender gone, history unreadable: {err}"
+        soft.append(f"{c}: its lender is gone, so its history cannot be read ({err}); kept instead: its .git and "
+                    "every file whose bytes the mirror lacks")
+    elif err:
         hard.append(f"{c}: {err}")
         out["corrupt"].append(hard[-1])
     elif n:
@@ -1285,12 +1327,12 @@ def clone_state(c: Path) -> dict:
         out["corrupt"].append(hard[-1])
     elif any(e and (e[0].islower() or (e[0] == "S" and os.path.lexists(c / e[2:]))) for e in flags.stdout.split("\0")):
         hard.append(f"{c}: a file is marked assume-unchanged or skip-worktree, so git status cannot vouch for it")
-    paths, tracked, untracked, size, err = dirty_files(c)
+    paths, tracked, untracked, size, err = orphan_files(c) if orphan else dirty_files(c)
     if err:
         hard.append(f"{c}: {err}")
         out["corrupt"].append(hard[-1])
     else:
-        cut = tmp_overcap(c, paths) if size > DIRTY_CAP else None
+        cut = tmp_overcap(c, paths) if size > DIRTY_CAP and not orphan else None
         if cut:
             paths, untracked = cut["dirty"], cut["untracked"]
             out["notes"], out["dropped"] = cut["notes"], cut["dropped"]
@@ -1613,7 +1655,7 @@ def judge_clone(p: Path, ctx: Ctx) -> dict:
         return refuse(row, why)
     if st["soft"]:
         row.update(verdict="ARCHIVE", why=st["soft"], tips=st["tips"], unique=st["unique"], dirty=st["dirty"],
-                   changed=st["changed"], tracked=st["tracked"], dead_refs=st.get("dead_refs", []))
+                   changed=st["changed"], tracked=st["tracked"], dead_refs=st.get("dead_refs", []), broken=st.get("broken"))
     row["why"] = row["why"] + st["notes"]
     if st["dropped"]:
         row["dropped"] = st["dropped"]
