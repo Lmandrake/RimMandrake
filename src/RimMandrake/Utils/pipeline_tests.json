@@ -1,5 +1,5 @@
 {
-  "_doc": "The Maturation Pipeline's own tests, checked AT THE DOOR, not nightly (item RIMMANDRAKE_PAUSE_NIGHTLY_SWEEP_WRONG_PHASE_UNTIL_MOD_FINISHED). The owner, by card 2026-11-15: nightly tests check mods with finished versions, 'not mods in production. Code is too fluid otherwise. Wrong phase.' He then asked 'Keep nightly tests for Pipeline elements perhaps though?'; the Conductor's answer, his to overrule: the pipeline's machinery is the most fluid code in the repo, so the nightly is the wrong phase for it too. So: when a publish's local commits touch a pipeline_files path, ./publish runs every test below whose inputs the change touches (the test, the repo .py files it imports or names, transitively, and each one's same-stem .json beside it) and refuses on a red, as it does for publish_tree_checks.json. A change touching no pipeline file adds no tests. live_excluded tests read live state and never run at the door. nightly: false keeps this set out of the nightly sweep; true puts it back in (one line). Bypass once: RM_PUBLISH_SKIP_PIPELINE_CHECKS='<why>' (printed). Code: publish.py pipeline_checks(). seconds = one run alone on archmagi 2026-11-15 (measured).",
+  "_doc": "The Maturation Pipeline's own tests, checked AT THE DOOR, not nightly (item RIMMANDRAKE_PAUSE_NIGHTLY_SWEEP_WRONG_PHASE_UNTIL_MOD_FINISHED). The owner, by card 2026-11-15: nightly tests check mods with finished versions, 'not mods in production. Code is too fluid otherwise. Wrong phase.' He then asked 'Keep nightly tests for Pipeline elements perhaps though?'; the Conductor's answer, his to overrule: the pipeline's machinery is the most fluid code in the repo, so the nightly is the wrong phase for it too. So: when a publish's local commits touch a pipeline_files path, ./publish runs every test below whose inputs the change touches (the test, the repo .py files it imports or names, transitively, each one's same-stem .json beside it, and any path matching the test's own `inputs` globs, as a boundary page for boundary_check) and refuses on a red, as it does for publish_tree_checks.json. A change touching no pipeline file adds no tests. live_excluded tests read live state and never run at the door. nightly: false keeps this set out of the nightly sweep; true puts it back in (one line). Bypass once: RM_PUBLISH_SKIP_PIPELINE_CHECKS='<why>' (printed). Code: publish.py pipeline_checks(). seconds = one run alone on archmagi 2026-11-15 (measured).",
   "nightly": false,
   "timeout_s": 180,
   "pipeline_files": [
@@ -40,7 +40,8 @@
     "src/RimMandrake/rimflow/control.py",
     "src/RimMandrake/rimflow/selftest_end_receipt_off_result.py",
     "src/RimMandrake/rimflow/selftest_control.py",
-    "pipe"
+    "pipe",
+    "design/specs/*/boundary.md"
   ],
   "tests": [
     {"test": "src/RimMandrake/Utils/selftest_maturation_convergence.py", "seconds": 0.4},
@@ -48,7 +49,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_pipeline_control.py", "seconds": 2.4},
     {"test": "src/RimMandrake/rimflow/selftest_run_rules_keys.py", "seconds": 1.0},
     {"test": "src/RimMandrake/rimflow/selftest_control.py", "seconds": 40},
-    {"test": "src/RimMandrake/Utils/boundary_check.py", "seconds": 0.1},
+    {"test": "src/RimMandrake/Utils/boundary_check.py", "inputs": ["design/specs/*/boundary.md"], "seconds": 0.1},
     {"test": "src/RimMandrake/Utils/selftest_boundary_check.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_end_receipt_off_result.py", "seconds": 1.3},
     {"test": "src/RimMandrake/rimflow/selftest_codex_review_fixes.py", "seconds": 0.9},

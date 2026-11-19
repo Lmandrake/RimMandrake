@@ -666,15 +666,17 @@ def door_inputs(top, test):
 
 
 def pipeline_selection(top, changed, cfg):
-    """-> the pipeline tests (not live_excluded) whose door_inputs the change touches; [] when it touches no pipeline
-    file; every one when the change set is unknown (None: no origin/main to diff against)."""
+    """-> the pipeline tests (not live_excluded) whose door_inputs, or `inputs` globs (a page a test reads that no import
+    names), the change touches; [] when it touches no pipeline file; every one when the change set is unknown (None: no
+    origin/main to diff against)."""
     live = set(cfg.get("live_excluded", {}))
     if changed is None:
         return [c for c in cfg.get("tests", ()) if c["test"] not in live]
     if not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())):
         return []
     ch = set(changed)
-    return [c for c in cfg.get("tests", ()) if c["test"] not in live and door_inputs(top, c["test"]) & ch]
+    return [c for c in cfg.get("tests", ()) if c["test"] not in live and (door_inputs(top, c["test"]) & ch or any(
+        fnmatch.fnmatch(p, g) for p in ch for g in c.get("inputs", ())))]
 
 
 def pipeline_checks(top, changed):
