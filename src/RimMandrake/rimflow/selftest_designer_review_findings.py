@@ -338,6 +338,8 @@ SECTIONS = [
     lambda tmp: ask_reviewer_is_author_by_id(),
     lambda tmp: program_honours_criteria_suspect(),
     pin_anchor_from_concept_clone,
+    waiting_result_needs_feed_baseline,
+    unreadable_live_proofs_noted,
 ]
 
 

@@ -751,8 +751,11 @@ def built_evidence(repo, mod, aliases=()):
     refs += ["ITEM:%s" % i for i in items]
     try:
         names = sorted(os.listdir(os.path.join(repo, LIVE_PROOFS)))
-    except OSError:
+    except FileNotFoundError:
+        names = []      # no proofs filed at all
+    except OSError as e:    # could not look is not "no proofs" (RIMMANDRAKE_NOTE_UNREADABLE_LIVE_PROOFS_AS_UNMEASURED)
         names = []
+        notes.append("live proofs UNMEASURED: %s unreadable (%s)" % (LIVE_PROOFS, e.__class__.__name__))
     for n in names:
         stem, ext = os.path.splitext(n)
         if ext == ".txt" and (stem in items or (prefixes and stem.upper().startswith(prefixes))):
@@ -1510,6 +1513,11 @@ def result_errors(res, d, st, repo=REPO):
         if stage not in DIALOGUE:
             return ["only stages 1-2 send him questions; stage %d returns to stage 2 with the question" % stage]
         errs += quick_look_errors(res, rec)
+        if st.get("item") and owner_feed(repo, st.get("item"), d) is None:
+            # the wait's baseline: a null one never moves, so he would answer into a concept that waits for good
+            # (RIMMANDRAKE_REFUSE_WAITING_RESULT_WITHOUT_FEED_BASELINE)
+            errs.append("waiting_owner UNMEASURED: his feed (OWNER.jsonl) could not be read here, so the wait has no "
+                        "baseline to see his answer against; close it where the ledger is readable")
         sent = [a for a in (rec or {}).get("asks") or [] if isinstance(a, dict) and a.get("status") == "sent"]
         if not sent:
             errs.append("waiting_owner with no ask in status sent")
