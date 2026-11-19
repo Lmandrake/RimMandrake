@@ -618,8 +618,8 @@ def tree_checks(top, changed):
     """Owner by card 2026-11-12 ~8:25 PM PST: publish runs the fast whole-tree checks and refuses on red, naming it
     (validation_map_and_rules.md rule 10). The list is TREE_CHECKS; a repo without it (a test fixture) runs nothing.
     `changed`: the paths the local commits touch; only skip_when_only paths -> nothing runs. A check that times out
-    warns: it measured nothing, so it refuses nothing. A sparse clone runs them on a full checkout of HEAD
-    (full_head_tree). -> None, or raises Refuse naming each red check and its fix."""
+    warns: it measured nothing, so it refuses nothing. A clone runs them on a full checkout of HEAD
+    (full_head_tree), so the verdict is the commit's. -> None, or raises Refuse naming each red check and its fix."""
     cfg_path = os.path.join(top, TREE_CHECKS)
     if not os.path.isfile(cfg_path):
         return None
@@ -630,9 +630,10 @@ def tree_checks(top, changed):
     cfg = json.load(open(cfg_path, encoding="utf-8"))
     if changed and all(any(fnmatch.fnmatch(p, g) for g in cfg.get("skip_when_only", ())) for p in changed):
         return None
-    if is_sparse(top):
+    if is_clone_top(top):
         with full_head_tree(top) as full:
-            return _run_tree_checks(full, cfg)
+            cfg = _committed(full, TREE_CHECKS)         # the commit's own list: its tests are the ones checked out
+            return _run_tree_checks(full, cfg) if cfg else None
     return _run_tree_checks(top, cfg)
 
 
@@ -693,9 +694,10 @@ def pipeline_checks(top, changed):
     elif not any(fnmatch.fnmatch(p, g) for p in changed for g in cfg.get("pipeline_files", ())):
         return 0.0
     base = door_base(top)
-    if is_sparse(top):
+    if is_clone_top(top):
         with full_head_tree(top) as full:
-            return _run_pipeline_checks(full, changed, cfg, base)
+            cfg = _committed(full, PIPELINE_TESTS)
+            return _run_pipeline_checks(full, changed, cfg, base) if cfg else 0.0
     return _run_pipeline_checks(top, changed, cfg, base)
 
 
@@ -839,6 +841,23 @@ def split_pre_existing(top, base, red, run_one):
     return still, pre
 
 
+def _committed(full, rel):
+    """The check list as HEAD's commit holds it, or None when the commit has none (an uncommitted list names tests the
+    checkout does not hold)."""
+    p = os.path.join(full, rel)
+    return json.load(open(p, encoding="utf-8")) if os.path.isfile(p) else None
+
+
+def is_clone_top(top):
+    """True when `top` is the top of a git work tree with a commit at HEAD: the door then judges that commit, on a full
+    checkout of it (full_head_tree), never the working tree, where a file edited but not named in this publish (or a
+    peer's half-done edit) turned a red commit green (RIMMANDRAKE_CHECK_COMMITTED_TREE_NOT_DIRTY_WORKTREE_AT_DOOR).
+    A plain folder (a test fixture) is judged where it stands."""
+    r = run(top, "rev-parse", "--show-toplevel", check=False)
+    return (not r.returncode and os.path.realpath(r.stdout.strip()) == os.path.realpath(top)
+            and ref_exists(top, "HEAD"))
+
+
 def is_sparse(top):
     """True when some tracked file is not checked out (skip-worktree: a sparse clone, scratch_clone.py's default)."""
     r = run(top, "ls-files", "-t", check=False)
@@ -851,8 +870,9 @@ CHECKTREE_STALE_S = 3600
 
 @contextlib.contextmanager
 def full_head_tree(top, rev="HEAD", what="HEAD"):
-    """A sparse clone cannot run the whole-tree checks: the files they read are not checked out, so they went red
-    blind (lessons 2026-11-15 194926Z/195130Z) or green blind. Yield a full checkout of HEAD instead: a throwaway
+    """The checks judge the commit, not the working tree: a sparse clone lacks the files they read (they went red or
+    green blind, lessons 2026-11-15 194926Z/195130Z) and a full one holds edits the commit does not (is_clone_top).
+    Yield a full checkout of HEAD: a throwaway
     `git clone --shared` inside this clone's git dir (no objects copied, ~15 s for the whole tree on ext4), removed
     after. It holds the commit being pushed, so a violation in it refuses exactly as in a full clone. A leftover from a
     killed run (older than an hour) is removed first."""
@@ -875,7 +895,8 @@ def full_head_tree(top, rev="HEAD", what="HEAD"):
                 raise Refuse("the full checkout of %s for the checks failed: git %s: %s"
                              % (what, a[0] if a[0] != "-C" else a[2], r.stderr.strip()))
         print("tree checks: %s, running them on a full checkout of %s %s (%.1f s)"
-              % ("sparse clone" if rev == "HEAD" else "a red test re-run", what, head[:12], time.monotonic() - t0),
+              % ("the commit is what lands" if rev == "HEAD" else "a red test re-run", what, head[:12],
+                 time.monotonic() - t0),
               flush=True)
         yield tmp
     finally:

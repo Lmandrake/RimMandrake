@@ -10,7 +10,8 @@ wind cannot show the wind is the cause):
   F  wind set east (SetWindForTest 90), wind on: after 10,000 ticks the burn has run further downwind than upwind.
   R  the same with the wind REVERSED (SetWindForTest 270): the burn turns and runs west. F and R together tell a fire that
      follows the wind from a mod that blocks sideways spread, or walks one way, whatever the wind.
-     In F and R the fires at once never pass 3 x the cells lit, and nothing burns in the outer three lanes each side.
+     In F and R, at each of the 20 samples 500 ticks apart, the fires at once do not pass 3 x the cells lit and nothing
+     burns in the outer three lanes each side (a fire that comes and goes between two samples is not seen).
   B  wind off (windCarriesFireEnabled false), wind east: the burn reaches the outer lanes and runs both ways along the strip,
      leaning less than either wind run (the control: the instrument sees vanilla's even spread, and has no east bias).
   C  black rain on a fourth strip under the wind: every fire out within 2,000 ticks (bar three_skies). Counts only when the
@@ -85,9 +86,9 @@ def verdict_rows(f, r, b, c):
          "down %d up %d" % (f["down_cells"], f["up_cells"])),
         ("R wind reversed: the burn turns and runs west", r["lit"] > 0 and r["down_cells"] > r["up_cells"],
          "down %d up %d" % (r["down_cells"], r["up_cells"])),
-        ("F,R never more fires than 3 x the cells lit", all(x["lit"] > 0 and x["peak_fires"] <= 3 * x["lit"] for x in (f, r)),
+        ("F,R at no 500-tick sample more fires than 3 x the cells lit", all(x["lit"] > 0 and x["peak_fires"] <= 3 * x["lit"] for x in (f, r)),
          "F %d/%d R %d/%d" % (f["peak_fires"], f["lit"], r["peak_fires"], r["lit"])),
-        ("F,R nothing burns beside the lit lanes", f["fires_in_outer_lanes"] == 0 and r["fires_in_outer_lanes"] == 0,
+        ("F,R at no 500-tick sample a fire beside the lit lanes", f["fires_in_outer_lanes"] == 0 and r["fires_in_outer_lanes"] == 0,
          "F %d R %d" % (f["fires_in_outer_lanes"], r["fires_in_outer_lanes"])),
         ("B CONTROL even spread reaches the outer lanes", b["fires_in_outer_lanes"] > 0, b["fires_in_outer_lanes"]),
         ("B CONTROL runs both ways, leaning less than the wind runs",

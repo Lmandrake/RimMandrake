@@ -81,8 +81,13 @@ print("-- 1. planted readings: each wrong game, the row that must refuse it")
 rows = verdict()
 check(len(rows) == 9 and all(ok for _, ok, _ in rows), "the shipped reading passes all %d rows" % len(rows))
 START, CLEAN, F_ROW, R_ROW, PEAK, OUTER, B_OUT, B_LEAN, C_ROW = (idx("start the wind"), idx("start every"), idx("F wind"),
-                                                                  idx("R wind"), idx("F,R never"), idx("F,R nothing"),
+                                                                  idx("R wind"), idx("F,R at no 500-tick sample more"),
+                                                                  idx("F,R at no 500-tick sample a fire"),
                                                                   idx("B CONTROL even"), idx("B CONTROL runs"), idx("C "))
+# RIMMANDRAKE_SAMPLE_PYRE_NEVER_ROWS_BETWEEN_FIVE_HUNDRED_TICKS: both rows are read from 20 samples 500 ticks apart, so
+# their names say that and never "never": a fire that comes and goes between two samples is not seen
+check(all("500-tick sample" in NAMES[i] and "never" not in NAMES[i] for i in (PEAK, OUTER)),
+      "the peak-fires and outer-lane rows name the sampling they rest on: %r, %r" % (NAMES[PEAK], NAMES[OUTER]))
 PLANTED = [
     ("the wind never set: ProbeWind reads the map's own 213", dict(f=run_reading(90, True, 10, 0, 0, probe_wind=213)), START),
     ("SetWindForTest found no component (-1)", dict(r=run_reading(270, True, 10, 0, 0, wind_set=-1)), START),

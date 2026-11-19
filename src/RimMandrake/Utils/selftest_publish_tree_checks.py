@@ -108,6 +108,23 @@ def sparse_cases(tmp):
     gitdir = os.path.join(sp, ".git")
     left = [n for n in os.listdir(gitdir) if n.startswith(P.CHECKTREE_PREFIX)]
     check(not left, "no check tree left in the git dir: %s" % left)
+    # RIMMANDRAKE_CHECK_COMMITTED_TREE_NOT_DIRTY_WORKTREE_AT_DOOR: a FULL clone's door verdict is about the commit too.
+    # `up` is full; publishing one of two edited files leaves the other dirty in the working tree, where the checks ran.
+    script(up, os.path.join("src", "list.txt"), "alpha\ngamma\n")
+    g("commit", "-q", "-am", "the commit: a name the committed record does not allow", cwd=up)
+    script(up, os.path.join("data", "allowed.txt"), "alpha beta gamma\n")    # the fix, edited but not committed
+    err, out = call(up, ["src/list.txt"])
+    check(bool(err) and "planted name not allowed" in err,
+          "a full clone refuses a commit that is red, whatever an uncommitted edit would make of it (%r)"
+          % (err or out)[-200:])
+    g("commit", "-q", "-am", "the fix, committed", cwd=up)
+    script(up, os.path.join("data", "allowed.txt"), "alpha\n")               # a peer's half-done edit, not in the commit
+    err, out = call(up, ["src/list.txt"])
+    check(err is None and "1 green" in out,
+          "a full clone passes a commit that is green, whatever an uncommitted edit would make of it (%r)"
+          % (err or out)[-200:])
+    check(not [n for n in os.listdir(os.path.join(up, ".git")) if n.startswith(P.CHECKTREE_PREFIX)],
+          "no check tree left in the full clone's git dir")
 
 
 # RIMMANDRAKE_REPAIR_TWO_GAMES_DOOR_TEST_BLOCKS_EVERY_PUBLISH (A3, A4): a pipeline test red on origin/main before the change
@@ -210,8 +227,8 @@ def door_base_cases(tmp):
     work, base = pipe_repo(tmp, "dirtyred", ["old"], [])
     script(work, os.path.join("src", "pipe.py"), "FAULTS = ['old']\n# an uncommitted edit makes it red\n")
     err, out = pcall(work, ch)
-    check(bool(err) and "green at HEAD's commit" in err,
-          "red only through uncommitted edits (HEAD's commit is green): refused, not excused (%r)" % err)
+    check(err is None, "red only through uncommitted edits (HEAD's commit is green): the door judges the commit, and "
+          "passes it (%r)" % err)
     work, base = pipe_repo(tmp, "unknown", ["old"], ["old"], remote=False)
     check(P._changed_since_origin(work) is None, "no origin/main: the change set reads unknown (None), not empty")
     err, out = pcall(work, None)

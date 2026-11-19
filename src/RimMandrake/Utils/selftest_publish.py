@@ -119,6 +119,7 @@ def t_refused_tree_check_leaves_no_commit(a, b):
     with open(os.path.join(a, P.TREE_CHECKS), "w") as f:
         f.write('{"budget_s": 30, "timeout_s": 20, "checks": [{"test": "nobad.py", "fix": "remove bad.txt"}]}')
     write(a, "nobad.py", "import os, sys\nsys.exit(1 if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'bad.txt')) else 0)\n")
+    quiet(P.publish, a, [P.TREE_CHECKS, "nobad.py"], "the door's list and its check, committed: the door reads the commit")
     before = sh(a, "rev-parse", "HEAD")
     write(a, "good.txt", "good\n")
     write(a, "bad.txt", "bad\n")
