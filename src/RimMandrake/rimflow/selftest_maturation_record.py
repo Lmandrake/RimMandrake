@@ -65,10 +65,47 @@ def t_spend_write_holds_the_mod_lock():
           "the move made while it waited is kept", (rec.get("stage"), rec.get("moves")))
 
 
+def t_stage_spend_unmeasured_when_no_row_measured():
+    """A stage whose rows all carry tokens/usd/wall_s UNMEASURED reads each UNMEASURED, never 0; a stage where some rows
+    measured a field sums those; show prints the unmeasured field as UNMEASURED, and does not crash on it."""
+    U = M.UNM
+    rows = [{"stage": "blind_challenge", "tokens": U, "usd": U, "wall_s": U},
+            {"stage": "blind_challenge", "tokens": U, "usd": U, "wall_s": U},
+            {"stage": "in_game", "tokens": 300, "usd": U, "wall_s": 20},
+            {"stage": "in_game", "tokens": U, "usd": 0.5, "wall_s": U},
+            {"stage": "designer", "tokens": 0, "usd": 0.0, "wall_s": 0}]
+    by = M.spend_by_stage({"spend": rows})
+    b = by.get("blind_challenge") or {}
+    check([b.get(k) for k in ("tokens", "usd", "wall_s")] == [U, U, U],
+          "a stage no row measured reads UNMEASURED in every field", b)
+    check(b.get("entries") == 2 and b.get("unmeasured") == 6, "its entries and unmeasured fields are still counted", b)
+    g = by.get("in_game") or {}
+    check([g.get(k) for k in ("tokens", "usd", "wall_s")] == [300, 0.5, 20],
+          "a stage some rows measured sums those rows", g)
+    d = by.get("designer") or {}
+    check([d.get(k) for k in ("tokens", "usd", "wall_s")] == [0, 0.0, 0], "a measured 0 stays 0", d)
+    cost = M.pass_cost(TMP, MOD, {"spend": rows[:2]})
+    check(cost["weighted_tokens"] == U and cost["by_stage"]["blind_challenge"]["tokens"] == U,
+          "pass_cost's by_stage reads UNMEASURED where no row measured tokens", cost)
+    root = fresh("show", spend=rows[:2])
+    import contextlib
+    import io
+    buf = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf):
+            rc = M.main(["--root", root, "show", MOD])
+    except Exception as e:      # noqa: BLE001
+        rc = "%s: %s" % (type(e).__name__, e)
+    line = [x for x in buf.getvalue().splitlines() if x.strip().startswith("spend ")]
+    check(rc == 0 and line and "UNMEASURED weighted tokens" in line[0] and "UNMEASURED s wall" in line[0]
+          and " 0 weighted tokens" not in line[0], "show prints the stage's tokens and wall time as UNMEASURED",
+          (rc, line))
+
+
 def main(argv=None):
     argv = sys.argv[1:] if argv is None else argv
     only = set(argv[argv.index("--only") + 1:]) if "--only" in argv else None
-    for t in (t_spend_write_holds_the_mod_lock,):
+    for t in (t_spend_write_holds_the_mod_lock, t_stage_spend_unmeasured_when_no_row_measured):
         if only is not None and t.__name__ not in only:
             continue
         print("== %s" % t.__name__)

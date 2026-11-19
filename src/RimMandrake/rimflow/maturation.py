@@ -1626,26 +1626,26 @@ def record_run_spend(root, mod, runs, stage_of):
 
 def spend_by_stage(rec):
     """-> {stage: {tokens, usd, wall_s, entries, estimates, unmeasured}}. A run that worked in several stages is
-    counted once, under the joined key ("designer+preflight"), never split by a guess. usd is UNMEASURED when no
-    entry of that stage measured it."""
-    out = {}
+    counted once, under the joined key ("designer+preflight"), never split by a guess. tokens, usd and wall_s are each
+    UNMEASURED when no entry of that stage measured it, never 0 (design/specs/2026-11-19-maturation-record/boundary.md)."""
+    out, known = {}, {}
     for s in rec.get("spend") or []:
         key = "+".join(s.get("stages") or [s.get("stage")])
-        t = out.setdefault(key, {"tokens": 0, "usd": 0.0, "wall_s": 0, "entries": 0, "estimates": 0,
-                                 "unmeasured": 0, "usd_known": 0})
-        if isinstance(s.get("usd"), (int, float)):
-            t["usd_known"] += 1
+        t = out.setdefault(key, {"tokens": 0, "usd": 0.0, "wall_s": 0, "entries": 0, "estimates": 0, "unmeasured": 0})
+        kn = known.setdefault(key, set())
         t["entries"] += 1
         if s.get("kind") == "estimate":
             t["estimates"] += 1
         for k in ("tokens", "usd", "wall_s"):
-            if isinstance(s.get(k), (int, float)):
+            if isinstance(s.get(k), (int, float)) and not isinstance(s.get(k), bool):
                 t[k] += s[k]
+                kn.add(k)
             else:
                 t["unmeasured"] += 1
-    for t in out.values():
-        if not t.pop("usd_known"):
-            t["usd"] = UNM
+    for key, t in out.items():
+        for k in ("tokens", "usd", "wall_s"):
+            if k not in known[key]:
+                t[k] = UNM
     return out
 
 
@@ -3995,7 +3995,8 @@ def main(argv=None):
         for st, t in spend_by_stage({"spend": version_spend_rows(root, o.mod, rec)}).items():
             # weighted tokens only (the owner, 2026-11-16: "Please speak in terms of weighted tokens not money.")
             print("  spend %s: %s weighted tokens, %s s wall, %d entries (%d estimates, %d unmeasured fields)"
-                  % (" + ".join(label(x) for x in st.split("+")), t["tokens"], round(t["wall_s"]), t["entries"],
+                  % (" + ".join(label(x) for x in st.split("+")), t["tokens"],
+                     round(t["wall_s"]) if isinstance(t["wall_s"], (int, float)) else t["wall_s"], t["entries"],
                      t["estimates"], t["unmeasured"]))
         return 0
     if o.cmd == "next":

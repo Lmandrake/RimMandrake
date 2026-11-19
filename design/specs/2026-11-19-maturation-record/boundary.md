@@ -33,12 +33,12 @@ this one, `design/specs/2026-11-19-maturation-reads/boundary.md`; the record's o
 
 - **spend-write-holds-the-mod-lock.** `add_spend` reads, changes and writes the record while holding `_mod_lock`: an
   `advance` cannot land between its read and its write and be erased.
+- **stage-spend-unmeasured-when-no-row-measured.** `spend_by_stage` gives `tokens`, `usd` and `wall_s` as UNMEASURED
+  for a stage where no row measured that field, never 0; a stage where some rows measured it sums those rows. `show`
+  prints such a field as UNMEASURED.
 
 ## OWED (this item builds each, one publish at a time; each moves up to PROMISES with its check)
 
-- *stage-spend-unmeasured-when-no-row-measured.* `spend_by_stage` gives `tokens`, `usd` and `wall_s` as UNMEASURED
-  for a stage where no row measured that field, never 0; a stage where some rows measured it sums those rows. `show`
-  prints such a field as UNMEASURED.
 - *next-version-sets-aside-numbered-evidence.* `next_version` moves the previous version's numbered evidence (the
   three kinds above) to `version/previous/<old version>/` under the same relative path, before the new record is
   written, and names every moved path in its result (`archived`) and on its CLI line: the new version's cycle 1,
