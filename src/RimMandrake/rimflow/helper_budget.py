@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """The Dispatcher's helper budget (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER).
 
-v3 has no BENCH seat (design/RimMandrake/rimflow_v3_2026-10-26.md §2-3): the Dispatcher, a program, enforces budgets
+v3 has no BENCH seat (design/RimMandrake/dispatcher_design_2026-10-26.md §2-3): the Dispatcher, a program, enforces budgets
 mechanically. Every tick it computes the per-seat helper budget with slot_allocator (the computing library: the
 measured pace, his word, the payback, the brakes; its rules in src/RimMandrake/Utils/slot_rules.json, split.rule "v3")
 and publishes it as `<dispatcher state>/helper_budget.json` under the v3 seat names:

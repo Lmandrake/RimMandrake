@@ -1,6 +1,6 @@
 # RimFlow v3 in a bottle: what the simulation says (2026-10-27)
 
-Item `RIMFLOW_SIM_BUILD_FACTORY_IN_A_BOTTLE`. Design under test: `design/RimMandrake/rimflow_v3_2026-10-26.md`.
+Item `RIMFLOW_SIM_BUILD_FACTORY_IN_A_BOTTLE`. Design under test: `design/RimMandrake/dispatcher_design_2026-10-26.md`.
 Code: `src/RimMandrake/Utils/sim/rimflow_v3_sim.py` (+ `_params.json`, selftest). Data: `D:\ClaudeWork\rimmandrake\rimflow_sim\`.
 
 ## What it is

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """doorbell.py — the channel the Dispatcher uses to wake an IDLE Claude Code window (RimFlow v3.0).
 
-Design: `design/RimMandrake/rimflow_v3_2026-10-26.md` §2/§6 item 1; item RIMFLOW_V3_BUILD_DISPATCHER_FIRST.
+Design: `design/RimMandrake/dispatcher_design_2026-10-26.md` §2/§6 item 1; item RIMFLOW_V3_BUILD_DISPATCHER_FIRST.
 
 HOW A WINDOW IS WOKEN
 =====================

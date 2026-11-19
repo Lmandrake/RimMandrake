@@ -1,6 +1,6 @@
 # RimFlow v3.0 Dispatcher tick (RIMFLOW_V3_BUILD_DISPATCHER_FIRST; src/RimMandrake/rimflow/dispatcher.py).
 # Runs from the dispatch clone like testq-tick.service. LIVE (--apply) since 2026-10-28 ~14:57 PDT: wave 1 step 11
-# (design/RimMandrake/rimflow_v3_golive_wave1.md), after FOUNDRY's doorbell armed. Rollback: runbook section 7.
+# (design/RimMandrake/dispatcher_golive_wave1.md), after FOUNDRY's doorbell armed. Rollback: runbook section 7.
 # Install: cp rm-dispatcher.{service,timer} ~/.config/systemd/user/ && systemctl --user daemon-reload
 #          && systemctl --user enable --now rm-dispatcher.timer
 [Unit]

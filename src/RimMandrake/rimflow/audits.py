@@ -8,7 +8,7 @@ waiting index ("Carried picks").
 
   ensure   create the file when it is absent (an empty file = no audits yet), never truncate one that exists, then
            validate it. The Auditor's pre_launch (dispatcher_schedule.json) and the wave-2 setup step
-           (design/RimMandrake/rimflow_v3_golive_wave1.md section 9) run it.
+           (design/RimMandrake/dispatcher_golive_wave1.md section 9) run it.
   check    validate every line; exit 2 on a missing file or a line that breaks the schema.
   waiting  print the waiting index: UNRESOLVED lines with waiting_for and no later SOUND/DEFECT for that item+sha.
   append   one JSON line from stdin, validated, refused when its idempotency key (item, sha, run) is already there.

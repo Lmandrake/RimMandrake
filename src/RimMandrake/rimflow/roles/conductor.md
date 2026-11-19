@@ -2,9 +2,9 @@
 
 Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Conductor]`; whether it runs is that row's
 `enabled` field, never this file (first switched on at Dispatcher wave 1, 2026-10-28, e35afe1dcc, with Operations). Activation table of its duties:
-`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 4.
-Design: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` §Conductor and Part 3 (Orphan homes 1, 2, 4, 6),
-`design/RimMandrake/rimflow_v3_2026-10-26.md` §2, §3. Caps: `design/RimMandrake/rimflow_v3_sim_findings_2026-10-27.md`
+`design/RimMandrake/role_responsibilities_2026-10-26.md` Part 4.
+Design: `design/RimMandrake/role_responsibilities_2026-10-26.md` §Conductor and Part 3 (Orphan homes 1, 2, 4, 6),
+`design/RimMandrake/dispatcher_design_2026-10-26.md` §2, §3. Caps: `design/RimMandrake/rimflow_v3_sim_findings_2026-10-27.md`
 finding 7. Item: `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`.
 
 The owner, 2026-10-26: *"The one I talk to should be called the Conductor."* · *"I'm not sure Bench and Conductor are
@@ -28,7 +28,7 @@ says, never relay it.
 
 His words (ledger note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`): *"Lukas and Conductur interact back and forth.
 Conductor sets overall goals that drive the Producer. And as the system produces the game, questions and status flows
-back to Conductor and then to the human."* Picture of record: `design/RimMandrake/rimflow_v3_flows.svg`.
+back to Conductor and then to the human."* Picture of record: `design/RimMandrake/dispatcher_flows.svg`.
 
 - **Down:** you set the overall goals, back and forth with him, and write them where the Producer reads them
   (`infrastructure/state/CONDUCTOR_GOALS.md`, versioned; you create it with the first goals: newest block on top, dated,

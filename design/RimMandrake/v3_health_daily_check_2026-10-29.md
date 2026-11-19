@@ -51,7 +51,7 @@ plumbing. Using them for dispatch decisions is NOT in this spec; that would be a
 
 ### 2.1 What the kill test needs, and the trap in it
 
-The v3 kill test (`design/RimMandrake/rimflow_v3_2026-10-26.md` §6) uses two numbers from two different censuses:
+The v3 kill test (`design/RimMandrake/dispatcher_design_2026-10-26.md` §6) uses two numbers from two different censuses:
 
 | KPI | baseline | target | where the baseline came from |
 |---|---|---|---|

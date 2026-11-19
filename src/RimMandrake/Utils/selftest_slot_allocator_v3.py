@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """selftest for slot_allocator.py's v3 split (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER).
 
-v3 has no BENCH seat (design/RimMandrake/rimflow_v3_2026-10-26.md §2): RELENTLESS, the one autonomous builder, gets the
+v3 has no BENCH seat (design/RimMandrake/dispatcher_design_2026-10-26.md §2): RELENTLESS, the one autonomous builder, gets the
 machine's whole helper budget (the pace fit, unchanged); the Conductor (the owner's window, the allocator's internal
 key "BENCH") gets helpers only while he is present, and every helper-hour it runs is owed and paid back from RELENTLESS
 after he leaves (his rule in slot_rules.json presence._doc). His word (the override) still stands over both.

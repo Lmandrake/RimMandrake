@@ -4,9 +4,9 @@ Status: **DESIGN, approved to build.** Owner, 2026-10-26 22:2x PDT: *"Ok, we ARE
 that review. For now, document all of this as RimFlow v3, then handoff to preserve context."*
 Baseline it replaces: git tag `system-baseline-two-seat-2026-10-26`
 (`design/RimMandrake/baseline_two_seat_system_2026-10-26.md`). Role diagram (the owner's view):
-https://claude.ai/artifact/8dMLHJKVSRd1ci4psfaP4a — source copy `design/RimMandrake/rimflow_v3_roles.html`.
+https://claude.ai/artifact/8dMLHJKVSRd1ci4psfaP4a — source copy `design/RimMandrake/dispatcher_roles.html`.
 Responsibilities, metrics per role, the gap check, and the review of his north-star checks-and-balances proposal:
-`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md`.
+`design/RimMandrake/role_responsibilities_2026-10-26.md`.
 
 ## 1. The problem, in his words
 
@@ -44,7 +44,7 @@ Measured (cite; all 2026-10-26/27):
 
 Flow (owner, 2026-10-27, ledger note on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`): *"Lukas and Conductur interact back
 and forth. Conductor sets overall goals that drive the Producer. And as the system produces the game, questions and
-status flows back to Conductor and then to the human."* Picture of record: `design/RimMandrake/rimflow_v3_flows.svg`
+status flows back to Conductor and then to the human."* Picture of record: `design/RimMandrake/dispatcher_flows.svg`
 (direction and work flow down: Mandrake → Conductor → Producer → Dispatcher → builders; questions, status and evidence
 flow up to the Conductor, and only the Conductor talks to him).
 
@@ -179,7 +179,7 @@ assessment and sends it to him through its owner-only route; the Auditor re-chec
 **His rulings (by card on `RIMFLOW_V3_BUILD_DISPATCHER_FIRST`, 2026-10-26 22:38 PDT):**
 - Shape: *"Run it, then right things, then learning (Operations → Producer+Arbiter → Auditor+Innovator)"*.
 - Roles: *"Confirm as drawn, and I'm very eager to write down the actual responsibilities so we don't miss anything /
-  metrics to care about"* → `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Parts 2-3.
+  metrics to care about"* → `design/RimMandrake/role_responsibilities_2026-10-26.md` Parts 2-3.
 - Arbiter limits, his proposal: *"Efficiency Agent should examine the Northstar skeptically to ensure we NEED
   everything there and to look for opportunities to combine checks for multiple outcomes / correlated outcomes.
   Producer should ensure the original vision & goal is supported by the Northstar plan. Arbiter decides if it was

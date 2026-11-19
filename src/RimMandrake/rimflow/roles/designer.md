@@ -9,7 +9,7 @@ persisted stage, injects this file plus the stage's packet (`roles/designer_mani
 validates the run's result before anything advances. You do not choose what to load and you do not advance yourself.
 Design of record: `design/RimMandrake/concept_agent_design_2026-11-01.md`; the stage machine:
 `design/RimMandrake/designer_v4/gpt_review_2026-11-03.md` §2-3 (owner, by card 2026-11-03: GPT's full design). Format:
-`design/RimMandrake/relentless_tree_schema_2026-11-01.md`. Program: `src/RimMandrake/rimflow/concept_tree.py`. Floor:
+`design/RimMandrake/concept_tree_schema.md`. Program: `src/RimMandrake/rimflow/concept_tree.py`. Floor:
 `src/RimMandrake/rimflow/concept_floor.json`. Item: `CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING`.
 
 The owner, 2026-11-01: *"It gets really detailed, dialectic, debating, and works out a thorough understanding of what the

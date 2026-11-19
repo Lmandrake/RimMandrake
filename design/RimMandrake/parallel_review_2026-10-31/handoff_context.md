@@ -237,7 +237,7 @@ Gate, before raising fan-out:
     covers, work pushed or bundleable, no keeper inside, no live process left in it. Many subagents make this a capacity
     requirement, not tidiness: 8-10 helpers per seat multiply clones and session dirs, and before expiry ran the root disk
     lost 47 GB in a day. The expiry timer and its last-run alarm must be green before fan-out rises
-    (`rimflow_v3_2026-10-26.md` section 3.1).
+    (`dispatcher_design_2026-10-26.md` section 3.1).
 
 Next:
 

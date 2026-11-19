@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """concept_tree.py - The Designer's tree (the Concept agent, renamed by card 2026-11-01; `authored_by: concept` stays, it is schema data): writer, door lint (Gate A) and the gate (a finished, signed, real tree).
 
-Format: design/RimMandrake/relentless_tree_schema_2026-11-01.md. Meaning: concept_agent_design_2026-11-01.md §5-§8, §11.
+Format: design/RimMandrake/concept_tree_schema.md. Meaning: concept_agent_design_2026-11-01.md §5-§8, §11.
 
   write    <dir> --draft d.json [--dry-walk]   stamp hashes, check the shape, write tree.json (clears any signature)
   lint     <dir>                               Gate A: sheet + tree + floor. Exit 0 PASS, 1 REFUSED

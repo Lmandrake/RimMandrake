@@ -220,7 +220,7 @@ Steps, in order:
 ### B5. Contradictions propagated (2026-10-28)
 
 Done in the text: `src/RimMandrake/rimflow/roles/conductor.md` (his goodbye is the one Dispatcher trigger; quick mode is a
-standing window, fresh after each goodbye), `design/RimMandrake/rimflow_v3_2026-10-26.md` ("fresh per message" is now
+standing window, fresh after each goodbye), `design/RimMandrake/dispatcher_design_2026-10-26.md` ("fresh per message" is now
 fresh per goodbye), the `_why` of the Conductor role in `src/RimMandrake/rimflow/dispatcher_schedule.json`.
 Owed to the build (B6 step 4): the `quick_checks_local` launch must not fire beside a live `CONDUCTOR` pid (code in
 `role_launch.py`), and `CONDUCTOR` goes into the failover `-Seats` list (that list is in the machine's launcher config,

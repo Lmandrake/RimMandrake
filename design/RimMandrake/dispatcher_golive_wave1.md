@@ -1,6 +1,6 @@
 # RimFlow v3 go-live, wave 1 (runbook, written 2026-10-27, for Wednesday 2026-10-28 after the weekly token reset)
 
-Item: `RIMFLOW_V3_BUILD_DISPATCHER_FIRST` (design `design/RimMandrake/rimflow_v3_2026-10-26.md` §6 item 1-3).
+Item: `RIMFLOW_V3_BUILD_DISPATCHER_FIRST` (design `design/RimMandrake/dispatcher_design_2026-10-26.md` §6 item 1-3).
 Wave 1 switches on: the Dispatcher's live **wakes** (FOUNDRY only), the **Conductor**'s quick checks and **Operations**' runs.
 Nothing else: Producer, Arbiter, Auditor, Innovator stay `enabled:false`; `recover_dead` stays off.
 

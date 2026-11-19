@@ -278,7 +278,7 @@ not built; it is to be written by hand the first time.
 | `record.json` | the working record: scope, decisions, questions to him, inventory, contradictions, failure modes, root; every entry source-linked | the Designer |
 | `log.md` | the verbatim record of the argument; never injected into a run | the Designer |
 | `sheet.md` | the plain-words design sheet | the Designer |
-| `tree.json` | the design tree (leaves, root reference, coverage stamp); format `design/RimMandrake/relentless_tree_schema_2026-11-01.md` | `concept_tree.py write`, `sign`, `certify` |
+| `tree.json` | the design tree (leaves, root reference, coverage stamp); format `design/RimMandrake/concept_tree_schema.md` | `concept_tree.py write`, `sign`, `certify` |
 | `scenes.json` | the proof-scene contract | the Designer |
 | `floor.json` | per floor line (`concept_floor.json`): applicable, not applicable with evidence, or disabled by him | the Designer |
 | `exam.json` | the Cold Reader exam, frozen against the tree and sheet hashes | the examiner |

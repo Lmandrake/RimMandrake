@@ -51,7 +51,7 @@ itself with his message unanswered is adopted (restart_orphan writes the record 
 waits orphan_wait_s for it). A wake is read until a window has ENDED A TURN after it (`answered`): the tile may relaunch
 up to MAX_CLAIMS times for an unanswered restart, and a window without the token reads it too.
 Every step is journalled (dispatcher journal.jsonl); failures alarm and note the ticket. Off unless the schedule key
-`seat_restart.enabled` is true (design/RimMandrake/rimflow_v3_golive_wave1.md, "Seat restart: enable steps").
+`seat_restart.enabled` is true (design/RimMandrake/dispatcher_golive_wave1.md, "Seat restart: enable steps").
 """
 import argparse
 import contextlib

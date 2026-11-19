@@ -1,7 +1,7 @@
 # RimFlow v3 audit: where it stands, re-measured (2026-10-31)
 
 Item: `V3_WORKFLOW_AUDIT_EVERY_CLOCK_AND_DOOR`. Measured at commit 9611cb2af7, Sat 2026-10-31 ~18:30 PDT.
-Re-measures every draft ticket and decision of `design/RimMandrake/rimflow_v3_risk_response_2026-10-29.md` against
+Re-measures every draft ticket and decision of `design/RimMandrake/dispatcher_risk_response_2026-10-29.md` against
 today's code. Nothing is ticketed yet, by the owner's order on the item: *"before that is taken into tickets, I would
 like to hear about the analysis myself here, and if there are any questions to decide upon, be presented with them."*
 
@@ -11,7 +11,7 @@ like to hear about the analysis myself here, and if there are any questions to d
 |---|---|---|
 | Document the workflow | done 10-29 | `design/RimMandrake/rimflow_v3_workflow_as_built_2026-10-29.md` (stale on one point: it predates the relentless lane) |
 | GPT skeptical review, literature | done 10-29 | `design/RimMandrake/rimflow_v3_gpt_risk_review_2026-10-29.md` |
-| Opus response | done 10-29 | `design/RimMandrake/rimflow_v3_risk_response_2026-10-29.md` |
+| Opus response | done 10-29 | `design/RimMandrake/dispatcher_risk_response_2026-10-29.md` |
 | He hears it, decides | **half** | A chat summary went to him 10-29 20:31Z. He redirected at 20:38Z to collapsing the design, then to Ralph loops. D1-D6 never reached a card; the Conductor's 20:41Z message still listed D1, D2 and D6 as owed. |
 | Ticket out at max priority | **not done** | All 18 names: `rimflow show <name>` says "has never been filed". |
 

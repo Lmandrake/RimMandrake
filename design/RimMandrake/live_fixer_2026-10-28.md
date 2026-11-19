@@ -305,7 +305,7 @@ shuttle's (ESTIMATE threshold, the owner's to set).
 Fixer is an **execution mode with its own row**: Foundry work (FlowWorks tickets included, owner 10-28), lease-bound,
 one ticket, not continuous.
 
-**`design/RimMandrake/rimflow_v3_2026-10-26.md`, §2 roles table, add a row after Foundry:**
+**`design/RimMandrake/dispatcher_design_2026-10-26.md`, §2 roles table, add a row after Foundry:**
 
 `| **Fixer** (mode) | one ticket + one Dispatcher-granted rig lease + a timebox, iterating live until the Arbiter's contract is met or the lease ends; SteveDesktop by default (design/RimMandrake/live_fixer_2026-10-28.md) | on a lease only; Foundry work, accountable to the Arbiter, FlowWorks/GSS tickets included | — | the next experiment inside its ticket | close its own item; touch its measurement contract; work outside its ticket; regrant itself |`
 
@@ -313,7 +313,7 @@ one ticket, not continuous.
 
 `Fixer leases: the Dispatcher lists candidates by rule (≥2 failed rig round trips or ≥2 L2 fails in 48 h, reopened 3+, or a swift note), only items with an approved measurement contract are eligible, the Producer orders them, and the Dispatcher grants one lease per rig (at most 2 per item, ever, without the owner); testq on that rig pauses for the lease.`
 
-**`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md`, new § "Fixer (mode)" after Foundry:**
+**`design/RimMandrake/role_responsibilities_2026-10-26.md`, new § "Fixer (mode)" after Foundry:**
 
 `- **Duties:** on a Dispatcher lease, run the debugging ladder end to end on one rig (SteveDesktop by default) under seat FIXER: red check before the final fix, at most 8 iterations or the timebox, no change to the measurement contract, findings outside the ticket filed not fixed, a handoff note on every end short of a pass, done claim to the Arbiter, who runs the contract. Foundry work, FlowWorks/GSS tickets included, accountable to the Arbiter.`
 `- **Metrics:** | X1 | fixer yield | leases ending in an Arbiter pass ÷ leases; wall hours from ready-to-fix to pass; tokens per accepted fix (all lease costs charged) vs shuttled fixes; reopens in 14 d | ledger lease + verdict events; account_usage per unit | UNMEASURED: not built |`
@@ -339,7 +339,7 @@ All six answered (item 1 by the owner's card 2026-10-28; items 2-6 by BENCH's de
 ## 10. Sources
 
 - Item and his words: `rimflow show LIVE_FIXER_DESIGN_ONE_SEAT_NO_SHUTTLE` (OWNER notes 01:43:50Z, 01:47:17Z).
-- `design/RimMandrake/rimflow_v3_2026-10-26.md` §2-§3; `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md`
+- `design/RimMandrake/dispatcher_design_2026-10-26.md` §2-§3; `design/RimMandrake/role_responsibilities_2026-10-26.md`
   (Dispatcher, Foundry, orphan home #4); `design/RimMandrake/debug_process.md` §0, §3, §5.
 - `src/RimMandrake/Utils/testq/steward.py` (states, intentional pause, the LLM wake caps), `testq.py` (dispatch clone
   requirements, pause), `infrastructure/stevedesktop/worker.py` (guard-held → exit 75), `src/RimMandrake/rimflow/host_guard.py`.

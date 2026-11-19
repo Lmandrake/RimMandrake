@@ -65,7 +65,7 @@ may not validate.
    greens a line (Agent_Policy.md). Criteria tagged **L4** are his by definition (CLAUDE.md, validation levels).
    **Delegated (owner, 2026-10-26 23:0x PDT, *"Both autonomy questions are yes, it has authorization for
    autonomy."*):** regression checks against bars he already approved, and NEW bars, are the Arbiter's to add
-   (`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 1). Loosening a bar (remove, merge,
+   (`design/RimMandrake/role_responsibilities_2026-10-26.md` Part 1). Loosening a bar (remove, merge,
    relax a threshold) stays his.
    The Arbiter weighs ALL the evidence (offline tests, online tests, code reviews, user feedback); the north star is one
    method of gathering it, not the whole bar (owner, 2026-10-27).

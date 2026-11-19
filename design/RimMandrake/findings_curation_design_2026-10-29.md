@@ -2,7 +2,7 @@
 
 Status: DESIGN ONLY. Nothing here is built or switched on, and no role file is changed. It answers the owner's refusal
 of the "born as items, no lobby" proposal (ledger item `FINDINGS_REDESIGN_BORN_AS_ITEMS_NO_LOBBY`, an Innovator
-proposal of 2026-10-29). The roles named here are the ones in RimFlow v3 (`design/RimMandrake/rimflow_v3_2026-10-26.md`):
+proposal of 2026-10-29). The roles named here are the ones in RimFlow v3 (`design/RimMandrake/dispatcher_design_2026-10-26.md`):
 the **Conductor** talks to him, the **Producer** decides what is built and when, **Operations** keeps the machine
 running, the **Arbiter** rules a feature done, the **Auditor** re-checks closed work and turns repeat errors into rules,
 the **Innovator** proposes big changes, the **Dispatcher** (a program) wakes and feeds the agents, and **FOUNDRY** is
@@ -200,7 +200,7 @@ Two notes that go with it, whichever option he picks:
 
 - The refused proposal and his words: `python3 src/RimMandrake/rimflow/cli.py show FINDINGS_REDESIGN_BORN_AS_ITEMS_NO_LOBBY`;
   innovations list `design/RimMandrake/innovations.md`.
-- Roles: `design/RimMandrake/rimflow_v3_2026-10-26.md` §2-3; `infrastructure/agents/FOUNDRY.md`;
+- Roles: `design/RimMandrake/dispatcher_design_2026-10-26.md` §2-3; `infrastructure/agents/FOUNDRY.md`;
   `src/RimMandrake/rimflow/roles/auditor.md` (weekly pass, lessons to skills, repeats to rules);
   `src/RimMandrake/rimflow/roles/producer.md` (backlog hygiene); all six roles enabled in
   `src/RimMandrake/rimflow/dispatcher_schedule.json` on 2026-10-29.

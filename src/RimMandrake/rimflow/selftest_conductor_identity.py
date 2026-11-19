@@ -2,7 +2,7 @@
 """selftest_conductor_identity.py — the BENCH tile wakes as the v3 Conductor (V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE).
 
 Owner, 2026-10-28 ~17:20 PDT: "Please build all the components of the v3 system at this time. ... I need to know we
-can proceed with a real trial tonight." Design of record: design/RimMandrake/rimflow_v3_2026-10-26.md (Conductor row:
+can proceed with a real trial tonight." Design of record: design/RimMandrake/dispatcher_design_2026-10-26.md (Conductor row:
 absorbs Bench; quick mode / session mode; session-only helpers; the one voice to him) and
 src/RimMandrake/rimflow/roles/conductor.md. Tonight's path (delegated, v3 build): the BENCH tile stays seat BENCH
 (the ledger has no CONDUCTOR seat) and wakes with the Conductor identity. Since CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS

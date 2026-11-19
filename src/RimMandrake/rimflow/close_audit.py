@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""close_audit.py - AU4, unearned dones (rimflow_v3_responsibilities_2026-10-26.md; RO3 of
+"""close_audit.py - AU4, unearned dones (role_responsibilities_2026-10-26.md; RO3 of
 operating_requirements_2026-11-01.md): items reaching done with no level-tagged pass on the sha they reached it at, or a newer fail.
 
 Every transition to done counts, whichever verb made it: `close`, the last criterion's `verify`, an `implemented` owing

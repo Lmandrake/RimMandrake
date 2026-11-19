@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """role_launch.py — the Dispatcher's role launcher (item DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE; spec
-design/RimMandrake/rimflow_v3_2026-10-26.md §3, §6). dispatcher.decide() calls decide_roles(); dispatcher.execute()
+design/RimMandrake/dispatcher_design_2026-10-26.md §3, §6). dispatcher.decide() calls decide_roles(); dispatcher.execute()
 calls launch() / stop(). A program: it decides nothing the schedule and the role files do not say.
 
 What it runs: every role in dispatcher_schedule.json `roles` that is `enabled` AND carries the launch keys

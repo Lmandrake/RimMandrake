@@ -1095,7 +1095,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `release_proximity_2026-10-22.md` | Release proximity, 2026-10-22 (FOUNDRY, read-only ranking) | — |
 | `relentless_improvement_loop_2026-11-03.md` | Relentless improvement loop — owner, 2026-11-03 | — |
 | `relentless_recovery_plan_2026-11-05.md` | Relentless recovery plan, 2026-11-05: second read of the GPT review, and a ranked plan | — |
-| `relentless_tree_schema_2026-11-01.md` | The acceptance tree: file format (2026-11-01) | — |
+| `concept_tree_schema.md` | The acceptance tree: file format (2026-11-01) | — |
 | `relic_replacements_proposal.md` | Relic replacements for the five broken VWE relic precepts — PROPOSAL, awaiting owner approval | — |
 | `retired_eras_index_2026-11-18.md` | Retired eras: what was removed, where it lived, what stays and why (2026-11-18) | — |
 | `retired_loops_2026-11-13.md` | Retired 2026-11-13: Relentless per-ticket work, the Artisan loops, the Whittle loops | — |
@@ -1106,14 +1106,14 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `rimbridge.md` | rimbridge.md — living context on RimBridgeServer (live game modification) |  |
 | `rimflow_gpt_review_2026-10-07.md` | — | — |
 | `rimflow_system_and_stuck_state_2026-10-07.md` | rimflow: the work-item system, and why items get stuck (2026-10-07) | — |
-| `rimflow_v3_2026-10-26.md` | RimFlow v3 — the integrator layer (design of record, 2026-10-26) | — |
-| `rimflow_v3_arbiter_tiers_2026-10-27.md` | RimFlow v3: the Arbiter by risk tier (2026-10-27) | — |
-| `rimflow_v3_audit_remeasure_2026-10-31.md` | RimFlow v3 audit: where it stands, re-measured (2026-10-31) | — |
-| `rimflow_v3_golive_wave1.md` | RimFlow v3 go-live, wave 1 (runbook, written 2026-10-27, for Wednesday 2026-10-28 after the weekly token reset) | — |
-| `rimflow_v3_responsibilities_2026-10-26.md` | RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26) | — |
-| `rimflow_v3_risk_response_2026-10-29.md` | RimFlow v3 risk review: the Opus response (2026-10-29) | — |
+| `dispatcher_design_2026-10-26.md` | RimFlow v3 — the integrator layer (design of record, 2026-10-26) | — |
+| `dispatcher_arbiter_tiers_2026-10-27.md` | RimFlow v3: the Arbiter by risk tier (2026-10-27) | — |
+| `dispatcher_audit_remeasure_2026-10-31.md` | RimFlow v3 audit: where it stands, re-measured (2026-10-31) | — |
+| `dispatcher_golive_wave1.md` | RimFlow v3 go-live, wave 1 (runbook, written 2026-10-27, for Wednesday 2026-10-28 after the weekly token reset) | — |
+| `role_responsibilities_2026-10-26.md` | RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26) | — |
+| `dispatcher_risk_response_2026-10-29.md` | RimFlow v3 risk review: the Opus response (2026-10-29) | — |
 | `rimflow_v3_sim_findings_2026-10-27.md` | RimFlow v3 in a bottle: what the simulation says (2026-10-27) | — |
-| `rimflow_v3_trial_night_2026-10-28.md` | RimFlow v3 trial night, 2026-10-28: one ordered runbook | — |
+| `dispatcher_trial_night_2026-10-28.md` | RimFlow v3 trial night, 2026-10-28: one ordered runbook | — |
 | `rimflow_validation_levels_addendum_2026-10-07.md` | Rimflow redesign — addendum: the validation levels | — |
 | `rimpulse_redesign_2026-10-23.md` | RimPulse redesign: what it shows, what you need from it, three better ways (2026-10-23) | — |
 | `rimtalk_analysis.md` | rimtalk_analysis.md — RimTalk adoption analysis | → superseded `llm_stack_assessment.md` |

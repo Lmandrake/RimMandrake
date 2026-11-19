@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """selftest_dispatcher_blocked_top_cursor.py - two Dispatcher doors the v3 audit found unproven (T15,
-DISPATCHER_PROVE_BLOCKED_TOP_AND_CURSOR; design/RimMandrake/rimflow_v3_risk_response_2026-10-29.md R03 and T15).
+DISPATCHER_PROVE_BLOCKED_TOP_AND_CURSOR; design/RimMandrake/dispatcher_risk_response_2026-10-29.md R03 and T15).
 
     python3 src/RimMandrake/rimflow/selftest_dispatcher_blocked_top_cursor.py
 

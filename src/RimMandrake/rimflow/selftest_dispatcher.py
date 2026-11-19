@@ -2805,7 +2805,7 @@ def test_review_x_alarm_flap():
 
 
 # ---------------------------------------------------------------- go-live review (DISPATCHER_GOLIVE_FIX_THREE_BLOCKERS_FOUND)
-# go-live wave 1 (design/RimMandrake/rimflow_v3_golive_wave1.md): the owner's switch may enable these and no others,
+# go-live wave 1 (design/RimMandrake/dispatcher_golive_wave1.md): the owner's switch may enable these and no others,
 # unless the schedule's golive block names the set (trial night: the flip adds the role to golive.roles in the same file)
 WAVE1_ROLES = ("Conductor", "Operations")
 
@@ -2865,7 +2865,7 @@ def test_golive_b3_wave1_config():
 
 
 def test_golive_trial_set_from_schedule():
-    """trial night (design/RimMandrake/rimflow_v3_trial_night_2026-10-28.md): the set the owner's switch may enable is
+    """trial night (design/RimMandrake/dispatcher_trial_night_2026-10-28.md): the set the owner's switch may enable is
     read from the schedule's golive block, not pinned in this test, so a flip is one file: the role's `enabled` and
     its name in golive.roles (recover_dead likewise: the seat in golive.recover_dead). Unlisted stays refused.
     The probes start from the fixed wave-1 baseline, so they hold after any valid flip of the shipped file."""

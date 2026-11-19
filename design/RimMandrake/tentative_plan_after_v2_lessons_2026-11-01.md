@@ -34,7 +34,7 @@ So the gap is not "a checker". He held five jobs, and each needs a named home:
 
 ## 3. New concepts to codify
 
-Each is a program that measures, plus a v3 role that reads and acts. The v3 roles stay (`rimflow_v3_2026-10-26.md` §2);
+Each is a program that measures, plus a v3 role that reads and acts. The v3 roles stay (`dispatcher_design_2026-10-26.md` §2);
 this plan gives them the instruments and gates they lack. No new role is proposed.
 
 | Concept | v3 role that owns it |

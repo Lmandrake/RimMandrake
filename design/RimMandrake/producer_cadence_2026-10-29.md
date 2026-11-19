@@ -9,7 +9,7 @@ pass here too."*
 
 Read with: `src/RimMandrake/rimflow/roles/producer.md` (the role today), `src/RimMandrake/rimflow/roles/operations.md`,
 `src/RimMandrake/rimflow/dispatcher_schedule.json` (`roles[name=Producer]`), `src/RimMandrake/rimflow/role_launch.py`
-(how slots launch), `infrastructure/state/CONDUCTOR_GOALS.md`, `design/RimMandrake/rimflow_v3_2026-10-26.md` §2-3 and
+(how slots launch), `infrastructure/state/CONDUCTOR_GOALS.md`, `design/RimMandrake/dispatcher_design_2026-10-26.md` §2-3 and
 §6, `design/RimMandrake/v3_health_daily_check_2026-10-29.md`, `design/RimMandrake/process_model_v2_v3_design_2026-10-29.md`.
 
 ## 1. The problem in plain words

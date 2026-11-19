@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """close_evidence.py -- machine evidence per commit sha, so no-AI gates can decide a close.
 
-CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE (design/RimMandrake/rimflow_v3_arbiter_tiers_2026-10-27.md, "Missing gates"):
+CLOSE_EVIDENCE_BUILD_GATES_CAN_DECIDE (design/RimMandrake/dispatcher_arbiter_tiers_2026-10-27.md, "Missing gates"):
 94% of closes recorded no machine evidence, although selftests, C# builds, patch validation and modcheck all ran.
 Each of those tools now appends ONE line here when it finishes; a gate looks the sha up at claim time with no AI and
 no re-run. Review Z (D:/ClaudeWork/rimmandrake/review_v3_Z/answer.md) hardened it to v2.

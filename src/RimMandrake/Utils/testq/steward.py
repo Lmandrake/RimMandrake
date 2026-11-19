@@ -38,7 +38,7 @@ What it knows (section 6.1), first match wins:
 
 The unowned clock (section 6.1) adds the time between two passes while the state is a fault, or RUNNING inside an open
 incident. Only proof ends an incident (STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING, T4 of
-design/RimMandrake/rimflow_v3_risk_response_2026-10-29.md): a stevedesktop job that came back DONE with its canary on,
+design/RimMandrake/dispatcher_risk_response_2026-10-29.md): a stevedesktop job that came back DONE with its canary on,
 finishing after the incident began (testq.lane_proven_after, the filler brake's own predicate). RUNNING is not proof
 (R02 there): a resumed lane on a dead game ran INVALID/CANARY again and again while each RUNNING closed the incident. Any
 other non-fault state (the day brake, EXHAUSTED, an intentional pause, a young READY) freezes the unowned clock and

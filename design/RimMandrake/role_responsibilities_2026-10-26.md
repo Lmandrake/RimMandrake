@@ -1,6 +1,6 @@
 # RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26)
 
-Status: **DESIGN, companion to `design/RimMandrake/rimflow_v3_2026-10-26.md`** (the design of record). Part 1 is the
+Status: **DESIGN, companion to `design/RimMandrake/dispatcher_design_2026-10-26.md`** (the design of record). Part 1 is the
 review of Lukas's north-star proposal (his to read; under two pages). Part 2 is the responsibilities register with
 metrics. Part 3 is the gap check of today's duties against the v3 roles. Part 4 is the activation table: each
 duty's interim holder until its role runs.
@@ -18,7 +18,7 @@ names the instrument that is missing. A metric belongs to exactly one role; othe
 
 ## Part 1. Review of the north-star checks-and-balances proposal
 
-His proposal (2026-10-26 22:38 PDT) is quoted verbatim in `design/RimMandrake/rimflow_v3_2026-10-26.md` §6.
+His proposal (2026-10-26 22:38 PDT) is quoted verbatim in `design/RimMandrake/dispatcher_design_2026-10-26.md` §6.
 
 **Who the "Efficiency Agent" is.** The economy duty of Operations, since v3 merged the Economist into Operations.
 Keep it there. Operations *never lowers a test bar*, so this duty **proposes** cuts and never enacts one. If the
@@ -136,7 +136,7 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
   on `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`: *"Lukas and Conductur interact back and forth. Conductor sets overall
   goals that drive the Producer. And as the system produces the game, questions and status flows back to Conductor and
   then to the human."*); be the one channel up: every role's questions and status come to it and it brings them to him
-  (`design/RimMandrake/rimflow_v3_flows.svg`); answer him from the metrics pack, every number with its
+  (`design/RimMandrake/dispatcher_flows.svg`); answer him from the metrics pack, every number with its
   MEASURED/UNMEASURED word; turn his words into Dispatcher instructions and tickets; record his rulings on the ledger with the right provenance flag and propagate
   them into every file that contradicts them (`deciding-and-superseding`); card him on §2 calls only; gate what
   reaches him (nothing unread: prereview through judges); deliver the daily digest and triage "what needs me?";

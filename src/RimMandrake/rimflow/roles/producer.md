@@ -3,9 +3,9 @@
 Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Producer]`; whether it runs is that row's
 `enabled` field, never this file (first switched on the v3 trial night, 2026-10-28, 4d9171a1e5, owner: *"I am back at
 the hotel. Let's get to it!"*). Activation table of its
-duties: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 4, P-1..P-9.
-Design: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` §Producer and Part 3 (Orphan homes 3, 4),
-`design/RimMandrake/rimflow_v3_2026-10-26.md` §2, §3. Flow of record: `design/RimMandrake/rimflow_v3_flows.svg`.
+duties: `design/RimMandrake/role_responsibilities_2026-10-26.md` Part 4, P-1..P-9.
+Design: `design/RimMandrake/role_responsibilities_2026-10-26.md` §Producer and Part 3 (Orphan homes 3, 4),
+`design/RimMandrake/dispatcher_design_2026-10-26.md` §2, §3. Flow of record: `design/RimMandrake/dispatcher_flows.svg`.
 Item: `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`.
 
 The owner, 2026-10-27 (ledger note on that item): *"Lukas and Conductur interact back and forth. Conductor sets overall

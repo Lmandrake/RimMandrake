@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""dispatcher.py — RimFlow v3.0, the Dispatcher: a PROGRAM, not an AI (design/RimMandrake/rimflow_v3_2026-10-26.md
+"""dispatcher.py — RimFlow v3.0, the Dispatcher: a PROGRAM, not an AI (design/RimMandrake/dispatcher_design_2026-10-26.md
 §2, §3, §6 item 1; item RIMFLOW_V3_BUILD_DISPATCHER_FIRST). It decides nothing: it follows its schedule file.
 
 Every tick (the rm-dispatcher.timer, every 2 min) it, for each seat in the schedule:
@@ -2733,7 +2733,7 @@ def main(argv=None):
         for x in lines:
             print(x)
         print("ALL LIVE ROLE RUNS ENDED (verified)" if ok else "NOT ALL ENDED: do not switch to dry-run or disable "
-              "the timer; see design/RimMandrake/rimflow_v3_golive_wave1.md section 7")
+              "the timer; see design/RimMandrake/dispatcher_golive_wave1.md section 7")
         return 0 if ok else 1
     still_owner = None
     if a.apply and a.metronome_gen is None:
