@@ -2267,7 +2267,9 @@ def close_run(d, run, tokens=None, repo=REPO, runner="claude", usage=None, trans
     # RIMMANDRAKE_TRACE_REPIN_FROM_FIRST_PIN_B_CHANGE_SKIPPED: an accepted stage is a pin, so it records its anchor
     # too. These bytes land in a commit at or after this HEAD (land_state commits after this), so the window
     # [HEAD, HEAD-then] starts at the landing of exactly these bytes instead of at a later revert to them.
-    pin_at = (_git(repo, "rev-parse", "--verify", "HEAD^{commit}") or b"").decode().strip()
+    # read in the concept's own clone, where these bytes land (land_state) and repin traces them
+    # (RIMMANDRAKE_ANCHOR_PIN_IN_CONCEPT_CLONE_NOT_DISPATCHER), not in the Dispatcher's clone that judges the close
+    pin_at = (_git(clone_of(d) or repo, "rev-parse", "--verify", "HEAD^{commit}") or b"").decode().strip()
     if out == "done" and pin_at:
         entry["pinned_at"] = {k: pin_at for k in INPUT_FILES}
     if out == "done" and stage == 2:
