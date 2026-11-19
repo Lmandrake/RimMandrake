@@ -152,6 +152,16 @@
     "file": "src/RimMandrake/FlowWorks/Source/SelfTest/SequenceFuzz.cs",
     "text": "MayFlowBetween 3-cycle"
    }
+  },
+  {
+   "id": "limitless_source_fills_every_connected_cell",
+   "family": "liveness",
+   "matrix_family": "fills_from_limitless",
+   "sentence": "A limitless water source fills every excavated cell connected to it through excavated cells, given time.",
+   "check": {
+    "file": "src/RimMandrake/FlowWorks/Source/SelfTest/FlowKernelFuzz.cs",
+    "text": "connected to a limitless source ends"
+   }
   }
  ],
  "families": {
@@ -192,6 +202,15 @@
     "find": "\t\t\tn = Math.Min(n, inputAvailable / inputUnits);\n",
     "replace": "",
     "what": "batches are no longer capped by the input on hand"
+   }
+  },
+  "liveness": {
+   "plant": {
+    "kind": "source",
+    "file": "src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs",
+    "find": "\t\t\tbool hasLim = exLimMouths.Count > 0;",
+    "replace": "\t\t\tbool hasLim = false;",
+    "what": "a limitless source's mouths are ignored: no limitless water enters a pit"
    }
   }
  }
