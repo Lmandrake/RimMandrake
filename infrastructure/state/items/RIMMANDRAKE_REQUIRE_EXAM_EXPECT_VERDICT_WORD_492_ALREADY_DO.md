@@ -16,13 +16,14 @@ python3 src/RimMandrake/rimflow/selftest_designer_stage.py
 
 ## acceptance
 Acceptance test (1 check), run from the repo root; it reuses the passing-exam fixture of
-`src/RimMandrake/rimflow/selftest_exam_partial_retake.py`:
+`src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py`:
 
 ```
 python3 - <<'PY'
 import shutil, sys, tempfile
-sys.path.insert(0, "src/RimMandrake/rimflow")
-import designer_stage as DS, concept_tree as CT, selftest_exam_partial_retake as T
+sys.path.insert(0, "src/RimMandrake/rimflow/acceptance")
+import exam_retake_map_accept as T
+import designer_stage as DS, concept_tree as CT
 root = tempfile.mkdtemp()
 try:
     rd, d = T.fixture(root, "X")

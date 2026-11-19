@@ -45,9 +45,9 @@ implement it now and don't return to me with this item, ok?"*
 The map's unit is the LEAF, not the file. Every Reader is handed the whole `tree.json` and `sheet.md`
 (roles/designer_exam.md step 4), so a file-level read record would say every repair touches every scenario. Where the
 text above says "file", read "leaf".
-- **Recorded at exam time:** `exam.json` gains `reads`: `{scenario id: [leaf ids its Readers said they relied on]}`,
-  written when the exam is scored (step 4 already asks each Reader for "the leaf it relied on"). A scenario's
-  `expect_source` leaf always counts as read too.
+- **Recorded at exam time:** `exam_reads.json` beside `exam.json` (`exam_retake.py record`) holds each scenario's
+  reads, the leaves its Readers said they relied on in `reader_verdicts` (step 4 asks each Reader for "the leaf it
+  relied on"), with every leaf's hash. A scenario's `expect_source` leaf always counts as read too.
 - **A leaf is touched** when `concept_tree.leaf_hash` differs between the tree the exam was taken on and the repaired
   tree, or a `sheet.md` line tagged `[leaf:<id>]` was added, removed or changed.
 - **A scenario is retaken** when it read a touched leaf, or its own text is new or changed. Every other answer is
@@ -55,19 +55,19 @@ text above says "file", read "leaf".
 - **The whole exam is retaken, never a guess,** when: a leaf was added or removed; tree content outside `leaves`
   (and outside `coverage`) changed; a sheet line with no leaf tag changed; `reads` is missing, lacks a scenario or
   names a leaf the exam's tree lacks; a tree, sheet or exam cannot be read; the exam was taken on another tree.
-  Every exam that exists today has no `reads`, so its first retake is whole; partial retakes start with the next exam.
+  Every exam that exists today has no read map, so its first retake is whole; partial retakes start with the next exam.
 - **Not inputs:** files a Reader never sees (`scenes.json`, `record.json`, the floor). A repair to those alone is
   "looked, none touched".
 - **The control run** is carried when its broken leaf is untouched and none of its `missed_ids` is retaken; otherwise
   it is made again with `exam-control` and re-run.
-- One pure function carries all of it: `designer_stage.exam_retake_plan(old_tree, new_tree, old_sheet, new_sheet,
-  exam, scenarios=None)` -> `{"mode": "none"|"partial"|"whole", "retake", "carry", "touched_leaves", "why"}`.
+- The build carries it in `src/RimMandrake/rimflow/exam_retake.py`: `record`, `plan` (outcome `none_touched`,
+  `partial`, `whole` or `cannot_run`, with `retake`, `carry`, `changed` and `why`) and `carry`.
 Measured over the git history of eight concepts' `tree.json` (2026-11-18): 30 of 45 tree edits changed leaves only,
 with a median of 8% of the leaves changed; 13 added or removed a leaf; 2 changed tree content outside the leaves.
 
-Acceptance test for the map: `python3 src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py` (33 checks; on
-b4c47bd15 in a throwaway `git clone --shared`, watched: 32 red, 1 green). It stands beside `selftest_exam_partial_retake.py`
-(A1 to A6 through the stage machine), which the building run still writes first.
+Acceptance test for the map and the stage machine, one file since RIMMANDRAKE_RECONCILE_TWO_EXAM_RETAKE_TESTS_LEAF_VERSUS_FILE:
+`python3 src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py` (the map's leaf-level cases through
+`exam_retake.record`/`plan`, then A1 to A6 through the stage machine; registered in `src/RimMandrake/Utils/pipeline_tests.json`).
 
 ## refs
 file: src/RimMandrake/rimflow/designer_stage.py
@@ -75,7 +75,7 @@ file: src/RimMandrake/rimflow/maturation_autonomy.py
 file: src/RimMandrake/rimflow/coverage_judge.py
 
 ## verify
-python3 src/RimMandrake/Utils/run_selftests.py --only selftest_designer_stage selftest_maturation_autonomy selftest_exam_partial_retake
+python3 src/RimMandrake/Utils/run_selftests.py --only selftest_designer_stage selftest_maturation_autonomy
 python3 src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py
 
 ## criteria
@@ -90,7 +90,8 @@ python3 src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py
 - A6: the order of the gates is unchanged: the coverage judge still does not look at a tree whose exam has not passed.
 
 ## acceptance
-Acceptance test: a new selftest `selftest_exam_partial_retake.py` driving the retake through A1 to A6 with fixed stage
+Acceptance test: a new selftest (written as `selftest_exam_partial_retake.py`, since merged into
+`src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py`) driving the retake through A1 to A6 with fixed stage
 dicts and fixed read records (no model call), registered in the pipeline test table. It is watched FAILING on the base
 commit before the build (A1, A4 and A5 fail by construction: today a retake re-runs every scenario), with the failing
 output quoted in the commit message. Expected: 6 cases, 6 pass after the build. Not yet watched failing at filing: the

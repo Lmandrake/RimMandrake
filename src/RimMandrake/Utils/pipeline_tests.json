@@ -57,7 +57,7 @@
     {"test": "src/RimMandrake/rimflow/selftest_scene_look_calibration.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_coverage_refusal_record.py", "seconds": 0.5},
     {"test": "src/RimMandrake/rimflow/selftest_designer_stage.py", "seconds": 3.3},
-    {"test": "src/RimMandrake/rimflow/selftest_exam_partial_retake.py", "seconds": 0.2},
+    {"test": "src/RimMandrake/rimflow/acceptance/exam_retake_map_accept.py", "seconds": 1.5},
     {"test": "src/RimMandrake/rimflow/selftest_designer_stage_land.py", "seconds": 5.6},
     {"test": "src/RimMandrake/rimflow/selftest_designer_closed_item_source.py", "seconds": 0.1},
     {"test": "src/RimMandrake/rimflow/selftest_designer_owner_elsewhere.py", "seconds": 0.7},

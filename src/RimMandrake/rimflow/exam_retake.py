@@ -10,8 +10,10 @@ skips a tree whose exam does not pass (coverage_judge.plan, maturation_autonomy.
 
 THE MAP. A Reader is shown sheet.md, tree.json and the scenario text (designer_exam.md step 4), so what a scenario
 can have read is cut into units: one per leaf (the leaf's object in tree.json and every sheet line tagged with its id,
-with the section it sits in) and one shared unit (the tree's own fields, coverage aside as tree_hash leaves it, and
-every untagged sheet line: his words, open, delegated, pruning). A scenario's reads are its expect_source leaf and
+with the section it sits in) and one shared unit (the tree's own fields, coverage aside as tree_hash leaves it, the
+leaves' order, and every untagged sheet line: his words, open, delegated, pruning). The order of the sheet's lines is
+recorded beside them: a line added to, removed from or moved within one leaf's own lines is that leaf's change, and any
+other reorder is read by every scenario. A scenario's reads are its expect_source leaf and
 every leaf either Reader said it relied on, taken from the Readers' own answers when the exam passed, never from a
 hand-kept list. Each unit's hash at that moment is recorded, so a later change is found by comparing hashes, not by
 reading a diff or the old tree.
@@ -20,8 +22,9 @@ THE OUTCOMES, kept apart in every return value and every line printed:
   partial       some scenarios retaken, the rest carried forward (A1, A5)
   none_touched  looked: nothing any scenario read changed, so zero are re-run (A4)
   whole         the map could not tell, so the whole exam is retaken by designer_exam.md in full: no map, an
-                unreadable map, a map of another exam, a change to the shared unit or to a leaf every scenario reads,
-                a changed or new leaf no scenario's reads cover (A2, A3). A partial retake is never guessed.
+                unreadable map, a map of another exam, a leaf added or removed, a change to the shared unit or to
+                a leaf every scenario reads, a changed leaf no scenario's reads cover, sheet lines reordered beyond
+                the touched leaves' own lines (A2, A3). A partial retake is never guessed.
   cannot_run    the retake cannot run at all: the current tree.json or sheet.md cannot be read
 
 A carried answer keeps, in exam.json `carried`, the exam it was answered in and the hashes it was answered against;
@@ -41,7 +44,7 @@ import concept_tree as CT          # noqa: E402
 
 READS_FILE = "exam_reads.json"
 PLAN_FILE = "exam_retake_plan.json"
-SCHEMA = 1
+SCHEMA = 2         # 2: the sheet's line order left the shared hash for its own record, sheet_order
 PARTIAL, NONE_TOUCHED, WHOLE, CANNOT_RUN = "partial", "none_touched", "whole", "cannot_run"
 SCENARIO_KEYS = ("id", "text", "expect", "expect_source", "by")
 TAGGED = re.compile(CT.BULLET + r"\s*\[(?:leaf|core):([A-Za-z0-9_]+)\]")
@@ -79,8 +82,9 @@ def _leaf_id(name):
 
 
 def units(d):
-    """-> ({leaf id: hash}, shared hash) of the current tree.json and sheet.md. OSError/ValueError when either cannot
-    be read (the caller's cannot_run)."""
+    """-> ({leaf id: hash}, shared hash, sheet order) of the current tree.json and sheet.md; the order is one
+    [section, leaf id or None] per sheet line. OSError/ValueError when either cannot be read (the caller's
+    cannot_run)."""
     tree = CT.load(d)
     if not isinstance(tree, dict) or not isinstance(tree.get("leaves"), list):
         raise ValueError("tree.json has no leaves list")
@@ -105,12 +109,27 @@ def units(d):
                 order.append([section, None])
     rest = {k: v for k, v in tree.items() if k not in ("leaves", "coverage")}
     # the order of the leaves and of the sheet's lines is read by every scenario (a rule may say "the earlier line
-    # wins"), so a reorder is a change to the shared unit, never to no unit
+    # wins"): the leaves' order is in the shared unit, the sheet's is returned for order_moved
     return ({k: CT.sha({"leaf": leaves[k], "sheet": tagged[k]}) for k in leaves},
-            CT.sha({"tree": rest, "sheet": untagged, "sheet_order": order,
+            CT.sha({"tree": rest, "sheet": untagged,
                     "leaf_order": [x.get("id") if isinstance(x, dict) else None for x in tree["leaves"]],
                     "other_entries": [x for x in tree["leaves"]
-                                      if not (isinstance(x, dict) and isinstance(x.get("id"), str))]}))
+                                      if not (isinstance(x, dict) and isinstance(x.get("id"), str))]}),
+            order)
+
+
+def is_order(o):
+    return isinstance(o, list) and all(isinstance(e, list) and len(e) == 2 and isinstance(e[0], str)
+                                       and (e[1] is None or isinstance(e[1], str)) for e in o)
+
+
+def order_moved(old, new, touched):
+    """True when the sheet's lines moved relative to each other beyond the touched leaves' own lines: with every line of
+    a touched leaf dropped, the two orders must be equal. A line added to or removed from a touched leaf is that leaf's
+    change; a reorder of lines whose text did not change touches no leaf, so it is a change every scenario reads."""
+    def keep(o):
+        return [list(e) for e in o if e[1] not in touched]
+    return keep(old) != keep(new)
 
 
 def _answers(v, d, repo):
@@ -199,14 +218,14 @@ def record(d, repo=None):
         errs = DS.exam_errors(ex, d, st, repo)
         if errs:
             return {"error": "the exam does not pass on the current tree, so no map is recorded: %s" % "; ".join(errs[:3])}
-        cur, shared = units(d)
+        cur, shared, order = units(d)
         rows = _map_rows(ex, set(cur), d, repo)
     except (OSError, ValueError, KeyError, TypeError, AttributeError, DS.Refused) as e:
         return {"error": "no map recorded: %s" % e}
     rec = {"schema": SCHEMA, "by": "exam_retake.py record", "at": _now(),
            "exam": {"tree": ex["inputs"]["tree"], "sheet": ex["inputs"]["sheet"],
                     "scenarios_hash": ex["scenarios_hash"]},
-           "units": cur, "shared": shared, "scenarios": rows}
+           "units": cur, "shared": shared, "sheet_order": order, "scenarios": rows}
     _write(os.path.join(d, READS_FILE), rec)
     return rec
 
@@ -255,7 +274,7 @@ def plan(d, scenarios=None, repo=None):
     `scenarios` is the set the retake will freeze (default: the last exam's); a scenario whose text, expectation or
     source differs from the one answered is re-run, as is one the map never saw."""
     try:
-        cur, shared = units(d)
+        cur, shared, order = units(d)
     except (OSError, ValueError) as e:
         return _out(CANNOT_RUN, "the retake cannot run: tree.json or sheet.md cannot be read (%s)" % e)
     p = os.path.join(d, READS_FILE)
@@ -266,9 +285,11 @@ def plan(d, scenarios=None, repo=None):
         rec = _read(p)
         if not isinstance(rec, dict) or rec.get("schema") != SCHEMA:
             raise ValueError("schema %r, not %d" % (rec.get("schema") if isinstance(rec, dict) else rec, SCHEMA))
-        units0, rows, shared0 = rec["units"], rec["scenarios"], rec.get("shared")
+        units0, rows, shared0, order0 = rec["units"], rec["scenarios"], rec.get("shared"), rec["sheet_order"]
         if not (isinstance(units0, dict) and isinstance(rows, dict) and rows):
             raise ValueError("no units or no scenarios")
+        if not is_order(order0):
+            raise ValueError("sheet_order is not a list of [section, leaf id or null]")
         for sid, r in rows.items():
             if not (isinstance(r, dict) and isinstance(r.get("reads"), list) and r["reads"] and CT.txt(r.get("hash"))
                     and isinstance(r.get("verdicts"), dict) and isinstance(r.get("right"), bool)):
@@ -303,15 +324,22 @@ def plan(d, scenarios=None, repo=None):
     if new:
         return _out(WHOLE, "leaf %s is new: no scenario's read record covers it, so the map cannot tell: retake the "
                     "whole exam" % ", ".join(new), against=against)
+    gone = sorted(set(units0) - set(cur))
+    if gone:
+        return _out(WHOLE, "leaf %s was removed: the leaves every scenario reads are not the ones it was answered on, "
+                    "so the map cannot tell: retake the whole exam" % ", ".join(gone), changed=gone, against=against)
     if shared != shared0:
         return _out(WHOLE, "the shared part every scenario reads changed (his words, an untagged sheet line or the "
                     "tree's own fields): retake the whole exam", against=against)
     changed = sorted(u for u in units0 if cur.get(u) != units0[u])
+    if order_moved(order0, order, set(changed)):
+        return _out(WHOLE, "the sheet's lines were reordered beyond the touched leaves' own lines (every scenario reads "
+                    "the order): retake the whole exam", changed=changed, against=against)
     for u in changed:
         readers_of = [s for s, r in rows.items() if u in r["reads"]]
         if not readers_of:
-            return _out(WHOLE, "leaf %s %s and no scenario's read record covers it: retake the whole exam" % (
-                u, "changed" if u in cur else "was removed"), changed=changed, against=against)
+            return _out(WHOLE, "leaf %s changed and no scenario's read record covers it: retake the whole exam" % u,
+                        changed=changed, against=against)
         if len(readers_of) == len(rows):
             return _out(WHOLE, "leaf %s changed and every scenario reads it: retake the whole exam" % u,
                         changed=changed, against=against)
@@ -404,12 +432,12 @@ def carry(d, fresh_path, repo=None):
     if p["retake"]:
         new.update(readers=readers, reader_verdicts=fresh.get("reader_verdicts"))
         try:
-            cur, shared = units(d)
+            cur, shared, order = units(d)
             got = _fresh_reads(new, p["retake"], set(cur), d, repo)
         except (OSError, ValueError, KeyError, TypeError, AttributeError) as e:
             cannot(p, "the fresh answers %s" % e)
     else:
-        cur, shared = units(d)
+        cur, shared, order = units(d)
         got = {}
     car = {}
     for sid in p["carry"]:
@@ -422,7 +450,8 @@ def carry(d, fresh_path, repo=None):
         1 for sid, g in got.items() if _right(by_id[sid], g["verdicts"]))
     new.update(inputs=now_in, carried=car, score={"right": right, "total": len(sc)},
                retake={"outcome": p["outcome"], "retaken": p["retake"], "carried": p["carry"],
-                       "changed": p["changed"], "against": p["against"], "by": "exam_retake.py carry", "at": _now()})
+                       "changed": p["changed"], "against": p["against"], "units": cur, "sheet_order": order,
+                       "by": "exam_retake.py carry", "at": _now()})
     # a Challenger miss stands for a carried scenario; a retaken one's old miss says nothing of the new answers
     new["challenger_misses"] = [m for m in (prior.get("challenger_misses") or []) if isinstance(m, dict)
                                 and CT.txt(m.get("id")) in car] + [
@@ -436,18 +465,28 @@ def carry(d, fresh_path, repo=None):
 
 def carry_errors(ex, d):
     """designer_stage.exam_errors' check of a carried answer: its scenario, the shared unit and every leaf unit it read
-    are as they were when it was answered. -> errors ([] when exam.json carries nothing)."""
+    are as they were when it was answered, and the sheet's lines are not reordered beyond the leaves changed since the
+    carry (retake.units and retake.sheet_order, written by carry). -> errors ([] when exam.json carries nothing)."""
     car = ex.get("carried")
     if car is None:
         return []
     if not isinstance(car, dict):
         return ["exam: carried is not a map of scenario id to its carried answer"]
     try:
-        cur, shared = units(d)
+        cur, shared, order = units(d)
     except (OSError, ValueError) as e:
         return ["exam: carried answers cannot be checked: %s" % e]
     by_id = {CT.txt(s.get("id")): s for s in ex.get("scenarios") or [] if isinstance(s, dict)}
     errs = []
+    if car:
+        rt = ex.get("retake") if isinstance(ex.get("retake"), dict) else {}
+        u0, o0 = rt.get("units"), rt.get("sheet_order")
+        if not (isinstance(u0, dict) and is_order(o0)):
+            errs.append("exam: carried answers cannot be checked: retake records no units and sheet_order of the carry; "
+                        "retake it (exam_retake.py plan)")
+        elif order_moved(o0, order, {u for u in set(u0) | set(cur) if u0.get(u) != cur.get(u)}):
+            errs.append("exam: carried answers are stale: the sheet's lines were reordered since the carry; retake it "
+                        "(exam_retake.py plan)")
     for sid, c in sorted(car.items()):
         how = "retake it (exam_retake.py plan)"
         bad = carried_shape(c)
