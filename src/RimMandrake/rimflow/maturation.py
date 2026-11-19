@@ -2940,8 +2940,9 @@ def blind_brief_text(root, mod, cap_usd=None):
 #   rows.jsonl     one row per run of a stage-6 check: {"test", "verdict": PASS|FAIL|UNMEASURED, "site_checked": bool,
 #                  "game": "archmagi"|"stevedesktop", "mod_sha", "command", "evidence", "held": [...], and the fields
 #                  `build_match.py identity` prints: "mod_hash", "game_build", "active_mods", "tier" or "full_list",
-#                  "unit"}; the last row per test counts (a rerun after a fix made in the sitting supersedes; the earlier
-#                  FAIL stays as history), and only on the build he walks (the build match, read_ingame_exit).
+#                  "unit"}; the last row per test counts, never past an earlier FAIL (a FAIL goes down its road back,
+#                  spec Stage 6, and a new visit reruns it), and only on the build he walks (the build match,
+#                  read_ingame_exit).
 #                  "held" names what the site switched off or locked for the run ("fire", "weather", ...; [] when the whole
 #                  mod ran): maturation_rescue.py's C5 reads a bar whose every decider ran held as untested by the real
 #                  mechanic, and a row without "held" as UNMEASURED (RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED)
@@ -2985,7 +2986,7 @@ BRIDGE_RULES = (
     "and any save his item's notes name): load your own site over it, never delete or overwrite it.",
 )
 INGAME_DEFAULT = ("No Conductor decisions are written for this visit, so the standing default holds: run every stage-6 "
-                  "check above and the owed cases, look beyond them, and fix in the sitting what a small fix can fix. "
+                  "check above and the owed cases, look beyond them, and diagnose each FAIL while the game is up. "
                   "Do not change a bar, its wording, the Design Version or the stage.")
 OWNER_STAGE6 = ("In-game acceptance testing with setup maps, proper acceptance testing, and using the fastest methods "
                 "available with dense, rich setups that test many items simultaneously + allowances to explore beyond "
@@ -3743,11 +3744,14 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "covers is a row of `strange.jsonl`: explained (what it is and why it is fine) or filed (a rimflow item, its "
           "id in the row). Screenshots go in `%s/screenshots/` only if under 1 MB each; else name their paths." % vdir,
           "", "## A FAIL is diagnosed in the sitting", "",
-          "A FAIL is not a verdict to carry home: diagnose it by experiment while the game is up (change one thing, "
-          "watch the row). A small fix is made on the spot: write the offline test that fails on the old code first, "
-          "then the fix, deploy, rerun the row; the rerun's row supersedes the FAIL in `rows.jsonl` (the FAIL stays as "
-          "history). A fix too big for the sitting is a filed item and the row stays FAIL. Never weaken a check to "
-          "pass it; a check you judge wrong is a note to the Conductor, its row UNMEASURED.", "",
+          "A FAIL is not a verdict to carry home bare: diagnose it by experiment while the game is up (change one "
+          "thing, watch the row), then file it as a rimflow item with what you found, and the row stays FAIL. Do not "
+          "fix the mod in the sitting: the exit reading counts no check with an earlier FAIL row and no visit whose "
+          "rows name two builds, so a fix-and-rerun here wastes the visit. The fault goes down its road back (spec "
+          "Stage 6: the lowest stage that can show it, an offline test that fails on the old code first), and a new "
+          "visit reruns it on the fixed build. Run the remaining checks all the same: every FAIL this visit finds is "
+          "one the road back fixes at once. Never weaken a check to pass it; a check you judge wrong is a note to the "
+          "Conductor, its row UNMEASURED.", "",
           "## The record (skeleton first: create it before the first live call)", "",
           "`%s/`:" % vdir,
           "- `rows.jsonl`: one row per run: `{\"test\": id, \"verdict\": \"PASS\"|\"FAIL\"|\"UNMEASURED\", "
@@ -3779,7 +3783,7 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           SELF_CHECK_RULE % mod, "",
           "## Report (10 lines or fewer, plain words)", "",
           "Tag every number [measured] or [guess ~N%%]: checks PASS of %d, FAIL, UNMEASURED; each owed case's outcome; "
-          "fixes made in the sitting (shas); strange things seen, explained, filed; the savegame path; the mod list "
+          "each FAIL's filed item; strange things seen, explained, filed; the savegame path; the mod list "
           "and game; whether the exit is met; bridge released; spend." % len(checks)]
     steward = (read_text(root, mod, STEWARD_FILE) or "").strip()
     ivs, undated = MN.parse_interventions(read_text(root, mod, "journal.md") or "", "journal")

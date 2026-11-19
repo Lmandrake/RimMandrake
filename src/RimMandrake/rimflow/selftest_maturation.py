@@ -1770,6 +1770,11 @@ def ingame_main():
                                                "diagnose it by experiment", "Never run `maturation.py advance`")),
             "the brief names the skeleton, the machine-checkable exit block, diagnosis in the sitting, no advance")
         chk(lambda: M.INGAME_DEFAULT[:50] in text[0], "no stage-6 decision written: the standing default")
+        chk(lambda: all(w not in text[0] for w in ("supersedes the FAIL", "fix in the sitting", "fixes made in the sitting"))
+            and all(w in text[0] for w in ("road back", "a new visit reruns", "the row stays FAIL")),
+            "brief and exit reader agree on a FAIL: no fix-and-rerun in the sitting (read_ingame_exit refuses an "
+            "earlier FAIL and rows from two builds); the FAIL is filed, goes down its road back, a new visit reruns it "
+            "(RIMMANDRAKE_FIX_MATURATION_REVIEW_FINDINGS_SIX_PREDATE_SCOPE point 5)")
         t2 = json.loads(json.dumps(tt))
         t2["tests"][live6[0]]["testq"] = {"chain": "selftest"}
         ttp = os.path.join(root, "design/concepts/Pyrelands/version/test_table.json")
