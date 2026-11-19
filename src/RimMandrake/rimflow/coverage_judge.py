@@ -1808,6 +1808,7 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
             rec["claims_refused"] = dp["refused"]
 
     calls = []      # each judge call's end, in order: "dead" (a system cause) or "answered"
+    totals = {}     # session id -> the total its last answer reported: a --resume result is the whole session so far
 
     def ask(call, wall, gaps_only=False):
         """-> (exit code, the well-formed verdict (or, gaps_only, a {gaps} answer) or None, session id). Charges what
@@ -1860,6 +1861,14 @@ def _judge(d, repo, runner, timeout, now, charge, reader, unit):
         except Exception as e:  # noqa: BLE001 - a charge we cannot measure is recorded as unmeasured, never fatal
             tok = None
             rec["unmeasured_why"] = str(e)    # an unknown model is named here, never weighed as another
+        total = tok
+        if "--resume" in call:      # its own part (RIMMANDRAKE_COUNT_JUDGE_AND_ART_REASK_TOKENS_ONCE)
+            import detached_helper as DH
+            sid = call[call.index("--resume") + 1]
+            tok, total = DH.session_part(tok, totals.get(sid), res.get("stopped_by") == "spend_watchdog")
+            if tok is None and total is not None:
+                rec["unmeasured_why"] = "a resume of session %s whose earlier total no ask recorded" % sid
+        totals[res.get("session_id")] = total
         rec["tokens"] = (rec.get("tokens") or 0) + tok if tok is not None else rec.get("tokens")
         if tok is None:
             rec["unmeasured_calls"] = int(rec.get("unmeasured_calls") or 0) + 1

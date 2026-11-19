@@ -43,19 +43,42 @@ def concept(root, stage=5, status="open"):
     return d
 
 
-def answer(verdict, gaps=(), tokens=True, checklist=None):
+def answer(verdict, gaps=(), tokens=True, checklist=None, scale=1):
+    """`scale`: a resumed call's result is the whole session so far (a re-ask after one ask is scale 2)."""
     res = {"structured_output": {"verdict": verdict, "gaps": list(gaps), "reasons": "r", "checklist": checklist or []},
            "session_id": "sess"}
     if tokens:
-        res["usage"] = {"input_tokens": 10, "output_tokens": 2, "cache_read_input_tokens": 0,
+        res["usage"] = {"input_tokens": 10 * scale, "output_tokens": 2 * scale, "cache_read_input_tokens": 0,
                         "cache_creation_input_tokens": 0}
-        res["modelUsage"] = {"claude-opus-5-5": {"inputTokens": 10, "outputTokens": 2, "cacheReadInputTokens": 0,
-                                                 "cacheCreationInputTokens": 0}}   # as `claude -p` writes it
+        res["modelUsage"] = {"claude-opus-5-5": {"inputTokens": 10 * scale, "outputTokens": 2 * scale,
+                                                 "cacheReadInputTokens": 0, "cacheCreationInputTokens": 0}}
     return json.dumps(res)
 
 
 def row(i, ok=True, scene="sc_a"):
     return {"id": i, "parts": [{"what": "part of %s" % i, "scene": scene, "ok": ok}]}
+
+
+def resumed_once(d, repo, part, full):
+    """RIMMANDRAKE_COUNT_JUDGE_AND_ART_REASK_TOKENS_ONCE: a `--resume` re-ask's result is the whole session so far
+    (measured: Graffiti rm-coverage-judge-1794940039 recorded 566,882 = 2 x 270,651 + 25,580, its transcript's two
+    launches). The round and the concept's charges take each call's own part; an earlier total nobody could read leaves
+    the re-ask UNMEASURED (the p90), never the session total and never zero."""
+    one, two = (RL.run_tokens(json.loads(answer("covered", scale=k))) for k in (1, 3))
+    for first, why in ((answer("covered", checklist=part), None), (answer("covered", checklist=part, tokens=False), "sess")):
+        os.remove(os.path.join(d, CJ.VERDICT_FILE))
+        answers = [first, answer("covered", checklist=full, scale=3)]
+        n = len(DS.load_state(d)["budget"]["charges"])
+        rec, _ = CJ.run(d, repo, lambda argv, cwd, env, timeout: (0, answers.pop(0)), charge=True)
+        got = [(c["kind"], c["tokens"]) for c in DS.load_state(d)["budget"]["charges"][n:]]
+        if why is None:
+            check("a resumed re-ask records only its own part: round and charges hold the session once",
+                  rec.get("tokens") == two and got == [("review", one), ("review", two - one)]
+                  and not rec.get("unmeasured_calls"), (rec.get("tokens"), got, two))
+        else:
+            check("an unreadable earlier total -> the re-ask UNMEASURED with its cause, never the total or zero",
+                  rec.get("tokens") is None and rec.get("unmeasured_calls") == 2 and why in str(rec.get("unmeasured_why"))
+                  and got == [("unmeasured", 0), ("unmeasured", 0)], (rec.get("tokens"), rec.get("unmeasured_why"), got))
 
 
 def one_pass(root, calls, runner_of, signed):
@@ -84,7 +107,7 @@ def one_pass(root, calls, runner_of, signed):
 
     # A missing row is re-asked once, in the same session.
     os.remove(os.path.join(d, CJ.VERDICT_FILE))
-    answers = [answer("covered", checklist=full[:2]), answer("covered", checklist=full)]
+    answers = [answer("covered", checklist=full[:2]), answer("covered", checklist=full, scale=2)]
     argvs = []
 
     def script(argv, cwd, env, timeout):
@@ -96,7 +119,9 @@ def one_pass(root, calls, runner_of, signed):
           len(argvs) == 2 and argvs[1][argvs[1].index("--resume") + 1] == "sess" and "leaf_c" in argvs[1][argvs[1].index("-p") + 1]
           and "inv_a" not in argvs[1][argvs[1].index("-p") + 1] and rec["reasked"] == ["leaf_c"], argvs[1:])
     check("answered on the re-ask -> signed", rec["signed"] and signed and "unchecked" not in rec, rec)
-    check("both calls are charged", rec["tokens"] == 2 * RL.run_tokens(json.loads(answer("covered"))), rec.get("tokens"))
+    check("both calls are charged, the session once", rec["tokens"] == RL.run_tokens(json.loads(answer("covered", scale=2))),
+          rec.get("tokens"))
+    resumed_once(d, os.path.join(root, "onepass"), full[:2], full)
 
     # Still missing: a covered verdict never signs; a not_covered one stays actionable.
     os.remove(os.path.join(d, CJ.VERDICT_FILE))

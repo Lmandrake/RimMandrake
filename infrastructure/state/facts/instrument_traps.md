@@ -232,9 +232,16 @@ The general method is the global skill `~/.claude/skills/confident-wrong-numbers
   resumed runs since 2026-11-18 that follow an earlier run of their session; on 2026-11-18 (PST) 81,158,999 of 371,342,565 recorded weighted tokens
   (`design/experiments/2026-11-19-night-hypotheses/tools/check_resumed_run_tokens.py`, which prints the corrected
   sum). Records since then carry their own part and `session`, `session_tokens`, `session_cost_usd`; old records are
-  not rewritten. The result's `usage` block is this process only (not cumulative) but leaves out subagents. Same trap,
-  not fixed: `coverage_judge` adds the tokens of a `--resume` re-ask to the first ask's, and `art_calibration` lists a
-  re-ask's `weighted_tokens` and `cost_usd` next to the first ask's.
+  not rewritten. The result's `usage` block is this process only (not cumulative) but leaves out subagents.
+- 🔴 **A coverage judge round re-asked between 2026-11-17 07:00 UTC and the fix of 2026-11-19 counts its first ask twice
+  (RIMMANDRAKE_COUNT_JUDGE_AND_ART_REASK_TOKENS_ONCE)**: from the weighted_v2 change (`381db58f59`) `run_tokens` reads
+  the result's `modelUsage`, the whole session, and `coverage_judge` added a `--resume` re-ask's figure to the first
+  ask's (round `tokens` and the concept's `review` charges). Graffiti `rm-coverage-judge-1794940039` recorded 566,882
+  = 2 x 270,651 + 25,580 from its transcript; Pyrelands has three such rounds. Earlier weighted_v1 rounds read `usage`
+  and are right (Contagion's 1,119,788 is its session's v1 total). `coverage_calibration` added the re-ask's
+  `total_cost_usd` to the first ask's (2026-11-18 run: all five re-asked cases). Both now take
+  `detached_helper.session_part`. `art_calibration` lists a re-ask's figure beside the first ask's in the same way,
+  but no art calibration re-ask has ever run, so the trap is unproven there and not fixed.
 
 ## placeholder_lint texture tags
 - **`placeholder_lint` is blind to some texture tags and masks.** `texpaths()` keeps only tags whose name contains 'texpath', so it misses `texturePath` (terrain), `pollutedTexturePath` and `leaflessGraphicPath` (`donor_retire_census` srctex saw 21 of 55 StandIn texts; use `donor_retire_census.py standin`, any tag; `regen_eligibility`/`bulk_accept_renders` TEXTAGS lacked them too, so the gate refused those twins as 'renamed'). Its MASK regex `m(_(south|east|north|west))?$` matches any stem ending in lowercase m (AB_MangrovePalm), silently dropping real pictures as masks; RimWorld masks are `<path>_m` and `<path>_<facing>m` (`donor_retire_census.MASK_STEM`).

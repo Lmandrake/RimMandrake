@@ -1206,14 +1206,21 @@ def own_part(rec, res, tokens, usd, root=None):
         return tokens, usd, {"session": sid, "session_tokens": tokens, "session_cost_usd": usd}
     sid = rec["resume_session"]
     pt, pu = earlier_session_totals(rec, sid, root)
-    if isinstance(res, dict) and res.get("stopped_by") == "spend_watchdog":
-        tot = [v + p if _num(v) and _num(p) else None for v, p in ((tokens, pt), (usd, pu))]
-        return tokens, usd, {"session": sid, "session_tokens": tot[0], "session_cost_usd": tot[1]}
-    fields = {"session": sid, "session_tokens": tokens, "session_cost_usd": usd}
-    if _num(tokens) and not _num(pt):
+    stop = isinstance(res, dict) and res.get("stopped_by") == "spend_watchdog"
+    (tp, ts), (up, us) = session_part(tokens, pt, stop), session_part(usd, pu, stop)
+    fields = {"session": sid, "session_tokens": ts, "session_cost_usd": us}
+    if tp is None and _num(tokens):
         fields["tokens_why"] = "a resume of session %s whose earlier total no run record holds" % sid
-    return (tokens - pt if _num(tokens) and _num(pt) else None,
-            usd - pu if _num(usd) and _num(pu) else None, fields)
+    return tp, up, fields
+
+
+def session_part(total, earlier, watchdog_stop=False):
+    """A resumed claude call's figure (tokens or dollars) -> (its own part, the session's total), each None when it
+    cannot be read. The CLI's result is the whole session so far, earlier launches included; a spend watchdog stop
+    measured this launch only. Shared by own_part and coverage_judge's re-asks."""
+    if watchdog_stop:
+        return total, (total + earlier if _num(total) and _num(earlier) else None)
+    return (total - earlier if _num(total) and _num(earlier) else None), total
 
 
 def _model_sum(mu):

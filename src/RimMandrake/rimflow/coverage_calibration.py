@@ -429,8 +429,10 @@ def judge(root, d, route=None, reader="auto", _resume=None):
         return None, {"error": "%s: %s" % (type(e).__name__, e)}
     so = (res or {}).get("structured_output") if isinstance(res, dict) else None
     detail = {"cost_usd": (res or {}).get("total_cost_usd") if isinstance(res, dict) else None}
-    if _resume:
-        detail.update(reasked=_resume[1][:6], cost_usd=(detail["cost_usd"] or 0) + (_resume[2] or 0))
+    if _resume:     # a resumed result is the whole session so far: the case costs that total, once
+        import detached_helper as DH
+        stop = isinstance(res, dict) and res.get("stopped_by") == "spend_watchdog"
+        detail.update(reasked=_resume[1][:6], cost_usd=DH.session_part(detail["cost_usd"], _resume[2], stop)[1])
     if p.returncode != 0 or not isinstance(so, dict) or so.get("verdict") not in ("covered", "not_covered"):
         detail["error"] = "no well-formed verdict (exit %s)" % p.returncode
         return None, detail
