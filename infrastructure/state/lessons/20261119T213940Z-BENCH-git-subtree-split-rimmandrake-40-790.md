@@ -1,0 +1,1 @@
+git subtree split on RimMandrake (40,790 commits) walks every commit at ~15/s: about 45 minutes per folder, and a 10-minute background Bash limit kills it. To move a skill folder out, copy it at a named sha and say in the commit message that its history stays in RimMandrake's git (measured 2026-11-19, RIMMANDRAKE_MOVE_IMAGE_SKILLS_TO_WORKFLOWS_GPT_TOOL_BORROWS).
