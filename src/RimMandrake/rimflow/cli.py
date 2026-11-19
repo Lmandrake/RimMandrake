@@ -4223,7 +4223,6 @@ def cmd_bridge(args, seat):
     return _bridge_take(args, seat, w, holder, purpose)
 
 
-
 def sync_game_state(w, seat, announce=True):
     """Measure the game, and correct the record if the machine contradicts it.
 
@@ -5148,18 +5147,6 @@ def _find_card(by_card):
     return by_card
 
 
-def _relentless_guard(args, argv):
-    """A leased relentless item's ledger state belongs to its supervisor (a stale worker cannot close it). Fails open
-    when the store cannot be read: rimflow must work on a host with no store."""
-    try:
-        import run_store
-        why = run_store.guard(getattr(args, "cmd", None), getattr(args, "id", None), argv)
-    except Exception:  # noqa: BLE001
-        return
-    if why:
-        die(why + "\n")
-
-
 def main(argv=None):
     av = sys.argv[1:] if argv is None else argv
     if av[:1] == ["pipe"]:      # `rimflow pipe ...` is the one-line pipeline control (control.py): no ledger
@@ -5169,12 +5156,10 @@ def main(argv=None):
     _bind_paths()
     p = build_parser()
     args = p.parse_args(argv)
-    _relentless_guard(args, sys.argv[1:] if argv is None else argv)
     if not getattr(args, "cmd", None):
         p.print_help()
         return 1
     return args.fn(args, _resolve_command_seat(args)) or 0
-
 
 
 if __name__ == "__main__":

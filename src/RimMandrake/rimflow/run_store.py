@@ -1,4 +1,4 @@
-"""run_store.py -- the run store (Store: items, journal, locks under /home/mandrake/rm/relentless/store), the clone effects detached helpers use (Effects: bundle_clone, remove_clone, restore_bundle), rules(), the rimflow guard and pilot_model.
+"""run_store.py -- the run store (Store: items, journal, locks under /home/mandrake/rm/relentless/store), the clone effects detached helpers use (Effects: bundle_clone, remove_clone, restore_bundle), rules() and pilot_model.
 
 Moved verbatim from rimflow/relentless.py (RIMMANDRAKE_SPLIT_LIVE_CODE_OUT_OF_RELENTLESS_NAMED_MODULES):
 only the functions live code reaches (design/RimMandrake/retired_eras_index_2026-11-18.md).
@@ -29,7 +29,6 @@ RULES = os.path.join(HERE, "run_rules.json")
 DEFAULT_ROOT = "/home/mandrake/rm/relentless"
 RESTORE_EMAIL = "relentless@localhost"     # the committer of every commit restore_commits carries back into a clone
 GAME = "game"           # relentless_game.GAME: the store status of an item in its game phase
-LEASED = ("running", "stopping", "candidate", "checking", "closing", "retiring", GAME)   # a worker or the supervisor owns the item
 NOT_READ = object()
 # dirt no worker made on purpose: session dumps and ledger shards the seats' projection rewrites. Bundled, never restored
 POOL_STATE = ("infrastructure/state/lessons/",)     # records a worker commits as it finishes; the bundle carries them, a fresh clone re-applies them
@@ -139,7 +138,6 @@ def bundle_bytes(d):
                 seen.add((st.st_dev, st.st_ino))
                 n += st.st_size
     return n
-GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
 
 
 def pilot_model(clone, agent, default, env=None):
@@ -268,13 +266,8 @@ class Store:
             self.on_alarm(rec)
 
 
-
-
     def learn(self, item, text):
         self._append(os.path.join(self.item_dir(item), "learned.md"), text)
-
-
-
 
 
 def new_state(item, now, why):
@@ -284,39 +277,6 @@ def new_state(item, now, why):
             "last_beat": None, "stopping_since": None, "contract": None, "candidate": None, "check": None,
             "hold": None, "last_fail": None, "last_sha": None, "sha_at_change": None, "run": None,
             "not_before": 0, "ledger_started": False, "start_intent": False, "done_at": None, "quarantined": []}
-
-
-def _conductor_carried(argv):
-    """True when argv cites --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM with a non-empty --why."""
-    def flag(name):
-        for i, a in enumerate(argv):
-            if a == name and i + 1 < len(argv):
-                return argv[i + 1]
-            if a.startswith(name + "="):
-                return a.split("=", 1)[1]
-        return None
-    return (flag("--per-ruling") or "").strip() == "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM" and \
-        bool((flag("--why") or "").strip())
-
-
-def guard(verb, item, argv, env=None, store=None):
-    """rimflow calls this. A leased item's ledger state belongs to the supervisor; his own word always passes.
-    -> None, or why not."""
-    env = os.environ if env is None else env
-    if verb not in GUARDED_VERBS or not item or env.get("RELENTLESS_SUPERVISOR") == "1":
-        return None
-    if any(a == "--owner-said" or a.startswith("--owner-said=") for a in argv):
-        return None
-    if _conductor_carried(argv):             # the Conductor speaks with his authority (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)
-        return None
-    if store is None and not os.path.isdir(os.path.join(root(), "store")):
-        return None
-    st = (store or Store()).load(item)
-    if st and st["status"] in LEASED:
-        return ("%s is carried by relentless (gen %d, %s). `%s` belongs to its supervisor; a worker reports with "
-                "relentless.py, and the owner's word (--owner-said) always passes." % (item, st["gen"], st["status"],
-                                                                                       verb))
-    return None
 
 
 class Effects(object):
@@ -339,80 +299,8 @@ class Effects(object):
                               stdin=subprocess.DEVNULL)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     # the showing stage (relentless_showing): an item waiting only on his look is staged before he is asked
     show_root = None        # relentless_showing.SHOW_DIR
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     def git_ok(self, cwd, *args):
@@ -684,39 +572,6 @@ class Effects(object):
         if why:                 # still present, so still counted; the bundle stands. A clone already gone is removed.
             self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "remove_failed", "clone": c, "why": why})
         return out
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 def clone_item(c):

@@ -244,14 +244,6 @@ for verb in ("verify", "claim", "start"):
     ev = {"event": verb, "seat": "BENCH", "id": "I0"}
     check(M._who_refusal(ev, _it("OWNER")) is None, "BENCH may `%s` an item owned by OWNER" % verb)
     check(M._who_refusal(ev, _it("DESIGNER")) is not None, "BENCH still may not `%s` another seat's item" % verb)
-import run_store as RS  # noqa: E402
-_leased = types.SimpleNamespace(load=lambda item: {"status": "running", "gen": 9})
-check(RS.guard("close", "I0", ["--per-ruling", CA.RULING, "--why", "done"], env={}, store=_leased) is None,
-      "run_store guard passes the Conductor's ruling with its text")
-check(RS.guard("close", "I0", ["--per-ruling", CA.RULING], env={}, store=_leased) is not None,
-      "run_store guard refuses the ruling without the Conductor's text")
-check(RS.guard("close", "I0", ["--why", "done"], env={}, store=_leased) is not None,
-      "run_store guard refuses a bare reason")
 
 # The function-level census. The parser census above sees only argparse flags; the two gates that escaped (a refusal of
 # BENCH on an item owned by OWNER; the lease guard reading argv for --owner-said) sat in plain functions. So: every
@@ -259,7 +251,7 @@ check(RS.guard("close", "I0", ["--why", "done"], env={}, store=_leased) is not N
 # test) must also mention the Conductor's route (per_ruling, perRuling, --per-ruling, conductor_authority, CA.) in the
 # same function; every file that COMPARES a seat or an item owner to "OWNER" must mention it somewhere in the file.
 # OWNER_ONLY is the only way out: file -> the ruling that keeps it his, and why.
-ROUTE_WORDS = re.compile(r"per.?ruling|conductor_authority|CONDUCTOR_AUTHORITY|\bCA\.|_conductor_carried|\bcarried\(")
+ROUTE_WORDS = re.compile(r"per.?ruling|conductor_authority|CONDUCTOR_AUTHORITY|\bCA\.|\bcarried\(")
 SAID_NAMES = ("owner_said", "ownerSaid")
 OWNER_ONLY = {
     "src/RimMandrake/rimflow/cli.py": "bridge give / the OWNER bridge hold 45-min rule (owner by card 2026-10-30), `played` "
