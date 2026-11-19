@@ -1,0 +1,8 @@
+Row and source check by the second reader over the rewrite_choices.md pages of RIMMANDRAKE_RECHECK_THESUMP_TO_WEEPINGSTONES_CHOICES, run 2026-11-18 (offline; documents only, no game).
+Script: design/RimMandrake/biome_recheck_row_check_2026-11-18.py <page>. What it checks: every table row under 'Every idea, row by row' has five cells and a non-empty outcome; every source name defined in the 'Source names' paragraph appears in some row's source cell; an invented source name is reported missing (the probe that shows the check can see absence). It counts rows by the first word of the outcome cell and counts the rows under 'Added by the second reader'.
+What it does not check: that every idea in every source has a row. That is the reading itself; each page's 'Second reader' section says what was read to the end.
+
+design/concepts/TheSump/rewrite_choices.md
+   {'rows': 242, 'added': 114, 'first': 128, 'counts': {'kept': 177, 'reshaped': 12, 'lost': 24, 'moved': 24, 'folded': 5}, 'partial_moves': 2, 'bad': [], 'empty': [], 'names': 27, 'missing': ['made-up source name zzqx'], 'probe_seen': True, 'noreason': 27}
+   VERDICT: PASS
+exit status: 0
