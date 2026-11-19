@@ -39,6 +39,7 @@ import fnmatch
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -894,13 +895,18 @@ def _run_tree_checks(top, cfg, what="tree check", base=None):
 
     def one(c, tree=top):
         t0 = time.monotonic()
+        # a TMPDIR of the check's own, gone after: every publish ran selftest_alpha_biomes_census.py in ours, and its
+        # five git repos a run were 2,236 of the scratch cleaner's 3,836 waiting clones (2026-11-18)
+        tdir = tempfile.mkdtemp(prefix="publish_check_")
         try:
             argv = [sys.executable, os.path.join(tree, c["test"])] + [str(x) for x in c.get("args") or []]
             r = subprocess.run(argv, cwd=tree, capture_output=True, text=True,
-                               timeout=limit, stdin=subprocess.DEVNULL, env=env)
+                               timeout=limit, stdin=subprocess.DEVNULL, env=dict(env, TMPDIR=tdir))
             return c, r.returncode, (r.stdout or "") + (r.stderr or ""), time.monotonic() - t0
         except subprocess.TimeoutExpired:
             return c, None, "", time.monotonic() - t0
+        finally:
+            shutil.rmtree(tdir, ignore_errors=True)
     t0 = time.monotonic()
     with concurrent.futures.ThreadPoolExecutor(max_workers=6) as ex:
         res = list(ex.map(one, cfg["checks"]))

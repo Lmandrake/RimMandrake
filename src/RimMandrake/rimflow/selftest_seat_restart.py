@@ -21,6 +21,7 @@ import time
 import subprocess
 import os
 import sys
+import shutil
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -2969,4 +2970,8 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:            # TMP holds git repos; left behind they waited for the scratch cleaner's bundles (2026-11-18)
+        rc = main()
+    finally:
+        shutil.rmtree(TMP, ignore_errors=True)
+    sys.exit(rc)

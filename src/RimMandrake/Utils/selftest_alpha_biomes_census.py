@@ -11,6 +11,7 @@ import json
 import os
 import subprocess
 import sys
+import shutil
 import tempfile
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -149,9 +150,17 @@ def real():
 
 
 def main():
-    synthetic()
-    donor_drift()
-    real()
+    # every mkdtemp lands in one root of this run's own, removed pass or fail: each run left five git repos, 2,236 of
+    # the scratch cleaner's waiting clones on 2026-11-18 (selftest_clone_tests_leave_no_tmp.py)
+    saved, root = tempfile.tempdir, tempfile.mkdtemp(prefix="selftest_abc_")
+    tempfile.tempdir = root
+    try:
+        synthetic()
+        donor_drift()
+        real()
+    finally:
+        tempfile.tempdir = saved
+        shutil.rmtree(root, ignore_errors=True)
     print("RESULT:", "FAIL %d" % len(FAILS) if FAILS else "PASS")
     return 1 if FAILS else 0
 

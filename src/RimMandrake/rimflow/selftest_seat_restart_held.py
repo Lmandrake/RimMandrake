@@ -19,6 +19,7 @@ import json
 import os
 import subprocess
 import sys
+import shutil
 import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -249,4 +250,9 @@ def main():
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:            # both temp roots hold git repos, 7 a run; left behind they clogged the scratch cleaner (2026-11-18)
+        rc = main()
+    finally:
+        shutil.rmtree(TMP, ignore_errors=True)
+        shutil.rmtree(B.TMP, ignore_errors=True)
+    sys.exit(rc)
