@@ -364,6 +364,26 @@ def t_reopening_a_closed_item_is_refused():
             "a closed item was reopened, which erases that it ever closed")
 
 
+def t_a_refused_door_ends_its_stdout_on_a_refused_line():
+    """A caller that filters stdout (`| grep`, `2>/dev/null`) saw only the shadow PREFLIGHT line of a refused `file`
+    and read silence twice on 2026-11-19 (RIMMANDRAKE_FIX_FOUR_SMALL_DEFECTS_FOUND_AT_TODAYS_WAKE): the refusal's words
+    go to stderr, so stdout's LAST line must say REFUSED, with the door, the id and the reason's first line."""
+    fresh()
+    rc, out, err = run("file", "RIMMANDRAKE_FOO", "--for", "BUILD", "--title", "t")
+    last = [l for l in out.splitlines() if l.strip()][-1:] or [""]
+    assert rc != 0, "a refused name filed (exit 0)"
+    assert last[0].startswith("REFUSED: file RIMMANDRAKE_FOO (exit %d): " % rc) and "not a new-style item name" in last[0], \
+        "stdout's last line is not the refusal: %r" % last[0]
+    ok("file", "CLOSED_THEN_RECLAIMED_LINE_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    out = ok("claim", "CLOSED_THEN_RECLAIMED_LINE_PROBE_FIXTURE")
+    assert not any(l.startswith("REFUSED:") for l in out.splitlines()), "a door that let the act through printed REFUSED: %r" % out
+    ok("close", "CLOSED_THEN_RECLAIMED_LINE_PROBE_FIXTURE", "--no-code", "a fixture")
+    rc, out, err = run("claim", "CLOSED_THEN_RECLAIMED_LINE_PROBE_FIXTURE")
+    last = [l for l in out.splitlines() if l.strip()][-1:] or [""]
+    assert rc != 0 and last[0].startswith("REFUSED: claim CLOSED_THEN_RECLAIMED_LINE_PROBE_FIXTURE"), \
+        "a refused claim's stdout does not end on REFUSED: %r" % last[0]
+
+
 def t_incomplete_item_starts_fine_and_the_tool_does_not_block():
     # 🔴 Owner, 2026-08-21: the completeness gate is removed. Asserting its ABSENCE so
     # that reinstating it fails the suite.

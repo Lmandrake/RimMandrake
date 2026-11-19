@@ -99,8 +99,12 @@ def _bind_paths():
         model.CLOSED = os.path.join(its, "closed")
 
 
+_LAST_DIE = []                  # the newest die() message, for a door's closing REFUSED line (_say_shadow)
+
+
 def die(msg, code=2):
     sys.stderr.write(msg.rstrip() + "\n")
+    _LAST_DIE[:] = [msg]
     raise SystemExit(code)
 
 
@@ -2068,11 +2072,21 @@ def _judge_list(what):
     return lambda got: ("FAIL", "%s: %s" % (what, ", ".join(got))) if got else ("PASS", "")
 
 
-def _say_shadow(pf):
+def _say_shadow(pf, door=None, iid=None):
+    """Print the shadow lines; when the door is being refused (a SystemExit with a non-zero code is in flight), end
+    stdout on `REFUSED: <door> <id> (exit N): <reason's first line>`. The refusal's own words go to stderr, so a caller
+    filtering stdout saw only PREFLIGHT and read silence (twice on 2026-11-19, RIMMANDRAKE_FIX_FOUR_SMALL_DEFECTS_FOUND_
+    AT_TODAYS_WAKE)."""
     try:
         print(pf.finish())
     except Exception as e:      # noqa: BLE001
         print("preflight did not run (%s: %s); the door carries on" % (type(e).__name__, e))
+    exc = sys.exc_info()[1]
+    if door and isinstance(exc, SystemExit) and exc.code not in (0, None):
+        code = exc.code if isinstance(exc.code, int) else 1
+        why = _LAST_DIE[0] if _LAST_DIE else (exc.code if not isinstance(exc.code, int) else "")
+        first = next((l.strip() for l in str(why).splitlines() if l.strip()), "the reason is on stderr above")
+        print("REFUSED: %s %s (exit %d): %s" % (door, iid, code, first))
 
 
 def cmd_file(args, seat):
@@ -2081,7 +2095,7 @@ def cmd_file(args, seat):
     try:
         return _file(args, seat, w, pf)
     finally:            # every attempt is a line, a refused one too; the lines print after the door's own output
-        _say_shadow(pf)
+        _say_shadow(pf, "file", args.id)
 
 
 def _file(args, seat, w, pf):
@@ -2238,7 +2252,7 @@ def cmd_claim(args, seat):
     try:
         return _claim(args, seat, pf)
     finally:
-        _say_shadow(pf)
+        _say_shadow(pf, "claim", args.id)
 
 
 def _pickup_gates(pf, w, it, seat, now, cap):
@@ -2538,7 +2552,7 @@ def _simple(verb, extra=()):
         try:
             return _simple_run(verb, extra, args, seat, pf)
         finally:
-            _say_shadow(pf)
+            _say_shadow(pf, "start", args.id)
     return run
 
 
