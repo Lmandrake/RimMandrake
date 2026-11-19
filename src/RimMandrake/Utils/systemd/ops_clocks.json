@@ -3,6 +3,7 @@
   "deploy": "/home/mandrake/rm/dispatch",
   "clocks": {
     "rm-ops-watch": "rm-ops-watch.timer",
+    "rm-vv-matrix": "rm-vv-matrix.timer",
     "timer-guard": "timer-guard.timer",
     "rm-account-usage": "rm-account-usage.timer",
     "account-plan": "account-plan.timer",
