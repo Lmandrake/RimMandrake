@@ -115,6 +115,59 @@ finally:
         except OSError:
             pass
 
+print("handoff: a (filed: X) citation naming an item id must name an item on the ledger")
+_items = {"AN_ITEM_1", "RIMMANDRAKE_REAL_FILED_ITEM"}
+
+
+def _no_read():
+    raise AssertionError("the ledger was read for a citation naming no item id")
+
+
+def _blind():
+    raise OSError("ledger shard unreadable")
+
+
+cites = {
+    "ghost_trap": _tmp(_doc(traps="- a tool lied about a count (filed: RIMMANDRAKE_NO_SUCH_ITEM_EVER_FILED)")),
+    "real_trap": _tmp(_doc(traps="- a tool lied about a count (filed: `RIMMANDRAKE_REAL_FILED_ITEM`)")),
+    "ghost_ptr": _tmp(_doc(half_done="- `AN_ITEM_1` — parked; NEXT: run the probe (filed: GHOST_POINTER_ITEM_X)")),
+    "words": _tmp(_doc(traps="- one (filed: lessons)\n- two (filed: LESSONS)\n- three (filed: "
+                             "infrastructure/state/lessons/20261119T1-BENCH-x.md)\n- four (filed: CANONICAL_SAVE.md)")),
+    "mixed": _tmp(_doc(traps="- a trap (filed: lessons; RIMMANDRAKE_REAL_FILED_ITEM, GHOST_SECOND_ITEM_Y)")),
+}
+try:
+    p = handoff.todo_scan(cites["ghost_trap"], items=_items)
+    check(any("RIMMANDRAKE_NO_SUCH_ITEM_EVER_FILED" in x and "not an item" in x for x in p),
+          "a trap citing (filed: X) for an X never filed is refused, naming X (%r)" % (p[:1],))
+    check(handoff.todo_scan(cites["real_trap"], items=_items) == [],
+          "a trap citing (filed: X) for an X on the ledger passes")
+    p = handoff.todo_scan(cites["ghost_ptr"], items=_items)
+    check(any("GHOST_POINTER_ITEM_X" in x for x in p), "a half-done pointer citing an unfiled X is refused (%r)" % (p[:1],))
+    try:
+        p = handoff.todo_scan(cites["words"], items=_no_read)
+        check(p == [], "(filed: lessons), a lesson path and a file name are not item ids: no refusal (%r)" % (p[:1],))
+    except AssertionError as e:
+        check(False, str(e))
+    p = handoff.todo_scan(cites["mixed"], items=_items)
+    check(len(p) == 1 and "GHOST_SECOND_ITEM_Y" in p[0] and "RIMMANDRAKE_REAL_FILED_ITEM" not in p[0],
+          "a citation naming two ids refuses only the unfiled one (%r)" % (p[:1],))
+    p = handoff.todo_scan(cites["ghost_trap"], items=_blind)
+    check(len(p) == 1 and "could not look" in p[0] and "not an item" not in p[0],
+          "an unreadable ledger is 'could not look', a refusal that is neither a pass nor 'not an item' (%r)" % (p[:1],))
+    real = _tmp(_doc(traps="- real (filed: RIMMANDRAKE_FIX_FOUR_SMALL_DEFECTS_FOUND_AT_TODAYS_WAKE)\n"
+                           "- ghost (filed: RIMMANDRAKE_NO_SUCH_ITEM_EVER_FILED)"))
+    cites["real"] = real
+    p = handoff.todo_scan(real)
+    check(len(p) == 1 and "RIMMANDRAKE_NO_SUCH_ITEM_EVER_FILED" in p[0]
+          and "RIMMANDRAKE_FIX_FOUR_SMALL_DEFECTS_FOUND_AT_TODAYS_WAKE" not in p[0],
+          "sanity probe on the real ledger: a filed item passes, a ghost is refused (%r)" % (p[:1],))
+finally:
+    for f in cites.values():
+        try:
+            os.unlink(f)
+        except OSError:
+            pass
+
 print("handoff: previous_handoff picks the newest COMMITTED file, never itself")
 name, ts = handoff.previous_handoff()
 check(name is None or ts,

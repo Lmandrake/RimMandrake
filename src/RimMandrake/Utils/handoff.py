@@ -542,11 +542,42 @@ def handoff_out(seat_, d, stamp=None):
     return None
 
 
-def todo_scan(path):
+FILED_CITE = re.compile(r"\(filed:([^)]*)\)", re.I)
+ITEM_SHAPE = re.compile(r"^[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+$")
+
+
+def filed_citation_problems(text, items=None):
+    """A `(filed: X)` whose X is shaped like an item id must name an item on the ledger: the Conductor's window cited
+    ids it had never filed and --check passed them (reported 2026-11-19, RIMMANDRAKE_FIX_FOUR_SMALL_DEFECTS_FOUND_AT_
+    TODAYS_WAKE). Only whole words of the citation count (`lessons`, a lesson path or `CANONICAL_SAVE.md` are not ids),
+    and the ledger is read only when one is cited. `items`: a set of ids, or a callable returning one (the seam); default
+    model.replay's items. A ledger that cannot be read is 'could not look', never a pass and never 'not an item'."""
+    cited = []
+    for m in FILED_CITE.finditer(text):
+        for w in re.split(r"[\s,;]+", m.group(1)):
+            w = w.strip("`*'\".")
+            if ITEM_SHAPE.match(w) and w not in cited:
+                cited.append(w)
+    if not cited:
+        return []
+    try:
+        known = items() if callable(items) else items if items is not None else set(_replay().items)
+    except Exception as e:                       # noqa: BLE001 - said, never silent
+        return ["could not look up %d `(filed: X)` id(s) on the ledger (%s: %s): %s"
+                % (len(cited), type(e).__name__, e, ", ".join(cited))]
+    ghosts = [c for c in cited if c not in known]
+    if ghosts:
+        return ["`(filed: X)` citation(s) whose X is not an item on the ledger -- file it (`rimflow file`) or cite where "
+                "it really lives: " + ", ".join(ghosts)]
+    return []
+
+
+def todo_scan(path, items=None):
     """Everything --check demands of the handoff's CONTENT. Each check maps to a
     measured failure mode from the 2026-09-17 audit (Transient/handoff_audit/):
     unfilled markers, off-template files, unattributed dirty-tree dumps, prose
-    pointers with no next action, traps re-explained instead of cited."""
+    pointers with no next action, traps re-explained instead of cited, and a
+    `(filed: X)` naming an item id the ledger does not hold (`items`: the seam)."""
     if not os.path.isfile(path):
         return ["the handoff file does not exist yet — run without --check first"]
     text = io.open(path, encoding="utf-8").read()
@@ -585,6 +616,7 @@ def todo_scan(path):
             bad.append("trap(s) with no `(filed: ...)`/`(see: ...)` citation — "
                        "file each with lessons.py add (or cite where it already "
                        "lives):\n      " + "\n      ".join(b for b in loose[:6]))
+    bad += filed_citation_problems(text, items)
     return bad
 
 
