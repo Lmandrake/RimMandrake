@@ -28,7 +28,6 @@
   "src/RimMandrake/rimflow/conductor_closeout.py::_event_ts::except-returns-empty": 1,
   "src/RimMandrake/rimflow/conductor_closeout.py::dismissed_keys::except-returns-empty": 1,
   "src/RimMandrake/rimflow/control.py::_alive::except-returns-empty": 1,
-  "src/RimMandrake/rimflow/control.py::_procs::except-returns-empty": 2,
   "src/RimMandrake/rimflow/control.py::_unit_loaded::except-returns-empty": 1,
   "src/RimMandrake/rimflow/control.py::heartbeat::except-returns-empty": 1,
   "src/RimMandrake/rimflow/control.py::reap_detached::or-empty": 1,

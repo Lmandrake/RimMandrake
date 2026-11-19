@@ -48,6 +48,7 @@ os.environ["RM_CONTROL_CONCEPTS"] = os.path.join(TMP, "concepts")
 os.makedirs(os.environ["RM_MATURATION_DISPATCH_DIR"])
 os.makedirs(os.environ["RM_CONTROL_CONCEPTS"])
 import control as C  # noqa: E402
+import probe_result as P  # noqa: E402
 
 PY = sys.executable
 TOOL = os.path.join(HERE, "control.py")
@@ -413,6 +414,7 @@ def t_clones():
         d = os.path.join(TMP, "clone-" + n, "src", "RimMandrake", "rimflow")
         os.makedirs(d)
         shutil.copy(TOOL, d)
+        shutil.copy(os.path.join(os.path.dirname(TOOL), "probe_result.py"), d)     # a clone holds control.py's sibling
         r = subprocess.run([PY, os.path.join(d, "control.py"), "show"], capture_output=True, text=True, timeout=30)
         outs.append((r.returncode, r.stdout))
     check(outs[0] == outs[1] and outs[0][0] == 0 and "HELD BY OWNER" in outs[0][1],
@@ -1086,8 +1088,8 @@ def t_review_claims_round_two():
     p1 = subprocess.Popen(["sleep", "300"])
     p2 = subprocess.Popen(["sleep", "300"])
     real_cg, real_sc, real_procs = C._cgroup_pids, C._systemctl, getattr(C, "_procs", None)
-    C._cgroup_pids = lambda u: ([p1.pid], "probe.slice/rm-probe-r2c4.service")
-    C._procs = lambda cg: [x for x in (p1.pid, p2.pid) if C._alive(x)]
+    C._cgroup_pids = lambda u: (P.value([p1.pid]), "probe.slice/rm-probe-r2c4.service")
+    C._procs = lambda cg: P.value([x for x in (p1.pid, p2.pid) if C._alive(x)])
     C._systemctl = lambda args, timeout=10: (1, "Failed to kill unit: timeout") if args[0] == "kill" else (0, "")
     try:
         res = C.kill_units(["rm-probe-r2c4"], wait_s=0.5)
@@ -1249,13 +1251,13 @@ def t_review_claims_round_three():
             time.sleep(0.3)
             return 1, "Failed to kill unit: timeout"
         return 0, ""
-    C._cgroup_pids = lambda u: ([gone.pid], "probe.slice/rm-probe-r3c4.service")
-    C._procs = lambda cg: None
+    C._cgroup_pids = lambda u: (P.value([gone.pid]), "probe.slice/rm-probe-r3c4.service")
+    C._procs = lambda cg: P.could_not_look("stand-in: cgroup.procs unreadable")
     C._systemctl = slow_fail
     try:
         res = C.kill_units(["rm-probe-r3c4"], wait_s=0.1)
         live = subprocess.Popen(["sleep", "300"])
-        C._procs = lambda cg: [live.pid]    # a member that survives SIGKILL is named, not just "not dead"
+        C._procs = lambda cg: P.value([live.pid])    # a member that survives SIGKILL is named, not just "not dead"
         C._systemctl = lambda args, timeout=10: (1, "Failed") if args[0] == "kill" else (0, "")
         real_kill = os.kill
         os.kill = lambda pid, sig: None if pid == live.pid else real_kill(pid, sig)
@@ -1286,7 +1288,8 @@ def t_review_claims_round_three():
         got2 = C._procs("/u.service")
     finally:
         C.CGROUP_ROOT = real_root
-    check(got == [4242] and got2 is None, "claim r3-8: the cgroup read walks descendants; an unreadable one is None",
+    check(list(got) == [4242] and got2.kind == "could_not_look", "claim r3-8: the cgroup read walks descendants; an "
+          "unreadable one is could-not-look",
           (got, got2))
     # 5. two due escalation timers, or two concurrent kills, reap one detached run once
     for how in ("escalate", "stop"):
@@ -1892,7 +1895,7 @@ def t_kill_verified_dead():
     fresh()
     child = subprocess.Popen(["/bin/sleep", "30"])
     real = (C._cgroup_pids, C._systemctl, C._alive)
-    C._cgroup_pids = lambda unit: ([child.pid], "/probe-kill-verified")
+    C._cgroup_pids = lambda unit: (P.value([child.pid]), "/probe-kill-verified")
     C._systemctl = lambda args, timeout=10: (0, "")
     try:
         for alive, want in ((lambda pid: True, "survivor"), (real[2], "dead")):
@@ -2005,8 +2008,8 @@ def t_probe_never_lies():
         res = C.kill_units(["rm-probe-blind1"], wait_s=0)
     finally:
         C._systemctl = real_sc
-    check(pids is None and "systemctl show failed" in why, "a failed systemctl show reads could not look, not empty",
-          (pids, why))
+    check(pids.kind == "could_not_look" and "systemctl show failed" in pids.cause and why == "",
+          "a failed systemctl show reads could not look, not empty", (pids, why))
     check(res[0]["dead"] is None and "UNVERIFIED" in res[0]["said"] and "nothing was running" not in res[0]["said"],
           "and the kill says death UNVERIFIED, never nothing was running", res)
     root = os.path.join(TMP, "cgroot")
@@ -2021,7 +2024,8 @@ def t_probe_never_lies():
         gone = C._procs("/probe.slice/gone.service")
     finally:
         C.CGROUP_ROOT = real_root
-    check(blind is None and empty == [] and gone == [], "a cgroup without a readable cgroup.procs reads could not look;"
+    check((blind.kind, empty.kind, gone.kind) == ("could_not_look", "empty", "empty"), "a cgroup without a readable"
+          " cgroup.procs reads could not look;"
           " an empty one and a gone one read empty", (blind, empty, gone))
 
 

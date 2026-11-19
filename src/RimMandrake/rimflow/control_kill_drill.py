@@ -107,7 +107,7 @@ def drill(lines):
     check(main and C._alive(main) and C._alive(child), "launch: the fixture or its child did not ignore SIGTERM (the "
                                                        "kill would prove nothing)")
     pids, cg = C._cgroup_pids(u)    # the fixture, its child and its loop's current sleep
-    check(pids and {main, child} <= set(pids), "launch: %s's cgroup %s holds %s, not the fixture %d and its child %d" % (
+    check(pids.ok and {main, child} <= set(pids), "launch: %s's cgroup %s holds %s, not the fixture %d and its child %d" % (
         u, cg, pids, main, child))
     lines.append("launch   ok: %s started through launch_unit, %d processes in its cgroup, all ignore SIGTERM" % (
         u, len(pids)))

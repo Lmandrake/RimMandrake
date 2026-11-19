@@ -74,6 +74,8 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+sys.path.insert(0, HERE) if HERE not in sys.path else None
+import probe_result as P  # noqa: E402  a read of systemd or a cgroup answers value, empty or could-not-look
 SCHEMA_VERSION = 1
 DEFAULT_DB = os.path.join(os.path.expanduser("~"), ".local", "state", "rimmandrake", "control", "control.db")
 TICK_UNIT = "rm-maturation-dispatch.service"
@@ -1541,13 +1543,14 @@ def _systemctl(args, timeout=10):
 
 
 def _cgroup_pids(unit):
-    """-> (pids now in the unit's cgroup, or None when it cannot be read; the cgroup path)."""
+    """-> (the pids now in the unit's cgroup as a probe_result answer, could_not_look when systemd or the cgroup cannot
+    be read; the cgroup path, "" when there is none)."""
     rc, out = _systemctl(["show", "-p", "ControlGroup", "--value", unit], 5)
     if rc != 0:     # a failed read is "could not look", never an empty cgroup (a unit that does not exist reads rc 0)
-        return None, "systemctl show failed (rc %d): %s" % (rc, out.strip()[:120])
+        return P.could_not_look("systemctl show failed (rc %d): %s" % (rc, out.strip()[:120])), ""
     cg = out.strip()
     if not cg:
-        return [], ""
+        return P.empty(), ""
     return _procs(cg), cg
 
 
@@ -1556,11 +1559,12 @@ CGROUP_ROOT = "/sys/fs/cgroup"
 
 def _procs(cg):
     """-> the pids in cgroup `cg` AND every cgroup below it (a delegated unit's processes may sit only in a child:
-    round-three claim 8), read from each cgroup.procs; [] when the cgroup is gone; None when any part could not be
-    read (a cgroup that still exists without a readable cgroup.procs included)."""
+    round-three claim 8), read from each cgroup.procs, as a probe_result answer: empty when the cgroup is gone or holds
+    none; could_not_look when any part could not be read (a cgroup that still exists without a readable cgroup.procs
+    included)."""
     top = os.path.join(CGROUP_ROOT, cg.lstrip("/"))
     if not os.path.isdir(top):
-        return []
+        return P.empty()
     out = []
     for d, _dirs, _files in os.walk(top):
         try:
@@ -1568,10 +1572,10 @@ def _procs(cg):
                 out += [int(x) for x in f.read().split()]
         except FileNotFoundError:
             if os.path.isdir(d):    # it exists and cannot be read; gone meanwhile is simply empty
-                return None
-        except (OSError, ValueError):
-            return None
-    return out
+                return P.could_not_look("%s exists with no readable cgroup.procs" % d)
+        except (OSError, ValueError) as e:
+            return P.could_not_look("%s/cgroup.procs: %s" % (d, e))
+    return P.value(out) if out else P.empty()
 
 
 def _alive(pid):
@@ -1590,7 +1594,8 @@ def kill_units(units, wait_s=KILL_WAIT_S):
     -> [{"unit", "dead" (True/False/None: nothing was running), "ms", "survivors", "said"}]. Never raises."""
     out = []
     for u in units:
-        pids, cg = _cgroup_pids(u)
+        got, cg = _cgroup_pids(u)
+        pids, blind = (list(got), "") if got.ok else (None, got.cause)    # None: could not look, death UNVERIFIED
         t0 = time.monotonic()
         rc, said = _systemctl(["kill", "--signal=SIGKILL", "--kill-whom=all", u], 10)
         if pids:        # belt and braces: the pids seen in the cgroup get SIGKILL too (a unit systemd no longer lists)
@@ -1604,8 +1609,8 @@ def kill_units(units, wait_s=KILL_WAIT_S):
         while (left or late) and time.monotonic() - t0 < wait_s:
             if late:    # systemd's cgroup kill failed: a process that entered the cgroup after the snapshot is only
                 now_in = _procs(cg)     # seen by reading the cgroup again (round-two claim 4)
-                if now_in is None:
-                    pids = None     # the reread could not look: death is UNVERIFIED, never assumed
+                if not now_in.ok:
+                    pids, blind = None, now_in.cause    # the reread could not look: death UNVERIFIED, never assumed
                     break
                 for pid in now_in:
                     if pid not in left and _alive(pid):
@@ -1623,8 +1628,8 @@ def kill_units(units, wait_s=KILL_WAIT_S):
         left = [x for x in left if _alive(x)]
         if late and pids is not None:   # the cgroup never read empty inside the wait (or the kill spent the wait)
             fin = _procs(cg)
-            if fin is None:     # could not look: UNVERIFIED, never "dead" (round-three claim 4)
-                pids = None
+            if not fin.ok:      # could not look: UNVERIFIED, never "dead" (round-three claim 4)
+                pids, blind = None, fin.cause
             else:
                 for pid in fin:
                     if pid not in left and _alive(pid):
@@ -1633,13 +1638,13 @@ def kill_units(units, wait_s=KILL_WAIT_S):
                             os.kill(pid, signal.SIGKILL)
                         except (ProcessLookupError, PermissionError):
                             pass
-                left = sorted({x for x in left + fin if _alive(x)})
+                left = sorted({x for x in left + list(fin) if _alive(x)})
         ms = int((time.monotonic() - t0) * 1000)
         _systemctl(["stop", "--no-block", u], 10)
         _systemctl(["reset-failed", u], 5)
         if pids is None:
             out.append({"unit": u, "dead": None, "ms": ms, "survivors": [],
-                        "said": "its cgroup could not be read (%s): death UNVERIFIED" % cg})
+                        "said": "its cgroup could not be read (%s): death UNVERIFIED" % blind})
         elif not pids:
             out.append({"unit": u, "dead": None, "ms": ms, "survivors": [], "said": "nothing was running in it"})
         else:
