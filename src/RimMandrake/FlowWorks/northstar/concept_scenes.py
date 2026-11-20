@@ -553,6 +553,11 @@ def _one_surface(S):
 SRC_MAPCTL = 'RimMandrake.FlowWorks.MapControls.RM_MapControls'
 SRC_CORE_LV, SRC_SHELF_LV, SRC_MOAT_LV, SRC_MOAT_N = 4, 1, 6, 60      # notches (0.5 m): core 2 m, shelf 0.5 m, moat 3 m
 SRC_LAKE_PROBES = ((105, 135), (100, 130), (38, 5))   # river site cells that read Endless (visit_1 sc_river__endless_read)
+# The bound on following the film to 0 L. Danger: a sink whose draw never ends (an endless pond, a creeping film) holds the
+# bridge forever. Evidence (visit_2/evidence/exp/source_pays_long.json): under the wet line the sink drew 2.98 notches in 50
+# pulses with ~17 notches of film left (53 L at the probe, 160 core squares), so a draw that falls with the film needs about
+# ln(17 / 0.0002) / (2.98 / 50 / 17) ~ 3,200 pulses to the last dL. Past the bound the row reads UNMEASURED, never PASS.
+SRC_FILM_PULSES = 4000
 
 
 def _src_wet(dls, wet_dl):
@@ -660,16 +665,33 @@ def _source_pays(S):
             S.pulse(100)
             if all(v is not None and v <= wet_dl for v in S.dl(pond)):
                 break
+        dry = all(v is not None and v <= wet_dl for v in S.dl(pond))
+        # His ruling POND_PUMP_FIX_LAST_DROP_COUNTS ('ponds pump to last dL'): under the wet line the sink still draws the
+        # film, slowly, so the draw is followed to 0 L and 0 dL, not stopped at the wet line
+        # (RIMMANDRAKE_REPIN_SOURCE_PAYS_FILM_IS_NOT_A_LEAK). A chunk that draws nothing ends the follow (stuck film).
+        film = 0
+        while dry and film < SRC_FILM_PULSES:
+            left = read()
+            if left is None or (left <= 0 and not any(S.dl(pond))):
+                break
+            before = _src_drained(S, tid)
+            S.pulse(100); film += 100
+            if before is None or _src_drained(S, tid) == before:
+                break
         dr1, dp = _src_drained(S, tid), S.dl(pond)
         S.pulse(50)
         dr2, empty = _src_drained(S, tid), read()
-        if dr1 is None or dr2 is None or not dr1 > 0 or blind:
-            S.row('SRC_flow_stops_when_empty', False, ('no drained total, the sink drained nothing (the draw never happened) '
-                                                       'or the pond squares read empty when full', rep, dr1, dr2, blind),
+        why = ('pond dry', dry, 'drained', dr1, dr2, 'litres', empty, 'max dL', max(dp) if None not in dp else dp,
+               'film pulses', film)
+        if dr1 is None or dr2 is None or not dr1 > 0 or blind or empty is None or None in dp:
+            S.row('SRC_flow_stops_when_empty', False, ('no drained total, no litres, the sink drained nothing (the draw never '
+                                                       'happened) or the pond squares read empty when full', rep, why, blind),
                   unmeasured=True)
-        else:
-            dry = all(v is not None and v <= wet_dl for v in dp)
-            S.row('SRC_flow_stops_when_empty', dry and dr2 == dr1, ('pond dry', dry, 'drained', dr1, dr2, 'litres', empty))
+        elif dry and (empty > 0 or any(dp)) and dr2 > dr1 and film >= SRC_FILM_PULSES:
+            S.row('SRC_flow_stops_when_empty', False, ('the film was still draining after %d pulses: the last dL was not '
+                                                       'reached in the bound' % film,) + why, unmeasured=True)
+        else:   # PASS only on a pond at 0 L and 0 dL whose drained total then stands still
+            S.row('SRC_flow_stops_when_empty', dry and empty == 0 and not any(dp) and dr2 == dr1, why)
         rm = S.sc(SRC_MAPCTL, 'Remove', tid)
         require(rm.startswith('OK removed'), 'the sink would not come off before the rain: %s' % rm)
     S.call('jawa/weather_set', unlock=True)

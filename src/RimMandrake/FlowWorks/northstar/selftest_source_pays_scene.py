@@ -8,7 +8,11 @@ weather is locked to Rain, an optional limitless body). It checks:
       calm site has no limitless body), and a fake map with one reads it PASS;
   (c) a vacuous read (REFUSED readout, an all-zero vector, a sink never placed, a draw or a rain that never happened) reads
       UNMEASURED, and a planted fault (pays nothing, shore frozen, tap 0 drains, never empties, never refills, refills at
-      once, the endless body drops) turns its row FAIL. Never PASS.
+      once, the endless body drops) turns its row FAIL. Never PASS;
+  (d) SRC_flow_stops_when_empty over a sweep of film regimes (film_regimes: film depth x how the sink draws it, in whole
+      dL) reads the fake's own truth when the sink comes off: PASS only at 0 dL with the draw stopped, FAIL on a stuck,
+      stalled or creeping film, UNMEASURED only when the film still drains at SRC_FILM_PULSES
+      (RIMMANDRAKE_REPIN_SOURCE_PAYS_FILM_IS_NOT_A_LEAK; red on the row at 59a01946ac).
 `--rev 2b4bffe212` runs the same checks against the visit-1 draft (git show into a temp dir): it must exit 1 (RED).
 The fake proves the scene's logic, never the game; the live half is
 `python.exe concept_scenes.py --scene scene_source_pays --out <json>`.
@@ -60,9 +64,17 @@ class Fake:
         self.weather, self.tick_rem = 'Clear', 0
         self.stock = 1.0e6
         self.bad, self.statics, self.fill_undug = [], set(), []
+        self.film = None          # (wet line in notches, mode, rate): the sink draws the film under the wet line slowly
+        self.film_end = None      # the truth when the unlimited sink comes off: (film left, last pulse's draw)
 
     # ---- the engine
     def comps(self):
+        key = tuple(sorted(self.dug.items()))         # the components change only with a dig: cached per dug map
+        if getattr(self, '_comps_key', None) != key:
+            self._comps_key, self._comps = key, list(self._flood())
+        return iter(self._comps)
+
+    def _flood(self):
         seen = set()
         for c in self.dug:
             if c in seen:
@@ -78,12 +90,15 @@ class Fake:
 
     def surface(self, comp, vol):
         """The one surface (notches relative to the brim, <= 0) that holds vol over this component's floors."""
-        lo, hi = -max(self.dug[q] for q in comp), 0.0
-        if vol >= sum(self.dug[q] for q in comp):
+        depths = {}
+        for q in comp:                                # squares grouped by depth: the bisection reads a handful of groups
+            depths[self.dug[q]] = depths.get(self.dug[q], 0) + 1
+        lo, hi = -max(depths), 0.0
+        if vol >= sum(d * n for d, n in depths.items()):
             return 0.0
         for _ in range(40):
             mid = (lo + hi) / 2
-            if sum(max(0.0, mid + self.dug[q]) for q in comp) > vol:
+            if sum(n * max(0.0, mid + d) for d, n in depths.items()) > vol:
                 hi = mid
             else:
                 lo = mid
@@ -96,6 +111,9 @@ class Fake:
             if len(comp) < 2:
                 continue
             frozen = {q: self.water.get(q, 0.0) for q in comp if self.fault == 'shore_frozen' and self.dug[q] == 1}
+            if self.film:
+                self.spread(comp, sum(self.water.get(q, 0.0) for q in comp))
+                continue
             h = self.surface(comp, sum(self.water.get(q, 0.0) for q in comp))
             for q in comp:
                 self.water[q] = frozen.get(q, max(0.0, h + self.dug[q]))
@@ -113,11 +131,17 @@ class Fake:
                 floor = -self.dug[q]
                 above = vol - sum(max(0.0, floor + self.dug[p]) for p in comp)   # what can still run down to this square
                 take = min(cap, max(0.0, above))
+                if self.film and s['rate'] < 0:
+                    take = self.film_take(comp, q, vol, above, s)
+                s['last'] = take
                 if take <= 0:
                     continue
-                h = self.surface(comp, vol - take)
-                for p in comp:
-                    self.water[p] = max(0.0, h + self.dug[p])
+                if self.film:
+                    self.spread(comp, vol - take)
+                else:
+                    h = self.surface(comp, vol - take)
+                    for p in comp:
+                        self.water[p] = max(0.0, h + self.dug[p])
                 s['drained'] += take
                 if self.fault == 'endless_pond':            # the source never runs dry: what the sink took comes back
                     h = self.surface(comp, vol)
@@ -131,6 +155,34 @@ class Fake:
                     if self.fault == 'lake_drops':
                         self.stock -= took
         self.level()
+
+    def spread(self, comp, vol):
+        """Section (d): vol over comp as whole dL a square (RM_Volume.UnitsPerLitre: the live engine stores dL), one surface,
+        the remainder handed out a dL at a time to the squares nearest the next dL; the comp's total is kept exactly."""
+        total = int(round(vol * U))
+        h = self.surface(comp, total / U)
+        want = {q: max(0.0, h + self.dug[q]) * U for q in comp}
+        got = {q: int(w) for q, w in want.items()}
+        rest = total - sum(got.values())
+        for q in sorted(comp, key=lambda c: (got[c] - want[c], c))[:max(0, rest)]:
+            got[q] += 1
+        for q in comp:
+            self.water[q] = got[q] / U
+
+    def film_take(self, comp, q, vol, above, s):
+        """Section (d): fast down to the wet line, then the film at its mode's rate, in whole fake dL (1 / U notch)."""
+        wet, mode, rate = self.film
+        reserve = sum(max(0.0, -self.dug[q] + wet + self.dug[p]) for p in comp)
+        if vol > reserve + 1e-9:
+            return min(100.0, vol - reserve)
+        left = max(0.0, above)
+        if mode == 'phantom':                      # the pond empties, yet the sink's total keeps creeping
+            s['drained'] += 1.0 / U
+            return min(1.0, left)
+        if mode == 'stall' and left < 0.5 * s.setdefault('film0', left):
+            return 0.0                             # the film stops moving half way: water left, no draw
+        want = rate * left if mode == 'prop' else rate
+        return min(left, max(1.0 / U, round(want * U) / U)) if want > 0 else 0.0
 
     def ticks(self, n):
         self.tick_rem += n
@@ -213,6 +265,12 @@ class Fake:
             if c is None:
                 return 'REFUSED: not a FlowWorks map control'
             line = self.line(c)
+            if self.sinks[c]['rate'] < 0:
+                reach = [q for q in ((c[0] + 1, c[1]), (c[0], c[1])) if q in self.dug]
+                comp = next(cm for cm in self.comps() if reach[0] in cm)
+                vol = sum(self.water.get(p, 0.0) for p in comp)
+                left = vol - sum(max(0.0, -self.dug[reach[0]] + self.dug[p]) for p in comp)
+                self.film_end = (max(0.0, left), self.sinks[c].get('last', 0.0))
             del self.sinks[c]
             return 'OK removed ' + line
         if method == 'Report':
@@ -287,6 +345,53 @@ def run(C, sigs, fault=None, lake=False):
     return {r['id']: r['status'] for r in out['rows']}, out, F
 
 
+def film_regimes(C):
+    """Section (d)'s range: what the game can vary for SRC_flow_stops_when_empty once the pond is at its wet line.
+    Varied: the film's depth (a thin film, half the wet line, the wet line itself: the scene's wet line is 0.05 notch) and how
+    the sink draws it: a constant rate from 0 to 1 notch a pulse, a rate that falls with the film left (live: about 0.0035 of
+    it a pulse, visit_2 evidence/exp/source_pays_long.json), a film that stops half way, and a total that creeps after the
+    pond is empty. Every draw is whole fake dL, as the live engine's is. Left out: a film thicker than the wet line (the
+    fast phase must reach the wet line in 500 pulses, unchanged by this fix), rain during the draw (the scene locks Clear),
+    and more than one sink (the scene places one)."""
+    out = []
+    for wet in (0.005, 0.025, 0.05):
+        for r in (0.0, 1e-4, 3e-4, 1e-3, 2.5e-3, 2.75e-3, 3e-3, 0.01, 0.03, 0.1, 1.0):   # 2.5e-3..3e-3: the bound's edge
+            out.append((wet, 'const', r))
+        for k in (5e-4, 1e-3, 2e-3, 3.5e-3, 1e-2, 5e-2):
+            out.append((wet, 'prop', k))
+        out += [(wet, 'stall', 0.03), (wet, 'phantom', 0.0)]
+    return out
+
+
+def film_sweep(C, sigs):
+    """(d) The row against the fake's own truth at the moment the sink comes off: PASS only when the film is gone and the
+    sink drew nothing in its last pulse; FAIL when water is left and the draw stopped, or the total crept with no water;
+    UNMEASURED only when the film was still draining at the bound."""
+    cases = film_regimes(C)
+    bad, worst, tally = [], (0, None), {}
+    for wet, mode, rate in cases:
+        F = Fake(None, False, sigs)
+        F.film = (wet, mode, rate)
+        out = C.scene_source_pays(F, lambda: None, lambda: None, {'calls': []})
+        r = next(x for x in out['rows'] if x['id'] == 'SRC_flow_stops_when_empty')
+        left, last = F.film_end
+        m = re.search(r"'film pulses', (\d+)", r['detail'])
+        film = int(m.group(1)) if m else None
+        truth = 'FAIL' if mode == 'phantom' else ('PASS' if left < 1e-9 and last < 1e-9 else
+                                                  'UNMEASURED' if last > 1e-9 else 'FAIL')
+        tally[r['status']] = tally.get(r['status'], 0) + 1
+        if r['status'] != truth:
+            bad.append((wet, mode, rate, r['status'], truth, left, film))
+        if r['status'] == 'PASS' and isinstance(film, int) and film > worst[0]:
+            worst = (film, (wet, mode, rate))
+    seen = sorted({(b[1], b[3], b[4]) for b in bad})
+    print('      film sweep: %d cases %s; worst PASS spent %s of %s film pulses at %s' % (
+        len(cases), sorted(tally.items()), worst[0], getattr(C, 'SRC_FILM_PULSES', None), worst[1]))
+    check('(d) the film sweep sees every verdict (a sweep of one verdict is a blind fake)',
+          {'PASS', 'FAIL', 'UNMEASURED'} <= set(tally), tally)
+    check('(d) the film sweep reads every case as the fake\'s truth (%d cases)' % len(cases), not bad, (seen, bad[:6]))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--rev', help='run against concept_scenes.py at this commit (2b4bffe212 = the visit-1 draft: RED)')
@@ -322,6 +427,7 @@ def main():
     for fault, lk, rid, verdict in CASES:
         r, o, _ = run(C, sigs, fault, lk)
         check('(c) fault %s: %s reads %s' % (fault, rid, verdict), r.get(rid) == verdict and o['status'] != 'PASS', (r.get(rid), r))
+    film_sweep(C, sigs)
     n = len(FAILS)
     print('selftest_source_pays_scene [%s]: %s (%d failed)' % (where, 'FAIL' if FAILS else 'ok', n))
     sys.exit(1 if FAILS else 0)
