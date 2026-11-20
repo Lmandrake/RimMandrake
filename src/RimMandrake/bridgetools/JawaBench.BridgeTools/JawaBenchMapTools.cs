@@ -1333,8 +1333,13 @@ namespace JawaBench.BridgeTools
                         && !(cp.TryGetComp(out CompPlantPreventCutting ppc) && ppc.PreventCutting)
                         && (!cp.def.plant.IsTree || !cp.HarvestableNow);
                 case "HarvestPlant":
-                    return t.def.plant != null && t is Plant hp
-                        && hp.HarvestableNow && hp.def.plant.harvestTag == "Standard";
+                    // Two vanilla designators share this def: Designator_PlantsHarvest
+                    // (crops, harvestTag Standard) and Designator_PlantsHarvestWood
+                    // (grown trees, unless CompPlantPreventCutting says no).
+                    return t.def.plant != null && t is Plant hp && hp.HarvestableNow
+                        && (hp.def.plant.harvestTag == "Standard"
+                            || (hp.def.plant.IsTree
+                                && !(hp.TryGetComp(out CompPlantPreventCutting hpc) && hpc.PreventCutting)));
                 case "Hunt":
                     return t is Pawn huntP && huntP.AnimalOrWildMan()
                         && !huntP.IsPrisonerInPrisonCell()
