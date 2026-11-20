@@ -29,7 +29,7 @@ Wall-time bound 3 hours (to about 12:26 AM PST).
   fixed test-first (selftest_pit_look_exit_codes.py red then green), the first row re-derived UNMEASURED with a note, rerun UNMEASURED.
   Item RIMMANDRAKE_SPLIT_PIT_LOOK_EXIT_UNMEASURED_READ_AS_FAIL.
 - 22:27-22:31 big pit staged on the sitting map; OL 1155 PASS, 9 FAIL, 1 UNMEASURED, 3 BLOCKED. The 9 FAIL are goods that staging never
-  left in the 2-4 m copies (reset method gone, d=16 not 8); deep water keeps minified goods (experiment). Item
+  left in the 2-4 m copies (the reset is called on the wrong class, RM_SubmergeDraw, so it never runs; d=16 not 8); deep water keeps minified goods (experiment). Item
   RIMMANDRAKE_REPAIR_FLOWWORKS_BIG_PIT_STAGE_RESET_METHOD_GONE. A first OL call of mine passed `--acts x,z` literally and crashed
   before reading; I removed that row (not a run).
 - 22:33-22:39 back on the flowworks tier, calm site verified (load_site.py); owner_review_stage.py staged the review map and saved
@@ -72,7 +72,7 @@ FAIL, each diagnosed in the sitting and filed (item prose has the evidence):
 - sc_fetch_fallen: one raider fell and was held; no ladder came. RIMMANDRAKE_FIX_FLOWWORKS_RAIDERS_LEAVE_FALLEN_NO_LADDER_LIVE.
 - sc_moat_raid: nobody swam with the bridge raised; two swam in the bridge-down control. RIMMANDRAKE_PROBE_FLOWWORKS_MOAT_RAIDERS_SWIM_ONLY_WHEN_BRIDGED.
 - sc_hung_bridge: SB_islands_restore_reach, a bank colonist cannot reach the mid-channel square. RIMMANDRAKE_FIX_FLOWWORKS_ISLAND_RESTORE_NEEDS_BRIDGE_FIRST.
-- OL_OWNER_LOOK_READS: 1155 PASS, 9 FAIL; the 9 are goods staging never left in the 2-4 m copies (the stage's reset method is gone),
+- OL_OWNER_LOOK_READS: 1155 PASS, 9 FAIL; the 9 are goods staging never left in the 2-4 m copies (the stage calls ProofResetRect on RM_SubmergeDraw, not RM_NorthstarProofs where it lives, so it never resets),
   read by OL as "drawn whole over the liquid". RIMMANDRAKE_REPAIR_FLOWWORKS_BIG_PIT_STAGE_RESET_METHOD_GONE.
 
 UNMEASURED: PIT_LOOK_1114_LIVE (19 PASS, 0 FAIL; body cover is a look, UNMEASURED by design), sc_trench_cover (the raid never came

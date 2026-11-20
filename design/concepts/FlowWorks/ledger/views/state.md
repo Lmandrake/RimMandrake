@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":12413,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=42a98ccf6ea6d92e77db0cec7f8d100a3a51d903773a5c10f75b10bf334f8b24 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":12710,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=f48dc5b3ce6767296616b3783d4a2b43a9caf4152bb0b10a947bc47ecdf929d6 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1334 events in 10 shards · reducer 1
-holder lease run-1795160350, token 7, last active 2026-11-20T07:40:46Z
+version 0.1.0 · stage offline_build · 1338 events in 11 shards · reducer 1
+holder lease run-1795160350, token 7, last active 2026-11-20T07:55:00Z
 holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 410250 of ceiling 400000 — ROTATE DUE
 
-## Last checkpoint (HOLDER.run-1795152236, 2026-11-20T07:32:19Z)
-- done: In-game visit 2 on game a: 18 PASS, 8 FAIL, 5 UNMEASURED of 31; every FAIL diagnosed and filed as a rimflow item; labelled walk save FLOWWORKS_OWNER_REVIEW_VISIT2_FULL_20261119_2327 on his full list; build match 31 of 31; pipeline fixes f24f71dba4, 223b6e2499
-- next: Steward: read design/concepts/FlowWorks/version/in_game/visit_2/SUMMARY.md and send the 8 FAIL items down the road back
-- ruled out: sc_ice and sc_geyser_tub FAILs are harness (shovel/designation; geyser_tub_live passes 4/4); OL 9 FAIL are staging, deep water keeps minified goods; source_pays film draw follows his last-dL ruling
+## Last checkpoint (HOLDER.run-1795160350, 2026-11-20T07:55:00Z)
+- done: Visit 2 read; 13 road-back items filed caused by RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_TWO_FAILURES_BACK (3 offline, 10 game-up); FlowWorks in_game -> offline_build
+- next: Fix the 3 offline items; then send the record back to in_game with --game-only for the 10 live items
+- ruled out: ProofResetRect is not gone: big_pit_scene calls it on RM_SubmergeDraw; sc_source_pays fault is the row, not the mod
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -490,6 +490,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1334 events (views/history.md; never read whole)
+- the full history: 1338 events (views/history.md; never read whole)
 
-cursor: t=2026-11-20T07:40:51Z.1795160451194268285 (modledger.py since --mod FlowWorks t=2026-11-20T07:40:51Z.1795160451194268285 prints what changed after this packet)
+cursor: t=2026-11-20T07:55:00Z.1795161300073123346 (modledger.py since --mod FlowWorks t=2026-11-20T07:55:00Z.1795161300073123346 prints what changed after this packet)

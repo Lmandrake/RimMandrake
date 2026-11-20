@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "in_game",
-  "stage_label": "In-game acceptance (Stage 6)",
-  "since": "2026-11-19T20:41:29-08:00",
-  "since_from": "advance by CONDUCTOR",
+  "stage": "offline_build",
+  "stage_label": "Offline build (Stage 3)",
+  "since": "2026-11-19T23:54:35-08:00",
+  "since_from": "advance by BENCH",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -152,6 +152,23 @@
         "steward_confirms",
         "exit_met",
         "judge_certificate"
+      ]
+    },
+    {
+      "from": "in_game",
+      "to": "offline_build",
+      "at": "2026-11-19T23:54:35-08:00",
+      "by": "BENCH",
+      "why": "visit 2 exit not met: 8 FAIL, 5 UNMEASURED of 31, each filed as a named item caused by RIMMANDRAKE_ROUTE_FLOWWORKS_VISIT_TWO_FAILURES_BACK; 3 offline (source_pays row re-pin, geyser check command, big-pit reset class + OL absent-goods reader), 10 game-only (Stage 6 work, no run at offline_build)",
+      "unit": "rm-detached-bench-rimmandrake-route-flowworks-visit-two-fa-1795160457",
+      "confirmed": {
+        "steward_confirms": "read visit_2/SUMMARY.md and rows.jsonl (18 PASS, 8 FAIL, 5 UNMEASURED of 31, build_match 31 of 31): verdict not met stands; sc_source_pays is a CRITERION FLAW (row against his ponds-pump-to-last-dL ruling), geyser a RECORD GAP (table runs the draft scene), OL a harness REAL MISS (reset called on the wrong class), PIT_LOOK a CRITERION FLAW (a look row the script can never decide), the rest REAL MISS or staging gaps needing live experiments; no test assertion weakened in the visit (only f24f71dba4 exit-code split)"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold"
       ]
     }
   ],
