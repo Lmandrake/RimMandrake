@@ -333,9 +333,10 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   One of these must be true:
   - the finding is significant, and ordinary operation reaches it;
   - a failure happened;
-  - the ticket has a failing test.
-- A real chance to void a run is always worth the fix. A rare failure that a page lists as not survived is not a real
-  chance until it happens once.
+  - the ticket has a red test that shows misbehaviour, a wrong result or a failure. A test that only restates the
+    ticket is not a go.
+- A real chance to void a run is always worth the fix. A real chance is a failure that happened, or a concrete case in
+  normal use. A rare failure that a page lists as not survived is not a real chance until it happens once.
 - A finding that fails test 1 gets no fix and no ticket. Write one line on `polish.md`, or in your report. Drop an open
   ticket that fails test 1 with the reason `not worth the touch: <why>`.
 - Test 2: if you judge a finding worth the fix, you are its fixer, in the same run, test first. Set it down only with

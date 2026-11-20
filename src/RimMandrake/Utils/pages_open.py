@@ -7,7 +7,7 @@ folder that rmpaths names. A missing page is named and the rest still open. Prom
     ./pages [--dry-run] [--show]
 exit 0 all opened, 2 a page missing (others opened), 3 the launch failed.
 --show starts the window normally; the default starts it minimized so it cannot take focus from the game.
-A Windows Startup shortcut is NOT made here: whether a window opens at logon is the owner's call.
+A Windows Startup shortcut is made by pages_logon_shortcut.py (owner card, 2026-11-19: at every logon).
 """
 import os
 import subprocess

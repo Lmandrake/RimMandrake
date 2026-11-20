@@ -467,10 +467,16 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
     promise or cause a failure) and ordinary operation reaches it (a call site, a documented command, a player's
     game or a later run produces the input);
   - a failure happened: a run, a test, a player-visible fault, or the owner's report;
-  - its ticket has a failing test. That is a go.
+  - its ticket has a red test that shows misbehaviour: a wrong result or a failure. That is a go. A red test that only
+    restates the ticket proves no worth and is not a go; a judge reads each red test (his card answer, Thu 2026-11-19
+    10:17 PM PST, *"When it shows misbehaviour (Recommended)"*; the card asked *"When is a red test enough to make a
+    ticket a go?"*).
 - **A real chance of voiding a run is always worth the touch** (his words: *"Vital: OF COURSE you do, no debate"*). A
   void is a run killed, timed out or never started, or a trial or a run's work lost (§No trial is spent by a system
-  failure). "Real" means it happened, or a concrete case in ordinary operation produces it. A rare failure that a page
+  failure). "Real" means *"Happened, or ordinary use causes it (Recommended)"*: a failure that happened, or a concrete case in
+  normal use (his card answer, Thu 2026-11-19 10:17 PM PST; the card asked *"How should 'a real chance of voiding a
+  run' be read?"*). No repair for an imagined fault. A rare known fault may waste one run before it is fixed; that run
+  is voided, so no trial is lost. A rare failure that a page
   lists under DOES NOT SURVIVE (§A boundary page before pipeline code, Decision 4) is not a real chance until it
   happens once. Then it is a failure and a new source event, and it is worth the touch.
 - **A finding that fails test 1 gets no fix and no ticket.** Write it as one line on `polish.md` beside its page, or
