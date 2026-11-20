@@ -3783,7 +3783,8 @@
    "observes": "dig a pit on a geyser, fill it over the vent with water: bubbling water on the vent, Hot Tub on mouse-over, a pawn soaks and gains the bonus; a pit beside a geyser stays cold",
    "reads": [
     "src/RimMandrake/FlowWorks/northstar/concept_scenes.py",
-    "design/concepts/FlowWorks/scenes.json"
+    "design/concepts/FlowWorks/scenes.json",
+    "src/RimMandrake/FlowWorks/northstar/selftest_geyser_tub_scene.py"
    ],
    "command": "python.exe src\\RimMandrake\\FlowWorks\\northstar\\concept_scenes.py --scene scene_geyser_tub --out <json>  (bridge held; minimal list + FlowWorks)",
    "why_game": "the Hot Tub mouse-over and a pawn choosing to soak exist only in a played map; the minimal list plus FlowWorks isolates it",
@@ -3791,8 +3792,10 @@
    "runs_today": {
     "ran": false,
     "entry_exists": true,
-    "why": "UNRUN: written Stage 3 2026-11-14, import- and lint-checked and smoke-run on a fake bridge; never the game"
-   }
+    "why": "ran live on visit 2 (2026-11-19): FAIL on the draft reads, rewired since; offline_proof green; the rewired scene is UNRUN in the game"
+   },
+   "offline_proof": "python3 src/RimMandrake/FlowWorks/northstar/selftest_geyser_tub_scene.py",
+   "note": "RIMMANDRAKE_POINT_FLOWWORKS_GEYSER_CHECK_AT_VISIT_ONE_RUNNER (2026-11-20): visit 2 FAILed the draft, which inspected the geyser's own cell and waited for a need the mod never writes; scene_geyser_tub now makes geyser_tub_live.py's reads (ProofPitLabel on the pool floor, the dry pit before its fill as control, a wet pit off the pool, an ordered RM_SoakInGeyserPool giving RM_HotPoolSoak then RM_HotPoolAfterglow), proven on a fake map by offline_proof."
   },
   "T_LIQUID_COATING_OFFLINE": {
    "id": "T_LIQUID_COATING_OFFLINE",

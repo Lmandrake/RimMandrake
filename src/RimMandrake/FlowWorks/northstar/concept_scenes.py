@@ -2122,15 +2122,61 @@ def _garden_rows(S, fill, log, d0, spill, why, full):
           why + str({'spill': spill[:80], 'read': y}), unmeasured=not good)
 
 
+TUB_LABEL = 'RimMandrake.FlowWorks.RM_Patch_MouseoverDepth'
+TUB_POOL = 'RimMandrake.FlowWorks.RM_GeyserPoolProof'
+SUBMERGE = 'RimMandrake.FlowWorks.RM_SubmergeDraw'
+TUB_MAP = 250     # the calm site's side, the draft's list rect: a geyser whose pit or cold control would leave it is skipped
+
+
+def _tub_layout(gx, gz):
+    """geyser_tub_live.py's measured layout (PASS 4 of 4, visit 2) round a geyser whose 2x2 is gx..gx+1, gz..gz+1: the 6x6
+    pit of geyser_pit_scene.pit_rect, its floor square beside the vent (the label and soak square), and the 2x2 cold
+    control dug 3 squares east of the pit."""
+    return {'rect': (gx - 2, gz - 2, 6, 6), 'floor': (gx - 1, gz - 1),
+            'beside': [(gx + 6, gz - 1), (gx + 7, gz - 1), (gx + 6, gz), (gx + 7, gz)]}
+
+
 def _geyser_tub(S):
-    gey = S.call('jawa/list_things', defName='SteamGeyser', rect='0,0,250,250', limit=1).get('things') or []
-    require(gey, 'no SteamGeyser on the prepared map')
-    c = (gey[0]['x'], gey[0]['z']); pit = [(c[0] + i, c[1] + j) for i in range(-1, 3) for j in range(-1, 3)]
-    S.dig(pit, 8); S.fill(pit, 1.0, WATER); S.pulse(20)
-    ins = S.call('jawa/inspect_string', rect='%d,%d,1,1' % c)
-    S.row('TUB_reads_hot_tub', 'Hot tub' in str(ins) or 'Hot Tub' in str(ins), str(ins)[:200])
-    col = S.pawn('Colonist', (c[0] + 4, c[1]), 'player'); S.ticks(30000)
-    S.row('TUB_pawn_soaks_bonus', 'HotSpring' in str(S.call('jawa/pawn_need', pawn=col, action='list')), col)
+    """inv_geyser_tub. RIMMANDRAKE_POINT_FLOWWORKS_GEYSER_CHECK_AT_VISIT_ONE_RUNNER: the draft inspected the geyser's own
+    cell and waited for a hot-spring need, which the mod never writes (visit 2 FAIL). These are geyser_tub_live.py's
+    reads: the player's terrain line (RM_Patch_MouseoverDepth.ProofPitLabel) on the pool's floor, and the soak hediffs
+    RM_HotPoolSoak / RM_HotPoolAfterglow on an ordered RM_SoakInGeyserPool. The dry control is the same pit before its fill."""
+    if str(HERE) not in sys.path:     # imported by path (a selftest, scene_empty_game): live_session sits beside this file
+        sys.path.append(str(HERE))
+    from live_session import hediffs
+    gey = S.call('jawa/list_things', defName='SteamGeyser', rect='0,0,%d,%d' % (TUB_MAP, TUB_MAP), limit=50).get('things') or []
+    fits = [t for t in gey if isinstance(t, dict) and 2 <= t.get('x', -1) and t['x'] + 7 < TUB_MAP and 2 <= t.get('z', -1)
+            and t['z'] + 3 < TUB_MAP]
+    require(fits, 'no SteamGeyser with room for its pit on the prepared map: %s' % str(gey)[:160])
+    g, L = fits[0]['id'], _tub_layout(fits[0]['x'], fits[0]['z'])
+    x0, z0, w, h = L['rect']
+    S.dig([(x0 + i, z0 + j) for i in range(w) for j in range(h)], 8)
+    S.ticks(70)
+
+    def label(c):
+        return S.sc(TUB_LABEL, 'ProofPitLabel', '%d,%d' % c)
+
+    t = label(L['floor'])
+    S.row('TUB_dry_pit_not_a_tub', t.startswith('line=Pit') and 'Hot tub' not in t, t)
+    # ProofFillRect takes METRES (geyser_pit_scene.py's fill of its G2 pool)
+    f = S.sc(SUBMERGE, 'ProofFillRect', '%d,%d,%d,%d,1.00,%s' % (x0, z0, w, h, WATER))
+    S.ticks(30)
+    t = label(L['floor'])
+    S.row('TUB_reads_hot_tub', 'Hot tub' in t and 'Water 1.00 m' in t, '%s (fill: %s)' % (t, f[:80]))
+    S.dig(L['beside'], 8, 1.0)
+    t = label(L['beside'][0])
+    S.row('TUB_beside_stays_cold', t.startswith('line=Pit') and 'water' in t and 'Hot tub' not in t, t)
+    p = S.pawn('Colonist', L['floor'], 'player')
+    o = S.call('jawa/ordered_job', pawnId=p, jobDef='RM_SoakInGeyserPool', targetAId=g, targetBX=L['floor'][0],
+               targetBZ=L['floor'][1], waitTicks=1)
+    S.ticks(600)
+    mid = hediffs(S.call('jawa/pawn_get', pawn=p))
+    pool = S.sc(TUB_POOL, 'Read', g)
+    S.ticks(2700)
+    after = hediffs(S.call('jawa/pawn_get', pawn=p))
+    S.row('TUB_pawn_soaks_bonus', bool(o.get('accepted')) and 'RM_HotPoolSoak' in mid and 'RM_HotPoolAfterglow' in after
+          and 'soakers=1' in pool, {'order': str(o)[:120], 'mid': mid, 'after': after, 'pool': pool[:200]},
+          unmeasured=not o.get('accepted'))
 
 
 def _coating_wash(S):
