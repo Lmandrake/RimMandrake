@@ -148,9 +148,8 @@ Checks, each with its false-pass named:
   one survivor each, per the turret pass's precedent).
 - **Coverage:** rows == live ResearchProjectDef count, MEASURED, both sides
   from the same fingerprint.
-- **Self-loop / cycle check:** shipped data already contains one
-  (`RimFridge_PowerFactorSetting` requires itself, MEASURED) — the validator
-  walks the graph and refuses cycles.
+- **Self-loop / cycle check:** the validator walks the graph and FAILS every
+  cycle, a project that requires itself included.
 - **Co-writer awareness:** run against the RESOLVED dump (post-RR), never raw
   XML — the 448-row techprint stamp proves the raw file is not what the game
   plays. *Lies by:* validating a manifest against raw XML and shipping a pass

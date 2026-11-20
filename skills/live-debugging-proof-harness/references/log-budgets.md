@@ -68,8 +68,7 @@ or "any error after the test". The method (GSS `proof_all.p2c_control_noise`):
    (`_foreign_source`), and the count of foreign errors is reported.
 
 Known per-load noise on the full list (MEASURED 2026-10-11): ReGrowthCore
-`Map_FinalizeInit_Patch.RecolorMineables` and `RimFridge.RimFridgeComponent.StartedOrLoadedGame`
-NRE on every map init or load.
+`Map_FinalizeInit_Patch.RecolorMineables` NRE on every map init or load.
 
 ## `[Ref XXXXXXXX] Duplicate stacktrace` has no frames
 

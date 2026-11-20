@@ -118,7 +118,6 @@ attributed to mods through the 498 capture. Our-mod verdicts start from `09_seco
 | `zylle.morevanillabiomes` | closure: hard dependency / class_ref of mandrake.rut.patches |
 | `oblitus.mylittleplanet` | TOOL: planet size until it is baked (09 sec 4) |
 | `brrainz.rimbridgeserver` | TOOL: the bridge that stamps the CSV bundle (w9_run.py) and prints the ship |
-| `rimfridge.kv.rw` | closure: hard dependency / class_ref of lwm.deepstorage |
 | `vanillaexpanded.vanillabackstoriesexpanded` | CHARACTERS: 3 founder backstories (Wave 2 HOLD) |
 | `oskarpotocki.vfe.tribals` | closure: mandrake.rut.researchretag's Defs name VFET_Tribalwear unguarded |
 | `vanillaexpanded.vfefactory` | SHIP: 6 VFEFactory machines in Gravship_v2_ring |

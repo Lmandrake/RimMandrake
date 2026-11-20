@@ -142,12 +142,6 @@
    "need": "TOOL",
    "why": "the bridge that stamps the CSV bundle (w9_run.py) and prints the ship"
   },
-  "rimfridge.kv.rw": {
-   "need": "CLOSURE",
-   "kind": "dep",
-   "of": "lwm.deepstorage",
-   "why": "hard dependency / class_ref of lwm.deepstorage"
-  },
   "vanillaexpanded.vanillabackstoriesexpanded": {
    "need": "CHARACTERS",
    "why": "3 founder backstories (Wave 2 HOLD)"

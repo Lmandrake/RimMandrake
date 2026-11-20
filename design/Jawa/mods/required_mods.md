@@ -251,18 +251,13 @@ A standalone local compatibility mod (NOT edits to Core/DLC/Workshop files) that
 ## Storage (restrictably fun)
 
 ### ⏳ STORAGE FOOTPRINT CAP — ratio-based (concept accepted; RETIRED as an open design question 2026-08-08 — now a Phase-A playtest tuning dial, not a desk decision)
-- **Concept (2026-08-02):** Storage is capped as a **RATIO of usable ship deck area**, not a fixed tile count — so it scales with hull growth and the squeeze stays constant as the ship expands. Denser shelving then only makes the *limited* hold tidy/searchable, never bigger. This is the single knob that keeps LWM/RimFridge/Adaptive Storage honest.
+- **Concept (2026-08-02):** Storage is capped as a **RATIO of usable ship deck area**, not a fixed tile count — so it scales with hull growth and the squeeze stays constant as the ship expands. Denser shelving then only makes the *limited* hold tidy/searchable, never bigger. This is the single knob that keeps LWM/Adaptive Storage honest.
 - **Now competes with the factory:** every storage tile is a tile the conveyor lines, hoppers, machine rooms, and cooling can't use. That competition is intentional — it's what forces the "what do we leave behind before launch?" moment.
 - **Exact value still TBD, but the Fetcher results sharpen it (2026-08-02):** the factory is hopper-fed, so storage now has TWO competing jobs — (a) **input feedstock buffers** the conveyors pull from (wood for the refinery, slag/scrap for the smelter, steel/plasteel for the assembler, herbal/neutroamine for medicine), and (b) small **output stockpiles**. Both compete with the machines themselves (large footprints per the verified building list) AND cabins/fuel/defense. So the cap should be read as "storage + hopper buffers ≤ X% of deck," not just finished goods. Leading candidate still ≈ ¼ of interior floor; alternatives = hard tile count or a quest-gated storage module. Tune in the Phase-A playtest now that we know the real machine footprints.
 
 ### LWM's Deep Storage — ✅ ✔️1.6 (packageId lwm.deepstorage; updated Workshop 3532608331 auto-adjusts settings on boot)
 - **Why:** Tidy, searchable "better than vanilla" storage.
-- **Restriction/config:** Configure DOWN — shelves/small units at ~3–4 stacks/cell; skip large-capacity building variants. Cap the NUMBER of storage tiles aboard the ship (footprint cap = the real constraint). Density is fine once tile count is capped. Plays well with RimFridge, Common Sense, Pick Up And Haul.
-
-### RimFridge — ✅ ✔️1.6 ⚠️ PICK ONE FORK
-- **Why:** Refrigerated cells keep food logistics manageable on short stays.
-- **Restriction/config:** Cap the COUNT aboard (a couple of units, not a walk-in freezer).
-- **⚠️ Caution:** Multiple forks with CONFLICTING package-IDs exist ("RimFridge", "RimFridge Updated [1.6]" #2878183338, "RimFridge: Now with Shelves" by just-harry). Subscribe to EXACTLY ONE. Recommended: **"Now with Shelves"** (just-harry) — actively updated, supports 3 stacks/cell like shelves.
+- **Restriction/config:** Configure DOWN — shelves/small units at ~3–4 stacks/cell; skip large-capacity building variants. Cap the NUMBER of storage tiles aboard the ship (footprint cap = the real constraint). Density is fine once tile count is capped. Plays well with Common Sense, Pick Up And Haul.
 
 ### Adaptive Storage Framework (+ model pack) — ✅ ✔️1.6 (Workshop 3033901359; lists v1.4–1.6, updated 2025-06)
 - **Why:** Mostly cosmetic denser shelving; content-aware graphics.

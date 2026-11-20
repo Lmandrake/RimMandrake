@@ -391,17 +391,17 @@ The items are filed in rimflow and done in this order. Each step names the depen
    **Wait:** steps 2–7.
 10. `RIMFRIDGE_DROP_FIX_INBOUND_REFS`: take RimFridge off the active list and fix every inbound reference in §1.
     That covers the validator self-loop entry, the proof_all noise list, the Cherry Picker line and the doc
-    mentions; wrong material is deleted, not superseded. **Wait:** step 9 (§10 Q1 is ruled: drop after our units ship). This seat does not touch
-    ModsConfig.
+    mentions; wrong material is deleted, not superseded. **Wait:** none (§10 Q1 is ruled: drop now, ahead of our
+    units). Done 2026-11-20: RimFridge is off the live list and off `ModsConfig.FULL.LATEST.xml`.
 
 ## 10. Questions for the owner (§2 only), both RULED 2026-10-26
 
 Both questions were reserved under `delegation_policy.md` §2. Everything else above is delegated.
 
 - **Q1** (§2.2, an irreversible act on his save): drop RimFridge now, or only after our cooling units ship?
-  **Ruled by card (2026-10-26 08:11 PDT, `OWNER.jsonl:1793027547189804844`): option 1, drop RimFridge AFTER our
-  units ship.** His words: *"We don't have saves to keep right now, remember?"* Save loss is not a concern; the
-  order is kept so the colony always has cold storage. Step 10 follows step 2 shipping (and step 9's proof).
+  **Ruled 2026-11-20 ~06:20 PST (`OWNER.jsonl:1795184485941902493`): drop RimFridge NOW, ahead of our units.**
+  His words: *"Agreed. Remove it now."* Save loss is not a concern (no saves are kept). Until our units ship, the
+  colony's cold storage is Dubs Bad Hygiene Lite's `HygieneRefrigerator` (§1). Step 10 no longer waits on steps 2 or 9.
 - **Q2** (§2.4, reconciling two of his rulings): full stasis at every working grade, or stasis *strength* following
   the Wrecked Machines 0.2 / 0.75 ladder? **Ruled by card (2026-10-26, `OWNER.jsonl:1793027548999599115`):
   strength follows grade** (0.2 / 0.75 / full). §4.2 carries the table; the engine hook is

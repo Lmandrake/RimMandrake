@@ -82,9 +82,8 @@ frame — never "any error naming the mod" (worked code: GSS `proof_all`
 `Faction.FactionTick` logs `Faction leader for <faction> is null.` via `Log.ErrorOnce`,
 once per session, on the first tick of a fresh quicktest world holding leaderless campaign
 factions — a control window opened after it never sees it. Known per-load noise on the
-full list: ReGrowthCore `Map_FinalizeInit_Patch.RecolorMineables` and
-`RimFridge.RimFridgeComponent.StartedOrLoadedGame` NRE on every map init/load
-(MEASURED 2026-10-11).
+full list: ReGrowthCore `Map_FinalizeInit_Patch.RecolorMineables` NRE on every map
+init/load (MEASURED 2026-10-11).
 
 **`[Ref XXXXXXXX] Duplicate stacktrace` has no frames — find the original.**
 BetterStackTraces prints the full trace once, tagged `[Ref XXXXXXXX]`, and only the

@@ -28,12 +28,9 @@ WHAT IT CHECKS, IN ORDER (taxonomy doc's own list, each with its false-pass name
                            MEASURED off the SAME capture the manifest declares
                            it was built against (a fingerprint mismatch refuses,
                            same as the mod-set check below).
-  6. Cycle check        - walks the prereq graph. Refuses to crash on the one
-                           genuine vanilla self-loop already shipped
-                           (`RimFridge_PowerFactorSetting` requires itself) -
-                           reports it as a known quirk, not a manifest defect -
-                           and FAILS on any other cycle, which the manifest
-                           would have introduced.
+  6. Cycle check        - walks the prereq graph without crashing on a cycle,
+                           and FAILS on every cycle, a project that requires
+                           itself included.
   7. Co-writer awareness- confirms the dump being validated is the RESOLVED,
                            post-patch state (Research Reinvented rewrites
                            prereqs/techprints at load) by checking vanilla
@@ -153,13 +150,14 @@ TIER_COST_BANDS = {
 }
 
 # research_tree_prep.md section 1, "22 more empty-cache rows, confirmed alive" -
-# the 10 it names outright plus the 10-row DP_RGive* pattern it names as a group.
+# the rows it names outright (less RimFridge's, gone with its mod) plus the 10-row
+# DP_RGive* pattern it names as a group.
 # See the module docstring: the remaining ~2 are the doc's own "etc." and are
 # deliberately NOT here.
 EMPTY_CACHE_ALLOWLIST = {
     "Bioregeneration", "Archogenetics", "BlissLobotomy", "GhoulInfusion",
     "ComplexClothing", "VFET_Mining", "ResearchDrillTurretEfficientDrilling",
-    "RimFridge_PowerFactorSetting", "VFEP_WarcasketRemoval",
+    "VFEP_WarcasketRemoval",
     "OuterRim_DroidEnergySys",
     # +8 verified 2026-09-04 (prep doc section 1, "+8 more"): prereq hubs,
     # stat/hyperlink/C#-mechanism rows, and the three MM ship rows reflavored
@@ -171,10 +169,6 @@ EMPTY_CACHE_ALLOWLIST = {
     "MM_Research_EmpireShipDesigns",
 }
 EMPTY_CACHE_ALLOWLIST_PREFIXES = ("DP_RGive",)
-
-# The one genuine vanilla self-loop the taxonomy doc names by defName -
-# reported, never treated as a manifest-introduced defect.
-KNOWN_SELF_LOOP = "RimFridge_PowerFactorSetting"
 
 FAIL, WARN, INFO = "FAIL", "WARN", "INFO"
 
@@ -607,14 +601,8 @@ def _cycle_issues(graph):
                 key = frozenset(cyc)
                 if key not in reported:
                     reported.add(key)
-                    if len(cyc) == 1 and cyc[0] == KNOWN_SELF_LOOP:
-                        issues.append(Issue(INFO, "cycle", cyc[0],
-                                             "known vanilla self-loop (requires itself) - "
-                                             "documented in research_tree_taxonomy.md section "
-                                             "4, reported, not treated as a manifest defect"))
-                    else:
-                        issues.append(Issue(FAIL, "cycle", None,
-                                             "prereq cycle: %s" % " -> ".join(cyc + (cyc[0],))))
+                    issues.append(Issue(FAIL, "cycle", None,
+                                         "prereq cycle: %s" % " -> ".join(cyc + (cyc[0],))))
         stack.pop()
         color[node] = BLACK
 
@@ -747,15 +735,12 @@ def run_inventory(dump, cherrypicker_choice, anyway):
              dump_fp.get("modCount", man.get("modCount", "?")),
              dump_fp.get("capturedUtc", man.get("capturedUtc", "?"))))
 
-    cycle_issues_all = _cycle_issues(inventory_graph(live))
-    known_loops = [i for i in cycle_issues_all if i.level == INFO]
-    cyc = report("cycle check (inventory)  ", cycle_issues_all)
+    cyc = report("cycle check (inventory)  ", _cycle_issues(inventory_graph(live)))
     orph = report("orphan check (inventory) ", inventory_orphans(live, cuts))
     report("co-writer awareness      ", check_resolved_dump(live, active_ids))
 
-    print("\nHEADLINE: %d ResearchProjectDef · %d cycle(s) found (%d known self-loop, "
-          "%d other) · %d dead orphan(s) found from the inventory scan alone"
-          % (len(live), len(cyc) + len(known_loops), len(known_loops), len(cyc), len(orph)))
+    print("\nHEADLINE: %d ResearchProjectDef · %d cycle(s) found · %d dead orphan(s) found "
+          "from the inventory scan alone" % (len(live), len(cyc), len(orph)))
     print("(no manifest was supplied - coverage/band/prereq/one-chain-per-form checks need "
           "a manifest row per def; run without --inventory once one exists)")
     return 0

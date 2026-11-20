@@ -279,7 +279,7 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
   MoreMechanoidsWorkModes excluded. DECIDED (`forbidden_mods.md`).
 
 ## 11. Storage / hauling / UI (adopt freely — no balance impact)
-- [~] Storage: LWM's Deep Storage + Adaptive Storage Framework + RimFridge (pick one fork). Storage
+- [~] Storage: LWM's Deep Storage + Adaptive Storage Framework. Storage
   footprint cap concept accepted, exact ratio TBD. DECIDED-ish. [ ] Set the storage-ratio cap value.
 - [~] Hauling/teardown: Pick Up And Haul (fork) + Common Sense (fork) + Allow Tool. DECIDED.
 - [~] UI/QoL: Dubs Mint Menus, RimHUD, Numbers, Interaction Bubbles, Camera+, Replace Stuff,

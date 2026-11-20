@@ -228,7 +228,7 @@ ModsConfig. It is on today's 536 list. The handoff is stale; the list is the rec
 | mod | pulled to | by | note |
 |---|---|---|---|
 | Interaction Bubbles `jaxe.bubbles` | **DEV** | SpeakUp (F1, needed by our JawaVoice) | class E (clutters screenshots) but cannot leave. Turn bubbles off in review **settings** instead |
-| LWM Deep Storage, then RimFridge | DEV | Outer Rim Core (C1 HARD) | they leave when the Outer Rim port lands |
+| LWM Deep Storage | DEV | Outer Rim Core (C1 HARD) | they leave when the Outer Rim port lands |
 | Vanilla Vehicles Expanded | DEV | Alpha Vehicles Neolithic (C1 HARD via our DesertVehicleReskin) | |
 | Intimacy – Friends n' Lovers | DEV | Intimacy – Gender Works (F1, C20 founder genes) | |
 | Biomes! Framework | DEV | More Vanilla Biomes (C1 HARD) | |

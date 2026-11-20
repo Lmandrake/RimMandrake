@@ -11,10 +11,8 @@ settings file, no ModsConfig.xml - genuinely offline), and calls each of the
 to FAIL it and at least one row engineered to PASS it, so a check that always
 says "fine" cannot hide behind an all-pass fixture.
 
-Two calibration cases from the taxonomy/prep docs are reproduced by real
+One calibration case from the taxonomy/prep docs is reproduced by real
 defName, not invented data:
-  - `RimFridge_PowerFactorSetting` requires itself (the one shipped vanilla
-    self-loop) -> the cycle check must report it as INFO, never FAIL.
   - `Electricity` carrying Research Reinvented's techprintCount+`RR_` prereq
     stamp -> the co-writer check must PASS when that stamp is present and
     FAIL when it is missing (simulating a raw/pre-patch dump).
@@ -72,8 +70,7 @@ def build_live():
         "PrereqB": d(prereqs=["PrereqA"], unlocks=["B_Widget"]),
         "BadPrereqRow": d(prereqs=["CutProject"], unlocks=["BPR_Widget"]),
         "CutProject": d(unlocks=["CP_Widget"]),
-        "RimFridge_PowerFactorSetting": d(
-            prereqs=["RimFridge_PowerFactorSetting"], unlocks=["RF_Widget"]),
+        "SelfLoop": d(prereqs=["SelfLoop"], unlocks=["SL_Widget"]),
         "CycleA": d(prereqs=["CycleB"], unlocks=["CA_Widget"]),
         "CycleB": d(prereqs=["CycleA"], unlocks=["CB_Widget"]),
         "BandBad": d(techLevel="Industrial", unlocks=["BandBad_Widget"]),
@@ -203,10 +200,9 @@ def main():
     expect("check6 cycle: synthetic CycleA/CycleB FAILs",
            any(i.level == rv.FAIL and "CycleA" in i.msg and "CycleB" in i.msg
                for i in cycle_issues))
-    expect("check6 cycle: RimFridge_PowerFactorSetting reports INFO, not FAIL "
-           "(calibration: the one shipped vanilla self-loop)",
-           "RimFridge_PowerFactorSetting" in names(cycle_issues, rv.INFO)
-           and "RimFridge_PowerFactorSetting" not in names(cycle_issues, rv.FAIL))
+    expect("check6 cycle: a 1-node self-loop (SelfLoop requires itself) FAILs",
+           any(i.level == rv.FAIL and i.msg.endswith("SelfLoop -> SelfLoop")
+               for i in cycle_issues))
 
     # ---- check 7: co-writer awareness ---------------------------------------
     # RESEARCH_TRIO_RETIRE_1, 2026-09-20: the RR_ splice onto vanilla Electricity
