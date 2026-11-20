@@ -5,6 +5,7 @@
 """
 import json
 import os
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -93,22 +94,25 @@ def sweeps():
     check(DM.promises({"LIVE_RESTORE_RM_DEAD": It(state="superseded")}, [DEAD]) == [], "a retired fixed id is not swept")
     calls.clear()
     many = ["unit=rm-dead%d.timer max_age=1h" % i for i in range(14)]
-    r = DM.sweep(NOW, filer, {}, many, {}, chk)
+    kinds = lambda line: "fault kind %s" % "abcdefghijklmn"[int(re.search(r"dead(\d+)", line).group(1))]
+    r = DM.sweep(NOW, filer, {}, many, {}, kinds)
     check(len(calls[0]) == DM.MAX_PER_PASS and r["held"] == 4 and len(r["broken"]) == 14, "a mass outage is capped and counted")
-    # one shared timer down under two fixes is ONE outage: the host is filed first, each fix's reading names it
-    # (RIMMANDRAKE_CHARGE_SHARED_OUTAGE_ONCE_FORTY_FIVE_DEATHS)
+    calls.clear()
+    r = DM.sweep(NOW, filer, {}, many, {}, chk)
+    check(len(calls[0]) == 1 and calls[0][0]["item"].startswith("LIVE_RESTORE_CAUSE_") and len(r["broken"]) == 14,
+          "14 promises broken for one reason are one ticket, and the report still counts 14")
+    # one shared timer down under two fixes is ONE outage: only the host is filed (RIMMANDRAKE_CHARGE_SHARED_OUTAGE_
+    # ONCE_FORTY_FIVE_DEATHS, then RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET: the fixes are not reopened)
     calls.clear()
     r = DM.sweep(NOW, filer, {"A_FIX_1": It(live=DEAD), "C_FIX_1": It(live=DEAD)}, [], {}, chk)
-    got = [(t["item"], t.get("sharedWith"), bool(t.get("spawn"))) for t in calls[0]]
-    check(got == [("LIVE_RESTORE_RM_DEAD", None, True), ("A_FIX_1", "LIVE_RESTORE_RM_DEAD", False),
-                  ("C_FIX_1", "LIVE_RESTORE_RM_DEAD", False)], "a shared outage files its host first: %s" % got)
+    got = [(t["item"], bool(t.get("spawn"))) for t in calls[0]]
+    check(got == [("LIVE_RESTORE_RM_DEAD", True)], "a shared outage files its host alone: %s" % got)
     check(r["line"] == "2 promises, 0 kept, 2 broken", "the host filed for a shared outage is not a promise: " + r["line"])
     calls.clear()
     DM.sweep(NOW, filer, {"A_FIX_1": It(live=DEAD), "C_FIX_1": It(live=DEAD),
-                          "LIVE_RESTORE_RM_DEAD": It(state="ready", live_broken="it died", live_repeats=1)}, [], {}, chk)
-    got = [(t["item"], t.get("sharedWith")) for t in calls[0]]
-    check(got == [("A_FIX_1", "LIVE_RESTORE_RM_DEAD"), ("C_FIX_1", "LIVE_RESTORE_RM_DEAD")],
-          "a host already broken is not filed again, its sharers still name it: %s" % got)
+                          "LIVE_RESTORE_RM_DEAD": It(state="ready", live_broken=DM.SHARED_MARK + "it died",
+                                                     live_repeats=1)}, [], {}, chk)
+    check(not calls, "a host already broken is not filed again, and its sharers file nothing: %s" % calls)
     calls.clear()
     DM.sweep(NOW, filer, {"A_FIX_1": It(live=DEAD)}, [], {}, chk)
     check(calls[0] == [{"item": "A_FIX_1", "result": "broken", "detail": "it died"}], "one fix alone shares nothing")
@@ -165,6 +169,100 @@ def sweeps():
         check(False, "a bad baseline line must raise")
     except ValueError:
         check(True, "a bad baseline line raises")
+
+
+# ---- one fault files one ticket (RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET), one test per promise on
+# design/specs/2026-11-19-one-fault-one-ticket/boundary.md
+
+HOOKS = ["hook=a_one.py", "hook=b_two.py", "hook=c_three.py"]
+
+
+def unwired(line):
+    """The 2026-11-08 flood's reason: every hook reads unwired because the settings path moved."""
+    return "hook %s is not wired in /x/.claude/settings.json" % line.split("=", 1)[1]
+
+
+def filed(baseline, items=None, chk=unwired):
+    calls = []
+    DM.sweep(NOW, lambda todo, conf: calls.append(todo) or {t["item"]: None for t in todo},
+             items or {}, baseline, {}, chk)
+    return calls[0] if calls else []
+
+
+def t_one_cause_files_one_ticket():
+    todo = filed(HOOKS)
+    ids = [t["item"] for t in todo]
+    check(len(todo) == 1 and ids[0].startswith("LIVE_RESTORE_CAUSE_") and todo[0].get("spawn"),
+          "three hooks unwired for one reason file one cause ticket: %s" % ids)
+    check(todo and all(DM.item_id(h) in todo[0]["detail"] for h in HOOKS),
+          "the cause ticket names every promise it holds: %s" % (todo[0]["detail"] if todo else None))
+
+
+def t_a_repeat_reopens_the_same_ticket():
+    first = filed(HOOKS)
+    cid = first[0]["item"] if first else None
+    again = filed(list(reversed(HOOKS)), {cid: It(state="done", live_repeats=1)} if cid else {})
+    check(cid is not None and [t["item"] for t in again] == [cid] and not again[0].get("spawn"),
+          "the same fault fed again reopens the same ticket, whatever the order: %s" % again)
+    held = filed(HOOKS, {cid: It(state="ready", live_broken=DM.SHARED_MARK + "x", live_repeats=1)} if cid else {})
+    check(held == [], "a fault still open files nothing more: %s" % held)
+
+
+def t_two_causes_stay_two_tickets():
+    why = lambda line: unwired(line) if line in HOOKS[:2] else "hook %s file is missing" % line.split("=", 1)[1]
+    todo = filed(HOOKS + ["hook=d_four.py"], chk=why)
+    ids = sorted(t["item"] for t in todo)
+    check(len(ids) == 2 and all(i.startswith("LIVE_RESTORE_CAUSE_") for i in ids) and ids[0] != ids[1],
+          "two reasons, two pairs: two cause tickets: %s" % ids)
+    todo = filed([HOOKS[0], DEAD], chk=lambda line: "it died")
+    check(sorted(t["item"] for t in todo) == ["LIVE_RESTORE_A_ONE", "LIVE_RESTORE_RM_DEAD"],
+          "a hook and a timer with the same words are two kinds, two tickets: %s" % [t["item"] for t in todo])
+
+
+def t_a_lone_fault_keeps_its_own_ticket():
+    why = lambda line: unwired(line) if line == HOOKS[0] else ("hook b_two.py is wired in /x but /y is absent"
+                                                              if line == HOOKS[1] else None)
+    todo = filed(HOOKS, chk=why)
+    check(sorted(t["item"] for t in todo) == ["LIVE_RESTORE_A_ONE", "LIVE_RESTORE_B_TWO"],
+          "two promises broken for two reasons stay two tickets, each its own id: %s" % [t["item"] for t in todo])
+
+
+def t_members_file_no_ticket_of_their_own():
+    todo = filed([], {"A_FIX_1": It(live=DEAD), "C_FIX_1": It(live=DEAD)}, chk=lambda line: "it died")
+    got = [(t["item"], bool(t.get("spawn"))) for t in todo]
+    check(got == [("LIVE_RESTORE_RM_DEAD", True)], "one shared timer under two fixes files its host only: %s" % got)
+    todo = filed(HOOKS, {"LIVE_RESTORE_A_ONE": It(state="done", live_repeats=1)})
+    check(len(todo) == 1 and todo[0]["item"].startswith("LIVE_RESTORE_CAUSE_"),
+          "a member that has its own item is not reopened: %s" % [t["item"] for t in todo])
+
+
+def t_the_cause_ticket_is_put_back_when_the_cause_clears():
+    cid = filed(HOOKS)[0]["item"]
+    todo = filed(HOOKS, {cid: It(state="ready", live_broken=DM.SHARED_MARK + "x", live_repeats=1)}, chk=lambda l: None)
+    check([(t["item"], t["result"]) for t in todo] == [(cid, "kept")], "the cause clears, its ticket is kept: %s" % todo)
+    why = lambda line: unwired(line) if line == HOOKS[0] else None
+    todo = filed(HOOKS, {cid: It(state="ready", live_broken=DM.SHARED_MARK + "x", live_repeats=1)}, chk=why)
+    got = sorted((t["item"], t["result"]) for t in todo)
+    check(got == sorted([(cid, "kept"), ("LIVE_RESTORE_A_ONE", "broken")]),
+          "one member left: the cause ticket is kept and the member files its own: %s" % got)
+
+
+def t_a_retired_cause_ticket_gets_a_successor():
+    cid = filed(HOOKS)[0]["item"]
+    todo = filed(HOOKS, {cid: It(state="dropped")})
+    nid = todo[0]["item"] if todo else None
+    check(nid and nid != cid and nid.startswith("LIVE_RESTORE_CAUSE_") and todo[0].get("spawn"),
+          "a dropped cause ticket is not reopened; the cause files its successor: %s" % nid)
+    again = filed(HOOKS, {cid: It(state="dropped"), nid: It(state="done", live_repeats=1)} if nid else {})
+    check([t["item"] for t in again] == [nid], "the successor is the cause's ticket from then on: %s" % again)
+
+
+def t_cause_ids_are_item_names():
+    import importlib
+    sys.path.insert(0, str(HERE.parent / "rimflow"))
+    model = importlib.import_module("model")
+    cid = filed(HOOKS)[0]["item"]
+    check(not model.mint_problems(cid, set()), "%s parses as an item name: %s" % (cid, model.mint_problems(cid, set())))
 
 
 def no_todoist():
@@ -349,6 +447,14 @@ def main():
     check(DM.stamps(mode="dry")["ops_watch"] is None, "torn status.json -> None, not fresh")
 
     sweeps()
+    for t in (t_one_cause_files_one_ticket, t_a_repeat_reopens_the_same_ticket, t_two_causes_stay_two_tickets,
+              t_a_lone_fault_keeps_its_own_ticket, t_members_file_no_ticket_of_their_own,
+              t_the_cause_ticket_is_put_back_when_the_cause_clears, t_a_retired_cause_ticket_gets_a_successor,
+              t_cause_ids_are_item_names):
+        try:
+            t()
+        except Exception as e:  # noqa: BLE001  a test that raises on the base code is a red, not a crash of the rest
+            check(False, "%s raised %s: %s" % (t.__name__, type(e).__name__, e))
     phones()
     no_todoist()
     receivers()

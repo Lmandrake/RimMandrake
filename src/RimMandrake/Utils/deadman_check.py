@@ -8,7 +8,9 @@ pass rechecks (1) every `live` line on the ledger, (2) rimflow/live_baseline.txt
 LIVE_RESTORE_RETIRED_LOOPS; Archmagi only).
 
 On failure it reopens the SAME item (`rimflow live --result broken`), filing LIVE_RESTORE_<NAME> first if the promise
-has no item. On recovery it puts the item back. The ledger is the only state, so one promise has one id and
+has no item. One outage files one ticket (hosts_of; page design/specs/2026-11-19-one-fault-one-ticket/boundary.md): one
+subject under many fixes files its host, and one cause across subjects files LIVE_RESTORE_CAUSE_<hash>; the members file
+nothing. On recovery it puts the item back. The ledger is the only state, so one promise has one id and
 `live_repeats` counts its outages; at 2 the report says it needs a fold. The pass writes ops_watch/live_sweep.json,
 whose `line` reads "61 promises, 58 kept, 3 broken". A pass that cannot see systemd says so and touches nothing.
 With --file-alarms a dead arm (Dispatcher, ops_watch) or a broken timer promise (`unit=`) also rings the owner's phone
@@ -33,6 +35,7 @@ a Todoist task, is retired (owner, 2026-11-19) and off unless RM_TODOIST_ALARM_P
     python3 src/RimMandrake/Utils/deadman_check.py baseline [--write]   generate the baseline from what runs today
 """
 import argparse
+import hashlib
 import json
 import math
 import os
@@ -225,6 +228,61 @@ def shared_hosts(rows):
     return out
 
 
+SHARED_MARK = "shared outage of "     # the head of a host's reading: what puts a cause ticket back when its cause clears
+
+
+def cause_key(line, why):
+    """-> what one cause looks like across promises: the subject's kind and the reason with the subject's own name and
+    every digit masked ('hook a.py is not wired in X' and 'hook b.py is not wired in X' are one key), or None for a
+    row that names no subject or no reason. Pure. Two faults that read alike are one key: the cost of that merge is
+    bounded, since the ticket names each member and a member left broken alone files its own (sweep)."""
+    subj = subject(line)
+    if not subj or not why or not isinstance(why, str):
+        return None
+    kind, name = subj.split("=", 1)
+    return "%s|%s" % (kind, re.sub(r"\d+", "#", why.replace(name, "<%s>" % kind)))
+
+
+def cause_id(key, items=None):
+    """-> the one ticket of a cause key: LIVE_RESTORE_CAUSE_<8 hex of the key>, the same every pass, so a repeat reopens
+    it. A dropped or superseded one cannot be reopened, so its successor (the key's next generation) takes over."""
+    items = items or {}
+    for gen in range(1, 100):
+        cid = "LIVE_RESTORE_CAUSE_%s" % hashlib.sha1(
+            (key if gen == 1 else "%s#%d" % (key, gen)).encode("utf-8")).hexdigest()[:8].upper()
+        it = items.get(cid)
+        if it is None or it.state not in RETIRED:
+            return cid
+    raise RuntimeError("cause %r: 99 generations retired" % key)
+
+
+def hosts_of(rows, items=None):
+    """-> {item: host}: every broken row of one pass that is part of ONE outage, mapped to that outage's one ticket.
+    First the same subject (shared_hosts: one timer under many fixes), then one cause across subjects (cause_key: 24
+    hooks unwired by one settings path, 2026-11-08). A subject group joins a cause group as one member, through its
+    host. A cause needs two or more members. A host never maps to itself. Pure but for cause_id's read of `items`."""
+    shared = shared_hosts(rows)
+    groups = {}
+    for r in rows:
+        k = cause_key(r.get("line"), r.get("why"))
+        if k:
+            groups.setdefault(k, set()).add(shared.get(r["item"], r["item"]))
+    cause = {}
+    for k, reps in groups.items():
+        if len(reps) >= 2:
+            cid = cause_id(k, items)
+            cause.update({rep: cid for rep in reps})
+    out = {}
+    for r in rows:
+        if not r.get("why"):
+            continue
+        rep = shared.get(r["item"], r["item"])
+        host = cause.get(rep, shared.get(r["item"]))
+        if host and host != r["item"]:
+            out[r["item"]] = host
+    return out
+
+
 def load_baseline(path=None):
     """The running system's promises, one live line each ('#' comments). A line that does not parse raises: the
     sweep must not silently watch less than the file says."""
@@ -383,13 +441,24 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, push
     rows = [r for r in rows if r["why"] != EXCUSED]
     rows += [{"item": "LIVE_RESTORE_" + arm.upper(), "line": None, "why": why} for arm, why in sorted(arms.items())]
     todo = []
-    shared = shared_hosts(rows)
-    # A host no row already reads broken is filed broken too (its first sharer's line and reason). Every host's
-    # reading goes FIRST: a sharer's `sharedWith` excuses its death only when the ledger already holds the host, and
-    # the MAX_PER_PASS cut below keeps the head of the list. The report still counts the real promises only.
+    shared = hosts_of(rows, items)
+    # One outage files ONE ticket, its host's (RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET): a host no row already
+    # reads broken is filed broken, its reading naming every member; a member files, reopens and raises nothing of its
+    # own. Hosts go FIRST, since the MAX_PER_PASS cut below keeps the head of the list. A host that holds no member
+    # this pass is put back (its cause cleared, or one member is left, which then files its own). The report still
+    # counts the real promises only.
     hosts = sorted(set(shared.values()) - {r["item"] for r in rows if r["why"]})
-    host_rows = [next(dict(r, item=h) for r in rows if shared.get(r["item"]) == h) for h in hosts]
+    host_rows = []
+    for h in hosts:
+        members = [r for r in rows if shared.get(r["item"]) == h]
+        host_rows.append(dict(members[0], item=h, why="%s%d promises: %s (%s)" % (
+            SHARED_MARK, len(members), members[0]["why"], ", ".join(r["item"] for r in members))))
+    seen = {r["item"] for r in rows} | set(hosts)
+    host_rows += [{"item": iid, "line": None, "why": None} for iid, it in sorted(items.items())
+                  if iid not in seen and str(getattr(it, "live_broken", None) or "").startswith(SHARED_MARK)]
     for r in host_rows + rows:
+        if r["item"] in shared:
+            continue
         it = items.get(r["item"])
         if r["why"] and it is None:
             todo.append({"item": r["item"], "result": "broken", "detail": r["why"], "spawn": True,
@@ -398,9 +467,6 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, push
             todo.append({"item": r["item"], "result": "broken", "detail": r["why"]})
         elif not r["why"] and it is not None and it.live_broken:
             todo.append({"item": r["item"], "result": "kept", "detail": "sweep: running again"})
-    for t in todo:
-        if t["result"] == "broken" and t["item"] in shared:
-            t["sharedWith"] = shared[t["item"]]
     todo.sort(key=lambda t: t["item"] not in shared.values())      # stable: hosts first, the rest in sweep order
     held = todo[MAX_PER_PASS:]        # a mass outage files over several passes, never a wall of commits in one
     todo = todo[:MAX_PER_PASS]
