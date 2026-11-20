@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "12b6ffdd3999ae3877e2b36f243e077aac0fc6a20b04e9bac7ec4336367bc2ce",
+  "body_sha256": "98fbb809d6c5dd536624690b7187b7e7195b550318a2eab9e2c7bd445b3daa9d",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -13,6 +13,7 @@
    "HOLDER.run-1795161691": 1067,
    "HOLDER.run-1795162652": 2404,
    "HOLDER.run-1795164214": 1355,
+   "HOLDER.run-1795165115": 1137,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1233,11 +1234,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795164214",
-   "done": "RIMMANDRAKE_RESET_FLOWWORKS_BIG_PIT_CALLED_WRONG_CLASS closed at 16d4894f4893: stage resets on RM_NorthstarProofs as x;z;w;h, exits 2 on a refused reset; OL judges nothing-drawn only after a presence read; accept 6/6; OL_OWNER_LOOK_READS UNRUN",
-   "next": "Fix the remaining offline road-back item, then send the record back to in_game with --game-only",
-   "ruled_out": "another wrong-class or comma-arg ProofResetRect call in northstar: audited, none",
-   "ts": "2026-11-20T08:49:12Z"
+   "by": "HOLDER.run-1795165115",
+   "done": "RIMMANDRAKE_DIG_OL_SPARE_PIT_ONLY_IN_OLD_SAVE at d1052da8ddf0: big_pit_scene plans and digs a 6x6 dry spare (plan key spare, SE of the site, >=8 cells off every copy); OL --acts reads it from --plan; a plan without one reads UNMEASURED naming it; accept 6/6 red 5 at base; OL_OWNER_LOOK_READS UNRUN",
+   "next": "Send the record back to in_game with --game-only and re-stage the big pit (plan, stage) before running OL --acts",
+   "ruled_out": "another OL row tied to the old save: none; the 9 mini FAILs of the same visit were the reset fault, closed at 16d4894f4893",
+   "ts": "2026-11-20T09:04:26Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1689,7 +1690,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1363,
+  "events": 1365,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7790,7 +7791,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-20T08:58:52Z",
+   "last": "2026-11-20T09:04:26Z",
    "lease": "run-1795165115",
    "released": false,
    "token": 11
@@ -7883,6 +7884,7 @@
    "HOLDER.run-1795161691",
    "HOLDER.run-1795162652",
    "HOLDER.run-1795164214",
+   "HOLDER.run-1795165115",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",

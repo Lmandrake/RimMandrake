@@ -1,0 +1,15 @@
+# at d1052da8ddf0 (d1052da8ddf0 HEAD)
+ok    (c1) the plan names a spare inside the site, >= 3 cells off every copy: [104, 96, 6, 8] gap 8 
+ok    (c1b) over all 481 origins the spare stays inside the site, >= 3 off every copy (0 bad) 
+ok    (c2) stage digs all 36 spare squares to 8 notches and spawns nothing there (0 undug, 0 spawned) 
+ok    (c3) --acts on the staged plan brims a dug square and reads PASS: [{'row': 'OL_pour_never_no_room', 'verdict': 'PASS', 'got': 'OK poured 1000 L at (107, 99): 0 L into the pit, 1000 L overflowed'}] at [(107, 99)] 
+ok    (c4) a plan with no spare: UNMEASURED naming it, no SetLevel at the old save's 143,103: [{'row': 'OL_pour_never_no_room', 'verdict': 'UNMEASURED', 'got': "the plan names no spare pit (a scene_plan.json older than big_pit_scene's spare): re-run big_pit_scene.py plan and stage, or pass --acts x,z for a save whose spare is known"}] [] 
+ok    (c5) --acts x,z pours at x,z: [(42, 91)] 
+accept_ol_spare_pit_in_plan: ok
+# at base 16d4894f4893/4e88552b93, before the fix (c1b added after this run)
+FAIL  (c1) the plan names a spare inside the site, >= 3 cells off every copy: None gap None None
+FAIL  (c2) stage digs the spare no spare in the plan
+FAIL  (c3) --acts on the staged plan brims a dug square and reads PASS: [{'row': 'OL_pour_never_no_room', 'verdict': 'UNMEASURED', 'got': 'could not brim the spare pit: REFUSED: (143, 103) is not dug; a level is set on a pit'}] at [(143, 103)] [{'row': 'OL_pour_never_no_room', 'verdict': 'UNMEASURED', 'got': 'could not brim the spare pit: REFUSED: (143, 103) is not dug; a level is set on a pit'}]
+FAIL  (c4) a plan with no spare: UNMEASURED naming it, no SetLevel at the old save's 143,103: [{'row': 'OL_pour_never_no_room', 'verdict': 'UNMEASURED', 'got': 'could not brim the spare pit: REFUSED: (143, 103) is not dug; a level is set on a pit'}] [(143, 103)] [{'row': 'OL_pour_never_no_room', 'verdict': 'UNMEASURED', 'got': 'could not brim the spare pit: REFUSED: (143, 103) is not dug; a level is set on a pit'}]
+ok    (c5) --acts x,z pours at x,z: [(42, 91)] 
+accept_ol_spare_pit_in_plan: FAIL ['(c1) the plan names a spare inside the site, >= 3 cells off every copy: None gap None', '(c2) stage digs the spare', "(c3) --acts on the staged plan brims a dug square and reads PASS: [{'row': 'OL_pour_never_no_room', 'verdict': 'UNMEASURED', 'got': 'could not brim the spare pit: REFUSED: (143, 103) is not dug; a level is set on a pit'}] at [(143, 103)]", "(c4) a plan with no spare: UNMEASURED naming it, no SetLevel at the old save's 143,103: [{'row': 'OL_pour_never_no_room', 'verdict': 'UNMEASURED', 'got': 'could not brim the spare pit: REFUSED: (143, 103) is not dug; a level is set on a pit'}] [(143, 103)]"]
