@@ -25,9 +25,10 @@ The page has these parts, each entry named with words:
 ## One round
 
 There is one review round per page version, never more. You read the page, the code and the tests, the whole file,
-once. The builder fixes each Problem, and each minor error that is cheap to fix. Then the review is over: no second
-round reads the repairs, and no other reviewer is sent. Owner, 2026-11-19: *"If you find minor errors and fix them,
-that's it."* A new round happens only for a new page version.
+once. The builder fixes each Problem and nothing else. A minor nit, or a finding with no meaningful impact, goes on
+`polish.md` and nobody fixes it in this review. Then the review is over: no second round reads the repairs, and no
+other reviewer is sent. Owner, 2026-11-19 5:27 PM PST: *"AGREED: minor nits and what doesn't have meaningful impact
+gets left alone, left on a "polish" list."* A new round happens only for a new page version.
 
 ## A Problem: one of three reasons, with the page quoted
 
@@ -63,7 +64,8 @@ the input" before "handle the input". Only a CALIBRATED brief's refusal sends wo
 
 - **"It should also accept or survive X"**: one line on `next_version.md` beside the page. It is never added to the
   current version's bars.
-- **A stricter test with no broken component described, a style point, robustness against an input outside ACCEPTS
+- **A minor nit, a finding with no meaningful impact, a stricter test with no broken component described, a style
+  point, robustness against an input outside ACCEPTS
   that nothing produces, a failure under DOES NOT SURVIVE**: one line on `polish.md` beside the page.
 - **A rare failure** (§A Problem): one plain line for the page's DOES NOT SURVIVE. The page's owner writes it there;
   no fix is built.

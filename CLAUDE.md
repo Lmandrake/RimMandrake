@@ -452,9 +452,11 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - `python3 src/RimMandrake/Utils/code_review_status.py check <path>` measures it. It reads CLEAN, DIRTY, UNREADABLE
   or NO PAGE.
 - A full-file review that finds nothing does not make a file clean. `mark-clean` only records a review round.
-- A review gets one round. Fix each claim that breaks a promise, and each minor error that is cheap to fix. Then the
-  review is over. There is no second round and no round that checks the repairs.
-- Write each claim that breaks no promise as one line on `polish.md` beside the page. It is never a ticket.
+- A review gets one round. Fix only a claim that breaks a stated promise or has meaningful impact (a defect that a
+  user or a later run would hit). Then the review is over. There is no second round and no round that checks the
+  repairs.
+- Write each minor nit, and each claim with no meaningful impact, as one line on `polish.md` beside the page. Do not
+  fix it in that review. It is never a ticket.
 - Code with no page reads NO PAGE. It is not DIRTY. It gets its page when someone next changes it, or when it is on a
   mod's next-step path. Do not write pages for untouched code.
 - Before you write new pipeline code, write its page. Pipeline machinery is any file that `pipeline_files` matches in

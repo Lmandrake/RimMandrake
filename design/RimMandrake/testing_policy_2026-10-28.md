@@ -106,8 +106,8 @@ Provenance of each tunable: **O** owner's words, **C** owner by card, **D** code
 - **Purpose:** a second read of a file against its boundary page. CLEAN is not earned by the review: a file is
   CLEAN when its page's promises have passing tests (owner, 2026-11-19, `standing_rulings.md` §Code is clean when
   its promises are tested).
-- **Cadence:** one round per page version, after the edits settle. Fix each claim that breaks a promise and each
-  cheap minor error; then the review is over.
+- **Cadence:** one round per page version, after the edits settle. Fix only a claim that breaks a stated promise or
+  has meaningful impact; a minor nit goes on `polish.md` unfixed. Then the review is over.
 - **Helps:** decision and evidence code, parsers, filters, schemas.
 - **Hurts:** a full review of a file that is edited again the same day. MEASURED: 326 paths were cleaned 4 or
   more times in 14 days.

@@ -618,9 +618,10 @@ Design work is never done in-window.
 
 - **Every code-review brief names the page and allows one round** (owner, 2026-11-19, `standing_rulings.md` §Code is
   clean when its promises are tested). The reviewer reads the code against its boundary page, the whole file, once.
-  The builder fixes each claim that breaks a promise, and each minor error that is cheap to fix. Then the review is
-  over: there is no second round and no check of the repairs.
-- A claim that breaks no promise is one line on `polish.md` beside the page. It is never a ticket.
+  The builder fixes only a claim that breaks a stated promise or has meaningful impact (a defect that a user or a
+  later run would hit). Then the review is over: there is no second round and no check of the repairs.
+- A minor nit, or a claim with no meaningful impact, is one line on `polish.md` beside the page. Nobody fixes it in
+  that review. It is never a ticket.
 - Code with no page reads NO PAGE. It gets its page when it is next changed, or when it is on a mod's next-step path.
 - No Codex or GPT review of pipeline machinery runs until the calibrated review brief exists (`standing_rulings.md` §A
   boundary page before pipeline code).

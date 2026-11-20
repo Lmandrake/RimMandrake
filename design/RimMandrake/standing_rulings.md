@@ -333,15 +333,23 @@ list with specified covering tests. If minor errors continue to be found, you ge
 seems too much to be honest. If you find minor errors and fix them, that's it. That's the new rule, ok? Push back if
 you disagree, but enough is enough."*
 
+His words (Thu 2026-11-19, 5:27 PM PST, item `RIMMANDRAKE_AMEND_REVIEW_RULE_MINOR_FINDINGS_STAY_ON_POLISH`):
+*"AGREED: minor nits and what doesn't have meaningful impact gets left alone, left on a "polish" list."*
+Reason (measured 2026-11-19, `D:\ClaudeWork\rimmandrake\conductor\review_instructions_old_vs_new_20261119.md`): the
+old FOUNDRY review loop fixed only significant findings and converged. Reviews that fixed every finding wrote new code,
+and new fix lines drew 14 to 25 claims per 1,000 lines, against about 3 for old code.
+
 - **For all code** (mods, defs, C#, tools, hooks and pipeline machinery), CLEAN is judged against a stated page of
   promises: `design/specs/<component>/boundary.md`, in the form of §A boundary page before pipeline code. A file is
   CLEAN when a page names it in its `Code:` line, each promise on that page has a test of the same name, and those
   tests pass. A later edit stays clean while those tests pass.
 - **"A full-file review finds nothing" is not a pass condition, for any code.** A review record (`mark-clean`) does
   not make a file CLEAN.
-- **A review gets one round.** The reviewer reports. Fix each claim that breaks a promise, and each minor error that
-  is cheap to fix. Then the review is over: there is no second round and no round that checks the repairs.
-- **A claim that breaks no promise** is one line on `polish.md` beside the page. It is never a ticket.
+- **A review gets one round.** The reviewer reports. Fix only a claim that breaks a stated promise or has meaningful
+  impact (a defect that a user or a later run would hit). Then the review is over: there is no second round and no
+  round that checks the repairs.
+- **A minor nit, or a claim with no meaningful impact,** is one line on `polish.md` beside the page. Nobody fixes it
+  in that review. It is never a ticket.
 - **Code with no page reads NO PAGE, not DIRTY** (the Conductor's reading, delegated, told to him 2026-11-19). It gets
   its page when someone next changes it, or when it is on a mod's next-step path. Nobody writes pages for untouched
   code in a sweep. For pipeline machinery, Decision 1 of §A boundary page before pipeline code also says when a page
