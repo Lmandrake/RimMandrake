@@ -65,7 +65,9 @@ function Step($cpu,$secs,$mask,$w,$inject=''){ # -> hashtable; $inject 'fatal' a
     if(Test-Path "$p\results.txt"){ $f=@(Get-Content "$p\results.txt"|?{$_ -match 'FATAL|[Hh]ardware failure|Possible hardware'}).Count }
     if($sp){ New-Item -ItemType File -Force $hs | Out-Null; if($sp.WaitForExit(20000)){ $l=@(Get-Content $ho -EA 0|?{$_.Trim()}); if($l.Count){$h=$l[-1].Trim()}else{$h='UNMEASURED(no_output)'} }else{ try{$sp.Kill()}catch{}; $h='UNMEASURED(sampler_hung)' } }
     $wh=@(Get-WinEvent -FilterHashtable @{LogName='System';ProviderName='Microsoft-Windows-WHEA-Logger';StartTime=$t0} -EA 0).Count
-  }finally{ Get-Process prime95 -EA 0|Stop-Process -Force; Get-Process stevetemp -EA 0|?{$_.StartTime -ge $t0}|Stop-Process -Force }
+  }finally{ Get-Process prime95 -EA 0|Stop-Process -Force; if($sp -and -not $sp.HasExited){ try{$sp.Kill()}catch{} } }
+  # only this step's own sampler is killed: the old "every stevetemp started since t0" also killed the fault watch's sampler,
+  # which then printed nothing (heat=UNMEASURED(no_output) on 774 of 792 watch cycles of the 2026-11-18 soak boot)
   $m=[regex]::Match($h,'core_max_c=(\d+)'); $cm=if($m.Success){[int]$m.Groups[1].Value}else{-1}
   return @{fatal=$f;alive=$a;whea=$wh;heat=$h;core_max=$cm;load=$ld} }
 $n=(Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors; $probe='unasked'
@@ -79,7 +81,7 @@ if($waited){ L "WAIT END" }
 L "PROBES run=$run worker_probe=$probe rimworld=$(@(Get-Process RimWorldWin64 -EA 0).Count) whoami=$(whoami)"
 # CONTROL: the instrument must see an injected error and an injected death, and the sampler must answer
 $ci=Step 0 12 1 1 'fatal'; $ck=Step 0 12 1 1 'kill'
-$okf=[int]($ci.fatal -ge 1); $okk=[int](-not $ck.alive); $okh=[int](-not ($ci.heat -like 'UNMEASURED*')); $okl=[int]($ci.load -ge 50)
+$okf=[int]($ci.fatal -ge 1); $okk=[int](-not $ck.alive); $okh=[int](-not ($ci.heat -match 'UNMEASURED')); $okl=[int]($ci.load -ge 50)
 L ("CONTROL run={0} inject_fatal_seen={1} inject_died_seen={2} heat_seen={3} load_seen={4} load={5} ok={6}" -f $run,$okf,$okk,$okh,$okl,$ci.load,[int]($okf -and $okk -and $okh -and $okl))
 $pass=0; $reason=''; $cause=''; $steps=0; $fails=[int]$s.fails
 try{

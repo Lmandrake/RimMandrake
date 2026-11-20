@@ -55,7 +55,7 @@ jobs ran 29.1 h before its first fault [measured].
 1. **Let the soak finish (Fri 11-20 5:29 PM PST), then run the normal game lane for 48-72 h at the current settings** and count
    fault windows (`python3 src/RimMandrake/Utils/testq/fault_monitor.py report`). This decides whether the fault still exists at
    +0.100 V under the workload that used to trigger it. Cost $0, no visit. If it stays at zero, stop here and keep watching.
-2. **If it returns: test the software explanation before buying.** Build a corrected register probe (it must catch a deliberate
+2. **If it returns: test the software explanation before buying.** Use the corrected register probe (built 2026-11-20; it must catch a deliberate
    `VZEROUPPER`, compare against fixed known answers, and check the scalar path too; the old `hold` test cannot see this fault,
    section 4) and run one boot with the hypervisor off (`bcdedit /set hypervisorlaunchtype off`), then back on. GPT call 1 names
    the hypervisor-off crossover as the single cheapest high-information test; GPT call 2 names the corrected probe first. Cost
@@ -187,14 +187,14 @@ years for a boxed 10900K, none for used chips; check this unit's FPO/ATPO at Int
 |---|---|
 | Does the fault return at +0.100 V under the game workload? | After the soak ends: `python3 src/RimMandrake/Utils/testq/testq.py resume --reason "post-soak baseline at +0.100 V"`, then after 48-72 h `python3 src/RimMandrake/Utils/testq/fault_monitor.py report` |
 | Hypervisor on vs off | `ssh stevedesktop "bcdedit /set hypervisorlaunchtype off"` + reboot, verify with `systeminfo`, run 48-72 h, then `bcdedit /set hypervisorlaunchtype auto`. Blocker: the test runner and remote seats live in WSL2, so this arm needs a Windows-native workload (Prime95 + the watch + a RimWorld run started from Windows). Not built. |
-| A probe that can see upper-half loss | Not built. It must detect an injected `VZEROUPPER`, compare against fixed known answers, include scalar and SSE controls, randomise CPU order, and log full register values on failure (GPT 1 and 2). |
+| A probe that can see upper-half loss | Built and running since 2026-11-20 20:08Z (task `SteveDiag Register Probe`, `src/RimMandrake/Utils/steve_cpu_retest/regprobe.c`): it caught an injected `VZEROUPPER` on 18 of 18 logical CPUs and read clean on a normal run (`regprobe_red_green/README.md`). Read it: `python3 src/RimMandrake/Utils/testq/fault_monitor.py regprobe`. |
 | The WSL2-guest canary (same check inside Linux on the same CPU) | UNRUN since `RIMMANDRAKE_DIAGNOSE_STEVE_WORLD_START_SIX_MODS_ONE_FAILURE`; no command written |
 | Bare-metal Linux | Live USB + `mprime` + a native AVX/scalar checker; needs a person at the machine |
 | Why Prime95 "died early" 3 times | the soak does not keep the PID or exit code; UNMEASURED |
 | Delivered Vcore and VRM temperature | a board (SuperIO) sensor read; `stevetemp` opens CPU sensors only; UNMEASURED |
 | Unit of the BIOS offset field (raw 20) | look at the BIOS screen, or decode the IFR numeric step; UNMEASURED |
 | RAM while the fault is active | MemTest86 4 passes per DIMM set; needs a person |
-| Is the even/odd imbalance real or the fixed test order? | randomise the watch's CPU order (watch2.ps1 change, after the soak) |
+| Is the even/odd imbalance real or the fixed test order? | watch2.ps1 now checks the CPUs in a random order each cycle and logs it as `order=[...]` (on Steve's disk 2026-11-20; it takes effect at the first boot after 20:05Z); compare the per-CPU counts after that |
 | PSU model | a look at the label |
 | This CPU's warranty | FPO/ATPO from the box or IHS into Intel's checker |
 

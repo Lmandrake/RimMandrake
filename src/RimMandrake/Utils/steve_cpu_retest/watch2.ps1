@@ -7,6 +7,8 @@
 # Heat (STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER): heat\stevetemp.exe (fault_monitor.py deploy-heat) samples the CPU
 # package and per-core temperatures every 500 ms WHILE the cycle's checks run, and its one line ends the CYCLE line;
 # no sampler, a hung one or an empty answer ends it with heat=UNMEASURED(<why>) instead, never with nothing.
+# The CPUs are checked in a fresh random order each cycle, written as order=[...] before the heat field
+# (RIMMANDRAKE_BUILD_STEVE_REGISTER_PROBE_SEES_UPPER_HALF_LOSS). The register probe (regprobe.exe) runs beside it as its own task.
 param([int]$CycleS=300,[int]$CheckS=4)
 $d='C:\SteveDesktop\diag'; $b="$d\bin3\stevecheck.exe"; $log="$d\logs\watch.log"; $ck="$d\logs\watch-chk.log"; $r="$d\retest"
 $tp="$d\heat\stevetemp.exe"; $ho="$d\logs\heat-cur.txt"; $hstop="$d\logs\heat-stop.flag"
@@ -25,12 +27,13 @@ while($true){
  $t0=Get-Date; $fails=@(); $rcs=@(); $hs=$null; $heat='heat=UNMEASURED(no_sampler)'
  Remove-Item $ho,$hstop -EA 0
  if(Test-Path $tp){ try{ $hs=Start-Process $tp -ArgumentList @([string]($n*$CheckS*2+60),'500',$hstop) -RedirectStandardOutput $ho -WindowStyle Hidden -PassThru }catch{ $heat='heat=UNMEASURED(sampler_start_failed)' } }
- foreach($cpu in 0..($n-1)){ & $b core $cpu $CheckS $ck | Out-Null; if($LASTEXITCODE -ne 0){$fails+=$cpu; $rcs+=$LASTEXITCODE} }
+ $ord=@(0..($n-1) | Get-Random -Count $n)   # a fresh order each cycle: the fixed order ran each even sibling first (REPORT.md section 4)
+ foreach($cpu in $ord){ & $b core $cpu $CheckS $ck | Out-Null; if($LASTEXITCODE -ne 0){$fails+=$cpu; $rcs+=$LASTEXITCODE} }
  if($hs){ New-Item -ItemType File -Force $hstop | Out-Null
    if($hs.WaitForExit(30000)){ $h=@(Get-Content $ho -EA 0 | ?{$_.Trim()}); if($h.Count){$heat=$h[-1].Trim()}else{$heat='heat=UNMEASURED(no_output)'} }
    else{ try{$hs.Kill()}catch{}; $heat='heat=UNMEASURED(sampler_hung)' } }
  $up=[math]::Round(((Get-Date).ToUniversalTime()-$boot).TotalHours,2)
- W "CYCLE uptime_h=$up bad_cpus=[$($fails -join ',')] n_ok=$($n-$fails.Count) exits=[$($rcs -join ',')] $heat"
+ W "CYCLE uptime_h=$up bad_cpus=[$($fails -join ',')] n_ok=$($n-$fails.Count) exits=[$($rcs -join ',')] order=[$($ord -join ',')] $heat"
  if($fails.Count -and (Test-Path "$r\armed.flag") -and -not (Test-Path "$r\fault.json")){
    @{event='watch';cpu=$fails[0];bad=@('watch_core');cpus=$fails;uptime_h=$up;ts=(Get-Date).ToUniversalTime().ToString('s')+'Z'} | ConvertTo-Json | Set-Content "$r\fault.json" }
  $left=$CycleS-((Get-Date)-$t0).TotalSeconds; if($left -gt 0){Start-Sleep ([int]$left)}

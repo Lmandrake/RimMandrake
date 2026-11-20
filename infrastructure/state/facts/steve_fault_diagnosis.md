@@ -8,6 +8,19 @@ state `D:\ClaudeWork\rimmandrake\testq\fault_state.json`). Raw evidence: `D:\Cla
 `docker exec tailscale-gmail sh -c 'ssh -o BatchMode=yes mandrake@100.115.10.14 "<cmd>"'`, with the probe
 log at `/mnt/c/SteveDesktop/diag/logs/watch.log` (4262 CYCLE lines as of 2026-11-18T01:00Z).
 
+## The register probe (running since 2026-11-20)
+
+- Task `SteveDiag Register Probe` (SYSTEM, at startup) runs `C:\SteveDesktop\diag\regprobe\regprobe.exe` every 300 s: on
+  each logical CPU, in a random order, it holds fixed patterns in all 16 YMM registers (steady, and cut by context switches),
+  all 16 XMM registers (legacy SSE) and 14 general registers, and compares all bits with compiled-in answers. Classes:
+  `upper_half_loss`, `lower_half_error`, `sse_error`, `scalar_error`. Log `C:\SteveDesktop\diag\logs\regprobe.log`; the
+  `rm-steve-fault` tick mirrors it; read it with `python3 src/RimMandrake/Utils/testq/fault_monitor.py regprobe` (exit 0
+  CLEAN, 1 FAULT, 2 UNMEASURED). Source and RED/GREEN readings:
+  `src/RimMandrake/Utils/steve_cpu_retest/regprobe.c`, `infrastructure/state/facts/stevedesktop_cpu_fault_2026-11-19/regprobe_red_green/README.md`.
+- The watch's `heat=UNMEASURED(no_output)` during the 72 h soak had one cause: the soak's step cleanup killed every
+  `stevetemp` started since the step began, the watch's own sampler included. Fixed in the repo's `steve_cpu_soak.ps1`
+  (it kills only its own sampler); Steve's copy is older and was not replaced, so the next soak deploy carries the fix.
+
 ## 🔴 The +0.100 V raise is stored in the BIOS, is not visible in the sensors, and did not cure the fault (MEASURED 2026-11-20)
 
 Per-boot bad-cycle counts from the whole probe log, and the pre/post split over all 3898 cycles:

@@ -151,8 +151,11 @@ def heat_checks(tmp):
           and '"heat=UNMEASURED(' in cs, "stevetemp.cs prints the format HEAT_RE reads")
     with open(os.path.join(HERE, "..", "steve_cpu_retest", "watch2.ps1"), encoding="utf-8") as f:
         ps1 = f.read()
-    check("exits=[$($rcs -join ',')] $heat\"" in ps1 and "$heat='heat=UNMEASURED(no_sampler)'" in ps1,
-          "watch2.ps1 ends every CYCLE with the sampler's line or heat=UNMEASURED")
+    check("exits=[$($rcs -join ',')] order=[$($ord -join ',')] $heat\"" in ps1 and "$heat='heat=UNMEASURED(no_sampler)'" in ps1,
+          "watch2.ps1 ends every CYCLE with the CPU order, then the sampler's line or heat=UNMEASURED")
+    check("Get-Random -Count $n" in ps1 and "foreach($cpu in $ord)" in ps1, "watch2.ps1 checks the CPUs in a fresh random order")
+    line = cyc(5, bad=(3,)) + " exits=[1] order=[3,0,1,2] pkg_c=40/44 core_max_c=45 hot_core=2 cores_max_c=[40,45]"
+    check(FM.CYCLE_RE.match(line) and FM.heat_of(line).get("core") == 45, "a CYCLE line with order=[...] still parses, heat too")
     live_fixture_checks()
 
 

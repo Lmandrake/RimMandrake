@@ -23,6 +23,9 @@ CPU, one CYCLE line in C:\\SteveDesktop\\diag\\logs\\watch.log. This module is t
               A pause by someone else holds the reboot; an auto pause born inside the window (a red canary) does not.
   report      the onset table: boot, uptime at onset, CPUs, jobs under it; check: the reading is honest (exit 0/1).
   deploy-watch  copy watch2.ps1 to Steve and restart its task.
+  regprobe    (RIMMANDRAKE_BUILD_STEVE_REGISTER_PROBE_SEES_UPPER_HALF_LOSS) the register probe's verdict and per-boot table
+              from QHOME/regprobe.log, which tick mirrors from Steve's regprobe.log; exit 0 CLEAN, 1 FAULT, 2 UNMEASURED.
+              `report` prints the same section. Parser: regprobe_log.py; probe: steve_cpu_retest/regprobe.c.
   heat        (STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER) one row per boot: CPU temperature over the boot and at the onset,
               so a fault window says whether heat climbed before it, and an open-case boot can be set against closed ones.
               Each CYCLE line ends with the sampler's reading (HEAT_RE) or heat=UNMEASURED(<why>); lines from before the
@@ -54,6 +57,8 @@ SSH = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=15", "-o", "LogLevel=
 RETEST_STATE = os.environ.get("STEVE_RETEST_HOME", "/mnt/d/ClaudeWork/rimmandrake/steve_diag/retest") + "/state.json"
 RETEST_IDLE = ("DONE_CLEAN", "END_FAULT", "ABORTED", "DISARMED")
 WATCH_LOG = r"C:\SteveDesktop\diag\logs\watch.log"
+REGPROBE_LOG = r"C:\SteveDesktop\diag\logs\regprobe.log"
+REGPROBE_TAIL = 400                 # lines per tick; the probe writes ~1 a cycle, up to ~70 in a faulty one; ticks are 2 min
 WATCH_PS1 = r"C:\SteveDesktop\diag\watch2.ps1"
 MARK = "STEVE_FAULT_MONITOR:"       # a pause of ours says so; only ours is lifted
 PAUSE_HOURS = 6
@@ -343,14 +348,19 @@ def steve_read():
 $b=([DateTimeOffset]$o.LastBootUpTime).ToUnixTimeSeconds(); $n=(Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
 $rw=@(Get-Process RimWorldWin64 -EA 0).Count
 "FACTS $b $n $rw"
-if(Test-Path '%s'){Get-Content '%s' -Tail 600}""" % (WATCH_LOG, WATCH_LOG))
+if(Test-Path '%s'){Get-Content '%s' -Tail 600}
+'REGPROBE_TAIL'
+if(Test-Path '%s'){Get-Content '%s' -Tail %d}""" % (WATCH_LOG, WATCH_LOG, REGPROBE_LOG, REGPROBE_LOG, REGPROBE_TAIL))
     if rc is None:
         return None
     lines = out.splitlines()
     for i, line in enumerate(lines):
         p = line.split()
         if line.startswith("FACTS ") and len(p) == 4:
-            return {"boot": int(p[1]), "cpus": int(p[2]), "rimworld": int(p[3]), "lines": lines[i + 1:]}
+            rest = lines[i + 1:]
+            cut = rest.index("REGPROBE_TAIL") if "REGPROBE_TAIL" in rest else len(rest)
+            return {"boot": int(p[1]), "cpus": int(p[2]), "rimworld": int(p[3]), "lines": rest[:cut],
+                    "rp_lines": rest[cut + 1:]}
     return None
 
 
@@ -554,9 +564,9 @@ def periodic_reboot(st, a, now):
         st["pr"] = {"state": "DRAIN", "quiet": 0, "n": pr.get("n", 0)}
 
 
-def merge_mirror(lines):
+def merge_mirror(lines, name="fault_watch.log"):
     """Union of the mirror and what Steve just gave, by timestamp, so Steve's log can rotate and we still hold history."""
-    path = T.q("fault_watch.log")
+    path = T.q(name)
     old = []
     if os.path.exists(path):
         with open(path, encoding="utf-8") as f:
@@ -587,6 +597,8 @@ def tick(now=None):
         st = T.read_json(T.q("fault_state.json")) or {"phase": "CLEAN"}
         fx = steve_read()
         lines = merge_mirror(fx["lines"] if fx else [])
+        if fx and fx.get("rp_lines"):
+            merge_mirror(fx["rp_lines"], "regprobe.log")
         # the highest boot ever seen, or a window a reboot closed would reopen when ssh fails before the next watch line
         a = analyse(lines, live_boot=max(fx["boot"] if fx else 0, st.get("boot") or 0) or None)
         anno = {w["id"]: w for w in T.read_json(T.q("fault_windows.json")) or []}
@@ -646,7 +658,25 @@ def report(_a=None):
         print("    heat: " + heat_line(w.get("heat")))
         if w.get("snapshot"):
             print("    cause evidence: %s" % w["snapshot"])
+    print("\n".join(regprobe_section()[1]))
     return 0
+
+
+def regprobe_section(now=None):
+    """-> (FAULT|CLEAN|UNMEASURED, lines) from the mirror of the register probe's log."""
+    import regprobe_log
+    path = T.q("regprobe.log")
+    if not os.path.exists(path):
+        return "UNMEASURED", ["register probe (regprobe.log): UNMEASURED(no mirror %s: the probe is not installed, or the "
+                              "monitor has not ticked since)" % path]
+    with open(path, encoding="utf-8") as f:
+        return regprobe_log.report_lines(f.read().splitlines(), now)
+
+
+def regprobe(_a=None):
+    word, lines = regprobe_section()
+    print("\n".join(lines))
+    return {"CLEAN": 0, "FAULT": 1}.get(word, 2)
 
 
 def _c(v):
@@ -704,6 +734,10 @@ def check(_a=None, now=None):
     lh = st.get("last_heat") or {}
     if lh.get("unmeasured"):        # a cycle with no heat field at all predates the sampler: not a failure
         bad.append("heat blind: the newest cycle says heat=UNMEASURED(%s)" % lh["unmeasured"])
+    if os.path.exists(T.q("regprobe.log")):     # installed: it must keep looking (no mirror = not installed, not a failure)
+        word, rl = regprobe_section(now)
+        if word == "UNMEASURED":
+            bad.append("register probe blind: " + rl[0].split(": ", 1)[1])
     nleft = 0
     for rec in ([] if advisory() else T.records("done")):
         span = job_span(rec)
@@ -810,11 +844,11 @@ def release(a=None):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("cmd", choices=("tick", "report", "check", "deploy-watch", "heat", "deploy-heat", "release"))
+    ap.add_argument("cmd", choices=("tick", "report", "check", "deploy-watch", "heat", "deploy-heat", "release", "regprobe"))
     ap.add_argument("prefix", nargs="?", help="release: only job ids starting with this (default: all)")
     a = ap.parse_args()
     return {"release": lambda: release(a), "tick": tick, "report": report, "check": check, "deploy-watch": deploy_watch, "heat": heat,
-            "deploy-heat": deploy_heat}[a.cmd]() or 0
+            "deploy-heat": deploy_heat, "regprobe": regprobe}[a.cmd]() or 0
 
 
 if __name__ == "__main__":
