@@ -13,3 +13,7 @@ Zoomed captures of the dry and the wet spikes twins (stations 5 and 6) and of a 
 ## criteria
 
 Acceptance test: none, a look (his eye, or a judge that did not make it, on the captures above).
+
+## absorbed
+
+Absorbed by RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN (his card 2026-11-20, FlowWorks 0.1.0): the same draw layer is rebuilt; fix this there, in the same run, and close both on its sha.

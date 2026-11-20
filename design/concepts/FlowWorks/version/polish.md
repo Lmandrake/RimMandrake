@@ -14,3 +14,4 @@ Source rows: `blind_challenge/cycle_4/lane2/faults.json` (class Polish, status N
 - `RIMMANDRAKE_NOTE_FLOWWORKS_FUZZ_BLIND_TO_ONE_SINK_PATH` (inv_flow_level): the kernel fuzz's volume law does not see an unreported sink drain on `RM_FlowKernel.cs:851` (planted `CHANGED_FUZZ_SINK_UNREPORTED`, rc 0).
 - `RIMMANDRAKE_NOTE_FLOWWORKS_GLOW_ROOM_RECT_UNPINNED` (inv_looks): `selftest_glow_tank_live.py` does not pin the scene room's size (planted `CHANGED_GLOW_ROOM_SHORT`, rc 0).
 
+- Pawn shadows reach outside a pit (his walk 2026-11-20: "Nice to have if easy, don't go crazy trying for it."): the pawn ground shadow is already skipped for a pawn drawn sunk in a cut (`RM_Patch_PitHidesShadow`, `Source/Superdeep/RM_PitDepthDraw.cs:417-436`); which shadow he saw is unread; no cheap fix found offline. No ticket.

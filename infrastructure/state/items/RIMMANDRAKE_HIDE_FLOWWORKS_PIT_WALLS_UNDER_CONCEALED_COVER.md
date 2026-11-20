@@ -13,3 +13,7 @@ Stage a covered 3x3 pit (planks over a 2 m pit, every square lidded) beside bare
 ## criteria
 
 Acceptance test: a live zoomed capture of the covered pit shows no outline or wall pixels inside the cover, and the control still shows its pit. Red today by his picture 6; not yet watched red by a test (the game was his).
+
+## absorbed
+
+Absorbed by RIMMANDRAKE_REBUILD_FLOWWORKS_PITS_AS_RELATIVE_TERRAIN (his card 2026-11-20, FlowWorks 0.1.0): the same draw layer is rebuilt; fix this there, in the same run, and close both on its sha.
