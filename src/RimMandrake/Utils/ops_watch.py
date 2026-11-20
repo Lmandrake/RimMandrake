@@ -4234,8 +4234,11 @@ def headline(points, flags, alarms):
         for a in accs)
              + ", codex " + g("codex.runway").strip()]
     if "accounts.fleet_stop_h" in points:
-        parts.append("fleet stop in %s h at %s %%/h" % (g("accounts.fleet_stop_h").strip(),
-                                                        g("accounts.fleet_burn_pct_h").strip()))
+        # a reading with no stop_at is the horizon cap ("no stop inside N h"), not a stop at N h
+        capped = str((points["accounts.fleet_stop_h"].get("x") or {}).get("why") or "").startswith("no stop inside")
+        parts.append("%s %s h at %s %%/h" % ("no fleet stop inside" if capped else "fleet stop in",
+                                             g("accounts.fleet_stop_h").strip(),
+                                             g("accounts.fleet_burn_pct_h").strip()))
     parts.append("steve %s, INVALID streak %s, unowned stall %s min" % (
         g("steve.state").strip(), g("steve.invalid_streak").strip(), g("steve.unowned_stall_min").strip()))
     parts.append("disk free / %s GB, C: %s GB, D: %s GB, scratch %s GB, pool %s clones %s GB oldest %s h" % (
