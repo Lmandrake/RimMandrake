@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7829,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":2936,"STEWARD":2597} body_sha256=94b379bb9e0fc0843d2328a54fd6dfe759e32e62a77017bc315f8aeac556434d -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7829,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":7256,"STEWARD":2597} body_sha256=cfb61fb10f40245e803ef4efb6c0378ecefbd563bde2d6244312b5ea8cc3e4c9 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage blind_challenge · 1300 events in 9 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 1304 events in 9 shards · reducer 1
 holder lease run-1794861652, token 4, last active 2026-11-16T21:17:55Z
 holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 400000
 
@@ -9,8 +9,8 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - next: Run blind cycle 4 judge on FlowWorks 0.1.0 at origin/main so a judge who did not make the cycle-3 fixes (96941bfa43, d0d33973116a) judges them
 - ruled out: No CRITERION FLAW and no weakened test in cycle 3; the census red was a stale pin after GSS b560ff91e8 (owner ripple removal), not a FlowWorks draw defect
 
-## Open findings (181)
-(claimed fixes, awaiting a judge, on one line each with the oldest 123 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
+## Open findings (185)
+(claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
 - RIMMANDRAKE_ANCHOR_CROP_DROWN_DELAY_IN_DAYS_NOT_PULSES [open, polish · bars inv_overflow_sheet]: cropDrownPulses ships 1680 (7 days at the 250-tick pulse) b…
 - RIMMANDRAKE_PIN_MACHINE_RATES_A_TENFOLD_STILL_PASSES [open, polish · bars inv_converters]: Planted DEF_STILL_RATE_TENFOLD (RM_LiquidStills.xml 6000 to…
 - ABSOLUTE_DESCENT_FIX_MISSES_DECK_SHOVE [open, problem]: With pitRelativeClimbEnabled off, IsFallingArrival (RM_Supe…
@@ -192,6 +192,10 @@ holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 4
 - TRENCH_STRIDE_UNDERPASS_FIX_ONE_BUG on c22de8bf0b58
 - FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS [open, problem]: Task: map makers and review/test maps need dev-placed FlowW…
 - TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH [open, problem · bars inv_looks]: Built FlowWorks tanks lacked a switch for their four looks;…
+- RIMMANDRAKE_PIN_FLOWWORKS_FILM_NEVER_DROWNS_CROPS [open, problem · bars inv_overflow_sheet]: T_SHEET stays green when the crop timer counts a film tier…
+- RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_KEEP_THEIR_UNITS [open, problem · bars inv_overflow_sheet]: T_SHEET stays green when SyncParams hands the door slider's…
+- RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN [open, problem · bars inv_converters]: T_CONVERT stays green when CompLiquidConverter drops the th…
+- RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING [open, problem · bars inv_drilling]: T_DRILL stays green when Building_LiquidDrill.CurrentBlock…
 
 ## Traps (264) — what a reader would otherwise get wrong (each cut to 60 chars; `modledger.py show --mod FlowWorks <subject>` for the whole)
 - trap:the-inventory-s-proof-field-reads-stale-20
@@ -489,10 +493,10 @@ spend recorded: USD 78.94, 45401435 tokens
 - closed traps: 1, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - tests: 47, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - claimed fixes in brief: 58 on one line (name and sha), their claim, test and fix by `show`
-- open findings in brief: the oldest 123 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
+- open findings in brief: the oldest 127 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1300 events (views/history.md; never read whole)
+- the full history: 1304 events (views/history.md; never read whole)
 
-cursor: t=2026-11-20T00:36:12Z.1795134972799199130 (modledger.py since --mod FlowWorks t=2026-11-20T00:36:12Z.1795134972799199130 prints what changed after this packet)
+cursor: t=2026-11-20T02:18:41Z.1795141121609446057 (modledger.py since --mod FlowWorks t=2026-11-20T02:18:41Z.1795141121609446057 prints what changed after this packet)

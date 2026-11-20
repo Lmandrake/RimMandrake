@@ -1,0 +1,627 @@
+{
+ "cycle": 4,
+ "run": "judge-1795134433",
+ "faults": [
+  {
+   "id": "SHEET_CROP_WEEK_PLUS_ONE",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (s.Stand[c] >= p.CropKillPulses) rep?.CropDrowning.Add",
+   "new": "if (s.Stand[c] > p.CropKillPulses) rep?.CropDrowning.Add",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "SHEET_FILM_DROWNS_CROPS",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (t >= p.CropStandMinTier)",
+   "new": "if (t >= Tier.Film)",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "SHEET_SOAK_UNCOUNTED",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (take > 0) { s.Dl[c] -= take; s.Soaked += take; rep?.Soaked",
+   "new": "if (take > 0) { s.Dl[c] -= take; rep?.Soaked",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "SHEET_CROP_DELAY_IGNORES_PULSE",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "(long)Math.Max(1, pulsesAtBase) * CropDelayBasePulseTicks), pulseIntervalTicks));",
+   "new": "(long)Math.Max(1, pulsesAtBase) * CropDelayBasePulseTicks), CropDelayBasePulseTicks));",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "SHEET_DOOR_ZERO_LEAKS",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (p.DoorLeakPermille <= 0) continue;   // GPT deep review 2026-10-22 #10: the 0% setting seals a door",
+   "new": "// seal removed",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "SHEET_LIQUIDS_MIX",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "private static bool Compatible(byte a, byte b) => a == 0 || b == 0 || a == b;",
+   "new": "private static bool Compatible(byte a, byte b) => true;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "SHEET_SAVE_DROPS_CALM",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "bw.Write(s.Stand[c]); bw.Write(s.Calm[c]);",
+   "new": "bw.Write(s.Stand[c]); bw.Write((byte)0);",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "SHEET_FREEZES_AT_ZERO",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_SheetMath.cs",
+   "old": "if (fr.NeverFreezes || w.TempDeciC[c] >= fr.FreezeDeciC) continue;",
+   "new": "if (fr.NeverFreezes || w.TempDeciC[c] > fr.FreezeDeciC) continue;",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "CONV_CAP_DROPS_EXTRA_BATCH",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "perTick > inputUnits ? perTick + inputUnits : inputUnits",
+   "new": "perTick > inputUnits ? perTick : inputUnits",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "CONV_CLIPPED_INCOME_LOST",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "return Math.Max(0f, Math.Min(accrued - capped, perTick));",
+   "new": "return 0f;",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "CONV_BLOCKED_TAKES_FIRST_CAP",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "if (capped[i] > best) best = capped[i];",
+   "new": "if (false) best = capped[i];",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "CONV_IGNORES_OUTPUT_ROOM",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "n = Math.Min(n, outputRoom / outputUnits);",
+   "new": "n = Math.Min(n, int.MaxValue);",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "CONV_ROTATION_STUCK_FIRST",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "int i = ((last < 0 ? -1 : last) + k) % n;",
+   "new": "int i = (k - 1) % n;",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "CONV_SUN_AT_DUSK",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "return !roofed && skyGlow >= 0.5f ? 1f : 0f;",
+   "new": "return !roofed && skyGlow >= 0.3f ? 1f : 0f;",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "CONV_SUN_AT_NIGHT",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/RM_ConversionMath.cs",
+   "old": "return !roofed && skyGlow >= 0.5f ? 1f : 0f;",
+   "new": "return !roofed ? 1f : 0f;",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "CALLER_CONV_SUN_FACTOR_SKIPPED",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+   "old": "float f = RM_ConversionMath.SunFactor(parent.Map.skyManager.CurSkyGlow, parent.Position.Roofed(parent.Map));",
+   "new": "float f = 1f;",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "caller"
+  },
+  {
+   "id": "THIRST_FALL_SLOWER",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "public const float BaseFallPerDay = 0.8f;",
+   "new": "public const float BaseFallPerDay = 0.6f;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "THIRST_HEAT_UNCAPPED",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "return f > HeatCap ? HeatCap : f;",
+   "new": "return f;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "THIRST_LAST_RESORT_SWITCH_IGNORED",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "return lastResortAllowed && Desperate(level);",
+   "new": "return Desperate(level);",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "THIRST_RESERVE_HALVED",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "return available > reserveUnits ? available - reserveUnits : 0;",
+   "new": "return available > reserveUnits ? available - reserveUnits / 2 : 0;",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "THIRST_BOTTLE_HYDRATES_DOUBLE",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "return litres / LitresPerFullNeed * HydrateFactor(quality, qualityEffects);",
+   "new": "return litres / 1.5f * HydrateFactor(quality, qualityEffects);",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "THIRST_ANIMALS_DRINK_ANYTHING",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_ThirstMath.cs",
+   "old": "\t\t\t\treturn native;\n",
+   "new": "\t\t\t\treturn true;\n",
+   "bars": [
+    "inv_bottles_thirst"
+   ],
+   "stock": "BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "where": "kernel"
+  },
+  {
+   "id": "DRILL_SPENT_RESERVE_ALLOWED",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+   "old": "return reserve <= 0f ? Verdict.Spent : Verdict.Allowed;",
+   "new": "return Verdict.Allowed;",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "DRILL_UNPOWERED_POURS",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+   "old": "if (s.needsPower && !s.powered) return Block.Unpowered;",
+   "new": "// power check removed",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "DRILL_CHARGES_WHOLE_LEVELS",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/RM_DrillSurveyMath.cs",
+   "old": "return (float)((afterDl - beforeDl) / (double)dlPerLevel) * unitPerLevel;",
+   "new": "return (float)System.Math.Ceiling((afterDl - beforeDl) / (double)dlPerLevel) * unitPerLevel;",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "SPRK_PART_PAID_SPRAYS",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "if (available < need) return RM_SprinklerState.Dry;",
+   "new": "if (available <= 0) return RM_SprinklerState.Dry;",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "SPRK_NO_PUMP_SPRAYS",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "if (!pressure) return RM_SprinklerState.NoPressure;",
+   "new": "// pressure check removed",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "SPRK_COST_ROUNDS_DOWN",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "return (int)Math.Ceiling(Math.Round(cells * (double)litresPerCellHour * unitsPerLitre, 3));",
+   "new": "return (int)Math.Floor(Math.Round(cells * (double)litresPerCellHour * unitsPerLitre, 3));",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "SPRK_VALVE_IGNORES_RESERVE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "if (reserveUnits > 0) cap = Math.Min(",
+   "new": "if (reserveUnits > 1000000) cap = Math.Min(",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "SPRK_NO_GRACE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_SprinklerKernel.cs",
+   "old": "public static int WetUntil(int now) => now + PulseTicks + GraceTicks;",
+   "new": "public static int WetUntil(int now) => now + PulseTicks;",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "where": "kernel"
+  },
+  {
+   "id": "CALLER_CONV_CLIPPED_NOT_ADDED_BACK",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+   "old": "accrued += clipped;   // CAP_EATS_CHANGE",
+   "new": "accrued += 0f;   // CAP_EATS_CHANGE",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "caller"
+  },
+  {
+   "id": "CALLER_CONV_BATCHES_FREE",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+   "old": "accrued -= n * step.InputUnits;",
+   "new": "accrued -= 0;",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "caller"
+  },
+  {
+   "id": "CALLER_CONV_RATE_SETTING_IGNORED",
+   "file": "src/RimMandrake/FlowWorks/Source/Machinery/CompLiquidConverter.cs",
+   "old": "RM_MachinerySettings.converterRateMultiplier, env);",
+   "new": "1f, env);",
+   "bars": [
+    "inv_converters"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*",
+   "py": [],
+   "where": "caller"
+  },
+  {
+   "id": "CALLER_SPRK_NO_PUMP_NEEDED",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_Sprinkle.cs",
+   "old": "bool pressure = enabled && switchOn && HasPressure(head);",
+   "new": "bool pressure = enabled && switchOn;",
+   "bars": [
+    "inv_sprinklers"
+   ],
+   "stock": "Sprinkler*",
+   "py": [],
+   "where": "caller"
+  },
+  {
+   "id": "CALLER_SPRK_DRINKS_RESERVE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sprinklers/RM_Sprinkle.cs",
+   "old": "held = Thirst.RM_DrinkReserve.Spendable(head, l);   // Q10: drinkers first",
+   "new": "held = parts.Sum(p => p.Key == pick ? p.Value : 0);",
+   "bars": [
+    "inv_sprinklers",
+    "inv_bottles_thirst"
+   ],
+   "stock": "Sprinkler*,BottleLoop*,ContainerStyle*,Thirst*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "where": "caller"
+  },
+  {
+   "id": "CALLER_DRILL_SPENDS_ASKED",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs",
+   "old": "pendingUnits -= RM_DrillSurveyMath.SpentUnits(beforeDl, excavation.WaterDlAt(outlet), RM_LevelSolve.U, unitPerLevel);",
+   "new": "pendingUnits = 0f;",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "where": "caller"
+  },
+  {
+   "id": "CALLER_DRILL_IGNORES_SETTING",
+   "file": "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs",
+   "old": "st.settingOn = RimMandrakeFlowWorksSettings.liquidDrillingEnabled;",
+   "new": "st.settingOn = true;",
+   "bars": [
+    "inv_drilling"
+   ],
+   "stock": "CoverFloor*,DrillSurvey*,DrillWhyNot*",
+   "py": [],
+   "where": "caller"
+  },
+  {
+   "id": "CALLER_SHEET_CROP_DELAY_AT_BASE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+   "old": "prm.CropKillPulses = RM_SheetMath.CropKillPulsesFor(RM_SheetSettings.cropDrownPulses, RimMandrakeFlowWorksSettings.PulseIntervalTicks);",
+   "new": "prm.CropKillPulses = RM_SheetMath.CropKillPulsesFor(RM_SheetSettings.cropDrownPulses, RM_SheetMath.CropDelayBasePulseTicks);",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "caller (changed file BlindCycle3Checks.cs law)"
+  },
+  {
+   "id": "CALLER_SHEET_DOOR_PERCENT_AS_PERMILLE",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+   "old": "prm.DoorLeakPermille = Mathf.Clamp(RM_SheetSettings.doorLeakPercent, 0, 100) * 10;",
+   "new": "prm.DoorLeakPermille = Mathf.Clamp(RM_SheetSettings.doorLeakPercent, 0, 100);",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "caller (changed file BlindCycle3Checks.cs law)"
+  },
+  {
+   "id": "CALLER_SHEET_CROPS_DROWN_SWITCH_IGNORED",
+   "file": "src/RimMandrake/FlowWorks/Source/Sheet/RM_MapComponent_Sheet.cs",
+   "old": "if (RM_SheetSettings.cropsDrownEnabled && rep.CropDrowning.Count > 0)",
+   "new": "if (rep.CropDrowning.Count > 0)",
+   "bars": [
+    "inv_overflow_sheet"
+   ],
+   "stock": "Depth*,FloodRelease*,Outflow*,Overflow*,Sheet*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_sheet_drown_message.py"
+   ],
+   "where": "caller"
+  },
+  {
+   "id": "CALLER_RESERVE_NEVER_POTABLE",
+   "file": "src/RimMandrake/FlowWorks/Source/Thirst/RM_DrinkReserve.cs",
+   "old": "liquid != null && liquid.AutoGathered);",
+   "new": "false);",
+   "bars": [
+    "inv_bottles_thirst",
+    "inv_converters",
+    "inv_sprinklers"
+   ],
+   "stock": "Converter*,Fuzz*,Gpt1016*,GptA*,P2*,Transfer*,BottleLoop*,ContainerStyle*,Thirst*,Sprinkler*",
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/Tools/selftest_water_not_food.py",
+    "python3 src/RimMandrake/FlowWorks/selftest_natives_drink_own_water.py"
+   ],
+   "where": "caller"
+  },
+  {
+   "id": "CHANGED_FUZZ_SINK_UNREPORTED",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs",
+   "old": "sinkDrained += total / (float)RM_LevelSolve.U;",
+   "new": "sinkDrained += 0f * total;",
+   "bars": [
+    "inv_flow_level"
+   ],
+   "stock": "Kernel*",
+   "py": [],
+   "where": "changed: FlowKernelFuzz.cs"
+  },
+  {
+   "id": "CHANGED_FUZZ_SINK_DRAIN_UNREPORTED",
+   "file": "src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs",
+   "old": "sinkDrained += drained / (float)U;",
+   "new": "sinkDrained += 0f * drained;",
+   "bars": [
+    "inv_flow_level"
+   ],
+   "stock": "Kernel*",
+   "py": [],
+   "where": "changed: FlowKernelFuzz.cs"
+  },
+  {
+   "id": "CHANGED_GLOW_GROWN_TENTHS",
+   "file": "src/RimMandrake/FlowWorks/northstar/glow_tank_live.py",
+   "old": "out.append(float(m.group(1)) / 100.0)",
+   "new": "out.append(float(m.group(1)) / 10.0)",
+   "bars": [
+    "inv_looks"
+   ],
+   "stock": null,
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/northstar/selftest_glow_tank_live.py"
+   ],
+   "where": "changed: glow_tank_live.py"
+  },
+  {
+   "id": "CHANGED_GLOW_ROOM_SHORT",
+   "file": "src/RimMandrake/FlowWorks/northstar/glow_tank_live.py",
+   "old": "return (ox, z - 2, 10, 6)",
+   "new": "return (ox, z - 2, 10, 5)",
+   "bars": [
+    "inv_looks"
+   ],
+   "stock": null,
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/northstar/selftest_glow_tank_live.py"
+   ],
+   "where": "changed: glow_tank_live.py"
+  },
+  {
+   "id": "CHANGED_CENSUS_GATE_ROUTE_GONE",
+   "file": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs",
+   "old": "return RM_SubmergeDraw.BeginRealtime(__instance, phase)",
+   "new": "return RM_SubmergeDraw.BeginRealtime(__instance, DrawPhase.Draw)",
+   "bars": [
+    "inv_pits"
+   ],
+   "stock": null,
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py"
+   ],
+   "where": "changed: selftest_flowworks_pit_draw_census.py"
+  },
+  {
+   "id": "CHANGED_CENSUS_PREDRAW_GATE_FLIPPED",
+   "file": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_SubmergeDraw.cs",
+   "old": "phase != DrawPhase.Draw",
+   "new": "phase == DrawPhase.Draw",
+   "bars": [
+    "inv_pits"
+   ],
+   "stock": null,
+   "py": [
+    "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py"
+   ],
+   "where": "changed: selftest_flowworks_pit_draw_census.py"
+  }
+ ]
+}

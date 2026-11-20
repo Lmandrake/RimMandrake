@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "38d1ffaa6ad41e574a5b1adf9358e272e8f18cf25421301f739d02c559d5d3b6",
+  "body_sha256": "27d88a0650c57bbd1ad3c819cc61c71a8c363cdcf421af3b2bc9f0b4c806d815",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -10,7 +10,7 @@
    "HOLDER.run-1794861652": 2822,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
-   "JUDGE.judge-1795134433": 2936,
+   "JUDGE.judge-1795134433": 7256,
    "STEWARD": 2597
   }
  },
@@ -1684,7 +1684,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1300,
+  "events": 1304,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -6218,6 +6218,22 @@
     "ts": "2026-11-19T23:57:29Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN": {
+    "accept": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_4/lane2/plant_faults.py --no-lane1 --require-caught --only CALLER_CONV_RATE_SETTING_IGNORED,CALLER_CONV_SUN_FACTOR_SKIPPED -> rc 0 (caught); rc 1 on 12dc96e238",
+    "bars": [
+     "inv_converters"
+    ],
+    "by": "JUDGE.judge-1795134433",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "BlindCycle4Checks.cs: cases Converter_caller_budget_scales_by_the_throughput_setting and Converter_caller_solar_still_reads_the_sky (source laws on CompTickRare and EnvironmentFactor)",
+    "status": "open",
+    "tags": [],
+    "text": "T_CONVERT stays green when CompLiquidConverter drops the throughput slider from its budget (planted CALLER_CONV_RATE_SETTING_IGNORED) or skips SunFactor so a solar still runs at night (planted CALLER_CONV_SUN_FACTOR_SKIPPED)",
+    "ts": "2026-11-20T02:18:41Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_KEEPS_DRINKERS_RESERVE": {
     "accept": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_3/lane2/plant_faults.py --no-lane1 --require-caught --only CALLER_CONVERTER_DRINKS_RESERVE --out /tmp/x.jsonl exits 0 (rc 1 on a43ee25d3b).",
     "bars": [
@@ -6266,6 +6282,22 @@
     "ts": "2026-11-19T23:57:29Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING": {
+    "accept": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_4/lane2/plant_faults.py --no-lane1 --require-caught --only CALLER_DRILL_IGNORES_SETTING -> rc 0 (caught); rc 1 on 12dc96e238",
+    "bars": [
+     "inv_drilling"
+    ],
+    "by": "JUDGE.judge-1795134433",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "BlindCycle4Checks.cs: case DrillWhyNot_caller_reads_the_drilling_setting (source law on CurrentBlock and TickRare)",
+    "status": "open",
+    "tags": [],
+    "text": "T_DRILL stays green when Building_LiquidDrill.CurrentBlock stops feeding the liquid-drilling setting into WhyNot, so a drill pours with drilling switched off (planted CALLER_DRILL_IGNORES_SETTING)",
+    "ts": "2026-11-20T02:18:41Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_FETCH_FIRE_WINDOW_AND_KEY_UNWATCHED": {
     "accept": "Laws pin UnderFireTicks > 0 and the RMFlow_RaidersFetchFallen key; planted FETCH_NEVER_UNDER_FIRE and XML_KEY_FETCH_WARNING_GONE turn T_FETCH_FALLEN_OFFLINE red.",
     "bars": [
@@ -6299,6 +6331,22 @@
     "ts": "2026-11-16T11:41:58Z",
     "version": "0.1.0"
    },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_FILM_NEVER_DROWNS_CROPS": {
+    "accept": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_4/lane2/plant_faults.py --no-lane1 --require-caught --only SHEET_FILM_DROWNS_CROPS -> rc 0 (caught); rc 1 on 12dc96e238",
+    "bars": [
+     "inv_overflow_sheet"
+    ],
+    "by": "JUDGE.judge-1795134433",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "src/RimMandrake/FlowWorks/Source/SelfTest/BlindCycle4Checks.cs: case Sheet_film_standing_past_the_delay_never_drowns_a_crop (a walled film with no soak stands 2x the delay, never reports drowning; a sheet beside it does at the delay)",
+    "status": "open",
+    "tags": [],
+    "text": "T_SHEET stays green when the crop timer counts a film tier (planted SHEET_FILM_DROWNS_CROPS): its film soaks away in 150 pulses, never standing to the 1680-pulse delay",
+    "ts": "2026-11-20T02:18:40Z",
+    "version": "0.1.0"
+   },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN": {
     "accept": "plant_faults.py --require-caught --only CALLER_SHEET_CROP_AGE_IGNORED exits 0; T_SHEET goes red when the caller stops handing CropDrowns the crop's own age.",
     "bars": [
@@ -6329,6 +6377,22 @@
     "tags": [],
     "text": "Stock T_SHEET stayed green when the crop delay rounded down a pulse (SHEET_PULSES_ROUND_DOWN) or hot ground dried past 3x (SHEET_HEAT_DRIES_UNCAPPED); only blind lane 1 caught them.",
     "ts": "2026-11-19T23:57:30Z",
+    "version": "0.1.0"
+   },
+   "finding:RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_KEEP_THEIR_UNITS": {
+    "accept": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_4/lane2/plant_faults.py --no-lane1 --require-caught --only CALLER_SHEET_DOOR_PERCENT_AS_PERMILLE -> rc 0 (caught); rc 1 on 12dc96e238",
+    "bars": [
+     "inv_overflow_sheet"
+    ],
+    "by": "JUDGE.judge-1795134433",
+    "claim": null,
+    "class": "problem",
+    "code_sha": null,
+    "proposed_fix": "BlindCycle4Checks.cs: case Sheet_settings_reach_the_kernel_in_its_units (source law: door percent x 10, cap and retention cm x DlPerCm)",
+    "status": "open",
+    "tags": [],
+    "text": "T_SHEET stays green when SyncParams hands the door slider's percent to the kernel as permille (planted CALLER_SHEET_DOOR_PERCENT_AS_PERMILLE): the cycle-3 law checks the setting's name, not its unit",
+    "ts": "2026-11-20T02:18:41Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_REACH_THE_KERNEL": {

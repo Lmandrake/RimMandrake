@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7829,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":2936,"STEWARD":2597} body_sha256=7057b3c7c1421a052be73816c26bef854d3f10868a2821021668984302b9f54c -->
-# FlowWorks — mod ledger history (1300 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7829,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":7256,"STEWARD":2597} body_sha256=2edad25d516d5dc34a92a710ac9f3045c2a146fda93faf594142dcc9576d930b -->
+# FlowWorks — mod ledger history (1304 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1301,3 +1301,7 @@
 - 2026-11-20T00:36:12Z JUDGE.judge-1795134433#3 test.run bar:inv_bottles_thirst v0.1.0: blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2
 - 2026-11-20T00:36:12Z JUDGE.judge-1795134433#4 test.run bar:inv_drilling v0.1.0: blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2
 - 2026-11-20T00:36:12Z JUDGE.judge-1795134433#5 test.run bar:inv_sprinklers v0.1.0: blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2
+- 2026-11-20T02:18:40Z JUDGE.judge-1795134433#6 finding.open finding:RIMMANDRAKE_PIN_FLOWWORKS_FILM_NEVER_DROWNS_CROPS v0.1.0: T_SHEET stays green when the crop timer counts a film tier (planted SHEET_FILM_DROWNS_CROPS): its film soaks away in 150 pulses, never standing to the 1680-pulse delay
+- 2026-11-20T02:18:41Z JUDGE.judge-1795134433#7 finding.open finding:RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_KEEP_THEIR_UNITS v0.1.0: T_SHEET stays green when SyncParams hands the door slider's percent to the kernel as permille (planted CALLER_SHEET_DOOR_PERCENT_AS_PERMILLE): the cycle-3 law checks the setting's name, not its unit
+- 2026-11-20T02:18:41Z JUDGE.judge-1795134433#8 finding.open finding:RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN v0.1.0: T_CONVERT stays green when CompLiquidConverter drops the throughput slider from its budget (planted CALLER_CONV_RATE_SETTING_IGNORED) or skips SunFactor so a solar still runs at night (planted CALLER_CONV_SUN_FACTOR_SKIPPED)
+- 2026-11-20T02:18:41Z JUDGE.judge-1795134433#9 finding.open finding:RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING v0.1.0: T_DRILL stays green when Building_LiquidDrill.CurrentBlock stops feeding the liquid-drilling setting into WhyNot, so a drill pours with drilling switched off (planted CALLER_DRILL_IGNORES_SETTING)

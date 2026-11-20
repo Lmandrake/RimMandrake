@@ -1,0 +1,1 @@
+{"id": "CALLER_DRILL_IGNORES_SETTING", "file": "src/RimMandrake/FlowWorks/Source/Drilling/Building_LiquidDrill.cs", "bars": ["inv_drilling"], "suites": {"stock:CoverFloor*,DrillSurvey*,DrillWhyNot*": {"rc": 0, "failing": [], "new_failing": [], "build_failed": false, "seconds": 89.2}}, "caught": false, "build_failed": false, "tree_clean": true, "at": "2026-11-20T02:12:34Z"}

@@ -1,0 +1,141 @@
+{
+ "cycle": 4,
+ "run": "judge-1795134433",
+ "faults": [
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_FILM_NEVER_DROWNS_CROPS",
+   "class": "Problem",
+   "bar": "inv_overflow_sheet",
+   "criterion": "record.json inv_overflow_sheet: 'kills crops under standing overflow after a week' (a film only irrigates: Params.CropStandMinTier = Sheet)",
+   "evidence": [
+    "lane2/planted_results.jsonl SHEET_FILM_DROWNS_CROPS: T_SHEET rc0 (no new failing case), caught only by lane 1 SHEET_CROP_DIES_AFTER_A_WEEK_STANDING",
+    "SheetWaterChecks.cs Sheet_crops_die_after_a_week_of_standing_overflow_film_irrigates: its film (150 dL, 1 dL/pulse soak) is gone in 150 pulses, so it never stands to the 1680-pulse delay and cannot tell a film-counting timer"
+   ],
+   "would_pass": "T_SHEET goes red when the crop timer counts a film: a film that stands past the delay (no soak, no drying) never reports drowning, a sheet beside it does at the delay",
+   "smallest_fix": "SelfTest/BlindCycle4Checks.cs: case Sheet_film_standing_past_the_delay_never_drowns_a_crop",
+   "verdict_on_criterion": "the bar is right; the decider was blind to a film standing a week",
+   "status": "FIXED 48864bd58c45440424a4f2e800e7609cf7918d04",
+   "miss_of": 3,
+   "acceptance_test": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_4/lane2/plant_faults.py --no-lane1 --require-caught --only SHEET_FILM_DROWNS_CROPS  (rc 1 = missed on the parent, rc 0 = caught on the fix)"
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_KEEP_THEIR_UNITS",
+   "class": "Problem",
+   "bar": "inv_overflow_sheet",
+   "criterion": "floor mod_settings + the door slider's text ('Water leaking under a door: N% of open ground'): the kernel gets the percent as permille (x10)",
+   "evidence": [
+    "lane2/planted_results.jsonl CALLER_SHEET_DOOR_PERCENT_AS_PERMILLE: T_SHEET rc0; the cycle-3 law Sheet_every_setting_reaches_the_kernel_and_its_own_inflow only checks that the setting is read, so a 5% door leaking 0.5% stayed green"
+   ],
+   "would_pass": "T_SHEET goes red when a sheet setting reaches SyncParams in the wrong unit (door percent, cap and retention centimetres)",
+   "smallest_fix": "SelfTest/BlindCycle4Checks.cs: case Sheet_settings_reach_the_kernel_in_its_units (source law on the conversion)",
+   "verdict_on_criterion": "the bar is right; the cycle-3 source law reads the setting's name, not its unit",
+   "status": "FIXED 48864bd58c45440424a4f2e800e7609cf7918d04",
+   "miss_of": null,
+   "acceptance_test": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_4/lane2/plant_faults.py --no-lane1 --require-caught --only CALLER_SHEET_DOOR_PERCENT_AS_PERMILLE  (rc 1 = missed on the parent, rc 0 = caught on the fix)"
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_CONVERTER_CALLER_RATE_AND_SUN",
+   "class": "Problem",
+   "bar": "inv_converters",
+   "criterion": "inv_converters 'machines that change liquids' with the shipped Converter throughput slider (RM_MachinerySettings.converterRateMultiplier 0.1..5) and the solar still's daylight rule",
+   "evidence": [
+    "lane2/planted_results.jsonl CALLER_CONV_RATE_SETTING_IGNORED: T_CONVERT rc0 (the throughput slider would do nothing)",
+    "lane2/planted_results.jsonl CALLER_CONV_SUN_FACTOR_SKIPPED: T_CONVERT rc0 (a solar still would run at night)",
+    "the kernel's rate and sun maths are tested (CONV_SUN_AT_NIGHT caught); CompLiquidConverter's use of them was not"
+   ],
+   "would_pass": "T_CONVERT goes red when CompTickRare drops the throughput setting from the budget or EnvironmentFactor skips SunFactor",
+   "smallest_fix": "SelfTest/BlindCycle4Checks.cs: cases Converter_caller_budget_scales_by_the_throughput_setting and Converter_caller_solar_still_reads_the_sky (source laws)",
+   "verdict_on_criterion": "the bar is right; the decider tests the kernel, not its caller",
+   "status": "FIXED 48864bd58c45440424a4f2e800e7609cf7918d04",
+   "miss_of": 3,
+   "acceptance_test": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_4/lane2/plant_faults.py --no-lane1 --require-caught --only CALLER_CONV_RATE_SETTING_IGNORED,CALLER_CONV_SUN_FACTOR_SKIPPED  (rc 1 = missed on the parent, rc 0 = caught on the fix)"
+  },
+  {
+   "id": "RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING",
+   "class": "Problem",
+   "bar": "inv_drilling",
+   "criterion": "floor mod_settings ('Off' means the drill pours nothing) for inv_drilling's drill and bleed well",
+   "evidence": [
+    "lane2/planted_results.jsonl CALLER_DRILL_IGNORES_SETTING: T_DRILL rc0 (a drill would pour with liquid drilling switched off)",
+    "record.json inv_drilling note: 'liquid_drilling toggle chain never measured a row'"
+   ],
+   "would_pass": "T_DRILL goes red when Building_LiquidDrill.CurrentBlock stops feeding the drilling setting into WhyNot, or TickRare pours past a block",
+   "smallest_fix": "SelfTest/BlindCycle4Checks.cs: case DrillWhyNot_caller_reads_the_drilling_setting (source law)",
+   "verdict_on_criterion": "the bar is right; the decider tests WhyNot, not the caller's inputs to it",
+   "status": "FIXED 48864bd58c45440424a4f2e800e7609cf7918d04",
+   "miss_of": 3,
+   "acceptance_test": "python3 design/concepts/FlowWorks/version/blind_challenge/cycle_4/lane2/plant_faults.py --no-lane1 --require-caught --only CALLER_DRILL_IGNORES_SETTING  (rc 1 = missed on the parent, rc 0 = caught on the fix)"
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_FLOWWORKS_OVERSPILL_SHIPS_SWITCHED_OFF",
+   "class": "Polish",
+   "bar": "inv_overflow_sheet",
+   "criterion": "the overspill is off by default ('being tested: off until the live walk signs it off')",
+   "evidence": [
+    "lane1 row SHEET_SHIPPED_DEFAULT_OFF",
+    "Source/Sheet/RM_SheetSettings.cs: sheetOverflowEnabled = false"
+   ],
+   "would_pass": "the default flips to on when his walk signs the overspill off (stage 8), or the bar says it ships opt-in",
+   "smallest_fix": "RM_SheetSettings.cs: sheetOverflowEnabled = true (after the walk), with its Scribe default",
+   "verdict_on_criterion": "not a Problem: the overspill is off by default ('being tested: off until the live walk signs it off')",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 3
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_FLOWWORKS_CONVERTER_PARTIAL_MOVE_UNCHARGED",
+   "class": "Polish",
+   "bar": "inv_converters",
+   "criterion": "a part-made move (RM_LiquidTransfer.Move returns 0 < b < n) is left made but uncharged",
+   "evidence": [
+    "CompLiquidConverter.CompTickRare: `if (Move(n, ...) == n) {credit} else { status; return; }` skips accrued -= n*InputUnits, totals, fuel and rotation for the b batches the move did make (Move: 'b < units' keeps b)"
+   ],
+   "would_pass": "a partial move charges the budget, totals and fuel for the b batches it made",
+   "smallest_fix": "CompLiquidConverter.cs: take `int moved = RM_LiquidTransfer.Move(...)`; on 0 < moved < n charge moved batches as the success path does",
+   "verdict_on_criterion": "not a Problem: a part-made move (RM_LiquidTransfer.Move returns 0 < b < n) is left made but uncharged",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 3
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_FLOWWORKS_SPRINKLER_PICKS_BEFORE_RESERVE",
+   "class": "Polish",
+   "bar": "inv_sprinklers",
+   "criterion": "the head picks the liquid it sprays by raw stock, then pays from the reserve-reduced stock",
+   "evidence": [
+    "RM_Sprinkle.MostHeld: PickLiquid over storedUnits, then held = Spendable(head, pick): a net with 2100 units of water (2000 reserved) and 1000 of another sprayable liquid reads Dry"
+   ],
+   "would_pass": "the pick weighs what is spendable, so a head sprays the other liquid instead of reading Dry",
+   "smallest_fix": "RM_Sprinkle.MostHeld: build parts from Spendable per liquid, not storedUnits",
+   "verdict_on_criterion": "not a Problem: the head picks the liquid it sprays by raw stock, then pays from the reserve-reduced stock",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": 3
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_FLOWWORKS_FUZZ_BLIND_TO_ONE_SINK_PATH",
+   "class": "Polish",
+   "bar": "inv_flow_level",
+   "criterion": "the kernel fuzz's volume law does not see a sink drain that goes unreported on RM_FlowKernel.cs:851",
+   "evidence": [
+    "lane2/planted_results.jsonl CHANGED_FUZZ_SINK_UNREPORTED: Kernel* rc0 (the sibling CHANGED_FUZZ_SINK_DRAIN_UNREPORTED is caught)"
+   ],
+   "would_pass": "a Kernel* case drains through the line-851 sink path and fails when its dL are not reported",
+   "smallest_fix": "FlowKernelFuzz.cs: a scene that reaches that drain (or a direct case on it); a stage-6 bar, outside this stage's exit",
+   "verdict_on_criterion": "not a Problem: the kernel fuzz's volume law does not see a sink drain that goes unreported on RM_FlowKernel.cs:851",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": null
+  },
+  {
+   "id": "RIMMANDRAKE_NOTE_FLOWWORKS_GLOW_ROOM_RECT_UNPINNED",
+   "class": "Polish",
+   "bar": "inv_looks",
+   "criterion": "selftest_glow_tank_live.py does not pin the scene room's size",
+   "evidence": [
+    "lane2/planted_results.jsonl CHANGED_GLOW_ROOM_SHORT: rc0"
+   ],
+   "would_pass": "the selftest asserts room_rect's interior is the 8x4 its docstring states",
+   "smallest_fix": "selftest_glow_tank_live.py: check room_rect(60,152) == (60,150,10,6); a live-harness helper, stage 6",
+   "verdict_on_criterion": "not a Problem: selftest_glow_tank_live.py does not pin the scene room's size",
+   "status": "NOTED_FOR_CONDUCTOR",
+   "miss_of": null
+  }
+ ]
+}
