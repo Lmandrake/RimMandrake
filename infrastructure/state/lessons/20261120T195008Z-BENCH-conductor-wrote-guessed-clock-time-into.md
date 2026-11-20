@@ -1,0 +1,1 @@
+Conductor wrote a guessed clock time into a brief and two ledger notes on 2026-11-20 (7:25 AM for 6:42 AM; 12:05 PM for 11:47 AM). A card that waits for him can span hours, so elapsed time cannot be felt. Run date in the same command that writes any time, every time.
