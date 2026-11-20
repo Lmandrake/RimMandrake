@@ -416,6 +416,11 @@ def test_background_commands_hold_a_window():
     proc(101, 100, "sh -c python3 doorbell.py")
     proc(102, 100, "node mcp-server")
     check(SR.background_commands(100, root) == [], "a doorbell hook and an MCP server are no background command")
+    # MEASURED 2026-11-20 (incident seats-20261120064755): the asyncRewake Stop hook carries the Bash tool's env mark,
+    # so it read as a background command and held the Conductor window over its hard limit for 4 h
+    proc(106, 100, 'sh -c python3 "${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/run_end_wake.py"', env=shell)
+    check(SR.background_commands(100, root) == [], "a hook that carries the env mark is no background command (%s)"
+          % SR.background_commands(100, root))
     proc(103, 100, "/usr/bin/zsh -c source /home/x/.claude/shell-snapshots/snapshot-zsh-1.sh && eval sleep", env=shell)
     check(SR.background_commands(100, root) == [103], "a Bash-tool child of the window is (%s)" % SR.background_commands(100, root))
     # BACKGROUND_FENCE_FIX_EXEC_ESCAPES_SNAPSHOT: `exec python3 serve.py` replaces the cmdline, not the environ

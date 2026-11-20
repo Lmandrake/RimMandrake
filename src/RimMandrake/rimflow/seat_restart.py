@@ -2732,7 +2732,9 @@ def background_commands(pid, proc="/proc"):
     A command that execs (`exec python3 x.py`, or a shell's own last-command exec) replaces that cmdline, so the
     environment is the second marker: MEASURED 2026-11-06, a Bash-tool shell carries CLAUDE_CODE_SHELL in its environ
     and a hook, an MCP server and the window itself do not; environ survives exec. A window that itself inherited the
-    variable (launched from another window's Bash) cannot tell by it, and keeps the cmdline marker alone."""
+    variable (launched from another window's Bash) cannot tell by it, and keeps the cmdline marker alone.
+    MEASURED 2026-11-20: a hook now carries the variable too (the asyncRewake Stop hook run_end_wake.py held the
+    Conductor over its hard limit for 4 h), so a child that runs a `.claude/hooks/` file is never a background command."""
     out = []
     try:
         names = os.listdir(proc)
@@ -2754,7 +2756,8 @@ def background_commands(pid, proc="/proc"):
                 continue
             with open(os.path.join(proc, name, "cmdline"), "rb") as f:
                 cmd = f.read()
-            mine = b"shell-snapshots/" in cmd or (by_env and _has_env_mark(os.path.join(proc, name, "environ")))
+            mine = b"shell-snapshots/" in cmd or (by_env and b"/.claude/hooks/" not in cmd
+                                                   and _has_env_mark(os.path.join(proc, name, "environ")))
         except FileNotFoundError:        # it ended between the listing and the read
             continue
         except ProcessLookupError:
