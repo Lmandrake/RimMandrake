@@ -1,9 +1,17 @@
-# Code review against the boundary page: one round, against the page only
+# Code review against the boundary page: you fix what is significant, one blind reread checks it
+
+Calibration note (2026-11-19, item `RIMMANDRAKE_ENACT_REVIEWER_FIXES_ONE_REREAD_THEN_FLAG`): this edit changed the
+brief, so its hash no longer matches `infrastructure/state/judge_calibration.json` and the `code_review` family reads
+UNTESTED. The recalibration is the item `RIMMANDRAKE_RECALIBRATE_CODE_REVIEW_BRIEF_ONE_PARAGRAPH_UNSET_IT`. It did not
+run in this edit.
 
 You review one component against its boundary page, `design/specs/<component>/boundary.md`. The page is the whole
 bar. Since the owner's ruling of 2026-11-19 this holds for all code, pipeline machinery included: code is clean when
-each promise on its page has a test of the same name and those tests pass, and a review gets one round
-(`design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested). Owner, by card 2026-11-18:
+each promise on its page has a test of the same name and those tests pass. You fix each significant finding yourself,
+and one blind reread checks the fix (`design/RimMandrake/standing_rulings.md` §Code is clean when its promises are
+tested). Owner, by card 2026-11-19 5:54 PM PST: who fixes a significant finding? *"The reviewer, on the spot
+(Recommended)"*. What checks a fix? *"(2) Precisely one, yes. If it too finds a significant change and fixes it, the
+file is flagged but left alone."* Owner, by card 2026-11-18:
 *"A complaint that breaks a promise on the list gets fixed. The others go on a 'later' list."* Design:
 `design/specs/2026-11-18-review-growth-cycle/01-design.md` section 5.3; rule: `design/RimMandrake/standing_rulings.md`
 §A boundary page before pipeline code. You do not ask "how could it be better?". You ask "does it keep its page?".
@@ -22,17 +30,29 @@ The page has these parts, each entry named with words:
 - **PROMISES**: what it guarantees. Each promise is owed a test of the same name.
 - **LIFE CYCLES** (only when it keeps state between calls): every move it may make. A move not listed is a defect.
 
-## One round
+## You fix it; one blind reread follows
 
-There is one review round per page version, never more. You read the page, the code and the tests, the whole file,
-once. The builder fixes each Problem and nothing else. A minor nit, or a finding with no meaningful impact, goes on
-`polish.md` and nobody fixes it in this review. Then the review is over: no second round reads the repairs, and no
-other reviewer is sent. Owner, 2026-11-19 5:27 PM PST: *"AGREED: minor nits and what doesn't have meaningful impact
-gets left alone, left on a "polish" list."* A new round happens only for a new page version.
+You read the page, the code and the tests, the whole file, once. For each Problem (below), you fix it in this job:
+first write a test and see it fail, then fix the code, then see the test pass. Nothing else is fixed. A minor nit, or
+a finding that is not significant, goes on `polish.md`, and nobody fixes it. Owner, 2026-11-19 5:27 PM PST:
+*"AGREED: minor nits and what doesn't have meaningful impact gets left alone, left on a "polish" list."*
 
-## A Problem: one of three reasons, with the page quoted
+When you fixed nothing, the review is over. When you fixed something, one fresh reader who did not make the fix reads
+the fixed file once: the file, the page and the tests, not your diff and not your findings. That reader works by this
+same brief.
 
-A finding is a **Problem** only for one of these three reasons. Quote the page entry by its name and words.
+- If the reader finds no Problem, the review is over.
+- If the reader finds a Problem, the reader fixes it (same test rule) and flags the file:
+  `python3 src/RimMandrake/Utils/code_review_status.py flag <path> --why "<what was found and fixed>"`. Nobody reviews
+  a FLAGGED file again. There is no third read. Flagged files are examined about weekly, not by you.
+
+If you are the reader of a FLAGGED file, stop: `mark-clean` refuses it, and the file waits for its examination.
+
+## A Problem: a significant finding, for one of three reasons, with the page quoted
+
+A finding is significant when it is measured, or predicted with a concrete case (this input, this wrong result), to
+break a stated promise or cause a failure. A prediction with no concrete case is not significant. A significant
+finding is a **Problem** only for one of these three reasons. Quote the page entry by its name and words.
 
 1. **A promise is not kept in ordinary operation.** Name the promise (or the LIFE CYCLES move), the ordinary input
    or the named failure (below) that breaks it, and the record, gate, commit or spend that comes out wrong.
@@ -55,7 +75,7 @@ is class `polish`, and its `why` begins `not handled:` and gives the one plain l
 report counts as a Problem only for a failure the promise names. The page's lines "handled today, not promised" are
 rare failures too.
 
-Each Problem is a refusal record of the `code_review` family (`src/RimMandrake/rimflow/refusal_contract.py`):
+Each Problem is also a refusal record of the `code_review` family (`src/RimMandrake/rimflow/refusal_contract.py`):
 `evidence` (file:line and the page entry), `observed`, `would_pass`, and `smallest_fix`. The smallest fix is "refuse
 the input" before "handle the input". Only a CALIBRATED brief's refusal sends work back
 (`infrastructure/state/judge_calibration.json`, family `code_review`).
@@ -70,8 +90,11 @@ the input" before "handle the input". Only a CALIBRATED brief's refusal sends wo
 - **A rare failure** (§A Problem): one plain line for the page's DOES NOT SURVIVE. The page's owner writes it there;
   no fix is built.
 
-No ticket and no repair lane come from either list. A polish line is promoted only when it fires in a real run or
-someone shows a call site that produces its input.
+No ticket and no repair lane come from either list. For now nobody takes lines from a polish list: it is a record
+(owner, by card 2026-11-19: *"(3) for now. We will later do experiments on Polish if we can/must. We're not close to
+polishing anything right now"*). When a polish line fires in a real run, that run is a failure and a new source
+event; it is no longer polish. A Problem you fixed needs no ticket. A new ticket must cite a broken promise or a
+failure, one ticket per source event, never one per symptom.
 
 ## What you return
 
@@ -80,10 +103,11 @@ One JSON object per finding (or per claim, when you are handed claims to sort ra
 ```
 {"id": "<claim id or a short name>", "class": "problem" | "polish" | "next_version",
  "reason": "promise-not-kept" | "promise-untested" | "page-or-test-wrong" | null,
- "page_entry": "<the entry's name, quoted>", "why": "<one sentence>"}
+ "page_entry": "<the entry's name, quoted>", "why": "<one sentence, with the concrete case>",
+ "fix": "<commit sha and the test that went red then green>" | null}
 ```
 
-`reason` is set only for a problem. Sorting claims made by another reader, take each claim's described behaviour as
+`reason` and `fix` are set only for a problem. When you sort claims and do not hold the code, `fix` is null. Sorting claims made by another reader, take each claim's described behaviour as
 true and decide only its class against today's page, even when the claim was made against older code. When you
 cannot search the repo, an input outside ACCEPTS counts as
 produced only if the page itself says it is ordinary.

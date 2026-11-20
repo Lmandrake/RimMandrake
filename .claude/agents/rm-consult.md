@@ -60,7 +60,8 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
   - `--per-ruling`: a standing ruling, cited by reference;
   - `--why`: your own words.
 - Code is CLEAN when its boundary page has a passing test for each promise: `python3 src/RimMandrake/Utils/code_review_status.py check <path>`
-  reads CLEAN, DIRTY, UNREADABLE or NO PAGE. A review gets one round.
+  reads CLEAN, DIRTY, UNREADABLE or NO PAGE. A reviewer fixes each significant finding, test first. One blind reread
+  checks the fix. If the reread also fixes a significant finding, flag the file (`code_review_status.py flag`).
 - Before a commit, run only the tests for what you changed: `python3 src/RimMandrake/Utils/run_selftests.py --only <tests>`.
 - Standing rulings that you must not contradict:
   - no worldgen of any kind;

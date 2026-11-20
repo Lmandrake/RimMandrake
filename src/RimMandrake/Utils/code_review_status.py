@@ -11,6 +11,14 @@ run. NO PAGE: no page names it (not a defect; it gets a page when next changed).
 
 The review record below (`mark-clean`, `reopen`, `list`, `check --record`)
 records that a review round was done on exact bytes. It makes nothing CLEAN.
+Two meanings, named apart: PAGE-CLEAN is `check` (each promise has a passing
+test); READ-CLEAN is the review record (a cold read found nothing significant).
+
+FLAGGED (owner, by card 2026-11-19 5:54 PM PST): a file whose one blind reread
+of a fix also found and fixed a significant finding. Nobody reviews it again:
+`list` counts it FLAGGED, never review debt, and `mark-clean` refuses it. The
+weekly examination reads `list --flagged` and ends a flag with `unflag`. A flag
+is not a page state: `check` answers as before.
 
 🔴 This is not a Python-only tool. It covers ANY file that contributes to
 what the game actually loads — .py tooling, .cs mod source, .xml Defs and
@@ -27,6 +35,9 @@ yet" — it always was.
     python3 src/RimMandrake/Utils/code_review_status.py reopen <path> [<path> ...] --reason "…"
     python3 src/RimMandrake/Utils/code_review_status.py list
     python3 src/RimMandrake/Utils/code_review_status.py list --show-untracked  # + files never entered at all
+    python3 src/RimMandrake/Utils/code_review_status.py flag <path> --why "…"     # the reread also fixed a significant finding
+    python3 src/RimMandrake/Utils/code_review_status.py unflag <path> --why "…"   # the weekly examination ends the flag
+    python3 src/RimMandrake/Utils/code_review_status.py list --flagged           # exit 0, or 3 when a flag shard is unreadable
     python3 src/RimMandrake/Utils/code_review_status.py migrate-hashes   # one-time, see below
 
 The log (`infrastructure/state/code_review/<SEAT>.jsonl`, append-only records,
@@ -286,13 +297,14 @@ def _record(path, entry, seat, ts):
     return rec
 
 
-def append_records(recs, shard=None):
+def append_records(recs, shard=None, rec_dir=None):
     """Append records to this seat's shard: one O_APPEND write, fsynced. Never
     rewrites an existing line — the shard is append-only (lint enforces it)."""
     if not recs:
         return
-    os.makedirs(REC_DIR, exist_ok=True)
-    fp = os.path.join(REC_DIR, (shard or _seat()) + ".jsonl")
+    rec_dir = rec_dir or REC_DIR
+    os.makedirs(rec_dir, exist_ok=True)
+    fp = os.path.join(rec_dir, (shard or _seat()) + ".jsonl")
     body = "".join(json.dumps(r, sort_keys=True, ensure_ascii=False) + "\n" for r in recs)
     dlock = _dir_lock(os.path.dirname(fp))
     try:
@@ -355,6 +367,114 @@ def save(data):
             continue
         recs.append(_record(path, new, seat, _ts()))
     append_records(recs)
+
+
+# FLAGGED: its own append-only shards, `code_review/flags/<SEAT>.jsonl`, so no
+# reader of the review records (load(), code_review_since.py) ever sees a flag
+# as a clean or dirty mark. A record is {event: flag|unflag, path, why, ts,
+# seat, sha256}; a path is flagged while its last record is a flag.
+def flag_dir():
+    """Read at call time from ROOT, so a selftest that moves ROOT moves the flags too."""
+    return os.path.join(ROOT, "infrastructure", "state", "code_review", "flags")
+
+
+class FlagsUnreadable(Exception):
+    """A flag shard could not be read or parsed: whether a path is flagged is unknown."""
+
+
+def flags():
+    """-> {path: its last flag record} for every path flagged now. Raises FlagsUnreadable."""
+    d = flag_dir()
+    try:
+        names = sorted(n for n in os.listdir(d) if n.endswith(".jsonl"))
+    except FileNotFoundError:
+        return {}
+    except OSError as e:
+        raise FlagsUnreadable("%s: %s" % (d, e))
+    recs = []
+    for n in names:
+        fp = os.path.join(d, n)
+        try:
+            with open(fp, encoding="utf-8") as f:
+                lines = f.read().splitlines()
+        except (OSError, UnicodeDecodeError) as e:
+            raise FlagsUnreadable("%s: %s" % (fp, e))
+        for i, line in enumerate(lines):
+            if not line.strip():
+                continue
+            try:
+                rec = json.loads(line)
+            except ValueError as e:
+                raise FlagsUnreadable("%s line %d is not valid JSON: %s" % (fp, i + 1, e))
+            if not isinstance(rec, dict) or rec.get("event") not in ("flag", "unflag") or not rec.get("path"):
+                raise FlagsUnreadable("%s line %d is not a flag record" % (fp, i + 1))
+            recs.append(((rec.get("ts", ""), rec.get("seat", ""), n, i), rec))
+    out = {}
+    for _, rec in sorted(recs, key=lambda t: t[0]):
+        if rec["event"] == "flag":
+            out[rec["path"]] = rec
+        else:
+            out.pop(rec["path"], None)
+    return out
+
+
+def _flag_target(path, why):
+    """-> (rel, None) or (None, exit code) after printing the refusal."""
+    rel = canonical_rel(repo_rel(path))
+    if rel.startswith("../") or rel == "..":
+        print(f"FAIL: {rel} is outside the repo root.", file=sys.stderr)
+        return None, 2
+    if not (why or "").strip():
+        print("FAIL: --why is empty: say what the reread found, or what the examination decided.", file=sys.stderr)
+        return None, 2
+    return rel, None
+
+
+def cmd_flag(path, why):
+    rel, rc = _flag_target(path, why)
+    if rel is None:
+        return rc
+    if not os.path.isfile(os.path.join(ROOT, rel)):
+        print(f"FAIL: {rel} does not exist under the repo root.", file=sys.stderr)
+        return 2
+    h = file_hash(rel)
+    append_records([{"event": "flag", "path": rel, "why": why.strip(), "ts": _ts(), "seat": _seat(),
+                     "sha256": h if isinstance(h, str) else None}], rec_dir=flag_dir())
+    print(f"FLAGGED  {rel}  nobody reviews it again; the weekly examination reads `list --flagged`")
+    return 0
+
+
+def cmd_unflag(path, why):
+    rel, rc = _flag_target(path, why)
+    if rel is None:
+        return rc
+    try:
+        now = flags()
+    except FlagsUnreadable as e:
+        print(f"UNREADABLE  flags: {e}", file=sys.stderr)
+        return 3
+    if rel not in now:
+        print(f"FAIL: {rel} is not flagged.", file=sys.stderr)
+        return 2
+    append_records([{"event": "unflag", "path": rel, "why": why.strip(), "ts": _ts(), "seat": _seat()}],
+                   rec_dir=flag_dir())
+    print(f"UNFLAGGED  {rel}")
+    return 0
+
+
+def cmd_list_flagged():
+    try:
+        now = flags()
+    except FlagsUnreadable as e:
+        print(f"UNREADABLE  flags: {e}")
+        return 3
+    if not now:
+        print("(no file is flagged)")
+    for rel in sorted(now):
+        rec = now[rel]
+        print(f"FLAGGED  {rel}  {rec.get('ts', '?')} {rec.get('seat', '?')}: {rec.get('why', '')}")
+    print(f"\nTALLY  FLAGGED {len(now)}")
+    return 0
 
 
 def repo_rel(path):
@@ -767,6 +887,16 @@ def cmd_mark_clean(path, sha, reviewer=None, gpt_job=None):
     if not os.path.isfile(os.path.join(ROOT, rel)):
         print(f"FAIL: {rel} does not exist under the repo root.", file=sys.stderr)
         return 2
+    try:
+        flagged = flags().get(rel)
+    except FlagsUnreadable as e:
+        print(f"FAIL: could not read the flags, so whether {rel} is FLAGGED is unknown: {e}", file=sys.stderr)
+        return 3
+    if flagged:
+        print(f"FAIL: {rel} is FLAGGED ({flagged.get('ts', '?')}: {flagged.get('why', '')}). Nobody reviews it "
+              "again. Only the weekly examination ends a flag: code_review_status.py unflag <path> --why \"…\".",
+              file=sys.stderr)
+        return 2
     current_hash = file_hash(rel)
     if current_hash is None or current_hash is UNREADABLE:
         print(f"FAIL: could not read {rel} to hash it.", file=sys.stderr)
@@ -1068,12 +1198,22 @@ def find_untracked(data):
 
 def cmd_list(show_untracked=False):
     data = load()
-    tally = {"CLEAN": 0, "DIRTY": 0, "ORPHANED": 0}
+    tally = {"CLEAN": 0, "DIRTY": 0, "ORPHANED": 0, "FLAGGED": 0}
+    try:
+        flagged, flags_err = flags(), None
+    except FlagsUnreadable as e:
+        flagged, flags_err = {}, str(e)
+        print(f"UNREADABLE  flags: {e} (FLAGGED files may read DIRTY below)")
     if not data:
         print("(empty — nothing has ever been marked clean)")
     else:
         for rel in sorted(data):
             entry = data[rel]
+            if rel in flagged:
+                # Not review debt: nobody reviews a FLAGGED file again (owner, by card 2026-11-19).
+                tally["FLAGGED"] += 1
+                print(f"{'FLAGGED':35s} {rel}  ({flagged[rel].get('ts', '?')}: {flagged[rel].get('why', '')})")
+                continue
             state, detail = clean_state(rel, entry)
             # An entry naming no reviewable file is NOT dirty code: there is
             # nothing to review, and its remedy is `prune`, not reviewer time.
@@ -1092,8 +1232,13 @@ def cmd_list(show_untracked=False):
             cc = entry.get("cleanCount", 1)
             streak = f"  [x{cc}]" if cc > 1 else ""
             print(f"{label:35s} {rel}  ({entry.get('sha', '?')}, {entry.get('date', '?')}){streak}")
+    for rel in sorted(set(flagged) - set(data)):
+        tally["FLAGGED"] += 1
+        print(f"{'FLAGGED':35s} {rel}  ({flagged[rel].get('ts', '?')}: {flagged[rel].get('why', '')})")
     if show_untracked:
         untracked = find_untracked(data)
+        if untracked is not None:
+            untracked = [p for p in untracked if p not in flagged]
         print()
         if untracked is None:
             print("UNTRACKED scan skipped: git ls-files failed (timeout or not a git repo).")
@@ -1109,11 +1254,14 @@ def cmd_list(show_untracked=False):
                 print(f"  {rel}")
         if untracked:
             tally["NEVER ENTERED"] = len(untracked)
+    if flags_err:
+        tally["FLAGGED"] = "UNREADABLE"
     print("\nTALLY  " + "  ".join(f"{k} {v}" for k, v in tally.items()))
     print("  review debt is DIRTY + NEVER ENTERED. ORPHANED is not reviewable at "
           "all — its remedy is `prune`, and counting it as debt overstates the "
-          "backlog (97 of 227 on 2026-09-17).")
-    return 0
+          "backlog (97 of 227 on 2026-09-17). FLAGGED is not review debt: nobody "
+          "reviews it again, and the weekly examination reads `list --flagged`.")
+    return 3 if flags_err else 0
 
 
 def _batch_cat_file(specs):
@@ -1219,6 +1367,15 @@ def main():
     p_list.add_argument("--show-untracked", action="store_true",
                         help="also list src/*.py|.cs|.xml files with NO entry at all - "
                              "DIRTY by default but invisible to the recorded-entries report")
+    p_list.add_argument("--flagged", action="store_true", help="only the FLAGGED files, each with its why")
+
+    p_flag = sub.add_parser("flag", help="the one blind reread of a fix also fixed a significant finding: "
+                                         "nobody reviews this file again")
+    p_flag.add_argument("path")
+    p_flag.add_argument("--why", required=True, help="what the reread found and fixed")
+    p_unflag = sub.add_parser("unflag", help="the weekly examination ends a flag")
+    p_unflag.add_argument("path")
+    p_unflag.add_argument("--why", required=True, help="what the examination decided")
     sub.add_parser("migrate-hashes", help="one-time backfill of {hash} onto pre-rewrite entries")
 
     p_prune = sub.add_parser("prune", help="drop entries for paths deleted or moved with no new entry")
@@ -1246,7 +1403,11 @@ def main():
             _trigger_health_rebuild()
         sys.exit(rc)
     elif args.cmd == "list":
-        sys.exit(cmd_list(args.show_untracked))
+        sys.exit(cmd_list_flagged() if args.flagged else cmd_list(args.show_untracked))
+    elif args.cmd == "flag":
+        sys.exit(cmd_flag(args.path, args.why))
+    elif args.cmd == "unflag":
+        sys.exit(cmd_unflag(args.path, args.why))
     elif args.cmd == "migrate-hashes":
         rc = cmd_migrate_hashes()
         if rc == 0:

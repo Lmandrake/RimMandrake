@@ -335,9 +335,24 @@ you disagree, but enough is enough."*
 
 His words (Thu 2026-11-19, 5:27 PM PST, item `RIMMANDRAKE_AMEND_REVIEW_RULE_MINOR_FINDINGS_STAY_ON_POLISH`):
 *"AGREED: minor nits and what doesn't have meaningful impact gets left alone, left on a "polish" list."*
-Reason (measured 2026-11-19, `D:\ClaudeWork\rimmandrake\conductor\review_instructions_old_vs_new_20261119.md`): the
-old FOUNDRY review loop fixed only significant findings and converged. Reviews that fixed every finding wrote new code,
-and new fix lines drew 14 to 25 claims per 1,000 lines, against about 3 for old code.
+His card (Thu 2026-11-19, 5:54 PM PST, item `RIMMANDRAKE_ENACT_REVIEWER_FIXES_ONE_REREAD_THEN_FLAG`). Who fixes a
+significant finding? He picked *"The reviewer, on the spot (Recommended)"*. What checks a fix? He picked *"One blind
+reread of the fix"*, and wrote: *"(2) Precisely one, yes. If it too finds a significant change and fixes it, the file
+is flagged but left alone. Flagged files are examined to see if we need to change the definition of significant or
+there is a real instability, but this is done infrequently, say weekly or so."* Should a standing scan run again? He
+picked *"Quiet files only, when idle (Recommended)"*, and wrote: *"(1) yes, on Sonnet 5.5, and the Python to visualize
+the clean/dirty codebase is ressurrected and included on the standard suite of Desktop visualizations to track.
+(perhaps this should become tabs in a standing browser actually, along with FLEET_NOW and MATURATION_NOW in their own
+windows)."* Who may take a line from a polish list? He picked *"Nobody; it is a record"*, and wrote: *"(3) for now. We
+will later do experiments on Polish if we can/must. We're not close to polishing anything right now"*. The card also
+stated two rows that he did not have to pick: the definition of significant, and the filing gate (below).
+Reason (measured 2026-11-19, `D:\ClaudeWork\rimmandrake\conductor\review_instructions_old_vs_new_20261119.md`,
+`review_loop_three_gaps_20261119.md` and `clean_rule_origin_20261119.md` in the same folder): the old FOUNDRY review
+loop let the reviewer fix what it found, with the whole file in context, then sent one fresh reader. It fixed only
+significant findings and converged on quiet files (median 0.75 commits in the week before a review): a first read
+found 0 or 1 bug per mod file, and the fresh reread found 0. Reviews that fixed every finding wrote new code, and new
+fix lines drew 14 to 25 claims per 1,000 lines, against about 3 for old code; on fast-changing pipeline files 8 of 11
+and 9 of 15 later claims pointed at lines the last fix had just written.
 
 - **For all code** (mods, defs, C#, tools, hooks and pipeline machinery), CLEAN is judged against a stated page of
   promises: `design/specs/<component>/boundary.md`, in the form of §A boundary page before pipeline code. A file is
@@ -345,11 +360,33 @@ and new fix lines drew 14 to 25 claims per 1,000 lines, against about 3 for old 
   tests pass. A later edit stays clean while those tests pass.
 - **"A full-file review finds nothing" is not a pass condition, for any code.** A review record (`mark-clean`) does
   not make a file CLEAN.
-- **A review gets one round.** The reviewer reports. Fix only a claim that breaks a stated promise or has meaningful
-  impact (a defect that a user or a later run would hit). Then the review is over: there is no second round and no
-  round that checks the repairs.
-- **A minor nit, or a claim with no meaningful impact,** is one line on `polish.md` beside the page. Nobody fixes it
-  in that review. It is never a ticket.
+- **Two meanings of clean, named apart.** PAGE-CLEAN: each stated promise has a passing test (`check`; this is what
+  CLEAN means everywhere). READ-CLEAN: a cold read of these exact bytes found nothing significant (the review record,
+  `mark-clean`, read by `check --record`). The standing scan writes READ-CLEAN; it never makes a file PAGE-CLEAN.
+- **A finding is significant** when it is measured, or predicted with a concrete case (this input, this wrong
+  result), to break a stated promise or cause a failure. A prediction with no concrete case is not significant.
+- **The reviewer fixes a significant finding on the spot**, in the same job. The reviewer first writes a test and sees
+  it fail, then fixes, then sees it pass. No ticket carries the finding to a separate builder.
+- **Precisely one blind reread checks a fix.** After a fix, one fresh reader who did not make the fix reads the fixed
+  file once. The reader gets the file, not the diff and not the earlier findings. If the reader finds nothing
+  significant, the review is over. If the reader also finds a significant thing, the reader fixes it (same test rule)
+  and flags the file: `code_review_status.py flag <path> --why "…"`. Nobody reviews a FLAGGED file again. There is no
+  third read.
+- **Flagged files are examined about weekly.** Read the list with `code_review_status.py list --flagged`. For each
+  file, ask one question: must the definition of significant change, or is this code really unstable? Record the
+  answer with `code_review_status.py unflag <path> --why "<the answer>"`, or leave the flag with a note on its ticket.
+  The Conductor does this until a timer does. Proposal, not wired: the Friday run of `rm-findings-judge.timer`
+  (`src/RimMandrake/Utils/findings_judge_friday.md`, a weekly Opus `claude -p` that already reads patterns across runs
+  and files Auditor rule candidates) takes this as one more step; the item
+  `RIMMANDRAKE_WIRE_FRIDAY_JUDGE_TO_EXAMINE_FLAGGED_FILES_WEEKLY` holds the wiring.
+- **A minor nit, or a claim that is not significant,** is one line on `polish.md` beside the page. Nobody fixes it. For
+  now nobody takes lines from a polish list: it is a record (his words above).
+- **Filing gate.** A new ticket must cite a broken promise or a failure. File one ticket per source event, never one
+  per symptom.
+- **A standing scan reads quiet files when the machine is idle** (his card above): files unchanged for 7 days or more,
+  mod content first, when no mod step needs the machine. It follows the same method (significant, the reviewer fixes,
+  one blind reread, flag). The clean/dirty view returns to the Desktop visualizations. Not built yet: the item
+  `RIMMANDRAKE_RESTART_QUIET_FILE_SCAN_3580_NEVER_READ` holds it.
 - **Code with no page reads NO PAGE, not DIRTY** (the Conductor's reading, delegated, told to him 2026-11-19). It gets
   its page when someone next changes it, or when it is on a mod's next-step path. Nobody writes pages for untouched
   code in a sweep. For pipeline machinery, Decision 1 of §A boundary page before pipeline code also says when a page
@@ -357,8 +394,11 @@ and new fix lines drew 14 to 25 claims per 1,000 lines, against about 3 for old 
 
 ```
 python3 src/RimMandrake/Utils/code_review_status.py check <path>...           CLEAN / DIRTY / UNREADABLE / NO PAGE
-python3 src/RimMandrake/Utils/code_review_status.py check --record <path>...  the review record: was a round done on these bytes
-python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path>         record that the one review round is done on these bytes
+python3 src/RimMandrake/Utils/code_review_status.py check --record <path>...  READ-CLEAN: did a cold read of these bytes find nothing significant
+python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path>         record READ-CLEAN on these bytes (refused on a FLAGGED file)
+python3 src/RimMandrake/Utils/code_review_status.py flag <path> --why "…"    the blind reread also fixed a significant finding
+python3 src/RimMandrake/Utils/code_review_status.py list --flagged            the weekly examination's list (exit 3: a flag shard is unreadable)
+python3 src/RimMandrake/Utils/code_review_status.py unflag <path> --why "…"  the weekly examination's answer
 ```
 
 `check` exits 0 CLEAN, 1 DIRTY (a promise has no test, or its tests file fails), 3 UNREADABLE (a page or tests file
@@ -376,9 +416,13 @@ the worst answer sets the exit. It runs each naming page's tests file once per c
 - **What this does not change.** The judge rule for mod work (§The judge refuses flaws, not polish: one full
   inspection, then one check of the repairs) is a separate ruling about mod judges. His stop of 2026-11-18 8:22 PM PST
   on Codex and GPT reviews of pipeline machinery stands (§A boundary page before pipeline code). "The test is built
-  with the item" and "The pipeline fixes its own defects" stand.
+  with the item" and "The pipeline fixes its own defects" stand. A mod's Polish list in the Maturation Pipeline (the
+  Design Version rule) is a separate list, confirmed with him; "nobody takes lines" covers only the `polish.md` beside
+  a code page.
 - **Test that this was applied:** `code_review_status.py check` on a file that no page names reads NO PAGE; on a file
-  whose page has every promise tested and passing it reads CLEAN, with no review record.
+  whose page has every promise tested and passing it reads CLEAN, with no review record. A FLAGGED file reads FLAGGED
+  in `list`, never DIRTY, and `mark-clean` refuses it. `roles/code_review.md` says that the reviewer fixes and that
+  one blind reread follows.
 
 ## What is where
 
@@ -1211,8 +1255,8 @@ repair drew new claims [measured, `design/specs/2026-11-18-review-growth-cycle/0
   component gets its page when it is next extended, never in a sweep. One fresh reader that did not write the page
   reads it before code is cut to it. The cost he accepted: *"New code that kills runs goes live in half a day, not
   one hour."*
-- **Decision 2, when code is clean**, is now his ruling of 2026-11-19 for all code: promises tested, and one review
-  round (§Code is clean when its promises are tested).
+- **Decision 2, when code is clean**, is now his ruling of 2026-11-19 for all code: promises tested; the reviewer
+  fixes a significant finding, and one blind reread checks the fix (§Code is clean when its promises are tested).
 - **Decision 3, the open complaints of 2026-11-18.** Card: *"What do we do with these 18?"* He picked *"Fix only
   real problems (Recommended)"*: *"A complaint that breaks a promise on the list gets fixed. The others go on a
   'later' list."* A claim outside the page goes to `polish.md` or `next_version.md` beside the page as one line: no

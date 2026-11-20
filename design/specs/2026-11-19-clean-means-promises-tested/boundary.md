@@ -1,12 +1,20 @@
-# BOUNDARY: `code_review_status.py check`, what CLEAN means, Design Version 0.1.0
+# BOUNDARY: `code_review_status.py check`, what CLEAN means, and FLAGGED, Design Version 0.2.0
 
-Code: `src/RimMandrake/Utils/code_review_status.py` (`page_states`, `code_files`, `cmd_check`). Item:
+Code: `src/RimMandrake/Utils/code_review_status.py` (`page_states`, `code_files`, `cmd_check`, `flags`, `cmd_flag`,
+`cmd_unflag`, `cmd_list`, `cmd_mark_clean`). Item:
 `RIMMANDRAKE_ENACT_CLEAN_MEANS_PROMISES_TESTED_ONE_FIX_ROUND`, written 2026-11-19. The owner's ruling of 2026-11-19
 (`design/RimMandrake/standing_rulings.md` §Code is clean when its promises are tested): for all code, CLEAN is judged
-against a stated page of promises with named covering tests, and a review gets one round. `check` reads the pages
+against a stated page of promises with named covering tests; the reviewer fixes a significant finding, and one blind
+reread checks the fix. `check` reads the pages
 (`design/specs/*/boundary.md`) and the tests files that `src/RimMandrake/Utils/boundary_check.py` `PAGES` registers;
 the promise-to-test match is `boundary_check.promises`, `tests_in` and `test_name`. Each promise has a test of its name
 in `src/RimMandrake/Utils/selftest_code_review_page_state.py`, each watched failing on the base `84a50ad44c`.
+
+Version 0.2.0 (item `RIMMANDRAKE_ENACT_REVIEWER_FIXES_ONE_REREAD_THEN_FLAG`, 2026-11-19) adds FLAGGED, from the
+owner's card of 2026-11-19 5:54 PM PST: when the one blind reread of a fix also finds and fixes a significant finding,
+the file is flagged and nobody reviews it again; flagged files are examined about weekly. The FLAGGED tests were
+watched failing on the base `b57a0b2520` (14 failures), except `t_a_flag_changes_no_page_state`, which guards against
+a change and passed there; six planted faults in the new code each turned the tests red.
 
 ## ACCEPTS (the only inputs this is built for)
 
@@ -16,12 +24,15 @@ in `src/RimMandrake/Utils/selftest_code_review_page_state.py`, each watched fail
   ancestor folder of a full path in that sentence (`rimflow/cli.py`); or a bare name in the folder of a full path in
   that sentence (`maturation_hands.py`). A backtick token that resolves to no file is not a file and is skipped.
 
+- **a-flag-request.** `flag <path> --why "…"` or `unflag <path> --why "…"` with a path inside the repo root and a
+  non-empty why. `list --flagged`.
+
 ## DOES NOT SURVIVE (not promised)
 
 - **a-file-named-only-lower-on-the-page.** A file the page names after its `Code:` sentence (for example "the readers
   named below") is not read as named, and reads NO PAGE unless another page names it.
 - **a-test-that-passes-without-checking-its-promise.** A tests file that exits 0 while a test body checks nothing
-  makes the file read CLEAN. The fresh reader of the page and the one review round catch that, not `check`.
+  makes the file read CLEAN. The fresh reader of the page and the review catch that, not `check`.
 - **a-tests-file-red-for-its-environment.** A tests file that exits non-zero because its machine lacks something
   reads DIRTY with its exit code, not UNREADABLE; the exit code and the last output line are in the detail.
 
@@ -48,6 +59,20 @@ in `src/RimMandrake/Utils/selftest_code_review_page_state.py`, each watched fail
 - **record-mode-keeps-the-review-record.** `check --record` answers from the review record as `check` did before
   this page (CLEAN when the recorded hash matches the bytes, else DIRTY; exit 0 or 1), for callers that track a
   review round and not cleanliness.
+
+- **flag-records-why-and-sticks.** `flag` appends one record (path, why, seat, time, the file's hash) to
+  `infrastructure/state/code_review/flags/<SEAT>.jsonl`, and the path stays FLAGGED however its bytes change, until
+  `unflag`. A flag with no `--why`, or of a path that is not a file, is refused (exit 2) and writes nothing.
+- **list-flagged-names-each-flag.** `list --flagged` prints one `FLAGGED  <path>  <time> <seat>: <why>` line per
+  flagged path and exits 0; with none it says that no file is flagged. When a flag shard cannot be read or parsed it
+  prints `UNREADABLE` with the cause, no FLAGGED line, and exits 3.
+- **a-flagged-file-is-not-picked-for-review.** `list` (with or without `--show-untracked`) counts a flagged path as
+  FLAGGED in its own tally, never as DIRTY or NEVER ENTERED. `mark-clean` of a flagged path is refused (exit 2),
+  writes no record, and names `unflag`.
+- **unflag-ends-the-flag.** `unflag` appends an unflag record, and the path is then not in `list --flagged`. An unflag
+  of a path that is not flagged, or with no `--why`, is refused (exit 2).
+- **a-flag-changes-no-page-state.** `check` and `check --record` answer the same states and exit for a flagged path
+  as for the same path unflagged. A flag is not a page state.
 
 ## LIMITS
 

@@ -43,8 +43,9 @@ import sys
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 SHARD_DIR = "infrastructure/state/ledger/events"
 # Every append-only, union-merged shard directory. Phase 5 (2026-10-02) added the
-# code-review records (`code_review_status.py`), which carry the same invariants.
-SHARD_DIRS = (SHARD_DIR, "infrastructure/state/code_review")
+# code-review records (`code_review_status.py`), which carry the same invariants; its FLAGGED records
+# (`code_review/flags/`) are append-only shards too.
+SHARD_DIRS = (SHARD_DIR, "infrastructure/state/code_review", "infrastructure/state/code_review/flags")
 FROZEN = "infrastructure/state/ledger/events.jsonl"
 
 

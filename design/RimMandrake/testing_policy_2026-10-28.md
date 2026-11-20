@@ -102,12 +102,14 @@ Provenance of each tunable: **O** owner's words, **C** owner by card, **D** code
 - **The known-red list:** `src/RimMandrake/Utils/known_reds.py` (the rule is its docstring). ops_watch alarms
   (`NIGHTLY_NEWS`) only on a red not on the list or an entry past its age.
 
-### 2.4 Code review, one round against the page (`code_review_status.py`)
+### 2.4 Code review against the page: the reviewer fixes, one blind reread (`code_review_status.py`)
 - **Purpose:** a second read of a file against its boundary page. CLEAN is not earned by the review: a file is
-  CLEAN when its page's promises have passing tests (owner, 2026-11-19, `standing_rulings.md` §Code is clean when
-  its promises are tested).
-- **Cadence:** one round per page version, after the edits settle. Fix only a claim that breaks a stated promise or
-  has meaningful impact; a minor nit goes on `polish.md` unfixed. Then the review is over.
+  CLEAN (PAGE-CLEAN) when its page's promises have passing tests (owner, 2026-11-19, `standing_rulings.md` §Code is
+  clean when its promises are tested). A read that finds nothing significant is READ-CLEAN (`mark-clean`).
+- **Cadence:** one read per page version, after the edits settle. The reviewer fixes each significant finding on the
+  spot, test seen failing first; a minor nit goes on `polish.md` unfixed. After a fix, precisely one blind reread. If
+  that reread also fixes a significant finding, the file is FLAGGED (`code_review_status.py flag`), nobody reviews it
+  again, and it is examined about weekly (owner, by card 2026-11-19 5:54 PM PST).
 - **Helps:** decision and evidence code, parsers, filters, schemas.
 - **Hurts:** a full review of a file that is edited again the same day. MEASURED: 326 paths were cleaned 4 or
   more times in 14 days.

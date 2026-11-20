@@ -212,6 +212,127 @@ def t_record_mode_keeps_the_review_record():
     eq((rc, state(rows, rel)), (1, "DIRTY"), "record mode, bytes changed")
 
 
+def run(*argv):
+    """-> (exit code, stdout, stderr) of `code_review_status.py <argv>` run as main() runs it."""
+    old, sys.argv = sys.argv, ["code_review_status.py"] + list(argv)
+    out, err = io.StringIO(), io.StringIO()
+    try:
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            try:
+                CRS.main()
+                rc = 0
+            except SystemExit as e:
+                rc = e.code if isinstance(e.code, int) else (0 if e.code is None else "exit %r" % (e.code,))
+    except Exception as e:  # a crash is a failed promise, not a crashed selftest
+        rc = "crash %s: %s" % (type(e).__name__, e)
+    finally:
+        sys.argv = old
+    return rc, out.getvalue(), err.getvalue()
+
+
+def flag_shards(r):
+    d = os.path.join(r, "infrastructure", "state", "code_review", "flags")
+    return sorted(os.listdir(d)) if os.path.isdir(d) else []
+
+
+def flagged_rows(stdout):
+    return [ln for ln in stdout.splitlines() if ln.startswith("FLAGGED  ")]
+
+
+def t_flag_records_why_and_sticks():
+    r = root("flag", {})
+    rel = "src/pkg/four.py"
+    rc, _, _ = run("flag", rel, "--why", "the blind reread found and fixed a second significant finding")
+    eq(rc, 0, "flag: exit")
+    eq(len(flag_shards(r)), 1, "flag: one shard under code_review/flags/")
+    write(r, rel, "x = 2\n")
+    rc, out, _ = run("list", "--flagged")
+    rows = flagged_rows(out)
+    eq(len(rows) == 1 and rel in rows[0] and "second significant finding" in rows[0], True,
+       "flag: still FLAGGED with its why after the bytes change")
+    r = root("flag_refused", {})
+    rc, _, _ = run("flag", "src/pkg/four.py")
+    eq(rc, 2, "flag with no --why: refused")
+    rc, _, _ = run("flag", "src/pkg/nosuch.py", "--why", "x")
+    eq(rc, 2, "flag of a path that is not a file: refused")
+    eq(flag_shards(r), [], "a refused flag writes nothing")
+
+
+def t_list_flagged_names_each_flag():
+    r = root("listflag", {})
+    rc, out, _ = run("list", "--flagged")
+    eq((rc, flagged_rows(out), "no file is flagged" in out), (0, [], True), "no flag: exit 0, says none")
+    run("flag", "src/pkg/one.py", "--why", "why one")
+    run("flag", "src/pkg/two.py", "--why", "why two")
+    rc, out, _ = run("list", "--flagged")
+    rows = flagged_rows(out)
+    eq(rc, 0, "two flags: exit")
+    eq([("src/pkg/one.py" in x and "why one" in x, "src/pkg/two.py" in x and "why two" in x) for x in rows],
+       [(True, False), (False, True)], "two flags: one line each, path and why")
+    d = os.path.join(r, "infrastructure", "state", "code_review", "flags")
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, "BAD.jsonl"), "w") as f:
+        f.write("{not json\n")
+    rc, out, err = run("list", "--flagged")
+    eq((rc, flagged_rows(out)), (3, []), "an unreadable flag shard: exit 3 and no FLAGGED line")
+    eq("UNREADABLE" in out + err, True, "an unreadable flag shard is named UNREADABLE")
+
+
+def t_a_flagged_file_is_not_picked_for_review():
+    r = root("notpicked", {})
+    subprocess.run(["git", "init", "-q"], cwd=r, capture_output=True)
+    subprocess.run(["git", "add", "src"], cwd=r, capture_output=True)
+    rel, never = "src/pkg/one.py", "src/pkg/two.py"
+    CRS.append_records([CRS._record(rel, {"hash": "0" * 64, "sha": "abc", "date": "2026-11-19", "cleanCount": 1},
+                                    "SELFTEST", CRS._ts())])
+    old_dir = CRS.UNTRACKED_SCAN_DIR
+    CRS.UNTRACKED_SCAN_DIR = "src"
+    try:
+        rc, out, _ = run("list", "--show-untracked")
+        eq("DIRTY" in out and rel in out and never in out, True, "setup: the file reads DIRTY, the other NEVER ENTERED")
+        run("flag", rel, "--why", "x")
+        run("flag", never, "--why", "y")
+        rc, out, _ = run("list", "--show-untracked")
+    finally:
+        CRS.UNTRACKED_SCAN_DIR = old_dir
+    lines = out.splitlines()
+    eq([ln for ln in lines if rel in ln and ln.startswith("DIRTY")], [], "list: a flagged file is not DIRTY")
+    eq([ln for ln in lines if ln.strip() == never], [], "list: a flagged file is not NEVER ENTERED")
+    eq(any(ln.startswith("FLAGGED") and rel in ln for ln in lines), True, "list: the file reads FLAGGED")
+    tally = [ln for ln in lines if ln.startswith("TALLY")]
+    eq(bool(tally) and "DIRTY 0" in tally[0] and "FLAGGED 2" in tally[0], True, "list: tally %r" % tally)
+    before = len(CRS.read_records())
+    rc, _, err = run("mark-clean", rel)
+    eq(rc, 2, "mark-clean of a flagged file: refused")
+    eq("unflag" in err, True, "the refusal names unflag")
+    eq(len(CRS.read_records()), before, "a refused mark-clean writes no record")
+
+
+def t_unflag_ends_the_flag():
+    root("unflag", {})
+    rel = "src/pkg/four.py"
+    run("flag", rel, "--why", "x")
+    rc, _, _ = run("unflag", rel, "--why", "weekly examination: the definition of significant was too wide")
+    eq(rc, 0, "unflag: exit")
+    rc, out, _ = run("list", "--flagged")
+    eq(flagged_rows(out), [], "unflag: no longer FLAGGED")
+    rc, _, _ = run("unflag", rel, "--why", "again")
+    eq(rc, 2, "unflag of a file that is not flagged: refused")
+    run("flag", rel, "--why", "x")
+    rc, _, _ = run("unflag", rel)
+    eq(rc, 2, "unflag with no --why: refused")
+
+
+def t_a_flag_changes_no_page_state():
+    root("flagpage", {"design/specs/p/boundary.md": "tests/t_p.py"})
+    run("flag", "src/pkg/one.py", "--why", "x")
+    rc, rows = check("src/pkg/one.py", "src/pkg/four.py")
+    eq((rc, state(rows, "src/pkg/one.py"), state(rows, "src/pkg/four.py")), (4, "CLEAN", "NO PAGE"),
+       "check on a flagged file: the page states and exit are unchanged")
+    rc, rows = check("src/pkg/one.py", record=True)
+    eq((rc, state(rows, "src/pkg/one.py")), (1, "DIRTY"), "check --record on a flagged file with no record")
+
+
 def main():
     t_clean_needs_a_page_and_passing_tests()
     t_a_promise_without_a_test_is_dirty()
@@ -222,6 +343,11 @@ def main():
     t_the_worst_answer_sets_the_exit()
     t_each_tests_file_runs_once()
     t_record_mode_keeps_the_review_record()
+    t_flag_records_why_and_sticks()
+    t_list_flagged_names_each_flag()
+    t_a_flagged_file_is_not_picked_for_review()
+    t_unflag_ends_the_flag()
+    t_a_flag_changes_no_page_state()
     os.chdir(HERE)
     shutil.rmtree(TMP, ignore_errors=True)
     for f in FAILS:

@@ -616,12 +616,22 @@ Design work is never done in-window.
 
 ## Review briefs
 
-- **Every code-review brief names the page and allows one round** (owner, 2026-11-19, `standing_rulings.md` §Code is
-  clean when its promises are tested). The reviewer reads the code against its boundary page, the whole file, once.
-  The builder fixes only a claim that breaks a stated promise or has meaningful impact (a defect that a user or a
-  later run would hit). Then the review is over: there is no second round and no check of the repairs.
-- A minor nit, or a claim with no meaningful impact, is one line on `polish.md` beside the page. Nobody fixes it in
-  that review. It is never a ticket.
+- **Every code-review brief names the page, and the reviewer fixes** (owner, 2026-11-19 and his card of 5:54 PM PST,
+  `standing_rulings.md` §Code is clean when its promises are tested). The reviewer reads the code against its boundary
+  page, the whole file, once. The reviewer fixes each significant finding in the same job: a test seen failing, the
+  fix, the test seen passing. Significant: measured, or predicted with a concrete case (this input, this wrong
+  result), to break a stated promise or cause a failure.
+- **After a fix, brief precisely one blind reread**: a fresh reader who did not make the fix reads the fixed file
+  once, by the same brief. Give the reader the file, the page and the tests, not the diff and not the earlier
+  findings. If the reader also fixes a significant finding, the reader flags the file
+  (`code_review_status.py flag <path> --why`). Never brief a third read. Never brief a review of a FLAGGED file.
+- **About weekly, examine the flagged files** (`code_review_status.py list --flagged`): must the definition of
+  significant change, or is this code really unstable? End a flag with `unflag <path> --why "<the answer>"`. You do
+  this until the Friday run of `rm-findings-judge.timer` is wired to do it
+  (`RIMMANDRAKE_WIRE_FRIDAY_JUDGE_TO_EXAMINE_FLAGGED_FILES_WEEKLY`).
+- A minor nit, or a claim that is not significant, is one line on `polish.md` beside the page. Nobody fixes it. For now
+  nobody takes lines from a polish list. It is never a ticket. A ticket cites a broken promise or a failure, one per
+  source event.
 - Code with no page reads NO PAGE. It gets its page when it is next changed, or when it is on a mod's next-step path.
 - No Codex or GPT review of pipeline machinery runs until the calibrated review brief exists (`standing_rulings.md` §A
   boundary page before pipeline code).
