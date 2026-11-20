@@ -225,10 +225,41 @@ def _since(hist, col):
     return UNM, "no dated journal heading names it"
 
 
+# The token unit of a spend row (RIMMANDRAKE_STAMP_STAGE_SPEND_ROWS_ONE_UNIT). Detached run records carry token_unit
+# weighted_v2 from role_launch's switch (381db58f59, 2026-11-16 23:00 PST); records before it carry none and are
+# weighted_v1. Measured 2026-11-19 over the 629 finished records: every unstamped one ended at or before
+# 2026-11-16T23:00:13-08:00, every weighted_v2 one at or after 23:10:17. The switch instant lies between.
+TOKEN_UNIT = "weighted_v2"
+V1_UNIT = "weighted_v1"
+UNSTATED = "unstated"
+V2_SWITCH = dt.datetime(2026, 11, 16, 23, 5, tzinfo=dt.timezone(dt.timedelta(hours=-8))).timestamp()
+
+
+def _unit_by_time(t):
+    return UNSTATED if not isinstance(t, (int, float)) else V1_UNIT if t < V2_SWITCH else TOKEN_UNIT
+
+
+def row_unit(row):
+    """-> the token unit of a spend row: its token_unit; else, for a row written before rows were stamped, weighted_v1
+    when its `at` is before the switch, weighted_v2 after, and weighted_v1 when it has no `at` (only the seed wrote such
+    rows, and every record was seeded before the switch, measured 2026-11-19)."""
+    u = row.get("token_unit")
+    if isinstance(u, str) and u.strip():
+        return u
+    if row.get("at") is None:
+        return V1_UNIT
+    t = _instant(row.get("at"))
+    return _unit_by_time(t) if t is not None else UNSTATED
+
+
 def _spend_row(r, stages):
-    """One detached run (a maturation_now run view) -> its spend entry, under the stage words it worked in."""
+    """One detached run (a maturation_now run view) -> its spend entry, under the stage words it worked in. Its
+    token_unit is the run's own when the view carries one, else read from when the run ended (or began)."""
     usd = r.get("usd") if isinstance(r.get("usd"), (int, float)) else r.get("said_usd")
-    return {"stage": stages[0], "stages": stages, "tokens": r.get("tokens") if isinstance(
+    when = r.get("end") if isinstance(r.get("end"), (int, float)) else r.get("at")
+    own = r.get("token_unit") if isinstance(r.get("token_unit"), str) and r.get("token_unit") else None
+    return {"stage": stages[0], "stages": stages, "token_unit": own or _unit_by_time(when),
+            "model": r.get("model") or UNM, "tokens": r.get("tokens") if isinstance(
         r.get("tokens"), int) else UNM, "usd": usd if isinstance(usd, (int, float)) else UNM,
         "usd_from": "run record" if isinstance(r.get("usd"), (int, float)) else
         ("the run's own words" if isinstance(r.get("said_usd"), (int, float)) else UNM),
@@ -250,6 +281,16 @@ def _run_spend(m):
             stages = [WORD_OF_COL[c] for c in (r.get("stages") or [col]) if c in WORD_OF_COL] or [WORD_OF_COL.get(col)]
             out.append(_spend_row(r, stages))
     return out
+
+
+def _designer_seed_row(v, mod):
+    """VERSION.json's tokens_spent -> the seed's designer spend row, in the unit VERSION.json names, else unstated (the
+    Designer's stage.json budget names no unit)."""
+    u = v.get("token_unit")
+    return {"stage": "designer", "stages": ["designer"], "tokens": v["tokens_spent"],
+            "token_unit": u if isinstance(u, str) and u else UNSTATED, "usd": UNM,
+            "wall_s": UNM, "source": rel(mod, "version/VERSION.json") + " tokens_spent",
+            "kind": "mixed: measured and estimated charges, see VERSION.json measured_from"}
 
 
 def seed_mod(root, mod, live=True, gathered=None):
@@ -285,9 +326,7 @@ def seed_mod(root, mod, live=True, gathered=None):
         "cycles": {"visit": 0, "total": 0}, "pre_human_arrivals": 0, "moves": [], "spend": [],
     }
     if isinstance(v.get("tokens_spent"), int):
-        rec["spend"].append({"stage": "designer", "stages": ["designer"], "tokens": v["tokens_spent"], "usd": UNM,
-                             "wall_s": UNM, "source": rel(mod, "version/VERSION.json") + " tokens_spent",
-                             "kind": "mixed: measured and estimated charges, see VERSION.json measured_from"})
+        rec["spend"].append(_designer_seed_row(v, mod))
     if live:
         rec["spend"] += _run_spend(m)
         rec["seeded"]["run_records"] = "read" if isinstance(m.get("runs"), list) else UNM
@@ -1573,6 +1612,7 @@ def add_spend(root, mod, stage, tokens, usd=None, wall_s=None, source=None, esti
             raise ValueError("%s has no stage record; run seed first" % mod)
         rec.setdefault("spend", []).append({
             "stage": stage, "stages": [stage], "tokens": tokens if isinstance(tokens, int) else UNM,
+            "token_unit": TOKEN_UNIT,
             "usd": usd if isinstance(usd, (int, float)) else UNM, "wall_s": wall_s if isinstance(wall_s, (int, float))
             else UNM, "source": source or UNM, "kind": "estimate" if estimate else "measured", "at": iso(now_ts())})
         write_text(root, mod, RECORD, dump(rec))
@@ -1665,24 +1705,34 @@ def record_run_spend(root, mod, runs, stage_of):
     return new
 
 
+def _num(x):
+    return isinstance(x, (int, float)) and not isinstance(x, bool)
+
+
 def spend_by_stage(rec):
-    """-> {stage: {tokens, usd, wall_s, entries, estimates, unmeasured}}. A run that worked in several stages is
-    counted once, under the joined key ("designer+preflight"), never split by a guess. tokens, usd and wall_s are each
-    UNMEASURED when no entry of that stage measured it, never 0 (design/specs/2026-11-19-maturation-record/boundary.md)."""
+    """-> {stage: {tokens, tokens_other, unit, usd, wall_s, entries, estimates, unmeasured}}. A run that worked in
+    several stages is counted once, under the joined key ("designer+preflight"), never split by a guess. tokens, usd and
+    wall_s are each UNMEASURED when no entry of that stage measured it, never 0. tokens sums weighted_v2 rows only;
+    tokens_other sums every other unit apart, by unit (row_unit), never converted or mixed in
+    (design/specs/2026-11-19-maturation-record/boundary.md)."""
     out, known = {}, {}
     for s in rec.get("spend") or []:
         key = "+".join(s.get("stages") or [s.get("stage")])
-        t = out.setdefault(key, {"tokens": 0, "usd": 0.0, "wall_s": 0, "entries": 0, "estimates": 0, "unmeasured": 0})
+        t = out.setdefault(key, {"tokens": 0, "tokens_other": {}, "unit": TOKEN_UNIT, "usd": 0.0, "wall_s": 0,
+                                 "entries": 0, "estimates": 0, "unmeasured": 0})
         kn = known.setdefault(key, set())
         t["entries"] += 1
         if s.get("kind") == "estimate":
             t["estimates"] += 1
         for k in ("tokens", "usd", "wall_s"):
-            if isinstance(s.get(k), (int, float)) and not isinstance(s.get(k), bool):
+            if not _num(s.get(k)):
+                t["unmeasured"] += 1
+            elif k == "tokens" and row_unit(s) != TOKEN_UNIT:
+                u = row_unit(s)
+                t["tokens_other"][u] = t["tokens_other"].get(u, 0) + s[k]
+            else:
                 t[k] += s[k]
                 kn.add(k)
-            else:
-                t["unmeasured"] += 1
     for key, t in out.items():
         for k in ("tokens", "usd", "wall_s"):
             if k not in known[key]:
@@ -3280,10 +3330,14 @@ def pass_cost(root, mod, rec):
     """A pass's cost: this version's spend rows (the record's and the Dispatch run rows since it was seeded, spend_rows)
     in weighted tokens. Tokens no row measured read UNMEASURED, never 0."""
     rows = version_spend_rows(root, mod, rec)     # an earlier version's Dispatch run rows are its cost, not this one's
-    known = [x["tokens"] for x in rows if isinstance(x.get("tokens"), (int, float))]
-    return {"weighted_tokens": sum(known) if known else UNM, "entries": len(rows),
-            "tokens_unmeasured": len(rows) - len(known), "by_stage": spend_by_stage({"spend": rows}),
-            "unit": "weighted tokens"}
+    known = [x["tokens"] for x in rows if _num(x.get("tokens")) and row_unit(x) == TOKEN_UNIT]
+    other = {}
+    for x in rows:
+        if _num(x.get("tokens")) and row_unit(x) != TOKEN_UNIT:
+            other[row_unit(x)] = other.get(row_unit(x), 0) + x["tokens"]
+    return {"weighted_tokens": sum(known) if known else UNM, "tokens_other": other, "entries": len(rows),
+            "tokens_unmeasured": sum(1 for x in rows if not _num(x.get("tokens"))),
+            "by_stage": spend_by_stage({"spend": rows}), "unit": TOKEN_UNIT}
 
 
 def pass_record(root, mod, rec, owner, sha, t, wid):
@@ -4090,8 +4144,10 @@ def main(argv=None):
                  rec.get("pre_human_arrivals"), len(rec.get("moves") or [])))
         for st, t in spend_by_stage({"spend": version_spend_rows(root, o.mod, rec)}).items():
             # weighted tokens only (the owner, 2026-11-16: "Please speak in terms of weighted tokens not money.")
-            print("  spend %s: %s weighted tokens, %s s wall, %d entries (%d estimates, %d unmeasured fields)"
-                  % (" + ".join(label(x) for x in st.split("+")), t["tokens"],
+            # weighted_v2 only in the sum; older units are labelled apart, never added in (RELABEL_SPEND_PRINTERS_STILL_V1)
+            other = "".join(", plus %s %s tokens not converted" % (n, u) for u, n in sorted(t["tokens_other"].items()))
+            print("  spend %s: %s weighted tokens (%s)%s, %s s wall, %d entries (%d estimates, %d unmeasured fields)"
+                  % (" + ".join(label(x) for x in st.split("+")), t["tokens"], t["unit"], other,
                      round(t["wall_s"]) if isinstance(t["wall_s"], (int, float)) else t["wall_s"], t["entries"],
                      t["estimates"], t["unmeasured"]))
         return 0

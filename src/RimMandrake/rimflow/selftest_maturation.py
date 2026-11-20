@@ -757,13 +757,16 @@ def main():
             rsp = os.path.join(twin, "design", "concepts", "Pyrelands", M.RUN_SPEND)
             os.makedirs(os.path.dirname(rsp), exist_ok=True)
             with open(rsp, "a") as f:
-                f.write(json.dumps({"stage": "in_game", "stages": ["in_game"], "tokens": 50, "unit": "rm-old-version-run",
+                f.write(json.dumps({"stage": "in_game", "stages": ["in_game"], "tokens": 50, "token_unit": "weighted_v2",
+                                    "unit": "rm-old-version-run",
                                     "at": "2026-10-20T00:00:00Z"}) + "\n")
-                f.write(json.dumps({"stage": "in_game", "stages": ["in_game"], "tokens": 70, "unit": "rm-this-version-run",
+                f.write(json.dumps({"stage": "in_game", "stages": ["in_game"], "tokens": 70, "token_unit": "weighted_v2",
+                                    "unit": "rm-this-version-run",
                                     "at": "2026-11-05T00:00:00Z"}) + "\n")
             rows_ = M.spend_rows(twin, "Pyrelands", M.load(twin, "Pyrelands"))
+            # weighted_v2 rows only: the live record's older rows are weighted_v1 history, summed apart (row_unit)
             want_tokens = sum(x["tokens"] for x in rows_ if isinstance(x.get("tokens"), (int, float))
-                              and x.get("unit") != "rm-old-version-run")
+                              and x.get("unit") != "rm-old-version-run" and M.row_unit(x) == "weighted_v2")
             # RIMMANDRAKE_TUNE_ADVANCE_REFUSAL_ALARM_BLOCKS_NOTHING_AS_CODED: the advance alarm only tells: an OPEN
             # item alarm on this mod@version blocks no advance
             ap = RC.alarms_path()

@@ -1088,8 +1088,9 @@ def blind_main():
         ok(len(M.read_run_spend(root, "GimmeSomeSlack")) == 2 and len(landed) == 1,
            "a second tick writes no second row and lands nothing")
         sp = M.next_step(root, "GimmeSomeSlack")["spend"]
-        ok(sp.get("blind_challenge", {}).get("tokens", 0) >= 3013781 and "in_game" in sp,
-           "maturation.py next counts them under their stages (%s)" % sorted(sp))
+        # the run ended at BLIND_CLOCK (2026-11-15), before the weighted_v2 switch: its row is weighted_v1, summed apart
+        ok((sp.get("blind_challenge", {}).get("tokens_other") or {}).get("weighted_v1") == 3013781 and "in_game" in sp,
+           "maturation.py next counts them under their stages, each in its own unit (%s)" % sp.get("blind_challenge"))
         os.remove(os.path.join(root, "design/concepts/GimmeSomeSlack", M.RUN_SPEND))
         reset()
         rd = tick(dict(base, advancing=["Graffiti"]))
