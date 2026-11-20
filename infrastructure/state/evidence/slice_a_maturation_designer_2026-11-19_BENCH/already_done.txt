@@ -1,0 +1,32 @@
+# ALREADY DONE checks, Thu Nov 19 19:57:17 PST 2026, on 3a19501bee (contains every sha below)
+  not recordable (4): clock: src/RimMandrake/rimflow/selftest_designer_cleanse.py, src/RimMandrake/rimflow/selftest_designer_stage.py, src/RimMandrake/rimflow/selftest_maturation.py, src/RimMandrake/rimflow/selftest_void_counters.py
+PASS          5.0s  src/RimMandrake/rimflow/selftest_designer_cleanse.py
+PASS          6.3s  src/RimMandrake/rimflow/selftest_designer_stage.py
+PASS          9.6s  src/RimMandrake/rimflow/selftest_maturation.py
+PASS          3.7s  src/RimMandrake/rimflow/selftest_void_counters.py
+
+PASS 4/4  FAIL 0/4  UNMEASURED 0/4  CRASH 0/4  SKIPPED 0/4  (wall 9.9s) — contained in rm-harness.slice (max 24G), 6 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)
+
+## Designer 'no result.json' rejections: unit exit codes (journalctl --user)
+== 1794861312
+rm-role-designer-1794861312.service: Main process exited, code=exited, status=3/NOTIMPLEMENTED
+== 1794938276
+rm-role-designer-1794938276.service: Main process exited, code=exited, status=3/NOTIMPLEMENTED
+== 1794940025
+rm-role-designer-1794940025.service: Main process exited, code=exited, status=3/NOTIMPLEMENTED
+== 1794821256
+rm-role-designer-1794821256.service: Main process exited, code=exited, status=3/NOTIMPLEMENTED
+stderr of those units: coverage_judge pre-step lines (not signed: N gaps / skip: at stage 3, not 5); stdout files 0 bytes: claude never started.
+22 rejections in design/concepts/*/stage.json, dated 2026-11-06..11-17; void rule for such runs landed 4fe2af3f9e (2026-11-18).
+
+## Design Versions
+Contagion 0.1.0 open: admitted to the Designer 2026-11-1
+ExplosiveKnockback 0.1.0 locked
+FlowWorks 0.1.0 locked
+GimmeSomeSlack 0.1.0 locked
+Graffiti 0.1.0 locked
+LeaningScrub 0.1.0 locked
+Pyrelands 0.1.0 locked
+PyrelandsMechanics 0.1.0 not started: waits for Pyrelands 0.1.0 t
+400:PASS_RECORD_DIR = "version/passes"          # <version>.json, written once by the move to passed (spec section 3.7)
