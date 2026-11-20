@@ -5,6 +5,11 @@ in the Conductor's sort of 2026-11-19. That sort counted *"about six"* ideas he 
 fourteen"* he passed over on a card with no words, and marked the split as a guess to re-count. The recount reads
 the 20 `NEEDS HIM` entries in the 18 designs that the question settles, and the source each entry cites.
 
+**His answer, the same night (card, 2026-11-19 about 11:20 PM PST): "They stay turned down"**, not the recommended
+second look. Every idea in both tables below stays out of every version; there is no review sheet; he can bring
+any one back by name (`design/RimMandrake/biome_rulings.md` §Five biome answers, 4). The 20 entries are answered in
+their designs.
+
 ## The result
 
 The draft split is wrong, by entry and by idea.
