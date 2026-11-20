@@ -8928,3 +8928,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T01:19:29Z","tsn":1795137569524206422}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-20T01:20:41Z","tsn":1795137641954780347}
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC_XKGA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T01:20:47Z","tsn":1795137647769516274}
+{"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-20T01:23:25Z","tsn":1795137805242232372}
+{"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC_XKGA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T01:23:31Z","tsn":1795137811374958058}
