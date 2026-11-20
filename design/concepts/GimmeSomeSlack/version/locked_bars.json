@@ -51,7 +51,8 @@
   "statics_clear_between_games",
   "no_hose_in_gss",
   "walk_scavenger_base",
-  "cords_draw_under_things"
+  "cords_draw_under_things",
+  "cords_join_stubs_on_position_and_slope"
  ],
  "history": [
   {
@@ -65,6 +66,18 @@
    ],
    "removed": [],
    "count": 48
+  },
+  {
+   "at": "2026-11-20T04:53:45Z",
+   "by": "BENCH",
+   "why": "RIMMANDRAKE_CHECK_THREE_COVERAGE_HOLES_CLOSED_WITH_TEST_RED: the bar his words added 2026-11-16 (fourth ask) reached VERSION.json (49), bars.md and the test table but never locked_bars.json (48), so the offline_build table check refused the table",
+   "how": "changed by his card",
+   "source": "OWNER:1794839942592183916",
+   "added": [
+    "cords_join_stubs_on_position_and_slope"
+   ],
+   "removed": [],
+   "count": 49
   }
  ]
 }
