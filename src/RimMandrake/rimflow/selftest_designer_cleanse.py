@@ -423,6 +423,38 @@ def test_case():
           "the run's brief is everything below the --- line, then the CASE")
 
 
+def test_owner_answers():
+    """RIMMANDRAKE_FEED_CLEANSE_OWNER_ANSWERS_SCALD_CARD_SAT_UNREAD: the CASE names every ANSWERS_OWNER.md of the mod,
+    by key, source folder or the named map; a folder no mod claims is reported by name; could not look is said."""
+    repo = fake_repo()
+    check("could not look" in DC.case_text(repo, "Demo") and DC.owner_answers(repo) is None,
+          "answers: no answers folder reads 'could not look', never 'none'")
+    base = os.path.join(repo, DC.ANSWERS_DIR)
+    for n in ("Demo", "DemoSrc", "TheScaldFloor", "Stray"):
+        os.makedirs(os.path.join(base, n))
+        with open(os.path.join(base, n, DC.ANSWERS_FILE), "w") as f:
+            f.write("# his answers\n")
+    os.makedirs(os.path.join(base, "NoAnswers"))
+    got, unclaimed = DC.owner_answers(repo)
+    case = DC.case_text(repo, "Demo")
+    check("%s/Demo/%s" % (DC.ANSWERS_DIR, DC.ANSWERS_FILE) in case and "%s/DemoSrc/%s" % (DC.ANSWERS_DIR, DC.ANSWERS_FILE)
+          in case and "his words" in case, "answers: a mod with two folders (key and source) names both, as his words")
+    check("none found under" in DC.case_text(repo, "Plain"), "answers: a mod with none says none found")
+    check(unclaimed == ["Stray", "TheScaldFloor"], "answers: an unclaimed folder, and a mapped one whose mod is not in "
+          "the compose file, are reported by name (%s)" % unclaimed)
+    real = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+    got, unclaimed = DC.owner_answers(real)
+    folders = sorted(n for n in os.listdir(os.path.join(real, DC.ANSWERS_DIR))
+                     if os.path.isfile(os.path.join(real, DC.ANSWERS_DIR, n, DC.ANSWERS_FILE)))
+    named = sorted([p.split("/")[-2] for v in got.values() for p in v] + unclaimed)
+    check(len(folders) >= 27 and named == folders, "answers: every one of the repo's %d answer folders is claimed by a "
+          "mod or reported unclaimed" % len(folders))
+    tb = DC.case_text(real, "TerminalBiomes")
+    check(all("%s/%s/%s" % (DC.ANSWERS_DIR, n, DC.ANSWERS_FILE) in tb for n in ("TheScaldFloor", "TheChillFloor",
+                                                                              "PropaneLakesShore")),
+          "answers: Terminal Biomes' CASE names the Scald, Chill and Propane shore answers")
+
+
 class FX:
     """Fake effects: records every call; scripted gate and agents."""
 
@@ -1752,7 +1784,7 @@ def main():
     tempfile.tempdir = root
     os.environ["TMPDIR"] = root
     try:
-        for t in (test_check, test_detector, test_case, test_hold, test_run, test_review, test_fleet,
+        for t in (test_check, test_detector, test_case, test_owner_answers, test_hold, test_run, test_review, test_fleet,
                   test_review_hardening, test_converge, test_gather, test_apply, test_apply_edges,
                   test_apply_write, test_release):
             try:

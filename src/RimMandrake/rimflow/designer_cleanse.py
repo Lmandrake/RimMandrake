@@ -651,6 +651,39 @@ def entry(repo, mod):
     raise KeyError("%s is not an entry of %s" % (mod, COMPOSE))
 
 
+# his card answers of 2026-11-10, one ANSWERS_OWNER.md per rehearsal folder; a folder is a mod's when it bears the mod's
+# key or source folder name, or is named here (each mapping read from the folder's own notes, which name the source:
+# NightsideIce -> src/RimMandrake/SleepingIce, Wasteland -> src/RimMandrake/Wastes; the three sea-floor folders are
+# TerminalBiomes' seas). A folder no mod claims is reported by name, never dropped
+# (RIMMANDRAKE_FEED_CLEANSE_OWNER_ANSWERS_SCALD_CARD_SAT_UNREAD: the Scald's three answers never reached its cleanse).
+ANSWERS_DIR = "design/RimMandrake/designer_codex_2026-11-09"
+ANSWERS_FILE = "ANSWERS_OWNER.md"
+ANSWERS_OF = {"NightsideIce": "SleepingIce", "Wasteland": "Wastes", "TheScaldFloor": "TerminalBiomes",
+              "TheChillFloor": "TerminalBiomes", "PropaneLakesShore": "TerminalBiomes"}
+
+
+def owner_answers(repo):
+    """-> ({mod key: [repo-relative ANSWERS_OWNER.md, ...]}, [folders no compose entry claims]), or None when the
+    answers folder cannot be listed (could not look is not "none")."""
+    try:
+        folders = sorted(n for n in os.listdir(os.path.join(repo, ANSWERS_DIR))
+                         if os.path.isfile(os.path.join(repo, ANSWERS_DIR, n, ANSWERS_FILE)))
+    except OSError:
+        return None
+    owner = {}
+    for e in compose(repo):
+        for n in {e["key"], e.get("source") or e["key"]}:
+            owner.setdefault(n, e["key"])
+    got, unclaimed = {}, []
+    for f in folders:
+        mod = ANSWERS_OF.get(f) or owner.get(f)
+        if mod is None or ANSWERS_OF.get(f) and ANSWERS_OF[f] not in owner.values():
+            unclaimed.append(f)
+            continue
+        got.setdefault(mod, []).append("%s/%s/%s" % (ANSWERS_DIR, f, ANSWERS_FILE))
+    return got, unclaimed
+
+
 def _caps(name):
     return {name.upper(), re.sub(r"(?<=[a-z0-9])(?=[A-Z])", "_", name).upper()}
 
@@ -749,6 +782,11 @@ def case_text(repo, mod):
     L += ["- %s (%d)" % (r, n) for n, r in hits[:60]] or ["- none"]
     if len(hits) > 60:
         L.append("- and %d more: grep -rlw %s design/" % (len(hits) - 60, mod))
+    ans = owner_answers(repo)
+    L += ["", "His card answers on this mod (2026-11-10; his words: where they differ from the brief's defaults, they "
+              "win, and the read basis cites each file):"]
+    L += (["- could not look: %s cannot be listed" % ANSWERS_DIR] if ans is None else
+          ["- %s" % p for p in ans[0].get(mod, [])] or ["- none found under %s" % ANSWERS_DIR])
     L += ["", "Lore and rulings to read before you define anything:"]
     L += ["- %s" % p for p in LORE if os.path.exists(os.path.join(repo, p))]
     L += ["", "Shared engines (dependencies: name what the mod needs from each; do not redesign them):"]
