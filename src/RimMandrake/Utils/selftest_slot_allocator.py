@@ -1068,8 +1068,8 @@ check("plan inputs: the engine's HOLD file -> no pool, no notice (the allocator 
       pi.get("pool") is None and pi.get("plan_notice") is None, pi)
 (_pd / "HOLD").unlink()
 pi = SA.plan_inputs(_m, "system", NOW)
-check("plan inputs: no HOLD (no state.json, no gate) -> the pool (50 + 96, binding at lukas's reset, 120 h) and the notice",
-      pi.get("pool") and abs(pi["pool"]["pct"] - 146) < 0.01 and abs(pi["pool"]["deadline_h"] - 120) < 0.01 and pi.get("plan_notice", {}).get("state") == "soft", pi)
+check("plan inputs: no HOLD (no state.json, no gate) -> the pool (49 + 96: system to its 1% floor, binding at lukas's reset, 120 h) and the notice",
+      pi.get("pool") and abs(pi["pool"]["pct"] - 145) < 0.01 and abs(pi["pool"]["deadline_h"] - 120) < 0.01 and pi.get("plan_notice", {}).get("state") == "soft", pi)
 os.environ.pop("RM_SWITCH_PLAN_DIR")
 
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")

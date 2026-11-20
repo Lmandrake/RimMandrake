@@ -724,6 +724,19 @@ The fixed account order and the shared account's leave line may be changed by th
 (owner 2026-11-19, §Only five acts stay his): its `--why` names what is lost if wrong (`lost:`) and the undo (`undo:`).
 The money side stays his: nothing here buys capacity.
 
+Live runs finish past the soft line; no account is driven to zero (owner, 2026-11-20 about 5:30 AM PST): *"And yes for
+live runs finish past, absolutely. Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck.
+Please make that true everywhere."* About 6 AM PST: *"Agreed for 1% at the moment"*. So:
+- At an account's soft line (its line + 2%) no new run starts on it. At its line the switch or the stop waits while a
+  detached run is live, and goes when the runs end or at the hard line, whichever is first.
+- The hard line is max(1%, line - 2%): steven's 52% leave line gives 50% (his 2026-10-28 "use it until 50%"); every
+  other account stops at 1%. The meter reads whole percents (8,749 readings to 2026-11-20, none fractional), so 1% is
+  the lowest line it can see; a 0.1% line waits for a finer meter.
+- A switch the priority pulls (above the line) waits for live runs too, at most 2 h.
+- Do not stop runs or switch accounts by hand at the soft line; the plan drains them.
+- The numbers live in `src/RimMandrake/Utils/switching_plan.json` and nowhere else; the page is
+  `design/specs/2026-11-20-account-drain/boundary.md`.
+
 ## The bridge is passed through one file
 
 **RELENTLESS** was the retired Relentless Pipeline's bridge holder (`model.bridge_identity`), not a seat: only old `bridge` events carry it.

@@ -28,9 +28,9 @@ os.environ["RM_TODOIST_ALARM_POSTS"] = "1"  # routing tested with the retired To
 FAILS = []
 NOW = 1_800_000_000.0
 PLAN = SP.load_plan()
-# the checkpoint grace is a tunable: pinned off for every case written before it, and turned on only by its own cases
-# (RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH; the pattern of RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS)
-PLAN["checkpoint_grace_s"] = 0
+# the pull drain is a tunable: pinned off here; its own cases are in selftest_switching_plan_drain.py
+# (the pattern of RIMMANDRAKE_PIN_TUNABLES_OUT_OF_SELFTESTS)
+PLAN["pull_drain_max_s"] = 0
 (TMP / "plan_pinned.json").write_text(json.dumps(PLAN))
 SP.PLAN_PATH = TMP / "plan_pinned.json"
 
@@ -95,26 +95,7 @@ def manual_switch_cases(calls):
     acts = go(day, NOW + 7 * 3600)
     check("use" not in acts, "and still leaves it alone hours later, on a later pass")
 
-    # RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH: a switch made above the line (the priority pulls, nothing is
-    # spent) waits checkpoint_grace_s after the first soft notice, so detached runs checkpoint and publish first; a
-    # switch at or under the line never waits (his card: "Soft line, then hard stop")
-    plan_path.write_text(json.dumps({**plan, "checkpoint_grace_s": 240}))
-    clear()
-    (TMP / "out" / "notice.json").unlink() if (TMP / "out" / "notice.json").exists() else None
-    acts = go(day)
-    nt = json.loads((TMP / "out" / "notice.json").read_text()) if (TMP / "out" / "notice.json").exists() else {}
-    rec = json.loads((TMP / "out" / "log.jsonl").read_text().splitlines()[-1])
-    check("use" not in acts and nt.get("state") == "soft" and rec.get("do") == "grace",
-          f"grace: a switch above the line first sends the soft notice and waits (got {acts}, {nt.get('state')}, {rec.get('do')})")
-    acts = go(day, NOW + 120)
-    check("use" not in acts, f"grace: still inside the grace, no switch (got {acts})")
-    acts = go(day, NOW + 300)
-    check("use" in acts, f"grace: once the soft notice is checkpoint_grace_s old the switch goes ahead (got {acts})")
-    clear()
-    (TMP / "out" / "notice.json").unlink() if (TMP / "out" / "notice.json").exists() else None
-    live_txt.write_text("lukas")
-    acts = go({**day, "lukas": R(0, 118)})
-    check("use" in acts, f"grace: a switch off a spent account (under its line) never waits (got {acts})")
+    # the checkpoint grace before a pull switch is replaced by the drain (2026-11-20): selftest_switching_plan_drain.py
     plan_path.write_text(json.dumps(plan))
     live_txt.write_text("lukas")
     # the same day with no switch of his on record: the priority still pulls (the fix did not freeze the plan)
@@ -245,7 +226,7 @@ def main():
     d = D({**off, "system": R(50, 100), "lukas": R(98, 120)}, "system")
     check(d["do"] == "normal" and d.get("to") is None, "system live with headroom, steven out of window: normal")
     d = D({**off, "system": R(1.5, 100), "lukas": R(98, 120)}, "system")
-    check(d["do"] == "soft", "system at 1.5% (switch-away line 0 + 2): soft line")
+    check(d["do"] == "soft", "system at 1.5% (switch-away line 1 + 2): soft line")
     d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system")
     check(d["do"] == "switch" and d["to"] == "lukas", "system at 0%, lukas has headroom: switch to lukas")
     d = D({**off, "system": R(0.9, 100, age=20), "lukas": R(98, 120)}, "system")
@@ -277,11 +258,15 @@ def main():
     mk = {SP.switch_key("lukas", "system", R(40, 100)): {"phase": "done"}}
     d = D({**off, "system": R(40, 100), "lukas": R(98, 120)}, "lukas", state={"_markers": mk})
     check(d["do"] == "hold", "a transition already done this week is never repeated (a human moved back)")
-    # owner 2026-10-28 11:2x (relayed): switch away at 0%, wait on 2%; blind meter = 0%
-    check(PLAN["floors"]["switch_away_pct_left"] == 0 and PLAN["floors"]["wait_pct_left"] == 2
-          and PLAN["floors"]["blind_zero_pct"] == 1, f"floors are 0 / 2, blind at 1 (got {PLAN['floors']})")
+    # owner 2026-11-20: never driven to 0% ("0.1% is even ok kept"; the meter reads whole percents): switch away at
+    # 1%, wait on 2%, hard stop at 1%; blind meter = 0% (2026-10-28 11:2x)
+    check(PLAN["floors"]["switch_away_pct_left"] == 1 and PLAN["floors"]["wait_pct_left"] == 2
+          and PLAN["floors"]["hard_pct_left"] == 1 and PLAN["floors"]["blind_zero_pct"] == 1,
+          f"floors are 1 / 2, hard 1, blind at 1 (got {PLAN['floors']})")
+    d = D({**off, "system": R(1.5, 100), "lukas": R(98, 120)}, "system")
+    check(d["do"] == "soft", f"1.5% on an account we switch away from at 1%: soft, keep burning (got {d['do']})")
     d = D({**off, "system": R(0.5, 100), "lukas": R(98, 120)}, "system")
-    check(d["do"] == "soft", f"0.5% on an account we switch away from at 0%: soft, keep burning (got {d['do']})")
+    check(d["do"] == "switch", f"0.5%, under the 1% hard line: switch (got {d['do']})")
     d = D({**off, "system": R(0, 100), "lukas": R(98, 120)}, "system")
     check(d["do"] == "switch" and d["to"] == "lukas", f"0% reached: switch (got {d})")
     d = D({**off, "system": R(0.8, 100, src="ESTIMATE", age=30), "lukas": R(98, 120)}, "system")
@@ -433,12 +418,12 @@ def main():
 
     # the pool: every budget is due at its own expiry (use it or lose it), plus each account's next refill
     p = SP.pool({"steven": R(80, 168 - 8), "system": R(50, 100), "lukas": R(98, 120)}, NOW, PLAN, live="steven")
-    # steven 28 by his window end (40 h); system 50 by 100 h (switch-away 0); lukas (last to expire: wait line 2) 96 by 120 h
+    # steven 28 by his window end (40 h); system 49 by 100 h (switch-away 1); lukas (last to expire: wait line 2) 96 by 120 h
     by120 = sum(x["spend_pct"] for x in p["parts"] if x["by_h"] <= 120)
-    check(abs(by120 - 174) < 0.01, f"this week's budgets: 28 + 50 + 96 = 174 due by lukas's reset, 120 h (got {by120})")
-    # the refills (steven 48 by 208 h, system 100 by 268 h, lukas 98 by 288 h) make 420 by 288 h: 1.458 > 174/120
-    check(abs(p["rate_pct_h"] - 420 / 288) < 0.01 and abs(p["deadline_h"] - 288) < 0.01 and abs(p["pct"] - 420) < 0.01,
-          f"the binding deadline is the refills' 420% by 288 h (got {p['pct']} by {p['deadline_h']})")
+    check(abs(by120 - 173) < 0.01, f"this week's budgets: 28 + 49 + 96 = 173 due by lukas's reset, 120 h (got {by120})")
+    # the refills (steven 48 by 208 h, system 99 by 268 h, lukas 98 by 288 h) make 418 by 288 h: 1.451 > 173/120
+    check(abs(p["rate_pct_h"] - 418 / 288) < 0.01 and abs(p["deadline_h"] - 288) < 0.01 and abs(p["pct"] - 418) < 0.01,
+          f"the binding deadline is the refills' 418% by 288 h (got {p['pct']} by {p['deadline_h']})")
     p = SP.pool({"steven": R(60, 168 - 46), "system": R(90, 100), "lukas": R(98, 120)}, NOW, PLAN, live="steven")
     check(abs(p["rate_pct_h"] - 4.0) < 0.01 and abs(p["deadline_h"] - 2) < 0.01,
           f"steven's 8% must go in the 2 h left of his window: 4%/h binds (got {p['rate_pct_h']})")
@@ -722,13 +707,13 @@ def main():
     (TMP / "live.txt").write_text("lukas")
     # a hold on a pending switch near the line still publishes the soft brake
     (TMP / "out" / "notice.json").unlink(missing_ok=True)
-    cur11 = {**off, "system": R(50, 30), "lukas": R(1, 60)}
+    cur11 = {**off, "system": R(50, 30), "lukas": R(2, 60)}   # over lukas's 1% line, in its soft zone
     kk = SP.switch_key("lukas", "system", cur11["system"])
     SP.write_marker(kk, {"phase": "pending", "at": SP.iso(NOW - 60), "from": "lukas", "to": "system"})
     SP.check(dry=False, now=NOW, meter_fn=lambda: cur11, poll_fn=lambda: None)
     (TMP / "out" / "markers" / f"{kk}.json").unlink(missing_ok=True)
     check(SP.read_json(TMP / "out" / "notice.json", {}).get("state") == "soft",
-          "a hold on a pending switch at 1% still publishes the soft brake")
+          "a hold on a pending switch at 2% still publishes the soft brake")
     # HOLD written while arming brakes the act
     calls.write_text("")
     st = SP.load_state(); st.pop("stopped", None); SP.save_state(st)

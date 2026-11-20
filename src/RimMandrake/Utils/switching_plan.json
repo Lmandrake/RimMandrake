@@ -19,15 +19,17 @@
         "lukas": {}
     },
     "floors": {
-        "switch_away_pct_left": 0,
+        "switch_away_pct_left": 1,
         "wait_pct_left": 2,
+        "hard_pct_left": 1,
+        "drain_pct": 2,
         "blind_zero_pct": 1,
-        "_doc": "[C] 2026-10-28 15:33 card, Drain floor: 'Drain to 0% (Recommended)' (settles the 10:15 'down to ~2%' vs the relayed 11:2x 'let it hit 0%'). [O] relayed by the coordinator 2026-10-28 11:2x: 'If it's actually safe to switch (is that because it goes through tailscale or something?) even when we hit 0%, then let it hit 0%. I thought it would lock us out'. The switch is local (claude-account swaps the credential file; no model tokens, no Tailscale), so an account we switch away from burns to 0%. [D] delegated: ops threshold (card 10:20, Floor: '[No preference]'; restated by the coordinator 11:2x): the account we idle on until a reset keeps 2%, so the owner can still talk to a seat while we wait. blind_zero_pct [R] coordinator 11:2x: once an account's last MEASURED reading is at or under 1%, a blind reading (failed /usage, usage-limit error, ESTIMATE, stale) counts as 0% and triggers the switch: never sit waiting on a meter that cannot read an exhausted account."
+        "_doc": "[O] 2026-11-20 about 5:30 AM PST: \"And yes for live runs finish past, absolutely. Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck. Please make that true everywhere.\" About 6 AM PST: \"Agreed for 1% at the moment\". So no account is driven to 0%: switch_away_pct_left is 1 (it was 0, his 2026-10-28 15:33 card 'Drain to 0%'), and hard_pct_left is the hard stop, 1%, the lowest line the meter can see (8,749 stored readings, 2026-10-26 to 2026-11-20, are all whole percents: a 0.1% line cannot be read; design/specs/2026-11-20-account-drain/boundary.md). Live runs FINISH past the soft line: at or under an account's line the switch (or the stop) waits while a detached run is live, and goes when they end or at the hard line = max(hard_pct_left, line - drain_pct), whichever is first. drain_pct 2 is his 2026-10-28 card's overshoot margin (steven 'Leave at 52% left', his words 'use it until 50%'; 'the 2 points are the overshoot margin'), so steven's hard line is 50. lost: 1% of the system and lukas weeks is left unspent; a live run may carry an account up to drain_pct under its line. undo: switch_away_pct_left 0, drain_pct 0 (the switch then kills live runs at the line, as before). [D] wait_pct_left 2: the account we idle on until a reset keeps 2%, so the owner can still talk to a seat (card 10:20, Floor: '[No preference]'). blind_zero_pct [R] coordinator 2026-10-28 11:2x: once an account's last MEASURED reading is at or under 1%, a blind reading (failed /usage, usage-limit error, ESTIMATE, stale) counts as 0% and triggers the switch: never sit waiting on a meter that cannot read an exhausted account."
     },
     "soft_margin_pct": 2,
-    "checkpoint_grace_s": 240,
-    "_checkpoint_grace_s": "RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH (goal 2 of RIMMANDRAKE_CHECKPOINT_HARD_STOP_NOT_KILL): a switch made ABOVE the line (a priority or reset pull, nothing spent) waits this many seconds after the first soft notice, so detached runs get the checkpoint signal (.claude/hooks/switch_checkpoint_signal.py) and publish before the switch SIGTERMs them; with the 5-minute timer that is one pass. A switch at or under the line, and a stop, never wait (card 10:20: 'Soft line, then hard stop'). 0 turns it off.",
-    "_soft_margin_pct": "[C] card 10:20, Overshoot: 'Soft line, then hard stop'. At line + 2%: the allocator gives every seat 0 new helpers and the notice tells running ones to publish and finish.",
+    "pull_drain_max_s": 7200,
+    "_pull_drain_max_s": "[O] 2026-11-20 about 5:30 AM PST: \"And yes for live runs finish past, absolutely. Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck. Please make that true everywhere.\" A switch made ABOVE the line (a priority or reset pull, nothing spent) waits while a detached run is live, so the run finishes on its own account and keeps its prompt cache (the switch stops every Claude process; 2026-11-18: 9 resumes after a stop and a switch missed the cache, 4.73M weighted on their first turns). It waits at most this many seconds after the first drain notice. Danger of the bound: a run that never ends keeps every new start waiting and the machine off the account the order wants (steven's window is 48 h). Evidence: 724 detached runs, measured 2026-11-20, ran p50 24 min, p95 122, max 804; 7200 s lets 95 of 100 finish. With no live run the pull switch goes at once. Replaces checkpoint_grace_s (240 s, then SIGTERM). lost: a pull switch can come up to 2 h late; undo: pull_drain_max_s 0 (the switch goes at once, killing live runs).",
+    "_soft_margin_pct": "[C] card 10:20, Overshoot: 'Soft line, then hard stop'. At line + 2%: the allocator gives every seat 0 new helpers, detached_helper.launch starts no new run while the plan drains, and live runs finish (2026-11-20, floors._doc).; lost: a new run waits for the switch; undo: pull_drain_max_s 0 and drain_pct 0).",
     "switch_lead_min": 20,
     "_switch_lead_min": "[A] a switch that a reset will cause (system at its reset, steven at his) raises the same soft notice this many minutes before the reset, so work is published before the windows close.",
     "fresh": {
@@ -39,19 +41,6 @@
     "_window_margin_min": "[R] GPT review round 9: a windowed account (steven) is no switch target in the last 10 min of its window, so a slow arm + use never lands after the window closed (live there, it is switched away early).",
     "pool_pacing": true,
     "_pool_pacing": "[C] card 10:20, Pacing: 'Pace the whole pool BECAUSE it spreads out the human review time cleanly to inform the process in a timely manner.' slot_allocator paces on what this plan will still spend (steven down to its leave line inside its window, the others to their floors) over the hours to each deadline.",
-    "exceptions": [
-        {
-            "id": "SYSTEM_LEAVES_AT_ONE_PERCENT_UNTIL_ITS_RESET",
-            "from": "2026-11-19T23:40:00-08:00",
-            "until": "2026-11-25T14:00:00-08:00",
-            "ends_at_reset_of": "system",
-            "accounts": {
-                "system": {
-                    "leave_pct_left": 1
-                }
-            },
-            "_why": "[O] owner 2026-11-19 ~11:40 PM PST, going to bed (system 22% left, lukas 100%, steven 51% under its 52% line): 'Switch to Lukas when you get to 1% on the.mandrake.system account.' So system's line is 1% left, not the standing 0%, and the order then gives lukas. Ends at system's next reset (read from the meter) or at `until`, whichever is first; after it the standing plan applies unchanged."
-        }
-    ],
+    "exceptions": [],
     "_exceptions": "[D] dated, self-expiring exceptions to the rules above (switching_plan.at(): the plan in force at a time). Each needs an id, `from` and `until` as ISO times with their UTC offset (at most 7 days apart), a `_why` with its provenance, and changes `order` (a reordering of the standing accounts) and/or `accounts.<name>.leave_pct_left` / `window_h_after_reset`; optional `ends_at_reset_of` ends it at that account's first reset after `from`, read from the meter. The guard (exception_problems) refuses a broken one, and overlapping ones, which are then never applied: the standing plan stands and every decision names the refusal (exception_refused). slot_allocator.lent_allowance reads the same exception for a lent account. An expired exception is inert and may be deleted."
 }

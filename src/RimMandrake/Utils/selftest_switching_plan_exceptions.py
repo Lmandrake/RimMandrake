@@ -111,7 +111,8 @@ def main():
 
     # ---- the decision: system first, then the lent account to 35%, then a stop
     d = SP.decide(meter, B, NOW, P, {}, {}, polled=True)
-    check(d["do"] == "normal" and d["line"] == 0, f"{B} live at 13%: normal, line 0 (someone takes over): {d['do']} {d['line']}")
+    away = BASE["floors"]["switch_away_pct_left"]
+    check(d["do"] == "normal" and d["line"] == away, f"{B} live at 13%: normal, line {away} (someone takes over): {d['do']} {d['line']}")
     m0 = {**meter, B: R(0, 25.3)}
     d = SP.decide(m0, B, NOW, P, {}, {}, polled=True)
     check(d["do"] == "switch" and d["to"] == A, f"{B} at 0%: switch to {A} ({d['do']} {d.get('to')}: {d['why']})")
@@ -203,7 +204,7 @@ def main():
     check("to 52% left" in txt[6] or "to %s%% left" % BASE["accounts"][A]["leave_pct_left"] in txt[6],
           f"after the reset the standing line: {txt[6]!r}")
     stop_at = [e for e in ev if e["kind"] == "target" and e["target"] is None][0]
-    check(abs(stop_at["pct"][A] - 35) < 0.05 and stop_at["pct"][B] == 0,
+    check(abs(stop_at["pct"][A] - 35) < 0.05 and stop_at["pct"][B] == BASE["floors"]["switch_away_pct_left"],
           f"IDLE with {A} at {stop_at['pct'][A]}% (limit 35) and {B} at {stop_at['pct'][B]}%")
 
     # ---- the lent allowance reads the same exception (one source: the plan file)

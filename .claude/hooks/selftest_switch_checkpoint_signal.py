@@ -52,6 +52,9 @@ def main():
            "a soft notice: the detached run is told to checkpoint and publish (read %r)" % ctx[:80])
         ok(not re.search(r"%|USD|\$|spend|budget|remain|left of", ctx, re.I),
            "the signal states no spend, cap or remainder")
+        # 2026-11-20 (live runs finish past the soft line): the signal never says the run is about to be stopped
+        ok("within minutes" not in ctx and "finish" in ctx and "hard line" in ctx,
+           "the signal says the run finishes on its account and names the hard line (read %r)" % ctx[:300])
         rc, out = run(env)
         ok(rc == 0 and out == "", "the same notice: told once, not on every tool call")
         notice("soft", "2026-11-18T15:00:00-08:00")

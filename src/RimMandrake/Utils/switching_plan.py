@@ -24,6 +24,14 @@ ours accounts for it, that account stays live, whatever the priority or a reset 
 line, past its window) or the next switch. A failover (login_watch, account_handover) reads the same, on purpose: the log
 cannot tell them from his hand, and leaving a working account alone is the safe way to be wrong.
 
+Live runs finish (owner 2026-11-20: "And yes for live runs finish past, absolutely. Actually 0.1% is even ok kept. We
+just don't want to crash to zero and get stuck."): `claude-account use` and `fleet-stop` stop every Claude process, so
+a switch or a stop that falls due at an account's line WAITS while a detached run is live (the pass reads `soft` with
+`drain`; detached_helper.launch starts no new run then), and goes when the runs end or at the account's hard line
+(hard_line: max(floors.hard_pct_left, line - floors.drain_pct); 1% at least, the lowest line the whole-percent meter can
+see), whichever is first. A switch made above the line (a priority or reset pull) waits the same way, at most
+pull_drain_max_s. Live runs that cannot be read count as live. Page: design/specs/2026-11-20-account-drain/boundary.md.
+
 Brake: a file HOLD in the output dir makes every pass passive (the owner's or an agent's brake); it is the only
 gate (the account_failover cutover gate was removed 2026-10-28: that script is retired and never wrote its marker).
 
@@ -435,10 +443,47 @@ def marker_lifted(raw: dict, plan: dict, name, m: dict, meter: dict) -> bool:
 
 
 # ------------------------------------------------------------------ the decision (pure)
+def hard_line(plan: dict, line: dict, name):
+    """-> the account's hard line: where a live run stops. Its line less drain_pct, never under hard_pct_left."""
+    fl = plan["floors"]
+    return max(fl["hard_pct_left"], line[name] - fl["drain_pct"])
+
+
+def runs_why(live_runs) -> str:
+    if live_runs is None:
+        return "the live runs are UNMEASURED (systemd could not be read), so they count as live"
+    return "%d live run(s): %s" % (len(live_runs), ", ".join(live_runs[:4]) + (" ..." if len(live_runs) > 4 else ""))
+
+
+def drained(d: dict, plan: dict, live_runs) -> dict:
+    """A switch or stop due on a spent account waits while a detached run is live, above the account's hard line:
+    -> the decision as a drain (`soft`, drain true), or d unchanged. live_runs None (unreadable) counts as live."""
+    if d.get("do") not in ("switch", "stop") or (d["do"] == "switch" and not d.get("under")):
+        return d
+    if live_runs is not None and not live_runs:
+        return d
+    p, ln = d.get("pct_left"), d.get("line")
+    if p is None or ln is None or "blind meter" in str(d.get("why")):
+        return d
+    hard = hard_line(plan, {"x": ln}, "x")
+    if p <= hard:
+        return d
+    return {**d, "do": "soft", "drain": True, "drain_of": d["do"], "under": d.get("under"),
+            "why": f"{d['account']} at {p}% is at or under its {ln}% line: the {d['do']} waits while live runs finish "
+                   f"({runs_why(live_runs)}); no new start; it goes when they end or at the {hard}% hard line. Was: "
+                   + str(d.get("why"))}
+
+
 def decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict, polled: bool = False,
-           manual=None) -> dict:
-    """-> {do: skip|poll|normal|soft|switch|hold|stop|stopped|start, to, account, line, pct_left, why, poll}
-    (the HOLD brake is the caller's: check() and status()). manual: manual_switch(), the switch to respect."""
+           manual=None, live_runs=()) -> dict:
+    """-> {do: skip|poll|normal|soft|switch|hold|stop|stopped|start, to, account, line, pct_left, why, poll, drain}
+    (the HOLD brake is the caller's: check() and status()). manual: manual_switch(), the switch to respect.
+    live_runs: the live detached runs (None: unreadable); a switch or stop due at the line waits on them (drained)."""
+    return drained(_decide(meter, live, now, plan, state, markers, polled, manual), at(plan, now, meter), live_runs)
+
+
+def _decide(meter: dict, live, now: float, plan: dict, state: dict, markers: dict, polled: bool = False,
+            manual=None) -> dict:
     if not live:
         return {"do": "skip", "why": "live account unknown (claude-account --json status failed)"}
     raw, plan = plan, at(plan, now, meter)  # the plan in force now: a dated exception, when one stands
@@ -896,12 +941,14 @@ def write_notice(d: dict, now: float) -> None:
     state = {"soft": "soft", "stop": "stop", "stopped": "stop"}.get(d["do"], "none")
     prev = read_json(OUT / "notice.json", {}) or {}
     since = (d.get("stopped_at") if state == "stop" else None) or (
-        prev.get("since") if prev.get("state") == state and prev.get("since") else iso(now))
-    msg = {"soft": "switch pending: publish and finish; no new helpers",
+        prev.get("since") if prev.get("state") == state and prev.get("since")
+        and bool(prev.get("drain")) == bool(d.get("drain")) else iso(now))     # a drain's own start bounds a pull
+    msg = {"soft": ("draining: no new start; live runs finish on this account, then it switches" if d.get("drain")
+                    else "switch pending: publish and finish; no new helpers"),
            "stop": "hard stop: the fleet is stopped until a reset", "none": ""}[state]
     write_atomic(OUT / "notice.json", {"state": state, "since": since, "at": iso(now), "account": d.get("account"),
                                        "line": d.get("line"), "pct_left": d.get("pct_left"), "message": msg,
-                                       "why": d.get("why"),
+                                       "why": d.get("why"), "drain": bool(d.get("drain")) and state == "soft",
                                        **({k: d.get(k) or prev.get(k) for k in ("reset_at", "reset_account")}
                                           if state == "stop" else {})})
 
@@ -930,7 +977,27 @@ def armed_call(st: dict, argv: list, still=None) -> dict:
     return out
 
 
-def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll) -> int:
+def live_detached_runs(runner=subprocess.run):
+    """-> the live detached run units (rm-detached-* services, active or activating, less their -return and -continue
+    steps), or None when systemd cannot be read."""
+    try:
+        r = runner(["systemctl", "--user", "list-units", "--type=service", "--state=active,activating", "--plain",
+                    "--no-legend", "rm-detached-*"], capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if r.returncode != 0:
+        return None
+    units = [ln.split()[0] for ln in (r.stdout or "").splitlines() if ln.split()]
+    return [u[:-len(".service")] for u in units if u.endswith(".service")
+            and not u[:-len(".service")].endswith(("-return", "-continue"))]
+
+
+def default_runs():
+    """The live plan dir reads the live runs; a test's plan dir never does (it reads none unless it hands runs_fn)."""
+    return live_detached_runs() if OUT == LIVE_OUT else []
+
+
+def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll, runs_fn=None) -> int:
     """One pass under an exclusive non-blocking lock: a pass that finds another running stands down (the markers are
     not a lock, and two passes could both switch)."""
     OUT.mkdir(parents=True, exist_ok=True)
@@ -940,7 +1007,7 @@ def check(dry: bool = False, now=None, meter_fn=meter_now, poll_fn=meter_poll) -
         except OSError:
             log({"do": "skip", "why": "another pass holds check.lock", "acted": False})
             return 0
-        rc = _check(dry, now, meter_fn, poll_fn)
+        rc = _check(dry, now, meter_fn, poll_fn, runs_fn or default_runs)
     if not dry and OUT == LIVE_OUT and not (OUT / "HOLD").exists():
         resume_stopped_runs()
     return rc
@@ -961,7 +1028,7 @@ def resume_stopped_runs():
 ACTS = ("soft", "stop", "stopped", "switch")
 
 
-def _check(dry, now, meter_fn, poll_fn) -> int:
+def _check(dry, now, meter_fn, poll_fn, runs_fn=default_runs) -> int:
     global DRY
     DRY = dry
     t0 = clock()
@@ -981,13 +1048,18 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
 
     def manual_now():  # read at each decision: a human can switch during a slow poll
         return manual_switch(last_switch(), read_markers(), live)
-    d = decide(meter, live, now, plan, state, read_markers(), manual=manual_now())
+    try:
+        runs = runs_fn()
+    except Exception:  # noqa: BLE001  unreadable runs count as live
+        runs = None
+    d = decide(meter, live, now, plan, state, read_markers(), manual=manual_now(), live_runs=runs)
     pre = None
     if d.get("poll"):
         last = epoch(state.get("last_poll")) or 0
         if not dry and now - last >= plan["fresh"]["max_age_min"] * 60:
             # the poll can take minutes: if this pass would brake on what it already sees, the brake goes out first
-            pre = decide(meter, live, now, plan, state, read_markers(), polled=True, manual=manual_now())
+            pre = decide(meter, live, now, plan, state, read_markers(), polled=True, manual=manual_now(),
+                         live_runs=runs)
             if ((pre["do"] == "stop" and (state.get("stopped") or {}).get("account") != live)
                     or (pre["do"] == "switch" and pre.get("under"))):
                 d = pre  # a brake on a spent account is never deferred behind a slow poll (agents keep burning)
@@ -1006,7 +1078,7 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
                     log({"do": "passive", "why": f"{OUT / 'HOLD'} appeared during the poll"})
                     return 0
         if d is not pre:
-            d = decide(meter, live, now, plan, state, read_markers(), polled=True, manual=manual_now())
+            d = decide(meter, live, now, plan, state, read_markers(), polled=True, manual=manual_now(), live_runs=runs)
     d.update(next_refill(meter, plan, now))
     if state.get("stopped"):
         d["stopped_at"] = state["stopped"].get("at")
@@ -1032,7 +1104,8 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
         if live2 != live:
             return False
         m2, n2 = meter_fn(), now + clock() - t2
-        d2 = decide(m2, live, n2, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live))
+        d2 = decide(m2, live, n2, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live),
+                    live_runs=runs)
         d2.update(next_refill(m2, plan, n2))
         same = d2["do"] == d["do"] and d2.get("to") == d.get("to")
         if same and d2.get("under"):  # exhaustion seen on the recheck latches into the marker
@@ -1047,21 +1120,20 @@ def _check(dry, now, meter_fn, poll_fn) -> int:
             brake.update({**d2, "do": "stop", "key": d2["key"] if d2["do"] == "stop" else stop_key(live, m2.get(live) or {}, n2)})
             return ["fleet-stop"]
         return same
-    if d["do"] == "switch" and not d.get("under"):
-        # RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH: a switch made above the line (a priority or reset pull,
-        # nothing spent) waits checkpoint_grace_s after the first soft notice, so the detached runs it will SIGTERM get
-        # the checkpoint signal (.claude/hooks/switch_checkpoint_signal.py) and publish first. A switch at or under the
-        # line, or a stop, never waits: that would spend past his line (card 10:20, "Soft line, then hard stop").
-        grace = plan.get("checkpoint_grace_s") or 0
+    if d["do"] == "switch" and not d.get("under") and (runs is None or runs):
+        # a switch made above the line (a priority or reset pull, nothing spent) waits while a detached run is live, so
+        # it finishes on its own account and keeps its cache (owner 2026-11-20, "live runs finish past"); at most
+        # pull_drain_max_s after the first drain notice. A switch at or under the line waits in decide (drained).
+        bound = plan.get("pull_drain_max_s") or 0
         nt = read_json(OUT / "notice.json", {}) or {}
-        since = epoch(nt.get("since")) if nt.get("state") == "soft" else None
-        if isinstance(grace, (int, float)) and grace > 0 and (since is None or now - since < grace):
-            write_notice({**d, "do": "soft", "why": f"checkpoint grace before the switch to {d['to']}: {d.get('why')}"},
-                         now)
-            left_s = int(grace - (now - since)) if since is not None else int(grace)
-            log({**rec, "do": "grace", "acted": False,
-                 "why": f"switch to {d['to']} held {left_s} s more (checkpoint_grace_s {grace}) so running agents "
-                        f"checkpoint first; was: {d.get('why')}"})
+        since = epoch(nt.get("since")) if nt.get("state") == "soft" and nt.get("drain") else None
+        if isinstance(bound, (int, float)) and bound > 0 and (since is None or now - since < bound):
+            write_notice({**d, "do": "soft", "drain": True,
+                          "why": f"the switch to {d['to']} waits while live runs finish: {d.get('why')}"}, now)
+            left_s = int(bound - (now - since)) if since is not None else int(bound)
+            log({**rec, "do": "drain", "acted": False,
+                 "why": f"switch to {d['to']} waits while live runs finish ({runs_why(runs)}), at most {left_s} s more "
+                        f"(pull_drain_max_s {bound}); was: {d.get('why')}"})
             return 0
     if d["do"] == "switch":
         write_marker(d["key"], {"phase": "pending", "at": iso(now), "from": live, "to": d["to"], "under": d.get("under"),
@@ -1159,7 +1231,8 @@ def status(rate=None, model=None) -> int:
     live = switcher_status().get("live")
     hold = (OUT / "HOLD").exists()
     mk = read_markers()
-    d = decide(meter, live, now, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live))
+    d = decide(meter, live, now, plan, state, mk, polled=True, manual=manual_switch(last_switch(), mk, live),
+               live_runs=default_runs())
     pl = pool(meter, now, plan, live)
     rate = rate if rate is not None else pl.get("rate_pct_h")
     print(json.dumps({"live": live, "hold": hold, "level_model": model or plan.get("level_model"),

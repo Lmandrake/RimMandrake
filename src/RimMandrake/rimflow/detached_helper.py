@@ -921,6 +921,34 @@ def skill_path_warning(brief):
             "Name the paths for its kind of work from skills/BY_WORK.md")
 
 
+DRAIN_NOTICE_FRESH_S = 20 * 60     # switching_plan.py writes its notice every 5 min: an older one means its timer stopped
+
+
+def drain_refusal(now, extra=None, resume_session=None, path=None):
+    """-> why a NEW run may not start now, or None. While the switching plan drains an account (its fresh notice reads
+    soft with drain true), live runs finish on it and no new run starts there: a switch stops every Claude process, and
+    a run started now would be killed by it (design/specs/2026-11-20-account-drain/boundary.md). A continuation of a
+    live run, or a resume of its session, is that run finishing and goes. An unreadable or stale notice refuses
+    nothing (a dead plan timer must not hold every launch)."""
+    if (extra or {}).get("continued_from") or resume_session:
+        return None
+    p = path or os.path.join(os.environ.get("RM_SWITCH_PLAN_DIR") or "/mnt/d/ClaudeWork/rimmandrake/switching_plan",
+                             "notice.json")
+    try:
+        with open(p, encoding="utf-8") as f:
+            n = json.load(f)
+    except (OSError, ValueError):
+        return None
+    at = _epoch(n.get("at")) if isinstance(n, dict) else None
+    if not (isinstance(n, dict) and n.get("state") == "soft" and n.get("drain") and at is not None
+            and now - at <= DRAIN_NOTICE_FRESH_S):
+        return None
+    return ("refused: the account %s is draining (switching plan notice since %s): live runs finish on it and no new "
+            "run starts until the switch. Launch again after it (`python3 src/RimMandrake/Utils/switching_plan.py "
+            "status` shows it). Why: %s" % (n.get("account") or "?", n.get("since") or "?",
+                                             " ".join(str(n.get("why") or "").split())[:300]))
+
+
 def card_refusal(item, brief, events_dir=None):
     """-> None, or the refusal for a brief on a by-card item that lacks a picked option's description verbatim
     (RIMMANDRAKE_RECORD_CARD_OPTION_TEXT_LABEL_LOST_THE_ART: "needs bigger art" was retold from memory as "check if the
@@ -1077,6 +1105,10 @@ def _launch(seat, item, brief, model, max_s, budget, now, runner, known, clone, 
         return 2, "refused: the ledger read 0 items (blind instrument), cannot check %s" % item
     if item not in known:
         return 2, "refused: %s is not a ledger item; file it first (rimflow namecheck, then file)" % item
+    if runner is subprocess.run:    # a test's fake runner never reads the live switching notice
+        draining = drain_refusal(now, extra, resume[0])
+        if draining:
+            return 2, draining
     unpublished = pf.gate("I6", origin_check, item, runner=runner, seat=seat, judge=_refusal)   # before a clone or a unit
     if unpublished:
         return 2, unpublished

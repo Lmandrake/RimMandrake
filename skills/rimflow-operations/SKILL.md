@@ -1,6 +1,6 @@
 ---
 name: rimflow-operations
-description: Operate the multi-account Claude quota system - check each account's level (weekly vs 5-hour cap, percent left, reset time, MEASURED/ESTIMATE/UNMEASURED), apply the standard switching plan (owner's fixed priority steven > system > lukas, 0%/2% floors, soft line then hard stop, Steven's 52% leave line, pool pacing), switch or recover accounts with claude-account, and stand windows down and up. Use whenever anyone asks how much quota/usage is left, which account is live, when an account resets, whether to switch accounts, why the fleet stopped or went DARK, how to recover a stuck switch, or touches account_usage.py, switching_plan.py, account_failover.py, slot_allocator set/clear, account-plan.timer, or timers_guard pause - even if they just say "are we about to run out".
+description: Operate the multi-account Claude quota system - check each account's level (weekly vs 5-hour cap, percent left, reset time, MEASURED/ESTIMATE/UNMEASURED), apply the standard switching plan (owner's fixed priority steven > system > lukas, 1%/2% floors (never 0%), soft line then drain then hard stop, Steven's 52% leave line, pool pacing), switch or recover accounts with claude-account, and stand windows down and up. Use whenever anyone asks how much quota/usage is left, which account is live, when an account resets, whether to switch accounts, why the fleet stopped or went DARK, how to recover a stuck switch, or touches account_usage.py, switching_plan.py, account_failover.py, slot_allocator set/clear, account-plan.timer, or timers_guard pause - even if they just say "are we about to run out".
 ---
 
 # rimflow-operations: accounts, levels and the standard switching plan
@@ -36,8 +36,10 @@ More traps for this section: [references/traps.md](references/traps.md) § 1. Ch
 | **Fixed priority** `order` = steven, system, lukas: burn the FIRST account in that list that is measured, fresh, inside its window and above its line. When system resets the machine goes to system even if lukas still has budget (a lower account's budget that expires first is given up) | owner's 10:15 words; the 10:58 soonest-expiry rule was reverted on his 15:20 review ("awkward") |
 | Steven: use only inside 48 h after his reset, **leave at 52% left** (his "50%" plus a 2-point overshoot margin) | owner words 2026-10-27 "up to 50% after a fresh reset only"; 52 by card 10:20; 48 h is our reading (delegated) |
 | Steven's account, late in his week: may be drawn down toward **10% left, never below**; the 50% use is done early in the week, then left alone | owner, 2026-10-26: *"As we get near his reset you may consider drawing it down towards 10%, but never beyond that. We don't ever want to crowd him out."* |
-| Floors: **0%** when switching away, **2%** when waiting on an account (owner can still talk to a seat while idle) | card 2026-10-28 15:33 "Drain to 0%"; 2% delegated |
-| **Soft line** (line + 2%: allocator gives 0 new helpers, running seats publish and finish) then **hard stop** (fleet-stop) | by card 10:20 |
+| Floors: **1%** when switching away, **2%** when waiting on an account (owner can still talk to a seat while idle). No account is driven to 0%. The meter reads whole percents (8,749 readings, none fractional), so 1% is the lowest line it can see | owner 2026-11-20: *"Actually 0.1% is even ok kept. We just don't want to crash to zero and get stuck."*, then *"Agreed for 1% at the moment"*; 2% delegated |
+| **Soft line** (line + 2%): no new start (allocator gives 0 new helpers; `detached_helper.launch` refuses a new run). **Live runs finish**: at the line the switch or stop waits while a detached run is live, and goes when they end or at the **hard line** = max(1%, line - 2%) (steven: 50%) | card 10:20 "Soft line, then hard stop"; owner 2026-11-20: *"And yes for live runs finish past, absolutely."* |
+| A switch the priority pulls (above the line) also waits for live runs, at most `pull_drain_max_s` (2 h) | owner 2026-11-20, as above; page `design/specs/2026-11-20-account-drain/boundary.md` |
+| **Do not stop runs or switch by hand at the soft line.** The 2026-11-18 6:43 PM hand stop and 6:59 PM hand switch (steven at 55%) killed 9 runs, and their resumes missed the cache: 4.73M weighted | the 2026-11-20 scan, `design/specs/2026-11-20-context-kept-not-reloaded/report.md` §1 row 3 |
 | **Blind meter = 0%**: once the last MEASURED reading is <= 1%, a blind one (failed /usage, limit error, ESTIMATE, stale) counts as 0% and switches | relayed rule 11:2x |
 | **Pool pacing**: pace the whole pool "BECAUSE it spreads out the human review time cleanly to inform the process in a timely manner" | by card 10:20 |
 
@@ -45,14 +47,13 @@ The engine (`switching_plan.py check`, `account-plan.timer`, every 5 min) polls 
 when a reading is old and acts once per transition (markers). Its ONLY brake is a `HOLD` file in its output dir
 (`D:\ClaudeWork\rimmandrake\switching_plan\HOLD`): while it exists every pass logs `passive` and acts on nothing.
 (The old account_failover gate was removed 2026-10-28; that script and its timer are retired.)
-**Owner pause, 2026-10-28 14:14 PDT:** "disable any script that will auto log me out for awhile and stay on this
-account" - HOLD is set and `account-plan.timer` is stopped and disabled. Remove HOLD or re-enable the timer only on
-his word. Full state machine, markers and the review history: `references/plan.md`.
+His 2026-10-28 pause (HOLD set, timer stopped) was lifted (`HOLD.lifted-2026-11-05`, `HOLD.lifted-2026-11-06` in that
+dir); the timer runs. Full state machine, markers and the review history: `references/plan.md`.
 
-**Why switching at 0% is safe.** The switch is local: `claude-account` renames a credential file,
-spends no model tokens and uses no network or Tailscale. Hitting 0% locks nobody out of the
-switcher. What breaks at 0%: every window and helper on that account errors, and the owner cannot
-talk to a seat until the switch lands. Hence waiting accounts keep 2%, leaving accounts burn to 0.
+**Why the switch must wait for live runs.** The switch is local: `claude-account` renames a credential file,
+spends no model tokens and uses no network or Tailscale. But it stops every Claude process on the machine, so a run
+cannot go on with the old account after it; a killed run resumed on the next account loses its prompt cache. At 0%
+every window and helper on that account errors and the owner cannot talk to a seat, so no account goes under 1%.
 
 More traps for this section: [references/traps.md](references/traps.md) § 2. The standard switching plan (rulings and provenance).
 
@@ -86,7 +87,8 @@ More traps for this section: [references/traps.md](references/traps.md) § 4. Re
 ## 5. Stand-down / stand-up costs (why switches are not free)
 
 - Every window and helper on the machine is killed; unpublished work dies. **Publish at every green
-  point** and write the handoff BEFORE a switch (the soft line exists to give time for this).
+  point** and write the handoff BEFORE a switch. The plan waits for detached runs to end (the drain), but a hard
+  line, a failed switch or a hand switch still kills them.
 - Remote Control sessions are likely dropped and need re-attaching (UNMEASURED; see skill
   `claude-remote-control`).
 - Vault freshness: a stale vault cannot be probed or switched to. `account_usage.py` warms an expired DORMANT login

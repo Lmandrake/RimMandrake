@@ -2,11 +2,13 @@
 """PostToolUse hook: tell a DETACHED run to checkpoint when an account switch is pending
 (RIMMANDRAKE_CHECKPOINT_SIGNAL_BEFORE_SOFT_SWITCH, goal 2 of RIMMANDRAKE_CHECKPOINT_HARD_STOP_NOT_KILL).
 
-A switch (`claude-account use`) or the plan's stop SIGTERMs every Claude process; a detached run then dies with its
-green work unpublished. When the switching plan's notice (switching_plan.py write_notice -> notice.json) reads `soft`,
-the run's next tool call gets one line of context: commit and publish what is green, write its ledger note, carry on.
-The plan holds a switch made above the line for checkpoint_grace_s after the first soft notice (switching_plan.json).
-Once per notice (its `since`) per run. The signal never states spend, a cap or what is left of one.
+A switch (`claude-account use`) or the plan's stop SIGTERMs every Claude process. Since 2026-11-20 the plan waits for
+live detached runs to end before it switches (owner: "And yes for live runs finish past, absolutely."), and stops them
+only at the account's hard line, after a failed switch, or at the end of pull_drain_max_s
+(design/specs/2026-11-20-account-drain/boundary.md). When the switching plan's notice (switching_plan.py write_notice ->
+notice.json) reads `soft`, the run's next tool call gets one line of context: the run finishes on this account; publish
+what is green as you go, so a hard-line stop loses nothing. Once per notice (its `since`) per run. The signal never
+states spend, a cap or what is left of one.
 
 Outside a detached run (no RM_DETACHED_UNIT) it exits at once and prints nothing; an unreadable notice is silent
 (this hook never breaks the run it rides in).
@@ -17,10 +19,11 @@ import os
 import sys
 import tempfile
 
-SIGNAL = ("CHECKPOINT NOW (switching plan, notice since %s): an account switch is pending, and it stops every running "
-          "Claude process within minutes. Before your next long step: commit what is green and land it with "
-          "`./publish -m \"...\" <explicit paths>`, then write your ledger note (state, evidence paths, one NEXT) and "
-          "publish its shard. Then carry on with the work; if this run is stopped, it is resumed from what you published.")
+SIGNAL = ("CHECKPOINT NOW (switching plan, notice since %s): an account switch is pending. It waits for running runs "
+          "like you to finish; no new run starts meanwhile. Carry on and finish your work. Only if the account reaches "
+          "its hard line first is every Claude process stopped, so before your next long step commit what is green "
+          "and land it with `./publish -m \"...\" <explicit paths>`, then write your ledger note (state, evidence "
+          "paths, one NEXT) and publish its shard; a stopped run is resumed from what you published.")
 
 
 def notice_path():

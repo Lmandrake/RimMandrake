@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """account_failover.py - switch this machine's Claude login once, when the burn account's week runs low.
 
+RETIRED 2026-10-28: no timer runs it and nothing imports it; switching_plan.py is the engine. Its 0% and 2% floors below
+are the one-time plan of 2026-10-27/28, not the rule: the floors live in switching_plan.json (since 2026-11-20 no account
+is driven under 1%, and live runs finish before a switch; design/specs/2026-11-20-account-drain/boundary.md).
+
 Owner, 2026-10-27, on incorporating the lukas account: "Yes schedule when they reach 2%."
 So: when `system` (the account Archmagi burns) reads MEASURED with at most THRESHOLD % of its week left, arm the
 switch, `claude-account use lukas` (closes every Claude window on this machine and relaunches the Fleet), disarm.
