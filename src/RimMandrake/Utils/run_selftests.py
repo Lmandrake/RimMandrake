@@ -153,7 +153,9 @@ DOTNET_LANE = {"selftest_atmosphericbase_kernel.py", "selftest_flowworks_kernel_
                # (coldstorage and spire build C#; vexxith runs flowworks_stock and the Cauldron fuzz).
                "selftest_coldstorage.py", "selftest_vexxith_uses.py", "selftest_spire_one_building.py",
                # SUMP_SINKING_RITE_BUILD_1: builds the Rites selftest with dotnet.exe
-               "selftest_sinking_kernel.py"}
+               "selftest_sinking_kernel.py",
+               # RIMMANDRAKE_INSTALL_VV_MATRIX_CLOCK_WRITTEN_NOT_RUNNING: builds and runs the matrix's negative control
+               "selftest_vv_negative_control.py"}
 
 
 def _lane_of(path: Path):

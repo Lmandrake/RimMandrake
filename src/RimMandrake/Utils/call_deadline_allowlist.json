@@ -151,7 +151,6 @@
   "src/RimMandrake/Utils/transient_pin.py::git::run": 1,
   "src/RimMandrake/Utils/transient_pin.py::is_ignored::run": 1,
   "src/RimMandrake/Utils/transient_pin.py::land_untrack::run": 1,
-  "src/RimMandrake/Utils/vv_shipped_matrix.py::main::run": 1,
   "src/RimMandrake/Utils/vv_shipped_matrix.py::stage_flowworks::run": 2,
   "src/RimMandrake/Utils/warlab_garrison_note_check.py::main::run": 1,
   "src/RimMandrake/Utils/warlab_merge_check.py::main::run": 3,

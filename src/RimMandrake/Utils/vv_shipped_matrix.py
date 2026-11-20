@@ -170,10 +170,27 @@ def kernel_defaults(text):
     return out
 
 
-def derive():
-    st = open(SETTINGS_CS, encoding="utf-8").read()
+def _read_file(path):
+    with open(path, encoding="utf-8") as f:
+        return f.read()
+
+
+def read_at(rev):
+    """-> a reader for derive(): the text of a repo file as it was at rev (git show), so a configuration can be derived
+    from an old revision's own settings, adapter and kernel."""
+    def read(path):
+        rel = os.path.relpath(path, ROOT).replace(os.sep, "/")
+        return subprocess.run(["git", "show", "%s:%s" % (rev, rel)], cwd=ROOT, capture_output=True, text=True, timeout=120,
+                              check=True).stdout
+    return read
+
+
+def derive(source=_read_file):
+    """The shipped kernel configuration, derived from the settings, adapter and kernel sources that source() returns (this
+    tree by default; read_at(rev) for an old revision's)."""
+    st = source(SETTINGS_CS)
     init, scribe, props = settings_defaults(st)
-    lines, scene = adapter_lines(open(ADAPTER_CS, encoding="utf-8").read())
+    lines, scene = adapter_lines(source(ADAPTER_CS))
     # a symbolic Scribe default (a named constant) is not parsed: only literal-vs-literal disagreements count as drift
     drift = [(k, init[k], scribe[k]) for k in scribe if k in init and not isinstance(scribe[k], str) and scribe[k] != init[k]]
     shipped = kernel_config(init, props, lines)
@@ -203,7 +220,7 @@ def derive():
             owner = {"_error": str(e)}
     return {"settings_read": read, "scribe_drift": drift, "adapter": lines, "adapter_scene": scene,
             "shipped": shipped, "variants": variants, "owner_diff": owner, "owner_keys_seen": owner_seen,
-            "kernel_defaults": kernel_defaults(open(KERNEL_CS, encoding="utf-8").read())}
+            "kernel_defaults": kernel_defaults(source(KERNEL_CS))}
 
 
 # ───────────────────────────── static flag lint ─────────────────────────────
@@ -348,6 +365,8 @@ def stage_flowworks(control=False, source_plants=(), tag=""):
                 '<LangVersion>latest</LangVersion><ImplicitUsings>enable</ImplicitUsings><Nullable>disable</Nullable>'
                 '<EnableDefaultCompileItems>false</EnableDefaultCompileItems><AssemblyName>VVControl</AssemblyName>'
                 '<StartupObject>RimMandrake.FlowWorks.SelfTest.VV.ShippedMatrixProbe</StartupObject>'
+                # VV_CONTROL: the probe leaves out what reads today's kernel only (the law plants, trace) and refuses them
+                '<DefineConstants>$(DefineConstants);VV_CONTROL</DefineConstants>'
                 '<NoWarn>CS8981;CS0168;CS0219;CS0162</NoWarn></PropertyGroup><ItemGroup>'
                 + "".join('<Compile Include="%s" />' % c for c in [
                     "..\\..\\RM_StockMath.cs", "..\\..\\RM_FlowKernel.cs", "..\\..\\RM_PumpMath.cs", "..\\..\\RM_FireMath.cs",
@@ -455,6 +474,38 @@ def dynamic_lint(rec, shipped):
     return rows, full, kernel_cases
 
 
+def negative_control(cdll, cout, cap):
+    """Criterion (3) on a built control dll: fills_from_limitless at base seed 1000, n=2000, on the pre-fix kernel with
+    the configuration that SHIPPED with it forced, then authored. -> (shipped record, authored record, reproduced).
+    reproduced = red at SHIPPED and 0 at AUTHORED. Also run by selftest_vv_negative_control.py.
+
+    The forced configuration is derived (derive(), the same parser the matrix uses) from CONTROL_REV's own settings,
+    adapter and kernel sources, never from today's: today's kernel no longer declares levelSetEnabled /
+    levelBySurfaceEnabled / creepEnabled (the exact solve became the only engine, 2026-11-13), so today's shipped fields
+    leave those at the old kernel's authored false, and the bug this control must find needs the level set on (STAGE2:
+    194/2000 with it on, 0/2000 off). Forcing today's fields read 0/2000 at SHIPPED on 2026-11-19: a control gone blind."""
+    global BASE_SEED
+    keep, BASE_SEED = BASE_SEED, 1000
+    try:
+        rev = derive(read_at(CONTROL_REV))
+        control_cfg = rev["shipped"]
+        undeclared = sorted(set(control_cfg) - set(rev["kernel_defaults"]))
+        if undeclared:   # not reproduced, said by name (the caller turns it into a red VERDICT, never a crash)
+            print("  control: the configuration derived at %s sets %s, which that kernel does not declare" % (CONTROL_REV, undeclared))
+            return {}, {}, False
+        print("  control forces the configuration shipped at %s: %s" % (CONTROL_REV, json.dumps(control_cfg, sort_keys=True)))
+        rates(cdll, cout, "CONTROL_prefix_SHIPPED", control_cfg, {"fills_from_limitless": 2000}, cap, 1)
+        rates(cdll, cout, "CONTROL_prefix_AUTHORED", None, {"fills_from_limitless": 2000}, cap, 1)
+    finally:
+        BASE_SEED = keep
+    cr = {r["config"]: r for r in map(json.loads, open(cout))} if os.path.isfile(cout) else {}
+    cs, ca = cr.get("CONTROL_prefix_SHIPPED", {}), cr.get("CONTROL_prefix_AUTHORED", {})
+    print("  control: pre-fix kernel %s, shipped %s/%s, authored %s/%s" % (CONTROL_REV, cs.get("failures"), cs.get("completed"), ca.get("failures"), ca.get("completed")))
+    ok = (cs.get("failures", 0) > 0 and not cs.get("unmeasured") and ca.get("completed", 0) > 0
+          and ca.get("failures", 1) == 0 and not ca.get("exceptions") and not ca.get("timed_out"))
+    return cs, ca, ok
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true", help="n/10 smoke run (never a verdict)")
@@ -497,6 +548,9 @@ def main(argv=None):
     verdict = []
 
     dll = stage_flowworks()
+    # the control is built BEFORE the long runs, so a control that no longer compiles stops the run in its first minutes,
+    # not at its last step (2026-11-19: 36 min of suites and rates, then 18 compile errors)
+    cdll = None if a.skip_control else stage_flowworks(control=True)
     print("== suites (one run each) ==")
     suites = {}
     if not a.skip_suites:
@@ -525,25 +579,8 @@ def main(argv=None):
         if v["diff"]:
             rates(dll, out, "OFF_" + v["setting"], v["kernel"], SINGLE_OFF_N, a.cap_seconds, scale)
     if not a.skip_control:
-        cdll = stage_flowworks(control=True)
-        cout = os.path.join(run_dir, "control.jsonl")
-        global BASE_SEED
-        keep, BASE_SEED = BASE_SEED, 1000
-        # the pre-fix kernel has none of the fields added after it (levelExactEnabled, WATER_LEVEL_BUILD_DECILITRES_NOT_NOTCHES):
-        # MatrixFlags refuses an unknown field, so the control forces only the shipped fields that kernel declares
-        old_kernel = subprocess.run(["git", "show", "%s:src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs" % CONTROL_REV],
-                                    cwd=ROOT, capture_output=True, text=True, check=True).stdout
-        old_fields = set(kernel_defaults(old_kernel))
-        control_cfg = {k: v for k, v in shipped.items() if k in old_fields}
-        print("  control forces %d of %d shipped fields (absent from %s: %s)" % (
-            len(control_cfg), len(shipped), CONTROL_REV, sorted(set(shipped) - old_fields) or "none"))
-        rates(cdll, cout, "CONTROL_prefix_SHIPPED", control_cfg, {"fills_from_limitless": 2000}, a.cap_seconds, 1)
-        rates(cdll, cout, "CONTROL_prefix_AUTHORED", None, {"fills_from_limitless": 2000}, a.cap_seconds, 1)
-        BASE_SEED = keep
-        cr = {r["config"]: r for r in map(json.loads, open(cout))}
-        cs, ca = cr.get("CONTROL_prefix_SHIPPED", {}), cr.get("CONTROL_prefix_AUTHORED", {})
-        print("  control: pre-fix kernel %s, shipped %s/%s, authored %s/%s" % (CONTROL_REV, cs.get("failures"), cs.get("completed"), ca.get("failures"), ca.get("completed")))
-        if not (cs.get("failures", 0) > 0 and ca.get("failures", 1) == 0):
+        _cs, _ca, reproduced = negative_control(cdll, os.path.join(run_dir, "control.jsonl"), a.cap_seconds)
+        if not reproduced:
             verdict.append("negative control did not reproduce (the matrix cannot see the bug it exists for)")
     if not a.skip_ep:
         edll = stage_ep()

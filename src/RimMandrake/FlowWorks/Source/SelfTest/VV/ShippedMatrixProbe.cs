@@ -73,6 +73,11 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 			Override = Forced.Count > 0;
 		}
 
+#if !VV_CONTROL
+		// The planted breaks read today's decilitre grid (k.water, RM_LevelSolve.U). The negative-control build
+		// (vv_shipped_matrix.py stage_flowworks(control=True), DefineConstants VV_CONTROL) compiles this file against the
+		// PRE-FIX kernel, which has byte[] fill and no RM_LevelSolve, so they are left out there and a --plant is refused
+		// (RIMMANDRAKE_INSTALL_VV_MATRIX_CLOCK_WRITTEN_NOT_RUNNING: the 2026-11-19 clock run died on 18 such compile errors).
 		private static RM_FlowKernel shK;
 		private static int shA = -1, shB = -1;
 		private static object shFluid;
@@ -146,12 +151,14 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 				shA = shB = -1;   // the kept pair can move neither way now: pick again, once
 			}
 		}
+#endif
 
 		/// <summary>Called by the staged ArrayWorld.Pulse just before RM_FlowKernel.Pulse.</summary>
 		public static void Apply(RM_FlowKernel k)
 		{
 			HookCalls++;
 			if (Override) foreach (var (f, v) in Forced) f.SetValue(k, v);
+#if !VV_CONTROL
 			if (Plant == "shuttle" && k.depth != null && k.water != null && k.world != null) Shuttle(k);
 			if (Plant != null && Plant != "shuttle" && HookCalls % 7 == 3 && k.depth != null && k.water != null)
 			{
@@ -162,6 +169,7 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 					if (Plant == "bounds") { k.depth[i] = 5; Planted++; break; }
 				}
 			}
+#endif
 			if (!Record) return;
 			var sb = new StringBuilder();
 			foreach (var f in Tracked)
@@ -225,6 +233,10 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 			var track = (Arg(args, "--track", "") ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries);
 			MatrixFlags.Configure(Arg(args, "--set", ""), track);
 			MatrixFlags.Plant = Arg(args, "--plant");
+#if VV_CONTROL
+			// a plant or a trace here would be a silent no-op on the pre-fix kernel: refuse it by name
+			if (MatrixFlags.Plant != null || mode == "trace") { Console.WriteLine("VV: --plant and trace are not compiled into the negative-control build (VV_CONTROL)"); return 2; }
+#endif
 			if (MatrixFlags.Plant != null && MatrixFlags.Plant != "volume" && MatrixFlags.Plant != "bounds" && MatrixFlags.Plant != "shuttle") { Console.WriteLine("VV: unknown --plant " + MatrixFlags.Plant); return 2; }
 			if (GenM == null || RunM == null || DigsF == null) { Console.WriteLine("VV: FlowKernelFuzz.Gen/Run not found by reflection"); return 3; }
 			if (mode == "rates") return Rates(args, outPath);
@@ -342,6 +354,9 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 		/// --body limited|limitless.</summary>
 		static int Trace(string[] args)
 		{
+#if VV_CONTROL
+			return 2;   // refused in Main (the pre-fix kernel has no decilitre grid to read notches from)
+#else
 			bool limitless = Arg(args, "--body", "limited") == "limitless";
 			int pulses = int.Parse(Arg(args, "--pulses", "12"));
 			var w = new ArrayWorld(20, 6);
@@ -361,6 +376,7 @@ namespace RimMandrake.FlowWorks.SelfTest.VV
 			}
 			Console.WriteLine($"pulses with the mouth dry while the channel is not yet full: {mouthDry}");
 			return 0;
+#endif
 		}
 
 		static int Suite(string[] args, string outPath)
