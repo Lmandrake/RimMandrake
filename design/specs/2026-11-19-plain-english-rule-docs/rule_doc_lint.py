@@ -183,7 +183,10 @@ def keep(old, new_texts):
                 if have[span] < n:
                     lost.append((kind, "%s (%d in the old text, %d in the new)" % (span, n, have[span])))
             continue
-        for m in rx.finditer(old):
+        # A quote is read with each code span masked by a line break: a `"` inside one code span and a `"` inside the
+        # next one are not a quote. A code span is checked whole, as a code span.
+        src = re.sub(r"`[^`\n]+`", "\n", old) if kind == "quote" else old
+        for m in rx.finditer(src):
             span = m.group(1).strip()
             if not span or (kind, span) in seen:
                 continue
@@ -298,6 +301,12 @@ def selftest(C):
     checks.append(("keep sees a lost id", ("named id", "FOO_BAR_1") in keep(old, ["nothing"])[1]))
     checks.append(("keep passes a re-wrapped copy", keep(old, [old.replace(" ", "\n  ")])[1] == [] and n >= 4))
     checks.append(("keep finds a span that moved to an --also file", keep(old, ["short", old])[1] == []))
+    # a `"` inside one code span and a `"` inside the next are not a quote (rm-testpilot.md, 2026-11-19)
+    two = 'Parse it (`ET.parse(p).find("activeMods")`), never grep it. On SteveDesktop drive by `ssh "$STEVE_WSL"`.'
+    split = 'Parse it (`ET.parse(p).find("activeMods")`).\n- Never grep it.\n- On SteveDesktop drive by `ssh "$STEVE_WSL"`.'
+    checks.append(("keep reads no quote across two code spans", keep(two, [split])[1] == []))
+    checks.append(("keep still sees a lost code span that holds a quote mark",
+                   ("code span", 'ssh "$STEVE_WSL"') in keep(two, [split.replace('`ssh "$STEVE_WSL"`', "ssh")])[1]))
     for name, ok in checks:
         print("%s  %s" % ("PASS" if ok else "FAIL", name))
     return 0 if all(ok for _, ok in checks) else 1

@@ -18,7 +18,8 @@ Hunt parameter regimes and regions, not examples. A bar holds over every situati
   - what the game can vary for this bar (what the thing connects to, what surrounds it, the player's settings, seeds and time);
   - the regimes and regions that those make;
   - what you leave out, and why.
-- Read that range with the bar's own check. If a sweep shows any failure, sweep again densely around the failure before you conclude anything.
+
+  Then, still before you change any code, read that range with the bar's own check. If a sweep shows any failure, sweep again densely around the failure before you conclude anything.
 - Every check that you run or write prints its worst value, its limit and how many cases it read. A pass by a hair is a finding to explain, not a pass to bank.
 - Before you change a check or the code that it reads, find every check that reads the same thing. After each change, run all of those checks. One green and another red is two bars in conflict, not a bug in either.
 - The tuning tripwire: the second time you nudge the same number, stop tuning. Also stop tuning when a check that you had made pass fails again.
@@ -92,7 +93,8 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
   - a biome of ours on 0 tiles is expected, not a defect;
   - every DLC is assumed;
   - never live-test a flyer's flight;
-  - the Conductor launches every FlowWorks and GSS (Gimme Some Slack) build directly, as a helper in the Maturation Pipeline. Every pipeline before the Maturation Pipeline is retired (owner, 2026-11-13 and 2026-11-18);
+  - the Conductor launches every FlowWorks and GSS build directly, as a helper in the Maturation Pipeline (owner, 2026-11-13 and 2026-11-18). GSS is Gimme Some Slack;
+  - every pipeline before the Maturation Pipeline is retired (owner, 2026-11-13 and 2026-11-18);
   - FOUNDRY is retired (BENCH takes only needs=owner live looks);
   - nothing reaches the owner unread;
   - wrong material is deleted, not superseded. Fix every inbound reference.

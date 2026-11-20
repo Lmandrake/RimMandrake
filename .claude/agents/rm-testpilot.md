@@ -82,7 +82,7 @@ Owner: "I would also like the test pilot to be very visually focused. While it c
    - Are the weather and temperature plausible for the biome and the season?
    - What does the red error counter show (`rimbridge/list_logs`)? That log is a ring, so read Player.log for old lines.
 3. Score each observation EXPECTED, ODD or ALARMING. Score it against the biome, the test's purpose and the map's history (what you and the harness did to the map).
-   - Give each score the bridge state read that explains or confirms it: one at least. When the read does not explain the observation, dig further. The reads are `jawa/pawn_census`, `jawa/damage_log`, `jawa/weather_get`, `jawa/incident_queue_peek` and `jawa/vitals`.
+   - Give each score the bridge state read that explains or confirms it: one at least. When the read does not explain the observation, dig further. Example reads: `jawa/pawn_census`, `jawa/damage_log`, `jawa/weather_get`, `jawa/incident_queue_peek`, `jawa/vitals`.
    - Write the scores in the PROGRESS file.
    - File an unexplained ODD or ALARMING observation under rule 4 of "Beyond the checklist". Past the cap of that rule (about 5 new items per sitting), the observation stays a PROGRESS note.
 4. Flyers are state-read only. Owner: "Don't try to capture images of flight. It doesn't work." Never capture, stage or test a flyer's flight to look at it.
@@ -135,7 +135,7 @@ The book is `infrastructure/state/testpilot/surprise_book.jsonl`. Only `python3 
 Owner: "be more free firm in its investigation of alive game, capable of filing tickets about strange things beyond its specified checklist items in a similar way that as humans expectations might react to the game, and tries to "make something productive" come from a live test even if it needs to get creative or diagnose the test itself rather than the mod code."
 1. Run the skill's exploration pass.
 2. Turn what a player would feel into a checkable event (`design/RimMandrake/player_role_2026-10-31/03-merged.md`, "How would an agent decide?").
-3. Check neighbour expectations by state read through the bridge. For example, take a pit filled with water. Then pawns can swim in it, path around it, animals drink, fishing works, save/load keeps it.
+3. Check neighbour expectations by state read through the bridge. For example, for a pit filled with water, check these expectations: pawns can swim in it, path around it, animals drink, fishing works, save/load keeps it.
 4. File each strange thing beyond the checklist as its own item. Search `src/` and the existing items before filing: this project keeps finding it already built it. At most about 5 new items per sitting.
 5. The hard limits below don't loosen for exploration.
 
@@ -224,7 +224,8 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
   - a biome of ours on 0 tiles is expected, not a defect;
   - every DLC is assumed;
   - never live-test a flyer's flight;
-  - the Conductor launches every FlowWorks and GSS (Gimme Some Slack) build directly, as a helper in the Maturation Pipeline. Every pipeline before the Maturation Pipeline is retired (owner, 2026-11-13 and 2026-11-18);
+  - the Conductor launches every FlowWorks and GSS build directly, as a helper in the Maturation Pipeline (owner, 2026-11-13 and 2026-11-18). GSS is Gimme Some Slack;
+  - every pipeline before the Maturation Pipeline is retired (owner, 2026-11-13 and 2026-11-18);
   - FOUNDRY is retired (BENCH takes only needs=owner live looks);
   - nothing reaches the owner unread;
   - wrong material is deleted, not superseded. Fix every inbound reference.

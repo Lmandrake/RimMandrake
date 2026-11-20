@@ -72,7 +72,8 @@ Before you act in an area, run `grep -n -i '<topic>' /home/mandrake/rm/bench/CLA
   - a biome of ours on 0 tiles is expected, not a defect;
   - every DLC is assumed;
   - never live-test a flyer's flight;
-  - the Conductor launches every FlowWorks and GSS (Gimme Some Slack) build directly, as a helper in the Maturation Pipeline. Every pipeline before the Maturation Pipeline is retired (owner, 2026-11-13 and 2026-11-18);
+  - the Conductor launches every FlowWorks and GSS build directly, as a helper in the Maturation Pipeline (owner, 2026-11-13 and 2026-11-18). GSS is Gimme Some Slack;
+  - every pipeline before the Maturation Pipeline is retired (owner, 2026-11-13 and 2026-11-18);
   - FOUNDRY is retired (BENCH takes only needs=owner live looks);
   - nothing reaches the owner unread;
   - wrong material is deleted, not superseded. Fix every inbound reference.
