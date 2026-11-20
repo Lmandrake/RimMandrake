@@ -1,0 +1,10 @@
+prove_true_tool_outcomes.py, live, 2026-11-19 9:14 PM PST, game a, modset_builder tier bridge (10 mods, Core + 5 DLC), quicktest map AridShrubland.
+Companion: build.py --gm --apply at clone HEAD 6403e3cc69; companion_identity FRESH (embedded source hash 209877e3ebed); game DLL sha256 8a4f869bff330ed1... = build. Holds 3c8b49c43666 and c7d498a52e88.
+Exit 0.
+
+build_batch_failed_op_is_failure       PASS       {'success': False, 'partial': False, 'error': '1 op(s) failed, 0 spawned. See failed[].', 'placed': 0, 'survived': 0, 'lostToLaterOps': 0, 'failedCount': 1, 'failed': [{'op': 'Wall:99999,99999', 'why': 'cell out of bound
+map_comp_timing_paused_unmeasured      PASS       {'success': False, 'error': 'UNMEASURED: no game tick ran while the timers were armed (paused game?)', 'ticksElapsed': 0, 'patchedMethods': 5, '_error': None}
+debug_action_yielders_answers          PASS       {'success': True, 'yieldersInvoked': 1, 'yieldersFailed': [], 'stopReason': 'completed', '_error': None}
+designate_harvest_grown_tree           PASS       {'hit': 'Plant_TreeDrago', 'tried': [('Plant_TreeDrago', 0, 1, 0), ('Plant_TreeDrago', 0, 1, 0), ('Plant_TreeDrago', 0, 1, 0), ('Plant_TreeDrago', 0, 1, 0), ('Plant_TreeDrago', 1, 0, 0)], 'triedCount': 5}
+
+4 row(s), 0 FAIL, 0 UNMEASURED
