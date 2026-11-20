@@ -1,0 +1,38 @@
+{
+  "_doc": "The closed list of what may page the owner's phone through pager.py (item RIMMANDRAKE_DESIGN_PUSHOVER_ALERTS_CRITICAL_ONLY_TWO_SENDERS; design design/specs/2026-11-19-pushover-critical-alerts/design.md). A class not here cannot page him. Adding or changing a class is the Conductor's logged act: a commit from the Conductor window plus a ledger note with --per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS; each entry's `added` names that act. window_h is the dedupe window: a repeat of the same class and cause inside it is recorded, not rung. Its danger: an alert that rings again for a fault he already knows trains him to ignore the pager (owner 2026-11-19: 'only for CRITICAL needs').",
+  "classes": {
+    "HARDWARE_FAILURE": {
+      "label": "Hardware failure",
+      "senders": ["conductor", "operations"],
+      "window_h": 24,
+      "template": "Hardware failure: {reading}",
+      "means": "a machine in the estate is failing or about to lose data: a fatal disk or PCIe error, SteveDesktop in a long fault, a disk about to fill",
+      "added": {"by": "CONDUCTOR", "on": "2026-11-19", "per": "owner 2026-11-19 ~7:00 PM PST: 'only for CRITICAL needs like hardware failure'"}
+    },
+    "ACCOUNT_SWITCH_FAILURE": {
+      "label": "Cannot switch accounts",
+      "senders": ["conductor", "operations"],
+      "window_h": 6,
+      "template": "Cannot switch accounts: {reading}",
+      "means": "the switching plan tried a switch and it failed, or the fleet is dark with no account to run on",
+      "added": {"by": "CONDUCTOR", "on": "2026-11-19", "per": "owner 2026-11-19 ~7:00 PM PST: 'inability to switch accounts'"}
+    },
+    "GOAL_SHOCK": {
+      "label": "A stated goal has failed",
+      "senders": ["conductor"],
+      "window_h": 168,
+      "needs_goal": true,
+      "template": "Goal failed: {goal}. {reading}",
+      "means": "the Conductor judges that a goal in infrastructure/state/CONDUCTOR_GOALS.md cannot be reached by the means it states, and he would want to know before his next sitting; never an ordinary miss or a late date",
+      "added": {"by": "CONDUCTOR", "on": "2026-11-19", "per": "owner 2026-11-19 ~7:00 PM PST: 'shocking inability to achieve a stated goal'"}
+    },
+    "TEST": {
+      "label": "Test page",
+      "senders": ["conductor"],
+      "window_h": 0,
+      "template": "Test page: {reading}",
+      "means": "the Conductor's drill that a page reaches his phone; window_h 0: a test never dedupes",
+      "added": {"by": "CONDUCTOR", "on": "2026-11-19", "per": "the brief's 'one real test page' before any trigger is switched on"}
+    }
+  }
+}

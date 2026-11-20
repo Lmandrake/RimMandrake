@@ -38,6 +38,7 @@ PAGES = {
     "design/specs/2026-11-19-consumable-readers/boundary.md": "src/RimMandrake/rimflow/selftest_pipeline_control.py",
     "design/specs/2026-11-19-tick-pauses/boundary.md": "src/RimMandrake/rimflow/selftest_tick_pauses.py",
     "design/specs/2026-11-19-conductor-acts/boundary.md": "src/RimMandrake/rimflow/selftest_conductor_acts.py",
+    "design/specs/2026-11-19-pushover-critical-alerts/boundary.md": "src/RimMandrake/Utils/selftest_pager.py",
     "design/specs/2026-11-19-incident-news-and-program-routes/boundary.md": "src/RimMandrake/rimflow/selftest_incident_news.py",
     "design/specs/2026-11-19-incident-clerk/boundary.md": "src/RimMandrake/rimflow/selftest_incident_clerk.py",
     "design/specs/2026-11-19-positive-steps-one-source/boundary.md": "src/RimMandrake/Utils/selftest_positive_steps_one_source.py",

@@ -92,7 +92,7 @@ DAY = 24 * HOUR
 # families whose collector was removed: their old keys never read as silent (relentless: the retired tick's belt, 2026-11-18)
 REMOVED_FAMILIES = ("relentless",)
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence", "companion", "seats", "plan", "roles", "queues", "wrapup", "maturation")
+            "evidence", "companion", "seats", "plan", "roles", "queues", "wrapup", "maturation", "pager")
 
 
 LIVE_OPS_DIR = "/mnt/d/ClaudeWork/rimmandrake/ops_watch"
@@ -3115,13 +3115,28 @@ def c_maturation(now, rules, ctx):
     return out
 
 
+def c_pager(now, rules, ctx):
+    """pager.*: a page to his phone that could not leave, refused callers, pages sent (ops_watch_pager.py; item
+    RIMMANDRAKE_DESIGN_PUSHOVER_ALERTS_CRITICAL_ONLY_TWO_SENDERS). A pager dir that cannot be named is UNMEASURED."""
+    import datetime as _dt
+    try:
+        import pager
+        import ops_watch_pager
+        return ops_watch_pager.points(pager.pager_dir(), _dt.datetime.fromtimestamp(now, _dt.timezone.utc))
+    except Exception as e:  # noqa: BLE001  one family's fault never stops the pass
+        why = "%s: %s" % (type(e).__name__, e)
+        return {"pager.could_not_send": U(why, "faults whose page has not left"),
+                "pager.refused_24h": U(why, "refused send attempts, 24 h"),
+                "pager.sent_7d": U(why, "pages accepted by Pushover, 7 d")}
+
+
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve_all, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
               "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
               "seats": c_seats, "plan": c_plan, "roles": c_roles,
-              "queues": c_queues, "wrapup": c_wrapup, "maturation": c_maturation}
+              "queues": c_queues, "wrapup": c_wrapup, "maturation": c_maturation, "pager": c_pager}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence", "companion", "seats", "plan", "roles", "queues", "wrapup", "maturation")
+         "evidence", "companion", "seats", "plan", "roles", "queues", "wrapup", "maturation", "pager")
 
 
 # ==================================================================================================== storage
