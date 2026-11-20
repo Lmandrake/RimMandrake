@@ -243,7 +243,11 @@ for k, t in NEW.items():
     print(k, row["runs_today"].get("result"), row["runs_today"].get("seconds"), flush=True)
 
 # in-game scenes: entry named in scenes.json; exists only if the function is defined there
-SCENE_TIER = {"sc_settings": "gimmesomeslack_flowworks", "sc_shock_reach": "gimmesomeslack_flowworks"}
+# the removal check loads a save WITHOUT GSS, so it runs on tier bridge (RIMMANDRAKE_PIN_SLACK_REMOVAL_CHECK_BRIDGE_TIER_NOT_GSS)
+SCENE_TIER = {"sc_settings": "gimmesomeslack_flowworks", "sc_shock_reach": "gimmesomeslack_flowworks",
+              "sc_removal_consequence": "bridge",
+              # it reads SC_under_liquid_pit, which asks only with FlowWorks loaded, as sc_cords_under_items does
+              "sc_true_to_grid": "gimmesomeslack_flowworks"}
 TIER_STAGE = {"quicktest": "6", "live_minimal": "6", "live_full": "6", "offline": "4-5"}
 TIER_KIND = {"quicktest": "live_minimal", "live_minimal": "live_minimal", "live_full": "live_full"}
 for s in scn["scenes"]:

@@ -1,5 +1,11 @@
 ## spec
 
+Road-back item of GimmeSomeSlack in-game visit 2, filed by its steward (RIMMANDRAKE_ROUTE_GIMMESOMESLACK_VISIT_TWO_FAILURES_BACK, 2026-11-20). It takes over RIMMANDRAKE_SPLIT_SLACK_WALK_FAILS_ONLY_BESIDE_REVIEW_STATIONS, which the visit's driver filed with the same evidence; the text below is that item's, with the stage sort added.
+
+Stage sort: GAME ONLY (`--needs game-up`). The cause is unknown until a live experiment: the divergence shows only on the owner's full list (316 mods) on the review map, and the fresh CordBuilder and the live pieces are C# in the running game; no offline harness builds them. Stage-6 check: `sc_walk` (`python.exe src/RimMandrake/GimmeSomeSlack/northstar/gss_playtest_runner.py --recipe full`, full list, on GSS_VISIT2_WALK_20261119.rws). Judge the judge: REAL MISS for cords, soak and save_reload_b (a load rebuilds fresh, and a line was lost). The ui 1/24 line (Industrial->Industrial) may be a check that picks the current look [guess ~55%]; if the fixer shows that, the check's pick is mended to a look other than the current one (the bar keeps its meaning) and re-pinned, never removed.
+
+Visit driver's text:
+
 GimmeSomeSlack visit 2, `sc_walk` (2026-11-19, game a, Archmagi, owner's full list 316 mods, DLL a00e4619…, source
 85f388636e). `gss_playtest_runner.py --recipe full` ran on the map that holds the 31 review stations
 (`human_review.py --build` on a full-list quicktest, saved first as GSS_VISIT2_WALK_20261119.rws). Result FAIL:

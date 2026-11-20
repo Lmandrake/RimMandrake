@@ -1,5 +1,13 @@
 ## spec
 
+Road-back item of GimmeSomeSlack in-game visit 2, filed by its steward (RIMMANDRAKE_ROUTE_GIMMESOMESLACK_VISIT_TWO_FAILURES_BACK, 2026-11-20). It takes over RIMMANDRAKE_SETTLE_SLACK_M8_CENSUS_READS_ONE_POLL_EARLY, which the visit's driver filed with the same evidence; the text below is that item's, with the stage sort added.
+
+Stage sort: GAME ONLY (`--needs game-up`). The fault is a race between the census and the graph worker in the running C# (`RM_MapComponent_CordGraph`); no offline harness runs the CordGraph worker, and the cause is measured but not traced. It is Stage 6 work. Stage-6 checks: `P_M8_break_two_ends_live_dead` (`python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --live`, tier gimmesomeslack) and `sc_cut_ends` (`python3 src/RimMandrake/GimmeSomeSlack/validation.py --scenes-from <proof json>`). Judge the judge: REAL MISS, not a criterion flaw: the probe promises a complete set to scripted callers, and a correct build can keep that promise.
+
+Delegated call (evidence-for-ask): the obvious fix is in the mod's probe (a census, and every probe that reads Pieces, waits until the worker has published), not a looser M8. A wait in M8 itself is a change to the check: if the fixer finds the probe cannot wait, M8 waiting for `LastPending == 0` keeps the bar's meaning (the player sees both ends) and is re-pinned with a journal line, never a weaker assertion.
+
+Visit driver's text:
+
 Found in GimmeSomeSlack in-game visit 2 (2026-11-19, game a, tier gimmesomeslack, deployed DLL a00e4619…, source
 85f388636e). Row `M8_break_two_ends_live_dead` (check `sc_cut_ends`) read FAIL in 7 of 9 core-block runs this
 evening: run 1, m8rep1 to m8rep6 and the probe run FAIL; run 3 and run 4 PASS. Every FAIL reads the same: the west

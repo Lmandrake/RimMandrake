@@ -1318,7 +1318,7 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "gimmesomeslack_flowworks"
   },
   "sc_cords_under_items": {
    "id": "sc_cords_under_items",
@@ -1719,7 +1719,7 @@
     "ran": false,
     "why": "live: this run is offline only; entry exists in the code"
    },
-   "tier": "gimmesomeslack"
+   "tier": "bridge"
   },
   "sc_stub_joins": {
    "id": "sc_stub_joins",
