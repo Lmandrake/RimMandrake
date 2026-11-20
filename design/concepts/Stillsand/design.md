@@ -316,7 +316,7 @@ source, named beside it.
 - *Declined, and not revived here:* **the dunes take the ship** (sand climbing the hull until dug out, and the
   landing raising the odds of an eruption by the ship's mass; out by his card of 2026-09-30) and **gale
   abrasion** (structure wear in a dune gale; built, then cut on 2026-10-23 under his *"I cut, you veto"* card,
-  restorable by reverting one commit). They are the second question under `NEEDS HIM`.
+  restorable by reverting one commit). Both stay down by his answer of 2026-11-19 on declined ship ideas.
 
 ## What the crew takes away
 
@@ -349,11 +349,16 @@ source, named beside it.
 | The drazzik's drum draws hunters; the duumma's hides it. | Each with a swimmer in range. | A silent drazzik draws nothing. |
 | Some clutches are canteens and some hatch on approach. | Take eggs from a soorrak nest and a drazzik clutch; drink one. | |
 | The rock holds a cave; the cave is cool, dark and occupied by one of its kinds; clearing and holding it makes it a place to rest and store. | Find the mouth on the shade face, go in, deal with what is there, stock it, sleep in it. | An unexplored cave gives no safety: its tenant is still in it. A cave with nothing useful in it exists. |
-| Digging and building on dry sand can bring the busters up under the work, with a rumble first. | A work camp on sand run until it happens; the same camp on rock. | On rock it never happens. |
 | The wrecks and sealed caches give real salvage and are not replaced. | Strip a hull, a cylinder and a tread; open a cache. | |
 | The soorrak flies, by the flight state, and nests where nothing walks. | A state read of its flight tracker (never a live look without the owner). | |
 | Sand banks against the windward side of what stands in the wind and can be shovelled off for glass sand. | A wall and the ship left a season's worth of fast-forward; shovel. | The lee side stays clear. |
 | Nothing vanishes. | Every loss above, and the mod's master setting switched off mid-event. | |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| Digging and building on dry sand can bring the busters up under the work, with a rumble first. | A work camp on sand run until it happens; the same camp on rock. | On rock it never happens. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary extreme desert
 (standing rule, every mod).
@@ -379,6 +384,14 @@ footprints (`HugeThings`); the growth engine, which has almost nothing to grow; 
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): the rock island and its cave.** A crossing of open sand,
+where things hunt under the surface, ends at the one rock; its cave on the shade face is cool, dark and occupied by
+one of its five kinds; clearing and holding it make a refuge whose finds provision the next crossing. *Why a normal
+stop is sure to see it:* the rock island is the harbour a ship lands by, and its cave mouth is on the face the crew
+shelters behind. His experience line: *"Rock islands are your harbours, and their caves are your fortune."*
+*Runner-up:* the dune gale's carry and return (the cleanse's runner-up), at 0.2.0. The sand busters, the busters'
+eruption under work, move to 0.2.0: they are a second hazard a stop can avoid by not digging on dry sand.
+
 **0.1.0, the stop**
 - The land: open sand and slow deep sand, the pinned sun and the one-sun rule, moving dunes and drift, the rock
   island and its arrival letter, sparse skeletons with skull and rib shade and their wind-harp, the bright wreck
@@ -392,9 +405,6 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   ordinary slow predator today and its following is owed)
 - The small and the planted: grain-scale life, light-pipe nubs and glasscrust, tall and kneeling ollim and its
   loomma tenant, the murrowbulb crop. (built)
-- The piinnok, the watcher whose lenses follow a walker and sink when something large passes under. (built in the
-  watcher kit, admitted by his card of 2026-09-30; its roster row on this biome is owed)
-- The sand busters' eruption under work on dry sand. (built; moved in, see `rewrite_choices.md`)
 - Sand fishing; the wind and sand sound bed and the rumble. (built)
 - Heat and blown sand on the hull through the campaign's shield frame, answered by the thermal veil and the light
   screen. (built in `src/RimUtinni/ShipShields/`; whether the heat wear fires at this biome's temperatures is
@@ -402,6 +412,12 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The campaign's cast where the Star Wars and Utinni layers add it.
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The piinnok, the watcher whose lenses follow a walker and sink when something large passes under. (built in the
+  watcher kit, admitted by his card of 2026-09-30; its roster row on this biome is owed)
+- The sand busters' eruption under work on dry sand. (built; moved in, see `rewrite_choices.md`)
+*Already here before that answer:*
 - The dune gale: herald, marching dunes, sun off, the carry and the return, one thing uncovered when it clears
   (the mummified caravan among them), and the search slowed one step while it blows. (built, except the last)
 - The muurrok and its mirror beam. (built)
@@ -436,10 +452,10 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - Choosing prey by how much water it holds, "travel thirsty" (out by card 2026-09-30).
-- The dunes take the ship; sinkhole caves; the glass sea landmark (out by card 2026-09-30). The first is asked
-  again below.
+- The dunes take the ship; sinkhole caves; the glass sea landmark (out by card 2026-09-30). The first stays down
+  by his answer of 2026-11-19 on declined ship ideas.
 - Dust devils, gale abrasion and static, skeleton burial, the cave drip, the tribal mark, fulgurites (cut
-  2026-10-23). Gale abrasion is asked again below.
+  2026-10-23). Gale abrasion stays down by the same answer; he can bring either back by name.
 - Krayts as events only (declined 2026-09-30: they stay wild). Kudda and truffle mole here (one home each, the Long
   Shade).
 - A biome heat kind, a glare floor, cover rules that change with a named region (the one-sun ruling of 2026-10-19).
@@ -449,22 +465,26 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-1. **[scope] Should the muurrok or the gale come forward into 0.1.0?** Both are built, both are his own asks
-   (*"This biome needs event level creatures"*; *"Call it a dune gale"*), and both are the kind of thing a player
-   retells. They are in 0.2.0 here because 0.1.0 already carries the busters and the swimmers and each addition
-   is more to prove. *As written* (default). *Muurrok forward:* the free tier's one leviathan is in the first
-   version. *Gale forward:* the biome's only weather, its only cover from orbit and the one safe hour on deep
-   sand are in the first version; it needs the dunes engine's owed live run.
-2. **[hull] The two wears on the ship that were cut: "the dunes take the ship" and gale abrasion.** The first he
-   put out by card on 2026-09-30, in a slate that also put out sinkholes and choosing prey by water; no typed
-   words came with that card. The second was built, then cut on 2026-10-23 under his card *"I cut, you veto"*,
-   and he did not veto it. On 2026-11-18 he ruled that every biome wears on the hull and that the answer is in
-   the sources. Neither is revived here. *Stay cut* (default: heat, blown sand, drift and what the landing wakes
-   carry the hull, each from a source he left standing). *Bring back "the dunes take the ship":* sand climbs the
-   hull until dug out and the landing raises the odds of an eruption near the pad; it must never lock a launch.
-   *Bring back gale abrasion in 0.2.0:* the gale wears outside fittings; one revert.
+None open. Every entry is answered (next section).
+
 
 Two things the cleanse proposal of 2026-11-17 decided are changed here by scope rather than asked, and each is a
-line under "Scope moves" in `rewrite_choices.md`: the sand busters are in 0.1.0, and the mirage is 0.2.0 instead
-of recommended for retirement. The second reader added a third: the lens kit (solar still and sun lance) is in
-0.2.0 as the ship's gift, where the cleanse deferred the still and recommended retiring the lance.
+line under "Scope moves" in `rewrite_choices.md`: the sand busters were in 0.1.0 (his first-version answer of
+2026-11-19 moved them back to 0.2.0), and the mirage is 0.2.0 instead of recommended for retirement. The second
+reader added a third: the lens kit (solar still and sun lance) is in 0.2.0 as the ship's gift, where the cleanse
+deferred the still and recommended retiring the lance.
+
+## Answered on 2026-11-19
+
+These entries were under `NEEDS HIM`, and each keeps its number.
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. **[scope] Should the muurrok or the gale come forward into 0.1.0?** *His card of 2026-11-19 (first version):* no.
+   Neither is the signature (the rock island and its cave), so both stay in 0.2.0 as written, and the sand busters
+   go back there too.
+2. **[hull] The two wears on the ship that were cut: "the dunes take the ship" and gale abrasion.** *His card of
+   2026-11-19 (declined ship ideas):* they stay cut. Heat, blown sand and drift carry the hull. He can bring either
+   back by name.

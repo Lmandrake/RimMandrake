@@ -284,8 +284,8 @@ source, named beside it.
   small warm patch of Rot mat"* wherever it lands next: *"the biome marks the ship by using it to travel."* He
   turned it down on 2026-10-02 (*"none of these hit the mark"*). And **the launch siege**, pitched the same day
   and not chosen: *"the warm mat grows up over the landing struts and holds the ship down for a few hours"* when a
-  joined crew member is aboard. Both were before he stated the ship lens. They are the first question under
-  `NEEDS HIM`.
+  joined crew member is aboard. Both were before he stated the ship lens. Both stay down by his answer of
+  2026-11-19 on declined ship ideas; he can bring either back by name.
 
 ## What the crew takes away
 
@@ -309,15 +309,20 @@ source, named beside it.
 | Organic things in the open on live mat spoil fast and vanish; inside walls and roof they do not; a lean-to does not count; frozen stock keeps; metal is untouched. | Meat, a corpse and steel: open, lean-to, enclosed; a frozen stack outside in deep cold. | The same meat on dead cold ground at the forest's starving edge spoils at the ordinary rate. |
 | Stored native food warms its store, visibly in proportion to how much is stored. | A cold room filled in steps. | The same weight of imported food does nothing. |
 | A Prime gasses what comes near in the ordinary course of play, and feeds on what dies there; a Skulltop does the lesser version. | An animal wandering near each, with nobody forcing anything. | A burst fired by a debug helper proves nothing: it has to happen on the plant's own tick. |
+| Under Sheen-fall an unscreened ship's outside fouls, slowly and with a letter; a ship under the light screen does not. | Two ships through a fall, one screened. | Under a clear sky neither fouls. (The frame does not see Sheen today; this is the row that says it must.) |
+| The fliers fly, by the flight state. | A state read of the illoth's and dustveil's flight trackers (never a live look without the owner). | |
+| Nothing vanishes. | Every loss above; the mod's master setting switched off with someone swallowed. | The swallowed person is released, not deleted. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
 | The hwelgrue eats loose stores, corpses and the downed in the open, and nothing that is up and walking. | A loose stack on open ground, a corpse, a downed stranger and a healthy colonist in its path. | Things under a roof or inside a stockpile zone are left, the downed included. |
 | A swallowed person knocks, is named with a time on the giant, and is got out alive by hurting the giant in time; too late, a body comes out. | One prompt rescue, one late. | Never a missing-person letter with nothing on the map. |
 | What it ate that was metal comes back whole in a casting. | Feed it a marked, damaged steel item; wait. | The item has its mark and quality; nothing organic comes back. |
 | With the ship's engine on the map, the core's carrier pings and the ship hears it. | A map with the carrier and one without. | Only one giant in the world ever pings. |
 | A lussa crown defended by its spores can be cut, brewed that day and drunk on the spot for joy and a lasting good memory; it cannot be stored or carried off. | Brew and drink at the grove; try to stock one. | A crown cut yesterday will not brew. |
-| Under Sheen-fall an unscreened ship's outside fouls, slowly and with a letter; a ship under the light screen does not. | Two ships through a fall, one screened. | Under a clear sky neither fouls. (The frame does not see Sheen today; this is the row that says it must.) |
 | A ship part or crate set down on open mat in the giant's path is eaten like anything else, and only its metal comes back. | A minified ship part and a crate, in the open and under a roof. | The roofed ones are left. |
-| The fliers fly, by the flight state. | A state read of the illoth's and dustveil's flight trackers (never a live look without the owner). | |
-| Nothing vanishes. | Every loss above; the mod's master setting switched off with someone swallowed. | The swallowed person is released, not deleted. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a cold forest of large mushrooms
 (standing rule, every mod).
@@ -343,6 +348,13 @@ one sun from geometry, which on the night shoulder is low or absent; the Empire'
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): the metabolism.** The living mat warms a walled,
+roofed room with nothing burning; organic things left in the open on live mat spoil fast and vanish; stored native
+food warms its store. *Why a normal stop is sure to see it:* a landed crew sets things down and sleeps somewhere on
+the first day, and what it leaves outside is gone by the next. His experience line: *"generous and hungry. The Rot
+shares everything, including you."* *Runner-up:* the hwelgrue, the giant that swallows the downed; this design had
+brought it into 0.1.0, and it goes back to 0.2.0 whole, as he let the cleanse mark it on 2026-11-17.
+
 **0.1.0, the stop**
 - The land: cap architecture with readable ground, living mat, milk shallows and bridges, biological light, the
   Sheen as weather, digested wreckage. (built; milk placement unproven)
@@ -351,12 +363,15 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The armed residents: Prime and Skulltop patches. (built; their gas on the ordinary plant tick is unproven)
 - The life: fungal forage, timber, fibre, medicine; the hybrid roster with its ordinary milk, silk, eggs, hunting
   and poison. (built)
-- The hwelgrue: grazing the open ground, swallowing the downed, the knocking and the rescue, castings that return
-  metal, the first-sighting letter, the ping. (built; moved in, see `rewrite_choices.md`)
-- The pleasure cup, brewed live at a guarded lussa crown. (built; his mark)
 - The Sheen as fouling on an unscreened ship, on the built shield frame. (frame built; it cannot see Sheen yet)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The hwelgrue: grazing the open ground, swallowing the downed, the knocking and the rescue, castings that return
+  metal, the first-sighting letter, the ping. (built; moved in, see `rewrite_choices.md`)
+- The pleasure cup, brewed live at a guarded lussa crown. (built; his mark)
+*Already here before that answer:*
 - The drive core: one carrier in the world, soundness lost to ship weapons, cut out and fitted for range. The dead
   ship's log and its salvage sites. (built)
 - The log's last camp and the living mat root: a ship part by his ruling of 2026-10-22, fed off the Rot, budding.
@@ -385,9 +400,10 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - A wayward Prime on an authored tile elsewhere. A colony of forty.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
-- The sheened hull, the ground's heartbeat, Unseaming (*"none of these hit the mark"*, 2026-10-02). The first is
-  asked again below.
-- The launch siege for the joined; the joined ear (pitched 2026-10-02, not chosen). The first is asked again below.
+- The sheened hull, the ground's heartbeat, Unseaming (*"none of these hit the mark"*, 2026-10-02). The sheened
+  hull stays down by his answer of 2026-11-19.
+- The launch siege for the joined; the joined ear (pitched 2026-10-02, not chosen). The launch siege stays down by
+  the same answer.
 - Two giants offered beside the hwelgrue and not chosen (2026-10-02): the yssomar, the wound-bearer whose scars
   are not its own; and the brullith that cannot lie down. *"No yssomar is built."*
 - The wound-tie surgery (held off the card). The grove's audible breath (offered with the heartbeat).
@@ -402,21 +418,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-1. **The sheened hull, again?** He turned it down on 2026-10-02. On 2026-11-18 he ruled that every biome wears on
-   the hull and that the answer is in the sources; this is the source's answer, and it is about what the Sheen is
-   for. *Stay turned down* (default: the Rot spares metal and wears on stores, the cold room and the crew). *Bring
-   it back in 0.2.0:* film, then fruiting pockets on seams and bays, scraped off in the fall before launch or
-   carried to the next landing, where a small patch of the Rot takes root; a medium build, and the only biome that
-   uses the ship to travel. Asked with it, because it is the other ship idea he passed over the same day: the
-   launch siege, where the mat grips the struts of a ship carrying a joined crew member and the Unjoining is what
-   makes leaving easy. *Not chosen stays not chosen* (default).
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
-2. **How much of the giant is 0.1.0?** He let the cleanse put all of it in the next version on 2026-11-17, the day
-   before the lens. This design brings the eating, the swallowing, the rescue, the castings and the ping into 0.1.0
-   and leaves the core, the log and the vat at 0.2.0. *As written* (default). *All of it at 0.2.0, as he marked:*
-   the first version is the cleanse's quiet metabolism and one cup. *All of it at 0.1.0:* the stop's prize is in the
-   first version, with a world-unique carrier and a ship part to prove.
-   *Waits on the first-version size question of 2026-11-19.*
+None open. Every entry is answered (next section).
+
 
 The cleanse proposal's own question to him still stands and is not re-asked here: whether exposed frozen meat
 should also be digested. This design keeps the cleanse's default, that frozen stock keeps.
@@ -431,3 +434,16 @@ can undo any one by name.
 
 3. **Is the blastpod the Rot's fuel?** Emergency fuel only. The plant cannot grow at the Rot's temperatures, and he
    kept its donor bodies purged (the design's default). *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. **The sheened hull, again?** *His card of 2026-11-19 (declined ship ideas):* it stays turned down, and the launch
+   siege with it. The Rot spares metal and wears on stores, the cold room and the crew. He can bring either back by
+   name.
+2. **How much of the giant is 0.1.0?** *His card of 2026-11-19 (first version):* none. The signature is the
+   metabolism (Scope, top), and the hwelgrue moves to 0.2.0 whole, as he marked it on 2026-11-17: the eating, the
+   swallowing and rescue, the castings, the first-sighting letter and the ping, with the core, the log and the vat
+   already there. The pleasure cup (his mark) moves with it. **This changes the design's default.** Was: the eating,
+   swallowing, rescue, castings and ping in 0.1.0.

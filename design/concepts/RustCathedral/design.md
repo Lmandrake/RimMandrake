@@ -351,8 +351,13 @@ Dry thunderstorms are on the weather table and are not a hazard the frame sees.
 | The pools are stationary, visibly marked, and hurt what stands in them. | Walk a pawn round one and through one. | A pool that moves or cannot be told from plate. True acid. |
 | The air and the overhead sun are ordinary heat at their strongest; the walls' shadows are real shade. | The same pawn in the open and in a wall's shadow. | A heat of the Cathedral's own. |
 | A roach cleans filth; a worn borehulk scrapes, backs away when hurt, and never fights. | A camp with filth; a shot at the borehulk. | |
-| Bolts on the ship's edges at launch stay on the hull and keep dancing wherever the ship lands. | Land, wait, launch, land elsewhere. | Bolts that fall off in weather. Bolts carried as cargo. |
 | An unshielded ship parked here wears, on the built shield frame, from the heat and from the polluted ground; the veil and the screen answer each, and neither is a design of this biome's. | A ship parked a week in the open, bare; then veiled; then screened. | Wear that stops when the crew behaves. A hazard the frame does not report. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| Bolts on the ship's edges at launch stay on the hull and keep dancing wherever the ship lands. | Land, wait, launch, land elsewhere. | Bolts that fall off in weather. Bolts carried as cargo. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a hot metal flat with its plain
 salvage and residents (standing rule, every mod). Switching off never resets a real faction standing.
@@ -378,6 +383,14 @@ pattern; here it stays behind the plot's gate); the Empire's search and the visi
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): the temper.** Extraction disturbs the Cathedral; the
+hum's mood and the living bolts show where the place minds the work; a marked divider or a sacred building costs
+real standing until repaid; deep drilling brings machines that leave when it stops; guardians hold ground and hunt
+nobody. *Why a normal stop is sure to see it:* salvage is why a crew stops here, and the first cut, haul or line in
+the canals moves the hum and gathers bolts at the work. His experience line: *"Salvage paradise with a temper."*
+*Runner-up:* restoring the borehulk (the cleanse's runner-up), later. The bolts that board at launch are a ship
+moment, not the temper, and move to 0.2.0 (the card's cost: *"several of your own picks wait a version"*).
+
 **0.1.0, the stop**
 - The land: deck plate, the maze of routes and marked dividers, dry bright weather, toxic pools with their
   sulfur edge, cooked strays, derelict wrecks; heat as ordinary air and overhead sun. (part built; the pools are
@@ -392,13 +405,16 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The deep-drill response. (built)
 - Guardians that hold ground and never hunt. (unknown)
 - Roaches; eels, their catch and what fishing does to the hum; the worn, peaceful borehulk. (built)
-- Bolts that board at launch and live on the hull. (built; moved in, see `rewrite_choices.md`)
 - The wear on the landed ship: heat and pollution, on the built shield frame, answered by the veil and the
   screen. (built; shared machinery, nothing of this biome's to add)
 - The ground's pollution as a cost on a crew working outside. (the fixed world's tiles; ordinary game rules)
 - An arrival notice of the pools and the heat. (built)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- Bolts that board at launch and live on the hull. (built; moved in, see `rewrite_choices.md`)
+*Already here before that answer:*
 - The line-cycle: machinery turning over under the plate, and every animal and machine standing still while the
   crew, who are not held, feel it. (built; in the batch he picked by card on 2026-10-02; `NEEDS HIM` 6)
 - Hum reading and the written primer; the droids' muttered commentary. (built)
@@ -437,6 +453,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   four of the giant's five hooks: the Furrow, the Bounty Notice, Scoop-Loads and the Rider (not chosen
   2026-10-02).
 - Stowaway bolts that go still a day after leaving (the pitch; he replaced it with bolts that remain).
+- The Loosing and the Rider (not chosen 2026-10-02): they stay down by his answer of 2026-11-19 on declined ship
+  ideas; he can bring either back by name.
 - A debt owed to the machines' own faction (the kit's reading; his August ruling names the Enclaves).
 - The nineteen hill tiles (the later flatness ruling); the mech-rat and the mech-chicken (his cuts).
 - **Recommended for dropping, not yet his:** alternate-planet scoring and rarity (there is no worldgen in any
@@ -444,20 +462,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-Each is tagged with one theme. The ship ideas he did not choose are gathered in 8; none is revived.
+None open. Every entry is answered (next section).
 
-6. **[scope] One signature, or the pieces.** His card of 2026-11-17 was "Land, life, one signature", and the
-   cleanse read it as the temper alone. The first read moved the boarding bolts into 0.1.0 on his own words.
-   The line-cycle has the same claim: he picked it by card on 2026-10-02, it is built, it lasts a minute or two,
-   and it holds animals and machines but not the crew. *As written* (default: bolts board in 0.1.0; the
-   line-cycle waits for 0.2.0). *Both in 0.1.0. Neither* (the cleanse's reading).
-   *Waits on the first-version size question of 2026-11-19.*
-8. **[other] Ship ideas he did not choose, listed so nobody revives one by accident.** All on 2026-10-02: **the
-   Loosing** (unbuild the thing the colony bolted down to stay and *"carry every piece aboard the ship's
-   hold"*); **the Rider** (bolts steering the giant from its cab, which *"move out onto the ship"* if the giant
-   is salvaged); and the first form of the stowaways, which went still a day after leaving, replaced by his own
-   (*"REMAIN on the ship"*). Not revived.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 ## Answered on 2026-11-19
 
@@ -482,3 +488,15 @@ can undo any one by name.
    beside a wall and is drawn onto the wall's face. It was his own wish (sheet note of 2026-10-05), and the digest
    that cut it did not say so. **This changes the design's default.** Was: *Stays dropped*. Undo: move it back to
    "Dropped" and set this answer back to *Stays dropped*. *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+6. **[scope] One signature, or the pieces.** *His card of 2026-11-19 (first version):* one signature a stop is sure
+   to see: the temper (Scope, top). Neither the boarding bolts nor the line-cycle is in 0.1.0: the bolts move to
+   0.2.0 with their text and promise row, and the line-cycle stays there. **This changes the design's default.**
+   Was: the bolts board in 0.1.0.
+8. **[other] Ship ideas he did not choose** (the Loosing, the Rider, the first form of the stowaways). *His card of
+   2026-11-19 (declined ship ideas):* they stay turned down. His own replacement, bolts that *"REMAIN on the ship"*,
+   stands, at 0.2.0 by answer 6.

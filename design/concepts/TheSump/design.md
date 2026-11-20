@@ -81,23 +81,17 @@ every lamp it lights is a choice. And nothing here grows, floods or closes in on
 That is the outer edge, not the usual stay. What actually ends most stops is on the crew's side of the ledger: the
 water it brought, the solvent it can make, and whether somebody dug one stratum too deep.
 
-**Cover from orbit (his ruling of 2026-11-18: partial cover, by biome).** The Sump has no canopy and no steam. It
-has the dusk, with the sun held about ten degrees under the horizon. That is deep twilight, not full dark, so this
-design gives the Sump **one step of cover** (the search from orbit runs one step slower) and not the pause that
-true night earns. Two things throw it away at once: a lit moat, whose smoke column the sheet calls *"visible for a
-day's travel"* and paints *"an orange smear on the underside of the sky"*, and a lit-up camp.
+**Cover from orbit (his cards of 2026-11-18 and 2026-11-19: one step per kind of cover on the tile, added; full
+dark is one step; nothing pauses the search).** The Sump has no canopy and no steam. It has the dusk, with the sun
+held about ten degrees under the horizon, and fog. Two things throw it away at once: a lit moat, whose smoke
+column the sheet calls *"visible for a day's travel"* and paints *"an orange smear on the underside of the sky"*, and a lit-up camp.
 
-The one step has a second leg the first pass did not see: the Sump's forced weather is fog. `RM_SumpWeather`, the
+The cover has a leg the first pass did not see: the Sump's forced weather is fog. `RM_SumpWeather`, the
 only weather the dusk lock allows, wears the base game's fog overlay and fog wind, and his card names fog as one of
-the three things that slow the search by a step. Dusk and fog together are still one step, as canopy and steam are
-in the Greentide.
-
-Whether it should be more than a step is his to say, and the sources lean both ways. For full dark: his own card
-of 2026-10-20 set dusk light to reach twelve degrees below the horizon, and the measurement put before him then
-reads the Sump at a median glow of 0.02, with four tiles in ten fully dark, *"still psychologically Dark"*
-(`design/RimMandrake/glow_consumers_2026-10-20.md`); and the freeze ruling of 2026-09-07 left *"a one-line call on
-the edge cases where 'lit' is arguable (the Sump ...)"* owed and never made. Against: the sheet's own picture is a
-horizon that glows. See `NEEDS HIM`.
+the three things that slow the search by a step. So the fog gives one step every day. The dark is a measurement of
+the sun's angle at each tile: the measurement put before him on 2026-10-20 reads the Sump at a median glow of 0.02,
+with four tiles in ten fully dark (`design/RimMandrake/glow_consumers_2026-10-20.md`), and a fully dark tile adds a
+second step. A ship on such a tile has two steps; elsewhere it has one.
 
 **Fuel (his ruling of 2026-11-18, and three older ones the first pass did not find).** The source is the tar, and
 it is neither new nor unbuilt.
@@ -125,10 +119,9 @@ The other two routes are his as well. **Buying** it from the Junker stations, wh
 *"undeploy, fly away rich. Raid pressure = time on the ground while pumping"*), with the Sump named in its notes as
 the place to *"fly to that tar lake"*. The hardware is FlowWorks'; nothing in the Sump's sources says it has run.
 
-Which class that makes the Sump is his call and is asked under `NEEDS HIM`. The first pass wrote "one of the
-richer sources". His 2026-09-07 line reads as the slow route with a machine attached; his story card reads as a
-route the campaign relies on. This design keeps "richer" as its default, because a found refinery on an
-inexhaustible pool is more than rendering biomass, and says plainly that it is slow by his word and stays slow.
+His fuel answer of 2026-11-19 makes the Sump one of the three richer sources, with the Abyss and the Fever Wood:
+the found refinery on an inexhaustible pool is its fuel in 0.1.0. It stays slow by his word of 2026-09-07, and the
+answer sets only that a crew can plan a stop around it.
 
 **What the place does to the ship (his ruling of 2026-11-18, in 0.1.0).** It tars it. Every source agrees that the
 tar *"gets on everything"* (the nastiness ruling of 2026-09-24): boots carry it up the ramp and across the decks, a
@@ -377,7 +370,8 @@ willingly, and it can be lit into a terrible smoky horror nothing can cross."*
 - A pool that caught fire and will not go out.
 
 **Stay, longer than the Empire would like:**
-- The dusk: an unlit crew is seen only from six cells, and the search from orbit runs one step slow.
+- The dusk and the fog: an unlit crew is seen only from six cells, and the search from orbit runs one step slow,
+  two on a fully dark tile.
 - Tar between the ship and anything walking toward it.
 - Nothing here grows over the ship, floods it or freezes it. A careful crew that stays out of the deep strata can
   sit in the dark for as long as its water lasts.
@@ -417,12 +411,17 @@ willingly, and it can be lit into a terrible smoky horror nothing can cross."*
 | Sump-mice cross tar freely and bend around what is under it. | A map with a dormant bulge and open pools; watch the lines. | Remove the bulge: the lines straighten. |
 | The pallick fails under a walker, mires and hurts and does not kill; mice never cross it. | A pawn walks onto pallick and onto mirrelin crust beside it; a helper stands by. | Mirrelin holds. A mouse routed at the pallick goes around. |
 | A dig pays by depth and sometimes clicks; the click gives time to clear the site and for a nearby miner to answer it. | A shaft worked through several strata with a miner near and with one far. | A stratum table with no trap row would pass a lazy check: the scene must see a click and both outcomes. No whole Assailant or Rakatan ever comes up. |
-| A dormant bulge wakes by cause, with signs first, and the woken beast is slow, unfightable, goes for built things and leaves a mound and a letter for each one taken. | Wake one by a deep dig with the ship's yard built at a distance; load and launch ahead of it. | Shooting it changes nothing that matters. Nothing it takes disappears without a mound. It sinks back and is a bulge again. |
-| The kethrel picks up loose scrap near the tar, wears it in visible stages, and gives every piece back on molt or death. | Scrap left by a pool; a kethrel loads; a handler coaxes a molt. | The dropped things are the same things, counted. |
-| A belch coats ground, goods and decks near a pit, and solvent or glasswalk answers it. | Trigger a belch beside a stockpile and the ship's ramp. | Glasswalk under the splash takes no deposit. |
 | The skellarn really flies, lands, and walks the open tar. | A skellarn over a pool with mice on it (flight read from its flight state, never from a screenshot). | It is not mired where a pawn would be. |
 | An unlit crew in the dusk is not seen by a watcher beyond a few cells; a lit one is. | A probe passes an unlit camp and a lamplit camp at the same distance. | The same pass on a daylit map sees both. |
 | Native plants grow with no sun and no sunlamp, and nothing native glows. | Skelver, korveth and lanneth growing through the visit. | A plant from elsewhere planted beside them does not grow. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| A dormant bulge wakes by cause, with signs first, and the woken beast is slow, unfightable, goes for built things and leaves a mound and a letter for each one taken. | Wake one by a deep dig with the ship's yard built at a distance; load and launch ahead of it. | Shooting it changes nothing that matters. Nothing it takes disappears without a mound. It sinks back and is a bulge again. |
+| The kethrel picks up loose scrap near the tar, wears it in visible stages, and gives every piece back on molt or death. | Scrap left by a pool; a kethrel loads; a handler coaxes a molt. | The dropped things are the same things, counted. |
+| A belch coats ground, goods and decks near a pit, and solvent or glasswalk answers it. | Trigger a belch beside a stockpile and the ship's ramp. | Glasswalk under the splash takes no deposit. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a cold dark flat with black
 ground (standing rule, every mod).
@@ -455,6 +454,17 @@ visibility dial.
 
 Every feature is in one bucket.
 
+**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; two candidates, listed for the
+Conductor.** His experience line holds both halves: *"The sump hides all and makes you fight it for every action."*
+- *The tar's burden:* crossing raw tar slows and dirties a walker and travels onto floors and decks; solvent,
+  scrubbing and glasswalk answer it; the sump-mice and the honest plants show where the tar is safe. A normal stop is
+  sure to see it: the ship lands on the black and the crew's first walk is across tar. The cleanse chose it
+  (2026-11-17) and deferred the dig on purpose.
+- *The dig (the playable "hides all"):* the shaft, the stratum lottery and the click. This design moved it into
+  0.1.0 on his words "hides all"; a stop sees it only if the crew chooses to dig.
+Moved now, because they are extras under either choice: the dormant bulge and its beast, the kethrel, and the belch.
+If the tar is chosen, the dig moves to 0.2.0 with its row; if the dig is chosen, the tar stays as land.
+
 **0.1.0, the stop**
 - The land: permanent dry dusk, deep and shallow tar, cooled glass reaches, the pan, the margin ring of
   chemotrophs. (built)
@@ -466,25 +476,14 @@ Every feature is in one bucket.
   plants on the right cells is not built either. All three are owed, and without them the mice are scenery.)
 - The dig shaft, the stratum lottery and the click. (built; moved in. Most of what the table pays today is
   placeholder salvage: the old bones, hides, casings and machines the sheet promises are still to be authored.)
-- The dormant bulge, its warning signs, and the station-eating beast that is evacuated ahead of. (the bulge, the
-  wake causes and the beast are built offline; the day-ahead warning, the bubble and the ring, was not found in
-  source and is owed. Moved in.)
-- The kethrel: pickup, the scrap shell in stages, the molt. (built; moved in)
-- The belch, as a real tar flood whose front cools to glass, and the slow responders after it (fresh crust the
-  mice avoid, a soffeth ring at the new edge). (Second reader: the incident is built as a flood in
-  `RM_IncidentWorker_TarPitBelch.cs`, not as the splash this page said, and the responders are built and passed one
-  live check on 2026-11-06. Two defects are on file: the glass edge may not be written on cells the depth engine
-  owns, and the responder looks for a glass terrain the Sump's cooling no longer produces. Both moved in from
-  0.2.0 and "later", because a belch that rewrites the ground without the signs catching up would make the mice
-  lie.)
 - The Deep Black mere. (built; it had no line on this page)
 - The first-landing letter, with text that names only signs that work. (built; his idea)
 - The wrecked tar refinery, found and kludged back. (built in FlowWorks, never run for the Sump)
 - The cast: sump-mouse, gulveth, the three thrummels as plain animals, dredgel, skarrid, skellarn with real flight.
   (built)
 - The margin's goods: skelver, korveth pitch, bitumen, seepwax, hides, lanneth. (built)
-- Dusk as cover from the Empire's watchers, and one step of cover from orbit. (the first is built in the pursuit
-  code; the second is the small build his ruling asks for)
+- Dusk as cover from the Empire's watchers, and cover from orbit: fog one step, a fully dark tile one more. (the
+  first is built in the pursuit code; the second is the small build his ruling asks for)
 - Chemfuel from tar at the found refinery. (built, unproven; this replaces the first pass's "rendering bench",
   which nothing in the sources asks for)
 - Owed and small, found by reading the build notes to the end: the dig's click has no sound and no letter today,
@@ -496,6 +495,20 @@ Every feature is in one bucket.
   being floor; the hull skin is owed)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The dormant bulge, its warning signs, and the station-eating beast that is evacuated ahead of. (the bulge, the
+  wake causes and the beast are built offline; the day-ahead warning, the bubble and the ring, was not found in
+  source and is owed. Moved in.)
+- The kethrel: pickup, the scrap shell in stages, the molt. (built; moved in)
+- The belch, as a real tar flood whose front cools to glass, and the slow responders after it (fresh crust the
+  mice avoid, a soffeth ring at the new edge). (Second reader: the incident is built as a flood in
+  `RM_IncidentWorker_TarPitBelch.cs`, not as the splash this page said, and the responders are built and passed one
+  live check on 2026-11-06. Two defects are on file: the glass edge may not be written on cells the depth engine
+  owns, and the responder looks for a glass terrain the Sump's cooling no longer produces. Both moved in from
+  0.2.0 and "later", because a belch that rewrites the ground without the signs catching up would make the mice
+  lie.)
+*Already here before that answer:*
 - The poured moat, the fuse post and the smoke wall; fire that runs along connected tar and stops at a gate. By
   his ruling of 2026-09-12 a lit moat does catch the natural pools beside it, with the build note that the cascade
   stay *"survivable-by-foresight ... no silent map-wipe"*. (moat and post built; nothing today makes the promised
@@ -548,17 +561,8 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-4. **Is the Sump's dusk dark enough to pause the search?** (cover) *One step, from dusk and fog together*
-   (default). *Full dark, a pause:* his light card of 2026-10-20 leaves the Sump at a median glow of 0.02, and the
-   2026-09-07 freeze ruling left the Sump's "lit" status as an owed one-line call. The same question is open for
-   the whole plain night side in `biome_shared_machinery_2026-11-18.md`.
-   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
-   2026-11-19.*
-5. **Which fuel class is the Sump?** (fuel) *A richer source* (default: a found refinery on a pool that never
-   runs dry, and his story card calls the Sump the fuel route). *The slow route with a machine:* his words of
-   2026-09-07, *"not fuel — must be processed ... and it is slow; the player cannot stay long"*. The machinery is
-   the same either way; the answer sets its rate and whether a crew plans a stop around it.
-   *Waits on the rich-fuel question (which biomes are the few with a richer source) of 2026-11-19.*
+None open. Every entry is answered (next section).
+
 
 No ship idea that he declined or cut was found in the Sump's sources. The nearest things are not ship ideas:
 re-paving the Ashfall Road, tar rain, and the mess-lover trait, each listed under Dropped with his words.
@@ -592,3 +596,15 @@ can undo any one by name.
    assailants. No normal life can survive otherwise."* Eggs are loot that never hatch.
 10. (other) **The vault as a ship gift.** Keep all three gifts. The vault is marked as an agent's pick, not his (the
    design's default). *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+4. **Is the Sump's dusk dark enough to pause the search?** *His card of 2026-11-19 (cover):* nothing pauses it.
+   The fog is one step every day; a tile whose measured light is full dark adds one more, and the steps add. A lit
+   moat or a lit camp takes them away while it burns. **This changes the design's default in part.** Was: one step
+   from dusk and fog together.
+5. **Which fuel class is the Sump?** *His card of 2026-11-19 (rich fuel):* a richer source, one of three with the
+   Abyss and the Fever Wood. The found refinery on a pool that never runs dry is the Sump's fuel in 0.1.0, slow by
+   his word of 2026-09-07.

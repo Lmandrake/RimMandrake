@@ -216,14 +216,15 @@ Each can happen inside the visit. Each says what is on screen.
 
 ## Fuel, and the hull
 
-**Fuel: the emergency route in play; a richer source on paper.** The campaign's fuel ruling of 2026-08-15 names
+**Fuel: the emergency route, and buying.** The campaign's fuel ruling of 2026-08-15 names
 *"helixien gas (volcanic/deep-desert tiles)"* among the paths to fuel, and this is the planet's one volcanic place.
 The sheet's own list of what the Forge uniquely gives says *"free heat"* and *"the vents — the vapor law's richest
 taps"*, and does not say fuel. Nothing in this mod taps gas for the ship. So in play today the Forge gives only the
 slow rendering of plant and carcass that every biome allows, and less of it than most, because the gas wash burns
 the plants every turn. The one idea in the sources that made this *"the best refuel stop on Ash'karr and the most
 uncomfortable one"* (a heat exchanger feeding the ship's engine from a vent) was struck by the owner before he
-stated the ship lens; it is the first question under `NEEDS HIM`. **Where fuel is bought:** nowhere a fugitive would
+stated the ship lens, and it stays struck: his fuel answer of 2026-11-19 names the few richer sources, and the Forge
+is not one of them. **Where fuel is bought:** nowhere a fugitive would
 want to ask. The only station on the mountain is the Empire's.
 
 **Tibanna is not fuel.** The embargo's own law: *"Tibanna is not propane."* It is blaster gas; *"no conversion route
@@ -308,13 +309,18 @@ wear below has a source, named beside it.
 | Floatstone cut on the crust and carried to the bank builds ordinary walls that do not burn, and a stack of it weighs less than stone. | One trip, cut to wall; a fire test against a wood wall; a carried-weight comparison. | |
 | Cracks warn; uncut gardens leave with dust and a count; the crust returns to lava and what was left on it is lost with a readable account. | A crew that leaves on the warning, one that leaves late, a crate left behind. | No pawn vanishes: a body or a located loss, every time. |
 | The rain wakes the dhokkur, the julmox and the dhuvvox, and they seal again after. | Watch one of each through a turn. | The same animal after reload is the same animal. |
-| A dhokkur asleep reads as an outcrop until it wakes, and wakes with a groan, dust and water. The sources allow it one quiet tell: *"the gutter-lines converge too regularly for stone. The tooltip lies; the sprite may only whisper."* | A fresh crew walking past one before the first rain. | |
 | Bulloos float in the vapor columns and are fed by them; away from a column they need ordinary feed. | A wild herd over a vent; a tame one led away. | A bulloo with no column and no feed starves. |
 | The fliers fly, by the flight state. | A state read of the fleet flier's and the jossur's flight trackers (never a live look without the owner). | |
 | The jossur hunts; a hurt native can turn. | A jossur with a small colony animal in reach; a provoked julmox. | A roster where nothing can hurt anyone fails his line. |
 | Fire reaches the parked ship's outside like anything else's, and a bare apron keeps it off; a crew member on an open deck in the rain is scalded. | A ship with stores on an open apron and one with a bare apron, through a turn. | |
 | A crew that studies ripe gardens learns to lay a floatstone hull and hang a floatstone door on the ship, and neither burns in the gas wash. | Researchers at ripe gardens through one growth phase; then one hull cell and one door built aboard; then a gas wash. | Before the study the two are not offered. A wooden fitting beside them burns. |
 | A ship set down on or against lava takes immediate severe damage, once, with a letter that says why; a ship set down on bank well clear of lava does not. | Two landings on one Forge map. | The second landing is the control: as written today it would also take the burst (see the hull section). |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| A dhokkur asleep reads as an outcrop until it wakes, and wakes with a groan, dust and water. The sources allow it one quiet tell: *"the gutter-lines converge too regularly for stone. The tooltip lies; the sprite may only whisper."* | A fresh crew walking past one before the first rain. | |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves a hot volcanic map with towers on
 it (standing rule, every mod).
@@ -337,6 +343,14 @@ bone from butchery; the ship's scanner; fire by the game's own spread; the Empir
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): the mountain's cycle.** Still, hiss and gas, boiling
+rain, crust, gardens, cracks, melt, each with its warning: the rain crusts the lava for a harvest window, the crew
+cuts floatstone and gathers the gardens, and gets off before the crust melts back. *Why a normal stop is sure to see
+it:* one turn of the mountain fits inside the first week, so every stop meets at least one hiss, one rain and one
+melt. The design's own line: *"a clock the crew has to learn before it kills them."* *Runner-up:* the dhokkur's
+remembered roads and wall shoves (the cleanse's runner-up), later. The floatstone hull and door stay in 0.1.0 as
+the Forge's armour, which is the hull-wear system's answer here, not a separate gift.
+
 **0.1.0, the stop**
 - The land: volcanic ground, permanent banks, lava seams and pools; still heat, boiling rain, red fog and ash;
   vapor columns that can be seen. (built) Whole towers and salvageable works on ordinary maps. (unbuilt) Machines
@@ -347,7 +361,6 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The life: flash plants and firevine; dhokkur, julmox and dhuvvox waking with the rain; bulloos small and great,
   fed by vapor; fleet flier and jossur; dhoggur, metal-eating slug as an ordinary forager, ummisk. (built; vapor
   feeding is not)
-- The dhokkur's wake as a show: groan, dust, pouring water. (built; moved in, see `rewrite_choices.md`)
 - Fire on the parked ship's outside; melt under anything on crust. (ordinary systems)
 - The shield frame's wear here: the lava landing and extreme heat, with the thermal veil as the answer. (built, in
   the campaign tier; the lava check is filed as too wide)
@@ -355,6 +368,10 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   2026-10-03. (built; moved in by the second reader, see `rewrite_choices.md`)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The dhokkur's wake as a show: groan, dust, pouring water. (built; moved in, see `rewrite_choices.md`)
+*Already here before that answer:*
 - The dhoggur's swell. The slug's metal diet. The jossur's stoop. (built)
 - The dhokkur's roads and what it does to things on them. (built)
 - Moving steam fronts after a quench; flooding in the rain. (built)
@@ -386,7 +403,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   Tribes' canon. Any tibanna source but the beldons.
 - The ship's heat exchanger and the scour that came with it; vent machines beyond the game's own; the fireweed
   and scald-gear economy; two-faiths map mechanics (all struck 2026-09-29). The fuel-saving keel brace (cut
-  2026-10-23). The ship ideas among these are asked below and not revived.
+  2026-10-23). The ship ideas among these stay down by his answer of 2026-11-19 on declined ship ideas; he can
+  bring any one back by name.
 - Creatures offered and not chosen: the kettugal and the brazzok (2026-10-20, he picked the ummisk); the jobbosh
   (2026-10-16, *"insufficiently alien"*); the lava snail and seven other vanilla rows (cut by card on the evening of 2026-10-19, Pacific; the ledger stamps
   it 2026-10-20 in universal time).
@@ -398,22 +416,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-1. **Should the ship drink the mountain?** He struck the heat exchanger before he stated the lens. On 2026-11-18 he
-   ruled that every biome states its fuel, that *"a few biomes have richer sources"*, and the campaign's own ruling
-   lists volcanic gas as one. *Stay struck* (default: the Forge is emergency fuel only, and its prize is floatstone).
-   *Bring it back in 0.2.0:* a rig on a vent that charges the ship faster than anywhere, on ground that scalds and
-   burns it every few days; a small build on the cycle's own state. *A gas tap instead:* the campaign's helixien
-   path given a home here; a new deposit and its own design.
-   *Waits on the rich-fuel question (which biomes are the few with a richer source) of 2026-11-19.*
-3. **Two things he cut that touched the hull: the scour and the keel brace.** The scour (boiling rain doing minor
-   damage and leaving ash on the ship's unroofed tiles) was struck on 2026-09-29 as half of the heat exchanger,
-   before the ship lens and before his 2026-11-18 ruling that hull wear is in 0.1.0; his own light-screen ruling of
-   2026-09-02 names *"ash"* and *"rain damage"* as things a screen stops. The keel brace was cut on 2026-10-23
-   under *"I cut, you veto"* as *"small effect; the only ship hook"*. *Both stay out* (default: the Forge's wear is
-   the lava landing, heat and fire, and its armour is floatstone). *The scour comes back in 0.2.0 on the shield
-   frame:* rain and ash wear an unscreened ship; a small build on the cycle's rain phase. *The brace comes back:*
-   one commit to revert; a second ship gift beside the hull and door.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
+None open. Every entry is answered (next section).
+
 
 The cleanse proposal of 2026-11-17 asked him nothing. One of its readings is changed here by scope rather than
 asked: it wrote the first version for a colony that *"settles among dark foundry towers"*. The same cycle is kept,
@@ -429,3 +433,13 @@ can undo any one by name.
 
 2. **Does landing beside the Empire's station change the search?** No: the ordinary search. The station belongs to the
    campaign layer (the design's default). *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. **Should the ship drink the mountain?** *His card of 2026-11-19 (rich fuel):* no. The richer sources are the
+   Abyss, the Fever Wood and the Sump; the Forge is emergency fuel only, its prize is floatstone, and the heat
+   exchanger stays struck. The gas tap stays the campaign's helixien path, with no home here.
+3. **The scour and the keel brace.** *His card of 2026-11-19 (declined ship ideas):* both stay out. The Forge's wear
+   is the lava landing, heat and fire, and its armour is floatstone. He can bring either back by name.

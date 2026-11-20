@@ -69,20 +69,20 @@ provisional): a probe droid five to eight days after landing, then scouts with a
 cordon on the ship, a breaching assault, and an orbital bombardment that cannot be fought. Each step comes only if
 the one before succeeded; a loud crew shortens every wait and a hidden one lengthens it.
 
-**The outer edge of a stay here: about a month, and about six weeks for a crew that runs the ship cold.** By the
-owner's word of 2026-11-18 the figure a design derives is *"the outer edge allowable"*, not the typical stay. It
-comes from the ladder's own arithmetic: if the Empire wins every step, the bombardment is the fourth full interval,
-which is 20 to 32 days at the ordinary pace and 28 to 45 days one step quieter. Most stops end long before that,
+**The outer edge of a stay here: about six weeks.** By the owner's word of 2026-11-18 the figure a design derives
+is *"the outer edge allowable"*, not the typical stay. It comes from the ladder's own arithmetic: if the Empire wins
+every step, the bombardment is the fourth full interval, which is 20 to 32 days at the ordinary pace and 28 to 45
+days one step quieter, and the sunless sky gives every ship here that one step (his card of 2026-11-19: *"Full dark
+is one step"*). Most stops end long before that,
 because of what is in the next two paragraphs.
 
-**Cover from orbit: none overhead; the cover here is cold.** His ruling of 2026-11-18 gives each biome partial cover
-by its own nature: *"Canopy, steam and fog slow the search by one step; full dark still pauses it."* The plateau has
-no canopy, no steam, no fog and no weather; it is open white ice under a bright aurora. What it has is in the sheet:
-*"Buried and bermed structures, exteriors at ambient — thermal camouflage, unique to this hemisphere"*, and
-*"Whoever is out here is out here to be un-findable."* So this design gives the Sleeping Ice its one step for a ship
-whose thermal signature is held low, and nothing for a warm one. The same dial that brings the tunnelers is the one
-the Empire reads. Whether the sunless night also counts as the "full dark" that pauses the search is the first
-question under `NEEDS HIM`; the default here is that it does not.
+**Cover from orbit: one step, from the dark.** His card of 2026-11-19: *"Full dark is one step, like fog; canopy,
+steam, fog and rock walls one step each, added"*, and nothing pauses the search for good. The plateau never sees
+the sun, so every ship here has that one step. It has no canopy, no steam, no fog and no weather; it is open white
+ice under a bright aurora. The sheet also has *"Buried and bermed structures, exteriors at ambient — thermal
+camouflage, unique to this hemisphere"*, and *"Whoever is out here is out here to be un-findable."* A cold ship as
+a second step is not one of the kinds of cover on his scale (each is something on the tile), so it is a 0.2.0
+proposal, kept as text; the thermal signature stays what brings the tunnelers.
 
 The plateau is also the worst ground on the planet for hiding from anything at eye level. It is flat, white and
 still: *"The party can see farther than it can afford to walk unprotected."* A probe droid that needs to see the ship
@@ -335,10 +335,16 @@ built: `src/RimUtinni/ShipShields/` (his eight shield rulings of 2026-09-02, rec
 | The ice does not take sides. | An unowned fire and a downed, living stranger on open ice, with shivven already up. | A cold corpse in the same place draws nothing. |
 | The frozen wrecks give real salvage and are not replaced. | Strip a hull section, a cylinder and a rig; wait a season. | |
 | Nothing grows here and animals need feed. | A zhissa with and without stored feed. | No plant of any kind appears, with the growth engine on. |
-| A zhissa gives milk and shocks who fights it hand to hand. | Milk one; strike one in melee. | The same blow on a pack animal with no charge. |
+| A zhissa gives milk. | Milk one. | |
 | The ridge mines to catalyst crust and never moves, wakes or answers. | Mine part of a hessarund and build a wall of the crust. | A heater left beside the rest of it for days changes nothing. |
-| A ship held cold is searched for more slowly than a warm one. | Two landings on this biome, thermal signature low and high; read the search's next-contact time. | The same two ships on open desert show no difference from heat. |
 | Nothing vanishes. | Kill a surfaced shivven, a submerged one, and one mid-travel; switch the mod's master setting off with a crack pending. | Every animal is a body or a visible waiting animal; the crack is visibly cancelled. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| A zhissa shocks who fights it hand to hand. | Strike one in melee. | The same blow on a pack animal with no charge. |
+| A ship held cold is searched for more slowly than a warm one. | Two landings on this biome, thermal signature low and high; read the search's next-contact time. | The same two ships on open desert show no difference from heat. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary ice sheet with wrecks
 on it (standing rule, every mod).
@@ -364,6 +370,13 @@ storage, which the outdoors does for free; the Empire's search and the visibilit
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): warmth wakes the ice.** Warmth exposed to the ice
+raises a readable thermal signature; the first crack is taught with a letter and a countdown; the blind shivven
+travel inside the ice toward warmth they can reach and come up through cracks; floors, a cold ship and fighting are
+the answers. *Why a normal stop is sure to see it:* the landed ship is the warmest thing on the ice, so the alert and
+the taught first crack come early in any stop that does not run the ship cold. His experience line: *"A frozen
+highway that nobody stays on."* *Runner-up:* the sohl's single lifetime movement (the cleanse's runner-up), later.
+
 **0.1.0, the stop**
 - The land: hard dirty-white ice, no plants, no water, no weather, the aurora overhead. (built) Hoarfrost forms as
   scenery and the hessarund ridge with its catalyst crust. (art done; unbuilt)
@@ -372,19 +385,25 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   his answer and is not yet how the code chooses)
 - Fires, warm rooms and downed living bodies as warmth the shivven can go to, whoever owns them. (unbuilt)
 - The frozen wreck field: hull sections, cylinders, expedition rigs. (built)
-- The zhissa with its milk and its shock; the tellurox as a pack beast the crew can own; the campaign's dying
-  visitors where the Utinni layer adds them. (built; the shock moved in, see `rewrite_choices.md`)
-- The tellurox hexplate, the ship's deck floor from this biome. (built; the cleanse recommended retiring it and
-  the second reader put it back, see `rewrite_choices.md`)
+- The zhissa with its milk; the tellurox as a pack beast the crew can own; the campaign's dying visitors where the
+  Utinni layer adds them. (built)
 - Cold wear on the hull through the campaign's shield frame, answered by the cryo envelope. (built in
   `src/RimUtinni/ShipShields/`; whether it fires at this biome's temperatures is `UNMEASURED`)
 - The cold as a standing cost inside the ship, and bitten fittings at its edge. (ordinary systems)
-- A cold ship searched for more slowly. (unbuilt: one call from the thermal signature into the visibility dial)
+- Full dark as one step of cover from orbit. (unbuilt: one entry in the pursuit; his card of 2026-11-19)
 - The scanner's readings here; hosting a Lantern Deeps entrance with a real trip down and back. (built; the trip is
   unproven)
 - Nothing disappears without a sign.
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The zhissa's shock. (built; moved in, see `rewrite_choices.md`)
+- The tellurox hexplate, the ship's deck floor from this biome. (built; the cleanse recommended retiring it and
+  the second reader put it back, see `rewrite_choices.md`)
+- A cold ship searched for more slowly, as a second step from the sheet's thermal camouflage: a proposal, not on
+  his cover scale of 2026-11-19. (unbuilt: one call from the thermal signature into the visibility dial)
+*Already here before that answer:*
 - The heat spike at engine start-up, read by the heat-sensing ice creatures once per landing. (a proposal;
   delegated call of 2026-11-19, `Answered on 2026-11-19` 3)
 - The sohl: a mound that moves once. (art done; unbuilt)
@@ -416,6 +435,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Droid enclaves, bermed structures, the failed Junker expeditions as sites: campaign layer.
 
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
+- The kesshet and the Keel-Press stay down by his answer of 2026-11-19 on declined ship ideas; he can bring either
+  back by name.
 - The Breath-Choir, the Witness Method, the kesshet and the Keel-Press (*"I don't like any of these. We should
   likely just pass this."*, 2026-10-01). The two ship ideas among them are listed under `NEEDS HIM` 2.
 - The ridge that bargains and the ridge that creeps toward heat (not chosen 2026-10-01).
@@ -425,28 +446,15 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-1. **[cover] Is the sunless night "full dark"?** His ruling pauses the orbital search in full dark. The Sleeping
-   Ice has no sun, ever, and a bright aurora. *No pause; a cold ship earns one step* (default: the sheet's own
-   cover is thermal, and a pause here would make half the planet a hideout). *Yes, it pauses:* every nightside
-   biome becomes a refuge and the ice's price for it is the cold. *No cover at all:* the thermal signature matters
-   only to the tunnelers.
-   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
-   2026-11-19.*
-2. **[hull] The two ship ideas he passed here: the kesshet and the Keel-Press.** On 2026-10-01 he was shown four
-   new marks for this biome, two of them about the ship, and typed: *"I don't like any of these. We should likely
-   just pass this. Home for now."* The record of that turn adds *"passed, not gaps to re-pitch."* On 2026-11-18 he
-   ruled that every biome wears on the hull and that the answer is in the sources. Neither idea is revived here.
-   *Stay passed* (default: the cryo envelope, the cold and the bitten edge carry the hull). *The kesshet in 0.2.0:*
-   a rime-ring on the warm hull that raises the signature and must be scraped before launch, for a superconducting
-   film. *The Keel-Press:* shifting cargo to press the ice until it calves up a seam of wreckage; the review that
-   pitched it called its fiction the weakest of the five.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
+None open. Every entry is answered (next section).
+
 
 The cleanse proposal of 2026-11-17 asked him nothing, and one of its own readings is changed here by scope rather
 than asked: it built the first version around a supplied refuge of forty colonists. The same warmth, cracks and
 floor line are kept, and the refuge is the ship. A second of its calls is undone on his earlier word: it
 recommended retiring the tellurox hexplate, which is the biome's answer to his every-biome ship question of
-2026-09-24.
+2026-09-24. It is kept, at 0.2.0: a ship gift is not one of the three shared systems his first-version answer of
+2026-11-19 keeps in 0.1.0.
 
 ## Answered on 2026-11-19
 
@@ -458,3 +466,14 @@ can undo any one by name.
 
 3. **[hull] Does a running cryo envelope give the ship away to the ice?** No in 0.1.0: the envelope's glow is not
    built (the design's default). The heat spike at engine start-up is a proposal for 0.2.0. *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. **[cover] Is the sunless night "full dark"?** *His card of 2026-11-19 (cover):* yes, and full dark is one step,
+   not a pause. Every ship here gets that step; a stop runs about six weeks at the outside. A cold ship as a second
+   step is not on his scale and waits as a 0.2.0 proposal. **This changes the design's default in part.** Was: no
+   dark step; one step for a cold ship only.
+2. **[hull] The kesshet and the Keel-Press.** *His card of 2026-11-19 (declined ship ideas):* they stay passed, as he
+   typed on 2026-10-01. He can bring either back by name.
