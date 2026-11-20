@@ -41,8 +41,17 @@ Injected with `designer.md` whenever the concept is at stage 4, resumed or not. 
 6. **Score**: a scenario is right when both Readers match `expect`. `accept_where_reject_core` counts any Reader accepting
    where a core line rejects. Pass: right ≥ 9/10 of the total, `accept_where_reject_core` = 0, every Challenger miss
    accounted for (the leaf fixed, or the miss shown not to be the tree's).
-7. **On failure**: the misses name the leaves to rewrite; `return` to stage 3 with the decision named, or to stage 2 if a
-   miss needs his answer. Never re-score the same scenarios against an edited tree without refreezing; a carry made
+7. **On failure, mend it now, in this same run** (owner, 2026-11-20: *"allow it a chance to mend it during judgement
+   while the context is fresh, even if it then gets blind judged again"*; `standing_rulings.md` §Touching code has a
+   cost; if you see it, do it). The misses name the leaves to rewrite. You hold the tree, the misses and the reasons
+   now, so do not end the run and do not leave the repair to a later run:
+   - `return` to stage 3 with the decision named. That records the move; it does not end your run.
+   - Rewrite the leaves that the misses name. Change only what a miss names.
+   - Take the exam again in this run by step 8 (`exam_retake.py plan`, then fresh Readers on what the edit touched).
+     The Readers stay fresh agents that never saw the old answers: that blind read is the check on your repair.
+   - Only a miss that needs his answer returns to stage 2 and waits. Mend every other miss first.
+   - A miss about wording that no player-facing experience turns on is polish: one line in `log.md`, no rewrite.
+   Never re-score the same scenarios against an edited tree without refreezing; a carry made
    by `exam_retake.py carry` (step 8) is not a re-score: it re-runs every scenario the edit touched and re-checks
    every carried answer against the current tree.
 8. **Retake after a coverage repair** (stage 5 refused, stage 3 repaired, you are back here with a passed exam on

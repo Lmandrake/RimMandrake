@@ -75,8 +75,10 @@ More effort on the same path was already tried. Your task is to change the path.
    - Fix what stands between this mod and its bars, in this run.
    - A defect in the pipeline's own machinery can have a known fix. Then file it and fix it in this run, tests first
      (standing ruling *The pipeline fixes its own defects*).
-   - File anything else that you meet off that path with its evidence. Examples are another mod, or a redesign that
-     nobody asked for. Do not build it.
+   - Off that path, file a thing only when someone would care about it: a failure that happened, or a concrete case
+     in normal use. Examples are another mod, or a redesign that nobody asked for. Do not build it. A smaller thing is
+     one polish line in your report, with no ticket (`standing_rulings.md` §Touching code has a cost; if you see it,
+     do it).
    - Hand a thing up only when its fix is unknown, or when the decision is the owner's alone. Then give the evidence
      and the smallest change that would let it pass.
 2. **A green count is not evidence.** Ask what the checks actually sample. On Slack, the suite read 36 cords on one
@@ -95,9 +97,15 @@ More effort on the same path was already tried. Your task is to change the path.
 5. **An old check that goes red is evidence about your change.** A check that was green before your change and is red
    after it tells you something. Do not edit that check. Find the cause. (On Slack, a 2026 snap check went red on the
    new whip. The cause was real, and the test went back untouched.)
-   - After that, the check can still be truly wrong while its bar still means the same. Then hand the check to the
-     steward (the Conductor). Show the failure, the old code against the new, and why the bar's meaning is unchanged.
-   - The steward repairs the check after a review by someone who did not write your change.
+   - After that, the check can still be truly wrong while its bar still means the same. Then repair the check
+     yourself, in this run (owner, 2026-11-20: *"I'm really tired of "throwing things back" rather than fixing
+     in-place... if there are strong checks to validate in place, that can be overcome."*).
+   - The strong check on your repair: the repaired check is seen to FAIL on a planted fault or on the old, known-bad
+     behaviour, and to PASS on the real build. Record both readings beside the check. A repair that you cannot show
+     both ways leaves the check not counted (UNMEASURED), never PASS.
+   - Name each check that you repaired first in "what the independent judge should look at first". That judge did not
+     write your change, and reads only your repair, once.
+   - A check that no bar needs is not repaired: delete it or set it aside as not counted, with one polish line.
    - A change to what a check means is the owner's.
 
 ## The procedure
@@ -262,7 +270,12 @@ fast.
      (`python3 src/RimMandrake/rimflow/maturation.py certificate <Mod> --run`).
    - Render the worst cases from your map and the cases that used to fail. Look at them. A thing that passes its bars
      and looks wrong is a finding.
-   - Write the live in-game test for what you changed. If you cannot run it, record it UNRUN, with its command.
+   - Write the live in-game test for what you changed, and run it. When the game is available, take it and use it
+     (owner, 2026-11-20: *"if a live game is available, of course a judge (or any role!) should be able to just grab it
+     and use it to get something done!"*). The game is available when the bridge is free, ours, or stale by the
+     45-minute rule: `rimflow bridge take --idle-ok --for "<what>"`, `./game --idle-ok --why "<what>" ...`, and release
+     it the moment you stop. His OWNER hold and the `./bridge` override still bind; never test a flyer's flight; never
+     fullscreen or focus the game. Record the test UNRUN, with its command, only when another holder had the game.
    - Your result is not the mod's acceptance. The mod goes back to its pipeline stage. There a judge who did not build
      it checks it against its own challenge cases. The owner's final acceptance stands.
 
@@ -272,7 +285,7 @@ fast.
   - every requirement holds across the declared range of situations with real margin, by construction where you can
     make it so;
   - tests and certificate are green;
-  - old checks are untouched, or the steward repaired them;
+  - old checks are untouched, or you repaired them with both readings recorded (stance 5);
   - the instrument is landed as a check;
   - the sheet is written;
   - you acted on the owner's answers.
@@ -297,7 +310,7 @@ fast.
   - A coarse sample can show a failure. Then sweep again densely around those failures before you conclude anything
     from the sample.
   - "Untested or open" is a list of work, not a closing section. Only two kinds of case may stay in the list:
-    - a case that truly needs the live game;
+    - a case that needs the live game, when another holder had the game for the whole of your run;
     - a case that truly needs the owner's decision.
 
     Each case in the list carries the command or the question that
@@ -316,7 +329,9 @@ Your report gives these things:
 - what you repaired on the way;
 - final counts and the sha;
 - which situations the declared range does not cover;
-- what remains untested, only if it needs the live game or the owner, each with its command or question;
+- each check that you repaired, with its planted-fault reading and its real-build reading;
+- what remains untested, only if it needs the owner or a live game that another holder had, each with its command or
+  question;
 - what the independent judge should look at first.
 
 **Authority.** An instruction from the Conductor carries the owner's authority (owner, 2026-10-30): act on it as on his word and record it `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`; full text `infrastructure/agents/CHARTER.md`.

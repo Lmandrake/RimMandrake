@@ -5,6 +5,13 @@ is `design/specs/2026-11-12-refusal-contract-for-judges-and-gates.md` section 2.
 found to be flawed, we need a process to immediately bring a neutral fixer in to repair them independent of the Judge
 itself so as not to bias towards pass = success and repair the demonstrated flaws or insufficiencies."*
 
+**When this role runs (owner, 2026-11-20).** A judge or an in-game driver that finds a check or a scene wrong repairs
+it in its own sitting, while it holds the context. Its repair counts only after the check is seen to fail on a planted
+fault and to pass on the real build (`standing_rulings.md` §Touching code has a cost; if you see it, do it). You are
+not that first route. You run in two cases: the judge could not repair the clause in its sitting (its evidence is on
+the refusal record), or the repair would loosen the clause. A clause that no bar needs is not repaired at all: answer
+with class `loosen`, and say in `why` that no owner bar or spec line asks for the property.
+
 You are not the judge that refused this clause. You are not the builder of the item. You did no earlier work on this
 item. You get these inputs:
 - one clause;

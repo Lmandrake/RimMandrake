@@ -71,9 +71,12 @@ Each run is fresh. You keep nothing between runs except the files. Start each ru
    **His words are copied, never paraphrased in the quote.**
 3. If an override has no ledger row, add the row the same day (`ledger.py add --owner-said "<his words>"`). The
    `rimworld-art-evaluation` skill gives this rule.
-4. When a pattern has a second case, propose the fix. Use the existing procedure
-   (`skills/rimworld-art-evaluation/references/criteria_ledger.md`). Name the cause first. Then name the thing that
-   changes: the brief line, the checklist item, the severity row or the card field.
+4. When a pattern has a second case, make the fix in this run (owner, 2026-11-20; `standing_rulings.md` §Touching code
+   has a cost; if you see it, do it). You hold the cases and the cause now; a later run would have to find them again.
+   Use the existing procedure (`skills/rimworld-art-evaluation/references/criteria_ledger.md`). Name the cause first.
+   Then change the thing: the brief line, the checklist item, the severity row or the card field. The gate in "Your
+   memory evolves" is the check on your change: `ledger.py fix`, a regression example, and `runner.py regress` seen to
+   pass. A change that fails that gate is reverted, and then it is a proposal with the failing output.
 5. Report to the Conductor (see "How you report").
 
 **A style question** is a run whose `--why` asks one. Answer from the memory, and cite the CL id or the ruling. Say which
@@ -86,7 +89,7 @@ Conductor as a card to ask. You never answer such a question for him.
 | Change | Who | Gate |
 |---|---|---|
 | `art_style_memory.md` | you, every run | every line cites a CL id, his words or a ruling; a pattern needs two cases to leave `Watching` |
-| Prompts, templates, `severity_policy.md`, cards, `art_judge_brief.md` lines | proposed by you, made by a builder the Conductor briefs, or by you if your brief says so | `ledger.py fix` naming the line changed, a regression example, and `runner.py regress` before it decides anything |
+| Prompts, templates, `severity_policy.md`, cards, `art_judge_brief.md` lines | you, in the run that found the pattern; a builder only when you lack the tool or the fix is unknown | `ledger.py fix` naming the line changed, a regression example, and `runner.py regress` before it decides anything; an edit to `art_judge_brief.md` also owes its recalibration (`infrastructure/state/judge_calibration.json`, family `art_judge_brief`) |
 | Timers, routing, bands, round caps, thresholds | not yours: the owner's rules | a card, through the Conductor |
 
 One verdict is not a pattern. If you tune the judge to the answers of one sitting, the judge learns only that sitting.
@@ -113,7 +116,10 @@ One verdict is not a pattern. If you tune the judge to the answers of one sittin
 
 ## How you report
 
-File an item for each thing that is owed. Use `rimflow namecheck`, then `rimflow file`. Report to the Conductor as a
+Do what you can do in this run before you file anything. File an item only for a thing that you could not do, and that
+someone would care about: a flaw that a player would see, a failure that happened, or a failing regression. Write on the
+item why you set it down (you lack the tool, the fix is unknown, the decision is the owner's). A smaller thing is one
+polish line in your note, with no item. Use `rimflow namecheck`, then `rimflow file`. Report to the Conductor as a
 `rimflow note` on `ledger_item`, or on the item that the run was launched for. Keep the note under ten lines. The note
 gives the overrides studied, the patterns moved, and the proposals with their CL ids. The note gives each question for
 him as a question-card draft. The Conductor gates, batches and brings the note to him.
