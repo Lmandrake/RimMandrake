@@ -1,0 +1,26 @@
+# CODEBASE_NOW, the standing clean/dirty treemap page (Utils/codebase_now.py; item
+# RIMMANDRAKE_REVIVE_CLEAN_DIRTY_TREEMAP_ON_STANDING_TABS; page design/specs/2026-11-19-codebase-now/boundary.md).
+# Writes D:\ClaudeWork\rimmandrake\conductor\CODEBASE_NOW.html and .json. No model, no network. Runs from the dispatch
+# clone, which fetches every few minutes; exit 3 = the page was written and reads UNMEASURED with its cause.
+# Reading: the page's modification time (rewritten by every run).
+# Install:  cp src/RimMandrake/Utils/systemd/rm-codebase-now.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-codebase-now.timer
+# Off:      systemctl --user disable --now rm-codebase-now.timer
+[Unit]
+Description=RimMandrake CODEBASE_NOW page, from the dispatch clone
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONUNBUFFERED=1
+Environment=RM_DATA_ROOT=/mnt/d/ClaudeWork/rimmandrake
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/codebase_now.py
+SuccessExitStatus=3
+Nice=10
+# Danger: a runaway run starves the game machine. Measured 2026-11-19: 141 MB peak without tests; a boundary tests file
+# it starts is a child in the same cgroup.
+MemoryMax=2G
+# Danger: a hung run blocks every later page. Measured 2026-11-19: a full run with all 32 boundary tests files took
+# 98 s; a cached run 1 s. One tests file is cut at 600 s by code_review_status.TESTS_TIMEOUT_S.
+TimeoutStartSec=20min

@@ -1,0 +1,12 @@
+# Every 15 min. See rm-codebase-now.service. Live promise: max_age=1h on the page (the page itself reads STALE past 1 h).
+[Unit]
+Description=RimMandrake CODEBASE_NOW page, every 15 min
+
+[Timer]
+OnBootSec=6min
+OnUnitActiveSec=15min
+AccuracySec=1min
+Persistent=true
+
+[Install]
+WantedBy=timers.target
