@@ -8913,3 +8913,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC","result":"kept","detail":"sweep: running again","ts":"2026-11-20T00:48:07Z","tsn":1795135687636976793}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-20T00:50:46Z","tsn":1795135846081600660}
 {"seat":"RUNNER","event":"note","id":"OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC","text":"ops_watch: cleared at 2026-11-20T00:53:00Z (disk.scratch_outside_blind now 0)","ts":"2026-11-20T00:53:07Z","tsn":1795135987447767853}
+{"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-20T00:55:50Z","tsn":1795136151001420125}
+{"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-20T00:57:11Z","tsn":1795136231633203727}
