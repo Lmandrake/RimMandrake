@@ -9043,3 +9043,5 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_PAUSED_FYEB","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T03:24:51Z","tsn":1795145091806876437}
 {"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-20T03:26:01Z","tsn":1795145161393829875}
 {"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_PAUSED_FYEB","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T03:26:09Z","tsn":1795145169932812226}
+{"seat":"RUNNER","event":"live","id":"OPS_MATURATION_MOD_PAUSED_FYEB","result":"broken","detail":"Ops alarm MATURATION_PAUSED: maturation.paused = 1 mods (MEASURED), line > 0","ts":"2026-11-20T03:28:34Z","tsn":1795145315000158074}
+{"seat":"RUNNER","event":"raise","id":"OPS_MATURATION_MOD_PAUSED_FYEB","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T03:28:43Z","tsn":1795145323258190215}
