@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":15372,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=8780b3ba4b224084f7c0b876480eb52e36a29bff79a8efd7ea14b0ae1c8bbfae -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":15372,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"HOLDER.run-1795160350":1258,"HOLDER.run-1795161691":1067,"HOLDER.run-1795162652":1664,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=bc0b24a56fd12958ba1d9f828bd3b0903bb72055d34a3f66c9d44371aed7c60c -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage offline_build · 1348 events in 12 shards · reducer 1
-holder lease run-1795162652, token 9, last active 2026-11-20T08:17:50Z
+version 0.1.0 · stage offline_build · 1352 events in 13 shards · reducer 1
+holder lease run-1795162652, token 9, last active 2026-11-20T08:38:15Z
 holder session e253ffba-ec5f-4ace-823c-57c7e385de14, context 178348 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1795161691, 2026-11-20T08:11:51Z)
-- done: RIMMANDRAKE_POINT_FLOWWORKS_GEYSER_CHECK_AT_VISIT_ONE_RUNNER closed at f2c6a84eee53: scene_geyser_tub reads the pool label and soak hediffs (selftest_geyser_tub_scene.py green, draft red); sc_geyser_tub UNRUN for Stage 6
-- next: Fix the other 2 offline road-back items, then send the record back to in_game with --game-only
-- ruled out: a test-table command change: the certificate empty-game check runs STAGE3_SCENES entries, so the scene was rewired in place and the table command kept
+## Last checkpoint (HOLDER.run-1795162652, 2026-11-20T08:38:15Z)
+- done: RIMMANDRAKE_REPIN_SOURCE_PAYS_FILM_IS_NOT_A_LEAK closed at f81a24fa857b: SRC_flow_stops_when_empty follows the film to 0 L / 0 dL (bound SRC_FILM_PULSES=4000, UNMEASURED past it); accept 3/3, selftest 31/31 with a 57-regime whole-dL film sweep; sc_source_pays UNRUN for Stage 6 (736da208b3c3)
+- next: Fix the remaining offline road-back item, then send the record back to in_game with --game-only
+- ruled out: a bars.md re-pin: the locked scenes.json text already says draw the pond empty; only the unlocked row code changed
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -490,6 +490,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1348 events (views/history.md; never read whole)
+- the full history: 1352 events (views/history.md; never read whole)
 
-cursor: t=2026-11-20T08:17:55Z.1795162675420721293 (modledger.py since --mod FlowWorks t=2026-11-20T08:17:55Z.1795162675420721293 prints what changed after this packet)
+cursor: t=2026-11-20T08:38:15Z.1795163895145746026 (modledger.py since --mod FlowWorks t=2026-11-20T08:38:15Z.1795163895145746026 prints what changed after this packet)

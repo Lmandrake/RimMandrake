@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "1df3a632d285f4f0763ec1bd056190d82bf3cfa0a5ca867adc6817656990c960",
+  "body_sha256": "d76b0e268ff542b484e145e12d4e9a0c0806893fdc55a76ce07bd1490a2e9e5d",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -11,6 +11,7 @@
    "HOLDER.run-1795152236": 3418,
    "HOLDER.run-1795160350": 1258,
    "HOLDER.run-1795161691": 1067,
+   "HOLDER.run-1795162652": 1664,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1231,11 +1232,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1795161691",
-   "done": "RIMMANDRAKE_POINT_FLOWWORKS_GEYSER_CHECK_AT_VISIT_ONE_RUNNER closed at f2c6a84eee53: scene_geyser_tub reads the pool label and soak hediffs (selftest_geyser_tub_scene.py green, draft red); sc_geyser_tub UNRUN for Stage 6",
-   "next": "Fix the other 2 offline road-back items, then send the record back to in_game with --game-only",
-   "ruled_out": "a test-table command change: the certificate empty-game check runs STAGE3_SCENES entries, so the scene was rewired in place and the table command kept",
-   "ts": "2026-11-20T08:11:51Z"
+   "by": "HOLDER.run-1795162652",
+   "done": "RIMMANDRAKE_REPIN_SOURCE_PAYS_FILM_IS_NOT_A_LEAK closed at f81a24fa857b: SRC_flow_stops_when_empty follows the film to 0 L / 0 dL (bound SRC_FILM_PULSES=4000, UNMEASURED past it); accept 3/3, selftest 31/31 with a 57-regime whole-dL film sweep; sc_source_pays UNRUN for Stage 6 (736da208b3c3)",
+   "next": "Fix the remaining offline road-back item, then send the record back to in_game with --game-only",
+   "ruled_out": "a bars.md re-pin: the locked scenes.json text already says draw the pond empty; only the unlocked row code changed",
+   "ts": "2026-11-20T08:38:15Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1687,7 +1688,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1348,
+  "events": 1352,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7788,7 +7789,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-20T08:17:50Z",
+   "last": "2026-11-20T08:38:15Z",
    "lease": "run-1795162652",
    "released": false,
    "token": 9
@@ -7879,6 +7880,7 @@
    "HOLDER.run-1795152236",
    "HOLDER.run-1795160350",
    "HOLDER.run-1795161691",
+   "HOLDER.run-1795162652",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
    "JUDGE.judge-1795134433",
