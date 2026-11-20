@@ -1,0 +1,10 @@
+{
+ "attempt": null,
+ "cause": null,
+ "job": null,
+ "note": "paused by hand",
+ "outcome": null,
+ "reason": "STEVE_CPU_SOAK_72H: owner 2026-11-17 'We need long soak data please' (RIMMANDRAKE_RERUN_STEVEDESKTOP_CPU_SOAK_INTERRUPTED_MID_RUN); no game jobs, no periodic or fault reboots until the soak ends. Resume early: testq.py resume --reason R",
+ "since": "2026-11-18T01:29:05Z",
+ "until": "2026-11-21T03:29:05Z"
+}

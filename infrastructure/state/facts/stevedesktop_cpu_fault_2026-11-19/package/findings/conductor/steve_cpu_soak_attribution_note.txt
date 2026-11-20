@@ -1,0 +1,1 @@
+# Soak attribution: fault_monitor (rm-steve-fault.timer) reads watch2.ps1's CYCLE SIMD per-CPU checks, not load; it does not know about the soak and, on a bad cycle, pauses the lane and reboots Steve. A fault window between 18:52Z 2026-11-17 and soak END in soak.log is attributed to the soak load.

@@ -1,0 +1,55 @@
+#< CLIXML
+
+
+Manufacturer : ASUSTeK COMPUTER INC.
+Product      : ROG STRIX Z490-G GAMING (WI-FI)
+
+
+
+
+
+
+SMBIOSBIOSVersion : 3401
+ReleaseDate       : 5/26/2026 5:00:00 PM
+
+
+
+
+--numproc
+
+numproc                 18
+--services
+AsusUpdateCheck Stopped
+MSiSCSI Stopped
+msiserver Stopped
+--dirs
+C:\Program Files\ASUS
+C:\Program Files\Intel
+C:\Program Files (x86)\ASUS
+C:\Program Files (x86)\Intel
+C:\Program Files (x86)\Intel Corporation
+--freqmax
+--perf
+96.3785939691445
+--boot
+
+Date        : 11/15/2026 12:00:00 AM
+Day         : 15
+DayOfWeek   : Sunday
+DayOfYear   : 319
+Hour        : 0
+Kind        : Local
+Millisecond : 500
+Minute      : 57
+Month       : 11
+Second      : 53
+Ticks       : 639303010735001970
+TimeOfDay   : 00:57:53.5001970
+Year        : 2026
+DateTime    : Sunday, November 15, 2026 12:57:53 AM
+
+--winget
+C:\Users\sjlewis\AppData\Local\Microsoft\WindowsApps\winget.exe
+
+
+<Objs Version="1.1.0.1" xmlns="http://schemas.microsoft.com/powershell/2004/04"><Obj S="progress" RefId="0"><TN RefId="0"><T>System.Management.Automation.PSCustomObject</T><T>System.Object</T></TN><MS><I64 N="SourceId">1</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="1"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="2"><TNRef RefId="0" /><MS><I64 N="SourceId">3</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj><Obj S="progress" RefId="3"><TNRef RefId="0" /><MS><I64 N="SourceId">2</I64><PR N="Record"><AV>Preparing modules for first use.</AV><AI>0</AI><Nil /><PI>-1</PI><PC>-1</PC><T>Completed</T><SR>-1</SR><SD> </SD></PR></MS></Obj></Objs>

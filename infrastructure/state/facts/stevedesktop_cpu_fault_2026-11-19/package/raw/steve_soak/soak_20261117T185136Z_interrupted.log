@@ -1,0 +1,37 @@
+2026-11-17T18:51:36Z SOAK START hours=6 end=2026-11-18T00:51:35Z cpus=18 core_secs=45 all_secs=90 max_c=90
+2026-11-17T18:51:36Z SOAK END steps=0 passes_started=1 reason=
+2026-11-17T18:51:58Z SOAK START hours=6 end=2026-11-18T00:51:58Z cpus=18 core_secs=45 all_secs=90 max_c=90
+2026-11-17T18:52:44Z pass=1 cpu=0 PASS fatal=0 whea=0 alive=1 heat=pkg_c=38/39 core_max_c=39 hot_core=1 cores_max_c=[39,33,35,29,30,29,30,34,29] samples=63 vcore_v=1.029
+2026-11-17T18:53:30Z pass=1 cpu=1 PASS fatal=0 whea=0 alive=1 heat=pkg_c=39/41 core_max_c=40 hot_core=1 cores_max_c=[40,38,32,30,36,29,30,30,33] samples=69 vcore_v=1.028
+2026-11-17T18:54:16Z pass=1 cpu=2 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/44 core_max_c=44 hot_core=2 cores_max_c=[36,44,32,35,34,36,35,35,34] samples=66 vcore_v=1.028
+2026-11-17T18:55:02Z pass=1 cpu=3 PASS fatal=0 whea=0 alive=1 heat=pkg_c=38/45 core_max_c=45 hot_core=2 cores_max_c=[38,45,40,40,39,33,32,36,36] samples=68 vcore_v=1.029
+2026-11-17T18:55:47Z pass=1 cpu=4 PASS fatal=0 whea=0 alive=1 heat=pkg_c=43/43 core_max_c=43 hot_core=3 cores_max_c=[39,40,43,32,41,38,40,38,40] samples=64 vcore_v=1.026
+2026-11-17T18:56:33Z pass=1 cpu=5 PASS fatal=0 whea=0 alive=1 heat=pkg_c=41/43 core_max_c=43 hot_core=3 cores_max_c=[33,34,43,34,34,31,33,36,33] samples=69 vcore_v=1.028
+2026-11-17T18:57:19Z pass=1 cpu=6 PASS fatal=0 whea=0 alive=1 heat=pkg_c=40/41 core_max_c=41 hot_core=4 cores_max_c=[30,36,33,41,32,33,38,31,31] samples=66 vcore_v=1.028
+2026-11-17T18:58:04Z pass=1 cpu=7 PASS fatal=0 whea=0 alive=1 heat=pkg_c=40/41 core_max_c=41 hot_core=4 cores_max_c=[35,35,37,41,32,33,32,31,33] samples=69 vcore_v=1.029
+2026-11-17T18:58:50Z pass=1 cpu=8 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/44 core_max_c=44 hot_core=5 cores_max_c=[30,41,41,38,44,36,38,33,35] samples=42 vcore_v=1.028
+2026-11-17T18:59:36Z pass=1 cpu=9 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/43 core_max_c=43 hot_core=2 cores_max_c=[39,43,39,36,43,34,40,33,37] samples=52 vcore_v=1.025
+2026-11-17T19:00:21Z pass=1 cpu=10 PASS fatal=0 whea=0 alive=1 heat=pkg_c=43/44 core_max_c=44 hot_core=2 cores_max_c=[38,44,41,41,41,43,41,38,35] samples=30 vcore_v=1.016
+2026-11-17T19:01:07Z pass=1 cpu=11 PASS fatal=0 whea=0 alive=1 heat=pkg_c=41/42 core_max_c=42 hot_core=6 cores_max_c=[32,41,38,33,34,42,41,41,40] samples=60 vcore_v=1.018
+2026-11-17T19:01:53Z pass=1 cpu=12 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/43 core_max_c=43 hot_core=7 cores_max_c=[32,39,33,31,35,35,43,37,33] samples=65 vcore_v=1.028
+2026-11-17T19:02:39Z pass=1 cpu=13 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/43 core_max_c=43 hot_core=7 cores_max_c=[32,35,32,36,37,31,43,33,34] samples=69 vcore_v=1.029
+2026-11-17T19:03:24Z pass=1 cpu=14 PASS fatal=0 whea=0 alive=1 heat=pkg_c=41/41 core_max_c=41 hot_core=8 cores_max_c=[36,35,34,33,34,32,34,41,35] samples=66 vcore_v=1.029
+2026-11-17T19:04:10Z pass=1 cpu=15 PASS fatal=0 whea=0 alive=1 heat=pkg_c=40/41 core_max_c=41 hot_core=8 cores_max_c=[34,38,38,34,33,32,37,41,36] samples=69 vcore_v=1.029
+2026-11-17T19:04:56Z pass=1 cpu=16 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/43 core_max_c=44 hot_core=2 cores_max_c=[39,44,41,38,33,31,40,35,42] samples=63 vcore_v=1.024
+2026-11-17T19:05:42Z pass=1 cpu=17 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/44 core_max_c=44 hot_core=9 cores_max_c=[36,40,37,39,41,39,42,40,44] samples=68 vcore_v=1.029
+2026-11-17T19:07:13Z pass=1 cpu=-1 PASS fatal=0 whea=0 alive=1 heat=pkg_c=43/52 core_max_c=51 hot_core=2 cores_max_c=[49,51,51,49,51,49,50,48,49] samples=139 vcore_v=0.996
+2026-11-17T19:07:13Z PASS_COMPLETE pass=1
+2026-11-17T19:07:58Z pass=2 cpu=0 PASS fatal=0 whea=0 alive=1 heat=pkg_c=47/47 core_max_c=47 hot_core=1 cores_max_c=[47,43,42,39,37,36,37,36,36] samples=62 vcore_v=1.023
+2026-11-17T19:08:44Z pass=2 cpu=1 PASS fatal=0 whea=0 alive=1 heat=pkg_c=45/45 core_max_c=45 hot_core=1 cores_max_c=[45,38,38,35,36,35,39,40,38] samples=70 vcore_v=1.028
+2026-11-17T19:09:30Z pass=2 cpu=2 PASS fatal=0 whea=0 alive=1 heat=pkg_c=46/47 core_max_c=47 hot_core=2 cores_max_c=[41,47,35,34,38,33,34,34,33] samples=65 vcore_v=1.024
+2026-11-17T19:10:15Z pass=2 cpu=3 PASS fatal=0 whea=0 alive=1 heat=pkg_c=47/48 core_max_c=48 hot_core=2 cores_max_c=[41,48,42,43,42,41,34,37,38] samples=67 vcore_v=1.028
+2026-11-17T19:11:01Z pass=2 cpu=4 PASS fatal=0 whea=0 alive=1 heat=pkg_c=44/45 core_max_c=45 hot_core=3 cores_max_c=[34,43,45,38,36,36,42,40,42] samples=65 vcore_v=1.028
+2026-11-17T19:11:47Z pass=2 cpu=5 PASS fatal=0 whea=0 alive=1 heat=pkg_c=43/45 core_max_c=45 hot_core=3 cores_max_c=[36,40,45,37,38,34,39,37,34] samples=70 vcore_v=1.029
+2026-11-17T19:12:33Z pass=2 cpu=6 PASS fatal=0 whea=0 alive=1 heat=pkg_c=41/42 core_max_c=42 hot_core=4 cores_max_c=[33,37,33,42,34,32,40,33,33] samples=66 vcore_v=1.028
+2026-11-17T19:13:19Z pass=2 cpu=7 PASS fatal=0 whea=0 alive=1 heat=pkg_c=41/42 core_max_c=42 hot_core=4 cores_max_c=[31,36,33,42,37,33,33,33,38] samples=70 vcore_v=1.029
+2026-11-17T19:14:04Z pass=2 cpu=8 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/44 core_max_c=44 hot_core=5 cores_max_c=[37,41,39,36,44,35,34,33,33] samples=65 vcore_v=1.029
+2026-11-17T19:14:50Z pass=2 cpu=9 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/44 core_max_c=44 hot_core=5 cores_max_c=[39,43,43,32,44,32,40,33,34] samples=68 vcore_v=1.029
+2026-11-17T19:15:35Z pass=2 cpu=10 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/44 core_max_c=44 hot_core=6 cores_max_c=[34,41,40,40,42,44,41,41,41] samples=63 vcore_v=1.029
+2026-11-17T19:16:21Z pass=2 cpu=11 PASS fatal=0 whea=0 alive=1 heat=pkg_c=42/44 core_max_c=44 hot_core=2 cores_max_c=[35,44,36,39,41,44,41,39,41] samples=69 vcore_v=1.028
+2026-11-17T19:17:06Z pass=2 cpu=12 PASS fatal=0 whea=0 alive=1 heat=pkg_c=43/44 core_max_c=44 hot_core=7 cores_max_c=[34,38,39,37,39,33,44,35,37] samples=65 vcore_v=1.028
+2026-11-17T19:17:06Z SOAK END steps=32 passes_started=2 reason=YIELD: STOP file

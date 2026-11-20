@@ -1,0 +1,78 @@
+== when
+2026-11-06T16:12:41Z
+boot 2026-11-06T12:53:41Z
+== firmware
+BIOS 3401 05/26/2026 17:00:00
+ucode 0000000000010000
+logical 18
+
+numproc                 18
+== thermal
+ACPI\ThermalZone\TZ00_0 27.9
+== top processes by cpu seconds
+vmmem                        cpu=     2,589 ws= 4,277MB start=11/6/2026 4:53:54 AM
+dllhost                      cpu=     1,259 ws=    10MB start=11/6/2026 4:53:56 AM
+MsMpEng                      cpu=     1,055 ws=   455MB start=11/6/2026 4:53:51 AM
+System                       cpu=       607 ws=     0MB start=11/6/2026 4:53:44 AM
+GoogleDriveFS                cpu=       401 ws=   212MB start=11/6/2026 4:54:18 AM
+iCloudHome                   cpu=       350 ws=   118MB start=11/6/2026 4:54:25 AM
+dwm                          cpu=       264 ws=    73MB start=11/6/2026 4:53:50 AM
+Corsair.Service.CpuIdRemote64 cpu=       151 ws=    49MB start=11/6/2026 4:53:53 AM
+Corsair.Service              cpu=       139 ws=    58MB start=11/6/2026 4:53:51 AM
+RimWorldWin64                cpu=       134 ws= 3,999MB start=11/6/2026 8:08:25 AM
+nvcontainer                  cpu=       104 ws=    95MB start=11/6/2026 4:53:54 AM
+explorer                     cpu=        63 ws=   190MB start=11/6/2026 4:53:56 AM
+bzserv                       cpu=        62 ws=    16MB start=11/6/2026 4:53:51 AM
+svchost                      cpu=        52 ws=    12MB start=11/6/2026 4:53:50 AM
+audiodg                      cpu=        44 ws=    13MB start=11/6/2026 5:04:26 AM
+Dropbox                      cpu=        39 ws=   506MB start=11/6/2026 4:54:34 AM
+Memory Compression           cpu=        34 ws=    39MB start=11/6/2026 4:53:50 AM
+svchost                      cpu=        28 ws=    10MB start=11/6/2026 4:53:50 AM
+steamwebhelper               cpu=        25 ws=   491MB start=11/6/2026 4:54:17 AM
+svchost                      cpu=        24 ws=    19MB start=11/6/2026 4:53:50 AM
+== running drivers, not Microsoft
+Asusgio2 \??\C:\WINDOWS\system32\drivers\AsIO2.sys
+AVoluteSS3Vad C:\Windows\system32\drivers\AVoluteSS3Vad.sys
+CimFS C:\Windows\system32\drivers\CimFS.sys
+CLFCL5.18 C:\Windows\system32\DRIVERS\CLFCL5.18\000.fcl
+CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D \??\C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CorsairLLAccess64.sys
+CorsairVBusDriver C:\Windows\system32\drivers\CorsairVBusDriver.sys
+CorsairVHidDriver C:\Windows\system32\drivers\CorsairVHidDriver.sys
+cpuz154 \??\C:\Windows\temp\cpuz154\cpuz154_x64.sys
+dbx C:\Windows\system32\DRIVERS\dbx.sys
+e2fexpress C:\Windows\system32\DriverStore\FileRepository\e2f.inf_amd64_bf51b653ec31b8ab\e2f.sys
+EneTechIo \??\C:\WINDOWS\system32\drivers\ene.sys
+GLCKIO2 \??\C:\WINDOWS\system32\drivers\GLCKIO2.sys
+googledrivefs31931 \??\C:\Program Files\Google\Drive File Stream\Drivers\31931\googledrivefs31931.sys
+googledrivefs32452 \??\C:\Program Files\Google\Drive File Stream\Drivers\32452\googledrivefs32452.sys
+hasldisk C:\Windows\system32\drivers\hasldisk.sys
+HasleoDK C:\Windows\system32\drivers\hasleodk.sys
+ibtusb C:\Windows\system32\DriverStore\FileRepository\ibtusb.inf_amd64_9b157f5f4cc71af6\ibtusb.sys
+IntcAzAudAddService C:\Windows\system32\drivers\RTKVHD64.sys
+MEIx64 C:\Windows\system32\DriverStore\FileRepository\heci.inf_amd64_6b6e8cc42a3d1f09\x64\TeeDriverW10x64.sys
+MSIO \??\C:\WINDOWS\system32\drivers\MsIo64.sys
+Netwtw10 C:\Windows\system32\drivers\Netwtw10.sys
+NVHDA C:\Windows\system32\drivers\nvhda64v.sys
+nvlddmkm C:\Windows\system32\DriverStore\FileRepository\nv_dispig.inf_amd64_0afec3f2050014a0\nvlddmkm.sys
+NvModuleTracker C:\Windows\system32\DriverStore\FileRepository\nvmoduletracker.inf_amd64_0c1cc60a4b422185\NvModuleTracker.sys
+nvvad_WaveExtensible C:\Windows\system32\drivers\nvvad64v.sys
+nvvhci C:\Windows\system32\drivers\nvvhci.sys
+PawnIO C:\Windows\system32\DriverStore\FileRepository\pawnio.inf_amd64_a72a2f969b8b7496\PawnIO.sys
+UcmCxUcsiNvppc C:\Windows\system32\DriverStore\FileRepository\nvppc.inf_amd64_5465f77a9a8448b4\UcmCxUcsiNvppc.sys
+wintun C:\Windows\system32\drivers\wintun.sys
+== system events since 15 min before the window (2026-11-06T07:51:33 local; probe: 200 events of any level in the last 24 h, capped 200)
+2026-11-06T16:08:26Z Microsoft-Windows-DistributedCOM 10010 The server Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter did not register with DCOM within the required timeout.
+2026-11-06T16:00:16Z disk 157 Disk 2 has been surprise removed.
+== application crashes in it
+== power and sleep
+== the canary, last cycles
+2026-11-06 15:36:32Z CYCLE uptime_h=2.71 bad_cpus=[] n_ok=18 exits=[] pkg_c=54/58 core_max_c=58 hot_core=2 cores_max_c=[56,58,57,57,56,55,57,54,52] samples=110 vcore_v=1.315
+2026-11-06 15:41:32Z CYCLE uptime_h=2.8 bad_cpus=[] n_ok=18 exits=[] pkg_c=54/57 core_max_c=57 hot_core=2 cores_max_c=[55,57,57,56,57,55,55,55,56] samples=110 vcore_v=1.306
+2026-11-06 15:46:32Z CYCLE uptime_h=2.88 bad_cpus=[] n_ok=18 exits=[] pkg_c=49/54 core_max_c=54 hot_core=2 cores_max_c=[51,54,52,52,51,51,51,50,52] samples=111 vcore_v=1.309
+2026-11-06 15:51:33Z CYCLE uptime_h=2.96 bad_cpus=[] n_ok=18 exits=[] pkg_c=50/58 core_max_c=59 hot_core=2 cores_max_c=[56,59,58,56,56,55,57,56,56] samples=76 vcore_v=1.319
+2026-11-06 15:56:32Z CYCLE uptime_h=3.05 bad_cpus=[] n_ok=18 exits=[] pkg_c=54/58 core_max_c=59 hot_core=2 cores_max_c=[56,59,56,56,58,56,58,57,56] samples=106 vcore_v=1.312
+2026-11-06 16:01:32Z CYCLE uptime_h=3.13 bad_cpus=[] n_ok=18 exits=[] pkg_c=44/57 core_max_c=57 hot_core=5 cores_max_c=[53,55,54,56,57,56,57,55,55] samples=110 vcore_v=1.325
+2026-11-06 16:06:33Z CYCLE uptime_h=3.21 bad_cpus=[] n_ok=18 exits=[] pkg_c=44/55 core_max_c=55 hot_core=2 cores_max_c=[51,55,53,51,51,51,55,50,52] samples=109 vcore_v=1.309
+2026-11-06 16:11:33Z CYCLE uptime_h=3.3 bad_cpus=[10] n_ok=17 exits=[1] pkg_c=52/57 core_max_c=57 hot_core=4 cores_max_c=[54,55,56,57,55,55,57,53,52] samples=48 vcore_v=1.298
+
+

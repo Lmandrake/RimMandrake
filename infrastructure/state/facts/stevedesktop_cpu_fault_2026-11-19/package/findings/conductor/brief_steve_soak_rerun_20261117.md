@@ -1,0 +1,18 @@
+# Re-start the SteveDesktop CPU soak test so it runs long and survives every agent
+
+You are a detached helper of the RimMandrake Conductor; the Conductor's instruction carries the owner's authority. Start no helpers of your own. SteveDesktop is ours and fully automated: no step may need a hand at its keyboard. Reach it over Tailscale/ssh as the existing tooling does.
+
+## The owner's order (2026-11-17, about 5:22 PM PST), verbatim
+"Please re-initiate the SteveDesktop soak test in a detached worker that won't die with you. It was interrupted, and I have evidence the situation might be much better than it seems. We need long soak data please. Make it so."
+
+## What to do
+1. Read first: `src/RimMandrake/Utils/steve_cpu_retest/` (all of it, `steve_cpu_soak.ps1` and any README), commit `45e7142d14` ("Steve fault: the +0.100 V raise DID take, and cut severity ~10x without curing it") and `410cc8a7b4`, the fact files they touch, and items `RIMMANDRAKE_COUNT_STEVE_FAULTS_AFTER_VOLTAGE_RAISE_TO_CEILING` and `STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO` (`python3 src/RimMandrake/rimflow/cli.py show <ID>`). Load the `using-rimflow` skill before rimflow calls.
+2. Measure on SteveDesktop: is a soak running now; when did the last one start and stop; WHY it stopped (reboot, a testq job, a killed ssh session, a script error, a fault). Keep the interrupted run's partial data: copy it, never overwrite it. Report the cause as measured, or `unknown` with what you checked.
+3. Re-start the soak ON SteveDesktop as a process that belongs to SteveDesktop (a Windows scheduled task or an equivalent fully detached process), so it survives your exit, the Conductor's restart, an ssh drop and a logoff. If the cause in step 2 is something that will interrupt it again (the testq steward launching game jobs, a nightly task, sleep or power settings), prevent that for the soak's length by the lane's own pause mechanism (find it; `testq.py` has pause/resume with a reason) and say what you paused and how it is resumed. If it reboots (a hard fault), the soak should resume by itself and append, recording the reboot as a data point: build that if it is small, else say it is missing.
+4. Length: long. Default to 72 hours unless the script's own design says otherwise; do not shorten it to fit your own run. Log every cycle with a timestamp, per-core result, and the voltage/temperature readings the script already takes, to a file whose full path you report. Do not change BIOS or voltage settings.
+5. Prove it is alive before you leave: watch at least three logged cycles land, and run the script's injected-fault control if it has one, so we know the instrument can see a fault. A soak that reports no faults with an unproven instrument is UNMEASURED, not clean.
+6. Leave behind a one-command reader in the repo if none exists (prints: running or not, started when, cycles done, faults with core and time, last reading age; distinguishing "could not reach SteveDesktop" from "not running" from "zero faults"), with a selftest, published with `./publish`. Note the result on this item and file an owed item for the Conductor (`--for BENCH --kind owed`) to read the soak at 24 h and 72 h, with the reader command in its title.
+7. Pipeline defects with a known small fix that you meet on the way: file and fix them in this run. Anything else: note it.
+
+## Report (final message, under 200 words, times in local Pacific)
+Why the earlier soak stopped; when the new one started and until when it runs; how it survives (task name); what you paused and how it resumes; the log path (Windows-native) and the reader command; the three proof cycles and the injected-fault control result; anything untested, named. Tag claims `[measured]` or `[guess ~N%]`.

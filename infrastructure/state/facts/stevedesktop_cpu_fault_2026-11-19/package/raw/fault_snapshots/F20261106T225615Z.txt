@@ -1,0 +1,142 @@
+== when
+2026-11-06T23:11:12Z
+boot 2026-11-06T22:56:15Z
+== firmware
+BIOS 3401 05/26/2026 17:00:00
+ucode 0000000000010000
+logical 18
+
+numproc                 18
+== thermal
+ACPI\ThermalZone\TZ00_0 27.9
+== top processes by cpu seconds
+iCloudHome                   cpu=       851 ws=   121MB start=11/6/2026 2:57:03 PM
+GoogleDriveFS                cpu=       404 ws=   212MB start=11/6/2026 2:56:57 PM
+MsMpEng                      cpu=       318 ws=   384MB start=11/6/2026 2:56:25 PM
+RimWorldWin64                cpu=       100 ws= 1,598MB start=11/6/2026 3:07:57 PM
+vmmem                        cpu=        69 ws= 3,255MB start=11/6/2026 2:56:28 PM
+explorer                     cpu=        56 ws=   182MB start=11/6/2026 2:56:30 PM
+bzserv                       cpu=        42 ws=    15MB start=11/6/2026 2:56:25 PM
+System                       cpu=        37 ws=     0MB start=11/6/2026 2:56:18 PM
+nvcontainer                  cpu=        18 ws=    78MB start=11/6/2026 2:56:28 PM
+Dropbox                      cpu=        16 ws=   499MB start=11/6/2026 2:57:18 PM
+LightingService              cpu=        14 ws=    25MB start=11/6/2026 2:56:25 PM
+msedgewebview2               cpu=        14 ws=    74MB start=11/6/2026 2:56:58 PM
+SearchIndexer                cpu=        14 ws=    46MB start=11/6/2026 2:56:27 PM
+Corsair.Service              cpu=        12 ws=    55MB start=11/6/2026 2:56:25 PM
+Corsair.Service.CpuIdRemote64 cpu=        12 ws=    47MB start=11/6/2026 2:56:26 PM
+svchost                      cpu=        12 ws=   203MB start=11/6/2026 3:07:44 PM
+svchost                      cpu=         9 ws=    47MB start=11/6/2026 2:56:24 PM
+OneDrive                     cpu=         8 ws=    82MB start=11/6/2026 2:56:52 PM
+iCloudDrive                  cpu=         7 ws=    58MB start=11/6/2026 2:57:14 PM
+iCUE                         cpu=         7 ws=   522MB start=11/6/2026 2:56:52 PM
+== running drivers, not Microsoft
+Asusgio2 \??\C:\WINDOWS\system32\drivers\AsIO2.sys
+AVoluteSS3Vad C:\Windows\system32\drivers\AVoluteSS3Vad.sys
+CimFS C:\Windows\system32\drivers\CimFS.sys
+CLFCL5.18 C:\Windows\system32\DRIVERS\CLFCL5.18\000.fcl
+CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D \??\C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CorsairLLAccess64.sys
+CorsairVBusDriver C:\Windows\system32\drivers\CorsairVBusDriver.sys
+CorsairVHidDriver C:\Windows\system32\drivers\CorsairVHidDriver.sys
+cpuz154 \??\C:\Windows\temp\cpuz154\cpuz154_x64.sys
+dbx C:\Windows\system32\DRIVERS\dbx.sys
+e2fexpress C:\Windows\system32\DriverStore\FileRepository\e2f.inf_amd64_bf51b653ec31b8ab\e2f.sys
+EneTechIo \??\C:\WINDOWS\system32\drivers\ene.sys
+GLCKIO2 \??\C:\WINDOWS\system32\drivers\GLCKIO2.sys
+googledrivefs31931 \??\C:\Program Files\Google\Drive File Stream\Drivers\31931\googledrivefs31931.sys
+googledrivefs32452 \??\C:\Program Files\Google\Drive File Stream\Drivers\32452\googledrivefs32452.sys
+hasldisk C:\Windows\system32\drivers\hasldisk.sys
+HasleoDK C:\Windows\system32\drivers\hasleodk.sys
+ibtusb C:\Windows\system32\DriverStore\FileRepository\ibtusb.inf_amd64_9b157f5f4cc71af6\ibtusb.sys
+IntcAzAudAddService C:\Windows\system32\drivers\RTKVHD64.sys
+MEIx64 C:\Windows\system32\DriverStore\FileRepository\heci.inf_amd64_6b6e8cc42a3d1f09\x64\TeeDriverW10x64.sys
+MSIO \??\C:\WINDOWS\system32\drivers\MsIo64.sys
+Netwtw10 C:\Windows\system32\drivers\Netwtw10.sys
+NVHDA C:\Windows\system32\drivers\nvhda64v.sys
+nvlddmkm C:\Windows\system32\DriverStore\FileRepository\nv_dispig.inf_amd64_0afec3f2050014a0\nvlddmkm.sys
+NvModuleTracker C:\Windows\system32\DriverStore\FileRepository\nvmoduletracker.inf_amd64_0c1cc60a4b422185\NvModuleTracker.sys
+nvvad_WaveExtensible C:\Windows\system32\drivers\nvvad64v.sys
+nvvhci C:\Windows\system32\drivers\nvvhci.sys
+PawnIO C:\Windows\system32\DriverStore\FileRepository\pawnio.inf_amd64_a72a2f969b8b7496\PawnIO.sys
+UcmCxUcsiNvppc C:\Windows\system32\DriverStore\FileRepository\nvppc.inf_amd64_5465f77a9a8448b4\UcmCxUcsiNvppc.sys
+wintun C:\Windows\system32\drivers\wintun.sys
+== system events since 15 min before the window (2026-11-06T14:49:12 local; probe: 200 events of any level in the last 24 h, capped 200)
+2026-11-06T23:09:14Z disk 157 Disk 2 has been surprise removed.
+2026-11-06T23:08:30Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-06T23:08:02Z Microsoft-Windows-DistributedCOM 10010 The server Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter did not register with DCOM within the required timeout.
+2026-11-06T23:06:43Z Microsoft-Windows-DistributedCOM 10010 The server Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter did not register with DCOM within the required timeout.
+2026-11-06T23:02:45Z disk 157 Disk 2 has been surprise removed.
+2026-11-06T22:58:41Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-06T22:58:41Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-06T22:58:41Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-06T22:58:41Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-06T22:58:41Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-06T22:58:41Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-06T22:58:15Z Microsoft-Windows-Hyper-V-VmSwitch 32 Failed to connect NIC E1419962-2CCC-4AA6-A1B1-A57ACE254738--CD9628BB-023F-5162-B994-B3AAD3B56708 (Friendly Name: ) to port 8E8D4A72-94DD-4120-A144-C33F80C2C887 (Friendly Name: ) on switch CE20BA90-F5C4-4EF3-B384-693A64DB1E3A (Friendly Name: ), status = Object Name not found.. UniqueEvent = 80.
+2026-11-06T22:57:54Z Service Control Manager 7000 The Minecraft Education Updater service failed to start due to the following error: 
+
+2026-11-06T22:57:03Z Microsoft-Windows-DistributedCOM 10016 The machine-default permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-06T22:56:59Z googledrivefs31931 2 The driver version of the disk does not match.
+2026-11-06T22:56:33Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-06T22:56:31Z Microsoft-Windows-Hyper-V-VmSwitch 32 Failed to connect NIC E1419962-2CCC-4AA6-A1B1-A57ACE254738--CD9628BB-023F-5162-B994-B3AAD3B56708 (Friendly Name: ) to port 8E8D4A72-94DD-4120-A144-C33F80C2C887 (Friendly Name: ) on switch CE20BA90-F5C4-4EF3-B384-693A64DB1E3A (Friendly Name: ), status = Object Name not found.. UniqueEvent = 80.
+2026-11-06T22:56:30Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-06T22:56:28Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-06T22:56:28Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-06T22:56:28Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-06T22:56:26Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-06T22:56:25Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-06T22:56:24Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-06T22:56:19Z e2fexpress 27 Intel(R) Ethernet Controller (2) I225-V #2
+
+2026-11-06T22:51:16Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-06T22:51:14Z Microsoft-Windows-WLAN-AutoConfig 10002 WLAN Extensibility Module has stopped.
+
+2026-11-06T22:51:14Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-06T22:51:14Z Service Control Manager 7031 The OpenSSH SSH Server service terminated unexpectedly.  It has done this 1 time(s).  The following corrective action will be taken in 5000 milliseconds: Restart the service.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:05Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:04Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:04Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:04Z Microsoft-Windows-DistributedCOM 10010 The server {021E4F06-9DCC-49AD-88CF-ECC2DA314C8A} did not register with DCOM within the required timeout.
+2026-11-06T22:51:00Z Microsoft-Windows-DistributedCOM 10016 The machine-default permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+== application crashes in it
+2026-11-06T23:07:31Z 1001 Fault bucket 1729469628703022449, type 4
+
+2026-11-06T23:07:29Z 1000 Faulting application name: RimWorldWin64.exe, version: 2022.3.35.4614, time stamp: 0x667bf359
+
+== power and sleep
+2026-11-06T22:56:18Z Microsoft-Windows-Kernel-Power 172
+2026-11-06T22:51:17Z Microsoft-Windows-Kernel-Power 109
+== the canary, last cycles
+2026-11-06 22:40:16Z CYCLE uptime_h=5.63 bad_cpus=[2] n_ok=17 exits=[1] pkg_c=51/53 core_max_c=53 hot_core=2 cores_max_c=[51,53,51,51,51,51,52,51,52] samples=110 vcore_v=1.314
+2026-11-06 22:45:17Z CYCLE uptime_h=5.71 bad_cpus=[3] n_ok=17 exits=[1] pkg_c=50/55 core_max_c=55 hot_core=5 cores_max_c=[52,54,52,52,55,51,53,51,53] samples=111 vcore_v=1.310
+2026-11-06 22:50:17Z CYCLE uptime_h=5.8 bad_cpus=[1,10,16] n_ok=15 exits=[1,1,1] pkg_c=49/53 core_max_c=54 hot_core=7 cores_max_c=[53,53,52,51,52,50,54,50,52] samples=110 vcore_v=1.319
+2026-11-06 22:57:50Z WATCH START boot=2026-11-06 22:56:15Z logical_cpus=18 cycle=300s per-cpu core check 4s each (scheduled task, survives reboot)
+2026-11-06 22:57:58Z CONTROL inject_exit=1 clean_exit=0
+2026-11-06 22:59:13Z CYCLE uptime_h=0.05 bad_cpus=[] n_ok=18 exits=[] pkg_c=57/63 core_max_c=64 hot_core=3 cores_max_c=[59,61,64,63,63,59,61,59,60] samples=81 vcore_v=1.300
+2026-11-06 23:04:12Z CYCLE uptime_h=0.13 bad_cpus=[] n_ok=18 exits=[] pkg_c=56/64 core_max_c=63 hot_core=2 cores_max_c=[60,63,62,61,61,60,61,60,60] samples=57 vcore_v=1.309
+2026-11-06 23:09:13Z CYCLE uptime_h=0.22 bad_cpus=[2] n_ok=17 exits=[1] pkg_c=61/65 core_max_c=64 hot_core=4 cores_max_c=[60,63,61,64,63,62,64,60,60] samples=41 vcore_v=1.307
+
+

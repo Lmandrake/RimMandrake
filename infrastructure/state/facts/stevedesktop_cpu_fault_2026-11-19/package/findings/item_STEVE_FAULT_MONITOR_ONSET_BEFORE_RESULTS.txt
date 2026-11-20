@@ -1,0 +1,17 @@
+STEVE_FAULT_MONITOR_ONSET_BEFORE_RESULTS   done  row -  needs offline  target v1
+Steve canary: run the pinned per-CPU check often, so the uptime SIMD fault's onset is timed, its results are quarantined, a reboot clears it, and a cause can be tied to it
+owner BENCH   kind bug   filed 2026-10-31T19:01:11Z
+closed at 5aad64f5cddf410447deb3540a3c6c328c6f7a2d
+live: unit=rm-steve-fault.timer reading=/mnt/d/ClaudeWork/rimmandrake/testq/fault_state.json max_age=30m  (0 outage(s))
+
+--- items/STEVE_FAULT_MONITOR_ONSET_BEFORE_RESULTS.md ---
+(absent or has no ## sections)
+--- history (4 events) ---
+  2026-10-31T19:01:11Z  BENCH  file      caused_by=STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO for=BENCH kind=bug needs=offline target=v1 title=Steve canary: run the pinned per-CPU check often, so the uptime SIMD fault's onset is timed, its results are quarantined, a reboot clears it, and a cause can be tied to it tsn=1793473271420031004  | agent's reason: fault clears on reboot and returns on an unknown clock; stevecheck at C:\SteveDesktop\diag\bin3 proved it sees it
+  2026-11-04T02:08:36Z  BENCH  start     tsn=1793758116518232347  | agent's reason: relentless supervisor takes the item
+  2026-11-04T03:16:44Z  RUNNER verify    config=marker:blind-check evidence=relentless: blind PASS at 5aad64f5cddf410447deb3540a3c6c328c6f7a2d after 0 return(s): Ran the 3 selftests on a git-initialised copy of 5aad64f5: 3/3 GREEN (in the bare export selftest_testq only crashes because there is no git repo or origin/main, which is the environment). fault_monitor selftest na level=L0 result=pass sha=5aad64f5cddf410447deb3540a3c6c328c6f7a2d tsn=1793762204557269324
+  2026-11-04T03:16:47Z  BENCH  close     live=unit=rm-steve-fault.timer reading=/mnt/d/ClaudeWork/rimmandrake/testq/fault_state.json max_age=30m reason=relentless: blind PASS at 5aad64f5cddf410447deb3540a3c6c328c6f7a2d after 0 return(s): Ran the 3 selftests on a git-initialised copy of 5aad64f5: 3/3 GREEN (in the bare export selftest_testq only crashes because there is no git repo or origin/main, which is the environment). fault_monitor selftest names a  sha=5aad64f5cddf410447deb3540a3c6c328c6f7a2d tsn=1793762207255444237  | agent's reason: relentless: blind check passed
+--- runs (immutable; a failure stands forever) ---
+  STEVE_FAULT_MONITOR_ONSET_BEFORE_RESULTS/run-1@marker:blind-check  pass    relentless: blind PASS at 5aad64f5cddf410447deb3540a3c6c328c6f7a2d after 0 return(s): Ran the 3 selftests on a git-initialised copy of 5aad64f5: 3/3 GREEN (in the bare export selftest_testq only crashes because there is no git repo or origin/main, which is the environment). fault_monitor selftest na
+--- causal chain ---
+  STEVE_FAULT_MONITOR_ONSET_BEFORE_RESULTS  <- caused by STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO

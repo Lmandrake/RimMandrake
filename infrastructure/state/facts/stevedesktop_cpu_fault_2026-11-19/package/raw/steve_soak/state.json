@@ -1,0 +1,14 @@
+{
+    "run":  "S20261118T012929Z",
+    "planned_utc":  "2026-11-18T01:29:29Z",
+    "end_utc":  "2026-11-21T01:29:29Z",
+    "hours":  72,
+    "core_secs":  45,
+    "all_secs":  90,
+    "max_c":  90,
+    "max_fails":  50,
+    "started":  true,
+    "boot":  "2026-11-18T01:39:36Z",
+    "finished":  null,
+    "fails":  3
+}

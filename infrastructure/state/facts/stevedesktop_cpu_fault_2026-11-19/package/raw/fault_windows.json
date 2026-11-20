@@ -1,0 +1,1533 @@
+[
+ {
+  "bad_cycles": 77,
+  "boot": "2026-11-01T03:52:19Z",
+  "clean_after": 25,
+  "cpus": {
+   "0": 14,
+   "1": 1,
+   "10": 6,
+   "11": 1,
+   "12": 6,
+   "13": 1,
+   "14": 4,
+   "16": 9,
+   "17": 3,
+   "18": 13,
+   "2": 24,
+   "3": 1,
+   "4": 8,
+   "5": 2,
+   "6": 7,
+   "7": 1,
+   "8": 4,
+   "9": 8
+  },
+  "end": "2026-11-01T16:42:45Z",
+  "first_bad": "2026-11-01T07:10:08Z",
+  "first_cpus": [
+   17
+  ],
+  "heat": {
+   "at_onset": null,
+   "at_onset_pkg": null,
+   "at_onset_unmeasured": "no reading",
+   "at_onset_vcore": null,
+   "boot_max_before": null,
+   "boot_mean_before": null,
+   "cycles_before": 39,
+   "cycles_measured_before": 0,
+   "last_clean": null,
+   "pre_max": null,
+   "pre_mean": null
+  },
+  "id": "F20261101T035219Z",
+  "last_bad": "2026-11-01T16:11:05Z",
+  "onset_uptime_h": 3.3,
+  "start": "2026-11-01T07:05:08Z"
+ },
+ {
+  "bad_cycles": 30,
+  "boot": "2026-11-01T16:42:45Z",
+  "clean_after": 50,
+  "cpus": {
+   "10": 3,
+   "11": 1,
+   "12": 6,
+   "14": 4,
+   "16": 5,
+   "17": 1,
+   "2": 9,
+   "3": 1,
+   "4": 2,
+   "6": 4,
+   "8": 1,
+   "9": 6
+  },
+  "end": "2026-11-02T00:38:35Z",
+  "first_bad": "2026-11-01T17:35:25Z",
+  "first_cpus": [
+   14
+  ],
+  "heat": {
+   "at_onset": null,
+   "at_onset_pkg": null,
+   "at_onset_unmeasured": "no reading",
+   "at_onset_vcore": null,
+   "boot_max_before": null,
+   "boot_mean_before": null,
+   "cycles_before": 10,
+   "cycles_measured_before": 0,
+   "last_clean": null,
+   "pre_max": null,
+   "pre_mean": null
+  },
+  "id": "F20261101T164245Z",
+  "last_bad": "2026-11-02T00:10:16Z",
+  "onset_uptime_h": 0.88,
+  "start": "2026-11-01T17:30:26Z"
+ },
+ {
+  "bad_cycles": 38,
+  "boot": "2026-11-03T19:59:21Z",
+  "clean_after": 9,
+  "cpus": {
+   "0": 8,
+   "10": 4,
+   "11": 1,
+   "12": 5,
+   "13": 2,
+   "14": 5,
+   "16": 3,
+   "17": 3,
+   "2": 5,
+   "3": 2,
+   "4": 3,
+   "5": 2,
+   "6": 10,
+   "8": 6,
+   "9": 2
+  },
+  "end": "2026-11-04T02:45:13Z",
+  "first_bad": "2026-11-03T22:52:02Z",
+  "first_cpus": [
+   0
+  ],
+  "heat": {
+   "at_onset": null,
+   "at_onset_pkg": null,
+   "at_onset_unmeasured": "no reading",
+   "at_onset_vcore": null,
+   "boot_max_before": null,
+   "boot_mean_before": null,
+   "cycles_before": 34,
+   "cycles_measured_before": 0,
+   "last_clean": null,
+   "pre_max": null,
+   "pre_mean": null
+  },
+  "id": "F20261103T195921Z",
+  "last_bad": "2026-11-04T02:39:56Z",
+  "onset_uptime_h": 2.88,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261103T195921Z.txt",
+  "start": "2026-11-03T22:47:02Z"
+ },
+ {
+  "bad_cycles": 3,
+  "boot": "2026-11-04T02:45:13Z",
+  "clean_after": 0,
+  "cpus": {
+   "2": 3
+  },
+  "end": "2026-11-04T03:57:22Z",
+  "first_bad": "2026-11-04T03:43:02Z",
+  "first_cpus": [
+   2
+  ],
+  "heat": {
+   "at_onset": null,
+   "at_onset_pkg": null,
+   "at_onset_unmeasured": "no reading",
+   "at_onset_vcore": null,
+   "boot_max_before": null,
+   "boot_mean_before": null,
+   "cycles_before": 11,
+   "cycles_measured_before": 0,
+   "last_clean": null,
+   "pre_max": null,
+   "pre_mean": null
+  },
+  "id": "F20261104T024513Z",
+  "last_bad": "2026-11-04T03:50:57Z",
+  "onset_uptime_h": 0.96,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261104T024513Z.txt",
+  "start": "2026-11-04T03:38:02Z"
+ },
+ {
+  "bad_cycles": 2,
+  "boot": "2026-11-04T03:57:22Z",
+  "clean_after": 0,
+  "cpus": {
+   "16": 2
+  },
+  "end": "2026-11-04T08:35:46Z",
+  "first_bad": "2026-11-04T08:25:14Z",
+  "first_cpus": [
+   16
+  ],
+  "heat": {
+   "at_onset": 61,
+   "at_onset_pkg": 61,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.302,
+   "boot_max_before": 69,
+   "boot_mean_before": 60.1,
+   "cycles_before": 53,
+   "cycles_measured_before": 53,
+   "last_clean": 59,
+   "pre_max": 61,
+   "pre_mean": 58.5
+  },
+  "id": "F20261104T035722Z",
+  "last_bad": "2026-11-04T08:30:14Z",
+  "onset_uptime_h": 4.46,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261104T035722Z.txt",
+  "start": "2026-11-04T08:20:14Z"
+ },
+ {
+  "bad_cycles": 1,
+  "boot": "2026-11-04T08:35:46Z",
+  "clean_after": 0,
+  "cpus": {
+   "16": 1
+  },
+  "end": "2026-11-04T09:38:00Z",
+  "first_bad": "2026-11-04T09:28:37Z",
+  "first_cpus": [
+   16
+  ],
+  "heat": {
+   "at_onset": 56,
+   "at_onset_pkg": 56,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.315,
+   "boot_max_before": 67,
+   "boot_mean_before": 64.2,
+   "cycles_before": 10,
+   "cycles_measured_before": 10,
+   "last_clean": 61,
+   "pre_max": 67,
+   "pre_mean": 64.2
+  },
+  "id": "F20261104T083546Z",
+  "last_bad": "2026-11-04T09:28:37Z",
+  "onset_uptime_h": 0.88,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261104T083546Z.txt",
+  "start": "2026-11-04T09:23:37Z"
+ },
+ {
+  "bad_cycles": 1,
+  "boot": "2026-11-04T09:38:00Z",
+  "clean_after": 0,
+  "cpus": {
+   "6": 1
+  },
+  "end": "2026-11-04T12:33:48Z",
+  "first_bad": "2026-11-04T12:25:45Z",
+  "first_cpus": [
+   6
+  ],
+  "heat": {
+   "at_onset": 61,
+   "at_onset_pkg": 61,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.313,
+   "boot_max_before": 66,
+   "boot_mean_before": 58.4,
+   "cycles_before": 33,
+   "cycles_measured_before": 33,
+   "last_clean": 60,
+   "pre_max": 66,
+   "pre_mean": 58.4
+  },
+  "id": "F20261104T093800Z",
+  "last_bad": "2026-11-04T12:25:45Z",
+  "onset_uptime_h": 2.8,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261104T093800Z.txt",
+  "start": "2026-11-04T12:20:44Z"
+ },
+ {
+  "bad_cycles": 1,
+  "boot": "2026-11-04T12:33:48Z",
+  "clean_after": 0,
+  "cpus": {
+   "12": 1
+  },
+  "end": "2026-11-04T13:34:22Z",
+  "first_bad": "2026-11-04T13:26:37Z",
+  "first_cpus": [
+   12
+  ],
+  "heat": {
+   "at_onset": 54,
+   "at_onset_pkg": 54,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.314,
+   "boot_max_before": 61,
+   "boot_mean_before": 58.2,
+   "cycles_before": 10,
+   "cycles_measured_before": 10,
+   "last_clean": 59,
+   "pre_max": 61,
+   "pre_mean": 58.2
+  },
+  "id": "F20261104T123348Z",
+  "last_bad": "2026-11-04T13:26:37Z",
+  "onset_uptime_h": 0.88,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261104T123348Z.txt",
+  "start": "2026-11-04T13:21:38Z"
+ },
+ {
+  "bad_cycles": 1,
+  "boot": "2026-11-04T13:34:22Z",
+  "clean_after": 0,
+  "cpus": {
+   "14": 1,
+   "6": 1,
+   "8": 1
+  },
+  "end": "2026-11-04T15:36:44Z",
+  "first_bad": "2026-11-04T15:27:11Z",
+  "first_cpus": [
+   6,
+   8,
+   14
+  ],
+  "heat": {
+   "at_onset": 52,
+   "at_onset_pkg": 52,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.306,
+   "boot_max_before": 64,
+   "boot_mean_before": 57.2,
+   "cycles_before": 22,
+   "cycles_measured_before": 22,
+   "last_clean": 53,
+   "pre_max": 60,
+   "pre_mean": 55.6
+  },
+  "id": "F20261104T133422Z",
+  "last_bad": "2026-11-04T15:27:11Z",
+  "onset_uptime_h": 1.88,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261104T133422Z.txt",
+  "start": "2026-11-04T15:22:11Z"
+ },
+ {
+  "bad_cycles": 1,
+  "boot": "2026-11-04T15:36:44Z",
+  "clean_after": 1,
+  "cpus": {
+   "16": 1,
+   "2": 1
+  },
+  "end": "2026-11-05T01:01:13Z",
+  "first_bad": "2026-11-05T00:49:45Z",
+  "first_cpus": [
+   2,
+   16
+  ],
+  "heat": {
+   "at_onset": 60,
+   "at_onset_pkg": 60,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.305,
+   "boot_max_before": 60,
+   "boot_mean_before": 52.2,
+   "cycles_before": 110,
+   "cycles_measured_before": 110,
+   "last_clean": 58,
+   "pre_max": 58,
+   "pre_mean": 53.8
+  },
+  "id": "F20261104T153644Z",
+  "last_bad": "2026-11-05T00:49:45Z",
+  "onset_uptime_h": 9.22,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261104T153644Z.txt",
+  "start": "2026-11-05T00:44:44Z"
+ },
+ {
+  "bad_cycles": 1,
+  "boot": "2026-11-05T01:01:13Z",
+  "clean_after": 1,
+  "cpus": {
+   "2": 1
+  },
+  "end": "2026-11-05T03:20:18Z",
+  "first_bad": "2026-11-05T03:08:59Z",
+  "first_cpus": [
+   2
+  ],
+  "heat": {
+   "at_onset": 61,
+   "at_onset_pkg": 61,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.312,
+   "boot_max_before": 68,
+   "boot_mean_before": 61.4,
+   "cycles_before": 25,
+   "cycles_measured_before": 25,
+   "last_clean": 59,
+   "pre_max": 63,
+   "pre_mean": 60.8
+  },
+  "id": "F20261105T010113Z",
+  "last_bad": "2026-11-05T03:08:59Z",
+  "onset_uptime_h": 2.13,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261105T010113Z.txt",
+  "start": "2026-11-05T03:04:00Z"
+ },
+ {
+  "bad_cycles": 2,
+  "boot": "2026-11-05T03:20:18Z",
+  "clean_after": 0,
+  "cpus": {
+   "0": 1,
+   "14": 1,
+   "3": 1,
+   "5": 1
+  },
+  "end": "2026-11-05T05:39:12Z",
+  "first_bad": "2026-11-05T05:28:10Z",
+  "first_cpus": [
+   0
+  ],
+  "heat": {
+   "at_onset": 59,
+   "at_onset_pkg": 58,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.304,
+   "boot_max_before": 68,
+   "boot_mean_before": 61.6,
+   "cycles_before": 25,
+   "cycles_measured_before": 25,
+   "last_clean": 59,
+   "pre_max": 62,
+   "pre_mean": 60.2
+  },
+  "id": "F20261105T032018Z",
+  "last_bad": "2026-11-05T05:33:08Z",
+  "onset_uptime_h": 2.13,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261105T032018Z.txt",
+  "start": "2026-11-05T05:23:08Z"
+ },
+ {
+  "bad_cycles": 7,
+  "boot": "2026-11-05T05:39:12Z",
+  "clean_after": 2,
+  "cpus": {
+   "10": 1,
+   "13": 1,
+   "2": 3,
+   "6": 1,
+   "7": 1,
+   "8": 1
+  },
+  "end": "2026-11-05T10:52:57Z",
+  "first_bad": "2026-11-05T10:07:07Z",
+  "first_cpus": [
+   2
+  ],
+  "heat": {
+   "at_onset": 58,
+   "at_onset_pkg": 58,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.31,
+   "boot_max_before": 77,
+   "boot_mean_before": 60.5,
+   "cycles_before": 53,
+   "cycles_measured_before": 53,
+   "last_clean": 63,
+   "pre_max": 77,
+   "pre_mean": 61.9
+  },
+  "id": "F20261105T053912Z",
+  "last_bad": "2026-11-05T10:47:09Z",
+  "onset_uptime_h": 4.47,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261105T053912Z.txt",
+  "start": "2026-11-05T10:02:07Z"
+ },
+ {
+  "bad_cycles": 1,
+  "boot": "2026-11-05T10:52:57Z",
+  "clean_after": 0,
+  "cpus": {
+   "2": 1
+  },
+  "end": "2026-11-05T12:50:32Z",
+  "first_bad": "2026-11-05T12:40:46Z",
+  "first_cpus": [
+   2
+  ],
+  "heat": {
+   "at_onset": 62,
+   "at_onset_pkg": 62,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.317,
+   "boot_max_before": 77,
+   "boot_mean_before": 61.4,
+   "cycles_before": 21,
+   "cycles_measured_before": 21,
+   "last_clean": 77,
+   "pre_max": 77,
+   "pre_mean": 61.6
+  },
+  "id": "F20261105T105257Z",
+  "last_bad": "2026-11-05T12:40:46Z",
+  "onset_uptime_h": 1.8,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261105T105257Z.txt",
+  "start": "2026-11-05T12:36:05Z"
+ },
+ {
+  "bad_cycles": 2,
+  "boot": "2026-11-05T12:50:32Z",
+  "clean_after": 0,
+  "cpus": {
+   "2": 2
+  },
+  "end": "2026-11-05T13:57:57Z",
+  "first_bad": "2026-11-05T13:43:22Z",
+  "first_cpus": [
+   2
+  ],
+  "heat": {
+   "at_onset": 62,
+   "at_onset_pkg": 62,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.313,
+   "boot_max_before": 62,
+   "boot_mean_before": 59.9,
+   "cycles_before": 10,
+   "cycles_measured_before": 10,
+   "last_clean": 58,
+   "pre_max": 62,
+   "pre_mean": 59.9
+  },
+  "id": "F20261105T125032Z",
+  "last_bad": "2026-11-05T13:48:22Z",
+  "onset_uptime_h": 0.88,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261105T125032Z.txt",
+  "start": "2026-11-05T13:38:22Z"
+ },
+ {
+  "bad_cycles": 4,
+  "boot": "2026-11-05T13:57:57Z",
+  "clean_after": 0,
+  "cpus": {
+   "0": 1,
+   "16": 1,
+   "2": 3,
+   "4": 1
+  },
+  "end": "2026-11-05T15:16:26Z",
+  "first_bad": "2026-11-05T14:50:46Z",
+  "first_cpus": [
+   2
+  ],
+  "heat": {
+   "at_onset": 62,
+   "at_onset_pkg": 61,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.315,
+   "boot_max_before": 64,
+   "boot_mean_before": 60.2,
+   "cycles_before": 10,
+   "cycles_measured_before": 10,
+   "last_clean": 59,
+   "pre_max": 64,
+   "pre_mean": 60.2
+  },
+  "id": "F20261105T135757Z",
+  "last_bad": "2026-11-05T15:10:45Z",
+  "onset_uptime_h": 0.88,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261105T135757Z.txt",
+  "start": "2026-11-05T14:45:46Z"
+ },
+ {
+  "bad_cycles": 2,
+  "boot": "2026-11-05T15:16:26Z",
+  "clean_after": 1,
+  "cpus": {
+   "4": 1,
+   "8": 1
+  },
+  "end": "2026-11-05T17:45:22Z",
+  "first_bad": "2026-11-05T17:29:20Z",
+  "first_cpus": [
+   4
+  ],
+  "heat": {
+   "at_onset": 57,
+   "at_onset_pkg": 56,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.309,
+   "boot_max_before": 77,
+   "boot_mean_before": 60.7,
+   "cycles_before": 26,
+   "cycles_measured_before": 26,
+   "last_clean": 56,
+   "pre_max": 77,
+   "pre_mean": 60.1
+  },
+  "id": "F20261105T151626Z",
+  "last_bad": "2026-11-05T17:39:21Z",
+  "onset_uptime_h": 2.21,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261105T151626Z.txt",
+  "start": "2026-11-05T17:24:19Z"
+ },
+ {
+  "bad_cycles": 2,
+  "boot": "2026-11-05T17:45:22Z",
+  "clean_after": 0,
+  "cpus": {
+   "0": 1,
+   "14": 1
+  },
+  "end": "2026-11-05T18:57:53Z",
+  "first_bad": "2026-11-05T18:43:12Z",
+  "first_cpus": [
+   14
+  ],
+  "heat": {
+   "at_onset": 61,
+   "at_onset_pkg": 61,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.308,
+   "boot_max_before": 75,
+   "boot_mean_before": 61.0,
+   "cycles_before": 11,
+   "cycles_measured_before": 11,
+   "last_clean": 58,
+   "pre_max": 75,
+   "pre_mean": 61.0
+  },
+  "id": "F20261105T174522Z",
+  "last_bad": "2026-11-05T18:48:11Z",
+  "onset_uptime_h": 0.96,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261105T174522Z.txt",
+  "start": "2026-11-05T18:38:11Z"
+ },
+ {
+  "bad_cycles": 20,
+  "boot": "2026-11-05T18:57:53Z",
+  "clean_after": 3,
+  "cpus": {
+   "10": 1,
+   "12": 3,
+   "13": 2,
+   "14": 1,
+   "16": 3,
+   "17": 1,
+   "2": 8,
+   "4": 3,
+   "5": 1,
+   "6": 1,
+   "8": 3
+  },
+  "end": "2026-11-05T22:23:34Z",
+  "first_bad": "2026-11-05T20:25:49Z",
+  "first_cpus": [
+   4
+  ],
+  "heat": {
+   "at_onset": 58,
+   "at_onset_pkg": 58,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.313,
+   "boot_max_before": 65,
+   "boot_mean_before": 60.9,
+   "cycles_before": 17,
+   "cycles_measured_before": 17,
+   "last_clean": 61,
+   "pre_max": 65,
+   "pre_mean": 60.5
+  },
+  "id": "F20261105T185753Z",
+  "last_bad": "2026-11-05T22:15:51Z",
+  "onset_uptime_h": 1.47,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261105T185753Z.txt",
+  "start": "2026-11-05T20:20:48Z"
+ },
+ {
+  "bad_cycles": 20,
+  "boot": "2026-11-05T22:23:34Z",
+  "clean_after": 5,
+  "cpus": {
+   "0": 1,
+   "1": 2,
+   "10": 3,
+   "12": 3,
+   "14": 5,
+   "16": 3,
+   "2": 2,
+   "4": 3,
+   "6": 3,
+   "8": 3
+  },
+  "end": "2026-11-06T01:25:25Z",
+  "first_bad": "2026-11-05T23:16:22Z",
+  "first_cpus": [
+   8
+  ],
+  "heat": {
+   "at_onset": 60,
+   "at_onset_pkg": 60,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.309,
+   "boot_max_before": 64,
+   "boot_mean_before": 61.5,
+   "cycles_before": 10,
+   "cycles_measured_before": 10,
+   "last_clean": 61,
+   "pre_max": 64,
+   "pre_mean": 61.5
+  },
+  "id": "F20261105T222334Z",
+  "last_bad": "2026-11-06T01:11:25Z",
+  "onset_uptime_h": 0.88,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261105T222334Z.txt",
+  "start": "2026-11-05T23:11:23Z"
+ },
+ {
+  "bad_cycles": 3,
+  "boot": "2026-11-06T01:25:25Z",
+  "clean_after": 1,
+  "cpus": {
+   "0": 1,
+   "12": 1,
+   "2": 1,
+   "4": 1
+  },
+  "end": "2026-11-06T07:26:05Z",
+  "first_bad": "2026-11-06T07:03:35Z",
+  "first_cpus": [
+   0,
+   12
+  ],
+  "heat": {
+   "at_onset": 60,
+   "at_onset_pkg": 59,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.309,
+   "boot_max_before": 70,
+   "boot_mean_before": 62.2,
+   "cycles_before": 67,
+   "cycles_measured_before": 67,
+   "last_clean": 58,
+   "pre_max": 64,
+   "pre_mean": 61.8
+  },
+  "id": "F20261106T012525Z",
+  "last_bad": "2026-11-06T07:18:35Z",
+  "onset_uptime_h": 5.64,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261106T012525Z.txt",
+  "start": "2026-11-06T06:58:35Z"
+ },
+ {
+  "bad_cycles": 4,
+  "boot": "2026-11-06T07:26:05Z",
+  "clean_after": 0,
+  "cpus": {
+   "10": 1,
+   "13": 1,
+   "14": 1,
+   "2": 1,
+   "4": 2,
+   "9": 1
+  },
+  "end": "2026-11-06T11:00:35Z",
+  "first_bad": "2026-11-06T10:38:56Z",
+  "first_cpus": [
+   4
+  ],
+  "heat": {
+   "at_onset": 63,
+   "at_onset_pkg": 63,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.314,
+   "boot_max_before": 64,
+   "boot_mean_before": 59.2,
+   "cycles_before": 38,
+   "cycles_measured_before": 38,
+   "last_clean": 63,
+   "pre_max": 64,
+   "pre_mean": 57.0
+  },
+  "id": "F20261106T072605Z",
+  "last_bad": "2026-11-06T10:53:57Z",
+  "onset_uptime_h": 3.21,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261106T072605Z.txt",
+  "start": "2026-11-06T10:33:56Z"
+ },
+ {
+  "bad_cycles": 3,
+  "boot": "2026-11-06T11:00:35Z",
+  "clean_after": 0,
+  "cpus": {
+   "1": 1,
+   "14": 1,
+   "16": 1
+  },
+  "end": "2026-11-06T12:53:41Z",
+  "first_bad": "2026-11-06T12:38:21Z",
+  "first_cpus": [
+   1
+  ],
+  "heat": {
+   "at_onset": 56,
+   "at_onset_pkg": 56,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.308,
+   "boot_max_before": 64,
+   "boot_mean_before": 54.8,
+   "cycles_before": 19,
+   "cycles_measured_before": 19,
+   "last_clean": 54,
+   "pre_max": 56,
+   "pre_mean": 53.6
+  },
+  "id": "F20261106T110035Z",
+  "last_bad": "2026-11-06T12:48:21Z",
+  "onset_uptime_h": 1.63,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261106T110035Z.txt",
+  "start": "2026-11-06T12:33:20Z"
+ },
+ {
+  "bad_cycles": 1,
+  "boot": "2026-11-06T12:53:41Z",
+  "clean_after": 0,
+  "cpus": {
+   "10": 1
+  },
+  "end": "2026-11-06T16:20:16Z",
+  "first_bad": "2026-11-06T16:11:33Z",
+  "first_cpus": [
+   10
+  ],
+  "heat": {
+   "at_onset": 57,
+   "at_onset_pkg": 57,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.298,
+   "boot_max_before": 67,
+   "boot_mean_before": 58.0,
+   "cycles_before": 39,
+   "cycles_measured_before": 39,
+   "last_clean": 55,
+   "pre_max": 60,
+   "pre_mean": 56.8
+  },
+  "id": "F20261106T125341Z",
+  "last_bad": "2026-11-06T16:11:33Z",
+  "onset_uptime_h": 3.3,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261106T125341Z.txt",
+  "start": "2026-11-06T16:06:33Z"
+ },
+ {
+  "bad_cycles": 4,
+  "boot": "2026-11-06T16:20:16Z",
+  "clean_after": 0,
+  "cpus": {
+   "0": 4
+  },
+  "end": "2026-11-06T17:02:26Z",
+  "first_bad": "2026-11-06T16:38:06Z",
+  "first_cpus": [
+   0
+  ],
+  "heat": {
+   "at_onset": 62,
+   "at_onset_pkg": 62,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.303,
+   "boot_max_before": 64,
+   "boot_mean_before": 62.0,
+   "cycles_before": 3,
+   "cycles_measured_before": 3,
+   "last_clean": 64,
+   "pre_max": 64,
+   "pre_mean": 62.0
+  },
+  "id": "F20261106T162016Z",
+  "last_bad": "2026-11-06T16:53:09Z",
+  "onset_uptime_h": 0.3,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261106T162016Z.txt",
+  "start": "2026-11-06T16:33:08Z"
+ },
+ {
+  "bad_cycles": 59,
+  "boot": "2026-11-06T17:02:26Z",
+  "clean_after": 9,
+  "cpus": {
+   "0": 3,
+   "1": 7,
+   "10": 10,
+   "11": 2,
+   "12": 6,
+   "13": 1,
+   "14": 6,
+   "15": 2,
+   "16": 8,
+   "17": 1,
+   "2": 23,
+   "3": 5,
+   "4": 10,
+   "5": 4,
+   "6": 6,
+   "7": 2,
+   "8": 8,
+   "9": 2
+  },
+  "end": "2026-11-06T22:56:15Z",
+  "first_bad": "2026-11-06T17:15:15Z",
+  "first_cpus": [
+   2,
+   8
+  ],
+  "heat": {
+   "at_onset": 60,
+   "at_onset_pkg": 61,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.277,
+   "boot_max_before": 61,
+   "boot_mean_before": 60.5,
+   "cycles_before": 2,
+   "cycles_measured_before": 2,
+   "last_clean": 60,
+   "pre_max": 61,
+   "pre_mean": 60.5
+  },
+  "id": "F20261106T170226Z",
+  "last_bad": "2026-11-06T22:50:17Z",
+  "onset_uptime_h": 0.21,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261106T170226Z.txt",
+  "start": "2026-11-06T17:10:18Z"
+ },
+ {
+  "bad_cycles": 35,
+  "boot": "2026-11-06T22:56:15Z",
+  "clean_after": 4,
+  "cpus": {
+   "0": 2,
+   "10": 3,
+   "11": 1,
+   "12": 2,
+   "13": 3,
+   "15": 2,
+   "16": 2,
+   "2": 19,
+   "4": 6,
+   "6": 7,
+   "7": 1,
+   "8": 1,
+   "9": 1
+  },
+  "end": "2026-11-07T06:11:30Z",
+  "first_bad": "2026-11-06T23:09:13Z",
+  "first_cpus": [
+   2
+  ],
+  "heat": {
+   "at_onset": 64,
+   "at_onset_pkg": 65,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.307,
+   "boot_max_before": 64,
+   "boot_mean_before": 63.5,
+   "cycles_before": 2,
+   "cycles_measured_before": 2,
+   "last_clean": 63,
+   "pre_max": 64,
+   "pre_mean": 63.5
+  },
+  "id": "F20261106T225615Z",
+  "last_bad": "2026-11-07T02:19:15Z",
+  "onset_uptime_h": 0.22,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261106T225615Z.txt",
+  "start": "2026-11-06T23:04:12Z"
+ },
+ {
+  "bad_cycles": 76,
+  "boot": "2026-11-07T06:11:30Z",
+  "clean_after": 6,
+  "cpus": {
+   "0": 14,
+   "1": 3,
+   "10": 9,
+   "12": 5,
+   "13": 6,
+   "14": 8,
+   "15": 1,
+   "16": 8,
+   "2": 8,
+   "3": 7,
+   "4": 13,
+   "5": 1,
+   "6": 19,
+   "7": 7,
+   "8": 9,
+   "9": 4
+  },
+  "end": "2026-11-07T13:18:41Z",
+  "first_bad": "2026-11-07T06:24:30Z",
+  "first_cpus": [
+   6
+  ],
+  "heat": {
+   "at_onset": 59,
+   "at_onset_pkg": 60,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.315,
+   "boot_max_before": 64,
+   "boot_mean_before": 63.5,
+   "cycles_before": 2,
+   "cycles_measured_before": 2,
+   "last_clean": 64,
+   "pre_max": 64,
+   "pre_mean": 63.5
+  },
+  "id": "F20261107T061130Z",
+  "last_bad": "2026-11-07T13:09:28Z",
+  "onset_uptime_h": 0.22,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261107T061130Z.txt",
+  "start": "2026-11-07T06:19:23Z"
+ },
+ {
+  "bad_cycles": 24,
+  "boot": "2026-11-07T13:18:41Z",
+  "clean_after": 2,
+  "cpus": {
+   "0": 1,
+   "1": 9,
+   "10": 5,
+   "12": 2,
+   "13": 4,
+   "14": 3,
+   "15": 1,
+   "16": 3,
+   "2": 2,
+   "3": 2,
+   "4": 3,
+   "6": 1
+  },
+  "end": "2026-11-07T15:43:19Z",
+  "first_bad": "2026-11-07T13:31:33Z",
+  "first_cpus": [
+   1
+  ],
+  "heat": {
+   "at_onset": 65,
+   "at_onset_pkg": 64,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.315,
+   "boot_max_before": 63,
+   "boot_mean_before": 62.5,
+   "cycles_before": 2,
+   "cycles_measured_before": 2,
+   "last_clean": 62,
+   "pre_max": 63,
+   "pre_mean": 62.5
+  },
+  "id": "F20261107T131841Z",
+  "last_bad": "2026-11-07T15:36:29Z",
+  "onset_uptime_h": 0.21,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261107T131841Z.txt",
+  "start": "2026-11-07T13:26:31Z"
+ },
+ {
+  "bad_cycles": 1,
+  "boot": "2026-11-07T15:43:19Z",
+  "clean_after": 0,
+  "cpus": {
+   "16": 1
+  },
+  "end": "2026-11-07T16:05:33Z",
+  "first_bad": "2026-11-07T15:56:08Z",
+  "first_cpus": [
+   16
+  ],
+  "heat": {
+   "at_onset": 62,
+   "at_onset_pkg": 61,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.304,
+   "boot_max_before": 61,
+   "boot_mean_before": 61.0,
+   "cycles_before": 2,
+   "cycles_measured_before": 2,
+   "last_clean": 61,
+   "pre_max": 61,
+   "pre_mean": 61.0
+  },
+  "id": "F20261107T154319Z",
+  "last_bad": "2026-11-07T15:56:08Z",
+  "onset_uptime_h": 0.21,
+  "snapshot": "/mnt/d/ClaudeWork/rimmandrake/testq/fault_snapshots/F20261107T154319Z.txt",
+  "start": "2026-11-07T15:51:05Z"
+ },
+ {
+  "bad_cycles": 774,
+  "boot": "2026-11-07T17:49:53Z",
+  "clean_after": 557,
+  "cpus": {
+   "0": 37,
+   "1": 14,
+   "10": 51,
+   "11": 6,
+   "12": 27,
+   "13": 16,
+   "14": 29,
+   "15": 8,
+   "16": 35,
+   "17": 10,
+   "2": 467,
+   "3": 11,
+   "4": 53,
+   "5": 15,
+   "6": 40,
+   "7": 13,
+   "8": 36,
+   "9": 6
+  },
+  "end": "2026-11-12T16:06:13Z",
+  "first_bad": "2026-11-08T00:57:39Z",
+  "first_cpus": [
+   13
+  ],
+  "heat": {
+   "at_onset": 45,
+   "at_onset_pkg": 44,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.023,
+   "boot_max_before": 66,
+   "boot_mean_before": 55.2,
+   "cycles_before": 85,
+   "cycles_measured_before": 85,
+   "last_clean": 45,
+   "pre_max": 61,
+   "pre_mean": 47.5
+  },
+  "id": "F20261107T174953Z",
+  "last_bad": "2026-11-12T15:56:59Z",
+  "onset_uptime_h": 7.13,
+  "start": "2026-11-08T00:52:39Z"
+ },
+ {
+  "bad_cycles": 59,
+  "boot": "2026-11-12T16:06:13Z",
+  "clean_after": 16,
+  "cpus": {
+   "10": 1,
+   "2": 16,
+   "6": 41,
+   "8": 1
+  },
+  "end": "2026-11-12T22:26:13Z",
+  "first_bad": "2026-11-12T16:13:59Z",
+  "first_cpus": [
+   2
+  ],
+  "heat": {
+   "at_onset": 44,
+   "at_onset_pkg": 44,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.016,
+   "boot_max_before": 45,
+   "boot_mean_before": 45.0,
+   "cycles_before": 1,
+   "cycles_measured_before": 1,
+   "last_clean": 45,
+   "pre_max": 45,
+   "pre_mean": 45.0
+  },
+  "id": "F20261112T160613Z",
+  "last_bad": "2026-11-12T22:18:56Z",
+  "onset_uptime_h": 0.13,
+  "start": "2026-11-12T16:09:03Z"
+ },
+ {
+  "bad_cycles": 113,
+  "boot": "2026-11-12T22:26:13Z",
+  "clean_after": 32,
+  "cpus": {
+   "0": 8,
+   "1": 16,
+   "10": 14,
+   "11": 3,
+   "12": 9,
+   "13": 7,
+   "14": 18,
+   "15": 4,
+   "16": 13,
+   "17": 8,
+   "2": 18,
+   "3": 2,
+   "4": 16,
+   "5": 1,
+   "6": 13,
+   "7": 3,
+   "8": 9,
+   "9": 4
+  },
+  "end": "2026-11-13T10:36:04Z",
+  "first_bad": "2026-11-12T22:34:04Z",
+  "first_cpus": [
+   1
+  ],
+  "heat": {
+   "at_onset": 46,
+   "at_onset_pkg": 46,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.01,
+   "boot_max_before": 46,
+   "boot_mean_before": 46.0,
+   "cycles_before": 1,
+   "cycles_measured_before": 1,
+   "last_clean": 46,
+   "pre_max": 46,
+   "pre_mean": 46.0
+  },
+  "id": "F20261112T222613Z",
+  "last_bad": "2026-11-13T10:28:46Z",
+  "onset_uptime_h": 0.13,
+  "start": "2026-11-12T22:29:07Z"
+ },
+ {
+  "bad_cycles": 51,
+  "boot": "2026-11-13T10:36:04Z",
+  "clean_after": 60,
+  "cpus": {
+   "0": 3,
+   "1": 3,
+   "10": 4,
+   "11": 1,
+   "12": 3,
+   "13": 3,
+   "14": 10,
+   "15": 1,
+   "16": 4,
+   "17": 1,
+   "2": 10,
+   "3": 2,
+   "4": 7,
+   "6": 7,
+   "7": 1,
+   "8": 9,
+   "9": 3
+  },
+  "end": "2026-11-13T20:45:27Z",
+  "first_bad": "2026-11-13T11:28:53Z",
+  "first_cpus": [
+   1,
+   10
+  ],
+  "heat": {
+   "at_onset": 42,
+   "at_onset_pkg": 42,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.024,
+   "boot_max_before": 45,
+   "boot_mean_before": 41.7,
+   "cycles_before": 10,
+   "cycles_measured_before": 10,
+   "last_clean": 42,
+   "pre_max": 45,
+   "pre_mean": 41.7
+  },
+  "id": "F20261113T103604Z",
+  "last_bad": "2026-11-13T20:13:42Z",
+  "onset_uptime_h": 0.88,
+  "start": "2026-11-13T11:23:53Z"
+ },
+ {
+  "bad_cycles": 126,
+  "boot": "2026-11-13T20:45:27Z",
+  "clean_after": 25,
+  "cpus": {
+   "0": 1,
+   "1": 3,
+   "10": 7,
+   "11": 1,
+   "12": 12,
+   "13": 3,
+   "14": 32,
+   "16": 7,
+   "17": 1,
+   "2": 13,
+   "4": 5,
+   "6": 8,
+   "7": 1,
+   "8": 56,
+   "9": 1
+  },
+  "end": "2026-11-14T09:34:29Z",
+  "first_bad": "2026-11-13T21:03:26Z",
+  "first_cpus": [
+   14
+  ],
+  "heat": {
+   "at_onset": 60,
+   "at_onset_pkg": 60,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.319,
+   "boot_max_before": 44,
+   "boot_mean_before": 44.0,
+   "cycles_before": 3,
+   "cycles_measured_before": 3,
+   "last_clean": 44,
+   "pre_max": 44,
+   "pre_mean": 44.0
+  },
+  "id": "F20261113T204527Z",
+  "last_bad": "2026-11-14T09:28:07Z",
+  "onset_uptime_h": 0.3,
+  "start": "2026-11-13T20:58:21Z"
+ },
+ {
+  "bad_cycles": 129,
+  "boot": "2026-11-14T09:34:29Z",
+  "clean_after": 15,
+  "cpus": {
+   "0": 3,
+   "1": 2,
+   "10": 6,
+   "12": 4,
+   "13": 6,
+   "14": 13,
+   "16": 2,
+   "17": 1,
+   "2": 12,
+   "3": 1,
+   "4": 86,
+   "5": 2,
+   "6": 6,
+   "8": 3,
+   "9": 1
+  },
+  "end": "2026-11-14T21:45:11Z",
+  "first_bad": "2026-11-14T09:42:25Z",
+  "first_cpus": [
+   4
+  ],
+  "heat": {
+   "at_onset": 43,
+   "at_onset_pkg": 43,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.014,
+   "boot_max_before": 44,
+   "boot_mean_before": 44.0,
+   "cycles_before": 1,
+   "cycles_measured_before": 1,
+   "last_clean": 44,
+   "pre_max": 44,
+   "pre_mean": 44.0
+  },
+  "id": "F20261114T093429Z",
+  "last_bad": "2026-11-14T21:32:16Z",
+  "onset_uptime_h": 0.13,
+  "start": "2026-11-14T09:37:26Z"
+ },
+ {
+  "bad_cycles": 12,
+  "boot": "2026-11-14T21:45:11Z",
+  "clean_after": 8,
+  "cpus": {
+   "0": 1,
+   "12": 2,
+   "13": 1,
+   "14": 3,
+   "16": 1,
+   "3": 1,
+   "4": 1,
+   "5": 1,
+   "6": 1,
+   "7": 2,
+   "8": 1,
+   "9": 2
+  },
+  "end": "2026-11-15T00:17:36Z",
+  "first_bad": "2026-11-14T22:33:00Z",
+  "first_cpus": [
+   14
+  ],
+  "heat": {
+   "at_onset": 42,
+   "at_onset_pkg": 41,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.03,
+   "boot_max_before": 44,
+   "boot_mean_before": 41.6,
+   "cycles_before": 9,
+   "cycles_measured_before": 9,
+   "last_clean": 41,
+   "pre_max": 44,
+   "pre_mean": 41.6
+  },
+  "id": "F20261114T214511Z",
+  "last_bad": "2026-11-15T00:07:59Z",
+  "onset_uptime_h": 0.8,
+  "start": "2026-11-14T22:28:00Z"
+ },
+ {
+  "bad_cycles": 40,
+  "boot": "2026-11-15T00:17:36Z",
+  "clean_after": 15,
+  "cpus": {
+   "0": 1,
+   "1": 1,
+   "10": 5,
+   "11": 1,
+   "12": 4,
+   "13": 2,
+   "14": 5,
+   "16": 4,
+   "17": 2,
+   "2": 6,
+   "3": 2,
+   "4": 3,
+   "5": 1,
+   "6": 3,
+   "7": 8,
+   "8": 1
+  },
+  "end": "2026-11-15T05:11:34Z",
+  "first_bad": "2026-11-15T00:35:25Z",
+  "first_cpus": [
+   7
+  ],
+  "heat": {
+   "at_onset": 43,
+   "at_onset_pkg": 43,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.025,
+   "boot_max_before": 45,
+   "boot_mean_before": 44.0,
+   "cycles_before": 3,
+   "cycles_measured_before": 3,
+   "last_clean": 45,
+   "pre_max": 45,
+   "pre_mean": 44.0
+  },
+  "id": "F20261115T001736Z",
+  "last_bad": "2026-11-15T05:00:15Z",
+  "onset_uptime_h": 0.3,
+  "start": "2026-11-15T00:30:19Z"
+ },
+ {
+  "bad_cycles": 1,
+  "boot": "2026-11-15T05:11:34Z",
+  "clean_after": 42,
+  "cpus": {
+   "2": 1
+  },
+  "end": "2026-11-15T08:57:53Z",
+  "first_bad": "2026-11-15T05:19:23Z",
+  "first_cpus": [
+   2
+  ],
+  "heat": {
+   "at_onset": 65,
+   "at_onset_pkg": 63,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.315,
+   "boot_max_before": 44,
+   "boot_mean_before": 44.0,
+   "cycles_before": 1,
+   "cycles_measured_before": 1,
+   "last_clean": 44,
+   "pre_max": 44,
+   "pre_mean": 44.0
+  },
+  "id": "F20261115T051134Z",
+  "last_bad": "2026-11-15T05:19:23Z",
+  "onset_uptime_h": 0.13,
+  "start": "2026-11-15T05:14:27Z"
+ },
+ {
+  "bad_cycles": 231,
+  "boot": "2026-11-15T08:57:53Z",
+  "clean_after": 72,
+  "cpus": {
+   "0": 32,
+   "1": 28,
+   "10": 28,
+   "11": 2,
+   "12": 14,
+   "13": 13,
+   "14": 33,
+   "15": 11,
+   "16": 17,
+   "17": 6,
+   "2": 48,
+   "3": 15,
+   "4": 59,
+   "5": 4,
+   "6": 21,
+   "7": 9,
+   "8": 16,
+   "9": 9
+  },
+  "end": "2026-11-17T15:32:58Z",
+  "first_bad": "2026-11-16T14:05:11Z",
+  "first_cpus": [
+   14
+  ],
+  "heat": {
+   "at_onset": 38,
+   "at_onset_pkg": 38,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.028,
+   "boot_max_before": 43,
+   "boot_mean_before": 38.2,
+   "cycles_before": 349,
+   "cycles_measured_before": 349,
+   "last_clean": 38,
+   "pre_max": 43,
+   "pre_mean": 37.8
+  },
+  "id": "F20261115T085753Z",
+  "last_bad": "2026-11-17T15:14:40Z",
+  "onset_uptime_h": 29.12,
+  "start": "2026-11-16T14:00:11Z"
+ },
+ {
+  "bad_cycles": 2,
+  "boot": "2026-11-17T15:32:58Z",
+  "clean_after": 0,
+  "cpus": {
+   "7": 1,
+   "8": 1
+  },
+  "end": "2026-11-17T19:51:20Z",
+  "first_bad": "2026-11-17T19:40:39Z",
+  "first_cpus": [
+   8
+  ],
+  "heat": {
+   "at_onset": 44,
+   "at_onset_pkg": 44,
+   "at_onset_unmeasured": null,
+   "at_onset_vcore": 1.027,
+   "boot_max_before": 52,
+   "boot_mean_before": 40.9,
+   "cycles_before": 49,
+   "cycles_measured_before": 42,
+   "last_clean": 44,
+   "pre_max": 44,
+   "pre_mean": 42.4
+  },
+  "id": "F20261117T153258Z",
+  "last_bad": "2026-11-17T19:45:39Z",
+  "onset_uptime_h": 4.13,
+  "start": "2026-11-17T19:35:39Z"
+ }
+]

@@ -1,0 +1,1 @@
+pkg_c=43/52 core_max_c=52 hot_core=3 cores_max_c=[49,51,52,50,52,50,50,49,48] samples=70 vcore_v=0.995

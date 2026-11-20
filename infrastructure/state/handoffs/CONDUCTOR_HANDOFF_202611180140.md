@@ -35,9 +35,9 @@ prints its own verdict line. Full checklist: `infrastructure/state/lessons/20261
    because we're barely using it?): **34.6% of cycles bad before (575/1661) vs 1.8% after (2/113)**, both
    restricted to boots under 5.2 h. P(≤2 bad | the old rate) = **2.6e-18**, so the improvement is real.
    BUT the 95% upper bound on the true post-raise rate is **5.5%**, so a cure is NOT established; only the
-   72 h window to **2026-11-20T15:33Z** settles it. A superseded note said "the raise is not visible in
-   vcore" — it compared a mean to a single sample; what actually changed is the vcore SPREAD (1.004–1.332 V
-   → 1.016–1.037 V) and package temp (42.8 → 36.1 °C mean).
+   72 h window to **2026-11-20T15:33Z** settles it. The raise is stored in the BIOS (Offset Mode +, raw 20, read
+   2026-11-20) but is not visible in the sampler's vcore or temperature: the spread and temperature fall cited here
+   came from comparing with turbo-on boots (corrected 2026-11-20, `infrastructure/state/facts/steve_fault_diagnosis.md`).
 3. **Do not buy the i9-10900K yet.** An independent hardware review (filed:
    `infrastructure/state/evidence/STEVE_CPU_SWAP_SECOND_OPINION_2026-11-17.md`) puts a swap at only
    **40–60%** likely to fix it, splits cause CPU 45% / board-VRM 30% / RAM 10% / PSU 5% / other 10%, and says

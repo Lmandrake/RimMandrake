@@ -1,0 +1,23 @@
+stevedesktop\sjlewis
+SteveDesktop
+admin=True
+boot=2026-11-15T08:57:53.5001970Z
+--intel dirs
+Intel(R) Chipset Device Software
+Intel(R) Management Engine Components
+Intel(R) Turbo Boost Max Technology 3.0
+--services
+--drivers
+--downloads
+--winget
+C:\Users\sjlewis\AppData\Local\Microsoft\WindowsApps\winget.exe
+--hvci
+0
+--vbs
+2
+--hyperv
+True
+--os
+Microsoft Windows 10 Pro 19045
+--tasks
+\SteveDiag Fault Watch Running

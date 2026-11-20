@@ -1,0 +1,10 @@
+17:36:18 MEM start gb=85 passes=2 threads=16
+17:36:33 pass=0 phase=0 done bad=0 t=15s
+17:36:44 pass=0 phase=1 done bad=0 t=26s
+17:36:54 pass=0 phase=2 done bad=0 t=36s
+17:38:05 pass=0 phase=3 done bad=0 t=107s
+17:38:15 pass=1 phase=0 done bad=0 t=10s
+17:38:26 pass=1 phase=1 done bad=0 t=21s
+17:38:36 pass=1 phase=2 done bad=0 t=31s
+17:39:47 pass=1 phase=3 done bad=0 t=102s
+17:39:55 MEM end gb=85 bad=0

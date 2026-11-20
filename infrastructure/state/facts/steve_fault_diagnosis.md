@@ -8,7 +8,7 @@ state `D:\ClaudeWork\rimmandrake\testq\fault_state.json`). Raw evidence: `D:\Cla
 `docker exec tailscale-gmail sh -c 'ssh -o BatchMode=yes mandrake@100.115.10.14 "<cmd>"'`, with the probe
 log at `/mnt/c/SteveDesktop/diag/logs/watch.log` (4262 CYCLE lines as of 2026-11-18T01:00Z).
 
-## 🔴 The +0.100 V raise DID take effect, and it did not cure the fault (MEASURED 2026-11-18T01:00Z)
+## 🔴 The +0.100 V raise is stored in the BIOS, is not visible in the sensors, and did not cure the fault (MEASURED 2026-11-20)
 
 Per-boot bad-cycle counts from the whole probe log, and the pre/post split over all 3898 cycles:
 
@@ -20,13 +20,14 @@ Per-boot bad-cycle counts from the whole probe log, and the pre/post split over 
 | **2026-11-17 15:35** (first post-raise) | 51 | **2** | **3.9%** | 4.2 h |
 | **2026-11-17 19:54** (second post-raise) | 62 | **0** | **0%** | 5.1 h |
 
-- **The raise IS visible, in temperature, not in the vcore reading.** Package temp mean fell from
-  **42.8 °C (n=3792, max 73)** before the raise to **36.1 °C (n=106, max 43)** after — and vcore's
-  *spread* collapsed from 1.004–1.332 V (mean 1.125) to 1.016–1.037 V (mean 1.031). An earlier note
-  read "vcore ~1.03 V both before and after, so the raise is not visible": that compared the MEAN
-  against a single sample and is **wrong**. What changed is the variance, not the idle level — the
-  board stopped excursioning to 1.33 V. Cooler and electrically calmer under the same workload is a
-  machine whose boost behaviour changed, i.e. the BIOS change took.
+- **The raise is stored in the BIOS** (UEFI variables read 2026-11-20: CPU Core/Cache Voltage = Offset Mode, sign +, offset
+  field raw value 20, which is +0.100 V if the unit is ASUS's 0.005 V step). **It is not visible in the sampler's vcore or in
+  temperature:** turbo-off boots before the raise read vcore about 1.026-1.029 V and hottest core about 41-42 C at idle; the
+  post-raise boots read 1.030-1.031 V and 41 C. The sampler reads LibreHardwareMonitor's CPU "CPU Core" voltage, probably the
+  CPU's VID request, not the delivered voltage [guess ~75%]. An earlier version of this bullet said the raise was visible
+  because vcore's spread and the mean temperature fell; that compared post-raise cycles with a pre-raise set that included the
+  turbo-on boots (1.31 V, 58 C), so it measured the turbo change, not the raise. Report and data:
+  `infrastructure/state/facts/stevedesktop_cpu_fault_2026-11-19/REPORT.md`.
 - **And the fault still fired**: window `F20261117T153258Z` opened 4.13 h into the first post-raise
   boot, CPUs 8 then 7, one bad cycle each, with the positive control (`inject_exit=1 clean_exit=0`)
   passing on both boots, so the instrument could see.
@@ -58,6 +59,11 @@ lands in it. A reboot resumes the same run and logs `SOAK REBOOT` (proven by a d
 
 ## The fault's shape (MEASURED)
 
+- 🔑 **The wrong results are a loss of the upper 128 bits of the 256-bit AVX registers** (measured 2026-11-20): every wrong
+  floating-point result in `watch-chk.log` equals the right answer with the two upper lanes turned to the x86 default NaN, on every
+  CPU and day, including both post-raise bad cycles. This is register-state loss, not random arithmetic noise; a CPU defect, a
+  kernel driver or Hyper-V can each cause it. The 2026-10-31 `stevecheck hold` test cannot see it (it compares two registers
+  that would both be zeroed), so its clean result is void. Detail: `infrastructure/state/facts/stevedesktop_cpu_fault_2026-11-19/REPORT.md`.
 - Wrong SIMD results (Prime95 rounding, `stevecheck`, sha256 distinct digests) on a logical CPU, acquired
   during uptime, held until a reboot, cleared by every reboot so far.
 - 10-26 it was CPU 18; 10-31 CPU 2 under `numproc 18`; so masking a core cures nothing.

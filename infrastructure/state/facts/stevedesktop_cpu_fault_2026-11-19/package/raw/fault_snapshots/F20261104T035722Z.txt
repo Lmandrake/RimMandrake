@@ -1,0 +1,74 @@
+== when
+2026-11-04T08:26:13Z
+boot 2026-11-04T03:57:22Z
+== firmware
+BIOS 3401 05/26/2026 17:00:00
+ucode 0000000000010000
+logical 18
+
+numproc                 18
+== thermal
+ACPI\ThermalZone\TZ00_0 27.9
+== top processes by cpu seconds
+vmmem                        cpu=     3,073 ws= 4,062MB start=11/3/2026 8:12:56 PM
+MsMpEng                      cpu=     1,711 ws=   566MB start=11/3/2026 7:57:33 PM
+RimWorldWin64                cpu=     1,069 ws= 4,140MB start=11/3/2026 11:53:37 PM
+dllhost                      cpu=       987 ws=    10MB start=11/3/2026 8:12:58 PM
+System                       cpu=       753 ws=     0MB start=11/3/2026 7:57:26 PM
+dwm                          cpu=       462 ws=    75MB start=11/3/2026 7:57:31 PM
+GoogleDriveFS                cpu=       409 ws=   213MB start=11/3/2026 7:57:58 PM
+nvcontainer                  cpu=       130 ws=    96MB start=11/3/2026 7:57:36 PM
+iCloudHome                   cpu=       105 ws=   120MB start=11/3/2026 7:58:04 PM
+svchost                      cpu=       100 ws=    12MB start=11/3/2026 7:57:31 PM
+audiodg                      cpu=        83 ws=    13MB start=11/3/2026 8:22:11 PM
+bzserv                       cpu=        68 ws=    16MB start=11/3/2026 7:57:33 PM
+dotnet                       cpu=        50 ws= 1,066MB start=11/4/2026 12:22:31 AM
+explorer                     cpu=        46 ws=   281MB start=11/3/2026 7:57:38 PM
+Dropbox                      cpu=        44 ws=   509MB start=11/3/2026 7:58:10 PM
+svchost                      cpu=        37 ws=    11MB start=11/3/2026 7:57:32 PM
+iCloudDrive                  cpu=        28 ws=    74MB start=11/3/2026 7:58:06 PM
+svchost                      cpu=        28 ws=    18MB start=11/3/2026 7:57:31 PM
+svchost                      cpu=        24 ws=    18MB start=11/3/2026 7:57:31 PM
+BackupService                cpu=        24 ws=    31MB start=11/3/2026 7:57:33 PM
+== running drivers, not Microsoft
+Asusgio2 \??\C:\WINDOWS\system32\drivers\AsIO2.sys
+AVoluteSS3Vad C:\Windows\system32\drivers\AVoluteSS3Vad.sys
+CimFS C:\Windows\system32\drivers\CimFS.sys
+CLFCL5.18 C:\Windows\system32\DRIVERS\CLFCL5.18\000.fcl
+CorsairVBusDriver C:\Windows\system32\drivers\CorsairVBusDriver.sys
+CorsairVHidDriver C:\Windows\system32\drivers\CorsairVHidDriver.sys
+dbx C:\Windows\system32\DRIVERS\dbx.sys
+e2fexpress C:\Windows\system32\DriverStore\FileRepository\e2f.inf_amd64_bf51b653ec31b8ab\e2f.sys
+EneTechIo \??\C:\WINDOWS\system32\drivers\ene.sys
+GLCKIO2 \??\C:\WINDOWS\system32\drivers\GLCKIO2.sys
+googledrivefs31931 \??\C:\Program Files\Google\Drive File Stream\Drivers\31931\googledrivefs31931.sys
+googledrivefs32452 \??\C:\Program Files\Google\Drive File Stream\Drivers\32452\googledrivefs32452.sys
+hasldisk C:\Windows\system32\drivers\hasldisk.sys
+HasleoDK C:\Windows\system32\drivers\hasleodk.sys
+ibtusb C:\Windows\system32\DriverStore\FileRepository\ibtusb.inf_amd64_9b157f5f4cc71af6\ibtusb.sys
+IntcAzAudAddService C:\Windows\system32\drivers\RTKVHD64.sys
+MEIx64 C:\Windows\system32\DriverStore\FileRepository\heci.inf_amd64_6b6e8cc42a3d1f09\x64\TeeDriverW10x64.sys
+MSIO \??\C:\WINDOWS\system32\drivers\MsIo64.sys
+Netwtw10 C:\Windows\system32\drivers\Netwtw10.sys
+NVHDA C:\Windows\system32\drivers\nvhda64v.sys
+nvlddmkm C:\Windows\system32\DriverStore\FileRepository\nv_dispig.inf_amd64_0afec3f2050014a0\nvlddmkm.sys
+NvModuleTracker C:\Windows\system32\DriverStore\FileRepository\nvmoduletracker.inf_amd64_0c1cc60a4b422185\NvModuleTracker.sys
+nvvad_WaveExtensible C:\Windows\system32\drivers\nvvad64v.sys
+nvvhci C:\Windows\system32\drivers\nvvhci.sys
+PawnIO C:\Windows\system32\DriverStore\FileRepository\pawnio.inf_amd64_a72a2f969b8b7496\PawnIO.sys
+UcmCxUcsiNvppc C:\Windows\system32\DriverStore\FileRepository\nvppc.inf_amd64_5465f77a9a8448b4\UcmCxUcsiNvppc.sys
+wintun C:\Windows\system32\drivers\wintun.sys
+== system events since 15 min before the window (2026-11-04T00:05:14 local; probe: 200 events of any level in the last 24 h, capped 200)
+== application crashes in it
+== power and sleep
+== the canary, last cycles
+2026-11-04 07:50:13Z CYCLE uptime_h=3.88 bad_cpus=[] n_ok=18 exits=[] pkg_c=55/60 core_max_c=60 hot_core=2 cores_max_c=[56,60,57,58,58,56,56,54,57] samples=87 vcore_v=1.305
+2026-11-04 07:55:14Z CYCLE uptime_h=3.96 bad_cpus=[] n_ok=18 exits=[] pkg_c=54/59 core_max_c=59 hot_core=2 cores_max_c=[53,59,55,57,54,55,57,54,56] samples=86 vcore_v=1.306
+2026-11-04 08:00:13Z CYCLE uptime_h=4.05 bad_cpus=[] n_ok=18 exits=[] pkg_c=57/60 core_max_c=60 hot_core=5 cores_max_c=[57,58,58,58,60,58,60,58,59] samples=110 vcore_v=1.304
+2026-11-04 08:05:13Z CYCLE uptime_h=4.13 bad_cpus=[] n_ok=18 exits=[] pkg_c=49/59 core_max_c=59 hot_core=9 cores_max_c=[51,57,58,56,57,57,58,57,59] samples=110 vcore_v=1.307
+2026-11-04 08:10:13Z CYCLE uptime_h=4.21 bad_cpus=[] n_ok=18 exits=[] pkg_c=48/57 core_max_c=57 hot_core=5 cores_max_c=[53,54,54,55,57,56,55,55,55] samples=109 vcore_v=1.309
+2026-11-04 08:15:14Z CYCLE uptime_h=4.3 bad_cpus=[] n_ok=18 exits=[] pkg_c=57/60 core_max_c=60 hot_core=1 cores_max_c=[60,60,57,59,60,58,60,58,57] samples=110 vcore_v=1.309
+2026-11-04 08:20:14Z CYCLE uptime_h=4.38 bad_cpus=[] n_ok=18 exits=[] pkg_c=55/59 core_max_c=59 hot_core=2 cores_max_c=[56,59,57,58,58,58,59,55,58] samples=106 vcore_v=1.308
+2026-11-04 08:25:14Z CYCLE uptime_h=4.46 bad_cpus=[16] n_ok=17 exits=[1] pkg_c=55/61 core_max_c=61 hot_core=2 cores_max_c=[59,61,57,59,60,58,60,58,60] samples=110 vcore_v=1.302
+
+

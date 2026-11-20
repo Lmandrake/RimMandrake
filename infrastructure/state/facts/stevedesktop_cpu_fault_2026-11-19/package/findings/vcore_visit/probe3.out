@@ -1,0 +1,22 @@
+--wsl list
+  NAME      STATE           VERSION
+
+* Ubuntu    Running         2
+
+
+
+--wsl procs owners
+wslservice.exe :: "C:\Program Files\WSL\wslservice.exe"
+wslrelay.exe ::  --mode 1 --vm-id {025f6586-5bdb-463a-b54e-cc4def486fcf} --handle 1500
+wsl.exe :: "C:\Program Files\WindowsApps\MicrosoftCorporationII.WindowsSubsystemForLinux_3.0.5.0_x64__8wekyb3d8bbwe\wsl.exe" -d Ubuntu --exec /bin/sh -c "exec sleep infinity"
+wslhost.exe ::  --vm-id {025f6586-5bdb-463a-b54e-cc4def486fcf} --handle 1592
+wslhost.exe ::  --vm-id {025f6586-5bdb-463a-b54e-cc4def486fcf} --handle 1560
+wsl.exe :: "C:\Program Files\WindowsApps\MicrosoftCorporationII.WindowsSubsystemForLinux_3.0.5.0_x64__8wekyb3d8bbwe\wsl.exe" -d Ubuntu --exec /bin/sh -c "exec sleep infinity"
+wslhost.exe ::  --distro-id {353db0b6-87af-4664-8d81-cf3ae8581661} --vm-id {025f6586-5bdb-463a-b54e-cc4def486fcf} --handle 748 --event 776 --parent 780
+wsl.exe :: "wsl.exe" --cd "C:\Windows\system32\" -d Ubuntu -u mandrake -- bash -lc "mkdir -p ~/seat-server && cd ~/seat-server && exec tmux new-session -A -s seat-server '~/.local/bin/claude remote-control --name SteveDesktop-Server'"
+wsl.exe :: "wsl.exe" --cd "C:\Windows\system32\" -d Ubuntu -u mandrake -- bash -lc "mkdir -p ~/seat-server && cd ~/seat-server && exec tmux new-session -A -s seat-server '~/.local/bin/claude remote-control --name SteveDesktop-Server'"
+wsl.exe :: "wsl.exe" --cd "C:\Windows\system32\" -d Ubuntu -u mandrake -- bash -lc "mkdir -p ~/rm/runner && cd ~/rm/runner && exec tmux new-session -A -s seat-runner '~/.local/bin/claude --remote-control SteveDesktop-Runner'"
+wslhost.exe ::  --distro-id {353db0b6-87af-4664-8d81-cf3ae8581661} --vm-id {025f6586-5bdb-463a-b54e-cc4def486fcf} --handle 776 --event 184 --parent 180
+wsl.exe :: "wsl.exe" --cd "C:\Windows\system32\" -d Ubuntu -u mandrake -- bash -lc "mkdir -p ~/rm/runner && cd ~/rm/runner && exec tmux new-session -A -s seat-runner '~/.local/bin/claude --remote-control SteveDesktop-Runner'"
+wslhost.exe ::  --distro-id {353db0b6-87af-4664-8d81-cf3ae8581661} --vm-id {025f6586-5bdb-463a-b54e-cc4def486fcf} --handle 752 --event 772 --parent 776
+--steve tasks using wsl

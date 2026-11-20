@@ -1,0 +1,31 @@
+rc 0
+CorsairService -> Auto Running
+CorsairLLAService -> Auto Running
+iCUEDevicePluginHost -> Manual Running
+asComSvc -> Auto Running
+LightingService -> Auto Running
+CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D -> Auto Running
+cpuz154 -> Manual Running
+AT 2026-11-04T10:00:58.3122509Z
+
+Name                     State   StartMode
+----                     -----   ---------
+asComSvc                 Running Auto     
+CorsairGamingAudioConfig Running Auto     
+CorsairLLAService        Running Auto     
+CorsairService           Running Auto     
+CorsairUniwillService    Stopped Auto     
+iCUEDevicePluginHost     Running Manual   
+LightingService          Running Auto     
+
+
+
+
+Name                                                    State   StartMode
+----                                                    -----   ---------
+CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D Running Auto     
+cpuz154                                                 Running Manual   
+
+
+
+

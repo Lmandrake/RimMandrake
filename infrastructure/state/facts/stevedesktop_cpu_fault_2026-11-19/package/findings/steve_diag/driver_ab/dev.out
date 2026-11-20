@@ -1,0 +1,18 @@
+
+FriendlyName                          InstanceId                                            
+------------                          ----------                                            
+HID-compliant vendor-defined device   HID\VID_1B1C&PID_1BFF&MI_01\7&3B236B14&0&0000         
+HID Keyboard Device                   HID\VID_1B1C&PID_1BFF&MI_00&COL01\7&174C2D52&0&0000   
+HID-compliant mouse                   HID\VID_1B1C&PID_1BFF&MI_03\7&5F8855A&0&0000          
+HID Keyboard Device                   HID\VID_1B1C&PID_1BFF&MI_00&COL02\7&174C2D52&0&0001   
+USB Input Device                      USB\VID_1B1C&PID_1BFF&MI_00\6&195BC465&0&0000         
+HID-compliant consumer control device HID\VID_1B1C&PID_1BFF&MI_00&COL03\7&174C2D52&0&0002   
+USB Input Device                      USB\VID_1B1C&PID_1BFF&MI_01\6&195BC465&0&0001         
+HID-compliant vendor-defined device   HID\VID_1B1C&PID_1BFF&MI_02\7&235FDECF&0&0000         
+USB Input Device                      USB\VID_1B1C&PID_1BFF&MI_02\6&195BC465&0&0002         
+USB Composite Device                  USB\VID_1B1C&PID_1BFF\1400F020AE02C10466501613F5001BC2
+USB Input Device                      USB\VID_1B1C&PID_1BFF&MI_03\6&195BC465&0&0003         
+
+
+
+ACPI\ThermalZone\TZ00_0 27.9C

@@ -1,0 +1,75 @@
+17:36:18 START memGB=85 N=18
+17:39:55 MEM exit=0
+17:40:18 P95 cpu=0 fft=4-8 fatal=0 cpusec=21 aff=1
+17:40:39 P95 cpu=0 fft=128-256 fatal=0 cpusec=20 aff=1
+17:40:59 CHK cpu=0 exit=0
+17:41:02 HOLD cpu=0 exit=0
+17:41:30 P95 cpu=1 fft=4-8 fatal=0 cpusec=20 aff=2
+17:41:51 P95 cpu=1 fft=128-256 fatal=0 cpusec=20 aff=2
+17:42:11 CHK cpu=1 exit=0
+17:42:14 HOLD cpu=1 exit=0
+17:42:42 P95 cpu=2 fft=4-8 fatal=1 cpusec=0 aff=4
+17:43:03 P95 cpu=2 fft=128-256 fatal=1 cpusec=0 aff=4
+17:43:23 CHK cpu=2 exit=1
+17:43:26 HOLD cpu=2 exit=0
+17:43:54 P95 cpu=3 fft=4-8 fatal=0 cpusec=20 aff=8
+17:44:15 P95 cpu=3 fft=128-256 fatal=0 cpusec=20 aff=8
+17:44:35 CHK cpu=3 exit=0
+17:44:38 HOLD cpu=3 exit=0
+17:45:06 P95 cpu=4 fft=4-8 fatal=0 cpusec=20 aff=16
+17:45:27 P95 cpu=4 fft=128-256 fatal=0 cpusec=20 aff=16
+17:45:47 CHK cpu=4 exit=0
+17:45:50 HOLD cpu=4 exit=0
+17:46:18 P95 cpu=5 fft=4-8 fatal=0 cpusec=20 aff=32
+17:46:39 P95 cpu=5 fft=128-256 fatal=0 cpusec=20 aff=32
+17:46:59 CHK cpu=5 exit=0
+17:47:02 HOLD cpu=5 exit=0
+17:47:30 P95 cpu=6 fft=4-8 fatal=0 cpusec=20 aff=64
+17:47:51 P95 cpu=6 fft=128-256 fatal=0 cpusec=20 aff=64
+17:48:11 CHK cpu=6 exit=0
+17:48:14 HOLD cpu=6 exit=0
+17:48:41 P95 cpu=7 fft=4-8 fatal=0 cpusec=20 aff=128
+17:49:03 P95 cpu=7 fft=128-256 fatal=0 cpusec=20 aff=128
+17:49:23 CHK cpu=7 exit=0
+17:49:26 HOLD cpu=7 exit=0
+17:49:53 P95 cpu=8 fft=4-8 fatal=0 cpusec=20 aff=256
+17:50:14 P95 cpu=8 fft=128-256 fatal=0 cpusec=20 aff=256
+17:50:34 CHK cpu=8 exit=0
+17:50:37 HOLD cpu=8 exit=0
+17:51:05 P95 cpu=9 fft=4-8 fatal=0 cpusec=20 aff=512
+17:51:26 P95 cpu=9 fft=128-256 fatal=0 cpusec=20 aff=512
+17:51:46 CHK cpu=9 exit=0
+17:51:50 HOLD cpu=9 exit=0
+17:52:17 P95 cpu=10 fft=4-8 fatal=0 cpusec=20 aff=1024
+17:52:38 P95 cpu=10 fft=128-256 fatal=0 cpusec=20 aff=1024
+17:52:58 CHK cpu=10 exit=0
+17:53:01 HOLD cpu=10 exit=0
+17:53:29 P95 cpu=11 fft=4-8 fatal=0 cpusec=20 aff=2048
+17:53:50 P95 cpu=11 fft=128-256 fatal=0 cpusec=20 aff=2048
+17:54:11 CHK cpu=11 exit=0
+17:54:14 HOLD cpu=11 exit=0
+17:54:41 P95 cpu=12 fft=4-8 fatal=0 cpusec=20 aff=4096
+17:55:02 P95 cpu=12 fft=128-256 fatal=0 cpusec=20 aff=4096
+17:55:22 CHK cpu=12 exit=0
+17:55:26 HOLD cpu=12 exit=0
+17:55:55 P95 cpu=13 fft=4-8 fatal=0 cpusec=20 aff=8192
+17:56:16 P95 cpu=13 fft=128-256 fatal=0 cpusec=20 aff=8192
+17:56:36 CHK cpu=13 exit=0
+17:56:39 HOLD cpu=13 exit=0
+17:57:07 P95 cpu=14 fft=4-8 fatal=0 cpusec=20 aff=16384
+17:57:28 P95 cpu=14 fft=128-256 fatal=0 cpusec=20 aff=16384
+17:57:48 CHK cpu=14 exit=0
+17:57:51 HOLD cpu=14 exit=0
+17:58:19 P95 cpu=15 fft=4-8 fatal=0 cpusec=20 aff=32768
+17:58:40 P95 cpu=15 fft=128-256 fatal=0 cpusec=20 aff=32768
+17:59:00 CHK cpu=15 exit=0
+17:59:03 HOLD cpu=15 exit=0
+17:59:31 P95 cpu=16 fft=4-8 fatal=0 cpusec=20 aff=65536
+17:59:52 P95 cpu=16 fft=128-256 fatal=0 cpusec=20 aff=65536
+18:00:12 CHK cpu=16 exit=0
+18:00:15 HOLD cpu=16 exit=0
+18:00:45 P95 cpu=17 fft=4-8 fatal=0 cpusec=20 aff=131072
+18:01:06 P95 cpu=17 fft=128-256 fatal=0 cpusec=20 aff=131072
+18:01:26 CHK cpu=17 exit=0
+18:01:29 HOLD cpu=17 exit=0
+18:01:36 END

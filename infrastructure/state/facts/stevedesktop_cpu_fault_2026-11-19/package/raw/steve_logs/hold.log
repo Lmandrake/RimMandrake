@@ -1,0 +1,3 @@
+17:34:52 HOLDSUM cpu=2 hits=0 iters=40940000000 gapMedMs=0.00 gapMinMs=0.00
+17:35:02 HOLDSUM cpu=3 hits=0 iters=46340000000 gapMedMs=0.00 gapMinMs=0.00
+17:35:12 HOLDSUM cpu=6 hits=0 iters=47760000000 gapMedMs=0.00 gapMinMs=0.00

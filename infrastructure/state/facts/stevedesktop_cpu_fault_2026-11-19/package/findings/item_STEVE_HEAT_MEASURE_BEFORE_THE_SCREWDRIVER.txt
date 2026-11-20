@@ -1,0 +1,19 @@
+STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER   done  row -  needs offline  target v1
+SteveDesktop's fault monitor records no CPU temperature: log core temps each cycle so a fault window shows whether heat climbed, and an open-case run can be judged
+owner BENCH   kind task   filed 2026-11-04T03:34:41Z
+closed at 84f6ba081660f1880c5213e2b9bd0416eb7a983f
+
+--- items/STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER.md ---
+(absent or has no ## sections)
+--- history (7 events) ---
+  2026-11-04T03:34:41Z  BENCH  file      for=BENCH kind=task needs=offline target=v1 title=SteveDesktop's fault monitor records no CPU temperature: log core temps each cycle so a fault window shows whether heat climbed, and an open-case run can be judged tsn=1793763281485559558  | agent's reason: Conductor: owner asked if heat could be the cause; the fault monitor has no CPU temperature to answer with
+  2026-11-04T03:36:51Z  BENCH  note      text=expedite set: expedited by Conductor: owner: Expedite those build items for SteveDesktop would you? tsn=1793763411519467445  | agent's reason: delegated: expedite lane, set by Operations or the Conductor
+  2026-11-04T03:37:04Z  BENCH  start     tsn=1793763424695153233  | agent's reason: relentless supervisor takes the item
+  2026-11-04T03:57:54Z  BENCH  note      text=blind check at 2bf9ed397015d428505ead46d15d35de93851d16: WEAK, the proof has holes and the work is unproven; item stays open: GAP:DIFF report() heat print is never exercised. Runs: (1) run_selftests --only selftest_testq_fault_monitor -> GREEN; every heat_checks line ok (CYCLE heat parse, vcore optional, UNMEASURED parse, pre-sampler=None, window at_onset/last_clean/pre_max/boot_max, per-boot rows tsn=1793764674969472607  | agent's reason: relentless supervisor
+  2026-11-04T04:16:49Z  RUNNER verify    config=marker:blind-check evidence=relentless: blind PASS at 84f6ba081660f1880c5213e2b9bd0416eb7a983f after 2 return(s): Ran run_selftests --only selftest_testq_fault_monitor: GREEN. On a scratch copy each mutant made the test RED: deleting report()'s 'heat:' print (FAIL 'report prints every window's heat line' + 'heat line sits unde level=L0 result=pass sha=84f6ba081660f1880c5213e2b9bd0416eb7a983f tsn=1793765809353661802
+  2026-11-04T04:16:52Z  BENCH  close     reason=relentless: blind PASS at 84f6ba081660f1880c5213e2b9bd0416eb7a983f after 2 return(s): Ran run_selftests --only selftest_testq_fault_monitor: GREEN. On a scratch copy each mutant made the test RED: deleting report()'s 'heat:' print (FAIL 'report prints every window's heat line' + 'heat line sits under its  sha=84f6ba081660f1880c5213e2b9bd0416eb7a983f tsn=1793765812033826572  | agent's reason: relentless: blind check passed
+  2026-11-04T07:42:22Z  BENCH  note      text=expedite: expedited by Conductor lapsed after 4 h with no renewal tsn=1793778142774374214  | agent's reason: delegated: expedite lane, set by Operations or the Conductor
+--- runs (immutable; a failure stands forever) ---
+  STEVE_HEAT_MEASURE_BEFORE_THE_SCREWDRIVER/run-1@marker:blind-check  pass    relentless: blind PASS at 84f6ba081660f1880c5213e2b9bd0416eb7a983f after 2 return(s): Ran run_selftests --only selftest_testq_fault_monitor: GREEN. On a scratch copy each mutant made the test RED: deleting report()'s 'heat:' print (FAIL 'report prints every window's heat line' + 'heat line sits unde
+--- causal chain ---
+  (none — this item stands on its own)

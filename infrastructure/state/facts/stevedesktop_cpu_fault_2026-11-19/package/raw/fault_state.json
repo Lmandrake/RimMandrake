@@ -1,0 +1,37 @@
+{
+ "at": "2026-11-20T08:00:35Z",
+ "boot": 1794965976,
+ "boot_before": 1793982016,
+ "boot_iso": "2026-11-18T01:39:36Z",
+ "clean_through": "2026-11-20T08:00:16Z",
+ "clean_through_s": 1795161616,
+ "control": {
+  "at": "2026-11-18T01:41:19Z",
+  "clean_exit": 0,
+  "inject_exit": 1,
+  "ok": true
+ },
+ "last_cycle": "2026-11-20T08:00:16Z",
+ "last_heat": {
+  "unmeasured": "no_output"
+ },
+ "last_reboot_out": "",
+ "open_window": null,
+ "phase": "PASSIVE",
+ "pr": {
+  "last_reboot": "2026-11-17T19:51:41Z",
+  "n": 7,
+  "state": null
+ },
+ "quiet": 1,
+ "reachable": true,
+ "reboot_t0": 1793984206.799611,
+ "reboots": [
+  1794944741.0347652
+ ],
+ "schema": "steve.fault/1",
+ "unparsed": 5,
+ "verify_since": 1794066319.0841906,
+ "window": "F20261107T154319Z",
+ "windows": 41
+}

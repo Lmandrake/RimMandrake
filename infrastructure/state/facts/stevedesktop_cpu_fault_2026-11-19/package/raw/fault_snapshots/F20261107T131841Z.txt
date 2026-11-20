@@ -1,0 +1,127 @@
+== when
+2026-11-07T13:32:51Z
+boot 2026-11-07T13:18:41Z
+== firmware
+BIOS 3401 05/26/2026 17:00:00
+ucode 0000000000010000
+logical 18
+
+numproc                 18
+== thermal
+ACPI\ThermalZone\TZ00_0 27.9
+== top processes by cpu seconds
+iCloudHome                   cpu=       803 ws=   118MB start=11/7/2026 5:19:27 AM
+GoogleDriveFS                cpu=       401 ws=   222MB start=11/7/2026 5:19:20 AM
+RimWorldWin64                cpu=       126 ws= 1,591MB start=11/7/2026 5:27:35 AM
+vmmem                        cpu=        70 ws= 3,468MB start=11/7/2026 5:18:54 AM
+explorer                     cpu=        44 ws=   283MB start=11/7/2026 5:18:57 AM
+bzserv                       cpu=        43 ws=    15MB start=11/7/2026 5:18:52 AM
+MsMpEng                      cpu=        42 ws=   336MB start=11/7/2026 5:29:13 AM
+System                       cpu=        38 ws=     0MB start=11/7/2026 5:18:44 AM
+nvcontainer                  cpu=        18 ws=    75MB start=11/7/2026 5:18:54 AM
+Dropbox                      cpu=        16 ws=   499MB start=11/7/2026 5:19:35 AM
+LightingService              cpu=        16 ws=    25MB start=11/7/2026 5:18:52 AM
+msedgewebview2               cpu=        15 ws=    73MB start=11/7/2026 5:19:21 AM
+SearchIndexer                cpu=        14 ws=    47MB start=11/7/2026 5:18:53 AM
+MicrosoftSecurityApp         cpu=        13 ws=   188MB start=11/7/2026 5:19:24 AM
+Corsair.Service              cpu=        12 ws=    56MB start=11/7/2026 5:18:52 AM
+Corsair.Service.CpuIdRemote64 cpu=        11 ws=    48MB start=11/7/2026 5:18:53 AM
+svchost                      cpu=        10 ws=    46MB start=11/7/2026 5:18:50 AM
+iCloudDrive                  cpu=         8 ws=    59MB start=11/7/2026 5:19:30 AM
+svchost                      cpu=         7 ws=    22MB start=11/7/2026 5:18:51 AM
+steamwebhelper               cpu=         7 ws=   430MB start=11/7/2026 5:19:19 AM
+== running drivers, not Microsoft
+Asusgio2 \??\C:\WINDOWS\system32\drivers\AsIO2.sys
+AVoluteSS3Vad C:\Windows\system32\drivers\AVoluteSS3Vad.sys
+CimFS C:\Windows\system32\drivers\CimFS.sys
+CLFCL5.18 C:\Windows\system32\DRIVERS\CLFCL5.18\000.fcl
+CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D \??\C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CorsairLLAccess64.sys
+CorsairVBusDriver C:\Windows\system32\drivers\CorsairVBusDriver.sys
+CorsairVHidDriver C:\Windows\system32\drivers\CorsairVHidDriver.sys
+cpuz154 \??\C:\Windows\temp\cpuz154\cpuz154_x64.sys
+dbx C:\Windows\system32\DRIVERS\dbx.sys
+e2fexpress C:\Windows\system32\DriverStore\FileRepository\e2f.inf_amd64_bf51b653ec31b8ab\e2f.sys
+EneTechIo \??\C:\WINDOWS\system32\drivers\ene.sys
+GLCKIO2 \??\C:\WINDOWS\system32\drivers\GLCKIO2.sys
+googledrivefs31931 \??\C:\Program Files\Google\Drive File Stream\Drivers\31931\googledrivefs31931.sys
+googledrivefs32452 \??\C:\Program Files\Google\Drive File Stream\Drivers\32452\googledrivefs32452.sys
+hasldisk C:\Windows\system32\drivers\hasldisk.sys
+HasleoDK C:\Windows\system32\drivers\hasleodk.sys
+ibtusb C:\Windows\system32\DriverStore\FileRepository\ibtusb.inf_amd64_9b157f5f4cc71af6\ibtusb.sys
+IntcAzAudAddService C:\Windows\system32\drivers\RTKVHD64.sys
+MEIx64 C:\Windows\system32\DriverStore\FileRepository\heci.inf_amd64_6b6e8cc42a3d1f09\x64\TeeDriverW10x64.sys
+MSIO \??\C:\WINDOWS\system32\drivers\MsIo64.sys
+Netwtw10 C:\Windows\system32\drivers\Netwtw10.sys
+NVHDA C:\Windows\system32\drivers\nvhda64v.sys
+nvlddmkm C:\Windows\system32\DriverStore\FileRepository\nv_dispig.inf_amd64_0afec3f2050014a0\nvlddmkm.sys
+NvModuleTracker C:\Windows\system32\DriverStore\FileRepository\nvmoduletracker.inf_amd64_0c1cc60a4b422185\NvModuleTracker.sys
+nvvad_WaveExtensible C:\Windows\system32\drivers\nvvad64v.sys
+nvvhci C:\Windows\system32\drivers\nvvhci.sys
+PawnIO C:\Windows\system32\DriverStore\FileRepository\pawnio.inf_amd64_a72a2f969b8b7496\PawnIO.sys
+UcmCxUcsiNvppc C:\Windows\system32\DriverStore\FileRepository\nvppc.inf_amd64_5465f77a9a8448b4\UcmCxUcsiNvppc.sys
+wintun C:\Windows\system32\drivers\wintun.sys
+== system events since 15 min before the window (2026-11-07T05:11:31 local; probe: 200 events of any level in the last 24 h, capped 200)
+2026-11-07T13:31:49Z disk 157 Disk 2 has been surprise removed.
+2026-11-07T13:30:56Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-07T13:29:12Z Service Control Manager 7031 The Microsoft Defender Antivirus Service service terminated unexpectedly.  It has done this 1 time(s).  The following corrective action will be taken in 1000 milliseconds: Restart the service.
+2026-11-07T13:27:40Z Microsoft-Windows-DistributedCOM 10010 The server Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter did not register with DCOM within the required timeout.
+2026-11-07T13:25:17Z disk 157 Disk 2 has been surprise removed.
+2026-11-07T13:23:52Z disk 157 Disk 2 has been surprise removed.
+2026-11-07T13:21:07Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T13:21:07Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T13:21:07Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T13:21:07Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T13:21:07Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T13:21:07Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T13:20:41Z Microsoft-Windows-Hyper-V-VmSwitch 32 Failed to connect NIC E96B147E-B66A-4F9E-BE48-45D81EBAA25A--9311CAE4-8357-54C9-8E6D-D5657E59843C (Friendly Name: ) to port 49DFEFB8-0133-461B-B8EE-9AA7FF0FFBB1 (Friendly Name: ) on switch C923CA33-2F88-4409-A306-640E0294C68B (Friendly Name: ), status = Object Name not found.. UniqueEvent = 80.
+2026-11-07T13:19:54Z Service Control Manager 7000 The Minecraft Education Updater service failed to start due to the following error: 
+
+2026-11-07T13:19:34Z Microsoft-Windows-DistributedCOM 10016 The machine-default permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-07T13:19:31Z googledrivefs31931 2 The driver version of the disk does not match.
+2026-11-07T13:18:57Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T13:18:57Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T13:18:54Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T13:18:54Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-07T13:18:54Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-07T13:18:52Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T13:18:51Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T13:18:50Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T13:18:45Z e2fexpress 27 Intel(R) Ethernet Controller (2) I225-V #2
+
+2026-11-07T13:13:43Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T13:13:41Z disk 157 Disk 2 has been surprise removed.
+2026-11-07T13:13:41Z Microsoft-Windows-WLAN-AutoConfig 10002 WLAN Extensibility Module has stopped.
+
+2026-11-07T13:13:41Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T13:13:41Z Service Control Manager 7031 The OpenSSH SSH Server service terminated unexpectedly.  It has done this 1 time(s).  The following corrective action will be taken in 5000 milliseconds: Restart the service.
+== application crashes in it
+2026-11-07T13:29:13Z 1001 Fault bucket 1438815623015488579, type 4
+
+2026-11-07T13:29:12Z 1001 Fault bucket , type 0
+
+2026-11-07T13:29:09Z 1000 Faulting application name: MsMpEng.exe, version: 4.18.26100.4, time stamp: 0x1059ce18
+
+== power and sleep
+2026-11-07T13:18:44Z Microsoft-Windows-Kernel-Power 172
+2026-11-07T13:13:44Z Microsoft-Windows-Kernel-Power 109
+== the canary, last cycles
+2026-11-07 12:59:27Z CYCLE uptime_h=6.8 bad_cpus=[7,13] n_ok=16 exits=[1,1] pkg_c=47/52 core_max_c=53 hot_core=5 cores_max_c=[49,52,50,50,53,49,51,49,51] samples=110 vcore_v=1.313
+2026-11-07 13:04:27Z CYCLE uptime_h=6.88 bad_cpus=[4,6] n_ok=16 exits=[1,1] pkg_c=47/52 core_max_c=53 hot_core=3 cores_max_c=[49,52,53,50,53,49,52,49,50] samples=110 vcore_v=1.324
+2026-11-07 13:09:28Z CYCLE uptime_h=6.97 bad_cpus=[1] n_ok=17 exits=[1] pkg_c=47/52 core_max_c=52 hot_core=2 cores_max_c=[49,52,50,49,51,49,51,49,50] samples=111 vcore_v=1.308
+2026-11-07 13:20:04Z WATCH START boot=2026-11-07 13:18:41Z logical_cpus=18 cycle=300s per-cpu core check 4s each (scheduled task, survives reboot)
+2026-11-07 13:20:12Z CONTROL inject_exit=1 clean_exit=0
+2026-11-07 13:21:29Z CYCLE uptime_h=0.05 bad_cpus=[] n_ok=18 exits=[] pkg_c=61/62 core_max_c=63 hot_core=2 cores_max_c=[59,63,62,61,59,61,61,59,58] samples=42 vcore_v=1.308
+2026-11-07 13:26:31Z CYCLE uptime_h=0.13 bad_cpus=[] n_ok=18 exits=[] pkg_c=57/62 core_max_c=62 hot_core=6 cores_max_c=[57,60,61,60,59,62,61,59,56] samples=19 vcore_v=1.313
+2026-11-07 13:31:33Z CYCLE uptime_h=0.21 bad_cpus=[1] n_ok=17 exits=[1] pkg_c=58/64 core_max_c=65 hot_core=3 cores_max_c=[55,63,65,58,58,58,59,57,57] samples=45 vcore_v=1.315
+
+

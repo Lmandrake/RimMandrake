@@ -1,0 +1,55 @@
+
+Name                     State   StartMode PathName                                                                   
+----                     -----   --------- --------                                                                   
+asComSvc                 Running Auto      "C:\Program Files (x86)\ASUS\AXSP\4.00.38\atkexComSvc.exe"                 
+AsusUpdateCheck          Stopped Auto      C:\Windows\System32\AsusUpdateCheck.exe                                    
+CorsairGamingAudioConfig Running Auto      C:\Windows\System32\CorsairGamingAudioCfgService64.exe                     
+CorsairLLAService        Running Auto      "C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CueLLAccessService.exe"  
+CorsairService           Running Auto      "C:\Program Files\Corsair\CORSAIR iCUE 4 Software\Corsair.Service.exe"     
+CorsairUniwillService    Stopped Auto      "C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CueUniwillService.exe"   
+HasleoBackupSuiteService Running Auto      "C:\Program Files\Hasleo\Hasleo Backup Suite\bin\BackupService.exe"        
+iCUEDevicePluginHost     Running Manual    "C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUEDevicePluginHost.exe"
+LightingService          Running Auto      "C:\Program Files (x86)\LightingService\LightingService.exe"               
+MSiSCSI                  Stopped Manual    C:\Windows\system32\svchost.exe -k netsvcs -p                              
+msiserver                Stopped Manual    C:\Windows\system32\msiexec.exe /V                                         
+
+
+
+
+Name                                                    State   StartMode PathName                                                                  
+----                                                    -----   --------- --------                                                                  
+Asusgio2                                                Running System    \??\C:\WINDOWS\system32\drivers\AsIO2.sys                                 
+CorsairGamingAudioService                               Stopped Manual    \??\C:\Windows\System32\drivers\CorsairGamingAudio64.sys                  
+CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D Running Auto      \??\C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CorsairLLAccess64.sys
+CorsairVBusDriver                                       Running Manual    C:\Windows\system32\drivers\CorsairVBusDriver.sys                         
+CorsairVHidDriver                                       Running Manual    C:\Windows\system32\drivers\CorsairVHidDriver.sys                         
+cpuz154                                                 Running Manual    \??\C:\WINDOWS\temp\cpuz154\cpuz154_x64.sys                               
+EneTechIo                                               Running System    \??\C:\WINDOWS\system32\drivers\ene.sys                                   
+GLCKIO2                                                 Running System    \??\C:\WINDOWS\system32\drivers\GLCKIO2.sys                               
+hasldisk                                                Running Auto      C:\Windows\system32\drivers\hasldisk.sys                                  
+HasleoDK                                                Running Auto      C:\Windows\system32\drivers\hasleodk.sys                                  
+MSIO                                                    Running System    \??\C:\WINDOWS\system32\drivers\MsIo64.sys                                
+
+
+
+
+Name                              Id Path                                                                               
+----                              -- ----                                                                               
+asusns                         25672 C:\Users\sjlewis\AppData\Local\NhNotifSys\sonicstudio\asusns.exe                   
+Corsair.Service                 6536 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\Corsair.Service.exe               
+Corsair.Service.CpuIdRemote64  10644 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\Corsair.Service.CpuIdRemote64.exe 
+Corsair.Service.DisplayAdapter  7856 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\Corsair.Service.DisplayAdapter.exe
+CorsairGamingAudioCfgService64  6496 C:\Windows\System32\CorsairGamingAudioCfgService64.exe                             
+iCUE                           21296 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUE.exe                          
+iCUEDevicePluginHost            1380 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUEDevicePluginHost.exe          
+iCUEDevicePluginHost           20708 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUEDevicePluginHost.exe          
+iCUEDevicePluginHost           25604 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUEDevicePluginHost.exe          
+iCUEDevicePluginHost           25688 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUEDevicePluginHost.exe          
+iCUEDevicePluginHost           25792 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUEDevicePluginHost.exe          
+iCUEDevicePluginHost           25964 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUEDevicePluginHost.exe          
+iCUEDevicePluginHost           26548 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUEDevicePluginHost.exe          
+iCUEDevicePluginHost           26604 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUEDevicePluginHost.exe          
+LightingService                 6676 C:\Program Files (x86)\LightingService\LightingService.exe                         
+
+
+

@@ -1,0 +1,49 @@
+17:16:09 START passes=2 p95=30 chk=30
+17:16:40 P95 pass=1 cpu=0 fft=4-8 fatal=0 cpusec=30 
+17:17:11 P95 pass=1 cpu=0 fft=128-256 fatal=0 cpusec=31 
+17:17:41 CHK pass=1 cpu=0 exit=0
+17:17:48 HASH pass=1 cpu=0 done
+17:18:19 P95 pass=1 cpu=1 fft=4-8 fatal=0 cpusec=31 
+17:18:50 P95 pass=1 cpu=1 fft=128-256 fatal=0 cpusec=30 
+17:19:21 CHK pass=1 cpu=1 exit=0
+17:19:27 HASH pass=1 cpu=1 done
+17:19:58 P95 pass=1 cpu=2 fft=4-8 fatal=1 cpusec=0 FATAL ERROR: Rounding was 0.5, expected less than 0.4
+17:20:30 P95 pass=1 cpu=2 fft=128-256 fatal=1 cpusec=0 FATAL ERROR: Rounding was 0.5, expected less than 0.4
+17:21:00 CHK pass=1 cpu=2 exit=1
+17:21:06 HASH pass=1 cpu=2 done
+17:21:38 P95 pass=1 cpu=3 fft=4-8 fatal=0 cpusec=30 
+17:22:09 P95 pass=1 cpu=3 fft=128-256 fatal=0 cpusec=30 
+17:22:39 CHK pass=1 cpu=3 exit=0
+17:22:46 HASH pass=1 cpu=3 done
+17:23:17 P95 pass=1 cpu=4 fft=4-8 fatal=0 cpusec=30 
+17:23:48 P95 pass=1 cpu=4 fft=128-256 fatal=0 cpusec=30 
+17:24:18 CHK pass=1 cpu=4 exit=0
+17:24:25 HASH pass=1 cpu=4 done
+17:24:56 P95 pass=1 cpu=5 fft=4-8 fatal=0 cpusec=31 
+17:25:27 P95 pass=1 cpu=5 fft=128-256 fatal=0 cpusec=30 
+17:25:57 CHK pass=1 cpu=5 exit=0
+17:26:04 HASH pass=1 cpu=5 done
+17:26:35 P95 pass=1 cpu=6 fft=4-8 fatal=1 cpusec=1 FATAL ERROR: Rounding was 0.5, expected less than 0.4
+17:27:06 P95 pass=1 cpu=6 fft=128-256 fatal=0 cpusec=30 
+17:27:36 CHK pass=1 cpu=6 exit=0
+17:27:43 HASH pass=1 cpu=6 done
+17:28:14 P95 pass=1 cpu=7 fft=4-8 fatal=1 cpusec=0 FATAL ERROR: Rounding was 0.5, expected less than 0.4
+17:28:45 P95 pass=1 cpu=7 fft=128-256 fatal=0 cpusec=30 
+17:29:16 CHK pass=1 cpu=7 exit=0
+17:29:22 HASH pass=1 cpu=7 done
+17:29:53 P95 pass=1 cpu=8 fft=4-8 fatal=1 cpusec=0 FATAL ERROR: Rounding was 0.5, expected less than 0.4
+17:30:25 P95 pass=1 cpu=8 fft=128-256 fatal=0 cpusec=30 
+17:30:55 CHK pass=1 cpu=8 exit=0
+17:31:01 HASH pass=1 cpu=8 done
+17:31:33 P95 pass=1 cpu=9 fft=4-8 fatal=1 cpusec=0 FATAL ERROR: Rounding was 0.5, expected less than 0.4
+17:32:04 P95 pass=1 cpu=9 fft=128-256 fatal=0 cpusec=30 
+17:32:34 CHK pass=1 cpu=9 exit=0
+17:32:41 HASH pass=1 cpu=9 done
+17:33:12 P95 pass=1 cpu=10 fft=4-8 fatal=0 cpusec=31 
+17:33:43 P95 pass=1 cpu=10 fft=128-256 fatal=0 cpusec=31 
+17:34:13 CHK pass=1 cpu=10 exit=0
+17:34:20 HASH pass=1 cpu=10 done
+17:34:51 P95 pass=1 cpu=11 fft=4-8 fatal=1 cpusec=0 FATAL ERROR: Rounding was 0.5, expected less than 0.4
+17:35:23 P95 pass=1 cpu=11 fft=128-256 fatal=0 cpusec=31 
+17:35:53 CHK pass=1 cpu=11 exit=0
+17:35:59 HASH pass=1 cpu=11 done

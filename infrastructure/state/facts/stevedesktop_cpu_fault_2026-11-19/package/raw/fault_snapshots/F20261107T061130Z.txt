@@ -1,0 +1,148 @@
+== when
+2026-11-07T06:26:03Z
+boot 2026-11-07T06:11:30Z
+== firmware
+BIOS 3401 05/26/2026 17:00:00
+ucode 0000000000010000
+logical 18
+
+numproc                 18
+== thermal
+ACPI\ThermalZone\TZ00_0 27.9
+== top processes by cpu seconds
+iCloudHome                   cpu=       830 ws=   118MB start=11/6/2026 10:12:15 PM
+GoogleDriveFS                cpu=       400 ws=   214MB start=11/6/2026 10:12:08 PM
+MsMpEng                      cpu=       245 ws=   345MB start=11/6/2026 10:11:41 PM
+vmmem                        cpu=       112 ws= 3,454MB start=11/6/2026 10:11:43 PM
+RimWorldWin64                cpu=        70 ws=   909MB start=11/6/2026 10:20:48 PM
+explorer                     cpu=        59 ws=   285MB start=11/6/2026 10:11:46 PM
+bzserv                       cpu=        45 ws=    15MB start=11/6/2026 10:11:41 PM
+svchost                      cpu=        39 ws=    39MB start=11/6/2026 10:11:42 PM
+System                       cpu=        39 ws=     0MB start=11/6/2026 10:11:33 PM
+svchost                      cpu=        20 ws=    53MB start=11/6/2026 10:11:43 PM
+nvcontainer                  cpu=        18 ws=    77MB start=11/6/2026 10:11:43 PM
+msedgewebview2               cpu=        15 ws=    73MB start=11/6/2026 10:12:09 PM
+Dropbox                      cpu=        15 ws=   499MB start=11/6/2026 10:12:30 PM
+SearchIndexer                cpu=        13 ws=    48MB start=11/6/2026 10:11:42 PM
+LightingService              cpu=        13 ws=    25MB start=11/6/2026 10:11:41 PM
+Corsair.Service              cpu=        12 ws=    56MB start=11/6/2026 10:11:41 PM
+Corsair.Service.CpuIdRemote64 cpu=        12 ws=    47MB start=11/6/2026 10:11:42 PM
+svchost                      cpu=        10 ws=    23MB start=11/6/2026 10:11:40 PM
+svchost                      cpu=        10 ws=    47MB start=11/6/2026 10:11:39 PM
+svchost                      cpu=         8 ws=    19MB start=11/6/2026 10:11:39 PM
+== running drivers, not Microsoft
+Asusgio2 \??\C:\WINDOWS\system32\drivers\AsIO2.sys
+AVoluteSS3Vad C:\Windows\system32\drivers\AVoluteSS3Vad.sys
+CimFS C:\Windows\system32\drivers\CimFS.sys
+CLFCL5.18 C:\Windows\system32\DRIVERS\CLFCL5.18\000.fcl
+CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D \??\C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CorsairLLAccess64.sys
+CorsairVBusDriver C:\Windows\system32\drivers\CorsairVBusDriver.sys
+CorsairVHidDriver C:\Windows\system32\drivers\CorsairVHidDriver.sys
+cpuz154 \??\C:\Windows\temp\cpuz154\cpuz154_x64.sys
+dbx C:\Windows\system32\DRIVERS\dbx.sys
+e2fexpress C:\Windows\system32\DriverStore\FileRepository\e2f.inf_amd64_bf51b653ec31b8ab\e2f.sys
+EneTechIo \??\C:\WINDOWS\system32\drivers\ene.sys
+GLCKIO2 \??\C:\WINDOWS\system32\drivers\GLCKIO2.sys
+googledrivefs31931 \??\C:\Program Files\Google\Drive File Stream\Drivers\31931\googledrivefs31931.sys
+googledrivefs32452 \??\C:\Program Files\Google\Drive File Stream\Drivers\32452\googledrivefs32452.sys
+hasldisk C:\Windows\system32\drivers\hasldisk.sys
+HasleoDK C:\Windows\system32\drivers\hasleodk.sys
+ibtusb C:\Windows\system32\DriverStore\FileRepository\ibtusb.inf_amd64_9b157f5f4cc71af6\ibtusb.sys
+IntcAzAudAddService C:\Windows\system32\drivers\RTKVHD64.sys
+MEIx64 C:\Windows\system32\DriverStore\FileRepository\heci.inf_amd64_6b6e8cc42a3d1f09\x64\TeeDriverW10x64.sys
+MSIO \??\C:\WINDOWS\system32\drivers\MsIo64.sys
+Netwtw10 C:\Windows\system32\drivers\Netwtw10.sys
+NVHDA C:\Windows\system32\drivers\nvhda64v.sys
+nvlddmkm C:\Windows\system32\DriverStore\FileRepository\nv_dispig.inf_amd64_0afec3f2050014a0\nvlddmkm.sys
+NvModuleTracker C:\Windows\system32\DriverStore\FileRepository\nvmoduletracker.inf_amd64_0c1cc60a4b422185\NvModuleTracker.sys
+nvvad_WaveExtensible C:\Windows\system32\drivers\nvvad64v.sys
+nvvhci C:\Windows\system32\drivers\nvvhci.sys
+PawnIO C:\Windows\system32\DriverStore\FileRepository\pawnio.inf_amd64_a72a2f969b8b7496\PawnIO.sys
+UcmCxUcsiNvppc C:\Windows\system32\DriverStore\FileRepository\nvppc.inf_amd64_5465f77a9a8448b4\UcmCxUcsiNvppc.sys
+wintun C:\Windows\system32\drivers\wintun.sys
+== system events since 15 min before the window (2026-11-06T22:04:23 local; probe: 200 events of any level in the last 24 h, capped 200)
+2026-11-07T06:25:19Z disk 157 Disk 2 has been surprise removed.
+2026-11-07T06:24:19Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-07T06:20:53Z Microsoft-Windows-DistributedCOM 10010 The server Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter did not register with DCOM within the required timeout.
+2026-11-07T06:18:30Z disk 157 Disk 2 has been surprise removed.
+2026-11-07T06:13:56Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T06:13:56Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T06:13:56Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T06:13:56Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T06:13:56Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T06:13:56Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Launch permission for the COM Server application with CLSID 
+
+2026-11-07T06:13:30Z Microsoft-Windows-Hyper-V-VmSwitch 32 Failed to connect NIC 972D8E7E-E26C-4EDF-9EBE-CAD3516A7B14--57838002-3A55-5BD1-B055-AE0AA5979E69 (Friendly Name: ) to port 89145E45-F03A-4381-8D12-112612D36647 (Friendly Name: ) on switch D144B95D-8DC9-4EA1-A3A0-5767FB8EC4D9 (Friendly Name: ), status = Object Name not found.. UniqueEvent = 80.
+2026-11-07T06:12:34Z Service Control Manager 7000 The Minecraft Education Updater service failed to start due to the following error: 
+
+2026-11-07T06:12:15Z Microsoft-Windows-DistributedCOM 10016 The machine-default permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-07T06:12:10Z googledrivefs31931 2 The driver version of the disk does not match.
+2026-11-07T06:11:45Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T06:11:45Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T06:11:43Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T06:11:43Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-07T06:11:43Z Microsoft-Windows-DistributedCOM 10016 The application-specific permission settings do not grant Local Activation permission for the COM Server application with CLSID 
+
+2026-11-07T06:11:41Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T06:11:40Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T06:11:39Z Microsoft-Windows-DNS-Client 1014 Name resolution for the name wpad timed out after none of the configured DNS servers responded.
+2026-11-07T06:11:34Z e2fexpress 27 Intel(R) Ethernet Controller (2) I225-V #2
+
+== application crashes in it
+2026-11-07T06:20:50Z 1001 Fault bucket 1729379587318822384, type 5
+
+2026-11-07T06:20:49Z 1001 Fault bucket 1747678264849741379, type 5
+
+2026-11-07T06:20:48Z 1001 Fault bucket 1525079460143471391, type 5
+
+2026-11-07T06:20:47Z 1001 Fault bucket 1473725927100264586, type 5
+
+2026-11-07T06:20:46Z 1001 Fault bucket 1862572414172749421, type 5
+
+2026-11-07T06:20:46Z 1001 Fault bucket , type 0
+
+2026-11-07T06:20:46Z 1001 Fault bucket 2168071379586229899, type 5
+
+2026-11-07T06:20:45Z 1001 Fault bucket , type 0
+
+2026-11-07T06:20:45Z 1001 Fault bucket , type 0
+
+2026-11-07T06:20:45Z 1001 Fault bucket 1525079460143471391, type 5
+
+2026-11-07T06:20:44Z 1001 Fault bucket , type 0
+
+2026-11-07T06:20:44Z 1001 Fault bucket , type 0
+
+2026-11-07T06:20:44Z 1001 Fault bucket 1190006793821980838, type 5
+
+2026-11-07T06:20:44Z 1001 Fault bucket , type 0
+
+2026-11-07T06:20:43Z 1001 Fault bucket , type 0
+
+2026-11-07T06:20:43Z 1001 Fault bucket , type 0
+
+2026-11-07T06:11:59Z 1001 Fault bucket 533235694, type 5
+
+2026-11-07T06:11:44Z 1001 Fault bucket , type 0
+
+== power and sleep
+2026-11-07T06:11:33Z Microsoft-Windows-Kernel-Power 172
+== the canary, last cycles
+2026-11-07 02:09:14Z CYCLE uptime_h=3.22 bad_cpus=[7,16] n_ok=16 exits=[1,1] pkg_c=50/55 core_max_c=55 hot_core=2 cores_max_c=[53,55,53,53,53,52,52,52,53] samples=92 vcore_v=1.318
+2026-11-07 02:14:14Z CYCLE uptime_h=3.3 bad_cpus=[6,12] n_ok=16 exits=[1,1] pkg_c=51/57 core_max_c=57 hot_core=3 cores_max_c=[52,55,57,53,51,51,52,52,53] samples=110 vcore_v=1.314
+2026-11-07 02:19:15Z CYCLE uptime_h=3.38 bad_cpus=[4] n_ok=17 exits=[1] pkg_c=51/54 core_max_c=55 hot_core=2 cores_max_c=[51,55,54,53,53,50,54,53,54] samples=91 vcore_v=1.308
+2026-11-07 06:12:58Z WATCH START boot=2026-11-07 06:11:30Z logical_cpus=18 cycle=300s per-cpu core check 4s each (scheduled task, survives reboot)
+2026-11-07 06:13:05Z CONTROL inject_exit=1 clean_exit=0
+2026-11-07 06:14:20Z CYCLE uptime_h=0.05 bad_cpus=[] n_ok=18 exits=[] pkg_c=62/63 core_max_c=63 hot_core=2 cores_max_c=[59,63,62,63,62,62,63,62,60] samples=38 vcore_v=1.317
+2026-11-07 06:19:23Z CYCLE uptime_h=0.13 bad_cpus=[] n_ok=18 exits=[] pkg_c=61/64 core_max_c=64 hot_core=2 cores_max_c=[58,64,62,60,62,62,61,60,60] samples=49 vcore_v=1.313
+2026-11-07 06:24:30Z CYCLE uptime_h=0.22 bad_cpus=[6] n_ok=17 exits=[1] pkg_c=53/60 core_max_c=59 hot_core=2 cores_max_c=[57,59,58,58,59,57,59,56,58] samples=54 vcore_v=1.315
+
+

@@ -1,0 +1,1 @@
+Copy a SteveDesktop native-crash report the day it happens. On 2026-11-19 all 112 folders under C:\Users\sjlewis\AppData\Local\Temp\Ludeon Studios\RimWorld by Ludeon Studios\Crashes were empty, and the crash item RIMMANDRAKE_FIX_JAWABENCH_AWARENESS_INSTALL_CRASHES_START could not be read from code alone. Reach the folder over ssh stevedesktop-wsl.

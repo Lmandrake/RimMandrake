@@ -1,0 +1,77 @@
+== when
+2026-11-05T23:16:43Z
+boot 2026-11-05T22:23:34Z
+== firmware
+BIOS 3401 05/26/2026 17:00:00
+ucode 0000000000010000
+logical 18
+
+numproc                 18
+== thermal
+ACPI\ThermalZone\TZ00_0 27.9
+== top processes by cpu seconds
+RimWorldWin64                cpu=     1,527 ws= 3,884MB start=11/5/2026 2:34:30 PM
+vmmem                        cpu=       515 ws= 3,464MB start=11/5/2026 2:23:47 PM
+MsMpEng                      cpu=       453 ws=   563MB start=11/5/2026 2:23:45 PM
+GoogleDriveFS                cpu=       407 ws=   212MB start=11/5/2026 2:24:12 PM
+System                       cpu=       132 ws=     0MB start=11/5/2026 2:23:37 PM
+dwm                          cpu=        95 ws=    73MB start=11/5/2026 2:23:43 PM
+explorer                     cpu=        50 ws=   179MB start=11/5/2026 2:23:50 PM
+bzserv                       cpu=        47 ws=    16MB start=11/5/2026 2:23:45 PM
+nvcontainer                  cpu=        40 ws=    79MB start=11/5/2026 2:23:48 PM
+Corsair.Service.CpuIdRemote64 cpu=        40 ws=    48MB start=11/5/2026 2:23:46 PM
+Corsair.Service              cpu=        39 ws=    56MB start=11/5/2026 2:23:45 PM
+iCloudHome                   cpu=        24 ws=   116MB start=11/5/2026 2:24:19 PM
+dllhost                      cpu=        22 ws=     9MB start=11/5/2026 2:23:49 PM
+Dropbox                      cpu=        19 ws=   500MB start=11/5/2026 2:24:29 PM
+SearchIndexer                cpu=        16 ws=    51MB start=11/5/2026 2:23:46 PM
+svchost                      cpu=        15 ws=    12MB start=11/5/2026 2:23:43 PM
+msedgewebview2               cpu=        15 ws=    74MB start=11/5/2026 2:24:13 PM
+bzfilelist64                 cpu=        14 ws=    31MB start=11/5/2026 2:26:45 PM
+LightingService              cpu=        13 ws=    25MB start=11/5/2026 2:23:45 PM
+audiodg                      cpu=        12 ws=    13MB start=11/5/2026 2:34:32 PM
+== running drivers, not Microsoft
+Asusgio2 \??\C:\WINDOWS\system32\drivers\AsIO2.sys
+AVoluteSS3Vad C:\Windows\system32\drivers\AVoluteSS3Vad.sys
+CimFS C:\Windows\system32\drivers\CimFS.sys
+CLFCL5.18 C:\Windows\system32\DRIVERS\CLFCL5.18\000.fcl
+CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D \??\C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CorsairLLAccess64.sys
+CorsairVBusDriver C:\Windows\system32\drivers\CorsairVBusDriver.sys
+CorsairVHidDriver C:\Windows\system32\drivers\CorsairVHidDriver.sys
+cpuz154 \??\C:\Windows\temp\cpuz154\cpuz154_x64.sys
+dbx C:\Windows\system32\DRIVERS\dbx.sys
+e2fexpress C:\Windows\system32\DriverStore\FileRepository\e2f.inf_amd64_bf51b653ec31b8ab\e2f.sys
+EneTechIo \??\C:\WINDOWS\system32\drivers\ene.sys
+GLCKIO2 \??\C:\WINDOWS\system32\drivers\GLCKIO2.sys
+googledrivefs31931 \??\C:\Program Files\Google\Drive File Stream\Drivers\31931\googledrivefs31931.sys
+googledrivefs32452 \??\C:\Program Files\Google\Drive File Stream\Drivers\32452\googledrivefs32452.sys
+hasldisk C:\Windows\system32\drivers\hasldisk.sys
+HasleoDK C:\Windows\system32\drivers\hasleodk.sys
+ibtusb C:\Windows\system32\DriverStore\FileRepository\ibtusb.inf_amd64_9b157f5f4cc71af6\ibtusb.sys
+IntcAzAudAddService C:\Windows\system32\drivers\RTKVHD64.sys
+MEIx64 C:\Windows\system32\DriverStore\FileRepository\heci.inf_amd64_6b6e8cc42a3d1f09\x64\TeeDriverW10x64.sys
+MSIO \??\C:\WINDOWS\system32\drivers\MsIo64.sys
+Netwtw10 C:\Windows\system32\drivers\Netwtw10.sys
+NVHDA C:\Windows\system32\drivers\nvhda64v.sys
+nvlddmkm C:\Windows\system32\DriverStore\FileRepository\nv_dispig.inf_amd64_0afec3f2050014a0\nvlddmkm.sys
+NvModuleTracker C:\Windows\system32\DriverStore\FileRepository\nvmoduletracker.inf_amd64_0c1cc60a4b422185\NvModuleTracker.sys
+nvvad_WaveExtensible C:\Windows\system32\drivers\nvvad64v.sys
+nvvhci C:\Windows\system32\drivers\nvvhci.sys
+PawnIO C:\Windows\system32\DriverStore\FileRepository\pawnio.inf_amd64_a72a2f969b8b7496\PawnIO.sys
+UcmCxUcsiNvppc C:\Windows\system32\DriverStore\FileRepository\nvppc.inf_amd64_5465f77a9a8448b4\UcmCxUcsiNvppc.sys
+wintun C:\Windows\system32\drivers\wintun.sys
+== system events since 15 min before the window (2026-11-05T14:56:23 local; probe: 200 events of any level in the last 24 h, capped 200)
+2026-11-05T22:58:09Z disk 157 Disk 2 has been surprise removed.
+== application crashes in it
+== power and sleep
+== the canary, last cycles
+2026-11-05 22:41:23Z CYCLE uptime_h=0.3 bad_cpus=[] n_ok=18 exits=[] pkg_c=59/63 core_max_c=63 hot_core=2 cores_max_c=[61,63,62,61,61,61,62,60,63] samples=108 vcore_v=1.315
+2026-11-05 22:46:23Z CYCLE uptime_h=0.38 bad_cpus=[] n_ok=18 exits=[] pkg_c=50/59 core_max_c=59 hot_core=2 cores_max_c=[56,59,57,57,59,57,59,58,58] samples=110 vcore_v=1.309
+2026-11-05 22:51:23Z CYCLE uptime_h=0.46 bad_cpus=[] n_ok=18 exits=[] pkg_c=51/62 core_max_c=62 hot_core=3 cores_max_c=[60,61,62,58,60,58,59,59,59] samples=110 vcore_v=1.318
+2026-11-05 22:56:24Z CYCLE uptime_h=0.55 bad_cpus=[] n_ok=18 exits=[] pkg_c=57/62 core_max_c=62 hot_core=2 cores_max_c=[58,62,61,60,61,61,59,58,58] samples=109 vcore_v=1.314
+2026-11-05 23:01:23Z CYCLE uptime_h=0.63 bad_cpus=[] n_ok=18 exits=[] pkg_c=55/59 core_max_c=60 hot_core=2 cores_max_c=[56,60,56,58,56,57,57,57,59] samples=107 vcore_v=1.323
+2026-11-05 23:06:23Z CYCLE uptime_h=0.71 bad_cpus=[] n_ok=18 exits=[] pkg_c=54/59 core_max_c=60 hot_core=2 cores_max_c=[55,60,57,57,57,56,59,56,57] samples=111 vcore_v=1.314
+2026-11-05 23:11:23Z CYCLE uptime_h=0.8 bad_cpus=[] n_ok=18 exits=[] pkg_c=55/60 core_max_c=61 hot_core=2 cores_max_c=[58,61,57,58,56,55,59,58,59] samples=107 vcore_v=1.315
+2026-11-05 23:16:22Z CYCLE uptime_h=0.88 bad_cpus=[8] n_ok=17 exits=[1] pkg_c=58/60 core_max_c=60 hot_core=2 cores_max_c=[58,60,59,59,57,57,59,56,57] samples=110 vcore_v=1.309
+
+

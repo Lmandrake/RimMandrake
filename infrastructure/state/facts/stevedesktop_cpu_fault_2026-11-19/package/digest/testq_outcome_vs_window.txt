@@ -1,0 +1,9 @@
+# testq job outcomes on SteveDesktop vs overlap of [started,finished] with any fault window [first_bad,end] from fault_windows.json
+728	DONE	outside
+309	DONE	overlaps_window
+4	INTERRUPTED	outside
+4	INTERRUPTED	overlaps_window
+76	INVALID	outside
+199	INVALID	overlaps_window
+7	REFUSED	outside
+1	REFUSED	overlaps_window

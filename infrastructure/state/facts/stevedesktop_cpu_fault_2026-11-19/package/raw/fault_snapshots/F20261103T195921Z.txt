@@ -1,0 +1,122 @@
+== when
+2026-11-04T02:34:16Z
+boot 2026-11-03T19:59:21Z
+== firmware
+BIOS 3401 05/26/2026 17:00:00
+ucode 0000000000010000
+logical 18
+
+numproc                 18
+== thermal
+ACPI\ThermalZone\TZ00_0 27.9
+== top processes by cpu seconds
+MsMpEng                      cpu=     5,287 ws=   687MB start=11/3/2026 11:59:32 AM
+vmmem                        cpu=     3,287 ws= 3,889MB start=11/3/2026 11:59:34 AM
+RimWorldWin64                cpu=     1,093 ws= 6,929MB start=11/3/2026 6:02:27 PM
+dllhost                      cpu=       925 ws=    10MB start=11/3/2026 11:59:37 AM
+System                       cpu=       598 ws=     0MB start=11/3/2026 11:59:25 AM
+SearchIndexer                cpu=       493 ws=    96MB start=11/3/2026 11:59:34 AM
+GoogleDriveFS                cpu=       415 ws=   225MB start=11/3/2026 11:59:58 AM
+Corsair.Service              cpu=       292 ws=    59MB start=11/3/2026 11:59:32 AM
+Corsair.Service.CpuIdRemote64 cpu=       291 ws=    51MB start=11/3/2026 11:59:34 AM
+nvcontainer                  cpu=       192 ws=   101MB start=11/3/2026 11:59:35 AM
+lsass                        cpu=       163 ws=    26MB start=11/3/2026 11:59:30 AM
+explorer                     cpu=       139 ws=   187MB start=11/3/2026 11:59:37 AM
+bzserv                       cpu=       126 ws=    16MB start=11/3/2026 11:59:32 AM
+MicrosoftSecurityApp         cpu=       119 ws=   161MB start=11/3/2026 12:00:00 PM
+svchost                      cpu=        70 ws=    15MB start=11/3/2026 11:59:32 AM
+dotnet                       cpu=        69 ws=   466MB start=11/3/2026 6:21:01 PM
+steamwebhelper               cpu=        60 ws=   637MB start=11/3/2026 11:59:57 AM
+svchost                      cpu=        56 ws=    11MB start=11/3/2026 11:59:31 AM
+svchost                      cpu=        43 ws=    19MB start=11/3/2026 11:59:30 AM
+Memory Compression           cpu=        39 ws=    59MB start=11/3/2026 11:59:31 AM
+== running drivers, not Microsoft
+Asusgio2 \??\C:\WINDOWS\system32\drivers\AsIO2.sys
+AVoluteSS3Vad C:\Windows\system32\drivers\AVoluteSS3Vad.sys
+CimFS C:\Windows\system32\drivers\CimFS.sys
+CLFCL5.18 C:\Windows\system32\DRIVERS\CLFCL5.18\000.fcl
+CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D \??\C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CorsairLLAccess64.sys
+CorsairVBusDriver C:\Windows\system32\drivers\CorsairVBusDriver.sys
+CorsairVHidDriver C:\Windows\system32\drivers\CorsairVHidDriver.sys
+cpuz154 \??\C:\WINDOWS\temp\cpuz154\cpuz154_x64.sys
+dbx C:\Windows\system32\DRIVERS\dbx.sys
+e2fexpress C:\Windows\system32\DriverStore\FileRepository\e2f.inf_amd64_bf51b653ec31b8ab\e2f.sys
+EneTechIo \??\C:\WINDOWS\system32\drivers\ene.sys
+GLCKIO2 \??\C:\WINDOWS\system32\drivers\GLCKIO2.sys
+googledrivefs31931 \??\C:\Program Files\Google\Drive File Stream\Drivers\31931\googledrivefs31931.sys
+googledrivefs32452 \??\C:\Program Files\Google\Drive File Stream\Drivers\32452\googledrivefs32452.sys
+hasldisk C:\Windows\system32\drivers\hasldisk.sys
+HasleoDK C:\Windows\system32\drivers\hasleodk.sys
+ibtusb C:\Windows\system32\DriverStore\FileRepository\ibtusb.inf_amd64_9b157f5f4cc71af6\ibtusb.sys
+IntcAzAudAddService C:\Windows\system32\drivers\RTKVHD64.sys
+MEIx64 C:\Windows\system32\DriverStore\FileRepository\heci.inf_amd64_6b6e8cc42a3d1f09\x64\TeeDriverW10x64.sys
+MSIO \??\C:\WINDOWS\system32\drivers\MsIo64.sys
+Netwtw10 C:\Windows\system32\drivers\Netwtw10.sys
+NVHDA C:\Windows\system32\drivers\nvhda64v.sys
+nvlddmkm C:\Windows\system32\DriverStore\FileRepository\nv_dispig.inf_amd64_0afec3f2050014a0\nvlddmkm.sys
+NvModuleTracker C:\Windows\system32\DriverStore\FileRepository\nvmoduletracker.inf_amd64_0c1cc60a4b422185\NvModuleTracker.sys
+nvvad_WaveExtensible C:\Windows\system32\drivers\nvvad64v.sys
+nvvhci C:\Windows\system32\drivers\nvvhci.sys
+UcmCxUcsiNvppc C:\Windows\system32\DriverStore\FileRepository\nvppc.inf_amd64_5465f77a9a8448b4\UcmCxUcsiNvppc.sys
+wintun C:\Windows\system32\drivers\wintun.sys
+== system events since 15 min before the window (2026-11-03T14:32:02 local; probe: 200 events of any level in the last 24 h, capped 200)
+2026-11-04T02:05:57Z disk 157 Disk 2 has been surprise removed.
+2026-11-04T01:56:57Z Display 4101 Display driver nvlddmkm stopped responding and has successfully recovered.
+2026-11-04T01:56:56Z nvlddmkm 153 
+2026-11-04T01:15:30Z Service Control Manager 7024 Cannot retrieve event message text.
+2026-11-04T01:15:25Z Microsoft-Windows-DistributedCOM 10010 The server {FBCD0362-4966-5849-B49D-6A9087C2EAA1} did not register with DCOM within the required timeout.
+2026-11-04T01:15:25Z Service Control Manager 7024 The DropboxUpdater InternalService 123.0.6299.152 (DropboxUpdaterInternalService123.0.6299.152) service terminated with the following service-specific error: 
+
+2026-11-04T01:13:24Z Microsoft-Windows-DistributedCOM 10010 The server {FBCD0362-4966-5849-B49D-6A9087C2EAA1} did not register with DCOM within the required timeout.
+2026-11-04T01:13:24Z Service Control Manager 7024 The DropboxUpdater InternalService 123.0.6299.152 (DropboxUpdaterInternalService123.0.6299.152) service terminated with the following service-specific error: 
+
+2026-11-04T01:05:57Z disk 157 Disk 2 has been surprise removed.
+2026-11-04T00:05:57Z disk 157 Disk 2 has been surprise removed.
+2026-11-04T00:04:47Z disk 157 Disk 2 has been surprise removed.
+2026-11-03T23:05:58Z disk 157 Disk 2 has been surprise removed.
+2026-11-03T22:50:39Z Microsoft-Windows-DistributedCOM 10010 The server Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter did not register with DCOM within the required timeout.
+2026-11-03T22:45:32Z Microsoft-Windows-DistributedCOM 10010 The server Windows.Gaming.GameBar.PresenceServer.Internal.PresenceWriter did not register with DCOM within the required timeout.
+== application crashes in it
+2026-11-04T02:10:27Z 1001 Fault bucket 1850558729625661278, type 4
+
+2026-11-04T02:10:25Z 1000 Faulting application name: dotnet.exe, version: 9.0.2226.52218, time stamp: 0x6ada6f42
+
+2026-11-04T02:08:58Z 1001 Fault bucket 1334114461835156961, type 4
+
+2026-11-04T02:08:57Z 1000 Faulting application name: dotnet.exe, version: 9.0.2226.52218, time stamp: 0x6ada6f42
+
+2026-11-04T02:08:56Z 1026 Application: dotnet.exe
+2026-11-04T01:57:12Z 1001 Fault bucket LKD_0x141_Tdr:6_IMAGE_nvlddmkm.sys_Turing_3D, type 0
+
+2026-11-04T01:57:01Z 1001 Fault bucket , type 0
+
+2026-11-04T01:40:56Z 1001 Fault bucket 2104222509207964357, type 4
+
+2026-11-04T01:40:55Z 1000 Faulting application name: stevecheck.exe, version: 1.0.0.0, time stamp: 0x6ada0000
+
+2026-11-04T01:40:55Z 1026 Application: stevecheck.exe
+2026-11-03T23:47:33Z 1001 Fault bucket 1898285753222557095, type 4
+
+2026-11-03T23:47:32Z 1000 Faulting application name: python.exe, version: 3.13.16150.1013, time stamp: 0x6abd6173
+
+2026-11-03T23:46:38Z 1001 Fault bucket 1334114461835156961, type 4
+
+2026-11-03T23:46:36Z 1000 Faulting application name: dotnet.exe, version: 9.0.2226.52218, time stamp: 0x6ada6f42
+
+2026-11-03T23:46:36Z 1026 Application: dotnet.exe
+2026-11-03T22:45:53Z 1001 Fault bucket 1729469628703022449, type 4
+
+2026-11-03T22:45:51Z 1000 Faulting application name: RimWorldWin64.exe, version: 2022.3.35.4614, time stamp: 0x667bf359
+
+== power and sleep
+== the canary, last cycles
+2026-11-04 02:07:01Z CYCLE uptime_h=6.13 bad_cpus=[14] n_ok=17
+2026-11-04 02:12:01Z CYCLE uptime_h=6.21 bad_cpus=[6] n_ok=17
+2026-11-04 02:17:00Z CYCLE uptime_h=6.29 bad_cpus=[0,3,6,8,16] n_ok=13
+2026-11-04 02:22:01Z CYCLE uptime_h=6.38 bad_cpus=[16] n_ok=17
+2026-11-04 02:27:01Z CYCLE uptime_h=6.46 bad_cpus=[] n_ok=18
+2026-11-04 02:32:01Z CYCLE uptime_h=6.54 bad_cpus=[] n_ok=18
+2026-11-04 02:33:36Z WATCH START boot=2026-11-03 19:59:21Z logical_cpus=18 cycle=300s per-cpu core check 4s each (scheduled task, survives reboot)
+2026-11-04 02:33:42Z CONTROL inject_exit=1 clean_exit=0
+
+

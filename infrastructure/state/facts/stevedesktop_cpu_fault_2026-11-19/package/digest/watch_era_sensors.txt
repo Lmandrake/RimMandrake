@@ -1,0 +1,4 @@
+# vcore and hottest-core readings carried on watch CYCLE lines, by era (cycles without a reading excluded)
+1_turbo_on cycles=1292 bad=426 | vcore_v n=937 mean=1.312 min=1.277 max=1.332 | core_max_c n=937 mean=57.918 min=50.000 max=77.000
+2_turbo_off_pre_raise cycles=2857 bad=1533 | vcore_v n=2855 mean=1.063 min=1.004 max=1.325 | core_max_c n=2855 mean=44.221 min=35.000 max=77.000
+3_post_raise cycles=770 bad=2 | vcore_v n=129 mean=1.026 min=0.988 max=1.037 | core_max_c n=129 mean=42.744 min=38.000 max=56.000

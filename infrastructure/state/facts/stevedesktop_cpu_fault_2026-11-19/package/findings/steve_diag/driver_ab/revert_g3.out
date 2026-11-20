@@ -1,0 +1,14 @@
+rc 0
+System.Object[] -> System.Object[]
+AT 2026-11-04T10:00:44.8425376Z
+
+Name               Status StartType
+----               ------ ---------
+asComSvc          Stopped  Disabled
+CorsairLLAService Stopped  Disabled
+CorsairService    Stopped  Disabled
+LightingService   Stopped  Disabled
+
+
+
+

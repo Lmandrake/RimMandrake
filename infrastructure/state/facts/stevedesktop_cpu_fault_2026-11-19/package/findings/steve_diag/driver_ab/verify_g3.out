@@ -1,0 +1,56 @@
+rc 0
+
+Name                     State   StartMode PathName                                                                   
+----                     -----   --------- --------                                                                   
+asComSvc                 Stopped Disabled  "C:\Program Files (x86)\ASUS\AXSP\4.00.38\atkexComSvc.exe"                 
+AsusUpdateCheck          Stopped Auto      C:\Windows\System32\AsusUpdateCheck.exe                                    
+CorsairGamingAudioConfig Running Auto      C:\Windows\System32\CorsairGamingAudioCfgService64.exe                     
+CorsairLLAService        Stopped Disabled  "C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CueLLAccessService.exe"  
+CorsairService           Stopped Disabled  "C:\Program Files\Corsair\CORSAIR iCUE 4 Software\Corsair.Service.exe"     
+CorsairUniwillService    Stopped Auto      "C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CueUniwillService.exe"   
+HasleoBackupSuiteService Running Auto      "C:\Program Files\Hasleo\Hasleo Backup Suite\bin\BackupService.exe"        
+iCUEDevicePluginHost     Stopped Disabled  "C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUEDevicePluginHost.exe"
+LightingService          Stopped Disabled  "C:\Program Files (x86)\LightingService\LightingService.exe"               
+MSiSCSI                  Stopped Manual    C:\Windows\system32\svchost.exe -k netsvcs -p                              
+msiserver                Stopped Manual    C:\Windows\system32\msiexec.exe /V                                         
+
+
+
+
+Name                                                    State   StartMode PathName                                                                  
+----                                                    -----   --------- --------                                                                  
+Asusgio2                                                Running System    \??\C:\WINDOWS\system32\drivers\AsIO2.sys                                 
+CorsairGamingAudioService                               Stopped Manual    \??\C:\Windows\System32\drivers\CorsairGamingAudio64.sys                  
+CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D Stopped Disabled  \??\C:\Program Files\Corsair\CORSAIR iCUE 4 Software\CorsairLLAccess64.sys
+CorsairVBusDriver                                       Running Manual    C:\Windows\system32\drivers\CorsairVBusDriver.sys                         
+CorsairVHidDriver                                       Running Manual    C:\Windows\system32\drivers\CorsairVHidDriver.sys                         
+EneTechIo                                               Running System    \??\C:\WINDOWS\system32\drivers\ene.sys                                   
+GLCKIO2                                                 Running System    \??\C:\WINDOWS\system32\drivers\GLCKIO2.sys                               
+hasldisk                                                Running Auto      C:\Windows\system32\drivers\hasldisk.sys                                  
+HasleoDK                                                Running Auto      C:\Windows\system32\drivers\hasleodk.sys                                  
+MSIO                                                    Running System    \??\C:\WINDOWS\system32\drivers\MsIo64.sys                                
+
+
+
+
+Name                              Id Path                                                            
+----                              -- ----                                                            
+asusns                         26620 C:\Users\sjlewis\AppData\Local\NhNotifSys\sonicstudio\asusns.exe
+CorsairGamingAudioCfgService64  6488 C:\Windows\System32\CorsairGamingAudioCfgService64.exe          
+iCUE                           20116 C:\Program Files\Corsair\CORSAIR iCUE 4 Software\iCUE.exe       
+
+
+
+BOOT 2026-11-04T09:38:00.5000000Z
+
+TimeCreated            Id Message                                                                                                                       
+-----------            -- -------                                                                                                                       
+11/3/2026 7:40:19 PM 7040 The start type of the CorsairLLAccessC2D033F14715AA7325305EA42FBFC65BF867CC1D service was changed from auto start to disabled.
+11/3/2026 7:40:16 PM 7040 The start type of the LightingService service was changed from auto start to disabled.                                        
+11/3/2026 7:40:16 PM 7040 The start type of the iCUE device plugin host service service was changed from demand start to disabled.                      
+11/3/2026 7:40:16 PM 7040 The start type of the Corsair LLA Service service was changed from auto start to disabled.                                    
+11/3/2026 7:40:14 PM 7040 The start type of the Corsair Service service was changed from auto start to disabled.                                        
+
+
+
+

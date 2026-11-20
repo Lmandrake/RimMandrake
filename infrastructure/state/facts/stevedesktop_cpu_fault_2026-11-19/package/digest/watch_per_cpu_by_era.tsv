@@ -1,0 +1,4 @@
+era	cycles_in_era	bad_cycles_in_era	cpu0	cpu1	cpu2	cpu3	cpu4	cpu5	cpu6	cpu7	cpu8	cpu9	cpu10	cpu11	cpu12	cpu13	cpu14	cpu15	cpu16	cpu17	cpu18	cpu19
+1_turbo_on	1292	426	51	23	116	19	56	11	61	12	38	24	47	6	40	21	41	6	51	9	13	0
+2_turbo_off_pre_raise	2857	1533	86	66	591	34	230	24	139	37	131	26	116	14	75	51	143	24	83	29	0	0
+3_post_raise	770	2	0	0	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0

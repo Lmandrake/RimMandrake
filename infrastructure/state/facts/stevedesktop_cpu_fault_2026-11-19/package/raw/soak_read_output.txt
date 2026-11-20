@@ -1,0 +1,13 @@
+SOAK RUNNING run=S20261118T012929Z task=Running prime95=1 now=2026-11-20T07:53:22Z boot=2026-11-18T01:39:34Z
+started=2026-11-18T01:29:32Z planned_end=2026-11-21T01:29:29Z steps=3978 passes_complete=209
+CONTROL PROVEN at 2026-11-18T01:30:00Z (inject_fatal_seen=1 inject_died_seen=1 heat_seen=1 load_seen=1 load=100 ok=1)
+CONTROL PROVEN at 2026-11-18T01:31:29Z (inject_fatal_seen=1 inject_died_seen=1 heat_seen=1 load_seen=1 load=100 ok=1)
+CONTROL PROVEN at 2026-11-18T01:40:41Z (inject_fatal_seen=1 inject_died_seen=1 heat_seen=1 load_seen=1 load=98 ok=1)
+faults=3 in 3978 steps:
+  FAIL 2026-11-18T04:23:06Z pass=11 cpu=8 prime95_died_early
+  FAIL 2026-11-18T19:54:00Z pass=71 cpu=6 prime95_died_early
+  FAIL 2026-11-18T21:28:51Z pass=77 cpu=8 prime95_died_early
+reboots=1 [2026-11-18T01:40:13Z boot=2026-11-18T01:39:36Z]
+task restarts same boot=1
+last reading 10s old: 2026-11-20T07:53:12Z pass=210 cpu=3 PASS fatal=0 whea=0 alive=1 load=100 heat=pkg_c=41/46 core_max_c=47 hot_core=2 cores_max_c=[34,47,38,42,34,34,36,35,37] samples=71 vcore_v=1.008
+note: the testq-worker probe is blind under SYSTEM; only a running RimWorldWin64 makes the soak wait

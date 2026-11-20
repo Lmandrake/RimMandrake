@@ -1,0 +1,10 @@
+{
+ "job_win": "/home/mandrake/.local/state/rimmandrake/scratch/codex/consult-20261120-001051-1105163-0c66ab",
+ "job": "/home/mandrake/.local/state/rimmandrake/scratch/codex/consult-20261120-001051-1105163-0c66ab",
+ "rc": 0,
+ "lockdown": false,
+ "codex_home_win": null,
+ "codex_home": "/home/mandrake/.codex",
+ "codex_side": "wsl",
+ "refused_tool_calls": 0
+}

@@ -1,0 +1,35 @@
+--bcd
+
+description             Windows 10
+numproc                 18
+--features
+Microsoft-Windows-Subsystem-Linux
+VirtualMachinePlatform
+--dg
+configured=0 running=0 vbs=2
+--hvci reg
+
+
+EnableVirtualizationBasedSecurity RequirePlatformSecurityFeatures
+--------------------------------- -------------------------------
+                                                                 
+
+
+
+--wsl
+vmcompute
+vmmem
+wsl
+wsl
+wsl
+wsl
+wsl
+wsl
+wslhost
+wslhost
+wslhost
+wslhost
+wslhost
+wslrelay
+wslservice
+--wsl distros
