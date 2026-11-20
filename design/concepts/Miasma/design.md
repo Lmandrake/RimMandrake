@@ -330,13 +330,18 @@ The fever wears on the crew, not the ship, and is covered above.
 | After each recession new flotsam lies in the root-lines, and it is real goods. | Comb the roots; wait for a surge; comb again. | A yard that was stocked once at the start and never again. Goods that appear on dry ground far from any root. |
 | Some recessions leave sea young in cut-off pools; they cry and can be found; a crew member can carry one to connected water; left alone, the pool's end leaves something to read. | A recession that strands young, with and without anyone responding. | A pond that was always there. A young that vanishes with no sign. A recession that must strand young every time. |
 | A stranded young can be held wet and sold to an ordinary trader for a notable price. | Hold one; a trader visits. | A sale that completes without a trader. A training order mistaken for a sale. |
-| Where a warden mother is present, she keeps to water, defends her reach, tolerates a crew that returned her young, and never forgives a sale; harvesting inside her reach ends tolerance at once. | A map with a mother: return one young; then harvest inside and outside her reach. A second map: sell one. | A mother on every map. A mother on dry land. Tolerance that survives a sale. |
 | The ground life is real: scuttlers in numbers, hunted by animals and by five plants that never take a person or a tame animal. | A generated map left to run with a pet walked past each predator plant. | |
 | The rainbow blooms are harmless in every way. | Touch, harvest and eat near each. | |
 | The haze never lifts and never rains, softens the light, and the air here makes people ill more often than elsewhere. | A stop of some weeks. | Rain. Clear sky. |
-| A dead meter found on the map teaches the decay cell; a cell fed ordinary rot gives real power. | Find, study, build, feed with spoiled food, run a bench from it. | A cell that runs on nothing. A cell that only takes good food (what is built today). |
 | *(0.2.0 proposal only, not a 0.1.0 promise; `Answered on 2026-11-19` 2.)* A hull a surge has reached is worn by salt until it is cleaned, and a ship landed above the surge's reach is not. | Two landings, one surge. | Wear with no brine. |
 | The haze wears an unscreened ship and a screened one is clean, with the small animals keeping off it. | Two ships, one screened, some days. | A screen that changes nothing visible. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| Where a warden mother is present, she keeps to water, defends her reach, tolerates a crew that returned her young, and never forgives a sale; harvesting inside her reach ends tolerance at once. | A map with a mother: return one young; then harvest inside and outside her reach. A second map: sell one. | A mother on every map. A mother on dry land. Tolerance that survives a sale. |
+| A dead meter found on the map teaches the decay cell; a cell fed ordinary rot gives real power. | Find, study, build, feed with spoiled food, run a bench from it. | A cell that runs on nothing. A cell that only takes good food (what is built today). |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary hot mangrove swamp
 (standing rule, every mod).
@@ -362,6 +367,14 @@ and the visibility dial.
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): the surge and what it leaves.** A surge comes without a
+schedule, wets the ground, moves the salt line and draws back; brine kills unfloored crops; each recession leaves
+flotsam in the root-lines and, sometimes, sea young crying in cut-off pools, to carry back or hold and sell. *Why a
+normal stop is sure to see it:* surges come without a schedule through any stop, and the ship's own landing ground
+sits on the fresh-to-brine line they move. His experience line: *"A stinking, beautiful nursery where the sea dumps
+everything. Rot is power, and every surge brings orphans."* *Runner-up:* rot becoming power in the decay cell (the
+cleanse's runner-up), now 0.2.0 with the mother's price, as this design's own one-signature reading named.
+
 **0.1.0, the stop**
 - The land: fertile mud, salt crust, mangal canopy, the fresh-to-brine gradient, the permanent haze and its
   sickness. (built, except that the living canopy does not yet sort itself along the line)
@@ -370,19 +383,26 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Flotsam in the root-lines after every recession, and brined wrecks. (built; moved in, see `rewrite_choices.md`)
 - Stranding pools, the changed young and their cry; carrying one back; holding and selling one to an ordinary
   trader. (built; the cry while carried is not)
-- The warden mother where she occurs: water-bound, defending, tolerant after a return, unforgiving after a sale;
-  sometimes arriving with a stranded young of her own; old to look at and said to be old on inspection. (built,
-  except that she is not yet held to water on every step, and a return can credit the wrong mother where two
-  nurseries are close)
+- The warden mother where she occurs, as an ordinary animal: water-bound, defending her reach; old to look at and
+  said to be old on inspection. (built, except that she is not yet held to water on every step)
 - Scuttlers, plant predation, the swarm, the free nursery young, the ordinary predators, rainbow blooms and muck
   plants. (built)
-- The found meter and the decay cell, the Miasma's gift on his ship register. (built; moved in; as built it
-  takes raw food, not rot)
 - The ship's wear, on the built shield frame: heat on the hottest days (built); the haze on the particulate
   screen (his ruling of 2026-09-02; one flag on the haze weather, unbuilt).
 - Canopy and haze as one step of cover from orbit. (new, small, by his card)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The mother's price: tolerant after a return, unforgiving after a sale; sometimes arriving with a stranded young of
+  her own. (built, except that a return can credit the wrong mother where two nurseries are close)
+- The found meter and the decay cell, the Miasma's gift on his ship register. (built; moved in; as built it
+  takes raw food, not rot)
+*Already here before that answer:*
+- The mother dying of age and one of her young taking the nursery; the heir's guard. A crew that stays its full six
+  weeks can watch her fail and leave a child on watch behind it. (The cleanse's own target puts her death 30 to 60
+  days after a crew meets her. As built the heir is a name and a message; no guard passes to it. Moved here from
+  "later" by his first-version answer of 2026-11-19.)
 - Brine on the hull, with its answers by position and by hand (this rewrite's proposal; no source has it; new,
   small).
 - Fever-forging: a disease survived sometimes leaves a lasting change; the five strange ones he chose
@@ -397,9 +417,6 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - Fever passed by the swarm's touch. (unbuilt)
 
 **Later (a crew that stays, a colony, or the campaign)**
-- The mother dying of age and one of her young taking the nursery; the heir's guard. (The cleanse's own target
-  puts her death 30 to 60 days after a crew meets her, which is inside the outer edge of a stop: `NEEDS HIM` 6.
-  As built the heir is a name and a message; no guard passes to it.)
 - Canals that bring her water, and her, inland; a colony *"buying her protection with labour instead of
   location"*.
 - Water-only hauling by tame young (the roster's *"single best fit between a creature and an existing economy in
@@ -424,6 +441,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   *"only, all the way."*
 - A conventional taming grind (*"animals in this project are not conquered, they agree"*); a second giant; a
   second pollinator; an auction or appraisal game on the yard.
+- The brine-proof plate from a dead warden mother (passed over 2026-10-02), and the last dry deck: they stay down by
+  his answer of 2026-11-19 on declined ship ideas; he can bring either back by name.
 - The grounded mother, the last dry deck, the scuttler appraisal, the first egg above water, the second-hand
   young, the mother's blind side (not chosen 2026-10-02); the Tide-reader boon (cut 2026-09-12); the pollination
   gate (removed 2026-11-02 by a delegated decision under his veto card, as *"invisible to the player"*).
@@ -434,25 +453,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-Each is tagged with one theme. Two ship ideas here are ones he already declined (2 and 3); neither is revived.
+None open. Every entry is answered (next section).
 
-3. **[other] The last dry deck.** Not chosen the same day: during a surge a flotsam crew retreats along the last
-   roots to the landed ship, *"dragging two workshop frames, and asks for passage to Bitterleaf with its
-   livelihood"*; *"taking them costs deck space or freight as the approach floods; refusing leaves them visibly
-   trying worse."* The reviewer's note beside it: he has rejected *"ship-centric gimmicks with no biome voice"*,
-   and this one has the voice. *Not revived* (default). *0.2.0:* a medium build and a real cost in deck.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
-5. **[scope] One signature, or the pieces.** His card of 2026-11-17 was "Land, life, one signature", and the
-   cleanse read it as the nursery alone, with the yard and the cell switched off. This design's 0.1.0 holds the
-   surge, the yard, the orphans, the mother where she occurs and the cell, on his answer of 2026-11-10
-   (*"competing worthwhile opportunities"*) and on *"Rot is power."* *The pieces* (default here). *One signature:*
-   then it is the surge and what it leaves, and the cell and the mother's price move to 0.2.0.
-   *Waits on the first-version size question of 2026-11-19.*
-6. **[scope] Her death.** The first read moved her dying of age, and her young inheriting, to "later" as a long
-   game. The cleanse's own target is 30 to 60 days after a crew meets an already-old mother, which a long stop
-   reaches. *Later* (default: nothing of it is promised in a stop, and she is only seen to be old). *0.2.0:* a
-   crew that stays its full six weeks can watch her fail, and leave a child on watch behind them.
-   *Waits on the first-version size question of 2026-11-19.*
 
 ## Answered on 2026-11-19
 
@@ -467,10 +469,23 @@ can undo any one by name.
    one flag on the haze weather. An unscreened ship wears slowly the whole stop, and a screened one stands in a ring
    of clean mud. **This changes the design's default.** Was: *Not counted*.
 2. **[hull] Brine on the hull, and the brine-proof plate.** No brine wear in 0.1.0: no source has it. Brine wear is a
-   proposal for 0.2.0. The brine-proof plate stays not revived; it is one of the ideas the declined-ship-ideas
-   question covers. *Delegated call.*
+   proposal for 0.2.0. The brine-proof plate stays not revived: his card of 2026-11-19 keeps declined ship ideas
+   down. *Delegated call* (the plate: his card).
 4. **[other] Does a rescued young ever come aboard?** They stay in the water (the design's default). *Delegated call.*
 7. **[fuel] What the decay cell eats.** Rot, as promised. The build is wrong and is owed a fix (the design's default).
    *Delegated call.*
 8. **[other] The sando aqua monster adult.** Held: it breaks the sheet's "no second giant" (the design's default).
    *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+3. **[other] The last dry deck.** *His card of 2026-11-19 (declined ship ideas):* it stays turned down. He can bring
+   it back by name.
+5. **[scope] One signature, or the pieces.** *His card of 2026-11-19 (first version):* one signature a stop is sure
+   to see: the surge and what it leaves (Scope, top). The decay cell with its found meter, and the mother's price,
+   move to 0.2.0 with their text; the mother stays in 0.1.0 as an ordinary animal. **This changes the design's
+   default.** Was: the pieces in 0.1.0.
+6. **[scope] Her death.** *His card of 2026-11-19 (first version):* not in 0.1.0; the rest goes to 0.2.0, so her
+   death and the heir move from "later" to the 0.2.0 list.

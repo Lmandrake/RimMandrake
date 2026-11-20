@@ -294,7 +294,7 @@ It arrives on time. Nothing here hides the ship.
   the sources give this place, and it needs no new system: the giant-creature mod's wake does the wrecking where
   that mod is loaded.
 - **Three ship ideas were put to him on 2026-10-02 and he chose none of them,** answering each card item in his own
-  words instead. They are listed in `NEEDS HIM` and not revived: the Landing You Cannot Take Back (the body reads
+  words instead. They stay down by his answer of 2026-11-19 on declined ship ideas: the Landing You Cannot Take Back (the body reads
   the hull's contact points; clean them or sell a passenger's gene), the Unfiled Hull (a swallowed ship inside the
   oldest giant, stripped for *"a ship-grade part for the gravship"*), and the tamper-proof seal for freight.
 - **Withdrawn.** The first read's default, slime gathering at the contact points and scrubbed off by hand, was the
@@ -341,6 +341,20 @@ Empire's search and the visibility dial; the acoustic sounder.
 ## Scope
 
 Every feature is in one bucket.
+
+**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; two candidates, listed for the
+Conductor.** The design and his words point two ways, so this page does not guess, and nothing is moved out of
+0.1.0 until the choice is made.
+- *The living ground (contact film):* touching or eating the body raw reads and absorbs flesh by stages, with
+  belongings left behind; food, block and poison relief come from it; drying country and the antidote are the ways
+  out. A normal stop is sure to see it: the ship lands on the body, *"footprints always show"*, and unprotected
+  flesh converts in about a week. The cleanse chose it (2026-11-17); his experience line fits it: *"Kind, generous
+  and slowly eating you."*
+- *The gene journey:* archive, seeker, extraction, the dose, the coma, the friend's rescue, the rider and the mark.
+  It is his original ask (2026-09-10), the Conductor's showcase pick, and this design's default, and it fits in a
+  few days; but a stop sees it only if the crew chooses to send someone.
+If the film is chosen, the gene journey and resistance by gene move to 0.2.0 with their promise rows. If the
+journey is chosen, the film stays as land and life (it is how the ground behaves) and nothing else moves.
 
 **0.1.0, the stop**
 - The land: crust, soft ground, channels, no rock; organism rain, drinkable and draining. (built; the rain's
@@ -402,20 +416,8 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-Each is tagged with one theme word.
+One entry is left, and it is a look he owes, not a question.
 
-1. **[hull] Three ship ideas he was offered on 2026-10-02 and did not choose; listed so nobody revives them.** He
-   answered that card in his own words: *"Grab a chunk of the giant..."* for the giant and *"An ability to
-   resurrect someone..."* for the new marks. Not chosen: **the Landing You Cannot Take Back** (the body reads the
-   hull's organic residue; clean the contact points, or take a broker's fee to leave a passenger's gene in the
-   archive); **the Unfiled Hull** (a small ship inside the oldest giant, got out by leading it onto dry ground,
-   then sold sealed, opened, or stripped for a bio-sealed hold); **the tamper-proof seal** (a lacquer for freight
-   crates). The first read asked him the first of these again. This page does not.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
-2. **[scope] Is the gene journey the heart of a stop, or an extra?** The cleanse asked this and defaulted to
-   "extra". This design defaults to *the heart*: it is his original ask, it is the chosen showcase, and it fits in
-   a few days. *An extra:* 0.1.0 is larder, tanks and the film, and the journey waits.
-   *Waits on the first-version size question of 2026-11-19.*
 5. **[other] His look at the giant.** Card of 2026-10-18: *"Can't judge from this sheet."* The in-game look at the
    smallest and largest sizes is still owed.
    *Waits on his look at the giant in game (not a question) of 2026-11-19.*
@@ -434,3 +436,15 @@ can undo any one by name.
    design's default). *Delegated call.*
 6. **[locked-tree] The locked tree is a colony; this design is a stop.** *His ruling:* his word of 2026-11-18, *"Let's
    rewrite them all and let git be provenance."* Re-cut the tree from this file when the hold lifts.
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. **[hull] Three ship ideas he was offered on 2026-10-02 and did not choose** (the Landing You Cannot Take Back, the
+   Unfiled Hull, the tamper-proof seal). *His card of 2026-11-19 (declined ship ideas):* they stay turned down. He can
+   bring any one back by name.
+2. **[scope] Is the gene journey the heart of a stop, or an extra?** *His card of 2026-11-19 (first version):* 0.1.0
+   holds one signature that a normal stop is sure to see. Which one is the Slime's is not obvious from this design
+   and his words (the contact film or the gene journey; Scope, top), so it is listed for the Conductor with both
+   candidates. Until it is chosen the journey stays where this design put it.

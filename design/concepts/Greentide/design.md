@@ -64,15 +64,15 @@ provisional): a probe droid five to eight days after landing, then scouts with a
 cordon on the ship, a breaching assault, and an orbital bombardment that cannot be fought. Each step comes only if
 the one before succeeded; a loud crew halves every wait and a hidden one doubles it.
 
-**How long a stop here can last: about six weeks, and that is the outer edge.** His ruling of 2026-11-18 on the
+**How long a stop here can last: about two months at the very outside.** His ruling of 2026-11-18 on the
 numbers the first pass assumed: *"The numbers you're generating are likely the outer edge allowable for each biome,
 and that's just fine. Go with that."* On open ground, for a crew the search reads as ordinary, the ladder's
 arithmetic gives a probe on day 5 to 8, a first real fight around day 12 to 20 and the bombardment around day 20 to
-32 if the Empire wins every step. The Greentide's canopy and steam are **partial cover from orbit** (his card, same
-day: *"Canopy, steam and fog slow the search by one step; full dark still pauses it"*), read here as one band on the
-pursuit's built visibility scale, which stretches every wait by about four tenths: a probe on day 7 to 11, a first
-fight in the third or fourth week, nothing past about six weeks. Canopy and steam together are still one step, not
-two. A loud crew gives the step back. (The pursuit's numbers are marked provisional in its own source; the shape is
+32 if the Empire wins every step. The Greentide's canopy and steam are **partial cover from orbit**, one step each,
+and they add up (his card of 2026-11-19: *"canopy, steam, fog and rock walls one step each, added"*). One step is one
+band on the pursuit's built visibility scale, about four tenths longer per wait; two steps about double every wait:
+a probe on day 10 to 16, a first fight around day 24 to 40, the bombardment around day 40 to 64. A clearing lifts the
+steam for a few hours and takes its step while it lasts. A loud crew gives the steps back. (The pursuit's numbers are marked provisional in its own source; the shape is
 what this design leans on.)
 
 Few crews will see that edge. The Greentide is kind to a short clock: its own pressure is measured in hours and
@@ -152,11 +152,11 @@ landing hole that was not there at noon.
 
 Three things every biome design now states, by his rulings of 2026-11-18.
 
-**Cover from orbit: partial.** Canopy and standing steam slow the search by one step (above). At ground level the
-understory does more than that, because the probe and the spotter have to see the ship. Neither makes the
+**Cover from orbit: partial.** Canopy and standing steam slow the search by one step each, two together
+(above). At ground level the understory does more than that, because the probe and the spotter have to see the ship. Neither makes the
 Greentide a hideout: the probe still comes. This is a campaign-layer line, one entry for this biome in a list the
-pursuit already reads. (`UNSETTLED`: whether a clearing, which lifts the steam and leaves the canopy, costs the
-step while it lasts. Assumed not.)
+pursuit already reads. A clearing, which lifts the steam and leaves the canopy, takes the steam's step while it
+lasts (his card of 2026-11-19: cover is what is on the tile at that moment).
 
 **Wear on the hull: the jungle eats metal too.** His ruling: *"Yes in 0.1.0. It's easy, and most of the biome
 already talk about this."* The Greentide's own wear is in the review of 2026-10-02
@@ -208,7 +208,8 @@ A ship on the run is the passing player. So:
   the Wildsteam's seats have the drums. Campaign layer, 0.2.0.
 - *Spending it.* The blower drains chemfuel all the time it runs (built). Holding the doors and the hull dry is
   paid for in the same drums the ship flies on. That is the Greentide's fuel joke: it sells fuel and eats it.
-- Not written as replete, and no longer written as a recipe the crew runs. Whether his ruling of 2026-11-18 was
+- Not one of the richer sources (his fuel answer of 2026-11-19): the slow route and buying. Not written as
+  replete, and no longer written as a recipe the crew runs. Whether his ruling of 2026-11-18 was
   meant to open sap-chemfuel to a ship's crew was the first question under NEEDS HIM, answered by his ruling R5 (`Answered on 2026-11-19` 1): the crew buys it.
 
 ## "OMG did you see that?"
@@ -294,7 +295,8 @@ There is no truce here and the Empire does not get one.
 - Blowers on the doorways, a penned herd eating the growth line, a paved apron.
 - Sight-blocking jungle between the ship and anything looking for it at ground level.
 - Mud and water the crew knows and the Empire does not.
-- Canopy and steam over the ship, which slow the search from orbit by one step (his card of 2026-11-18; unbuilt).
+- Canopy and steam over the ship, which slow the search from orbit by one step each, added (his cards of
+  2026-11-18 and 2026-11-19; unbuilt).
 - A hull kept scraped, blown dry or screened.
 
 The danger does not grow as the crew learns. The owner's card of 2026-09-25: *"danger stays FLAT as players master
@@ -330,14 +332,19 @@ player is better.
 | The low steam hides the floor, costs accuracy and speed, and lifts for a few hours in a clearing. | Shoot and walk under the steam and during a clearing. Watch the grazers. | The same shots on a map with the steam switched off. |
 | The understory blocks sight. | A watcher and a walker with mature leaf mounds between them. | The same line with the plants cut. |
 | The river predator is unseen until it lunges, and the noise ducks first. | Prey at the bank of a deep reach, with a calling flock overhead. | Shallow water with the same prey: no lunge, no hush. |
+| Outside metal left in the jungle, the hull included, grows a visible rasp that wears it; scraping, a working blower and the ship's light screen each keep it off; it dies when the ship leaves, and a worn ship can always launch. | A landed ship and a steel wall, each with one face left alone, one scraped, one behind a blower. Run the days, then launch. | The same steel on another biome's map grows nothing. The blower with its fuel out: the rasp returns. |
+| Under canopy and steam the Empire's search comes two steps slower than it does for the same crew on open ground. | The same crew, as loud, landed here and on an uncovered tile; read the search's next contact on both. | A crew made loud here loses the step. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
 | The bank ambusher bites what is heavy enough at once, is only revealed by what is light, and stops the game the first time one is ever revealed. | A person and a small animal walk the same bank cell. | A bank with no water near it holds none. A second reveal does not pause. |
 | The shoal shrugs off everything but a blast. | A shoal in a reach; shoot it, then blast it. | The same shots on any other animal of its size kill it. |
 | A disturbed gall releases wasps on the one who disturbed it. | Harvest a host plant that carries a gall, and one that does not. | A gall spawned by hand proves nothing: the gall has to be on its host by the map's own making. |
 | The Frenzy speeds its victim, then drops them for days; untreated it kills, and treated in the coma the patient lives. | An ambient case run to its end, tended and untended. | Flu and malaria do not appear here. |
 | The stellock lace stops all bleeding for a while and nothing else. | A bleeding patient with and without the lace, here and on another map. | The wounds are still there afterwards. |
 | Eating the yearning fruit feeds, then costs: early hunger, filth, a slow walk. | Two pawns, one fed fruit, one fed an ordinary meal. | |
-| Outside metal left in the jungle, the hull included, grows a visible rasp that wears it; scraping, a working blower and the ship's light screen each keep it off; it dies when the ship leaves, and a worn ship can always launch. | A landed ship and a steel wall, each with one face left alone, one scraped, one behind a blower. Run the days, then launch. | The same steel on another biome's map grows nothing. The blower with its fuel out: the rasp returns. |
-| Under canopy and steam the Empire's search comes one step slower than it does for the same crew on open ground. | The same crew, as loud, landed here and on an uncovered tile; read the search's next contact on both. | A crew made loud here loses the step. |
 
 Neither new row pins a rate: how fast the rasp wears and how long a step is are tuning, and stay out of any bar.
 
@@ -380,6 +387,12 @@ shared-machinery file has the whole of it):
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): the green takes back the ground.** Growth you can
+watch contests the used, unpaved ground around the ship; clearing, the blower, grazing and paving are the answers,
+and paving ends regrowth on the cells it covers. *Why a normal stop is sure to see it:* the ship's own landing site
+is used ground, and growth takes it back within days. His sheet's line: *"A green ribbon of total war, steaming,
+growing while you watch."* *Runner-up:* living greatbole settlement and extraction (the cleanse's runner-up), later.
+
 **0.1.0, the stop**
 - The land: low standing steam and its rare clearing; churnmud that mires and buries; static root causeways; a
   choked, sight-blocking understory under a readable canopy. (built)
@@ -387,22 +400,26 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
   paving as the answers. (parts built; natural pressure on used ground at shipped settings is unproven)
 - Tree falls by three fellers; the gnawing krannock; the thurrock herd as browsers and fellers; the fellable
   greatbole and its hardwood. (built)
-- The dhollock's lunge and the hush; the vurrak's bank; the illisk shoal, which nothing but a blast kills; yammeth
-  flocks that really fly; sulleth grazers that seek shade in a clearing. (built; the vurrak and the shoal's hide
-  moved in, see `rewrite_choices.md`)
-- Galls on their host plants and the wasps in them. (the wasps are built; natural gall placement is not)
-- The larder: brakkel, tumbel, sarquin, wollick, the catch, timber, resin; the yearning fruit with its tax. (built;
-  the fruit's tax moved in)
-- The Frenzy as the jungle's own ambient sickness. The stellock lace by ordinary research. (built)
+- The dhollock's lunge and the hush; yammeth flocks that really fly; sulleth grazers that seek shade in a
+  clearing. (built)
+- The larder: brakkel, tumbel, sarquin, wollick, the catch, timber, resin; the yearning fruit as food. (built)
 - Natives are not mired at home; nothing disappears without a sign.
 - The hull rasp on outside metal, the ship included; scraping, the blower and the light screen as the answers.
   (unbuilt; campaign layer for the ship, on the shared hull-wear machinery; his ruling of 2026-11-18)
-- Canopy and steam as partial cover from orbit. (unbuilt; campaign layer, one entry in the pursuit; his card of
-  2026-11-18)
+- Canopy and steam as partial cover from orbit: two steps, added; a clearing takes the steam's step while it
+  lasts. (unbuilt; campaign layer, one entry in the pursuit; his cards of 2026-11-18 and 2026-11-19)
 - Fuel by the slow route from greenwood; resin and green wood as goods. (the base game's refining; the harvests are
   built)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The vurrak's bank; the illisk shoal, which nothing but a blast kills. (built; the vurrak and the shoal's hide
+  moved in, see `rewrite_choices.md`)
+- Galls on their host plants and the wasps in them. (the wasps are built; natural gall placement is not)
+- The yearning fruit's tax. (built; moved in)
+- The Frenzy as the jungle's own ambient sickness. The stellock lace by ordinary research. (built)
+*Already here before that answer:*
 - Plants that act: the maddrick's closing ring, the gorbeleth's spitting throat, the phorrik's bursting bladders,
   the zhorrel's hanging strangler. (unbuilt)
 - The rooted ambusher: an animal that is a plant. His words (2026-09-22): it *waits, rooted and still*, *"one of
@@ -453,12 +470,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-Each has the default this design uses, so nothing waits on him to read on.
+None open. Every entry is answered (next section).
 
-4. **[cover] Is one step of cover one visibility band,** and does a clearing, which lifts the steam and leaves the
-   canopy, cost the step while it lasts? Asked once for every biome. Default: one band; a clearing costs nothing.
-   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
-   2026-11-19.*
 
 Three questions the cleanse put to him on 2026-11-17 are answered here by scope instead of asked again, and each is
 a line under "Scope moves" in `rewrite_choices.md`: plants that act are 0.2.0, not absent; cuisine in 0.1.0 is
@@ -491,3 +504,13 @@ can undo any one by name.
    nothing (the design's default). *Delegated call.*
 9. **[other] Does a crew react to one of its own being given the Frenzy on purpose?** No reaction (0.2.0; the design's
    default). *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+4. **[cover] Is one step of cover one visibility band, and does a clearing cost the step?** *His card of 2026-11-19
+   (cover):* one step is one band (each wait about 1.4 times longer); canopy and steam are one step each and add up
+   to two; cover is what is on the tile at that moment, so a clearing, which lifts the steam and leaves the canopy,
+   takes the steam's step for as long as it lasts. **This changes the design's default.** Was: one step for both
+   together, and a clearing costs nothing.

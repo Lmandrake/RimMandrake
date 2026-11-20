@@ -77,12 +77,12 @@ cordon on the ship, a breaching assault, and an orbital bombardment that cannot 
 the one before succeeded; a loud crew halves every wait and a hidden one doubles it.
 
 **How long a stop here can last (the outer edge of a stay, not the usual one; owner's ruling of 2026-11-18).** The
-ship is landed on a nightside host, so the clock is the host's, and the host is in full dark. His ruling of
-2026-08-05 pauses the orbital search on dark tiles, and his card of 2026-11-18 keeps that: *"full dark still pauses
-it."* By the rulings, then, a Deeps stop is among the longest on the planet, ended by cold, provisions and nerve
-before the Empire. **As built it is not:** only the Abyss is on the pursuit mod's slowed list, so until the cold
-hosts are added a Deeps stop runs the ordinary ladder: a first week nearly free, a first fight in the second or
-third week, nothing past about a month. This design is written to work under either; the host designs own the fix.
+ship is landed on a nightside host, so the clock is the host's, and the host is in full dark. By his card of
+2026-11-19 full dark is one step of cover, like fog, and nothing pauses the search for good: each wait is about 1.4
+times the open-ground figure, a probe on day 7 to 11, a first fight in the third or fourth week, and *"about six
+weeks"* (his card's figure for a night-side stop) at the outside. **As built it is not yet:** only the Abyss is on
+the pursuit mod's slowed list, so until the cold hosts are given their step a Deeps stop runs the ordinary ladder,
+nothing past about a month. The host's step is the shared partial-cover entry; the host designs own the fix.
 
 **What cover this place gives, and which kind (same card).** Two different things, and the design keeps them apart:
 
@@ -290,11 +290,11 @@ divide the crew:
 
 ## Fuel, and what this place does to the ship
 
-**Fuel: a richer source, named.** (Owner's ruling of 2026-11-18: most biomes only render biomass, *"a few biomes
-have richer sources."*) The Deeps are one of the few, on their own sources: the candler's cold wax *"burns like
-chemfuel and needs no refinery"*; the drifter is the *"best fuel-per-kill"*; the galuush is the richest single
-harvest. It is not replete: the wax comes at a milking pace and the big harvests are each a risk. Nobody sells fuel
-here, because nobody is here. What is built, read from the definitions and not seen live: the wax is the Blue Desert's item, shared
+**Fuel: the slow route, and buying.** (Owner's ruling of 2026-11-18: most biomes only render biomass, *"a few
+biomes have richer sources."*) His fuel answer of 2026-11-19 names the few, and the Deeps are not one of them. The
+candler's cold wax, the drifter and the galuush are fuel stuff at the slow route's rate. The richer reading (*"burns
+like chemfuel and needs no refinery"*; the drifter as *"best fuel-per-kill"*; the galuush as the richest single
+harvest) is kept in the 0.2.0 list as text. Nobody sells fuel here, because nobody is here. What is built, read from the definitions and not seen live: the wax is the Blue Desert's item, shared
 (`src/RimMandrake/BlueDesert/Defs/ThingDefs_Items/RM_ColdWax.xml`; the cleanse could not find it and called it
 missing). It is safe only below freezing. Warmer than that it spoils within a couple of hours, and spoiling lights
 its fuse (the Blue Desert's switch `coldWaxWarmReactiveEnabled`, on by default). Its header records the recipe that
@@ -336,9 +336,14 @@ cold** and that goes off if it does not.
 | Taking the marked gallery's lanternstone, or hurting a mind or its body, brings finite dead shells against the one who did it, after a warning; they stay with their gallery and leave the way out open. | Designate (nothing happens but the mark); extract; retreat to the mouth. | Mining ordinary rock, harvesting fungus or a wild animal's damage provokes nothing. No new bodies appear. A friend of the suit is warned the same as a stranger. |
 | Orun-Ghal is harmless company: it can be studied by real visits, it remembers the crew, and on a later descent it comes to greet them and keeps near them. | Study to completion; leave; save, reload; return with a different crew member. | An interrupted visit earns nothing. It never mines, fights, or is recruited. A destroyed suit stays destroyed. |
 | An unsupported roof warns where it will fall, in time to leave or prop it. | Remove a support under a span with a miner beneath; once leave, once prop. | A propped span does not fall; the warning does not hold a roof up for ever. |
-| A drifter or a galuush killed by fire or spark detonates; killed cold it does not. | One of each, each way. | The inspect text says so before the first shot. |
 | Candlers can be milked for a fuel that works as fuel. | Tame, milk, burn. | A candler butchered for meat gives none: these animals are fuel, not food. Whether the wax may sit in the cave's own air is `Answered on 2026-11-19` 4. |
 | The cave feeds and clothes a visiting party from its own fungus, and what is eaten grows back. | A week of foraging on one pasture. | |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| A drifter or a galuush killed by fire or spark detonates; killed cold it does not. | One of each, each way. | The inspect text says so before the first shot. |
 | With a keel hoist, cargo and a downed animal ride the cable between the ship and the Deep, and the ship will not launch with the cable down. | The walk already written in `design/validation_walks/RimMandrake/KeelHoist.md`, step 3 and 4. | Reeled in, the launch is allowed. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary lit cave with its
@@ -368,6 +373,14 @@ is ordinary air temperature, not a heat of its own).
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): light wakes the Deep.** A crew's own light draws the
+native drinker along a real route; near an aware crystal a dead chassis stands and turns to the light; taking a
+marked gallery or hurting a mind brings the dead against the taker; Orun-Ghal remembers the crew. *Why a normal stop
+is sure to see it:* nobody works a lightless cave, so every party that goes down carries light, and the drinker and
+the standing dead answer the first lit party. His experience line: *"Mineral riches for kings, until you realize they
+are both alive and intelligent."* *Runner-up:* a managed light economy of Lanterns and lamp-drainers (the cleanse's
+runner-up); the Lantern stays only as the safe light the signature needs.
+
 **0.1.0, the stop**
 - Two kinds of mouth on cold nightside hosts; the persistent Deep; its still air, hum, lanternstone rock and
   glowing formations; sealing a mouth as the player's own destructive choice, with a warning. (built)
@@ -385,12 +398,19 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 - The fungus pasture, food and cloth, and its regrowth. (built; no timber)
 - The cold on the landed ship, and the cryo envelope that answers it. (built in the campaign's `ShipShields`,
   unproven; it happens on the host's map)
-- The plain hydrocarbon animals as bodies with their own light; the candler's fuel; the galuush as a lit chamber
-  and a harvest; drifter and galuush ignition when killed hot. (built; ignition moved in, see `rewrite_choices.md`)
-- The keel hoist's line down a mouth and its tether lock. (built in its own mod; the live walk is uncovered)
+- The plain hydrocarbon animals as bodies with their own light; the candler's wax on the slow route; the galuush
+  as a lit chamber and a harvest. (built)
 - Nothing disappears without a sign: bodies, falls and sealed mouths leave something to read.
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- Drifter and galuush ignition when killed hot. (built; ignition moved in, see `rewrite_choices.md`)
+- The keel hoist's line down a mouth and its tether lock. (built in its own mod; the live walk is uncovered)
+*Already here before that answer:*
+- *Not chosen as a richer source (his fuel answer of 2026-11-19); kept as text, his to bring back by name:* the
+  candler's cold wax *"burns like chemfuel and needs no refinery"*; the drifter is the *"best fuel-per-kill"*; the
+  galuush is the richest single harvest; not replete, the wax comes at a milking pace.
 - A lone Imperial probe that drifts down the mouth with its searchlight on, which the cave deals with unaided.
   (a proposal; delegated call of 2026-11-19, `Answered on 2026-11-19` 1)
 - Crew droids stop and listen at a mindstone gallery. (built, switched off)
@@ -437,12 +457,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-2. **Is the host's dark enough to pause the search here, as built?** His rulings say full dark pauses it; the
-   pursuit mod slows only the Abyss. This is the hosts' question more than the Deep's, and it decides whether a
-   Deeps stop is a month or a long winter. *Add the cold nightside hosts to the slowed list* (what the rulings
-   read as). *Leave them out:* the Deeps become a smash-and-grab like anywhere else.
-   *Waits on the cover-scale question (what ordinary darkness is worth, and whether kinds of cover add up) of
-   2026-11-19.*
+None open. Every entry is answered (next section).
+
 
 **Ship ideas he declined or cut:** none found in the Deeps' sources. The one ship idea pitched here, the keel
 hoist, he took and widened on 2026-10-01.
@@ -463,3 +479,12 @@ can undo any one by name.
    keep in the cave's warm air (the design's default). *Delegated call.*
 5. **Does a running cryo envelope give the ship away?** No in 0.1.0: the envelope's glow is not built. Ask again when
    it is built. *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+2. **Is the host's dark enough to pause the search here, as built?** *His card of 2026-11-19 (cover):* no pause
+   anywhere; full dark is one step. The cold night-side hosts get one step on the shared partial-cover list, and a
+   Deeps stop runs about six weeks at the outside. **This changes the design's default in part.** Was: add the
+   hosts to the paused list.

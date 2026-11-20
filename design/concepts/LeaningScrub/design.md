@@ -326,7 +326,8 @@ Each can happen inside the visit. Each says what is on screen.
 
 ## Fuel, and what this place does to the ship
 
-**Fuel: the emergency-slow kind, with one premium exception a visitor can only find or buy.** (Owner's ruling of
+**Fuel: the emergency-slow kind; cane is slow-route stuff and a trade good.** His fuel answer of 2026-11-19 did
+not make the Scrub one of the richer sources. (Owner's ruling of
 2026-11-18: most biomes only render biomass, *"uselessly slow, only for emergencies"*; *"you can also buy it."*)
 The Scrub is worse than most at biomass: its living plants *"resist fire greatly and burn only grudgingly."* Its
 one real fuel is cane, and in the fiction making cane is the local industry of years: throw a blanket over a
@@ -390,15 +391,20 @@ herds. He cut both at the sitting. They are listed with his words under `NEEDS H
 | Ordinary work keeps to ground and routes the crew maintains, or visibly waits; only an ordered trip enters the vine, and it comes back. | A needed item beyond a thicket with a long safe way round and no safe way; then an ordered expedition. | One detour that passes while a later errand quietly walks through poison. |
 | Venomvine passes the small, slows and scratches people, and stops the big; the venom builds by scratches and fades. | A small animal, a crew member, a trooper-sized stranger and a large animal at the same stand. | Any health loss called venom; a boundary size that passes or fails depending on the day. |
 | The vine islands are tall, many and varied on a generated map and still leave the ship a usable start; they creep on a capped clock and never take ground the crew has built on or keeps clear. | A generated landing; the days run with an apron and two kept routes. | A hand-planted line of vines; a walking stand that crosses the apron. |
-| Each kind of vine does its one thing, readably, and shows whether it is ready or spent: beads venom and regrows, lashes and droops, lets small things through, gathers a cloud in the Stall, rears when entered, walks in a Gale, keeps and returns what was left in it, quenches fire once, sheds thorns downwind, wraps and damages what is built, weeps a bounded pool, wakes once under a foot, bears fruit that draws the hungry. | One of each, met in play on the same map. | Art that changes at random; a hoard stand that returns new steel for lost gear; litter placed by hand. |
-| Small animals under the fuzz cannot be seen or targeted but shimmer; in a built lee they show; in the Stall the ones that hold still are safe and a hunter picks from the ones it can see and reach. | Watch the runs on an ordinary day, behind the hull, and in a Stall with a hunter present. | A hidden marker on an animal that can still be shot; a hunt assigned by hand. |
-| Walking the fuzz sets off the runs, and what flies really flies. | A hauling party across untouched fuzz. | (Flight in the air is looked at only with the owner present; unattended it is a state read.) |
+| Each kept kind of vine does its one thing, readably, and shows whether it is ready or spent: beads venom and regrows, lets small things through, walks in a Gale, wraps and damages what is built. | One of each, met in play on the same map. | Art that changes at random; a hoard stand that returns new steel for lost gear; litter placed by hand. |
 | A rare named sweetline tree stands on some maps; coated animals choose to rub on it and are healed of parasites and disease over time; the wool at its trunk can be gathered and the felted mass harvested once; felt is worth having. | A map with a tree, wild coated animals carrying a parasite, a week. | A sheep led to the trunk by hand; a healing label with the parasite still there. |
 | The native animals appear on their own and do what they are for: the den-defender, the crust-swimmer, the edge-ambusher, the run-wall ambusher, the canopy-top thread, the glider that returns home, the carrion-roller, the star-armed thing that sheds an arm and regrows it. | A generated map left to run, then walked. | An animal spawned beside a decorative bush and called an ecology. |
-| A big open blaze brings thundersteps to stamp it out, and they go for the maker only if they watched it lit or can follow a fresh trail. | A fire lit in view; a fire lit unseen with the maker gone and the trail cold. | A herd teleported in; the nearest person blamed. |
 | Getting near a thunderstep's young enrages the parent, with no warning. | Walk a crew member toward a calf. | |
 | A Gale changes which raids come and when. | A long run of raid picks under Gale and under ordinary wind. | One forced raid. |
 | The place wears on the ship in the three ways stated above, and each has the stated answer. | A ship landed in a Gale, parked by a strangler, with gear exposed; then the same with the answers applied. | Wear with no visible cause; an answer that changes nothing. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| Small animals under the fuzz cannot be seen or targeted but shimmer; in a built lee they show; in the Stall the ones that hold still are safe and a hunter picks from the ones it can see and reach. | Watch the runs on an ordinary day, behind the hull, and in a Stall with a hunter present. | A hidden marker on an animal that can still be shot; a hunt assigned by hand. |
+| Walking the fuzz sets off the runs, and what flies really flies. | A hauling party across untouched fuzz. | (Flight in the air is looked at only with the owner present; unattended it is a state read.) |
+| A big open blaze brings thundersteps to stamp it out, and they go for the maker only if they watched it lit or can follow a fresh trail. | A fire lit in view; a fire lit unseen with the maker gone and the trail cold. | A herd teleported in; the nearest person blamed. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary windy scrubland
 (standing rule, every mod).
@@ -429,36 +435,55 @@ visibility dial; wreck salvage.
 
 Every feature is in one bucket. "Built" is what the locked sheet of 2026-11-16 cites in source, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): venomvine footing.** Vine islands stand in the fuzz,
+pass the small, scratch and slow people and stop the big; the venom builds by scratches; the islands creep on their
+own clock; the crew keeps to built ground and kept routes and enters the vine only on an ordered trip. *Why a normal
+stop is sure to see it:* the ship lands among islands on a generated map, and the first haul to anything not on a
+kept route meets the vine. His experience line: *"Endless leaning grass, endless motion, endless venomvine. Power is
+free here, but footing is not."* *Runner-up:* motion hidden under the fuzz until the Stall exposes it (the cleanse's
+runner-up), now 0.2.0. Kept kinds of vine: dripping and hollow (the cleanse's two active forms), the walking stand
+(its dead tail is cane, the fuel) and the strangler (it is the hull wear). The other nine kinds wait for 0.2.0.
+
 **0.1.0, the stop**
 - The wind: the lean, ordinary windy days, the Stall, the Gale and what each does to sound, power, exposed people,
   small animals and raid timing; scent and fire following the wind. (built)
-- Concealment under the fuzz, the lee that reveals, hunting in the Stall, the runs that flush under traffic.
-  (built)
 - Venomvine as land: islands on generation, the size gate and contact venom, creep on its own capped clock,
   dependable built ground and kept routes, ordered expeditions only. (built)
-- The thirteen kinds: dripping, twitcher, hollow, crown, rearing, walking, hoard, quench, shedding, strangler,
-  weeper, sleeper, lure. (built; four of them have passed a first live check)
-- Cane as a fuel worth having, taken from stands that have died back. (the item is built and burns as wood;
-  burning better than wood is owed; a visitor's route to it is this design's)
+- Four kinds of vine: dripping, hollow, walking and strangler. (built)
+- Cane, taken from walking stands that have died back, as slow-route biomass and a trade good. (the item is built
+  and burns as wood; his fuel answer of 2026-11-19 keeps the Scrub on the slow route, so cane burning better than
+  wood waits in 0.2.0)
 - The sweetline tree: named landmark, coats rubbed off, the healing his words added, wool on the ground, the one
   harvest of felt, felt's comfort. (built, except the healing)
 - The native cast and what each does; pillowmoss wetting ground from fog; tanglefuzz anchoring dens; crustweevils
   grazing cruststar. (some built, several marked by the sheet as owed)
-- Thundersteps stamping open blazes; parental enrage. (built; the stamper marking reaches the thunderstep through
-  the campaign's patch layer, and no franchise-free stamper ships yet)
-- Thundersteps finding the maker by witness or trail. (his ruling of 2026-11-10; not built)
+- Parental enrage: getting near a thunderstep's young. (built)
 - What the place does to the landed ship: the Gale as a particulate hazard on the built ship-shield frame,
   strangler and thorn litter, a giant on its line. (the frame is built; the Gale's definition needs its one
   field, `Answered on 2026-11-19` 5; the rest is built for ordinary structures)
 - Fog as one step of cover from orbit on fog days. (new, small, by his card)
 - The plain's sound: wind, the tikkit click-chorus, wing-bursts and stranger calls, quiet in the Stall. (built on
   vanilla sounds; his ruling of 2026-09-28)
+
+**0.2.0, the stop with company** (the owner's own "next Design Version" of 2026-11-16, plus two lens additions)
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- Concealment under the fuzz, the lee that reveals, hunting in the Stall, the runs that flush under traffic.
+  (built)
+- The other nine kinds: twitcher, crown, rearing, hoard, quench, shedding, weeper, sleeper, lure. (built; four of
+  the thirteen have passed a first live check)
+- Thundersteps stamping open blazes. (built; the stamper marking reaches the thunderstep through the campaign's
+  patch layer, and no franchise-free stamper ships yet)
+- Thundersteps finding the maker by witness or trail. (his ruling of 2026-11-10; not built)
 - The rollbug rolling any corpse to its larder; the thornhold standing its ground at its den against whoever
   struck it and nobody else; the shirrel gliding downwind in a Gale and walking home to its tree. (built; his
   cards of 2026-10-26)
 - The scanner's readings here; the eggs that hatch near people. (built)
-
-**0.2.0, the stop with company** (the owner's own "next Design Version" of 2026-11-16, plus two lens additions)
+*Already here before that answer:*
+- The nine other kinds' promise: lashes and droops, gathers a cloud in the Stall, rears when entered, keeps and
+  returns what was left in it, quenches fire once, sheds thorns downwind, weeps a bounded pool, wakes once under a
+  foot, bears fruit that draws the hungry.
+- Cane that burns better than wood (owed in the build; not a richer source by his fuel answer of 2026-11-19).
 - The dead farmstead, recovered plans, the plain wind vaporator, and the scavenger clans' camps with their peace
   and war. (built, unproven; his ruling. The vaporator has no dried wake: his card of 2026-10-16, *"Plain
   vaporator, no scar"*. The farming people's camps are gone: see "Dropped".)
@@ -505,30 +530,8 @@ Every feature is in one bucket. "Built" is what the locked sheet of 2026-11-16 c
 
 ## NEEDS HIM
 
-Each is tagged with one theme word.
+None open. Every entry is answered (next section).
 
-1. **[hull] Two ship ideas he already declined. Not revived; listed so he can say if the lens reopens them.** The
-   review of 2026-09-29 pitched the landed ship as *"the tallest thing on the plain"*: a calm lee behind the hull
-   where fog-fat plants green and *"thornholds [nest] in your hull's lee"*, and *"at spool-up the engine reads as
-   FIRE to the plain — thunderstep herds converge on a launching ship to stamp the burn."* At the sitting of
-   2026-09-28 he typed, on the first, *"No, we dont need a downwind lee around the ship."* and on the second,
-   *"Yes in 1. 2) not needed."* The mechanics item records *"both halves cut by his word"*, and the later GPT
-   consult was told *"none of these restores a gravship mechanic."* That was seven weeks before he asked for every
-   biome through the ship's eyes. *Stay cut* (default here; neither is in any scope bucket). *Reopen the herds:*
-   the biome's strongest ship moment, and the review's own caution applies (*"herds delay/damage, never
-   forbid"*). *Reopen the lee:* note that the Long Shade has a built relative, the Shipfall Commons, where a
-   landed ship's shade draws wildlife.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
-6. **[scope] One signature, or every "did you see that"?** His card of 2026-11-17: a biome's first version holds
-   *"Land, life, one signature."* The cleanse that followed chose the creeping vine as the signature and proposed
-   switching off, for 0.1.0, the ripple, the Stall's hunt, the runs flushing, the lash, ten of the thirteen kinds
-   of vine, the rollbug, the gliding shirrel, fire-stamping and the tree's history, and asked him whether they
-   stay. No answer is recorded. The day before, he had said of those same things *"Why am I choosing between
-   these? These are all important."* The day after, he made the *"OMG did you see that?"* *"the overriding
-   priority"*. *Keep them all in 0.1.0* (default here: nearly every moment in this design's list is one of them).
-   *One signature:* 0.1.0 is the wind, the vine islands, dripping and hollow stands, the tree and the plain
-   animals, and most of the list above moves to 0.2.0.
-   *Waits on the first-version size question of 2026-11-19.*
 
 ## Answered on 2026-11-19
 
@@ -552,3 +555,17 @@ can undo any one by name.
    and let git be provenance."* A Designer run reconciles `sheet.md`, `tree.json` and `scenes.json` with this file
    when the hold lifts.
 9. **[other] Does the thunderstep grow a coat?** No (as built; the design's default). *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. **[hull] Two ship ideas he already declined: the calm lee behind the hull and the herds that stamp a launching
+   ship's flame.** *His card of 2026-11-19 (declined ship ideas):* they stay cut, as he typed on 2026-09-28. He can
+   bring either back by name.
+6. **[scope] One signature, or every "did you see that"?** *His card of 2026-11-19 (first version):* one signature a
+   stop is sure to see. The signature is venomvine footing (Scope, top). 0.1.0 is the wind, the vine islands with
+   four kinds (dripping, hollow, walking, strangler), the sweetline tree, the plain animals, the hull wear and fog as
+   cover. Concealment under the fuzz and the Stall's hunt, the runs flushing, nine kinds of vine, fire-stamping and
+   finding the maker, the rollbug, the thornhold's stand and the gliding shirrel, the scanner and the eggs move to
+   0.2.0 with their text. **This changes the design's default.** Was: keep them all in 0.1.0.

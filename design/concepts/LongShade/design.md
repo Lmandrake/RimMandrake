@@ -331,13 +331,18 @@ The rest is company:
 | Direct sun is ordinary heat set by geometry alone: shade, a roof or a parasol removes it; hot air still hurts in shade. | The same pawn in the open, behind a rock, under a roof, under a parasol; then the same in a heat wave. | Any private desert heat, angle or offset. A cool-looking shadow that does not cool. |
 | Native animals rest in shade, cross lit gaps briskly within what their size allows, and rest again, at ordinary shipped conditions. | A generated map left alone, natives of three sizes. | Animals that only wander as vanilla animals do and happen not to overheat. A small native on ground only a big one could reach. |
 | A crew member who begins to overheat in the sun goes to the nearest shade they can reach, recovers and returns to the same work, again and again, and the work gets done. | An ordered job in the open with shade in reach; with shade out of reach; with the only shade too hot to recover in. | A crew member who loops between shade and sun and never works. A drafted crew member who walks off. |
-| The landed ship's shade fills with the country's animals in order of how far each can cross, and the pilot's console clears it before launch. | Land; wait; count who is under the hull each day; work the console; launch. | Animals created at the hull. A ship held on the ground by its tenants. |
 | A gloomcast is real moving shade, its followers keep to it, it feeds from the sand and leaves plain dung. | A crossing gloomcast, a crew member walking beside it and one walking apart. | Followers that never leave to eat or drink. |
 | A mirrak looks like shade and is not: it cools nothing, it can be told from real shade by looking and confirmed by a safe inspection, and what it takes leaves a mark. | A mirrak lying square with the real shadows and one lying across them; an overheated animal; a crew member who inspects first. | A loss with nothing left to read. A mirrak that cannot be told when it happens to lie the right way. |
 | A shadow's holder strikes what arrives and returns to cool; nothing here runs prey down. | A dakkra in a shadow, prey arriving spent, prey passing at a distance. | A chase across the open. |
+| The place wears on the ship only through its company: a resting giant warms the hull's flank and crowds the apron, and clearing the shade answers both. | A gloomcast settled at the hull, then dispersed. | Heat with no visible source. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| The landed ship's shade fills with the country's animals in order of how far each can cross, and the pilot's console clears it before launch. | Land; wait; count who is under the hull each day; work the console; launch. | Animals created at the hull. A ship held on the ground by its tenants. |
 | The lee-side heaps in the shadows can each be searched once for scrap, bone and rare finds. | A generated map; search three heaps of different size. | A heap that pays twice. A heap in the open. |
 | The remains in the open still carry their loads, and reaching them is a real crossing for the crew. | A grave within one dash, and one beyond it reached under a parasol. | Loot that comes back after it is taken. |
-| The place wears on the ship only through its company: a resting giant warms the hull's flank and crowds the apron, and clearing the shade answers both. | A gloomcast settled at the hull, then dispersed. | Heat with no visible source. |
 
 Settings: one switch per major feature, defaults as shipped, everything off leaves an ordinary dry desert under a
 low sun (standing rule, every mod).
@@ -365,27 +370,41 @@ the acoustic scanner's readings; wind (nothing here features it); the Empire's s
 
 Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): real and false shade.** Under a sun pinned low, every
+creature lives rest, dash, rest between shadows; the crew walks to shade when the sun starts to hurt; a gloomcast is
+shade that moves; a mirrak looks like shade and is not; a dakkra holds a shadow and strikes what arrives. *Why a
+normal stop is sure to see it:* every shadow on the map is a patch with hot light between, and the first work in
+the open sends crew and animals across those gaps. His experience line: *"Shade is the currency, and every crossing
+is a gamble. Rest, dash, rest, and never trust a shadow you didn't cast yourself."* *Runner-up:* the landed ship's
+shade filling with the country's animals (his card pick of 2026-09-30, the cleanse's runner-up); it moves to 0.2.0,
+as the card warned (*"several of your own picks wait a version"*). Ordinary shade-seeking still brings animals to
+the ship's shadow, which is how the resting giant warms the hull.
+
 **0.1.0, the stop**
 - The land: sand, soil, hardpan and walkable deep sand; dry weather; the pinned golden-hour sun. (built)
 - Shade and the one sun feeding ordinary heat; parasols and quick roofs. (built, shared; current source still
   carries an older biome heat that must be brought into line)
 - Natives that rest, dash and rest, sorted by size. (built, unproven)
-- Crew who seek shade when they begin to overheat, and go back to work. (unbuilt, shared)
+- Crew who seek shade when they begin to overheat, and go back to work: his card of 2026-11-19, one rule for every
+  day-side biome. (unbuilt, shared)
 - The gloomcast as moving shade, its followers, its sand-feeding and plain dung. (built)
 - The mirrak, with look-then-inspect and a readable loss. (built)
 - The dakkra holding a shadow. (built)
-- The ship's shade filling by stages, and the console clearing it. (built; his card pick of 2026-09-30; moved in
-  against the cleanse, see `rewrite_choices.md`)
-- The lee-side heaps and searching them. (built; his card pick of 2026-09-30; moved in)
 - The empty patch as the tell of a held shadow. (his rule by card; the static markers are built)
 - The shadespire, pavecrust and maidenbloom as plants on the map; pavecrust scraps as a thin fuel. (built; their
   special growing rules are not)
 - The sandstorm as the one hazard the ship-shield frame sees here. (built)
-- The sun graves and their loads. (built; moved in)
 - The native roster, ordinary forage, taming and stock; fliers that really fly. (built)
 - What the place does to the landed ship, as stated above. (a resting giant's warmth is new, small work)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The ship's shade filling by stages, and the console clearing it. (built; his card pick of 2026-09-30; moved in
+  against the cleanse, see `rewrite_choices.md`)
+- The lee-side heaps and searching them. (built; his card pick of 2026-09-30; moved in)
+- The sun graves and their loads. (built; moved in)
+*Already here before that answer:*
 - The wreck road across the widest gap, its salvage, and the dead crawler at its end. (built)
 - The returning Jawa clan: pay, trade or argue to keep the hull, or watch it towed. (the claim and tow are built; the
   negotiation his answer of 2026-11-10 asked for is not)
@@ -440,22 +459,8 @@ Every feature is in one bucket. "Built" is the 2026-11-17 census, not a pass.
 
 ## NEEDS HIM
 
-Each is tagged with one theme word.
+None open. Every entry is answered (next section).
 
-1. **[other] The discussion he said was owed.** On 2026-11-10 he wrote *"We need a deeper design discussion here"* about
-   what people do when they overheat, and it has not been held. This design is written on the cleanse's default:
-   a crew member in harmful direct sun, before the heatstroke turns serious, goes to the nearest reachable shade
-   they can actually recover in, then resumes; drafted and broken people are left alone. It is a rule for every
-   biome and it is unbuilt. *That default.* *Something lighter:* a warning and nothing automatic. *Something
-   smarter:* which contradicts his own "they aren't evolved beings from that biome".
-   *Waits on the overheating question (what a crew member does alone when the sun starts to hurt) of 2026-11-19.*
-5. **[scope] One signature, or the pieces he picked?** His card of 2026-11-17: a biome's first version holds
-   *"Land, life, one signature."* The cleanse chose real and false shelter as the signature and switched off the
-   ship's shade filling up, the heaps, the sun graves, the wreck road, the vorrel and the rest. This design brings
-   the first three back into 0.1.0. Two of them (the ship as refuge, the heaps) are his own card picks of
-   2026-09-30, and the lens of 2026-11-18 makes the ship the subject. *As this design has it* (default). *Strictly
-   one signature:* 0.1.0 is the sun, the dash, the gloomcast and the mirrak, and the ship's shade is just shade.
-   *Waits on the first-version size question of 2026-11-19.*
 
 ## Answered on 2026-11-19
 
@@ -473,3 +478,17 @@ can undo any one by name.
    call.*
 6. **[other] Should lightning strike here?** Remove the dry thunderstorms. The sheet bans fire that starts here (*"Ash
    and smoke ARRIVE; they do not originate"*). *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+1. **[other] What a crew member does alone when overheating.** *His card of 2026-11-19 (overheating):* they walk to
+   shade alone. Before heatstroke turns serious a crew member walks to the nearest reachable shade where they can
+   recover, recovers, and goes back to work; people under the player's direct control are left alone. One rule for
+   every day-side biome, shared and unbuilt. He typed nothing more, so the fuller discussion of 2026-11-10 is not
+   held; the rule stands until he opens it.
+5. **[scope] One signature, or the pieces he picked?** *His card of 2026-11-19 (first version):* one signature a stop
+   is sure to see: real and false shade (Scope, top). The ship's shade filling by stages and its console, the
+   lee-side heaps and the sun graves move to 0.2.0 with their text; two of them are his card picks of 2026-09-30,
+   and the card named that cost. **This changes the design's default.** Was: the three in 0.1.0.
