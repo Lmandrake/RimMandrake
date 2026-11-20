@@ -37,8 +37,12 @@ def main():
     a = ap.parse_args()
     started = time.strftime("%Y-%m-%dT%H:%M:%S")
     det = {"setting": "keepWiresOnGravship", "value": a.mode == "on"}
+    rc = None
     try:
         rc = scene(a, det)
+    except SystemExit as e:  # prove_gravship's need() refused the staging: the scene could not ask (visit 2, 2026-11-19: no row at all)
+        det["error"] = "staging refused (prove_gravship need() exit %s): see the FAIL: line above" % (e.code,)
+        rc = 2
     except Exception as e:   # noqa: BLE001  (a crash is a verdict too: written, then raised)
         det["error"] = "%s: %s" % (type(e).__name__, e)
         rc = None
