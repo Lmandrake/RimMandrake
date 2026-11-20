@@ -142,7 +142,7 @@ def line_of(path, m):
 
 
 # ---- keep: the second no-loss check ---------------------------------------------------------------------------------
-KEEP = [("code span", re.compile(r"`([^`\n]+)`")),
+KEEP = [("code span", re.compile(r"`([^`]+)`")),
         ("number", re.compile(r"(?<![\w.])(\d[\d,]*(?:\.\d+)?)(?![\d])")),
         ("quote", re.compile(r"[\"“]([^\"“”\n]{12,})[\"”]")),
         ("named id", re.compile(r"\b([A-Z][A-Z0-9]+(?:_[A-Z0-9]+)+)\b"))]
@@ -164,6 +164,25 @@ def read_any(spec):
         sys.exit(3)
 
 
+def paragraphs(text):
+    """The text outside fenced blocks, split at blank lines. A code span may wrap a line but never crosses a blank line."""
+    out, cur, fenced = [], [], False
+    for l in text.split("\n"):
+        if l.lstrip().startswith("```"):
+            fenced = not fenced
+            continue
+        if fenced:
+            continue
+        if l.strip():
+            cur.append(l)
+        elif cur:
+            out.append("\n".join(cur))
+            cur = []
+    if cur:
+        out.append("\n".join(cur))
+    return out
+
+
 def squash(s):
     return re.sub(r"\s+", "", s)
 
@@ -176,8 +195,8 @@ def keep(old, new_texts):
     seen, lost = set(), []
     for kind, rx in KEEP:
         if kind == "number":
-            want = Counter(m.group(1) for m in rx.finditer(old))
-            have = Counter(m.group(1) for m in rx.finditer("\n".join(new_texts)))
+            want = Counter(m.group(1).rstrip(",") for m in rx.finditer(old))
+            have = Counter(m.group(1).rstrip(",") for m in rx.finditer("\n".join(new_texts)))
             for span, n in sorted(want.items()):
                 seen.add((kind, span))
                 if have[span] < n:
@@ -185,8 +204,13 @@ def keep(old, new_texts):
             continue
         # A quote is read with each code span masked by a line break: a `"` inside one code span and a `"` inside the
         # next one are not a quote. A code span is checked whole, as a code span.
-        src = re.sub(r"`[^`\n]+`", "\n", old) if kind == "quote" else old
-        for m in rx.finditer(src):
+        if kind == "quote":
+            srcs = [re.sub(r"`[^`]+`", "\n", p) for p in paragraphs(old)]
+        elif kind == "code span":
+            srcs = paragraphs(old)
+        else:
+            srcs = [old]
+        for m in (m for src in srcs for m in rx.finditer(src)):
             span = m.group(1).strip()
             if not span or (kind, span) in seen:
                 continue
