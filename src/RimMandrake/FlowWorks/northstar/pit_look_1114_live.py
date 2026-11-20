@@ -107,4 +107,5 @@ if __name__ == "__main__":
         SECTIONS[name]()
     bad = [r for r in ROWS if r[1] is not True]
     print("%d/%d PASS" % (len(ROWS) - len(bad), len(ROWS)))
-    sys.exit(1 if bad else 0)
+    # 1 only for a FAIL; a row that could not look (None) or no row at all is UNMEASURED, exit 2 (never FAIL)
+    sys.exit(1 if any(r[1] is False for r in ROWS) else (2 if bad or not ROWS else 0))

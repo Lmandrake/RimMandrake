@@ -1,10 +1,24 @@
-Traceback (most recent call last):
-  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\src\RimMandrake\FlowWorks\northstar\big_pit_scene.py", line 743, in <module>
-    sys.exit(main(sys.argv))
-             ~~~~^^^^^^^^^^
-  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\src\RimMandrake\FlowWorks\northstar\big_pit_scene.py", line 716, in main
-    plan = load_plan()
-  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\src\RimMandrake\FlowWorks\northstar\big_pit_scene.py", line 331, in load_plan
-    with open(plan_path()) as fh:
-         ~~~~^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_2\\evidence\\bigpit\\scene_plan.json'
+open_sky_before_verify {"ok": true, "rect": [2, 2, 89, 55], "roofCells": [], "rockCells": [], "why": [], "cleared": null}
+FAIL {"row": "BP0_dry_depth_fill", "verdict": "FAIL", "got": [[0, 0, 16, 0], [1, 0, 16, 0], [2, 0, 16, 0], [3, 0, 16, 0], [4, 0, 16, 0], [5, 0, 16, 0], [6, 0, 16, 0], [7, 0, 16, 0], [8, 0, 16, 0], [9, 0, 16, 0]]}
+FAIL {"row": "BP1_0.5m_depth_fill", "verdict": "FAIL", "got": [[0, 0, 16, 1], [1, 0, 16, 1], [2, 0, 16, 1], [3, 0, 16, 1], [4, 0, 16, 1], [5, 0, 16, 1], [6, 0, 16, 1], [7, 0, 16, 1], [8, 0, 16, 1], [9, 0, 16, 1]]}
+FAIL {"row": "BP2_1m_depth_fill", "verdict": "FAIL", "got": [[0, 0, 16, 2], [1, 0, 16, 2], [2, 0, 16, 2], [3, 0, 16, 2], [4, 0, 16, 2], [5, 0, 16, 2], [6, 0, 16, 2], [7, 0, 16, 2], [8, 0, 16, 2], [9, 0, 16, 2]]}
+FAIL {"row": "BP3_2m_depth_fill", "verdict": "FAIL", "got": [[0, 0, 16, 4], [1, 0, 16, 4], [2, 0, 16, 4], [3, 0, 16, 4], [4, 0, 16, 4], [5, 0, 16, 4], [6, 0, 16, 4], [7, 0, 16, 4], [8, 0, 16, 4], [9, 0, 16, 4]]}
+FAIL {"row": "BP3_2m_mini_Armchair", "verdict": "FAIL", "got": {"missing at": [6, 9], "have": []}}
+FAIL {"row": "BP3_2m_mini_EndTable", "verdict": "FAIL", "got": {"missing at": [7, 9], "have": []}}
+FAIL {"row": "BP3_2m_mini_RM_BrineCrock", "verdict": "FAIL", "got": {"missing at": [8, 9], "have": []}}
+FAIL {"row": "BP4_3m_depth_fill", "verdict": "FAIL", "got": [[0, 0, 16, 6], [1, 0, 16, 6], [2, 0, 16, 6], [3, 0, 16, 6], [4, 0, 16, 6], [5, 0, 16, 6], [6, 0, 16, 6], [7, 0, 16, 6], [8, 0, 16, 6], [9, 0, 16, 6]]}
+FAIL {"row": "BP4_3m_mini_Armchair", "verdict": "FAIL", "got": {"missing at": [6, 9], "have": []}}
+FAIL {"row": "BP4_3m_mini_EndTable", "verdict": "FAIL", "got": {"missing at": [7, 9], "have": []}}
+FAIL {"row": "BP4_3m_mini_RM_BrineCrock", "verdict": "FAIL", "got": {"missing at": [8, 9], "have": []}}
+FAIL {"row": "BP5_brim_depth_fill", "verdict": "FAIL", "got": [[0, 0, 16, 8], [1, 0, 16, 8], [2, 0, 16, 8], [3, 0, 16, 8], [4, 0, 16, 8], [5, 0, 16, 8], [6, 0, 16, 8], [7, 0, 16, 8], [8, 0, 16, 8], [9, 0, 16, 8]]}
+FAIL {"row": "BP5_brim_mini_Armchair", "verdict": "FAIL", "got": {"missing at": [6, 9], "have": []}}
+FAIL {"row": "BP5_brim_mini_EndTable", "verdict": "FAIL", "got": {"missing at": [7, 9], "have": []}}
+FAIL {"row": "BP5_brim_mini_RM_BrineCrock", "verdict": "FAIL", "got": {"missing at": [8, 9], "have": []}}
+FAIL {"row": "BP6_tar1.5m_depth_fill", "verdict": "FAIL", "got": [[0, 0, 16, 3], [1, 0, 16, 3], [2, 0, 16, 3], [3, 0, 16, 3], [4, 0, 16, 3], [5, 0, 16, 3], [6, 0, 16, 3], [7, 0, 16, 3], [8, 0, 16, 3], [9, 0, 16, 3]]}
+FAIL {"row": "BP3_2m_same_as_dry_copy", "verdict": "FAIL", "got": {"onlyInDry": [["MinifiedThing", 6, 9, 1], ["MinifiedThing", 7, 9, 1], ["MinifiedThing", 8, 9, 1]], "onlyHere": []}}
+FAIL {"row": "BP4_3m_same_as_dry_copy", "verdict": "FAIL", "got": {"onlyInDry": [["MinifiedThing", 6, 9, 1], ["MinifiedThing", 7, 9, 1], ["MinifiedThing", 8, 9, 1]], "onlyHere": []}}
+FAIL {"row": "BP5_brim_same_as_dry_copy", "verdict": "FAIL", "got": {"onlyInDry": [["MinifiedThing", 6, 9, 1], ["MinifiedThing", 7, 9, 1], ["MinifiedThing", 8, 9, 1]], "onlyHere": []}}
+UNMEASURED {"row": "label_onscreen_text", "verdict": "UNMEASURED", "got": "no bridge reader for RM_MapComponent_Excavation.PitLabelAt (instance method; mouseover only): expected text recorded, actual text owed (item RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE)"}
+elapsed_s 1.0
+TOTALS Counter({'PASS': 234, 'FAIL': 19, 'UNMEASURED': 1})
+[bridge split] 1.0 s wall: load 0.0 / ticks 0.0 / reads 0.9 / other 0.0 / outside calls 0.1 s

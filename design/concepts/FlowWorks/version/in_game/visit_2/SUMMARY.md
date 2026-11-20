@@ -23,3 +23,12 @@ Wall-time bound 3 hours (to about 12:26 AM PST).
   designation read as a refusal; fixed both, the cut still does not land); sc_geyser_tub HARNESS (geyser_tub_live.py PASS 4/4 on the
   same build); sc_source_pays row asks the pond to stop at the wet line against his ruling "ponds pump to last dL" (longer drain: dry,
   sink still draws 3 L of film). Filed seven items (below).
+- 22:16-22:22 game a on the 23-mod `evening_20261113` list (its tier holds the sitting save's defs); loaded SITTING_20261114_PIT_FIXES
+  (in memory only, never saved).
+- 22:26 PIT_LOOK_1114_LIVE 19 PASS, 0 FAIL, 1 UNMEASURED (body cover is a look, by design). The script exited 1 for that, read as FAIL:
+  fixed test-first (selftest_pit_look_exit_codes.py red then green), the first row re-derived UNMEASURED with a note, rerun UNMEASURED.
+  Item RIMMANDRAKE_SPLIT_PIT_LOOK_EXIT_UNMEASURED_READ_AS_FAIL.
+- 22:27-22:31 big pit staged on the sitting map; OL 1155 PASS, 9 FAIL, 1 UNMEASURED, 3 BLOCKED. The 9 FAIL are goods that staging never
+  left in the 2-4 m copies (reset method gone, d=16 not 8); deep water keeps minified goods (experiment). Item
+  RIMMANDRAKE_REPAIR_FLOWWORKS_BIG_PIT_STAGE_RESET_METHOD_GONE. A first OL call of mine passed `--acts x,z` literally and crashed
+  before reading; I removed that row (not a run).

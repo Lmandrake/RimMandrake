@@ -1,0 +1,16 @@
+FAIL OL_goods_covered_BP3_2m_mini_Armchair the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid
+FAIL OL_goods_covered_BP3_2m_mini_EndTable the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid
+FAIL OL_goods_covered_BP3_2m_mini_RM_BrineCrock the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid
+FAIL OL_goods_covered_BP4_3m_mini_Armchair the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid
+FAIL OL_goods_covered_BP4_3m_mini_EndTable the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid
+FAIL OL_goods_covered_BP4_3m_mini_RM_BrineCrock the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid
+FAIL OL_goods_covered_BP5_brim_mini_Armchair the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid
+FAIL OL_goods_covered_BP5_brim_mini_EndTable the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid
+FAIL OL_goods_covered_BP5_brim_mini_RM_BrineCrock the law reports nothing for it (ProofSubmerge refused): it is drawn whole over the liquid
+BLOCKED OL_no_surface_shadow_under_sheet ProofSubmerge reports no shadowQueue: a shadow drawn over the sheet is invisible to this read
+UNMEASURED OL_pour_never_no_room could not brim the spare pit: REFUSED: (143, 103) is not dug; a level is set on a pit
+BLOCKED OL_label_text_true_depth no reader for the on-screen pit label (RIMMANDRAKE_ADD_PIT_LABEL_STATE_READER_MOUSEOVER_HAS_NONE); expected text is pinned offline by PitLabelChecks
+BLOCKED OL_overlays_hidden overlay drawers (power icon, battery bar, cooler arrow, torch flame, GSS rope and connector) do not report to the law (RIMMANDRAKE_ADD_OVERLAY_PROOF_HOOK_LAW_CANNOT_SEE_ICONS)
+owner_look_regressions {"PASS": 1155, "FAIL": 9, "UNMEASURED": 1, "BLOCKED": 3}
+[bridge split] 23.3 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 22.5 / outside calls 0.8 s
+[bridge split] WARN 463 calls of jawa/static_call (22.4 s): batch them

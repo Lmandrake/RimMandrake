@@ -1,0 +1,13 @@
+minified in BP0: [(6, 9, 'Cloth armchair (normal)'), (7, 9, 'Steel end table (normal)'), (8, 9, 'Brine crock')]
+fill 1.5:
+{"success": true, "method": "System.String ProofFillRect(System.String)", "result": "FILL applied=256 refused=0 notOwned=0 fluid=default", "thingArgs": [], "ticksGame": 21990, "operation": {"OperationId": "op_0672e5690b2d4399bffe6fea8d15d72c", "Status": "Completed", "Success": true, "DurationMs": 52
+minified in BP0: [(6, 9, 'Cloth armchair (normal)'), (7, 9, 'Steel end table (normal)'), (8, 9, 'Brine crock')]
+fill 2.0:
+{"success": true, "method": "System.String ProofFillRect(System.String)", "result": "FILL applied=256 refused=0 notOwned=0 fluid=default", "thingArgs": [], "ticksGame": 21990, "operation": {"OperationId": "op_cce3212c7ee74524856d432c7a9669d5", "Status": "Completed", "Success": true, "DurationMs": 42
+minified in BP0: [(6, 9, 'Cloth armchair (normal)'), (7, 9, 'Steel end table (normal)'), (8, 9, 'Brine crock')]
+advance 250 ticks at 2.0 m:
+{"success": true, "state": "done", "requested": 250, "executed": 250, "tickFrom": 21990, "tickTo": 22240, "triggers": [], "triggersTotal": 0, "wallS": 0.44, "frames": 5, "chunk": 60, "frameBudgetMs": 40.0, "perFrameTickCap": 0, "stepMs": 344.473, "maxFrameMs": 187.29, "ticksGame": 22240, "operation"
+minified in BP0: [(6, 9, 'Cloth armchair (normal)'), (7, 9, 'Steel end table (normal)'), (8, 9, 'Brine crock')]
+advance 2500 more:
+{"success": true, "state": "done", "requested": 2500, "executed": 2500, "tickFrom": 22240, "tickTo": 24740, "triggers": [], "triggersTotal": 0, "wallS": 2.56, "frames": 42, "chunk": 60, "frameBudgetMs": 40.0, "perFrameTickCap": 0, "stepMs": 2303.538, "maxFrameMs": 102.184, "ticksGame": 24740, "opera
+minified in BP0: [(6, 9, 'Cloth armchair (normal)'), (7, 9, 'Steel end table (normal)'), (8, 9, 'Brine crock')]

@@ -1,10 +1,12 @@
-Traceback (most recent call last):
-  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\src\RimMandrake\FlowWorks\northstar\big_pit_scene.py", line 743, in <module>
-    sys.exit(main(sys.argv))
-             ~~~~^^^^^^^^^^
-  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\src\RimMandrake\FlowWorks\northstar\big_pit_scene.py", line 716, in main
-    plan = load_plan()
-  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\relentless\clones\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\src\RimMandrake\FlowWorks\northstar\big_pit_scene.py", line 331, in load_plan
-    with open(plan_path()) as fh:
-         ~~~~^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\relentless\\clones\\RIMMANDRAKE_DRIVE_FLOWWORKS_IN_GAME_VISIT_TWO.det\\design\\concepts\\FlowWorks\\version\\in_game\\visit_2\\evidence\\bigpit\\scene_plan.json'
+reset "{'success': False, 'message': 'No public static ProofResetRect with 1 params.', 'details': {'available': []}, 'operation': {'OperationId': 'op_86d23aaba8da4e59856730f9742b7dc1', 'Status': 'Completed', 'Success': True, 'DurationMs': 38}, 'state': {'programState': 'Playing', 'hasCurrentGame': True, '
+open_sky_before_stage {"ok": true, "rect": [2, 2, 89, 55], "roofCells": [], "rockCells": [], "why": [], "cleared": {"roofOp": {"success": true, "cellsChanged": 0, "cellsFailedVerify": 0}}}
+cleared {"success": true, "destroyed": 496}
+open_sky_after_clear {"ok": true, "rect": [2, 2, 89, 55], "roofCells": [], "rockCells": [], "why": [], "cleared": null}
+dig_failed_calls 0
+routes {"SculptureGrand": ["spawn_batch ok"], "DoubleBed": ["spawn_batch ok"], "RM_GlowTank": ["spawn_batch ok"], "RM_HoseReel": ["spawn_batch ok"], "Table2x2c": ["spawn_batch ok"], "TableButcher": ["spawn_batch ok"], "HandTailoringBench": ["spawn_batch ok"], "SculptureLarge": ["spawn_batch ok"], "Bed": ["
+labels {"success": false, "added": 7}
+elapsed_s 118.8
+TOTALS Counter({'PASS': 2})
+[bridge split] 118.7 s wall: load 0.0 / ticks 0.4 / reads 2.1 / other 112.5 / outside calls 3.7 s
+[bridge split] WARN 1792 calls of jawa/flowworks_excavation_drive (86.8 s): batch them
+[bridge split] WARN 448 calls of jawa/spawn_batch (21.5 s): batch them
