@@ -1,0 +1,15 @@
+# runs at Thu Nov 19 19:48:24 PST 2026 on 3fed2d78f4
+## clone lag accept
+PASS churn with HEAD advancing stays under 5 min (worst 0.0)
+PASS stuck HEAD accumulates (13.5 min)
+PASS level reads 0
+PASS blind stays unmeasured
+PASS unknown head does not reset the clock (6.7)
+5/5 PASS
+## zombie inline (rc 0 = pass)
+rc=0
+## cleanse accept
+PASS 1/1
+## gate previews accept
+PASS: 0 failure(s)
+## base d5510c8fb4 (before): clone accept TypeError rc 1; zombie rc 1 (pid environ unreadable); cleanse FAIL 0/1; held-bridge dispatch selftest 3 FAIL

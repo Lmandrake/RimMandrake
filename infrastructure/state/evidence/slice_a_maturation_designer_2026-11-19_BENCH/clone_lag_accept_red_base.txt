@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIX_CONTROL_STORE_COUNTS_AND_TICK_PAUSES.det/design/specs/maturation_dispatch/accept_clone_lag_from_last_pull.py", line 14, in <module>
+    r = MD.clone_reading(st, t + 90 * i, (2 + i % 3, 0), head="sha%d" % i); worst = max(worst, r["behind_min"])
+TypeError: clone_reading() got an unexpected keyword argument 'head'

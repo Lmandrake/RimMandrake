@@ -1,0 +1,332 @@
+conductor_log_guard: refused a test's append to the real Conductor log: /mnt/d/ClaudeWork/rimmandrake/conductor/log.md
+conductor_log_guard: refused a test's append to the real Conductor log: /mnt/d/ClaudeWork/rimmandrake/conductor/log.md
+PASS  a clone 10 min behind launches nothing: FlowWorks reads stale_clone, a Needs Conductor line (stale_clone)
+PASS  nor does it seal, end or spend-record a run from the old tree (its 02:59 publish sealed a 19-line judge shard empty and dropped a re-seal line): ledger_runs 'held: the clone reads an old tree (stale_clone)', spend_rows 'held: the clone reads an old tree (stale_clone)'
+PASS  the first tick behind (0 min) still launches: a lag under the alarm holds nothing (launched)
+PASS  one builder launches, on FlowWorks ({'ExplosiveKnockback': 'live', 'FlowWorks': 'launched', 'GimmeSomeSlack': 'hand_step', 'Pyrelands': 'ready', 'Graffiti': 'not_offline', 'PyrelandsMechanics': 'not_offline'})
+PASS  Explosive Knockback has a live run: no second builder
+PASS  the fixture convergence source: no real mod's rounds reach a dispatch check ([])
+PASS  the tick reads convergence through its fx seam, on its own root (['/home/mandrake/.seat-tmp/BENCH/maturation_dispatch_cdrmgrx_'])
+PASS  Gimme Some Slack owes a hand step: a Needs Conductor line, no launch
+PASS  Pyrelands passes every exit test: 'ready to advance' for the Conductor, never an advance
+PASS  a red offline decider: Pyrelands waits on its certificate (the test's own last line), not 'ready to advance' (certificate)
+PASS  Graffiti (no record, the Designer) and Pyrelands Mechanics (intake) launch nothing
+PASS  a fixture owner hold on Graffiti: Graffiti reads owner_hold, FlowWorks is still decided (owner_hold, stopped)
+PASS  the build item is filed once, named by the refused count (['RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SEVEN_BARS_LEFT'])
+PASS  the minted item name passes rimflow namecheck
+PASS  the launch carries the 15 USD cap and opus
+PASS  7 refused bars over a batch of 6 go out as an even 4 + 3: this run takes 4 (['canal_reads_as_dug', 'covered_pit_springs', 'fill_level_legible', 'hose_reads_as_hose'])
+PASS  the brief lists only the batch's bars and names the other 3 as later runs' (4 listed)
+PASS  the item title says 4 of the 7 bars (FlowWorks Stage 3: build the checks for 4 of the 7 bars not runnable, offline (launched by the Dispatch step))
+PASS  batch_of: 13 -> 5 (even thirds), 6 -> whole, size 0 -> whole, 33 -> 6, empty -> empty
+PASS  a brief with no batch still lists every refused bar
+PASS  launch_mod refuses a batch naming a bar not refused (REFUSED: the batch names bars FlowWorks is not refusing: no_such_bar)
+PASS  the tick measures its own clone: level, last level kept in state.json ({'at': 1794718800.0, 'level_at': 1794718800.0, 'level_pac': '2026-11-14 9:00 PM PST', 'measured': True, 'behind': 0, 'ahead': 0, 'behind_since': None, 'behind_min': 0.0})
+PASS  first tick behind: behind_since set, 0 min, last level unchanged ({'at': 1794719400.0, 'level_at': 1794718800.0, 'level_pac': '2026-11-14 9:00 PM PST', 'measured': True, 'behind': 4, 'ahead': 1, 'behind_since': 1794719400.0, 'behind_min': 0.0})
+PASS  while the run is live, no second launch on FlowWorks
+PASS  a blind fetch is UNMEASURED, never level, and keeps the behind clock ({'at': 1794719760.0, 'level_at': 1794718800.0, 'level_pac': '2026-11-14 9:00 PM PST', 'measured': False, 'why': 'fetch refused and origin/main unmoved for 20 min: x'})
+PASS  a tick 60 s after a run ends neither judges the refused count nor launches; the watch is kept
+PASS  minutes behind count from the first tick behind, not from commit dates (10.0)
+PASS  the run ended with the same 7 refused: stopped, a Needs Conductor line, no relaunch
+PASS  levelled again: the behind clock clears, last level is this tick ({'at': 1794720600.0, 'level_at': 1794720600.0, 'level_pac': '2026-11-14 9:30 PM PST', 'measured': True, 'behind': 0, 'ahead': 0, 'behind_since': None, 'behind_min': 0.0})
+PASS  the next tick still never tries the same refusals again
+PASS  the Conductor's clear lets one launch through
+PASS  a refused bar turned runnable with its checks unchanged is not progress (run rm-detached-bench-fake-1 ended and bar(s) inv_looks turned runnable with their checks )
+PASS  a renamed refused bar (b2 -> b9) is not progress (refused bar(s) b9 appeared that were not refused before (a rename is not progress))
+PASS  the run took the refused bars 7 -> 6: the next builder starts (launched)
+PASS  no cap in the settings: nothing launches (no_cap)
+PASS  a zero cap: nothing launches (no_cap)
+PASS  FlowWorks not on the advancing list: nothing launches (None)
+PASS  two live runs on other advancing mods (max_live 2): nothing launches (slots_full)
+PASS  the Conductor's live builder on Explosive Knockback fills the one slot: nothing launches (slots_full)
+PASS  the stage's dollars past the ceiling: nothing launches (stopped)
+PASS  the ceiling pause says weighted tokens, never a dollar figure (≈15.2M weighted tokens spent at the offline build, at or past the ≈15.0M weighted tokens ceiling; release it: python3 src/RimMandrake/rimflow/maturation_dispatc)
+PASS  USD 50 spent plus a USD 15 cap passes the 60 ceiling: nothing launches (stopped)
+PASS  the refusal names the reserved cap (≈12.5M weighted tokens spent at the offline build plus the next run's ≈3.8M weighted tokens cap passes the ≈15.0M weighted tokens ceiling; release it: python3 src/RimMandrake/rimflow/maturation_dispatch.py release FlowWorks --stage offline_build --read-tokens 12500000 --tokens 1250000 --why "...")
+PASS  USD 45 spent plus a USD 15 cap fits the 60 ceiling: it launches (launched)
+PASS  no release record: USD 50 + a USD 15 cap past 60 stays paused, and the pause names the release command (stopped: ≈12.5M weighted tokens spent at the offline build plus the next run's ≈3.8M weighted tokens cap passes the ≈15.0M weighted tokens ceiling; release it: python3 src/RimMandrake/rimflow/maturation_dispatch.py release FlowWorks --stage offline_build --read-tokens 12500000 --tokens 1250000 --why "...")
+PASS  a release for this mod, stage and amount (USD 5, read at USD 50) lifts the ceiling stop: one launch, the release spent (launched: filed RIMMANDRAKE_AUTOBUILD_FL; used ['rel-test-a'])
+PASS  the released run's USD 15 spent (65): the spent release frees nothing and the mod re-pauses at the next ceiling, naming the next release (stopped: ≈16.2M weighted tokens spent at the offline build, at or past the ≈15.0M weighted tokens ceiling (its release is spent); release it: python3 src/RimMandrake/rimflow/maturation_dispatch.py release FlowWorks --stage offline_build --read-tokens 16250000 --tokens 5000000 --why "...")
+PASS  a release for another mod: still paused (stopped: ≈12.5M weighted tokens spent at the offline build plus the next run's ≈3.8M weighted tokens cap passes the ≈15.0M weighted tokens ceiling; release it: python3 src/RimMandrake/rimflow/maturation_dispatch.py release FlowWorks --stage offline_build --read-tokens 12500000 --tokens 1250000 --why "...")
+PASS  a release for another stage: still paused (stopped: ≈12.5M weighted tokens spent at the offline build plus the next run's ≈3.8M weighted tokens cap passes the ≈15.0M weighted tokens ceiling; release it: python3 src/RimMandrake/rimflow/maturation_dispatch.py release FlowWorks --stage offline_build --read-tokens 12500000 --tokens 1250000 --why "...")
+PASS  a release that read another spend (USD 40): still paused (stopped: ≈12.5M weighted tokens spent at the offline build plus the next run's ≈3.8M weighted tokens cap passes the ≈15.0M weighted tokens ceiling (a release read ≈10.0M weighted tokens, the spend is now ≈12.5M weighted tokens); release it: python3 src/RimMandrake/rimflow/maturation_dispatch.py release FlowWorks --stage offline_build --read-tokens 12500000 --tokens 1250000 --why "...")
+PASS  a release smaller than the cap needs (USD 2): still paused (stopped: ≈12.5M weighted tokens spent at the offline build plus the next run's ≈3.8M weighted tokens cap passes the ≈15.0M weighted tokens ceiling (a release of ≈500k weighted tokens does not cover the next run's cap); release it: python3 src/RimMandrake/rimflow/maturation_dispatch.py release FlowWorks --stage offline_build --read-tokens 12500000 --tokens 1250000 --why "...")
+PASS  malformed release lines: still paused, and the pause counts them (stopped: ≈12.5M weighted tokens spent at the offline build plus the next run's ≈3.8M weighted tokens cap passes the ≈15.0M weighted tokens ceiling (2 malformed release line(s) ignored); release it: python3 src/RimMandrake/rimflow/maturation_dispatch.py release FlowWorks --stage offline_build --read-tokens 12500000 --tokens 1250000 --why "...")
+PASS  read_releases: one whole record, six malformed lines counted, no file is no release (1, 6)
+PASS  Explosive Knockback's live runs cannot be read (occupancy unknown): nothing launches (slots_unknown)
+PASS  the account pick holds role launches: nothing launches (account_hold)
+PASS  the step disabled: nothing launches (disabled)
+PASS  a dry pass launches nothing and writes no state
+PASS  a Conductor hold on Stage 3: nothing launches (held)
+PASS  a mod at intake: nothing launches (None)
+PASS  a failed Stage 3 launch is void_system: a Needs Conductor line naming it, and the next tick launches
+PASS  a Stage 3 filing that hit a lock retries on the next tick, no stop, no Needs Conductor line (launch_retry, launched, [])
+PASS  a Stage 3 launch refused as not yet on origin retries the SAME item, published again, never re-filed (filed ['RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SEVEN_BARS_LEFT'], published ['RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SEVEN_BARS_LEFT'], launched ['RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SEVEN_BARS_LEFT', 'RIMMANDRAKE_AUTOBUILD_FLOWWORKS_SEVEN_BARS_LEFT'])
+PASS  a transient fault that outlasts launch_tries: a Needs Conductor line, then system_fault (OPS_MATURATION_SYSTEM_FAULT_LOOP), no turn spent (['launch_retry', 'launch_retry', 'launch_failed', 'system_fault'])
+PASS  a steward run that ends with the refused bars unchanged is not judged as a builder: no stop, the builder launches (live -> launched, stopped None)
+PASS  a fixers run that ends with the refused bars unchanged is not judged as a builder: no stop, the builder launches (live -> launched, stopped None)
+PASS  a stop already written on a steward run lifts itself, the builder launches (launched, it judged the steward run rm-detached-bench-rimmandrake-steward-flowworks-preflight-s-1 as a builder)
+PASS  a paused mod (only a hand step is left, the steward is off) is not idle owed (0)
+PASS  a planted idle mod (owed 2 h, nothing on it) reads 120 min idle (120)
+PASS  ops_watch's maturation family reads it ({'v': 120, 'm': 'MEASURED', 'unit': 'min', 'x': {'mods': 'GimmeSomeSlack'}})
+PASS  a stale reading is UNMEASURED, never 0
+PASS  one fixed-id alarm over 60 min in ops_watch_rules.json
+PASS  the family is registered in ops_watch
+PASS  ops_watch reads the dispatch clone's minutes behind from the reading ({'v': 8.0, 'm': 'MEASURED', 'unit': 'min', 'x': {'behind': 3, 'ahead': 0, 'level': '2026-11-14 8:51 PM PST'}})
+PASS  one fixed-id alarm, OPS_DISPATCH_CLONE_BEHIND_UNSTICK, when the dispatch clone is behind over 5 min
+PASS  synced again: the reading is 0, so the alarm re-arms ({'v': 0.0, 'm': 'MEASURED', 'unit': 'min', 'x': {'behind': 0, 'ahead': 0, 'level': '2026-11-14 9:01 PM PST'}})
+PASS  a clone the tick cannot read is UNMEASURED, never 0 ({'v': None, 'm': 'UNMEASURED', 'why': 'the dispatch clone: clone unreadable: x'})
+PASS  a mod first seen owed but paused (hand step, steward off) is not idle owed (0 min)
+PASS  nothing under design/concepts in the repo was written
+ALL PASS
+PASS  a level clone reads (0 behind, 0 ahead) ((0, 0))
+PASS  the tick's own fetch sees origin move: 2 behind (sanity probe: the instrument can see) ((2, 0))
+PASS  a refused fetch on an old ref is no reading, not level ((None, "fetch refused and origin/main unmoved for 7153 min: fatal: '/home/mandrake/.seat-tmp/BENCH/md_clone_xu216rmz/gone.git' does not appear to be a git repository\nfatal: Could not read from remote repository.\n\nPlease make sure you have the correct access rights\nand the repository exists."))
+PASS  a reading older than two ticks says its age first, in plain words ('reading is 10 min old: the tick is paused/stopped (rm-maturation-dispatch.timer inactive); nothing below is current (reading at old)')
+PASS  status shows the clone's distance and minutes behind
+PASS  a wait on a dead unit is marked DEAD (['Pyrelands            wait    designer_wait waiting on rm-role-designer-17 [DEAD: rm-role-designer-17 inactive; the wait is over, the next tick re-decides] (40 min)'])
+PASS  a wait on a live unit is not (['Graffiti             wait    live          waiting on rm-blind-x-1 (3 min)'])
+PASS  a fresh reading leads with its time as before ('reading at old')
+PASS  a stale reading with its timer active says the tick is not writing it ('reading is 10 min old: the tick is not writing it (rm-maturation-dispatch.timer active; see journalctl --user -u rm-maturation-dispatch); nothing below is current (reading at old)')
+ALL PASS
+PASS  release writes one whole record: who, the spend read, the amount, why (RELEASED FlowWorks at in_game by ≈7.5M weighted tokens (read ≈10.0M weighted tokens, by BE)
+PASS  release takes the pause line's weighted tokens (--read-tokens/--tokens) and says tokens, never dollars (RELEASED FlowWorks at in_game by ≈7.5M weighted tokens (read ≈10.0M weighted tokens, by BENCH; rel-d8ee4fcf4a33): the next tick may launch on it once
+This is a )
+PASS  release refuses a mod off the advancing list, writing nothing (REFUSED: NotAMod is not on the advancing list)
+PASS  release refuses a zero release, writing nothing (REFUSED: --usd must be above 0)
+PASS  release refuses an unknown stage, writing nothing (where' (choose from offline_build, blind_challenge, in_game))
+PASS  release refuses no seat and no --by, writing nothing (REFUSED: no seat: pass --by)
+PASS  release refuses a --by that is no ledger seat, writing nothing ( CLAUDE_STEVEDESKTOP_OFFLINE7, CLAUDE_STEVEDESKTOP_OFFLINE8))
+PASS  release --by CONDUCTOR records seat BENCH (BENCH)
+PASS  the digest reads the release file: one record, one malformed line counted ({'state': 'measured', 'malformed': 1})
+PASS  no release file yet: measured and empty, not UNMEASURED
+PASS  the daily digest shows the release: mod, stage, who; never its why text or its dollars, the page being token-blind (['- 11-20 03:13Z release FlowWorks at in_game by BENCH'])
+PASS  `releases` lists each release with its spend, amount and why for the Conductor (2026-11-20T03:13:24Z rel-87f72f0944c7 FlowWorks          in_game         read ≈10.0M weighted tokens, released ≈7.5M wei)
+PASS  nothing in the repo was written
+ALL PASS
+PASS  the settings: blind launches on, a positive cap, automatic cycles per visit within his CYCLE_LIMIT (True, 20, 3)
+PASS  cycle 1 owed but a deciding test is red: no judge; the item owing it is filed and ONE offline builder on it, whose brief names the certificate command at this gate (launched: DETACHED rm-detached-bench-fake-1; filed ['RIMMANDRAKE_GREEN_GIMMESOMESLACK_T_CORE_RED_DECIDER'])
+PASS  a deciding test edited after its recorded run: no judge, the tick starts the zero-token `certificate --run` itself (launched: STARTED rm-cert-rerun-t1; reruns [('GimmeSomeSlack', 'b90c83022294')])
+PASS  a deciding test edited after its recorded run: the next tick, the rerun running, still no judge and no second rerun (live)
+PASS  Gimme Some Slack, cycle 1 owed and nothing live: one judge launches (launched: filed RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_ONE_TESTS_FIRST; DETACHED rm-)
+PASS  the launch carries the settings' blind cap, opus and the blind-challenge brief
+PASS  the judge's item is filed once and its name passes namecheck (['RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_ONE_TESTS_FIRST'])
+PASS  while it is live: nothing more
+PASS  60 s after it ends: settling, nothing judged or launched
+PASS  it ended and wrote no record: stopped, a Needs Conductor line, no second try
+PASS  a cycle that ends with exit not met: a Needs Conductor line, nothing launched
+PASS  exit met: the steward's confirmation is named, the record is not advanced, nothing launched
+PASS  the Conductor opens cycle 2 in the same visit: the visit's one automatic cycle is spent, no launch (auto_spent)
+PASS  a hand-launched judge is live and has written nothing yet: no second cycle
+PASS  it ended a minute ago: settling, no second cycle
+PASS  it ended an hour ago and wrote no cycle folder: a Needs Conductor line, no second cycle
+PASS  a non-judge run RIMMANDRAKE_UNSTICK_DISPATCH_BLIND_CYCLES_WAITED_SIX_HOURS is no hand-launched blind cycle (would_launch)
+PASS  a non-judge run RIMMANDRAKE_BUILD_FLOWWORKS_RAIDER_PRESSURE_BLIND_FOUND_ZERO_HITS is no hand-launched blind cycle (would_launch)
+PASS  a non-judge run RIMMANDRAKE_FIX_DESIGNER_STALL_READING_BLIND_TO_CODEX_LANE is no hand-launched blind cycle (would_launch)
+PASS  _is_blind_item: a judge verb with BLIND is a blind run; any other verb, or no BLIND, is not
+PASS  it ended with its Exit still (pending): a Needs Conductor line, no second cycle
+PASS  blind launches off in the settings: nothing launches (blind_off)
+PASS  no blind cap: nothing launches (no_cap)
+PASS  the account pick holds role launches: nothing launches (account_hold)
+PASS  two live runs on other advancing mods: nothing launches (slots_full)
+PASS  a Conductor hold on stage 4+5: nothing launches (held)
+PASS  USD 45 spent at the blind challenge plus a USD 20 cap passes the 60 ceiling: nothing launches (ceiling)
+PASS  the blind ceiling pause names its release command (≈11.2M weighted tokens spent at Blind challenge, tests first (Stages 4 and 5) plus the next run's ≈5.0M weighted tokens cap passes the ≈15.0M weighted tokens ceiling; release it: python3 src/RimMandrake/rimflow/maturation_dispatch.py release GimmeSomeSlack --stage blind_challenge --read-tokens 11250000 --tokens 1250000 --why "...")
+PASS  a USD 5 release at the offline_build: the blind challenge stays paused (ceiling)
+PASS  a USD 5 release at the blind_challenge: the blind challenge launches once (launched)
+PASS  a finished blind run and a finished in-game run each write a spend row; the live one does not (['u-blind-1', 'u-ig-1'])
+PASS  the rows are landed, that file only ([['design/concepts/GimmeSomeSlack/version/run_spend.jsonl']])
+PASS  a second tick writes no second row and lands nothing
+PASS  maturation.py next counts them under their stages, each in its own unit ({'tokens': 'UNMEASURED', 'tokens_other': {'weighted_v1': 3013781}, 'unit': 'weighted_v2', 'usd': 12.5, 'wall_s': 3000, 'entries': 1, 'estimates': 0, 'unmeasured': 0})
+PASS  a mod not on the advancing list: no row, no launch
+PASS  a dry pass launches nothing
+PASS  a failed blind launch is void_system: no cycle spent, the next tick launches it (launch_failed, launched; faults 1)
+PASS  a blind launch that never started on a git lock (filed, publish stopped, not on origin/main): the next tick publishes again and launches the same item, one cycle in the book (launch_retry, launched; filed 1, book [(2, True)])
+PASS  the retried judge is live: nothing more
+PASS  three transient faults in a row: system_fault (OPS_MATURATION_SYSTEM_FAULT_LOOP) naming the count, no fourth try, and the cycle unspent (the book is empty, the entry void_system) (['launch_retry', 'launch_retry', 'launch_failed', 'system_fault']; OPS_MATURATION_SYSTEM_FAULT_LOOP: 3 system faults since the last clear (limit 3), the last)
+PASS  a transient fault, then a launch failure: neither spends the cycle, the third tick launches it (['launch_retry', 'launch_failed', 'launched'])
+PASS  the ingest lock busy at filing (nothing filed): the next tick files and launches (launch_retry, launched)
+PASS  an older record (no tries field, the failed text measured live) retries the same item without a clear (launched)
+PASS  a judge killed before it wrote a result (finish never ran): not stopped, the tick finishes it and starts its return, nothing launches yet (launched, launch_retry: blind cycle 1 was killed (its unit died with no result JSON and its finish never ran); this tick finishes it and starts )
+PASS  its return is still giving the clone back: wait, no second reap, no launch (launch_retry)
+PASS  the clone back: the same item relaunches as the same cycle, one book entry, try 2 (launched; book [(2, ['rm-detached-bench-fake-1'])])
+PASS  the relaunch's brief opens with the Resume section naming the killed run
+PASS  killed again and again: launch_tries (3) bound it, then stopped with a Needs Conductor line (launched, stopped)
+PASS  a half-written cycle: unfinished while its run reads as having ended by itself, resumed once it reads killed (cycle_unfinished, launched: retry 2 of RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_ONE_TESTS_FIRST, filed earlier; publish: PUB)
+PASS  launch_mod without resume still refuses the half-written cycle (REFUSED: GimmeSomeSlack owes no blind cycle: cycle 1 is recorded (design/concept)
+PASS  a judge that ended by itself and wrote no record still spends the cycle (stopped)
+PASS  a killed judge whose return KEPT its clone: stopped naming the return command (blind cycle 1 was killed (its unit died with no result JSON and its finish never ran) and its return)
+PASS  finish names a kill: by hand on a vanished unit, or a TERM exit with no result; a failure or its own time limit is not (killed: unknown (- -) | killed: exit-code (exited 143) | exit-code (exited 1) | timeout (killed TERM))
+PASS  detached_helper.killed: a TERM stop or a dead unit with no result JSON is a kill; a result written, a plain failure or a timeout is not
+PASS  killed_runs keeps only the ended blind or in-game runs read as killed (['u-k'])
+PASS  nothing under design/concepts in the repo was written
+ALL PASS
+PASS  land-views fixture: the peer shard is on origin
+     land_ledger -> PUBLISHED b67fcc8b253eba951eb27e4ad7760ff08474d95b
+PASS  land-views: origin's history view lists the peer HOLDER.L1 shard and the Dispatch's new grant
+PASS  land-views: origin's views are not VIEW_STALE (got [])
+PASS  land-views: the peer shard is still on origin
+PASS  land-views: no peer file was written untracked into the Dispatch root's worktree
+ALL PASS
+     land_ledger -> PUBLISHED 7c53657ecbf91b29e14ea2b786a1940eb6244df7; again: PUBLISHED abdafa7ba822d9a7c803b1890beaf4112e33b7ab
+PASS  land-race fixture: the peer line was pushed mid-race ([1, True])
+PASS  land-race: origin's history view lists the peer's mid-race line and the Dispatch's grant
+PASS  land-race: origin's views are not VIEW_STALE after the race (got [])
+PASS  land-race: no race, a ledger new to origin lands once (read PUBLISHED 8fcf63bc053bc5f50cf4652aa594fe3146b936ec)
+ALL PASS
+PASS  item names: ingame_item_id GimmeSomeSlack 1 gets four distinct names a rimflow file takes (['RIMMANDRAKE_DRIVE_GIMMESOMESLACK_IN_GAME_VISIT_ONE_RUN_TWO']; bad [])
+PASS  item names: every GimmeSomeSlack in-game name reads as an in-game run
+PASS  item names: blind_item_id GimmeSomeSlack 1 gets four distinct names a rimflow file takes (['RIMMANDRAKE_JUDGE_GIMMESOMESLACK_BLIND_CYCLE_ONE_RUN_TWO']; bad [])
+PASS  item names: ingame_item_id Contagion 2 gets four distinct names a rimflow file takes (['RIMMANDRAKE_DRIVE_CONTAGION_IN_GAME_VISIT_TWO_RUN_TWO']; bad [])
+PASS  item names: every Contagion in-game name reads as an in-game run
+PASS  item names: blind_item_id ExplosiveKnockback 3 gets four distinct names a rimflow file takes (['RIMMANDRAKE_JUDGE_EXPLOSIVEKNOCKBACK_BLIND_CYCLE_THREE_RUN_THREE']; bad [])
+PASS  item names: item_id ExplosiveKnockback 23 gets four distinct names a rimflow file takes (['RIMMANDRAKE_AUTOBUILD_EXPLOSIVEKNOCKBACK_BARS_LEFT_RUN_TWO']; bad [])
+PASS  item names: item_id Graffiti 4 gets four distinct names a rimflow file takes (['RIMMANDRAKE_AUTOBUILD_GRAFFITI_FOUR_BARS_LEFT_RUN_TWO']; bad [])
+PASS  never ran: a launch_failed record is not an in-game run that worked (['u-ran'])
+ALL PASS
+PASS  cert rerun: maturation_dispatch has stale_key, cert_rerun_unit, cert_rerun_worker and rerun_result
+PASS  cert rerun: stale stamps alone, no red decider, slots full (max_live 0): the tick owes one zero-token rerun (launch: its certificate refuses only stale stamps (2 decider(s) last run on an older build), no decider red: one zero-token `maturation.py certificate ExplosiveKnockback --run`, detached, for this build)
+PASS  cert rerun: execute starts exactly one rerun unit, files no item and briefs no builder ([('ExplosiveKnockback', '18d83bc3300f')]; []; launched)
+PASS  cert rerun: the run is booked against its build key ({'key': '18d83bc3300f', 'unit': 'rm-cert-rerun-1', 'at': 1794718800.0, 'failed': None, 'code': None, 'tries': 1})
+PASS  cert rerun: the next tick on the same build, the unit still running, launches nothing (live: certificate rerun rm-cert-rerun-1 (zero tokens) started 60 s ago on this build)
+PASS  cert rerun: it ended and the same build is still stale: never a second run, a Needs Conductor line naming it (certificate: ExplosiveKnockback: the move into the blind challenge: waiting on its certificate, which refuses (refused: 11 of 44 bars); nothing goes in until `maturation.py certificate ExplosiveKnockback --to blind_challenge` exits 0. Smallest fix: certificate --run; the zero-token certificate rerun rm-cert-rerun-1 on this build ended (ok False, published nothing, error: publish refused: hook), and the step never reruns the same build (`maturation_dispatch.py clear ExplosiveKnockback --why ...` lets it run once more))
+PASS  cert rerun: still none two hours later on that build (certificate)
+PASS  cert rerun: a new build (someone landed a change) gets its own one rerun (launch)
+PASS  cert rerun: the rerun itself left this build stale (a decider rewrites what it reads): no loop, a Needs Conductor line (certificate: ExplosiveKnockback: the move into the blind challenge: waiting on its certificate, which refuses (refused: 11 of 44 bars); nothing goes in until `maturation.py certificate ExplosiveKnockback --to blind_challenge` exits 0. Smallest fix: certificate --run; the certificate rerun rm-cert-rerun-2 left its own build stale (a decider that changes what it reads?), and the step never reruns the same build (`maturation_dispatch.py clear ExplosiveKnockback --why ...` lets it run once more))
+PASS  cert rerun: stale stamps beside a red decider stay cert_red_decide's builder (it reruns first)
+PASS  cert rerun: a refusal a rerun cannot pass (registered) is no rerun: the certificate wait stands
+PASS  cert rerun: nothing while a run is live on the mod
+PASS  cert rerun: a start refused on a defect is not retried on the same code (certificate)
+PASS  cert rerun: it is retried once the pipeline's code changed (launch)
+PASS  cert rerun: the autonomy layer leaves the rerun the tick's own launch (launch: its certificate refuses only stale stamps (2 decider(s) last run on an older build), no decider red: one zero-token `maturation.py certificate ExplosiveKnockback --run`, detached, for this build)
+PASS  cert rerun: an open road-back item gets its fixer before the rerun (fixer: road-back item RIMMANDRAKE_BREAK_X (of 1 open, caused by RIMMANDRAKE_STEWARD_X) gets one fixer run)
+PASS  cert rerun: the unit is a bounded systemd-run of `maturation_dispatch.py cert-rerun`, no claude (['systemd-run', '--user', '--quiet', '--collect', '-p', 'RuntimeMaxSec=14400', '-p', 'StandardOutput=append:/home/mandrake/.seat-tmp/BENCH/cert_rerun_6t9ej2c0/cert_rerun/ExplosiveKnockback.log', '-p', 'StandardError=append:/home/mandrake/.seat-tmp/BENCH/cert_rerun_6t9ej2c0/cert_rerun/ExplosiveKnockback.log', '--working-directory', '/home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIX_CONTROL_STORE_COUNTS_AND_TICK_PAUSES.det', '--setenv', 'PATH=/home/mandrake/.local/bin:/home/mandrake/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/WINDOWS/system32:/mnt/c/WINDOWS:/mnt/c/WINDOWS/System32/Wbem:/mnt/c/WINDOWS/System32/WindowsPowerShell/v1.0/:/mnt/c/WINDOWS/System32/OpenSSH/:/mnt/c/Program Files/NVIDIA Corporation/NVIDIA app/NvDLISR:/mnt/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/mnt/c/Program Files/dotnet/:/mnt/c/Program Files/Tailscale/:/mnt/c/Program Files/Git/cmd:/mnt/c/Program Files/GitHub CLI/:/mnt/c/Users/Mandrake/AppData/Local/Microsoft/WindowsApps:/mnt/d/Luke/dev/Ollama:/mnt/c/Users/Mandrake/.local/bin:/mnt/c/Users/Mandrake/.dotnet/tools:/mnt/c/Users/Mandrake/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-9.0.2-full_build/bin:/snap/bin:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Users/Default User/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/Default/AppData/Local/Microsoft/WindowsApps', '--setenv', 'RM_MATURATION_DISPATCH_DIR=/home/mandrake/.seat-tmp/BENCH/cert_rerun_6t9ej2c0', '--unit', 'rm-cert-rerun-explosiveknockback-1794718800', '-p', 'ExecCondition=/usr/bin/python3 -c \'import os,sys;a=sys.argv[1:];i=a.index(chr(45)*2);c=[x for x in a[:i] if os.path.isfile(x)];c or sys.exit(chr(10).join(["no stop-step script among:"]+a[:i]));os.execv(sys.executable,[sys.executable,c[0]]+a[i+1:])#detached_helper stop resolver\' /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIX_CONTROL_STORE_COUNTS_AND_TICK_PAUSES.det/src/RimMandrake/rimflow/control.py /home/mandrake/rm/bench/src/RimMandrake/rimflow/control.py -- condition run_rm-cert-rerun-explosiveknockback-1794718800 --db /home/mandrake/.seat-tmp/BENCH/rm-control-selftest/control-3746977.db', '-p', 'ExecStopPost=-/usr/bin/python3 -c \'import os,sys;a=sys.argv[1:];i=a.index(chr(45)*2);c=[x for x in a[:i] if os.path.isfile(x)];c or sys.exit(chr(10).join(["no stop-step script among:"]+a[:i]));os.execv(sys.executable,[sys.executable,c[0]]+a[i+1:])#detached_helper stop resolver\' /home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIX_CONTROL_STORE_COUNTS_AND_TICK_PAUSES.det/src/RimMandrake/rimflow/control.py /home/mandrake/rm/bench/src/RimMandrake/rimflow/control.py -- ended run_rm-cert-rerun-explosiveknockback-1794718800 --db /home/mandrake/.seat-tmp/BENCH/rm-control-selftest/control-3746977.db', '--', '/usr/bin/python3', '/home/mandrake/rm/relentless/clones/RIMMANDRAKE_FIX_CONTROL_STORE_COUNTS_AND_TICK_PAUSES.det/src/RimMandrake/rimflow/maturation_dispatch.py', 'cert-rerun', 'ExplosiveKnockback', '--key', '18d83bc3300f', '--unit', 'rm-cert-rerun-explosiveknockback-1794718800'])
+PASS  cert rerun: the worker runs `certificate --run` and publishes the table by path ([['/usr/bin/python3', 'src/RimMandrake/rimflow/maturation.py', 'certificate', 'ExplosiveKnockback', '--run', '--resume', '--json'], ['git', 'status', '--porcelain', '--', 'design/concepts/ExplosiveKnockback/version/test_table.json'], ['./publish', '-m', 'maturation: ExplosiveKnockback certificate rerun on its build (dispatch, zero tokens)', 'design/concepts/ExplosiveKnockback/version/test_table.json']])
+PASS  cert rerun: the result the tick reads names the unit, the key, the sha and the key after ({'mod': 'ExplosiveKnockback', 'unit': 'rm-cert-rerun-1', 'key': '18d83bc3300f', 'at': 1794718800.0, 'ok': True, 'key_after': None, 'published': '0123abcd', 'error': None, 'clone': '/home/mandrake/.seat-tmp/BENCH/cert_rerun_6t9ej2c0/clone', 'ran': {'ran': 2}, 'end': 1794718800.0})
+ALL PASS
+PASS  cert rerun gates (in_game, account True): stale stamps alone at in-game visit 2, slots full (max_live 0): one zero-token rerun is owed, read 1 mod (launch: its certificate refuses only stale stamps (5 decider(s) last run on an older build), no decider red: one zero-token `maturation.py certificate GimmeSomeSlack --run`, detached, for this build)
+PASS  cert rerun gates (in_game, account False): stale stamps alone at in-game visit 2, slots full (max_live 0): one zero-token rerun is owed, read 1 mod (launch: its certificate refuses only stale stamps (5 decider(s) last run on an older build), no decider red: one zero-token `maturation.py certificate GimmeSomeSlack --run`, detached, for this build)
+PASS  cert rerun gates (in_game): the rerun takes no run slot and no game (None)
+PASS  cert rerun gates (in_game): execute starts exactly one rerun unit and nothing else ([('GimmeSomeSlack', '4451b47597c6')]; []; launched)
+PASS  cert rerun gates (in_game): the next tick, the unit still running, launches nothing (live: certificate rerun rm-cert-rerun-1 (zero tokens) started 60 s ago on this build)
+PASS  cert rerun gates (in_game): the probe's new build moves the stale key
+PASS  cert rerun gates (in_game): a new build while the rerun is live launches no second rerun (live: certificate rerun rm-cert-rerun-1 (zero tokens) started 120 s ago on an older build; this build reruns after it)
+PASS  cert rerun gates (in_game): once it ended, the new build gets its own one rerun (launch: its certificate refuses only stale stamps (5 decider(s) last run on an older build), no decider red: one zero-token `maturation.py certificate GimmeSomeSlack --run`, detached, for this build)
+PASS  cert rerun gates (in_game): it ended and the build is still stale: never a second run, a Needs Conductor line naming the unit and the in-game visit 2 gate (certificate: GimmeSomeSlack: in-game visit 2: waiting on its certificate, which refuses (refused: 5 of 5 bars (bar_t_cord_geometry_offline, bar_t_core, bar_t_no_hose, bar_t_settings_sweep_offline, bar_t_shock_rule_offline); ran_on_this_build T_CORD_GEOMETRY_OFFLINE, T_CORE, T_NO_HOSE, T_SETTINGS_SWEEP_OFFLINE, T)
+PASS  cert rerun gates (in_game): a red decider beside the stale stamps is no rerun: the red route, queued at max_live 0 (slots_full)
+PASS  cert rerun gates (in_game): nothing while a run is live on the mod
+PASS  cert rerun gates (in_game): the autonomy layer leaves the rerun the tick's own launch (launch: its certificate refuses only stale stamps (5 decider(s) last run on an older build), no decider red: one zero-token `maturation.py certificate GimmeSomeSlack --run`, detached, for this build)
+PASS  cert rerun gates (blind_challenge, account True): stale stamps alone at blind cycle 2, slots full (max_live 0): one zero-token rerun is owed, read 1 mod (launch: its certificate refuses only stale stamps (5 decider(s) last run on an older build), no decider red: one zero-token `maturation.py certificate GimmeSomeSlack --run`, detached, for this build)
+PASS  cert rerun gates (blind_challenge, account False): stale stamps alone at blind cycle 2, slots full (max_live 0): one zero-token rerun is owed, read 1 mod (launch: its certificate refuses only stale stamps (5 decider(s) last run on an older build), no decider red: one zero-token `maturation.py certificate GimmeSomeSlack --run`, detached, for this build)
+PASS  cert rerun gates (blind_challenge): the rerun takes no run slot and no game (None)
+PASS  cert rerun gates (blind_challenge): execute starts exactly one rerun unit and nothing else ([('GimmeSomeSlack', '4451b47597c6')]; []; launched)
+PASS  cert rerun gates (blind_challenge): the next tick, the unit still running, launches nothing (live: certificate rerun rm-cert-rerun-1 (zero tokens) started 60 s ago on this build)
+PASS  cert rerun gates (blind_challenge): the probe's new build moves the stale key
+PASS  cert rerun gates (blind_challenge): a new build while the rerun is live launches no second rerun (live: certificate rerun rm-cert-rerun-1 (zero tokens) started 120 s ago on an older build; this build reruns after it)
+PASS  cert rerun gates (blind_challenge): once it ended, the new build gets its own one rerun (launch: its certificate refuses only stale stamps (5 decider(s) last run on an older build), no decider red: one zero-token `maturation.py certificate GimmeSomeSlack --run`, detached, for this build)
+PASS  cert rerun gates (blind_challenge): it ended and the build is still stale: never a second run, a Needs Conductor line naming the unit and the blind cycle 2 gate (certificate: GimmeSomeSlack: blind cycle 2: waiting on its certificate, which refuses (refused: 5 of 5 bars (bar_t_cord_geometry_offline, bar_t_core, bar_t_no_hose, bar_t_settings_sweep_offline, bar_t_shock_rule_offline); ran_on_this_build T_CORD_GEOMETRY_OFFLINE, T_CORE, T_NO_HOSE, T_SETTINGS_SWEEP_OFFLINE, T_S)
+PASS  cert rerun gates (blind_challenge): a red decider beside the stale stamps is no rerun: the red route, queued at max_live 0 (slots_full)
+PASS  cert rerun gates (blind_challenge): nothing while a run is live on the mod
+PASS  cert rerun gates (blind_challenge): the autonomy layer leaves the rerun the tick's own launch (launch: its certificate refuses only stale stamps (5 decider(s) last run on an older build), no decider red: one zero-token `maturation.py certificate GimmeSomeSlack --run`, detached, for this build)
+FAIL  cert rerun gates: at max_live 1 on one game, the rerun ahead spends neither, the next mod's visit launches ([('GimmeSomeSlack', 'launch', True), ('Twin', 'bridge_held', False)])
+cert rerun gates: 1 checks failed of the cases read (2 gates x 12 + 1)
+PASS  cert red gates (in-game visit 2, a red decider alone): one launch on the red route, a run slot and no game (launch: its certificate refuses 1 red decider(s) (T_STUB_ART_CENSUS) and nothing is live on it: the item owing each and one builder on them (ok))
+PASS  cert red gates (in-game visit 2, a red decider alone): the open item under the route's own name gets ONE builder, nothing filed, its brief names the --run rerun and the gate (filed [], briefs 1, other [], launched)
+PASS  cert red gates (in-game visit 2, a red decider alone): booked as offline_build spend at the offline cap ({'unit': 'rm-cert-red-1', 'item': 'RIMMANDRAKE_GREEN_GIMMESOMESLACK_T_STUB_ART_CENSUS_RED_DECIDER', 'at': 1794718800.0, 'cap': 15, 'stage': 'offline_build', 'cert_reds': ['T_STUB_ART_CENSUS']})
+PASS  cert red gates (in-game visit 2, a red decider alone): its unit live: live, no launch (live)
+PASS  cert red gates (in-game visit 2, a red decider alone): ended with the same reds: stopped, a Needs Conductor line, no second try (stopped)
+PASS  cert red gates (in-game visit 2, a red decider beside stale stamps): one launch on the red route, a run slot and no game (launch: its certificate refuses 1 red decider(s) (T_STUB_ART_CENSUS) and nothing is live on it: the item owing each and one builder on them (ok))
+PASS  cert red gates (in-game visit 2, a red decider beside stale stamps): the open item under the route's own name gets ONE builder, nothing filed, its brief names the --run rerun and the gate (filed [], briefs 1, other [], launched)
+PASS  cert red gates (in-game visit 2, a red decider beside stale stamps): booked as offline_build spend at the offline cap ({'unit': 'rm-cert-red-1', 'item': 'RIMMANDRAKE_GREEN_GIMMESOMESLACK_T_STUB_ART_CENSUS_RED_DECIDER', 'at': 1794718800.0, 'cap': 15, 'stage': 'offline_build', 'cert_reds': ['T_STUB_ART_CENSUS']})
+PASS  cert red gates (in-game visit 2, a red decider beside stale stamps): its unit live: live, no launch (live)
+PASS  cert red gates (in-game visit 2, a red decider beside stale stamps): ended with the same reds: stopped, a Needs Conductor line, no second try (stopped)
+PASS  cert red gates (in-game visit 2): slot taken by a live run: slots_full, queued for the offline builder on T_STUB_ART_CENSUS, never a certificate wait (slots_full; waits on a free slot for one offline builder on red deciders T_STUB_ART_CENSUS (the road back to the offline build, from in-game visit 2))
+PASS  cert red gates (in-game visit 2): the autonomy layer reads it as a named wait on the offline builder (waiting on a free slot for one offline builder on red deciders T_STUB_ART_CENSUS (the road back to the offline build, from in-game visit 2))
+FAIL  cert red gates (in-game visit 2): slot taken by an earlier mod on the list: slots_full, queued for the offline builder behind Twin (['GimmeSomeSlack']; launch; waits on None)
+PASS  cert red gates (in-game visit 2): stale stamps alone: the zero-token rerun, no red route (launch)
+PASS  cert red gates (in-game visit 2): a held mod: held, no red route (held)
+PASS  cert red gates (in-game visit 2): a paused mod (coverage stop): paused, nothing filed or launched (coverage_stop; [])
+PASS  cert red gates (blind cycle 2, a red decider alone): one launch on the red route, a run slot and no game (launch: its certificate refuses 1 red decider(s) (T_STUB_ART_CENSUS) and nothing is live on it: the item owing each and one builder on them (ok))
+PASS  cert red gates (blind cycle 2, a red decider alone): the open item under the route's own name gets ONE builder, nothing filed, its brief names the --run rerun and the gate (filed [], briefs 1, other [], launched)
+PASS  cert red gates (blind cycle 2, a red decider alone): booked as offline_build spend at the offline cap ({'unit': 'rm-cert-red-1', 'item': 'RIMMANDRAKE_GREEN_GIMMESOMESLACK_T_STUB_ART_CENSUS_RED_DECIDER', 'at': 1794718800.0, 'cap': 15, 'stage': 'offline_build', 'cert_reds': ['T_STUB_ART_CENSUS']})
+PASS  cert red gates (blind cycle 2, a red decider alone): its unit live: live, no launch (live)
+PASS  cert red gates (blind cycle 2, a red decider alone): ended with the same reds: stopped, a Needs Conductor line, no second try (stopped)
+PASS  cert red gates (blind cycle 2, a red decider beside stale stamps): one launch on the red route, a run slot and no game (launch: its certificate refuses 1 red decider(s) (T_STUB_ART_CENSUS) and nothing is live on it: the item owing each and one builder on them (ok))
+PASS  cert red gates (blind cycle 2, a red decider beside stale stamps): the open item under the route's own name gets ONE builder, nothing filed, its brief names the --run rerun and the gate (filed [], briefs 1, other [], launched)
+PASS  cert red gates (blind cycle 2, a red decider beside stale stamps): booked as offline_build spend at the offline cap ({'unit': 'rm-cert-red-1', 'item': 'RIMMANDRAKE_GREEN_GIMMESOMESLACK_T_STUB_ART_CENSUS_RED_DECIDER', 'at': 1794718800.0, 'cap': 15, 'stage': 'offline_build', 'cert_reds': ['T_STUB_ART_CENSUS']})
+PASS  cert red gates (blind cycle 2, a red decider beside stale stamps): its unit live: live, no launch (live)
+PASS  cert red gates (blind cycle 2, a red decider beside stale stamps): ended with the same reds: stopped, a Needs Conductor line, no second try (stopped)
+PASS  cert red gates (blind cycle 2): slot taken by a live run: slots_full, queued for the offline builder on T_STUB_ART_CENSUS, never a certificate wait (slots_full; waits on a free slot for one offline builder on red deciders T_STUB_ART_CENSUS (the road back to the offline build, from blind cycle 2))
+PASS  cert red gates (blind cycle 2): the autonomy layer reads it as a named wait on the offline builder (waiting on a free slot for one offline builder on red deciders T_STUB_ART_CENSUS (the road back to the offline build, from blind cycle 2))
+PASS  cert red gates (blind cycle 2): slot taken by an earlier mod on the list: slots_full, queued for the offline builder behind Twin (['Twin']; slots_full; waits on a free slot for one offline builder on red deciders T_STUB_ART_CENSUS (the road back to the offline build, from blind cycle 2) (launch priority: Twin first))
+PASS  cert red gates (blind cycle 2): stale stamps alone: the zero-token rerun, no red route (launch)
+PASS  cert red gates (blind cycle 2): a held mod: held, no red route (held)
+PASS  cert red gates (blind cycle 2): a paused mod (coverage stop): paused, nothing filed or launched (coverage_stop; [])
+FAIL  cert red gates: on one game, the builder ahead holds no game and the next mod's visit launches ([('GimmeSomeSlack', 'launch', True, None), ('Twin', 'bridge_held', False, None)])
+cert red gates: 2 checks failed of 15 cases read (2 gates x 7 + 1)
+PASS  a run that started on its third LAUNCH try and was then killed is retried: launch faults are not kills
+PASS  a run killed for the third time is not retried (launch_tries still bounds the kills)
+PASS  a run that ended by itself with no record is not retried
+PASS  the in-game brief: a staged owner look is a kept save, never a reason to hold or wait on the game
+PASS  clear releases a started automatic run that has ENDED (the derived stop), keeps a live one (['u-live'])
+PASS  clear names the ended run it released, never 'was: not stopped' (CLEARED X (was: the automatic run(s) rm-detached-bench-drive-x-in-game-1 ended and wrote no record; released 0 steward, 0 fixer key(s), 1 blind/in-game launch(es) that never started or ended with no r)
+2 failed
+== launch priority across layers (max_live 1) ==
+PASS  priority: P first owes a fixer, G second owes a decide launch: P's fixer gets the one slot, G waits (read launches ['P'], P fixer, G slots_full)
+PASS  priority: G's wait names the mod ahead of it (read a free slot (launch priority: P first))
+PASS  priority: with G first, G keeps the slot and P's fixer waits (read ['G'], P slots_full)
+PASS  priority: one run already live: neither launches (read [], P slots_full, G slots_full)
+PASS  priority: P settling (its run ended under settle_s ago) keeps the slot from G (read [], G slots_full)
+PASS  priority: G's zero-token certificate rerun takes no slot and still launches (read ['G', 'P'])
+PASS  priority: P's pilot holder beats G's later launch (read ['P'], P launch, G slots_full)
+2 failed
+PASS  ledger reader: no ledger folder is UNMEASURED (None), never zero endings
+PASS  ledger reader: X has 2 endings since its sitting (one per run, the hand note counted), Y none, Z unasked (read {'X': {'sat': 200, 'ends': [{'tsn': 300, 'unit': 'u1'}, {'tsn': 400, 'unit': None}]}, 'Y': {'sat': 0, 'ends': []}})
+PASS  the count is Relentless's own pilot_after_live_fails (2), no new key
+PASS  1 live ending(s), fewer than 2: the item gets its fixer, not a sitting (read fixer)
+PASS  1 ending(s) and its fixer spent: fixer_spent as before (read fixer_spent)
+PASS  2 live endings since the last sitting: the tick's next run on it is a Test Pilot sitting (read pilot, FIX_ME|pilot|1794716201000000000, ['M'])
+PASS  the sitting comes first even when no fixer ran yet (hand runs ended it 2 times; read pilot)
+PASS  at an offline stage a live item gets no run, never a sitting (read game_only)
+PASS  an item that needs no live game never goes to a sitting (read fixer_spent)
+PASS  an unreadable ledger: no sitting, the step named UNMEASURED, the fixer path as before (read fixer_spent, UNMEASURED: the ledger cannot be read for the LEFT OPEN endings)
+PASS  the sitting launches on the item with the pilot model claude-fable-5-2 (read FIX_ME, claude-fable-5-2)
+PASS  the sitting's brief makes the run the Test Pilot itself, ending on a TESTPILOT_SAT note
+PASS  the sitting is booked under its own key, the fixer's entry untouched (['FIX_ME', 'FIX_ME|pilot|1794716201000000000'])
+PASS  after the sitting, its own LEFT OPEN and the endings before it count nothing (read fixer_spent)
+PASS  2 fresh endings after the sitting: another sitting, a new key (read pilot, FIX_ME|pilot|1794718921000000000)
+PASS  a killed sitting (moved out of the book by the void rule) is no sitting: the same one is retried
+PASS  a sitting whose launch never started is retried under the same key (read pilot, FIX_ME|pilot|1794716201000000000)
+PASS  pilot_after_live_fails 0 turns the step off (read fixer_spent)
+PASS  an unreadable shard is UNMEASURED (None), never a crash or a partial count (read None)
+2 failed
+PASS  the settings as shipped: in-game launches a bool (the Conductor ran the first by hand), a positive cap, at least one automatic run per visit, opus (True, 30, 1)
+PASS  off (ingame_enabled false), visit 1 owed: no launch, the bridge not even asked, a Needs Conductor line saying run it by hand
+PASS  on, visit 1 owed, a deciding test red: no live driver, the bridge not even asked; the item owing it is filed and ONE offline builder on it, whose brief names `certificate Pyrelands --to in_game`
+PASS  a stale companion refuses the visit: launch_failed naming it, no driver started (the stand-in can say no, so it is not a bypass)
+PASS  on, visit 1 owed, the bridge takeable: one live driver launches (the cap, opus, the in-game brief)
+PASS  its item is filed once, needs game-up, passes namecheck and reads as an in-game run
+PASS  rimflow's RUNNER spawn rule admits the in-game item as file_and_publish spawns it
+PASS  this launcher's own build item is not an in-game run (a bare IN_GAME is not enough)
+PASS  while it is live: nothing more
+PASS  60 s after it ends: settling, nothing read or launched
+PASS  it ended and wrote no record: stopped, a Needs Conductor line, no second try
+PASS  a visit that ends with exit not met: a Needs Conductor line, nothing launched
+PASS  exit met: the steward's confirmation is named, the record is not advanced, nothing launched
+PASS  a visit record with no exit block and nothing live: a Needs Conductor line, no launch
+PASS  the bridge not takeable (another live driver): bridge_held, nothing filed or launched
+PASS  a held bridge spends nothing: the next tick with it free launches
+PASS  an in-game run live on another mod: driver_busy, one live-game driver at a time, bridge not asked
+PASS  two mods owed a visit in one tick: the first launches, the second waits (driver_busy)
+PASS  a hand-launched in-game run that ended with no record: a Needs Conductor line, no launch
+PASS  no cap, an account hold, max_live reached, a dry pass: nothing launches
+PASS  a failed in-game launch is void_system: it spends no run of the visit, the next tick launches it
+CLEARED Pyrelands (was: not stopped; released 0 steward, 0 fixer key(s), 0 blind/in-game launch(es) that never started or ended with no record)
+This is a hand act on the pipeline (id clear-Pyrelands-1795144446): the tick records it, and one with no follow-up within a day alarms. Name the item that makes this hand unnecessary in --why, or `maturation_hands.py fold <id> --item <ID>` once it is filed.
+CLEARED Pyrelands (was: not stopped; released 0 steward, 0 fixer key(s), 0 blind/in-game launch(es) that never started or ended with no record)
+This is a hand act on the pipeline (id clear-Pyrelands-1795144447): the tick records it, and one with no follow-up within a day alarms. Name the item that makes this hand unnecessary in --why, or `maturation_hands.py fold <id> --item <ID>` once it is filed.
+PASS  an in-game launch refused at the spawn is void_system: the next tick launches with no clear; a started run survives a clear
+PASS  an in-game launch that never started on a git lock: the next tick publishes again and launches the same item, one run in the book
+PASS  three transient in-game launch faults in a row: system_fault naming the count, no fourth try, the visit's run unspent
+PASS  nothing under design/concepts in the repo was written
+2 failed

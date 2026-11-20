@@ -1,0 +1,51 @@
+contained in rm-harness.slice (max 24G), 6 workers
+[1/20] PASS          1.0s  src/RimMandrake/rimflow/selftest_tick_pauses.py
+[2/20] PASS          4.9s  src/RimMandrake/rimflow/selftest_role_launch_decide_mut.py
+[3/20] PASS          7.0s  src/RimMandrake/rimflow/selftest_void_counters.py
+[4/20] PASS          7.0s  src/RimMandrake/rimflow/selftest_designer_cleanse.py
+[5/20] PASS          1.0s  src/RimMandrake/rimflow/selftest_judge_gates_designer_close.py
+[6/20] PASS          2.2s  src/RimMandrake/rimflow/selftest_detached_reap.py
+[7/20] PASS          1.3s  src/RimMandrake/rimflow/selftest_launch_checks.py
+[8/20] PASS          0.9s  src/RimMandrake/rimflow/selftest_incident_clerk.py
+[9/20] PASS          1.6s  src/RimMandrake/rimflow/selftest_role_launch_cause_book_harden.py
+[10/20] PASS          0.4s  src/RimMandrake/rimflow/selftest_incident_news.py
+[11/20] PASS          0.4s  src/RimMandrake/rimflow/selftest_maturation_dispatch_reads.py
+[12/20] PASS          2.2s  src/RimMandrake/rimflow/selftest_role_launch_props.py
+[13/20] PASS          0.5s  src/RimMandrake/rimflow/selftest_stage_ceiling_arrival.py
+[14/20] PASS          0.3s  src/RimMandrake/rimflow/selftest_failed_before_reads.py
+[15/20] PASS          0.6s  src/RimMandrake/rimflow/selftest_role_launch.py
+[16/20] PASS          0.7s  src/RimMandrake/rimflow/selftest_role_launch_reject_routes.py
+[17/20] PASS          0.4s  src/RimMandrake/rimflow/selftest_role_launch_floor_names.py
+[18/20] PASS         19.7s  src/RimMandrake/rimflow/selftest_mod_model_pin.py
+[19/20] PASS         73.6s  src/RimMandrake/rimflow/selftest_maturation_autonomy.py
+[20/20] PASS         97.4s  src/RimMandrake/rimflow/selftest_maturation_dispatch.py
+evidence: 0 eligible, 0 SKIPPED as unchanged, 0 PASS recorded, 0 PASS not recordable — runner 5785dd174c6d727f
+cache: 0 CACHED PASS, 0 declared test(s) ran
+known results: 0/20 answered from the ledger (selftests.cache_hit_share 0.000), 0s not spent; 20 ran, 0 recorded, 0 checked against a stored PASS, 0 known red
+  ran (20): no record
+  not recordable (11): clock: src/RimMandrake/rimflow/selftest_detached_reap.py, src/RimMandrake/rimflow/selftest_failed_before_reads.py, src/RimMandrake/rimflow/selftest_incident_clerk.py, src/RimMandrake/rimflow/selftest_incident_news.py ...
+  not recordable (7): changed during the run: src/RimMandrake/rimflow/selftest_designer_cleanse.py, src/RimMandrake/rimflow/selftest_maturation_autonomy.py, src/RimMandrake/rimflow/selftest_maturation_dispatch.py, src/RimMandrake/rimflow/selftest_mod_model_pin.py ...
+  not recordable (2): external: src/RimMandrake/rimflow/selftest_maturation_dispatch_reads.py, src/RimMandrake/rimflow/selftest_stage_ceiling_arrival.py
+PASS          7.0s  src/RimMandrake/rimflow/selftest_designer_cleanse.py
+PASS          2.2s  src/RimMandrake/rimflow/selftest_detached_reap.py
+PASS          0.3s  src/RimMandrake/rimflow/selftest_failed_before_reads.py
+PASS          0.9s  src/RimMandrake/rimflow/selftest_incident_clerk.py
+PASS          0.4s  src/RimMandrake/rimflow/selftest_incident_news.py
+PASS          1.0s  src/RimMandrake/rimflow/selftest_judge_gates_designer_close.py
+PASS          1.3s  src/RimMandrake/rimflow/selftest_launch_checks.py
+PASS         73.6s  src/RimMandrake/rimflow/selftest_maturation_autonomy.py
+PASS         97.4s  src/RimMandrake/rimflow/selftest_maturation_dispatch.py
+PASS          0.4s  src/RimMandrake/rimflow/selftest_maturation_dispatch_reads.py
+PASS         19.7s  src/RimMandrake/rimflow/selftest_mod_model_pin.py
+PASS          0.6s  src/RimMandrake/rimflow/selftest_role_launch.py
+PASS          1.6s  src/RimMandrake/rimflow/selftest_role_launch_cause_book_harden.py
+PASS          4.9s  src/RimMandrake/rimflow/selftest_role_launch_decide_mut.py
+PASS          0.4s  src/RimMandrake/rimflow/selftest_role_launch_floor_names.py
+PASS          2.2s  src/RimMandrake/rimflow/selftest_role_launch_props.py
+PASS          0.7s  src/RimMandrake/rimflow/selftest_role_launch_reject_routes.py
+PASS          0.5s  src/RimMandrake/rimflow/selftest_stage_ceiling_arrival.py
+PASS          1.0s  src/RimMandrake/rimflow/selftest_tick_pauses.py
+PASS          7.0s  src/RimMandrake/rimflow/selftest_void_counters.py
+
+PASS 20/20  FAIL 0/20  UNMEASURED 0/20  CRASH 0/20  SKIPPED 0/20  (wall 99.2s) — contained in rm-harness.slice (max 24G), 6 workers
+RESULT: GREEN (green = FAIL 0 and CRASH 0)
