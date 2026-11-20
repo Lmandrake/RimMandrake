@@ -238,11 +238,12 @@ its first script (`debug_process.md` §2).
 - For a restart that you call yourself, run `./game --why "<your reason>" <state>`. Never use `--said` for it.
 - Ledger provenance takes one field per kind of authority: CLAUDE.md "Owner authority on the ledger".
 - Never infer the game state. In any window, bare `./game` measures the state and corrects the ledger.
-- `broadcast.py` is his, with that single carve-out: a seat may relay a game state with `./game`. The carve-out is
+- `broadcast.py` is his and the Conductor's (owner 2026-11-19). No other seat or helper runs it, with that single
+  carve-out: a seat may relay a game state with `./game`. The carve-out is
   STAMP-ONLY (owner, 2026-09-29). A seat's relay writes the ledger and messages no window. Peers read the state from
   `rimflow next`, which measures the game itself.
 - The bridge has one driver at a time: `rimflow bridge take` / `release`. CLAUDE.md's "The bridge is passed through one
-  file" is canonical. A free bridge is takeable, and his machine use gates nothing. Never fly a flyer on the bridge
+  file" is canonical. A free bridge is takeable, and his machine use gates nothing. Never run a flyer's flight
   (`delegation_policy.md` §2.1).
 - Config files (`ModsConfig.xml` included) never wait for RimSort or the game. Only assemblies need the game down (OS
   lock).

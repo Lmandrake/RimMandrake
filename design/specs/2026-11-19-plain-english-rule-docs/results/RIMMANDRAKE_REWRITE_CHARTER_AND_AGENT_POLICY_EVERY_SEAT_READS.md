@@ -7,9 +7,9 @@ Batch 3 of `batch_plan.md`. Base commit `d4d5729aeb`. Files: `infrastructure/age
 
 | measure | CHARTER before | CHARTER after | Agent_Policy before | Agent_Policy after |
 |---|---|---|---|---|
-| bytes | 15,405 | 16,894 | 21,688 | 23,022 |
-| words in linted prose | 2,193 | 2,479 | 2,756 | 2,914 |
-| STE violations per 100 words | 4.10 | 2.14 | 4.32 | 2.44 |
+| bytes | 15,405 | 16,963 | 21,688 | 23,026 |
+| words in linted prose | 2,193 | 2,489 | 2,756 | 2,915 |
+| STE violations per 100 words | 4.10 | 2.13 | 4.32 | 2.44 |
 | sentences over 20 words | 37 | 8 | 50 | 17 |
 | flagged lines (mechanical) | 8 | 8 | 10 | 7 |
 | lines that a cold reader cannot act on (hand count, by the writer) | 15 | 4 | 12 | 5 |
@@ -83,6 +83,9 @@ Agent_Policy (17):
    confirmed the fix from `git log -p`.
 3. **Agent_Policy, "(folded in 2026-10-01; see below)".** The "see below" target was a Haiku note that a later edit
    removed. The line now names the event instead.
+4. **CHARTER, "`broadcast.py` is his".** `design/RimMandrake/standing_rulings.md` §The bridge (owner 2026-11-19)
+   says that `broadcast.py` is the owner's tool and the Conductor's, and that no other seat or helper runs it. The
+   repair-check reader found the old line out of date. The line now says so.
 
 ## The checks
 
@@ -152,8 +155,15 @@ Agent_Policy: 6 findings.
 | "The routing axis (the one question ...)" invented a meaning | restored the old sentence; listed under "could not determine" |
 | 5.2M and 11.2M read as day totals | "per closed item" added to each |
 
-The writer re-ran both checks, the lint and the tests after the repairs. A second meaning read of the repairs did not
-run.
+The writer re-ran both checks, the lint and the tests after the repairs. Then a second fresh Opus per file checked the
+repairs and read the whole file again:
+
+- CHARTER: the four repairs ok. 1 new finding: "Never fly a flyer on the bridge" narrowed the old "never flyer
+  flight". Repair: "Never run a flyer's flight". It also found the out-of-date `broadcast.py` line (error 4).
+- Agent_Policy: the four repairs ok, 0 findings. One borderline point: the one-hour alarm in its own sentence could
+  read wider than the old clause. Repair: the alarm joins the two-helper clause again, as in the old text.
+
+No third read checked those last two repairs.
 
 ## Conflicts (listed, not picked)
 
@@ -195,7 +205,7 @@ run.
 ## What this batch did not test
 
 - No agent read the new text and acted on it. No measurement shows that an agent behaves better after the rewrite.
-- A second meaning read of the repairs did not run.
+- No reader checked the last three repairs (the flyer line, the `broadcast.py` line, the alarm clause).
 - `selftest_dispatcher.py` did not run. It cites Agent_Policy by name but reads the schedule, not the file.
 - The `rule_doc_lint.py` blind area above is not fixed in the tool. It is filed as
   `RIMMANDRAKE_FIX_KEEP_CHECK_MISPAIRS_BACKTICKS_ON_CHARTER`, with its acceptance test (watched to fail on the base).

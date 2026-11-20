@@ -104,7 +104,7 @@ here.
 
 - **Unattended seats: at most 3 helpers per seat** (the allocator's limit).
 - **The Conductor window has no helper limit only for work started within 20 min of the owner's last typed message.**
-  After that, the limit is two helpers. A helper that runs over an hour raises an alarm. Owner: "...only for work
+  After that, the limit is two helpers, and a helper that runs over an hour raises an alarm. Owner: "...only for work
   started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents
   only." To measure helper use, run `python3 src/RimMandrake/Utils/token_census.py --since <UTC>`.
 - **Worktrees are OFF:** never pass `isolation: "worktree"` (`block_worktrees.py` refuses it).
