@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "GimmeSomeSlack",
   "version": "0.1.0",
-  "stage": "his_walk",
-  "stage_label": "His live walk (Stage 8)",
-  "since": "2026-11-20T09:13:41-08:00",
-  "since_from": "advance by BENCH",
+  "stage": "passed",
+  "stage_label": "Version passed (Passed)",
+  "since": "2026-11-20T15:33:19-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -241,6 +241,26 @@
         "version",
         "hold",
         "walk_brief"
+      ]
+    },
+    {
+      "from": "his_walk",
+      "to": "passed",
+      "at": "2026-11-20T15:33:19-08:00",
+      "by": "CONDUCTOR",
+      "why": "his walk of 2026-11-20 on save GSS_VISIT3_WALK_20261120, full 315-mod list, build 345366aa49; he passed 0.1.0 by card (Pass now, fixes are 0.1.1); his verdict words are event OWNER:1795217435873952971, his card answer OWNER:1795217553611770372",
+      "unit": null,
+      "confirmed": {
+        "owner_said": "OWNER:1795217553611770372"
+      },
+      "checks_passed": [
+        "order",
+        "by",
+        "version",
+        "hold",
+        "owner_said",
+        "walk_build",
+        "pass_record_new"
       ]
     }
   ],
