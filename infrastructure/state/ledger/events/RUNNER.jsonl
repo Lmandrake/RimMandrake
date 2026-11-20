@@ -9015,3 +9015,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC_XKGA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T02:52:16Z","tsn":1795143136266046539}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-20T02:53:27Z","tsn":1795143207963538881}
 {"seat":"RUNNER","event":"raise","id":"OPS_TIMER_REPAIR_PRXC_XKGA","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T02:53:33Z","tsn":1795143213674231865}
+{"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-20T02:54:52Z","tsn":1795143292928796590}
