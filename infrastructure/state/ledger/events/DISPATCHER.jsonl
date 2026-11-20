@@ -2114,3 +2114,4 @@
 {"seat":"DISPATCHER","event":"note","id":"OPS_GAME_HEALTH_DEBUG_PXQI","text":"dispatcher role_done Operations: Operations alarm run rm-role-operations-1795154446 done: 68857 weighted tokens of a 480000 budget (raw 740773), model claude-sonnet-5-5, success","ts":"2026-11-20T06:03:16Z","tsn":1795154596778340395}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: completed","ts":"2026-11-20T06:05:43Z","tsn":1795154743910582388}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: launched","ts":"2026-11-20T06:20:05Z","tsn":1795155605026633166}
+{"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Conductor quick run: completed","ts":"2026-11-20T06:25:05Z","tsn":1795155905956835128}
