@@ -85,7 +85,8 @@ def kv_of(text):
 
 def vacuous(text, kv):
     """-> why the read cannot judge anything (no map, no engine, no pit cell), or None. A REFUSED "nothing drawn" over a
-    dug cell is not vacuous: the planned thing is drawn whole over the liquid (judge_covered's FAIL)."""
+    dug cell is not vacuous: when a presence read finds the planned thing there (judge_absent), it is drawn whole over
+    the liquid (judge_covered's FAIL)."""
     t = str(text or "")
     if t.startswith("REFUSED"):
         if "nothing drawn" not in t or "(depth=0 " in t:
@@ -221,8 +222,37 @@ def plan_rows(plan):
 WANT_KIND = {"furn": "building", "item": "item", "mini": "minified", "corpse": "corpse"}
 
 
-def judge_scene(plan, proof):
-    """plan: scene_plan.json; proof(x, z) -> ProofSubmerge text. -> list of (row, verdict, got). Pure but for proof()."""
+def present_at(things, kind, dn, x, z):
+    """things: list_things rows of the copy (def, x, z), or None when unread. -> True/False, or None when unread.
+    A minified good reads def MinifiedThing, a corpse Corpse_<race> (a Villager's is Corpse_Human), the rest its own def."""
+    if things is None:
+        return None
+    for t in things:
+        if (t.get("x"), t.get("z")) != (x, z):
+            continue
+        d = str(t.get("def"))
+        if (d == "MinifiedThing" if kind == "mini" else d.startswith("Corpse_") if kind == "corpse" else d == dn):
+            return True
+    return False
+
+
+def judge_absent(text, kv, here, x0, z0, kind, dn, x, z):
+    """ProofSubmerge says 'nothing drawn under liquid' both for a thing drawn whole over the liquid and for no thing at
+    the cell (visit 2: the minified goods were absent after a staging miss, and 9 rows read FAIL). -> None when the read
+    may be judged (the thing is there), else why it is UNMEASURED. here(x0, z0) -> the copy's list_things rows or None."""
+    if kv or not str(text or "").startswith("REFUSED"):
+        return None
+    if here is None:
+        return "no presence read: 'nothing drawn' cannot tell a thing drawn whole from no thing at %d,%d" % (x, z)
+    p = present_at(here(x0, z0), kind, dn, x, z)
+    if p is None:
+        return "presence unreadable (list_things failed): 'nothing drawn' at %d,%d cannot be judged" % (x, z)
+    return None if p else "the planned %s %s is not at %d,%d (a staging miss, not a look): nothing to judge" % (kind, dn, x, z)
+
+
+def judge_scene(plan, proof, here=None):
+    """plan: scene_plan.json; proof(x, z) -> ProofSubmerge text; here(x0, z0) -> the copy's list_things rows (def, x, z) or
+    None when unreadable. -> list of (row, verdict, got). Pure but for proof() and here()."""
     rows, mono, dry, queues = [], {}, {}, []
     pr = plan_rows(plan)
     if not pr:
@@ -232,12 +262,12 @@ def judge_scene(plan, proof):
         kv = kv_of(text)
         if kind == "furn" and f == 0 and num(kv, "shadow") is not None and not vacuous(text, kv):
             dry[dn] = num(kv, "shadow")
-    for (key, _x0, _z0, f, fl, kind, dn, x, z), text in reads:
+    for (key, x0, z0, f, fl, kind, dn, x, z), text in reads:
         kv = kv_of(text)
         wet = f > 0
         want_def = "MinifiedThing" if kind == "mini" else None if kind == "corpse" else dn
         fam = {"furn": "OL_buildings_covered", "corpse": "OL_corpses_covered"}.get(kind, "OL_goods_covered")
-        vac = vacuous(text, kv)
+        vac = vacuous(text, kv) or judge_absent(text, kv, here, x0, z0, kind, dn, x, z)
         if vac:
             rows.append(("%s_%s_%s_%s" % (fam, key, kind, dn), "UNMEASURED", vac))
             continue
@@ -342,7 +372,15 @@ def main(argv):
     with open(plan_path) as fh:
         plan = json.load(fh)
     sm0 = call("jawa/screenshot_mode")
-    rows = judge_scene(plan, lambda x, z: static(SUB, "ProofSubmerge", "%d,%d" % (x, z)))
+    seen = {}
+
+    def here(x0, z0):
+        """One list_things per copy, read once; None when the bridge cannot list it."""
+        if (x0, z0) not in seen:
+            r = call("jawa/list_things", rect="%d,%d,%d,%d" % (x0, z0, PW, PW), limit=2000)
+            seen[(x0, z0)] = r.get("things") if r.get("success") is not False and isinstance(r.get("things"), list) else None
+        return seen[(x0, z0)]
+    rows = judge_scene(plan, lambda x, z: static(SUB, "ProofSubmerge", "%d,%d" % (x, z)), here)
     if spare:
         rows += acts(spare)
     else:

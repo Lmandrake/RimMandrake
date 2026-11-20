@@ -9,10 +9,13 @@ each absence "drawn whole over the liquid". Two faults, both offline:
   (b) owner_look_regressions reads "REFUSED: nothing drawn under liquid" as FAIL even when no thing stands at the cell.
       ProofSubmerge gives that one text both for a thing drawn whole and for no thing at all, so only a presence read
       (list_things) can tell them apart. An absent thing is UNMEASURED, never a look FAIL.
-Cases: (a) the stage's ProofResetRect call names a class whose C# source defines it; (b1) on the visit-2 plan, with no
+Cases: (a) the stage's ProofResetRect call names a class whose C# source defines it; (a2) its arg is the "x;z;w;h" that
+ProofResetRect parses (a comma rect is REFUSED by the method itself); (a3) a reset that does not answer RESET stops the
+stage before it clears, digs or spawns anything (no scene on an unreset site); (b1) on the visit-2 plan, with no
 thing at any planned cell and every read "nothing drawn", no *_covered row reads FAIL; (b2) the same plan, with every
-planned thing present and every read "nothing drawn", the *_covered rows still read FAIL (the real look fault stays red).
-Red at the filing commit on (a) and (b1).
+planned thing present and every read "nothing drawn", the *_covered rows still read FAIL (the real look fault stays red);
+(b3) the presence read itself unreadable: no *_covered row reads FAIL (could not look is UNMEASURED).
+Red at the filing commit on (a) and (b1); (a2), (a3) and (b3) added by the fixer and watched red on the same base.
 """
 import glob
 import json
@@ -52,7 +55,7 @@ def case_a():
 
     def call(tool, **kw):
         if tool == 'jawa/static_call':
-            seen.append((kw.get('type'), kw.get('method')))
+            seen.append((kw.get('type'), kw.get('method'), kw.get('args')))
             if kw.get('method') == 'ProofResetRect':
                 raise Stop()
         return {'success': True}
@@ -64,12 +67,46 @@ def case_a():
         pass
     except Exception as ex:  # noqa: BLE001  a stage that dies before its reset is read below as "no reset call"
         print('      stage stopped before its reset: %r' % ex)
-    resets = [t for t, m in seen if m == 'ProofResetRect']
-    check('(a) stage calls ProofResetRect on a class that defines it %s' % resets,
-          resets and all(defines(t, 'ProofResetRect') for t in resets), resets or 'no ProofResetRect call')
+    resets = [(t, a) for t, m, a in seen if m == 'ProofResetRect']
+    check('(a) stage calls ProofResetRect on a class that defines it %s' % [t for t, _a in resets],
+          resets and all(defines(t, 'ProofResetRect') for t, _a in resets), resets or 'no ProofResetRect call')
+    # RM_NorthstarProofs.ProofResetRect: arg.Split(';') must give 4 ints, else "REFUSED: arg must be x;z;w;h"
+    want = ';'.join(str(v) for v in plan['site'])
+    check('(a2) the reset arg is the site as x;z;w;h (%s)' % want,
+          resets and all(a == want for _t, a in resets), [a for _t, a in resets])
 
 
-def case_b(present):
+def case_a3():
+    """A reset the mod refuses (or the bridge cannot route) stops the stage before any clear, dig or spawn."""
+    import importlib
+    import big_pit_scene as S
+    S = importlib.reload(S)
+    acts = []
+
+    def call(tool, **kw):
+        if tool == 'jawa/static_call' and kw.get('method') == 'ProofResetRect':
+            return {'success': False, 'message': 'No public static ProofResetRect with 1 params.'}
+        acts.append(tool)
+        return {'success': True}
+    S.call, S.log, S.dump = call, (lambda *a, **k: None), (lambda: None)
+    S.ROWS[:] = []
+    plan = json.loads(PLAN.read_text(encoding='utf-8'))
+    stopped = None
+    try:
+        S.stage(plan)
+    except SystemExit as ex:
+        stopped = ex.code
+    except Exception as ex:  # noqa: BLE001
+        stopped = repr(ex)
+    later = [a for a in acts if a in ('jawa/destroy_batch', 'jawa/flowworks_excavation_drive', 'jawa/spawn_batch',
+                                      'jawa/spawn_pawn', 'jawa/set_terrain_batch')]
+    rows = [r for r in S.ROWS if 'reset' in r['row']]
+    check('(a3) a refused reset stops the stage (exit %s) with a reset row, before any clear/dig/spawn (%d such calls)'
+          % (stopped, len(later)), stopped == 2 and not later and rows and rows[0]['verdict'] == 'UNMEASURED',
+          {'exit': stopped, 'later': later[:4], 'rows': rows})
+
+
+def case_b(present, readable=True):
     import importlib
     import owner_look_regressions as O
     O = importlib.reload(O)
@@ -82,6 +119,8 @@ def case_b(present):
             x, z = kw['args'].split(',')
             return {'success': True, 'result': 'REFUSED: nothing drawn under liquid at %s,%s (depth=8 waterM=1)' % (x, z)}
         if tool == 'jawa/list_things':
+            if not readable:
+                return {'success': False, 'error': 'bridge timeout'}
             got = things if present else []
             if kw.get('rect'):
                 x0, z0, w, h = (int(v) for v in str(kw['rect']).split(','))
@@ -100,7 +139,10 @@ def case_b(present):
     rows = json.load(open(Path(out) / 'owner_look_regressions.json'))
     cov = [r for r in rows if '_covered_' in r['row'] and '_BP0_' not in r['row']]
     fails = [r['row'] for r in cov if r['verdict'] == 'FAIL']
-    if present:
+    if not readable:
+        check('(b3) presence unreadable: no *_covered row reads FAIL (%d FAIL of %d)' % (len(fails), len(cov)),
+              cov and not fails, fails[:4])
+    elif present:
         check('(b2) things present, read "nothing drawn": the wet *_covered rows read FAIL (%d of %d)' % (len(fails), len(cov)),
               cov and len(fails) == len(cov), [r for r in cov if r['verdict'] != 'FAIL'][:3])
     else:
@@ -110,8 +152,10 @@ def case_b(present):
 
 def main():
     case_a()
+    case_a3()
     case_b(present=False)
     case_b(present=True)
+    case_b(present=True, readable=False)
     print('accept_big_pit_stage_resets: %s' % ('FAIL %s' % FAILS if FAILS else 'ok'))
     sys.exit(1 if FAILS else 0)
 

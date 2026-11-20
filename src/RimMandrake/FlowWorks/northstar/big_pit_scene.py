@@ -23,6 +23,7 @@ import time
 from water_reads import levels  # noqa: E402  (whole levels from the one water number)
 
 SUB = "RimMandrake.FlowWorks.RM_SubmergeDraw"
+NSP = "RimMandrake.FlowWorks.RM_NorthstarProofs"   # owns ProofResetRect (SUB never had it: the visit-2 site was never reset)
 SCRATCH_FROM_EDGE = 12           # footprint probe spot, cells in from the NE corner (far from the scene at 40,89)
 PW, DEPTH = 16, 8                # pit width in cells; dug notches (1 notch = 0.5 m)
 MARGIN = 1                       # clear cells between any footprint and the pit walls (the dug rect's own edge ring)
@@ -510,7 +511,14 @@ def spawn_stuffed(dn, x, z, n, plan):
 def stage(plan):
     x, z, w, h = plan["site"]
     rect = "%d,%d,%d,%d" % (x, z, w, h)
-    log("reset", static("ProofResetRect", rect))
+    # ProofResetRect parses "x;z;w;h" and answers "RESET cells=..."; anything else leaves old digs, fills and rolled depths
+    # on the site (visit 2: every copy read d=16 against DEPTH=8), so the stage refuses to build a scene on it
+    reset = static_on(NSP, "ProofResetRect", "%d;%d;%d;%d" % (x, z, w, h))
+    log("reset", reset)
+    if not reset.startswith("RESET"):
+        row("site_reset", "UNMEASURED", reset[:300])
+        dump()
+        sys.exit(2)
     clear_wildlife()
     sky_gate(plan, "before_stage", clear=True)
     log("cleared", {k: v for k, v in call("jawa/destroy_batch", rects=rect, categories="All").items() if k in ("success", "destroyed", "counts", "skippedUndestroyable")})

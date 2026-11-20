@@ -23,6 +23,18 @@ HEIGHT = {"Bed": 0.8, "SculptureGrand": 3.0, "Steel": 0.3, "MinifiedThing": 0.75
 KIND = {"furn": "building", "item": "item", "mini": "minified", "corpse": "corpse"}
 
 
+def toy_here(absent=()):
+    """-> here(x0, z0) for PLAN: list_things rows of every planned thing at its cell (the toy world's things stand there),
+    less the (kind, def) pairs in absent."""
+    rows = {}
+    for key, x0, z0, f, fl, kind, dn, x, z in O.plan_rows(PLAN):
+        if (kind, dn) in absent:
+            continue
+        rows.setdefault((x0, z0), []).append({"def": "MinifiedThing" if kind == "mini" else "Corpse_Human" if kind == "corpse"
+                                              else dn, "x": x, "z": z})
+    return lambda x0, z0: rows.get((x0, z0), [])
+
+
 def toy_world(fault=None, queue=2448):
     """-> proof(x, z) for PLAN under a toy law (clarity 0.45 water, 0 tar; Seen = 1 - 0.5*(1 - c^(m + 0.35))).
     The floor shadow is the 11-12 design (RM_UnderLiquid.ThingShadow): its own alpha, drawn UNDER the liquid sheet
@@ -86,7 +98,7 @@ def main():
         print(("PASS " if ok else "FAIL ") + name + ("" if ok else "  " + str(got)[:300]))
         bad += not ok
 
-    good = O.judge_scene(PLAN, toy_world())
+    good = O.judge_scene(PLAN, toy_world(), toy_here())
     fails = [r for r in good if r[1] != "PASS"]
     check("fixed world: every scene row PASS (%d rows)" % len(good), not fails, fails[:4])
     want = {"OL_buildings_covered", "OL_goods_covered", "OL_corpses_covered", "OL_opaque_hides", "OL_no_surface_shadow",
@@ -98,16 +110,58 @@ def main():
                        ("tar_seen", {"OL_opaque_hides"}), ("shadow_faded", {"OL_no_surface_shadow"}),
                        ("shadow_lost", {"OL_no_surface_shadow"}), ("shadow_over_sheet", {"OL_no_surface_shadow"}),
                        ("label_bright", {"OL_labels_fade"}), ("non_monotone", {"OL_one_law_over_fill"})):
-        red = families(O.judge_scene(PLAN, toy_world(fault)), "FAIL")
+        red = families(O.judge_scene(PLAN, toy_world(fault), toy_here()), "FAIL")
         check("planted %s goes red in %s" % (fault, sorted(fam)), fam <= red, red)
+    # "nothing drawn" is FAIL only for a thing the presence read finds at its cell (visit 2: absent goods read FAIL)
+    minis = [(k, d) for k, _k2, d, _s, _ij, _n in PLAN["things"] if k == "mini"]
+    ab = O.judge_scene(PLAN, toy_world("old_build"), toy_here(absent=set(minis)))
+    gm = [r for r in ab if r[0].startswith("OL_goods_covered_") and "_mini_" in r[0] and "_BP0_" not in r[0]]
+    check("planted old_build with the minified goods absent: their rows UNMEASURED, never FAIL (%d rows)" % len(gm),
+          gm and all(r[1] == "UNMEASURED" and "not at" in r[2] for r in gm), gm[:3])
+    check("planted old_build with the minified goods absent: the present things still FAIL",
+          {"OL_buildings_covered", "OL_corpses_covered"} <= families(ab, "FAIL"), families(ab, "FAIL"))
+    for why, here in (("no presence reader", None), ("presence unreadable", lambda x0, z0: None)):
+        nr = O.judge_scene(PLAN, toy_world("old_build"), here)
+        cov = [r for r in nr if "_covered_" in r[0] and "_BP0_" not in r[0]]
+        check("planted old_build, %s: no covered row FAIL or PASS (%d rows)" % (why, len(cov)),
+              cov and all(r[1] == "UNMEASURED" for r in cov), sorted({r[1] for r in cov}))
+    pa = O.present_at
+    check("presence: a minified good reads MinifiedThing, a corpse Corpse_*, a building its own def",
+          pa([{"def": "MinifiedThing", "x": 3, "z": 4}], "mini", "Armchair", 3, 4) is True
+          and pa([{"def": "Corpse_Human", "x": 3, "z": 4}], "corpse", "Villager", 3, 4) is True
+          and pa([{"def": "Bed", "x": 3, "z": 4}], "furn", "Bed", 3, 4) is True)
+    check("presence: another def at the cell, or the def one cell over, is absent; unread is None",
+          pa([{"def": "Steel", "x": 3, "z": 4}], "furn", "Bed", 3, 4) is False
+          and pa([{"def": "Bed", "x": 4, "z": 4}], "furn", "Bed", 3, 4) is False
+          and pa([], "mini", "Armchair", 3, 4) is False and pa(None, "furn", "Bed", 3, 4) is None)
+    # sweep: 4 read classes x 5 presence states x 4 kinds (80 cases). Only a "nothing drawn" read over a dug cell with the
+    # planned thing present may FAIL; a real reply is never re-classed by presence; every other pair is UNMEASURED.
+    # Left out: multi-thing cells (the stage plans one thing per cell) and partial list_things pages (limit 2000 > 256 cells).
+    reads = {"drawn": "def=Bed kind=building share=0.500", "nothing": "REFUSED: nothing drawn under liquid at 3,4 (depth=8 waterM=1)",
+             "no_pit": "REFUSED: nothing drawn under liquid at 3,4 (depth=0 waterM=0)", "no_map": "REFUSED: need a current map"}
+    sweep_bad, n = [], 0
+    for kind, dn, fake in (("furn", "Bed", "Bed"), ("item", "Steel", "Steel"), ("mini", "Armchair", "MinifiedThing"),
+                           ("corpse", "Villager", "Corpse_Human")):
+        for pres, here in (("present", lambda a, b, d=fake: [{"def": d, "x": 3, "z": 4}]), ("absent", lambda a, b: []),
+                           ("other", lambda a, b: [{"def": "Plant_Grass", "x": 3, "z": 4}]), ("unread", lambda a, b: None),
+                           ("noreader", None)):
+            for rc, text in reads.items():
+                n += 1
+                kv = O.kv_of(text)
+                vac = O.vacuous(text, kv) or O.judge_absent(text, kv, here, 0, 0, kind, dn, 3, 4)
+                want_judged = rc == "drawn" or (rc == "nothing" and pres == "present")
+                if bool(vac) == want_judged:
+                    sweep_bad.append((kind, pres, rc, vac))
+    check("sweep: judged only when drawn, or 'nothing drawn' with the thing present (%d cases, %d wrong)" % (n, len(sweep_bad)),
+          n == 80 and not sweep_bad, sweep_bad[:4])
     # the floor shadow (11-12 design: its own alpha UNDER the sheet, owner 11-13 "transparent to them as usual")
     sh = [r for r in good if r[0].startswith("OL_no_surface_shadow_BP3_")]
     check("shadow under the sheet in clear water at the dry alpha -> PASS", sh and all(r[1] == "PASS" for r in sh), sh[:3])
-    over = [r for r in O.judge_scene(PLAN, toy_world("shadow_over_sheet")) if r[0].startswith("OL_no_surface_shadow")]
+    over = [r for r in O.judge_scene(PLAN, toy_world("shadow_over_sheet"), toy_here()) if r[0].startswith("OL_no_surface_shadow")]
     check("planted shadow over the sheet -> its per-thing rows and the sheet row FAIL",
           any(r[0] == "OL_no_surface_shadow_under_sheet" and r[1] == "FAIL" for r in over)
           and any(r[0].startswith("OL_no_surface_shadow_BP3_") and r[1] == "FAIL" for r in over), over[:3])
-    noq = O.judge_scene(PLAN, toy_world(queue=None))
+    noq = O.judge_scene(PLAN, toy_world(queue=None), toy_here())
     check("no shadowQueue in the reply: the sheet row is BLOCKED ON HOOK, never PASS",
           [r[1] for r in noq if r[0] == "OL_no_surface_shadow_under_sheet"] == ["BLOCKED"], [r for r in noq if r[1] != "PASS"][:3])
     check("tar: a shadow seen through it -> FAIL",
@@ -128,7 +182,7 @@ def main():
                        ("no pit cell", "REFUSED: nothing drawn under liquid at 3,3 (depth=0 waterM=0.0000)"),
                        ("thing not in a pit", "def=Bed class=X kind=building rot=0 depth=0 level=0.00 share=0.000 "
                                               "clarity=0.000 seenLine=1 seenFoot=1 height=0.80 shadow=- label=1.000")):
-        rv = O.judge_scene(PLAN, lambda x, z, reply=reply: reply)
+        rv = O.judge_scene(PLAN, lambda x, z, reply=reply: reply, toy_here())
         check("vacuous read (%s) -> every row UNMEASURED" % why, rv and all(r[1] == "UNMEASURED" for r in rv),
               sorted({r[1] for r in rv}))
     rv = O.judge_scene({"copies": [], "things": []}, lambda x, z: "")
