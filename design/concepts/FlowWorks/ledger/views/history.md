@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7829,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=2d1a679fe249108eeb9be0acd0f1f371df07f38882c9b1828fdf1e30a2d977da -->
-# FlowWorks — mod ledger history (1311 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":8848,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=669f9834d7c7ba9a4dbf383553ccd8e148a17f563210c78d91e667420756ed52 -->
+# FlowWorks — mod ledger history (1313 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1312,3 +1312,5 @@
 - 2026-11-20T02:54:49Z JUDGE.judge-1795134433#14 finding.verified finding:RIMMANDRAKE_FIX_FLOWWORKS_CROP_WEEK_FOLLOWS_PULSE_SLIDER v0.1.0: my planted faults at 12dc96e238 (same FlowWorks tree): SHEET_CROP_DELAY_IGNORES_PULSE and CALLER_SHEET_CROP_DELAY_AT_BASE CAUGHT by SheetCropWeek_a_week_at_every_flow_pulse_interval; lane 1 SHEET_CROP_DELAY_SWEEP_PULSE_SLIDER PASS (0.5..30 days x 14 pulse lengths)
 - 2026-11-20T02:54:50Z JUDGE.judge-1795134433#15 finding.verified finding:RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN v0.1.0: my planted CALLER_DRILL_SPENDS_ASKED (pendingUnits zeroed instead of charging what landed) CAUGHT by DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds; T_DRILL PASS at 48864bd58c
 - 2026-11-20T02:54:50Z JUDGE.judge-1795134433#16 finding.verified finding:LIQUID_ROTATION_FIX_STARVED_STRANGER v0.1.0: my planted CONV_ROTATION_STUCK_FIRST (NextRunnable always from the first input) CAUGHT by GptA_converter_multi_input_rotates and lane 1 CONV_ROTATION_FAIR_AND_SKIPS_BLOCKED; T_CONVERT PASS at 48864bd58c
+- 2026-11-20T02:59:03Z DISPATCH#24 judge.sealed judge v0.1.0: 
+- 2026-11-20T02:59:03Z DISPATCH#25 run.end run v0.1.0: 
