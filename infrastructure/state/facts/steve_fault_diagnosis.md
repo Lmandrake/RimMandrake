@@ -21,6 +21,36 @@ log at `/mnt/c/SteveDesktop/diag/logs/watch.log` (4262 CYCLE lines as of 2026-11
   `stevetemp` started since the step began, the watch's own sampler included. Fixed in the repo's `steve_cpu_soak.ps1`
   (it kills only its own sampler); Steve's copy is older and was not replaced, so the next soak deploy carries the fix.
 
+## Live catch, boot 2026-11-20 20:05:07Z (read 2026-11-20 20:21-20:26Z over ssh, read-only)
+
+- **Turbo is OFF in this boot, as in the 66 h soak boot** [measured]: Balanced plan, PROCTHROTTLEMAX AC = 99; at 20:22Z with
+  RimWorld up, `% Processor Performance` 97 and `Processor Frequency` 3596 MHz on every CPU. No script under `C:\SteveDesktop`
+  writes a processor power setting (the only `powercfg` writes are sleep, hibernate and monitor in `bootstrap.ps1` lines 311-318),
+  the soak included. So the soak did not change turbo, and the soak's clean 66 h ran at the same turbo-off setting as today.
+- **A 1.30 V reading is not a turbo sign** [measured, `watch.log` per boot]: turbo-off boots 11-13 20:45Z, 11-14 09:34Z, 11-15
+  05:11Z and 11-15 08:57Z have 50, 47, 1 and 18 cycles at 1.2 V or more (max 1.315-1.325 V); today's 1.302 V is the 20:13Z cycle
+  (cold load, 66 C); the next cycles read 1.012 and 1.017 V. In the soak boot only 19 cycles carried vcore (max 1.032 V), so
+  vcore under Prime95 load is UNMEASURED.
+- **The fault** [measured, `regprobe.log`]: 4 probe cycles this boot; 20:08:44Z clean (before RimWorld started, 20:10:14Z); 20:13:42Z,
+  20:18:44Z and 20:23:44Z all `upper_half_loss` on logical CPU 0 only (16 of 16 AVX holds, SSE and scalar right; the other 17
+  CPUs clean). The watch agrees (`bad_cpus=[0]` at 20:13, 20:18, 20:23Z). The 20:23:44Z cycle faulted after both lane jobs ended
+  (20:22:18Z), with RimWorld still up, so the fault does not follow job start and end; whether it follows the game process is
+  UNMEASURED (the game has been up since before the onset).
+- **CPU 0 under load** [measured, one 3 s sample at 20:22Z]: `Interrupts/sec` 4221 on CPU 0, the highest of 18 (even CPUs
+  1926-3178, odd CPUs 484-1465); `% Interrupt Time` 0.5 and `% DPC Time` 0.5, no higher than the others (max 1.0). Third-party
+  ring-0 drivers running: AsIO2, GLCKIO2, ene (EneTechIo), MsIo64, CorsairLLAccess, cpuz154 (CPUID), PawnIO (the sensor
+  sampler's MSR driver), AVoluteSS3Vad (audio enhancer), CyberLink CLFCL, Dropbox dbx, Google Drive, Hasleo disk/Dokan, wintun,
+  NVIDIA, Intel, Realtek. None is anti-cheat; none is known to us to use AVX in kernel or hook context switches. The one
+  component that saves and restores every CPU's full register state is the hypervisor itself.
+- **Hypervisor ON** [measured]: `HypervisorPresent` True, VBS status 2 (running, no security services), WSL2 `vmmem` up;
+  `bcdedit {current}` has no `hypervisorlaunchtype` line; `numproc 18`.
+- **Remote access is Windows-native** [measured]: `sshd` is `C:\Windows\System32\OpenSSH\sshd.exe` (Automatic) behind the Windows
+  Tailscale service `tailscaled.exe` (Automatic), address 100.118.241.96; the shell is PowerShell. It does not depend on WSL2.
+- Jobs that overlapped the fault: `J20261118T093145Z-70df7c` (FlowWorks, 20:07:00-20:18:16Z) and `J20261118T093156Z-5dcd3d`
+  (FlowWorks, 20:19:38-20:22:18Z), both REFUSED, cause HARNESS `stale_load` (the restart onto the composed list failed: `rimflow bridge idle` gave no verdict).
+- The vendor-software section below still stands: today's one-CPU shape fits a per-CPU state loss (CPU defect, driver or
+  hypervisor) and does not tell those apart.
+
 ## 🔴 The +0.100 V raise is stored in the BIOS, is not visible in the sensors, and did not cure the fault (MEASURED 2026-11-20)
 
 Per-boot bad-cycle counts from the whole probe log, and the pre/post split over all 3898 cycles:
