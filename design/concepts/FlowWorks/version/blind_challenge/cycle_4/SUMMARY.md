@@ -93,6 +93,14 @@ report, RM_DrinkReserve) match the kernels' contracts, and 12 caller faults were
 fix). Still not decidable offline: crops actually killed in game, bottle jobs moving exact litres, the survey roll per biome, and the
 FluidDefs' authored soak/drying on the live map (stage 6; propane's 0 % soak and 0 % drying is covered by its boil-off).
 
+## Verification of claimed fixes
+`maturation_dispatch.py judge-verify FlowWorks` lists 58 findings claimed fixed; 13 name an offline bar. **7 verified** at 48864bd58c
+[measured] (mod ledger `finding.verified`): the four cycle-3 pins (their `plant_faults.py --require-caught` rerun, all 6 faults CAUGHT),
+the crop week following the pulse slider, the drill caller's charge, and the converter rotation (each by my own planted analogue, CAUGHT).
+**None reopened.** Not ruled (owed to the next judge): BOTTLE_STOCK_MEND_FREE_REFILLS, FLOWWORKS_HOTPATH_MEASURE_EVERY_FRAME,
+HOSE_SPILL_MEND_POND_GETS_NOTHING, RIMMANDRAKE_PIN_FLOWWORKS_SHEET_CALLER_CROP_AGE_UNSEEN, RIMMANDRAKE_PIN_FLOWWORKS_THIRST_CALLER_FALL_UNSEEN,
+TANK_CONTENTS_SALVAGE_ON_DECONSTRUCT, and the 45 findings on stage-6 bars or none.
+
 ## Exit
 offline_bars: {inv_overflow_sheet: green, inv_converters: green, inv_bottles_thirst: green, inv_drilling: green, inv_sprinklers: green}
 problems_open: 0
@@ -103,4 +111,5 @@ exit_met is false because this cycle FIXED four Problems: a new blind judge is o
 ## Owed
 - A new blind judge (cycle 5) over the changed files `BlindCycle4Checks.cs`, Program.cs and the csproj, and the bars they decide.
 - The Conductor's call on the five Polish rows in `lane2/faults.json`.
-- Not done in the bound: reruns of the other ~115 offline tests of `test_table.json`.
+- Not done in the bound: reruns of the other ~115 offline tests of `test_table.json`; rulings on the 51 claimed fixes listed above as not ruled.
+- The exit reader (`maturation.py next`) also names the five lane-1 `not_kernel` rows as UNSETTLED on offline bars: a substance reason, left as recorded.

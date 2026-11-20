@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "27d88a0650c57bbd1ad3c819cc61c71a8c363cdcf421af3b2bc9f0b4c806d815",
+  "body_sha256": "9ff1e5ed1f65607d7e3832674ab819c36571bafb3df2d4079cee029d8d03b058",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -10,7 +10,7 @@
    "HOLDER.run-1794861652": 2822,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
-   "JUDGE.judge-1795134433": 7256,
+   "JUDGE.judge-1795134433": 11686,
    "STEWARD": 2597
   }
  },
@@ -1684,7 +1684,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1304,
+  "events": 1311,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -4814,12 +4814,12 @@
     "by": "BACKFILL",
     "claim": "Rotation is keyed per store with forfeit after one yield (fixing the map-wide stall), and multi-input converters use NextRunnable (fixing first-liquid-only). (recorded on pre-landing 69a9a10adb; landed as 7e492a762f01)",
     "class": "problem",
-    "code_sha": "7e492a762f01",
+    "code_sha": "48864bd58c45440424a4f2e800e7609cf7918d04",
     "proposed_fix": "Key rotation per store with a forfeit after one yield; replace FirstRunnable with NextRunnable so multi-input rotates per cycle.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "MayDraw (RM_LiquidNetKernel.cs:447) keys consumer rotation by LiquidDef only, so an isolated starved machine re-starves each cycle and a supplied machine is never served. FirstRunnable always returns the first positive liquid, so multi-input converters never rotate.",
-    "ts": "2026-11-19T23:57:55Z",
+    "ts": "2026-11-20T02:54:50Z",
     "version": "0.1.0"
    },
    "finding:LIQUID_THEFT_FIX_TANK_HIDES_ITSELF": {
@@ -5900,12 +5900,12 @@
     "by": "BACKFILL",
     "claim": "CropKillPulsesFor converts the stored delay to the current pulse interval, so the first CropDrowning lands a week after the crop starts standing at any slider setting (4b33b22f00).",
     "class": "problem",
-    "code_sha": "4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67",
+    "code_sha": "48864bd58c45440424a4f2e800e7609cf7918d04",
     "proposed_fix": "RM_SheetMath.CropKillPulsesFor(pulsesAtBase, interval) converts the stored delay (pulses at the 250-tick base); SyncParams uses it; slider and Days() read/write at the base. Scribe key and default unchanged.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "SyncParams stores CropKillPulses as a raw pulse count (cropDrownPulses), unconverted for the flow-pulse slider (60-2500 ticks). Crops drown after 1.68 days at 60 ticks and 70 days at 2500, not a week.",
-    "ts": "2026-11-19T23:57:29Z",
+    "ts": "2026-11-20T02:54:49Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_FIX_FLOWWORKS_FUZZ_FOUR_FLAWS_SINK_STILL_FLOAT": {
@@ -6242,12 +6242,12 @@
     "by": "BACKFILL",
     "claim": "Added case Converter_caller_keeps_drinkers_reserve in BlindCycle3Checks.cs; planted CALLER_CONVERTER_DRINKS_RESERVE is now caught, red on a43ee25d3b, green on 96941bfa43.",
     "class": "problem",
-    "code_sha": "96941bfa43",
+    "code_sha": "48864bd58c45440424a4f2e800e7609cf7918d04",
     "proposed_fix": "Add case Converter_caller_keeps_drinkers_reserve to BlindCycle3Checks.cs so T_CONVERT goes red when converter batches are not bounded by RM_DrinkReserve.Spendable.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_CONVERT, PY_WATER_NOT_FOOD and PY_NATIVES_DRINK_OWN_WATER all stayed green when CompLiquidConverter's batches are not bounded by RM_DrinkReserve.Spendable, so a converter could eat the drinkers' reserve of potable water.",
-    "ts": "2026-11-19T23:57:30Z",
+    "ts": "2026-11-20T02:54:49Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_CROP_DELAY_TEXT_FOLLOWS_PULSE": {
@@ -6258,12 +6258,12 @@
     "by": "BACKFILL",
     "claim": "Added case Sheet_crop_delay_text_converts_with_its_own_pulse in BlindCycle3Checks.cs; both planted text faults are now caught, red on a43ee25d3b, green on 96941bfa43.",
     "class": "problem",
-    "code_sha": "96941bfa43",
+    "code_sha": "48864bd58c45440424a4f2e800e7609cf7918d04",
     "proposed_fix": "Add case Sheet_crop_delay_text_converts_with_its_own_pulse to BlindCycle3Checks.cs so a decider goes red when either text converts pulses with the wrong pulse length.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "The crop-drowning message and the delay slider's label could state the wrong days at a moved flow pulse (planted CALLER_SHEET_MESSAGE_DAYS_AT_BASE, SETTINGS_CROP_DAYS_LABEL_UNCONVERTED) with T_SHEET and PY_FLOWWORKS_SHEET_DROWN_MESSAGE green.",
-    "ts": "2026-11-19T23:57:29Z",
+    "ts": "2026-11-20T02:54:49Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_CHARGE_UNSEEN": {
@@ -6274,12 +6274,12 @@
     "by": "BACKFILL",
     "claim": "Added case DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds in CoverFloorSurveyChecks.cs; red on a395d97a, green on 4b33b22f.",
     "class": "problem",
-    "code_sha": "4b33b22f003b1c7cd76acc19a2e028d1bcfd4b67",
+    "code_sha": "48864bd58c45440424a4f2e800e7609cf7918d04",
     "proposed_fix": "Add SelfTest/CoverFloorSurveyChecks.cs case DrillSurvey_caller_charges_what_landed_and_returns_what_it_holds so T_DRILL goes red on either fault.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "T_DRILL stayed green when Building_LiquidDrill charged the asked-for dL instead of what landed (SpentUnits(beforeDl, beforeDl + addDl)) or deleted its pending units on destroy (ReturnUnits(0f)).",
-    "ts": "2026-11-19T23:57:29Z",
+    "ts": "2026-11-20T02:54:50Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_DRILL_CALLER_READS_SETTING": {
@@ -6371,12 +6371,12 @@
     "by": "BACKFILL",
     "claim": "Added case Sheet_crop_delay_never_short_and_drying_capped_at_three_times in BlindCycle3Checks.cs; both planted faults caught, red on a43ee25d3b, green on 96941bfa43.",
     "class": "problem",
-    "code_sha": "96941bfa43",
+    "code_sha": "48864bd58c45440424a4f2e800e7609cf7918d04",
     "proposed_fix": "Add case Sheet_crop_delay_never_short_and_drying_capped_at_three_times to BlindCycle3Checks.cs so T_SHEET goes red on either fault.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Stock T_SHEET stayed green when the crop delay rounded down a pulse (SHEET_PULSES_ROUND_DOWN) or hot ground dried past 3x (SHEET_HEAT_DRIES_UNCAPPED); only blind lane 1 caught them.",
-    "ts": "2026-11-19T23:57:30Z",
+    "ts": "2026-11-20T02:54:49Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_SHEET_SETTINGS_KEEP_THEIR_UNITS": {
@@ -6403,12 +6403,12 @@
     "by": "BACKFILL",
     "claim": "Added case Sheet_every_setting_reaches_the_kernel_and_its_own_inflow in BlindCycle3Checks.cs; both planted faults caught, red on a43ee25d3b, green on 96941bfa43.",
     "class": "problem",
-    "code_sha": "96941bfa43",
+    "code_sha": "48864bd58c45440424a4f2e800e7609cf7918d04",
     "proposed_fix": "Add case Sheet_every_setting_reaches_the_kernel_and_its_own_inflow to BlindCycle3Checks.cs, source laws since the code is Verse-bound.",
-    "status": "claimed_fixed",
+    "status": "verified",
     "tags": [],
     "text": "Stock T_SHEET stayed green when the door-leak slider was wired to a fixed 5 percent (CALLER_SHEET_DOOR_SETTING_IGNORED) or the rain spill switch answered for pumps (SETTINGS_RAIN_READS_PUMP_SWITCH).",
-    "ts": "2026-11-19T23:57:29Z",
+    "ts": "2026-11-20T02:54:49Z",
     "version": "0.1.0"
    },
    "finding:RIMMANDRAKE_PIN_FLOWWORKS_SHEET_TIER_EDGE_LANE_ONE_ONLY": {
