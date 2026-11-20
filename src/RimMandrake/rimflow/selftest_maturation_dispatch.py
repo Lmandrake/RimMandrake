@@ -88,6 +88,11 @@ FIXTURE_NUMBERS = {"cap_usd": 15, "settle_s": 180, "idle_alarm_min": 60, "blind_
                    "build_batch_bars": 6, "launch_tries": 3}
 
 
+# a takeable bridge stand-in for the cert checks, which are not about the bridge: without it decide() reads the LIVE
+# bridge, and a held bridge failed one ./publish (RIMMANDRAKE_PIN_DISPATCH_SELFTEST_BRIDGE_READ_FLAKED_ONE_PUBLISH)
+FREE_BRIDGE = lambda p, game="a": (True, "free")      # noqa: E731
+
+
 def load_cfg():
     """-> the shipped settings with the fixture numbers (the shipped ones are range-checked where they are read)."""
     return dict(MD.load_cfg(), stage_ceiling_usd=FIXTURE_CEILING, **FIXTURE_NUMBERS)
@@ -1944,7 +1949,7 @@ def cert_rerun_main():
     st = {"mods": {}}
     has = all(hasattr(MD, n) for n in ("stale_key", "cert_rerun_unit", "cert_rerun_worker", "rerun_result"))
     ok(has, "cert rerun: maturation_dispatch has stale_key, cert_rerun_unit, cert_rerun_worker and rerun_result")
-    rows, la = MD.decide(cfg, st, facts(two), now, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, st, facts(two), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     r = rows[0]
     ok(la == ["ExplosiveKnockback"] and r.get("decision") == "launch" and r.get("cert_rerun_key") and not r.get("cert_reds"),
        "cert rerun: stale stamps alone, no red decider, slots full (max_live 0): the tick owes one zero-token rerun "
@@ -1960,47 +1965,47 @@ def cert_rerun_main():
     book = (st["mods"].get("ExplosiveKnockback") or {}).get("cert_rerun") or {}
     ok(book.get("key") == key and book.get("unit") == "rm-cert-rerun-1",
        "cert rerun: the run is booked against its build key (%s)" % book)
-    rows, la = MD.decide(cfg, st, facts(two), now + 60, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, st, facts(two), now + 60, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(not la and rows[0].get("decision") == "live" and "rm-cert-rerun-1" in str(rows[0].get("why")),
        "cert rerun: the next tick on the same build, the unit still running, launches nothing (%s: %s)" % (
            rows[0].get("decision"), rows[0].get("why")))
     done = {"unit": "rm-cert-rerun-1", "key": key, "key_after": key, "ok": False, "published": None,
             "error": "publish refused: hook", "end": now + 600}
-    rows, la = MD.decide(cfg, st, facts(two, result=done), now + 900, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, st, facts(two, result=done), now + 900, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(not la and rows[0].get("decision") == "certificate" and "rm-cert-rerun-1" in str(rows[0].get("need")),
        "cert rerun: it ended and the same build is still stale: never a second run, a Needs Conductor line naming it "
        "(%s: %s)" % (rows[0].get("decision"), rows[0].get("need")))
-    rows, la = MD.decide(cfg, st, facts(two, result=done), now + 7200, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, st, facts(two, result=done), now + 7200, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(not la, "cert rerun: still none two hours later on that build (%s)" % rows[0].get("decision"))
     new = stale(["PY_KNOCK_A", "PY_KNOCK_B"], build="b2")
-    rows, la = MD.decide(cfg, st, facts(new, result=done), now + 7300, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, st, facts(new, result=done), now + 7300, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(la == ["ExplosiveKnockback"] and rows[0].get("cert_rerun_key") not in (None, key),
        "cert rerun: a new build (someone landed a change) gets its own one rerun (%s)" % rows[0].get("decision"))
     own = {"unit": "rm-cert-rerun-2", "key": "kprev", "key_after": MD.stale_key({"rows": new}) if has else None,
            "ok": False, "published": "abc1234", "end": now + 7000}
     st2 = {"mods": {"ExplosiveKnockback": {"cert_rerun": {"key": "kprev", "unit": "rm-cert-rerun-2", "at": now + 6000}}}}
-    rows, la = MD.decide(cfg, st2, facts(new, result=own), now + 7300, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, st2, facts(new, result=own), now + 7300, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(not la and rows[0].get("need") and "stale" in str(rows[0].get("need")),
        "cert rerun: the rerun itself left this build stale (a decider rewrites what it reads): no loop, a Needs "
        "Conductor line (%s: %s)" % (rows[0].get("decision"), rows[0].get("need")))
     red = two + [{"bar": "bar_t", "test": "T_RED", "clause": "green", "status": "REFUSED", "observed": "rc 1",
                   "smallest_fix": "fix"}]
-    rows, la = MD.decide(dict(cfg, max_live=4), {"mods": {}}, facts(red), now, (True, "ok"), releases=[])
+    rows, la = MD.decide(dict(cfg, max_live=4), {"mods": {}}, facts(red), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(rows[0].get("cert_reds") == ["T_RED"] and not rows[0].get("cert_rerun_key"),
        "cert rerun: stale stamps beside a red decider stay cert_red_decide's builder (it reruns first)")
     reg = two + [{"bar": "bar_r", "test": "T_GONE", "clause": "registered", "status": "REFUSED", "observed": "no file",
                   "smallest_fix": "build it"}]
-    rows, la = MD.decide(cfg, {"mods": {}}, facts(reg), now, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, {"mods": {}}, facts(reg), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(not la and rows[0].get("decision") == "certificate",
        "cert rerun: a refusal a rerun cannot pass (registered) is no rerun: the certificate wait stands")
-    rows, la = MD.decide(cfg, {"mods": {}}, facts(two, live=["rm-builder"]), now, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, {"mods": {}}, facts(two, live=["rm-builder"]), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(not la and rows[0].get("decision") == "live", "cert rerun: nothing while a run is live on the mod")
     failed = {"mods": {"ExplosiveKnockback": {"cert_rerun": {"key": key, "unit": None, "at": now, "tries": 1,
                                                              "failed": "systemd-run exit 1: bad unit", "code": "t1"}}}}
-    rows, la = MD.decide(dict(cfg, _code="t1"), failed, facts(two), now + 120, (True, "ok"), releases=[])
+    rows, la = MD.decide(dict(cfg, _code="t1"), failed, facts(two), now + 120, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(not la and rows[0].get("need"), "cert rerun: a start refused on a defect is not retried on the same code (%s)"
        % rows[0].get("decision"))
-    rows, la = MD.decide(dict(cfg, _code="t2"), failed, facts(two), now + 120, (True, "ok"), releases=[])
+    rows, la = MD.decide(dict(cfg, _code="t2"), failed, facts(two), now + 120, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     ok(la == ["ExplosiveKnockback"], "cert rerun: it is retried once the pipeline's code changed (%s)" % rows[0].get("decision"))
     if not has:
         print("%d failed" % len(FAILS))
@@ -2010,13 +2015,13 @@ def cert_rerun_main():
     aut_fx = {"open_items": lambda ids: [], "designer_state": lambda m: None, "version_locked": lambda m: True,
               "version_evidence": lambda m: None}
     st3 = {"mods": {}}
-    rows, la = MD.decide(cfg, st3, facts(two), now, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, st3, facts(two), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     rows, la = MD.AUT.resolve(".", cfg, st3, facts(two), rows, la, now, aut_fx)
     ok(la == ["ExplosiveKnockback"] and rows[0].get("cert_rerun_key") and not rows[0].get("aut"),
        "cert rerun: the autonomy layer leaves the rerun the tick's own launch (%s: %s)" % (
            rows[0].get("decision"), rows[0].get("why")))
     st4 = {"mods": {"ExplosiveKnockback": {"road_back": {"caused_by": "RIMMANDRAKE_STEWARD_X", "opened": now - 600}}}}
-    rows, la = MD.decide(dict(cfg, max_live=4), st4, facts(two), now, (True, "ok"), releases=[])
+    rows, la = MD.decide(dict(cfg, max_live=4), st4, facts(two), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     rows, la = MD.AUT.resolve(".", dict(cfg, max_live=4), st4, facts(two), rows, la, now, dict(
         aut_fx, open_items=lambda ids: [{"id": "RIMMANDRAKE_BREAK_X", "needs": "offline"}]))
     ok(rows[0].get("aut") == "fixer" and rows[0].get("fix_item") == "RIMMANDRAKE_BREAK_X",
@@ -2115,12 +2120,12 @@ def cert_rerun_gates_main():
               "known": lambda: set(), "launch": lambda *a, **k: other.append(("launch", a)) or (0, "DETACHED y", "y")}
         st = {"mods": {}}
         for acct in ((True, "ok"), (False, "account hold: every account at its floor")):
-            rows, la = MD.decide(cfg, dict(st, mods={}), facts(stage, rows5), now, acct, releases=[])
+            rows, la = MD.decide(cfg, dict(st, mods={}), facts(stage, rows5), now, acct, releases=[], bridge=FREE_BRIDGE)
             r = rows[0]
             ok(la == [mod] and r.get("decision") == "launch" and r.get("cert_rerun_key"),
                "cert rerun gates (%s, account %s): stale stamps alone at %s, slots full (max_live 0): one zero-token "
                "rerun is owed, read 1 mod (%s: %s)" % (stage, acct[0], gate, r.get("decision"), r.get("why")))
-        rows, la = MD.decide(cfg, st, facts(stage, rows5), now, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg, st, facts(stage, rows5), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         key = rows[0].get("cert_rerun_key")
         ok(not MD.takes_slot(rows[0]) and not rows[0].get("game"),
            "cert rerun gates (%s): the rerun takes no run slot and no game (%s)" % (stage, rows[0].get("game")))
@@ -2131,7 +2136,7 @@ def cert_rerun_gates_main():
         ok(calls == [(mod, key)] and not other and rows[0].get("decision") == "launched",
            "cert rerun gates (%s): execute starts exactly one rerun unit and nothing else (%s; %s; %s)" % (
                stage, calls, other, rows[0].get("decision")))
-        rows, la = MD.decide(cfg, st, facts(stage, rows5), now + 60, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg, st, facts(stage, rows5), now + 60, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         ok(not la and rows[0].get("decision") == "live" and "rm-cert-rerun-1" in str(rows[0].get("why")),
            "cert rerun gates (%s): the next tick, the unit still running, launches nothing (%s: %s)" % (
                stage, rows[0].get("decision"), rows[0].get("why")))
@@ -2140,20 +2145,20 @@ def cert_rerun_gates_main():
         rows6 = stale([r["test"] for r in rows5], build="b2")
         ok(MD.stale_key(facts(stage, rows6)[mod]["certificate"]) not in (None, key),
            "cert rerun gates (%s): the probe's new build moves the stale key" % stage)
-        rows, la = MD.decide(cfg, json.loads(json.dumps(st)), facts(stage, rows6), now + 120, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg, json.loads(json.dumps(st)), facts(stage, rows6), now + 120, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         ok(not la and rows[0].get("decision") == "live" and "rm-cert-rerun-1" in str(rows[0].get("why")),
            "cert rerun gates (%s): a new build while the rerun is live launches no second rerun (%s: %s)" % (
                stage, rows[0].get("decision"), rows[0].get("why")))
         ended = {"unit": "rm-cert-rerun-1", "key": key, "key_after": key, "ok": True, "published": "abc1234",
                  "end": now + 600}
         rows, la = MD.decide(cfg, json.loads(json.dumps(st)), facts(stage, rows6, result=ended), now + 900, (True, "ok"),
-                             releases=[])
+                             releases=[], bridge=FREE_BRIDGE)
         ok(la == [mod] and rows[0].get("cert_rerun_key") not in (None, key),
            "cert rerun gates (%s): once it ended, the new build gets its own one rerun (%s: %s)" % (
                stage, rows[0].get("decision"), rows[0].get("why")))
         done = {"unit": "rm-cert-rerun-1", "key": key, "key_after": key, "ok": False, "published": None,
                 "error": "publish refused: hook", "end": now + 600}
-        rows, la = MD.decide(cfg, st, facts(stage, rows5, result=done), now + 900, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg, st, facts(stage, rows5, result=done), now + 900, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         need = str(rows[0].get("need"))
         ok(not la and rows[0].get("decision") == "certificate" and "rm-cert-rerun-1" in need and word in need
            and gate in need,
@@ -2161,20 +2166,20 @@ def cert_rerun_gates_main():
            "naming the unit and the %s gate (%s: %s)" % (stage, gate, rows[0].get("decision"), need[:300]))
         red = rows5 + [{"bar": "bar_t", "test": "T_RED", "clause": "green", "status": "REFUSED", "observed": "rc 1",
                         "smallest_fix": "fix"}]
-        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, red), now, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, red), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         # restated by RIMMANDRAKE_ROUTE_RED_DECIDER_AT_VISIT_AND_CYCLE_GATES: beside a red decider the stale stamps get
         # no rerun; the red decider takes the offline red route (here max_live 0: queued for it, cert_red_gates_main)
         ok(not la and rows[0].get("decision") == "slots_full" and not rows[0].get("cert_rerun_key")
            and rows[0].get("cert_reds") == ["T_RED"],
            "cert rerun gates (%s): a red decider beside the stale stamps is no rerun: the red route, queued at max_live "
            "0 (%s)" % (stage, rows[0].get("decision")))
-        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, rows5, live=["rm-other"]), now, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, rows5, live=["rm-other"]), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         ok(not la and rows[0].get("decision") == "live", "cert rerun gates (%s): nothing while a run is live on the mod"
            % stage)
         aut_fx = {"open_items": lambda ids: [], "designer_state": lambda m: None, "version_locked": lambda m: True,
                   "version_evidence": lambda m: None}
         st3 = {"mods": {}}
-        rows, la = MD.decide(cfg, st3, facts(stage, rows5), now, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg, st3, facts(stage, rows5), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         rows, la = MD.AUT.resolve(".", cfg, st3, facts(stage, rows5), rows, la, now, aut_fx)
         ok(la == [mod] and rows[0].get("cert_rerun_key") and not rows[0].get("aut"),
            "cert rerun gates (%s): the autonomy layer leaves the rerun the tick's own launch (%s: %s)" % (
@@ -2184,7 +2189,7 @@ def cert_rerun_gates_main():
     two = facts("in_game", rows5)
     two["Twin"] = dict(facts("in_game", [])[mod], mod="Twin")
     cfg = dict(load_cfg(), advancing=[mod, "Twin"], max_live=1, ingame_enabled=True, game_instances=["a"])
-    rows, la = MD.decide(cfg, {"mods": {}}, two, now, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, {"mods": {}}, two, now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     got = [(r["mod"], r.get("decision"), bool(r.get("cert_rerun_key"))) for r in rows]
     ok(la == [mod, "Twin"] and got == [(mod, "launch", True), ("Twin", "launch", False)],
        "cert rerun gates: at max_live 1 on one game, the rerun ahead spends neither, the next mod's visit launches (%s)"
@@ -2242,7 +2247,7 @@ def cert_red_gates_main():
                   "known": lambda: {base_item}, "ended": lambda ids: set(),
                   "launch": lambda *a, **k: other.append(("launch", a)) or (0, "DETACHED y", "y")}
             st = {"mods": {}}
-            rows, la = MD.decide(cfg, st, facts(stage, rows_in), now, (True, "ok"), releases=[])
+            rows, la = MD.decide(cfg, st, facts(stage, rows_in), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
             r = rows[0]
             ok(la == [mod] and r.get("decision") == "launch" and r.get("cert_reds") == [red_t]
                and not r.get("cert_rerun_key") and MD.takes_slot(r) and not r.get("game"),
@@ -2263,10 +2268,10 @@ def cert_red_gates_main():
             ok(book[-1].get("stage") == "offline_build" and book[-1].get("cap") == cfg["cap_usd"],
                "cert red gates (%s, %s): booked as offline_build spend at the offline cap (%s)" % (gate, label, book[-1]))
             rows, la = MD.decide(cfg, st, facts(stage, rows_in, live=["rm-cert-red-1"]), now + 60, (True, "ok"),
-                                 releases=[])
+                                 releases=[], bridge=FREE_BRIDGE)
             ok(not la and rows[0].get("decision") == "live",
                "cert red gates (%s, %s): its unit live: live, no launch (%s)" % (gate, label, rows[0].get("decision")))
-            rows, la = MD.decide(cfg, st, facts(stage, rows_in), now + 7200, (True, "ok"), releases=[])
+            rows, la = MD.decide(cfg, st, facts(stage, rows_in), now + 7200, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
             ok(not la and rows[0].get("decision") == "stopped" and rows[0].get("need"),
                "cert red gates (%s, %s): ended with the same reds: stopped, a Needs Conductor line, no second try "
                "(%s)" % (gate, label, rows[0].get("decision")))
@@ -2274,7 +2279,7 @@ def cert_red_gates_main():
         cases += 1
         two = facts(stage, [redrow])
         two.update(facts("offline_build" if stage == "in_game" else stage, [], live=["rm-other-1"], who="Other"))
-        rows, la = MD.decide(dict(cfg, advancing=[mod, "Other"]), {"mods": {}}, two, now, (True, "ok"), releases=[])
+        rows, la = MD.decide(dict(cfg, advancing=[mod, "Other"]), {"mods": {}}, two, now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         w = str(rows[0].get("waits_on"))
         ok(not la and rows[0].get("decision") == "slots_full" and "offline builder" in w and red_t in w,
            "cert red gates (%s): slot taken by a live run: slots_full, queued for the offline builder on %s, never a "
@@ -2292,7 +2297,7 @@ def cert_red_gates_main():
         ahead = facts(stage, [redrow])
         ahead.update(facts(stage, [], who="Twin"))
         cfg2 = dict(cfg, advancing=["Twin", mod], max_live=2, game_instances=["a", "b"])
-        rows, la = MD.decide(cfg2, {"mods": {}}, ahead, now, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg2, {"mods": {}}, ahead, now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         la = MD.prioritise(dict(cfg2, max_live=1), {"mods": {}}, ahead, rows, la)
         r = next(x for x in rows if x["mod"] == mod)
         w = str(r.get("waits_on"))
@@ -2302,13 +2307,13 @@ def cert_red_gates_main():
            "behind Twin (%s; %s; waits on %s)" % (gate, la, r.get("decision"), w))
         # stale stamps alone: the zero-token rerun as before
         cases += 1
-        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, stale(["T_CORE"])), now, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, stale(["T_CORE"])), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         ok(la == [mod] and rows[0].get("cert_rerun_key") and not rows[0].get("cert_reds"),
            "cert red gates (%s): stale stamps alone: the zero-token rerun, no red route (%s)" % (
                gate, rows[0].get("decision")))
         # a held mod (journal hold) is untouched
         cases += 1
-        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, [redrow], owed="blocked"), now, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg, {"mods": {}}, facts(stage, [redrow], owed="blocked"), now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         ok(not la and rows[0].get("decision") == "held" and not rows[0].get("cert_reds"),
            "cert red gates (%s): a held mod: held, no red route (%s)" % (gate, rows[0].get("decision")))
         # a paused mod (coverage stop) is untouched: resolve takes the launch back and execute acts on nothing
@@ -2316,7 +2321,7 @@ def cert_red_gates_main():
         stop = {"status": "blocked", "history": [{"what": "coverage_stop", "at": "2026-11-14T20:00:00Z", "why": "x"}]}
         st = {"mods": {}}
         f1 = facts(stage, [redrow])
-        rows, la = MD.decide(cfg, st, f1, now, (True, "ok"), releases=[])
+        rows, la = MD.decide(cfg, st, f1, now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
         rows, la = MD.AUT.resolve(".", cfg, st, f1, rows, la, now, dict(aut_fx, designer_state=lambda m: stop))
         acted = []
         MD.execute(".", cfg, st, rows, la, now, {"file": lambda *a, **k: acted.append(a) or (True, "x"),
@@ -2330,7 +2335,7 @@ def cert_red_gates_main():
     pair = facts("in_game", [redrow])
     pair.update(facts("in_game", [], who="Twin"))
     cfg = dict(load_cfg(), advancing=[mod, "Twin"], max_live=2, ingame_enabled=True, game_instances=["a"])
-    rows, la = MD.decide(cfg, {"mods": {}}, pair, now, (True, "ok"), releases=[])
+    rows, la = MD.decide(cfg, {"mods": {}}, pair, now, (True, "ok"), releases=[], bridge=FREE_BRIDGE)
     got = [(x["mod"], x.get("decision"), bool(x.get("cert_reds")), x.get("game")) for x in rows]
     ok(la == [mod, "Twin"] and got[0][:3] == (mod, "launch", True) and not got[0][3] and got[1][1] == "launch",
        "cert red gates: on one game, the builder ahead holds no game and the next mod's visit launches (%s)" % got)
