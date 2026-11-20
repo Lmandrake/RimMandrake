@@ -26,6 +26,14 @@ a killed, voided or failed run, a closed item (a lane with every ticket closed),
 a `pipe off` switch on its scope; a gate that cannot be read is a named no. At most MAX_PER_DAY continuations per item
 (its chain's first item) in 24 h; the next one is the alarm ALARM_ID in the Conductor log and no launch. The header
 carries no spend, cap or remainder (owner 2026-11-16: no launched agent is told its spend).
+
+The continuation RESUMES the ended session (`--resume`) when its transcript is found, the run ended under WARM_S ago
+(the prompt cache is still warm) and its last context is under modledger's holder_context_ceiling_tokens; the prompt
+is then the header alone. Else it starts fresh, with the header and the previous brief as its written state, and the
+record names why (continue_fresh_why). A blind role never resumes: a judge, reader, examiner, challenger or coverage
+judge starts fresh every time (RIMMANDRAKE_LAUNCH_SIX_CONTEXT_KEEPING_CHANGES_FROM_THE_SCAN; owner 2026-11-20: "The
+needless churn of shutdown->reload context->figure out what to do when you literally started that way before
+shutdown. That needs to STOP." and "blind judges and others don't inherit the builder's context").
 """
 import argparse
 import json
@@ -45,6 +53,13 @@ ALARM_ID = "DETACHED_CONTINUE_LIMIT_REACHED"
 HEAD = "LEFT OPEN CONTINUE"
 LANE_RX = re.compile(r"\blane\b", re.I)
 BULLET_ID_RX = re.compile(r"^\s*[-*]\s+`([A-Z][A-Z0-9_]{7,})`", re.M)
+# Past the prompt cache's 1 h life the first resumed turn writes the whole context again at the cache-write price: 18 of
+# 33 resumes in the 2026-11-20 scan missed the cache (9.08M on the first turns of the 9 that waited 68 to 226 min).
+WARM_S = 3300
+BLIND_STAGES = ("blind_challenge",)
+BLIND_VERBS = ("JUDGE", "CHALLENGE", "PILOT", "EXAMINE")     # maturation_dispatch.JUDGE_VERBS, and the exam's
+ROLE_RX = re.compile(r"\byou are (?:a|an|the)\s+(?:[\w-]+\s+){0,2}?(judge|reviewer|reader|examiner|challenger)\b", re.I)
+TITLE_RX = re.compile(r"\b(blind|fresh read(?:er)?|second reader|naive judge|independent (?:read|review|judge))\b", re.I)
 TERMINAL = ("done", "dropped", "superseded")     # model.TERMINAL, without importing the ledger here
 READ_STATES = r"""
 import json, os, sys
@@ -263,6 +278,58 @@ def plan(rec, got, lane_states, now=None, gates=None, root=None):
                      else "%d lane ticket(s) open" % len(open_lane)))
 
 
+def blind_role(rec, target=None):
+    """-> the blind role this run holds (a judge, reader, examiner, challenger, coverage judge: its point is NOT to
+    carry another's context), or None. Read from its stage, its item names and the opening of its brief; a builder whose
+    brief only names a judge as its subject is not one. A false yes costs only a fresh start, as before resume existed."""
+    st = (rec.get("env") or {}).get("RM_CONTROL_STAGE")
+    if st in BLIND_STAGES:
+        return "stage %s" % st
+    for it in (rec.get("item"), target):     # BLIND and a judge's verb: its slot-2 verb, or any word of an old name
+        s = str(it or "").upper()
+        verbs = [s[12:].split("_", 1)[0]] if s.startswith("RIMMANDRAKE_") else s.split("_")
+        if "BLIND" in s and any(v in BLIND_VERBS for v in verbs):
+            return "item %s" % it
+    b = brief_of(rec)
+    m = ROLE_RX.search(b[:800])
+    if m:
+        return "its brief says %r" % m.group(0)
+    first = next((ln for ln in b.splitlines() if ln.strip()), "")
+    m = TITLE_RX.search(first) if first.lstrip().startswith("#") else None
+    return "its brief's title says %r" % m.group(0) if m else None
+
+
+def resume_choice(rec, p, now, projects=None):
+    """-> (session id, None) to resume the ended run's session, or (None, why it starts fresh)."""
+    role = blind_role(rec, p.get("target"))
+    if role:
+        return None, "a blind role (%s) always starts fresh, never in a session that holds earlier context" % role
+    ended = rec.get("ended")
+    if not isinstance(ended, (int, float)):
+        return None, "its end time is not recorded, so the cache's warmth is UNMEASURED"
+    if now - ended >= WARM_S:
+        return None, "it ended %d min ago, past the %d min the prompt cache stays warm" % ((now - ended) // 60,
+                                                                                         WARM_S // 60)
+    import stop_resume as SR
+    sid = rec.get("session") or rec.get("session_id")
+    if not (sid and DH.find_transcript(sid, projects)):
+        sid = SR.session_of(rec, projects)
+    t = DH.find_transcript(sid, projects) if sid else None
+    if not t:
+        return None, "no transcript of its session was found"
+    ctx = DH.context_tokens(t)
+    if ctx is None:
+        return None, "its session's context is UNMEASURED (no main-thread usage in %s)" % t
+    try:
+        import modledger
+        ceiling = int(modledger.config()["holder_context_ceiling_tokens"])
+    except Exception as e:  # noqa: BLE001
+        return None, "the context ceiling could not be read (%s: %s)" % (type(e).__name__, e)
+    if ctx >= ceiling:
+        return None, "its context of %d tokens is at or over the %d ceiling" % (ctx, ceiling)
+    return sid, None
+
+
 def header(rec, p, now):
     """The continuation's brief header. Never a word on spend, its cap, what is left of one or why a run was stopped:
     a stopped run is "interrupted", nothing more (RIMMANDRAKE_HIDE_CAP_STOP_FROM_RESUMED_RUN_READER_TRIMMED)."""
@@ -286,6 +353,13 @@ def header(rec, p, now):
     if p.get("open_lane"):
         lines.append("Still open: %s (lane tickets in the brief below; you work %s first)."
                      % (", ".join("`%s`" % t for t in p["open_lane"]), p["target"]))
+    if p.get("resumed"):
+        lines.append("This is the same session, resumed: everything above is your own earlier work. Your clone is a new "
+                     "one on origin/main (the footer names it): what you had not published is not in it%s. Read `git "
+                     "log --oneline -5` and carry on from where you stopped; do not re-read what you already know." % (
+                         "; it was saved in %s (HEAD, diff.patch, untracked.tar, deleted)" % rec["bundle"]
+                         if rec.get("bundle") else ""))
+        return "\n".join(lines) + "\n"
     lines.append("This is a fresh session with no memory of the previous one. Your clone stands on origin/main. First "
                  "read `git log --oneline -15` and `python3 src/RimMandrake/rimflow/cli.py show %s`; do not redo work "
                  "that is already published. Then carry on from where it stopped." % p["target"])
@@ -361,7 +435,7 @@ def recheck(rec, now, gates=None, root=None, reader=None):
     return waiting(got, now)
 
 
-def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, reader=None):
+def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, reader=None, projects=None):
     """The continuation unit's step: launch the planned continuation once. -> {act, why, ...}."""
     now = now or time.time()
     rec = DH.read_record(unit, root)
@@ -380,12 +454,15 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
     rec["continue_claim"] = now
     DH.write_record(rec, root)
     root_brief = rec.get("continue_brief_src") or rec.get("brief_src")
-    text = header(rec, p, now)
-    orig = brief_of(rec)
-    if orig.strip():
-        text += "\n---- the previous run's brief ----\n" + orig.rstrip() + "\n"
+    sid, fresh_why = resume_choice(rec, p, now, projects)
     import stop_resume as SR
-    text = SR.with_card_text(p["target"], text, DH.REPO)
+
+    def written(resumed):
+        text = header(rec, dict(p, resumed=resumed), now)
+        orig = brief_of(rec)
+        if orig.strip() and not resumed:
+            text += "\n---- the previous run's brief ----\n" + orig.rstrip() + "\n"
+        return SR.with_card_text(p["target"], text, DH.REPO)
     extra = {"continued_from": unit, "continue_root": rec.get("continue_root") or unit,
              "continue_root_item": rec.get("continue_root_item") or rec["item"], "continue_n": p["n"],
              "continue_brief_src": root_brief, "continue_on_cap": int(rec.get("continue_on_cap") or 0),
@@ -393,22 +470,33 @@ def run(unit, now=None, launch_fn=None, gates=None, root=None, log_path=None, re
     if p.get("kind"):
         extra["continue_kind"] = p["kind"]
     launch_fn = launch_fn or DH.launch
-    try:
-        code, out = launch_fn(rec.get("seat"), p["target"], text, rec.get("model"), rec.get("max_s") or "none",
-                              rec.get("budget_usd") or 0.0, now=now, env=rec.get("env") or None,
-                              clone=SR.given_clone(rec), extra=extra,
-                              skip_launch_checks=("continuation of %s: the same work, whose launch checks already ran"
-                                                  % unit) if p["target"] == rec.get("item") else None)
-    except Exception as e:  # noqa: BLE001
-        code, out = 1, "%s: %s" % (type(e).__name__, e)
+
+    def go(session, why):
+        x = dict(extra, continue_how="resume" if session else "fresh")
+        if why:
+            x["continue_fresh_why"] = why
+        kw = {"resume_session": session, "projects": projects} if session else {}
+        try:
+            return launch_fn(rec.get("seat"), p["target"], written(bool(session)), rec.get("model"),
+                             rec.get("max_s") or "none", rec.get("budget_usd") or 0.0, now=now,
+                             env=rec.get("env") or None, clone=SR.given_clone(rec), extra=x,
+                             skip_launch_checks=("continuation of %s: the same work, whose launch checks already ran"
+                                                 % unit) if p["target"] == rec.get("item") else None, **kw)
+        except Exception as e:  # noqa: BLE001
+            return 1, "%s: %s" % (type(e).__name__, e)
+    code, out = go(sid, fresh_why)
+    if sid and code and "has no transcript" in str(out):     # it vanished between the look and the launch
+        sid, fresh_why = None, "the resume of session %s was refused: %s" % (sid, " ".join(str(out).split())[:200])
+        code, out = go(None, fresh_why)
     rec = DH.read_record(unit, root) or rec
     rec.pop("continue_claim", None)
     m = re.match(r"DETACHED (\S+)", out or "")
     if code == 0 and m:
         rec.update(continued_by=m.group(1), continued_at=now)
         DH.write_record(rec, root)
-        line = "%s on %s ended with work left (%s); continued as %s on %s, same model %s (%d of at most %d today)" % (
-            unit, rec["item"], p.get("why"), m.group(1), p["target"], rec.get("model"), p["n"], MAX_PER_DAY)
+        line = "%s on %s ended with work left (%s); continued as %s on %s, same model %s, %s (%d of at most %d today)" % (
+            unit, rec["item"], p.get("why"), m.group(1), p["target"], rec.get("model"),
+            "its session resumed" if sid else "fresh: " + str(fresh_why), p["n"], MAX_PER_DAY)
         try:
             DH.conductor_line(line, now, log_path, head=HEAD)
         except Exception as e:  # noqa: BLE001

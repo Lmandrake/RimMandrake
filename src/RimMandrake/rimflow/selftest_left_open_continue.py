@@ -550,6 +550,137 @@ def t_the_run_end_note_carries_no_spend_sentence():
           and "$" not in notes[0] and "budget" not in notes[0], str(notes)[:300])
 
 
+# ---- resume of the ended session (RIMMANDRAKE_LAUNCH_SIX_CONTEXT_KEEPING_CHANGES_FROM_THE_SCAN, report change 1)
+PROJECTS = os.path.join(TMP, "projects")
+SID = "11111111-2222-3333-4444-555555555555"
+
+
+def resumable(**kw):
+    """A run record on an item of its own (an earlier case's later run on ITEM would read as a relaunch)."""
+    N[0] += 1
+    kw.setdefault("item", "RIMMANDRAKE_RESUME_CASE_%d_OF_THE_SCAN" % N[0])
+    return make_run(at=T0, **kw)
+
+
+def plant_session(sid=SID, context=300000):
+    """A transcript under the fake projects dir whose last main-thread turn read `context` tokens (None: no usage)."""
+    d = os.path.join(PROJECTS, "-old-clone")
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, sid + ".jsonl"), "w", encoding="utf-8") as f:
+        f.write(json.dumps({"type": "user", "message": {"content": "brief"}}) + "\n")
+        if context is not None:
+            f.write(json.dumps({"type": "assistant", "message": {"usage": {
+                "input_tokens": 10, "cache_creation_input_tokens": 0, "cache_read_input_tokens": context - 20,
+                "output_tokens": 10}}}) + "\n")
+            f.write(json.dumps({"type": "assistant", "isSidechain": True, "message": {"usage": {
+                "input_tokens": 999999}}}) + "\n")
+
+
+def clear_continuations():
+    """Each case stands alone: the fake launches of earlier cases (same item, later start) would read as a relaunch."""
+    import glob
+    for f in glob.glob(os.path.join(DH.runs_dir(), "rm-detached-bench-cont-*.json")):
+        os.remove(f)
+
+
+def resume_go(rec, now):
+    """plan at finish (gap 100 s), then the step at `now`, with the fake projects dir."""
+    clear_continuations()
+    del LAUNCHES[:]
+    got = {"state": "claimed", "notes": [dict(note(LEFT, T0 + 300), id=rec["item"])]}
+    p = LOC.plan(rec, got, {}, now=T0 + 700, gates=Gates().as_dict())
+    rec = DH.read_record(rec["unit"])
+    rec["continue_plan"] = p
+    DH.write_record(rec)
+    return LOC.run(rec["unit"], now=now, launch_fn=fake_launch, gates=Gates().as_dict(), reader=open_reader(),
+                   projects=PROJECTS)
+
+
+def t_a_warm_continuation_resumes_the_ended_session():
+    plant_session(context=300000)
+    rec = resumable(session=SID)
+    r = resume_go(rec, T0 + 660)     # ended T0+600: 1 min gap
+    L = LAUNCHES[-1] if LAUNCHES else {}
+    check("warm: continued", r.get("act") == "continued", str(r))
+    check("warm: launched with resume_session of the ended session", L.get("resume_session") == SID, str(L)[:300])
+    check("warm: the prompt says it is the same session", "same session" in (L.get("brief") or ""), L.get("brief", "")[:300])
+    check("warm: the prompt does not repeat the brief", "the previous run's brief" not in (L.get("brief") or ""))
+    check("warm: record says continue_how resume", (L.get("extra") or {}).get("continue_how") == "resume", str(L.get("extra")))
+    # a lane hand-off to the next ticket is the same role, same brief: it resumes too
+    plant_session(context=200000)
+    rec = resumable(brief=LANE_BRIEF, session=SID)
+    clear_continuations()
+    del LAUNCHES[:]
+    got = {"state": "done", "notes": []}
+    p = LOC.plan(rec, got, {LANE[0]: "done", LANE[1]: "claimed"}, now=T0 + 700, gates=Gates().as_dict())
+    rec = DH.read_record(rec["unit"]); rec["continue_plan"] = p; DH.write_record(rec)
+    LOC.run(rec["unit"], now=T0 + 700, launch_fn=fake_launch, gates=Gates().as_dict(), reader=open_reader(),
+            projects=PROJECTS)
+    check("warm lane hand-off resumes", LAUNCHES and LAUNCHES[-1].get("resume_session") == SID, str(LAUNCHES)[:300])
+
+
+def t_a_cold_large_or_lost_session_starts_fresh():
+    cases = [("context 450k, over the ceiling", 450000, SID, T0 + 660, "ceiling"),
+             ("gap 70 min", 300000, SID, T0 + 600 + 70 * 60, "min"),
+             ("no transcript", 300000, "99999999-8888-7777-6666-555555555555", T0 + 660, "transcript"),
+             ("context unreadable", None, SID, T0 + 660, "UNMEASURED")]
+    for name, ctx, sid, now, word in cases:
+        plant_session(context=ctx)
+        rec = resumable(session=sid)
+        r = resume_go(rec, now)
+        L = LAUNCHES[-1] if LAUNCHES else {}
+        ex = L.get("extra") or {}
+        check("fresh (%s): continued" % name, r.get("act") == "continued", str(r))
+        check("fresh (%s): no resume_session" % name, L and not L.get("resume_session"), str(L.get("resume_session")))
+        check("fresh (%s): the written state carries the previous brief" % name,
+              "the previous run's brief" in (L.get("brief") or ""))
+        check("fresh (%s): continue_how fresh, why names it" % name,
+              ex.get("continue_how") == "fresh" and word.lower() in str(ex.get("continue_fresh_why")).lower(), str(ex))
+    # a resume launch refused for a vanished transcript is retried once fresh
+    plant_session(context=300000)
+    rec = resumable(session=SID)
+    clear_continuations()
+    calls = []
+
+    def gone(seat, item, brief, model, max_s, budget, **kw):
+        calls.append(kw.get("resume_session"))
+        if kw.get("resume_session"):
+            return 2, "REFUSED: session %s has no transcript under x; the holder starts from the packet" % SID
+        return fake_launch(seat, item, brief, model, max_s, budget, **kw)
+    got = {"state": "claimed", "notes": [dict(note(LEFT, T0 + 300), id=rec["item"])]}
+    p = LOC.plan(rec, got, {}, now=T0 + 700, gates=Gates().as_dict())
+    rec = DH.read_record(rec["unit"]); rec["continue_plan"] = p; DH.write_record(rec)
+    r = LOC.run(rec["unit"], now=T0 + 660, launch_fn=gone, gates=Gates().as_dict(), reader=open_reader(),
+                projects=PROJECTS)
+    check("a refused resume is retried fresh once", calls == [SID, None] and r.get("act") == "continued", str((calls, r)))
+
+
+def t_a_blind_role_never_resumes():
+    plant_session(context=100000)
+    cases = [("blind_challenge stage", dict(env={"RM_CONTROL_MOD": "Pyrelands", "RM_CONTROL_STAGE": "blind_challenge"})),
+             ("BLIND judge item", dict(item="RIMMANDRAKE_JUDGE_PYRELANDS_BLIND_CYCLE_TWO")),
+             ("fresh reader brief", dict(brief="# Fresh read of the probe page\n\nYou are a detached reader for the Conductor.")),
+             ("second reader brief", dict(brief="# Second reader: check the rewritten designs\n\nRead them.")),
+             ("examiner brief", dict(brief="# Exam\n\nYou are the examiner of this design; you did not write it.")),
+             ("challenger brief", dict(brief="# Challenge\n\nYou are a blind challenger of the Designer's draft.")),
+             ("coverage judge brief", dict(brief="# Coverage\n\nYou are the coverage judge of FlowWorks.")),
+             ("judge brief", dict(brief="# Label claims\n\nYou are a detached judge for the Conductor."))]
+    for name, kw in cases:
+        rec = resumable(session=SID, **kw)
+        r = resume_go(rec, T0 + 660)
+        L = LAUNCHES[-1] if LAUNCHES else {}
+        ex = L.get("extra") or {}
+        check("blind (%s): continued fresh" % name, r.get("act") == "continued" and not L.get("resume_session"),
+              str((r, L.get("resume_session"))))
+        check("blind (%s): why names the blind role" % name, "blind role" in str(ex.get("continue_fresh_why")), str(ex))
+    # a builder whose brief only mentions a coverage judge as its subject is not a blind role
+    rec = resumable(session=SID, brief="# Prove two coverage-judge faults\n\nYou are a detached builder. Fix the "
+                                      "coverage judge's blind spot.")
+    resume_go(rec, T0 + 660)
+    check("a builder about the coverage judge still resumes", LAUNCHES and LAUNCHES[-1].get("resume_session") == SID,
+          str(LAUNCHES[-1].get("extra") if LAUNCHES else None))
+
+
 def main():
     for t in (test_open_with_note, test_closed, test_lane, test_limit, test_capped, test_killed_voided, test_gates,
               test_finish_kicks, test_launch_records_opt_in, test_waiting,
@@ -558,7 +689,8 @@ def main():
               t_the_step_rereads_the_target_before_launch, t_launch_checks_are_skipped_only_for_the_same_item,
               t_an_open_lane_item_is_its_own_target, t_a_refused_continuation_spends_no_daily_slot,
               t_an_alarm_whose_log_write_failed_is_retried, t_the_alarm_honours_the_run_root,
-              t_the_run_end_note_carries_no_spend_sentence):
+              t_the_run_end_note_carries_no_spend_sentence, t_a_warm_continuation_resumes_the_ended_session,
+              t_a_cold_large_or_lost_session_starts_fresh, t_a_blind_role_never_resumes):
         try:
             t()
         except Exception as e:  # noqa: BLE001

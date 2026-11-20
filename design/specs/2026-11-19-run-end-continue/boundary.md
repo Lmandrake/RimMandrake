@@ -56,10 +56,33 @@ Each promise has a check of its name in `src/RimMandrake/rimflow/selftest_left_o
   sentence taken out (`spend_talk.strip`); a resumed or continued run reads that note.
 - **the-alarm-honours-the-run-root.** `alarm` reads and writes the record, and journals, under the `root` that `run`
   was given.
+- **a-warm-continuation-resumes-the-ended-session.** When the ended run's session has a transcript, the run ended less
+  than `WARM_S` ago, and its last main-thread context is under the ceiling, the step launches with `resume_session` of
+  that session. The prompt is the header only (the session already holds the brief), and it says the session is the
+  same one, resumed. The new record carries `continue_how` `resume` (RIMMANDRAKE_LAUNCH_SIX_CONTEXT_KEEPING_CHANGES_FROM_
+  THE_SCAN, report change 1).
+- **a-cold-large-or-lost-session-starts-fresh.** A gap of `WARM_S` or more, a context at or over the ceiling, a context
+  that cannot be read, or a session with no transcript launches with no `resume_session` and with the full written
+  state (header and the previous brief). The new record carries `continue_how` `fresh` and `continue_fresh_why` names
+  the cause. A resume launch that is refused because the transcript is gone is retried once fresh.
+- **a-blind-role-never-resumes.** A run whose role is to read without the maker's context starts fresh, every time: a
+  blind judge (stage `blind_challenge`, or an item named BLIND with a judge's verb), a fresh or second reader, an
+  examiner, a challenger, a coverage judge, or any brief that declares itself a judge, reviewer or reader. The why
+  names the role. (Owner, 2026-11-20: "blind judges and others don't inherit the builder's context, or anywhere else
+  the whole point was NOT to inherit the context.")
 
 ## LIMITS
 
 - `MAX_PER_DAY` = 3 continuations per chain item in 24 h. Danger: a run that ends the same way each time relaunches
   for ever (each start is a full session). Evidence: the 2026-11-18 relaunch loop this file was built after.
+
+- `WARM_S` = 3300 s (55 min). Danger: past the prompt cache's 1 h life, the first resumed turn writes the whole
+  context again at the cache-write price. Evidence: the 2026-11-20 scan (`design/specs/2026-11-20-context-kept-not-
+  reloaded/report.md` §1 row 3): 18 of 33 resumes missed the cache, 9.08M on the first turns of the 9 that waited 68 to
+  226 min; the 15 that hit cost 0.85M in all.
+- The context ceiling is `holder_context_ceiling_tokens` in `modledger.json` (400k, his card 2026-11-15, "Try 400k
+  first."), read at call time, not a second number. Danger: every later turn of a resumed run re-reads its whole
+  context, so a large context costs on every turn. Evidence: the same report §1 row 2: Conductor turns over 200k cost
+  6.52M of re-read in 3 days; the drivers ended at 380k to 409k, at that ceiling.
 
 Later lists beside this page: `polish.md`.
