@@ -57,6 +57,7 @@ import os
 import re
 import shlex
 import shutil
+import socket
 import subprocess
 import sys
 import time
@@ -324,6 +325,22 @@ def live_holder(name):
         return host_guard.crossing()
 
 
+def bridge_host_args(name):
+    """["--host", <machine>] when game `name` is this machine's today's game and the machine is not the default bridge
+    host, else []. `rimflow bridge idle` with no --host reads ARCHMAGI's lock on every machine (ambient_bridge_host
+    answers None for game a), so SteveDesktop's own game a was gated on whoever held Archmagi's bridge, e.g. the
+    Conductor's walk (MEASURED 2026-11-20 12:40 PST on Steve's clone: `bridge idle` NOT TAKEABLE, BENCH holds, while
+    `--host stevedesktop` said TAKEABLE). A named instance already carries its machine (<host>.<letter>)."""
+    if name != DEFAULT:
+        return []
+    rf = os.path.join(REPO, "src", "RimMandrake", "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import model
+    machine = (os.environ.get("RM_HOST") or socket.gethostname()).strip().lower()
+    return ["--host", machine] if machine in model.BRIDGE_HOSTS and machine != model.DEFAULT_BRIDGE_HOST else []
+
+
 def bridge_refusal(name, purpose=None, timeout=120):
     """None when this seat may stop game `name`, else why not and what would pass. RIMMANDRAKE_GUARD_GAME_STOP_BY_BRIDGE_HOLD
     (GPT review p2.F2: stop used to taskkill with no bridge check). The verdict is rimflow's own, not a second copy:
@@ -340,8 +357,9 @@ def bridge_refusal(name, purpose=None, timeout=120):
         env.pop(INSTANCE_ENV, None)
     else:
         env[INSTANCE_ENV] = name            # the bridge of the game being stopped, whatever this shell drives
+    host = bridge_host_args(name)
     try:
-        r = subprocess.run([sys.executable, RIMFLOW_CLI, "bridge", "idle", "--for", purpose], env=env,
+        r = subprocess.run([sys.executable, RIMFLOW_CLI, "bridge", "idle"] + host + ["--for", purpose], env=env,
                            capture_output=True, text=True, timeout=timeout, encoding="utf-8", errors="replace")
         rc, out, text = r.returncode, r.stdout or "", ((r.stdout or "") + (r.stderr or "")).strip()
     except (OSError, subprocess.SubprocessError) as e:
@@ -353,7 +371,7 @@ def bridge_refusal(name, purpose=None, timeout=120):
     return ("the bridge does not let this seat stop game %s: %s\n  what passes: hold it yourself, then stop again  "
             "rimflow bridge take%s --for \"%s\"  (another seat's live hold needs --force; his OWNER hold is takeable "
             "only 45 min after his last interaction, --force included)"
-            % (name, text, "" if name == DEFAULT else " --host <machine>.%s" % name, purpose))
+            % (name, text, " --host " + host[1] if host else "" if name == DEFAULT else " --host <machine>.%s" % name, purpose))
 
 
 def stop(pid_=None, force=False, name=None, purpose=None):

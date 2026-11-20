@@ -281,11 +281,17 @@ def bridge(w):
     refuse = (("another seat's live hold", [(OTHER, 120)], None),
               ("his OWNER hold, 5 min old", [("OWNER", 300)], None),
               ("his OWNER hold past 45 min, his last act UNMEASURED", [("OWNER", 3000)], "unmeasured"),
-              ("game b, another seat's live hold on b's bridge", [(OTHER, 120, "archmagi.b")], None))
+              ("game b, another seat's live hold on b's bridge", [(OTHER, 120, "archmagi.b")], None),
+              # RIMMANDRAKE_FIX_STEVE_LANE_REFUSES_JOBS_BRIDGE_IDLE_SILENT foil: on SteveDesktop game a's bridge is
+              # stevedesktop's, and another seat's live hold THERE still refuses
+              ("SteveDesktop, another seat's live hold on stevedesktop's bridge", [(OTHER, 120, "stevedesktop")], None))
     allow = (("a free bridge", [], None), ("our own hold", [("BENCH", 120)], None),
              ("another seat's stale hold (46 min)", [(OTHER, 46 * 60)], None),
              ("his OWNER hold 50 min after his last act", [("OWNER", 3000)], None),
-             ("game b, a live hold on game a's bridge only", [(OTHER, 120)], None))
+             ("game b, a live hold on game a's bridge only", [(OTHER, 120)], None),
+             # 2026-11-20: the Conductor held ARCHMAGI's bridge for a walk and SteveDesktop's own game a was gated on
+             # it (idle with no --host reads the default host, archmagi, on every machine)
+             ("SteveDesktop, another seat's live hold on archmagi's bridge only", [(OTHER, 120)], None))
     for verdict, cases in (("refuses", refuse), ("allowed", allow)):
         for label, holds, owner in cases:
             inst = "b" if label.startswith("game b") else None
@@ -293,7 +299,8 @@ def bridge(w):
             if owner == "unmeasured":
                 os.makedirs(w.env["RIMFLOW_OWNER_ACT_STAMP"])        # an unreadable ./bridge stamp: UNMEASURED
             p = w.start_b() if inst else w.start_a()
-            r = w.gi("stop", instance=inst, RM_HOST="archmagi", timeout=120)
+            r = w.gi("stop", instance=inst, RM_HOST="stevedesktop" if label.startswith("SteveDesktop") else "archmagi",
+                     timeout=120)
             if verdict == "refuses":
                 check(r.returncode == G.EX_REFUSED and F.alive(p) and w.kills() == [] and "rimflow bridge" in r.stderr,
                       "stop with %s: refused, nothing sent, and says what would pass: %s %s"
