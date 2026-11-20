@@ -1,0 +1,2 @@
+A machine-minted item name passes every selftest and still fails in production: under a test ledger (RIMFLOW_LEDGER set) model.mint_problems skips the slot-1 project check, so testq's HARNESS_REPAIR_CAUSE_<hex> names passed selftest_ingest while the real mint refused all of them for 14 days (10 repairs lost). Test a minter's names with mint_problems(name, set(), strict=True), or add its shape to model.MACHINE_FAMILIES.
+home: skills/using-rimflow/SKILL.md
