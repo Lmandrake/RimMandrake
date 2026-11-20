@@ -388,7 +388,7 @@ Rust Cathedral only, very shy.**
 node whose picture is chosen by a comp angle (`RM_WatcherStalkRender.cs`). Both are vanilla mechanisms.
 
 **Do not reuse:** the `PawnRenderNodeProperties_Spastic` wing tree. It was reversed on the fire
-hawk (CLAUDE.md flyer section) because it wiggles one fixed texture and cannot express poses.
+hawk (`design/RimMandrake/standing_rulings.md` §If it flies in the fiction) because it wiggles one fixed texture and cannot express poses.
 
 ### 5.4 The bans
 

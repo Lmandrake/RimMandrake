@@ -95,7 +95,7 @@ are §6.
 Format: hook · cycle role · stats sketch · wiring. Commonalities are the ruled
 roster's. All ports are UV-shy (dive at the Burn) except where the sheet's two
 carve-outs already rule otherwise (Scorchpod walks the light and cooks; Scaldhide
-is armored and hunts in it). Flight per the Flyer Law (CLAUDE.md): a flyer gets
+is armored and hunts in it). Flight per the Flyer Law (`design/RimMandrake/standing_rulings.md` §If it flies in the fiction): a flyer gets
 real flight — `MaxFlightTime`/`FlightCooldown` statBases + the Locust-shape race
 fields — and never waits on animation frames.
 

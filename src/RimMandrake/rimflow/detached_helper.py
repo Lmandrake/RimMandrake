@@ -99,6 +99,13 @@ LAUNCH_GRACE_S = 120   # a record "launching" this young may simply not have its
 RETURN_WAIT_S = 600    # how long launch waits for the run before to give the clone back (a 3.6 GB bundle takes minutes)
 RETURN_POLL_S = 10
 EVENTS_REL = "infrastructure/state/ledger/events"
+# RIMMANDRAKE_MOVE_BIOME_FEATURE_JUDGE_RULES_OUT_POINTERS_STAY: CLAUDE.md keeps only a pointer for these rule groups, so
+# every detached brief names their homes. Boundary: design/specs/2026-11-19-rule-homes-in-briefs/boundary.md.
+RULE_HOMES = """- Some rules live outside CLAUDE.md. Read the home file before the work it names. A biome, roster, sea,
+  creature or creature name: `design/RimMandrake/biome_rulings.md`. An in-game LLM call, a pit, Direct Sun or shade, or
+  a flyer: its section of `design/RimMandrake/standing_rulings.md`. A judge, a gate or a judge brief:
+  `design/RimMandrake/standing_rulings.md` §The judge refuses flaws, not polish and §A refusal carries its path to pass.
+"""
 
 FOOTER = """
 
@@ -123,7 +130,7 @@ Ledger item: {item}. Seat: {seat}. {bound_text}.
   is lost. Run helpers and long commands in the foreground and take their results before your last message; never end
   "waiting" for anything.
 - Nobody reads your stdout until you end; the note is what the Conductor sees. End with a 5-line summary.
-"""
+""" + RULE_HOMES
 
 
 def dirty_shards(clone, seat, runner=subprocess.run):

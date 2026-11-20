@@ -115,7 +115,7 @@ kept, wrap-safe angle test, LOS as the explosion already applied). The damage wa
 
 ## 3. The weapon range
 
-Tier: **RimMandrake** (`RM_`), franchise-free — every name below is invented or plain English (CLAUDE.md Q11a).
+Tier: **RimMandrake** (`RM_`), franchise-free — every name below is invented or plain English (`design/RimMandrake/biome_rulings.md`, Q11a).
 Source: found in ruins (owner); the only faction that carries them is pirate raiders who looted those ruins, rarely
 (§3.2). Proposed home: a new mod **`mandrake.rm.kineticarms`** ("RimMandrake: Kinetic Arms"), hard-
 depending on Explosive Knockback (Q2). One shared new DamageDef family:

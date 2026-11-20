@@ -169,7 +169,8 @@
     {"test": "src/RimMandrake/rimflow/selftest_offline_stage_road_back.py", "seconds": 1.5},
     {"test": "src/RimMandrake/rimflow/selftest_stop_steps_outlive_launcher.py", "seconds": 2.0},
     {"test": "src/RimMandrake/rimflow/selftest_role_clone_level.py", "seconds": 6.0},
-    {"test": "src/RimMandrake/Utils/selftest_positive_steps_one_source.py", "seconds": 1.0, "inputs": [".claude/rm_positive_steps.md", ".claude/agents/rm-builder.md", ".claude/agents/rm-fixer.md", ".claude/agents/rm-testpilot.md", "src/RimMandrake/rimflow/roles/fable_rescue.md", "src/RimMandrake/rimflow/maturation.py", "src/RimMandrake/rimflow/testpilot_route.py", "design/specs/2026-11-19-positive-steps-one-source/boundary.md"]}
+    {"test": "src/RimMandrake/Utils/selftest_positive_steps_one_source.py", "seconds": 1.0, "inputs": [".claude/rm_positive_steps.md", ".claude/agents/rm-builder.md", ".claude/agents/rm-fixer.md", ".claude/agents/rm-testpilot.md", "src/RimMandrake/rimflow/roles/fable_rescue.md", "src/RimMandrake/rimflow/maturation.py", "src/RimMandrake/rimflow/testpilot_route.py", "design/specs/2026-11-19-positive-steps-one-source/boundary.md"]},
+    {"test": "src/RimMandrake/rimflow/selftest_rule_homes_in_briefs.py", "seconds": 0.3, "inputs": ["CLAUDE.md", "src/RimMandrake/rimflow/roles/designer.md", "design/RimMandrake/biome_rulings.md", "design/RimMandrake/standing_rulings.md", "design/specs/2026-11-19-rule-homes-in-briefs/boundary.md"]}
   ],
   "live_excluded": {
     "src/RimMandrake/Utils/selftest_maturation_now.py": "runs on the live tree: the real concept journals, ledger shards and run records (its point 6)",

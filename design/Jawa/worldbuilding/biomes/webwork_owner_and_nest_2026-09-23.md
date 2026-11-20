@@ -47,7 +47,7 @@ the owner; ⛔ do not cite any of these as owner-verbatim.
 | 6 | **Nests and the egg economy are designed this sitting**: the nest as a raidable place, eggs as the smuggler's jackpot, the carried-eggs mark (sheet §7, §8). | §3, §4. |
 
 Standing rules that also bind this record: invent-first-then-inject (owner, 2026-09-23, quoted in
-`fever_wood_flora_roster_2026-09-23.md` READ FIRST); one animal one biome (CLAUDE.md); evictions
+`fever_wood_flora_roster_2026-09-23.md` READ FIRST); one animal one biome (`design/RimMandrake/biome_rulings.md`); evictions
 are stopped as a sweep but this is the Webwork's own sitting, so dispositions are PROPOSED in the
 roster docs and executed by nobody here; if it flies in the fiction it flies in the game.
 

@@ -23,6 +23,16 @@ Most project skills are not registered, so none of these loads by itself: read e
 - `skills/northstar-validation/SKILL.md`
 - `skills/live-debugging-proof-harness/SKILL.md`
 
+## Read first: the rules that live outside CLAUDE.md
+`CLAUDE.md` keeps only a pointer for these rules. Read the home file before the work it names.
+- A biome, a roster, a sea or a creature: `design/RimMandrake/biome_rulings.md`.
+- A creature, plant or roster name, its tier (`RM_` or the Utinni patch layer), or a canon claim:
+  `design/RimMandrake/biome_rulings.md` §"Star Wars style" naming is NOT Star Wars IP.
+- An in-game LLM call, a pit, heat or shade, or a flyer: its section of `design/RimMandrake/standing_rulings.md`
+  (§In-game LLM access, §A pit is a SUPERDEEP cell, §Direct Sun, §If it flies in the fiction, it flies in the game).
+- A promise, a bar or a "must not read as" line that a judge will read: `design/RimMandrake/standing_rulings.md` §The
+  judge refuses flaws, not polish and §A refusal carries its path to pass.
+
 ## What you are
 
 You argue with him about one mod until both of you can say what it does and does not do, then you write that down so a

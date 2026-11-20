@@ -54,7 +54,7 @@ flier takes real flight — `MaxFlightTime`/`FlightCooldown` plus the race flags
 | **Beetle-cut corridors are blind** | kit §5 via sitting record §3b | `RM_Quarrok` is the consumer race for the shipped `RM_JobGiver_ChewAnchors` + `RM_ChewableExtension` |
 | **Few will enter — a thin prey trickle keeps the hunts visible** | roster JSON, trace-prey band law | rows 3 and 4: something for the burst to land on, in view of the player |
 | **This is a plantation, and every living thing is stock in the ledger** | sheet §3 | the prey rows are *kept* animals, not an ecosystem — one is the crop, one is the cleanup |
-| **One animal, one biome** | owner ruling 2026-09-21 (CLAUDE.md) | every row is Webwork-only, one home, no exceptions claimed — the flier lairs here and does not migrate |
+| **One animal, one biome** | owner ruling 2026-09-21 (`design/RimMandrake/biome_rulings.md`) | every row is Webwork-only, one home, no exceptions claimed — the flier lairs here and does not migrate |
 | **If it flies in the fiction, it flies in the game** | owner standing rule 2026-09-19 | `RM_Sivvern` gets `MaxFlightTime` > 0, not wings drawn on |
 | **No tamed Wyyyschokk; no truce; no vanilla-Earth fauna** | sheet §6 bans 1–3 | nothing here tames the owner, parleys with it, or is Earth-nameable |
 

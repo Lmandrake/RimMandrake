@@ -802,7 +802,7 @@ tuning because we keep asking a judge 'how could it be better?'"* (2026-11-17 ab
 - **Rule 3, a refusal creates no new requirement:** it binds only "close this hole". Its numbers, day counts, bearings
   and methods are one way to close it; a number binds only if the owner said it. The mod is never changed to hit a
   test's number: that is a question for the owner. (The 2026-11-12 path to pass stands, as a suggestion.)
-- **Rule 4, only the owner's promises must be proven:** a Designer "it must not read as…" line that is neither his words
+- **Rule 4, only the owner's promises must be proven:** a Designer "must not read as" line ("it must not read as…") that is neither his words
   nor the plain opposite of the promise is a tip for finding broken mods, never a separate thing to test.
 - **The two dials:** who must confirm a refusal (today only late findings get a second reader; one step up: every
   refusal), and the number of looks (starts at 2). A third, the Designer's tips per promise, starts at 1.

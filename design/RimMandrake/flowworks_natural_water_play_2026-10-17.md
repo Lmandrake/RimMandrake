@@ -237,8 +237,8 @@ Play rules this implies:
     never saw coming. **Card Q4.** The cheapest gentle fix is a natural **beach**: the outermost shore square's floor is
     0.5 m, not 1 m. Draining then always leaves a walkable slope, and the cost is a slightly smaller lake. This is a
     floor-shape rule, so it costs no new art.
-- **Birds** fly over all of it. A flying drinker needs only an edge cell, and real flight is a stat (CLAUDE.md
-  flight rule). Nothing new.
+- **Birds** fly over all of it. A flying drinker needs only an edge cell, and real flight is a stat (`design/RimMandrake/standing_rulings.md` §If it flies in the fiction).
+  Nothing new.
 - **Aquatic creatures:**
   - Odyssey's otters and seals set `waterCellCost` (MEASURED in the aquatic design §1). Water is cheap ground for
     them, and they keep it in any water that keeps a water terrain.

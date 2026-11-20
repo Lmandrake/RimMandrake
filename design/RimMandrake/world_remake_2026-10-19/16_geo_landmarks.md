@@ -59,7 +59,7 @@ wreck layer), plus one exposed stratum and one night-side landmark, so that both
 They sit at arcs 14° to 107°. Where the world already has a label that fits, the landmark sits inside it:
 Cratercrown is the rim of the Scald crater lake (`the_one_map.md`, "THE SCALD IS A PERCHED LAKE"), and the other
 fits are Salt, Chalk Marches and Coldstone.
-None of the six names is canon IP: all are invented, so they belong to the `RM_` tier (CLAUDE.md, the Q11a ruling).
+None of the six names is canon IP: all are invented, so they belong to the `RM_` tier (`design/RimMandrake/biome_rulings.md`, the Q11a ruling).
 
 ## How it will work (the build item owns this; recorded so the paint can stamp it)
 

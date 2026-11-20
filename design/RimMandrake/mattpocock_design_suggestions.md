@@ -80,7 +80,7 @@ instead of a sentence. And *the three-part ADR test*, which is a good filter for
 
 **We already have:** ADRs in substance: owner rulings with dates in `D:\Luke\dev\RimMandrake\design\RimMandrake\standing_rulings.md`, `D:\Luke\dev\RimMandrake\design\RimMandrake\biome_rulings.md` and the
 ledger's `--owner-said` / `--by-card` events, which are stronger than ADRs because they carry his words. Glossary entries
-exist but are scattered: CLAUDE.md's "Say which greatbole you mean" is a textbook `_Avoid_` entry
+exist but are scattered: `design/RimMandrake/biome_rulings.md`'s "Say which greatbole you mean" is a textbook `_Avoid_` entry
 (`RM_Greatbole` vs `RUT_GreatboleHeartwood` vs `RUT_GreatboleCore`), and `D:\Luke\dev\RimMandrake\design\NAMING_SCHEME_PLAN.md` fixes prefixes.
 No `GLOSSARY.md` exists anywhere in the repo (checked with `git ls-files`).
 

@@ -276,7 +276,7 @@ Per mod:
 - Refund the dig-find budget when placement fails (§3) → `GenPlace.TryPlaceThing(..., Near)` (RM_DigDiscovery.cs:110) practically never fails, and the loss is a few items of a 5% budget.
 - Thread-safety documentation (§2) → no worker-thread caller exists (GPT itself says UNVERIFIABLE). This is speculative.
 - Shared pit policy for pushes, teleports, flight and modded verbs (§4) → already built. RM_SuperdeepTrapState's per-tick position scan (RM_SuperdeepTrap.cs:355-385) catches any arrival however it happened and routes it to OnForcedDescent. The flyer-landing patch is at RM_PitPathing.cs:361. The live row is FLOWWORKS_FORCED_PIT_FALL_ROW_1.
-- D=4 is separate from sea-floor access (§4) → this is already the ruling (CLAUDE.md: ship-only via `RM_SeabedLayer`). Nothing to build.
+- D=4 is separate from sea-floor access (§4) → this is already the ruling (`design/RimMandrake/biome_rulings.md`: ship-only via `RM_SeabedLayer`). Nothing to build.
 
 ### GimmeSomeSlack
 

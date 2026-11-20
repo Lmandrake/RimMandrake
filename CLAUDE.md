@@ -106,37 +106,22 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## Biomes, rosters and seas
 
-- Search `src/` and the roster before you file or design a new thing.
-- Name the greatbole that you mean:
-  - `RM_Greatbole` is the tree that you can fell.
-  - `RUT_GreatboleHeartwood` is the blob that you can mine.
-  - `RUT_GreatboleCore` is a 1×1 marker for bookkeeping.
-- An animal belongs to one biome, unless an in-game reason says otherwise. Fill a hole in a roster with a new creature.
-- Evictions from a roster are stopped. No pass edits a roster to enforce the one-biome rule. A species with more than one home is a
-  row on that biome's own review sheet, at that biome's sitting.
-- If each new question to the owner adds a clause to a procedure, stop. That work is human review work: put the cases
-  on a review sheet.
-- A sea biome describes its floor and its catch: the animals you meet there and what you can fish there. Only
-  fish-sized creatures owe a catch.
-- In every sea, all fishable creatures are alive and move in the depths.
-- The ship is the only way down to the seabed and back. The ship flies to its own planet layer, `RM_SeabedLayer`.
-  `RM_SeaDiveHatch` is a leftover (`SEA_DIVE_HATCH_REMOVE_1`).
+- Before you design, build, audit or edit a biome, roster, sea or creature, read
+  `design/RimMandrake/biome_rulings.md`. The file holds the full rules. Topics: greatbole defs, one biome per animal,
+  roster holes, sea catches, the ship to the seabed, review-sheet cuts.
 - Every BiomeDef with a roster sets `animalDensity`. An unset value is 0, and then no animals ever spawn.
 - Parse `<wildAnimals>` and `<wildPlants>` as XML elements. Do not count `<li>` tags.
-- A review sheet's `cut` applies to that sheet's biome only, never to the planet.
 - An `RM_` twin biome gets its real cast from patches (`UtinniPatches/Patches/WildAnimals_<Biome>.xml`). If you read
   only the BiomeDefs, you see the wrong half.
-- Full text: `design/RimMandrake/biome_rulings.md`.
+- Evictions from a roster are stopped. No pass edits a roster to enforce the one-biome rule.
 
 ## Star Wars style naming is not Star Wars IP
 
-- An invented exotic name lives in the franchise-free `RM_` tier. Only a real canon name is IP, and it goes through the
-  Utinni patch layer.
-- An `RM_` roster can stand alone. It is never a thin fallback.
-- When a tier or provenance question makes more sub-questions, first ask if the category is necessary at all.
-- A donor mod's defName is not a canon source. Check canon with the Wookieepedia search API.
-- Authority: `design/RimMandrake/biome_mod_architecture.md` §7 Q11a (a name that only sounds like Star Wars is not
-  IP). Full text: `design/RimMandrake/biome_rulings.md`.
+- Before you name a creature, plant or roster, read `design/RimMandrake/biome_rulings.md` §"Star Wars style" naming
+  is NOT Star Wars IP. Read that section also before you pick a tier (`RM_` or the Utinni patch layer) or call a name
+  canon.
+- A question about a naming tier or about provenance can make more sub-questions. Then stop. First ask if the category
+  itself is necessary.
 
 ## Facts you cannot guess
 
@@ -183,32 +168,22 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## In-game LLM access is the Claude Code CLI, never a hosted API key
 
-- Every in-game LLM call runs `claude -p "<prompt>"` as a subprocess. It uses the claude.ai login and needs no API key.
-- The spec has two laws. The LLM has authority over text and menus only. The game is complete when the LLM is absent.
-- Detail: `design/RimMandrake/standing_rulings.md` §In-game LLM access. Spec:
-  `design/RimMandrake/llm_ingame_wiring_spec.md`.
+- Before you design or build an in-game LLM call, read `design/RimMandrake/standing_rulings.md` §In-game LLM access.
+  Then read the two laws in the spec, `design/RimMandrake/llm_ingame_wiring_spec.md`.
 
 ## A pit is a superdeep cell, not a building
 
-- The authority is the item `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`.
+- Before you design or build a pit, read the item `infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md`. Then read
+  `design/RimMandrake/standing_rulings.md` §A pit is a SUPERDEEP cell.
 - Do not act on the 1127-line spec `design/RimMandrake/pit_superdeep_collapse_spec.md` before you read the item. Ten
   of the spec's answers changed after the spec was written.
-- Summary: `design/RimMandrake/standing_rulings.md` §A pit is a SUPERDEEP cell.
 
 ## One Direct Sun, a pure function of geometry
 
-- Direct Sun is one model. It feeds vanilla heat: felt temperature, then Heatstroke.
-- Its value is 55 °C at the zenith × sin(sun angle). The sun angle comes from the tile's position on the planet.
-- No biome has its own heat kind, number or exception. Low sun is less intense and casts longer shade. High sun is
-  more intense and leaves only covered shade.
-- Ambient heat follows normal RimWorld rules. Volcanic, steam and fog heat is plain air temperature.
-- Shade gear is parasols and roofs. A tent is any quick roof.
+- Before you design or build heat, sun, shade or a biome's climate, read `design/RimMandrake/standing_rulings.md`
+  §Direct Sun. Design and migration: `design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`.
+- No biome has its own heat kind, number or exception.
 - No animal or pawn ever vanishes without a sign that the player can read.
-- Direct Sun runs the same on every day-side map only with a good tree shade model. Without that model, Direct Sun is
-  off on maps with many trees, which the owner calls inferior. The model:
-  `design/RimMandrake/tree_shade_model_2026-10-19.md`.
-- Full text: `design/RimMandrake/standing_rulings.md` §Direct Sun. Design and migration:
-  `design/RimMandrake/unified_direct_sun_heat_2026-10-19.md`.
 
 ## Every DLC is assumed
 
@@ -247,16 +222,10 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## If it flies in the fiction, it flies in the game
 
-- When a creature flies in its fiction, make it a real flyer where we can. Do this when you touch its def, not in a
-  sweep.
-- Flight is the `MaxFlightTime` STAT (Core, not a donor). The animation is a whole-body directional flip-book
-  (`flyingAnimationFramePathPrefix`). Never use a Spastic wing render-tree.
-- Mechanics: `skills/rimworld-modding/references/flight.md`.
+- Before you design or build a creature, read `design/RimMandrake/standing_rulings.md` §If it flies in the fiction,
+  it flies in the game. Mechanics: `skills/rimworld-modding/references/flight.md`.
 - Never live-test a flyer's flight without the owner present. Never try to capture images of flight. Both attempts
-  fail.
-- Verify flight with a deterministic state read of `Pawn_FlightTracker`. A visual check happens in a joint session, or
-  it waits.
-- Full text: `design/RimMandrake/standing_rulings.md` §If it flies in the fiction, it flies in the game.
+  fail. Verify flight with a deterministic state read of `Pawn_FlightTracker`.
 
 ## Queue items are NAMED, not numbered
 
@@ -393,21 +362,10 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## The judge refuses flaws, not polish
 
-- A judge turns away incomplete work. A judge does not turn away work only because it is not tuned to perfection.
-- Four rules:
-  1. Refuse only for one of three flaws. Quote the promise. Everything else is advice. The three flaws:
-     - a promise not kept;
-     - a broken promise that nobody would notice;
-     - a test or file that is itself wrong.
-  2. Do one full inspection, then one check of the repairs, by reading the fix. Then the owner gets the short list.
-  3. A refusal binds only "close this hole". Its numbers and methods are suggestions. A number binds only if the owner
-     said it. Never change the mod to hit a test's number.
-  4. A Designer "must not read as" line is a tip, not a thing to test. The exception is a line that is his words or
-     the plain opposite of the promise.
-- Two settings (the dials) can change: who confirms a refusal, and the number of looks. The number of looks starts
-  at 2.
-- These rules bind only after the judge prompt is edited and recalibrated.
-- Full text: `design/RimMandrake/standing_rulings.md` §The judge refuses flaws, not polish.
+- Before you judge, or write or edit a judge brief, read `design/RimMandrake/standing_rulings.md` §The judge refuses
+  flaws, not polish.
+- A judge's refusal binds only "close this hole". Its numbers and methods are suggestions. Never change the mod to hit
+  a test's number.
 
 ## No launched agent is told its spend
 
@@ -481,14 +439,9 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 
 ## A refusal carries its path to pass
 
-- Every judge or gate refusal is a refusal record. It holds the evidence, `would_pass`, `smallest_fix`, and a verdict
-  on the criterion.
-- A refusal is as detailed as the evidence that it rejects. It gives fixes and paths to a pass that are reasonable to
-  attain.
-- A flawed criterion goes to the neutral fixer, never to the builder.
+- Before you write or run a judge or a gate, read `design/RimMandrake/standing_rulings.md` §A refusal carries its
+  path to pass.
 - Only a refusal from a CALIBRATED brief sends work back.
-- If nothing could ever pass, that is the `REFUSAL_NOTHING_COULD_EVER_PASS` alarm.
-- Full text: `design/RimMandrake/standing_rulings.md` §A refusal carries its path to pass.
 
 ## Code isn't clean until a review says so
 

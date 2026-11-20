@@ -78,8 +78,8 @@ Every ruled feature and the item that carries it. **One item was missing and is 
   silhouette, no hoard, and the word "dragon" never reaches a label, defName or description.
 - **House style:** painterly vanilla-RimWorld, matte, no outlines, never cute. On faced jobs north
   is a true rear view with no face; facings derive from the accepted east master (`fill_queue.py`
-  default). Flight frames are a **whole-body flip-book**, never a wing layer (CLAUDE.md flight
-  rule; Locust ships 5 frames).
+  default). Flight frames are a **whole-body flip-book**, never a wing layer (`design/RimMandrake/standing_rulings.md` §If it flies in the fiction;
+  Locust ships 5 frames).
 - **Tier (Q11a):** everything invented is `RM_`. The Lightfall lair's unique things (brood-mother,
   egg, great bone, bone field, wreck) are campaign content and take `RUT_`; the brood **species**
   is the free giant, so the brood-mother is a `RUT_` PawnKind on the `RM_` race.
