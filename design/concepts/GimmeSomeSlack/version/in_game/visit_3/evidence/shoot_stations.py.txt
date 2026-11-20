@@ -1,0 +1,27 @@
+"""One zoomed game render (screenshot_cell_rect) per review station of the loaded map -> D:\\ClaudeWork\\scratch\\gss_v3\\shots."""
+import sys, os, time, json, shutil
+sys.path.insert(0, os.path.join("src", "RimMandrake", "GimmeSomeSlack"))
+import human_review as H
+import validation as V
+OUT = r"D:\ClaudeWork\scratch\gss_v3\shots"
+os.makedirs(OUT, exist_ok=True)
+B = V.Bridge()
+B.call("rimworld/set_time_speed", speed="Paused")
+done = []
+for st in H.station_list():
+    (x, z), (w, h) = st["origin"], st["size"]
+    name = "gss_v3_st%02d" % st["n"]
+    B.call("jawa/clear_ui", all=True)
+    time.sleep(0.8)
+    res = B.call("rimworld/screenshot_cell_rect", x=x, z=z, width=w, height=h, paddingCells=1, fileName=name,
+                 rootSize=max(4.0, max(h, w * 9.0 / 16.0) / 2.0 + 1.0))
+    src = res.get("filePath") or res.get("path") or res.get("savedPath")
+    for _ in range(20):
+        if src and os.path.exists(src):
+            break
+        time.sleep(0.5)
+    ok = bool(src and os.path.exists(src))
+    if ok:
+        shutil.copyfile(src, os.path.join(OUT, "st%02d.png" % st["n"]))
+    done.append((st["n"], st["title"], ok))
+    print(st["n"], st["title"], "OK" if ok else "FAILED " + json.dumps(res)[:200])

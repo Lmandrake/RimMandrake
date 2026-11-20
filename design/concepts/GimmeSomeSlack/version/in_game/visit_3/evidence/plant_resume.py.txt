@@ -1,0 +1,23 @@
+"""Run the launcher's own resume path (load -> wait_for_map -> wait_cords_laid -> save_reload_b) for an armed run whose
+checkpoint was planted: the repaired sc_walk save/load read must go red on it."""
+import sys, os, time
+from functools import partial
+sys.path.insert(0, os.path.join("src", "RimMandrake", "GimmeSomeSlack", "northstar"))
+import gss_playtest_runner as G
+run_id, save, ticks = sys.argv[1], sys.argv[2], int(sys.argv[3])
+a = G.argparse.Namespace(recipe="save_reload_b", seed=1, tick_mode="batch", budget_ms=50, poll=2.0, timeout=300.0, force=False,
+                         resume=run_id, no_resume=False, load_wait=300.0, out_dir=os.path.join(G.REPO, "Transient", "gss_playtest"))
+calls = [0]
+s = G.P._connect()
+lr = s.call("rimworld/load_game_ready", {"saveName": save}) or {}
+print("load", lr if isinstance(lr, dict) and "success" in lr else str(lr)[:200])
+def wait(remaining):
+    poll = partial(G._resume_call, remaining, s, calls, "rimworld/get_game_info")
+    w = G.wait_for_map(poll, ticks, remaining=remaining)
+    if w.get("ready"):
+        lw = G.wait_cords_laid(partial(G._motion_poll, remaining), remaining=remaining)
+        print("RESUME: cords laid=%s after %s s (%d polls, last %s)" % (lw["laid"], lw["seconds"], lw["polls"], lw["last"]))
+        w = dict(w, cords=lw, ready=lw["laid"])
+    return w
+r = G.resume_loop(wait, partial(G.run_once, s, calls, a, "save_reload_b", run_id), limit_s=300)
+print("VERDICT", G.P.verdict(r["recs"]) if r["recs"] else "INCOMPLETE")

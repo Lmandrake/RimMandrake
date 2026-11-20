@@ -1,0 +1,14 @@
+"""Read the cord component's pending/builds over time WITHOUT a settle (motion is not a laid-set read)."""
+import sys, os, time, json
+sys.path.insert(0, os.path.join("src", "RimMandrake", "GimmeSomeSlack"))
+import validation as V
+n = int(sys.argv[1]) if len(sys.argv) > 1 else 6
+gap = float(sys.argv[2]) if len(sys.argv) > 2 else 2.0
+B = V.Bridge()
+gi = B.call("rimworld/get_game_info")
+print("tick", gi.get("ticksGame"), "paused", (gi.get("state") or {}).get("paused"))
+for i in range(n):
+    m = B.probe("motion")
+    keep = {k: m.get(k) for k in ("pending", "builds", "slicedBuilds", "offscreenRebuilds", "regenSkips", "settledReads", "layBusy", "graphBusy") if k in m}
+    print(round(i * gap, 1), json.dumps(keep) if keep else json.dumps(m)[:400])
+    time.sleep(gap)

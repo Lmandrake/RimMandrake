@@ -1,0 +1,25 @@
+"""Load a save, then read pending/builds every 0.25 s with 'motion' (no settle) until pending 0 and builds>0, or 120 s."""
+import sys, os, time, json
+sys.path.insert(0, os.path.join("src", "RimMandrake", "GimmeSomeSlack"))
+import validation as V
+save = sys.argv[1]
+B = V.Bridge()
+t0 = time.monotonic()
+r = B.call("rimworld/load_game_ready", saveName=save)
+print("load_game_ready", round(time.monotonic() - t0, 1), "s", json.dumps({k: r.get(k) for k in ("success", "status", "message")}))
+B.close() if hasattr(B, "close") else None
+t1 = time.monotonic(); last = None; trace = []
+while time.monotonic() - t1 < 120:
+    try:
+        B = V.Bridge()
+        gi = B.call("rimworld/get_game_info")
+        m = B.probe("motion", wait_s=5)
+    except Exception as ex:
+        trace.append((round(time.monotonic() - t1, 2), "err " + str(ex)[:80])); time.sleep(0.5); continue
+    cur = (gi.get("ticksGame"), m.get("pending"), m.get("builds"))
+    if cur != last:
+        trace.append((round(time.monotonic() - t1, 2), cur)); last = cur
+    if m.get("pending") == 0 and (m.get("builds") or 0) > 0 and len(trace) > 1:
+        break
+    time.sleep(0.25)
+for t in trace: print(t)

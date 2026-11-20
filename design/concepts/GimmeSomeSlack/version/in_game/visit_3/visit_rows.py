@@ -148,6 +148,10 @@ def add(a):
     for tid in sorted(tests):
         if not tid.startswith("sc_") or tests[tid].get("file", "").endswith("gss_playtest_runner.py"):
             continue
+        # a scene is written only from a run on the tier the table names for it (visit 2: scene rows written on the wrong
+        # tier never counted at the build match); --scenes-tier names this run's tier
+        if a.scenes_tier and (tests[tid].get("tier") or "gimmesomeslack") != a.scenes_tier:
+            continue
         try:
             st, det = V.scene_verdict(tid, merged)
         except KeyError:                      # not a scenes.json scene (sc_stub_joins): its own command writes its row
@@ -179,6 +183,7 @@ def main():
     p.add_argument("--sha", help="the deployed source's sha, for a result that records no run_identity")
     p.add_argument("--env", help="JSON {running: [...], tier: {active_equals_running: bool}} for a result that records no env")
     p.add_argument("--identity", help="the one JSON line build_match.py identity printed for this run's deploy and list")
+    p.add_argument("--scenes-tier", help="write scene rows only for scenes whose test-table tier is this (the run's tier)")
     p.add_argument("--held", help="comma list of what the site switched off or locked for this run (weather, fire, ...)")
     a = ap.parse_args()
     if a.cmd != "add":
