@@ -509,7 +509,6 @@ see); each line goes back by one move:*
 
 None open. Every entry is answered (next section).
 
-
 ## Answered on 2026-11-19
 
 These entries were under `NEEDS HIM`, and each keeps its number. Item

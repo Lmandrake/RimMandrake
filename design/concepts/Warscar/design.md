@@ -96,8 +96,8 @@ soil, and the animals are armour and madness. The sources do name two things her
 Wreck-lichen scrapings are *"a dye base and a poor fuel"* (built as a harvest). Glower crust, by its own shipped
 description, *"burned, ... makes a crude, hot fuel"*; the sheet listed *"glower fuel — radiogenic harvest from the
 black crusts"* and the first review proposed a brazier that doses whoever tends it. His card of 2026-09-30 put the
-glower-black uses out, fuel among them, so the crust burns in its description and in nothing else. That cut is
-listed under `NEEDS HIM`, because his fuel ruling came seven weeks after it. Nobody lives on this ground and
+glower-black uses out, fuel among them, so the crust burns in its description and in nothing else. That cut
+stands by his answer of 2026-11-19 on declined ship ideas, though his fuel ruling came seven weeks after it. Nobody lives on this ground and
 nobody trades on it, so fuel cannot be bought here either. A crew lands on the Warscar with the fuel to leave it,
 or it does not land.
 
@@ -482,7 +482,6 @@ see); each line goes back by one move:*
 ## NEEDS HIM
 
 None open. Every entry is answered (next section).
-
 
 One question the cleanse put on its owner pages is answered here without asking: the label is "Warscar", the later
 of the two cards.

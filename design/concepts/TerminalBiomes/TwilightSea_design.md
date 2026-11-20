@@ -366,12 +366,17 @@ comfortable"*; there is no cover from orbit; water arrives as fog, *"a cupful at
 | A surge is warned by the floor itself, widens the reach past the stakes, and passes; a way from the ship to a bank stays outside it. | Work at the stakes through one surge. | The same bank on a calm day: nothing is taken. |
 | A light-well wanes, closes and another opens elsewhere within the visit; the closing can be read from the floor before it happens; a new well never opens in the river's reach or on the ship. | A stay long enough for one well to turn over. | A well whose shown remaining life never moves fails. A new well standing in surge reach fails. |
 | A closed well's ground lights itself for a while afterwards and then goes dark. | The ground under a well before and after it closes. | The same sponges under a standing well stay dark. |
-| The lid's keeper passes overhead: the floor dims, its call is heard, nothing is harmed; it cannot be hurt or removed. | One pass; an attack on the lanternwhale when it is on the floor. | The attack is refused with a reason; no corpse, no silent respawn, no roof left standing over a dead keeper. |
 | Panes fall with a shadow first, can kill, lie where they land and can be harvested; they pile on a parked ship, and a launch waits until the deck is cleared. | A pawn and a crate under a shadow; a ship parked through several falls; a launch with a laden deck. | Launch is delayed, never locked: clearing always works, and a launch already under way is not stopped. The same ship on the beach gathers none. |
 | Food can be gathered and hunted by hand on the floor; nothing can be fished there; the same kinds are fished from the beach. | A crew with no supplies for a day on the floor; a line on the beach. | A fishing zone on the floor does nothing. |
 | Nothing rains under the sea; weather changes only the light. | A full visit's weather. | His words: *"Twilight Sea is a sea floor... no rain."* |
 | Nothing vanishes. | Every loss above, with a save and reload in the middle. | |
 | Under the lid the Empire's search comes at the top level of cover, much slower than for the same crew on the beach, and it still comes. | The same crew, as loud, landed on the floor and on the beach; read the search's next contact on both. | A search that never comes on the floor. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| The lid's keeper passes overhead: the floor dims, its call is heard, nothing is harmed; it cannot be hurt or removed. | One pass; an attack on the lanternwhale when it is on the floor. | The attack is refused with a reason; no corpse, no silent respawn, no roof left standing over a dead keeper. |
 
 No row pins a rate: how often a pane falls, how long a well lives and how long a step is are tuning, and stay out of
 any bar.
@@ -413,6 +418,15 @@ sea (his redirect of 2026-09-26).
 
 Every feature is in one bucket. "Built" is source presence, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): the river on the floor.** Gold light-wells and the
+banks draw workers out across the floor; the bottom river's current carries off whoever steps onto its bed; a surge
+is warned by the floor itself and widens the reach; a carried worker ends at the sink, findable and worsening, and
+recovers once carried home. *Why a normal stop is sure to see it:* the ship lands clear of the river's reach, and
+the best ground and the wells lie across or beside it, so the first work party meets the bank and the stakes. He
+approved this chain on 2026-11-17 as the signature of the whole four-sea mod; it stays the Twilight's own.
+*Runner-up:* the cultivated light and tenancy economy (the cleanse's runner-up), 0.2.0. The lid's keeper passing
+overhead moves to 0.2.0: it harms nothing and a stop can miss it.
+
 **0.1.0, the stop**
 - The floor as a real place on the ship's layer: the lid as a sky, gold wells, dark between, no rain, mild water.
   (flora and animals built; the floor on the ship's layer unproven)
@@ -430,8 +444,6 @@ Every feature is in one bucket. "Built" is source presence, not a pass.
 - The river: bed, banks, lit stakes, fords, the current, drifting cargo, the surge and its tells, the sink as a
   place and a heap, the sunk condition, rescue into the hull, warnings, a landing kept clear. (built, except the
   bed's own ground and the ship-footprint reservation)
-- The gardener overhead: the passing shadow, the call, sometimes a well moved; protected from harm. (the pass is
-  unbuilt; the animal is built)
 - Falling panes, flakes, the laden deck and the launch that waits. (built)
 - The stripped wreck; ordinary sea-floor wrecks. (built)
 - Weather that only changes the light. (today the floor has Clear and Fog; the four lighting weathers are unbuilt)
@@ -439,6 +451,11 @@ Every feature is in one bucket. "Built" is source presence, not a pass.
 - Under the lid as the top level of cover from orbit. (unbuilt; campaign layer, one entry in the pursuit)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The gardener overhead: the passing shadow, the call, sometimes a well moved; protected from harm. (the pass is
+  unbuilt; the animal is built)
+*Already here before that answer:*
 - The gardener's five beats: the booming, the dark, the panic, the rain of flakes, parasites and glowing shells, and
   the hour of overdrive; the seam of gleanings along its track. (unbuilt)
 - The grazer of lamps and the junk-lamp decoy; the liar and its trophy; lid-dark. (built; lid-dark unknown)
@@ -500,12 +517,7 @@ Every feature is in one bucket. "Built" is source presence, not a pass.
 
 ## NEEDS HIM
 
-5. **Not questions; a list he asked for.** Ship or light ideas in these sources that he declined or cut, which this
-   design does not bring back: the selling of light and all its paper (2026-09-27, his words above); light calling
-   the sea (2026-09-26, his words above); the Ark Seed, a tank of live breeding stock carried up in the ship, which
-   sat third in the ranking he answered with *"no we need to vary this"* (2026-09-26) and was never ruled in. If he
-   wants the Ark Seed, the small version is live fish as cargo in the hold with no home pen.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
+None open. Every entry is answered (next section).
 
 The cleanse proposal of 2026-11-17 asked him one question, whether the wells may turn over in about a week when the
 frozen sheet says years. He had answered it on 2026-09-26 in his own words (*"the light can move around slowly over a
@@ -529,3 +541,11 @@ can undo any one by name.
    at one resident, no fuel on the floor, fuel from caravans on the beach (the design's default). *Delegated call.*
 4. **May the gripping terror take hold of the ship (0.2.0)?** Yes, at 0.2.0, as a rare event: a sign comes first, the
    ship is never destroyed, the grip can be broken, and a launch stays possible. *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+5. **Ship or light ideas he declined or cut** (the selling of light, light calling the sea, the Ark Seed). *His card
+   of 2026-11-19 (declined ship ideas):* they stay out. He can bring any one back by
+   name.

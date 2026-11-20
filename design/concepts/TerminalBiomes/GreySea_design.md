@@ -362,10 +362,15 @@ drifter that *"rides the shore current through the shadow lanes"*) are on the fl
 | A parked hull rimes; then its outer doors salt shut from outside and force open from inside; then crust holds the launch until it is chipped off; and chipping pays in salt. | A ship parked for the stay; chip one door from each side; chip the deck; launch. | Interior heating changes nothing. A running shield changes nothing. The same ship on another sea's floor grows nothing. Nobody is ever sealed in. |
 | Where the ship sits and what is falling change how fast the salt comes. | The same ship beside a chimney field and well away from one; in clear water and under salt snow. | Nothing the crew builds, burns or buys changes the pace. |
 | A crusted ship can always tear free, at a cost in hull. | A launch with the deck still crusted, by the forced launch. | The ship leaves; the crust and salted doors are gone; the damage is real and never destroys a hull part. |
-| A strong steady work-light brings the watcher to the edge of the light, then fresh scrape-marks, then the giant, which breaks that lamp and leaves. Switching the lamp off at any point resets it. | One work-light left burning; a second ship-day with the lamp dowsed when the watcher shows. | A torch never brings the giant. The watcher never enters the light and never attacks. The giant harms neither ship nor crew. |
 | Every catch has a living body on the floor, and nothing here schools. | Fish the beach; find the same four kinds alive below. | A catch that exists only as an item fails. |
 | Under the sea the Empire's search comes at the top level of cover, much slower than for the same crew on the beach, and it still comes. | The same crew, as loud, on the floor and on the beach; read the search's next contact on both. | A search that never comes on the floor. |
 | Nothing vanishes. | Every loss above, with a save and reload in the middle; a launch with someone still encased outside. | The launch warns that someone is held. |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| A strong steady work-light brings the watcher to the edge of the light, then fresh scrape-marks, then the giant, which breaks that lamp and leaves. Switching the lamp off at any point resets it. | One work-light left burning; a second ship-day with the lamp dowsed when the watcher shows. | A torch never brings the giant. The watcher never enters the light and never attacks. The giant harms neither ship nor crew. |
 
 No row pins a rate, a day count or a yield: how fast salt comes, how long a lamp may burn and how much a block pays
 are tuning.
@@ -408,6 +413,17 @@ the Empire's search and the visibility dial; the one sun from geometry, which on
 Every feature is in one bucket. Moves against the cleanse proposal and against the retired combined four-seas
 design are listed, with reasons, in `GreySea_rewrite_choices.md`.
 
+**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; listed for the Conductor.**
+The four seas are one mod, and two readings disagree:
+- *His approval of 2026-11-17:* one signature for the whole four-sea mod, the Twilight's river (bank, current,
+  surge, sink), with this sea as land, ordinary life and now the three shared systems only (`design/concepts/
+  CLEANSE_PLAN_OWNER_2026-11-17.md`). His first-version answer *"keeps your 11-17 hard edge"*. Against it: a stop at this sea never
+  sees the Twilight's river, and the answer asks for a signature *"a normal stop must see"*.
+- *Its own signature, the sea keeps what it is given:* whoever touches a pool or stands in a chimney's plume is
+  encased where they stand and is got out by mining. A normal stop is sure to see it: the pools and plumes are
+  everywhere on the floor and the statuary shows it from the first minute.
+Moved now, because they are extras under either reading: the lamp (light-seekers, the fessk at the rim, the giant that breaks the lamp).
+
 **0.1.0, the stop**
 - The floor as a place on the ship's layer: murk without penalty, pillars, domes, chimneys with crystallising
   plumes, brine channels running to the pools, the deepest pool, the statuary as blocks of jacket, the four great
@@ -419,13 +435,16 @@ design are listed, with reasons, in `GreySea_rewrite_choices.md`.
 - Pools and plumes that encase; rescue by mining out; the air timer and its alert. (built)
 - The hull: rime, salted doors, crust, the launch that waits, chipping that pays, berth and weather changing the
   pace, the tear-free launch. (built; moved in)
-- The lamp: light-seekers, the fessk at the rim, scrape-marks, the giant that breaks the lamp. (built; moved in)
 - The catch of four and its rare table; the beach's white crust and domes. (built)
 - Salt as goods: raw salt, the four coloured salts. (built)
 - The sea floor as the top level of cover from orbit. (unbuilt; campaign layer, one entry in the pursuit)
 - The ship's landing advice naming the salt. (unbuilt; campaign layer, on the shared frame)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The lamp: light-seekers, the fessk at the rim, scrape-marks, the giant that breaks the lamp. (built; moved in)
+*Already here before that answer:*
 - The orruhmu's squirt: two or more people within reach, one swell of warning, then the nearest is encased. (built)
 - The plants that hurt to touch: the sphere plant and the Brine Crown. (built)
 - The Brine Crown pulling its membranes in under salt snow, as a picture only (card, 2026-10-19). (built; the

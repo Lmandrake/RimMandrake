@@ -131,7 +131,7 @@ protection and offense needed to drive them back"*), and **sunlight**: a hull st
 be reached at all. *This half is the first pass's proposal.* The spinning and door-wrapping run today only in the
 siege incident on a neighbouring tile; pointing them at a landed ship on the home map is a build, and no source
 asks for it. (A third, stranger wear is in the sources and was not chosen in October: roots that thread the ship's
-doorframes. See `NEEDS HIM` 1.)
+doorframes. It stays down: `Answered on 2026-11-19` 1.)
 
 ---
 
@@ -504,7 +504,6 @@ see); each line goes back by one move:*
 ## NEEDS HIM
 
 None open. Every entry is answered (next section).
-
 
 ## Answered on 2026-11-19
 

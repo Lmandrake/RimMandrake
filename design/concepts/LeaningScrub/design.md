@@ -380,7 +380,7 @@ shielded hull: nothing moves in.
 
 **Two older ship ideas were declined and are not revived here.** Both come from the review of 2026-09-29: that the
 landed ship casts a calm lee where things green and nest, and that the launch burn reads as fire and brings the
-herds. He cut both at the sitting. They are listed with his words under `NEEDS HIM` 1.
+herds. He cut both at the sitting. Both stay cut (`Answered on 2026-11-19` 1).
 
 ## The promises of 0.1.0, and the scene that would show each one broken
 
@@ -513,7 +513,7 @@ see); each line goes back by one move:*
 **Dropped (already cut or declined; listed so nobody revives them by accident)**
 - **The ship's wind-shadow and lee** (cut 2026-09-28, his words: *"No, we dont need a downwind lee around the
   ship."*) and **the herds converging on a launching ship** (cut the same sitting: *"Yes in 1. 2) not needed."*).
-  See `NEEDS HIM` 1.
+  Both stay cut: `Answered on 2026-11-19` 1.
 - The bark-wardens, the trees' guardians (cut 2026-10-23); the vaporator-farming people and their camps (banned
   2026-10-20, *"We don't want those"*; camps removed by card); the vaporator's drying scar (card 2026-10-16,
   *"Plain vaporator, no scar"*); any work to preserve old saves (his answer of 2026-11-16: *"the savegame stuff
@@ -531,7 +531,6 @@ see); each line goes back by one move:*
 ## NEEDS HIM
 
 None open. Every entry is answered (next section).
-
 
 ## Answered on 2026-11-19
 

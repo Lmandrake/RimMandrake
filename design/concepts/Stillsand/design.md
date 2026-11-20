@@ -467,7 +467,6 @@ see); each line goes back by one move:*
 
 None open. Every entry is answered (next section).
 
-
 Two things the cleanse proposal of 2026-11-17 decided are changed here by scope rather than asked, and each is a
 line under "Scope moves" in `rewrite_choices.md`: the sand busters were in 0.1.0 (his first-version answer of
 2026-11-19 moved them back to 0.2.0), and the mirage is 0.2.0 instead of recommended for retirement. The second

@@ -301,8 +301,8 @@ built: `src/RimUtinni/ShipShields/` (his eight shield rulings of 2026-09-02, rec
   thaw built, a ship that sits warm softens the ice around itself; that soft ring is where cracks open and slabs go.
   The sheet names *"a machine venting"* among the things that start a thaw, and a landing is one.
 - *Declined, and not revived here:* the kesshet (a crust that grows on the warm hull and must be scraped before
-  launch) and the Keel-Press (shifting cargo to press the ice open). He passed both on 2026-10-01. They are the
-  second question under `NEEDS HIM`.
+  launch) and the Keel-Press (shifting cargo to press the ice open). He passed both on 2026-10-01. They stay
+  down by his answer of 2026-11-19 (`Answered on 2026-11-19` 2).
 
 ## What the crew takes away
 
@@ -438,7 +438,7 @@ see); each line goes back by one move:*
 - The kesshet and the Keel-Press stay down by his answer of 2026-11-19 on declined ship ideas; he can bring either
   back by name.
 - The Breath-Choir, the Witness Method, the kesshet and the Keel-Press (*"I don't like any of these. We should
-  likely just pass this."*, 2026-10-01). The two ship ideas among them are listed under `NEEDS HIM` 2.
+  likely just pass this."*, 2026-10-01). The two ship ideas among them stay down (`Answered on 2026-11-19` 2).
 - The ridge that bargains and the ridge that creeps toward heat (not chosen 2026-10-01).
 - The Exchange at the Crack and the Cold Hearth rites (not taken 2026-10-01).
 - The six donor residents and vanilla's arctic zoo (evicted 2026-09-24; the roster is closed and not reopened).
@@ -447,7 +447,6 @@ see); each line goes back by one move:*
 ## NEEDS HIM
 
 None open. Every entry is answered (next section).
-
 
 The cleanse proposal of 2026-11-17 asked him nothing, and one of its own readings is changed here by scope rather
 than asked: it built the first version around a supplied refuge of forty colonists. The same warmth, cracks and

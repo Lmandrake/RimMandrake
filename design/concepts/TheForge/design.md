@@ -260,7 +260,7 @@ wear below has a source, named beside it.
   built tracker knows a particulate hazard only as pollution or as weather that carries sand. No weather this mod
   ships sets that field (measured by search of `src/RimMandrake/TheForge/`; the donor ash weathers were not read:
   `UNMEASURED`). So today the rain phase and the ash fall do nothing to a ship, shielded or not. Teaching the
-  frame the Forge's rain phase is the build; it is in 0.2.0 with the question under `NEEDS HIM` 3, because the
+  frame the Forge's rain phase is the build; it is not built, and the scour stays out (`Answered on 2026-11-19` 3), because the
   one source that put rain on the hull was struck.
 - *Fire (0.1.0, ordinary systems).* The gas wash lights what will burn. Outside fittings and stores on the apron
   burn like anything else. By the kit's specification scald is dealt to unroofed pawns, not to buildings: a crew
@@ -282,8 +282,8 @@ wear below has a source, named beside it.
   damage/ash filth on unroofed ship tiles during boiling rain)"*, struck 2026-09-29 with the heat exchanger it
   came with) and **the floatstone keel brace** (a brace threaded through the ship that saved launch fuel and rang
   like glass at launch; he picked it by card from a consult of 2026-09-30, it was built, and it was cut on 2026-10-23 under his
-  *"I cut, you veto"* card as *"small effect; the only ship hook"*; restorable by reverting one commit). They are
-  the third question under `NEEDS HIM`.
+  *"I cut, you veto"* card as *"small effect; the only ship hook"*; restorable by reverting one commit). Both stay
+  out by his answer of 2026-11-19 (`Answered on 2026-11-19` 3).
 
 ## What the crew takes away
 
@@ -417,7 +417,6 @@ see); each line goes back by one move:*
 ## NEEDS HIM
 
 None open. Every entry is answered (next section).
-
 
 The cleanse proposal of 2026-11-17 asked him nothing. One of its readings is changed here by scope rather than
 asked: it wrote the first version for a colony that *"settles among dark foundry towers"*. The same cycle is kept,

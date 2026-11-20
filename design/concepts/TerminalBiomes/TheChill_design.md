@@ -297,7 +297,8 @@ beach for example)."* The sources agree from every side.
   descriptions only: *"scrapers"* who furnish shacks with set wax, fish the lake for the oddu and *"carry them home
   in mittens to eat by the tap-wire, which is as close to a good evening as the nightside offers."* Who they are,
   and whether they trade, is `UNSETTLED`. The very Jawa thought, that a crew with full tanks should fill the hold
-  with drums and sell fuel everywhere else, runs into a cut he made by name, and is under `NEEDS HIM`.
+  with drums and sell fuel everywhere else, runs into a cut he made by name. The cut stands (`Answered on 2026-11-19` 5);
+  whether drums of ordinary fuel may still go aboard as cargo is `UNSETTLED`.
 - *The joke.* The ship flies on fuel and is parked in a sea of it, and what will drive the crew out is power.
   Nothing down here can be burned to keep warm.
 
@@ -431,14 +432,12 @@ not light it either. It belongs to the campaign layer.
 | The floor's light rises and falls with the aurora above and is never wholly dark. | The same floor under a bright sky and a quiet one. | With the glowing plants removed and the sky quiet, the floor is darker than with them. |
 | Outside the hull an unsuited crew member is in severe cold at once; a charged heated suit keeps one working; an empty one starts fast hypothermia with time to walk back. | Three crew at the ramp: unsuited, charged, nearly flat. | A native animal beside them is unharmed. The gauge is the only clock. |
 | Nothing flammable lights anywhere on the floor map, inside the ship included; in a sealed, roofed room with a powered oxygen pump, it does. | A stove in the hold; the same stove in a pumped room; the pump switched off. | The same stove on any other map lights. An unroofed or leaking room stays dead and says so. |
-| The one plant with a light on it explodes when harvested, on a map where nothing else burns. | A harvest order on a fuselight; a torch held beside it first. | The torch stays dead and the plant still goes off. |
 | A parked ship boils the liquid against its hull, and plants flower in a ring round its heat with bare ground inside the ring. | A ship parked for days; the same ground before it came. | A cold, unpowered hulk grows no ring. |
 | A ship that cannot heat itself loses rooms to the cold, and can always launch. | A ship on full power and on half. | The same ship on the Twilight floor loses none. |
 | While the ship sits in this cold without the cold field, its own structures wear and an advisory says why; with the field up the wear stops and the inside still cools, slowly. | The same ship with the field off, then on. | The wear follows the field, not a timer. A launch is never refused. |
 | Harming the garden brings arcs at the one doing the harm, first; stopping and backing off ends it. | A crew member harvesting past the garden's patience, then standing down. | A crew member standing idle in the same spot draws nothing. |
 | Carrying on brings a hard fight with things that were scenery, sized for a prepared crew to win, and then quiet again. | The same crew member not standing down. | It is one fight. It does not grow into a raid and it does not repeat by itself. |
 | Warm things leave visible trails on the ice, and the garden's answer comes sooner along a trail already used. | The same errand walked twice on the same line, and once on fresh ice. | Save and reload between the two walks: the trail and its effect are still there. |
-| A file of giant wax colonies crosses the floor, pauses, and sheds sheets a crew can carry off; killing one spoils its sheets. | A file followed through one pause; one colony shot. | The file never fights and cannot be tamed. |
 | Every kind of catch on the beach's line is alive on the floor. | Fish the beach; find the same kinds below. | |
 | The catch renders to fuel, and the rare line can bring fuel up directly. | A refinery bill on a basket of catch. | The catch is poor food, and raw it can sicken. |
 | At the beach the ship fuels from the lake through pipes laid from a standoff, and never by parking at the edge. | A pipe run, a pump, a tank filling. | With the valve shut nothing flows. |
@@ -446,6 +445,13 @@ not light it either. It belongs to the campaign layer.
 | A gas emergency can always be walked away from; shutting the valve is the dangerous choice. | A rupture with a crew near it: one group leaves, one goes for the valve. | Nobody is ever sealed in gas. A shot fired in thick gas is what makes the fireball; the lake does not light by itself. |
 | On the floor the Empire's search comes at the top level of cover, much slower than for the same crew on the open beach, and it still comes. | The same crew, as loud, on the floor and on the beach; read the search's next contact on both. | A search that never comes on the floor. |
 | Nothing vanishes. | Every loss above, with a save and reload in the middle. | |
+
+**Promises that moved to 0.2.0 with their features** (his first-version answer of 2026-11-19):
+
+| the player sees | the scene | what rules out a fake |
+|---|---|---|
+| The one plant with a light on it explodes when harvested, on a map where nothing else burns. | A harvest order on a fuselight; a torch held beside it first. | The torch stays dead and the plant still goes off. |
+| A file of giant wax colonies crosses the floor, pauses, and sheds sheets a crew can carry off; killing one spoils its sheets. | A file followed through one pause; one colony shot. | The file never fights and cannot be tamed. |
 
 No row pins a rate, a temperature, a charge time, a wattage or a count: those are tuning and stay out of any bar.
 
@@ -486,16 +492,26 @@ geometry, which on the night side and on a sea floor is nothing.
 
 Every feature is in one bucket.
 
+**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; listed for the Conductor.**
+The four seas are one mod, and two readings disagree:
+- *His approval of 2026-11-17:* one signature for the whole four-sea mod, the Twilight's river (bank, current,
+  surge, sink), with this sea as land, ordinary life and now the three shared systems only (`design/concepts/
+  CLEANSE_PLAN_OWNER_2026-11-17.md`). His first-version answer *"keeps your 11-17 hard edge"*. Against it: a stop at this sea never
+  sees the Twilight's river, and the answer asks for a signature *"a normal stop must see"*.
+- *Its own signature, the garden answers warmth:* the ship's warmth flowers a ring of plants round the hull and
+  leaves trails; harming the garden brings warning arcs, then the lattices wake. A normal stop is sure to see the
+  bloom and the trails, because the parked ship is warm; the defence comes only if the crew harms the garden.
+Moved now, because they are extras under either reading: the wax procession and the fuselight's explosion.
+
 **0.1.0, the stop**
 - The floor as a place on the ship's layer: ice bedrock, fuel pools ringed with standable crust, rime terraces,
   the Return Comb, the drowned aurora over the plants' own light. (built; the layer's flight and the frozen twin's
   floors unproven)
 - The cold: one brutal temperature, the heated suit on one charge, the ship's cooling load and boil shroud,
   natives comfortable far below it. (built)
-- No fire, the pumped fire room, and the fuselight's real explosion. (built; the explosion moved in)
+- No fire, and the pumped fire room. (built)
 - The garden: the plants and the animals at sparse draws; warm bloom round the ship; warmth trails; the arcs that
   warn; the lattices that wake. (built; the defence moved in on his answers of 2026-11-10)
-- The wax procession and its sheets. (built; moved in)
 - The hull: cold wear on the ship's structures and the cold field that answers it. (built in the campaign's shield
   mod; unproven on a floor)
 - The top level of cover from orbit on the floor. (unbuilt; one entry in the pursuit)
@@ -504,6 +520,11 @@ Every feature is in one bucket.
   walked away from. (built, campaign layer for the pipework; the creature's home unsettled)
 
 **0.2.0, the stop with company**
+*Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
+see); each line goes back by one move:*
+- The wax procession and its sheets. (built; moved in)
+- The fuselight's real explosion. (built; moved in)
+*Already here before that answer:*
 - Aurora surge storms and the collector mast. (built)
 - The raid in the gas; gas vents on the beach. (built, campaign layer)
 - The polar Burner at its one place. (creature built; place unpicked)
@@ -540,14 +561,7 @@ Every feature is in one bucket.
 
 ## NEEDS HIM
 
-5. **Ship ideas he has already cut or passed over here.** Listed, not revived. *Tanker runs*, cut 2026-09-02:
-   *"You're not extra flammable on the way home, just right next to that explosive lake... and you have to run
-   long flexible pipes from your ship to the lake, because of your thrusters."* The cut was of hauling as the
-   fuel mechanic; whether a crew may still load drums of ordinary fuel to sell elsewhere is the very Jawa
-   question it leaves. *A cold hold aboard* for cargo that must stay frozen, not chosen 2026-10-02 (no words
-   recorded). *Krellik-frost insulation* for the hull, not adopted 2026-09-27 (no words recorded). Default for
-   all three: they stay out.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
+None open. Every entry is answered (next section).
 
 ## Answered on 2026-11-19
 
@@ -570,3 +584,12 @@ can undo any one by name.
 4. **Does the lakebed he seeded on 2026-09-10 still stand?** Yes: the stinger and the lakestar pair come into 0.2.0
    beside the present cast (the design's default). *Delegated call.*
 6. **Where does the polar Burner stand?** The Conductor picks the place in the shore's design. *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+5. **Ship ideas he has already cut or passed over here** (tanker runs as the fuel mechanic, a cold hold aboard,
+   krellik-frost hull insulation). *His card of 2026-11-19 (declined ship ideas):* they stay out. He can bring any one
+   back by name. Whether a crew may still load drums of ordinary fuel to sell elsewhere is not settled by that
+   answer and stays `UNSETTLED`.

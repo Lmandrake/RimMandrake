@@ -209,7 +209,7 @@ its own two voices: the ground that refuses and the thing that hears."*
   down at the margin weeks later)."* A crew that comes back finds its own hull plate set out as bait. On his card
   of 2026-10-02 the mooring was offered by name and not chosen (he picked the oil boil only). The first pass of
   this rewrite moved it into 0.2.0 on the strength of the hull-wear ruling; the second reader took it back out,
-  because a ship idea he passed over is his to bring back. It is question 2 under `NEEDS HIM`.
+  because a ship idea he passed over is his to bring back. It stays down by his answer of 2026-11-19 (`Answered on 2026-11-19` 2).
 
 **Fuel: a richer source, named, and sold nearby.** His ruling: *"Every biome has a fuel source, but for most its
 the hideously slow route of rendering biomass into chemfuel... A few biomes have richer sources. You can also buy
@@ -510,7 +510,6 @@ see); each line goes back by one move:*
 None open. Three were answered by his card of 2026-11-18 and are written into the design above: the crown is
 partial cover from orbit; the place wears the hull, in 0.1.0; seep-oil is the Fever Wood's richer fuel source. The
 rest were answered on 2026-11-19 (next section).
-
 
 Two readings this document rested on are settled by his cards of 2026-11-19: "one step" of cover is one
 visibility band, and the richer seep-oil recipe is 0.1.0 work.

@@ -415,6 +415,18 @@ agitated water (`RM_MapComponent_WaterAgitation`, built for this sea and usable 
 
 Every feature is in one bucket. "In source" is my search of 2026-11-18, not a pass.
 
+**The one signature (his first-version answer of 2026-11-19): NOT CHOSEN YET; listed for the Conductor.**
+The four seas are one mod, and two readings disagree:
+- *His approval of 2026-11-17:* one signature for the whole four-sea mod, the Twilight's river (bank, current,
+  surge, sink), with this sea as land, ordinary life and now the three shared systems only (`design/concepts/
+  CLEANSE_PLAN_OWNER_2026-11-17.md`). His first-version answer *"keeps your 11-17 hard edge"*. Against it: a stop at this sea never
+  sees the Twilight's river, and the answer asks for a signature *"a normal stop must see"*.
+- *Its own signature, one of two from his answers of 2026-11-10:* the herd (grazing that bares the mat, the
+  following job, the trample with its warning), or the vent cycle and the sails' gathering (*"Learning the reliable
+  gathering of sail creatures and the vent cycle allows calculated work through the warning before retreat."*). A
+  normal stop is sure to see both: the herd grazes the floor round the ship, and the vents discharge on their cycle.
+Moved now, because they are extras under either reading: nothing (every 0.1.0 item here is land, life, a shared system or a candidate).
+
 **0.1.0, the stop**
 - The floor as a real place on the ship's layer: walkable hot sediment at a constant 55 °C, boiling pools with
   their cool rings, vent fields, wrecks, calm, dark. (in source: `RM_SeabedGenerator_TheScald`; the dark is
@@ -475,6 +487,8 @@ Every feature is in one bucket. "In source" is my search of 2026-11-18, not a pa
 
 ## NEEDS HIM
 
+One is left, and it is his: entry 2, handed back with its evidence.
+
 2. **Is the steam's clock still wanted, now that there is one kind of heat?** *Yes, in 0.1.0 on the beach*
    (default). His words asked for steam *"deadly without protective gear"* (2026-09-25); his card of 2026-10-08
    folded its protection into ordinary heat armour; his card of 2026-11-06 tuned the rind coat against it, which
@@ -486,12 +500,6 @@ Every feature is in one bucket. "In source" is my search of 2026-11-18, not a pa
    three reasons. The steam clock is built (`RM_HediffComp_EnvironmentalExposure`, read by ordinary heat armour). His
    card of 2026-11-06, after that ruling, tuned the rind coat against the steam. And his words of 2026-09-25 ask for
    steam *"deadly without protective gear"*. Two of his acts point different ways, so it stays his.
-5. **Two ship ideas for the Scald that he did not pick, not revived here.** *Kettle scale* (mineral fur on the
-   hull, scraped off): offered on the card of 2026-10-02 and passed over for the Immersion Berth; the agenda
-   called it *"too close to the Grey's crust-and-chip."* *A navigation core in the Rakatan wreck:* declined by
-   card, 2026-09-25. Neither card has typed words of his. Listed in case the hull ruling of 2026-11-18 changes
-   his mind about the first.
-   *Waits on the declined-ship-ideas question of 2026-11-19.*
 
 ## Answered on 2026-11-19
 
@@ -508,3 +516,10 @@ can undo any one by name.
    rename is owed. *Delegated call.*
 4. **Does every river start here, or end here?** Both: the rivers start here as steam and come home as water (the
    design's default). *Delegated call.*
+
+**Answered by his five cards of 2026-11-19** (item
+`RIMMANDRAKE_ENACT_FIVE_BIOME_ANSWERS_INTO_26_DESIGNS`; each card and his pick, word for word:
+`design/RimMandrake/biome_rulings.md` §Five biome answers). Each keeps its number.
+
+5. **Kettle scale and a navigation core in the Rakatan wreck.** *His card of 2026-11-19 (declined ship ideas):* they
+   stay turned down. The Immersion Berth is the Scald's wear. He can bring either back by name.

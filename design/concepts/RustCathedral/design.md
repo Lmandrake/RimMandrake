@@ -224,7 +224,7 @@ Each can happen inside the visit. Each says what is on screen.
 
 *0.2.0 adds:* the floor rolling as a mile of machinery under it turns over once, a dust front crossing the map,
 and every animal and machine standing still until it passes while the crew, who are not held, stand there
-feeling it (see `NEEDS HIM` 6: this is built, he picked it by card on 2026-10-02, and it asks nothing of the
+feeling it (see `Answered on 2026-11-19` 6: this is built, he picked it by card on 2026-10-02, and it asks nothing of the
 player); the hull bolts all stopping at once and turning to face a crew member who is selling something of the
 Cathedral's, on another world; a crew member who has listened long enough to read the tones, and writes it down to sell;
 the worn bit unbolted and hauled to a Junker yard to be haggled over; the hull bolts' cold little marks, and what
@@ -416,7 +416,7 @@ see); each line goes back by one move:*
 - Bolts that board at launch and live on the hull. (built; moved in, see `rewrite_choices.md`)
 *Already here before that answer:*
 - The line-cycle: machinery turning over under the plate, and every animal and machine standing still while the
-  crew, who are not held, feel it. (built; in the batch he picked by card on 2026-10-02; `NEEDS HIM` 6)
+  crew, who are not held, feel it. (built; in the batch he picked by card on 2026-10-02; `Answered on 2026-11-19` 6)
 - Hum reading and the written primer; the droids' muttered commentary. (built)
 - Hull bolts as witnesses: the ledger of what the crew sold or broke in their sight, the cold marks, the uneasy
   hum on return, the revealed dilemma of prying them off, the small comfort of having them. (built)
@@ -463,7 +463,6 @@ see); each line goes back by one move:*
 ## NEEDS HIM
 
 None open. Every entry is answered (next section).
-
 
 ## Answered on 2026-11-19
 
