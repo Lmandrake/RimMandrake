@@ -280,11 +280,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 356.77,
-    "last": "GATE_JSON {\"red\": [], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"statuses\": {\"O8_lamp_mast_vanilla_register\": \"PASS\", \"O7_gpt_read_fixes\": \"PASS\", \"O1_mod_files\": \"PASS\", \"O2_settings_defaults\": \"PASS\", \"O5_style_art_sane\": \"PASS\", \"O6_review_round1\": \"PASS\", \"O3_core_selftest\": \"PASS\", \"O3n_selftest_can_fail\": \"PASS\", \"O4_python_oracle\": \"PASS\"}, \"wall_s\": 326.3}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"57/57 checks passed (17 negative controls among them)\"], \"wall_s\": 7.5}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RERUN_GIMMESOMESLACK_CERTIFICATE.det/Transient/mc_human_review\"], \"wall_s\": 0.1}, \"selftest_human_review\": {\"exit\": 0, \"tail\": [\"41/41 checks passed\"], \"wall_s\": 0.1}, \"selftest_proof_all\": {\"exit\": 0, \"tail\": [\"ALL PASS\"], \"wall_s\": 22.3}, \"design_spec\": {\"exit\": 0, \"tail\": [\"wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\"], \"wall_s\": 0.3}}, \"spec_posix\": \"/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\", \"spec_win\": \"D:\\\\ClaudeWork\\\\rimmandrake\\\\scratch\\\\gss_proof\\\\scenes_design.json\"}",
-    "at": "2026-11-17T20:02:38Z",
+    "seconds": 306.9,
+    "last": "GATE_JSON {\"red\": [], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"statuses\": {\"O8_lamp_mast_vanilla_register\": \"PASS\", \"O7_gpt_read_fixes\": \"PASS\", \"O1_mod_files\": \"PASS\", \"O2_settings_defaults\": \"PASS\", \"O5_style_art_sane\": \"PASS\", \"O6_review_round1\": \"PASS\", \"O3_core_selftest\": \"PASS\", \"O3n_selftest_can_fail\": \"PASS\", \"O4_python_oracle\": \"PASS\"}, \"wall_s\": 273.2}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"61/61 checks passed (18 negative controls among them)\"], \"wall_s\": 8.0}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RERUN_GIMMESOMESLACK_CERTIFICATE.det/Transient/mc_human_review\"], \"wall_s\": 0.1}, \"selftest_human_review\": {\"exit\": 0, \"tail\": [\"41/41 checks passed\"], \"wall_s\": 0.1}, \"selftest_proof_all\": {\"exit\": 0, \"tail\": [\"ALL PASS\"], \"wall_s\": 24.4}, \"selftest_gss_stub_art_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.3}, \"selftest_gss_statics_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.1}, \"design_spec\": {\"exit\": 0, \"tail\": [\"wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\"], \"wall_s\": 0.4}}, \"spec_posix\": \"/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\", \"spec_win\": \"D:\\\\ClaudeWork\\\\rimmandrake\\\\scratch\\\\gss_proof\\\\scenes_design.json\"}",
+    "at": "2026-11-20T00:25:33Z",
     "result": "PASS",
-    "build": "b8b284b97c7e67bb67c9",
+    "build": "cf8bbe92723f9b13d05d",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate"
    }
   },
@@ -311,11 +311,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 8.4,
-    "last": "57/57 checks passed (17 negative controls among them)",
-    "at": "2026-11-17T07:43:45Z",
+    "seconds": 9.77,
+    "last": "61/61 checks passed (18 negative controls among them)",
+    "at": "2026-11-20T00:25:43Z",
     "result": "PASS",
-    "build": "f695554c102894a1148e",
+    "build": "543a99ec707c8aaad1cf",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py"
    }
   },
@@ -334,11 +334,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.29,
+    "seconds": 3.09,
     "last": "PASS  G0_clean_copy  want=green got=[]",
-    "at": "2026-11-17T20:52:43Z",
+    "at": "2026-11-20T00:25:46Z",
     "result": "PASS",
-    "build": "1b3b4211fec4c431d0cf",
+    "build": "6e9ed7d9bff6a3fa7d1f",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py"
    }
   },
@@ -434,11 +434,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 7.52,
+    "seconds": 12.13,
     "last": "ALL PASS",
-    "at": "2026-11-17T20:02:48Z",
+    "at": "2026-11-20T00:25:58Z",
     "result": "PASS",
-    "build": "f674dc1fe30c3e96d17b",
+    "build": "5506d336f1cc921fc56c",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_shock_outlives_wire_binding.py"
    }
   },
@@ -484,11 +484,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.39,
+    "seconds": 0.44,
     "last": "ALL PASS",
-    "at": "2026-11-17T20:02:48Z",
+    "at": "2026-11-20T00:25:58Z",
     "result": "PASS",
-    "build": "a08848b4fbfe5594a1bc",
+    "build": "6bc3224843e75ff5ad03",
     "command": "python3 src/RimMandrake/Utils/selftest_gss_shock_still_bites_binding.py"
    }
   },
@@ -673,11 +673,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.51,
+    "seconds": 0.53,
     "last": "M22b_kinetic_sway_off_does_nothing FAIL      {'schema': 1, 'setting': 'kineticSway', 'enabled': False, 'damageSelector': 'RM_Repulse_Palm', 'damageDef': 'RM_Repulse_Palm', 'readings': [{'cmd': 'set:kineticSway=False', 'reply': {'success': True, 'cmd': 'set:kineticSway=False', '_probeSerial': 5, 'value': 'False'}}, {'cmd': 'census', 'reply': {'success': True, 'cmd': 'census', '_probeSerial': 6, 'kineticSways': 8, 'explosionCuts': 4, 'settings': {'kineticSway': 'False', 'dripLoops': 'True', 'cutWiresOnOwnerChange': 'True', 'keepWiresOnGravship': 'True'}, 'anchors': [{'id': 4, 'x': 92, 'z': 135, 'net': 11, 'links': [{'other': 5, 'state': 'Up', 'hp': 30.0}]}, {'id': 5, 'x': 104, 'z': 135, 'net': 11, 'links': [{'other': 4, 'state': 'Up', 'hp': 30.0}]}]}}, {'cmd': 'explode:98,135,2.5,50,RM_Repulse_Palm', 'reply': {'success': True, 'cmd': 'explode:98,135,2.5,50,RM_Repulse_Palm', '_probeSerial': 7, 'cuts': 0, 'sways': 0, 'damageDef': 'RM_Repulse_Palm', 'synthetic': False, 'kinetic': True, 'harmsHealth': True, 'spansReached': 1}}, {'cmd': 'census', 'reply': {'success': True, 'cmd': 'census', '_probeSerial': 8, 'kineticSways': 9, 'explosionCuts': 4, 'settings': {'kineticSway': 'False', 'dripLoops': 'True', 'cutWiresOnOwnerChange': 'True', 'keepWiresOnGravship': 'True'}, 'anchors': [{'id': 4, 'x': 92, 'z': 135, 'net': 11, 'links': [{'other': 5, 'state': 'Up', 'hp': 30.0}]}, {'id': 5, 'x': 104, 'z': 135, 'net': 11, 'links': [{'other': 4, 'state': 'Up', 'hp': 30.0}]}]}}], 'anchors': [4, 5], 'censusSwayDelta': 1, 'censusCutDelta': 0, 'spanStillUp': True, 'synthetic': False, 'kinetic': True, 'harmsHealth': True, 'spansReached': 1, 'settingBefore': 'False', 'settingAfter': 'False', 'hpBefore': [30.0, 30.0], 'hpAfter': [30.0, 30.0], 'error': 'ValueError: wrong kineticSways delta'}",
-    "at": "2026-11-17T07:44:00Z",
+    "at": "2026-11-20T00:25:59Z",
     "result": "PASS",
-    "build": "1338a068485080a3499e",
+    "build": "176063f4698c6b04a97b",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_kinetic_sway.py"
    }
   },
@@ -761,11 +761,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
-    "last": "22/22 passed",
-    "at": "2026-11-17T20:02:50Z",
+    "seconds": 0.07,
+    "last": "39/39 passed",
+    "at": "2026-11-20T00:25:59Z",
     "result": "PASS",
-    "build": "4bcf08e952ede20ebd15",
+    "build": "6f17ed57b55addf12216",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py"
    }
   },
@@ -871,11 +871,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 17.06,
+    "seconds": 24.33,
     "last": "ALL PASS",
-    "at": "2026-11-17T07:44:20Z",
+    "at": "2026-11-20T00:26:23Z",
     "result": "PASS",
-    "build": "6c50eb91b1d180c2f64c",
+    "build": "2ce8f03b2ddfd22ebd1b",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py"
    }
   },
@@ -910,11 +910,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.34,
+    "seconds": 2.39,
     "last": "PASS",
-    "at": "2026-11-17T20:02:52Z",
+    "at": "2026-11-20T00:26:26Z",
     "result": "PASS",
-    "build": "d3a514a2778f5b8a1abc",
+    "build": "cc0d538fe33b34593bcb",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py"
    }
   },
@@ -1144,11 +1144,11 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.12,
+    "seconds": 0.11,
     "last": "PASS",
-    "at": "2026-11-17T20:57:03Z",
+    "at": "2026-11-20T00:26:26Z",
     "result": "PASS",
-    "build": "d8db0eabcb93ff49cd98",
+    "build": "1f768520f8f8cefdb9b4",
     "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py"
    }
   },
@@ -5984,7 +5984,17 @@
    "id": "T_CORDS_UNDER_ITEMS_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.2,
+    "last": "PASS",
+    "at": "2026-11-20T00:26:26Z",
+    "result": "PASS",
+    "build": "c17221a52174454cb6f2",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_cords_under_items.py"
+   }
   },
   "T_FLIP_FRESH_OFFLINE": {
    "stage": "4-5",
@@ -5996,7 +6006,17 @@
    "id": "T_FLIP_FRESH_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_flip_fresh.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS",
+    "at": "2026-11-20T00:26:26Z",
+    "result": "PASS",
+    "build": "37ae32ffda996eb72aae",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_flip_fresh.py"
+   }
   },
   "T_TEXPATH_OFFLINE": {
    "stage": "4-5",
@@ -6008,7 +6028,17 @@
    "id": "T_TEXPATH_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS",
+    "at": "2026-11-20T00:26:26Z",
+    "result": "PASS",
+    "build": "810469fe1ff6545ae1a4",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_texpath.py"
+   }
   },
   "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE": {
    "stage": "4-5",
@@ -6018,7 +6048,17 @@
    "id": "T_DROPPED_CORDS_AERIAL_MASTER_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.02,
+    "last": "PASS  M2_old_checkpawns_gate reads red",
+    "at": "2026-11-20T00:26:26Z",
+    "result": "PASS",
+    "build": "c4c6b37099a61b1e1360",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_dropped_cords_ignore_aerial_master.py"
+   }
   },
   "T_LIVE_END_SWEEP_OFFLINE": {
    "stage": "4-5",
@@ -6028,7 +6068,17 @@
    "id": "T_LIVE_END_SWEEP_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_live_end_sweep.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 65.15,
+    "last": "8/8 live end sweep checks pass",
+    "at": "2026-11-20T00:27:31Z",
+    "result": "PASS",
+    "build": "d7866ad011e7aca11103",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_live_end_sweep.py"
+   }
   },
   "T_NO_GROUND_WIND_OFFLINE": {
    "stage": "4-5",
@@ -6038,7 +6088,17 @@
    "id": "T_NO_GROUND_WIND_OFFLINE",
    "kind": "offline",
    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_no_ground_wind.py",
-   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)"
+   "note": "supports only, registered so the certificate and the blind brief see it (RIMMANDRAKE_REGISTER_UNLISTED_SELFTESTS_THREE_MODS_157_UNSEEN)",
+   "runs_today": {
+    "ran": true,
+    "rc": 0,
+    "seconds": 0.04,
+    "last": "OK",
+    "at": "2026-11-20T00:27:31Z",
+    "result": "PASS",
+    "build": "30257f1c1331a993573a",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_no_ground_wind.py"
+   }
   }
  },
  "bars": [
