@@ -1,6 +1,6 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7829,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=1f0405caf709ed64af062e42d806bb581da6fef52b138181110235e275be1f65 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7829,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":2936,"STEWARD":2597} body_sha256=94b379bb9e0fc0843d2328a54fd6dfe759e32e62a77017bc315f8aeac556434d -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage blind_challenge · 1295 events in 8 shards · reducer 1
+version 0.1.0 · stage blind_challenge · 1300 events in 9 shards · reducer 1
 holder lease run-1794861652, token 4, last active 2026-11-16T21:17:55Z
 holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 400000
 
@@ -487,12 +487,12 @@ spend recorded: USD 78.94, 45401435 tokens
 ## Left out
 - closed findings: 174, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - closed traps: 1, oldest first (`modledger.py show --mod FlowWorks <subject>`)
-- tests: 42, oldest first (`modledger.py show --mod FlowWorks <subject>`)
+- tests: 47, oldest first (`modledger.py show --mod FlowWorks <subject>`)
 - claimed fixes in brief: 58 on one line (name and sha), their claim, test and fix by `show`
 - open findings in brief: the oldest 123 on one line, their fix and accept by `modledger.py show --mod FlowWorks <subject>`
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1295 events (views/history.md; never read whole)
+- the full history: 1300 events (views/history.md; never read whole)
 
-cursor: t=2026-11-20T00:27:37Z.1795134457577485926 (modledger.py since --mod FlowWorks t=2026-11-20T00:27:37Z.1795134457577485926 prints what changed after this packet)
+cursor: t=2026-11-20T00:36:12Z.1795134972799199130 (modledger.py since --mod FlowWorks t=2026-11-20T00:36:12Z.1795134972799199130 prints what changed after this packet)

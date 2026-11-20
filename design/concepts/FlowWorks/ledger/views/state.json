@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "dc9ab4f46e5d0121dcb169851ad38fbaa1a1f8fae3930f4e0ceee002d6436c84",
+  "body_sha256": "38d1ffaa6ad41e574a5b1adf9358e272e8f18cf25421301f739d02c559d5d3b6",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -10,6 +10,7 @@
    "HOLDER.run-1794861652": 2822,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
+   "JUDGE.judge-1795134433": 2936,
    "STEWARD": 2597
   }
  },
@@ -1683,7 +1684,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1295,
+  "events": 1300,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7810,6 +7811,7 @@
    "HOLDER.run-1794861652",
    "JUDGE.judge-1794833810",
    "JUDGE.judge-1794849236",
+   "JUDGE.judge-1795134433",
    "STEWARD"
   ],
   "spend_tokens": 45401435,
@@ -8194,6 +8196,51 @@
     "subject": "bar:inv_converters",
     "text": "blind cycle 3 rerun of T_CONVERT after the fix",
     "ts": "2026-11-16T20:34:42Z"
+   },
+   {
+    "by": "JUDGE.judge-1795134433",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "804026c2e1ea841a5cc508609be509eeca54e027",
+    "subject": "bar:inv_overflow_sheet",
+    "text": "blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2",
+    "ts": "2026-11-20T00:36:11Z"
+   },
+   {
+    "by": "JUDGE.judge-1795134433",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "804026c2e1ea841a5cc508609be509eeca54e027",
+    "subject": "bar:inv_converters",
+    "text": "blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2",
+    "ts": "2026-11-20T00:36:12Z"
+   },
+   {
+    "by": "JUDGE.judge-1795134433",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "804026c2e1ea841a5cc508609be509eeca54e027",
+    "subject": "bar:inv_bottles_thirst",
+    "text": "blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2",
+    "ts": "2026-11-20T00:36:12Z"
+   },
+   {
+    "by": "JUDGE.judge-1795134433",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "804026c2e1ea841a5cc508609be509eeca54e027",
+    "subject": "bar:inv_drilling",
+    "text": "blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2",
+    "ts": "2026-11-20T00:36:12Z"
+   },
+   {
+    "by": "JUDGE.judge-1795134433",
+    "kind": "test.run",
+    "result": "PASS",
+    "sha": "804026c2e1ea841a5cc508609be509eeca54e027",
+    "subject": "bar:inv_sprinklers",
+    "text": "blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2",
+    "ts": "2026-11-20T00:36:12Z"
    }
   ],
   "traps": {

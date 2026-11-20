@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7829,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"STEWARD":2597} body_sha256=122de35e440bb8157bd25d08823d3476e6fc3b18a5aecbd1e0c527d940e9be77 -->
-# FlowWorks — mod ledger history (1295 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":7829,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":2936,"STEWARD":2597} body_sha256=7057b3c7c1421a052be73816c26bef854d3f10868a2821021668984302b9f54c -->
+# FlowWorks — mod ledger history (1300 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1296,3 +1296,8 @@
 - 2026-11-19T23:58:30Z BACKFILL#1100 decision finding:FLOW_SOURCE_SINK_BUILD_TAPS_FOR_MAPMAKERS v0.1.0: 
 - 2026-11-19T23:58:30Z BACKFILL#1101 decision finding:TANK_LOOKS_WIRE_FOUR_STYLE_SWITCH v0.1.0: 
 - 2026-11-20T00:27:37Z DISPATCH#23 run.start run v0.1.0: 
+- 2026-11-20T00:36:11Z JUDGE.judge-1795134433#1 test.run bar:inv_overflow_sheet v0.1.0: blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2
+- 2026-11-20T00:36:12Z JUDGE.judge-1795134433#2 test.run bar:inv_converters v0.1.0: blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2
+- 2026-11-20T00:36:12Z JUDGE.judge-1795134433#3 test.run bar:inv_bottles_thirst v0.1.0: blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2
+- 2026-11-20T00:36:12Z JUDGE.judge-1795134433#4 test.run bar:inv_drilling v0.1.0: blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2
+- 2026-11-20T00:36:12Z JUDGE.judge-1795134433#5 test.run bar:inv_sprinklers v0.1.0: blind lane 1 (cycle 4): every kernel row for this bar PASS; its game-side half UNSETTLED (not_kernel) until lane 2
