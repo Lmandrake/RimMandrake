@@ -1,6 +1,6 @@
 {
  "_view": {
-  "body_sha256": "33d126604c022938cb6258007ebaae350a52b8d667efc240477ac4a3c6cd8961",
+  "body_sha256": "2c68394962d015141406d24b5ecedda46a84329f49a0277641aaf468fc96db48",
   "reducer": 1,
   "shards": {
    "BACKFILL": 893183,
@@ -8,7 +8,7 @@
    "HOLDER.run-1794816885": 928,
    "HOLDER.run-1794848129": 1121,
    "HOLDER.run-1794861652": 2822,
-   "HOLDER.run-1795152236": 2240,
+   "HOLDER.run-1795152236": 3418,
    "JUDGE.judge-1794833810": 53964,
    "JUDGE.judge-1794849236": 35843,
    "JUDGE.judge-1795134433": 11686,
@@ -1229,11 +1229,11 @@
    }
   },
   "checkpoint": {
-   "by": "HOLDER.run-1794861652",
-   "done": "Steward read blind cycle 3: 4 Problems FIXED by the judge at 96941bfa43 (additions only); census Problem re-pinned as an ABSENT ripple law and closed at d0d33973116a; certificate --run redone (7 reruns, OK on 55 bars) at d5cdc5ffa3; advanced to blind cycle 4 (visit 2, third)",
-   "next": "Run blind cycle 4 judge on FlowWorks 0.1.0 at origin/main so a judge who did not make the cycle-3 fixes (96941bfa43, d0d33973116a) judges them",
-   "ruled_out": "No CRITERION FLAW and no weakened test in cycle 3; the census red was a stale pin after GSS b560ff91e8 (owner ripple removal), not a FlowWorks draw defect",
-   "ts": "2026-11-16T21:17:55Z"
+   "by": "HOLDER.run-1795152236",
+   "done": "In-game visit 2 on game a: 18 PASS, 8 FAIL, 5 UNMEASURED of 31; every FAIL diagnosed and filed as a rimflow item; labelled walk save FLOWWORKS_OWNER_REVIEW_VISIT2_FULL_20261119_2327 on his full list; build match 31 of 31; pipeline fixes f24f71dba4, 223b6e2499",
+   "next": "Steward: read design/concepts/FlowWorks/version/in_game/visit_2/SUMMARY.md and send the 8 FAIL items down the road back",
+   "ruled_out": "sc_ice and sc_geyser_tub FAILs are harness (shovel/designation; geyser_tub_live passes 4/4); OL 9 FAIL are staging, deep water keeps minified goods; source_pays film draw follows his last-dL ruling",
+   "ts": "2026-11-20T07:32:19Z"
   },
   "decisions": {
    "finding:CANAL_FRONT_FIX_WRONG_END_WETS_FIRST": {
@@ -1685,7 +1685,7 @@
     "ts": "2026-11-16T07:16:23Z"
    }
   },
-  "events": 1328,
+  "events": 1330,
   "exit_claims": [],
   "fenced": [],
   "findings": {
@@ -7786,7 +7786,7 @@
    }
   },
   "lease": {
-   "last": "2026-11-20T06:55:23Z",
+   "last": "2026-11-20T07:32:19Z",
    "lease": "run-1795152236",
    "released": false,
    "token": 6

@@ -1,13 +1,13 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":11086,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":2240,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=917f02497813f2db5057656b382aacbd824b915c888c66c4ed5b3048c39fa43f -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":11086,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=3d668c430ba5f7ebec619f5e48191cda5252cb3bb209fc6efa67bf34c2b538f4 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1328 events in 10 shards · reducer 1
-holder lease run-1795152236, token 6, last active 2026-11-20T06:55:23Z
+version 0.1.0 · stage in_game · 1330 events in 10 shards · reducer 1
+holder lease run-1795152236, token 6, last active 2026-11-20T07:32:19Z
 holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 400000
 
-## Last checkpoint (HOLDER.run-1794861652, 2026-11-16T21:17:55Z)
-- done: Steward read blind cycle 3: 4 Problems FIXED by the judge at 96941bfa43 (additions only); census Problem re-pinned as an ABSENT ripple law and closed at d0d33973116a; certificate --run redone (7 reruns, OK on 55 bars) at d5cdc5ffa3; advanced to blind cycle 4 (visit 2, third)
-- next: Run blind cycle 4 judge on FlowWorks 0.1.0 at origin/main so a judge who did not make the cycle-3 fixes (96941bfa43, d0d33973116a) judges them
-- ruled out: No CRITERION FLAW and no weakened test in cycle 3; the census red was a stale pin after GSS b560ff91e8 (owner ripple removal), not a FlowWorks draw defect
+## Last checkpoint (HOLDER.run-1795152236, 2026-11-20T07:32:19Z)
+- done: In-game visit 2 on game a: 18 PASS, 8 FAIL, 5 UNMEASURED of 31; every FAIL diagnosed and filed as a rimflow item; labelled walk save FLOWWORKS_OWNER_REVIEW_VISIT2_FULL_20261119_2327 on his full list; build match 31 of 31; pipeline fixes f24f71dba4, 223b6e2499
+- next: Steward: read design/concepts/FlowWorks/version/in_game/visit_2/SUMMARY.md and send the 8 FAIL items down the road back
+- ruled out: sc_ice and sc_geyser_tub FAILs are harness (shovel/designation; geyser_tub_live passes 4/4); OL 9 FAIL are staging, deep water keeps minified goods; source_pays film draw follows his last-dL ruling
 
 ## Open findings (178)
 (claimed fixes, awaiting a judge, on one line each with the oldest 127 open findings, named without their 'finding:': `modledger.py show --mod FlowWorks finding:<NAME>`)
@@ -490,6 +490,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1328 events (views/history.md; never read whole)
+- the full history: 1330 events (views/history.md; never read whole)
 
-cursor: t=2026-11-20T06:55:23Z.1795157723272652345 (modledger.py since --mod FlowWorks t=2026-11-20T06:55:23Z.1795157723272652345 prints what changed after this packet)
+cursor: t=2026-11-20T07:32:19Z.1795159939276971081 (modledger.py since --mod FlowWorks t=2026-11-20T07:32:19Z.1795159939276971081 prints what changed after this packet)

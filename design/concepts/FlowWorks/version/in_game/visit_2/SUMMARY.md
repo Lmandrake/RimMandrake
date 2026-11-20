@@ -38,6 +38,17 @@ Wall-time bound 3 hours (to about 12:26 AM PST).
 - 22:47-22:55 his full list (316 mods): sc_walk PASS, 12 of 12 rows (reload digests, pond pays again, no leftovers, log clean).
 - 22:56-23:01 flowworks tier again, calm site verified, sc_ways_out rerun PASS with its site asserted.
 
+- 23:03-23:12 reading my record: `maturation.py next` crashed on a cp1252 dash in a diffed log, and build_match refused sc_walk
+  (kind live_full, no why_full_list) as a minimal-list check. Both fixed test-first and published 223b6e2499 (maturation_advance
+  recalibrated for the edit); items RIMMANDRAKE_DECODE_RUN_DIFF_CP1252_DASH_CRASHED_NEXT and RIMMANDRAKE_READ_LIVE_FULL_KIND_AS_FULL_LIST
+  closed. build_match then read 30 of 31 counting; sc_walk's list differs from the walk savegame's because I had saved that on the
+  13-mod tier. His walk is on his full list, so the walk savegame is re-staged on the full list (23:13 on).
+- 23:13-23:29 his full list cold-loaded (13 min), calm site verified, review map re-staged and saved as
+  FLOWWORKS_OWNER_REVIEW_VISIT2_FULL_20261119_2327 under save_guard (454 keepers, VERIFIED none changed); the 13-mod save
+  FLOWWORKS_OWNER_REVIEW_VISIT2_20261119_2237 is kept (a staged look). Full-list capture: labels overlap at map zoom (filed); a pale
+  patch is vanilla geyser steam (explained in strange.jsonl).
+- 23:36 bridge released; game a left up on his full list with the review map loaded (a working game). The mod ledger refuses
+  `finding.open` from a HOLDER writer, so the FAILs are rimflow items only, for the steward to carry.
 ## Results (18 PASS, 8 FAIL, 5 UNMEASURED of 31) [measured]
 
 Game a on Archmagi, FlowWorks deployed at mod hash sha256:97ced4aec366... (one deploy, every row), game 1.6.4871 rev590. Lists: the
@@ -99,6 +110,6 @@ OL_OWNER_LOOK_READS FAIL, sc_fetch_fallen FAIL.
 ```
 ingame_rows: {sc_dig_and_read: pass, sc_dig_finds: pass, sc_fill_front: pass, sc_fill_tiers: pass, sc_one_surface: pass, sc_source_pays: fail, sc_canal_fire: pass, sc_slime: pass, sc_pawn_height: unmeasured, sc_pit_reads: pass, sc_covered_pit: pass, sc_ways_out: pass, sc_sluice: pass, sc_hose_look: pass, sc_one_network: pass, sc_trench_cover: unmeasured, sc_hung_bridge: fail, sc_ice: fail, sc_river: pass, sc_moat_raid: fail, sc_hole_prison: pass, sc_toss_flame: pass, sc_fetch_fallen: fail, sc_islands: unmeasured, sc_walk: pass, sc_pit_trap_raid: unmeasured, sc_garden: fail, OL_OWNER_LOOK_READS: fail, sc_geyser_tub: fail, sc_coating_wash: pass, PIT_LOOK_1114_LIVE: unmeasured}
 strange_open: 0
-savegame: C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\FLOWWORKS_OWNER_REVIEW_VISIT2_20261119_2237.rws
+savegame: C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\FLOWWORKS_OWNER_REVIEW_VISIT2_FULL_20261119_2327.rws
 exit_met: false
 ```
