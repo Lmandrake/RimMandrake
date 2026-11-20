@@ -98,26 +98,6 @@ past art, and his notes on the subject verbatim. Missing any of these → `UNSUR
   spawned pawn of that xenotype showing the face drawn whole (no missing eyes, no floating parts). — the reason
   behind the retired 2026-09-15 permission rule (`standing_rulings.md`)
 
-## A flaw is refused; polish is listed; a repair that needs no redraw is yours (owner, 2026-11-19 and 2026-11-20)
-
-Rule: `design/RimMandrake/standing_rulings.md` §Touching code has a cost; if you see it, do it, and §The judge refuses
-flaws, not polish. The owner, 2026-11-20: *"I'm really tired of "throwing things back" rather than fixing in-place."*
-
-- **REDO only for a flaw.** A flaw is one of two things: a player would see it at play zoom or at true scale beside the
-  human; or the picture breaks a line quoted from the owner (a Must show line, his note on the subject, an Owner
-  constraint above).
-- **Anything smaller is polish.** The verdict stays KEEP. Write one line in the `polish` list of your output. Nobody
-  regenerates a picture for a polish line, and no item is filed for it.
-- **Before a REDO, try the repair that needs no redraw.** Some flaws are in the file, not in the drawing: the canvas
-  size (D2), stray backdrop or halo pixels (D4), the registration offset (C4), the scale against the sibling keeps (B3,
-  C2). When an art tool in the repo makes that repair (`skills/generating-rimworld-sprites/SKILL.md`, the `image_scaling`
-  skill), make it on a copy yourself, in this run. Then judge the repaired copy against every constraint again. Record
-  both looks in the verdict: `repaired_from` (the original), what you changed, and the constraint that failed before and
-  passes after. A repaired copy that you cannot show both ways stays REDO. The repaired file still goes in through
-  `art install` only, by the window that launched you.
-- **A REDO that needs a redraw carries the whole brief for it** (`redo_brief`, and `smallest_fix` in the refusal
-  record), so the regeneration starts from what you saw and nobody has to find it again.
-
 ## Checklist (per subject)
 
 1. Inputs complete (else UNSURE). 2. Owner-kept? Apply E3. Flag concerns in the report. Any replacement follows its
@@ -137,7 +117,6 @@ notes (E). 8. Pawn faces (F).
     "violated": "C1", "quote": "North is the creature's rear (no face, no eyes)",
     "seen": "two eyes visible on the north facing", "redo_brief": "<one line for the regen>"},
    {"picture": "<sha or path>", "facing": "east", "verdict": "UNSURE", "why": "brief does not decide <what>"}],
- "polish": ["<facing>: <what is slightly off, in one line; the verdict stays KEEP>"],
  "proposals": ["<a constraint you wish existed, with the evidence>"]}
 ```
 
