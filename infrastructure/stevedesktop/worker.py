@@ -726,8 +726,14 @@ class Attempt:
         """Run a shell command in the runner clone; -> (rc or None on timeout, tail of output)."""
         logf = open(os.path.join(self.d, log_name or "worker.log"), "ab")
         self.say("$ " + cmd)
+        # RIMMANDRAKE_FIX_STEVE_LANE_REFUSES_JOBS_BRIDGE_IDLE_SILENT: the lane is ssh-started with no seat env, and the
+        # restart's `game down` asks `rimflow bridge idle`, which refuses a caller it cannot name (exit 2, 2026-11-20).
+        # The worker is the testq RUNNER seat unless a seat is already named (a test or the owner's own export wins).
+        env = dict(os.environ)
+        if not (env.get("RIMFLOW_SEAT") or env.get("AGENT_SEAT")):
+            env["RIMFLOW_SEAT"] = "RUNNER"
         self.child = subprocess.Popen(["bash", "-c", cmd], cwd=CLONE, stdin=subprocess.DEVNULL, stdout=logf,
-                                      stderr=subprocess.STDOUT, start_new_session=True)
+                                      stderr=subprocess.STDOUT, start_new_session=True, env=env)
         try:
             rc = self.child.wait(timeout=timeout)
         except subprocess.TimeoutExpired:

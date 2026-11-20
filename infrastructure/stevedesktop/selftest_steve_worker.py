@@ -150,7 +150,7 @@ def main():
         mock = os.path.join(tmp, "mock_modcheck.py")
         open(mock, "w").write(MOCK)
         lock = os.path.join(tmp, "DRIVER_LOCK.json")
-        env = {k: v for k, v in os.environ.items() if k not in ("RM_HOST_GUARD_GEN", "RIMFLOW_SEAT")}
+        env = {k: v for k, v in os.environ.items() if k not in ("RM_HOST_GUARD_GEN", "RIMFLOW_SEAT", "AGENT_SEAT")}   # SteveDesktop's worker has no seat env
         env.update(TESTQ_HOME=home, TESTQ_SHEET_DIR=sheets, TESTQ_MODS_DIR=mods, TESTQ_SKIP_PULL="1",
                    TESTQ_NO_SYSTEMD="1", TESTQ_CMD_DEPLOY="true", TESTQ_CMD_LOAD="true", TESTQ_CMD_DOWN="true",
                    TESTQ_CMD_PROBE="true", TESTQ_PROBE_GAP_S="0",  # the kept game answers unless a case says not
@@ -292,6 +292,27 @@ def main():
               and (res.get("note") or "").startswith("stale_load (after a restart"),
               "stale again after the restart -> INVALID/HARNESS, cause stale_load, unrepaired: %s" % res.get("note"))
         check(len(open(sdowns + "_2").readlines()) == 1, "only one restart is spent on a stale load")
+        # 3a2. RIMMANDRAKE_FIX_STEVE_LANE_REFUSES_JOBS_BRIDGE_IDLE_SILENT (2026-11-20, J20261118T093145Z-70df7c and
+        # J20261118T093156Z-5dcd3d): the restart's `game down` asks the REAL `rimflow bridge idle`, and the worker
+        # (ssh-started, no seat env) gave it no seat -> "I cannot tell which seat I am" -> exit 2 -> UNMEASURED -> the job
+        # REFUSED. The down below IS that gate (real rimflow cli, scratch ledger and lock): exit 0 only on TAKEABLE.
+        gate = ("%s %s bridge idle --for selftest >> %%s 2>&1" % (sys.executable, os.path.join(RUNNER, "src", "RimMandrake", "rimflow", "cli.py")))
+        gout = os.path.join(tmp, "gate_out")
+        os.remove(os.path.join(home, "mock_stale_once"))
+        rc, o = w(["start"], job(), MOCK_MODE="stale-once", TESTQ_CMD_DOWN=gate % gout)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and "TAKEABLE" in open(gout).read() and "cannot tell which seat" not in open(gout).read(),
+              "a seat-less worker's restart gate reads a free bridge as TAKEABLE: %s | %s" % (res.get("note"), open(gout).read()[-200:]))
+        # foil: a bridge another seat really holds still refuses the restart, and the note says so
+        subprocess.run([sys.executable, os.path.join(RUNNER, "src", "RimMandrake", "rimflow", "cli.py"), "bridge", "take",
+                        "--for", "selftest foil"], env=dict(env, RIMFLOW_SEAT="BENCH"), capture_output=True, text=True)
+        os.remove(os.path.join(home, "mock_stale_once"))
+        gout2 = os.path.join(tmp, "gate_out2")
+        rc, o = w(["start"], job(), MOCK_MODE="stale-once", TESTQ_CMD_DOWN=(gate % gout2) + "; exit $?")
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") != "DONE" and "NOT TAKEABLE" in open(gout2).read()
+              and "BENCH holds the bridge" in open(gout2).read(),
+              "a bridge held by another seat still refuses the restart: %s | %s" % (res.get("outcome"), open(gout2).read()[-200:]))
         rc, o = w(["start"], job(), MOCK_MODE="stale-nokeep", TESTQ_CMD_DOWN="echo down >> %s" % (sdowns + "_3"))
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "INVALID" and res.get("harness_cause") == "stale_load"
