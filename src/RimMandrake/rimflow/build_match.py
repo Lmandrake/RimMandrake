@@ -416,7 +416,8 @@ def _resolve_tier(t, installed):
 # ---- the comparison --------------------------------------------------------------------------------------------------
 
 def is_full(test):
-    return bool((test or {}).get("why_full_list"))
+    """A full-list check: its why_full_list says why, or the test table gives it kind live_full (sc_walk carries only the kind)."""
+    return bool((test or {}).get("why_full_list")) or (test or {}).get("kind") == "live_full"
 
 
 def _first_diff(a, b):

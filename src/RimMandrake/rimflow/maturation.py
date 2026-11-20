@@ -1864,7 +1864,9 @@ def run_diff(root, mod):
                               capture_output=True, text=True, timeout=60).stdout.strip()
         if not base:
             return None, "no origin/main commit before the run began"
-        r = subprocess.run(["git", "-C", root, "diff", base, "--"] + paths, capture_output=True, text=True, timeout=120)
+        # errors="replace": a diffed evidence log may hold Windows bytes (a cp1252 dash), which must not kill the reader
+        r = subprocess.run(["git", "-C", root, "diff", base, "--"] + paths, capture_output=True, text=True, encoding="utf-8",
+                           errors="replace", timeout=120)
     except (OSError, subprocess.SubprocessError) as e:
         return None, "git could not run: %s" % e
     if r.returncode:

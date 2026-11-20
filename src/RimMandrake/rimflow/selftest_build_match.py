@@ -355,6 +355,10 @@ def one(test, r, walk=WALK):
 
 
 def compare_checks():
+    # RIMMANDRAKE_READ_LIVE_FULL_KIND_AS_FULL_LIST: the test table marks sc_walk by kind live_full with no why_full_list; a
+    # check of that kind ran on his full list and must be read as one (FlowWorks visit 2: sc_walk refused as "names no tier")
+    check(B.is_full({"kind": "live_full", "stage": "6"}), "a test of kind live_full is a full-list test without why_full_list")
+    check(not B.is_full({"kind": "live_minimal", "stage": "6"}), "a test of kind live_minimal is not a full-list test")
     ok, why = one("full_t", row("full_t"))
     check(ok, "a full-list row on the walk's hash, build and exact list counts (%s)" % why)
     ok, why = one("min_t", row("min_t"))
