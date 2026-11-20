@@ -497,6 +497,39 @@ failure classes came from reviewers, judges and auto-filers with no stopping lev
 
   The ticket that you file carries that evidence, and the fix where you could see it.
 - **Test 1 comes first.** "If you see it, do it" never licenses a touch that fails test 1.
+- **A wrong check is repaired or set aside in the sitting; it never sends the mod back** (owner, 2026-11-20, item
+  `RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED`). His words (Fri 2026-11-20, about 4:10 AM PST), asked
+  whether to extend the significance rule to tests: *"Agreed, modify standing rule in-place to include your extension
+  for "inappropriate/insignificant test""*; asked whether the in-game driver should repair a wrong check in the
+  sitting: *"YES! I'm really tired of "throwing things back" rather than fixing in-place. These should have been
+  repaired in place I'm fairly certain, then re-run. We need to stop treating all agents as corrupt. They're not.
+  Their reasoning just collapses to the fixes they make sometimes. But if there are strong checks to validate in place,
+  that can be overcome."* Earlier (about 3:55 AM PST): *"I am distressed that judging events are still being used to
+  slowly improve testing definitions rather than game content."* The cause (measured 2026-11-20): FlowWorks in-game
+  visit 2 read 8 FAIL and 5 UNMEASURED of 31; the router filed all 13 lines and moved the mod back to the offline
+  build; all six fixer runs that followed repaired checks, and none changed the mod.
+  - Class each failed or unmeasured check first: the mod is wrong (`class` MOD), the check is wrong (HARNESS) or the
+    staged scene is wrong (SITE). These are the classes of skill `live-debugging-proof-harness`.
+  - A wrong check or scene is worth repair only if a bar would go undecided without it. Otherwise delete the check, or
+    set it aside as not counted, with one line on the polish list. No ticket.
+  - "A failure happened" (test 1) does not make a wrong check worth the touch by itself: the failure was the check's.
+  - The agent that classes a check wrong repairs it in the same sitting and runs it again while the game is up. The
+    reasons "my verdict must stay independent" and "my assigned work would not finish" (test 2) do not excuse a wrong
+    check or scene: its repair does not touch the mod.
+  - The guard that replaces distrust: a repaired check counts only after it is seen to FAIL on a planted fault (or on
+    a state that is known bad) and PASS on the real build, in that sitting, with both readings recorded beside the
+    row. A repair that cannot be shown both ways leaves the check not counted (UNMEASURED), never PASS. Plant with what
+    exists: the planted cases of the blind challenge, a check's `--old` or mutant switch, or a save or state that is
+    known bad. Where no plant exists for a check, the repaired check stays not counted.
+  - A wrong check or scene never moves the mod back a stage. Only a check classed "the mod is wrong", or a bar left
+    undecided, does. The router files an item only for a mod-wrong line, and for a wrong check that the driver could
+    not repair when a bar needs it, with the evidence why (no tools, the fix is not known, another run holds the files).
+  - In the blind challenge, a Problem `against` a check or scene that the judge repairs, shown both ways, owes no new
+    blind judge. A Problem fixed in the mod still owes one.
+  - Enforced by `maturation.py` (`read_ingame_exit`: `line_class`, `repair_shown`, undecided bars; `read_exit`:
+    `check_repair`) and carried by the blind-judge, in-game driver, steward and fixer briefs (`WRONG_CHECK_RULE`).
+    Page: `design/specs/2026-11-20-wrong-check-fixed-in-sitting/boundary.md`; test:
+    `src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py`.
 - **Group the repairs.** Tickets with one cause, or in the same files, are fixed in one run and one context.
 - **A stopping level in every judging brief** (his pick on the same card, *"Stop rule in every judge brief
   (Recommended)"*, whose description read: *"Why: it hits the measured cause. About a dozen briefs (auditor, ops

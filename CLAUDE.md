@@ -348,6 +348,18 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
   - your verdict must stay independent of the work;
   - your assigned work would not finish.
 - Test 1 comes first. Test 2 never makes a fix that fails test 1 worth it.
+- A wrong check is repaired or set aside in the sitting. It never sends the mod back:
+  - Class each failed or unmeasured check first: the mod is wrong, the check is wrong, or the staged scene is wrong.
+  - A wrong check or scene is worth repair only if a bar would go undecided without it. Otherwise delete it, or set it
+    aside as not counted, with one line on the polish list. No ticket.
+  - "A failure happened" does not make a wrong check worth the fix by itself. The failure was the check's.
+  - The agent that classes a check wrong repairs it in the same sitting and runs it again. "My verdict must stay
+    independent" and "my assigned work would not finish" do not excuse a wrong check or scene. The repair does not
+    touch the mod.
+  - A repaired check counts only after it is seen to FAIL on a planted fault (or a state known bad) and PASS on the
+    real build, in that sitting, with both readings beside the row. A repair that cannot be shown both ways leaves the
+    check not counted (UNMEASURED), never PASS.
+  - Only a check classed "the mod is wrong", or a bar left undecided, moves the mod back a stage.
 - Fix tickets with one cause, or in the same files, in one run.
 - A brief that reviews, judges, audits or files findings states three things:
   - the level that is enough;

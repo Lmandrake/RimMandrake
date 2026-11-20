@@ -6,6 +6,7 @@ card, "Stop rule in every judge brief (Recommended)" (item RIMMANDRAKE_ENACT_TOU
 design/RimMandrake/standing_rulings.md §Touching code has a cost; if you see it, do it).
 
 - PRESENT: each file carries the words of the two tests, or its stopping level.
+- The extension of 2026-11-20 (a wrong check is repaired or set aside in the sitting) is pinned the same way (WRONG).
 - ABSENT: the lines that the ruling made false stay deleted (the auditor's "No fixed count", the CHARTER's "File a
   ticket only for a fix that is not small", the agents' "Do not pick up more work.", designer.md's "The Conductor
   cannot supply these" and "first-touch certification stay his").
@@ -57,6 +58,22 @@ PRESENT = {
 for a in AGENTS:
     PRESENT.setdefault(a, []).extend(AGENT_PINS)
 
+# the extension of 2026-11-20 (RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED): a wrong check is repaired or
+# set aside in the sitting and never sends the mod back; selftest_wrong_check_fixed_in_sitting.py tests the code
+WRONG = {
+    "CLAUDE.md": ["A wrong check is repaired or set aside in the sitting. It never sends the mod back",
+                  "seen to FAIL on a planted fault", "Only a check classed \"the mod is wrong\", or a bar left undecided"],
+    "design/RimMandrake/standing_rulings.md": [
+        "**A wrong check is repaired or set aside in the sitting; it never sends the mod back** (owner, 2026-11-20",
+        "We need to stop treating all agents as corrupt.", "include your extension",
+        "judging events are still being used to slowly improve testing definitions rather than game content",
+        "The guard that replaces distrust"],
+    "infrastructure/agents/CHARTER.md": ["A wrong check or scene is repaired in the same sitting"],
+    "design/specs/2026-11-13-maturation-pipeline.md": ["A wrong check or scene never goes back"],
+}
+for k, v in WRONG.items():
+    PRESENT.setdefault(k, []).extend(v)
+
 ABSENT = {
     "src/RimMandrake/rimflow/roles/auditor.md": ["No fixed count"],
     "infrastructure/agents/CHARTER.md": ["File a ticket only for a fix that is not small."],
@@ -65,6 +82,13 @@ ABSENT = {
 }
 for a in AGENTS:
     ABSENT.setdefault(a, []).append("Do not pick up more work.")
+ABSENT.update({
+    "src/RimMandrake/rimflow/maturation.py": ["a check you judge wrong is a note to the",
+                                             "files each failed line as a named item"],
+    "src/RimMandrake/rimflow/maturation_autonomy.py": ["File EACH failed or UNMEASURED line as a",
+                                                      "A failed or UNMEASURED line is filed as a NAMED item"],
+    "src/RimMandrake/rimflow/maturation_dispatch.py": ["each failed line item down its road back"],
+})
 
 
 def flat(s):

@@ -1706,7 +1706,7 @@ def decide_ingame(cfg, s, f, row, put, now, account, live_total, drivers, bridge
     if owed == "exit not met":
         put("exit_not_met", "; ".join((ex.get("why") or [])[:3]),
             "in-game visit %s ended, exit not met (%s); nothing more launches on it: the Conductor reads %s and sends "
-            "each failed line item down its road back" % (n, "; ".join((ex.get("why") or [])[:3]), summ))
+            "each mod-wrong line, and each undecided bar, down its road back (a wrong check or scene never goes back)" % (n, "; ".join((ex.get("why") or [])[:3]), summ))
         return False
     mine = [x for x in ours if x.get("visit") == n]
     retry = mine[-1] if mine and retriable(cfg, mine[-1], f.get("killed"), mod) else None

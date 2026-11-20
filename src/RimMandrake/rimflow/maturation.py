@@ -1958,7 +1958,8 @@ def next_step(root, mod):
                "--steward-confirms \"...\"" % (ing["visit"], ing["exit"]["why"][0], ing["exit"]["record"], mod))
     elif ing:
         nxt = ("NEXT (automatic: one steward run, then a fixer per item): visit %d: exit not met (%s); the steward reads "
-               "%s/SUMMARY.md, files each failed line as a named item and sends the mod down its road back (maturation.py "
+               "%s/SUMMARY.md, files a named item for each mod-wrong line (and each wrong check a bar needs that the driver "
+               "could not repair) and sends the mod down its road back only for those or an undecided bar (maturation.py "
                "advance %s --to offline_build or --to blind_challenge, or --to in_game for a check only to re-run, as "
                "one made on another build than his walk's); the next visit launches when they close" % (
                    ing["visit"], "; ".join(ing["exit"]["why"][:3]), ing["exit"]["record"], mod))
@@ -2040,6 +2041,27 @@ SELF_FIX_RULE = ("- The pipeline fixes its own defects (owner, 2026-11-15): a de
                  "north-star bar, with the evidence and what you tried on the ticket. Never work around it by hand. A "
                  "mod's own gaps still go through the stages. Full text: `design/RimMandrake/standing_rulings.md` "
                  "§The pipeline fixes its own defects.")
+# The owner's ruling of 2026-11-20 (RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED): a wrong check is
+# repaired or set aside in the sitting and never sends the mod back. Carried by the blind judge, the in-game driver, the
+# steward (router) and the road-back fixer; read_ingame_exit and read_exit enforce it. Full text: standing_rulings.md
+# §Touching code has a cost. selftest_wrong_check_fixed_in_sitting.py.
+WRONG_CHECK_RULE = "\n".join([
+    "**Class each failed or UNMEASURED line first** (owner, 2026-11-20; `design/RimMandrake/standing_rulings.md` "
+    "§Touching code has a cost): mod wrong (`class` MOD: the mod's code, defs or settings), check wrong (`class` HARNESS: "
+    "the script, the instrument, the criterion) or scene wrong (`class` SITE: the staged scene). Then:",
+    "- Test 1, the worth of the touch: a wrong check or scene is worth repair only if a bar would go undecided without "
+    "it. \"A failure happened\" does not make it worth the touch by itself: the failure was the check's. Otherwise delete "
+    "it or set it aside as not counted, with one line on the polish list. No ticket.",
+    "- Test 2, if you see it, do it: the agent that classes a check or scene wrong repairs it in the same sitting and runs "
+    "it again. \"My verdict must stay independent\" and \"my assigned work would not finish\" do not excuse a wrong "
+    "check or scene: its repair does not touch the mod.",
+    "- The guard: a repaired check counts only after it is seen to FAIL on a planted fault (or on a state known bad) and "
+    "PASS on the real build, in that sitting, with both readings recorded beside the row. A repair that cannot be shown "
+    "both ways leaves the check not counted (UNMEASURED), never PASS. To plant, use what exists: a planted case of the "
+    "blind challenge (`lane2/planted_faults.json`, `plant_faults.py`), the check's own `--old` or mutant switch, or a save "
+    "or state known bad. Build no new framework. Where no plant exists for a check, the repaired check stays not counted.",
+    "- A repair never weakens what the check observes, and never touches the mod.",
+    "- A wrong check or scene never sends the mod back a stage. Only a mod wrong line, or a bar left undecided, does."])
 # What the Gimme Some Slack and Pyrelands rescues taught (2026-11-16; owner: "let's make these changes to the
 # builder/fixers so they act better from now on too"): green on the suite's examples was taken for green everywhere,
 # builders tuned between bars that want opposite things, and a rescue ended with open cases as a footnote. Carried by
@@ -2680,6 +2702,50 @@ def exit_block(summary):
 
 
 JUDGE_SAYS_FALSE = "the judge's block says exit_met false"
+AGAINST_WRONG = ("check", "scene")
+
+
+def _commit_paths(root, sha):
+    """-> a probe_result answer: the paths commit sha changed (value), none (empty), or could_not_look naming why."""
+    import probe_result as PR
+    try:
+        p = subprocess.run(["git", "-C", root, "diff-tree", "--no-commit-id", "--name-only", "-r", str(sha)],
+                           capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return PR.could_not_look("git diff-tree %s: %s" % (sha, e))
+    if p.returncode != 0:
+        return PR.could_not_look("git diff-tree %s exited %d: %s" % (sha, p.returncode, p.stderr.strip()[:120]))
+    paths = [x for x in p.stdout.split("\n") if x.strip()]
+    return PR.value(paths) if paths else PR.empty()
+
+
+def _edited_paths(te):
+    rows = te.get("edited") if isinstance(te, dict) else te
+    return {str(x.get("path") if isinstance(x, dict) else x) for x in rows or [] if x}
+
+
+def check_repair(root, x, fx, edited):
+    """-> (True, None) when FIXED Problem x is a wrong check or scene repaired, not a mod fix: `against` check or scene,
+    its fixes.jsonl row fx names its `plant` (red: the repaired check on that plant; green: on the real build; read_exit
+    checks the rcs), and the fix commit changes only paths in tests_edited.json or the cycle's record. Else (False, why):
+    a mod fix, which owes a new blind judge. A commit git cannot read counts as a mod fix, and why names the cause
+    (owner, 2026-11-20, RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_RETURNED)."""
+    if str(x.get("against", "")).lower() not in AGAINST_WRONG:
+        return False, "against %s, not check or scene" % (x.get("against") or "nothing")
+    if not isinstance(fx, dict) or not str(fx.get("plant") or "").strip():
+        return False, "its fixes.jsonl row names no plant"
+    sha = fx.get("sha") or (str(x.get("status", "")).split() + [""])[1]
+    if not sha:
+        return False, "no fix sha"
+    paths = _commit_paths(root, sha)
+    if not paths.ok:
+        return False, str(paths)
+    if not paths:
+        return False, "commit %s changed no file" % sha
+    rec = "design/concepts/%s/%s/" % (x.get("_mod", ""), BLIND_DIR)
+    other = [p for p in paths if p not in edited and not p.startswith(rec)]
+    return (False, "commit %s changes %s, not in tests_edited.json" % (sha, ", ".join(other[:3]))) if other else (True,
+                                                                                                                  None)
 
 
 def read_exit(root, mod, n, tt=None, game_only_bars=None):
@@ -2851,8 +2917,15 @@ def read_exit(root, mod, n, tt=None, game_only_bars=None):
         why.append("lane2/planted_results.jsonl plants no fault (only a baseline): the tests were never shown to catch one")
     elif pr is not None and not any(_planted_caught(r) for r in planted):
         why.append("lane2/planted_results.jsonl: none of its %d planted fault(s) was caught" % len(planted))
-    fixed = [x.get("id", "?") for x in problems if str(x.get("status", "")).startswith("FIXED")]
-    out["checks"]["fixed_this_cycle"] = fixed
+    edited = _edited_paths(te)
+    read = {x.get("id", "?"): check_repair(root, dict(x, _mod=mod), fixes.get(x.get("id")), edited)
+            for x in problems if str(x.get("status", "")).startswith("FIXED")}
+    repairs = [i for i, (ok, _) in read.items() if ok]
+    out["checks"]["mod_fixes_why"] = {i: w for i, (ok, w) in read.items() if not ok}
+    out["checks"]["fixed_this_cycle"] = [x.get("id", "?") for x in problems if str(x.get("status", "")).startswith("FIXED")]
+    # a wrong check repaired and shown on its plant and the real build owes no new judge: the mod did not change
+    out["checks"]["check_repairs"] = repairs
+    fixed = [i for i in out["checks"]["fixed_this_cycle"] if i not in repairs]
     if fixed and game_only_bars is not None and all(w == JUDGE_SAYS_FALSE for w in why):
         # a game-only move: the owed judge is not counted (the Conductor's act on
         # RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT); each fix was shown red then green above
@@ -3209,7 +3282,8 @@ def blind_brief_text(root, mod, cap_usd=None):
           "**Faults.** Write each one to `lane2/faults.json` (`{\"faults\": [...]}`) as a refusal record: `id` (a "
           "rimflow name; `python3 src/RimMandrake/rimflow/cli.py namecheck`), `class` (Problem or Polish), `bar`, "
           "`criterion`, `evidence[]`, `would_pass`, `smallest_fix`, `verdict_on_criterion`, `status` (PENDING, FIXED "
-          "<sha>, or NOTED_FOR_CONDUCTOR)%s. File each fault as a rimflow item (skill `using-rimflow`, `--why`)." % (
+          "<sha>, or NOTED_FOR_CONDUCTOR), `against` (mod, check or scene: which one is wrong)%s. File a fault as a rimflow "
+          "item (skill `using-rimflow`, `--why`) only when it passes test 1 below and you do not fix it in this cycle." % (
               ", `miss_of` (%d when the fault is in material unchanged since cycle %d)" % (n - 1, n - 1)
               if n >= 2 else "")]
 
@@ -3233,7 +3307,13 @@ def blind_brief_text(root, mod, cap_usd=None):
                                           "version/VERSION.json", "version/bars.md")), "",
           "When a fix needs bar text: if the code is wrong, fix the code; if the criterion is wrong but the bar keeps "
           "its meaning, mark it NOTED_FOR_CONDUCTOR (the steward re-pins it); if the bar's words are wrong, mark it "
-          "NOTED_FOR_CONDUCTOR (the neutral fixer). Build no verdict on a NOTED bar."]
+          "NOTED_FOR_CONDUCTOR (the neutral fixer). Build no verdict on a NOTED bar.", "",
+          WRONG_CHECK_RULE, "",
+          "Here: a Problem `against` check or scene that you repair is FIXED with a `fixes.jsonl` row that names `plant` "
+          "(what you planted), `red` (the repaired check run on that plant: an rc non-zero) and `green` (the repaired "
+          "check run on the real build: rc 0), both at the fix sha; the fix commit changes only files you list in "
+          "`tests_edited.json`. Such a repair owes no new blind judge (`read_exit` lists it under `check_repairs`). A "
+          "Problem `against` mod that you FIXED owes one. A wrong check that no bar needs is Polish: no fix, no item."]
 
     # ---- output and exit
     heads = ["Start time"] + (["Changed files to bars"] if n >= 2 else []) + [
@@ -3250,10 +3330,11 @@ def blind_brief_text(root, mod, cap_usd=None):
           "then the fixes, then the record; then `./publish`.", "",
           "## The exit, and who reads it", "",
           "**The exit condition:** every offline bar (%s) is green on your rerun, and no Problem is left PENDING or "
-          "NOTED_FOR_CONDUCTOR, and no Problem was FIXED in this cycle. A Problem you FIXED red-first is closed as an item, "
-          "but a cycle's own fixes never pass its exit: a new blind judge is owed (his road back: \"send it back to just "
-          "before Stage 4 again for a new blind judgement pass\"), so a cycle that fixed any Problem writes "
-          "exit_met: false." % (
+          "NOTED_FOR_CONDUCTOR, and no Problem `against` the mod was FIXED in this cycle. A Problem you FIXED red-first is "
+          "closed as an item, but a cycle's own mod fixes never pass its exit: a new blind judge is owed (his road back: "
+          "\"send it back to just before Stage 4 again for a new blind judgement pass\"), so a cycle that fixed the mod "
+          "writes exit_met: false. A check or scene repair shown on its plant and on the real build is not a mod fix "
+          "and owes no judge." % (
               ", ".join("`%s`" % b for b, _ in bars) or "none in the table: say so in Exit"), "",
           "Write the Exit section as this block, exactly these three keys (a program reads it):", "",
           "```", "## Exit", "offline_bars: {%s}" % ", ".join("%s: green|red" % b for b, _ in bars),
@@ -3305,9 +3386,10 @@ def blind_brief_text(root, mod, cap_usd=None):
 #   rows.jsonl     one row per run of a stage-6 check: {"test", "verdict": PASS|FAIL|UNMEASURED, "site_checked": bool,
 #                  "game": "archmagi"|"stevedesktop", "mod_sha", "command", "evidence", "held": [...], and the fields
 #                  `build_match.py identity` prints: "mod_hash", "game_build", "active_mods", "tier" or "full_list",
-#                  "unit"}; the last row per test counts, never past an earlier FAIL (a FAIL goes down its road back,
-#                  spec Stage 6, and a new visit reruns it), and only on the build he walks (the build match,
-#                  read_ingame_exit).
+#                  "unit"}; the last row per test counts, never past an earlier MOD or unclassed FAIL (a mod-wrong
+#                  FAIL goes down its road back, spec Stage 6, and a new visit reruns it), and only on the build he
+#                  walks (the build match, read_ingame_exit). "class" (MOD | HARNESS | SITE), "repair", "set_aside" and
+#                  "unrepaired" class a failed line (line_class; owner, 2026-11-20).
 #                  "held" names what the site switched off or locked for the run ("fire", "weather", ...; [] when the whole
 #                  mod ran): maturation_rescue.py's C5 reads a bar whose every decider ran held as untested by the real
 #                  mechanic, and a row without "held" as UNMEASURED (RIMMANDRAKE_PROPOSE_RESCUE_WHEN_MOD_CIRCLES_BOTH_HAND_LAUNCHED)
@@ -3519,6 +3601,61 @@ def pass_record(root, mod, rec, owner, sha, t, wid):
         "build": {k: v for k, v in wid.items() if k not in ("why",)}}
 
 
+# ---- a failed or unmeasured line is classed (owner, 2026-11-20, RIMMANDRAKE_ENACT_WRONG_CHECK_FIXED_IN_SITTING_NOT_
+# RETURNED; standing_rulings §Touching code has a cost): the mod is wrong (MOD), the check is wrong (HARNESS) or the
+# staged scene is wrong (SITE), the classes of skill live-debugging-proof-harness. A wrong check or scene is repaired in
+# the sitting and counts only when seen FAIL on a plant and PASS on the real build, or it is set aside; it never sends
+# the mod back. Only a MOD line or an undecided bar does. Boundary: design/specs/2026-11-20-wrong-check-fixed-in-sitting/
+
+WRONG_CLASSES = ("HARNESS", "SITE")
+
+
+def repair_shown(r):
+    """-> None when row r's `repair` shows the repaired check both ways: the repair commit, and a planted reading (what
+    was planted, its command, verdict FAIL). The row's own verdict is the real-build reading. Else -> why not."""
+    rp = r.get("repair")
+    if not isinstance(rp, dict):
+        return "its `repair` is not a record"
+    pl = rp.get("planted") if isinstance(rp.get("planted"), dict) else {}
+    miss = [w for w, bad in (
+        ("class HARNESS (check wrong) or SITE (scene wrong)", str(rp.get("class", "")).upper() not in WRONG_CLASSES),
+        ("repair commit", not SHA_RE.match(str(rp.get("commit") or ""))),
+        ("planted reading", not pl),
+        ("plant (what was planted)", pl and not str(pl.get("plant") or "").strip()),
+        ("command for the planted reading", pl and not str(pl.get("command") or "").strip()),
+        ("planted reading that reads FAIL", pl and str(pl.get("verdict", "")).upper() != "FAIL")) if bad]
+    return ("its repair names no %s" % ", no ".join(miss)) if miss else None
+
+
+def _said(r, field):
+    return len(str(r.get(field) or "").split()) >= EXPLAIN_WORDS
+
+
+def line_class(r, earlier, tt=None):
+    """-> how a check's last row r counts at the exit: pass | mod (the mod is wrong: the road back) | not_counted (a
+    wrong check or scene set aside, said unrepaired, or repaired and not shown both ways: it blocks only through an
+    undecided bar) | unclassed (a FAIL or UNMEASURED with no class) | unhandled (classed wrong, nothing done about it).
+    earlier: the classes of the check's earlier real FAIL rows (never HARNESS or SITE)."""
+    if earlier:
+        return "mod" if "MOD" in earlier else "unclassed"
+    v, cls = str(r.get("verdict", "")).upper(), str(r.get("class", "")).upper()
+    if "repair" in r:
+        return "pass" if v == "PASS" and repair_shown(r) is None else "not_counted"
+    if v == "PASS":
+        return "pass"
+    if cls == "MOD":
+        return "mod"
+    if cls in WRONG_CLASSES:
+        return "not_counted" if _said(r, "set_aside") or _said(r, "unrepaired") else "unhandled"
+    return "unclassed"
+
+
+def _not_counted_why(r):
+    if "repair" in r:
+        return "repaired and not shown both ways: %s" % (repair_shown(r) or "its re-run reads %s" % r.get("verdict"))
+    return "set aside: %s" % r["set_aside"] if _said(r, "set_aside") else "unrepaired: %s" % r.get("unrepaired")
+
+
 def read_ingame_exit(root, mod, n, tt=None):
     """-> {visit, state, why[], claimed, rows}: the program's reading of visit n's exit. state: absent (no visit_n folder)
     | no_exit_block (no Exit block with the four keys: a visit in progress, or one that ended without writing it) | met |
@@ -3549,31 +3686,50 @@ def read_ingame_exit(root, mod, n, tt=None):
     if rows is None:
         why.append("rows.jsonl is missing")
     # an earlier row counts against its check only as a real FAIL: an UNMEASURED row (a run the 540 s command bound
-    # split) or a FAIL the driver classed HARNESS or SITE is a system failure and spends nothing (standing_rulings, No
-    # trial is spent by a system failure); the check's last row must still read PASS
+    # split) or a FAIL the driver classed HARNESS or SITE (the check or the scene was wrong) spends nothing (standing_
+    # rulings, No trial is spent by a system failure, and §Touching code has a cost); the last row decides (line_class)
     last, earlier = {}, {}
     for r in rows or []:
         t = r.get("test") or r.get("id")
         if t:
             p = last.get(t) or {}
-            if str(p.get("verdict", "")).upper() == "FAIL" and str(p.get("class", "")).upper() not in ("HARNESS", "SITE"):
-                earlier.setdefault(t, []).append("FAIL")
+            if str(p.get("verdict", "")).upper() == "FAIL" and str(p.get("class", "")).upper() not in WRONG_CLASSES:
+                earlier.setdefault(t, []).append(str(p.get("class", "")).upper() or "unclassed")
             last[t] = r
+    lines_ = out["lines"] = {}
     for t, _ in checks:
         claim = blk["ingame_rows"].get(t)
         r = last.get(t)
         v = str((r or {}).get("verdict", "")).upper()
         out["rows"][t] = v or "NO ROW"
+        cnt = line_class(r, earlier.get(t)) if r is not None else "no_row"
+        rp = r.get("repair") if r is not None and isinstance(r.get("repair"), dict) else {}
+        cls = str(r.get("class") or rp.get("class") or "").upper() if r is not None else ""
+        ln = lines_[t] = {"count": cnt, "class": cls or None, "bars": _bars_of(tt, t)}
+        if r is not None and isinstance(r.get("repair"), dict):
+            ln["repair"], ln["real"] = r["repair"], v
+        if cnt == "not_counted":
+            ln["why"] = _not_counted_why(r)
+            out["rows"][t] = "UNMEASURED" if "repair" in r else v
+            if claim == "pass":
+                why.append("in-game check %s reads pass in the block, but it is not counted (%s)" % (t, ln["why"]))
+            continue        # it decides nothing; its bars are read below
         if claim != "pass":
             why.append("in-game check %s reads %s in the block" % (t, claim or "nothing (left out)"))
         if r is None:
             why.append("in-game check %s has no row in rows.jsonl" % t)
             continue
         if v != "PASS":
-            why.append("in-game check %s: its last row reads %s" % (t, v or "no verdict"))
+            why.append("in-game check %s: its last row reads %s%s" % (t, v or "no verdict", {
+                "mod": " (classed MOD: the mod is wrong; it goes down its road back)",
+                "unclassed": " with no class: class it MOD (the mod is wrong), HARNESS (the check is wrong) or SITE "
+                             "(the scene is wrong)",
+                "unhandled": " (classed %s: the check or scene is wrong) and is neither repaired (`repair`, seen FAIL "
+                             "on a plant and PASS on the real build), set aside (`set_aside`: its polish line) nor said "
+                             "`unrepaired` (why not)" % ln["class"]}.get(cnt, "")))
         if earlier.get(t):
-            why.append("in-game check %s: an earlier row reads %s; a later PASS does not hide it (the failure goes "
-                       "down its road back, and a new visit reruns it)" % (t, ", ".join(earlier[t])))
+            why.append("in-game check %s: an earlier row reads FAIL (classed %s); a later PASS does not hide it (the "
+                       "failure goes down its road back, and a new visit reruns it)" % (t, ", ".join(earlier[t])))
         if r.get("site_checked") is not True:
             why.append("in-game check %s: its row does not say the site was checked first (site_checked)" % t)
         elif not _site_shown(root, r):
@@ -3585,6 +3741,20 @@ def read_ingame_exit(root, mod, n, tt=None):
             why.append("in-game check %s: its row names no mod_sha (the build it ran)" % t)
         elif not SHA_RE.match(str(r.get("mod_sha"))):
             why.append("in-game check %s: its mod_sha %r is not a commit hash (7 to 40 hex)" % (t, r.get("mod_sha")))
+    # a check not counted sends nothing back unless its bar is left undecided: no other in-game check of that bar reads
+    # a counted PASS or a MOD FAIL (a FAIL decides its bar too)
+    undecided = {}
+    for t, ln in lines_.items():
+        if ln["count"] == "not_counted":
+            for b in ln["bars"]:
+                if not any(lines_.get(k, {}).get("count") in ("pass", "mod") for k, _ in checks
+                           if k != t and b in _bars_of(tt, k)):
+                    undecided.setdefault(b, []).append(t)
+    out["undecided_bars"] = sorted(undecided)
+    for b in sorted(undecided):
+        why.append("bar %s is undecided: its in-game check(s) %s are not counted (%s) and no other in-game check of it "
+                   "counts: repair one in the sitting, seen FAIL on a plant and PASS on the real build, and re-run it" % (
+                       b, ", ".join(undecided[b]), "; ".join(lines_[t]["why"] for t in undecided[b])))
     # RIMMANDRAKE_BIND_STAGE_EVIDENCE_TO_ONE_BUILD (the part that needs no ruling): one visit judges ONE build, so every
     # row's mod_sha names the same commit (a short hash agrees with a long one it starts)
     shas = sorted({str(r.get("mod_sha")) for r in rows or [] if SHA_RE.match(str(r.get("mod_sha") or ""))}, key=len)
@@ -3626,8 +3796,12 @@ def read_ingame_exit(root, mod, n, tt=None):
         why.append("the savegame %s is not a RimWorld save (an .rws file whose head is XML holding <savegame>)" % sv)
     out["state"] = "not_met" if why else "met"
     if not why:
-        why.append("%d of %d in-game checks PASS on checked sites; strange things all explained or filed; savegame %s"
-                   % (len(checks), len(checks), sv))
+        nc = sorted(t for t, ln in lines_.items() if ln["count"] == "not_counted")
+        rep = sorted(t for t, ln in lines_.items() if ln["count"] == "pass" and ln.get("repair"))
+        why.append("%d of %d in-game checks PASS on checked sites%s%s; strange things all explained or filed; savegame %s"
+                   % (len(checks) - len(nc), len(checks), "; repaired in the sitting and shown both ways: %s" % ", ".join(
+                       rep) if rep else "", "; not counted, every bar still decided: %s" % ", ".join(
+                       "%s (%s)" % (t, lines_[t]["why"]) for t in nc) if nc else "", sv))
     return out
 
 
@@ -4154,15 +4328,29 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "for the desktop, the bridge's capture for the map), looked at, not only taken. Every strange thing no bar "
           "covers is a row of `strange.jsonl`: explained (what it is and why it is fine) or filed (a rimflow item, its "
           "id in the row). Screenshots go in `%s/screenshots/` only if under 1 MB each; else name their paths." % vdir,
-          "", "## A FAIL is diagnosed in the sitting", "",
-          "A FAIL is not a verdict to carry home bare: diagnose it by experiment while the game is up (change one "
-          "thing, watch the row), then file it as a rimflow item with what you found, and the row stays FAIL. Do not "
-          "fix the mod in the sitting: the exit reading counts no check with an earlier FAIL row and no visit whose "
-          "rows name two builds, so a fix-and-rerun here wastes the visit. The fault goes down its road back (spec "
-          "Stage 6: the lowest stage that can show it, an offline test that fails on the old code first), and a new "
-          "visit reruns it on the fixed build. Run the remaining checks all the same: every FAIL this visit finds is "
-          "one the road back fixes at once. Never weaken a check to pass it; a check you judge wrong is a note to the "
-          "Conductor, its row UNMEASURED.", "",
+          "", "## A FAIL is diagnosed and classed in the sitting", "",
+          "A FAIL or UNMEASURED is not a verdict to carry home bare: diagnose it by experiment while the game is up "
+          "(change one thing, watch the row), and class it.", "", WRONG_CHECK_RULE, "",
+          "What each class does here (`read_ingame_exit` reads these row fields):",
+          "- **Mod wrong** (`class: \"MOD\"`): file it as a rimflow item with what you found, and the row stays FAIL. "
+          "Do not fix the mod in the sitting: the exit reading counts no check with an earlier MOD FAIL row and no "
+          "visit whose rows name two builds, so a fix-and-rerun of the mod wastes the visit. The fault goes down its "
+          "road back (spec Stage 6: the lowest stage that can show it, an offline test that fails on the old code "
+          "first), and a new visit reruns it on the fixed build.",
+          "- **Check or scene wrong, and a bar needs it** (`class: \"HARNESS\"` or `\"SITE\"` on the failed row): repair "
+          "the check or the scene, commit the repair, keep the deployed build (the rows keep its `mod_sha`), plant the "
+          "fault and run the repaired check on it, then run it on the real build. Write the re-run row with `repair`: "
+          "`{\"class\": \"HARNESS\"|\"SITE\", \"commit\": <sha>, \"planted\": {\"plant\": <what you planted>, "
+          "\"command\": ..., \"verdict\": \"FAIL\", \"evidence\": <path>}}`; that row's own PASS is the real-build "
+          "reading. The earlier HARNESS or SITE row spends nothing. No item.",
+          "- **Check or scene wrong, and no bar needs it**: `set_aside`: its one polish line (also on `%s/polish.md`). "
+          "It is not counted and does not block. No item." % vdir,
+          "- **Check or scene wrong, and you cannot repair it**: `unrepaired`: why (you lack the tools, the fix is not "
+          "known, another run holds the files). File an item with that evidence only if a bar would go undecided.",
+          "- A FAIL or UNMEASURED row with no class never passes and is never set aside silently: the exit reads it "
+          "not met.", "",
+          "Run the remaining checks all the same: every mod-wrong FAIL this visit finds is one the road back fixes at "
+          "once.", "",
           "## The record (skeleton first: create it before the first live call)", "",
           "`%s/`:" % vdir,
           "- `rows.jsonl`: one row per run: `{\"test\": id, \"verdict\": \"PASS\"|\"FAIL\"|\"UNMEASURED\", "
@@ -4186,7 +4374,9 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           "strange_open: <count neither explained nor filed>", "savegame: <its full path>", "exit_met: true|false",
           "```", "```", "",
           "`python3 src/RimMandrake/rimflow/maturation.py next %s` reads it and checks it against the files: met needs "
-          "every check pass in the block AND PASS in its last row with the site checked, the game and mod_sha named, "
+          "every counted check pass in the block AND PASS in its last row with the site checked, the game and mod_sha "
+          "named (a check not counted, that is set aside, said unrepaired or repaired and not shown both ways, reads "
+          "unmeasured in the block and blocks only when it leaves a bar undecided), "
           "every row on the walk build (`build_match.py check --mod %s` reads that part alone), every strange thing "
           "explained or filed, and the savegame on disk. That reading is evidence for the steward, "
           "not a move: the Conductor reads your SUMMARY.md and advances with `--to pre_human --steward-confirms "
@@ -4194,7 +4384,8 @@ def ingame_brief_text(root, mod, cap_usd=None, seat="BENCH"):
           SELF_CHECK_RULE % mod, "",
           "## Report (10 lines or fewer, plain words)", "",
           "Tag every number [measured] or [guess ~N%%]: checks PASS of %d, FAIL, UNMEASURED; each owed case's outcome; "
-          "each FAIL's filed item; strange things seen, explained, filed; the savegame path; the mod list "
+          "each failed line's class; each mod-wrong FAIL's filed item; each repaired check's commit and its planted and "
+          "real readings; each check set aside; strange things seen, explained, filed; the savegame path; the mod list "
           "and game; whether the exit is met; bridge released." % len(checks)]
     steward = (read_text(root, mod, STEWARD_FILE) or "").strip()
     ivs, undated = MN.parse_interventions(read_text(root, mod, "journal.md") or "", "journal")

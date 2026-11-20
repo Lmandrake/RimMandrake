@@ -1416,9 +1416,13 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
   was stopped by the Conductor counts as no cycle, visit, look or steward run. Never count one as a failure on the
   mod's merits; void one the tick did not class itself with `python3 src/RimMandrake/rimflow/maturation_dispatch.py
   void <unit> --why "..."` and say so in your note.
-- A failed or UNMEASURED line is filed as a NAMED item (`rimflow file <NAME> --for BENCH --caused-by %(item)s ...`;
-  name grammar PROJECT_VERB_INTENTION_TWIST, `rimflow namecheck`), each with its acceptance test (a command that fails
-  now and passes on a fix, or `Acceptance test: none, <reason>`), caused by THIS item so the tick finds and fixes them.
+- File a NAMED item (`rimflow file <NAME> --for BENCH --caused-by %(item)s ...`; name grammar
+  PROJECT_VERB_INTENTION_TWIST, `rimflow namecheck`) only for: a mod wrong line (class MOD); a line with no class that
+  you class mod wrong from its evidence; and a wrong check or scene that the driver could not repair (`unrepaired`)
+  when a bar would go undecided without it, with the evidence why (no tools, the fix is not known, another run holds
+  the files). Each carries its acceptance test (a command that fails now and passes on a fix, or `Acceptance test:
+  none, <reason>`), caused by THIS item so the tick finds and fixes them. A check or scene set aside, or repaired and
+  shown both ways, gets no item. `maturation.py next` reads each line's class (`lines`) and the undecided bars.
 - Move the mod only with `python3 src/RimMandrake/rimflow/maturation.py advance <Mod> --to <stage> --by BENCH --why
   "..." [--steward-confirms "<what you read and the verdict>"]`, forward one stage or along a drawn road back.
 - Land with `./publish -m "subject" <explicit paths>` (the record, the journal, the ledger shard); a move that is not on
@@ -1427,8 +1431,9 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
   sort every reason `maturation.py next` gives for "not met" into one of three and say which in your note:
   RECORD GAP (the run did it but did not record it in the form the reader wants): redo the demonstration for real (a
   fix: its test red at the commit before, green at HEAD), never write it from the report.
-  CRITERION FLAW (the check demands what no correct build could give): never loosened by you or by the builder. File
-  it as a named item for a neutral fixer with a refusal record (evidence, would_pass, smallest_fix); if the bar keeps
+  CRITERION FLAW (the check demands what no correct build could give): a wrong check. Never loosened by you or by the
+  builder. When a bar would go undecided without it, file it as a named item for a neutral fixer with a refusal record
+  (evidence, would_pass, smallest_fix); otherwise it is one polish line, no item. If the bar keeps
   its meaning, the criterion's text is repaired and re-pinned (next rule); if the bar's words are wrong, it is his card.
   REAL MISS (a Problem left open, a rerun not done): file it down the road back.
   Then read `tests_edited.json` and the diff of every test the judge touched: an assertion weakened, skipped or
@@ -1437,14 +1442,15 @@ STEWARD_RULES = """Rules (the owner's, carried; every one binds you):
   wording or bookkeeping fields, the bar's meaning unchanged, is re-pinned in `version/bars.md` with a journal line
   saying what changed and why the meaning is the same. A changed bar (its words, its numbers, what decides it, which
   version holds it) is never re-pinned by you: that is his card, with the before and after text.
-""" + M.SELF_FIX_RULE + "\n"
+""" + M.WRONG_CHECK_RULE + "\n" + M.SELF_FIX_RULE + "\n"
 
 
 # a Stage 6 failure goes to the lowest stage that can show it (spec Stage 6 road back; "Offline stages never wait for a
 # game"): RIMMANDRAKE_CLOSE_OFFLINE_STAGE_ITEMS_OFFLINE_GAME_WAS_DEMANDED, after FlowWorks and Explosive Knockback sat at
 # Stage 3 with twelve items only the game could close
 STAGE6_ROAD = (
-    "Sort each failed line by the lowest stage that can show its fault, and say which in its item:\n"
+    "Sort each line you file (a mod wrong line, or a wrong check a bar needs that the driver could not repair) by the "
+    "lowest stage that can show its fault, and say which in its item:\n"
     "- An offline test can show it (a selftest against a fake bridge or map, a pure-function check, a criterion text): "
     "file it with `--needs offline`; its body names that offline acceptance command (red on the old code), and its "
     "in-game check (the test table's stage-6 id and its exact live command), which its fixer records UNRUN for Stage 6 "
@@ -1465,17 +1471,20 @@ def steward_brief(root, mod, row):
         nxt, refs = "maturation.py next failed: %s" % e, ""
     kind = row.get("steward_kind")
     task = {
-        "exit_not_met": "The %s ended NOT met. Read its SUMMARY.md and rows. File EACH failed or UNMEASURED line as a "
-                        "named item (caused by this item); when a line's check is an OFFLINE command (a selftest or offline check "
+        "exit_not_met": "The %s ended NOT met. Read its SUMMARY.md and rows, and the class of each failed or "
+                        "UNMEASURED line (mod wrong, check wrong, scene wrong: the rule below). File a named item "
+                        "(caused by this item) only for the lines the rules below name; when a line's check is an OFFLINE command (a selftest or offline check "
                         "that runs in under 120 s, never a bridge, game or live run), its item's prose (items/<ID>.md) "
                         "carries `## launch-checks` then `must-fail: <that command>`, so a fixer whose red already passes "
-                        "is refused at launch. Then send the mod down its road back (%s). If the reading says "
+                        "is refused at launch. Then send the mod down its road back (%s) only for a mod wrong line or an "
+                        "undecided bar: a wrong check or scene never sends the mod back. If the reading says "
                         "a new blind judge is owed (its Problems were FIXED in the cycle), file nothing new: advance "
                         "--to blind_challenge, so a judge who did not see the fixes judges them. The tick launches "
                         "one fixer per item, and the next visit or cycle when they close.%s" % (
                             "in-game visit" if row.get("stage") == "in_game" else "blind cycle",
-                            "advance --to offline_build, or --to blind_challenge when every failure is a check or "
-                            "scene of the blind lane, or --to in_game when every failure is game-only; see below"
+                            "advance --to offline_build for a mod wrong line, or --to blind_challenge when every line "
+                            "that sends it back is an undecided bar whose blind-lane check the driver could not repair, "
+                            "or --to in_game when every such line is game-only; see below"
                             if row.get("stage") == "in_game" else "advance --to blind_challenge opens the next cycle",
                             "\n\n" + STAGE6_ROAD if row.get("stage") == "in_game" else ""),
         "exit_met": "The program reads the exit as met. Read SUMMARY.md and the rows yourself; if they bear it out, "
@@ -1595,17 +1604,20 @@ def fixer_brief(item, mod, cap, fix_for=None, live=False):
                     item, mod, item, item, mod, mod, item, mod, M.SELF_FIX_RULE))
     return ("# Road-back fix: %s (%s)\n\nItem: %s. Seat BENCH.\n\nRead `python3 "
             "src/RimMandrake/rimflow/cli.py show %s` to its end: it is one failed line of %s's in-game visit or blind "
-            "cycle, sent back by the steward. A line sent back is one symptom: before you fix it, read the other failed "
+            "cycle, sent back by the steward. Class it first, by the rule below: if the check or the scene is wrong, "
+            "not the mod, and no bar goes undecided without it, drop the item with `--why \"not worth the touch: "
+            "<why>\"` and its one polish line; if a bar needs it, repair the check, never the mod, and show it FAIL on "
+            "a planted fault and PASS on the real build. A line sent back is one symptom: before you fix it, read the other failed "
             "lines of the same visit or cycle that touch the same system, and if two or more share a cause, fix the "
             "cause. If this line has come back before (its item history shows it), do not tune it again: say what the "
             "earlier fixes changed and why they did not hold. Fix it, run its acceptance test (watch it fail first if "
             "it is new), land "
             "with `./publish -m ... <paths>`, and close the item with the published sha. If it cannot be fixed "
             "offline, or the fix is the owner's (a bar, a ruling, a classification), write that in a note and drop "
-            "nothing. %s\n%s\n\n%s\n\n%s\n" % (item, mod, item, item, mod, "Its acceptance test needs the live game: use it "
+            "nothing. %s\n%s\n\n%s\n\n%s\n\n%s\n" % (item, mod, item, item, mod, "Its acceptance test needs the live game: use it "
                                                "as the section below says, and write a note starting LEFT OPEN: on "
                                                "what still fails." if live else OFFLINE_CLOSE % {"mod": mod, "item": item},
-                                               M.SELF_FIX_RULE, M.HOW_A_BAR_HOLDS, M.OFFLINE_MODEL)
+                                               M.WRONG_CHECK_RULE, M.SELF_FIX_RULE, M.HOW_A_BAR_HOLDS, M.OFFLINE_MODEL)
             + (live_rules("%s holder run on %s" % (mod, item), mod) if live else ""))
 
 

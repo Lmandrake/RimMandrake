@@ -36,7 +36,10 @@ policy."*).
   test 1 gets one polish line, no fix and no ticket. Test 2: whoever judges a fix worth the touch is its fixer, small
   or not. File a ticket for someone else only with the evidence that the section lists (no tools or access, fix
   unknown, one of his five acts, a north-star bar, files held by another live run, a verdict that must stay
-  independent, assigned work that would not finish). The ticket says which.
+  independent, assigned work that would not finish). The ticket says which. A failed check is classed first (the mod,
+  the check or the scene is wrong). A wrong check or scene is repaired in the same sitting, seen FAIL on a planted
+  fault and PASS on the real build, or set aside with one polish line when no bar needs it. It never sends the mod
+  back, and neither "independent verdict" nor "work would not finish" excuses its repair.
 - The pipeline never "blesses" a small change (owner, 2026-11-05). For a small change, the agent does a quick manual
   validation on the spot. Then the agent closes the item with that evidence. Never queue a small change for a Judge
   (`standing_rulings.md`).

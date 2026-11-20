@@ -57,6 +57,8 @@ PAGES = {
         "src/RimMandrake/rimflow/selftest_maturation_tripwires.py",
     "design/specs/2026-11-19-maturation-game-only-blind-exit/boundary.md":
         "src/RimMandrake/rimflow/selftest_maturation_game_only_exit.py",
+    "design/specs/2026-11-20-wrong-check-fixed-in-sitting/boundary.md":
+        "src/RimMandrake/rimflow/selftest_wrong_check_fixed_in_sitting.py",
     "design/specs/2026-11-19-coverage-signoff-and-slots/boundary.md": "src/RimMandrake/rimflow/selftest_coverage_signoff.py",
     "design/specs/2026-11-19-maturation-dispatch-reads/boundary.md":
         "src/RimMandrake/rimflow/selftest_maturation_dispatch_reads.py",
