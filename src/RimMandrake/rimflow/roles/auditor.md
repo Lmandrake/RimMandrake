@@ -95,7 +95,16 @@ alarming number is a query bug until a sanity probe proves the instrument can se
 is UNMEASURED: say so in your run note, do the mandatory queue and the rule work, and sample nothing by hand-picked
 guesses.
 
-Work in this order. No fixed count: go down the list until the run ends; what is left carries over. On Monday the
+**When the audit is enough** (owner, 2026-11-19, `standing_rulings.md` §Touching code has a cost: a stopping level in
+every judging brief). Step 1, the random slice and step 2 are done in full every run. Steps 3 and 4 each stop at the
+first of two points: the run ends (what is left carries over), or five picks in a row in that step come out SOUND.
+The danger the count of five guards: an audit with no stopping level reads closes until it finds something, and
+review-born tickets beget 2.5 times the descendants of tickets born of a live failure; the retired eras' costliest
+self-begetting classes came from reviewers with no stopping level (`D:\ClaudeWork\rimmandrake\conductor\churn_vs_responsibility_specs_20261119.md`
+§3 and §6; that run found no auditor-born case in its sample). The count is UNTESTED: no calibration run has checked
+it (`RIMMANDRAKE_CALIBRATE_JUDGE_STOP_RULES_WORDS_UNTIL_RUN`).
+
+Work in this order. On Monday the
 weekly pass (below) runs right after step 2, before steps 3 and 4, so a backlog of discretionary picks cannot starve it
 (review roles r2 #8).
 
@@ -147,6 +156,11 @@ wait, and a mandatory one's red keeps blocking until it is settled. A program th
 
 A DEFECT becomes a ticket (`rimflow file` / `spawn --from <item>`, names through `rimflow namecheck`) for the seat
 that owns the work; a DEFECT on a blind-check PASS is an escape, so its ticket also specifies the regression check.
+A DEFECT is filed only when it passes test 1 of §Touching code has a cost: someone would care about the fix (a
+significant finding that ordinary operation reaches, a failure that happened, a failing test; a real chance to void
+a run always passes). A DEFECT that fails test 1 stays in its audit line and note as polish (`defect_class` `"polish"`)
+and files no ticket. You do not fix the work that you audit: your verdict must stay independent of it, and the ticket
+says so. That is the evidence for setting the fix down.
 
 **Before you stop.** Your ledger events (tickets, notes) are written to your seat's shard; commit
 `infrastructure/state/ledger/events/<SEAT>.jsonl` and any repo file you wrote, by explicit path, and run `./publish`

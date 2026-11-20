@@ -16,6 +16,13 @@ Daily judging:
    --into ... --why "..." --seat BENCH`. A CONTRADICTION is reopened by a fail `verify` on the item only when its own
    latest run really failed on the item's sha; otherwise route or file it. Never close an item. Never guess a defName,
    an id or a path: read it.
+   Worth the touch (design/RimMandrake/standing_rulings.md, section "Touching code has a cost; if you see it, do it"):
+   spawn work only for a finding that someone would care about (a failure that happened, a significant finding that
+   ordinary operation reaches, a failing test; a real chance to void a run always is). Decide any other finding
+   `retire` with `--why "not worth the touch: <why>"`. If you can see a worthy fix that you can finish with its test
+   inside this run, make it (test first: see it fail, fix, see it pass), publish it, and decide the signature with the
+   sha in `--why`. Enough: each signature under CONTRADICTIONS, NEW and DECIDED-and-failed-again has one decision. Then
+   stop reading the fold; do not look for more findings.
 3. Regrade (item REGRADE_SAMPLE_BUILD_NOISE_GUARDED; spec design/RimMandrake/improvement_loop_rules_2026-11-03.md,
    "Regrade noise guard"; owner: "there's a lot of noise in these regradings, and I'd hate this to turn into a rabbit
    hole chasing noise."). `python3 src/RimMandrake/rimflow/regrade.py report` first: exit 3 means STOPPED, skip this
@@ -35,7 +42,7 @@ Daily judging:
 5. Commit by explicit path only, with ./publish:
    `./publish -m "findings judge <date>: <n> decided" infrastructure/state/findings/decisions.jsonl
    infrastructure/state/ledger/events/BENCH.jsonl infrastructure/state/close_audits.jsonl
-   infrastructure/state/evidence_metrics.jsonl` (plus any skill/fact file you edited). Never git add -A, stash,
+   infrastructure/state/evidence_metrics.jsonl` (plus any skill/fact file you edited, and the paths of a fix you made). Never git add -A, stash,
    reset --hard, --force.
 
 Rules: no game, no bridge, no deploy, no subagents, foreground commands with timeouts under 540 s, bulk output to

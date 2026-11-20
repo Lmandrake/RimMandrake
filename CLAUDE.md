@@ -325,6 +325,35 @@ provenance (`design/RimMandrake/standing_rulings.md` §The root CLAUDE.md holds 
 - A mod's gaps still go through the stages.
 - Full text: `design/RimMandrake/standing_rulings.md` §The pipeline fixes its own defects.
 
+## Touching code has a cost; if you see it, do it
+
+- This rule applies to fixers, reviewers and judges. It applies to each pipeline monitor before it files. The rule
+  also covers tickets filed before the rule.
+- Test 1 comes before you touch code, a def, a test, a hook or a brief. Show that someone would care about the fix.
+  One of these must be true:
+  - the finding is significant, and ordinary operation reaches it;
+  - a failure happened;
+  - the ticket has a failing test.
+- A real chance to void a run is always worth the fix. A rare failure that a page lists as not survived is not a real
+  chance until it happens once.
+- A finding that fails test 1 gets no fix and no ticket. Write one line on `polish.md`, or in your report. Drop an open
+  ticket that fails test 1 with the reason `not worth the touch: <why>`.
+- Test 2: if you judge a finding worth the fix, you are its fixer, in the same run, test first. Set it down only with
+  evidence. Write that evidence on the ticket. The evidence is one of these:
+  - you lack the tools or the access;
+  - the fix is unknown;
+  - it needs one of the owner's five acts, or it changes a north-star bar;
+  - another live run holds the files;
+  - your verdict must stay independent of the work;
+  - your assigned work would not finish.
+- Test 1 comes first. Test 2 never makes a fix that fails test 1 worth it.
+- Fix tickets with one cause, or in the same files, in one run.
+- A brief that reviews, judges, audits or files findings states three things:
+  - the level that is enough;
+  - when to stop looking;
+  - the polish route, which files no ticket.
+- Full text: `design/RimMandrake/standing_rulings.md` §Touching code has a cost; if you see it, do it.
+
 ## No trial is spent by a system failure
 
 - A run spends no trial, turn, look or cycle if it was killed, timed out or never started. The same applies when the

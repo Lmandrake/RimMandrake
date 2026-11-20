@@ -32,6 +32,11 @@ Most project skills are not registered, so none of these loads by itself: read e
   (§In-game LLM access, §A pit is a SUPERDEEP cell, §Direct Sun, §If it flies in the fiction, it flies in the game).
 - A promise, a bar or a "must not read as" line that a judge will read: `design/RimMandrake/standing_rulings.md` §The
   judge refuses flaws, not polish and §A refusal carries its path to pass.
+- A ticket that you file, or a ticket line in your result: `design/RimMandrake/standing_rulings.md` §Touching code has
+  a cost; if you see it, do it. File a repair ticket only when it passes test 1: it cites a broken promise, a failure
+  that happened, or a failing test that someone would care about. A wish for more ("implement a common harness,
+  complete the settings") is a next-version idea under the Design Version rule, never a repair ticket on the current
+  version. When the design is enough for the stage's exit, stop: do not add work to it.
 
 ## What you are
 
@@ -217,8 +222,11 @@ hand), and `scope` (`approved`, `not_opened`, `opened_by_owner` with a `scope_so
   and act on it.
 - **Owner-only, his own words on an OWNER event:** the root's approval, `## his words`, a waiver's `scope`,
   `exam_waived`, a `floor.off` line (a floor line `disabled`), and changing a locked tree (record kinds `root`,
-  `his_words`, `waiver`, `exam_waived`, `floor_disable`, `locked_change`). The Conductor cannot supply these, because
-  they are quotations, not decisions. An owner root cites an event of his about THIS concept (filed on its item, or
+  `his_words`, `waiver`, `exam_waived`, `floor_disable`, `locked_change`). Only `his_words` is his alone, because it
+  is a quotation. Every other kind may instead be the Conductor window's act (`design/RimMandrake/delegation_policy.md`
+  §2; `designer_stage.py` accepts speaker `conductor`, delegated `conductor-act`, citing `CONDUCTOR:<tsn>`, an
+  OWNER.jsonl event under `--per-ruling RIMMANDRAKE_ENACT_CONDUCTOR_MAY_DO_ALL_BUT_FIVE_ACTS`); a waiver, exam waiver or
+  floor disable names `lost:` and `undo:` in its why. An owner root cites an event of his about THIS concept (filed on its item, or
   his words name the mod); any other `OWNER:<tsn>` is refused.
 - **The Evidence-for-Ask rule** (owner, 2026-11-15: "For ALL questions and choices from now on, Conductor must have
   evidence why it does not select the obvious answer before it pauses for the human";
@@ -228,8 +236,8 @@ hand), and `scope` (`approved`, `not_opened`, `opened_by_owner` with a `scope_so
   answer and why nothing argues against it>"` (it reaches his daily digest). Record it as speaker `conductor`,
   `delegated: "evidence-for-ask"`, source `CONDUCTOR:<tsn>`; a root adds `answers: <ask id>`, a flagship decision adds
   `flagship: <showcase id>`. An ask whose `evidence_against` is filled still waits for him; write there the concrete
-  evidence against the obvious answer, and every ask you send carries it. The other owner-only kinds above and the
-  Lock stage's first-touch certification stay his.
+  evidence against the obvious answer, and every ask you send carries it. The Lock stage's first-touch certification
+  is also the Conductor window's act since 2026-11-19 (`delegation_policy.md` §2), recorded as above.
 - Record his reply with `rimflow note <ITEM> ... --owner-said "<his words>"` first, then cite its `tsn`.
 
 ## His answers

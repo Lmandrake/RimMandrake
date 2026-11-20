@@ -10,7 +10,7 @@
   - Do not cat or print logs, diffs, JSON dumps, or whole files that you will not edit.
 - Images: view only the images that you must judge, at most 1500 px on a side. Crop to the subject. Do not view whole screenshots again and again.
 - Load a skill only when the step needs it, once.
-- Stop at the end of your assigned item or batch. Do not pick up more work. Report, and the parent briefs a fresh helper.
+- Stop at the end of your assigned item or batch. Do not go looking for more work. Report, and the parent briefs a fresh helper. A defect that you meet on the way follows "Touching code has a cost" below.
 - Before you stop, leave the tree clean: commit, or write a clear handoff note that lists your uncommitted paths.
 - Return ≤10 lines: verdict, ids, shas, evidence paths, and what is owed. Put a big result in a file, and return its path.
 

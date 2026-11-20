@@ -51,6 +51,18 @@ brim-full reference cells, or the judge files the references as WRONG (calibrati
 9. UI on screen: dialogs, red letters, error text, dev palettes covering the subject.
 10. Dead or downed pawns, fires, filth with no cause in the scene.
 
+## When the look is enough, and when to stop (owner, 2026-11-19)
+`standing_rulings.md` §Touching code has a cost; if you see it, do it: every judging brief states its stopping level.
+- Enough: every cell has one answer (EXPECTED, ODD, WRONG or COULD NOT SEE) with the object and the place. Then the
+  judge stops. It does not look for more.
+- Each pass is one look. A look after a repair re-judges only the cells that were ODD, WRONG or COULD NOT SEE. It
+  raises something new only where the repair itself changed what the cell shows. There is no third look: what is still
+  open goes to the owner as a short list (§The judge refuses flaws, not polish, Rule 2). The danger this count guards:
+  a judge asked again never stops (Pyrelands stage 5 took nine recorded looks, 2026-11-17).
+- Polish route: a detail that the judge calls minor (not odd, and not the thing a player would notice first) is one
+  line in the output, marked polish. It is not a refusal, files no ticket and blocks nothing.
+- This stop rule is UNTESTED until a calibration run checks it (`RIMMANDRAKE_CALIBRATE_JUDGE_STOP_RULES_WORDS_UNTIL_RUN`).
+
 ## North-star must-show bars: the same two passes, one entry point
 Owner pick 11 (2026-11-12): one item, one judge (`RIMMANDRAKE_FOLD_FRAME_JUDGE_INTO_PRELOOK`). A north-star run's frames
 are judged by THIS brief through ONE entry point, `src/RimMandrake/Utils/northstar_driver/judge_cli.py` (cli.py and

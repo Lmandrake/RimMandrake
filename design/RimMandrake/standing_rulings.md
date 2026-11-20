@@ -429,6 +429,85 @@ the worst answer sets the exit. It runs each naming page's tests file once per c
   in `list`, never DIRTY, and `mark-clean` refuses it. `roles/code_review.md` says that the reviewer fixes and that
   one blind reread follows.
 
+## Touching code has a cost; if you see it, do it — owner, 2026-11-19
+
+His words (Thu 2026-11-19, card answered about 6:28 PM PST; the card asked *"Which rule should govern the pipeline
+tickets already filed?"*; item `RIMMANDRAKE_ENACT_TOUCHING_CODE_COSTS_SEE_IT_DO_IT`):
+*"We JUST changed standing orders across this whole project. Please be advised and make the changes. This is standing
+policy for all FIXERS that receive a ticket (is it really fixing something that anyone would care about?),
+REVIEWERS/JUDGES (is this a significant comment/change), and pipeline monitors (are these tickets impactful,
+meaningful, and worthy of action)? Basically we're introducing a new concept: TOUCHING code has a COST. It's DANGEROUS
+at a low noise-level, so you must justify doing it, and that includes old tickets that didn't justify why. So by that
+criteria, yes! Go and "judge" the tickets now to see if they are "worthy" the risk of their repair. Obviously the ones
+with failing tests are a go. Maybe you can group them together to repair them in a single context more cheaply, that
+would be welcome. I would also like to introduce the idea that ANYONE can be a fixer. If a ticket adjudicant in THIS
+VERY EXERCISE picks up a ticket and can clearly see "yes this is valid and I can even see how to easily fix it"...
+PLEASE DO. Don't make someone else go read everything and decide yet again... Just please do it! This is the "If you
+see it, do it" rule. In essence, you have to have evidence that you should NOT do so. The assumption to just "set a
+ticket down for someone else later with 'fixer' on their forehead" is false... the fixer is you unless you can prove
+you don't have the resources or currently have other responsibilities that prevent you from investing. Feel free to
+push back, but this seems very important and is very much in the spirit of the old successful Foundry process, even
+now. Vital: OF COURSE you do, no debate. Any real chance of voiding a run is catastrophic."*
+The same card's other question (*"Which of these should I build?"*, about why findings never stop) he answered *"Stop
+rule in every judge brief (Recommended)"* and *"One fault, one ticket"*
+(`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET`).
+Why a touch is dangerous (measured 2026-11-19): new fix lines drew 14 to 25 review claims per 1,000 lines, against
+about 3 for old code (§Code is clean when its promises are tested); tickets born of a review beget 2.5 times the
+descendant tickets of tickets born of a live failure (0.78 against 0.31 per root), and the costliest retired-era
+failure classes came from reviewers, judges and auto-filers with no stopping level
+(`D:\ClaudeWork\rimmandrake\conductor\churn_vs_responsibility_specs_20261119.md` §3, §6 and §8).
+
+- **Who this binds.** Every fixer that receives a ticket, every reviewer and judge, and every pipeline monitor
+  (Operations, the auditor, the ops alarm filers, the findings judge, the sweeps) before it files. It binds tickets
+  filed before the ruling too: a ticket that does not show why its repair is worth the touch is judged now
+  (`RIMMANDRAKE_JUDGE_OPEN_PIPELINE_TICKETS_WORTH_THE_TOUCH`).
+- **Test 1, the worth of the touch, asked before the touch.** Change code, a def, a test, a hook or a brief only to fix
+  something that someone would care about. The touch is worth it when one of these is true:
+  - the finding is significant (§Code is clean: measured, or predicted with a concrete case, to break a stated
+    promise or cause a failure) and ordinary operation reaches it (a call site, a documented command, a player's
+    game or a later run produces the input);
+  - a failure happened: a run, a test, a player-visible fault, or the owner's report;
+  - its ticket has a failing test. That is a go.
+- **A real chance of voiding a run is always worth the touch** (his words: *"Vital: OF COURSE you do, no debate"*). A
+  void is a run killed, timed out or never started, or a trial or a run's work lost (§No trial is spent by a system
+  failure). "Real" means it happened, or a concrete case in ordinary operation produces it. A rare failure that a page
+  lists under DOES NOT SURVIVE (§A boundary page before pipeline code, Decision 4) is not a real chance until it
+  happens once. Then it is a failure and a new source event, and it is worth the touch.
+- **A finding that fails test 1 gets no fix and no ticket.** Write it as one line on `polish.md` beside its page, or
+  as one line in your report where no page exists. An open ticket that fails test 1 is dropped with the reason
+  `not worth the touch: <why>`. That is not trimming work: §You do not trim work (`roles/conductor.md`) forbids cutting
+  worthy work to save spend, and this rule says the unworthy touch is itself the cost.
+- **Test 2, if you see it, do it.** Whoever judges a finding or a ticket worth the touch is its fixer, in the same run:
+  write the test and see it fail, fix, see the test pass, publish. Never set it down for someone else without evidence
+  that you should not do it. The evidence is one of these:
+  - you lack the tools or the access (a read-only role; a live-only fault and no bridge);
+  - the fix is not known;
+  - it needs one of the owner's five acts (§Only five acts stay his);
+  - it would change a north-star bar;
+  - another live run holds the same files;
+  - your verdict must stay independent of the work: a judge or an auditor that fixed the work it judges would become
+    its maker, and nobody would judge the fix;
+  - your assigned work would not finish (name it).
+
+  The ticket that you file carries that evidence, and the fix where you could see it.
+- **Test 1 comes first.** "If you see it, do it" never licenses a touch that fails test 1.
+- **Group the repairs.** Tickets with one cause, or in the same files, are fixed in one run and one context.
+- **A stopping level in every judging brief** (his pick on the same card, *"Stop rule in every judge brief
+  (Recommended)"*, whose description read: *"Why: it hits the measured cause. About a dozen briefs (auditor, ops
+  alarms, blind judges, art and coverage judges, sweeps) each get a look count and a 'good enough' level. Cost: each
+  brief needs a calibration run, or the rule is only words."*). Each brief that reviews, judges, audits or files
+  findings states three things: the level that is enough, when to stop looking, and the polish route that files no
+  ticket. A count in such a brief names the danger it guards beside it (§No limit without the danger it guards).
+  Until a calibration run checks a brief's stop rule, that rule is only words: the list of briefs and the runs owed
+  are on `RIMMANDRAKE_CALIBRATE_JUDGE_STOP_RULES_WORDS_UNTIL_RUN`.
+- **How the rules fit.** §Code is clean when its promises are tested is this rule for code review (significant, the
+  reviewer fixes, one blind reread). §The pipeline fixes its own defects is test 2 for the pipeline's own machinery,
+  and its hand-off list is the list above. The CHARTER's "See it, fix it, then" (owner, 2026-11-05) is test 2 for a
+  small fix; since this ruling, a fix that is not small is still yours unless the evidence above says otherwise.
+- **Test that this was applied:** `src/RimMandrake/rimflow/selftest_touching_code_cost_rule.py` finds the two tests
+  in the root `CLAUDE.md`, the CHARTER, the six `.claude/agents/rm-*.md` files and the fixer, judge and monitor role
+  files, and a stopping level in each judging brief that it names.
+
 ## What is where
 
 **Art is judged against the canon library, and canon is the target** (owner, 2026-09-15).
@@ -1020,9 +1099,11 @@ a judge, a fixer, a builder, the Designer's runs, a Conductor helper):
   known fix: file the ticket with its acceptance test, then do the fix in the same run, tests first; publish; say so in
   the report (ticket id, sha). A program does the fix itself when it is deterministic and logs it; when it needs a
   model, the program files the ticket and launches a fixer on it itself, inside its own caps.
-- Hand off only when the fix is not known, is outside the agent's tools (it needs the game and the agent holds no
-  bridge; it needs the owner under `delegation_policy.md` §2), or would change a north-star bar. Then the ticket
-  carries the evidence and what was tried.
+- Hand off only with the evidence that §Touching code has a cost; if you see it, do it lists: the fix is not known,
+  is outside the agent's tools (it needs the game and the agent holds no bridge; it needs the owner under
+  `delegation_policy.md` §2), would change a north-star bar, or touches files another live run holds. Then the ticket
+  carries the evidence and what was tried. A defect must pass that section's test 1 (worth the touch) before anyone
+  fixes or files it.
 - A workaround by hand without the permanent fix is not allowed. Cleaning up after the pipeline and leaving it alone is
   the thing he ruled against.
 - What it does not change: a MOD's gaps (its bars, its build work, its findings) keep going through the stages as

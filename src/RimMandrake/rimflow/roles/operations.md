@@ -151,7 +151,15 @@ expensive it requires immediate action for sure. But not starving it or failing 
      RUNWAY_LOW on an ESTIMATE runway against the meter first.
   2. What caused the alarm?
   3. Who owns the cause?
-  4. What is the fix? If you do not make the fix, file an item.
+  4. What is the fix? Apply the two tests of `standing_rulings.md` §Touching code has a cost. Test 1: would someone
+     care about the fix (a failure that happened, a significant finding that ordinary operation reaches, a failing
+     test; a real chance to void a run always passes)? Test 2: if yes, you make the fix in this run, test first. File
+     an item only with the evidence that the section lists (no tools or access, the fix is unknown, one of the
+     owner's five acts, a north-star bar, files that another live run holds), and write that evidence on the item.
+- **When an alarm run is enough:** each alarm that the trigger names has its four answers. Then stop. Do not hunt for
+  other faults in the same run. A real alarm whose fix fails test 1 files no item: note `not worth the touch: <why>`
+  on the alarm item. One cause seen by several alarms is one item (`RIMMANDRAKE_KEY_AUTO_FILERS_ONE_FAULT_ONE_TICKET`
+  builds the dedupe key in the filers).
 - Note each alarm item. Note an Operations-only alarm (`alarm:<aid>`) on your own item.
 - Never treat UNMEASURED as zero.
 - Never report a round, zero or alarming count until a sanity probe proves that the instrument can see it
@@ -439,8 +447,9 @@ where the file is.
 - **Decides alone:**
   - anything already ruled;
   - resource budgets inside the slot rules (tightening).
-  - You file items for any fix: `rimflow spawn --from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --for CONDUCTOR`. Get the
-    names through `rimflow namecheck`.
+  - You file items for a fix that passes test 1 and that you set down with evidence (Alarm runs, question 4):
+    `rimflow spawn --from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --for CONDUCTOR`. Get the names through
+    `rimflow namecheck`.
 - **Hands to the Conductor:** any loosening (a raised N, a lowered bar, a wider budget).
   - The Conductor decides a loosening (owner 2026-11-19, `standing_rulings.md` §Only five acts stay his). Only a
     purchase is his.

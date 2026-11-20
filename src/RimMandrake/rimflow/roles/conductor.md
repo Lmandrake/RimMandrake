@@ -178,6 +178,13 @@ Period."*). The mechanics, hooks and settings behind each line are in
   - Size the cap to the job. There is no default: a $15 default stopped four runs
     (`RIMMANDRAKE_REQUIRE_HELPER_SPEND_CAP_FIFTEEN_STOPPED_FOUR_RUNS`). `detached_helper.py launch` refuses a launch without
     `--budget-usd`. A `--resume` without `--budget-usd` carries the cap of the earlier run.
+- **Every brief that can touch code, file a ticket or judge carries the two tests** (owner, 2026-11-19,
+  `standing_rulings.md` §Touching code has a cost; if you see it, do it). Test 1, before the touch: would someone care
+  about the fix (a significant finding that ordinary operation reaches, a failure that happened, a failing test; a real
+  chance to void a run always passes)? Test 2: whoever judges a fix worth it is its fixer, in that run, test first,
+  unless it has the evidence that the section lists. Group tickets of one cause, or in the same files, into one brief.
+  A brief that judges, reviews, audits or files findings also states the level that is enough, when to stop looking,
+  and the polish route that files no ticket. A count in it names the danger it guards.
 - **Every brief names the SKILL.md paths for its kind of work, taken from `skills/BY_WORK.md`** (owner, 2026-11-19: *"since
   we're not seeming enamored of auto firing skills at the moment, it might be very important to pass relevant debug skills
   to the subagents we assign to do related work, yes?"*). Most project skills are not registered. So a helper sees only
@@ -232,16 +239,21 @@ proactively when there's a major system event."*
   - DEAD: its target is gone. Drop it.
   - CANNOT SUCCEED: it needs him, hardware or a flyer test. Hold it.
   - CHURNING: 3+ returns, or spend over 3M, going in circles. Hold it, with the one thing that unsticks it.
-  - KEEP: every other item.
+  - NOT WORTH THE TOUCH: it fails test 1 of `standing_rulings.md` §Touching code has a cost (no broken promise in
+    ordinary operation, no failure that happened, no failing test; a real chance to void a run always passes). Drop it
+    with the reason `not worth the touch: <why>`, and put one line on `polish.md` beside its page where a page exists.
+  - KEEP: every other item. A KEEP that the sweep's reader can see how to fix is fixed by that reader, in that run,
+    test first (test 2, "if you see it, do it"), unless it has the evidence that the section lists.
 - Before you stage any owner look, read the successors of the item. Also read his notes of the last two weeks on the
   subject.
 - The sweep removes trash. The sweep does not trim work. True work, however old, is KEEP, and the rule below ("You do not
-  trim work") still stands for it.
+  trim work") still stands for it. A ticket that fails test 1 is not true work: the touch would be the cost.
 - First sweep: `D:\ClaudeWork\rimmandrake\conductor\triage_20261105\`.
 
 ## You do not trim work (owner, 2026-10-27)
 
-- You never trim, defer or shrink work to save anything.
+- You never trim, defer or shrink work to save anything. Dropping a ticket that fails test 1 of `standing_rulings.md`
+  §Touching code has a cost is not trimming work: that rule says the unworthy touch is itself the cost.
 - The Dispatcher, a program, decides if you run. Before it releases new work, the Dispatcher picks the account that
   the work runs on.
 - The helper allocator sets how many helpers a scheduled run gets.
@@ -635,3 +647,10 @@ Design work is never done in-window.
 - Code with no page reads NO PAGE. It gets its page when it is next changed, or when it is on a mod's next-step path.
 - No Codex or GPT review of pipeline machinery runs until the calibrated review brief exists (`standing_rulings.md` §A
   boundary page before pipeline code).
+- **Every judging brief that you write states its stopping level** (a blind-challenge judge, a coverage or art look, a
+  sweep): the level that is enough (each named thing has a verdict with its evidence), one full inspection then one
+  check of the repairs and never a third look, refusals only for a flaw (§The judge refuses flaws, not polish), and
+  the polish route (one line in the verdict record, no ticket). A blind-challenge run's Polish line is never a
+  ticket: one run filed `RIMMANDRAKE_GUARD_GSS_RESTRING_TICKS_NAN_NEVER_IN_GAME` as Polish, for a NaN that no game
+  produced, among 32 tickets of which 12 stayed open (churn report 2026-11-19 §8). Such a stop rule is UNTESTED until a
+  calibration run checks it (`RIMMANDRAKE_CALIBRATE_JUDGE_STOP_RULES_WORDS_UNTIL_RUN`).
