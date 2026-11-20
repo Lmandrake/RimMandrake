@@ -1,0 +1,17 @@
+ok    every staging call keeps its tool contract []
+ok    healthy pool: every row PASS, 4 of 4 read ({'TUB_dry_pit_not_a_tub': 'PASS', 'TUB_reads_hot_tub': 'PASS', 'TUB_beside_stays_cold': 'PASS', 'TUB_pawn_soaks_bonus': 'PASS'})
+ok    the scene reloads its begin snapshot: nothing dug or soaking after it
+ok    planted HEAT_LEAKS_BESIDE turns TUB_beside_stays_cold FAIL (got FAIL: line=Pit, 1.0 m water in 4.0 m (walk speed 30%) — Hole 4 m · Water 1.00 m (2,000 L) · Hot )
+ok    planted NO_AFTERGLOW turns TUB_pawn_soaks_bonus FAIL (got FAIL: {'order': "{'success': True, 'accepted': True}", 'mid': {'RM_HotPoolSoak': 1.0}, 'after': )
+ok    planted NO_TUB_WORD turns TUB_reads_hot_tub FAIL (got FAIL: line=Pit, 1.0 m water in 4.0 m (walk speed 30%) — Hole 4 m · Water 1.00 m (2,000 L) (fill:)
+ok    planted WORD_ON_DRY_PIT turns TUB_dry_pit_not_a_tub FAIL (got FAIL: line=Pit, 4.0 m deep (walk speed 100%) — Hole 4 m · Water 0.00 m (0 L) · Hot tub)
+ok    a refused soak order reads UNMEASURED (got UNMEASURED)
+ok    a geyser too near the east edge is skipped; the next one is read ({'TUB_dry_pit_not_a_tub': 'PASS', 'TUB_reads_hot_tub': 'PASS', 'TUB_beside_stays_cold': 'PASS', 'TUB_pawn_soaks_bonus': 'PASS'}, soak on ['SteamGeyser1'])
+ok    no geyser with room for its pit: one UNMEASURED staging row ({'scene_geyser_tub_staging': 'UNMEASURED'})
+ok    no geyser at all: one UNMEASURED staging row ({'scene_geyser_tub_staging': 'UNMEASURED'})
+selftest_geyser_tub_scene: ok
+rc=0
+--    (1) test table runs geyser_tub_live.py: False (python.exe src\RimMandrake\FlowWorks\northstar\concept_scenes.py --scene scene_geyser_tub --out <json>  (bridge held; mi)
+ok    (2) scene_geyser_tub reads the pool, no HotSpring need: True
+accept_geyser_tub_reads_the_pool: ok
+rc=0
