@@ -19,8 +19,8 @@ refuses two other clauses:
   The only override is `--owner-said OWNER:<tsn>`, an event of his on the OWNER shard that carries `ownerSaid` or
   `byCard` (`owner_event`). A Conductor `--per-ruling` event carries neither, so the Conductor cannot make that move
   by itself.
-- `judge_certificate`: it also applies to a forward move out of blind_challenge. For its state after tonight's
-  `certificate --run`, see the note on RIMMANDRAKE_CLEAR_FLOWWORKS_PAPERWORK_TO_GAME_ONLY_ROAD.
+- `judge_certificate` also applies, and PASSES after tonight's `certificate FlowWorks --run` (55 of 55 bars, 8:04 PM
+  PST). A dry evaluate at 8:05 PM refuses `exit_met` alone.
 
 The two routes, and whose each one is:
 - (a) his words, as an OWNER event, then `advance ... --owner-said OWNER:<tsn>`; no code changes.
