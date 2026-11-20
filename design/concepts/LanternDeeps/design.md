@@ -459,7 +459,6 @@ see); each line goes back by one move:*
 
 None open. Every entry is answered (next section).
 
-
 **Ship ideas he declined or cut:** none found in the Deeps' sources. The one ship idea pitched here, the keel
 hoist, he took and widened on 2026-10-01.
 

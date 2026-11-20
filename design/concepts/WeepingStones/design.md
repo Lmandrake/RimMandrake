@@ -445,7 +445,6 @@ If the truce is chosen, the pen, the netting of live stock, the ones that are no
 
 None open. Every entry is answered (next section).
 
-
 ## Answered on 2026-11-19
 
 These entries were under `NEEDS HIM`, and each keeps its number. Item

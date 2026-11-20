@@ -66,11 +66,14 @@ cordon on the ship, a breaching assault, and an orbital bombardment that cannot 
 
 **The outer edge of a stay here: about six weeks.** By the owner's word of 2026-11-18 the figure a design derives is
 *"the outer edge allowable"*, not the typical stay. If the Empire wins every step, the bombardment is the fourth
-full interval of the ladder: 28 to 45 days at one step quieter than open ground, which is what this mountain gets.
+full interval of the ladder: 28 to 45 days at one step quieter than open ground, and longer in the phases when
+steam and fog stand on the tile together (below).
 
 **Cover from orbit: steam and ash, one step.** His ruling of 2026-11-18: *"Canopy, steam and fog slow the search by
 one step."* The Forge is the planet's steam engine: vent columns *"streaming vent-steam like banners"*, red fog, ash
-fall, and the fog off every quench. It hides nothing at ground level for long; the towers are *"visible for a
+fall, and the fog off every quench. By his card of 2026-11-19 steam and fog are one step each and add up, and
+cover is what is on the tile at that moment, so the cycle's phases set whether a ship has one step or two. It hides
+nothing at ground level for long; the towers are *"visible for a
 hundred kilometers."*
 
 **`UNSETTLED`: what it means to land beside the Empire's own station.** The gas operation is the campaign layer's

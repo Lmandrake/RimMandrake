@@ -563,7 +563,6 @@ see); each line goes back by one move:*
 
 None open. Every entry is answered (next section).
 
-
 No ship idea that he declined or cut was found in the Sump's sources. The nearest things are not ship ideas:
 re-paving the Ashfall Road, tar rain, and the mess-lover trait, each listed under Dropped with his words.
 

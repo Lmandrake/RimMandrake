@@ -69,8 +69,9 @@ crew halves every wait and a hidden one doubles it.
 
 **Cover from orbit here: partial, from the sky.** The Cauldron has no canopy (*"each trunk carries a crown of fine
 chemical fronds"*) and its dusk is light, not dark. What it has is his own first sentence, a sky that *"roils with
-eternal anger"*, and the vapour bank, chemical fog off the vents. By the card of 2026-11-18 that is worth one step:
-the search here runs one visibility band quieter than on open sand. It is owed work; the pursuit's built list of
+eternal anger"*, and the vapour bank, chemical fog off the vents. By the card of 2026-11-18 the sky is worth one
+step: the search here runs one visibility band quieter than on open sand. By his card of 2026-11-19 kinds of cover
+add up and cover is what is on the tile at that moment, so the vapour bank adds a second step while it stands. It is owed work; the pursuit's built list of
 slowed biomes holds the Abyss alone.
 
 **How long a stop lasts (the outer edge).** On the ladder's arithmetic one step quieter stretches the open-ground
@@ -390,7 +391,6 @@ see); each line goes back by one move:*
 - **Recommended for dropping, not yet his:** crystalmit bricks.
 
 ## NEEDS HIM
-
 
 None open. Every entry is answered (next section).
 

@@ -472,7 +472,6 @@ see); each line goes back by one move:*
 
 None open. Every entry is answered (next section).
 
-
 Three questions the cleanse put to him on 2026-11-17 are answered here by scope instead of asked again, and each is
 a line under "Scope moves" in `rewrite_choices.md`: plants that act are 0.2.0, not absent; cuisine in 0.1.0 is
 ordinary cooking of extraordinary ingredients, with the combining system later; and paving ends regrowth on the

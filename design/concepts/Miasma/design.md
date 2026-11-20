@@ -70,14 +70,15 @@ cordon on the ship, a breaching assault, and an orbital bombardment that cannot 
 the one before succeeded; a loud crew halves every wait and a hidden one doubles it.
 
 **How long a stop here can last (the outer edge of a stay, not the usual one; owner's ruling of 2026-11-18).**
-Longer than an open landing by the one step of cover below: on the ladder's provisional numbers, first contact in
-the second week instead of the first, a first fight around the end of the first month, and nothing much past six
-weeks. That is the Empire's edge. The Miasma's own edge usually comes first: the place sickens a crew on a clock
+Longer than an open landing by the two steps of cover below: on the ladder's provisional numbers each wait about
+doubles, so first contact comes around day 10 to 16, a first fight around day 24 to 40, and nothing much past about
+two months. That is the Empire's edge. The Miasma's own edge usually comes first: the place sickens a crew on a clock
 of its own, and each surge may put the ship's footing in brine.
 
 **What cover this place gives, and which kind (same card: canopy, steam and fog slow the search by one step).**
 - **From orbit: partial cover, two ways over.** A closed mangal canopy, and under it a haze that *"never lifts"*.
-  The search runs one step slower here. It is never paused: this is a dim place, not a dark one.
+  Canopy and haze are one step each, and by his card of 2026-11-19 they add up: the search runs two steps slower
+  here. It is never paused: this is a dim place, not a dark one.
 - **On the ground:** the haze softens everything and the root-maze breaks every sight line. A probe has to see
   the ship or the crew to count, and here it has to find them first. The ground is also the slowest to cross on
   the day side (the sheet keeps the donor's figure for how hard it is to move here and explains it as *"the
@@ -218,7 +219,7 @@ lantern, a muffalo-sized worm whose pods *"glow a sickly orange"* in the dusk un
 
 ## When the Empire arrives
 
-- **They are slow to find the ship and slow to reach it.** One step slower from orbit; on the ground, haze, roots
+- **They are slow to find the ship and slow to reach it.** Two steps slower from orbit; on the ground, haze, roots
   and the worst walking on the day side.
 - **The water is not theirs.** A strike team wading the brine shallows may be wading inside a warden mother's
   reach. She tolerates a crew that returned her young. She tolerates nobody else.
@@ -389,7 +390,8 @@ cleanse's runner-up), now 0.2.0 with the mother's price, as this design's own on
   plants. (built)
 - The ship's wear, on the built shield frame: heat on the hottest days (built); the haze on the particulate
   screen (his ruling of 2026-09-02; one flag on the haze weather, unbuilt).
-- Canopy and haze as one step of cover from orbit. (new, small, by his card)
+- Canopy and haze as two steps of cover from orbit, added. (new, small, by his cards of 2026-11-18 and
+  2026-11-19)
 
 **0.2.0, the stop with company**
 *Moved here from 0.1.0 by his first-version answer of 2026-11-19 (one signature a stop is sure to
@@ -454,7 +456,6 @@ see); each line goes back by one move:*
 ## NEEDS HIM
 
 None open. Every entry is answered (next section).
-
 
 ## Answered on 2026-11-19
 

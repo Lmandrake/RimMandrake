@@ -75,16 +75,18 @@ The Empire's search restarts at every landing (`src/RimUtinni/EmpirePursuit/`, c
 provisional): a probe droid five to eight days after landing, then scouts with a spotter, a strike team, an ion
 cordon on the ship, a breaching assault, and an orbital bombardment that cannot be fought.
 
-**The outer edge of a stay here: about six weeks.** By the owner's word of 2026-11-18 the figure a design derives is
+**The outer edge of a stay here: about two months.** By the owner's word of 2026-11-18 the figure a design derives is
 *"the outer edge allowable"*, not the typical stay. If the Empire wins every step, the bombardment is the fourth
-full interval of the ladder: 28 to 45 days at one step quieter than open ground.
+full interval of the ladder: 28 to 45 days at one step quieter than open ground, and about 40 to 64 days at two
+steps, which is what canopy and fog give together (below).
 
-**Cover from orbit: canopy, one step.** His ruling of 2026-11-18: *"Canopy, steam and fog slow the search by one
+**Cover from orbit: canopy and fog, two steps.** His ruling of 2026-11-18: *"Canopy, steam and fog slow the search by one
 step; full dark still pauses it."* The Rot is a forest of caps wide enough to stand a camp under, *"dense beyond
-anything dayside"*, in a fog of its own making. That is canopy and fog, and this design gives it the one step. It is
-also on the night side under a black sky. Whether that makes it "full dark" is the same question the Sleeping Ice's
-design asks first, and the default is the same: it does not, because the forest floor glows. *"All useful light is
-biological"*, and there is a lot of it.
+anything dayside"*, in a fog of its own making. That is canopy and fog, one step each, and by his card of
+2026-11-19 they add up: two steps. It is also on the night side under a black sky, and full dark is one more step.
+`UNSETTLED`, for the Conductor: whether the dark's step counts here, where the forest floor glows (*"All useful
+light is biological"*, and there is a lot of it). The card's measure (the sun's angle) says it counts; its reading
+that anything which lights the ship takes the dark away says the glow may cancel it. This design uses two steps.
 
 ---
 
@@ -219,7 +221,7 @@ Each can happen inside the visit. Each says what is on screen.
 **Stay, longer than the Empire would like:**
 - Free warmth, on the cold side of the world.
 - Food everywhere, for a crew that cooks and eats what it cuts.
-- Canopy, one step slower above.
+- Canopy and fog, two steps slower above.
 - By his answer of 2026-11-10, quiet: *"Understanding the Rot and arranging the base well earns peaceful ordinary
   days and dependable comfort between outings; its hungry character can concentrate in exceptional events."*
 
@@ -419,7 +421,6 @@ see); each line goes back by one move:*
 ## NEEDS HIM
 
 None open. Every entry is answered (next section).
-
 
 The cleanse proposal's own question to him still stands and is not re-asked here: whether exposed frozen meat
 should also be digested. This design keeps the cleanse's default, that frozen stock keeps.

@@ -437,7 +437,6 @@ see); each line goes back by one move:*
 
 ## NEEDS HIM
 
-
 None open. Every entry is answered (next section).
 
 Themes, for gathering these across biomes: 1 cover · 2 hull · 3 other · 4 cover · 5 hull · 6 other.

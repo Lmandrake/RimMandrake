@@ -549,7 +549,6 @@ see); each line goes back by one move:*
 
 None open. Every entry is answered (next section).
 
-
 Not a question: the Abyss has no locked Designer tree. Not asked again: where the greed line lies (his waiver),
 the gust turbines (cut), the rites (deferred by him).
 
