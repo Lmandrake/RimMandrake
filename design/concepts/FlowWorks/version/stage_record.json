@@ -2,10 +2,10 @@
   "schema": 1,
   "mod": "FlowWorks",
   "version": "0.1.0",
-  "stage": "blind_challenge",
-  "stage_label": "Blind challenge, tests first (Stages 4 and 5)",
-  "since": "2026-11-16T13:17:49-08:00",
-  "since_from": "advance by BENCH",
+  "stage": "in_game",
+  "stage_label": "In-game acceptance (Stage 6)",
+  "since": "2026-11-19T20:41:29-08:00",
+  "since_from": "advance by CONDUCTOR",
   "at_door": false,
   "seeded": {
     "at": "2026-11-14T16:02:19-08:00",
@@ -128,6 +128,29 @@
         "version",
         "hold",
         "fourth_cycle",
+        "judge_certificate"
+      ]
+    },
+    {
+      "from": "blind_challenge",
+      "to": "in_game",
+      "at": "2026-11-19T20:41:29-08:00",
+      "by": "CONDUCTOR",
+      "why": "FlowWorks 0.1.0 to in-game visit 2 by the game-only road; the judgement is built into the pipeline by RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT (d9870b13c6)",
+      "unit": null,
+      "confirmed": {
+        "steward_confirms": "cycle 4 read: 4 Problems FIXED red then green, 0 open; SHEET, THIRST, DRILL rows carried by game-only items",
+        "conductor_decision": "route b on RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT: no fifth blind cycle",
+        "game_only": "RIMMANDRAKE_PROVE_FLOWWORKS_SHEET_DROWNS_CROPS_LIVE, RIMMANDRAKE_PROVE_FLOWWORKS_BOTTLE_JOBS_MOVE_EXACT_LITRES, RIMMANDRAKE_PROVE_FLOWWORKS_DRILL_SURVEY_ROLLS_PER_BIOME_LIVE, RIMMANDRAKE_RETEST_FLOWWORKS_TOSS_FLAME_SINCE_JOBDEF_BUILT, RIMMANDRAKE_PASS_FLOWWORKS_COATING_WASH_SCENE_NEVER_PASSED"
+      },
+      "checks_passed": [
+        "order",
+        "game_only",
+        "by",
+        "version",
+        "hold",
+        "steward_confirms",
+        "exit_met",
         "judge_certificate"
       ]
     }

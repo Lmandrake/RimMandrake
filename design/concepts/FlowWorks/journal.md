@@ -12,7 +12,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Design Version 0.1.0, locked** on his word 2026-11-13 (`version/VERSION.json`: "Yes, lock the other four mods").
   Code exists and is large: `src/RimMandrake/FlowWorks/` (C# mod, a 325+ case C# SelfTest, about 168 Python selftests,
   a northstar proof harness).
-- **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:17 PM PST (`version/stage_record.json`).
+- **Stage now:** Stage 6, in-game acceptance, since 2026-11-19 8:41 PM PST (`version/stage_record.json`).
 - **Bars:** 57 = 29 inventory rows of `record.json` + 28 leaves of `tree.json` (`coverage_judge.required_ids()`); 59 at the
   lock, his card of 2026-11-14 added `inv_geyser_tub` and `inv_liquid_coating` (61), and his card of 2026-11-14 ~9:43 PM
   PST moved the four wetting bars to 0.2.0 (interventions below; `version/next_version/README.md`).
@@ -22,7 +22,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - **Held look statements for this mod:** 103 rows in five files of `design/RimMandrake/validation_holding/` (2026-11-12:
   56 rows; 2026-11-13 morning: 18; 2026-11-13 dig interface: 2; 2026-11-13 evening: 5; 2026-11-14: 22); 83 are placed
   in `version/test_table.json`, all 103 placed. [measured, preflight C8, 2:40 PM PST]
-- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:17 PM PST).
+- **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-19 8:41 PM PST).
 
 ### The vision (his root paragraph, approved 2026-11-04, OWNER:1793794915205594887; eight lines in `version/vision.md`)
 
@@ -91,6 +91,7 @@ now, offline only"). Its table matches the pilot's columns (`design/concepts/Exp
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 10:05 PM PST, kind decision): deferral by his card: bars `inv_irrigation`, `canal_wets_two_squares`, `wetting_is_not_flood` and `wetness_probe` left 0.1.0 for 0.2.0 (61 to 57 bars), with test `T_WETTING_OFFLINE`, `T_WETNESS_PROBE_OFFLINE` and scene `sc_wetting`; `sc_garden` lost its wetting feature, rows and control clause; build items `FLOWWORKS_WETTING_BUILD_TWO_SQUARES_DAMP` and `FLOWWORKS_WETPROBE_BUILD_READ_THE_DAMP_FIRST` aimed at 0.2.0. Objects kept in `version/next_version/wetting_from_0.1.0.json`. Source: owner by card 2026-11-14 ~9:43 PM PST (OWNER:1794721673433243094).
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 10:05 PM PST, kind re-pin): check X4 in `validation_v2.py` rewritten to follow the pit sink of 0.05 per half metre (drawn 4 x 0.05 down at D=4, the wall ratio agreeing with it), a new mock fault `wall_ratio_off` seen turning it red; the C# case `PitDraw_sink_is_monotonic_in_depth_and_follows_the_pit_sink` and `RM_PitDrawMath.DefaultSinkPerLevel` (0.3 to 0.05) follow too; the retired wall-height number is deleted from the north star (`pit_trapped_reads_as_trapped`, re-validated by his card), the pit item, `human_review.py` J04 and seven design docs. Source: owner by card 2026-11-14 ~9:43 PM PST (OWNER:1794721678572743709).
 - CONDUCTOR INTERVENED (stage 3, 2026-11-14 10:05 PM PST, kind re-pin): `version/bars.md` re-pinned for tree.json, sheet.md, scenes.json, record.json and plan.md after the wetting move; tree hash now `5b90f4e381`, sheet hash `16533ac4f2`. The Arbiter's coverage signature names the lock's hashes, so `concept_tree.py gate` refuses on hash; nothing in Stage 3 reads that gate. Source: this journal's deferral line above.
+- CONDUCTOR INTERVENED (stage 6, 2026-11-19 8:41 PM PST, kind decision): route b on RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT: no fifth blind cycle. Source: maturation.py advance by CONDUCTOR, cycle 3.
 
 ### 2026-11-14 11:24 PST, advance begins (rm-builder, detached, offline only)
 
@@ -360,4 +361,15 @@ None open; question 3 (the dig speed) is answered in the history entry of 2026-1
 - Blind cycle 3 of this visit (4 in all).
 - Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 9:07 AM PST (`version/stage_record.json`).
 - Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 9:07 AM PST).
+- Record: `version/stage_record.json`.
+
+### 2026-11-19 8:41 PM PST, stage change: Blind challenge, tests first (Stages 4 and 5) to In-game acceptance (Stage 6) (by CONDUCTOR)
+
+- Why: FlowWorks 0.1.0 to in-game visit 2 by the game-only road; the judgement is built into the pipeline by RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT (d9870b13c6)
+- Checks passed: order, game_only, by, version, hold, steward_confirms, exit_met, judge_certificate.
+- Steward confirms: cycle 4 read: 4 Problems FIXED red then green, 0 open; SHEET, THIRST, DRILL rows carried by game-only items
+- Conductor decision: route b on RIMMANDRAKE_UNBLOCK_GAME_ONLY_ADVANCE_AT_BLIND_EXIT: no fifth blind cycle
+- Game only: RIMMANDRAKE_PROVE_FLOWWORKS_SHEET_DROWNS_CROPS_LIVE, RIMMANDRAKE_PROVE_FLOWWORKS_BOTTLE_JOBS_MOVE_EXACT_LITRES, RIMMANDRAKE_PROVE_FLOWWORKS_DRILL_SURVEY_ROLLS_PER_BIOME_LIVE, RIMMANDRAKE_RETEST_FLOWWORKS_TOSS_FLAME_SINCE_JOBDEF_BUILT, RIMMANDRAKE_PASS_FLOWWORKS_COATING_WASH_SCENE_NEVER_PASSED
+- Was, "Stage now": - **Stage now:** Stages 4 and 5, the blind challenge (tests first), since 2026-11-16 1:17 PM PST (`version/stage_record.json`).
+- Was, "Waiting on": - **Waiting on:** not yet written for this stage; the steward writes it (the earlier line is in the history entry of 2026-11-16 1:17 PM PST).
 - Record: `version/stage_record.json`.

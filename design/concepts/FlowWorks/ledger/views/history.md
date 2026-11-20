@@ -1,5 +1,5 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":8848,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=669f9834d7c7ba9a4dbf383553ccd8e148a17f563210c78d91e667420756ed52 -->
-# FlowWorks — mod ledger history (1313 events, merged across shards)
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":9151,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=aacb7a7f38f8ebd0c77b1636bf0cd3a8d5f17521ff778f913c76edaeef115eb5 -->
+# FlowWorks — mod ledger history (1314 events, merged across shards)
 
 - 2026-11-16T07:16:23Z BACKFILL#1 version.open version v0.1.0: Design Version 0.1.0, locked on 2026-11-13 by owner; 55 of 57 bars met at the lock
 - 2026-11-16T07:16:23Z BACKFILL#2 decision version v0.1.0: 
@@ -1314,3 +1314,4 @@
 - 2026-11-20T02:54:50Z JUDGE.judge-1795134433#16 finding.verified finding:LIQUID_ROTATION_FIX_STARVED_STRANGER v0.1.0: my planted CONV_ROTATION_STUCK_FIRST (NextRunnable always from the first input) CAUGHT by GptA_converter_multi_input_rotates and lane 1 CONV_ROTATION_FAIR_AND_SKIPS_BLOCKED; T_CONVERT PASS at 48864bd58c
 - 2026-11-20T02:59:03Z DISPATCH#24 judge.sealed judge v0.1.0: 
 - 2026-11-20T02:59:03Z DISPATCH#25 run.end run v0.1.0: 
+- 2026-11-20T04:41:30Z DISPATCH#26 stage.accepted stage v0.1.0: 
