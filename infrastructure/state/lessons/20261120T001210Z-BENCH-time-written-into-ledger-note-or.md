@@ -1,0 +1,1 @@
+A time written into a ledger note or a report comes from date in the same command, never from a guess: the Conductor wrote two wrong times into notes on 2026-11-19 (4:05 for 3:35, 4:20 for 4:11) by estimating from earlier output.
