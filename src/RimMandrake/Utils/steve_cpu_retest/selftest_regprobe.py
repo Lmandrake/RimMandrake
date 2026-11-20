@@ -193,6 +193,9 @@ def reader_checks(rl, sink):
     w, _ = rl.verdict(a, now)
     check(len(a["boots"]) == 2 and w == "CLEAN" and a["boots"][0]["cycles"]["fault"] == 1,
           "a new boot starts a new row; the old boot's fault stays in history", sink)
+    a = rl.analyse([start(boot="2026-11-20 08:00:00Z"), control(), cyc(1), start(2), control(2), cyc(5)])
+    check(len(a["boots"]) == 2 and a["boots"][-1]["boot"] == "2026-11-20 19:00:00",
+          "two boots on one day are two rows, keyed by the whole boot stamp (date and time)", sink)
     a = rl.analyse([start(), control(), cyc(1), start(2, boot="2026-11-20 19:00:01Z"), control(2), cyc(5)])
     check(len(a["boots"]) == 1 and a["boots"][0]["starts"] == 2, "a restart whose boot= is a second off stays in its boot", sink)
 
