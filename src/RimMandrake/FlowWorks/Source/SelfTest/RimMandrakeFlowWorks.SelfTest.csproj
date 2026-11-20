@@ -301,6 +301,7 @@
     <Compile Include="GptBatchA1024Checks.cs" />
     <Compile Include="BlindCycle1Checks.cs" />
     <Compile Include="BlindCycle3Checks.cs" />
+    <Compile Include="BlindCycle4Checks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="..\RM_SheetMath.cs" />
     <Compile Include="SheetWaterChecks.cs" />
