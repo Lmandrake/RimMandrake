@@ -8910,3 +8910,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T00:35:59Z","tsn":1795134959818268831}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-20T00:38:40Z","tsn":1795135120933911103}
 {"seat":"RUNNER","event":"live","id":"OPS_TIMER_REPAIR_PRXC_XKGA","result":"broken","detail":"Ops alarm TIMER_FAILED: timers.failed_units = 1 failed user units (MEASURED), line > 0","ts":"2026-11-20T00:40:04Z","tsn":1795135204794789446}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_OUTSIDE_READING_RESTORE_WLTC","result":"kept","detail":"sweep: running again","ts":"2026-11-20T00:48:07Z","tsn":1795135687636976793}
