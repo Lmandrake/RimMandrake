@@ -9766,3 +9766,4 @@
 {"seat":"RUNNER","event":"raise","id":"OPS_TESTQ_UNSTICK_ECPK","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T20:23:04Z","tsn":1795206184787624883}
 {"seat":"RUNNER","event":"live","id":"OPS_TESTQ_UNSTICK_ECPK","result":"broken","detail":"Ops alarm QUEUE_STALLED: queues.testq.stalled_min = 844.2 min pending > 0 with no claim, finish or heartbeat (MEASURED), line > 20","ts":"2026-11-20T20:24:13Z","tsn":1795206253019859637}
 {"seat":"RUNNER","event":"raise","id":"OPS_TESTQ_UNSTICK_ECPK","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T20:24:18Z","tsn":1795206258946392656}
+{"seat":"RUNNER","event":"live","id":"OPS_TESTQ_UNSTICK_ECPK","result":"kept","detail":"sweep: running again","ts":"2026-11-20T20:33:08Z","tsn":1795206788124108648}
