@@ -1,8 +1,8 @@
-<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":11086,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=3d668c430ba5f7ebec619f5e48191cda5252cb3bb209fc6efa67bf34c2b538f4 -->
+<!-- modledger view, generated: never edit (python3 src/RimMandrake/rimflow/modledger.py views --mod FlowWorks) reducer=1 shards={"BACKFILL":893183,"DISPATCH":11769,"HOLDER.run-1794816885":928,"HOLDER.run-1794848129":1121,"HOLDER.run-1794861652":2822,"HOLDER.run-1795152236":3418,"JUDGE.judge-1794833810":53964,"JUDGE.judge-1794849236":35843,"JUDGE.judge-1795134433":11686,"STEWARD":2597} body_sha256=0e873317c486c7b26158000678a980978d10572b029430b6608e237b7cad81d9 -->
 # FlowWorks — mod ledger packet
-version 0.1.0 · stage in_game · 1330 events in 10 shards · reducer 1
+version 0.1.0 · stage in_game · 1332 events in 10 shards · reducer 1
 holder lease run-1795152236, token 6, last active 2026-11-20T07:32:19Z
-holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 137670 of ceiling 400000
+holder session f6f3356a-a412-4765-a4c4-e2070488d864, context 410250 of ceiling 400000 — ROTATE DUE
 
 ## Last checkpoint (HOLDER.run-1795152236, 2026-11-20T07:32:19Z)
 - done: In-game visit 2 on game a: 18 PASS, 8 FAIL, 5 UNMEASURED of 31; every FAIL diagnosed and filed as a rimflow item; labelled walk save FLOWWORKS_OWNER_REVIEW_VISIT2_FULL_20261119_2327 on his full list; build match 31 of 31; pipeline fixes f24f71dba4, 223b6e2499
@@ -490,6 +490,6 @@ spend recorded: USD 78.94, 45401435 tokens
 - his answers and the bars' texts in brief (cut at 100 and 60 chars)
 - traps and refuted causes in brief (texts cut at 60 and 80 chars); traps on closed findings counted, not listed
 - notes: 11, never printed here (`modledger.py find --mod FlowWorks <words>`)
-- the full history: 1330 events (views/history.md; never read whole)
+- the full history: 1332 events (views/history.md; never read whole)
 
-cursor: t=2026-11-20T07:32:19Z.1795159939276971081 (modledger.py since --mod FlowWorks t=2026-11-20T07:32:19Z.1795159939276971081 prints what changed after this packet)
+cursor: t=2026-11-20T07:36:36Z.1795160196118744451 (modledger.py since --mod FlowWorks t=2026-11-20T07:36:36Z.1795160196118744451 prints what changed after this packet)
