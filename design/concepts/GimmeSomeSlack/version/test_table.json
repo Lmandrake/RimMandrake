@@ -212,12 +212,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 447.36,
-    "last": "4560/4560 checks passed",
-    "at": "2026-11-17T20:50:07Z",
+    "seconds": 315.62,
+    "last": "4600/4600 checks passed",
+    "at": "2026-11-20T10:26:41Z",
     "result": "PASS",
-    "build": "57f1f70123fec8430d47",
-    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py"
+    "build": "822fd624ab101de374fd",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+    "margins": []
    }
   },
   "T_STUB_JOINS": {
@@ -235,12 +236,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 19.05,
+    "seconds": 20.29,
     "last": "9/9 checks passed (stub joins only)",
-    "at": "2026-11-17T20:50:26Z",
+    "at": "2026-11-20T10:27:02Z",
     "result": "PASS",
-    "build": "e77c4736f74b01acd80d",
-    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only"
+    "build": "ca70bdc720cc32034d5e",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --no-export --joins-only",
+    "margins": []
    }
   },
   "T_STUB_ART_CENSUS": {
@@ -280,12 +282,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 306.9,
-    "last": "GATE_JSON {\"red\": [], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"statuses\": {\"O8_lamp_mast_vanilla_register\": \"PASS\", \"O7_gpt_read_fixes\": \"PASS\", \"O1_mod_files\": \"PASS\", \"O2_settings_defaults\": \"PASS\", \"O5_style_art_sane\": \"PASS\", \"O6_review_round1\": \"PASS\", \"O3_core_selftest\": \"PASS\", \"O3n_selftest_can_fail\": \"PASS\", \"O4_python_oracle\": \"PASS\"}, \"wall_s\": 273.2}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"61/61 checks passed (18 negative controls among them)\"], \"wall_s\": 8.0}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RERUN_GIMMESOMESLACK_CERTIFICATE.det/Transient/mc_human_review\"], \"wall_s\": 0.1}, \"selftest_human_review\": {\"exit\": 0, \"tail\": [\"41/41 checks passed\"], \"wall_s\": 0.1}, \"selftest_proof_all\": {\"exit\": 0, \"tail\": [\"ALL PASS\"], \"wall_s\": 24.4}, \"selftest_gss_stub_art_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.3}, \"selftest_gss_statics_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.1}, \"design_spec\": {\"exit\": 0, \"tail\": [\"wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\"], \"wall_s\": 0.4}}, \"spec_posix\": \"/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\", \"spec_win\": \"D:\\\\ClaudeWork\\\\rimmandrake\\\\scratch\\\\gss_proof\\\\scenes_design.json\"}",
-    "at": "2026-11-20T00:25:33Z",
+    "seconds": 335.78,
+    "last": "GATE_JSON {\"red\": [], \"steps\": {\"validation_offline\": {\"rows\": 9, \"not_pass\": [], \"statuses\": {\"O8_lamp_mast_vanilla_register\": \"PASS\", \"O7_gpt_read_fixes\": \"PASS\", \"O1_mod_files\": \"PASS\", \"O2_settings_defaults\": \"PASS\", \"O5_style_art_sane\": \"PASS\", \"O6_review_round1\": \"PASS\", \"O3_core_selftest\": \"PASS\", \"O3n_selftest_can_fail\": \"PASS\", \"O4_python_oracle\": \"PASS\"}, \"wall_s\": 306.5}, \"matrix_selftest\": {\"exit\": 0, \"fail\": [], \"summary\": [\"61/61 checks passed (18 negative controls among them)\"], \"wall_s\": 7.6}, \"human_review_plan\": {\"exit\": 0, \"tail\": [\"layout ok: 31 stations (1-11 style gallery) + art board M + free area; key sheet -> /home/mandrake/rm/relentless/clones/RIMMANDRAKE_RERUN_GIMMESOMESLACK_CERTIFICATE.det/Transient/mc_human_review\"], \"wall_s\": 0.1}, \"selftest_human_review\": {\"exit\": 0, \"tail\": [\"41/41 checks passed\"], \"wall_s\": 0.1}, \"selftest_proof_all\": {\"exit\": 0, \"tail\": [\"ALL PASS\"], \"wall_s\": 20.4}, \"selftest_gss_stub_art_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.3}, \"selftest_gss_statics_census\": {\"exit\": 0, \"tail\": [\"PASS\"], \"wall_s\": 0.1}, \"design_spec\": {\"exit\": 0, \"tail\": [\"wrote /mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\"], \"wall_s\": 0.4}}, \"spec_posix\": \"/mnt/d/ClaudeWork/rimmandrake/scratch/gss_proof/scenes_design.json\", \"spec_win\": \"D:\\\\ClaudeWork\\\\rimmandrake\\\\scratch\\\\gss_proof\\\\scenes_design.json\"}",
+    "at": "2026-11-20T10:32:38Z",
     "result": "PASS",
-    "build": "cf8bbe92723f9b13d05d",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate"
+    "build": "b52a7bc60be202e6fb9a",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/proof_all.py --offline-gate",
+    "margins": []
    }
   },
   "T_MATRIX": {
@@ -334,12 +337,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 3.09,
+    "seconds": 2.35,
     "last": "PASS  G0_clean_copy  want=green got=[]",
-    "at": "2026-11-20T00:25:46Z",
+    "at": "2026-11-20T10:32:40Z",
     "result": "PASS",
-    "build": "6e9ed7d9bff6a3fa7d1f",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py"
+    "build": "9358d48c3f4d03f55bf4",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_no_hose.py",
+    "margins": []
    }
   },
   "T_SHOCK_OUTLIVES": {
@@ -526,12 +530,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.01,
     "last": "gss end-heap budget: ok",
-    "at": "2026-11-17T20:52:43Z",
+    "at": "2026-11-20T10:32:40Z",
     "result": "PASS",
-    "build": "87ec0063689f9f778bac",
-    "command": "python3 src/RimMandrake/Utils/selftest_gss_end_heap_budget.py"
+    "build": "c93dbd1bf503321a9eab",
+    "command": "python3 src/RimMandrake/Utils/selftest_gss_end_heap_budget.py",
+    "margins": []
    }
   },
   "T_JUNCTION_ART": {
@@ -607,12 +612,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.4,
+    "seconds": 0.45,
     "last": "PASS",
-    "at": "2026-11-17T20:02:49Z",
+    "at": "2026-11-20T10:32:40Z",
     "result": "PASS",
-    "build": "c8ea7daa79aa4ecda48e",
-    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py"
+    "build": "f112aa121a2e97896b13",
+    "command": "python3 src/RimMandrake/FlowWorks/selftest_flowworks_pit_draw_census.py",
+    "margins": []
    }
   },
   "T_PROOF_LEAVES": {
@@ -827,12 +833,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.02,
+    "seconds": 0.01,
     "last": "selftest_gss_weakclose_guards: PASS",
-    "at": "2026-11-17T07:44:03Z",
+    "at": "2026-11-20T10:32:40Z",
     "result": "PASS",
-    "build": "5d01af6d5dd1cdfb2a65",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_weakclose_guards.py"
+    "build": "3ebfc1edd23065f1d7b5",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_weakclose_guards.py",
+    "margins": []
    }
   },
   "T_H_HUMAN_REVIEW": {
@@ -910,12 +917,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 2.39,
+    "seconds": 2.45,
     "last": "PASS",
-    "at": "2026-11-20T00:26:26Z",
+    "at": "2026-11-20T10:32:43Z",
     "result": "PASS",
-    "build": "cc0d538fe33b34593bcb",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py"
+    "build": "464c253c4c8ed4aceb40",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_settings_sweep.py",
+    "margins": []
    }
   },
   "T_SHOCK_RULE_OFFLINE": {
@@ -963,12 +971,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 256.78,
-    "last": "4560/4560 checks passed",
-    "at": "2026-11-17T20:07:09Z",
+    "seconds": 298.97,
+    "last": "4600/4600 checks passed",
+    "at": "2026-11-20T10:37:42Z",
     "result": "PASS",
-    "build": "3c0d3aec9e12433dbf99",
-    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py"
+    "build": "ed8cfd990ea75557d75a",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py",
+    "margins": []
    }
   },
   "T_CORD_GEOMETRY_OFFLINE": {
@@ -1009,12 +1018,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 257.86,
-    "last": "4569/4569 checks passed",
-    "at": "2026-11-17T20:57:03Z",
+    "seconds": 318.64,
+    "last": "4609/4609 checks passed",
+    "at": "2026-11-20T10:43:01Z",
     "result": "PASS",
-    "build": "e6dab4cf0be0ff8223fe",
-    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry"
+    "build": "7ca930bc735c71748538",
+    "command": "python3 src/RimMandrake/Utils/selftest_gimmesomeslack.py --geometry",
+    "margins": []
    }
   },
   "T_STATICS_CENSUS": {
@@ -1144,12 +1154,13 @@
    "runs_today": {
     "ran": true,
     "rc": 0,
-    "seconds": 0.11,
+    "seconds": 0.13,
     "last": "PASS",
-    "at": "2026-11-20T00:26:26Z",
+    "at": "2026-11-20T10:43:01Z",
     "result": "PASS",
-    "build": "1f768520f8f8cefdb9b4",
-    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py"
+    "build": "854ff73d1d7a7eb740b8",
+    "command": "python3 src/RimMandrake/GimmeSomeSlack/selftest_gss_statics_census.py",
+    "margins": []
    }
   },
   "sc_conduit_invisible": {
