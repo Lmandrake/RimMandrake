@@ -9815,3 +9815,5 @@
 {"seat":"RUNNER","event":"live","id":"OPS_SEAT_CLONE_DIRT_RESTORE_VTLF","result":"broken","detail":"Ops alarm SEAT_CLONE_DIRT: disk.seat_dirt = 1 paths dirty in the seat and role clones over 60 min (MEASURED), line > 0","ts":"2026-11-20T23:32:47Z","tsn":1795217567570564955}
 {"seat":"RUNNER","event":"raise","id":"OPS_SEAT_CLONE_DIRT_RESTORE_VTLF","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T23:32:53Z","tsn":1795217573720819966}
 {"seat":"RUNNER","event":"live","id":"OPS_SEAT_CLONE_DIRT_RESTORE_VTLF","result":"kept","detail":"sweep: running again","ts":"2026-11-20T23:33:20Z","tsn":1795217600122467681}
+{"seat":"RUNNER","event":"live","id":"OPS_SEAT_CLONE_DIRT_RESTORE_VTLF","result":"broken","detail":"Ops alarm SEAT_CLONE_DIRT: disk.seat_dirt = 1 paths dirty in the seat and role clones over 60 min (MEASURED), line > 0","ts":"2026-11-20T23:34:21Z","tsn":1795217661185930480}
+{"seat":"RUNNER","event":"raise","id":"OPS_SEAT_CLONE_DIRT_RESTORE_VTLF","reason":"alarm: first in the BENCH queue (build-cop reds: red_dispatch.py launches the fixer)","ts":"2026-11-20T23:34:27Z","tsn":1795217667284344755}
