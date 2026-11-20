@@ -1,0 +1,15 @@
+run gsspt_20261120T045557_s1  scenarios=cords,soak  mode=batch
+  cords        PASS       1.23s     17 ticks  cord drawn on connect, gone on disconnect, back on reconnect; live == fresh at every step; C1 not reproduced here
+  soak         PASS      27.13s   2000 ticks  8 blasts in wind: cords == fresh, spans symmetric, hose clear after every blast; 1 span cut(s) by explosion
+
+scenario   status  wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+---------  ------  ------  -----  ------  -------  ------  ---------  -------
+cords      PASS    1.23    17     28      0.04     1.02    0.17       22     
+soak       PASS    27.13   2000   195     5.39     13.67   8.07       148    
+RUN TOTAL  done    28.50   2017   225     0.00     0.00    0.00       142    
+tick mode batch (None), frame budget 50 ms, runner overhead 0.15 s, Ultrafast multiplier None
+launcher: 28.77 s wall start->collect, 10 bridge calls
+RUN VERDICT PASS  (4 records)  copy D:\ClaudeWork\scratch\gss_v2\walk\gsspt_20261120T045557_s1.jsonl
+
+VERDICT PASS
+[bridge split] 28.8 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 12.5 / outside calls 16.3 s

@@ -1,0 +1,40 @@
+"""Visit 2: capture every station of the loaded review map (human_review stations) with the game's own render."""
+import os, sys, time, shutil, json
+REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "GimmeSomeSlack"))
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+import human_review as H
+import validation_core as VC
+B = VC.Bridge()
+OUT = r"D:\ClaudeWork\scratch\gss_v2\shots"
+os.makedirs(OUT, exist_ok=True)
+prefix = sys.argv[1] if len(sys.argv) > 1 else "st"
+only = set(sys.argv[2].split(",")) if len(sys.argv) > 2 else None
+S = H.station_list()
+B.call("jawa/clear_ui", all=True)
+time.sleep(1.0)
+got = {}
+for s in S:
+    if only and str(s["n"]) not in only:
+        continue
+    x, z, w, h = H.rect_of(s, 2)
+    x, z = max(0, x), max(0, z); w, h = min(w, 250 - x), min(h, 250 - z)
+    name = "%s%02d" % (prefix, int(s["n"])) if str(s["n"]).isdigit() else "%s_%s" % (prefix, s["n"])
+    for k in (1.0, 1.5, 2.2):
+        res = B.call("rimworld/screenshot_cell_rect", x=x, z=z, width=w, height=h, paddingCells=1, fileName=name,
+                     rootSize=k * max(4.0, max(h, w * 9.0 / 16.0) / 2.0 + 1.0))
+        if res.get("success") is not False:
+            break
+    src = res.get("filePath") or res.get("path") or res.get("savedPath")
+    for _ in range(30):
+        if src and os.path.exists(src):
+            break
+        time.sleep(0.5)
+    dst = os.path.join(OUT, name + ".png")
+    if src and os.path.exists(src):
+        time.sleep(0.3)
+        shutil.copyfile(src, dst)
+        got[name] = dst
+    else:
+        got[name] = "FAILED %s" % json.dumps(res)[:200]
+    print(name, s.get("title", "")[:60], got[name], flush=True)

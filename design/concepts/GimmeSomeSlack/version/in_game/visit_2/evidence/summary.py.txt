@@ -1,0 +1,25 @@
+import json, sys
+from collections import Counter
+V = 'design/concepts/GimmeSomeSlack/version/in_game/visit_2/'
+EXIT_MET = sys.argv[1] if len(sys.argv) > 1 else "false"
+t = json.load(open('design/concepts/GimmeSomeSlack/version/test_table.json'))['tests']
+s6 = sorted(k for k, e in t.items() if str(e.get('stage')) == '6')
+last = {}
+for l in open(V + 'rows.jsonl'):
+    if l.strip():
+        r = json.loads(l); last[r['test']] = r['verdict']
+c = Counter(last.get(k, 'UNMEASURED') for k in s6)
+block = "ingame_rows: {" + ", ".join("%s: %s" % (k, last.get(k, 'UNMEASURED').lower()) for k in s6) + "}"
+strange = [json.loads(l) for l in open(V + 'strange.jsonl') if l.strip()]
+nopen = sum(1 for s in strange if s.get('status') not in ('explained', 'filed'))
+s = open(V + 'SUMMARY.md').read()
+head = s.split('## What ran')[0].split('## Exit')[0]
+if "20:12–20:27" not in head:
+    head = head.replace("- 20:12 owner's full list (316 mods) loading for sc_walk.\n", open('Transient/gss_v2/progress_tail.md').read())
+body = open('Transient/gss_v2/body.md').read()
+for k, v in dict(N=len(s6), P=c['PASS'], F=c['FAIL'], U=c['UNMEASURED'], BLOCK=block, NS=len(strange),
+                 NF=sum(1 for x in strange if x['status'] == 'filed'), NE=sum(1 for x in strange if x['status'] == 'explained'),
+                 NO=nopen, EXIT=EXIT_MET).items():
+    body = body.replace("@@%s@@" % k, str(v))
+open(V + 'SUMMARY.md', 'w').write(head + body)
+print(len(s6), dict(c), "strange open", nopen)

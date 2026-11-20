@@ -1,0 +1,32 @@
+run gsspt_20261120T045647_s1  scenarios=cords,soak,ui,save_reload  mode=batch
+  cords        PASS       1.12s     17 ticks  cord drawn on connect, gone on disconnect, back on reconnect; live == fresh at every step; C1 not reproduced here
+  soak         PASS      13.94s   2000 ticks  8 blasts in wind: cords == fresh, spans symmetric, hose clear after every blast; 1 span cut(s) by explosion
+  ui           INVALID    0.35s      0 ticks  no clean 30x16 site
+  save_reload  PENDING    2.65s    124 ticks  armed: saved JBPT_gsspt_20261120T045647_s1 at tick 4159 (7 lines); verdict owed by save_reload_b (resume=gsspt_20261120T045647_s1) after loading that save
+
+scenario     status   wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+-----------  -------  ------  -----  ------  -------  ------  ---------  -------
+cords        PASS     1.12    17     25      0.07     0.82    0.23       87     
+soak         PASS     13.94   2000   210     0.12     12.92   0.90       157    
+ui           INVALID  0.35    0      0       0.35     0.00    0.00       0      
+save_reload  PENDING  2.65    124    18      0.19     1.01    1.46       134    
+RUN TOTAL    done     18.23   2141   257     0.00     0.00    0.00       155    
+tick mode batch (None), frame budget 50 ms, runner overhead 0.17 s, Ultrafast multiplier None
+launcher: 18.43 s wall start->collect, 10 bridge calls
+RUN VERDICT INCOMPLETE  (6 records)  copy D:\ClaudeWork\scratch\gss_v2\walk\gsspt_20261120T045647_s1.jsonl
+
+RESUME: loading JBPT_gsspt_20261120T045647_s1 (tick 4159)
+run gsspt_20261120T045720_s1  scenarios=save_reload_b  mode=batch  resume=gsspt_20261120T045647_s1
+  save_reload_b PASS       0.48s      0 ticks  all 7 cord/hose/span lines the same after the load (0 polyline(s) redrawn, not a bar)
+
+scenario       status  wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+-------------  ------  ------  -----  ------  -------  ------  ---------  -------
+save_reload_b  PASS    0.48    0      6       0.48     0.00    0.00       0      
+RUN TOTAL      done    0.54    0      7       0.00     0.00    0.00       0      
+tick mode batch (None), frame budget 50 ms, runner overhead 0.06 s, Ultrafast multiplier None
+launcher: 2.16 s wall start->collect, 25 bridge calls
+RUN VERDICT PASS  (3 records)  copy D:\ClaudeWork\scratch\gss_v2\walk\gsspt_20261120T045720_s1.jsonl
+RESUME: 1 try, 16.1 s
+
+VERDICT INVALID
+[bridge split] 35.7 s wall: load 1.2 / ticks 0.0 / reads 3.9 / other 2.3 / outside calls 28.4 s

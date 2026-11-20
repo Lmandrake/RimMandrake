@@ -1,0 +1,15 @@
+run gsspt_20261120T044635_s1  scenarios=cords,soak  mode=batch
+  cords        FAIL      15.78s     17 ticks  connect: live cords != fresh build; disconnect: live cords != fresh build; reconnect: live cords != fresh build
+  soak         FAIL       4.58s    250 ticks  blast 0: live cords != fresh
+
+scenario   status  wall s  ticks  frames  setup s  exec s  observe s  ticks/s
+---------  ------  ------  -----  ------  -------  ------  ---------  -------
+cords      FAIL    15.78   17     39      0.00     0.52    15.26      180    
+soak       FAIL    4.58    250    11      0.03     0.54    4.01       479    
+RUN TOTAL  done    20.44   267    52      0.00     0.00    0.00       433    
+tick mode batch (None), frame budget 50 ms, runner overhead 0.07 s, Ultrafast multiplier None
+launcher: 20.63 s wall start->collect, 7 bridge calls
+RUN VERDICT FAIL  (4 records)  copy D:\ClaudeWork\scratch\gss_v2\walk\gsspt_20261120T044635_s1.jsonl
+
+VERDICT FAIL
+[bridge split] 20.6 s wall: load 0.0 / ticks 0.0 / reads 0.0 / other 10.4 / outside calls 10.2 s
